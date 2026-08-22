@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Sports Big Board — v3.0.0</title>
+  <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preconnect" href="https://www.googlevideo.com">
+  <link rel="preconnect" href="https://i.ytimg.com">
+  <link rel="stylesheet" href="styles.css?v=3.0.0" />
+</head>
+<body>
+  <div id="launchScreen" class="sbb-launch-screen" role="dialog" aria-modal="true" aria-labelledby="launchTitle">
+    <div class="sbb-launch-glow" aria-hidden="true"></div>
+    <div class="sbb-launch-card">
+      <div class="sbb-launch-brand" aria-label="Sports Big Board">
+        <span class="sbb-launch-mark" aria-hidden="true">⬢</span>
+        <div><strong>SPORTS</strong><span>BIG BOARD</span></div>
+      </div>
+      <div class="sbb-launch-rule"></div>
+      <h1 id="launchTitle">YOUR SPORTS. ONE BIG BOARD.</h1>
+      <p>Live scores, recaps, highlights and Game Center in one continuous sports channel.</p>
+      <button id="launchPlayBtn" class="sbb-launch-play" type="button" aria-label="Start Sports Big Board">
+        <span class="sbb-launch-play-icon" aria-hidden="true">▶</span>
+        <span>START SPORTS BIG BOARD</span>
+      </button>
+      <small>Scores and coverage warm up while you are here.</small>
+    </div>
+  </div>
+  <div id="localFileWarning" class="local-file-warning hidden">
+    <div class="local-file-card">
+      <div class="warning-kicker">YOUTUBE PLAYBACK SETUP</div>
+      <h2>Open Sports Big Board through localhost</h2>
+      <p>YouTube blocks embedded playback when this page is opened directly as a <code>file://</code> page. This page must be served through localhost. On Windows, double-click <strong>START SPORTS BIG BOARD.bat</strong>. On Android/Termux, run <strong>bash START-ANDROID.sh</strong>.</p>
+      <p class="warning-path">The working address will be <strong>http://localhost:8080</strong>.</p>
+    </div>
+  </div>
+  <div id="app-shell">
+    <header class="top-nav-header">
+
+      <div class="brand"><span class="brand-mark">⬢</span><div><strong>SPORTS</strong><span>BIG BOARD</span></div></div>
+
+      <button id="bigBoardFullscreenBtn" class="big-board-fullscreen-btn" type="button" aria-label="Fullscreen Sports Big Board" title="Fullscreen Sports Big Board">
+      <span class="bbfs-corners" aria-hidden="true">⛶</span>
+    </button>
+    <div class="top-date-controls" aria-label="Score date controls">
+      <button id="topDateSelectBtn" class="top-date-select-btn" type="button" aria-label="Select a score date"><span class="top-date-search" aria-hidden="true">⌕</span><span id="topDateSelectLabel">SELECT DATE</span></button>
+      <button id="returnTodayBtn" class="return-today-btn hidden" type="button" aria-label="Return to today and start today playback"><span aria-hidden="true">↩</span> <span class="return-today-long">RETURN TO TODAY</span><span class="return-today-short">TODAY</span></button>
+    </div>
+    <div id="scoreFilters" class="score-filters" aria-label="Score ribbon sport filters">
+        <button type="button" data-score-filter="ALL" class="active">ALL</button>
+        <button type="button" data-score-filter="MLB">MLB</button><button type="button" data-score-filter="NFL">NFL</button>
+        <button type="button" data-score-filter="NBA">NBA</button><button type="button" data-score-filter="NHL">NHL</button>
+        <button type="button" data-score-filter="EPL">EPL</button><button type="button" data-score-filter="MLS">MLS</button>
+      </div>
+    </header>
+    <section class="key-info-ribbon" aria-live="polite">
+
+      <div class="key-info-label"><strong>KEY INFO</strong><span id="keyInfoState">Checking updates…</span></div>
+      <div id="keyInfoTrack" class="key-info-track"><div class="key-info-empty">Loading official league updates…</div></div>
+
+    </section>
+    <section class="score-ribbon" aria-label="Scores">
+
+      <div id="scoreDayPager" class="score-day-pager score-day-pager-left" aria-label="Previous score date">
+        <button type="button" class="score-day-arrow" data-score-date-step="-1" aria-label="Previous score date" title="Previous date"><span aria-hidden="true">‹</span></button>
+      </div>
+
+      <button id="scoreDayIndicator" class="score-day-indicator" type="button" data-score-day="today" aria-label="Choose score date" title="Choose a date">TODAY • AUG 22</button>
+      <input id="scoreDatePicker" class="score-date-picker" type="date" aria-label="Choose score date">
+      <div id="scoreCells" class="score-cells"><div class="score-cell"><span>MLB</span><b>Loading</b><b>scores…</b><small>LIVE DATA</small></div></div>
+
+      <div id="scoreDayPagerRight" class="score-day-pager score-day-pager-right" aria-label="Next score date">
+        <button type="button" class="score-day-arrow" data-score-date-step="1" aria-label="Next score date" title="Next date"><span aria-hidden="true">›</span></button>
+      </div>
+    </section>
+    <div class="mobile-live-bar">
+
+      <div id="mobileDataStatus" class="mobile-data-state">DATA: CHECKING</div>
+      <div id="mobileLiveSummary">Connecting to Highlightly…</div><div id="quotaSummary" class="quota-summary">API —</div>
+
+    </div>
+    <section class="sport-feed-diagnostics" aria-live="polite">
+      <div class="sport-feed-head"><strong>LIVE FEEDS</strong><span id="sportFeedSummary">Checking MLB / NFL / NBA / NHL / EPL / MLS…</span><span id="sportCallSummary" class="sport-call-summary">—</span> <span id="rapidHighlightStatus" class="muted">RAPID waiting</span><span id="mediaPrewarmStatus" class="muted">PREWARM starting</span><span id="editorStatusBadge" class="editor-status-badge">EDITOR: CHECKING</span><span id="dataStatus" class="data-pill">DATA: CHECKING</span><span id="bufferStatus" class="status-pill">STANDBY: STARTING</span></div>
+      <div class="sport-feed-grid">
+        <div class="sport-feed-chip checking" id="feedMLB"><b>MLB</b><span>CHECKING</span><small>—</small></div>
+        <div class="sport-feed-chip checking" id="feedNFL"><b>NFL</b><span>CHECKING</span><small>—</small></div>
+        <div class="sport-feed-chip checking" id="feedNBA"><b>NBA</b><span>CHECKING</span><small>—</small></div>
+        <div class="sport-feed-chip checking" id="feedNHL"><b>NHL</b><span>CHECKING</span><small>—</small></div>
+        <div class="sport-feed-chip checking" id="feedEPL"><b>EPL</b><span>CHECKING</span><small>—</small></div>
+        <div class="sport-feed-chip checking" id="feedMLS"><b>MLS</b><span>CHECKING</span><small>—</small></div>
+      </div>
+    </section>
+    <section id="coveragePipeline" class="coverage-pipeline" aria-live="polite">
+      <div class="coverage-head">
+        <strong>MEDIA: STARTING</strong>
+        <span id="coverageSummary">Preparing highlight discovery…</span>
+      </div>
+      <div class="coverage-steps">
+        <span id="coverageCache" class="coverage-step active">CACHE</span>
+        <span id="coverageScores" class="coverage-step">SCORES</span>
+        <span id="coverageHighlightly" class="coverage-step">HIGHLIGHTLY</span>
+        <span id="coverageMlb" class="coverage-step">MLB SEARCH</span>
+        <span id="coverageYoutube" class="coverage-step">YOUTUBE / LOCAL</span>
+        <span id="coverageValidate" class="coverage-step">VIDEO CHECK</span>
+        <span id="coverageReady" class="coverage-step">READY</span>
+      </div>
+      <div id="coverageDetail" class="coverage-detail">0 completed • 0 playable • discovery not started</div>
+    </section>
+
+    <main class="layout">
+      <aside class="left-rail">
+        <button class="nav active">▶ <span>Around the League</span></button>
+        <button class="nav">★ <span>My Teams</span></button>
+        <button class="nav">◉ <span>Live Games</span></button>
+        <button class="nav">▦ <span>Scores</span></button>
+        <button class="nav">🏆 <span>Standings</span></button>
+        <button id="leftRailSettingsBtn" class="nav">⚙ <span>Settings</span></button>
+        <div class="proof-card">
+          <strong>v3.0.0</strong>
+          <span>V1B • Cache + background discovery</span>
+          <small id="apiRailStatus">Checking API…</small>
+          <small id="editorRailStatus">Editor: checking…</small>
+        </div>
+      </aside>
+
+      <section class="stage-card">
+        <div class="player-topbar">
+          <div class="now-playing-copy">
+            <div class="now-playing-meta-row"><span class="league-chip" id="currentLeague">NBA</span><span id="currentPosted" class="current-posted">Posted time unavailable</span><span id="currentDuration" class="current-duration"></span><span id="currentRecapPair" class="current-recap-pair hidden"></span></div>
+            <h1 id="currentTitle">Loading highlight…</h1>
+            <p id="currentSubtitle">Dual-player prebuffer test</p>
+          </div>
+          <div class="transport" aria-label="Playback controls">
+            <div id="recapAltButtons" class="recap-alt-buttons hidden" aria-label="Available recap versions">
+              <button id="recapQuickBtn" class="recap-alt-btn target-green hidden" aria-label="Switch to quick recap" title="Watch quick/full recap">+ QUICK</button>
+              <button id="recapExtendedBtn" class="recap-alt-btn target-extended hidden" aria-label="Switch to extended recap" title="Watch extended recap">+ EXTENDED</button>
+              <button id="recapCommentaryBtn" class="recap-alt-btn target-gold hidden" aria-label="Switch to commentary recap" title="Watch commentary recap">+ COMMENTARY</button>
+            </div>
+            <button id="prevBtn" class="transport-btn" aria-label="Previous highlight" title="Previous highlight">⏮</button>
+            <button id="playBtn" class="transport-btn transport-play primary" aria-label="Pause" title="Play or pause">Ⅱ</button>
+            <button id="nextBtn" class="transport-btn" aria-label="Next highlight" title="Next highlight">⏭</button>
+          </div>
+        </div>
+        <div class="stage" id="stage">
+          <div class="player-layer active" id="layerA">
+            <div id="playerA" class="youtube-player-host"></div>
+            <video id="nativeA" class="native-player hidden" playsinline preload="auto" controls></video>
+            <div id="contextA" class="context-program hidden"></div>
+          </div>
+          <div class="player-layer" id="layerB">
+            <div id="playerB" class="youtube-player-host"></div>
+            <video id="nativeB" class="native-player hidden" playsinline preload="auto" controls></video>
+            <div id="contextB" class="context-program hidden"></div>
+          </div>
+
+          <div id="bumper" class="bumper hidden">
+            <div id="bumperBackdrop" class="bumper-backdrop"></div>
+            <div class="bumper-content">
+              <div class="bumper-copy">
+                <div class="bumper-kicker" id="bumperKicker">COMING UP NEXT</div>
+                <div class="bumper-league" id="bumperLeague">NBA</div>
+                <div class="bumper-title" id="bumperTitle">Preparing highlight…</div>
+                <div class="bumper-subtitle" id="bumperSubtitle">Official highlight package</div>
+                <div id="bumperAction" class="bumper-action hidden"></div>
+                <div class="bumper-brand">SPORTS BIG BOARD</div>
+              </div>
+              <div class="bumper-art">
+                <img id="bumperThumb" src="" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div id="videoLoadingOverlay" class="video-loading-overlay hidden" role="status" aria-live="polite">
+            <span class="sbb-loading-spinner" aria-hidden="true"></span>
+            <span id="videoLoadingText">Loading video…</span>
+          </div>
+          <div class="on-air-badge" id="onAirBadge">STARTING</div>
+          <div class="keyboard-help">SPACE pause • → next • F fullscreen</div>
+        </div>
+
+        <div class="lower-third player-footer">
+          <div class="player-status">
+            <div class="metric-grid">
+              <div><span>TRANSITION</span><b id="lastTransition">—</b></div>
+              <div><span>STANDBY</span><b id="standbyState">—</b></div>
+              <div><span>SWAPS</span><b id="swapCount">0</b></div>
+            </div>
+            <div class="utility-controls">
+              <button id="gameCenterDrawerBtn" class="utility-btn drawer-launch-btn" type="button">GAME CENTER</button>
+              <button id="upNextDrawerBtn" class="utility-btn drawer-launch-btn" type="button">UP NEXT</button>
+              <button id="settingsDrawerBtn" class="utility-btn drawer-launch-btn" type="button">SETTINGS</button>
+              <button id="bumperToggle" class="utility-btn">Bumper: Always</button>
+              <button id="fullscreenBtn" class="utility-btn" aria-label="Fullscreen" title="Fullscreen">⛶</button>
+            </div>
+          </div>
+        </div>
+
+      <aside id="infoDrawer" class="info-drawer is-closed" aria-hidden="true" aria-label="Sports Big Board information drawer">
+        <div class="info-drawer-head">
+          <div class="info-drawer-tabs" role="tablist" aria-label="Information drawer">
+            <button id="gameCenterTabBtn" class="info-drawer-tab active" type="button" role="tab" aria-selected="true" data-drawer-tab="game-center">GAME CENTER</button>
+            <button id="upNextTabBtn" class="info-drawer-tab" type="button" role="tab" aria-selected="false" data-drawer-tab="up-next">UP NEXT</button>
+            <button id="settingsTabBtn" class="info-drawer-tab" type="button" role="tab" aria-selected="false" data-drawer-tab="settings">SETTINGS</button>
+          </div>
+          <button id="infoDrawerClose" class="info-drawer-close" type="button" aria-label="Close information drawer" title="Close">×</button>
+        </div>
+
+        <section id="gameCenterPane" class="drawer-pane game-center-pane" data-drawer-pane="game-center">
+          <div class="game-center-empty" id="gameCenterEmpty">
+            <strong>GAME CENTER</strong>
+            <span>Select a game from the score ribbon to see its scoreboard, stats, players and plays.</span>
+          </div>
+          <div id="gameCenterContent" class="game-center-content hidden">
+            <div class="gc-hero">
+              <div id="gcAwayTeam" class="gc-team gc-team-away">
+                <span class="gc-team-logo-wrap"><img class="gc-team-logo" alt=""><span class="gc-team-logo-fallback">AWY</span></span>
+                <span class="gc-team-copy"><span class="gc-team-abbr">AWAY</span><strong class="gc-team-name">Away</strong></span>
+                <b class="gc-team-score">—</b>
+              </div>
+              <div class="gc-status"><strong id="gcStatus">—</strong><span id="gcVenue">—</span><small id="gcUpdated">—</small></div>
+              <div id="gcHomeTeam" class="gc-team gc-team-home">
+                <b class="gc-team-score">—</b>
+                <span class="gc-team-copy"><span class="gc-team-abbr">HOME</span><strong class="gc-team-name">Home</strong></span>
+                <span class="gc-team-logo-wrap"><img class="gc-team-logo" alt=""><span class="gc-team-logo-fallback">HME</span></span>
+              </div>
+            </div>
+            <div class="gc-section-tabs" role="tablist" aria-label="Game Center sections">
+              <button class="gc-section-tab active" type="button" data-gc-section="overview">OVERVIEW</button>
+              <button class="gc-section-tab" type="button" data-gc-section="team-stats">TEAM STATS</button>
+              <button class="gc-section-tab" type="button" data-gc-section="players">PLAYERS</button>
+              <button class="gc-section-tab" type="button" data-gc-section="plays">PLAYS</button>
+            </div>
+            <div id="gcOverview" class="gc-section" data-gc-pane="overview"></div>
+            <div id="gcTeamStats" class="gc-section hidden" data-gc-pane="team-stats"></div>
+            <div id="gcPlayers" class="gc-section hidden" data-gc-pane="players"></div>
+            <div id="gcPlays" class="gc-section hidden" data-gc-pane="plays"></div>
+          </div>
+        </section>
+
+        <section id="upNextPane" class="drawer-pane hidden" data-drawer-pane="up-next">
+          <div class="queue-panel drawer-queue-panel">
+            <div class="panel-head"><div><small>PROGRAMMING</small><h2>Up Next</h2></div><button id="shuffleBtn">Shuffle</button></div><div id="feedNote" class="feed-note">Loading Highlightly MLB feed…</div>
+            <div id="queueList" class="queue-list"></div>
+            <button id="debugToggle" class="debug-toggle" type="button">PLAYER DEBUG ▸</button>
+            <div id="playbackDebug" class="playback-debug is-collapsed">
+              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v3.0.0</span></div>
+              <div><span>PROVIDER</span><b id="diagProvider">—</b></div>
+              <div><span>SLOT</span><b id="diagSlot">—</b></div>
+              <div><span>STATE</span><b id="diagState">idle</b></div>
+              <div><span>ERROR</span><b id="diagError">—</b></div>
+              <div><span>READY / NETWORK</span><b><i id="diagReady">—</i> / <i id="diagNetwork">—</i></b></div>
+              <div class="debug-source"><span>SOURCE</span><b id="diagSource">—</b></div>
+              <div class="debug-source"><span>LAST ACTION</span><b id="diagAction">—</b></div>
+            </div>
+            <div class="test-notes">
+              <strong>Playback health</strong>
+              <span>✓ Prepared-player adoption remains isolated</span>
+              <span>✓ Queue can continue unattended</span>
+              <span>✓ Game Center never controls playback</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="settingsPane" class="drawer-pane settings-pane hidden" data-drawer-pane="settings">
+          <div class="settings-grid">
+            <div class="settings-card">
+              <div class="settings-card-title">VIEWING</div>
+              <label class="settings-toggle-row"><span><strong>Keep Video Visible</strong><small>Shrink and pin the video while you scroll Game Center.</small></span><input id="keepVideoVisibleToggle" type="checkbox"></label>
+              <label class="settings-field"><span>Game Center layout</span><select id="gameCenterLayoutSelect"><option value="below">Below video (mobile/tablet)</option><option value="side">Embedded right side (PC)</option></select></label>
+              <small id="gameCenterLayoutHint" class="settings-hint">PC uses the embedded right-side Game Center; mobile/tablet use below-video.</small>
+            </div>
+            <div class="settings-card">
+              <div class="settings-card-title">API CONNECTIONS</div>
+              <div class="api-connection-row"><span><b>Highlightly</b><small>Scores and sports data</small></span><strong id="settingsHighlightlyStatus">Checking…</strong></div>
+              <input id="settingsHighlightlyKey" class="settings-secret-input" type="password" autocomplete="off" placeholder="Enter replacement key only if needed">
+              <div class="api-connection-row"><span><b>YouTube</b><small>Official highlight discovery</small></span><strong id="settingsYoutubeStatus">Checking…</strong></div>
+              <input id="settingsYoutubeKey" class="settings-secret-input" type="password" autocomplete="off" placeholder="Enter replacement key only if needed">
+              <div class="api-connection-row"><span><b>OpenAI</b><small>Editorial ranking</small></span><strong id="settingsOpenaiStatus">Checking…</strong></div>
+              <input id="settingsOpenaiKey" class="settings-secret-input" type="password" autocomplete="off" placeholder="Enter replacement key only if needed">
+              <button id="saveApiSettingsBtn" class="settings-save-btn" type="button">SAVE API SETTINGS</button>
+              <div id="apiSettingsMessage" class="settings-message">Keys are stored once per machine outside release folders.</div>
+            </div>
+          </div>
+        </section>
+      </aside>
+      </section>
+    </main>
+  </div>
+
+  <script src="config.js?v=3.0.0"></script>
+  <script src="api-runtime.js?v=3.0.0"></script>
+  <script>
+  // v3.0.0 bootstrap is deliberately independent of app.js and YouTube.
+  // It proves the browser can reach the local API and captures startup errors.
+  window.__SBB_BOOT_STARTED_AT = Date.now();
+  try { fetch('/api/client-log?event=BOOT_START&v=3.0.0', {cache:'no-store'}).catch(()=>{}); } catch(e) {}
+  window.__SBB_BOOT_STATUS_PROMISE__ = fetch('/api/status', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('status HTTP '+r.status); return r.json(); })
+    .then(function(data){ try{fetch('/api/client-log?event=BOOT_STATUS_OK&v=3.0.0',{cache:'no-store'}).catch(()=>{});}catch(e){} return data; })
+    .catch(function(err){ try{fetch('/api/client-log?event=BOOT_STATUS_ERROR&detail='+encodeURIComponent(String(err)),{cache:'no-store'}).catch(()=>{});}catch(e){} throw err; });
+  window.addEventListener('error', function(ev){
+    try { fetch('/api/client-log?event=JS_ERROR&detail='+encodeURIComponent((ev.message||'error')+' @ '+(ev.filename||'')+':'+(ev.lineno||0)), {cache:'no-store'}).catch(()=>{}); } catch(e) {}
+  });
+  window.addEventListener('unhandledrejection', function(ev){
+    try { fetch('/api/client-log?event=PROMISE_ERROR&detail='+encodeURIComponent(String(ev.reason?.stack||ev.reason||'unknown')), {cache:'no-store'}).catch(()=>{}); } catch(e) {}
+  });
+</script>
+<script src="core-model.js?v=3.0.0"></script>
+<script src="architecture/score-date-store.js?v=3.0.0"></script>
+<script src="architecture/event-identity.js?v=3.0.0"></script>
+<script src="architecture/media-classifier.js?v=3.0.0"></script>
+<script src="architecture/playback-transports.js?v=3.0.0"></script>
+<script src="architecture/provider-health.js?v=3.0.0"></script>
+<script src="architecture/sport-media-policy.js?v=3.0.0"></script>
+<script src="architecture/media-manifest.js?v=3.0.0"></script>
+<script src="architecture/media-resolver.js?v=3.0.0"></script>
+<script src="architecture/game-center-policy.js?v=3.0.0"></script>
+<script src="architecture/selected-event-store.js?v=3.0.0"></script>
+<script src="architecture/game-center-contract.js?v=3.0.0"></script>
+<script src="architecture/media-work-priorities.js?v=3.0.0"></script>
+<script src="architecture/editorial-packages.js?v=3.0.0"></script>
+<script src="ui/player-visibility.js?v=3.0.0"></script>
+<script src="ui/info-drawer.js?v=3.0.0"></script>
+<script src="ui/settings-view.js?v=3.0.0"></script>
+<script src="ui/game-center-view.js?v=3.0.0"></script>
+<script src="app.js?v=3.0.0"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>

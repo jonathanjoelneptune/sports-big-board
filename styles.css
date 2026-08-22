@@ -1,0 +1,3510 @@
+:root{--bg:#070a0e;--panel:#0d1218;--panel2:#111820;--line:#25303a;--text:#f6f8fa;--muted:#8f9aa6;--accent:#ef3b2d;--blue:#2494ff;--green:#2ed47a}
+*{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{overflow:hidden}button{font:inherit;color:inherit;background:#121922;border:1px solid #293540;border-radius:10px;padding:10px 14px;cursor:pointer}button:hover{background:#18222d}.primary{background:var(--accent);border-color:var(--accent);font-weight:800}.score-ribbon{height:82px;display:flex;align-items:stretch;gap:0;border-bottom:1px solid var(--line);background:#0a0f14;padding:8px}.brand{width:205px;display:flex;align-items:center;gap:10px;padding:8px 14px}.brand-mark{font-size:34px;color:var(--accent)}.brand div{display:grid;line-height:1}.brand strong{font-size:19px}.brand span{font-size:14px;font-weight:800}.score-cell{min-width:150px;border-left:1px solid var(--line);padding:6px 14px;display:grid;grid-template-columns:48px 1fr;gap:2px}.score-cell span{grid-row:1/4;align-self:center;font-weight:900;color:#b9c2cc}.score-cell b{font-size:16px}.score-cell small{font-size:11px;color:var(--muted)}.status-pill{margin-left:auto;align-self:center;margin-right:10px;border:1px solid #315c43;color:#7bf1a9;background:#0e2317;border-radius:999px;padding:8px 12px;font-size:11px;font-weight:900}.layout{height:calc(100vh - 82px);display:grid;grid-template-columns:190px minmax(0,1fr) 330px;gap:10px;padding:10px}.left-rail,.queue-panel,.stage-card{background:var(--panel);border:1px solid #151e27;border-radius:14px;min-height:0}.left-rail{padding:8px;display:flex;flex-direction:column;gap:6px}.nav{text-align:left;border:0;background:transparent;padding:14px 12px;color:#c5ced7}.nav span{margin-left:8px}.nav.active{background:#3a1714;color:#fff}.proof-card{margin-top:auto;border:1px solid var(--line);background:#0a0f14;border-radius:11px;padding:12px;display:grid;gap:4px}.proof-card strong{color:var(--accent)}.proof-card span{font-size:13px;font-weight:800}.proof-card small{color:var(--muted)}.stage-card{display:grid;grid-template-rows:minmax(0,1fr) auto auto;overflow:hidden}.stage{position:relative;background:#000;min-height:0;overflow:hidden}.player-layer{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .12s linear}.player-layer.active{opacity:1;pointer-events:auto}.player-layer iframe{width:100%;height:100%;border:0}.on-air-badge{position:absolute;top:16px;left:16px;background:rgba(239,59,45,.92);font-size:11px;font-weight:900;border-radius:6px;padding:7px 9px;z-index:6}.keyboard-help{position:absolute;right:15px;bottom:12px;background:rgba(0,0,0,.65);color:#cbd3db;font-size:10px;padding:6px 8px;border-radius:6px;z-index:6}.bumper{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;justify-content:center;align-items:center;background:radial-gradient(circle at center,#1a2732 0,#0b1117 55%,#07090c 100%);transition:opacity .18s ease}.bumper.hidden{opacity:0;pointer-events:none}.bumper-kicker{font-size:14px;color:var(--accent);font-weight:900;letter-spacing:.18em}.bumper-title{font-size:clamp(34px,5vw,72px);font-weight:1000;letter-spacing:-.04em}.bumper-score{font-size:18px;margin-top:16px;color:#a9b4bf}.bumper-next{margin-top:7px;font-size:22px;font-weight:800}.lower-third{border-top:1px solid var(--line);background:#0c1218;padding:15px 20px;display:flex;justify-content:space-between;gap:20px;align-items:center}.lower-third h1{font-size:21px;margin:5px 0 2px}.lower-third p{margin:0;color:var(--muted);font-size:13px}.league-chip{font-size:11px;font-weight:900;background:#202a34;border-radius:5px;padding:4px 6px}.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);min-width:300px}.metric-grid div{display:grid;border-left:1px solid var(--line);padding-left:14px}.metric-grid span{font-size:9px;color:var(--muted);font-weight:900}.metric-grid b{font-size:16px;margin-top:2px}.controls{display:flex;gap:8px;padding:10px 15px;background:#090e13;border-top:1px solid #151e27}.queue-panel{padding:12px;display:flex;flex-direction:column}.panel-head{display:flex;align-items:center;justify-content:space-between}.panel-head small{font-size:9px;color:var(--muted);font-weight:900}.panel-head h2{margin:2px 0 10px}.queue-list{display:flex;flex-direction:column;gap:7px;overflow:auto;padding-right:3px}.queue-item{display:grid;grid-template-columns:30px 92px minmax(0,1fr) 54px;gap:8px;align-items:center;padding:8px;background:#10171f;border:1px solid #202b35;border-radius:9px}.queue-item.next{border-color:var(--blue);box-shadow:0 0 0 1px rgba(36,148,255,.25) inset}.queue-num{font-size:18px;color:#75818d;font-weight:900;text-align:center}.queue-item img{width:92px;height:52px;object-fit:cover;border-radius:6px;background:#050709}.queue-copy{min-width:0}.queue-copy strong{display:block;font-size:12px;line-height:1.25}.queue-copy span{display:block;font-size:10px;color:var(--muted);margin-top:4px}.test-notes{margin-top:auto;border-top:1px solid var(--line);padding-top:12px;display:grid;gap:4px;font-size:11px}.test-notes strong{margin-bottom:3px}.test-notes span{color:#9ca7b2}@media(max-width:1050px){.layout{grid-template-columns:70px minmax(0,1fr) 270px}.nav span,.proof-card span,.proof-card small{display:none}.brand{width:160px}.score-cell:nth-of-type(n+5){display:none}}@media(max-width:760px){body{overflow:auto}.score-ribbon{height:68px}.brand{width:145px}.score-cell{display:none}.layout{height:auto;grid-template-columns:1fr;padding:6px}.left-rail{display:none}.stage-card{min-height:78vh}.queue-panel{min-height:420px}.metric-grid{display:none}.stage{min-height:50vh}.keyboard-help{display:none}}
+
+
+.local-file-warning{
+  position:fixed; inset:0; z-index:99999; display:grid; place-items:center;
+  background:rgba(5,8,13,.88); backdrop-filter:blur(8px); padding:24px;
+}
+.local-file-warning.hidden{display:none}
+.local-file-card{
+  width:min(620px,92vw); background:#111820; border:1px solid #33404d;
+  border-radius:18px; padding:28px 30px; box-shadow:0 22px 80px rgba(0,0,0,.55);
+}
+.local-file-card h2{margin:6px 0 12px;font-size:28px}
+.local-file-card p{margin:10px 0;color:#cbd5df;line-height:1.55}
+.local-file-card code{background:#0a0f15;padding:2px 6px;border-radius:5px}
+.warning-kicker{color:#f35b4b;font-weight:800;font-size:12px;letter-spacing:.12em}
+.warning-path{border-top:1px solid #27313c;padding-top:14px!important;margin-top:16px!important}
+/* V1.0A.3 dynamic Coming Up bumper */
+.bumper{display:block;overflow:hidden;background:#07090c}
+.bumper-backdrop{position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(.85);transform:scale(1.02);transition:background-image .15s ease}
+.bumper-backdrop:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,9,12,.78),rgba(7,9,12,.05) 55%,rgba(7,9,12,.20))}
+.bumper-content{position:relative;z-index:2;height:100%;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(250px,.75fr);align-items:center;gap:44px;padding:8% 8%}
+.bumper-copy{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+.bumper-kicker{font-size:13px;letter-spacing:.22em;color:var(--accent);font-weight:1000;margin-bottom:16px}
+.bumper-league{display:inline-flex;border:1px solid rgba(255,255,255,.22);background:rgba(15,21,28,.76);padding:6px 9px;border-radius:6px;font-size:12px;font-weight:1000;margin-bottom:13px}
+.bumper-title{font-size:clamp(30px,4.3vw,62px);font-weight:1000;letter-spacing:-.045em;line-height:.98;max-width:820px;text-wrap:balance}
+.bumper-subtitle{font-size:clamp(14px,1.4vw,20px);margin-top:16px;color:#c3ccd5;max-width:700px}
+.bumper-brand{margin-top:34px;font-size:12px;font-weight:1000;letter-spacing:.16em;color:#8f9aa5}
+.bumper-art{justify-self:end;width:min(34vw,480px);aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.18);box-shadow:0 24px 70px rgba(0,0,0,.45);background:#111820}
+.bumper-art img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:900px){.bumper-content{grid-template-columns:1fr;padding:9%}.bumper-art{display:none}.bumper-title{font-size:clamp(28px,7vw,54px)}}
+
+/* V1.0A.4 integrated transport controls */
+.stage-card{grid-template-rows:minmax(0,1fr) auto}
+.lower-third{display:grid;grid-template-columns:minmax(220px,1fr) auto minmax(300px,auto);align-items:center;gap:24px;padding:13px 18px}
+.now-playing-copy{min-width:0}.now-playing-copy h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.transport{display:flex;align-items:center;justify-content:center;gap:10px}
+.transport-btn{width:44px;height:44px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:900;background:#141c25;border:1px solid #33404c;box-shadow:none}
+.transport-btn:hover{background:#1d2834}.transport-play{width:54px;height:54px;font-size:22px;background:var(--accent);border-color:var(--accent)}
+.transport-play:hover{background:var(--accent)}
+.player-status{display:flex;align-items:center;gap:12px;justify-content:flex-end;min-width:0}.player-status .metric-grid{min-width:280px}.utility-controls{display:flex;gap:7px;align-items:center}.utility-btn{padding:7px 9px;border-radius:8px;font-size:11px;color:#c8d1da;background:#111820}
+@media(max-width:1100px){.lower-third{grid-template-columns:minmax(180px,1fr) auto}.player-status{grid-column:1/-1;justify-content:space-between}.player-status .metric-grid{min-width:260px}}
+@media(max-width:760px){.lower-third{grid-template-columns:1fr auto;gap:12px;padding:10px 12px}.transport{gap:7px}.transport-btn{width:42px;height:42px}.transport-play{width:50px;height:50px}.player-status{grid-column:1/-1}.player-status .metric-grid{display:none}.utility-controls{margin-left:auto}.utility-btn{font-size:10px;padding:6px 8px}.now-playing-copy h1{font-size:16px}.now-playing-copy p{font-size:11px}}
+
+/* V1.0A.6 player-state truth */
+.transport-play.is-buffering{font-size:14px;letter-spacing:2px;opacity:.9}
+.on-air-badge{min-width:62px;text-align:center}
+
+/* v1.1 V1B live-data layer */
+.score-cells{display:flex;min-width:0;overflow:hidden;flex:1}
+.data-pill{align-self:center;margin-left:auto;border:1px solid #6b5930;color:#ffd56b;background:#211b0e;border-radius:999px;padding:8px 12px;font-size:11px;font-weight:900;white-space:nowrap}
+.data-pill.good{border-color:#315c43;color:#7bf1a9;background:#0e2317}
+.data-pill.bad{border-color:#6c3434;color:#ff8d84;background:#2a1111}
+.status-pill{margin-left:8px}
+.feed-note{font-size:10px;color:var(--muted);padding:7px 9px;margin:0 0 8px;background:#0a0f14;border:1px solid #1d2833;border-radius:7px}
+@media(max-width:1050px){.data-pill{display:none}.score-cells .score-cell:nth-child(n+4){display:none}}
+@media(max-width:760px){.score-cells{display:none}.status-pill{margin-left:auto}}
+
+
+/* v1.2 — live data must remain visible on Android */
+.mobile-live-bar{display:none}
+@media(max-width:760px){
+  .score-ribbon{height:auto;min-height:68px;display:grid;grid-template-columns:145px 1fr auto;align-items:center;padding:6px 8px;gap:4px}
+  .brand{width:145px;grid-column:1;padding:6px 8px}
+  .score-cells{display:flex!important;grid-column:1/-1;grid-row:2;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;border-top:1px solid var(--line);padding-top:4px}
+  .score-cells::-webkit-scrollbar{display:none}
+  .score-cell{display:grid!important;min-width:132px;padding:5px 10px;grid-template-columns:40px 1fr}
+  .score-cell b{font-size:14px}.score-cell small{font-size:10px}
+  .data-pill{display:block!important;grid-column:2;justify-self:end;margin:0;font-size:10px;padding:7px 9px}
+  .status-pill{grid-column:3;margin:0;font-size:10px;padding:7px 9px}
+  .mobile-live-bar{display:flex;gap:8px;align-items:center;padding:7px 10px;border-bottom:1px solid var(--line);background:#0a0f14;color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden}
+  .mobile-data-state{font-weight:900;color:#7bf1a9;flex:0 0 auto}
+  .mobile-live-bar #mobileLiveSummary{overflow:hidden;text-overflow:ellipsis}
+  .layout{padding-top:6px}
+}
+
+/* v1.3 — yesterday-first ribbon + game highlight affordance */
+.score-button{position:relative;appearance:none;color:inherit;text-align:left;background:transparent;border:0;border-right:1px solid var(--line);font:inherit;cursor:default}
+.score-button:disabled{opacity:1;color:inherit}
+.score-button.has-highlights{cursor:pointer;box-shadow:inset 0 0 0 2px rgba(239,70,58,.72);background:rgba(239,70,58,.055)}
+.score-button.has-highlights:hover{background:rgba(239,70,58,.11)}
+.score-button.has-highlights:focus-visible{outline:2px solid #fff;outline-offset:-3px}
+.highlight-dot{position:absolute;right:7px;top:7px;display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:8px;font-style:normal;line-height:1}
+.score-cell small{white-space:nowrap}
+@media(max-width:760px){
+  .score-button.has-highlights{box-shadow:inset 0 0 0 2px rgba(239,70,58,.78)}
+  .highlight-dot{right:5px;top:5px;width:16px;height:16px;font-size:7px}
+}
+
+
+/* v1.4 — compact score ribbon with team logos */
+.score-cells{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain}
+.score-cells::-webkit-scrollbar{display:none}
+.score-card{position:relative;flex:0 0 172px;min-width:172px;height:66px;padding:5px 10px 4px;border:0;border-right:1px solid var(--line);border-radius:0;background:transparent;display:grid;grid-template-rows:13px 18px 18px 13px;gap:0;text-align:left;cursor:default}
+.score-card:disabled{opacity:1;color:inherit}
+.score-card-top{display:flex;align-items:center;justify-content:space-between;font-size:9px;font-weight:900;color:#aeb8c3}
+.score-card-top small{font-size:8px;color:#697581;font-weight:900;letter-spacing:.04em}
+.score-team-row{display:grid;grid-template-columns:20px minmax(0,1fr) 24px;align-items:center;gap:6px;min-width:0}
+.score-team-logo-wrap{width:18px;height:18px;display:grid;place-items:center}
+.score-team-logo{width:18px;height:18px;object-fit:contain;display:block}
+.score-team-logo-fallback{width:18px;height:18px;border-radius:4px;background:#18212a;display:grid;place-items:center;font-size:6px;font-weight:1000;color:#c8d0d8}
+.score-team-abbr{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.score-team-score{font-size:14px;text-align:right;font-variant-numeric:tabular-nums}
+.score-card-footer{font-size:9px;color:var(--muted);align-self:end;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.score-card-footer.live{color:#7bf1a9;font-weight:900}
+.score-card.has-highlights{cursor:pointer;box-shadow:inset 0 -2px 0 var(--accent), inset 0 0 0 1px rgba(239,59,45,.45);background:rgba(239,59,45,.045)}
+.score-card.has-highlights:hover{background:rgba(239,59,45,.1)}
+.score-empty{padding:18px;color:var(--muted);font-size:12px}
+@media(max-width:760px){
+  .score-ribbon{grid-template-columns:150px minmax(0,1fr) auto}
+  .score-cells{padding-top:5px;gap:0}
+  .score-card{display:grid!important;flex:0 0 158px;min-width:158px;height:70px;padding:5px 9px;grid-template-rows:13px 19px 19px 13px}
+  .score-team-row{grid-template-columns:22px minmax(0,1fr) 24px;gap:5px}
+  .score-team-logo-wrap,.score-team-logo,.score-team-logo-fallback{width:20px;height:20px}
+  .score-team-abbr{font-size:13px}
+  .score-team-score{font-size:14px}
+  .highlight-dot{right:4px;top:4px}
+}
+
+
+/* v1.5 — contain score-card text so FINAL/LIVE never bleeds into team rows */
+.score-card{
+  height:76px;
+  padding:5px 10px 5px;
+  grid-template-rows:14px 19px 19px 14px;
+  align-content:start;
+  overflow:hidden;
+}
+.score-card-top,
+.score-team-row,
+.score-card-footer{
+  min-height:0;
+  line-height:1;
+}
+.score-card-footer{
+  display:flex;
+  align-items:flex-end;
+  padding-top:2px;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.score-team-logo-wrap{overflow:hidden}
+.score-team-logo,.score-team-logo-fallback{flex:0 0 auto}
+@media(max-width:760px){
+  .score-card{
+    height:78px;
+    padding:5px 9px 5px;
+    grid-template-rows:14px 20px 20px 14px;
+  }
+  .score-cells{padding-bottom:2px}
+}
+
+/* v1.6 — direct MLB media playback alongside YouTube */
+.native-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+.native-video.hidden{display:none}
+
+/* v1.7 — highlight type affordance + footer play button + queue resilience */
+.score-card.has-highlights{box-shadow:none;background:rgba(255,255,255,.015)}
+.score-card.highlight-recap{box-shadow:inset 0 -3px 0 #35c778, inset 0 0 0 1px rgba(53,199,120,.36);background:rgba(53,199,120,.035)}
+.score-card.highlight-clips{box-shadow:inset 0 -3px 0 #3b9cff, inset 0 0 0 1px rgba(59,156,255,.35);background:rgba(59,156,255,.035)}
+.score-card-footer{justify-content:space-between;gap:8px}
+.score-card-footer .highlight-dot{position:static;flex:0 0 auto;width:17px;height:17px;font-size:8px;margin-left:auto}
+.score-card.highlight-recap .highlight-dot{background:#35c778}
+.score-card.highlight-clips .highlight-dot{background:#3b9cff}
+.queue-empty{padding:16px 12px;border:1px dashed #26323d;border-radius:9px;color:var(--muted);font-size:12px;text-align:center}
+.queue-thumb-fallback{width:92px;height:52px;display:grid;place-items:center;border-radius:6px;background:#17202a;color:#aeb8c3;font-weight:900;font-size:12px}
+@media(max-width:760px){
+  .score-card-footer .highlight-dot{width:17px;height:17px;right:auto;top:auto}
+  .queue-list{min-height:150px}
+}
+
+
+/* v1.7.3 — Pro quota diagnostic + stricter playable affordance */
+.quota-summary{margin-left:auto;flex:0 0 auto;color:#8f9aa6;font-size:10px;font-weight:800;white-space:nowrap}
+.quota-summary.quota-low{color:#ff9c91}
+.score-card:not(.has-highlights) .highlight-dot{display:none}
+.score-card.highlight-recap{border-bottom-color:#35c778}
+.score-card.highlight-clips{border-bottom-color:#3b9cff}
+@media(max-width:760px){
+  .mobile-live-bar{overflow-x:auto;overflow-y:hidden}
+  .quota-summary{padding-left:8px}
+}
+
+/* v1.7.4 — explicit recap/reel labels and score-card launch affordance */
+.score-card.has-highlights{cursor:pointer}
+.score-card-footer{display:flex;align-items:center}
+.highlight-type-label{margin-left:auto;font-size:7px;font-weight:900;letter-spacing:.055em;white-space:nowrap}
+.score-card.highlight-recap .highlight-type-label{color:#35c778}
+.score-card.highlight-clips .highlight-type-label{color:#3b9cff}
+.score-card-footer .highlight-type-label + .highlight-dot{margin-left:5px}
+@media(max-width:700px){
+  .highlight-type-label{font-size:6px;letter-spacing:.035em}
+}
+
+
+/* v1.7.6 — bounded playback recovery */
+.bumper.needs-tap{cursor:pointer}
+.bumper-action{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:rgba(239,59,45,.92);color:#fff;font-size:12px;font-weight:900;letter-spacing:.055em}
+.bumper-action.hidden{display:none}
+.bumper.needs-tap .bumper-content{pointer-events:none}
+@media(max-width:760px){.bumper-action{font-size:11px;padding:9px 12px}}
+
+/* v1.7.8 — playback-provider diagnostics */
+.playback-debug{margin-top:12px;border:1px solid #26323d;border-radius:10px;background:#0a0f14;padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:7px 12px;font-size:10px}
+.debug-head{grid-column:1/-1;display:flex;justify-content:space-between;color:#d8e0e8}.playback-debug>div:not(.debug-head){display:grid;gap:2px;min-width:0}.playback-debug span{color:#7f8b96;font-size:8px;font-weight:900;letter-spacing:.06em}.playback-debug b{font-weight:750;overflow-wrap:anywhere}.playback-debug i{font-style:normal}.debug-source{grid-column:1/-1}
+@media(max-width:760px){.playback-debug{grid-template-columns:1fr 1fr}.queue-panel{min-height:520px}}
+
+/* v1.7.9: real native playback surfaces for MLB/direct-video adapters. */
+.player-layer { position: absolute; inset: 0; }
+.youtube-player-host,
+.native-player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.native-player {
+  background: #000;
+  object-fit: contain;
+  z-index: 1;
+}
+.youtube-player-host { z-index: 1; }
+.native-player.hidden { display: none !important; }
+
+
+/* v1.7.11 — visible media-ingestion pipeline */
+.coverage-pipeline{display:grid;gap:7px;padding:8px 12px;border-bottom:1px solid var(--line);background:#091017;color:#cbd4dc}
+.coverage-head{display:flex;gap:10px;align-items:center;min-width:0;font-size:10px}.coverage-head strong{color:#ffd56b;white-space:nowrap}.coverage-head strong.good{color:#7bf1a9}.coverage-head strong.bad{color:#ff8d84}.coverage-head strong.degraded{color:#ffbd66}.coverage-head span{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.coverage-steps{display:flex;gap:5px;align-items:center;overflow-x:auto;scrollbar-width:none}.coverage-steps::-webkit-scrollbar{display:none}.coverage-step{flex:0 0 auto;padding:4px 7px;border:1px solid #26323d;border-radius:999px;color:#697581;background:#0a0f14;font-size:7px;font-weight:900;letter-spacing:.045em}.coverage-step.active{border-color:#7a6031;color:#ffd56b;background:#201a0d}.coverage-step.done{border-color:#315c43;color:#7bf1a9;background:#0e2317}.coverage-step.error{border-color:#6c3434;color:#ff8d84;background:#2a1111}
+.coverage-detail{font-size:9px;color:#8f9aa6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:760px){.coverage-pipeline{padding:7px 10px}.coverage-head{font-size:9px}.coverage-detail{font-size:8px}}
+
+/* v1.8 queue duration badges */
+.queue-thumb-wrap{position:relative;width:92px;height:52px;border-radius:6px;overflow:hidden;background:#050709}
+.queue-thumb-wrap img{display:block;width:92px;height:52px;object-fit:cover;border-radius:6px}
+.queue-thumb-wrap .queue-thumb-fallback{width:92px;height:52px;display:flex;align-items:center;justify-content:center;background:#101820;color:#8e9aa6;font-size:10px;font-weight:900;letter-spacing:.06em}
+.queue-duration{position:absolute;right:4px;bottom:4px;padding:2px 5px;border-radius:4px;background:rgba(0,0,0,.82);color:#fff;font-size:10px;font-weight:900;line-height:1.15;font-variant-numeric:tabular-nums}
+
+
+/* v1.8.2 — queue duration right column */
+.queue-duration-col{justify-self:end;align-self:center;min-width:48px;text-align:right;color:#e7edf3;font-size:12px;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}
+.queue-duration{display:none!important}
+@media(max-width:520px){.queue-item{grid-template-columns:26px 78px minmax(0,1fr) 46px}.queue-thumb-wrap,.queue-thumb-wrap img,.queue-thumb-wrap .queue-thumb-fallback{width:78px;height:44px}.queue-duration-col{font-size:11px;min-width:42px}}
+
+
+/* v1.8.2 — guaranteed right-edge duration placement */
+.queue-item{position:relative;grid-template-columns:30px 92px minmax(0,1fr)!important;padding-right:78px!important}
+.queue-duration-col{position:absolute!important;right:16px!important;top:50%!important;transform:translateY(-50%)!important;display:block!important;min-width:50px!important;text-align:right!important;font-size:13px!important;font-weight:900!important;color:#e7edf3!important;font-variant-numeric:tabular-nums!important;white-space:nowrap!important}
+@media(max-width:520px){.queue-item{grid-template-columns:26px 78px minmax(0,1fr)!important;padding-right:66px!important}.queue-duration-col{right:12px!important;font-size:12px!important;min-width:44px!important}}
+
+/* v1.9.1 per-league feed diagnostics + quota-aware polling */
+.sport-feed-diagnostics{padding:7px 12px 8px;border-bottom:1px solid var(--line);background:#081015;color:#cbd4dc}
+.sport-feed-head{display:flex;align-items:center;gap:9px;min-width:0;margin-bottom:6px;font-size:9px}.sport-feed-head strong{font-size:8px;letter-spacing:.08em;color:#8f9aa6}.sport-feed-head>span:not(.sport-call-summary){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sport-call-summary{margin-left:auto;color:#71808c;white-space:nowrap}
+.sport-feed-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.sport-feed-chip{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;gap:1px 7px;align-items:center;padding:6px 8px;border:1px solid #26323d;border-radius:8px;background:#0b1117;min-width:0}.sport-feed-chip b{grid-row:1/3;font-size:11px}.sport-feed-chip span{font-size:8px;font-weight:900;letter-spacing:.045em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sport-feed-chip small{font-size:8px;color:#82909c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sport-feed-chip.ok{border-color:#315c43;background:#0d1d15}.sport-feed-chip.ok span{color:#7bf1a9}.sport-feed-chip.empty{border-color:#34414d}.sport-feed-chip.empty span{color:#a9b6c1}.sport-feed-chip.live{border-color:#315c43;background:#10271a}.sport-feed-chip.live span{color:#7bf1a9}.sport-feed-chip.error{border-color:#6c3434;background:#2a1111}.sport-feed-chip.error span{color:#ff8d84}.sport-feed-chip.checking span{color:#ffd56b}
+@media(max-width:760px){.sport-feed-diagnostics{padding:6px 10px}.sport-feed-head{font-size:8px}.sport-call-summary{display:none}.sport-feed-grid{gap:4px}.sport-feed-chip{padding:5px 6px;gap:0 5px}.sport-feed-chip b{font-size:10px}.sport-feed-chip span,.sport-feed-chip small{font-size:7px}}
+
+
+/* v1.9.2 — always-on Key Information ribbon */
+.key-info-ribbon{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:stretch;border-bottom:1px solid var(--line);background:#0b0f13;min-height:42px;overflow:hidden}
+.key-info-label{display:flex;flex-direction:column;justify-content:center;gap:1px;padding:6px 11px;border-right:1px solid var(--line);background:#17120a;white-space:nowrap}.key-info-label strong{font-size:9px;letter-spacing:.08em;color:#ffd166}.key-info-label span{font-size:7px;color:#a99772;text-transform:uppercase}
+.key-info-track{display:flex;align-items:stretch;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}.key-info-track::-webkit-scrollbar{display:none}.key-info-empty{padding:11px 13px;color:#73808c;font-size:9px}
+.key-info-item{appearance:none;border:0;border-right:1px solid #242b32;background:#0d1217;color:#eaf0f5;display:grid;grid-template-columns:auto minmax(130px,260px);grid-template-rows:auto auto;align-content:center;gap:2px 8px;padding:6px 12px;text-align:left;cursor:pointer;flex:0 0 auto;min-width:220px}.key-info-item:hover{background:#131a21}.key-info-type{grid-row:1/3;align-self:center;padding:3px 6px;border-radius:999px;background:#3a2a0a;border:1px solid #74551a;color:#ffd166;font-size:7px;font-weight:950;letter-spacing:.055em}.key-info-item strong{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.key-info-item small{font-size:7px;color:#8d99a5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.key-info-item.injury .key-info-type{background:#351515;border-color:#713333;color:#ff9c91}.key-info-item.preseason .key-info-type{background:#10253a;border-color:#315b7d;color:#82c8ff}.key-info-item.signing .key-info-type,.key-info-item.trade .key-info-type{background:#302608;border-color:#705b1d;color:#ffe08a}
+@media(max-width:760px){.key-info-ribbon{grid-template-columns:72px minmax(0,1fr);min-height:38px}.key-info-label{padding:5px 8px}.key-info-item{min-width:205px;padding:5px 9px;grid-template-columns:auto minmax(120px,230px)}.key-info-item strong{font-size:9px}}
+
+/* v1.9.3 — factual-first Key Info ticker polish */
+.key-info-ribbon{min-height:48px}
+.key-info-label{min-width:82px;padding:7px 10px}
+.key-info-label strong{font-size:10px}.key-info-label span{max-width:70px;overflow:hidden;text-overflow:ellipsis}
+.key-info-track{gap:0}
+.key-info-item{grid-template-columns:auto minmax(190px,360px);min-width:300px;max-width:430px;padding:7px 12px}
+.key-info-item strong{font-size:10px;line-height:1.15}.key-info-item small{font-size:7.5px}
+.key-info-item:not(.preseason):not(.injury):not(.signing):not(.trade) .key-info-type{background:#24282d;border-color:#444b53;color:#dce4ec}
+@media(max-width:760px){
+  .key-info-ribbon{grid-template-columns:66px minmax(0,1fr);min-height:42px}
+  .key-info-label{min-width:66px;padding:5px 7px}.key-info-label strong{font-size:8px}.key-info-label span{font-size:6px;max-width:58px}
+  .key-info-item{min-width:270px;max-width:340px;grid-template-columns:auto minmax(175px,280px);padding:6px 9px;gap:2px 7px}
+  .key-info-item strong{font-size:9px}.key-info-item small{font-size:7px}
+}
+
+
+/* v1.9.6 — title/transport above video + published time */
+.stage-card{grid-template-rows:auto minmax(0,1fr) auto!important}
+.player-topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;padding:11px 16px;background:#0c1218;border-bottom:1px solid var(--line)}
+.player-topbar .now-playing-copy{min-width:0}.player-topbar h1{margin:4px 0 2px;font-size:18px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.player-topbar p{margin:0;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now-playing-meta-row{display:flex;align-items:center;gap:9px;min-width:0}.current-posted{font-size:10px;color:#9aa6b2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-footer{padding:7px 12px!important;min-height:42px}.player-footer .player-status{width:100%;justify-content:flex-end}
+@media(max-width:760px){.player-topbar{padding:8px 10px;gap:8px}.player-topbar h1{font-size:14px}.player-topbar p{font-size:9px}.current-posted{font-size:9px}.player-topbar .transport{gap:5px}.player-topbar .transport-btn{width:38px;height:38px}.player-topbar .transport-play{width:44px;height:44px}.player-footer{padding:5px 8px!important}.stage{min-height:46vh}}
+@media(max-width:480px){.player-topbar{grid-template-columns:minmax(0,1fr) auto}.player-topbar p{display:none}.current-posted{max-width:180px}.player-topbar .transport-btn{width:35px;height:35px}.player-topbar .transport-play{width:41px;height:41px}}
+\n\n/* v1.9.11 — readable Key Info cards: wrap instead of cutting off consequential updates */\n.key-info-track{align-items:stretch}\n.key-info-item{grid-template-columns:auto minmax(210px,390px);max-width:520px;min-width:330px;height:auto;min-height:52px}\n.key-info-item strong{white-space:normal;overflow:visible;text-overflow:clip;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.25;max-height:2.5em}\n.key-info-item small{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.2}\n@media(max-width:760px){.key-info-item{min-width:310px;max-width:390px;grid-template-columns:auto minmax(205px,315px)}.key-info-item strong{font-size:9px;line-height:1.25}}\n
+
+/* v1.9.11 — television-style Key Info ticker */
+.key-info-track{
+  position:relative;
+  overflow:hidden;
+  white-space:normal;
+}
+.key-info-marquee{
+  display:flex;
+  align-items:stretch;
+  width:max-content;
+  will-change:transform;
+  animation:sbb-key-info-ticker var(--ticker-duration,42s) linear infinite;
+}
+.key-info-track:hover .key-info-marquee,
+.key-info-track:focus-within .key-info-marquee{
+  animation-play-state:paused;
+}
+@keyframes sbb-key-info-ticker{
+  from{transform:translateX(100vw)}
+  to{transform:translateX(-50%)}
+}
+@media (prefers-reduced-motion: reduce){
+  .key-info-marquee{animation:none;transform:none}
+  .key-info-track{overflow-x:auto}
+}
+
+
+/* v2.0.1 — truly seamless Key Info conveyor */
+.key-info-marquee{display:flex;align-items:stretch;width:max-content;animation:sbb-key-info-ticker var(--ticker-duration,54s) linear infinite;transform:translate3d(0,0,0)}
+.key-info-group{display:flex;align-items:stretch;flex:0 0 auto;width:max-content}
+@keyframes sbb-key-info-ticker{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+.key-info-item.performance .key-info-type,.key-info-item.play .key-info-type,.key-info-item.record .key-info-type,.key-info-item.milestone .key-info-type{background:#10253a;border-color:#315b7d;color:#82c8ff}
+.key-info-item.result .key-info-type,.key-info-item.upset .key-info-type{background:#1d2b16;border-color:#48653b;color:#a9e98e}
+
+/* v2.0.1: fifth live competition and future sport-family scaling. */
+.sport-feed-grid{grid-template-columns:repeat(5,minmax(0,1fr));}
+.score-card.league-epl .score-card-top>span,.score-card.league-epl .highlight-type-label{letter-spacing:.04em;}
+@media(max-width:900px){.sport-feed-grid{grid-template-columns:repeat(5,minmax(82px,1fr));overflow-x:auto;}}
+@media(max-width:600px){.sport-feed-grid{display:flex;gap:6px;overflow-x:auto}.sport-feed-chip{min-width:92px;flex:0 0 auto}}
+
+/* v2.1.0 editorial diagnostics + spacious ticker */
+.editor-status-badge{margin-left:auto;border:1px solid #394654;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:800;letter-spacing:.04em;color:#a8b2bd;white-space:nowrap}
+.editor-status-badge.ready{border-color:#286641;color:#7be5a1;background:#10261a}
+.editor-status-badge.degraded{border-color:#795a24;color:#f3c66d;background:#2a2112}
+@media(max-width:900px){.sport-feed-grid{grid-template-columns:repeat(5,minmax(120px,1fr));overflow-x:auto}.editor-status-badge{margin-left:0}}
+
+
+/* v2.1.0 — spacious Key Info cards. We are not space constrained: never ellipsize a headline. */
+.key-info-ribbon{min-height:58px;align-items:stretch}
+.key-info-track{min-height:58px}
+.key-info-group{align-items:stretch}
+.key-info-item{
+  min-width:480px!important;
+  max-width:760px!important;
+  grid-template-columns:auto minmax(360px,650px)!important;
+  min-height:58px!important;
+  padding:8px 16px!important;
+}
+.key-info-item strong{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  display:block!important;
+  -webkit-line-clamp:unset!important;
+  max-height:none!important;
+  line-height:1.28!important;
+  font-size:10.5px!important;
+}
+.key-info-item small{white-space:normal!important;overflow:visible!important;text-overflow:clip!important}
+.editor-status-badge{max-width:460px;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:760px){
+  .key-info-item{min-width:390px!important;max-width:560px!important;grid-template-columns:auto minmax(285px,455px)!important}
+  .key-info-item strong{font-size:9.5px!important}
+  .editor-status-badge{max-width:310px}
+}
+
+
+/* v2.1.2 — wide, compact Key Info ticker. Keep the ribbon short; spend horizontal space instead. */
+.key-info-ribbon{min-height:40px!important;height:40px!important;align-items:stretch!important}
+.key-info-label{height:40px!important;min-height:40px!important;padding:4px 10px!important}
+.key-info-track{height:40px!important;min-height:40px!important;align-items:stretch!important}
+.key-info-marquee,.key-info-group{height:40px!important;align-items:stretch!important}
+.key-info-item{
+  min-width:620px!important;
+  max-width:900px!important;
+  height:40px!important;
+  min-height:40px!important;
+  padding:4px 16px!important;
+  grid-template-columns:auto minmax(500px,780px)!important;
+  grid-template-rows:1fr!important;
+  align-items:center!important;
+  align-content:center!important;
+  column-gap:10px!important;
+}
+.key-info-type{grid-row:1!important;align-self:center!important}
+.key-info-item strong{
+  grid-row:1!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  display:block!important;
+  line-height:1.08!important;
+  font-size:10px!important;
+  max-height:2.16em!important;
+}
+/* Source metadata is useful but should not make the ticker taller. Keep it accessible via item title/tooltip. */
+.key-info-item small{display:none!important}
+@media(max-width:760px){
+  .key-info-ribbon{min-height:38px!important;height:38px!important;grid-template-columns:66px minmax(0,1fr)!important}
+  .key-info-label,.key-info-track,.key-info-marquee,.key-info-group{height:38px!important;min-height:38px!important}
+  .key-info-item{min-width:500px!important;max-width:720px!important;height:38px!important;min-height:38px!important;grid-template-columns:auto minmax(390px,620px)!important;padding:3px 12px!important}
+  .key-info-item strong{font-size:9px!important;line-height:1.08!important;max-height:2.16em!important}
+}
+
+
+/* v2.1.3 — content-sized, single-line Key Info ticker */
+.key-info-ribbon{height:38px!important;min-height:38px!important}
+.key-info-label,.key-info-track,.key-info-marquee,.key-info-group{height:38px!important;min-height:38px!important}
+.key-info-item{
+  display:flex!important;
+  align-items:center!important;
+  width:var(--story-width,auto)!important;
+  min-width:0!important;
+  max-width:760px!important;
+  height:38px!important;
+  min-height:38px!important;
+  padding:3px 12px!important;
+  gap:9px!important;
+  flex:0 0 auto!important;
+}
+.key-info-item strong{
+  display:block!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  max-height:none!important;
+  line-height:1!important;
+  font-size:9.5px!important;
+}
+.key-info-type{flex:0 0 auto!important;grid-row:auto!important}
+.key-info-item small{display:none!important}
+@media(max-width:760px){
+  .key-info-ribbon{height:36px!important;min-height:36px!important}
+  .key-info-label,.key-info-track,.key-info-marquee,.key-info-group{height:36px!important;min-height:36px!important}
+  .key-info-item{height:36px!important;min-height:36px!important;max-width:680px!important;padding:3px 10px!important;gap:8px!important}
+  .key-info-item strong{font-size:8.7px!important}
+}
+
+/* v2.1.3 — diagnostics are useful, but normal programming should own the screen. */
+.playback-debug{margin-top:8px}
+.playback-debug.is-collapsed{display:none}
+.debug-toggle{width:100%;margin-top:10px;border:1px solid #26323d;border-radius:9px;background:#0a0f14;color:#87939f;padding:8px 10px;text-align:left;font-size:9px;font-weight:850;letter-spacing:.05em}
+
+
+/* v2.1.4 — true intrinsic-width Key Info cards.
+   Overrides every older fixed/min-width experiment above. */
+.key-info-item{
+  width:max-content!important;
+  min-width:max-content!important;
+  max-width:none!important;
+  flex:0 0 auto!important;
+  display:flex!important;
+  align-items:center!important;
+  height:38px!important;
+  min-height:38px!important;
+  padding:3px 11px!important;
+  gap:8px!important;
+}
+.key-info-item strong{
+  display:block!important;
+  width:max-content!important;
+  min-width:0!important;
+  max-width:none!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+.key-info-type{flex:0 0 auto!important}
+@media(max-width:760px){
+  .key-info-item{
+    width:max-content!important;
+    min-width:max-content!important;
+    max-width:none!important;
+    height:36px!important;
+    min-height:36px!important;
+    padding:3px 9px!important;
+  }
+  .key-info-item strong{
+    width:max-content!important;
+    max-width:none!important;
+  }
+}
+
+
+/* v2.2.0 television-style context interstitials */
+.context-program{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at 80% 15%,rgba(43,108,176,.28),transparent 38%),
+    linear-gradient(135deg,#0c1521 0%,#07101a 48%,#10243a 100%);
+  color:#f7fbff;
+  overflow:hidden;
+}
+.context-program.hidden{display:none!important}
+.context-program::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.13;
+  background-image:linear-gradient(rgba(255,255,255,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.13) 1px,transparent 1px);
+  background-size:54px 54px;
+}
+.context-program-inner{
+  position:relative;
+  width:min(88%,980px);
+  border:1px solid rgba(126,180,230,.28);
+  background:rgba(4,12,21,.78);
+  box-shadow:0 20px 70px rgba(0,0,0,.35);
+  padding:28px 34px 24px;
+  border-radius:16px;
+}
+.context-kicker{
+  color:#6fc3ff;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.18em;
+}
+.context-heading{
+  margin-top:5px;
+  font-size:clamp(34px,5vw,64px);
+  line-height:.95;
+  font-weight:950;
+  letter-spacing:-.035em;
+  text-transform:uppercase;
+}
+.context-subheading{
+  margin-top:9px;
+  color:#aebdca;
+  font-size:15px;
+}
+.context-stories{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:24px;
+}
+.context-story{
+  min-width:0;
+  min-height:150px;
+  padding:15px;
+  border-radius:12px;
+  background:linear-gradient(180deg,rgba(34,75,114,.74),rgba(12,28,45,.9));
+  border:1px solid rgba(111,195,255,.18);
+  display:flex;
+  gap:10px;
+}
+.context-index{
+  font-size:34px;
+  font-weight:950;
+  color:#5bbcff;
+  line-height:1;
+}
+.context-story-copy span{
+  display:block;
+  color:#84cfff;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.1em;
+  margin-bottom:8px;
+}
+.context-story-copy strong{
+  display:block;
+  font-size:clamp(15px,1.8vw,22px);
+  line-height:1.12;
+}
+.context-footer{
+  margin-top:18px;
+  color:#7f93a5;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.1em;
+}
+@media(max-width:760px){
+  .context-program-inner{width:92%;padding:20px 18px}
+  .context-stories{gap:7px}
+  .context-story{padding:10px;min-height:130px}
+  .context-index{font-size:24px}
+  .context-story-copy strong{font-size:14px}
+}
+
+
+
+/* v2.5.30 — every available recap tier gets its own switch button. */
+.recap-alt-buttons{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;min-width:0}
+.recap-alt-buttons.hidden{display:none!important}
+@media(max-width:760px){
+  .recap-alt-buttons{gap:4px;max-width:47vw;overflow-x:auto;scrollbar-width:none}
+  .recap-alt-buttons::-webkit-scrollbar{display:none}
+  .recap-alt-btn{min-width:max-content!important}
+}
+
+/* v2.2.2 quick/extended recap switch */
+.recap-alt-btn{
+  appearance:none;border:1px solid #2f84c9;background:#102438;color:#8fd2ff;
+  border-radius:999px;height:38px;padding:0 12px;font-size:10px;font-weight:900;
+  letter-spacing:.045em;white-space:nowrap;cursor:pointer;
+}
+.recap-alt-btn:hover,.recap-alt-btn:focus{background:#16324d;border-color:#59b6fb;color:#d9f2ff}
+.recap-alt-btn.hidden{display:none!important}
+@media(max-width:760px){.recap-alt-btn{height:34px;padding:0 9px;font-size:8px;letter-spacing:.02em}}
+
+/* v2.2.4 recap alternate control */
+.extended-recap-btn{
+  border:1px solid rgba(96,165,250,.38);
+  background:rgba(20,45,72,.78);
+  color:#d7ecff;
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.04em;
+  white-space:nowrap;
+}
+.extended-recap-btn:hover,.extended-recap-btn:active{
+  background:rgba(31,86,138,.92);
+}
+.extended-recap-btn.hidden{display:none!important}
+
+
+/* v2.2.4 — gold narrated/commentary recap tier */
+.score-card.highlight-gold{
+  box-shadow:inset 0 -3px 0 #e6b94a, inset 0 0 0 1px rgba(230,185,74,.42)!important;
+  background:rgba(230,185,74,.045)!important;
+}
+.score-card.highlight-gold .highlight-type-label{color:#f0c65b!important}
+.score-card.highlight-gold .highlight-dot{background:#e6b94a!important}
+.recap-alt-btn{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:92px}
+.recap-alt-btn.hidden{display:none!important}
+.gold-recap-badge{background:#5b4616!important;border-color:#e6b94a!important;color:#ffe39a!important;box-shadow:0 0 0 1px rgba(230,185,74,.18) inset}
+
+
+/* v2.2.5 — make recap pairing observable before playback */
+.queue-recap-pair{display:inline-flex;align-items:center;width:max-content;max-width:100%;margin-top:5px;padding:3px 7px;border-radius:999px;font-size:9px;line-height:1.1;font-style:normal;font-weight:900;letter-spacing:.035em;white-space:nowrap}
+.queue-recap-pair.paired{color:#bfe2ff;background:rgba(40,117,177,.16);border:1px solid rgba(75,160,224,.34)}
+.queue-recap-pair.searching{color:#f0c76e;background:rgba(125,84,13,.18);border:1px solid rgba(195,143,42,.36)}
+.current-recap-pair{display:inline-flex;align-items:center;margin-left:8px;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:900;white-space:nowrap}
+.current-recap-pair.paired{color:#bfe2ff;border:1px solid rgba(75,160,224,.34);background:rgba(40,117,177,.16)}
+.current-recap-pair.searching{color:#f0c76e;border:1px solid rgba(195,143,42,.36);background:rgba(125,84,13,.18)}
+.current-recap-pair.hidden{display:none!important}
+@media(max-width:600px){.queue-recap-pair{font-size:8px;white-space:normal}.current-recap-pair{font-size:9px;white-space:normal}}
+
+
+/* v2.3.0 — permanent four-color media language
+   Gold commentary • Green quick recap • Purple extended • Blue reel */
+:root{
+  --media-gold:#e6b94a;
+  --media-green:#35c778;
+  --media-extended:#a56cff;
+  --media-blue:#3b9cff;
+}
+
+/* The recap switch pill always uses the color of the version it will open. */
+.recap-alt-btn.target-extended{
+  border-color:rgba(165,108,255,.72)!important;
+  background:rgba(74,43,118,.72)!important;
+  color:#e8d7ff!important;
+  box-shadow:0 0 0 1px rgba(165,108,255,.12) inset;
+}
+.recap-alt-btn.target-extended:hover,.recap-alt-btn.target-extended:focus{
+  background:rgba(94,54,148,.9)!important;
+  border-color:#c29aff!important;
+}
+.recap-alt-btn.target-green{
+  border-color:rgba(53,199,120,.7)!important;
+  background:rgba(25,92,57,.68)!important;
+  color:#bdf2d2!important;
+}
+.recap-alt-btn.target-green:hover,.recap-alt-btn.target-green:focus{
+  background:rgba(31,112,69,.9)!important;
+  border-color:#69dd9d!important;
+}
+.recap-alt-btn.target-gold{
+  border-color:rgba(230,185,74,.76)!important;
+  background:rgba(91,70,22,.78)!important;
+  color:#ffe39a!important;
+}
+.recap-alt-btn.target-gold:hover,.recap-alt-btn.target-gold:focus{
+  background:rgba(120,91,27,.94)!important;
+  border-color:#f0c65b!important;
+}
+
+/* Paired recap badges describe an available Extended package, so they are purple. */
+.queue-recap-pair.paired,
+.current-recap-pair.paired{
+  color:#e6d5ff!important;
+  background:rgba(87,48,139,.22)!important;
+  border-color:rgba(165,108,255,.45)!important;
+}
+
+/* Extended-only is a legitimate default tier when no concise recap exists yet. */
+.score-card.highlight-extended{
+  box-shadow:inset 0 0 0 1px rgba(165,108,255,.34)!important;
+  background:rgba(165,108,255,.035)!important;
+}
+.score-card.highlight-extended .highlight-type-label{color:var(--media-extended)!important}
+.score-card.highlight-extended .highlight-dot{background:var(--media-extended)!important}
+
+/* Media availability rail: equal segments in fixed semantic order.
+   Segment count, not card width, determines each segment width. */
+.score-card{overflow:hidden}
+.media-availability-rail{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:4px;
+  display:flex;
+  z-index:3;
+  pointer-events:none;
+  background:#1b2630;
+}
+.media-availability-segment{display:block;flex:1 1 0;min-width:0;height:100%}
+.media-availability-segment.media-gold{background:var(--media-gold)}
+.media-availability-segment.media-green{background:var(--media-green)}
+.media-availability-segment.media-extended{background:var(--media-extended)}
+.media-availability-segment.media-blue{background:var(--media-blue)}
+
+/* The segmented rail replaces the old single-color bottom stripe. Keep only the
+   subtle outline/background that communicates what a click will play by default. */
+.score-card.highlight-recap,
+.score-card.highlight-clips,
+.score-card.highlight-gold,
+.score-card.highlight-extended{border-bottom-color:transparent!important}
+
+@media(max-width:760px){
+  .media-availability-rail{height:4px}
+}
+
+
+/* v2.3.0 — quiet availability language + MLS + Top Plays */
+/* The rail remains semantic but stops competing with the score itself. */
+.media-availability-rail{
+  height:2px!important;
+  opacity:.56;
+  background:transparent!important;
+}
+.media-availability-segment{filter:saturate(.82)}
+/* Default media tier is communicated by the label/dot; keep card surfaces neutral. */
+.score-card.has-highlights,
+.score-card.highlight-recap,
+.score-card.highlight-clips,
+.score-card.highlight-gold,
+.score-card.highlight-extended{
+  background:rgba(255,255,255,.008)!important;
+  box-shadow:none!important;
+}
+.score-card.has-highlights:hover{background:rgba(255,255,255,.035)!important}
+.score-card.league-mls .score-card-top>span,.score-card.league-mls .highlight-type-label{letter-spacing:.04em}
+.top-plays-badge{
+  background:#17212b!important;
+  border-color:#536474!important;
+  color:#e5edf4!important;
+  box-shadow:none!important;
+}
+@media(max-width:760px){.media-availability-rail{height:2px!important}}
+/* Six diagnostic chips on wide screens; mobile remains horizontally scrollable. */
+.sport-feed-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+@media(max-width:900px){.sport-feed-grid{grid-template-columns:repeat(6,minmax(120px,1fr));overflow-x:auto}}
+
+
+/* v2.5.25 — ranked score ribbon, sport filters, polished-view diagnostics toggle */
+.score-filters{display:flex;align-items:center;gap:3px;padding:0 6px;flex:0 0 auto;border-left:1px solid var(--line)}
+.score-filters button{padding:5px 7px;border-radius:999px;background:transparent;border:1px solid #28343f;color:#8794a0;font-size:9px;font-weight:900;line-height:1}
+.score-filters button.active{color:#dff8e8;border-color:#2b6544;background:#0e2518}
+.score-favorite{font-style:normal;color:#f6c857;margin-left:5px;font-size:10px}
+.score-card.favorite-game{background:linear-gradient(180deg,rgba(246,200,87,.035),transparent 65%)}
+.favorite-queue-badge{color:#f6c857;font-size:9px;letter-spacing:.035em}
+.stage-card:fullscreen{width:100vw;height:100vh;border-radius:0;grid-template-rows:auto minmax(0,1fr) auto;background:var(--panel)}
+.stage-card:fullscreen .stage{min-height:0}
+body.diagnostics-off .mobile-live-bar,
+body.diagnostics-off .sport-feed-diagnostics,
+body.diagnostics-off #coveragePipeline,
+body.diagnostics-off .data-pill,
+body.diagnostics-off .status-pill,
+body.diagnostics-off .proof-card,
+body.diagnostics-off .debug-toggle,
+body.diagnostics-off .playback-debug,
+body.diagnostics-off .test-notes,
+body.diagnostics-off .feed-note,
+body.diagnostics-off .metric-grid{display:none!important}
+body.diagnostics-off .score-ribbon{border-bottom-color:#17212a}
+@media(max-width:760px){
+  .score-ribbon{grid-template-columns:145px minmax(0,1fr)!important}
+  .score-filters{grid-column:1/-1;grid-row:2;overflow-x:auto;padding:4px 0;border-left:0;border-top:1px solid var(--line);scrollbar-width:none}
+  .score-filters::-webkit-scrollbar{display:none}
+  .score-cells{grid-row:3!important}
+  body.diagnostics-off .score-ribbon{grid-template-rows:auto auto auto}
+}
+
+
+/* v2.5.25 — diagnostics must stay in normal document flow and never cover content. */
+.mobile-live-bar,
+.sport-feed-diagnostics,
+#coveragePipeline{
+  position:relative!important;
+  inset:auto!important;
+  z-index:0!important;
+  transform:none!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+  isolation:isolate;
+}
+.sport-feed-head{
+  position:relative!important;
+  z-index:0!important;
+  flex-wrap:wrap!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+}
+.sport-feed-head>span,
+.editor-status-badge,
+#rapidHighlightStatus,
+#mediaPrewarmStatus{
+  position:static!important;
+  inset:auto!important;
+  z-index:auto!important;
+  float:none!important;
+  max-width:100%!important;
+}
+.editor-status-badge{margin-left:0!important}
+.sport-feed-grid{position:relative!important;z-index:0!important;max-width:100%!important}
+body:not(.diagnostics-off) #app-shell{isolation:isolate}
+
+
+/* v2.5.25 — distinct Sports Big Board broadcast-chip language.
+   Playback transport stays circular; information/status controls are squared tabs. */
+.data-pill,
+.status-pill,
+.coverage-step,
+.key-info-type,
+.editor-status-badge,
+.score-filters button,
+.queue-recap-pair,
+.current-recap-pair,
+.extended-recap-btn{border-radius:3px!important}
+.score-filters button{
+  padding:5px 9px!important;background:#0b1117!important;border-color:#26323d!important;letter-spacing:.04em
+}
+.score-filters button.active{
+  background:#101b15!important;border-color:#35694a!important;box-shadow:inset 0 -2px 0 #55c98a
+}
+.sport-feed-head .data-pill,.sport-feed-head .status-pill{
+  margin:0!important;padding:4px 7px!important;font-size:8px!important;flex:0 0 auto
+}
+
+/* One physical score row that rotates vertically between Today and Yesterday. */
+.score-cells{position:relative;will-change:transform,opacity}
+.score-cells.score-day-slide{animation:sbbScoreDaySlide .34s cubic-bezier(.2,.75,.2,1)}
+@keyframes sbbScoreDaySlide{0%{opacity:.12;transform:translateY(11px)}100%{opacity:1;transform:translateY(0)}}
+.score-ribbon{overflow:hidden}
+
+/* Dev telemetry no longer takes any horizontal score-card space. */
+@media(min-width:761px){
+  .score-ribbon{
+    display:grid!important;grid-template-columns:auto auto minmax(0,1fr)!important;
+    grid-template-rows:auto minmax(66px,auto)!important;height:auto!important;min-height:106px;
+    padding:8px 10px 0!important;align-items:center!important
+  }
+  .brand{grid-column:1;grid-row:1;width:auto!important;padding:6px 10px!important}
+  .score-filters{grid-column:2;grid-row:1;border-left:1px solid var(--line);padding-left:10px}
+  .score-cells{grid-column:1/-1;grid-row:2;width:100%;border-top:1px solid var(--line)}
+}
+
+
+/* v2.5.25 — manual + automatic Today / Yesterday score pages */
+.score-day-pager{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:18px;min-width:18px;align-self:stretch;border-right:1px solid var(--line);padding:7px 3px}
+.score-day-dot{width:12px;height:18px;padding:0;border:0;background:transparent!important;display:grid;place-items:center}
+.score-day-dot span{width:5px;height:5px;border-radius:50%;background:#56616c;transition:.16s ease}
+.score-day-dot.active span{background:#e5edf5;transform:scale(1.45)}
+.score-day-dot.unavailable{opacity:.2;pointer-events:none}
+.score-cells{touch-action:pan-x;overscroll-behavior:contain}
+@media(min-width:761px){
+ .score-ribbon{grid-template-columns:auto auto minmax(0,1fr)!important;grid-template-rows:auto minmax(66px,auto)!important}
+ .brand{grid-column:1;grid-row:1}.score-filters{grid-column:2/4;grid-row:1}
+ .score-day-pager{grid-column:1;grid-row:2}.score-cells{grid-column:2/4;grid-row:2!important;min-width:0;border-top:1px solid var(--line)}
+}
+@media(max-width:760px){
+ .score-ribbon{grid-template-columns:18px minmax(0,1fr)!important;grid-template-rows:auto auto auto!important}
+ .brand{grid-column:1/3;grid-row:1}.score-filters{grid-column:1/3;grid-row:2!important}
+ .score-day-pager{grid-column:1;grid-row:3}.score-cells{grid-column:2;grid-row:3!important;min-width:0}
+}
+
+/* v2.5.25 — landscape uses a scrollable player + queue composition. */
+@media (orientation:landscape) and (max-height:720px){
+ html,body{height:auto!important;min-height:100%;overflow-y:auto!important;overflow-x:hidden!important}
+ #app-shell{height:auto!important;min-height:100vh;overflow:visible!important}
+ .layout{height:auto!important;min-height:0!important;display:grid!important;grid-template-columns:minmax(0,1.55fr) minmax(360px,.85fr)!important;gap:10px!important;padding:10px!important;align-items:start!important;overflow:visible!important}
+ .left-rail{display:none!important}
+ .stage-card{grid-column:1;height:auto!important;min-height:0!important;overflow:hidden!important}
+ .stage{height:min(58vw,calc(100vh - 195px))!important;min-height:300px!important;max-height:600px!important}
+ .player-topbar{padding:10px 12px!important;gap:10px!important;align-items:center!important}
+ .now-playing-copy{min-width:0!important}.now-playing-copy h1{font-size:clamp(15px,1.8vw,21px)!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;line-height:1.15!important}
+ .now-playing-copy p{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+ .transport{flex:0 0 auto!important;gap:5px!important}.transport-btn{width:48px!important;height:48px!important;padding:0!important}.transport-play{width:56px!important;height:56px!important}
+ .recap-alt-btn{max-width:145px!important;white-space:nowrap!important}.player-footer{padding:8px 10px!important}
+ .queue-panel{grid-column:2;width:auto!important;min-width:0!important;height:auto!important;max-height:none!important;overflow:visible!important;padding:12px!important}
+ .queue-list{overflow:visible!important;max-height:none!important;padding-right:0!important}
+ .queue-item{grid-template-columns:28px 82px minmax(0,1fr) 46px!important;gap:8px!important;padding:9px!important;min-height:72px!important}
+ .queue-item img{width:82px!important;height:48px!important}.queue-copy{min-width:0!important}.queue-copy strong{font-size:12px!important;line-height:1.25!important;white-space:normal!important;overflow:visible!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical}.queue-copy span{font-size:9px!important;line-height:1.3!important;white-space:normal!important}
+ .playback-debug,.test-notes{width:100%!important;min-width:0!important}.mobile-live-bar,.key-info-ribbon,.sport-feed-diagnostics,#coveragePipeline{max-width:100%!important;overflow:hidden!important}
+}
+@media (orientation:landscape) and (min-height:721px) and (max-width:1400px){
+ body{overflow-y:auto!important}.layout{height:auto!important;grid-template-columns:70px minmax(0,1.45fr) minmax(350px,.85fr)!important;align-items:start!important}.stage-card,.queue-panel{height:auto!important;max-height:none!important}.queue-list{max-height:none!important;overflow:visible!important}
+}
+
+
+/* v2.5.25 — header + score carousel refinement */
+.score-day-pager{
+  width:10px!important;
+  min-width:10px!important;
+  gap:5px!important;
+  padding:5px 1px!important;
+  border-right:0!important;
+}
+.score-day-dot{
+  width:8px!important;
+  height:13px!important;
+}
+.score-day-dot span{
+  width:3px!important;
+  height:3px!important;
+}
+.score-day-dot.active span{
+  transform:scale(1.65)!important;
+}
+.score-cells{
+  touch-action:pan-x!important;
+}
+
+/* Logo and sport filters share one compact header row on every layout. */
+.score-ribbon{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  grid-template-rows:auto minmax(66px,auto)!important;
+  height:auto!important;
+  min-height:0!important;
+  padding:7px 10px 0!important;
+}
+.brand{
+  grid-column:1!important;
+  grid-row:1!important;
+  width:auto!important;
+  min-width:128px;
+  padding:5px 10px!important;
+}
+.score-filters{
+  grid-column:2!important;
+  grid-row:1!important;
+  min-width:0!important;
+  overflow-x:auto!important;
+  border-left:1px solid var(--line)!important;
+  border-top:0!important;
+  padding:3px 4px 3px 9px!important;
+  scrollbar-width:none;
+}
+.score-filters::-webkit-scrollbar{display:none}
+.score-day-pager{
+  grid-column:1!important;
+  grid-row:2!important;
+  justify-self:end;
+}
+.score-cells{
+  grid-column:2!important;
+  grid-row:2!important;
+  width:100%!important;
+  min-width:0!important;
+  border-top:1px solid var(--line);
+}
+
+/* A portrait device stays a portrait composition even when a tablet/fold reports
+   a CSS width above the old 760px breakpoint. */
+@media (orientation:portrait){
+  html,body{
+    height:auto!important;
+    min-height:100%!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+  #app-shell{height:auto!important;min-height:100vh!important;overflow:visible!important}
+  .layout{
+    height:auto!important;
+    min-height:0!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:8px!important;
+    padding:8px!important;
+    overflow:visible!important;
+  }
+  .left-rail{display:none!important}
+  .stage-card{
+    grid-column:1!important;
+    width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+  }
+  .stage{
+    height:auto!important;
+    min-height:46vh!important;
+    max-height:none!important;
+    aspect-ratio:16/9;
+  }
+  .queue-panel{
+    grid-column:1!important;
+    width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+    padding:12px!important;
+  }
+  .queue-list{
+    overflow:visible!important;
+    max-height:none!important;
+  }
+  .queue-item{
+    grid-template-columns:30px 96px minmax(0,1fr)!important;
+    padding:9px 72px 9px 9px!important;
+    gap:9px!important;
+    min-height:72px!important;
+  }
+  .queue-thumb-wrap,.queue-thumb-wrap img,.queue-thumb-wrap .queue-thumb-fallback{
+    width:96px!important;
+    height:54px!important;
+  }
+  .queue-copy strong{
+    font-size:13px!important;
+    line-height:1.25!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    display:-webkit-box!important;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+  }
+  .queue-copy span{font-size:10px!important}
+  .score-cell{min-width:164px}
+}
+
+/* True landscape remains side-by-side, but give the queue enough width and use a
+   compact broadcast list instead of the tall narrow text stacks from v2.5.3. */
+@media (orientation:landscape) and (max-height:720px){
+  .layout{
+    grid-template-columns:minmax(0,1.45fr) minmax(390px,1fr)!important;
+    gap:9px!important;
+  }
+  .queue-panel{padding:10px!important}
+  .panel-head h2{font-size:21px!important}
+  .queue-item{
+    grid-template-columns:26px 70px minmax(0,1fr)!important;
+    padding:8px 60px 8px 8px!important;
+    min-height:62px!important;
+    gap:7px!important;
+  }
+  .queue-thumb-wrap,.queue-thumb-wrap img,.queue-thumb-wrap .queue-thumb-fallback{
+    width:70px!important;height:42px!important
+  }
+  .queue-copy strong{
+    font-size:11.5px!important;
+    line-height:1.2!important;
+    -webkit-line-clamp:2!important;
+  }
+  .queue-copy span{font-size:8.5px!important;line-height:1.2!important}
+  .queue-duration-col{right:9px!important;font-size:11px!important}
+}
+
+/* Polished mode: keep editorially useful information, remove implementation detail. */
+.queue-meta-polished{display:none!important}
+.current-duration{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:700;
+  white-space:nowrap;
+}
+body.diagnostics-off .queue-meta-diagnostic{display:none!important}
+body.diagnostics-off .queue-meta-polished{
+  display:block!important;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+}
+body.diagnostics-off .player-topbar .now-playing-copy p{display:none!important}
+body.diagnostics-off #currentLeague{display:none!important}
+body.diagnostics-off .now-playing-meta-row{
+  gap:6px!important;
+  min-height:18px;
+}
+body.diagnostics-off .current-posted,
+body.diagnostics-off .current-duration{
+  display:inline!important;
+}
+body.diagnostics-off .queue-progress-note{display:none!important}
+
+
+/* v2.5.25 — definitive viewport-mode layout */
+body.sbb-portrait,
+body.sbb-portrait #app-shell{
+  height:auto!important;
+  min-height:100%!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+}
+body.sbb-portrait .layout{
+  display:flex!important;
+  flex-direction:column!important;
+  grid-template-columns:none!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+  gap:8px!important;
+  padding:8px!important;
+}
+body.sbb-portrait .left-rail{display:none!important}
+body.sbb-portrait .stage-card{
+  order:1!important;
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  height:auto!important;
+  max-height:none!important;
+}
+body.sbb-portrait .queue-panel{
+  order:2!important;
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+body.sbb-portrait .queue-list{
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+body.sbb-portrait .stage{
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:16/9!important;
+}
+body.sbb-portrait .queue-item{
+  grid-template-columns:30px 92px minmax(0,1fr)!important;
+  min-height:70px!important;
+  padding:9px 68px 9px 9px!important;
+  gap:9px!important;
+}
+body.sbb-portrait .queue-thumb-wrap,
+body.sbb-portrait .queue-thumb-wrap img,
+body.sbb-portrait .queue-thumb-wrap .queue-thumb-fallback{
+  width:92px!important;height:52px!important
+}
+body.sbb-portrait .queue-copy strong{
+  font-size:13px!important;
+  line-height:1.25!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  display:-webkit-box!important;
+  -webkit-line-clamp:2!important;
+  -webkit-box-orient:vertical!important;
+}
+
+/* Score pager is an overlay, not a layout column. */
+.score-ribbon{position:relative!important}
+.score-day-pager{
+  position:absolute!important;
+  left:3px!important;
+  top:58%!important;
+  transform:translateY(-50%)!important;
+  width:6px!important;
+  min-width:6px!important;
+  padding:0!important;
+  margin:0!important;
+  gap:4px!important;
+  z-index:5!important;
+  border:0!important;
+  background:transparent!important;
+}
+.score-day-dot{width:6px!important;height:9px!important;padding:0!important}
+.score-day-dot span{width:3px!important;height:3px!important}
+.score-cells{
+  grid-column:1/-1!important;
+  padding-left:5px!important;
+}
+
+/* Editorial Key Info should look neutral, never like a warning/error block. */
+.key-info-label{
+  background:#0d1217!important;
+  border-right-color:#242b32!important;
+}
+.key-info-label strong{color:#d7e0e8!important}
+.key-info-label span{color:#7f8b96!important}
+.key-info-type{
+  background:#202830!important;
+  border-color:#394550!important;
+  color:#d3dce4!important;
+}
+
+
+/* v2.5.25 — stable shell: explicit portrait and landscape modes only. */
+
+/* Header order: logo/filters, then Key Info, then scores. */
+.key-info-strip{order:1}
+.score-ribbon{order:2}
+
+/* Score pager consumes zero layout width. */
+.score-ribbon{position:relative!important}
+.score-day-pager{
+  position:absolute!important;
+  left:3px!important;
+  top:calc(50% + 12px)!important;
+  transform:translateY(-50%)!important;
+  width:5px!important;
+  min-width:5px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  z-index:6!important;
+}
+.score-day-dot{width:5px!important;height:10px!important;padding:0!important;margin:0!important}
+.score-day-dot span{width:3px!important;height:3px!important}
+.score-cells{
+  grid-column:1/-1!important;
+  padding-left:2px!important;
+  margin-left:0!important;
+}
+
+/* Portrait restores the old single-column composition regardless of CSS breakpoint. */
+body.portrait-mode,
+body.portrait-mode #app-shell{
+  height:auto!important;
+  min-height:100vh!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+}
+body.portrait-mode .layout{
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  padding:8px!important;
+  overflow:visible!important;
+}
+body.portrait-mode .left-rail{display:none!important}
+body.portrait-mode .stage-card,
+body.portrait-mode .queue-panel{
+  display:block!important;
+  position:relative!important;
+  inset:auto!important;
+  float:none!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 0 8px 0!important;
+  overflow:visible!important;
+}
+body.portrait-mode .stage{
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:16/9!important;
+}
+body.portrait-mode .queue-list{
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+body.portrait-mode .queue-item{
+  grid-template-columns:30px 88px minmax(0,1fr)!important;
+  gap:9px!important;
+  min-height:68px!important;
+  padding:8px 66px 8px 8px!important;
+}
+body.portrait-mode .queue-thumb-wrap,
+body.portrait-mode .queue-thumb-wrap img,
+body.portrait-mode .queue-thumb-wrap .queue-thumb-fallback{
+  width:88px!important;height:50px!important
+}
+body.portrait-mode .queue-copy strong{
+  font-size:13px!important;
+  line-height:1.24!important;
+  display:-webkit-box!important;
+  -webkit-line-clamp:2!important;
+  -webkit-box-orient:vertical!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+}
+
+/* Landscape is intentionally its own 72/28 composition. */
+body.landscape-mode{
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+}
+body.landscape-mode .layout{
+  display:grid!important;
+  grid-template-columns:minmax(0,2.55fr) minmax(285px,1fr)!important;
+  gap:8px!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+  padding:8px!important;
+}
+body.landscape-mode .left-rail{display:none!important}
+body.landscape-mode .stage-card,
+body.landscape-mode .queue-panel{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:auto!important;
+  max-height:none!important;
+}
+body.landscape-mode .stage{min-height:0!important;height:auto!important;aspect-ratio:16/9}
+body.landscape-mode .queue-panel{
+  padding:9px!important;
+  overflow:visible!important;
+}
+body.landscape-mode .queue-list{
+  overflow:visible!important;
+  max-height:none!important;
+}
+body.landscape-mode .panel-head{margin-bottom:8px!important}
+body.landscape-mode .panel-head h2{font-size:clamp(18px,2.1vw,26px)!important}
+body.landscape-mode .shuffle-btn{padding:8px 12px!important;font-size:clamp(11px,1.2vw,15px)!important}
+body.landscape-mode .queue-item{
+  grid-template-columns:22px 58px minmax(0,1fr)!important;
+  gap:6px!important;
+  min-height:54px!important;
+  padding:7px 50px 7px 7px!important;
+  border-radius:8px!important;
+}
+body.landscape-mode .queue-thumb-wrap,
+body.landscape-mode .queue-thumb-wrap img,
+body.landscape-mode .queue-thumb-wrap .queue-thumb-fallback{
+  width:58px!important;height:36px!important
+}
+body.landscape-mode .queue-num{font-size:clamp(11px,1.1vw,16px)!important}
+body.landscape-mode .queue-copy strong{
+  font-size:clamp(9px,1.12vw,13px)!important;
+  line-height:1.18!important;
+  display:-webkit-box!important;
+  -webkit-line-clamp:2!important;
+  -webkit-box-orient:vertical!important;
+  overflow:hidden!important;
+}
+body.landscape-mode .queue-copy span{
+  font-size:clamp(7px,.85vw,10px)!important;
+  line-height:1.16!important;
+}
+body.landscape-mode .queue-duration-col{
+  right:7px!important;
+  font-size:clamp(9px,1vw,12px)!important;
+}
+body.landscape-mode .player-topbar{
+  min-height:58px!important;
+  padding:8px 10px!important;
+}
+body.landscape-mode .now-playing-copy h1,
+body.landscape-mode .now-playing-copy strong{
+  font-size:clamp(13px,1.6vw,20px)!important;
+  line-height:1.15!important;
+}
+
+/* Neutral Key Info branding; category chips retain semantic color. */
+.key-info-label{
+  background:#0b1117!important;
+  border-color:#26323d!important;
+}
+.key-info-label strong{color:#d6dee6!important}
+.key-info-label span{color:#7e8994!important}
+
+
+/* v2.5.25 — Key Info physically precedes scores; no flex-order dependency. */
+.key-info-strip{position:relative!important;z-index:2}
+.score-ribbon{position:relative!important;z-index:1}
+
+/* Around the League queue thumbnail */
+.around-league-thumb{
+  width:100%!important;
+  height:100%!important;
+  background:
+    linear-gradient(135deg,rgba(86,184,255,.18),transparent 55%),
+    linear-gradient(180deg,var(--atl-bg,#182430),#081018)!important;
+  border:1px solid rgba(111,196,255,.35)!important;
+  border-radius:7px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:flex-end!important;
+  padding:6px!important;
+  overflow:hidden!important;
+  position:relative!important;
+}
+.around-league-thumb:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:10px 10px;
+}
+.around-league-thumb .atl-mark{
+  position:absolute;
+  top:5px;left:6px;
+  color:#59bfff;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.14em;
+}
+.around-league-thumb strong{
+  position:relative;
+  z-index:1;
+  color:#fff!important;
+  font-size:9px!important;
+  line-height:1.05!important;
+  letter-spacing:.03em!important;
+}
+
+/* Produced Around the League full-screen graphic */
+.around-league-card{
+  width:100%;
+  height:100%;
+  padding:7% 7.5%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:
+    radial-gradient(circle at 82% 18%,rgba(45,145,220,.22),transparent 28%),
+    linear-gradient(135deg,#07111c 0%,#0b1724 55%,#07101a 100%);
+  position:relative;
+  overflow:hidden;
+}
+.around-league-card:before{
+  content:"";
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(74,161,221,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(74,161,221,.06) 1px,transparent 1px);
+  background-size:44px 44px;
+}
+.around-league-card>*{position:relative;z-index:1}
+.atl-kicker{
+  color:#5fc0ff;
+  font-weight:900;
+  font-size:clamp(12px,1.5vw,22px);
+  letter-spacing:.22em;
+  margin-bottom:10px;
+}
+.atl-title{
+  color:#fff;
+  font-size:clamp(34px,5.2vw,74px);
+  font-weight:950;
+  letter-spacing:-.045em;
+  line-height:.95;
+  margin-bottom:10px;
+}
+.atl-subtitle{
+  color:#aab9c7;
+  font-size:clamp(14px,1.9vw,26px);
+  margin-bottom:34px;
+}
+.atl-story-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+.atl-story-grid>div{
+  min-height:150px;
+  padding:18px;
+  border-radius:10px;
+  border:1px solid rgba(88,177,237,.28);
+  background:linear-gradient(180deg,rgba(24,67,101,.82),rgba(12,35,54,.9));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.atl-footer{
+  margin-top:28px;
+  padding-top:15px;
+  border-top:1px solid rgba(127,180,216,.22);
+  color:#7f91a2;
+  font-weight:800;
+  font-size:clamp(9px,1.05vw,14px);
+  letter-spacing:.12em;
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+
+
+/* v2.5.25 — real top hierarchy: header -> Key Info -> scores */
+.top-nav-header{
+  display:flex;
+  align-items:center;
+  min-width:0;
+  padding:8px 10px 7px;
+  border-bottom:1px solid var(--line);
+  background:var(--bg);
+}
+.top-nav-header .brand{
+  flex:0 0 auto;
+  width:auto!important;
+  min-width:170px;
+  padding:5px 10px!important;
+  border-right:1px solid var(--line);
+}
+.top-nav-header .score-filters{
+  flex:1 1 auto;
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  overflow-x:auto;
+  border:0!important;
+  padding:3px 10px!important;
+  scrollbar-width:none;
+}
+.top-nav-header .score-filters::-webkit-scrollbar{display:none}
+
+.key-info-ribbon{
+  border-bottom:1px solid var(--line)!important;
+}
+.score-ribbon{
+  display:block!important;
+  position:relative!important;
+  height:auto!important;
+  min-height:70px!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-bottom:1px solid var(--line);
+}
+.score-cells{
+  width:100%!important;
+  min-height:68px!important;
+  padding-left:5px!important;
+  border-top:0!important;
+}
+.score-day-pager{
+  top:50%!important;
+}
+
+/* Around the League thumbnail */
+.context-queue-thumb{
+  position:relative;
+  width:100%!important;
+  height:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:flex-end!important;
+  padding:7px!important;
+  color:#fff!important;
+  overflow:hidden;
+  border:1px solid rgba(87,190,255,.32)!important;
+  background:
+    radial-gradient(circle at 85% 18%,rgba(69,174,244,.42),transparent 36%),
+    linear-gradient(145deg,#153c60 0%,#0a1e31 54%,#07111c 100%)!important;
+}
+.context-queue-thumb:before{
+  content:"";
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:12px 12px;
+}
+.context-thumb-kicker{
+  position:absolute;left:7px;top:6px;
+  z-index:1;
+  font-size:7px!important;
+  font-weight:950;
+  letter-spacing:.16em;
+  color:#73c9ff!important;
+}
+.context-queue-thumb strong{
+  position:relative;z-index:1;
+  font-size:9px!important;
+  line-height:.92!important;
+  letter-spacing:.03em;
+}
+.context-queue-thumb i{
+  position:absolute;
+  right:-12px;bottom:-18px;
+  width:56px;height:56px;
+  border:8px solid rgba(89,194,255,.12);
+  border-radius:50%;
+}
+
+/* Around the League produced segment */
+.context-program{
+  background:
+    radial-gradient(circle at 80% 15%,rgba(32,133,205,.32),transparent 34%),
+    linear-gradient(135deg,#07101a 0%,#0b1724 52%,#07111d 100%)!important;
+}
+.context-program-inner{
+  width:min(92%,1050px)!important;
+  padding:0!important;
+  border-radius:12px!important;
+  overflow:hidden;
+  border:1px solid rgba(97,184,244,.30)!important;
+  background:rgba(5,13,22,.88)!important;
+  box-shadow:0 24px 80px rgba(0,0,0,.45)!important;
+}
+.context-topline{
+  height:38px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:0 20px;
+  background:linear-gradient(90deg,#153b5d,#102a43);
+  color:#a8cce6;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.context-sbb{color:#fff}
+.context-live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#f43f35;
+  box-shadow:0 0 10px rgba(244,63,53,.6);
+}
+.context-titlebar{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:22px 24px 18px;
+  border-bottom:1px solid rgba(111,195,255,.15);
+}
+.context-league-badge{
+  flex:0 0 auto;
+  min-width:74px;
+  height:74px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  color:#fff;
+  background:linear-gradient(145deg,#1b5481,#102d49);
+  border:1px solid rgba(112,197,255,.34);
+  font-size:18px;
+  font-weight:950;
+  letter-spacing:.06em;
+}
+.context-heading{
+  margin:0!important;
+  font-size:clamp(30px,4.5vw,58px)!important;
+  line-height:.94!important;
+}
+.context-subheading{
+  margin-top:7px!important;
+  font-size:clamp(12px,1.5vw,18px)!important;
+}
+.context-stories{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:0!important;
+  margin:0!important;
+}
+.context-story{
+  min-height:172px!important;
+  padding:20px!important;
+  border:0!important;
+  border-right:1px solid rgba(111,195,255,.14)!important;
+  border-radius:0!important;
+  background:linear-gradient(180deg,rgba(28,66,98,.58),rgba(10,26,42,.88))!important;
+  display:block!important;
+}
+.context-story:last-child{border-right:0!important}
+.context-story-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+.context-index{
+  font-size:30px!important;
+}
+.context-category{
+  color:#80cfff;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+.context-story>strong{
+  display:block;
+  color:#fff;
+  font-size:clamp(14px,1.7vw,21px);
+  line-height:1.12;
+}
+.context-footer{
+  margin:0!important;
+  padding:13px 20px!important;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  background:#07111b;
+  border-top:1px solid rgba(111,195,255,.14);
+  color:#7890a3!important;
+  font-size:9px!important;
+}
+.context-footer b{color:#b8d6e9}
+
+@media(max-width:760px){
+  .top-nav-header .brand{min-width:150px}
+  .context-titlebar{padding:16px;gap:12px}
+  .context-league-badge{min-width:58px;height:58px;font-size:14px}
+  .context-story{min-height:130px!important;padding:13px!important}
+  .context-story>strong{font-size:13px}
+  .context-footer{padding:10px 14px!important}
+}
+
+
+/* v2.5.25 — compact identity lockup aligned to the sport-filter row. */
+.top-nav-header{
+  min-height:42px!important;
+  padding:5px 10px!important;
+}
+.top-nav-header .brand{
+  min-width:154px!important;
+  height:32px!important;
+  padding:2px 10px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+.top-nav-header .brand-dot{
+  width:8px!important;
+  height:8px!important;
+  flex:0 0 8px!important;
+}
+.top-nav-header .brand-name{
+  font-size:15px!important;
+  line-height:.93!important;
+  letter-spacing:-.02em!important;
+}
+.top-nav-header .brand-sub{
+  font-size:10px!important;
+  line-height:.92!important;
+  margin-top:0!important;
+}
+.top-nav-header .score-filters{
+  min-height:32px!important;
+  padding:2px 8px!important;
+}
+.top-nav-header .score-filters button{
+  min-height:28px!important;
+  padding:4px 10px!important;
+}
+
+/* Six-item Around the League board. */
+.context-stories{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-template-rows:repeat(2,minmax(0,1fr))!important;
+}
+.context-story{
+  min-height:118px!important;
+  padding:15px 17px!important;
+  border-right:1px solid rgba(111,195,255,.14)!important;
+  border-bottom:1px solid rgba(111,195,255,.14)!important;
+}
+.context-story:nth-child(3n){border-right:0!important}
+.context-story:nth-last-child(-n+3){border-bottom:0!important}
+.context-story-top{
+  gap:8px!important;
+  margin-bottom:10px!important;
+}
+.context-index{
+  font-size:24px!important;
+  line-height:1!important;
+}
+.context-category{
+  font-size:9px!important;
+}
+.context-age{
+  margin-left:auto;
+  color:#8da0b0;
+  font-size:9px;
+  font-weight:750;
+  white-space:nowrap;
+}
+.context-story>strong{
+  font-size:clamp(12px,1.32vw,17px)!important;
+  line-height:1.13!important;
+}
+.context-titlebar{
+  padding:17px 22px 14px!important;
+}
+.context-league-badge{
+  min-width:62px!important;
+  height:62px!important;
+  font-size:16px!important;
+}
+.context-heading{
+  font-size:clamp(27px,3.8vw,48px)!important;
+}
+.context-subheading{
+  font-size:clamp(11px,1.25vw,16px)!important;
+  margin-top:4px!important;
+}
+.context-footer{
+  padding:10px 18px!important;
+}
+
+@media(max-width:760px){
+  .top-nav-header .brand{min-width:142px!important}
+  .top-nav-header .brand-name{font-size:14px!important}
+  .top-nav-header .brand-sub{font-size:9px!important}
+  .context-stories{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  }
+  .context-story:nth-child(3n){border-right:1px solid rgba(111,195,255,.14)!important}
+  .context-story:nth-child(2n){border-right:0!important}
+  .context-story:nth-last-child(-n+3){border-bottom:1px solid rgba(111,195,255,.14)!important}
+  .context-story:nth-last-child(-n+2){border-bottom:0!important}
+}
+
+
+/* v2.5.25 ---------------------------------------------------------- */
+
+/* Compact brand row, with a whole-interface fullscreen control before filters. */
+.top-nav-header{
+  min-height:38px!important;
+  padding:4px 9px!important;
+  gap:6px!important;
+}
+.top-nav-header .brand{
+  min-width:142px!important;
+  height:30px!important;
+  padding:1px 8px!important;
+}
+.top-nav-header .brand-name{
+  font-size:14px!important;
+  line-height:.9!important;
+}
+.top-nav-header .brand-sub{
+  font-size:9px!important;
+  line-height:.9!important;
+}
+.big-board-fullscreen-btn{
+  flex:0 0 30px;
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  border:1px solid #263440;
+  border-radius:5px;
+  background:#0e151c;
+  color:#9eabb6;
+  cursor:pointer;
+}
+.big-board-fullscreen-btn:hover,
+.big-board-fullscreen-btn.active{
+  color:#e8f4eb;
+  border-color:#3c7355;
+  background:#11241a;
+}
+.bbfs-corners{
+  font-size:16px;
+  line-height:1;
+}
+.top-nav-header .score-filters{
+  min-height:30px!important;
+  padding:1px 7px!important;
+}
+.top-nav-header .score-filters button{
+  min-height:27px!important;
+  padding:3px 9px!important;
+}
+
+/* Six consequential stories: 3x2 wide, 2x3 narrow. */
+.context-stories{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-template-rows:repeat(2,minmax(0,1fr))!important;
+  gap:0!important;
+}
+.context-story{
+  min-height:112px!important;
+  padding:14px 16px!important;
+  border-right:1px solid rgba(111,195,255,.14)!important;
+  border-bottom:1px solid rgba(111,195,255,.14)!important;
+  border-radius:0!important;
+}
+.context-story:nth-child(3n){border-right:0!important}
+.context-story:nth-child(n+4){border-bottom:0!important}
+.context-story-top{
+  gap:7px!important;
+  margin-bottom:9px!important;
+}
+.context-index{
+  font-size:23px!important;
+  line-height:1!important;
+}
+.context-category{
+  font-size:9px!important;
+}
+.context-age{
+  margin-left:auto;
+  color:#8da0b0;
+  font-size:9px;
+  font-weight:750;
+  white-space:nowrap;
+}
+.context-story>strong{
+  font-size:clamp(12px,1.25vw,17px)!important;
+  line-height:1.13!important;
+}
+.context-titlebar{
+  padding:15px 20px 13px!important;
+}
+.context-league-badge{
+  min-width:60px!important;
+  height:60px!important;
+  font-size:15px!important;
+}
+.context-heading{
+  font-size:clamp(26px,3.6vw,46px)!important;
+}
+.context-subheading{
+  font-size:clamp(11px,1.2vw,15px)!important;
+  margin-top:4px!important;
+}
+.context-footer{
+  padding:9px 17px!important;
+}
+
+/* Fullscreen the entire dashboard, not only the video. */
+#app-shell:fullscreen,
+#app-shell:-webkit-full-screen{
+  width:100vw!important;
+  min-height:100vh!important;
+  background:#070c10!important;
+  overflow:auto!important;
+}
+#app-shell:fullscreen .top-nav-header,
+#app-shell:-webkit-full-screen .top-nav-header{
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+@media(max-width:760px){
+  .top-nav-header .brand{min-width:132px!important}
+  .big-board-fullscreen-btn{flex-basis:28px;width:28px;height:28px}
+  .context-stories{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  }
+  .context-story:nth-child(3n){border-right:1px solid rgba(111,195,255,.14)!important}
+  .context-story:nth-child(2n){border-right:0!important}
+  .context-story:nth-child(n+4){border-bottom:1px solid rgba(111,195,255,.14)!important}
+  .context-story:nth-child(n+5){border-bottom:0!important}
+}
+
+
+/* v2.5.25 ---------------------------------------------------------- */
+
+/* Context cards already carry LIVE DESK branding. Move the playback state badge
+   out of the title area so it never covers "Around the NBA/NFL/etc." */
+.stage-card.context-active .on-air-badge{
+  top:auto!important;
+  left:18px!important;
+  bottom:16px!important;
+  opacity:.82;
+}
+
+/* Six-story board gets equal 3x2 occupancy when six stories exist. */
+.context-stories{
+  min-height:260px!important;
+}
+.context-story{
+  overflow:hidden;
+}
+.context-story>strong{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:4;
+  overflow:hidden;
+}
+.context-heading{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* Sport-selected Key Info remains one compact ticker row. */
+.key-info-empty{
+  padding:12px 16px!important;
+  color:#8c99a5!important;
+}
+
+
+
+/* v2.5.25 ---------------------------------------------------------- */
+@media (orientation:landscape) and (min-width:900px){
+  body.fullscreen-active .main-grid,
+  #app-shell:fullscreen .main-grid,
+  #app-shell:-webkit-full-screen .main-grid{
+    grid-template-columns:minmax(0,1.95fr) minmax(280px,.85fr)!important;
+    gap:12px!important;
+  }
+  #app-shell:fullscreen .queue-card,
+  #app-shell:-webkit-full-screen .queue-card{
+    padding:12px!important;
+  }
+  #app-shell:fullscreen .queue-title,
+  #app-shell:-webkit-full-screen .queue-title{
+    font-size:13px!important;
+  }
+  #app-shell:fullscreen .queue-meta,
+  #app-shell:-webkit-full-screen .queue-meta{
+    font-size:10px!important;
+  }
+}
+.context-story-empty{
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  color:#5f7385;
+  font-size:11px;
+  font-weight:700;
+  text-align:center;
+  background:linear-gradient(180deg,rgba(15,36,54,.45),rgba(8,18,29,.78))!important;
+}
+.context-story-empty:before{
+  content:"";
+  width:5px;
+  height:5px;
+  margin-right:8px;
+  border-radius:50%;
+  background:#345f7c;
+}
+.dev-mode .sport-feed-card .feed-error,
+.dev-mode .sport-feed-card .feed-sub{
+  white-space:normal!important;
+}
+
+
+/* v2.5.25 regression recovery ------------------------------------- */
+@media (orientation:landscape) and (max-height:700px){
+  .bumper-title{
+    font-size:clamp(28px,4.15vw,52px)!important;
+    line-height:.94!important;
+  }
+  .bumper-kicker{
+    font-size:11px!important;
+    letter-spacing:.15em!important;
+  }
+  .bumper-next{
+    font-size:16px!important;
+  }
+  .context-heading{
+    font-size:clamp(26px,3.8vw,48px)!important;
+    line-height:.96!important;
+  }
+  .context-subheading{
+    font-size:12px!important;
+  }
+}
+
+
+/* v2.5.25 ---------------------------------------------------------- */
+/* Keep landscape bumpers readable and secondary to the actual program. */
+@media (orientation:landscape) and (max-height:760px){
+  .bumper-title{
+    font-size:clamp(24px,3.5vw,44px)!important;
+    line-height:.96!important;
+    max-width:88%!important;
+  }
+  .bumper-kicker,
+  .context-kicker{
+    font-size:10px!important;
+    letter-spacing:.14em!important;
+  }
+  .context-heading{
+    font-size:clamp(24px,3.25vw,42px)!important;
+    line-height:.98!important;
+  }
+  .context-subheading{
+    font-size:11px!important;
+    line-height:1.25!important;
+  }
+}
+
+
+/* v2.5.25 — polished broadcast mode */
+body.broadcast-mode{background:#050a0e}
+body.broadcast-mode .mobile-live-bar,
+body.broadcast-mode .sport-feed-diagnostics,
+body.broadcast-mode #coveragePipeline,
+body.broadcast-mode .data-summary,
+body.broadcast-mode .data-pill,
+body.broadcast-mode .status-pill,
+body.broadcast-mode .proof-card,
+body.broadcast-mode .debug-toggle,
+body.broadcast-mode .playback-debug,
+body.broadcast-mode .test-notes,
+body.broadcast-mode .feed-note,
+body.broadcast-mode .metric-grid,
+body.broadcast-mode .queue-progress-note{display:none!important}
+
+body.broadcast-mode .key-info-ribbon{
+  background:#081018;
+  border-top:1px solid #16222c;
+  border-bottom:1px solid #16222c;
+}
+body.broadcast-mode .score-ribbon{
+  background:#070d12;
+  border-bottom:1px solid #1a2731;
+}
+body.broadcast-mode .player-shell,
+body.broadcast-mode .queue-shell{
+  border-color:#18242d;
+  box-shadow:0 14px 42px rgba(0,0,0,.22);
+}
+body.broadcast-mode .queue-shell{background:#080f15}
+body.broadcast-mode .queue-head .eyebrow{display:none!important}
+body.broadcast-mode .queue-head h2{
+  font-size:clamp(22px,2.6vw,34px);
+  letter-spacing:-.025em;
+}
+body.broadcast-mode .queue-row{
+  background:#0b131a;
+  border-color:#1a2833;
+}
+body.broadcast-mode .queue-row:first-child{border-color:#2774a9}
+body.broadcast-mode .queue-meta-diagnostic{display:none!important}
+body.broadcast-mode .queue-meta-polished{
+  display:block!important;
+  color:#8e9aa5;
+  font-size:11px;
+  margin-top:3px;
+}
+body.broadcast-mode .player-topbar .now-playing-copy p,
+body.broadcast-mode #currentLeague{display:none!important}
+body.broadcast-mode .current-source,
+body.broadcast-mode .current-provider,
+body.broadcast-mode .current-state{display:none!important}
+body.broadcast-mode .player-footer .bumper-select{display:none!important}
+
+/* Keep bumper copy from swallowing a landscape broadcast frame. */
+@media (orientation:landscape) and (max-height:760px){
+  body.broadcast-mode .bumper-title{
+    font-size:clamp(22px,3.1vw,40px)!important;
+    line-height:.98!important;
+    max-width:84%!important;
+  }
+  body.broadcast-mode .bumper-kicker,
+  body.broadcast-mode .context-kicker{
+    font-size:9px!important;
+    letter-spacing:.13em!important;
+  }
+  body.broadcast-mode .context-heading{
+    font-size:clamp(22px,3vw,38px)!important;
+    line-height:.98!important;
+  }
+  body.broadcast-mode .context-story strong{
+    font-size:clamp(10px,1.25vw,14px)!important;
+  }
+}
+
+
+/* v2.5.25 — persistent Big Board control strip ---------------------- */
+.top-nav-header{
+  position:sticky!important;
+  top:0!important;
+  z-index:1500!important;
+  background:#070d12!important;
+  box-shadow:0 1px 0 #1a2731,0 8px 22px rgba(0,0,0,.2);
+}
+
+/* Keep the sticky strip compact instead of creating a second toolbar-sized header. */
+.top-nav-header .brand,
+.top-nav-header .big-board-fullscreen-btn,
+.top-nav-header .score-filters{
+  flex-shrink:0;
+}
+
+/* Mobile Chrome can change viewport height as its address bar appears/disappears;
+   sticky positioning keeps page scrolling native and avoids fixed-header jumps. */
+
+
+/* v2.5.25 — Android-safe persistent control bar --------------------- */
+:root{--sbb-top-control-height:0px}
+
+body.sbb-fixed-controls .top-nav-header{
+  position:fixed!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  width:100%!important;
+  z-index:5000!important;
+  background:#070d12!important;
+  transform:translateZ(0);
+  backface-visibility:hidden;
+  box-shadow:0 1px 0 #1a2731,0 8px 22px rgba(0,0,0,.22)!important;
+}
+
+body.sbb-fixed-controls #app-shell{
+  padding-top:var(--sbb-top-control-height)!important;
+}
+
+/* Fullscreen Big Board should pin to the physical top as well. */
+:fullscreen body.sbb-fixed-controls .top-nav-header,
+body:fullscreen.sbb-fixed-controls .top-nav-header,
+html:fullscreen body.sbb-fixed-controls .top-nav-header{
+  top:0!important;
+}
+
+/* Stop old sticky declarations from creating nested sticky behavior. */
+body.sbb-fixed-controls .top-nav-header .brand,
+body.sbb-fixed-controls .top-nav-header .score-filters,
+body.sbb-fixed-controls .top-nav-header .big-board-fullscreen-btn{
+  position:relative!important;
+  top:auto!important;
+}
+
+
+/* v2.5.25 hotfix: completed-game recap colors are invalid on live cards. */
+.score-card .score-media-strip{pointer-events:none}
+
+/* v3.0.0 — optional Game Center / Up Next drawer ------------------ */
+:root{--sbb-info-drawer-top:110px}
+.layout{position:relative!important;grid-template-columns:190px minmax(0,1fr)!important}
+.stage-card{grid-column:auto!important}
+.drawer-launch-btn{font-size:10px!important;font-weight:900!important;letter-spacing:.04em!important}
+.info-drawer{
+  position:fixed;z-index:4200;top:var(--sbb-info-drawer-top);right:10px;bottom:10px;
+  width:min(440px,42vw);min-width:340px;background:#081018;border:1px solid #20303c;
+  border-radius:15px;box-shadow:-18px 0 42px rgba(0,0,0,.4);overflow:hidden;
+  display:flex;flex-direction:column;transform:translateX(calc(100% + 28px));opacity:.98;
+  transition:transform .22s ease,opacity .18s ease;
+}
+.info-drawer.is-open{transform:translateX(0)}
+.info-drawer.is-closed{pointer-events:none}
+.info-drawer-head{display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #1a2833;background:#0a1219;flex:0 0 auto}
+.info-drawer-tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;flex:1}
+.info-drawer-tab{padding:9px 10px!important;border-radius:8px!important;font-size:10px!important;font-weight:950!important;letter-spacing:.06em;color:#8696a4;background:#0e171f!important;border-color:#1b2a35!important}
+.info-drawer-tab.active{color:#fff;background:#17324a!important;border-color:#2e6e9f!important;box-shadow:inset 0 -2px 0 #58b7f0}
+.info-drawer-close{width:34px;height:34px;padding:0!important;border-radius:50%!important;font-size:22px!important;line-height:1}
+.drawer-pane{min-height:0;flex:1;overflow:auto;background:#081018}
+.drawer-pane.hidden{display:none!important}
+.drawer-queue-panel{height:100%!important;min-height:0!important;max-height:none!important;border:0!important;border-radius:0!important;background:transparent!important;overflow:hidden!important;padding:12px!important}
+.drawer-queue-panel .queue-list{min-height:0!important;max-height:none!important;overflow:auto!important;padding-right:4px!important}
+.drawer-queue-panel .test-notes{margin-top:14px!important}
+
+.game-center-pane{padding:0 0 12px}
+.game-center-empty{min-height:260px;padding:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;color:#8393a1}
+.game-center-empty strong{font-size:18px;color:#dbe7ef;letter-spacing:.08em}
+.game-center-empty span{max-width:290px;font-size:12px;line-height:1.5}
+.game-center-content{min-height:100%}
+.gc-hero{display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr);gap:10px;align-items:center;padding:16px 14px 13px;border-bottom:1px solid #17242e;background:linear-gradient(180deg,#0d1821,#091118)}
+.gc-team{display:grid;align-items:center;gap:2px;min-width:0}
+.gc-team-away{grid-template-columns:auto minmax(0,1fr) auto;text-align:left}
+.gc-team-home{grid-template-columns:auto minmax(0,1fr) auto;text-align:right}
+.gc-team-abbr{font-size:10px;font-weight:950;color:#7f91a0;letter-spacing:.06em}
+.gc-team-name{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc-team-score{font-size:31px;line-height:1;font-weight:1000;color:#fff;font-variant-numeric:tabular-nums}
+.gc-status{text-align:center;display:grid;gap:2px;min-width:0}
+.gc-status strong{font-size:12px;color:#dce8f0}
+.gc-status span{font-size:9px;color:#8c9ba8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc-status small{font-size:8px;color:#577084}
+.gc-section-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:sticky;top:0;z-index:2;background:#081018;border-bottom:1px solid #17242e}
+.gc-section-tab{border:0!important;border-radius:0!important;background:transparent!important;padding:10px 4px!important;color:#778998;font-size:9px!important;font-weight:950!important;letter-spacing:.03em}
+.gc-section-tab.active{color:#fff!important;background:#0d1b25!important;box-shadow:inset 0 -2px 0 #55b7f0}
+.gc-section{padding:10px;display:grid;gap:10px}
+.gc-section.hidden{display:none!important}
+.gc-card{background:#0d161e;border:1px solid #1b2934;border-radius:10px;overflow:hidden}
+.gc-card-title{padding:8px 10px;border-bottom:1px solid #1b2934;color:#8fa3b3;font-size:9px;font-weight:950;letter-spacing:.08em}
+.gc-table-scroll{overflow:auto;max-width:100%}
+.gc-linescore,.gc-player-table,.gc-stat-compare{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.gc-linescore th,.gc-linescore td{padding:7px 6px;text-align:center;border-bottom:1px solid #17242d;font-size:10px;white-space:nowrap}
+.gc-linescore thead th{color:#687d8e;font-size:8px;background:#091219}
+.gc-linescore .gc-lines-team{text-align:left;color:#dce7ef;position:sticky;left:0;background:#0d161e;z-index:1}
+.gc-stat-compare th,.gc-stat-compare td{padding:9px 10px;border-bottom:1px solid #17242d;font-size:11px;text-align:center}
+.gc-stat-compare thead th{color:#c7d5df;background:#0a131a;font-weight:950}
+.gc-stat-compare tbody th{color:#738897;font-size:9px;letter-spacing:.04em}
+.gc-stat-compare tbody td{font-weight:900;color:#e3ecf2}
+.gc-player-card{margin-bottom:2px}
+.gc-player-table th,.gc-player-table td{padding:7px 8px;border-bottom:1px solid #17242d;text-align:right;font-size:9px;white-space:nowrap}
+.gc-player-table thead th{position:sticky;top:0;background:#0a131a;color:#7f93a3;font-size:8px;z-index:1}
+.gc-player-table th:first-child,.gc-player-table td:first-child{text-align:left}
+.gc-player-table tbody th{color:#e0e9ef;font-weight:800}
+.gc-play-row{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;padding:10px;border-bottom:1px solid #17242d}
+.gc-play-row:last-child{border-bottom:0}
+.gc-play-row>span{font-size:9px;font-weight:900;color:#6f8798;text-transform:uppercase}
+.gc-play-row>div{min-width:0;display:grid;gap:3px}
+.gc-play-row strong{font-size:10px;line-height:1.35;color:#d9e4eb}
+.gc-play-row small{font-size:9px;color:#728797}
+.gc-play-row.scoring{background:linear-gradient(90deg,rgba(35,112,160,.13),transparent)}
+.gc-play-row.scoring>span{color:#65bff2}
+.gc-play-score{font-weight:950!important;color:#b9dcef!important}
+.gc-play-filter{display:flex;gap:5px}
+.gc-play-filter button{padding:7px 10px!important;font-size:9px!important;font-weight:950!important;color:#7890a1;background:#0d1720!important}
+.gc-play-filter button.active{color:#fff;background:#17324a!important;border-color:#2e6e9f!important}
+.gc-empty-row,.gc-loading{padding:18px;color:#6f8393;font-size:11px;text-align:center}
+.gc-error{padding:18px;display:grid;gap:7px}.gc-error strong{color:#e8b86a}.gc-error span{color:#8fa0ad;font-size:10px}
+
+body.broadcast-mode .info-drawer{background:#070e14;border-color:#172632}
+body.broadcast-mode .drawer-queue-panel .debug-toggle,
+body.broadcast-mode .drawer-queue-panel .playback-debug,
+body.broadcast-mode .drawer-queue-panel .test-notes,
+body.broadcast-mode .drawer-queue-panel .feed-note{display:none!important}
+
+@media(max-width:1050px) and (min-width:761px){
+  .layout{grid-template-columns:70px minmax(0,1fr)!important}
+  .info-drawer{width:min(420px,48vw);min-width:320px}
+}
+@media(max-width:760px), (orientation:portrait){
+  .layout{grid-template-columns:1fr!important}
+  .info-drawer{
+    top:auto!important;left:7px;right:7px;bottom:7px;width:auto;min-width:0;height:min(72vh,720px);
+    border-radius:16px;transform:translateY(calc(100% + 20px));
+  }
+  .info-drawer.is-open{transform:translateY(0)}
+  .gc-hero{grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);padding:13px 10px}
+  .gc-team-score{font-size:26px}.gc-team-name{font-size:10px}.gc-status strong{font-size:10px}
+  .drawer-launch-btn{padding:8px 9px!important;font-size:9px!important}
+}
+.gc-basic-overview{padding:22px 16px;display:grid;gap:6px;text-align:center}.gc-basic-overview strong{font-size:18px}.gc-basic-overview span{font-size:11px;color:#a9bbc8}.gc-basic-overview small{font-size:9px;color:#657d8e}
+/* v3.0.0 final grid ownership: the secondary drawer must never reserve a third column. */
+body.landscape-mode .layout,body.sbb-landscape .layout{grid-template-columns:190px minmax(0,1fr)!important}
+@media(max-width:1050px) and (min-width:761px){body.landscape-mode .layout,body.sbb-landscape .layout{grid-template-columns:70px minmax(0,1fr)!important}}
+body.portrait-mode .layout,body.sbb-portrait .layout{grid-template-columns:1fr!important}
+
+
+/* v3.0.0 — Game Center layout + latency hardening ------------------- */
+/* The placeholder and hydrated content are mutually exclusive. v3.0.0 added
+   .hidden in JS but had no display rule for these two containers. */
+.game-center-empty.hidden,.game-center-content.hidden{display:none!important}
+
+/* Landscape: the information surface overlays the full-size player. The left
+   rail is hidden in landscape-mode, so the layout must also collapse to one
+   real grid column; otherwise the player falls into the abandoned 190px rail. */
+body.landscape-mode .layout,body.sbb-landscape .layout{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+body.landscape-mode .stage-card,body.sbb-landscape .stage-card{
+  grid-column:1!important;width:100%!important;min-width:0!important;
+}
+@media (orientation:landscape){
+  .info-drawer{
+    position:fixed!important;z-index:4200!important;
+    left:auto!important;right:10px!important;bottom:10px!important;
+    width:min(520px,44vw)!important;min-width:340px!important;
+    height:auto!important;max-height:calc(100vh - var(--sbb-info-drawer-top) - 20px)!important;
+    transform:translateX(calc(100% + 30px))!important;
+  }
+  .info-drawer.is-open{display:flex!important;transform:translateX(0)!important}
+  .info-drawer.is-closed{display:flex!important;pointer-events:none!important}
+}
+
+/* Portrait: Game Center / Up Next belongs in document flow immediately after
+   the player card. It never covers the video and expands naturally with stats. */
+@media (orientation:portrait){
+  .info-drawer{
+    position:static!important;z-index:auto!important;grid-column:1!important;
+    top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+    width:100%!important;min-width:0!important;height:auto!important;max-height:none!important;
+    margin:0!important;border-radius:14px!important;transform:none!important;opacity:1!important;
+    box-shadow:none!important;transition:none!important;
+  }
+  .info-drawer.is-closed{display:none!important;pointer-events:none!important}
+  .info-drawer.is-open{display:flex!important;transform:none!important;pointer-events:auto!important}
+  .drawer-pane{overflow:visible!important;max-height:none!important;flex:0 0 auto!important}
+  .game-center-content{min-height:0!important}
+  .game-center-empty{min-height:180px!important}
+  .drawer-queue-panel{height:auto!important;overflow:visible!important}
+  .drawer-queue-panel .queue-list{overflow:visible!important;max-height:none!important}
+}
+
+/* v3.0.0 — integrated below-video Game Center + sticky video --------------- */
+.stage-card{display:block!important;overflow:visible!important;min-width:0!important}
+.stage-card>.player-topbar,.stage-card>.lower-third{position:relative;z-index:1}
+.stage-card>.stage{
+  width:100%;height:auto!important;min-height:0!important;max-height:none!important;
+  aspect-ratio:16/9!important;margin-left:auto;margin-right:auto;
+  transition:border-radius .12s ease,box-shadow .15s ease;
+}
+.info-drawer{
+  position:static!important;inset:auto!important;width:100%!important;min-width:0!important;
+  height:auto!important;max-height:none!important;margin:10px 0 0!important;
+  transform:none!important;opacity:1!important;box-shadow:none!important;
+  border-radius:12px!important;transition:none!important;z-index:auto!important;
+}
+.info-drawer.is-closed{display:none!important;pointer-events:none!important}
+.info-drawer.is-open{display:flex!important;pointer-events:auto!important;transform:none!important}
+.info-drawer-tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.drawer-pane{overflow:visible!important;max-height:none!important;min-height:0!important}
+.game-center-content{min-height:0!important}
+.game-center-empty{min-height:170px!important}
+.drawer-queue-panel{height:auto!important;max-height:none!important;overflow:visible!important}
+.drawer-queue-panel .queue-list{overflow:visible!important;max-height:none!important}
+
+/* Keep Video Visible is presentation-only. v3.0.0 uses a fixed stage after
+   the scroll threshold instead of CSS sticky, which is unreliable in Android
+   Chromium when the historical shell changes overflow modes. JS preserves the
+   exact document-flow footprint with this placeholder. */
+.sbb-stage-placeholder{display:none;width:100%;min-height:1px;background:transparent;pointer-events:none}
+body.sbb-stage-sticky-active .stage-card>.stage{
+  box-shadow:0 14px 42px rgba(0,0,0,.52),0 0 0 1px #273b49!important;
+  overflow:hidden!important;
+}
+
+/* Optional PC-only side preference. player-visibility.js only activates this
+   class when a fine-pointer wide screen is present; mobile is always below. */
+@media (min-width:1100px) and (pointer:fine){
+  body.sbb-game-center-side .info-drawer{
+    position:fixed!important;top:72px!important;right:12px!important;bottom:12px!important;left:auto!important;
+    width:min(560px,42vw)!important;height:auto!important;max-height:calc(100vh - 84px)!important;
+    z-index:4200!important;box-shadow:0 22px 70px rgba(0,0,0,.55)!important;
+    overflow:hidden!important;margin:0!important;
+  }
+  body.sbb-game-center-side .info-drawer .drawer-pane{overflow:auto!important;min-height:0!important}
+  body.sbb-game-center-side .drawer-queue-panel{height:100%!important;overflow:hidden!important}
+  body.sbb-game-center-side .drawer-queue-panel .queue-list{overflow:auto!important}
+}
+
+/* Settings */
+.settings-pane{padding:14px!important}
+.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.settings-card{border:1px solid #1b2934;background:#0d161e;border-radius:12px;padding:14px;display:grid;gap:12px}
+.settings-card-title{font-size:9px;font-weight:950;letter-spacing:.09em;color:#8fa3b3;border-bottom:1px solid #1b2934;padding-bottom:9px}
+.settings-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.settings-toggle-row>span{display:grid;gap:3px}.settings-toggle-row strong{font-size:12px}.settings-toggle-row small,.settings-hint{font-size:9px;color:#708493;line-height:1.4}
+.settings-toggle-row input{width:22px;height:22px;accent-color:#35c878}
+.settings-field{display:grid;gap:6px;font-size:10px;color:#a6b6c2}.settings-field select{width:100%;background:#091219;color:#e5eef4;border:1px solid #2a3a46;border-radius:8px;padding:9px}
+.api-connection-row{display:flex;justify-content:space-between;align-items:center;gap:12px}.api-connection-row>span{display:grid;gap:2px}.api-connection-row b{font-size:11px}.api-connection-row small{font-size:8px;color:#718593}.api-connection-row>strong{font-size:9px;color:#e9b55d}.api-connection-row>strong.configured{color:#64dc98}.api-connection-row>strong.missing{color:#e9b55d}
+.settings-secret-input{width:100%;background:#081018;color:#e6eef4;border:1px solid #243541;border-radius:8px;padding:9px 10px;font:inherit;font-size:10px}
+.settings-save-btn{justify-self:start;font-size:9px!important;font-weight:950!important;background:#123021!important;border-color:#2f6c4c!important;color:#82e6a8!important}
+.settings-message{font-size:9px;color:#718593;line-height:1.45}
+.gc-overview-stats{border-top:1px solid #1b2934}
+.gc-error button{justify-self:start;padding:7px 10px!important;font-size:9px!important}
+
+@media(max-width:820px),(pointer:coarse){
+  .settings-grid{grid-template-columns:1fr}
+  .info-drawer{position:static!important;inset:auto!important;width:100%!important;height:auto!important;max-height:none!important;margin-top:8px!important;box-shadow:none!important}
+  .drawer-pane{overflow:visible!important}
+}
+/* v3.0.0 — deterministic shrink runway.
+   JS changes only the fixed player + in-flow placeholder height. Game Center is
+   never translated independently, so its flow edge cannot slide under the video
+   while the shrink phase is active. Once minimum size is reached the Game Center
+   header/tabs stick directly below the pinned player while content scrolls. */
+body.sbb-stage-sticky-active .stage-card>.stage{
+  max-width:calc(100vw - 16px)!important;
+}
+body.sbb-stage-minimized .info-drawer-head{
+  position:sticky;top:var(--sbb-sticky-video-bottom,0px);z-index:1300;
+}
+body.sbb-stage-minimized .gc-section-tabs{
+  top:calc(var(--sbb-sticky-video-bottom,0px) + 54px);z-index:1299;
+}
+@media(max-width:820px),(pointer:coarse){
+  body.sbb-stage-sticky-active .stage-card>.stage{max-width:calc(100vw - 16px)!important;}
+}
+
+/* v3.0.0 coordinated shrink runway refinement.
+   During the shrink phase the compact footer is removed from flow so the Game
+   Center begins immediately below the visible video. The placeholder math in
+   player-visibility.js then keeps that edge attached while the video shrinks.
+   After minimum size is reached, the drawer resumes ordinary document scrolling
+   behind the pinned video; it is not independently sticky/fixed/transformed. */
+body.sbb-stage-sticky-active .stage-card>.player-footer{display:none!important}
+body.sbb-stage-minimized .info-drawer-head{position:relative!important;top:auto!important;z-index:auto!important}
+body.sbb-stage-minimized .gc-section-tabs{position:sticky!important;top:0!important;z-index:2!important}
+
+
+/* v3.0.0 — minimum-player scroll handoff.
+   At minimum size the document/app-shell stops advancing. The full information
+   surface is fixed directly below the player and its active pane becomes the
+   scroll container. This prevents Game Center from disappearing underneath the
+   pinned video. */
+body.sbb-gc-scroll-locked .info-drawer{
+  position:fixed!important;
+  top:var(--sbb-gc-lock-top)!important;
+  left:var(--sbb-gc-lock-left)!important;
+  right:auto!important;
+  bottom:var(--sbb-gc-lock-bottom,6px)!important;
+  width:var(--sbb-gc-lock-width)!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:0!important;
+  z-index:1385!important;
+  overflow:hidden!important;
+  display:flex!important;
+  transform:none!important;
+  box-shadow:0 16px 44px rgba(0,0,0,.42)!important;
+}
+body.sbb-gc-scroll-locked .info-drawer-head{flex:0 0 auto!important;position:relative!important;top:auto!important}
+body.sbb-gc-scroll-locked .drawer-pane:not(.hidden){
+  flex:1 1 auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch;
+}
+body.sbb-gc-scroll-locked .gc-section-tabs{position:sticky!important;top:0!important;z-index:4!important}
+body.sbb-gc-scroll-locked .stage-card>.player-footer{display:none!important}
+#app-shell:fullscreen body.sbb-gc-scroll-locked{overflow:hidden!important}
+
+/* v3.0.0 — bounded sticky workspace. Never changes document/body overflow.
+   At minimum size the complete information surface is fixed below the player and
+   ONLY the active pane scrolls. This avoids Android Chromium's scroll reset when
+   overflow:hidden is toggled on the root. */
+body.sbb-gc-scroll-locked .info-drawer{
+  position:fixed!important;
+  top:var(--sbb-gc-lock-top)!important;
+  left:var(--sbb-gc-lock-left)!important;
+  right:auto!important;
+  bottom:var(--sbb-gc-lock-bottom,6px)!important;
+  width:var(--sbb-gc-lock-width)!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  z-index:1385!important;
+  overflow:hidden!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overscroll-behavior:contain!important;
+}
+body.sbb-gc-scroll-locked .info-drawer-head{flex:0 0 auto!important;position:relative!important;top:auto!important}
+body.sbb-gc-scroll-locked .drawer-pane:not(.hidden){
+  flex:1 1 0!important;min-height:0!important;height:0!important;
+  overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important;
+  touch-action:pan-y!important;-webkit-overflow-scrolling:touch!important;
+}
+body.sbb-gc-scroll-locked .game-center-content{min-height:max-content!important}
+body.sbb-gc-scroll-locked .gc-section-tabs{position:sticky!important;top:0!important;z-index:5!important}
+
+/* v3.0.0 compact workspace chrome hardening.
+   Keep the topbar's layout box so the runway geometry never jumps, but remove its
+   visual/interactive chrome while the compact video + Game Center workspace owns
+   the viewport. */
+body.sbb-stage-sticky-active .stage-card>.player-topbar{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+/* v3.0.0 — compact sticky Now Playing + transport companion.
+   The normal topbar stays in flow (hidden) so the original runway geometry cannot
+   jump. player-visibility.js mirrors only presentation state into this attached
+   strip; the proxy buttons click the original transport controls and never own
+   playback themselves. The strip grows beneath the shrinking video and becomes
+   fully interactive before minimum size. */
+.sbb-compact-chrome{
+  position:fixed;
+  z-index:1404;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  min-width:0;
+  overflow:hidden;
+  padding:0 7px 0 10px;
+  background:linear-gradient(90deg,rgba(9,16,22,.98),rgba(11,20,27,.96));
+  border:1px solid #263844;
+  border-top-color:#314a5a;
+  border-radius:9px;
+  box-shadow:0 8px 24px rgba(0,0,0,.38);
+  visibility:hidden;
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(-4px);
+  will-change:top,left,width,height,opacity,transform;
+}
+.sbb-compact-chrome.is-visible{visibility:visible;pointer-events:auto}
+.sbb-compact-copy{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;flex:1 1 auto}
+.sbb-compact-league{
+  flex:0 0 auto;
+  padding:3px 5px;
+  border-radius:4px;
+  background:#1b2b36;
+  color:#a9bdca;
+  font-size:8px;
+  font-weight:950;
+  line-height:1;
+}
+.sbb-compact-title{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#e7eef3;
+  font-size:10px;
+  line-height:1.15;
+  font-weight:850;
+}
+.sbb-compact-transport{display:flex;align-items:center;gap:4px;flex:0 0 auto}
+.sbb-compact-btn{
+  width:27px!important;
+  height:27px!important;
+  min-width:27px!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  border:1px solid #344653!important;
+  background:#111c24!important;
+  color:#e8f0f5!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  box-shadow:none!important;
+  touch-action:manipulation;
+}
+.sbb-compact-btn:disabled{opacity:.45!important}
+.sbb-compact-play{
+  width:31px!important;
+  height:31px!important;
+  min-width:31px!important;
+  background:var(--accent)!important;
+  border-color:var(--accent)!important;
+  color:#fff!important;
+  font-size:12px!important;
+}
+.sbb-compact-play.is-buffering{font-size:8px!important;letter-spacing:1px!important}
+@media(max-width:430px){
+  .sbb-compact-chrome{padding-left:7px;gap:5px}
+  .sbb-compact-league{display:none}
+  .sbb-compact-title{font-size:9px}
+  .sbb-compact-transport{gap:3px}
+  .sbb-compact-btn{width:25px!important;height:25px!important;min-width:25px!important}
+  .sbb-compact-play{width:29px!important;height:29px!important;min-width:29px!important}
+}
+
+/* v3.0.0 — deliberate launch screen ------------------------------------ */
+.sbb-launch-screen{
+  position:fixed;inset:0;z-index:90000;display:grid;place-items:center;
+  padding:max(22px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(22px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
+  background:#05090d;overflow:hidden;opacity:1;visibility:visible;
+  transition:opacity .32s ease,visibility .32s step-end;
+}
+.sbb-launch-screen.is-dismissed{opacity:0;visibility:hidden;pointer-events:none}
+.sbb-launch-glow{
+  position:absolute;inset:-20%;pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 44%,rgba(35,77,104,.24),transparent 31%),
+    radial-gradient(circle at 50% 70%,rgba(239,59,45,.08),transparent 28%);
+}
+.sbb-launch-card{
+  position:relative;z-index:1;width:min(760px,92vw);display:flex;flex-direction:column;
+  align-items:center;text-align:center;padding:clamp(24px,5vh,52px) clamp(18px,5vw,54px);
+}
+.sbb-launch-brand{display:flex;align-items:center;gap:14px;line-height:.9;text-align:left}
+.sbb-launch-mark{font-size:clamp(33px,5.2vw,54px);color:var(--accent);filter:drop-shadow(0 0 18px rgba(239,59,45,.16))}
+.sbb-launch-brand>div{display:grid;gap:1px}.sbb-launch-brand strong{font-size:clamp(24px,4.2vw,42px);letter-spacing:-.035em}.sbb-launch-brand span{font-size:clamp(17px,2.8vw,27px);font-weight:950;letter-spacing:.015em}
+.sbb-launch-rule{width:min(330px,56vw);height:1px;background:linear-gradient(90deg,transparent,#263641,transparent);margin:24px 0 20px}
+.sbb-launch-card h1{margin:0;font-size:clamp(23px,4.2vw,45px);line-height:1;letter-spacing:-.035em;font-weight:1000}
+.sbb-launch-card p{max-width:600px;margin:15px 0 26px;color:#8fa0ad;font-size:clamp(12px,1.8vw,16px);line-height:1.5}
+.sbb-launch-play{
+  min-width:min(330px,80vw);display:flex;align-items:center;justify-content:center;gap:12px;
+  padding:14px 22px!important;border-radius:999px!important;border:1px solid #f04a3d!important;
+  background:#ef3b2d!important;color:#fff!important;font-size:clamp(12px,1.7vw,15px)!important;
+  font-weight:1000!important;letter-spacing:.055em!important;box-shadow:0 12px 34px rgba(0,0,0,.34)!important;
+}
+.sbb-launch-play:active{transform:translateY(1px)}
+.sbb-launch-play-icon{display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#fff;color:#ef3b2d;font-size:12px;padding-left:2px}
+.sbb-launch-card>small{margin-top:14px;color:#5f7180;font-size:10px;letter-spacing:.025em}
+@media (max-height:560px) and (orientation:landscape){
+  .sbb-launch-card{padding:10px 24px}.sbb-launch-rule{margin:13px 0 12px}.sbb-launch-card p{margin:9px 0 15px}.sbb-launch-card>small{margin-top:8px}
+}
+
+/* v3.0.0 — Game Center is an inset continuation of the page, not glass. */
+.stage-card{background:#070d12!important;border-color:#111d25!important}
+.info-drawer{
+  background:#070d12!important;
+  border:1px solid #111f29!important;
+  border-radius:11px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.015),inset 0 0 30px rgba(0,0,0,.18)!important;
+  opacity:1!important;
+}
+.info-drawer-head{
+  background:#070d12!important;
+  border-bottom:1px solid #14232d!important;
+  box-shadow:none!important;
+}
+.info-drawer-tab{
+  background:#081119!important;
+  border-color:#172631!important;
+  color:#7f909d!important;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.24)!important;
+}
+.info-drawer-tab.active{
+  background:#0a1720!important;
+  border-color:#22445b!important;
+  color:#f4f7f9!important;
+  box-shadow:inset 0 -2px 0 #55b7f0,inset 0 2px 8px rgba(0,0,0,.22)!important;
+}
+.info-drawer-close{background:#09131a!important;border-color:#1a2a35!important;box-shadow:inset 0 1px 4px rgba(0,0,0,.28)!important}
+.drawer-pane,.game-center-pane,.game-center-content{background:#070d12!important}
+.gc-hero{
+  background:#070d12!important;
+  border-bottom:1px solid #14232d!important;
+}
+.gc-section-tabs{background:#070d12!important;border-bottom-color:#14232d!important}
+.gc-section-tab{background:transparent!important;color:#748794!important}
+.gc-section-tab.active{background:#09141c!important;color:#fff!important;box-shadow:inset 0 -2px 0 #55b7f0,inset 0 5px 12px rgba(0,0,0,.15)!important}
+.gc-section{background:#070d12!important}
+.gc-card{
+  background:#081119!important;
+  border-color:#162630!important;
+  box-shadow:inset 0 2px 10px rgba(0,0,0,.31),inset 0 0 0 1px rgba(255,255,255,.006)!important;
+}
+.gc-card-title{background:#081119!important;border-bottom-color:#162630!important;color:#8498a7!important}
+.gc-linescore thead th,.gc-stat-compare thead th,.gc-player-table thead th{background:#060d12!important}
+.gc-linescore .gc-lines-team{background:#081119!important}
+.gc-play-row.scoring{background:#08131a!important;box-shadow:inset 3px 0 0 rgba(85,183,240,.36)!important}
+.gc-overview-stats{border-top-color:#162630!important}
+.settings-card{background:#081119!important;border-color:#162630!important;box-shadow:inset 0 2px 10px rgba(0,0,0,.28)!important}
+body.broadcast-mode .info-drawer,body.broadcast-mode .drawer-pane{background:#070d12!important;border-color:#111f29!important}
+
+/* Integrated below-video mode should visually continue the stage instead of
+   floating a second card a full gutter away from it. */
+body.sbb-game-center-below .info-drawer{margin-top:5px!important}
+@media (orientation:portrait),(max-width:820px),(pointer:coarse){
+  .info-drawer{border-radius:10px!important}
+}
+
+/* v3.0.0 — PC is a true video + Game Center workspace ------------------
+   On a wide fine-pointer screen the Game Center is no longer a drawer laid over
+   the broadcast. It is the second column of the stage itself. The 16:9 player
+   therefore scales to the remaining left-column width and stays completely in
+   view instead of extending below the viewport. */
+@media (min-width:1100px) and (pointer:fine){
+  body.sbb-game-center-side .layout{
+    height:auto!important;
+    min-height:0!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    padding:8px!important;
+    gap:0!important;
+    align-items:start!important;
+    overflow:visible!important;
+  }
+  body.sbb-game-center-side .left-rail{display:none!important}
+  body.sbb-game-center-side .stage-card{
+    width:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+    height:auto!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) clamp(390px,34vw,560px)!important;
+    grid-template-rows:auto auto auto!important;
+    column-gap:0!important;
+    row-gap:0!important;
+    align-items:start!important;
+    overflow:hidden!important;
+    border-radius:10px!important;
+    border:1px solid #14222c!important;
+    background:#070d12!important;
+  }
+  body.sbb-game-center-side .stage-card>.player-topbar{
+    grid-column:1!important;grid-row:1!important;
+    min-width:0!important;
+    border-right:1px solid #14222c!important;
+  }
+  body.sbb-game-center-side .stage-card>.stage{
+    grid-column:1!important;grid-row:2!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    aspect-ratio:16/9!important;
+    margin:0!important;
+    border-right:1px solid #14222c!important;
+    align-self:start!important;
+  }
+  body.sbb-game-center-side .stage-card>.lower-third{
+    grid-column:1!important;grid-row:3!important;
+    min-width:0!important;
+    border-right:1px solid #14222c!important;
+  }
+  body.sbb-game-center-side .info-drawer{
+    grid-column:2!important;grid-row:1 / span 3!important;
+    position:relative!important;
+    inset:auto!important;
+    top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;
+    align-self:stretch!important;
+    width:100%!important;
+    min-width:0!important;
+    height:100%!important;
+    max-height:none!important;
+    margin:0!important;
+    display:flex!important;
+    transform:none!important;
+    opacity:1!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:inset 10px 0 24px rgba(0,0,0,.12),inset 1px 0 0 #14222c!important;
+    background:#070d12!important;
+    overflow:hidden!important;
+    pointer-events:auto!important;
+  }
+  body.sbb-game-center-side .info-drawer.is-closed{
+    display:flex!important;
+    pointer-events:auto!important;
+  }
+  body.sbb-game-center-side .info-drawer-close{display:none!important}
+  body.sbb-game-center-side .info-drawer-head{
+    flex:0 0 auto!important;
+    padding:8px!important;
+    background:#070d12!important;
+  }
+  body.sbb-game-center-side .drawer-pane:not(.hidden){
+    flex:1 1 0!important;
+    min-height:0!important;
+    height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+  }
+  body.sbb-game-center-side .game-center-content{min-height:max-content!important}
+  body.sbb-game-center-side .gc-section-tabs{position:sticky!important;top:0!important;z-index:5!important}
+
+  /* The actual YouTube/HTML5 player controls are primary on PC. Keep program
+     navigation, but make it read as quiet Prev/Next controls instead of a second
+     oversized play/pause UI competing with the player. */
+  body.sbb-game-center-side .player-topbar #playBtn{display:none!important}
+  body.sbb-game-center-side .player-topbar .transport{gap:6px!important}
+  body.sbb-game-center-side .player-topbar #prevBtn,
+  body.sbb-game-center-side .player-topbar #nextBtn{
+    width:auto!important;height:32px!important;min-width:66px!important;
+    padding:0 10px!important;border-radius:7px!important;
+    background:#0b151d!important;border:1px solid #20313d!important;
+    color:#b9c7d1!important;box-shadow:inset 0 1px 3px rgba(0,0,0,.2)!important;
+    font-size:0!important;
+  }
+  body.sbb-game-center-side .player-topbar #prevBtn::after{content:'‹  PREV';font-size:9px;font-weight:950;letter-spacing:.05em}
+  body.sbb-game-center-side .player-topbar #nextBtn::after{content:'NEXT  ›';font-size:9px;font-weight:950;letter-spacing:.05em}
+  body.sbb-game-center-side .player-topbar #prevBtn:hover,
+  body.sbb-game-center-side .player-topbar #nextBtn:hover{background:#101f2a!important;border-color:#315066!important;color:#fff!important}
+  body.sbb-game-center-side .native-player{object-fit:contain!important;background:#000!important}
+  body.sbb-game-center-side .keyboard-help{display:none!important}
+}
+
+/* v3.0.0 — dedicated Yesterday / Today ribbon controls -----------------
+   The day buttons own real columns instead of floating above the score track, so
+   the right controls can never cover the last game. Either arrow loops the two
+   faces forever; the center label always states the face currently being shown. */
+.score-ribbon{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:30px minmax(0,1fr) 30px!important;
+  align-items:stretch!important;
+  gap:4px!important;
+  height:88px!important;
+  padding:4px 3px!important;
+  overflow:hidden!important;
+}
+.score-day-pager{
+  position:relative!important;
+  inset:auto!important;
+  top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;
+  transform:none!important;
+  z-index:9!important;
+  width:30px!important;
+  min-width:30px!important;
+  height:100%!important;
+  padding:3px!important;
+  display:grid!important;
+  grid-template-rows:1fr 1fr!important;
+  align-items:stretch!important;
+  justify-items:stretch!important;
+  gap:3px!important;
+  border:1px solid #1c2a34!important;
+  background:#081016!important;
+  border-radius:7px!important;
+  box-shadow:inset 0 0 8px rgba(0,0,0,.25)!important;
+}
+.score-day-pager-left{grid-column:1!important;grid-row:1!important}
+.score-day-pager-right{grid-column:3!important;grid-row:1!important}
+.score-day-arrow{
+  width:100%!important;height:auto!important;min-width:0!important;padding:0!important;
+  display:grid!important;place-items:center!important;border:0!important;border-radius:4px!important;
+  background:#0c1720!important;color:#8da0ae!important;font-size:12px!important;line-height:1!important;
+  cursor:pointer!important;font-weight:650!important;
+}
+.score-day-arrow:hover{background:#142531!important;color:#fff!important}
+.score-day-arrow:active{transform:translateY(1px)!important;background:#19303e!important}
+.score-ribbon-center{
+  grid-column:2!important;grid-row:1!important;min-width:0!important;min-height:0!important;
+  display:grid!important;grid-template-rows:15px minmax(0,1fr)!important;overflow:hidden!important;
+}
+.score-day-indicator{
+  grid-row:1!important;align-self:center!important;justify-self:center!important;
+  min-width:76px!important;padding:1px 9px!important;border-radius:999px!important;
+  border:1px solid #22333f!important;background:#0a141b!important;color:#9eafbb!important;
+  text-align:center!important;font-size:8.5px!important;font-weight:700!important;letter-spacing:.1em!important;
+  line-height:1.25!important;pointer-events:none!important;
+}
+.score-day-indicator[data-score-day="yesterday"]{color:#b6c4ce!important;border-color:#2c3c48!important}
+.score-ribbon-center>.score-cells{
+  grid-row:2!important;grid-column:1!important;width:100%!important;min-width:0!important;min-height:0!important;
+  padding:0!important;border-top:1px solid #13212a!important;overflow-x:auto!important;overflow-y:hidden!important;
+  scroll-padding-inline:4px!important;
+}
+.score-empty-day{min-width:180px!important;display:flex!important;align-items:center!important;gap:9px!important;padding:0 14px!important;color:#758895!important}
+.score-empty-day strong{font-size:10px!important;font-weight:650!important;color:#a9bac5!important;text-transform:uppercase!important;letter-spacing:.06em!important}
+.score-empty-day span{font-size:10px!important;font-weight:450!important}
+
+/* v3.0.0 — desktop readability without turning the UI into bold display type. */
+@media (min-width:1100px) and (pointer:fine){
+  .top-nav-header{min-height:46px!important;padding:5px 10px!important}
+  .top-nav-header .brand{min-width:166px!important;height:36px!important}
+  .top-nav-header .brand strong,.top-nav-header .brand-name{font-size:16.5px!important;line-height:.98!important;font-weight:750!important}
+  .top-nav-header .brand span,.top-nav-header .brand-sub{font-size:11px!important;line-height:.98!important;font-weight:600!important}
+  .top-nav-header .score-filters button{font-size:11px!important;min-height:31px!important;padding:4px 12px!important;font-weight:650!important}
+
+  .key-info-ribbon{min-height:40px!important}
+  .key-info-label{min-width:88px!important;padding:6px 10px!important}
+  .key-info-label strong{font-size:10.5px!important;letter-spacing:.04em!important;font-weight:700!important}
+  .key-info-label span{font-size:8.5px!important;max-width:82px!important;font-weight:450!important;line-height:1.25!important}
+  .key-info-item{min-height:40px!important;padding:5px 11px!important;grid-template-columns:auto minmax(260px,470px)!important;max-width:630px!important}
+  .key-info-type{font-size:8px!important;padding:3px 6px!important;font-weight:700!important}
+  .key-info-item strong{font-size:11.5px!important;line-height:1.25!important;max-height:2.5em!important;font-weight:600!important}
+  .key-info-item small{font-size:8.75px!important;line-height:1.2!important;font-weight:450!important}
+
+  .score-ribbon{height:94px!important;grid-template-columns:32px minmax(0,1fr) 32px!important}
+  .score-day-pager{width:32px!important;min-width:32px!important}
+  .score-day-indicator{font-size:9px!important;min-width:82px!important}
+  .score-card{min-width:166px!important;padding:7px 10px!important}
+  .score-card-top{font-size:10px!important;font-weight:650!important}
+  .score-card-top small{font-size:9px!important;font-weight:500!important}
+  .score-team-abbr{font-size:14px!important;font-weight:650!important}
+  .score-team-score{font-size:16px!important;font-weight:750!important}
+  .score-card-footer{font-size:9.5px!important;font-weight:500!important}
+  .highlight-type-label{font-size:8px!important;font-weight:650!important}
+
+  body.sbb-game-center-side .stage-card{grid-template-columns:minmax(0,1fr) clamp(430px,36vw,610px)!important}
+  .player-topbar{padding:10px 13px!important;gap:12px!important}
+  .player-topbar h1,.now-playing-copy h1{font-size:19px!important;line-height:1.18!important;font-weight:650!important}
+  .player-topbar p,.now-playing-copy p{font-size:11.5px!important;font-weight:450!important}
+  .current-posted,.current-duration{font-size:10.5px!important;font-weight:450!important}
+  .league-chip{font-size:10px!important;font-weight:700!important}
+  body.sbb-game-center-side .player-topbar #prevBtn,
+  body.sbb-game-center-side .player-topbar #nextBtn{min-width:72px!important;height:33px!important;padding:0 11px!important}
+  body.sbb-game-center-side .player-topbar #prevBtn::after,
+  body.sbb-game-center-side .player-topbar #nextBtn::after{font-size:10.5px!important;font-weight:650!important}
+
+  body.sbb-game-center-side .info-drawer-head{padding:9px!important}
+  body.sbb-game-center-side .info-drawer-tab{font-size:10.5px!important;padding:10px 9px!important;font-weight:650!important}
+  body.sbb-game-center-side .gc-scoreboard{padding:12px 10px!important}
+  body.sbb-game-center-side .gc-team-abbr{font-size:10px!important;font-weight:600!important}
+  body.sbb-game-center-side .gc-team-name{font-size:12px!important;font-weight:600!important;line-height:1.2!important}
+  body.sbb-game-center-side .gc-team-score{font-size:32px!important;font-weight:750!important}
+  body.sbb-game-center-side .gc-status strong{font-size:12px!important;font-weight:650!important}
+  body.sbb-game-center-side .gc-status span{font-size:9.5px!important;font-weight:450!important}
+  body.sbb-game-center-side .gc-status small{font-size:8.5px!important;font-weight:450!important}
+  body.sbb-game-center-side .gc-section-tab{font-size:9.5px!important;padding:11px 5px!important;font-weight:650!important}
+  body.sbb-game-center-side .gc-card-title{font-size:10px!important;padding:9px 10px!important;font-weight:650!important}
+  body.sbb-game-center-side .gc-linescore{table-layout:fixed!important}
+  body.sbb-game-center-side .gc-linescore th,
+  body.sbb-game-center-side .gc-linescore td{font-size:10.5px!important;padding:8px 5px!important;font-weight:500!important}
+  body.sbb-game-center-side .gc-linescore thead th{font-size:8.5px!important;font-weight:600!important}
+  body.sbb-game-center-side .gc-linescore tbody th{font-weight:650!important}
+  body.sbb-game-center-side .gc-stat-compare th,
+  body.sbb-game-center-side .gc-stat-compare td{font-size:11px!important;padding:9px 10px!important;font-weight:500!important}
+  body.sbb-game-center-side .gc-stat-compare tbody th{font-size:9.5px!important;font-weight:550!important}
+  body.sbb-game-center-side .gc-player-table th,
+  body.sbb-game-center-side .gc-player-table td{font-size:9.5px!important;padding:8px!important;font-weight:500!important}
+  body.sbb-game-center-side .gc-player-table tbody th{font-weight:600!important}
+  body.sbb-game-center-side .gc-play-row{grid-template-columns:58px minmax(0,1fr)!important;padding:9px 10px!important}
+  body.sbb-game-center-side .gc-play-row>span{font-size:9px!important;font-weight:650!important}
+  body.sbb-game-center-side .gc-play-row strong{font-size:10.5px!important;line-height:1.38!important;font-weight:550!important}
+  body.sbb-game-center-side .gc-play-row small{font-size:9.5px!important;font-weight:450!important}
+}
+
+@media(max-width:760px),(pointer:coarse){
+  .score-ribbon{grid-template-columns:25px minmax(0,1fr) 25px!important;height:82px!important;gap:2px!important;padding:3px 2px!important}
+  .score-day-pager{width:25px!important;min-width:25px!important;padding:2px!important;gap:2px!important}
+  .score-day-arrow{font-size:10px!important}
+  .score-ribbon-center{grid-template-rows:13px minmax(0,1fr)!important}
+  .score-day-indicator{font-size:7.5px!important;min-width:66px!important;padding:1px 6px!important}
+}
+
+
+/* v3.0.0 — score ribbon recovery ----------------------------------------
+   v3.0.0 nested the horizontal score track inside another grid to make room
+   for the day badge. On desktop that collapsed the team rows and left only the
+   MLB/TODAY header visible. Return the proven direct flex track, reserve a slim
+   top strip for the day indicator, and keep real scroll padding at both ends so
+   neither arrow stack can cover the first or final game. */
+.score-ribbon{
+  position:relative!important;
+  display:block!important;
+  height:94px!important;
+  min-height:94px!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+.score-ribbon>.score-cells{
+  position:absolute!important;
+  left:0!important;right:0!important;top:14px!important;bottom:0!important;
+  width:100%!important;height:auto!important;min-height:0!important;
+  display:flex!important;align-items:flex-start!important;
+  padding:4px 38px 4px 38px!important;
+  margin:0!important;border-top:1px solid #13212a!important;
+  overflow-x:auto!important;overflow-y:hidden!important;
+  scrollbar-width:none!important;overscroll-behavior-x:contain!important;
+  scroll-padding-left:38px!important;scroll-padding-right:38px!important;
+}
+.score-ribbon>.score-cells::-webkit-scrollbar{display:none!important}
+.score-ribbon .score-card{
+  flex:0 0 166px!important;min-width:166px!important;height:76px!important;
+  padding:5px 10px 5px!important;
+  grid-template-rows:14px 19px 19px 14px!important;
+  align-content:start!important;
+}
+.score-day-indicator{
+  position:absolute!important;z-index:8!important;top:1px!important;left:50%!important;
+  transform:translateX(-50%)!important;min-width:82px!important;height:12px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  padding:0 9px!important;border-radius:999px!important;border:1px solid #22333f!important;
+  background:#091218!important;color:#9eafbb!important;font-size:8.5px!important;
+  font-weight:650!important;letter-spacing:.11em!important;line-height:1!important;
+  pointer-events:none!important;
+}
+.score-day-indicator[data-score-day="yesterday"]{color:#c0ccd4!important;border-color:#30424f!important}
+.score-day-pager{
+  position:absolute!important;z-index:10!important;top:54px!important;
+  transform:translateY(-50%)!important;width:28px!important;min-width:28px!important;
+  height:62px!important;padding:2px!important;display:grid!important;
+  grid-template-rows:1fr 1fr!important;gap:2px!important;
+  border:1px solid #1c2a34!important;background:#081016!important;
+  border-radius:7px!important;box-shadow:0 4px 15px rgba(0,0,0,.24)!important;
+}
+.score-day-pager-left{left:3px!important;right:auto!important;grid-column:auto!important;grid-row:auto!important}
+.score-day-pager-right{right:3px!important;left:auto!important;grid-column:auto!important;grid-row:auto!important}
+.score-day-arrow{
+  width:100%!important;height:auto!important;min-width:0!important;padding:0!important;
+  display:grid!important;place-items:center!important;border:0!important;border-radius:4px!important;
+  background:#0c1720!important;color:#8da0ae!important;font-size:11px!important;
+  line-height:1!important;cursor:pointer!important;font-weight:600!important;
+}
+.score-day-arrow:hover{background:#142531!important;color:#fff!important}
+.score-day-arrow:active{transform:translateY(1px)!important;background:#19303e!important}
+
+@media (max-width:760px),(pointer:coarse){
+  .score-ribbon{height:82px!important;min-height:82px!important}
+  .score-ribbon>.score-cells{top:12px!important;padding:3px 31px!important;scroll-padding-left:31px!important;scroll-padding-right:31px!important}
+  .score-ribbon .score-card{flex-basis:158px!important;min-width:158px!important;height:70px!important;padding:4px 9px!important;grid-template-rows:13px 19px 19px 13px!important}
+  .score-day-indicator{top:1px!important;min-width:68px!important;height:10px!important;font-size:7.5px!important;padding:0 6px!important}
+  .score-day-pager{top:47px!important;width:24px!important;min-width:24px!important;height:54px!important;padding:2px!important}
+  .score-day-arrow{font-size:9px!important}
+}
+
+/* v3.0.0 friendly loading states */
+@keyframes sbb-loading-spin{to{transform:rotate(360deg)}}
+.sbb-loading-spinner{
+  display:inline-block;width:18px;height:18px;flex:0 0 18px;border-radius:50%;
+  border:2px solid rgba(143,166,185,.32);border-top-color:#63c8ff;
+  animation:sbb-loading-spin .8s linear infinite
+}
+.gc-loading{
+  min-height:74px;display:flex;align-items:center;justify-content:center;gap:10px;
+  color:#8fa2b2;font-size:12px;font-weight:500
+}
+.video-loading-overlay{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:26;
+  display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;
+  background:rgba(5,10,15,.82);border:1px solid rgba(150,180,202,.22);
+  box-shadow:0 10px 30px rgba(0,0,0,.28);backdrop-filter:blur(5px);
+  color:#e9f2f8;font-size:12px;font-weight:600;pointer-events:none
+}
+.video-loading-overlay.hidden{display:none!important}
+@media(max-width:760px){
+  .video-loading-overlay{font-size:11px;padding:9px 12px}
+  .sbb-loading-spinner{width:16px;height:16px;flex-basis:16px}
+}
+
+/* v3.0.0 — player-team navigation + Game Center team identity */
+.gc-team-copy{display:grid;gap:2px;min-width:0;align-items:center}
+.gc-team-away .gc-team-copy{text-align:left}
+.gc-team-home .gc-team-copy{text-align:right}
+.gc-team-logo-wrap{
+  width:34px;height:34px;min-width:34px;display:grid;place-items:center;position:relative;
+  border-radius:9px;background:#081118;border:1px solid #1b2a35;overflow:hidden
+}
+.gc-team-logo{width:28px;height:28px;object-fit:contain;display:block}
+.gc-team-logo-fallback{
+  width:100%;height:100%;display:grid;place-items:center;color:#91a3b1;
+  font-size:8px;font-weight:700;letter-spacing:.04em
+}
+.gc-team-logo.hidden,.gc-team-logo-fallback.hidden{display:none!important}
+.gc-player-team-tabs{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;
+  padding:0 0 2px;margin:0;min-width:0
+}
+.gc-player-team-tab{
+  min-width:0;height:42px;padding:5px 9px!important;border:1px solid #1c2d38!important;
+  border-radius:8px!important;background:#081118!important;color:#8fa0ac!important;
+  display:flex;align-items:center;justify-content:center;gap:8px;font-size:10px!important;
+  font-weight:600!important;box-shadow:inset 0 1px 4px rgba(0,0,0,.18)!important
+}
+.gc-player-team-tab.active{
+  color:#fff!important;background:#0b1a24!important;border-color:#31556b!important;
+  box-shadow:inset 0 -2px 0 #55b7f0,inset 0 1px 7px rgba(0,0,0,.24)!important
+}
+.gc-player-team-tab.disabled{opacity:.42;cursor:default}
+.gc-mini-logo-wrap{
+  width:24px;height:24px;min-width:24px;display:grid;place-items:center;position:relative;
+  border-radius:6px;background:#0a141b;border:1px solid #20313c;overflow:hidden
+}
+.gc-mini-logo{width:20px;height:20px;object-fit:contain}
+.gc-mini-logo.hidden,.gc-mini-logo-fallback.hidden{display:none!important}
+.gc-mini-logo-fallback{font-size:6.5px;font-weight:700;color:#9aabb7}
+
+/* v3.0.0 — leave real vertical room for the media-availability rail.
+   The larger score cards introduced in the readability pass were taller than
+   the score track's usable content box, so the last 2–5 px were clipped. */
+.score-ribbon{height:96px!important;min-height:96px!important}
+.score-ribbon>.score-cells{
+  top:14px!important;bottom:0!important;
+  padding:2px 38px 0 38px!important;
+  align-items:flex-start!important
+}
+.score-ribbon .score-card{height:76px!important}
+.media-availability-rail{height:3px!important;opacity:.78!important}
+
+@media(max-width:760px),(pointer:coarse){
+  .gc-team-logo-wrap{width:30px;height:30px;min-width:30px;border-radius:8px}
+  .gc-team-logo{width:25px;height:25px}
+  .gc-player-team-tab{height:40px;font-size:10px!important;padding:5px 7px!important}
+  .score-ribbon{height:84px!important;min-height:84px!important}
+  .score-ribbon>.score-cells{top:12px!important;padding:1px 31px 0 31px!important}
+  .score-ribbon .score-card{height:70px!important}
+  .score-day-pager{top:48px!important}
+}
+
+/* v3.0.0 — score-card geometry owns enough room for its footer controls.
+   The footer is a real three-column row, so FINAL, the media label and the play
+   button can never occupy the same pixels. The availability rail has its own
+   bottom clearance instead of being clipped by the ribbon viewport. */
+.score-ribbon{
+  height:102px!important;
+  min-height:102px!important;
+}
+.score-ribbon>.score-cells{
+  top:14px!important;
+  bottom:0!important;
+  padding:3px 38px 4px 38px!important;
+  align-items:flex-start!important;
+}
+.score-ribbon .score-card{
+  height:84px!important;
+  min-height:84px!important;
+  padding:6px 10px 7px!important;
+  grid-template-rows:14px 20px 20px 20px!important;
+  row-gap:0!important;
+  overflow:hidden!important;
+}
+.score-card-footer{
+  display:grid!important;
+  grid-template-columns:minmax(34px,1fr) auto 20px!important;
+  align-items:center!important;
+  column-gap:6px!important;
+  min-height:20px!important;
+  padding:0!important;
+  overflow:visible!important;
+  line-height:1!important;
+}
+.score-card-footer>span:first-child{
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.highlight-type-label{
+  margin:0!important;
+  min-width:0!important;
+  max-width:82px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  line-height:1!important;
+}
+.score-card-footer .highlight-dot{
+  width:19px!important;
+  height:19px!important;
+  margin:0!important;
+  display:grid!important;
+  place-items:center!important;
+  align-self:center!important;
+  border-radius:50%!important;
+  line-height:1!important;
+  font-size:8px!important;
+}
+.media-availability-rail{
+  height:3px!important;
+  bottom:0!important;
+  opacity:.82!important;
+}
+.score-day-pager{top:58px!important;height:66px!important}
+
+@media(max-width:760px),(pointer:coarse){
+  .score-ribbon{height:94px!important;min-height:94px!important}
+  .score-ribbon>.score-cells{
+    top:12px!important;
+    padding:2px 31px 4px 31px!important;
+  }
+  .score-ribbon .score-card{
+    flex-basis:162px!important;
+    min-width:162px!important;
+    height:78px!important;
+    min-height:78px!important;
+    padding:4px 8px 7px!important;
+    grid-template-rows:13px 19px 19px 18px!important;
+  }
+  .score-team-row{grid-template-columns:21px minmax(0,1fr) 24px!important;gap:5px!important}
+  .score-team-logo-wrap,.score-team-logo,.score-team-logo-fallback{width:19px!important;height:19px!important}
+  .score-card-footer{grid-template-columns:minmax(32px,1fr) auto 18px!important;column-gap:4px!important;min-height:18px!important}
+  .score-card-footer .highlight-dot{width:18px!important;height:18px!important;font-size:7px!important}
+  .highlight-type-label{font-size:0!important;max-width:48px!important}
+  .highlight-type-label::after{content:attr(data-short);font-size:7.5px!important;font-weight:650!important;letter-spacing:.045em!important}
+  .score-day-pager{top:53px!important;height:60px!important}
+}
+
+/* v3.0.0 final ribbon polish — make the media action read as a compact control,
+   not text competing with the score. Slightly wider cards also give the larger
+   typography room to breathe without sacrificing the horizontal carousel. */
+.score-ribbon .score-card{
+  flex-basis:184px!important;
+  min-width:184px!important;
+}
+.score-card-footer{
+  grid-template-columns:minmax(42px,1fr) auto 21px!important;
+  column-gap:7px!important;
+}
+.highlight-type-label{
+  max-width:88px!important;
+  padding:2px 5px!important;
+  border-radius:4px!important;
+  border:1px solid currentColor!important;
+  background:rgba(255,255,255,.025)!important;
+  opacity:.92!important;
+}
+.score-card.highlight-recap .highlight-type-label{background:rgba(53,199,120,.075)!important}
+.score-card.highlight-clips .highlight-type-label{background:rgba(59,156,255,.075)!important}
+.score-card.highlight-gold .highlight-type-label{background:rgba(230,185,74,.075)!important}
+.score-card.highlight-extended .highlight-type-label{background:rgba(169,112,255,.075)!important}
+.score-card-footer .highlight-dot{
+  width:20px!important;height:20px!important;font-size:8px!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.08),0 2px 5px rgba(0,0,0,.22)!important;
+}
+@media(max-width:760px),(pointer:coarse){
+  .score-ribbon .score-card{
+    flex-basis:170px!important;
+    min-width:170px!important;
+    padding-left:9px!important;
+    padding-right:9px!important;
+  }
+  .score-card-footer{
+    grid-template-columns:minmax(36px,1fr) auto 19px!important;
+    column-gap:5px!important;
+  }
+  .highlight-type-label{
+    max-width:52px!important;
+    padding:2px 4px!important;
+  }
+  .highlight-type-label::after{font-size:7.25px!important}
+  .score-card-footer .highlight-dot{width:19px!important;height:19px!important}
+}
+
+
+/* v3.0.0 — unmistakable current-game focus.
+   This is independent of the bottom media-tier rail: cyan means NOW WATCHING;
+   gold/green/purple/blue still describe the available media package. */
+.score-card.now-playing-game{
+  z-index:5!important;
+  border-color:#65d4ff!important;
+  outline:3px solid #65d4ff!important;
+  outline-offset:-3px!important;
+  background:linear-gradient(180deg,rgba(38,157,219,.34),rgba(18,86,126,.20))!important;
+  box-shadow:inset 0 0 0 2px rgba(165,232,255,.55),0 0 0 1px rgba(101,212,255,.38),0 0 22px rgba(64,190,245,.42)!important;
+}
+.score-card.now-playing-game .score-card-top small{
+  font-size:0!important;
+  opacity:1!important;
+  overflow:visible!important;
+}
+.score-card.now-playing-game .score-card-top small::after{
+  content:'NOW WATCHING';
+  display:inline-flex;
+  align-items:center;
+  min-height:14px;
+  padding:1px 5px;
+  border-radius:999px;
+  background:#74dcff;
+  color:#03131c;
+  font-size:7.5px;
+  font-weight:850;
+  letter-spacing:.055em;
+  white-space:nowrap;
+  box-shadow:0 1px 5px rgba(0,0,0,.3);
+}
+.score-card.now-playing-game .score-team-row{color:#fff!important}
+.score-card.now-playing-game:focus-visible{outline-color:#d1f4ff!important}
+.score-card.external-only .highlight-dot{
+  background:transparent!important;
+  border:1px solid currentColor!important;
+  color:inherit!important;
+  font-size:11px!important;
+  font-weight:800!important;
+}
+.score-card.external-only .highlight-type-label::after{content:attr(data-short) ' ↗'!important}
+.bumper.external-fallback .bumper-action{display:inline-flex!important}
+
+@media(max-width:760px),(pointer:coarse){
+  .score-card.now-playing-game{outline-width:3px!important;outline-offset:-3px!important}
+  .score-card.now-playing-game .score-card-top small::after{font-size:7px;padding:1px 4px}
+}
+
+/* v3.0.0 — historical Date Browser -----------------------------------
+   The date is now a deliberate browsing context. Previous/next controls move one
+   calendar day at a time, the center date opens the native picker, and Return to
+   Today is the explicit full-session escape hatch back to live programming. */
+.top-nav-header .return-today-btn{
+  flex:0 0 auto!important;
+  min-height:30px!important;
+  padding:6px 11px!important;
+  margin-left:8px!important;
+  border:1px solid #2d8fc2!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#153e55,#102c3d)!important;
+  color:#d9f5ff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 14px rgba(64,183,239,.12)!important;
+  font-size:9px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.055em!important;
+  white-space:nowrap!important;
+}
+.top-nav-header .return-today-btn:hover{
+  border-color:#65d4ff!important;
+  background:linear-gradient(180deg,#1a506e,#12374d)!important;
+  color:#fff!important;
+}
+.top-nav-header .return-today-btn.hidden{display:none!important}
+
+.score-day-indicator{
+  pointer-events:auto!important;
+  cursor:pointer!important;
+  min-width:142px!important;
+  height:14px!important;
+  padding:0 12px!important;
+  color:#b8c7d2!important;
+  font-size:8px!important;
+  letter-spacing:.085em!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+}
+.score-day-indicator:hover,.score-day-indicator:focus-visible{
+  color:#fff!important;
+  border-color:#3f6780!important;
+  background:#0d1a23!important;
+  outline:none!important;
+}
+.score-day-indicator[data-score-day="historical"]{
+  color:#d8eef9!important;
+  border-color:#38647d!important;
+  background:#0c1b25!important;
+  box-shadow:0 0 0 1px rgba(81,173,222,.08),0 2px 10px rgba(0,0,0,.18)!important;
+}
+.score-date-picker{
+  position:absolute!important;
+  z-index:-1!important;
+  top:1px!important;
+  left:50%!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+.score-day-pager{
+  grid-template-rows:1fr!important;
+}
+.score-day-arrow{
+  font-size:20px!important;
+  font-weight:450!important;
+}
+.score-day-arrow:disabled,.score-day-arrow.unavailable{
+  opacity:.23!important;
+  cursor:default!important;
+  transform:none!important;
+}
+.score-card.historical-find-media{
+  border-color:#29475a!important;
+}
+.score-card.historical-find-media:hover{
+  border-color:#4d8aab!important;
+  background:linear-gradient(180deg,rgba(42,96,125,.18),rgba(12,27,36,.08))!important;
+}
+.score-card.historical-find-media .find-recap-label{
+  color:#7bc8f2!important;
+  border-color:#3b7798!important;
+  background:rgba(62,145,190,.08)!important;
+}
+.score-card.historical-find-media .find-recap-dot{
+  color:#8bd6ff!important;
+  border:1px solid #4284a7!important;
+  background:#102b3a!important;
+}
+
+@media(max-width:760px),(pointer:coarse){
+  .top-nav-header .return-today-btn{
+    min-height:27px!important;
+    margin-left:4px!important;
+    padding:5px 7px!important;
+    font-size:7.4px!important;
+    letter-spacing:.035em!important;
+  }
+  .score-day-indicator{
+    min-width:128px!important;
+    height:12px!important;
+    padding:0 8px!important;
+    font-size:7px!important;
+    letter-spacing:.06em!important;
+  }
+  .score-day-arrow{font-size:17px!important}
+}
+
+@media(max-width:520px){
+  .top-nav-header .return-today-btn{
+    max-width:84px!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+}
+.return-today-short{display:none}
+@media(max-width:760px),(pointer:coarse){
+  .return-today-long{display:none}
+  .return-today-short{display:inline}
+}
+
+/* v3.0.0 — persistent top date control */
+.top-date-controls{
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  flex:0 0 auto!important;
+  margin-left:8px!important;
+}
+.top-nav-header .top-date-select-btn{
+  min-height:30px!important;
+  padding:6px 11px!important;
+  border:1px solid #315166!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#111e28,#0c171f)!important;
+  color:#c7d5df!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+  font-size:9px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.055em!important;
+  white-space:nowrap!important;
+  cursor:pointer!important;
+}
+.top-nav-header .top-date-select-btn:hover,.top-nav-header .top-date-select-btn:focus-visible{
+  border-color:#4b8eaf!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#152a37,#0e202b)!important;
+  outline:none!important;
+}
+.top-nav-header .top-date-select-btn[data-historical="true"]{
+  border-color:#4283a5!important;
+  color:#ddf4ff!important;
+  background:linear-gradient(180deg,#15384b,#102938)!important;
+}
+.top-date-search{font-size:13px!important;line-height:0!important;margin-right:3px!important;vertical-align:-1px!important}
+.top-nav-header .return-today-btn{margin-left:0!important}
+@media(max-width:760px),(pointer:coarse){
+  .top-date-controls{gap:4px!important;margin-left:4px!important}
+  .top-nav-header .top-date-select-btn{min-height:27px!important;padding:5px 7px!important;font-size:7.4px!important;letter-spacing:.035em!important}
+  .top-date-search{font-size:11px!important;margin-right:1px!important}
+}
+@media(max-width:520px){
+  .top-nav-header .top-date-select-btn{max-width:78px!important;overflow:hidden!important;text-overflow:ellipsis!important}
+}
+.score-card.historical-searching-media .find-recap-label{
+  color:#9bdcff!important;
+  border-color:#3f7f9f!important;
+}
+.score-card.historical-searching-media .find-recap-dot{
+  min-width:15px!important;
+  text-align:center!important;
+}
