@@ -757,6 +757,84 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(saved['discovery']['bestTier'],'gold')
             self.assertTrue(saved['discovery']['catalogComplete'])
 
+    def test_catalog_complete_blue_remains_quality_upgrade_pending(self):
+        row={'id':'nba-blue-closed','espnEventId':'nba-blue-closed','completed':True,
+             'awayTeam':{'name':'Away Club'},'homeTeam':{'name':'Home Club'}}
+        blue={'id':'blue','youtubeId':'blue-only-id','title':'Top plays Away Club vs Home Club','durationSeconds':50,'programType':'reel','verifiedPlayable':True}
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/'history.sqlite3'); date='2025-12-20'
+            repo.put_scores(date,'NBA',[row])
+            with patch.object(server,'HISTORY_REPOSITORY',repo), \
+                 patch.object(server,'_history_event_media_no_quota',return_value=[blue]), \
+                 patch.object(server,'_official_youtube_history_activity_results',return_value=[]), \
+                 patch.object(server,'_official_youtube_history_day_search_results',return_value=[]), \
+                 patch.object(server,'_historical_youtube_web_results',return_value=[]), \
+                 patch.object(server,'_historical_search_engine_youtube_results',return_value=[]):
+                before=time.time()
+                result=server._history_discover_event(date,'NBA',row,allow_search_rescue=True)
+                saved=repo.get_event(date,'NBA','nba-blue-closed')
+                inv=server._history_inventory(date)
+            self.assertEqual(result['state'],'VERIFIED_UPGRADE_PENDING')
+            self.assertTrue(result['catalogComplete'])
+            self.assertFalse(result['qualityComplete'])
+            self.assertTrue(result['upgradeEligible'])
+            self.assertEqual(result['bestTier'],'blue')
+            self.assertGreater(result['nextRetryAt'],before)
+            self.assertFalse(saved['discovery']['qualityComplete'])
+            self.assertEqual(saved['discovery']['missingBetterTiers'],['gold','green','extended'])
+            self.assertEqual(inv['qualityCompleteGames'],0)
+            self.assertEqual(inv['upgradeEligibleGames'],1)
+            self.assertTrue(inv['needsUpgrade'])
+
+    def test_discovery_version_8_soft_reindex_ignores_old_closed_retry(self):
+        row={'id':'nba-old-v7','espnEventId':'nba-old-v7','completed':True,
+             'awayTeam':{'name':'Away Club'},'homeTeam':{'name':'Home Club'}}
+        blue={'id':'old-blue','youtubeId':'old-blue-id','title':'Top plays Away Club vs Home Club','durationSeconds':45,'programType':'reel','verifiedPlayable':True}
+        gold={'id':'new-gold','youtubeId':'new-gold-id','title':'Away Club vs Home Club Postgame Recap and Analysis','durationSeconds':240,'overview':True,'verifiedPlayable':True,'source':'ESPN'}
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/'history.sqlite3'); date='2025-12-19'
+            repo.put_scores(date,'NBA',[row])
+            repo.put_event_media(date,'NBA','nba-old-v7',server._history_decorate_event_media('NBA',date,row,[blue]))
+            repo.set_event_discovery(date,'NBA','nba-old-v7','VERIFIED',
+                {'discoveryVersion':7,'freeLaneComplete':True,'searchRescueAttempted':True,'catalogComplete':True},
+                retry_at=time.time()+7*24*60*60,success=True)
+            with patch.object(server,'HISTORY_REPOSITORY',repo), \
+                 patch.object(server,'_history_event_media_no_quota',return_value=[gold]), \
+                 patch.object(server,'_official_youtube_history_activity_results',return_value=[]), \
+                 patch.object(server,'_official_youtube_history_day_search_results',return_value=[]), \
+                 patch.object(server,'_historical_youtube_web_results',return_value=[]), \
+                 patch.object(server,'_historical_search_engine_youtube_results',return_value=[]):
+                result=server._history_discover_event(date,'NBA',row,allow_search_rescue=True)
+                saved=repo.get_event(date,'NBA','nba-old-v7')
+            self.assertFalse(result.get('cached'))
+            self.assertEqual(result['state'],'VERIFIED')
+            self.assertEqual(result['bestTier'],'gold')
+            self.assertTrue(result['qualityComplete'])
+            self.assertEqual(saved['discovery']['discoveryVersion'],8)
+            self.assertTrue(saved['discovery']['qualityComplete'])
+
+    def test_quality_upgrade_due_respects_persistent_retry_window(self):
+        row={'id':'nba-retry','espnEventId':'nba-retry','completed':True,
+             'awayTeam':{'name':'Away Club'},'homeTeam':{'name':'Home Club'}}
+        blue={'id':'retry-blue','youtubeId':'retry-blue-id','title':'Top plays Away Club vs Home Club','durationSeconds':45,'programType':'reel','verifiedPlayable':True}
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/'history.sqlite3'); date='2025-12-18'
+            repo.put_scores(date,'NBA',[row])
+            repo.put_event_media(date,'NBA','nba-retry',server._history_decorate_event_media('NBA',date,row,[blue]))
+            details={'discoveryVersion':server.HISTORY_DISCOVERY_VERSION,'freeLaneComplete':True,'searchRescueAttempted':True,
+                     'catalogComplete':True,'qualityComplete':False,'upgradeEligible':True,'bestTier':'blue'}
+            repo.set_event_discovery(date,'NBA','nba-retry','VERIFIED_UPGRADE_PENDING',details,retry_at=time.time()+3600,success=True)
+            with patch.object(server,'HISTORY_REPOSITORY',repo):
+                future=server._history_inventory(date)
+            self.assertTrue(future['needsUpgrade'])
+            self.assertFalse(future['upgradeDue'])
+            repo.set_event_discovery(date,'NBA','nba-retry','VERIFIED_UPGRADE_PENDING',details,retry_at=time.time()-1,success=True)
+            with patch.object(server,'HISTORY_REPOSITORY',repo):
+                due=server._history_inventory(date)
+            self.assertTrue(due['needsUpgrade'])
+            self.assertTrue(due['upgradeDue'])
+            self.assertEqual(due['upgradeDueGames'],1)
+
     def test_background_playable_event_remains_partial_until_foreground_search_lane_runs(self):
         row={'id':'nba-bg-1','espnEventId':'nba-bg-1','completed':True,
              'awayTeam':{'name':'Away Club'},'homeTeam':{'name':'Home Club'}}

@@ -1,4 +1,4 @@
-"""Provider routing registry for v3.0.2.
+"""Provider routing registry for v3.0.3.
 
 SCORE_API retains the existing Highlightly adapter metadata. MEDIA_ADAPTERS is the
 new provider-independent capability registry consumed by architecture diagnostics

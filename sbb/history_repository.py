@@ -8,10 +8,11 @@ from contextlib import closing
 class HistoryRepository:
     """Persistent historical score/event/media catalog.
 
-    v3.0.2 keeps the legacy date/league JSON rows for fast score hydration while
-    adding normalized event and asset tables. Media truth now belongs to one
-    canonical event + asset identity, which lets runtime playback successes and
-    failures survive browser reloads instead of being rediscovered as green.
+    v3.0.3 keeps the legacy date/league JSON rows for fast score hydration while
+    retaining normalized event and asset tables. Discovery metadata now tracks
+    source exhaustion separately from preferred-media quality, so Blue/Purple/Green
+    assets remain playable while the persistent cloud catalog keeps seeking Gold.
+    Runtime playback successes and failures continue to survive browser reloads.
     """
 
     def __init__(self, path):

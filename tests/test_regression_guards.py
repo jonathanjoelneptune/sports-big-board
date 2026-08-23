@@ -14,7 +14,7 @@ CONTRACT=(ROOT/'architecture/game-center-contract.js').read_text(encoding='utf-8
 
 class RegressionGuards(unittest.TestCase):
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=3.0.2','architecture/score-date-store.js?v=3.0.2','architecture/event-identity.js?v=3.0.2','architecture/media-classifier.js?v=3.0.2','architecture/playback-transports.js?v=3.0.2','architecture/provider-health.js?v=3.0.2','architecture/sport-media-policy.js?v=3.0.2','architecture/media-manifest.js?v=3.0.2','architecture/media-resolver.js?v=3.0.2','architecture/game-center-policy.js?v=3.0.2','architecture/selected-event-store.js?v=3.0.2','architecture/game-center-contract.js?v=3.0.2','architecture/media-work-priorities.js?v=3.0.2','architecture/editorial-packages.js?v=3.0.2','ui/player-visibility.js?v=3.0.2','ui/info-drawer.js?v=3.0.2','ui/settings-view.js?v=3.0.2','ui/game-center-view.js?v=3.0.2','app.js?v=3.0.2']
+        ordered=['core-model.js?v=3.0.3','architecture/score-date-store.js?v=3.0.3','architecture/event-identity.js?v=3.0.3','architecture/media-classifier.js?v=3.0.3','architecture/playback-transports.js?v=3.0.3','architecture/provider-health.js?v=3.0.3','architecture/sport-media-policy.js?v=3.0.3','architecture/media-manifest.js?v=3.0.3','architecture/media-resolver.js?v=3.0.3','architecture/game-center-policy.js?v=3.0.3','architecture/selected-event-store.js?v=3.0.3','architecture/game-center-contract.js?v=3.0.3','architecture/media-work-priorities.js?v=3.0.3','architecture/editorial-packages.js?v=3.0.3','ui/player-visibility.js?v=3.0.3','ui/info-drawer.js?v=3.0.3','ui/settings-view.js?v=3.0.3','ui/game-center-view.js?v=3.0.3','app.js?v=3.0.3']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -371,8 +371,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v3.0.2 — score ribbon recovery',STYLES)
-        self.assertIn('v3.0.2 — historical Date Browser',STYLES)
+        self.assertIn('v3.0.3 — score ribbon recovery',STYLES)
+        self.assertIn('v3.0.3 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -381,7 +381,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v3.0.2 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v3.0.3 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -395,7 +395,10 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("['gold','green','extended']",resolver)
         self.assertIn('HISTORY_TIER_PRIORITY = {"gold":4,"green":3,"extended":2,"blue":1}',SERVER)
         self.assertIn('catalogComplete',SERVER)
-        self.assertIn("state='VERIFIED' if catalog_complete else 'VERIFIED_PARTIAL'",SERVER)
+        self.assertIn("state='VERIFIED_UPGRADE_PENDING'",SERVER)
+        self.assertIn('HISTORY_QUALITY_TARGET_TIER = "gold"',SERVER)
+        self.assertIn('qualityComplete',SERVER)
+        self.assertIn('upgradeEligible',SERVER)
 
     def test_pc_readability_pass_increases_microtype_without_blanket_bold(self):
         self.assertIn('desktop readability without turning the UI into bold display type',STYLES)
@@ -541,7 +544,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v3.0.2',STYLES)
+        self.assertNotIn('\\n\\n/* v3.0.3',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)
@@ -579,7 +582,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('/api/history/event/discover',SERVER)
         self.assertIn('/api/history/event/media',SERVER)
         self.assertIn('/api/history/media/runtime',SERVER)
-        self.assertIn('HISTORY_DISCOVERY_VERSION = 7',SERVER)
+        self.assertIn('HISTORY_DISCOVERY_VERSION = 8',SERVER)
         self.assertIn('_touch_history_focus(date',SERVER)
         self.assertIn('team_v290_',SERVER)
         self.assertIn("apiJson('/api/history/event/discover'",APP)
