@@ -92,16 +92,17 @@ class MediaScopeRoundupTests(unittest.TestCase):
             self.assertEqual(result["bestTier"],"green")
             self.assertEqual(repo.event_media(date,"MLB","mlb-score-id")[0]["validationState"],"VERIFIED")
 
-    def test_canonical_queue_dedupes_adjacent_date_alias_and_obeys_cooldown(self):
+    def test_canonical_queue_dedupes_adjacent_date_alias_and_obeys_current_generation_cooldown(self):
         event={"scoreEventId":"same-event","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"},"completed":True}
         with tempfile.TemporaryDirectory() as td:
             path=Path(td)/"history.sqlite3"; repo=HistoryRepository(path)
             repo.put_scores("2026-08-22","NBA",[event]); repo.put_scores("2026-08-23","NBA",[event])
             repo.set_event_discovery("2026-08-23","NBA","same-event","SEARCHED_EMPTY",{"discoveryVersion":11},retry_at=0)
-            # A version bump alone cannot immediately requeue a game just searched.
-            self.assertEqual(repo.green_gap_events(current_discovery_version=12,now=time.time(),recent_cooldown=7200,archive_cooldown=86400),[])
-            conn=sqlite3.connect(path); conn.execute("UPDATE history_catalog_event SET last_discovery_at=? WHERE league='NBA' AND event_id='same-event'",(time.time()-90000,)); conn.commit(); conn.close()
-            due=repo.green_gap_events(current_discovery_version=12,now=time.time(),recent_cooldown=0,archive_cooldown=0)
+            # Same-generation retries honor cooldown. A new discovery generation
+            # deliberately bypasses that old cooldown and still returns only one
+            # canonical LEAGUE:EventID row despite the adjacent-date alias.
+            self.assertEqual(repo.green_gap_events(current_discovery_version=11,now=time.time(),recent_cooldown=7200,archive_cooldown=86400),[])
+            due=repo.green_gap_events(current_discovery_version=12,now=time.time(),recent_cooldown=7200,archive_cooldown=86400)
             self.assertEqual(len(due),1)
             self.assertEqual(due[0]["canonicalEventKey"],"NBA:same-event")
 

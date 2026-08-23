@@ -1,4 +1,4 @@
-# Sports Big Board v4.0.0 Architecture
+# Sports Big Board v4.0.1 Architecture
 
 ## Product model
 
@@ -65,7 +65,7 @@ Changing `browseDate` can fetch and render another day's slate but cannot call P
 
 Past-day score and media snapshots remain resident in the browser session. Final historical Game Centers may remain HOT for 24 hours in browser memory while partial shells retain the short retry TTL; the server's persistent repository remains the WARM authority.
 
-### v4.0.0 normalized historical catalog baseline
+### v4.0.1 normalized historical catalog baseline
 
 v4 treats a discovered media asset and a sporting-event relationship as different entities. The fundamental flow is:
 

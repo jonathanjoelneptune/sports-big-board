@@ -76,6 +76,58 @@ class HistoryV4BaselineTests(unittest.TestCase):
             repo.put_event_media("2026-08-20","NBA","evt1",[wrong])
             review=repo.assignment_reviews(state="QUARANTINED"); self.assertGreaterEqual(review["total"],1); self.assertEqual(review["rows"][0]["state"],"QUARANTINED")
 
+
+    def test_reindex_reset_is_not_recorded_as_a_discovery_attempt(self):
+        with tempfile.TemporaryDirectory() as td:
+            db=Path(td)/"history.sqlite3"; repo=HistoryRepository(db)
+            event={"scoreEventId":"evt1","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}
+            details={"catalogSchemaVersion":4,"discoveryVersion":0,"rebuildImportedAt":time.time(),"rebuildState":"PENDING_CURRENT_DISCOVERY"}
+            repo.upsert_event("2026-08-20","NBA","evt1",event)
+            repo.reset_event_for_reindex("2026-08-20","NBA","evt1",details)
+            row=repo.get_event("2026-08-20","NBA","evt1")
+            self.assertEqual(row["lastDiscoveryAt"],0)
+            self.assertEqual(row["nextRetryAt"],0)
+            self.assertEqual(row["discovery"]["discoveryVersion"],0)
+
+    def test_stale_discovery_generation_bypasses_retry_cooldown(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"scoreEventId":"evt1","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}
+            repo.upsert_event("2026-08-20","NBA","evt1",event)
+            # A real v12 attempt happened moments ago. Discovery v13 must still
+            # be allowed immediately because generation changes invalidate the
+            # old cooldown.
+            repo.set_event_discovery("2026-08-20","NBA","evt1","SEARCHED_EMPTY",{"discoveryVersion":12},retry_at=time.time()+86400)
+            rows=repo.green_gap_events(current_discovery_version=13,now=time.time())
+            self.assertEqual([r["eventId"] for r in rows],["evt1"])
+            summary=repo.green_gap_summary(current_discovery_version=13,now=time.time())
+            self.assertEqual(summary["due"],1)
+            self.assertEqual(summary["unindexed"],1)
+            self.assertNotIn("noMedia",summary)
+            self.assertEqual(summary["unindexedOrEmpty"],1)
+
+    def test_current_discovery_generation_still_respects_cooldown(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"scoreEventId":"evt1","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}
+            repo.upsert_event("2026-08-20","NBA","evt1",event)
+            repo.set_event_discovery("2026-08-20","NBA","evt1","SEARCHED_EMPTY",{"discoveryVersion":13},retry_at=0)
+            self.assertEqual(repo.green_gap_events(current_discovery_version=13,now=time.time()),[])
+            self.assertEqual(repo.green_gap_summary(current_discovery_version=13,now=time.time())["due"],0)
+
+    def test_startup_release_repairs_v400_artificial_rebuild_timestamp(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"scoreEventId":"evt1","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}
+            repo.upsert_event("2026-08-20","NBA","evt1",event)
+            details={"catalogSchemaVersion":4,"discoveryVersion":0,"rebuildImportedAt":time.time(),"rebuildState":"PENDING_CURRENT_DISCOVERY"}
+            repo.set_event_discovery("2026-08-20","NBA","evt1","UNKNOWN",details,retry_at=time.time()+86400)
+            self.assertGreater(repo.get_event("2026-08-20","NBA","evt1")["lastDiscoveryAt"],0)
+            self.assertEqual(repo.release_rebuild_pending_events(13),1)
+            row=repo.get_event("2026-08-20","NBA","evt1")
+            self.assertEqual(row["lastDiscoveryAt"],0); self.assertEqual(row["nextRetryAt"],0)
+            self.assertEqual(repo.release_rebuild_pending_events(13),0)
+
     def test_preflight_recognizes_fresh_v4_without_mutating_or_rebuilding(self):
         with tempfile.TemporaryDirectory() as td:
             state=Path(td); db=state/"cache"/"history.sqlite3"; db.parent.mkdir(parents=True)
@@ -125,6 +177,7 @@ class HistoryV4BaselineTests(unittest.TestCase):
             data=json.loads(proc.stdout.strip()); self.assertEqual(data["action"],"REBUILT"); self.assertTrue(data["rebuild"]["passed"])
             self.assertTrue(Path(data["rollbackBackup"]).exists()); self.assertTrue(Path(data["reconciliationReport"]).exists())
             repo=HistoryRepository(db); self.assertEqual(repo.catalog_integrity()["schemaVersion"],4); self.assertEqual(len(repo.event_media("2026-08-20","NBA","evt1")),1)
+            migrated=repo.get_event("2026-08-20","NBA","evt1"); self.assertEqual(migrated["lastDiscoveryAt"],0); self.assertEqual(migrated["nextRetryAt"],0)
 
     def test_rebuild_conflict_resolution_quarantines_cross_event_asset_before_hard_audit(self):
         with tempfile.TemporaryDirectory() as td:

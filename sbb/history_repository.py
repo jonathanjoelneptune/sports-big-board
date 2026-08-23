@@ -418,6 +418,40 @@ class HistoryRepository:
               (state,self._dump_obj(details),now,1 if success else 0,now,float(retry_at or 0),str(error or "")[:1000],now,key)); conn.commit()
         return now
 
+    def reset_event_for_reindex(self, date, league, event_id, details=None, *, state="UNKNOWN"):
+        """Reset catalog indexing state without recording a discovery attempt.
+
+        Catalog reconstruction/import is bookkeeping, not provider discovery.  A
+        migrated event must therefore begin with no discovery timestamp and no
+        retry hold.  ``rebuildImportedAt``/other provenance belongs in ``details``
+        instead of overloading ``last_discovery_at``.
+        """
+        self.upsert_event(date,league,event_id)
+        now=time.time(); key=self.canonical_event_key(league,event_id); state=str(state or "UNKNOWN").upper(); details=dict(details or {})
+        with self._lock, closing(self._connect()) as conn:
+            conn.execute("""UPDATE history_catalog_event SET discovery_state=?,discovery_json=?,last_discovery_at=0,next_retry_at=0,last_error='',updated_at=?
+              WHERE canonical_event_key=?""",(state,self._dump_obj(details),now,key)); conn.commit()
+        return now
+
+    def release_rebuild_pending_events(self, current_discovery_version):
+        """Release artificial v4.0.1 migration cooldowns already persisted in production.
+
+        This is intentionally narrow and idempotent: only events explicitly marked
+        ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
+        generation are touched. Real current-version search timestamps are never
+        changed.
+        """
+        current=max(0,int(current_discovery_version or 0))
+        if not current: return 0
+        now=time.time()
+        with self._lock, closing(self._connect()) as conn:
+            cur=conn.execute("""UPDATE history_catalog_event SET last_discovery_at=0,next_retry_at=0,last_error='',updated_at=?
+              WHERE COALESCE(CAST(json_extract(discovery_json,'$.discoveryVersion') AS INTEGER),0)<?
+                AND COALESCE(json_extract(discovery_json,'$.rebuildState'),'')='PENDING_CURRENT_DISCOVERY'
+                AND (last_discovery_at>0 OR next_retry_at>0)""",(now,current))
+            count=int(cur.rowcount or 0); conn.commit()
+        return count
+
     def get_event(self, date, league, event_id):
         league=str(league).upper(); event_id=str(event_id); key=self.canonical_event_key(league,event_id)
         with self._lock, closing(self._connect()) as conn:
@@ -670,11 +704,14 @@ class HistoryRepository:
                 FROM history_event_media em JOIN history_source_media s ON s.asset_key=em.asset_key GROUP BY em.canonical_event_key)
               SELECT e.*,COALESCE(f.verified_count,0) verified_count,COALESCE(f.has_gold,0) has_gold,COALESCE(f.has_green,0) has_green,COALESCE(f.has_extended,0) has_extended,COALESCE(f.has_blue,0) has_blue
               FROM history_catalog_event e LEFT JOIN flags f ON f.canonical_event_key=e.canonical_event_key
-              WHERE COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND (e.next_retry_at<=? OR COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?)
-                AND (e.last_discovery_at<=0 OR e.last_discovery_at <= ? - CASE WHEN e.event_date>=date('now','-2 days') THEN ? ELSE ? END)
+              WHERE COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0
+                AND (
+                  COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?
+                  OR (e.next_retry_at<=? AND (e.last_discovery_at<=0 OR e.last_discovery_at <= ? - CASE WHEN e.event_date>=date('now','-2 days') THEN ? ELSE ? END))
+                )
               ORDER BY CASE WHEN e.event_date>=date('now','-2 days') AND COALESCE(f.verified_count,0)=0 THEN -3 WHEN e.event_date>=date('now','-2 days') AND COALESCE(f.has_blue,0)=1 THEN -2
                 WHEN e.event_date>=date('now','-2 days') AND COALESCE(f.has_extended,0)=1 THEN -1 WHEN COALESCE(f.has_blue,0)=1 THEN 0 WHEN COALESCE(f.verified_count,0)=0 THEN 1 WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
-                e.event_date DESC,e.last_discovery_at ASC LIMIT ?""",(now,current,now,float(recent_cooldown),float(archive_cooldown),limit)).fetchall()
+                e.event_date DESC,e.last_discovery_at ASC LIMIT ?""",(current,now,now,float(recent_cooldown),float(archive_cooldown),limit)).fetchall()
         out=[]
         for row in rows:
             best="blue" if row["has_blue"] else ("extended" if row["has_extended"] else "")
@@ -709,16 +746,18 @@ class HistoryRepository:
             elif verified: summary["coverageComplete"]+=1
             elif state=="CANDIDATE_ONLY": summary["candidateOnly"]+=1
             cooldown=float(recent_cooldown if recent else archive_cooldown)
-            due=(float(row["next_retry_at"] or 0)<=now or version<current) and (float(row["last_discovery_at"] or 0)<=0 or float(row["last_discovery_at"] or 0)<=now-cooldown)
+            stale=bool(version<current)
+            due=stale or (float(row["next_retry_at"] or 0)<=now and (float(row["last_discovery_at"] or 0)<=0 or float(row["last_discovery_at"] or 0)<=now-cooldown))
             if not has_good and due: summary["due"]+=1
-        # Stable operator-console aliases. The normalized catalog uses explicit
-        # semantic names, while older browser builds used snake_case queue keys.
+        # v4.0.1 operator-console aliases keep the explicit catalog semantics.
+        # "noMedia" was ambiguous because UNINDEXED events can already have Blue
+        # or Purple media; expose the actual union under an honest name instead.
         summary.update({
-            "noMedia":summary["unindexed"]+summary["searchedEmpty"],"recentGaps":summary["recent"],"noMediaSearchedEmpty":summary["searchedEmpty"],
+            "unindexedOrEmpty":summary["unindexed"]+summary["searchedEmpty"],"recentGaps":summary["recent"],
             "gaps":summary["total"],"due_now":summary["due"],"recent_gaps":summary["recent"],"recent_no_media":summary["recentNoMedia"],
             "blue_only":summary["blueOnly"],"purple_only":summary["purpleOnly"],"stale_version":summary["staleVersion"],
             "searched_empty":summary["searchedEmpty"],"coverage_complete":summary["coverageComplete"],"candidate_only":summary["candidateOnly"],
-            "no_media":summary["unindexed"]+summary["searchedEmpty"],
+            "unindexed_or_empty":summary["unindexed"]+summary["searchedEmpty"],
         })
         return summary
 

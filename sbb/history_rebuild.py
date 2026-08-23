@@ -128,7 +128,7 @@ class HistoryCatalogRebuilder:
             legacy=_load_obj(row["discovery_json"])
             details={"catalogSchemaVersion":CATALOG_SCHEMA_VERSION,"discoveryVersion":0,"rebuildImportedAt":self.started_at,"rebuildState":"PENDING_CURRENT_DISCOVERY",
                      "legacyDiscoveryState":str(row["discovery_state"] or "UNKNOWN"),"legacyDiscoveryVersion":int(legacy.get("discoveryVersion") or 0)}
-            self.repo.set_event_discovery(date,league,event_id,"UNKNOWN",details,error="",retry_at=0,success=False)
+            self.repo.reset_event_for_reindex(date,league,event_id,details,state="UNKNOWN")
             self.report["legacyDiscoveryResetEvents"]+=1
         self._index_events()
 

@@ -15,7 +15,7 @@ CONTRACT=(ROOT/'architecture/game-center-contract.js').read_text(encoding='utf-8
 
 class RegressionGuards(unittest.TestCase):
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=4.0.0','architecture/score-date-store.js?v=4.0.0','architecture/event-identity.js?v=4.0.0','architecture/media-scope.js?v=4.0.0','architecture/media-classifier.js?v=4.0.0','architecture/playback-transports.js?v=4.0.0','architecture/provider-health.js?v=4.0.0','architecture/sport-media-policy.js?v=4.0.0','architecture/media-manifest.js?v=4.0.0','architecture/media-resolver.js?v=4.0.0','architecture/game-center-policy.js?v=4.0.0','architecture/selected-event-store.js?v=4.0.0','architecture/game-center-contract.js?v=4.0.0','architecture/media-work-priorities.js?v=4.0.0','architecture/editorial-packages.js?v=4.0.0','ui/player-visibility.js?v=4.0.0','ui/info-drawer.js?v=4.0.0','ui/settings-view.js?v=4.0.0','ui/history-audit.js?v=4.0.0','ui/game-center-view.js?v=4.0.0','app.js?v=4.0.0']
+        ordered=['core-model.js?v=4.0.1','architecture/score-date-store.js?v=4.0.1','architecture/event-identity.js?v=4.0.1','architecture/media-scope.js?v=4.0.1','architecture/media-classifier.js?v=4.0.1','architecture/playback-transports.js?v=4.0.1','architecture/provider-health.js?v=4.0.1','architecture/sport-media-policy.js?v=4.0.1','architecture/media-manifest.js?v=4.0.1','architecture/media-resolver.js?v=4.0.1','architecture/game-center-policy.js?v=4.0.1','architecture/selected-event-store.js?v=4.0.1','architecture/game-center-contract.js?v=4.0.1','architecture/media-work-priorities.js?v=4.0.1','architecture/editorial-packages.js?v=4.0.1','ui/player-visibility.js?v=4.0.1','ui/info-drawer.js?v=4.0.1','ui/settings-view.js?v=4.0.1','ui/history-audit.js?v=4.0.1','ui/game-center-view.js?v=4.0.1','app.js?v=4.0.1']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -372,8 +372,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v4.0.0 — score ribbon recovery',STYLES)
-        self.assertIn('v4.0.0 — historical Date Browser',STYLES)
+        self.assertIn('v4.0.1 — score ribbon recovery',STYLES)
+        self.assertIn('v4.0.1 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -382,7 +382,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v4.0.0 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v4.0.1 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -545,7 +545,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v4.0.0',STYLES)
+        self.assertNotIn('\\n\\n/* v4.0.1',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)
