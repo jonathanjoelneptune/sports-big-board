@@ -2,8 +2,7 @@ name: Deploy Sports Big Board
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -19,20 +18,16 @@ jobs:
   verify:
     name: Verify release
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-
       - name: Run Sports Big Board verification
         run: bash VERIFY.sh
-
 
   backend:
     name: Deploy cloud backend
     runs-on: ubuntu-latest
     needs: verify
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -44,25 +39,10 @@ jobs:
           GCP_DEPLOY_SERVICE_ACCOUNT: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
           SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
         run: |
-          test -n "$GCP_PROJECT_ID" || {
-            echo "Missing repository variable GCP_PROJECT_ID"
-            exit 1
-          }
-
-          test -n "$GCP_WORKLOAD_IDENTITY_PROVIDER" || {
-            echo "Missing repository variable GCP_WORKLOAD_IDENTITY_PROVIDER"
-            exit 1
-          }
-
-          test -n "$GCP_DEPLOY_SERVICE_ACCOUNT" || {
-            echo "Missing repository variable GCP_DEPLOY_SERVICE_ACCOUNT"
-            exit 1
-          }
-
-          test -n "$SBB_API_BASE_URL" || {
-            echo "Missing repository variable SBB_API_BASE_URL"
-            exit 1
-          }
+          test -n "$GCP_PROJECT_ID" || { echo "Missing repository variable GCP_PROJECT_ID"; exit 1; }
+          test -n "$GCP_WORKLOAD_IDENTITY_PROVIDER" || { echo "Missing repository variable GCP_WORKLOAD_IDENTITY_PROVIDER"; exit 1; }
+          test -n "$GCP_DEPLOY_SERVICE_ACCOUNT" || { echo "Missing repository variable GCP_DEPLOY_SERVICE_ACCOUNT"; exit 1; }
+          test -n "$SBB_API_BASE_URL" || { echo "Missing repository variable SBB_API_BASE_URL"; exit 1; }
 
       - name: Authenticate to Google Cloud without a stored key
         uses: google-github-actions/auth@v3
@@ -82,76 +62,53 @@ jobs:
           SBB_ZONE: ${{ vars.SBB_GCP_ZONE || 'us-west2-b' }}
           SBB_VM_NAME: ${{ vars.SBB_GCP_VM_NAME || 'sports-big-board' }}
           GITHUB_SHA: ${{ github.sha }}
-        run: |
-          bash cloud/gcp/DEPLOY-FROM-GITHUB.sh
+        run: bash cloud/gcp/DEPLOY-FROM-GITHUB.sh
 
-      - name: Verify public backend health
+      - name: Verify public backend health and release version
         env:
           SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
         run: |
-          echo "Checking Sports Big Board backend:"
-          echo "$SBB_API_BASE_URL/api/status"
-
+          EXPECTED_VERSION="$(tr -d '[:space:]' < VERSION)"
           for attempt in {1..18}; do
-            echo "Health check attempt $attempt of 18..."
-
-            if curl \
-              --fail \
-              --silent \
-              --show-error \
-              --max-time 10 \
-              "$SBB_API_BASE_URL/api/status" \
-              > /tmp/sbb-status.json
-            then
-              echo "Backend is healthy:"
+            if curl --fail --silent --show-error --max-time 10 "$SBB_API_BASE_URL/api/status" > /tmp/sbb-status.json; then
+              ACTUAL_VERSION="$(python3 -c 'import json; print(json.load(open("/tmp/sbb-status.json")).get("version", ""))')"
               cat /tmp/sbb-status.json
               echo
-              exit 0
+              echo "Expected backend: $EXPECTED_VERSION | Public backend: $ACTUAL_VERSION"
+              if [[ "$ACTUAL_VERSION" == "$EXPECTED_VERSION" ]]; then
+                exit 0
+              fi
             fi
-
             sleep 5
           done
-
-          echo "Backend public health check failed:"
-          echo "$SBB_API_BASE_URL/api/status"
+          echo "Backend health/version check failed. Refusing to publish a frontend against an older backend."
           exit 1
-
 
   pages-build:
     name: Build GitHub Pages frontend
     runs-on: ubuntu-latest
     needs: backend
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-
       - name: Build static frontend
         env:
           SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
-        run: |
-          python3 cloud/github-pages/build_pages.py \
-            "$SBB_API_BASE_URL" \
-            .pages-dist
-
+        run: python3 cloud/github-pages/build_pages.py "$SBB_API_BASE_URL" .pages-dist
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: .pages-dist
 
-
   pages-deploy:
     name: Publish GitHub Pages
-    runs-on: ubuntu-latest
-    needs: pages-build
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
+    runs-on: ubuntu-latest
+    needs: pages-build
     steps:
       - name: Deploy frontend
         id: deployment
