@@ -49,6 +49,17 @@ class CloudStage1Tests(unittest.TestCase):
         for token in ('workload-identity-pools providers create-oidc',"assertion.repository == '$GITHUB_REPOSITORY'","assertion.ref == 'refs/heads/main'",'roles/iam.workloadIdentityUser','roles/compute.instanceAdmin.v1','GCP_WORKLOAD_IDENTITY_PROVIDER'):
             self.assertIn(token,setup)
         self.assertNotIn('keys create',setup)
+    def test_v4_failed_rebuild_preserves_diagnostics_before_rollback(self):
+        deploy=(ROOT/"cloud/gcp/DEPLOY-FROM-GITHUB.sh").read_text()
+        self.assertIn('MIGRATION_STDERR="/tmp/sbb-history-v4-migration.stderr.log"',deploy)
+        self.assertIn('v4 catalog preflight exit code',deploy)
+        self.assertIn('history-v4-last-failed-migration.json',deploy)
+        self.assertIn('Reconciliation report follows',deploy)
+        self.assertIn('trap - ERR\n    rollback\n    exit "$MIGRATION_RC"',deploy)
+        migration_block=deploy.split('if [[ -f "$HISTORY_DB" ]]',1)[1].split("else\n  echo '[deploy] No historical catalog exists yet",1)[0]
+        self.assertIn('if runuser -u sportsbigboard',migration_block)
+        self.assertNotIn('rm -f "$ARCHIVE" "$MIGRATION_JSON"',deploy.split('rollback(){',1)[1].split('}',1)[0])
+
     def test_version_file_matches_server(self):
         self.assertEqual((ROOT/'VERSION').read_text().strip(),'4.0.0')
         self.assertIn('APP_VERSION = "4.0.0"',(ROOT/'server.py').read_text())

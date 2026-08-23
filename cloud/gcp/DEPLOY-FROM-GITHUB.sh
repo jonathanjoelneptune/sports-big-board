@@ -152,7 +152,9 @@ PREVIOUS="$(readlink -f "$CURRENT_LINK" 2>/dev/null || true)"
 STATE_DIR="/var/lib/sports-big-board"
 HISTORY_DB="$STATE_DIR/cache/history.sqlite3"
 MIGRATION_JSON="/tmp/sbb-history-v4-migration.json"
+MIGRATION_STDERR="/tmp/sbb-history-v4-migration.stderr.log"
 MIGRATION_BACKUP=""
+MIGRATION_REPORT=""
 rollback(){
   echo "[deploy] New backend failed health checks. Rolling back application and catalog..."
   systemctl stop sports-big-board >/dev/null 2>&1 || true
@@ -167,7 +169,7 @@ rollback(){
     systemctl restart sports-big-board || true
   fi
   rm -rf "$RELEASE_DIR"
-  rm -f "$ARCHIVE" "$MIGRATION_JSON"
+  rm -f "$ARCHIVE"
 }
 trap rollback ERR
 rm -rf "$RELEASE_DIR"; mkdir -p "$RELEASE_DIR"
@@ -180,16 +182,38 @@ chown -R root:root "$RELEASE_DIR"
 systemctl stop sports-big-board >/dev/null 2>&1 || true
 ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 if [[ -f "$HISTORY_DB" ]]; then
-  set +e
-  runuser -u sportsbigboard -- env SBB_STATE_DIR="$STATE_DIR" \
-    /usr/bin/python3 "$RELEASE_DIR/tools/ensure_history_v4.py" --state-dir "$STATE_DIR" > "$MIGRATION_JSON"
-  MIGRATION_RC=$?
-  set -e
-  cat "$MIGRATION_JSON" || true
-  MIGRATION_BACKUP="$(python3 -c 'import json; d=json.load(open("/tmp/sbb-history-v4-migration.json")); print(d.get("rollbackBackup", ""))' 2>/dev/null || true)"
+  # Run reconstruction in an explicit if-condition so an expected non-zero
+  # audit result does NOT trigger the global ERR rollback trap before we can
+  # print and preserve its reconciliation report.
+  if runuser -u sportsbigboard -- env SBB_STATE_DIR="$STATE_DIR" \
+      /usr/bin/python3 "$RELEASE_DIR/tools/ensure_history_v4.py" --state-dir "$STATE_DIR" \
+      > "$MIGRATION_JSON" 2> >(tee "$MIGRATION_STDERR" >&2); then
+    MIGRATION_RC=0
+  else
+    MIGRATION_RC=$?
+  fi
+  echo "[deploy] v4 catalog preflight exit code: $MIGRATION_RC"
+  if [[ -s "$MIGRATION_JSON" ]]; then
+    cat "$MIGRATION_JSON"
+    MIGRATION_BACKUP="$(python3 -c 'import json; d=json.load(open("/tmp/sbb-history-v4-migration.json")); print(d.get("rollbackBackup", ""))' 2>/dev/null || true)"
+    MIGRATION_REPORT="$(python3 -c 'import json; d=json.load(open("/tmp/sbb-history-v4-migration.json")); print(d.get("reconciliationReport", ""))' 2>/dev/null || true)"
+  else
+    echo "[deploy] ERROR: v4 preflight produced no structured JSON result."
+  fi
   if [[ "$MIGRATION_RC" != "0" ]]; then
     echo "[deploy] v4 catalog reconstruction/audit failed (exit $MIGRATION_RC)."
-    false
+    if [[ -n "$MIGRATION_REPORT" && -f "$MIGRATION_REPORT" ]]; then
+      echo "[deploy] Reconciliation report follows: $MIGRATION_REPORT"
+      cat "$MIGRATION_REPORT" || true
+    fi
+    if [[ -s "$MIGRATION_JSON" ]]; then
+      cp -f "$MIGRATION_JSON" "$STATE_DIR/backups/history-v4-last-failed-migration.json" || true
+      chown sportsbigboard:sportsbigboard "$STATE_DIR/backups/history-v4-last-failed-migration.json" 2>/dev/null || true
+      echo "[deploy] Preserved failed migration JSON at $STATE_DIR/backups/history-v4-last-failed-migration.json"
+    fi
+    trap - ERR
+    rollback
+    exit "$MIGRATION_RC"
   fi
 else
   echo '[deploy] No historical catalog exists yet; v4 will initialize a fresh normalized catalog.'
@@ -233,7 +257,7 @@ if [[ -n "$PUBLIC_HOST" ]]; then
   fi
 fi
 trap - ERR
-rm -f "$ARCHIVE" "$MIGRATION_JSON"
+rm -f "$ARCHIVE" "$MIGRATION_JSON" "$MIGRATION_STDERR"
 echo "[deploy] Backend v${VERSION}-${SHA} is healthy."
 cat /tmp/sbb-health.json
 CURRENT_REAL="$(readlink -f "$CURRENT_LINK")"

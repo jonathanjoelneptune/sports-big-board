@@ -101,6 +101,32 @@ class HistoryV4BaselineTests(unittest.TestCase):
             self.assertTrue(Path(data["rollbackBackup"]).exists()); self.assertTrue(Path(data["reconciliationReport"]).exists())
             repo=HistoryRepository(db); self.assertEqual(repo.catalog_integrity()["schemaVersion"],4); self.assertEqual(len(repo.event_media("2026-08-20","NBA","evt1")),1)
 
+    def test_rebuild_conflict_resolution_quarantines_cross_event_asset_before_hard_audit(self):
+        with tempfile.TemporaryDirectory() as td:
+            state=Path(td); source=state/"legacy.sqlite3"; output=state/"v4.sqlite3"; now=time.time()
+            e1={"scoreEventId":"evt1","awayTeam":{"name":"Away One"},"homeTeam":{"name":"Home One"},"completed":True}
+            e2={"scoreEventId":"evt2","awayTeam":{"name":"Away Two"},"homeTeam":{"name":"Home Two"},"completed":True}
+            conn=sqlite3.connect(source)
+            conn.execute("CREATE TABLE history_day(date TEXT,league TEXT,scores_json TEXT,media_json TEXT,discovery_json TEXT,scores_saved_at REAL,media_saved_at REAL,discovery_saved_at REAL,PRIMARY KEY(date,league))")
+            conn.execute("CREATE TABLE history_event(date TEXT,league TEXT,event_id TEXT,event_json TEXT,discovery_state TEXT,discovery_json TEXT,last_discovery_at REAL,last_success_at REAL,next_retry_at REAL,last_error TEXT,updated_at REAL,PRIMARY KEY(date,league,event_id))")
+            conn.execute("CREATE TABLE history_media_asset(date TEXT,league TEXT,event_id TEXT,asset_key TEXT,asset_json TEXT,validation_state TEXT,verified_at REAL,runtime_state TEXT,runtime_success_at REAL,runtime_failure_at REAL,runtime_failure_reason TEXT,last_seen_at REAL,updated_at REAL,PRIMARY KEY(date,league,event_id,asset_key))")
+            conn.execute("INSERT INTO history_day VALUES(?,?,?,?,?,?,?,?)",("2026-08-20","NBA",json.dumps([e1,e2]),"[]","{}",now,now,now))
+            for eid,event in (("evt1",e1),("evt2",e2)):
+                conn.execute("INSERT INTO history_event VALUES(?,?,?,?,?,?,?,?,?,?,?)",("2026-08-20","NBA",eid,json.dumps(event),"VERIFIED","{}",now,now,0,"",now))
+            # Same source asset is stamped into two games, reproducing the legacy contamination class.
+            item={"youtubeId":"abcdefghijk","title":"Generic Full Game Highlights","verifiedPlayable":True,"mediaScope":"GAME"}
+            for eid in ("evt1","evt2"):
+                stamped=dict(item,sourceType="espn-event-video",scoreEventId=eid)
+                conn.execute("INSERT INTO history_media_asset VALUES(?,?,?,?,?,'VERIFIED',?,'UNKNOWN',0,0,'',?,?)",("2026-08-20","NBA",eid,"yt:abcdefghijk",json.dumps(stamped),now,now,now))
+            conn.commit(); conn.close()
+            from sbb.history_rebuild import HistoryCatalogRebuilder
+            report=HistoryCatalogRebuilder(source,output).rebuild(force=True)
+            self.assertTrue(report["passed"],report)
+            self.assertEqual(report["integrity"]["crossEventAssignedAssets"],0)
+            self.assertGreaterEqual(report["conflictResolution"]["crossEventAssetsQuarantined"],1)
+            repo=HistoryRepository(output)
+            self.assertGreaterEqual(repo.assignment_reviews(reason="CROSS_EVENT_CONFLICT")["total"],1)
+
     def test_launch_and_cloud_paths_enforce_v4_preflight(self):
         for path in (ROOT/"start.sh",ROOT/"START-ANDROID.sh",ROOT/"START SPORTS BIG BOARD.bat",ROOT/"cloud/vm/INSTALL-STAGE1.sh",ROOT/"cloud/gcp/DEPLOY-FROM-GITHUB.sh"):
             self.assertIn("ensure_history_v4.py",path.read_text())

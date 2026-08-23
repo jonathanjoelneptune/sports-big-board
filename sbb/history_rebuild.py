@@ -13,6 +13,7 @@ import os
 import shutil
 import sqlite3
 import time
+import sys
 from collections import defaultdict
 from contextlib import closing
 from datetime import datetime, timedelta
@@ -87,6 +88,9 @@ class HistoryCatalogRebuilder:
 
     def _event_key(self,league,event_id): return self.repo.canonical_event_key(league,event_id)
 
+    def _progress(self, message):
+        print(f"[v4 rebuild] {message}", file=sys.stderr, flush=True)
+
     def _index_events(self):
         with closing(self._dst()) as conn:
             rows=conn.execute("SELECT canonical_event_key,league,event_id,event_date,event_json FROM history_catalog_event").fetchall()
@@ -97,7 +101,7 @@ class HistoryCatalogRebuilder:
 
     def _copy_score_skeleton(self, src):
         if not _table_exists(src,"history_day"): return
-        rows=src.execute("SELECT * FROM history_day ORDER BY date,league").fetchall(); self.report["sourceLeagueDays"]=len(rows)
+        rows=src.execute("SELECT * FROM history_day ORDER BY date,league").fetchall(); self.report["sourceLeagueDays"]=len(rows); self._progress(f"Score skeleton: {len(rows)} league-days")
         for row in rows:
             date=str(row["date"])[:10]; league=str(row["league"]).upper(); scores=_load_list(row["scores_json"])
             self.repo.put_scores(date,league,scores)
@@ -112,7 +116,7 @@ class HistoryCatalogRebuilder:
 
     def _copy_event_skeleton(self, src):
         if not _table_exists(src,"history_event"): return
-        rows=src.execute("SELECT * FROM history_event ORDER BY updated_at DESC").fetchall(); self.report["sourceEventRows"]=len(rows)
+        rows=src.execute("SELECT * FROM history_event ORDER BY updated_at DESC").fetchall(); self.report["sourceEventRows"]=len(rows); self._progress(f"Event skeleton: {len(rows)} legacy event rows")
         chosen={}
         for row in rows:
             key=(str(row["league"]).upper(),str(row["event_id"]))
@@ -242,16 +246,18 @@ class HistoryCatalogRebuilder:
         # v3.1 schema has scope/league/period_key directly. If source is already
         # v4, this path is skipped because collection_key replaces those columns.
         if not {"scope","league","period_key","asset_json"}.issubset(cols): return
-        rows=src.execute("SELECT * FROM history_collection_media").fetchall(); self.report["sourceCollectionRows"]=len(rows)
-        for row in rows:
+        rows=src.execute("SELECT * FROM history_collection_media").fetchall(); self.report["sourceCollectionRows"]=len(rows); self._progress(f"Legacy Silver collections: {len(rows)} rows")
+        for idx,row in enumerate(rows,1):
+            if idx % 1000 == 0: self._progress(f"Silver collection rows processed: {idx}/{len(rows)}")
             raw=_load_obj(row["asset_json"]); state={k:row[k] for k in row.keys() if k in {"validation_state","verified_at","runtime_state","runtime_success_at","runtime_failure_at","runtime_failure_reason"}}
             self._process_media(raw,league=row["league"],date=str(raw.get("date") or row["period_key"])[:10],legacy_state=state,
                                 explicit_collection=(str(row["scope"]),str(row["period_key"]),str(row["collection_kind"] or "ROUNDUP")),source_label="legacy_collection")
 
     def _import_normalized_media(self, src):
         if not _table_exists(src,"history_media_asset"): return
-        rows=src.execute("SELECT * FROM history_media_asset").fetchall(); self.report["sourceNormalizedMediaRows"]=len(rows)
-        for row in rows:
+        rows=src.execute("SELECT * FROM history_media_asset").fetchall(); self.report["sourceNormalizedMediaRows"]=len(rows); self._progress(f"Normalized legacy media: {len(rows)} rows")
+        for idx,row in enumerate(rows,1):
+            if idx % 1000 == 0: self._progress(f"Normalized media rows processed: {idx}/{len(rows)}")
             raw=_load_obj(row["asset_json"]); state={k:row[k] for k in row.keys() if k in {"validation_state","verified_at","runtime_state","runtime_success_at","runtime_failure_at","runtime_failure_reason"}}
             self._process_media(raw,league=row["league"],date=row["date"],legacy_event_id=row["event_id"],legacy_state=state,source_label="legacy_event_media")
 
@@ -260,9 +266,100 @@ class HistoryCatalogRebuilder:
         count=0
         for row in src.execute("SELECT date,league,media_json FROM history_day WHERE media_json IS NOT NULL AND media_json<>''"):
             for raw in _load_list(row["media_json"]):
-                count+=1; legacy_event_id=HistoryRepository.event_id_for(raw)
+                count+=1
+                if count % 1000 == 0: self._progress(f"Day-cache media rows processed: {count}")
+                legacy_event_id=HistoryRepository.event_id_for(raw)
                 self._process_media(raw,league=row["league"],date=row["date"],legacy_event_id=legacy_event_id,legacy_state=raw,source_label="legacy_day_cache")
         self.report["sourceCachedMediaRows"]=count
+
+    def _resolve_integrity_conflicts(self):
+        """Fail closed on residual legacy conflicts before the hard v4 audit.
+
+        The rebuild intentionally imports legacy evidence generously, then this
+        pass enforces the normalized invariants. Conflicting links are never
+        guessed into production; they are quarantined/reviewable.
+        """
+        now=time.time()
+        counts={"silverGameLinksQuarantined":0,"gameCollectionLinksRemoved":0,
+                "lowConfidenceEventLinksQuarantined":0,"crossEventAssetsQuarantined":0,
+                "lowConfidenceCollectionLinksRemoved":0}
+        with closing(self._dst()) as conn:
+            # Collection-scoped media cannot satisfy a game.
+            rows=conn.execute("""SELECT em.canonical_event_key,em.asset_key,e.league,e.event_date
+              FROM history_event_media em JOIN history_source_media s ON s.asset_key=em.asset_key
+              JOIN history_catalog_event e ON e.canonical_event_key=em.canonical_event_key
+              WHERE em.association_state='ASSIGNED' AND s.scope<>'GAME'""").fetchall()
+            for row in rows:
+                conn.execute("UPDATE history_event_media SET association_state='QUARANTINED',updated_at=? WHERE canonical_event_key=? AND asset_key=?",
+                             (now,row["canonical_event_key"],row["asset_key"]))
+                conn.execute("""INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at)
+                  VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,evidence_json=excluded.evidence_json,updated_at=excluded.updated_at""",
+                  (row["asset_key"],row["league"],row["event_date"],row["canonical_event_key"],QUARANTINED,"SCOPE_EVENT_CONFLICT",json.dumps({"action":"event link quarantined because source scope is not GAME"}),MEDIA_CLASSIFIER_VERSION,EVENT_MATCHER_VERSION,now,now))
+                counts["silverGameLinksQuarantined"]+=1
+
+            # GAME-scoped media cannot live in Silver collections.
+            rows=conn.execute("""SELECT cm.collection_key,cm.asset_key,c.league,c.period_key
+              FROM history_collection_media cm JOIN history_source_media s ON s.asset_key=cm.asset_key
+              JOIN history_collection c ON c.collection_key=cm.collection_key WHERE s.scope='GAME'""").fetchall()
+            for row in rows:
+                conn.execute("DELETE FROM history_collection_media WHERE collection_key=? AND asset_key=?",(row["collection_key"],row["asset_key"]))
+                conn.execute("""INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at)
+                  VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,evidence_json=excluded.evidence_json,updated_at=excluded.updated_at""",
+                  (row["asset_key"],row["league"],str(row["period_key"])[:10],"",UNASSIGNED,"GAME_COLLECTION_CONFLICT",json.dumps({"collectionKey":row["collection_key"],"action":"collection link removed because source scope is GAME"}),MEDIA_CLASSIFIER_VERSION,EVENT_MATCHER_VERSION,now,now))
+                counts["gameCollectionLinksRemoved"]+=1
+
+            # Assigned game links below the v4 confidence floor are review-only.
+            rows=conn.execute("""SELECT em.canonical_event_key,em.asset_key,e.league,e.event_date,em.association_confidence
+              FROM history_event_media em JOIN history_catalog_event e ON e.canonical_event_key=em.canonical_event_key
+              WHERE em.association_state='ASSIGNED' AND em.association_confidence<0.90""").fetchall()
+            for row in rows:
+                conn.execute("UPDATE history_event_media SET association_state='QUARANTINED',updated_at=? WHERE canonical_event_key=? AND asset_key=?",
+                             (now,row["canonical_event_key"],row["asset_key"]))
+                conn.execute("""INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at)
+                  VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,evidence_json=excluded.evidence_json,updated_at=excluded.updated_at""",
+                  (row["asset_key"],row["league"],row["event_date"],row["canonical_event_key"],QUARANTINED,"LOW_CONFIDENCE_EVENT_ASSOCIATION",json.dumps({"confidence":float(row["association_confidence"] or 0)}),MEDIA_CLASSIFIER_VERSION,EVENT_MATCHER_VERSION,now,now))
+                counts["lowConfidenceEventLinksQuarantined"]+=1
+
+            # A GAME asset may belong to only one canonical event. Any residual
+            # multi-event asset is ambiguous by definition, so quarantine every
+            # competing assignment instead of choosing one silently.
+            conflicts=conn.execute("""SELECT asset_key FROM history_event_media WHERE association_state='ASSIGNED'
+              GROUP BY asset_key HAVING COUNT(DISTINCT canonical_event_key)>1""").fetchall()
+            for conflict in conflicts:
+                asset_key=conflict["asset_key"]
+                links=conn.execute("""SELECT em.canonical_event_key,e.league,e.event_date,em.association_confidence,em.association_method
+                  FROM history_event_media em JOIN history_catalog_event e ON e.canonical_event_key=em.canonical_event_key
+                  WHERE em.asset_key=? AND em.association_state='ASSIGNED'""",(asset_key,)).fetchall()
+                evidence={"conflictingEvents":[{"event":r["canonical_event_key"],"confidence":float(r["association_confidence"] or 0),"method":r["association_method"]} for r in links]}
+                for row in links:
+                    conn.execute("UPDATE history_event_media SET association_state='QUARANTINED',updated_at=? WHERE canonical_event_key=? AND asset_key=?",
+                                 (now,row["canonical_event_key"],asset_key))
+                    conn.execute("""INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at)
+                      VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,evidence_json=excluded.evidence_json,updated_at=excluded.updated_at""",
+                      (asset_key,row["league"],row["event_date"],row["canonical_event_key"],QUARANTINED,"CROSS_EVENT_CONFLICT",json.dumps(evidence,separators=(",",":")),MEDIA_CLASSIFIER_VERSION,EVENT_MATCHER_VERSION,now,now))
+                counts["crossEventAssetsQuarantined"]+=1
+
+            # Weak collection links are not allowed to enter Silver playback.
+            rows=conn.execute("""SELECT cm.collection_key,cm.asset_key,c.league,c.period_key,cm.association_confidence
+              FROM history_collection_media cm JOIN history_collection c ON c.collection_key=cm.collection_key
+              WHERE cm.association_confidence<0.80""").fetchall()
+            for row in rows:
+                conn.execute("DELETE FROM history_collection_media WHERE collection_key=? AND asset_key=?",(row["collection_key"],row["asset_key"]))
+                conn.execute("""INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at)
+                  VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,evidence_json=excluded.evidence_json,updated_at=excluded.updated_at""",
+                  (row["asset_key"],row["league"],str(row["period_key"])[:10],"",UNASSIGNED,"LOW_CONFIDENCE_COLLECTION_ASSOCIATION",json.dumps({"collectionKey":row["collection_key"],"confidence":float(row["association_confidence"] or 0)}),MEDIA_CLASSIFIER_VERSION,EVENT_MATCHER_VERSION,now,now))
+                counts["lowConfidenceCollectionLinksRemoved"]+=1
+
+            # Recompute the source-level state from surviving relationships.
+            conn.execute("""UPDATE history_source_media SET catalog_state=CASE
+              WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='ASSIGNED')
+                OR EXISTS(SELECT 1 FROM history_collection_media cm WHERE cm.asset_key=history_source_media.asset_key) THEN 'ASSIGNED'
+              WHEN EXISTS(SELECT 1 FROM history_assignment_review ar WHERE ar.asset_key=history_source_media.asset_key AND ar.state='QUARANTINED') THEN 'QUARANTINED'
+              ELSE 'UNASSIGNED' END""")
+            conn.commit()
+        self.report["conflictResolution"]=counts
+        self._progress("Conflict resolution: "+", ".join(f"{k}={v}" for k,v in counts.items()))
+        return counts
 
     def _finalize_accounting(self):
         self.report["uniqueInputAssets"]=len(self._seen_input_assets)
@@ -298,6 +395,9 @@ class HistoryCatalogRebuilder:
         with closing(self._src()) as src:
             self._copy_score_skeleton(src); self._copy_event_skeleton(src); self._index_events()
             self._import_legacy_collections(src); self._import_normalized_media(src); self._import_day_cache_media(src)
+        self._progress("Resolving residual legacy association conflicts")
+        self._resolve_integrity_conflicts()
+        self._progress("Running hard v4 integrity audit")
         return self._finalize_accounting()
 
 

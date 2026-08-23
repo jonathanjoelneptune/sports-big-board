@@ -14,6 +14,7 @@ import os
 import sqlite3
 import sys
 import time
+import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -94,9 +95,12 @@ def main():
     backup_path=backup_dir/f"history-pre-v4-{stamp}.sqlite3"
     rebuild_path=db.with_name("history-v4-rebuild.sqlite3")
     report_path=backup_dir/f"history-v4-rebuild-{stamp}.report.json"
+    print(f"[v4 preflight] Backing up legacy catalog to {backup_path}",file=sys.stderr,flush=True)
     rollback=backup_database(db,backup_path)
+    print(f"[v4 preflight] Reconstructing normalized catalog at {rebuild_path}",file=sys.stderr,flush=True)
     report=HistoryCatalogRebuilder(db,rebuild_path).rebuild(force=True)
     report_path.write_text(json.dumps(report,indent=2,sort_keys=True),encoding="utf-8")
+    print(f"[v4 preflight] Reconciliation report: {report_path}",file=sys.stderr,flush=True)
     result.update(action="REBUILT",rollbackBackup=str(rollback),rebuildDatabase=str(rebuild_path),reconciliationReport=str(report_path),rebuild=report)
     if not report.get("passed"):
         result.update(ok=False,error="V4_REBUILD_AUDIT_FAILED")
@@ -107,4 +111,12 @@ def main():
     result["ok"]=after.get("catalogSchemaVersion")==CATALOG_SCHEMA_VERSION and not after.get("needsRebuild") and not integrity.get("silverGameLeaks") and not integrity.get("collectionGameLeaks") and not integrity.get("lowConfidenceAssigned") and not integrity.get("crossEventAssignedAssets") and not integrity.get("lowConfidenceCollectionLinks")
     print(json.dumps(result,sort_keys=True)); return 0 if result["ok"] else 2
 
-if __name__=="__main__": raise SystemExit(main())
+if __name__=="__main__":
+    try:
+        raise SystemExit(main())
+    except SystemExit:
+        raise
+    except Exception as exc:
+        traceback.print_exc(file=sys.stderr)
+        print(json.dumps({"ok":False,"action":"ERROR","error":f"{type(exc).__name__}: {exc}","catalogSchemaVersion":CATALOG_SCHEMA_VERSION},sort_keys=True),flush=True)
+        raise SystemExit(4)
