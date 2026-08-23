@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sports Big Board v3.0.1 local/cloud backend.
+"""Sports Big Board v3.0.2 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
@@ -34,7 +34,7 @@ from sbb.history_repository import HistoryRepository
 from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
 from sbb.secrets import get_secret, set_secrets, status as secrets_status, migrate_legacy as migrate_legacy_secrets, SECRETS_FILE
 
-APP_VERSION = "3.0.1"
+APP_VERSION = "3.0.2"
 PORT = int(os.environ.get("PORT", "8080"))
 BIND_HOST = os.environ.get("SBB_BIND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -66,7 +66,7 @@ OPENAI_KEY_FILE = STATE_DIR / "openai-key"
 OPENAI_API_BASE = "https://api.openai.com/v1"
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
 YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
-YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/3.0.1")
+YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/3.0.2")
 
 def youtube_fetch_json(url, timeout=10):
     """Operation-aware YouTube broker.
@@ -120,7 +120,13 @@ HISTORY_BACKFILL_MEDIA = str(os.environ.get("SBB_HISTORY_BACKFILL_MEDIA","1")).l
 HISTORY_BACKFILL_STATE = {"running":False,"lastDate":"","lastRun":0.0,"lastError":"","daysCompleted":0,"mediaItems":0,"deepGames":0}
 HISTORY_DISCOVERY_LOCK = threading.RLock()
 HISTORY_DISCOVERY_STATE = {}
-HISTORY_DISCOVERY_VERSION = 6
+HISTORY_DISCOVERY_VERSION = 7
+# Historical playback preference is deliberately editorial-first: a produced
+# commentary package is the best default, followed by a concise full recap, an
+# extended package, then a clip/reel fallback. Discovery completion is separate
+# from playability so finding a blue/green asset never prematurely ends indexing.
+HISTORY_TIER_PRIORITY = {"gold":4,"green":3,"extended":2,"blue":1}
+HISTORY_TIER_ORDER = ("gold","green","extended","blue")
 HISTORY_SCORE_FETCH_LOCK = threading.RLock()
 HISTORY_SCORE_FETCH_LOCKS = {}
 # Browsing a past date is foreground work. Keep that focus server-side so today's
@@ -468,7 +474,7 @@ def _prewarm_highlightly_call(sport_key,endpoint,date,timezone_value="",force=Fa
     if RATE_LIMIT_STATE.get("limited") and limited_since and time.time()-limited_since < 15*60:
         return cached
     url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/3.0.1"})
+    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/3.0.2"})
     try:
         with urlopen(req,timeout=15) as resp:
             data=json.loads(resp.read().decode("utf-8"))
@@ -1023,7 +1029,7 @@ def openai_api_request(path, payload=None, method=None, timeout=20):
         raise RuntimeError("OPENAI_NOT_CONFIGURED")
     method=method or ("POST" if payload is not None else "GET")
     body=None if payload is None else json.dumps(payload).encode("utf-8")
-    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/3.0.1"}
+    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/3.0.2"}
     req=Request(f"{OPENAI_API_BASE}{path}",data=body,headers=headers,method=method)
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -1399,7 +1405,7 @@ def _decorate_recap_tier(item):
     conf=_narrated_recap_confidence(row.get('title'),row.get('description'),row.get('sourceLabel') or row.get('source'),duration)
     row['commentaryConfidence']=conf
     row['commentaryLikely']=conf>=0.85
-    # v3.0.1: one server-side classifier owns Gold/Green/Purple/Blue.
+    # v3.0.2: one server-side classifier owns Gold/Green/Purple/Blue.
     return annotate_media_tier(row)
 
 def _youtube_game_result(game, date):
@@ -1558,7 +1564,7 @@ def _google_news_official_results(league):
     site_clause=' OR '.join(f'site:{d}' for d in sorted(trusted_domains))
     query=f'({terms}) ({site_clause}) {league} when:5d'
     url='https://news.google.com/rss/search?'+urlencode({'q':query,'hl':'en-US','gl':'US','ceid':'US:en'})
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.1'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.2'})
     try:
         with urlopen(req,timeout=10) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -1617,7 +1623,7 @@ def _espn_rss_results(league):
     """First-party ESPN headline feed. ESPN explicitly publishes these RSS feeds for aggregators."""
     league=str(league or '').upper(); url=ESPN_RSS.get(league)
     if not url: return []
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.1'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.2'})
     try:
         with urlopen(req,timeout=8) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -1722,7 +1728,7 @@ def _espn_video_media_url(video):
             if isinstance(v,str) and v.startswith('http'): return v
         return ''
     if isinstance(source,dict):
-        # v3.0.1: ESPN's mezzanine asset is frequently the largest/highest-
+        # v3.0.2: ESPN's mezzanine asset is frequently the largest/highest-
         # bitrate encode. It looked great but was a poor default for a localhost
         # streaming app on mobile and caused avoidable rebuffering. Prefer the
         # normal/full or HD delivery encode and keep mezzanine as a last MP4
@@ -1863,7 +1869,7 @@ def _nfl_team_site_video_results(date, away, home, max_items=8):
     for host in hosts:
         page=f'https://{host}/video/'
         try:
-            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.1'})
+            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.2'})
             with urlopen(req,timeout=8) as resp: raw=resp.read().decode('utf-8','ignore')
         except Exception as exc:
             print(f'[SBB NFL] club video page failed {host}: {type(exc).__name__}: {exc}',flush=True); continue
@@ -2011,7 +2017,7 @@ def _espn_generic_soccer_event_matches(ev,league_key):
 def _espn_scoreboard(league,date,tz_value="",utc_offset_minutes=None):
     """Return one viewer-calendar day from a redundant ESPN transport set.
 
-    v3.0.1 deliberately treats score/schedule identity as infrastructure rather
+    v3.0.2 deliberately treats score/schedule identity as infrastructure rather
     than media metadata.  MLB still has MLB Stats as its main path in the browser;
     NFL/NBA/NHL/EPL/MLS use this function as a resilient independent authority.
 
@@ -2209,7 +2215,7 @@ def _highlightly_soccer_schedule(league,date):
         "x-rapidapi-key":read_key(),
         "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/3.0.1"
+        "User-Agent":"SportsBigBoard/3.0.2"
     })
     with urlopen(req,timeout=12) as resp:
         payload=json.loads(resp.read().decode("utf-8"))
@@ -2313,7 +2319,7 @@ def _soccer_diagnostics():
                     "x-rapidapi-key":read_key(),
                     "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
                     "Accept":"application/json",
-                    "User-Agent":"SportsBigBoard/3.0.1"
+                    "User-Agent":"SportsBigBoard/3.0.2"
                 })
                 with urlopen(req,timeout=12) as resp:
                     payload=json.loads(resp.read().decode("utf-8"))
@@ -2745,7 +2751,7 @@ def official_mls_youtube_videos(date, force_refresh=False):
 
 def _generic_rapid_cache_path(league, date, away, home):
     safe=re.sub(r'[^a-z0-9]+','-',f'{league}-{date}-{away}-{home}'.lower()).strip('-')[:140]
-    # v3.0.1 bumps the namespace to flush historical empty/rate-limited results from older builds.
+    # v3.0.2 bumps the namespace to flush historical empty/rate-limited results from older builds.
     return RAPID_CACHE_DIR / f"team_v290_{safe}.json"
 
 def _official_nfl_feed_videos(date, away, home):
@@ -2762,7 +2768,7 @@ def _official_nfl_feed_videos(date, away, home):
         return []
     url=f"https://www.youtube.com/feeds/videos.xml?channel_id={NFL_YOUTUBE_CHANNEL_ID}"
     try:
-        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/3.0.1"})
+        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/3.0.2"})
         with urlopen(req,timeout=9) as resp:
             raw=resp.read()
         root=ET.fromstring(raw)
@@ -2817,7 +2823,7 @@ def _official_nfl_feed_videos(date, away, home):
         }
         out.append(_decorate_recap_tier(row))
 
-    # v3.0.1: the public channel feed proves that a video exists, not that the
+    # v3.0.2: the public channel feed proves that a video exists, not that the
     # owner permits iframe playback. When a YouTube Data API key is available,
     # validate feed candidates before they can outrank team/broadcast search
     # results. This prevents an official-but-non-embeddable NFL upload from
@@ -2951,7 +2957,7 @@ def _youtube_oembed_probe(video_id,timeout=7):
     vid=str(video_id or '').strip()
     if not vid: return None
     url='https://www.youtube.com/oembed?'+urlencode({'url':f'https://www.youtube.com/watch?v={vid}','format':'json'})
-    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.1'})
+    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.2'})
     try:
         with urlopen(req,timeout=timeout) as resp:
             if getattr(resp,'status',200)!=200: return None
@@ -3019,7 +3025,7 @@ def _official_youtube_activity_cache_path(league,date):
 def _official_youtube_day_activity_catalog(league,date,force=False):
     """Return verified uploads from one official league channel around a game day.
 
-    This is the primary v3.0.1 historical YouTube lane. activities.list is cheap
+    This is the primary v3.0.2 historical YouTube lane. activities.list is cheap
     and independent of the separate search.list daily bucket. We fetch the official
     channel once per league/date, then batch videos.list all upload ids so every
     game on that slate can reuse the same verified catalog.
@@ -3108,7 +3114,7 @@ def _official_youtube_history_activity_results(league,date,away,home,max_items=1
         item['away']=away; item['home']=home; item['date']=str(date)[:10]
         out.append(_decorate_recap_tier(item))
     out.sort(key=lambda x:(
-        {'green':4,'extended':3,'gold':2,'blue':1}.get(str(x.get('recapTier') or 'blue'),0),
+        HISTORY_TIER_PRIORITY.get(str(x.get('recapTier') or 'blue'),0),
         bool(x.get('overview')),
         -abs(int(x.get('durationSeconds') or 0)-210) if str(x.get('recapTier') or '')=='green' else int(x.get('durationSeconds') or 0)
     ),reverse=True)
@@ -3212,7 +3218,7 @@ def _official_youtube_history_day_search_results(league,date,away,home,max_items
         item['away']=away; item['home']=home; item['date']=str(date)[:10]
         out.append(_decorate_recap_tier(item))
     out.sort(key=lambda x:(
-        {'green':4,'extended':3,'gold':2,'blue':1}.get(str(x.get('recapTier') or 'blue'),0),
+        HISTORY_TIER_PRIORITY.get(str(x.get('recapTier') or 'blue'),0),
         bool(x.get('overview')),
         -abs(int(x.get('durationSeconds') or 0)-210) if str(x.get('recapTier') or '')=='green' else int(x.get('durationSeconds') or 0)
     ),reverse=True)
@@ -3287,7 +3293,7 @@ def _official_youtube_history_api_results(league,date,away,home,max_items=18):
         out.append(annotate_media_tier(row))
     out.sort(key=lambda x:(
         bool(x.get('verifiedPlayable')),
-        {'green':4,'extended':3,'gold':2,'blue':1}.get(str(x.get('recapTier') or 'blue'),0),
+        HISTORY_TIER_PRIORITY.get(str(x.get('recapTier') or 'blue'),0),
         bool(x.get('overview')),
         -abs(int(x.get('durationSeconds') or 0)-210) if str(x.get('recapTier') or '')=='green' else int(x.get('durationSeconds') or 0)
     ),reverse=True)
@@ -3427,7 +3433,7 @@ def _search_engine_youtube_links(query,max_results=18):
     # normal search result page on a phone connection.
     try:
         url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss','count':max(10,min(30,max_results*2))})
-        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.1','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
+        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.2','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
         with urlopen(req,timeout=9) as resp:
             blob=resp.read(1_500_000)
         root=ET.fromstring(blob)
@@ -3707,14 +3713,14 @@ def generic_rapid_team_videos(league, date, away, home, event_id="", force_refre
     prepared.sort(key=lambda x:(
         bool(x.get('verifiedPlayable')),
         bool(x.get('mediaUrl')) or bool(x.get('embedValidated')),
-        {'green':4,'extended':3,'gold':2,'blue':1}.get(str(x.get('recapTier') or 'blue'),0),
+        HISTORY_TIER_PRIORITY.get(str(x.get('recapTier') or 'blue'),0),
         bool(x.get('overview')),
         int(x.get('importance') or 0),
         -abs(int(x.get('durationSeconds') or 0)-210) if str(x.get('recapTier'))=='green' else int(x.get('durationSeconds') or 0)
     ),reverse=True)
     dedup=[]; seen=set(); tier_kept=set()
     # First guarantee one representative of every discovered tier.
-    for wanted in ('green','extended','gold','blue'):
+    for wanted in HISTORY_TIER_ORDER:
         for row in prepared:
             if str(row.get('recapTier') or 'blue')!=wanted: continue
             key_id=str(row.get('youtubeId') or row.get('mediaUrl') or row.get('externalUrl') or row.get('id') or '')
@@ -3801,7 +3807,7 @@ def normalized_rapid_highlights(date, force_refresh=False, force_clips=False):
     return unique
 
 def fetch_json(url, timeout=15):
-    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/3.0.1"})
+    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/3.0.2"})
     with urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
@@ -4335,7 +4341,7 @@ def _football_day_fallback(date, sport_key, timezone_value=""):
     req=Request(url,headers={
         "x-rapidapi-key":key,
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/3.0.1"
+        "User-Agent":"SportsBigBoard/3.0.2"
     })
     with urlopen(req,timeout=15) as resp:
         data=json.loads(resp.read().decode("utf-8"))
@@ -4472,7 +4478,7 @@ def _openai_program_rank(mode,candidates,favorites=None,local_date=''):
 # PlaybackController remains the sole authority that can make media active.
 MEDIA_FILE_CACHE_DIR = CACHE_DIR / "media-v2529"
 MEDIA_FILE_CACHE_DIR.mkdir(parents=True, exist_ok=True)
-# v3.0.1: four megabytes was not enough runway for some NFL/ESPN MP4s on
+# v3.0.2: four megabytes was not enough runway for some NFL/ESPN MP4s on
 # mobile. Stage a real 16 MB startup window so playback can run locally while
 # the remainder/full file is fetched in the background.
 MEDIA_FILE_CACHE_HEAD_BYTES = int(os.environ.get("SBB_MEDIA_HEAD_BYTES", str(16*1024*1024)))
@@ -4482,7 +4488,7 @@ MEDIA_FILE_CACHE_MAX_BYTES = int(os.environ.get("SBB_MEDIA_CACHE_MAX_BYTES", str
 MEDIA_FILE_CACHE_TTL = int(os.environ.get("SBB_MEDIA_CACHE_TTL", str(3*24*3600)))
 MEDIA_FILE_CACHE_LOCK = threading.RLock()
 MEDIA_WORK_SCHEDULER = MediaWorkScheduler(workers=4, name="sbb-media-work")
-# v3.0.1: Game Center network work gets its own pool so video/media prewarm can
+# v3.0.2: Game Center network work gets its own pool so video/media prewarm can
 # never starve score/stat preparation. Foreground playback remains outside both.
 GAME_CENTER_WORK_SCHEDULER = MediaWorkScheduler(workers=8, name="sbb-game-center-work")
 MEDIA_FILE_CACHE_JOBS = {}
@@ -4554,7 +4560,7 @@ def _media_request_headers(range_value=None,media_url=""):
     host=(urlparse(str(media_url or "")).hostname or "").lower()
     referer="https://www.espn.com/" if ("espn" in host or "akamai" in host) else ("https://www.nfl.com/" if "nfl" in host else "https://www.mlb.com/")
     headers={
-        "User-Agent":"Mozilla/5.0 SportsBigBoard/3.0.1",
+        "User-Agent":"Mozilla/5.0 SportsBigBoard/3.0.2",
         "Accept":"video/mp4,video/*;q=0.9,*/*;q=0.8",
         "Referer":referer
     }
@@ -4940,7 +4946,7 @@ def _highlightly_game_center(competition,match_id):
 def _highlightly_provider_key(event_id):
     text=str(event_id or "")
     return text[3:] if text.startswith("hl-") else text
-# v3.0.1 Game Center repository ---------------------------------------------
+# v3.0.2 Game Center repository ---------------------------------------------
 # Normalized Game Centers are persistent application data. SQLite is the
 # authoritative local repository; browser clicks normally read localhost only.
 GAME_CENTER_FETCH_LOCKS = {}
@@ -5483,7 +5489,9 @@ def _history_event_media_no_quota(league,date,row):
     try:
         items.extend(_espn_search_video_results(league,away_name,home_name,max_items=8))
     except Exception: pass
-    if league=='NFL' and not any(x.get('verifiedPlayable') and (x.get('mediaUrl') or x.get('youtubeId')) for x in items):
+    if league=='NFL':
+        # Historical cataloging is exhaustive, not first-playable-wins. Team-site
+        # media may contain a better package than an ESPN clip already found.
         try: items.extend(_nfl_team_site_video_results(date,away_name,home_name,max_items=6))
         except Exception: pass
     out=[]; seen=set()
@@ -5556,7 +5564,7 @@ def _history_validate_native_asset(item,timeout=6):
     """Positively probe one direct historical media URL before advertising green."""
     row=dict(item or {}); url=str(row.get('mediaUrl') or '').strip()
     if not url: return row
-    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.1','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
+    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/3.0.2','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
     if 'espn' in url.lower(): headers['Referer']='https://www.espn.com/'
     try:
         req=Request(url,headers=headers)
@@ -5617,9 +5625,34 @@ def _history_event_needs_native_refresh(state,row,max_age_seconds=5.5*60*60):
     return bool(native and not durable)
 
 
+def _history_playable_tiers(items):
+    tiers=[]
+    for item in items or []:
+        tier=str((item or {}).get('recapTier') or 'blue')
+        if tier not in HISTORY_TIER_PRIORITY: tier='blue'
+        if tier not in tiers: tiers.append(tier)
+    tiers.sort(key=lambda x:HISTORY_TIER_PRIORITY.get(x,0),reverse=True)
+    return tiers
+
+
+def _history_discovery_details(record):
+    return dict((record or {}).get('discovery') or {})
+
+
+def _history_catalog_complete(record):
+    details=_history_discovery_details(record)
+    return bool(int(details.get('discoveryVersion') or 0)>=HISTORY_DISCOVERY_VERSION and details.get('catalogComplete') is True)
+
+
+def _history_free_lanes_complete(record):
+    details=_history_discovery_details(record)
+    return bool(int(details.get('discoveryVersion') or 0)>=HISTORY_DISCOVERY_VERSION and details.get('freeLaneComplete') is True)
+
+
 def _history_inventory(date):
     day=HISTORY_REPOSITORY.get_day(date); leagues={}
     total_games=completed=media_items=playable_media_items=candidate_media=archived_only_items=playable_games=0
+    background_complete_games=catalog_complete_games=0
     tier_counts={'green':0,'extended':0,'gold':0,'blue':0}; now=time.time()
     for league in HISTORY_LEAGUES:
         state=(day.get('leagues') or {}).get(league) or {}
@@ -5628,34 +5661,48 @@ def _history_inventory(date):
         playable=[x for x in media if x.get('verifiedPlayable') and x.get('runtimeCatalogState')!='FAILED' and (x.get('youtubeId') or x.get('mediaUrl'))]
         candidates=[x for x in media if not x.get('verifiedPlayable') and str(x.get('validationState') or '').upper() in ('CANDIDATE','EXTERNAL')]
         archived_only=[x for x in media if x not in playable]
-        covered=0; searched=0; complete_now=True; event_states={}; event_needs_retry=False
+        covered=0; searched=0; background_done=0; catalog_done=0; event_states={}; event_needs_retry=False; event_needs_upgrade=False
         for row in finals:
             event_id=_history_row_event_id(row)
             if any(_history_media_matches_row(item,row) for item in playable): covered+=1
             record=HISTORY_REPOSITORY.get_event(date,league,event_id) if event_id else None
-            if record and float(record.get('lastDiscoveryAt') or 0)>0: searched+=1
+            details=_history_discovery_details(record)
+            version_ok=int(details.get('discoveryVersion') or 0)>=HISTORY_DISCOVERY_VERSION
+            if record and float(record.get('lastDiscoveryAt') or 0)>0 and version_ok: searched+=1
             ds=str((record or {}).get('discoveryState') or 'UNKNOWN')
             if event_id: event_states[event_id]=ds
+            free_complete=_history_free_lanes_complete(record)
+            catalog_complete=_history_catalog_complete(record)
+            if free_complete: background_done+=1
+            if catalog_complete: catalog_done+=1
             retry_at=float((record or {}).get('nextRetryAt') or 0)
-            terminal_now=(ds=='VERIFIED') or (ds=='SEARCHED_EMPTY' and retry_at>now)
-            if not terminal_now: complete_now=False
-            if ds!='VERIFIED' and (not retry_at or retry_at<=now): event_needs_retry=True
+            native_refresh=_history_event_needs_native_refresh(state,row)
+            retry_due=bool(record and retry_at and retry_at<=now and ds in ('VERIFIED_PARTIAL','SEARCHED_EMPTY','CANDIDATE_ONLY','DEGRADED_PROVIDER'))
+            if native_refresh or retry_due: event_needs_retry=True
+            if not catalog_complete: event_needs_upgrade=True
         lt={'green':0,'extended':0,'gold':0,'blue':0}
         for item in playable:
             tier=str(item.get('recapTier') or 'blue'); tier=tier if tier in lt else 'blue'; lt[tier]+=1; tier_counts[tier]+=1
         discovery=state.get('discovery') or {}; discovery_version=int(discovery.get('discoveryVersion') or 0)
-        native_refresh=any(_history_event_needs_native_refresh(state,row) for row in finals)
         durable_games=sum(1 for row in finals if any(x.get('verifiedPlayable') and x.get('runtimeCatalogState')!='FAILED' and x.get('youtubeId') and _history_media_matches_row(x,row) for x in media))
         leagues[league]={
             'games':len(scores),'completed':len(finals),'mediaItems':len(media),'playableMedia':len(playable),'candidateMedia':len(candidates),
             'archivedOnlyMedia':len(archived_only),'playableGames':covered,'durablePlayableGames':durable_games,
-            'needsRefresh':bool(native_refresh or event_needs_retry),'discoveryVersion':discovery_version,
-            'searchedGames':searched,'deepComplete':bool(complete_now) if finals else True,'eventStates':event_states,'tiers':lt,
+            'needsRefresh':bool(event_needs_retry),'needsUpgrade':bool(event_needs_upgrade),'discoveryVersion':discovery_version,
+            'searchedGames':searched,'backgroundCompleteGames':background_done,'catalogCompleteGames':catalog_done,
+            'deepComplete':bool(background_done>=len(finals)) if finals else True,
+            'catalogComplete':bool(catalog_done>=len(finals)) if finals else True,
+            'eventStates':event_states,'tiers':lt,
             'scoresSavedAt':state.get('scoresSavedAt') or 0,'mediaSavedAt':state.get('mediaSavedAt') or 0,
         }
         total_games+=len(scores); completed+=len(finals); media_items+=len(media); playable_media_items+=len(playable); candidate_media+=len(candidates); archived_only_items+=len(archived_only); playable_games+=covered
+        background_complete_games+=background_done; catalog_complete_games+=catalog_done
     return {'date':date,'games':total_games,'completedGames':completed,'mediaItems':media_items,'playableMedia':playable_media_items,'candidateMedia':candidate_media,
-            'archivedOnlyMedia':archived_only_items,'playableGames':playable_games,'needsRefresh':any(bool(x.get('needsRefresh')) for x in leagues.values()),'tiers':tier_counts,'leagues':leagues}
+            'archivedOnlyMedia':archived_only_items,'playableGames':playable_games,
+            'backgroundCompleteGames':background_complete_games,'catalogCompleteGames':catalog_complete_games,
+            'catalogComplete':bool(catalog_complete_games>=completed) if completed else True,
+            'needsUpgrade':bool(catalog_complete_games<completed),'needsRefresh':any(bool(x.get('needsRefresh')) for x in leagues.values()),
+            'tiers':tier_counts,'leagues':leagues}
 
 def _history_discovery_state(date):
     with HISTORY_DISCOVERY_LOCK:
@@ -5753,7 +5800,7 @@ def _history_playback_plan(date,league,event_id):
     media=HISTORY_REPOSITORY.event_media(date,league,event_id,include_failed=True)
     playable=[x for x in media if isinstance(x,dict) and x.get('verifiedPlayable') and x.get('runtimeCatalogState')!='FAILED' and (x.get('youtubeId') or x.get('mediaUrl'))]
     playable=[annotate_media_tier(x) for x in playable]
-    playable.sort(key=lambda x:({'green':4,'extended':3,'gold':2,'blue':1}.get(str(x.get('recapTier') or 'blue'),0),bool(x.get('overview')),int(x.get('importance') or 0)),reverse=True)
+    playable.sort(key=lambda x:(HISTORY_TIER_PRIORITY.get(str(x.get('recapTier') or 'blue'),0),bool(x.get('overview')),int(x.get('importance') or 0)),reverse=True)
     return {'date':str(date)[:10],'league':str(league).upper(),'eventId':str(event_id),'event':row or (record or {}).get('event') or {},'discovery':record or {},'media':media,'playable':playable,'primary':playable[0] if playable else None}
 
 
@@ -5769,9 +5816,12 @@ def _history_event_catalog_state(date,league,row):
 def _history_discover_event(date,league,row,force=False,allow_search_rescue=True):
     """Discover and persist the complete media manifest for one final event.
 
-    This is the single owner of historical media discovery in v3.0.1. The browser
-    never calls league-specific search providers. A result is only PLAYABLE after a
-    provider-specific positive validation; metadata candidates stay catalog-only.
+    v3.0.2 separates PLAYABLE from DISCOVERY COMPLETE. A blue reel (or any other
+    playable tier) makes the game immediately usable, but it never short-circuits
+    the remaining source lanes. Full foreground discovery inventories every
+    applicable lane and keeps every Gold/Green/Purple/Blue package it can verify.
+    Background discovery exhausts all no-search-quota lanes and records the event
+    as VERIFIED_PARTIAL until the shared foreground search lane has also run.
     """
     league=str(league or '').upper(); date=str(date or '')[:10]; row=dict(row or {})
     event_id=_history_row_event_id(row); away=_history_team_name(row,'away'); home=_history_team_name(row,'home')
@@ -5779,11 +5829,21 @@ def _history_discover_event(date,league,row,force=False,allow_search_rescue=True
         return {'eventId':'','state':'ERROR','media':[],'playable':[],'errors':['event id unavailable']}
     HISTORY_REPOSITORY.upsert_event(date,league,event_id,row)
     previous,existing,existing_playable,_=_history_event_catalog_state(date,league,row)
-    now=time.time()
-    if not force and existing_playable and str(previous.get('discoveryState') or '')=='VERIFIED' and not _history_event_needs_native_refresh(HISTORY_REPOSITORY.get_league(date,league),row):
-        return {'eventId':event_id,'state':'VERIFIED','media':existing,'playable':existing_playable,'errors':[],'cached':True}
-    if not force and previous and float(previous.get('nextRetryAt') or 0)>now and str(previous.get('discoveryState') or '') in ('SEARCHED_EMPTY','CANDIDATE_ONLY','DEGRADED_PROVIDER'):
-        return {'eventId':event_id,'state':previous.get('discoveryState'),'media':existing,'playable':existing_playable,'errors':[],'cached':True}
+    now=time.time(); previous_details=_history_discovery_details(previous)
+    native_refresh=_history_event_needs_native_refresh(HISTORY_REPOSITORY.get_league(date,league),row)
+    if not force and _history_catalog_complete(previous) and existing_playable and not native_refresh:
+        return {'eventId':event_id,'state':'VERIFIED','media':existing,'playable':existing_playable,'errors':[],'cached':True,'catalogComplete':True}
+    retry_at=float(previous.get('nextRetryAt') or 0) if previous else 0
+    previous_state=str(previous.get('discoveryState') or '') if previous else ''
+    # Idle/background passes respect their retry window after the free lanes have
+    # been exhausted. An interactive foreground pass may immediately promote that
+    # same event through the shared search-rescue lane instead of waiting hours.
+    if not force and not allow_search_rescue and _history_free_lanes_complete(previous) and retry_at>now and not native_refresh:
+        return {'eventId':event_id,'state':previous_state or 'VERIFIED_PARTIAL','media':existing,'playable':existing_playable,'errors':[],'cached':True,'catalogComplete':False}
+    if not force and retry_at>now and previous_state=='VERIFIED_PARTIAL' and allow_search_rescue and previous_details.get('searchRescueAttempted') and not native_refresh:
+        return {'eventId':event_id,'state':previous_state,'media':existing,'playable':existing_playable,'errors':[],'cached':True,'catalogComplete':False}
+    if not force and retry_at>now and previous_state in ('SEARCHED_EMPTY','CANDIDATE_ONLY','DEGRADED_PROVIDER') and (not allow_search_rescue or previous_details.get('searchRescueAttempted')):
+        return {'eventId':event_id,'state':previous_state,'media':existing,'playable':existing_playable,'errors':[],'cached':True,'catalogComplete':bool(previous_details.get('catalogComplete'))}
 
     found=[]; errors=[]; lanes={}
     def lane(name,fn):
@@ -5802,6 +5862,9 @@ def _history_discover_event(date,league,row,force=False,allow_search_rescue=True
             errors.append(f'{name}: {type(exc).__name__}: {exc}')
             return []
 
+    # Every lane gets a chance. Do not stop because a lower-priority playable asset
+    # was found first; later lanes may contain Gold commentary, a Green quick recap,
+    # or a Purple extended package and all of them belong in the persistent catalog.
     lane('official-native',lambda:_history_event_media_no_quota(league,date,row))
     if league=='MLB':
         def mlb_official():
@@ -5811,20 +5874,14 @@ def _history_discover_event(date,league,row,force=False,allow_search_rescue=True
             return [x for x in all_rows if _history_media_matches_row(x,row)]
         lane('mlb-official',mlb_official)
     else:
-        # Official-channel activity indexing is the default history lane. It is
-        # independent of search.list and its result is already videos.list-validated.
         lane('youtube-official-activity',lambda:_official_youtube_history_activity_results(league,date,away,home,max_items=24,force=force))
-        # Foreground history may spend at most ONE search.list request per league/day.
-        # The resulting official-channel day catalog is shared by every game. This
-        # replaces the old one-search-per-game rescue that exhausted the 100-call
-        # search bucket before Christmas/NBA/NFL discovery could finish.
-        if allow_search_rescue and not any(x.get('verifiedPlayable') and (x.get('youtubeId') or x.get('mediaUrl')) for x in found):
+        if allow_search_rescue:
+            # One shared search.list catalog per league/day; the provider function
+            # owns caching/budget so every event can consume the same day result.
             lane('youtube-official-day-search',lambda:_official_youtube_history_day_search_results(league,date,away,home,max_items=24,force=force))
-        if not any(x.get('verifiedPlayable') and (x.get('youtubeId') or x.get('mediaUrl')) for x in found):
-            lane('youtube-public-page',lambda:_historical_youtube_web_results(league,date,away,home,max_items=16))
-        if not any(x.get('verifiedPlayable') and (x.get('youtubeId') or x.get('mediaUrl')) for x in found):
-            lane('youtube-public-index',lambda:_historical_search_engine_youtube_results(league,date,away,home,max_items=16))
-        if league=='NFL' and not any(x.get('verifiedPlayable') and (x.get('youtubeId') or x.get('mediaUrl')) for x in found):
+        lane('youtube-public-page',lambda:_historical_youtube_web_results(league,date,away,home,max_items=16))
+        lane('youtube-public-index',lambda:_historical_search_engine_youtube_results(league,date,away,home,max_items=16))
+        if league=='NFL':
             lane('nfl-feed',lambda:_official_nfl_feed_videos(date,away,home))
 
     decorated=_history_decorate_event_media(league,date,row,found)
@@ -5832,27 +5889,43 @@ def _history_discover_event(date,league,row,force=False,allow_search_rescue=True
         HISTORY_REPOSITORY.put_media(date,league,decorated,merge=True)
         HISTORY_REPOSITORY.put_event_media(date,league,event_id,decorated)
     record,media,playable,candidates=_history_event_catalog_state(date,league,row)
+    playable=[annotate_media_tier(x) for x in playable]
+    tiers=_history_playable_tiers(playable)
+    tier_counts={tier:sum(1 for x in playable if str(x.get('recapTier') or 'blue')==tier) for tier in HISTORY_TIER_ORDER}
+    free_lane_names=['official-native','mlb-official'] if league=='MLB' else ['official-native','youtube-official-activity','youtube-public-page','youtube-public-index']+(['nfl-feed'] if league=='NFL' else [])
+    free_lane_complete=all(name in lanes and lanes[name].get('ok') for name in free_lane_names)
+    search_attempted='youtube-official-day-search' in lanes
+    search_complete=bool(lanes.get('youtube-official-day-search',{}).get('ok')) if league!='MLB' else True
+    catalog_complete=bool(free_lane_complete and (league=='MLB' or (search_attempted and search_complete)))
     if playable:
-        state='VERIFIED'; retry_at=0; success=True
+        state='VERIFIED' if catalog_complete else 'VERIFIED_PARTIAL'
+        # A partial playable event remains instantly usable but is eligible for a
+        # future upgrade pass. Cloud background gets a long quiet retry window;
+        # foreground provider degradation retries sooner.
+        retry_at=0 if catalog_complete else now+(20*60 if errors else 6*60*60)
+        success=True
     elif candidates:
-        state='CANDIDATE_ONLY'; retry_at=now+20*60; success=False
+        state='CANDIDATE_ONLY'; retry_at=now+(20*60 if errors else 60*60); success=False
     elif errors:
         state='DEGRADED_PROVIDER'; retry_at=now+10*60; success=False
     else:
-        state='SEARCHED_EMPTY'; retry_at=now+12*60*60; success=False
+        state='SEARCHED_EMPTY'; retry_at=now+(12*60*60 if catalog_complete else 6*60*60); success=False
     details={
         'discoveryVersion':HISTORY_DISCOVERY_VERSION,'lanes':lanes,'mediaItems':len(media),'playableItems':len(playable),
         'candidateItems':len(candidates),'away':away,'home':home,'lastSearchAt':now,
+        'tiersFound':tiers,'tierCounts':tier_counts,'bestTier':tiers[0] if tiers else '',
+        'freeLaneComplete':bool(free_lane_complete),'searchRescueAttempted':bool(search_attempted),
+        'catalogComplete':bool(catalog_complete),'discoveryExhausted':bool(catalog_complete),
     }
     HISTORY_REPOSITORY.set_event_discovery(date,league,event_id,state,details,error=' | '.join(errors[-6:]),retry_at=retry_at,success=success)
-    # Legacy league-day progress remains for old UI/tests, but event state is now
-    # authoritative and transient failures are never recorded as permanent success.
+    # Legacy league-day progress remains for older diagnostics. "Deep" now means
+    # the free background lanes were exhausted; catalogComplete separately records
+    # whether the foreground shared search lane has also been inventoried.
     progress={'lastSearchAt':now,'discoveryVersion':HISTORY_DISCOVERY_VERSION}
     if lanes.get('official-native',{}).get('ok'): progress['noQuotaSearchedEventIds']=[event_id]
-    if state in ('VERIFIED','SEARCHED_EMPTY'): progress['deepSearchedEventIds']=[event_id]
+    if free_lane_complete: progress['deepSearchedEventIds']=[event_id]
     HISTORY_REPOSITORY.put_discovery(date,league,progress,merge=True)
-    return {'eventId':event_id,'state':state,'media':media,'playable':playable,'errors':errors,'lanes':lanes,'cached':False}
-
+    return {'eventId':event_id,'state':state,'media':media,'playable':playable,'errors':errors,'lanes':lanes,'cached':False,'catalogComplete':catalog_complete,'tiersFound':tiers}
 
 def _history_discover_day(date,deep=True,only_one_game=False,force=False):
     """Build one historical day by invoking the canonical per-event catalog service."""
@@ -5861,23 +5934,27 @@ def _history_discover_day(date,deep=True,only_one_game=False,force=False):
     for league in HISTORY_LEAGUES:
         for row in score_rows.get(league) or []:
             if _history_row_completed(row): tasks.append((league,row))
-    # Put missing/degraded events first; already verified games do not steal the
-    # one-game idle backfill slot from a game that actually needs work.
+    # Missing/degraded/partial events are upgraded before already complete events.
     def task_priority(pair):
         league,row=pair; event_id=_history_row_event_id(row); record=HISTORY_REPOSITORY.get_event(date,league,event_id) if event_id else None
         state=str((record or {}).get('discoveryState') or 'UNKNOWN')
-        return {'UNKNOWN':0,'DEGRADED_PROVIDER':1,'CANDIDATE_ONLY':2,'SEARCHED_EMPTY':3,'VERIFIED':9}.get(state,4)
+        return {'UNKNOWN':0,'DEGRADED_PROVIDER':1,'CANDIDATE_ONLY':2,'SEARCHED_EMPTY':3,'VERIFIED_PARTIAL':4,'VERIFIED':9}.get(state,5)
     tasks.sort(key=task_priority)
     _history_set_discovery_state(date,status='SEARCHING',running=True,totalGames=len(tasks),searchedGames=0,currentLeague='',currentGame='',lastError='',startedAt=start,finishedAt=0)
-    searched=0; attempts=0
+    searched=0; attempts=0; now=time.time()
     for league,row in tasks:
         event_id=_history_row_event_id(row); away=_history_team_name(row,'away'); home=_history_team_name(row,'home')
         record=HISTORY_REPOSITORY.get_event(date,league,event_id) if event_id else None
-        if only_one_game and record and str(record.get('discoveryState') or '')=='VERIFIED' and not _history_event_needs_native_refresh(HISTORY_REPOSITORY.get_league(date,league),row):
-            continue
+        if only_one_game and record:
+            retry_at=float(record.get('nextRetryAt') or 0)
+            free_done=_history_free_lanes_complete(record)
+            if free_done and retry_at>now and not _history_event_needs_native_refresh(HISTORY_REPOSITORY.get_league(date,league),row):
+                continue
         _history_set_discovery_state(date,searchedGames=searched,currentLeague=league,currentGame=f'{away} @ {home}'.strip())
         result=_history_discover_event(date,league,row,force=force,allow_search_rescue=bool(deep and not only_one_game))
-        attempts+=1; searched+=1
+        if not result.get('cached'):
+            attempts+=1
+        searched+=1
         errors.extend(result.get('errors') or [])
         _history_set_discovery_state(date,searchedGames=searched,currentLeague=league,currentGame=f'{away} @ {home}'.strip())
         if only_one_game and attempts>=1: break
@@ -5887,7 +5964,7 @@ def _history_discover_day(date,deep=True,only_one_game=False,force=False):
         info=(inv.get('leagues') or {}).get(league) or {}
         HISTORY_REPOSITORY.put_discovery(date,league,{
             'discoveryVersion':HISTORY_DISCOVERY_VERSION,'deepComplete':bool(info.get('deepComplete')),
-            'knownFinalEvents':int(info.get('completed') or 0),'lastDiscoveryAt':time.time(),
+            'catalogComplete':bool(info.get('catalogComplete')),'knownFinalEvents':int(info.get('completed') or 0),'lastDiscoveryAt':time.time(),
         },merge=True)
     final_status='READY' if inv.get('playableGames')>=inv.get('completedGames') and not inv.get('needsRefresh') else ('DEGRADED' if errors or inv.get('candidateMedia') else 'READY')
     _history_set_discovery_state(date,status=final_status,running=False,searchedGames=searched,currentLeague='',currentGame='',lastError=' | '.join(errors[-8:])[:900],finishedAt=time.time())
@@ -5906,7 +5983,7 @@ def trigger_history_discovery(date,deep=True,force=False):
         current=HISTORY_DISCOVERY_STATE.get(date) or {}
         if current.get('running'): return False
     inv=_history_inventory(date)
-    if not force and inv.get('completedGames') and not inv.get('needsRefresh') and all((inv.get('leagues') or {}).get(lg,{}).get('deepComplete') for lg in HISTORY_LEAGUES):
+    if not force and inv.get('completedGames') and not inv.get('needsRefresh') and bool(inv.get('catalogComplete')):
         _history_set_discovery_state(date,status='READY',running=False,totalGames=inv.get('completedGames') or 0,searchedGames=inv.get('completedGames') or 0,finishedAt=time.time())
         return False
     t=threading.Thread(target=_history_discovery_worker,args=(date,deep,force),daemon=True,name=f'sbb-history-{date}')
@@ -5926,8 +6003,8 @@ def _history_deep_backfill_one_game(date):
     result=_history_discover_day(date,deep=True,only_one_game=True)
     after=result.get('inventory') or _history_inventory(date)
     # Count an idle deep step only when durable deep-search progress increased.
-    before_n=sum(int((x or {}).get('searchedGames') or 0) for x in (before.get('leagues') or {}).values())
-    after_n=sum(int((x or {}).get('searchedGames') or 0) for x in (after.get('leagues') or {}).values())
+    before_n=sum(int((x or {}).get('backgroundCompleteGames') or 0) for x in (before.get('leagues') or {}).values())
+    after_n=sum(int((x or {}).get('backgroundCompleteGames') or 0) for x in (after.get('leagues') or {}).values())
     return {'searched':max(0,after_n-before_n),'media':max(0,int(after.get('mediaItems') or 0)-before_media),'state':result}
 
 
@@ -5958,7 +6035,7 @@ def _history_backfill_day(date):
                 mlb_media=[annotate_media_tier(x) for x in (normalized_stats_highlights(date) or []) if isinstance(x,dict)]
                 HISTORY_REPOSITORY.put_media(date,'MLB',mlb_media,merge=True); media_count+=len(mlb_media)
             except Exception as exc: errors.append(f'MLB media: {type(exc).__name__}: {exc}')
-        # v3.0.1 background history uses official/native sources plus the official
+        # v3.0.2 background history uses official/native sources plus the official
         # channel activities catalog. It can therefore build real NBA/NFL/NHL/MLS/EPL
         # playable manifests while idle without spending a single search.list call.
         for lg in ('NFL','NBA','NHL','EPL','MLS'):
@@ -5978,9 +6055,11 @@ def _history_backfill_day(date):
                 if event_id:
                     searched_ids.append(event_id)
                     HISTORY_REPOSITORY.upsert_event(date,lg,event_id,row)
-                    HISTORY_REPOSITORY.set_event_discovery(date,lg,event_id,'VERIFIED' if playable else 'CANDIDATE_ONLY',
-                        {'discoveryVersion':HISTORY_DISCOVERY_VERSION,'lanes':{'background-official':{'ok':True}},'playableItems':len(playable),'mediaItems':len(decorated)},
-                        retry_at=0 if playable else time.time()+30*60,success=bool(playable))
+                    HISTORY_REPOSITORY.set_event_discovery(date,lg,event_id,'VERIFIED_PARTIAL' if playable else 'CANDIDATE_ONLY',
+                        {'discoveryVersion':HISTORY_DISCOVERY_VERSION,'lanes':{'background-official':{'ok':True}},'playableItems':len(playable),'mediaItems':len(decorated),
+                         'tiersFound':_history_playable_tiers(playable),'bestTier':(_history_playable_tiers(playable)[0] if playable else ''),
+                         'freeLaneComplete':False,'searchRescueAttempted':False,'catalogComplete':False,'discoveryExhausted':False},
+                        retry_at=time.time()+30*60,success=bool(playable))
             HISTORY_REPOSITORY.put_media(date,lg,discovered,merge=True); media_count+=len(discovered)
             HISTORY_REPOSITORY.put_discovery(date,lg,{'discoveryVersion':HISTORY_DISCOVERY_VERSION,'noQuotaSearchedEventIds':searched_ids,'noQuotaComplete':True,'lastDiscoveryAt':time.time()},merge=True)
     return {'date':date,'scores':sum(len(v) for v in score_rows.values()),'media':media_count,'errors':errors}
@@ -6359,7 +6438,7 @@ class Handler(SimpleHTTPRequestHandler):
                 "persistentState": bool(STATE_DIR),
                 "rateLimit": {"remaining": RATE_LIMIT_STATE.get("remaining", ""), "limit": RATE_LIMIT_STATE.get("limit", ""), "limited": RATE_LIMIT_STATE.get("limited", False)},
                 "highlightlyRateLimited": RATE_LIMIT_STATE["limited"],
-                "phase": "V3.0.1 PROVIDER-INDEPENDENT MEDIA + GAME CENTER CONTRACT",
+                "phase": "V3.0.2 PROVIDER-INDEPENDENT MEDIA + GAME CENTER CONTRACT",
                 "highlightlyConfigured": bool(key),
                 "youtubeCooldownSeconds":max((row.get("cooldownSeconds",0) for row in YOUTUBE_GATEWAY.status().values()), default=0),
                 "youtubeGateway":YOUTUBE_GATEWAY.status(),
@@ -6668,7 +6747,7 @@ class Handler(SimpleHTTPRequestHandler):
                 flat.setdefault("leagueName",cfg["league"])
                 flat.setdefault("countryCode",cfg.get("countryCode",""))
             url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/3.0.1"})
+            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/3.0.2"})
             cache_name=f"{sport_key}-{endpoint}-v2514" if sport_key in ("epl","mls") else f"{sport_key}-{endpoint}"
 
             # v1.9.1 quota control: proactively reuse a fresh server-side snapshot.
@@ -6802,7 +6881,7 @@ class Handler(SimpleHTTPRequestHandler):
             req = Request(url, headers={
                 "x-rapidapi-key": key,
                 "Accept": "application/json",
-                "User-Agent": "SportsBigBoard/3.0.1"
+                "User-Agent": "SportsBigBoard/3.0.2"
             })
             try:
                 with urlopen(req, timeout=15) as resp:
@@ -6842,7 +6921,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT)
-    print("\nSports Big Board v3.0.1 — cloud-stage historical catalog + persistent always-on backend")
+    print("\nSports Big Board v3.0.2 — cloud-stage historical catalog + persistent always-on backend")
     print(f"Bind: {BIND_HOST}:{PORT} • deployment: {DEPLOYMENT_MODE} • state: {STATE_DIR}")
     if not CLOUD_MODE: print(f"Open: http://localhost:{PORT}")
     print("Highlightly key:", "configured" if read_key() else "NOT CONFIGURED")

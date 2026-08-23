@@ -8,7 +8,7 @@ from contextlib import closing
 class HistoryRepository:
     """Persistent historical score/event/media catalog.
 
-    v3.0.1 keeps the legacy date/league JSON rows for fast score hydration while
+    v3.0.2 keeps the legacy date/league JSON rows for fast score hydration while
     adding normalized event and asset tables. Media truth now belongs to one
     canonical event + asset identity, which lets runtime playback successes and
     failures survive browser reloads instead of being rediscovered as green.

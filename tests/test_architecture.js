@@ -5,7 +5,7 @@ global.window=global;
 for(const f of ['core-model.js','architecture/score-date-store.js','architecture/event-identity.js','architecture/media-classifier.js','architecture/playback-transports.js','architecture/provider-health.js','architecture/sport-media-policy.js','architecture/media-manifest.js','architecture/media-resolver.js','architecture/game-center-policy.js','architecture/selected-event-store.js','architecture/media-work-priorities.js','architecture/editorial-packages.js']){
   vm.runInThisContext(fs.readFileSync(path.join(root,f),'utf8'),{filename:f});
 }
-assert.equal(SBB_CORE.version,'3.0.1');
+assert.equal(SBB_CORE.version,'3.0.2');
 assert.deepEqual(SBB_CORE.enabledCompetitions().map(x=>x.id),['MLB','NFL','NBA','NHL','EPL','MLS']);
 assert.equal(SBB_CORE.COMPETITIONS.MLS.enabled,true);
 assert.equal(SBB_MEDIA_WORK.PRIORITY.VISIBLE_SCORE,'VISIBLE_SCORE');
@@ -41,6 +41,14 @@ assert.equal(SBB_MEDIA_CLASSIFIER.tier(extended),'extended');
 assert.equal(SBB_MEDIA_CLASSIFIER.tier(quick),'green');
 assert.equal(SBB_MEDIA_CLASSIFIER.tier(commentary),'gold');
 assert.equal(SBB_MEDIA_CLASSIFIER.tier(clip),'blue');
+const preferenceEvent=SBB_CORE.event({eventId:'pref-1',date:'2026-03-27T02:00:00Z',awayTeam:{name:'Brooklyn Nets'},homeTeam:{name:'Los Angeles Lakers'}},'NBA');
+SBB_MEDIA_MANIFEST.ingest(preferenceEvent,[
+  {...clip,id:'pref-blue',eventId:'pref-1',youtubeId:'pref-blue',verifiedPlayable:true},
+  {...extended,id:'pref-ext',eventId:'pref-1',youtubeId:'pref-ext',verifiedPlayable:true},
+  {...quick,id:'pref-green',eventId:'pref-1',youtubeId:'pref-green',verifiedPlayable:true},
+  {...commentary,id:'pref-gold',eventId:'pref-1',youtubeId:'pref-gold',verifiedPlayable:true}
+]);
+assert.equal(SBB_MEDIA_RESOLVER.resolveBest(preferenceEvent).primary.id,'pref-gold');
 
 let observed=null;
 const unsub=SBB_SELECTED_EVENT.subscribe(x=>observed=x);
@@ -75,7 +83,7 @@ assert.equal(gcNormalized.playerStatSections[0].teamSide,'away');
 assert.equal(gcNormalized.playerStatSections[0].category,'passing');
 console.log('PASS provider-independent media resolver + Game Center policy');
 
-// v3.0.1 Game Center browser handoff: two sequential score-provider aliases
+// v3.0.2 Game Center browser handoff: two sequential score-provider aliases
 // must follow two distinct resolved provider ids. The second selection can never
 // inherit the first game's resolved id/cache entry.
 const gcCalls=[];

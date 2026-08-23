@@ -1,4 +1,4 @@
-# Sports Big Board v3.0.1 Architecture
+# Sports Big Board v3.0.2 Architecture
 
 ## Product model
 
@@ -62,6 +62,16 @@ Changing `browseDate` can fetch and render another day's slate but cannot call P
 `returnToToday()` is the intentional synchronization point. It sets both date contexts to the viewer's local Today, replaces the historical program with a Today-only program, updates selection/Game Center, and tunes playback through PlaybackController. No other date-navigation action performs that full reset.
 
 Past-day score and media snapshots remain resident in the browser session. Final historical Game Centers may remain HOT for 24 hours in browser memory while partial shells retain the short retry TTL; the server's persistent repository remains the WARM authority.
+
+### v3.0.2 historical discovery completion
+
+Historical media uses two independent truths:
+
+`playable = at least one positively validated in-app asset exists`
+
+`catalogComplete = every applicable foreground discovery lane for that event has been attempted/exhausted`
+
+A playable Blue reel therefore cannot terminate discovery. Background discovery may persist `VERIFIED_PARTIAL` after exhausting no-search lanes; foreground history browsing upgrades that event through the shared league/day search lane. The preferred default package order is **Gold → Green → Purple/Extended → Blue**, but all verified alternates remain attached to the canonical event for fallback and user choice.
 
 ### HistoricalEventCatalog
 
@@ -263,23 +273,23 @@ Public YouTube HTML, Bing/DuckDuckGo indexing and oEmbed are discovery/metadata 
 
 The IFrame API remains final runtime authority. Error 101/150 demotes only the exact YouTube asset and triggers same-game fallback/recovery; 153 is treated as client-identification/referrer failure rather than content unavailability. Sports Big Board serves `strict-origin-when-cross-origin` and supplies `origin`/`widget_referrer` to the player. Runtime failures are persisted into `history_media_asset`, preventing stale green rails after reload.
 
-`HISTORY_DISCOVERY_VERSION = 6` and the `team_v290_` rapid cache namespace ensure v2.8.x candidate/empty results are reconsidered without deleting the historical SQLite database.
+`HISTORY_DISCOVERY_VERSION = 7` ensures older v3.0.1 and v2.8.x discovery records are reconsidered under the playable-vs-catalog-complete model without deleting the historical SQLite database.
 
 
-## v3.0.1 success condition
+## v3.0.2 success condition
 
 Adding a league no longer requires teaching PlaybackController how that league works. The integration path is: register the competition, add/enable score inventory, contribute media assets through provider adapters, configure sport media policy, and use the shared Game Center contract. Existing providers may fail independently without collapsing the event inventory or forcing a league-specific playback branch.
 
 A user can select and play a game, fail over among same-game sources, scroll normalized Game Center data while optionally keeping the video visible, switch games rapidly, restart the server and reuse prepared final Game Centers, and configure APIs once per machine — all while PlaybackController remains the sole media activation authority.
 
-## v3.0.1 catalog-to-ribbon reconciliation
+## v3.0.2 catalog-to-ribbon reconciliation
 
-A verified asset is only useful when the browser actually hydrates it. v3.0.1 removes the remaining legacy `history_day.media_saved_at` dependency from browser hydration. `history_media_asset` is authoritative and is always projected into `ScoreDateStore` for the selected historical date. This guarantees that server inventory, ribbon availability, event playback plans, and PlaybackController all consume the same asset truth.
+A verified asset is only useful when the browser actually hydrates it. v3.0.2 removes the remaining legacy `history_day.media_saved_at` dependency from browser hydration. `history_media_asset` is authoritative and is always projected into `ScoreDateStore` for the selected historical date. This guarantees that server inventory, ribbon availability, event playback plans, and PlaybackController all consume the same asset truth.
 
 Historical click flow is now cache-first: `GET /api/history/event/media` -> play if verified -> otherwise `POST /api/history/event/discover` -> rehydrate date -> play. `apiJson()` preserves RequestInit so POST semantics cannot silently degrade to GET.
 
 
-## v3.0.1 Cloud Stage 1 deployment boundary
+## v3.0.2 Cloud Stage 1 deployment boundary
 
 The browser and backend are now independently deployable. `config.js` selects the API origin at runtime and `api-runtime.js` rewrites `/api/*` requests to the configured HTTPS backend. Local mode leaves `apiBase` empty and remains same-origin. GitHub Pages builds inject `SBB_API_BASE_URL` and publish static assets only.
 

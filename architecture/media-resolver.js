@@ -1,4 +1,4 @@
-/* Sports Big Board v3.0.1 — provider-independent EventMediaResolver. */
+/* Sports Big Board v3.0.2 — provider-independent EventMediaResolver. */
 (() => {
   const R=()=>window.SBB_SPORT_MEDIA_POLICY?.REQUEST||{QUICK:'QUICK',EXTENDED:'EXTENDED',COMMENTARY:'COMMENTARY',MOMENTS:'MOMENTS',ANY:'ANY'};
   const classifier=()=>window.SBB_MEDIA_CLASSIFIER;
@@ -43,7 +43,7 @@
     const ranked=internal.map(asset=>({asset,score:rankScore(eventLike,asset,request)})).sort((a,b)=>b.score-a.score);
     let primary=ranked.find(x=>requestMatches(x.asset,request))?.asset||null;
     // Quick is allowed to degrade to the best playable recap rather than no video.
-    if(!primary&&request===R().QUICK)primary=ranked.find(x=>['green','gold','extended'].includes(classifier()?.tier?.(x.asset)))?.asset||null;
+    if(!primary&&request===R().QUICK)primary=ranked.find(x=>['gold','green','extended'].includes(classifier()?.tier?.(x.asset)))?.asset||null;
     if(!primary&&request===R().ANY)primary=ranked[0]?.asset||null;
     const externalRanked=external.map(asset=>({asset,score:rankScore(eventLike,asset,request)})).sort((a,b)=>b.score-a.score);
     const externalPrimary=includeExternalFallback?(externalRanked.find(x=>requestMatches(x.asset,request))?.asset||externalRanked[0]?.asset||null):null;
@@ -52,7 +52,7 @@
   function resolveBest(eventLike,opts={}){
     const REQ=R();
     if(opts.live)return resolve(eventLike,REQ.MOMENTS,opts);
-    for(const req of [REQ.QUICK,REQ.COMMENTARY,REQ.EXTENDED,REQ.MOMENTS]){const r=resolve(eventLike,req,opts);if(r.primary)return r;}
+    for(const req of [REQ.COMMENTARY,REQ.QUICK,REQ.EXTENDED,REQ.MOMENTS]){const r=resolve(eventLike,req,opts);if(r.primary)return r;}
     return resolve(eventLike,REQ.ANY,opts);
   }
   window.SBB_MEDIA_RESOLVER=Object.freeze({version:'1.0',resolve,resolveBest,rankScore,requestMatches});

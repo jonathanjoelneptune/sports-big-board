@@ -1,63 +1,42 @@
-# Sports Big Board v3.0.1
+# Sports Big Board v3.0.2
+
+## v3.0.2 historical media quality + ribbon navigation
+
+This release separates **a game is playable** from **historical discovery is complete**.
+
+- Historical playback preference is now **Gold commentary → Green quick recap → Purple extended → Blue reel**.
+- Finding a Blue/Green asset no longer ends discovery. Every applicable source lane continues so the persistent cloud catalog can retain all verified media types it finds.
+- Background no-search-quota discovery records a playable game as `VERIFIED_PARTIAL` until its free lanes are exhausted. Foreground date browsing can then promote the same event through the shared official-channel search rescue without losing the already-playable fallback.
+- Historical event records now persist `tiersFound`, `bestTier`, `freeLaneComplete`, `searchRescueAttempted`, and `catalogComplete`. `HISTORY_DISCOVERY_VERSION = 7` automatically revisits older v3.0.1 records without deleting the existing database.
+- The historical playback plan and browser resolver use the same Gold/Green/Purple/Blue preference, while every alternate remains in the media manifest for fallback.
+- On desktop, the score ribbon can be browsed with the mouse wheel/trackpad and by click-dragging the ribbon. Manual browsing continues to suppress automatic recentering temporarily.
+- Previous/next date controls are larger full-surface buttons. Hover/focus/press treatment now fills the whole date-arrow control instead of only emphasizing the small glyph.
 
 ## Cloud Stage 1
 
-v3.0.1 adds the first production-style deployment path: a GitHub Pages frontend backed by an always-on Google Compute Engine server and a persistent historical SQLite catalog. The cloud backend owns score/media discovery, Game Center hydration, runtime playback truth, and the 400-day historical backfill. Local Termux/Windows mode remains supported for development and fallback.
+The production path remains the GitHub Pages frontend backed by the always-on Google Compute Engine server and persistent historical SQLite catalog. The cloud backend owns score/media discovery, Game Center hydration, runtime playback truth, and the 400-day historical backfill. Local Termux/Windows mode remains supported for development and fallback.
 
-See **CLOUD STAGE 1.md** for the one-time deployment commands.
+### Normal release workflow
 
-### Normal release workflow (v3.0.1+)
+After the one-time `cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh` setup, a release is just a push to `main`: upload the complete unzipped repository contents at the GitHub repository root. The GitHub Action verifies the build, deploys the Compute Engine backend with automatic rollback/health checking, then publishes the matching GitHub Pages frontend. No Cloud Shell command is required for normal releases.
 
-After running `cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh` once, a release is just a push to `main`: upload the complete unzipped repository contents at the GitHub repository root. The single GitHub Action verifies the build, deploys the Compute Engine backend with automatic rollback and health checking, then publishes the matching GitHub Pages frontend. No Cloud Shell command is required for normal future releases.
+## v3.0.1 historical playback foundation
 
-
-## v3.0.1 historical playback rearchitecture
-
-v3.0.1 replaces the patch-by-patch historical search path with one server-owned event/media catalog. The score ribbon, database, resolver and player now consume the same per-event playback truth.
-
-### One historical pipeline
+v3.0.1 established the server-owned historical event/media catalog used by v3.0.2:
 
 `selected date → canonical score events → event catalog → validated media assets → playback plan → PlaybackController → runtime feedback`
 
-- **Historical score inventory is server-owned too.** `/api/history/scores` is now the one historical league/date score read for both ribbon hydration and media discovery, with request coalescing and persistent empty-day caching. The browser no longer performs a parallel ESPN/Highlightly historical inventory.
-- **The browser no longer owns historical provider discovery.** Opening a past date starts one localhost date job. Per-card FIND/touch requests call the same canonical event service at higher priority rather than starting a second YouTube/ESPN search implementation.
-- **Historical state is normalized by event and asset.** `history_event` stores discovery state/retry truth for each game. `history_media_asset` stores each YouTube/direct asset, validation state, last verification and runtime PLAYED/FAILED state. The legacy date/league JSON remains only as the fast hydration layer.
-- **A green/purple/gold/blue rail requires an internally playable asset.** External links and oEmbed metadata are useful catalog evidence, but they cannot turn a score card green. Direct URLs receive an HTTP media probe. YouTube IDs require a positive `videos.list` embed/region validation or a previous successful runtime PLAYING event.
-- **Runtime playback writes back to the catalog.** YouTube 101/150, native load failures and other exact-asset failures are persisted against that asset. A reload cannot resurrect the same failed source as green. A later newer provider validation may rehabilitate it.
-- **Historical clicks and autoplay use the same PlaybackController as Today.** Starting a past game establishes the past-date queue; failure tries another verified same-game asset, then performs one exact-event forced refresh before declaring the recap unavailable.
+The normalized `history_event` and `history_media_asset` tables remain the persistent source of truth. Runtime playback success/failure survives browser reloads, score-ribbon hydration uses the same catalog as playback, and historical Game Center remains independent of media selection.
 
-### YouTube is indexed by day, not searched game-by-game
+### Historical discovery lanes
 
-The June 2026 YouTube quota model gives `search.list` its own small daily bucket, so historical discovery no longer treats search as the primary database builder.
+1. Official/native event media such as ESPN event packages and MLB official media.
+2. Official YouTube channel activity indexing with exact-ID validation.
+3. One shared official-channel `search.list` rescue per league/date during foreground historical browsing.
+4. Public YouTube/search-engine discovery as candidate metadata only until positively validated.
+5. League/team-specific free lanes where available, including the NFL feed.
 
-1. **Official/native event sources first.** ESPN event media, league/team feeds and MLB official media are checked by canonical event ID.
-2. **Official YouTube channel activity index.** For NFL/NBA/NHL/MLS/EPL, localhost calls `activities.list` once per league/date window and batch-validates the returned upload IDs with `videos.list`. The resulting verified day catalog is reused by every game on that slate.
-3. **One optional official-channel `search.list` rescue per league/date.** This is interactive-only and shared by the whole day. It replaces the old one-search-per-game pattern.
-4. **Public YouTube/search-engine lanes are candidate discovery only.** They may locate IDs without consuming `search.list`, but oEmbed alone never marks them playable.
-
-`search.list`, `activities.list` and `videos.list` also have separate cooldown state in `sbb/youtube_gateway.py`. Exhausting the search bucket no longer disables activity indexing or exact-ID validation.
-
-### Foreground historical priority
-
-When the viewer opens a past date, the selected historical slate owns foreground network capacity. Browser Today refreshes, rapid team searches, Key Info video enrichment and Top Plays refreshes pause until the viewer returns to Today. Server-side heavy Today media prewarming also yields. Score/Game Center reads remain available. This prevents the Android phone from downloading multiple current-day 70–90 MB assets while the requested historical catalog is trying to resolve.
-
-### Persistent database and backfill
-
-`~/.sports-big-board/cache/history.sqlite3` now stores:
-
-- date/league scoreboard snapshots for fast ribbon hydration
-- canonical historical events and per-event discovery/retry state
-- multiple recap tiers per event: Quick, Extended, Commentary and Moments/Reels
-- verified/candidate/external media state
-- exact-asset runtime PLAYED/FAILED truth
-
-The idle 400-day builder uses only low-cost/no-search lanes. It can progressively make old dates instant without spending the `search.list` bucket. Failed/rate-limited providers remain retryable instead of being recorded as a permanently completed search. `HISTORY_DISCOVERY_VERSION = 6` forces older degraded v2.8.x records through the new catalog without deleting the existing database.
-
-### Diagnostics
-
-On a historical date the developer rail is entirely date-scoped: games/finals, indexed events, playable games, candidates, Quick/Extended/Commentary/Reel counts, activity/video validation availability and whether the one-per-league/day search rescue was used. Today-oriented workers cannot overwrite it with current MLB counts.
-
-The top date controls, historical Game Center behavior, date-locked queue and **RETURN TO TODAY** full-session reset remain unchanged.
+The idle cloud builder intentionally does not spend the scarce YouTube `search.list` bucket. It exhausts the no-search lanes and leaves the event instantly playable with a lower tier while still marking richer catalog discovery as eligible for later foreground upgrade.
 
 ## v2.7.0 provider-independent media + Game Center architecture
 
@@ -94,13 +73,13 @@ This release addresses the root architecture behind the fragile non-MLB score fe
 - **EPL/MLS get redundant soccer schedule views.** League-specific day windows, an exact-date transport, a season-wide league board, CDN, and a guarded `soccer/all` rescue path are unioned before local-day filtering.
 - **The ESPN envelope parser now collects every event list.** The prior first-list behavior could make `soccer/all` find another competition first, filter it out, and incorrectly report no EPL game even when a later event list contained the fixture.
 - **Known non-empty days persist locally.** A short current-day cache and longer historical cache prevent a temporary provider/network blank from erasing games already discovered.
-- **The old two-face Today/Yesterday toggle has been superseded in v3.0.1 by explicit calendar-day navigation.** The underlying viewer-day date authority and ESPN fallback behavior remain in place.
+- **The old two-face Today/Yesterday toggle has been superseded in v3.0.2 by explicit calendar-day navigation.** The underlying viewer-day date authority and ESPN fallback behavior remain in place.
 - **Playback waits longer for the exact YouTube player and retries the exact media once** before falling back to a user tap. This preserves the single PlaybackController ownership model while making normal iframe/network startup hiccups less visible.
 - **Friendly loading states.** Game Center now says **Loading Game Center…** with a spinner. Video startup/buffering shows **Loading video…** or **Buffering video…** with the same lightweight animation instead of developer-oriented status text.
 
 Sports Big Board is a local, personalized sports television system: live scores and game state feed a direct-tune ribbon, official highlights and recaps feed the player, Game Center adds the live/final statistical context, and Around the League provides unattended programming.
 
-v3.0.1 builds on the stabilized score inventory and Game Center work by adding arbitrary historical date context without coupling ribbon browsing to playback.
+v3.0.2 builds on the stabilized score inventory and Game Center work by adding arbitrary historical date context without coupling ribbon browsing to playback.
 
 ## Launch experience
 
@@ -108,7 +87,7 @@ A fresh page load now opens on a full-screen **Sports Big Board** splash instead
 
 ## Legacy Today / Yesterday score authority
 
-NFL, NBA and NHL score inventory retains its ESPN fallback whenever Highlightly is empty. In v3.0.1 the league filter no longer changes the date automatically: the viewer-selected calendar date remains authoritative. ESPN historical lookups keep trying alternate transports when a non-empty endpoint response contains only the wrong calendar day, preventing a weekly/current board from masking the requested date.
+NFL, NBA and NHL score inventory retains its ESPN fallback whenever Highlightly is empty. In v3.0.2 the league filter no longer changes the date automatically: the viewer-selected calendar date remains authoritative. ESPN historical lookups keep trying alternate transports when a non-empty endpoint response contains only the wrong calendar day, preventing a weekly/current board from masking the requested date.
 
 ## NFL recap discovery
 
@@ -142,7 +121,7 @@ The normalized Game Center contract remains:
 
 `GET /api/events/{competition}/{eventId}/game-center`
 
-Detailed adapters in v3.0.1:
+Detailed adapters in v3.0.2:
 
 - **MLB** — score/status, inning linescore, R/H/E, team stats, batting, pitching, scoring plays and full play-by-play.
 - **NFL** — score/quarter/clock, team stats, player stat sections, scoring plays and play-by-play/drives when ESPN provides them.
@@ -169,7 +148,7 @@ Sports Big Board continuously inventories today's and yesterday's relevant MLB/N
 - A teams/score-only shell is explicitly **PARTIAL**, not a completed cache hit. Partial finals get a short server TTL, a short browser HOT TTL, and continue background enrichment.
 - Normalized snapshots from multiple providers are merged section-by-section; richer linescore, team stats, player sections and play-by-play can fill gaps without discarding already-correct event identity.
 
-The browser uses request generations and AbortController so obsolete selections cannot update the current panel. v3.0.1 also makes repository misses asynchronous: localhost returns PREPARING immediately, promotes the selected game to touch-intent priority on a dedicated Game Center worker pool, and the browser polls localhost until the prepared snapshot is available. A slow MLB/ESPN socket therefore no longer blocks the browser request.
+The browser uses request generations and AbortController so obsolete selections cannot update the current panel. v3.0.2 also makes repository misses asynchronous: localhost returns PREPARING immediately, promotes the selected game to touch-intent priority on a dedicated Game Center worker pool, and the browser polls localhost until the prepared snapshot is available. A slow MLB/ESPN socket therefore no longer blocks the browser request.
 
 Provider identity is verified against the sporting event (competition + date + away/home teams + optional start/game number). If the score came from Highlightly, Sports Big Board first asks Highlightly for detailed match data using that exact score match id. For MLB it also requests Highlightly match statistics and player box scores where available. MLB Stats and ESPN remain official-provider fallbacks when the score provider does not expose enough detail. Any returned identity is still rejected if the teams do not match the selected score card. Legacy `Unknown` rows and mismatched aliases are invalidated automatically on read.
 
@@ -206,7 +185,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v3.0.1/sports-big-board-v3.0.1
+cd ~/storage/downloads/sports-big-board-v3.0.2/sports-big-board-v3.0.2
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```
@@ -240,7 +219,7 @@ bash VERIFY.sh
 
 Node is optional. When Node is unavailable, the permanent Python suite still verifies the browser architecture/UI boundaries and all server contracts.
 
-The v3.0.1 regression suite covers, among other things:
+The v3.0.2 regression suite covers, among other things:
 
 - authoritative score-card playback and epoch ownership
 - HOT/WARM media prewarming separation
@@ -274,9 +253,9 @@ The canonical programming model continues to reserve league-level Top Plays pack
 
 They belong to Around-the-League programming and never mutate `SelectedEvent` or a game's Gold/Green/Purple/Blue package.
 
-## v3.0.1 historical playback reconciliation
+## v3.0.2 historical playback reconciliation
 
-v3.0.1 fixes the first integration issues revealed by the canonical v2.9 history catalog:
+v3.0.2 fixes the first integration issues revealed by the canonical v2.9 history catalog:
 
 - Browser JSON requests now preserve HTTP method/body, so exact-event historical discovery reaches the POST endpoint instead of falling through to a GET 404.
 - Normalized `history_media_asset` catalog rows hydrate the score-date store even when the legacy league-day `media_saved_at` field is empty. Server `playable` counts and score-card rails therefore derive from the same catalog.

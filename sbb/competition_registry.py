@@ -1,4 +1,4 @@
-"""Canonical competition/provider registry shared by server services (v3.0.1).
+"""Canonical competition/provider registry shared by server services (v3.0.2).
 
 Competition definitions describe capabilities, not playback implementations. Media
 providers are ordered discovery adapters; the EventMediaResolver remains free to

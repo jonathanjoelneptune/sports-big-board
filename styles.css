@@ -2237,7 +2237,7 @@ body.sbb-fixed-controls .top-nav-header .big-board-fullscreen-btn{
 /* v2.5.25 hotfix: completed-game recap colors are invalid on live cards. */
 .score-card .score-media-strip{pointer-events:none}
 
-/* v3.0.1 — optional Game Center / Up Next drawer ------------------ */
+/* v3.0.2 — optional Game Center / Up Next drawer ------------------ */
 :root{--sbb-info-drawer-top:110px}
 .layout{position:relative!important;grid-template-columns:190px minmax(0,1fr)!important}
 .stage-card{grid-column:auto!important}
@@ -2336,14 +2336,14 @@ body.broadcast-mode .drawer-queue-panel .feed-note{display:none!important}
   .drawer-launch-btn{padding:8px 9px!important;font-size:9px!important}
 }
 .gc-basic-overview{padding:22px 16px;display:grid;gap:6px;text-align:center}.gc-basic-overview strong{font-size:18px}.gc-basic-overview span{font-size:11px;color:#a9bbc8}.gc-basic-overview small{font-size:9px;color:#657d8e}
-/* v3.0.1 final grid ownership: the secondary drawer must never reserve a third column. */
+/* v3.0.2 final grid ownership: the secondary drawer must never reserve a third column. */
 body.landscape-mode .layout,body.sbb-landscape .layout{grid-template-columns:190px minmax(0,1fr)!important}
 @media(max-width:1050px) and (min-width:761px){body.landscape-mode .layout,body.sbb-landscape .layout{grid-template-columns:70px minmax(0,1fr)!important}}
 body.portrait-mode .layout,body.sbb-portrait .layout{grid-template-columns:1fr!important}
 
 
-/* v3.0.1 — Game Center layout + latency hardening ------------------- */
-/* The placeholder and hydrated content are mutually exclusive. v3.0.1 added
+/* v3.0.2 — Game Center layout + latency hardening ------------------- */
+/* The placeholder and hydrated content are mutually exclusive. v3.0.2 added
    .hidden in JS but had no display rule for these two containers. */
 .game-center-empty.hidden,.game-center-content.hidden{display:none!important}
 
@@ -2387,7 +2387,7 @@ body.landscape-mode .stage-card,body.sbb-landscape .stage-card{
   .drawer-queue-panel .queue-list{overflow:visible!important;max-height:none!important}
 }
 
-/* v3.0.1 — integrated below-video Game Center + sticky video --------------- */
+/* v3.0.2 — integrated below-video Game Center + sticky video --------------- */
 .stage-card{display:block!important;overflow:visible!important;min-width:0!important}
 .stage-card>.player-topbar,.stage-card>.lower-third{position:relative;z-index:1}
 .stage-card>.stage{
@@ -2410,7 +2410,7 @@ body.landscape-mode .stage-card,body.sbb-landscape .stage-card{
 .drawer-queue-panel{height:auto!important;max-height:none!important;overflow:visible!important}
 .drawer-queue-panel .queue-list{overflow:visible!important;max-height:none!important}
 
-/* Keep Video Visible is presentation-only. v3.0.1 uses a fixed stage after
+/* Keep Video Visible is presentation-only. v3.0.2 uses a fixed stage after
    the scroll threshold instead of CSS sticky, which is unreliable in Android
    Chromium when the historical shell changes overflow modes. JS preserves the
    exact document-flow footprint with this placeholder. */
@@ -2455,7 +2455,7 @@ body.sbb-stage-sticky-active .stage-card>.stage{
   .info-drawer{position:static!important;inset:auto!important;width:100%!important;height:auto!important;max-height:none!important;margin-top:8px!important;box-shadow:none!important}
   .drawer-pane{overflow:visible!important}
 }
-/* v3.0.1 — deterministic shrink runway.
+/* v3.0.2 — deterministic shrink runway.
    JS changes only the fixed player + in-flow placeholder height. Game Center is
    never translated independently, so its flow edge cannot slide under the video
    while the shrink phase is active. Once minimum size is reached the Game Center
@@ -2473,7 +2473,7 @@ body.sbb-stage-minimized .gc-section-tabs{
   body.sbb-stage-sticky-active .stage-card>.stage{max-width:calc(100vw - 16px)!important;}
 }
 
-/* v3.0.1 coordinated shrink runway refinement.
+/* v3.0.2 coordinated shrink runway refinement.
    During the shrink phase the compact footer is removed from flow so the Game
    Center begins immediately below the visible video. The placeholder math in
    player-visibility.js then keeps that edge attached while the video shrinks.
@@ -2484,7 +2484,7 @@ body.sbb-stage-minimized .info-drawer-head{position:relative!important;top:auto!
 body.sbb-stage-minimized .gc-section-tabs{position:sticky!important;top:0!important;z-index:2!important}
 
 
-/* v3.0.1 — minimum-player scroll handoff.
+/* v3.0.2 — minimum-player scroll handoff.
    At minimum size the document/app-shell stops advancing. The full information
    surface is fixed directly below the player and its active pane becomes the
    scroll container. This prevents Game Center from disappearing underneath the
@@ -2519,7 +2519,7 @@ body.sbb-gc-scroll-locked .gc-section-tabs{position:sticky!important;top:0!impor
 body.sbb-gc-scroll-locked .stage-card>.player-footer{display:none!important}
 #app-shell:fullscreen body.sbb-gc-scroll-locked{overflow:hidden!important}
 
-/* v3.0.1 — bounded sticky workspace. Never changes document/body overflow.
+/* v3.0.2 — bounded sticky workspace. Never changes document/body overflow.
    At minimum size the complete information surface is fixed below the player and
    ONLY the active pane scrolls. This avoids Android Chromium's scroll reset when
    overflow:hidden is toggled on the root. */
@@ -2548,7 +2548,7 @@ body.sbb-gc-scroll-locked .drawer-pane:not(.hidden){
 body.sbb-gc-scroll-locked .game-center-content{min-height:max-content!important}
 body.sbb-gc-scroll-locked .gc-section-tabs{position:sticky!important;top:0!important;z-index:5!important}
 
-/* v3.0.1 compact workspace chrome hardening.
+/* v3.0.2 compact workspace chrome hardening.
    Keep the topbar's layout box so the runway geometry never jumps, but remove its
    visual/interactive chrome while the compact video + Game Center workspace owns
    the viewport. */
@@ -2558,7 +2558,7 @@ body.sbb-stage-sticky-active .stage-card>.player-topbar{
   pointer-events:none!important;
 }
 
-/* v3.0.1 — compact sticky Now Playing + transport companion.
+/* v3.0.2 — compact sticky Now Playing + transport companion.
    The normal topbar stays in flow (hidden) so the original runway geometry cannot
    jump. player-visibility.js mirrors only presentation state into this attached
    strip; the proxy buttons click the original transport controls and never own
@@ -2645,7 +2645,7 @@ body.sbb-stage-sticky-active .stage-card>.player-topbar{
   .sbb-compact-play{width:29px!important;height:29px!important;min-width:29px!important}
 }
 
-/* v3.0.1 — deliberate launch screen ------------------------------------ */
+/* v3.0.2 — deliberate launch screen ------------------------------------ */
 .sbb-launch-screen{
   position:fixed;inset:0;z-index:90000;display:grid;place-items:center;
   padding:max(22px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(22px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
@@ -2682,7 +2682,7 @@ body.sbb-stage-sticky-active .stage-card>.player-topbar{
   .sbb-launch-card{padding:10px 24px}.sbb-launch-rule{margin:13px 0 12px}.sbb-launch-card p{margin:9px 0 15px}.sbb-launch-card>small{margin-top:8px}
 }
 
-/* v3.0.1 — Game Center is an inset continuation of the page, not glass. */
+/* v3.0.2 — Game Center is an inset continuation of the page, not glass. */
 .stage-card{background:#070d12!important;border-color:#111d25!important}
 .info-drawer{
   background:#070d12!important;
@@ -2738,7 +2738,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .info-drawer{border-radius:10px!important}
 }
 
-/* v3.0.1 — PC is a true video + Game Center workspace ------------------
+/* v3.0.2 — PC is a true video + Game Center workspace ------------------
    On a wide fine-pointer screen the Game Center is no longer a drawer laid over
    the broadcast. It is the second column of the stage itself. The 16:9 player
    therefore scales to the remaining left-column width and stays completely in
@@ -2854,7 +2854,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   body.sbb-game-center-side .keyboard-help{display:none!important}
 }
 
-/* v3.0.1 — dedicated Yesterday / Today ribbon controls -----------------
+/* v3.0.2 — dedicated Yesterday / Today ribbon controls -----------------
    The day buttons own real columns instead of floating above the score track, so
    the right controls can never cover the last game. Either arrow loops the two
    faces forever; the center label always states the face currently being shown. */
@@ -2919,7 +2919,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 .score-empty-day strong{font-size:10px!important;font-weight:650!important;color:#a9bac5!important;text-transform:uppercase!important;letter-spacing:.06em!important}
 .score-empty-day span{font-size:10px!important;font-weight:450!important}
 
-/* v3.0.1 — desktop readability without turning the UI into bold display type. */
+/* v3.0.2 — desktop readability without turning the UI into bold display type. */
 @media (min-width:1100px) and (pointer:fine){
   .top-nav-header{min-height:46px!important;padding:5px 10px!important}
   .top-nav-header .brand{min-width:166px!important;height:36px!important}
@@ -2995,8 +2995,8 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 }
 
 
-/* v3.0.1 — score ribbon recovery ----------------------------------------
-   v3.0.1 nested the horizontal score track inside another grid to make room
+/* v3.0.2 — score ribbon recovery ----------------------------------------
+   v3.0.2 nested the horizontal score track inside another grid to make room
    for the day badge. On desktop that collapsed the team rows and left only the
    MLB/TODAY header visible. Return the proven direct flex track, reserve a slim
    top strip for the day indicator, and keep real scroll padding at both ends so
@@ -3065,7 +3065,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .score-day-arrow{font-size:9px!important}
 }
 
-/* v3.0.1 friendly loading states */
+/* v3.0.2 friendly loading states */
 @keyframes sbb-loading-spin{to{transform:rotate(360deg)}}
 .sbb-loading-spinner{
   display:inline-block;width:18px;height:18px;flex:0 0 18px;border-radius:50%;
@@ -3089,7 +3089,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .sbb-loading-spinner{width:16px;height:16px;flex-basis:16px}
 }
 
-/* v3.0.1 — player-team navigation + Game Center team identity */
+/* v3.0.2 — player-team navigation + Game Center team identity */
 .gc-team-copy{display:grid;gap:2px;min-width:0;align-items:center}
 .gc-team-away .gc-team-copy{text-align:left}
 .gc-team-home .gc-team-copy{text-align:right}
@@ -3126,7 +3126,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 .gc-mini-logo.hidden,.gc-mini-logo-fallback.hidden{display:none!important}
 .gc-mini-logo-fallback{font-size:6.5px;font-weight:700;color:#9aabb7}
 
-/* v3.0.1 — leave real vertical room for the media-availability rail.
+/* v3.0.2 — leave real vertical room for the media-availability rail.
    The larger score cards introduced in the readability pass were taller than
    the score track's usable content box, so the last 2–5 px were clipped. */
 .score-ribbon{height:96px!important;min-height:96px!important}
@@ -3148,7 +3148,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .score-day-pager{top:48px!important}
 }
 
-/* v3.0.1 — score-card geometry owns enough room for its footer controls.
+/* v3.0.2 — score-card geometry owns enough room for its footer controls.
    The footer is a real three-column row, so FINAL, the media label and the play
    button can never occupy the same pixels. The availability rail has its own
    bottom clearance instead of being clipped by the ribbon viewport. */
@@ -3236,7 +3236,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .score-day-pager{top:53px!important;height:60px!important}
 }
 
-/* v3.0.1 final ribbon polish — make the media action read as a compact control,
+/* v3.0.2 final ribbon polish — make the media action read as a compact control,
    not text competing with the score. Slightly wider cards also give the larger
    typography room to breathe without sacrificing the horizontal carousel. */
 .score-ribbon .score-card{
@@ -3283,7 +3283,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 }
 
 
-/* v3.0.1 — unmistakable current-game focus.
+/* v3.0.2 — unmistakable current-game focus.
    This is independent of the bottom media-tier rail: cyan means NOW WATCHING;
    gold/green/purple/blue still describe the available media package. */
 .score-card.now-playing-game{
@@ -3331,7 +3331,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .score-card.now-playing-game .score-card-top small::after{font-size:7px;padding:1px 4px}
 }
 
-/* v3.0.1 — historical Date Browser -----------------------------------
+/* v3.0.2 — historical Date Browser -----------------------------------
    The date is now a deliberate browsing context. Previous/next controls move one
    calendar day at a time, the center date opens the native picker, and Return to
    Today is the explicit full-session escape hatch back to live programming. */
@@ -3456,7 +3456,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .return-today-short{display:inline}
 }
 
-/* v3.0.1 — persistent top date control */
+/* v3.0.2 — persistent top date control */
 .top-date-controls{
   display:flex!important;
   align-items:center!important;
@@ -3507,4 +3507,71 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 .score-card.historical-searching-media .find-recap-dot{
   min-width:15px!important;
   text-align:center!important;
+}
+
+/* v3.0.2 — desktop score-ribbon browsing + full-surface date arrows */
+@media (min-width:761px) and (pointer:fine){
+  .score-ribbon>.score-cells{cursor:grab!important}
+  .score-ribbon>.score-cells.is-dragging{cursor:grabbing!important;user-select:none!important}
+  .score-ribbon>.score-cells.is-dragging .score-card{pointer-events:none!important}
+}
+.score-day-pager{
+  width:40px!important;
+  min-width:40px!important;
+  height:68px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:10px!important;
+  overflow:visible!important;
+}
+.score-day-pager-left{left:4px!important}
+.score-day-pager-right{right:4px!important}
+.score-day-arrow{
+  width:100%!important;
+  height:100%!important;
+  min-width:40px!important;
+  min-height:68px!important;
+  padding:0!important;
+  border:1px solid #243844!important;
+  border-radius:10px!important;
+  background:#0b171f!important;
+  color:#a9bdca!important;
+  font-size:34px!important;
+  font-weight:300!important;
+  line-height:1!important;
+  display:grid!important;
+  place-items:center!important;
+  cursor:pointer!important;
+  box-shadow:0 4px 15px rgba(0,0,0,.24)!important;
+  transition:background .12s ease,border-color .12s ease,color .12s ease,box-shadow .12s ease,transform .08s ease!important;
+}
+.score-day-arrow>span{display:block!important;line-height:1!important;transform:translateY(-2px)!important;pointer-events:none!important}
+.score-day-arrow:hover,.score-day-arrow:focus-visible{
+  background:#173246!important;
+  border-color:#4d94bb!important;
+  color:#fff!important;
+  box-shadow:0 0 0 2px rgba(77,148,187,.16),0 5px 18px rgba(0,0,0,.3)!important;
+  outline:none!important;
+}
+.score-day-arrow:active{background:#1c3d52!important;transform:translateY(1px)!important}
+.score-day-arrow:disabled,.score-day-arrow.unavailable{
+  opacity:.23!important;
+  cursor:default!important;
+  transform:none!important;
+  box-shadow:none!important;
+}
+.score-ribbon>.score-cells{
+  padding-left:50px!important;
+  padding-right:50px!important;
+  scroll-padding-left:50px!important;
+  scroll-padding-right:50px!important;
+}
+@media(max-width:760px),(pointer:coarse){
+  .score-day-pager{width:32px!important;min-width:32px!important;height:58px!important;border-radius:8px!important}
+  .score-day-pager-left{left:2px!important}
+  .score-day-pager-right{right:2px!important}
+  .score-day-arrow{min-width:32px!important;min-height:58px!important;font-size:28px!important;border-radius:8px!important}
+  .score-ribbon>.score-cells{padding-left:38px!important;padding-right:38px!important;scroll-padding-left:38px!important;scroll-padding-right:38px!important}
 }
