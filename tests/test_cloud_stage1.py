@@ -4,8 +4,8 @@ ROOT=Path(__file__).resolve().parents[1]
 class CloudStage1Tests(unittest.TestCase):
     def test_frontend_loads_api_runtime_before_bootstrap(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
-        self.assertIn('config.js?v=3.0.5',html); self.assertIn('api-runtime.js?v=3.0.5',html)
-        self.assertLess(html.index('api-runtime.js?v=3.0.5'),html.index('BOOT_START'))
+        self.assertIn('config.js?v=3.0.7',html); self.assertIn('api-runtime.js?v=3.0.7',html)
+        self.assertLess(html.index('api-runtime.js?v=3.0.7'),html.index('BOOT_START'))
     def test_api_runtime_routes_api_only(self):
         js=(ROOT/'api-runtime.js').read_text(encoding='utf-8')
         self.assertIn("input.startsWith('/api/')",js); self.assertIn('window.fetch = function',js); self.assertIn('window.SBB_API',js)
@@ -40,6 +40,6 @@ class CloudStage1Tests(unittest.TestCase):
             self.assertIn(token,setup)
         self.assertNotIn('keys create',setup)
     def test_version_file_matches_server(self):
-        self.assertEqual((ROOT/'VERSION').read_text().strip(),'3.0.5')
-        self.assertIn('APP_VERSION = "3.0.5"',(ROOT/'server.py').read_text())
+        self.assertEqual((ROOT/'VERSION').read_text().strip(),'3.0.7')
+        self.assertIn('APP_VERSION = "3.0.7"',(ROOT/'server.py').read_text())
 if __name__=='__main__': unittest.main()

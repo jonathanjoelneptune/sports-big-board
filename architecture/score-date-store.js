@@ -1,4 +1,4 @@
-/* v3.0.5 ScoreDateStore
+/* v3.0.7 ScoreDateStore
    Date browsing is application context, not playback ownership. The score ribbon
    can browse any past day while the currently playing program keeps its own date.
    Historical score/media snapshots are session-resident and immutable enough to

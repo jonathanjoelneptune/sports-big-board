@@ -880,7 +880,7 @@ class ArchitectureTests(unittest.TestCase):
             self.assertTrue(rows[0]["Discovery Pending"])
             self.assertEqual(rows[0]["Current Discovery Version"],9)
 
-    def test_discovery_version_9_soft_reindex_ignores_old_closed_retry(self):
+    def test_discovery_version_11_soft_reindex_ignores_old_closed_retry(self):
         row={'id':'nba-old-v7','espnEventId':'nba-old-v7','completed':True,
              'awayTeam':{'name':'Away Club'},'homeTeam':{'name':'Home Club'}}
         blue={'id':'old-blue','youtubeId':'old-blue-id','title':'Top plays Away Club vs Home Club','durationSeconds':45,'programType':'reel','verifiedPlayable':True}
@@ -905,7 +905,7 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(result['state'],'VERIFIED')
             self.assertEqual(result['bestTier'],'gold')
             self.assertTrue(result['qualityComplete'])
-            self.assertEqual(saved['discovery']['discoveryVersion'],9)
+            self.assertEqual(saved['discovery']['discoveryVersion'],11)
             self.assertTrue(saved['discovery']['qualityComplete'])
 
     def test_quality_upgrade_due_respects_persistent_retry_window(self):

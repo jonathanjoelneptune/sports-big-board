@@ -55,6 +55,12 @@ if [[ "$healthy" != "1" ]]; then
   journalctl -u sports-big-board --no-pager -n 80 || true
   false
 fi
+LOCAL_VERSION="$(python3 -c 'import json; print(json.load(open("/tmp/sbb-health.json")).get("version", ""))' 2>/dev/null || true)"
+if [[ "$LOCAL_VERSION" != "$VERSION" ]]; then
+  echo "[deploy] Version mismatch: expected backend v${VERSION}, got v${LOCAL_VERSION:-UNKNOWN}."
+  journalctl -u sports-big-board --no-pager -n 80 || true
+  false
+fi
 
 # Validate the public Caddy/TLS route from the VM too. A failure here rolls the
 # symlink back before GitHub Pages can publish a frontend that points at a bad API.
@@ -68,6 +74,11 @@ if [[ -n "$PUBLIC_HOST" ]]; then
   if [[ "$public_healthy" != "1" ]]; then
     echo "[deploy] Public HTTPS backend health check failed for $PUBLIC_HOST."
     journalctl -u caddy -u sports-big-board --no-pager -n 80 || true
+    false
+  fi
+  PUBLIC_VERSION="$(python3 -c 'import json; print(json.load(open("/tmp/sbb-public-health.json")).get("version", ""))' 2>/dev/null || true)"
+  if [[ "$PUBLIC_VERSION" != "$VERSION" ]]; then
+    echo "[deploy] Public backend version mismatch: expected v${VERSION}, got v${PUBLIC_VERSION:-UNKNOWN}."
     false
   fi
 fi

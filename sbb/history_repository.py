@@ -8,7 +8,7 @@ from contextlib import closing
 class HistoryRepository:
     """Persistent historical score/event/media catalog.
 
-    v3.0.5 keeps the legacy date/league JSON rows for fast score hydration while
+    v3.0.7 keeps the legacy date/league JSON rows for fast score hydration while
     retaining normalized event and asset tables. Discovery metadata now tracks
     source exhaustion separately from preferred-media quality, so Blue/Purple/Green
     assets remain playable while the persistent cloud catalog keeps seeking Gold.
@@ -339,6 +339,84 @@ class HistoryRepository:
             conn.commit()
         return True
 
+    def green_gap_events(self, *, current_discovery_version=0, now=None, limit=24):
+        """Return due historical games that still lack a verified Green/Gold package.
+
+        This is intentionally game-centric rather than asset-centric. A game with 20
+        Blue clips is still one Green gap. Blue-only games are prioritized first,
+        followed by no-media games and Purple-only games. Runtime-failed assets do
+        not count as coverage.
+        """
+        now=float(now or time.time()); limit=max(1,min(200,int(limit or 24)))
+        with self._lock, closing(self._connect()) as conn:
+            rows=conn.execute(
+                """
+                WITH flags AS (
+                  SELECT date,league,event_id,
+                    SUM(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' THEN 1 ELSE 0 END) AS verified_count,
+                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND json_extract(asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) AS has_gold,
+                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND json_extract(asset_json,'$.recapTier')='green' THEN 1 ELSE 0 END) AS has_green,
+                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND json_extract(asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) AS has_extended,
+                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.recapTier'),'blue')='blue' THEN 1 ELSE 0 END) AS has_blue
+                  FROM history_media_asset GROUP BY date,league,event_id
+                )
+                SELECT e.*,COALESCE(f.verified_count,0) AS verified_count,COALESCE(f.has_gold,0) AS has_gold,
+                       COALESCE(f.has_green,0) AS has_green,COALESCE(f.has_extended,0) AS has_extended,COALESCE(f.has_blue,0) AS has_blue
+                FROM history_event e
+                LEFT JOIN flags f ON f.date=e.date AND f.league=e.league AND f.event_id=e.event_id
+                WHERE COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0
+                  AND (e.next_retry_at<=? OR COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?)
+                ORDER BY
+                  CASE WHEN COALESCE(f.has_blue,0)=1 THEN 0 WHEN COALESCE(f.verified_count,0)=0 THEN 1 WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
+                  CASE WHEN e.next_retry_at<=? THEN 0 ELSE 1 END,
+                  e.last_discovery_at ASC, e.date DESC
+                LIMIT ?
+                """,
+                (now,int(current_discovery_version or 0),now,limit),
+            ).fetchall()
+        out=[]
+        for row in rows:
+            event=self._load_obj(row['event_json']); discovery=self._load_obj(row['discovery_json'])
+            if int(row['has_blue'] or 0): best='blue'
+            elif int(row['has_extended'] or 0): best='extended'
+            else: best=''
+            out.append({
+                'date':row['date'],'league':row['league'],'eventId':row['event_id'],'event':event,'discoveryState':row['discovery_state'],
+                'discovery':discovery,'nextRetryAt':float(row['next_retry_at'] or 0),'lastDiscoveryAt':float(row['last_discovery_at'] or 0),
+                'verifiedCount':int(row['verified_count'] or 0),'hasBlue':bool(row['has_blue']),'hasExtended':bool(row['has_extended']),
+                'bestTier':best or 'none',
+            })
+        return out
+
+    def green_gap_summary(self, *, current_discovery_version=0, now=None):
+        """Aggregate Green-gap backlog health for the live worker console."""
+        now=float(now or time.time())
+        with self._lock, closing(self._connect()) as conn:
+            row=conn.execute(
+                """
+                WITH flags AS (
+                  SELECT date,league,event_id,
+                    SUM(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' THEN 1 ELSE 0 END) AS verified_count,
+                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND json_extract(asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) AS has_gold,
+                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND json_extract(asset_json,'$.recapTier')='green' THEN 1 ELSE 0 END) AS has_green,
+                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND json_extract(asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) AS has_extended,
+                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.recapTier'),'blue')='blue' THEN 1 ELSE 0 END) AS has_blue
+                  FROM history_media_asset GROUP BY date,league,event_id
+                )
+                SELECT
+                  COUNT(*) AS total_events,
+                  SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 THEN 1 ELSE 0 END) AS gaps,
+                  SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND COALESCE(f.has_blue,0)=1 THEN 1 ELSE 0 END) AS blue_only,
+                  SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND COALESCE(f.verified_count,0)=0 THEN 1 ELSE 0 END) AS no_media,
+                  SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND COALESCE(f.has_extended,0)=1 AND COALESCE(f.has_blue,0)=0 THEN 1 ELSE 0 END) AS purple_only,
+                  SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND (e.next_retry_at<=? OR COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?) THEN 1 ELSE 0 END) AS due_now,
+                  SUM(CASE WHEN COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<? THEN 1 ELSE 0 END) AS stale_version
+                FROM history_event e LEFT JOIN flags f ON f.date=e.date AND f.league=e.league AND f.event_id=e.event_id
+                """,
+                (now,int(current_discovery_version or 0),int(current_discovery_version or 0)),
+            ).fetchone()
+        return {k:int(row[k] or 0) for k in row.keys()} if row else {}
+
     def put_media(self, date, league, rows, merge=True):
         date = str(date)[:10]; league = str(league).upper(); items = list(rows or [])
         if merge:
@@ -534,7 +612,7 @@ class HistoryRepository:
                       current_discovery_version=0, quality_target="gold"):
         """Return an Excel-like game-level view of the normalized history catalog.
 
-        v3.0.5 deliberately exposes an *effective* audit status in addition to the raw
+        v3.0.7 deliberately exposes an *effective* audit status in addition to the raw
         discovery state. This keeps legacy UNKNOWN rows from looking empty when the
         persistent media catalog already contains verified Green/Purple/Blue assets.
         """
@@ -561,7 +639,7 @@ class HistoryRepository:
                          "effectiveStatuses":{"QUALITY_COMPLETE":0,"UPGRADE_PENDING":0,"PARTIAL":0,"PENDING_INDEX":0,
                                               "NO_MEDIA_FOUND":0,"PROVIDER_DEGRADED":0,"CANDIDATE_ONLY":0},
                          "upgradePendingGames":0,"qualityCompleteGames":0,"discoveryPendingGames":0,
-                         "noVerifiedMediaGames":0}
+                         "noVerifiedMediaGames":0,"greenCoverageGames":0,"greenCoverageByLeague":{}}
         for erow in events:
             event=self._load_obj(erow["event_json"]); discovery=self._load_obj(erow["discovery_json"])
             key=(erow["date"],erow["league"],erow["event_id"]); event_assets=by_event.get(key,[])
@@ -602,6 +680,13 @@ class HistoryRepository:
             if quality_complete: summary["qualityCompleteGames"]+=1
             if projected["discoveryPending"]: summary["discoveryPendingGames"]+=1
             if not verified: summary["noVerifiedMediaGames"]+=1
+            league_cov=summary["greenCoverageByLeague"].setdefault(str(erow["league"]),{"games":0,"greenGames":0,"greenOrGoldGames":0})
+            league_cov["games"]+=1
+            has_green=any(a.get("verified") for a in tiers.get("green",[]))
+            has_gold=any(a.get("verified") for a in tiers.get("gold",[]))
+            if has_green:
+                summary["greenCoverageGames"]+=1; league_cov["greenGames"]+=1
+            if has_green or has_gold: league_cov["greenOrGoldGames"]+=1
             rows.append({
                 "date":erow["date"],"league":erow["league"],"eventId":erow["event_id"],"away":away,"home":home,"game":game,
                 "discoveryState":discovery_state,"effectiveStatus":effective_status,"bestTier":best or "none",
