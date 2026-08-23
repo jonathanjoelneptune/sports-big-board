@@ -35,6 +35,25 @@ The script creates a repository-restricted Google Workload Identity Federation t
 
 After that, future releases require no Cloud Shell command. Upload/commit the complete repository contents to `main` and watch the single **Deploy Sports Big Board** action.
 
+### GitHub runner SSH transport
+
+The GitHub deployment intentionally performs **one** `gcloud compute ssh` bootstrap. That call creates/installs one temporary 60-minute runner key and waits for the Compute Engine guest agent to accept it. Once the bootstrap prints `SSH READY`, deployment resolves the VM external IP and reuses that exact key with ordinary OpenSSH for the direct readiness probe, release upload, remote v4 catalog preflight/rebuild, health checks, and rollback shell. It does **not** invoke `gcloud compute scp` or a second `gcloud compute ssh`, so there is no second metadata/key-propagation cycle in the middle of a deployment.
+
+A normal backend Action should progress through these milestones:
+
+```text
+[ssh] Bootstrap readiness attempt ...
+[ssh] SSH READY as remote user ...
+[ssh] Direct transport locked ...
+[ssh] DIRECT SSH READY. No further gcloud SSH propagation will occur.
+[upload] RELEASE UPLOAD COMPLETE.
+[remote] Starting v4 deployment and catalog preflight over the established key...
+... v4 reconstruction / audit output ...
+[deploy] Backend v4.0.0-... is healthy.
+```
+
+If the initial bootstrap cannot propagate the key within the bounded retry window, the job exits before uploading a release and before touching the historical database. If direct-key reuse fails after bootstrap, it likewise exits before upload.
+
 
 ## Target architecture
 

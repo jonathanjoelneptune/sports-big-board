@@ -31,8 +31,15 @@ class CloudStage1Tests(unittest.TestCase):
         self.assertLess(workflow.index('name: Deploy cloud backend'),workflow.index('name: Build GitHub Pages frontend'))
     def test_backend_deploy_is_atomic_and_preserves_state(self):
         deploy=(ROOT/'cloud/gcp/DEPLOY-FROM-GITHUB.sh').read_text()
-        for token in ('$APP_BASE/releases/','rollback()','ln -sfn','127.0.0.1:8080/api/status','/etc/caddy/Caddyfile','SSH_KEY_EXPIRE_AFTER="${SBB_SSH_KEY_EXPIRE_AFTER:-60m}"','SBB_SSH_READY','timeout --signal=TERM --kill-after=10s','RELEASE UPLOAD COMPLETE'):
+        for token in ('$APP_BASE/releases/','rollback()','ln -sfn','127.0.0.1:8080/api/status','/etc/caddy/Caddyfile','SSH_KEY_EXPIRE_AFTER="${SBB_SSH_KEY_EXPIRE_AFTER:-60m}"','SBB_SSH_READY','SBB_DIRECT_SSH_READY','SSH_KEY_PATH="$TMP/google_compute_engine"','IdentitiesOnly=yes','ServerAliveInterval=15','RELEASE UPLOAD COMPLETE'):
             self.assertIn(token,deploy)
+        self.assertEqual(deploy.count('gcloud compute ssh "$VM_NAME"'),1)
+        self.assertNotIn('gcloud compute scp "$ARCHIVE"',deploy)
+        direct_tail=deploy.split('echo "[ssh] DIRECT SSH READY. No further gcloud SSH propagation will occur."',1)[1]
+        self.assertNotIn('gcloud compute ssh',direct_tail)
+        self.assertNotIn('gcloud compute scp',direct_tail)
+        self.assertIn('scp "${SSH_OPTS[@]}" "$ARCHIVE"',deploy)
+        self.assertIn('ssh "${SSH_OPTS[@]}" "${SSH_USER}@${VM_IP}"',deploy)
         self.assertIn('/var/lib/sports-big-board',deploy)
         self.assertIn('ensure_history_v4.py',deploy)
         self.assertIn('MIGRATION_BACKUP',deploy)

@@ -18,37 +18,53 @@ tar --exclude='.git' --exclude='.pages-dist' --exclude='gha-creds-*.json' \
 REMOTE_ARCHIVE="/tmp/sbb-release-${SHORT_SHA}.tgz"
 echo "Deploying Sports Big Board v${VERSION} (${SHORT_SHA}) to ${VM_NAME} in ${ZONE}..."
 
-# GitHub-hosted runners generate a fresh Compute Engine SSH key. GCE may need
-# time to propagate an instance-metadata key through the guest agent. Do not let
-# gcloud scp hide that wait indefinitely: establish SSH explicitly with bounded
-# retries, then upload only after the VM has proved it accepts the exact runner.
+# GitHub-hosted runners need a temporary SSH key installed on the VM. GCE
+# metadata/guest-agent propagation can be slow, so use gcloud exactly once as
+# the bootstrap authority: it installs the explicit key and proves the guest
+# accepts it. After that successful probe, all transfer and remote execution
+# uses normal OpenSSH with the SAME key. This prevents gcloud compute scp/ssh
+# from starting a second metadata propagation cycle mid-deploy.
 SSH_KEY_EXPIRE_AFTER="${SBB_SSH_KEY_EXPIRE_AFTER:-60m}"
 SSH_READY_ATTEMPTS="${SBB_SSH_READY_ATTEMPTS:-4}"
 SSH_READY_TIMEOUT_SECONDS="${SBB_SSH_READY_TIMEOUT_SECONDS:-120}"
 SSH_READY_SLEEP_SECONDS="${SBB_SSH_READY_SLEEP_SECONDS:-15}"
+SSH_CONNECT_TIMEOUT_SECONDS="${SBB_SSH_CONNECT_TIMEOUT_SECONDS:-20}"
+SSH_UPLOAD_TIMEOUT_SECONDS="${SBB_SSH_UPLOAD_TIMEOUT_SECONDS:-180}"
+SSH_REMOTE_TIMEOUT_SECONDS="${SBB_SSH_REMOTE_TIMEOUT_SECONDS:-3600}"
+SSH_KEY_PATH="$TMP/google_compute_engine"
+KNOWN_HOSTS="$TMP/known_hosts"
 SSH_READY=0
+SSH_USER=""
+VM_IP=""
 
-echo "[ssh] Preparing runner SSH access (temporary key lifetime: ${SSH_KEY_EXPIRE_AFTER})."
+mkdir -p "$(dirname "$SSH_KEY_PATH")"
+touch "$KNOWN_HOSTS"
+chmod 600 "$KNOWN_HOSTS"
+
+echo "[ssh] Preparing ONE runner SSH identity (temporary key lifetime: ${SSH_KEY_EXPIRE_AFTER})."
 for ((attempt=1; attempt<=SSH_READY_ATTEMPTS; attempt++)); do
-  echo "[ssh] Readiness attempt ${attempt}/${SSH_READY_ATTEMPTS} (timeout ${SSH_READY_TIMEOUT_SECONDS}s)..."
+  echo "[ssh] Bootstrap readiness attempt ${attempt}/${SSH_READY_ATTEMPTS} (timeout ${SSH_READY_TIMEOUT_SECONDS}s)..."
   set +e
   SSH_OUTPUT="$(timeout --signal=TERM --kill-after=10s "${SSH_READY_TIMEOUT_SECONDS}s" \
     gcloud compute ssh "$VM_NAME" \
       --zone "$ZONE" --project "$PROJECT_ID" --quiet \
+      --ssh-key-file="$SSH_KEY_PATH" \
       --ssh-key-expire-after="$SSH_KEY_EXPIRE_AFTER" \
-      --command='printf SBB_SSH_READY' 2>&1)"
+      --command='printf "SBB_SSH_READY:%s\\n" "$(id -un)"' 2>&1)"
   SSH_RC=$?
   set -e
   printf '%s\n' "$SSH_OUTPUT"
-  if [[ "$SSH_RC" == "0" && "$SSH_OUTPUT" == *"SBB_SSH_READY"* ]]; then
+  SSH_USER="$(printf '%s\n' "$SSH_OUTPUT" | sed -n 's/.*SBB_SSH_READY:\([A-Za-z0-9._-][A-Za-z0-9._-]*\).*/\1/p' | tail -n 1)"
+  if [[ "$SSH_RC" == "0" && -n "$SSH_USER" ]]; then
     SSH_READY=1
-    echo "[ssh] SSH READY."
+    echo "[ssh] SSH READY as remote user ${SSH_USER}."
     break
   fi
+  SSH_USER=""
   if [[ "$SSH_RC" == "124" || "$SSH_RC" == "137" ]]; then
-    echo "[ssh] Attempt timed out while waiting for the GCE guest to accept the runner key."
+    echo "[ssh] Bootstrap timed out while waiting for the GCE guest to accept the runner key."
   else
-    echo "[ssh] Attempt failed with exit code ${SSH_RC}."
+    echo "[ssh] Bootstrap failed with exit code ${SSH_RC}."
   fi
   if (( attempt < SSH_READY_ATTEMPTS )); then
     echo "[ssh] Waiting ${SSH_READY_SLEEP_SECONDS}s before retry..."
@@ -65,25 +81,66 @@ if [[ "$SSH_READY" != "1" ]]; then
   exit 1
 fi
 
-echo "[upload] SSH proven. Uploading release archive..."
+if [[ ! -s "$SSH_KEY_PATH" ]]; then
+  echo "[ssh] ERROR: bootstrap reported success but the expected private key does not exist: $SSH_KEY_PATH"
+  exit 1
+fi
+chmod 600 "$SSH_KEY_PATH"
+
+VM_IP="$(gcloud compute instances describe "$VM_NAME" \
+  --zone "$ZONE" --project "$PROJECT_ID" \
+  --format='get(networkInterfaces[0].accessConfigs[0].natIP)' | tr -d '[:space:]')"
+if [[ -z "$VM_IP" ]]; then
+  echo "[ssh] ERROR: VM has no external NAT IP; direct transport cannot continue."
+  exit 1
+fi
+
+echo "[ssh] Direct transport locked: ${SSH_USER}@${VM_IP} using ${SSH_KEY_PATH}."
+SSH_OPTS=(
+  -i "$SSH_KEY_PATH"
+  -o BatchMode=yes
+  -o IdentitiesOnly=yes
+  -o "ConnectTimeout=${SSH_CONNECT_TIMEOUT_SECONDS}"
+  -o ServerAliveInterval=15
+  -o ServerAliveCountMax=4
+  -o StrictHostKeyChecking=accept-new
+  -o "UserKnownHostsFile=${KNOWN_HOSTS}"
+  -o LogLevel=ERROR
+)
+
+# Prove the direct OpenSSH path before uploading. No gcloud SSH/SCP calls are
+# allowed below this point; the same accepted key is reused for the full deploy.
+echo "[ssh] Verifying direct OpenSSH reuse of the accepted key..."
+DIRECT_READY="$(timeout --signal=TERM --kill-after=10s 45s \
+  ssh "${SSH_OPTS[@]}" "${SSH_USER}@${VM_IP}" 'printf SBB_DIRECT_SSH_READY')" || {
+    rc=$?
+    echo "[ssh] ERROR: direct OpenSSH reuse failed after gcloud bootstrap (exit ${rc})."
+    echo "[ssh] No release archive was uploaded and the historical database was not touched."
+    exit "$rc"
+  }
+if [[ "$DIRECT_READY" != *"SBB_DIRECT_SSH_READY"* ]]; then
+  echo "[ssh] ERROR: direct OpenSSH probe returned an unexpected response."
+  exit 1
+fi
+echo "[ssh] DIRECT SSH READY. No further gcloud SSH propagation will occur."
+
+echo "[upload] Uploading release archive over the established key..."
 set +e
-timeout --signal=TERM --kill-after=10s 180s \
-  gcloud compute scp "$ARCHIVE" "$VM_NAME:$REMOTE_ARCHIVE" \
-    --zone "$ZONE" --project "$PROJECT_ID" --quiet \
-    --ssh-key-expire-after="$SSH_KEY_EXPIRE_AFTER"
+timeout --signal=TERM --kill-after=10s "${SSH_UPLOAD_TIMEOUT_SECONDS}s" \
+  scp "${SSH_OPTS[@]}" "$ARCHIVE" "${SSH_USER}@${VM_IP}:${REMOTE_ARCHIVE}"
 SCP_RC=$?
 set -e
 if [[ "$SCP_RC" != "0" ]]; then
-  echo "[upload] ERROR: release upload failed or exceeded the 180s transfer limit (exit ${SCP_RC})."
+  echo "[upload] ERROR: release upload failed or exceeded the ${SSH_UPLOAD_TIMEOUT_SECONDS}s transfer limit (exit ${SCP_RC})."
   echo "[upload] Historical database has not been touched."
   exit "$SCP_RC"
 fi
 echo "[upload] RELEASE UPLOAD COMPLETE."
 
-echo "[remote] Starting v4 deployment and catalog preflight..."
-gcloud compute ssh "$VM_NAME" \
-  --zone "$ZONE" --project "$PROJECT_ID" --quiet --ssh-key-expire-after="$SSH_KEY_EXPIRE_AFTER" \
-  --command="sudo env SBB_RELEASE_VERSION='$VERSION' SBB_RELEASE_SHA='$SHORT_SHA' SBB_REMOTE_ARCHIVE='$REMOTE_ARCHIVE' bash -s" <<'REMOTE'
+echo "[remote] Starting v4 deployment and catalog preflight over the established key..."
+timeout --signal=TERM --kill-after=30s "${SSH_REMOTE_TIMEOUT_SECONDS}s" \
+  ssh "${SSH_OPTS[@]}" "${SSH_USER}@${VM_IP}" \
+  "sudo env SBB_RELEASE_VERSION='$VERSION' SBB_RELEASE_SHA='$SHORT_SHA' SBB_REMOTE_ARCHIVE='$REMOTE_ARCHIVE' bash -s" <<'REMOTE'
 set -euo pipefail
 VERSION="${SBB_RELEASE_VERSION:?}"
 SHA="${SBB_RELEASE_SHA:?}"
