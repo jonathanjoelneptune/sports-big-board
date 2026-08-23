@@ -1,0 +1,30 @@
+"""Provider routing registry for v3.0.6.
+
+SCORE_API retains the existing Highlightly adapter metadata. MEDIA_ADAPTERS is the
+new provider-independent capability registry consumed by architecture diagnostics
+and future resolver/server orchestration.
+"""
+BASE_URL="https://sports.highlightly.net"
+SPORT_API={
+    "mlb":{"competitionId":"MLB","league":"MLB","base":BASE_URL,"prefix":"/baseball","matchParam":"league","highlightParam":"leagueName"},
+    "nba":{"competitionId":"NBA","league":"NBA","base":"https://nba.highlightly.net","prefix":"","matchParam":"league","highlightParam":"leagueName"},
+    "nfl":{"competitionId":"NFL","league":"NFL","base":"https://american-football.highlightly.net","prefix":"","matchParam":"league","highlightParam":"leagueName"},
+    "nhl":{"competitionId":"NHL","league":"NHL","base":"https://nhl.highlightly.net","prefix":"","matchParam":"league","highlightParam":"leagueName"},
+    "epl":{"competitionId":"EPL","league":"Premier League","base":"https://soccer.highlightly.net","prefix":"","matchParam":"leagueName","highlightParam":"leagueName","countryCode":"GB","rapidHost":"football-highlights-api.p.rapidapi.com"},
+    "mls":{"competitionId":"MLS","league":"Major League Soccer","base":"https://soccer.highlightly.net","prefix":"","matchParam":"leagueName","highlightParam":"leagueName","countryCode":"US","rapidHost":"football-highlights-api.p.rapidapi.com"},
+}
+
+MEDIA_ADAPTERS={
+    "mlb-stats":{"kind":"official-api","transport":["DIRECT_VIDEO"],"competitions":["MLB"],"reliability":100},
+    "espn":{"kind":"broadcaster-api","transport":["DIRECT_VIDEO"],"competitions":["MLB","NFL","NBA","NHL","EPL","MLS"],"reliability":94},
+    "nfl-club":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NFL"],"reliability":96},
+    "nfl-feed":{"kind":"official-feed","transport":["YOUTUBE_EMBED","EXTERNAL"],"competitions":["NFL"],"reliability":92},
+    "mls":{"kind":"official-api","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["MLS"],"reliability":95},
+    "club-sites":{"kind":"official-web","transport":["DIRECT_VIDEO","YOUTUBE_EMBED","EXTERNAL"],"competitions":["EPL","MLS"],"reliability":90},
+    "highlightly":{"kind":"aggregator-api","transport":["YOUTUBE_EMBED","EXTERNAL"],"competitions":["MLB","NFL","NBA","NHL","EPL","MLS"],"reliability":80},
+    "youtube":{"kind":"discovery-api","transport":["YOUTUBE_EMBED","EXTERNAL"],"competitions":["MLB","NFL","NBA","NHL","EPL","MLS"],"reliability":78},
+}
+
+def media_adapters_for(competition):
+    key=str(competition or "").upper()
+    return [name for name,row in MEDIA_ADAPTERS.items() if key in row.get("competitions",[])]
