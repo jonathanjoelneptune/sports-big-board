@@ -18,6 +18,17 @@ stop backend
 
 GitHub deployment performs this flow automatically on the first v4 release. If application health later fails, deployment restores the pre-v4 database and previous application release together.
 
+## Interrupted-transition recovery
+
+v4 readiness is not inferred from `catalog_schema_version=4` alone. Preflight also checks normalized source/event/collection structure and then runs the hard catalog integrity gate. Recovery follows this order:
+
+1. Valid, complete v4 catalog -> use it without rebuilding.
+2. Incomplete/invalid v4 catalog with preserved legacy rows -> reconstruct from the live database as evidence.
+3. Incomplete/invalid v4 catalog without enough legacy evidence -> reconstruct from the newest usable `backups/history-pre-v4-*.sqlite3`.
+4. No trustworthy reconstruction source -> refuse the deployment without replacing the catalog.
+
+This specifically protects against interrupted additive-schema transitions where v4 tables/meta exist but normalized `history_source_media` or association rows were never successfully built.
+
 ## Manual rebuild
 
 With the backend stopped:

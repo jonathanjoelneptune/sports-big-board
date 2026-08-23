@@ -84,6 +84,31 @@ class HistoryV4BaselineTests(unittest.TestCase):
             data=json.loads(proc.stdout.strip()); self.assertEqual(data["action"],"V4_ALREADY_READY"); self.assertEqual(data["before"]["catalogSchemaVersion"],CATALOG_SCHEMA_VERSION)
             self.assertFalse(list((state/"backups").glob("history-pre-v4-*.sqlite3")))
 
+    def test_preflight_recovers_partial_v4_shell_using_preserved_legacy_rows(self):
+        with tempfile.TemporaryDirectory() as td:
+            state=Path(td); db=state/"cache"/"history.sqlite3"; db.parent.mkdir(parents=True); now=time.time()
+            event={"scoreEventId":"evt1","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}
+            conn=sqlite3.connect(db)
+            conn.execute("CREATE TABLE history_day(date TEXT,league TEXT,scores_json TEXT,media_json TEXT,discovery_json TEXT,scores_saved_at REAL,media_saved_at REAL,discovery_saved_at REAL,PRIMARY KEY(date,league))")
+            conn.execute("CREATE TABLE history_event(date TEXT,league TEXT,event_id TEXT,event_json TEXT,discovery_state TEXT,discovery_json TEXT,last_discovery_at REAL,last_success_at REAL,next_retry_at REAL,last_error TEXT,updated_at REAL,PRIMARY KEY(date,league,event_id))")
+            conn.execute("CREATE TABLE history_media_asset(date TEXT,league TEXT,event_id TEXT,asset_key TEXT,asset_json TEXT,validation_state TEXT,verified_at REAL,runtime_state TEXT,runtime_success_at REAL,runtime_failure_at REAL,runtime_failure_reason TEXT,last_seen_at REAL,updated_at REAL,PRIMARY KEY(date,league,event_id,asset_key))")
+            item={"youtubeId":"abcdefghijk","scoreEventId":"evt1","title":"Away Club vs Home Club Full Game Highlights","verifiedPlayable":True,"recapTier":"extended"}
+            conn.execute("INSERT INTO history_day VALUES(?,?,?,?,?,?,?,?)",("2026-08-20","NBA",json.dumps([event]),json.dumps([item]),"{}",now,now,now))
+            conn.execute("INSERT INTO history_event VALUES(?,?,?,?,?,?,?,?,?,?,?)",("2026-08-20","NBA","evt1",json.dumps(event),"VERIFIED","{}",now,now,0,"",now))
+            conn.execute("INSERT INTO history_media_asset VALUES(?,?,?,?,?,'VERIFIED',?,'UNKNOWN',0,0,'',?,?)",("2026-08-20","NBA","evt1","yt:abcdefghijk",json.dumps(item),now,now,now)); conn.commit(); conn.close()
+            # Reproduce the failed-transition state from production: additive v4
+            # schema/meta exists, but normalized source assets were never built.
+            repo=HistoryRepository(db)
+            self.assertEqual(repo.catalog_integrity()["sourceAssets"],0)
+            proc=subprocess.run(["python3",str(ROOT/"tools/ensure_history_v4.py"),"--state-dir",str(state)],capture_output=True,text=True,check=True)
+            data=json.loads(proc.stdout.strip())
+            self.assertEqual(data["action"],"REBUILT")
+            self.assertIn(data["before"]["reason"],{"V4_INCOMPLETE_WITH_LEGACY","V4_INVALID_WITH_LEGACY"})
+            self.assertTrue(data["rebuild"]["passed"],data)
+            rebuilt=HistoryRepository(db)
+            self.assertGreaterEqual(rebuilt.catalog_integrity()["sourceAssets"],1)
+            self.assertEqual(len(rebuilt.event_media("2026-08-20","NBA","evt1")),1)
+
     def test_preflight_rebuilds_legacy_into_second_catalog_and_keeps_backup(self):
         with tempfile.TemporaryDirectory() as td:
             state=Path(td); db=state/"cache"/"history.sqlite3"; db.parent.mkdir(parents=True); now=time.time()
