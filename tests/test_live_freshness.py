@@ -1,0 +1,327 @@
+import unittest
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+from datetime import datetime, timezone
+import server
+
+class LiveFreshnessTests(unittest.TestCase):
+    def test_client_timezone_drives_today(self):
+        class FixedDateTime(datetime):
+            @classmethod
+            def now(cls,tz=None):
+                base=datetime(2026,8,21,0,58,0,tzinfo=timezone.utc)
+                return base if tz is None else base.astimezone(tz)
+        # Termux may not ship Python's optional IANA tzdata. The browser-provided
+        # UTC offset must therefore be sufficient to preserve the sports day.
+        with patch.object(server,'datetime',FixedDateTime), patch.object(server,'ZoneInfo',side_effect=Exception('tzdata unavailable')):
+            self.assertEqual(server._client_date_iso(0,"America/New_York",-240),"2026-08-20")
+            self.assertEqual(server._client_date_iso(0,"Etc/UTC",0),"2026-08-21")
+
+
+    def test_remembered_browser_offset_survives_missing_tzdata(self):
+        class FixedDateTime(datetime):
+            @classmethod
+            def now(cls,tz=None):
+                base=datetime(2026,8,21,0,58,0,tzinfo=timezone.utc)
+                return base if tz is None else base.astimezone(tz)
+        old_offset=server.MEDIA_PREWARM_STATE.get("utcOffsetMinutes")
+        try:
+            server.MEDIA_PREWARM_STATE["utcOffsetMinutes"]=-240
+            with patch.object(server,'datetime',FixedDateTime), patch.object(server,'ZoneInfo',side_effect=Exception('tzdata unavailable')):
+                self.assertEqual(server._client_date_iso(0,"America/New_York"),"2026-08-20")
+        finally:
+            server.MEDIA_PREWARM_STATE["utcOffsetMinutes"]=old_offset
+
+    def test_post_kickoff_scheduled_game_uses_transition_window(self):
+        class FixedDateTime(datetime):
+            @classmethod
+            def now(cls,tz=None):
+                base=datetime(2026,8,21,0,28,0,tzinfo=timezone.utc)
+                return base if tz is None else base.astimezone(tz)
+            @classmethod
+            def fromisoformat(cls,value):
+                return datetime.fromisoformat(value)
+            @classmethod
+            def fromtimestamp(cls,value,tz=None):
+                return datetime.fromtimestamp(value,tz=tz)
+        payload={"data":[{"date":"2026-08-21T00:00:00Z","status":"8:00 PM","state":{"status":"scheduled"}}]}
+        with patch.object(server,'datetime',FixedDateTime):
+            self.assertTrue(server._payload_has_transition_game(payload,"America/New_York"))
+
+    def test_espn_authority_overlays_stale_scheduled_state(self):
+        highlightly={"data":[{
+            "date":"2026-08-20T20:00:00-04:00",
+            "awayTeam":{"abbreviation":"DAL","name":"Dallas Cowboys"},
+            "homeTeam":{"abbreviation":"NYG","name":"New York Giants"},
+            "state":{"description":"Scheduled","status":"scheduled"},
+            "status":"8:00 PM"
+        }]}
+        espn=[{
+            "date":"2026-08-21T00:00:00Z",
+            "awayTeam":{"abbreviation":"DAL","name":"Dallas Cowboys"},
+            "homeTeam":{"abbreviation":"NYG","name":"New York Giants"},
+            "state":{"description":"Q1 12:34","status":"in","report":"LIVE"},
+            "status":"Q1 12:34","clock":"12:34","period":1,"completed":False,
+            "score":{"awayScore":"3","homeScore":"0"}
+        }]
+        with patch.object(server,'_client_date_iso',return_value='2026-08-20'), patch.object(server,'_espn_live_authority',return_value=espn):
+            out=server._reconcile_scoreboard_authority(highlightly,'nfl','2026-08-20','America/New_York')
+        row=out['data'][0]
+        self.assertEqual(row['status'],'Q1 12:34')
+        self.assertEqual(row['clock'],'12:34')
+        self.assertEqual(row['__sbbScoreAuthority'],'ESPN')
+        self.assertEqual(row['state']['report'],'LIVE')
+
+    def test_espn_cdn_fallback_supplies_live_nfl_state(self):
+        live_event={
+            "id":"401999001","date":"2026-08-21T00:00:00Z","name":"Las Vegas Raiders at Houston Texans","shortName":"LV @ HOU",
+            "competitions":[{"competitors":[
+                {"homeAway":"away","score":"3","team":{"id":"13","displayName":"Las Vegas Raiders","abbreviation":"LV"}},
+                {"homeAway":"home","score":"17","team":{"id":"34","displayName":"Houston Texans","abbreviation":"HOU"}}
+            ]}],
+            "status":{"displayClock":"0:00","period":2,"type":{"state":"in","shortDetail":"Halftime","completed":False}}
+        }
+        cdn={"content":{"sbData":{"events":[live_event]}}}
+        def fake_fetch(url,timeout=8):
+            if 'cdn.espn.com/core/nfl/scoreboard' in url: return cdn
+            raise RuntimeError('site endpoint blocked')
+        with patch.object(server,'_read_scoreboard_cache',return_value=(None,None)), patch.object(server,'_write_scoreboard_cache'), patch.object(server,'_espn_fetch_json',side_effect=fake_fetch), patch.object(server,'ZoneInfo',side_effect=Exception('tzdata unavailable')):
+            rows=server._espn_scoreboard('NFL','2026-08-20','America/New_York',-240)
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['score']['homeScore'],'17')
+        self.assertEqual(rows[0]['state']['report'],'LIVE')
+        self.assertEqual(rows[0]['period'],2)
+
+    def test_nfl_scoreboard_queries_utc_window_for_evening_viewer_day(self):
+        event={
+            "id":"401873285","date":"2026-08-21T02:00:00Z","name":"San Francisco 49ers at Los Angeles Chargers","shortName":"SF @ LAC",
+            "competitions":[{"competitors":[
+                {"homeAway":"away","score":"41","team":{"displayName":"San Francisco 49ers","abbreviation":"SF"}},
+                {"homeAway":"home","score":"17","team":{"displayName":"Los Angeles Chargers","abbreviation":"LAC"}}
+            ]}],
+            "status":{"displayClock":"0:00","period":4,"type":{"state":"post","shortDetail":"Final","completed":True}}
+        }
+        calls=[]
+        def fake_fetch(url,timeout=8):
+            calls.append(url)
+            return {"events":[event]}
+        with patch.object(server,'_read_scoreboard_cache',return_value=(None,None)), patch.object(server,'_write_scoreboard_cache'), patch.object(server,'_espn_fetch_json',side_effect=fake_fetch), patch.object(server,'ZoneInfo',side_effect=Exception('tzdata unavailable')):
+            rows=server._espn_scoreboard('NFL','2026-08-20','America/Los_Angeles',-420)
+        self.assertEqual([x['id'] for x in rows],['401873285'])
+        self.assertTrue(any('dates=20260819-20260821' in url for url in calls))
+
+    def test_espn_historical_lookup_skips_wrong_day_envelope(self):
+        wrong={
+            "id":"wrong-day","date":"2026-08-22T00:00:00Z","name":"Wrong Day","shortName":"WRG @ DAY",
+            "competitions":[{"competitors":[
+                {"homeAway":"away","score":"0","team":{"displayName":"Wrong","abbreviation":"WRG"}},
+                {"homeAway":"home","score":"0","team":{"displayName":"Day","abbreviation":"DAY"}}
+            ]}],
+            "status":{"displayClock":"0:00","period":0,"type":{"state":"pre","shortDetail":"Scheduled","completed":False}}
+        }
+        wanted={
+            # Midnight UTC Aug 21 is still Aug 20 for an Eastern viewer.
+            "id":"wanted-day","date":"2026-08-21T00:00:00Z","name":"Dallas Cowboys at New York Giants","shortName":"DAL @ NYG",
+            "competitions":[{"competitors":[
+                {"homeAway":"away","score":"21","team":{"displayName":"Dallas Cowboys","abbreviation":"DAL"}},
+                {"homeAway":"home","score":"17","team":{"displayName":"New York Giants","abbreviation":"NYG"}}
+            ]}],
+            "status":{"displayClock":"0:00","period":4,"type":{"state":"post","shortDetail":"Final","completed":True}}
+        }
+        calls=[]
+        def fake_fetch(url,timeout=8):
+            calls.append(url)
+            return {"events":[wrong]} if len(calls)==1 else {"events":[wanted]}
+        with patch.object(server,'_read_scoreboard_cache',return_value=(None,None)), patch.object(server,'_write_scoreboard_cache'), patch.object(server,'_espn_fetch_json',side_effect=fake_fetch), patch.object(server,'ZoneInfo',side_effect=Exception('tzdata unavailable')):
+            rows=server._espn_scoreboard('NFL','2026-08-20','America/New_York',-240)
+        self.assertGreaterEqual(len(calls),2)
+        self.assertEqual([x['id'] for x in rows],['wanted-day'])
+
+    def test_espn_soccer_utc_timestamp_uses_viewer_calendar_day(self):
+        # 02:30 UTC Aug 20 is 10:30 PM Aug 19 for an Eastern viewer. It must be
+        # YESTERDAY on Aug 20, not TODAY merely because ESPN's UTC date is Aug 20.
+        event={
+            "id":"761738","date":"2026-08-20T02:30:00Z","name":"San Jose Earthquakes at LA Galaxy","shortName":"SJ @ LA",
+            "competitions":[{"competitors":[
+                {"homeAway":"away","score":"0","team":{"displayName":"San Jose Earthquakes","abbreviation":"SJ"}},
+                {"homeAway":"home","score":"1","team":{"displayName":"LA Galaxy","abbreviation":"LA"}}
+            ]}],
+            "status":{"displayClock":"90:00","period":2,"type":{"state":"post","shortDetail":"Final","completed":True}}
+        }
+        payload={"events":[event]}
+        with patch.object(server,'_read_scoreboard_cache',return_value=(None,None)), patch.object(server,'_write_scoreboard_cache'), patch.object(server,'_espn_fetch_json',return_value=payload), patch.object(server,'ZoneInfo',side_effect=Exception('tzdata unavailable')):
+            aug19=server._espn_scoreboard('MLS','2026-08-19','America/New_York',-240)
+            aug20=server._espn_scoreboard('MLS','2026-08-20','America/New_York',-240)
+        self.assertEqual([x['id'] for x in aug19],['761738'])
+        self.assertEqual(aug20,[])
+
+    def test_nfl_official_preseason_week_title_is_accepted_as_recap(self):
+        search_row={
+            "id":{"videoId":"DHlHW9N7lbg"},
+            "snippet":{"title":"San Francisco 49ers vs. Los Angeles Chargers | 2026 Preseason Week 2","description":"San Francisco 49ers vs. Los Angeles Chargers - Highlights | 2026 Preseason Week 2","channelTitle":"NFL","publishedAt":"2026-08-21T05:00:00Z"}
+        }
+        detail={
+            "id":"DHlHW9N7lbg",
+            "snippet":search_row["snippet"],
+            "contentDetails":{"duration":"PT12M30S"},
+            "status":{"embeddable":True},
+            "statistics":{"viewCount":"100000"}
+        }
+        def fake_youtube(url,timeout=10):
+            if '/search?' in url: return {"items":[search_row]}
+            if '/videos?' in url: return {"items":[detail]}
+            raise AssertionError(url)
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(server,'_date_iso',return_value='2026-08-20'), \
+             patch.object(server,'read_youtube_key',return_value='fake-key'), \
+             patch.object(server,'_official_nfl_feed_videos',return_value=[]), \
+             patch.object(server,'youtube_fetch_json',side_effect=fake_youtube), \
+             patch.object(server,'_espn_search_video_results',return_value=[]), \
+             patch.object(server,'_generic_rapid_cache_path',return_value=Path(td)/'nfl.json'):
+            rows=server.generic_rapid_team_videos('NFL','2026-08-20','San Francisco 49ers','Los Angeles Chargers',force_refresh=True)
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['youtubeId'],'DHlHW9N7lbg')
+        self.assertTrue(rows[0]['overview'])
+        self.assertEqual(rows[0]['programType'],'recap')
+        self.assertTrue(rows[0]['verifiedPlayable'])
+        self.assertEqual(rows[0]['durationSeconds'],750)
+
+
+    def test_official_nfl_atom_feed_finds_recap_without_api_key(self):
+        from io import BytesIO
+        xml=b"""<?xml version='1.0' encoding='UTF-8'?>
+        <feed xmlns='http://www.w3.org/2005/Atom' xmlns:yt='http://www.youtube.com/xml/schemas/2015' xmlns:media='http://search.yahoo.com/mrss/'>
+          <entry>
+            <yt:videoId>8wd5sEqGYpI</yt:videoId>
+            <title>Las Vegas Raiders vs. Houston Texans | 2026 Preseason Week 2</title>
+            <published>2026-08-21T03:00:00Z</published>
+            <media:group><media:thumbnail url='https://img.test/nfl.jpg'/></media:group>
+          </entry>
+          <entry>
+            <yt:videoId>noise</yt:videoId>
+            <title>NFL Top 100 Players</title>
+            <published>2026-08-21T02:00:00Z</published>
+          </entry>
+        </feed>"""
+        with patch.object(server,'urlopen',return_value=BytesIO(xml)):
+            rows=server._official_nfl_feed_videos('2026-08-20','Las Vegas Raiders','Houston Texans')
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['youtubeId'],'8wd5sEqGYpI')
+        self.assertTrue(rows[0]['overview'])
+        self.assertEqual(rows[0]['sourceLabel'],'NFL')
+
+    def test_official_nfl_feed_filters_non_embeddable_video_when_key_exists(self):
+        from io import BytesIO
+        xml=b"""<?xml version='1.0' encoding='UTF-8'?>
+        <feed xmlns='http://www.w3.org/2005/Atom' xmlns:yt='http://www.youtube.com/xml/schemas/2015' xmlns:media='http://search.yahoo.com/mrss/'>
+          <entry><yt:videoId>blocked123</yt:videoId><title>San Francisco 49ers vs. Los Angeles Chargers | 2026 Preseason Week 2</title><published>2026-08-21T03:00:00Z</published></entry>
+          <entry><yt:videoId>playable456</yt:videoId><title>San Francisco 49ers vs. Los Angeles Chargers | 2026 Preseason Week 2 Game Highlights</title><published>2026-08-21T03:01:00Z</published></entry>
+        </feed>"""
+        details={"items":[
+            {"id":"blocked123","status":{"embeddable":False,"privacyStatus":"public"},"contentDetails":{"duration":"PT10M"}},
+            {"id":"playable456","status":{"embeddable":True,"privacyStatus":"public"},"contentDetails":{"duration":"PT8M"}},
+        ]}
+        with patch.object(server,'urlopen',return_value=BytesIO(xml)), \
+             patch.object(server,'read_youtube_key',return_value='key'), \
+             patch.object(server,'youtube_fetch_json',return_value=details):
+            rows=server._official_nfl_feed_videos('2026-08-20','San Francisco 49ers','Los Angeles Chargers')
+        self.assertEqual([x['youtubeId'] for x in rows],['blocked123','playable456'])
+        blocked,playable=rows
+        self.assertTrue(blocked['externalOnly'])
+        self.assertFalse(blocked['verifiedPlayable'])
+        self.assertFalse(blocked['embedValidated'])
+        self.assertTrue(playable['verifiedPlayable'])
+        self.assertTrue(playable['embedValidated'])
+        self.assertEqual(playable['durationSeconds'],480)
+
+    def test_nfl_event_id_espn_video_package_provides_direct_playable_media(self):
+        payload={"videos":[{
+            "id":"espnclip1","headline":"49ers vs. Chargers Game Highlights","duration":242,
+            "tracking":{"coverageType":"Final Game Highlight"},
+            "links":{"source":{"HD":{"href":"https://media.video-cdn.espn.com/motion/test/highlights_720.mp4"}}}
+        }]}
+        with patch.object(server,'_espn_fetch_json',return_value=payload) as fetcher:
+            rows=server._espn_event_video_results('401873285','NFL','San Francisco 49ers','Los Angeles Chargers')
+        self.assertEqual(len(rows),1)
+        self.assertTrue(rows[0]['verifiedPlayable'])
+        self.assertTrue(rows[0]['overview'])
+        self.assertEqual(rows[0]['provider'],'ESPN')
+        self.assertTrue(rows[0]['mediaUrl'].endswith('.mp4'))
+        self.assertIn('summary?event=401873285',fetcher.call_args.args[0])
+
+    def test_nfl_club_site_fallback_surfaces_official_full_game_highlights(self):
+        from io import BytesIO
+        page=b'<html><body><a href="/video/full-game-highlights-raiders-vs-texans-nfl-preseason-week-2-2026">Full Game Highlights: Raiders vs. Texans - Preseason Week 2</a></body></html>'
+        with patch.object(server,'urlopen',return_value=BytesIO(page)):
+            rows=server._nfl_team_site_video_results('2026-08-20','Las Vegas Raiders','Houston Texans')
+        self.assertTrue(rows)
+        self.assertTrue(rows[0]['externalOnly'])
+        self.assertTrue(rows[0]['overview'])
+        self.assertIn('raiders.com/video/full-game-highlights',rows[0]['externalUrl'])
+
+    def test_cross_sport_espn_video_fallback_runs_without_youtube_key(self):
+        espn_row={'id':'espn-1','league':'NFL','title':'Raiders vs Texans game highlights','mediaUrl':'https://example.test/video.mp4','verifiedPlayable':True,'overview':True,'programType':'recap','durationSeconds':240,'importance':90}
+        with tempfile.TemporaryDirectory() as td, \
+             patch.object(server,'read_youtube_key',return_value=''), \
+             patch.object(server,'_official_nfl_feed_videos',return_value=[]), \
+             patch.object(server,'_historical_youtube_web_results',return_value=[]), \
+             patch.object(server,'_historical_search_engine_youtube_results',return_value=[]), \
+             patch.object(server,'_official_youtube_history_api_results',return_value=[]), \
+             patch.object(server,'_espn_search_video_results',return_value=[espn_row]) as espn, \
+             patch.object(server,'_generic_rapid_cache_path',return_value=Path(td)/'nfl.json'):
+            rows=server.generic_rapid_team_videos('NFL','2026-08-20','Las Vegas Raiders','Houston Texans',force_refresh=True)
+        espn.assert_called_once()
+        self.assertEqual(rows[0]['id'],'espn-1')
+        self.assertTrue(rows[0]['verifiedPlayable'])
+
+    def test_nfl_preseason_week_rescue_finds_target_day_when_date_boards_are_empty(self):
+        event={
+            "id":"401873285","date":"2026-08-21T02:00:00Z","name":"San Francisco 49ers at Los Angeles Chargers","shortName":"SF @ LAC",
+            "competitions":[{"competitors":[
+                {"homeAway":"away","score":"41","team":{"displayName":"San Francisco 49ers","abbreviation":"SF"}},
+                {"homeAway":"home","score":"17","team":{"displayName":"Los Angeles Chargers","abbreviation":"LAC"}}
+            ]}],
+            "status":{"displayClock":"0:00","period":4,"type":{"state":"post","shortDetail":"Final","completed":True}}
+        }
+        calls=[]
+        def fake_fetch(url,timeout=8):
+            calls.append(url)
+            if 'seasontype=1' in url and 'week=2' in url: return {"events":[event]}
+            return {"events":[]}
+        with patch.object(server,'_read_scoreboard_cache',return_value=(None,None)), patch.object(server,'_write_scoreboard_cache'), patch.object(server,'_espn_fetch_json',side_effect=fake_fetch), patch.object(server,'ZoneInfo',side_effect=Exception('tzdata unavailable')):
+            rows=server._espn_scoreboard('NFL','2026-08-20','America/Los_Angeles',-420)
+        self.assertEqual([x['id'] for x in rows],['401873285'])
+        self.assertTrue(any('seasontype=1' in u and 'week=2' in u for u in calls))
+
+    def test_soccer_all_parser_collects_later_league_event_lists(self):
+        other={"id":"other","date":"2026-08-21T18:00:00Z","season":{"slug":"spanish-la-liga"},"competitions":[{"competitors":[]}],"status":{"type":{"state":"pre"}}}
+        epl={
+            "id":"epl-ars-cov","date":"2026-08-21T19:00:00Z","season":{"slug":"2026-27-english-premier-league"},
+            "name":"Coventry City at Arsenal","competitions":[{"competitors":[
+                {"homeAway":"away","team":{"displayName":"Coventry City","abbreviation":"COV"}},
+                {"homeAway":"home","team":{"displayName":"Arsenal","abbreviation":"ARS"}}
+            ]}],"status":{"type":{"state":"pre","shortDetail":"Scheduled","completed":False}}
+        }
+        payload={"sports":[{"leagues":[{"events":[other]},{"events":[epl]}]}]}
+        rows=server._espn_event_rows(payload)
+        self.assertEqual({x['id'] for x in rows},{'other','epl-ars-cov'})
+        self.assertTrue(server._espn_generic_soccer_event_matches(epl,'EPL'))
+
+    def test_epl_season_rescue_finds_fixture_when_day_endpoints_are_empty(self):
+        epl={
+            "id":"epl-ars-cov","date":"2026-08-21T19:00:00Z","season":{"slug":"2026-27-english-premier-league"},
+            "name":"Coventry City at Arsenal","competitions":[{"competitors":[
+                {"homeAway":"away","team":{"displayName":"Coventry City","abbreviation":"COV"}},
+                {"homeAway":"home","team":{"displayName":"Arsenal","abbreviation":"ARS"}}
+            ]}],"status":{"type":{"state":"pre","shortDetail":"Scheduled","completed":False}}
+        }
+        def fake_fetch(url,timeout=8):
+            if '/soccer/eng.1/scoreboard' in url and 'dates=2026&' in url: return {"events":[epl]}
+            return {"events":[]}
+        with patch.object(server,'_read_scoreboard_cache',return_value=(None,None)), patch.object(server,'_write_scoreboard_cache'), patch.object(server,'_espn_fetch_json',side_effect=fake_fetch), patch.object(server,'ZoneInfo',side_effect=Exception('tzdata unavailable')):
+            rows=server._espn_scoreboard('EPL','2026-08-21','America/New_York',-240)
+        self.assertEqual([x['id'] for x in rows],['epl-ars-cov'])
+
+
+if __name__=='__main__': unittest.main()

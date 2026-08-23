@@ -1,4 +1,4 @@
-/* Sports Big Board v3.0.0 — persistent per-event media manifest.
+/* Sports Big Board v3.0.1 — persistent per-event media manifest.
    One truth feeds score rails, resolver, alternates, and playback failover. */
 (() => {
   const manifests=new Map(),listeners=new Set();

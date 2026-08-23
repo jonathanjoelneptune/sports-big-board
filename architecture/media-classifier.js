@@ -1,4 +1,4 @@
-/* v3.0.0 single authoritative media taxonomy for Gold/Green/Purple/Blue. */
+/* v3.0.1 single authoritative media taxonomy for Gold/Green/Purple/Blue. */
 (() => {
   const TIER=Object.freeze({COMMENTARY:'gold',QUICK:'green',EXTENDED:'extended',HIGHLIGHT_REEL:'blue'});
   const duration=item=>Number(item?.durationSeconds??item?.duration??0)||0;
