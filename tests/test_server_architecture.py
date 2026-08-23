@@ -828,6 +828,58 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(data["summary"]["tiers"]["green"],1)
             self.assertEqual(data["summary"]["upgradePendingGames"],1)
 
+    def test_history_audit_projects_unknown_with_known_green_as_pending_index_and_upgradeable(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"scoreEventId":"evt-stale-green","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"},"completed":True}
+            repo.put_scores("2025-12-25","NBA",[event])
+            repo.put_event_media("2025-12-25","NBA","evt-stale-green",[
+                {"id":"green1","scoreEventId":"evt-stale-green","recapTier":"green","title":"Full Game Highlights","youtubeId":"abcdefghijk","verifiedPlayable":True,"validationState":"VERIFIED","historyVerifiedAt":100}
+            ])
+            data=repo.audit_catalog(date_from="2025-12-25",date_to="2025-12-25",current_discovery_version=9)
+            row=data["rows"][0]
+            self.assertEqual(row["discoveryState"],"UNKNOWN")
+            self.assertEqual(row["effectiveStatus"],"PENDING_INDEX")
+            self.assertTrue(row["discoveryPending"])
+            self.assertTrue(row["upgradeEligible"])
+            self.assertEqual(row["bestTier"],"green")
+            self.assertEqual(data["summary"]["effectiveStatuses"]["PENDING_INDEX"],1)
+            self.assertEqual(data["summary"]["upgradePendingGames"],1)
+
+    def test_history_audit_projects_unknown_without_media_as_pending_index_not_false_complete(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            repo.put_scores("2025-12-24","NFL",[{"scoreEventId":"evt-empty","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"},"completed":True}])
+            data=repo.audit_catalog(current_discovery_version=9)
+            row=data["rows"][0]
+            self.assertEqual(row["effectiveStatus"],"PENDING_INDEX")
+            self.assertTrue(row["discoveryPending"])
+            self.assertFalse(row["upgradeEligible"])
+            self.assertEqual(data["summary"]["noVerifiedMediaGames"],1)
+
+    def test_history_audit_actual_gold_overrides_stale_unknown_bookkeeping(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"scoreEventId":"evt-gold","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"},"completed":True}
+            repo.put_scores("2025-12-23","NBA",[event])
+            repo.put_event_media("2025-12-23","NBA","evt-gold",[
+                {"id":"gold1","scoreEventId":"evt-gold","recapTier":"gold","title":"Postgame Recap","youtubeId":"abcdefghijk","verifiedPlayable":True,"validationState":"VERIFIED","historyVerifiedAt":100}
+            ])
+            row=repo.audit_catalog(current_discovery_version=9)["rows"][0]
+            self.assertEqual(row["effectiveStatus"],"QUALITY_COMPLETE")
+            self.assertTrue(row["qualityComplete"])
+            self.assertFalse(row["upgradeEligible"])
+
+    def test_history_audit_export_preserves_raw_state_and_adds_projected_status(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            repo.put_scores("2025-12-22","NBA",[{"scoreEventId":"evt-export","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"},"completed":True}])
+            rows=repo.audit_export_rows(current_discovery_version=9)
+            self.assertEqual(rows[0]["Audit Status"],"PENDING INDEX")
+            self.assertEqual(rows[0]["Discovery State"],"UNKNOWN")
+            self.assertTrue(rows[0]["Discovery Pending"])
+            self.assertEqual(rows[0]["Current Discovery Version"],9)
+
     def test_discovery_version_9_soft_reindex_ignores_old_closed_retry(self):
         row={'id':'nba-old-v7','espnEventId':'nba-old-v7','completed':True,
              'awayTeam':{'name':'Away Club'},'homeTeam':{'name':'Home Club'}}

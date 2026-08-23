@@ -1,8 +1,8 @@
-# Sports Big Board v3.0.4 — Cloud Stage 1
+# Sports Big Board v3.0.5 — Cloud Stage 1
 
-v3.0.4 turns the existing local Sports Big Board server into an always-on Stage 1 cloud deployment without changing the core event/media/Game Center architecture.
+v3.0.5 turns the existing local Sports Big Board server into an always-on Stage 1 cloud deployment without changing the core event/media/Game Center architecture.
 
-## v3.0.4 one-push GitHub deployment
+## v3.0.5 one-push GitHub deployment
 
 Stage 1 can now deploy both halves of Sports Big Board from one push to `main`. After a one-time keyless Google/GitHub trust setup, uploading the complete unzipped repository contents to the root of the GitHub repository is the entire release process.
 
@@ -56,7 +56,7 @@ The browser no longer needs Termux or Windows CMD for normal use. Local launch s
 ## One-time Google Cloud deployment
 
 1. Open Google Cloud Console and launch **Cloud Shell**.
-2. Upload `sports-big-board-v3.0.4.zip` to Cloud Shell and extract it.
+2. Upload `sports-big-board-v3.0.5.zip` to Cloud Shell and extract it.
 3. Select the project that should own Sports Big Board:
 
 ```bash
@@ -105,7 +105,7 @@ In the GitHub repository:
 1. **Settings → Secrets and variables → Actions → Variables**
 2. Create repository variable `SBB_API_BASE_URL` with that HTTPS backend URL.
 3. **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-4. Push v3.0.4 to `main`.
+4. Push v3.0.5 to `main`.
 
 `.github/workflows/deploy-pages.yml` verifies the release, deploys the backend, verifies health, and only then publishes the static frontend. Backend code, SQLite databases, caches, and API credentials are never included in the Pages artifact.
 
@@ -161,7 +161,7 @@ In cloud mode API credentials are environment-managed on the server. The public 
 Android / Termux:
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v3.0.4/sports-big-board-v3.0.4
+cd ~/storage/downloads/sports-big-board-v3.0.5/sports-big-board-v3.0.5
 bash START-ANDROID.sh
 ```
 

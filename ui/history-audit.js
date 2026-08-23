@@ -1,4 +1,4 @@
-/* Sports Big Board v3.0.4 historical database audit view. */
+/* Sports Big Board v3.0.5 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null};
@@ -32,11 +32,13 @@
     return shown+(items.length>2?`<span class="audit-more">+${items.length-2} more</span>`:'');
   }
   function renderSummary(summary={}){
-    const t=summary.tiers||{}, b=summary.best||{};
+    const t=summary.tiers||{}, b=summary.best||{}, st=summary.effectiveStatuses||{};
     const map={historyAuditGames:summary.games||0,historyAuditVerified:summary.verifiedAssets||0,historyAuditGold:t.gold||0,historyAuditGreen:t.green||0,historyAuditPurple:t.extended||0,historyAuditBlue:t.blue||0,historyAuditUpgrade:summary.upgradePendingGames||0};
     for(const [id,val] of Object.entries(map)){const el=$(id);if(el)el.textContent=Number(val).toLocaleString();}
     const best=$('historyAuditBestSummary');
     if(best)best.textContent=`Best per game: ${Number(b.gold||0).toLocaleString()} Gold • ${Number(b.green||0).toLocaleString()} Green • ${Number(b.extended||0).toLocaleString()} Purple • ${Number(b.blue||0).toLocaleString()} Blue • ${Number(b.none||0).toLocaleString()} none`;
+    const status=$('historyAuditStatusSummary');
+    if(status)status.textContent=`Status projection: ${Number(st.PENDING_INDEX||0).toLocaleString()} Pending Index • ${Number(st.UPGRADE_PENDING||0).toLocaleString()} Upgrade Pending • ${Number(st.PARTIAL||0).toLocaleString()} Partial • ${Number(st.QUALITY_COMPLETE||0).toLocaleString()} Quality Complete • ${Number(summary.noVerifiedMediaGames||0).toLocaleString()} without verified media`;
   }
   function renderRows(payload){
     const body=$('historyAuditTableBody'); if(!body)return;
@@ -44,7 +46,11 @@
     if(!rows.length){body.innerHTML='<tr><td colspan="9" class="audit-no-results">No games match these filters.</td></tr>';return;}
     body.innerHTML=rows.map(row=>{
       const tiers=row.tiers||{}; const best=row.bestTier||'none';
-      const status=row.qualityComplete?'QUALITY COMPLETE':(row.upgradeEligible?'UPGRADE PENDING':String(row.discoveryState||'UNKNOWN').replaceAll('_',' '));
+      const effective=String(row.effectiveStatus||'PENDING_INDEX');
+      const status=effective.replaceAll('_',' ');
+      const statusDetail=row.discoveryPending
+        ? `Discovery v${Number(row.currentDiscoveryVersion||0)} pass pending${row.bestTier&&row.bestTier!=='none'?' • media already known':''}`
+        : (row.nextRetryAt?`Retry ${new Date(row.nextRetryAt*1000).toLocaleString()}`:(row.lastError?String(row.lastError).slice(0,90):''));
       return `<tr>
         <td class="audit-date">${esc(fmtDate(row.date))}</td>
         <td><span class="audit-league">${esc(row.league)}</span></td>
@@ -54,7 +60,7 @@
         <td class="audit-tier-cell purple">${mediaCell(tiers.extended,'extended')}</td>
         <td class="audit-tier-cell blue">${mediaCell(tiers.blue,'blue')}</td>
         <td><span class="audit-best tier-${esc(best)}">${esc(tierLabel(best))}</span></td>
-        <td class="audit-status"><strong>${esc(status)}</strong>${row.nextRetryAt?`<small>Retry ${new Date(row.nextRetryAt*1000).toLocaleString()}</small>`:''}</td>
+        <td class="audit-status status-${esc(effective.toLowerCase().replaceAll('_','-'))}" title="Raw state: ${esc(row.discoveryState||'UNKNOWN')} • stored discovery v${Number(row.discoveryVersion||0)}"><strong>${esc(status)}</strong>${statusDetail?`<small>${esc(statusDetail)}</small>`:''}</td>
       </tr>`;
     }).join('');
   }
@@ -71,7 +77,7 @@
       const r=await fetch(`/api/history/audit?${queryParams(true).toString()}`,{cache:'no-store'}); const data=await r.json();
       if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);
       state.total=Number(data.total||0);state.lastPayload=data;renderSummary(data.summary||{});renderRows(data);updatePager();
-      const msg=$('historyAuditMessage');if(msg)msg.textContent=`Read-only view of the persistent cloud catalog • ${Number(data.repository?.days||0).toLocaleString()} dates stored`;
+      const msg=$('historyAuditMessage');if(msg)msg.textContent=`Read-only catalog truth • ${Number(data.repository?.days||0).toLocaleString()} dates stored • PENDING INDEX means the game exists but has not completed the current per-event discovery pass`;
     }catch(err){
       const body=$('historyAuditTableBody');if(body)body.innerHTML=`<tr><td colspan="9" class="audit-no-results">Audit load failed: ${esc(err.message||err)}</td></tr>`;
     }finally{state.loading=false;$('historyAuditLoading')?.classList.add('hidden');}
