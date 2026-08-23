@@ -1,4 +1,4 @@
-/* Sports Big Board v3.0.7 — provider-independent EventMediaResolver. */
+/* Sports Big Board v3.0.9 — provider-independent EventMediaResolver. */
 (() => {
   const R=()=>window.SBB_SPORT_MEDIA_POLICY?.REQUEST||{QUICK:'QUICK',EXTENDED:'EXTENDED',COMMENTARY:'COMMENTARY',MOMENTS:'MOMENTS',ANY:'ANY'};
   const classifier=()=>window.SBB_MEDIA_CLASSIFIER;

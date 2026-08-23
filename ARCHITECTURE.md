@@ -1,4 +1,4 @@
-# Sports Big Board v3.0.7 Architecture
+# Sports Big Board v3.0.9 Architecture
 
 ## Product model
 
@@ -63,7 +63,7 @@ Changing `browseDate` can fetch and render another day's slate but cannot call P
 
 Past-day score and media snapshots remain resident in the browser session. Final historical Game Centers may remain HOT for 24 hours in browser memory while partial shells retain the short retry TTL; the server's persistent repository remains the WARM authority.
 
-### v3.0.7 historical discovery completion
+### v3.0.9 historical discovery completion
 
 Historical media now uses three independent truths:
 
@@ -280,20 +280,20 @@ The IFrame API remains final runtime authority. Error 101/150 demotes only the e
 `HISTORY_DISCOVERY_VERSION = 7` ensures older v3.0.1 and v2.8.x discovery records are reconsidered under the playable-vs-catalog-complete model without deleting the historical SQLite database.
 
 
-## v3.0.7 success condition
+## v3.0.9 success condition
 
 Adding a league no longer requires teaching PlaybackController how that league works. The integration path is: register the competition, add/enable score inventory, contribute media assets through provider adapters, configure sport media policy, and use the shared Game Center contract. Existing providers may fail independently without collapsing the event inventory or forcing a league-specific playback branch.
 
 A user can select and play a game, fail over among same-game sources, scroll normalized Game Center data while optionally keeping the video visible, switch games rapidly, restart the server and reuse prepared final Game Centers, and configure APIs once per machine — all while PlaybackController remains the sole media activation authority.
 
-## v3.0.7 catalog-to-ribbon reconciliation
+## v3.0.9 catalog-to-ribbon reconciliation
 
-A verified asset is only useful when the browser actually hydrates it. v3.0.7 removes the remaining legacy `history_day.media_saved_at` dependency from browser hydration. `history_media_asset` is authoritative and is always projected into `ScoreDateStore` for the selected historical date. This guarantees that server inventory, ribbon availability, event playback plans, and PlaybackController all consume the same asset truth.
+A verified asset is only useful when the browser actually hydrates it. v3.0.9 removes the remaining legacy `history_day.media_saved_at` dependency from browser hydration. `history_media_asset` is authoritative and is always projected into `ScoreDateStore` for the selected historical date. This guarantees that server inventory, ribbon availability, event playback plans, and PlaybackController all consume the same asset truth.
 
 Historical click flow is now cache-first: `GET /api/history/event/media` -> play if verified -> otherwise `POST /api/history/event/discover` -> rehydrate date -> play. `apiJson()` preserves RequestInit so POST semantics cannot silently degrade to GET.
 
 
-## v3.0.7 Cloud Stage 1 deployment boundary
+## v3.0.9 Cloud Stage 1 deployment boundary
 
 The browser and backend are now independently deployable. `config.js` selects the API origin at runtime and `api-runtime.js` rewrites `/api/*` requests to the configured HTTPS backend. Local mode leaves `apiBase` empty and remains same-origin. GitHub Pages builds inject `SBB_API_BASE_URL` and publish static assets only.
 
@@ -304,6 +304,6 @@ The VM remains the single discovery owner. GitHub Pages contains no API keys and
 The Stage 1 invariant is: **frontend deployments are disposable; historical state is persistent.**
 
 
-## v3.0.7 audit-state projection
+## v3.0.9 audit-state projection
 
 `history_event.discovery_state` remains a raw durable pipeline marker. The audit API no longer displays raw `UNKNOWN` as if it means no data. It combines current discovery-version metadata with the normalized verified media catalog to derive `effectiveStatus`, `discoveryPending`, `catalogComplete`, `qualityComplete`, and inferred `upgradeEligible`. This projection is read-only and therefore cannot accidentally mark stale events current or suppress the version-driven reindex scheduler.

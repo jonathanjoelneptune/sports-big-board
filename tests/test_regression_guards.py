@@ -15,7 +15,7 @@ CONTRACT=(ROOT/'architecture/game-center-contract.js').read_text(encoding='utf-8
 
 class RegressionGuards(unittest.TestCase):
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=3.0.7','architecture/score-date-store.js?v=3.0.7','architecture/event-identity.js?v=3.0.7','architecture/media-classifier.js?v=3.0.7','architecture/playback-transports.js?v=3.0.7','architecture/provider-health.js?v=3.0.7','architecture/sport-media-policy.js?v=3.0.7','architecture/media-manifest.js?v=3.0.7','architecture/media-resolver.js?v=3.0.7','architecture/game-center-policy.js?v=3.0.7','architecture/selected-event-store.js?v=3.0.7','architecture/game-center-contract.js?v=3.0.7','architecture/media-work-priorities.js?v=3.0.7','architecture/editorial-packages.js?v=3.0.7','ui/player-visibility.js?v=3.0.7','ui/info-drawer.js?v=3.0.7','ui/settings-view.js?v=3.0.7','ui/history-audit.js?v=3.0.7','ui/game-center-view.js?v=3.0.7','app.js?v=3.0.7']
+        ordered=['core-model.js?v=3.0.9','architecture/score-date-store.js?v=3.0.9','architecture/event-identity.js?v=3.0.9','architecture/media-classifier.js?v=3.0.9','architecture/playback-transports.js?v=3.0.9','architecture/provider-health.js?v=3.0.9','architecture/sport-media-policy.js?v=3.0.9','architecture/media-manifest.js?v=3.0.9','architecture/media-resolver.js?v=3.0.9','architecture/game-center-policy.js?v=3.0.9','architecture/selected-event-store.js?v=3.0.9','architecture/game-center-contract.js?v=3.0.9','architecture/media-work-priorities.js?v=3.0.9','architecture/editorial-packages.js?v=3.0.9','ui/player-visibility.js?v=3.0.9','ui/info-drawer.js?v=3.0.9','ui/settings-view.js?v=3.0.9','ui/history-audit.js?v=3.0.9','ui/game-center-view.js?v=3.0.9','app.js?v=3.0.9']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -372,8 +372,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v3.0.7 — score ribbon recovery',STYLES)
-        self.assertIn('v3.0.7 — historical Date Browser',STYLES)
+        self.assertIn('v3.0.9 — score ribbon recovery',STYLES)
+        self.assertIn('v3.0.9 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -382,7 +382,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v3.0.7 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v3.0.9 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -545,7 +545,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v3.0.7',STYLES)
+        self.assertNotIn('\\n\\n/* v3.0.9',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)
@@ -884,5 +884,37 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('auto-refresh 30s',AUDIT)
         self.assertIn('setInterval',AUDIT)
         self.assertIn('BACKGROUND SEARCH ACTIVE',AUDIT)
+
+    def test_v308_search_console_is_copyable_and_distinguishes_yield_from_error(self):
+        self.assertIn('historySearchConsoleCopyIssues', INDEX)
+        self.assertIn('historySearchConsoleCopyAll', INDEX)
+        self.assertIn('historySearchConsoleDownload', INDEX)
+        self.assertIn('consoleIssuesReport', AUDIT)
+        self.assertIn('consoleFullReport', AUDIT)
+        self.assertIn('navigator.clipboard.writeText', AUDIT)
+        self.assertIn('limit=320', AUDIT)
+        self.assertIn('QUOTA EXHAUSTED', AUDIT)
+        self.assertIn('EXHAUSTED ${used}/${limit}', AUDIT)
+        self.assertIn("not in ('media-playback','foreground-history-discovery','foreground-request','playback-priority')", SERVER)
+        self.assertIn('Historical YouTube search budget exhausted', SERVER)
+
+    def test_v309_operator_priority_modes_suspend_the_opposite_resource(self):
+        repo=(ROOT/'sbb/history_repository.py').read_text(encoding='utf-8')
+        self.assertIn('historyModeSearch', INDEX)
+        self.assertIn('historyModeBalanced', INDEX)
+        self.assertIn('historyModePlayback', INDEX)
+        self.assertIn('/api/history/work-mode', SERVER)
+        self.assertIn('HISTORY_WORK_MODES = ("search","balanced","playback")', SERVER)
+        self.assertIn("if mode=='playback':", SERVER)
+        self.assertIn("elif mode=='search':", SERVER)
+        self.assertIn('PLAYBACK_SUSPENDED_BY_SEARCH_PRIORITY', SERVER)
+        self.assertIn('SEARCH_PAUSED_BY_PRIORITY', SERVER)
+        self.assertIn('searchPriorityPlaybackLock', INDEX)
+        self.assertIn('sbbPlaybackAllowed', APP)
+        self.assertIn("window.addEventListener('sbb:workmode'", APP)
+        self.assertIn("e.date>=date('now','-2 days')", repo)
+        self.assertIn('recent_no_media', repo)
+        self.assertIn('recent_gaps', repo)
+
 
 if __name__=='__main__': unittest.main()

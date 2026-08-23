@@ -8,7 +8,7 @@ from contextlib import closing
 class HistoryRepository:
     """Persistent historical score/event/media catalog.
 
-    v3.0.7 keeps the legacy date/league JSON rows for fast score hydration while
+    v3.0.9 keeps the legacy date/league JSON rows for fast score hydration while
     retaining normalized event and asset tables. Discovery metadata now tracks
     source exhaustion separately from preferred-media quality, so Blue/Purple/Green
     assets remain playable while the persistent cloud catalog keeps seeking Gold.
@@ -367,9 +367,19 @@ class HistoryRepository:
                 WHERE COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0
                   AND (e.next_retry_at<=? OR COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?)
                 ORDER BY
-                  CASE WHEN COALESCE(f.has_blue,0)=1 THEN 0 WHEN COALESCE(f.verified_count,0)=0 THEN 1 WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
+                  -- v3.0.9 recent-slate guard: before the worker spends hours deep in
+                  -- the archive, completed games from the newest three calendar days
+                  -- with no recap get a cursory pass. Within the older archive we keep
+                  -- the normal Blue -> none -> Purple Green-gap priority.
+                  CASE
+                    WHEN e.date>=date('now','-2 days') AND COALESCE(f.verified_count,0)=0 THEN -3
+                    WHEN e.date>=date('now','-2 days') AND COALESCE(f.has_blue,0)=1 THEN -2
+                    WHEN e.date>=date('now','-2 days') AND COALESCE(f.has_extended,0)=1 THEN -1
+                    WHEN COALESCE(f.has_blue,0)=1 THEN 0
+                    WHEN COALESCE(f.verified_count,0)=0 THEN 1
+                    WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
                   CASE WHEN e.next_retry_at<=? THEN 0 ELSE 1 END,
-                  e.last_discovery_at ASC, e.date DESC
+                  e.date DESC, e.last_discovery_at ASC
                 LIMIT ?
                 """,
                 (now,int(current_discovery_version or 0),now,limit),
@@ -409,6 +419,8 @@ class HistoryRepository:
                   SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND COALESCE(f.has_blue,0)=1 THEN 1 ELSE 0 END) AS blue_only,
                   SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND COALESCE(f.verified_count,0)=0 THEN 1 ELSE 0 END) AS no_media,
                   SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND COALESCE(f.has_extended,0)=1 AND COALESCE(f.has_blue,0)=0 THEN 1 ELSE 0 END) AS purple_only,
+                  SUM(CASE WHEN e.date>=date('now','-2 days') AND COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND COALESCE(f.verified_count,0)=0 THEN 1 ELSE 0 END) AS recent_no_media,
+                  SUM(CASE WHEN e.date>=date('now','-2 days') AND COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 THEN 1 ELSE 0 END) AS recent_gaps,
                   SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND (e.next_retry_at<=? OR COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?) THEN 1 ELSE 0 END) AS due_now,
                   SUM(CASE WHEN COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<? THEN 1 ELSE 0 END) AS stale_version
                 FROM history_event e LEFT JOIN flags f ON f.date=e.date AND f.league=e.league AND f.event_id=e.event_id
@@ -612,7 +624,7 @@ class HistoryRepository:
                       current_discovery_version=0, quality_target="gold"):
         """Return an Excel-like game-level view of the normalized history catalog.
 
-        v3.0.7 deliberately exposes an *effective* audit status in addition to the raw
+        v3.0.9 deliberately exposes an *effective* audit status in addition to the raw
         discovery state. This keeps legacy UNKNOWN rows from looking empty when the
         persistent media catalog already contains verified Green/Purple/Blue assets.
         """

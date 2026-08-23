@@ -1,8 +1,8 @@
-/* Sports Big Board v3.0.7 historical database audit view. */
+/* Sports Big Board v3.0.9 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='3.0.7';
-  const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,autoTimer:null,consoleTimer:null,consoleLoading:false};
+  const FRONTEND_VERSION='3.0.9';
+  const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
     if(!s)return '—';
@@ -79,11 +79,119 @@
     const next=$('historyAuditNext'); if(next)next.disabled=state.offset+state.limit>=state.total;
   }
   function consoleSet(id,text){const el=$(id);if(el)el.textContent=text;}
+  function consoleWorkerLine(name,st={}){
+    return `${name}: phase=${String(st.phase||'unknown')} • healthy=${st.healthy?'YES':'NO'} • heartbeat=${ageText(st.heartbeatAgeSeconds)} • progress=${ageText(st.progressAgeSeconds)}${st.current?` • current=${st.current}`:''}`;
+  }
+  function workModeFrom(data){
+    const mode=String(data?.workMode?.mode||data?.background?.workMode||window.SBB_RESOURCE_MODE||'balanced').toLowerCase();
+    return ['search','balanced','playback'].includes(mode)?mode:'balanced';
+  }
+  function applyWorkMode(mode,{dispatch=true}={}){
+    mode=['search','balanced','playback'].includes(String(mode))?String(mode):'balanced';
+    window.SBB_RESOURCE_MODE=mode;
+    const group=document.querySelector('.history-resource-mode'); if(group)group.classList.toggle('busy',state.modeUpdating);
+    for(const id of ['historyModeSearch','historyModeBalanced','historyModePlayback']){const btn=$(id);if(btn)btn.classList.toggle('active',btn.dataset.mode===mode);}
+    const head=document.querySelector('.history-search-console-head'); if(head){head.classList.toggle('mode-search',mode==='search');head.classList.toggle('mode-playback',mode==='playback');}
+    if(dispatch)window.dispatchEvent(new CustomEvent('sbb:workmode',{detail:{mode}}));
+  }
+  async function setWorkMode(mode){
+    mode=String(mode||'').toLowerCase(); if(!['search','balanced','playback'].includes(mode)||state.modeUpdating)return;
+    state.modeUpdating=true;applyWorkMode(mode,{dispatch:false});
+    const status=$('historySearchConsoleCopyStatus'); if(status)status.textContent='SETTING MODE…';
+    try{
+      const r=await fetch('/api/history/work-mode',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode}),cache:'no-store'});
+      const data=await r.json(); if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);
+      applyWorkMode(String(data.workMode?.mode||mode));
+      if(status)status.textContent=`${mode.toUpperCase()} MODE ACTIVE`;
+      setTimeout(()=>{if(status)status.textContent='';},2200);
+      loadConsole();load(false);
+    }catch(err){
+      if(status){status.classList.add('copy-error');status.textContent=`MODE FAILED: ${String(err?.message||err)}`;setTimeout(()=>{status.textContent='';status.classList.remove('copy-error');},3500);}
+      if(state.lastConsole)applyWorkMode(workModeFrom(state.lastConsole));
+    }finally{state.modeUpdating=false;applyWorkMode(window.SBB_RESOURCE_MODE||'balanced',{dispatch:false});}
+  }
+  function consoleFullReport(data){
+    const now=new Date(); const backend=String(data?.version||'UNKNOWN'); const discovery=Number(data?.historyDiscoveryVersion||0);
+    const threads=data?.threads||[], workers=data?.workers||{}, queue=data?.greenGapQueue||{}, bg=data?.background||{}, g=data?.greenGap||{}, back=data?.backfill||{};
+    const gateway=data?.youtubeGateway||{}, budget=data?.youtubeSearchBudget||{}, hi=data?.highlightly||{}, focus=data?.focus||{};
+    const used=Number(budget.used||0), limit=Number(budget.limit||budget.budget||0);
+    const rows=[
+      'SPORTS BIG BOARD — LIVE SEARCH CONSOLE',
+      `Captured: ${now.toLocaleString()} (${now.toISOString()})`,
+      `Frontend v${FRONTEND_VERSION} • Backend v${backend} • Discovery v${discovery} • Deployment ${String(data?.deploymentMode||'unknown')}`,
+      `[MODE] ${workModeFrom(data).toUpperCase()} • playbackSuspended=${data?.playbackSuspended?'YES':'NO'} • searchSuspended=${data?.searchSuspended?'YES':'NO'}`,
+      '',
+      `[STATE] server uptime ${Math.round(Number(data?.uptimeSeconds||0)/60)}m • green attempts ${Number(g.attempts||0)} • green upgrades ${Number(g.upgradedToGreen||0)}`,
+      `[THREADS] ${threads.map(x=>`${x.name}=${x.alive?'ALIVE':'DEAD'}`).join(' • ')||'none reported'}`,
+      `[WORKER] ${consoleWorkerLine('green-gap',workers['green-gap']||{})}`,
+      `[WORKER] ${consoleWorkerLine('date-backfill',workers['date-backfill']||{})}`,
+      `[QUEUE] total gaps ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent gaps ${Number(queue.recent_gaps||0)} • recent no-media ${Number(queue.recent_no_media||0)} • blue-only ${Number(queue.blue_only||0)} • no-media ${Number(queue.no_media||0)} • purple-only ${Number(queue.purple_only||0)} • stale-v ${Number(queue.stale_version||0)}`,
+      `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')} • lastError=${String(g.lastError||'none')}`,
+      `[BACKFILL] ${back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)} • media items ${Number(back.mediaItems||0)} • days ${Number(back.daysCompleted||0)}`:'waiting for first pass'} • lastError=${String(back.lastError||'none')}`,
+      `[BACKGROUND] ${bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`} • mediaAge=${Number(bg.mediaAgeSeconds||0)}s • interactiveAge=${Number(bg.interactiveAgeSeconds||0)}s • siteOpenDoesNotPause=${bg.siteOpenDoesNotPause?'YES':'NO'}`,
+      `[FOCUS] date=${focus.date||'none'} • until=${focus.until?new Date(Number(focus.until)*1000).toISOString():'none'} • foregroundDiscovery=${bg.foregroundDiscoveryRunning?'YES':'NO'}`,
+      `[SEARCH BUDGET] ${used}/${limit||'?'} today${limit&&used>=limit?' • EXHAUSTED':''}`,
+      `[HIGHLIGHTLY] ${hi.limited?'RATE LIMITED':'OK'} • remaining=${hi.remaining??'?'} • limit=${hi.limit??'?'}`,
+    ];
+    for(const op of ['search','videos','activities','playlistItems','channels']){
+      const st=gateway[op]; if(!st)continue;
+      rows.push(`[YOUTUBE ${op}] ${st.quotaExhausted?'QUOTA EXHAUSTED':(Number(st.cooldownSeconds||0)>0?`COOLDOWN ${Number(st.cooldownSeconds||0)}s`:'OK')} • failures=${Number(st.failures||0)}${st.lastError?` • ${st.lastError}`:''}`);
+    }
+    const problems=data?.problems||[];
+    rows.push('',`[CURRENT PROBLEMS] ${problems.length}`,...(problems.length?problems.map(x=>`- ${x}`):['- none']));
+    const active=data?.activeDiscoveries||{}; const activeKeys=Object.keys(active);
+    rows.push('',`[ACTIVE DISCOVERIES] ${activeKeys.length}`,...(activeKeys.length?activeKeys.map(k=>`- ${k}: ${JSON.stringify(active[k])}`):['- none']));
+    rows.push('','[RECENT TERMINAL]');
+    for(const row of (data?.recent||[]))rows.push(`[${consoleTime(row.at)}] [${String(row.worker||'history')}] ${String(row.level||'INFO')} ${String(row.message||'')}${row.meta&&Object.keys(row.meta).length?` • meta=${JSON.stringify(row.meta)}`:''}`);
+    return rows.join('\n');
+  }
+  function consoleIssuesReport(data){
+    const queue=data?.greenGapQueue||{}, bg=data?.background||{}, gateway=data?.youtubeGateway||{}, budget=data?.youtubeSearchBudget||{}, hi=data?.highlightly||{}, g=data?.greenGap||{}, back=data?.backfill||{};
+    const used=Number(budget.used||0), limit=Number(budget.limit||budget.budget||0); const rows=[
+      'SPORTS BIG BOARD — SEARCH ISSUES / RATE LIMITS',
+      `Captured: ${new Date().toLocaleString()} (${new Date().toISOString()})`,
+      `Frontend v${FRONTEND_VERSION} • Backend v${String(data?.version||'UNKNOWN')} • Discovery v${Number(data?.historyDiscoveryVersion||0)}`,
+      `[MODE] ${workModeFrom(data).toUpperCase()} • playbackSuspended=${data?.playbackSuspended?'YES':'NO'} • searchSuspended=${data?.searchSuspended?'YES':'NO'}`,
+      '',
+      `[QUEUE CONTEXT] ${Number(queue.due_now||0)} due / ${Number(queue.gaps||0)} gaps • blue-only ${Number(queue.blue_only||0)} • no-media ${Number(queue.no_media||0)} • purple-only ${Number(queue.purple_only||0)}`,
+      `[BACKGROUND] ${bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`} (normal yielding is not itself an error)`,
+      `[GREEN LAST ERROR] ${String(g.lastError||'none')}`,
+      `[BACKFILL LAST ERROR] ${String(back.lastError||'none')}`,
+      `[SEARCH BUDGET] ${used}/${limit||'?'}${limit&&used>=limit?' • EXHAUSTED':''}`,
+      `[HIGHLIGHTLY] ${hi.limited?'RATE LIMITED':'OK'} • remaining=${hi.remaining??'?'} • limit=${hi.limit??'?'}`,
+    ];
+    for(const [op,st] of Object.entries(gateway)){
+      if(Number(st?.cooldownSeconds||0)>0||st?.quotaExhausted||st?.lastError)rows.push(`[YOUTUBE ${op}] ${st?.quotaExhausted?'QUOTA EXHAUSTED':(Number(st?.cooldownSeconds||0)>0?`COOLDOWN ${Number(st.cooldownSeconds)}s`:'ERROR RECORDED')} • failures=${Number(st?.failures||0)}${st?.lastError?` • ${st.lastError}`:''}`);
+    }
+    const problems=data?.problems||[]; rows.push('',`[CURRENT PROBLEMS] ${problems.length}`,...(problems.length?problems.map(x=>`- ${x}`):['- none']));
+    const rx=/(WARN|ERROR|ERR\(|rate.?limit|resource_exhausted|quota|exhaust|cooldown|timeout|failed|degraded|unavailable)/i;
+    const bad=(data?.recent||[]).filter(row=>['WARN','ERROR'].includes(String(row.level||'').toUpperCase())||rx.test(String(row.message||'')));
+    rows.push('',`[RECENT WARNINGS / ERRORS / LIMITS] ${bad.length}`);
+    if(!bad.length)rows.push('- none');
+    else for(const row of bad)rows.push(`[${consoleTime(row.at)}] [${String(row.worker||'history')}] ${String(row.level||'INFO')} ${String(row.message||'')}${row.meta&&Object.keys(row.meta).length?` • meta=${JSON.stringify(row.meta)}`:''}`);
+    return rows.join('\n');
+  }
+  async function copyConsoleText(text,label='COPIED'){
+    let ok=false;
+    try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);ok=true;}}catch(_){ok=false;}
+    if(!ok){
+      try{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';ta.style.pointerEvents='none';document.body.appendChild(ta);ta.focus();ta.select();ok=document.execCommand('copy');ta.remove();}catch(_){ok=false;}
+    }
+    const status=$('historySearchConsoleCopyStatus');
+    if(status){clearTimeout(state.copyTimer);status.classList.toggle('copy-error',!ok);status.textContent=ok?`${label} • ${text.length.toLocaleString()} chars`:'COPY FAILED';state.copyTimer=setTimeout(()=>{status.textContent='';status.classList.remove('copy-error');},3000);}
+    return ok;
+  }
+  function downloadConsoleText(){
+    if(!state.lastConsole)return;
+    const text=consoleFullReport(state.lastConsole); const stamp=new Date().toISOString().replace(/[:.]/g,'-'); const blob=new Blob([text],{type:'text/plain;charset=utf-8'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');a.href=url;a.download=`sports-big-board-search-console-${stamp}.txt`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    const status=$('historySearchConsoleCopyStatus');if(status){clearTimeout(state.copyTimer);status.classList.remove('copy-error');status.textContent='TXT SAVED';state.copyTimer=setTimeout(()=>{status.textContent='';},2500);}
+  }
   function ageText(n){n=Number(n);if(!Number.isFinite(n))return 'no heartbeat';if(n<60)return `${Math.max(0,Math.round(n))}s ago`;if(n<3600)return `${Math.round(n/60)}m ago`;return `${Math.round(n/3600)}h ago`;}
   function consoleTime(ts){if(!ts)return '--:--:--';try{return new Date(Number(ts)*1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});}catch(_){return '--:--:--';}}
   function renderConsole(data){
-    const head=document.querySelector('.history-search-console-head'); if(head)head.classList.remove('mismatch','problem');
+    state.lastConsole=data; const head=document.querySelector('.history-search-console-head'); if(head)head.classList.remove('mismatch','problem','yielding','mode-search','mode-playback');
     const backend=String(data.version||'UNKNOWN'); const discovery=Number(data.historyDiscoveryVersion||0); const versionOk=backend===FRONTEND_VERSION;
+    const workMode=workModeFrom(data); applyWorkMode(workMode);
     consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • Backend v${backend} • Discovery v${discovery}`);
     const threads=data.threads||[]; const allThreads=threads.length&&threads.every(x=>x.alive);
     const gw=(data.workers||{})['green-gap']||{}; const queue=data.greenGapQueue||{}; const bg=data.background||{};
@@ -92,22 +200,25 @@
     if(!versionOk)problems.unshift(`RELEASE MISMATCH: frontend v${FRONTEND_VERSION} but backend v${backend}`);
     if(discovery<11)problems.unshift(`DISCOVERY MISMATCH: expected v11 but backend reports v${discovery||'?'}`);
     const healthy=versionOk&&discovery>=11&&allThreads&&gw.healthy&&!problems.filter(x=>/thread|heartbeat|mismatch/i.test(x)).length;
-    consoleSet('historySearchConsoleOverall',healthy?'RUNNING':(versionOk?'ISSUE DETECTED':'BACKEND VERSION MISMATCH'));
+    consoleSet('historySearchConsoleOverall',healthy?(workMode==='search'?'SEARCH PRIORITY':(workMode==='playback'?'PLAYBACK PRIORITY':'RUNNING')):(versionOk?'ISSUE DETECTED':'BACKEND VERSION MISMATCH'));
     if(head){if(!versionOk||discovery<11)head.classList.add('mismatch');else if(problems.length)head.classList.add('problem');}
     consoleSet('historySearchConsoleWorker',`${String(gw.phase||'unknown').replaceAll(':',' / ')} • ${ageText(gw.heartbeatAgeSeconds)}`);
     consoleSet('historySearchConsoleQueue',`${Number(queue.due_now||0).toLocaleString()} due / ${Number(queue.gaps||0).toLocaleString()} gaps`);
-    consoleSet('historySearchConsoleBackground',bg.canWork?'ACTIVE':`PAUSED • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`);
-    consoleSet('historySearchConsoleYoutube',Number(search.cooldownSeconds||0)>0?`COOLDOWN ${Number(search.cooldownSeconds)}s`:'AVAILABLE');
-    const used=Number(budget.used||0), limit=Number(budget.limit||budget.budget||0); consoleSet('historySearchConsoleBudget',limit?`${used}/${limit} today`:`${used} used`);
+    consoleSet('historySearchConsoleBackground',workMode==='search'?'ACTIVE • SEARCH PRIORITY':(workMode==='playback'?'PAUSED • PLAYBACK PRIORITY':(bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`))); if(head&&!bg.canWork&&!problems.length&&workMode==='balanced')head.classList.add('yielding');
+    consoleSet('historySearchConsoleYoutube',search.quotaExhausted?'QUOTA EXHAUSTED':(Number(search.cooldownSeconds||0)>0?`COOLDOWN ${Number(search.cooldownSeconds)}s`:'AVAILABLE')); 
+    const used=Number(budget.used||0), limit=Number(budget.limit||budget.budget||0); consoleSet('historySearchConsoleBudget',limit?(used>=limit?`EXHAUSTED ${used}/${limit}`:`${used}/${limit} today`):`${used} used`);
     const p=$('historySearchConsoleProblems'); if(p){if(problems.length){p.classList.remove('hidden');p.textContent=problems.join(' • ');}else{p.classList.add('hidden');p.textContent='';}}
     const out=$('historySearchConsoleOutput'); if(out){
       const g=data.greenGap||{}; const back=data.backfill||{};
       const header=[
         `[STATE] server uptime ${Math.round(Number(data.uptimeSeconds||0)/60)}m • workers ${allThreads?'alive':'CHECK THREADS'} • green attempts ${Number(g.attempts||0)} • green upgrades ${Number(g.upgradedToGreen||0)}`,
-        `[QUEUE] total gaps ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • blue-only ${Number(queue.blue_only||0)} • no-media ${Number(queue.no_media||0)} • purple-only ${Number(queue.purple_only||0)} • stale-v ${Number(queue.stale_version||0)}`,
+        `[QUEUE] total gaps ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent gaps ${Number(queue.recent_gaps||0)} • recent no-media ${Number(queue.recent_no_media||0)} • blue-only ${Number(queue.blue_only||0)} • no-media ${Number(queue.no_media||0)} • purple-only ${Number(queue.purple_only||0)} • stale-v ${Number(queue.stale_version||0)}`,
         `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')}`,
         `[BACKFILL] ${back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)}`:'waiting for first pass'}`,
-        `[YOUTUBE] search ${Number(search.cooldownSeconds||0)>0?'COOLDOWN':'OK'}${search.lastError?' • '+String(search.lastError).slice(0,190):''}`,
+        `[YOUTUBE] search ${search.quotaExhausted?'QUOTA EXHAUSTED':(Number(search.cooldownSeconds||0)>0?'COOLDOWN':'OK')}${search.lastError?' • '+String(search.lastError):''}`,
+        `[SEARCH BUDGET] ${used}/${limit||'?'}${limit&&used>=limit?' • EXHAUSTED':''}`,
+        `[MODE] ${workMode.toUpperCase()} • playbackSuspended=${data.playbackSuspended?'YES':'NO'} • searchSuspended=${data.searchSuspended?'YES':'NO'}`,
+        `[BACKGROUND] ${workMode==='search'?'ACTIVE • SEARCH PRIORITY':(workMode==='playback'?'PAUSED • PLAYBACK PRIORITY':(bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`))}`,
       ];
       const lines=(data.recent||[]).map(row=>`[${consoleTime(row.at)}] [${String(row.worker||'history')}] ${String(row.level||'INFO')} ${String(row.message||'')}`);
       out.textContent=[...header,'',...lines].join('\n'); out.scrollTop=out.scrollHeight;
@@ -116,13 +227,13 @@
   async function loadConsole(){
     if(state.consoleLoading)return; state.consoleLoading=true;
     try{
-      const r=await fetch('/api/history/worker-console?limit=180',{cache:'no-store'});
+      const r=await fetch('/api/history/worker-console?limit=320',{cache:'no-store'});
       let data={}; try{data=await r.json();}catch(_){data={};}
       if(!r.ok||!data.ok){
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v3.0.7 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v3.0.9 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);
@@ -162,6 +273,10 @@
   function init(){
     $('openHistoryAuditBtn')?.addEventListener('click',open);$('historyAuditClose')?.addEventListener('click',close);$('historyAuditBackdrop')?.addEventListener('click',close);
     $('historyAuditRefresh')?.addEventListener('click',()=>{load(false);loadConsole();});$('historyAuditCsv')?.addEventListener('click',()=>exportFile('csv'));$('historyAuditXlsx')?.addEventListener('click',()=>exportFile('xlsx'));
+    $('historySearchConsoleCopyIssues')?.addEventListener('click',()=>{if(state.lastConsole)copyConsoleText(consoleIssuesReport(state.lastConsole),'ISSUES COPIED');});
+    $('historySearchConsoleCopyAll')?.addEventListener('click',()=>{if(state.lastConsole)copyConsoleText(consoleFullReport(state.lastConsole),'FULL CONSOLE COPIED');});
+    $('historySearchConsoleDownload')?.addEventListener('click',downloadConsoleText);
+    for(const id of ['historyModeSearch','historyModeBalanced','historyModePlayback'])$(id)?.addEventListener('click',ev=>setWorkMode(ev.currentTarget.dataset.mode));
     $('historyAuditPrev')?.addEventListener('click',()=>{state.offset=Math.max(0,state.offset-state.limit);load(false);});
     $('historyAuditNext')?.addEventListener('click',()=>{state.offset+=state.limit;load(false);});
     ['historyAuditDateFrom','historyAuditDateTo','historyAuditLeague','historyAuditBestTier','historyAuditStatus'].forEach(id=>$(id)?.addEventListener('change',()=>load(true)));
