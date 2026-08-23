@@ -1,4 +1,4 @@
-/* v3.0.9 single authoritative media taxonomy for Gold/Green/Purple/Blue. */
+/* v3.1.0 authoritative game-media taxonomy; Silver is a separate collection scope. */
 (() => {
   const TIER=Object.freeze({COMMENTARY:'gold',QUICK:'green',EXTENDED:'extended',HIGHLIGHT_REEL:'blue'});
   const duration=item=>Number(item?.durationSeconds??item?.duration??0)||0;
@@ -33,7 +33,7 @@
   function scoreType(item){ const t=tier(item); return t==='green'?'recap':t==='blue'?'clips':t; }
   function label(value){ return value==='gold'?'COMMENTARY':value==='green'?'FULL RECAP':value==='extended'?'EXTENDED':value==='blue'?'HIGHLIGHT REEL':''; }
   function availability(items,expand=x=>x||[]){
-    const list=expand(items||[]);
+    const list=expand(items||[]).filter(x=>!window.SBB_MEDIA_SCOPE||window.SBB_MEDIA_SCOPE.isGame(x));
     return {
       gold:list.some(x=>tier(x)==='gold'), green:list.some(x=>tier(x)==='green'),
       extended:list.some(x=>tier(x)==='extended'), blue:list.some(x=>tier(x)==='blue'&&!!(x?.youtubeId||x?.mediaUrl))

@@ -1,7 +1,7 @@
-/* Sports Big Board v3.0.9 historical database audit view. */
+/* Sports Big Board v3.1.0 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='3.0.9';
+  const FRONTEND_VERSION='3.1.0';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -125,12 +125,13 @@
       `[THREADS] ${threads.map(x=>`${x.name}=${x.alive?'ALIVE':'DEAD'}`).join(' • ')||'none reported'}`,
       `[WORKER] ${consoleWorkerLine('green-gap',workers['green-gap']||{})}`,
       `[WORKER] ${consoleWorkerLine('date-backfill',workers['date-backfill']||{})}`,
-      `[QUEUE] total gaps ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent gaps ${Number(queue.recent_gaps||0)} • recent no-media ${Number(queue.recent_no_media||0)} • blue-only ${Number(queue.blue_only||0)} • no-media ${Number(queue.no_media||0)} • purple-only ${Number(queue.purple_only||0)} • stale-v ${Number(queue.stale_version||0)}`,
+      `[CATALOG] unindexed ${Number(queue.unindexed||queue.stale_version||0)} • searched-empty ${Number(queue.searched_empty||0)} • coverage-complete ${Number(queue.coverage_complete||0)} • candidate-only ${Number(queue.candidate_only||0)}`,
+      `[GAPS] total ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent ${Number(queue.recent_gaps||0)} • blue-only ${Number(queue.blue_only||0)} • purple-only ${Number(queue.purple_only||0)}`,
       `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')} • lastError=${String(g.lastError||'none')}`,
       `[BACKFILL] ${back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)} • media items ${Number(back.mediaItems||0)} • days ${Number(back.daysCompleted||0)}`:'waiting for first pass'} • lastError=${String(back.lastError||'none')}`,
       `[BACKGROUND] ${bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`} • mediaAge=${Number(bg.mediaAgeSeconds||0)}s • interactiveAge=${Number(bg.interactiveAgeSeconds||0)}s • siteOpenDoesNotPause=${bg.siteOpenDoesNotPause?'YES':'NO'}`,
       `[FOCUS] date=${focus.date||'none'} • until=${focus.until?new Date(Number(focus.until)*1000).toISOString():'none'} • foregroundDiscovery=${bg.foregroundDiscoveryRunning?'YES':'NO'}`,
-      `[SEARCH BUDGET] ${used}/${limit||'?'} today${limit&&used>=limit?' • EXHAUSTED':''}`,
+      `[SEARCH BUDGET] ${used}/${limit||'?'} today${limit&&used>=limit?' • EXHAUSTED':''}${budget.remainingByBucket?` • reserves recent ${Number(budget.remainingByBucket.recent||0)} / empty ${Number(budget.remainingByBucket.empty||0)} / blue ${Number(budget.remainingByBucket.blue||0)} / archive ${Number(budget.remainingByBucket.archive||0)}`:''}`,
       `[HIGHLIGHTLY] ${hi.limited?'RATE LIMITED':'OK'} • remaining=${hi.remaining??'?'} • limit=${hi.limit??'?'}`,
     ];
     for(const op of ['search','videos','activities','playlistItems','channels']){
@@ -153,11 +154,11 @@
       `Frontend v${FRONTEND_VERSION} • Backend v${String(data?.version||'UNKNOWN')} • Discovery v${Number(data?.historyDiscoveryVersion||0)}`,
       `[MODE] ${workModeFrom(data).toUpperCase()} • playbackSuspended=${data?.playbackSuspended?'YES':'NO'} • searchSuspended=${data?.searchSuspended?'YES':'NO'}`,
       '',
-      `[QUEUE CONTEXT] ${Number(queue.due_now||0)} due / ${Number(queue.gaps||0)} gaps • blue-only ${Number(queue.blue_only||0)} • no-media ${Number(queue.no_media||0)} • purple-only ${Number(queue.purple_only||0)}`,
+      `[QUEUE CONTEXT] ${Number(queue.due_now||0)} due / ${Number(queue.gaps||0)} gaps • blue-only ${Number(queue.blue_only||0)} • purple-only ${Number(queue.purple_only||0)} • searched-empty ${Number(queue.searched_empty||0)} • unindexed ${Number(queue.unindexed||0)}`,
       `[BACKGROUND] ${bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`} (normal yielding is not itself an error)`,
       `[GREEN LAST ERROR] ${String(g.lastError||'none')}`,
       `[BACKFILL LAST ERROR] ${String(back.lastError||'none')}`,
-      `[SEARCH BUDGET] ${used}/${limit||'?'}${limit&&used>=limit?' • EXHAUSTED':''}`,
+      `[SEARCH BUDGET] ${used}/${limit||'?'}${limit&&used>=limit?' • EXHAUSTED':''}${budget.remainingByBucket?` • reserves recent ${Number(budget.remainingByBucket.recent||0)} / empty ${Number(budget.remainingByBucket.empty||0)} / blue ${Number(budget.remainingByBucket.blue||0)} / archive ${Number(budget.remainingByBucket.archive||0)}`:''}`,
       `[HIGHLIGHTLY] ${hi.limited?'RATE LIMITED':'OK'} • remaining=${hi.remaining??'?'} • limit=${hi.limit??'?'}`,
     ];
     for(const [op,st] of Object.entries(gateway)){
@@ -198,8 +199,8 @@
     const search=(data.youtubeGateway||{}).search||{}; const budget=data.youtubeSearchBudget||{};
     const problems=[...(data.problems||[])];
     if(!versionOk)problems.unshift(`RELEASE MISMATCH: frontend v${FRONTEND_VERSION} but backend v${backend}`);
-    if(discovery<11)problems.unshift(`DISCOVERY MISMATCH: expected v11 but backend reports v${discovery||'?'}`);
-    const healthy=versionOk&&discovery>=11&&allThreads&&gw.healthy&&!problems.filter(x=>/thread|heartbeat|mismatch/i.test(x)).length;
+    if(discovery<12)problems.unshift(`DISCOVERY MISMATCH: expected v12 but backend reports v${discovery||'?'}`);
+    const healthy=versionOk&&discovery>=12&&allThreads&&gw.healthy&&!problems.filter(x=>/thread|heartbeat|mismatch/i.test(x)).length;
     consoleSet('historySearchConsoleOverall',healthy?(workMode==='search'?'SEARCH PRIORITY':(workMode==='playback'?'PLAYBACK PRIORITY':'RUNNING')):(versionOk?'ISSUE DETECTED':'BACKEND VERSION MISMATCH'));
     if(head){if(!versionOk||discovery<11)head.classList.add('mismatch');else if(problems.length)head.classList.add('problem');}
     consoleSet('historySearchConsoleWorker',`${String(gw.phase||'unknown').replaceAll(':',' / ')} • ${ageText(gw.heartbeatAgeSeconds)}`);
@@ -212,11 +213,12 @@
       const g=data.greenGap||{}; const back=data.backfill||{};
       const header=[
         `[STATE] server uptime ${Math.round(Number(data.uptimeSeconds||0)/60)}m • workers ${allThreads?'alive':'CHECK THREADS'} • green attempts ${Number(g.attempts||0)} • green upgrades ${Number(g.upgradedToGreen||0)}`,
-        `[QUEUE] total gaps ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent gaps ${Number(queue.recent_gaps||0)} • recent no-media ${Number(queue.recent_no_media||0)} • blue-only ${Number(queue.blue_only||0)} • no-media ${Number(queue.no_media||0)} • purple-only ${Number(queue.purple_only||0)} • stale-v ${Number(queue.stale_version||0)}`,
+        `[CATALOG] unindexed ${Number(queue.unindexed||queue.stale_version||0)} • searched-empty ${Number(queue.searched_empty||0)} • coverage-complete ${Number(queue.coverage_complete||0)} • candidate-only ${Number(queue.candidate_only||0)}`,
+      `[GAPS] total ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent ${Number(queue.recent_gaps||0)} • blue-only ${Number(queue.blue_only||0)} • purple-only ${Number(queue.purple_only||0)}`,
         `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')}`,
         `[BACKFILL] ${back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)}`:'waiting for first pass'}`,
         `[YOUTUBE] search ${search.quotaExhausted?'QUOTA EXHAUSTED':(Number(search.cooldownSeconds||0)>0?'COOLDOWN':'OK')}${search.lastError?' • '+String(search.lastError):''}`,
-        `[SEARCH BUDGET] ${used}/${limit||'?'}${limit&&used>=limit?' • EXHAUSTED':''}`,
+        `[SEARCH BUDGET] ${used}/${limit||'?'}${limit&&used>=limit?' • EXHAUSTED':''}${budget.remainingByBucket?` • reserves recent ${Number(budget.remainingByBucket.recent||0)} / empty ${Number(budget.remainingByBucket.empty||0)} / blue ${Number(budget.remainingByBucket.blue||0)} / archive ${Number(budget.remainingByBucket.archive||0)}`:''}`,
         `[MODE] ${workMode.toUpperCase()} • playbackSuspended=${data.playbackSuspended?'YES':'NO'} • searchSuspended=${data.searchSuspended?'YES':'NO'}`,
         `[BACKGROUND] ${workMode==='search'?'ACTIVE • SEARCH PRIORITY':(workMode==='playback'?'PAUSED • PLAYBACK PRIORITY':(bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`))}`,
       ];
@@ -233,7 +235,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v3.0.9 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v3.1.0 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);

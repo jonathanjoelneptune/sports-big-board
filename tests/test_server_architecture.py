@@ -905,7 +905,7 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(result['state'],'VERIFIED')
             self.assertEqual(result['bestTier'],'gold')
             self.assertTrue(result['qualityComplete'])
-            self.assertEqual(saved['discovery']['discoveryVersion'],11)
+            self.assertEqual(saved['discovery']['discoveryVersion'],12)
             self.assertTrue(saved['discovery']['qualityComplete'])
 
     def test_quality_upgrade_due_respects_persistent_retry_window(self):

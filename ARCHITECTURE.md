@@ -1,4 +1,4 @@
-# Sports Big Board v3.0.9 Architecture
+# Sports Big Board v3.1.0 Architecture
 
 ## Product model
 
@@ -17,16 +17,18 @@ The score ribbon is the direct-tune/channel guide. PlaybackController owns media
 5. Game Center subscribes to `SelectedEvent`; it never calls PlaybackController.
 6. Sticky/shrinking player behavior changes presentation only and never reloads/reassigns media.
 7. Game Center caching/refreshing cannot change playback or `SelectedEvent`.
-8. League editorial packages are programming objects, not games, and never mutate `SelectedEvent`.
-9. Provider-specific response shapes terminate at adapters/contracts.
-10. Browser code never receives stored API secret values.
+8. Silver roundup collections are programming objects, not games, and never mutate `SelectedEvent`.
+9. Collection media cannot enter a game MediaManifest or satisfy a Gold/Green/Purple/Blue tier.
+10. Provider-specific response shapes terminate at adapters/contracts.
+11. Browser code never receives stored API secret values.
 
 ## Browser boundaries
 
 - `core-model.js` — Sport / Competition / Event / MediaPackage / MediaAsset / Moment / GameCenter / EditorialPackage shapes
 - `architecture/score-date-store.js` — independent browse/playback dates plus session-resident per-date score/media snapshots
 - `architecture/event-identity.js` — canonical event identity; missing competition identity is never silently coerced to MLB
-- `architecture/media-classifier.js` — Gold / Green / Purple / Blue taxonomy
+- `architecture/media-scope.js` — GAME vs day/week/player/season/other scope classification and Silver collection semantics
+- `architecture/media-classifier.js` — Gold / Green / Purple / Blue taxonomy for GAME media only
 - `architecture/playback-transports.js` — `DIRECT_VIDEO`, `YOUTUBE_EMBED`, `EXTERNAL`, and `CONTEXT`; transport is independent of league/provider
 - `architecture/provider-health.js` — adaptive provider health/cooldown, independent of whether an individual asset exists
 - `architecture/sport-media-policy.js` — QUICK / EXTENDED / COMMENTARY / MOMENTS duration policy by sport
@@ -63,7 +65,15 @@ Changing `browseDate` can fetch and render another day's slate but cannot call P
 
 Past-day score and media snapshots remain resident in the browser session. Final historical Game Centers may remain HOT for 24 hours in browser memory while partial shells retain the short retry TTL; the server's persistent repository remains the WARM authority.
 
-### v3.0.9 historical discovery completion
+### v3.1.0 media scope, Silver collections, and historical discovery
+
+v3.1.0 inserts a scope boundary before event association:
+
+`discovered media → MediaScopeClassifier → GAME association OR Silver collection → validation → playback truth`
+
+Gold/Green/Purple/Blue are valid only for `GAME` media. `DAY_LEAGUE` and `WEEK_LEAGUE` assets are persisted as Silver collections. `PLAYER`, `SEASON_LEAGUE`, and `OTHER` remain outside an individual game's tier calculation unless a future explicit product surface consumes them. Generic channel metadata cannot become event authority merely because it was discovered while searching that event.
+
+The canonical queue identity is `LEAGUE:EventID`; date is event metadata rather than identity. This prevents local/UTC date aliases from creating duplicate gap work. Existing candidate media is validated before any new rescue search, and per-event cooldown/backoff suppresses repeated no-improvement attempts. YouTube Search quota is partitioned by recent/empty/Blue-upgrade/archive purpose.
 
 Historical media now uses three independent truths:
 
@@ -75,7 +85,7 @@ Historical media now uses three independent truths:
 
 The playback preference is **Gold → Green → Purple/Extended → Blue**. A lower-tier asset never blocks playback and is never discarded, but it remains upgrade-eligible after source exhaustion. Source-complete lower-tier events persist as `VERIFIED_UPGRADE_PENDING` with a future `nextRetryAt`. Recent dates retry more aggressively; older archive dates retry gently. The idle cloud worker re-enters a date when one of those quality retries becomes due.
 
-`HISTORY_DISCOVERY_VERSION = 11` provides a non-destructive soft reindex: old scores/assets remain authoritative, while older completion/retry metadata cannot suppress the Green-gap and quality reassessment.
+`HISTORY_DISCOVERY_VERSION = 12` provides a non-destructive soft reindex: old scores/assets remain authoritative, while older completion/retry metadata cannot suppress the Green-gap and quality reassessment.
 
 ### HistoricalEventCatalog
 
@@ -93,7 +103,9 @@ Media discovery is separate from score hydration and is normalized around the sp
 
 `history_media_asset(date, league, event_id, asset_key)`
 
-`history_event` owns discovery state, last attempt/success, retry time and provider-lane diagnostics. `history_media_asset` owns durable asset identity, provider validation, verification time and browser runtime PLAYED/FAILED state. The older `history_day` date/league JSON row is retained as a fast hydration/cache compatibility tier, not as playback authority.
+`history_collection_media(scope, league, period_key, asset_key)`
+
+`history_event` owns discovery state, last attempt/success, retry time and provider-lane diagnostics. `history_media_asset` owns durable **GAME** asset identity, provider validation, verification time and browser runtime PLAYED/FAILED state. `history_collection_media` owns Silver daily/weekly recap assets independently from game truth. The older `history_day` date/league JSON row is retained as a fast hydration/cache compatibility tier, not as playback authority.
 
 Historical score misses are fetched through `/api/history/scores`, which coalesces concurrent league/date requests and writes the same canonical events consumed by media discovery. Opening a historical date then triggers one server-owned `POST /api/history/discover` job. That job walks the final canonical score events and invokes the same event service used by a touch-priority FIND action. The browser does not call league-specific YouTube/ESPN discovery routes for historical games.
 
@@ -288,7 +300,7 @@ A user can select and play a game, fail over among same-game sources, scroll nor
 
 ## v3.0.9 catalog-to-ribbon reconciliation
 
-A verified asset is only useful when the browser actually hydrates it. v3.0.9 removes the remaining legacy `history_day.media_saved_at` dependency from browser hydration. `history_media_asset` is authoritative and is always projected into `ScoreDateStore` for the selected historical date. This guarantees that server inventory, ribbon availability, event playback plans, and PlaybackController all consume the same asset truth.
+A verified asset is only useful when the browser actually hydrates it. v3.0.9 removed the remaining legacy `history_day.media_saved_at` dependency from browser hydration. `history_media_asset` is authoritative and is always projected into `ScoreDateStore` for the selected historical date. This guarantees that server inventory, ribbon availability, event playback plans, and PlaybackController all consume the same asset truth.
 
 Historical click flow is now cache-first: `GET /api/history/event/media` -> play if verified -> otherwise `POST /api/history/event/discover` -> rehydrate date -> play. `apiJson()` preserves RequestInit so POST semantics cannot silently degrade to GET.
 

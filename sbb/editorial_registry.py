@@ -1,4 +1,4 @@
-"""League-level editorial programming definitions for v3.0.9."""
+"""League-level editorial programming definitions for v3.1.0."""
 EDITORIAL_SERIES = {
     "MLB_TOP_PLAYS_DAILY": {
         "id":"MLB_TOP_PLAYS_DAILY","competitionId":"MLB","scope":"league",

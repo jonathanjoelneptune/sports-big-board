@@ -2,10 +2,10 @@
 const fs=require('fs'), vm=require('vm'), path=require('path'), assert=require('assert');
 const root=path.resolve(__dirname,'..');
 global.window=global;
-for(const f of ['core-model.js','architecture/score-date-store.js','architecture/event-identity.js','architecture/media-classifier.js','architecture/playback-transports.js','architecture/provider-health.js','architecture/sport-media-policy.js','architecture/media-manifest.js','architecture/media-resolver.js','architecture/game-center-policy.js','architecture/selected-event-store.js','architecture/media-work-priorities.js','architecture/editorial-packages.js']){
+for(const f of ['core-model.js','architecture/score-date-store.js','architecture/event-identity.js','architecture/media-scope.js','architecture/media-classifier.js','architecture/playback-transports.js','architecture/provider-health.js','architecture/sport-media-policy.js','architecture/media-manifest.js','architecture/media-resolver.js','architecture/game-center-policy.js','architecture/selected-event-store.js','architecture/media-work-priorities.js','architecture/editorial-packages.js']){
   vm.runInThisContext(fs.readFileSync(path.join(root,f),'utf8'),{filename:f});
 }
-assert.equal(SBB_CORE.version,'3.0.9');
+assert.equal(SBB_CORE.version,'3.1.0');
 assert.deepEqual(SBB_CORE.enabledCompetitions().map(x=>x.id),['MLB','NFL','NBA','NHL','EPL','MLS']);
 assert.equal(SBB_CORE.COMPETITIONS.MLS.enabled,true);
 assert.equal(SBB_MEDIA_WORK.PRIORITY.VISIBLE_SCORE,'VISIBLE_SCORE');
@@ -41,6 +41,10 @@ assert.equal(SBB_MEDIA_CLASSIFIER.tier(extended),'extended');
 assert.equal(SBB_MEDIA_CLASSIFIER.tier(quick),'green');
 assert.equal(SBB_MEDIA_CLASSIFIER.tier(commentary),'gold');
 assert.equal(SBB_MEDIA_CLASSIFIER.tier(clip),'blue');
+const silverDaily=SBB_MEDIA_SCOPE.annotate({title:"NBA's Nightly Recap | January 26, 2026",youtubeId:'daily-recap',verifiedPlayable:true},{date:'2026-01-26',away:'Los Angeles Lakers',home:'Chicago Bulls'});
+assert.equal(silverDaily.mediaScope,'DAY_LEAGUE');assert.equal(silverDaily.displayTier,'silver');
+assert.equal(SBB_MEDIA_SCOPE.classify({title:'LAKERS at BULLS | FULL GAME HIGHLIGHTS'},{away:'Los Angeles Lakers',home:'Chicago Bulls'}),'GAME');
+assert.equal(SBB_MEDIA_SCOPE.classify({title:'WARRIORS at TIMBERWOLVES | FULL GAME HIGHLIGHTS'},{away:'Los Angeles Lakers',home:'Chicago Bulls'}),'OTHER');
 const preferenceEvent=SBB_CORE.event({eventId:'pref-1',date:'2026-03-27T02:00:00Z',awayTeam:{name:'Brooklyn Nets'},homeTeam:{name:'Los Angeles Lakers'}},'NBA');
 SBB_MEDIA_MANIFEST.ingest(preferenceEvent,[
   {...clip,id:'pref-blue',eventId:'pref-1',youtubeId:'pref-blue',verifiedPlayable:true},
@@ -49,6 +53,13 @@ SBB_MEDIA_MANIFEST.ingest(preferenceEvent,[
   {...commentary,id:'pref-gold',eventId:'pref-1',youtubeId:'pref-gold',verifiedPlayable:true}
 ]);
 assert.equal(SBB_MEDIA_RESOLVER.resolveBest(preferenceEvent).primary.id,'pref-gold');
+const scopeGuardEvent=SBB_CORE.event({eventId:'scope-guard',date:'2026-01-26T02:00:00Z',awayTeam:{name:'Los Angeles Lakers'},homeTeam:{name:'Chicago Bulls'}},'NBA');
+SBB_MEDIA_MANIFEST.ingest(scopeGuardEvent,[
+  {id:'daily-green',youtubeId:'daily-green',title:"NBA's Nightly Recap | January 26, 2026",durationSeconds:1500,overview:true,recapTier:'green',verifiedPlayable:true},
+  {id:'game-purple',youtubeId:'game-purple',title:'LAKERS at BULLS | FULL GAME HIGHLIGHTS',durationSeconds:995,overview:true,recapTier:'extended',verifiedPlayable:true}
+]);
+assert.deepEqual(SBB_MEDIA_MANIFEST.list(scopeGuardEvent).map(x=>x.id),['game-purple']);
+assert.equal(SBB_MEDIA_RESOLVER.resolveBest(scopeGuardEvent).primary.id,'game-purple');
 
 let observed=null;
 const unsub=SBB_SELECTED_EVENT.subscribe(x=>observed=x);
@@ -83,7 +94,7 @@ assert.equal(gcNormalized.playerStatSections[0].teamSide,'away');
 assert.equal(gcNormalized.playerStatSections[0].category,'passing');
 console.log('PASS provider-independent media resolver + Game Center policy');
 
-// v3.0.9 Game Center browser handoff: two sequential score-provider aliases
+// v3.1.0 Game Center browser handoff: two sequential score-provider aliases
 // must follow two distinct resolved provider ids. The second selection can never
 // inherit the first game's resolved id/cache entry.
 const gcCalls=[];

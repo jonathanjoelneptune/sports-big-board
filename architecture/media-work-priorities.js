@@ -1,4 +1,4 @@
-/* v3.0.9 semantic media-work priority names shared by browser requests. */
+/* v3.1.0 semantic media-work priority names shared by browser requests. */
 (() => {
   const PRIORITY=Object.freeze({
     ACTIVE_PLAYBACK:'ACTIVE_PLAYBACK',TOUCH_INTENT:'TOUCH_INTENT',VISIBLE_SCORE:'VISIBLE_SCORE',

@@ -1,4 +1,4 @@
-/* Sports Big Board v3.0.9 — provider-independent EventMediaResolver. */
+/* Sports Big Board v3.1.0 — provider-independent GAME EventMediaResolver. */
 (() => {
   const R=()=>window.SBB_SPORT_MEDIA_POLICY?.REQUEST||{QUICK:'QUICK',EXTENDED:'EXTENDED',COMMENTARY:'COMMENTARY',MOMENTS:'MOMENTS',ANY:'ANY'};
   const classifier=()=>window.SBB_MEDIA_CLASSIFIER;
@@ -20,6 +20,7 @@
     return true;
   }
   function rankScore(eventLike,asset,request){
+    if(window.SBB_MEDIA_SCOPE && !window.SBB_MEDIA_SCOPE.isGame(asset,{eventId:eventLike?.eventId||eventLike?.scoreEventId||eventLike?.matchId||eventLike?.gamePk||eventLike?.id||'',away:eventLike?.awayTeam?.displayName||eventLike?.away?.name||'',home:eventLike?.homeTeam?.displayName||eventLike?.home?.name||''}))return -100000;
     const pol=window.SBB_SPORT_MEDIA_POLICY, transports=window.SBB_PLAYBACK_TRANSPORTS;
     const policy=pol?.policyFor?.(eventLike)||{};const transport=transports?.transportForAsset?.(asset)||'';
     let score=quality(asset)+(policy.sourceWeights?.[transport]||0)+(window.SBB_PROVIDER_HEALTH?.score?.(provider(asset))||0);

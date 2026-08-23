@@ -1,4 +1,4 @@
-/* Sports Big Board v3.0.9 — persistent per-event media manifest.
+/* Sports Big Board v3.1.0 — persistent per-event GAME media manifest.
    One truth feeds score rails, resolver, alternates, and playback failover. */
 (() => {
   const manifests=new Map(),listeners=new Set();
@@ -28,6 +28,8 @@
     let changed=false;
     for(const raw of (assets||[])){
       if(!raw)continue;
+      const ctx={eventId:eventLike?.eventId||eventLike?.scoreEventId||eventLike?.matchId||eventLike?.gamePk||eventLike?.id||'',away:eventLike?.awayTeam?.displayName||eventLike?.awayTeam?.name||eventLike?.away?.displayName||eventLike?.away?.name||'',home:eventLike?.homeTeam?.displayName||eventLike?.homeTeam?.name||eventLike?.home?.displayName||eventLike?.home?.name||''};
+      if(window.SBB_MEDIA_SCOPE && !window.SBB_MEDIA_SCOPE.isGame(raw,ctx))continue;
       const a=normalizeAsset(eventLike,raw,{external});const key=assetKey(a);if(!key||key==='unsupported')continue;
       const prev=m.assets.get(key)||{};
       const merged={...prev,...a,manifestAssetKey:key,lastSeenAt:Date.now()};
