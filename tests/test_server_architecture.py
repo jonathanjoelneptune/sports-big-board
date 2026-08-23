@@ -650,7 +650,7 @@ class ArchitectureTests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/'history.sqlite3')
             repo.put_media('2025-12-25','NBA',[{'id':'old-feed','youtubeId':'P55rMeZkNwQ','verifiedPlayable':False,'externalOnly':True}],merge=True)
             repo.put_media('2025-12-25','NBA',[{'id':'new-index','youtubeId':'P55rMeZkNwQ','verifiedPlayable':True,'externalOnly':False,'embedValidated':True}],merge=True)
-            media=repo.get_league('2025-12-25','NBA')['media']
+            media=repo.get_league('2025-12-25','NBA',prefer_catalog=False)['media']
         self.assertEqual(len(media),1)
         self.assertTrue(media[0]['verifiedPlayable'])
         self.assertFalse(media[0]['externalOnly'])
@@ -839,11 +839,11 @@ class ArchitectureTests(unittest.TestCase):
             data=repo.audit_catalog(date_from="2025-12-25",date_to="2025-12-25",current_discovery_version=9)
             row=data["rows"][0]
             self.assertEqual(row["discoveryState"],"UNKNOWN")
-            self.assertEqual(row["effectiveStatus"],"PENDING_INDEX")
+            self.assertEqual(row["effectiveStatus"],"UNINDEXED")
             self.assertTrue(row["discoveryPending"])
             self.assertTrue(row["upgradeEligible"])
             self.assertEqual(row["bestTier"],"green")
-            self.assertEqual(data["summary"]["effectiveStatuses"]["PENDING_INDEX"],1)
+            self.assertEqual(data["summary"]["effectiveStatuses"]["UNINDEXED"],1)
             self.assertEqual(data["summary"]["upgradePendingGames"],1)
 
     def test_history_audit_projects_unknown_without_media_as_pending_index_not_false_complete(self):
@@ -852,7 +852,7 @@ class ArchitectureTests(unittest.TestCase):
             repo.put_scores("2025-12-24","NFL",[{"scoreEventId":"evt-empty","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"},"completed":True}])
             data=repo.audit_catalog(current_discovery_version=9)
             row=data["rows"][0]
-            self.assertEqual(row["effectiveStatus"],"PENDING_INDEX")
+            self.assertEqual(row["effectiveStatus"],"UNINDEXED")
             self.assertTrue(row["discoveryPending"])
             self.assertFalse(row["upgradeEligible"])
             self.assertEqual(data["summary"]["noVerifiedMediaGames"],1)
@@ -875,7 +875,7 @@ class ArchitectureTests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             repo.put_scores("2025-12-22","NBA",[{"scoreEventId":"evt-export","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"},"completed":True}])
             rows=repo.audit_export_rows(current_discovery_version=9)
-            self.assertEqual(rows[0]["Audit Status"],"PENDING INDEX")
+            self.assertEqual(rows[0]["Audit Status"],"UNINDEXED")
             self.assertEqual(rows[0]["Discovery State"],"UNKNOWN")
             self.assertTrue(rows[0]["Discovery Pending"])
             self.assertEqual(rows[0]["Current Discovery Version"],9)
@@ -905,7 +905,7 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(result['state'],'VERIFIED')
             self.assertEqual(result['bestTier'],'gold')
             self.assertTrue(result['qualityComplete'])
-            self.assertEqual(saved['discovery']['discoveryVersion'],12)
+            self.assertEqual(saved['discovery']['discoveryVersion'],13)
             self.assertTrue(saved['discovery']['qualityComplete'])
 
     def test_quality_upgrade_due_respects_persistent_retry_window(self):

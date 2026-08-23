@@ -14,11 +14,18 @@ if not defined SBBPY (
 )
 
 echo.
-echo Sports Big Board v3.1.0 - Windows
+echo Sports Big Board v4.0.0 - Windows
 echo ---------------------------------
 %SBBPY% setup_credentials.py
 if errorlevel 1 (
   echo API setup encountered an error.
+  pause
+  exit /b 1
+)
+
+%SBBPY% tools\ensure_history_v4.py
+if errorlevel 1 (
+  echo Historical catalog preflight failed. Existing database was left recoverable from backup.
   pause
   exit /b 1
 )

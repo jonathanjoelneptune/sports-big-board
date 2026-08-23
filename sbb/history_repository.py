@@ -1,19 +1,30 @@
 import json
+import hashlib
+import re
 import sqlite3
 import threading
 import time
 from contextlib import closing
+
+from sbb.catalog_contract import (
+    CATALOG_SCHEMA_VERSION, MEDIA_CLASSIFIER_VERSION, EVENT_MATCHER_VERSION,
+    RANKING_VERSION, VERIFICATION_VERSION, ASSIGNED, QUARANTINED, UNASSIGNED,
+)
+from sbb.event_matcher import match_event, team_name
 from sbb.media_scope import annotate as annotate_media_scope, GAME, COLLECTION_SCOPES
 
 
 class HistoryRepository:
-    """Persistent historical score/event/media catalog.
+    """Sports Big Board v4 normalized historical catalog.
 
-    v3.1.0 keeps the legacy date/league JSON rows for fast score hydration while
-    retaining normalized event and asset tables. Discovery metadata now tracks
-    source exhaustion separately from preferred-media quality, so Blue/Purple/Green
-    assets remain playable while the persistent cloud catalog keeps seeking Gold.
-    Runtime playback successes and failures continue to survive browser reloads.
+    v4 has three independent truths:
+      * `history_source_media`: a media asset exists once.
+      * `history_event_media`: evidence that an asset belongs to a canonical game.
+      * `history_collection_media`: evidence that an asset belongs to Silver.
+
+    Event quality/coverage is derived from assigned GAME relationships. The old
+    `history_day` JSON row remains a hydration/cache compatibility layer for score
+    inventory and day-level discovery bookkeeping, never playback authority.
     """
 
     def __init__(self, path):
@@ -22,96 +33,11 @@ class HistoryRepository:
         self._init_db()
 
     def _connect(self):
-        conn = sqlite3.connect(self.path, timeout=15)
+        conn = sqlite3.connect(self.path, timeout=30)
         conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA foreign_keys=ON")
+        conn.execute("PRAGMA journal_mode=WAL")
         return conn
-
-    def _init_db(self):
-        with self._lock, closing(self._connect()) as conn:
-            conn.execute(
-                """
-                CREATE TABLE IF NOT EXISTS history_day (
-                    date TEXT NOT NULL,
-                    league TEXT NOT NULL,
-                    scores_json TEXT,
-                    media_json TEXT,
-                    discovery_json TEXT,
-                    scores_saved_at REAL NOT NULL DEFAULT 0,
-                    media_saved_at REAL NOT NULL DEFAULT 0,
-                    discovery_saved_at REAL NOT NULL DEFAULT 0,
-                    PRIMARY KEY(date, league)
-                )
-                """
-            )
-            cols = {row[1] for row in conn.execute("PRAGMA table_info(history_day)").fetchall()}
-            if "discovery_json" not in cols:
-                conn.execute("ALTER TABLE history_day ADD COLUMN discovery_json TEXT")
-            if "discovery_saved_at" not in cols:
-                conn.execute("ALTER TABLE history_day ADD COLUMN discovery_saved_at REAL NOT NULL DEFAULT 0")
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_history_date ON history_day(date)")
-
-            conn.execute(
-                """
-                CREATE TABLE IF NOT EXISTS history_event (
-                    date TEXT NOT NULL,
-                    league TEXT NOT NULL,
-                    event_id TEXT NOT NULL,
-                    event_json TEXT,
-                    discovery_state TEXT NOT NULL DEFAULT 'UNKNOWN',
-                    discovery_json TEXT,
-                    last_discovery_at REAL NOT NULL DEFAULT 0,
-                    last_success_at REAL NOT NULL DEFAULT 0,
-                    next_retry_at REAL NOT NULL DEFAULT 0,
-                    last_error TEXT NOT NULL DEFAULT '',
-                    updated_at REAL NOT NULL DEFAULT 0,
-                    PRIMARY KEY(date, league, event_id)
-                )
-                """
-            )
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_history_event_date ON history_event(date, league)")
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_history_event_retry ON history_event(next_retry_at)")
-
-            conn.execute(
-                """
-                CREATE TABLE IF NOT EXISTS history_media_asset (
-                    date TEXT NOT NULL,
-                    league TEXT NOT NULL,
-                    event_id TEXT NOT NULL,
-                    asset_key TEXT NOT NULL,
-                    asset_json TEXT NOT NULL,
-                    validation_state TEXT NOT NULL DEFAULT 'CANDIDATE',
-                    verified_at REAL NOT NULL DEFAULT 0,
-                    runtime_state TEXT NOT NULL DEFAULT 'UNKNOWN',
-                    runtime_success_at REAL NOT NULL DEFAULT 0,
-                    runtime_failure_at REAL NOT NULL DEFAULT 0,
-                    runtime_failure_reason TEXT NOT NULL DEFAULT '',
-                    last_seen_at REAL NOT NULL DEFAULT 0,
-                    updated_at REAL NOT NULL DEFAULT 0,
-                    PRIMARY KEY(date, league, event_id, asset_key)
-                )
-                """
-            )
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_history_asset_event ON history_media_asset(date, league, event_id)")
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_history_asset_validation ON history_media_asset(validation_state, runtime_state)")
-            conn.execute(
-                """
-                CREATE TABLE IF NOT EXISTS history_collection_media (
-                    scope TEXT NOT NULL,
-                    league TEXT NOT NULL,
-                    period_key TEXT NOT NULL,
-                    asset_key TEXT NOT NULL,
-                    asset_json TEXT NOT NULL,
-                    collection_kind TEXT NOT NULL DEFAULT 'ROUNDUP',
-                    validation_state TEXT NOT NULL DEFAULT 'CANDIDATE',
-                    verified_at REAL NOT NULL DEFAULT 0,
-                    runtime_state TEXT NOT NULL DEFAULT 'UNKNOWN',
-                    updated_at REAL NOT NULL DEFAULT 0,
-                    PRIMARY KEY(scope, league, period_key, asset_key)
-                )
-                """
-            )
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_history_collection_period ON history_collection_media(period_key,league,scope)")
-            conn.commit()
 
     @staticmethod
     def _dump(rows):
@@ -123,34 +49,189 @@ class HistoryRepository:
 
     @staticmethod
     def _load(value):
-        if not value:
-            return []
+        if not value: return []
         try:
-            data = json.loads(value)
-            return data if isinstance(data, list) else []
-        except Exception:
-            return []
+            data = json.loads(value); return data if isinstance(data, list) else []
+        except Exception: return []
 
     @staticmethod
     def _load_obj(value):
-        if not value:
-            return {}
+        if not value: return {}
         try:
-            data = json.loads(value)
-            return data if isinstance(data, dict) else {}
-        except Exception:
-            return {}
+            data = json.loads(value); return data if isinstance(data, dict) else {}
+        except Exception: return {}
+
+    def _init_db(self):
+        now = time.time()
+        with self._lock, closing(self._connect()) as conn:
+            # Compatibility day cache. Media JSON is retained only so pre-v4
+            # database imports can be reconciled; normalized tables own playback.
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_day (
+                    date TEXT NOT NULL, league TEXT NOT NULL,
+                    scores_json TEXT, media_json TEXT, discovery_json TEXT,
+                    scores_saved_at REAL NOT NULL DEFAULT 0,
+                    media_saved_at REAL NOT NULL DEFAULT 0,
+                    discovery_saved_at REAL NOT NULL DEFAULT 0,
+                    PRIMARY KEY(date, league)
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_history_day_date ON history_day(date)")
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_catalog_meta (
+                    key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at REAL NOT NULL DEFAULT 0
+                )""")
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_catalog_event (
+                    canonical_event_key TEXT PRIMARY KEY,
+                    league TEXT NOT NULL, event_id TEXT NOT NULL, event_date TEXT NOT NULL,
+                    event_json TEXT NOT NULL DEFAULT '{}', final_at REAL NOT NULL DEFAULT 0,
+                    discovery_state TEXT NOT NULL DEFAULT 'UNKNOWN',
+                    discovery_json TEXT NOT NULL DEFAULT '{}',
+                    last_discovery_at REAL NOT NULL DEFAULT 0,
+                    last_success_at REAL NOT NULL DEFAULT 0,
+                    next_retry_at REAL NOT NULL DEFAULT 0,
+                    last_error TEXT NOT NULL DEFAULT '',
+                    created_at REAL NOT NULL DEFAULT 0,
+                    updated_at REAL NOT NULL DEFAULT 0,
+                    UNIQUE(league, event_id)
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_catalog_event_date ON history_catalog_event(event_date,league)")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_catalog_event_retry ON history_catalog_event(next_retry_at,last_discovery_at)")
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_source_media (
+                    asset_key TEXT PRIMARY KEY,
+                    provider TEXT NOT NULL DEFAULT '', provider_media_id TEXT NOT NULL DEFAULT '',
+                    canonical_url TEXT NOT NULL DEFAULT '', title TEXT NOT NULL DEFAULT '',
+                    duration_seconds REAL NOT NULL DEFAULT 0, published_at TEXT NOT NULL DEFAULT '',
+                    channel_id TEXT NOT NULL DEFAULT '', channel_name TEXT NOT NULL DEFAULT '',
+                    scope TEXT NOT NULL DEFAULT 'OTHER', intent TEXT NOT NULL DEFAULT 'OTHER',
+                    scope_confidence REAL NOT NULL DEFAULT 0, scope_reason TEXT NOT NULL DEFAULT '',
+                    intent_confidence REAL NOT NULL DEFAULT 0, intent_reason TEXT NOT NULL DEFAULT '',
+                    classifier_version INTEGER NOT NULL DEFAULT 0,
+                    catalog_state TEXT NOT NULL DEFAULT 'UNASSIGNED', quarantine_reason TEXT NOT NULL DEFAULT '',
+                    validation_state TEXT NOT NULL DEFAULT 'CANDIDATE', verified_at REAL NOT NULL DEFAULT 0,
+                    runtime_state TEXT NOT NULL DEFAULT 'UNKNOWN', runtime_success_at REAL NOT NULL DEFAULT 0,
+                    runtime_failure_at REAL NOT NULL DEFAULT 0, runtime_failure_reason TEXT NOT NULL DEFAULT '',
+                    asset_json TEXT NOT NULL DEFAULT '{}',
+                    first_seen_at REAL NOT NULL DEFAULT 0, last_seen_at REAL NOT NULL DEFAULT 0,
+                    updated_at REAL NOT NULL DEFAULT 0
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_source_media_scope ON history_source_media(scope,intent)")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_source_media_state ON history_source_media(catalog_state,validation_state,runtime_state)")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_source_media_provider ON history_source_media(provider,provider_media_id)")
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_event_media (
+                    canonical_event_key TEXT NOT NULL,
+                    asset_key TEXT NOT NULL,
+                    association_state TEXT NOT NULL DEFAULT 'UNASSIGNED',
+                    association_confidence REAL NOT NULL DEFAULT 0,
+                    association_method TEXT NOT NULL DEFAULT '',
+                    association_evidence TEXT NOT NULL DEFAULT '',
+                    matcher_version INTEGER NOT NULL DEFAULT 0,
+                    first_associated_at REAL NOT NULL DEFAULT 0,
+                    updated_at REAL NOT NULL DEFAULT 0,
+                    PRIMARY KEY(canonical_event_key,asset_key),
+                    FOREIGN KEY(canonical_event_key) REFERENCES history_catalog_event(canonical_event_key) ON DELETE CASCADE,
+                    FOREIGN KEY(asset_key) REFERENCES history_source_media(asset_key) ON DELETE CASCADE
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_event_media_asset ON history_event_media(asset_key,association_state)")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_event_media_event ON history_event_media(canonical_event_key,association_state)")
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_collection (
+                    collection_key TEXT PRIMARY KEY,
+                    scope TEXT NOT NULL, league TEXT NOT NULL, period_key TEXT NOT NULL,
+                    collection_kind TEXT NOT NULL DEFAULT 'ROUNDUP', title TEXT NOT NULL DEFAULT '',
+                    metadata_json TEXT NOT NULL DEFAULT '{}', created_at REAL NOT NULL DEFAULT 0,
+                    updated_at REAL NOT NULL DEFAULT 0,
+                    UNIQUE(scope,league,period_key,collection_kind)
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_collection_period ON history_collection(period_key,league,scope)")
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_collection_media (
+                    collection_key TEXT NOT NULL, asset_key TEXT NOT NULL,
+                    association_confidence REAL NOT NULL DEFAULT 0, association_method TEXT NOT NULL DEFAULT '',
+                    association_evidence TEXT NOT NULL DEFAULT '', classifier_version INTEGER NOT NULL DEFAULT 0,
+                    rank_hint INTEGER NOT NULL DEFAULT 0,
+                    first_associated_at REAL NOT NULL DEFAULT 0, updated_at REAL NOT NULL DEFAULT 0,
+                    PRIMARY KEY(collection_key,asset_key),
+                    FOREIGN KEY(collection_key) REFERENCES history_collection(collection_key) ON DELETE CASCADE,
+                    FOREIGN KEY(asset_key) REFERENCES history_source_media(asset_key) ON DELETE CASCADE
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_collection_media_asset ON history_collection_media(asset_key)")
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_media_segment (
+                    segment_key TEXT PRIMARY KEY, asset_key TEXT NOT NULL,
+                    canonical_event_key TEXT, collection_key TEXT,
+                    start_seconds REAL NOT NULL DEFAULT 0, end_seconds REAL NOT NULL DEFAULT 0,
+                    title TEXT NOT NULL DEFAULT '', confidence REAL NOT NULL DEFAULT 0,
+                    evidence TEXT NOT NULL DEFAULT '', extractor_version INTEGER NOT NULL DEFAULT 0,
+                    created_at REAL NOT NULL DEFAULT 0, updated_at REAL NOT NULL DEFAULT 0,
+                    FOREIGN KEY(asset_key) REFERENCES history_source_media(asset_key) ON DELETE CASCADE
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_segment_event ON history_media_segment(canonical_event_key)")
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_media_verification (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT, asset_key TEXT NOT NULL,
+                    verification_type TEXT NOT NULL, state TEXT NOT NULL,
+                    reason TEXT NOT NULL DEFAULT '', details_json TEXT NOT NULL DEFAULT '{}',
+                    verified_at REAL NOT NULL DEFAULT 0, verification_version INTEGER NOT NULL DEFAULT 0,
+                    FOREIGN KEY(asset_key) REFERENCES history_source_media(asset_key) ON DELETE CASCADE
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_verification_asset ON history_media_verification(asset_key,verified_at)")
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_discovery_attempt (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    canonical_event_key TEXT NOT NULL, source TEXT NOT NULL DEFAULT '',
+                    attempted_at REAL NOT NULL DEFAULT 0, discovery_version INTEGER NOT NULL DEFAULT 0,
+                    query_type TEXT NOT NULL DEFAULT '', query_text TEXT NOT NULL DEFAULT '',
+                    result_count INTEGER NOT NULL DEFAULT 0, accepted_count INTEGER NOT NULL DEFAULT 0,
+                    best_before TEXT NOT NULL DEFAULT '', best_after TEXT NOT NULL DEFAULT '',
+                    quota_cost REAL NOT NULL DEFAULT 0, failure_reason TEXT NOT NULL DEFAULT '',
+                    details_json TEXT NOT NULL DEFAULT '{}',
+                    FOREIGN KEY(canonical_event_key) REFERENCES history_catalog_event(canonical_event_key) ON DELETE CASCADE
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_discovery_attempt_event ON history_discovery_attempt(canonical_event_key,attempted_at)")
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_assignment_review (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT, asset_key TEXT NOT NULL,
+                    league TEXT NOT NULL DEFAULT '', event_date TEXT NOT NULL DEFAULT '',
+                    proposed_event_key TEXT NOT NULL DEFAULT '', state TEXT NOT NULL,
+                    reason TEXT NOT NULL DEFAULT '', evidence_json TEXT NOT NULL DEFAULT '{}',
+                    classifier_version INTEGER NOT NULL DEFAULT 0, matcher_version INTEGER NOT NULL DEFAULT 0,
+                    created_at REAL NOT NULL DEFAULT 0, updated_at REAL NOT NULL DEFAULT 0,
+                    UNIQUE(asset_key, proposed_event_key, reason)
+                )""")
+            # v4 is a clean baseline, but development/pre-release databases may
+            # have been initialized by an earlier v4 build. Additive guards keep
+            # those files readable without ever treating v3 relationship tables as
+            # authoritative or performing a destructive migration.
+            def ensure_column(table, column, ddl):
+                cols={str(r[1]) for r in conn.execute(f"PRAGMA table_info({table})")}
+                if column not in cols: conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {ddl}")
+            ensure_column("history_catalog_event","final_at","REAL NOT NULL DEFAULT 0")
+            ensure_column("history_source_media","intent_confidence","REAL NOT NULL DEFAULT 0")
+            ensure_column("history_source_media","intent_reason","TEXT NOT NULL DEFAULT ''")
+            ensure_column("history_collection_media","association_confidence","REAL NOT NULL DEFAULT 0")
+            ensure_column("history_collection_media","association_method","TEXT NOT NULL DEFAULT ''")
+            ensure_column("history_collection_media","association_evidence","TEXT NOT NULL DEFAULT ''")
+            ensure_column("history_collection_media","classifier_version","INTEGER NOT NULL DEFAULT 0")
+
+            for key, value in {
+                "catalog_schema_version": CATALOG_SCHEMA_VERSION,
+                "media_classifier_version": MEDIA_CLASSIFIER_VERSION,
+                "event_matcher_version": EVENT_MATCHER_VERSION,
+                "ranking_version": RANKING_VERSION,
+                "verification_version": VERIFICATION_VERSION,
+            }.items():
+                conn.execute("INSERT INTO history_catalog_meta(key,value,updated_at) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at",(key,str(value),now))
+            conn.commit()
 
     @staticmethod
     def event_id_for(item):
-        if not isinstance(item, dict):
-            return ""
-        # scoreEventId/matchId are sporting-event identity. A YouTube row's eventId
-        # can itself be the video id, so it intentionally ranks after those fields.
-        for key in ("scoreEventId", "matchId", "espnEventId", "gamePk", "canonicalEventId", "eventId"):
-            value = item.get(key)
-            if value not in (None, ""):
-                return str(value)
+        if not isinstance(item, dict): return ""
+        for key in ("scoreEventId","matchId","espnEventId","gamePk","canonicalEventId","eventId","id"):
+            value=item.get(key)
+            if value not in (None, ""): return str(value)
         return ""
 
     @staticmethod
@@ -159,437 +240,372 @@ class HistoryRepository:
 
     @staticmethod
     def asset_key_for(item):
-        if not isinstance(item, dict):
-            return ""
-        if item.get("youtubeId"):
-            return "yt:" + str(item.get("youtubeId"))
-        # Provider item id is preferred for native signed URLs so a refreshed URL
-        # updates the same asset instead of creating an endless stream of stale rows.
-        if item.get("id"):
-            return "id:" + str(item.get("id"))
-        if item.get("mediaUrl"):
-            return "url:" + str(item.get("mediaUrl"))
-        if item.get("externalUrl"):
-            return "ext:" + str(item.get("externalUrl"))
+        """Return a provider-stable source-media identity.
+
+        v4 intentionally does not use a game's event id as media identity. Direct
+        media URLs and explicit provider media ids are preferred; generic ids are
+        namespaced and title-fingerprinted so a provider game id cannot collapse
+        several distinct clips into one source row.
+        """
+        if not isinstance(item, dict): return ""
+        if item.get("assetKey"): return str(item.get("assetKey"))
+        if item.get("youtubeId"): return "yt:"+str(item.get("youtubeId"))
+        provider=str(item.get("provider") or item.get("sourceLabel") or item.get("source") or item.get("sourceType") or "source").lower()
+        provider=re.sub(r"[^a-z0-9]+","-",provider).strip("-") or "source"
+        for key in ("providerMediaId","videoId","assetId","contentId","clipId"):
+            if item.get(key) not in (None,""):
+                return f"{provider}:{key.lower()}:{item.get(key)}"
+        direct=str(item.get("mediaUrl") or "").strip()
+        if direct:
+            digest=hashlib.sha256(direct.encode("utf-8")).hexdigest()[:32]
+            return f"url:{digest}"
+        generic=item.get("id")
+        if generic not in (None,""):
+            title=str(item.get("title") or "").strip().lower()
+            suffix=hashlib.sha256(title.encode("utf-8")).hexdigest()[:12] if title else "untitled"
+            return f"{provider}:id:{generic}:{suffix}"
+        external=str(item.get("externalUrl") or "").strip()
+        if external:
+            material=external+"\n"+str(item.get("title") or "")
+            return "ext:"+hashlib.sha256(material.encode("utf-8")).hexdigest()[:32]
         return ""
 
     @staticmethod
+    def provider_media_id_for(item):
+        if not isinstance(item,dict): return ""
+        if item.get("youtubeId"): return str(item.get("youtubeId"))
+        for key in ("providerMediaId","videoId","assetId","contentId","clipId"):
+            if item.get(key) not in (None,""): return str(item.get(key))
+        return str(item.get("id") or "")
+
+    @staticmethod
     def validation_state_for(item):
-        value = str((item or {}).get("validationState") or "").upper()
-        if value in {"VERIFIED", "CANDIDATE", "EXTERNAL", "FAILED"}:
-            return value
-        if (item or {}).get("verifiedPlayable") and ((item or {}).get("youtubeId") or (item or {}).get("mediaUrl")):
-            return "VERIFIED"
-        if (item or {}).get("externalOnly"):
-            return "EXTERNAL"
+        value=str((item or {}).get("validationState") or "").upper()
+        if value in {"VERIFIED","CANDIDATE","EXTERNAL","FAILED"}: return value
+        if (item or {}).get("verifiedPlayable") and ((item or {}).get("youtubeId") or (item or {}).get("mediaUrl")): return "VERIFIED"
+        if (item or {}).get("externalOnly"): return "EXTERNAL"
         return "CANDIDATE"
 
-    def put_scores(self, date, league, rows):
-        now = time.time(); date = str(date)[:10]; league = str(league).upper(); rows = list(rows or [])
-        with self._lock, closing(self._connect()) as conn:
-            conn.execute(
-                """
-                INSERT INTO history_day(date, league, scores_json, scores_saved_at)
-                VALUES(?,?,?,?)
-                ON CONFLICT(date,league) DO UPDATE SET
-                    scores_json=excluded.scores_json,
-                    scores_saved_at=excluded.scores_saved_at
-                """,
-                (date, league, self._dump(rows), now),
-            )
-            # Seed canonical event rows while the scoreboard is authoritative.
-            for row in rows:
-                event_id = self.event_id_for(row)
-                if not event_id:
-                    continue
-                conn.execute(
-                    """
-                    INSERT INTO history_event(date,league,event_id,event_json,updated_at)
-                    VALUES(?,?,?,?,?)
-                    ON CONFLICT(date,league,event_id) DO UPDATE SET
-                        event_json=excluded.event_json, updated_at=excluded.updated_at
-                    """,
-                    (date, league, event_id, self._dump_obj(row), now),
-                )
-            conn.commit()
-        return now
+    @staticmethod
+    def _provider_for(item):
+        return str((item or {}).get("provider") or (item or {}).get("sourceLabel") or (item or {}).get("source") or "").strip()
 
-    def upsert_event(self, date, league, event_id, event=None):
-        date=str(date)[:10]; league=str(league).upper(); event_id=str(event_id or '')
-        if not event_id: return 0
-        now=time.time()
-        with self._lock, closing(self._connect()) as conn:
-            conn.execute(
-                """
-                INSERT INTO history_event(date,league,event_id,event_json,updated_at)
-                VALUES(?,?,?,?,?)
-                ON CONFLICT(date,league,event_id) DO UPDATE SET
-                    event_json=CASE WHEN excluded.event_json<>'{}' THEN excluded.event_json ELSE history_event.event_json END,
-                    updated_at=excluded.updated_at
-                """,
-                (date,league,event_id,self._dump_obj(event),now),
-            )
-            conn.commit()
-        return now
+    @staticmethod
+    def _canonical_url(item):
+        item=item or {}
+        if item.get("youtubeId"): return f"https://www.youtube.com/watch?v={item.get('youtubeId')}"
+        return str(item.get("mediaUrl") or item.get("externalUrl") or "")
 
-    def set_event_discovery(self, date, league, event_id, state, details=None, *, error="", retry_at=0, success=False):
-        date=str(date)[:10]; league=str(league).upper(); event_id=str(event_id or '')
-        if not event_id: return 0
-        now=time.time(); state=str(state or 'UNKNOWN').upper(); details=dict(details or {})
-        with self._lock, closing(self._connect()) as conn:
-            conn.execute(
-                """
-                INSERT INTO history_event(date,league,event_id,discovery_state,discovery_json,last_discovery_at,last_success_at,next_retry_at,last_error,updated_at)
-                VALUES(?,?,?,?,?,?,?,?,?,?)
-                ON CONFLICT(date,league,event_id) DO UPDATE SET
-                    discovery_state=excluded.discovery_state,
-                    discovery_json=excluded.discovery_json,
-                    last_discovery_at=excluded.last_discovery_at,
-                    last_success_at=CASE WHEN excluded.last_success_at>0 THEN excluded.last_success_at ELSE history_event.last_success_at END,
-                    next_retry_at=excluded.next_retry_at,
-                    last_error=excluded.last_error,
-                    updated_at=excluded.updated_at
-                """,
-                (date,league,event_id,state,self._dump_obj(details),now,now if success else 0,float(retry_at or 0),str(error or '')[:1000],now),
-            )
-            conn.commit()
-        return now
+    def _upsert_source_media_conn(self, conn, raw, *, league="", date="", away="", home="", catalog_state=None, quarantine_reason=""):
+        if not isinstance(raw,dict): return ""
+        item=annotate_media_scope(dict(raw),league=league,date=date,away=away,home=home)
+        asset_key=self.asset_key_for(item)
+        if not asset_key: return ""
+        now=time.time(); validation=self.validation_state_for(item)
+        verified_at=float(item.get("historyVerifiedAt") or item.get("verifiedAt") or (now if validation=="VERIFIED" else 0) or 0)
+        existing=conn.execute("SELECT * FROM history_source_media WHERE asset_key=?",(asset_key,)).fetchone()
+        runtime="UNKNOWN"; success_at=failure_at=0.0; failure_reason=""; first_seen=now
+        previous={}
+        if existing:
+            previous=self._load_obj(existing["asset_json"]); previous.update(item); item=previous
+            runtime=str(existing["runtime_state"] or "UNKNOWN").upper(); success_at=float(existing["runtime_success_at"] or 0)
+            failure_at=float(existing["runtime_failure_at"] or 0); failure_reason=str(existing["runtime_failure_reason"] or "")
+            first_seen=float(existing["first_seen_at"] or now)
+            if runtime=="FAILED" and verified_at>failure_at:
+                runtime="UNKNOWN"; failure_at=0; failure_reason=""
+            elif runtime=="FAILED":
+                item["verifiedPlayable"]=False; item["runtimeState"]="failed"; item["runtimeFailureReason"]=failure_reason
+        state=str(catalog_state or (existing["catalog_state"] if existing else "UNASSIGNED") or "UNASSIGNED").upper()
+        if state not in {ASSIGNED,QUARANTINED,UNASSIGNED}: state=UNASSIGNED
+        if state==ASSIGNED: quarantine_reason=""
+        item["assetKey"]=asset_key; item["validationState"]=validation
+        conn.execute("""
+            INSERT INTO history_source_media(asset_key,provider,provider_media_id,canonical_url,title,duration_seconds,published_at,channel_id,channel_name,
+              scope,intent,scope_confidence,scope_reason,intent_confidence,intent_reason,classifier_version,catalog_state,quarantine_reason,validation_state,verified_at,runtime_state,
+              runtime_success_at,runtime_failure_at,runtime_failure_reason,asset_json,first_seen_at,last_seen_at,updated_at)
+            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            ON CONFLICT(asset_key) DO UPDATE SET
+              provider=CASE WHEN excluded.provider<>'' THEN excluded.provider ELSE history_source_media.provider END,
+              provider_media_id=CASE WHEN excluded.provider_media_id<>'' THEN excluded.provider_media_id ELSE history_source_media.provider_media_id END,
+              canonical_url=CASE WHEN excluded.canonical_url<>'' THEN excluded.canonical_url ELSE history_source_media.canonical_url END,
+              title=CASE WHEN excluded.title<>'' THEN excluded.title ELSE history_source_media.title END,
+              duration_seconds=MAX(history_source_media.duration_seconds,excluded.duration_seconds),
+              published_at=CASE WHEN excluded.published_at<>'' THEN excluded.published_at ELSE history_source_media.published_at END,
+              channel_id=CASE WHEN excluded.channel_id<>'' THEN excluded.channel_id ELSE history_source_media.channel_id END,
+              channel_name=CASE WHEN excluded.channel_name<>'' THEN excluded.channel_name ELSE history_source_media.channel_name END,
+              scope=excluded.scope,intent=excluded.intent,scope_confidence=excluded.scope_confidence,scope_reason=excluded.scope_reason,intent_confidence=excluded.intent_confidence,intent_reason=excluded.intent_reason,classifier_version=excluded.classifier_version,
+              catalog_state=CASE WHEN excluded.catalog_state='ASSIGNED' THEN 'ASSIGNED' WHEN history_source_media.catalog_state='ASSIGNED' THEN 'ASSIGNED' ELSE excluded.catalog_state END,
+              quarantine_reason=CASE WHEN excluded.catalog_state='ASSIGNED' THEN '' ELSE excluded.quarantine_reason END,
+              validation_state=CASE WHEN excluded.validation_state='VERIFIED' THEN 'VERIFIED' WHEN history_source_media.validation_state='VERIFIED' THEN 'VERIFIED' ELSE excluded.validation_state END,
+              verified_at=MAX(history_source_media.verified_at,excluded.verified_at),runtime_state=excluded.runtime_state,
+              runtime_success_at=excluded.runtime_success_at,runtime_failure_at=excluded.runtime_failure_at,runtime_failure_reason=excluded.runtime_failure_reason,
+              asset_json=excluded.asset_json,last_seen_at=excluded.last_seen_at,updated_at=excluded.updated_at
+        """,(
+            asset_key,self._provider_for(item),self.provider_media_id_for(item),self._canonical_url(item),str(item.get("title") or ""),
+            float(item.get("durationSeconds") or item.get("duration") or 0),str(item.get("publishedAt") or item.get("published") or ""),
+            str(item.get("channelId") or ""),str(item.get("channelName") or item.get("channelTitle") or ""),str(item.get("mediaScope") or "OTHER"),
+            str(item.get("mediaIntent") or "OTHER"),float(item.get("mediaScopeConfidence") or 0),str(item.get("mediaScopeReason") or ""),
+            float(item.get("mediaIntentConfidence") or 0),str(item.get("mediaIntentReason") or ""),int(item.get("mediaClassifierVersion") or MEDIA_CLASSIFIER_VERSION),state,str(quarantine_reason or "")[:1000],validation,verified_at,runtime,
+            success_at,failure_at,failure_reason,self._dump_obj(item),first_seen,now,now))
+        return asset_key
 
-    def get_event(self, date, league, event_id):
-        league=str(league).upper(); event_id=str(event_id); requested=str(date)[:10]
+    def put_source_media(self, rows, *, league="", date="", away="", home="", catalog_state=None):
+        count=0
         with self._lock, closing(self._connect()) as conn:
-            row=conn.execute(
-                "SELECT * FROM history_event WHERE league=? AND event_id=? ORDER BY last_discovery_at DESC,updated_at DESC,CASE WHEN date=? THEN 0 ELSE 1 END,date DESC LIMIT 1",
-                (league,event_id,requested),
-            ).fetchone()
-        if not row: return None
-        return {
-            "date":row["date"],"league":row["league"],"eventId":row["event_id"],"event":self._load_obj(row["event_json"]),
-            "discoveryState":row["discovery_state"],"discovery":self._load_obj(row["discovery_json"]),
-            "lastDiscoveryAt":float(row["last_discovery_at"] or 0),"lastSuccessAt":float(row["last_success_at"] or 0),
-            "nextRetryAt":float(row["next_retry_at"] or 0),"lastError":row["last_error"] or "","updatedAt":float(row["updated_at"] or 0),
-        }
-
-    def put_event_media(self, date, league, event_id, rows):
-        date=str(date)[:10]; league=str(league).upper(); event_id=str(event_id or '')
-        if not event_id: return 0
-        now=time.time(); count=0
-        with self._lock, closing(self._connect()) as conn:
-            event_row=conn.execute("SELECT event_json FROM history_event WHERE league=? AND event_id=? ORDER BY CASE WHEN date=? THEN 0 ELSE 1 END,updated_at DESC LIMIT 1",(league,event_id,date)).fetchone()
-            event=self._load_obj(event_row["event_json"]) if event_row else {}
-            away=self._audit_team_name(event,"away"); home=self._audit_team_name(event,"home")
-            for raw in rows or []:
-                if not isinstance(raw,dict): continue
-                item=annotate_media_scope(dict(raw),league=league,date=date,away=away,home=home)
-                item["canonicalEventKey"]=self.canonical_event_key(league,event_id)
-                if item.get("mediaScope") != GAME: continue
-                asset_key=self.asset_key_for(item)
-                if not asset_key: continue
-                validation=self.validation_state_for(item)
-                verified_at=float(item.get("historyVerifiedAt") or item.get("verifiedAt") or (now if validation=="VERIFIED" else 0) or 0)
-                existing=conn.execute(
-                    "SELECT asset_json,validation_state,verified_at,runtime_state,runtime_success_at,runtime_failure_at,runtime_failure_reason FROM history_media_asset WHERE date=? AND league=? AND event_id=? AND asset_key=?",
-                    (date,league,event_id,asset_key),
-                ).fetchone()
-                runtime_state="UNKNOWN"; success_at=failure_at=0.0; failure_reason=""
-                if existing:
-                    previous=self._load_obj(existing["asset_json"]); previous.update(item); item=previous
-                    runtime_state=str(existing["runtime_state"] or "UNKNOWN").upper()
-                    success_at=float(existing["runtime_success_at"] or 0); failure_at=float(existing["runtime_failure_at"] or 0); failure_reason=str(existing["runtime_failure_reason"] or '')
-                    # A newer positive provider validation can rehabilitate an old
-                    # runtime failure. Otherwise the exact asset stays demoted.
-                    if runtime_state=="FAILED" and verified_at<=failure_at:
-                        item["verifiedPlayable"]=False; item["runtimeState"]="failed"; item["runtimeFailureReason"]=failure_reason
-                    elif runtime_state=="FAILED" and verified_at>failure_at:
-                        runtime_state="UNKNOWN"; failure_at=0; failure_reason=""
-                item["validationState"]=validation
-                conn.execute(
-                    """
-                    INSERT INTO history_media_asset(date,league,event_id,asset_key,asset_json,validation_state,verified_at,runtime_state,runtime_success_at,runtime_failure_at,runtime_failure_reason,last_seen_at,updated_at)
-                    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
-                    ON CONFLICT(date,league,event_id,asset_key) DO UPDATE SET
-                        asset_json=excluded.asset_json,
-                        validation_state=excluded.validation_state,
-                        verified_at=MAX(history_media_asset.verified_at,excluded.verified_at),
-                        runtime_state=excluded.runtime_state,
-                        runtime_success_at=excluded.runtime_success_at,
-                        runtime_failure_at=excluded.runtime_failure_at,
-                        runtime_failure_reason=excluded.runtime_failure_reason,
-                        last_seen_at=excluded.last_seen_at,
-                        updated_at=excluded.updated_at
-                    """,
-                    (date,league,event_id,asset_key,self._dump_obj(item),validation,verified_at,runtime_state,success_at,failure_at,failure_reason,now,now),
-                )
-                count+=1
+            for row in rows or []:
+                if self._upsert_source_media_conn(conn,row,league=str(league).upper(),date=str(date)[:10],away=away,home=home,catalog_state=catalog_state): count+=1
             conn.commit()
         return count
 
-    def event_media(self, date, league, event_id, include_failed=True):
-        league=str(league).upper(); event_id=str(event_id)
+    def put_scores(self, date, league, rows):
+        now=time.time(); date=str(date)[:10]; league=str(league).upper(); rows=list(rows or [])
         with self._lock, closing(self._connect()) as conn:
-            rows=conn.execute(
-                "SELECT * FROM history_media_asset WHERE league=? AND event_id=? AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' ORDER BY verified_at DESC, updated_at DESC",
-                (league,event_id),
-            ).fetchall()
-        out=[]; seen=set()
+            conn.execute("INSERT INTO history_day(date,league,scores_json,scores_saved_at) VALUES(?,?,?,?) ON CONFLICT(date,league) DO UPDATE SET scores_json=excluded.scores_json,scores_saved_at=excluded.scores_saved_at",(date,league,self._dump(rows),now))
+            for event in rows:
+                event_id=self.event_id_for(event)
+                if not event_id: continue
+                key=self.canonical_event_key(league,event_id)
+                final_at=self._event_final_at(event)
+                conn.execute("""
+                    INSERT INTO history_catalog_event(canonical_event_key,league,event_id,event_date,event_json,final_at,created_at,updated_at)
+                    VALUES(?,?,?,?,?,?,?,?) ON CONFLICT(canonical_event_key) DO UPDATE SET
+                      event_date=excluded.event_date,event_json=CASE WHEN excluded.event_json<>'{}' THEN excluded.event_json ELSE history_catalog_event.event_json END,
+                      final_at=CASE WHEN excluded.final_at>0 THEN excluded.final_at ELSE history_catalog_event.final_at END,updated_at=excluded.updated_at
+                """,(key,league,event_id,date,self._dump_obj(event),final_at,now,now))
+            conn.commit()
+        return now
+
+    @staticmethod
+    def _event_final_at(event):
+        event=event if isinstance(event,dict) else {}
+        candidates=[]
+        for key in ("finalAt","completedAt","endedAt","endTime","statusTimestamp"):
+            if event.get(key) not in (None,""): candidates.append(event.get(key))
+        status=event.get("status") if isinstance(event.get("status"),dict) else {}
+        for key in ("finalAt","completedAt","endedAt","timestamp"):
+            if status.get(key) not in (None,""): candidates.append(status.get(key))
+        for value in candidates:
+            try:
+                num=float(value)
+                if num>10_000_000_000: num/=1000.0
+                if num>0: return num
+            except Exception: pass
+            try:
+                from datetime import datetime
+                text=str(value).replace("Z","+00:00")
+                return float(datetime.fromisoformat(text).timestamp())
+            except Exception: pass
+        return 0.0
+
+    def upsert_event(self, date, league, event_id, event=None):
+        date=str(date)[:10]; league=str(league).upper(); event_id=str(event_id or "")
+        if not event_id: return 0
+        now=time.time(); key=self.canonical_event_key(league,event_id)
+        with self._lock, closing(self._connect()) as conn:
+            final_at=self._event_final_at(event)
+            conn.execute("""INSERT INTO history_catalog_event(canonical_event_key,league,event_id,event_date,event_json,final_at,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)
+              ON CONFLICT(canonical_event_key) DO UPDATE SET event_date=excluded.event_date,event_json=CASE WHEN excluded.event_json<>'{}' THEN excluded.event_json ELSE history_catalog_event.event_json END,
+              final_at=CASE WHEN excluded.final_at>0 THEN excluded.final_at ELSE history_catalog_event.final_at END,updated_at=excluded.updated_at""",
+              (key,league,event_id,date,self._dump_obj(event),final_at,now,now)); conn.commit()
+        return now
+
+    def set_event_discovery(self, date, league, event_id, state, details=None, *, error="", retry_at=0, success=False):
+        self.upsert_event(date,league,event_id)
+        now=time.time(); key=self.canonical_event_key(league,event_id); state=str(state or "UNKNOWN").upper(); details=dict(details or {})
+        with self._lock, closing(self._connect()) as conn:
+            conn.execute("""UPDATE history_catalog_event SET discovery_state=?,discovery_json=?,last_discovery_at=?,last_success_at=CASE WHEN ?>0 THEN ? ELSE last_success_at END,
+              next_retry_at=?,last_error=?,updated_at=? WHERE canonical_event_key=?""",
+              (state,self._dump_obj(details),now,1 if success else 0,now,float(retry_at or 0),str(error or "")[:1000],now,key)); conn.commit()
+        return now
+
+    def get_event(self, date, league, event_id):
+        league=str(league).upper(); event_id=str(event_id); key=self.canonical_event_key(league,event_id)
+        with self._lock, closing(self._connect()) as conn:
+            row=conn.execute("SELECT * FROM history_catalog_event WHERE canonical_event_key=?",(key,)).fetchone()
+        if not row: return None
+        return {"date":row["event_date"],"league":row["league"],"eventId":row["event_id"],"canonicalEventKey":row["canonical_event_key"],"event":self._load_obj(row["event_json"]),
+            "discoveryState":row["discovery_state"],"discovery":self._load_obj(row["discovery_json"]),"lastDiscoveryAt":float(row["last_discovery_at"] or 0),
+            "finalAt":float(row["final_at"] or 0),"lastSuccessAt":float(row["last_success_at"] or 0),"nextRetryAt":float(row["next_retry_at"] or 0),"lastError":row["last_error"] or "","updatedAt":float(row["updated_at"] or 0)}
+
+    def put_event_media(self, date, league, event_id, rows):
+        date=str(date)[:10]; league=str(league).upper(); event_id=str(event_id or "")
+        if not event_id: return 0
+        self.upsert_event(date,league,event_id)
+        key=self.canonical_event_key(league,event_id); now=time.time(); count=0
+        with self._lock, closing(self._connect()) as conn:
+            erow=conn.execute("SELECT event_json,event_date FROM history_catalog_event WHERE canonical_event_key=?",(key,)).fetchone()
+            event=self._load_obj(erow["event_json"]) if erow else {}; event_date=str(erow["event_date"] if erow else date)[:10]
+            away,home=team_name(event,"away"),team_name(event,"home")
+            for raw in rows or []:
+                if not isinstance(raw,dict): continue
+                item=annotate_media_scope(dict(raw),league=league,date=event_date,away=away,home=home)
+                evidence=match_event(item,event,league=league,date=event_date)
+                state=str(evidence.get("associationState") or QUARANTINED)
+                reason="" if state==ASSIGNED else str(evidence.get("associationMethod") or "UNPROVEN_GAME_ASSOCIATION")
+                asset_key=self._upsert_source_media_conn(conn,item,league=league,date=event_date,away=away,home=home,catalog_state=(ASSIGNED if state==ASSIGNED else QUARANTINED),quarantine_reason=reason)
+                if not asset_key: continue
+                if state==ASSIGNED:
+                    item["canonicalEventKey"]=key
+                    conn.execute("UPDATE history_source_media SET catalog_state='ASSIGNED',quarantine_reason='',asset_json=? WHERE asset_key=?",(self._dump_obj(item),asset_key))
+                    count+=1
+                else:
+                    conn.execute("INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,evidence_json=excluded.evidence_json,updated_at=excluded.updated_at",
+                        (asset_key,league,event_date,key,state,reason,self._dump_obj(evidence),MEDIA_CLASSIFIER_VERSION,EVENT_MATCHER_VERSION,now,now))
+                conn.execute("""INSERT INTO history_event_media(canonical_event_key,asset_key,association_state,association_confidence,association_method,association_evidence,matcher_version,first_associated_at,updated_at)
+                  VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(canonical_event_key,asset_key) DO UPDATE SET association_state=excluded.association_state,association_confidence=excluded.association_confidence,
+                  association_method=excluded.association_method,association_evidence=excluded.association_evidence,matcher_version=excluded.matcher_version,updated_at=excluded.updated_at""",
+                  (key,asset_key,state,float(evidence.get("associationConfidence") or 0),str(evidence.get("associationMethod") or ""),str(evidence.get("associationEvidence") or "")[:2000],int(evidence.get("matcherVersion") or EVENT_MATCHER_VERSION),now,now))
+            conn.commit()
+        return count
+
+    @staticmethod
+    def _hydrate_asset(row):
+        item=HistoryRepository._load_obj(row["asset_json"]); item["assetKey"]=row["asset_key"]
+        item["mediaScope"]=row["scope"]; item["mediaIntent"]=row["intent"]; item["mediaScopeConfidence"]=float(row["scope_confidence"] or 0)
+        item["mediaScopeReason"]=row["scope_reason"]; item["mediaIntentConfidence"]=float(row["intent_confidence"] or 0); item["mediaIntentReason"]=row["intent_reason"]; item["mediaClassifierVersion"]=int(row["classifier_version"] or 0)
+        item["validationState"]=row["validation_state"]; item["historyVerifiedAt"]=float(row["verified_at"] or 0); runtime=str(row["runtime_state"] or "UNKNOWN").upper()
+        item["runtimeCatalogState"]=runtime
+        if runtime=="FAILED": item["runtimeState"]="failed"; item["verifiedPlayable"]=False; item["runtimeFailureReason"]=row["runtime_failure_reason"] or ""
+        elif runtime=="PLAYED": item["runtimeState"]="playing-confirmed"; item["verifiedPlayable"]=True
+        return item
+
+    def event_media(self, date, league, event_id, include_failed=True):
+        key=self.canonical_event_key(league,event_id)
+        with self._lock, closing(self._connect()) as conn:
+            rows=conn.execute("""SELECT s.*,em.association_confidence,em.association_method,em.association_evidence,em.matcher_version
+              FROM history_event_media em JOIN history_source_media s ON s.asset_key=em.asset_key
+              WHERE em.canonical_event_key=? AND em.association_state='ASSIGNED' AND s.scope='GAME'
+              ORDER BY s.verified_at DESC,s.updated_at DESC""",(key,)).fetchall()
+        out=[]
         for row in rows:
-            if row["asset_key"] in seen: continue
-            seen.add(row["asset_key"])
-            item=self._load_obj(row["asset_json"])
-            runtime_state=str(row["runtime_state"] or "UNKNOWN").upper()
-            item["validationState"]=row["validation_state"] or "CANDIDATE"
-            item["historyVerifiedAt"]=float(row["verified_at"] or item.get("historyVerifiedAt") or 0)
-            item["runtimeCatalogState"]=runtime_state
-            if runtime_state=="FAILED":
-                item["runtimeState"]="failed"; item["verifiedPlayable"]=False
-                item["runtimeFailureReason"]=row["runtime_failure_reason"] or ""
-                if not include_failed: continue
-            elif runtime_state=="PLAYED":
-                item["runtimeState"]="playing-confirmed"; item["verifiedPlayable"]=True
+            item=self._hydrate_asset(row)
+            if str(row["runtime_state"] or "").upper()=="FAILED" and not include_failed: continue
+            item["associationConfidence"]=float(row["association_confidence"] or 0); item["associationMethod"]=row["association_method"]
+            item["associationEvidence"]=row["association_evidence"]; item["eventMatcherVersion"]=int(row["matcher_version"] or 0); item["canonicalEventKey"]=key
             out.append(item)
         return out
 
     def record_runtime(self, date, league, event_id, asset_key, *, success=False, reason=""):
-        date=str(date)[:10]; league=str(league).upper(); event_id=str(event_id or ''); asset_key=str(asset_key or '')
-        if not event_id or not asset_key: return False
+        asset_key=str(asset_key or ""); key=self.canonical_event_key(league,event_id)
+        if not asset_key: return False
         now=time.time(); state="PLAYED" if success else "FAILED"
         with self._lock, closing(self._connect()) as conn:
-            row=conn.execute("SELECT asset_json FROM history_media_asset WHERE league=? AND event_id=? AND asset_key=? ORDER BY CASE WHEN date=? THEN 0 ELSE 1 END,updated_at DESC LIMIT 1",(league,event_id,asset_key,date)).fetchone()
+            linked=conn.execute("SELECT 1 FROM history_event_media WHERE canonical_event_key=? AND asset_key=? AND association_state='ASSIGNED'",(key,asset_key)).fetchone()
+            if not linked: return False
+            row=conn.execute("SELECT asset_json FROM history_source_media WHERE asset_key=?",(asset_key,)).fetchone()
             if not row: return False
             item=self._load_obj(row["asset_json"])
-            if success:
-                item["runtimeState"]="playing-confirmed"; item["verifiedPlayable"]=True
-            else:
-                item["runtimeState"]="failed"; item["verifiedPlayable"]=False; item["runtimeFailureReason"]=str(reason or '')[:500]
-            conn.execute(
-                """
-                UPDATE history_media_asset SET asset_json=?, runtime_state=?,
-                  runtime_success_at=CASE WHEN ? THEN ? ELSE runtime_success_at END,
-                  runtime_failure_at=CASE WHEN ? THEN runtime_failure_at ELSE ? END,
-                  runtime_failure_reason=CASE WHEN ? THEN '' ELSE ? END,
-                  updated_at=?
-                WHERE league=? AND event_id=? AND asset_key=?
-                """,
-                (self._dump_obj(item),state,1 if success else 0,now,1 if success else 0,now,1 if success else 0,str(reason or '')[:500],now,league,event_id,asset_key),
-            )
-            conn.commit()
+            if success: item["runtimeState"]="playing-confirmed"; item["verifiedPlayable"]=True
+            else: item["runtimeState"]="failed"; item["verifiedPlayable"]=False; item["runtimeFailureReason"]=str(reason or "")[:500]
+            conn.execute("""UPDATE history_source_media SET asset_json=?,runtime_state=?,runtime_success_at=CASE WHEN ? THEN ? ELSE runtime_success_at END,
+              runtime_failure_at=CASE WHEN ? THEN runtime_failure_at ELSE ? END,runtime_failure_reason=CASE WHEN ? THEN '' ELSE ? END,updated_at=? WHERE asset_key=?""",
+              (self._dump_obj(item),state,1 if success else 0,now,1 if success else 0,now,1 if success else 0,str(reason or "")[:500],now,asset_key))
+            conn.execute("INSERT INTO history_media_verification(asset_key,verification_type,state,reason,details_json,verified_at,verification_version) VALUES(?,?,?,?,?,?,?)",
+              (asset_key,"RUNTIME",state,str(reason or "")[:1000],"{}",now,VERIFICATION_VERSION)); conn.commit()
         return True
 
-    def green_gap_events(self, *, current_discovery_version=0, now=None, limit=24, recent_cooldown=2*60*60, archive_cooldown=24*60*60):
-        """Return canonical, due games that lack verified GAME-scoped Green/Gold.
-
-        League + provider Event ID is the durable identity. Adjacent-date aliases do
-        not generate duplicate queue work. A cooldown applies even across discovery
-        version migrations, preventing the same event from being retried repeatedly.
-        """
-        now=float(now or time.time()); limit=max(1,min(200,int(limit or 24)))
-        current=int(current_discovery_version or 0)
+    def record_verification(self, asset_key, verification_type, state, *, reason="", details=None, verified_at=None):
+        now=float(verified_at or time.time())
         with self._lock, closing(self._connect()) as conn:
-            rows=conn.execute(
-                """
-                WITH canonical AS (
-                  SELECT * FROM (
-                    SELECT e.*,ROW_NUMBER() OVER(PARTITION BY league,event_id ORDER BY last_discovery_at DESC,updated_at DESC,date DESC) rn
-                    FROM history_event e
-                  ) WHERE rn=1
-                ), flags AS (
-                  SELECT league,event_id,
-                    SUM(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' THEN 1 ELSE 0 END) verified_count,
-                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' AND json_extract(asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) has_gold,
-                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' AND json_extract(asset_json,'$.recapTier')='green' THEN 1 ELSE 0 END) has_green,
-                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' AND json_extract(asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) has_extended,
-                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' AND COALESCE(json_extract(asset_json,'$.recapTier'),'blue')='blue' THEN 1 ELSE 0 END) has_blue
-                  FROM history_media_asset GROUP BY league,event_id
-                )
-                SELECT e.*,COALESCE(f.verified_count,0) verified_count,COALESCE(f.has_gold,0) has_gold,
-                       COALESCE(f.has_green,0) has_green,COALESCE(f.has_extended,0) has_extended,COALESCE(f.has_blue,0) has_blue
-                FROM canonical e LEFT JOIN flags f ON f.league=e.league AND f.event_id=e.event_id
-                WHERE COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0
-                  AND (e.next_retry_at<=? OR COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?)
-                  AND (e.last_discovery_at<=0 OR e.last_discovery_at <= ? - CASE WHEN e.date>=date('now','-2 days') THEN ? ELSE ? END)
-                ORDER BY
-                  CASE WHEN e.date>=date('now','-2 days') AND COALESCE(f.verified_count,0)=0 THEN -3
-                       WHEN e.date>=date('now','-2 days') AND COALESCE(f.has_blue,0)=1 THEN -2
-                       WHEN e.date>=date('now','-2 days') AND COALESCE(f.has_extended,0)=1 THEN -1
-                       WHEN COALESCE(f.has_blue,0)=1 THEN 0
-                       WHEN COALESCE(f.verified_count,0)=0 THEN 1
-                       WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
-                  e.date DESC,e.last_discovery_at ASC LIMIT ?
-                """,
-                (now,current,now,float(recent_cooldown),float(archive_cooldown),limit),
-            ).fetchall()
-        out=[]
-        for row in rows:
-            event=self._load_obj(row['event_json']); discovery=self._load_obj(row['discovery_json'])
-            best='blue' if int(row['has_blue'] or 0) else ('extended' if int(row['has_extended'] or 0) else '')
-            out.append({'date':row['date'],'league':row['league'],'eventId':row['event_id'],'canonicalEventKey':self.canonical_event_key(row['league'],row['event_id']),
-                'event':event,'discoveryState':row['discovery_state'],'discovery':discovery,'nextRetryAt':float(row['next_retry_at'] or 0),
-                'lastDiscoveryAt':float(row['last_discovery_at'] or 0),'verifiedCount':int(row['verified_count'] or 0),'hasBlue':bool(row['has_blue']),
-                'hasExtended':bool(row['has_extended']),'bestTier':best or 'none'})
-        return out
+            if not conn.execute("SELECT 1 FROM history_source_media WHERE asset_key=?",(asset_key,)).fetchone(): return False
+            conn.execute("INSERT INTO history_media_verification(asset_key,verification_type,state,reason,details_json,verified_at,verification_version) VALUES(?,?,?,?,?,?,?)",
+              (asset_key,str(verification_type or "UNKNOWN"),str(state or "UNKNOWN"),str(reason or "")[:1000],self._dump_obj(details),now,VERIFICATION_VERSION)); conn.commit()
+        return True
 
-    def green_gap_summary(self, *, current_discovery_version=0, now=None, recent_cooldown=2*60*60, archive_cooldown=24*60*60):
-        """Aggregate canonical game coverage and migration state for the console."""
-        now=float(now or time.time()); current=int(current_discovery_version or 0)
+    def record_discovery_attempt(self, league, event_id, *, source="", discovery_version=0, query_type="", query_text="", result_count=0, accepted_count=0,
+                                 best_before="", best_after="", quota_cost=0, failure_reason="", details=None, attempted_at=None):
+        key=self.canonical_event_key(league,event_id); now=float(attempted_at or time.time())
         with self._lock, closing(self._connect()) as conn:
-            row=conn.execute(
-                """
-                WITH canonical AS (
-                  SELECT * FROM (SELECT e.*,ROW_NUMBER() OVER(PARTITION BY league,event_id ORDER BY last_discovery_at DESC,updated_at DESC,date DESC) rn FROM history_event e) WHERE rn=1
-                ), flags AS (
-                  SELECT league,event_id,
-                    SUM(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' THEN 1 ELSE 0 END) verified_count,
-                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' AND json_extract(asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) has_gold,
-                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' AND json_extract(asset_json,'$.recapTier')='green' THEN 1 ELSE 0 END) has_green,
-                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' AND json_extract(asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) has_extended,
-                    MAX(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' AND COALESCE(json_extract(asset_json,'$.recapTier'),'blue')='blue' THEN 1 ELSE 0 END) has_blue,
-                    SUM(CASE WHEN validation_state='CANDIDATE' AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' THEN 1 ELSE 0 END) candidate_count
-                  FROM history_media_asset GROUP BY league,event_id
-                )
-                SELECT COUNT(*) total_events,
-                  SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 THEN 1 ELSE 0 END) gaps,
-                  SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND COALESCE(f.has_blue,0)=1 THEN 1 ELSE 0 END) blue_only,
-                  SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND COALESCE(f.has_extended,0)=1 AND COALESCE(f.has_blue,0)=0 THEN 1 ELSE 0 END) purple_only,
-                  SUM(CASE WHEN COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<? THEN 1 ELSE 0 END) unindexed,
-                  SUM(CASE WHEN COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)>=? AND e.discovery_state='SEARCHED_EMPTY' AND COALESCE(f.verified_count,0)=0 THEN 1 ELSE 0 END) searched_empty,
-                  SUM(CASE WHEN COALESCE(f.verified_count,0)>0 THEN 1 ELSE 0 END) coverage_complete,
-                  SUM(CASE WHEN COALESCE(f.verified_count,0)=0 AND COALESCE(f.candidate_count,0)>0 THEN 1 ELSE 0 END) candidate_only,
-                  SUM(CASE WHEN e.date>=date('now','-2 days') AND COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 THEN 1 ELSE 0 END) recent_gaps,
-                  SUM(CASE WHEN e.date>=date('now','-2 days') AND COALESCE(f.verified_count,0)=0 THEN 1 ELSE 0 END) recent_uncovered,
-                  SUM(CASE WHEN COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0
-                    AND (e.next_retry_at<=? OR COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?)
-                    AND (e.last_discovery_at<=0 OR e.last_discovery_at <= ? - CASE WHEN e.date>=date('now','-2 days') THEN ? ELSE ? END)
-                    THEN 1 ELSE 0 END) due_now,
-                  SUM(CASE WHEN COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<? THEN 1 ELSE 0 END) stale_version
-                FROM canonical e LEFT JOIN flags f ON f.league=e.league AND f.event_id=e.event_id
-                """,(current,current,now,current,now,float(recent_cooldown),float(archive_cooldown),current),
-            ).fetchone()
-        out={k:int(row[k] or 0) for k in row.keys()} if row else {}
-        # Compatibility aliases for older UI/tests; "no_media" no longer means unindexed.
-        out['no_media']=out.get('searched_empty',0); out['recent_no_media']=out.get('recent_uncovered',0)
-        return out
+            if not conn.execute("SELECT 1 FROM history_catalog_event WHERE canonical_event_key=?",(key,)).fetchone(): return False
+            conn.execute("""INSERT INTO history_discovery_attempt(canonical_event_key,source,attempted_at,discovery_version,query_type,query_text,result_count,accepted_count,best_before,best_after,quota_cost,failure_reason,details_json)
+              VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)""",(key,str(source or ""),now,int(discovery_version or 0),str(query_type or ""),str(query_text or "")[:2000],int(result_count or 0),int(accepted_count or 0),str(best_before or ""),str(best_after or ""),float(quota_cost or 0),str(failure_reason or "")[:1000],self._dump_obj(details))); conn.commit()
+        return True
+
+    def add_segment(self, asset_key, *, segment_key="", league="", event_id="", collection_key="", start_seconds=0, end_seconds=0, title="", confidence=0, evidence="", extractor_version=1):
+        if not segment_key:
+            suffix=f"{league}:{event_id}" if event_id else str(collection_key or "segment")
+            segment_key=f"{asset_key}:{suffix}:{float(start_seconds or 0):.3f}"
+        event_key=self.canonical_event_key(league,event_id) if league and event_id else None; now=time.time()
+        with self._lock, closing(self._connect()) as conn:
+            if not conn.execute("SELECT 1 FROM history_source_media WHERE asset_key=?",(asset_key,)).fetchone(): return ""
+            conn.execute("""INSERT INTO history_media_segment(segment_key,asset_key,canonical_event_key,collection_key,start_seconds,end_seconds,title,confidence,evidence,extractor_version,created_at,updated_at)
+              VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(segment_key) DO UPDATE SET start_seconds=excluded.start_seconds,end_seconds=excluded.end_seconds,title=excluded.title,confidence=excluded.confidence,evidence=excluded.evidence,extractor_version=excluded.extractor_version,updated_at=excluded.updated_at""",
+              (segment_key,asset_key,event_key,collection_key or None,float(start_seconds or 0),float(end_seconds or 0),str(title or ""),float(confidence or 0),str(evidence or "")[:2000],int(extractor_version or 1),now,now)); conn.commit()
+        return segment_key
+
+    @staticmethod
+    def _collection_key(scope,league,period_key,kind):
+        return f"{str(scope).upper()}:{str(league).upper()}:{str(period_key)}:{str(kind).upper()}"
 
     def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP"):
-        scope=str(scope or '').upper(); league=str(league or '').upper(); period_key=str(period_key or '')
-        if scope not in COLLECTION_SCOPES or not league or not period_key: return 0
-        now=time.time(); count=0
+        scope=str(scope or "").upper(); league=str(league or "").upper(); period_key=str(period_key or ""); kind=str(collection_kind or "ROUNDUP").upper()
+        if scope not in COLLECTION_SCOPES or not period_key: return 0
+        ckey=self._collection_key(scope,league,period_key,kind); now=time.time(); count=0
         with self._lock, closing(self._connect()) as conn:
+            conn.execute("""INSERT INTO history_collection(collection_key,scope,league,period_key,collection_kind,title,metadata_json,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)
+              ON CONFLICT(collection_key) DO UPDATE SET updated_at=excluded.updated_at""",(ckey,scope,league,period_key,kind,f"{league} {period_key} {kind.replace('_',' ').title()}","{}",now,now))
             for raw in rows or []:
                 if not isinstance(raw,dict): continue
-                item=annotate_media_scope(dict(raw),league=league,date=period_key[:10])
-                if item.get('mediaScope') not in COLLECTION_SCOPES: continue
-                asset_key=self.asset_key_for(item)
+                item=annotate_media_scope(dict(raw),league=league,date=str(raw.get("date") or period_key)[:10])
+                if item.get("mediaScope") not in COLLECTION_SCOPES:
+                    # The caller explicitly routed this into a collection. Keep the
+                    # classifier decision visible but never turn it into GAME truth.
+                    item["mediaScope"]=scope; item["mediaScopeReason"]="EXPLICIT_COLLECTION_ROUTE"; item["mediaScopeConfidence"]=1.0
+                item["collectionTier"]="silver"; item["displayTier"]="silver"; item["collectionPeriodKey"]=period_key; item["collectionKind"]=kind
+                asset_key=self._upsert_source_media_conn(conn,item,league=league,date=str(item.get("date") or period_key)[:10],catalog_state=ASSIGNED)
                 if not asset_key: continue
-                validation=self.validation_state_for(item); verified_at=float(item.get('historyVerifiedAt') or item.get('verifiedAt') or (now if validation=='VERIFIED' else 0) or 0)
-                item['collectionTier']='silver'; item['displayTier']='silver'; item['collectionPeriodKey']=period_key
-                kind=str(item.get('collectionKind') or collection_kind or 'ROUNDUP').upper(); item['collectionKind']=kind
-                conn.execute("""
-                    INSERT INTO history_collection_media(scope,league,period_key,asset_key,asset_json,collection_kind,validation_state,verified_at,runtime_state,updated_at)
-                    VALUES(?,?,?,?,?,?,?,?,?,?)
-                    ON CONFLICT(scope,league,period_key,asset_key) DO UPDATE SET
-                      asset_json=excluded.asset_json,collection_kind=excluded.collection_kind,
-                      validation_state=CASE WHEN excluded.validation_state='VERIFIED' THEN 'VERIFIED' ELSE history_collection_media.validation_state END,
-                      verified_at=MAX(history_collection_media.verified_at,excluded.verified_at),updated_at=excluded.updated_at
-                """,(scope,league,period_key,asset_key,self._dump_obj(item),kind,validation,verified_at,'UNKNOWN',now))
-                count+=1
+                rank=400 if kind=="DAILY_RECAP" else 350 if kind=="TOP_PLAYS" else 300 if scope=="WEEK_LEAGUE" else 200
+                confidence=float(item.get("mediaScopeConfidence") or 0); method=str(item.get("mediaScopeReason") or "EXPLICIT_COLLECTION_ROUTE")
+                evidence=f"scope={scope}; kind={kind}; period={period_key}"
+                conn.execute("INSERT INTO history_collection_media(collection_key,asset_key,association_confidence,association_method,association_evidence,classifier_version,rank_hint,first_associated_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(collection_key,asset_key) DO UPDATE SET association_confidence=excluded.association_confidence,association_method=excluded.association_method,association_evidence=excluded.association_evidence,classifier_version=excluded.classifier_version,rank_hint=excluded.rank_hint,updated_at=excluded.updated_at",(ckey,asset_key,confidence,method,evidence,int(item.get("mediaClassifierVersion") or MEDIA_CLASSIFIER_VERSION),rank,now,now)); count+=1
             conn.commit()
         return count
 
     def roundup_media(self, date, league=None):
-        date=str(date or '')[:10]; league=str(league or '').upper()
+        date=str(date or "")[:10]; league=str(league or "").upper()
         with self._lock, closing(self._connect()) as conn:
-            if league and league!='ALL':
-                rows=conn.execute("SELECT * FROM history_collection_media WHERE league=? AND ((scope='DAY_LEAGUE' AND period_key=?) OR (scope='WEEK_LEAGUE' AND json_extract(asset_json,'$.date')=?)) ORDER BY verified_at DESC,updated_at DESC",(league,date,date)).fetchall()
-            else:
-                rows=conn.execute("SELECT * FROM history_collection_media WHERE (scope='DAY_LEAGUE' AND period_key=?) OR (scope='WEEK_LEAGUE' AND json_extract(asset_json,'$.date')=?) ORDER BY league,verified_at DESC,updated_at DESC",(date,date)).fetchall()
+            params=[date,date]; league_sql=""
+            if league and league!="ALL": league_sql=" AND c.league=?"; params.append(league)
+            rows=conn.execute("""SELECT c.*,cm.rank_hint,s.* FROM history_collection c JOIN history_collection_media cm ON cm.collection_key=c.collection_key
+              JOIN history_source_media s ON s.asset_key=cm.asset_key WHERE ((c.scope='DAY_LEAGUE' AND c.period_key=?) OR (c.scope='WEEK_LEAGUE' AND json_extract(s.asset_json,'$.date')=?))"""+league_sql+
+              " ORDER BY cm.rank_hint DESC,s.verified_at DESC,s.duration_seconds DESC",params).fetchall()
         out=[]; seen=set()
         for row in rows:
-            if row['asset_key'] in seen: continue
-            seen.add(row['asset_key']); item=self._load_obj(row['asset_json'])
-            item['mediaScope']=row['scope']; item['collectionTier']='silver'; item['displayTier']='silver'; item['collectionKind']=row['collection_kind']; item['collectionPeriodKey']=row['period_key']
-            item['validationState']=row['validation_state']; item['historyVerifiedAt']=float(row['verified_at'] or 0)
-            if str(row['runtime_state'] or '').upper()=='FAILED': item['verifiedPlayable']=False; item['runtimeState']='failed'
-            out.append(item)
-        def rank(x):
-            kind=str(x.get('collectionKind') or ''); scope=str(x.get('mediaScope') or '')
-            return (4 if scope=='DAY_LEAGUE' and kind=='DAILY_RECAP' else 3 if scope=='DAY_LEAGUE' and kind=='TOP_PLAYS' else 2 if scope=='WEEK_LEAGUE' else 1,
-                    1 if x.get('verifiedPlayable') else 0, int(x.get('durationSeconds') or x.get('duration') or 0))
-        out.sort(key=rank,reverse=True)
+            if row["asset_key"] in seen: continue
+            seen.add(row["asset_key"]); item=self._hydrate_asset(row)
+            item["mediaScope"]=row["scope"]; item["collectionTier"]="silver"; item["displayTier"]="silver"; item["collectionKind"]=row["collection_kind"]
+            item["collectionPeriodKey"]=row["period_key"]; item["collectionKey"]=row["collection_key"]; out.append(item)
         return out
 
-    def reclassify_media_scopes(self):
-        """Soft-migrate v3.0.x assets without losing durable provider discoveries."""
-        moved=updated=0
-        with self._lock, closing(self._connect()) as conn:
-            rows=conn.execute("SELECT a.rowid rid,a.*,e.event_json FROM history_media_asset a LEFT JOIN history_event e ON e.date=a.date AND e.league=a.league AND e.event_id=a.event_id").fetchall()
-            for row in rows:
-                item=self._load_obj(row['asset_json']); event=self._load_obj(row['event_json'])
-                away=self._audit_team_name(event,'away'); home=self._audit_team_name(event,'home')
-                # v3.0.x generic YouTube rows may already carry a bogus matchId /
-                # scoreEventId because association happened before matchup proof.
-                # Reclassification must distrust those legacy stamps and rebuild
-                # scope from provider authority + the title/opponent fingerprint.
-                probe=dict(item); probe.pop('mediaScope',None)
-                generic_channel=bool(probe.get('youtubeId')) and str(probe.get('sourceType') or '').lower() not in {'espn-event-video','mlb-game-content','nfl-event-video','official-nfl-club-site'}
-                if generic_channel:
-                    for key in ('matchId','scoreEventId','espnEventId','canonicalEventId','canonicalEventKey'): probe.pop(key,None)
-                classified=annotate_media_scope(probe,league=row['league'],date=row['date'],away=away,home=home)
-                scoped=dict(item); scoped.update({k:v for k,v in classified.items() if k in ('mediaScope','collectionTier','displayTier','collectionKind','collectionPeriodKey')})
-                scope=scoped.get('mediaScope')
-                if scope in COLLECTION_SCOPES:
-                    for key in ('matchId','scoreEventId','espnEventId','canonicalEventId','canonicalEventKey'): scoped.pop(key,None)
-                if scope in COLLECTION_SCOPES:
-                    period=str(scoped.get('collectionPeriodKey') or row['date'])
-                    # Persist after this transaction through direct SQL to avoid nested connections.
-                    kind=str(scoped.get('collectionKind') or 'ROUNDUP')
-                    conn.execute("""INSERT INTO history_collection_media(scope,league,period_key,asset_key,asset_json,collection_kind,validation_state,verified_at,runtime_state,updated_at)
-                      VALUES(?,?,?,?,?,?,?,?,?,?) ON CONFLICT(scope,league,period_key,asset_key) DO UPDATE SET asset_json=excluded.asset_json,validation_state=excluded.validation_state,verified_at=MAX(history_collection_media.verified_at,excluded.verified_at),updated_at=excluded.updated_at""",
-                      (scope,row['league'],period,row['asset_key'],self._dump_obj(scoped),kind,row['validation_state'],row['verified_at'],row['runtime_state'],time.time()))
-                    conn.execute("DELETE FROM history_media_asset WHERE rowid=?",(row['rid'],)); moved+=1
-                else:
-                    if scoped!=item:
-                        conn.execute("UPDATE history_media_asset SET asset_json=?,updated_at=? WHERE rowid=?",(self._dump_obj(scoped),time.time(),row['rid'])); updated+=1
-            conn.commit()
-        return {'movedToCollections':moved,'updatedScopes':updated}
-
     def put_media(self, date, league, rows, merge=True):
-        date = str(date)[:10]; league = str(league).upper(); items = list(rows or [])
+        """Ingest source assets. Event association is deliberately separate.
+
+        For browser/backward compatibility, the raw day cache is retained, but it
+        is never read as playback authority when v4 normalized relationships exist.
+        """
+        date=str(date)[:10]; league=str(league).upper(); items=list(rows or [])
         if merge:
-            current = self.get_league(date, league, prefer_catalog=False).get("media") or []
-            merged=[]; positions={}
-            def key_for(item):
-                return self.asset_key_for(item) or json.dumps(item, sort_keys=True, default=str)
-            for item in current:
+            current=self.get_league(date,league,prefer_catalog=False).get("media") or []; merged=[]; pos={}
+            for item in [*current,*items]:
                 if not isinstance(item,dict): continue
-                key=key_for(item)
-                if key in positions: continue
-                positions[key]=len(merged); merged.append(dict(item))
-            for item in items:
-                if not isinstance(item,dict): continue
-                key=key_for(item)
-                if key in positions:
-                    idx=positions[key]; upgraded=dict(merged[idx]); upgraded.update(item); merged[idx]=upgraded
-                else:
-                    positions[key]=len(merged); merged.append(dict(item))
+                key=self.asset_key_for(item) or self._dump_obj(item)
+                if key in pos: merged[pos[key]].update(item)
+                else: pos[key]=len(merged); merged.append(dict(item))
             items=merged
         now=time.time()
         with self._lock, closing(self._connect()) as conn:
-            conn.execute(
-                """
-                INSERT INTO history_day(date, league, media_json, media_saved_at)
-                VALUES(?,?,?,?)
-                ON CONFLICT(date,league) DO UPDATE SET media_json=excluded.media_json, media_saved_at=excluded.media_saved_at
-                """,
-                (date,league,self._dump(items),now),
-            )
+            conn.execute("INSERT INTO history_day(date,league,media_json,media_saved_at) VALUES(?,?,?,?) ON CONFLICT(date,league) DO UPDATE SET media_json=excluded.media_json,media_saved_at=excluded.media_saved_at",(date,league,self._dump(items),now))
+            for item in items:
+                self._upsert_source_media_conn(conn,item,league=league,date=date)
             conn.commit()
-        # Mirror into normalized catalog outside the first connection/lock scope.
+        # Only rows that already carry the post-match canonical key are eligible
+        # for an association replay. Generic source rows remain unassigned.
         grouped={}
         for item in items:
-            event_id=self.event_id_for(item)
-            if event_id: grouped.setdefault(event_id,[]).append(item)
-        for event_id,event_items in grouped.items():
-            self.put_event_media(date,league,event_id,event_items)
+            ckey=str((item or {}).get("canonicalEventKey") or "")
+            if ckey.startswith(league+":"):
+                grouped.setdefault(ckey.split(":",1)[1],[]).append(item)
+        for event_id,event_items in grouped.items(): self.put_event_media(date,league,event_id,event_items)
         return now
 
     def put_discovery(self, date, league, state, merge=True):
@@ -597,47 +613,24 @@ class HistoryRepository:
         if merge:
             current=self.get_league(date,league,prefer_catalog=False).get("discovery") or {}; merged=dict(current); merged.update(value)
             for key in ("deepSearchedEventIds","noQuotaSearchedEventIds"):
-                if key in current or key in value:
-                    merged[key]=list(dict.fromkeys([*(current.get(key) or []),*(value.get(key) or [])]))
+                if key in current or key in value: merged[key]=list(dict.fromkeys([*(current.get(key) or []),*(value.get(key) or [])]))
             value=merged
         now=time.time()
         with self._lock, closing(self._connect()) as conn:
-            conn.execute(
-                """
-                INSERT INTO history_day(date,league,discovery_json,discovery_saved_at)
-                VALUES(?,?,?,?)
-                ON CONFLICT(date,league) DO UPDATE SET discovery_json=excluded.discovery_json, discovery_saved_at=excluded.discovery_saved_at
-                """,
-                (date,league,self._dump_obj(value),now),
-            ); conn.commit()
+            conn.execute("INSERT INTO history_day(date,league,discovery_json,discovery_saved_at) VALUES(?,?,?,?) ON CONFLICT(date,league) DO UPDATE SET discovery_json=excluded.discovery_json,discovery_saved_at=excluded.discovery_saved_at",(date,league,self._dump_obj(value),now)); conn.commit()
         return now
 
     def _catalog_media_for_league(self, date, league):
         date=str(date)[:10]; league=str(league).upper()
         with self._lock, closing(self._connect()) as conn:
-            ids={str(r[0]) for r in conn.execute("SELECT event_id FROM history_event WHERE date=? AND league=?",(date,league)).fetchall() if r[0]}
-            day=conn.execute("SELECT scores_json FROM history_day WHERE date=? AND league=?",(date,league)).fetchone()
-            if day:
-                for score in self._load(day['scores_json']):
-                    eid=self.event_id_for(score)
-                    if eid: ids.add(eid)
-            if not ids: return []
-            marks=','.join('?' for _ in ids)
-            rows=conn.execute(f"SELECT * FROM history_media_asset WHERE league=? AND event_id IN ({marks}) AND COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME' ORDER BY event_id,verified_at DESC,updated_at DESC",[league,*sorted(ids)]).fetchall()
-        out=[]; seen=set()
+            rows=conn.execute("""SELECT DISTINCT s.*,em.association_confidence,em.association_method,em.association_evidence,em.matcher_version,e.canonical_event_key
+              FROM history_catalog_event e JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key
+              JOIN history_source_media s ON s.asset_key=em.asset_key
+              WHERE e.event_date=? AND e.league=? AND em.association_state='ASSIGNED' AND s.scope='GAME' ORDER BY e.canonical_event_key,s.verified_at DESC""",(date,league)).fetchall()
+        out=[]
         for row in rows:
-            dedupe=(row['event_id'],row['asset_key'])
-            if dedupe in seen: continue
-            seen.add(dedupe)
-            item=self._load_obj(row["asset_json"]); runtime=str(row["runtime_state"] or "UNKNOWN").upper()
-            item["validationState"]=row["validation_state"] or "CANDIDATE"
-            item["historyVerifiedAt"]=float(row["verified_at"] or item.get("historyVerifiedAt") or 0)
-            item["runtimeCatalogState"]=runtime
-            if runtime=="FAILED":
-                item["runtimeState"]="failed"; item["verifiedPlayable"]=False; item["runtimeFailureReason"]=row["runtime_failure_reason"] or ""
-            elif runtime=="PLAYED":
-                item["runtimeState"]="playing-confirmed"; item["verifiedPlayable"]=True
-            out.append(item)
+            item=self._hydrate_asset(row); item["canonicalEventKey"]=row["canonical_event_key"]
+            event_id=str(row["canonical_event_key"]).split(":",1)[1]; item.setdefault("matchId",event_id); item.setdefault("scoreEventId",event_id); out.append(item)
         return out
 
     def get_league(self, date, league, prefer_catalog=True):
@@ -647,265 +640,264 @@ class HistoryRepository:
         if not row:
             base={"date":date,"league":league,"scores":[],"media":[],"discovery":{},"scoresSavedAt":0,"mediaSavedAt":0,"discoverySavedAt":0}
         else:
-            keys=set(row.keys())
-            base={"date":row["date"],"league":row["league"],"scores":self._load(row["scores_json"]),"media":self._load(row["media_json"]),"discovery":self._load_obj(row["discovery_json"]) if "discovery_json" in keys else {},"scoresSavedAt":float(row["scores_saved_at"] or 0),"mediaSavedAt":float(row["media_saved_at"] or 0),"discoverySavedAt":float(row["discovery_saved_at"] or 0) if "discovery_saved_at" in keys else 0}
+            base={"date":row["date"],"league":row["league"],"scores":self._load(row["scores_json"]),"media":self._load(row["media_json"]),"discovery":self._load_obj(row["discovery_json"]),
+                "scoresSavedAt":float(row["scores_saved_at"] or 0),"mediaSavedAt":float(row["media_saved_at"] or 0),"discoverySavedAt":float(row["discovery_saved_at"] or 0)}
         if prefer_catalog:
-            catalog=self._catalog_media_for_league(date,league)
-            if catalog: base["media"]=catalog
+            base["media"]=self._catalog_media_for_league(date,league)
         return base
 
     def get_day(self, date):
-        date=str(date)[:10]; leagues={}
+        date=str(date)[:10]
         with self._lock, closing(self._connect()) as conn:
-            names=[r[0] for r in conn.execute("SELECT league FROM history_day WHERE date=? UNION SELECT league FROM history_event WHERE date=? UNION SELECT league FROM history_media_asset WHERE date=? ORDER BY league",(date,date,date)).fetchall()]
+            names=[r[0] for r in conn.execute("SELECT league FROM history_day WHERE date=? UNION SELECT league FROM history_catalog_event WHERE event_date=? ORDER BY league",(date,date)).fetchall()]
+        leagues={}
         for league in names:
-            row=self.get_league(date,league,prefer_catalog=True)
-            leagues[league]={k:v for k,v in row.items() if k not in ("date","league")}
+            row=self.get_league(date,league,prefer_catalog=True); leagues[league]={k:v for k,v in row.items() if k not in ("date","league")}
         return {"date":date,"leagues":leagues,"roundups":self.roundup_media(date)}
 
-    def has_scores(self, date, league):
-        return bool(self.get_league(date,league,prefer_catalog=False).get("scoresSavedAt"))
+    def has_scores(self, date, league): return bool(self.get_league(date,league,prefer_catalog=False).get("scoresSavedAt"))
 
-    @staticmethod
-    def _audit_team_name(event, side):
-        event=event if isinstance(event,dict) else {}
-        team=event.get(f"{side}Team") or event.get(side) or {}
-        if isinstance(team,dict):
-            return str(team.get("displayName") or team.get("name") or team.get("shortName") or team.get("abbreviation") or team.get("abbr") or "").strip()
-        return str(team or "").strip()
-
-    @staticmethod
-    def _audit_asset_view(row, item):
-        item=item if isinstance(item,dict) else {}
-        tier=str(item.get("recapTier") or "blue")
-        if tier not in {"gold","green","extended","blue"}: tier="blue"
-        youtube_id=str(item.get("youtubeId") or "").strip()
-        media_url=str(item.get("mediaUrl") or "").strip()
-        external_url=str(item.get("externalUrl") or "").strip()
-        url=external_url or (f"https://www.youtube.com/watch?v={youtube_id}" if youtube_id else media_url)
-        try: duration=int(float(item.get("durationSeconds") or item.get("duration") or 0))
-        except Exception: duration=0
-        runtime=str(row["runtime_state"] or "UNKNOWN").upper()
-        validation=str(row["validation_state"] or "CANDIDATE").upper()
-        return {
-            "assetKey":row["asset_key"],"tier":tier,"title":str(item.get("title") or "Untitled media"),
-            "durationSeconds":duration,"provider":str(item.get("provider") or item.get("sourceLabel") or item.get("source") or ""),
-            "source":str(item.get("sourceLabel") or item.get("source") or ""),"url":url,
-            "youtubeId":youtube_id,"mediaUrl":media_url,"validationState":validation,"runtimeState":runtime,
-            "verified":bool(validation=="VERIFIED" and runtime!="FAILED" and (youtube_id or media_url)),
-            "verifiedAt":float(row["verified_at"] or 0),"runtimeSuccessAt":float(row["runtime_success_at"] or 0),
-            "runtimeFailureAt":float(row["runtime_failure_at"] or 0),"runtimeFailureReason":str(row["runtime_failure_reason"] or ""),
-            "lastSeenAt":float(row["last_seen_at"] or 0),
-        }
-
-    @staticmethod
-    def _audit_effective_status(discovery_state, discovery, *, best_tier="", verified_count=0,
-                                current_discovery_version=0, quality_target="gold"):
-        """Project durable catalog truth into a human-readable audit status.
-
-        Raw history_event.discovery_state is intentionally preserved for diagnostics, but
-        older rows can remain UNKNOWN until the current per-event discovery pipeline has
-        revisited them. The audit must not confuse that migration state with "we know
-        nothing": verified media, current discovery version, and quality/catalog flags are
-        combined here into an effective read-only status.
-        """
-        discovery=discovery if isinstance(discovery,dict) else {}
-        raw=str(discovery_state or "UNKNOWN").upper()
-        try: version=int(discovery.get("discoveryVersion") or 0)
-        except Exception: version=0
-        try: current_version=int(current_discovery_version or 0)
-        except Exception: current_version=0
-        version_current=bool(not current_version or version>=current_version)
-        target=str(quality_target or "gold").lower()
-        best=str(best_tier or "").lower()
-
-        # Actual verified catalog content outranks stale bookkeeping. If Gold exists,
-        # the quality target is met even before the old event row is rewritten.
-        quality_complete=bool(best==target or (version_current and discovery.get("qualityComplete") is True))
-        catalog_complete=bool(version_current and discovery.get("catalogComplete") is True)
-        discovery_pending=bool(not version_current or raw in {"", "UNKNOWN"})
-        inferred_upgrade=bool(best and best!=target and not quality_complete)
-        upgrade_eligible=bool(inferred_upgrade or (version_current and discovery.get("upgradeEligible") is True))
-
-        if quality_complete:
-            effective="QUALITY_COMPLETE"
-        elif discovery_pending:
-            effective="PENDING_INDEX"
-        elif verified_count:
-            effective="UPGRADE_PENDING" if (catalog_complete and upgrade_eligible) else "PARTIAL"
-        elif raw=="DEGRADED_PROVIDER":
-            effective="PROVIDER_DEGRADED"
-        elif raw=="CANDIDATE_ONLY":
-            effective="CANDIDATE_ONLY"
-        elif raw=="SEARCHED_EMPTY":
-            effective="NO_MEDIA_FOUND"
-        elif raw=="VERIFIED_UPGRADE_PENDING":
-            effective="UPGRADE_PENDING"
-        elif raw=="VERIFIED_PARTIAL":
-            effective="PARTIAL"
-        elif raw=="VERIFIED":
-            effective="PARTIAL"
-        else:
-            effective="PENDING_INDEX"
-
-        return {
-            "effectiveStatus":effective,"discoveryState":raw,"discoveryVersion":version,
-            "currentDiscoveryVersion":current_version,"versionCurrent":version_current,
-            "discoveryPending":discovery_pending,"catalogComplete":catalog_complete,
-            "qualityComplete":quality_complete,"upgradeEligible":upgrade_eligible,
-        }
-
-    def audit_catalog(self, *, date_from="", date_to="", league="", best_tier="", status="", search="", limit=100, offset=0,
-                      current_discovery_version=0, quality_target="gold"):
-        """Return an Excel-like game-level view of the normalized history catalog.
-
-        v3.1.0 deliberately exposes an *effective* audit status in addition to the raw
-        discovery state. This keeps legacy UNKNOWN rows from looking empty when the
-        persistent media catalog already contains verified Green/Purple/Blue assets.
-        """
-        date_from=str(date_from or "")[:10]; date_to=str(date_to or "")[:10]; league=str(league or "").upper()
-        best_tier=str(best_tier or "").lower(); status=str(status or "").lower(); search=str(search or "").strip().lower()
-        limit=max(1,min(500,int(limit or 100))); offset=max(0,int(offset or 0))
-        where=[]; args=[]
-        if date_from: where.append("date>=?"); args.append(date_from)
-        if date_to: where.append("date<=?"); args.append(date_to)
-        if league: where.append("league=?"); args.append(league)
-        clause=(" WHERE "+" AND ".join(where)) if where else ""
+    def green_gap_events(self, *, current_discovery_version=0, now=None, limit=24, recent_cooldown=2*60*60, archive_cooldown=24*60*60):
+        now=float(now or time.time()); current=int(current_discovery_version or 0); limit=max(1,min(200,int(limit or 24)))
         with self._lock, closing(self._connect()) as conn:
-            # League + sporting Event ID is the durable game identity. The audit
-            # projects one canonical row even when UTC/viewer-day aliases created
-            # duplicate date records in an older catalog.
-            inner_clause=clause
-            events=conn.execute(f"""SELECT * FROM (
-                SELECT e.*,ROW_NUMBER() OVER(PARTITION BY league,event_id ORDER BY last_discovery_at DESC,updated_at DESC,date DESC) rn
-                FROM history_event e{inner_clause}
-              ) WHERE rn=1 ORDER BY date DESC,league,event_id""",args).fetchall()
-            asset_where=list(where); asset_args=list(args)
-            asset_where.append("COALESCE(json_extract(asset_json,'$.mediaScope'),'GAME')='GAME'")
-            asset_clause=(" WHERE "+" AND ".join(asset_where)) if asset_where else ""
-            assets=conn.execute(f"SELECT * FROM history_media_asset{asset_clause} ORDER BY league,event_id,verified_at DESC,updated_at DESC",asset_args).fetchall()
+            rows=conn.execute("""WITH flags AS (
+                SELECT em.canonical_event_key,
+                  SUM(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count,
+                  MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) has_gold,
+                  MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='green' THEN 1 ELSE 0 END) has_green,
+                  MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) has_extended,
+                  MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND COALESCE(json_extract(s.asset_json,'$.recapTier'),'blue')='blue' THEN 1 ELSE 0 END) has_blue
+                FROM history_event_media em JOIN history_source_media s ON s.asset_key=em.asset_key GROUP BY em.canonical_event_key)
+              SELECT e.*,COALESCE(f.verified_count,0) verified_count,COALESCE(f.has_gold,0) has_gold,COALESCE(f.has_green,0) has_green,COALESCE(f.has_extended,0) has_extended,COALESCE(f.has_blue,0) has_blue
+              FROM history_catalog_event e LEFT JOIN flags f ON f.canonical_event_key=e.canonical_event_key
+              WHERE COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0 AND (e.next_retry_at<=? OR COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?)
+                AND (e.last_discovery_at<=0 OR e.last_discovery_at <= ? - CASE WHEN e.event_date>=date('now','-2 days') THEN ? ELSE ? END)
+              ORDER BY CASE WHEN e.event_date>=date('now','-2 days') AND COALESCE(f.verified_count,0)=0 THEN -3 WHEN e.event_date>=date('now','-2 days') AND COALESCE(f.has_blue,0)=1 THEN -2
+                WHEN e.event_date>=date('now','-2 days') AND COALESCE(f.has_extended,0)=1 THEN -1 WHEN COALESCE(f.has_blue,0)=1 THEN 0 WHEN COALESCE(f.verified_count,0)=0 THEN 1 WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
+                e.event_date DESC,e.last_discovery_at ASC LIMIT ?""",(now,current,now,float(recent_cooldown),float(archive_cooldown),limit)).fetchall()
+        out=[]
+        for row in rows:
+            best="blue" if row["has_blue"] else ("extended" if row["has_extended"] else "")
+            out.append({"date":row["event_date"],"league":row["league"],"eventId":row["event_id"],"canonicalEventKey":row["canonical_event_key"],"event":self._load_obj(row["event_json"]),
+                "discoveryState":row["discovery_state"],"discovery":self._load_obj(row["discovery_json"]),"nextRetryAt":float(row["next_retry_at"] or 0),"lastDiscoveryAt":float(row["last_discovery_at"] or 0),
+                "verifiedCount":int(row["verified_count"] or 0),"hasBlue":bool(row["has_blue"]),"hasExtended":bool(row["has_extended"]),"bestTier":best or "none"})
+        return out
+
+    def green_gap_summary(self, *, current_discovery_version=0, now=None, recent_cooldown=2*60*60, archive_cooldown=24*60*60):
+        now=float(now or time.time()); current=int(current_discovery_version or 0)
+        with self._lock, closing(self._connect()) as conn:
+            rows=conn.execute("""SELECT e.canonical_event_key,e.event_date,e.discovery_state,e.discovery_json,e.last_discovery_at,e.next_retry_at,
+                SUM(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count,
+                MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) has_gold,
+                MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='green' THEN 1 ELSE 0 END) has_green,
+                MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) has_extended,
+                MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND COALESCE(json_extract(s.asset_json,'$.recapTier'),'blue')='blue' THEN 1 ELSE 0 END) has_blue
+              FROM history_catalog_event e LEFT JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key LEFT JOIN history_source_media s ON s.asset_key=em.asset_key GROUP BY e.canonical_event_key""").fetchall()
+        summary={"total":0,"due":0,"recent":0,"recentNoMedia":0,"blueOnly":0,"purpleOnly":0,"unindexed":0,"searchedEmpty":0,"coverageComplete":0,"candidateOnly":0,"staleVersion":0}
+        for row in rows:
+            disc=self._load_obj(row["discovery_json"]); version=int(disc.get("discoveryVersion") or 0); verified=int(row["verified_count"] or 0)
+            has_good=bool(row["has_gold"] or row["has_green"]); recent=str(row["event_date"])>=time.strftime("%Y-%m-%d",time.gmtime(now-2*86400))
+            if not has_good: summary["total"]+=1
+            if recent and not has_good: summary["recent"]+=1
+            if recent and not verified: summary["recentNoMedia"]+=1
+            if row["has_blue"] and not row["has_extended"] and not has_good: summary["blueOnly"]+=1
+            if row["has_extended"] and not has_good: summary["purpleOnly"]+=1
+            if version<current: summary["staleVersion"]+=1
+            state=str(row["discovery_state"] or "UNKNOWN").upper()
+            if version<current or state in {"","UNKNOWN"}: summary["unindexed"]+=1
+            elif state=="SEARCHED_EMPTY" and not verified: summary["searchedEmpty"]+=1
+            elif verified: summary["coverageComplete"]+=1
+            elif state=="CANDIDATE_ONLY": summary["candidateOnly"]+=1
+            cooldown=float(recent_cooldown if recent else archive_cooldown)
+            due=(float(row["next_retry_at"] or 0)<=now or version<current) and (float(row["last_discovery_at"] or 0)<=0 or float(row["last_discovery_at"] or 0)<=now-cooldown)
+            if not has_good and due: summary["due"]+=1
+        # Stable operator-console aliases. The normalized catalog uses explicit
+        # semantic names, while older browser builds used snake_case queue keys.
+        summary.update({
+            "noMedia":summary["unindexed"]+summary["searchedEmpty"],"recentGaps":summary["recent"],"noMediaSearchedEmpty":summary["searchedEmpty"],
+            "gaps":summary["total"],"due_now":summary["due"],"recent_gaps":summary["recent"],"recent_no_media":summary["recentNoMedia"],
+            "blue_only":summary["blueOnly"],"purple_only":summary["purpleOnly"],"stale_version":summary["staleVersion"],
+            "searched_empty":summary["searchedEmpty"],"coverage_complete":summary["coverageComplete"],"candidate_only":summary["candidateOnly"],
+            "no_media":summary["unindexed"]+summary["searchedEmpty"],
+        })
+        return summary
+
+    @staticmethod
+    def _audit_effective_status(discovery_state, discovery, *, best_tier="", verified_count=0, current_discovery_version=0, quality_target="gold"):
+        discovery=discovery if isinstance(discovery,dict) else {}; raw=str(discovery_state or "UNKNOWN").upper(); version=int(discovery.get("discoveryVersion") or 0); current=int(current_discovery_version or 0)
+        current_ok=not current or version>=current; best=str(best_tier or "").lower(); quality_complete=bool(best==str(quality_target or "gold").lower() or (current_ok and discovery.get("qualityComplete") is True))
+        catalog_complete=bool(current_ok and discovery.get("catalogComplete") is True); pending=bool(not current_ok or raw in {"","UNKNOWN"}); upgrade=bool((best and not quality_complete) or (current_ok and discovery.get("upgradeEligible") is True))
+        if quality_complete: effective="QUALITY_COMPLETE"
+        elif pending: effective="UNINDEXED"
+        elif verified_count: effective="COVERAGE_COMPLETE" if catalog_complete and not upgrade else ("UPGRADE_PENDING" if upgrade else "PARTIAL")
+        elif raw=="SEARCHED_EMPTY": effective="SEARCHED_EMPTY"
+        elif raw=="DEGRADED_PROVIDER": effective="PROVIDER_DEGRADED"
+        elif raw=="CANDIDATE_ONLY": effective="CANDIDATE_ONLY"
+        else: effective="UNINDEXED"
+        return {"effectiveStatus":effective,"discoveryState":raw,"discoveryVersion":version,"currentDiscoveryVersion":current,"versionCurrent":current_ok,"discoveryPending":pending,"catalogComplete":catalog_complete,"qualityComplete":quality_complete,"upgradeEligible":upgrade}
+
+    def audit_catalog(self, *, date_from="", date_to="", league="", best_tier="", status="", search="", limit=100, offset=0, current_discovery_version=0, quality_target="gold"):
+        league=str(league or "").upper(); search=str(search or "").lower(); status=str(status or "").lower(); best_tier=str(best_tier or "").lower(); limit=max(1,min(500,int(limit or 100))); offset=max(0,int(offset or 0))
+        clauses=[]; params=[]
+        if date_from: clauses.append("event_date>=?"); params.append(str(date_from)[:10])
+        if date_to: clauses.append("event_date<=?"); params.append(str(date_to)[:10])
+        if league: clauses.append("league=?"); params.append(league)
+        where=(" WHERE "+" AND ".join(clauses)) if clauses else ""
+        with self._lock, closing(self._connect()) as conn:
+            events=conn.execute("SELECT * FROM history_catalog_event"+where+" ORDER BY event_date DESC,league,event_id",params).fetchall()
+            assets=conn.execute("""SELECT e.canonical_event_key,s.*,em.association_confidence,em.association_method,em.association_evidence,em.matcher_version
+              FROM history_catalog_event e JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key JOIN history_source_media s ON s.asset_key=em.asset_key
+              WHERE em.association_state='ASSIGNED' AND s.scope='GAME'""").fetchall()
         by_event={}
-        seen_assets=set()
         for row in assets:
-            key=(row["league"],row["event_id"]); dedupe=(key,row["asset_key"])
-            if dedupe in seen_assets: continue
-            seen_assets.add(dedupe)
-            item=self._load_obj(row["asset_json"])
-            by_event.setdefault(key,[]).append(self._audit_asset_view(row,item))
-        priority={"gold":4,"green":3,"extended":2,"blue":1,"":0}
-        rows=[]; summary={"games":0,"verifiedAssets":0,"candidateAssets":0,"runtimeFailedAssets":0,
-                         "tiers":{"gold":0,"green":0,"extended":0,"blue":0},
-                         "best":{"gold":0,"green":0,"extended":0,"blue":0,"none":0},
-                         "effectiveStatuses":{"QUALITY_COMPLETE":0,"UPGRADE_PENDING":0,"PARTIAL":0,"PENDING_INDEX":0,
-                                              "NO_MEDIA_FOUND":0,"PROVIDER_DEGRADED":0,"CANDIDATE_ONLY":0},
-                         "upgradePendingGames":0,"qualityCompleteGames":0,"discoveryPendingGames":0,
-                         "noVerifiedMediaGames":0,"greenCoverageGames":0,"greenCoverageByLeague":{}}
+            item=self._hydrate_asset(row); item["associationConfidence"]=float(row["association_confidence"] or 0); item["associationMethod"]=row["association_method"]; item["associationEvidence"]=row["association_evidence"]
+            tier=str(item.get("recapTier") or "blue"); tier=tier if tier in {"gold","green","extended","blue"} else "blue"; item["tier"]=tier
+            youtube_id=str(item.get("youtubeId") or ""); item["url"]=str(item.get("externalUrl") or (f"https://www.youtube.com/watch?v={youtube_id}" if youtube_id else item.get("mediaUrl") or ""))
+            item["verified"]=bool(str(row["validation_state"] or "").upper()=="VERIFIED" and str(row["runtime_state"] or "").upper()!="FAILED" and (youtube_id or item.get("mediaUrl")))
+            by_event.setdefault(row["canonical_event_key"],[]).append(item)
+        priority={"gold":4,"green":3,"extended":2,"blue":1,"":0}; rows=[]
+        summary={"games":0,"verifiedAssets":0,"candidateAssets":0,"runtimeFailedAssets":0,"tiers":{"gold":0,"green":0,"extended":0,"blue":0},"best":{"gold":0,"green":0,"extended":0,"blue":0,"none":0},
+                 "effectiveStatuses":{},"upgradePendingGames":0,"qualityCompleteGames":0,"discoveryPendingGames":0,"noVerifiedMediaGames":0,"greenCoverageGames":0,"greenCoverageByLeague":{}}
         for erow in events:
-            event=self._load_obj(erow["event_json"]); discovery=self._load_obj(erow["discovery_json"])
-            key=(erow["league"],erow["event_id"]); event_assets=by_event.get(key,[])
-            tiers={"gold":[],"green":[],"extended":[],"blue":[]}
-            for asset in event_assets:
-                tiers.setdefault(asset["tier"],[]).append(asset)
-            for values in tiers.values():
-                values.sort(key=lambda a:(bool(a.get("verified")),float(a.get("runtimeSuccessAt") or 0),float(a.get("verifiedAt") or 0),int(a.get("durationSeconds") or 0)),reverse=True)
-            verified=[a for a in event_assets if a.get("verified")]
-            best=max((a.get("tier") or "" for a in verified),key=lambda t:priority.get(t,0),default="")
-            away=self._audit_team_name(event,"away"); home=self._audit_team_name(event,"home")
-            game=f"{away} @ {home}".strip(" @") or str(erow["event_id"])
-            projected=self._audit_effective_status(erow["discovery_state"],discovery,best_tier=best,verified_count=len(verified),
-                                                   current_discovery_version=current_discovery_version,quality_target=quality_target)
-            quality_complete=bool(projected["qualityComplete"])
-            upgrade_eligible=bool(projected["upgradeEligible"])
-            discovery_state=str(projected["discoveryState"])
-            effective_status=str(projected["effectiveStatus"])
-            hay=f"{erow['date']} {erow['league']} {game} {erow['event_id']} "+" ".join(str(a.get('title') or '') for a in event_assets)
+            event=self._load_obj(erow["event_json"]); disc=self._load_obj(erow["discovery_json"]); event_assets=by_event.get(erow["canonical_event_key"],[]); tiers={"gold":[],"green":[],"extended":[],"blue":[]}
+            for asset in event_assets: tiers[asset["tier"]].append(asset)
+            verified=[a for a in event_assets if a.get("verified")]; best=max((a["tier"] for a in verified),key=lambda t:priority.get(t,0),default="")
+            away,home=team_name(event,"away"),team_name(event,"home"); game=f"{away} @ {home}".strip(" @") or erow["event_id"]
+            projected=self._audit_effective_status(erow["discovery_state"],disc,best_tier=best,verified_count=len(verified),current_discovery_version=current_discovery_version,quality_target=quality_target)
+            hay=f"{erow['event_date']} {erow['league']} {game} {erow['event_id']} "+" ".join(str(a.get("title") or "") for a in event_assets)
             if search and search not in hay.lower(): continue
             if best_tier and (best or "none")!=best_tier: continue
-            if status=="upgrade" and not upgrade_eligible: continue
-            if status=="complete" and not quality_complete: continue
-            if status=="pending" and effective_status!="PENDING_INDEX": continue
-            if status=="partial" and effective_status!="PARTIAL": continue
-            if status=="degraded" and effective_status!="PROVIDER_DEGRADED": continue
-            if status=="candidate" and effective_status!="CANDIDATE_ONLY": continue
-            if status=="failed" and not any(str(a.get("runtimeState"))=="FAILED" for a in event_assets): continue
-            if status=="no-media" and verified: continue
-            summary["games"]+=1
-            summary["verifiedAssets"]+=len(verified)
-            summary["candidateAssets"]+=sum(1 for a in event_assets if not a.get("verified") and a.get("validationState") in {"CANDIDATE","EXTERNAL"})
-            summary["runtimeFailedAssets"]+=sum(1 for a in event_assets if a.get("runtimeState")=="FAILED")
-            for tier in summary["tiers"]: summary["tiers"][tier]+=sum(1 for a in tiers.get(tier,[]) if a.get("verified"))
-            summary["best"][best or "none"]+=1
-            summary["effectiveStatuses"].setdefault(effective_status,0); summary["effectiveStatuses"][effective_status]+=1
-            if upgrade_eligible: summary["upgradePendingGames"]+=1
-            if quality_complete: summary["qualityCompleteGames"]+=1
+            eff=projected["effectiveStatus"]
+            if status:
+                runtime_failed=any(a.get("runtimeCatalogState")=="FAILED" for a in event_assets)
+                status_ok={eff.lower(),eff.lower().replace("_","-")}
+                if eff=="UNINDEXED": status_ok.update({"pending","unindexed"})
+                if eff=="SEARCHED_EMPTY": status_ok.update({"searched-empty","empty"})
+                if eff=="COVERAGE_COMPLETE": status_ok.update({"coverage","coverage-complete"})
+                if projected["upgradeEligible"]: status_ok.add("upgrade")
+                if eff=="PARTIAL": status_ok.add("partial")
+                if projected["qualityComplete"]: status_ok.update({"complete","quality-complete"})
+                if eff=="PROVIDER_DEGRADED": status_ok.add("degraded")
+                if eff=="CANDIDATE_ONLY": status_ok.add("candidate")
+                if runtime_failed: status_ok.add("failed")
+                if not verified: status_ok.add("no-media")
+                if status not in status_ok: continue
+            summary["games"]+=1; summary["verifiedAssets"]+=len(verified); summary["candidateAssets"]+=sum(1 for a in event_assets if not a.get("verified")); summary["runtimeFailedAssets"]+=sum(1 for a in event_assets if a.get("runtimeCatalogState")=="FAILED")
+            for tier in summary["tiers"]: summary["tiers"][tier]+=sum(1 for a in tiers[tier] if a.get("verified"))
+            summary["best"][best or "none"]+=1; summary["effectiveStatuses"][eff]=summary["effectiveStatuses"].get(eff,0)+1
+            if projected["upgradeEligible"]: summary["upgradePendingGames"]+=1
+            if projected["qualityComplete"]: summary["qualityCompleteGames"]+=1
             if projected["discoveryPending"]: summary["discoveryPendingGames"]+=1
             if not verified: summary["noVerifiedMediaGames"]+=1
-            league_cov=summary["greenCoverageByLeague"].setdefault(str(erow["league"]),{"games":0,"greenGames":0,"greenOrGoldGames":0})
-            league_cov["games"]+=1
-            has_green=any(a.get("verified") for a in tiers.get("green",[]))
-            has_gold=any(a.get("verified") for a in tiers.get("gold",[]))
-            if has_green:
-                summary["greenCoverageGames"]+=1; league_cov["greenGames"]+=1
-            if has_green or has_gold: league_cov["greenOrGoldGames"]+=1
-            rows.append({
-                "date":erow["date"],"league":erow["league"],"eventId":erow["event_id"],"away":away,"home":home,"game":game,
-                "discoveryState":discovery_state,"effectiveStatus":effective_status,"bestTier":best or "none",
-                "qualityComplete":quality_complete,"upgradeEligible":upgrade_eligible,"catalogComplete":bool(projected["catalogComplete"]),
-                "discoveryPending":bool(projected["discoveryPending"]),"discoveryVersion":int(projected["discoveryVersion"] or 0),
-                "currentDiscoveryVersion":int(projected["currentDiscoveryVersion"] or 0),"versionCurrent":bool(projected["versionCurrent"]),
-                "nextRetryAt":float(erow["next_retry_at"] or 0),"lastDiscoveryAt":float(erow["last_discovery_at"] or 0),"lastError":str(erow["last_error"] or ""),
-                "tiers":tiers,"verifiedAssetCount":len(verified),"assetCount":len(event_assets),
-            })
-        total=len(rows); page=rows[offset:offset+limit]
-        return {"summary":summary,"rows":page,"total":total,"limit":limit,"offset":offset}
+            cov=summary["greenCoverageByLeague"].setdefault(erow["league"],{"games":0,"greenGames":0,"greenOrGoldGames":0}); cov["games"]+=1
+            if any(a.get("verified") for a in tiers["green"]): summary["greenCoverageGames"]+=1; cov["greenGames"]+=1
+            if any(a.get("verified") for a in tiers["green"]+tiers["gold"]): cov["greenOrGoldGames"]+=1
+            rows.append({"date":erow["event_date"],"league":erow["league"],"eventId":erow["event_id"],"canonicalEventKey":erow["canonical_event_key"],"away":away,"home":home,"game":game,
+              "discoveryState":projected["discoveryState"],"effectiveStatus":eff,"bestTier":best or "none","qualityComplete":projected["qualityComplete"],"upgradeEligible":projected["upgradeEligible"],"catalogComplete":projected["catalogComplete"],
+              "discoveryPending":projected["discoveryPending"],"discoveryVersion":projected["discoveryVersion"],"currentDiscoveryVersion":projected["currentDiscoveryVersion"],"versionCurrent":projected["versionCurrent"],
+              "nextRetryAt":float(erow["next_retry_at"] or 0),"lastDiscoveryAt":float(erow["last_discovery_at"] or 0),"lastError":str(erow["last_error"] or ""),"tiers":tiers,"verifiedAssetCount":len(verified),"assetCount":len(event_assets)})
+        total=len(rows); return {"summary":summary,"rows":rows[offset:offset+limit],"total":total,"limit":limit,"offset":offset}
 
     def audit_export_rows(self, **filters):
-        filters=dict(filters); filters["limit"]=500; filters["offset"]=0
-        # Page through the same projected game view so browser and exports show the
-        # same effective status and inferred upgrade eligibility.
-        first=self.audit_catalog(**filters); games=list(first["rows"]); total=int(first["total"] or 0)
-        offset=len(games)
-        while offset<total:
-            page_filters=dict(filters); page_filters["offset"]=offset
-            page=self.audit_catalog(**page_filters); chunk=page["rows"]
+        filters=dict(filters); filters["limit"]=500; filters["offset"]=0; first=self.audit_catalog(**filters); games=list(first["rows"]); total=int(first["total"] or 0); off=len(games)
+        while off<total:
+            f=dict(filters); f["offset"]=off; chunk=self.audit_catalog(**f)["rows"]
             if not chunk: break
-            games.extend(chunk); offset+=len(chunk)
+            games.extend(chunk); off+=len(chunk)
         out=[]
-        def common(game):
-            return {
-                "Best Tier":"purple" if game.get("bestTier")=="extended" else game.get("bestTier"),
-                "Audit Status":str(game.get("effectiveStatus") or "PENDING_INDEX").replace("_"," "),
-                "Discovery Pending":bool(game.get("discoveryPending")),"Upgrade Pending":bool(game.get("upgradeEligible")),
-                "Catalog Complete":bool(game.get("catalogComplete")),"Quality Complete":bool(game.get("qualityComplete")),
-                "Discovery Version":int(game.get("discoveryVersion") or 0),"Current Discovery Version":int(game.get("currentDiscoveryVersion") or 0),
-                "Discovery State":game.get("discoveryState") or "UNKNOWN",
-            }
         for game in games:
+            common={"Best Tier":"purple" if game["bestTier"]=="extended" else game["bestTier"],"Audit Status":game["effectiveStatus"].replace("_"," "),"Discovery Pending":game["discoveryPending"],"Upgrade Pending":game["upgradeEligible"],"Catalog Complete":game["catalogComplete"],"Quality Complete":game["qualityComplete"],"Discovery Version":game["discoveryVersion"],"Current Discovery Version":game["currentDiscoveryVersion"],"Discovery State":game["discoveryState"]}
             emitted=False
             for tier in ("gold","green","extended","blue"):
-                for asset in game.get("tiers",{}).get(tier,[]):
-                    emitted=True
-                    row={
-                        "Date":game["date"],"League":game["league"],"Game":game["game"],"Event ID":game["eventId"],
-                        "Tier":"purple" if tier=="extended" else tier,"Title":asset.get("title") or "","Duration Seconds":asset.get("durationSeconds") or 0,
-                        "Provider":asset.get("provider") or "","URL":asset.get("url") or "","Validation":asset.get("validationState") or "",
-                        "Runtime":asset.get("runtimeState") or "","Verified":bool(asset.get("verified")),"Last Verified":asset.get("verifiedAt") or 0,
-                    }
-                    row.update(common(game)); out.append(row)
+                for asset in game["tiers"][tier]:
+                    emitted=True; row={"Date":game["date"],"League":game["league"],"Game":game["game"],"Event ID":game["eventId"],"Tier":"purple" if tier=="extended" else tier,"Title":asset.get("title") or "","Duration Seconds":asset.get("durationSeconds") or asset.get("duration") or 0,"Provider":self._provider_for(asset),"URL":asset.get("url") or "","Validation":asset.get("validationState") or "","Runtime":asset.get("runtimeCatalogState") or "","Verified":bool(asset.get("verified")),"Last Verified":asset.get("historyVerifiedAt") or 0,"Association Confidence":asset.get("associationConfidence") or 0,"Association Method":asset.get("associationMethod") or "","Scope":asset.get("mediaScope") or "","Intent":asset.get("mediaIntent") or ""}; row.update(common); out.append(row)
             if not emitted:
-                row={"Date":game["date"],"League":game["league"],"Game":game["game"],"Event ID":game["eventId"],"Tier":"","Title":"",
-                     "Duration Seconds":0,"Provider":"","URL":"","Validation":"","Runtime":"","Verified":False,"Last Verified":0}
-                row.update(common(game)); out.append(row)
+                row={"Date":game["date"],"League":game["league"],"Game":game["game"],"Event ID":game["eventId"],"Tier":"","Title":"","Duration Seconds":0,"Provider":"","URL":"","Validation":"","Runtime":"","Verified":False,"Last Verified":0,"Association Confidence":0,"Association Method":"","Scope":"","Intent":""}; row.update(common); out.append(row)
         return out
+
+    def assignment_reviews(self, *, state="", reason="", league="", limit=200, offset=0):
+        state=str(state or "").upper(); reason=str(reason or "").upper(); league=str(league or "").upper(); limit=max(1,min(1000,int(limit or 200))); offset=max(0,int(offset or 0))
+        clauses=[]; params=[]
+        if state: clauses.append("ar.state=?"); params.append(state)
+        if reason: clauses.append("ar.reason=?"); params.append(reason)
+        if league: clauses.append("ar.league=?"); params.append(league)
+        where=(" WHERE "+" AND ".join(clauses)) if clauses else ""
+        with self._lock, closing(self._connect()) as conn:
+            total=int(conn.execute("SELECT COUNT(*) FROM history_assignment_review ar"+where,params).fetchone()[0] or 0)
+            rows=conn.execute("""SELECT ar.*,s.title,s.provider,s.canonical_url,s.scope,s.intent,s.scope_confidence,s.scope_reason,s.intent_confidence,s.intent_reason,s.catalog_state
+              FROM history_assignment_review ar JOIN history_source_media s ON s.asset_key=ar.asset_key"""+where+" ORDER BY ar.updated_at DESC,ar.id DESC LIMIT ? OFFSET ?",params+[limit,offset]).fetchall()
+        out=[]
+        for row in rows:
+            out.append({"id":int(row["id"]),"assetKey":row["asset_key"],"league":row["league"],"date":row["event_date"],"proposedEventKey":row["proposed_event_key"],
+                "state":row["state"],"reason":row["reason"],"evidence":self._load_obj(row["evidence_json"]),"classifierVersion":int(row["classifier_version"] or 0),"matcherVersion":int(row["matcher_version"] or 0),
+                "title":row["title"],"provider":row["provider"],"url":row["canonical_url"],"scope":row["scope"],"intent":row["intent"],"scopeConfidence":float(row["scope_confidence"] or 0),
+                "scopeReason":row["scope_reason"],"intentConfidence":float(row["intent_confidence"] or 0),"intentReason":row["intent_reason"],"catalogState":row["catalog_state"],"updatedAt":float(row["updated_at"] or 0)})
+        return {"rows":out,"total":total,"limit":limit,"offset":offset}
+
+    def discovery_attempts(self, *, league="", event_id="", source="", limit=200, offset=0):
+        league=str(league or "").upper(); event_id=str(event_id or ""); source=str(source or ""); limit=max(1,min(1000,int(limit or 200))); offset=max(0,int(offset or 0))
+        clauses=[]; params=[]
+        if league: clauses.append("e.league=?"); params.append(league)
+        if event_id: clauses.append("e.event_id=?"); params.append(event_id)
+        if source: clauses.append("a.source=?"); params.append(source)
+        where=(" WHERE "+" AND ".join(clauses)) if clauses else ""
+        base=" FROM history_discovery_attempt a JOIN history_catalog_event e ON e.canonical_event_key=a.canonical_event_key"
+        with self._lock, closing(self._connect()) as conn:
+            total=int(conn.execute("SELECT COUNT(*)"+base+where,params).fetchone()[0] or 0)
+            rows=conn.execute("SELECT a.*,e.league,e.event_id,e.event_date"+base+where+" ORDER BY a.attempted_at DESC,a.id DESC LIMIT ? OFFSET ?",params+[limit,offset]).fetchall()
+        out=[]
+        for row in rows:
+            out.append({"id":int(row["id"]),"canonicalEventKey":row["canonical_event_key"],"league":row["league"],"eventId":row["event_id"],"date":row["event_date"],"source":row["source"],
+                "attemptedAt":float(row["attempted_at"] or 0),"discoveryVersion":int(row["discovery_version"] or 0),"queryType":row["query_type"],"query":row["query_text"],"resultCount":int(row["result_count"] or 0),
+                "acceptedCount":int(row["accepted_count"] or 0),"bestBefore":row["best_before"],"bestAfter":row["best_after"],"quotaCost":float(row["quota_cost"] or 0),"failureReason":row["failure_reason"],"details":self._load_obj(row["details_json"])})
+        return {"rows":out,"total":total,"limit":limit,"offset":offset}
+
+    def collection_audit(self, *, scope="", league="", period_key="", limit=200, offset=0):
+        scope=str(scope or "").upper(); league=str(league or "").upper(); period_key=str(period_key or ""); limit=max(1,min(1000,int(limit or 200))); offset=max(0,int(offset or 0))
+        clauses=[]; params=[]
+        if scope: clauses.append("c.scope=?"); params.append(scope)
+        if league: clauses.append("c.league=?"); params.append(league)
+        if period_key: clauses.append("c.period_key=?"); params.append(period_key)
+        where=(" WHERE "+" AND ".join(clauses)) if clauses else ""
+        base=" FROM history_collection c JOIN history_collection_media cm ON cm.collection_key=c.collection_key JOIN history_source_media s ON s.asset_key=cm.asset_key"
+        with self._lock, closing(self._connect()) as conn:
+            total=int(conn.execute("SELECT COUNT(*)"+base+where,params).fetchone()[0] or 0)
+            rows=conn.execute("SELECT c.*,cm.association_confidence,cm.association_method,cm.association_evidence,cm.classifier_version AS collection_classifier_version,cm.rank_hint,s.asset_key,s.title,s.provider,s.canonical_url,s.duration_seconds,s.validation_state,s.runtime_state,s.scope AS media_scope,s.intent"+base+where+" ORDER BY c.period_key DESC,c.league,cm.rank_hint DESC,s.duration_seconds DESC LIMIT ? OFFSET ?",params+[limit,offset]).fetchall()
+        out=[]
+        for row in rows:
+            out.append({"collectionKey":row["collection_key"],"scope":row["scope"],"league":row["league"],"periodKey":row["period_key"],"collectionKind":row["collection_kind"],"assetKey":row["asset_key"],"title":row["title"],"provider":row["provider"],"url":row["canonical_url"],"durationSeconds":float(row["duration_seconds"] or 0),"mediaScope":row["media_scope"],"intent":row["intent"],"validation":row["validation_state"],"runtime":row["runtime_state"],"associationConfidence":float(row["association_confidence"] or 0),"associationMethod":row["association_method"],"associationEvidence":row["association_evidence"],"classifierVersion":int(row["collection_classifier_version"] or 0),"rank":int(row["rank_hint"] or 0)})
+        return {"rows":out,"total":total,"limit":limit,"offset":offset}
+
+    def catalog_integrity(self):
+        with self._lock, closing(self._connect()) as conn:
+            scalar=lambda sql: int((conn.execute(sql).fetchone()[0] or 0))
+            return {
+                "schemaVersion":CATALOG_SCHEMA_VERSION,
+                "sourceAssets":scalar("SELECT COUNT(*) FROM history_source_media"),
+                "assignedEventLinks":scalar("SELECT COUNT(*) FROM history_event_media WHERE association_state='ASSIGNED'"),
+                "quarantinedEventLinks":scalar("SELECT COUNT(*) FROM history_event_media WHERE association_state='QUARANTINED'"),
+                "unassignedAssets":scalar("SELECT COUNT(*) FROM history_source_media WHERE catalog_state='UNASSIGNED'"),
+                "quarantinedAssets":scalar("SELECT COUNT(*) FROM history_source_media WHERE catalog_state='QUARANTINED'"),
+                "silverLinks":scalar("SELECT COUNT(*) FROM history_collection_media"),
+                "silverGameLeaks":scalar("SELECT COUNT(*) FROM history_event_media em JOIN history_source_media s ON s.asset_key=em.asset_key WHERE em.association_state='ASSIGNED' AND s.scope<>'GAME'"),
+                "collectionGameLeaks":scalar("SELECT COUNT(*) FROM history_collection_media cm JOIN history_source_media s ON s.asset_key=cm.asset_key WHERE s.scope='GAME'"),
+                "lowConfidenceCollectionLinks":scalar("SELECT COUNT(*) FROM history_collection_media WHERE association_confidence<0.80"),
+                "crossEventAssignedAssets":scalar("SELECT COUNT(*) FROM (SELECT asset_key FROM history_event_media WHERE association_state='ASSIGNED' GROUP BY asset_key HAVING COUNT(DISTINCT canonical_event_key)>1)"),
+                "lowConfidenceAssigned":scalar("SELECT COUNT(*) FROM history_event_media WHERE association_state='ASSIGNED' AND association_confidence<0.90"),
+                "segments":scalar("SELECT COUNT(*) FROM history_media_segment"),
+                "discoveryAttempts":scalar("SELECT COUNT(*) FROM history_discovery_attempt"),
+                "verificationRecords":scalar("SELECT COUNT(*) FROM history_media_verification"),
+            }
 
     def summary(self):
         with self._lock, closing(self._connect()) as conn:
-            row=conn.execute("SELECT COUNT(DISTINCT date) AS days, COUNT(*) AS league_days, MAX(scores_saved_at) AS last_scores, MAX(media_saved_at) AS last_media, MAX(discovery_saved_at) AS last_discovery FROM history_day").fetchone()
-            assets=conn.execute("SELECT COUNT(*) AS assets, SUM(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' THEN 1 ELSE 0 END) AS verified, SUM(CASE WHEN runtime_state='PLAYED' THEN 1 ELSE 0 END) AS played, SUM(CASE WHEN runtime_state='FAILED' THEN 1 ELSE 0 END) AS failed FROM history_media_asset").fetchone()
-            events=conn.execute("SELECT COUNT(*) AS events, SUM(CASE WHEN discovery_state='VERIFIED' THEN 1 ELSE 0 END) AS verified_events FROM history_event").fetchone()
-            deep_complete=0
-            try:
-                for r in conn.execute("SELECT discovery_json FROM history_day WHERE discovery_json IS NOT NULL AND discovery_json<>''"):
-                    if self._load_obj(r[0]).get("deepComplete"): deep_complete+=1
-            except Exception: deep_complete=0
-        return {"days":int(row["days"] or 0),"leagueDays":int(row["league_days"] or 0),"events":int(events["events"] or 0),"verifiedEvents":int(events["verified_events"] or 0),"assets":int(assets["assets"] or 0),"verifiedAssets":int(assets["verified"] or 0),"runtimePlayedAssets":int(assets["played"] or 0),"runtimeFailedAssets":int(assets["failed"] or 0),"deepCompleteLeagueDays":int(deep_complete),"lastScoresSavedAt":float(row["last_scores"] or 0),"lastMediaSavedAt":float(row["last_media"] or 0),"lastDiscoverySavedAt":float(row["last_discovery"] or 0)}
+            day=conn.execute("SELECT COUNT(DISTINCT date) days,COUNT(*) league_days,MAX(scores_saved_at) last_scores,MAX(media_saved_at) last_media,MAX(discovery_saved_at) last_discovery FROM history_day").fetchone()
+            events=conn.execute("SELECT COUNT(*) events FROM history_catalog_event").fetchone(); media=conn.execute("SELECT COUNT(*) assets,SUM(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' THEN 1 ELSE 0 END) verified,SUM(CASE WHEN runtime_state='PLAYED' THEN 1 ELSE 0 END) played,SUM(CASE WHEN runtime_state='FAILED' THEN 1 ELSE 0 END) failed FROM history_source_media").fetchone()
+            collections=conn.execute("SELECT COUNT(*) collections FROM history_collection").fetchone(); deep=0
+            for row in conn.execute("SELECT discovery_json FROM history_day WHERE discovery_json IS NOT NULL AND discovery_json<>''"):
+                if self._load_obj(row[0]).get("deepComplete"): deep+=1
+        return {"catalogSchemaVersion":CATALOG_SCHEMA_VERSION,"days":int(day["days"] or 0),"leagueDays":int(day["league_days"] or 0),"events":int(events["events"] or 0),"assets":int(media["assets"] or 0),"verifiedAssets":int(media["verified"] or 0),"runtimePlayedAssets":int(media["played"] or 0),"runtimeFailedAssets":int(media["failed"] or 0),"collections":int(collections["collections"] or 0),"deepCompleteLeagueDays":deep,"lastScoresSavedAt":float(day["last_scores"] or 0),"lastMediaSavedAt":float(day["last_media"] or 0),"lastDiscoverySavedAt":float(day["last_discovery"] or 0),"integrity":self.catalog_integrity()}
+
+    # v3.x compatibility hook. v4 never mutates legacy event/media tables in place.
+    def reclassify_media_scopes(self):
+        return {"baseline":"v4-normalized","catalogSchemaVersion":CATALOG_SCHEMA_VERSION,"movedToCollections":0,"updatedScopes":0}

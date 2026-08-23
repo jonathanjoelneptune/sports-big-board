@@ -116,6 +116,13 @@ $PUBLIC_HOST {
 CADDY
 
 systemctl daemon-reload
+
+# If this persistent disk already contains a v3 catalog, reconstruct it into the
+# normalized v4 baseline before the service is ever started. The preflight keeps
+# an immutable rollback database plus JSON reconciliation report under backups/.
+runuser -u sportsbigboard -- env SBB_STATE_DIR="$STATE_DIR" \
+  /usr/bin/python3 "$APP_BASE/current/tools/ensure_history_v4.py" --state-dir "$STATE_DIR"
+
 systemctl enable --now sports-big-board.service
 systemctl enable --now sports-big-board-backup.timer
 caddy validate --config /etc/caddy/Caddyfile >/dev/null

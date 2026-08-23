@@ -1,7 +1,7 @@
-/* Sports Big Board v3.1.0 historical database audit view. */
+/* Sports Big Board v4.0.0 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='3.1.0';
+  const FRONTEND_VERSION='4.0.0';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -39,7 +39,7 @@
     const best=$('historyAuditBestSummary');
     if(best)best.textContent=`Best per game: ${Number(b.gold||0).toLocaleString()} Gold • ${Number(b.green||0).toLocaleString()} Green • ${Number(b.extended||0).toLocaleString()} Purple • ${Number(b.blue||0).toLocaleString()} Blue • ${Number(b.none||0).toLocaleString()} none`;
     const status=$('historyAuditStatusSummary');
-    if(status)status.textContent=`Status projection: ${Number(st.PENDING_INDEX||0).toLocaleString()} Pending Index • ${Number(st.UPGRADE_PENDING||0).toLocaleString()} Upgrade Pending • ${Number(st.PARTIAL||0).toLocaleString()} Partial • ${Number(st.QUALITY_COMPLETE||0).toLocaleString()} Quality Complete • ${Number(summary.noVerifiedMediaGames||0).toLocaleString()} without verified media`;
+    if(status)status.textContent=`Status projection: ${Number(st.UNINDEXED||0).toLocaleString()} Unindexed • ${Number(st.SEARCHED_EMPTY||0).toLocaleString()} Searched Empty • ${Number(st.COVERAGE_COMPLETE||0).toLocaleString()} Coverage Complete • ${Number(st.UPGRADE_PENDING||0).toLocaleString()} Upgrade Pending • ${Number(st.QUALITY_COMPLETE||0).toLocaleString()} Quality Complete • ${Number(summary.noVerifiedMediaGames||0).toLocaleString()} without verified media`;
     const coverage=$('historyAuditGreenCoverageSummary');
     if(coverage){
       const by=summary.greenCoverageByLeague||{}; const games=Number(summary.games||0), green=Number(summary.greenCoverageGames||0);
@@ -54,7 +54,7 @@
     if(!rows.length){body.innerHTML='<tr><td colspan="9" class="audit-no-results">No games match these filters.</td></tr>';return;}
     body.innerHTML=rows.map(row=>{
       const tiers=row.tiers||{}; const best=row.bestTier||'none';
-      const effective=String(row.effectiveStatus||'PENDING_INDEX');
+      const effective=String(row.effectiveStatus||'UNINDEXED');
       const status=effective.replaceAll('_',' ');
       const statusDetail=row.discoveryPending
         ? `Discovery v${Number(row.currentDiscoveryVersion||0)} pass pending${row.bestTier&&row.bestTier!=='none'?' • media already known':''}`
@@ -235,7 +235,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v3.1.0 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.0.0 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);

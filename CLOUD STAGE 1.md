@@ -1,8 +1,8 @@
-# Sports Big Board v3.1.0 — Cloud Stage 1
+# Sports Big Board v4.0.0 — Cloud Stage 1
 
-v3.1.0 turns the existing local Sports Big Board server into an always-on Stage 1 cloud deployment without changing the core event/media/Game Center architecture.
+v4.0.0 keeps the existing always-on Stage 1 deployment while replacing the historical media catalog with the normalized v4 baseline. Application releases remain immutable; the persistent disk is reconstructed separately and only after a passing audit.
 
-## v3.1.0 one-push GitHub deployment
+## v4.0.0 one-push GitHub deployment
 
 Stage 1 can now deploy both halves of Sports Big Board from one push to `main`. After a one-time keyless Google/GitHub trust setup, uploading the complete unzipped repository contents to the root of the GitHub repository is the entire release process.
 
@@ -17,6 +17,12 @@ VERIFY
 ```
 
 The backend deployment uses an immutable release directory and changes `/opt/sports-big-board/current` only for application code. `/var/lib/sports-big-board` and `/etc/sports-big-board/sbb.env` are never part of the release archive, so the historical database, Game Center cache, backups, and API credentials survive every GitHub deployment. If the new backend fails its local health check, the VM automatically restores the previous release before the GitHub workflow fails.
+
+### First v4 deployment: audited catalog reconstruction
+
+The first v4 deployment detects the existing v3 `cache/history.sqlite3` **before starting v4**. It stops the old backend, creates `backups/history-pre-v4-<timestamp>.sqlite3`, reconstructs a separate `cache/history-v4-rebuild.sqlite3`, writes a JSON reconciliation report under `backups/`, and installs the rebuilt database only when all integrity checks pass. The rebuild does not reacquire the internet catalog: it reuses already harvested source media, reclassifies scope/intent, re-proves GAME associations, moves daily/weekly packages to Silver, and quarantines ambiguity.
+
+If v4 subsequently fails backend/public health checks, deployment restores both the previous application symlink **and the pre-v4 database backup**. The GitHub Pages job never publishes a v4 frontend against a failed backend/catalog deployment. Subsequent v4 deployments detect schema generation 4 and skip the one-time reconstruction.
 
 ### One-time enablement for the existing Stage 1 VM
 
@@ -56,7 +62,7 @@ The browser no longer needs Termux or Windows CMD for normal use. Local launch s
 ## One-time Google Cloud deployment
 
 1. Open Google Cloud Console and launch **Cloud Shell**.
-2. Upload `sports-big-board-v3.1.0.zip` to Cloud Shell and extract it.
+2. Upload `sports-big-board-v4.0.0.zip` to Cloud Shell and extract it.
 3. Select the project that should own Sports Big Board:
 
 ```bash
@@ -105,7 +111,7 @@ In the GitHub repository:
 1. **Settings → Secrets and variables → Actions → Variables**
 2. Create repository variable `SBB_API_BASE_URL` with that HTTPS backend URL.
 3. **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-4. Push v3.1.0 to `main`.
+4. Push v4.0.0 to `main`.
 
 `.github/workflows/deploy-pages.yml` verifies the release, deploys the backend, verifies health, and only then publishes the static frontend. Backend code, SQLite databases, caches, and API credentials are never included in the Pages artifact.
 
@@ -161,7 +167,7 @@ In cloud mode API credentials are environment-managed on the server. The public 
 Android / Termux:
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v3.1.0/sports-big-board-v3.1.0
+cd ~/storage/downloads/sports-big-board-v4.0.0/sports-big-board-v4.0.0
 bash START-ANDROID.sh
 ```
 

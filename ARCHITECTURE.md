@@ -1,4 +1,4 @@
-# Sports Big Board v3.1.0 Architecture
+# Sports Big Board v4.0.0 Architecture
 
 ## Product model
 
@@ -65,64 +65,89 @@ Changing `browseDate` can fetch and render another day's slate but cannot call P
 
 Past-day score and media snapshots remain resident in the browser session. Final historical Game Centers may remain HOT for 24 hours in browser memory while partial shells retain the short retry TTL; the server's persistent repository remains the WARM authority.
 
-### v3.1.0 media scope, Silver collections, and historical discovery
+### v4.0.0 normalized historical catalog baseline
 
-v3.1.0 inserts a scope boundary before event association:
+v4 treats a discovered media asset and a sporting-event relationship as different entities. The fundamental flow is:
 
-`discovered media → MediaScopeClassifier → GAME association OR Silver collection → validation → playback truth`
+`provider harvest → SOURCE_MEDIA → scope/intent classifier → EVENT_MEDIA or COLLECTION_MEDIA or REVIEW → validation/runtime truth → derived playback coverage`
 
-Gold/Green/Purple/Blue are valid only for `GAME` media. `DAY_LEAGUE` and `WEEK_LEAGUE` assets are persisted as Silver collections. `PLAYER`, `SEASON_LEAGUE`, and `OTHER` remain outside an individual game's tier calculation unless a future explicit product surface consumes them. Generic channel metadata cannot become event authority merely because it was discovered while searching that event.
+The normalized tables are:
 
-The canonical queue identity is `LEAGUE:EventID`; date is event metadata rather than identity. This prevents local/UTC date aliases from creating duplicate gap work. Existing candidate media is validated before any new rescue search, and per-event cooldown/backoff suppresses repeated no-improvement attempts. YouTube Search quota is partitioned by recent/empty/Blue-upgrade/archive purpose.
+`history_catalog_event(canonical_event_key = LEAGUE:EventID, event_date, final_at, discovery state...)`
 
-Historical media now uses three independent truths:
+`history_source_media(asset_key, provider identity, URL/title/duration/published_at, scope, intent, classification evidence, validation/runtime...)`
 
-`playable = at least one positively validated in-app asset exists`
+`history_event_media(canonical_event_key, asset_key, association state/confidence/method/evidence/matcher version)`
 
-`catalogComplete = every applicable discovery lane for that event has been attempted/exhausted`
+`history_collection(scope, league, period_key, collection_kind)`
 
-`qualityComplete = the preferred Gold historical package has been found`
+`history_collection_media(collection_key, asset_key, classification confidence/evidence/rank)`
 
-The playback preference is **Gold → Green → Purple/Extended → Blue**. A lower-tier asset never blocks playback and is never discarded, but it remains upgrade-eligible after source exhaustion. Source-complete lower-tier events persist as `VERIFIED_UPGRADE_PENDING` with a future `nextRetryAt`. Recent dates retry more aggressively; older archive dates retry gently. The idle cloud worker re-enters a date when one of those quality retries becomes due.
+`history_media_segment(asset_key, optional event/collection target, start/end/confidence/evidence)`
 
-`HISTORY_DISCOVERY_VERSION = 12` provides a non-destructive soft reindex: old scores/assets remain authoritative, while older completion/retry metadata cannot suppress the Green-gap and quality reassessment.
+`history_media_verification(asset_key, verification type/state/reason/version/time)`
 
-### HistoricalEventCatalog
+`history_discovery_attempt(canonical_event_key, source/query/results/accepted/before-after/quota/failure)`
 
-Historical media has one server-side authority backed by SQLite:
+`history_assignment_review(asset_key, proposed event, QUARANTINED|UNASSIGNED reason/evidence)`
 
-`~/.sports-big-board/cache/history.sqlite3`
+`history_day` remains only a score/day hydration and compatibility cache. It is never event-media playback authority in v4.
 
-The browser read path for an arbitrary date is:
+#### Source identity and association
 
-`ScoreDateStore HOT → /api/history/day WARM → /api/history/scores canonical fetch → score-provider COLD`
+A YouTube video is stored once as `yt:<videoId>`. Other providers use explicit media ids or stable direct-URL fingerprints; generic ids are provider-namespaced and title-fingerprinted so a game id cannot collapse several clips. An asset can affect an event only through an `ASSIGNED` `history_event_media` relationship with confidence ≥ 0.90. Provider conflicts fail closed. Matchup-title association requires both opponents. Daily/nightly/top-plays packages are collections, not games.
 
-Media discovery is separate from score hydration and is normalized around the sporting event:
+An integrity audit treats these as release-blocking failures:
 
-`history_event(date, league, event_id)`
+- Silver/collection media linked as GAME;
+- GAME media linked into Silver;
+- assigned event relationships below the confidence threshold;
+- a GAME source asset assigned to more than one canonical event;
+- low-confidence collection links; or
+- reconstructed source assets with no event, collection, or review accounting.
 
-`history_media_asset(date, league, event_id, asset_key)`
+#### Scope and intent
 
-`history_collection_media(scope, league, period_key, asset_key)`
+Scope answers **what the asset covers** (`GAME`, `DAY_LEAGUE`, `WEEK_LEAGUE`, `PLAYER`, `SEASON_LEAGUE`, `OTHER`). Intent answers **what kind of program it is** (`RECAP`, `CONDENSED_GAME`, `EXTENDED_HIGHLIGHTS`, `HIGHLIGHT`, `TOP_PLAYS`, `PLAYER_HIGHLIGHTS`, `INTERVIEW`, `ANALYSIS`, `PRESS_CONFERENCE`, `FULL_GAME`, `OTHER`). Both decisions retain confidence, reason, and classifier version.
 
-`history_event` owns discovery state, last attempt/success, retry time and provider-lane diagnostics. `history_media_asset` owns durable **GAME** asset identity, provider validation, verification time and browser runtime PLAYED/FAILED state. `history_collection_media` owns Silver daily/weekly recap assets independently from game truth. The older `history_day` date/league JSON row is retained as a fast hydration/cache compatibility tier, not as playback authority.
+Gold/Green/Purple/Blue remain GAME-only quality tiers. Silver is the UI representation of collection media. Consequently an NBA Nightly Recap can be an excellent Silver daily asset while Lakers/Bulls remains Purple because its best game-specific package is a 16-minute full-game highlight.
 
-Historical score misses are fetched through `/api/history/scores`, which coalesces concurrent league/date requests and writes the same canonical events consumed by media discovery. Opening a historical date then triggers one server-owned `POST /api/history/discover` job. That job walks the final canonical score events and invokes the same event service used by a touch-priority FIND action. The browser does not call league-specific YouTube/ESPN discovery routes for historical games.
+#### Derived coverage and search scheduling
 
-The event endpoint is:
+Coverage is derived from assigned, validated, runtime-healthy GAME media rather than stored as fundamental asset truth:
 
-`POST /api/history/event/discover {date, league, eventId, force}`
+`playable = at least one positively validated GAME asset`
 
-and returns an authoritative playback plan:
+`catalogComplete = applicable source lanes have completed for the current discovery pass`
 
-`event → discovery → media[] → playable[] → primary`
+`qualityComplete = preferred Gold package is present`
 
-The browser can also read that plan through `GET /api/history/event/media`. Runtime playback feedback is written through `POST /api/history/media/runtime`, so a source that fails after provider validation is demoted persistently for that exact event/asset.
+`coverageComplete = usable game-specific media exists even when a better tier could still appear`
 
-Historical discovery states are explicit: `VERIFIED`, `CANDIDATE_ONLY`, `DEGRADED_PROVIDER`, and `SEARCHED_EMPTY`. Provider/network failure is not equivalent to a successful empty search. Retry timestamps determine when incomplete events become eligible again.
+Playback preference remains **Gold → Green → Purple/Extended → Blue**. Candidate GAME assets are validated before any new discovery. `LEAGUE:EventID` is the queue identity, so local/UTC date aliases cannot generate duplicate work. Retry cooldown/backoff and the `history_discovery_attempt` ledger prevent the same no-improvement search from consuming quota repeatedly. Search quota is partitioned among recent, empty, Blue-upgrade, and archive purposes.
 
-The idle `history_backfill_worker` walks backward through prior calendar days, caches scoreboards and advances canonical event discovery one game at a time. It never consumes `search.list`; foreground interaction may use the shared date-level search rescue described below.
+`HISTORY_DISCOVERY_VERSION = 13` is fresh discovery bookkeeping on top of the reconstructed v4 catalog.
 
+#### Offline v3 → v4 reconstruction
+
+The application server never performs a destructive v3 relationship migration at startup. `tools/ensure_history_v4.py` and `sbb/history_rebuild.py` reconstruct a second database while the backend is stopped:
+
+`v3 history.sqlite3 (immutable evidence) → pre-v4 backup → history-v4-rebuild.sqlite3 → reconciliation audit → atomic install`
+
+The rebuild preserves canonical scores/events, deduplicates source assets, preserves safe verification/runtime truth, reruns scope/intent classification, distrusts generic legacy event stamps, re-proves GAME associations, routes daily/weekly content into Silver, quarantines ambiguity, and resets stale discovery completion/retry bookkeeping. Every source asset must be accounted for before installation.
+
+Cloud deployment records the pre-v4 backup path before starting the new release. A release-health failure restores that database together with the prior `/opt/sports-big-board/current` symlink. Local/Android/Windows launch scripts use the same preflight.
+
+#### Audit surfaces
+
+- `/api/history/audit` — event coverage/tier/status projection.
+- `/api/history/catalog/integrity` — schema/integrity counters.
+- `/api/history/catalog/review` — quarantined/unassigned association review queue.
+- `/api/history/catalog/attempts` — durable discovery attempt/quota/failure ledger.
+- `/api/history/catalog/collections` — Silver collection membership/evidence.
+- `/api/history/roundups` — playable Silver daily/weekly programming.
+
+The operator status vocabulary is **UNINDEXED**, **SEARCHED EMPTY**, **COVERAGE COMPLETE**, **UPGRADE PENDING**, **QUALITY COMPLETE**, **PROVIDER DEGRADED**, and **CANDIDATE ONLY**. Provider failure and successful empty search are deliberately distinct.
 
 ## v2.7 provider-independent media plane
 
@@ -287,7 +312,7 @@ Historical YouTube discovery is day-indexed rather than game-searched. For suppo
 
 Public YouTube HTML, Bing/DuckDuckGo indexing and oEmbed are discovery/metadata lanes only. oEmbed does **not** prove iframe permission and can never by itself produce a green historical score card. A YouTube asset becomes internally playable only after positive `videos.list` embed/US-region validation or a previously recorded successful runtime playback. Direct ESPN/team/league media must pass a range/content-type probe and receives an item-level verification timestamp because signed URLs can expire.
 
-The IFrame API remains final runtime authority. Error 101/150 demotes only the exact YouTube asset and triggers same-game fallback/recovery; 153 is treated as client-identification/referrer failure rather than content unavailability. Sports Big Board serves `strict-origin-when-cross-origin` and supplies `origin`/`widget_referrer` to the player. Runtime failures are persisted into `history_media_asset`, preventing stale green rails after reload.
+The IFrame API remains final runtime authority. Error 101/150 demotes only the exact YouTube asset and triggers same-game fallback/recovery; 153 is treated as client-identification/referrer failure rather than content unavailability. Sports Big Board serves `strict-origin-when-cross-origin` and supplies `origin`/`widget_referrer` to the player. Runtime failures are persisted into `history_source_media`, preventing stale green rails after reload.
 
 `HISTORY_DISCOVERY_VERSION = 7` ensures older v3.0.1 and v2.8.x discovery records are reconsidered under the playable-vs-catalog-complete model without deleting the historical SQLite database.
 
@@ -300,7 +325,7 @@ A user can select and play a game, fail over among same-game sources, scroll nor
 
 ## v3.0.9 catalog-to-ribbon reconciliation
 
-A verified asset is only useful when the browser actually hydrates it. v3.0.9 removed the remaining legacy `history_day.media_saved_at` dependency from browser hydration. `history_media_asset` is authoritative and is always projected into `ScoreDateStore` for the selected historical date. This guarantees that server inventory, ribbon availability, event playback plans, and PlaybackController all consume the same asset truth.
+A verified asset is only useful when the browser actually hydrates it. v3.0.9 removed the remaining legacy `history_day.media_saved_at` dependency from browser hydration. `history_source_media` is authoritative and is always projected into `ScoreDateStore` for the selected historical date. This guarantees that server inventory, ribbon availability, event playback plans, and PlaybackController all consume the same asset truth.
 
 Historical click flow is now cache-first: `GET /api/history/event/media` -> play if verified -> otherwise `POST /api/history/event/discover` -> rehydrate date -> play. `apiJson()` preserves RequestInit so POST semantics cannot silently degrade to GET.
 
@@ -318,4 +343,4 @@ The Stage 1 invariant is: **frontend deployments are disposable; historical stat
 
 ## v3.0.9 audit-state projection
 
-`history_event.discovery_state` remains a raw durable pipeline marker. The audit API no longer displays raw `UNKNOWN` as if it means no data. It combines current discovery-version metadata with the normalized verified media catalog to derive `effectiveStatus`, `discoveryPending`, `catalogComplete`, `qualityComplete`, and inferred `upgradeEligible`. This projection is read-only and therefore cannot accidentally mark stale events current or suppress the version-driven reindex scheduler.
+`history_catalog_event.discovery_state` remains a raw durable pipeline marker. The audit API no longer displays raw `UNKNOWN` as if it means no data. It combines current discovery-version metadata with the normalized verified media catalog to derive `effectiveStatus`, `discoveryPending`, `catalogComplete`, `qualityComplete`, and inferred `upgradeEligible`. This projection is read-only and therefore cannot accidentally mark stale events current or suppress the version-driven reindex scheduler.

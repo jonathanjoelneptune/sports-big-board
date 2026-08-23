@@ -1,20 +1,47 @@
-# Sports Big Board v3.1.0
+# Sports Big Board v4.0.0
 
-## v3.1.0 Media Scope + Silver Roundups
+## v4.0.0 normalized historical media catalog baseline
 
-v3.1.0 separates **what a video covers** from **how useful that video is for one game**. Gold/Green/Purple/Blue remain game-specific quality tiers. **Silver** is a first-class Roundup collection and never satisfies an individual game's recap tier.
+v4.0.0 is a schema-generation change, not an in-place patch to the v3 catalog. The historical database is rebuilt around independent source-media, event-association, and collection-association truths so a discovery bug cannot make a league/day harvest authoritative for every game on that date.
 
-- **Media Scope** classifies assets as `GAME`, `DAY_LEAGUE`, `WEEK_LEAGUE`, `PLAYER`, `SEASON_LEAGUE`, or `OTHER` before event association.
-- **Cross-event association now fails closed.** Generic official-channel harvests must prove the target matchup from sporting-event identity or both opponent names before they can enter a game's catalog. Same-day highlights for another matchup are quarantined instead of being stamped with the requested Event ID.
-- **Daily and weekly collections are persistent.** League-wide nightly recaps, daily Top Plays, and weekly football packages live in `history_collection_media` as Silver assets. The source video's own date/week determines its collection period when that information is explicit.
-- **Silver is the first score-ribbon item.** A date/league roundup card appears before individual games; Daily Recap outranks Top Plays inside the collection. In normal playback modes, entering a day/channel may begin with that Silver roundup. SEARCH PRIORITY continues to suppress playback.
-- **Game playback is scope-safe.** Collection media is excluded from Event Media Manifests, game availability rails, tier calculations, and resolver ranking. A strong Purple game highlight therefore beats an unrelated daily Green-length video every time.
-- **Existing candidates are promoted before new search.** Official/native Green candidates are positively validated first; a valid candidate can satisfy the gap without spending YouTube `search.list` quota. Candidate validation/rejection state is persisted for diagnostics.
-- **Event identity is canonicalized as `LEAGUE:EventID`.** Adjacent local/UTC date aliases share one queue identity and one media truth instead of being rediscovered independently.
-- **Quality-gap attempts are deduped and cooled down.** Recent games retry sooner, archive games retry gently, and repeated no-improvement attempts back off instead of consuming the same quota again and again.
-- **Console status now separates inventory from failure.** `UNINDEXED`, `SEARCHED EMPTY`, `COVERAGE COMPLETE`, and candidate-only counts are distinct; a large migration backlog is no longer mislabeled as “no media.”
-- **YouTube Search quota is reserved by purpose.** Daily search capacity is partitioned among recent games, true empty-game rescue, Blue-to-Green upgrades, and archive rescue so overnight history work cannot consume all current-game capacity.
-- **Discovery v12 performs a soft migration.** Existing scores and valid media remain intact. Legacy roundup rows move to Silver collections, legacy cross-game associations are re-proven, and unrelated rows stop affecting game truth.
+### Normalized catalog
+
+- `history_source_media` stores each discovered media asset once using a provider-stable identity. It owns provider metadata, canonical URL, title, duration, publish/discovery timestamps, scope/intent classification, classifier confidence/reason/version, validation, and runtime health.
+- `history_catalog_event` stores canonical sporting events under `LEAGUE:EventID`; date is metadata rather than identity. It owns current discovery state/retry scheduling and captures a durable `final_at` timestamp when the provider supplies one.
+- `history_event_media` is the only way GAME media can affect an event. Every link stores association state, confidence, method, evidence, and matcher version. Unproven relationships fail closed and enter the review queue.
+- `history_collection` + `history_collection_media` own **Silver** daily/weekly recap collections independently from game quality. Collection links also preserve classification confidence/evidence.
+- `history_media_segment` is available for optional future chapter/timestamp slices without making segmentation a prerequisite for roundups.
+- `history_media_verification` and `history_discovery_attempt` are append-only operational ledgers for playback/embed truth, queries, provider lanes, result counts, accepted counts, before/after tier, quota cost, and failures.
+- `history_assignment_review` retains quarantined and unassigned media instead of deleting uncertain assets. Future classifier/matcher versions can reconsider those rows without re-spending discovery quota.
+
+### Scope, intent, and Silver
+
+Media scope is independent from game quality. `GAME`, `DAY_LEAGUE`, `WEEK_LEAGUE`, `PLAYER`, `SEASON_LEAGUE`, and `OTHER` are classified before association. Gold/Green/Purple/Blue are valid only for `GAME`. Daily/nightly league recaps and Top Plays become Silver collection media and can never satisfy an individual game's tier.
+
+The Silver Roundup card is the first ribbon item when roundup media exists. Daily Recap outranks Top Plays; entering a day/league may begin with Silver in normal playback modes. SEARCH PRIORITY still suppresses all playback.
+
+### v3 → v4 reconstruction
+
+v4 never converts the old relationship tables destructively at server startup. `tools/ensure_history_v4.py` performs an **offline reconstruction**:
+
+1. detect the catalog generation without modifying the database;
+2. make an immutable pre-v4 SQLite backup;
+3. create a second v4 database beside production;
+4. preserve score/event skeletons and source/runtime evidence;
+5. strip legacy event stamps from generic harvested media;
+6. reclassify scope/intent under the v4 classifier;
+7. re-prove every GAME association from authoritative provider identity or exact matchup evidence;
+8. move daily/weekly content into Silver collections;
+9. quarantine ambiguous/unproven media instead of deleting it;
+10. reset stale v3 discovery bookkeeping while retaining the already discovered source reservoir;
+11. run reconciliation/integrity checks; and
+12. atomically install the rebuilt catalog only when the audit passes.
+
+Cloud deployment stops the backend before reconstruction. If the new v4 release later fails health checks, deployment restores **both** the previous application release and the pre-v4 database backup. Android/Termux and Windows launchers run the same preflight before starting the server.
+
+`HISTORY_DISCOVERY_VERSION = 13` starts fresh discovery bookkeeping on top of the reconstructed source catalog. Existing candidates are validated before new search, queue identity is `LEAGUE:EventID`, repeated no-improvement attempts back off, and YouTube Search quota is partitioned among recent games, true-empty rescue, Blue upgrades, and archive rescue.
+
+The historical console uses explicit states: **UNINDEXED**, **SEARCHED EMPTY**, **COVERAGE COMPLETE**, **UPGRADE PENDING**, **QUALITY COMPLETE**, **PROVIDER DEGRADED**, and **CANDIDATE ONLY**. Unindexed migration work is no longer mislabeled as “no media.”
 
 ## v3.0.9 Search / Mix / Playback resource control + recent-game guard
 
@@ -28,7 +55,7 @@ The selected mode is stored on the persistent cloud data disk, so page refreshes
 
 v3.0.9 also added a **recent-slate safeguard**. The Green-gap queue gives completed games from the newest three calendar days with no verified recap a cursory pass before spending long stretches deep in the archive. After that safeguard, the normal Blue-only → no-media → Purple-only archive priority continues. The console reports `recent gaps` and `recent no-media` separately so current coverage cannot be hidden by a large December backlog.
 
-Those resource controls, worker heartbeat/watchdog, copy issues/full console controls, version mismatch protection, and recent-slate scheduling remain intact in v3.1.0. Historical discovery advances to `HISTORY_DISCOVERY_VERSION = 12` for the scope/association migration described above.
+Those resource controls, worker heartbeat/watchdog, copy issues/full console controls, version mismatch protection, and recent-slate scheduling remain intact in v4.0.0. Historical discovery advances to `HISTORY_DISCOVERY_VERSION = 13` for the scope/association migration described above.
 
 ## Cloud Stage 1
 
@@ -40,11 +67,11 @@ After the one-time `cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh` setup, a release is j
 
 ## v3.0.1 historical playback foundation
 
-v3.0.1 established the server-owned historical event/media catalog used by v3.1.0:
+v3.0.1 established the server-owned historical event/media catalog used by v4.0.0:
 
 `selected date → canonical score events → event catalog → validated media assets → playback plan → PlaybackController → runtime feedback`
 
-The normalized `history_event` and `history_media_asset` tables remain the persistent source of truth. Runtime playback success/failure survives browser reloads, score-ribbon hydration uses the same catalog as playback, and historical Game Center remains independent of media selection.
+v4 replaces the old event-centric media table with `history_source_media` plus evidence-bearing `history_event_media` and `history_collection_media` relationships. Runtime playback success/failure survives browser reloads, score-ribbon hydration uses the same normalized event associations as playback, and historical Game Center remains independent of media selection.
 
 ### Historical discovery lanes
 
@@ -97,7 +124,7 @@ This release addresses the root architecture behind the fragile non-MLB score fe
 
 Sports Big Board is a local, personalized sports television system: live scores and game state feed a direct-tune ribbon, official highlights and recaps feed the player, Game Center adds the live/final statistical context, and Around the League provides unattended programming.
 
-v3.1.0 builds on the stabilized score inventory and Game Center work by adding arbitrary historical date context without coupling ribbon browsing to playback.
+v4.0.0 builds on the stabilized score inventory and Game Center work by adding arbitrary historical date context without coupling ribbon browsing to playback.
 
 ## Launch experience
 
@@ -105,7 +132,7 @@ A fresh page load now opens on a full-screen **Sports Big Board** splash instead
 
 ## Legacy Today / Yesterday score authority
 
-NFL, NBA and NHL score inventory retains its ESPN fallback whenever Highlightly is empty. In v3.1.0 the league filter no longer changes the date automatically: the viewer-selected calendar date remains authoritative. ESPN historical lookups keep trying alternate transports when a non-empty endpoint response contains only the wrong calendar day, preventing a weekly/current board from masking the requested date.
+NFL, NBA and NHL score inventory retains its ESPN fallback whenever Highlightly is empty. In v4.0.0 the league filter no longer changes the date automatically: the viewer-selected calendar date remains authoritative. ESPN historical lookups keep trying alternate transports when a non-empty endpoint response contains only the wrong calendar day, preventing a weekly/current board from masking the requested date.
 
 ## NFL recap discovery
 
@@ -203,7 +230,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v3.1.0/sports-big-board-v3.1.0
+cd ~/storage/downloads/sports-big-board-v4.0.0/sports-big-board-v4.0.0
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```
@@ -237,7 +264,7 @@ bash VERIFY.sh
 
 Node is optional. When Node is unavailable, the permanent Python suite still verifies the browser architecture/UI boundaries and all server contracts.
 
-The v3.1.0 regression suite covers, among other things:
+The v4.0.0 regression suite covers, among other things:
 
 - authoritative score-card playback and epoch ownership
 - HOT/WARM media prewarming separation
@@ -275,7 +302,7 @@ These assets are presented as **Silver**. They may lead the score ribbon and dat
 v3.0.9 fixed the first integration issues revealed by the canonical v2.9 history catalog:
 
 - Browser JSON requests now preserve HTTP method/body, so exact-event historical discovery reaches the POST endpoint instead of falling through to a GET 404.
-- Normalized `history_media_asset` catalog rows hydrate the score-date store even when the legacy league-day `media_saved_at` field is empty. Server `playable` counts and score-card rails therefore derive from the same catalog.
+- Normalized `history_source_media` + assigned `history_event_media` rows hydrate the score-date store even when the legacy league-day `media_saved_at` field is empty. Server `playable` counts and score-card rails therefore derive from the same relationship truth.
 - A historical game click checks the existing event playback plan before launching discovery, making revisited dates instant when verified assets already exist.
 - Historical diagnostics separately expose verified catalog assets and ribbon-ready games.
 - Current-day YouTube search work yields while a historical date is foregrounded, and exhausted `search.list` cooldowns no longer produce one error per game.
@@ -285,7 +312,7 @@ v3.0.9 fixed the first integration issues revealed by the canonical v2.9 history
 
 The Historical Database Audit now separates the raw persisted discovery state from the user-facing **effective audit status**. Legacy or not-yet-reindexed `UNKNOWN` event rows no longer imply that Sports Big Board has no information. The audit projects current catalog truth into actionable states:
 
-- **PENDING INDEX** — the event exists but has not completed the current per-event discovery-version pass. Existing Green/Purple/Blue media is still shown and lower-than-Gold media is inferred as upgrade eligible.
+- **UNINDEXED** — the event exists but has not completed the current discovery-version pass. Existing assigned GAME media remains visible while current-version discovery is pending.
 - **UPGRADE PENDING** — current-version discovery is catalog-complete but the best verified tier remains below Gold.
 - **PARTIAL** — verified media exists but applicable provider lanes are not yet exhausted.
 - **QUALITY COMPLETE** — Gold exists or the current-version quality target is explicitly complete.

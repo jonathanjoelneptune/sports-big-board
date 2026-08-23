@@ -30,20 +30,51 @@ APP_BASE="/opt/sports-big-board"
 RELEASE_DIR="$APP_BASE/releases/v${VERSION}-${SHA}"
 CURRENT_LINK="$APP_BASE/current"
 PREVIOUS="$(readlink -f "$CURRENT_LINK" 2>/dev/null || true)"
+STATE_DIR="/var/lib/sports-big-board"
+HISTORY_DB="$STATE_DIR/cache/history.sqlite3"
+MIGRATION_JSON="/tmp/sbb-history-v4-migration.json"
+MIGRATION_BACKUP=""
 rollback(){
-  echo "[deploy] New backend failed health checks. Rolling back..."
+  echo "[deploy] New backend failed health checks. Rolling back application and catalog..."
+  systemctl stop sports-big-board >/dev/null 2>&1 || true
+  if [[ -n "$MIGRATION_BACKUP" && -f "$MIGRATION_BACKUP" ]]; then
+    cp -f "$MIGRATION_BACKUP" "$HISTORY_DB"
+    chown sportsbigboard:sportsbigboard "$HISTORY_DB"
+    rm -f "${HISTORY_DB}-wal" "${HISTORY_DB}-shm"
+    echo "[deploy] Restored pre-v4 history catalog: $MIGRATION_BACKUP"
+  fi
   if [[ -n "$PREVIOUS" && -d "$PREVIOUS" ]]; then
     ln -sfn "$PREVIOUS" "$CURRENT_LINK"
     systemctl restart sports-big-board || true
   fi
   rm -rf "$RELEASE_DIR"
-  rm -f "$ARCHIVE"
+  rm -f "$ARCHIVE" "$MIGRATION_JSON"
 }
 trap rollback ERR
 rm -rf "$RELEASE_DIR"; mkdir -p "$RELEASE_DIR"
 tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
 chown -R root:root "$RELEASE_DIR"
+
+# v4 catalog migration is an offline, audited reconstruction. Stop the old
+# backend first so SQLite is quiescent, build a second catalog, then install it
+# only if every reconciliation/integrity check passes.
+systemctl stop sports-big-board >/dev/null 2>&1 || true
 ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
+if [[ -f "$HISTORY_DB" ]]; then
+  set +e
+  runuser -u sportsbigboard -- env SBB_STATE_DIR="$STATE_DIR" \
+    /usr/bin/python3 "$RELEASE_DIR/tools/ensure_history_v4.py" --state-dir "$STATE_DIR" > "$MIGRATION_JSON"
+  MIGRATION_RC=$?
+  set -e
+  cat "$MIGRATION_JSON" || true
+  MIGRATION_BACKUP="$(python3 -c 'import json; d=json.load(open("/tmp/sbb-history-v4-migration.json")); print(d.get("rollbackBackup", ""))' 2>/dev/null || true)"
+  if [[ "$MIGRATION_RC" != "0" ]]; then
+    echo "[deploy] v4 catalog reconstruction/audit failed (exit $MIGRATION_RC)."
+    false
+  fi
+else
+  echo '[deploy] No historical catalog exists yet; v4 will initialize a fresh normalized catalog.'
+fi
 systemctl restart sports-big-board
 healthy=0
 for attempt in {1..24}; do
@@ -83,7 +114,7 @@ if [[ -n "$PUBLIC_HOST" ]]; then
   fi
 fi
 trap - ERR
-rm -f "$ARCHIVE"
+rm -f "$ARCHIVE" "$MIGRATION_JSON"
 echo "[deploy] Backend v${VERSION}-${SHA} is healthy."
 cat /tmp/sbb-health.json
 CURRENT_REAL="$(readlink -f "$CURRENT_LINK")"

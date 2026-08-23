@@ -3,7 +3,7 @@ set -e
 cd "$(dirname "$0")"
 
 echo ""
-echo "Sports Big Board v3.1.0 — Android"
+echo "Sports Big Board v4.0.0 — Android"
 echo "---------------------------------"
 
 if ! command -v python >/dev/null 2>&1; then
@@ -14,6 +14,7 @@ fi
 # setup_credentials.py automatically migrates keys from older Sports Big Board
 # releases into ~/.sports-big-board/secrets.env and only asks for missing keys.
 python setup_credentials.py
+python tools/ensure_history_v4.py
 
 echo ""
 echo "Starting: http://localhost:8080"

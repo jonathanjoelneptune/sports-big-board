@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 import server
 from sbb.history_repository import HistoryRepository
+from sbb.history_rebuild import HistoryCatalogRebuilder
 from sbb.media_scope import annotate, GAME, DAY_LEAGUE, OTHER
 from sbb.youtube_gateway import YouTubeRateLimited
 
@@ -45,31 +46,32 @@ class MediaScopeRoundupTests(unittest.TestCase):
             self.assertEqual([x["youtubeId"] for x in roundups],["roundup-video"])
             self.assertEqual(roundups[0]["displayTier"],"silver")
 
-    def test_soft_migration_distrusts_legacy_wrong_event_stamp(self):
+    def test_v4_rebuild_distrusts_legacy_wrong_event_stamp(self):
         event={"scoreEventId":"761743","awayTeam":{"name":"Seattle Sounders FC"},"homeTeam":{"name":"FC Cincinnati"},"completed":True}
         with tempfile.TemporaryDirectory() as td:
-            path=Path(td)/"history.sqlite3"; repo=HistoryRepository(path)
-            repo.put_scores("2026-08-23","MLS",[event])
-            now=time.time()
+            source=Path(td)/"v3.sqlite3"; output=Path(td)/"v4.sqlite3"; now=time.time()
+            conn=sqlite3.connect(source)
+            conn.execute("CREATE TABLE history_day(date TEXT,league TEXT,scores_json TEXT,media_json TEXT,discovery_json TEXT,scores_saved_at REAL,media_saved_at REAL,discovery_saved_at REAL,PRIMARY KEY(date,league))")
+            conn.execute("CREATE TABLE history_event(date TEXT,league TEXT,event_id TEXT,event_json TEXT,discovery_state TEXT,discovery_json TEXT,last_discovery_at REAL,last_success_at REAL,next_retry_at REAL,last_error TEXT,updated_at REAL,PRIMARY KEY(date,league,event_id))")
+            conn.execute("CREATE TABLE history_media_asset(date TEXT,league TEXT,event_id TEXT,asset_key TEXT,asset_json TEXT,validation_state TEXT,verified_at REAL,runtime_state TEXT,runtime_success_at REAL,runtime_failure_at REAL,runtime_failure_reason TEXT,last_seen_at REAL,updated_at REAL,PRIMARY KEY(date,league,event_id,asset_key))")
+            conn.execute("INSERT INTO history_day VALUES(?,?,?,?,?,?,?,?)",("2026-08-23","MLS",json.dumps([event]),"[]","{}",now,now,now))
+            conn.execute("INSERT INTO history_event VALUES(?,?,?,?,?,?,?,?,?,?,?)",("2026-08-23","MLS","761743",json.dumps(event),"VERIFIED","{}",now,now,0,"",now))
             legacy=[
                 ("yt:daily",{"id":"daily","youtubeId":"daily","matchId":"761743","scoreEventId":"761743","title":"MLS Daily Recap | August 23, 2026","durationSeconds":1200,"verifiedPlayable":True,"recapTier":"green"}),
                 ("yt:wrong",{"id":"wrong","youtubeId":"wrong","matchId":"761743","scoreEventId":"761743","title":"LAFC vs Portland Timbers | Full Match Highlights","durationSeconds":624,"verifiedPlayable":True,"recapTier":"extended"}),
                 ("yt:right",{"id":"right","youtubeId":"right","matchId":"761743","scoreEventId":"761743","title":"FC Cincinnati vs Seattle Sounders FC | Full Match Highlights","durationSeconds":632,"verifiedPlayable":True,"recapTier":"extended"}),
             ]
-            conn=sqlite3.connect(path)
             for key,item in legacy:
-                conn.execute("INSERT INTO history_media_asset(date,league,event_id,asset_key,asset_json,validation_state,verified_at,last_seen_at,updated_at) VALUES(?,?,?,?,?,'VERIFIED',?,?,?)",
-                             ("2026-08-23","MLS","761743",key,json.dumps(item),now,now,now))
+                conn.execute("INSERT INTO history_media_asset VALUES(?,?,?,?,?,'VERIFIED',?,'UNKNOWN',0,0,'',?,?)",("2026-08-23","MLS","761743",key,json.dumps(item),now,now,now))
             conn.commit(); conn.close()
-            result=repo.reclassify_media_scopes()
-            self.assertGreaterEqual(result["movedToCollections"],1)
-            game_ids=[x.get("youtubeId") for x in repo.event_media("2026-08-23","MLS","761743")]
-            self.assertEqual(game_ids,["right"])
+            result=HistoryCatalogRebuilder(source,output).rebuild()
+            self.assertTrue(result["passed"])
+            repo=HistoryRepository(output)
+            self.assertEqual([x.get("youtubeId") for x in repo.event_media("2026-08-23","MLS","761743")],["right"])
             self.assertEqual(repo.roundup_media("2026-08-23","MLS")[0]["youtubeId"],"daily")
-            # Unrelated game is quarantined rather than counted as target coverage.
-            conn=sqlite3.connect(path)
-            scope=json.loads(conn.execute("SELECT asset_json FROM history_media_asset WHERE asset_key='yt:wrong'").fetchone()[0])["mediaScope"]
-            conn.close(); self.assertEqual(scope,OTHER)
+            conn=sqlite3.connect(output)
+            state=conn.execute("SELECT catalog_state FROM history_source_media WHERE asset_key='yt:wrong'").fetchone()[0]
+            conn.close(); self.assertEqual(state,"QUARANTINED")
 
     def test_existing_green_candidate_promotes_before_new_discovery(self):
         row={"id":"mlb-score-id","espnEventId":"mlb-score-id","completed":True,
@@ -98,7 +100,7 @@ class MediaScopeRoundupTests(unittest.TestCase):
             repo.set_event_discovery("2026-08-23","NBA","same-event","SEARCHED_EMPTY",{"discoveryVersion":11},retry_at=0)
             # A version bump alone cannot immediately requeue a game just searched.
             self.assertEqual(repo.green_gap_events(current_discovery_version=12,now=time.time(),recent_cooldown=7200,archive_cooldown=86400),[])
-            conn=sqlite3.connect(path); conn.execute("UPDATE history_event SET last_discovery_at=? WHERE league='NBA' AND event_id='same-event'",(time.time()-90000,)); conn.commit(); conn.close()
+            conn=sqlite3.connect(path); conn.execute("UPDATE history_catalog_event SET last_discovery_at=? WHERE league='NBA' AND event_id='same-event'",(time.time()-90000,)); conn.commit(); conn.close()
             due=repo.green_gap_events(current_discovery_version=12,now=time.time(),recent_cooldown=0,archive_cooldown=0)
             self.assertEqual(len(due),1)
             self.assertEqual(due[0]["canonicalEventKey"],"NBA:same-event")
