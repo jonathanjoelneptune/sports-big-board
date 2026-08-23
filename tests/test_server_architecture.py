@@ -533,6 +533,23 @@ class ArchitectureTests(unittest.TestCase):
         self.assertEqual(second[1],'HISTORY_DB')
         self.assertEqual(espn.call_count,1)
 
+    def test_official_uploads_playlist_finds_historical_green_without_search_list(self):
+        calls=[]
+        def fake_fetch(url,timeout=0):
+            calls.append(url)
+            if '/channels?' in url:
+                return {'items':[{'contentDetails':{'relatedPlaylists':{'uploads':'UPLOADS1'}}}]}
+            if '/playlistItems?' in url:
+                return {'items':[{'contentDetails':{'videoId':'abcdefghijk'},'snippet':{'resourceId':{'videoId':'abcdefghijk'}}}]}
+            if '/videos?' in url:
+                return {'items':[{'id':'abcdefghijk','snippet':{'title':'Cleveland Cavaliers vs New York Knicks Full Game Highlights','description':'Christmas Day recap','channelTitle':'NBA','publishedAt':'2025-12-26T03:00:00Z','thumbnails':{}},'contentDetails':{'duration':'PT3M30S'},'status':{'embeddable':True,'privacyStatus':'public'}}]}
+            raise AssertionError(url)
+        with tempfile.TemporaryDirectory() as td, patch.object(server,'YOUTUBE_CACHE_DIR',Path(td)), patch.object(server,'read_youtube_key',return_value='key'), patch.object(server,'youtube_fetch_json',side_effect=fake_fetch):
+            out=server._official_youtube_history_upload_results('NBA','2025-12-25','Cleveland Cavaliers','New York Knicks')
+        self.assertTrue(any(x.get('recapTier')=='green' for x in out))
+        self.assertTrue(any('/playlistItems?' in x for x in calls))
+        self.assertFalse(any('/search?' in x for x in calls))
+
     def test_official_activity_catalog_finds_historical_video_without_search_list(self):
         activity={"items":[
             {"snippet":{"type":"upload"},"contentDetails":{"upload":{"videoId":"P55rMeZkNwQ"}}},
@@ -608,7 +625,8 @@ class ArchitectureTests(unittest.TestCase):
 
     def test_historical_generic_discovery_uses_official_channel_rescue_when_free_lane_is_empty(self):
         playable={'id':'official-rescue','youtubeId':'MEp3ymMFxsE','title':'CAVALIERS at KNICKS | FULL GAME HIGHLIGHTS | December 25, 2025','source':'NBA','sourceLabel':'NBA','provider':'YOUTUBE','durationSeconds':208,'overview':True,'verifiedPlayable':True,'embedValidated':True,'externalOnly':False}
-        with patch.object(server,'_official_youtube_history_activity_results',return_value=[]), \
+        with patch.object(server,'_official_youtube_history_upload_results',return_value=[]), \
+             patch.object(server,'_official_youtube_history_activity_results',return_value=[]), \
              patch.object(server,'_historical_youtube_web_results',return_value=[]), \
              patch.object(server,'_historical_search_engine_youtube_results',return_value=[]), \
              patch.object(server,'_official_youtube_history_api_results',return_value=[playable]) as rescue, \
@@ -619,7 +637,8 @@ class ArchitectureTests(unittest.TestCase):
 
     def test_historical_generic_discovery_does_not_spend_youtube_search_api_quota(self):
         playable={'id':'yt-web','youtubeId':'P6e9d5jOwX8','title':'MAVERICKS at WARRIORS | FULL GAME HIGHLIGHTS | December 25, 2025','source':'NBA','sourceLabel':'NBA','provider':'YOUTUBE','durationSeconds':600,'overview':True,'verifiedPlayable':True,'embedValidated':True,'externalOnly':False}
-        with patch.object(server,'_official_youtube_history_activity_results',return_value=[]), \
+        with patch.object(server,'_official_youtube_history_upload_results',return_value=[]), \
+             patch.object(server,'_official_youtube_history_activity_results',return_value=[]), \
              patch.object(server,'_historical_youtube_web_results',return_value=[playable]), \
              patch.object(server,'_espn_search_video_results',return_value=[]), \
              patch.object(server,'youtube_fetch_json',side_effect=AssertionError('search API should not run for history')):
@@ -711,6 +730,7 @@ class ArchitectureTests(unittest.TestCase):
                  patch.object(server,'normalized_stats_highlights',return_value=[]), \
                  patch.object(server,'normalized_rapid_highlights',return_value=[]), \
                  patch.object(server,'_history_event_media_no_quota',return_value=no_quota), \
+                 patch.object(server,'_official_youtube_history_upload_results',return_value=[]), \
                  patch.object(server,'_official_youtube_history_activity_results',return_value=deep), \
                  patch.object(server,'_official_youtube_history_day_search_results',return_value=[]), \
                  patch.object(server,'_historical_youtube_web_results',return_value=[]), \
@@ -742,6 +762,7 @@ class ArchitectureTests(unittest.TestCase):
                 retry_at=time.time()+6*60*60,success=True)
             with patch.object(server,'HISTORY_REPOSITORY',repo), \
                  patch.object(server,'_history_event_media_no_quota',return_value=[blue]), \
+                 patch.object(server,'_official_youtube_history_upload_results',return_value=[]), \
                  patch.object(server,'_official_youtube_history_activity_results',return_value=[green]), \
                  patch.object(server,'_official_youtube_history_day_search_results',return_value=[extended,gold]), \
                  patch.object(server,'_historical_youtube_web_results',return_value=[]), \
@@ -766,6 +787,7 @@ class ArchitectureTests(unittest.TestCase):
             repo.put_scores(date,'NBA',[row])
             with patch.object(server,'HISTORY_REPOSITORY',repo), \
                  patch.object(server,'_history_event_media_no_quota',return_value=[blue]), \
+                 patch.object(server,'_official_youtube_history_upload_results',return_value=[]), \
                  patch.object(server,'_official_youtube_history_activity_results',return_value=[]), \
                  patch.object(server,'_official_youtube_history_day_search_results',return_value=[]), \
                  patch.object(server,'_historical_youtube_web_results',return_value=[]), \
@@ -786,7 +808,27 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(inv['upgradeEligibleGames'],1)
             self.assertTrue(inv['needsUpgrade'])
 
-    def test_discovery_version_8_soft_reindex_ignores_old_closed_retry(self):
+    def test_history_audit_groups_media_by_game_and_tier(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"scoreEventId":"evt1","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}
+            repo.put_scores("2025-12-26","NBA",[event])
+            repo.put_event_media("2025-12-26","NBA","evt1",[
+                {"id":"green1","scoreEventId":"evt1","recapTier":"green","title":"Full Game Highlights","youtubeId":"abcdefghijk","verifiedPlayable":True,"validationState":"VERIFIED","historyVerifiedAt":100},
+                {"id":"blue1","scoreEventId":"evt1","recapTier":"blue","title":"Top Play","youtubeId":"lmnopqrstuv","verifiedPlayable":True,"validationState":"VERIFIED","historyVerifiedAt":90},
+            ])
+            repo.set_event_discovery("2025-12-26","NBA","evt1","VERIFIED_UPGRADE_PENDING",{"discoveryVersion":9,"bestTier":"green","qualityComplete":False,"upgradeEligible":True},retry_at=200)
+            data=repo.audit_catalog(date_from="2025-12-26",date_to="2025-12-26",league="NBA")
+            self.assertEqual(data["total"],1)
+            row=data["rows"][0]
+            self.assertEqual(row["game"],"Away Club @ Home Club")
+            self.assertEqual(row["bestTier"],"green")
+            self.assertEqual(len(row["tiers"]["green"]),1)
+            self.assertEqual(len(row["tiers"]["blue"]),1)
+            self.assertEqual(data["summary"]["tiers"]["green"],1)
+            self.assertEqual(data["summary"]["upgradePendingGames"],1)
+
+    def test_discovery_version_9_soft_reindex_ignores_old_closed_retry(self):
         row={'id':'nba-old-v7','espnEventId':'nba-old-v7','completed':True,
              'awayTeam':{'name':'Away Club'},'homeTeam':{'name':'Home Club'}}
         blue={'id':'old-blue','youtubeId':'old-blue-id','title':'Top plays Away Club vs Home Club','durationSeconds':45,'programType':'reel','verifiedPlayable':True}
@@ -800,6 +842,7 @@ class ArchitectureTests(unittest.TestCase):
                 retry_at=time.time()+7*24*60*60,success=True)
             with patch.object(server,'HISTORY_REPOSITORY',repo), \
                  patch.object(server,'_history_event_media_no_quota',return_value=[gold]), \
+                 patch.object(server,'_official_youtube_history_upload_results',return_value=[]), \
                  patch.object(server,'_official_youtube_history_activity_results',return_value=[]), \
                  patch.object(server,'_official_youtube_history_day_search_results',return_value=[]), \
                  patch.object(server,'_historical_youtube_web_results',return_value=[]), \
@@ -810,7 +853,7 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(result['state'],'VERIFIED')
             self.assertEqual(result['bestTier'],'gold')
             self.assertTrue(result['qualityComplete'])
-            self.assertEqual(saved['discovery']['discoveryVersion'],8)
+            self.assertEqual(saved['discovery']['discoveryVersion'],9)
             self.assertTrue(saved['discovery']['qualityComplete'])
 
     def test_quality_upgrade_due_respects_persistent_retry_window(self):
@@ -844,6 +887,7 @@ class ArchitectureTests(unittest.TestCase):
             repo.put_scores(date,'NBA',[row])
             with patch.object(server,'HISTORY_REPOSITORY',repo), \
                  patch.object(server,'_history_event_media_no_quota',return_value=[blue]), \
+                 patch.object(server,'_official_youtube_history_upload_results',return_value=[]), \
                  patch.object(server,'_official_youtube_history_activity_results',return_value=[]), \
                  patch.object(server,'_historical_youtube_web_results',return_value=[]), \
                  patch.object(server,'_historical_search_engine_youtube_results',return_value=[]):
@@ -884,6 +928,7 @@ class ArchitectureTests(unittest.TestCase):
             with patch.object(server,'HISTORY_REPOSITORY',repo), \
                  patch.object(server,'_history_ensure_scores',return_value=(score_rows,[])), \
                  patch.object(server,'_history_event_media_no_quota',return_value=[]), \
+                 patch.object(server,'_official_youtube_history_upload_results',return_value=[]), \
                  patch.object(server,'_official_youtube_history_activity_results',side_effect=activity), \
                  patch.object(server,'_official_youtube_history_day_search_results',return_value=[]), \
                  patch.object(server,'_historical_youtube_web_results',return_value=[]), \

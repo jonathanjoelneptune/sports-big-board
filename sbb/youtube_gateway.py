@@ -1,8 +1,8 @@
-"""YouTube API gateway for Sports Big Board v3.0.3.
+"""YouTube API gateway for Sports Big Board v3.0.4.
 
 The gateway is deliberately operation-aware. A search.list quota/rate failure must
 never disable cheap metadata validation (videos.list) or official-channel history
-indexing (activities.list). Historical playback relies on those independent lanes.
+indexing (activities.list / playlistItems.list). Historical playback relies on those independent lanes.
 """
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ class OperationState:
 class YouTubeGateway:
     """Small thread-safe request broker with separate failure domains per method."""
 
-    def __init__(self, user_agent: str = "SportsBigBoard/3.0.3"):
+    def __init__(self, user_agent: str = "SportsBigBoard/3.0.4"):
         self.user_agent = user_agent
         self._lock = threading.RLock()
         self._states = {
@@ -42,13 +42,14 @@ class YouTubeGateway:
             "videos": OperationState(),
             "activities": OperationState(),
             "channels": OperationState(),
+            "playlistitems": OperationState(),
             "other": OperationState(),
         }
 
     @staticmethod
     def operation_for_url(url: str) -> str:
         path = urlparse(str(url or "")).path.rstrip("/").split("/")[-1].lower()
-        if path in {"search", "videos", "activities", "channels"}:
+        if path in {"search", "videos", "activities", "channels", "playlistitems"}:
             return path
         return "other"
 

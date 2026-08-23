@@ -8,7 +8,7 @@ from contextlib import closing
 class HistoryRepository:
     """Persistent historical score/event/media catalog.
 
-    v3.0.3 keeps the legacy date/league JSON rows for fast score hydration while
+    v3.0.4 keeps the legacy date/league JSON rows for fast score hydration while
     retaining normalized event and asset tables. Discovery metadata now tracks
     source exhaustion separately from preferred-media quality, so Blue/Purple/Green
     assets remain playable while the persistent cloud catalog keeps seeking Gold.
@@ -440,6 +440,130 @@ class HistoryRepository:
 
     def has_scores(self, date, league):
         return bool(self.get_league(date,league,prefer_catalog=False).get("scoresSavedAt"))
+
+    @staticmethod
+    def _audit_team_name(event, side):
+        event=event if isinstance(event,dict) else {}
+        team=event.get(f"{side}Team") or event.get(side) or {}
+        if isinstance(team,dict):
+            return str(team.get("displayName") or team.get("name") or team.get("shortName") or team.get("abbreviation") or team.get("abbr") or "").strip()
+        return str(team or "").strip()
+
+    @staticmethod
+    def _audit_asset_view(row, item):
+        item=item if isinstance(item,dict) else {}
+        tier=str(item.get("recapTier") or "blue")
+        if tier not in {"gold","green","extended","blue"}: tier="blue"
+        youtube_id=str(item.get("youtubeId") or "").strip()
+        media_url=str(item.get("mediaUrl") or "").strip()
+        external_url=str(item.get("externalUrl") or "").strip()
+        url=external_url or (f"https://www.youtube.com/watch?v={youtube_id}" if youtube_id else media_url)
+        try: duration=int(float(item.get("durationSeconds") or item.get("duration") or 0))
+        except Exception: duration=0
+        runtime=str(row["runtime_state"] or "UNKNOWN").upper()
+        validation=str(row["validation_state"] or "CANDIDATE").upper()
+        return {
+            "assetKey":row["asset_key"],"tier":tier,"title":str(item.get("title") or "Untitled media"),
+            "durationSeconds":duration,"provider":str(item.get("provider") or item.get("sourceLabel") or item.get("source") or ""),
+            "source":str(item.get("sourceLabel") or item.get("source") or ""),"url":url,
+            "youtubeId":youtube_id,"mediaUrl":media_url,"validationState":validation,"runtimeState":runtime,
+            "verified":bool(validation=="VERIFIED" and runtime!="FAILED" and (youtube_id or media_url)),
+            "verifiedAt":float(row["verified_at"] or 0),"runtimeSuccessAt":float(row["runtime_success_at"] or 0),
+            "runtimeFailureAt":float(row["runtime_failure_at"] or 0),"runtimeFailureReason":str(row["runtime_failure_reason"] or ""),
+            "lastSeenAt":float(row["last_seen_at"] or 0),
+        }
+
+    def audit_catalog(self, *, date_from="", date_to="", league="", best_tier="", status="", search="", limit=100, offset=0):
+        """Return an Excel-like game-level view of the normalized history catalog."""
+        date_from=str(date_from or "")[:10]; date_to=str(date_to or "")[:10]; league=str(league or "").upper()
+        best_tier=str(best_tier or "").lower(); status=str(status or "").lower(); search=str(search or "").strip().lower()
+        limit=max(1,min(500,int(limit or 100))); offset=max(0,int(offset or 0))
+        where=[]; args=[]
+        if date_from: where.append("date>=?"); args.append(date_from)
+        if date_to: where.append("date<=?"); args.append(date_to)
+        if league: where.append("league=?"); args.append(league)
+        clause=(" WHERE "+" AND ".join(where)) if where else ""
+        with self._lock, closing(self._connect()) as conn:
+            events=conn.execute(f"SELECT * FROM history_event{clause} ORDER BY date DESC, league, event_id",args).fetchall()
+            assets=conn.execute(f"SELECT * FROM history_media_asset{clause} ORDER BY date DESC, league, event_id, verified_at DESC, updated_at DESC",args).fetchall()
+        by_event={}
+        for row in assets:
+            key=(row["date"],row["league"],row["event_id"])
+            item=self._load_obj(row["asset_json"])
+            by_event.setdefault(key,[]).append(self._audit_asset_view(row,item))
+        priority={"gold":4,"green":3,"extended":2,"blue":1,"":0}
+        rows=[]; summary={"games":0,"verifiedAssets":0,"candidateAssets":0,"runtimeFailedAssets":0,
+                         "tiers":{"gold":0,"green":0,"extended":0,"blue":0},
+                         "best":{"gold":0,"green":0,"extended":0,"blue":0,"none":0},"upgradePendingGames":0,"qualityCompleteGames":0}
+        for erow in events:
+            event=self._load_obj(erow["event_json"]); discovery=self._load_obj(erow["discovery_json"])
+            key=(erow["date"],erow["league"],erow["event_id"]); event_assets=by_event.get(key,[])
+            tiers={"gold":[],"green":[],"extended":[],"blue":[]}
+            for asset in event_assets:
+                tiers.setdefault(asset["tier"],[]).append(asset)
+            for values in tiers.values():
+                values.sort(key=lambda a:(bool(a.get("verified")),float(a.get("runtimeSuccessAt") or 0),float(a.get("verifiedAt") or 0),int(a.get("durationSeconds") or 0)),reverse=True)
+            verified=[a for a in event_assets if a.get("verified")]
+            best=max((a.get("tier") or "" for a in verified),key=lambda t:priority.get(t,0),default="")
+            away=self._audit_team_name(event,"away"); home=self._audit_team_name(event,"home")
+            game=f"{away} @ {home}".strip(" @") or str(erow["event_id"])
+            quality_complete=bool(discovery.get("qualityComplete"))
+            upgrade_eligible=bool(discovery.get("upgradeEligible"))
+            discovery_state=str(erow["discovery_state"] or "UNKNOWN")
+            hay=f"{erow['date']} {erow['league']} {game} {erow['event_id']} "+" ".join(str(a.get('title') or '') for a in event_assets)
+            if search and search not in hay.lower(): continue
+            if best_tier and (best or "none")!=best_tier: continue
+            if status=="upgrade" and not upgrade_eligible: continue
+            if status=="complete" and not quality_complete: continue
+            if status=="failed" and not any(str(a.get("runtimeState"))=="FAILED" for a in event_assets): continue
+            if status=="no-media" and verified: continue
+            summary["games"]+=1
+            summary["verifiedAssets"]+=len(verified)
+            summary["candidateAssets"]+=sum(1 for a in event_assets if not a.get("verified") and a.get("validationState") in {"CANDIDATE","EXTERNAL"})
+            summary["runtimeFailedAssets"]+=sum(1 for a in event_assets if a.get("runtimeState")=="FAILED")
+            for tier in summary["tiers"]: summary["tiers"][tier]+=sum(1 for a in tiers.get(tier,[]) if a.get("verified"))
+            summary["best"][best or "none"]+=1
+            if upgrade_eligible: summary["upgradePendingGames"]+=1
+            if quality_complete: summary["qualityCompleteGames"]+=1
+            rows.append({
+                "date":erow["date"],"league":erow["league"],"eventId":erow["event_id"],"away":away,"home":home,"game":game,
+                "discoveryState":discovery_state,"bestTier":best or "none","qualityComplete":quality_complete,"upgradeEligible":upgrade_eligible,
+                "nextRetryAt":float(erow["next_retry_at"] or 0),"lastDiscoveryAt":float(erow["last_discovery_at"] or 0),"lastError":str(erow["last_error"] or ""),
+                "tiers":tiers,"verifiedAssetCount":len(verified),"assetCount":len(event_assets),
+            })
+        total=len(rows); page=rows[offset:offset+limit]
+        return {"summary":summary,"rows":page,"total":total,"limit":limit,"offset":offset}
+
+    def audit_export_rows(self, **filters):
+        filters=dict(filters); filters["limit"]=500; filters["offset"]=0
+        # Export is expected to remain modest (400-day catalog). Page through the
+        # same audited game view so filters and best-tier logic stay identical.
+        first=self.audit_catalog(**filters); games=list(first["rows"]); total=int(first["total"] or 0)
+        offset=len(games)
+        while offset<total:
+            page_filters=dict(filters); page_filters["offset"]=offset
+            page=self.audit_catalog(**page_filters); chunk=page["rows"]
+            if not chunk: break
+            games.extend(chunk); offset+=len(chunk)
+        out=[]
+        for game in games:
+            emitted=False
+            for tier in ("gold","green","extended","blue"):
+                for asset in game.get("tiers",{}).get(tier,[]):
+                    emitted=True
+                    out.append({
+                        "Date":game["date"],"League":game["league"],"Game":game["game"],"Event ID":game["eventId"],
+                        "Tier":"purple" if tier=="extended" else tier,"Title":asset.get("title") or "","Duration Seconds":asset.get("durationSeconds") or 0,
+                        "Provider":asset.get("provider") or "","URL":asset.get("url") or "","Validation":asset.get("validationState") or "",
+                        "Runtime":asset.get("runtimeState") or "","Verified":bool(asset.get("verified")),"Last Verified":asset.get("verifiedAt") or 0,
+                        "Best Tier":"purple" if game.get("bestTier")=="extended" else game.get("bestTier"),"Upgrade Pending":bool(game.get("upgradeEligible")),
+                        "Discovery State":game.get("discoveryState") or "",
+                    })
+            if not emitted:
+                out.append({"Date":game["date"],"League":game["league"],"Game":game["game"],"Event ID":game["eventId"],"Tier":"","Title":"",
+                            "Duration Seconds":0,"Provider":"","URL":"","Validation":"","Runtime":"","Verified":False,"Last Verified":0,
+                            "Best Tier":"none","Upgrade Pending":bool(game.get("upgradeEligible")),"Discovery State":game.get("discoveryState") or ""})
+        return out
 
     def summary(self):
         with self._lock, closing(self._connect()) as conn:
