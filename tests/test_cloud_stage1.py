@@ -31,7 +31,7 @@ class CloudStage1Tests(unittest.TestCase):
         self.assertLess(workflow.index('name: Deploy cloud backend'),workflow.index('name: Build GitHub Pages frontend'))
     def test_backend_deploy_is_atomic_and_preserves_state(self):
         deploy=(ROOT/'cloud/gcp/DEPLOY-FROM-GITHUB.sh').read_text()
-        for token in ('$APP_BASE/releases/','rollback()','ln -sfn','127.0.0.1:8080/api/status','/etc/caddy/Caddyfile','--ssh-key-expire-after=10m'):
+        for token in ('$APP_BASE/releases/','rollback()','ln -sfn','127.0.0.1:8080/api/status','/etc/caddy/Caddyfile','SSH_KEY_EXPIRE_AFTER="${SBB_SSH_KEY_EXPIRE_AFTER:-60m}"','SBB_SSH_READY','timeout --signal=TERM --kill-after=10s','RELEASE UPLOAD COMPLETE'):
             self.assertIn(token,deploy)
         self.assertIn('/var/lib/sports-big-board',deploy)
         self.assertIn('ensure_history_v4.py',deploy)

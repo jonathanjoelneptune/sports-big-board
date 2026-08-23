@@ -17,10 +17,72 @@ tar --exclude='.git' --exclude='.pages-dist' --exclude='gha-creds-*.json' \
   -czf "$ARCHIVE" -C "$ROOT" .
 REMOTE_ARCHIVE="/tmp/sbb-release-${SHORT_SHA}.tgz"
 echo "Deploying Sports Big Board v${VERSION} (${SHORT_SHA}) to ${VM_NAME} in ${ZONE}..."
-gcloud compute scp "$ARCHIVE" "$VM_NAME:$REMOTE_ARCHIVE" \
-  --zone "$ZONE" --project "$PROJECT_ID" --quiet --ssh-key-expire-after=10m
+
+# GitHub-hosted runners generate a fresh Compute Engine SSH key. GCE may need
+# time to propagate an instance-metadata key through the guest agent. Do not let
+# gcloud scp hide that wait indefinitely: establish SSH explicitly with bounded
+# retries, then upload only after the VM has proved it accepts the exact runner.
+SSH_KEY_EXPIRE_AFTER="${SBB_SSH_KEY_EXPIRE_AFTER:-60m}"
+SSH_READY_ATTEMPTS="${SBB_SSH_READY_ATTEMPTS:-4}"
+SSH_READY_TIMEOUT_SECONDS="${SBB_SSH_READY_TIMEOUT_SECONDS:-120}"
+SSH_READY_SLEEP_SECONDS="${SBB_SSH_READY_SLEEP_SECONDS:-15}"
+SSH_READY=0
+
+echo "[ssh] Preparing runner SSH access (temporary key lifetime: ${SSH_KEY_EXPIRE_AFTER})."
+for ((attempt=1; attempt<=SSH_READY_ATTEMPTS; attempt++)); do
+  echo "[ssh] Readiness attempt ${attempt}/${SSH_READY_ATTEMPTS} (timeout ${SSH_READY_TIMEOUT_SECONDS}s)..."
+  set +e
+  SSH_OUTPUT="$(timeout --signal=TERM --kill-after=10s "${SSH_READY_TIMEOUT_SECONDS}s" \
+    gcloud compute ssh "$VM_NAME" \
+      --zone "$ZONE" --project "$PROJECT_ID" --quiet \
+      --ssh-key-expire-after="$SSH_KEY_EXPIRE_AFTER" \
+      --command='printf SBB_SSH_READY' 2>&1)"
+  SSH_RC=$?
+  set -e
+  printf '%s\n' "$SSH_OUTPUT"
+  if [[ "$SSH_RC" == "0" && "$SSH_OUTPUT" == *"SBB_SSH_READY"* ]]; then
+    SSH_READY=1
+    echo "[ssh] SSH READY."
+    break
+  fi
+  if [[ "$SSH_RC" == "124" || "$SSH_RC" == "137" ]]; then
+    echo "[ssh] Attempt timed out while waiting for the GCE guest to accept the runner key."
+  else
+    echo "[ssh] Attempt failed with exit code ${SSH_RC}."
+  fi
+  if (( attempt < SSH_READY_ATTEMPTS )); then
+    echo "[ssh] Waiting ${SSH_READY_SLEEP_SECONDS}s before retry..."
+    sleep "$SSH_READY_SLEEP_SECONDS"
+  fi
+done
+
+if [[ "$SSH_READY" != "1" ]]; then
+  echo "[ssh] ERROR: VM never accepted the GitHub runner SSH key after bounded retries."
+  echo "[ssh] No release archive was uploaded and the historical database was not touched."
+  echo "[ssh] Instance summary follows for diagnosis:"
+  gcloud compute instances describe "$VM_NAME" --zone "$ZONE" --project "$PROJECT_ID" \
+    --format='yaml(name,status,networkInterfaces[0].accessConfigs[0].natIP,metadata.items.key)' || true
+  exit 1
+fi
+
+echo "[upload] SSH proven. Uploading release archive..."
+set +e
+timeout --signal=TERM --kill-after=10s 180s \
+  gcloud compute scp "$ARCHIVE" "$VM_NAME:$REMOTE_ARCHIVE" \
+    --zone "$ZONE" --project "$PROJECT_ID" --quiet \
+    --ssh-key-expire-after="$SSH_KEY_EXPIRE_AFTER"
+SCP_RC=$?
+set -e
+if [[ "$SCP_RC" != "0" ]]; then
+  echo "[upload] ERROR: release upload failed or exceeded the 180s transfer limit (exit ${SCP_RC})."
+  echo "[upload] Historical database has not been touched."
+  exit "$SCP_RC"
+fi
+echo "[upload] RELEASE UPLOAD COMPLETE."
+
+echo "[remote] Starting v4 deployment and catalog preflight..."
 gcloud compute ssh "$VM_NAME" \
-  --zone "$ZONE" --project "$PROJECT_ID" --quiet --ssh-key-expire-after=10m \
+  --zone "$ZONE" --project "$PROJECT_ID" --quiet --ssh-key-expire-after="$SSH_KEY_EXPIRE_AFTER" \
   --command="sudo env SBB_RELEASE_VERSION='$VERSION' SBB_RELEASE_SHA='$SHORT_SHA' SBB_REMOTE_ARCHIVE='$REMOTE_ARCHIVE' bash -s" <<'REMOTE'
 set -euo pipefail
 VERSION="${SBB_RELEASE_VERSION:?}"
