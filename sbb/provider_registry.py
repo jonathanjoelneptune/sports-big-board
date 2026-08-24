@@ -1,4 +1,4 @@
-"""Provider routing registry for v4.1.6.
+"""Provider routing registry for v4.1.7.
 
 SCORE_API retains the existing Highlightly adapter metadata. MEDIA_ADAPTERS is the
 new provider-independent capability registry consumed by architecture diagnostics
@@ -17,6 +17,7 @@ SPORT_API={
 MEDIA_ADAPTERS={
     "mlb-stats":{"kind":"official-api","transport":["DIRECT_VIDEO"],"competitions":["MLB"],"reliability":100},
     "espn":{"kind":"broadcaster-api","transport":["DIRECT_VIDEO"],"competitions":["MLB","NFL","NBA","NHL","EPL","MLS"],"reliability":94},
+    "nfl-game-highlights":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NFL"],"reliability":100},
     "nfl-club":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NFL"],"reliability":96},
     "nfl-feed":{"kind":"official-feed","transport":["YOUTUBE_EMBED","EXTERNAL"],"competitions":["NFL"],"reliability":92},
     "mls":{"kind":"official-api","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["MLS"],"reliability":95},

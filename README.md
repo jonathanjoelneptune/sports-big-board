@@ -1,6 +1,14 @@
-# Sports Big Board v4.1.6
+# Sports Big Board v4.1.7
 
-> v4.1.6 makes the Historical Database Audit easier to read at a glance and exposes true **Coverage Complete** statistics separately from Quick Recap coverage.
+> v4.1.7 adds a first-class **NFL.com Game Highlights** acquisition lane so recent NFL games can resolve an official matchup recap without depending on generic web search or YouTube Search quota.
+
+## v4.1.7 — official NFL.com Game Highlights adapter
+
+Recent NFL discovery now starts with the league's own `https://www.nfl.com/videos/channel/game-highlights-vc` inventory and the two participating teams' NFL.com pages. The adapter accepts only canonical matchup-level pages whose URL/title prove both teams and a `team-vs-team-highlights` package. Individual plays, player `best plays`, Can't-Miss clips, interviews, press conferences, previews, and other one-off videos are deliberately rejected from the recap lane.
+
+For each accepted NFL.com matchup page, the backend reads standards-based OpenGraph/JSON-LD video metadata. When NFL.com exposes a direct HTTPS MP4/HLS rendition, Sports Big Board range-probes it before marking it playable; otherwise the official NFL.com page is retained as an external fallback rather than falsely claiming in-app playback. Duration flows through the existing Gold/Green/Purple/Blue classifier, so the roughly five-minute official packages naturally become Green while longer packages can remain legitimate Purple Coverage Complete media.
+
+The historical worker exposes this source as its own `nfl-game-highlights` primary lane **before** generic `official-native`, YouTube activity/feed, and public-web fallbacks. The adapter is intentionally recent-window scoped (default 21 days, configurable with `SBB_NFL_GAME_HIGHLIGHTS_RECENT_DAYS`) because NFL.com's channel/team pages are current-content surfaces; the one-time deep archive continues to use the existing historical source stack. The shared provider semaphore and short-lived page catalog prevent the three Green workers from re-fetching the same NFL.com inventory independently.
 
 ## v4.1.6 — coverage-complete statistics + semantic audit colors
 
@@ -28,7 +36,7 @@ Seed completion is based on persisted score/media inventory, not on eventually r
 
 ## v4.0.1 reindex scheduling correction
 
-v4.1.6 fixes the post-reconstruction state boundary exposed by the first production v4 catalog. Catalog import/rebuild bookkeeping is no longer recorded as a provider discovery attempt. Rebuilt events begin with `last_discovery_at = 0` and `next_retry_at = 0`, stale discovery generations bypass cooldown immediately, and the server performs a narrow idempotent startup repair for v4.0.0 rows marked `PENDING_CURRENT_DISCOVERY`. Current-generation attempts still obey the normal recent/archive cooldowns. No database rebuild is required for the v4.0.0 → v4.1.6 update.
+v4.1.7 fixes the post-reconstruction state boundary exposed by the first production v4 catalog. Catalog import/rebuild bookkeeping is no longer recorded as a provider discovery attempt. Rebuilt events begin with `last_discovery_at = 0` and `next_retry_at = 0`, stale discovery generations bypass cooldown immediately, and the server performs a narrow idempotent startup repair for v4.0.0 rows marked `PENDING_CURRENT_DISCOVERY`. Current-generation attempts still obey the normal recent/archive cooldowns. No database rebuild is required for the v4.0.0 → v4.1.7 update.
 
 The operator queue also drops the ambiguous legacy `noMedia`/`no_media` aliases. `UNINDEXED` remains distinct from `SEARCHED EMPTY`, while the combined diagnostic is exposed explicitly as `unindexedOrEmpty`.
 
@@ -87,7 +95,7 @@ The selected mode is stored on the persistent cloud data disk, so page refreshes
 
 v3.0.9 also added a **recent-slate safeguard**. The Green-gap queue gives completed games from the newest three calendar days with no verified recap a cursory pass before spending long stretches deep in the archive. After that safeguard, the normal Blue-only → no-media → Purple-only archive priority continues. The console reports `recent gaps` and `recent no-media` separately so current coverage cannot be hidden by a large December backlog.
 
-Those resource controls, worker heartbeat/watchdog, copy issues/full console controls, version mismatch protection, and recent-slate scheduling remain intact in v4.1.6. Historical discovery advances to `HISTORY_DISCOVERY_VERSION = 13` for the scope/association migration described above.
+Those resource controls, worker heartbeat/watchdog, copy issues/full console controls, version mismatch protection, and recent-slate scheduling remain intact in v4.1.7. Historical discovery advances to `HISTORY_DISCOVERY_VERSION = 13` for the scope/association migration described above.
 
 ## Cloud Stage 1
 
@@ -99,7 +107,7 @@ After the one-time `cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh` setup, a release is j
 
 ## v3.0.1 historical playback foundation
 
-v3.0.1 established the server-owned historical event/media catalog used by v4.1.6:
+v3.0.1 established the server-owned historical event/media catalog used by v4.1.7:
 
 `selected date → canonical score events → event catalog → validated media assets → playback plan → PlaybackController → runtime feedback`
 
@@ -113,7 +121,7 @@ v4 replaces the old event-centric media table with `history_source_media` plus e
 4. Public YouTube/search-engine discovery as candidate metadata only until positively validated.
 5. League/team-specific free lanes where available, including the NFL feed.
 
-The chronological date-backfill worker intentionally does not spend the scarce YouTube `search.list` bucket. In v4.1.6, a bounded three-worker Green-gap pool runs in SEARCH mode (one worker in BALANCED). Every worker must atomically lease a canonical Event ID before discovery, while provider-specific semaphores and same-day single-flight locks prevent concurrency from multiplying API pressure. YouTube Search remains globally serialized and quota-brokered.
+The chronological date-backfill worker intentionally does not spend the scarce YouTube `search.list` bucket. In v4.1.7, a bounded three-worker Green-gap pool runs in SEARCH mode (one worker in BALANCED). Every worker must atomically lease a canonical Event ID before discovery, while provider-specific semaphores and same-day single-flight locks prevent concurrency from multiplying API pressure. YouTube Search remains globally serialized and quota-brokered.
 
 ## v2.7.0 provider-independent media + Game Center architecture
 
@@ -156,7 +164,7 @@ This release addresses the root architecture behind the fragile non-MLB score fe
 
 Sports Big Board is a local, personalized sports television system: live scores and game state feed a direct-tune ribbon, official highlights and recaps feed the player, Game Center adds the live/final statistical context, and Around the League provides unattended programming.
 
-v4.1.6 builds on the stabilized score inventory and Game Center work by adding arbitrary historical date context without coupling ribbon browsing to playback.
+v4.1.7 builds on the stabilized score inventory and Game Center work by adding arbitrary historical date context without coupling ribbon browsing to playback.
 
 ## Launch experience
 
@@ -164,7 +172,7 @@ A fresh page load now opens on a full-screen **Sports Big Board** splash instead
 
 ## Legacy Today / Yesterday score authority
 
-NFL, NBA and NHL score inventory retains its ESPN fallback whenever Highlightly is empty. In v4.1.6 the league filter no longer changes the date automatically: the viewer-selected calendar date remains authoritative. ESPN historical lookups keep trying alternate transports when a non-empty endpoint response contains only the wrong calendar day, preventing a weekly/current board from masking the requested date.
+NFL, NBA and NHL score inventory retains its ESPN fallback whenever Highlightly is empty. In v4.1.7 the league filter no longer changes the date automatically: the viewer-selected calendar date remains authoritative. ESPN historical lookups keep trying alternate transports when a non-empty endpoint response contains only the wrong calendar day, preventing a weekly/current board from masking the requested date.
 
 ## NFL recap discovery
 
@@ -262,7 +270,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.6/sports-big-board-v4.1.6
+cd ~/storage/downloads/sports-big-board-v4.1.7/sports-big-board-v4.1.7
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```
@@ -296,7 +304,7 @@ bash VERIFY.sh
 
 Node is optional. When Node is unavailable, the permanent Python suite still verifies the browser architecture/UI boundaries and all server contracts.
 
-The v4.1.6 regression suite covers, among other things:
+The v4.1.7 regression suite covers, among other things:
 
 - authoritative score-card playback and epoch ownership
 - HOT/WARM media prewarming separation

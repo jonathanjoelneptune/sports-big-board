@@ -176,6 +176,7 @@ class LiveFreshnessTests(unittest.TestCase):
              patch.object(server,'_date_iso',return_value='2026-08-20'), \
              patch.object(server,'read_youtube_key',return_value='fake-key'), \
              patch.object(server,'_official_nfl_feed_videos',return_value=[]), \
+             patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
              patch.object(server,'youtube_fetch_json',side_effect=fake_youtube), \
              patch.object(server,'_espn_search_video_results',return_value=[]), \
              patch.object(server,'_generic_rapid_cache_path',return_value=Path(td)/'nfl.json'):
@@ -187,6 +188,55 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertTrue(rows[0]['verifiedPlayable'])
         self.assertEqual(rows[0]['durationSeconds'],750)
 
+
+    def test_nfl_dot_com_game_highlights_adapter_accepts_only_matchup_recap(self):
+        channel="""<html><body>
+        <a href='/videos/jets-vs-steelers-highlights-preseason-week-2'>Jets vs. Steelers highlights | Preseason Week 2</a>
+        <a href='/videos/some-player-best-plays-vs-steelers-preseason-week-2'>Some Player's best plays vs. Steelers | Preseason Week 2</a>
+        </body></html>"""
+        detail="""<html><head>
+        <meta property='og:title' content='Jets vs. Steelers highlights | Preseason Week 2'>
+        <meta property='og:description' content='Watch the New York Jets vs. Pittsburgh Steelers highlights from Preseason Week 2 of the 2026 season.'>
+        <script type='application/ld+json'>{"@type":"VideoObject","name":"Jets vs. Steelers highlights | Preseason Week 2","description":"Watch the New York Jets vs. Pittsburgh Steelers highlights from Preseason Week 2 of the 2026 season.","duration":"PT5M12S","datePublished":"2026-08-21T23:00:00Z","contentUrl":"https://cdn.nfl.test/jets-steelers.mp4","thumbnailUrl":"https://img.nfl.test/jets.jpg"}</script>
+        </head></html>"""
+        pages={server.NFL_GAME_HIGHLIGHTS_CHANNEL_URL:channel}
+        pages.update({u:'' for u in server._nfl_game_highlights_source_pages('New York Jets','Pittsburgh Steelers')[1:]})
+        pages['https://www.nfl.com/videos/jets-vs-steelers-highlights-preseason-week-2']=detail
+        def fake_page(url,timeout=9): return pages.get(url,'')
+        with patch.object(server,'_nfl_fetch_page_text',side_effect=fake_page), patch.object(server,'HISTORY_SHARED_CATALOG_CACHE',{}):
+            rows=server._nfl_game_highlights_results('2026-08-21','New York Jets','Pittsburgh Steelers',validate_native=False)
+        self.assertEqual(len(rows),1)
+        row=rows[0]
+        self.assertEqual(row['provider'],'NFL.COM')
+        self.assertEqual(row['sourceType'],'official-nfl-game-highlights')
+        self.assertEqual(row['sourceAuthority'],'LEAGUE_OFFICIAL')
+        self.assertEqual(row['durationSeconds'],312)
+        self.assertEqual(row['recapTier'],'green')
+        self.assertEqual(row['mediaUrl'],'https://cdn.nfl.test/jets-steelers.mp4')
+        self.assertEqual(row['externalUrl'],'https://www.nfl.com/videos/jets-vs-steelers-highlights-preseason-week-2')
+
+    def test_nfl_dot_com_game_highlights_parser_rejects_individual_best_plays(self):
+        self.assertTrue(server._nfl_game_highlight_is_match(
+            'https://www.nfl.com/videos/jets-vs-steelers-highlights-preseason-week-2',
+            'Jets vs. Steelers highlights | Preseason Week 2','',
+            'New York Jets','Pittsburgh Steelers'))
+        self.assertFalse(server._nfl_game_highlight_is_match(
+            'https://www.nfl.com/videos/joe-milton-best-plays-vs-cardinals-preseason-week-2',
+            "Joe Milton III's best plays from 3-TD game vs. Cardinals | Preseason Week 2",'',
+            'Dallas Cowboys','Arizona Cardinals'))
+        self.assertFalse(server._nfl_game_highlight_is_match(
+            'https://www.nfl.com/videos/can-t-miss-play-some-touchdown-vs-steelers',
+            "Can't-Miss Play: touchdown vs. Steelers",'New York Jets play Pittsburgh Steelers',
+            'New York Jets','Pittsburgh Steelers'))
+
+    def test_nfl_dot_com_video_metadata_extracts_jsonld_direct_media(self):
+        raw="""<html><head><script type='application/ld+json'>
+        {"@type":"VideoObject","name":"Chiefs vs. Buccaneers highlights | Preseason Week 2","duration":"PT4M58S","contentUrl":"https:\\/\\/cdn.nfl.test\\/chiefs-bucs.m3u8","datePublished":"2026-08-22T01:00:00Z"}
+        </script></head></html>"""
+        meta=server._nfl_video_page_metadata(raw,'https://www.nfl.com/videos/chiefs-vs-buccaneers-highlights-preseason-week-2')
+        self.assertEqual(meta['durationSeconds'],298)
+        self.assertEqual(meta['mediaUrl'],'https://cdn.nfl.test/chiefs-bucs.m3u8')
+        self.assertEqual(meta['publishedAt'],'2026-08-22T01:00:00Z')
 
     def test_official_nfl_atom_feed_finds_recap_without_api_key(self):
         from io import BytesIO
@@ -265,6 +315,7 @@ class LiveFreshnessTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td, \
              patch.object(server,'read_youtube_key',return_value=''), \
              patch.object(server,'_official_nfl_feed_videos',return_value=[]), \
+             patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
              patch.object(server,'_historical_youtube_web_results',return_value=[]), \
              patch.object(server,'_historical_search_engine_youtube_results',return_value=[]), \
              patch.object(server,'_official_youtube_history_api_results',return_value=[]), \
