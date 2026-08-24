@@ -334,6 +334,29 @@ class HistoryV4BaselineTests(unittest.TestCase):
             objectives=repo.media_objective_summary()
             self.assertEqual(objectives["nflQuickGames"],1); self.assertEqual(objectives["nflExtendedGames"],0); self.assertEqual(objectives["nflGreenWithoutPurple"],1)
 
+    def test_v4111_mls_green_without_extended_remains_rule_catchup_eligible(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            sources={"MLS":[{"key":"mls-match-snapshot","version":1,"objective":"quick"},{"key":"mls-match-highlights","version":1,"objective":"extended"}]}
+            event={"scoreEventId":"mls-objectives","awayTeam":{"name":"San Diego FC"},"homeTeam":{"name":"Minnesota United FC"},"completed":True}
+            repo.put_scores("2026-08-20","MLS",[event])
+            green={"youtubeId":"mlssnap123","scoreEventId":"mls-objectives","title":"Match Snapshot: San Diego FC vs Minnesota United FC","durationSeconds":60,"overview":True,"programType":"recap","mediaObjective":"QUICK","recapTier":"green","verifiedPlayable":True,"validationState":"VERIFIED","historyVerifiedAt":time.time(),"embedValidated":True,"sourceType":"official-mls-match-snapshot","source":"MLSsoccer.com"}
+            repo.put_event_media("2026-08-20","MLS","mls-objectives",[green])
+            rows=repo.source_enrichment_events(sources,floor_date="2025-08-01",today="2026-08-24",now=time.time(),limit=10)
+            self.assertEqual(len(rows),1); self.assertTrue(rows[0]["hasGreen"]); self.assertFalse(rows[0]["hasExtended"])
+            self.assertEqual([x["key"] for x in rows[0]["pendingSources"]],["mls-match-highlights"])
+
+    def test_v4111_epl_green_without_extended_remains_rule_catchup_eligible(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            sources={"EPL":[{"key":"premierleague-official","version":3,"objective":"quick"},{"key":"nbc-epl-extended","version":2,"objective":"extended"}]}
+            event={"scoreEventId":"epl-objectives","awayTeam":{"name":"Arsenal"},"homeTeam":{"name":"Liverpool"},"completed":True}
+            repo.put_scores("2026-08-20","EPL",[event])
+            green={"youtubeId":"eplquick123","scoreEventId":"epl-objectives","title":"Arsenal v Liverpool Match Highlights","durationSeconds":240,"overview":True,"programType":"recap","mediaObjective":"QUICK","recapTier":"green","verifiedPlayable":True,"validationState":"VERIFIED","historyVerifiedAt":time.time(),"embedValidated":True,"sourceType":"official-premierleague-match-highlights","source":"PremierLeague.com"}
+            repo.put_event_media("2026-08-20","EPL","epl-objectives",[green])
+            rows=repo.source_enrichment_events(sources,floor_date="2025-08-01",today="2026-08-24",now=time.time(),limit=10)
+            self.assertEqual(len(rows),1); self.assertEqual([x["key"] for x in rows[0]["pendingSources"]],["nbc-epl-extended"])
+
     def test_v419_source_enrichment_summary_counts_coverage_and_quality_upgrades(self):
         with tempfile.TemporaryDirectory() as td:
             repo=HistoryRepository(Path(td)/"history.sqlite3")
@@ -445,7 +468,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
             repo.put_scores("2026-08-22","MLS",[event])
-            # Simulate a pre-v4.1.10 assigned row by directly inserting source/link.
+            # Simulate a pre-v4.1.11 assigned row by directly inserting source/link.
             wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
             repo.put_source_media([wrong],league="MLS",date="2026-08-22")
             import sqlite3 as _sqlite3, time as _time, json as _json

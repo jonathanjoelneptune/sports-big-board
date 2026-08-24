@@ -297,6 +297,23 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertFalse(server._epl_official_match_highlight_title('BEST GOALS: Manchester United and Newcastle United | Matchweek 20',away,home))
         self.assertFalse(server._epl_official_match_highlight_title('Instant Reaction: Manchester United v Newcastle United Highlights',away,home))
 
+    def test_v4111_epl_collectors_stamp_independent_quick_and_extended_objectives(self):
+        pl_index="""<a href='https://www.premierleague.com/en/video/pl-highlights'><span>Arsenal v Liverpool | Match Highlights</span></a>"""
+        pl_detail="""<script type='application/ld+json'>{"@type":"VideoObject","name":"Arsenal v Liverpool | Match Highlights","duration":"PT4M00S","datePublished":"2026-08-20T20:00:00Z","contentUrl":"https://cdn.pl.test/highlights.mp4"}</script>"""
+        nbc_index="""<a href='https://www.nbcsports.com/watch/video/premier-league/arsenal-liverpool-extended-highlights'><span>Arsenal v Liverpool extended highlights</span></a>"""
+        nbc_detail="""<script type='application/ld+json'>{"@type":"VideoObject","name":"Arsenal v Liverpool extended highlights","duration":"PT12M00S","datePublished":"2026-08-20T21:00:00Z","contentUrl":"https://cdn.nbc.test/extended.mp4"}</script>"""
+        def fake_page(url,timeout=10,referer=''):
+            if url==server.PREMIER_LEAGUE_VIDEO_URL: return pl_index
+            if url==server.NBC_EPL_VIDEO_URL: return nbc_index
+            if 'pl-highlights' in url: return pl_detail
+            if 'extended-highlights' in url: return nbc_detail
+            return ''
+        with patch.object(server,'_official_fetch_page_text',side_effect=fake_page), patch.object(server,'HISTORY_SHARED_CATALOG_CACHE',{}):
+            quick=server._premierleague_official_results('2026-08-20','Arsenal','Liverpool')
+            extended=server._nbc_epl_extended_results('2026-08-20','Arsenal','Liverpool')
+        self.assertEqual(quick[0]['mediaObjective'],'QUICK'); self.assertEqual(quick[0]['recapTier'],'green')
+        self.assertEqual(extended[0]['mediaObjective'],'EXTENDED'); self.assertEqual(extended[0]['recapTier'],'extended')
+
     def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
         quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
         long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}

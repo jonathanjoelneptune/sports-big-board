@@ -474,7 +474,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.10 migration cooldowns already persisted in production.
+        """Release artificial v4.1.11 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -620,7 +620,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.10 treats collection membership as fully derived state.  Classifier
+        v4.1.11 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -719,7 +719,7 @@ class HistoryRepository:
         return {"event":event,"collection":collection,"integrity":integrity,"issues":issues,"ok":not bool(issues)}
 
     def media_objective_summary(self):
-        """Persisted v4.1.10 objective/category counts for operator audit."""
+        """Persisted v4.1.11 objective/category counts for operator audit."""
         out={"nflQuickGames":0,"nflExtendedGames":0,"nflGreenWithoutPurple":0,"mlsSnapshots":0,"mlsMatchHighlights":0,"bestGoalsCollections":0,"bestGoalsAssets":0,"bestSavesCollections":0,"bestSavesAssets":0}
         with self._lock, closing(self._connect()) as conn:
             flags=conn.execute("""SELECT e.canonical_event_key,
@@ -1101,9 +1101,10 @@ class HistoryRepository:
     def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, limit=96):
         """Newest-first official-source objective queue.
 
-        v4.1.10 gives NFL two independent objectives: Quick/Green and Extended/Purple.
-        Therefore Green-without-Purple remains eligible instead of disappearing from
-        the official-source catch-up queue.
+        v4.1.11 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
+        objectives. A previously completed generic source pass cannot hide an unmet
+        objective, and the three rule-migration leagues are scheduled ahead of legacy
+        NHL source catch-up until their new objective ledgers are satisfied.
         """
         now=float(now or time.time()); floor=str(floor_date or "")[:10]; today=str(today or time.strftime("%Y-%m-%d",time.gmtime(now)))[:10]; limit=max(1,min(500,int(limit or 96)))
         leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_specs_for_league(source_versions,lg)]
@@ -1124,9 +1125,10 @@ class HistoryRepository:
           SELECT e.*,COALESCE(f.verified_count,0) verified_count,COALESCE(f.has_gold,0) has_gold,COALESCE(f.has_green,0) has_green,COALESCE(f.has_extended,0) has_extended,COALESCE(f.has_blue,0) has_blue
           FROM history_catalog_event e LEFT JOIN flags f ON f.canonical_event_key=e.canonical_event_key
           WHERE e.league IN ({marks}) AND e.event_date>=? AND e.event_date<=?
-            AND ((e.league='NFL' AND (COALESCE(f.has_green,0)=0 OR COALESCE(f.has_extended,0)=0)) OR (e.league<>'NFL' AND COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0))
+            AND (((e.league IN ('NFL','MLS','EPL')) AND (COALESCE(f.has_green,0)=0 OR COALESCE(f.has_extended,0)=0)) OR ((e.league NOT IN ('NFL','MLS','EPL')) AND COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0))
             AND (COALESCE(e.claim_expires_at,0)<=? OR COALESCE(e.claim_owner,'')='')
-          ORDER BY CASE WHEN e.event_date>=? THEN 0 WHEN e.event_date>=? THEN 1 WHEN e.event_date>=? THEN 2 ELSE 3 END,
+          ORDER BY CASE e.league WHEN 'NFL' THEN 0 WHEN 'MLS' THEN 1 WHEN 'EPL' THEN 2 ELSE 3 END,
+            CASE WHEN e.event_date>=? THEN 0 WHEN e.event_date>=? THEN 1 WHEN e.event_date>=? THEN 2 ELSE 3 END,
             CASE WHEN COALESCE(f.verified_count,0)=0 THEN 0 WHEN COALESCE(f.has_blue,0)=1 AND COALESCE(f.has_extended,0)=0 THEN 1 WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
             e.event_date DESC,e.updated_at ASC LIMIT ?"""
         params=[*leagues,floor,today,now,cut7,cut30,cut90,max(limit*5,limit)]

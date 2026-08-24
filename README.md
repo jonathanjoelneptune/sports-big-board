@@ -1,8 +1,8 @@
-# Sports Big Board v4.1.10
+# Sports Big Board v4.1.11
 
-> v4.1.10 separates **Quick** and **Extended** game-media objectives, hardens MLS/EPL official match discovery, adds first-class `BEST_GOALS` / `BEST_SAVES` Silver collections, and normalizes duplicate/reaction media before playback.
+> v4.1.11 separates **Quick** and **Extended** game-media objectives, hardens MLS/EPL official match discovery, adds first-class `BEST_GOALS` / `BEST_SAVES` Silver collections, and normalizes duplicate/reaction media before playback.
 
-## v4.1.10 — MLS/EPL official media + NFL Quick/Extended objectives
+## v4.1.11 — MLS/EPL official media + NFL Quick/Extended objectives
 
 - **MLS:** `MATCH SNAPSHOT` is the preferred Green quick recap; `MATCH HIGHLIGHTS` is Purple/Extended. League-wide `Every Goal`, `Must-see Golazos`, and `What A Save` packages are promoted to Silver with canonical scoring / `BEST_GOALS` / `BEST_SAVES` collection identity.
 - **EPL:** official PremierLeague.com match highlights now require the actual team pair and match-highlight language, while Matchweek `Best Goals` and `Best Saves` packages are first-class Silver collections rather than generic Top Plays.
@@ -11,6 +11,7 @@
 - **Normalized catalog:** GAME media without an already authoritative persisted tier is classified at ingestion, allowing durable SQL scheduling/audit to see Quick/Extended objectives correctly after restart. Existing explicit tiers are preserved.
 - **Operator audit:** Search Console/status now exposes NFL Quick, NFL Extended, Green-without-Purple, MLS Snapshot, MLS Match Highlights, `BEST_GOALS`, `BEST_SAVES`, duplicate-collapse, postgame/reaction rejection, and runtime objective-accept counters.
 - **Catalog generation:** `HISTORY_DISCOVERY_VERSION = 14`, media classifier v7, event matcher v6, and ranking v6. Official source ledgers are versioned independently so provider-specific fixes can reopen only the affected source objective.
+- **Rule catch-up migration:** v4.1.11 explicitly reopens NFL, MLS, and EPL from newest games back to the Aug. 1, 2025 seed floor under the new independent Quick/Extended objectives. NFL runs `nfl-game-highlights@v3` + `nfl-extended-highlights@v2`; MLS runs separate Snapshot/Highlights ledgers; EPL runs PremierLeague Quick + NBC Extended ledgers. A one-time MLS/EPL Silver replay runs weekly probes after the historical seed and persists a completion marker so it does not restart on every boot.
 
 Verification for this release covers browser contracts, normalized-history scheduling, official collectors/classifiers, Silver promotion, cloud deployment, and regression guards.
 
@@ -282,7 +283,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.10/sports-big-board-v4.1.10
+cd ~/storage/downloads/sports-big-board-v4.1.11/sports-big-board-v4.1.11
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```

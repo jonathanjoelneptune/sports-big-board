@@ -1,4 +1,4 @@
-# Sports Big Board v4.1.10 Historical Catalog Rebuild
+# Sports Big Board v4.1.11 Historical Catalog Rebuild
 
 v4 uses an offline reconstruction rather than an in-place relationship migration. The old database is evidence; the rebuilt database is the new authority.
 
@@ -80,16 +80,16 @@ Quarantined and unassigned assets are **accounted for**, not failures. They rema
 
 The event audit uses UNINDEXED, SEARCHED EMPTY, COVERAGE COMPLETE, UPGRADE PENDING, QUALITY COMPLETE, PROVIDER DEGRADED, and CANDIDATE ONLY so migration/index backlog is distinct from a real searched-empty result.
 
-## v4.1.10 live association repair
+## v4.1.11 live association repair
 
-v4.1.10 does not rebuild the historical database. On first startup under Event Matcher v5 it re-proves every existing GAME relationship in place while preserving `history_source_media` as immutable evidence. Team-pair conflicts, explicit MLB date conflicts, season/year conflicts, and cross-event asset conflicts are moved to the assignment-review/quarantine layer. The repair is version-marked and idempotent.
+v4.1.11 does not rebuild the historical database. On first startup under Event Matcher v5 it re-proves every existing GAME relationship in place while preserving `history_source_media` as immutable evidence. Team-pair conflicts, explicit MLB date conflicts, season/year conflicts, and cross-event asset conflicts are moved to the assignment-review/quarantine layer. The repair is version-marked and idempotent.
 
 The live Search Console now reports association integrity counts. A healthy catalog has `cross-event 0`; team/date/season mismatch counts represent quarantined relationships, not playable game media.
 
 SEARCH mode also reserves playback infrastructure: Game Center Highlightly prewarm/coverage yields while historical discovery is active, and resumes automatically in BALANCED or PLAYBACK mode.
 
 
-## v4.1.10: when reconstruction is allowed
+## v4.1.11: when reconstruction is allowed
 
 A v4 relationship audit failure is **not** a reconstruction trigger. `tools/ensure_history_v4.py` first performs a read-only structural inspection. A normalized v4 database is retained when its schema/table set, SQLite quick-check, foreign keys, and normalized source/event skeleton are structurally sound. If its matcher/classifier relationship version is stale or an active relationship invariant is violated, preflight reports `repairRequired=true`, creates a `history-pre-relation-repair-...sqlite3` rollback snapshot, and returns success without rebuilding. The backend then repairs relationship tables in place and performs a hard post-repair audit.
 
