@@ -201,6 +201,21 @@ class HistoryRepository:
                 )""")
             conn.execute("CREATE INDEX IF NOT EXISTS idx_discovery_attempt_event ON history_discovery_attempt(canonical_event_key,attempted_at)")
             conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_source_enrichment (
+                    canonical_event_key TEXT NOT NULL, source_key TEXT NOT NULL,
+                    source_version INTEGER NOT NULL DEFAULT 0, state TEXT NOT NULL DEFAULT 'PENDING',
+                    attempted_at REAL NOT NULL DEFAULT 0, completed_at REAL NOT NULL DEFAULT 0,
+                    next_retry_at REAL NOT NULL DEFAULT 0, accepted_count INTEGER NOT NULL DEFAULT 0,
+                    best_before TEXT NOT NULL DEFAULT '', best_after TEXT NOT NULL DEFAULT '',
+                    coverage_upgraded INTEGER NOT NULL DEFAULT 0, quality_upgraded INTEGER NOT NULL DEFAULT 0,
+                    last_error TEXT NOT NULL DEFAULT '', details_json TEXT NOT NULL DEFAULT '{}',
+                    updated_at REAL NOT NULL DEFAULT 0,
+                    PRIMARY KEY(canonical_event_key,source_key),
+                    FOREIGN KEY(canonical_event_key) REFERENCES history_catalog_event(canonical_event_key) ON DELETE CASCADE
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_source_enrichment_state ON history_source_enrichment(source_key,source_version,state,next_retry_at)")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_source_enrichment_event ON history_source_enrichment(canonical_event_key,updated_at)")
+            conn.execute("""
                 CREATE TABLE IF NOT EXISTS history_assignment_review (
                     id INTEGER PRIMARY KEY AUTOINCREMENT, asset_key TEXT NOT NULL,
                     league TEXT NOT NULL DEFAULT '', event_date TEXT NOT NULL DEFAULT '',
@@ -453,7 +468,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.8 migration cooldowns already persisted in production.
+        """Release artificial v4.1.9 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -589,7 +604,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.8 treats collection membership as fully derived state.  Classifier
+        v4.1.9 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -1010,6 +1025,139 @@ class HistoryRepository:
         })
         return summary
 
+    def mark_source_enrichment(self, league, event_id, source_key, source_version, state, *, accepted_count=0, best_before="", best_after="", coverage_upgraded=False, quality_upgraded=False, error="", retry_at=0, details=None, now=None):
+        """Persist one provider-version enrichment result independently of Discovery vN.
+
+        Source adapters evolve on their own cadence. Keeping this ledger separate from
+        ``discovery_json`` lets a new NFL/NHL/EPL/MLS adapter revisit only the events
+        that have not seen that provider version, without globally reindexing history.
+        """
+        key=self.canonical_event_key(league,event_id); source_key=str(source_key or "").strip(); version=max(0,int(source_version or 0)); now=float(now or time.time())
+        state=str(state or "PENDING").upper()
+        if state not in {"PENDING","COMPLETE","ERROR"}: state="PENDING"
+        completed=now if state=="COMPLETE" else 0.0
+        with self._lock, closing(self._connect()) as conn:
+            conn.execute("""INSERT INTO history_source_enrichment(canonical_event_key,source_key,source_version,state,attempted_at,completed_at,next_retry_at,accepted_count,best_before,best_after,coverage_upgraded,quality_upgraded,last_error,details_json,updated_at)
+              VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+              ON CONFLICT(canonical_event_key,source_key) DO UPDATE SET
+                source_version=excluded.source_version,state=excluded.state,attempted_at=excluded.attempted_at,completed_at=excluded.completed_at,next_retry_at=excluded.next_retry_at,
+                accepted_count=excluded.accepted_count,best_before=excluded.best_before,best_after=excluded.best_after,coverage_upgraded=excluded.coverage_upgraded,
+                quality_upgraded=excluded.quality_upgraded,last_error=excluded.last_error,details_json=excluded.details_json,updated_at=excluded.updated_at""",
+              (key,source_key,version,state,now,completed,float(retry_at or 0),int(accepted_count or 0),str(best_before or ""),str(best_after or ""),1 if coverage_upgraded else 0,1 if quality_upgraded else 0,str(error or "")[:2000],self._dump_obj(details),now))
+            conn.commit()
+        return state
+
+    @staticmethod
+    def _source_versions_for_league(source_versions, league):
+        raw=(source_versions or {}).get(str(league or "").upper()) or []
+        out=[]
+        for item in raw:
+            if isinstance(item,dict): key=str(item.get("key") or "").strip(); version=int(item.get("version") or 0)
+            elif isinstance(item,(list,tuple)) and len(item)>=2: key=str(item[0] or "").strip(); version=int(item[1] or 0)
+            else: continue
+            if key and version>0: out.append((key,version))
+        return out
+
+    def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, limit=96):
+        """Newest-first official-source catch-up queue for incomplete/upgradeable games.
+
+        Recency dominates the sort (0-7d, 8-30d, 31-90d, archive), then NONE,
+        Blue, Purple. Green/Gold are intentionally excluded because the purpose of
+        this pass is filling coverage gaps with newly added official adapters.
+        """
+        now=float(now or time.time()); floor=str(floor_date or "")[:10]; today=str(today or time.strftime("%Y-%m-%d",time.gmtime(now)))[:10]; limit=max(1,min(500,int(limit or 96)))
+        leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_versions_for_league(source_versions,lg)]
+        if not leagues or not floor or not today: return []
+        try:
+            from datetime import datetime, timedelta
+            td=datetime.strptime(today,"%Y-%m-%d").date()
+            cut7=(td-timedelta(days=7)).isoformat(); cut30=(td-timedelta(days=30)).isoformat(); cut90=(td-timedelta(days=90)).isoformat()
+        except Exception:
+            cut7=cut30=cut90=today
+        marks=','.join('?' for _ in leagues)
+        sql=f"""WITH flags AS (
+            SELECT em.canonical_event_key,
+              SUM(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count,
+              MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) has_gold,
+              MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='green' THEN 1 ELSE 0 END) has_green,
+              MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) has_extended,
+              MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND COALESCE(json_extract(s.asset_json,'$.recapTier'),'blue')='blue' THEN 1 ELSE 0 END) has_blue
+            FROM history_event_media em JOIN history_source_media s ON s.asset_key=em.asset_key GROUP BY em.canonical_event_key)
+          SELECT e.*,COALESCE(f.verified_count,0) verified_count,COALESCE(f.has_gold,0) has_gold,COALESCE(f.has_green,0) has_green,COALESCE(f.has_extended,0) has_extended,COALESCE(f.has_blue,0) has_blue
+          FROM history_catalog_event e LEFT JOIN flags f ON f.canonical_event_key=e.canonical_event_key
+          WHERE e.league IN ({marks}) AND e.event_date>=? AND e.event_date<=?
+            AND COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0
+            AND (COALESCE(e.claim_expires_at,0)<=? OR COALESCE(e.claim_owner,'')='')
+          ORDER BY CASE WHEN e.event_date>=? THEN 0 WHEN e.event_date>=? THEN 1 WHEN e.event_date>=? THEN 2 ELSE 3 END,
+            CASE WHEN COALESCE(f.verified_count,0)=0 THEN 0 WHEN COALESCE(f.has_blue,0)=1 AND COALESCE(f.has_extended,0)=0 THEN 1 WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
+            e.event_date DESC,e.updated_at ASC LIMIT ?"""
+        params=[*leagues,floor,today,now,cut7,cut30,cut90,max(limit*5,limit)]
+        with self._lock, closing(self._connect()) as conn:
+            rows=conn.execute(sql,params).fetchall()
+            keys=[str(r["canonical_event_key"]) for r in rows]
+            enrich={}
+            if keys:
+                km=','.join('?' for _ in keys)
+                for er in conn.execute(f"SELECT * FROM history_source_enrichment WHERE canonical_event_key IN ({km})",keys).fetchall():
+                    enrich[(str(er["canonical_event_key"]),str(er["source_key"]))]=er
+        out=[]
+        for row in rows:
+            configured=self._source_versions_for_league(source_versions,row["league"]); pending=[]
+            for source_key,version in configured:
+                er=enrich.get((str(row["canonical_event_key"]),source_key))
+                if er and int(er["source_version"] or 0)>=version and str(er["state"] or "").upper()=="COMPLETE": continue
+                if er and int(er["source_version"] or 0)>=version and str(er["state"] or "").upper()=="ERROR" and float(er["next_retry_at"] or 0)>now: continue
+                pending.append({"key":source_key,"version":version,"state":str(er["state"] or "PENDING") if er else "PENDING"})
+            if not pending: continue
+            best="extended" if row["has_extended"] else ("blue" if row["has_blue"] else "none")
+            out.append({"date":row["event_date"],"league":row["league"],"eventId":row["event_id"],"canonicalEventKey":row["canonical_event_key"],"event":self._load_obj(row["event_json"]),
+                        "bestTier":best,"verifiedCount":int(row["verified_count"] or 0),"pendingSources":pending})
+            if len(out)>=limit: break
+        return out
+
+    def source_enrichment_summary(self, source_versions, *, floor_date="", today="", now=None):
+        """Per-league progress for the versioned official-source catch-up pass."""
+        now=float(now or time.time()); floor=str(floor_date or "")[:10]; today=str(today or time.strftime("%Y-%m-%d",time.gmtime(now)))[:10]
+        leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_versions_for_league(source_versions,lg)]
+        result={"floorDate":floor,"status":"COMPLETE","total":0,"checked":0,"remaining":0,"coverageUpgrades":0,"qualityUpgrades":0,"accepted":0,"leagues":{}}
+        if not leagues or not floor or not today: return result
+        marks=','.join('?' for _ in leagues)
+        with self._lock, closing(self._connect()) as conn:
+            flags={}
+            for r in conn.execute(f"""SELECT e.canonical_event_key,e.league,
+              MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier') IN ('gold','green') THEN 1 ELSE 0 END) has_green,
+              MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) has_extended,
+              MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count
+              FROM history_catalog_event e LEFT JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key LEFT JOIN history_source_media s ON s.asset_key=em.asset_key
+              WHERE e.league IN ({marks}) AND e.event_date>=? AND e.event_date<=? GROUP BY e.canonical_event_key""",[*leagues,floor,today]).fetchall():
+                flags[str(r["canonical_event_key"])]=r
+            enrich={}
+            for r in conn.execute(f"""SELECT se.* FROM history_source_enrichment se JOIN history_catalog_event e ON e.canonical_event_key=se.canonical_event_key
+              WHERE e.league IN ({marks}) AND e.event_date>=? AND e.event_date<=?""",[*leagues,floor,today]).fetchall():
+                enrich[(str(r["canonical_event_key"]),str(r["source_key"]))]=r
+        for lg in leagues:
+            cfg=self._source_versions_for_league(source_versions,lg); stat={"total":0,"checked":0,"remaining":0,"coverageUpgrades":0,"qualityUpgrades":0,"accepted":0,"sources":{k:v for k,v in cfg}}
+            event_keys=[k for k,r in flags.items() if str(r["league"]).upper()==lg]
+            for key in event_keys:
+                row=flags[key]
+                current_rows=[]; has_any=False
+                for source_key,version in cfg:
+                    er=enrich.get((key,source_key)); current=bool(er and int(er["source_version"] or 0)>=version)
+                    if current: has_any=True; current_rows.append(er)
+                below_green=not bool(row["has_green"])
+                if not below_green and not has_any: continue
+                stat["total"]+=1
+                all_complete=all(any(str(er["source_key"])==source_key and int(er["source_version"] or 0)>=version and str(er["state"] or "").upper()=="COMPLETE" for er in current_rows) for source_key,version in cfg)
+                if all_complete: stat["checked"]+=1
+                elif below_green: stat["remaining"]+=1
+                stat["coverageUpgrades"]+=1 if any(int(er["coverage_upgraded"] or 0) for er in current_rows) else 0
+                stat["qualityUpgrades"]+=1 if any(int(er["quality_upgraded"] or 0) for er in current_rows) else 0
+                stat["accepted"]+=sum(int(er["accepted_count"] or 0) for er in current_rows)
+            result["leagues"][lg]=stat
+            for k in ("total","checked","remaining","coverageUpgrades","qualityUpgrades","accepted"): result[k]+=int(stat[k] or 0)
+        result["status"]="ACTIVE" if result["remaining"] else "COMPLETE"
+        return result
+
     def claim_event(self, canonical_event_key, owner, *, lease_seconds=300, now=None):
         """Atomically lease one canonical event to a worker.
 
@@ -1359,6 +1507,7 @@ class HistoryRepository:
                 "segments":scalar("SELECT COUNT(*) FROM history_media_segment"),
                 "discoveryAttempts":scalar("SELECT COUNT(*) FROM history_discovery_attempt"),
                 "verificationRecords":scalar("SELECT COUNT(*) FROM history_media_verification"),
+                "sourceEnrichmentRecords":scalar("SELECT COUNT(*) FROM history_source_enrichment"),
             }
 
     def summary(self):

@@ -1,8 +1,16 @@
-# Sports Big Board v4.1.8
+# Sports Big Board v4.1.9
 
-> v4.1.8 adds a first-class **NFL.com Game Highlights** acquisition lane so recent NFL games can resolve an official matchup recap without depending on generic web search or YouTube Search quota.
+> v4.1.9 adds a durable **Official-Source Catch-Up** pass so newly introduced NFL/NHL/EPL/MLS structured providers refill the newest historical gaps first without resetting Discovery v13 or rerunning generic search.
 
-## v4.1.8 — official NFL.com Game Highlights adapter
+## v4.1.9 — versioned official-source catch-up
+
+NFL, NHL, EPL, and MLS now keep a provider-version ledger independent from the global discovery generation. The three existing Green-gap workers first claim incomplete events whose current official provider version has never been checked, starting with the newest completed games and moving backward to the fixed August 1, 2025 seed floor. Recency is strongly weighted (0–7, 8–30, 31–90 days, then archive), while NONE outranks Blue and Blue outranks Purple within each band. Gold/Green games do not enter the catch-up queue.
+
+Catch-up passes run **only** the newly-versioned structured source lanes: NFL.com Game Highlights, NHL.com official game video, PremierLeague.com + NBC Extended Highlights, and MLSsoccer.com Match Highlights. They never enter public-page/public-index, YouTube Search, Highlightly, ESPN, or generic search rescue. A Purple result counts as a Coverage Complete upgrade; a Green result also counts as a quality upgrade. Every provider/version result is stored in `history_source_enrichment`, so restarts do not repeat finished work and a future adapter fix can reopen only that provider by incrementing its version. Normal current-day discovery records the same provider-version completion markers, preventing duplicate catch-up work on newly completed games.
+
+The Live Search Console exposes `[OFFICIAL SOURCE CATCH-UP]` with per-league checked/remaining counts plus coverage and Green upgrades. Individual workers show `official-source-catchup` while processing these passes. Once the seeded archive and current source versions are fully checked, the queue naturally becomes dormant and the same workers return to ordinary Green-gap work. No database rebuild or Discovery v14 reset is required.
+
+## v4.1.8 — official content-source adapters
 
 Recent NFL discovery now starts with the league's own `https://www.nfl.com/videos/channel/game-highlights-vc` inventory and the two participating teams' NFL.com pages. The adapter accepts only canonical matchup-level pages whose URL/title prove both teams and a `team-vs-team-highlights` package. Individual plays, player `best plays`, Can't-Miss clips, interviews, press conferences, previews, and other one-off videos are deliberately rejected from the recap lane.
 
@@ -270,7 +278,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.8/sports-big-board-v4.1.8
+cd ~/storage/downloads/sports-big-board-v4.1.9/sports-big-board-v4.1.9
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```

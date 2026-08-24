@@ -1,4 +1,4 @@
-"""Media scope + Silver collection classification for Sports Big Board v4.1.8.
+"""Media scope + Silver collection classification for Sports Big Board v4.1.9.
 
 Scope answers *what the media covers*. Intent answers *what kind of program it is*.
 Neither is the game's Gold/Green/Purple/Blue quality tier. Only GAME-scoped media
@@ -24,7 +24,7 @@ PLAYER = "PLAYER"
 SEASON_LEAGUE = "SEASON_LEAGUE"
 OTHER = "OTHER"
 # COLLECTION_SCOPES remains the broad taxonomy vocabulary for compatibility.
-# SILVER_SCOPES is the actual v4.1.8 presentation/promotion contract.
+# SILVER_SCOPES is the actual v4.1.9 presentation/promotion contract.
 COLLECTION_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, SEASON_LEAGUE}
 SILVER_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE}
 VALID_SCOPES = {GAME, DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, PLAYER, SEASON_LEAGUE, OTHER}

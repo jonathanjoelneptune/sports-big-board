@@ -303,6 +303,35 @@ class HistoryV4BaselineTests(unittest.TestCase):
             self.assertTrue(repo.claim_event(key,"replacement-worker",lease_seconds=30,now=now+31))
             self.assertEqual(repo.active_event_claims(now=now+31)[0]["owner"],"replacement-worker")
 
+    def test_v419_source_enrichment_is_versioned_and_newest_first(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            sources={"NFL":[{"key":"nfl-game-highlights","version":1}],"NHL":[{"key":"nhl-official-video","version":1}]}
+            recent={"scoreEventId":"nfl-new","awayTeam":{"name":"Jets"},"homeTeam":{"name":"Steelers"},"completed":True}
+            older={"scoreEventId":"nhl-old","awayTeam":{"name":"Bruins"},"homeTeam":{"name":"Rangers"},"completed":True}
+            repo.put_scores("2026-08-20","NFL",[recent]); repo.put_scores("2025-11-01","NHL",[older])
+            rows=repo.source_enrichment_events(sources,floor_date="2025-08-01",today="2026-08-24",now=time.time(),limit=10)
+            self.assertEqual(rows[0]["eventId"],"nfl-new"); self.assertEqual(rows[0]["pendingSources"][0]["key"],"nfl-game-highlights")
+            repo.mark_source_enrichment("NFL","nfl-new","nfl-game-highlights",1,"COMPLETE",best_before="none",best_after="none")
+            rows=repo.source_enrichment_events(sources,floor_date="2025-08-01",today="2026-08-24",now=time.time(),limit=10)
+            self.assertEqual([r["eventId"] for r in rows],["nhl-old"])
+            # Bumping only one provider version reopens only that provider/event.
+            sources["NFL"][0]["version"]=2
+            rows=repo.source_enrichment_events(sources,floor_date="2025-08-01",today="2026-08-24",now=time.time(),limit=10)
+            self.assertEqual(rows[0]["eventId"],"nfl-new"); self.assertEqual(rows[0]["pendingSources"][0]["version"],2)
+
+    def test_v419_source_enrichment_summary_counts_coverage_and_quality_upgrades(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            sources={"EPL":[{"key":"premierleague-official","version":1},{"key":"nbc-epl-extended","version":1}]}
+            event={"scoreEventId":"epl1","awayTeam":{"name":"Away FC"},"homeTeam":{"name":"Home FC"},"completed":True}
+            repo.put_scores("2026-08-10","EPL",[event])
+            repo.mark_source_enrichment("EPL","epl1","premierleague-official",1,"COMPLETE",best_before="none",best_after="none")
+            repo.mark_source_enrichment("EPL","epl1","nbc-epl-extended",1,"COMPLETE",accepted_count=1,best_before="none",best_after="extended",coverage_upgraded=True)
+            summary=repo.source_enrichment_summary(sources,floor_date="2025-08-01",today="2026-08-24")
+            self.assertEqual(summary["leagues"]["EPL"]["checked"],1); self.assertEqual(summary["remaining"],0)
+            self.assertEqual(summary["coverageUpgrades"],1); self.assertEqual(summary["qualityUpgrades"],0)
+
     def test_v410_silver_summary_exposes_daily_and_weekly_inventory(self):
         with tempfile.TemporaryDirectory() as td:
             repo=HistoryRepository(Path(td)/"history.sqlite3")
@@ -402,7 +431,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
             repo.put_scores("2026-08-22","MLS",[event])
-            # Simulate a pre-v4.1.8 assigned row by directly inserting source/link.
+            # Simulate a pre-v4.1.9 assigned row by directly inserting source/link.
             wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
             repo.put_source_media([wrong],league="MLS",date="2026-08-22")
             import sqlite3 as _sqlite3, time as _time, json as _json
