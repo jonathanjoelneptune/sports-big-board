@@ -1,29 +1,10 @@
-Sports Big Board v4.1.11 — Updated Files Package
-==================================================
+Sports Big Board v4.1.12 — Updated Files Only
+Base release: v4.1.11
 
-Base release: v4.1.10
-Target release: v4.1.11
-Discovery generation: v14
+Upload/overlay these files at the repository root, preserving paths.
+No catalog rebuild is required.
 
-Use this package when updating an existing v4.1.10 repository. Extract the ZIP and copy the CONTENTS of sports-big-board-v4.1.11/ over the repository root, preserving the folder structure. Replace files when prompted. Files not listed below do not need to be uploaded for this release.
-
-v4.1.11 targeted rule catch-up
--------------------------------
-- Re-open NFL, MLS, and EPL historical media newest-first to the fixed 2025-08-01 floor without resetting the catalog.
-- NFL: bump Quick to nfl-game-highlights@v3 and Extended to nfl-extended-highlights@v2; Green-without-Purple remains catch-up eligible.
-- MLS: separate durable Match Snapshot (Quick/Green) and Match Highlights (Extended/Purple) objectives so one cannot close the other.
-- EPL: separate PremierLeague.com Match Highlights (Quick/Green) from NBC Extended Highlights (Extended/Purple).
-- Prioritize NFL -> MLS -> EPL rule migration before continuing legacy NHL official-source catch-up.
-- Run a one-time MLS/EPL Silver collection replay after the historical seed, sampling newest-first weekly and persisting a completion marker.
-- Search Console exposes the rule-collection catch-up worker/state in addition to the per-game official-source ledger.
-
-Verification
-------------
-- Full repository VERIFY.sh passes 275/275 Python tests plus browser JavaScript contract checks.
-- Discovery generation remains v14; this release intentionally uses source/objective versions rather than a destructive global reindex.
-
-Changed/new files
------------------
+Changed/new files (52):
 - ANDROID SETUP.md
 - ARCHITECTURE.md
 - CLOUD STAGE 1.md
@@ -69,10 +50,10 @@ Changed/new files
 - tests/test_history_v4_baseline.py
 - tests/test_live_freshness.py
 - tests/test_regression_guards.py
+- tests/test_server_architecture.py
 - tools/ensure_history_v4.py
 - ui/game-center-view.js
 - ui/history-audit.js
 - ui/info-drawer.js
 - ui/player-visibility.js
 - ui/settings-view.js
-

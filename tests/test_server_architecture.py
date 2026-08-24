@@ -951,7 +951,7 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(result['state'],'VERIFIED')
             self.assertEqual(result['bestTier'],'gold')
             self.assertTrue(result['qualityComplete'])
-            self.assertEqual(saved['discovery']['discoveryVersion'],14)
+            self.assertEqual(saved['discovery']['discoveryVersion'],15)
             self.assertTrue(saved['discovery']['qualityComplete'])
 
     def test_quality_upgrade_due_respects_persistent_retry_window(self):
@@ -1028,6 +1028,8 @@ class ArchitectureTests(unittest.TestCase):
                  patch.object(server,'_history_event_media_no_quota',return_value=[]), \
                  patch.object(server,'_official_youtube_history_upload_results',return_value=[]), \
                  patch.object(server,'_official_youtube_history_activity_results',side_effect=activity), \
+                 patch.object(server,'_nfl_public_video_results',return_value=[]), \
+                 patch.object(server,'_nfl_team_video_results',return_value=[]), \
                  patch.object(server,'_official_youtube_history_day_search_results',return_value=[]), \
                  patch.object(server,'_historical_youtube_web_results',return_value=[]), \
                  patch.object(server,'_historical_search_engine_youtube_results',return_value=[]):

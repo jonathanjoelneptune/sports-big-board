@@ -1,4 +1,4 @@
-/* v4.1.11 SelectedEvent is the synchronization boundary between playback and future Game Center UI. */
+/* v4.1.12 SelectedEvent is the synchronization boundary between playback and future Game Center UI. */
 (() => {
   let current=null;
   let revision=0;

@@ -474,7 +474,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.11 migration cooldowns already persisted in production.
+        """Release artificial v4.1.12 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -620,7 +620,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.11 treats collection membership as fully derived state.  Classifier
+        v4.1.12 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -719,19 +719,31 @@ class HistoryRepository:
         return {"event":event,"collection":collection,"integrity":integrity,"issues":issues,"ok":not bool(issues)}
 
     def media_objective_summary(self):
-        """Persisted v4.1.11 objective/category counts for operator audit."""
-        out={"nflQuickGames":0,"nflExtendedGames":0,"nflGreenWithoutPurple":0,"mlsSnapshots":0,"mlsMatchHighlights":0,"bestGoalsCollections":0,"bestGoalsAssets":0,"bestSavesCollections":0,"bestSavesAssets":0}
+        """Persisted v4.1.12 objective/category counts for operator audit."""
+        out={"nflQuickGames":0,"nflExtendedGames":0,"nflBothGames":0,"nflGreenWithoutPurple":0,"nflMissingQuick":0,"nflMissingExtended":0,
+             "mlsSnapshots":0,"mlsMatchHighlights":0,"mlsSnapshotGames":0,"mlsHighlightGames":0,"mlsBothGames":0,"mlsMissingSnapshot":0,"mlsMissingHighlights":0,
+             "eplQuickGames":0,"eplExtendedGames":0,"eplBothGames":0,"eplMissingQuick":0,"eplMissingExtended":0,
+             "bestGoalsCollections":0,"bestGoalsAssets":0,"bestSavesCollections":0,"bestSavesAssets":0}
         with self._lock, closing(self._connect()) as conn:
-            flags=conn.execute("""SELECT e.canonical_event_key,
-              MAX(CASE WHEN json_extract(s.asset_json,'$.recapTier')='green' AND em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' THEN 1 ELSE 0 END) has_green,
-              MAX(CASE WHEN json_extract(s.asset_json,'$.recapTier')='extended' AND em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' THEN 1 ELSE 0 END) has_extended
-              FROM history_catalog_event e LEFT JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key LEFT JOIN history_source_media s ON s.asset_key=em.asset_key WHERE e.league='NFL' GROUP BY e.canonical_event_key""").fetchall()
-            out['nflQuickGames']=sum(1 for r in flags if r['has_green']); out['nflExtendedGames']=sum(1 for r in flags if r['has_extended']); out['nflGreenWithoutPurple']=sum(1 for r in flags if r['has_green'] and not r['has_extended'])
+            def event_flags(league,quick_sql,extended_sql):
+                rows=conn.execute(f"""SELECT e.canonical_event_key,
+                  MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND ({quick_sql}) THEN 1 ELSE 0 END) has_quick,
+                  MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND ({extended_sql}) THEN 1 ELSE 0 END) has_extended
+                  FROM history_catalog_event e LEFT JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key LEFT JOIN history_source_media s ON s.asset_key=em.asset_key
+                  WHERE e.league=? GROUP BY e.canonical_event_key""",(league,)).fetchall()
+                return rows
+            flags=event_flags('NFL',"json_extract(s.asset_json,'$.recapTier')='green'","json_extract(s.asset_json,'$.recapTier')='extended'")
+            out['nflQuickGames']=sum(1 for r in flags if r['has_quick']); out['nflExtendedGames']=sum(1 for r in flags if r['has_extended']); out['nflBothGames']=sum(1 for r in flags if r['has_quick'] and r['has_extended'])
+            out['nflGreenWithoutPurple']=sum(1 for r in flags if r['has_quick'] and not r['has_extended']); out['nflMissingQuick']=sum(1 for r in flags if not r['has_quick']); out['nflMissingExtended']=sum(1 for r in flags if not r['has_extended'])
             src=conn.execute("""SELECT
               SUM(CASE WHEN json_extract(s.asset_json,'$.sourceType')='official-mls-match-snapshot' THEN 1 ELSE 0 END) snapshots,
               SUM(CASE WHEN json_extract(s.asset_json,'$.sourceType')='official-mls-match-highlights' THEN 1 ELSE 0 END) highlights
               FROM history_source_media s""").fetchone()
             out['mlsSnapshots']=int(src['snapshots'] or 0); out['mlsMatchHighlights']=int(src['highlights'] or 0)
+            flags=event_flags('MLS',"json_extract(s.asset_json,'$.sourceType')='official-mls-match-snapshot'","json_extract(s.asset_json,'$.sourceType')='official-mls-match-highlights'")
+            out['mlsSnapshotGames']=sum(1 for r in flags if r['has_quick']); out['mlsHighlightGames']=sum(1 for r in flags if r['has_extended']); out['mlsBothGames']=sum(1 for r in flags if r['has_quick'] and r['has_extended']); out['mlsMissingSnapshot']=sum(1 for r in flags if not r['has_quick']); out['mlsMissingHighlights']=sum(1 for r in flags if not r['has_extended'])
+            flags=event_flags('EPL',"json_extract(s.asset_json,'$.sourceType')='official-premierleague-match-highlights'","json_extract(s.asset_json,'$.sourceType')='trusted-nbc-epl-extended'")
+            out['eplQuickGames']=sum(1 for r in flags if r['has_quick']); out['eplExtendedGames']=sum(1 for r in flags if r['has_extended']); out['eplBothGames']=sum(1 for r in flags if r['has_quick'] and r['has_extended']); out['eplMissingQuick']=sum(1 for r in flags if not r['has_quick']); out['eplMissingExtended']=sum(1 for r in flags if not r['has_extended'])
             for kind,prefix in (("BEST_GOALS","bestGoals"),("BEST_SAVES","bestSaves")):
                 r=conn.execute("""SELECT COUNT(DISTINCT c.collection_key) collections,COUNT(cm.asset_key) assets FROM history_collection c LEFT JOIN history_collection_media cm ON cm.collection_key=c.collection_key WHERE c.collection_kind=?""",(kind,)).fetchone()
                 out[prefix+'Collections']=int(r['collections'] or 0); out[prefix+'Assets']=int(r['assets'] or 0)
@@ -825,43 +837,53 @@ class HistoryRepository:
     def _collection_key(scope,league,period_key,kind):
         return f"{str(scope).upper()}:{str(league).upper()}:{str(period_key)}:{str(kind).upper()}"
 
-    def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP"):
+    def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP", return_stats=False):
         """Promote only strictly proven league-wide roundup assets into Silver.
 
-        Caller scope/period/kind are discovery hints, not authority.  The v5 classifier
-        resolves canonical collection identity from title/publication/source evidence,
-        preventing one asset from being smeared across overlapping backfill dates.
+        v4.1.12 keeps the legacy integer return by default, but can return precise
+        idempotent telemetry so rule catch-up reports *new* assets/links rather than
+        repeatedly calling rediscovered rows "accepted".
         """
         league=str(league or "").upper(); hint_period=str(period_key or ""); now=time.time(); count=0
+        stats={"candidatesExamined":0,"qualifying":0,"newUniqueAssets":0,"existingAssetsReused":0,
+               "newCollectionLinks":0,"duplicateLinksSuppressed":0,"rejected":0}
         with self._lock, closing(self._connect()) as conn:
             for raw in rows or []:
                 if not isinstance(raw,dict): continue
+                stats["candidatesExamined"]+=1
                 base=strip_classifier_fields(dict(raw)); base.setdefault("league",league)
                 source_date=str(base.get("date") or base.get("sourceDate") or hint_period)[:10]
                 decision=silver_eligibility(base,league=league,date=source_date)
                 annotated=annotate_media_scope(base,league=league,date=source_date)
                 if not decision.get("eligible"):
-                    # Keep harvested material in SOURCE_MEDIA, but do not fabricate a
-                    # Silver relationship just because a broad collector routed it here.
+                    stats["rejected"]+=1
                     self._upsert_source_media_conn(conn,annotated,league=league,date=source_date,catalog_state=None)
                     continue
+                stats["qualifying"]+=1
                 resolved_scope=str(decision["scope"]); resolved_period=str(decision["periodKey"]); kind=str(decision["collectionKind"]); ckey=self._collection_key(resolved_scope,league,resolved_period,kind)
                 annotated["collectionTier"]="silver"; annotated["displayTier"]="silver"; annotated["collectionPeriodKey"]=resolved_period; annotated["collectionKind"]=kind
+                predicted=self.asset_key_for(annotated)
+                existed_asset=bool(predicted and conn.execute("SELECT 1 FROM history_source_media WHERE asset_key=?",(predicted,)).fetchone())
                 asset_key=self._upsert_source_media_conn(conn,annotated,league=league,date=source_date,catalog_state=ASSIGNED)
                 if not asset_key: continue
+                if existed_asset: stats["existingAssetsReused"]+=1
+                else: stats["newUniqueAssets"]+=1
                 authority=str(decision.get("sourceAuthority") or "UNKNOWN")
                 rank=(450 if kind=="DAILY_RECAP" else 445 if kind in ("BEST_GOALS","BEST_SAVES") else 440 if kind=="SCORING_ROUNDUP" else 400 if kind=="TOP_PLAYS" else 350) + (100 if authority=="LEAGUE_OFFICIAL" else 25 if authority=="TRUSTED_BROADCAST" else 0)
                 conn.execute("""INSERT INTO history_collection(collection_key,scope,league,period_key,collection_kind,title,metadata_json,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)
                     ON CONFLICT(collection_key) DO UPDATE SET title=excluded.title,metadata_json=excluded.metadata_json,updated_at=excluded.updated_at""",
                     (ckey,resolved_scope,league,resolved_period,kind,f"{league} {resolved_period} {kind.replace('_',' ').title()}",self._dump_obj({"classifierVersion":MEDIA_CLASSIFIER_VERSION,"sourceAuthorityPreferred":True}),now,now))
+                existed_link=bool(conn.execute("SELECT 1 FROM history_collection_media WHERE collection_key=? AND asset_key=?",(ckey,asset_key)).fetchone())
                 confidence=min(float(decision.get("scopeConfidence") or 0),float(decision.get("sourceAuthorityConfidence") or 0))
                 method=str(decision.get("scopeReason") or "STRICT_SILVER_CLASSIFIER")
                 evidence=f"scope={resolved_scope}; kind={kind}; period={resolved_period}; authority={authority}; authorityReason={decision.get('sourceAuthorityReason')}"
                 conn.execute("""INSERT INTO history_collection_media(collection_key,asset_key,association_confidence,association_method,association_evidence,classifier_version,rank_hint,first_associated_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)
                     ON CONFLICT(collection_key,asset_key) DO UPDATE SET association_confidence=excluded.association_confidence,association_method=excluded.association_method,association_evidence=excluded.association_evidence,classifier_version=excluded.classifier_version,rank_hint=excluded.rank_hint,updated_at=excluded.updated_at""",
                     (ckey,asset_key,confidence,method,evidence,MEDIA_CLASSIFIER_VERSION,rank,now,now)); count+=1
+                if existed_link: stats["duplicateLinksSuppressed"]+=1
+                else: stats["newCollectionLinks"]+=1
             conn.commit()
-        return count
+        return stats if return_stats else count
 
     def roundup_media(self, date, league=None):
         date=str(date or "")[:10]; league=str(league or "").upper()
@@ -1098,10 +1120,10 @@ class HistoryRepository:
     def _source_versions_for_league(source_versions, league):
         return [(x["key"],x["version"]) for x in HistoryRepository._source_specs_for_league(source_versions,league)]
 
-    def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, limit=96):
+    def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, preferred_league="", limit=96):
         """Newest-first official-source objective queue.
 
-        v4.1.11 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
+        v4.1.12 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
         objectives. A previously completed generic source pass cannot hide an unmet
         objective, and the three rule-migration leagues are scheduled ahead of legacy
         NHL source catch-up until their new objective ledgers are satisfied.
@@ -1133,7 +1155,13 @@ class HistoryRepository:
             e.event_date DESC,e.updated_at ASC LIMIT ?"""
         params=[*leagues,floor,today,now,cut7,cut30,cut90,max(limit*5,limit)]
         with self._lock, closing(self._connect()) as conn:
-            rows=conn.execute(sql,params).fetchall(); keys=[str(r["canonical_event_key"]) for r in rows]; enrich={}
+            rows=conn.execute(sql,params).fetchall()
+            preferred=str(preferred_league or "").upper()
+            if preferred:
+                # Stable sort preserves newest-first/source-quality ordering inside
+                # each league while giving one migration worker an affinity lane.
+                rows=sorted(rows,key=lambda r:0 if str(r["league"] or "").upper()==preferred else 1)
+            keys=[str(r["canonical_event_key"]) for r in rows]; enrich={}
             if keys:
                 km=','.join('?' for _ in keys)
                 for er in conn.execute(f"SELECT * FROM history_source_enrichment WHERE canonical_event_key IN ({km})",keys).fetchall(): enrich[(str(er["canonical_event_key"]),str(er["source_key"]))]=er

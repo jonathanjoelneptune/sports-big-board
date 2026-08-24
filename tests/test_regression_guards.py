@@ -24,7 +24,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertLess(block.index('const assoc=data.associations||{};'),block.index('assoc.assignedLinks'))
 
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=4.1.11','architecture/score-date-store.js?v=4.1.11','architecture/event-identity.js?v=4.1.11','architecture/media-scope.js?v=4.1.11','architecture/media-classifier.js?v=4.1.11','architecture/playback-transports.js?v=4.1.11','architecture/provider-health.js?v=4.1.11','architecture/sport-media-policy.js?v=4.1.11','architecture/media-manifest.js?v=4.1.11','architecture/media-resolver.js?v=4.1.11','architecture/game-center-policy.js?v=4.1.11','architecture/selected-event-store.js?v=4.1.11','architecture/game-center-contract.js?v=4.1.11','architecture/media-work-priorities.js?v=4.1.11','architecture/editorial-packages.js?v=4.1.11','ui/player-visibility.js?v=4.1.11','ui/info-drawer.js?v=4.1.11','ui/settings-view.js?v=4.1.11','ui/history-audit.js?v=4.1.11','ui/game-center-view.js?v=4.1.11','app.js?v=4.1.11']
+        ordered=['core-model.js?v=4.1.12','architecture/score-date-store.js?v=4.1.12','architecture/event-identity.js?v=4.1.12','architecture/media-scope.js?v=4.1.12','architecture/media-classifier.js?v=4.1.12','architecture/playback-transports.js?v=4.1.12','architecture/provider-health.js?v=4.1.12','architecture/sport-media-policy.js?v=4.1.12','architecture/media-manifest.js?v=4.1.12','architecture/media-resolver.js?v=4.1.12','architecture/game-center-policy.js?v=4.1.12','architecture/selected-event-store.js?v=4.1.12','architecture/game-center-contract.js?v=4.1.12','architecture/media-work-priorities.js?v=4.1.12','architecture/editorial-packages.js?v=4.1.12','ui/player-visibility.js?v=4.1.12','ui/info-drawer.js?v=4.1.12','ui/settings-view.js?v=4.1.12','ui/history-audit.js?v=4.1.12','ui/game-center-view.js?v=4.1.12','app.js?v=4.1.12']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -224,8 +224,9 @@ class RegressionGuards(unittest.TestCase):
     def test_nfl_has_keyless_official_channel_feed_fallback(self):
         self.assertIn('NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"',SERVER)
         self.assertIn('def _official_nfl_feed_videos',SERVER)
-        self.assertIn("for row in _official_nfl_feed_videos(date,away,home):",SERVER)
-        self.assertIn("out.extend(_nfl_official_extended_results(date,away,home,max_items=4,validate_native=True))",SERVER)
+        self.assertIn("for raw in _official_nfl_feed_videos(date,away,home):",SERVER)
+        self.assertIn("out.extend(_nfl_public_video_results(date,away,home,max_items=4,validate_native=True,allow_historical=True,objective='quick'))",SERVER)
+        self.assertIn("out.extend(_nfl_team_video_results(date,away,home,max_items=4,validate_native=True,objective='extended'))",SERVER)
         self.assertIn('team_v418_',SERVER)
 
     def test_nfl_has_event_scoped_espn_and_club_site_fallbacks(self):
@@ -382,8 +383,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v4.1.11 — score ribbon recovery',STYLES)
-        self.assertIn('v4.1.11 — historical Date Browser',STYLES)
+        self.assertIn('v4.1.12 — score ribbon recovery',STYLES)
+        self.assertIn('v4.1.12 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -392,7 +393,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v4.1.11 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v4.1.12 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -555,7 +556,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v4.1.11',STYLES)
+        self.assertNotIn('\\n\\n/* v4.1.12',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)
@@ -572,14 +573,16 @@ class RegressionGuards(unittest.TestCase):
     def test_v417_nfl_dot_com_game_highlights_is_first_class_primary_lane(self):
         self.assertIn('NFL_GAME_HIGHLIGHTS_CHANNEL_URL = "https://www.nfl.com/videos/channel/game-highlights-vc"',SERVER)
         self.assertIn('def _nfl_game_highlights_results',SERVER)
+        self.assertIn('def _nfl_public_video_results',SERVER)
+        self.assertIn('def _nfl_team_video_results',SERVER)
         discover=SERVER[SERVER.index('def _history_discover_event'):SERVER.index('def _history_discover_day',SERVER.index('def _history_discover_event'))]
-        quick_lane="lane('nfl-game-highlights',lambda:_nfl_game_highlights_results(date,away,home,max_items=6,validate_native=False,objective='quick'),'primary')"
-        extended_lane="lane('nfl-extended-highlights',lambda:_nfl_official_extended_results(date,away,home,max_items=6,validate_native=False),'primary')"
-        self.assertIn(quick_lane,discover); self.assertIn(extended_lane,discover)
-        self.assertLess(discover.index(quick_lane),discover.index("lane('official-native'"))
-        self.assertLess(discover.index(extended_lane),discover.index("lane('official-native'"))
-        self.assertIn("if lane in {'nfl-feed','nfl-game-highlights','nfl-extended-highlights'}: return 'nfl'",SERVER)
-        self.assertIn("out.extend(_nfl_game_highlights_results(date,away,home,max_items=4,validate_native=True,objective='quick'))",SERVER)
+        public_quick="lane('nfl-public-video-quick',lambda:_nfl_public_video_results(date,away,home,max_items=6,validate_native=False,allow_historical=True,objective='quick'),'primary')"
+        team_quick="lane('nfl-team-video-quick',lambda:_nfl_team_video_results(date,away,home,max_items=6,validate_native=False,objective='quick'),'primary')"
+        public_extended="lane('nfl-public-video-extended',lambda:_nfl_public_video_results(date,away,home,max_items=6,validate_native=False,allow_historical=True,objective='extended'),'primary')"
+        team_extended="lane('nfl-team-video-extended',lambda:_nfl_team_video_results(date,away,home,max_items=6,validate_native=False,objective='extended'),'primary')"
+        for lane in (public_quick,team_quick,public_extended,team_extended):
+            self.assertIn(lane,discover); self.assertLess(discover.index(lane),discover.index("lane('official-native'"))
+        self.assertIn("'nfl-public-video-quick','nfl-public-video-extended','nfl-team-video-quick','nfl-team-video-extended'",SERVER)
 
     def test_v419_official_source_catchup_is_versioned_recent_first_and_official_only(self):
         self.assertIn('HISTORY_OFFICIAL_CATCHUP_SOURCES = {',SERVER)
@@ -605,7 +608,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('MLS_MATCH_HIGHLIGHTS_URL = "https://www.mlssoccer.com/video/topics/match-highlights/"',SERVER)
         self.assertIn('MLS_ALL_GOALS_URL = "https://www.mlssoccer.com/video/topics/all-goals/"',SERVER)
         discover=SERVER[SERVER.index('def _history_discover_event'):SERVER.index('def _history_discover_day',SERVER.index('def _history_discover_event'))]
-        for lane in ("lane('nhl-official-video'","lane('premierleague-official'","lane('nbc-epl-extended'","lane('mls-official-web'"):
+        for lane in ("lane('nhl-official-video'","lane('premierleague-official'","lane('nbc-epl-extended'","lane('mls-match-snapshot'","lane('mls-match-highlights'"):
             self.assertIn(lane,discover)
             self.assertLess(discover.index(lane),discover.index("lane('official-native'"))
         self.assertIn("lane('nhl-official-roundups'",discover)
@@ -639,7 +642,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('/api/history/event/discover',SERVER)
         self.assertIn('/api/history/event/media',SERVER)
         self.assertIn('/api/history/media/runtime',SERVER)
-        self.assertIn('HISTORY_DISCOVERY_VERSION = 14',SERVER)
+        self.assertIn('HISTORY_DISCOVERY_VERSION = 15',SERVER)
         self.assertIn('_touch_history_focus(date',SERVER)
         self.assertIn('team_v418_',SERVER)
         self.assertIn("apiJson('/api/history/event/discover'",APP)
@@ -663,14 +666,20 @@ class RegressionGuards(unittest.TestCase):
 
     def test_v4111_rule_catchup_reopens_nfl_mls_epl_and_tracks_silver_replay(self):
         self.assertIn('HISTORY_RULE_CATCHUP_LEAGUES = ("NFL","MLS","EPL")',SERVER)
-        self.assertIn('"nfl-game-highlights","version":3,"objective":"quick"',SERVER)
-        self.assertIn('"nfl-extended-highlights","version":2,"objective":"extended"',SERVER)
-        self.assertIn('"mls-match-snapshot","version":1,"objective":"quick"',SERVER)
-        self.assertIn('"mls-match-highlights","version":1,"objective":"extended"',SERVER)
-        self.assertIn('"premierleague-official","version":3,"objective":"quick"',SERVER)
-        self.assertIn('"nbc-epl-extended","version":2,"objective":"extended"',SERVER)
+        self.assertIn('"nfl-public-video-quick","version":1,"objective":"quick"',SERVER)
+        self.assertIn('"nfl-team-video-quick","version":1,"objective":"quick"',SERVER)
+        self.assertIn('"nfl-public-video-extended","version":1,"objective":"extended"',SERVER)
+        self.assertIn('"nfl-team-video-extended","version":1,"objective":"extended"',SERVER)
+        self.assertIn('"mls-match-snapshot","version":2,"objective":"quick"',SERVER)
+        self.assertIn('"mls-match-highlights","version":2,"objective":"extended"',SERVER)
+        self.assertIn('"premierleague-official","version":4,"objective":"quick"',SERVER)
+        self.assertIn('"nbc-epl-extended","version":3,"objective":"extended"',SERVER)
+        self.assertIn('HISTORY_RULE_CATCHUP_VERSION = 2',SERVER)
+        self.assertIn('def _history_rule_game_catchup_snapshot',SERVER)
+        self.assertIn("preferred_rule_league={1:'NFL',2:'MLS',3:'EPL'}.get(worker_index,'')",SERVER)
         self.assertIn('def history_rule_collection_catchup_worker',SERVER)
         self.assertIn('sbb-history-rule-collections',SERVER)
+        self.assertIn('[RULE GAME CATCH-UP]',AUDIT)
         self.assertIn('[RULE COLLECTION CATCH-UP]',AUDIT)
 
     def test_v305_audit_projects_unknown_into_actionable_statuses(self):
@@ -687,7 +696,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('/playlistItems?',SERVER)
         self.assertIn("lane('youtube-official-uploads'",SERVER)
         self.assertIn('youtube-official-uploads',SERVER)
-        self.assertIn('HISTORY_DISCOVERY_VERSION = 14',SERVER)
+        self.assertIn('HISTORY_DISCOVERY_VERSION = 15',SERVER)
 
     def test_historical_date_session_keeps_browse_playback_and_game_center_separate(self):
         date_store=(ROOT/'architecture/score-date-store.js').read_text(encoding='utf-8')
@@ -786,7 +795,7 @@ class RegressionGuards(unittest.TestCase):
         providers=(ROOT/'sbb/provider_registry.py').read_text(encoding='utf-8')
         competitions=(ROOT/'sbb/competition_registry.py').read_text(encoding='utf-8')
         self.assertIn('MEDIA_ADAPTERS={',providers)
-        self.assertIn('"nfl-game-highlights"',providers)
+        self.assertIn('"nfl-public-video"',providers); self.assertIn('"nfl-team-video"',providers)
         self.assertIn('"nfl-club"',providers)
         self.assertIn('"espn"',providers)
         self.assertIn('"mediaManifest":"browser persistent event manifest"',SERVER)

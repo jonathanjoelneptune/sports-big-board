@@ -95,7 +95,7 @@ class HistoryV4BaselineTests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"scoreEventId":"evt1","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}
             repo.upsert_event("2026-08-20","NBA","evt1",event)
-            # A real v12 attempt happened moments ago. Discovery v14 must still
+            # A real v12 attempt happened moments ago. Discovery v15 must still
             # be allowed immediately because generation changes invalidate the
             # old cooldown.
             repo.set_event_discovery("2026-08-20","NBA","evt1","SEARCHED_EMPTY",{"discoveryVersion":12},retry_at=time.time()+86400)
@@ -422,6 +422,33 @@ class HistoryV4BaselineTests(unittest.TestCase):
 
 
 
+
+    def test_v412_rule_catchup_worker_affinity_prefers_assigned_league(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            sources={
+                "NFL":[{"key":"nfl-public-video-quick","version":1,"objective":"quick"}],
+                "MLS":[{"key":"mls-match-snapshot","version":2,"objective":"quick"}],
+                "EPL":[{"key":"premierleague-official","version":4,"objective":"quick"}],
+            }
+            for league,event_id in (("NFL","nfl-aff"),("MLS","mls-aff"),("EPL","epl-aff")):
+                repo.put_scores("2026-08-20",league,[{"scoreEventId":event_id,"awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}])
+            rows=repo.source_enrichment_events(sources,floor_date="2025-08-01",today="2026-08-24",now=time.time(),preferred_league="MLS",limit=10)
+            self.assertEqual(rows[0]["league"],"MLS")
+            self.assertEqual(rows[0]["eventId"],"mls-aff")
+
+    def test_v412_silver_rule_replay_telemetry_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            item={"youtubeId":"daily412xyz","title":"NBA Nightly Recap August 20 2026","verifiedPlayable":True,"provider":"YOUTUBE",
+                  "channelId":"UCWJ2lWNubArHWmf3FIHbfcQ","publishedAt":"2026-08-20T23:00:00Z"}
+            first=repo.put_collection_media("DAY_LEAGUE","NBA","2026-08-20",[item],collection_kind="DAILY_RECAP",return_stats=True)
+            second=repo.put_collection_media("DAY_LEAGUE","NBA","2026-08-20",[item],collection_kind="DAILY_RECAP",return_stats=True)
+            self.assertEqual(first["newUniqueAssets"],1); self.assertEqual(first["newCollectionLinks"],1)
+            self.assertEqual(second["newUniqueAssets"],0); self.assertEqual(second["existingAssetsReused"],1)
+            self.assertEqual(second["newCollectionLinks"],0); self.assertEqual(second["duplicateLinksSuppressed"],1)
+
+
 class EventAssociationV402Tests(unittest.TestCase):
     def test_matcher_rejects_wrong_matchup_even_with_copied_event_id(self):
         from sbb.event_matcher import match_event
@@ -468,7 +495,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
             repo.put_scores("2026-08-22","MLS",[event])
-            # Simulate a pre-v4.1.11 assigned row by directly inserting source/link.
+            # Simulate a pre-v4.1.12 assigned row by directly inserting source/link.
             wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
             repo.put_source_media([wrong],league="MLS",date="2026-08-22")
             import sqlite3 as _sqlite3, time as _time, json as _json

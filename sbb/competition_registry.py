@@ -1,4 +1,4 @@
-"""Canonical competition/provider registry shared by server services (v4.1.11).
+"""Canonical competition/provider registry shared by server services (v4.1.12).
 
 Competition definitions describe capabilities, not playback implementations. Media
 providers are ordered discovery adapters; the EventMediaResolver remains free to
@@ -8,7 +8,7 @@ from copy import deepcopy
 
 COMPETITIONS = {
     "MLB":{"id":"MLB","sportId":"baseball","name":"Major League Baseball","enabled":True,"scoreProvider":"highlightly","mediaProviders":["mlb-stats","espn","highlightly","youtube"],"gameCenterProvider":"highlightly","gameCenterFallback":"mlb-stats"},
-    "NFL":{"id":"NFL","sportId":"american-football","name":"National Football League","enabled":True,"scoreProvider":"espn","mediaProviders":["nfl-game-highlights","espn","nfl-club","nfl-feed","highlightly","youtube"],"gameCenterProvider":"highlightly","gameCenterFallback":"espn"},
+    "NFL":{"id":"NFL","sportId":"american-football","name":"National Football League","enabled":True,"scoreProvider":"espn","mediaProviders":["nfl-public-video","nfl-team-video","espn","nfl-feed","highlightly","youtube"],"gameCenterProvider":"highlightly","gameCenterFallback":"espn"},
     "NBA":{"id":"NBA","sportId":"basketball","name":"National Basketball Association","enabled":True,"scoreProvider":"espn","mediaProviders":["espn","highlightly","youtube"],"gameCenterProvider":"highlightly","gameCenterFallback":"espn"},
     "NHL":{"id":"NHL","sportId":"ice-hockey","name":"National Hockey League","enabled":True,"scoreProvider":"espn","mediaProviders":["nhl-official","espn","highlightly","youtube"],"gameCenterProvider":"highlightly","gameCenterFallback":"espn"},
     "EPL":{"id":"EPL","sportId":"football","name":"Premier League","enabled":True,"scoreProvider":"espn","mediaProviders":["premierleague-official","nbc-epl-extended","espn","club-sites","highlightly","youtube"],"gameCenterProvider":"highlightly","gameCenterFallback":"espn"},

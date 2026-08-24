@@ -1,17 +1,19 @@
-# Sports Big Board v4.1.11
+# Sports Big Board v4.1.12
 
-> v4.1.11 separates **Quick** and **Extended** game-media objectives, hardens MLS/EPL official match discovery, adds first-class `BEST_GOALS` / `BEST_SAVES` Silver collections, and normalizes duplicate/reaction media before playback.
+> v4.1.12 is the **public-source discovery + catch-up quality** release. It keeps the normalized v4 catalog, but replaces NFL replay-tab dependence with public NFL/team sources, gives the NFL/MLS/EPL migration dedicated worker affinity, hardens MLS Snapshot discovery, and makes every migration result auditable.
 
-## v4.1.11 — MLS/EPL official media + NFL Quick/Extended objectives
+## v4.1.12 — public official collectors + Rule Catch-up v2
 
-- **MLS:** `MATCH SNAPSHOT` is the preferred Green quick recap; `MATCH HIGHLIGHTS` is Purple/Extended. League-wide `Every Goal`, `Must-see Golazos`, and `What A Save` packages are promoted to Silver with canonical scoring / `BEST_GOALS` / `BEST_SAVES` collection identity.
-- **EPL:** official PremierLeague.com match highlights now require the actual team pair and match-highlight language, while Matchweek `Best Goals` and `Best Saves` packages are first-class Silver collections rather than generic Top Plays.
-- **NFL:** Quick and Extended are independent official-source objectives. A game with Green but no Purple remains eligible for Extended catch-up. Green ranking prefers roughly **2–6 minute** recaps over ~1 minute recaps when both are available; the official Extended lane targets roughly **8–20 minute** packages.
-- **GAME-media safety:** postgame shows, instant reaction, analysis shows, press conferences, interviews, and similar programs no longer qualify as GAME recap media merely because they mention the matchup. Exact duplicate assets collapse before ranking/playback.
-- **Normalized catalog:** GAME media without an already authoritative persisted tier is classified at ingestion, allowing durable SQL scheduling/audit to see Quick/Extended objectives correctly after restart. Existing explicit tiers are preserved.
-- **Operator audit:** Search Console/status now exposes NFL Quick, NFL Extended, Green-without-Purple, MLS Snapshot, MLS Match Highlights, `BEST_GOALS`, `BEST_SAVES`, duplicate-collapse, postgame/reaction rejection, and runtime objective-accept counters.
-- **Catalog generation:** `HISTORY_DISCOVERY_VERSION = 14`, media classifier v7, event matcher v6, and ranking v6. Official source ledgers are versioned independently so provider-specific fixes can reopen only the affected source objective.
-- **Rule catch-up migration:** v4.1.11 explicitly reopens NFL, MLS, and EPL from newest games back to the Aug. 1, 2025 seed floor under the new independent Quick/Extended objectives. NFL runs `nfl-game-highlights@v3` + `nfl-extended-highlights@v2`; MLS runs separate Snapshot/Highlights ledgers; EPL runs PremierLeague Quick + NBC Extended ledgers. A one-time MLS/EPL Silver replay runs weekly probes after the historical seed and persists a completion marker so it does not restart on every boot.
+- **NFL public sources:** NFL+ full/condensed/All-22 replay inventory is treated as `ENTITLEMENT_GATED` metadata and is never ingested as playable GAME media. Public NFL.com video pages plus the 32 official team video sitemaps/pages are first-class sources.
+- **NFL Quick / Extended:** Quick remains Green with a 2–6 minute preference and short fallback; Extended remains Purple and targets openly playable official ~8–20 minute game-highlight packages. Postgame/reaction, press conferences, individual-play clips, mic'd-up features, full replays, and condensed replays are rejected from GAME recap objectives.
+- **Candidate dispositions:** NFL candidates finish in explicit audit states such as `ACCEPTED_QUICK`, `ACCEPTED_EXTENDED`, `ENTITLEMENT_GATED`, `POSTGAME_REACTION`, `INDIVIDUAL_PLAY`, `DURATION_REJECT`, `EVENT_MISMATCH`, and `NON_PLAYABLE`; `+1` discoveries can no longer disappear silently.
+- **Rule Catch-up v2:** the three Green workers have temporary migration affinity: worker 1 NFL, worker 2 MLS, worker 3 EPL. Each league remains newest-first from the Aug. 1, 2025 floor, and a worker may help another league only after its preferred queue is exhausted.
+- **MLS:** `MATCH SNAPSHOT` Quick/Green and Match Highlights Extended/Purple are independent v2 ledgers. The collector walks the official paginated Match Highlights topic feed and can infer the date of an undated Snapshot from its adjacent same-match dated highlight card.
+- **EPL:** PremierLeague.com Quick moves to source v4 and NBC Extended to v3, reopening only those objectives without rebuilding the catalog. `BEST_GOALS` / `BEST_SAVES` Silver behavior is preserved.
+- **Silver replay telemetry:** collection migration reports candidates examined, qualifying items, new unique assets, reused assets, new collection links, duplicate links suppressed, and rejected items. Replaying an already-complete date is idempotent rather than inflating an `accepted` counter.
+- **Durable negative completion:** source/objective/version checks remain persisted. A completed empty public source does not rerun until its source version changes; changing one collector version reopens only that objective/source.
+- **Operator audit:** Search Console exposes `[RULE GAME CATCH-UP]`, detailed `[RULE COLLECTION CATCH-UP]`, independent NFL/MLS/EPL missing-objective counts, and `[NFL PUBLIC SOURCES]` acceptance/rejection counters.
+- **Catalog generation:** `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 2`, media classifier v7, event matcher v6. No catalog rebuild is required.
 
 Verification for this release covers browser contracts, normalized-history scheduling, official collectors/classifiers, Silver promotion, cloud deployment, and regression guards.
 
@@ -35,7 +37,7 @@ Silver promotion is fail-closed. A source asset becomes `DAY_LEAGUE` or `WEEK_LE
 
 Daily Silver identity is derived from the content period rather than the crawler encounter date. Explicit title dates win, including compact official formats such as `8/21`; publication chronology is the fallback. One daily asset therefore resolves to one canonical day instead of being smeared across overlapping backfill windows. Weekly identity is **league season + season week**, not calendar/ISO week: `The TOP Plays of Week 24 | 2025-26 NBA Season` becomes `WEEK_LEAGUE:NBA:2025-26:W24:TOP_PLAYS`, while `Every Touchdown from Week 18 | 2025 NFL Season` becomes `WEEK_LEAGUE:NFL:2025:W18:WEEKLY_RECAP`. Player-specific `Week N` videos are not weekly Silver.
 
-On the first v4.1.5 startup, `collection_association_repair_version=5` rebuilds **only Silver collection relationships** from the preserved source-media reservoir. Old duplicated/day-smeared links and old calendar-week keys are discarded, high-confidence assets are re-promoted under the strict classifier, and rejected items remain available in `SOURCE_MEDIA`. Event associations, Discovery v14 progress, verification/runtime history, the Aug. 1, 2025 historical-seed state, and the discovery-attempt ledger are untouched.
+On the first v4.1.5 startup, `collection_association_repair_version=5` rebuilds **only Silver collection relationships** from the preserved source-media reservoir. Old duplicated/day-smeared links and old calendar-week keys are discarded, high-confidence assets are re-promoted under the strict classifier, and rejected items remain available in `SOURCE_MEDIA`. Event associations, Discovery v15 progress, verification/runtime history, the Aug. 1, 2025 historical-seed state, and the discovery-attempt ledger are untouched.
 
 Game coverage completeness is also independent from editorial quality. A verified **Gold, Green, or Purple/extended** game package counts as `COVERAGE_COMPLETE`; **Blue or None** remains a coverage gap. Purple still remains eligible for an optional Green/Gold quality upgrade, and the Green-gap worker selection/propagation rules are unchanged. This lets sports such as soccer correctly count a legitimate 10–15 minute official Purple package as a complete watchable game record without pretending it is the preferred final tier.
 
@@ -283,7 +285,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.11/sports-big-board-v4.1.11
+cd ~/storage/downloads/sports-big-board-v4.1.12/sports-big-board-v4.1.12
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```

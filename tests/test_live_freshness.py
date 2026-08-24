@@ -394,6 +394,57 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertTrue(rows[0]['overview'])
         self.assertIn('raiders.com/video/full-game-highlights',rows[0]['externalUrl'])
 
+    def test_v412_nfl_team_registry_covers_all_32_clubs(self):
+        self.assertEqual(len(server.NFL_TEAM_SITE_DOMAINS),32)
+        self.assertEqual(server._nfl_team_site_domain('Tampa Bay Buccaneers'),'buccaneers.com')
+        self.assertEqual(server._nfl_team_site_domain('San Francisco 49ers'),'49ers.com')
+
+    def test_v412_nfl_team_title_disposition_is_fail_closed(self):
+        away='Tampa Bay Buccaneers'; home='Atlanta Falcons'
+        self.assertEqual(server._nfl_team_title_disposition('Bucs vs. Falcons Full Game Highlights',away,home),'GAME_PACKAGE')
+        self.assertEqual(server._nfl_team_title_disposition('Bucs vs. Falcons Postgame Press Conference',away,home),'POSTGAME_REACTION')
+        self.assertEqual(server._nfl_team_title_disposition('Bucs vs. Falcons Baker Mayfield touchdown highlights',away,home),'INDIVIDUAL_PLAY')
+        self.assertEqual(server._nfl_team_title_disposition('Saints vs. Falcons Full Game Highlights',away,home),'EVENT_MISMATCH')
+
+    def test_v412_nflplus_replay_is_entitlement_gated_not_game_media(self):
+        gated={'title':'Buccaneers at Falcons Full Game Replay','externalUrl':'https://www.nfl.com/games/buccaneers-at-falcons-2025-reg-1?tab=replays-highlights'}
+        self.assertEqual(server._nfl_candidate_disposition(gated),'ENTITLEMENT_GATED')
+        condensed={'title':'Buccaneers vs Falcons Condensed Game Replay','externalUrl':'https://www.nfl.com/plus'}
+        self.assertEqual(server._nfl_candidate_disposition(condensed),'ENTITLEMENT_GATED')
+
+    def test_v412_nfl_team_sitemap_parser_preserves_date_and_public_page(self):
+        page_html='<table><tr><td>2025-09-08</td><td><a href="/video/full-game-highlights-falcons-bucs-win-score-23-20-week-1-2025">Bucs vs. Falcons Full Game Highlights</a></td></tr></table>'
+        rows=server._nfl_team_sitemap_entries(page_html,'https://www.buccaneers.com/sitemap/html/videos/2025/9')
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['publishedAt'],'2025-09-08')
+        self.assertEqual(rows[0]['url'],'https://www.buccaneers.com/video/full-game-highlights-falcons-bucs-win-score-23-20-week-1-2025')
+
+    def test_v412_public_team_full_game_highlights_can_be_extended_playable(self):
+        entry={'url':'https://www.buccaneers.com/video/full-game-highlights-falcons-bucs-win-score-23-20-week-1-2025','title':'Bucs vs. Falcons Full Game Highlights','description':'Bucs vs. Falcons Full Game Highlights','publishedAt':'2025-09-08'}
+        detail='<meta property="og:title" content="Bucs vs. Falcons Full Game Highlights"><meta property="og:video" content="https://cdn.test/bucs-falcons.mp4"><meta property="og:video:duration" content="660"><meta property="article:published_time" content="2025-09-08T12:00:00Z">'
+        with patch.object(server,'_nfl_team_sitemap_urls',return_value=['https://www.buccaneers.com/sitemap/html/videos/2025/9']), \
+             patch.object(server,'_history_shared_catalog',return_value=[entry]), \
+             patch.object(server,'_official_fetch_page_text',return_value=detail):
+            rows=server._nfl_team_video_results('2025-09-07','Tampa Bay Buccaneers','Atlanta Falcons',objective='extended')
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['mediaObjective'],'EXTENDED')
+        self.assertEqual(rows[0]['recapTier'],'extended')
+        self.assertEqual(rows[0]['discoverySourceFamily'],'nfl-team-video')
+        self.assertEqual(rows[0]['durationSeconds'],660)
+
+    def test_v412_mls_snapshot_infers_date_from_adjacent_official_highlight(self):
+        entries=[
+            {'url':'https://www.mlssoccer.com/video/match-snapshot-atlanta-toronto','title':'MATCH SNAPSHOT: Atlanta United FC vs Toronto FC','description':''},
+            {'url':'https://www.mlssoccer.com/video/highlights-atlanta-toronto','title':'HIGHLIGHTS: Atlanta United FC vs Toronto FC | April 25, 2026','description':''},
+        ]
+        detail='<meta property="og:title" content="MATCH SNAPSHOT: Atlanta United FC vs Toronto FC"><meta property="og:video" content="https://cdn.test/mls-snapshot.mp4"><meta property="og:video:duration" content="59">'
+        with patch.object(server,'_history_shared_catalog',return_value=entries), patch.object(server,'_official_fetch_page_text',return_value=detail):
+            rows=server._mls_official_web_results('2026-04-25','Atlanta United FC','Toronto FC',max_items=1,objective='quick')
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['mediaObjective'],'QUICK')
+        self.assertEqual(rows[0]['recapTier'],'green')
+        self.assertEqual(rows[0]['durationSeconds'],59)
+
     def test_cross_sport_espn_video_fallback_runs_without_youtube_key(self):
         espn_row={'id':'espn-1','league':'NFL','title':'Raiders vs Texans game highlights','mediaUrl':'https://example.test/video.mp4','verifiedPlayable':True,'overview':True,'programType':'recap','durationSeconds':240,'importance':90}
         with tempfile.TemporaryDirectory() as td, \
