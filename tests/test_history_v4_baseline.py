@@ -328,10 +328,13 @@ class HistoryV4BaselineTests(unittest.TestCase):
             self.assertEqual(summary["coverageComplete"],1)
             self.assertEqual(summary["purpleOnly"],1)
             self.assertEqual(summary["qualityUpgradeDue"],1)
-            audit=repo.audit_catalog(league="EPL",current_discovery_version=13)["rows"][0]
+            audit_payload=repo.audit_catalog(league="EPL",current_discovery_version=13)
+            audit=audit_payload["rows"][0]
             self.assertEqual(audit["catalogCoverageStatus"],"COVERAGE_COMPLETE")
             self.assertTrue(audit["coverageComplete"]); self.assertTrue(audit["upgradeEligible"])
             self.assertEqual(audit["qualityGapStatus"],"OPTIONAL_QUALITY_UPGRADE")
+            self.assertEqual(audit_payload["summary"]["coverageCompleteGames"],1)
+            self.assertEqual(audit_payload["summary"]["coverageCompleteByLeague"]["EPL"],{"games":1,"coverageCompleteGames":1})
             # Green-gap scheduling itself is intentionally unchanged: Purple can still
             # be revisited later for a preferred Green/Gold upgrade.
             due=repo.green_gap_events(current_discovery_version=13,now=time.time()+90000,recent_cooldown=1,archive_cooldown=1,recent_cutoff="2026-08-01")
@@ -399,7 +402,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
             repo.put_scores("2026-08-22","MLS",[event])
-            # Simulate a pre-v4.1.5 assigned row by directly inserting source/link.
+            # Simulate a pre-v4.1.6 assigned row by directly inserting source/link.
             wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
             repo.put_source_media([wrong],league="MLS",date="2026-08-22")
             import sqlite3 as _sqlite3, time as _time, json as _json

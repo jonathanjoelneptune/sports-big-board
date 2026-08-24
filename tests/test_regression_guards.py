@@ -24,7 +24,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertLess(block.index('const assoc=data.associations||{};'),block.index('assoc.assignedLinks'))
 
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=4.1.5','architecture/score-date-store.js?v=4.1.5','architecture/event-identity.js?v=4.1.5','architecture/media-scope.js?v=4.1.5','architecture/media-classifier.js?v=4.1.5','architecture/playback-transports.js?v=4.1.5','architecture/provider-health.js?v=4.1.5','architecture/sport-media-policy.js?v=4.1.5','architecture/media-manifest.js?v=4.1.5','architecture/media-resolver.js?v=4.1.5','architecture/game-center-policy.js?v=4.1.5','architecture/selected-event-store.js?v=4.1.5','architecture/game-center-contract.js?v=4.1.5','architecture/media-work-priorities.js?v=4.1.5','architecture/editorial-packages.js?v=4.1.5','ui/player-visibility.js?v=4.1.5','ui/info-drawer.js?v=4.1.5','ui/settings-view.js?v=4.1.5','ui/history-audit.js?v=4.1.5','ui/game-center-view.js?v=4.1.5','app.js?v=4.1.5']
+        ordered=['core-model.js?v=4.1.6','architecture/score-date-store.js?v=4.1.6','architecture/event-identity.js?v=4.1.6','architecture/media-scope.js?v=4.1.6','architecture/media-classifier.js?v=4.1.6','architecture/playback-transports.js?v=4.1.6','architecture/provider-health.js?v=4.1.6','architecture/sport-media-policy.js?v=4.1.6','architecture/media-manifest.js?v=4.1.6','architecture/media-resolver.js?v=4.1.6','architecture/game-center-policy.js?v=4.1.6','architecture/selected-event-store.js?v=4.1.6','architecture/game-center-contract.js?v=4.1.6','architecture/media-work-priorities.js?v=4.1.6','architecture/editorial-packages.js?v=4.1.6','ui/player-visibility.js?v=4.1.6','ui/info-drawer.js?v=4.1.6','ui/settings-view.js?v=4.1.6','ui/history-audit.js?v=4.1.6','ui/game-center-view.js?v=4.1.6','app.js?v=4.1.6']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -381,8 +381,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v4.1.5 — score ribbon recovery',STYLES)
-        self.assertIn('v4.1.5 — historical Date Browser',STYLES)
+        self.assertIn('v4.1.6 — score ribbon recovery',STYLES)
+        self.assertIn('v4.1.6 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -391,7 +391,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v4.1.5 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v4.1.6 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -554,7 +554,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v4.1.5',STYLES)
+        self.assertNotIn('\\n\\n/* v4.1.6',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)
@@ -919,6 +919,19 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('[QUARANTINE REASONS]',AUDIT)
         self.assertIn('quarantineReasons',(ROOT/'sbb/history_repository.py').read_text(encoding='utf-8'))
         self.assertIn('known games / +',SERVER)
+
+    def test_v416_history_audit_shows_coverage_complete_and_semantic_color_badges(self):
+        repo=(ROOT/'sbb/history_repository.py').read_text(encoding='utf-8')
+        styles=(ROOT/'styles.css').read_text(encoding='utf-8')
+        self.assertIn('historyAuditCoverageCompleteSummary',INDEX)
+        self.assertIn('historyAuditCoverageComplete',INDEX)
+        self.assertIn('coverageCompleteByLeague',repo)
+        self.assertIn('coverageCompleteGames',repo)
+        self.assertIn('Coverage complete (Gold / Green / Purple)',AUDIT)
+        for token in ('league-mlb','league-nfl','league-nba','league-nhl','league-epl','league-mls','kind-daily-recap','kind-weekly-recap','kind-top-plays','scope-daily','scope-weekly'):
+            self.assertIn(token,styles)
+        self.assertIn('leagueBadge(row.league)',AUDIT)
+        self.assertIn('silverKindBadge(row.collectionKind)',AUDIT)
 
     def test_v306_history_audit_is_live_and_shows_green_game_coverage(self):
         self.assertIn('historyAuditGreenCoverageSummary',INDEX)

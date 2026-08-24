@@ -1,67 +1,52 @@
-Sports Big Board v4.1.5 — updated files only
-Baseline: v4.1.4
+Sports Big Board v4.1.6 updated files
+Base: v4.1.5
 
-Functional release changes:
-- Strict Silver classifier v5: league-wide daily/weekly semantics only.
-- Verified league sources preferred; trusted broadcasters are fallback; unproven/team sources stay SOURCE_MEDIA.
-- Weekly Silver identity uses league season + season week (NBA 2025-26:W24, NFL 2025:W18).
-- Daily Silver period resolves from content/title/publication chronology and de-smears overlapping discovery dates.
-- In-place versioned Silver relationship repair preserves SOURCE_MEDIA and all GAME/discovery state.
-- Gold/Green/Purple count as coverage complete; Blue/None remain coverage gaps; Purple remains quality-upgrade eligible.
-
-Changed files: 54
-
-START-ANDROID.sh
-ARCHITECTURE.md
-core-model.js
-V4 CATALOG REBUILD.md
-styles.css
-README.md
-api-runtime.js
-index.html
-VERIFY.sh
-server.py
-app.js
 ANDROID SETUP.md
-WINDOWS SETUP.md
-VERSION
+ARCHITECTURE.md
 CLOUD STAGE 1.md
+README.md
 START SPORTS BIG BOARD.bat
-tools/ensure_history_v4.py
-tests/test_silver_roundup_audit.py
-tests/test_server_architecture.py
-tests/test_history_v4_baseline.py
-tests/test_cloud_stage1.py
-tests/test_regression_guards.py
-tests/test_media_scope_roundups.py
-tests/test_architecture.js
-sbb/event_matcher.py
-sbb/media_policy.py
-sbb/__init__.py
-sbb/history_rebuild.py
-sbb/competition_registry.py
-sbb/media_scope.py
-sbb/editorial_registry.py
-sbb/history_repository.py
-sbb/catalog_contract.py
-sbb/youtube_gateway.py
-sbb/provider_registry.py
-architecture/media-manifest.js
-architecture/game-center-contract.js
+START-ANDROID.sh
+V4 CATALOG REBUILD.md
+VERIFY.sh
+VERSION
+WINDOWS SETUP.md
+api-runtime.js
+app.js
+architecture/editorial-packages.js
 architecture/event-identity.js
-architecture/media-classifier.js
+architecture/game-center-contract.js
 architecture/game-center-policy.js
-architecture/provider-health.js
-architecture/score-date-store.js
+architecture/media-classifier.js
+architecture/media-manifest.js
 architecture/media-resolver.js
 architecture/media-scope.js
-architecture/playback-transports.js
-architecture/selected-event-store.js
-architecture/editorial-packages.js
-architecture/sport-media-policy.js
 architecture/media-work-priorities.js
+architecture/playback-transports.js
+architecture/provider-health.js
+architecture/score-date-store.js
+architecture/selected-event-store.js
+architecture/sport-media-policy.js
+core-model.js
+index.html
+sbb/__init__.py
+sbb/competition_registry.py
+sbb/editorial_registry.py
+sbb/event_matcher.py
+sbb/history_repository.py
+sbb/media_policy.py
+sbb/media_scope.py
+sbb/provider_registry.py
+sbb/youtube_gateway.py
+server.py
+styles.css
+tests/test_architecture.js
+tests/test_cloud_stage1.py
+tests/test_history_v4_baseline.py
+tests/test_regression_guards.py
+tools/ensure_history_v4.py
 ui/game-center-view.js
-ui/settings-view.js
-ui/player-visibility.js
-ui/info-drawer.js
 ui/history-audit.js
+ui/info-drawer.js
+ui/player-visibility.js
+ui/settings-view.js

@@ -453,7 +453,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.5 migration cooldowns already persisted in production.
+        """Release artificial v4.1.6 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -589,7 +589,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.5 treats collection membership as fully derived state.  Classifier
+        v4.1.6 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -1109,7 +1109,8 @@ class HistoryRepository:
             by_event.setdefault(row["canonical_event_key"],[]).append(item)
         priority={"gold":4,"green":3,"extended":2,"blue":1,"":0}; rows=[]
         summary={"games":0,"verifiedAssets":0,"candidateAssets":0,"runtimeFailedAssets":0,"tiers":{"gold":0,"green":0,"extended":0,"blue":0},"best":{"gold":0,"green":0,"extended":0,"blue":0,"none":0},
-                 "effectiveStatuses":{},"upgradePendingGames":0,"qualityCompleteGames":0,"discoveryPendingGames":0,"noVerifiedMediaGames":0,"greenCoverageGames":0,"greenCoverageByLeague":{}}
+                 "effectiveStatuses":{},"upgradePendingGames":0,"qualityCompleteGames":0,"discoveryPendingGames":0,"noVerifiedMediaGames":0,
+                 "greenCoverageGames":0,"greenCoverageByLeague":{},"coverageCompleteGames":0,"coverageCompleteByLeague":{}}
         for erow in events:
             event=self._load_obj(erow["event_json"]); disc=self._load_obj(erow["discovery_json"]); event_assets=by_event.get(erow["canonical_event_key"],[]); tiers={"gold":[],"green":[],"extended":[],"blue":[]}
             for asset in event_assets: tiers[asset["tier"]].append(asset)
@@ -1144,6 +1145,9 @@ class HistoryRepository:
             cov=summary["greenCoverageByLeague"].setdefault(erow["league"],{"games":0,"greenGames":0,"greenOrGoldGames":0}); cov["games"]+=1
             if any(a.get("verified") for a in tiers["green"]): summary["greenCoverageGames"]+=1; cov["greenGames"]+=1
             if any(a.get("verified") for a in tiers["green"]+tiers["gold"]): cov["greenOrGoldGames"]+=1
+            complete_cov=summary["coverageCompleteByLeague"].setdefault(erow["league"],{"games":0,"coverageCompleteGames":0}); complete_cov["games"]+=1
+            if projected.get("coverageComplete"):
+                summary["coverageCompleteGames"]+=1; complete_cov["coverageCompleteGames"]+=1
             catalog_coverage=("COVERAGE_COMPLETE" if projected.get("coverageComplete") else ("UNINDEXED" if projected["discoveryPending"] else ("SEARCHED_EMPTY" if eff=="SEARCHED_EMPTY" else ("CANDIDATE_ONLY" if eff=="CANDIDATE_ONLY" else ("PLAYABLE_PARTIAL" if verified else "PROVIDER_DEGRADED")))))
             if projected["qualityComplete"]: quality_gap="QUALITY_COMPLETE"
             elif projected.get("coverageComplete"): quality_gap="OPTIONAL_QUALITY_UPGRADE"

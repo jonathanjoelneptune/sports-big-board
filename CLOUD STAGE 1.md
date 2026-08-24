@@ -1,8 +1,8 @@
-# Sports Big Board v4.1.5 — Cloud Stage 1
+# Sports Big Board v4.1.6 — Cloud Stage 1
 
-v4.1.5 keeps the existing always-on Stage 1 deployment while replacing the historical media catalog with the normalized v4 baseline. Application releases remain immutable; the persistent disk is reconstructed separately and only after a passing audit.
+v4.1.6 keeps the existing always-on Stage 1 deployment while replacing the historical media catalog with the normalized v4 baseline. Application releases remain immutable; the persistent disk is reconstructed separately and only after a passing audit.
 
-## v4.1.5 one-push GitHub deployment
+## v4.1.6 one-push GitHub deployment
 
 Stage 1 can now deploy both halves of Sports Big Board from one push to `main`. After a one-time keyless Google/GitHub trust setup, uploading the complete unzipped repository contents to the root of the GitHub repository is the entire release process.
 
@@ -49,7 +49,7 @@ A normal backend Action should progress through these milestones:
 [upload] RELEASE UPLOAD COMPLETE.
 [remote] Starting v4 deployment and catalog preflight over the established key...
 ... v4 reconstruction / audit output ...
-[deploy] Backend v4.1.5-... is healthy.
+[deploy] Backend v4.1.6-... is healthy.
 ```
 
 If the initial bootstrap cannot propagate the key within the bounded retry window, the job exits before uploading a release and before touching the historical database. If direct-key reuse fails after bootstrap, it likewise exits before upload.
@@ -81,7 +81,7 @@ The browser no longer needs Termux or Windows CMD for normal use. Local launch s
 ## One-time Google Cloud deployment
 
 1. Open Google Cloud Console and launch **Cloud Shell**.
-2. Upload `sports-big-board-v4.1.5.zip` to Cloud Shell and extract it.
+2. Upload `sports-big-board-v4.1.6.zip` to Cloud Shell and extract it.
 3. Select the project that should own Sports Big Board:
 
 ```bash
@@ -130,7 +130,7 @@ In the GitHub repository:
 1. **Settings → Secrets and variables → Actions → Variables**
 2. Create repository variable `SBB_API_BASE_URL` with that HTTPS backend URL.
 3. **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-4. Push v4.1.5 to `main`.
+4. Push v4.1.6 to `main`.
 
 `.github/workflows/deploy-pages.yml` verifies the release, deploys the backend, verifies health, and only then publishes the static frontend. Backend code, SQLite databases, caches, and API credentials are never included in the Pages artifact.
 
@@ -186,13 +186,13 @@ In cloud mode API credentials are environment-managed on the server. The public 
 Android / Termux:
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.5/sports-big-board-v4.1.5
+cd ~/storage/downloads/sports-big-board-v4.1.6/sports-big-board-v4.1.6
 bash START-ANDROID.sh
 ```
 
 Windows can continue using `START SPORTS BIG BOARD.bat`.
 
 
-### v4.1.5 catalog-preserving preflight
+### v4.1.6 catalog-preserving preflight
 
 The GitHub deployment stops the backend before catalog preflight. For a structurally healthy v4 database, preflight **does not reconstruct or replace `history.sqlite3`** even when matcher/classifier relationships require repair. It optionally creates a pre-repair rollback snapshot, starts the new backend, repairs relationships in place, and requires the backend health check to pass. Deployment rollback restores the pre-deploy snapshot when one was created. Full reconstruction is reserved for structural/legacy catalog failures only.

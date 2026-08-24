@@ -1,7 +1,7 @@
-/* Sports Big Board v4.1.5 historical database audit view. */
+/* Sports Big Board v4.1.6 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.1.5';
+  const FRONTEND_VERSION='4.1.6';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,tab:'games',silverOffset:0,silverLimit:100,silverTotal:0,silverLoading:false,lastSilverPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -29,6 +29,9 @@
   }
   function scopeLabel(scope){return String(scope||'').toUpperCase()==='WEEK_LEAGUE'?'WEEKLY':(String(scope||'').toUpperCase()==='DAY_LEAGUE'?'DAILY':String(scope||'—'));}
   function flagLabel(flag){return String(flag||'').replaceAll('_',' ');}
+  function cssToken(value){return String(value||'unknown').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'unknown';}
+  function leagueBadge(league){const value=String(league||'—').toUpperCase();return `<span class="audit-league league-${esc(cssToken(value))}">${esc(value)}</span>`;}
+  function silverKindBadge(kind){const value=String(kind||'ROUNDUP').toUpperCase();return `<span class="silver-kind kind-${esc(cssToken(value))}">${esc(value.replaceAll('_',' '))}</span>`;}
   function renderSilverSummary(summary={}){
     const map={historySilverCollections:summary.collections||0,historySilverLinks:summary.links||0,historySilverUniqueAssets:summary.uniqueAssets||0,historySilverDaily:summary.dayCollections||0,historySilverWeekly:summary.weekCollections||0,historySilverSuspicious:summary.suspiciousLinks||0,historySilverLargest:summary.maxCollectionAssets||0};
     for(const [id,val] of Object.entries(map)){const el=$(id);if(el)el.textContent=Number(val).toLocaleString();}
@@ -45,9 +48,9 @@
       const flagHtml=flags.length?flags.map(f=>`<span class="silver-flag ${f==='GAME_SCOPE_ASSET'||f.includes('MISMATCH')?'danger':''}">${esc(flagLabel(f))}</span>`).join(''):'<span class="silver-flag clean">CLEAN</span>';
       return `<tr class="${flags.length?'silver-row-flagged':''}">
         <td class="audit-date"><strong>${esc(row.periodKey||'—')}</strong><small>${esc(sourceBits.length?'source '+sourceBits.join(' / '):'')}</small></td>
-        <td><span class="silver-scope">${esc(scopeLabel(row.scope))}</span></td>
-        <td><span class="audit-league">${esc(row.league||'—')}</span></td>
-        <td class="silver-collection"><strong>${esc(String(row.collectionKind||'ROUNDUP').replaceAll('_',' '))}</strong><small>${Number(row.collectionAssetCount||0).toLocaleString()} assets • ${esc(row.collectionKey||'')}</small></td>
+        <td><span class="silver-scope scope-${esc(cssToken(scopeLabel(row.scope)))}">${esc(scopeLabel(row.scope))}</span></td>
+        <td>${leagueBadge(row.league)}</td>
+        <td class="silver-collection">${silverKindBadge(row.collectionKind)}<small>${Number(row.collectionAssetCount||0).toLocaleString()} assets • ${esc(row.collectionKey||'')}</small></td>
         <td class="silver-asset">${asset}</td>
         <td><strong>${esc(row.provider||'—')}</strong><small>${esc(row.sourceAuthority||'UNPROVEN')}</small></td>
         <td>${esc(dur||'—')}</td>
@@ -101,7 +104,7 @@
   }
   function renderSummary(summary={}){
     const t=summary.tiers||{}, b=summary.best||{}, st=summary.effectiveStatuses||{};
-    const map={historyAuditGames:summary.games||0,historyAuditVerified:summary.verifiedAssets||0,historyAuditGold:t.gold||0,historyAuditGreen:t.green||0,historyAuditPurple:t.extended||0,historyAuditBlue:t.blue||0,historyAuditUpgrade:summary.upgradePendingGames||0};
+    const map={historyAuditGames:summary.games||0,historyAuditVerified:summary.verifiedAssets||0,historyAuditGold:t.gold||0,historyAuditGreen:t.green||0,historyAuditPurple:t.extended||0,historyAuditBlue:t.blue||0,historyAuditCoverageComplete:summary.coverageCompleteGames||0,historyAuditUpgrade:summary.upgradePendingGames||0};
     for(const [id,val] of Object.entries(map)){const el=$(id);if(el)el.textContent=Number(val).toLocaleString();}
     const best=$('historyAuditBestSummary');
     if(best)best.textContent=`Best per game: ${Number(b.gold||0).toLocaleString()} Gold • ${Number(b.green||0).toLocaleString()} Green • ${Number(b.extended||0).toLocaleString()} Purple • ${Number(b.blue||0).toLocaleString()} Blue • ${Number(b.none||0).toLocaleString()} none`;
@@ -113,6 +116,13 @@
       const pct=games?((green/games)*100).toFixed(1):'0.0';
       const leagues=['MLB','NFL','NBA','NHL','EPL','MLS'].filter(l=>by[l]).map(l=>{const x=by[l]||{},g=Number(x.games||0),q=Number(x.greenGames||0);return `${l} ${q}/${g}${g?` (${((q/g)*100).toFixed(0)}%)`:''}`;});
       coverage.textContent=`Quick recap coverage: ${green.toLocaleString()}/${games.toLocaleString()} games (${pct}%)${leagues.length?' • '+leagues.join(' • '):''}`;
+    }
+    const completeCoverage=$('historyAuditCoverageCompleteSummary');
+    if(completeCoverage){
+      const by=summary.coverageCompleteByLeague||{}; const games=Number(summary.games||0), complete=Number(summary.coverageCompleteGames||0);
+      const pct=games?((complete/games)*100).toFixed(1):'0.0';
+      const leagues=['MLB','NFL','NBA','NHL','EPL','MLS'].filter(l=>by[l]).map(l=>{const x=by[l]||{},g=Number(x.games||0),q=Number(x.coverageCompleteGames||0);return `${l} ${q}/${g}${g?` (${((q/g)*100).toFixed(0)}%)`:''}`;});
+      completeCoverage.textContent=`Coverage complete (Gold / Green / Purple): ${complete.toLocaleString()}/${games.toLocaleString()} games (${pct}%)${leagues.length?' • '+leagues.join(' • '):''}`;
     }
   }
   function renderRows(payload){
@@ -128,7 +138,7 @@
         : (row.nextRetryAt?`Retry ${new Date(row.nextRetryAt*1000).toLocaleString()}`:(row.lastError?String(row.lastError).slice(0,90):''));
       return `<tr>
         <td class="audit-date">${esc(fmtDate(row.date))}</td>
-        <td><span class="audit-league">${esc(row.league)}</span></td>
+        <td>${leagueBadge(row.league)}</td>
         <td class="audit-game"><strong>${esc(row.game)}</strong><small>${esc(row.eventId)}</small></td>
         <td class="audit-tier-cell gold">${mediaCell(tiers.gold,'gold')}</td>
         <td class="audit-tier-cell green">${mediaCell(tiers.green,'green')}</td>
@@ -343,7 +353,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.5 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.6 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);
