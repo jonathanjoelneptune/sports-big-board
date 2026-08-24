@@ -1,4 +1,4 @@
-/* v4.0.4 API-origin bridge.
+/* v4.1.0 API-origin bridge.
    Lets the static frontend live on GitHub Pages while every /api request is
    routed to the persistent Sports Big Board cloud backend. */
 (() => {

@@ -24,7 +24,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertLess(block.index('const assoc=data.associations||{};'),block.index('assoc.assignedLinks'))
 
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=4.0.4','architecture/score-date-store.js?v=4.0.4','architecture/event-identity.js?v=4.0.4','architecture/media-scope.js?v=4.0.4','architecture/media-classifier.js?v=4.0.4','architecture/playback-transports.js?v=4.0.4','architecture/provider-health.js?v=4.0.4','architecture/sport-media-policy.js?v=4.0.4','architecture/media-manifest.js?v=4.0.4','architecture/media-resolver.js?v=4.0.4','architecture/game-center-policy.js?v=4.0.4','architecture/selected-event-store.js?v=4.0.4','architecture/game-center-contract.js?v=4.0.4','architecture/media-work-priorities.js?v=4.0.4','architecture/editorial-packages.js?v=4.0.4','ui/player-visibility.js?v=4.0.4','ui/info-drawer.js?v=4.0.4','ui/settings-view.js?v=4.0.4','ui/history-audit.js?v=4.0.4','ui/game-center-view.js?v=4.0.4','app.js?v=4.0.4']
+        ordered=['core-model.js?v=4.1.0','architecture/score-date-store.js?v=4.1.0','architecture/event-identity.js?v=4.1.0','architecture/media-scope.js?v=4.1.0','architecture/media-classifier.js?v=4.1.0','architecture/playback-transports.js?v=4.1.0','architecture/provider-health.js?v=4.1.0','architecture/sport-media-policy.js?v=4.1.0','architecture/media-manifest.js?v=4.1.0','architecture/media-resolver.js?v=4.1.0','architecture/game-center-policy.js?v=4.1.0','architecture/selected-event-store.js?v=4.1.0','architecture/game-center-contract.js?v=4.1.0','architecture/media-work-priorities.js?v=4.1.0','architecture/editorial-packages.js?v=4.1.0','ui/player-visibility.js?v=4.1.0','ui/info-drawer.js?v=4.1.0','ui/settings-view.js?v=4.1.0','ui/history-audit.js?v=4.1.0','ui/game-center-view.js?v=4.1.0','app.js?v=4.1.0']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -381,8 +381,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v4.0.4 — score ribbon recovery',STYLES)
-        self.assertIn('v4.0.4 — historical Date Browser',STYLES)
+        self.assertIn('v4.1.0 — score ribbon recovery',STYLES)
+        self.assertIn('v4.1.0 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -391,7 +391,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v4.0.4 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v4.1.0 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -554,7 +554,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v4.0.4',STYLES)
+        self.assertNotIn('\\n\\n/* v4.1.0',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)
@@ -854,9 +854,9 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('def green_gap_events',repo)
         self.assertIn("has_green",repo)
         self.assertIn("has_blue",repo)
-        self.assertIn('def history_green_gap_worker():',SERVER)
-        self.assertIn('target=history_green_gap_worker',SERVER)
-        self.assertIn("_history_console_log('green-gap'",SERVER)
+        self.assertIn('def history_green_gap_worker(worker_index=1):',SERVER)
+        self.assertIn('target=history_green_gap_worker,args=(worker_index,)',SERVER)
+        self.assertIn("_history_console_log(worker_name",SERVER)
         self.assertIn('allow_search_rescue=allow_rescue',SERVER)
 
     def test_v306_authoritative_event_story_can_promote_to_green(self):
@@ -878,6 +878,14 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('Search Console endpoint missing',AUDIT)
         self.assertIn('Expected backend:',workflow)
         self.assertIn('Version mismatch: expected backend',deploy)
+
+    def test_v410_bounded_green_pool_and_audit_worker_observability(self):
+        self.assertIn('SBB_GREEN_WORKERS',SERVER)
+        self.assertIn('def claim_event', (ROOT/'sbb/history_repository.py').read_text(encoding='utf-8'))
+        self.assertIn('HISTORY_PROVIDER_SEMAPHORES',SERVER)
+        self.assertIn('target=history_green_gap_worker,args=(worker_index,)',SERVER)
+        self.assertIn('id="historySearchWorkerGrid"',INDEX)
+        self.assertIn('greenPool',AUDIT); self.assertIn('providerConcurrency',AUDIT); self.assertIn('[SILVER]',AUDIT)
 
     def test_v307_green_gap_worker_accepts_legacy_historical_rows_and_mlb_rescue(self):
         self.assertIn('def _history_gap_event_ready',SERVER)

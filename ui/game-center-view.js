@@ -1,4 +1,4 @@
-/* v4.0.4 Game Center renderer. Consumes SelectedEvent + normalized data only. */
+/* v4.1.0 Game Center renderer. Consumes SelectedEvent + normalized data only. */
 (() => {
   const $=id=>document.getElementById(id);
   let selected=null,data=null,requestToken=0,pollTimer=null,requestAbort=null,activeSection='overview',playsMode='scoring',activePlayerSide='away';

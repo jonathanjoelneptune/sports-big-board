@@ -277,7 +277,40 @@ class HistoryV4BaselineTests(unittest.TestCase):
         self.assertIn("MIGRATION_BACKUP",deploy); self.assertIn("Restored pre-deploy history catalog",deploy)
 
 
-if __name__=='__main__': unittest.main()
+
+    def test_v410_durable_event_lease_prevents_duplicate_worker_claims(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"scoreEventId":"evt-lease","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}
+            repo.upsert_event("2026-08-20","NBA","evt-lease",event)
+            key=repo.canonical_event_key("NBA","evt-lease"); now=time.time()
+            self.assertTrue(repo.claim_event(key,"green-gap-1",lease_seconds=300,now=now))
+            self.assertFalse(repo.claim_event(key,"green-gap-2",lease_seconds=300,now=now+1))
+            self.assertEqual(repo.green_gap_events(current_discovery_version=13,now=now+2),[])
+            summary=repo.green_gap_summary(current_discovery_version=13,now=now+2)
+            self.assertEqual(summary["claimed"],1); self.assertEqual(summary["availableDue"],0)
+            claims=repo.active_event_claims(now=now+2); self.assertEqual(claims[0]["owner"],"green-gap-1")
+            self.assertTrue(repo.release_event_claim(key,"green-gap-1"))
+            self.assertTrue(repo.claim_event(key,"green-gap-2",lease_seconds=300,now=now+3))
+
+    def test_v410_expired_event_lease_is_recoverable_after_worker_crash(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"scoreEventId":"evt-expire","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"},"completed":True}
+            repo.upsert_event("2026-08-19","NFL","evt-expire",event); key=repo.canonical_event_key("NFL","evt-expire"); now=time.time()
+            self.assertTrue(repo.claim_event(key,"dead-worker",lease_seconds=30,now=now))
+            self.assertTrue(repo.claim_event(key,"replacement-worker",lease_seconds=30,now=now+31))
+            self.assertEqual(repo.active_event_claims(now=now+31)[0]["owner"],"replacement-worker")
+
+    def test_v410_silver_summary_exposes_daily_and_weekly_inventory(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            repo.put_collection_media("DAY_LEAGUE","NBA","2026-08-20",[{"youtubeId":"daily1234567","title":"NBA Nightly Recap August 20 2026","verifiedPlayable":True}],collection_kind="DAILY_RECAP")
+            repo.put_collection_media("WEEK_LEAGUE","NFL","2026-W34",[{"youtubeId":"weekly123456","title":"NFL Week 34 Recap 2026","verifiedPlayable":True}],collection_kind="WEEKLY_RECAP")
+            summary=repo.silver_summary()
+            self.assertEqual(summary["dayCollections"],1); self.assertEqual(summary["weekCollections"],1)
+            self.assertEqual(summary["dayAssets"],1); self.assertEqual(summary["weekAssets"],1); self.assertEqual(summary["totalAssets"],2)
+
 
 class EventAssociationV402Tests(unittest.TestCase):
     def test_matcher_rejects_wrong_matchup_even_with_copied_event_id(self):
@@ -325,7 +358,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
             repo.put_scores("2026-08-22","MLS",[event])
-            # Simulate a pre-v4.0.4 assigned row by directly inserting source/link.
+            # Simulate a pre-v4.1.0 assigned row by directly inserting source/link.
             wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
             repo.put_source_media([wrong],league="MLS",date="2026-08-22")
             import sqlite3 as _sqlite3, time as _time, json as _json
@@ -338,3 +371,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             self.assertEqual(repo.event_media("2026-08-22","MLS","761748"),[])
             con=_sqlite3.connect(Path(td)/"history.sqlite3")
             self.assertIsNotNone(con.execute("SELECT 1 FROM history_source_media WHERE asset_key=?",(key,)).fetchone()); con.close()
+
+if __name__=='__main__': unittest.main()
+
+if __name__=='__main__': unittest.main()

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sports Big Board v4.0.4 local/cloud backend.
+"""Sports Big Board v4.1.0 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
@@ -41,7 +41,7 @@ from sbb.event_matcher import match_event as match_media_to_event
 from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
 from sbb.secrets import get_secret, set_secrets, status as secrets_status, migrate_legacy as migrate_legacy_secrets, SECRETS_FILE
 
-APP_VERSION = "4.0.4"
+APP_VERSION = "4.1.0"
 PORT = int(os.environ.get("PORT", "8080"))
 BIND_HOST = os.environ.get("SBB_BIND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -73,7 +73,7 @@ OPENAI_KEY_FILE = STATE_DIR / "openai-key"
 OPENAI_API_BASE = "https://api.openai.com/v1"
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
 YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
-YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.0.4", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
+YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.0", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
 
 def youtube_fetch_json(url, timeout=10):
     """Operation-aware YouTube broker.
@@ -142,7 +142,7 @@ HISTORY_DISCOVERY_VERSION = 13
 # from playability so finding a blue/green asset never prematurely ends indexing.
 HISTORY_TIER_PRIORITY = {"gold":4,"green":3,"extended":2,"blue":1}
 HISTORY_TIER_ORDER = ("gold","green","extended","blue")
-# v4.0.4 separates source exhaustion from media-quality satisfaction. A playable
+# v4.1.0 separates source exhaustion from media-quality satisfaction. A playable
 # Blue/Purple/Green asset is retained and remains instantly usable, but the event
 # stays upgrade-eligible until a Gold package is found. Retry cadence is deliberately
 # gentle for old dates so the always-on cloud catalog improves without hammering
@@ -150,17 +150,69 @@ HISTORY_TIER_ORDER = ("gold","green","extended","blue")
 HISTORY_QUALITY_TARGET_TIER = "gold"
 HISTORY_UPGRADE_RETRY_RECENT = {"blue":30*60,"extended":2*60*60,"green":12*60*60}
 HISTORY_UPGRADE_RETRY_ARCHIVE = {"blue":2*60*60,"extended":12*60*60,"green":3*24*60*60}
-# v4.0.4 adds a dedicated Green-gap worker. Normal date backfill keeps walking the
-# archive, while this queue explicitly revisits games whose best verified asset is
-# Blue/Purple/None and tries the authoritative recap lanes again. It is deliberately
-# quota-light and can run while the website is open.
-HISTORY_GREEN_GAP_STATE = {"running":False,"lastRun":0.0,"lastDate":"","lastLeague":"","lastEventId":"","lastBestTier":"","lastResultTier":"","lastError":"","attempts":0,"upgradedToGreen":0}
-HISTORY_GREEN_GAP_INTERVAL = max(20,int(os.environ.get("SBB_HISTORY_GREEN_GAP_INTERVAL","45")))
+# v4.1.0 adds a bounded Green-gap worker pool. Normal date backfill keeps walking
+# the archive while up to three leased event workers revisit Blue/Purple/None games.
+# Provider concurrency remains centrally bounded and same-day catalogs single-flight.
+HISTORY_GREEN_GAP_STATE = {"running":False,"lastRun":0.0,"lastDate":"","lastLeague":"","lastEventId":"","lastBestTier":"","lastResultTier":"","lastError":"","attempts":0,"upgradedToGreen":0,"candidatePromotions":0}
+# v4.1.0 bounded concurrency: SEARCH uses the full pool, BALANCED keeps one Green
+# worker, PLAYBACK pauses all historical work. Claims are durable SQLite leases so
+# multiple threads/process restarts cannot work the same canonical Event ID.
+HISTORY_GREEN_WORKERS = max(1,min(6,int(os.environ.get("SBB_GREEN_WORKERS","3") or 3)))
+HISTORY_GREEN_LEASE_SECONDS = max(90,int(os.environ.get("SBB_GREEN_LEASE_SECONDS","600") or 600))
+HISTORY_GREEN_SEARCH_INTERVAL = max(2,int(os.environ.get("SBB_GREEN_SEARCH_INTERVAL","8") or 8))
+HISTORY_GREEN_BALANCED_INTERVAL = max(10,int(os.environ.get("SBB_GREEN_BALANCED_INTERVAL","45") or 45))
+HISTORY_GREEN_GAP_INTERVAL = HISTORY_GREEN_BALANCED_INTERVAL  # compatibility alias
+HISTORY_GREEN_STATE_LOCK = threading.RLock()
+HISTORY_GREEN_WORKER_STATE = {}
 HISTORY_GREEN_SEARCH_RESCUE_INTERVAL = max(5*60,int(os.environ.get("SBB_HISTORY_GREEN_SEARCH_RESCUE_INTERVAL","1200") or 1200))
 HISTORY_GREEN_SEARCH_RESCUE_STATE = {"lastAt":0.0}
+HISTORY_GREEN_SEARCH_RESCUE_LOCK = threading.RLock()
+
+# Provider concurrency is centralized. More event workers must not multiply the
+# pressure on scarce APIs. The worker console exposes active/waiting counts.
+HISTORY_PROVIDER_LIMITS = {
+    "native":max(1,int(os.environ.get("SBB_PROVIDER_NATIVE_CONCURRENCY","3") or 3)),
+    "mlb":max(1,int(os.environ.get("SBB_PROVIDER_MLB_CONCURRENCY","2") or 2)),
+    "youtube":max(1,int(os.environ.get("SBB_PROVIDER_YOUTUBE_CONCURRENCY","2") or 2)),
+    "youtube-search":1,
+    "web":max(1,int(os.environ.get("SBB_PROVIDER_WEB_CONCURRENCY","2") or 2)),
+    "nfl":max(1,int(os.environ.get("SBB_PROVIDER_NFL_CONCURRENCY","2") or 2)),
+    "highlightly":1,
+}
+HISTORY_PROVIDER_SEMAPHORES={k:threading.BoundedSemaphore(v) for k,v in HISTORY_PROVIDER_LIMITS.items()}
+HISTORY_PROVIDER_STATE_LOCK=threading.RLock()
+HISTORY_PROVIDER_STATE={k:{"limit":v,"active":0,"waiting":0,"waitSeconds":0.0,"acquires":0} for k,v in HISTORY_PROVIDER_LIMITS.items()}
+HISTORY_WORKER_LOCAL=threading.local()
+HISTORY_SINGLEFLIGHT_GUARD=threading.RLock()
+HISTORY_SINGLEFLIGHT_LOCKS={}
+HISTORY_SHARED_CATALOG_CACHE={}
+
+def _history_singleflight_lock(key):
+    key=str(key or '')
+    with HISTORY_SINGLEFLIGHT_GUARD:
+        return HISTORY_SINGLEFLIGHT_LOCKS.setdefault(key,threading.Lock())
+
+def _history_singleflight_call(key,fn):
+    if not key: return fn()
+    with _history_singleflight_lock(key): return fn()
+
+def _history_shared_catalog(key,fn,ttl=180):
+    """Single-flight a reusable league/day catalog and retain it briefly in RAM."""
+    key=str(key or ''); now=time.time()
+    if not key: return fn()
+    with _history_singleflight_lock('catalog:'+key):
+        cached=HISTORY_SHARED_CATALOG_CACHE.get(key)
+        if cached and now-float(cached[0] or 0)<max(5,float(ttl or 180)):
+            return copy.deepcopy(cached[1])
+        value=fn()
+        HISTORY_SHARED_CATALOG_CACHE[key]=(time.time(),copy.deepcopy(value))
+        # Bound memory: these are short-lived day catalogs, not a second database.
+        if len(HISTORY_SHARED_CATALOG_CACHE)>128:
+            for old_key,_ in sorted(HISTORY_SHARED_CATALOG_CACHE.items(),key=lambda kv:float(kv[1][0] or 0))[:32]: HISTORY_SHARED_CATALOG_CACHE.pop(old_key,None)
+        return value
 HISTORY_BACKGROUND_MEDIA_PAUSE_SECONDS = max(2,int(os.environ.get("SBB_HISTORY_BACKGROUND_MEDIA_PAUSE_SECONDS","8")))
 HISTORY_BACKGROUND_INTERACTIVE_PAUSE_SECONDS = max(1,int(os.environ.get("SBB_HISTORY_BACKGROUND_INTERACTIVE_PAUSE_SECONDS","3")))
-# v4.0.4 exposes an operator-controlled resource mode in the live Search Console.
+# v4.1.0 exposes an operator-controlled resource mode in the live Search Console.
 # SEARCH dedicates the server to historical discovery and suspends playback/media
 # staging. PLAYBACK freezes background/foreground media discovery. BALANCED keeps
 # the normal behavior where search yields briefly to active playback. The setting
@@ -206,7 +258,7 @@ SERVER_STARTED_AT = time.time()
 HISTORY_CONSOLE_LOCK = threading.RLock()
 HISTORY_CONSOLE_LINES = deque(maxlen=320)
 HISTORY_WORKER_HEALTH = {
-    "green-gap":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
+    **{f"green-gap-{i}":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""} for i in range(1,HISTORY_GREEN_WORKERS+1)},
     "date-backfill":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
 }
 
@@ -228,8 +280,50 @@ def _history_worker_beat(worker, phase=None, current=None, progress=False, block
 
 def _history_threads_status():
     names={t.name:bool(t.is_alive()) for t in threading.enumerate()}
-    expected=("sbb-history-backfill","sbb-history-green-gap")
+    expected=["sbb-history-backfill",*[f"sbb-history-green-gap-{i}" for i in range(1,HISTORY_GREEN_WORKERS+1)]]
     return [{"name":name,"alive":bool(names.get(name))} for name in expected]
+
+def _history_green_worker_enabled(worker_index):
+    mode=_history_work_mode()
+    if mode=='playback': return False,'playback-priority'
+    if mode=='balanced' and int(worker_index)>1: return False,'balanced-worker-limit'
+    return True,''
+
+def _history_provider_key(lane_name):
+    lane=str(lane_name or '')
+    if lane=='youtube-official-day-search': return 'youtube-search'
+    if lane.startswith('youtube-official'): return 'youtube'
+    if lane.startswith('youtube-public'): return 'web'
+    if lane=='mlb-official': return 'mlb'
+    if lane=='nfl-feed': return 'nfl'
+    return 'native'
+
+def _history_provider_call(provider, fn):
+    provider=str(provider or 'native'); sem=HISTORY_PROVIDER_SEMAPHORES.get(provider) or HISTORY_PROVIDER_SEMAPHORES['native']
+    started=time.time(); worker_name=str(getattr(HISTORY_WORKER_LOCAL,'name','') or '')
+    if worker_name.startswith('green-gap-'):
+        _green_worker_patch(worker_name,phase=f'provider-wait:{provider}',provider=provider,providerWaitStartedAt=started)
+        _history_worker_beat(worker_name,f'provider-wait:{provider}')
+    with HISTORY_PROVIDER_STATE_LOCK:
+        st=HISTORY_PROVIDER_STATE.setdefault(provider,{"limit":1,"active":0,"waiting":0,"waitSeconds":0.0,"acquires":0}); st['waiting']=int(st.get('waiting') or 0)+1
+    sem.acquire(); waited=max(0.0,time.time()-started)
+    with HISTORY_PROVIDER_STATE_LOCK:
+        st=HISTORY_PROVIDER_STATE[provider]; st['waiting']=max(0,int(st.get('waiting') or 0)-1); st['active']=int(st.get('active') or 0)+1; st['waitSeconds']=float(st.get('waitSeconds') or 0)+waited; st['acquires']=int(st.get('acquires') or 0)+1
+    if worker_name.startswith('green-gap-'):
+        _green_worker_patch(worker_name,phase=f'provider:{provider}',provider=provider,providerWaitSeconds=round(waited,3))
+        _history_worker_beat(worker_name,f'provider:{provider}')
+    try:
+        return fn(),waited
+    finally:
+        with HISTORY_PROVIDER_STATE_LOCK:
+            st=HISTORY_PROVIDER_STATE[provider]; st['active']=max(0,int(st.get('active') or 0)-1)
+        sem.release()
+        if worker_name.startswith('green-gap-'):
+            _green_worker_patch(worker_name,phase='discovering',provider='')
+            _history_worker_beat(worker_name,'discovering')
+
+def _history_provider_status():
+    with HISTORY_PROVIDER_STATE_LOCK: return copy.deepcopy(HISTORY_PROVIDER_STATE)
 HISTORY_SCORE_FETCH_LOCK = threading.RLock()
 HISTORY_SCORE_FETCH_LOCKS = {}
 # Browsing a past date is foreground work. Keep that focus server-side so today's
@@ -577,7 +671,7 @@ def _prewarm_highlightly_call(sport_key,endpoint,date,timezone_value="",force=Fa
     if RATE_LIMIT_STATE.get("limited") and limited_since and time.time()-limited_since < 15*60:
         return cached
     url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.0.4"})
+    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.0"})
     try:
         with urlopen(req,timeout=15) as resp:
             data=json.loads(resp.read().decode("utf-8"))
@@ -1138,7 +1232,7 @@ def openai_api_request(path, payload=None, method=None, timeout=20):
         raise RuntimeError("OPENAI_NOT_CONFIGURED")
     method=method or ("POST" if payload is not None else "GET")
     body=None if payload is None else json.dumps(payload).encode("utf-8")
-    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.0.4"}
+    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.0"}
     req=Request(f"{OPENAI_API_BASE}{path}",data=body,headers=headers,method=method)
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -1514,7 +1608,7 @@ def _decorate_recap_tier(item):
     conf=_narrated_recap_confidence(row.get('title'),row.get('description'),row.get('sourceLabel') or row.get('source'),duration)
     row['commentaryConfidence']=conf
     row['commentaryLikely']=conf>=0.85
-    # v4.0.4: one server-side classifier owns Gold/Green/Purple/Blue.
+    # v4.1.0: one server-side classifier owns Gold/Green/Purple/Blue.
     return annotate_media_tier(row)
 
 def _youtube_game_result(game, date):
@@ -1673,7 +1767,7 @@ def _google_news_official_results(league):
     site_clause=' OR '.join(f'site:{d}' for d in sorted(trusted_domains))
     query=f'({terms}) ({site_clause}) {league} when:5d'
     url='https://news.google.com/rss/search?'+urlencode({'q':query,'hl':'en-US','gl':'US','ceid':'US:en'})
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.0.4'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.0'})
     try:
         with urlopen(req,timeout=10) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -1732,7 +1826,7 @@ def _espn_rss_results(league):
     """First-party ESPN headline feed. ESPN explicitly publishes these RSS feeds for aggregators."""
     league=str(league or '').upper(); url=ESPN_RSS.get(league)
     if not url: return []
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.0.4'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.0'})
     try:
         with urlopen(req,timeout=8) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -1837,7 +1931,7 @@ def _espn_video_media_url(video):
             if isinstance(v,str) and v.startswith('http'): return v
         return ''
     if isinstance(source,dict):
-        # v4.0.4: ESPN's mezzanine asset is frequently the largest/highest-
+        # v4.1.0: ESPN's mezzanine asset is frequently the largest/highest-
         # bitrate encode. It looked great but was a poor default for a localhost
         # streaming app on mobile and caused avoidable rebuffering. Prefer the
         # normal/full or HD delivery encode and keep mezzanine as a last MP4
@@ -1978,7 +2072,7 @@ def _nfl_team_site_video_results(date, away, home, max_items=8):
     for host in hosts:
         page=f'https://{host}/video/'
         try:
-            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.0.4'})
+            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.0'})
             with urlopen(req,timeout=8) as resp: raw=resp.read().decode('utf-8','ignore')
         except Exception as exc:
             print(f'[SBB NFL] club video page failed {host}: {type(exc).__name__}: {exc}',flush=True); continue
@@ -2126,7 +2220,7 @@ def _espn_generic_soccer_event_matches(ev,league_key):
 def _espn_scoreboard(league,date,tz_value="",utc_offset_minutes=None):
     """Return one viewer-calendar day from a redundant ESPN transport set.
 
-    v4.0.4 deliberately treats score/schedule identity as infrastructure rather
+    v4.1.0 deliberately treats score/schedule identity as infrastructure rather
     than media metadata.  MLB still has MLB Stats as its main path in the browser;
     NFL/NBA/NHL/EPL/MLS use this function as a resilient independent authority.
 
@@ -2324,7 +2418,7 @@ def _highlightly_soccer_schedule(league,date):
         "x-rapidapi-key":read_key(),
         "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.0.4"
+        "User-Agent":"SportsBigBoard/4.1.0"
     })
     with urlopen(req,timeout=12) as resp:
         payload=json.loads(resp.read().decode("utf-8"))
@@ -2428,7 +2522,7 @@ def _soccer_diagnostics():
                     "x-rapidapi-key":read_key(),
                     "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
                     "Accept":"application/json",
-                    "User-Agent":"SportsBigBoard/4.0.4"
+                    "User-Agent":"SportsBigBoard/4.1.0"
                 })
                 with urlopen(req,timeout=12) as resp:
                     payload=json.loads(resp.read().decode("utf-8"))
@@ -2860,7 +2954,7 @@ def official_mls_youtube_videos(date, force_refresh=False):
 
 def _generic_rapid_cache_path(league, date, away, home):
     safe=re.sub(r'[^a-z0-9]+','-',f'{league}-{date}-{away}-{home}'.lower()).strip('-')[:140]
-    # v4.0.4 bumps the namespace to flush historical empty/rate-limited results from older builds.
+    # v4.1.0 bumps the namespace to flush historical empty/rate-limited results from older builds.
     return RAPID_CACHE_DIR / f"team_v290_{safe}.json"
 
 def _official_nfl_feed_videos(date, away, home):
@@ -2877,7 +2971,7 @@ def _official_nfl_feed_videos(date, away, home):
         return []
     url=f"https://www.youtube.com/feeds/videos.xml?channel_id={NFL_YOUTUBE_CHANNEL_ID}"
     try:
-        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.0.4"})
+        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.0"})
         with urlopen(req,timeout=9) as resp:
             raw=resp.read()
         root=ET.fromstring(raw)
@@ -2932,7 +3026,7 @@ def _official_nfl_feed_videos(date, away, home):
         }
         out.append(_decorate_recap_tier(row))
 
-    # v4.0.4: the public channel feed proves that a video exists, not that the
+    # v4.1.0: the public channel feed proves that a video exists, not that the
     # owner permits iframe playback. When a YouTube Data API key is available,
     # validate feed candidates before they can outrank team/broadcast search
     # results. This prevents an official-but-non-embeddable NFL upload from
@@ -3066,7 +3160,7 @@ def _youtube_oembed_probe(video_id,timeout=7):
     vid=str(video_id or '').strip()
     if not vid: return None
     url='https://www.youtube.com/oembed?'+urlencode({'url':f'https://www.youtube.com/watch?v={vid}','format':'json'})
-    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.0.4'})
+    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.0'})
     try:
         with urlopen(req,timeout=timeout) as resp:
             if getattr(resp,'status',200)!=200: return None
@@ -3188,7 +3282,7 @@ def _official_youtube_activity_cache_path(league,date):
 def _official_youtube_day_activity_catalog(league,date,force=False):
     """Return verified uploads from one official league channel around a game day.
 
-    This is the primary v4.0.4 historical YouTube lane. activities.list is cheap
+    This is the primary v4.1.0 historical YouTube lane. activities.list is cheap
     and independent of the separate search.list daily bucket. We fetch the official
     channel once per league/date, then batch videos.list all upload ids so every
     game on that slate can reuse the same verified catalog.
@@ -3761,7 +3855,7 @@ def _search_engine_youtube_links(query,max_results=18):
     # normal search result page on a phone connection.
     try:
         url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss','count':max(10,min(30,max_results*2))})
-        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.0.4','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
+        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.0','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
         with urlopen(req,timeout=9) as resp:
             blob=resp.read(1_500_000)
         root=ET.fromstring(blob)
@@ -4138,7 +4232,7 @@ def normalized_rapid_highlights(date, force_refresh=False, force_clips=False):
     return unique
 
 def fetch_json(url, timeout=15):
-    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.0.4"})
+    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.0"})
     with urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
@@ -4756,7 +4850,7 @@ def _football_day_fallback(date, sport_key, timezone_value=""):
     req=Request(url,headers={
         "x-rapidapi-key":key,
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.0.4"
+        "User-Agent":"SportsBigBoard/4.1.0"
     })
     with urlopen(req,timeout=15) as resp:
         data=json.loads(resp.read().decode("utf-8"))
@@ -4893,7 +4987,7 @@ def _openai_program_rank(mode,candidates,favorites=None,local_date=''):
 # PlaybackController remains the sole authority that can make media active.
 MEDIA_FILE_CACHE_DIR = CACHE_DIR / "media-v2529"
 MEDIA_FILE_CACHE_DIR.mkdir(parents=True, exist_ok=True)
-# v4.0.4: four megabytes was not enough runway for some NFL/ESPN MP4s on
+# v4.1.0: four megabytes was not enough runway for some NFL/ESPN MP4s on
 # mobile. Stage a real 16 MB startup window so playback can run locally while
 # the remainder/full file is fetched in the background.
 MEDIA_FILE_CACHE_HEAD_BYTES = int(os.environ.get("SBB_MEDIA_HEAD_BYTES", str(16*1024*1024)))
@@ -4903,7 +4997,7 @@ MEDIA_FILE_CACHE_MAX_BYTES = int(os.environ.get("SBB_MEDIA_CACHE_MAX_BYTES", str
 MEDIA_FILE_CACHE_TTL = int(os.environ.get("SBB_MEDIA_CACHE_TTL", str(3*24*3600)))
 MEDIA_FILE_CACHE_LOCK = threading.RLock()
 MEDIA_WORK_SCHEDULER = MediaWorkScheduler(workers=4, name="sbb-media-work")
-# v4.0.4: Game Center network work gets its own pool so video/media prewarm can
+# v4.1.0: Game Center network work gets its own pool so video/media prewarm can
 # never starve score/stat preparation. Foreground playback remains outside both.
 GAME_CENTER_WORK_SCHEDULER = MediaWorkScheduler(workers=8, name="sbb-game-center-work")
 MEDIA_FILE_CACHE_JOBS = {}
@@ -4975,7 +5069,7 @@ def _media_request_headers(range_value=None,media_url=""):
     host=(urlparse(str(media_url or "")).hostname or "").lower()
     referer="https://www.espn.com/" if ("espn" in host or "akamai" in host) else ("https://www.nfl.com/" if "nfl" in host else "https://www.mlb.com/")
     headers={
-        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.0.4",
+        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.0",
         "Accept":"video/mp4,video/*;q=0.9,*/*;q=0.8",
         "Referer":referer
     }
@@ -5363,7 +5457,7 @@ def _highlightly_game_center(competition,match_id):
 def _highlightly_provider_key(event_id):
     text=str(event_id or "")
     return text[3:] if text.startswith("hl-") else text
-# v4.0.4 Game Center repository ---------------------------------------------
+# v4.1.0 Game Center repository ---------------------------------------------
 # Normalized Game Centers are persistent application data. SQLite is the
 # authoritative local repository; browser clicks normally read localhost only.
 GAME_CENTER_FETCH_LOCKS = {}
@@ -5999,7 +6093,7 @@ def _history_validate_native_asset(item,timeout=6):
     """Positively probe one direct historical media URL before advertising green."""
     row=dict(item or {}); url=str(row.get('mediaUrl') or '').strip()
     if not url: return row
-    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.0.4','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
+    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.0','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
     if 'espn' in url.lower(): headers['Referer']='https://www.espn.com/'
     try:
         req=Request(url,headers=headers)
@@ -6383,7 +6477,7 @@ def _history_event_catalog_state(date,league,row):
 def _history_discover_event(date,league,row,force=False,allow_search_rescue=True):
     """Discover and persist the media manifest for one final event.
 
-    v4.0.4 treats *source exhaustion* and *quality satisfaction* as independent
+    v4.1.0 treats *source exhaustion* and *quality satisfaction* as independent
     dimensions. Blue/Purple/Green assets make an event immediately playable and
     are always retained, but only Gold satisfies the preferred historical quality
     target. Lower-tier events remain upgrade-eligible and are revisited on a gentle
@@ -6437,18 +6531,19 @@ def _history_discover_event(date,league,row,force=False,allow_search_rescue=True
     found=[]; errors=[]; lanes={}
     search_budget_bucket=_history_search_budget_bucket(date,previous_best)
     def lane(name,fn):
-        before=len(found)
+        before=len(found); provider=_history_provider_key(name)
+        shared_key=f"{name}:{league}:{date}" if name in ('mlb-official','youtube-official-uploads','youtube-official-activity','youtube-official-day-search') else ''
         try:
-            rows=fn() or []
+            rows,waited=_history_provider_call(provider,lambda:_history_singleflight_call(shared_key,fn)); rows=rows or []
             if isinstance(rows,list): found.extend(x for x in rows if isinstance(x,dict))
-            lanes[name]={'ok':True,'items':max(0,len(found)-before)}
+            lanes[name]={'ok':True,'items':max(0,len(found)-before),'provider':provider,'providerWaitSeconds':round(float(waited),3)}
             return rows
         except YouTubeRateLimited as exc:
-            lanes[name]={'ok':False,'degraded':True,'error':str(exc),'operation':getattr(exc,'operation','')}
+            lanes[name]={'ok':False,'degraded':True,'error':str(exc),'operation':getattr(exc,'operation',''),'provider':provider}
             errors.append(f'{name}: {exc}')
             return []
         except Exception as exc:
-            lanes[name]={'ok':False,'degraded':True,'error':f'{type(exc).__name__}: {exc}'}
+            lanes[name]={'ok':False,'degraded':True,'error':f'{type(exc).__name__}: {exc}','provider':provider}
             errors.append(f'{name}: {type(exc).__name__}: {exc}')
             return []
 
@@ -6458,9 +6553,12 @@ def _history_discover_event(date,league,row,force=False,allow_search_rescue=True
     lane('official-native',lambda:_history_event_media_no_quota(league,date,row))
     if league=='MLB':
         def mlb_official():
-            all_rows=[]
-            all_rows.extend(normalized_stats_highlights(date,force_refresh=force) or [])
-            all_rows.extend(normalized_rapid_highlights(date,force_refresh=force,force_clips=True) or [])
+            def build_day_catalog():
+                all_rows=[]
+                all_rows.extend(normalized_stats_highlights(date,force_refresh=force) or [])
+                all_rows.extend(normalized_rapid_highlights(date,force_refresh=force,force_clips=True) or [])
+                return all_rows
+            all_rows=_history_shared_catalog(f'mlb-official:{date}',build_day_catalog,ttl=180)
             return [x for x in all_rows if _history_media_matches_row(x,row)]
         lane('mlb-official',mlb_official)
         # MLB's official YouTube channel is extremely deep and publishes both
@@ -6583,7 +6681,15 @@ def _history_discover_day(date,deep=True,only_one_game=False,force=False):
             if free_done and retry_at>now and not _history_event_needs_native_refresh(HISTORY_REPOSITORY.get_league(date,league),row):
                 continue
         _history_set_discovery_state(date,searchedGames=searched,currentLeague=league,currentGame=f'{away} @ {home}'.strip())
-        result=_history_discover_event(date,league,row,force=force,allow_search_rescue=bool(deep and not only_one_game))
+        backfill_claim_key=''; backfill_claim_owner='date-backfill'
+        if only_one_game and event_id:
+            backfill_claim_key=HISTORY_REPOSITORY.canonical_event_key(league,event_id)
+            if not HISTORY_REPOSITORY.claim_event(backfill_claim_key,backfill_claim_owner,lease_seconds=HISTORY_GREEN_LEASE_SECONDS):
+                continue
+        try:
+            result=_history_discover_event(date,league,row,force=force,allow_search_rescue=bool(deep and not only_one_game))
+        finally:
+            if backfill_claim_key: HISTORY_REPOSITORY.release_event_claim(backfill_claim_key,backfill_claim_owner)
         if not result.get('cached'):
             attempts+=1
         searched+=1
@@ -6673,7 +6779,7 @@ def _history_backfill_day(date):
                 mlb_media=[annotate_media_tier(x) for x in (normalized_stats_highlights(date) or []) if isinstance(x,dict)]
                 HISTORY_REPOSITORY.put_media(date,'MLB',mlb_media,merge=True); media_count+=len(mlb_media)
             except Exception as exc: errors.append(f'MLB media: {type(exc).__name__}: {exc}')
-        # v4.0.4 background history uses official/native sources plus the official
+        # v4.1.0 background history uses official/native sources plus the official
         # channel activities catalog. It can therefore build real NBA/NFL/NHL/MLS/EPL
         # playable manifests while idle without spending a single search.list call.
         for lg in ('NFL','NBA','NHL','EPL','MLS'):
@@ -6706,7 +6812,7 @@ def _history_backfill_day(date):
 def _history_background_status():
     """Return whether low-priority catalog work may run right now.
 
-    v4.0.4 adds an explicit operator mode:
+    v4.1.0 adds an explicit operator mode:
       SEARCH   -> discovery owns bandwidth; playback is suspended and never pauses search.
       BALANCED -> current behavior; discovery yields briefly to playback/foreground work.
       PLAYBACK -> all historical discovery workers remain paused until mode changes.
@@ -6742,114 +6848,142 @@ def _history_server_idle():
 
 def _history_green_search_rescue_due():
     now=time.time()
-    return bool(now-float(HISTORY_GREEN_SEARCH_RESCUE_STATE.get('lastAt') or 0)>=HISTORY_GREEN_SEARCH_RESCUE_INTERVAL)
+    with HISTORY_GREEN_SEARCH_RESCUE_LOCK:
+        return bool(now-float(HISTORY_GREEN_SEARCH_RESCUE_STATE.get('lastAt') or 0)>=HISTORY_GREEN_SEARCH_RESCUE_INTERVAL)
+
+def _history_reserve_green_search_rescue():
+    now=time.time()
+    with HISTORY_GREEN_SEARCH_RESCUE_LOCK:
+        if not _youtube_search_available(): return False
+        if now-float(HISTORY_GREEN_SEARCH_RESCUE_STATE.get('lastAt') or 0)<HISTORY_GREEN_SEARCH_RESCUE_INTERVAL: return False
+        HISTORY_GREEN_SEARCH_RESCUE_STATE['lastAt']=now
+        return True
 
 
 def _history_recent_cutoff():
     try: return _client_date_iso(-2,MEDIA_PREWARM_STATE.get('timezone') or '',MEDIA_PREWARM_STATE.get('utcOffsetMinutes'))
     except Exception: return (datetime.now(timezone.utc)-timedelta(days=2)).date().isoformat()
 
-def history_green_gap_worker():
-    """Continuously attack games that still lack a real Green recap.
+def _green_worker_patch(worker_name, **patch):
+    with HISTORY_GREEN_STATE_LOCK:
+        st=HISTORY_GREEN_WORKER_STATE.setdefault(worker_name,{"worker":worker_name,"attempts":0,"upgrades":0,"candidatePromotions":0,"phase":"starting","current":"","claimKey":"","claimStartedAt":0.0,"lastError":"","startedAt":time.time()})
+        st.update(patch)
+        return dict(st)
 
-    v4.0.4 makes the worker observable and removes a legacy completion gate that
-    could silently skip historical event rows whose normalized JSON omitted the
-    provider's final-state fields. The worker records heartbeat, queue depth,
-    current event, per-lane outcomes, provider errors, and actual progress in the
-    Search Console.
+
+def _green_pool_snapshot(now=None):
+    now=float(now or time.time())
+    with HISTORY_GREEN_STATE_LOCK:
+        workers=copy.deepcopy(HISTORY_GREEN_WORKER_STATE); agg=copy.deepcopy(HISTORY_GREEN_GAP_STATE)
+    mode=_history_work_mode(); desired=0 if mode=='playback' else (1 if mode=='balanced' else HISTORY_GREEN_WORKERS)
+    active=sum(1 for st in workers.values() if str(st.get('phase') or '').startswith(('discovering','claiming','provider')))
+    uptime=max(1.0,now-float(agg.get('startedAt') or SERVER_STARTED_AT))
+    return {
+        'configured':HISTORY_GREEN_WORKERS,'desired':desired,'active':active,'idle':max(0,HISTORY_GREEN_WORKERS-active),
+        'leaseSeconds':HISTORY_GREEN_LEASE_SECONDS,'workers':workers,
+        'attemptsPerHour':round(float(agg.get('attempts') or 0)*3600.0/uptime,1),
+        'upgradesPerHour':round(float(agg.get('upgradedToGreen') or 0)*3600.0/uptime,1),
+        'candidatePromotionsPerHour':round(float(agg.get('candidatePromotions') or 0)*3600.0/uptime,1),
+    }
+
+
+def history_green_gap_worker(worker_index=1):
+    """One member of the bounded v4.1 Green-gap pool.
+
+    Workers share one priority queue but must win a durable SQLite lease before
+    touching an event. SEARCH enables the full pool, BALANCED only worker 1, and
+    PLAYBACK pauses all members. Provider semaphores remain centralized.
     """
-    time.sleep(18)
-    HISTORY_GREEN_GAP_STATE['running']=True
-    HISTORY_GREEN_GAP_STATE['startedAt']=time.time()
-    _history_worker_beat('green-gap','idle',progress=True)
-    _history_console_log('green-gap','INFO',f'worker started • discovery v{HISTORY_DISCOVERY_VERSION}')
-    last_pause=''
-    last_empty_log=0.0
+    worker_index=max(1,int(worker_index or 1)); worker_name=f'green-gap-{worker_index}'; owner=f'{worker_name}:{os.getpid()}'
+    HISTORY_WORKER_LOCAL.name=worker_name
+    time.sleep(16+worker_index*2)
+    with HISTORY_GREEN_STATE_LOCK:
+        HISTORY_GREEN_GAP_STATE['running']=True
+        HISTORY_GREEN_GAP_STATE.setdefault('startedAt',time.time())
+    _green_worker_patch(worker_name,phase='idle',startedAt=time.time())
+    _history_worker_beat(worker_name,'idle',progress=True)
+    _history_console_log(worker_name,'INFO',f'worker started • pool {worker_index}/{HISTORY_GREEN_WORKERS} • discovery v{HISTORY_DISCOVERY_VERSION}')
+    last_pause=''; last_empty_log=0.0; claim_key=''
     while True:
         try:
-            _history_worker_beat('green-gap','checking')
+            _history_worker_beat(worker_name,'checking')
+            enabled,limit_reason=_history_green_worker_enabled(worker_index)
             bg=_history_background_status()
-            if not bg.get('canWork'):
-                reason=str(bg.get('pauseReason') or 'foreground-work')
-                HISTORY_GREEN_GAP_STATE['pauseReason']=reason
-                _history_worker_beat('green-gap',f'paused:{reason}',blocked=True)
+            if not enabled or not bg.get('canWork'):
+                reason=limit_reason or str(bg.get('pauseReason') or 'foreground-work')
+                _green_worker_patch(worker_name,phase=f'paused:{reason}',current='',claimKey='')
+                _history_worker_beat(worker_name,f'paused:{reason}',current='',blocked=True)
                 if reason!=last_pause:
-                    _history_console_log('green-gap','INFO',f'paused • {reason}')
-                    last_pause=reason
-                time.sleep(5)
-                continue
+                    _history_console_log(worker_name,'INFO',f'paused • {reason}'); last_pause=reason
+                time.sleep(4); continue
             if last_pause:
-                _history_console_log('green-gap','INFO','resumed')
-                last_pause=''
-            HISTORY_GREEN_GAP_STATE['pauseReason']=''
+                _history_console_log(worker_name,'INFO','resumed'); last_pause=''
 
-            qsum=HISTORY_REPOSITORY.green_gap_summary(current_discovery_version=HISTORY_DISCOVERY_VERSION,now=time.time(),recent_cutoff=_history_recent_cutoff())
-            HISTORY_GREEN_GAP_STATE['queue']=qsum
-            gaps=HISTORY_REPOSITORY.green_gap_events(current_discovery_version=HISTORY_DISCOVERY_VERSION,now=time.time(),limit=96,recent_cutoff=_history_recent_cutoff())
-            HISTORY_GREEN_GAP_STATE['candidateBatch']=len(gaps)
-            target=None; skipped=0
+            now=time.time()
+            if worker_index==1:
+                qsum=HISTORY_REPOSITORY.green_gap_summary(current_discovery_version=HISTORY_DISCOVERY_VERSION,now=now,recent_cutoff=_history_recent_cutoff())
+                with HISTORY_GREEN_STATE_LOCK: HISTORY_GREEN_GAP_STATE['queue']=qsum
+            gaps=HISTORY_REPOSITORY.green_gap_events(current_discovery_version=HISTORY_DISCOVERY_VERSION,now=now,limit=96,recent_cutoff=_history_recent_cutoff())
+            target=None; skipped=0; claim_conflicts=0
             for gap in gaps:
-                if _history_gap_event_ready(gap.get('date') or '',gap.get('event') or {}):
-                    target=gap; break
-                skipped+=1
-            HISTORY_GREEN_GAP_STATE['skippedNotReady']=skipped
+                if not _history_gap_event_ready(gap.get('date') or '',gap.get('event') or {}):
+                    skipped+=1; continue
+                key=str(gap.get('canonicalEventKey') or '')
+                if key and HISTORY_REPOSITORY.claim_event(key,owner,lease_seconds=HISTORY_GREEN_LEASE_SECONDS,now=time.time()):
+                    target=gap; claim_key=key; break
+                claim_conflicts+=1
+            _green_worker_patch(worker_name,claimConflicts=int((_green_worker_patch(worker_name).get('claimConflicts') or 0)+claim_conflicts),skippedNotReady=skipped)
             if not target:
-                _history_worker_beat('green-gap','waiting:no-due-ready-event',blocked=bool(gaps))
-                if gaps and time.time()-last_empty_log>60:
-                    _history_console_log('green-gap','WARN',f'{len(gaps)} due gap rows but none looked completed/ready • skipped={skipped}',queue=qsum)
+                _green_worker_patch(worker_name,phase='waiting:no-unclaimed-due-event',current='',claimKey='')
+                _history_worker_beat(worker_name,'waiting:no-unclaimed-due-event',current='',blocked=bool(gaps))
+                if time.time()-last_empty_log>90:
+                    _history_console_log(worker_name,'INFO',f'no unclaimed due event right now • candidates={len(gaps)} • claim-conflicts={claim_conflicts}')
                     last_empty_log=time.time()
-                elif not gaps and time.time()-last_empty_log>180:
-                    _history_console_log('green-gap','INFO','no due Green-gap event right now',queue=qsum)
-                    last_empty_log=time.time()
-                time.sleep(45 if gaps else 120)
-                continue
+                time.sleep(6 if gaps else 30); continue
 
-            date=str(target.get('date') or '')[:10]
-            league=str(target.get('league') or '').upper()
-            event_id=str(target.get('eventId') or '')
-            row=dict(target.get('event') or {})
-            before=str(target.get('bestTier') or 'none')
+            date=str(target.get('date') or '')[:10]; league=str(target.get('league') or '').upper(); event_id=str(target.get('eventId') or '')
+            row=dict(target.get('event') or {}); before=str(target.get('bestTier') or 'none')
             current=f'{date} {league} {event_id} {_history_team_name(row,"away")} @ {_history_team_name(row,"home")}'.strip()
-            allow_rescue=bool(before in ('blue','none','extended') and _history_green_search_rescue_due() and _youtube_search_available())
-            HISTORY_GREEN_GAP_STATE.update({'current':current,'currentStartedAt':time.time(),'searchRescueAllowed':allow_rescue})
-            _history_worker_beat('green-gap','discovering',current=current)
-            _history_console_log('green-gap','INFO',f'searching {current} • best={before.upper()} • search-rescue={"YES" if allow_rescue else "NO"}')
+            allow_rescue=bool(before in ('blue','none','extended') and _history_reserve_green_search_rescue())
+            claim_started=time.time()
+            _green_worker_patch(worker_name,phase='discovering',current=current,currentStartedAt=claim_started,claimKey=claim_key,claimStartedAt=claim_started,searchRescueAllowed=allow_rescue)
+            _history_worker_beat(worker_name,'discovering',current=current)
+            _history_console_log(worker_name,'INFO',f'searching {current} • best={before.upper()} • search-rescue={"YES" if allow_rescue else "NO"}')
 
             result=_history_discover_event(date,league,row,force=False,allow_search_rescue=allow_rescue)
-            if allow_rescue:
-                HISTORY_GREEN_SEARCH_RESCUE_STATE['lastAt']=time.time()
             after=str(result.get('bestTier') or _history_best_tier(result.get('playable') or []) or 'none')
             upgraded=bool(after in ('green','gold') and before not in ('green','gold'))
+            promoted=int(result.get('candidatePromotedItems') or (1 if result.get('candidatePromoted') else 0))
             lane_parts=[]
-            if result.get('candidatePromoted'):
-                lane_parts.append(f'existing-candidate=VERIFIED(+{int(result.get("candidatePromotedItems") or 1)})')
+            if result.get('candidatePromoted'): lane_parts.append(f'existing-candidate=VERIFIED(+{promoted or 1})')
             for name,info in (result.get('lanes') or {}).items():
-                info=info or {}
-                if info.get('ok'):
-                    lane_parts.append(f'{name}=OK(+{int(info.get("items") or 0)})')
-                else:
-                    err=str(info.get('error') or 'failed')[:120]
-                    lane_parts.append(f'{name}=ERR({err})')
+                info=info or {}; wait=float(info.get('providerWaitSeconds') or 0)
+                suffix=f' wait={wait:.1f}s' if wait>=0.1 else ''
+                if info.get('ok'): lane_parts.append(f'{name}=OK(+{int(info.get("items") or 0)}){suffix}')
+                else: lane_parts.append(f'{name}=ERR({str(info.get("error") or "failed")[:120]}){suffix}')
             err_text=' | '.join(result.get('errors') or [])[:700]
-            HISTORY_GREEN_GAP_STATE.update({
-                'lastRun':time.time(),'lastDate':date,'lastLeague':league,'lastEventId':event_id,
-                'lastBestTier':before,'lastResultTier':after,'lastError':err_text,
-                'lastLanes':result.get('lanes') or {},'current':'','currentStartedAt':0.0,
-                'attempts':int(HISTORY_GREEN_GAP_STATE.get('attempts') or 0)+1,
-                'upgradedToGreen':int(HISTORY_GREEN_GAP_STATE.get('upgradedToGreen') or 0)+(1 if upgraded else 0),
-            })
-            _history_worker_beat('green-gap','sleeping',current='',progress=True)
-            level='INFO' if not err_text else 'WARN'
-            _history_console_log('green-gap',level,f'{current} • {before.upper()}→{after.upper()}'+(' • GREEN+' if upgraded else '')+' • '+' • '.join(lane_parts),errors=err_text)
-            time.sleep(HISTORY_GREEN_GAP_INTERVAL)
+            finished=time.time(); duration=max(0.0,finished-claim_started)
+            with HISTORY_GREEN_STATE_LOCK:
+                HISTORY_GREEN_GAP_STATE.update({'lastRun':finished,'lastDate':date,'lastLeague':league,'lastEventId':event_id,'lastBestTier':before,'lastResultTier':after,'lastError':err_text})
+                HISTORY_GREEN_GAP_STATE['attempts']=int(HISTORY_GREEN_GAP_STATE.get('attempts') or 0)+1
+                HISTORY_GREEN_GAP_STATE['upgradedToGreen']=int(HISTORY_GREEN_GAP_STATE.get('upgradedToGreen') or 0)+(1 if upgraded else 0)
+                HISTORY_GREEN_GAP_STATE['candidatePromotions']=int(HISTORY_GREEN_GAP_STATE.get('candidatePromotions') or 0)+promoted
+            st=_green_worker_patch(worker_name,phase='sleeping',current='',currentStartedAt=0.0,claimKey='',lastRun=finished,lastDate=date,lastLeague=league,lastEventId=event_id,lastBestTier=before,lastResultTier=after,lastError=err_text,lastDurationSeconds=round(duration,2))
+            _green_worker_patch(worker_name,attempts=int(st.get('attempts') or 0)+1,upgrades=int(st.get('upgrades') or 0)+(1 if upgraded else 0),candidatePromotions=int(st.get('candidatePromotions') or 0)+promoted)
+            _history_worker_beat(worker_name,'sleeping',current='',progress=True)
+            _history_console_log(worker_name,'INFO' if not err_text else 'WARN',f'{current} • {before.upper()}→{after.upper()}'+(' • GREEN+' if upgraded else '')+f' • {duration:.1f}s • '+' • '.join(lane_parts),errors=err_text)
+            HISTORY_REPOSITORY.release_event_claim(claim_key,owner); claim_key=''
+            time.sleep(HISTORY_GREEN_SEARCH_INTERVAL if _history_work_mode()=='search' else HISTORY_GREEN_BALANCED_INTERVAL)
         except Exception as exc:
+            if claim_key:
+                try: HISTORY_REPOSITORY.release_event_claim(claim_key,owner)
+                except Exception: pass
+                claim_key=''
             msg=f'{type(exc).__name__}: {exc}'
-            HISTORY_GREEN_GAP_STATE['lastError']=msg
-            HISTORY_GREEN_GAP_STATE['lastExceptionAt']=time.time()
-            _history_worker_beat('green-gap','error',blocked=True)
-            _history_console_log('green-gap','ERROR',msg)
-            time.sleep(30)
-
+            with HISTORY_GREEN_STATE_LOCK: HISTORY_GREEN_GAP_STATE['lastError']=msg
+            _green_worker_patch(worker_name,phase='error',lastError=msg,current='',claimKey='')
+            _history_worker_beat(worker_name,'error',current='',blocked=True)
+            _history_console_log(worker_name,'ERROR',msg); time.sleep(20)
 
 def history_backfill_worker():
     """Continuously walk backward and build a persistent date catalog at low priority."""
@@ -7195,16 +7329,27 @@ class Handler(SimpleHTTPRequestHandler):
                     hb=float(st.get('heartbeat') or 0); lp=float(st.get('lastProgress') or 0)
                     st['heartbeatAgeSeconds']=int(max(0,now-hb)) if hb else None
                     st['progressAgeSeconds']=int(max(0,now-lp)) if lp else None
-                    st['healthy']=bool(hb and now-hb<240)
+                    st['healthy']=bool((hb and now-hb<240) or (not hb and now-SERVER_STARTED_AT<45))
+                green_pool=_green_pool_snapshot(now)
+                pool_states=green_pool.get('workers') or {}
+                for name,pst in pool_states.items():
+                    if name in workers: workers[name].update(pst)
+                green_hbs=[float((workers.get(f'green-gap-{i}') or {}).get('heartbeat') or 0) for i in range(1,HISTORY_GREEN_WORKERS+1)]
+                green_lp=[float((workers.get(f'green-gap-{i}') or {}).get('lastProgress') or 0) for i in range(1,HISTORY_GREEN_WORKERS+1)]
+                workers['green-gap']={'phase':f"pool:{green_pool.get('active',0)}/{green_pool.get('desired',0)}-active",'current':'','heartbeat':max(green_hbs or [0]),'lastProgress':max(green_lp or [0]),'heartbeatAgeSeconds':int(max(0,now-max(green_hbs))) if any(green_hbs) else None,'progressAgeSeconds':int(max(0,now-max(green_lp))) if any(green_lp) else None,'healthy':all(bool((workers.get(f'green-gap-{i}') or {}).get('healthy')) for i in range(1,HISTORY_GREEN_WORKERS+1))}
                 with HISTORY_FOCUS_LOCK: focus=dict(HISTORY_FOCUS_STATE)
                 gateway=YOUTUBE_GATEWAY.status()
                 qsum=HISTORY_REPOSITORY.green_gap_summary(current_discovery_version=HISTORY_DISCOVERY_VERSION,now=now,recent_cutoff=_history_recent_cutoff())
                 associations=HISTORY_REPOSITORY.association_integrity_summary()
+                claims=HISTORY_REPOSITORY.active_event_claims(now=now,limit=32)
+                providers=_history_provider_status()
+                silver=HISTORY_REPOSITORY.silver_summary()
                 problems=[]
                 threads=_history_threads_status()
                 for row in threads:
                     if not row.get('alive'): problems.append(f"thread {row.get('name')} is not alive")
                 for name,st in workers.items():
+                    if name=='green-gap': continue
                     if not st.get('healthy'): problems.append(f"{name} heartbeat stale or missing")
                 bg=_history_background_status()
                 # Normal scheduler yielding (media playback / foreground discovery / brief user action)
@@ -7226,7 +7371,8 @@ class Handler(SimpleHTTPRequestHandler):
                     'deploymentMode':DEPLOYMENT_MODE,'workMode':dict(HISTORY_WORK_MODE_STATE),
                     'playbackSuspended':_history_playback_suspended(),'searchSuspended':_history_search_suspended(),
                     'threads':threads,'workers':workers,'background':bg,
-                    'greenGap':copy.deepcopy(HISTORY_GREEN_GAP_STATE),'greenGapQueue':qsum,'associations':associations,
+                    'greenGap':copy.deepcopy(HISTORY_GREEN_GAP_STATE),'greenPool':green_pool,'greenGapQueue':qsum,'associations':associations,
+                    'eventClaims':claims,'providerConcurrency':providers,'silver':silver,
                     'backfill':copy.deepcopy(HISTORY_BACKFILL_STATE),'activeDiscoveries':active,'focus':focus,
                     'youtubeGateway':gateway,'youtubeSearchBudget':budget_state,
                     'highlightly':{'limited':bool(RATE_LIMIT_STATE.get('limited')),'remaining':RATE_LIMIT_STATE.get('remaining'),'limit':RATE_LIMIT_STATE.get('limit')},
@@ -7371,7 +7517,7 @@ class Handler(SimpleHTTPRequestHandler):
                 "persistentState": bool(STATE_DIR),
                 "rateLimit": {"remaining": RATE_LIMIT_STATE.get("remaining", ""), "limit": RATE_LIMIT_STATE.get("limit", ""), "limited": RATE_LIMIT_STATE.get("limited", False)},
                 "highlightlyRateLimited": RATE_LIMIT_STATE["limited"],
-                "phase": "V4.0.4 NORMALIZED CATALOG + SEARCH CONSOLE",
+                "phase": "V4.1.0 NORMALIZED CATALOG + SEARCH CONSOLE",
                 "workMode":dict(HISTORY_WORK_MODE_STATE),
                 "highlightlyConfigured": bool(key),
                 "youtubeCooldownSeconds":max((row.get("cooldownSeconds",0) for row in YOUTUBE_GATEWAY.status().values()), default=0),
@@ -7683,7 +7829,7 @@ class Handler(SimpleHTTPRequestHandler):
                 flat.setdefault("leagueName",cfg["league"])
                 flat.setdefault("countryCode",cfg.get("countryCode",""))
             url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.0.4"})
+            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.0"})
             cache_name=f"{sport_key}-{endpoint}-v2514" if sport_key in ("epl","mls") else f"{sport_key}-{endpoint}"
 
             # v1.9.1 quota control: proactively reuse a fresh server-side snapshot.
@@ -7817,7 +7963,7 @@ class Handler(SimpleHTTPRequestHandler):
             req = Request(url, headers={
                 "x-rapidapi-key": key,
                 "Accept": "application/json",
-                "User-Agent": "SportsBigBoard/4.0.4"
+                "User-Agent": "SportsBigBoard/4.1.0"
             })
             try:
                 with urlopen(req, timeout=15) as resp:
@@ -7857,7 +8003,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT)
-    print("\nSports Big Board v4.0.4 — normalized catalog + fail-closed event association")
+    print("\nSports Big Board v4.1.0 — normalized catalog + fail-closed event association")
     print(f"Bind: {BIND_HOST}:{PORT} • deployment: {DEPLOYMENT_MODE} • state: {STATE_DIR}")
     if not CLOUD_MODE: print(f"Open: http://localhost:{PORT}")
     print("Highlightly key:", "configured" if read_key() else "NOT CONFIGURED")
@@ -7877,7 +8023,7 @@ if __name__ == "__main__":
         print("Warm editorial cache: empty; first deep refresh will run in background")
     print("Background refresh: source delta every 5 min • OpenAI editorial desk hourly")
     print(f"History catalog: {HISTORY_BACKFILL_DAYS} past days • no-search-quota media backfill {'ON' if HISTORY_BACKFILL_MEDIA else 'OFF'}")
-    print(f"Green-gap queue: ON • one due game about every {HISTORY_GREEN_GAP_INTERVAL}s • search rescue no more than every {HISTORY_GREEN_SEARCH_RESCUE_INTERVAL//60} min")
+    print(f"Green-gap pool: {HISTORY_GREEN_WORKERS} workers in SEARCH • 1 in BALANCED • durable event leases {HISTORY_GREEN_LEASE_SECONDS}s • search rescue no more than every {HISTORY_GREEN_SEARCH_RESCUE_INTERVAL//60} min")
     print(f"Historical quality policy: v{HISTORY_DISCOVERY_VERSION} • Gold > Green > Purple > Blue • lower tiers stay upgrade-eligible")
     print("Media prewarm: browser decoded-player HOT pool + persistent media/Game Center server caches • all-sports discovery remains active")
     print("Press Ctrl+C to stop.\n")
@@ -7904,5 +8050,6 @@ if __name__ == "__main__":
     threading.Thread(target=game_center_refresh_worker,daemon=True,name="sbb-game-center-refresh").start()
     threading.Thread(target=media_prewarm_worker,daemon=True,name="sbb-media-prewarm-worker").start()
     threading.Thread(target=history_backfill_worker,daemon=True,name="sbb-history-backfill").start()
-    threading.Thread(target=history_green_gap_worker,daemon=True,name="sbb-history-green-gap").start()
+    for worker_index in range(1,HISTORY_GREEN_WORKERS+1):
+        threading.Thread(target=history_green_gap_worker,args=(worker_index,),daemon=True,name=f"sbb-history-green-gap-{worker_index}").start()
     ThreadingHTTPServer((BIND_HOST, PORT), Handler).serve_forever()

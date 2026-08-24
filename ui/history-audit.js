@@ -1,7 +1,7 @@
-/* Sports Big Board v4.0.4 historical database audit view. */
+/* Sports Big Board v4.1.0 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.0.4';
+  const FRONTEND_VERSION='4.1.0';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -80,7 +80,22 @@
   }
   function consoleSet(id,text){const el=$(id);if(el)el.textContent=text;}
   function consoleWorkerLine(name,st={}){
-    return `${name}: phase=${String(st.phase||'unknown')} • healthy=${st.healthy?'YES':'NO'} • heartbeat=${ageText(st.heartbeatAgeSeconds)} • progress=${ageText(st.progressAgeSeconds)}${st.current?` • current=${st.current}`:''}`;
+    const bits=[`${name}: phase=${String(st.phase||'unknown')}`,`healthy=${st.healthy?'YES':'NO'}`,`heartbeat=${ageText(st.heartbeatAgeSeconds)}`,`progress=${ageText(st.progressAgeSeconds)}`];
+    if(st.provider)bits.push(`provider=${st.provider}`); if(st.providerWaitSeconds)bits.push(`provider-wait=${Number(st.providerWaitSeconds).toFixed(1)}s`);
+    if(st.claimKey)bits.push(`claim=${st.claimKey}`); if(st.lastDurationSeconds)bits.push(`last=${Number(st.lastDurationSeconds).toFixed(1)}s`); if(st.current)bits.push(`current=${st.current}`);
+    return bits.join(' • ');
+  }
+  function renderWorkerGrid(data){
+    const grid=$('historySearchWorkerGrid');if(!grid)return;grid.innerHTML='';
+    const workers=data?.workers||{}, pool=data?.greenPool||{};
+    const names=[...Array(Number(pool.configured||0)).keys()].map(i=>`green-gap-${i+1}`); names.push('date-backfill');
+    for(const name of names){
+      const st=workers[name]||{}; const phase=String(st.phase||'starting'); const card=document.createElement('div'); card.className='history-search-worker-card';
+      if(phase.startsWith('provider')||phase==='discovering'||phase==='backfilling')card.classList.add('active'); else if(phase.startsWith('paused'))card.classList.add('paused'); else if(phase.includes('wait'))card.classList.add('waiting'); else if(phase==='error')card.classList.add('error');
+      const title=document.createElement('span');title.textContent=name.toUpperCase(); const strong=document.createElement('strong');strong.textContent=phase.replaceAll(':',' / '); const small=document.createElement('small');
+      const detail=[]; if(st.current)detail.push(st.current); if(st.provider)detail.push(`provider ${st.provider}`); if(st.claimKey)detail.push(`lease ${st.claimKey}`); if(st.lastDurationSeconds)detail.push(`last ${Number(st.lastDurationSeconds).toFixed(1)}s`); if(!detail.length)detail.push(`heartbeat ${ageText(st.heartbeatAgeSeconds)}`);
+      small.textContent=detail.join(' • ');card.append(title,strong,small);grid.appendChild(card);
+    }
   }
   function workModeFrom(data){
     const mode=String(data?.workMode?.mode||data?.background?.workMode||window.SBB_RESOURCE_MODE||'balanced').toLowerCase();
@@ -113,7 +128,7 @@
   function consoleFullReport(data){
     const now=new Date(); const backend=String(data?.version||'UNKNOWN'); const discovery=Number(data?.historyDiscoveryVersion||0);
     const threads=data?.threads||[], workers=data?.workers||{}, queue=data?.greenGapQueue||{}, bg=data?.background||{}, g=data?.greenGap||{}, back=data?.backfill||{};
-    const gateway=data?.youtubeGateway||{}, budget=data?.youtubeSearchBudget||{}, hi=data?.highlightly||{}, focus=data?.focus||{}, assoc=data?.associations||{};
+    const gateway=data?.youtubeGateway||{}, budget=data?.youtubeSearchBudget||{}, hi=data?.highlightly||{}, focus=data?.focus||{}, assoc=data?.associations||{}, pool=data?.greenPool||{}, providers=data?.providerConcurrency||{}, claims=data?.eventClaims||[], silver=data?.silver||{};
     const used=Number(budget.used||0), limit=Number(budget.limit||budget.budget||0);
     const rows=[
       'SPORTS BIG BOARD — LIVE SEARCH CONSOLE',
@@ -123,11 +138,15 @@
       '',
       `[STATE] server uptime ${Math.round(Number(data?.uptimeSeconds||0)/60)}m • green attempts ${Number(g.attempts||0)} • green upgrades ${Number(g.upgradedToGreen||0)}`,
       `[THREADS] ${threads.map(x=>`${x.name}=${x.alive?'ALIVE':'DEAD'}`).join(' • ')||'none reported'}`,
-      `[WORKER] ${consoleWorkerLine('green-gap',workers['green-gap']||{})}`,
+      `[GREEN POOL] configured ${Number(pool.configured||0)} • desired ${Number(pool.desired||0)} • active ${Number(pool.active||0)} • attempts/hr ${Number(pool.attemptsPerHour||0)} • upgrades/hr ${Number(pool.upgradesPerHour||0)} • candidate-promotions/hr ${Number(pool.candidatePromotionsPerHour||0)}`,
+      ...Object.keys(workers).filter(k=>/^green-gap-\d+$/.test(k)).sort().map(k=>`[WORKER] ${consoleWorkerLine(k,workers[k]||{})}`),
       `[WORKER] ${consoleWorkerLine('date-backfill',workers['date-backfill']||{})}`,
       `[CATALOG] unindexed ${Number(queue.unindexed||queue.stale_version||0)} • searched-empty ${Number(queue.searched_empty||0)} • coverage-complete ${Number(queue.coverage_complete||0)} • candidate-only ${Number(queue.candidate_only||0)}`,
       `[GAPS] total ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent ${Number(queue.recent_gaps||0)} • blue-only ${Number(queue.blue_only||0)} • purple-only ${Number(queue.purple_only||0)}`,
       `[ASSOCIATIONS] assigned ${Number(assoc.assignedLinks||0)} • quarantined ${Number(assoc.quarantinedLinks||0)} • cross-event ${Number(assoc.crossEventAssets||0)} • team-mismatch ${Number(assoc.teamMismatch||0)} • date-mismatch ${Number(assoc.dateMismatch||0)} • season-mismatch ${Number(assoc.seasonMismatch||0)}`,
+      `[CLAIMS] active ${claims.length}${claims.length?` • ${claims.map(x=>`${x.owner}=${x.canonicalEventKey}`).join(' • ')}`:''}`,
+      `[PROVIDERS] ${Object.entries(providers).map(([k,v])=>`${k} ${Number(v.active||0)}/${Number(v.limit||0)} active${Number(v.waiting||0)?` +${Number(v.waiting)} waiting`:''}`).join(' • ')||'none'}`,
+      `[SILVER] day collections ${Number(silver.dayCollections||0)} / ${Number(silver.dayAssets||0)} assets • week collections ${Number(silver.weekCollections||0)} / ${Number(silver.weekAssets||0)} assets • periods ${Number(silver.periods||0)}`,
       `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')} • lastError=${String(g.lastError||'none')}`,
       `[BACKFILL] ${back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)} • media items ${Number(back.mediaItems||0)} • days ${Number(back.daysCompleted||0)}`:'waiting for first pass'} • lastError=${String(back.lastError||'none')}`,
       `[BACKGROUND] ${bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`} • mediaAge=${Number(bg.mediaAgeSeconds||0)}s • interactiveAge=${Number(bg.interactiveAgeSeconds||0)}s • siteOpenDoesNotPause=${bg.siteOpenDoesNotPause?'YES':'NO'}`,
@@ -196,27 +215,35 @@
     const workMode=workModeFrom(data); applyWorkMode(workMode);
     consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • Backend v${backend} • Discovery v${discovery}`);
     const threads=data.threads||[]; const allThreads=threads.length&&threads.every(x=>x.alive);
-    const gw=(data.workers||{})['green-gap']||{}; const queue=data.greenGapQueue||{}; const bg=data.background||{};
-    const search=(data.youtubeGateway||{}).search||{}; const budget=data.youtubeSearchBudget||{}; const assoc=data.associations||{};
+    const gw=(data.workers||{})['green-gap']||{}; const queue=data.greenGapQueue||{}; const bg=data.background||{}; const pool=data.greenPool||{};
+    const search=(data.youtubeGateway||{}).search||{}; const budget=data.youtubeSearchBudget||{}; const assoc=data.associations||{}; const silver=data.silver||{};
     const problems=[...(data.problems||[])];
     if(!versionOk)problems.unshift(`RELEASE MISMATCH: frontend v${FRONTEND_VERSION} but backend v${backend}`);
     if(discovery<12)problems.unshift(`DISCOVERY MISMATCH: expected v12 but backend reports v${discovery||'?'}`);
     const healthy=versionOk&&discovery>=12&&allThreads&&gw.healthy&&!problems.filter(x=>/thread|heartbeat|mismatch/i.test(x)).length;
     consoleSet('historySearchConsoleOverall',healthy?(workMode==='search'?'SEARCH PRIORITY':(workMode==='playback'?'PLAYBACK PRIORITY':'RUNNING')):(versionOk?'ISSUE DETECTED':'BACKEND VERSION MISMATCH'));
     if(head){if(!versionOk||discovery<11)head.classList.add('mismatch');else if(problems.length)head.classList.add('problem');}
-    consoleSet('historySearchConsoleWorker',`${String(gw.phase||'unknown').replaceAll(':',' / ')} • ${ageText(gw.heartbeatAgeSeconds)}`);
+    consoleSet('historySearchConsoleWorker',`${Number(pool.active||0)}/${Number(pool.desired||0)} active • ${Number(pool.attemptsPerHour||0)}/hr`); renderWorkerGrid(data);
     consoleSet('historySearchConsoleQueue',`${Number(queue.due_now||0).toLocaleString()} due / ${Number(queue.gaps||0).toLocaleString()} gaps`);
     consoleSet('historySearchConsoleBackground',workMode==='search'?'ACTIVE • SEARCH PRIORITY':(workMode==='playback'?'PAUSED • PLAYBACK PRIORITY':(bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`))); if(head&&!bg.canWork&&!problems.length&&workMode==='balanced')head.classList.add('yielding');
     consoleSet('historySearchConsoleYoutube',search.quotaExhausted?'QUOTA EXHAUSTED':(Number(search.cooldownSeconds||0)>0?`COOLDOWN ${Number(search.cooldownSeconds)}s`:'AVAILABLE')); 
     const used=Number(budget.used||0), limit=Number(budget.limit||budget.budget||0); consoleSet('historySearchConsoleBudget',limit?(used>=limit?`EXHAUSTED ${used}/${limit}`:`${used}/${limit} today`):`${used} used`);
+    consoleSet('historySearchConsoleSilver',`${Number(silver.dayAssets||0)} daily • ${Number(silver.weekAssets||0)} weekly`);
     const p=$('historySearchConsoleProblems'); if(p){if(problems.length){p.classList.remove('hidden');p.textContent=problems.join(' • ');}else{p.classList.add('hidden');p.textContent='';}}
     const out=$('historySearchConsoleOutput'); if(out){
-      const g=data.greenGap||{}; const back=data.backfill||{};
+      const g=data.greenGap||{}; const back=data.backfill||{}; const providers=data.providerConcurrency||{}; const claims=data.eventClaims||[];
+      const workerLines=Object.keys(data.workers||{}).filter(k=>/^green-gap-\d+$/.test(k)).sort().map(k=>`[WORKER] ${consoleWorkerLine(k,(data.workers||{})[k]||{})}`);
+      workerLines.push(`[WORKER] ${consoleWorkerLine('date-backfill',(data.workers||{})['date-backfill']||{})}`);
       const header=[
         `[STATE] server uptime ${Math.round(Number(data.uptimeSeconds||0)/60)}m • workers ${allThreads?'alive':'CHECK THREADS'} • green attempts ${Number(g.attempts||0)} • green upgrades ${Number(g.upgradedToGreen||0)}`,
+        `[GREEN POOL] ${Number(pool.active||0)}/${Number(pool.desired||0)} active • configured ${Number(pool.configured||0)} • attempts/hr ${Number(pool.attemptsPerHour||0)} • upgrades/hr ${Number(pool.upgradesPerHour||0)}`,
+        ...workerLines,
         `[CATALOG] unindexed ${Number(queue.unindexed||queue.stale_version||0)} • searched-empty ${Number(queue.searched_empty||0)} • coverage-complete ${Number(queue.coverage_complete||0)} • candidate-only ${Number(queue.candidate_only||0)}`,
       `[GAPS] total ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent ${Number(queue.recent_gaps||0)} • blue-only ${Number(queue.blue_only||0)} • purple-only ${Number(queue.purple_only||0)}`,
       `[ASSOCIATIONS] assigned ${Number(assoc.assignedLinks||0)} • quarantined ${Number(assoc.quarantinedLinks||0)} • cross-event ${Number(assoc.crossEventAssets||0)} • team-mismatch ${Number(assoc.teamMismatch||0)} • date-mismatch ${Number(assoc.dateMismatch||0)} • season-mismatch ${Number(assoc.seasonMismatch||0)}`,
+        `[CLAIMS] active ${claims.length}`,
+        `[PROVIDERS] ${Object.entries(providers).map(([k,v])=>`${k} ${Number(v.active||0)}/${Number(v.limit||0)}${Number(v.waiting||0)?` +${Number(v.waiting)} waiting`:''}`).join(' • ')||'none'}`,
+        `[SILVER] day ${Number(silver.dayCollections||0)} collections / ${Number(silver.dayAssets||0)} assets • week ${Number(silver.weekCollections||0)} collections / ${Number(silver.weekAssets||0)} assets`,
         `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')}`,
         `[BACKFILL] ${back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)}`:'waiting for first pass'}`,
         `[YOUTUBE] search ${search.quotaExhausted?'QUOTA EXHAUSTED':(Number(search.cooldownSeconds||0)>0?'COOLDOWN':'OK')}${search.lastError?' • '+String(search.lastError):''}`,
@@ -237,7 +264,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.0.4 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.0 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);

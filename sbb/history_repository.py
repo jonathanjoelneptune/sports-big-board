@@ -94,6 +94,9 @@ class HistoryRepository:
                     last_success_at REAL NOT NULL DEFAULT 0,
                     next_retry_at REAL NOT NULL DEFAULT 0,
                     last_error TEXT NOT NULL DEFAULT '',
+                    claim_owner TEXT NOT NULL DEFAULT '',
+                    claim_started_at REAL NOT NULL DEFAULT 0,
+                    claim_expires_at REAL NOT NULL DEFAULT 0,
                     created_at REAL NOT NULL DEFAULT 0,
                     updated_at REAL NOT NULL DEFAULT 0,
                     UNIQUE(league, event_id)
@@ -212,6 +215,10 @@ class HistoryRepository:
                 cols={str(r[1]) for r in conn.execute(f"PRAGMA table_info({table})")}
                 if column not in cols: conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {ddl}")
             ensure_column("history_catalog_event","final_at","REAL NOT NULL DEFAULT 0")
+            ensure_column("history_catalog_event","claim_owner","TEXT NOT NULL DEFAULT ''")
+            ensure_column("history_catalog_event","claim_started_at","REAL NOT NULL DEFAULT 0")
+            ensure_column("history_catalog_event","claim_expires_at","REAL NOT NULL DEFAULT 0")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_catalog_event_claim ON history_catalog_event(claim_expires_at,claim_owner)")
             ensure_column("history_source_media","intent_confidence","REAL NOT NULL DEFAULT 0")
             ensure_column("history_source_media","intent_reason","TEXT NOT NULL DEFAULT ''")
             ensure_column("history_collection_media","association_confidence","REAL NOT NULL DEFAULT 0")
@@ -443,7 +450,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.0.4 migration cooldowns already persisted in production.
+        """Release artificial v4.1.0 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -844,6 +851,7 @@ class HistoryRepository:
               SELECT e.*,COALESCE(f.verified_count,0) verified_count,COALESCE(f.has_gold,0) has_gold,COALESCE(f.has_green,0) has_green,COALESCE(f.has_extended,0) has_extended,COALESCE(f.has_blue,0) has_blue
               FROM history_catalog_event e LEFT JOIN flags f ON f.canonical_event_key=e.canonical_event_key
               WHERE COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0
+                AND (COALESCE(e.claim_expires_at,0)<=? OR COALESCE(e.claim_owner,'')='')
                 AND (
                   COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?
                   OR (e.next_retry_at<=? AND (e.last_discovery_at<=0 OR e.last_discovery_at <= ? - CASE WHEN e.event_date>=? THEN ? ELSE ? END))
@@ -856,26 +864,27 @@ class HistoryRepository:
                 WHEN COALESCE(f.verified_count,0)=0 THEN -2 WHEN COALESCE(f.has_blue,0)=1 THEN -1
                 WHEN e.event_date>=? AND COALESCE(f.has_extended,0)=1 THEN 0
                 WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
-                e.event_date DESC,e.last_discovery_at ASC LIMIT ?""",(current,now,now,cutoff,float(recent_cooldown),float(archive_cooldown),current,current,cutoff,cutoff,cutoff,limit)).fetchall()
+                e.event_date DESC,e.last_discovery_at ASC LIMIT ?""",(now,current,now,now,cutoff,float(recent_cooldown),float(archive_cooldown),current,current,cutoff,cutoff,cutoff,limit)).fetchall()
         out=[]
         for row in rows:
             best="blue" if row["has_blue"] else ("extended" if row["has_extended"] else "")
             out.append({"date":row["event_date"],"league":row["league"],"eventId":row["event_id"],"canonicalEventKey":row["canonical_event_key"],"event":self._load_obj(row["event_json"]),
                 "discoveryState":row["discovery_state"],"discovery":self._load_obj(row["discovery_json"]),"nextRetryAt":float(row["next_retry_at"] or 0),"lastDiscoveryAt":float(row["last_discovery_at"] or 0),
-                "verifiedCount":int(row["verified_count"] or 0),"hasBlue":bool(row["has_blue"]),"hasExtended":bool(row["has_extended"]),"bestTier":best or "none"})
+                "verifiedCount":int(row["verified_count"] or 0),"hasBlue":bool(row["has_blue"]),"hasExtended":bool(row["has_extended"]),"bestTier":best or "none",
+                "claimOwner":str(row["claim_owner"] or ""),"claimStartedAt":float(row["claim_started_at"] or 0),"claimExpiresAt":float(row["claim_expires_at"] or 0)})
         return out
 
     def green_gap_summary(self, *, current_discovery_version=0, now=None, recent_cooldown=2*60*60, archive_cooldown=24*60*60, recent_cutoff=""):
         now=float(now or time.time()); current=int(current_discovery_version or 0); cutoff=str(recent_cutoff or time.strftime("%Y-%m-%d",time.gmtime(now-2*86400)))[:10]
         with self._lock, closing(self._connect()) as conn:
-            rows=conn.execute("""SELECT e.canonical_event_key,e.event_date,e.discovery_state,e.discovery_json,e.last_discovery_at,e.next_retry_at,
+            rows=conn.execute("""SELECT e.canonical_event_key,e.event_date,e.discovery_state,e.discovery_json,e.last_discovery_at,e.next_retry_at,e.claim_owner,e.claim_started_at,e.claim_expires_at,
                 SUM(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count,
                 MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) has_gold,
                 MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='green' THEN 1 ELSE 0 END) has_green,
                 MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) has_extended,
                 MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND COALESCE(json_extract(s.asset_json,'$.recapTier'),'blue')='blue' THEN 1 ELSE 0 END) has_blue
               FROM history_catalog_event e LEFT JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key LEFT JOIN history_source_media s ON s.asset_key=em.asset_key GROUP BY e.canonical_event_key""").fetchall()
-        summary={"total":0,"due":0,"recent":0,"recentNoMedia":0,"blueOnly":0,"purpleOnly":0,"unindexed":0,"searchedEmpty":0,"coverageComplete":0,"candidateOnly":0,"staleVersion":0}
+        summary={"total":0,"due":0,"availableDue":0,"claimed":0,"recent":0,"recentNoMedia":0,"blueOnly":0,"purpleOnly":0,"unindexed":0,"searchedEmpty":0,"coverageComplete":0,"candidateOnly":0,"staleVersion":0}
         for row in rows:
             disc=self._load_obj(row["discovery_json"]); version=int(disc.get("discoveryVersion") or 0); verified=int(row["verified_count"] or 0)
             has_good=bool(row["has_gold"] or row["has_green"]); recent=str(row["event_date"])>=cutoff
@@ -893,18 +902,80 @@ class HistoryRepository:
             cooldown=float(recent_cooldown if recent else archive_cooldown)
             stale=bool(version<current)
             due=stale or (float(row["next_retry_at"] or 0)<=now and (float(row["last_discovery_at"] or 0)<=0 or float(row["last_discovery_at"] or 0)<=now-cooldown))
-            if not has_good and due: summary["due"]+=1
-        # v4.0.4 operator-console aliases keep the explicit catalog semantics.
+            if not has_good and due:
+                summary["due"]+=1
+                claimed=bool(str(row["claim_owner"] or "") and float(row["claim_expires_at"] or 0)>now)
+                if claimed: summary["claimed"]+=1
+                else: summary["availableDue"]+=1
+        # v4.1.0 operator-console aliases keep the explicit catalog semantics.
         # "noMedia" was ambiguous because UNINDEXED events can already have Blue
         # or Purple media; expose the actual union under an honest name instead.
         summary.update({
             "unindexedOrEmpty":summary["unindexed"]+summary["searchedEmpty"],"recentGaps":summary["recent"],
-            "gaps":summary["total"],"due_now":summary["due"],"recent_gaps":summary["recent"],"recent_no_media":summary["recentNoMedia"],
+            "gaps":summary["total"],"due_now":summary["due"],"available_due":summary["availableDue"],"claimed":summary["claimed"],"recent_gaps":summary["recent"],"recent_no_media":summary["recentNoMedia"],
             "blue_only":summary["blueOnly"],"purple_only":summary["purpleOnly"],"stale_version":summary["staleVersion"],
             "searched_empty":summary["searchedEmpty"],"coverage_complete":summary["coverageComplete"],"candidate_only":summary["candidateOnly"],
             "unindexed_or_empty":summary["unindexed"]+summary["searchedEmpty"],
         })
         return summary
+
+    def claim_event(self, canonical_event_key, owner, *, lease_seconds=300, now=None):
+        """Atomically lease one canonical event to a worker.
+
+        Claims survive thread crashes and process restarts only until their expiry;
+        no discovery worker is allowed to own the same event concurrently.
+        """
+        key=str(canonical_event_key or ""); owner=str(owner or "")[:120]; now=float(now or time.time())
+        if not key or not owner: return False
+        expires=now+max(30,float(lease_seconds or 300))
+        with self._lock, closing(self._connect()) as conn:
+            conn.execute("BEGIN IMMEDIATE")
+            cur=conn.execute("""UPDATE history_catalog_event SET claim_owner=?,claim_started_at=?,claim_expires_at=?,updated_at=?
+              WHERE canonical_event_key=? AND (COALESCE(claim_expires_at,0)<=? OR COALESCE(claim_owner,'')='' OR claim_owner=?)""",
+              (owner,now,expires,now,key,now,owner))
+            ok=bool(cur.rowcount==1); conn.commit()
+        return ok
+
+    def renew_event_claim(self, canonical_event_key, owner, *, lease_seconds=300, now=None):
+        key=str(canonical_event_key or ""); owner=str(owner or "")[:120]; now=float(now or time.time())
+        if not key or not owner: return False
+        expires=now+max(30,float(lease_seconds or 300))
+        with self._lock, closing(self._connect()) as conn:
+            cur=conn.execute("UPDATE history_catalog_event SET claim_expires_at=?,updated_at=? WHERE canonical_event_key=? AND claim_owner=?",(expires,now,key,owner)); conn.commit()
+        return bool(cur.rowcount==1)
+
+    def release_event_claim(self, canonical_event_key, owner="", *, force=False):
+        key=str(canonical_event_key or ""); owner=str(owner or "")[:120]; now=time.time()
+        if not key: return False
+        with self._lock, closing(self._connect()) as conn:
+            if force:
+                cur=conn.execute("UPDATE history_catalog_event SET claim_owner='',claim_started_at=0,claim_expires_at=0,updated_at=? WHERE canonical_event_key=?",(now,key))
+            else:
+                cur=conn.execute("UPDATE history_catalog_event SET claim_owner='',claim_started_at=0,claim_expires_at=0,updated_at=? WHERE canonical_event_key=? AND claim_owner=?",(now,key,owner))
+            conn.commit()
+        return bool(cur.rowcount==1)
+
+    def active_event_claims(self, *, now=None, limit=50):
+        now=float(now or time.time()); limit=max(1,min(500,int(limit or 50)))
+        with self._lock, closing(self._connect()) as conn:
+            rows=conn.execute("""SELECT canonical_event_key,league,event_id,event_date,claim_owner,claim_started_at,claim_expires_at
+              FROM history_catalog_event WHERE claim_owner<>'' AND claim_expires_at>? ORDER BY claim_started_at ASC LIMIT ?""",(now,limit)).fetchall()
+        return [{"canonicalEventKey":r["canonical_event_key"],"league":r["league"],"eventId":r["event_id"],"date":r["event_date"],
+                 "owner":r["claim_owner"],"startedAt":float(r["claim_started_at"] or 0),"expiresAt":float(r["claim_expires_at"] or 0)} for r in rows]
+
+    def silver_summary(self):
+        """Compact day/week Silver inventory for the operator console.
+
+        The detailed collection audit endpoint remains the future dedicated Silver
+        screen; this summary makes daily/weekly roundup growth observable now.
+        """
+        with self._lock, closing(self._connect()) as conn:
+            day_col=int(conn.execute("SELECT COUNT(*) FROM history_collection WHERE scope='DAY_LEAGUE'").fetchone()[0] or 0)
+            week_col=int(conn.execute("SELECT COUNT(*) FROM history_collection WHERE scope='WEEK_LEAGUE'").fetchone()[0] or 0)
+            day_assets=int(conn.execute("SELECT COUNT(*) FROM history_collection_media cm JOIN history_collection c ON c.collection_key=cm.collection_key WHERE c.scope='DAY_LEAGUE'").fetchone()[0] or 0)
+            week_assets=int(conn.execute("SELECT COUNT(*) FROM history_collection_media cm JOIN history_collection c ON c.collection_key=cm.collection_key WHERE c.scope='WEEK_LEAGUE'").fetchone()[0] or 0)
+            periods=int(conn.execute("SELECT COUNT(DISTINCT scope||':'||league||':'||period_key) FROM history_collection").fetchone()[0] or 0)
+        return {"dayCollections":day_col,"weekCollections":week_col,"dayAssets":day_assets,"weekAssets":week_assets,"periods":periods,"totalAssets":day_assets+week_assets}
 
     @staticmethod
     def _audit_effective_status(discovery_state, discovery, *, best_tier="", verified_count=0, current_discovery_version=0, quality_target="gold"):

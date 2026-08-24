@@ -1,4 +1,4 @@
-# Sports Big Board v4.0.4 Architecture
+# Sports Big Board v4.1.0 Architecture
 
 ## Product model
 
@@ -65,7 +65,7 @@ Changing `browseDate` can fetch and render another day's slate but cannot call P
 
 Past-day score and media snapshots remain resident in the browser session. Final historical Game Centers may remain HOT for 24 hours in browser memory while partial shells retain the short retry TTL; the server's persistent repository remains the WARM authority.
 
-### v4.0.4 normalized historical catalog baseline
+### v4.1.0 normalized historical catalog baseline
 
 v4 treats a discovered media asset and a sporting-event relationship as different entities. The fundamental flow is:
 
@@ -345,15 +345,20 @@ The Stage 1 invariant is: **frontend deployments are disposable; historical stat
 
 `history_catalog_event.discovery_state` remains a raw durable pipeline marker. The audit API no longer displays raw `UNKNOWN` as if it means no data. It combines current discovery-version metadata with the normalized verified media catalog to derive `effectiveStatus`, `discoveryPending`, `catalogComplete`, `qualityComplete`, and inferred `upgradeEligible`. This projection is read-only and therefore cannot accidentally mark stale events current or suppress the version-driven reindex scheduler.
 
-### v4.0.4 fail-closed event association
+### v4.1.0 fail-closed event association
 
 Event Matcher v5 makes association evidence stricter than provider discovery. Broad source results are never stamped with the target Event ID or target away/home teams before matching. Matchup-title conflicts, explicit MLB date mismatches, stale season/year content, and one-asset/multiple-game conflicts fail closed into quarantine. A one-time matcher-version repair re-evaluates existing v4 EVENT_MEDIA links without deleting SOURCE_MEDIA.
 
 The queue now prioritizes first-pass NONE/BLUE events ahead of archive Purple optimization, uses the remembered sports-day timezone for the recent window, persists YouTube Search exhaustion through restart until the provider reset window, and uses Pacific-day accounting with a hard internal search ceiling.
 
 
-### v4.0.4 structural preflight boundary
+### v4.1.0 structural preflight boundary
 
 Deployment health is intentionally split into **structural integrity** and **repairable relationship integrity**. Structural integrity covers the normalized table set, SQLite quick-check, foreign-key consistency, and normalization completeness. Only a structural failure can select the offline reconstruction path. Event/collection relationship issues such as matcher-version drift, cross-event links, scope leaks, and low-confidence associations never select reconstruction. They cause an optional pre-repair rollback snapshot, then `HistoryRepository.repair_relationships()` runs against the existing catalog. The backend performs a hard post-repair relationship audit before workers start.
 
 This boundary means a future Event Matcher or Media Classifier version may re-evaluate `history_event_media` / `history_collection_media`, but cannot reset `history_catalog_event.discovery_*`, `history_discovery_attempt`, `history_media_verification`, or `history_day.discovery_json`.
+
+
+## v4.1.0 bounded discovery concurrency
+
+Historical discovery is concurrent at the event level, not at the quota level. Three Green-gap threads may own different canonical Event IDs in SEARCH mode, with `history_catalog_event` lease fields (`claim_owner`, `claim_started_at`, `claim_expires_at`) acting as the durable concurrency boundary. Date-backfill participates in the same lease protocol. Provider semaphores and same-day single-flight locks cap external pressure independently of worker count. YouTube Search and Highlightly remain single-concurrency lanes. The worker-console API exposes pool state, leases, provider active/waiting counts, and throughput. Daily/weekly Silver collection totals are also exposed without mixing collection media into GAME quality.

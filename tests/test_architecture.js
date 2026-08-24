@@ -5,7 +5,7 @@ global.window=global;
 for(const f of ['core-model.js','architecture/score-date-store.js','architecture/event-identity.js','architecture/media-scope.js','architecture/media-classifier.js','architecture/playback-transports.js','architecture/provider-health.js','architecture/sport-media-policy.js','architecture/media-manifest.js','architecture/media-resolver.js','architecture/game-center-policy.js','architecture/selected-event-store.js','architecture/media-work-priorities.js','architecture/editorial-packages.js']){
   vm.runInThisContext(fs.readFileSync(path.join(root,f),'utf8'),{filename:f});
 }
-assert.equal(SBB_CORE.version,'4.0.4');
+assert.equal(SBB_CORE.version,'4.1.0');
 assert.deepEqual(SBB_CORE.enabledCompetitions().map(x=>x.id),['MLB','NFL','NBA','NHL','EPL','MLS']);
 assert.equal(SBB_CORE.COMPETITIONS.MLS.enabled,true);
 assert.equal(SBB_MEDIA_WORK.PRIORITY.VISIBLE_SCORE,'VISIBLE_SCORE');
@@ -94,7 +94,7 @@ assert.equal(gcNormalized.playerStatSections[0].teamSide,'away');
 assert.equal(gcNormalized.playerStatSections[0].category,'passing');
 console.log('PASS provider-independent media resolver + Game Center policy');
 
-// v4.0.4 Game Center browser handoff: two sequential score-provider aliases
+// v4.1.0 Game Center browser handoff: two sequential score-provider aliases
 // must follow two distinct resolved provider ids. The second selection can never
 // inherit the first game's resolved id/cache entry.
 const gcCalls=[];
