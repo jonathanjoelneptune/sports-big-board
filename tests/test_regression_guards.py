@@ -14,8 +14,17 @@ AUDIT=(ROOT/'ui/history-audit.js').read_text(encoding='utf-8')
 CONTRACT=(ROOT/'architecture/game-center-contract.js').read_text(encoding='utf-8')
 
 class RegressionGuards(unittest.TestCase):
+
+    def test_history_console_render_declares_association_payload(self):
+        start=AUDIT.index('function renderConsole(data){')
+        end=AUDIT.index('async function loadConsole()',start)
+        block=AUDIT[start:end]
+        self.assertIn('const assoc=data.associations||{};',block)
+        self.assertIn('assoc.assignedLinks',block)
+        self.assertLess(block.index('const assoc=data.associations||{};'),block.index('assoc.assignedLinks'))
+
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=4.0.3','architecture/score-date-store.js?v=4.0.3','architecture/event-identity.js?v=4.0.3','architecture/media-scope.js?v=4.0.3','architecture/media-classifier.js?v=4.0.3','architecture/playback-transports.js?v=4.0.3','architecture/provider-health.js?v=4.0.3','architecture/sport-media-policy.js?v=4.0.3','architecture/media-manifest.js?v=4.0.3','architecture/media-resolver.js?v=4.0.3','architecture/game-center-policy.js?v=4.0.3','architecture/selected-event-store.js?v=4.0.3','architecture/game-center-contract.js?v=4.0.3','architecture/media-work-priorities.js?v=4.0.3','architecture/editorial-packages.js?v=4.0.3','ui/player-visibility.js?v=4.0.3','ui/info-drawer.js?v=4.0.3','ui/settings-view.js?v=4.0.3','ui/history-audit.js?v=4.0.3','ui/game-center-view.js?v=4.0.3','app.js?v=4.0.3']
+        ordered=['core-model.js?v=4.0.4','architecture/score-date-store.js?v=4.0.4','architecture/event-identity.js?v=4.0.4','architecture/media-scope.js?v=4.0.4','architecture/media-classifier.js?v=4.0.4','architecture/playback-transports.js?v=4.0.4','architecture/provider-health.js?v=4.0.4','architecture/sport-media-policy.js?v=4.0.4','architecture/media-manifest.js?v=4.0.4','architecture/media-resolver.js?v=4.0.4','architecture/game-center-policy.js?v=4.0.4','architecture/selected-event-store.js?v=4.0.4','architecture/game-center-contract.js?v=4.0.4','architecture/media-work-priorities.js?v=4.0.4','architecture/editorial-packages.js?v=4.0.4','ui/player-visibility.js?v=4.0.4','ui/info-drawer.js?v=4.0.4','ui/settings-view.js?v=4.0.4','ui/history-audit.js?v=4.0.4','ui/game-center-view.js?v=4.0.4','app.js?v=4.0.4']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -372,8 +381,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v4.0.3 — score ribbon recovery',STYLES)
-        self.assertIn('v4.0.3 — historical Date Browser',STYLES)
+        self.assertIn('v4.0.4 — score ribbon recovery',STYLES)
+        self.assertIn('v4.0.4 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -382,7 +391,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v4.0.3 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v4.0.4 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -545,7 +554,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v4.0.3',STYLES)
+        self.assertNotIn('\\n\\n/* v4.0.4',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)

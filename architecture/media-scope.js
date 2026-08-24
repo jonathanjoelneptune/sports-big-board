@@ -1,4 +1,4 @@
-/* Sports Big Board v4.0.3 — media scope is independent from recap quality. */
+/* Sports Big Board v4.0.4 — media scope is independent from recap quality. */
 (() => {
   const SCOPE=Object.freeze({GAME:'GAME',DAY_LEAGUE:'DAY_LEAGUE',WEEK_LEAGUE:'WEEK_LEAGUE',PLAYER:'PLAYER',SEASON_LEAGUE:'SEASON_LEAGUE',OTHER:'OTHER'});
   const COLLECTION=new Set([SCOPE.DAY_LEAGUE,SCOPE.WEEK_LEAGUE,SCOPE.SEASON_LEAGUE]);

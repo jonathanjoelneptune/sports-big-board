@@ -443,7 +443,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.0.3 migration cooldowns already persisted in production.
+        """Release artificial v4.0.4 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -894,7 +894,7 @@ class HistoryRepository:
             stale=bool(version<current)
             due=stale or (float(row["next_retry_at"] or 0)<=now and (float(row["last_discovery_at"] or 0)<=0 or float(row["last_discovery_at"] or 0)<=now-cooldown))
             if not has_good and due: summary["due"]+=1
-        # v4.0.3 operator-console aliases keep the explicit catalog semantics.
+        # v4.0.4 operator-console aliases keep the explicit catalog semantics.
         # "noMedia" was ambiguous because UNINDEXED events can already have Blue
         # or Purple media; expose the actual union under an honest name instead.
         summary.update({
