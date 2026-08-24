@@ -77,6 +77,21 @@ class SilverRoundupAuditTests(unittest.TestCase):
         self.assertIn('/api/history/catalog/collections?',js)
         self.assertIn('renderSilverSummary',js)
         self.assertIn('DUPLICATE_ACROSS_PERIODS',html)
+        self.assertIn('id="historySilverCsv"',html)
+        self.assertIn('id="historySilverXlsx"',html)
+        self.assertIn('function exportSilverFile(ext)',js)
+        self.assertIn('/api/history/catalog/collections.${ext}',js)
+        self.assertIn("$('historySilverCsv')?.addEventListener('click',()=>exportSilverFile('csv'))",js)
+
+    def test_silver_export_contract_is_full_and_distinct_from_game_export(self):
+        root=Path(__file__).resolve().parents[1]
+        server=(root/'server.py').read_text(encoding='utf-8')
+        self.assertIn("sports-big-board-silver-audit-{stamp}.csv",server)
+        self.assertIn("'Audit View','Period','Scope','League','Collection Kind','Collection Key','Collection Title'",server)
+        self.assertIn("'Published At','URL','Validation','Runtime','Catalog State','Quarantine Reason'",server)
+        self.assertIn("'Intent Confidence','Intent Reason','Association Confidence','Association Method','Association Evidence'",server)
+        self.assertIn("'Asset Link Count','Asset Period Count','Asset Scope Count','Flags'",server)
+        self.assertIn("'Audit View':'SILVER ROUNDUPS'",server)
 
 
 if __name__=='__main__':

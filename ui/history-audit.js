@@ -1,7 +1,7 @@
-/* Sports Big Board v4.1.3 historical database audit view. */
+/* Sports Big Board v4.1.4 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.1.3';
+  const FRONTEND_VERSION='4.1.4';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,tab:'games',silverOffset:0,silverLimit:100,silverTotal:0,silverLoading:false,lastSilverPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -70,6 +70,9 @@
     const gameBtn=$('historyAuditTabGames'),silverBtn=$('historyAuditTabSilver');
     if(gameBtn){gameBtn.classList.toggle('active',!silver);gameBtn.setAttribute('aria-selected',String(!silver));}
     if(silverBtn){silverBtn.classList.toggle('active',silver);silverBtn.setAttribute('aria-selected',String(silver));}
+    const csv=$('historyAuditCsv'),xlsx=$('historyAuditXlsx');
+    if(csv)csv.textContent=silver?'EXPORT SILVER CSV':'EXPORT GAME CSV';
+    if(xlsx)xlsx.textContent=silver?'EXPORT SILVER XLSX':'EXPORT GAME XLSX';
     if(loadData){silver?loadSilver(true):load(true);}
   }
   async function loadSilver(reset=false){
@@ -338,7 +341,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.3 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.4 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);
@@ -372,12 +375,23 @@
     const modal=$('historyAuditModal');if(!modal)return;modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false');document.body.classList.add('audit-open');setAuditTab(state.tab,{loadData:false});loadCurrent(true);loadConsole();startAutoRefresh();
   }
   function close(){const modal=$('historyAuditModal');if(!modal)return;modal.classList.add('hidden');modal.setAttribute('aria-hidden','true');document.body.classList.remove('audit-open');stopAutoRefresh();}
-  function exportFile(ext){const silver=state.tab==='silver';const base=silver?`/api/history/catalog/collections.${ext}`:`/api/history/audit.${ext}`;const params=silver?silverQueryParams(false):queryParams(false);const url=`${base}?${params.toString()}`;window.location.href=window.SBB_API?.url?window.SBB_API.url(url):url;}
+  function startExport(base,params){const url=`${base}?${params.toString()}`;window.location.href=window.SBB_API?.url?window.SBB_API.url(url):url;}
+  function exportGameFile(ext){startExport(`/api/history/audit.${ext}`,queryParams(false));}
+  function exportSilverFile(ext){startExport(`/api/history/catalog/collections.${ext}`,silverQueryParams(false));}
+  function exportFile(ext){
+    // Derive the visible tab from the DOM as well as state.  This prevents a stale
+    // state value from ever routing a Silver-screen export to the GAME endpoint.
+    const silver=state.tab==='silver'||Boolean($('historyAuditTabSilver')?.classList.contains('active'));
+    silver?exportSilverFile(ext):exportGameFile(ext);
+  }
   let debounce=null;
   function queueLoad(){clearTimeout(debounce);debounce=setTimeout(()=>load(true),250);}
   function init(){
     $('openHistoryAuditBtn')?.addEventListener('click',open);$('historyAuditClose')?.addEventListener('click',close);$('historyAuditBackdrop')?.addEventListener('click',close);
     $('historyAuditRefresh')?.addEventListener('click',()=>{loadCurrent(false);loadConsole();});$('historyAuditCsv')?.addEventListener('click',()=>exportFile('csv'));$('historyAuditXlsx')?.addEventListener('click',()=>exportFile('xlsx'));
+    // Dedicated Silver exports are intentionally hard-wired to collection endpoints.
+    // They do not depend on shared-tab state and therefore cannot export GAME rows.
+    $('historySilverCsv')?.addEventListener('click',()=>exportSilverFile('csv'));$('historySilverXlsx')?.addEventListener('click',()=>exportSilverFile('xlsx'));
     $('historyAuditTabGames')?.addEventListener('click',()=>setAuditTab('games'));$('historyAuditTabSilver')?.addEventListener('click',()=>setAuditTab('silver'));
     $('historySearchConsoleCopyIssues')?.addEventListener('click',()=>{if(state.lastConsole)copyConsoleText(consoleIssuesReport(state.lastConsole),'ISSUES COPIED');});
     $('historySearchConsoleCopyAll')?.addEventListener('click',()=>{if(state.lastConsole)copyConsoleText(consoleFullReport(state.lastConsole),'FULL CONSOLE COPIED');});

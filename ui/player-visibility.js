@@ -1,4 +1,4 @@
-/* v4.1.3 presentation-only Keep Video Visible controller.
+/* v4.1.4 presentation-only Keep Video Visible controller.
 
    One bounded sticky workspace, two deterministic phases:
    1) The active page scroll shrinks the video while the in-flow Game Center edge
@@ -150,7 +150,7 @@
   function resetGeometry(){normalStage();anchorTop=null;baseRect=null;upperReverseGesture=false;bindScrollRoot();}
   function applyClasses(){
     document.body.classList.toggle('sbb-keep-video-visible',keep);
-    // v4.1.3: a wide fine-pointer PC always uses the embedded right-side Game
+    // v4.1.4: a wide fine-pointer PC always uses the embedded right-side Game
     // Center workspace. Mobile/tablet keeps the proven below-video behavior.
     const side=sideEligible();
     document.body.classList.toggle('sbb-game-center-side',side);
