@@ -453,7 +453,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.7 migration cooldowns already persisted in production.
+        """Release artificial v4.1.8 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -589,7 +589,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.7 treats collection membership as fully derived state.  Classifier
+        v4.1.8 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -613,7 +613,7 @@ class HistoryRepository:
                 candidates[(str(row["asset_key"]),str(row["league"] or "").upper())]=row
             # Also reconsider source rows previously classified as collection media even
             # if an earlier repair had already removed their stale relationship.
-            extra=conn.execute("SELECT * FROM history_source_media WHERE scope IN ('DAY_LEAGUE','WEEK_LEAGUE','SEASON_LEAGUE')").fetchall()
+            extra=conn.execute("SELECT * FROM history_source_media WHERE scope IN ('DAY_LEAGUE','WEEK_LEAGUE','ROUND_LEAGUE','SEASON_LEAGUE')").fetchall()
             for row in extra:
                 raw=self._load_obj(row["asset_json"]); league=str(raw.get("league") or raw.get("sourceLeague") or "").upper()
                 if league and (str(row["asset_key"]),league) not in candidates:
@@ -653,7 +653,7 @@ class HistoryRepository:
                     continue
                 scope=str(decision["scope"]); period=str(decision["periodKey"]); kind=str(decision["collectionKind"]); ckey=self._collection_key(scope,league,period,kind)
                 authority=str(decision.get("sourceAuthority") or "UNKNOWN")
-                rank=(450 if kind=="DAILY_RECAP" else 400 if kind=="TOP_PLAYS" else 350) + (100 if authority=="LEAGUE_OFFICIAL" else 25 if authority=="TRUSTED_BROADCAST" else 0)
+                rank=(450 if kind=="DAILY_RECAP" else 440 if kind=="SCORING_ROUNDUP" else 400 if kind=="TOP_PLAYS" else 350) + (100 if authority=="LEAGUE_OFFICIAL" else 25 if authority=="TRUSTED_BROADCAST" else 0)
                 conn.execute("""INSERT INTO history_collection(collection_key,scope,league,period_key,collection_kind,title,metadata_json,created_at,updated_at)
                     VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(collection_key) DO UPDATE SET title=excluded.title,metadata_json=excluded.metadata_json,updated_at=excluded.updated_at""",
                     (ckey,scope,league,period,kind,f"{league} {period} {kind.replace('_',' ').title()}",self._dump_obj({"classifierVersion":target,"sourceAuthorityPreferred":True}),now,now))
@@ -800,7 +800,7 @@ class HistoryRepository:
                 asset_key=self._upsert_source_media_conn(conn,annotated,league=league,date=source_date,catalog_state=ASSIGNED)
                 if not asset_key: continue
                 authority=str(decision.get("sourceAuthority") or "UNKNOWN")
-                rank=(450 if kind=="DAILY_RECAP" else 400 if kind=="TOP_PLAYS" else 350) + (100 if authority=="LEAGUE_OFFICIAL" else 25 if authority=="TRUSTED_BROADCAST" else 0)
+                rank=(450 if kind=="DAILY_RECAP" else 440 if kind=="SCORING_ROUNDUP" else 400 if kind=="TOP_PLAYS" else 350) + (100 if authority=="LEAGUE_OFFICIAL" else 25 if authority=="TRUSTED_BROADCAST" else 0)
                 conn.execute("""INSERT INTO history_collection(collection_key,scope,league,period_key,collection_kind,title,metadata_json,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)
                     ON CONFLICT(collection_key) DO UPDATE SET title=excluded.title,metadata_json=excluded.metadata_json,updated_at=excluded.updated_at""",
                     (ckey,resolved_scope,league,resolved_period,kind,f"{league} {resolved_period} {kind.replace('_',' ').title()}",self._dump_obj({"classifierVersion":MEDIA_CLASSIFIER_VERSION,"sourceAuthorityPreferred":True}),now,now))
@@ -1063,10 +1063,12 @@ class HistoryRepository:
         with self._lock, closing(self._connect()) as conn:
             day_col=int(conn.execute("SELECT COUNT(*) FROM history_collection WHERE scope='DAY_LEAGUE'").fetchone()[0] or 0)
             week_col=int(conn.execute("SELECT COUNT(*) FROM history_collection WHERE scope='WEEK_LEAGUE'").fetchone()[0] or 0)
+            round_col=int(conn.execute("SELECT COUNT(*) FROM history_collection WHERE scope='ROUND_LEAGUE'").fetchone()[0] or 0)
             day_assets=int(conn.execute("SELECT COUNT(*) FROM history_collection_media cm JOIN history_collection c ON c.collection_key=cm.collection_key WHERE c.scope='DAY_LEAGUE'").fetchone()[0] or 0)
             week_assets=int(conn.execute("SELECT COUNT(*) FROM history_collection_media cm JOIN history_collection c ON c.collection_key=cm.collection_key WHERE c.scope='WEEK_LEAGUE'").fetchone()[0] or 0)
+            round_assets=int(conn.execute("SELECT COUNT(*) FROM history_collection_media cm JOIN history_collection c ON c.collection_key=cm.collection_key WHERE c.scope='ROUND_LEAGUE'").fetchone()[0] or 0)
             periods=int(conn.execute("SELECT COUNT(DISTINCT scope||':'||league||':'||period_key) FROM history_collection").fetchone()[0] or 0)
-        return {"dayCollections":day_col,"weekCollections":week_col,"dayAssets":day_assets,"weekAssets":week_assets,"periods":periods,"totalAssets":day_assets+week_assets}
+        return {"dayCollections":day_col,"weekCollections":week_col,"roundCollections":round_col,"dayAssets":day_assets,"weekAssets":week_assets,"roundAssets":round_assets,"periods":periods,"totalAssets":day_assets+week_assets+round_assets}
 
     @staticmethod
     def _audit_effective_status(discovery_state, discovery, *, best_tier="", verified_count=0, current_discovery_version=0, quality_target="gold"):
@@ -1280,7 +1282,9 @@ class HistoryRepository:
               COALESCE(json_extract(s.asset_json,'$.sourceAuthority'),'') AS source_authority,
               COALESCE(json_extract(s.asset_json,'$.sourceAuthorityReason'),'') AS source_authority_reason,
               COALESCE(json_extract(s.asset_json,'$.collectionSeasonId'),'') AS collection_season_id,
-              COALESCE(json_extract(s.asset_json,'$.collectionSeasonWeek'),0) AS collection_season_week"""
+              COALESCE(json_extract(s.asset_json,'$.collectionSeasonWeek'),0) AS collection_season_week,
+              COALESCE(json_extract(s.asset_json,'$.collectionRoundNumber'),0) AS collection_round_number,
+              COALESCE(json_extract(s.asset_json,'$.collectionRoundType'),'') AS collection_round_type"""
 
         with self._lock, closing(self._connect()) as conn:
             total=int(conn.execute(stats_cte+" SELECT COUNT(*)"+base+where,params).fetchone()[0] or 0)
@@ -1288,6 +1292,7 @@ class HistoryRepository:
             summary_row=conn.execute(stats_cte+" SELECT COUNT(*) AS links,COUNT(DISTINCT c.collection_key) AS collections,COUNT(DISTINCT s.asset_key) AS unique_assets,"
                 "COUNT(DISTINCT CASE WHEN c.scope='DAY_LEAGUE' THEN c.collection_key END) AS day_collections,COUNT(CASE WHEN c.scope='DAY_LEAGUE' THEN 1 END) AS day_links,"
                 "COUNT(DISTINCT CASE WHEN c.scope='WEEK_LEAGUE' THEN c.collection_key END) AS week_collections,COUNT(CASE WHEN c.scope='WEEK_LEAGUE' THEN 1 END) AS week_links,"
+                "COUNT(DISTINCT CASE WHEN c.scope='ROUND_LEAGUE' THEN c.collection_key END) AS round_collections,COUNT(CASE WHEN c.scope='ROUND_LEAGUE' THEN 1 END) AS round_links,"
                 f"COUNT(CASE WHEN {suspicious} THEN 1 END) AS suspicious_links,COUNT(DISTINCT CASE WHEN cs.collection_asset_count>{large_threshold} THEN c.collection_key END) AS large_collections,"
                 "COUNT(DISTINCT CASE WHEN ast.asset_link_count>1 THEN s.asset_key END) AS multi_collection_assets,COUNT(DISTINCT CASE WHEN ast.asset_period_count>1 THEN s.asset_key END) AS duplicate_assets,"
                 "COUNT(CASE WHEN s.scope='GAME' THEN 1 END) AS game_scope_links,COUNT(CASE WHEN cm.association_confidence<0.80 THEN 1 END) AS low_confidence_links,"
@@ -1322,12 +1327,12 @@ class HistoryRepository:
                 "assetLinkCount":int(row["asset_link_count"] or 0),"assetPeriodCount":int(row["asset_period_count"] or 0),"assetScopeCount":int(row["asset_scope_count"] or 0),
                 "sourceDate":row["source_date"] or "","resolvedPeriod":row["resolved_period"] or "","sourceLeague":row["source_league"] or "",
                 "sourceAuthority":row["source_authority"] or "","sourceAuthorityReason":row["source_authority_reason"] or "",
-                "seasonId":row["collection_season_id"] or "","seasonWeek":int(row["collection_season_week"] or 0),"flags":row_flags(row),
+                "seasonId":row["collection_season_id"] or "","seasonWeek":int(row["collection_season_week"] or 0),"roundNumber":int(row["collection_round_number"] or 0),"roundType":row["collection_round_type"] or "","flags":row_flags(row),
             })
         sr=summary_row
         summary={
             "links":int(sr["links"] or 0),"collections":int(sr["collections"] or 0),"uniqueAssets":int(sr["unique_assets"] or 0),
-            "dayCollections":int(sr["day_collections"] or 0),"dayAssets":int(sr["day_links"] or 0),"weekCollections":int(sr["week_collections"] or 0),"weekAssets":int(sr["week_links"] or 0),
+            "dayCollections":int(sr["day_collections"] or 0),"dayAssets":int(sr["day_links"] or 0),"weekCollections":int(sr["week_collections"] or 0),"weekAssets":int(sr["week_links"] or 0),"roundCollections":int(sr["round_collections"] or 0),"roundAssets":int(sr["round_links"] or 0),
             "suspiciousLinks":int(sr["suspicious_links"] or 0),"largeCollections":int(sr["large_collections"] or 0),"multiCollectionAssets":int(sr["multi_collection_assets"] or 0),"duplicateAssets":int(sr["duplicate_assets"] or 0),
             "gameScopeLinks":int(sr["game_scope_links"] or 0),"lowConfidenceLinks":int(sr["low_confidence_links"] or 0),
             "periodMismatchLinks":int(sr["period_mismatch_links"] or 0),"leagueMismatchLinks":int(sr["league_mismatch_links"] or 0),

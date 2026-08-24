@@ -132,7 +132,7 @@ class SilverRoundupAuditTests(unittest.TestCase):
         root=Path(__file__).resolve().parents[1]
         server=(root/'server.py').read_text(encoding='utf-8')
         self.assertIn("sports-big-board-silver-audit-{stamp}.csv",server)
-        self.assertIn("return ['Audit View','Period','Season ID','Season Week','Scope','League','Collection Kind','Collection Key','Collection Title'",server)
+        self.assertIn("return ['Audit View','Period','Season ID','Season Week','Round Type','Round Number','Scope','League','Collection Kind','Collection Key','Collection Title'",server)
         self.assertIn("'Provider','Source Authority','Source Authority Reason','Duration Seconds','Published At','URL','Validation','Runtime','Catalog State','Quarantine Reason'",server)
         self.assertIn("'Intent Confidence','Intent Reason','Association Confidence','Association Method','Association Evidence'",server)
         self.assertIn("'Asset Link Count','Asset Period Count','Asset Scope Count','Flags'",server)

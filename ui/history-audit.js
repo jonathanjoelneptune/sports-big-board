@@ -1,7 +1,7 @@
-/* Sports Big Board v4.1.7 historical database audit view. */
+/* Sports Big Board v4.1.8 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.1.7';
+  const FRONTEND_VERSION='4.1.8';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,tab:'games',silverOffset:0,silverLimit:100,silverTotal:0,silverLoading:false,lastSilverPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -27,13 +27,13 @@
     if(includePaging){p.set('limit',String(state.silverLimit));p.set('offset',String(state.silverOffset));}
     return p;
   }
-  function scopeLabel(scope){return String(scope||'').toUpperCase()==='WEEK_LEAGUE'?'WEEKLY':(String(scope||'').toUpperCase()==='DAY_LEAGUE'?'DAILY':String(scope||'—'));}
+  function scopeLabel(scope){const v=String(scope||'').toUpperCase();return v==='WEEK_LEAGUE'?'WEEKLY':(v==='DAY_LEAGUE'?'DAILY':(v==='ROUND_LEAGUE'?'MATCHWEEK / MATCHDAY':String(scope||'—')));}
   function flagLabel(flag){return String(flag||'').replaceAll('_',' ');}
   function cssToken(value){return String(value||'unknown').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'unknown';}
   function leagueBadge(league){const value=String(league||'—').toUpperCase();return `<span class="audit-league league-${esc(cssToken(value))}">${esc(value)}</span>`;}
   function silverKindBadge(kind){const value=String(kind||'ROUNDUP').toUpperCase();return `<span class="silver-kind kind-${esc(cssToken(value))}">${esc(value.replaceAll('_',' '))}</span>`;}
   function renderSilverSummary(summary={}){
-    const map={historySilverCollections:summary.collections||0,historySilverLinks:summary.links||0,historySilverUniqueAssets:summary.uniqueAssets||0,historySilverDaily:summary.dayCollections||0,historySilverWeekly:summary.weekCollections||0,historySilverSuspicious:summary.suspiciousLinks||0,historySilverLargest:summary.maxCollectionAssets||0};
+    const map={historySilverCollections:summary.collections||0,historySilverLinks:summary.links||0,historySilverUniqueAssets:summary.uniqueAssets||0,historySilverDaily:summary.dayCollections||0,historySilverWeekly:summary.weekCollections||0,historySilverRound:summary.roundCollections||0,historySilverSuspicious:summary.suspiciousLinks||0,historySilverLargest:summary.maxCollectionAssets||0};
     for(const [id,val] of Object.entries(map)){const el=$(id);if(el)el.textContent=Number(val).toLocaleString();}
     const text=$('historySilverSummaryText');
     if(text)text.textContent=`Silver collection integrity: ${Number(summary.largeCollections||0).toLocaleString()} collections over ${Number(summary.largeCollectionThreshold||20)} assets • ${Number(summary.multiCollectionAssets||0).toLocaleString()} assets reused across collections • ${Number(summary.duplicateAssets||0).toLocaleString()} assets linked across multiple periods • ${Number(summary.gameScopeLinks||0).toLocaleString()} GAME-scope leaks • ${Number(summary.lowConfidenceLinks||0).toLocaleString()} low-confidence links • ${Number(summary.periodMismatchLinks||0).toLocaleString()} date mismatches • ${Number(summary.leagueMismatchLinks||0).toLocaleString()} league mismatches`;
@@ -232,7 +232,7 @@
       `[QUARANTINE REASONS] ${Object.entries(assoc.quarantineReasons||{}).slice(0,8).map(([k,v])=>`${k}=${Number(v||0)}`).join(' • ')||'none'}`,
       `[CLAIMS] active ${claims.length}${claims.length?` • ${claims.map(x=>`${x.owner}=${x.canonicalEventKey}`).join(' • ')}`:''}`,
       `[PROVIDERS] ${Object.entries(providers).map(([k,v])=>`${k} ${Number(v.active||0)}/${Number(v.limit||0)} active${Number(v.waiting||0)?` +${Number(v.waiting)} waiting`:''}`).join(' • ')||'none'}`,
-      `[SILVER] day collections ${Number(silver.dayCollections||0)} / ${Number(silver.dayAssets||0)} assets • week collections ${Number(silver.weekCollections||0)} / ${Number(silver.weekAssets||0)} assets • periods ${Number(silver.periods||0)}`,
+      `[SILVER] day collections ${Number(silver.dayCollections||0)} / ${Number(silver.dayAssets||0)} assets • week collections ${Number(silver.weekCollections||0)} / ${Number(silver.weekAssets||0)} assets • round collections ${Number(silver.roundCollections||0)} / ${Number(silver.roundAssets||0)} assets • periods ${Number(silver.periods||0)}`,
       `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')} • lastError=${String(g.lastError||'none')}`,
       `[BACKFILL] ${backfillSummary(back)} • lastError=${String(back.lastError||'none')}`,
       `[BACKGROUND] ${bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`} • mediaAge=${Number(bg.mediaAgeSeconds||0)}s • interactiveAge=${Number(bg.interactiveAgeSeconds||0)}s • siteOpenDoesNotPause=${bg.siteOpenDoesNotPause?'YES':'NO'}`,
@@ -314,7 +314,7 @@
     consoleSet('historySearchConsoleBackground',workMode==='search'?'ACTIVE • SEARCH PRIORITY':(workMode==='playback'?'PAUSED • PLAYBACK PRIORITY':(bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`))); if(head&&!bg.canWork&&!problems.length&&workMode==='balanced')head.classList.add('yielding');
     consoleSet('historySearchConsoleYoutube',search.quotaExhausted?'QUOTA EXHAUSTED':(Number(search.cooldownSeconds||0)>0?`COOLDOWN ${Number(search.cooldownSeconds)}s`:'AVAILABLE')); 
     const used=Number(budget.used||0), limit=Number(budget.limit||budget.budget||0); consoleSet('historySearchConsoleBudget',limit?(used>=limit?`EXHAUSTED ${used}/${limit}`:`${used}/${limit} today`):`${used} used`);
-    consoleSet('historySearchConsoleSilver',`${Number(silver.dayAssets||0)} daily • ${Number(silver.weekAssets||0)} weekly`);
+    consoleSet('historySearchConsoleSilver',`${Number(silver.dayAssets||0)} daily • ${Number(silver.weekAssets||0)} weekly • ${Number(silver.roundAssets||0)} round`);
     const p=$('historySearchConsoleProblems'); if(p){if(problems.length){p.classList.remove('hidden');p.textContent=problems.join(' • ');}else{p.classList.add('hidden');p.textContent='';}}
     const out=$('historySearchConsoleOutput'); if(out){
       const g=data.greenGap||{}; const back=data.backfill||{}; const providers=data.providerConcurrency||{}; const claims=data.eventClaims||[];
@@ -332,7 +332,7 @@
         `[QUARANTINE REASONS] ${Object.entries(assoc.quarantineReasons||{}).slice(0,6).map(([k,v])=>`${k}=${Number(v||0)}`).join(' • ')||'none'}`,
         `[CLAIMS] active ${claims.length}`,
         `[PROVIDERS] ${Object.entries(providers).map(([k,v])=>`${k} ${Number(v.active||0)}/${Number(v.limit||0)}${Number(v.waiting||0)?` +${Number(v.waiting)} waiting`:''}`).join(' • ')||'none'}`,
-        `[SILVER] day ${Number(silver.dayCollections||0)} collections / ${Number(silver.dayAssets||0)} assets • week ${Number(silver.weekCollections||0)} collections / ${Number(silver.weekAssets||0)} assets`,
+        `[SILVER] day ${Number(silver.dayCollections||0)} collections / ${Number(silver.dayAssets||0)} assets • week ${Number(silver.weekCollections||0)} collections / ${Number(silver.weekAssets||0)} assets • round ${Number(silver.roundCollections||0)} collections / ${Number(silver.roundAssets||0)} assets`,
         `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')}`,
         `[BACKFILL] ${backfillSummary(back)}`,
         `[YOUTUBE] search ${search.quotaExhausted?'QUOTA EXHAUSTED':(Number(search.cooldownSeconds||0)>0?'COOLDOWN':'OK')}${search.lastError?' • '+String(search.lastError):''}`,
@@ -353,7 +353,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.7 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.8 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);

@@ -238,6 +238,39 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertEqual(meta['mediaUrl'],'https://cdn.nfl.test/chiefs-bucs.m3u8')
         self.assertEqual(meta['publishedAt'],'2026-08-22T01:00:00Z')
 
+
+    def test_v418_nhl_official_five_minute_recap_adapter(self):
+        index="""<html><body><a href='/video/mtl-at-car-recap-123'>4:58 MTL at CAR | Recap May 30, 2026</a></body></html>"""
+        detail="""<html><head><script type='application/ld+json'>{"@type":"VideoObject","name":"MTL at CAR | Recap","duration":"PT4M58S","datePublished":"2026-05-30T23:00:00Z","contentUrl":"https://cdn.nhl.test/mtl-car.mp4"}</script></head></html>"""
+        def fake_page(url,timeout=10,referer=''):
+            if url==server.NHL_GAME_RECAPS_URL: return index
+            if url==server.NHL_CONDENSED_GAMES_URL: return ''
+            if url=='https://www.nhl.com/video/mtl-at-car-recap-123': return detail
+            return ''
+        with patch.object(server,'_official_fetch_page_text',side_effect=fake_page), patch.object(server,'HISTORY_SHARED_CATALOG_CACHE',{}):
+            rows=server._nhl_official_video_results('2026-05-30','Montreal Canadiens','Carolina Hurricanes',validate_native=False)
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['sourceType'],'official-nhl-game-recap')
+        self.assertEqual(rows[0]['provider'],'NHL.COM')
+        self.assertEqual(rows[0]['durationSeconds'],298)
+        self.assertEqual(rows[0]['recapTier'],'green')
+        self.assertEqual(rows[0]['mediaUrl'],'https://cdn.nhl.test/mtl-car.mp4')
+
+    def test_v418_mls_official_match_highlights_adapter(self):
+        index="""<html><body><a href='/video/highlights-new-england-revolution-vs-new-york-city-fc-august-23-2026'>10:31 HIGHLIGHTS: New England Revolution vs. New York City FC | August 23, 2026</a></body></html>"""
+        detail="""<html><head><script type='application/ld+json'>{"@type":"VideoObject","name":"HIGHLIGHTS: New England Revolution vs. New York City FC | August 23, 2026","duration":"PT10M31S","datePublished":"2026-08-23T23:00:00Z","contentUrl":"https://cdn.mls.test/ner-nyc.mp4"}</script></head></html>"""
+        def fake_page(url,timeout=10,referer=''):
+            if url==server.MLS_MATCH_HIGHLIGHTS_URL: return index
+            if 'highlights-new-england' in url: return detail
+            return ''
+        with patch.object(server,'_official_fetch_page_text',side_effect=fake_page), patch.object(server,'HISTORY_SHARED_CATALOG_CACHE',{}):
+            rows=server._mls_official_web_results('2026-08-23','New York City FC','New England Revolution',validate_native=False)
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['sourceType'],'official-mls-match-highlights')
+        self.assertEqual(rows[0]['provider'],'MLSSOCCER.COM')
+        self.assertEqual(rows[0]['durationSeconds'],631)
+        self.assertEqual(rows[0]['recapTier'],'extended')
+
     def test_official_nfl_atom_feed_finds_recap_without_api_key(self):
         from io import BytesIO
         xml=b"""<?xml version='1.0' encoding='UTF-8'?>

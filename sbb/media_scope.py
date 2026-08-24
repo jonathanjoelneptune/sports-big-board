@@ -1,9 +1,9 @@
-"""Media scope + Silver collection classification for Sports Big Board v4.1.7.
+"""Media scope + Silver collection classification for Sports Big Board v4.1.8.
 
 Scope answers *what the media covers*. Intent answers *what kind of program it is*.
 Neither is the game's Gold/Green/Purple/Blue quality tier. Only GAME-scoped media
 may be associated to an individual sporting event. Silver is intentionally narrower:
-only high-confidence DAY_LEAGUE and WEEK_LEAGUE league-wide roundup programming is
+only high-confidence DAY_LEAGUE, WEEK_LEAGUE and ROUND_LEAGUE league-wide roundup programming is
 promoted. Season/player/team features remain SOURCE_MEDIA but do not become Silver.
 """
 import re
@@ -19,19 +19,21 @@ from .catalog_contract import (
 GAME = "GAME"
 DAY_LEAGUE = "DAY_LEAGUE"
 WEEK_LEAGUE = "WEEK_LEAGUE"
+ROUND_LEAGUE = "ROUND_LEAGUE"
 PLAYER = "PLAYER"
 SEASON_LEAGUE = "SEASON_LEAGUE"
 OTHER = "OTHER"
 # COLLECTION_SCOPES remains the broad taxonomy vocabulary for compatibility.
-# SILVER_SCOPES is the actual v4.1.7 presentation/promotion contract.
-COLLECTION_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, SEASON_LEAGUE}
-SILVER_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE}
-VALID_SCOPES = {GAME, DAY_LEAGUE, WEEK_LEAGUE, PLAYER, SEASON_LEAGUE, OTHER}
+# SILVER_SCOPES is the actual v4.1.8 presentation/promotion contract.
+COLLECTION_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, SEASON_LEAGUE}
+SILVER_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE}
+VALID_SCOPES = {GAME, DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, PLAYER, SEASON_LEAGUE, OTHER}
 
 ROUNDUP = "ROUNDUP"
 TOP_PLAYS = "TOP_PLAYS"
 WEEKLY_RECAP = "WEEKLY_RECAP"
 DAILY_RECAP = "DAILY_RECAP"
+SCORING_ROUNDUP = "SCORING_ROUNDUP"
 
 # Strong collection language. v4.1.4's generic "best plays" / "top 10" rules were
 # too broad and promoted player packages, historical features and ordinary game clips.
@@ -51,10 +53,15 @@ _WEEKLY_TOP_TITLE_RE = re.compile(
     r"\b(?:the\s+)?top\s*(?:\d{1,2})?\s*plays?\s*(?:of|from)?\s*week\s*\d{1,2}\b|"
     r"\bplays? of week\s*\d{1,2}\b|"
     r"\bevery\s+(?:team(?:'s|s')?\s+)?(?:best\s+play|touchdown)s?\s*(?:from|of)?\s*week\s*\d{1,2}\b", re.I)
+_WEEKLY_CATEGORY_TOP_RE = re.compile(
+    r"\btop\s+(?:goals?|saves?|plays?|hits?)\s+(?:from|of)\s+week\s*\d{1,2}\b", re.I)
 _SEASON_RE = re.compile(r"\b(season recap|season highlights|month in review|monthly recap|playoffs recap|tournament recap)\b", re.I)
 _TOP_PLAYS_RE = re.compile(r"\b(top\s*(?:\d{1,2})?\s*plays?|plays? of the (?:day|night|week)|best of the (?:day|night|week))\b", re.I)
 _GAME_RE = re.compile(r"\b(full game highlights|game highlights|game recap|game summary|condensed game|full match highlights|match highlights|match recap)\b", re.I)
 _WEEK_NUM_RE = re.compile(r"\bweek\s*(\d{1,2})\b", re.I)
+_ROUND_NUM_RE = re.compile(r"\b(matchweek|mwk|matchday)\s*(\d{1,2})\b", re.I)
+_SCORING_ROUNDUP_RE = re.compile(r"\b(?:every|all)\s+(?:goal|touchdown)s?\s+(?:from|of)\s+(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b|\ball goals? from (?:matchweek|mwk|matchday)\s*\d{1,2}\b", re.I)
+_ROUND_TOP_RE = re.compile(r"\b(?:best|top)\s+(?:goals?|saves?|plays?)\s+(?:of|from)\s+(?:matchweek|mwk|matchday)\s*\d{1,2}\b|\bthings you may have missed in (?:matchweek|mwk|matchday)\s*\d{1,2}\b", re.I)
 
 # A title containing these signals is about a player/team/game/feature rather than a
 # league-wide roundup unless an even stronger explicit roundup phrase proves otherwise.
@@ -215,6 +222,15 @@ def week_key(item=None, date="", league=""):
     except Exception: return f"{sid}:WEEK"
 
 
+def round_key(item=None, date="", league=""):
+    """Canonical soccer round identity, separate from ISO/calendar weeks."""
+    item=item or {}; title=_title(item); m=_ROUND_NUM_RE.search(title)
+    sid=season_id(item,league=league or item.get("league"),date=date or item.get("date") or item.get("publishedAt"))
+    if not m: return f"{sid}:ROUND"
+    label=str(m.group(1) or "").lower(); prefix="MD" if label=="matchday" else "MW"
+    return f"{sid}:{prefix}{int(m.group(2))}"
+
+
 def source_authority(item, league=""):
     """Return source authority independently from title semantics.
 
@@ -273,14 +289,24 @@ def _daily_collection_signal(item, league=""):
 def _weekly_collection_signal(item, league=""):
     title=_title(item)
     if not title or not _WEEK_NUM_RE.search(title) or _narrow_title(title): return False,""
-    if _WEEKLY_TOP_TITLE_RE.search(title): return True,"WEEKLY_TOP_PLAYS_TITLE"
+    if _WEEKLY_TOP_TITLE_RE.search(title) or _WEEKLY_CATEGORY_TOP_RE.search(title): return True,"WEEKLY_TOP_PLAYS_TITLE"
     if _WEEKLY_RECAP_TITLE_RE.search(title): return True,"WEEKLY_RECAP_TITLE"
+    return False,""
+
+
+def _round_collection_signal(item, league=""):
+    title=_title(item); league=str(league or (item or {}).get("league") or "").upper()
+    if league not in {"EPL","MLS"} or not title or not _ROUND_NUM_RE.search(title) or _narrow_title(title): return False,""
+    if _SCORING_ROUNDUP_RE.search(title): return True,"ROUND_SCORING_ROUNDUP_TITLE"
+    if _ROUND_TOP_RE.search(title): return True,"ROUND_TOP_PLAYS_TITLE"
     return False,""
 
 
 def collection_kind(item, scope=None):
     scope=str(scope or (item or {}).get("mediaScope") or "").upper(); title=_title(item)
-    if scope==WEEK_LEAGUE and _WEEKLY_TOP_TITLE_RE.search(title): return TOP_PLAYS
+    if _SCORING_ROUNDUP_RE.search(title): return SCORING_ROUNDUP
+    if scope==WEEK_LEAGUE and (_WEEKLY_TOP_TITLE_RE.search(title) or _WEEKLY_CATEGORY_TOP_RE.search(title)): return TOP_PLAYS
+    if scope==ROUND_LEAGUE and _ROUND_TOP_RE.search(title): return TOP_PLAYS
     if scope==DAY_LEAGUE and (_DAILY_TOP_TITLE_RE.search(title) or _DATED_LEAGUE_TOP_RE.search(title)): return TOP_PLAYS
     if scope==WEEK_LEAGUE: return WEEKLY_RECAP
     if scope==DAY_LEAGUE: return DAILY_RECAP
@@ -294,13 +320,17 @@ def classify_with_reason(item, *, league="", date="", away="", home=""):
     if any(item.get(k) not in (None, "") for k in ("scoreEventId","matchId","espnEventId","canonicalEventId")):
         return GAME,1.0,"AUTHORITATIVE_EVENT_ID"
     source_type=str(item.get("sourceType") or "").lower()
-    if source_type in {"espn-event-video","mlb-game-content","nfl-event-video","official-nfl-club-site"}:
+    if source_type in {"espn-event-video","mlb-game-content","nfl-event-video","official-nfl-club-site",
+                        "official-nhl-game-recap","official-nhl-condensed-game","official-mls-match-highlights",
+                        "official-premierleague-match-highlights","trusted-nbc-epl-extended"}:
         return GAME,0.99,"AUTHORITATIVE_GAME_SOURCE"
     if item.get("gamePk") and "mlb" in str(item.get("sourceLabel") or item.get("source") or "").lower():
         return GAME,0.99,"MLB_GAME_PK"
     if away and home and _mentions(title,away) and _mentions(title,home): return GAME,0.96,"TARGET_TEAM_PAIR_TITLE"
     ia=str(item.get("away") or item.get("awayTeamName") or ""); ih=str(item.get("home") or item.get("homeTeamName") or "")
     if away and home and ia and ih and _mentions(ia,away) and _mentions(ih,home): return GAME,0.99,"TARGET_TEAM_PAIR_FIELDS"
+    round_signal,rr=_round_collection_signal(item,league)
+    if round_signal: return ROUND_LEAGUE,0.995,rr
     daily,dr=_daily_collection_signal(item,league)
     if daily: return DAY_LEAGUE,0.995,dr
     weekly,wr=_weekly_collection_signal(item,league)
@@ -352,20 +382,21 @@ def silver_eligibility(item, *, league="", date=""):
     if scope==DAY_LEAGUE:
         ok,_=_daily_collection_signal(base,league)
         if not ok: result["reason"]="WEAK_DAILY_COLLECTION_SEMANTICS"; return result
-        # Discovery/source dates are not coverage dates. Require title or publication
-        # chronology so an overlapping backfill window cannot smear one video over days.
         if not (_explicit_day_from_title(base) or _parse_iso_date(base.get("publishedAt") or base.get("published"))):
             result["reason"]="UNRESOLVED_DAILY_PERIOD"; return result
         period=day_key(base,date)
         if not re.match(r"^20\d{2}-\d{2}-\d{2}$",period): result["reason"]="UNRESOLVED_DAILY_PERIOD"; return result
-    else:
+    elif scope==WEEK_LEAGUE:
         ok,_=_weekly_collection_signal(base,league)
         if not ok: result["reason"]="WEAK_WEEKLY_COLLECTION_SEMANTICS"; return result
-        # "Week N" is a league-season week, never an ISO/calendar week. Require
-        # explicit season identity so resurfaced historical uploads cannot look current.
         if not explicit_season_id(base,league): result["reason"]="UNRESOLVED_SEASON_ID"; return result
         period=week_key(base,date,league)
         if ":W" not in period or period.endswith(":WEEK"): result["reason"]="UNRESOLVED_SEASON_WEEK"; return result
+    else:
+        ok,_=_round_collection_signal(base,league)
+        if not ok: result["reason"]="WEAK_ROUND_COLLECTION_SEMANTICS"; return result
+        period=round_key(base,date,league)
+        if not re.search(r":(?:MW|MD)\d{1,2}$",period): result["reason"]="UNRESOLVED_LEAGUE_ROUND"; return result
     result.update({"eligible":True,"periodKey":period,"reason":"SILVER_PROMOTION_APPROVED"})
     return result
 
@@ -387,6 +418,8 @@ def annotate(item, *, league="", date="", away="", home=""):
             out["collectionPromotionApproved"]=True; out["collectionPromotionReason"]=decision["reason"]
             if scope==WEEK_LEAGUE:
                 out["collectionSeasonId"]=season_id(out,league,date); m=_WEEK_NUM_RE.search(_title(out)); out["collectionSeasonWeek"]=int(m.group(1)) if m else 0
+            elif scope==ROUND_LEAGUE:
+                out["collectionSeasonId"]=season_id(out,league,date); m=_ROUND_NUM_RE.search(_title(out)); out["collectionRoundNumber"]=int(m.group(2)) if m else 0; out["collectionRoundType"]=("MATCHDAY" if m and str(m.group(1)).lower()=="matchday" else "MATCHWEEK")
         else:
             out["collectionPromotionApproved"]=False; out["collectionPromotionReason"]=decision.get("reason") or "SILVER_PROMOTION_REJECTED"
     return out

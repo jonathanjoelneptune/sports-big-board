@@ -1,8 +1,8 @@
-Sports Big Board v4.1.7 — updated files from v4.1.6
+Sports Big Board v4.1.8 — updated files only
+Base: v4.1.7
 
-Overlay the contents of sports-big-board-v4.1.7/ onto the repository root.
+Changed files: 53
 
-Changed files:
 ANDROID SETUP.md
 ARCHITECTURE.md
 CLOUD STAGE 1.md
@@ -32,6 +32,7 @@ architecture/sport-media-policy.js
 core-model.js
 index.html
 sbb/__init__.py
+sbb/catalog_contract.py
 sbb/competition_registry.py
 sbb/editorial_registry.py
 sbb/event_matcher.py
@@ -46,7 +47,9 @@ tests/test_architecture.js
 tests/test_cloud_stage1.py
 tests/test_history_v4_baseline.py
 tests/test_live_freshness.py
+tests/test_media_scope_roundups.py
 tests/test_regression_guards.py
+tests/test_silver_roundup_audit.py
 tools/ensure_history_v4.py
 ui/game-center-view.js
 ui/history-audit.js

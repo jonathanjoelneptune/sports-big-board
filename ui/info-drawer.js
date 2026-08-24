@@ -1,4 +1,4 @@
-/* v4.1.7 Game Center / Up Next / Settings information surface. No playback authority. */
+/* v4.1.8 Game Center / Up Next / Settings information surface. No playback authority. */
 (() => {
   const $=id=>document.getElementById(id);
   const desktopEmbedded=()=>!!window.matchMedia?.('(pointer:fine)').matches&&window.innerWidth>=1100;

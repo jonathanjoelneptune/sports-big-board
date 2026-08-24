@@ -1,4 +1,4 @@
-"""Provider routing registry for v4.1.7.
+"""Provider routing registry for v4.1.8.
 
 SCORE_API retains the existing Highlightly adapter metadata. MEDIA_ADAPTERS is the
 new provider-independent capability registry consumed by architecture diagnostics
@@ -20,6 +20,10 @@ MEDIA_ADAPTERS={
     "nfl-game-highlights":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NFL"],"reliability":100},
     "nfl-club":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NFL"],"reliability":96},
     "nfl-feed":{"kind":"official-feed","transport":["YOUTUBE_EMBED","EXTERNAL"],"competitions":["NFL"],"reliability":92},
+    "nhl-official":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NHL"],"reliability":100},
+    "premierleague-official":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["EPL"],"reliability":100},
+    "nbc-epl-extended":{"kind":"trusted-broadcaster-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["EPL"],"reliability":96},
+    "mls-official-web":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["MLS"],"reliability":100},
     "mls":{"kind":"official-api","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["MLS"],"reliability":95},
     "club-sites":{"kind":"official-web","transport":["DIRECT_VIDEO","YOUTUBE_EMBED","EXTERNAL"],"competitions":["EPL","MLS"],"reliability":90},
     "highlightly":{"kind":"aggregator-api","transport":["YOUTUBE_EMBED","EXTERNAL"],"competitions":["MLB","NFL","NBA","NHL","EPL","MLS"],"reliability":80},

@@ -1,4 +1,4 @@
-"""Sport-aware media request policy shared by server tests/diagnostics (v4.1.7)."""
+"""Sport-aware media request policy shared by server tests/diagnostics (v4.1.8)."""
 from copy import deepcopy
 
 REQUESTS=("QUICK","EXTENDED","COMMENTARY","MOMENTS","ANY")

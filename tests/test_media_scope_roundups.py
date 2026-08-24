@@ -9,7 +9,7 @@ from unittest.mock import patch
 import server
 from sbb.history_repository import HistoryRepository
 from sbb.history_rebuild import HistoryCatalogRebuilder
-from sbb.media_scope import annotate, GAME, DAY_LEAGUE, OTHER
+from sbb.media_scope import annotate, GAME, DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, OTHER
 from sbb.youtube_gateway import YouTubeRateLimited
 
 
@@ -98,6 +98,30 @@ class MediaScopeRoundupTests(unittest.TestCase):
         item=annotate({"youtubeId":"allgames","title":"Highlights from ALL GAMES on 8/21","provider":"YOUTUBE",
                        "channelId":"UCoLrcjPV5PbUrUyXq5mjc_A","publishedAt":"2026-08-22T05:00:00Z"},league="MLB",date="2026-08-23")
         self.assertEqual(item.get("collectionPeriodKey"),"2026-08-21")
+
+
+    def test_v418_soccer_roundups_use_matchweek_matchday_identity(self):
+        mls=annotate({"title":"Every goal from Matchday 21!","officialLeagueSource":True,"sourceType":"official-mls-matchday-roundup",
+                      "publishedAt":"2026-06-20T12:00:00Z"},league="MLS",date="2026-06-20")
+        epl=annotate({"title":"BEST GOALS of Matchweek 38","officialLeagueSource":True,"sourceType":"official-premierleague-roundup",
+                      "publishedAt":"2026-05-24T12:00:00Z"},league="EPL",date="2026-05-24")
+        self.assertEqual(mls.get("mediaScope"),ROUND_LEAGUE)
+        self.assertEqual(mls.get("collectionPeriodKey"),"2026:MD21")
+        self.assertEqual(mls.get("collectionKind"),"SCORING_ROUNDUP")
+        self.assertEqual(mls.get("collectionRoundType"),"MATCHDAY")
+        self.assertEqual(epl.get("mediaScope"),ROUND_LEAGUE)
+        self.assertEqual(epl.get("collectionPeriodKey"),"2025-26:MW38")
+        self.assertEqual(epl.get("collectionKind"),"TOP_PLAYS")
+        self.assertEqual(epl.get("collectionRoundType"),"MATCHWEEK")
+
+    def test_v418_nhl_top_goals_week_is_weekly_silver(self):
+        nhl=annotate({"title":"Top Goals from Week 24 of the 2025-26 NHL Season","officialLeagueSource":True,
+                      "sourceType":"official-nhl-weekly-roundup","publishedAt":"2026-04-05T12:00:00Z"},
+                     league="NHL",date="2026-04-05")
+        self.assertEqual(nhl.get("mediaScope"),WEEK_LEAGUE)
+        self.assertEqual(nhl.get("collectionPeriodKey"),"2025-26:W24")
+        self.assertEqual(nhl.get("collectionKind"),"TOP_PLAYS")
+        self.assertEqual(nhl.get("collectionTier"),"silver")
 
     def test_existing_green_candidate_promotes_before_new_discovery(self):
         row={"id":"mlb-score-id","espnEventId":"mlb-score-id","completed":True,
