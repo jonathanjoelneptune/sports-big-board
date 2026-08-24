@@ -790,6 +790,26 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(set(result['lanes']),{'official-native'}); native.assert_called_once()
             uploads.assert_not_called(); activity.assert_not_called(); web.assert_not_called(); index.assert_not_called(); search.assert_not_called()
 
+    def test_v412_historical_seed_floor_is_fixed_and_inclusive(self):
+        self.assertEqual(server.HISTORY_BACKFILL_FLOOR_DATE,'2025-08-01')
+        base=server.datetime.strptime('2025-08-03','%Y-%m-%d').date()
+        self.assertEqual(server._history_backfill_seed_dates(base),['2025-08-02','2025-08-01'])
+        floor=server.datetime.strptime('2025-08-01','%Y-%m-%d').date()
+        self.assertEqual(server._history_backfill_seed_dates(floor),[])
+
+    def test_v412_historical_seed_completion_is_persisted_for_exact_floor(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/'history.sqlite3')
+            with patch.object(server,'HISTORY_REPOSITORY',repo):
+                self.assertFalse(server._history_backfill_seed_marker()['seedComplete'])
+                repo.set_catalog_meta('historical_seed_floor_date','2025-08-01')
+                repo.set_catalog_meta('historical_seed_complete','1')
+                repo.set_catalog_meta('historical_seed_completed_at','123.5')
+                marker=server._history_backfill_seed_marker()
+                self.assertTrue(marker['seedComplete']); self.assertEqual(marker['completedAt'],123.5)
+                repo.set_catalog_meta('historical_seed_floor_date','2025-09-01')
+                self.assertFalse(server._history_backfill_seed_marker()['seedComplete'])
+
     def test_v411_public_fallback_hit_stops_before_index_and_search(self):
         row={'id':'nba-fallback-1','espnEventId':'nba-fallback-1','completed':True,
              'awayTeam':{'name':'Brooklyn Nets'},'homeTeam':{'name':'Los Angeles Lakers'}}

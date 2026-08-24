@@ -1,7 +1,7 @@
-/* Sports Big Board v4.1.1 historical database audit view. */
+/* Sports Big Board v4.1.2 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.1.1';
+  const FRONTEND_VERSION='4.1.2';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -79,6 +79,12 @@
     const next=$('historyAuditNext'); if(next)next.disabled=state.offset+state.limit>=state.total;
   }
   function consoleSet(id,text){const el=$(id);if(el)el.textContent=text;}
+  function backfillSummary(back={}){
+    const floor=String(back.floorDate||'2025-08-01');
+    if(back.seedComplete)return `SEED COMPLETE through ${floor}${back.completedAt?` • completed ${new Date(Number(back.completedAt)*1000).toLocaleString()}`:''}`;
+    const progress=back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)} • media items ${Number(back.mediaItems||0)} • dates ${Number(back.daysCompleted||0)}`:'waiting for first seed pass';
+    return `seed floor ${floor} • ${progress}`;
+  }
   function consoleWorkerLine(name,st={}){
     const bits=[`${name}: phase=${String(st.phase||'unknown')}`,`healthy=${st.healthy?'YES':'NO'}`,`heartbeat=${ageText(st.heartbeatAgeSeconds)}`,`progress=${ageText(st.progressAgeSeconds)}`];
     if(st.provider)bits.push(`provider=${st.provider}`); if(st.providerWaitSeconds)bits.push(`provider-wait=${Number(st.providerWaitSeconds).toFixed(1)}s`);
@@ -150,7 +156,7 @@
       `[PROVIDERS] ${Object.entries(providers).map(([k,v])=>`${k} ${Number(v.active||0)}/${Number(v.limit||0)} active${Number(v.waiting||0)?` +${Number(v.waiting)} waiting`:''}`).join(' • ')||'none'}`,
       `[SILVER] day collections ${Number(silver.dayCollections||0)} / ${Number(silver.dayAssets||0)} assets • week collections ${Number(silver.weekCollections||0)} / ${Number(silver.weekAssets||0)} assets • periods ${Number(silver.periods||0)}`,
       `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')} • lastError=${String(g.lastError||'none')}`,
-      `[BACKFILL] ${back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)} • media items ${Number(back.mediaItems||0)} • days ${Number(back.daysCompleted||0)}`:'waiting for first pass'} • lastError=${String(back.lastError||'none')}`,
+      `[BACKFILL] ${backfillSummary(back)} • lastError=${String(back.lastError||'none')}`,
       `[BACKGROUND] ${bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`} • mediaAge=${Number(bg.mediaAgeSeconds||0)}s • interactiveAge=${Number(bg.interactiveAgeSeconds||0)}s • siteOpenDoesNotPause=${bg.siteOpenDoesNotPause?'YES':'NO'}`,
       `[FOCUS] date=${focus.date||'none'} • until=${focus.until?new Date(Number(focus.until)*1000).toISOString():'none'} • foregroundDiscovery=${bg.foregroundDiscoveryRunning?'YES':'NO'}`,
       `[SEARCH BUDGET] ${used}/${limit||'?'} today${limit&&used>=limit?' • EXHAUSTED':''}${budget.remainingByBucket?` • reserves recent ${Number(budget.remainingByBucket.recent||0)} / empty ${Number(budget.remainingByBucket.empty||0)} / blue ${Number(budget.remainingByBucket.blue||0)} / archive ${Number(budget.remainingByBucket.archive||0)}`:''}`,
@@ -249,7 +255,7 @@
         `[PROVIDERS] ${Object.entries(providers).map(([k,v])=>`${k} ${Number(v.active||0)}/${Number(v.limit||0)}${Number(v.waiting||0)?` +${Number(v.waiting)} waiting`:''}`).join(' • ')||'none'}`,
         `[SILVER] day ${Number(silver.dayCollections||0)} collections / ${Number(silver.dayAssets||0)} assets • week ${Number(silver.weekCollections||0)} collections / ${Number(silver.weekAssets||0)} assets`,
         `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')}`,
-        `[BACKFILL] ${back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)}`:'waiting for first pass'}`,
+        `[BACKFILL] ${backfillSummary(back)}`,
         `[YOUTUBE] search ${search.quotaExhausted?'QUOTA EXHAUSTED':(Number(search.cooldownSeconds||0)>0?'COOLDOWN':'OK')}${search.lastError?' • '+String(search.lastError):''}`,
         `[SEARCH BUDGET] ${used}/${limit||'?'}${limit&&used>=limit?' • EXHAUSTED':''}${budget.remainingByBucket?` • reserves recent ${Number(budget.remainingByBucket.recent||0)} / empty ${Number(budget.remainingByBucket.empty||0)} / blue ${Number(budget.remainingByBucket.blue||0)} / archive ${Number(budget.remainingByBucket.archive||0)}`:''}`,
         `[MODE] ${workMode.toUpperCase()} • playbackSuspended=${data.playbackSuspended?'YES':'NO'} • searchSuspended=${data.searchSuspended?'YES':'NO'}`,
@@ -268,7 +274,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.1 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.2 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);
