@@ -201,9 +201,10 @@ class HistoryV4BaselineTests(unittest.TestCase):
             report=HistoryCatalogRebuilder(source,output).rebuild(force=True)
             self.assertTrue(report["passed"],report)
             self.assertEqual(report["integrity"]["crossEventAssignedAssets"],0)
-            self.assertGreaterEqual(report["conflictResolution"]["crossEventAssetsQuarantined"],1)
             repo=HistoryRepository(output)
-            self.assertGreaterEqual(repo.assignment_reviews(reason="CROSS_EVENT_CONFLICT")["total"],1)
+            integrity=repo.association_integrity_summary()
+            self.assertEqual(integrity["crossEventAssets"],0)
+            self.assertGreaterEqual(integrity["quarantinedLinks"],1)
 
     def test_launch_and_cloud_paths_enforce_v4_preflight(self):
         for path in (ROOT/"start.sh",ROOT/"START-ANDROID.sh",ROOT/"START SPORTS BIG BOARD.bat",ROOT/"cloud/vm/INSTALL-STAGE1.sh",ROOT/"cloud/gcp/DEPLOY-FROM-GITHUB.sh"):
@@ -213,3 +214,63 @@ class HistoryV4BaselineTests(unittest.TestCase):
 
 
 if __name__=='__main__': unittest.main()
+
+class EventAssociationV402Tests(unittest.TestCase):
+    def test_matcher_rejects_wrong_matchup_even_with_copied_event_id(self):
+        from sbb.event_matcher import match_event
+        from sbb.media_scope import annotate
+        event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
+        item=annotate({"espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","sourceType":"espn-event-video","provider":"ESPN"},league="MLS",date="2026-08-22",away="Philadelphia Union",home="Austin FC")
+        ev=match_event(item,event,league="MLS",date="2026-08-22")
+        self.assertNotEqual(ev["associationState"],"ASSIGNED")
+        self.assertEqual(ev["associationMethod"],"TITLE_TEAM_PAIR_CONFLICT")
+
+    def test_mlb_explicit_date_disambiguates_consecutive_series_games(self):
+        from sbb.event_matcher import match_event
+        from sbb.media_scope import annotate
+        event={"id":"401816625","awayTeam":{"name":"San Francisco Giants"},"homeTeam":{"name":"Boston Red Sox"}}
+        wrong=annotate({"scoreEventId":"401816625","title":"GIANTS vs. RED SOX: Official Full Game Highlights (August 21) | 2026 MLB Season","provider":"YOUTUBE"},league="MLB",date="2026-08-22",away="San Francisco Giants",home="Boston Red Sox")
+        ev=match_event(wrong,event,league="MLB",date="2026-08-22")
+        self.assertEqual(ev["associationMethod"],"DATE_MISMATCH")
+        self.assertNotEqual(ev["associationState"],"ASSIGNED")
+
+    def test_nfl_old_season_club_recap_is_rejected(self):
+        from sbb.event_matcher import match_event
+        from sbb.media_scope import annotate
+        event={"id":"401873296","awayTeam":{"name":"Kansas City Chiefs"},"homeTeam":{"name":"Tampa Bay Buccaneers"}}
+        old=annotate({"scoreEventId":"401873296","title":"Chiefs vs. Buccaneers Week 4 Recap | Chiefs Rewind Oct 03, 2022","sourceType":"official-nfl-club-site","provider":"NFL_CLUB"},league="NFL",date="2026-08-22",away="Kansas City Chiefs",home="Tampa Bay Buccaneers")
+        ev=match_event(old,event,league="NFL",date="2026-08-22")
+        self.assertEqual(ev["associationMethod"],"SEASON_MISMATCH")
+        self.assertNotEqual(ev["associationState"],"ASSIGNED")
+
+    def test_repository_enforces_one_asset_one_game(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            e1={"id":"a","awayTeam":{"name":"Alpha Bears"},"homeTeam":{"name":"Beta Hawks"}}
+            e2={"id":"b","awayTeam":{"name":"Alpha Bears"},"homeTeam":{"name":"Beta Hawks"}}
+            repo.put_scores("2026-08-20","NBA",[e1]); repo.put_scores("2026-08-21","NBA",[e2])
+            media={"youtubeId":"same","title":"Alpha Bears vs Beta Hawks Game Highlights","verifiedPlayable":True,"recapTier":"green","provider":"YOUTUBE"}
+            self.assertEqual(repo.put_event_media("2026-08-20","NBA","a",[media]),1)
+            self.assertEqual(repo.put_event_media("2026-08-21","NBA","b",[media]),0)
+            self.assertEqual(repo.event_media("2026-08-20","NBA","a"),[])
+            self.assertEqual(repo.event_media("2026-08-21","NBA","b"),[])
+            self.assertEqual(repo.association_integrity_summary()["crossEventAssets"],0)
+
+    def test_repair_quarantines_existing_bad_links_without_deleting_source(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
+            repo.put_scores("2026-08-22","MLS",[event])
+            # Simulate a pre-v4.0.2 assigned row by directly inserting source/link.
+            wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
+            repo.put_source_media([wrong],league="MLS",date="2026-08-22")
+            import sqlite3 as _sqlite3, time as _time, json as _json
+            con=_sqlite3.connect(Path(td)/"history.sqlite3")
+            key=con.execute("SELECT asset_key FROM history_source_media LIMIT 1").fetchone()[0]
+            con.execute("INSERT INTO history_event_media(canonical_event_key,asset_key,association_state,association_confidence,association_method,association_evidence,matcher_version,first_associated_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)",("MLS:761748",key,"ASSIGNED",1.0,"PROVIDER_EVENT_ID","legacy",4,_time.time(),_time.time()))
+            con.commit(); con.close()
+            report=repo.repair_event_associations(force=True)
+            self.assertGreaterEqual(report["quarantinedLinks"],1)
+            self.assertEqual(repo.event_media("2026-08-22","MLS","761748"),[])
+            con=_sqlite3.connect(Path(td)/"history.sqlite3")
+            self.assertIsNotNone(con.execute("SELECT 1 FROM history_source_media WHERE asset_key=?",(key,)).fetchone()); con.close()

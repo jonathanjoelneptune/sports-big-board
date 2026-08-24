@@ -1,7 +1,7 @@
-/* Sports Big Board v4.0.1 historical database audit view. */
+/* Sports Big Board v4.0.2 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.0.1';
+  const FRONTEND_VERSION='4.0.2';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -113,7 +113,7 @@
   function consoleFullReport(data){
     const now=new Date(); const backend=String(data?.version||'UNKNOWN'); const discovery=Number(data?.historyDiscoveryVersion||0);
     const threads=data?.threads||[], workers=data?.workers||{}, queue=data?.greenGapQueue||{}, bg=data?.background||{}, g=data?.greenGap||{}, back=data?.backfill||{};
-    const gateway=data?.youtubeGateway||{}, budget=data?.youtubeSearchBudget||{}, hi=data?.highlightly||{}, focus=data?.focus||{};
+    const gateway=data?.youtubeGateway||{}, budget=data?.youtubeSearchBudget||{}, hi=data?.highlightly||{}, focus=data?.focus||{}, assoc=data?.associations||{};
     const used=Number(budget.used||0), limit=Number(budget.limit||budget.budget||0);
     const rows=[
       'SPORTS BIG BOARD — LIVE SEARCH CONSOLE',
@@ -127,6 +127,7 @@
       `[WORKER] ${consoleWorkerLine('date-backfill',workers['date-backfill']||{})}`,
       `[CATALOG] unindexed ${Number(queue.unindexed||queue.stale_version||0)} • searched-empty ${Number(queue.searched_empty||0)} • coverage-complete ${Number(queue.coverage_complete||0)} • candidate-only ${Number(queue.candidate_only||0)}`,
       `[GAPS] total ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent ${Number(queue.recent_gaps||0)} • blue-only ${Number(queue.blue_only||0)} • purple-only ${Number(queue.purple_only||0)}`,
+      `[ASSOCIATIONS] assigned ${Number(assoc.assignedLinks||0)} • quarantined ${Number(assoc.quarantinedLinks||0)} • cross-event ${Number(assoc.crossEventAssets||0)} • team-mismatch ${Number(assoc.teamMismatch||0)} • date-mismatch ${Number(assoc.dateMismatch||0)} • season-mismatch ${Number(assoc.seasonMismatch||0)}`,
       `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')} • lastError=${String(g.lastError||'none')}`,
       `[BACKFILL] ${back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)} • media items ${Number(back.mediaItems||0)} • days ${Number(back.daysCompleted||0)}`:'waiting for first pass'} • lastError=${String(back.lastError||'none')}`,
       `[BACKGROUND] ${bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`} • mediaAge=${Number(bg.mediaAgeSeconds||0)}s • interactiveAge=${Number(bg.interactiveAgeSeconds||0)}s • siteOpenDoesNotPause=${bg.siteOpenDoesNotPause?'YES':'NO'}`,
@@ -215,6 +216,7 @@
         `[STATE] server uptime ${Math.round(Number(data.uptimeSeconds||0)/60)}m • workers ${allThreads?'alive':'CHECK THREADS'} • green attempts ${Number(g.attempts||0)} • green upgrades ${Number(g.upgradedToGreen||0)}`,
         `[CATALOG] unindexed ${Number(queue.unindexed||queue.stale_version||0)} • searched-empty ${Number(queue.searched_empty||0)} • coverage-complete ${Number(queue.coverage_complete||0)} • candidate-only ${Number(queue.candidate_only||0)}`,
       `[GAPS] total ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent ${Number(queue.recent_gaps||0)} • blue-only ${Number(queue.blue_only||0)} • purple-only ${Number(queue.purple_only||0)}`,
+      `[ASSOCIATIONS] assigned ${Number(assoc.assignedLinks||0)} • quarantined ${Number(assoc.quarantinedLinks||0)} • cross-event ${Number(assoc.crossEventAssets||0)} • team-mismatch ${Number(assoc.teamMismatch||0)} • date-mismatch ${Number(assoc.dateMismatch||0)} • season-mismatch ${Number(assoc.seasonMismatch||0)}`,
         `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')}`,
         `[BACKFILL] ${back.lastDate?`last ${back.lastDate} • deep games ${Number(back.deepGames||0)}`:'waiting for first pass'}`,
         `[YOUTUBE] search ${search.quotaExhausted?'QUOTA EXHAUSTED':(Number(search.cooldownSeconds||0)>0?'COOLDOWN':'OK')}${search.lastError?' • '+String(search.lastError):''}`,
@@ -235,7 +237,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.0.1 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.0.2 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);

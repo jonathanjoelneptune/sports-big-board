@@ -1,4 +1,4 @@
-"""YouTube API gateway for Sports Big Board v4.0.1.
+"""YouTube API gateway for Sports Big Board v4.0.2.
 
 The gateway is deliberately operation-aware. A search.list quota/rate failure must
 never disable cheap metadata validation (videos.list) or official-channel history
@@ -10,6 +10,9 @@ import json
 import threading
 import time
 from dataclasses import dataclass
+from datetime import datetime, timedelta
+from pathlib import Path
+from zoneinfo import ZoneInfo
 from urllib.error import HTTPError
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
@@ -29,13 +32,16 @@ class OperationState:
     last_error: str = ""
     failures: int = 0
     quota_exhausted: bool = False
+    reset_at: float = 0.0
 
 
 class YouTubeGateway:
     """Small thread-safe request broker with separate failure domains per method."""
 
-    def __init__(self, user_agent: str = "SportsBigBoard/4.0.1"):
+    def __init__(self, user_agent: str = "SportsBigBoard/4.0.2", state_file=None, quota_timezone="America/Los_Angeles"):
         self.user_agent = user_agent
+        self.state_file = Path(state_file) if state_file else None
+        self.quota_timezone = str(quota_timezone or "America/Los_Angeles")
         self._lock = threading.RLock()
         self._states = {
             "search": OperationState(),
@@ -45,6 +51,36 @@ class YouTubeGateway:
             "playlistitems": OperationState(),
             "other": OperationState(),
         }
+        self._load_state()
+
+    def _next_quota_reset(self):
+        try:
+            tz=ZoneInfo(self.quota_timezone); now=datetime.now(tz); tomorrow=(now+timedelta(days=1)).date()
+            return datetime(tomorrow.year,tomorrow.month,tomorrow.day,tzinfo=tz).timestamp()
+        except Exception:
+            return time.time()+6*60*60
+
+    def _load_state(self):
+        if not self.state_file: return
+        try:
+            payload=json.loads(self.state_file.read_text(encoding="utf-8"))
+        except Exception:
+            return
+        now=time.time()
+        for name,raw in (payload.get("operations") or {}).items():
+            if name not in self._states or not isinstance(raw,dict): continue
+            st=self._states[name]; reset=float(raw.get("resetAt") or 0)
+            if raw.get("quotaExhausted") and reset>now:
+                st.quota_exhausted=True; st.reset_at=reset; st.until=max(float(raw.get("until") or 0),reset); st.last_error=str(raw.get("lastError") or "quota exhausted"); st.failures=int(raw.get("failures") or 0)
+
+    def _save_state(self):
+        if not self.state_file: return
+        try:
+            self.state_file.parent.mkdir(parents=True,exist_ok=True)
+            payload={"savedAt":time.time(),"operations":{name:{"until":st.until,"lastError":st.last_error,"failures":st.failures,"quotaExhausted":st.quota_exhausted,"resetAt":st.reset_at} for name,st in self._states.items()}}
+            tmp=self.state_file.with_suffix(self.state_file.suffix+".tmp"); tmp.write_text(json.dumps(payload,separators=(",",":")),encoding="utf-8"); tmp.replace(self.state_file)
+        except Exception:
+            pass
 
     @staticmethod
     def operation_for_url(url: str) -> str:
@@ -86,8 +122,10 @@ class YouTubeGateway:
 
     def _check(self, operation: str) -> None:
         with self._lock:
-            state = self._state(operation)
-            if time.time() < state.until:
+            state = self._state(operation); now=time.time()
+            if state.quota_exhausted and state.reset_at and now>=state.reset_at:
+                state.until=0.0; state.last_error=""; state.failures=0; state.quota_exhausted=False; state.reset_at=0.0; self._save_state()
+            if now < state.until:
                 raise YouTubeRateLimited(
                     f"YouTube {operation}.list cooldown active: {state.last_error or 'temporarily unavailable'}",
                     operation=operation,
@@ -102,6 +140,8 @@ class YouTubeGateway:
             state.last_error = ""
             state.failures = 0
             state.quota_exhausted = False
+            state.reset_at = 0.0
+            self._save_state()
 
     def _mark_http_failure(self, operation: str, exc: HTTPError) -> YouTubeRateLimited | None:
         if exc.code not in (403, 429):
@@ -113,11 +153,9 @@ class YouTubeGateway:
             state.failures += 1
             # search.list has a separate daily bucket. A real quota exhaustion can
             # safely be held for hours, but it still must not poison activities/videos.
-            if operation == "search" and (quota or exc.code == 429):
-                # search.list has its own small daily call bucket. In practice the
-                # exhausted bucket can surface as a generic HTTP 429 without a
-                # useful JSON reason, so do not hammer it once per game. This long
-                # search-only cooldown does NOT affect activities.list/videos.list.
+            if operation == "search" and quota:
+                state.reset_at=self._next_quota_reset(); delay=max(60,state.reset_at-now)
+            elif operation == "search" and exc.code == 429:
                 delay = 45 * 60
             elif exc.code == 429:
                 delay = min(15 * 60, 60 * (2 ** min(3, state.failures - 1)))
@@ -128,6 +166,8 @@ class YouTubeGateway:
             state.until = max(state.until, now + delay)
             state.last_error = reason
             state.quota_exhausted = quota
+            if not quota: state.reset_at=0.0
+            self._save_state()
             return YouTubeRateLimited(
                 f"YouTube {operation}.list unavailable: {reason}",
                 operation=operation,
@@ -159,10 +199,13 @@ class YouTubeGateway:
                     "lastError": state.last_error,
                     "quotaExhausted": state.quota_exhausted,
                     "failures": state.failures,
+                    "resetAt": state.reset_at,
                 }
                 for name, state in self._states.items()
             }
 
     def operation_available(self, operation: str) -> bool:
-        with self._lock:
-            return time.time() >= self._state(operation).until
+        try:
+            self._check(operation); return True
+        except YouTubeRateLimited:
+            return False

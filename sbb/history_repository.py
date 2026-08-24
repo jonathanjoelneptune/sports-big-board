@@ -434,7 +434,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.0.1 migration cooldowns already persisted in production.
+        """Release artificial v4.0.2 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -451,6 +451,17 @@ class HistoryRepository:
                 AND (last_discovery_at>0 OR next_retry_at>0)""",(now,current))
             count=int(cur.rowcount or 0); conn.commit()
         return count
+
+    def catalog_meta(self, key, default=""):
+        with self._lock, closing(self._connect()) as conn:
+            row=conn.execute("SELECT value FROM history_catalog_meta WHERE key=?",(str(key),)).fetchone()
+        return str(row[0]) if row else str(default)
+
+    def set_catalog_meta(self, key, value):
+        now=time.time()
+        with self._lock, closing(self._connect()) as conn:
+            conn.execute("INSERT INTO history_catalog_meta(key,value,updated_at) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at",(str(key),str(value),now)); conn.commit()
+        return value
 
     def get_event(self, date, league, event_id):
         league=str(league).upper(); event_id=str(event_id); key=self.canonical_event_key(league,event_id)
@@ -479,10 +490,19 @@ class HistoryRepository:
                 asset_key=self._upsert_source_media_conn(conn,item,league=league,date=event_date,away=away,home=home,catalog_state=(ASSIGNED if state==ASSIGNED else QUARANTINED),quarantine_reason=reason)
                 if not asset_key: continue
                 if state==ASSIGNED:
-                    item["canonicalEventKey"]=key
-                    conn.execute("UPDATE history_source_media SET catalog_state='ASSIGNED',quarantine_reason='',asset_json=? WHERE asset_key=?",(self._dump_obj(item),asset_key))
-                    count+=1
-                else:
+                    competing=[str(r[0]) for r in conn.execute("SELECT canonical_event_key FROM history_event_media WHERE asset_key=? AND association_state='ASSIGNED' AND canonical_event_key<>?",(asset_key,key)).fetchall()]
+                    if competing:
+                        # One GAME source asset may never be authoritative for two games.
+                        # Fail closed rather than letting arrival order choose a winner.
+                        state=QUARANTINED; reason="CROSS_EVENT_ASSET_CONFLICT"
+                        evidence=dict(evidence); evidence.update(associationState=QUARANTINED,associationConfidence=0.0,associationMethod=reason,associationEvidence=f"already assigned to {competing}")
+                        conn.execute("UPDATE history_event_media SET association_state='QUARANTINED',association_confidence=0,association_method=?,association_evidence=?,matcher_version=?,updated_at=? WHERE asset_key=? AND association_state='ASSIGNED'",(reason,f"competing event {key}",EVENT_MATCHER_VERSION,now,asset_key))
+                        conn.execute("UPDATE history_source_media SET catalog_state='QUARANTINED',quarantine_reason=? WHERE asset_key=?",(reason,asset_key))
+                    else:
+                        item["canonicalEventKey"]=key
+                        conn.execute("UPDATE history_source_media SET catalog_state='ASSIGNED',quarantine_reason='',asset_json=? WHERE asset_key=?",(self._dump_obj(item),asset_key))
+                        count+=1
+                if state!=ASSIGNED:
                     conn.execute("INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,evidence_json=excluded.evidence_json,updated_at=excluded.updated_at",
                         (asset_key,league,event_date,key,state,reason,self._dump_obj(evidence),MEDIA_CLASSIFIER_VERSION,EVENT_MATCHER_VERSION,now,now))
                 conn.execute("""INSERT INTO history_event_media(canonical_event_key,asset_key,association_state,association_confidence,association_method,association_evidence,matcher_version,first_associated_at,updated_at)
@@ -491,6 +511,58 @@ class HistoryRepository:
                   (key,asset_key,state,float(evidence.get("associationConfidence") or 0),str(evidence.get("associationMethod") or ""),str(evidence.get("associationEvidence") or "")[:2000],int(evidence.get("matcherVersion") or EVENT_MATCHER_VERSION),now,now))
             conn.commit()
         return count
+
+    def repair_event_associations(self, matcher_version=EVENT_MATCHER_VERSION, force=False):
+        """Re-prove every GAME relationship under the current fail-closed matcher.
+
+        Source assets are preserved. Bad/ambiguous links are quarantined and can
+        be reconsidered by a future matcher without reacquiring media.
+        """
+        target=int(matcher_version or EVENT_MATCHER_VERSION)
+        marker=int(self.catalog_meta("event_association_repair_version","0") or 0)
+        if marker>=target and not force:
+            return {"skipped":True,"matcherVersion":target,**self.association_integrity_summary()}
+        now=time.time(); checked=kept=quarantined=0; reasons={}
+        with self._lock, closing(self._connect()) as conn:
+            rows=conn.execute("""SELECT em.canonical_event_key,em.asset_key,e.league,e.event_date,e.event_json,s.asset_json,s.scope
+              FROM history_event_media em JOIN history_catalog_event e ON e.canonical_event_key=em.canonical_event_key
+              JOIN history_source_media s ON s.asset_key=em.asset_key WHERE s.scope='GAME'""").fetchall()
+            for row in rows:
+                checked+=1; event=self._load_obj(row["event_json"]); item=self._load_obj(row["asset_json"])
+                away,home=team_name(event,"away"),team_name(event,"home")
+                item=annotate_media_scope(item,league=row["league"],date=row["event_date"],away=away,home=home)
+                ev=match_event(item,event,league=row["league"],date=row["event_date"]); state=str(ev.get("associationState") or QUARANTINED)
+                method=str(ev.get("associationMethod") or "UNPROVEN_GAME_ASSOCIATION"); reasons[method]=reasons.get(method,0)+1
+                if state==ASSIGNED: kept+=1
+                else:
+                    quarantined+=1
+                    conn.execute("INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,evidence_json=excluded.evidence_json,matcher_version=excluded.matcher_version,updated_at=excluded.updated_at",(row["asset_key"],row["league"],row["event_date"],row["canonical_event_key"],QUARANTINED,method,self._dump_obj(ev),MEDIA_CLASSIFIER_VERSION,target,now,now))
+                conn.execute("UPDATE history_event_media SET association_state=?,association_confidence=?,association_method=?,association_evidence=?,matcher_version=?,updated_at=? WHERE canonical_event_key=? AND asset_key=?",(state,float(ev.get("associationConfidence") or 0),method,str(ev.get("associationEvidence") or "")[:2000],target,now,row["canonical_event_key"],row["asset_key"]))
+            # Enforce global one-asset/one-game invariant after revalidation.
+            conflicts=conn.execute("SELECT asset_key,COUNT(DISTINCT canonical_event_key) n FROM history_event_media WHERE association_state='ASSIGNED' GROUP BY asset_key HAVING n>1").fetchall()
+            conflict_assets=0
+            for c in conflicts:
+                conflict_assets+=1; asset=str(c["asset_key"]); quarantined_links=conn.execute("SELECT COUNT(*) FROM history_event_media WHERE asset_key=? AND association_state='ASSIGNED'",(asset,)).fetchone()[0]
+                quarantined+=int(quarantined_links or 0); kept-=int(quarantined_links or 0)
+                conn.execute("UPDATE history_event_media SET association_state='QUARANTINED',association_confidence=0,association_method='CROSS_EVENT_ASSET_CONFLICT',association_evidence='multiple canonical games survived revalidation',matcher_version=?,updated_at=? WHERE asset_key=? AND association_state='ASSIGNED'",(target,now,asset))
+                conn.execute("UPDATE history_source_media SET catalog_state='QUARANTINED',quarantine_reason='CROSS_EVENT_ASSET_CONFLICT',updated_at=? WHERE asset_key=?",(now,asset))
+            # Recompute source state from surviving relationships/collections.
+            conn.execute("""UPDATE history_source_media SET catalog_state=CASE
+                WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='ASSIGNED') THEN 'ASSIGNED'
+                WHEN EXISTS(SELECT 1 FROM history_collection_media cm WHERE cm.asset_key=history_source_media.asset_key) THEN 'ASSIGNED'
+                WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='QUARANTINED') THEN 'QUARANTINED'
+                ELSE 'UNASSIGNED' END,
+                quarantine_reason=CASE WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='ASSIGNED') THEN '' ELSE quarantine_reason END,updated_at=?""",(now,))
+            conn.execute("INSERT INTO history_catalog_meta(key,value,updated_at) VALUES('event_association_repair_version',?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at",(str(target),now)); conn.commit()
+        return {"skipped":False,"matcherVersion":target,"checkedLinks":checked,"keptLinks":max(0,kept),"quarantinedLinks":quarantined,"reasons":reasons,**self.association_integrity_summary()}
+
+    def association_integrity_summary(self):
+        with self._lock, closing(self._connect()) as conn:
+            assigned=int(conn.execute("SELECT COUNT(*) FROM history_event_media WHERE association_state='ASSIGNED'").fetchone()[0] or 0)
+            quarantined=int(conn.execute("SELECT COUNT(*) FROM history_event_media WHERE association_state='QUARANTINED'").fetchone()[0] or 0)
+            cross=int(conn.execute("SELECT COUNT(*) FROM (SELECT asset_key FROM history_event_media WHERE association_state='ASSIGNED' GROUP BY asset_key HAVING COUNT(DISTINCT canonical_event_key)>1)").fetchone()[0] or 0)
+            counts={r[0]:int(r[1] or 0) for r in conn.execute("SELECT association_method,COUNT(*) FROM history_event_media WHERE association_state='QUARANTINED' GROUP BY association_method").fetchall()}
+        return {"assignedLinks":assigned,"quarantinedLinks":quarantined,"crossEventAssets":cross,"teamMismatch":counts.get('TITLE_TEAM_PAIR_CONFLICT',0)+counts.get('TEAM_FIELD_CONFLICT',0),"dateMismatch":counts.get('DATE_MISMATCH',0),"seasonMismatch":counts.get('SEASON_MISMATCH',0),"crossEventQuarantined":counts.get('CROSS_EVENT_ASSET_CONFLICT',0)}
 
     @staticmethod
     def _hydrate_asset(row):
@@ -691,8 +763,8 @@ class HistoryRepository:
 
     def has_scores(self, date, league): return bool(self.get_league(date,league,prefer_catalog=False).get("scoresSavedAt"))
 
-    def green_gap_events(self, *, current_discovery_version=0, now=None, limit=24, recent_cooldown=2*60*60, archive_cooldown=24*60*60):
-        now=float(now or time.time()); current=int(current_discovery_version or 0); limit=max(1,min(200,int(limit or 24)))
+    def green_gap_events(self, *, current_discovery_version=0, now=None, limit=24, recent_cooldown=2*60*60, archive_cooldown=24*60*60, recent_cutoff=""):
+        now=float(now or time.time()); current=int(current_discovery_version or 0); limit=max(1,min(200,int(limit or 24))); cutoff=str(recent_cutoff or time.strftime("%Y-%m-%d",time.gmtime(now-2*86400)))[:10]
         with self._lock, closing(self._connect()) as conn:
             rows=conn.execute("""WITH flags AS (
                 SELECT em.canonical_event_key,
@@ -707,11 +779,17 @@ class HistoryRepository:
               WHERE COALESCE(f.has_gold,0)=0 AND COALESCE(f.has_green,0)=0
                 AND (
                   COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<?
-                  OR (e.next_retry_at<=? AND (e.last_discovery_at<=0 OR e.last_discovery_at <= ? - CASE WHEN e.event_date>=date('now','-2 days') THEN ? ELSE ? END))
+                  OR (e.next_retry_at<=? AND (e.last_discovery_at<=0 OR e.last_discovery_at <= ? - CASE WHEN e.event_date>=? THEN ? ELSE ? END))
                 )
-              ORDER BY CASE WHEN e.event_date>=date('now','-2 days') AND COALESCE(f.verified_count,0)=0 THEN -3 WHEN e.event_date>=date('now','-2 days') AND COALESCE(f.has_blue,0)=1 THEN -2
-                WHEN e.event_date>=date('now','-2 days') AND COALESCE(f.has_extended,0)=1 THEN -1 WHEN COALESCE(f.has_blue,0)=1 THEN 0 WHEN COALESCE(f.verified_count,0)=0 THEN 1 WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
-                e.event_date DESC,e.last_discovery_at ASC LIMIT ?""",(current,now,now,float(recent_cooldown),float(archive_cooldown),limit)).fetchall()
+              ORDER BY CASE
+                WHEN COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<? AND COALESCE(f.verified_count,0)=0 THEN -6
+                WHEN COALESCE(CAST(json_extract(e.discovery_json,'$.discoveryVersion') AS INTEGER),0)<? AND COALESCE(f.has_blue,0)=1 THEN -5
+                WHEN e.event_date>=? AND COALESCE(f.verified_count,0)=0 THEN -4
+                WHEN e.event_date>=? AND COALESCE(f.has_blue,0)=1 THEN -3
+                WHEN COALESCE(f.verified_count,0)=0 THEN -2 WHEN COALESCE(f.has_blue,0)=1 THEN -1
+                WHEN e.event_date>=? AND COALESCE(f.has_extended,0)=1 THEN 0
+                WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
+                e.event_date DESC,e.last_discovery_at ASC LIMIT ?""",(current,now,now,cutoff,float(recent_cooldown),float(archive_cooldown),current,current,cutoff,cutoff,cutoff,limit)).fetchall()
         out=[]
         for row in rows:
             best="blue" if row["has_blue"] else ("extended" if row["has_extended"] else "")
@@ -720,8 +798,8 @@ class HistoryRepository:
                 "verifiedCount":int(row["verified_count"] or 0),"hasBlue":bool(row["has_blue"]),"hasExtended":bool(row["has_extended"]),"bestTier":best or "none"})
         return out
 
-    def green_gap_summary(self, *, current_discovery_version=0, now=None, recent_cooldown=2*60*60, archive_cooldown=24*60*60):
-        now=float(now or time.time()); current=int(current_discovery_version or 0)
+    def green_gap_summary(self, *, current_discovery_version=0, now=None, recent_cooldown=2*60*60, archive_cooldown=24*60*60, recent_cutoff=""):
+        now=float(now or time.time()); current=int(current_discovery_version or 0); cutoff=str(recent_cutoff or time.strftime("%Y-%m-%d",time.gmtime(now-2*86400)))[:10]
         with self._lock, closing(self._connect()) as conn:
             rows=conn.execute("""SELECT e.canonical_event_key,e.event_date,e.discovery_state,e.discovery_json,e.last_discovery_at,e.next_retry_at,
                 SUM(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count,
@@ -733,7 +811,7 @@ class HistoryRepository:
         summary={"total":0,"due":0,"recent":0,"recentNoMedia":0,"blueOnly":0,"purpleOnly":0,"unindexed":0,"searchedEmpty":0,"coverageComplete":0,"candidateOnly":0,"staleVersion":0}
         for row in rows:
             disc=self._load_obj(row["discovery_json"]); version=int(disc.get("discoveryVersion") or 0); verified=int(row["verified_count"] or 0)
-            has_good=bool(row["has_gold"] or row["has_green"]); recent=str(row["event_date"])>=time.strftime("%Y-%m-%d",time.gmtime(now-2*86400))
+            has_good=bool(row["has_gold"] or row["has_green"]); recent=str(row["event_date"])>=cutoff
             if not has_good: summary["total"]+=1
             if recent and not has_good: summary["recent"]+=1
             if recent and not verified: summary["recentNoMedia"]+=1
@@ -749,7 +827,7 @@ class HistoryRepository:
             stale=bool(version<current)
             due=stale or (float(row["next_retry_at"] or 0)<=now and (float(row["last_discovery_at"] or 0)<=0 or float(row["last_discovery_at"] or 0)<=now-cooldown))
             if not has_good and due: summary["due"]+=1
-        # v4.0.1 operator-console aliases keep the explicit catalog semantics.
+        # v4.0.2 operator-console aliases keep the explicit catalog semantics.
         # "noMedia" was ambiguous because UNINDEXED events can already have Blue
         # or Purple media; expose the actual union under an honest name instead.
         summary.update({
@@ -831,8 +909,10 @@ class HistoryRepository:
             cov=summary["greenCoverageByLeague"].setdefault(erow["league"],{"games":0,"greenGames":0,"greenOrGoldGames":0}); cov["games"]+=1
             if any(a.get("verified") for a in tiers["green"]): summary["greenCoverageGames"]+=1; cov["greenGames"]+=1
             if any(a.get("verified") for a in tiers["green"]+tiers["gold"]): cov["greenOrGoldGames"]+=1
+            catalog_coverage=("UNINDEXED" if projected["discoveryPending"] else ("SEARCHED_EMPTY" if eff=="SEARCHED_EMPTY" else ("CANDIDATE_ONLY" if eff=="CANDIDATE_ONLY" else ("PLAYABLE_COMPLETE" if verified and projected["catalogComplete"] else ("PLAYABLE_PARTIAL" if verified else "PROVIDER_DEGRADED")))))
+            quality_gap=("QUALITY_COMPLETE" if projected["qualityComplete"] else ("UPGRADE_PENDING" if verified else "NO_PLAYABLE_MEDIA"))
             rows.append({"date":erow["event_date"],"league":erow["league"],"eventId":erow["event_id"],"canonicalEventKey":erow["canonical_event_key"],"away":away,"home":home,"game":game,
-              "discoveryState":projected["discoveryState"],"effectiveStatus":eff,"bestTier":best or "none","qualityComplete":projected["qualityComplete"],"upgradeEligible":projected["upgradeEligible"],"catalogComplete":projected["catalogComplete"],
+              "discoveryState":projected["discoveryState"],"effectiveStatus":eff,"catalogCoverageStatus":catalog_coverage,"qualityGapStatus":quality_gap,"bestTier":best or "none","qualityComplete":projected["qualityComplete"],"upgradeEligible":projected["upgradeEligible"],"catalogComplete":projected["catalogComplete"],
               "discoveryPending":projected["discoveryPending"],"discoveryVersion":projected["discoveryVersion"],"currentDiscoveryVersion":projected["currentDiscoveryVersion"],"versionCurrent":projected["versionCurrent"],
               "nextRetryAt":float(erow["next_retry_at"] or 0),"lastDiscoveryAt":float(erow["last_discovery_at"] or 0),"lastError":str(erow["last_error"] or ""),"tiers":tiers,"verifiedAssetCount":len(verified),"assetCount":len(event_assets)})
         total=len(rows); return {"summary":summary,"rows":rows[offset:offset+limit],"total":total,"limit":limit,"offset":offset}
@@ -845,7 +925,7 @@ class HistoryRepository:
             games.extend(chunk); off+=len(chunk)
         out=[]
         for game in games:
-            common={"Best Tier":"purple" if game["bestTier"]=="extended" else game["bestTier"],"Audit Status":game["effectiveStatus"].replace("_"," "),"Discovery Pending":game["discoveryPending"],"Upgrade Pending":game["upgradeEligible"],"Catalog Complete":game["catalogComplete"],"Quality Complete":game["qualityComplete"],"Discovery Version":game["discoveryVersion"],"Current Discovery Version":game["currentDiscoveryVersion"],"Discovery State":game["discoveryState"]}
+            common={"Best Tier":"purple" if game["bestTier"]=="extended" else game["bestTier"],"Audit Status":game["effectiveStatus"].replace("_"," "),"Catalog Coverage Status":game.get("catalogCoverageStatus") or "","Quality Gap Status":game.get("qualityGapStatus") or "","Discovery Pending":game["discoveryPending"],"Upgrade Pending":game["upgradeEligible"],"Catalog Complete":game["catalogComplete"],"Quality Complete":game["qualityComplete"],"Discovery Version":game["discoveryVersion"],"Current Discovery Version":game["currentDiscoveryVersion"],"Discovery State":game["discoveryState"]}
             emitted=False
             for tier in ("gold","green","extended","blue"):
                 for asset in game["tiers"][tier]:

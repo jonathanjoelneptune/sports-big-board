@@ -1,4 +1,4 @@
-# Sports Big Board v4.0.1 Architecture
+# Sports Big Board v4.0.2 Architecture
 
 ## Product model
 
@@ -65,7 +65,7 @@ Changing `browseDate` can fetch and render another day's slate but cannot call P
 
 Past-day score and media snapshots remain resident in the browser session. Final historical Game Centers may remain HOT for 24 hours in browser memory while partial shells retain the short retry TTL; the server's persistent repository remains the WARM authority.
 
-### v4.0.1 normalized historical catalog baseline
+### v4.0.2 normalized historical catalog baseline
 
 v4 treats a discovered media asset and a sporting-event relationship as different entities. The fundamental flow is:
 
@@ -344,3 +344,9 @@ The Stage 1 invariant is: **frontend deployments are disposable; historical stat
 ## v3.0.9 audit-state projection
 
 `history_catalog_event.discovery_state` remains a raw durable pipeline marker. The audit API no longer displays raw `UNKNOWN` as if it means no data. It combines current discovery-version metadata with the normalized verified media catalog to derive `effectiveStatus`, `discoveryPending`, `catalogComplete`, `qualityComplete`, and inferred `upgradeEligible`. This projection is read-only and therefore cannot accidentally mark stale events current or suppress the version-driven reindex scheduler.
+
+### v4.0.2 fail-closed event association
+
+Event Matcher v5 makes association evidence stricter than provider discovery. Broad source results are never stamped with the target Event ID or target away/home teams before matching. Matchup-title conflicts, explicit MLB date mismatches, stale season/year content, and one-asset/multiple-game conflicts fail closed into quarantine. A one-time matcher-version repair re-evaluates existing v4 EVENT_MEDIA links without deleting SOURCE_MEDIA.
+
+The queue now prioritizes first-pass NONE/BLUE events ahead of archive Purple optimization, uses the remembered sports-day timezone for the recent window, persists YouTube Search exhaustion through restart until the provider reset window, and uses Pacific-day accounting with a hard internal search ceiling.
