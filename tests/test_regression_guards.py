@@ -24,7 +24,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertLess(block.index('const assoc=data.associations||{};'),block.index('assoc.assignedLinks'))
 
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=4.1.9','architecture/score-date-store.js?v=4.1.9','architecture/event-identity.js?v=4.1.9','architecture/media-scope.js?v=4.1.9','architecture/media-classifier.js?v=4.1.9','architecture/playback-transports.js?v=4.1.9','architecture/provider-health.js?v=4.1.9','architecture/sport-media-policy.js?v=4.1.9','architecture/media-manifest.js?v=4.1.9','architecture/media-resolver.js?v=4.1.9','architecture/game-center-policy.js?v=4.1.9','architecture/selected-event-store.js?v=4.1.9','architecture/game-center-contract.js?v=4.1.9','architecture/media-work-priorities.js?v=4.1.9','architecture/editorial-packages.js?v=4.1.9','ui/player-visibility.js?v=4.1.9','ui/info-drawer.js?v=4.1.9','ui/settings-view.js?v=4.1.9','ui/history-audit.js?v=4.1.9','ui/game-center-view.js?v=4.1.9','app.js?v=4.1.9']
+        ordered=['core-model.js?v=4.1.10','architecture/score-date-store.js?v=4.1.10','architecture/event-identity.js?v=4.1.10','architecture/media-scope.js?v=4.1.10','architecture/media-classifier.js?v=4.1.10','architecture/playback-transports.js?v=4.1.10','architecture/provider-health.js?v=4.1.10','architecture/sport-media-policy.js?v=4.1.10','architecture/media-manifest.js?v=4.1.10','architecture/media-resolver.js?v=4.1.10','architecture/game-center-policy.js?v=4.1.10','architecture/selected-event-store.js?v=4.1.10','architecture/game-center-contract.js?v=4.1.10','architecture/media-work-priorities.js?v=4.1.10','architecture/editorial-packages.js?v=4.1.10','ui/player-visibility.js?v=4.1.10','ui/info-drawer.js?v=4.1.10','ui/settings-view.js?v=4.1.10','ui/history-audit.js?v=4.1.10','ui/game-center-view.js?v=4.1.10','app.js?v=4.1.10']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -224,7 +224,8 @@ class RegressionGuards(unittest.TestCase):
     def test_nfl_has_keyless_official_channel_feed_fallback(self):
         self.assertIn('NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"',SERVER)
         self.assertIn('def _official_nfl_feed_videos',SERVER)
-        self.assertIn("out.extend(_official_nfl_feed_videos(date,away,home))",SERVER)
+        self.assertIn("for row in _official_nfl_feed_videos(date,away,home):",SERVER)
+        self.assertIn("out.extend(_nfl_official_extended_results(date,away,home,max_items=4,validate_native=True))",SERVER)
         self.assertIn('team_v418_',SERVER)
 
     def test_nfl_has_event_scoped_espn_and_club_site_fallbacks(self):
@@ -381,8 +382,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v4.1.9 — score ribbon recovery',STYLES)
-        self.assertIn('v4.1.9 — historical Date Browser',STYLES)
+        self.assertIn('v4.1.10 — score ribbon recovery',STYLES)
+        self.assertIn('v4.1.10 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -391,7 +392,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v4.1.9 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v4.1.10 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -554,7 +555,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v4.1.9',STYLES)
+        self.assertNotIn('\\n\\n/* v4.1.10',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)
@@ -572,11 +573,13 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('NFL_GAME_HIGHLIGHTS_CHANNEL_URL = "https://www.nfl.com/videos/channel/game-highlights-vc"',SERVER)
         self.assertIn('def _nfl_game_highlights_results',SERVER)
         discover=SERVER[SERVER.index('def _history_discover_event'):SERVER.index('def _history_discover_day',SERVER.index('def _history_discover_event'))]
-        nfl_lane="lane('nfl-game-highlights',lambda:_nfl_game_highlights_results(date,away,home,max_items=4,validate_native=False),'primary')"
-        self.assertIn(nfl_lane,discover)
-        self.assertLess(discover.index(nfl_lane),discover.index("lane('official-native'"))
-        self.assertIn("if lane in {'nfl-feed','nfl-game-highlights'}: return 'nfl'",SERVER)
-        self.assertIn("out.extend(_nfl_game_highlights_results(date,away,home,max_items=4,validate_native=True))",SERVER)
+        quick_lane="lane('nfl-game-highlights',lambda:_nfl_game_highlights_results(date,away,home,max_items=6,validate_native=False,objective='quick'),'primary')"
+        extended_lane="lane('nfl-extended-highlights',lambda:_nfl_official_extended_results(date,away,home,max_items=6,validate_native=False),'primary')"
+        self.assertIn(quick_lane,discover); self.assertIn(extended_lane,discover)
+        self.assertLess(discover.index(quick_lane),discover.index("lane('official-native'"))
+        self.assertLess(discover.index(extended_lane),discover.index("lane('official-native'"))
+        self.assertIn("if lane in {'nfl-feed','nfl-game-highlights','nfl-extended-highlights'}: return 'nfl'",SERVER)
+        self.assertIn("out.extend(_nfl_game_highlights_results(date,away,home,max_items=4,validate_native=True,objective='quick'))",SERVER)
 
     def test_v419_official_source_catchup_is_versioned_recent_first_and_official_only(self):
         self.assertIn('HISTORY_OFFICIAL_CATCHUP_SOURCES = {',SERVER)
@@ -636,7 +639,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('/api/history/event/discover',SERVER)
         self.assertIn('/api/history/event/media',SERVER)
         self.assertIn('/api/history/media/runtime',SERVER)
-        self.assertIn('HISTORY_DISCOVERY_VERSION = 13',SERVER)
+        self.assertIn('HISTORY_DISCOVERY_VERSION = 14',SERVER)
         self.assertIn('_touch_history_focus(date',SERVER)
         self.assertIn('team_v418_',SERVER)
         self.assertIn("apiJson('/api/history/event/discover'",APP)
@@ -655,6 +658,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('Gold, Green, Purple and Blue',INDEX)
         self.assertIn('historyAuditTableBody',AUDIT)
         self.assertIn("exportFile('xlsx')",AUDIT)
+        self.assertIn('BEST_GOALS',INDEX); self.assertIn('BEST_SAVES',INDEX)
+        self.assertIn('[MEDIA OBJECTIVES]',AUDIT); self.assertIn('[MEDIA NORMALIZATION]',AUDIT)
 
     def test_v305_audit_projects_unknown_into_actionable_statuses(self):
         self.assertIn('UNINDEXED',INDEX); self.assertIn('SEARCHED EMPTY',INDEX); self.assertIn('COVERAGE COMPLETE',INDEX)
@@ -670,7 +675,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('/playlistItems?',SERVER)
         self.assertIn("lane('youtube-official-uploads'",SERVER)
         self.assertIn('youtube-official-uploads',SERVER)
-        self.assertIn('HISTORY_DISCOVERY_VERSION = 13',SERVER)
+        self.assertIn('HISTORY_DISCOVERY_VERSION = 14',SERVER)
 
     def test_historical_date_session_keeps_browse_playback_and_game_center_separate(self):
         date_store=(ROOT/'architecture/score-date-store.js').read_text(encoding='utf-8')

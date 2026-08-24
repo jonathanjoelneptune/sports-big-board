@@ -95,7 +95,7 @@ class HistoryV4BaselineTests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"scoreEventId":"evt1","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}
             repo.upsert_event("2026-08-20","NBA","evt1",event)
-            # A real v12 attempt happened moments ago. Discovery v13 must still
+            # A real v12 attempt happened moments ago. Discovery v14 must still
             # be allowed immediately because generation changes invalidate the
             # old cooldown.
             repo.set_event_discovery("2026-08-20","NBA","evt1","SEARCHED_EMPTY",{"discoveryVersion":12},retry_at=time.time()+86400)
@@ -320,6 +320,20 @@ class HistoryV4BaselineTests(unittest.TestCase):
             rows=repo.source_enrichment_events(sources,floor_date="2025-08-01",today="2026-08-24",now=time.time(),limit=10)
             self.assertEqual(rows[0]["eventId"],"nfl-new"); self.assertEqual(rows[0]["pendingSources"][0]["version"],2)
 
+    def test_v4110_nfl_green_without_purple_remains_extended_catchup_eligible(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            sources={"NFL":[{"key":"nfl-game-highlights","version":2,"objective":"quick"},{"key":"nfl-extended-highlights","version":1,"objective":"extended"}]}
+            event={"scoreEventId":"nfl-objectives","awayTeam":{"name":"Las Vegas Raiders"},"homeTeam":{"name":"Houston Texans"},"completed":True}
+            repo.put_scores("2026-08-20","NFL",[event])
+            green={"youtubeId":"nflquick123","scoreEventId":"nfl-objectives","title":"Las Vegas Raiders vs Houston Texans Game Highlights","durationSeconds":180,"overview":True,"programType":"recap","mediaObjective":"QUICK","verifiedPlayable":True,"validationState":"VERIFIED","historyVerifiedAt":time.time(),"embedValidated":True,"sourceType":"official-nfl-game-highlights","source":"NFL.com"}
+            repo.put_event_media("2026-08-20","NFL","nfl-objectives",[green])
+            rows=repo.source_enrichment_events(sources,floor_date="2025-08-01",today="2026-08-24",now=time.time(),limit=10)
+            self.assertEqual(len(rows),1); self.assertTrue(rows[0]["hasGreen"]); self.assertFalse(rows[0]["hasExtended"])
+            self.assertEqual([x["key"] for x in rows[0]["pendingSources"]],["nfl-extended-highlights"])
+            objectives=repo.media_objective_summary()
+            self.assertEqual(objectives["nflQuickGames"],1); self.assertEqual(objectives["nflExtendedGames"],0); self.assertEqual(objectives["nflGreenWithoutPurple"],1)
+
     def test_v419_source_enrichment_summary_counts_coverage_and_quality_upgrades(self):
         with tempfile.TemporaryDirectory() as td:
             repo=HistoryRepository(Path(td)/"history.sqlite3")
@@ -431,7 +445,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
             repo.put_scores("2026-08-22","MLS",[event])
-            # Simulate a pre-v4.1.9 assigned row by directly inserting source/link.
+            # Simulate a pre-v4.1.10 assigned row by directly inserting source/link.
             wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
             repo.put_source_media([wrong],league="MLS",date="2026-08-22")
             import sqlite3 as _sqlite3, time as _time, json as _json

@@ -1,4 +1,4 @@
-/* Sports Big Board v4.1.9 — transport vocabulary.
+/* Sports Big Board v4.1.10 — transport vocabulary.
    Discovery identifies media; transport decides how an already-selected asset is
    delivered. League names never decide playback implementation. */
 (() => {

@@ -1,4 +1,4 @@
-"""Media scope + Silver collection classification for Sports Big Board v4.1.9.
+"""Media scope + Silver collection classification for Sports Big Board v4.1.10.
 
 Scope answers *what the media covers*. Intent answers *what kind of program it is*.
 Neither is the game's Gold/Green/Purple/Blue quality tier. Only GAME-scoped media
@@ -24,7 +24,7 @@ PLAYER = "PLAYER"
 SEASON_LEAGUE = "SEASON_LEAGUE"
 OTHER = "OTHER"
 # COLLECTION_SCOPES remains the broad taxonomy vocabulary for compatibility.
-# SILVER_SCOPES is the actual v4.1.9 presentation/promotion contract.
+# SILVER_SCOPES is the actual v4.1.10 presentation/promotion contract.
 COLLECTION_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, SEASON_LEAGUE}
 SILVER_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE}
 VALID_SCOPES = {GAME, DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, PLAYER, SEASON_LEAGUE, OTHER}
@@ -34,6 +34,8 @@ TOP_PLAYS = "TOP_PLAYS"
 WEEKLY_RECAP = "WEEKLY_RECAP"
 DAILY_RECAP = "DAILY_RECAP"
 SCORING_ROUNDUP = "SCORING_ROUNDUP"
+BEST_GOALS = "BEST_GOALS"
+BEST_SAVES = "BEST_SAVES"
 
 # Strong collection language. v4.1.4's generic "best plays" / "top 10" rules were
 # too broad and promoted player packages, historical features and ordinary game clips.
@@ -61,7 +63,10 @@ _GAME_RE = re.compile(r"\b(full game highlights|game highlights|game recap|game 
 _WEEK_NUM_RE = re.compile(r"\bweek\s*(\d{1,2})\b", re.I)
 _ROUND_NUM_RE = re.compile(r"\b(matchweek|mwk|matchday)\s*(\d{1,2})\b", re.I)
 _SCORING_ROUNDUP_RE = re.compile(r"\b(?:every|all)\s+(?:goal|touchdown)s?\s+(?:from|of)\s+(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b|\ball goals? from (?:matchweek|mwk|matchday)\s*\d{1,2}\b", re.I)
-_ROUND_TOP_RE = re.compile(r"\b(?:best|top)\s+(?:goals?|saves?|plays?)\s+(?:of|from)\s+(?:matchweek|mwk|matchday)\s*\d{1,2}\b|\bthings you may have missed in (?:matchweek|mwk|matchday)\s*\d{1,2}\b", re.I)
+_ROUND_TOP_RE = re.compile(r"\b(?:best|top)\s+(?:goals?|saves?|plays?)\s+(?:of|from)\s+(?:matchweek|mwk|matchday)\s*\d{1,2}\b|\bthings you may have missed in (?:matchweek|mwk|matchday)\s*\d{1,2}\b|\bmust[- ]see golazos?\b.*\bmatchday\s*\d{1,2}\b|\bwhat a save\b.*\bmatchday(?:s)?\s*\d{1,2}\b", re.I)
+_BEST_GOALS_RE = re.compile(r"\b(?:best|top)\s+goals?\s+(?:of|from)\s+(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b|\bmust[- ]see golazos?\b", re.I)
+_BEST_SAVES_RE = re.compile(r"\b(?:best|top)\s+saves?\s+(?:of|from)\s+(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b|\bwhat a save\b", re.I)
+_NON_GAME_RECAP_PROGRAM_RE = re.compile(r"\b(?:post[- ]?game show|post[- ]?game live|instant reaction|reaction(?:s)?(?: to)?|reacts? to|analysis show|film room|podcast|press conference|presser|interview)\b",re.I)
 
 # A title containing these signals is about a player/team/game/feature rather than a
 # league-wide roundup unless an even stronger explicit roundup phrase proves otherwise.
@@ -304,6 +309,8 @@ def _round_collection_signal(item, league=""):
 
 def collection_kind(item, scope=None):
     scope=str(scope or (item or {}).get("mediaScope") or "").upper(); title=_title(item)
+    if scope in SILVER_SCOPES and _BEST_GOALS_RE.search(title): return BEST_GOALS
+    if scope in SILVER_SCOPES and _BEST_SAVES_RE.search(title): return BEST_SAVES
     if _SCORING_ROUNDUP_RE.search(title): return SCORING_ROUNDUP
     if scope==WEEK_LEAGUE and (_WEEKLY_TOP_TITLE_RE.search(title) or _WEEKLY_CATEGORY_TOP_RE.search(title)): return TOP_PLAYS
     if scope==ROUND_LEAGUE and _ROUND_TOP_RE.search(title): return TOP_PLAYS
@@ -312,17 +319,20 @@ def collection_kind(item, scope=None):
     if scope==DAY_LEAGUE: return DAILY_RECAP
     return ROUNDUP
 
-
 def classify_with_reason(item, *, league="", date="", away="", home=""):
     item=item or {}; explicit=str(item.get("mediaScope") or "").upper(); title=_title(item); text=_text(item)
     if explicit in VALID_SCOPES:
         return explicit,float(item.get("mediaScopeConfidence") or 1.0),str(item.get("mediaScopeReason") or "EXPLICIT_SCOPE")
+    # v4.1.10: studio/reaction/postgame-show programming can remain in SOURCE_MEDIA,
+    # but may not become GAME media merely because a provider endpoint was event-scoped.
+    if _NON_GAME_RECAP_PROGRAM_RE.search(text) and not re.search(r"\b(?:full game highlights|game highlights|full match highlights|match highlights|condensed game|extended highlights)\b",text,re.I):
+        return OTHER,0.995,"NON_GAME_POSTGAME_OR_REACTION_PROGRAM"
     if any(item.get(k) not in (None, "") for k in ("scoreEventId","matchId","espnEventId","canonicalEventId")):
         return GAME,1.0,"AUTHORITATIVE_EVENT_ID"
     source_type=str(item.get("sourceType") or "").lower()
     if source_type in {"espn-event-video","mlb-game-content","nfl-event-video","official-nfl-club-site",
-                        "official-nhl-game-recap","official-nhl-condensed-game","official-mls-match-highlights",
-                        "official-premierleague-match-highlights","trusted-nbc-epl-extended"}:
+                        "official-nhl-game-recap","official-nhl-condensed-game","official-mls-match-snapshot","official-mls-match-highlights",
+                        "official-premierleague-match-highlights","trusted-nbc-epl-extended","official-nfl-game-highlights","official-nfl-extended-highlights"}:
         return GAME,0.99,"AUTHORITATIVE_GAME_SOURCE"
     if item.get("gamePk") and "mlb" in str(item.get("sourceLabel") or item.get("source") or "").lower():
         return GAME,0.99,"MLB_GAME_PK"
@@ -340,19 +350,18 @@ def classify_with_reason(item, *, league="", date="", away="", home=""):
     if _GAME_RE.search(title) and re.search(r"\b(?:vs\.?|versus|at)\b|@",title,re.I): return GAME,0.90,"GENERIC_MATCHUP_TITLE"
     if re.search(r"\b\d{2,3}[- ]?(?:pt|point)|double[- ]double|triple[- ]double|player highlights?\b",text,re.I) or _POSSESSIVE_BEST_RE.search(title):
         return PLAYER,0.94,"PLAYER_PACKAGE_LANGUAGE"
-    # Preserve season/feature media as source inventory but do not promote it to Silver.
     if _SEASON_RE.search(text): return SEASON_LEAGUE,0.90,"SEASON_FEATURE_LANGUAGE"
     return OTHER,0.50,"NO_SCOPE_SIGNAL"
-
 
 def classify(item, **kwargs): return classify_with_reason(item, **kwargs)[0]
 
 
 def classify_intent(item, scope=None):
     text=_text(item); title=_title(item); scope=str(scope or (item or {}).get("mediaScope") or "").upper()
-    if scope in SILVER_SCOPES and collection_kind(item,scope)==TOP_PLAYS: return INTENT_TOP_PLAYS,0.99,"TOP_PLAYS_LANGUAGE"
+    if scope in SILVER_SCOPES and collection_kind(item,scope) in {TOP_PLAYS,BEST_GOALS,BEST_SAVES}: return INTENT_TOP_PLAYS,0.99,"TOP_PLAYS_LANGUAGE"
     if re.search(r"\bpress conference|postgame presser|post-game presser\b",text,re.I): return INTENT_PRESS_CONFERENCE,0.99,"PRESS_CONFERENCE_LANGUAGE"
     if re.search(r"\binterview|one-on-one|1-on-1\b",text,re.I): return INTENT_INTERVIEW,0.95,"INTERVIEW_LANGUAGE"
+    if _NON_GAME_RECAP_PROGRAM_RE.search(text): return INTENT_ANALYSIS,0.98,"NON_GAME_ANALYSIS_PROGRAM"
     if re.search(r"\bfull game|full match|complete game\b",title,re.I) and not re.search(r"highlights",title,re.I): return INTENT_FULL_GAME,0.96,"FULL_GAME_LANGUAGE"
     if re.search(r"\bcondensed game\b",text,re.I): return INTENT_CONDENSED_GAME,0.99,"CONDENSED_GAME_LANGUAGE"
     if re.search(r"\bfull game highlights|full match highlights|extended highlights|extended recap\b",text,re.I): return INTENT_EXTENDED_HIGHLIGHTS,0.98,"EXTENDED_HIGHLIGHTS_LANGUAGE"
@@ -361,7 +370,6 @@ def classify_intent(item, scope=None):
     if re.search(r"\banalysis|breakdown|reaction|film room|takeaways\b",text,re.I): return INTENT_ANALYSIS,0.90,"ANALYSIS_LANGUAGE"
     if re.search(r"\bhighlights?\b",text,re.I): return INTENT_HIGHLIGHT,0.86,"HIGHLIGHT_LANGUAGE"
     return INTENT_OTHER,0.50,"NO_INTENT_SIGNAL"
-
 
 def silver_eligibility(item, *, league="", date=""):
     """Return a strict Silver promotion decision and canonical collection identity."""

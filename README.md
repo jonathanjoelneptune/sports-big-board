@@ -1,14 +1,18 @@
-# Sports Big Board v4.1.9
+# Sports Big Board v4.1.10
 
-> v4.1.9 adds a durable **Official-Source Catch-Up** pass so newly introduced NFL/NHL/EPL/MLS structured providers refill the newest historical gaps first without resetting Discovery v13 or rerunning generic search.
+> v4.1.10 separates **Quick** and **Extended** game-media objectives, hardens MLS/EPL official match discovery, adds first-class `BEST_GOALS` / `BEST_SAVES` Silver collections, and normalizes duplicate/reaction media before playback.
 
-## v4.1.9 — versioned official-source catch-up
+## v4.1.10 — MLS/EPL official media + NFL Quick/Extended objectives
 
-NFL, NHL, EPL, and MLS now keep a provider-version ledger independent from the global discovery generation. The three existing Green-gap workers first claim incomplete events whose current official provider version has never been checked, starting with the newest completed games and moving backward to the fixed August 1, 2025 seed floor. Recency is strongly weighted (0–7, 8–30, 31–90 days, then archive), while NONE outranks Blue and Blue outranks Purple within each band. Gold/Green games do not enter the catch-up queue.
+- **MLS:** `MATCH SNAPSHOT` is the preferred Green quick recap; `MATCH HIGHLIGHTS` is Purple/Extended. League-wide `Every Goal`, `Must-see Golazos`, and `What A Save` packages are promoted to Silver with canonical scoring / `BEST_GOALS` / `BEST_SAVES` collection identity.
+- **EPL:** official PremierLeague.com match highlights now require the actual team pair and match-highlight language, while Matchweek `Best Goals` and `Best Saves` packages are first-class Silver collections rather than generic Top Plays.
+- **NFL:** Quick and Extended are independent official-source objectives. A game with Green but no Purple remains eligible for Extended catch-up. Green ranking prefers roughly **2–6 minute** recaps over ~1 minute recaps when both are available; the official Extended lane targets roughly **8–20 minute** packages.
+- **GAME-media safety:** postgame shows, instant reaction, analysis shows, press conferences, interviews, and similar programs no longer qualify as GAME recap media merely because they mention the matchup. Exact duplicate assets collapse before ranking/playback.
+- **Normalized catalog:** GAME media without an already authoritative persisted tier is classified at ingestion, allowing durable SQL scheduling/audit to see Quick/Extended objectives correctly after restart. Existing explicit tiers are preserved.
+- **Operator audit:** Search Console/status now exposes NFL Quick, NFL Extended, Green-without-Purple, MLS Snapshot, MLS Match Highlights, `BEST_GOALS`, `BEST_SAVES`, duplicate-collapse, postgame/reaction rejection, and runtime objective-accept counters.
+- **Catalog generation:** `HISTORY_DISCOVERY_VERSION = 14`, media classifier v7, event matcher v6, and ranking v6. Official source ledgers are versioned independently so provider-specific fixes can reopen only the affected source objective.
 
-Catch-up passes run **only** the newly-versioned structured source lanes: NFL.com Game Highlights, NHL.com official game video, PremierLeague.com + NBC Extended Highlights, and MLSsoccer.com Match Highlights. They never enter public-page/public-index, YouTube Search, Highlightly, ESPN, or generic search rescue. A Purple result counts as a Coverage Complete upgrade; a Green result also counts as a quality upgrade. Every provider/version result is stored in `history_source_enrichment`, so restarts do not repeat finished work and a future adapter fix can reopen only that provider by incrementing its version. Normal current-day discovery records the same provider-version completion markers, preventing duplicate catch-up work on newly completed games.
-
-The Live Search Console exposes `[OFFICIAL SOURCE CATCH-UP]` with per-league checked/remaining counts plus coverage and Green upgrades. Individual workers show `official-source-catchup` while processing these passes. Once the seeded archive and current source versions are fully checked, the queue naturally becomes dormant and the same workers return to ordinary Green-gap work. No database rebuild or Discovery v14 reset is required.
+Verification for this release covers browser contracts, normalized-history scheduling, official collectors/classifiers, Silver promotion, cloud deployment, and regression guards.
 
 ## v4.1.8 — official content-source adapters
 
@@ -30,7 +34,7 @@ Silver promotion is fail-closed. A source asset becomes `DAY_LEAGUE` or `WEEK_LE
 
 Daily Silver identity is derived from the content period rather than the crawler encounter date. Explicit title dates win, including compact official formats such as `8/21`; publication chronology is the fallback. One daily asset therefore resolves to one canonical day instead of being smeared across overlapping backfill windows. Weekly identity is **league season + season week**, not calendar/ISO week: `The TOP Plays of Week 24 | 2025-26 NBA Season` becomes `WEEK_LEAGUE:NBA:2025-26:W24:TOP_PLAYS`, while `Every Touchdown from Week 18 | 2025 NFL Season` becomes `WEEK_LEAGUE:NFL:2025:W18:WEEKLY_RECAP`. Player-specific `Week N` videos are not weekly Silver.
 
-On the first v4.1.5 startup, `collection_association_repair_version=5` rebuilds **only Silver collection relationships** from the preserved source-media reservoir. Old duplicated/day-smeared links and old calendar-week keys are discarded, high-confidence assets are re-promoted under the strict classifier, and rejected items remain available in `SOURCE_MEDIA`. Event associations, Discovery v13 progress, verification/runtime history, the Aug. 1, 2025 historical-seed state, and the discovery-attempt ledger are untouched.
+On the first v4.1.5 startup, `collection_association_repair_version=5` rebuilds **only Silver collection relationships** from the preserved source-media reservoir. Old duplicated/day-smeared links and old calendar-week keys are discarded, high-confidence assets are re-promoted under the strict classifier, and rejected items remain available in `SOURCE_MEDIA`. Event associations, Discovery v14 progress, verification/runtime history, the Aug. 1, 2025 historical-seed state, and the discovery-attempt ledger are untouched.
 
 Game coverage completeness is also independent from editorial quality. A verified **Gold, Green, or Purple/extended** game package counts as `COVERAGE_COMPLETE`; **Blue or None** remains a coverage gap. Purple still remains eligible for an optional Green/Gold quality upgrade, and the Green-gap worker selection/propagation rules are unchanged. This lets sports such as soccer correctly count a legitimate 10–15 minute official Purple package as a complete watchable game record without pretending it is the preferred final tier.
 
@@ -87,7 +91,7 @@ v4 never converts the old relationship tables destructively at server startup. `
 
 Cloud deployment stops the backend before reconstruction. If the new v4 release later fails health checks, deployment restores **both** the previous application release and the pre-v4 database backup. Android/Termux and Windows launchers run the same preflight before starting the server.
 
-`HISTORY_DISCOVERY_VERSION = 13` starts fresh discovery bookkeeping on top of the reconstructed source catalog. Existing candidates are validated before new search, queue identity is `LEAGUE:EventID`, repeated no-improvement attempts back off, and YouTube Search quota is partitioned among recent games, true-empty rescue, Blue upgrades, and archive rescue.
+`HISTORY_DISCOVERY_VERSION = 14` starts fresh discovery bookkeeping on top of the reconstructed source catalog. Existing candidates are validated before new search, queue identity is `LEAGUE:EventID`, repeated no-improvement attempts back off, and YouTube Search quota is partitioned among recent games, true-empty rescue, Blue upgrades, and archive rescue.
 
 The historical console uses explicit states: **UNINDEXED**, **SEARCHED EMPTY**, **COVERAGE COMPLETE**, **UPGRADE PENDING**, **QUALITY COMPLETE**, **PROVIDER DEGRADED**, and **CANDIDATE ONLY**. Unindexed migration work is no longer mislabeled as “no media.”
 
@@ -103,7 +107,7 @@ The selected mode is stored on the persistent cloud data disk, so page refreshes
 
 v3.0.9 also added a **recent-slate safeguard**. The Green-gap queue gives completed games from the newest three calendar days with no verified recap a cursory pass before spending long stretches deep in the archive. After that safeguard, the normal Blue-only → no-media → Purple-only archive priority continues. The console reports `recent gaps` and `recent no-media` separately so current coverage cannot be hidden by a large December backlog.
 
-Those resource controls, worker heartbeat/watchdog, copy issues/full console controls, version mismatch protection, and recent-slate scheduling remain intact in v4.1.8. Historical discovery advances to `HISTORY_DISCOVERY_VERSION = 13` for the scope/association migration described above.
+Those resource controls, worker heartbeat/watchdog, copy issues/full console controls, version mismatch protection, and recent-slate scheduling remain intact in v4.1.8. Historical discovery advances to `HISTORY_DISCOVERY_VERSION = 14` for the scope/association migration described above.
 
 ## Cloud Stage 1
 
@@ -278,7 +282,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.9/sports-big-board-v4.1.9
+cd ~/storage/downloads/sports-big-board-v4.1.10/sports-big-board-v4.1.10
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```

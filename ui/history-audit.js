@@ -1,7 +1,7 @@
-/* Sports Big Board v4.1.9 historical database audit view. */
+/* Sports Big Board v4.1.10 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.1.9';
+  const FRONTEND_VERSION='4.1.10';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,tab:'games',silverOffset:0,silverLimit:100,silverTotal:0,silverLoading:false,lastSilverPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -216,7 +216,7 @@
   function consoleFullReport(data){
     const now=new Date(); const backend=String(data?.version||'UNKNOWN'); const discovery=Number(data?.historyDiscoveryVersion||0);
     const threads=data?.threads||[], workers=data?.workers||{}, queue=data?.greenGapQueue||{}, bg=data?.background||{}, g=data?.greenGap||{}, back=data?.backfill||{};
-    const gateway=data?.youtubeGateway||{}, budget=data?.youtubeSearchBudget||{}, hi=data?.highlightly||{}, focus=data?.focus||{}, assoc=data?.associations||{}, pool=data?.greenPool||{}, providers=data?.providerConcurrency||{}, claims=data?.eventClaims||[], eff=data?.discoveryEfficiency||{}, silver=data?.silver||{}, catchup=data?.officialSourceCatchup||{};
+    const gateway=data?.youtubeGateway||{}, budget=data?.youtubeSearchBudget||{}, hi=data?.highlightly||{}, focus=data?.focus||{}, assoc=data?.associations||{}, pool=data?.greenPool||{}, providers=data?.providerConcurrency||{}, claims=data?.eventClaims||[], eff=data?.discoveryEfficiency||{}, silver=data?.silver||{}, objectives=data?.mediaObjectives||{}, objRuntime=objectives?.runtime||{}, catchup=data?.officialSourceCatchup||{};
     const used=Number(budget.used||0), limit=Number(budget.limit||budget.budget||0);
     const rows=[
       'SPORTS BIG BOARD — LIVE SEARCH CONSOLE',
@@ -239,6 +239,8 @@
       `[CLAIMS] active ${claims.length}${claims.length?` • ${claims.map(x=>`${x.owner}=${x.canonicalEventKey}`).join(' • ')}`:''}`,
       `[PROVIDERS] ${Object.entries(providers).map(([k,v])=>`${k} ${Number(v.active||0)}/${Number(v.limit||0)} active${Number(v.waiting||0)?` +${Number(v.waiting)} waiting`:''}`).join(' • ')||'none'}`,
       `[SILVER] day collections ${Number(silver.dayCollections||0)} / ${Number(silver.dayAssets||0)} assets • week collections ${Number(silver.weekCollections||0)} / ${Number(silver.weekAssets||0)} assets • round collections ${Number(silver.roundCollections||0)} / ${Number(silver.roundAssets||0)} assets • periods ${Number(silver.periods||0)}`,
+      `[MEDIA OBJECTIVES] NFL quick ${Number(objectives.nflQuickGames||0)} • extended ${Number(objectives.nflExtendedGames||0)} • green-without-purple ${Number(objectives.nflGreenWithoutPurple||0)} | MLS snapshot ${Number(objectives.mlsSnapshots||0)} • match-highlights ${Number(objectives.mlsMatchHighlights||0)} | BEST_GOALS ${Number(objectives.bestGoalsCollections||0)} collections / ${Number(objectives.bestGoalsAssets||0)} assets • BEST_SAVES ${Number(objectives.bestSavesCollections||0)} collections / ${Number(objectives.bestSavesAssets||0)} assets`,
+      `[MEDIA NORMALIZATION] duplicates-collapsed ${Number(objRuntime.duplicatesCollapsed||0)} • postgame/reaction-rejected ${Number(objRuntime.postgameReactionRejected||0)} • accepted NFL quick ${Number(objRuntime.nflQuickAccepted||0)} / extended ${Number(objRuntime.nflExtendedAccepted||0)} • MLS snapshot ${Number(objRuntime.mlsSnapshotAccepted||0)} / highlights ${Number(objRuntime.mlsMatchHighlightsAccepted||0)}`,
       `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')} • lastError=${String(g.lastError||'none')}`,
       `[BACKFILL] ${backfillSummary(back)} • lastError=${String(back.lastError||'none')}`,
       `[BACKGROUND] ${bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`} • mediaAge=${Number(bg.mediaAgeSeconds||0)}s • interactiveAge=${Number(bg.interactiveAgeSeconds||0)}s • siteOpenDoesNotPause=${bg.siteOpenDoesNotPause?'YES':'NO'}`,
@@ -308,13 +310,13 @@
     consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • Backend v${backend} • Discovery v${discovery}`);
     const threads=data.threads||[]; const allThreads=threads.length&&threads.every(x=>x.alive);
     const gw=(data.workers||{})['green-gap']||{}; const queue=data.greenGapQueue||{}; const bg=data.background||{}; const pool=data.greenPool||{};
-    const search=(data.youtubeGateway||{}).search||{}; const budget=data.youtubeSearchBudget||{}; const assoc=data.associations||{}; const eff=data.discoveryEfficiency||{}; const silver=data.silver||{}; const catchup=data.officialSourceCatchup||{};
+    const search=(data.youtubeGateway||{}).search||{}; const budget=data.youtubeSearchBudget||{}; const assoc=data.associations||{}; const eff=data.discoveryEfficiency||{}; const silver=data.silver||{}; const objectives=data.mediaObjectives||{}; const objRuntime=objectives.runtime||{}; const catchup=data.officialSourceCatchup||{};
     const problems=[...(data.problems||[])];
     if(!versionOk)problems.unshift(`RELEASE MISMATCH: frontend v${FRONTEND_VERSION} but backend v${backend}`);
-    if(discovery<12)problems.unshift(`DISCOVERY MISMATCH: expected v12 but backend reports v${discovery||'?'}`);
-    const healthy=versionOk&&discovery>=12&&allThreads&&gw.healthy&&!problems.filter(x=>/thread|heartbeat|mismatch/i.test(x)).length;
+    if(discovery<14)problems.unshift(`DISCOVERY MISMATCH: expected v14 but backend reports v${discovery||'?'}`);
+    const healthy=versionOk&&discovery>=14&&allThreads&&gw.healthy&&!problems.filter(x=>/thread|heartbeat|mismatch/i.test(x)).length;
     consoleSet('historySearchConsoleOverall',healthy?(workMode==='search'?'SEARCH PRIORITY':(workMode==='playback'?'PLAYBACK PRIORITY':'RUNNING')):(versionOk?'ISSUE DETECTED':'BACKEND VERSION MISMATCH'));
-    if(head){if(!versionOk||discovery<11)head.classList.add('mismatch');else if(problems.length)head.classList.add('problem');}
+    if(head){if(!versionOk||discovery<14)head.classList.add('mismatch');else if(problems.length)head.classList.add('problem');}
     consoleSet('historySearchConsoleWorker',`${Number(pool.active||0)}/${Number(pool.desired||0)} active • ${Number(pool.attemptsPerHour||0)}/hr`); renderWorkerGrid(data);
     consoleSet('historySearchConsoleQueue',`${Number(queue.due_now||0).toLocaleString()} due / ${Number(queue.gaps||0).toLocaleString()} coverage gaps`);
     consoleSet('historySearchConsoleBackground',workMode==='search'?'ACTIVE • SEARCH PRIORITY':(workMode==='playback'?'PAUSED • PLAYBACK PRIORITY':(bg.canWork?'ACTIVE':`YIELDING • ${String(bg.pauseReason||'unknown').replaceAll('-',' ')}`))); if(head&&!bg.canWork&&!problems.length&&workMode==='balanced')head.classList.add('yielding');
@@ -340,6 +342,8 @@
         `[CLAIMS] active ${claims.length}`,
         `[PROVIDERS] ${Object.entries(providers).map(([k,v])=>`${k} ${Number(v.active||0)}/${Number(v.limit||0)}${Number(v.waiting||0)?` +${Number(v.waiting)} waiting`:''}`).join(' • ')||'none'}`,
         `[SILVER] day ${Number(silver.dayCollections||0)} collections / ${Number(silver.dayAssets||0)} assets • week ${Number(silver.weekCollections||0)} collections / ${Number(silver.weekAssets||0)} assets • round ${Number(silver.roundCollections||0)} collections / ${Number(silver.roundAssets||0)} assets`,
+        `[MEDIA OBJECTIVES] NFL quick ${Number(objectives.nflQuickGames||0)} • extended ${Number(objectives.nflExtendedGames||0)} • green-without-purple ${Number(objectives.nflGreenWithoutPurple||0)} | MLS snapshot ${Number(objectives.mlsSnapshots||0)} • highlights ${Number(objectives.mlsMatchHighlights||0)} | BEST_GOALS ${Number(objectives.bestGoalsCollections||0)}/${Number(objectives.bestGoalsAssets||0)} • BEST_SAVES ${Number(objectives.bestSavesCollections||0)}/${Number(objectives.bestSavesAssets||0)}`,
+        `[MEDIA NORMALIZATION] duplicate-collapse ${Number(objRuntime.duplicatesCollapsed||0)} • postgame/reaction rejected ${Number(objRuntime.postgameReactionRejected||0)} • runtime NFL quick ${Number(objRuntime.nflQuickAccepted||0)} / extended ${Number(objRuntime.nflExtendedAccepted||0)} • MLS snapshot ${Number(objRuntime.mlsSnapshotAccepted||0)} / highlights ${Number(objRuntime.mlsMatchHighlightsAccepted||0)}`,
         `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')}`,
         `[BACKFILL] ${backfillSummary(back)}`,
         `[YOUTUBE] search ${search.quotaExhausted?'QUOTA EXHAUSTED':(Number(search.cooldownSeconds||0)>0?'COOLDOWN':'OK')}${search.lastError?' • '+String(search.lastError):''}`,
@@ -360,7 +364,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.9 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.10 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);

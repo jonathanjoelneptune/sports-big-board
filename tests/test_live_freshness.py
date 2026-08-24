@@ -271,6 +271,40 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertEqual(rows[0]['durationSeconds'],631)
         self.assertEqual(rows[0]['recapTier'],'extended')
 
+    def test_v4110_mls_match_snapshot_is_green_while_match_highlights_are_purple(self):
+        index="""<html><body>
+        <a href='/video/match-snapshot-new-england-revolution-vs-new-york-city-fc-august-23-2026'>0:59 MATCH SNAPSHOT: New England Revolution vs. New York City FC | August 23, 2026</a>
+        <a href='/video/highlights-new-england-revolution-vs-new-york-city-fc-august-23-2026'>10:31 HIGHLIGHTS: New England Revolution vs. New York City FC | August 23, 2026</a>
+        </body></html>"""
+        snapshot="""<script type='application/ld+json'>{"@type":"VideoObject","name":"MATCH SNAPSHOT: New England Revolution vs. New York City FC | August 23, 2026","duration":"PT59S","datePublished":"2026-08-23T22:00:00Z","contentUrl":"https://cdn.mls.test/snapshot.mp4"}</script>"""
+        highlights="""<script type='application/ld+json'>{"@type":"VideoObject","name":"HIGHLIGHTS: New England Revolution vs. New York City FC | August 23, 2026","duration":"PT10M31S","datePublished":"2026-08-23T23:00:00Z","contentUrl":"https://cdn.mls.test/highlights.mp4"}</script>"""
+        def fake_page(url,timeout=10,referer=''):
+            if url==server.MLS_MATCH_HIGHLIGHTS_URL: return index
+            if 'match-snapshot-' in url: return snapshot
+            if 'highlights-' in url: return highlights
+            return ''
+        with patch.object(server,'_official_fetch_page_text',side_effect=fake_page), patch.object(server,'HISTORY_SHARED_CATALOG_CACHE',{}):
+            rows=server._mls_official_web_results('2026-08-23','New York City FC','New England Revolution',validate_native=False)
+        by_type={x['sourceType']:x for x in rows}
+        self.assertEqual(by_type['official-mls-match-snapshot']['recapTier'],'green')
+        self.assertEqual(by_type['official-mls-match-snapshot']['mediaObjective'],'QUICK')
+        self.assertEqual(by_type['official-mls-match-highlights']['recapTier'],'extended')
+        self.assertEqual(by_type['official-mls-match-highlights']['mediaObjective'],'EXTENDED')
+
+    def test_v4110_epl_official_match_highlight_hardening_rejects_roundups_and_reaction(self):
+        away='Manchester United'; home='Newcastle United'
+        self.assertTrue(server._epl_official_match_highlight_title('Manchester United v Newcastle United | Match Highlights',away,home))
+        self.assertFalse(server._epl_official_match_highlight_title('BEST GOALS: Manchester United and Newcastle United | Matchweek 20',away,home))
+        self.assertFalse(server._epl_official_match_highlight_title('Instant Reaction: Manchester United v Newcastle United Highlights',away,home))
+
+    def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
+        quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
+        long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}
+        with patch.object(server,'_nfl_game_highlights_results',return_value=[]), patch.object(server,'_official_nfl_feed_videos',return_value=[quick,long]):
+            rows=server._nfl_official_extended_results('2026-08-20','Raiders','Texans')
+        self.assertEqual([x['youtubeId'] for x in rows],['long'])
+        self.assertEqual(rows[0]['recapTier'],'extended'); self.assertEqual(rows[0]['mediaObjective'],'EXTENDED')
+
     def test_official_nfl_atom_feed_finds_recap_without_api_key(self):
         from io import BytesIO
         xml=b"""<?xml version='1.0' encoding='UTF-8'?>

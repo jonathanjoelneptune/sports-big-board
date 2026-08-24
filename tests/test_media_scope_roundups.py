@@ -9,7 +9,7 @@ from unittest.mock import patch
 import server
 from sbb.history_repository import HistoryRepository
 from sbb.history_rebuild import HistoryCatalogRebuilder
-from sbb.media_scope import annotate, GAME, DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, OTHER
+from sbb.media_scope import annotate, GAME, DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, OTHER, BEST_GOALS, BEST_SAVES
 from sbb.youtube_gateway import YouTubeRateLimited
 
 
@@ -111,7 +111,7 @@ class MediaScopeRoundupTests(unittest.TestCase):
         self.assertEqual(mls.get("collectionRoundType"),"MATCHDAY")
         self.assertEqual(epl.get("mediaScope"),ROUND_LEAGUE)
         self.assertEqual(epl.get("collectionPeriodKey"),"2025-26:MW38")
-        self.assertEqual(epl.get("collectionKind"),"TOP_PLAYS")
+        self.assertEqual(epl.get("collectionKind"),BEST_GOALS)
         self.assertEqual(epl.get("collectionRoundType"),"MATCHWEEK")
 
     def test_v418_nhl_top_goals_week_is_weekly_silver(self):
@@ -120,8 +120,24 @@ class MediaScopeRoundupTests(unittest.TestCase):
                      league="NHL",date="2026-04-05")
         self.assertEqual(nhl.get("mediaScope"),WEEK_LEAGUE)
         self.assertEqual(nhl.get("collectionPeriodKey"),"2025-26:W24")
-        self.assertEqual(nhl.get("collectionKind"),"TOP_PLAYS")
+        self.assertEqual(nhl.get("collectionKind"),BEST_GOALS)
         self.assertEqual(nhl.get("collectionTier"),"silver")
+
+
+    def test_v4110_epl_best_saves_is_first_class_silver(self):
+        epl=annotate({"title":"Watch: The BEST SAVES of Matchweek 26","officialLeagueSource":True,"sourceType":"official-premierleague-roundup",
+                      "publishedAt":"2026-02-22T12:00:00Z"},league="EPL",date="2026-02-22")
+        self.assertEqual(epl.get("mediaScope"),ROUND_LEAGUE)
+        self.assertEqual(epl.get("collectionKind"),BEST_SAVES)
+        self.assertEqual(epl.get("collectionPeriodKey"),"2025-26:MW26")
+
+    def test_v4110_mls_golazos_and_what_a_save_are_first_class_silver(self):
+        goals=annotate({"title":"Must-see golazos! | Matchday 20","officialLeagueSource":True,"sourceType":"official-mls-best-goals",
+                        "publishedAt":"2026-06-14T12:00:00Z"},league="MLS",date="2026-06-14")
+        saves=annotate({"title":"What A Save! Best stops | Matchday 20","officialLeagueSource":True,"sourceType":"official-mls-best-saves",
+                        "publishedAt":"2026-06-14T12:00:00Z"},league="MLS",date="2026-06-14")
+        self.assertEqual(goals.get("mediaScope"),ROUND_LEAGUE); self.assertEqual(goals.get("collectionKind"),BEST_GOALS)
+        self.assertEqual(saves.get("mediaScope"),ROUND_LEAGUE); self.assertEqual(saves.get("collectionKind"),BEST_SAVES)
 
     def test_existing_green_candidate_promotes_before_new_discovery(self):
         row={"id":"mlb-score-id","espnEventId":"mlb-score-id","completed":True,

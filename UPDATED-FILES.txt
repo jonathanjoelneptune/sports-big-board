@@ -1,55 +1,79 @@
-Sports Big Board v4.1.9 — Updated Files Only
-Baseline: v4.1.8
-Overlay the contents of this folder onto the repository root.
+Sports Big Board v4.1.10 — Updated Files Package
+==================================================
 
-Changed files: 49
+Base release: v4.1.9
+Target release: v4.1.10
+Discovery generation: v14
 
-ANDROID SETUP.md
-ARCHITECTURE.md
-CLOUD STAGE 1.md
-README.md
-START SPORTS BIG BOARD.bat
-START-ANDROID.sh
-V4 CATALOG REBUILD.md
-VERIFY.sh
-VERSION
-WINDOWS SETUP.md
-api-runtime.js
-app.js
-architecture/editorial-packages.js
-architecture/event-identity.js
-architecture/game-center-contract.js
-architecture/game-center-policy.js
-architecture/media-classifier.js
-architecture/media-manifest.js
-architecture/media-resolver.js
-architecture/media-scope.js
-architecture/media-work-priorities.js
-architecture/playback-transports.js
-architecture/provider-health.js
-architecture/score-date-store.js
-architecture/selected-event-store.js
-architecture/sport-media-policy.js
-core-model.js
-index.html
-sbb/__init__.py
-sbb/competition_registry.py
-sbb/editorial_registry.py
-sbb/event_matcher.py
-sbb/history_repository.py
-sbb/media_policy.py
-sbb/media_scope.py
-sbb/provider_registry.py
-sbb/youtube_gateway.py
-server.py
-styles.css
-tests/test_architecture.js
-tests/test_cloud_stage1.py
-tests/test_history_v4_baseline.py
-tests/test_regression_guards.py
-tools/ensure_history_v4.py
-ui/game-center-view.js
-ui/history-audit.js
-ui/info-drawer.js
-ui/player-visibility.js
-ui/settings-view.js
+Use this package when updating an existing v4.1.9 repository. Extract the ZIP and copy the CONTENTS of sports-big-board-v4.1.10/ over the repository root, preserving the folder structure. Replace files when prompted. Files not listed below do not need to be uploaded for this release.
+
+Combined v4.1.10 scope
+----------------------
+- MLS Match Snapshot -> preferred Green; MLS Match Highlights -> Purple/Extended.
+- MLS Every Goal / Must-see Golazos / What A Save -> Silver.
+- EPL official match-highlight hardening and Matchweek BEST_GOALS / BEST_SAVES Silver.
+- NFL independent Quick + Extended official-media objectives.
+- Green-without-Purple remains eligible for NFL Extended catch-up.
+- Prefer 2-6 minute Green over ~1 minute Green when both exist.
+- Official NFL Extended collector targets ~8-20 minute packages.
+- Reject postgame/reaction/analysis programming as GAME recap media.
+- Duplicate media collapse before ranking/playback.
+- Search Console/audit objective and normalization counters.
+
+Changed/new files
+-----------------
+- ANDROID SETUP.md
+- ARCHITECTURE.md
+- CLOUD STAGE 1.md
+- README.md
+- START SPORTS BIG BOARD.bat
+- START-ANDROID.sh
+- UPDATED-FILES.txt
+- V4 CATALOG REBUILD.md
+- VERIFY.sh
+- VERSION
+- WINDOWS SETUP.md
+- api-runtime.js
+- app.js
+- architecture/editorial-packages.js
+- architecture/event-identity.js
+- architecture/game-center-contract.js
+- architecture/game-center-policy.js
+- architecture/media-classifier.js
+- architecture/media-manifest.js
+- architecture/media-resolver.js
+- architecture/media-scope.js
+- architecture/media-work-priorities.js
+- architecture/playback-transports.js
+- architecture/provider-health.js
+- architecture/score-date-store.js
+- architecture/selected-event-store.js
+- architecture/sport-media-policy.js
+- core-model.js
+- index.html
+- sbb/__init__.py
+- sbb/catalog_contract.py
+- sbb/competition_registry.py
+- sbb/editorial_registry.py
+- sbb/event_matcher.py
+- sbb/history_repository.py
+- sbb/media_classifier.py
+- sbb/media_policy.py
+- sbb/media_scope.py
+- sbb/provider_registry.py
+- sbb/youtube_gateway.py
+- server.py
+- styles.css
+- tests/test_architecture.js
+- tests/test_cloud_stage1.py
+- tests/test_history_v4_baseline.py
+- tests/test_live_freshness.py
+- tests/test_media_scope_roundups.py
+- tests/test_regression_guards.py
+- tests/test_server_architecture.py
+- tools/ensure_history_v4.py
+- ui/game-center-view.js
+- ui/history-audit.js
+- ui/info-drawer.js
+- ui/player-visibility.js
+- ui/settings-view.js

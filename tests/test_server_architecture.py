@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 import server
 from sbb.competition_registry import enabled_ids
-from sbb.media_classifier import tier
+from sbb.media_classifier import tier, is_non_game_program
 from sbb.game_center import normalize_mlb_feed, fetch_mlb_game_center, normalize_espn_summary, fetch_espn_game_center, normalize_highlightly_game_center, game_center_coverage, merge_game_centers
 from sbb.media_work_scheduler import MediaWorkScheduler
 from sbb.editorial_registry import catalog as editorial_catalog
@@ -951,7 +951,7 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(result['state'],'VERIFIED')
             self.assertEqual(result['bestTier'],'gold')
             self.assertTrue(result['qualityComplete'])
-            self.assertEqual(saved['discovery']['discoveryVersion'],13)
+            self.assertEqual(saved['discovery']['discoveryVersion'],14)
             self.assertTrue(saved['discovery']['qualityComplete'])
 
     def test_quality_upgrade_due_respects_persistent_retry_window(self):
@@ -1065,9 +1065,24 @@ class ArchitectureTests(unittest.TestCase):
         parsed=server._openai_json_object('```json\n{"items":[{"id":"1"}]}\n```')
         self.assertEqual(parsed['items'][0]['id'],'1')
 
-    def test_espn_postgame_analysis_is_gold_commentary_not_blue_reel(self):
-        item={"title":"Did Man United look better without Fernandes in win vs Newcastle?","source":"ESPN FC","durationSeconds":90,"programType":"reel","overview":False}
-        self.assertEqual(tier(item),"gold")
+    def test_v4110_nfl_quick_extended_objectives_and_green_preference(self):
+        one_min={"title":"Away Club vs Home Club Game Highlights","durationSeconds":60,"overview":True,"mediaObjective":"QUICK","recapTier":"green","youtubeId":"short"}
+        three_min={"title":"Away Club vs Home Club Game Highlights","durationSeconds":180,"overview":True,"mediaObjective":"QUICK","recapTier":"green","youtubeId":"preferred"}
+        extended={"title":"Away Club vs Home Club Extended Highlights","durationSeconds":900,"overview":True,"mediaObjective":"EXTENDED","youtubeId":"extended"}
+        self.assertEqual(tier(one_min),"green"); self.assertEqual(tier(extended),"extended")
+        self.assertGreater(server._history_media_rank(three_min),server._history_media_rank(one_min))
+        self.assertEqual(server._nfl_media_objective(one_min),'quick'); self.assertEqual(server._nfl_media_objective(extended),'extended')
+
+    def test_v4110_duplicate_media_collapses_same_youtube_asset(self):
+        a={"youtubeId":"same123","title":"Game Highlights","durationSeconds":180,"recapTier":"green","verifiedPlayable":False}
+        b={"youtubeId":"same123","title":"Game Highlights","durationSeconds":180,"recapTier":"green","verifiedPlayable":True}
+        rows=server._history_collapse_duplicate_media([a,b])
+        self.assertEqual(len(rows),1); self.assertTrue(rows[0].get('verifiedPlayable'))
+
+    def test_v4110_espn_postgame_reaction_is_not_game_recap(self):
+        item={"title":"Instant Reaction: Did Man United look better without Fernandes in win vs Newcastle?","source":"ESPN FC","durationSeconds":90,"programType":"reel","overview":False}
+        self.assertEqual(tier(item),"blue")
+        self.assertTrue(is_non_game_program(item))
 
 
 if __name__=='__main__': unittest.main()
