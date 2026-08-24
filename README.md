@@ -1,21 +1,19 @@
-# Sports Big Board v4.1.12
+# Sports Big Board v4.1.13
 
-> v4.1.12 is the **public-source discovery + catch-up quality** release. It keeps the normalized v4 catalog, but replaces NFL replay-tab dependence with public NFL/team sources, gives the NFL/MLS/EPL migration dedicated worker affinity, hardens MLS Snapshot discovery, and makes every migration result auditable.
+> v4.1.13 is the **rule-catch-up correctness + persistence observability** release. It keeps Discovery v15, Rule Catch-up v2, and the v4.1.12 public-source collectors, while fixing migration scheduling and making candidate loss between normalization and the persisted event catalog explicit.
 
-## v4.1.12 — public official collectors + Rule Catch-up v2
+## v4.1.13 — strict affinity + persistence tracing
 
-- **NFL public sources:** NFL+ full/condensed/All-22 replay inventory is treated as `ENTITLEMENT_GATED` metadata and is never ingested as playable GAME media. Public NFL.com video pages plus the 32 official team video sitemaps/pages are first-class sources.
-- **NFL Quick / Extended:** Quick remains Green with a 2–6 minute preference and short fallback; Extended remains Purple and targets openly playable official ~8–20 minute game-highlight packages. Postgame/reaction, press conferences, individual-play clips, mic'd-up features, full replays, and condensed replays are rejected from GAME recap objectives.
-- **Candidate dispositions:** NFL candidates finish in explicit audit states such as `ACCEPTED_QUICK`, `ACCEPTED_EXTENDED`, `ENTITLEMENT_GATED`, `POSTGAME_REACTION`, `INDIVIDUAL_PLAY`, `DURATION_REJECT`, `EVENT_MISMATCH`, and `NON_PLAYABLE`; `+1` discoveries can no longer disappear silently.
-- **Rule Catch-up v2:** the three Green workers have temporary migration affinity: worker 1 NFL, worker 2 MLS, worker 3 EPL. Each league remains newest-first from the Aug. 1, 2025 floor, and a worker may help another league only after its preferred queue is exhausted.
-- **MLS:** `MATCH SNAPSHOT` Quick/Green and Match Highlights Extended/Purple are independent v2 ledgers. The collector walks the official paginated Match Highlights topic feed and can infer the date of an undated Snapshot from its adjacent same-match dated highlight card.
-- **EPL:** PremierLeague.com Quick moves to source v4 and NBC Extended to v3, reopening only those objectives without rebuilding the catalog. `BEST_GOALS` / `BEST_SAVES` Silver behavior is preserved.
-- **Silver replay telemetry:** collection migration reports candidates examined, qualifying items, new unique assets, reused assets, new collection links, duplicate links suppressed, and rejected items. Replaying an already-complete date is idempotent rather than inflating an `accepted` counter.
-- **Durable negative completion:** source/objective/version checks remain persisted. A completed empty public source does not rerun until its source version changes; changing one collector version reopens only that objective/source.
-- **Operator audit:** Search Console exposes `[RULE GAME CATCH-UP]`, detailed `[RULE COLLECTION CATCH-UP]`, independent NFL/MLS/EPL missing-objective counts, and `[NFL PUBLIC SOURCES]` acceptance/rejection counters.
-- **Catalog generation:** `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 2`, media classifier v7, event matcher v6. No catalog rebuild is required.
+- **Strict NFL/MLS/EPL migration lanes:** while a league still has unresolved Rule Catch-up v2 objectives, worker 1 may claim only NFL, worker 2 only MLS, and worker 3 only EPL. A worker joins the shared queue only after its assigned league is complete. This prevents SQL candidate-window starvation from sending the EPL worker back into NFL work.
+- **Attempted vs. completed progress:** Rule Game Catch-up now reports `attempted` independently from `checked`. Recent games that were actually queried but remain retry-eligible no longer look untouched.
+- **NFL normalization → persistence trace:** per-source results now record raw candidates, normalized playable candidates, persisted accepted candidates, persistence losses, and a durable disposition/reason. `[MEDIA PIPELINE]` and `[NFL PERSISTENCE]` expose the gap directly.
+- **MLS candidate dispositions:** MLS Snapshot and Match Highlights candidates now report association/non-playable/objective rejection reasons just like NFL. `[MLS CANDIDATES]` shows why a raw official candidate did not become a persisted game asset.
+- **Cross-event collision split:** a broad asset encountered while already assigned to another event is now `MULTI_EVENT_CANDIDATE_ENCOUNTER`; the existing proven assignment is preserved. `CROSS_EVENT_ASSET_CONFLICT` is reserved for genuine strong provider-identity conflicts. The console reports active conflicts, harmless candidate encounters, and legacy quarantined cross-event rows separately.
+- **Association matcher v7:** relationship repair is re-run under the refined collision semantics. Source media and historical discovery state are preserved; no catalog rebuild is required.
+- **Silver unchanged:** Rule Collection Catch-up v2, BEST_GOALS/BEST_SAVES, idempotent collection telemetry, and existing Silver relationships are not reopened by this release.
+- **Versions:** Frontend/Backend v4.1.13, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 2`, media classifier v7, event matcher v7.
 
-Verification for this release covers browser contracts, normalized-history scheduling, official collectors/classifiers, Silver promotion, cloud deployment, and regression guards.
+Verification covers strict migration affinity, attempted-progress accounting, persistence-state tracing, MLS dispositions, multi-event candidate handling, browser contracts, cloud deployment, and the full historical regression suite.
 
 ## v4.1.8 — official content-source adapters
 
@@ -285,7 +283,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.12/sports-big-board-v4.1.12
+cd ~/storage/downloads/sports-big-board-v4.1.13/sports-big-board-v4.1.13
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```

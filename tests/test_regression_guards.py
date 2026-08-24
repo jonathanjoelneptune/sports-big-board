@@ -24,7 +24,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertLess(block.index('const assoc=data.associations||{};'),block.index('assoc.assignedLinks'))
 
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=4.1.12','architecture/score-date-store.js?v=4.1.12','architecture/event-identity.js?v=4.1.12','architecture/media-scope.js?v=4.1.12','architecture/media-classifier.js?v=4.1.12','architecture/playback-transports.js?v=4.1.12','architecture/provider-health.js?v=4.1.12','architecture/sport-media-policy.js?v=4.1.12','architecture/media-manifest.js?v=4.1.12','architecture/media-resolver.js?v=4.1.12','architecture/game-center-policy.js?v=4.1.12','architecture/selected-event-store.js?v=4.1.12','architecture/game-center-contract.js?v=4.1.12','architecture/media-work-priorities.js?v=4.1.12','architecture/editorial-packages.js?v=4.1.12','ui/player-visibility.js?v=4.1.12','ui/info-drawer.js?v=4.1.12','ui/settings-view.js?v=4.1.12','ui/history-audit.js?v=4.1.12','ui/game-center-view.js?v=4.1.12','app.js?v=4.1.12']
+        ordered=['core-model.js?v=4.1.13','architecture/score-date-store.js?v=4.1.13','architecture/event-identity.js?v=4.1.13','architecture/media-scope.js?v=4.1.13','architecture/media-classifier.js?v=4.1.13','architecture/playback-transports.js?v=4.1.13','architecture/provider-health.js?v=4.1.13','architecture/sport-media-policy.js?v=4.1.13','architecture/media-manifest.js?v=4.1.13','architecture/media-resolver.js?v=4.1.13','architecture/game-center-policy.js?v=4.1.13','architecture/selected-event-store.js?v=4.1.13','architecture/game-center-contract.js?v=4.1.13','architecture/media-work-priorities.js?v=4.1.13','architecture/editorial-packages.js?v=4.1.13','ui/player-visibility.js?v=4.1.13','ui/info-drawer.js?v=4.1.13','ui/settings-view.js?v=4.1.13','ui/history-audit.js?v=4.1.13','ui/game-center-view.js?v=4.1.13','app.js?v=4.1.13']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -383,8 +383,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v4.1.12 — score ribbon recovery',STYLES)
-        self.assertIn('v4.1.12 — historical Date Browser',STYLES)
+        self.assertIn('v4.1.13 — score ribbon recovery',STYLES)
+        self.assertIn('v4.1.13 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -393,7 +393,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v4.1.12 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v4.1.13 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -556,7 +556,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v4.1.12',STYLES)
+        self.assertNotIn('\\n\\n/* v4.1.13',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)
@@ -662,7 +662,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('historyAuditTableBody',AUDIT)
         self.assertIn("exportFile('xlsx')",AUDIT)
         self.assertIn('BEST_GOALS',INDEX); self.assertIn('BEST_SAVES',INDEX)
-        self.assertIn('[MEDIA OBJECTIVES]',AUDIT); self.assertIn('[MEDIA NORMALIZATION]',AUDIT)
+        self.assertIn('[MEDIA OBJECTIVES]',AUDIT); self.assertIn('[MEDIA PIPELINE]',AUDIT); self.assertIn('[MLS CANDIDATES]',AUDIT); self.assertIn('[NFL PERSISTENCE]',AUDIT)
 
     def test_v4111_rule_catchup_reopens_nfl_mls_epl_and_tracks_silver_replay(self):
         self.assertIn('HISTORY_RULE_CATCHUP_LEAGUES = ("NFL","MLS","EPL")',SERVER)
@@ -681,6 +681,16 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('sbb-history-rule-collections',SERVER)
         self.assertIn('[RULE GAME CATCH-UP]',AUDIT)
         self.assertIn('[RULE COLLECTION CATCH-UP]',AUDIT)
+
+    def test_v413_strict_rule_affinity_and_pipeline_observability(self):
+        self.assertIn('strict_preferred=strict_affinity',SERVER)
+        self.assertIn("waiting:rule-affinity-",SERVER)
+        self.assertIn("ruleAffinityStrict",SERVER)
+        self.assertIn("'attempted':0",SERVER)
+        self.assertIn('[ASSOCIATION COLLISIONS]',AUDIT)
+        self.assertIn('candidate-encounters',AUDIT)
+        self.assertIn('mlsCandidateDispositions',AUDIT)
+        self.assertIn('nflPersistenceReasons',AUDIT)
 
     def test_v305_audit_projects_unknown_into_actionable_statuses(self):
         self.assertIn('UNINDEXED',INDEX); self.assertIn('SEARCHED EMPTY',INDEX); self.assertIn('COVERAGE COMPLETE',INDEX)

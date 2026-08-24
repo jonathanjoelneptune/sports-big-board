@@ -1,17 +1,24 @@
-Sports Big Board v4.1.12 — Updated Files Only
-Base release: v4.1.11
+Sports Big Board v4.1.13 — Updated Files Only
+Base release: v4.1.12 (corrected/fixed build)
 
-Upload/overlay these files at the repository root, preserving paths.
-No catalog rebuild is required.
+Scope:
+- strict NFL / MLS / EPL Rule Catch-up v2 worker affinity until each assigned league completes
+- Rule Game attempted-vs-checked progress telemetry
+- NFL normalized-to-persisted candidate tracing and persistence-loss reasons
+- MLS candidate disposition telemetry
+- multi-event candidate encounters separated from true cross-event asset conflicts
+- event matcher v7 relationship repair
+- frontend/backend release markers v4.1.13
 
-Changed/new files (52):
+Upload these files over the matching repository paths. No catalog rebuild is required.
+
+Changed/new files:
 - ANDROID SETUP.md
 - ARCHITECTURE.md
 - CLOUD STAGE 1.md
 - README.md
 - START SPORTS BIG BOARD.bat
 - START-ANDROID.sh
-- UPDATED-FILES.txt
 - V4 CATALOG REBUILD.md
 - VERIFY.sh
 - VERSION
@@ -35,6 +42,7 @@ Changed/new files (52):
 - core-model.js
 - index.html
 - sbb/__init__.py
+- sbb/catalog_contract.py
 - sbb/competition_registry.py
 - sbb/editorial_registry.py
 - sbb/event_matcher.py
@@ -50,10 +58,12 @@ Changed/new files (52):
 - tests/test_history_v4_baseline.py
 - tests/test_live_freshness.py
 - tests/test_regression_guards.py
-- tests/test_server_architecture.py
 - tools/ensure_history_v4.py
 - ui/game-center-view.js
 - ui/history-audit.js
 - ui/info-drawer.js
 - ui/player-visibility.js
 - ui/settings-view.js
+- UPDATED-FILES.txt
+
+Total changed/new files: 52

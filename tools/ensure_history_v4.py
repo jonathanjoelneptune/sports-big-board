@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Safe offline preflight for the Sports Big Board v4 history catalog.
 
-v4.1.12 makes a hard distinction between two classes of catalog health:
+v4.1.13 makes a hard distinction between two classes of catalog health:
 
 * STRUCTURAL integrity decides whether a normalized v4 database is usable at all.
   Only structural corruption/incompleteness may trigger an offline reconstruction.
@@ -328,7 +328,7 @@ def main():
     rebuild_source=db
     rebuild_source_snapshot=before
 
-    # v4.1.12 invariant: a structurally healthy normalized catalog is NEVER
+    # v4.1.13 invariant: a structurally healthy normalized catalog is NEVER
     # reconstructed just because matcher/classifier relationships are stale.
     # Relationship drift is application state and is repaired in place after
     # startup, preserving discovery/backfill/verification/attempt history.

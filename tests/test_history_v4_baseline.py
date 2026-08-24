@@ -437,6 +437,34 @@ class HistoryV4BaselineTests(unittest.TestCase):
             self.assertEqual(rows[0]["league"],"MLS")
             self.assertEqual(rows[0]["eventId"],"mls-aff")
 
+    def test_v413_rule_catchup_strict_affinity_cannot_be_starved_by_other_leagues(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            sources={
+                "NFL":[{"key":"nfl-public-video-quick","version":1,"objective":"quick"}],
+                "MLS":[{"key":"mls-match-snapshot","version":2,"objective":"quick"}],
+                "EPL":[{"key":"premierleague-official","version":4,"objective":"quick"}],
+            }
+            for i in range(140):
+                repo.put_scores("2026-08-20","NFL",[{"scoreEventId":f"nfl-{i}","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}])
+                repo.put_scores("2026-08-20","MLS",[{"scoreEventId":f"mls-{i}","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}])
+            repo.put_scores("2026-08-20","EPL",[{"scoreEventId":"epl-strict","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}])
+            rows=repo.source_enrichment_events(sources,floor_date="2025-08-01",today="2026-08-24",now=time.time(),preferred_league="EPL",strict_preferred=True,limit=10)
+            self.assertTrue(rows)
+            self.assertTrue(all(r["league"]=="EPL" for r in rows))
+            self.assertEqual(rows[0]["eventId"],"epl-strict")
+
+    def test_v413_rule_catchup_summary_counts_attempted_before_complete(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            sources={"MLS":[{"key":"mls-match-snapshot","version":2,"objective":"quick"}]}
+            repo.put_scores("2026-08-23","MLS",[{"scoreEventId":"mls-attempted","awayTeam":{"name":"Away Club"},"homeTeam":{"name":"Home Club"},"completed":True}])
+            repo.mark_source_enrichment("MLS","mls-attempted","mls-match-snapshot",2,"PENDING",retry_at=time.time()+3600,details={"via":"test"})
+            summary=repo.source_enrichment_summary(sources,floor_date="2025-08-01",today="2026-08-24",now=time.time())
+            self.assertEqual(summary["leagues"]["MLS"]["attempted"],1)
+            self.assertEqual(summary["leagues"]["MLS"]["checked"],0)
+            self.assertEqual(summary["leagues"]["MLS"]["remaining"],1)
+
     def test_v412_silver_rule_replay_telemetry_is_idempotent(self):
         with tempfile.TemporaryDirectory() as td:
             repo=HistoryRepository(Path(td)/"history.sqlite3")
@@ -486,16 +514,21 @@ class EventAssociationV402Tests(unittest.TestCase):
             media={"youtubeId":"same","title":"Alpha Bears vs Beta Hawks Game Highlights","verifiedPlayable":True,"recapTier":"green","provider":"YOUTUBE"}
             self.assertEqual(repo.put_event_media("2026-08-20","NBA","a",[media]),1)
             self.assertEqual(repo.put_event_media("2026-08-21","NBA","b",[media]),0)
-            self.assertEqual(repo.event_media("2026-08-20","NBA","a"),[])
+            # v4.1.13 treats a broad rematch candidate as a harmless multi-event
+            # encounter: preserve the first proven assignment and quarantine only
+            # the new candidate link instead of destroying both.
+            self.assertEqual(len(repo.event_media("2026-08-20","NBA","a")),1)
             self.assertEqual(repo.event_media("2026-08-21","NBA","b"),[])
-            self.assertEqual(repo.association_integrity_summary()["crossEventAssets"],0)
+            summary=repo.association_integrity_summary()
+            self.assertEqual(summary["crossEventAssets"],0)
+            self.assertEqual(summary["multiEventCandidateEncounters"],1)
 
     def test_repair_quarantines_existing_bad_links_without_deleting_source(self):
         with tempfile.TemporaryDirectory() as td:
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
             repo.put_scores("2026-08-22","MLS",[event])
-            # Simulate a pre-v4.1.12 assigned row by directly inserting source/link.
+            # Simulate a pre-v4.1.13 assigned row by directly inserting source/link.
             wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
             repo.put_source_media([wrong],league="MLS",date="2026-08-22")
             import sqlite3 as _sqlite3, time as _time, json as _json

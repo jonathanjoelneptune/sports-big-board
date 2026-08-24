@@ -1,4 +1,4 @@
-/* v4.1.12 league-level editorial programming contracts.
+/* v4.1.13 league-level editorial programming contracts.
    These packages belong to a league/programming desk, never to one selected game. */
 (() => {
   const SERIES=Object.freeze({

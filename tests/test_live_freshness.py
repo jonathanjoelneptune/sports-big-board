@@ -317,7 +317,7 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
         quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
         long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}
-        # v4.1.12 adds official team-site packages as a second Extended lane.
+        # v4.1.13 adds official team-site packages as a second Extended lane.
         # Keep this legacy duration-window unit test deterministic by isolating
         # the public NFL/YouTube lane it was originally written to exercise.
         with patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
@@ -436,6 +436,26 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertEqual(rows[0]['recapTier'],'extended')
         self.assertEqual(rows[0]['discoverySourceFamily'],'nfl-team-video')
         self.assertEqual(rows[0]['durationSeconds'],660)
+
+    def test_v413_mls_candidate_disposition_reports_association_failure(self):
+        row={'competitionId':'MLS','__sbbLeague':'MLS','__sbbDate':'2026-08-22','scoreEventId':'761746','awayTeam':{'name':'Columbus Crew'},'homeTeam':{'name':'Nashville SC'}}
+        wrong={'title':'MATCH SNAPSHOT: Atlanta United FC vs Toronto FC','sourceType':'official-mls-match-snapshot','mediaUrl':'https://cdn.test/snapshot.mp4'}
+        self.assertEqual(server._mls_candidate_disposition(wrong,row,'quick'),'TEAM_MISMATCH')
+
+    def test_v413_persisted_disposition_distinguishes_normalized_from_repository_truth(self):
+        from sbb.history_repository import HistoryRepository
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/'history.sqlite3')
+            event={'id':'evt413','awayTeam':{'name':'Alpha Bears'},'homeTeam':{'name':'Beta Hawks'}}
+            repo.put_scores('2026-08-20','NFL',[event])
+            item={'youtubeId':'persist413','title':'Alpha Bears vs Beta Hawks Game Highlights','verifiedPlayable':True,'validationState':'VERIFIED','recapTier':'green','mediaObjective':'QUICK','provider':'YOUTUBE'}
+            repo.put_event_media('2026-08-20','NFL','evt413',[item])
+            with patch.object(server,'HISTORY_REPOSITORY',repo):
+                self.assertEqual(server._history_persisted_candidate_disposition(item,'NFL','evt413','quick'),'PERSISTED_QUICK')
+                missing=dict(item); missing['youtubeId']='missing413'
+                self.assertEqual(server._history_persisted_candidate_disposition(missing,'NFL','evt413','quick'),'PERSISTENCE_MISSING_LINK')
 
     def test_v412_mls_snapshot_infers_date_from_adjacent_official_highlight(self):
         entries=[

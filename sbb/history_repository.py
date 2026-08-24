@@ -474,7 +474,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.12 migration cooldowns already persisted in production.
+        """Release artificial v4.1.13 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -532,14 +532,25 @@ class HistoryRepository:
                 asset_key=self._upsert_source_media_conn(conn,item,league=league,date=event_date,away=away,home=home,catalog_state=(ASSIGNED if state==ASSIGNED else QUARANTINED),quarantine_reason=reason)
                 if not asset_key: continue
                 if state==ASSIGNED:
-                    competing=[str(r[0]) for r in conn.execute("SELECT canonical_event_key FROM history_event_media WHERE asset_key=? AND association_state='ASSIGNED' AND canonical_event_key<>?",(asset_key,key)).fetchall()]
+                    competing=conn.execute("SELECT canonical_event_key,association_confidence,association_method FROM history_event_media WHERE asset_key=? AND association_state='ASSIGNED' AND canonical_event_key<>?",(asset_key,key)).fetchall()
                     if competing:
-                        # One GAME source asset may never be authoritative for two games.
-                        # Fail closed rather than letting arrival order choose a winner.
-                        state=QUARANTINED; reason="CROSS_EVENT_ASSET_CONFLICT"
-                        evidence=dict(evidence); evidence.update(associationState=QUARANTINED,associationConfidence=0.0,associationMethod=reason,associationEvidence=f"already assigned to {competing}")
-                        conn.execute("UPDATE history_event_media SET association_state='QUARANTINED',association_confidence=0,association_method=?,association_evidence=?,matcher_version=?,updated_at=? WHERE asset_key=? AND association_state='ASSIGNED'",(reason,f"competing event {key}",EVENT_MATCHER_VERSION,now,asset_key))
-                        conn.execute("UPDATE history_source_media SET catalog_state='QUARANTINED',quarantine_reason=? WHERE asset_key=?",(reason,asset_key))
+                        # v4.1.13 distinguishes a broad candidate being encountered
+                        # for another game from a genuine strong-identity conflict.
+                        # Preserve a previously proven assignment for ordinary title/
+                        # team matches and quarantine only the new candidate link.
+                        original_method=str(item.get("associationMethod") or "")
+                        original_conf=float(item.get("associationConfidence") or 0)
+                        strong_identity=original_method in {"PROVIDER_EVENT_ID","PROVIDER_SOURCE_EVENT_ID","PROVIDER_GAME_PK"} and original_conf>=0.99
+                        competing_strong=any(str(r["association_method"] or "") in {"PROVIDER_EVENT_ID","PROVIDER_SOURCE_EVENT_ID","PROVIDER_GAME_PK"} and float(r["association_confidence"] or 0)>=0.99 for r in competing)
+                        state=QUARANTINED
+                        if strong_identity and competing_strong:
+                            reason="CROSS_EVENT_ASSET_CONFLICT"
+                            evidence=dict(evidence); evidence.update(associationState=QUARANTINED,associationConfidence=0.0,associationMethod=reason,associationEvidence=f"strong provider identity conflicts with {[str(r['canonical_event_key']) for r in competing]}")
+                            conn.execute("UPDATE history_event_media SET association_state='QUARANTINED',association_confidence=0,association_method=?,association_evidence=?,matcher_version=?,updated_at=? WHERE asset_key=? AND association_state='ASSIGNED'",(reason,f"strong identity conflict with {key}",EVENT_MATCHER_VERSION,now,asset_key))
+                            conn.execute("UPDATE history_source_media SET catalog_state='QUARANTINED',quarantine_reason=? WHERE asset_key=?",(reason,asset_key))
+                        else:
+                            reason="MULTI_EVENT_CANDIDATE_ENCOUNTER"
+                            evidence=dict(evidence); evidence.update(associationState=QUARANTINED,associationConfidence=0.0,associationMethod=reason,associationEvidence=f"asset already assigned to {[str(r['canonical_event_key']) for r in competing]}; existing assignment preserved")
                     else:
                         item["canonicalEventKey"]=key
                         conn.execute("UPDATE history_source_media SET catalog_state='ASSIGNED',quarantine_reason='',asset_json=? WHERE asset_key=?",(self._dump_obj(item),asset_key))
@@ -620,7 +631,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.12 treats collection membership as fully derived state.  Classifier
+        v4.1.13 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -719,7 +730,7 @@ class HistoryRepository:
         return {"event":event,"collection":collection,"integrity":integrity,"issues":issues,"ok":not bool(issues)}
 
     def media_objective_summary(self):
-        """Persisted v4.1.12 objective/category counts for operator audit."""
+        """Persisted v4.1.13 objective/category counts for operator audit."""
         out={"nflQuickGames":0,"nflExtendedGames":0,"nflBothGames":0,"nflGreenWithoutPurple":0,"nflMissingQuick":0,"nflMissingExtended":0,
              "mlsSnapshots":0,"mlsMatchHighlights":0,"mlsSnapshotGames":0,"mlsHighlightGames":0,"mlsBothGames":0,"mlsMissingSnapshot":0,"mlsMissingHighlights":0,
              "eplQuickGames":0,"eplExtendedGames":0,"eplBothGames":0,"eplMissingQuick":0,"eplMissingExtended":0,
@@ -756,7 +767,10 @@ class HistoryRepository:
             cross=int(conn.execute("SELECT COUNT(*) FROM (SELECT asset_key FROM history_event_media WHERE association_state='ASSIGNED' GROUP BY asset_key HAVING COUNT(DISTINCT canonical_event_key)>1)").fetchone()[0] or 0)
             counts={r[0]:int(r[1] or 0) for r in conn.execute("SELECT association_method,COUNT(*) FROM history_event_media WHERE association_state='QUARANTINED' GROUP BY association_method").fetchall()}
         quarantine_reasons={k:v for k,v in sorted(counts.items(),key=lambda kv:(-int(kv[1]),str(kv[0]))) if k}
-        return {"assignedLinks":assigned,"quarantinedLinks":quarantined,"crossEventAssets":cross,"teamMismatch":counts.get('TITLE_TEAM_PAIR_CONFLICT',0)+counts.get('TEAM_FIELD_CONFLICT',0),"dateMismatch":counts.get('DATE_MISMATCH',0),"seasonMismatch":counts.get('SEASON_MISMATCH',0),"crossEventQuarantined":counts.get('CROSS_EVENT_ASSET_CONFLICT',0),"quarantineReasons":quarantine_reasons}
+        return {"assignedLinks":assigned,"quarantinedLinks":quarantined,"crossEventAssets":cross,"activeCrossEventConflicts":cross,
+                "multiEventCandidateEncounters":counts.get('MULTI_EVENT_CANDIDATE_ENCOUNTER',0),
+                "teamMismatch":counts.get('TITLE_TEAM_PAIR_CONFLICT',0)+counts.get('TEAM_FIELD_CONFLICT',0),"dateMismatch":counts.get('DATE_MISMATCH',0),"seasonMismatch":counts.get('SEASON_MISMATCH',0),
+                "crossEventQuarantined":counts.get('CROSS_EVENT_ASSET_CONFLICT',0),"quarantineReasons":quarantine_reasons}
 
     @staticmethod
     def _hydrate_asset(row):
@@ -784,6 +798,22 @@ class HistoryRepository:
             item["associationEvidence"]=row["association_evidence"]; item["eventMatcherVersion"]=int(row["matcher_version"] or 0); item["canonicalEventKey"]=key
             out.append(item)
         return out
+
+    def event_media_link_status(self, league, event_id, asset_key):
+        """Return the persisted relationship state for one source asset/event pair."""
+        key=self.canonical_event_key(league,event_id); asset_key=str(asset_key or "")
+        if not key or not asset_key: return None
+        with self._lock, closing(self._connect()) as conn:
+            row=conn.execute("""SELECT em.association_state,em.association_confidence,em.association_method,em.association_evidence,em.matcher_version,
+                s.catalog_state,s.quarantine_reason,s.validation_state,s.runtime_state
+              FROM history_event_media em JOIN history_source_media s ON s.asset_key=em.asset_key
+              WHERE em.canonical_event_key=? AND em.asset_key=?""",(key,asset_key)).fetchone()
+        if not row: return None
+        return {"associationState":row["association_state"],"associationConfidence":float(row["association_confidence"] or 0),
+                "associationMethod":row["association_method"] or "","associationEvidence":row["association_evidence"] or "",
+                "matcherVersion":int(row["matcher_version"] or 0),"catalogState":row["catalog_state"] or "",
+                "quarantineReason":row["quarantine_reason"] or "","validationState":row["validation_state"] or "",
+                "runtimeState":row["runtime_state"] or ""}
 
     def record_runtime(self, date, league, event_id, asset_key, *, success=False, reason=""):
         asset_key=str(asset_key or ""); key=self.canonical_event_key(league,event_id)
@@ -840,7 +870,7 @@ class HistoryRepository:
     def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP", return_stats=False):
         """Promote only strictly proven league-wide roundup assets into Silver.
 
-        v4.1.12 keeps the legacy integer return by default, but can return precise
+        v4.1.13 keeps the legacy integer return by default, but can return precise
         idempotent telemetry so rule catch-up reports *new* assets/links rather than
         repeatedly calling rediscovered rows "accepted".
         """
@@ -1120,16 +1150,22 @@ class HistoryRepository:
     def _source_versions_for_league(source_versions, league):
         return [(x["key"],x["version"]) for x in HistoryRepository._source_specs_for_league(source_versions,league)]
 
-    def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, preferred_league="", limit=96):
+    def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, preferred_league="", strict_preferred=False, limit=96):
         """Newest-first official-source objective queue.
 
-        v4.1.12 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
+        v4.1.13 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
         objectives. A previously completed generic source pass cannot hide an unmet
         objective, and the three rule-migration leagues are scheduled ahead of legacy
         NHL source catch-up until their new objective ledgers are satisfied.
         """
         now=float(now or time.time()); floor=str(floor_date or "")[:10]; today=str(today or time.strftime("%Y-%m-%d",time.gmtime(now)))[:10]; limit=max(1,min(500,int(limit or 96)))
         leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_specs_for_league(source_versions,lg)]
+        preferred=str(preferred_league or "").upper()
+        if strict_preferred and preferred and preferred in leagues:
+            # v4.1.13 strict rule-migration lane: query only the assigned league.
+            # This avoids SQL LIMIT starvation where NFL/MLS rows can consume the
+            # candidate window before an EPL-affinity worker ever sees EPL work.
+            leagues=[preferred]
         if not leagues or not floor or not today: return []
         try:
             from datetime import datetime, timedelta
@@ -1156,10 +1192,9 @@ class HistoryRepository:
         params=[*leagues,floor,today,now,cut7,cut30,cut90,max(limit*5,limit)]
         with self._lock, closing(self._connect()) as conn:
             rows=conn.execute(sql,params).fetchall()
-            preferred=str(preferred_league or "").upper()
-            if preferred:
+            if preferred and not strict_preferred:
                 # Stable sort preserves newest-first/source-quality ordering inside
-                # each league while giving one migration worker an affinity lane.
+                # each league while giving a non-strict worker a preference.
                 rows=sorted(rows,key=lambda r:0 if str(r["league"] or "").upper()==preferred else 1)
             keys=[str(r["canonical_event_key"]) for r in rows]; enrich={}
             if keys:
@@ -1185,7 +1220,7 @@ class HistoryRepository:
     def source_enrichment_summary(self, source_versions, *, floor_date="", today="", now=None):
         now=float(now or time.time()); floor=str(floor_date or "")[:10]; today=str(today or time.strftime("%Y-%m-%d",time.gmtime(now)))[:10]
         leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_specs_for_league(source_versions,lg)]
-        result={"floorDate":floor,"status":"COMPLETE","total":0,"checked":0,"remaining":0,"coverageUpgrades":0,"qualityUpgrades":0,"accepted":0,"leagues":{}}
+        result={"floorDate":floor,"status":"COMPLETE","total":0,"attempted":0,"checked":0,"remaining":0,"coverageUpgrades":0,"qualityUpgrades":0,"accepted":0,"leagues":{}}
         if not leagues or not floor or not today: return result
         marks=','.join('?' for _ in leagues)
         with self._lock, closing(self._connect()) as conn:
@@ -1200,7 +1235,7 @@ class HistoryRepository:
         by_league={lg:[] for lg in leagues}
         for r in rows: by_league.setdefault(str(r['league']).upper(),[]).append(r)
         for lg in leagues:
-            specs=self._source_specs_for_league(source_versions,lg); stat={"total":0,"checked":0,"remaining":0,"coverageUpgrades":0,"qualityUpgrades":0,"accepted":0,"sources":{x['key']:x['version'] for x in specs}}
+            specs=self._source_specs_for_league(source_versions,lg); stat={"total":0,"attempted":0,"checked":0,"remaining":0,"coverageUpgrades":0,"qualityUpgrades":0,"accepted":0,"sources":{x['key']:x['version'] for x in specs}}
             for row in by_league.get(lg,[]):
                 needs=[]; current=[]
                 for spec in specs:
@@ -1212,13 +1247,14 @@ class HistoryRepository:
                 # Do not make already-satisfied events inflate the catch-up denominator unless a v-current source was actually attempted.
                 if all(needs) and not current: continue
                 stat['total']+=1
+                if current: stat['attempted']+=1
                 if all(needs): stat['checked']+=1
                 else: stat['remaining']+=1
                 stat['coverageUpgrades']+=1 if any(int(er['coverage_upgraded'] or 0) for er in current) else 0
                 stat['qualityUpgrades']+=1 if any(int(er['quality_upgraded'] or 0) for er in current) else 0
                 stat['accepted']+=sum(int(er['accepted_count'] or 0) for er in current)
             result['leagues'][lg]=stat
-            for k in ('total','checked','remaining','coverageUpgrades','qualityUpgrades','accepted'): result[k]+=int(stat[k] or 0)
+            for k in ('total','attempted','checked','remaining','coverageUpgrades','qualityUpgrades','accepted'): result[k]+=int(stat[k] or 0)
         result['status']='ACTIVE' if result['remaining'] else 'COMPLETE'
         return result
 
