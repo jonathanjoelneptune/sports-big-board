@@ -162,7 +162,7 @@ rollback(){
     cp -f "$MIGRATION_BACKUP" "$HISTORY_DB"
     chown sportsbigboard:sportsbigboard "$HISTORY_DB"
     rm -f "${HISTORY_DB}-wal" "${HISTORY_DB}-shm"
-    echo "[deploy] Restored pre-v4 history catalog: $MIGRATION_BACKUP"
+    echo "[deploy] Restored pre-deploy history catalog: $MIGRATION_BACKUP"
   fi
   if [[ -n "$PREVIOUS" && -d "$PREVIOUS" ]]; then
     ln -sfn "$PREVIOUS" "$CURRENT_LINK"
@@ -176,9 +176,10 @@ rm -rf "$RELEASE_DIR"; mkdir -p "$RELEASE_DIR"
 tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
 chown -R root:root "$RELEASE_DIR"
 
-# v4 catalog migration is an offline, audited reconstruction. Stop the old
-# backend first so SQLite is quiescent, build a second catalog, then install it
-# only if every reconciliation/integrity check passes.
+# v4 catalog preflight is structural. Stop the old backend so SQLite is
+# quiescent. Structurally healthy normalized catalogs are preserved and may get
+# only a rollback snapshot for in-place relationship repair. Legacy/structurally
+# invalid catalogs alone are reconstructed into a second database.
 systemctl stop sports-big-board >/dev/null 2>&1 || true
 ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 if [[ -f "$HISTORY_DB" ]]; then
@@ -201,7 +202,7 @@ if [[ -f "$HISTORY_DB" ]]; then
     echo "[deploy] ERROR: v4 preflight produced no structured JSON result."
   fi
   if [[ "$MIGRATION_RC" != "0" ]]; then
-    echo "[deploy] v4 catalog reconstruction/audit failed (exit $MIGRATION_RC)."
+    echo "[deploy] v4 catalog preflight/reconstruction failed (exit $MIGRATION_RC)."
     if [[ -n "$MIGRATION_REPORT" && -f "$MIGRATION_REPORT" ]]; then
       echo "[deploy] Reconciliation report follows: $MIGRATION_REPORT"
       cat "$MIGRATION_REPORT" || true

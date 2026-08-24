@@ -117,9 +117,10 @@ CADDY
 
 systemctl daemon-reload
 
-# If this persistent disk already contains a v3 catalog, reconstruct it into the
-# normalized v4 baseline before the service is ever started. The preflight keeps
-# an immutable rollback database plus JSON reconciliation report under backups/.
+# Structural v4 preflight runs before service start. Legacy/structurally invalid
+# catalogs are reconstructed offline; healthy normalized v4 catalogs are kept in
+# place and relationship upgrades are repaired by the backend without resetting
+# discovery/backfill progress.
 runuser -u sportsbigboard -- env SBB_STATE_DIR="$STATE_DIR" \
   /usr/bin/python3 "$APP_BASE/current/tools/ensure_history_v4.py" --state-dir "$STATE_DIR"
 

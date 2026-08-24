@@ -1,8 +1,8 @@
-# Sports Big Board v4.0.2
+# Sports Big Board v4.0.3
 
-## v4.0.2 reindex scheduling correction
+## v4.0.3 reindex scheduling correction
 
-v4.0.2 fixes the post-reconstruction state boundary exposed by the first production v4 catalog. Catalog import/rebuild bookkeeping is no longer recorded as a provider discovery attempt. Rebuilt events begin with `last_discovery_at = 0` and `next_retry_at = 0`, stale discovery generations bypass cooldown immediately, and the server performs a narrow idempotent startup repair for v4.0.0 rows marked `PENDING_CURRENT_DISCOVERY`. Current-generation attempts still obey the normal recent/archive cooldowns. No database rebuild is required for the v4.0.0 → v4.0.2 update.
+v4.0.3 fixes the post-reconstruction state boundary exposed by the first production v4 catalog. Catalog import/rebuild bookkeeping is no longer recorded as a provider discovery attempt. Rebuilt events begin with `last_discovery_at = 0` and `next_retry_at = 0`, stale discovery generations bypass cooldown immediately, and the server performs a narrow idempotent startup repair for v4.0.0 rows marked `PENDING_CURRENT_DISCOVERY`. Current-generation attempts still obey the normal recent/archive cooldowns. No database rebuild is required for the v4.0.0 → v4.0.3 update.
 
 The operator queue also drops the ambiguous legacy `noMedia`/`no_media` aliases. `UNINDEXED` remains distinct from `SEARCHED EMPTY`, while the combined diagnostic is exposed explicitly as `unindexedOrEmpty`.
 
@@ -61,7 +61,7 @@ The selected mode is stored on the persistent cloud data disk, so page refreshes
 
 v3.0.9 also added a **recent-slate safeguard**. The Green-gap queue gives completed games from the newest three calendar days with no verified recap a cursory pass before spending long stretches deep in the archive. After that safeguard, the normal Blue-only → no-media → Purple-only archive priority continues. The console reports `recent gaps` and `recent no-media` separately so current coverage cannot be hidden by a large December backlog.
 
-Those resource controls, worker heartbeat/watchdog, copy issues/full console controls, version mismatch protection, and recent-slate scheduling remain intact in v4.0.2. Historical discovery advances to `HISTORY_DISCOVERY_VERSION = 13` for the scope/association migration described above.
+Those resource controls, worker heartbeat/watchdog, copy issues/full console controls, version mismatch protection, and recent-slate scheduling remain intact in v4.0.3. Historical discovery advances to `HISTORY_DISCOVERY_VERSION = 13` for the scope/association migration described above.
 
 ## Cloud Stage 1
 
@@ -73,7 +73,7 @@ After the one-time `cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh` setup, a release is j
 
 ## v3.0.1 historical playback foundation
 
-v3.0.1 established the server-owned historical event/media catalog used by v4.0.2:
+v3.0.1 established the server-owned historical event/media catalog used by v4.0.3:
 
 `selected date → canonical score events → event catalog → validated media assets → playback plan → PlaybackController → runtime feedback`
 
@@ -130,7 +130,7 @@ This release addresses the root architecture behind the fragile non-MLB score fe
 
 Sports Big Board is a local, personalized sports television system: live scores and game state feed a direct-tune ribbon, official highlights and recaps feed the player, Game Center adds the live/final statistical context, and Around the League provides unattended programming.
 
-v4.0.2 builds on the stabilized score inventory and Game Center work by adding arbitrary historical date context without coupling ribbon browsing to playback.
+v4.0.3 builds on the stabilized score inventory and Game Center work by adding arbitrary historical date context without coupling ribbon browsing to playback.
 
 ## Launch experience
 
@@ -138,7 +138,7 @@ A fresh page load now opens on a full-screen **Sports Big Board** splash instead
 
 ## Legacy Today / Yesterday score authority
 
-NFL, NBA and NHL score inventory retains its ESPN fallback whenever Highlightly is empty. In v4.0.2 the league filter no longer changes the date automatically: the viewer-selected calendar date remains authoritative. ESPN historical lookups keep trying alternate transports when a non-empty endpoint response contains only the wrong calendar day, preventing a weekly/current board from masking the requested date.
+NFL, NBA and NHL score inventory retains its ESPN fallback whenever Highlightly is empty. In v4.0.3 the league filter no longer changes the date automatically: the viewer-selected calendar date remains authoritative. ESPN historical lookups keep trying alternate transports when a non-empty endpoint response contains only the wrong calendar day, preventing a weekly/current board from masking the requested date.
 
 ## NFL recap discovery
 
@@ -236,7 +236,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.0.2/sports-big-board-v4.0.2
+cd ~/storage/downloads/sports-big-board-v4.0.3/sports-big-board-v4.0.3
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```
@@ -270,7 +270,7 @@ bash VERIFY.sh
 
 Node is optional. When Node is unavailable, the permanent Python suite still verifies the browser architecture/UI boundaries and all server contracts.
 
-The v4.0.2 regression suite covers, among other things:
+The v4.0.3 regression suite covers, among other things:
 
 - authoritative score-card playback and epoch ownership
 - HOT/WARM media prewarming separation
@@ -335,3 +335,8 @@ v3.0.9 also added a persistent official YouTube **uploads-playlist index** for N
 ### v3.0.9 diagnostic-copy update
 
 The Historical Database Audit live search console now provides **COPY ISSUES**, **COPY FULL CONSOLE**, and **SAVE TXT** controls. The full report includes worker heartbeats, Green-gap queue counts, background scheduler state, YouTube gateway cooldown/quota details, the historical search budget, Highlightly status, active discovery jobs, and the full in-memory terminal buffer. Normal short scheduler yields for media playback are shown as **YIELDING** instead of being mislabeled as worker errors.
+
+
+## Sports Big Board v4.0.3
+
+v4.0.3 hardens the deployment boundary for the normalized history catalog. A valid v4 SQLite structure is preserved across matcher/classifier upgrades; relationship drift is repaired in place and can never trigger a full historical reconstruction. Only legacy, corrupt, or structurally incomplete catalogs are rebuilt. If an in-place relationship repair is pending, preflight creates a rollback snapshot before startup, and the backend requires a zero-violation post-repair relationship audit before serving traffic. Discovery state, backfill progress, verification history, runtime history, and the discovery-attempt ledger are outside the relationship repair mutation set.

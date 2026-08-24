@@ -4,8 +4,8 @@ ROOT=Path(__file__).resolve().parents[1]
 class CloudStage1Tests(unittest.TestCase):
     def test_frontend_loads_api_runtime_before_bootstrap(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
-        self.assertIn('config.js?v=4.0.2',html); self.assertIn('api-runtime.js?v=4.0.2',html)
-        self.assertLess(html.index('api-runtime.js?v=4.0.2'),html.index('BOOT_START'))
+        self.assertIn('config.js?v=4.0.3',html); self.assertIn('api-runtime.js?v=4.0.3',html)
+        self.assertLess(html.index('api-runtime.js?v=4.0.3'),html.index('BOOT_START'))
     def test_api_runtime_routes_api_only(self):
         js=(ROOT/'api-runtime.js').read_text(encoding='utf-8')
         self.assertIn("input.startsWith('/api/')",js); self.assertIn('window.fetch = function',js); self.assertIn('window.SBB_API',js)
@@ -43,7 +43,7 @@ class CloudStage1Tests(unittest.TestCase):
         self.assertIn('/var/lib/sports-big-board',deploy)
         self.assertIn('ensure_history_v4.py',deploy)
         self.assertIn('MIGRATION_BACKUP',deploy)
-        self.assertIn('Restored pre-v4 history catalog',deploy)
+        self.assertIn('Restored pre-deploy history catalog',deploy)
     def test_autodeploy_setup_uses_keyless_repo_restricted_wif(self):
         setup=(ROOT/'cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh').read_text()
         for token in ('workload-identity-pools providers create-oidc',"assertion.repository == '$GITHUB_REPOSITORY'","assertion.ref == 'refs/heads/main'",'roles/iam.workloadIdentityUser','roles/compute.instanceAdmin.v1','GCP_WORKLOAD_IDENTITY_PROVIDER'):
@@ -61,6 +61,6 @@ class CloudStage1Tests(unittest.TestCase):
         self.assertNotIn('rm -f "$ARCHIVE" "$MIGRATION_JSON"',deploy.split('rollback(){',1)[1].split('}',1)[0])
 
     def test_version_file_matches_server(self):
-        self.assertEqual((ROOT/'VERSION').read_text().strip(),'4.0.2')
-        self.assertIn('APP_VERSION = "4.0.2"',(ROOT/'server.py').read_text())
+        self.assertEqual((ROOT/'VERSION').read_text().strip(),'4.0.3')
+        self.assertIn('APP_VERSION = "4.0.3"',(ROOT/'server.py').read_text())
 if __name__=='__main__': unittest.main()

@@ -136,6 +136,70 @@ class HistoryV4BaselineTests(unittest.TestCase):
             data=json.loads(proc.stdout.strip()); self.assertEqual(data["action"],"V4_ALREADY_READY"); self.assertEqual(data["before"]["catalogSchemaVersion"],CATALOG_SCHEMA_VERSION)
             self.assertFalse(list((state/"backups").glob("history-pre-v4-*.sqlite3")))
 
+    def test_preflight_preserves_discovery_progress_for_repairable_relationship_drift(self):
+        with tempfile.TemporaryDirectory() as td:
+            state=Path(td); db=state/"cache"/"history.sqlite3"; db.parent.mkdir(parents=True)
+            repo=HistoryRepository(db)
+            e1={"scoreEventId":"evt1","awayTeam":{"name":"Alpha Bears"},"homeTeam":{"name":"Beta Hawks"},"completed":True}
+            e2={"scoreEventId":"evt2","awayTeam":{"name":"Gamma Cats"},"homeTeam":{"name":"Delta Wolves"},"completed":True}
+            repo.put_scores("2026-08-20","NBA",[e1,e2])
+            retry=time.time()+7200
+            repo.set_event_discovery("2026-08-20","NBA","evt1","VERIFIED_PARTIAL",{"discoveryVersion":13,"catalogComplete":True,"qualityComplete":False},retry_at=retry,success=True)
+            repo.record_discovery_attempt("NBA","evt1",source="official-native",discovery_version=13,query_type="PROVIDER_LANE",result_count=3,accepted_count=1,best_before="blue",best_after="extended")
+            media={"youtubeId":"sharedasset1","title":"Alpha Bears vs Beta Hawks Game Highlights","verifiedPlayable":True,"provider":"YOUTUBE","mediaScope":"GAME","recapTier":"extended"}
+            repo.put_source_media([media],league="NBA",date="2026-08-20",away="Alpha Bears",home="Beta Hawks")
+            conn=sqlite3.connect(db)
+            asset=conn.execute("SELECT asset_key FROM history_source_media LIMIT 1").fetchone()[0]
+            now=time.time()
+            for key in ("NBA:evt1","NBA:evt2"):
+                conn.execute("INSERT INTO history_event_media(canonical_event_key,asset_key,association_state,association_confidence,association_method,association_evidence,matcher_version,first_associated_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)",(key,asset,"ASSIGNED",1.0,"LEGACY_STAMP","legacy",4,now,now))
+            conn.execute("UPDATE history_catalog_meta SET value='4' WHERE key='event_association_repair_version'")
+            day_progress={"deepComplete":True,"deepGames":1,"discoveryVersion":13,"lastEventId":"evt1"}
+            conn.execute("UPDATE history_day SET discovery_json=?,discovery_saved_at=? WHERE date='2026-08-20' AND league='NBA'",(json.dumps(day_progress),now))
+            before_event=conn.execute("SELECT discovery_state,discovery_json,last_discovery_at,last_success_at,next_retry_at,last_error FROM history_catalog_event WHERE canonical_event_key='NBA:evt1'").fetchone()
+            before_attempts=conn.execute("SELECT COUNT(*) FROM history_discovery_attempt").fetchone()[0]
+            before_day=conn.execute("SELECT discovery_json,discovery_saved_at FROM history_day WHERE date='2026-08-20' AND league='NBA'").fetchone()
+            conn.commit(); conn.close()
+
+            proc=subprocess.run(["python3",str(ROOT/"tools/ensure_history_v4.py"),"--state-dir",str(state)],capture_output=True,text=True,check=True)
+            data=json.loads(proc.stdout.strip())
+            self.assertEqual(data["action"],"V4_ALREADY_READY")
+            self.assertTrue(data["repairRequired"],data)
+            self.assertEqual(data["before"]["reason"],"V4_READY")
+            self.assertTrue(Path(data["rollbackBackup"]).exists())
+            self.assertFalse(list((state/"backups").glob("history-pre-v4-*.sqlite3")))
+
+            conn=sqlite3.connect(db)
+            after_event=conn.execute("SELECT discovery_state,discovery_json,last_discovery_at,last_success_at,next_retry_at,last_error FROM history_catalog_event WHERE canonical_event_key='NBA:evt1'").fetchone()
+            after_attempts=conn.execute("SELECT COUNT(*) FROM history_discovery_attempt").fetchone()[0]
+            after_day=conn.execute("SELECT discovery_json,discovery_saved_at FROM history_day WHERE date='2026-08-20' AND league='NBA'").fetchone()
+            conn.close()
+            self.assertEqual(before_event,after_event)
+            self.assertEqual(before_attempts,after_attempts)
+            self.assertEqual(before_day,after_day)
+
+            repaired=HistoryRepository(db).repair_relationships(force=True)
+            self.assertTrue(repaired["ok"],repaired)
+            conn=sqlite3.connect(db)
+            final_event=conn.execute("SELECT discovery_state,discovery_json,last_discovery_at,last_success_at,next_retry_at,last_error FROM history_catalog_event WHERE canonical_event_key='NBA:evt1'").fetchone()
+            final_attempts=conn.execute("SELECT COUNT(*) FROM history_discovery_attempt").fetchone()[0]
+            final_day=conn.execute("SELECT discovery_json,discovery_saved_at FROM history_day WHERE date='2026-08-20' AND league='NBA'").fetchone()
+            conn.close()
+            self.assertEqual(before_event,final_event)
+            self.assertEqual(before_attempts,final_attempts)
+            self.assertEqual(before_day,final_day)
+
+    def test_preflight_check_only_reports_repairable_drift_without_backup_or_failure(self):
+        with tempfile.TemporaryDirectory() as td:
+            state=Path(td); db=state/"cache"/"history.sqlite3"; db.parent.mkdir(parents=True)
+            repo=HistoryRepository(db)
+            repo.put_scores("2026-08-20","NBA",[{"scoreEventId":"evt1","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"}}])
+            repo.set_catalog_meta("event_association_repair_version",EVENT_MATCHER_VERSION-1)
+            proc=subprocess.run(["python3",str(ROOT/"tools/ensure_history_v4.py"),"--state-dir",str(state),"--check-only"],capture_output=True,text=True,check=True)
+            data=json.loads(proc.stdout.strip())
+            self.assertTrue(data["ok"]); self.assertTrue(data["structuralOk"]); self.assertTrue(data["repairRequired"])
+            self.assertFalse(list((state/"backups").glob("*.sqlite3")))
+
     def test_preflight_recovers_partial_v4_shell_using_preserved_legacy_rows(self):
         with tempfile.TemporaryDirectory() as td:
             state=Path(td); db=state/"cache"/"history.sqlite3"; db.parent.mkdir(parents=True); now=time.time()
@@ -155,7 +219,7 @@ class HistoryV4BaselineTests(unittest.TestCase):
             proc=subprocess.run(["python3",str(ROOT/"tools/ensure_history_v4.py"),"--state-dir",str(state)],capture_output=True,text=True,check=True)
             data=json.loads(proc.stdout.strip())
             self.assertEqual(data["action"],"REBUILT")
-            self.assertIn(data["before"]["reason"],{"V4_INCOMPLETE_WITH_LEGACY","V4_INVALID_WITH_LEGACY"})
+            self.assertIn(data["before"]["reason"],{"V4_STRUCTURAL_INVALID_WITH_LEGACY"})
             self.assertTrue(data["rebuild"]["passed"],data)
             rebuilt=HistoryRepository(db)
             self.assertGreaterEqual(rebuilt.catalog_integrity()["sourceAssets"],1)
@@ -210,7 +274,7 @@ class HistoryV4BaselineTests(unittest.TestCase):
         for path in (ROOT/"start.sh",ROOT/"START-ANDROID.sh",ROOT/"START SPORTS BIG BOARD.bat",ROOT/"cloud/vm/INSTALL-STAGE1.sh",ROOT/"cloud/gcp/DEPLOY-FROM-GITHUB.sh"):
             self.assertIn("ensure_history_v4.py",path.read_text())
         deploy=(ROOT/"cloud/gcp/DEPLOY-FROM-GITHUB.sh").read_text()
-        self.assertIn("MIGRATION_BACKUP",deploy); self.assertIn("Restored pre-v4 history catalog",deploy)
+        self.assertIn("MIGRATION_BACKUP",deploy); self.assertIn("Restored pre-deploy history catalog",deploy)
 
 
 if __name__=='__main__': unittest.main()
@@ -261,7 +325,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
             repo.put_scores("2026-08-22","MLS",[event])
-            # Simulate a pre-v4.0.2 assigned row by directly inserting source/link.
+            # Simulate a pre-v4.0.3 assigned row by directly inserting source/link.
             wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
             repo.put_source_media([wrong],league="MLS",date="2026-08-22")
             import sqlite3 as _sqlite3, time as _time, json as _json

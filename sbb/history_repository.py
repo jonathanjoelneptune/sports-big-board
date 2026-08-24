@@ -1,5 +1,6 @@
 import json
 import hashlib
+import os
 import re
 import sqlite3
 import threading
@@ -63,6 +64,8 @@ class HistoryRepository:
 
     def _init_db(self):
         now = time.time()
+        try: fresh_catalog=(not os.path.exists(self.path)) or os.path.getsize(self.path)==0
+        except OSError: fresh_catalog=True
         with self._lock, closing(self._connect()) as conn:
             # Compatibility day cache. Media JSON is retained only so pre-v4
             # database imports can be reconciled; normalized tables own playback.
@@ -224,6 +227,12 @@ class HistoryRepository:
                 "verification_version": VERIFICATION_VERSION,
             }.items():
                 conn.execute("INSERT INTO history_catalog_meta(key,value,updated_at) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at",(key,str(value),now))
+            # A brand-new normalized catalog has no legacy relationships to
+            # repair. Existing catalogs deliberately keep their historical repair
+            # markers so future matcher/classifier upgrades can be detected.
+            if fresh_catalog:
+                conn.execute("INSERT INTO history_catalog_meta(key,value,updated_at) VALUES('event_association_repair_version',?,?) ON CONFLICT(key) DO NOTHING",(str(EVENT_MATCHER_VERSION),now))
+                conn.execute("INSERT INTO history_catalog_meta(key,value,updated_at) VALUES('collection_association_repair_version',?,?) ON CONFLICT(key) DO NOTHING",(str(MEDIA_CLASSIFIER_VERSION),now))
             conn.commit()
 
     @staticmethod
@@ -434,7 +443,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.0.2 migration cooldowns already persisted in production.
+        """Release artificial v4.0.3 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -524,6 +533,17 @@ class HistoryRepository:
             return {"skipped":True,"matcherVersion":target,**self.association_integrity_summary()}
         now=time.time(); checked=kept=quarantined=0; reasons={}
         with self._lock, closing(self._connect()) as conn:
+            # Scope leakage is repairable relationship state, never a reason to
+            # reconstruct the normalized catalog. Quarantine any collection/non-
+            # GAME asset that was historically attached to an event.
+            leaks=conn.execute("""SELECT em.canonical_event_key,em.asset_key,e.league,e.event_date
+              FROM history_event_media em JOIN history_catalog_event e ON e.canonical_event_key=em.canonical_event_key
+              JOIN history_source_media s ON s.asset_key=em.asset_key
+              WHERE em.association_state='ASSIGNED' AND s.scope<>'GAME'""").fetchall()
+            for leak in leaks:
+                checked+=1; quarantined+=1; reason='NON_GAME_SCOPE_EVENT_LINK'; reasons[reason]=reasons.get(reason,0)+1
+                conn.execute("UPDATE history_event_media SET association_state='QUARANTINED',association_confidence=0,association_method=?,association_evidence='source scope is not GAME',matcher_version=?,updated_at=? WHERE canonical_event_key=? AND asset_key=?",(reason,target,now,leak["canonical_event_key"],leak["asset_key"]))
+                conn.execute("INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,matcher_version=excluded.matcher_version,updated_at=excluded.updated_at",(leak["asset_key"],leak["league"],leak["event_date"],leak["canonical_event_key"],QUARANTINED,reason,'{}',MEDIA_CLASSIFIER_VERSION,target,now,now))
             rows=conn.execute("""SELECT em.canonical_event_key,em.asset_key,e.league,e.event_date,e.event_json,s.asset_json,s.scope
               FROM history_event_media em JOIN history_catalog_event e ON e.canonical_event_key=em.canonical_event_key
               JOIN history_source_media s ON s.asset_key=em.asset_key WHERE s.scope='GAME'""").fetchall()
@@ -555,6 +575,53 @@ class HistoryRepository:
                 quarantine_reason=CASE WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='ASSIGNED') THEN '' ELSE quarantine_reason END,updated_at=?""",(now,))
             conn.execute("INSERT INTO history_catalog_meta(key,value,updated_at) VALUES('event_association_repair_version',?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at",(str(target),now)); conn.commit()
         return {"skipped":False,"matcherVersion":target,"checkedLinks":checked,"keptLinks":max(0,kept),"quarantinedLinks":quarantined,"reasons":reasons,**self.association_integrity_summary()}
+
+    def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
+        """Repair Silver collection relationships without touching discovery state.
+
+        Collection links are derived/routing state. A classifier upgrade may
+        remove a stale link, but it must never rebuild the database or mutate
+        event discovery/backfill/verification history.
+        """
+        target=int(classifier_version or MEDIA_CLASSIFIER_VERSION)
+        marker=int(self.catalog_meta("collection_association_repair_version","0") or 0)
+        integrity=self.catalog_integrity()
+        has_active_issues=bool(int(integrity.get("collectionGameLeaks") or 0) or int(integrity.get("lowConfidenceCollectionLinks") or 0))
+        if marker>=target and not force and not has_active_issues:
+            return {"skipped":True,"classifierVersion":target,"checkedLinks":0,"removedLinks":0,"reasons":{}}
+        now=time.time(); checked=removed=0; reasons={}
+        with self._lock, closing(self._connect()) as conn:
+            rows=conn.execute("""SELECT cm.collection_key,cm.asset_key,cm.association_confidence,c.scope,c.league,c.period_key,s.scope AS media_scope
+              FROM history_collection_media cm JOIN history_collection c ON c.collection_key=cm.collection_key
+              JOIN history_source_media s ON s.asset_key=cm.asset_key""").fetchall()
+            for row in rows:
+                checked+=1; reason=''
+                media_scope=str(row["media_scope"] or "").upper(); collection_scope=str(row["scope"] or "").upper()
+                if media_scope=='GAME': reason='GAME_SCOPE_COLLECTION_LINK'
+                elif media_scope not in COLLECTION_SCOPES: reason='NON_COLLECTION_SCOPE_LINK'
+                elif media_scope!=collection_scope: reason='COLLECTION_SCOPE_MISMATCH'
+                elif float(row["association_confidence"] or 0)<0.80: reason='COLLECTION_LOW_CONFIDENCE'
+                if not reason: continue
+                removed+=1; reasons[reason]=reasons.get(reason,0)+1
+                conn.execute("DELETE FROM history_collection_media WHERE collection_key=? AND asset_key=?",(row["collection_key"],row["asset_key"]))
+                review_key='COLLECTION:'+str(row["collection_key"])
+                conn.execute("INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,classifier_version=excluded.classifier_version,updated_at=excluded.updated_at",(row["asset_key"],row["league"],str(row["period_key"] or '')[:10],review_key,QUARANTINED,reason,'{}',target,EVENT_MATCHER_VERSION,now,now))
+            conn.execute("""UPDATE history_source_media SET catalog_state=CASE
+                WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='ASSIGNED') THEN 'ASSIGNED'
+                WHEN EXISTS(SELECT 1 FROM history_collection_media cm WHERE cm.asset_key=history_source_media.asset_key) THEN 'ASSIGNED'
+                WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='QUARANTINED') THEN 'QUARANTINED'
+                ELSE 'UNASSIGNED' END,updated_at=?""",(now,))
+            conn.execute("INSERT INTO history_catalog_meta(key,value,updated_at) VALUES('collection_association_repair_version',?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at",(str(target),now))
+            conn.commit()
+        return {"skipped":False,"classifierVersion":target,"checkedLinks":checked,"removedLinks":removed,"reasons":reasons}
+
+    def repair_relationships(self, force=False):
+        event=self.repair_event_associations(force=force)
+        collection=self.repair_collection_associations(force=force)
+        integrity=self.catalog_integrity()
+        relationship_keys=("silverGameLeaks","collectionGameLeaks","lowConfidenceAssigned","crossEventAssignedAssets","lowConfidenceCollectionLinks")
+        issues={k:int(integrity.get(k) or 0) for k in relationship_keys if int(integrity.get(k) or 0)>0}
+        return {"event":event,"collection":collection,"integrity":integrity,"issues":issues,"ok":not bool(issues)}
 
     def association_integrity_summary(self):
         with self._lock, closing(self._connect()) as conn:
@@ -827,7 +894,7 @@ class HistoryRepository:
             stale=bool(version<current)
             due=stale or (float(row["next_retry_at"] or 0)<=now and (float(row["last_discovery_at"] or 0)<=0 or float(row["last_discovery_at"] or 0)<=now-cooldown))
             if not has_good and due: summary["due"]+=1
-        # v4.0.2 operator-console aliases keep the explicit catalog semantics.
+        # v4.0.3 operator-console aliases keep the explicit catalog semantics.
         # "noMedia" was ambiguous because UNINDEXED events can already have Blue
         # or Purple media; expose the actual union under an honest name instead.
         summary.update({
