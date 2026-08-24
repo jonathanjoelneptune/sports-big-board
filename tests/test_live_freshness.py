@@ -317,7 +317,12 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
         quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
         long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}
-        with patch.object(server,'_nfl_game_highlights_results',return_value=[]), patch.object(server,'_official_nfl_feed_videos',return_value=[quick,long]):
+        # v4.1.12 adds official team-site packages as a second Extended lane.
+        # Keep this legacy duration-window unit test deterministic by isolating
+        # the public NFL/YouTube lane it was originally written to exercise.
+        with patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
+             patch.object(server,'_official_nfl_feed_videos',return_value=[quick,long]), \
+             patch.object(server,'_nfl_team_video_results',return_value=[]):
             rows=server._nfl_official_extended_results('2026-08-20','Raiders','Texans')
         self.assertEqual([x['youtubeId'] for x in rows],['long'])
         self.assertEqual(rows[0]['recapTier'],'extended'); self.assertEqual(rows[0]['mediaObjective'],'EXTENDED')
