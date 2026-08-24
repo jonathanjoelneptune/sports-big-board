@@ -12,7 +12,10 @@ from sbb.catalog_contract import (
     RANKING_VERSION, VERIFICATION_VERSION, ASSIGNED, QUARANTINED, UNASSIGNED,
 )
 from sbb.event_matcher import match_event, team_name
-from sbb.media_scope import annotate as annotate_media_scope, GAME, COLLECTION_SCOPES
+from sbb.media_scope import (
+    annotate as annotate_media_scope, GAME, COLLECTION_SCOPES, SILVER_SCOPES,
+    silver_eligibility, strip_classifier_fields, source_authority,
+)
 
 
 class HistoryRepository:
@@ -450,7 +453,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.4 migration cooldowns already persisted in production.
+        """Release artificial v4.1.5 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -584,43 +587,97 @@ class HistoryRepository:
         return {"skipped":False,"matcherVersion":target,"checkedLinks":checked,"keptLinks":max(0,kept),"quarantinedLinks":quarantined,"reasons":reasons,**self.association_integrity_summary()}
 
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
-        """Repair Silver collection relationships without touching discovery state.
+        """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        Collection links are derived/routing state. A classifier upgrade may
-        remove a stale link, but it must never rebuild the database or mutate
-        event discovery/backfill/verification history.
+        v4.1.5 treats collection membership as fully derived state.  Classifier
+        upgrades therefore re-evaluate source assets in place, re-key daily/weekly
+        periods, and discard stale collection links without touching event discovery,
+        backfill progress, verification history, or the source asset itself.
         """
         target=int(classifier_version or MEDIA_CLASSIFIER_VERSION)
         marker=int(self.catalog_meta("collection_association_repair_version","0") or 0)
-        integrity=self.catalog_integrity()
-        has_active_issues=bool(int(integrity.get("collectionGameLeaks") or 0) or int(integrity.get("lowConfidenceCollectionLinks") or 0))
-        if marker>=target and not force and not has_active_issues:
-            return {"skipped":True,"classifierVersion":target,"checkedLinks":0,"removedLinks":0,"reasons":{}}
-        now=time.time(); checked=removed=0; reasons={}
+        if marker>=target and not force:
+            return {"skipped":True,"classifierVersion":target,"checkedAssets":0,"keptAssets":0,"removedLinks":0,"createdLinks":0,"reasons":{}}
+        now=time.time(); checked=kept=created=0; reasons={}
         with self._lock, closing(self._connect()) as conn:
-            rows=conn.execute("""SELECT cm.collection_key,cm.asset_key,cm.association_confidence,c.scope,c.league,c.period_key,s.scope AS media_scope
+            old_links=conn.execute("""SELECT cm.collection_key,cm.asset_key,c.scope,c.league,c.period_key,c.collection_kind,
+                s.provider,s.provider_media_id,s.canonical_url,s.title,s.duration_seconds,s.published_at,s.channel_id,s.channel_name,
+                s.validation_state,s.runtime_state,s.asset_json
               FROM history_collection_media cm JOIN history_collection c ON c.collection_key=cm.collection_key
               JOIN history_source_media s ON s.asset_key=cm.asset_key""").fetchall()
-            for row in rows:
-                checked+=1; reason=''
-                media_scope=str(row["media_scope"] or "").upper(); collection_scope=str(row["scope"] or "").upper()
-                if media_scope=='GAME': reason='GAME_SCOPE_COLLECTION_LINK'
-                elif media_scope not in COLLECTION_SCOPES: reason='NON_COLLECTION_SCOPE_LINK'
-                elif media_scope!=collection_scope: reason='COLLECTION_SCOPE_MISMATCH'
-                elif float(row["association_confidence"] or 0)<0.80: reason='COLLECTION_LOW_CONFIDENCE'
-                if not reason: continue
-                removed+=1; reasons[reason]=reasons.get(reason,0)+1
-                conn.execute("DELETE FROM history_collection_media WHERE collection_key=? AND asset_key=?",(row["collection_key"],row["asset_key"]))
-                review_key='COLLECTION:'+str(row["collection_key"])
-                conn.execute("INSERT INTO history_assignment_review(asset_key,league,event_date,proposed_event_key,state,reason,evidence_json,classifier_version,matcher_version,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_key,proposed_event_key,reason) DO UPDATE SET state=excluded.state,classifier_version=excluded.classifier_version,updated_at=excluded.updated_at",(row["asset_key"],row["league"],str(row["period_key"] or '')[:10],review_key,QUARANTINED,reason,'{}',target,EVENT_MATCHER_VERSION,now,now))
+            removed_links=len(old_links)
+            # Keep one candidate per asset/league.  Multiple old periods are precisely
+            # the smearing condition this repair is designed to collapse.
+            candidates={}
+            for row in old_links:
+                candidates[(str(row["asset_key"]),str(row["league"] or "").upper())]=row
+            # Also reconsider source rows previously classified as collection media even
+            # if an earlier repair had already removed their stale relationship.
+            extra=conn.execute("SELECT * FROM history_source_media WHERE scope IN ('DAY_LEAGUE','WEEK_LEAGUE','SEASON_LEAGUE')").fetchall()
+            for row in extra:
+                raw=self._load_obj(row["asset_json"]); league=str(raw.get("league") or raw.get("sourceLeague") or "").upper()
+                if league and (str(row["asset_key"]),league) not in candidates:
+                    candidates[(str(row["asset_key"]),league)]=row
+
+            conn.execute("UPDATE history_media_segment SET collection_key=NULL WHERE collection_key IS NOT NULL")
+            conn.execute("DELETE FROM history_collection_media")
+            conn.execute("DELETE FROM history_collection")
+
+            for (asset_key,league),row in candidates.items():
+                checked+=1
+                raw=self._load_obj(row["asset_json"])
+                # Backfill normalized columns into the JSON candidate when older source
+                # rows did not persist all provenance fields in asset_json.
+                for key,col in (("provider","provider"),("providerMediaId","provider_media_id"),("title","title"),("publishedAt","published_at"),("channelId","channel_id"),("channelName","channel_name")):
+                    try:
+                        if not raw.get(key) and row[col] not in (None,""): raw[key]=row[col]
+                    except Exception:
+                        pass
+                try:
+                    if not raw.get("durationSeconds") and row["duration_seconds"]: raw["durationSeconds"]=float(row["duration_seconds"] or 0)
+                except Exception:
+                    pass
+                raw["league"]=league
+                source_date=str(raw.get("date") or raw.get("sourceDate") or raw.get("publishedAt") or "")[:10]
+                decision=silver_eligibility(raw,league=league,date=source_date)
+                annotated=annotate_media_scope(strip_classifier_fields(raw),league=league,date=source_date)
+                # Update classifier/source-authority truth regardless of Silver eligibility.
+                conn.execute("""UPDATE history_source_media SET scope=?,intent=?,scope_confidence=?,scope_reason=?,intent_confidence=?,intent_reason=?,
+                    classifier_version=?,asset_json=?,updated_at=? WHERE asset_key=?""",(
+                    str(annotated.get("mediaScope") or "OTHER"),str(annotated.get("mediaIntent") or "OTHER"),
+                    float(annotated.get("mediaScopeConfidence") or 0),str(annotated.get("mediaScopeReason") or ""),
+                    float(annotated.get("mediaIntentConfidence") or 0),str(annotated.get("mediaIntentReason") or ""),
+                    target,self._dump_obj(annotated),now,asset_key))
+                if not decision.get("eligible"):
+                    reason=str(decision.get("reason") or "SILVER_PROMOTION_REJECTED"); reasons[reason]=reasons.get(reason,0)+1
+                    continue
+                scope=str(decision["scope"]); period=str(decision["periodKey"]); kind=str(decision["collectionKind"]); ckey=self._collection_key(scope,league,period,kind)
+                authority=str(decision.get("sourceAuthority") or "UNKNOWN")
+                rank=(450 if kind=="DAILY_RECAP" else 400 if kind=="TOP_PLAYS" else 350) + (100 if authority=="LEAGUE_OFFICIAL" else 25 if authority=="TRUSTED_BROADCAST" else 0)
+                conn.execute("""INSERT INTO history_collection(collection_key,scope,league,period_key,collection_kind,title,metadata_json,created_at,updated_at)
+                    VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(collection_key) DO UPDATE SET title=excluded.title,metadata_json=excluded.metadata_json,updated_at=excluded.updated_at""",
+                    (ckey,scope,league,period,kind,f"{league} {period} {kind.replace('_',' ').title()}",self._dump_obj({"classifierVersion":target,"sourceAuthorityPreferred":True}),now,now))
+                confidence=min(float(decision.get("scopeConfidence") or 0),float(decision.get("sourceAuthorityConfidence") or 0))
+                method=str(decision.get("scopeReason") or "STRICT_SILVER_CLASSIFIER")
+                evidence=f"period={period}; authority={authority}; authorityReason={decision.get('sourceAuthorityReason')}; promotion={decision.get('reason')}"
+                conn.execute("""INSERT INTO history_collection_media(collection_key,asset_key,association_confidence,association_method,association_evidence,classifier_version,rank_hint,first_associated_at,updated_at)
+                    VALUES(?,?,?,?,?,?,?,?,?)""",(ckey,asset_key,confidence,method,evidence,target,rank,now,now))
+                kept+=1; created+=1
+
+            # Empty/no-longer-Silver assets stay in SOURCE_MEDIA.  Recompute catalog state
+            # from surviving event/collection truth and preserve event quarantine where relevant.
             conn.execute("""UPDATE history_source_media SET catalog_state=CASE
                 WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='ASSIGNED') THEN 'ASSIGNED'
                 WHEN EXISTS(SELECT 1 FROM history_collection_media cm WHERE cm.asset_key=history_source_media.asset_key) THEN 'ASSIGNED'
                 WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='QUARANTINED') THEN 'QUARANTINED'
-                ELSE 'UNASSIGNED' END,updated_at=?""",(now,))
+                ELSE 'UNASSIGNED' END,
+                quarantine_reason=CASE WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='QUARANTINED')
+                    AND NOT EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=history_source_media.asset_key AND em.association_state='ASSIGNED')
+                    AND NOT EXISTS(SELECT 1 FROM history_collection_media cm WHERE cm.asset_key=history_source_media.asset_key)
+                    THEN quarantine_reason ELSE '' END,updated_at=?""",(now,))
             conn.execute("INSERT INTO history_catalog_meta(key,value,updated_at) VALUES('collection_association_repair_version',?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at",(str(target),now))
             conn.commit()
-        return {"skipped":False,"classifierVersion":target,"checkedLinks":checked,"removedLinks":removed,"reasons":reasons}
+        return {"skipped":False,"classifierVersion":target,"checkedAssets":checked,"keptAssets":kept,"removedLinks":removed_links,"createdLinks":created,"reasons":reasons}
 
     def repair_relationships(self, force=False):
         event=self.repair_event_associations(force=force)
@@ -719,36 +776,56 @@ class HistoryRepository:
         return f"{str(scope).upper()}:{str(league).upper()}:{str(period_key)}:{str(kind).upper()}"
 
     def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP"):
-        scope=str(scope or "").upper(); league=str(league or "").upper(); period_key=str(period_key or ""); kind=str(collection_kind or "ROUNDUP").upper()
-        if scope not in COLLECTION_SCOPES or not period_key: return 0
-        ckey=self._collection_key(scope,league,period_key,kind); now=time.time(); count=0
+        """Promote only strictly proven league-wide roundup assets into Silver.
+
+        Caller scope/period/kind are discovery hints, not authority.  The v5 classifier
+        resolves canonical collection identity from title/publication/source evidence,
+        preventing one asset from being smeared across overlapping backfill dates.
+        """
+        league=str(league or "").upper(); hint_period=str(period_key or ""); now=time.time(); count=0
         with self._lock, closing(self._connect()) as conn:
-            conn.execute("""INSERT INTO history_collection(collection_key,scope,league,period_key,collection_kind,title,metadata_json,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)
-              ON CONFLICT(collection_key) DO UPDATE SET updated_at=excluded.updated_at""",(ckey,scope,league,period_key,kind,f"{league} {period_key} {kind.replace('_',' ').title()}","{}",now,now))
             for raw in rows or []:
                 if not isinstance(raw,dict): continue
-                item=annotate_media_scope(dict(raw),league=league,date=str(raw.get("date") or period_key)[:10])
-                if item.get("mediaScope") not in COLLECTION_SCOPES:
-                    # The caller explicitly routed this into a collection. Keep the
-                    # classifier decision visible but never turn it into GAME truth.
-                    item["mediaScope"]=scope; item["mediaScopeReason"]="EXPLICIT_COLLECTION_ROUTE"; item["mediaScopeConfidence"]=1.0
-                item["collectionTier"]="silver"; item["displayTier"]="silver"; item["collectionPeriodKey"]=period_key; item["collectionKind"]=kind
-                asset_key=self._upsert_source_media_conn(conn,item,league=league,date=str(item.get("date") or period_key)[:10],catalog_state=ASSIGNED)
+                base=strip_classifier_fields(dict(raw)); base.setdefault("league",league)
+                source_date=str(base.get("date") or base.get("sourceDate") or hint_period)[:10]
+                decision=silver_eligibility(base,league=league,date=source_date)
+                annotated=annotate_media_scope(base,league=league,date=source_date)
+                if not decision.get("eligible"):
+                    # Keep harvested material in SOURCE_MEDIA, but do not fabricate a
+                    # Silver relationship just because a broad collector routed it here.
+                    self._upsert_source_media_conn(conn,annotated,league=league,date=source_date,catalog_state=None)
+                    continue
+                resolved_scope=str(decision["scope"]); resolved_period=str(decision["periodKey"]); kind=str(decision["collectionKind"]); ckey=self._collection_key(resolved_scope,league,resolved_period,kind)
+                annotated["collectionTier"]="silver"; annotated["displayTier"]="silver"; annotated["collectionPeriodKey"]=resolved_period; annotated["collectionKind"]=kind
+                asset_key=self._upsert_source_media_conn(conn,annotated,league=league,date=source_date,catalog_state=ASSIGNED)
                 if not asset_key: continue
-                rank=400 if kind=="DAILY_RECAP" else 350 if kind=="TOP_PLAYS" else 300 if scope=="WEEK_LEAGUE" else 200
-                confidence=float(item.get("mediaScopeConfidence") or 0); method=str(item.get("mediaScopeReason") or "EXPLICIT_COLLECTION_ROUTE")
-                evidence=f"scope={scope}; kind={kind}; period={period_key}"
-                conn.execute("INSERT INTO history_collection_media(collection_key,asset_key,association_confidence,association_method,association_evidence,classifier_version,rank_hint,first_associated_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(collection_key,asset_key) DO UPDATE SET association_confidence=excluded.association_confidence,association_method=excluded.association_method,association_evidence=excluded.association_evidence,classifier_version=excluded.classifier_version,rank_hint=excluded.rank_hint,updated_at=excluded.updated_at",(ckey,asset_key,confidence,method,evidence,int(item.get("mediaClassifierVersion") or MEDIA_CLASSIFIER_VERSION),rank,now,now)); count+=1
+                authority=str(decision.get("sourceAuthority") or "UNKNOWN")
+                rank=(450 if kind=="DAILY_RECAP" else 400 if kind=="TOP_PLAYS" else 350) + (100 if authority=="LEAGUE_OFFICIAL" else 25 if authority=="TRUSTED_BROADCAST" else 0)
+                conn.execute("""INSERT INTO history_collection(collection_key,scope,league,period_key,collection_kind,title,metadata_json,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)
+                    ON CONFLICT(collection_key) DO UPDATE SET title=excluded.title,metadata_json=excluded.metadata_json,updated_at=excluded.updated_at""",
+                    (ckey,resolved_scope,league,resolved_period,kind,f"{league} {resolved_period} {kind.replace('_',' ').title()}",self._dump_obj({"classifierVersion":MEDIA_CLASSIFIER_VERSION,"sourceAuthorityPreferred":True}),now,now))
+                confidence=min(float(decision.get("scopeConfidence") or 0),float(decision.get("sourceAuthorityConfidence") or 0))
+                method=str(decision.get("scopeReason") or "STRICT_SILVER_CLASSIFIER")
+                evidence=f"scope={resolved_scope}; kind={kind}; period={resolved_period}; authority={authority}; authorityReason={decision.get('sourceAuthorityReason')}"
+                conn.execute("""INSERT INTO history_collection_media(collection_key,asset_key,association_confidence,association_method,association_evidence,classifier_version,rank_hint,first_associated_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)
+                    ON CONFLICT(collection_key,asset_key) DO UPDATE SET association_confidence=excluded.association_confidence,association_method=excluded.association_method,association_evidence=excluded.association_evidence,classifier_version=excluded.classifier_version,rank_hint=excluded.rank_hint,updated_at=excluded.updated_at""",
+                    (ckey,asset_key,confidence,method,evidence,MEDIA_CLASSIFIER_VERSION,rank,now,now)); count+=1
             conn.commit()
         return count
 
     def roundup_media(self, date, league=None):
         date=str(date or "")[:10]; league=str(league or "").upper()
         with self._lock, closing(self._connect()) as conn:
-            params=[date,date]; league_sql=""
-            if league and league!="ALL": league_sql=" AND c.league=?"; params.append(league)
+            league_sql=""
+            if league and league!="ALL": league_sql=" AND c.league=?"
+            # Day ribbon playback is date-scoped. WEEK_LEAGUE collections use league-
+            # season identity and must never appear on a current day merely because a
+            # historical video was re-discovered or re-published today. A dedicated
+            # season-week resolver can surface them in the future weekly UI.
+            params=[date];
+            if league and league!="ALL": params.append(league)
             rows=conn.execute("""SELECT c.*,cm.rank_hint,s.* FROM history_collection c JOIN history_collection_media cm ON cm.collection_key=c.collection_key
-              JOIN history_source_media s ON s.asset_key=cm.asset_key WHERE ((c.scope='DAY_LEAGUE' AND c.period_key=?) OR (c.scope='WEEK_LEAGUE' AND json_extract(s.asset_json,'$.date')=?))"""+league_sql+
+              JOIN history_source_media s ON s.asset_key=cm.asset_key WHERE c.scope='DAY_LEAGUE' AND c.period_key=?"""+league_sql+
               " ORDER BY cm.rank_hint DESC,s.verified_at DESC,s.duration_seconds DESC",params).fetchall()
         out=[]; seen=set()
         for row in rows:
@@ -876,6 +953,12 @@ class HistoryRepository:
         return out
 
     def green_gap_summary(self, *, current_discovery_version=0, now=None, recent_cooldown=2*60*60, archive_cooldown=24*60*60, recent_cutoff=""):
+        """Summarize coverage gaps separately from optional Purple→Green work.
+
+        Gold/Green/Purple (``extended``) are complete for *coverage*. Purple remains
+        eligible for a later editorial quality upgrade, but it is not an open database
+        coverage gap. Blue/None remain incomplete coverage.
+        """
         now=float(now or time.time()); current=int(current_discovery_version or 0); cutoff=str(recent_cutoff or time.strftime("%Y-%m-%d",time.gmtime(now-2*86400)))[:10]
         with self._lock, closing(self._connect()) as conn:
             rows=conn.execute("""SELECT e.canonical_event_key,e.event_date,e.discovery_state,e.discovery_json,e.last_discovery_at,e.next_retry_at,e.claim_owner,e.claim_started_at,e.claim_expires_at,
@@ -885,38 +968,45 @@ class HistoryRepository:
                 MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) has_extended,
                 MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND COALESCE(json_extract(s.asset_json,'$.recapTier'),'blue')='blue' THEN 1 ELSE 0 END) has_blue
               FROM history_catalog_event e LEFT JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key LEFT JOIN history_source_media s ON s.asset_key=em.asset_key GROUP BY e.canonical_event_key""").fetchall()
-        summary={"total":0,"due":0,"availableDue":0,"claimed":0,"recent":0,"recentNoMedia":0,"blueOnly":0,"purpleOnly":0,"unindexed":0,"searchedEmpty":0,"coverageComplete":0,"candidateOnly":0,"staleVersion":0}
+        summary={"total":0,"due":0,"availableDue":0,"claimed":0,"recent":0,"recentNoMedia":0,"blueOnly":0,"purpleOnly":0,"qualityUpgradeDue":0,"workTotal":0,"workDue":0,
+                 "unindexed":0,"searchedEmpty":0,"coverageComplete":0,"playablePartial":0,"candidateOnly":0,"staleVersion":0}
         for row in rows:
             disc=self._load_obj(row["discovery_json"]); version=int(disc.get("discoveryVersion") or 0); verified=int(row["verified_count"] or 0)
-            has_good=bool(row["has_gold"] or row["has_green"]); recent=str(row["event_date"])>=cutoff
-            if not has_good: summary["total"]+=1
-            if recent and not has_good: summary["recent"]+=1
+            has_green_or_gold=bool(row["has_gold"] or row["has_green"]); has_coverage=bool(has_green_or_gold or row["has_extended"]); recent=str(row["event_date"])>=cutoff
+            coverage_gap=not has_coverage; quality_upgrade=bool(row["has_extended"] and not has_green_or_gold)
+            if coverage_gap: summary["total"]+=1
+            if not has_green_or_gold: summary["workTotal"]+=1
+            if recent and coverage_gap: summary["recent"]+=1
             if recent and not verified: summary["recentNoMedia"]+=1
-            if row["has_blue"] and not row["has_extended"] and not has_good: summary["blueOnly"]+=1
-            if row["has_extended"] and not has_good: summary["purpleOnly"]+=1
+            if row["has_blue"] and not row["has_extended"] and not has_green_or_gold: summary["blueOnly"]+=1
+            if quality_upgrade: summary["purpleOnly"]+=1
             if version<current: summary["staleVersion"]+=1
             state=str(row["discovery_state"] or "UNKNOWN").upper()
+            # Index currency and coverage completeness are independent dimensions.
+            # A verified Purple/Green/Gold package satisfies the watchability contract
+            # even when the event still needs a current discovery-generation pass.
+            if has_coverage: summary["coverageComplete"]+=1
+            elif verified: summary["playablePartial"]+=1
             if version<current or state in {"","UNKNOWN"}: summary["unindexed"]+=1
             elif state=="SEARCHED_EMPTY" and not verified: summary["searchedEmpty"]+=1
-            elif verified: summary["coverageComplete"]+=1
-            elif state=="CANDIDATE_ONLY": summary["candidateOnly"]+=1
-            cooldown=float(recent_cooldown if recent else archive_cooldown)
-            stale=bool(version<current)
+            elif state=="CANDIDATE_ONLY" and not verified: summary["candidateOnly"]+=1
+            cooldown=float(recent_cooldown if recent else archive_cooldown); stale=bool(version<current)
             due=stale or (float(row["next_retry_at"] or 0)<=now and (float(row["last_discovery_at"] or 0)<=0 or float(row["last_discovery_at"] or 0)<=now-cooldown))
-            if not has_good and due:
+            if not has_green_or_gold and due:
+                summary["workDue"]+=1
+                if quality_upgrade: summary["qualityUpgradeDue"]+=1
+            if coverage_gap and due:
                 summary["due"]+=1
                 claimed=bool(str(row["claim_owner"] or "") and float(row["claim_expires_at"] or 0)>now)
                 if claimed: summary["claimed"]+=1
                 else: summary["availableDue"]+=1
-        # v4.1.4 operator-console aliases keep the explicit catalog semantics.
-        # "noMedia" was ambiguous because UNINDEXED events can already have Blue
-        # or Purple media; expose the actual union under an honest name instead.
         summary.update({
             "unindexedOrEmpty":summary["unindexed"]+summary["searchedEmpty"],"recentGaps":summary["recent"],
-            "gaps":summary["total"],"due_now":summary["due"],"available_due":summary["availableDue"],"claimed":summary["claimed"],"recent_gaps":summary["recent"],"recent_no_media":summary["recentNoMedia"],
-            "blue_only":summary["blueOnly"],"purple_only":summary["purpleOnly"],"stale_version":summary["staleVersion"],
-            "searched_empty":summary["searchedEmpty"],"coverage_complete":summary["coverageComplete"],"candidate_only":summary["candidateOnly"],
-            "unindexed_or_empty":summary["unindexed"]+summary["searchedEmpty"],
+            "gaps":summary["total"],"due_now":summary["due"],"available_due":summary["availableDue"],
+            "work_gaps":summary["workTotal"],"work_due":summary["workDue"],"quality_upgrade_due":summary["qualityUpgradeDue"],
+            "recent_gaps":summary["recent"],"recent_no_media":summary["recentNoMedia"],"blue_only":summary["blueOnly"],"purple_only":summary["purpleOnly"],
+            "stale_version":summary["staleVersion"],"searched_empty":summary["searchedEmpty"],"coverage_complete":summary["coverageComplete"],
+            "playable_partial":summary["playablePartial"],"candidate_only":summary["candidateOnly"],"no_media":summary["unindexed"]+summary["searchedEmpty"],
         })
         return summary
 
@@ -981,16 +1071,22 @@ class HistoryRepository:
     @staticmethod
     def _audit_effective_status(discovery_state, discovery, *, best_tier="", verified_count=0, current_discovery_version=0, quality_target="gold"):
         discovery=discovery if isinstance(discovery,dict) else {}; raw=str(discovery_state or "UNKNOWN").upper(); version=int(discovery.get("discoveryVersion") or 0); current=int(current_discovery_version or 0)
-        current_ok=not current or version>=current; best=str(best_tier or "").lower(); quality_complete=bool(best==str(quality_target or "gold").lower() or (current_ok and discovery.get("qualityComplete") is True))
+        current_ok=not current or version>=current; best=str(best_tier or "").lower(); priority={"gold":4,"green":3,"extended":2,"blue":1,"":0}
+        quality_complete=bool(best==str(quality_target or "gold").lower() or (current_ok and discovery.get("qualityComplete") is True))
+        # Coverage completeness is intentionally less strict than editorial quality:
+        # a verified Purple/extended package already satisfies the core watch-the-game
+        # intent even though Green/Gold remain desirable optional upgrades.
+        coverage_complete=bool(priority.get(best,0)>=priority["extended"] or (current_ok and discovery.get("coverageComplete") is True and priority.get(best,0)>=priority["extended"]))
         catalog_complete=bool(current_ok and discovery.get("catalogComplete") is True); pending=bool(not current_ok or raw in {"","UNKNOWN"}); upgrade=bool((best and not quality_complete) or (current_ok and discovery.get("upgradeEligible") is True))
         if quality_complete: effective="QUALITY_COMPLETE"
+        elif coverage_complete: effective="COVERAGE_COMPLETE"
         elif pending: effective="UNINDEXED"
-        elif verified_count: effective="COVERAGE_COMPLETE" if catalog_complete and not upgrade else ("UPGRADE_PENDING" if upgrade else "PARTIAL")
+        elif verified_count: effective="PARTIAL"
         elif raw=="SEARCHED_EMPTY": effective="SEARCHED_EMPTY"
         elif raw=="DEGRADED_PROVIDER": effective="PROVIDER_DEGRADED"
         elif raw=="CANDIDATE_ONLY": effective="CANDIDATE_ONLY"
         else: effective="UNINDEXED"
-        return {"effectiveStatus":effective,"discoveryState":raw,"discoveryVersion":version,"currentDiscoveryVersion":current,"versionCurrent":current_ok,"discoveryPending":pending,"catalogComplete":catalog_complete,"qualityComplete":quality_complete,"upgradeEligible":upgrade}
+        return {"effectiveStatus":effective,"discoveryState":raw,"discoveryVersion":version,"currentDiscoveryVersion":current,"versionCurrent":current_ok,"discoveryPending":pending,"catalogComplete":catalog_complete,"coverageComplete":coverage_complete,"qualityComplete":quality_complete,"upgradeEligible":upgrade}
 
     def audit_catalog(self, *, date_from="", date_to="", league="", best_tier="", status="", search="", limit=100, offset=0, current_discovery_version=0, quality_target="gold"):
         league=str(league or "").upper(); search=str(search or "").lower(); status=str(status or "").lower(); best_tier=str(best_tier or "").lower(); limit=max(1,min(500,int(limit or 100))); offset=max(0,int(offset or 0))
@@ -1048,10 +1144,13 @@ class HistoryRepository:
             cov=summary["greenCoverageByLeague"].setdefault(erow["league"],{"games":0,"greenGames":0,"greenOrGoldGames":0}); cov["games"]+=1
             if any(a.get("verified") for a in tiers["green"]): summary["greenCoverageGames"]+=1; cov["greenGames"]+=1
             if any(a.get("verified") for a in tiers["green"]+tiers["gold"]): cov["greenOrGoldGames"]+=1
-            catalog_coverage=("UNINDEXED" if projected["discoveryPending"] else ("SEARCHED_EMPTY" if eff=="SEARCHED_EMPTY" else ("CANDIDATE_ONLY" if eff=="CANDIDATE_ONLY" else ("PLAYABLE_COMPLETE" if verified and projected["catalogComplete"] else ("PLAYABLE_PARTIAL" if verified else "PROVIDER_DEGRADED")))))
-            quality_gap=("QUALITY_COMPLETE" if projected["qualityComplete"] else ("UPGRADE_PENDING" if verified else "NO_PLAYABLE_MEDIA"))
+            catalog_coverage=("COVERAGE_COMPLETE" if projected.get("coverageComplete") else ("UNINDEXED" if projected["discoveryPending"] else ("SEARCHED_EMPTY" if eff=="SEARCHED_EMPTY" else ("CANDIDATE_ONLY" if eff=="CANDIDATE_ONLY" else ("PLAYABLE_PARTIAL" if verified else "PROVIDER_DEGRADED")))))
+            if projected["qualityComplete"]: quality_gap="QUALITY_COMPLETE"
+            elif projected.get("coverageComplete"): quality_gap="OPTIONAL_QUALITY_UPGRADE"
+            elif verified: quality_gap="REQUIRED_COVERAGE_UPGRADE"
+            else: quality_gap="NO_PLAYABLE_MEDIA"
             rows.append({"date":erow["event_date"],"league":erow["league"],"eventId":erow["event_id"],"canonicalEventKey":erow["canonical_event_key"],"away":away,"home":home,"game":game,
-              "discoveryState":projected["discoveryState"],"effectiveStatus":eff,"catalogCoverageStatus":catalog_coverage,"qualityGapStatus":quality_gap,"bestTier":best or "none","qualityComplete":projected["qualityComplete"],"upgradeEligible":projected["upgradeEligible"],"catalogComplete":projected["catalogComplete"],
+              "discoveryState":projected["discoveryState"],"effectiveStatus":eff,"catalogCoverageStatus":catalog_coverage,"qualityGapStatus":quality_gap,"bestTier":best or "none","coverageComplete":projected.get("coverageComplete",False),"qualityComplete":projected["qualityComplete"],"upgradeEligible":projected["upgradeEligible"],"catalogComplete":projected["catalogComplete"],
               "discoveryPending":projected["discoveryPending"],"discoveryVersion":projected["discoveryVersion"],"currentDiscoveryVersion":projected["currentDiscoveryVersion"],"versionCurrent":projected["versionCurrent"],
               "nextRetryAt":float(erow["next_retry_at"] or 0),"lastDiscoveryAt":float(erow["last_discovery_at"] or 0),"lastError":str(erow["last_error"] or ""),"tiers":tiers,"verifiedAssetCount":len(verified),"assetCount":len(event_assets)})
         total=len(rows); return {"summary":summary,"rows":rows[offset:offset+limit],"total":total,"limit":limit,"offset":offset}
@@ -1064,7 +1163,7 @@ class HistoryRepository:
             games.extend(chunk); off+=len(chunk)
         out=[]
         for game in games:
-            common={"Best Tier":"purple" if game["bestTier"]=="extended" else game["bestTier"],"Audit Status":game["effectiveStatus"].replace("_"," "),"Catalog Coverage Status":game.get("catalogCoverageStatus") or "","Quality Gap Status":game.get("qualityGapStatus") or "","Discovery Pending":game["discoveryPending"],"Upgrade Pending":game["upgradeEligible"],"Catalog Complete":game["catalogComplete"],"Quality Complete":game["qualityComplete"],"Discovery Version":game["discoveryVersion"],"Current Discovery Version":game["currentDiscoveryVersion"],"Discovery State":game["discoveryState"]}
+            common={"Best Tier":"purple" if game["bestTier"]=="extended" else game["bestTier"],"Audit Status":game["effectiveStatus"].replace("_"," "),"Catalog Coverage Status":game.get("catalogCoverageStatus") or "","Coverage Complete":game.get("coverageComplete",False),"Quality Gap Status":game.get("qualityGapStatus") or "","Discovery Pending":game["discoveryPending"],"Upgrade Pending":game["upgradeEligible"],"Catalog Complete":game["catalogComplete"],"Quality Complete":game["qualityComplete"],"Discovery Version":game["discoveryVersion"],"Current Discovery Version":game["currentDiscoveryVersion"],"Discovery State":game["discoveryState"]}
             emitted=False
             for tier in ("gold","green","extended","blue"):
                 for asset in game["tiers"][tier]:
@@ -1147,8 +1246,9 @@ class HistoryRepository:
               JOIN collection_stats cs ON cs.collection_key=c.collection_key
               JOIN asset_stats ast ON ast.asset_key=cm.asset_key"""
         source_date="substr(COALESCE(json_extract(s.asset_json,'$.date'),''),1,10)"
+        resolved_period="COALESCE(json_extract(s.asset_json,'$.collectionPeriodKey'),'')"
         source_league="upper(COALESCE(json_extract(s.asset_json,'$.league'),''))"
-        period_mismatch=f"(c.scope='DAY_LEAGUE' AND {source_date}<>'' AND {source_date}<>c.period_key)"
+        period_mismatch=f"({resolved_period}<>'' AND {resolved_period}<>c.period_key)"
         league_mismatch=f"({source_league}<>'' AND {source_league}<>c.league)"
         suspicious=f"(cs.collection_asset_count>{large_threshold} OR ast.asset_link_count>1 OR ast.asset_period_count>1 OR ast.asset_scope_count>1 OR s.scope='GAME' OR cm.association_confidence<0.80 OR {period_mismatch} OR {league_mismatch} OR s.runtime_state='FAILED')"
         flag_map={
@@ -1165,14 +1265,19 @@ class HistoryRepository:
         }
         if flag in flag_map: clauses.append(flag_map[flag])
         where=(" WHERE "+" AND ".join(clauses)) if clauses else ""
-        select="""SELECT c.collection_key,c.scope,c.league,c.period_key,c.collection_kind,c.title AS collection_title,
+        select=f"""SELECT c.collection_key,c.scope,c.league,c.period_key,c.collection_kind,c.title AS collection_title,
               cm.association_confidence,cm.association_method,cm.association_evidence,
               cm.classifier_version AS collection_classifier_version,cm.rank_hint,
               s.asset_key,s.title,s.provider,s.canonical_url,s.duration_seconds,s.published_at,
               s.validation_state,s.runtime_state,s.scope AS media_scope,s.intent,s.scope_confidence,s.scope_reason,
               s.intent_confidence,s.intent_reason,s.catalog_state,s.quarantine_reason,s.asset_json,
               cs.collection_asset_count,ast.asset_link_count,ast.asset_period_count,ast.asset_scope_count,
-              """+source_date+" AS source_date,"+source_league+" AS source_league"
+              {source_date} AS source_date,{resolved_period} AS resolved_period,{source_league} AS source_league,
+              COALESCE(json_extract(s.asset_json,'$.sourceAuthority'),'') AS source_authority,
+              COALESCE(json_extract(s.asset_json,'$.sourceAuthorityReason'),'') AS source_authority_reason,
+              COALESCE(json_extract(s.asset_json,'$.collectionSeasonId'),'') AS collection_season_id,
+              COALESCE(json_extract(s.asset_json,'$.collectionSeasonWeek'),0) AS collection_season_week"""
+
         with self._lock, closing(self._connect()) as conn:
             total=int(conn.execute(stats_cte+" SELECT COUNT(*)"+base+where,params).fetchone()[0] or 0)
             rows=conn.execute(stats_cte+" "+select+base+where+" ORDER BY c.period_key DESC,c.league,c.collection_kind,cm.rank_hint DESC,s.duration_seconds DESC LIMIT ? OFFSET ?",params+[limit,offset]).fetchall()
@@ -1194,7 +1299,7 @@ class HistoryRepository:
             if int(row["asset_scope_count"] or 0)>1: flags.append("CROSS_SCOPE_DUPLICATE")
             if str(row["media_scope"] or "").upper()=="GAME": flags.append("GAME_SCOPE_ASSET")
             if float(row["association_confidence"] or 0)<0.80: flags.append("LOW_CONFIDENCE")
-            if str(row["scope"] or "")=="DAY_LEAGUE" and str(row["source_date"] or "") and str(row["source_date"] or "")!=str(row["period_key"] or ""): flags.append("PERIOD_DATE_MISMATCH")
+            if str(row["resolved_period"] or "") and str(row["resolved_period"] or "")!=str(row["period_key"] or ""): flags.append("PERIOD_DATE_MISMATCH")
             if str(row["source_league"] or "") and str(row["source_league"] or "")!=str(row["league"] or ""): flags.append("LEAGUE_MISMATCH")
             if str(row["runtime_state"] or "").upper()=="FAILED": flags.append("RUNTIME_FAILED")
             return flags
@@ -1211,7 +1316,9 @@ class HistoryRepository:
                 "associationConfidence":float(row["association_confidence"] or 0),"associationMethod":row["association_method"],"associationEvidence":row["association_evidence"],
                 "classifierVersion":int(row["collection_classifier_version"] or 0),"rank":int(row["rank_hint"] or 0),
                 "assetLinkCount":int(row["asset_link_count"] or 0),"assetPeriodCount":int(row["asset_period_count"] or 0),"assetScopeCount":int(row["asset_scope_count"] or 0),
-                "sourceDate":row["source_date"] or "","sourceLeague":row["source_league"] or "","flags":row_flags(row),
+                "sourceDate":row["source_date"] or "","resolvedPeriod":row["resolved_period"] or "","sourceLeague":row["source_league"] or "",
+                "sourceAuthority":row["source_authority"] or "","sourceAuthorityReason":row["source_authority_reason"] or "",
+                "seasonId":row["collection_season_id"] or "","seasonWeek":int(row["collection_season_week"] or 0),"flags":row_flags(row),
             })
         sr=summary_row
         summary={

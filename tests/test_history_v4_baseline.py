@@ -36,7 +36,8 @@ class HistoryV4BaselineTests(unittest.TestCase):
             db=Path(td)/"history.sqlite3"; repo=HistoryRepository(db)
             event={"scoreEventId":"401810516","awayTeam":{"name":"Los Angeles Lakers"},"homeTeam":{"name":"Chicago Bulls"},"completed":True}
             repo.put_scores("2026-01-26","NBA",[event])
-            nightly={"youtubeId":"nightly12345","title":"NBA's Nightly Recap | January 26, 2026","durationSeconds":1253,"verifiedPlayable":True,"provider":"YOUTUBE"}
+            nightly={"youtubeId":"nightly12345","title":"NBA's Nightly Recap | January 26, 2026","durationSeconds":1253,"verifiedPlayable":True,"provider":"YOUTUBE",
+                     "channelId":"UCWJ2lWNubArHWmf3FIHbfcQ","publishedAt":"2026-01-26T23:30:00Z"}
             self.assertEqual(repo.put_event_media("2026-01-26","NBA","401810516",[nightly]),0)
             self.assertEqual(repo.put_collection_media("DAY_LEAGUE","NBA","2026-01-26",[nightly],collection_kind="DAILY_RECAP"),1)
             integrity=repo.catalog_integrity(); self.assertEqual(integrity["silverGameLeaks"],0); self.assertEqual(integrity["collectionGameLeaks"],0)
@@ -305,11 +306,51 @@ class HistoryV4BaselineTests(unittest.TestCase):
     def test_v410_silver_summary_exposes_daily_and_weekly_inventory(self):
         with tempfile.TemporaryDirectory() as td:
             repo=HistoryRepository(Path(td)/"history.sqlite3")
-            repo.put_collection_media("DAY_LEAGUE","NBA","2026-08-20",[{"youtubeId":"daily1234567","title":"NBA Nightly Recap August 20 2026","verifiedPlayable":True}],collection_kind="DAILY_RECAP")
-            repo.put_collection_media("WEEK_LEAGUE","NFL","2026-W34",[{"youtubeId":"weekly123456","title":"NFL Week 34 Recap 2026","verifiedPlayable":True}],collection_kind="WEEKLY_RECAP")
+            repo.put_collection_media("DAY_LEAGUE","NBA","2026-08-20",[{"youtubeId":"daily1234567","title":"NBA Nightly Recap August 20 2026","verifiedPlayable":True,"provider":"YOUTUBE",
+                "channelId":"UCWJ2lWNubArHWmf3FIHbfcQ","publishedAt":"2026-08-20T23:00:00Z"}],collection_kind="DAILY_RECAP")
+            repo.put_collection_media("WEEK_LEAGUE","NFL","2026-W34",[{"youtubeId":"weekly123456","title":"Every Touchdown from Week 18 | 2025 NFL Season","verifiedPlayable":True,"provider":"YOUTUBE",
+                "channelId":"UCDVYQ4Zhbm3S2dlz7P1GBDg","publishedAt":"2026-01-03T23:00:00Z"}],collection_kind="WEEKLY_RECAP")
             summary=repo.silver_summary()
             self.assertEqual(summary["dayCollections"],1); self.assertEqual(summary["weekCollections"],1)
             self.assertEqual(summary["dayAssets"],1); self.assertEqual(summary["weekAssets"],1); self.assertEqual(summary["totalAssets"],2)
+
+
+    def test_purple_is_coverage_complete_but_remains_quality_upgrade_eligible(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"scoreEventId":"soccer-purple","awayTeam":{"name":"Away FC"},"homeTeam":{"name":"Home FC"},"completed":True}
+            repo.put_scores("2026-04-18","EPL",[event])
+            purple={"youtubeId":"purple12345","title":"Away FC vs Home FC Extended Highlights","durationSeconds":780,"verifiedPlayable":True,"recapTier":"extended","provider":"YOUTUBE"}
+            self.assertEqual(repo.put_event_media("2026-04-18","EPL","soccer-purple",[purple]),1)
+            repo.set_event_discovery("2026-04-18","EPL","soccer-purple","VERIFIED",{"discoveryVersion":13,"coverageComplete":True,"upgradeEligible":True},retry_at=0)
+            summary=repo.green_gap_summary(current_discovery_version=13,now=time.time()+90000,recent_cooldown=1,archive_cooldown=1,recent_cutoff="2026-08-01")
+            self.assertEqual(summary["gaps"],0)
+            self.assertEqual(summary["coverageComplete"],1)
+            self.assertEqual(summary["purpleOnly"],1)
+            self.assertEqual(summary["qualityUpgradeDue"],1)
+            audit=repo.audit_catalog(league="EPL",current_discovery_version=13)["rows"][0]
+            self.assertEqual(audit["catalogCoverageStatus"],"COVERAGE_COMPLETE")
+            self.assertTrue(audit["coverageComplete"]); self.assertTrue(audit["upgradeEligible"])
+            self.assertEqual(audit["qualityGapStatus"],"OPTIONAL_QUALITY_UPGRADE")
+            # Green-gap scheduling itself is intentionally unchanged: Purple can still
+            # be revisited later for a preferred Green/Gold upgrade.
+            due=repo.green_gap_events(current_discovery_version=13,now=time.time()+90000,recent_cooldown=1,archive_cooldown=1,recent_cutoff="2026-08-01")
+            self.assertEqual(len(due),1); self.assertEqual(due[0]["bestTier"],"extended")
+
+    def test_blue_remains_incomplete_coverage(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/"history.sqlite3")
+            event={"scoreEventId":"blue-only","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"},"completed":True}
+            repo.put_scores("2026-04-18","NBA",[event])
+            blue={"youtubeId":"blue123456","title":"Away vs Home Game Highlights","durationSeconds":80,"verifiedPlayable":True,"recapTier":"blue","provider":"YOUTUBE"}
+            repo.put_event_media("2026-04-18","NBA","blue-only",[blue])
+            repo.set_event_discovery("2026-04-18","NBA","blue-only","VERIFIED",{"discoveryVersion":13},retry_at=0)
+            summary=repo.green_gap_summary(current_discovery_version=13,now=time.time()+90000,recent_cooldown=1,archive_cooldown=1,recent_cutoff="2026-08-01")
+            self.assertEqual(summary["gaps"],1); self.assertEqual(summary["blueOnly"],1); self.assertEqual(summary["coverageComplete"],0)
+            audit=repo.audit_catalog(league="NBA",current_discovery_version=13)["rows"][0]
+            self.assertEqual(audit["catalogCoverageStatus"],"PLAYABLE_PARTIAL")
+            self.assertEqual(audit["qualityGapStatus"],"REQUIRED_COVERAGE_UPGRADE")
+
 
 
 class EventAssociationV402Tests(unittest.TestCase):
@@ -358,7 +399,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
             repo.put_scores("2026-08-22","MLS",[event])
-            # Simulate a pre-v4.1.4 assigned row by directly inserting source/link.
+            # Simulate a pre-v4.1.5 assigned row by directly inserting source/link.
             wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
             repo.put_source_media([wrong],league="MLS",date="2026-08-22")
             import sqlite3 as _sqlite3, time as _time, json as _json

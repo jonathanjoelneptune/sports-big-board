@@ -1,4 +1,4 @@
-/* Sports Big Board v4.1.4 — canonical sport/event/media domain model.
+/* Sports Big Board v4.1.5 — canonical sport/event/media domain model.
    Provider adapters normalize into SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT.
    Legacy fields remain accepted while v2.6.x migrates the existing application onto these contracts. */
 (() => {
@@ -185,7 +185,7 @@
   function playable(item){ return !!(item && item.verifiedPlayable && (item.youtubeId||item.mediaUrl)); }
 
   window.SBB_CORE=Object.freeze({
-    version:'4.1.4', TYPES, SPORTS, COMPETITIONS, competition, enabledCompetitions,
+    version:'4.1.5', TYPES, SPORTS, COMPETITIONS, competition, enabledCompetitions,
     participant, event, media, mediaAsset, mediaPackage, moment, statSection, gameCenter, editorialPackage, playable
   });
 })();

@@ -1,12 +1,18 @@
-# Sports Big Board v4.1.4
+# Sports Big Board v4.1.5
 
-> v4.1.4 adds a dedicated **Silver Roundups** audit surface beside GAME media so daily/weekly recap collections can be inspected, filtered, flagged, and exported without affecting game-tier truth.
+> v4.1.5 tightens **Silver Roundups** into an official/trusted league-wide programming layer and separates **coverage completeness** from optional Green/Gold quality improvement.
 
-## v4.1.4 — Silver Roundups audit
+## v4.1.5 — strict Silver classifier + Purple coverage completeness
 
-Open **Settings → Historical Database → Open Database Audit → Silver Roundups** to inspect `DAY_LEAGUE` and `WEEK_LEAGUE` media independently from Gold/Green/Purple/Blue game media. The view exposes collection period, scope, league, collection kind/size, asset title/link/provider/duration, validation/runtime state, media scope/intent, association confidence/method/evidence, and source date/league. It also flags oversized collections, assets reused across periods/scopes, GAME-scope leaks, low-confidence collection links, date/league mismatches, and runtime failures.
+Silver promotion is now fail-closed. A source asset becomes `DAY_LEAGUE` or `WEEK_LEAGUE` Silver only when its title proves league-wide roundup semantics **and** its publisher is a verified league source or trusted major broadcaster. Verified league YouTube channel IDs rank above broadcaster fallbacks. Team/club publishers, self-described “official” channels, player packages, single-game clips, interviews, features, historical lists, series packages, and season retrospectives remain in `SOURCE_MEDIA` but do not become Silver. `SEASON_LEAGUE` is retained as source taxonomy only and is excluded from the Silver Roundups surface.
 
-The Silver tab has dedicated filters for scope, league, kind, integrity flag, period, and text search. Its summary shows collections, asset links, unique assets, daily/weekly counts, suspicious links, and the largest collection. CSV/XLSX export follows the active audit tab, so Silver can be exported separately from game media. The audit is read-only and does not alter collection membership or game playback truth.
+Daily Silver identity is derived from the content period rather than the crawler encounter date. Explicit title dates win, including compact official formats such as `8/21`; publication chronology is the fallback. One daily asset therefore resolves to one canonical day instead of being smeared across overlapping backfill windows. Weekly identity is **league season + season week**, not calendar/ISO week: `The TOP Plays of Week 24 | 2025-26 NBA Season` becomes `WEEK_LEAGUE:NBA:2025-26:W24:TOP_PLAYS`, while `Every Touchdown from Week 18 | 2025 NFL Season` becomes `WEEK_LEAGUE:NFL:2025:W18:WEEKLY_RECAP`. Player-specific `Week N` videos are not weekly Silver.
+
+On the first v4.1.5 startup, `collection_association_repair_version=5` rebuilds **only Silver collection relationships** from the preserved source-media reservoir. Old duplicated/day-smeared links and old calendar-week keys are discarded, high-confidence assets are re-promoted under the strict classifier, and rejected items remain available in `SOURCE_MEDIA`. Event associations, Discovery v13 progress, verification/runtime history, the Aug. 1, 2025 historical-seed state, and the discovery-attempt ledger are untouched.
+
+Game coverage completeness is also now independent from editorial quality. A verified **Gold, Green, or Purple/extended** game package counts as `COVERAGE_COMPLETE`; **Blue or None** remains a coverage gap. Purple still remains eligible for an optional Green/Gold quality upgrade, and the Green-gap worker selection/propagation rules are unchanged. This lets sports such as soccer correctly count a legitimate 10–15 minute official Purple package as a complete watchable game record without pretending it is the preferred final tier.
+
+The Silver audit/export now exposes source authority, canonical resolved period, season ID/week, and classifier evidence so official-vs-broadcast fallback and repaired collection identity can be audited directly.
 
 ## v4.1.2 — fixed historical seed floor
 
@@ -14,9 +20,9 @@ v4.1.2 changes chronological history ingestion from a rolling day-count job into
 
 Seed completion is based on persisted score/media inventory, not on eventually reaching Gold/Green quality for every game. The three Green-gap workers remain responsible for quality improvement of already-seeded events. Once every date in the seed range has score/media inventory, the backend persists `historical_seed_complete=1`, records the exact floor and completion time, and the chronological worker transitions to `complete:historical-seed`. It stays alive only for health/heartbeat reporting and never walks earlier than the seed floor or restarts the seed after a reboot. If the configured floor is intentionally changed later, the completion marker no longer matches and the seed worker resumes only for the newly requested range.
 
-## v4.1.4 reindex scheduling correction
+## v4.0.1 reindex scheduling correction
 
-v4.1.4 fixes the post-reconstruction state boundary exposed by the first production v4 catalog. Catalog import/rebuild bookkeeping is no longer recorded as a provider discovery attempt. Rebuilt events begin with `last_discovery_at = 0` and `next_retry_at = 0`, stale discovery generations bypass cooldown immediately, and the server performs a narrow idempotent startup repair for v4.0.0 rows marked `PENDING_CURRENT_DISCOVERY`. Current-generation attempts still obey the normal recent/archive cooldowns. No database rebuild is required for the v4.0.0 → v4.1.4 update.
+v4.1.5 fixes the post-reconstruction state boundary exposed by the first production v4 catalog. Catalog import/rebuild bookkeeping is no longer recorded as a provider discovery attempt. Rebuilt events begin with `last_discovery_at = 0` and `next_retry_at = 0`, stale discovery generations bypass cooldown immediately, and the server performs a narrow idempotent startup repair for v4.0.0 rows marked `PENDING_CURRENT_DISCOVERY`. Current-generation attempts still obey the normal recent/archive cooldowns. No database rebuild is required for the v4.0.0 → v4.1.5 update.
 
 The operator queue also drops the ambiguous legacy `noMedia`/`no_media` aliases. `UNINDEXED` remains distinct from `SEARCHED EMPTY`, while the combined diagnostic is exposed explicitly as `unindexedOrEmpty`.
 
@@ -75,7 +81,7 @@ The selected mode is stored on the persistent cloud data disk, so page refreshes
 
 v3.0.9 also added a **recent-slate safeguard**. The Green-gap queue gives completed games from the newest three calendar days with no verified recap a cursory pass before spending long stretches deep in the archive. After that safeguard, the normal Blue-only → no-media → Purple-only archive priority continues. The console reports `recent gaps` and `recent no-media` separately so current coverage cannot be hidden by a large December backlog.
 
-Those resource controls, worker heartbeat/watchdog, copy issues/full console controls, version mismatch protection, and recent-slate scheduling remain intact in v4.1.4. Historical discovery advances to `HISTORY_DISCOVERY_VERSION = 13` for the scope/association migration described above.
+Those resource controls, worker heartbeat/watchdog, copy issues/full console controls, version mismatch protection, and recent-slate scheduling remain intact in v4.1.5. Historical discovery advances to `HISTORY_DISCOVERY_VERSION = 13` for the scope/association migration described above.
 
 ## Cloud Stage 1
 
@@ -87,7 +93,7 @@ After the one-time `cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh` setup, a release is j
 
 ## v3.0.1 historical playback foundation
 
-v3.0.1 established the server-owned historical event/media catalog used by v4.1.4:
+v3.0.1 established the server-owned historical event/media catalog used by v4.1.5:
 
 `selected date → canonical score events → event catalog → validated media assets → playback plan → PlaybackController → runtime feedback`
 
@@ -101,7 +107,7 @@ v4 replaces the old event-centric media table with `history_source_media` plus e
 4. Public YouTube/search-engine discovery as candidate metadata only until positively validated.
 5. League/team-specific free lanes where available, including the NFL feed.
 
-The chronological date-backfill worker intentionally does not spend the scarce YouTube `search.list` bucket. In v4.1.4, a bounded three-worker Green-gap pool runs in SEARCH mode (one worker in BALANCED). Every worker must atomically lease a canonical Event ID before discovery, while provider-specific semaphores and same-day single-flight locks prevent concurrency from multiplying API pressure. YouTube Search remains globally serialized and quota-brokered.
+The chronological date-backfill worker intentionally does not spend the scarce YouTube `search.list` bucket. In v4.1.5, a bounded three-worker Green-gap pool runs in SEARCH mode (one worker in BALANCED). Every worker must atomically lease a canonical Event ID before discovery, while provider-specific semaphores and same-day single-flight locks prevent concurrency from multiplying API pressure. YouTube Search remains globally serialized and quota-brokered.
 
 ## v2.7.0 provider-independent media + Game Center architecture
 
@@ -144,7 +150,7 @@ This release addresses the root architecture behind the fragile non-MLB score fe
 
 Sports Big Board is a local, personalized sports television system: live scores and game state feed a direct-tune ribbon, official highlights and recaps feed the player, Game Center adds the live/final statistical context, and Around the League provides unattended programming.
 
-v4.1.4 builds on the stabilized score inventory and Game Center work by adding arbitrary historical date context without coupling ribbon browsing to playback.
+v4.1.5 builds on the stabilized score inventory and Game Center work by adding arbitrary historical date context without coupling ribbon browsing to playback.
 
 ## Launch experience
 
@@ -152,7 +158,7 @@ A fresh page load now opens on a full-screen **Sports Big Board** splash instead
 
 ## Legacy Today / Yesterday score authority
 
-NFL, NBA and NHL score inventory retains its ESPN fallback whenever Highlightly is empty. In v4.1.4 the league filter no longer changes the date automatically: the viewer-selected calendar date remains authoritative. ESPN historical lookups keep trying alternate transports when a non-empty endpoint response contains only the wrong calendar day, preventing a weekly/current board from masking the requested date.
+NFL, NBA and NHL score inventory retains its ESPN fallback whenever Highlightly is empty. In v4.1.5 the league filter no longer changes the date automatically: the viewer-selected calendar date remains authoritative. ESPN historical lookups keep trying alternate transports when a non-empty endpoint response contains only the wrong calendar day, preventing a weekly/current board from masking the requested date.
 
 ## NFL recap discovery
 
@@ -250,7 +256,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.4/sports-big-board-v4.1.4
+cd ~/storage/downloads/sports-big-board-v4.1.5/sports-big-board-v4.1.5
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```
@@ -284,7 +290,7 @@ bash VERIFY.sh
 
 Node is optional. When Node is unavailable, the permanent Python suite still verifies the browser architecture/UI boundaries and all server contracts.
 
-The v4.1.4 regression suite covers, among other things:
+The v4.1.5 regression suite covers, among other things:
 
 - authoritative score-card playback and epoch ownership
 - HOT/WARM media prewarming separation

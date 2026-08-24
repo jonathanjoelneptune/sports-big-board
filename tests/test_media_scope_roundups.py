@@ -15,7 +15,8 @@ from sbb.youtube_gateway import YouTubeRateLimited
 
 class MediaScopeRoundupTests(unittest.TestCase):
     def test_scope_separates_nightly_roundup_from_game_highlights(self):
-        nightly=annotate({"title":"NBA's Nightly Recap | January 28, 2026","durationSeconds":1538,"provider":"YOUTUBE"},
+        nightly=annotate({"title":"NBA's Nightly Recap | January 28, 2026","durationSeconds":1538,"provider":"YOUTUBE",
+                          "channelId":"UCWJ2lWNubArHWmf3FIHbfcQ","publishedAt":"2026-01-28T08:00:00Z"},
                          league="NBA",date="2026-01-26",away="Los Angeles Lakers",home="Chicago Bulls")
         game=annotate({"title":"LAKERS at BULLS | FULL GAME HIGHLIGHTS | January 26, 2026","durationSeconds":995,"provider":"YOUTUBE"},
                       league="NBA",date="2026-01-26",away="Los Angeles Lakers",home="Chicago Bulls")
@@ -33,7 +34,8 @@ class MediaScopeRoundupTests(unittest.TestCase):
         rows=[
             {"id":"wrong","youtubeId":"wrong-video","title":"LAFC vs. Portland Timbers | Full Match Highlights","durationSeconds":624,"verifiedPlayable":True},
             {"id":"right","youtubeId":"right-video","title":"FC Cincinnati vs. Seattle Sounders FC | Full Match Highlights","durationSeconds":632,"verifiedPlayable":True},
-            {"id":"roundup","youtubeId":"roundup-video","title":"MLS Daily Recap | August 23, 2026","durationSeconds":1200,"verifiedPlayable":True},
+            {"id":"roundup","youtubeId":"roundup-video","title":"MLS Daily Recap | August 23, 2026","durationSeconds":1200,"verifiedPlayable":True,
+             "provider":"YOUTUBE","channelId":"UCSZbXT5TLLW_i-5W8FZpFsg","publishedAt":"2026-08-23T23:00:00Z"},
         ]
         with tempfile.TemporaryDirectory() as td:
             repo=HistoryRepository(Path(td)/"history.sqlite3")
@@ -57,7 +59,8 @@ class MediaScopeRoundupTests(unittest.TestCase):
             conn.execute("INSERT INTO history_day VALUES(?,?,?,?,?,?,?,?)",("2026-08-23","MLS",json.dumps([event]),"[]","{}",now,now,now))
             conn.execute("INSERT INTO history_event VALUES(?,?,?,?,?,?,?,?,?,?,?)",("2026-08-23","MLS","761743",json.dumps(event),"VERIFIED","{}",now,now,0,"",now))
             legacy=[
-                ("yt:daily",{"id":"daily","youtubeId":"daily","matchId":"761743","scoreEventId":"761743","title":"MLS Daily Recap | August 23, 2026","durationSeconds":1200,"verifiedPlayable":True,"recapTier":"green"}),
+                ("yt:daily",{"id":"daily","youtubeId":"daily","matchId":"761743","scoreEventId":"761743","title":"MLS Daily Recap | August 23, 2026","durationSeconds":1200,"verifiedPlayable":True,"recapTier":"green",
+                             "provider":"YOUTUBE","channelId":"UCSZbXT5TLLW_i-5W8FZpFsg","publishedAt":"2026-08-23T23:00:00Z"}),
                 ("yt:wrong",{"id":"wrong","youtubeId":"wrong","matchId":"761743","scoreEventId":"761743","title":"LAFC vs Portland Timbers | Full Match Highlights","durationSeconds":624,"verifiedPlayable":True,"recapTier":"extended"}),
                 ("yt:right",{"id":"right","youtubeId":"right","matchId":"761743","scoreEventId":"761743","title":"FC Cincinnati vs Seattle Sounders FC | Full Match Highlights","durationSeconds":632,"verifiedPlayable":True,"recapTier":"extended"}),
             ]
@@ -72,6 +75,29 @@ class MediaScopeRoundupTests(unittest.TestCase):
             conn=sqlite3.connect(output)
             state=conn.execute("SELECT catalog_state FROM history_source_media WHERE asset_key='yt:wrong'").fetchone()[0]
             conn.close(); self.assertEqual(state,"QUARANTINED")
+
+    def test_weekly_silver_uses_league_season_week_not_calendar_week(self):
+        nba=annotate({"youtubeId":"week24","title":"The TOP Plays of Week 24 | 2025-26 NBA Season","provider":"YOUTUBE",
+                      "channelId":"UCWJ2lWNubArHWmf3FIHbfcQ","publishedAt":"2026-04-03T12:00:00Z"},league="NBA",date="2026-04-03")
+        nfl=annotate({"youtubeId":"week18","title":"Every Touchdown from Week 18 | 2025 NFL Season","provider":"YOUTUBE",
+                      "channelId":"UCDVYQ4Zhbm3S2dlz7P1GBDg","publishedAt":"2026-01-03T12:00:00Z"},league="NFL",date="2026-01-03")
+        self.assertEqual(nba.get("collectionPeriodKey"),"2025-26:W24")
+        self.assertEqual(nba.get("collectionSeasonId"),"2025-26"); self.assertEqual(nba.get("collectionSeasonWeek"),24)
+        self.assertEqual(nfl.get("collectionPeriodKey"),"2025:W18")
+
+    def test_player_week_clip_and_unproven_channel_do_not_become_silver(self):
+        player=annotate({"youtubeId":"player","title":"Stetson Bennett's best plays from 2-TD game vs. Saints | Preseason Week 2",
+                         "provider":"YOUTUBE","channelId":"UCDVYQ4Zhbm3S2dlz7P1GBDg","publishedAt":"2026-08-21T12:00:00Z"},league="NFL",date="2026-08-23")
+        unofficial=annotate({"youtubeId":"fake","title":"NBA's Nightly Recap | August 23, 2026","provider":"YOUTUBE",
+                             "channelId":"small-town-shop","channelName":"Small Town Hoops Official","publishedAt":"2026-08-23T23:00:00Z"},league="NBA",date="2026-08-23")
+        self.assertNotEqual(player.get("collectionTier"),"silver")
+        self.assertNotEqual(unofficial.get("collectionTier"),"silver")
+        self.assertEqual(unofficial.get("sourceAuthority"),"UNKNOWN")
+
+    def test_daily_period_comes_from_content_not_backfill_encounter_date(self):
+        item=annotate({"youtubeId":"allgames","title":"Highlights from ALL GAMES on 8/21","provider":"YOUTUBE",
+                       "channelId":"UCoLrcjPV5PbUrUyXq5mjc_A","publishedAt":"2026-08-22T05:00:00Z"},league="MLB",date="2026-08-23")
+        self.assertEqual(item.get("collectionPeriodKey"),"2026-08-21")
 
     def test_existing_green_candidate_promotes_before_new_discovery(self):
         row={"id":"mlb-score-id","espnEventId":"mlb-score-id","completed":True,

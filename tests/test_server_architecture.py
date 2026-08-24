@@ -872,7 +872,7 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(data["summary"]["tiers"]["green"],1)
             self.assertEqual(data["summary"]["upgradePendingGames"],1)
 
-    def test_history_audit_projects_unknown_with_known_green_as_pending_index_and_upgradeable(self):
+    def test_history_audit_projects_unknown_with_known_green_as_coverage_complete_and_upgradeable(self):
         with tempfile.TemporaryDirectory() as td:
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"scoreEventId":"evt-stale-green","awayTeam":{"name":"Away"},"homeTeam":{"name":"Home"},"completed":True}
@@ -883,11 +883,13 @@ class ArchitectureTests(unittest.TestCase):
             data=repo.audit_catalog(date_from="2025-12-25",date_to="2025-12-25",current_discovery_version=9)
             row=data["rows"][0]
             self.assertEqual(row["discoveryState"],"UNKNOWN")
-            self.assertEqual(row["effectiveStatus"],"UNINDEXED")
+            self.assertEqual(row["effectiveStatus"],"COVERAGE_COMPLETE")
+            self.assertEqual(row["catalogCoverageStatus"],"COVERAGE_COMPLETE")
+            self.assertTrue(row["coverageComplete"])
             self.assertTrue(row["discoveryPending"])
             self.assertTrue(row["upgradeEligible"])
             self.assertEqual(row["bestTier"],"green")
-            self.assertEqual(data["summary"]["effectiveStatuses"]["UNINDEXED"],1)
+            self.assertEqual(data["summary"]["effectiveStatuses"]["COVERAGE_COMPLETE"],1)
             self.assertEqual(data["summary"]["upgradePendingGames"],1)
 
     def test_history_audit_projects_unknown_without_media_as_pending_index_not_false_complete(self):

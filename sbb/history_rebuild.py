@@ -138,7 +138,8 @@ class HistoryCatalogRebuilder:
         source_type=str(item.get("sourceType") or "").lower(); authoritative=source_type in _AUTHORITATIVE_TYPES
         # Strip v3 classification so v4 reruns from source evidence.
         for key in ("mediaScope","mediaScopeConfidence","mediaScopeReason","mediaClassifierVersion","mediaIntent","mediaIntentConfidence","mediaIntentReason",
-                    "collectionTier","displayTier","collectionKind","collectionPeriodKey"):
+                    "collectionTier","displayTier","collectionKind","collectionPeriodKey","collectionPromotionApproved","collectionPromotionReason",
+                    "collectionSeasonId","collectionSeasonWeek","sourceAuthority","sourceAuthorityConfidence","sourceAuthorityReason"):
             item.pop(key,None)
         # Generic official-channel rows may contain a wrong event stamp introduced
         # by v3 association-before-proof. Never trust it during reconstruction.
@@ -195,8 +196,17 @@ class HistoryCatalogRebuilder:
 
         if explicit_collection:
             scope,period,kind=explicit_collection
-            classified=annotate_media_scope(item,league=league,date=date); classified["mediaScope"]=scope; classified["mediaScopeReason"]="LEGACY_COLLECTION_MEMBERSHIP"; classified["mediaScopeConfidence"]=1.0
-            self.repo.put_collection_media(scope,league,period,[classified],collection_kind=kind); self.report["silverAssets"]+=1
+            classified=annotate_media_scope(item,league=league,date=date)
+            accepted=self.repo.put_collection_media(scope,league,period,[classified],collection_kind=kind)
+            if accepted:
+                self.report["silverAssets"]+=1
+            else:
+                # Legacy collection membership is evidence to reconsider, not proof.
+                # Keep the source asset and an explicit review trail when strict Silver
+                # v5 rejects it so rebuild accounting remains complete.
+                self.repo.put_source_media([classified],league=league,date=date,catalog_state=UNASSIGNED)
+                self._review_unmatched(asset_key,league,date,"","SILVER_PROMOTION_REJECTED",
+                    {"legacyCollection":{"scope":scope,"period":period,"kind":kind},"title":classified.get("title")},state=UNASSIGNED)
             self._preserve_state(asset_key,legacy_state or {})
             return
 
@@ -204,7 +214,13 @@ class HistoryCatalogRebuilder:
         scope=str(classified.get("mediaScope") or "OTHER")
         if scope in COLLECTION_SCOPES:
             period=str(classified.get("collectionPeriodKey") or date); kind=str(classified.get("collectionKind") or "ROUNDUP")
-            self.repo.put_collection_media(scope,league,period,[classified],collection_kind=kind); self.report["silverAssets"]+=1
+            accepted=self.repo.put_collection_media(scope,league,period,[classified],collection_kind=kind)
+            if accepted:
+                self.report["silverAssets"]+=1
+            else:
+                self.repo.put_source_media([classified],league=league,date=date,catalog_state=UNASSIGNED)
+                self._review_unmatched(asset_key,league,date,"","SILVER_PROMOTION_REJECTED",
+                    {"scope":scope,"period":period,"kind":kind,"title":classified.get("title")},state=UNASSIGNED)
             self._preserve_state(asset_key,legacy_state or {})
             return
 
