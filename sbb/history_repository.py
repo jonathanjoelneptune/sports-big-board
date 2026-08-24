@@ -450,7 +450,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.2 migration cooldowns already persisted in production.
+        """Release artificial v4.1.3 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -908,7 +908,7 @@ class HistoryRepository:
                 claimed=bool(str(row["claim_owner"] or "") and float(row["claim_expires_at"] or 0)>now)
                 if claimed: summary["claimed"]+=1
                 else: summary["availableDue"]+=1
-        # v4.1.2 operator-console aliases keep the explicit catalog semantics.
+        # v4.1.3 operator-console aliases keep the explicit catalog semantics.
         # "noMedia" was ambiguous because UNINDEXED events can already have Blue
         # or Purple media; expose the actual union under an honest name instead.
         summary.update({
@@ -1110,21 +1110,119 @@ class HistoryRepository:
                 "acceptedCount":int(row["accepted_count"] or 0),"bestBefore":row["best_before"],"bestAfter":row["best_after"],"quotaCost":float(row["quota_cost"] or 0),"failureReason":row["failure_reason"],"details":self._load_obj(row["details_json"])})
         return {"rows":out,"total":total,"limit":limit,"offset":offset}
 
-    def collection_audit(self, *, scope="", league="", period_key="", limit=200, offset=0):
-        scope=str(scope or "").upper(); league=str(league or "").upper(); period_key=str(period_key or ""); limit=max(1,min(1000,int(limit or 200))); offset=max(0,int(offset or 0))
+    def collection_audit(self, *, scope="", league="", period_key="", collection_kind="", flag="", search="", limit=200, offset=0):
+        """Read-only Silver collection audit with collection and asset integrity flags.
+
+        Silver is intentionally audited independently from GAME media.  A collection
+        link can therefore be suspicious without ever affecting an event tier or
+        playback plan.  The query is SQL-paged so the operator UI can safely inspect
+        thousands of roundup assets while the background workers continue running.
+        """
+        scope=str(scope or "").upper(); league=str(league or "").upper(); period_key=str(period_key or "")[:32]
+        collection_kind=str(collection_kind or "").upper(); flag=str(flag or "").upper(); search=str(search or "").strip()[:160]
+        limit=max(1,min(1000,int(limit or 200))); offset=max(0,int(offset or 0)); large_threshold=20
         clauses=[]; params=[]
         if scope: clauses.append("c.scope=?"); params.append(scope)
         if league: clauses.append("c.league=?"); params.append(league)
-        if period_key: clauses.append("c.period_key=?"); params.append(period_key)
+        if period_key: clauses.append("c.period_key LIKE ?"); params.append(f"%{period_key}%")
+        if collection_kind: clauses.append("c.collection_kind=?"); params.append(collection_kind)
+        if search:
+            token=f"%{search}%"
+            clauses.append("(s.title LIKE ? OR s.provider LIKE ? OR s.canonical_url LIKE ? OR s.asset_key LIKE ? OR c.period_key LIKE ? OR c.collection_kind LIKE ?)")
+            params.extend([token]*6)
+
+        stats_cte="""WITH collection_stats AS (
+              SELECT collection_key,COUNT(*) AS collection_asset_count
+              FROM history_collection_media GROUP BY collection_key
+            ), asset_stats AS (
+              SELECT cm2.asset_key,COUNT(*) AS asset_link_count,
+                     COUNT(DISTINCT c2.scope||':'||c2.league||':'||c2.period_key) AS asset_period_count,
+                     COUNT(DISTINCT c2.scope) AS asset_scope_count
+              FROM history_collection_media cm2 JOIN history_collection c2 ON c2.collection_key=cm2.collection_key
+              GROUP BY cm2.asset_key
+            )"""
+        base=""" FROM history_collection c
+              JOIN history_collection_media cm ON cm.collection_key=c.collection_key
+              JOIN history_source_media s ON s.asset_key=cm.asset_key
+              JOIN collection_stats cs ON cs.collection_key=c.collection_key
+              JOIN asset_stats ast ON ast.asset_key=cm.asset_key"""
+        source_date="substr(COALESCE(json_extract(s.asset_json,'$.date'),''),1,10)"
+        source_league="upper(COALESCE(json_extract(s.asset_json,'$.league'),''))"
+        period_mismatch=f"(c.scope='DAY_LEAGUE' AND {source_date}<>'' AND {source_date}<>c.period_key)"
+        league_mismatch=f"({source_league}<>'' AND {source_league}<>c.league)"
+        suspicious=f"(cs.collection_asset_count>{large_threshold} OR ast.asset_link_count>1 OR ast.asset_period_count>1 OR ast.asset_scope_count>1 OR s.scope='GAME' OR cm.association_confidence<0.80 OR {period_mismatch} OR {league_mismatch} OR s.runtime_state='FAILED')"
+        flag_map={
+            'SUSPICIOUS':suspicious,
+            'LARGE_COLLECTION':f"cs.collection_asset_count>{large_threshold}",
+            'MULTI_COLLECTION_ASSET':"ast.asset_link_count>1",
+            'DUPLICATE_ACROSS_PERIODS':"ast.asset_period_count>1",
+            'CROSS_SCOPE_DUPLICATE':"ast.asset_scope_count>1",
+            'GAME_SCOPE_ASSET':"s.scope='GAME'",
+            'LOW_CONFIDENCE':"cm.association_confidence<0.80",
+            'PERIOD_DATE_MISMATCH':period_mismatch,
+            'LEAGUE_MISMATCH':league_mismatch,
+            'RUNTIME_FAILED':"s.runtime_state='FAILED'",
+        }
+        if flag in flag_map: clauses.append(flag_map[flag])
         where=(" WHERE "+" AND ".join(clauses)) if clauses else ""
-        base=" FROM history_collection c JOIN history_collection_media cm ON cm.collection_key=c.collection_key JOIN history_source_media s ON s.asset_key=cm.asset_key"
+        select="""SELECT c.collection_key,c.scope,c.league,c.period_key,c.collection_kind,c.title AS collection_title,
+              cm.association_confidence,cm.association_method,cm.association_evidence,
+              cm.classifier_version AS collection_classifier_version,cm.rank_hint,
+              s.asset_key,s.title,s.provider,s.canonical_url,s.duration_seconds,s.published_at,
+              s.validation_state,s.runtime_state,s.scope AS media_scope,s.intent,s.scope_confidence,s.scope_reason,
+              s.intent_confidence,s.intent_reason,s.catalog_state,s.quarantine_reason,s.asset_json,
+              cs.collection_asset_count,ast.asset_link_count,ast.asset_period_count,ast.asset_scope_count,
+              """+source_date+" AS source_date,"+source_league+" AS source_league"
         with self._lock, closing(self._connect()) as conn:
-            total=int(conn.execute("SELECT COUNT(*)"+base+where,params).fetchone()[0] or 0)
-            rows=conn.execute("SELECT c.*,cm.association_confidence,cm.association_method,cm.association_evidence,cm.classifier_version AS collection_classifier_version,cm.rank_hint,s.asset_key,s.title,s.provider,s.canonical_url,s.duration_seconds,s.validation_state,s.runtime_state,s.scope AS media_scope,s.intent"+base+where+" ORDER BY c.period_key DESC,c.league,cm.rank_hint DESC,s.duration_seconds DESC LIMIT ? OFFSET ?",params+[limit,offset]).fetchall()
+            total=int(conn.execute(stats_cte+" SELECT COUNT(*)"+base+where,params).fetchone()[0] or 0)
+            rows=conn.execute(stats_cte+" "+select+base+where+" ORDER BY c.period_key DESC,c.league,c.collection_kind,cm.rank_hint DESC,s.duration_seconds DESC LIMIT ? OFFSET ?",params+[limit,offset]).fetchall()
+            summary_row=conn.execute(stats_cte+" SELECT COUNT(*) AS links,COUNT(DISTINCT c.collection_key) AS collections,COUNT(DISTINCT s.asset_key) AS unique_assets,"
+                "COUNT(DISTINCT CASE WHEN c.scope='DAY_LEAGUE' THEN c.collection_key END) AS day_collections,COUNT(CASE WHEN c.scope='DAY_LEAGUE' THEN 1 END) AS day_links,"
+                "COUNT(DISTINCT CASE WHEN c.scope='WEEK_LEAGUE' THEN c.collection_key END) AS week_collections,COUNT(CASE WHEN c.scope='WEEK_LEAGUE' THEN 1 END) AS week_links,"
+                f"COUNT(CASE WHEN {suspicious} THEN 1 END) AS suspicious_links,COUNT(DISTINCT CASE WHEN cs.collection_asset_count>{large_threshold} THEN c.collection_key END) AS large_collections,"
+                "COUNT(DISTINCT CASE WHEN ast.asset_link_count>1 THEN s.asset_key END) AS multi_collection_assets,COUNT(DISTINCT CASE WHEN ast.asset_period_count>1 THEN s.asset_key END) AS duplicate_assets,"
+                "COUNT(CASE WHEN s.scope='GAME' THEN 1 END) AS game_scope_links,COUNT(CASE WHEN cm.association_confidence<0.80 THEN 1 END) AS low_confidence_links,"
+                f"COUNT(CASE WHEN {period_mismatch} THEN 1 END) AS period_mismatch_links,COUNT(CASE WHEN {league_mismatch} THEN 1 END) AS league_mismatch_links,"
+                "MAX(cs.collection_asset_count) AS max_collection_assets"+base+where,params).fetchone()
+            kinds=[r[0] for r in conn.execute("SELECT DISTINCT collection_kind FROM history_collection ORDER BY collection_kind").fetchall() if r[0]]
+
+        def row_flags(row):
+            flags=[]
+            if int(row["collection_asset_count"] or 0)>large_threshold: flags.append("LARGE_COLLECTION")
+            if int(row["asset_link_count"] or 0)>1: flags.append("MULTI_COLLECTION_ASSET")
+            if int(row["asset_period_count"] or 0)>1: flags.append("DUPLICATE_ACROSS_PERIODS")
+            if int(row["asset_scope_count"] or 0)>1: flags.append("CROSS_SCOPE_DUPLICATE")
+            if str(row["media_scope"] or "").upper()=="GAME": flags.append("GAME_SCOPE_ASSET")
+            if float(row["association_confidence"] or 0)<0.80: flags.append("LOW_CONFIDENCE")
+            if str(row["scope"] or "")=="DAY_LEAGUE" and str(row["source_date"] or "") and str(row["source_date"] or "")!=str(row["period_key"] or ""): flags.append("PERIOD_DATE_MISMATCH")
+            if str(row["source_league"] or "") and str(row["source_league"] or "")!=str(row["league"] or ""): flags.append("LEAGUE_MISMATCH")
+            if str(row["runtime_state"] or "").upper()=="FAILED": flags.append("RUNTIME_FAILED")
+            return flags
+
         out=[]
         for row in rows:
-            out.append({"collectionKey":row["collection_key"],"scope":row["scope"],"league":row["league"],"periodKey":row["period_key"],"collectionKind":row["collection_kind"],"assetKey":row["asset_key"],"title":row["title"],"provider":row["provider"],"url":row["canonical_url"],"durationSeconds":float(row["duration_seconds"] or 0),"mediaScope":row["media_scope"],"intent":row["intent"],"validation":row["validation_state"],"runtime":row["runtime_state"],"associationConfidence":float(row["association_confidence"] or 0),"associationMethod":row["association_method"],"associationEvidence":row["association_evidence"],"classifierVersion":int(row["collection_classifier_version"] or 0),"rank":int(row["rank_hint"] or 0)})
-        return {"rows":out,"total":total,"limit":limit,"offset":offset}
+            out.append({
+                "collectionKey":row["collection_key"],"scope":row["scope"],"league":row["league"],"periodKey":row["period_key"],
+                "collectionKind":row["collection_kind"],"collectionTitle":row["collection_title"],"collectionAssetCount":int(row["collection_asset_count"] or 0),
+                "assetKey":row["asset_key"],"title":row["title"],"provider":row["provider"],"url":row["canonical_url"],
+                "durationSeconds":float(row["duration_seconds"] or 0),"publishedAt":row["published_at"],"mediaScope":row["media_scope"],"intent":row["intent"],
+                "scopeConfidence":float(row["scope_confidence"] or 0),"scopeReason":row["scope_reason"],"intentConfidence":float(row["intent_confidence"] or 0),"intentReason":row["intent_reason"],
+                "validation":row["validation_state"],"runtime":row["runtime_state"],"catalogState":row["catalog_state"],"quarantineReason":row["quarantine_reason"],
+                "associationConfidence":float(row["association_confidence"] or 0),"associationMethod":row["association_method"],"associationEvidence":row["association_evidence"],
+                "classifierVersion":int(row["collection_classifier_version"] or 0),"rank":int(row["rank_hint"] or 0),
+                "assetLinkCount":int(row["asset_link_count"] or 0),"assetPeriodCount":int(row["asset_period_count"] or 0),"assetScopeCount":int(row["asset_scope_count"] or 0),
+                "sourceDate":row["source_date"] or "","sourceLeague":row["source_league"] or "","flags":row_flags(row),
+            })
+        sr=summary_row
+        summary={
+            "links":int(sr["links"] or 0),"collections":int(sr["collections"] or 0),"uniqueAssets":int(sr["unique_assets"] or 0),
+            "dayCollections":int(sr["day_collections"] or 0),"dayAssets":int(sr["day_links"] or 0),"weekCollections":int(sr["week_collections"] or 0),"weekAssets":int(sr["week_links"] or 0),
+            "suspiciousLinks":int(sr["suspicious_links"] or 0),"largeCollections":int(sr["large_collections"] or 0),"multiCollectionAssets":int(sr["multi_collection_assets"] or 0),"duplicateAssets":int(sr["duplicate_assets"] or 0),
+            "gameScopeLinks":int(sr["game_scope_links"] or 0),"lowConfidenceLinks":int(sr["low_confidence_links"] or 0),
+            "periodMismatchLinks":int(sr["period_mismatch_links"] or 0),"leagueMismatchLinks":int(sr["league_mismatch_links"] or 0),
+            "maxCollectionAssets":int(sr["max_collection_assets"] or 0),"largeCollectionThreshold":large_threshold,
+        }
+        return {"rows":out,"total":total,"limit":limit,"offset":offset,"summary":summary,"facets":{"collectionKinds":kinds}}
 
     def catalog_integrity(self):
         with self._lock, closing(self._connect()) as conn:

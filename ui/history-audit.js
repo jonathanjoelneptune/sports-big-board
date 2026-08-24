@@ -1,8 +1,8 @@
-/* Sports Big Board v4.1.2 historical database audit view. */
+/* Sports Big Board v4.1.3 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.1.2';
-  const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
+  const FRONTEND_VERSION='4.1.3';
+  const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,tab:'games',silverOffset:0,silverLimit:100,silverTotal:0,silverLoading:false,lastSilverPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
     if(!s)return '—';
@@ -20,6 +20,70 @@
     if(includePaging){p.set('limit',String(state.limit));p.set('offset',String(state.offset));}
     return p;
   }
+  function silverQueryParams(includePaging=true){
+    const p=new URLSearchParams();
+    const values={scope:$('historySilverScope')?.value||'',league:$('historySilverLeague')?.value||'',kind:$('historySilverKind')?.value||'',flag:$('historySilverFlag')?.value||'',period:$('historySilverPeriod')?.value||'',q:$('historySilverSearch')?.value||''};
+    for(const [k,v] of Object.entries(values))if(v)p.set(k,v);
+    if(includePaging){p.set('limit',String(state.silverLimit));p.set('offset',String(state.silverOffset));}
+    return p;
+  }
+  function scopeLabel(scope){return String(scope||'').toUpperCase()==='WEEK_LEAGUE'?'WEEKLY':(String(scope||'').toUpperCase()==='DAY_LEAGUE'?'DAILY':String(scope||'—'));}
+  function flagLabel(flag){return String(flag||'').replaceAll('_',' ');}
+  function renderSilverSummary(summary={}){
+    const map={historySilverCollections:summary.collections||0,historySilverLinks:summary.links||0,historySilverUniqueAssets:summary.uniqueAssets||0,historySilverDaily:summary.dayCollections||0,historySilverWeekly:summary.weekCollections||0,historySilverSuspicious:summary.suspiciousLinks||0,historySilverLargest:summary.maxCollectionAssets||0};
+    for(const [id,val] of Object.entries(map)){const el=$(id);if(el)el.textContent=Number(val).toLocaleString();}
+    const text=$('historySilverSummaryText');
+    if(text)text.textContent=`Silver collection integrity: ${Number(summary.largeCollections||0).toLocaleString()} collections over ${Number(summary.largeCollectionThreshold||20)} assets • ${Number(summary.multiCollectionAssets||0).toLocaleString()} assets reused across collections • ${Number(summary.duplicateAssets||0).toLocaleString()} assets linked across multiple periods • ${Number(summary.gameScopeLinks||0).toLocaleString()} GAME-scope leaks • ${Number(summary.lowConfidenceLinks||0).toLocaleString()} low-confidence links • ${Number(summary.periodMismatchLinks||0).toLocaleString()} date mismatches • ${Number(summary.leagueMismatchLinks||0).toLocaleString()} league mismatches`;
+  }
+  function renderSilverRows(payload){
+    const body=$('historySilverTableBody');if(!body)return;const rows=payload.rows||[];
+    if(!rows.length){body.innerHTML='<tr><td colspan="11" class="audit-no-results">No Silver assets match these filters.</td></tr>';return;}
+    body.innerHTML=rows.map(row=>{
+      const flags=row.flags||[]; const conf=Math.round(Number(row.associationConfidence||0)*100); const dur=fmtDur(row.durationSeconds);
+      const asset=`${row.url?`<a class="silver-asset-link" href="${esc(row.url)}" target="_blank" rel="noopener"><strong>${esc(row.title||'Media')}</strong></a>`:`<strong>${esc(row.title||'Media')}</strong>`}<small>${esc(row.assetKey||'')}</small>`;
+      const sourceBits=[];if(row.sourceDate)sourceBits.push(row.sourceDate);if(row.sourceLeague)sourceBits.push(row.sourceLeague);
+      const flagHtml=flags.length?flags.map(f=>`<span class="silver-flag ${f==='GAME_SCOPE_ASSET'||f.includes('MISMATCH')?'danger':''}">${esc(flagLabel(f))}</span>`).join(''):'<span class="silver-flag clean">CLEAN</span>';
+      return `<tr class="${flags.length?'silver-row-flagged':''}">
+        <td class="audit-date"><strong>${esc(row.periodKey||'—')}</strong><small>${esc(sourceBits.length?'source '+sourceBits.join(' / '):'')}</small></td>
+        <td><span class="silver-scope">${esc(scopeLabel(row.scope))}</span></td>
+        <td><span class="audit-league">${esc(row.league||'—')}</span></td>
+        <td class="silver-collection"><strong>${esc(String(row.collectionKind||'ROUNDUP').replaceAll('_',' '))}</strong><small>${Number(row.collectionAssetCount||0).toLocaleString()} assets • ${esc(row.collectionKey||'')}</small></td>
+        <td class="silver-asset">${asset}</td>
+        <td><strong>${esc(row.provider||'—')}</strong></td>
+        <td>${esc(dur||'—')}</td>
+        <td class="silver-validation"><strong>${esc(row.validation||'CANDIDATE')}</strong><small>${esc(row.runtime||'UNKNOWN')}</small></td>
+        <td class="silver-scope-intent"><strong>${esc(row.mediaScope||'OTHER')}</strong><small>${esc(row.intent||'OTHER')} • scope ${Math.round(Number(row.scopeConfidence||0)*100)}%</small></td>
+        <td class="silver-association" title="${esc(row.associationEvidence||'')}"><strong>${conf}%</strong><small>${esc(row.associationMethod||'—')}</small></td>
+        <td class="silver-flags">${flagHtml}</td>
+      </tr>`;
+    }).join('');
+  }
+  function updateSilverPager(){
+    const from=state.silverTotal?state.silverOffset+1:0,to=Math.min(state.silverTotal,state.silverOffset+state.silverLimit);
+    const label=$('historySilverPageLabel');if(label)label.textContent=`${from.toLocaleString()}–${to.toLocaleString()} of ${state.silverTotal.toLocaleString()} asset links`;
+    const prev=$('historySilverPrev');if(prev)prev.disabled=state.silverOffset<=0;const next=$('historySilverNext');if(next)next.disabled=state.silverOffset+state.silverLimit>=state.silverTotal;
+  }
+  function setAuditTab(tab,{loadData=true}={}){
+    state.tab=tab==='silver'?'silver':'games';const silver=state.tab==='silver';
+    document.querySelectorAll('.history-game-only').forEach(el=>el.classList.toggle('history-audit-pane-hidden',silver));
+    document.querySelectorAll('.history-silver-only').forEach(el=>el.classList.toggle('history-audit-pane-hidden',!silver));
+    const gameBtn=$('historyAuditTabGames'),silverBtn=$('historyAuditTabSilver');
+    if(gameBtn){gameBtn.classList.toggle('active',!silver);gameBtn.setAttribute('aria-selected',String(!silver));}
+    if(silverBtn){silverBtn.classList.toggle('active',silver);silverBtn.setAttribute('aria-selected',String(silver));}
+    if(loadData){silver?loadSilver(true):load(true);}
+  }
+  async function loadSilver(reset=false){
+    if(state.silverLoading)return;if(reset)state.silverOffset=0;state.silverLoading=true;$('historySilverLoading')?.classList.remove('hidden');
+    try{
+      const r=await fetch(`/api/history/catalog/collections?${silverQueryParams(true).toString()}`,{cache:'no-store'});let data={};try{data=await r.json();}catch(_){data={};}
+      if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);
+      state.silverTotal=Number(data.total||0);state.lastSilverPayload=data;renderSilverSummary(data.summary||{});renderSilverRows(data);updateSilverPager();
+      const msg=$('historyAuditMessage');if(msg)msg.textContent=`SILVER ROUNDUPS • ${Number(data.summary?.collections||0).toLocaleString()} collections • ${Number(data.summary?.links||0).toLocaleString()} asset links • read-only collection audit`;
+    }catch(err){const body=$('historySilverTableBody');if(body)body.innerHTML=`<tr><td colspan="11" class="audit-no-results">Silver audit load failed: ${esc(err.message||err)}</td></tr>`;}
+    finally{state.silverLoading=false;$('historySilverLoading')?.classList.add('hidden');}
+  }
+  function loadCurrent(reset=false){return state.tab==='silver'?loadSilver(reset):load(reset);}
+
   function mediaCell(items,tier){
     items=(items||[]).slice().sort((a,b)=>(Number(b.verified)-Number(a.verified))||(Number(b.runtimeSuccessAt||0)-Number(a.runtimeSuccessAt||0))||(Number(b.verifiedAt||0)-Number(a.verifiedAt||0)));
     if(!items.length)return '<span class="audit-empty">—</span>';
@@ -274,7 +338,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.2 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.3 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);
@@ -302,28 +366,34 @@
       const body=$('historyAuditTableBody');if(body)body.innerHTML=`<tr><td colspan="9" class="audit-no-results">Audit load failed: ${esc(err.message||err)}</td></tr>`;
     }finally{state.loading=false;$('historyAuditLoading')?.classList.add('hidden');}
   }
-  function startAutoRefresh(){clearInterval(state.autoTimer);clearInterval(state.consoleTimer);state.autoTimer=setInterval(()=>{if(!$('historyAuditModal')?.classList.contains('hidden'))load(false);},30000);state.consoleTimer=setInterval(()=>{if(!$('historyAuditModal')?.classList.contains('hidden'))loadConsole();},2500);}
+  function startAutoRefresh(){clearInterval(state.autoTimer);clearInterval(state.consoleTimer);state.autoTimer=setInterval(()=>{if(!$('historyAuditModal')?.classList.contains('hidden'))loadCurrent(false);},30000);state.consoleTimer=setInterval(()=>{if(!$('historyAuditModal')?.classList.contains('hidden'))loadConsole();},2500);}
   function stopAutoRefresh(){clearInterval(state.autoTimer);clearInterval(state.consoleTimer);state.autoTimer=null;state.consoleTimer=null;}
   function open(){
-    const modal=$('historyAuditModal');if(!modal)return;modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false');document.body.classList.add('audit-open');load(true);loadConsole();startAutoRefresh();
+    const modal=$('historyAuditModal');if(!modal)return;modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false');document.body.classList.add('audit-open');setAuditTab(state.tab,{loadData:false});loadCurrent(true);loadConsole();startAutoRefresh();
   }
   function close(){const modal=$('historyAuditModal');if(!modal)return;modal.classList.add('hidden');modal.setAttribute('aria-hidden','true');document.body.classList.remove('audit-open');stopAutoRefresh();}
-  function exportFile(ext){const url=`/api/history/audit.${ext}?${queryParams(false).toString()}`;window.location.href=window.SBB_API?.url?window.SBB_API.url(url):url;}
+  function exportFile(ext){const silver=state.tab==='silver';const base=silver?`/api/history/catalog/collections.${ext}`:`/api/history/audit.${ext}`;const params=silver?silverQueryParams(false):queryParams(false);const url=`${base}?${params.toString()}`;window.location.href=window.SBB_API?.url?window.SBB_API.url(url):url;}
   let debounce=null;
   function queueLoad(){clearTimeout(debounce);debounce=setTimeout(()=>load(true),250);}
   function init(){
     $('openHistoryAuditBtn')?.addEventListener('click',open);$('historyAuditClose')?.addEventListener('click',close);$('historyAuditBackdrop')?.addEventListener('click',close);
-    $('historyAuditRefresh')?.addEventListener('click',()=>{load(false);loadConsole();});$('historyAuditCsv')?.addEventListener('click',()=>exportFile('csv'));$('historyAuditXlsx')?.addEventListener('click',()=>exportFile('xlsx'));
+    $('historyAuditRefresh')?.addEventListener('click',()=>{loadCurrent(false);loadConsole();});$('historyAuditCsv')?.addEventListener('click',()=>exportFile('csv'));$('historyAuditXlsx')?.addEventListener('click',()=>exportFile('xlsx'));
+    $('historyAuditTabGames')?.addEventListener('click',()=>setAuditTab('games'));$('historyAuditTabSilver')?.addEventListener('click',()=>setAuditTab('silver'));
     $('historySearchConsoleCopyIssues')?.addEventListener('click',()=>{if(state.lastConsole)copyConsoleText(consoleIssuesReport(state.lastConsole),'ISSUES COPIED');});
     $('historySearchConsoleCopyAll')?.addEventListener('click',()=>{if(state.lastConsole)copyConsoleText(consoleFullReport(state.lastConsole),'FULL CONSOLE COPIED');});
     $('historySearchConsoleDownload')?.addEventListener('click',downloadConsoleText);
     for(const id of ['historyModeSearch','historyModeBalanced','historyModePlayback'])$(id)?.addEventListener('click',ev=>setWorkMode(ev.currentTarget.dataset.mode));
     $('historyAuditPrev')?.addEventListener('click',()=>{state.offset=Math.max(0,state.offset-state.limit);load(false);});
     $('historyAuditNext')?.addEventListener('click',()=>{state.offset+=state.limit;load(false);});
+    $('historySilverPrev')?.addEventListener('click',()=>{state.silverOffset=Math.max(0,state.silverOffset-state.silverLimit);loadSilver(false);});
+    $('historySilverNext')?.addEventListener('click',()=>{state.silverOffset+=state.silverLimit;loadSilver(false);});
     ['historyAuditDateFrom','historyAuditDateTo','historyAuditLeague','historyAuditBestTier','historyAuditStatus'].forEach(id=>$(id)?.addEventListener('change',()=>load(true)));
     $('historyAuditSearch')?.addEventListener('input',queueLoad);
+    ['historySilverScope','historySilverLeague','historySilverKind','historySilverFlag'].forEach(id=>$(id)?.addEventListener('change',()=>loadSilver(true)));
+    let silverDebounce=null;const queueSilverLoad=()=>{clearTimeout(silverDebounce);silverDebounce=setTimeout(()=>loadSilver(true),250);};
+    $('historySilverPeriod')?.addEventListener('input',queueSilverLoad);$('historySilverSearch')?.addEventListener('input',queueSilverLoad);
     window.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!$('historyAuditModal')?.classList.contains('hidden'))close();});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-  window.SBB_HISTORY_AUDIT={open,refresh:()=>{load(false);loadConsole();},refreshConsole:loadConsole};
+  window.SBB_HISTORY_AUDIT={open,refresh:()=>{loadCurrent(false);loadConsole();},refreshConsole:loadConsole,setTab:setAuditTab};
 })();
