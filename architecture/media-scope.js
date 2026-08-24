@@ -1,4 +1,4 @@
-/* Sports Big Board v4.1.13 — media scope is independent from recap quality. */
+/* Sports Big Board v4.1.14 — media scope is independent from recap quality. */
 (() => {
   const SCOPE=Object.freeze({GAME:'GAME',DAY_LEAGUE:'DAY_LEAGUE',WEEK_LEAGUE:'WEEK_LEAGUE',ROUND_LEAGUE:'ROUND_LEAGUE',PLAYER:'PLAYER',SEASON_LEAGUE:'SEASON_LEAGUE',OTHER:'OTHER'});
   const COLLECTION=new Set([SCOPE.DAY_LEAGUE,SCOPE.WEEK_LEAGUE,SCOPE.ROUND_LEAGUE,SCOPE.SEASON_LEAGUE]);
@@ -32,7 +32,7 @@
     if(eventId&&item?.eventId!=null&&String(item.eventId)===String(eventId))return SCOPE.GAME;
     if(['scoreEventId','matchId','espnEventId','canonicalEventId'].some(k=>item?.[k]!=null&&String(item[k])!==''))return SCOPE.GAME;
     const st=String(item?.sourceType||'').toLowerCase(),src=String(item?.sourceLabel||item?.source||'').toLowerCase();
-    if(['espn-event-video','mlb-game-content','nfl-event-video','official-nfl-club-site','official-nfl-game-highlights','official-nfl-extended-highlights','official-nhl-game-recap','official-nhl-condensed-game','official-mls-match-snapshot','official-mls-match-highlights','official-premierleague-match-highlights','trusted-nbc-epl-extended','official-nfl-public-video','official-nfl-team-video'].includes(st))return SCOPE.GAME;
+    if(['espn-event-video','mlb-game-content','nfl-event-video','official-nfl-club-site','official-nfl-game-highlights','official-nfl-extended-highlights','official-nhl-game-recap','official-nhl-condensed-game','official-mls-match-snapshot','official-mls-match-highlights','official-premierleague-match-highlights','trusted-nbc-epl-extended','official-nfl-public-video','official-nfl-team-video','official-nfl-youtube-playlist'].includes(st))return SCOPE.GAME;
     if(item?.gamePk&&src.includes('mlb'))return SCOPE.GAME;
     if(away&&home&&mentions(ttl,away)&&mentions(ttl,home))return SCOPE.GAME;
     const ia=item?.away||item?.awayTeamName,ih=item?.home||item?.homeTeamName;if(away&&home&&ia&&ih&&mentions(ia,away)&&mentions(ih,home))return SCOPE.GAME;

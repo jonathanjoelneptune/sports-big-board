@@ -1,4 +1,4 @@
-"""Provider routing registry for v4.1.13.
+"""Provider routing registry for v4.1.14.
 
 SCORE_API retains the existing Highlightly adapter metadata. MEDIA_ADAPTERS is the
 new provider-independent capability registry consumed by architecture diagnostics
@@ -17,6 +17,9 @@ SPORT_API={
 MEDIA_ADAPTERS={
     "mlb-stats":{"kind":"official-api","transport":["DIRECT_VIDEO"],"competitions":["MLB"],"reliability":100},
     "espn":{"kind":"broadcaster-api","transport":["DIRECT_VIDEO"],"competitions":["MLB","NFL","NBA","NHL","EPL","MLS"],"reliability":94},
+    "nfl-youtube-playlist":{"kind":"official-youtube-playlist","transport":["YOUTUBE"],"competitions":["NFL"],"reliability":100},
+    "nfl-youtube-playlist-quick":{"kind":"official-youtube-playlist","transport":["YOUTUBE"],"competitions":["NFL"],"reliability":100},
+    "nfl-youtube-playlist-extended":{"kind":"official-youtube-playlist","transport":["YOUTUBE"],"competitions":["NFL"],"reliability":100},
     "nfl-public-video":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NFL"],"reliability":100},
     "nfl-team-video":{"kind":"official-team-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NFL"],"reliability":99},
     "nfl-public-video-quick":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NFL"],"reliability":100},

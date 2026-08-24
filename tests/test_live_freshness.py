@@ -317,7 +317,7 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
         quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
         long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}
-        # v4.1.13 adds official team-site packages as a second Extended lane.
+        # v4.1.14 adds official team-site packages as a second Extended lane.
         # Keep this legacy duration-window unit test deterministic by isolating
         # the public NFL/YouTube lane it was originally written to exercise.
         with patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
@@ -423,6 +423,18 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertEqual(len(rows),1)
         self.assertEqual(rows[0]['publishedAt'],'2025-09-08')
         self.assertEqual(rows[0]['url'],'https://www.buccaneers.com/video/full-game-highlights-falcons-bucs-win-score-23-20-week-1-2025')
+
+    def test_v414_nfl_official_playlist_extended_is_first_class_and_search_free(self):
+        playlist={'playlistId':'PLweek16','title':'Week 16 - 2025 Season','seasonYear':2025}
+        item={'id':'nfl-playlist-PLweek16-long','youtubeId':'long','league':'NFL','title':'Buffalo Bills vs. Cleveland Browns | 2025 Week 16 Game Highlights','description':'Official NFL game recap','durationSeconds':720,'duration':720,'source':'NFL','sourceLabel':'NFL','sourceType':'official-nfl-youtube-playlist','provider':'YOUTUBE','verifiedPlayable':True,'embedValidated':True,'validationState':'VERIFIED','externalUrl':'https://www.youtube.com/watch?v=long','officialChannelId':server.NFL_YOUTUBE_CHANNEL_ID,'officialPlaylistId':'PLweek16','officialPlaylistTitle':'Week 16 - 2025 Season','discoverySourceFamily':'nfl-youtube-playlist','overview':True,'programType':'recap'}
+        with patch.object(server,'_nfl_candidate_recap_playlists',return_value=[playlist]), patch.object(server,'_nfl_youtube_playlist_items',return_value=[item]):
+            rows=server._nfl_youtube_playlist_results('2025-12-21','Buffalo Bills','Cleveland Browns',objective='extended')
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['youtubeId'],'long')
+        self.assertEqual(rows[0]['mediaObjective'],'EXTENDED')
+        self.assertEqual(rows[0]['recapTier'],'extended')
+        self.assertEqual(rows[0]['discoverySourceFamily'],'nfl-youtube-playlist')
+
 
     def test_v412_public_team_full_game_highlights_can_be_extended_playable(self):
         entry={'url':'https://www.buccaneers.com/video/full-game-highlights-falcons-bucs-win-score-23-20-week-1-2025','title':'Bucs vs. Falcons Full Game Highlights','description':'Bucs vs. Falcons Full Game Highlights','publishedAt':'2025-09-08'}

@@ -1,19 +1,20 @@
-# Sports Big Board v4.1.13
+# Sports Big Board v4.1.14
 
-> v4.1.13 is the **rule-catch-up correctness + persistence observability** release. It keeps Discovery v15, Rule Catch-up v2, and the v4.1.12 public-source collectors, while fixing migration scheduling and making candidate loss between normalization and the persisted event catalog explicit.
+> v4.1.14 is the **NFL official-playlist acquisition + EPL diagnostics** release. It keeps the normalized catalog, Discovery v15, strict NFL/MLS/EPL worker affinity, and Silver Catch-up v2 while adding a quota-light official @NFL playlist lane that remains usable when YouTube Search is exhausted.
 
-## v4.1.13 — strict affinity + persistence tracing
+## v4.1.14 — official NFL recap playlists
 
-- **Strict NFL/MLS/EPL migration lanes:** while a league still has unresolved Rule Catch-up v2 objectives, worker 1 may claim only NFL, worker 2 only MLS, and worker 3 only EPL. A worker joins the shared queue only after its assigned league is complete. This prevents SQL candidate-window starvation from sending the EPL worker back into NFL work.
-- **Attempted vs. completed progress:** Rule Game Catch-up now reports `attempted` independently from `checked`. Recent games that were actually queried but remain retry-eligible no longer look untouched.
-- **NFL normalization → persistence trace:** per-source results now record raw candidates, normalized playable candidates, persisted accepted candidates, persistence losses, and a durable disposition/reason. `[MEDIA PIPELINE]` and `[NFL PERSISTENCE]` expose the gap directly.
-- **MLS candidate dispositions:** MLS Snapshot and Match Highlights candidates now report association/non-playable/objective rejection reasons just like NFL. `[MLS CANDIDATES]` shows why a raw official candidate did not become a persisted game asset.
-- **Cross-event collision split:** a broad asset encountered while already assigned to another event is now `MULTI_EVENT_CANDIDATE_ENCOUNTER`; the existing proven assignment is preserved. `CROSS_EVENT_ASSET_CONFLICT` is reserved for genuine strong provider-identity conflicts. The console reports active conflicts, harmless candidate encounters, and legacy quarantined cross-event rows separately.
-- **Association matcher v7:** relationship repair is re-run under the refined collision semantics. Source media and historical discovery state are preserved; no catalog rebuild is required.
-- **Silver unchanged:** Rule Collection Catch-up v2, BEST_GOALS/BEST_SAVES, idempotent collection telemetry, and existing Silver relationships are not reopened by this release.
-- **Versions:** Frontend/Backend v4.1.13, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 2`, media classifier v7, event matcher v7.
+- **Official NFL YouTube playlists are first-class GAME sources:** `playlists.list` enumerates recap playlists from the verified `@NFL` channel, `playlistItems.list` enumerates each selected playlist, and `videos.list` validates public/embeddable video metadata and duration. `search.list` is never part of this path.
+- **Season/week playlist indexing:** playlist titles are parsed for NFL season/year, regular-season week, preseason week, or postseason round. The event date selects a small set of likely playlists and each playlist is cached durably, so one weekly playlist can satisfy every game in that period without repeated API discovery.
+- **Historical anchors:** known official 2025 Week 15, Week 16, and Divisional Round recap playlists are retained as bootstrap IDs while automatic channel playlist enumeration remains authoritative.
+- **Quick + Extended objectives:** official playlist videos in the existing 2–6 minute Quick window become Green; public 8–20 minute packages become Purple/Extended. Both require exact two-team matchup evidence and verified YouTube playability.
+- **Source priority:** NFL official playlist Quick/Extended runs before public NFL.com and team-site fallbacks in both normal discovery and Rule Game Catch-up. Existing NFL+ entitlement gating and team-site fail-closed filtering remain unchanged.
+- **Independent YouTube health:** Search quota exhaustion no longer hides playlist health. The console reports `playlists`, `playlistItems`, and `videos` independently and adds `[NFL PLAYLISTS]` with Quick/Extended persistence counts.
+- **EPL candidate diagnostics:** Premier League and NBC raw candidates now receive the same explicit candidate dispositions used for NFL/MLS, with a new `[EPL CANDIDATES]` console line and persisted Quick/Extended counters. EPL source versions are reopened for this diagnostic pass.
+- **Migration boundary:** Rule Game Catch-up is v3; Silver Rule Collection Catch-up remains v2 and is not reopened. Discovery remains v15, so unrelated historical games are not globally reindexed.
+- **Versions:** Frontend/Backend v4.1.14, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 3`, `HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 2`, event matcher v7.
 
-Verification covers strict migration affinity, attempted-progress accounting, persistence-state tracing, MLS dispositions, multi-event candidate handling, browser contracts, cloud deployment, and the full historical regression suite.
+Verification covers playlist catalog enumeration, playlist item expansion, duration/objective classification, strict no-search behavior, independent YouTube operation health, EPL dispositions, strict migration affinity, persistence tracing, browser contracts, cloud deployment, and the full historical regression suite.
 
 ## v4.1.8 — official content-source adapters
 
@@ -283,7 +284,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.13/sports-big-board-v4.1.13
+cd ~/storage/downloads/sports-big-board-v4.1.14/sports-big-board-v4.1.14
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sports Big Board v4.1.13 local/cloud backend.
+"""Sports Big Board v4.1.14 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
@@ -41,7 +41,7 @@ from sbb.event_matcher import match_event as match_media_to_event
 from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
 from sbb.secrets import get_secret, set_secrets, status as secrets_status, migrate_legacy as migrate_legacy_secrets, SECRETS_FILE
 
-APP_VERSION = "4.1.13"
+APP_VERSION = "4.1.14"
 PORT = int(os.environ.get("PORT", "8080"))
 BIND_HOST = os.environ.get("SBB_BIND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -73,7 +73,7 @@ OPENAI_KEY_FILE = STATE_DIR / "openai-key"
 OPENAI_API_BASE = "https://api.openai.com/v1"
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
 YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
-YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.13", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
+YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.14", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
 
 def youtube_fetch_json(url, timeout=10):
     """Operation-aware YouTube broker.
@@ -87,6 +87,15 @@ def youtube_fetch_json(url, timeout=10):
 MLB_YOUTUBE_CHANNEL_ID = "UCoLrcjPV5PbUrUyXq5mjc_A"  # verified @MLB channel
 MLS_YOUTUBE_CHANNEL_ID = "UCSZbXT5TLLW_i-5W8FZpFsg"  # verified @MLS channel
 NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"  # verified @NFL channel
+# Official NFL recap playlists are a quota-light first-class source. The catalog is
+# discovered with playlists.list and each selected playlist is expanded with
+# playlistItems.list + videos.list; search.list is never required. Known historical
+# playlist IDs provide immediate anchors while automatic enumeration remains primary.
+NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS = {
+    "PLRdw3IjKY2gnK2f32zf7qlXGtHZlTZiyQ":"2025 Divisional Round Game Recaps",
+    "PLRdw3IjKY2gmO5mZRxR3YNII5qHYs_3RY":"Week 16 - 2025 Season",
+    "PLRdw3IjKY2gn04EX1BXBk8TgY82oOIWVl":"Week 15 Game Recaps - 2025",
+}
 NFL_GAME_HIGHLIGHTS_CHANNEL_URL = "https://www.nfl.com/videos/channel/game-highlights-vc"
 NFL_GAME_HIGHLIGHTS_RECENT_DAYS = max(3,int(os.environ.get("SBB_NFL_GAME_HIGHLIGHTS_RECENT_DAYS","21") or 21))
 NHL_GAME_RECAPS_URL = "https://www.nhl.com/video/topic/game-recaps/"
@@ -183,7 +192,7 @@ HISTORY_REPOSITORY = HistoryRepository(HISTORY_DB)
 # server never performs destructive/in-place history migration at startup.
 HISTORY_SCOPE_MIGRATION = {"baseline":"v4-normalized","catalogSchemaVersion":CATALOG_SCHEMA_VERSION}
 HISTORY_LEAGUES = ("MLB","NFL","NBA","NHL","EPL","MLS")
-# v4.1.13 turns chronological history ingestion into a one-time seed rather than a
+# v4.1.14 turns chronological history ingestion into a one-time seed rather than a
 # permanently rolling N-day job. The floor is intentionally fixed so Sports Big
 # Board builds one useful recent-era archive and then grows forward organically.
 HISTORY_BACKFILL_FLOOR_DATE = str(os.environ.get("SBB_HISTORY_BACKFILL_FLOOR_DATE","2025-08-01") or "2025-08-01").strip()[:10]
@@ -191,7 +200,7 @@ try:
     datetime.strptime(HISTORY_BACKFILL_FLOOR_DATE,"%Y-%m-%d")
 except Exception:
     HISTORY_BACKFILL_FLOOR_DATE = "2025-08-01"
-# Retained only for API/backward compatibility with older operators. v4.1.13 no
+# Retained only for API/backward compatibility with older operators. v4.1.14 no
 # longer uses a rolling day count to decide how far historical seed ingestion goes.
 HISTORY_BACKFILL_DAYS = max(0,int(os.environ.get("SBB_HISTORY_BACKFILL_DAYS","400")))
 HISTORY_BACKFILL_MEDIA = str(os.environ.get("SBB_HISTORY_BACKFILL_MEDIA","1")).lower() not in ("0","false","no","off")
@@ -206,7 +215,7 @@ HISTORY_DISCOVERY_VERSION = 15
 # from playability so finding a blue/green asset never prematurely ends indexing.
 HISTORY_TIER_PRIORITY = {"gold":4,"green":3,"extended":2,"blue":1}
 HISTORY_TIER_ORDER = ("gold","green","extended","blue")
-# v4.1.13 separates source exhaustion from media-quality satisfaction. A playable
+# v4.1.14 separates source exhaustion from media-quality satisfaction. A playable
 # Blue/Purple/Green asset is retained and remains instantly usable, but the event
 # stays upgrade-eligible until a Gold package is found. Retry cadence is deliberately
 # gentle for old dates so the always-on cloud catalog improves without hammering
@@ -217,11 +226,11 @@ HISTORY_QUALITY_TARGET_TIER = "gold"
 HISTORY_COVERAGE_COMPLETE_TIER = "extended"
 HISTORY_UPGRADE_RETRY_RECENT = {"blue":30*60,"extended":2*60*60,"green":12*60*60}
 HISTORY_UPGRADE_RETRY_ARCHIVE = {"blue":2*60*60,"extended":12*60*60,"green":3*24*60*60}
-# v4.1.13 adds a bounded Green-gap worker pool. Normal date backfill keeps walking
+# v4.1.14 adds a bounded Green-gap worker pool. Normal date backfill keeps walking
 # the archive while up to three leased event workers revisit Blue/Purple/None games.
 # Provider concurrency remains centrally bounded and same-day catalogs single-flight.
 HISTORY_GREEN_GAP_STATE = {"running":False,"lastRun":0.0,"lastDate":"","lastLeague":"","lastEventId":"","lastBestTier":"","lastResultTier":"","lastError":"","attempts":0,"upgradedToGreen":0,"candidatePromotions":0}
-# v4.1.13 bounded concurrency: SEARCH uses the full pool, BALANCED keeps one Green
+# v4.1.14 bounded concurrency: SEARCH uses the full pool, BALANCED keeps one Green
 # worker, PLAYBACK pauses all historical work. Claims are durable SQLite leases so
 # multiple threads/process restarts cannot work the same canonical Event ID.
 HISTORY_GREEN_WORKERS = max(1,min(6,int(os.environ.get("SBB_GREEN_WORKERS","3") or 3)))
@@ -235,31 +244,34 @@ HISTORY_GREEN_SEARCH_RESCUE_INTERVAL = max(5*60,int(os.environ.get("SBB_HISTORY_
 HISTORY_GREEN_SEARCH_RESCUE_STATE = {"lastAt":0.0}
 HISTORY_GREEN_SEARCH_RESCUE_LOCK = threading.RLock()
 
-# v4.1.13 rule catch-up. Source/objective versions are independent of the global
+# v4.1.14 rule catch-up. Source/objective versions are independent of the global
 # discovery generation so a media-policy change can explicitly re-open only the
 # affected league/objective from newest games back to the historical seed floor.
 # NFL, MLS and EPL are intentionally first in the map and queue priority because
-# v4.1.13 is the one-time migration onto their new Quick/Extended rules.
+# v4.1.14 is the one-time migration onto their new Quick/Extended rules.
 HISTORY_OFFICIAL_CATCHUP_FLOOR_DATE = HISTORY_BACKFILL_FLOOR_DATE
 HISTORY_OFFICIAL_CATCHUP_RETRY_SECONDS = max(15*60,int(os.environ.get("SBB_OFFICIAL_CATCHUP_RETRY_SECONDS","21600") or 21600))
 HISTORY_RULE_CATCHUP_LEAGUES = ("NFL","MLS","EPL")
-HISTORY_RULE_CATCHUP_VERSION = 2
+HISTORY_RULE_CATCHUP_VERSION = 3
+HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 2
 HISTORY_OFFICIAL_CATCHUP_SOURCES = {
-    # v4.1.13 / Discovery v15: public NFL playback is intentionally split from
+    # v4.1.14 / Discovery v15: official NFL playlist playback is first, with public NFL playback split from
     # NFL+ entitlement-gated replay inventory. Source keys include the objective
     # because history_source_enrichment is source-key unique per event.
     "NFL":[
+        {"key":"nfl-youtube-playlist-quick","version":1,"objective":"quick","sourceFamily":"nfl-youtube-playlist"},
+        {"key":"nfl-youtube-playlist-extended","version":1,"objective":"extended","sourceFamily":"nfl-youtube-playlist"},
         {"key":"nfl-public-video-quick","version":1,"objective":"quick","sourceFamily":"nfl-public-video"},
         {"key":"nfl-team-video-quick","version":1,"objective":"quick","sourceFamily":"nfl-team-video"},
         {"key":"nfl-public-video-extended","version":1,"objective":"extended","sourceFamily":"nfl-public-video"},
         {"key":"nfl-team-video-extended","version":1,"objective":"extended","sourceFamily":"nfl-team-video"},
     ],
     "MLS":[{"key":"mls-match-snapshot","version":2,"objective":"quick"},{"key":"mls-match-highlights","version":2,"objective":"extended"}],
-    "EPL":[{"key":"premierleague-official","version":4,"objective":"quick"},{"key":"nbc-epl-extended","version":3,"objective":"extended"}],
+    "EPL":[{"key":"premierleague-official","version":5,"objective":"quick"},{"key":"nbc-epl-extended","version":4,"objective":"extended"}],
     "NHL":[{"key":"nhl-official-video","version":1}],
 }
 HISTORY_OFFICIAL_CATCHUP_STATE = {"startedAt":0.0,"eventPasses":0,"sourceAttempts":0,"accepted":0,"coverageUpgrades":0,"qualityUpgrades":0,"lastRun":0.0,"lastError":""}
-HISTORY_RULE_COLLECTION_CATCHUP_STATE = {"version":HISTORY_RULE_CATCHUP_VERSION,"running":False,"complete":False,"startedAt":0.0,"completedAt":0.0,"datesChecked":0,"candidatesExamined":0,"qualifying":0,"newUniqueAssets":0,"existingAssetsReused":0,"newCollectionLinks":0,"duplicateLinksSuppressed":0,"rejected":0,"lastDate":"","lastLeague":"","lastError":""}
+HISTORY_RULE_COLLECTION_CATCHUP_STATE = {"version":HISTORY_RULE_COLLECTION_CATCHUP_VERSION,"running":False,"complete":False,"startedAt":0.0,"completedAt":0.0,"datesChecked":0,"candidatesExamined":0,"qualifying":0,"newUniqueAssets":0,"existingAssetsReused":0,"newCollectionLinks":0,"duplicateLinksSuppressed":0,"rejected":0,"lastDate":"","lastLeague":"","lastError":""}
 HISTORY_MEDIA_AUDIT_LOCK = threading.RLock()
 HISTORY_MEDIA_AUDIT = {
     "duplicatesCollapsed":0,"postgameReactionRejected":0,
@@ -267,14 +279,16 @@ HISTORY_MEDIA_AUDIT = {
     # the normalized source also survived repository association and is playable.
     "nflQuickAccepted":0,"nflExtendedAccepted":0,"nflQuickPersisted":0,"nflExtendedPersisted":0,"nflPersistenceLost":0,"nflPersistenceReasons":{},
     "mlsSnapshotAccepted":0,"mlsMatchHighlightsAccepted":0,"mlsSnapshotPersisted":0,"mlsMatchHighlightsPersisted":0,"mlsCandidateDispositions":{},
-    "nflCandidateDispositions":{},"nflPublicAccepted":0,"nflTeamAccepted":0,"entitlementGated":0,"individualPlayRejected":0,"durationRejected":0,"nonPlayableRejected":0,"eventMismatchRejected":0
+    "eplCandidateDispositions":{},"eplQuickPersisted":0,"eplExtendedPersisted":0,
+    "nflCandidateDispositions":{},"nflPublicAccepted":0,"nflTeamAccepted":0,"nflPlaylistAccepted":0,"nflPlaylistQuickPersisted":0,"nflPlaylistExtendedPersisted":0,
+    "entitlementGated":0,"individualPlayRejected":0,"durationRejected":0,"nonPlayableRejected":0,"eventMismatchRejected":0
 }
 HISTORY_OFFICIAL_CATCHUP_LOCK = threading.RLock()
 
 def _history_media_audit_disposition(code, source_family='', league='NFL'):
     code=str(code or 'UNKNOWN_REJECT').upper(); family=str(source_family or '').lower(); league=str(league or 'NFL').upper()
     with HISTORY_MEDIA_AUDIT_LOCK:
-        bucket_name='mlsCandidateDispositions' if league=='MLS' else 'nflCandidateDispositions'
+        bucket_name='mlsCandidateDispositions' if league=='MLS' else ('eplCandidateDispositions' if league=='EPL' else 'nflCandidateDispositions')
         bucket=HISTORY_MEDIA_AUDIT.setdefault(bucket_name,{})
         bucket[code]=int(bucket.get(code) or 0)+1
         if league=='NFL':
@@ -284,7 +298,11 @@ def _history_media_audit_disposition(code, source_family='', league='NFL'):
             elif code=='NON_PLAYABLE': HISTORY_MEDIA_AUDIT['nonPlayableRejected']=int(HISTORY_MEDIA_AUDIT.get('nonPlayableRejected') or 0)+1
             elif code in {'EVENT_MISMATCH','TEAM_MISMATCH','DATE_MISMATCH'}: HISTORY_MEDIA_AUDIT['eventMismatchRejected']=int(HISTORY_MEDIA_AUDIT.get('eventMismatchRejected') or 0)+1
             if code in {'PERSISTED_QUICK','PERSISTED_EXTENDED'}:
-                if family=='nfl-public-video': HISTORY_MEDIA_AUDIT['nflPublicAccepted']=int(HISTORY_MEDIA_AUDIT.get('nflPublicAccepted') or 0)+1
+                if family=='nfl-youtube-playlist':
+                    HISTORY_MEDIA_AUDIT['nflPlaylistAccepted']=int(HISTORY_MEDIA_AUDIT.get('nflPlaylistAccepted') or 0)+1
+                    pkey='nflPlaylistExtendedPersisted' if code=='PERSISTED_EXTENDED' else 'nflPlaylistQuickPersisted'
+                    HISTORY_MEDIA_AUDIT[pkey]=int(HISTORY_MEDIA_AUDIT.get(pkey) or 0)+1
+                elif family=='nfl-public-video': HISTORY_MEDIA_AUDIT['nflPublicAccepted']=int(HISTORY_MEDIA_AUDIT.get('nflPublicAccepted') or 0)+1
                 elif family=='nfl-team-video': HISTORY_MEDIA_AUDIT['nflTeamAccepted']=int(HISTORY_MEDIA_AUDIT.get('nflTeamAccepted') or 0)+1
                 key='nflExtendedPersisted' if code=='PERSISTED_EXTENDED' else 'nflQuickPersisted'
                 HISTORY_MEDIA_AUDIT[key]=int(HISTORY_MEDIA_AUDIT.get(key) or 0)+1
@@ -294,6 +312,9 @@ def _history_media_audit_disposition(code, source_family='', league='NFL'):
         elif league=='MLS':
             if code=='PERSISTED_SNAPSHOT': HISTORY_MEDIA_AUDIT['mlsSnapshotPersisted']=int(HISTORY_MEDIA_AUDIT.get('mlsSnapshotPersisted') or 0)+1
             elif code=='PERSISTED_HIGHLIGHTS': HISTORY_MEDIA_AUDIT['mlsMatchHighlightsPersisted']=int(HISTORY_MEDIA_AUDIT.get('mlsMatchHighlightsPersisted') or 0)+1
+        elif league=='EPL':
+            if code=='PERSISTED_QUICK': HISTORY_MEDIA_AUDIT['eplQuickPersisted']=int(HISTORY_MEDIA_AUDIT.get('eplQuickPersisted') or 0)+1
+            elif code=='PERSISTED_EXTENDED': HISTORY_MEDIA_AUDIT['eplExtendedPersisted']=int(HISTORY_MEDIA_AUDIT.get('eplExtendedPersisted') or 0)+1
     return code
 
 # Provider concurrency is centralized. More event workers must not multiply the
@@ -310,7 +331,7 @@ HISTORY_PROVIDER_LIMITS = {
 HISTORY_PROVIDER_SEMAPHORES={k:threading.BoundedSemaphore(v) for k,v in HISTORY_PROVIDER_LIMITS.items()}
 HISTORY_PROVIDER_STATE_LOCK=threading.RLock()
 HISTORY_PROVIDER_STATE={k:{"limit":v,"active":0,"waiting":0,"waitSeconds":0.0,"acquires":0} for k,v in HISTORY_PROVIDER_LIMITS.items()}
-# v4.1.13 measures whether authoritative primary lanes satisfy the per-pass target
+# v4.1.14 measures whether authoritative primary lanes satisfy the per-pass target
 # before any public/search rescue work. These are process-lifetime diagnostics;
 # durable discovery truth remains in SQLite.
 HISTORY_DISCOVERY_EFFICIENCY_LOCK=threading.RLock()
@@ -375,7 +396,7 @@ def _history_shared_catalog(key,fn,ttl=180):
         return value
 HISTORY_BACKGROUND_MEDIA_PAUSE_SECONDS = max(2,int(os.environ.get("SBB_HISTORY_BACKGROUND_MEDIA_PAUSE_SECONDS","8")))
 HISTORY_BACKGROUND_INTERACTIVE_PAUSE_SECONDS = max(1,int(os.environ.get("SBB_HISTORY_BACKGROUND_INTERACTIVE_PAUSE_SECONDS","3")))
-# v4.1.13 exposes an operator-controlled resource mode in the live Search Console.
+# v4.1.14 exposes an operator-controlled resource mode in the live Search Console.
 # SEARCH dedicates the server to historical discovery and suspends playback/media
 # staging. PLAYBACK freezes background/foreground media discovery. BALANCED keeps
 # the normal behavior where search yields briefly to active playback. The setting
@@ -459,6 +480,7 @@ def _history_provider_key(lane_name):
     if lane.startswith('youtube-public'): return 'web'
     if lane=='mlb-official': return 'mlb'
     if lane in {'nfl-feed','nfl-game-highlights','nfl-extended-highlights','nfl-public-video-quick','nfl-public-video-extended','nfl-team-video-quick','nfl-team-video-extended'}: return 'nfl'
+    if lane in {'nfl-youtube-playlist-quick','nfl-youtube-playlist-extended'}: return 'youtube'
     if lane in {'nhl-official-video','nhl-official-roundups'}: return 'native'
     if lane in {'premierleague-official','mls-official-web','mls-roundups'}: return 'native'
     if lane=='nbc-epl-extended': return 'web'
@@ -837,7 +859,7 @@ def _prewarm_highlightly_call(sport_key,endpoint,date,timezone_value="",force=Fa
     if RATE_LIMIT_STATE.get("limited") and limited_since and time.time()-limited_since < 15*60:
         return cached
     url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.13"})
+    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.14"})
     try:
         with urlopen(req,timeout=15) as resp:
             data=json.loads(resp.read().decode("utf-8"))
@@ -1398,7 +1420,7 @@ def openai_api_request(path, payload=None, method=None, timeout=20):
         raise RuntimeError("OPENAI_NOT_CONFIGURED")
     method=method or ("POST" if payload is not None else "GET")
     body=None if payload is None else json.dumps(payload).encode("utf-8")
-    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.13"}
+    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.14"}
     req=Request(f"{OPENAI_API_BASE}{path}",data=body,headers=headers,method=method)
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -1774,7 +1796,7 @@ def _decorate_recap_tier(item):
     conf=_narrated_recap_confidence(row.get('title'),row.get('description'),row.get('sourceLabel') or row.get('source'),duration)
     row['commentaryConfidence']=conf
     row['commentaryLikely']=conf>=0.85
-    # v4.1.13: one server-side classifier owns Gold/Green/Purple/Blue.
+    # v4.1.14: one server-side classifier owns Gold/Green/Purple/Blue.
     return annotate_media_tier(row)
 
 def _youtube_game_result(game, date):
@@ -1933,7 +1955,7 @@ def _google_news_official_results(league):
     site_clause=' OR '.join(f'site:{d}' for d in sorted(trusted_domains))
     query=f'({terms}) ({site_clause}) {league} when:5d'
     url='https://news.google.com/rss/search?'+urlencode({'q':query,'hl':'en-US','gl':'US','ceid':'US:en'})
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.13'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.14'})
     try:
         with urlopen(req,timeout=10) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -1992,7 +2014,7 @@ def _espn_rss_results(league):
     """First-party ESPN headline feed. ESPN explicitly publishes these RSS feeds for aggregators."""
     league=str(league or '').upper(); url=ESPN_RSS.get(league)
     if not url: return []
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.13'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.14'})
     try:
         with urlopen(req,timeout=8) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2097,7 +2119,7 @@ def _espn_video_media_url(video):
             if isinstance(v,str) and v.startswith('http'): return v
         return ''
     if isinstance(source,dict):
-        # v4.1.13: ESPN's mezzanine asset is frequently the largest/highest-
+        # v4.1.14: ESPN's mezzanine asset is frequently the largest/highest-
         # bitrate encode. It looked great but was a poor default for a localhost
         # streaming app on mobile and caused avoidable rebuffering. Prefer the
         # normal/full or HD delivery encode and keep mezzanine as a last MP4
@@ -2238,7 +2260,7 @@ def _nfl_team_site_video_results(date, away, home, max_items=8):
     for host in hosts:
         page=f'https://{host}/video/'
         try:
-            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.13'})
+            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.14'})
             with urlopen(req,timeout=8) as resp: raw=resp.read().decode('utf-8','ignore')
         except Exception as exc:
             print(f'[SBB NFL] club video page failed {host}: {type(exc).__name__}: {exc}',flush=True); continue
@@ -2386,7 +2408,7 @@ def _espn_generic_soccer_event_matches(ev,league_key):
 def _espn_scoreboard(league,date,tz_value="",utc_offset_minutes=None):
     """Return one viewer-calendar day from a redundant ESPN transport set.
 
-    v4.1.13 deliberately treats score/schedule identity as infrastructure rather
+    v4.1.14 deliberately treats score/schedule identity as infrastructure rather
     than media metadata.  MLB still has MLB Stats as its main path in the browser;
     NFL/NBA/NHL/EPL/MLS use this function as a resilient independent authority.
 
@@ -2584,7 +2606,7 @@ def _highlightly_soccer_schedule(league,date):
         "x-rapidapi-key":read_key(),
         "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.13"
+        "User-Agent":"SportsBigBoard/4.1.14"
     })
     with urlopen(req,timeout=12) as resp:
         payload=json.loads(resp.read().decode("utf-8"))
@@ -2688,7 +2710,7 @@ def _soccer_diagnostics():
                     "x-rapidapi-key":read_key(),
                     "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
                     "Accept":"application/json",
-                    "User-Agent":"SportsBigBoard/4.1.13"
+                    "User-Agent":"SportsBigBoard/4.1.14"
                 })
                 with urlopen(req,timeout=12) as resp:
                     payload=json.loads(resp.read().decode("utf-8"))
@@ -3120,7 +3142,7 @@ def official_mls_youtube_videos(date, force_refresh=False):
 
 def _generic_rapid_cache_path(league, date, away, home):
     safe=re.sub(r'[^a-z0-9]+','-',f'{league}-{date}-{away}-{home}'.lower()).strip('-')[:140]
-    # v4.1.13 bumps the namespace to flush historical empty/rate-limited results from older builds.
+    # v4.1.14 bumps the namespace to flush historical empty/rate-limited results from older builds.
     return RAPID_CACHE_DIR / f"team_v418_{safe}.json"
 
 
@@ -3309,6 +3331,23 @@ def _mls_candidate_disposition(item,row=None,objective=''):
     if wanted=='extended' and st!='official-mls-match-highlights': return 'OBJECTIVE_MISMATCH'
     return 'NORMALIZED_SNAPSHOT' if wanted=='quick' else 'NORMALIZED_HIGHLIGHTS'
 
+def _epl_candidate_disposition(item,row=None,objective=''):
+    item=dict(item or {}); wanted=str(objective or '').lower(); text=' '.join(str(item.get(k) or '') for k in ('title','description')).lower()
+    if re.search(r'post[- ]?game|reaction|analysis|interview|press conference|best goals|best saves|matchweek roundup',text,re.I): return 'NON_GAME_SCOPE'
+    if row is not None:
+        scoped,evidence=_history_media_match_evidence(item,row)
+        if scoped.get('mediaScope')!=MEDIA_SCOPE_GAME: return 'NON_GAME_SCOPE'
+        if evidence.get('associationState')!='ASSIGNED':
+            method=str(evidence.get('associationMethod') or '').upper()
+            if 'DATE' in method: return 'DATE_MISMATCH'
+            if 'TEAM' in method or 'TITLE_TEAM' in method: return 'TEAM_MISMATCH'
+            return 'EVENT_MISMATCH'
+    if not item.get('youtubeId') and not item.get('mediaUrl'): return 'NON_PLAYABLE'
+    dur=int(item.get('durationSeconds') or item.get('duration') or 0)
+    if wanted=='extended' and dur and dur<5*60: return 'DURATION_REJECT'
+    return 'NORMALIZED_EXTENDED' if wanted=='extended' else 'NORMALIZED_QUICK'
+
+
 def _history_persisted_candidate_disposition(item,league,event_id,objective=''):
     item=dict(item or {}); asset_key=HISTORY_REPOSITORY.asset_key_for(item)
     if not asset_key: return 'PERSISTENCE_NO_ASSET_KEY'
@@ -3433,7 +3472,7 @@ def _nfl_game_highlights_source_pages(away,home):
 
 
 def _nfl_fetch_page_text(url,timeout=9):
-    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.13'})
+    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.14'})
     with urlopen(req,timeout=timeout) as resp:
         return resp.read().decode('utf-8','ignore')
 
@@ -3542,7 +3581,7 @@ def _nfl_game_highlights_results(date,away,home,max_items=4,validate_native=Fals
 
 
 # ---------------------------------------------------------------------------
-# v4.1.13 official league / trusted broadcaster video acquisition
+# v4.1.14 official league / trusted broadcaster video acquisition
 # ---------------------------------------------------------------------------
 
 _NHL_TEAM_ABBR = {
@@ -3584,7 +3623,7 @@ _SOCCER_TEAM_ALIASES = {
 
 
 def _official_fetch_page_text(url,timeout=10,referer=''):
-    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.13'}
+    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.14'}
     if referer: headers['Referer']=referer
     req=Request(url,headers=headers)
     with urlopen(req,timeout=timeout) as resp:
@@ -3592,7 +3631,7 @@ def _official_fetch_page_text(url,timeout=10,referer=''):
 
 
 def _nfl_fetch_page_text(url,timeout=9):
-    # Compatibility wrapper; v4.1.13 shares the standards-based page resolver.
+    # Compatibility wrapper; v4.1.14 shares the standards-based page resolver.
     return _official_fetch_page_text(url,timeout=timeout,referer='https://www.nfl.com/')
 
 
@@ -3768,7 +3807,7 @@ def _premierleague_official_results(date,away,home,max_items=3,validate_native=F
         if not _epl_official_match_highlight_title(title,away,home): continue
         if not _source_date_near(meta.get('publishedAt'),date,2): continue
         row=_official_web_row(entry,meta,league='EPL',source='PremierLeague.com',source_label='Premier League Official Match Highlights',source_type='official-premierleague-match-highlights',provider='PREMIERLEAGUE.COM',importance=116,official=True,validate_native=validate_native,referer=PREMIER_LEAGUE_VIDEO_URL)
-        # v4.1.13: PremierLeague.com match highlights satisfy the preferred Quick/Green
+        # v4.1.14: PremierLeague.com match highlights satisfy the preferred Quick/Green
         # objective independently from the NBC Extended/Purple objective.
         row['overview']=True; row['programType']='recap'; row['mediaObjective']='QUICK'; row=_decorate_recap_tier(row)
         out.append(row)
@@ -3798,7 +3837,7 @@ def _mls_match_highlights_page_urls(max_pages=42):
 def _mls_official_web_results(date,away,home,max_items=6,validate_native=False,objective=''):
     """MLS Match Snapshot / Match Highlights from the official paginated topic feed.
 
-    The root page only exposes the newest cards. v4.1.13 walks pagination lazily and
+    The root page only exposes the newest cards. v4.1.14 walks pagination lazily and
     stamps an undated MATCH SNAPSHOT with the same-pair dated highlight card next to
     it, which makes the ~1 minute Snapshot independently backfillable historically.
     """
@@ -3923,7 +3962,7 @@ def _premierleague_roundup_results(date):
 
 
 def _nfl_official_extended_results(date,away,home,max_items=4,validate_native=False,allow_historical=False):
-    """Compatibility wrapper for v4.1.13 public Extended collection."""
+    """Compatibility wrapper for v4.1.14 public Extended collection."""
     rows=[]
     rows.extend(_nfl_public_video_results(date,away,home,max_items=max_items*2,validate_native=validate_native,allow_historical=allow_historical,objective='extended') or [])
     rows.extend(_nfl_team_video_results(date,away,home,max_items=max_items*2,validate_native=validate_native,objective='extended') or [])
@@ -3944,7 +3983,7 @@ def _official_nfl_feed_videos(date, away, home):
         return []
     url=f"https://www.youtube.com/feeds/videos.xml?channel_id={NFL_YOUTUBE_CHANNEL_ID}"
     try:
-        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.13"})
+        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.14"})
         with urlopen(req,timeout=9) as resp:
             raw=resp.read()
         root=ET.fromstring(raw)
@@ -3999,7 +4038,7 @@ def _official_nfl_feed_videos(date, away, home):
         }
         out.append(_decorate_recap_tier(row))
 
-    # v4.1.13: the public channel feed proves that a video exists, not that the
+    # v4.1.14: the public channel feed proves that a video exists, not that the
     # owner permits iframe playback. When a YouTube Data API key is available,
     # validate feed candidates before they can outrank team/broadcast search
     # results. This prevents an official-but-non-embeddable NFL upload from
@@ -4133,7 +4172,7 @@ def _youtube_oembed_probe(video_id,timeout=7):
     vid=str(video_id or '').strip()
     if not vid: return None
     url='https://www.youtube.com/oembed?'+urlencode({'url':f'https://www.youtube.com/watch?v={vid}','format':'json'})
-    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.13'})
+    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.14'})
     try:
         with urlopen(req,timeout=timeout) as resp:
             if getattr(resp,'status',200)!=200: return None
@@ -4226,7 +4265,7 @@ def _history_search_budget_bucket(date,best_tier=''):
 def _history_capture_collection_catalog(league,date,rows,return_stats=False):
     """Persist Silver roundup media once per source catalog, never per game.
 
-    v4.1.13 telemetry is idempotent: "new" means a new source asset or a new
+    v4.1.14 telemetry is idempotent: "new" means a new source asset or a new
     collection relationship, not simply a qualifying row seen again on another
     weekly probe.
     """
@@ -4264,7 +4303,7 @@ def _official_youtube_activity_cache_path(league,date):
 def _official_youtube_day_activity_catalog(league,date,force=False):
     """Return verified uploads from one official league channel around a game day.
 
-    This is the primary v4.1.13 historical YouTube lane. activities.list is cheap
+    This is the primary v4.1.14 historical YouTube lane. activities.list is cheap
     and independent of the separate search.list daily bucket. We fetch the official
     channel once per league/date, then batch videos.list all upload ids so every
     game on that slate can reuse the same verified catalog.
@@ -4364,6 +4403,167 @@ def _official_youtube_history_activity_results(league,date,away,home,max_items=1
     return out[:max_items]
 
 
+
+
+def _nfl_youtube_playlist_catalog_cache_path():
+    return YOUTUBE_CACHE_DIR / 'nfl-recap-playlists-v414.json'
+
+
+def _nfl_youtube_playlist_items_cache_path(playlist_id):
+    safe=re.sub(r'[^A-Za-z0-9_.-]+','-',str(playlist_id or 'unknown'))
+    return YOUTUBE_CACHE_DIR / f'nfl-recap-playlist-items-v414-{safe}.json'
+
+
+def _nfl_playlist_title_is_recap(title):
+    text=str(title or '').strip().lower()
+    if not text: return False
+    if re.search(r'press conference|mic.?d|sounds of|top plays|best plays|fantasy|preview|draft|combine|schedule release',text,re.I): return False
+    return bool(re.search(r'game recaps?|week\s*\d+.*(?:season|recaps?)|(?:preseason|regular season)\s+week\s*\d+|wild\s*card.*recaps?|divisional.*recaps?|conference.*recaps?|championship.*recaps?|super\s*bowl.*recaps?',text,re.I))
+
+
+def _nfl_playlist_season_year(title):
+    years=[int(x) for x in re.findall(r'\b(20\d{2})\b',str(title or ''))]
+    return years[0] if years else 0
+
+
+def _nfl_season_year_for_date(date):
+    try: d=datetime.strptime(str(date)[:10],'%Y-%m-%d').date()
+    except Exception: return 0
+    return d.year if d.month>=7 else d.year-1
+
+
+def _nfl_regular_week_for_date(date):
+    try: d=datetime.strptime(str(date)[:10],'%Y-%m-%d').date()
+    except Exception: return 0
+    season=_nfl_season_year_for_date(date)
+    sept1=datetime(season,9,1).date(); labor=sept1+timedelta(days=(7-sept1.weekday())%7); opener=labor+timedelta(days=3)
+    delta=(d-opener).days
+    if 0<=delta<18*7: return 1+(delta//7)
+    return 0
+
+
+def _nfl_preseason_week_for_date(date):
+    try: d=datetime.strptime(str(date)[:10],'%Y-%m-%d').date()
+    except Exception: return 0
+    if d.month!=8: return 0
+    return max(1,min(4,((d.day-1)//7)))
+
+
+def _nfl_youtube_playlist_catalog(force=False):
+    """Enumerate official @NFL recap playlists without search.list."""
+    key=read_youtube_key()
+    if not key: return []
+    path=_nfl_youtube_playlist_catalog_cache_path()
+    if not force:
+        try:
+            payload=json.loads(path.read_text(encoding='utf-8')); age=time.time()-float(payload.get('savedAt') or 0)
+            if age<12*60*60 and isinstance(payload.get('data'),list): return payload['data']
+        except Exception: pass
+    out=[]; token=''; pages=0
+    while pages<8:
+        params={'part':'snippet,contentDetails','channelId':NFL_YOUTUBE_CHANNEL_ID,'maxResults':'50','key':key}
+        if token: params['pageToken']=token
+        data=youtube_fetch_json(f"{YOUTUBE_API_BASE}/playlists?{urlencode(params)}",timeout=12); pages+=1
+        for raw in data.get('items') or []:
+            if not isinstance(raw,dict): continue
+            pid=str(raw.get('id') or '').strip(); sn=raw.get('snippet') or {}; title=str(sn.get('title') or '').strip()
+            if not pid or not _nfl_playlist_title_is_recap(title): continue
+            out.append({'playlistId':pid,'title':title,'description':str(sn.get('description') or ''),'publishedAt':str(sn.get('publishedAt') or ''),'itemCount':int((raw.get('contentDetails') or {}).get('itemCount') or 0),'seasonYear':_nfl_playlist_season_year(title),'source':'NFL','officialChannelId':NFL_YOUTUBE_CHANNEL_ID})
+        token=str(data.get('nextPageToken') or '')
+        if not token: break
+    by={str(x.get('playlistId')):x for x in out}
+    for pid,title in NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS.items():
+        if pid not in by:
+            by[pid]={'playlistId':pid,'title':title,'description':'Known official NFL recap playlist','publishedAt':'','itemCount':0,'seasonYear':_nfl_playlist_season_year(title),'source':'NFL','officialChannelId':NFL_YOUTUBE_CHANNEL_ID,'seeded':True}
+    out=list(by.values()); out.sort(key=lambda x:(int(x.get('seasonYear') or 0),str(x.get('title') or '')),reverse=True)
+    try: path.write_text(json.dumps({'savedAt':time.time(),'data':out},ensure_ascii=False),encoding='utf-8')
+    except Exception: pass
+    return out
+
+
+def _nfl_candidate_recap_playlists(date):
+    season=_nfl_season_year_for_date(date); reg_week=_nfl_regular_week_for_date(date); pre_week=_nfl_preseason_week_for_date(date)
+    rows=[]
+    for row in _nfl_youtube_playlist_catalog():
+        title=str(row.get('title') or ''); low=title.lower(); year=int(row.get('seasonYear') or 0)
+        if year and season and year!=season: continue
+        score=0
+        if season and str(season) in title: score+=30
+        if pre_week and 'preseason' in low:
+            score+=50
+            m=re.search(r'week\s*(\d{1,2})',low); pw=int(m.group(1)) if m else 0
+            if pw==pre_week: score+=80
+            elif pw and abs(pw-pre_week)==1: score+=20
+        elif reg_week and 'preseason' not in low:
+            m=re.search(r'week\s*(\d{1,2})',low); rw=int(m.group(1)) if m else 0
+            if rw==reg_week: score+=100
+            elif rw and abs(rw-reg_week)==1: score+=15
+        elif re.search(r'wild\s*card|divisional|conference|championship|super\s*bowl',low,re.I):
+            score+=45
+        if 'game recap' in low: score+=25
+        if score: rows.append((score,row))
+    rows.sort(key=lambda x:x[0],reverse=True)
+    return [dict(x[1]) for x in rows[:8]]
+
+
+def _nfl_youtube_playlist_items(playlist,force=False):
+    """Expand one official recap playlist and validate videos with videos.list."""
+    playlist=dict(playlist or {}); pid=str(playlist.get('playlistId') or '')
+    key=read_youtube_key()
+    if not pid or not key: return []
+    path=_nfl_youtube_playlist_items_cache_path(pid)
+    if not force:
+        try:
+            payload=json.loads(path.read_text(encoding='utf-8')); age=time.time()-float(payload.get('savedAt') or 0)
+            if age<30*24*60*60 and isinstance(payload.get('data'),list): return payload['data']
+        except Exception: pass
+    ids=[]; order={}; token=''; pages=0
+    while pages<4:
+        params={'part':'snippet,contentDetails','playlistId':pid,'maxResults':'50','key':key}
+        if token: params['pageToken']=token
+        data=youtube_fetch_json(f"{YOUTUBE_API_BASE}/playlistItems?{urlencode(params)}",timeout=12); pages+=1
+        for raw in data.get('items') or []:
+            if not isinstance(raw,dict): continue
+            vid=str(((raw.get('contentDetails') or {}).get('videoId')) or (((raw.get('snippet') or {}).get('resourceId') or {}).get('videoId')) or '').strip()
+            if vid and vid not in order: order[vid]=len(order); ids.append(vid)
+        token=str(data.get('nextPageToken') or '')
+        if not token: break
+    out=[]
+    for start in range(0,len(ids),50):
+        chunk=ids[start:start+50]
+        data=youtube_fetch_json(f"{YOUTUBE_API_BASE}/videos?{urlencode({'part':'snippet,contentDetails,status','id':','.join(chunk),'key':key})}",timeout=12)
+        for vd in data.get('items') or []:
+            if not isinstance(vd,dict) or not _youtube_video_available_in_us(vd): continue
+            vid=str(vd.get('id') or ''); sn=vd.get('snippet') or {}; cd=vd.get('contentDetails') or {}
+            if str(sn.get('channelId') or '')!=NFL_YOUTUBE_CHANNEL_ID: continue
+            title=str(sn.get('title') or '').strip(); desc=str(sn.get('description') or '').strip(); dur=_iso8601_duration_seconds(cd.get('duration')) or 0
+            if not title or not re.search(r'highlights?|recap|vs\.?| at ',title,re.I): continue
+            thumbs=sn.get('thumbnails') or {}; thumb=((thumbs.get('high') or thumbs.get('medium') or thumbs.get('default') or {}).get('url') if isinstance(thumbs,dict) else '') or ''
+            row={'id':f'nfl-playlist-{pid}-{vid}','eventId':vid,'youtubeId':vid,'league':'NFL','title':title,'description':desc,'duration':dur,'durationSeconds':dur,'thumbnail':str(thumb),'source':'NFL','sourceLabel':'NFL','sourceType':'official-nfl-youtube-playlist','provider':'YOUTUBE','verifiedPlayable':True,'embedValidated':True,'externalOnly':False,'validationState':'VERIFIED','embedValidation':'official-playlist+videos.list','overview':True,'programType':'recap','externalUrl':f'https://www.youtube.com/watch?v={vid}','publishedAt':str(sn.get('publishedAt') or ''),'officialChannelId':NFL_YOUTUBE_CHANNEL_ID,'officialPlaylistId':pid,'officialPlaylistTitle':str(playlist.get('title') or ''),'playlistSeasonYear':int(playlist.get('seasonYear') or 0),'discoverySourceFamily':'nfl-youtube-playlist','chronology':[1,1002,0,order.get(vid,999),order.get(vid,999)],'importance':126,'rapid':True}
+            obj=_nfl_media_objective(row)
+            if obj: row['mediaObjective']='EXTENDED' if obj=='extended' else 'QUICK'; row['recapTier']='extended' if obj=='extended' else 'green'
+            out.append(_decorate_recap_tier(row))
+    out.sort(key=lambda x:order.get(str(x.get('youtubeId') or ''),999))
+    try: path.write_text(json.dumps({'savedAt':time.time(),'playlist':playlist,'data':out},ensure_ascii=False),encoding='utf-8')
+    except Exception: pass
+    return out
+
+
+def _nfl_youtube_playlist_results(date,away,home,max_items=8,objective='extended'):
+    wanted=str(objective or '').lower(); out=[]
+    for playlist in _nfl_candidate_recap_playlists(date):
+        for raw in _nfl_youtube_playlist_items(playlist):
+            item=dict(raw); title=str(item.get('title') or ''); desc=str(item.get('description') or '')
+            if _youtube_match_strength(title,desc,away,home)<2: continue
+            item['away']=away; item['home']=home; item['date']=str(date)[:10]
+            scoped,evidence=_history_media_match_evidence(item,{'away':away,'home':home,'date':str(date)[:10]})
+            if scoped.get('mediaScope')!=MEDIA_SCOPE_GAME or evidence.get('associationState')!='ASSIGNED': continue
+            obj=_nfl_media_objective(item)
+            if obj!=wanted: continue
+            item['mediaObjective']='EXTENDED' if obj=='extended' else 'QUICK'; item['recapTier']='extended' if obj=='extended' else 'green'
+            item['sourcePairEvidence']=f'{away} vs {home}'; out.append(_decorate_recap_tier(item))
+        if len(out)>=max_items: break
+    return _history_collapse_duplicate_media(out)[:max_items]
 
 
 def _official_youtube_uploads_cache_path(league):
@@ -4837,7 +5037,7 @@ def _search_engine_youtube_links(query,max_results=18):
     # normal search result page on a phone connection.
     try:
         url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss','count':max(10,min(30,max_results*2))})
-        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.13','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
+        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.14','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
         with urlopen(req,timeout=9) as resp:
             blob=resp.read(1_500_000)
         root=ET.fromstring(blob)
@@ -4998,7 +5198,7 @@ def generic_rapid_team_videos(league, date, away, home, event_id="", force_refre
         try: out.extend(_mls_official_web_results(date,away,home,max_items=4,validate_native=True))
         except Exception as exc: print(f'[SBB MLS] MLSsoccer.com discovery failed {away}@{home}: {type(exc).__name__}: {exc}',flush=True)
     if league=='NFL':
-        # v4.1.13 uses only public official playback surfaces. NFL+ game/condensed
+        # v4.1.14 uses only public official playback surfaces. NFL+ game/condensed
         # replay inventory is entitlement-gated and is never treated as a GAME
         # playback source. Public NFL.com and both official club sites are queried.
         try:
@@ -5235,7 +5435,7 @@ def normalized_rapid_highlights(date, force_refresh=False, force_clips=False):
     return unique
 
 def fetch_json(url, timeout=15):
-    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.13"})
+    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.14"})
     with urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
@@ -5933,7 +6133,7 @@ def _football_day_fallback(date, sport_key, timezone_value=""):
     req=Request(url,headers={
         "x-rapidapi-key":key,
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.13"
+        "User-Agent":"SportsBigBoard/4.1.14"
     })
     with urlopen(req,timeout=15) as resp:
         data=json.loads(resp.read().decode("utf-8"))
@@ -6070,7 +6270,7 @@ def _openai_program_rank(mode,candidates,favorites=None,local_date=''):
 # PlaybackController remains the sole authority that can make media active.
 MEDIA_FILE_CACHE_DIR = CACHE_DIR / "media-v2529"
 MEDIA_FILE_CACHE_DIR.mkdir(parents=True, exist_ok=True)
-# v4.1.13: four megabytes was not enough runway for some NFL/ESPN MP4s on
+# v4.1.14: four megabytes was not enough runway for some NFL/ESPN MP4s on
 # mobile. Stage a real 16 MB startup window so playback can run locally while
 # the remainder/full file is fetched in the background.
 MEDIA_FILE_CACHE_HEAD_BYTES = int(os.environ.get("SBB_MEDIA_HEAD_BYTES", str(16*1024*1024)))
@@ -6080,7 +6280,7 @@ MEDIA_FILE_CACHE_MAX_BYTES = int(os.environ.get("SBB_MEDIA_CACHE_MAX_BYTES", str
 MEDIA_FILE_CACHE_TTL = int(os.environ.get("SBB_MEDIA_CACHE_TTL", str(3*24*3600)))
 MEDIA_FILE_CACHE_LOCK = threading.RLock()
 MEDIA_WORK_SCHEDULER = MediaWorkScheduler(workers=4, name="sbb-media-work")
-# v4.1.13: Game Center network work gets its own pool so video/media prewarm can
+# v4.1.14: Game Center network work gets its own pool so video/media prewarm can
 # never starve score/stat preparation. Foreground playback remains outside both.
 GAME_CENTER_WORK_SCHEDULER = MediaWorkScheduler(workers=8, name="sbb-game-center-work")
 MEDIA_FILE_CACHE_JOBS = {}
@@ -6152,7 +6352,7 @@ def _media_request_headers(range_value=None,media_url=""):
     host=(urlparse(str(media_url or "")).hostname or "").lower()
     referer="https://www.espn.com/" if ("espn" in host or "akamai" in host) else ("https://www.nfl.com/" if "nfl" in host else "https://www.mlb.com/")
     headers={
-        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.13",
+        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.14",
         "Accept":"video/mp4,video/*;q=0.9,*/*;q=0.8",
         "Referer":referer
     }
@@ -6540,7 +6740,7 @@ def _highlightly_game_center(competition,match_id):
 def _highlightly_provider_key(event_id):
     text=str(event_id or "")
     return text[3:] if text.startswith("hl-") else text
-# v4.1.13 Game Center repository ---------------------------------------------
+# v4.1.14 Game Center repository ---------------------------------------------
 # Normalized Game Centers are persistent application data. SQLite is the
 # authoritative local repository; browser clicks normally read localhost only.
 GAME_CENTER_FETCH_LOCKS = {}
@@ -7176,7 +7376,7 @@ def _history_validate_native_asset(item,timeout=6):
     """Positively probe one direct historical media URL before advertising green."""
     row=dict(item or {}); url=str(row.get('mediaUrl') or '').strip()
     if not url: return row
-    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.13','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
+    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.14','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
     if 'espn' in url.lower(): headers['Referer']='https://www.espn.com/'
     source_type=str(row.get('sourceType') or '')
     external=str(row.get('externalUrl') or '').lower()
@@ -7570,6 +7770,8 @@ def _history_official_catchup_sources(league):
 def _history_official_catchup_source_call(source_key,date,away,home):
     """Invoke exactly one structured provider lane; never generic/public rescue."""
     key=str(source_key or '')
+    if key=='nfl-youtube-playlist-quick': return _nfl_youtube_playlist_results(date,away,home,max_items=8,objective='quick')
+    if key=='nfl-youtube-playlist-extended': return _nfl_youtube_playlist_results(date,away,home,max_items=8,objective='extended')
     if key=='nfl-public-video-quick': return _nfl_public_video_results(date,away,home,max_items=6,validate_native=False,allow_historical=True,objective='quick')
     if key=='nfl-team-video-quick': return _nfl_team_video_results(date,away,home,max_items=6,validate_native=False,objective='quick')
     if key=='nfl-public-video-extended': return _nfl_public_video_results(date,away,home,max_items=6,validate_native=False,allow_historical=True,objective='extended')
@@ -7644,12 +7846,12 @@ def _history_official_source_catchup_event(date,league,row,pending_sources):
             accepted=sum(1 for x in normalized_verified if str(HISTORY_REPOSITORY.asset_key_for(x) or '') in persisted_keys)
             accepted_total+=accepted
             dispositions={}
-            if league in {'NFL','MLS'}:
+            if league in {'NFL','MLS','EPL'}:
                 decorated_by={}
                 for x in decorated:
                     for token in (str(x.get('id') or ''),str(x.get('externalUrl') or ''),str(x.get('mediaUrl') or '')):
                         if token: decorated_by[token]=x
-                family=str(cfg.get('sourceFamily') or ('nfl-team-video' if 'team-video' in key else 'nfl-public-video')) if league=='NFL' else 'mls-official'
+                family=str(cfg.get('sourceFamily') or ('nfl-youtube-playlist' if 'youtube-playlist' in key else ('nfl-team-video' if 'team-video' in key else 'nfl-public-video'))) if league=='NFL' else ('mls-official' if league=='MLS' else 'epl-official')
                 objective=str(cfg.get('objective') or '').lower()
                 for raw in rows:
                     match=None
@@ -7661,8 +7863,10 @@ def _history_official_source_catchup_event(date,league,row,pending_sources):
                         code='NON_PLAYABLE'
                     elif league=='NFL':
                         code=_nfl_candidate_disposition(raw,row)
-                    else:
+                    elif league=='MLS':
                         code=_mls_candidate_disposition(raw,row,objective)
+                    else:
+                        code=_epl_candidate_disposition(raw,row,objective)
                     dispositions[code]=int(dispositions.get(code) or 0)+1
                     _history_media_audit_disposition(code,family,league)
             _r,_m,pitems,_c=_history_event_catalog_state(date,league,row); after=_history_best_tier([annotate_media_tier(x) for x in pitems])
@@ -7716,7 +7920,7 @@ def _history_rule_game_catchup_snapshot(summary=None):
 def _history_discover_event(date,league,row,force=False,allow_search_rescue=True,pass_target_tier=None):
     """Discover and persist the media manifest for one final event.
 
-    v4.1.13 separates the *pass target* from the long-term Gold quality target.
+    v4.1.14 separates the *pass target* from the long-term Gold quality target.
     Green-gap/backfill passes normally target Green and stop after authoritative
     primary lanes reach it; foreground/full discovery may still target Gold. Public
     page/index and search.list are true fallbacks entered only when primary lanes
@@ -7811,6 +8015,8 @@ def _history_discover_event(date,league,row,force=False,allow_search_rescue=True
     # Roundup lanes are collection-only and intentionally run even when a game already
     # has strong media so Silver remains complete independently from event tiering.
     if league=='NFL':
+        lane('nfl-youtube-playlist-quick',lambda:_nfl_youtube_playlist_results(date,away,home,max_items=8,objective='quick'),'primary'); primary_checkpoint()
+        lane('nfl-youtube-playlist-extended',lambda:_nfl_youtube_playlist_results(date,away,home,max_items=8,objective='extended'),'primary'); primary_checkpoint()
         lane('nfl-public-video-quick',lambda:_nfl_public_video_results(date,away,home,max_items=6,validate_native=False,allow_historical=True,objective='quick'),'primary'); primary_checkpoint()
         lane('nfl-team-video-quick',lambda:_nfl_team_video_results(date,away,home,max_items=6,validate_native=False,objective='quick'),'primary'); primary_checkpoint()
         lane('nfl-public-video-extended',lambda:_nfl_public_video_results(date,away,home,max_items=6,validate_native=False,allow_historical=True,objective='extended'),'primary'); primary_checkpoint()
@@ -8088,7 +8294,7 @@ def _history_backfill_day(date):
                 mlb_media=[annotate_media_tier(x) for x in (normalized_stats_highlights(date) or []) if isinstance(x,dict)]
                 HISTORY_REPOSITORY.put_media(date,'MLB',mlb_media,merge=True); media_count+=len(mlb_media)
             except Exception as exc: errors.append(f'MLB media: {type(exc).__name__}: {exc}')
-        # v4.1.13 background history uses official/native sources plus the official
+        # v4.1.14 background history uses official/native sources plus the official
         # channel activities catalog. It can therefore build real NBA/NFL/NHL/MLS/EPL
         # playable manifests while idle without spending a single search.list call.
         for lg in ('NFL','NBA','NHL','EPL','MLS'):
@@ -8123,7 +8329,7 @@ def _history_backfill_day(date):
 def _history_background_status():
     """Return whether low-priority catalog work may run right now.
 
-    v4.1.13 adds an explicit operator mode:
+    v4.1.14 adds an explicit operator mode:
       SEARCH   -> discovery owns bandwidth; playback is suspended and never pauses search.
       BALANCED -> current behavior; discovery yields briefly to playback/foreground work.
       PLAYBACK -> all historical discovery workers remain paused until mode changes.
@@ -8263,7 +8469,7 @@ def history_green_gap_worker(worker_index=1):
                 claim_conflicts+=1
             gaps=[]
             if not target and strict_affinity:
-                # Dedicated v4.1.13 migration lanes do not steal work from another
+                # Dedicated v4.1.14 migration lanes do not steal work from another
                 # league while their assigned league still has unresolved objectives.
                 _green_worker_patch(worker_name,phase=f'waiting:rule-affinity-{preferred_rule_league.lower()}',current='',claimKey='',workType='rule-affinity-wait')
                 _history_worker_beat(worker_name,f'waiting:rule-affinity-{preferred_rule_league.lower()}',current='',blocked=True)
@@ -8426,7 +8632,7 @@ def _history_backfill_complete_idle(log_once=True):
 
 
 def _history_rule_collection_catchup_key():
-    return f"rule_collection_catchup_v{HISTORY_RULE_CATCHUP_VERSION}_complete"
+    return f"rule_collection_catchup_v{HISTORY_RULE_COLLECTION_CATCHUP_VERSION}_complete"
 
 
 def _history_rule_collection_catchup_dates(base_date):
@@ -8454,7 +8660,7 @@ def _history_rule_collection_catchup_snapshot():
 
 
 def history_rule_collection_catchup_worker():
-    """One-time v4.1.13 MLS/EPL Silver replay under the new collection rules."""
+    """One-time v4.1.14 MLS/EPL Silver replay under the new collection rules."""
     time.sleep(18)
     worker='rule-collections'
     while not _history_backfill_seed_marker().get('seedComplete'):
@@ -8468,7 +8674,7 @@ def history_rule_collection_catchup_worker():
             _history_worker_beat(worker,'complete:rule-collections',current='')
             time.sleep(60)
     HISTORY_RULE_COLLECTION_CATCHUP_STATE.update({'running':True,'complete':False,'startedAt':time.time(),'completedAt':0.0,'datesChecked':0,'candidatesExamined':0,'qualifying':0,'newUniqueAssets':0,'existingAssetsReused':0,'newCollectionLinks':0,'duplicateLinksSuppressed':0,'rejected':0,'lastError':''})
-    _history_console_log(worker,'INFO',f'rule collection catch-up v{HISTORY_RULE_CATCHUP_VERSION} started • MLS/EPL Silver • floor={HISTORY_OFFICIAL_CATCHUP_FLOOR_DATE}')
+    _history_console_log(worker,'INFO',f'rule collection catch-up v{HISTORY_RULE_COLLECTION_CATCHUP_VERSION} started • MLS/EPL Silver • floor={HISTORY_OFFICIAL_CATCHUP_FLOOR_DATE}')
     try:
         today=_client_date_iso(0,MEDIA_PREWARM_STATE.get('timezone') or '',MEDIA_PREWARM_STATE.get('utcOffsetMinutes'))
         dates=_history_rule_collection_catchup_dates(datetime.strptime(today,'%Y-%m-%d').date())
@@ -8500,7 +8706,7 @@ def history_rule_collection_catchup_worker():
             time.sleep(1)
         completed=time.time(); HISTORY_REPOSITORY.set_catalog_meta(marker,'1'); HISTORY_REPOSITORY.set_catalog_meta(marker+'_completed_at',str(completed))
         HISTORY_RULE_COLLECTION_CATCHUP_STATE.update({'running':False,'complete':True,'completedAt':completed,'lastLeague':'','lastDate':'','lastError':''})
-        _history_console_log(worker,'INFO',f"rule collection catch-up v{HISTORY_RULE_CATCHUP_VERSION} complete • dates={HISTORY_RULE_COLLECTION_CATCHUP_STATE.get('datesChecked',0)} • new-assets={HISTORY_RULE_COLLECTION_CATCHUP_STATE.get('newUniqueAssets',0)} • new-links={HISTORY_RULE_COLLECTION_CATCHUP_STATE.get('newCollectionLinks',0)}")
+        _history_console_log(worker,'INFO',f"rule collection catch-up v{HISTORY_RULE_COLLECTION_CATCHUP_VERSION} complete • dates={HISTORY_RULE_COLLECTION_CATCHUP_STATE.get('datesChecked',0)} • new-assets={HISTORY_RULE_COLLECTION_CATCHUP_STATE.get('newUniqueAssets',0)} • new-links={HISTORY_RULE_COLLECTION_CATCHUP_STATE.get('newCollectionLinks',0)}")
         _history_worker_beat(worker,'complete:rule-collections',current='',progress=True)
     except Exception as exc:
         HISTORY_RULE_COLLECTION_CATCHUP_STATE.update({'running':False,'lastError':f'{type(exc).__name__}: {exc}'})
@@ -8515,7 +8721,7 @@ def history_rule_collection_catchup_worker():
 def history_backfill_worker():
     """Build the fixed historical seed once, then stop chronological backfill.
 
-    v4.1.13 seeds every date from yesterday through 2025-08-01 (inclusive). Once
+    v4.1.14 seeds every date from yesterday through 2025-08-01 (inclusive). Once
     score/media inventory exists for that full range, completion is persisted in
     catalog metadata and this worker remains alive only as a heartbeat. Green-gap
     workers may continue improving already-seeded events, but the date worker never
@@ -9075,7 +9281,7 @@ class Handler(SimpleHTTPRequestHandler):
                 "persistentState": bool(STATE_DIR),
                 "rateLimit": {"remaining": RATE_LIMIT_STATE.get("remaining", ""), "limit": RATE_LIMIT_STATE.get("limit", ""), "limited": RATE_LIMIT_STATE.get("limited", False)},
                 "highlightlyRateLimited": RATE_LIMIT_STATE["limited"],
-                "phase": "V4.1.13 NORMALIZED CATALOG + SEARCH CONSOLE",
+                "phase": "V4.1.14 NORMALIZED CATALOG + SEARCH CONSOLE",
                 "workMode":dict(HISTORY_WORK_MODE_STATE),
                 "highlightlyConfigured": bool(key),
                 "youtubeCooldownSeconds":max((row.get("cooldownSeconds",0) for row in YOUTUBE_GATEWAY.status().values()), default=0),
@@ -9387,7 +9593,7 @@ class Handler(SimpleHTTPRequestHandler):
                 flat.setdefault("leagueName",cfg["league"])
                 flat.setdefault("countryCode",cfg.get("countryCode",""))
             url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.13"})
+            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.14"})
             cache_name=f"{sport_key}-{endpoint}-v2514" if sport_key in ("epl","mls") else f"{sport_key}-{endpoint}"
 
             # v1.9.1 quota control: proactively reuse a fresh server-side snapshot.
@@ -9521,7 +9727,7 @@ class Handler(SimpleHTTPRequestHandler):
             req = Request(url, headers={
                 "x-rapidapi-key": key,
                 "Accept": "application/json",
-                "User-Agent": "SportsBigBoard/4.1.13"
+                "User-Agent": "SportsBigBoard/4.1.14"
             })
             try:
                 with urlopen(req, timeout=15) as resp:
@@ -9561,7 +9767,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT)
-    print("\nSports Big Board v4.1.13 — normalized catalog + fail-closed event association")
+    print("\nSports Big Board v4.1.14 — normalized catalog + fail-closed event association")
     print(f"Bind: {BIND_HOST}:{PORT} • deployment: {DEPLOYMENT_MODE} • state: {STATE_DIR}")
     if not CLOUD_MODE: print(f"Open: http://localhost:{PORT}")
     print("Highlightly key:", "configured" if read_key() else "NOT CONFIGURED")

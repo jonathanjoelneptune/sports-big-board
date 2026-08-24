@@ -234,6 +234,30 @@ class ArchitectureTests(unittest.TestCase):
             server.GAME_CENTER_EVENT_INDEX.pop(('MLB',date),None)
 
 
+    def test_v414_nfl_playlist_catalog_and_items_never_use_search_list(self):
+        calls=[]
+        def fake(url,timeout=10):
+            calls.append(url)
+            if '/playlists?' in url:
+                return {'items':[{'id':'PLweek16','snippet':{'title':'Week 16 - 2025 Season','description':'Game recaps','publishedAt':'2025-12-19T00:00:00Z'},'contentDetails':{'itemCount':1}}]}
+            if '/playlistItems?' in url:
+                return {'items':[{'contentDetails':{'videoId':'vid16'},'snippet':{'resourceId':{'videoId':'vid16'}}}]}
+            if '/videos?' in url:
+                return {'items':[{'id':'vid16','snippet':{'channelId':server.NFL_YOUTUBE_CHANNEL_ID,'channelTitle':'NFL','title':'Buffalo Bills vs. Cleveland Browns | 2025 Week 16 Game Highlights','description':'Official NFL recap','publishedAt':'2025-12-22T00:00:00Z','thumbnails':{'high':{'url':'thumb'}}},'contentDetails':{'duration':'PT12M'},'status':{'privacyStatus':'public','embeddable':True}}]}
+            return {}
+        with tempfile.TemporaryDirectory() as td, patch.object(server,'read_youtube_key',return_value='k'), patch.object(server,'youtube_fetch_json',side_effect=fake), patch.object(server,'_nfl_youtube_playlist_catalog_cache_path',return_value=Path(td)/'catalog.json'), patch.object(server,'_nfl_youtube_playlist_items_cache_path',side_effect=lambda pid:Path(td)/(pid+'.json')):
+            catalog=server._nfl_youtube_playlist_catalog(force=True)
+            chosen=server._nfl_candidate_recap_playlists('2025-12-21')
+            items=server._nfl_youtube_playlist_items(chosen[0],force=True)
+        self.assertEqual(catalog[0]['playlistId'],'PLweek16')
+        self.assertEqual(chosen[0]['playlistId'],'PLweek16')
+        self.assertEqual(items[0]['youtubeId'],'vid16')
+        self.assertEqual(items[0]['mediaObjective'],'EXTENDED')
+        self.assertTrue(any('/playlists?' in x for x in calls))
+        self.assertTrue(any('/playlistItems?' in x for x in calls))
+        self.assertTrue(any('/videos?' in x for x in calls))
+        self.assertFalse(any('/search?' in x for x in calls))
+
     def test_wrong_provider_id_cannot_override_team_fingerprint(self):
         date='2026-08-20'
         games=[
@@ -519,6 +543,13 @@ class ArchitectureTests(unittest.TestCase):
         self.assertGreater(status['search']['cooldownSeconds'],0)
         self.assertEqual(status['activities']['cooldownSeconds'],0)
         self.assertEqual(status['videos']['cooldownSeconds'],0)
+
+    def test_v414_youtube_playlists_are_independent_from_search_quota(self):
+        gateway=YouTubeGateway()
+        self.assertEqual(gateway.operation_for_url('https://www.googleapis.com/youtube/v3/playlists?part=snippet'),'playlists')
+        self.assertEqual(gateway.operation_for_url('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet'),'playlistitems')
+        self.assertEqual(gateway.operation_for_url('https://www.googleapis.com/youtube/v3/search?part=snippet'),'search')
+
 
     def test_historical_score_inventory_is_cached_once_and_shared_with_media_discovery(self):
         row={'id':'evt-score','espnEventId':'evt-score','completed':True,'awayTeam':{'name':'Away'},'homeTeam':{'name':'Home'}}

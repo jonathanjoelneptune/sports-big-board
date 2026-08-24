@@ -1,8 +1,8 @@
-"""YouTube API gateway for Sports Big Board v4.1.13.
+"""YouTube API gateway for Sports Big Board v4.1.14.
 
 The gateway is deliberately operation-aware. A search.list quota/rate failure must
 never disable cheap metadata validation (videos.list) or official-channel history
-indexing (activities.list / playlistItems.list). Historical playback relies on those independent lanes.
+indexing (activities.list / playlists.list / playlistItems.list). Historical playback relies on those independent lanes.
 """
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ class OperationState:
 class YouTubeGateway:
     """Small thread-safe request broker with separate failure domains per method."""
 
-    def __init__(self, user_agent: str = "SportsBigBoard/4.1.13", state_file=None, quota_timezone="America/Los_Angeles"):
+    def __init__(self, user_agent: str = "SportsBigBoard/4.1.14", state_file=None, quota_timezone="America/Los_Angeles"):
         self.user_agent = user_agent
         self.state_file = Path(state_file) if state_file else None
         self.quota_timezone = str(quota_timezone or "America/Los_Angeles")
@@ -48,6 +48,7 @@ class YouTubeGateway:
             "videos": OperationState(),
             "activities": OperationState(),
             "channels": OperationState(),
+            "playlists": OperationState(),
             "playlistitems": OperationState(),
             "other": OperationState(),
         }
@@ -85,7 +86,7 @@ class YouTubeGateway:
     @staticmethod
     def operation_for_url(url: str) -> str:
         path = urlparse(str(url or "")).path.rstrip("/").split("/")[-1].lower()
-        if path in {"search", "videos", "activities", "channels", "playlistitems"}:
+        if path in {"search", "videos", "activities", "channels", "playlists", "playlistitems"}:
             return path
         return "other"
 
