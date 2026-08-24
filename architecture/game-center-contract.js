@@ -1,4 +1,4 @@
-/* v4.1.0 normalized Game Center browser contract.
+/* v4.1.1 normalized Game Center browser contract.
 
    Browser memory is HOT. Localhost SQLite is WARM. Provider identity belongs to
    the server: score-ribbon ids are aliases, not assumed MLB/ESPN ids. Every

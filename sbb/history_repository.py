@@ -450,7 +450,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.0 migration cooldowns already persisted in production.
+        """Release artificial v4.1.1 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -636,7 +636,8 @@ class HistoryRepository:
             quarantined=int(conn.execute("SELECT COUNT(*) FROM history_event_media WHERE association_state='QUARANTINED'").fetchone()[0] or 0)
             cross=int(conn.execute("SELECT COUNT(*) FROM (SELECT asset_key FROM history_event_media WHERE association_state='ASSIGNED' GROUP BY asset_key HAVING COUNT(DISTINCT canonical_event_key)>1)").fetchone()[0] or 0)
             counts={r[0]:int(r[1] or 0) for r in conn.execute("SELECT association_method,COUNT(*) FROM history_event_media WHERE association_state='QUARANTINED' GROUP BY association_method").fetchall()}
-        return {"assignedLinks":assigned,"quarantinedLinks":quarantined,"crossEventAssets":cross,"teamMismatch":counts.get('TITLE_TEAM_PAIR_CONFLICT',0)+counts.get('TEAM_FIELD_CONFLICT',0),"dateMismatch":counts.get('DATE_MISMATCH',0),"seasonMismatch":counts.get('SEASON_MISMATCH',0),"crossEventQuarantined":counts.get('CROSS_EVENT_ASSET_CONFLICT',0)}
+        quarantine_reasons={k:v for k,v in sorted(counts.items(),key=lambda kv:(-int(kv[1]),str(kv[0]))) if k}
+        return {"assignedLinks":assigned,"quarantinedLinks":quarantined,"crossEventAssets":cross,"teamMismatch":counts.get('TITLE_TEAM_PAIR_CONFLICT',0)+counts.get('TEAM_FIELD_CONFLICT',0),"dateMismatch":counts.get('DATE_MISMATCH',0),"seasonMismatch":counts.get('SEASON_MISMATCH',0),"crossEventQuarantined":counts.get('CROSS_EVENT_ASSET_CONFLICT',0),"quarantineReasons":quarantine_reasons}
 
     @staticmethod
     def _hydrate_asset(row):
@@ -907,7 +908,7 @@ class HistoryRepository:
                 claimed=bool(str(row["claim_owner"] or "") and float(row["claim_expires_at"] or 0)>now)
                 if claimed: summary["claimed"]+=1
                 else: summary["availableDue"]+=1
-        # v4.1.0 operator-console aliases keep the explicit catalog semantics.
+        # v4.1.1 operator-console aliases keep the explicit catalog semantics.
         # "noMedia" was ambiguous because UNINDEXED events can already have Blue
         # or Purple media; expose the actual union under an honest name instead.
         summary.update({

@@ -1,7 +1,7 @@
-/* Sports Big Board v4.1.0 historical database audit view. */
+/* Sports Big Board v4.1.1 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.1.0';
+  const FRONTEND_VERSION='4.1.1';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -93,7 +93,7 @@
       const st=workers[name]||{}; const phase=String(st.phase||'starting'); const card=document.createElement('div'); card.className='history-search-worker-card';
       if(phase.startsWith('provider')||phase==='discovering'||phase==='backfilling')card.classList.add('active'); else if(phase.startsWith('paused'))card.classList.add('paused'); else if(phase.includes('wait'))card.classList.add('waiting'); else if(phase==='error')card.classList.add('error');
       const title=document.createElement('span');title.textContent=name.toUpperCase(); const strong=document.createElement('strong');strong.textContent=phase.replaceAll(':',' / '); const small=document.createElement('small');
-      const detail=[]; if(st.current)detail.push(st.current); if(st.provider)detail.push(`provider ${st.provider}`); if(st.claimKey)detail.push(`lease ${st.claimKey}`); if(st.lastDurationSeconds)detail.push(`last ${Number(st.lastDurationSeconds).toFixed(1)}s`); if(!detail.length)detail.push(`heartbeat ${ageText(st.heartbeatAgeSeconds)}`);
+      const detail=[]; if(st.current)detail.push(st.current); if(st.provider)detail.push(`provider ${st.provider}`); if(st.claimKey)detail.push(`lease ${st.claimKey}`); if(st.lastDurationSeconds)detail.push(`last ${Number(st.lastDurationSeconds).toFixed(1)}s`); if(Number(st.shortCircuits||0))detail.push(`short ${Number(st.shortCircuits||0)}`); if(Number(st.fallbackAttempts||0))detail.push(`fallback ${Number(st.fallbackHits||0)}/${Number(st.fallbackAttempts||0)}`); if(!detail.length)detail.push(`heartbeat ${ageText(st.heartbeatAgeSeconds)}`);
       small.textContent=detail.join(' • ');card.append(title,strong,small);grid.appendChild(card);
     }
   }
@@ -128,7 +128,7 @@
   function consoleFullReport(data){
     const now=new Date(); const backend=String(data?.version||'UNKNOWN'); const discovery=Number(data?.historyDiscoveryVersion||0);
     const threads=data?.threads||[], workers=data?.workers||{}, queue=data?.greenGapQueue||{}, bg=data?.background||{}, g=data?.greenGap||{}, back=data?.backfill||{};
-    const gateway=data?.youtubeGateway||{}, budget=data?.youtubeSearchBudget||{}, hi=data?.highlightly||{}, focus=data?.focus||{}, assoc=data?.associations||{}, pool=data?.greenPool||{}, providers=data?.providerConcurrency||{}, claims=data?.eventClaims||[], silver=data?.silver||{};
+    const gateway=data?.youtubeGateway||{}, budget=data?.youtubeSearchBudget||{}, hi=data?.highlightly||{}, focus=data?.focus||{}, assoc=data?.associations||{}, pool=data?.greenPool||{}, providers=data?.providerConcurrency||{}, claims=data?.eventClaims||[], eff=data?.discoveryEfficiency||{}, silver=data?.silver||{};
     const used=Number(budget.used||0), limit=Number(budget.limit||budget.budget||0);
     const rows=[
       'SPORTS BIG BOARD — LIVE SEARCH CONSOLE',
@@ -139,11 +139,13 @@
       `[STATE] server uptime ${Math.round(Number(data?.uptimeSeconds||0)/60)}m • green attempts ${Number(g.attempts||0)} • green upgrades ${Number(g.upgradedToGreen||0)}`,
       `[THREADS] ${threads.map(x=>`${x.name}=${x.alive?'ALIVE':'DEAD'}`).join(' • ')||'none reported'}`,
       `[GREEN POOL] configured ${Number(pool.configured||0)} • desired ${Number(pool.desired||0)} • active ${Number(pool.active||0)} • attempts/hr ${Number(pool.attemptsPerHour||0)} • upgrades/hr ${Number(pool.upgradesPerHour||0)} • candidate-promotions/hr ${Number(pool.candidatePromotionsPerHour||0)}`,
+      `[DISCOVERY EFFICIENCY] primary ${Number(eff.primaryPasses||0)} • primary-target ${Number(eff.primaryTargetHits||0)} • short-circuit ${Number(eff.shortCircuits||0)} • fallbacks ${Number(eff.fallbackAttempts||0)} • fallback hits ${Number(eff.fallbackHits||0)} (${Number(eff.fallbackHitRate||0)}%) • avg fallback ${Number(eff.averageFallbackSeconds||0)}s • est saved ${(Number(eff.estimatedSecondsSaved||0)/60).toFixed(1)}m`,
       ...Object.keys(workers).filter(k=>/^green-gap-\d+$/.test(k)).sort().map(k=>`[WORKER] ${consoleWorkerLine(k,workers[k]||{})}`),
       `[WORKER] ${consoleWorkerLine('date-backfill',workers['date-backfill']||{})}`,
       `[CATALOG] unindexed ${Number(queue.unindexed||queue.stale_version||0)} • searched-empty ${Number(queue.searched_empty||0)} • coverage-complete ${Number(queue.coverage_complete||0)} • candidate-only ${Number(queue.candidate_only||0)}`,
       `[GAPS] total ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent ${Number(queue.recent_gaps||0)} • blue-only ${Number(queue.blue_only||0)} • purple-only ${Number(queue.purple_only||0)}`,
       `[ASSOCIATIONS] assigned ${Number(assoc.assignedLinks||0)} • quarantined ${Number(assoc.quarantinedLinks||0)} • cross-event ${Number(assoc.crossEventAssets||0)} • team-mismatch ${Number(assoc.teamMismatch||0)} • date-mismatch ${Number(assoc.dateMismatch||0)} • season-mismatch ${Number(assoc.seasonMismatch||0)}`,
+      `[QUARANTINE REASONS] ${Object.entries(assoc.quarantineReasons||{}).slice(0,8).map(([k,v])=>`${k}=${Number(v||0)}`).join(' • ')||'none'}`,
       `[CLAIMS] active ${claims.length}${claims.length?` • ${claims.map(x=>`${x.owner}=${x.canonicalEventKey}`).join(' • ')}`:''}`,
       `[PROVIDERS] ${Object.entries(providers).map(([k,v])=>`${k} ${Number(v.active||0)}/${Number(v.limit||0)} active${Number(v.waiting||0)?` +${Number(v.waiting)} waiting`:''}`).join(' • ')||'none'}`,
       `[SILVER] day collections ${Number(silver.dayCollections||0)} / ${Number(silver.dayAssets||0)} assets • week collections ${Number(silver.weekCollections||0)} / ${Number(silver.weekAssets||0)} assets • periods ${Number(silver.periods||0)}`,
@@ -216,7 +218,7 @@
     consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • Backend v${backend} • Discovery v${discovery}`);
     const threads=data.threads||[]; const allThreads=threads.length&&threads.every(x=>x.alive);
     const gw=(data.workers||{})['green-gap']||{}; const queue=data.greenGapQueue||{}; const bg=data.background||{}; const pool=data.greenPool||{};
-    const search=(data.youtubeGateway||{}).search||{}; const budget=data.youtubeSearchBudget||{}; const assoc=data.associations||{}; const silver=data.silver||{};
+    const search=(data.youtubeGateway||{}).search||{}; const budget=data.youtubeSearchBudget||{}; const assoc=data.associations||{}; const eff=data.discoveryEfficiency||{}; const silver=data.silver||{};
     const problems=[...(data.problems||[])];
     if(!versionOk)problems.unshift(`RELEASE MISMATCH: frontend v${FRONTEND_VERSION} but backend v${backend}`);
     if(discovery<12)problems.unshift(`DISCOVERY MISMATCH: expected v12 but backend reports v${discovery||'?'}`);
@@ -237,10 +239,12 @@
       const header=[
         `[STATE] server uptime ${Math.round(Number(data.uptimeSeconds||0)/60)}m • workers ${allThreads?'alive':'CHECK THREADS'} • green attempts ${Number(g.attempts||0)} • green upgrades ${Number(g.upgradedToGreen||0)}`,
         `[GREEN POOL] ${Number(pool.active||0)}/${Number(pool.desired||0)} active • configured ${Number(pool.configured||0)} • attempts/hr ${Number(pool.attemptsPerHour||0)} • upgrades/hr ${Number(pool.upgradesPerHour||0)}`,
+        `[DISCOVERY EFFICIENCY] primary ${Number(eff.primaryPasses||0)} • primary-target ${Number(eff.primaryTargetHits||0)} • short ${Number(eff.shortCircuits||0)} • fallbacks ${Number(eff.fallbackAttempts||0)} • hits ${Number(eff.fallbackHits||0)} (${Number(eff.fallbackHitRate||0)}%) • avg ${Number(eff.averageFallbackSeconds||0)}s • est saved ${(Number(eff.estimatedSecondsSaved||0)/60).toFixed(1)}m`,
         ...workerLines,
         `[CATALOG] unindexed ${Number(queue.unindexed||queue.stale_version||0)} • searched-empty ${Number(queue.searched_empty||0)} • coverage-complete ${Number(queue.coverage_complete||0)} • candidate-only ${Number(queue.candidate_only||0)}`,
       `[GAPS] total ${Number(queue.gaps||0)} • due ${Number(queue.due_now||0)} • recent ${Number(queue.recent_gaps||0)} • blue-only ${Number(queue.blue_only||0)} • purple-only ${Number(queue.purple_only||0)}`,
       `[ASSOCIATIONS] assigned ${Number(assoc.assignedLinks||0)} • quarantined ${Number(assoc.quarantinedLinks||0)} • cross-event ${Number(assoc.crossEventAssets||0)} • team-mismatch ${Number(assoc.teamMismatch||0)} • date-mismatch ${Number(assoc.dateMismatch||0)} • season-mismatch ${Number(assoc.seasonMismatch||0)}`,
+        `[QUARANTINE REASONS] ${Object.entries(assoc.quarantineReasons||{}).slice(0,6).map(([k,v])=>`${k}=${Number(v||0)}`).join(' • ')||'none'}`,
         `[CLAIMS] active ${claims.length}`,
         `[PROVIDERS] ${Object.entries(providers).map(([k,v])=>`${k} ${Number(v.active||0)}/${Number(v.limit||0)}${Number(v.waiting||0)?` +${Number(v.waiting)} waiting`:''}`).join(' • ')||'none'}`,
         `[SILVER] day ${Number(silver.dayCollections||0)} collections / ${Number(silver.dayAssets||0)} assets • week ${Number(silver.weekCollections||0)} collections / ${Number(silver.weekAssets||0)} assets`,
@@ -264,7 +268,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.0 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.1 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);

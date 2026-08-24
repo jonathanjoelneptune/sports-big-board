@@ -767,7 +767,7 @@ class ArchitectureTests(unittest.TestCase):
                  patch.object(server,'_official_youtube_history_day_search_results',return_value=[extended,gold]), \
                  patch.object(server,'_historical_youtube_web_results',return_value=[]), \
                  patch.object(server,'_historical_search_engine_youtube_results',return_value=[]):
-                result=server._history_discover_event(date,'NBA',row,allow_search_rescue=True)
+                result=server._history_discover_event(date,'NBA',row,allow_search_rescue=True,pass_target_tier=server.HISTORY_QUALITY_TARGET_TIER)
                 plan=server._history_playback_plan(date,'NBA','nba-upgrade-1')
                 saved=repo.get_event(date,'NBA','nba-upgrade-1')
             self.assertFalse(result.get('cached'))
@@ -777,6 +777,30 @@ class ArchitectureTests(unittest.TestCase):
             self.assertEqual(plan['primary']['recapTier'],'gold')
             self.assertEqual(saved['discovery']['bestTier'],'gold')
             self.assertTrue(saved['discovery']['catalogComplete'])
+
+    def test_v411_green_pass_short_circuits_after_primary_target_hit(self):
+        row={'id':'nba-short-1','espnEventId':'nba-short-1','completed':True,
+             'awayTeam':{'name':'Brooklyn Nets'},'homeTeam':{'name':'Los Angeles Lakers'}}
+        green={'id':'green-short','youtubeId':'green-short-id','title':'Brooklyn Nets vs Los Angeles Lakers Game Recap','durationSeconds':210,'overview':True,'verifiedPlayable':True}
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/'history.sqlite3'); date='2026-03-25'; repo.put_scores(date,'NBA',[row])
+            with patch.object(server,'HISTORY_REPOSITORY',repo),                  patch.object(server,'_history_event_media_no_quota',return_value=[green]) as native,                  patch.object(server,'_official_youtube_history_upload_results',return_value=[]) as uploads,                  patch.object(server,'_official_youtube_history_activity_results',return_value=[]) as activity,                  patch.object(server,'_historical_youtube_web_results',return_value=[]) as web,                  patch.object(server,'_historical_search_engine_youtube_results',return_value=[]) as index,                  patch.object(server,'_official_youtube_history_day_search_results',return_value=[]) as search:
+                result=server._history_discover_event(date,'NBA',row,allow_search_rescue=True,pass_target_tier='green')
+            self.assertEqual(result['bestTier'],'green'); self.assertTrue(result['shortCircuited']); self.assertFalse(result['fallbackAttempted'])
+            self.assertEqual(set(result['lanes']),{'official-native'}); native.assert_called_once()
+            uploads.assert_not_called(); activity.assert_not_called(); web.assert_not_called(); index.assert_not_called(); search.assert_not_called()
+
+    def test_v411_public_fallback_hit_stops_before_index_and_search(self):
+        row={'id':'nba-fallback-1','espnEventId':'nba-fallback-1','completed':True,
+             'awayTeam':{'name':'Brooklyn Nets'},'homeTeam':{'name':'Los Angeles Lakers'}}
+        blue={'id':'blue-fallback','youtubeId':'blue-fallback-id','title':'Top plays Brooklyn Nets vs Los Angeles Lakers','durationSeconds':45,'programType':'reel','verifiedPlayable':True}
+        green={'id':'green-fallback','youtubeId':'green-fallback-id','title':'Brooklyn Nets vs Los Angeles Lakers Game Recap','durationSeconds':210,'overview':True,'verifiedPlayable':True}
+        with tempfile.TemporaryDirectory() as td:
+            repo=HistoryRepository(Path(td)/'history.sqlite3'); date='2026-03-24'; repo.put_scores(date,'NBA',[row])
+            with patch.object(server,'HISTORY_REPOSITORY',repo),                  patch.object(server,'_history_event_media_no_quota',return_value=[blue]),                  patch.object(server,'_official_youtube_history_upload_results',return_value=[]),                  patch.object(server,'_official_youtube_history_activity_results',return_value=[]),                  patch.object(server,'_historical_youtube_web_results',return_value=[green]) as web,                  patch.object(server,'_historical_search_engine_youtube_results',return_value=[]) as index,                  patch.object(server,'_official_youtube_history_day_search_results',return_value=[]) as search:
+                result=server._history_discover_event(date,'NBA',row,allow_search_rescue=True,pass_target_tier='green')
+            self.assertEqual(result['bestTier'],'green'); self.assertFalse(result['shortCircuited']); self.assertTrue(result['fallbackAttempted']); self.assertTrue(result['fallbackHit'])
+            web.assert_called_once(); index.assert_not_called(); search.assert_not_called()
 
     def test_catalog_complete_blue_remains_quality_upgrade_pending(self):
         row={'id':'nba-blue-closed','espnEventId':'nba-blue-closed','completed':True,
