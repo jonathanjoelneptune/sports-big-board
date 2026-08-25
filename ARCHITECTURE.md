@@ -1,6 +1,10 @@
-# Sports Big Board v4.1.23 Architecture
+# Sports Big Board v4.1.24 Architecture
 
-## v4.1.23 catalog-first runtime and interactive source-management boundary
+## v4.1.24 historical ribbon recovery boundary
+
+Historical navigation now has two server-owned read contracts. `/api/history/ribbon` is the lightweight first-paint contract: SQLite returns canonical score rows and compact playable-media plans keyed by canonical event identity, with no provider calls and no full source/audit payload. The browser gives this request a bounded deadline, paints cards immediately, and then hydrates `/api/history/day` asynchronously for full media/diagnostics. Seed authority comes from persisted catalog metadata so backend startup timing cannot reopen historical provider dependencies. Every static Pages asset advances to the v4.1.24 query generation to force Android/GitHub Pages cache invalidation.
+
+## v4.1.24 catalog-first runtime and interactive source-management boundary
 
 The canonical SQLite catalog is now the runtime relationship authority, not merely a historical audit store. Provider schedule feeds, playlist crawlers, and discovery workers write normalized events/media/associations into the catalog; `/api/history/day` exposes resolved `eventPlans`; score cards consume those exact plans before any browser-side heuristic matching. Historical navigation is therefore read-first. Opening a date does not launch a full date discovery pass; exact-event discovery remains available only for a genuine missing-media interaction while background recovery continues independently.
 

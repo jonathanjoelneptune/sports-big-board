@@ -1,18 +1,18 @@
-# Android setup — Sports Big Board v4.1.23
+# Android setup — Sports Big Board v4.1.24
 
 ## Start
 
 After extracting the ZIP:
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.23/sports-big-board-v4.1.23
+cd ~/storage/downloads/sports-big-board-v4.1.24/sports-big-board-v4.1.24
 bash START-ANDROID.sh
 ```
 
 If Android extracts without the nested folder:
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.23
+cd ~/storage/downloads/sports-big-board-v4.1.24
 bash START-ANDROID.sh
 ```
 

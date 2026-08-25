@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sports Big Board v4.1.23 local/cloud backend.
+"""Sports Big Board v4.1.24 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
@@ -41,7 +41,7 @@ from sbb.event_matcher import match_event as match_media_to_event
 from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
 from sbb.secrets import get_secret, set_secrets, status as secrets_status, migrate_legacy as migrate_legacy_secrets, SECRETS_FILE
 
-APP_VERSION = "4.1.23"
+APP_VERSION = "4.1.24"
 PORT = int(os.environ.get("PORT", "8080"))
 BIND_HOST = os.environ.get("SBB_BIND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -73,7 +73,7 @@ OPENAI_KEY_FILE = STATE_DIR / "openai-key"
 OPENAI_API_BASE = "https://api.openai.com/v1"
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
 YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
-YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.23", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
+YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.24", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
 
 def youtube_fetch_json(url, timeout=10):
     """Operation-aware YouTube broker.
@@ -92,7 +92,7 @@ NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"  # verified @NFL channel
 # playlistItems.list + videos.list; search.list is never required. Known historical
 # playlist IDs provide immediate anchors while automatic enumeration remains primary.
 NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS = {
-    # v4.1.23 operator-pinned 2025-season weekly/playoff recap playlists.  The
+    # v4.1.24 operator-pinned 2025-season weekly/playoff recap playlists.  The
     # channel catalog supplies the authoritative title when available; these anchors
     # keep every known playlist reachable even if playlists.list misses/changes it.
     "PLRdw3IjKY2gm8m7heXMOfVPLVA8jDY_Jd":"2025 NFL Recap Playlist 01",
@@ -139,7 +139,7 @@ EPL_YOUTUBE_KNOWN_PLAYLISTS = {
     "PLR1b-6EyIaTs":{"title":"Premier League 2026-27 season","url":"https://www.youtube.com/playlist?list=PLR1b-6EyIaTs","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2026,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
     "PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E":{"title":"Premier League 2025-26 season","url":"https://www.youtube.com/playlist?list=PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2025,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
 }
-# v4.1.23 operator-curated GAME playlist registry. These playlist lanes use
+# v4.1.24 operator-curated GAME playlist registry. These playlist lanes use
 # playlistItems.list + videos.list only, never search.list.  Exact event association
 # still requires both teams plus explicit/published date evidence, so a trusted
 # playlist can improve discovery without weakening Event Matcher v7.
@@ -362,7 +362,7 @@ HISTORY_DB_AUDIT_LOCK = threading.RLock()
 HISTORY_DB_AUDIT_STATE = {"generation":0,"running":False,"complete":False,"cursor":0,"checked":0,"total":0,"startedAt":0.0,"completedAt":0.0,"lastRun":0.0,"lastError":"","issues":{"noVerifiedMedia":0,"staleDiscovery":0,"quarantinedLinks":0,"unknownDiscovery":0},"integrity":{},"silverIdentity":{}}
 HISTORY_DB_AUDIT_BATCH = max(50,min(1000,int(os.environ.get("SBB_DB_AUDIT_BATCH","250") or 250)))
 
-# v4.1.23 rolling schedule + operator playlist state. Provider feeds write into the
+# v4.1.24 rolling schedule + operator playlist state. Provider feeds write into the
 # canonical catalog; the UI reads the catalog instead of reconstructing relationships.
 HISTORY_SCHEDULE_SYNC_INTERVAL = max(120,int(os.environ.get("SBB_SCHEDULE_SYNC_INTERVAL","600") or 600))
 HISTORY_SCHEDULE_SYNC_FUTURE_DAYS = max(3,min(21,int(os.environ.get("SBB_SCHEDULE_SYNC_FUTURE_DAYS","14") or 14)))
@@ -1039,7 +1039,7 @@ def _prewarm_highlightly_call(sport_key,endpoint,date,timezone_value="",force=Fa
     if RATE_LIMIT_STATE.get("limited") and limited_since and time.time()-limited_since < 15*60:
         return cached
     url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.23"})
+    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.24"})
     try:
         with urlopen(req,timeout=15) as resp:
             data=json.loads(resp.read().decode("utf-8"))
@@ -1600,7 +1600,7 @@ def openai_api_request(path, payload=None, method=None, timeout=20):
         raise RuntimeError("OPENAI_NOT_CONFIGURED")
     method=method or ("POST" if payload is not None else "GET")
     body=None if payload is None else json.dumps(payload).encode("utf-8")
-    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.23"}
+    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.24"}
     req=Request(f"{OPENAI_API_BASE}{path}",data=body,headers=headers,method=method)
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -2135,7 +2135,7 @@ def _google_news_official_results(league):
     site_clause=' OR '.join(f'site:{d}' for d in sorted(trusted_domains))
     query=f'({terms}) ({site_clause}) {league} when:5d'
     url='https://news.google.com/rss/search?'+urlencode({'q':query,'hl':'en-US','gl':'US','ceid':'US:en'})
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.24'})
     try:
         with urlopen(req,timeout=10) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2194,7 +2194,7 @@ def _espn_rss_results(league):
     """First-party ESPN headline feed. ESPN explicitly publishes these RSS feeds for aggregators."""
     league=str(league or '').upper(); url=ESPN_RSS.get(league)
     if not url: return []
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.24'})
     try:
         with urlopen(req,timeout=8) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2440,7 +2440,7 @@ def _nfl_team_site_video_results(date, away, home, max_items=8):
     for host in hosts:
         page=f'https://{host}/video/'
         try:
-            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'})
+            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.24'})
             with urlopen(req,timeout=8) as resp: raw=resp.read().decode('utf-8','ignore')
         except Exception as exc:
             print(f'[SBB NFL] club video page failed {host}: {type(exc).__name__}: {exc}',flush=True); continue
@@ -2786,7 +2786,7 @@ def _highlightly_soccer_schedule(league,date):
         "x-rapidapi-key":read_key(),
         "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.23"
+        "User-Agent":"SportsBigBoard/4.1.24"
     })
     with urlopen(req,timeout=12) as resp:
         payload=json.loads(resp.read().decode("utf-8"))
@@ -2890,7 +2890,7 @@ def _soccer_diagnostics():
                     "x-rapidapi-key":read_key(),
                     "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
                     "Accept":"application/json",
-                    "User-Agent":"SportsBigBoard/4.1.23"
+                    "User-Agent":"SportsBigBoard/4.1.24"
                 })
                 with urlopen(req,timeout=12) as resp:
                     payload=json.loads(resp.read().decode("utf-8"))
@@ -3652,7 +3652,7 @@ def _nfl_game_highlights_source_pages(away,home):
 
 
 def _nfl_fetch_page_text(url,timeout=9):
-    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'})
+    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.24'})
     with urlopen(req,timeout=timeout) as resp:
         return resp.read().decode('utf-8','ignore')
 
@@ -3809,7 +3809,7 @@ _SOCCER_TEAM_ALIASES = {
 
 
 def _official_fetch_page_text(url,timeout=10,referer=''):
-    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'}
+    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.24'}
     if referer: headers['Referer']=referer
     req=Request(url,headers=headers)
     with urlopen(req,timeout=timeout) as resp:
@@ -4262,7 +4262,7 @@ def _official_nfl_feed_videos(date, away, home):
         return []
     url=f"https://www.youtube.com/feeds/videos.xml?channel_id={NFL_YOUTUBE_CHANNEL_ID}"
     try:
-        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.23"})
+        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.24"})
         with urlopen(req,timeout=9) as resp:
             raw=resp.read()
         root=ET.fromstring(raw)
@@ -4451,7 +4451,7 @@ def _youtube_oembed_probe(video_id,timeout=7):
     vid=str(video_id or '').strip()
     if not vid: return None
     url='https://www.youtube.com/oembed?'+urlencode({'url':f'https://www.youtube.com/watch?v={vid}','format':'json'})
-    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'})
+    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.24'})
     try:
         with urlopen(req,timeout=timeout) as resp:
             if getattr(resp,'status',200)!=200: return None
@@ -6024,7 +6024,7 @@ def _search_engine_youtube_links(query,max_results=18):
     # normal search result page on a phone connection.
     try:
         url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss','count':max(10,min(30,max_results*2))})
-        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
+        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.24','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
         with urlopen(req,timeout=9) as resp:
             blob=resp.read(1_500_000)
         root=ET.fromstring(blob)
@@ -6422,7 +6422,7 @@ def normalized_rapid_highlights(date, force_refresh=False, force_clips=False):
     return unique
 
 def fetch_json(url, timeout=15):
-    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.23"})
+    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.24"})
     with urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
@@ -7120,7 +7120,7 @@ def _football_day_fallback(date, sport_key, timezone_value=""):
     req=Request(url,headers={
         "x-rapidapi-key":key,
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.23"
+        "User-Agent":"SportsBigBoard/4.1.24"
     })
     with urlopen(req,timeout=15) as resp:
         data=json.loads(resp.read().decode("utf-8"))
@@ -7339,7 +7339,7 @@ def _media_request_headers(range_value=None,media_url=""):
     host=(urlparse(str(media_url or "")).hostname or "").lower()
     referer="https://www.espn.com/" if ("espn" in host or "akamai" in host) else ("https://www.nfl.com/" if "nfl" in host else "https://www.mlb.com/")
     headers={
-        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.23",
+        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.24",
         "Accept":"video/mp4,video/*;q=0.9,*/*;q=0.8",
         "Referer":referer
     }
@@ -8363,7 +8363,7 @@ def _history_validate_native_asset(item,timeout=6):
     """Positively probe one direct historical media URL before advertising green."""
     row=dict(item or {}); url=str(row.get('mediaUrl') or '').strip()
     if not url: return row
-    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
+    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.24','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
     if 'espn' in url.lower(): headers['Referer']='https://www.espn.com/'
     source_type=str(row.get('sourceType') or '')
     external=str(row.get('externalUrl') or '').lower()
@@ -8750,15 +8750,71 @@ def _history_day_event_plans(date):
         out[key]=_history_playback_plan(str(date)[:10],league,event_id)
     return out
 
+def _history_day_score_rows(date):
+    """Return the canonical historical ribbon slate without any provider calls.
+
+    v4.1.24 deliberately separates the lightweight score-ribbon contract from the
+    much larger event/media plans.  Persisted history_day scoreboards are preferred
+    because they carry the richest score/status fields.  Canonical catalog events
+    fill any identity gaps so a relationship-only catalog still paints the ribbon.
+    """
+    target=str(date or '')[:10]
+    out={lg:[] for lg in HISTORY_LEAGUES}; seen={lg:set() for lg in HISTORY_LEAGUES}
+    for lg in HISTORY_LEAGUES:
+        state=HISTORY_REPOSITORY.get_league(target,lg)
+        for raw in state.get('scores') or []:
+            if not isinstance(raw,dict): continue
+            row=dict(raw); event_id=_history_row_event_id(row)
+            if not event_id: continue
+            row.setdefault('id',event_id); row.setdefault('eventId',event_id); row.setdefault('date',target)
+            row.setdefault('competitionId',lg); row.setdefault('league',lg)
+            out[lg].append(row); seen[lg].add(str(event_id))
+    for ev in HISTORY_REPOSITORY.catalog_events(date_from=target,date_to=target,limit=500):
+        lg=str(ev.get('league') or '').upper(); event_id=str(ev.get('eventId') or '')
+        if lg not in out or not event_id or event_id in seen[lg]: continue
+        row=dict(ev.get('event') or {})
+        if not row: continue
+        row.setdefault('id',event_id); row.setdefault('eventId',event_id); row.setdefault('date',target)
+        row.setdefault('competitionId',lg); row.setdefault('league',lg)
+        if not row.get('status') and float(ev.get('finalAt') or 0)>0: row['status']='Final'
+        out[lg].append(row); seen[lg].add(event_id)
+    return out
+
+def _history_day_ribbon_plans(date,score_rows=None):
+    """Compact exact-event media plans for score-ribbon first paint.
+
+    Unlike /api/history/day this intentionally omits discovery records and the full
+    source-media inventory.  Only playable assigned GAME media is returned, which
+    keeps historical navigation responsive over mobile connections.
+    """
+    target=str(date or '')[:10]; score_rows=score_rows or _history_day_score_rows(target); out={}
+    for lg,rows in score_rows.items():
+        if lg not in HISTORY_LEAGUES: continue
+        for row in rows or []:
+            event_id=_history_row_event_id(row)
+            if not event_id: continue
+            key=HISTORY_REPOSITORY.canonical_event_key(lg,event_id)
+            media=HISTORY_REPOSITORY.event_media(target,lg,event_id,include_failed=False)
+            playable=[x for x in media if isinstance(x,dict) and x.get('verifiedPlayable') and x.get('runtimeCatalogState')!='FAILED' and (x.get('youtubeId') or x.get('mediaUrl'))]
+            playable=_history_collapse_duplicate_media([annotate_media_tier(x) for x in playable]); playable.sort(key=_history_media_rank,reverse=True)
+            out[key]={'date':target,'league':lg,'eventId':str(event_id),'canonicalEventKey':key,'event':row,'playable':playable,'primary':playable[0] if playable else None,'media':[]}
+    return out
+
 def _history_day_score_inventory_complete(date):
-    """Whether SQLite is authoritative for the complete historical slate."""
+    """Whether SQLite is authoritative for the complete historical slate.
+
+    Use the persisted seed marker, not only the in-memory worker flag.  On a backend
+    restart the worker intentionally waits before restoring its heartbeat state; the
+    catalog itself must remain authoritative during that startup window.
+    """
     target=str(date or '')[:10]
     if not re.match(r'^\d{4}-\d{2}-\d{2}$',target): return False
     try:
         today=_client_date_iso(0,MEDIA_PREWARM_STATE.get('timezone') or '',MEDIA_PREWARM_STATE.get('utcOffsetMinutes'))
     except Exception:
         today=_date_iso(0)
-    return bool(HISTORY_BACKFILL_STATE.get('seedComplete')) and HISTORY_BACKFILL_FLOOR_DATE<=target<today
+    marker=_history_backfill_seed_marker()
+    return bool(marker.get('seedComplete')) and HISTORY_BACKFILL_FLOOR_DATE<=target<today
 
 
 def _history_event_catalog_state(date,league,row):
@@ -10214,12 +10270,21 @@ class Handler(SimpleHTTPRequestHandler):
             _touch_history_focus(date,seconds=120)
             return send_json(self,{'ok':True,'plan':_history_playback_plan(date,league,event_id)},200)
 
+        if parsed.path == "/api/history/ribbon":
+            qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]
+            if not re.match(r'^\d{4}-\d{2}-\d{2}$',date): return send_json(self,{'ok':False,'error':'DATE_REQUIRED'},400)
+            _touch_history_focus(date,seconds=120)
+            score_rows=_history_day_score_rows(date); plans=_history_day_ribbon_plans(date,score_rows)
+            score_count=sum(len(rows or []) for rows in score_rows.values())
+            return send_json(self,{'ok':True,'version':APP_VERSION,'date':date,'scoreRowsByLeague':score_rows,'scoreGameCount':score_count,'eventPlans':plans,'catalogFirst':True,'compact':True,'catalogEventCount':len(plans),'scoreInventoryComplete':_history_day_score_inventory_complete(date)},200)
+
         if parsed.path == "/api/history/day":
             qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]
             if not re.match(r'^\d{4}-\d{2}-\d{2}$',date): return send_json(self,{'ok':False,'error':'DATE_REQUIRED'},400)
             _touch_history_focus(date,seconds=120)
-            day=HISTORY_REPOSITORY.get_day(date); plans=_history_day_event_plans(date)
-            return send_json(self,{'ok':True,**day,'eventPlans':plans,'catalogFirst':True,'catalogEventCount':len(plans),'scoreInventoryComplete':_history_day_score_inventory_complete(date),'discoveryState':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary(),'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE)},200)
+            day=HISTORY_REPOSITORY.get_day(date); score_rows=_history_day_score_rows(date); plans=_history_day_event_plans(date)
+            score_count=sum(len(rows or []) for rows in score_rows.values())
+            return send_json(self,{'ok':True,**day,'scoreRowsByLeague':score_rows,'scoreGameCount':score_count,'eventPlans':plans,'catalogFirst':True,'catalogEventCount':len(plans),'scoreInventoryComplete':_history_day_score_inventory_complete(date),'discoveryState':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary(),'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE)},200)
 
         if parsed.path == "/api/history/roundups":
             qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]; league=str((qs.get('league') or ['ALL'])[-1]).upper()
@@ -10514,7 +10579,7 @@ class Handler(SimpleHTTPRequestHandler):
                 "persistentState": bool(STATE_DIR),
                 "rateLimit": {"remaining": RATE_LIMIT_STATE.get("remaining", ""), "limit": RATE_LIMIT_STATE.get("limit", ""), "limited": RATE_LIMIT_STATE.get("limited", False)},
                 "highlightlyRateLimited": RATE_LIMIT_STATE["limited"],
-                "phase": "V4.1.23 CURATED PLAYLIST RECOVERY + SOURCE REGISTRY",
+                "phase": "V4.1.24 CURATED PLAYLIST RECOVERY + SOURCE REGISTRY",
                 "workMode":dict(HISTORY_WORK_MODE_STATE),
                 "highlightlyConfigured": bool(key),
                 "youtubeCooldownSeconds":max((row.get("cooldownSeconds",0) for row in YOUTUBE_GATEWAY.status().values()), default=0),
@@ -10826,7 +10891,7 @@ class Handler(SimpleHTTPRequestHandler):
                 flat.setdefault("leagueName",cfg["league"])
                 flat.setdefault("countryCode",cfg.get("countryCode",""))
             url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.23"})
+            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.24"})
             cache_name=f"{sport_key}-{endpoint}-v2514" if sport_key in ("epl","mls") else f"{sport_key}-{endpoint}"
 
             # v1.9.1 quota control: proactively reuse a fresh server-side snapshot.
@@ -10960,7 +11025,7 @@ class Handler(SimpleHTTPRequestHandler):
             req = Request(url, headers={
                 "x-rapidapi-key": key,
                 "Accept": "application/json",
-                "User-Agent": "SportsBigBoard/4.1.23"
+                "User-Agent": "SportsBigBoard/4.1.24"
             })
             try:
                 with urlopen(req, timeout=15) as resp:
@@ -11000,7 +11065,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT)
-    print("\nSports Big Board v4.1.23 — catalog-first runtime + interactive source management")
+    print("\nSports Big Board v4.1.24 — catalog-first runtime + interactive source management")
     print(f"Bind: {BIND_HOST}:{PORT} • deployment: {DEPLOYMENT_MODE} • state: {STATE_DIR}")
     if not CLOUD_MODE: print(f"Open: http://localhost:{PORT}")
     print("Highlightly key:", "configured" if read_key() else "NOT CONFIGURED")

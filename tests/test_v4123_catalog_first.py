@@ -9,7 +9,7 @@ from sbb.history_repository import HistoryRepository
 
 class V4123CatalogFirstTests(unittest.TestCase):
     def test_release_boundary_preserves_discovery_and_rule_versions(self):
-        self.assertEqual(server.APP_VERSION, "4.1.23")
+        self.assertEqual(server.APP_VERSION, "4.1.24")
         self.assertEqual(server.HISTORY_DISCOVERY_VERSION, 15)
         self.assertEqual(server.HISTORY_RULE_CATCHUP_VERSION, 10)
         self.assertEqual(server.HISTORY_RULE_COLLECTION_CATCHUP_VERSION, 8)
@@ -97,8 +97,9 @@ class V4123CatalogFirstTests(unittest.TestCase):
         self.assertIn("catalogEventCount",backend)
         self.assertIn("const catalogRowsByLeague=new Map()",app)
         self.assertIn("storeScoreDateLeague(lg,date,rows)",app)
-        self.assertIn("if(hydrated.scoreInventoryComplete)",app)
-        self.assertIn("source:'CATALOG'",app)
+        self.assertIn("hydrateHistoricalRibbonFromCatalog",app)
+        self.assertIn("if(ribbon.scoreInventoryComplete)",app)
+        self.assertIn("source:'CATALOG_RIBBON'",app)
 
     def test_key_info_today_has_rolling_recent_fallback(self):
         root=Path(__file__).resolve().parents[1]
@@ -110,7 +111,7 @@ class V4123CatalogFirstTests(unittest.TestCase):
     def test_android_history_audit_uses_outer_vertical_scroll_container(self):
         root=Path(__file__).resolve().parents[1]
         css=(root/"styles.css").read_text(encoding="utf-8")
-        marker="/* v4.1.23 Android/mobile Historical Database Audit scroll repair."
+        marker="/* v4.1.24 Android/mobile Historical Database Audit scroll repair."
         self.assertIn(marker,css)
         mobile=css[css.index(marker):]
         self.assertIn("height:100dvh",mobile)

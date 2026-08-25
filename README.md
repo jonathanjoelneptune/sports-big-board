@@ -1,8 +1,18 @@
-# Sports Big Board v4.1.23
+# Sports Big Board v4.1.24
 
-> v4.1.23 is the **Catalog-First Runtime + Interactive Source Management** release. It keeps Discovery v15, Matcher v7, Rule Game Catch-up v10, Rule Collection Catch-up v8, the five-worker recovery pool, and every v4.1.22 curated source while making the canonical SQLite catalog the primary runtime read path.
+> v4.1.24 is the **Historical Ribbon Recovery + Cache-Bust** release. It preserves the v4.1.23 catalog-first runtime, rolling schedule sync, interactive playlist manager, Android audit repair, five-worker recovery pool, Discovery v15, Matcher v7, Rule Game Catch-up v10, and Rule Collection Catch-up v8 while replacing the historical score-ribbon first paint with an explicit lightweight SQLite contract.
 
-## v4.1.23 — catalog-first runtime + interactive source management
+## v4.1.24 — historical ribbon recovery + cache-bust
+
+- **New static asset generation:** every Pages script/style URL advances to `?v=4.1.24`, so Android Chrome and GitHub Pages cannot keep executing an older `app.js?v=4.1.23` after deployment.
+- **Compact historical ribbon endpoint:** `/api/history/ribbon?date=YYYY-MM-DD` returns canonical score rows plus compact exact-event playable-media plans without the full audit/source-media payload. Historical score cards can paint before deeper media hydration finishes.
+- **Persisted historical authority:** historical seed completeness is read from SQLite catalog metadata, not only the delayed in-memory worker heartbeat. A backend restart cannot temporarily turn a seeded date back into a provider-dependent date.
+- **Bounded mobile load:** the compact historical ribbon read has a 6.5-second deadline and the full history hydration has a 10-second deadline. A stalled mobile/network request cannot leave the ribbon in `Loading games…` forever; the UI surfaces an explicit catalog error instead.
+- **Score-first, media-second:** canonical games and known primary recap availability render first; the full `/api/history/day` media/diagnostic payload hydrates asynchronously after the ribbon exists.
+- **Today Key Info recovery:** returning to Today paints cached current Key Info immediately and then requests the forced editorial refresh, preventing a historical empty message from remaining visible during a slow refresh.
+- **Cumulative v4.1.23 fixes retained:** selective startup relationship repair, longer bounded deploy health grace, Android Historical Database Audit scrolling, rolling schedule sync, interactive playlist ingestion, and canonical event/media playback remain intact.
+
+## v4.1.24 — catalog-first runtime + interactive source management
 
 - **Rolling schedule sync:** a new `sbb-history-schedule-sync` worker refreshes yesterday, today, and the next 14 days into `history_day` / `history_catalog_event`. A full horizon refresh runs at startup and periodically; a smaller rolling refresh runs every 10 minutes. Today/future events are cataloged immediately but remain ineligible for recap discovery until live/final state makes them eligible.
 - **Manual schedule refresh:** Game Media Playlists now includes **SYNC SCHEDULE NOW**, which triggers the same canonical schedule ingestion without rebuilding the catalog.
@@ -14,7 +24,7 @@
 - **Catalog-first ribbon/playback:** browsing a historical day no longer automatically launches a whole-date `/api/history/discover` job. The browser hydrates canonical event→media plans from SQLite first. `FIND RECAP` is reserved for a true catalog gap; an explicit click can still run exact-event discovery.
 - **Today is catalog-first too:** today's persisted schedule/media can paint immediately from SQLite, then live score providers refresh authoritative score/status state in the background. This avoids waiting on providers before known media becomes clickable.
 - **Single media relationship authority:** score cards prefer exact canonical event keys from the server instead of reconstructing associations client-side. Provider search, curated playlists, generic recovery, and rolling schedules all write to the catalog; the frontend reads that resolved catalog.
-- **Version boundary:** Frontend/Backend v4.1.23; Discovery v15; Event Matcher v7; Rule Game Catch-up v10; Rule Collection Catch-up v8. No catalog rebuild and no automatic global replay.
+- **Version boundary:** Frontend/Backend v4.1.24; Discovery v15; Event Matcher v7; Rule Game Catch-up v10; Rule Collection Catch-up v8. No catalog rebuild and no automatic global replay.
 
 # Sports Big Board v4.1.22
 
