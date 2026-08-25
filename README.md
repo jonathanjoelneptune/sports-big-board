@@ -1,20 +1,21 @@
-# Sports Big Board v4.1.20
+# Sports Big Board v4.1.21
 
-> v4.1.20 is the **EPL direct matcher + targeted replay reset** release. It preserves Discovery v15, matcher v7, and the successful NFL/MLS architecture while forcing every filtered NBC highlight into event matching, carrying Every Goal directly into Silver qualification, converting EPL telemetry to unique-object accounting, and reopening only EPL YouTube catch-up newest-first.
+> v4.1.21 is the **Parallel Catalog Recovery + Operator Controls** release. It preserves Discovery v15, matcher v7, Rule Game Catch-up v9, Rule Collection Catch-up v8, and all proven NFL/MLS/EPL source adapters while increasing recovery throughput, starting NHL/general recovery concurrently, and making cursor/source/database-audit recovery an explicit operator workflow.
 
-## v4.1.20 — direct NBC matching, direct Silver handoff, EPL replay reset
+## v4.1.21 — parallel catalog recovery + operator controls
 
-- **44-item matcher invariant:** the complete season-scoped NBC `PREMIER LEAGUE HIGHLIGHTS` inventory is passed directly to the NBC matcher. Each event invocation records `matcherInventory` and `matcherCalls`; any mismatch emits an explicit internal error and increments `nbcInvariantErrors`.
-- **End-to-end NBC trace:** `[EPL NBC TRACE]` preserves one concrete candidate through title → parsed clubs → explicit date → target event → duration → association → `PERSISTED_EXTENDED`. Once a persisted trace exists, later no-match scans cannot overwrite it.
-- **Unique-object EPL telemetry:** NBC and PL Club counters now deduplicate by video identity across the runtime. Re-checking the same 59 Club Highlights against dozens of events no longer inflates the operator console into thousands of titles.
-- **Direct Every Goal Silver handoff:** the trusted Every Goal playlist is enumerated once. A recognized Matchweek candidate is sent directly into Silver qualification rather than being rediscovered on 57 weekly probe dates. Explicit `collectionRoundNumber/Type` metadata can prove a trusted scoring roundup period even when the title uses `Opening Weekend` wording.
-- **Targeted EPL replay reset:** Rule Game Catch-up v9 bumps only EPL YouTube GAME sources to v6. That reopens EPL from **today/newest-first back to 2025-08-01** while retaining all existing media, NFL/MLS/NHL source completion, and catalog history.
-- **Worker utilization retained:** when an affinity league has remaining but no claimable work, its worker assists the largest claimable priority backlog and then generic Green-gap work instead of parking.
-- **Rule Collection Catch-up v8:** the EPL Every Goal replay is now a one-shot direct playlist → Silver qualification pass.
-- **No global rebuild:** Discovery remains v15, event matcher remains v7, and successful NFL/MLS/NHL state is not invalidated.
-- **Versions:** Frontend/Backend v4.1.20, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 9`, `HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 8`, EPL YouTube source v6.
+- **Five-worker Green pool:** SEARCH mode defaults to 5 workers. Workers 1–3 retain NFL/MLS/EPL first refusal, Worker 4 is a floating NHL-first worker, and Worker 5 is a floating general-coverage worker. Provider semaphores are unchanged.
+- **No queue can hold the catalog hostage:** affinity is first refusal, not reservation. If a preferred league has remaining but no claimable work, that worker assists another claimable rule backlog, then NHL, then generic coverage. Floating capacity may work NHL and generic gaps while EPL replay is still active.
+- **Coverage-opportunity scheduling:** generic floating work favors games with no verified media, then Blue-only gaps, recency, and high-value league deficits before optional Purple quality upgrades.
+- **Operator Recovery Controls:** GAME MEDIA audit now exposes three intentionally separate operations: Restart Catch-up Cursor, Reopen Source Audit, and Restart Database Audit Cursor. Each operation has a dry-run preview and confirmation token; existing media is always preserved. Source reopen can be scoped by league/source/objective.
+- **Restartable local database audit:** a read-only database-audit worker scans for no-verified-media events, stale discovery metadata, quarantined links, and catalog integrity issues. Its cursor/generation are persistent and can be restarted explicitly.
+- **Every Goal identity audit:** one YouTube video identity remains one source asset. The console reports unique YouTube IDs, assets, collections, links, and duplicate identities. Rule Collection Catch-up stays at v8 so the previous Every Goal replay is not automatically repeated.
+- **Clearer operator vocabulary:** the UI distinguishes Verified Catalog Coverage, Media Objectives, and Source Catch-up. `UNINDEXED` is displayed as **Index Pass Pending**, `SEARCHED_EMPTY` as **Source Exhausted Empty**, and rule `checked` is displayed as **source-complete**.
+- **Catch-up position + utilization telemetry:** console reports upper/floor/oldest-attempted position by league, worker jobs/hour, busy %, provider-wait %, scheduler roles, DB-audit progress, and Silver identity health.
+- **Preserved discovery behavior:** NFL playlist Extended, EPL NBC playlist matching (44/44 invariant), MLS Snapshot/Highlights, NHL official adapter, event matcher v7, source versions, and provider limits are unchanged. No catalog rebuild and no global catch-up reset.
+- **Versions:** Frontend/Backend v4.1.21; Discovery v15; Rule Game Catch-up v9; Rule Collection Catch-up v8; EPL YouTube sources remain v6.
 
-Verification includes the 44→44 matcher invariant, persisted NBC trace plumbing, unique-object telemetry under repeated scans, direct Matchweek Silver qualification, targeted EPL source-version reopening, worker assistance, and the complete existing cloud/browser/catalog regression suite.
+Verification covers worker-role scheduling, recovery preview/apply safety, source-ledger reopening without media deletion, database-audit restart state, Silver identity accounting, browser operator controls, plus the complete existing cloud/browser/catalog regression suite.
 
 ## v4.1.8 — official content-source adapters
 
@@ -284,7 +285,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.20/sports-big-board-v4.1.20
+cd ~/storage/downloads/sports-big-board-v4.1.21/sports-big-board-v4.1.21
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```

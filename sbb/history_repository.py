@@ -474,7 +474,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.20 migration cooldowns already persisted in production.
+        """Release artificial v4.1.21 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -502,6 +502,106 @@ class HistoryRepository:
         with self._lock, closing(self._connect()) as conn:
             conn.execute("INSERT INTO history_catalog_meta(key,value,updated_at) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at",(str(key),str(value),now)); conn.commit()
         return value
+
+    def release_event_claims(self, league="", *, date_from="", date_to=""):
+        """Release durable worker leases without changing media or discovery state."""
+        league=str(league or "").upper(); date_from=str(date_from or "")[:10]; date_to=str(date_to or "")[:10]; now=time.time()
+        clauses=["COALESCE(claim_owner,'')<>''"]; params=[]
+        if league: clauses.append("league=?"); params.append(league)
+        if date_from: clauses.append("event_date>=?"); params.append(date_from)
+        if date_to: clauses.append("event_date<=?"); params.append(date_to)
+        with self._lock, closing(self._connect()) as conn:
+            cur=conn.execute(f"UPDATE history_catalog_event SET claim_owner='',claim_started_at=0,claim_expires_at=0,updated_at=? WHERE {' AND '.join(clauses)}",[now,*params])
+            count=int(cur.rowcount or 0); conn.commit()
+        return count
+
+    def source_enrichment_reset_preview(self, source_versions, *, league="", source_key="", objective="", date_from="", date_to=""):
+        """Preview source-ledger records that an operator reopen would remove.
+
+        Media and event relationships are intentionally excluded: reopening a source
+        audit only makes provider/objective checks eligible again.
+        """
+        league=str(league or "").upper(); source_key=str(source_key or "").strip(); objective=str(objective or "").strip().lower(); date_from=str(date_from or "")[:10]; date_to=str(date_to or "")[:10]
+        selected=[]
+        leagues=[league] if league else sorted((source_versions or {}).keys())
+        for lg in leagues:
+            for spec in self._source_specs_for_league(source_versions,lg):
+                if source_key and spec['key']!=source_key: continue
+                if objective and spec.get('objective')!=objective: continue
+                selected.append((lg,spec['key'],int(spec['version'] or 0),spec.get('objective') or ''))
+        if not selected: return {'records':0,'events':0,'sources':[]}
+        clauses=[]; params=[]
+        pair_sql=[]
+        for lg,key,_ver,_obj in selected:
+            pair_sql.append('(e.league=? AND se.source_key=?)'); params.extend([lg,key])
+        clauses.append('('+ ' OR '.join(pair_sql) +')')
+        if date_from: clauses.append('e.event_date>=?'); params.append(date_from)
+        if date_to: clauses.append('e.event_date<=?'); params.append(date_to)
+        where=' AND '.join(clauses)
+        with self._lock, closing(self._connect()) as conn:
+            row=conn.execute(f"SELECT COUNT(*) records,COUNT(DISTINCT se.canonical_event_key) events FROM history_source_enrichment se JOIN history_catalog_event e ON e.canonical_event_key=se.canonical_event_key WHERE {where}",params).fetchone()
+        return {'records':int(row['records'] or 0),'events':int(row['events'] or 0),'sources':[{'league':lg,'key':key,'version':ver,'objective':obj} for lg,key,ver,obj in selected]}
+
+    def reset_source_enrichment(self, source_versions, *, league="", source_key="", objective="", date_from="", date_to=""):
+        """Reopen selected provider/objective checks while preserving all media."""
+        preview=self.source_enrichment_reset_preview(source_versions,league=league,source_key=source_key,objective=objective,date_from=date_from,date_to=date_to)
+        selected=preview.get('sources') or []
+        if not selected: return {**preview,'deleted':0}
+        clauses=[]; params=[]; pair_sql=[]
+        for spec in selected:
+            pair_sql.append('(e.league=? AND se.source_key=?)'); params.extend([spec['league'],spec['key']])
+        clauses.append('('+ ' OR '.join(pair_sql) +')')
+        date_from=str(date_from or "")[:10]; date_to=str(date_to or "")[:10]
+        if date_from: clauses.append('e.event_date>=?'); params.append(date_from)
+        if date_to: clauses.append('e.event_date<=?'); params.append(date_to)
+        where=' AND '.join(clauses); now=time.time()
+        with self._lock, closing(self._connect()) as conn:
+            keys=[r[0] for r in conn.execute(f"SELECT se.canonical_event_key||'\n'||se.source_key FROM history_source_enrichment se JOIN history_catalog_event e ON e.canonical_event_key=se.canonical_event_key WHERE {where}",params).fetchall()]
+            deleted=0
+            for packed in keys:
+                event_key,key=str(packed).split('\n',1)
+                cur=conn.execute('DELETE FROM history_source_enrichment WHERE canonical_event_key=? AND source_key=?',(event_key,key)); deleted+=int(cur.rowcount or 0)
+            conn.commit()
+        return {**preview,'deleted':deleted,'resetAt':now}
+
+    def catalog_event_count(self, *, league="", date_from="", date_to=""):
+        league=str(league or "").upper(); date_from=str(date_from or "")[:10]; date_to=str(date_to or "")[:10]; clauses=[]; params=[]
+        if league: clauses.append('league=?'); params.append(league)
+        if date_from: clauses.append('event_date>=?'); params.append(date_from)
+        if date_to: clauses.append('event_date<=?'); params.append(date_to)
+        where=(' WHERE '+' AND '.join(clauses)) if clauses else ''
+        with self._lock, closing(self._connect()) as conn: row=conn.execute('SELECT COUNT(*) n FROM history_catalog_event'+where,params).fetchone()
+        return int(row['n'] or 0)
+
+    def database_audit_batch(self, *, offset=0, limit=250, current_discovery_version=0):
+        """Read-only local catalog scan used by the restartable database-audit cursor."""
+        offset=max(0,int(offset or 0)); limit=max(1,min(1000,int(limit or 250))); current=int(current_discovery_version or 0)
+        with self._lock, closing(self._connect()) as conn:
+            rows=conn.execute("""SELECT e.canonical_event_key,e.league,e.event_date,e.discovery_state,e.discovery_json,
+              SUM(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count,
+              SUM(CASE WHEN em.association_state='QUARANTINED' THEN 1 ELSE 0 END) quarantined_links
+              FROM history_catalog_event e LEFT JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key LEFT JOIN history_source_media s ON s.asset_key=em.asset_key
+              GROUP BY e.canonical_event_key ORDER BY e.event_date DESC,e.league,e.event_id LIMIT ? OFFSET ?""",(limit,offset)).fetchall()
+        stats={'rows':len(rows),'noVerifiedMedia':0,'staleDiscovery':0,'quarantinedLinks':0,'unknownDiscovery':0}
+        for row in rows:
+            disc=self._load_obj(row['discovery_json']); version=int(disc.get('discoveryVersion') or 0); state=str(row['discovery_state'] or 'UNKNOWN').upper()
+            if int(row['verified_count'] or 0)==0: stats['noVerifiedMedia']+=1
+            if version<current: stats['staleDiscovery']+=1
+            if state in {'','UNKNOWN'}: stats['unknownDiscovery']+=1
+            stats['quarantinedLinks']+=int(row['quarantined_links'] or 0)
+        return stats
+
+    def silver_identity_audit(self, *, league="EPL"):
+        """Report whether Silver source identity obeys one provider video -> one asset."""
+        league=str(league or "").upper()
+        with self._lock, closing(self._connect()) as conn:
+            row=conn.execute("""SELECT COUNT(*) links,COUNT(DISTINCT cm.asset_key) unique_assets,COUNT(DISTINCT c.collection_key) collections,
+              COUNT(DISTINCT CASE WHEN s.provider_media_id<>'' THEN s.provider_media_id END) provider_ids,
+              COUNT(DISTINCT CASE WHEN json_extract(s.asset_json,'$.youtubeId') IS NOT NULL AND json_extract(s.asset_json,'$.youtubeId')<>'' THEN json_extract(s.asset_json,'$.youtubeId') END) youtube_ids
+              FROM history_collection c JOIN history_collection_media cm ON cm.collection_key=c.collection_key JOIN history_source_media s ON s.asset_key=cm.asset_key
+              WHERE c.league=? AND c.scope='ROUND_LEAGUE' AND c.collection_kind='SCORING_ROUNDUP'""",(league,)).fetchone()
+            dup=conn.execute("""SELECT COUNT(*) n FROM (SELECT json_extract(s.asset_json,'$.youtubeId') y,COUNT(DISTINCT s.asset_key) c FROM history_collection c JOIN history_collection_media cm ON cm.collection_key=c.collection_key JOIN history_source_media s ON s.asset_key=cm.asset_key WHERE c.league=? AND c.scope='ROUND_LEAGUE' AND c.collection_kind='SCORING_ROUNDUP' AND COALESCE(json_extract(s.asset_json,'$.youtubeId'),'')<>'' GROUP BY y HAVING c>1)""",(league,)).fetchone()
+        return {'league':league,'links':int(row['links'] or 0),'uniqueAssets':int(row['unique_assets'] or 0),'collections':int(row['collections'] or 0),'providerIds':int(row['provider_ids'] or 0),'youtubeIds':int(row['youtube_ids'] or 0),'duplicateYoutubeIdentities':int(dup['n'] or 0)}
 
     def get_event(self, date, league, event_id):
         league=str(league).upper(); event_id=str(event_id); key=self.canonical_event_key(league,event_id)
@@ -534,7 +634,7 @@ class HistoryRepository:
                 if state==ASSIGNED:
                     competing=conn.execute("SELECT canonical_event_key,association_confidence,association_method FROM history_event_media WHERE asset_key=? AND association_state='ASSIGNED' AND canonical_event_key<>?",(asset_key,key)).fetchall()
                     if competing:
-                        # v4.1.20 distinguishes a broad candidate being encountered
+                        # v4.1.21 distinguishes a broad candidate being encountered
                         # for another game from a genuine strong-identity conflict.
                         # Preserve a previously proven assignment for ordinary title/
                         # team matches and quarantine only the new candidate link.
@@ -631,7 +731,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.20 treats collection membership as fully derived state.  Classifier
+        v4.1.21 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -730,7 +830,7 @@ class HistoryRepository:
         return {"event":event,"collection":collection,"integrity":integrity,"issues":issues,"ok":not bool(issues)}
 
     def media_objective_summary(self):
-        """Persisted v4.1.20 objective/category counts for operator audit."""
+        """Persisted v4.1.21 objective/category counts for operator audit."""
         out={"nflQuickGames":0,"nflExtendedGames":0,"nflBothGames":0,"nflGreenWithoutPurple":0,"nflMissingQuick":0,"nflMissingExtended":0,
              "mlsSnapshots":0,"mlsMatchHighlights":0,"mlsSnapshotGames":0,"mlsHighlightGames":0,"mlsBothGames":0,"mlsMissingSnapshot":0,"mlsMissingHighlights":0,
              "eplQuickGames":0,"eplExtendedGames":0,"eplBothGames":0,"eplMissingQuick":0,"eplMissingExtended":0,
@@ -870,7 +970,7 @@ class HistoryRepository:
     def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP", return_stats=False):
         """Promote only strictly proven league-wide roundup assets into Silver.
 
-        v4.1.20 keeps the legacy integer return by default, but can return precise
+        v4.1.21 keeps the legacy integer return by default, but can return precise
         idempotent telemetry so rule catch-up reports *new* assets/links rather than
         repeatedly calling rediscovered rows "accepted".
         """
@@ -1150,10 +1250,10 @@ class HistoryRepository:
     def _source_versions_for_league(source_versions, league):
         return [(x["key"],x["version"]) for x in HistoryRepository._source_specs_for_league(source_versions,league)]
 
-    def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, preferred_league="", strict_preferred=False, limit=96):
+    def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, preferred_league="", strict_preferred=False, limit=96, newest_first=True):
         """Newest-first official-source objective queue.
 
-        v4.1.20 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
+        v4.1.21 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
         objectives. A previously completed generic source pass cannot hide an unmet
         objective, and the three rule-migration leagues are scheduled ahead of legacy
         NHL source catch-up until their new objective ledgers are satisfied.
@@ -1162,7 +1262,7 @@ class HistoryRepository:
         leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_specs_for_league(source_versions,lg)]
         preferred=str(preferred_league or "").upper()
         if strict_preferred and preferred and preferred in leagues:
-            # v4.1.20 strict rule-migration lane: query only the assigned league.
+            # v4.1.21 strict rule-migration lane: query only the assigned league.
             # This avoids SQL LIMIT starvation where NFL/MLS rows can consume the
             # candidate window before an EPL-affinity worker ever sees EPL work.
             leagues=[preferred]
@@ -1172,6 +1272,7 @@ class HistoryRepository:
             td=datetime.strptime(today,"%Y-%m-%d").date(); cut7=(td-timedelta(days=7)).isoformat(); cut30=(td-timedelta(days=30)).isoformat(); cut90=(td-timedelta(days=90)).isoformat()
         except Exception: cut7=cut30=cut90=today
         marks=','.join('?' for _ in leagues)
+        date_order='DESC' if bool(newest_first) else 'ASC'
         sql=f"""WITH flags AS (
             SELECT em.canonical_event_key,
               SUM(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count,
@@ -1188,7 +1289,7 @@ class HistoryRepository:
           ORDER BY CASE e.league WHEN 'NFL' THEN 0 WHEN 'MLS' THEN 1 WHEN 'EPL' THEN 2 ELSE 3 END,
             CASE WHEN e.event_date>=? THEN 0 WHEN e.event_date>=? THEN 1 WHEN e.event_date>=? THEN 2 ELSE 3 END,
             CASE WHEN COALESCE(f.verified_count,0)=0 THEN 0 WHEN COALESCE(f.has_blue,0)=1 AND COALESCE(f.has_extended,0)=0 THEN 1 WHEN COALESCE(f.has_extended,0)=1 THEN 2 ELSE 3 END,
-            e.event_date DESC,e.updated_at ASC LIMIT ?"""
+            e.event_date {date_order},e.updated_at ASC LIMIT ?"""
         params=[*leagues,floor,today,now,cut7,cut30,cut90,max(limit*5,limit)]
         with self._lock, closing(self._connect()) as conn:
             rows=conn.execute(sql,params).fetchall()
@@ -1224,7 +1325,7 @@ class HistoryRepository:
         if not leagues or not floor or not today: return result
         marks=','.join('?' for _ in leagues)
         with self._lock, closing(self._connect()) as conn:
-            rows=conn.execute(f"""SELECT e.canonical_event_key,e.league,
+            rows=conn.execute(f"""SELECT e.canonical_event_key,e.league,e.event_date,
               MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) has_gold,
               MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='green' THEN 1 ELSE 0 END) has_green,
               MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='extended' THEN 1 ELSE 0 END) has_extended
@@ -1235,7 +1336,7 @@ class HistoryRepository:
         by_league={lg:[] for lg in leagues}
         for r in rows: by_league.setdefault(str(r['league']).upper(),[]).append(r)
         for lg in leagues:
-            specs=self._source_specs_for_league(source_versions,lg); stat={"total":0,"attempted":0,"checked":0,"remaining":0,"coverageUpgrades":0,"qualityUpgrades":0,"accepted":0,"sources":{x['key']:x['version'] for x in specs}}
+            specs=self._source_specs_for_league(source_versions,lg); stat={"total":0,"attempted":0,"checked":0,"remaining":0,"coverageUpgrades":0,"qualityUpgrades":0,"accepted":0,"sources":{x['key']:x['version'] for x in specs},"newestAttemptedDate":"","oldestAttemptedDate":""}
             for row in by_league.get(lg,[]):
                 needs=[]; current=[]
                 for spec in specs:
@@ -1247,7 +1348,12 @@ class HistoryRepository:
                 # Do not make already-satisfied events inflate the catch-up denominator unless a v-current source was actually attempted.
                 if all(needs) and not current: continue
                 stat['total']+=1
-                if current: stat['attempted']+=1
+                if current:
+                    stat['attempted']+=1
+                    d=str(row['event_date'] or '')[:10]
+                    if d:
+                        if not stat['newestAttemptedDate'] or d>stat['newestAttemptedDate']: stat['newestAttemptedDate']=d
+                        if not stat['oldestAttemptedDate'] or d<stat['oldestAttemptedDate']: stat['oldestAttemptedDate']=d
                 if all(needs): stat['checked']+=1
                 else: stat['remaining']+=1
                 stat['coverageUpgrades']+=1 if any(int(er['coverage_upgraded'] or 0) for er in current) else 0

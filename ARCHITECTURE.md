@@ -1,18 +1,24 @@
-# Sports Big Board v4.1.20 Architecture
+# Sports Big Board v4.1.21 Architecture
 
-## v4.1.20 EPL direct-matcher and replay boundary
+## v4.1.21 parallel recovery and operator-control boundary
 
-The playlist acquisition layer is considered proven. v4.1.20 removes the final generic selection boundary between NBC's filtered season inventory and event matching:
+The historical scheduler is now a five-worker recovery pool rather than a three-lane migration gate. Worker 1/2/3 retain NFL/MLS/EPL first refusal, Worker 4 is NHL-first floating capacity, and Worker 5 is general-coverage-first floating capacity. An affinity worker only reserves itself while its own league has claimable work; retry-delayed leftovers cannot park compute. All workers still share the existing provider semaphores, so increasing scheduling concurrency does not automatically increase external-provider concurrency.
 
-`pinned NBC season playlist → hydrated videos → PREMIER LEAGUE HIGHLIGHTS inventory → every inventory object calls NBC matcher → team/date/duration/event proof → persistence`
+Floating generic work uses a small opportunity score: no verified media outranks Blue-only gaps, recent games outrank old games, and league deficit/source confidence biases high-value recovery before optional quality upgrades. NHL official-source work can therefore proceed in parallel with EPL replay instead of waiting for the specialized migration to finish.
 
-For each event invocation, `nbcMatcherCalls` must equal `nbcMatcherInventory`. A mismatch is an invariant failure and is surfaced explicitly. The runtime also retains one representative NBC trace containing the source title, parsed club pair, parsed date, target event, duration, and final disposition; a `PERSISTED_EXTENDED` trace is sticky for the process lifetime.
+Operator recovery has three separate state transitions:
 
-EPL playlist telemetry is video-identity based. Inventory videos, parsed videos, pair-matched videos, duration-pass videos, and associated videos are unique-object sets, not accumulated event-comparison counts. This prevents a 59-video playlist from appearing as thousands of titles after repeated historical checks.
+1. **Cursor restart** changes traversal upper date/direction and releases leases; it preserves source-completion ledgers and media.
+2. **Source audit reopen** removes only selected source-enrichment ledger rows (league/source/objective/date scope), making those provider checks eligible again while preserving all media and associations.
+3. **Database audit restart** resets only the local read-only audit generation/cursor. It does not trigger network discovery.
 
-Every Goal uses a direct collection path. The trusted playlist is enumerated once, Matchweek identity is resolved from title+description, and that one candidate is passed directly into Silver qualification. `collectionRoundNumber` / `collectionRoundType` are recognized as explicit trusted round metadata when the title itself uses editorial wording such as Opening Weekend.
+Both reset operations expose a dry-run preview and require its confirmation token before apply. Existing media is never deleted by these controls.
 
-Rule Game Catch-up v9 bumps only `epl-youtube-pl-quick`, `epl-youtube-pl-extended`, and `epl-youtube-nbc-extended` to source v6. Because the durable source ledger is versioned and the queue is newest-first, this acts as an EPL-only replay reset from today back to the existing 2025-08-01 floor without deleting media or replaying NFL/MLS/NHL state. Rule Collection Catch-up v8 reopens only the direct EPL Every Goal qualification pass. Discovery remains v15 and matcher remains v7.
+A restartable database-audit worker scans catalog events in bounded batches and persists its generation/cursor. It reports no-verified-media events, stale discovery metadata, quarantined links, catalog integrity, and EPL Every Goal identity health. Silver identity is audited as unique YouTube IDs → unique source assets → collection links; Rule Collection Catch-up remains v8 and is not automatically replayed.
+
+Operator terminology is presentation-safe: catalog media coverage, media objectives, and source-completion progress are separate dimensions. Internal legacy states remain backward compatible, but the UI displays `UNINDEXED` as **Index Pass Pending** and rule completion as **source-complete**.
+
+Discovery v15, matcher v7, Rule Game Catch-up v9, EPL source v6, current media collectors, and provider concurrency limits remain unchanged. v4.1.21 requires no catalog rebuild.
 
 ## Product model
 
@@ -36,9 +42,9 @@ The score ribbon is the direct-tune/channel guide. PlaybackController owns media
 10. Provider-specific response shapes terminate at adapters/contracts.
 11. Browser code never receives stored API secret values.
 
-## v4.1.20 EPL playlist acquisition boundary
+## v4.1.21 EPL playlist acquisition boundary
 
-Rule Game Catch-up v6 preserves strict affinity: `green-gap-1 → NFL`, `green-gap-2 → MLS`, `green-gap-3 → EPL`. Discovery remains v15, so v4.1.20 does not globally invalidate unrelated historical discovery. Rule Collection Catch-up v5 is narrowly reopened for the official EPL Every Goal playlist and does not replay the already-completed MLS/legacy Silver migration.
+Rule Game Catch-up v6 preserves strict affinity: `green-gap-1 → NFL`, `green-gap-2 → MLS`, `green-gap-3 → EPL`. Discovery remains v15, so v4.1.21 does not globally invalidate unrelated historical discovery. Rule Collection Catch-up v5 is narrowly reopened for the official EPL Every Goal playlist and does not replay the already-completed MLS/legacy Silver migration.
 
 EPL GAME discovery now prefers curated YouTube playlist graphs:
 
@@ -114,7 +120,7 @@ Changing `browseDate` can fetch and render another day's slate but cannot call P
 
 Past-day score and media snapshots remain resident in the browser session. Final historical Game Centers may remain HOT for 24 hours in browser memory while partial shells retain the short retry TTL; the server's persistent repository remains the WARM authority.
 
-### v4.1.20 normalized historical catalog baseline
+### v4.1.21 normalized historical catalog baseline
 
 v4 treats a discovered media asset and a sporting-event relationship as different entities. The fundamental flow is:
 
@@ -177,13 +183,13 @@ Playback preference remains **Gold → Green → Purple/Extended → Blue**. Can
 
 `HISTORY_DISCOVERY_VERSION = 15` is fresh discovery bookkeeping on top of the reconstructed v4 catalog.
 
-### v4.1.20 targeted Rule Game Catch-up v3
+### v4.1.21 targeted Rule Game Catch-up v3
 
 NFL, MLS, and EPL are reopened by source/objective version instead of by destructive reindex. During Rule Game Catch-up v3, the three Green workers use migration affinity: worker 1 prefers NFL, worker 2 MLS, and worker 3 EPL. Ordering remains newest-first inside each league; an affinity worker may consume other league work after its preferred queue is exhausted. This prevents a low-yield collector from monopolizing the entire pool while preserving the shared durable event lease.
 
 MLS Quick and Extended use `mls-match-snapshot@v2` and `mls-match-highlights@v2`. The Snapshot collector walks MLSsoccer.com's paginated Match Highlights inventory and pairs an undated same-match Snapshot with the nearest explicit same-pair highlight date. EPL uses `premierleague-official@v4` for Quick and `nbc-epl-extended@v3` for Extended. NFL uses four public/team objective ledgers as described above.
 
-The MLS/EPL Silver replay remains a dedicated post-seed worker, but v4.1.20 makes its accounting idempotent: candidates examined, qualifying, new unique assets, reused assets, new links, duplicate links, and rejects are tracked separately. A persisted Rule Collection Catch-up v2 completion marker means reboot does not restart finished migration work.
+The MLS/EPL Silver replay remains a dedicated post-seed worker, but v4.1.21 makes its accounting idempotent: candidates examined, qualifying, new unique assets, reused assets, new links, duplicate links, and rejects are tracked separately. A persisted Rule Collection Catch-up v2 completion marker means reboot does not restart finished migration work.
 
 #### Offline v3 → v4 reconstruction
 
@@ -403,36 +409,36 @@ The Stage 1 invariant is: **frontend deployments are disposable; historical stat
 
 `history_catalog_event.discovery_state` remains a raw durable pipeline marker. The audit API no longer displays raw `UNKNOWN` as if it means no data. It combines current discovery-version metadata with the normalized verified media catalog to derive `effectiveStatus`, `discoveryPending`, `catalogComplete`, `qualityComplete`, and inferred `upgradeEligible`. This projection is read-only and therefore cannot accidentally mark stale events current or suppress the version-driven reindex scheduler.
 
-### v4.1.20 fail-closed event association
+### v4.1.21 fail-closed event association
 
 Event Matcher v5 makes association evidence stricter than provider discovery. Broad source results are never stamped with the target Event ID or target away/home teams before matching. Matchup-title conflicts, explicit MLB date mismatches, stale season/year content, and one-asset/multiple-game conflicts fail closed into quarantine. A one-time matcher-version repair re-evaluates existing v4 EVENT_MEDIA links without deleting SOURCE_MEDIA.
 
 The queue now prioritizes first-pass NONE/BLUE events ahead of archive Purple optimization, uses the remembered sports-day timezone for the recent window, persists YouTube Search exhaustion through restart until the provider reset window, and uses Pacific-day accounting with a hard internal search ceiling.
 
 
-### v4.1.20 structural preflight boundary
+### v4.1.21 structural preflight boundary
 
 Deployment health is intentionally split into **structural integrity** and **repairable relationship integrity**. Structural integrity covers the normalized table set, SQLite quick-check, foreign-key consistency, and normalization completeness. Only a structural failure can select the offline reconstruction path. Event/collection relationship issues such as matcher-version drift, cross-event links, scope leaks, and low-confidence associations never select reconstruction. They cause an optional pre-repair rollback snapshot, then `HistoryRepository.repair_relationships()` runs against the existing catalog. The backend performs a hard post-repair relationship audit before workers start.
 
 This boundary means a future Event Matcher or Media Classifier version may re-evaluate `history_event_media` / `history_collection_media`, but cannot reset `history_catalog_event.discovery_*`, `history_discovery_attempt`, `history_media_verification`, or `history_day.discovery_json`.
 
 
-## v4.1.20 bounded discovery concurrency
+## v4.1.21 bounded discovery concurrency
 
 Historical discovery is concurrent at the event level, not at the quota level. Three Green-gap threads may own different canonical Event IDs in SEARCH mode, with `history_catalog_event` lease fields (`claim_owner`, `claim_started_at`, `claim_expires_at`) acting as the durable concurrency boundary. Date-backfill participates in the same lease protocol. Provider semaphores and same-day single-flight locks cap external pressure independently of worker count. YouTube Search and Highlightly remain single-concurrency lanes. The worker-console API exposes pool state, leases, provider active/waiting counts, and throughput. Daily/weekly Silver collection totals are also exposed without mixing collection media into GAME quality. The Historical Database Audit has a dedicated **Silver Roundups** tab that reads this collection model directly, surfaces collection/asset integrity flags, and exports Silver separately from GAME media.
 
 
-## v4.1.20 tier-aware provider staging
+## v4.1.21 tier-aware provider staging
 
 The concurrent pool does not imply that every claimed game runs every provider. Each event pass has a **pass target** independent from the long-term Gold quality target. Green-gap and one-game chronological backfill passes target Green; full foreground discovery targets Gold. Candidate validation remains first. Authoritative/native lanes run one stage at a time, persist accepted GAME media, and recalculate the event tier after each stage. If the pass target is reached, remaining primary lanes and all fallback lanes are skipped.
 
 The fallback stage is ordered `public page → public index → YouTube search rescue`. It also recalculates after every lane, so a free fallback hit can prevent the next web request or scarce `search.list` call. If the target remains unmet and Search rescue is unavailable or incomplete, the event remains partial rather than being falsely closed as searched-empty. The worker-console API publishes process-lifetime efficiency counters (`primaryPasses`, `primaryTargetHits`, `shortCircuits`, `fallbackAttempts`, `fallbackHits`, `fallbackSeconds`, `estimatedSecondsSaved`) for soak-test validation.
 
-### Fixed historical seed boundary (v4.1.20)
+### Fixed historical seed boundary (v4.1.21)
 
 Chronological date backfill is a one-time bootstrap, not a permanent rolling workload. The production seed floor is `2025-08-01` inclusive. The date worker owns broad score/media inventory only; Green-gap workers own subsequent per-event quality improvement. Seed completion is persisted in `history_catalog_meta` with the exact floor and completion timestamp. Once complete, the date worker remains heartbeat-only (`complete:historical-seed`) and does not scan older dates on later restarts. A future explicit floor change invalidates the marker and reopens only the newly requested seed range.
 
-## v4.1.20 official content acquisition adapters
+## v4.1.21 official content acquisition adapters
 
 The discovery graph now includes explicit structured adapters for the content libraries that best fit the Sports Big Board product contract. Each adapter is an independent provider lane with shared single-flight/cache behavior and runs before generic fallback:
 
