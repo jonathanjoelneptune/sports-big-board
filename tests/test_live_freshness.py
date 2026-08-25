@@ -317,7 +317,7 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
         quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
         long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}
-        # v4.1.17 adds official team-site packages as a second Extended lane.
+        # v4.1.18 adds official team-site packages as a second Extended lane.
         # Keep this legacy duration-window unit test deterministic by isolating
         # the public NFL/YouTube lane it was originally written to exercise.
         with patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
@@ -627,6 +627,35 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertTrue(server._epl_parsed_pair_matches_event(parsed,'Manchester United','Manchester City'))
         self.assertTrue(server._epl_team_equivalent('Spurs','Tottenham Hotspur'))
         self.assertTrue(server._epl_team_equivalent('Wolves','Wolverhampton Wanderers'))
+
+    def test_v418_epl_pl_score_title_parses_unordered_matchup(self):
+        parsed=server._epl_parse_match_title('Brentford 3-0 Tottenham Hotspur | Premier League 2026/27 Highlights',2026)
+        self.assertTrue(parsed['ok'])
+        self.assertEqual(parsed['left'],'Brentford')
+        self.assertEqual(parsed['right'],'Tottenham Hotspur')
+        self.assertEqual(parsed['method'],'SCORE')
+        self.assertTrue(server._epl_parsed_pair_matches_event(parsed,'Tottenham Hotspur','Brentford'))
+
+    def test_v418_epl_nbc_event_team_scan_handles_unexpected_separator(self):
+        playlist={'playlistId':'PLnbc','title':'Premier League 2026-27 season','seasonStart':2026,'family':'epl-youtube-nbc','role':'season-highlights','channelId':'NBC123'}
+        item={'id':'n','youtubeId':'n','league':'EPL','title':'Brentford - Tottenham Hotspur | PREMIER LEAGUE HIGHLIGHTS | 8/22/2026 | NBC Sports','description':'','durationSeconds':900,'duration':900,'publishedAt':'2026-08-22T20:00:00Z','sourceType':'trusted-nbc-epl-youtube-highlights','provider':'YOUTUBE','verifiedPlayable':True,'validationState':'VERIFIED','externalUrl':'https://www.youtube.com/watch?v=n','discoverySourceFamily':'epl-youtube-nbc'}
+        with patch.object(server,'_epl_candidate_playlists',return_value=[playlist]), patch.object(server,'_epl_youtube_playlist_items',return_value=[item]):
+            rows=server._epl_youtube_playlist_results('2026-08-22','Tottenham Hotspur','Brentford',objective='extended',family='epl-youtube-nbc')
+        self.assertEqual([x['youtubeId'] for x in rows],['n'])
+        self.assertEqual(rows[0]['titleMatchMethod'],'EVENT_TEAM_SCAN')
+        tel=server.HISTORY_MEDIA_AUDIT['eplPlaylistTelemetry']
+        self.assertGreaterEqual(tel.get('nbcPairMatches',0),1)
+        self.assertGreaterEqual(tel.get('nbcDurationPass',0),1)
+        self.assertGreaterEqual(tel.get('nbcAssociationPass',0),1)
+
+    def test_v418_every_goal_all_the_goals_matchweek_title_is_accepted(self):
+        playlist={'playlistId':'PLgoals','title':'Every Goal by Premier League Matchweek: 2026-27','seasonStart':2026,'family':'epl-youtube-pl','role':'every-goal','channelId':server.EPL_YOUTUBE_PL_CHANNEL_ID}
+        item={'id':'g','youtubeId':'g','league':'EPL','title':'ALL The Goals From Opening Weekend | Matchweek 1 | 2026/27 Premier League Highlights','description':'','durationSeconds':720,'duration':720,'publishedAt':'2026-08-23T12:00:00Z','sourceType':'official-premierleague-youtube-highlights','provider':'YOUTUBE','verifiedPlayable':True,'validationState':'VERIFIED','externalUrl':'https://www.youtube.com/watch?v=g','discoverySourceFamily':'epl-youtube-pl'}
+        self.assertEqual(server._epl_every_goal_matchweek(item['title']),1)
+        with patch.object(server,'_epl_candidate_playlists',return_value=[playlist]), patch.object(server,'_epl_youtube_playlist_items',return_value=[item]):
+            rows=server._epl_youtube_every_goal_results('2026-08-23')
+        self.assertEqual([x['youtubeId'] for x in rows],['g'])
+        self.assertEqual(rows[0]['collectionRoundNumber'],1)
 
     def test_v417_every_goal_pinned_playlist_trusts_curated_member_owner(self):
         calls=[]

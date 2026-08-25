@@ -1,4 +1,4 @@
-"""Media scope + Silver collection classification for Sports Big Board v4.1.17.
+"""Media scope + Silver collection classification for Sports Big Board v4.1.18.
 
 Scope answers *what the media covers*. Intent answers *what kind of program it is*.
 Neither is the game's Gold/Green/Purple/Blue quality tier. Only GAME-scoped media
@@ -24,7 +24,7 @@ PLAYER = "PLAYER"
 SEASON_LEAGUE = "SEASON_LEAGUE"
 OTHER = "OTHER"
 # COLLECTION_SCOPES remains the broad taxonomy vocabulary for compatibility.
-# SILVER_SCOPES is the actual v4.1.17 presentation/promotion contract.
+# SILVER_SCOPES is the actual v4.1.18 presentation/promotion contract.
 COLLECTION_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, SEASON_LEAGUE}
 SILVER_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE}
 VALID_SCOPES = {GAME, DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, PLAYER, SEASON_LEAGUE, OTHER}
@@ -62,7 +62,7 @@ _TOP_PLAYS_RE = re.compile(r"\b(top\s*(?:\d{1,2})?\s*plays?|plays? of the (?:day
 _GAME_RE = re.compile(r"\b(full game highlights|game highlights|game recap|game summary|condensed game|full match highlights|match highlights|match recap)\b", re.I)
 _WEEK_NUM_RE = re.compile(r"\bweek\s*(\d{1,2})\b", re.I)
 _ROUND_NUM_RE = re.compile(r"\b(matchweek|mwk|matchday)\s*(\d{1,2})\b", re.I)
-_SCORING_ROUNDUP_RE = re.compile(r"\b(?:every|all)\s+(?:goal|touchdown)s?\s+(?:from|of)\s+(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b|\ball goals? from (?:matchweek|mwk|matchday)\s*\d{1,2}\b", re.I)
+_SCORING_ROUNDUP_RE = re.compile(r"(?:\b(?:every|all(?:\s+of)?)\s+(?:the\s+)?(?:goal|touchdown)s?\b.*\b(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b|\b(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b.*\b(?:every|all(?:\s+of)?)\s+(?:the\s+)?(?:goal|touchdown)s?\b)", re.I)
 _ROUND_TOP_RE = re.compile(r"\b(?:best|top)\s+(?:goals?|saves?|plays?)\s+(?:of|from)\s+(?:matchweek|mwk|matchday)\s*\d{1,2}\b|\bthings you may have missed in (?:matchweek|mwk|matchday)\s*\d{1,2}\b|\bmust[- ]see golazos?\b.*\bmatchday\s*\d{1,2}\b|\bwhat a save\b.*\bmatchday(?:s)?\s*\d{1,2}\b", re.I)
 _BEST_GOALS_RE = re.compile(r"\b(?:best|top)\s+goals?\s+(?:of|from)\s+(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b|\bmust[- ]see golazos?\b", re.I)
 _BEST_SAVES_RE = re.compile(r"\b(?:best|top)\s+saves?\s+(?:of|from)\s+(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b|\bwhat a save\b", re.I)
@@ -323,7 +323,7 @@ def classify_with_reason(item, *, league="", date="", away="", home=""):
     item=item or {}; explicit=str(item.get("mediaScope") or "").upper(); title=_title(item); text=_text(item)
     if explicit in VALID_SCOPES:
         return explicit,float(item.get("mediaScopeConfidence") or 1.0),str(item.get("mediaScopeReason") or "EXPLICIT_SCOPE")
-    # v4.1.17: studio/reaction/postgame-show programming can remain in SOURCE_MEDIA,
+    # v4.1.18: studio/reaction/postgame-show programming can remain in SOURCE_MEDIA,
     # but may not become GAME media merely because a provider endpoint was event-scoped.
     if _NON_GAME_RECAP_PROGRAM_RE.search(text) and not re.search(r"\b(?:full game highlights|game highlights|full match highlights|match highlights|condensed game|extended highlights)\b",text,re.I):
         return OTHER,0.995,"NON_GAME_POSTGAME_OR_REACTION_PROGRAM"
