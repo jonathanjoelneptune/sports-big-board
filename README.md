@@ -1,23 +1,36 @@
-# Sports Big Board v4.1.26
+# Sports Big Board v4.1.27
 
-> v4.1.26 is the **Historical Ribbon Performance + Catalog Authority** release. It preserves the v4.1.24 fail-closed historical contract while removing the remaining SQLite N+1/read-lock bottleneck and fixing the browser merge bug that could hide exact persisted recap media behind an empty media manifest.
+> v4.1.27 is the **Site Soundtrack** release. It preserves the v4.1.26 database/operator/playback architecture and adds a persistent application-level sports music bed that follows highlight playback without restarting when the viewer changes games, dates, leagues, or recap packages.
+
+## v4.1.27 — persistent Sports Big Board soundtrack
+
+- **Site-level music ownership:** one soundtrack engine sits above the A/B highlight players. Changing videos never recreates or restarts the current music track.
+- **Minimal controls:** a compact `♫ play/pause` control and soundtrack-volume button sit beside the existing video transport controls.
+- **Highlight-aware audio:** music runs during startup/buffering, ducks under actual highlight audio, pauses when the viewer pauses, and stays continuous through normal program transitions.
+- **113-track no-repeat library:** the normalized Mixkit manifest represents roughly 3 hours 41 minutes of audio. A weighted unique shuffle bag favors CORE tracks without repeating any enabled track until the bag is exhausted.
+- **Crossfades:** the next track is preloaded on a second audio element and crossfades over 2.5 seconds.
+- **Persistent preference/session:** enabled state, volume, current track/position, and remaining shuffle bag survive reloads through local storage. Browser autoplay restrictions remain respected.
+- **Cloud Storage audio boundary:** GitHub Pages ships only the player and ~46 KB manifest. MP3s are served directly from `gs://<GCP_PROJECT_ID>-soundtrack`; the repository explicitly ignores `assets/soundtrack/tracks/`.
+- **One-command audio upload:** `cloud/gcp/UPLOAD-SOUNDTRACK.sh` accepts the six downloaded soundtrack ZIPs, validates all track hashes, creates/configures the bucket, and uploads the normalized audio library.
+- **No catalog rebuild:** soundtrack deployment is independent of SQLite, historical discovery, Silver media, Game Center, and API credentials.
+
+See **SOUNDTRACK SETUP.md** for the one-time six-ZIP Cloud Storage upload.
 
 ## v4.1.26 — operator telemetry, Silver authority, and playback smoothing
 
-- **Fast operator UI:** Live Search Console serves a precomputed in-memory telemetry snapshot instead of running whole-catalog aggregation on every poll.
-- **SQL-paged Database Audit:** the normal audit tab reads only the requested event page and media relationships for those events; advanced semantic filters preserve the exhaustive compatibility path.
-- **Independent Silver reads:** daily Silver roundup lookup uses WAL query-only connections and derives playability from normalized `VERIFIED` / runtime state rather than stale JSON flags.
-- **Chunked native runway:** direct-video staging keeps the existing 16 MB head and adds fixed 8 MB follow-on chunks before full-cache completion, allowing hybrid playback to stay local longer.
-- **Playback-path diagnostics:** native clicks report first-frame latency and classify the path as browser-hot, server cache, hybrid chunk, or cold upstream; `/api/media/diagnostics` exposes the server-side cache/transport result.
-- Existing historical catalog data, discovery state, source-enrichment ledgers, Silver relationships, and worker progress are preserved. No catalog rebuild is required.
+- Live Search Console serves a precomputed in-memory telemetry snapshot instead of running whole-catalog aggregation on every poll.
+- The normal Database Audit path uses SQL pagination and hydrates media only for the requested page.
+- Silver roundup reads use independent WAL readers and normalized VERIFIED/runtime-state authority.
+- Native playback keeps the 16 MB startup head and adds 8 MB sequential chunks plus first-frame/path diagnostics.
+- No catalog rebuild is required.
 
-## v4.1.26 verification
+## v4.1.25 — historical ribbon performance and catalog authority
 
-`VERIFY.sh` runs browser contract checks plus the full Python regression suite, including v4.1.26 operator/Silver/playback tests.
-
-## v4.1.26 verification
-
-The release adds regression coverage proving that historical score reads do not hydrate catalog media, the ribbon uses one bulk media read instead of an event-by-event N+1 path, query-only reads complete while the repository write lock is held, exact SQLite media survives an empty browser manifest, and the timing/diagnostic contract is present. The complete local + cloud Stage 1 suite passes.
+- Historical score reads do not hydrate the full catalog.
+- Ribbon media uses one bulk day query instead of per-game N+1 reads.
+- Query-only WAL readers avoid blocking behind the writer Python lock.
+- Exact SQLite media is merged authoritatively with browser manifest state.
+- `/api/history/ribbon` exposes timing diagnostics.
 
 # Sports Big Board v4.1.22
 

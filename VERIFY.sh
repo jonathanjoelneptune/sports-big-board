@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-echo "Sports Big Board v4.1.26 verification"
+echo "Sports Big Board v4.1.27 verification"
 echo "----------------------------------"
 
 if command -v node >/dev/null 2>&1; then
@@ -18,15 +18,18 @@ else
 fi
 
 python -m py_compile server.py sbb/*.py tests/*.py cloud/vm/backup_state.py cloud/github-pages/build_pages.py
-bash -n START-ANDROID.sh start.sh cloud/gcp/CREATE-STAGE1.sh cloud/gcp/DEPLOY-UPDATE.sh cloud/gcp/DEPLOY-FROM-GITHUB.sh cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh cloud/vm/INSTALL-STAGE1.sh
+bash -n START-ANDROID.sh start.sh cloud/gcp/CREATE-STAGE1.sh cloud/gcp/DEPLOY-UPDATE.sh cloud/gcp/DEPLOY-FROM-GITHUB.sh cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh cloud/gcp/UPLOAD-SOUNDTRACK.sh cloud/vm/INSTALL-STAGE1.sh
 PYTHONPATH=. python -m unittest discover -s tests -p 'test_*.py' -v
 
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
-python3 cloud/github-pages/build_pages.py https://203-0-113-10.sslip.io "$TMP/pages" >/dev/null
+GCP_PROJECT_ID=sportsbigboard python3 cloud/github-pages/build_pages.py https://203-0-113-10.sslip.io "$TMP/pages" >/dev/null
 test -f "$TMP/pages/index.html"
 test -f "$TMP/pages/config.js"
+test -f "$TMP/pages/assets/soundtrack/manifest.json"
+test ! -d "$TMP/pages/assets/soundtrack/tracks"
 test ! -f "$TMP/pages/server.py"
 grep -q 'https://203-0-113-10.sslip.io' "$TMP/pages/config.js"
+grep -q 'https://storage.googleapis.com/sportsbigboard-soundtrack' "$TMP/pages/config.js"
 
-echo "PASS: v4.1.26 local + cloud Stage 1 architecture and regression suite"
+echo "PASS: v4.1.27 local + cloud Stage 1 architecture and regression suite"
