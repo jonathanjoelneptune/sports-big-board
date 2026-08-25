@@ -1,4 +1,4 @@
-"""Media scope + Silver collection classification for Sports Big Board v4.1.19.
+"""Media scope + Silver collection classification for Sports Big Board v4.1.20.
 
 Scope answers *what the media covers*. Intent answers *what kind of program it is*.
 Neither is the game's Gold/Green/Purple/Blue quality tier. Only GAME-scoped media
@@ -24,7 +24,7 @@ PLAYER = "PLAYER"
 SEASON_LEAGUE = "SEASON_LEAGUE"
 OTHER = "OTHER"
 # COLLECTION_SCOPES remains the broad taxonomy vocabulary for compatibility.
-# SILVER_SCOPES is the actual v4.1.19 presentation/promotion contract.
+# SILVER_SCOPES is the actual v4.1.20 presentation/promotion contract.
 COLLECTION_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, SEASON_LEAGUE}
 SILVER_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE}
 VALID_SCOPES = {GAME, DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, PLAYER, SEASON_LEAGUE, OTHER}
@@ -62,6 +62,7 @@ _TOP_PLAYS_RE = re.compile(r"\b(top\s*(?:\d{1,2})?\s*plays?|plays? of the (?:day
 _GAME_RE = re.compile(r"\b(full game highlights|game highlights|game recap|game summary|condensed game|full match highlights|match highlights|match recap)\b", re.I)
 _WEEK_NUM_RE = re.compile(r"\bweek\s*(\d{1,2})\b", re.I)
 _ROUND_NUM_RE = re.compile(r"\b(matchweek|mwk|matchday)\s*(\d{1,2})\b", re.I)
+_SCORING_GOALS_PHRASE_RE = re.compile(r"\b(?:every|all(?:\s+of)?)\s+(?:the\s+)?(?:goal|touchdown)s?\b", re.I)
 _SCORING_ROUNDUP_RE = re.compile(r"(?:\b(?:every|all(?:\s+of)?)\s+(?:the\s+)?(?:goal|touchdown)s?\b.*\b(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b|\b(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b.*\b(?:every|all(?:\s+of)?)\s+(?:the\s+)?(?:goal|touchdown)s?\b)", re.I)
 _ROUND_TOP_RE = re.compile(r"\b(?:best|top)\s+(?:goals?|saves?|plays?)\s+(?:of|from)\s+(?:matchweek|mwk|matchday)\s*\d{1,2}\b|\bthings you may have missed in (?:matchweek|mwk|matchday)\s*\d{1,2}\b|\bmust[- ]see golazos?\b.*\bmatchday\s*\d{1,2}\b|\bwhat a save\b.*\bmatchday(?:s)?\s*\d{1,2}\b", re.I)
 _BEST_GOALS_RE = re.compile(r"\b(?:best|top)\s+goals?\s+(?:of|from)\s+(?:matchweek|mwk|matchday|week)\s*\d{1,2}\b|\bmust[- ]see golazos?\b", re.I)
@@ -231,9 +232,11 @@ def round_key(item=None, date="", league=""):
     """Canonical soccer round identity, separate from ISO/calendar weeks."""
     item=item or {}; title=_title(item); m=_ROUND_NUM_RE.search(title)
     sid=season_id(item,league=league or item.get("league"),date=date or item.get("date") or item.get("publishedAt"))
-    if not m: return f"{sid}:ROUND"
-    label=str(m.group(1) or "").lower(); prefix="MD" if label=="matchday" else "MW"
-    return f"{sid}:{prefix}{int(m.group(2))}"
+    if m:
+        label=str(m.group(1) or "").lower(); prefix="MD" if label=="matchday" else "MW"; return f"{sid}:{prefix}{int(m.group(2))}"
+    number,kind=_explicit_round_metadata(item)
+    if number: return f"{sid}:{'MD' if kind=='MATCHDAY' else 'MW'}{number}"
+    return f"{sid}:ROUND"
 
 
 def source_authority(item, league=""):
@@ -299,10 +302,22 @@ def _weekly_collection_signal(item, league=""):
     return False,""
 
 
+def _explicit_round_metadata(item):
+    item=item or {}
+    try: number=int(item.get("collectionRoundNumber") or 0)
+    except Exception: number=0
+    kind=str(item.get("collectionRoundType") or "MATCHWEEK").upper()
+    if number>0 and kind in {"MATCHWEEK","MATCHDAY"}: return number,kind
+    return 0,""
+
 def _round_collection_signal(item, league=""):
-    title=_title(item); league=str(league or (item or {}).get("league") or "").upper()
-    if league not in {"EPL","MLS"} or not title or not _ROUND_NUM_RE.search(title) or _narrow_title(title): return False,""
+    title=_title(item); league=str(league or (item or {}).get("league") or "").upper(); explicit_num,explicit_kind=_explicit_round_metadata(item)
+    if league not in {"EPL","MLS"} or not title or _narrow_title(title): return False,""
     if _SCORING_ROUNDUP_RE.search(title): return True,"ROUND_SCORING_ROUNDUP_TITLE"
+    # v4.1.20: a trusted playlist collector may have already resolved Matchweek N
+    # from title+description (e.g. "Opening Weekend" + "Match Week 1"). Carry that
+    # explicit round identity directly into Silver instead of rediscovering it by date.
+    if explicit_num and _SCORING_GOALS_PHRASE_RE.search(_text(item)): return True,"EXPLICIT_ROUND_SCORING_ROUNDUP"
     if _ROUND_TOP_RE.search(title): return True,"ROUND_TOP_PLAYS_TITLE"
     return False,""
 
@@ -311,7 +326,7 @@ def collection_kind(item, scope=None):
     scope=str(scope or (item or {}).get("mediaScope") or "").upper(); title=_title(item)
     if scope in SILVER_SCOPES and _BEST_GOALS_RE.search(title): return BEST_GOALS
     if scope in SILVER_SCOPES and _BEST_SAVES_RE.search(title): return BEST_SAVES
-    if _SCORING_ROUNDUP_RE.search(title): return SCORING_ROUNDUP
+    if _SCORING_ROUNDUP_RE.search(title) or (_explicit_round_metadata(item)[0] and _SCORING_GOALS_PHRASE_RE.search(_text(item))): return SCORING_ROUNDUP
     if scope==WEEK_LEAGUE and (_WEEKLY_TOP_TITLE_RE.search(title) or _WEEKLY_CATEGORY_TOP_RE.search(title)): return TOP_PLAYS
     if scope==ROUND_LEAGUE and _ROUND_TOP_RE.search(title): return TOP_PLAYS
     if scope==DAY_LEAGUE and (_DAILY_TOP_TITLE_RE.search(title) or _DATED_LEAGUE_TOP_RE.search(title)): return TOP_PLAYS
@@ -323,7 +338,7 @@ def classify_with_reason(item, *, league="", date="", away="", home=""):
     item=item or {}; explicit=str(item.get("mediaScope") or "").upper(); title=_title(item); text=_text(item)
     if explicit in VALID_SCOPES:
         return explicit,float(item.get("mediaScopeConfidence") or 1.0),str(item.get("mediaScopeReason") or "EXPLICIT_SCOPE")
-    # v4.1.19: studio/reaction/postgame-show programming can remain in SOURCE_MEDIA,
+    # v4.1.20: studio/reaction/postgame-show programming can remain in SOURCE_MEDIA,
     # but may not become GAME media merely because a provider endpoint was event-scoped.
     if _NON_GAME_RECAP_PROGRAM_RE.search(text) and not re.search(r"\b(?:full game highlights|game highlights|full match highlights|match highlights|condensed game|extended highlights)\b",text,re.I):
         return OTHER,0.995,"NON_GAME_POSTGAME_OR_REACTION_PROGRAM"
@@ -427,7 +442,7 @@ def annotate(item, *, league="", date="", away="", home=""):
             if scope==WEEK_LEAGUE:
                 out["collectionSeasonId"]=season_id(out,league,date); m=_WEEK_NUM_RE.search(_title(out)); out["collectionSeasonWeek"]=int(m.group(1)) if m else 0
             elif scope==ROUND_LEAGUE:
-                out["collectionSeasonId"]=season_id(out,league,date); m=_ROUND_NUM_RE.search(_title(out)); out["collectionRoundNumber"]=int(m.group(2)) if m else 0; out["collectionRoundType"]=("MATCHDAY" if m and str(m.group(1)).lower()=="matchday" else "MATCHWEEK")
+                out["collectionSeasonId"]=season_id(out,league,date); m=_ROUND_NUM_RE.search(_title(out)); explicit_num,explicit_kind=_explicit_round_metadata(out); out["collectionRoundNumber"]=int(m.group(2)) if m else explicit_num; out["collectionRoundType"]=("MATCHDAY" if m and str(m.group(1)).lower()=="matchday" else (explicit_kind or "MATCHWEEK"))
         else:
             out["collectionPromotionApproved"]=False; out["collectionPromotionReason"]=decision.get("reason") or "SILVER_PROMOTION_REJECTED"
     return out

@@ -1,6 +1,6 @@
 """Evidence-based media-to-event association for the v4 historical catalog.
 
-v4.1.19 is deliberately fail-closed. Source media may be broad/ambiguous, but an
+v4.1.20 is deliberately fail-closed. Source media may be broad/ambiguous, but an
 EVENT_MEDIA relationship must prove one canonical sporting event. Matchup-title,
 calendar/season, and provider-id conflicts are evaluated before positive provider
 identity so a stale or over-broad provider adapter cannot launder the wrong asset

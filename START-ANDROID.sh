@@ -3,7 +3,7 @@ set -e
 cd "$(dirname "$0")"
 
 echo ""
-echo "Sports Big Board v4.1.19 — Android"
+echo "Sports Big Board v4.1.20 — Android"
 echo "---------------------------------"
 
 if ! command -v python >/dev/null 2>&1; then
