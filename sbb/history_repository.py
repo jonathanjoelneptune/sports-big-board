@@ -42,7 +42,7 @@ class HistoryRepository:
 
         Re-running ``PRAGMA journal_mode=WAL`` on every short-lived connection can
         serialize otherwise independent readers behind catalog writers.  The journal
-        mode is persistent database state, so v4.1.25 configures it in ``_init_db``
+        mode is persistent database state, so v4.1.27 configures it in ``_init_db``
         and keeps normal connections cheap.
         """
         conn = sqlite3.connect(self.path, timeout=30)
@@ -499,7 +499,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.25 migration cooldowns already persisted in production.
+        """Release artificial v4.1.27 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -682,7 +682,7 @@ class HistoryRepository:
                 if state==ASSIGNED:
                     competing=conn.execute("SELECT canonical_event_key,association_confidence,association_method FROM history_event_media WHERE asset_key=? AND association_state='ASSIGNED' AND canonical_event_key<>?",(asset_key,key)).fetchall()
                     if competing:
-                        # v4.1.25 distinguishes a broad candidate being encountered
+                        # v4.1.27 distinguishes a broad candidate being encountered
                         # for another game from a genuine strong-identity conflict.
                         # Preserve a previously proven assignment for ordinary title/
                         # team matches and quarantine only the new candidate link.
@@ -779,7 +779,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.25 treats collection membership as fully derived state.  Classifier
+        v4.1.27 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -882,7 +882,7 @@ class HistoryRepository:
         return {"event":event,"collection":collection,"integrity":integrity,"issues":issues,"ok":not bool(issues)}
 
     def media_objective_summary(self):
-        """Persisted v4.1.25 objective/category counts for operator audit."""
+        """Persisted v4.1.27 objective/category counts for operator audit."""
         out={"nflQuickGames":0,"nflExtendedGames":0,"nflBothGames":0,"nflGreenWithoutPurple":0,"nflMissingQuick":0,"nflMissingExtended":0,
              "mlsSnapshots":0,"mlsMatchHighlights":0,"mlsSnapshotGames":0,"mlsHighlightGames":0,"mlsBothGames":0,"mlsMissingSnapshot":0,"mlsMissingHighlights":0,
              "eplQuickGames":0,"eplExtendedGames":0,"eplBothGames":0,"eplMissingQuick":0,"eplMissingExtended":0,
@@ -954,8 +954,8 @@ class HistoryRepository:
     def ribbon_media_for_date(self, date, leagues=None, include_failed=False):
         """Bulk exact-event GAME media for one historical ribbon date.
 
-        v4.1.25 performed one ``event_media`` query per score card (the classic
-        N+1 pattern).  This v4.1.25 path resolves every assigned source asset for
+        v4.1.27 performed one ``event_media`` query per score card (the classic
+        N+1 pattern).  This v4.1.27 path resolves every assigned source asset for
         the requested day in a single SQLite read and groups the hydrated rows by
         canonical event key in memory.
         """
@@ -1063,7 +1063,7 @@ class HistoryRepository:
     def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP", return_stats=False):
         """Promote only strictly proven league-wide roundup assets into Silver.
 
-        v4.1.25 keeps the legacy integer return by default, but can return precise
+        v4.1.27 keeps the legacy integer return by default, but can return precise
         idempotent telemetry so rule catch-up reports *new* assets/links rather than
         repeatedly calling rediscovered rows "accepted".
         """
@@ -1110,7 +1110,9 @@ class HistoryRepository:
 
     def roundup_media(self, date, league=None):
         date=str(date or "")[:10]; league=str(league or "").upper()
-        with self._lock, closing(self._connect()) as conn:
+        # v4.1.27: Silver is a latency-sensitive read. WAL/query_only means this
+        # lookup never queues behind discovery writers or a database audit.
+        with closing(self._read_connect()) as conn:
             league_sql=""
             if league and league!="ALL": league_sql=" AND c.league=?"
             # Day ribbon playback is date-scoped. WEEK_LEAGUE collections use league-
@@ -1127,7 +1129,13 @@ class HistoryRepository:
             if row["asset_key"] in seen: continue
             seen.add(row["asset_key"]); item=self._hydrate_asset(row)
             item["mediaScope"]=row["scope"]; item["collectionTier"]="silver"; item["displayTier"]="silver"; item["collectionKind"]=row["collection_kind"]
-            item["collectionPeriodKey"]=row["period_key"]; item["collectionKey"]=row["collection_key"]; out.append(item)
+            item["collectionPeriodKey"]=row["period_key"]; item["collectionKey"]=row["collection_key"]
+            # Normalized SQLite state is authoritative. A stale asset_json copy must
+            # not make a verified Silver recap look disconnected/unplayable.
+            has_transport=bool(str(item.get("youtubeId") or "").strip() or str(item.get("mediaUrl") or item.get("externalUrl") or "").strip())
+            item["verifiedPlayable"]=bool(str(row["validation_state"] or "").upper()=="VERIFIED" and str(row["runtime_state"] or "").upper()!="FAILED" and has_transport)
+            item["validationState"]=str(row["validation_state"] or "CANDIDATE").upper(); item["runtimeCatalogState"]=str(row["runtime_state"] or "UNKNOWN").upper()
+            out.append(item)
         return out
 
     def put_media(self, date, league, rows, merge=True):
@@ -1346,7 +1354,7 @@ class HistoryRepository:
     def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, preferred_league="", strict_preferred=False, limit=96, newest_first=True):
         """Newest-first official-source objective queue.
 
-        v4.1.25 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
+        v4.1.27 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
         objectives. A previously completed generic source pass cannot hide an unmet
         objective, and the three rule-migration leagues are scheduled ahead of legacy
         NHL source catch-up until their new objective ledgers are satisfied.
@@ -1355,7 +1363,7 @@ class HistoryRepository:
         leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_specs_for_league(source_versions,lg)]
         preferred=str(preferred_league or "").upper()
         if strict_preferred and preferred and preferred in leagues:
-            # v4.1.25 strict rule-migration lane: query only the assigned league.
+            # v4.1.27 strict rule-migration lane: query only the assigned league.
             # This avoids SQL LIMIT starvation where NFL/MLS rows can consume the
             # candidate window before an EPL-affinity worker ever sees EPL work.
             leagues=[preferred]
@@ -1538,6 +1546,73 @@ class HistoryRepository:
         return {"effectiveStatus":effective,"discoveryState":raw,"discoveryVersion":version,"currentDiscoveryVersion":current,"versionCurrent":current_ok,"discoveryPending":pending,"catalogComplete":catalog_complete,"coverageComplete":coverage_complete,"qualityComplete":quality_complete,"upgradeEligible":upgrade}
 
     def audit_catalog(self, *, date_from="", date_to="", league="", best_tier="", status="", search="", limit=100, offset=0, current_discovery_version=0, quality_target="gold"):
+        """Paginate the common audit view in SQL instead of materializing the catalog.
+
+        Advanced semantic filters retain the exhaustive compatibility path, but the
+        normal audit-tab connection (date/league/page) now reads only the requested
+        event page and the media linked to those events. This is the hot operator path.
+        """
+        if best_tier or status or search:
+            return self._audit_catalog_fullscan(date_from=date_from,date_to=date_to,league=league,best_tier=best_tier,status=status,search=search,limit=limit,offset=offset,current_discovery_version=current_discovery_version,quality_target=quality_target)
+        league=str(league or "").upper(); limit=max(1,min(500,int(limit or 100))); offset=max(0,int(offset or 0))
+        clauses=[]; params=[]
+        if date_from: clauses.append("e.event_date>=?"); params.append(str(date_from)[:10])
+        if date_to: clauses.append("e.event_date<=?"); params.append(str(date_to)[:10])
+        if league: clauses.append("e.league=?"); params.append(league)
+        where=(" WHERE "+" AND ".join(clauses)) if clauses else ""
+        verified_sql="s.validation_state='VERIFIED' AND s.runtime_state!='FAILED' AND (json_extract(s.asset_json,'$.youtubeId') IS NOT NULL OR json_extract(s.asset_json,'$.mediaUrl') IS NOT NULL OR s.canonical_url!='')"
+        with closing(self._read_connect()) as conn:
+            total=int(conn.execute("SELECT COUNT(*) FROM history_catalog_event e"+where,params).fetchone()[0] or 0)
+            events=conn.execute("SELECT e.* FROM history_catalog_event e"+where+" ORDER BY e.event_date DESC,e.league,e.event_id LIMIT ? OFFSET ?",[*params,limit,offset]).fetchall()
+            keys=[str(r['canonical_event_key']) for r in events]
+            assets=[]
+            if keys:
+                marks=','.join('?' for _ in keys)
+                assets=conn.execute(f"""SELECT em.canonical_event_key,s.*,em.association_confidence,em.association_method,em.association_evidence,em.matcher_version
+                  FROM history_event_media em JOIN history_source_media s ON s.asset_key=em.asset_key
+                  WHERE em.association_state='ASSIGNED' AND s.scope='GAME' AND em.canonical_event_key IN ({marks})""",keys).fetchall()
+            # Cheap global counters for the header; no JSON hydration is required.
+            join_where=(where.replace(' WHERE ',' AND ',1) if where else '')
+            sums=conn.execute(f"""SELECT COUNT(DISTINCT e.canonical_event_key) games,
+              SUM(CASE WHEN {verified_sql} THEN 1 ELSE 0 END) verifiedAssets,
+              SUM(CASE WHEN NOT ({verified_sql}) THEN 1 ELSE 0 END) candidateAssets,
+              SUM(CASE WHEN s.runtime_state='FAILED' THEN 1 ELSE 0 END) runtimeFailedAssets
+              FROM history_catalog_event e LEFT JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key AND em.association_state='ASSIGNED'
+              LEFT JOIN history_source_media s ON s.asset_key=em.asset_key AND s.scope='GAME' WHERE 1=1 {join_where}""",params).fetchone()
+        by_event={}
+        for row in assets:
+            item=self._hydrate_asset(row); item['associationConfidence']=float(row['association_confidence'] or 0); item['associationMethod']=row['association_method']; item['associationEvidence']=row['association_evidence']
+            tier=str(item.get('recapTier') or 'blue').lower(); tier=tier if tier in {'gold','green','extended','blue'} else 'blue'; item['tier']=tier
+            youtube_id=str(item.get('youtubeId') or ''); item['url']=str(item.get('externalUrl') or (f"https://www.youtube.com/watch?v={youtube_id}" if youtube_id else item.get('mediaUrl') or ''))
+            item['verified']=bool(str(row['validation_state'] or '').upper()=='VERIFIED' and str(row['runtime_state'] or '').upper()!='FAILED' and (youtube_id or item.get('mediaUrl') or item.get('externalUrl')))
+            by_event.setdefault(str(row['canonical_event_key']),[]).append(item)
+        priority={'gold':4,'green':3,'extended':2,'blue':1,'':0}; rows=[]
+        summary={'games':total,'verifiedAssets':int((sums['verifiedAssets'] if sums else 0) or 0),'candidateAssets':int((sums['candidateAssets'] if sums else 0) or 0),'runtimeFailedAssets':int((sums['runtimeFailedAssets'] if sums else 0) or 0),'tiers':{'gold':0,'green':0,'extended':0,'blue':0},'best':{'gold':0,'green':0,'extended':0,'blue':0,'none':0},'effectiveStatuses':{},'upgradePendingGames':0,'qualityCompleteGames':0,'discoveryPendingGames':0,'noVerifiedMediaGames':0,'greenCoverageGames':0,'greenCoverageByLeague':{},'coverageCompleteGames':0,'coverageCompleteByLeague':{},'summaryMode':'SQL_FAST'}
+        for erow in events:
+            event=self._load_obj(erow['event_json']); disc=self._load_obj(erow['discovery_json']); event_assets=by_event.get(str(erow['canonical_event_key']),[]); tiers={'gold':[],'green':[],'extended':[],'blue':[]}
+            for asset in event_assets: tiers[asset['tier']].append(asset)
+            verified=[a for a in event_assets if a.get('verified')]; best=max((a['tier'] for a in verified),key=lambda t:priority.get(t,0),default='')
+            away,home=team_name(event,'away'),team_name(event,'home'); game=f"{away} @ {home}".strip(' @') or erow['event_id']
+            projected=self._audit_effective_status(erow['discovery_state'],disc,best_tier=best,verified_count=len(verified),current_discovery_version=current_discovery_version,quality_target=quality_target); eff=projected['effectiveStatus']
+            catalog_coverage=('COVERAGE_COMPLETE' if projected.get('coverageComplete') else ('UNINDEXED' if projected['discoveryPending'] else ('SEARCHED_EMPTY' if eff=='SEARCHED_EMPTY' else ('CANDIDATE_ONLY' if eff=='CANDIDATE_ONLY' else ('PLAYABLE_PARTIAL' if verified else 'PROVIDER_DEGRADED')))))
+            quality_gap='QUALITY_COMPLETE' if projected['qualityComplete'] else ('OPTIONAL_QUALITY_UPGRADE' if projected.get('coverageComplete') else ('REQUIRED_COVERAGE_UPGRADE' if verified else 'NO_PLAYABLE_MEDIA'))
+            # Page-derived semantic counters preserve the established audit contract.
+            for tier_name in summary['tiers']: summary['tiers'][tier_name]+=sum(1 for a in tiers[tier_name] if a.get('verified'))
+            summary['best'][best or 'none']=summary['best'].get(best or 'none',0)+1
+            summary['effectiveStatuses'][eff]=summary['effectiveStatuses'].get(eff,0)+1
+            if projected['upgradeEligible']: summary['upgradePendingGames']+=1
+            if projected['qualityComplete']: summary['qualityCompleteGames']+=1
+            if projected['discoveryPending']: summary['discoveryPendingGames']+=1
+            if not verified: summary['noVerifiedMediaGames']+=1
+            cov=summary['greenCoverageByLeague'].setdefault(erow['league'],{'games':0,'greenGames':0,'greenOrGoldGames':0}); cov['games']+=1
+            if any(a.get('verified') for a in tiers['green']): summary['greenCoverageGames']+=1; cov['greenGames']+=1
+            if any(a.get('verified') for a in tiers['green']+tiers['gold']): cov['greenOrGoldGames']+=1
+            cc=summary['coverageCompleteByLeague'].setdefault(erow['league'],{'games':0,'coverageCompleteGames':0}); cc['games']+=1
+            if projected.get('coverageComplete'): summary['coverageCompleteGames']+=1; cc['coverageCompleteGames']+=1
+            rows.append({'date':erow['event_date'],'league':erow['league'],'eventId':erow['event_id'],'canonicalEventKey':erow['canonical_event_key'],'away':away,'home':home,'game':game,'discoveryState':projected['discoveryState'],'effectiveStatus':eff,'catalogCoverageStatus':catalog_coverage,'qualityGapStatus':quality_gap,'bestTier':best or 'none','coverageComplete':projected.get('coverageComplete',False),'qualityComplete':projected['qualityComplete'],'upgradeEligible':projected['upgradeEligible'],'catalogComplete':projected['catalogComplete'],'discoveryPending':projected['discoveryPending'],'discoveryVersion':projected['discoveryVersion'],'currentDiscoveryVersion':projected['currentDiscoveryVersion'],'versionCurrent':projected['versionCurrent'],'nextRetryAt':float(erow['next_retry_at'] or 0),'lastDiscoveryAt':float(erow['last_discovery_at'] or 0),'lastError':str(erow['last_error'] or ''),'tiers':tiers,'verifiedAssetCount':len(verified),'assetCount':len(event_assets)})
+        return {'summary':summary,'rows':rows,'total':total,'limit':limit,'offset':offset,'queryMode':'SQL_PAGE'}
+
+    def _audit_catalog_fullscan(self, *, date_from="", date_to="", league="", best_tier="", status="", search="", limit=100, offset=0, current_discovery_version=0, quality_target="gold"):
         league=str(league or "").upper(); search=str(search or "").lower(); status=str(status or "").lower(); best_tier=str(best_tier or "").lower(); limit=max(1,min(500,int(limit or 100))); offset=max(0,int(offset or 0))
         clauses=[]; params=[]
         if date_from: clauses.append("event_date>=?"); params.append(str(date_from)[:10])
