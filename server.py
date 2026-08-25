@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sports Big Board v4.1.25 local/cloud backend.
+"""Sports Big Board v4.1.26 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
@@ -41,7 +41,7 @@ from sbb.event_matcher import match_event as match_media_to_event
 from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
 from sbb.secrets import get_secret, set_secrets, status as secrets_status, migrate_legacy as migrate_legacy_secrets, SECRETS_FILE
 
-APP_VERSION = "4.1.25"
+APP_VERSION = "4.1.26"
 PORT = int(os.environ.get("PORT", "8080"))
 BIND_HOST = os.environ.get("SBB_BIND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -73,7 +73,7 @@ OPENAI_KEY_FILE = STATE_DIR / "openai-key"
 OPENAI_API_BASE = "https://api.openai.com/v1"
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
 YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
-YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.25", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
+YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.26", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
 
 def youtube_fetch_json(url, timeout=10):
     """Operation-aware YouTube broker.
@@ -92,7 +92,7 @@ NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"  # verified @NFL channel
 # playlistItems.list + videos.list; search.list is never required. Known historical
 # playlist IDs provide immediate anchors while automatic enumeration remains primary.
 NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS = {
-    # v4.1.25 operator-pinned 2025-season weekly/playoff recap playlists.  The
+    # v4.1.26 operator-pinned 2025-season weekly/playoff recap playlists.  The
     # channel catalog supplies the authoritative title when available; these anchors
     # keep every known playlist reachable even if playlists.list misses/changes it.
     "PLRdw3IjKY2gm8m7heXMOfVPLVA8jDY_Jd":"2025 NFL Recap Playlist 01",
@@ -139,7 +139,7 @@ EPL_YOUTUBE_KNOWN_PLAYLISTS = {
     "PLR1b-6EyIaTs":{"title":"Premier League 2026-27 season","url":"https://www.youtube.com/playlist?list=PLR1b-6EyIaTs","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2026,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
     "PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E":{"title":"Premier League 2025-26 season","url":"https://www.youtube.com/playlist?list=PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2025,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
 }
-# v4.1.25 operator-curated GAME playlist registry. These playlist lanes use
+# v4.1.26 operator-curated GAME playlist registry. These playlist lanes use
 # playlistItems.list + videos.list only, never search.list.  Exact event association
 # still requires both teams plus explicit/published date evidence, so a trusted
 # playlist can improve discovery without weakening Event Matcher v7.
@@ -361,8 +361,12 @@ HISTORY_ADMIN_RECOVERY_STATE = {"lastAction":"","lastPreview":{},"lastAppliedAt"
 HISTORY_DB_AUDIT_LOCK = threading.RLock()
 HISTORY_DB_AUDIT_STATE = {"generation":0,"running":False,"complete":False,"cursor":0,"checked":0,"total":0,"startedAt":0.0,"completedAt":0.0,"lastRun":0.0,"lastError":"","issues":{"noVerifiedMedia":0,"staleDiscovery":0,"quarantinedLinks":0,"unknownDiscovery":0},"integrity":{},"silverIdentity":{}}
 HISTORY_DB_AUDIT_BATCH = max(50,min(1000,int(os.environ.get("SBB_DB_AUDIT_BATCH","250") or 250)))
+HISTORY_OPERATOR_SNAPSHOT_LOCK = threading.RLock()
+HISTORY_OPERATOR_SNAPSHOT_STATE = {"ready":False,"generatedAt":0.0,"generationMs":0.0,"error":"","greenGapQueue":{},"associations":{},"eventClaims":[],"silver":{},"mediaObjectives":{},"silverIdentity":{}}
+HISTORY_OPERATOR_SNAPSHOT_INTERVAL = max(5,min(60,int(os.environ.get("SBB_OPERATOR_SNAPSHOT_INTERVAL","10") or 10)))
 
-# v4.1.25 rolling schedule + operator playlist state. Provider feeds write into the
+
+# v4.1.26 rolling schedule + operator playlist state. Provider feeds write into the
 # canonical catalog; the UI reads the catalog instead of reconstructing relationships.
 HISTORY_SCHEDULE_SYNC_INTERVAL = max(120,int(os.environ.get("SBB_SCHEDULE_SYNC_INTERVAL","600") or 600))
 HISTORY_SCHEDULE_SYNC_FUTURE_DAYS = max(3,min(21,int(os.environ.get("SBB_SCHEDULE_SYNC_FUTURE_DAYS","14") or 14)))
@@ -1039,7 +1043,7 @@ def _prewarm_highlightly_call(sport_key,endpoint,date,timezone_value="",force=Fa
     if RATE_LIMIT_STATE.get("limited") and limited_since and time.time()-limited_since < 15*60:
         return cached
     url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.25"})
+    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.26"})
     try:
         with urlopen(req,timeout=15) as resp:
             data=json.loads(resp.read().decode("utf-8"))
@@ -1600,7 +1604,7 @@ def openai_api_request(path, payload=None, method=None, timeout=20):
         raise RuntimeError("OPENAI_NOT_CONFIGURED")
     method=method or ("POST" if payload is not None else "GET")
     body=None if payload is None else json.dumps(payload).encode("utf-8")
-    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.25"}
+    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.26"}
     req=Request(f"{OPENAI_API_BASE}{path}",data=body,headers=headers,method=method)
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -2135,7 +2139,7 @@ def _google_news_official_results(league):
     site_clause=' OR '.join(f'site:{d}' for d in sorted(trusted_domains))
     query=f'({terms}) ({site_clause}) {league} when:5d'
     url='https://news.google.com/rss/search?'+urlencode({'q':query,'hl':'en-US','gl':'US','ceid':'US:en'})
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.25'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.26'})
     try:
         with urlopen(req,timeout=10) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2194,7 +2198,7 @@ def _espn_rss_results(league):
     """First-party ESPN headline feed. ESPN explicitly publishes these RSS feeds for aggregators."""
     league=str(league or '').upper(); url=ESPN_RSS.get(league)
     if not url: return []
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.25'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.26'})
     try:
         with urlopen(req,timeout=8) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2440,7 +2444,7 @@ def _nfl_team_site_video_results(date, away, home, max_items=8):
     for host in hosts:
         page=f'https://{host}/video/'
         try:
-            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.25'})
+            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.26'})
             with urlopen(req,timeout=8) as resp: raw=resp.read().decode('utf-8','ignore')
         except Exception as exc:
             print(f'[SBB NFL] club video page failed {host}: {type(exc).__name__}: {exc}',flush=True); continue
@@ -2786,7 +2790,7 @@ def _highlightly_soccer_schedule(league,date):
         "x-rapidapi-key":read_key(),
         "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.25"
+        "User-Agent":"SportsBigBoard/4.1.26"
     })
     with urlopen(req,timeout=12) as resp:
         payload=json.loads(resp.read().decode("utf-8"))
@@ -2890,7 +2894,7 @@ def _soccer_diagnostics():
                     "x-rapidapi-key":read_key(),
                     "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
                     "Accept":"application/json",
-                    "User-Agent":"SportsBigBoard/4.1.25"
+                    "User-Agent":"SportsBigBoard/4.1.26"
                 })
                 with urlopen(req,timeout=12) as resp:
                     payload=json.loads(resp.read().decode("utf-8"))
@@ -3652,7 +3656,7 @@ def _nfl_game_highlights_source_pages(away,home):
 
 
 def _nfl_fetch_page_text(url,timeout=9):
-    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.25'})
+    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.26'})
     with urlopen(req,timeout=timeout) as resp:
         return resp.read().decode('utf-8','ignore')
 
@@ -3809,7 +3813,7 @@ _SOCCER_TEAM_ALIASES = {
 
 
 def _official_fetch_page_text(url,timeout=10,referer=''):
-    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.25'}
+    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.26'}
     if referer: headers['Referer']=referer
     req=Request(url,headers=headers)
     with urlopen(req,timeout=timeout) as resp:
@@ -4262,7 +4266,7 @@ def _official_nfl_feed_videos(date, away, home):
         return []
     url=f"https://www.youtube.com/feeds/videos.xml?channel_id={NFL_YOUTUBE_CHANNEL_ID}"
     try:
-        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.25"})
+        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.26"})
         with urlopen(req,timeout=9) as resp:
             raw=resp.read()
         root=ET.fromstring(raw)
@@ -4451,7 +4455,7 @@ def _youtube_oembed_probe(video_id,timeout=7):
     vid=str(video_id or '').strip()
     if not vid: return None
     url='https://www.youtube.com/oembed?'+urlencode({'url':f'https://www.youtube.com/watch?v={vid}','format':'json'})
-    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.25'})
+    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.26'})
     try:
         with urlopen(req,timeout=timeout) as resp:
             if getattr(resp,'status',200)!=200: return None
@@ -6024,7 +6028,7 @@ def _search_engine_youtube_links(query,max_results=18):
     # normal search result page on a phone connection.
     try:
         url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss','count':max(10,min(30,max_results*2))})
-        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.25','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
+        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.26','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
         with urlopen(req,timeout=9) as resp:
             blob=resp.read(1_500_000)
         root=ET.fromstring(blob)
@@ -6422,7 +6426,7 @@ def normalized_rapid_highlights(date, force_refresh=False, force_clips=False):
     return unique
 
 def fetch_json(url, timeout=15):
-    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.25"})
+    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.26"})
     with urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
@@ -7120,7 +7124,7 @@ def _football_day_fallback(date, sport_key, timezone_value=""):
     req=Request(url,headers={
         "x-rapidapi-key":key,
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.25"
+        "User-Agent":"SportsBigBoard/4.1.26"
     })
     with urlopen(req,timeout=15) as resp:
         data=json.loads(resp.read().decode("utf-8"))
@@ -7263,6 +7267,9 @@ MEDIA_FILE_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 MEDIA_FILE_CACHE_HEAD_BYTES = int(os.environ.get("SBB_MEDIA_HEAD_BYTES", str(16*1024*1024)))
 MEDIA_FILE_CACHE_TAIL_BYTES = int(os.environ.get("SBB_MEDIA_TAIL_BYTES", str(1*1024*1024)))
 MEDIA_FILE_CACHE_FULL_MAX_BYTES = int(os.environ.get("SBB_MEDIA_FULL_MAX_BYTES", str(110*1024*1024)))
+MEDIA_FILE_CACHE_CHUNK_BYTES = int(os.environ.get("SBB_MEDIA_CHUNK_BYTES", str(8*1024*1024)))
+MEDIA_FILE_CACHE_PREFETCH_CHUNKS = max(2,min(8,int(os.environ.get("SBB_MEDIA_PREFETCH_CHUNKS","4") or 4)))
+MEDIA_PLAYBACK_DIAGNOSTICS = {}
 MEDIA_FILE_CACHE_MAX_BYTES = int(os.environ.get("SBB_MEDIA_CACHE_MAX_BYTES", str(3*1024*1024*1024)))
 MEDIA_FILE_CACHE_TTL = int(os.environ.get("SBB_MEDIA_CACHE_TTL", str(3*24*3600)))
 MEDIA_FILE_CACHE_LOCK = threading.RLock()
@@ -7294,8 +7301,23 @@ def _media_cache_paths(media_url):
     key=_media_cache_key(media_url); base=MEDIA_FILE_CACHE_DIR/key
     return {
         "key":key,"meta":base.with_suffix(".json"),"head":base.with_suffix(".head"),
-        "tail":base.with_suffix(".tail"),"full":base.with_suffix(".mp4"),"tmp":base.with_suffix(".part")
+        "tail":base.with_suffix(".tail"),"full":base.with_suffix(".mp4"),"tmp":base.with_suffix(".part"),
+        "chunkDir":MEDIA_FILE_CACHE_DIR / (key+".chunks")
     }
+
+def _media_chunk_path(paths,index):
+    d=paths["chunkDir"]; d.mkdir(parents=True,exist_ok=True); return d / f"{int(index):05d}.part"
+
+def _media_chunk_bounds(index,total):
+    start=int(index)*MEDIA_FILE_CACHE_CHUNK_BYTES; return start,min(int(total)-1,start+MEDIA_FILE_CACHE_CHUNK_BYTES-1)
+
+def _media_diag(media_url, mode, **extra):
+    key=_media_cache_key(media_url); row={"mode":mode,"at":time.time(),**extra}
+    with MEDIA_FILE_CACHE_LOCK:
+        MEDIA_PLAYBACK_DIAGNOSTICS[key]=row
+        if len(MEDIA_PLAYBACK_DIAGNOSTICS)>256:
+            for old in sorted(MEDIA_PLAYBACK_DIAGNOSTICS,key=lambda k:MEDIA_PLAYBACK_DIAGNOSTICS[k].get("at",0))[:64]: MEDIA_PLAYBACK_DIAGNOSTICS.pop(old,None)
+    return row
 
 def _media_cache_meta(media_url):
     paths=_media_cache_paths(media_url)
@@ -7339,7 +7361,7 @@ def _media_request_headers(range_value=None,media_url=""):
     host=(urlparse(str(media_url or "")).hostname or "").lower()
     referer="https://www.espn.com/" if ("espn" in host or "akamai" in host) else ("https://www.nfl.com/" if "nfl" in host else "https://www.mlb.com/")
     headers={
-        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.25",
+        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.26",
         "Accept":"video/mp4,video/*;q=0.9,*/*;q=0.8",
         "Referer":referer
     }
@@ -7454,6 +7476,17 @@ def _media_cache_prepare(media_url,event_id="",media_date="",priority=0):
         if total and paths["head"].exists() and paths["head"].stat().st_size>=total:
             paths["head"].replace(paths["full"]); meta["fullReady"]=True; meta["fullSize"]=total; meta["headSize"]=0
         if total and total>MEDIA_FILE_CACHE_HEAD_BYTES and not meta.get("fullReady"):
+            # v4.1.26: extend the startup runway with fixed 8 MB chunks. The first
+            # 16 MB remains backwards-compatible as HEAD; chunks 2+ keep playback
+            # local while the low-priority full-file cache finishes.
+            for idx in range(2,min(MEDIA_FILE_CACHE_PREFETCH_CHUNKS,(total+MEDIA_FILE_CACHE_CHUNK_BYTES-1)//MEDIA_FILE_CACHE_CHUNK_BYTES)):
+                cstart,cend=_media_chunk_bounds(idx,total); cpath=_media_chunk_path(paths,idx)
+                if cpath.exists() and cpath.stat().st_size>=cend-cstart+1: continue
+                info=_fetch_media_range_to_file(media_url,cstart,cend,cpath)
+                if int(info.get("start") or cstart)!=cstart:
+                    try: cpath.unlink()
+                    except Exception: pass
+                    break
             tail_start=max(0,total-MEDIA_FILE_CACHE_TAIL_BYTES)
             tail_ok=paths["tail"].exists() and int(meta.get("tailStart") or -1)==tail_start and paths["tail"].stat().st_size>=total-tail_start
             if not tail_ok:
@@ -7513,6 +7546,10 @@ def _media_cache_serve(handler,media_url,range_header):
             source=paths["head"]; file_offset=start-hs; label="HEAD"
         elif paths["tail"].exists() and start>=ts and end<=te:
             source=paths["tail"]; file_offset=start-ts; label="TAIL"
+        else:
+            idx=start//MEDIA_FILE_CACHE_CHUNK_BYTES; cstart,cend=_media_chunk_bounds(idx,total); cpath=_media_chunk_path(paths,idx)
+            if cpath.exists() and start>=cstart and end<=cend and cpath.stat().st_size>=end-cstart+1:
+                source=cpath; file_offset=start-cstart; label=f"CHUNK-{idx}"
     if source is None: return False
     length=end-start+1
     handler.send_response(206 if requested else 200)
@@ -7539,6 +7576,7 @@ def _media_cache_serve(handler,media_url,range_header):
         MEDIA_FILE_CACHE_STATS["requests"]+=1
         if label=="FULL": MEDIA_FILE_CACHE_STATS["fullHits"]+=1
         else: MEDIA_FILE_CACHE_STATS["rangeHits"]+=1
+    _media_diag(media_url,f"SERVER_{label}",rangeStart=start,rangeEnd=end,total=total)
     print(f"[SBB media-cache] HIT-{label} bytes={start}-{end}/{total}",flush=True)
     return True
 
@@ -7606,6 +7644,25 @@ def _media_cache_serve_hybrid_head(handler,media_url,range_header,event_id="",me
         if not client_connected:
             print(f"[SBB media-cache] HYBRID head satisfied then client closed bytes={start}-{cached_end}/{total}",flush=True)
             return True
+        # Continue through any fixed chunks already prefetched before touching the CDN.
+        while next_start<=end and next_start % MEDIA_FILE_CACHE_CHUNK_BYTES==0:
+            idx=next_start//MEDIA_FILE_CACHE_CHUNK_BYTES; cstart,cend=_media_chunk_bounds(idx,total); cpath=_media_chunk_path(paths,idx)
+            if not cpath.exists() or cpath.stat().st_size < cend-cstart+1: break
+            upto=min(cend,end)
+            with cpath.open('rb') as cf:
+                remaining=upto-cstart+1
+                while remaining>0:
+                    piece=cf.read(min(256*1024,remaining))
+                    if not piece: break
+                    try: handler.wfile.write(piece)
+                    except (BrokenPipeError,ConnectionResetError): client_connected=False; break
+                    remaining-=len(piece)
+            if not client_connected: return True
+            cached_end=upto; next_start=upto+1
+        if next_start>end:
+            _media_diag(media_url,'HYBRID_CHUNK_LOCAL',rangeStart=start,rangeEnd=end,total=total,cachedThrough=cached_end)
+            return True
+        upstream_started=time.perf_counter()
         req=Request(media_url,headers=_media_request_headers(f"bytes={next_start}-{end}",media_url))
         with urlopen(req,timeout=20) as resp:
             while True:
@@ -7631,6 +7688,7 @@ def _media_cache_serve_hybrid_head(handler,media_url,range_header,event_id="",me
                 if full_tmp: full_tmp.unlink(missing_ok=True)
             except Exception: pass
             if total<=MEDIA_FILE_CACHE_FULL_MAX_BYTES: _schedule_media_cache_full(media_url,total)
+        _media_diag(media_url,'HYBRID_CHUNK',rangeStart=start,rangeEnd=end,total=total,cachedThrough=cached_end,upstreamMs=round((time.perf_counter()-upstream_started)*1000,1))
         print(f"[SBB media-cache] HYBRID-HEAD bytes={start}-{cached_end} + upstream {next_start}-{end}/{total}",flush=True)
         return True
     except Exception as exc:
@@ -7650,7 +7708,7 @@ def _media_cache_summary():
     with MEDIA_FILE_CACHE_LOCK:
         stats=dict(MEDIA_FILE_CACHE_STATS); stats["stageJobs"]=len(MEDIA_FILE_CACHE_JOBS); stats["fullJobs"]=len(MEDIA_FILE_CACHE_FULL_JOBS); stats["activeStreams"]=len(MEDIA_FILE_CACHE_ACTIVE_STREAMS)
     files=list(MEDIA_FILE_CACHE_DIR.glob("*.mp4")); heads=list(MEDIA_FILE_CACHE_DIR.glob("*.head"))
-    stats["fullFiles"]=len(files); stats["stagedFiles"]=len(heads)
+    stats["fullFiles"]=len(files); stats["stagedFiles"]=len(heads); stats["chunkFiles"]=sum(1 for d in MEDIA_FILE_CACHE_DIR.glob("*.chunks") if d.is_dir() for _ in d.glob("*.part"))
     stats["bytesOnDisk"]=sum(x.stat().st_size for x in MEDIA_FILE_CACHE_DIR.iterdir() if x.is_file() and x.suffix in {".mp4",".head",".tail"})
     return stats
 
@@ -8363,7 +8421,7 @@ def _history_validate_native_asset(item,timeout=6):
     """Positively probe one direct historical media URL before advertising green."""
     row=dict(item or {}); url=str(row.get('mediaUrl') or '').strip()
     if not url: return row
-    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.25','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
+    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.26','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
     if 'espn' in url.lower(): headers['Referer']='https://www.espn.com/'
     source_type=str(row.get('sourceType') or '')
     external=str(row.get('externalUrl') or '').lower()
@@ -8753,7 +8811,7 @@ def _history_day_event_plans(date):
 def _history_day_score_rows(date):
     """Return the canonical historical ribbon slate without any provider calls.
 
-    v4.1.25 deliberately separates the lightweight score-ribbon contract from the
+    v4.1.26 deliberately separates the lightweight score-ribbon contract from the
     much larger event/media plans.  Persisted history_day scoreboards are preferred
     because they carry the richest score/status fields.  Canonical catalog events
     fill any identity gaps so a relationship-only catalog still paints the ribbon.
@@ -8761,7 +8819,7 @@ def _history_day_score_rows(date):
     target=str(date or '')[:10]
     out={lg:[] for lg in HISTORY_LEAGUES}; seen={lg:set() for lg in HISTORY_LEAGUES}
     for lg in HISTORY_LEAGUES:
-        # v4.1.25 score inventory must not hydrate catalog media.  The compact
+        # v4.1.26 score inventory must not hydrate catalog media.  The compact
         # endpoint bulk-loads exact media separately after the score slate is known.
         state=HISTORY_REPOSITORY.get_league(target,lg,prefer_catalog=False)
         for raw in state.get('scores') or []:
@@ -8785,7 +8843,7 @@ def _history_day_score_rows(date):
 def _history_day_ribbon_plans(date,score_rows=None):
     """Compact exact-event media plans for score-ribbon first paint.
 
-    v4.1.25 performs one bulk SQLite media read for the entire date.  The prior
+    v4.1.26 performs one bulk SQLite media read for the entire date.  The prior
     implementation called ``event_media`` once per game, turning a 30-game ribbon
     into 30+ separate SQLite connections while backfill workers were writing.
     """
@@ -9846,6 +9904,37 @@ def history_rule_collection_catchup_worker():
         phase='complete:rule-collections' if HISTORY_RULE_COLLECTION_CATCHUP_STATE.get('complete') else 'error'; _history_worker_beat(worker,phase,current=''); time.sleep(60)
 
 
+def _history_operator_snapshot():
+    with HISTORY_OPERATOR_SNAPSHOT_LOCK:
+        return copy.deepcopy(HISTORY_OPERATOR_SNAPSHOT_STATE)
+
+def history_operator_snapshot_worker():
+    """Precompute expensive operator telemetry off the request path.
+
+    The Live Search Console polls frequently; it must never trigger whole-catalog
+    aggregation synchronously. A stale 10-second snapshot is far more useful than a
+    request that blocks the console (and other SQLite readers) for tens of seconds.
+    """
+    time.sleep(4)
+    while True:
+        started=time.perf_counter(); now=time.time()
+        try:
+            payload={
+                'greenGapQueue':HISTORY_REPOSITORY.green_gap_summary(current_discovery_version=HISTORY_DISCOVERY_VERSION,now=now,recent_cutoff=_history_recent_cutoff()),
+                'associations':HISTORY_REPOSITORY.association_integrity_summary(),
+                'eventClaims':HISTORY_REPOSITORY.active_event_claims(now=now,limit=32),
+                'silver':HISTORY_REPOSITORY.silver_summary(),
+                'mediaObjectives':HISTORY_REPOSITORY.media_objective_summary(),
+                'silverIdentity':HISTORY_REPOSITORY.silver_identity_audit(league='EPL'),
+            }
+            with HISTORY_OPERATOR_SNAPSHOT_LOCK:
+                HISTORY_OPERATOR_SNAPSHOT_STATE.update(payload); HISTORY_OPERATOR_SNAPSHOT_STATE.update({'ready':True,'generatedAt':time.time(),'generationMs':round((time.perf_counter()-started)*1000,1),'error':''})
+        except Exception as exc:
+            with HISTORY_OPERATOR_SNAPSHOT_LOCK:
+                HISTORY_OPERATOR_SNAPSHOT_STATE.update({'error':f'{type(exc).__name__}: {exc}','generationMs':round((time.perf_counter()-started)*1000,1)})
+        elapsed=time.perf_counter()-started
+        time.sleep(max(1.0,HISTORY_OPERATOR_SNAPSHOT_INTERVAL-elapsed))
+
 def history_database_audit_worker():
     """Restartable, read-only database audit cursor for catalog quality checks."""
     worker='database-audit'; time.sleep(22)
@@ -10404,12 +10493,13 @@ class Handler(SimpleHTTPRequestHandler):
                 workers['green-gap']={'phase':f"pool:{green_pool.get('active',0)}/{green_pool.get('desired',0)}-active",'current':'','heartbeat':max(green_hbs or [0]),'lastProgress':max(green_lp or [0]),'heartbeatAgeSeconds':int(max(0,now-max(green_hbs))) if any(green_hbs) else None,'progressAgeSeconds':int(max(0,now-max(green_lp))) if any(green_lp) else None,'healthy':all(bool((workers.get(f'green-gap-{i}') or {}).get('healthy')) for i in range(1,HISTORY_GREEN_WORKERS+1))}
                 with HISTORY_FOCUS_LOCK: focus=dict(HISTORY_FOCUS_STATE)
                 gateway=YOUTUBE_GATEWAY.status()
-                qsum=HISTORY_REPOSITORY.green_gap_summary(current_discovery_version=HISTORY_DISCOVERY_VERSION,now=now,recent_cutoff=_history_recent_cutoff())
-                associations=HISTORY_REPOSITORY.association_integrity_summary()
-                claims=HISTORY_REPOSITORY.active_event_claims(now=now,limit=32)
+                operator_snapshot=_history_operator_snapshot()
+                qsum=operator_snapshot.get('greenGapQueue') or {}
+                associations=operator_snapshot.get('associations') or {}
+                claims=operator_snapshot.get('eventClaims') or []
                 providers=_history_provider_status()
-                silver=HISTORY_REPOSITORY.silver_summary()
-                media_objectives=HISTORY_REPOSITORY.media_objective_summary()
+                silver=operator_snapshot.get('silver') or {}
+                media_objectives=operator_snapshot.get('mediaObjectives') or {}
                 with HISTORY_MEDIA_AUDIT_LOCK: media_runtime=copy.deepcopy(HISTORY_MEDIA_AUDIT)
                 media_objectives['runtime']=media_runtime
                 official_catchup=_history_official_catchup_snapshot(now)
@@ -10443,7 +10533,7 @@ class Handler(SimpleHTTPRequestHandler):
                     'threads':threads,'workers':workers,'background':bg,
                     'greenGap':copy.deepcopy(HISTORY_GREEN_GAP_STATE),'greenPool':green_pool,'greenGapQueue':qsum,'associations':associations,
                     'eventClaims':claims,'providerConcurrency':providers,'discoveryEfficiency':_history_efficiency_snapshot(),'silver':silver,'mediaObjectives':media_objectives,'officialSourceCatchup':official_catchup,'ruleGameCatchup':rule_game_catchup,'ruleCollectionCatchup':_history_rule_collection_catchup_snapshot(),
-                    'databaseAudit':_history_database_audit_snapshot(),'recovery':_history_recovery_status(),'silverIdentity':HISTORY_REPOSITORY.silver_identity_audit(league='EPL'),
+                    'databaseAudit':_history_database_audit_snapshot(),'recovery':_history_recovery_status(),'silverIdentity':operator_snapshot.get('silverIdentity') or {},'operatorSnapshot':{'ready':bool(operator_snapshot.get('ready')),'generatedAt':operator_snapshot.get('generatedAt',0),'ageSeconds':round(max(0,now-float(operator_snapshot.get('generatedAt') or 0)),1) if operator_snapshot.get('generatedAt') else None,'generationMs':operator_snapshot.get('generationMs',0),'error':operator_snapshot.get('error','')},
                     'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE),'playlistCrawler':dict(OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE),'operatorPlaylists':len(_operator_media_playlist_rows(enabled_only=False)),
                     'backfill':copy.deepcopy(HISTORY_BACKFILL_STATE),'backfillFloorDate':HISTORY_BACKFILL_FLOOR_DATE,'activeDiscoveries':active,'focus':focus,
                     'youtubeGateway':gateway,'youtubeSearchBudget':budget_state,
@@ -10589,7 +10679,7 @@ class Handler(SimpleHTTPRequestHandler):
                 "persistentState": bool(STATE_DIR),
                 "rateLimit": {"remaining": RATE_LIMIT_STATE.get("remaining", ""), "limit": RATE_LIMIT_STATE.get("limit", ""), "limited": RATE_LIMIT_STATE.get("limited", False)},
                 "highlightlyRateLimited": RATE_LIMIT_STATE["limited"],
-                "phase": "V4.1.25 HISTORICAL RIBBON PERFORMANCE + CATALOG AUTHORITY",
+                "phase": "V4.1.26 OPERATOR TELEMETRY + SILVER AUTHORITY + CHUNKED PLAYBACK",
                 "workMode":dict(HISTORY_WORK_MODE_STATE),
                 "highlightlyConfigured": bool(key),
                 "youtubeCooldownSeconds":max((row.get("cooldownSeconds",0) for row in YOUTUBE_GATEWAY.status().values()), default=0),
@@ -10610,6 +10700,17 @@ class Handler(SimpleHTTPRequestHandler):
                 job=DISCOVERY_JOBS.get(date)
                 st["jobRunning"]=bool(job and job.is_alive())
             return send_json(self,{"ok":True,"data":st})
+
+        if parsed.path == "/api/media/diagnostics":
+            qs=parse_qs(parsed.query); media_url=(qs.get("url") or [""])[-1]
+            if not media_url or not _media_host_allowed(media_url): return send_json(self,{"ok":False,"error":"MEDIA_HOST_NOT_ALLOWED"},400)
+            paths=_media_cache_paths(media_url); meta=_media_cache_meta(media_url); total=int(meta.get("total") or 0)
+            chunks=[]
+            try:
+                if paths["chunkDir"].exists(): chunks=sorted(x.name for x in paths["chunkDir"].glob("*.part"))
+            except Exception: pass
+            with MEDIA_FILE_CACHE_LOCK: last=copy.deepcopy(MEDIA_PLAYBACK_DIAGNOSTICS.get(paths["key"]) or {})
+            return send_json(self,{"ok":True,"cache":{"fullReady":bool(meta.get("fullReady")),"headBytes":int(meta.get("headSize") or 0),"chunkBytes":MEDIA_FILE_CACHE_CHUNK_BYTES,"chunks":chunks,"total":total},"lastTransport":last},200)
 
         if parsed.path == "/api/media":
             if _history_playback_suspended():
@@ -10649,8 +10750,10 @@ class Handler(SimpleHTTPRequestHandler):
                 media_tag="media-prime" if self.headers.get("X-SBB-Prime")=="1" else "media"
                 print(f"[SBB {media_tag}] request host={host} range={range_header or '-'} url={media_url[:180]}", flush=True)
                 req=Request(media_url, headers=headers)
+                upstream_started=time.perf_counter()
                 try:
                     with urlopen(req, timeout=20) as resp:
+                        upstream_ttfb_ms=round((time.perf_counter()-upstream_started)*1000,1)
                         print(f"[SBB {media_tag}] upstream status={getattr(resp, 'status', 200)} type={resp.headers.get('Content-Type','')} length={resp.headers.get('Content-Length','')} range={resp.headers.get('Content-Range','')}", flush=True)
                         status=getattr(resp, "status", 200)
                         content_length=int(resp.headers.get("Content-Length") or 0)
@@ -10676,7 +10779,9 @@ class Handler(SimpleHTTPRequestHandler):
                                 if value: self.send_header(name,value)
                             self.send_header("Cache-Control","private, max-age=3600")
                             self.send_header("X-SBB-Media-Cache","MISS-UPSTREAM")
+                            self.send_header("X-SBB-Upstream-TTFB-Ms",str(upstream_ttfb_ms))
                             self.end_headers()
+                            _media_diag(media_url,'COLD_UPSTREAM',rangeStart=start,rangeEnd=end,total=total or 0,upstreamTtfbMs=upstream_ttfb_ms,host=host)
                             client_connected=True
                             while True:
                                 chunk=resp.read(256*1024)
@@ -10901,7 +11006,7 @@ class Handler(SimpleHTTPRequestHandler):
                 flat.setdefault("leagueName",cfg["league"])
                 flat.setdefault("countryCode",cfg.get("countryCode",""))
             url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.25"})
+            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.26"})
             cache_name=f"{sport_key}-{endpoint}-v2514" if sport_key in ("epl","mls") else f"{sport_key}-{endpoint}"
 
             # v1.9.1 quota control: proactively reuse a fresh server-side snapshot.
@@ -11035,7 +11140,7 @@ class Handler(SimpleHTTPRequestHandler):
             req = Request(url, headers={
                 "x-rapidapi-key": key,
                 "Accept": "application/json",
-                "User-Agent": "SportsBigBoard/4.1.25"
+                "User-Agent": "SportsBigBoard/4.1.26"
             })
             try:
                 with urlopen(req, timeout=15) as resp:
@@ -11075,7 +11180,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT)
-    print("\nSports Big Board v4.1.25 — historical ribbon performance + catalog authority")
+    print("\nSports Big Board v4.1.26 — historical ribbon performance + catalog authority")
     print(f"Bind: {BIND_HOST}:{PORT} • deployment: {DEPLOYMENT_MODE} • state: {STATE_DIR}")
     if not CLOUD_MODE: print(f"Open: http://localhost:{PORT}")
     print("Highlightly key:", "configured" if read_key() else "NOT CONFIGURED")
@@ -11146,6 +11251,7 @@ if __name__ == "__main__":
     threading.Thread(target=history_backfill_worker,daemon=True,name="sbb-history-backfill").start()
     threading.Thread(target=history_rule_collection_catchup_worker,daemon=True,name="sbb-history-rule-collections").start()
     threading.Thread(target=history_database_audit_worker,daemon=True,name="sbb-history-database-audit").start()
+    threading.Thread(target=history_operator_snapshot_worker,daemon=True,name="sbb-history-operator-snapshot").start()
     threading.Thread(target=history_schedule_sync_worker,daemon=True,name="sbb-history-schedule-sync").start()
     threading.Thread(target=history_media_playlist_crawler_worker,daemon=True,name="sbb-media-playlist-crawler").start()
     for worker_index in range(1,HISTORY_GREEN_WORKERS+1):

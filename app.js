@@ -67,14 +67,14 @@ if (location.protocol === 'file:') {
   });
 }
 
-/* Sports Big Board v4.1.25 — canonical event/media architecture foundation; v2.5.30 playback behavior preserved. */
+/* Sports Big Board v4.1.26 — canonical event/media architecture foundation; v2.5.30 playback behavior preserved. */
 
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:'4.1.25',domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:'4.1.26',domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,infoDrawer:!!window.SBB_INFO_DRAWER});
 
-// v4.1.25 operator resource mode. SEARCH suspends every playback path so the cloud
+// v4.1.26 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
 // catalog hydration intact but tells the backend workers to stop searching. MIX is
 // the normal behavior where background search yields briefly to playback.
@@ -568,7 +568,7 @@ async function setScoreBrowseDate(value,{animate=true,hold=9000,load=true}={}){
   renderActiveSportKeyInformation();
   if(date<today){
     renderHistoricalDateDiagnostics(date,historicalDiscoveryState(date));
-    // v4.1.25 catalog-first browsing is read-only. Background recovery owns gap
+    // v4.1.26 catalog-first browsing is read-only. Background recovery owns gap
     // discovery; an explicit FIND RECAP click can still request one exact event.
     refreshHistoricalDiscoverySnapshot(date,{hydrate:false}).catch(()=>{});
   }else{
@@ -593,7 +593,7 @@ async function setScoreBrowseDate(value,{animate=true,hold=9000,load=true}={}){
   return true;
 }
 function stepScoreRibbonDate(delta){ return setScoreBrowseDate(addCalendarDays(scoreBrowseDate,delta),{animate:true,hold:10000,load:true}); }
-function scheduleScoreRibbonDayCarousel(){ /* v4.1.25: deliberate date browsing never auto-rotates. */ }
+function scheduleScoreRibbonDayCarousel(){ /* v4.1.26: deliberate date browsing never auto-rotates. */ }
 function wireScoreDayPager(){
   document.querySelectorAll('.score-day-pager').forEach(pager=>{
     if(pager.dataset.wired) return; pager.dataset.wired='1';
@@ -775,7 +775,7 @@ function startSportsBigBoardExperience(){
     }
     scheduleLaunchGameCenterPopulate();
   }
-  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.1.25',{cache:'no-store'}).catch(()=>{}); }catch(_){}
+  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.1.26',{cache:'no-store'}).catch(()=>{}); }catch(_){}
 }
 function wireLaunchScreen(){
   const btn=$('launchPlayBtn');
@@ -847,7 +847,7 @@ window.onYouTubeIframeAPIReady = () => {
 function safeStartLiveData(){
   if(liveDataInitStarted) return;
   liveDataInitStarted=true;
-  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.1.25',{cache:'no-store'}).catch(()=>{}); }catch(e){}
+  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.1.26',{cache:'no-store'}).catch(()=>{}); }catch(e){}
   initLiveData().catch(err=>{
     console.warn('Live data startup failed',err);
     try{ fetch('/api/client-log?event=APP_LIVE_ERROR&detail='+encodeURIComponent(String(err?.stack||err)),{cache:'no-store'}).catch(()=>{}); }catch(e){}
@@ -1604,6 +1604,21 @@ function unlockMediaFromGesture(){
 document.addEventListener('pointerdown', unlockMediaFromGesture, {passive:true});
 document.addEventListener('keydown', unlockMediaFromGesture, {passive:true});
 
+async function reportNativePlaybackPath(v,slot){
+  if(!v)return; const firstFrameMs=Math.max(0,Math.round(performance.now()-Number(v.__sbbTuneStartedAt||performance.now())));
+  let transport=v.__sbbAdoptedHot?'BROWSER_HOT':'DIRECT_VIDEO'; let server={};
+  try{
+    const current=new URL(v.currentSrc||v.getAttribute('src')||'',location.href);
+    const raw=current.pathname.endsWith('/api/media')?current.searchParams.get('url'):'';
+    if(raw){ const r=await fetch(`/api/media/diagnostics?url=${encodeURIComponent(raw)}`,{cache:'no-store'}); if(r.ok)server=await r.json(); transport=server?.lastTransport?.mode||transport; }
+  }catch(_){ }
+  const stalls=Number(v.__sbbBufferStalls||0);
+  console.info('[SBB v4.1.26] native playback path', {slot,transport,firstFrameMs,stalls,cache:server?.cache||{},server:server?.lastTransport||{}});
+  setPlaybackDiag({lastAction:`${transport} • first frame ${firstFrameMs}ms${stalls?` • stalls ${stalls}`:''}`});
+  try{fetch(`/api/client-log?event=PLAYBACK_FIRST_FRAME&detail=${encodeURIComponent(`${transport}|${firstFrameMs}ms|stalls=${stalls}`)}`,{cache:'no-store'}).catch(()=>{});}catch(_){}
+  v.__sbbAdoptedHot=false;
+}
+
 function bindNativeVideoElement(slot,v){
   if(!v || v.__sbbNativeBoundSlot===slot) return;
   v.__sbbNativeBoundSlot=slot;
@@ -1618,6 +1633,7 @@ function bindNativeVideoElement(slot,v){
     if(mediaInteractionUnlocked){v.muted=false; startupMutedSlots[slot]=false;}
     activePlaybackState='native-playing';
     setPlaybackUi('playing');
+    reportNativePlaybackPath(v,slot);
     try{ const currentItem=clip(currentIndex); window.SBB_PROVIDER_HEALTH?.success?.(currentItem?.provider||currentItem?.source||'DIRECT_VIDEO'); window.SBB_MEDIA_MANIFEST?.markPlaying?.(knownMatchForMedia(currentItem)||window.SBB_SELECTED_EVENT?.get?.()||currentItem,currentItem); reportHistoricalRuntime(currentItem,'PLAYED'); }catch(_){ }
     // Native playback has no YouTube state callback. Make its visual readiness obey
     // the same bumper minimum as every other provider instead of leaving a playing
@@ -1633,6 +1649,7 @@ function bindNativeVideoElement(slot,v){
   v.addEventListener('waiting',()=>{
     if(!current()) return;
     if(slot===activeSlot && slotMedia[slot]==='native'){
+      v.__sbbBufferStalls=Number(v.__sbbBufferStalls||0)+1;
       setPlaybackUi('buffering');
       try{
         const currentItem=clip(currentIndex);
@@ -1706,6 +1723,7 @@ function configurePreparedNativeSlot(slot,item,entry,active=false){
   videoReady[slot]=v.readyState>=2;
   warming[slot]=false;
   launchRequested[slot]=!!active;
+  v.__sbbTuneStartedAt=performance.now(); v.__sbbPlaybackItem=item; v.__sbbAdoptedHot=true; v.__sbbBufferStalls=0;
   setPlaybackDiag({provider:'DIRECT_VIDEO',slot,state:'prepared',readyState:v.readyState,networkState:v.networkState,source:v.currentSrc||v.getAttribute('src')||'—',error:nativeErrorText(v),lastAction:'adopted hot score player'});
   return epoch;
 }
@@ -1732,7 +1750,7 @@ function configureSlotForItem(slot,item,active=false){
       v.classList.remove('hidden');
       v.pause();
       const mediaSrc=nativePlaybackUrl(item);
-      if(v.getAttribute('src') !== mediaSrc) v.setAttribute('src', mediaSrc);
+      if(v.getAttribute('src') !== mediaSrc){ v.__sbbTuneStartedAt=performance.now(); v.__sbbPlaybackItem=item; v.__sbbBufferStalls=0; v.setAttribute('src', mediaSrc); }
       v.preload='auto'; v.muted=!active;
       try{v.load();}catch(e){}
     }
@@ -1789,7 +1807,7 @@ function startAssignedPlayback(slot,item,{userInitiated=false,reason='playback',
     }
     const launch=p=>{
       try{
-        // v4.1.25: start every YouTube tune muted first, then restore audio in the
+        // v4.1.26: start every YouTube tune muted first, then restore audio in the
         // only after YouTube confirms PLAYING. Mobile Chrome is much more reliable
         // when the initial load/play
         // request is muted; unmuted loadVideoById can be silently ignored even
@@ -2073,7 +2091,7 @@ function syncSelectedEvent(eventLike,{reason='playback',source='playback'}={}){
   if(!eventLike) return null;
   const store=window.SBB_SELECTED_EVENT;
   const current=store?.get?.()||null;
-  // v4.1.25: a score-card selection owns the event. Playback may switch media
+  // v4.1.26: a score-card selection owns the event. Playback may switch media
   // packages for that SAME game, but the sparse media item must never replace the
   // richer scoreboard event (teams, score, date, ESPN id, etc.). This also avoids
   // duplicate Game Center request/abort races on one user click.
@@ -2517,7 +2535,7 @@ function doSwap(newActive, targetIndex){
         if(!slotClaimIsCurrent(newActive,epoch,item)) return;
         if(transitionRecoveryAttempts<1){
           transitionRecoveryAttempts++;
-          console.warn('[SBB v4.1.25] transition timeout; retrying assigned media once');
+          console.warn('[SBB v4.1.26] transition timeout; retrying assigned media once');
           startAssignedPlayback(newActive,item,{userInitiated:false,reason:'automatic transition retry',restart:false,epoch})
             .then(()=>waitForFirstPlayback(newActive,{timeoutMs:10000,epoch,onTimeout:()=>{ if(slotClaimIsCurrent(newActive,epoch,item)){ transitionInFlight=false; handlePlaybackFailure(newActive,new Error('Playback did not start after recovery'),false); } }}))
             .catch(err=>handlePlaybackFailure(newActive,err,false));
@@ -2534,7 +2552,7 @@ function doSwap(newActive, targetIndex){
     renderQueue();
   }catch(err){
     transitionInFlight=false;
-    console.error('[SBB v4.1.25] swap failure',err);
+    console.error('[SBB v4.1.26] swap failure',err);
     handlePlaybackFailure(activeSlot,err,false);
   }
 }
@@ -2685,7 +2703,7 @@ function onPlayerError(slot, code){
   if(slot === activeSlot){
     const failed=clip(currentIndex);
     // Error 153 is not a bad video. It means YouTube did not receive the HTTP
-    // Referer / API-client identity it now requires. v4.1.25 explicitly serves
+    // Referer / API-client identity it now requires. v4.1.26 explicitly serves
     // strict-origin-when-cross-origin and passes origin + widget_referrer. Never
     // poison the game's media inventory for an app-level identity failure.
     if(Number(code)===153){
@@ -3726,7 +3744,7 @@ async function refreshMlsOfficialVideos(matches){
     try{
       const payload=await apiJson(`/api/mls/official-videos?date=${encodeURIComponent(date)}`);
       found.push(...associateMlsOfficialRows(responseItems(payload),matches,date));
-    }catch(e){ console.warn('[SBB v4.1.25] MLS official-channel discovery failed',e); }
+    }catch(e){ console.warn('[SBB v4.1.26] MLS official-channel discovery failed',e); }
   }
   if(found.length){
     const existing=[...(LIVE_CANDIDATES_BY_LEAGUE.get('MLS')||[])];
@@ -3759,7 +3777,7 @@ async function rapidEnrichOtherSport(league, matches, candidates,{force=false}={
         scoreGameKey:`${date}::${gameKey(teamAbbr(away,''),teamAbbr(home,''))}`,gameKey:gameKey(teamAbbr(away,''),teamAbbr(home,'')),gameDate:date}))
         .filter(x=>mediaMatchesScoreGame(x,m));
       found.push(...rows);
-    }catch(e){ console.warn(`[SBB v4.1.25] ${league} rapid team-video search failed`,e); }
+    }catch(e){ console.warn(`[SBB v4.1.26] ${league} rapid team-video search failed`,e); }
   }
   if(found.length){
     const external=found.filter(x=>x?.externalOnly&&x?.externalUrl);
@@ -3855,7 +3873,7 @@ async function refreshSoccerDiagnostics(league,date){
 }
 
 
-// ---------------- v4.1.25 arbitrary-date score/media discovery ----------------
+// ---------------- v4.1.26 arbitrary-date score/media discovery ----------------
 const HISTORICAL_MEDIA_DISCOVERY_CONCURRENCY=3;
 const historicalDateDiscoveryStates=new Map();
 let historicalDiscoveryPollTimer=null;
@@ -3974,7 +3992,7 @@ function scheduleHistoricalDiscoveryPoll(date,generation,delay=700){
       const state=await refreshHistoricalDiscoverySnapshot(date,{hydrate:true});
       if(state?.running||['QUEUED','SEARCHING'].includes(String(state?.status||'').toUpperCase()))scheduleHistoricalDiscoveryPoll(date,generation,850);
       else historicalDiscoveryPollTimer=null;
-    }catch(err){console.warn('[SBB v4.1.25] historical discovery poll failed',date,err);scheduleHistoricalDiscoveryPoll(date,generation,1800);}
+    }catch(err){console.warn('[SBB v4.1.26] historical discovery poll failed',date,err);scheduleHistoricalDiscoveryPoll(date,generation,1800);}
   },delay);
 }
 async function startHistoricalDateDiscovery(date,{force=false}={}){
@@ -3987,7 +4005,7 @@ async function startHistoricalDateDiscovery(date,{force=false}={}){
     scheduleHistoricalDiscoveryPoll(date,generation,state?.running?450:1100);
     return state;
   }catch(err){
-    console.warn('[SBB v4.1.25] historical discovery start failed',date,err);
+    console.warn('[SBB v4.1.26] historical discovery start failed',date,err);
     const state={date,status:'ERROR',running:false,lastError:String(err?.message||err)};historicalDateDiscoveryStates.set(date,state);
     if(scoreBrowseDate===date)renderHistoricalDateDiagnostics(date,state);
     return state;
@@ -4029,7 +4047,7 @@ async function hydrateHistoricalRibbonFromCatalog(date){
     }
     ingestCompactCatalogPlans(payload,date);
     if(payload?.timing){
-      console.info('[SBB v4.1.25] historical ribbon timing',date,payload.timing,`games=${Number(payload?.scoreGameCount||games)}`,`plans=${Number(payload?.catalogEventCount||0)}`);
+      console.info('[SBB v4.1.26] historical ribbon timing',date,payload.timing,`games=${Number(payload?.scoreGameCount||games)}`,`plans=${Number(payload?.catalogEventCount||0)}`);
     }
     if(payload?.scoreInventoryComplete){
       for(const lg of ENABLED_LIVE_LEAGUES){
@@ -4040,14 +4058,14 @@ async function hydrateHistoricalRibbonFromCatalog(date){
     return {ok:true,games:Number(payload?.scoreGameCount||games),scoreInventoryComplete:!!payload?.scoreInventoryComplete,catalogEventCount:Number(payload?.catalogEventCount||0),timing:payload?.timing||null};
   }catch(err){
     HISTORICAL_SCORE_LOAD_ERRORS.set(date,String(err?.message||err||'Historical ribbon unavailable'));
-    console.warn('[SBB v4.1.25] compact historical ribbon failed',date,err);
+    console.warn('[SBB v4.1.26] compact historical ribbon failed',date,err);
     return {ok:false,games:0,scoreInventoryComplete:false,error:err};
   }
 }
 
 async function hydrateScoreDateFromHistory(date,{scores=true}={}){
   try{
-    // v4.1.25: the selected historical date has a hard mobile/network deadline.
+    // v4.1.26: the selected historical date has a hard mobile/network deadline.
     // A stalled API request may not leave ScoreDateStore stuck on Loading forever.
     const payload=await apiJsonTimed(`/api/history/day?date=${encodeURIComponent(date)}`,10000);
     HISTORICAL_SCORE_LOAD_ERRORS.delete(date);
@@ -4117,7 +4135,7 @@ async function hydrateScoreDateFromHistory(date,{scores=true}={}){
     return {any,leagues,catalogGames,scoreGameCount:Number(payload?.scoreGameCount||catalogGames),scoreInventoryComplete:!!payload?.scoreInventoryComplete,discoveryState:payload?.discoveryState||null};
   }catch(err){
     HISTORICAL_SCORE_LOAD_ERRORS.set(date,String(err?.message||err||'Historical catalog unavailable'));
-    console.warn('[SBB v4.1.25] history hydrate failed',date,err);
+    console.warn('[SBB v4.1.26] history hydrate failed',date,err);
     return {any:false,leagues:{},catalogGames:0,scoreGameCount:0,scoreInventoryComplete:false,discoveryState:null,error:err};
   }
 }
@@ -4174,7 +4192,7 @@ async function loadScoreDateLeagueMatches(league,date){
   const lg=String(league).toUpperCase();
   const timezone=Intl.DateTimeFormat().resolvedOptions().timeZone||'Etc/UTC';
   const utcOffsetMinutes=-new Date().getTimezoneOffset();
-  // v4.1.25: historical score inventory is server-owned too. Ribbon hydration and
+  // v4.1.26: historical score inventory is server-owned too. Ribbon hydration and
   // historical media discovery now consume the same persisted canonical events,
   // eliminating the old browser/server double fetch and identity drift.
   if(String(date).slice(0,10)<localDateISO(0)){
@@ -4183,7 +4201,7 @@ async function loadScoreDateLeagueMatches(league,date){
       const rows=responseItems(payload).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:lg},date)===date);
       return {rows:storeScoreDateLeague(lg,date,rows),error:null,source:payload?.source||'HISTORY'};
     }catch(err){
-      console.warn(`[SBB v4.1.25] ${lg} canonical historical score load failed`,date,err);
+      console.warn(`[SBB v4.1.26] ${lg} canonical historical score load failed`,date,err);
       return {rows:storeScoreDateLeague(lg,date,[]),error:err,source:'HISTORY ERROR'};
     }
   }
@@ -4191,7 +4209,7 @@ async function loadScoreDateLeagueMatches(league,date){
   try{
     const payload=await apiJson(`/api/espn/scoreboard?league=${encodeURIComponent(lg)}&date=${encodeURIComponent(date)}&timezone=${encodeURIComponent(timezone)}&utcOffsetMinutes=${encodeURIComponent(utcOffsetMinutes)}`);
     rows=responseItems(payload).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:lg},date)===date);
-  }catch(err){firstError=err;console.warn(`[SBB v4.1.25] ${lg} score load failed`,date,err);}
+  }catch(err){firstError=err;console.warn(`[SBB v4.1.26] ${lg} score load failed`,date,err);}
   return {rows:storeScoreDateLeague(lg,date,rows),error:firstError,source:'ESPN'};
 }
 
@@ -4223,11 +4241,11 @@ async function rapidHistoricalGameMedia(match,{force=false}={}){
     const ready=decorate(payload?.plan||{});
     await hydrateScoreDateFromHistory(date);
     return ready;
-  }catch(err){console.warn(`[SBB v4.1.25] ${league} historical catalog discovery failed`,err);return [];}
+  }catch(err){console.warn(`[SBB v4.1.26] ${league} historical catalog discovery failed`,err);return [];}
 }
 
 async function loadScoreDateLeagueMedia(league,date,matches){
-  // v4.1.25: full historical discovery belongs to the localhost server. The
+  // v4.1.26: full historical discovery belongs to the localhost server. The
   // browser no longer launches one independent Highlightly/YouTube search per
   // league and then another exact-game search for every apparent miss. That old
   // split pipeline was why the ribbon could show Dec 25 NFL/NBA scores while the
@@ -4252,7 +4270,7 @@ async function ensureScoreDateLoaded(date,{force=false}={}){
     if(date>=today) return;
     loadScoreDateLeagueMedia(league,date,rows||[]).then(()=>{
       if(scoreBrowseDate===date) renderHistoricalDateDiagnostics(date,historicalDiscoveryState(date));
-    }).catch(err=>console.warn('[SBB v4.1.25] historical media hydrate failed',league,date,err));
+    }).catch(err=>console.warn('[SBB v4.1.26] historical media hydrate failed',league,date,err));
   };
 
   if(!force && allLoaded()){
@@ -4290,7 +4308,7 @@ async function ensureScoreDateLoaded(date,{force=false}={}){
     const needed=(date>=today||force)?[...ENABLED_LIVE_LEAGUES]:ENABLED_LIVE_LEAGUES.filter(lg=>!leagueLoaded(lg));
     const scorePromises=needed.map(async league=>{
       const result=await loadScoreDateLeagueMatches(league,date);
-      // v4.1.25 paints each league as soon as that provider finishes rather than
+      // v4.1.26 paints each league as soon as that provider finishes rather than
       // waiting for the slowest of six sports before showing any ribbon cards.
       if(scoreBrowseDate===date) renderScoresFromMatchesCombined(false);
       launchMedia(league,result.rows||[]);
@@ -4301,7 +4319,7 @@ async function ensureScoreDateLoaded(date,{force=false}={}){
     if(generation===scoreDateLoadGeneration || scoreBrowseDate===date) renderScoresFromMatchesCombined(true);
     return scoreResults;
   }catch(err){
-    console.warn('[SBB v4.1.25] historical score-date load failed',date,err);
+    console.warn('[SBB v4.1.26] historical score-date load failed',date,err);
     return [];
   }finally{
     SCORE_DATE_STORE?.markLoading?.(date,false);
@@ -4356,7 +4374,7 @@ async function refreshSoccerLeague(league,today,yesterday,allCandidates){
     if(league==='MLS') extras.push(...await refreshMlsOfficialVideos(allMatches));
     const rapid=await rapidEnrichOtherSport(league,allMatches,extras);
     if(rapid.length) extras.push(...rapid);
-  }catch(mediaErr){ console.warn(`[SBB v4.1.25] ${league} media discovery`,mediaErr); }
+  }catch(mediaErr){ console.warn(`[SBB v4.1.26] ${league} media discovery`,mediaErr); }
 
   extras=preferGameOverviews(extras);
   if(extras.length){
@@ -4421,7 +4439,7 @@ async function refreshOtherSports(first=false){
       // Stage 1: only matches. This is enough to prove the feed works and to know
       // whether highlight requests are useful. It cuts two needless API calls for
       // every league/date pair with no completed games.
-      // v4.1.25 deep-dive: schedule identity is fetched from ESPN directly and
+      // v4.1.26 deep-dive: schedule identity is fetched from ESPN directly and
       // independently for each day. Highlightly no longer sits in front of score
       // discovery, so a slow/empty enrichment response cannot hide an NFL/NBA/NHL
       // schedule. It remains a fallback and media source only.
@@ -4433,7 +4451,7 @@ async function refreshOtherSports(first=false){
           rows=responseItems(espn).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:league},date)===date);
         }catch(err){
           espnError=err;
-          console.warn(`[SBB v4.1.25] ${league} ESPN ${day} schedule read failed`,err);
+          console.warn(`[SBB v4.1.26] ${league} ESPN ${day} schedule read failed`,err);
         }
         if(!rows.length && apiConfigured){
           try{
@@ -4441,7 +4459,7 @@ async function refreshOtherSports(first=false){
             const fallback=await apiJson(`/api/sports/${key}/matches?date=${encodeURIComponent(date)}${clientClock}`);
             rows=responseItems(fallback).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:league},date)===date);
           }catch(err){
-            console.warn(`[SBB v4.1.25] ${league} ${day} Highlightly schedule fallback failed`,err);
+            console.warn(`[SBB v4.1.26] ${league} ${day} Highlightly schedule fallback failed`,err);
             if(!espnError) espnError=err;
           }
         }
@@ -4470,7 +4488,7 @@ async function refreshOtherSports(first=false){
       const highlightResults=await Promise.all(highlightJobs);
       const raw=[]; let mediaErrors=0;
       for(const result of highlightResults){
-        if(result.error){ mediaErrors++; console.warn(`[SBB v4.1.25] ${league} highlight refresh failed`,result.error); continue; }
+        if(result.error){ mediaErrors++; console.warn(`[SBB v4.1.26] ${league} highlight refresh failed`,result.error); continue; }
         raw.push(...responseItems(result.payload).map(x=>({...x,__sbbDate:result.date})));
       }
       let candidates=preferGameOverviews(normalizeHighlights(raw,league));
@@ -4491,7 +4509,7 @@ async function refreshOtherSports(first=false){
         error:mediaErrors?`${mediaErrors} media request${mediaErrors===1?'':'s'} failed`:((!allMatches.length&&(todayLoad.error||yesterdayLoad.error))?String((todayLoad.error||yesterdayLoad.error)?.message||todayLoad.error||yesterdayLoad.error):'')
       });
     }catch(err){
-      console.warn(`[SBB v4.1.25] ${league} Highlightly feed failed`,err);
+      console.warn(`[SBB v4.1.26] ${league} Highlightly feed failed`,err);
       // ESPN is an independent scoreboard fallback. Highlightly rate limiting or
       // schema trouble should not make a league disappear, especially soccer where
       // official YouTube discovery continues independently.
@@ -4513,7 +4531,7 @@ async function refreshOtherSports(first=false){
     setTimeout(reconcileScoreMediaIndicators,0); mergeLiveProgram(extras,false); allCandidates.push(...extras); }
           updateSportFeedState(league,{status:all.some(isLive)?'live':(all.length?'ok':'empty'),games:all.length,eligible:all.filter(isHighlightEligible).length,live:all.filter(isLive).length,final:all.filter(isFinal).length,scheduled:all.filter(x=>!isLive(x)&&!isFinal(x)).length,highlights:extras.length,calls:2,error:'ESPN scoreboard fallback'});
           return;
-        }catch(fallbackErr){ console.warn(`[SBB v4.1.25] ${league} ESPN fallback failed`,fallbackErr); }
+        }catch(fallbackErr){ console.warn(`[SBB v4.1.26] ${league} ESPN fallback failed`,fallbackErr); }
       }
 
       updateSportFeedState(league,{status:'error',error:`${err?.status||''} ${err?.message||err}`.trim(),games:0,eligible:0,live:0,final:0,scheduled:0,highlights:0,calls:2});
@@ -4541,7 +4559,7 @@ function keyInfoEventsForActiveSport(){
   const leagueRows=ALL_KEY_INFO_EVENTS.filter(x=>lg==='ALL'||String(x?.league||'').toUpperCase()===lg);
   const exact=leagueRows.filter(x=>keyInfoEventDate(x)===scoreBrowseDate);
   if(exact.length || scoreBrowseDate!==localDateISO(0)) return exact;
-  // v4.1.25 hotfix: Key Info is a current-information lane, not an empty-midnight
+  // v4.1.26 hotfix: Key Info is a current-information lane, not an empty-midnight
   // lane. If today's source refresh has not yet produced an item stamped on the
   // viewer's exact local calendar date, show the newest factual updates from the
   // rolling 36-hour window while the background editorial refresh catches up.
@@ -4628,7 +4646,7 @@ async function refreshRapidMlbHighlights(date, force=false){
     const el=$('rapidHighlightStatus');
     if(el) el.textContent=`RAPID ${[...RAPID_MLB_BY_DATE.values()].reduce((n,x)=>n+x.length,0)} scanned • ${RAPID_MLB_BY_DATE.size} dates`;
   }catch(err){
-    console.warn('[SBB v4.1.25] rapid MLB highlight refresh failed',err);
+    console.warn('[SBB v4.1.26] rapid MLB highlight refresh failed',err);
     const el=$('rapidHighlightStatus'); if(el) el.textContent='RAPID source unavailable';
   }
 }
@@ -4719,7 +4737,7 @@ async function refreshKeyInformation(first=false,force=false){
       if(state) state.textContent=payload?.refreshing?'Building updates…':'Checking updates…';
     }
   }catch(err){
-    console.warn('[SBB v4.1.25] key information refresh failed',err);
+    console.warn('[SBB v4.1.26] key information refresh failed',err);
     const state=$('keyInfoState'); if(state) state.textContent='Feed unavailable';
   }
 }
@@ -4736,7 +4754,7 @@ async function refreshDailyTopPlays(first=false){
       verifiedPlayable:!!(x.verifiedPlayable&&(x.youtubeId||x.mediaUrl)), programType:'top-plays', eventType:'TOP PLAYS'
     })).filter(x=>x.verifiedPlayable && x.topPlaysDate===today);
     if(TOP_PLAYS_CANDIDATES.length) mergeLiveProgram([],false);
-  }catch(err){ console.warn('[SBB v4.1.25] daily Top Plays refresh failed',err); }
+  }catch(err){ console.warn('[SBB v4.1.26] daily Top Plays refresh failed',err); }
 }
 
 async function refreshFallbackData(first=false){
@@ -5344,7 +5362,7 @@ async function requestAIProgrammingRanks(items){
     setTimeout(()=>{ mergeLiveProgram([],false); renderScoresFromMatchesCombined(); },0);
   }catch(err){
     aiRankLastAt=Date.now();
-    console.warn('[SBB v4.1.25] AI programming rank unavailable; deterministic ranking remains active',err);
+    console.warn('[SBB v4.1.26] AI programming rank unavailable; deterministic ranking remains active',err);
   }
   finally{ aiRankInFlight=false; }
 }
@@ -5537,7 +5555,7 @@ function mergeLiveProgram(candidates, first){
   GENERAL_PROGRAM=[...launchRoundups,...baseGeneral.filter(x=>!launchKeys.has(String(x?.youtubeId||x?.mediaUrl||x?.id||'')))];
   if(userPlaybackSession){ renderQueue(); updateRecapAlternateButton(); return; } // Direct user selection owns PROGRAM; GENERAL_PROGRAM still refreshes.
 
-  // v4.1.25: once the viewer starts a date-specific session, background live-feed
+  // v4.1.26: once the viewer starts a date-specific session, background live-feed
   // refreshes may enrich that date but may not silently replace its queue with the
   // general Today/Yesterday programming feed.
   if(playbackDateContext?.date){
@@ -5847,7 +5865,7 @@ function scoreCardPlayableItems(match){
       .map(x=>[String(x.id||x.youtubeId||x.mediaUrl||x.externalUrl),x])
   ).values()];
   try{ window.SBB_MEDIA_MANIFEST?.ingest?.(match,discovered); }catch(_){ }
-  // v4.1.25: an empty (or partial) browser manifest may never erase exact media
+  // v4.1.26: an empty (or partial) browser manifest may never erase exact media
   // returned by the authoritative SQLite catalog.  JavaScript [] is truthy, so
   // `manifest.playable(match) || discovered` silently discarded catalog results
   // whenever the manifest returned an empty array. Merge both pools and let the
@@ -6068,7 +6086,7 @@ function playGameHighlights(matchId, match, providedItems=null){
   if(!primary) return;
   rememberRecentScoreMedia(primary);
   const selectedMediaWasPrepared=isScoreMediaPrimed(primary);
-  // v4.1.25: score selection also tells localhost to stage the exact native
+  // v4.1.26: score selection also tells localhost to stage the exact native
   // asset at touch-intent priority. This does not create a second playback owner;
   // it only makes the proxy cache fill ahead of the active decoder when possible.
   if(isNativeItem(primary)){

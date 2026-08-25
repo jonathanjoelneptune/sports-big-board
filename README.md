@@ -1,21 +1,21 @@
-# Sports Big Board v4.1.25
+# Sports Big Board v4.1.26
 
-> v4.1.25 is the **Historical Ribbon Performance + Catalog Authority** release. It preserves the v4.1.24 fail-closed historical contract while removing the remaining SQLite N+1/read-lock bottleneck and fixing the browser merge bug that could hide exact persisted recap media behind an empty media manifest.
+> v4.1.26 is the **Historical Ribbon Performance + Catalog Authority** release. It preserves the v4.1.24 fail-closed historical contract while removing the remaining SQLite N+1/read-lock bottleneck and fixing the browser merge bug that could hide exact persisted recap media behind an empty media manifest.
 
-## v4.1.25 — historical ribbon performance + catalog authority
+## v4.1.26 — operator telemetry, Silver authority, and playback smoothing
 
-- **Score rows are genuinely score-only:** `_history_day_score_rows()` reads `history_day` with `prefer_catalog=False`; collecting the ribbon slate no longer hydrates each league's complete normalized media catalog.
-- **One bulk media query per date:** `HistoryRepository.ribbon_media_for_date()` resolves all assigned GAME media for the selected day in one SQLite query. `/api/history/ribbon` no longer performs one `event_media()` lookup per score card.
-- **Concurrent WAL readers:** latency-sensitive catalog reads use independent query-only SQLite connections and do not wait on the repository-wide Python `RLock` held by discovery/backfill writers.
-- **WAL setup only at database initialization:** `PRAGMA journal_mode=WAL` is no longer re-negotiated for every short-lived SQLite connection.
-- **SQLite media remains authoritative in the browser:** `scoreCardPlayableItems()` merges manifest media with exact catalog media. An empty `SBB_MEDIA_MANIFEST.playable()` array can no longer replace a known Green/Extended/Blue recap with `FIND RECAP`. Exact catalog rows win identity collisions.
-- **Ribbon diagnostics:** each compact event plan now includes `catalogPlayableCount` and `catalogTier`. The endpoint also returns `scoresMs`, `mediaMs`, `inventoryMs`, and `totalMs` and emits a `Server-Timing` header for direct performance verification.
-- **Search Priority behavior preserved:** Search Priority may still suspend actual playback to reserve resources for recovery, but it does not suppress persisted recap availability on the score cards.
-- **Persisted historical authority retained:** the SQLite seed-complete marker remains authoritative across backend restarts, and the UI still fails closed with an explicit catalog error rather than remaining on `Loading games…`.
-- **New asset generation:** all Pages assets advance to `?v=4.1.25`, forcing the browser to load the corrected frontend bundle.
-- **No catalog rebuild required:** this release changes read/query behavior and frontend media merging only. Existing events, media, associations, worker progress, and source ledgers remain intact.
+- **Fast operator UI:** Live Search Console serves a precomputed in-memory telemetry snapshot instead of running whole-catalog aggregation on every poll.
+- **SQL-paged Database Audit:** the normal audit tab reads only the requested event page and media relationships for those events; advanced semantic filters preserve the exhaustive compatibility path.
+- **Independent Silver reads:** daily Silver roundup lookup uses WAL query-only connections and derives playability from normalized `VERIFIED` / runtime state rather than stale JSON flags.
+- **Chunked native runway:** direct-video staging keeps the existing 16 MB head and adds fixed 8 MB follow-on chunks before full-cache completion, allowing hybrid playback to stay local longer.
+- **Playback-path diagnostics:** native clicks report first-frame latency and classify the path as browser-hot, server cache, hybrid chunk, or cold upstream; `/api/media/diagnostics` exposes the server-side cache/transport result.
+- Existing historical catalog data, discovery state, source-enrichment ledgers, Silver relationships, and worker progress are preserved. No catalog rebuild is required.
 
-## v4.1.25 verification
+## v4.1.26 verification
+
+`VERIFY.sh` runs browser contract checks plus the full Python regression suite, including v4.1.26 operator/Silver/playback tests.
+
+## v4.1.26 verification
 
 The release adds regression coverage proving that historical score reads do not hydrate catalog media, the ribbon uses one bulk media read instead of an event-by-event N+1 path, query-only reads complete while the repository write lock is held, exact SQLite media survives an empty browser manifest, and the timing/diagnostic contract is present. The complete local + cloud Stage 1 suite passes.
 

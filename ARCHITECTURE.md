@@ -1,16 +1,12 @@
-# Sports Big Board v4.1.25 Architecture
+# Sports Big Board v4.1.26 Architecture
 
-## v4.1.25 historical ribbon performance boundary
+## v4.1.26 operator/read and playback boundary
 
-Historical ribbon first paint is now a deliberately separate SQLite read workload. Score inventory reads use the compatibility `history_day` score JSON only and explicitly disable catalog-media hydration. Once the slate is known, `HistoryRepository.ribbon_media_for_date()` performs one date-scoped join across canonical events, assigned event-media relationships, and normalized GAME source assets. The server groups those rows in memory into compact event plans. This replaces the previous N+1 event-media query pattern.
+The interactive operator surfaces are no longer allowed to perform expensive whole-catalog work synchronously. A background telemetry worker refreshes green-gap, association, claim, Silver, media-objective, and Silver-identity summaries into an in-memory snapshot. The Live Search Console only combines that snapshot with inexpensive live thread/worker state, so its frequent polling does not compete with discovery or playback.
 
-The repository now distinguishes write connections from latency-sensitive query-only connections. WAL is configured once when the database is initialized. Query-only reads do not acquire the process-wide repository `RLock`; each owns its own SQLite connection and can therefore proceed concurrently while background discovery/backfill workers are writing. Writes retain the lock and existing transaction semantics. No normalized catalog schema migration or rebuild is required.
+The common Historical Database Audit path is SQL-paged. SQLite selects the requested event page first and only hydrates media relationships belonging to those events. This preserves the established audit row semantics while removing the initial full-catalog materialization. Advanced semantic filters retain the exhaustive compatibility path where necessary. Silver daily roundups use query-only WAL readers and normalized verification/runtime columns as playback authority.
 
-`/api/history/ribbon` remains the first-paint contract and still performs no provider discovery. Each event plan includes exact persisted playable media plus `catalogPlayableCount` and `catalogTier`. The response reports score/media/inventory/total timings and a `Server-Timing` header, making ribbon latency observable independently from the asynchronous full `/api/history/day` hydration.
-
-The browser treats those exact catalog rows as relationship authority. `scoreCardPlayableItems()` merges browser-manifest playable rows with the catalog-discovered pool instead of choosing one with JavaScript `||`. This matters because an empty array is truthy: the old expression could discard a known SQLite recap whenever the manifest returned `[]`. In v4.1.25 the two sets are identity-deduplicated and the exact catalog row wins collisions, preserving `__sbbCatalogExact` and recap availability. Search Priority can still suspend actual playback, but it does not alter the existence/availability truth shown by score cards.
-
-The v4.1.24 fail-closed behavior remains: persisted seed-complete metadata establishes historical score authority after restart, historical ribbon requests are bounded, and a catalog-owned date either renders the stored slate or surfaces an explicit error instead of remaining indefinitely in `Loading games…`. Static Pages assets advance to v4.1.25 for cache invalidation.
+Native direct-video playback extends the v4.1.25 cache with fixed 8 MB follow-on chunks after the 16 MB startup head. Hybrid responses write every already-cached contiguous chunk to the browser before opening the upstream CDN remainder. Full-file completion remains lower priority. Playback diagnostics record first-frame time and distinguish browser-hot adoption, server cache hits, hybrid chunk delivery, and cold-upstream transport.
 
 ## v4.1.22 curated playlist recovery + source registry
 
