@@ -1,15 +1,18 @@
-# Sports Big Board v4.1.29
+# Sports Big Board v4.1.30
 
-> v4.1.29 is the **Site Soundtrack** release. It preserves the v4.1.26 database/operator/playback architecture and adds a persistent application-level sports music bed that follows highlight playback without restarting when the viewer changes games, dates, leagues, or recap packages.
+> v4.1.30 is the **Single-Stream Soundtrack Hardening** release. It keeps the private-GCS soundtrack introduced in v4.1.27-v4.1.29, removes crossfade playback entirely, and guarantees that only one soundtrack stream can ever be audible while preserving highlight pause/resume, Next, volume, Dev Mode identification, and the long no-repeat rotation.
 
-## v4.1.29 — persistent Sports Big Board soundtrack
+## v4.1.30 — single-stream soundtrack hardening
 
 - **Site-level music ownership:** one soundtrack engine sits above the A/B highlight players. Changing videos never recreates or restarts the current music track.
 - **Minimal controls:** a compact `♫ play/pause` control and soundtrack-volume button sit beside the existing video transport controls.
 - **Highlight-aware audio:** music runs during startup/buffering, ducks under actual highlight audio, pauses when the viewer pauses, and stays continuous through normal program transitions.
 - **113-track no-repeat library:** the normalized Mixkit manifest represents roughly 3 hours 41 minutes of audio. A weighted unique shuffle bag favors CORE tracks without repeating any enabled track until the bag is exhausted.
-- **Crossfades:** the next track is preloaded on a second audio element and crossfades over 2.5 seconds.
-- **Persistent preference/session:** enabled state, volume, current track/position, and remaining shuffle bag survive reloads through local storage. Browser autoplay restrictions remain respected.
+- **No crossfade / no overlap:** exactly one soundtrack `Audio` element is permitted to play. A second permanently muted element may preload the next file, but its `play()` path is guarded off. Next hard-stops the outgoing song before loading the replacement.
+- **Persistent preference/session:** enabled state, volume, current track/position, exact remaining shuffle bag, and already-heard IDs survive reloads through v2 local storage. Browser autoplay restrictions remain respected and the v1 state migrates forward.
+- **Pause/Next race hardening:** highlight pause is immediate and authoritative, stale asynchronous `play()` completions are invalidated with an operation epoch, and soundtrack-control clicks are excluded from the generic autoplay-unlock path.
+- **Single-tab ownership:** a short local lease/BroadcastChannel claim prevents two Sports Big Board tabs from playing independent soundtrack streams at the same time.
+- **Dev curation:** Player Debug continues to show the exact soundtrack title, tier, and track ID so unwanted songs can be identified and removed later.
 - **Private Cloud Storage audio boundary:** GitHub Pages ships only the player and ~46 KB manifest. The GCS bucket remains private under Public Access Prevention. The backend prefers short-lived signed GCS redirects and falls back to authenticated private streaming; the repository explicitly ignores `assets/soundtrack/tracks/`.
 - **One-command private audio setup:** `cloud/gcp/UPLOAD-SOUNDTRACK.sh` accepts the six ZIPs, validates all track hashes, uploads the library, grants the VM private read access, and enables signed-URL capability when IAM permits it.
 - **No catalog rebuild:** soundtrack deployment is independent of SQLite, historical discovery, Silver media, Game Center, and API credentials.

@@ -18,7 +18,7 @@ class V4128SoundtrackTests(unittest.TestCase):
     def test_browser_engine_is_site_level_and_persistent(self):
         src=(ROOT/'architecture/site-soundtrack.js').read_text()
         for token in (
-            'weightedShuffle', 'rebuildBag', 'beginCrossfade', 'localStorage',
+            'weightedShuffle', 'rebuildCycle', 'primeNextTrack', 'localStorage',
             'setPlaybackState', 'highlightDuckFactor', 'pauseForSearch',
             'assets/soundtrack/manifest.json', 'soundtrackBase'
         ):
