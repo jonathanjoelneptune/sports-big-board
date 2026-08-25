@@ -1,8 +1,13 @@
-# Sports Big Board v4.1.15
+# Sports Big Board v4.1.16
 
-> v4.1.15 is the **EPL YouTube playlist acquisition** release. It keeps Discovery v15, strict NFL/MLS/EPL worker affinity, the proven NFL playlist collector, matcher v7, and the existing MLS/Silver architecture while moving EPL GAME and Every Goal discovery onto quota-light curated YouTube playlists.
+> v4.1.16 is the **EPL pinned-playlist resolution** release. It keeps Discovery v15, strict NFL/MLS/EPL worker affinity, the proven NFL playlist collector, matcher v7, and the existing MLS/Silver architecture while moving EPL GAME and Every Goal discovery onto quota-light curated YouTube playlists.
 
-## v4.1.15 — EPL official/NBC playlist acquisition
+## v4.1.16 — EPL pinned playlist resolution
+
+- **Pinned first:** the supplied Premier League Club Highlights, Every Goal, and NBC season playlists are consumed directly via `playlistItems.list`; channel playlist enumeration is no longer a prerequisite.
+- **Trusted-channel repair:** if a pinned/shared playlist id yields zero items, the official Premier League or NBC Sports channel catalog is scanned for the exact season/title and retried with the canonical playlist id.
+- **Stage telemetry:** `[EPL PLAYLIST INDEX]` and `[EPL PLAYLIST VIDEOS]` show item counts, hydration, title qualification, exact-event matches, channel catalog scans, and repaired pins.
+- **Migration:** Rule Game Catch-up v5 reopens only EPL playlist source v2; Rule Collection Catch-up v4 reopens only EPL Every Goal. Discovery remains v15.
 
 - **NBC Sports season playlists are the preferred EPL Extended source:** `playlistItems.list` + `videos.list` harvest videos from trusted Premier League season playlists. A GAME candidate must contain both clubs, the title phrase `PREMIER LEAGUE HIGHLIGHTS`, an exact title date when present (or a publication date within the event window), and an 8–20 minute duration before it becomes Purple/Extended.
 - **Premier League Club highlights are first-class GAME sources:** official Premier League channel playlists are enumerated with `playlists.list`. Exact two-team videos in the 2–7 minute window become Green/Quick; 8–20 minute packages can become Purple/Extended.
@@ -12,7 +17,7 @@
 - **Source priority:** EPL playlist Quick/Extended lanes run before PremierLeague.com/NBC webpage fallbacks. Existing webpage adapters remain fallback sources rather than being removed.
 - **Operator telemetry:** `[EPL PLAYLISTS]` reports Premier League Quick/Extended, NBC Extended, Every Goal observations, and independent playlists/playlistItems health. Existing `[EPL CANDIDATES]` dispositions remain active.
 - **Migration boundary:** Rule Game Catch-up is v4 and reopens only the new EPL playlist source/objective ledgers. Rule Collection Catch-up is v3 and reopens only the EPL YouTube Every Goal Silver sweep. Discovery remains v15; no catalog rebuild or unrelated global reindex is required.
-- **Versions:** Frontend/Backend v4.1.15, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 4`, `HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 3`, event matcher v7.
+- **Versions:** Frontend/Backend v4.1.16, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 4`, `HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 3`, event matcher v7.
 
 Verification covers EPL playlist selection, exact-match association, duration-based Quick/Extended classification, NBC title/date requirements, Matchweek Silver classification, no-search behavior, existing NFL playlist acquisition, cloud deployment contracts, and the full historical regression suite.
 
@@ -284,7 +289,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.15/sports-big-board-v4.1.15
+cd ~/storage/downloads/sports-big-board-v4.1.16/sports-big-board-v4.1.16
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```

@@ -317,7 +317,7 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
         quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
         long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}
-        # v4.1.15 adds official team-site packages as a second Extended lane.
+        # v4.1.16 adds official team-site packages as a second Extended lane.
         # Keep this legacy duration-window unit test deterministic by isolating
         # the public NFL/YouTube lane it was originally written to exercise.
         with patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
@@ -582,6 +582,29 @@ class LiveFreshnessTests(unittest.TestCase):
         with patch.object(server,'_read_scoreboard_cache',return_value=(None,None)), patch.object(server,'_write_scoreboard_cache'), patch.object(server,'_espn_fetch_json',side_effect=fake_fetch), patch.object(server,'ZoneInfo',side_effect=Exception('tzdata unavailable')):
             rows=server._espn_scoreboard('EPL','2026-08-21','America/New_York',-240)
         self.assertEqual([x['id'] for x in rows],['epl-ars-cov'])
+
+
+    def test_v416_pinned_epl_playlist_is_direct_first_without_catalog_dependency(self):
+        rows=server._epl_pinned_playlists('2026-08-22',family='epl-youtube-nbc',role='season-highlights')
+        self.assertEqual(rows[0]['playlistId'],'PLR1b-6EyIaTs')
+        self.assertTrue(rows[0]['pinned'])
+        self.assertEqual(rows[0]['channelId'],server.EPL_YOUTUBE_NBC_CHANNEL_ID)
+
+    def test_v416_empty_pinned_playlist_can_repair_through_trusted_channel_catalog(self):
+        pinned={'playlistId':'short','title':'Premier League 2026-27 season','seasonStart':2026,'family':'epl-youtube-nbc','role':'season-highlights','channelId':server.EPL_YOUTUBE_NBC_CHANNEL_ID,'pinned':True}
+        alias={'playlistId':'canonical','title':'Premier League 2026-27 season','seasonStart':2026,'family':'epl-youtube-nbc','role':'season-highlights','channelId':server.EPL_YOUTUBE_NBC_CHANNEL_ID,'catalogDiscovered':True}
+        calls=[]
+        def fake(url,timeout=10):
+            calls.append(url)
+            if 'playlistId=short' in url: return {'items':[]}
+            if 'playlistId=canonical' in url: return {'items':[{'contentDetails':{'videoId':'v1'},'snippet':{'resourceId':{'videoId':'v1'}}}]}
+            if '/videos?' in url: return {'items':[{'id':'v1','snippet':{'channelId':server.EPL_YOUTUBE_NBC_CHANNEL_ID,'channelTitle':'NBC Sports','title':'Everton v. Crystal Palace | PREMIER LEAGUE HIGHLIGHTS | 8/22/2026 | NBC Sports','description':'','publishedAt':'2026-08-22T20:00:00Z','thumbnails':{}},'contentDetails':{'duration':'PT14M'},'status':{'privacyStatus':'public','embeddable':True}}]}
+            return {}
+        with tempfile.TemporaryDirectory() as td, patch.object(server,'read_youtube_key',return_value='k'), patch.object(server,'youtube_fetch_json',side_effect=fake), patch.object(server,'_epl_catalog_fallback_for_pinned',return_value=alias), patch.object(server,'_epl_youtube_playlist_items_cache_path',side_effect=lambda pid: Path(td)/(str(pid)+'.json')):
+            rows=server._epl_youtube_playlist_items(pinned,force=True)
+        self.assertEqual([x['youtubeId'] for x in rows],['v1'])
+        self.assertTrue(any('playlistId=short' in x for x in calls))
+        self.assertTrue(any('playlistId=canonical' in x for x in calls))
 
 
 if __name__=='__main__': unittest.main()
