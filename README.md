@@ -1,30 +1,23 @@
-# Sports Big Board v4.1.24
+# Sports Big Board v4.1.25
 
-> v4.1.24 is the **Historical Ribbon Recovery + Cache-Bust** release. It preserves the v4.1.23 catalog-first runtime, rolling schedule sync, interactive playlist manager, Android audit repair, five-worker recovery pool, Discovery v15, Matcher v7, Rule Game Catch-up v10, and Rule Collection Catch-up v8 while replacing the historical score-ribbon first paint with an explicit lightweight SQLite contract.
+> v4.1.25 is the **Historical Ribbon Performance + Catalog Authority** release. It preserves the v4.1.24 fail-closed historical contract while removing the remaining SQLite N+1/read-lock bottleneck and fixing the browser merge bug that could hide exact persisted recap media behind an empty media manifest.
 
-## v4.1.24 — historical ribbon recovery + cache-bust
+## v4.1.25 — historical ribbon performance + catalog authority
 
-- **New static asset generation:** every Pages script/style URL advances to `?v=4.1.24`, so Android Chrome and GitHub Pages cannot keep executing an older `app.js?v=4.1.23` after deployment.
-- **Compact historical ribbon endpoint:** `/api/history/ribbon?date=YYYY-MM-DD` returns canonical score rows plus compact exact-event playable-media plans without the full audit/source-media payload. Historical score cards can paint before deeper media hydration finishes.
-- **Persisted historical authority:** historical seed completeness is read from SQLite catalog metadata, not only the delayed in-memory worker heartbeat. A backend restart cannot temporarily turn a seeded date back into a provider-dependent date.
-- **Bounded mobile load:** the compact historical ribbon read has a 6.5-second deadline and the full history hydration has a 10-second deadline. A stalled mobile/network request cannot leave the ribbon in `Loading games…` forever; the UI surfaces an explicit catalog error instead.
-- **Score-first, media-second:** canonical games and known primary recap availability render first; the full `/api/history/day` media/diagnostic payload hydrates asynchronously after the ribbon exists.
-- **Today Key Info recovery:** returning to Today paints cached current Key Info immediately and then requests the forced editorial refresh, preventing a historical empty message from remaining visible during a slow refresh.
-- **Cumulative v4.1.23 fixes retained:** selective startup relationship repair, longer bounded deploy health grace, Android Historical Database Audit scrolling, rolling schedule sync, interactive playlist ingestion, and canonical event/media playback remain intact.
+- **Score rows are genuinely score-only:** `_history_day_score_rows()` reads `history_day` with `prefer_catalog=False`; collecting the ribbon slate no longer hydrates each league's complete normalized media catalog.
+- **One bulk media query per date:** `HistoryRepository.ribbon_media_for_date()` resolves all assigned GAME media for the selected day in one SQLite query. `/api/history/ribbon` no longer performs one `event_media()` lookup per score card.
+- **Concurrent WAL readers:** latency-sensitive catalog reads use independent query-only SQLite connections and do not wait on the repository-wide Python `RLock` held by discovery/backfill writers.
+- **WAL setup only at database initialization:** `PRAGMA journal_mode=WAL` is no longer re-negotiated for every short-lived SQLite connection.
+- **SQLite media remains authoritative in the browser:** `scoreCardPlayableItems()` merges manifest media with exact catalog media. An empty `SBB_MEDIA_MANIFEST.playable()` array can no longer replace a known Green/Extended/Blue recap with `FIND RECAP`. Exact catalog rows win identity collisions.
+- **Ribbon diagnostics:** each compact event plan now includes `catalogPlayableCount` and `catalogTier`. The endpoint also returns `scoresMs`, `mediaMs`, `inventoryMs`, and `totalMs` and emits a `Server-Timing` header for direct performance verification.
+- **Search Priority behavior preserved:** Search Priority may still suspend actual playback to reserve resources for recovery, but it does not suppress persisted recap availability on the score cards.
+- **Persisted historical authority retained:** the SQLite seed-complete marker remains authoritative across backend restarts, and the UI still fails closed with an explicit catalog error rather than remaining on `Loading games…`.
+- **New asset generation:** all Pages assets advance to `?v=4.1.25`, forcing the browser to load the corrected frontend bundle.
+- **No catalog rebuild required:** this release changes read/query behavior and frontend media merging only. Existing events, media, associations, worker progress, and source ledgers remain intact.
 
-## v4.1.24 — catalog-first runtime + interactive source management
+## v4.1.25 verification
 
-- **Rolling schedule sync:** a new `sbb-history-schedule-sync` worker refreshes yesterday, today, and the next 14 days into `history_day` / `history_catalog_event`. A full horizon refresh runs at startup and periodically; a smaller rolling refresh runs every 10 minutes. Today/future events are cataloged immediately but remain ineligible for recap discovery until live/final state makes them eligible.
-- **Manual schedule refresh:** Game Media Playlists now includes **SYNC SCHEDULE NOW**, which triggers the same canonical schedule ingestion without rebuilding the catalog.
-- **Interactive Game Media Playlists:** operators can add, edit, enable/disable, remove, or crawl a YouTube playlist from the audit UI. Adding a playlist validates its ID/metadata, persists it in `operator-media-playlists.json`, and starts a background crawl.
-- **Crawl first, associate second:** every playable item in an operator playlist is hydrated into normalized `SOURCE_MEDIA` as unassigned/orphaned media. Event Matcher v7 then attempts canonical GAME associations using team/date evidence. Ambiguous/non-game items remain orphaned rather than being forced onto an event.
-- **Automatic recrawl:** enabled operator playlists can recrawl on a configurable interval (default 60 minutes). New videos are reused by identity, newly available schedule events can absorb prior orphans, and disabling/removing a playlist never deletes already-discovered media.
-- **Playlist status:** custom rows report playlist items, hydrated assets, assigned assets, orphans, quarantines, last crawl, and last error. The worker console adds `[PLAYLIST CRAWLER]`.
-- **Catalog-first day response:** `/api/history/day` now returns canonical `eventPlans` keyed by `LEAGUE:eventId`, including already-associated media, playable media, and primary playback selection.
-- **Catalog-first ribbon/playback:** browsing a historical day no longer automatically launches a whole-date `/api/history/discover` job. The browser hydrates canonical event→media plans from SQLite first. `FIND RECAP` is reserved for a true catalog gap; an explicit click can still run exact-event discovery.
-- **Today is catalog-first too:** today's persisted schedule/media can paint immediately from SQLite, then live score providers refresh authoritative score/status state in the background. This avoids waiting on providers before known media becomes clickable.
-- **Single media relationship authority:** score cards prefer exact canonical event keys from the server instead of reconstructing associations client-side. Provider search, curated playlists, generic recovery, and rolling schedules all write to the catalog; the frontend reads that resolved catalog.
-- **Version boundary:** Frontend/Backend v4.1.24; Discovery v15; Event Matcher v7; Rule Game Catch-up v10; Rule Collection Catch-up v8. No catalog rebuild and no automatic global replay.
+The release adds regression coverage proving that historical score reads do not hydrate catalog media, the ribbon uses one bulk media read instead of an event-by-event N+1 path, query-only reads complete while the repository write lock is held, exact SQLite media survives an empty browser manifest, and the timing/diagnostic contract is present. The complete local + cloud Stage 1 suite passes.
 
 # Sports Big Board v4.1.22
 
