@@ -1,20 +1,19 @@
-# Sports Big Board v4.1.18
+# Sports Big Board v4.1.19
 
-> v4.1.18 is the **EPL YouTube acceptance + Matchweek Silver classifier** release. It keeps Discovery v15, strict NFL/MLS/EPL worker affinity, the proven NFL playlist collector, matcher v7, and the working MLS/Silver architecture while fixing the final EPL title/classification boundary exposed by v4.1.17.
+> v4.1.19 is the **EPL NBC wiring + affinity-assist** release. It keeps Discovery v15, matcher v7, and the proven NFL/MLS playlist architecture while wiring pinned NBC highlight inventory directly into the EPL matcher, making Every Goal classification observable, reconciling EPL matching telemetry, and allowing blocked affinity workers to assist claimable work instead of idling.
+## v4.1.19 — EPL NBC wiring + worker affinity assist
 
-## v4.1.18 — EPL source-split matching + Every Goal classification
+- **NBC matcher wiring:** the season-scoped pinned NBC playlist now feeds its filtered `PREMIER LEAGUE HIGHLIGHTS` inventory directly into EPL event matching instead of passing back through the generic playlist-selector layer that could drop the candidates.
+- **NBC inventory telemetry:** `[EPL PLAYLIST VIDEOS]` now shows the number of NBC highlight titles that actually enter the matcher, while `[EPL NBC MATCHING]` accumulates the complete title → team/date → duration → association funnel across the runtime.
+- **Every Goal observability + tolerance:** Every Goal classification now checks title **and description**, accepts `Matchweek`, `Match Week`, `MW`, and Opening Weekend wording when paired with goals semantics, and exposes the last hydrated title plus an explicit acceptance/rejection disposition in `[EPL EVERY GOAL]`.
+- **PL Club counter reconciliation:** source-matching counters are cumulative for the runtime instead of being overwritten by the most recent game check, so associated and persisted totals can be interpreted together.
+- **Affinity assist:** NFL/MLS/EPL workers keep their assigned league while claimable work exists. If that league still has remaining objectives but `available-now=0`, the worker assists another claimable priority-league backlog, preferring the largest remaining backlog, and then falls through to generic Green-gap work rather than idling indefinitely. The worker console renders `ASSIST→<league>` when this happens.
+- **Pinned season sources preserved:** the 2026–27 NBC playlist and supplied 2025–26 historical NBC playlist remain direct season-scoped Extended sources. PL Club Highlights and Every Goal remain pinned Premier League sources.
+- **No YouTube Search dependency:** EPL/NFL playlist ingestion remains on `playlists.list`, `playlistItems.list`, and `videos.list`, so YouTube Search quota exhaustion does not block the historical playlist lanes.
+- **Migration boundary:** Rule Game Catch-up v8 reopens only EPL playlist source v5; Rule Collection Catch-up v7 reopens the EPL Every Goal pass. EPL playlist caches move to the v419 namespace. Discovery remains v15, matcher remains v7, and no catalog rebuild is required.
+- **Versions:** Frontend/Backend v4.1.19, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 8`, `HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 7`, event matcher v7.
 
-- **Source-split telemetry:** NBC Sports and Premier League Club playlist matching now report independent funnels. `[EPL NBC MATCHING]` and `[EPL PL CLUB MATCHING]` prevent one source pass from overwriting the other source's parser statistics.
-- **NBC acceptance funnel:** operator telemetry now separates title recognition, parsed clubs, parsed dates, exact club-pair match, duration pass, event-association pass, persisted Extended, and parse/team/date/duration/association misses.
-- **Fail-safe exact pair scan:** if trusted NBC punctuation differs from the known `v.`/`vs.` shapes, both canonical event clubs explicitly present in the title plus the trusted playlist/date evidence can still prove the event without relaxing cross-event safeguards.
-- **Premier League score titles:** official Club Highlights titles such as `Brentford 3-0 Tottenham Hotspur | ... Highlights` are parsed as an unordered club pair alongside the existing `v`, `v.`, `vs`, `vs.`, and `@` formats.
-- **Every Goal classifier:** official Matchweek Silver now accepts `Every Goal`, `All Goals`, `All The Goals`, and `All of the Goals` when a `Matchweek N` marker appears anywhere in the title. The Matchweek number is stamped before collection classification.
-- **Pinned season sources preserved:** the 2026–27 NBC playlist and supplied 2025–26 NBC historical playlist remain direct season-scoped Extended sources; PL Club Highlights and Every Goal remain direct pinned sources.
-- **No YouTube Search dependency:** EPL playlist ingestion continues to use `playlists.list`, `playlistItems.list`, and `videos.list`, so the backfill remains independent of `search.list` quota.
-- **Migration boundary:** Rule Game Catch-up v7 reopens only EPL playlist source v4; Rule Collection Catch-up v6 reopens only EPL Every Goal. Discovery remains v15. NFL, MLS, matcher v7, and unrelated Silver data are not reset. No catalog rebuild is required.
-- **Versions:** Frontend/Backend v4.1.18, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 7`, `HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 6`, event matcher v7.
-
-Verification includes NBC `PREMIER LEAGUE HIGHLIGHTS` event matching, unexpected-separator fallback, Premier League score-formatted club highlights, `ALL The Goals ... Matchweek 1` Silver classification, the pinned 2025–26 NBC source, and the complete existing NFL/MLS/cloud regression suite.
+Verification includes direct NBC inventory → event matching, NBC unexpected-separator fallback, Premier League score-formatted club highlights, Every Goal title/description Matchweek extraction, worker affinity-assist contracts, and the complete existing NFL/MLS/cloud regression suite.
 
 ## v4.1.8 — official content-source adapters
 
@@ -284,7 +283,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.18/sports-big-board-v4.1.18
+cd ~/storage/downloads/sports-big-board-v4.1.19/sports-big-board-v4.1.19
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```

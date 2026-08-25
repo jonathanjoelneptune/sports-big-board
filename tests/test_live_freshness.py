@@ -317,7 +317,7 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
         quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
         long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}
-        # v4.1.18 adds official team-site packages as a second Extended lane.
+        # v4.1.19 adds official team-site packages as a second Extended lane.
         # Keep this legacy duration-window unit test deterministic by isolating
         # the public NFL/YouTube lane it was originally written to exercise.
         with patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
@@ -439,7 +439,7 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v415_epl_nbc_playlist_highlights_are_extended_and_exact_event(self):
         playlist={'playlistId':'PLnbc','title':'Premier League 2026-27 season','seasonStart':2026,'family':'epl-youtube-nbc','role':'season-highlights','channelId':'NBC123'}
         item={'id':'epl-playlist-PLnbc-nbc1','youtubeId':'nbc1','league':'EPL','title':'Brentford v. Tottenham Hotspur | PREMIER LEAGUE HIGHLIGHTS | 8/22/2026 | NBC Sports','description':'','durationSeconds':900,'duration':900,'publishedAt':'2026-08-22T20:00:00Z','sourceType':'trusted-nbc-epl-youtube-highlights','provider':'YOUTUBE','verifiedPlayable':True,'validationState':'VERIFIED','externalUrl':'https://www.youtube.com/watch?v=nbc1','discoverySourceFamily':'epl-youtube-nbc'}
-        with patch.object(server,'_epl_candidate_playlists',return_value=[playlist]), patch.object(server,'_epl_youtube_playlist_items',return_value=[item]):
+        with patch.object(server,'_epl_nbc_highlight_inventory',return_value=[item]):
             rows=server._epl_youtube_playlist_results('2026-08-22','Tottenham Hotspur','Brentford',objective='extended',family='epl-youtube-nbc')
         self.assertEqual(len(rows),1)
         self.assertEqual(rows[0]['youtubeId'],'nbc1')
@@ -639,7 +639,7 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v418_epl_nbc_event_team_scan_handles_unexpected_separator(self):
         playlist={'playlistId':'PLnbc','title':'Premier League 2026-27 season','seasonStart':2026,'family':'epl-youtube-nbc','role':'season-highlights','channelId':'NBC123'}
         item={'id':'n','youtubeId':'n','league':'EPL','title':'Brentford - Tottenham Hotspur | PREMIER LEAGUE HIGHLIGHTS | 8/22/2026 | NBC Sports','description':'','durationSeconds':900,'duration':900,'publishedAt':'2026-08-22T20:00:00Z','sourceType':'trusted-nbc-epl-youtube-highlights','provider':'YOUTUBE','verifiedPlayable':True,'validationState':'VERIFIED','externalUrl':'https://www.youtube.com/watch?v=n','discoverySourceFamily':'epl-youtube-nbc'}
-        with patch.object(server,'_epl_candidate_playlists',return_value=[playlist]), patch.object(server,'_epl_youtube_playlist_items',return_value=[item]):
+        with patch.object(server,'_epl_nbc_highlight_inventory',return_value=[item]):
             rows=server._epl_youtube_playlist_results('2026-08-22','Tottenham Hotspur','Brentford',objective='extended',family='epl-youtube-nbc')
         self.assertEqual([x['youtubeId'] for x in rows],['n'])
         self.assertEqual(rows[0]['titleMatchMethod'],'EVENT_TEAM_SCAN')
@@ -672,6 +672,23 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertEqual([x['youtubeId'] for x in rows],['goals1'])
         self.assertEqual(server.HISTORY_MEDIA_AUDIT['eplPlaylistTelemetry']['everyGoalVideoIds'],1)
         self.assertEqual(server.HISTORY_MEDIA_AUDIT['eplPlaylistTelemetry']['everyGoalVideoDetails'],1)
+
+
+    def test_v419_every_goal_matchweek_can_come_from_description_and_records_disposition(self):
+        playlist={'playlistId':'PLgoals','title':'Every Goal by Premier League Matchweek: 2026-27','seasonStart':2026,'family':'epl-youtube-pl','role':'every-goal','channelId':server.EPL_YOUTUBE_PL_CHANNEL_ID}
+        item={'id':'g2','youtubeId':'g2','league':'EPL','title':'Opening Weekend Goals | Premier League 2026/27','description':'All the goals from Match Week 1','durationSeconds':720,'duration':720,'publishedAt':'2026-08-23T12:00:00Z','sourceType':'official-premierleague-youtube-highlights','provider':'YOUTUBE','verifiedPlayable':True,'validationState':'VERIFIED','externalUrl':'https://www.youtube.com/watch?v=g2','discoverySourceFamily':'epl-youtube-pl'}
+        with patch.object(server,'_epl_candidate_playlists',return_value=[playlist]), patch.object(server,'_epl_youtube_playlist_items',return_value=[item]):
+            rows=server._epl_youtube_every_goal_results('2026-08-23')
+        self.assertEqual([x['youtubeId'] for x in rows],['g2'])
+        self.assertEqual(rows[0]['collectionRoundNumber'],1)
+        tel=server.HISTORY_MEDIA_AUDIT['eplPlaylistTelemetry']
+        self.assertEqual(tel.get('everyGoalLastDisposition'),'ACCEPTED_MATCHWEEK_1')
+
+    def test_v419_nbc_inventory_is_direct_input_to_matcher(self):
+        item={'id':'n2','youtubeId':'n2','league':'EPL','title':'Everton v. Crystal Palace | PREMIER LEAGUE HIGHLIGHTS | 8/22/2026 | NBC Sports','description':'','durationSeconds':900,'duration':900,'publishedAt':'2026-08-22T20:00:00Z','sourceType':'trusted-nbc-epl-youtube-highlights','provider':'YOUTUBE','verifiedPlayable':True,'validationState':'VERIFIED','externalUrl':'https://www.youtube.com/watch?v=n2','discoverySourceFamily':'epl-youtube-nbc'}
+        with patch.object(server,'_epl_nbc_highlight_inventory',return_value=[item]):
+            rows=server._epl_youtube_playlist_results('2026-08-22','Crystal Palace','Everton',objective='extended',family='epl-youtube-nbc')
+        self.assertEqual([x['youtubeId'] for x in rows],['n2'])
 
 
 
