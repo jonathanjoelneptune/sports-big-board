@@ -1,9 +1,9 @@
-/* Sports Big Board v4.1.28 — persistent site-level soundtrack engine.
+/* Sports Big Board v4.1.29 — persistent site-level soundtrack engine.
    The soundtrack belongs to the application, not to any individual highlight.
    It survives score/date/program changes and follows the active playback state. */
 (() => {
   'use strict';
-  const VERSION='1.0';
+  const VERSION='1.1';
   const STORAGE_KEY='sbb:soundtrack:v1';
   const MANIFEST_URL=new URL('assets/soundtrack/manifest.json',document.baseURI).toString();
   const cfg=window.SBB_CONFIG||{};
@@ -151,10 +151,20 @@
   }
   function setCurrentTrack(track,{position=0}={}){
     currentTrack=track;
+    announceTrack('select');
     loadInto(activeAudioIndex,currentTrack,{position});
     primeStandby();
     saveStored();
     renderUi();
+  }
+
+  function currentTrackDebugLabel(){
+    if(!currentTrack) return '—';
+    return `${currentTrack.title||currentTrack.id||'Unknown'} • ${currentTrack.tier||'ROTATION'} • ${currentTrack.id||'—'}`;
+  }
+  function announceTrack(reason='track-change'){
+    if(!currentTrack) return;
+    try{console.info('[SBB soundtrack] now playing',{id:currentTrack.id,title:currentTrack.title,tier:currentTrack.tier,reason});}catch(_){ }
   }
 
   function finalizeCrossfade(){
@@ -166,6 +176,7 @@
     setAudioVolume(old,0);
     activeAudioIndex=nextIndex;
     currentTrack=standbyTrack;
+    announceTrack('crossfade');
     crossfading=false;
     standbyTrack=null;
     setAudioVolume(next,baseTargetVolume());
@@ -240,6 +251,7 @@
     if(crossfading) finishCrossfadeForPause();
     const old=audio[activeAudioIndex];try{old.pause();old.currentTime=0;}catch(_){ }
     currentTrack=standbyTrack||drawNextTrack();
+    announceTrack('next');
     standbyTrack=null;
     loadInto(activeAudioIndex,currentTrack);
     primeStandby();saveStored();renderUi();
@@ -262,15 +274,17 @@
     const next=String(mode||'idle').toLowerCase();
     const changed=next!==playbackState;
     playbackState=next;
-    if(!changed) return;
+    // Playback truth is authoritative. Repeated PAUSED/READY notifications must
+    // still stop audio because iframe/native control interactions can bypass the
+    // page-level transport click handler.
     if(ACTIVE_STATES.has(playbackState)){
       clearTimeout(pauseTimer);pauseTimer=0;
       ensurePlaying();
       updateVolumes();
     }else if(HARD_PAUSE_STATES.has(playbackState)){
-      pauseNow({fade:true});
+      pauseNow({fade:false});
     }else if(playbackState==='ended'){
-      scheduleEndedPause();
+      if(changed) scheduleEndedPause();
     }
     renderUi();
   }
@@ -304,6 +318,11 @@
       volBtn.title=`Soundtrack volume ${Math.round(masterVolume*100)}%`;
     }
     if(slider && Math.abs(Number(slider.value)-masterVolume)>.001) slider.value=String(masterVolume);
+    const debug=$('diagSoundtrack');
+    if(debug){
+      debug.textContent=currentTrackDebugLabel();
+      debug.title=currentTrack?.sourceFilename||currentTrack?.file||'';
+    }
     document.body?.classList.toggle('sbb-soundtrack-enabled',enabled);
   }
 
@@ -332,6 +351,7 @@
   }
   function bindUi(){
     $('soundtrackToggle')?.addEventListener('click',toggleEnabled);
+    $('soundtrackNextBtn')?.addEventListener('click',ev=>{ev.stopPropagation();skipTrack();});
     $('soundtrackVolumeBtn')?.addEventListener('click',ev=>{ev.stopPropagation();toggleVolumePopover();});
     $('soundtrackVolume')?.addEventListener('input',ev=>setVolume(ev.target.value));
     document.addEventListener('click',ev=>{if(!ev.target.closest?.('#soundtrackControls'))toggleVolumePopover(false);});
@@ -367,7 +387,7 @@
     setVolume,
     toggle:toggleEnabled,
     skip:skipTrack,
-    snapshot:()=>({enabled,available,playbackState,volume:masterVolume,currentTrack:currentTrack?{id:currentTrack.id,title:currentTrack.title,tier:currentTrack.tier}:null,remainingInBag:bag.length,trackCount:tracks.length,remoteBase})
+    snapshot:()=>({enabled,available,playbackState,volume:masterVolume,currentTrack:currentTrack?{id:currentTrack.id,title:currentTrack.title,tier:currentTrack.tier,file:currentTrack.file,sourceFilename:currentTrack.sourceFilename}:null,remainingInBag:bag.length,trackCount:tracks.length,remoteBase})
   });
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init(),{once:true});else init();
 })();

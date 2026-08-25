@@ -1,8 +1,8 @@
-# Sports Big Board v4.1.28
+# Sports Big Board v4.1.29
 
-> v4.1.28 is the **Site Soundtrack** release. It preserves the v4.1.26 database/operator/playback architecture and adds a persistent application-level sports music bed that follows highlight playback without restarting when the viewer changes games, dates, leagues, or recap packages.
+> v4.1.29 is the **Site Soundtrack** release. It preserves the v4.1.26 database/operator/playback architecture and adds a persistent application-level sports music bed that follows highlight playback without restarting when the viewer changes games, dates, leagues, or recap packages.
 
-## v4.1.28 — persistent Sports Big Board soundtrack
+## v4.1.29 — persistent Sports Big Board soundtrack
 
 - **Site-level music ownership:** one soundtrack engine sits above the A/B highlight players. Changing videos never recreates or restarts the current music track.
 - **Minimal controls:** a compact `♫ play/pause` control and soundtrack-volume button sit beside the existing video transport controls.

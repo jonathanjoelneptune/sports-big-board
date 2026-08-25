@@ -21,7 +21,7 @@ for directory in ('architecture','ui'):
 shutil.copy2(root/'assets'/'soundtrack'/'manifest.json',out/'assets'/'soundtrack'/'manifest.json')
 soundtrack=(os.environ.get('SBB_SOUNDTRACK_BASE_URL') or '').strip().rstrip('/')
 if not soundtrack:
-    # v4.1.28 keeps the GCS bucket private. The browser requests soundtrack
+    # v4.1.29 keeps the GCS bucket private. The browser requests soundtrack
     # tracks from the backend, which prefers a short-lived signed GCS redirect
     # and transparently falls back to authenticated proxy streaming.
     soundtrack=f'{api}/api/soundtrack'

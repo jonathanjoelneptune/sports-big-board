@@ -1,6 +1,6 @@
-# Sports Big Board v4.1.28 Architecture
+# Sports Big Board v4.1.29 Architecture
 
-## v4.1.28 operator/read and playback boundary
+## v4.1.29 operator/read and playback boundary
 
 The interactive operator surfaces are no longer allowed to perform expensive whole-catalog work synchronously. A background telemetry worker refreshes green-gap, association, claim, Silver, media-objective, and Silver-identity summaries into an in-memory snapshot. The Live Search Console only combines that snapshot with inexpensive live thread/worker state, so its frequent polling does not compete with discovery or playback.
 
@@ -39,7 +39,7 @@ Operator terminology is presentation-safe: catalog media coverage, media objecti
 Discovery v15, matcher v7, Rule Game Catch-up v9, EPL source v6, current media collectors, and provider concurrency limits remain unchanged. v4.1.21 requires no catalog rebuild.
 
 
-## v4.1.28 site soundtrack boundary
+## v4.1.29 site soundtrack boundary
 
 The soundtrack is an application-level service, not a MediaAsset and not a PlaybackController transport. `architecture/site-soundtrack.js` owns two browser `Audio` elements, the unique weighted shuffle bag, crossfade state, soundtrack volume/ducking, persistence, and Cloud Storage URL resolution. PlaybackController remains the sole owner of highlight video state; it reports only coarse UI playback states (`starting`, `buffering`, `playing`, `paused`, `ended`) to the soundtrack engine.
 
