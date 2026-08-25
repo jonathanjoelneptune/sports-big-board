@@ -1,18 +1,20 @@
-Sports Big Board v4.1.14 — Updated Files Only
-Base release: v4.1.13
+Sports Big Board v4.1.15 — Updated Files Only
+Base release: v4.1.14
 
 Scope:
-- first-class official @NFL YouTube recap playlist collector using playlists.list + playlistItems.list + videos.list
-- NFL playlist Quick/Extended objectives that do not depend on YouTube search.list quota
-- season/week/postseason playlist selection with durable playlist catalog/item caches
-- known official 2025 recap-playlist bootstrap anchors plus automatic @NFL playlist enumeration
-- NFL playlist persistence and independent YouTube playlists/playlistItems health telemetry
-- EPL Quick/Extended candidate disposition telemetry with reopened source versions
-- Rule Game Catch-up v3 while Silver Rule Collection Catch-up remains v2
-- Discovery remains v15; no global catalog reindex or catalog rebuild required
-- frontend/backend release markers v4.1.14
+- EPL official Premier League YouTube Club highlights playlist collector
+- NBC Sports Premier League season-playlist Extended collector keyed on exact `PREMIER LEAGUE HIGHLIGHTS` + both teams + date + 8–20 minute duration
+- official Premier League Every Goal by Matchweek playlist → Silver ROUND_LEAGUE / SCORING_ROUNDUP
+- playlists.list + playlistItems.list + videos.list only; no YouTube search.list dependency
+- automatic Premier League playlist enumeration and trusted NBC channel/season discovery with 2026-27 bootstrap anchors
+- EPL playlist Quick/Extended persistence telemetry and [EPL PLAYLISTS] console line
+- Rule Game Catch-up v4 for new EPL playlist objectives
+- Rule Collection Catch-up v3 scoped to EPL YouTube Every Goal Silver only
+- existing NFL playlist, MLS Snapshot/Highlights, matcher v7, and legacy EPL webpage fallbacks preserved
+- Discovery remains v15; no catalog rebuild or global historical reindex required
+- frontend/backend release markers v4.1.15
 
-Upload these files over the matching repository paths. No catalog rebuild is required.
+Upload these files over the matching v4.1.14 repository paths. No catalog rebuild is required.
 
 Changed/new files:
 - ANDROID SETUP.md
@@ -58,8 +60,8 @@ Changed/new files:
 - tests/test_cloud_stage1.py
 - tests/test_history_v4_baseline.py
 - tests/test_live_freshness.py
+- tests/test_media_scope_roundups.py
 - tests/test_regression_guards.py
-- tests/test_server_architecture.py
 - tools/ensure_history_v4.py
 - ui/game-center-view.js
 - ui/history-audit.js

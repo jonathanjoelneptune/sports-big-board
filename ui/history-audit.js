@@ -1,7 +1,7 @@
-/* Sports Big Board v4.1.14 historical database audit view. */
+/* Sports Big Board v4.1.15 historical database audit view. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.1.14';
+  const FRONTEND_VERSION='4.1.15';
   const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,tab:'games',silverOffset:0,silverLimit:100,silverTotal:0,silverLoading:false,lastSilverPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
@@ -249,6 +249,7 @@
       `[MEDIA PIPELINE] normalized NFL quick ${Number(objRuntime.nflQuickAccepted||0)} / extended ${Number(objRuntime.nflExtendedAccepted||0)} • persisted ${Number(objRuntime.nflQuickPersisted||0)} / ${Number(objRuntime.nflExtendedPersisted||0)} • lost ${Number(objRuntime.nflPersistenceLost||0)} • MLS normalized snapshot ${Number(objRuntime.mlsSnapshotAccepted||0)} / highlights ${Number(objRuntime.mlsMatchHighlightsAccepted||0)} • persisted ${Number(objRuntime.mlsSnapshotPersisted||0)} / ${Number(objRuntime.mlsMatchHighlightsPersisted||0)} • EPL persisted ${Number(objRuntime.eplQuickPersisted||0)} / ${Number(objRuntime.eplExtendedPersisted||0)} • duplicate-collapse ${Number(objRuntime.duplicatesCollapsed||0)}`, 
       `[MLS CANDIDATES] ${Object.entries(objRuntime.mlsCandidateDispositions||{}).slice(0,8).map(([k,v])=>`${k}=${Number(v||0)}`).join(' • ')||'none'}`, 
       `[EPL CANDIDATES] ${Object.entries(objRuntime.eplCandidateDispositions||{}).slice(0,8).map(([k,v])=>`${k}=${Number(v||0)}`).join(' • ')||'none'}`, 
+      `[EPL PLAYLISTS] PL quick ${Number(objRuntime.eplPlPlaylistQuickPersisted||0)} • PL extended ${Number(objRuntime.eplPlPlaylistExtendedPersisted||0)} • NBC extended ${Number(objRuntime.eplNbcPlaylistExtendedPersisted||0)} • every-goal seen ${Number(objRuntime.eplEveryGoalPlaylistSeen||0)} • playlists API ${((gateway.playlists||{}).quotaExhausted?'QUOTA EXHAUSTED':(Number((gateway.playlists||{}).cooldownSeconds||0)>0?'COOLDOWN':'OK'))} • playlistItems ${((gateway.playlistitems||{}).quotaExhausted?'QUOTA EXHAUSTED':(Number((gateway.playlistitems||{}).cooldownSeconds||0)>0?'COOLDOWN':'OK'))}`,
       `[NFL PERSISTENCE] ${Object.entries(objRuntime.nflPersistenceReasons||{}).slice(0,8).map(([k,v])=>`${k}=${Number(v||0)}`).join(' • ')||'none'}`, 
       `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')} • lastError=${String(g.lastError||'none')}`,
       `[BACKFILL] ${backfillSummary(back)} • lastError=${String(back.lastError||'none')}`,
@@ -361,6 +362,7 @@
         `[MEDIA PIPELINE] normalized NFL quick ${Number(objRuntime.nflQuickAccepted||0)} / extended ${Number(objRuntime.nflExtendedAccepted||0)} • persisted ${Number(objRuntime.nflQuickPersisted||0)} / ${Number(objRuntime.nflExtendedPersisted||0)} • lost ${Number(objRuntime.nflPersistenceLost||0)} • MLS normalized snapshot ${Number(objRuntime.mlsSnapshotAccepted||0)} / highlights ${Number(objRuntime.mlsMatchHighlightsAccepted||0)} • persisted ${Number(objRuntime.mlsSnapshotPersisted||0)} / ${Number(objRuntime.mlsMatchHighlightsPersisted||0)} • EPL persisted ${Number(objRuntime.eplQuickPersisted||0)} / ${Number(objRuntime.eplExtendedPersisted||0)}`, 
         `[MLS CANDIDATES] ${Object.entries(objRuntime.mlsCandidateDispositions||{}).slice(0,8).map(([k,v])=>`${k}=${Number(v||0)}`).join(' • ')||'none'}`, 
         `[EPL CANDIDATES] ${Object.entries(objRuntime.eplCandidateDispositions||{}).slice(0,8).map(([k,v])=>`${k}=${Number(v||0)}`).join(' • ')||'none'}`, 
+        `[EPL PLAYLISTS] PL quick ${Number(objRuntime.eplPlPlaylistQuickPersisted||0)} • PL extended ${Number(objRuntime.eplPlPlaylistExtendedPersisted||0)} • NBC extended ${Number(objRuntime.eplNbcPlaylistExtendedPersisted||0)} • every-goal seen ${Number(objRuntime.eplEveryGoalPlaylistSeen||0)} • playlists API ${(((data.youtubeGateway||{}).playlists||{}).quotaExhausted?'QUOTA EXHAUSTED':(Number(((data.youtubeGateway||{}).playlists||{}).cooldownSeconds||0)>0?'COOLDOWN':'OK'))} • playlistItems ${(((data.youtubeGateway||{}).playlistitems||{}).quotaExhausted?'QUOTA EXHAUSTED':(Number(((data.youtubeGateway||{}).playlistitems||{}).cooldownSeconds||0)>0?'COOLDOWN':'OK'))}`,
         `[NFL PERSISTENCE] ${Object.entries(objRuntime.nflPersistenceReasons||{}).slice(0,8).map(([k,v])=>`${k}=${Number(v||0)}`).join(' • ')||'none'}`, 
         `[GREEN] ${g.current?`NOW ${g.current}`:(g.lastDate?`LAST ${g.lastDate} ${g.lastLeague||''} ${String(g.lastBestTier||'none').toUpperCase()}→${String(g.lastResultTier||'none').toUpperCase()}`:'no completed attempt yet')}`,
         `[BACKFILL] ${backfillSummary(back)}`,
@@ -382,7 +384,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.14 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.15 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);

@@ -1,20 +1,20 @@
-# Sports Big Board v4.1.14
+# Sports Big Board v4.1.15
 
-> v4.1.14 is the **NFL official-playlist acquisition + EPL diagnostics** release. It keeps the normalized catalog, Discovery v15, strict NFL/MLS/EPL worker affinity, and Silver Catch-up v2 while adding a quota-light official @NFL playlist lane that remains usable when YouTube Search is exhausted.
+> v4.1.15 is the **EPL YouTube playlist acquisition** release. It keeps Discovery v15, strict NFL/MLS/EPL worker affinity, the proven NFL playlist collector, matcher v7, and the existing MLS/Silver architecture while moving EPL GAME and Every Goal discovery onto quota-light curated YouTube playlists.
 
-## v4.1.14 — official NFL recap playlists
+## v4.1.15 — EPL official/NBC playlist acquisition
 
-- **Official NFL YouTube playlists are first-class GAME sources:** `playlists.list` enumerates recap playlists from the verified `@NFL` channel, `playlistItems.list` enumerates each selected playlist, and `videos.list` validates public/embeddable video metadata and duration. `search.list` is never part of this path.
-- **Season/week playlist indexing:** playlist titles are parsed for NFL season/year, regular-season week, preseason week, or postseason round. The event date selects a small set of likely playlists and each playlist is cached durably, so one weekly playlist can satisfy every game in that period without repeated API discovery.
-- **Historical anchors:** known official 2025 Week 15, Week 16, and Divisional Round recap playlists are retained as bootstrap IDs while automatic channel playlist enumeration remains authoritative.
-- **Quick + Extended objectives:** official playlist videos in the existing 2–6 minute Quick window become Green; public 8–20 minute packages become Purple/Extended. Both require exact two-team matchup evidence and verified YouTube playability.
-- **Source priority:** NFL official playlist Quick/Extended runs before public NFL.com and team-site fallbacks in both normal discovery and Rule Game Catch-up. Existing NFL+ entitlement gating and team-site fail-closed filtering remain unchanged.
-- **Independent YouTube health:** Search quota exhaustion no longer hides playlist health. The console reports `playlists`, `playlistItems`, and `videos` independently and adds `[NFL PLAYLISTS]` with Quick/Extended persistence counts.
-- **EPL candidate diagnostics:** Premier League and NBC raw candidates now receive the same explicit candidate dispositions used for NFL/MLS, with a new `[EPL CANDIDATES]` console line and persisted Quick/Extended counters. EPL source versions are reopened for this diagnostic pass.
-- **Migration boundary:** Rule Game Catch-up is v3; Silver Rule Collection Catch-up remains v2 and is not reopened. Discovery remains v15, so unrelated historical games are not globally reindexed.
-- **Versions:** Frontend/Backend v4.1.14, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 3`, `HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 2`, event matcher v7.
+- **NBC Sports season playlists are the preferred EPL Extended source:** `playlistItems.list` + `videos.list` harvest videos from trusted Premier League season playlists. A GAME candidate must contain both clubs, the title phrase `PREMIER LEAGUE HIGHLIGHTS`, an exact title date when present (or a publication date within the event window), and an 8–20 minute duration before it becomes Purple/Extended.
+- **Premier League Club highlights are first-class GAME sources:** official Premier League channel playlists are enumerated with `playlists.list`. Exact two-team videos in the 2–7 minute window become Green/Quick; 8–20 minute packages can become Purple/Extended.
+- **Every Goal by Matchweek is Silver:** official Premier League `Every Goal` playlist videos are classified as `ROUND_LEAGUE` / `SCORING_ROUNDUP` using their explicit Matchweek identity and are never attached to an individual game.
+- **No YouTube Search dependency:** EPL playlist catalog, playlist items, and video validation use `playlists.list`, `playlistItems.list`, and `videos.list`. `search.list` is not used, so the playlist lanes remain available while YouTube Search quota is exhausted.
+- **Automatic season discovery + bootstrap anchors:** the official Premier League channel catalog is enumerated automatically; known 2026-27 `Club highlights` and `Every Goal` playlist IDs provide immediate anchors. The trusted current NBC season playlist is resolved once to learn its channel identity, after which other Premier League season playlists can be enumerated from the same NBC Sports channel.
+- **Source priority:** EPL playlist Quick/Extended lanes run before PremierLeague.com/NBC webpage fallbacks. Existing webpage adapters remain fallback sources rather than being removed.
+- **Operator telemetry:** `[EPL PLAYLISTS]` reports Premier League Quick/Extended, NBC Extended, Every Goal observations, and independent playlists/playlistItems health. Existing `[EPL CANDIDATES]` dispositions remain active.
+- **Migration boundary:** Rule Game Catch-up is v4 and reopens only the new EPL playlist source/objective ledgers. Rule Collection Catch-up is v3 and reopens only the EPL YouTube Every Goal Silver sweep. Discovery remains v15; no catalog rebuild or unrelated global reindex is required.
+- **Versions:** Frontend/Backend v4.1.15, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 4`, `HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 3`, event matcher v7.
 
-Verification covers playlist catalog enumeration, playlist item expansion, duration/objective classification, strict no-search behavior, independent YouTube operation health, EPL dispositions, strict migration affinity, persistence tracing, browser contracts, cloud deployment, and the full historical regression suite.
+Verification covers EPL playlist selection, exact-match association, duration-based Quick/Extended classification, NBC title/date requirements, Matchweek Silver classification, no-search behavior, existing NFL playlist acquisition, cloud deployment contracts, and the full historical regression suite.
 
 ## v4.1.8 — official content-source adapters
 
@@ -284,7 +284,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.14/sports-big-board-v4.1.14
+cd ~/storage/downloads/sports-big-board-v4.1.15/sports-big-board-v4.1.15
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```

@@ -1,4 +1,4 @@
-"""Provider routing registry for v4.1.14.
+"""Provider routing registry for v4.1.15.
 
 SCORE_API retains the existing Highlightly adapter metadata. MEDIA_ADAPTERS is the
 new provider-independent capability registry consumed by architecture diagnostics
@@ -29,6 +29,11 @@ MEDIA_ADAPTERS={
     "nfl-club":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NFL"],"reliability":96},
     "nfl-feed":{"kind":"official-feed","transport":["YOUTUBE_EMBED","EXTERNAL"],"competitions":["NFL"],"reliability":92},
     "nhl-official":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["NHL"],"reliability":100},
+    "epl-youtube-pl":{"kind":"official-youtube-playlist","transport":["YOUTUBE"],"competitions":["EPL"],"reliability":100},
+    "epl-youtube-pl-quick":{"kind":"official-youtube-playlist","transport":["YOUTUBE"],"competitions":["EPL"],"reliability":100},
+    "epl-youtube-pl-extended":{"kind":"official-youtube-playlist","transport":["YOUTUBE"],"competitions":["EPL"],"reliability":100},
+    "epl-youtube-nbc-extended":{"kind":"trusted-broadcaster-youtube-playlist","transport":["YOUTUBE"],"competitions":["EPL"],"reliability":99},
+    "epl-youtube-every-goal":{"kind":"official-youtube-playlist","transport":["YOUTUBE"],"competitions":["EPL"],"reliability":100},
     "premierleague-official":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["EPL"],"reliability":100},
     "nbc-epl-extended":{"kind":"trusted-broadcaster-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["EPL"],"reliability":96},
     "mls-official-web":{"kind":"official-web","transport":["DIRECT_VIDEO","EXTERNAL"],"competitions":["MLS"],"reliability":100},

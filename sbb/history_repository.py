@@ -474,7 +474,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.14 migration cooldowns already persisted in production.
+        """Release artificial v4.1.15 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -534,7 +534,7 @@ class HistoryRepository:
                 if state==ASSIGNED:
                     competing=conn.execute("SELECT canonical_event_key,association_confidence,association_method FROM history_event_media WHERE asset_key=? AND association_state='ASSIGNED' AND canonical_event_key<>?",(asset_key,key)).fetchall()
                     if competing:
-                        # v4.1.14 distinguishes a broad candidate being encountered
+                        # v4.1.15 distinguishes a broad candidate being encountered
                         # for another game from a genuine strong-identity conflict.
                         # Preserve a previously proven assignment for ordinary title/
                         # team matches and quarantine only the new candidate link.
@@ -631,7 +631,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.14 treats collection membership as fully derived state.  Classifier
+        v4.1.15 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -730,7 +730,7 @@ class HistoryRepository:
         return {"event":event,"collection":collection,"integrity":integrity,"issues":issues,"ok":not bool(issues)}
 
     def media_objective_summary(self):
-        """Persisted v4.1.14 objective/category counts for operator audit."""
+        """Persisted v4.1.15 objective/category counts for operator audit."""
         out={"nflQuickGames":0,"nflExtendedGames":0,"nflBothGames":0,"nflGreenWithoutPurple":0,"nflMissingQuick":0,"nflMissingExtended":0,
              "mlsSnapshots":0,"mlsMatchHighlights":0,"mlsSnapshotGames":0,"mlsHighlightGames":0,"mlsBothGames":0,"mlsMissingSnapshot":0,"mlsMissingHighlights":0,
              "eplQuickGames":0,"eplExtendedGames":0,"eplBothGames":0,"eplMissingQuick":0,"eplMissingExtended":0,
@@ -753,7 +753,7 @@ class HistoryRepository:
             out['mlsSnapshots']=int(src['snapshots'] or 0); out['mlsMatchHighlights']=int(src['highlights'] or 0)
             flags=event_flags('MLS',"json_extract(s.asset_json,'$.sourceType')='official-mls-match-snapshot'","json_extract(s.asset_json,'$.sourceType')='official-mls-match-highlights'")
             out['mlsSnapshotGames']=sum(1 for r in flags if r['has_quick']); out['mlsHighlightGames']=sum(1 for r in flags if r['has_extended']); out['mlsBothGames']=sum(1 for r in flags if r['has_quick'] and r['has_extended']); out['mlsMissingSnapshot']=sum(1 for r in flags if not r['has_quick']); out['mlsMissingHighlights']=sum(1 for r in flags if not r['has_extended'])
-            flags=event_flags('EPL',"json_extract(s.asset_json,'$.sourceType')='official-premierleague-match-highlights'","json_extract(s.asset_json,'$.sourceType')='trusted-nbc-epl-extended'")
+            flags=event_flags('EPL',"json_extract(s.asset_json,'$.recapTier')='green' AND json_extract(s.asset_json,'$.sourceType') IN ('official-premierleague-match-highlights','official-premierleague-youtube-highlights')","json_extract(s.asset_json,'$.recapTier')='extended' AND json_extract(s.asset_json,'$.sourceType') IN ('trusted-nbc-epl-extended','official-premierleague-youtube-highlights','trusted-nbc-epl-youtube-highlights')")
             out['eplQuickGames']=sum(1 for r in flags if r['has_quick']); out['eplExtendedGames']=sum(1 for r in flags if r['has_extended']); out['eplBothGames']=sum(1 for r in flags if r['has_quick'] and r['has_extended']); out['eplMissingQuick']=sum(1 for r in flags if not r['has_quick']); out['eplMissingExtended']=sum(1 for r in flags if not r['has_extended'])
             for kind,prefix in (("BEST_GOALS","bestGoals"),("BEST_SAVES","bestSaves")):
                 r=conn.execute("""SELECT COUNT(DISTINCT c.collection_key) collections,COUNT(cm.asset_key) assets FROM history_collection c LEFT JOIN history_collection_media cm ON cm.collection_key=c.collection_key WHERE c.collection_kind=?""",(kind,)).fetchone()
@@ -870,7 +870,7 @@ class HistoryRepository:
     def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP", return_stats=False):
         """Promote only strictly proven league-wide roundup assets into Silver.
 
-        v4.1.14 keeps the legacy integer return by default, but can return precise
+        v4.1.15 keeps the legacy integer return by default, but can return precise
         idempotent telemetry so rule catch-up reports *new* assets/links rather than
         repeatedly calling rediscovered rows "accepted".
         """
@@ -1153,7 +1153,7 @@ class HistoryRepository:
     def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, preferred_league="", strict_preferred=False, limit=96):
         """Newest-first official-source objective queue.
 
-        v4.1.14 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
+        v4.1.15 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
         objectives. A previously completed generic source pass cannot hide an unmet
         objective, and the three rule-migration leagues are scheduled ahead of legacy
         NHL source catch-up until their new objective ledgers are satisfied.
@@ -1162,7 +1162,7 @@ class HistoryRepository:
         leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_specs_for_league(source_versions,lg)]
         preferred=str(preferred_league or "").upper()
         if strict_preferred and preferred and preferred in leagues:
-            # v4.1.14 strict rule-migration lane: query only the assigned league.
+            # v4.1.15 strict rule-migration lane: query only the assigned league.
             # This avoids SQL LIMIT starvation where NFL/MLS rows can consume the
             # candidate window before an EPL-affinity worker ever sees EPL work.
             leagues=[preferred]

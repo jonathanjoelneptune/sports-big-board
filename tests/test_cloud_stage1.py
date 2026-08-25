@@ -4,8 +4,8 @@ ROOT=Path(__file__).resolve().parents[1]
 class CloudStage1Tests(unittest.TestCase):
     def test_frontend_loads_api_runtime_before_bootstrap(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
-        self.assertIn('config.js?v=4.1.14',html); self.assertIn('api-runtime.js?v=4.1.14',html)
-        self.assertLess(html.index('api-runtime.js?v=4.1.14'),html.index('BOOT_START'))
+        self.assertIn('config.js?v=4.1.15',html); self.assertIn('api-runtime.js?v=4.1.15',html)
+        self.assertLess(html.index('api-runtime.js?v=4.1.15'),html.index('BOOT_START'))
     def test_api_runtime_routes_api_only(self):
         js=(ROOT/'api-runtime.js').read_text(encoding='utf-8')
         self.assertIn("input.startsWith('/api/')",js); self.assertIn('window.fetch = function',js); self.assertIn('window.SBB_API',js)
@@ -61,6 +61,6 @@ class CloudStage1Tests(unittest.TestCase):
         self.assertNotIn('rm -f "$ARCHIVE" "$MIGRATION_JSON"',deploy.split('rollback(){',1)[1].split('}',1)[0])
 
     def test_version_file_matches_server(self):
-        self.assertEqual((ROOT/'VERSION').read_text().strip(),'4.1.14')
-        self.assertIn('APP_VERSION = "4.1.14"',(ROOT/'server.py').read_text())
+        self.assertEqual((ROOT/'VERSION').read_text().strip(),'4.1.15')
+        self.assertIn('APP_VERSION = "4.1.15"',(ROOT/'server.py').read_text())
 if __name__=='__main__': unittest.main()

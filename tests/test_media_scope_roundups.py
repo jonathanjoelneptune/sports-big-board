@@ -114,6 +114,15 @@ class MediaScopeRoundupTests(unittest.TestCase):
         self.assertEqual(epl.get("collectionKind"),BEST_GOALS)
         self.assertEqual(epl.get("collectionRoundType"),"MATCHWEEK")
 
+    def test_v415_epl_every_goal_youtube_playlist_is_matchweek_silver(self):
+        epl=annotate({"title":"Every Goal from Matchweek 1 | Premier League 2026/27","officialLeagueSource":True,
+                      "officialChannelId":"UCG5qGWdu8nIRZqJ_GgDwQ-w","sourceType":"official-premierleague-youtube-every-goal",
+                      "publishedAt":"2026-08-23T12:00:00Z","youtubeId":"goals1"},league="EPL",date="2026-08-23")
+        self.assertEqual(epl.get("mediaScope"),ROUND_LEAGUE)
+        self.assertEqual(epl.get("collectionPeriodKey"),"2026-27:MW1")
+        self.assertEqual(epl.get("collectionKind"),"SCORING_ROUNDUP")
+        self.assertEqual(epl.get("collectionTier"),"silver")
+
     def test_v418_nhl_top_goals_week_is_weekly_silver(self):
         nhl=annotate({"title":"Top Goals from Week 24 of the 2025-26 NHL Season","officialLeagueSource":True,
                       "sourceType":"official-nhl-weekly-roundup","publishedAt":"2026-04-05T12:00:00Z"},

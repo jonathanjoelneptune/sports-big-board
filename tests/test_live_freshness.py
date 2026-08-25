@@ -317,7 +317,7 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
         quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
         long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}
-        # v4.1.14 adds official team-site packages as a second Extended lane.
+        # v4.1.15 adds official team-site packages as a second Extended lane.
         # Keep this legacy duration-window unit test deterministic by isolating
         # the public NFL/YouTube lane it was originally written to exercise.
         with patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
@@ -435,6 +435,43 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertEqual(rows[0]['recapTier'],'extended')
         self.assertEqual(rows[0]['discoverySourceFamily'],'nfl-youtube-playlist')
 
+
+    def test_v415_epl_nbc_playlist_highlights_are_extended_and_exact_event(self):
+        playlist={'playlistId':'PLnbc','title':'Premier League 2026-27 season','seasonStart':2026,'family':'epl-youtube-nbc','role':'season-highlights','channelId':'NBC123'}
+        item={'id':'epl-playlist-PLnbc-nbc1','youtubeId':'nbc1','league':'EPL','title':'Brentford v. Tottenham Hotspur | PREMIER LEAGUE HIGHLIGHTS | 8/22/2026 | NBC Sports','description':'','durationSeconds':900,'duration':900,'publishedAt':'2026-08-22T20:00:00Z','sourceType':'trusted-nbc-epl-youtube-highlights','provider':'YOUTUBE','verifiedPlayable':True,'validationState':'VERIFIED','externalUrl':'https://www.youtube.com/watch?v=nbc1','discoverySourceFamily':'epl-youtube-nbc'}
+        with patch.object(server,'_epl_candidate_playlists',return_value=[playlist]), patch.object(server,'_epl_youtube_playlist_items',return_value=[item]):
+            rows=server._epl_youtube_playlist_results('2026-08-22','Tottenham Hotspur','Brentford',objective='extended',family='epl-youtube-nbc')
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['youtubeId'],'nbc1')
+        self.assertEqual(rows[0]['mediaObjective'],'EXTENDED')
+        self.assertEqual(rows[0]['recapTier'],'extended')
+
+    def test_v415_epl_official_club_highlights_classify_by_duration(self):
+        playlist={'playlistId':'PLclub','title':'Club highlights 2026/27','seasonStart':2026,'family':'epl-youtube-pl','role':'club-highlights','channelId':server.EPL_YOUTUBE_PL_CHANNEL_ID}
+        quick={'id':'q','youtubeId':'q','league':'EPL','title':'Everton v. Crystal Palace | Match Highlights','description':'','durationSeconds':300,'duration':300,'publishedAt':'2026-08-22T20:00:00Z','sourceType':'official-premierleague-youtube-highlights','provider':'YOUTUBE','verifiedPlayable':True,'validationState':'VERIFIED','externalUrl':'https://www.youtube.com/watch?v=q','discoverySourceFamily':'epl-youtube-pl'}
+        extended=dict(quick,id='x',youtubeId='x',durationSeconds=720,duration=720,externalUrl='https://www.youtube.com/watch?v=x')
+        with patch.object(server,'_epl_candidate_playlists',return_value=[playlist]), patch.object(server,'_epl_youtube_playlist_items',return_value=[quick,extended]):
+            qrows=server._epl_youtube_playlist_results('2026-08-22','Crystal Palace','Everton',objective='quick',family='epl-youtube-pl')
+            xrows=server._epl_youtube_playlist_results('2026-08-22','Crystal Palace','Everton',objective='extended',family='epl-youtube-pl')
+        self.assertEqual([x['youtubeId'] for x in qrows],['q'])
+        self.assertEqual([x['youtubeId'] for x in xrows],['x'])
+
+    def test_v415_epl_playlist_items_are_search_quota_independent(self):
+        calls=[]
+        def fake(url,timeout=10):
+            calls.append(url)
+            if '/playlistItems?' in url:
+                return {'items':[{'contentDetails':{'videoId':'nbc1'},'snippet':{'resourceId':{'videoId':'nbc1'}}}]}
+            if '/videos?' in url:
+                return {'items':[{'id':'nbc1','snippet':{'channelId':'NBC123','channelTitle':'NBC Sports','title':'Everton v. Crystal Palace | PREMIER LEAGUE HIGHLIGHTS | 8/22/2026 | NBC Sports','description':'','publishedAt':'2026-08-22T20:00:00Z','thumbnails':{'high':{'url':'thumb'}}},'contentDetails':{'duration':'PT14M'},'status':{'privacyStatus':'public','embeddable':True}}]}
+            return {}
+        playlist={'playlistId':'PLnbc','title':'Premier League 2026-27 season','seasonStart':2026,'family':'epl-youtube-nbc','role':'season-highlights','channelId':'NBC123'}
+        with tempfile.TemporaryDirectory() as td, patch.object(server,'read_youtube_key',return_value='k'), patch.object(server,'youtube_fetch_json',side_effect=fake), patch.object(server,'_epl_youtube_playlist_items_cache_path',return_value=Path(td)/'items.json'):
+            rows=server._epl_youtube_playlist_items(playlist,force=True)
+        self.assertEqual(rows[0]['youtubeId'],'nbc1')
+        self.assertTrue(any('/playlistItems?' in x for x in calls))
+        self.assertTrue(any('/videos?' in x for x in calls))
+        self.assertFalse(any('/search?' in x for x in calls))
 
     def test_v412_public_team_full_game_highlights_can_be_extended_playable(self):
         entry={'url':'https://www.buccaneers.com/video/full-game-highlights-falcons-bucs-win-score-23-20-week-1-2025','title':'Bucs vs. Falcons Full Game Highlights','description':'Bucs vs. Falcons Full Game Highlights','publishedAt':'2025-09-08'}
