@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sports Big Board v4.1.21 local/cloud backend.
+"""Sports Big Board v4.1.22 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
@@ -41,7 +41,7 @@ from sbb.event_matcher import match_event as match_media_to_event
 from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
 from sbb.secrets import get_secret, set_secrets, status as secrets_status, migrate_legacy as migrate_legacy_secrets, SECRETS_FILE
 
-APP_VERSION = "4.1.21"
+APP_VERSION = "4.1.22"
 PORT = int(os.environ.get("PORT", "8080"))
 BIND_HOST = os.environ.get("SBB_BIND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -73,7 +73,7 @@ OPENAI_KEY_FILE = STATE_DIR / "openai-key"
 OPENAI_API_BASE = "https://api.openai.com/v1"
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
 YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
-YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.21", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
+YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.22", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
 
 def youtube_fetch_json(url, timeout=10):
     """Operation-aware YouTube broker.
@@ -92,9 +92,30 @@ NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"  # verified @NFL channel
 # playlistItems.list + videos.list; search.list is never required. Known historical
 # playlist IDs provide immediate anchors while automatic enumeration remains primary.
 NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS = {
+    # v4.1.22 operator-pinned 2025-season weekly/playoff recap playlists.  The
+    # channel catalog supplies the authoritative title when available; these anchors
+    # keep every known playlist reachable even if playlists.list misses/changes it.
+    "PLRdw3IjKY2gm8m7heXMOfVPLVA8jDY_Jd":"2025 NFL Recap Playlist 01",
+    "PLRdw3IjKY2gliML-zgYzqEn76Fayh44Lf":"2025 NFL Recap Playlist 02",
+    "PLRdw3IjKY2gmZZQViYTCH9Xbj1RIGrRgI":"2025 NFL Recap Playlist 03",
+    "PLRdw3IjKY2gln21PBnZu4vV7g9goAWI0i":"2025 NFL Recap Playlist 04",
+    "PLRdw3IjKY2gkXEBGxiz9BMhgz_24x29wW":"2025 NFL Recap Playlist 05",
+    "PLRdw3IjKY2gmIFSeJbGx8Y8zXN-M8VKm1":"2025 NFL Recap Playlist 06",
+    "PLRdw3IjKY2gm_kWGipAwvtAe94ukc-5j1":"2025 NFL Recap Playlist 07",
+    "PLRdw3IjKY2gkXHxmqwXBA0k7flhPUYdeb":"2025 NFL Recap Playlist 08",
+    "PLRdw3IjKY2gls1K4-hUFq521Nun1pFc6v":"2025 NFL Recap Playlist 09",
+    "PLRdw3IjKY2glvQ0OzVS3Eqpc79pJ3-pwk":"2025 NFL Recap Playlist 10",
     "PLRdw3IjKY2gnK2f32zf7qlXGtHZlTZiyQ":"2025 Divisional Round Game Recaps",
+    "PLRdw3IjKY2gl5it7MUcgeCkRGSbWicHC2":"2025 NFL Recap Playlist 12",
+    "PLRdw3IjKY2gmf9GXquXmWjML4mY428WSR":"2025 NFL Recap Playlist 13",
+    "PLRdw3IjKY2gn1WlB_2MRD6ZGGhflq5u-n":"2025 NFL Recap Playlist 14",
     "PLRdw3IjKY2gmO5mZRxR3YNII5qHYs_3RY":"Week 16 - 2025 Season",
     "PLRdw3IjKY2gn04EX1BXBk8TgY82oOIWVl":"Week 15 Game Recaps - 2025",
+    "PLRdw3IjKY2gngxLmdCouF4seR20NDrviF":"2025 NFL Recap Playlist 17",
+    "PLRdw3IjKY2gnV2nqGQtIHQnrkBAR-RYuQ":"2025 NFL Recap Playlist 18",
+    "PLRdw3IjKY2gkkRZXXJvfF5R6egSDPsdrH":"2025 NFL Recap Playlist 19",
+    "PLRdw3IjKY2gk21o44KgSQVIx7r1T3oz4u":"2025 NFL Recap Playlist 20",
+    "PLRdw3IjKY2gkqZowlSUWT2wRn5lLiVa-_":"2025 NFL Recap Playlist 21",
 }
 NFL_GAME_HIGHLIGHTS_CHANNEL_URL = "https://www.nfl.com/videos/channel/game-highlights-vc"
 NFL_GAME_HIGHLIGHTS_RECENT_DAYS = max(3,int(os.environ.get("SBB_NFL_GAME_HIGHLIGHTS_RECENT_DAYS","21") or 21))
@@ -118,6 +139,25 @@ EPL_YOUTUBE_KNOWN_PLAYLISTS = {
     "PLR1b-6EyIaTs":{"title":"Premier League 2026-27 season","url":"https://www.youtube.com/playlist?list=PLR1b-6EyIaTs","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2026,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
     "PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E":{"title":"Premier League 2025-26 season","url":"https://www.youtube.com/playlist?list=PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2025,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
 }
+# v4.1.22 operator-curated GAME playlist registry. These playlist lanes use
+# playlistItems.list + videos.list only, never search.list.  Exact event association
+# still requires both teams plus explicit/published date evidence, so a trusted
+# playlist can improve discovery without weakening Event Matcher v7.
+CURATED_GAME_PLAYLISTS = {
+    "NHL":[
+        {"playlistId":"PL1NbHSfosBuFyu867mbHHhB2G6fx7jtiH","title":"2025-2026 NHL Full Game Highlights","url":"https://www.youtube.com/playlist?list=PL1NbHSfosBuFyu867mbHHhB2G6fx7jtiH","seasonStart":2025,"seasonEnd":2026,"objective":"extended","forceTier":"extended","sourceLabel":"NHL YouTube Full Game Highlights","sourceType":"official-nhl-youtube-full-game-highlights","channelId":"UCqFMzb-4AUf6WAIbl132QKA","trust":"OFFICIAL","priority":"PRIMARY"},
+    ],
+    "MLS":[
+        {"playlistId":"PLcj4z4KsbIoXrLpj2pOVr_maRaxhW902-","title":"2026 Match Highlights","url":"https://www.youtube.com/playlist?list=PLcj4z4KsbIoXrLpj2pOVr_maRaxhW902-","seasonStart":2026,"seasonEnd":2026,"objective":"extended","forceTier":"extended","sourceLabel":"2026 Match Highlights","sourceType":"trusted-mls-youtube-match-highlights","channelId":"","trust":"OPERATOR_TRUSTED","priority":"PRIMARY"},
+        {"playlistId":"PLaqZDrMi2AhY","title":"2026 Soccer Highlights","url":"https://www.youtube.com/playlist?list=PLaqZDrMi2AhY","anchorVideoId":"9MJU2BjtMko","seasonStart":2026,"seasonEnd":2026,"objective":"extended","forceTier":"extended","sourceLabel":"2026 Soccer Highlights","sourceType":"trusted-mls-youtube-match-highlights","channelId":"","trust":"OPERATOR_TRUSTED","priority":"SECONDARY"},
+        {"playlistId":"PLcj4z4KsbIoVYKuevRiaE94KlwPuXqLHy","title":"2025 Match Highlights","url":"https://www.youtube.com/playlist?list=PLcj4z4KsbIoVYKuevRiaE94KlwPuXqLHy","seasonStart":2025,"seasonEnd":2025,"objective":"extended","forceTier":"extended","sourceLabel":"2025 Match Highlights","sourceType":"trusted-mls-youtube-match-highlights","channelId":"","trust":"OPERATOR_TRUSTED","priority":"PRIMARY"},
+    ],
+    "MLB":[
+        {"playlistId":"PLL-lmlkrmJak3neKKEataBelAVfdkBbDX","title":"MLB 2026 Game Highlights","url":"https://www.youtube.com/playlist?list=PLL-lmlkrmJak3neKKEataBelAVfdkBbDX","seasonStart":2026,"seasonEnd":2026,"objective":"coverage","sourceLabel":"MLB YouTube Game Highlights","sourceType":"official-mlb-youtube-game-highlights","channelId":MLB_YOUTUBE_CHANNEL_ID,"trust":"OFFICIAL","priority":"PRIMARY"},
+        {"playlistId":"PLL-lmlkrmJanq-c41voXY4cCbxVR0bjxR","title":"MLB 2025 Game Highlights","url":"https://www.youtube.com/playlist?list=PLL-lmlkrmJanq-c41voXY4cCbxVR0bjxR","seasonStart":2025,"seasonEnd":2025,"objective":"coverage","sourceLabel":"MLB YouTube Game Highlights","sourceType":"official-mlb-youtube-game-highlights","channelId":MLB_YOUTUBE_CHANNEL_ID,"trust":"OFFICIAL","priority":"PRIMARY"},
+    ],
+}
+
 EPL_QUICK_MIN_SECONDS = 2*60
 EPL_QUICK_MAX_SECONDS = 7*60
 EPL_EXTENDED_MIN_SECONDS = 8*60
@@ -271,21 +311,21 @@ HISTORY_GREEN_SEARCH_RESCUE_LOCK = threading.RLock()
 HISTORY_OFFICIAL_CATCHUP_FLOOR_DATE = HISTORY_BACKFILL_FLOOR_DATE
 HISTORY_OFFICIAL_CATCHUP_RETRY_SECONDS = max(15*60,int(os.environ.get("SBB_OFFICIAL_CATCHUP_RETRY_SECONDS","21600") or 21600))
 HISTORY_RULE_CATCHUP_LEAGUES = ("NFL","MLS","EPL")
-HISTORY_RULE_CATCHUP_VERSION = 9
+HISTORY_RULE_CATCHUP_VERSION = 10
 HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 8
 HISTORY_OFFICIAL_CATCHUP_SOURCES = {
     # v4.1.21 / Discovery v15: official NFL playlist playback remains first; EPL now mirrors that playlist-first strategy.
     # NFL+ entitlement-gated replay inventory. Source keys include the objective
     # because history_source_enrichment is source-key unique per event.
     "NFL":[
-        {"key":"nfl-youtube-playlist-quick","version":1,"objective":"quick","sourceFamily":"nfl-youtube-playlist"},
-        {"key":"nfl-youtube-playlist-extended","version":1,"objective":"extended","sourceFamily":"nfl-youtube-playlist"},
+        {"key":"nfl-youtube-playlist-quick","version":2,"objective":"quick","sourceFamily":"nfl-youtube-playlist"},
+        {"key":"nfl-youtube-playlist-extended","version":2,"objective":"extended","sourceFamily":"nfl-youtube-playlist"},
         {"key":"nfl-public-video-quick","version":1,"objective":"quick","sourceFamily":"nfl-public-video"},
         {"key":"nfl-team-video-quick","version":1,"objective":"quick","sourceFamily":"nfl-team-video"},
         {"key":"nfl-public-video-extended","version":1,"objective":"extended","sourceFamily":"nfl-public-video"},
         {"key":"nfl-team-video-extended","version":1,"objective":"extended","sourceFamily":"nfl-team-video"},
     ],
-    "MLS":[{"key":"mls-match-snapshot","version":2,"objective":"quick"},{"key":"mls-match-highlights","version":2,"objective":"extended"}],
+    "MLS":[{"key":"mls-youtube-playlist-highlights","version":1,"objective":"extended","sourceFamily":"mls-youtube-playlist"},{"key":"mls-match-snapshot","version":2,"objective":"quick"},{"key":"mls-match-highlights","version":2,"objective":"extended"}],
     "EPL":[
         {"key":"epl-youtube-pl-quick","version":6,"objective":"quick","sourceFamily":"epl-youtube-pl"},
         {"key":"epl-youtube-pl-extended","version":6,"objective":"extended","sourceFamily":"epl-youtube-pl"},
@@ -293,7 +333,8 @@ HISTORY_OFFICIAL_CATCHUP_SOURCES = {
         {"key":"premierleague-official","version":5,"objective":"quick"},
         {"key":"nbc-epl-extended","version":4,"objective":"extended"},
     ],
-    "NHL":[{"key":"nhl-official-video","version":1}],
+    "NHL":[{"key":"nhl-youtube-playlist-highlights","version":1,"objective":"extended","sourceFamily":"nhl-youtube-playlist"},{"key":"nhl-official-video","version":1,"objective":"coverage"}],
+    "MLB":[{"key":"mlb-youtube-playlist-highlights","version":1,"objective":"coverage","sourceFamily":"mlb-youtube-playlist"}],
 }
 HISTORY_OFFICIAL_CATCHUP_STATE = {"startedAt":0.0,"eventPasses":0,"sourceAttempts":0,"accepted":0,"coverageUpgrades":0,"qualityUpgrades":0,"lastRun":0.0,"lastError":""}
 HISTORY_RULE_COLLECTION_CATCHUP_STATE = {"version":HISTORY_RULE_COLLECTION_CATCHUP_VERSION,"running":False,"complete":False,"startedAt":0.0,"completedAt":0.0,"datesChecked":0,"candidatesExamined":0,"qualifying":0,"newUniqueAssets":0,"existingAssetsReused":0,"newCollectionLinks":0,"duplicateLinksSuppressed":0,"rejected":0,"lastDate":"","lastLeague":"","lastError":""}
@@ -604,7 +645,7 @@ def _history_provider_key(lane_name):
     if lane.startswith('youtube-public'): return 'web'
     if lane=='mlb-official': return 'mlb'
     if lane in {'nfl-feed','nfl-game-highlights','nfl-extended-highlights','nfl-public-video-quick','nfl-public-video-extended','nfl-team-video-quick','nfl-team-video-extended'}: return 'nfl'
-    if lane in {'nfl-youtube-playlist-quick','nfl-youtube-playlist-extended','epl-youtube-pl-quick','epl-youtube-pl-extended','epl-youtube-nbc-extended','epl-youtube-every-goal'}: return 'youtube'
+    if lane in {'nfl-youtube-playlist-quick','nfl-youtube-playlist-extended','epl-youtube-pl-quick','epl-youtube-pl-extended','epl-youtube-nbc-extended','epl-youtube-every-goal','nhl-youtube-playlist-highlights','mls-youtube-playlist-highlights','mlb-youtube-playlist-highlights'}: return 'youtube'
     if lane in {'nhl-official-video','nhl-official-roundups'}: return 'native'
     if lane in {'premierleague-official','mls-official-web','mls-roundups'}: return 'native'
     if lane=='nbc-epl-extended': return 'web'
@@ -984,7 +1025,7 @@ def _prewarm_highlightly_call(sport_key,endpoint,date,timezone_value="",force=Fa
     if RATE_LIMIT_STATE.get("limited") and limited_since and time.time()-limited_since < 15*60:
         return cached
     url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.21"})
+    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.22"})
     try:
         with urlopen(req,timeout=15) as resp:
             data=json.loads(resp.read().decode("utf-8"))
@@ -1545,7 +1586,7 @@ def openai_api_request(path, payload=None, method=None, timeout=20):
         raise RuntimeError("OPENAI_NOT_CONFIGURED")
     method=method or ("POST" if payload is not None else "GET")
     body=None if payload is None else json.dumps(payload).encode("utf-8")
-    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.21"}
+    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.22"}
     req=Request(f"{OPENAI_API_BASE}{path}",data=body,headers=headers,method=method)
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -2080,7 +2121,7 @@ def _google_news_official_results(league):
     site_clause=' OR '.join(f'site:{d}' for d in sorted(trusted_domains))
     query=f'({terms}) ({site_clause}) {league} when:5d'
     url='https://news.google.com/rss/search?'+urlencode({'q':query,'hl':'en-US','gl':'US','ceid':'US:en'})
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.21'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'})
     try:
         with urlopen(req,timeout=10) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2139,7 +2180,7 @@ def _espn_rss_results(league):
     """First-party ESPN headline feed. ESPN explicitly publishes these RSS feeds for aggregators."""
     league=str(league or '').upper(); url=ESPN_RSS.get(league)
     if not url: return []
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.21'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'})
     try:
         with urlopen(req,timeout=8) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2385,7 +2426,7 @@ def _nfl_team_site_video_results(date, away, home, max_items=8):
     for host in hosts:
         page=f'https://{host}/video/'
         try:
-            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.21'})
+            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'})
             with urlopen(req,timeout=8) as resp: raw=resp.read().decode('utf-8','ignore')
         except Exception as exc:
             print(f'[SBB NFL] club video page failed {host}: {type(exc).__name__}: {exc}',flush=True); continue
@@ -2731,7 +2772,7 @@ def _highlightly_soccer_schedule(league,date):
         "x-rapidapi-key":read_key(),
         "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.21"
+        "User-Agent":"SportsBigBoard/4.1.22"
     })
     with urlopen(req,timeout=12) as resp:
         payload=json.loads(resp.read().decode("utf-8"))
@@ -2835,7 +2876,7 @@ def _soccer_diagnostics():
                     "x-rapidapi-key":read_key(),
                     "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
                     "Accept":"application/json",
-                    "User-Agent":"SportsBigBoard/4.1.21"
+                    "User-Agent":"SportsBigBoard/4.1.22"
                 })
                 with urlopen(req,timeout=12) as resp:
                     payload=json.loads(resp.read().decode("utf-8"))
@@ -3597,7 +3638,7 @@ def _nfl_game_highlights_source_pages(away,home):
 
 
 def _nfl_fetch_page_text(url,timeout=9):
-    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.21'})
+    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'})
     with urlopen(req,timeout=timeout) as resp:
         return resp.read().decode('utf-8','ignore')
 
@@ -3754,7 +3795,7 @@ _SOCCER_TEAM_ALIASES = {
 
 
 def _official_fetch_page_text(url,timeout=10,referer=''):
-    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.21'}
+    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'}
     if referer: headers['Referer']=referer
     req=Request(url,headers=headers)
     with urlopen(req,timeout=timeout) as resp:
@@ -4207,7 +4248,7 @@ def _official_nfl_feed_videos(date, away, home):
         return []
     url=f"https://www.youtube.com/feeds/videos.xml?channel_id={NFL_YOUTUBE_CHANNEL_ID}"
     try:
-        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.21"})
+        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.22"})
         with urlopen(req,timeout=9) as resp:
             raw=resp.read()
         root=ET.fromstring(raw)
@@ -4396,7 +4437,7 @@ def _youtube_oembed_probe(video_id,timeout=7):
     vid=str(video_id or '').strip()
     if not vid: return None
     url='https://www.youtube.com/oembed?'+urlencode({'url':f'https://www.youtube.com/watch?v={vid}','format':'json'})
-    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.21'})
+    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'})
     try:
         with urlopen(req,timeout=timeout) as resp:
             if getattr(resp,'status',200)!=200: return None
@@ -4629,6 +4670,148 @@ def _official_youtube_history_activity_results(league,date,away,home,max_items=1
 
 
 
+def _curated_playlist_items_cache_path(league,playlist_id):
+    safe=re.sub(r'[^A-Za-z0-9_.-]+','-',str(playlist_id or 'unknown'))
+    return YOUTUBE_CACHE_DIR / f'curated-game-playlist-v422-{str(league or "").lower()}-{safe}.json'
+
+
+def _curated_playlists_for_date(league,date):
+    league=str(league or '').upper(); target=str(date or '')[:10]
+    try: year=int(target[:4])
+    except Exception: year=0
+    rows=[]
+    for raw in CURATED_GAME_PLAYLISTS.get(league) or []:
+        item=dict(raw); start=int(item.get('seasonStart') or 0); end=int(item.get('seasonEnd') or start or 0)
+        if year and start and not (start<=year<=max(start,end)): continue
+        rows.append(item)
+    rows.sort(key=lambda x:(0 if str(x.get('priority') or '').upper()=='PRIMARY' else 1,-int(x.get('seasonStart') or 0)))
+    return rows
+
+
+def _curated_playlist_items(league,playlist,force=False):
+    playlist=dict(playlist or {}); pid=str(playlist.get('playlistId') or '')
+    return _history_singleflight_call(f'curated-playlist:{pid}',lambda:_curated_playlist_items_impl(league,playlist,force=force))
+
+
+def _curated_playlist_items_impl(league,playlist,force=False):
+    """Expand a pinned GAME playlist with playlistItems.list + videos.list.
+
+    Full-season NHL/MLB playlists can contain thousands of videos, so this walks up
+    to 90 pages once and caches the hydrated inventory.  Current-season caches are
+    refreshed every six hours; historical seasons remain stable for 30 days.
+    """
+    league=str(league or '').upper(); playlist=dict(playlist or {}); pid=str(playlist.get('playlistId') or '')
+    key=read_youtube_key()
+    if not league or not pid or not key: return []
+    path=_curated_playlist_items_cache_path(league,pid)
+    now_year=datetime.now().year; season_end=int(playlist.get('seasonEnd') or playlist.get('seasonStart') or 0)
+    ttl=6*60*60 if season_end>=now_year else 30*24*60*60
+    if not force:
+        try:
+            payload=json.loads(path.read_text(encoding='utf-8')); age=time.time()-float(payload.get('savedAt') or 0)
+            if age<ttl and isinstance(payload.get('data'),list): return payload['data']
+        except Exception: pass
+    ids=[]; order={}; token=''; pages=0
+    while pages<90:
+        params={'part':'snippet,contentDetails','playlistId':pid,'maxResults':'50','key':key}
+        if token: params['pageToken']=token
+        data=youtube_fetch_json(f"{YOUTUBE_API_BASE}/playlistItems?{urlencode(params)}",timeout=12); pages+=1
+        for raw in data.get('items') or []:
+            if not isinstance(raw,dict): continue
+            vid=str(((raw.get('contentDetails') or {}).get('videoId')) or (((raw.get('snippet') or {}).get('resourceId') or {}).get('videoId')) or '').strip()
+            if vid and vid not in order: order[vid]=len(order); ids.append(vid)
+        token=str(data.get('nextPageToken') or '')
+        if not token: break
+    expected_channel=str(playlist.get('channelId') or '')
+    out=[]
+    for start in range(0,len(ids),50):
+        chunk=ids[start:start+50]
+        data=youtube_fetch_json(f"{YOUTUBE_API_BASE}/videos?{urlencode({'part':'snippet,contentDetails,status','id':','.join(chunk),'key':key})}",timeout=12)
+        for vd in data.get('items') or []:
+            if not isinstance(vd,dict) or not _youtube_video_available_in_us(vd): continue
+            vid=str(vd.get('id') or ''); sn=vd.get('snippet') or {}; cd=vd.get('contentDetails') or {}; channel_id=str(sn.get('channelId') or '')
+            if expected_channel and channel_id!=expected_channel: continue
+            title=str(sn.get('title') or '').strip(); desc=str(sn.get('description') or '').strip(); dur=_iso8601_duration_seconds(cd.get('duration')) or 0
+            if not title or not re.search(r'highlights?|recap|game\s+summary|match\s+summary|condensed',f'{title} {desc}',re.I): continue
+            thumbs=sn.get('thumbnails') or {}; thumb=((thumbs.get('high') or thumbs.get('medium') or thumbs.get('default') or {}).get('url') if isinstance(thumbs,dict) else '') or ''
+            source_label=str(playlist.get('sourceLabel') or f'{league} YouTube Playlist')
+            row={'id':f'curated-playlist-{league.lower()}-{pid}-{vid}','eventId':vid,'youtubeId':vid,'league':league,'title':title,'description':desc,'duration':dur,'durationSeconds':dur,'thumbnail':str(thumb),'source':source_label,'sourceLabel':source_label,'sourceType':str(playlist.get('sourceType') or f'trusted-{league.lower()}-youtube-playlist'),'provider':'YOUTUBE','verifiedPlayable':True,'embedValidated':True,'externalOnly':False,'validationState':'VERIFIED','embedValidation':'pinned-playlist+playlistItems.list+videos.list','overview':True,'programType':'recap','externalUrl':f'https://www.youtube.com/watch?v={vid}','publishedAt':str(sn.get('publishedAt') or ''),'officialChannelId':channel_id,'officialPlaylistId':pid,'officialPlaylistTitle':str(playlist.get('title') or ''),'playlistSeasonStart':int(playlist.get('seasonStart') or 0),'playlistSeasonEnd':int(playlist.get('seasonEnd') or 0),'playlistTrust':str(playlist.get('trust') or 'OPERATOR_TRUSTED'),'discoverySourceFamily':f'{league.lower()}-youtube-playlist','chronology':[1,1003,0,order.get(vid,999),order.get(vid,999)],'importance':128 if str(playlist.get('priority') or '').upper()=='PRIMARY' else 122,'rapid':True}
+            force_tier=str(playlist.get('forceTier') or '')
+            if force_tier in {'green','extended'}: row['recapTier']=force_tier; row['mediaObjective']='QUICK' if force_tier=='green' else 'EXTENDED'
+            out.append(_decorate_recap_tier(row))
+    out.sort(key=lambda x:order.get(str(x.get('youtubeId') or ''),999))
+    try: path.write_text(json.dumps({'savedAt':time.time(),'playlist':playlist,'data':out},ensure_ascii=False),encoding='utf-8')
+    except Exception: pass
+    return out
+
+
+def _curated_game_playlist_results(league,date,away,home,max_items=10,objective=''):
+    league=str(league or '').upper(); target=str(date or '')[:10]; wanted=str(objective or '').lower(); out=[]
+    try: default_year=int(target[:4])
+    except Exception: default_year=0
+    for playlist in _curated_playlists_for_date(league,target):
+        for raw in _curated_playlist_items(league,playlist):
+            item=dict(raw); title=str(item.get('title') or ''); desc=str(item.get('description') or '')
+            if not _source_pair_title_match(f'{title} {desc}',away,home,league): continue
+            explicit=_epl_numeric_date_from_text(title) or _named_date_from_text(title,default_year)
+            if explicit and explicit!=target: continue
+            if not explicit and not _source_date_near(item.get('publishedAt'),target,2): continue
+            dur=int(item.get('durationSeconds') or 0); force_tier=str(playlist.get('forceTier') or '')
+            if force_tier=='extended' and not (120<=dur<=35*60): continue
+            item['away']=away; item['home']=home; item['date']=target; item['sourcePairEvidence']=f'{away} vs {home}'; item['explicitTitleDate']=explicit
+            scoped,evidence=_history_media_match_evidence(item,{'away':away,'home':home,'date':target,'competitionId':league,'__sbbDate':target})
+            if scoped.get('mediaScope')!=MEDIA_SCOPE_GAME or evidence.get('associationState')!='ASSIGNED': continue
+            tier=force_tier or str(_decorate_recap_tier(item).get('recapTier') or '')
+            if wanted=='quick' and tier!='green': continue
+            if wanted=='extended' and tier!='extended': continue
+            if wanted=='coverage' and tier not in ('gold','green','extended'): continue
+            decorated=_decorate_recap_tier(item)
+            if force_tier:
+                decorated['recapTier']=force_tier
+                decorated['mediaObjective']='EXTENDED' if force_tier=='extended' else 'QUICK'
+            out.append(decorated)
+        if len(out)>=max_items: break
+    return _history_collapse_duplicate_media(out)[:max_items]
+
+
+def _game_media_source_registry():
+    """Operator-facing inventory of active GAME media sources and pinned playlists."""
+    rows=[]
+    def add(league,priority,kind,title,url,objective='GAME',season='ALL',collector='',trust='OFFICIAL',notes=''):
+        rows.append({'league':league,'priority':priority,'kind':kind,'title':title,'url':url,'objective':objective,'season':season,'collector':collector,'trust':trust,'active':True,'notes':notes})
+    # MLB
+    for x in CURATED_GAME_PLAYLISTS['MLB']: add('MLB',x['priority'],'YOUTUBE PLAYLIST',x['title'],x['url'],'GAME COVERAGE',str(x['seasonStart']), 'mlb-youtube-playlist-highlights',x['trust'],'Pinned season inventory; exact teams + date required.')
+    add('MLB','PRIMARY','OFFICIAL API','MLB game highlights / Stats API','https://www.mlb.com/video','GREEN / EXTENDED','ALL','mlb-official','OFFICIAL','Fast native source; short-circuits at qualifying Green.')
+    add('MLB','FALLBACK','YOUTUBE CHANNEL','Official MLB uploads','https://www.youtube.com/@MLB','GAME COVERAGE','ALL','youtube-official-uploads','OFFICIAL','Used after primary playlist/native lanes.')
+    # NFL
+    add('NFL','PRIMARY','YOUTUBE CHANNEL','Official NFL recap playlist catalog','https://www.youtube.com/@NFL/playlists','QUICK / EXTENDED','ALL','nfl-youtube-playlist','OFFICIAL','playlists.list + playlistItems.list + videos.list; search.list not required.')
+    for pid,title in NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS.items(): add('NFL','PRIMARY','YOUTUBE PLAYLIST',title,f'https://www.youtube.com/playlist?list={pid}','QUICK / EXTENDED','2025','nfl-youtube-playlist','OFFICIAL','Operator-pinned weekly/playoff recap anchor.')
+    add('NFL','SECONDARY','WEBSITE','NFL Game Highlights','https://www.nfl.com/videos/channel/game-highlights-vc','QUICK / EXTENDED','ALL','nfl-public-video','OFFICIAL','Public NFL.com matchup packages.')
+    add('NFL','FALLBACK','WEBSITE','NFL team video sites','https://www.nfl.com/teams/','QUICK / EXTENDED','ALL','nfl-team-video','OFFICIAL','Team-site fallback; postgame/reaction clips rejected.')
+    # NBA
+    add('NBA','PRIMARY','YOUTUBE CHANNEL','Official NBA uploads','https://www.youtube.com/@NBA','GAME COVERAGE','ALL','youtube-official-uploads','OFFICIAL','Official-channel uploads/activity inventory.')
+    add('NBA','SECONDARY','OFFICIAL / NATIVE','NBA native media feeds','https://www.nba.com/watch','GAME COVERAGE','ALL','official-native','OFFICIAL','Native provider media when available.')
+    # NHL
+    for x in CURATED_GAME_PLAYLISTS['NHL']: add('NHL',x['priority'],'YOUTUBE PLAYLIST',x['title'],x['url'],'EXTENDED / PURPLE','2025-26','nhl-youtube-playlist-highlights',x['trust'],'Preferred historical full-game highlight inventory.')
+    add('NHL','SECONDARY','WEBSITE','NHL Game Recaps','https://www.nhl.com/video/topic/game-recaps/','QUICK / GREEN','ALL','nhl-official-video','OFFICIAL','NHL.com recap index.')
+    add('NHL','SECONDARY','WEBSITE','NHL Condensed Games','https://www.nhl.com/video/topic/condensed-games/','EXTENDED / PURPLE','ALL','nhl-official-video','OFFICIAL','NHL.com condensed-game fallback.')
+    add('NHL','SILVER','WEBSITE','NHL Top Plays','https://www.nhl.com/video/topic/top-plays/','SILVER','ALL','nhl-official-roundups','OFFICIAL','League-level roundup only; never satisfies a GAME.')
+    # EPL
+    for pid,x in EPL_YOUTUBE_KNOWN_PLAYLISTS.items():
+        objective='SILVER' if x.get('role')=='every-goal' else ('QUICK / EXTENDED' if x.get('family')=='epl-youtube-pl' else 'EXTENDED / PURPLE')
+        priority='SILVER' if x.get('role')=='every-goal' else 'PRIMARY'
+        add('EPL',priority,'YOUTUBE PLAYLIST',x['title'],x['url'],objective,f"{int(x.get('seasonStart') or 0)}-{str(int(x.get('seasonStart') or 0)+1)[-2:]}",str(x.get('family') or ''),'OFFICIAL' if x.get('family')=='epl-youtube-pl' else 'TRUSTED BROADCASTER','Pinned Premier League/NBC inventory.')
+    add('EPL','SECONDARY','WEBSITE','PremierLeague.com Video','https://www.premierleague.com/en/video/','QUICK / GREEN','ALL','premierleague-official','OFFICIAL','Official match-highlight fallback.')
+    add('EPL','FALLBACK','WEBSITE','NBC Sports Premier League','https://www.nbcsports.com/soccer/premier-league','EXTENDED / PURPLE','ALL','nbc-epl-extended','TRUSTED BROADCASTER','Web fallback after YouTube playlist lanes.')
+    # MLS
+    for x in CURATED_GAME_PLAYLISTS['MLS']: add('MLS',x['priority'],'YOUTUBE PLAYLIST',x['title'],x['url'],'MATCH HIGHLIGHTS / PURPLE',str(x['seasonStart']),'mls-youtube-playlist-highlights',x['trust'],'Operator-pinned match-highlight inventory; exact teams + date required.')
+    add('MLS','PRIMARY','WEBSITE','MLS Match Snapshot / Match Highlights','https://www.mlssoccer.com/video/topics/match-highlights/','QUICK / EXTENDED','ALL','mls-match-snapshot + mls-match-highlights','OFFICIAL','Snapshot is preferred Green; Match Highlights is Purple.')
+    add('MLS','SILVER','WEBSITE','MLS All Goals / Goal of Matchday / What A Save','https://www.mlssoccer.com/video/topics/all-goals/','SILVER','ALL','mls-roundups','OFFICIAL','Matchday-level editorial collections; never satisfies a GAME.')
+    order={'MLB':0,'NFL':1,'NBA':2,'NHL':3,'EPL':4,'MLS':5}; pr={'PRIMARY':0,'SECONDARY':1,'FALLBACK':2,'SILVER':3}
+    rows.sort(key=lambda x:(order.get(x['league'],99),pr.get(x['priority'],9),x['season'],x['title']))
+    return {'version':1,'generatedAt':time.time(),'leagues':['MLB','NFL','NBA','NHL','EPL','MLS'],'rows':rows}
+
+
 def _nfl_youtube_playlist_catalog_cache_path():
     return YOUTUBE_CACHE_DIR / 'nfl-recap-playlists-v414.json'
 
@@ -4727,7 +4910,7 @@ def _nfl_candidate_recap_playlists(date):
         if 'game recap' in low: score+=25
         if score: rows.append((score,row))
     rows.sort(key=lambda x:x[0],reverse=True)
-    return [dict(x[1]) for x in rows[:8]]
+    return [dict(x[1]) for x in rows[:32]]
 
 
 def _nfl_youtube_playlist_items(playlist,force=False):
@@ -5628,7 +5811,7 @@ def _search_engine_youtube_links(query,max_results=18):
     # normal search result page on a phone connection.
     try:
         url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss','count':max(10,min(30,max_results*2))})
-        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.21','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
+        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
         with urlopen(req,timeout=9) as resp:
             blob=resp.read(1_500_000)
         root=ET.fromstring(blob)
@@ -6026,7 +6209,7 @@ def normalized_rapid_highlights(date, force_refresh=False, force_clips=False):
     return unique
 
 def fetch_json(url, timeout=15):
-    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.21"})
+    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.22"})
     with urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
@@ -6724,7 +6907,7 @@ def _football_day_fallback(date, sport_key, timezone_value=""):
     req=Request(url,headers={
         "x-rapidapi-key":key,
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.21"
+        "User-Agent":"SportsBigBoard/4.1.22"
     })
     with urlopen(req,timeout=15) as resp:
         data=json.loads(resp.read().decode("utf-8"))
@@ -6943,7 +7126,7 @@ def _media_request_headers(range_value=None,media_url=""):
     host=(urlparse(str(media_url or "")).hostname or "").lower()
     referer="https://www.espn.com/" if ("espn" in host or "akamai" in host) else ("https://www.nfl.com/" if "nfl" in host else "https://www.mlb.com/")
     headers={
-        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.21",
+        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.22",
         "Accept":"video/mp4,video/*;q=0.9,*/*;q=0.8",
         "Referer":referer
     }
@@ -7967,7 +8150,7 @@ def _history_validate_native_asset(item,timeout=6):
     """Positively probe one direct historical media URL before advertising green."""
     row=dict(item or {}); url=str(row.get('mediaUrl') or '').strip()
     if not url: return row
-    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.21','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
+    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
     if 'espn' in url.lower(): headers['Referer']='https://www.espn.com/'
     source_type=str(row.get('sourceType') or '')
     external=str(row.get('externalUrl') or '').lower()
@@ -8367,6 +8550,7 @@ def _history_official_catchup_source_call(source_key,date,away,home):
     if key=='nfl-team-video-quick': return _nfl_team_video_results(date,away,home,max_items=6,validate_native=False,objective='quick')
     if key=='nfl-public-video-extended': return _nfl_public_video_results(date,away,home,max_items=6,validate_native=False,allow_historical=True,objective='extended')
     if key=='nfl-team-video-extended': return _nfl_team_video_results(date,away,home,max_items=6,validate_native=False,objective='extended')
+    if key=='mls-youtube-playlist-highlights': return _curated_game_playlist_results('MLS',date,away,home,max_items=8,objective='extended')
     if key=='mls-match-snapshot': return _mls_official_web_results(date,away,home,max_items=4,validate_native=False,objective='quick')
     if key=='mls-match-highlights': return _mls_official_web_results(date,away,home,max_items=4,validate_native=False,objective='extended')
     if key=='epl-youtube-pl-quick': return _epl_youtube_playlist_results(date,away,home,max_items=8,objective='quick',family='epl-youtube-pl')
@@ -8374,7 +8558,9 @@ def _history_official_catchup_source_call(source_key,date,away,home):
     if key=='epl-youtube-nbc-extended': return _epl_youtube_playlist_results(date,away,home,max_items=8,objective='extended',family='epl-youtube-nbc')
     if key=='premierleague-official': return _premierleague_official_results(date,away,home,max_items=3,validate_native=False)
     if key=='nbc-epl-extended': return _nbc_epl_extended_results(date,away,home,max_items=3,validate_native=False)
+    if key=='nhl-youtube-playlist-highlights': return _curated_game_playlist_results('NHL',date,away,home,max_items=8,objective='extended')
     if key=='nhl-official-video': return _nhl_official_video_results(date,away,home,max_items=4,validate_native=False)
+    if key=='mlb-youtube-playlist-highlights': return _curated_game_playlist_results('MLB',date,away,home,max_items=8,objective='coverage')
     raise ValueError(f'unsupported official catch-up source: {key}')
 
 def _history_official_source_goal_met(league,source_key,playable):
@@ -8382,6 +8568,7 @@ def _history_official_source_goal_met(league,source_key,playable):
     spec=next((x for x in _history_official_catchup_sources(league) if str(x.get('key') or '')==key),{})
     objective=str(spec.get('objective') or '').lower()
     if objective=='quick': return any(str(x.get('recapTier') or '')=='green' for x in rows)
+    if objective=='coverage': return any(str(x.get('recapTier') or '') in ('gold','green','extended') for x in rows)
     if objective=='extended':
         extended=[x for x in rows if str(x.get('recapTier') or '')=='extended']
         if league=='NFL': return any(NFL_EXTENDED_MIN_SECONDS<=int(x.get('durationSeconds') or x.get('duration') or 0)<=NFL_EXTENDED_MAX_SECONDS for x in extended)
@@ -8623,6 +8810,8 @@ def _history_discover_event(date,league,row,force=False,allow_search_rescue=True
     if league=='NHL':
         lane('nhl-official-roundups',lambda:_nhl_official_roundups(date),'primary'); primary_checkpoint()
         if not primary_target_hit:
+            lane('nhl-youtube-playlist-highlights',lambda:_curated_game_playlist_results('NHL',date,away,home,max_items=8,objective='extended'),'primary'); primary_checkpoint()
+        if not primary_target_hit:
             lane('nhl-official-video',lambda:_nhl_official_video_results(date,away,home,max_items=4,validate_native=False),'primary'); primary_checkpoint()
     if league=='EPL':
         lane('premierleague-roundups',lambda:_premierleague_roundup_results(date),'primary'); primary_checkpoint()
@@ -8640,8 +8829,12 @@ def _history_discover_event(date,league,row,force=False,allow_search_rescue=True
     if league=='MLS':
         lane('mls-roundups',lambda:_mls_roundup_results(date),'primary'); primary_checkpoint()
         if not primary_target_hit:
+            lane('mls-youtube-playlist-highlights',lambda:_curated_game_playlist_results('MLS',date,away,home,max_items=8,objective='extended'),'primary'); primary_checkpoint()
+        if not primary_target_hit:
             lane('mls-match-snapshot',lambda:_mls_official_web_results(date,away,home,max_items=4,validate_native=False,objective='quick'),'primary'); primary_checkpoint()
             lane('mls-match-highlights',lambda:_mls_official_web_results(date,away,home,max_items=4,validate_native=False,objective='extended'),'primary'); primary_checkpoint()
+    if league=='MLB' and not primary_target_hit:
+        lane('mlb-youtube-playlist-highlights',lambda:_curated_game_playlist_results('MLB',date,away,home,max_items=8,objective='coverage'),'primary'); primary_checkpoint()
     if not primary_target_hit:
         lane('official-native',lambda:_history_event_media_no_quota(league,date,row),'primary'); primary_checkpoint()
     if league=='MLB' and not primary_target_hit:
@@ -9775,6 +9968,9 @@ class Handler(SimpleHTTPRequestHandler):
             try: return send_json(self,_history_recovery_status(),200)
             except Exception as exc: return send_json(self,{'ok':False,'error':'HISTORY_RECOVERY_STATUS_ERROR','message':f'{type(exc).__name__}: {exc}'},500)
 
+        if parsed.path == "/api/history/media-sources":
+            return send_json(self,{"ok":True,"version":APP_VERSION,**_game_media_source_registry()},200)
+
         if parsed.path == "/api/history/audit":
             try:
                 qs=parse_qs(parsed.query); filters=_history_audit_filters(qs)
@@ -10043,7 +10239,7 @@ class Handler(SimpleHTTPRequestHandler):
                 "persistentState": bool(STATE_DIR),
                 "rateLimit": {"remaining": RATE_LIMIT_STATE.get("remaining", ""), "limit": RATE_LIMIT_STATE.get("limit", ""), "limited": RATE_LIMIT_STATE.get("limited", False)},
                 "highlightlyRateLimited": RATE_LIMIT_STATE["limited"],
-                "phase": "V4.1.21 NORMALIZED CATALOG + SEARCH CONSOLE",
+                "phase": "V4.1.22 CURATED PLAYLIST RECOVERY + SOURCE REGISTRY",
                 "workMode":dict(HISTORY_WORK_MODE_STATE),
                 "highlightlyConfigured": bool(key),
                 "youtubeCooldownSeconds":max((row.get("cooldownSeconds",0) for row in YOUTUBE_GATEWAY.status().values()), default=0),
@@ -10355,7 +10551,7 @@ class Handler(SimpleHTTPRequestHandler):
                 flat.setdefault("leagueName",cfg["league"])
                 flat.setdefault("countryCode",cfg.get("countryCode",""))
             url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.21"})
+            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.22"})
             cache_name=f"{sport_key}-{endpoint}-v2514" if sport_key in ("epl","mls") else f"{sport_key}-{endpoint}"
 
             # v1.9.1 quota control: proactively reuse a fresh server-side snapshot.
@@ -10489,7 +10685,7 @@ class Handler(SimpleHTTPRequestHandler):
             req = Request(url, headers={
                 "x-rapidapi-key": key,
                 "Accept": "application/json",
-                "User-Agent": "SportsBigBoard/4.1.21"
+                "User-Agent": "SportsBigBoard/4.1.22"
             })
             try:
                 with urlopen(req, timeout=15) as resp:
@@ -10529,7 +10725,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT)
-    print("\nSports Big Board v4.1.21 — normalized catalog + fail-closed event association")
+    print("\nSports Big Board v4.1.22 — curated playlist recovery + source registry")
     print(f"Bind: {BIND_HOST}:{PORT} • deployment: {DEPLOYMENT_MODE} • state: {STATE_DIR}")
     if not CLOUD_MODE: print(f"Open: http://localhost:{PORT}")
     print("Highlightly key:", "configured" if read_key() else "NOT CONFIGURED")
@@ -10569,7 +10765,7 @@ if __name__ == "__main__":
         print(f"History reindex release: {released} reconstructed events made immediately eligible for discovery v{HISTORY_DISCOVERY_VERSION}.")
     _history_console_log('server','INFO',f'backend v{APP_VERSION} started • discovery v{HISTORY_DISCOVERY_VERSION} • {DEPLOYMENT_MODE}')
     source_text=' • '.join(f"{lg}:{','.join(str(x.get('key'))+'@v'+str(x.get('version')) for x in specs)}" for lg,specs in HISTORY_OFFICIAL_CATCHUP_SOURCES.items())
-    _history_console_log('server','INFO',f'rule catch-up v{HISTORY_RULE_CATCHUP_VERSION} • floor={HISTORY_OFFICIAL_CATCHUP_FLOOR_DATE} • priority NFL/MLS/EPL • newest-first • {source_text}')
+    _history_console_log('server','INFO',f'rule catch-up v{HISTORY_RULE_CATCHUP_VERSION} • floor={HISTORY_OFFICIAL_CATCHUP_FLOOR_DATE} • priority NFL/MLS/EPL + curated NHL/MLB • newest-first • {source_text}')
     _history_console_log('server','INFO',f'EPL rule replay continues • upper={_history_cursor_settings("EPL",_client_date_iso(0,MEDIA_PREWARM_STATE.get("timezone") or "",MEDIA_PREWARM_STATE.get("utcOffsetMinutes"))).get("upperDate")} • floor={HISTORY_OFFICIAL_CATCHUP_FLOOR_DATE} • source v6 • operator cursor controls enabled • existing media preserved')
     _history_console_log('server','INFO',f'association integrity matcher v{association_repair.get("matcherVersion",0)} • assigned={association_repair.get("assignedLinks",0)} • quarantined={association_repair.get("quarantinedLinks",0)} • cross-event={association_repair.get("crossEventAssets",0)} • team-mismatch={association_repair.get("teamMismatch",0)} • date-mismatch={association_repair.get("dateMismatch",0)} • season-mismatch={association_repair.get("seasonMismatch",0)}')
     collection_repair=relationship_repair.get("collection") or {}

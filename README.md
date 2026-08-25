@@ -1,3 +1,19 @@
+# Sports Big Board v4.1.22
+
+> v4.1.22 is the **Curated Playlist Recovery + Source Registry** release. It keeps the five-worker v4.1.21 recovery engine and Discovery v15, but adds operator-pinned NHL/MLS/MLB/NFL playlist inventories, reopens only the affected source ledgers, makes Operator Recovery collapsible, and adds a Game Media Playlists tab that exposes the active source strategy for every league.
+
+## v4.1.22 — curated playlist recovery + source registry
+
+- **NHL playlist-first recovery:** `2025-2026 NHL Full Game Highlights` (`PL1NbHSfosBuFyu867mbHHhB2G6fx7jtiH`) is now the primary NHL Extended/Purple historical lane. It uses playlistItems.list + videos.list, exact team/date association, and no YouTube Search. NHL.com recap/condensed pages remain secondary.
+- **MLS pinned match-highlight playlists:** the operator-supplied 2026 primary/alternate and 2025 Match Highlights playlists are active Extended/Purple sources before the slower MLSsoccer.com fallback. Exact teams + date are still required.
+- **MLB pinned season playlists:** 2026 and 2025 MLB Game Highlights playlists are now a fast GAME-coverage lane ahead of expensive generic web fallbacks. Green/Extended tier is derived from the actual video package.
+- **NFL recap anchors expanded:** all supplied 2025 weekly/playoff recap playlists are pinned. NFL playlist Quick/Extended source versions advance to v2 so previously exhausted games can be reconsidered against the complete pinned inventory.
+- **EPL 2025-26 source surfaced:** `PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E` was already active; v4.1.22 exposes it in the new source registry alongside the existing Premier League and NBC playlist lanes.
+- **Game Media Playlists tab:** Historical Database Audit now has a third tab listing Primary / Secondary / Fallback / Silver sources for MLB, NFL, NBA, NHL, EPL, and MLS, with direct links, season scope, objective, collector key, trust level, and notes.
+- **Collapsible Operator Recovery:** the recovery panel is collapsed by default, remembers its state locally, and can be expanded only when cursor/source/database recovery is needed.
+- **No search-list dependency for the new playlists:** all new playlist collectors use playlistItems.list + videos.list and share the existing bounded YouTube provider semaphore.
+- **Version boundary:** Frontend/Backend v4.1.22; Discovery remains v15; Event Matcher remains v7; Rule Game Catch-up v10; Rule Collection Catch-up remains v8. No catalog rebuild.
+
 # Sports Big Board v4.1.21
 
 > v4.1.21 is the **Parallel Catalog Recovery + Operator Controls** release. It preserves Discovery v15, matcher v7, Rule Game Catch-up v9, Rule Collection Catch-up v8, and all proven NFL/MLS/EPL source adapters while increasing recovery throughput, starting NHL/general recovery concurrently, and making cursor/source/database-audit recovery an explicit operator workflow.

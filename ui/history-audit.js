@@ -1,8 +1,8 @@
-/* Sports Big Board v4.1.21 parallel catalog recovery + operator controls. */
+/* Sports Big Board v4.1.22 curated playlist recovery + source registry. */
 (() => {
   const $ = id => document.getElementById(id);
-  const FRONTEND_VERSION='4.1.21';
-  const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,tab:'games',silverOffset:0,silverLimit:100,silverTotal:0,silverLoading:false,lastSilverPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false,recovery:null,recoveryPreviewToken:'',recoveryPreview:null};
+  const FRONTEND_VERSION='4.1.22';
+  const state={offset:0,limit:100,total:0,loading:false,lastPayload:null,tab:'games',silverOffset:0,silverLimit:100,silverTotal:0,silverLoading:false,lastSilverPayload:null,lastConsole:null,autoTimer:null,consoleTimer:null,consoleLoading:false,copyTimer:null,modeUpdating:false,recovery:null,recoveryPreviewToken:'',recoveryPreview:null,mediaSources:null,mediaSourcesLoading:false};
   const tierLabel=t=>t==='extended'?'PURPLE':String(t||'none').toUpperCase();
   const fmtDate=s=>{
     if(!s)return '—';
@@ -67,16 +67,20 @@
     const prev=$('historySilverPrev');if(prev)prev.disabled=state.silverOffset<=0;const next=$('historySilverNext');if(next)next.disabled=state.silverOffset+state.silverLimit>=state.silverTotal;
   }
   function setAuditTab(tab,{loadData=true}={}){
-    state.tab=tab==='silver'?'silver':'games';const silver=state.tab==='silver';
-    document.querySelectorAll('.history-game-only').forEach(el=>el.classList.toggle('history-audit-pane-hidden',silver));
+    state.tab=tab==='silver'?'silver':(tab==='playlists'?'playlists':'games');const silver=state.tab==='silver',playlists=state.tab==='playlists',games=state.tab==='games';
+    document.querySelectorAll('.history-game-only').forEach(el=>el.classList.toggle('history-audit-pane-hidden',!games));
     document.querySelectorAll('.history-silver-only').forEach(el=>el.classList.toggle('history-audit-pane-hidden',!silver));
-    const gameBtn=$('historyAuditTabGames'),silverBtn=$('historyAuditTabSilver');
-    if(gameBtn){gameBtn.classList.toggle('active',!silver);gameBtn.setAttribute('aria-selected',String(!silver));}
+    document.querySelectorAll('.history-playlists-only').forEach(el=>el.classList.toggle('history-audit-pane-hidden',!playlists));
+    document.querySelector('.history-search-console')?.classList.toggle('history-audit-pane-hidden',playlists);
+    const gameBtn=$('historyAuditTabGames'),silverBtn=$('historyAuditTabSilver'),playlistBtn=$('historyAuditTabPlaylists');
+    if(gameBtn){gameBtn.classList.toggle('active',games);gameBtn.setAttribute('aria-selected',String(games));}
     if(silverBtn){silverBtn.classList.toggle('active',silver);silverBtn.setAttribute('aria-selected',String(silver));}
+    if(playlistBtn){playlistBtn.classList.toggle('active',playlists);playlistBtn.setAttribute('aria-selected',String(playlists));}
     const csv=$('historyAuditCsv'),xlsx=$('historyAuditXlsx');
-    if(csv)csv.textContent=silver?'EXPORT SILVER CSV':'EXPORT GAME CSV';
-    if(xlsx)xlsx.textContent=silver?'EXPORT SILVER XLSX':'EXPORT GAME XLSX';
-    if(loadData){silver?loadSilver(true):load(true);}
+    for(const el of [csv,xlsx])if(el)el.classList.toggle('hidden',playlists);
+    if(csv&&!playlists)csv.textContent=silver?'EXPORT SILVER CSV':'EXPORT GAME CSV';
+    if(xlsx&&!playlists)xlsx.textContent=silver?'EXPORT SILVER XLSX':'EXPORT GAME XLSX';
+    if(loadData){playlists?loadMediaSources(false):(silver?loadSilver(true):load(true));}
   }
   async function loadSilver(reset=false){
     if(state.silverLoading)return;if(reset)state.silverOffset=0;state.silverLoading=true;$('historySilverLoading')?.classList.remove('hidden');
@@ -88,7 +92,16 @@
     }catch(err){const body=$('historySilverTableBody');if(body)body.innerHTML=`<tr><td colspan="11" class="audit-no-results">Silver audit load failed: ${esc(err.message||err)}</td></tr>`;}
     finally{state.silverLoading=false;$('historySilverLoading')?.classList.add('hidden');}
   }
-  function loadCurrent(reset=false){return state.tab==='silver'?loadSilver(reset):load(reset);}
+  function renderMediaSources(payload={}){
+    state.mediaSources=payload;const rows=(payload.rows||[]);const filter=String($('historyMediaSourcesLeague')?.value||'').toUpperCase();const shown=filter?rows.filter(x=>String(x.league||'').toUpperCase()===filter):rows;
+    const by={};for(const row of shown){const lg=String(row.league||'OTHER').toUpperCase();(by[lg]||(by[lg]=[])).push(row);}
+    const summary=$('historyMediaSourcesSummary');if(summary){const primary=shown.filter(x=>x.priority==='PRIMARY').length,playlists=shown.filter(x=>x.kind==='YOUTUBE PLAYLIST').length;summary.textContent=`${shown.length.toLocaleString()} active source entries • ${primary.toLocaleString()} primary • ${playlists.toLocaleString()} pinned YouTube playlists • playlist lanes use playlistItems/videos metadata and do not require YouTube Search`;} 
+    const grid=$('historyMediaSourcesGrid');if(!grid)return;if(!shown.length){grid.innerHTML='<div class="history-media-sources-loading">No active sources match this league.</div>';return;}
+    const leagueOrder=['MLB','NFL','NBA','NHL','EPL','MLS'];grid.innerHTML=leagueOrder.filter(lg=>by[lg]).map(lg=>{const leagueRows=by[lg];return `<details class="history-media-source-league" open><summary>${leagueBadge(lg)}<strong>${esc(lg)} GAME MEDIA</strong><span>${leagueRows.length} source${leagueRows.length===1?'':'s'} • ${leagueRows.filter(x=>x.priority==='PRIMARY').length} primary</span></summary><div class="history-media-source-scroll"><table class="history-media-source-table"><thead><tr><th>PRIORITY</th><th>TYPE</th><th>SEASON</th><th>OBJECTIVE</th><th>SOURCE</th><th>COLLECTOR / TRUST</th><th>NOTES</th></tr></thead><tbody>${leagueRows.map(row=>`<tr><td><span class="media-source-priority priority-${esc(cssToken(row.priority))}">${esc(row.priority||'ACTIVE')}</span></td><td><span class="media-source-kind">${esc(row.kind||'SOURCE')}</span></td><td>${esc(row.season||'ALL')}</td><td><strong>${esc(row.objective||'GAME')}</strong></td><td>${row.url?`<a class="history-media-source-link" href="${esc(row.url)}" target="_blank" rel="noopener"><strong>${esc(row.title||row.url)}</strong></a>`:`<strong>${esc(row.title||'Source')}</strong>`}<small>${esc(row.url||'')}</small></td><td><strong>${esc(row.collector||'—')}</strong><small><span class="media-source-trust">${esc(row.trust||'—')}</span></small></td><td>${esc(row.notes||'')}</td></tr>`).join('')}</tbody></table></div></details>`;}).join('');
+    const msg=$('historyAuditMessage');if(msg)msg.textContent=`GAME MEDIA PLAYLISTS • ${shown.length.toLocaleString()} active source entries • inspect this registry to spot missing playlists or weak league coverage`;
+  }
+  async function loadMediaSources(force=false){if(state.mediaSourcesLoading)return;if(state.mediaSources&&!force){renderMediaSources(state.mediaSources);return;}state.mediaSourcesLoading=true;const grid=$('historyMediaSourcesGrid');if(grid)grid.innerHTML='<div class="history-media-sources-loading">Loading active media source registry…</div>';try{const r=await fetch('/api/history/media-sources',{cache:'no-store'});const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);renderMediaSources(data);}catch(err){if(grid)grid.innerHTML=`<div class="history-media-sources-loading">Source registry load failed: ${esc(err?.message||err)}</div>`;}finally{state.mediaSourcesLoading=false;}}
+  function loadCurrent(reset=false){return state.tab==='playlists'?loadMediaSources(false):(state.tab==='silver'?loadSilver(reset):load(reset));}
 
   function mediaCell(items,tier){
     items=(items||[]).slice().sort((a,b)=>(Number(b.verified)-Number(a.verified))||(Number(b.runtimeSuccessAt||0)-Number(a.runtimeSuccessAt||0))||(Number(b.verifiedAt||0)-Number(a.verifiedAt||0)));
@@ -409,7 +422,7 @@
         const backend=data.version||'unknown'; const msg=r.status===404?`Search Console endpoint missing. The live backend is probably older than frontend v${FRONTEND_VERSION}.`:(data.message||data.error||`HTTP ${r.status}`);
         const head=document.querySelector('.history-search-console-head'); if(head)head.classList.add('mismatch');
         consoleSet('historySearchConsoleOverall','BACKEND CHECK FAILED');consoleSet('historySearchConsoleVersion',`Frontend v${FRONTEND_VERSION} • backend ${backend}`);
-        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.21 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
+        const out=$('historySearchConsoleOutput');if(out)out.textContent=`[ERROR] ${msg}\n\nOpen /api/status or check GitHub Actions backend deployment. The v4.1.22 workflow now refuses to publish Pages unless the public backend reports the same release version.`;
         return;
       }
       renderConsole(data);
@@ -451,6 +464,9 @@ Media preserved: YES • ${res.sourceLedgerPreserved===false?'source ledger will
 ${res.note}`:''}`;if(status)status.textContent='PREVIEW READY';if($('historyRecoveryApply'))$('historyRecoveryApply').disabled=!state.recoveryPreviewToken;}catch(err){state.recoveryPreviewToken='';if($('historyRecoveryApply'))$('historyRecoveryApply').disabled=true;if(status)status.textContent=`PREVIEW FAILED: ${String(err?.message||err)}`;}}
   async function applyRecovery(){if(!state.recoveryPreviewToken||!state.recoveryPreview)return;const p=recoveryPayload();if(!window.confirm(`Apply ${String(p.action).replaceAll('_',' ')} for ${p.league}? Existing media will be preserved.`))return;const status=$('historyRecoveryStatus');if(status)status.textContent='APPLYING…';try{const r=await fetch('/api/history/admin/recovery/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...p,confirmToken:state.recoveryPreviewToken}),cache:'no-store'});const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);if(status)status.textContent='RESET APPLIED • MEDIA PRESERVED';state.recoveryPreviewToken='';if($('historyRecoveryApply'))$('historyRecoveryApply').disabled=true;await loadRecoveryState();loadConsole();}catch(err){if(status)status.textContent=`APPLY FAILED: ${String(err?.message||err)}`;}}
 
+  function setRecoveryCollapsed(collapsed){const panel=$('historyRecoveryPanel'),btn=$('historyRecoveryToggle');if(!panel)return;panel.classList.toggle('collapsed',Boolean(collapsed));if(btn){btn.setAttribute('aria-expanded',String(!collapsed));btn.textContent=collapsed?'EXPAND ▾':'COLLAPSE ▴';}try{localStorage.setItem('sbb-history-recovery-collapsed',collapsed?'1':'0');}catch(_){}}
+  function toggleRecovery(){const panel=$('historyRecoveryPanel');setRecoveryCollapsed(!panel||!panel.classList.contains('collapsed'));}
+
   function startAutoRefresh(){clearInterval(state.autoTimer);clearInterval(state.consoleTimer);state.autoTimer=setInterval(()=>{if(!$('historyAuditModal')?.classList.contains('hidden'))loadCurrent(false);},30000);state.consoleTimer=setInterval(()=>{if(!$('historyAuditModal')?.classList.contains('hidden'))loadConsole();},2500);}
   function stopAutoRefresh(){clearInterval(state.autoTimer);clearInterval(state.consoleTimer);state.autoTimer=null;state.consoleTimer=null;}
   function open(){
@@ -463,7 +479,7 @@ ${res.note}`:''}`;if(status)status.textContent='PREVIEW READY';if($('historyReco
   function exportFile(ext){
     // Derive the visible tab from the DOM as well as state.  This prevents a stale
     // state value from ever routing a Silver-screen export to the GAME endpoint.
-    const silver=state.tab==='silver'||Boolean($('historyAuditTabSilver')?.classList.contains('active'));
+    const playlists=state.tab==='playlists'||Boolean($('historyAuditTabPlaylists')?.classList.contains('active'));if(playlists)return;const silver=state.tab==='silver'||Boolean($('historyAuditTabSilver')?.classList.contains('active'));
     silver?exportSilverFile(ext):exportGameFile(ext);
   }
   let debounce=null;
@@ -474,7 +490,7 @@ ${res.note}`:''}`;if(status)status.textContent='PREVIEW READY';if($('historyReco
     // Dedicated Silver exports are intentionally hard-wired to collection endpoints.
     // They do not depend on shared-tab state and therefore cannot export GAME rows.
     $('historySilverCsv')?.addEventListener('click',()=>exportSilverFile('csv'));$('historySilverXlsx')?.addEventListener('click',()=>exportSilverFile('xlsx'));
-    $('historyAuditTabGames')?.addEventListener('click',()=>setAuditTab('games'));$('historyAuditTabSilver')?.addEventListener('click',()=>setAuditTab('silver'));
+    $('historyAuditTabGames')?.addEventListener('click',()=>setAuditTab('games'));$('historyAuditTabSilver')?.addEventListener('click',()=>setAuditTab('silver'));$('historyAuditTabPlaylists')?.addEventListener('click',()=>setAuditTab('playlists'));
     $('historySearchConsoleCopyIssues')?.addEventListener('click',()=>{if(state.lastConsole)copyConsoleText(consoleIssuesReport(state.lastConsole),'ISSUES COPIED');});
     $('historySearchConsoleCopyAll')?.addEventListener('click',()=>{if(state.lastConsole)copyConsoleText(consoleFullReport(state.lastConsole),'FULL CONSOLE COPIED');});
     $('historySearchConsoleDownload')?.addEventListener('click',downloadConsoleText);
@@ -488,7 +504,8 @@ ${res.note}`:''}`;if(status)status.textContent='PREVIEW READY';if($('historyReco
     ['historySilverScope','historySilverLeague','historySilverKind','historySilverFlag'].forEach(id=>$(id)?.addEventListener('change',()=>loadSilver(true)));
     let silverDebounce=null;const queueSilverLoad=()=>{clearTimeout(silverDebounce);silverDebounce=setTimeout(()=>loadSilver(true),250);};
     $('historySilverPeriod')?.addEventListener('input',queueSilverLoad);$('historySilverSearch')?.addEventListener('input',queueSilverLoad);
-    $('historyRecoveryRefresh')?.addEventListener('click',loadRecoveryState);$('historyRecoveryPreview')?.addEventListener('click',previewRecovery);$('historyRecoveryApply')?.addEventListener('click',applyRecovery);$('historyRecoveryAction')?.addEventListener('change',updateRecoveryActionUi);$('historyRecoveryLeague')?.addEventListener('change',()=>{recoverySourceOptions();updateRecoveryActionUi();});['historyRecoveryStartDate','historyRecoveryDirection','historyRecoverySource','historyRecoveryObjective'].forEach(id=>$(id)?.addEventListener('change',()=>{state.recoveryPreviewToken='';if($('historyRecoveryApply'))$('historyRecoveryApply').disabled=true;}));updateRecoveryActionUi();
+    $('historyMediaSourcesRefresh')?.addEventListener('click',()=>loadMediaSources(true));$('historyMediaSourcesLeague')?.addEventListener('change',()=>{if(state.mediaSources)renderMediaSources(state.mediaSources);else loadMediaSources(false);});
+    $('historyRecoveryRefresh')?.addEventListener('click',loadRecoveryState);$('historyRecoveryToggle')?.addEventListener('click',toggleRecovery);$('historyRecoveryPreview')?.addEventListener('click',previewRecovery);$('historyRecoveryApply')?.addEventListener('click',applyRecovery);$('historyRecoveryAction')?.addEventListener('change',updateRecoveryActionUi);$('historyRecoveryLeague')?.addEventListener('change',()=>{recoverySourceOptions();updateRecoveryActionUi();});['historyRecoveryStartDate','historyRecoveryDirection','historyRecoverySource','historyRecoveryObjective'].forEach(id=>$(id)?.addEventListener('change',()=>{state.recoveryPreviewToken='';if($('historyRecoveryApply'))$('historyRecoveryApply').disabled=true;}));updateRecoveryActionUi();try{setRecoveryCollapsed(localStorage.getItem('sbb-history-recovery-collapsed')!=='0');}catch(_){setRecoveryCollapsed(true);}
     window.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!$('historyAuditModal')?.classList.contains('hidden'))close();});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();

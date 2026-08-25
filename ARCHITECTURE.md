@@ -1,4 +1,14 @@
-# Sports Big Board v4.1.21 Architecture
+# Sports Big Board v4.1.22 Architecture
+
+## v4.1.22 curated playlist recovery + source registry
+
+v4.1.22 keeps the five-worker v4.1.21 scheduler and adds an operator-curated, playlist-first GAME acquisition layer for leagues whose generic/web recovery was producing long provider waits. The new playlist lanes use `playlistItems.list + videos.list` only; they do not depend on YouTube `search.list`. Event Matcher v7 remains fail-closed: playlist membership establishes source provenance, while a GAME assignment still requires both teams plus explicit-title or publication-date evidence.
+
+Pinned GAME inventories now include the official NHL `2025-2026 NHL Full Game Highlights` playlist, operator-supplied 2025/2026 soccer Match Highlights playlists, official MLB 2025/2026 Game Highlights playlists, and the complete operator-supplied set of 2025 NFL weekly/playoff recap playlist anchors. The existing EPL 2025-26 NBC season playlist remains active and is exposed alongside the current Premier League/NBC playlists. NHL/MLS trusted Match Highlights are Extended/Purple lanes; MLB derives Green/Extended from the actual package; NFL retains separate Quick and Extended objectives.
+
+Rule Game Catch-up advances to **v10**. Only the affected source ledgers are versioned/reopened: NFL playlist Quick/Extended move to v2, while new NHL/MLS/MLB playlist source keys begin at v1. Discovery remains **v15**, Event Matcher remains **v7**, Rule Collection Catch-up remains **v8**, provider semaphores remain unchanged, and no catalog rebuild is required. Existing media and associations are preserved.
+
+Historical Database Audit gains a **GAME MEDIA PLAYLISTS** tab backed by `/api/history/media-sources`. It is the operator-facing source registry for MLB/NFL/NBA/NHL/EPL/MLS and displays Primary, Secondary, Fallback, and Silver sources with direct URLs, season scope, objective, collector key, trust level, and notes. Operator Recovery is collapsed by default and remembers its local expanded/collapsed state so recovery controls no longer dominate the audit surface.
 
 ## v4.1.21 parallel recovery and operator-control boundary
 

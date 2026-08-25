@@ -1,4 +1,4 @@
-/* Sports Big Board v4.1.21 — sport media policy.
+/* Sports Big Board v4.1.22 — sport media policy.
    The application asks for QUICK / EXTENDED / COMMENTARY / MOMENTS. Sport policy
    describes ideal duration and ranking; providers are interchangeable. */
 (() => {

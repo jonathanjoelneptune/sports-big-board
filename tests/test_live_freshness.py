@@ -317,7 +317,7 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
         quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
         long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}
-        # v4.1.21 adds official team-site packages as a second Extended lane.
+        # v4.1.22 adds official team-site packages as a second Extended lane.
         # Keep this legacy duration-window unit test deterministic by isolating
         # the public NFL/YouTube lane it was originally written to exercise.
         with patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
@@ -729,13 +729,13 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertEqual(scoped.get('collectionKind'),'SCORING_ROUNDUP')
 
     def test_v420_epl_source_versions_reopen_only_epl_youtube_replay(self):
-        self.assertEqual(server.HISTORY_RULE_CATCHUP_VERSION,9)
+        self.assertEqual(server.HISTORY_RULE_CATCHUP_VERSION,10)
         self.assertEqual(server.HISTORY_RULE_COLLECTION_CATCHUP_VERSION,8)
         epl={x['key']:x['version'] for x in server.HISTORY_OFFICIAL_CATCHUP_SOURCES['EPL']}
         self.assertEqual(epl['epl-youtube-pl-quick'],6)
         self.assertEqual(epl['epl-youtube-pl-extended'],6)
         self.assertEqual(epl['epl-youtube-nbc-extended'],6)
-        self.assertEqual({x['key']:x['version'] for x in server.HISTORY_OFFICIAL_CATCHUP_SOURCES['NFL']}['nfl-youtube-playlist-extended'],1)
+        self.assertEqual({x['key']:x['version'] for x in server.HISTORY_OFFICIAL_CATCHUP_SOURCES['NFL']}['nfl-youtube-playlist-extended'],2)
 
 
 if __name__=='__main__': unittest.main()
