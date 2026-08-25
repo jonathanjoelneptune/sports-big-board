@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Sports Big Board v4.1.27 one-time soundtrack uploader.
+# Sports Big Board v4.1.28 private soundtrack uploader.
 # Accepts the six generated soundtrack ZIPs, one combined pool ZIP, or an already
-# extracted Sports-Big-Board-Soundtrack-Pool directory.
+# extracted Sports-Big-Board-Soundtrack-Pool directory. Public Access Prevention
+# may remain enforced: the VM gets private objectViewer access and the browser
+# uses signed GCS redirects with an authenticated proxy fallback.
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 PROJECT_ID="${SBB_PROJECT_ID:-$(gcloud config get-value project 2>/dev/null || true)}"
 PROJECT_ID="${PROJECT_ID//[[:space:]]/}"
 [[ -n "$PROJECT_ID" && "$PROJECT_ID" != "(unset)" ]] || { echo "Set SBB_PROJECT_ID or run: gcloud config set project YOUR_PROJECT"; exit 1; }
 BUCKET="${SBB_SOUNDTRACK_BUCKET:-${PROJECT_ID}-soundtrack}"
 REGION="${SBB_SOUNDTRACK_REGION:-us-west2}"
+ZONE="${SBB_ZONE:-us-west2-b}"
+VM_NAME="${SBB_VM_NAME:-sports-big-board}"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
@@ -35,7 +39,6 @@ done
 
 POOL="$(find "$TMP" -type f -path '*/assets/soundtrack/manifest.json' -print -quit | xargs -r dirname | xargs -r dirname | xargs -r dirname)"
 if [[ -z "$POOL" ]]; then
-  # Directory input can already be the pool root.
   POOL="$(find "$TMP" -type d -name 'Sports-Big-Board-Soundtrack-Pool' -print -quit || true)"
 fi
 [[ -n "$POOL" ]] || { echo "Could not locate Sports Big Board soundtrack manifest."; exit 1; }
@@ -60,16 +63,29 @@ print(f'Validated {len(rows)} soundtrack tracks ({sum(p.stat().st_size for p in 
 PY
 
 if ! gcloud storage buckets describe "gs://$BUCKET" >/dev/null 2>&1; then
-  echo "Creating gs://$BUCKET in $REGION ..."
+  echo "Creating private gs://$BUCKET in $REGION ..."
   gcloud storage buckets create "gs://$BUCKET" --project="$PROJECT_ID" --location="$REGION" --uniform-bucket-level-access
 fi
-# The soundtrack is intentionally a public-read static asset library. No API keys,
-# user data, databases, or private state are stored in this bucket.
-gcloud storage buckets update "gs://$BUCKET" --public-access-prevention=unspecified >/dev/null
-if ! gcloud storage buckets add-iam-policy-binding "gs://$BUCKET" --member=allUsers --role=roles/storage.objectViewer >/dev/null; then
-  echo "Unable to enable public object reads. Check project public-access-prevention policy." >&2
-  exit 1
+
+# Public Access Prevention is fully compatible with v4.1.28 and should remain
+# enforced when required by organization/project policy.
+VM_SERVICE_ACCOUNT="$(gcloud compute instances describe "$VM_NAME" --zone "$ZONE" --project "$PROJECT_ID" --format='value(serviceAccounts.email)' | head -1)"
+[[ -n "$VM_SERVICE_ACCOUNT" ]] || { echo "Could not determine the $VM_NAME service account." >&2; exit 1; }
+echo "Granting private soundtrack read access to VM service account: $VM_SERVICE_ACCOUNT"
+gcloud storage buckets add-iam-policy-binding "gs://$BUCKET" \
+  --member="serviceAccount:$VM_SERVICE_ACCOUNT" --role=roles/storage.objectViewer >/dev/null
+
+# signBlob lets the backend redirect browsers directly to short-lived signed GCS
+# URLs. If this binding is not permitted, the backend automatically falls back to
+# authenticated proxy streaming, so soundtrack playback still works.
+if gcloud iam service-accounts add-iam-policy-binding "$VM_SERVICE_ACCOUNT" --project "$PROJECT_ID" \
+    --member="serviceAccount:$VM_SERVICE_ACCOUNT" --role=roles/iam.serviceAccountTokenCreator >/dev/null 2>&1; then
+  echo "Signed-URL capability enabled for $VM_SERVICE_ACCOUNT."
+else
+  echo "WARNING: Could not grant signBlob to the VM service account; v4.1.28 will use private proxy fallback." >&2
 fi
+
+gcloud services enable iamcredentials.googleapis.com storage.googleapis.com --project "$PROJECT_ID" >/dev/null
 cat > "$TMP/cors.json" <<'JSON'
 [
   {
@@ -84,12 +100,11 @@ gcloud storage buckets update "gs://$BUCKET" --cors-file="$TMP/cors.json" >/dev/
 
 echo "Uploading soundtrack tracks ..."
 gcloud storage rsync "$TRACKS" "gs://$BUCKET/tracks" --recursive
-# Keep a copy of the manifest in the bucket for inspection; GitHub Pages also ships
-# the same manifest and uses this bucket only as the audio base URL.
-gcloud storage cp "$MANIFEST" "gs://$BUCKET/manifest.json" --cache-control="public,max-age=300"
+gcloud storage cp "$MANIFEST" "gs://$BUCKET/manifest.json" --cache-control="private,max-age=300"
 
 echo
-echo "Sports Big Board soundtrack uploaded."
+echo "Sports Big Board private soundtrack uploaded."
 echo "Bucket: gs://$BUCKET"
-echo "Soundtrack base URL: https://storage.googleapis.com/$BUCKET"
-echo "GitHub Pages v4.1.27 derives this URL automatically from GCP_PROJECT_ID."
+echo "Tracks: $(gcloud storage ls "gs://$BUCKET/tracks/" | wc -l | tr -d ' ')"
+echo "Public bucket access: NOT REQUIRED"
+echo "v4.1.28 browser transport: backend -> signed GCS redirect -> private proxy fallback"

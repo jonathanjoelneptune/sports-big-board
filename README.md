@@ -1,8 +1,8 @@
-# Sports Big Board v4.1.27
+# Sports Big Board v4.1.28
 
-> v4.1.27 is the **Site Soundtrack** release. It preserves the v4.1.26 database/operator/playback architecture and adds a persistent application-level sports music bed that follows highlight playback without restarting when the viewer changes games, dates, leagues, or recap packages.
+> v4.1.28 is the **Site Soundtrack** release. It preserves the v4.1.26 database/operator/playback architecture and adds a persistent application-level sports music bed that follows highlight playback without restarting when the viewer changes games, dates, leagues, or recap packages.
 
-## v4.1.27 — persistent Sports Big Board soundtrack
+## v4.1.28 — persistent Sports Big Board soundtrack
 
 - **Site-level music ownership:** one soundtrack engine sits above the A/B highlight players. Changing videos never recreates or restarts the current music track.
 - **Minimal controls:** a compact `♫ play/pause` control and soundtrack-volume button sit beside the existing video transport controls.
@@ -10,8 +10,8 @@
 - **113-track no-repeat library:** the normalized Mixkit manifest represents roughly 3 hours 41 minutes of audio. A weighted unique shuffle bag favors CORE tracks without repeating any enabled track until the bag is exhausted.
 - **Crossfades:** the next track is preloaded on a second audio element and crossfades over 2.5 seconds.
 - **Persistent preference/session:** enabled state, volume, current track/position, and remaining shuffle bag survive reloads through local storage. Browser autoplay restrictions remain respected.
-- **Cloud Storage audio boundary:** GitHub Pages ships only the player and ~46 KB manifest. MP3s are served directly from `gs://<GCP_PROJECT_ID>-soundtrack`; the repository explicitly ignores `assets/soundtrack/tracks/`.
-- **One-command audio upload:** `cloud/gcp/UPLOAD-SOUNDTRACK.sh` accepts the six downloaded soundtrack ZIPs, validates all track hashes, creates/configures the bucket, and uploads the normalized audio library.
+- **Private Cloud Storage audio boundary:** GitHub Pages ships only the player and ~46 KB manifest. The GCS bucket remains private under Public Access Prevention. The backend prefers short-lived signed GCS redirects and falls back to authenticated private streaming; the repository explicitly ignores `assets/soundtrack/tracks/`.
+- **One-command private audio setup:** `cloud/gcp/UPLOAD-SOUNDTRACK.sh` accepts the six ZIPs, validates all track hashes, uploads the library, grants the VM private read access, and enables signed-URL capability when IAM permits it.
 - **No catalog rebuild:** soundtrack deployment is independent of SQLite, historical discovery, Silver media, Game Center, and API credentials.
 
 See **SOUNDTRACK SETUP.md** for the one-time six-ZIP Cloud Storage upload.

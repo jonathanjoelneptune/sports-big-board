@@ -1,4 +1,4 @@
-/* Sports Big Board v4.1.27 — persistent site-level soundtrack engine.
+/* Sports Big Board v4.1.28 — persistent site-level soundtrack engine.
    The soundtrack belongs to the application, not to any individual highlight.
    It survives score/date/program changes and follows the active playback state. */
 (() => {

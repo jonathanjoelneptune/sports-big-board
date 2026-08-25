@@ -3,5 +3,6 @@
 window.SBB_CONFIG = Object.freeze({
   apiBase: "",
   soundtrackBase: "",
+  soundtrackTransport: "local",
   deployment: "local"
 });

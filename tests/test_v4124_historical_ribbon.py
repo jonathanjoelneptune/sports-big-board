@@ -11,9 +11,9 @@ class V4124HistoricalRibbonTests(unittest.TestCase):
     def test_release_boundary_and_static_cache_buster_advance(self):
         root=Path(__file__).resolve().parents[1]
         index=(root/'index.html').read_text(encoding='utf-8')
-        self.assertEqual(server.APP_VERSION,'4.1.27')
-        self.assertIn('app.js?v=4.1.27',index)
-        self.assertIn('styles.css?v=4.1.27',index)
+        self.assertEqual(server.APP_VERSION,'4.1.28')
+        self.assertIn('app.js?v=4.1.28',index)
+        self.assertIn('styles.css?v=4.1.28',index)
         self.assertNotIn('app.js?v=4.1.23',index)
 
     def test_persisted_seed_marker_is_authoritative_after_restart(self):

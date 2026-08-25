@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Sports Big Board v4.1.27 local/cloud backend.
+"""Sports Big Board v4.1.28 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
-from urllib.parse import urlparse, parse_qs, urlencode, quote_plus, urljoin, unquote
+from urllib.parse import urlparse, parse_qs, urlencode, quote_plus, quote, urljoin, unquote
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 import json
 import os
+import base64
 import csv
 import io
 import zipfile
@@ -41,7 +42,7 @@ from sbb.event_matcher import match_event as match_media_to_event
 from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
 from sbb.secrets import get_secret, set_secrets, status as secrets_status, migrate_legacy as migrate_legacy_secrets, SECRETS_FILE
 
-APP_VERSION = "4.1.27"
+APP_VERSION = "4.1.28"
 PORT = int(os.environ.get("PORT", "8080"))
 BIND_HOST = os.environ.get("SBB_BIND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -66,6 +67,200 @@ def _cors_allowed_origin(origin):
         except Exception:
             pass
     return ""
+
+
+# v4.1.28 private soundtrack transport. The soundtrack bucket can remain under
+# enforced Public Access Prevention. The browser asks this backend for an MP3;
+# the backend prefers a short-lived V4 GCS signed redirect and falls back to an
+# authenticated range-capable stream if IAM signBlob is unavailable.
+GCE_METADATA_ROOT = "http://metadata.google.internal/computeMetadata/v1"
+SOUNDTRACK_SIGNED_URL_TTL = max(300, min(3600, int(os.environ.get("SBB_SOUNDTRACK_SIGNED_URL_TTL", "3300"))))
+SOUNDTRACK_FORCE_PROXY = str(os.environ.get("SBB_SOUNDTRACK_FORCE_PROXY", "0")).lower() in ("1","true","yes","on")
+SOUNDTRACK_LOCK = threading.RLock()
+SOUNDTRACK_AUTH_STATE = {"projectId":"", "serviceAccount":"", "accessToken":"", "tokenExpiresAt":0.0, "lastError":""}
+SOUNDTRACK_SIGNED_CACHE = {}
+try:
+    _soundtrack_manifest_data = json.loads((ROOT / "assets" / "soundtrack" / "manifest.json").read_text(encoding="utf-8"))
+except Exception:
+    _soundtrack_manifest_data = {"tracks":[]}
+SOUNDTRACK_ALLOWED_FILES = frozenset(pathlib.Path(str(x.get("file") or "")).name for x in (_soundtrack_manifest_data.get("tracks") or []) if x.get("file"))
+
+
+def _metadata_get(path, *, json_response=False, timeout=2.5):
+    req=Request(f"{GCE_METADATA_ROOT}/{path.lstrip('/')}", headers={"Metadata-Flavor":"Google", "User-Agent":f"SportsBigBoard/{APP_VERSION}"})
+    with urlopen(req, timeout=timeout) as resp:
+        raw=resp.read()
+    if json_response: return json.loads(raw.decode("utf-8"))
+    return raw.decode("utf-8").strip()
+
+
+def _soundtrack_project_id():
+    configured=str(os.environ.get("SBB_GCP_PROJECT_ID") or os.environ.get("GCP_PROJECT_ID") or "").strip()
+    if configured: return configured
+    with SOUNDTRACK_LOCK:
+        if SOUNDTRACK_AUTH_STATE["projectId"]: return SOUNDTRACK_AUTH_STATE["projectId"]
+    project=_metadata_get("project/project-id") if CLOUD_MODE else ""
+    with SOUNDTRACK_LOCK: SOUNDTRACK_AUTH_STATE["projectId"]=project
+    return project
+
+
+def _soundtrack_bucket():
+    explicit=str(os.environ.get("SBB_SOUNDTRACK_BUCKET") or "").strip()
+    if explicit: return explicit.removeprefix("gs://").strip("/")
+    project=_soundtrack_project_id()
+    return f"{project}-soundtrack" if project else ""
+
+
+def _soundtrack_service_account():
+    with SOUNDTRACK_LOCK:
+        if SOUNDTRACK_AUTH_STATE["serviceAccount"]: return SOUNDTRACK_AUTH_STATE["serviceAccount"]
+    email=_metadata_get("instance/service-accounts/default/email") if CLOUD_MODE else ""
+    with SOUNDTRACK_LOCK: SOUNDTRACK_AUTH_STATE["serviceAccount"]=email
+    return email
+
+
+def _soundtrack_access_token():
+    now=time.time()
+    with SOUNDTRACK_LOCK:
+        token=SOUNDTRACK_AUTH_STATE.get("accessToken") or ""
+        if token and now < float(SOUNDTRACK_AUTH_STATE.get("tokenExpiresAt") or 0)-90: return token
+    if not CLOUD_MODE: raise RuntimeError("GCE soundtrack credentials are only available in cloud mode")
+    payload=_metadata_get("instance/service-accounts/default/token", json_response=True)
+    token=str(payload.get("access_token") or "")
+    if not token: raise RuntimeError("GCE metadata returned no soundtrack access token")
+    expires=max(60, int(payload.get("expires_in") or 300))
+    with SOUNDTRACK_LOCK:
+        SOUNDTRACK_AUTH_STATE["accessToken"]=token
+        SOUNDTRACK_AUTH_STATE["tokenExpiresAt"]=now+expires
+    return token
+
+
+def _soundtrack_filename(path):
+    raw=unquote(str(path or "").rsplit("/",1)[-1]).strip()
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,127}\.mp3", raw): return ""
+    if SOUNDTRACK_ALLOWED_FILES and raw not in SOUNDTRACK_ALLOWED_FILES: return ""
+    return raw
+
+
+def _rfc3986(value):
+    return quote(str(value), safe="~-._")
+
+
+def _soundtrack_sign_blob(service_account, payload_bytes):
+    token=_soundtrack_access_token()
+    target=quote(service_account, safe="")
+    url=f"https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{target}:signBlob"
+    body=json.dumps({"payload":base64.b64encode(payload_bytes).decode("ascii")}).encode("utf-8")
+    req=Request(url, data=body, method="POST", headers={"Authorization":f"Bearer {token}", "Content-Type":"application/json", "User-Agent":f"SportsBigBoard/{APP_VERSION}"})
+    with urlopen(req, timeout=8) as resp:
+        data=json.loads(resp.read().decode("utf-8"))
+    signed=str(data.get("signedBlob") or "")
+    if not signed: raise RuntimeError("IAM signBlob returned no signature")
+    return base64.b64decode(signed)
+
+
+def _soundtrack_signed_url(filename):
+    if SOUNDTRACK_FORCE_PROXY: return ""
+    now=time.time()
+    with SOUNDTRACK_LOCK:
+        cached=SOUNDTRACK_SIGNED_CACHE.get(filename)
+        if cached and now < float(cached.get("expiresAt") or 0): return str(cached.get("url") or "")
+    bucket=_soundtrack_bucket(); email=_soundtrack_service_account()
+    if not bucket or not email: raise RuntimeError("Soundtrack bucket/service account unavailable")
+    instant=datetime.now(timezone.utc)
+    timestamp=instant.strftime("%Y%m%dT%H%M%SZ"); datestamp=instant.strftime("%Y%m%d")
+    scope=f"{datestamp}/auto/storage/goog4_request"
+    credential=f"{email}/{scope}"
+    object_name=f"tracks/{filename}"
+    canonical_uri=f"/{_rfc3986(bucket)}/" + "/".join(_rfc3986(x) for x in object_name.split("/"))
+    params={
+        "X-Goog-Algorithm":"GOOG4-RSA-SHA256",
+        "X-Goog-Credential":credential,
+        "X-Goog-Date":timestamp,
+        "X-Goog-Expires":str(SOUNDTRACK_SIGNED_URL_TTL),
+        "X-Goog-SignedHeaders":"host",
+    }
+    canonical_query="&".join(f"{_rfc3986(k)}={_rfc3986(params[k])}" for k in sorted(params))
+    canonical_request=f"GET\n{canonical_uri}\n{canonical_query}\nhost:storage.googleapis.com\n\nhost\nUNSIGNED-PAYLOAD"
+    digest=hashlib.sha256(canonical_request.encode("utf-8")).hexdigest()
+    string_to_sign=f"GOOG4-RSA-SHA256\n{timestamp}\n{scope}\n{digest}"
+    signature=_soundtrack_sign_blob(email, string_to_sign.encode("utf-8")).hex()
+    url=f"https://storage.googleapis.com{canonical_uri}?{canonical_query}&X-Goog-Signature={signature}"
+    with SOUNDTRACK_LOCK:
+        SOUNDTRACK_SIGNED_CACHE[filename]={"url":url,"expiresAt":now+max(120,SOUNDTRACK_SIGNED_URL_TTL-120)}
+        SOUNDTRACK_AUTH_STATE["lastError"]=""
+    return url
+
+
+def _soundtrack_proxy(handler, filename):
+    bucket=_soundtrack_bucket()
+    if not bucket: return send_json(handler,{"ok":False,"error":"SOUNDTRACK_BUCKET_UNAVAILABLE"},503)
+    object_name=f"tracks/{filename}"
+    token=_soundtrack_access_token()
+    object_enc=quote(object_name, safe="")
+    bucket_enc=quote(bucket, safe="")
+    url=f"https://storage.googleapis.com/download/storage/v1/b/{bucket_enc}/o/{object_enc}?alt=media"
+    headers={"Authorization":f"Bearer {token}","User-Agent":f"SportsBigBoard/{APP_VERSION}"}
+    range_header=handler.headers.get("Range")
+    if range_header: headers["Range"]=range_header
+    req=Request(url, headers=headers)
+    try:
+        with urlopen(req, timeout=15) as resp:
+            status=getattr(resp,"status",200)
+            handler.send_response(status)
+            for name in ("Content-Type","Content-Length","Content-Range","Accept-Ranges","ETag","Last-Modified"):
+                value=resp.headers.get(name)
+                if value: handler.send_header(name,value)
+            handler.send_header("Cache-Control","private, max-age=3600")
+            handler.send_header("X-SBB-Soundtrack-Transport","PRIVATE-GCS-PROXY")
+            handler.end_headers()
+            while True:
+                chunk=resp.read(128*1024)
+                if not chunk: break
+                try: handler.wfile.write(chunk)
+                except (BrokenPipeError,ConnectionResetError): break
+            return True
+    except HTTPError as exc:
+        handler.send_response(exc.code)
+        handler.send_header("Content-Type",exc.headers.get("Content-Type","text/plain"))
+        if exc.headers.get("Content-Range"): handler.send_header("Content-Range",exc.headers.get("Content-Range"))
+        handler.send_header("X-SBB-Soundtrack-Transport","PRIVATE-GCS-PROXY-ERROR")
+        handler.end_headers()
+        try: handler.wfile.write(exc.read())
+        except Exception: pass
+        return False
+
+
+def _serve_soundtrack_track(handler, parsed_path):
+    filename=_soundtrack_filename(parsed_path)
+    if not filename: return send_json(handler,{"ok":False,"error":"SOUNDTRACK_TRACK_NOT_FOUND"},404)
+    try:
+        signed=_soundtrack_signed_url(filename)
+        if signed:
+            handler.send_response(307)
+            handler.send_header("Location",signed)
+            handler.send_header("Cache-Control","private, max-age=300")
+            handler.send_header("X-SBB-Soundtrack-Transport","SIGNED-GCS")
+            handler.send_header("Content-Length","0")
+            handler.end_headers()
+            return True
+    except Exception as exc:
+        with SOUNDTRACK_LOCK: SOUNDTRACK_AUTH_STATE["lastError"]=f"{type(exc).__name__}: {exc}"
+        print(f"[SBB soundtrack] signed URL unavailable; using private proxy: {type(exc).__name__}: {exc}", flush=True)
+    try:
+        return _soundtrack_proxy(handler,filename)
+    except Exception as exc:
+        with SOUNDTRACK_LOCK: SOUNDTRACK_AUTH_STATE["lastError"]=f"{type(exc).__name__}: {exc}"
+        print(f"[SBB soundtrack] private proxy error: {type(exc).__name__}: {exc}", flush=True)
+        return send_json(handler,{"ok":False,"error":"SOUNDTRACK_PRIVATE_GCS_ERROR","message":str(exc)},502)
+
+
+def _soundtrack_status():
+    try: bucket=_soundtrack_bucket()
+    except Exception: bucket=""
+    with SOUNDTRACK_LOCK:
+        state={"lastError":SOUNDTRACK_AUTH_STATE.get("lastError") or "", "signedCacheEntries":len(SOUNDTRACK_SIGNED_CACHE)}
+    return {"ok":True,"version":APP_VERSION,"bucket":bucket,"private":True,"publicAccessRequired":False,"tracks":len(SOUNDTRACK_ALLOWED_FILES),"preferredTransport":"SIGNED-GCS","fallbackTransport":"PRIVATE-GCS-PROXY",**state}
 KEY_FILE = ROOT / ".highlightly-key"
 GLOBAL_KEY_FILE = STATE_DIR / "highlightly-key"
 YOUTUBE_KEY_FILE = STATE_DIR / "youtube-key"
@@ -73,7 +268,7 @@ OPENAI_KEY_FILE = STATE_DIR / "openai-key"
 OPENAI_API_BASE = "https://api.openai.com/v1"
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
 YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
-YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.27", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
+YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.28", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
 
 def youtube_fetch_json(url, timeout=10):
     """Operation-aware YouTube broker.
@@ -92,7 +287,7 @@ NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"  # verified @NFL channel
 # playlistItems.list + videos.list; search.list is never required. Known historical
 # playlist IDs provide immediate anchors while automatic enumeration remains primary.
 NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS = {
-    # v4.1.27 operator-pinned 2025-season weekly/playoff recap playlists.  The
+    # v4.1.28 operator-pinned 2025-season weekly/playoff recap playlists.  The
     # channel catalog supplies the authoritative title when available; these anchors
     # keep every known playlist reachable even if playlists.list misses/changes it.
     "PLRdw3IjKY2gm8m7heXMOfVPLVA8jDY_Jd":"2025 NFL Recap Playlist 01",
@@ -139,7 +334,7 @@ EPL_YOUTUBE_KNOWN_PLAYLISTS = {
     "PLR1b-6EyIaTs":{"title":"Premier League 2026-27 season","url":"https://www.youtube.com/playlist?list=PLR1b-6EyIaTs","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2026,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
     "PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E":{"title":"Premier League 2025-26 season","url":"https://www.youtube.com/playlist?list=PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2025,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
 }
-# v4.1.27 operator-curated GAME playlist registry. These playlist lanes use
+# v4.1.28 operator-curated GAME playlist registry. These playlist lanes use
 # playlistItems.list + videos.list only, never search.list.  Exact event association
 # still requires both teams plus explicit/published date evidence, so a trusted
 # playlist can improve discovery without weakening Event Matcher v7.
@@ -366,7 +561,7 @@ HISTORY_OPERATOR_SNAPSHOT_STATE = {"ready":False,"generatedAt":0.0,"generationMs
 HISTORY_OPERATOR_SNAPSHOT_INTERVAL = max(5,min(60,int(os.environ.get("SBB_OPERATOR_SNAPSHOT_INTERVAL","10") or 10)))
 
 
-# v4.1.27 rolling schedule + operator playlist state. Provider feeds write into the
+# v4.1.28 rolling schedule + operator playlist state. Provider feeds write into the
 # canonical catalog; the UI reads the catalog instead of reconstructing relationships.
 HISTORY_SCHEDULE_SYNC_INTERVAL = max(120,int(os.environ.get("SBB_SCHEDULE_SYNC_INTERVAL","600") or 600))
 HISTORY_SCHEDULE_SYNC_FUTURE_DAYS = max(3,min(21,int(os.environ.get("SBB_SCHEDULE_SYNC_FUTURE_DAYS","14") or 14)))
@@ -1043,7 +1238,7 @@ def _prewarm_highlightly_call(sport_key,endpoint,date,timezone_value="",force=Fa
     if RATE_LIMIT_STATE.get("limited") and limited_since and time.time()-limited_since < 15*60:
         return cached
     url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.27"})
+    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.28"})
     try:
         with urlopen(req,timeout=15) as resp:
             data=json.loads(resp.read().decode("utf-8"))
@@ -1604,7 +1799,7 @@ def openai_api_request(path, payload=None, method=None, timeout=20):
         raise RuntimeError("OPENAI_NOT_CONFIGURED")
     method=method or ("POST" if payload is not None else "GET")
     body=None if payload is None else json.dumps(payload).encode("utf-8")
-    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.27"}
+    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.28"}
     req=Request(f"{OPENAI_API_BASE}{path}",data=body,headers=headers,method=method)
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -2139,7 +2334,7 @@ def _google_news_official_results(league):
     site_clause=' OR '.join(f'site:{d}' for d in sorted(trusted_domains))
     query=f'({terms}) ({site_clause}) {league} when:5d'
     url='https://news.google.com/rss/search?'+urlencode({'q':query,'hl':'en-US','gl':'US','ceid':'US:en'})
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.27'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.28'})
     try:
         with urlopen(req,timeout=10) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2198,7 +2393,7 @@ def _espn_rss_results(league):
     """First-party ESPN headline feed. ESPN explicitly publishes these RSS feeds for aggregators."""
     league=str(league or '').upper(); url=ESPN_RSS.get(league)
     if not url: return []
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.27'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.28'})
     try:
         with urlopen(req,timeout=8) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2444,7 +2639,7 @@ def _nfl_team_site_video_results(date, away, home, max_items=8):
     for host in hosts:
         page=f'https://{host}/video/'
         try:
-            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.27'})
+            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.28'})
             with urlopen(req,timeout=8) as resp: raw=resp.read().decode('utf-8','ignore')
         except Exception as exc:
             print(f'[SBB NFL] club video page failed {host}: {type(exc).__name__}: {exc}',flush=True); continue
@@ -2790,7 +2985,7 @@ def _highlightly_soccer_schedule(league,date):
         "x-rapidapi-key":read_key(),
         "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.27"
+        "User-Agent":"SportsBigBoard/4.1.28"
     })
     with urlopen(req,timeout=12) as resp:
         payload=json.loads(resp.read().decode("utf-8"))
@@ -2894,7 +3089,7 @@ def _soccer_diagnostics():
                     "x-rapidapi-key":read_key(),
                     "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
                     "Accept":"application/json",
-                    "User-Agent":"SportsBigBoard/4.1.27"
+                    "User-Agent":"SportsBigBoard/4.1.28"
                 })
                 with urlopen(req,timeout=12) as resp:
                     payload=json.loads(resp.read().decode("utf-8"))
@@ -3656,7 +3851,7 @@ def _nfl_game_highlights_source_pages(away,home):
 
 
 def _nfl_fetch_page_text(url,timeout=9):
-    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.27'})
+    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.28'})
     with urlopen(req,timeout=timeout) as resp:
         return resp.read().decode('utf-8','ignore')
 
@@ -3813,7 +4008,7 @@ _SOCCER_TEAM_ALIASES = {
 
 
 def _official_fetch_page_text(url,timeout=10,referer=''):
-    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.27'}
+    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.28'}
     if referer: headers['Referer']=referer
     req=Request(url,headers=headers)
     with urlopen(req,timeout=timeout) as resp:
@@ -4266,7 +4461,7 @@ def _official_nfl_feed_videos(date, away, home):
         return []
     url=f"https://www.youtube.com/feeds/videos.xml?channel_id={NFL_YOUTUBE_CHANNEL_ID}"
     try:
-        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.27"})
+        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.28"})
         with urlopen(req,timeout=9) as resp:
             raw=resp.read()
         root=ET.fromstring(raw)
@@ -4455,7 +4650,7 @@ def _youtube_oembed_probe(video_id,timeout=7):
     vid=str(video_id or '').strip()
     if not vid: return None
     url='https://www.youtube.com/oembed?'+urlencode({'url':f'https://www.youtube.com/watch?v={vid}','format':'json'})
-    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.27'})
+    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.28'})
     try:
         with urlopen(req,timeout=timeout) as resp:
             if getattr(resp,'status',200)!=200: return None
@@ -6028,7 +6223,7 @@ def _search_engine_youtube_links(query,max_results=18):
     # normal search result page on a phone connection.
     try:
         url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss','count':max(10,min(30,max_results*2))})
-        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.27','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
+        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.28','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
         with urlopen(req,timeout=9) as resp:
             blob=resp.read(1_500_000)
         root=ET.fromstring(blob)
@@ -6426,7 +6621,7 @@ def normalized_rapid_highlights(date, force_refresh=False, force_clips=False):
     return unique
 
 def fetch_json(url, timeout=15):
-    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.27"})
+    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.28"})
     with urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
@@ -7124,7 +7319,7 @@ def _football_day_fallback(date, sport_key, timezone_value=""):
     req=Request(url,headers={
         "x-rapidapi-key":key,
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.27"
+        "User-Agent":"SportsBigBoard/4.1.28"
     })
     with urlopen(req,timeout=15) as resp:
         data=json.loads(resp.read().decode("utf-8"))
@@ -7361,7 +7556,7 @@ def _media_request_headers(range_value=None,media_url=""):
     host=(urlparse(str(media_url or "")).hostname or "").lower()
     referer="https://www.espn.com/" if ("espn" in host or "akamai" in host) else ("https://www.nfl.com/" if "nfl" in host else "https://www.mlb.com/")
     headers={
-        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.27",
+        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.28",
         "Accept":"video/mp4,video/*;q=0.9,*/*;q=0.8",
         "Referer":referer
     }
@@ -7476,7 +7671,7 @@ def _media_cache_prepare(media_url,event_id="",media_date="",priority=0):
         if total and paths["head"].exists() and paths["head"].stat().st_size>=total:
             paths["head"].replace(paths["full"]); meta["fullReady"]=True; meta["fullSize"]=total; meta["headSize"]=0
         if total and total>MEDIA_FILE_CACHE_HEAD_BYTES and not meta.get("fullReady"):
-            # v4.1.27: extend the startup runway with fixed 8 MB chunks. The first
+            # v4.1.28: extend the startup runway with fixed 8 MB chunks. The first
             # 16 MB remains backwards-compatible as HEAD; chunks 2+ keep playback
             # local while the low-priority full-file cache finishes.
             for idx in range(2,min(MEDIA_FILE_CACHE_PREFETCH_CHUNKS,(total+MEDIA_FILE_CACHE_CHUNK_BYTES-1)//MEDIA_FILE_CACHE_CHUNK_BYTES)):
@@ -8421,7 +8616,7 @@ def _history_validate_native_asset(item,timeout=6):
     """Positively probe one direct historical media URL before advertising green."""
     row=dict(item or {}); url=str(row.get('mediaUrl') or '').strip()
     if not url: return row
-    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.27','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
+    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.28','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
     if 'espn' in url.lower(): headers['Referer']='https://www.espn.com/'
     source_type=str(row.get('sourceType') or '')
     external=str(row.get('externalUrl') or '').lower()
@@ -8811,7 +9006,7 @@ def _history_day_event_plans(date):
 def _history_day_score_rows(date):
     """Return the canonical historical ribbon slate without any provider calls.
 
-    v4.1.27 deliberately separates the lightweight score-ribbon contract from the
+    v4.1.28 deliberately separates the lightweight score-ribbon contract from the
     much larger event/media plans.  Persisted history_day scoreboards are preferred
     because they carry the richest score/status fields.  Canonical catalog events
     fill any identity gaps so a relationship-only catalog still paints the ribbon.
@@ -8819,7 +9014,7 @@ def _history_day_score_rows(date):
     target=str(date or '')[:10]
     out={lg:[] for lg in HISTORY_LEAGUES}; seen={lg:set() for lg in HISTORY_LEAGUES}
     for lg in HISTORY_LEAGUES:
-        # v4.1.27 score inventory must not hydrate catalog media.  The compact
+        # v4.1.28 score inventory must not hydrate catalog media.  The compact
         # endpoint bulk-loads exact media separately after the score slate is known.
         state=HISTORY_REPOSITORY.get_league(target,lg,prefer_catalog=False)
         for raw in state.get('scores') or []:
@@ -8843,7 +9038,7 @@ def _history_day_score_rows(date):
 def _history_day_ribbon_plans(date,score_rows=None):
     """Compact exact-event media plans for score-ribbon first paint.
 
-    v4.1.27 performs one bulk SQLite media read for the entire date.  The prior
+    v4.1.28 performs one bulk SQLite media read for the entire date.  The prior
     implementation called ``event_media`` once per game, turning a 30-game ribbon
     into 30+ separate SQLite connections while backfill workers were writing.
     """
@@ -10135,7 +10330,7 @@ class Handler(SimpleHTTPRequestHandler):
         if origin:
             self.send_header("Access-Control-Allow-Origin",origin)
             self.send_header("Vary","Origin")
-            self.send_header("Access-Control-Expose-Headers","X-SBB-RateLimit-Remaining, X-SBB-RateLimit-Limit, X-SBB-Cache, X-SBB-GameCenter-Cache, Retry-After")
+            self.send_header("Access-Control-Expose-Headers","X-SBB-RateLimit-Remaining, X-SBB-RateLimit-Limit, X-SBB-Cache, X-SBB-GameCenter-Cache, X-SBB-Soundtrack-Transport, Retry-After")
         return super().end_headers()
 
     def do_OPTIONS(self):
@@ -10345,6 +10540,12 @@ class Handler(SimpleHTTPRequestHandler):
                 media_qs=parse_qs(parsed.query); media_date=str((media_qs.get('date') or [''])[-1])[:10]
                 _touch_history_focus(media_date,seconds=120)
             except Exception: pass
+
+        if parsed.path.startswith("/api/soundtrack/tracks/"):
+            return _serve_soundtrack_track(self, parsed.path)
+
+        if parsed.path == "/api/soundtrack/status":
+            return send_json(self,_soundtrack_status(),200)
 
         if parsed.path == "/api/history/scores":
             qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]; league=str((qs.get('league') or [''])[-1]).upper()
@@ -10679,7 +10880,7 @@ class Handler(SimpleHTTPRequestHandler):
                 "persistentState": bool(STATE_DIR),
                 "rateLimit": {"remaining": RATE_LIMIT_STATE.get("remaining", ""), "limit": RATE_LIMIT_STATE.get("limit", ""), "limited": RATE_LIMIT_STATE.get("limited", False)},
                 "highlightlyRateLimited": RATE_LIMIT_STATE["limited"],
-                "phase": "V4.1.27 OPERATOR TELEMETRY + SILVER AUTHORITY + CHUNKED PLAYBACK",
+                "phase": "V4.1.28 OPERATOR TELEMETRY + SILVER AUTHORITY + CHUNKED PLAYBACK",
                 "workMode":dict(HISTORY_WORK_MODE_STATE),
                 "highlightlyConfigured": bool(key),
                 "youtubeCooldownSeconds":max((row.get("cooldownSeconds",0) for row in YOUTUBE_GATEWAY.status().values()), default=0),
@@ -11006,7 +11207,7 @@ class Handler(SimpleHTTPRequestHandler):
                 flat.setdefault("leagueName",cfg["league"])
                 flat.setdefault("countryCode",cfg.get("countryCode",""))
             url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.27"})
+            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.28"})
             cache_name=f"{sport_key}-{endpoint}-v2514" if sport_key in ("epl","mls") else f"{sport_key}-{endpoint}"
 
             # v1.9.1 quota control: proactively reuse a fresh server-side snapshot.
@@ -11140,7 +11341,7 @@ class Handler(SimpleHTTPRequestHandler):
             req = Request(url, headers={
                 "x-rapidapi-key": key,
                 "Accept": "application/json",
-                "User-Agent": "SportsBigBoard/4.1.27"
+                "User-Agent": "SportsBigBoard/4.1.28"
             })
             try:
                 with urlopen(req, timeout=15) as resp:
@@ -11180,7 +11381,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT)
-    print("\nSports Big Board v4.1.27 — historical ribbon performance + catalog authority")
+    print("\nSports Big Board v4.1.28 — historical ribbon performance + catalog authority")
     print(f"Bind: {BIND_HOST}:{PORT} • deployment: {DEPLOYMENT_MODE} • state: {STATE_DIR}")
     if not CLOUD_MODE: print(f"Open: http://localhost:{PORT}")
     print("Highlightly key:", "configured" if read_key() else "NOT CONFIGURED")

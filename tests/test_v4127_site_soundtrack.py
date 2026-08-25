@@ -3,7 +3,7 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 
-class V4127SoundtrackTests(unittest.TestCase):
+class V4128SoundtrackTests(unittest.TestCase):
     def test_manifest_is_unique_and_long_rotation(self):
         data=json.loads((ROOT/'assets/soundtrack/manifest.json').read_text())
         tracks=data.get('tracks') or []
@@ -37,7 +37,8 @@ class V4127SoundtrackTests(unittest.TestCase):
             env=dict(os.environ,GCP_PROJECT_ID='sportsbigboard')
             subprocess.run(['python3',str(ROOT/'cloud/github-pages/build_pages.py'),'https://example.invalid',str(out)],check=True,env=env,capture_output=True,text=True)
             config=(out/'config.js').read_text()
-            self.assertIn('https://storage.googleapis.com/sportsbigboard-soundtrack',config)
+            self.assertIn('https://example.invalid/api/soundtrack',config)
+            self.assertIn("soundtrackTransport:'private-gcs'",config)
             self.assertTrue((out/'assets/soundtrack/manifest.json').exists())
             self.assertFalse((out/'assets/soundtrack/tracks').exists())
 
@@ -48,6 +49,15 @@ class V4127SoundtrackTests(unittest.TestCase):
         self.assertIn('gcloud storage rsync',src)
         self.assertIn('${PROJECT_ID}-soundtrack',src)
         self.assertIn('roles/storage.objectViewer',src)
+        self.assertIn('roles/iam.serviceAccountTokenCreator',src)
+        self.assertNotIn('--member=allUsers',src)
+        self.assertNotIn('public-access-prevention=unspecified',src)
+
+    def test_private_gcs_backend_prefers_signed_redirect_with_proxy_fallback(self):
+        src=(ROOT/'server.py').read_text()
+        for token in ('/api/soundtrack/tracks/', '_soundtrack_signed_url', ':signBlob', 'SIGNED-GCS', 'PRIVATE-GCS-PROXY', 'SOUNDTRACK_ALLOWED_FILES'):
+            self.assertIn(token,src)
+        self.assertIn('storage.googleapis.com/download/storage/v1/b/',src)
 
 if __name__=='__main__':
     unittest.main()

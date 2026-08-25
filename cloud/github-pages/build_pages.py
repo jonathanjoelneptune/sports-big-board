@@ -21,10 +21,11 @@ for directory in ('architecture','ui'):
 shutil.copy2(root/'assets'/'soundtrack'/'manifest.json',out/'assets'/'soundtrack'/'manifest.json')
 soundtrack=(os.environ.get('SBB_SOUNDTRACK_BASE_URL') or '').strip().rstrip('/')
 if not soundtrack:
-    project=(os.environ.get('GCP_PROJECT_ID') or os.environ.get('SBB_PROJECT_ID') or '').strip()
-    if project:
-        soundtrack=f'https://storage.googleapis.com/{project}-soundtrack'
-config=f"window.SBB_CONFIG = Object.freeze({{apiBase:{json.dumps(api)},soundtrackBase:{json.dumps(soundtrack)},deployment:'github-pages'}});\n"
+    # v4.1.28 keeps the GCS bucket private. The browser requests soundtrack
+    # tracks from the backend, which prefers a short-lived signed GCS redirect
+    # and transparently falls back to authenticated proxy streaming.
+    soundtrack=f'{api}/api/soundtrack'
+config=f"window.SBB_CONFIG = Object.freeze({{apiBase:{json.dumps(api)},soundtrackBase:{json.dumps(soundtrack)},soundtrackTransport:'private-gcs',deployment:'github-pages'}});\n"
 (out/'config.js').write_text(config,encoding='utf-8')
 (out/'.nojekyll').write_text('',encoding='utf-8')
 print(f'Built GitHub Pages frontend -> {out}')
