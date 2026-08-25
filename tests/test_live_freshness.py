@@ -317,7 +317,7 @@ class LiveFreshnessTests(unittest.TestCase):
     def test_v4110_nfl_extended_collector_requires_8_to_20_minutes(self):
         quick={"youtubeId":"quick","title":"Raiders vs Texans Game Highlights","durationSeconds":180,"overview":True,"verifiedPlayable":True}
         long={"youtubeId":"long","title":"Raiders vs Texans Game Highlights","durationSeconds":900,"overview":True,"verifiedPlayable":True}
-        # v4.1.16 adds official team-site packages as a second Extended lane.
+        # v4.1.17 adds official team-site packages as a second Extended lane.
         # Keep this legacy duration-window unit test deterministic by isolating
         # the public NFL/YouTube lane it was originally written to exercise.
         with patch.object(server,'_nfl_game_highlights_results',return_value=[]), \
@@ -590,6 +590,12 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertTrue(rows[0]['pinned'])
         self.assertEqual(rows[0]['channelId'],server.EPL_YOUTUBE_NBC_CHANNEL_ID)
 
+    def test_v417_epl_2025_26_nbc_playlist_is_pinned_for_historical_backfill(self):
+        rows=server._epl_pinned_playlists('2025-12-07',family='epl-youtube-nbc',role='season-highlights')
+        self.assertEqual([x['playlistId'] for x in rows],['PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E'])
+        self.assertEqual(rows[0]['seasonStart'],2025)
+        self.assertTrue(rows[0]['pinned'])
+
     def test_v416_empty_pinned_playlist_can_repair_through_trusted_channel_catalog(self):
         pinned={'playlistId':'short','title':'Premier League 2026-27 season','seasonStart':2026,'family':'epl-youtube-nbc','role':'season-highlights','channelId':server.EPL_YOUTUBE_NBC_CHANNEL_ID,'pinned':True}
         alias={'playlistId':'canonical','title':'Premier League 2026-27 season','seasonStart':2026,'family':'epl-youtube-nbc','role':'season-highlights','channelId':server.EPL_YOUTUBE_NBC_CHANNEL_ID,'catalogDiscovered':True}
@@ -605,6 +611,39 @@ class LiveFreshnessTests(unittest.TestCase):
         self.assertEqual([x['youtubeId'] for x in rows],['v1'])
         self.assertTrue(any('playlistId=short' in x for x in calls))
         self.assertTrue(any('playlistId=canonical' in x for x in calls))
+
+
+    def test_v417_epl_nbc_numeric_title_date_and_unordered_pair_are_explicit(self):
+        title='Brentford v. Tottenham Hotspur | PREMIER LEAGUE HIGHLIGHTS | 8/22/2026 | NBC Sports'
+        parsed=server._epl_parse_match_title(title,2026)
+        self.assertTrue(parsed['ok'])
+        self.assertEqual(parsed['left'],'Brentford')
+        self.assertEqual(parsed['right'],'Tottenham Hotspur')
+        self.assertEqual(parsed['date'],'2026-08-22')
+        self.assertTrue(server._epl_parsed_pair_matches_event(parsed,'Tottenham Hotspur','Brentford'))
+
+    def test_v417_epl_alias_matching_handles_common_short_names(self):
+        parsed=server._epl_parse_match_title('Man City vs. Man Utd | PREMIER LEAGUE HIGHLIGHTS | 8/23/2026 | NBC Sports',2026)
+        self.assertTrue(server._epl_parsed_pair_matches_event(parsed,'Manchester United','Manchester City'))
+        self.assertTrue(server._epl_team_equivalent('Spurs','Tottenham Hotspur'))
+        self.assertTrue(server._epl_team_equivalent('Wolves','Wolverhampton Wanderers'))
+
+    def test_v417_every_goal_pinned_playlist_trusts_curated_member_owner(self):
+        calls=[]
+        def fake(url,timeout=10):
+            calls.append(url)
+            if '/playlistItems?' in url:
+                return {'items':[{'contentDetails':{'videoId':'goals1'},'snippet':{'resourceId':{'videoId':'goals1'}}}]}
+            if '/videos?' in url:
+                return {'items':[{'id':'goals1','snippet':{'channelId':'CLUB_PARTNER','channelTitle':'Official Club Partner','title':'Every Goal from Matchweek 1 | Premier League 2026/27','description':'','publishedAt':'2026-08-23T12:00:00Z','thumbnails':{}},'contentDetails':{'duration':'PT12M','regionRestriction':{}},'status':{'privacyStatus':'public','embeddable':True}}]}
+            return {}
+        playlist={'playlistId':'PLVJum5p_YGgA','title':'Every Goal by Premier League Matchweek: 2026-27','seasonStart':2026,'family':'epl-youtube-pl','role':'every-goal','channelId':server.EPL_YOUTUBE_PL_CHANNEL_ID,'pinned':True}
+        with tempfile.TemporaryDirectory() as td, patch.object(server,'read_youtube_key',return_value='k'), patch.object(server,'youtube_fetch_json',side_effect=fake), patch.object(server,'_epl_youtube_playlist_items_cache_path',return_value=Path(td)/'items.json'):
+            rows=server._epl_youtube_playlist_items(playlist,force=True)
+        self.assertEqual([x['youtubeId'] for x in rows],['goals1'])
+        self.assertEqual(server.HISTORY_MEDIA_AUDIT['eplPlaylistTelemetry']['everyGoalVideoIds'],1)
+        self.assertEqual(server.HISTORY_MEDIA_AUDIT['eplPlaylistTelemetry']['everyGoalVideoDetails'],1)
+
 
 
 if __name__=='__main__': unittest.main()

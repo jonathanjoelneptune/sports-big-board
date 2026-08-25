@@ -1,4 +1,4 @@
-"""Media scope + Silver collection classification for Sports Big Board v4.1.16.
+"""Media scope + Silver collection classification for Sports Big Board v4.1.17.
 
 Scope answers *what the media covers*. Intent answers *what kind of program it is*.
 Neither is the game's Gold/Green/Purple/Blue quality tier. Only GAME-scoped media
@@ -24,7 +24,7 @@ PLAYER = "PLAYER"
 SEASON_LEAGUE = "SEASON_LEAGUE"
 OTHER = "OTHER"
 # COLLECTION_SCOPES remains the broad taxonomy vocabulary for compatibility.
-# SILVER_SCOPES is the actual v4.1.16 presentation/promotion contract.
+# SILVER_SCOPES is the actual v4.1.17 presentation/promotion contract.
 COLLECTION_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, SEASON_LEAGUE}
 SILVER_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE}
 VALID_SCOPES = {GAME, DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, PLAYER, SEASON_LEAGUE, OTHER}
@@ -323,7 +323,7 @@ def classify_with_reason(item, *, league="", date="", away="", home=""):
     item=item or {}; explicit=str(item.get("mediaScope") or "").upper(); title=_title(item); text=_text(item)
     if explicit in VALID_SCOPES:
         return explicit,float(item.get("mediaScopeConfidence") or 1.0),str(item.get("mediaScopeReason") or "EXPLICIT_SCOPE")
-    # v4.1.16: studio/reaction/postgame-show programming can remain in SOURCE_MEDIA,
+    # v4.1.17: studio/reaction/postgame-show programming can remain in SOURCE_MEDIA,
     # but may not become GAME media merely because a provider endpoint was event-scoped.
     if _NON_GAME_RECAP_PROGRAM_RE.search(text) and not re.search(r"\b(?:full game highlights|game highlights|full match highlights|match highlights|condensed game|extended highlights)\b",text,re.I):
         return OTHER,0.995,"NON_GAME_POSTGAME_OR_REACTION_PROGRAM"

@@ -1,4 +1,4 @@
-"""YouTube API gateway for Sports Big Board v4.1.16.
+"""YouTube API gateway for Sports Big Board v4.1.17.
 
 The gateway is deliberately operation-aware. A search.list quota/rate failure must
 never disable cheap metadata validation (videos.list) or official-channel history
@@ -38,7 +38,7 @@ class OperationState:
 class YouTubeGateway:
     """Small thread-safe request broker with separate failure domains per method."""
 
-    def __init__(self, user_agent: str = "SportsBigBoard/4.1.16", state_file=None, quota_timezone="America/Los_Angeles"):
+    def __init__(self, user_agent: str = "SportsBigBoard/4.1.17", state_file=None, quota_timezone="America/Los_Angeles"):
         self.user_agent = user_agent
         self.state_file = Path(state_file) if state_file else None
         self.quota_timezone = str(quota_timezone or "America/Los_Angeles")

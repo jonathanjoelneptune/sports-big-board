@@ -1,13 +1,14 @@
-Sports Big Board v4.1.16 — Updated Files Only
-Base release: v4.1.15
+Sports Big Board v4.1.17 — Updated Files Only
+Base release: v4.1.16
 
 Scope:
-- direct pinned EPL playlist ingestion before channel enumeration
-- trusted NBC Sports channel ID for canonical playlist repair/future discovery
-- automatic exact-title channel fallback when a pinned/shared playlist id yields zero items
-- EPL playlist index/video stage telemetry
-- Rule Game Catch-up v5 with EPL playlist source v2 only
-- Rule Collection Catch-up v4 for EPL Every Goal only
-- Discovery remains v15; NFL, MLS, matcher v7 and existing Silver architecture remain unchanged
+- EPL NBC/Premier League YouTube title event matching: v/v./vs/vs./@ separators, unordered canonical club pair, explicit numeric title date
+- common EPL club alias normalization before event association
+- pinned NBC Premier League 2025-26 season playlist for historical Extended backfill
+- trusted curated Every Goal member hydration for Matchweek Silver
+- EPL event-matching telemetry plus existing playlist index/video-stage telemetry
+- Rule Game Catch-up v6 with EPL playlist source v3 only
+- Rule Collection Catch-up v5 for EPL Every Goal only
+- Discovery remains v15; NFL, MLS, matcher v7, and unrelated Silver architecture remain unchanged
 
-Upload these files over the matching v4.1.15 repository paths. No catalog rebuild is required.
+Upload these files over the matching v4.1.16 repository paths. No catalog rebuild is required.

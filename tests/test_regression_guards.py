@@ -24,7 +24,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertLess(block.index('const assoc=data.associations||{};'),block.index('assoc.assignedLinks'))
 
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=4.1.16','architecture/score-date-store.js?v=4.1.16','architecture/event-identity.js?v=4.1.16','architecture/media-scope.js?v=4.1.16','architecture/media-classifier.js?v=4.1.16','architecture/playback-transports.js?v=4.1.16','architecture/provider-health.js?v=4.1.16','architecture/sport-media-policy.js?v=4.1.16','architecture/media-manifest.js?v=4.1.16','architecture/media-resolver.js?v=4.1.16','architecture/game-center-policy.js?v=4.1.16','architecture/selected-event-store.js?v=4.1.16','architecture/game-center-contract.js?v=4.1.16','architecture/media-work-priorities.js?v=4.1.16','architecture/editorial-packages.js?v=4.1.16','ui/player-visibility.js?v=4.1.16','ui/info-drawer.js?v=4.1.16','ui/settings-view.js?v=4.1.16','ui/history-audit.js?v=4.1.16','ui/game-center-view.js?v=4.1.16','app.js?v=4.1.16']
+        ordered=['core-model.js?v=4.1.17','architecture/score-date-store.js?v=4.1.17','architecture/event-identity.js?v=4.1.17','architecture/media-scope.js?v=4.1.17','architecture/media-classifier.js?v=4.1.17','architecture/playback-transports.js?v=4.1.17','architecture/provider-health.js?v=4.1.17','architecture/sport-media-policy.js?v=4.1.17','architecture/media-manifest.js?v=4.1.17','architecture/media-resolver.js?v=4.1.17','architecture/game-center-policy.js?v=4.1.17','architecture/selected-event-store.js?v=4.1.17','architecture/game-center-contract.js?v=4.1.17','architecture/media-work-priorities.js?v=4.1.17','architecture/editorial-packages.js?v=4.1.17','ui/player-visibility.js?v=4.1.17','ui/info-drawer.js?v=4.1.17','ui/settings-view.js?v=4.1.17','ui/history-audit.js?v=4.1.17','ui/game-center-view.js?v=4.1.17','app.js?v=4.1.17']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -383,8 +383,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v4.1.16 — score ribbon recovery',STYLES)
-        self.assertIn('v4.1.16 — historical Date Browser',STYLES)
+        self.assertIn('v4.1.17 — score ribbon recovery',STYLES)
+        self.assertIn('v4.1.17 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -393,7 +393,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v4.1.16 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v4.1.17 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -556,7 +556,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v4.1.16',STYLES)
+        self.assertNotIn('\\n\\n/* v4.1.17',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)
@@ -674,7 +674,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('"mls-match-highlights","version":2,"objective":"extended"',SERVER)
         self.assertIn('"premierleague-official","version":5,"objective":"quick"',SERVER)
         self.assertIn('"nbc-epl-extended","version":4,"objective":"extended"',SERVER)
-        self.assertIn('HISTORY_RULE_CATCHUP_VERSION = 5',SERVER)
+        self.assertIn('HISTORY_RULE_CATCHUP_VERSION = 6',SERVER)
         self.assertIn('def _history_rule_game_catchup_snapshot',SERVER)
         self.assertIn("preferred_rule_league={1:'NFL',2:'MLS',3:'EPL'}.get(worker_index,'')",SERVER)
         self.assertIn('def history_rule_collection_catchup_worker',SERVER)
@@ -714,16 +714,16 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn('epl-youtube-nbc-extended',SERVER)
         self.assertIn('epl-youtube-every-goal',SERVER)
         self.assertIn('PREMIER LEAGUE HIGHLIGHTS',SERVER)
-        self.assertIn('HISTORY_RULE_CATCHUP_VERSION = 5',SERVER)
-        self.assertIn('HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 4',SERVER)
+        self.assertIn('HISTORY_RULE_CATCHUP_VERSION = 6',SERVER)
+        self.assertIn('HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 5',SERVER)
         self.assertIn('[EPL PLAYLISTS]',AUDIT)
 
     def test_v416_epl_pins_are_direct_sources_with_stage_telemetry(self):
         self.assertIn('EPL_YOUTUBE_NBC_CHANNEL_ID',SERVER)
         self.assertIn('def _epl_pinned_playlists',SERVER)
         self.assertIn('def _epl_catalog_fallback_for_pinned',SERVER)
-        self.assertIn('HISTORY_RULE_CATCHUP_VERSION = 5',SERVER)
-        self.assertIn('HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 4',SERVER)
+        self.assertIn('HISTORY_RULE_CATCHUP_VERSION = 6',SERVER)
+        self.assertIn('HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 5',SERVER)
         self.assertIn('[EPL PLAYLIST INDEX]',AUDIT)
         self.assertIn('[EPL PLAYLIST VIDEOS]',AUDIT)
 
@@ -1086,6 +1086,17 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("recent_cutoff", repo)
         self.assertIn('recent_no_media', repo)
         self.assertIn('recent_gaps', repo)
+
+
+    def test_v417_epl_event_matching_and_every_goal_hydration_are_observable(self):
+        self.assertIn('def _epl_parse_match_title',SERVER)
+        self.assertIn('def _epl_parsed_pair_matches_event',SERVER)
+        self.assertIn('def _epl_numeric_date_from_text',SERVER)
+        self.assertIn('HISTORY_RULE_CATCHUP_VERSION = 6',SERVER)
+        self.assertIn('HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 5',SERVER)
+        self.assertIn('epl-playlist-items-v417-',SERVER)
+        self.assertIn('[EPL EVENT MATCHING]',AUDIT)
+        self.assertIn('everyGoalVideoDetails',AUDIT)
 
 
 if __name__=='__main__': unittest.main()
