@@ -1,21 +1,20 @@
-# Sports Big Board v4.1.17
+# Sports Big Board v4.1.18
 
-> v4.1.17 is the **EPL playlist event-matching + historical backfill** release. It keeps Discovery v15, strict NFL/MLS/EPL worker affinity, the proven NFL playlist collector, matcher v7, and the working MLS/Silver architecture while fixing the last EPL YouTube association/hydration boundary.
+> v4.1.18 is the **EPL YouTube acceptance + Matchweek Silver classifier** release. It keeps Discovery v15, strict NFL/MLS/EPL worker affinity, the proven NFL playlist collector, matcher v7, and the working MLS/Silver architecture while fixing the final EPL title/classification boundary exposed by v4.1.17.
 
-## v4.1.17 — EPL playlist event matching
+## v4.1.18 — EPL source-split matching + Every Goal classification
 
-- **NBC title parsing:** parses the club pair before the first `|`, accepts `v`, `v.`, `vs`, `vs.`, and `@`, and compares normalized clubs as an unordered pair rather than assuming home/away title order.
-- **Explicit title dates:** numeric NBC dates such as `8/22/2026` are parsed to the canonical event date and take precedence over publication-date tolerance.
-- **EPL club aliases:** common forms such as `Spurs`, `Man City`, `Man Utd`, `Wolves`, `Brighton`, `Forest`, `West Ham`, and `Newcastle` normalize to canonical event teams before association.
-- **Pinned-current + historical NBC backfill:** the 2026–27 NBC season playlist remains pinned, and the supplied `Premier League 2025-26 season` playlist (`PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E`) is now a direct season-scoped historical Extended source using the same `PREMIER LEAGUE HIGHLIGHTS` matcher.
-- **Pinned Premier League sources:** the supplied Club Highlights and Every Goal playlists are still consumed directly with `playlistItems.list`; channel enumeration remains fallback repair/future-season discovery only.
-- **Every Goal hydration:** trusted Premier League curated-playlist membership is sufficient provenance even when an individual playlist member is owned by an official club/partner channel, so the Matchweek video is no longer discarded before Silver classification.
-- **Operator telemetry:** `[EPL EVENT MATCHING]` exposes titles examined, teams parsed, dates parsed, exact matches, team misses, date misses, and parse failures. Existing `[EPL PLAYLIST INDEX]` and `[EPL PLAYLIST VIDEOS]` continue to show playlist/item/hydration stages.
-- **No YouTube Search dependency:** EPL playlist ingestion uses `playlists.list`, `playlistItems.list`, and `videos.list`; it remains operational while `search.list` quota is exhausted.
-- **Migration boundary:** Rule Game Catch-up v6 reopens only EPL playlist source v3; Rule Collection Catch-up v5 reopens only EPL Every Goal. Discovery remains v15. NFL, MLS, matcher v7, and unrelated Silver data are not reset. No catalog rebuild is required.
-- **Versions:** Frontend/Backend v4.1.17, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 6`, `HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 5`, event matcher v7.
+- **Source-split telemetry:** NBC Sports and Premier League Club playlist matching now report independent funnels. `[EPL NBC MATCHING]` and `[EPL PL CLUB MATCHING]` prevent one source pass from overwriting the other source's parser statistics.
+- **NBC acceptance funnel:** operator telemetry now separates title recognition, parsed clubs, parsed dates, exact club-pair match, duration pass, event-association pass, persisted Extended, and parse/team/date/duration/association misses.
+- **Fail-safe exact pair scan:** if trusted NBC punctuation differs from the known `v.`/`vs.` shapes, both canonical event clubs explicitly present in the title plus the trusted playlist/date evidence can still prove the event without relaxing cross-event safeguards.
+- **Premier League score titles:** official Club Highlights titles such as `Brentford 3-0 Tottenham Hotspur | ... Highlights` are parsed as an unordered club pair alongside the existing `v`, `v.`, `vs`, `vs.`, and `@` formats.
+- **Every Goal classifier:** official Matchweek Silver now accepts `Every Goal`, `All Goals`, `All The Goals`, and `All of the Goals` when a `Matchweek N` marker appears anywhere in the title. The Matchweek number is stamped before collection classification.
+- **Pinned season sources preserved:** the 2026–27 NBC playlist and supplied 2025–26 NBC historical playlist remain direct season-scoped Extended sources; PL Club Highlights and Every Goal remain direct pinned sources.
+- **No YouTube Search dependency:** EPL playlist ingestion continues to use `playlists.list`, `playlistItems.list`, and `videos.list`, so the backfill remains independent of `search.list` quota.
+- **Migration boundary:** Rule Game Catch-up v7 reopens only EPL playlist source v4; Rule Collection Catch-up v6 reopens only EPL Every Goal. Discovery remains v15. NFL, MLS, matcher v7, and unrelated Silver data are not reset. No catalog rebuild is required.
+- **Versions:** Frontend/Backend v4.1.18, `HISTORY_DISCOVERY_VERSION = 15`, `HISTORY_RULE_CATCHUP_VERSION = 7`, `HISTORY_RULE_COLLECTION_CATCHUP_VERSION = 6`, event matcher v7.
 
-Verification includes the exact Brentford–Tottenham NBC title form, numeric date parsing, reversed home/away order, common EPL aliases, pinned-playlist direct/fallback resolution, trusted Every Goal hydration, the 2025–26 pinned NBC backfill source, existing NFL/MLS behavior, and the complete historical/cloud regression suite.
+Verification includes NBC `PREMIER LEAGUE HIGHLIGHTS` event matching, unexpected-separator fallback, Premier League score-formatted club highlights, `ALL The Goals ... Matchweek 1` Silver classification, the pinned 2025–26 NBC source, and the complete existing NFL/MLS/cloud regression suite.
 
 ## v4.1.8 — official content-source adapters
 
@@ -285,7 +284,7 @@ A key entered on Android is not automatically copied to a different PC. Enter or
 ## Android
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.17/sports-big-board-v4.1.17
+cd ~/storage/downloads/sports-big-board-v4.1.18/sports-big-board-v4.1.18
 bash VERIFY.sh
 bash START-ANDROID.sh
 ```
