@@ -575,6 +575,9 @@ async function setScoreBrowseDate(value,{animate=true,hold=9000,load=true}={}){
     setHistoricalCoverageLabels(false);
     renderSportFeedDiagnostics();
     renderCoverage(coverageState);
+    // Returning to TODAY should immediately revalidate the current-information
+    // lane. The endpoint remains cache-first, so this does not block navigation.
+    refreshKeyInformation(false,true).catch(()=>{});
   }
   if(load) await ensureScoreDateLoaded(date);
   if(load) await loadRoundupsForDate(date);
@@ -3990,7 +3993,8 @@ function persistHistoricalMediaSnapshot(league,date,items){
 async function hydrateScoreDateFromHistory(date,{scores=true}={}){
   try{
     const payload=await apiJson(`/api/history/day?date=${encodeURIComponent(date)}`);
-    const leagues=payload?.leagues||{}; let any=false;
+    const leagues=payload?.leagues||{}; let any=false; let catalogGames=0;
+    const catalogRowsByLeague=new Map();
     if(Array.isArray(payload?.roundups)){ROUNDUPS_BY_DATE.set(date,payload.roundups);if(payload.roundups.length)any=true;}
     if(payload?.eventPlans&&typeof payload.eventPlans==='object'){
       for(const [key,plan] of Object.entries(payload.eventPlans)){
@@ -3999,17 +4003,39 @@ async function hydrateScoreDateFromHistory(date,{scores=true}={}){
         const aliases=[plan?.eventId,ev?.scoreEventId,ev?.espnEventId,ev?.gameCenterEventId,ev?.matchId,ev?.gamePk,ev?.eventId,ev?.id].filter(x=>x!==undefined&&x!==null&&String(x)!=='');
         for(const id of aliases)CATALOG_EVENT_PLANS.set(`${lg}:${String(id)}`,plan);
         if(Array.isArray(plan?.media)&&plan.media.length)any=true;
+        // Catalog-first means the canonical event record is also sufficient to
+        // paint the historical score ribbon. Do not make the browser refetch six
+        // league scoreboards simply to reconstruct events SQLite already owns.
+        if(scores&&ENABLED_LIVE_LEAGUES.includes(lg)&&ev&&typeof ev==='object'&&Object.keys(ev).length){
+          const row={...ev};
+          if(row.id===undefined||row.id===null||String(row.id)==='') row.id=String(plan?.eventId||'');
+          if(row.eventId===undefined||row.eventId===null||String(row.eventId)==='') row.eventId=String(plan?.eventId||row.id||'');
+          if(!row.date&&!row.gameDate) row.date=date;
+          const rows=catalogRowsByLeague.get(lg)||[]; rows.push(row); catalogRowsByLeague.set(lg,rows); catalogGames++;
+        }
       }
+    }
+    if(scores&&catalogRowsByLeague.size){
+      for(const [lg,rows] of catalogRowsByLeague.entries()){
+        if(!SCORE_DATE_STORE?.hasLeagueMatchesSnapshot?.(date,lg)) storeScoreDateLeague(lg,date,rows);
+      }
+      any=true;
+    }
+    // A completed historical seed makes absent leagues authoritative empty
+    // snapshots. This is what lets Aug 22 paint instantly without waiting on ESPN.
+    if(scores&&payload?.scoreInventoryComplete){
+      for(const lg of ENABLED_LIVE_LEAGUES){
+        if(!SCORE_DATE_STORE?.hasLeagueMatchesSnapshot?.(date,lg)) storeScoreDateLeague(lg,date,[]);
+      }
+      any=true;
     }
     if(payload?.discoveryState) historicalDateDiscoveryStates.set(date,payload.discoveryState);
     for(const lg of ENABLED_LIVE_LEAGUES){
       const state=leagues[lg]; if(!state) continue;
-      // An empty saved scoreboard is still authoritative: "no games" is data and
-      // should not force another upstream fetch each time the viewer revisits a day.
+      // Prefer a persisted scoreboard when one exists; it can carry fresher score
+      // details than the normalized catalog event, but it is no longer required
+      // for the historical ribbon to appear.
       if(scores&&Number(state.scoresSavedAt||0)>0){ storeScoreDateLeague(lg,date,state.scores||[]); any=true; }
-      // The normalized event catalog is authoritative even when legacy
-      // history_day.media_saved_at is zero. v2.9.0 could therefore report 9/9 NBA
-      // games playable on the server while the browser hydrated zero NBA assets.
       if(Array.isArray(state.media)){
         const nowSeconds=Date.now()/1000;
         const rows=(state.media||[]).filter(x=>{
@@ -4022,9 +4048,10 @@ async function hydrateScoreDateFromHistory(date,{scores=true}={}){
       }
     }
     if(scoreBrowseDate===date) renderHistoricalDateDiagnostics(date,payload?.discoveryState||historicalDiscoveryState(date));
-    return {any,leagues,discoveryState:payload?.discoveryState||null};
-  }catch(_){ return {any:false,leagues:{},discoveryState:null}; }
+    return {any,leagues,catalogGames,scoreInventoryComplete:!!payload?.scoreInventoryComplete,discoveryState:payload?.discoveryState||null};
+  }catch(_){ return {any:false,leagues:{},catalogGames:0,scoreInventoryComplete:false,discoveryState:null}; }
 }
+
 function pumpHistoricalMediaSearchQueue(){
   while(historicalMediaSearchActive<HISTORICAL_MEDIA_DISCOVERY_CONCURRENCY && historicalMediaSearchQueue.length){
     const job=historicalMediaSearchQueue.shift();
@@ -4174,7 +4201,15 @@ async function ensureScoreDateLoaded(date,{force=false}={}){
     if(!force){
       const hydrated=await hydrateScoreDateFromHistory(date,{scores:true});
       if(hydrated.any && scoreBrowseDate===date) renderScoresFromMatchesCombined(true);
-      if(date<today){for(const league of ENABLED_LIVE_LEAGUES){if(leagueLoaded(league)) launchMedia(league,SCORE_DATE_STORE?.matches?.(date,league)||[]);}}
+      if(date<today){
+        for(const league of ENABLED_LIVE_LEAGUES){if(leagueLoaded(league)) launchMedia(league,SCORE_DATE_STORE?.matches?.(date,league)||[]);}
+        // Historical seed + canonical event plans are authoritative. Once that
+        // inventory is present, do not hold the loading state open on upstream
+        // score providers that may be slow or unavailable.
+        if(hydrated.scoreInventoryComplete){
+          return ENABLED_LIVE_LEAGUES.map(league=>[league,{rows:SCORE_DATE_STORE?.matches?.(date,league)||[],cached:true,source:'CATALOG'}]);
+        }
+      }
     }
 
     // Today still refreshes scores from live providers, but already-associated media
@@ -4430,7 +4465,18 @@ function keyInfoEventDate(item){
 }
 function keyInfoEventsForActiveSport(){
   const lg=String(scoreRibbonLeagueFilter||'ALL').toUpperCase();
-  return ALL_KEY_INFO_EVENTS.filter(x=>(lg==='ALL'||String(x?.league||'').toUpperCase()===lg) && keyInfoEventDate(x)===scoreBrowseDate);
+  const leagueRows=ALL_KEY_INFO_EVENTS.filter(x=>lg==='ALL'||String(x?.league||'').toUpperCase()===lg);
+  const exact=leagueRows.filter(x=>keyInfoEventDate(x)===scoreBrowseDate);
+  if(exact.length || scoreBrowseDate!==localDateISO(0)) return exact;
+  // v4.1.23 hotfix: Key Info is a current-information lane, not an empty-midnight
+  // lane. If today's source refresh has not yet produced an item stamped on the
+  // viewer's exact local calendar date, show the newest factual updates from the
+  // rolling 36-hour window while the background editorial refresh catches up.
+  const now=Date.now(), floor=now-(36*60*60*1000), ceiling=now+(60*60*1000);
+  return leagueRows.filter(x=>{
+    const dt=new Date(String(x?.publishedAt||x?.date||''));
+    const ts=dt.getTime(); return Number.isFinite(ts)&&ts>=floor&&ts<=ceiling;
+  }).sort((a,b)=>new Date(String(b?.publishedAt||b?.date||0))-new Date(String(a?.publishedAt||a?.date||0))).slice(0,20);
 }
 function renderActiveSportKeyInformation(){
   renderKeyInformation(keyInfoEventsForActiveSport());

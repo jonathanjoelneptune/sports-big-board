@@ -89,6 +89,24 @@ class V4123CatalogFirstTests(unittest.TestCase):
         self.assertIn("sbb-history-schedule-sync",backend)
         self.assertIn("sbb-media-playlist-crawler",backend)
 
+    def test_historical_ribbon_uses_catalog_events_without_waiting_on_score_providers(self):
+        root=Path(__file__).resolve().parents[1]
+        app=(root/"app.js").read_text(encoding="utf-8")
+        backend=(root/"server.py").read_text(encoding="utf-8")
+        self.assertIn("scoreInventoryComplete",backend)
+        self.assertIn("catalogEventCount",backend)
+        self.assertIn("const catalogRowsByLeague=new Map()",app)
+        self.assertIn("storeScoreDateLeague(lg,date,rows)",app)
+        self.assertIn("if(hydrated.scoreInventoryComplete)",app)
+        self.assertIn("source:'CATALOG'",app)
+
+    def test_key_info_today_has_rolling_recent_fallback(self):
+        root=Path(__file__).resolve().parents[1]
+        app=(root/"app.js").read_text(encoding="utf-8")
+        self.assertIn("rolling 36-hour window",app)
+        self.assertIn("scoreBrowseDate!==localDateISO(0)",app)
+        self.assertIn("refreshKeyInformation(false,true).catch(()=>{})",app)
+
     def test_android_history_audit_uses_outer_vertical_scroll_container(self):
         root=Path(__file__).resolve().parents[1]
         css=(root/"styles.css").read_text(encoding="utf-8")

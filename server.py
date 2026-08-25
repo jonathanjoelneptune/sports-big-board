@@ -8750,6 +8750,16 @@ def _history_day_event_plans(date):
         out[key]=_history_playback_plan(str(date)[:10],league,event_id)
     return out
 
+def _history_day_score_inventory_complete(date):
+    """Whether SQLite is authoritative for the complete historical slate."""
+    target=str(date or '')[:10]
+    if not re.match(r'^\d{4}-\d{2}-\d{2}$',target): return False
+    try:
+        today=_client_date_iso(0,MEDIA_PREWARM_STATE.get('timezone') or '',MEDIA_PREWARM_STATE.get('utcOffsetMinutes'))
+    except Exception:
+        today=_date_iso(0)
+    return bool(HISTORY_BACKFILL_STATE.get('seedComplete')) and HISTORY_BACKFILL_FLOOR_DATE<=target<today
+
 
 def _history_event_catalog_state(date,league,row):
     event_id=_history_row_event_id(row)
@@ -10209,7 +10219,7 @@ class Handler(SimpleHTTPRequestHandler):
             if not re.match(r'^\d{4}-\d{2}-\d{2}$',date): return send_json(self,{'ok':False,'error':'DATE_REQUIRED'},400)
             _touch_history_focus(date,seconds=120)
             day=HISTORY_REPOSITORY.get_day(date); plans=_history_day_event_plans(date)
-            return send_json(self,{'ok':True,**day,'eventPlans':plans,'catalogFirst':True,'discoveryState':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary(),'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE)},200)
+            return send_json(self,{'ok':True,**day,'eventPlans':plans,'catalogFirst':True,'catalogEventCount':len(plans),'scoreInventoryComplete':_history_day_score_inventory_complete(date),'discoveryState':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary(),'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE)},200)
 
         if parsed.path == "/api/history/roundups":
             qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]; league=str((qs.get('league') or ['ALL'])[-1]).upper()

@@ -1,7 +1,10 @@
-Sports Big Board v4.1.23 deploy + Android audit hotfix
-Base: v4.1.23 GitHub repository
+Sports Big Board v4.1.23 cumulative hotfix 2
 
-Changed files:
+Apply over any v4.1.23 repository.
+Includes deploy/mobile audit + catalog-first history ribbon + Key Info fixes.
+
+Files:
+app.js
 cloud/gcp/DEPLOY-FROM-GITHUB.sh
 sbb/history_repository.py
 server.py
@@ -9,8 +12,3 @@ styles.css
 tests/test_cloud_stage1.py
 tests/test_history_v4_baseline.py
 tests/test_v4123_catalog_first.py
-
-Fixes:
-- Selective relationship repair: collection-only integrity drift no longer forces a full event-link repair before port 8080 opens.
-- Deployment local-health grace increased to a bounded 3 minutes, with immediate failure if systemd exits.
-- Android/mobile Historical Database Audit uses the full modal shell as the vertical scroll container; tables retain horizontal pan.
