@@ -1,3 +1,21 @@
+# Sports Big Board v4.1.23
+
+> v4.1.23 is the **Catalog-First Runtime + Interactive Source Management** release. It keeps Discovery v15, Matcher v7, Rule Game Catch-up v10, Rule Collection Catch-up v8, the five-worker recovery pool, and every v4.1.22 curated source while making the canonical SQLite catalog the primary runtime read path.
+
+## v4.1.23 — catalog-first runtime + interactive source management
+
+- **Rolling schedule sync:** a new `sbb-history-schedule-sync` worker refreshes yesterday, today, and the next 14 days into `history_day` / `history_catalog_event`. A full horizon refresh runs at startup and periodically; a smaller rolling refresh runs every 10 minutes. Today/future events are cataloged immediately but remain ineligible for recap discovery until live/final state makes them eligible.
+- **Manual schedule refresh:** Game Media Playlists now includes **SYNC SCHEDULE NOW**, which triggers the same canonical schedule ingestion without rebuilding the catalog.
+- **Interactive Game Media Playlists:** operators can add, edit, enable/disable, remove, or crawl a YouTube playlist from the audit UI. Adding a playlist validates its ID/metadata, persists it in `operator-media-playlists.json`, and starts a background crawl.
+- **Crawl first, associate second:** every playable item in an operator playlist is hydrated into normalized `SOURCE_MEDIA` as unassigned/orphaned media. Event Matcher v7 then attempts canonical GAME associations using team/date evidence. Ambiguous/non-game items remain orphaned rather than being forced onto an event.
+- **Automatic recrawl:** enabled operator playlists can recrawl on a configurable interval (default 60 minutes). New videos are reused by identity, newly available schedule events can absorb prior orphans, and disabling/removing a playlist never deletes already-discovered media.
+- **Playlist status:** custom rows report playlist items, hydrated assets, assigned assets, orphans, quarantines, last crawl, and last error. The worker console adds `[PLAYLIST CRAWLER]`.
+- **Catalog-first day response:** `/api/history/day` now returns canonical `eventPlans` keyed by `LEAGUE:eventId`, including already-associated media, playable media, and primary playback selection.
+- **Catalog-first ribbon/playback:** browsing a historical day no longer automatically launches a whole-date `/api/history/discover` job. The browser hydrates canonical event→media plans from SQLite first. `FIND RECAP` is reserved for a true catalog gap; an explicit click can still run exact-event discovery.
+- **Today is catalog-first too:** today's persisted schedule/media can paint immediately from SQLite, then live score providers refresh authoritative score/status state in the background. This avoids waiting on providers before known media becomes clickable.
+- **Single media relationship authority:** score cards prefer exact canonical event keys from the server instead of reconstructing associations client-side. Provider search, curated playlists, generic recovery, and rolling schedules all write to the catalog; the frontend reads that resolved catalog.
+- **Version boundary:** Frontend/Backend v4.1.23; Discovery v15; Event Matcher v7; Rule Game Catch-up v10; Rule Collection Catch-up v8. No catalog rebuild and no automatic global replay.
+
 # Sports Big Board v4.1.22
 
 > v4.1.22 is the **Curated Playlist Recovery + Source Registry** release. It keeps the five-worker v4.1.21 recovery engine and Discovery v15, but adds operator-pinned NHL/MLS/MLB/NFL playlist inventories, reopens only the affected source ledgers, makes Operator Recovery collapsible, and adds a Game Media Playlists tab that exposes the active source strategy for every league.

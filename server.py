@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sports Big Board v4.1.22 local/cloud backend.
+"""Sports Big Board v4.1.23 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
@@ -41,7 +41,7 @@ from sbb.event_matcher import match_event as match_media_to_event
 from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
 from sbb.secrets import get_secret, set_secrets, status as secrets_status, migrate_legacy as migrate_legacy_secrets, SECRETS_FILE
 
-APP_VERSION = "4.1.22"
+APP_VERSION = "4.1.23"
 PORT = int(os.environ.get("PORT", "8080"))
 BIND_HOST = os.environ.get("SBB_BIND_HOST", "127.0.0.1").strip() or "127.0.0.1"
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -73,7 +73,7 @@ OPENAI_KEY_FILE = STATE_DIR / "openai-key"
 OPENAI_API_BASE = "https://api.openai.com/v1"
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
 YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
-YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.22", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
+YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.23", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
 
 def youtube_fetch_json(url, timeout=10):
     """Operation-aware YouTube broker.
@@ -92,7 +92,7 @@ NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"  # verified @NFL channel
 # playlistItems.list + videos.list; search.list is never required. Known historical
 # playlist IDs provide immediate anchors while automatic enumeration remains primary.
 NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS = {
-    # v4.1.22 operator-pinned 2025-season weekly/playoff recap playlists.  The
+    # v4.1.23 operator-pinned 2025-season weekly/playoff recap playlists.  The
     # channel catalog supplies the authoritative title when available; these anchors
     # keep every known playlist reachable even if playlists.list misses/changes it.
     "PLRdw3IjKY2gm8m7heXMOfVPLVA8jDY_Jd":"2025 NFL Recap Playlist 01",
@@ -139,7 +139,7 @@ EPL_YOUTUBE_KNOWN_PLAYLISTS = {
     "PLR1b-6EyIaTs":{"title":"Premier League 2026-27 season","url":"https://www.youtube.com/playlist?list=PLR1b-6EyIaTs","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2026,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
     "PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E":{"title":"Premier League 2025-26 season","url":"https://www.youtube.com/playlist?list=PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2025,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
 }
-# v4.1.22 operator-curated GAME playlist registry. These playlist lanes use
+# v4.1.23 operator-curated GAME playlist registry. These playlist lanes use
 # playlistItems.list + videos.list only, never search.list.  Exact event association
 # still requires both teams plus explicit/published date evidence, so a trusted
 # playlist can improve discovery without weakening Event Matcher v7.
@@ -361,6 +361,18 @@ HISTORY_ADMIN_RECOVERY_STATE = {"lastAction":"","lastPreview":{},"lastAppliedAt"
 HISTORY_DB_AUDIT_LOCK = threading.RLock()
 HISTORY_DB_AUDIT_STATE = {"generation":0,"running":False,"complete":False,"cursor":0,"checked":0,"total":0,"startedAt":0.0,"completedAt":0.0,"lastRun":0.0,"lastError":"","issues":{"noVerifiedMedia":0,"staleDiscovery":0,"quarantinedLinks":0,"unknownDiscovery":0},"integrity":{},"silverIdentity":{}}
 HISTORY_DB_AUDIT_BATCH = max(50,min(1000,int(os.environ.get("SBB_DB_AUDIT_BATCH","250") or 250)))
+
+# v4.1.23 rolling schedule + operator playlist state. Provider feeds write into the
+# canonical catalog; the UI reads the catalog instead of reconstructing relationships.
+HISTORY_SCHEDULE_SYNC_INTERVAL = max(120,int(os.environ.get("SBB_SCHEDULE_SYNC_INTERVAL","600") or 600))
+HISTORY_SCHEDULE_SYNC_FUTURE_DAYS = max(3,min(21,int(os.environ.get("SBB_SCHEDULE_SYNC_FUTURE_DAYS","14") or 14)))
+HISTORY_SCHEDULE_SYNC_FULL_INTERVAL = max(3600,int(os.environ.get("SBB_SCHEDULE_SYNC_FULL_INTERVAL","21600") or 21600))
+HISTORY_SCHEDULE_SYNC_STATE = {"running":False,"lastRun":0.0,"lastFullRun":0.0,"today":"","dates":0,"events":0,"futureDays":HISTORY_SCHEDULE_SYNC_FUTURE_DAYS,"errors":[],"lastError":""}
+OPERATOR_MEDIA_PLAYLISTS_FILE = STATE_DIR / "operator-media-playlists.json"
+OPERATOR_MEDIA_PLAYLISTS_LOCK = threading.RLock()
+OPERATOR_MEDIA_PLAYLIST_CRAWL_LOCK = threading.RLock()
+OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE = {"running":False,"lastRun":0.0,"lastPlaylistId":"","lastError":""}
+
 
 def _history_worker_role(worker_index):
     idx=max(1,int(worker_index or 1))
@@ -609,6 +621,8 @@ HISTORY_WORKER_HEALTH = {
     **{f"green-gap-{i}":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""} for i in range(1,HISTORY_GREEN_WORKERS+1)},
     "date-backfill":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
     "database-audit":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
+    "schedule-sync":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
+    "playlist-crawler":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
 }
 
 def _history_console_log(worker, level, message, **meta):
@@ -629,7 +643,7 @@ def _history_worker_beat(worker, phase=None, current=None, progress=False, block
 
 def _history_threads_status():
     names={t.name:bool(t.is_alive()) for t in threading.enumerate()}
-    expected=["sbb-history-backfill","sbb-history-rule-collections","sbb-history-database-audit",*[f"sbb-history-green-gap-{i}" for i in range(1,HISTORY_GREEN_WORKERS+1)]]
+    expected=["sbb-history-backfill","sbb-history-rule-collections","sbb-history-database-audit","sbb-history-schedule-sync","sbb-media-playlist-crawler",*[f"sbb-history-green-gap-{i}" for i in range(1,HISTORY_GREEN_WORKERS+1)]]
     return [{"name":name,"alive":bool(names.get(name))} for name in expected]
 
 def _history_green_worker_enabled(worker_index):
@@ -1025,7 +1039,7 @@ def _prewarm_highlightly_call(sport_key,endpoint,date,timezone_value="",force=Fa
     if RATE_LIMIT_STATE.get("limited") and limited_since and time.time()-limited_since < 15*60:
         return cached
     url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.22"})
+    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.23"})
     try:
         with urlopen(req,timeout=15) as resp:
             data=json.loads(resp.read().decode("utf-8"))
@@ -1586,7 +1600,7 @@ def openai_api_request(path, payload=None, method=None, timeout=20):
         raise RuntimeError("OPENAI_NOT_CONFIGURED")
     method=method or ("POST" if payload is not None else "GET")
     body=None if payload is None else json.dumps(payload).encode("utf-8")
-    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.22"}
+    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.23"}
     req=Request(f"{OPENAI_API_BASE}{path}",data=body,headers=headers,method=method)
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -2121,7 +2135,7 @@ def _google_news_official_results(league):
     site_clause=' OR '.join(f'site:{d}' for d in sorted(trusted_domains))
     query=f'({terms}) ({site_clause}) {league} when:5d'
     url='https://news.google.com/rss/search?'+urlencode({'q':query,'hl':'en-US','gl':'US','ceid':'US:en'})
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'})
     try:
         with urlopen(req,timeout=10) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2180,7 +2194,7 @@ def _espn_rss_results(league):
     """First-party ESPN headline feed. ESPN explicitly publishes these RSS feeds for aggregators."""
     league=str(league or '').upper(); url=ESPN_RSS.get(league)
     if not url: return []
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'})
     try:
         with urlopen(req,timeout=8) as resp: raw=resp.read()
         root=ET.fromstring(raw)
@@ -2426,7 +2440,7 @@ def _nfl_team_site_video_results(date, away, home, max_items=8):
     for host in hosts:
         page=f'https://{host}/video/'
         try:
-            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'})
+            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'})
             with urlopen(req,timeout=8) as resp: raw=resp.read().decode('utf-8','ignore')
         except Exception as exc:
             print(f'[SBB NFL] club video page failed {host}: {type(exc).__name__}: {exc}',flush=True); continue
@@ -2772,7 +2786,7 @@ def _highlightly_soccer_schedule(league,date):
         "x-rapidapi-key":read_key(),
         "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.22"
+        "User-Agent":"SportsBigBoard/4.1.23"
     })
     with urlopen(req,timeout=12) as resp:
         payload=json.loads(resp.read().decode("utf-8"))
@@ -2876,7 +2890,7 @@ def _soccer_diagnostics():
                     "x-rapidapi-key":read_key(),
                     "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
                     "Accept":"application/json",
-                    "User-Agent":"SportsBigBoard/4.1.22"
+                    "User-Agent":"SportsBigBoard/4.1.23"
                 })
                 with urlopen(req,timeout=12) as resp:
                     payload=json.loads(resp.read().decode("utf-8"))
@@ -3638,7 +3652,7 @@ def _nfl_game_highlights_source_pages(away,home):
 
 
 def _nfl_fetch_page_text(url,timeout=9):
-    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'})
+    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'})
     with urlopen(req,timeout=timeout) as resp:
         return resp.read().decode('utf-8','ignore')
 
@@ -3795,7 +3809,7 @@ _SOCCER_TEAM_ALIASES = {
 
 
 def _official_fetch_page_text(url,timeout=10,referer=''):
-    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'}
+    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'}
     if referer: headers['Referer']=referer
     req=Request(url,headers=headers)
     with urlopen(req,timeout=timeout) as resp:
@@ -4248,7 +4262,7 @@ def _official_nfl_feed_videos(date, away, home):
         return []
     url=f"https://www.youtube.com/feeds/videos.xml?channel_id={NFL_YOUTUBE_CHANNEL_ID}"
     try:
-        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.22"})
+        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.23"})
         with urlopen(req,timeout=9) as resp:
             raw=resp.read()
         root=ET.fromstring(raw)
@@ -4437,7 +4451,7 @@ def _youtube_oembed_probe(video_id,timeout=7):
     vid=str(video_id or '').strip()
     if not vid: return None
     url='https://www.youtube.com/oembed?'+urlencode({'url':f'https://www.youtube.com/watch?v={vid}','format':'json'})
-    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22'})
+    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23'})
     try:
         with urlopen(req,timeout=timeout) as resp:
             if getattr(resp,'status',200)!=200: return None
@@ -4680,7 +4694,9 @@ def _curated_playlists_for_date(league,date):
     try: year=int(target[:4])
     except Exception: year=0
     rows=[]
-    for raw in CURATED_GAME_PLAYLISTS.get(league) or []:
+    configured=[dict(x) for x in (CURATED_GAME_PLAYLISTS.get(league) or [])]
+    configured.extend(_operator_playlist_to_curated(x) for x in _operator_media_playlist_rows(enabled_only=True) if str(x.get('league') or '').upper()==league)
+    for raw in configured:
         item=dict(raw); start=int(item.get('seasonStart') or 0); end=int(item.get('seasonEnd') or start or 0)
         if year and start and not (start<=year<=max(start,end)): continue
         rows.append(item)
@@ -4732,7 +4748,8 @@ def _curated_playlist_items_impl(league,playlist,force=False):
             vid=str(vd.get('id') or ''); sn=vd.get('snippet') or {}; cd=vd.get('contentDetails') or {}; channel_id=str(sn.get('channelId') or '')
             if expected_channel and channel_id!=expected_channel: continue
             title=str(sn.get('title') or '').strip(); desc=str(sn.get('description') or '').strip(); dur=_iso8601_duration_seconds(cd.get('duration')) or 0
-            if not title or not re.search(r'highlights?|recap|game\s+summary|match\s+summary|condensed',f'{title} {desc}',re.I): continue
+            if not title: continue
+            if not playlist.get('includeAllItems') and not re.search(r'highlights?|recap|game\s+summary|match\s+summary|condensed',f'{title} {desc}',re.I): continue
             thumbs=sn.get('thumbnails') or {}; thumb=((thumbs.get('high') or thumbs.get('medium') or thumbs.get('default') or {}).get('url') if isinstance(thumbs,dict) else '') or ''
             source_label=str(playlist.get('sourceLabel') or f'{league} YouTube Playlist')
             row={'id':f'curated-playlist-{league.lower()}-{pid}-{vid}','eventId':vid,'youtubeId':vid,'league':league,'title':title,'description':desc,'duration':dur,'durationSeconds':dur,'thumbnail':str(thumb),'source':source_label,'sourceLabel':source_label,'sourceType':str(playlist.get('sourceType') or f'trusted-{league.lower()}-youtube-playlist'),'provider':'YOUTUBE','verifiedPlayable':True,'embedValidated':True,'externalOnly':False,'validationState':'VERIFIED','embedValidation':'pinned-playlist+playlistItems.list+videos.list','overview':True,'programType':'recap','externalUrl':f'https://www.youtube.com/watch?v={vid}','publishedAt':str(sn.get('publishedAt') or ''),'officialChannelId':channel_id,'officialPlaylistId':pid,'officialPlaylistTitle':str(playlist.get('title') or ''),'playlistSeasonStart':int(playlist.get('seasonStart') or 0),'playlistSeasonEnd':int(playlist.get('seasonEnd') or 0),'playlistTrust':str(playlist.get('trust') or 'OPERATOR_TRUSTED'),'discoverySourceFamily':f'{league.lower()}-youtube-playlist','chronology':[1,1003,0,order.get(vid,999),order.get(vid,999)],'importance':128 if str(playlist.get('priority') or '').upper()=='PRIMARY' else 122,'rapid':True}
@@ -4774,6 +4791,199 @@ def _curated_game_playlist_results(league,date,away,home,max_items=10,objective=
     return _history_collapse_duplicate_media(out)[:max_items]
 
 
+
+def _operator_media_playlists_load():
+    with OPERATOR_MEDIA_PLAYLISTS_LOCK:
+        try:
+            payload=json.loads(OPERATOR_MEDIA_PLAYLISTS_FILE.read_text(encoding='utf-8'))
+            rows=payload.get('rows') if isinstance(payload,dict) else payload
+            return [dict(x) for x in (rows or []) if isinstance(x,dict)]
+        except Exception:
+            return []
+
+
+def _operator_media_playlists_save(rows):
+    with OPERATOR_MEDIA_PLAYLISTS_LOCK:
+        OPERATOR_MEDIA_PLAYLISTS_FILE.parent.mkdir(parents=True,exist_ok=True)
+        tmp=OPERATOR_MEDIA_PLAYLISTS_FILE.with_suffix('.tmp')
+        tmp.write_text(json.dumps({'version':1,'updatedAt':time.time(),'rows':list(rows or [])},ensure_ascii=False,indent=2),encoding='utf-8')
+        tmp.replace(OPERATOR_MEDIA_PLAYLISTS_FILE)
+    return rows
+
+
+def _youtube_playlist_id(value):
+    text=str(value or '').strip()
+    if re.fullmatch(r'[A-Za-z0-9_-]{10,}',text): return text
+    try:
+        parsed=urlparse(text); qs=parse_qs(parsed.query); pid=str((qs.get('list') or [''])[-1]).strip()
+        if pid: return pid
+    except Exception: pass
+    m=re.search(r'(?:list=|playlist/)([A-Za-z0-9_-]{10,})',text)
+    return m.group(1) if m else ''
+
+
+def _youtube_playlist_metadata(playlist_id):
+    pid=str(playlist_id or '').strip(); key=read_youtube_key()
+    if not pid or not key: return {}
+    try:
+        data=youtube_fetch_json(f"{YOUTUBE_API_BASE}/playlists?{urlencode({'part':'snippet,contentDetails,status','id':pid,'key':key})}",timeout=12)
+        row=((data.get('items') or [{}])[0] or {}); sn=row.get('snippet') or {}; cd=row.get('contentDetails') or {}
+        return {'playlistId':pid,'title':str(sn.get('title') or ''),'channelId':str(sn.get('channelId') or ''),'channelTitle':str(sn.get('channelTitle') or ''),'itemCount':int(cd.get('itemCount') or 0),'publishedAt':str(sn.get('publishedAt') or '')}
+    except Exception as exc:
+        return {'playlistId':pid,'error':f'{type(exc).__name__}: {exc}'}
+
+
+def _operator_media_playlist_normalize(raw,existing=None):
+    raw=dict(raw or {}); existing=dict(existing or {}); now=time.time()
+    pid=_youtube_playlist_id(raw.get('playlistId') or raw.get('url') or existing.get('playlistId') or existing.get('url'))
+    if not pid: raise ValueError('A valid YouTube playlist URL or playlist ID is required.')
+    league=str(raw.get('league') or existing.get('league') or '').upper()
+    if league not in HISTORY_LEAGUES: raise ValueError('Choose a supported league.')
+    try: start=int(raw.get('seasonStart') if raw.get('seasonStart') not in (None,'') else existing.get('seasonStart') or 0)
+    except Exception: start=0
+    try: end=int(raw.get('seasonEnd') if raw.get('seasonEnd') not in (None,'') else existing.get('seasonEnd') or start or 0)
+    except Exception: end=start
+    objective=str(raw.get('objective') or existing.get('objective') or 'coverage').lower()
+    if objective not in {'coverage','quick','extended'}: objective='coverage'
+    priority=str(raw.get('priority') or existing.get('priority') or 'PRIMARY').upper()
+    if priority not in {'PRIMARY','SECONDARY','FALLBACK'}: priority='PRIMARY'
+    trust=str(raw.get('trust') or existing.get('trust') or 'OPERATOR_TRUSTED').upper()
+    meta=_youtube_playlist_metadata(pid) if bool(raw.get('resolveMetadata',True)) else {}
+    title=str(raw.get('title') or existing.get('title') or meta.get('title') or f'Operator Playlist {pid}').strip()
+    row={**existing,'id':str(existing.get('id') or raw.get('id') or ('playlist-'+hashlib.sha256((league+':'+pid).encode()).hexdigest()[:16])),'playlistId':pid,'url':f'https://www.youtube.com/playlist?list={pid}','league':league,'title':title,'seasonStart':start,'seasonEnd':max(start,end),'objective':objective,'priority':priority,'trust':trust,'enabled':bool(raw.get('enabled',existing.get('enabled',True))),'autoRecrawl':bool(raw.get('autoRecrawl',existing.get('autoRecrawl',True))),'recrawlMinutes':max(30,min(24*60,int(raw.get('recrawlMinutes') or existing.get('recrawlMinutes') or 60))),'channelId':str(raw.get('channelId') or existing.get('channelId') or meta.get('channelId') or ''),'channelTitle':str(raw.get('channelTitle') or existing.get('channelTitle') or meta.get('channelTitle') or ''),'createdAt':float(existing.get('createdAt') or now),'updatedAt':now}
+    row.setdefault('stats',existing.get('stats') or {})
+    return row
+
+
+def _operator_media_playlist_rows(enabled_only=False):
+    rows=_operator_media_playlists_load()
+    return [x for x in rows if (x.get('enabled') or not enabled_only)]
+
+
+def _operator_playlist_to_curated(row):
+    row=dict(row or {}); objective=str(row.get('objective') or 'coverage').lower()
+    force='green' if objective=='quick' else ('extended' if objective=='extended' else '')
+    return {'playlistId':row.get('playlistId'),'title':row.get('title'),'url':row.get('url'),'seasonStart':int(row.get('seasonStart') or 0),'seasonEnd':int(row.get('seasonEnd') or row.get('seasonStart') or 0),'objective':objective,'forceTier':force,'sourceLabel':row.get('channelTitle') or row.get('title') or 'Operator YouTube Playlist','sourceType':'operator-youtube-game-playlist','channelId':row.get('channelId') or '','trust':row.get('trust') or 'OPERATOR_TRUSTED','priority':row.get('priority') or 'PRIMARY','operatorPlaylistId':row.get('id'),'includeAllItems':True}
+
+
+def _playlist_title_candidate_date(item,default_year=0):
+    title=str((item or {}).get('title') or '')
+    explicit=_epl_numeric_date_from_text(title) or _named_date_from_text(title,default_year)
+    if explicit: return explicit
+    published=str((item or {}).get('publishedAt') or '')[:10]
+    return published if re.match(r'^\d{4}-\d{2}-\d{2}$',published) else ''
+
+
+def _operator_media_playlist_crawl(playlist_id,force=True):
+    oid=str(playlist_id or '').strip(); rows=_operator_media_playlists_load(); row=next((x for x in rows if str(x.get('id'))==oid or str(x.get('playlistId'))==oid),None)
+    if not row: raise ValueError('Playlist is not registered.')
+    cfg=_operator_playlist_to_curated(row); league=str(row.get('league') or '').upper(); start=int(row.get('seasonStart') or 0); end=int(row.get('seasonEnd') or start or 0)
+    with OPERATOR_MEDIA_PLAYLIST_CRAWL_LOCK:
+        OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE.update(running=True,lastPlaylistId=str(row.get('id') or ''),lastError='')
+        try:
+            items=[dict(x) for x in _curated_playlist_items(league,cfg,force=bool(force))]
+            for item in items:
+                item['operatorPlaylistId']=str(row.get('id') or ''); item['operatorPlaylistTitle']=str(row.get('title') or ''); item['league']=league
+            HISTORY_REPOSITORY.put_source_media(items,league=league,catalog_state='UNASSIGNED')
+            date_from=f'{start}-01-01' if start else ''; date_to=f'{max(start,end)}-12-31' if max(start,end) else ''
+            events=HISTORY_REPOSITORY.catalog_events(league=league,date_from=date_from,date_to=date_to,limit=50000)
+            by_date={}
+            for ev in events: by_date.setdefault(str(ev.get('date') or '')[:10],[]).append(ev)
+            associated=set(); ambiguous=0
+            for item in items:
+                try: default_year=int(str(item.get('publishedAt') or '')[:4] or start or 0)
+                except Exception: default_year=start
+                d=_playlist_title_candidate_date(item,default_year); candidates=[]
+                if d:
+                    candidates.extend(by_date.get(d) or [])
+                    # Published timestamps can fall on the UTC day after a night game.
+                    if not (_epl_numeric_date_from_text(str(item.get('title') or '')) or _named_date_from_text(str(item.get('title') or ''),default_year)):
+                        try:
+                            base=datetime.strptime(d,'%Y-%m-%d').date()
+                            for delta in (-1,1,2,-2): candidates.extend(by_date.get((base+timedelta(days=delta)).isoformat()) or [])
+                        except Exception: pass
+                matches=[]
+                for ev in candidates:
+                    event=dict(ev.get('event') or {})
+                    event.setdefault('competitionId',league); event.setdefault('__sbbLeague',league); event.setdefault('__sbbDate',str(ev.get('date') or '')[:10])
+                    scoped,evidence=_history_media_match_evidence(dict(item),event)
+                    if scoped.get('mediaScope')==MEDIA_SCOPE_GAME and str(evidence.get('associationState') or '')=='ASSIGNED': matches.append((ev,evidence))
+                unique={str(x[0].get('canonicalEventKey')):x for x in matches}
+                if len(unique)==1:
+                    ev=list(unique.values())[0][0]; event=ev.get('event') or {}; decorated=dict(item); decorated['date']=ev.get('date'); decorated['canonicalEventKey']=ev.get('canonicalEventKey'); decorated['away']=_history_team_name(event,'away'); decorated['home']=_history_team_name(event,'home')
+                    if HISTORY_REPOSITORY.put_event_media(ev.get('date'),league,ev.get('eventId'),[decorated])>0: associated.add(str(item.get('youtubeId') or item.get('id') or ''))
+                elif len(unique)>1: ambiguous+=1
+            stats=HISTORY_REPOSITORY.playlist_asset_stats(row.get('playlistId')); stats.update({'playlistItems':len(items),'hydrated':len(items),'associatedThisCrawl':len(associated),'ambiguousThisCrawl':ambiguous,'lastCrawlAt':time.time(),'lastError':''})
+            for x in rows:
+                if str(x.get('id'))==str(row.get('id')): x['stats']=stats; x['lastCrawlAt']=stats['lastCrawlAt']; x['lastError']=''; x['updatedAt']=time.time()
+            _operator_media_playlists_save(rows); OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE.update(running=False,lastRun=time.time(),lastError='')
+            return {'ok':True,'playlist':next(x for x in rows if str(x.get('id'))==str(row.get('id'))),'stats':stats}
+        except Exception as exc:
+            message=f'{type(exc).__name__}: {exc}'
+            for x in rows:
+                if str(x.get('id'))==str(row.get('id')): x['lastError']=message; x['lastCrawlAt']=time.time(); x['updatedAt']=time.time()
+            _operator_media_playlists_save(rows); OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE.update(running=False,lastRun=time.time(),lastError=message)
+            raise
+
+
+def _operator_media_playlist_crawl_async(playlist_id,force=True):
+    def run():
+        try: _operator_media_playlist_crawl(playlist_id,force=force)
+        except Exception as exc: print(f'[SBB playlist crawler] {type(exc).__name__}: {exc}',flush=True)
+    threading.Thread(target=run,daemon=True,name=f'sbb-playlist-crawl-{str(playlist_id)[:12]}').start()
+
+
+def history_media_playlist_crawler_worker():
+    threading.current_thread().name='sbb-media-playlist-crawler'
+    while True:
+        try:
+            _history_worker_beat('playlist-crawler',phase='crawling',progress=False)
+            now=time.time()
+            for row in _operator_media_playlist_rows(enabled_only=True):
+                if not row.get('autoRecrawl'): continue
+                due=float(row.get('lastCrawlAt') or 0)+max(30,int(row.get('recrawlMinutes') or 60))*60
+                if due<=now:
+                    try: _operator_media_playlist_crawl(row.get('id'),force=True)
+                    except Exception: pass
+            time.sleep(60)
+        except Exception as exc:
+            OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE['lastError']=f'{type(exc).__name__}: {exc}'; time.sleep(60)
+
+
+def _history_schedule_sync_today():
+    tz=str(os.environ.get('SBB_SCHEDULE_TIMEZONE') or MEDIA_PREWARM_STATE.get('timezone') or 'America/Los_Angeles')
+    try: return datetime.now(ZoneInfo(tz)).date().isoformat()
+    except Exception: return _client_date_iso(0)
+
+
+def _history_schedule_sync_once(full=False):
+    today=_history_schedule_sync_today(); now=time.time(); last_full=float(HISTORY_SCHEDULE_SYNC_STATE.get('lastFullRun') or 0)
+    horizon=HISTORY_SCHEDULE_SYNC_FUTURE_DAYS if (full or now-last_full>=HISTORY_SCHEDULE_SYNC_FULL_INTERVAL) else 2
+    dates=[]; base=datetime.strptime(today,'%Y-%m-%d').date()
+    for delta in range(-1,horizon+1): dates.append((base+timedelta(days=delta)).isoformat())
+    events=0; errors=[]; tz=str(os.environ.get('SBB_SCHEDULE_TIMEZONE') or MEDIA_PREWARM_STATE.get('timezone') or 'America/Los_Angeles'); offset=MEDIA_PREWARM_STATE.get('utcOffsetMinutes')
+    HISTORY_SCHEDULE_SYNC_STATE.update(running=True,today=today,futureDays=HISTORY_SCHEDULE_SYNC_FUTURE_DAYS,lastError='')
+    for date in dates:
+        for league in HISTORY_LEAGUES:
+            try:
+                rows,source,cached,error=_history_get_league_scores(date,league,tz,offset,force=True); events+=len(rows or [])
+                if error and source=='UNAVAILABLE': errors.append(f'{league} {date}: {error}')
+            except Exception as exc: errors.append(f'{league} {date}: {type(exc).__name__}: {exc}')
+    HISTORY_SCHEDULE_SYNC_STATE.update(running=False,lastRun=time.time(),lastFullRun=(time.time() if horizon==HISTORY_SCHEDULE_SYNC_FUTURE_DAYS else last_full),dates=len(dates),events=events,errors=errors[-20:],lastError=(errors[-1] if errors else ''))
+    return dict(HISTORY_SCHEDULE_SYNC_STATE)
+
+
+def history_schedule_sync_worker():
+    threading.current_thread().name='sbb-history-schedule-sync'
+    first=True
+    while True:
+        try:
+            _history_worker_beat('schedule-sync',phase='syncing',current=_history_schedule_sync_today(),progress=False)
+            _history_schedule_sync_once(full=first); first=False
+            _history_worker_beat('schedule-sync',phase='sleeping',current=HISTORY_SCHEDULE_SYNC_STATE.get('today') or '',progress=True)
+        except Exception as exc: HISTORY_SCHEDULE_SYNC_STATE.update(running=False,lastError=f'{type(exc).__name__}: {exc}')
+        time.sleep(HISTORY_SCHEDULE_SYNC_INTERVAL)
+
 def _game_media_source_registry():
     """Operator-facing inventory of active GAME media sources and pinned playlists."""
     rows=[]
@@ -4807,9 +5017,12 @@ def _game_media_source_registry():
     for x in CURATED_GAME_PLAYLISTS['MLS']: add('MLS',x['priority'],'YOUTUBE PLAYLIST',x['title'],x['url'],'MATCH HIGHLIGHTS / PURPLE',str(x['seasonStart']),'mls-youtube-playlist-highlights',x['trust'],'Operator-pinned match-highlight inventory; exact teams + date required.')
     add('MLS','PRIMARY','WEBSITE','MLS Match Snapshot / Match Highlights','https://www.mlssoccer.com/video/topics/match-highlights/','QUICK / EXTENDED','ALL','mls-match-snapshot + mls-match-highlights','OFFICIAL','Snapshot is preferred Green; Match Highlights is Purple.')
     add('MLS','SILVER','WEBSITE','MLS All Goals / Goal of Matchday / What A Save','https://www.mlssoccer.com/video/topics/all-goals/','SILVER','ALL','mls-roundups','OFFICIAL','Matchday-level editorial collections; never satisfies a GAME.')
+    for custom in _operator_media_playlist_rows(enabled_only=False):
+        stats=HISTORY_REPOSITORY.playlist_asset_stats(custom.get('playlistId')); stats.update(custom.get('stats') or {})
+        rows.append({'id':custom.get('id'),'league':custom.get('league'),'priority':custom.get('priority') or 'PRIMARY','kind':'YOUTUBE PLAYLIST','title':custom.get('title'),'url':custom.get('url'),'objective':str(custom.get('objective') or 'coverage').upper(),'season':f"{custom.get('seasonStart') or 'ALL'}" if not custom.get('seasonEnd') or custom.get('seasonEnd')==custom.get('seasonStart') else f"{custom.get('seasonStart')}-{custom.get('seasonEnd')}",'collector':'operator-playlist-crawler','trust':custom.get('trust') or 'OPERATOR_TRUSTED','active':bool(custom.get('enabled')),'custom':True,'autoRecrawl':bool(custom.get('autoRecrawl')),'recrawlMinutes':int(custom.get('recrawlMinutes') or 60),'playlistId':custom.get('playlistId'),'seasonStart':int(custom.get('seasonStart') or 0),'seasonEnd':int(custom.get('seasonEnd') or custom.get('seasonStart') or 0),'objectiveKey':str(custom.get('objective') or 'coverage'),'lastCrawlAt':float(custom.get('lastCrawlAt') or 0),'lastError':custom.get('lastError') or '','stats':stats,'notes':'Operator-managed playlist. Crawled into SOURCE_MEDIA first, then Event Matcher associates canonical games; unmatched videos remain orphaned.'})
     order={'MLB':0,'NFL':1,'NBA':2,'NHL':3,'EPL':4,'MLS':5}; pr={'PRIMARY':0,'SECONDARY':1,'FALLBACK':2,'SILVER':3}
-    rows.sort(key=lambda x:(order.get(x['league'],99),pr.get(x['priority'],9),x['season'],x['title']))
-    return {'version':1,'generatedAt':time.time(),'leagues':['MLB','NFL','NBA','NHL','EPL','MLS'],'rows':rows}
+    rows.sort(key=lambda x:(order.get(x['league'],99),pr.get(x['priority'],9),x.get('season',''),x.get('title','')))
+    return {'version':2,'generatedAt':time.time(),'leagues':['MLB','NFL','NBA','NHL','EPL','MLS'],'rows':rows,'operatorPlaylists':_operator_media_playlist_rows(enabled_only=False),'crawler':dict(OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE),'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE)}
 
 
 def _nfl_youtube_playlist_catalog_cache_path():
@@ -5811,7 +6024,7 @@ def _search_engine_youtube_links(query,max_results=18):
     # normal search result page on a phone connection.
     try:
         url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss','count':max(10,min(30,max_results*2))})
-        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
+        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
         with urlopen(req,timeout=9) as resp:
             blob=resp.read(1_500_000)
         root=ET.fromstring(blob)
@@ -6209,7 +6422,7 @@ def normalized_rapid_highlights(date, force_refresh=False, force_clips=False):
     return unique
 
 def fetch_json(url, timeout=15):
-    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.22"})
+    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.23"})
     with urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
@@ -6907,7 +7120,7 @@ def _football_day_fallback(date, sport_key, timezone_value=""):
     req=Request(url,headers={
         "x-rapidapi-key":key,
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.22"
+        "User-Agent":"SportsBigBoard/4.1.23"
     })
     with urlopen(req,timeout=15) as resp:
         data=json.loads(resp.read().decode("utf-8"))
@@ -7126,7 +7339,7 @@ def _media_request_headers(range_value=None,media_url=""):
     host=(urlparse(str(media_url or "")).hostname or "").lower()
     referer="https://www.espn.com/" if ("espn" in host or "akamai" in host) else ("https://www.nfl.com/" if "nfl" in host else "https://www.mlb.com/")
     headers={
-        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.22",
+        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.23",
         "Accept":"video/mp4,video/*;q=0.9,*/*;q=0.8",
         "Referer":referer
     }
@@ -8150,7 +8363,7 @@ def _history_validate_native_asset(item,timeout=6):
     """Positively probe one direct historical media URL before advertising green."""
     row=dict(item or {}); url=str(row.get('mediaUrl') or '').strip()
     if not url: return row
-    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.22','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
+    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.23','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
     if 'espn' in url.lower(): headers['Referer']='https://www.espn.com/'
     source_type=str(row.get('sourceType') or '')
     external=str(row.get('externalUrl') or '').lower()
@@ -8526,7 +8739,17 @@ def _history_playback_plan(date,league,event_id):
     row=_history_find_score_row(date,league,event_id); record=HISTORY_REPOSITORY.get_event(date,league,event_id); media=HISTORY_REPOSITORY.event_media(date,league,event_id,include_failed=True)
     playable=[x for x in media if isinstance(x,dict) and x.get('verifiedPlayable') and x.get('runtimeCatalogState')!='FAILED' and (x.get('youtubeId') or x.get('mediaUrl'))]
     playable=_history_collapse_duplicate_media([annotate_media_tier(x) for x in playable]); playable.sort(key=_history_media_rank,reverse=True)
-    return {'date':str(date)[:10],'league':str(league).upper(),'eventId':str(event_id),'event':row or (record or {}).get('event') or {},'discovery':record or {},'media':media,'playable':playable,'primary':playable[0] if playable else None}
+    return {'date':str(date)[:10],'league':str(league).upper(),'eventId':str(event_id),'canonicalEventKey':str((record or {}).get('canonicalEventKey') or f"{str(league).upper()}:{event_id}"),'event':row or (record or {}).get('event') or {},'discovery':record or {},'media':media,'playable':playable,'primary':playable[0] if playable else None}
+
+def _history_day_event_plans(date):
+    """Canonical event -> persisted media plans for one date, owned by SQLite."""
+    out={}
+    for ev in HISTORY_REPOSITORY.catalog_events(date_from=str(date)[:10],date_to=str(date)[:10],limit=500):
+        key=str(ev.get('canonicalEventKey') or ''); league=str(ev.get('league') or '').upper(); event_id=str(ev.get('eventId') or '')
+        if not key or not league or not event_id: continue
+        out[key]=_history_playback_plan(str(date)[:10],league,event_id)
+    return out
+
 
 def _history_event_catalog_state(date,league,row):
     event_id=_history_row_event_id(row)
@@ -9801,6 +10024,44 @@ class Handler(SimpleHTTPRequestHandler):
                 return send_json(self,{'ok':False,'error':'BAD_HISTORY_WORK_MODE','message':str(exc)},400)
             except Exception as exc:
                 return send_json(self,{'ok':False,'error':'HISTORY_WORK_MODE_ERROR','message':f'{type(exc).__name__}: {exc}'},500)
+        if parsed.path == '/api/history/media-sources':
+            try:
+                length=min(64000,int(self.headers.get('Content-Length') or 0)); body=json.loads(self.rfile.read(length).decode('utf-8') or '{}'); action=str(body.get('action') or 'save').lower()
+                rows=_operator_media_playlists_load()
+                if action=='save':
+                    incoming=dict(body.get('playlist') or body); wanted=str(incoming.get('id') or ''); existing=next((x for x in rows if wanted and str(x.get('id'))==wanted),None); normalized=_operator_media_playlist_normalize(incoming,existing)
+                    if existing: rows=[normalized if str(x.get('id'))==str(existing.get('id')) else x for x in rows]
+                    else:
+                        duplicate=next((x for x in rows if str(x.get('league'))==normalized['league'] and str(x.get('playlistId'))==normalized['playlistId']),None)
+                        if duplicate: normalized=_operator_media_playlist_normalize(incoming,duplicate); rows=[normalized if str(x.get('id'))==str(duplicate.get('id')) else x for x in rows]
+                        else: rows.append(normalized)
+                    _operator_media_playlists_save(rows)
+                    if normalized.get('enabled'): _operator_media_playlist_crawl_async(normalized.get('id'),force=True)
+                    return send_json(self,{'ok':True,'action':'save','playlist':normalized,**_game_media_source_registry()},200)
+                target=str(body.get('id') or body.get('playlistId') or ''); row=next((x for x in rows if str(x.get('id'))==target or str(x.get('playlistId'))==target),None)
+                if not row: return send_json(self,{'ok':False,'error':'PLAYLIST_NOT_FOUND'},404)
+                if action=='crawl':
+                    _operator_media_playlist_crawl_async(row.get('id'),force=True); return send_json(self,{'ok':True,'action':'crawl','playlist':row,'crawler':dict(OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE)},202)
+                if action=='toggle':
+                    row['enabled']=bool(body.get('enabled',not row.get('enabled'))); row['updatedAt']=time.time(); _operator_media_playlists_save(rows)
+                    if row['enabled']: _operator_media_playlist_crawl_async(row.get('id'),force=False)
+                    return send_json(self,{'ok':True,'action':'toggle','playlist':row,**_game_media_source_registry()},200)
+                if action=='delete':
+                    rows=[x for x in rows if str(x.get('id'))!=str(row.get('id'))]; _operator_media_playlists_save(rows)
+                    return send_json(self,{'ok':True,'action':'delete','deletedId':row.get('id'),'mediaPreserved':True,**_game_media_source_registry()},200)
+                return send_json(self,{'ok':False,'error':'BAD_PLAYLIST_ACTION'},400)
+            except ValueError as exc:
+                return send_json(self,{'ok':False,'error':'BAD_MEDIA_PLAYLIST','message':str(exc)},400)
+            except Exception as exc:
+                return send_json(self,{'ok':False,'error':'MEDIA_PLAYLIST_ERROR','message':f'{type(exc).__name__}: {exc}'},500)
+        if parsed.path == '/api/history/schedule-sync':
+            try:
+                length=min(8000,int(self.headers.get('Content-Length') or 0)); body=json.loads(self.rfile.read(length).decode('utf-8') or '{}')
+                if body.get('runNow'):
+                    threading.Thread(target=lambda:_history_schedule_sync_once(full=bool(body.get('full',True))),daemon=True,name='sbb-schedule-sync-manual').start()
+                return send_json(self,{'ok':True,'state':dict(HISTORY_SCHEDULE_SYNC_STATE)},202 if body.get('runNow') else 200)
+            except Exception as exc:
+                return send_json(self,{'ok':False,'error':'SCHEDULE_SYNC_ERROR','message':f'{type(exc).__name__}: {exc}'},500)
         if parsed.path in ('/api/history/admin/recovery/preview','/api/history/admin/recovery/apply'):
             try:
                 length=min(32000,int(self.headers.get('Content-Length') or 0)); body=json.loads(self.rfile.read(length).decode('utf-8') or '{}')
@@ -9947,8 +10208,8 @@ class Handler(SimpleHTTPRequestHandler):
             qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]
             if not re.match(r'^\d{4}-\d{2}-\d{2}$',date): return send_json(self,{'ok':False,'error':'DATE_REQUIRED'},400)
             _touch_history_focus(date,seconds=120)
-            day=HISTORY_REPOSITORY.get_day(date)
-            return send_json(self,{'ok':True,**day,'discoveryState':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary()},200)
+            day=HISTORY_REPOSITORY.get_day(date); plans=_history_day_event_plans(date)
+            return send_json(self,{'ok':True,**day,'eventPlans':plans,'catalogFirst':True,'discoveryState':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary(),'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE)},200)
 
         if parsed.path == "/api/history/roundups":
             qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]; league=str((qs.get('league') or ['ALL'])[-1]).upper()
@@ -9970,6 +10231,9 @@ class Handler(SimpleHTTPRequestHandler):
 
         if parsed.path == "/api/history/media-sources":
             return send_json(self,{"ok":True,"version":APP_VERSION,**_game_media_source_registry()},200)
+
+        if parsed.path == "/api/history/schedule-sync":
+            return send_json(self,{"ok":True,"version":APP_VERSION,"state":dict(HISTORY_SCHEDULE_SYNC_STATE)},200)
 
         if parsed.path == "/api/history/audit":
             try:
@@ -10095,6 +10359,7 @@ class Handler(SimpleHTTPRequestHandler):
                     'greenGap':copy.deepcopy(HISTORY_GREEN_GAP_STATE),'greenPool':green_pool,'greenGapQueue':qsum,'associations':associations,
                     'eventClaims':claims,'providerConcurrency':providers,'discoveryEfficiency':_history_efficiency_snapshot(),'silver':silver,'mediaObjectives':media_objectives,'officialSourceCatchup':official_catchup,'ruleGameCatchup':rule_game_catchup,'ruleCollectionCatchup':_history_rule_collection_catchup_snapshot(),
                     'databaseAudit':_history_database_audit_snapshot(),'recovery':_history_recovery_status(),'silverIdentity':HISTORY_REPOSITORY.silver_identity_audit(league='EPL'),
+                    'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE),'playlistCrawler':dict(OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE),'operatorPlaylists':len(_operator_media_playlist_rows(enabled_only=False)),
                     'backfill':copy.deepcopy(HISTORY_BACKFILL_STATE),'backfillFloorDate':HISTORY_BACKFILL_FLOOR_DATE,'activeDiscoveries':active,'focus':focus,
                     'youtubeGateway':gateway,'youtubeSearchBudget':budget_state,
                     'highlightly':{'limited':bool(RATE_LIMIT_STATE.get('limited')),'remaining':RATE_LIMIT_STATE.get('remaining'),'limit':RATE_LIMIT_STATE.get('limit')},
@@ -10239,7 +10504,7 @@ class Handler(SimpleHTTPRequestHandler):
                 "persistentState": bool(STATE_DIR),
                 "rateLimit": {"remaining": RATE_LIMIT_STATE.get("remaining", ""), "limit": RATE_LIMIT_STATE.get("limit", ""), "limited": RATE_LIMIT_STATE.get("limited", False)},
                 "highlightlyRateLimited": RATE_LIMIT_STATE["limited"],
-                "phase": "V4.1.22 CURATED PLAYLIST RECOVERY + SOURCE REGISTRY",
+                "phase": "V4.1.23 CURATED PLAYLIST RECOVERY + SOURCE REGISTRY",
                 "workMode":dict(HISTORY_WORK_MODE_STATE),
                 "highlightlyConfigured": bool(key),
                 "youtubeCooldownSeconds":max((row.get("cooldownSeconds",0) for row in YOUTUBE_GATEWAY.status().values()), default=0),
@@ -10551,7 +10816,7 @@ class Handler(SimpleHTTPRequestHandler):
                 flat.setdefault("leagueName",cfg["league"])
                 flat.setdefault("countryCode",cfg.get("countryCode",""))
             url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.22"})
+            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.23"})
             cache_name=f"{sport_key}-{endpoint}-v2514" if sport_key in ("epl","mls") else f"{sport_key}-{endpoint}"
 
             # v1.9.1 quota control: proactively reuse a fresh server-side snapshot.
@@ -10685,7 +10950,7 @@ class Handler(SimpleHTTPRequestHandler):
             req = Request(url, headers={
                 "x-rapidapi-key": key,
                 "Accept": "application/json",
-                "User-Agent": "SportsBigBoard/4.1.22"
+                "User-Agent": "SportsBigBoard/4.1.23"
             })
             try:
                 with urlopen(req, timeout=15) as resp:
@@ -10725,7 +10990,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT)
-    print("\nSports Big Board v4.1.22 — curated playlist recovery + source registry")
+    print("\nSports Big Board v4.1.23 — catalog-first runtime + interactive source management")
     print(f"Bind: {BIND_HOST}:{PORT} • deployment: {DEPLOYMENT_MODE} • state: {STATE_DIR}")
     if not CLOUD_MODE: print(f"Open: http://localhost:{PORT}")
     print("Highlightly key:", "configured" if read_key() else "NOT CONFIGURED")
@@ -10780,6 +11045,8 @@ if __name__ == "__main__":
     threading.Thread(target=history_backfill_worker,daemon=True,name="sbb-history-backfill").start()
     threading.Thread(target=history_rule_collection_catchup_worker,daemon=True,name="sbb-history-rule-collections").start()
     threading.Thread(target=history_database_audit_worker,daemon=True,name="sbb-history-database-audit").start()
+    threading.Thread(target=history_schedule_sync_worker,daemon=True,name="sbb-history-schedule-sync").start()
+    threading.Thread(target=history_media_playlist_crawler_worker,daemon=True,name="sbb-media-playlist-crawler").start()
     for worker_index in range(1,HISTORY_GREEN_WORKERS+1):
         threading.Thread(target=history_green_gap_worker,args=(worker_index,),daemon=True,name=f"sbb-history-green-gap-{worker_index}").start()
     ThreadingHTTPServer((BIND_HOST, PORT), Handler).serve_forever()

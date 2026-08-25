@@ -15,7 +15,7 @@ class V4121ParallelRecoveryTests(unittest.TestCase):
         self.assertEqual(server._history_worker_role(3)["league"], "EPL")
         self.assertEqual(server._history_worker_role(4)["label"], "FLOAT-NHL")
         self.assertEqual(server._history_worker_role(5)["label"], "FLOAT-GENERIC")
-        # v4.1.22 intentionally scales scheduling without scaling provider semaphores.
+        # v4.1.23 intentionally scales scheduling without scaling provider semaphores.
         self.assertEqual(server.HISTORY_PROVIDER_LIMITS.get("youtube"), 2)
         self.assertEqual(server.HISTORY_PROVIDER_LIMITS.get("web"), 2)
         self.assertEqual(server.HISTORY_PROVIDER_LIMITS.get("native"), 3)

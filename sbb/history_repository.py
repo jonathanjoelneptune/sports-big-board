@@ -474,7 +474,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.22 migration cooldowns already persisted in production.
+        """Release artificial v4.1.23 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -573,6 +573,29 @@ class HistoryRepository:
         with self._lock, closing(self._connect()) as conn: row=conn.execute('SELECT COUNT(*) n FROM history_catalog_event'+where,params).fetchone()
         return int(row['n'] or 0)
 
+    def catalog_events(self, *, league="", date_from="", date_to="", limit=10000):
+        """Return canonical event rows for catalog-owned association work."""
+        league=str(league or "").upper(); date_from=str(date_from or "")[:10]; date_to=str(date_to or "")[:10]; limit=max(1,min(50000,int(limit or 10000))); clauses=[]; params=[]
+        if league: clauses.append('league=?'); params.append(league)
+        if date_from: clauses.append('event_date>=?'); params.append(date_from)
+        if date_to: clauses.append('event_date<=?'); params.append(date_to)
+        where=(' WHERE '+' AND '.join(clauses)) if clauses else ''
+        with self._lock, closing(self._connect()) as conn:
+            rows=conn.execute('SELECT canonical_event_key,league,event_id,event_date,event_json,final_at FROM history_catalog_event'+where+' ORDER BY event_date DESC,league,event_id LIMIT ?',[*params,limit]).fetchall()
+        return [{"canonicalEventKey":r['canonical_event_key'],"league":r['league'],"eventId":r['event_id'],"date":r['event_date'],"event":self._load_obj(r['event_json']),"finalAt":float(r['final_at'] or 0)} for r in rows]
+
+    def playlist_asset_stats(self, playlist_id):
+        """Summarize normalized assets discovered from one YouTube playlist."""
+        pid=str(playlist_id or "").strip()
+        if not pid: return {"assets":0,"assigned":0,"orphaned":0,"quarantined":0}
+        with self._lock, closing(self._connect()) as conn:
+            row=conn.execute("""SELECT COUNT(DISTINCT s.asset_key) assets,
+              COUNT(DISTINCT CASE WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=s.asset_key AND em.association_state='ASSIGNED') THEN s.asset_key END) assigned,
+              COUNT(DISTINCT CASE WHEN NOT EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=s.asset_key AND em.association_state='ASSIGNED') THEN s.asset_key END) orphaned,
+              COUNT(DISTINCT CASE WHEN s.catalog_state='QUARANTINED' THEN s.asset_key END) quarantined
+              FROM history_source_media s WHERE COALESCE(json_extract(s.asset_json,'$.officialPlaylistId'),'')=?""",(pid,)).fetchone()
+        return {"assets":int(row['assets'] or 0),"assigned":int(row['assigned'] or 0),"orphaned":int(row['orphaned'] or 0),"quarantined":int(row['quarantined'] or 0)}
+
     def database_audit_batch(self, *, offset=0, limit=250, current_discovery_version=0):
         """Read-only local catalog scan used by the restartable database-audit cursor."""
         offset=max(0,int(offset or 0)); limit=max(1,min(1000,int(limit or 250))); current=int(current_discovery_version or 0)
@@ -634,7 +657,7 @@ class HistoryRepository:
                 if state==ASSIGNED:
                     competing=conn.execute("SELECT canonical_event_key,association_confidence,association_method FROM history_event_media WHERE asset_key=? AND association_state='ASSIGNED' AND canonical_event_key<>?",(asset_key,key)).fetchall()
                     if competing:
-                        # v4.1.22 distinguishes a broad candidate being encountered
+                        # v4.1.23 distinguishes a broad candidate being encountered
                         # for another game from a genuine strong-identity conflict.
                         # Preserve a previously proven assignment for ordinary title/
                         # team matches and quarantine only the new candidate link.
@@ -731,7 +754,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.22 treats collection membership as fully derived state.  Classifier
+        v4.1.23 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -830,7 +853,7 @@ class HistoryRepository:
         return {"event":event,"collection":collection,"integrity":integrity,"issues":issues,"ok":not bool(issues)}
 
     def media_objective_summary(self):
-        """Persisted v4.1.22 objective/category counts for operator audit."""
+        """Persisted v4.1.23 objective/category counts for operator audit."""
         out={"nflQuickGames":0,"nflExtendedGames":0,"nflBothGames":0,"nflGreenWithoutPurple":0,"nflMissingQuick":0,"nflMissingExtended":0,
              "mlsSnapshots":0,"mlsMatchHighlights":0,"mlsSnapshotGames":0,"mlsHighlightGames":0,"mlsBothGames":0,"mlsMissingSnapshot":0,"mlsMissingHighlights":0,
              "eplQuickGames":0,"eplExtendedGames":0,"eplBothGames":0,"eplMissingQuick":0,"eplMissingExtended":0,
@@ -970,7 +993,7 @@ class HistoryRepository:
     def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP", return_stats=False):
         """Promote only strictly proven league-wide roundup assets into Silver.
 
-        v4.1.22 keeps the legacy integer return by default, but can return precise
+        v4.1.23 keeps the legacy integer return by default, but can return precise
         idempotent telemetry so rule catch-up reports *new* assets/links rather than
         repeatedly calling rediscovered rows "accepted".
         """
@@ -1253,7 +1276,7 @@ class HistoryRepository:
     def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, preferred_league="", strict_preferred=False, limit=96, newest_first=True):
         """Newest-first official-source objective queue.
 
-        v4.1.22 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
+        v4.1.23 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
         objectives. A previously completed generic source pass cannot hide an unmet
         objective, and the three rule-migration leagues are scheduled ahead of legacy
         NHL source catch-up until their new objective ledgers are satisfied.
@@ -1262,7 +1285,7 @@ class HistoryRepository:
         leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_specs_for_league(source_versions,lg)]
         preferred=str(preferred_league or "").upper()
         if strict_preferred and preferred and preferred in leagues:
-            # v4.1.22 strict rule-migration lane: query only the assigned league.
+            # v4.1.23 strict rule-migration lane: query only the assigned league.
             # This avoids SQL LIMIT starvation where NFL/MLS rows can consume the
             # candidate window before an EPL-affinity worker ever sees EPL work.
             leagues=[preferred]

@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <title>Sports Big Board — v4.1.22</title>
+  <title>Sports Big Board — v4.1.23</title>
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://www.googlevideo.com">
   <link rel="preconnect" href="https://i.ytimg.com">
-  <link rel="stylesheet" href="styles.css?v=4.1.22" />
+  <link rel="stylesheet" href="styles.css?v=4.1.23" />
 </head>
 <body>
   <div id="launchScreen" class="sbb-launch-screen" role="dialog" aria-modal="true" aria-labelledby="launchTitle">
@@ -118,7 +118,7 @@
         <button class="nav">🏆 <span>Standings</span></button>
         <button id="leftRailSettingsBtn" class="nav">⚙ <span>Settings</span></button>
         <div class="proof-card">
-          <strong>v4.1.22</strong>
+          <strong>v4.1.23</strong>
           <span>V1B • Cache + background discovery</span>
           <small id="apiRailStatus">Checking API…</small>
           <small id="editorRailStatus">Editor: checking…</small>
@@ -249,7 +249,7 @@
             <div id="queueList" class="queue-list"></div>
             <button id="debugToggle" class="debug-toggle" type="button">PLAYER DEBUG ▸</button>
             <div id="playbackDebug" class="playback-debug is-collapsed">
-              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v4.1.22</span></div>
+              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v4.1.23</span></div>
               <div><span>PROVIDER</span><b id="diagProvider">—</b></div>
               <div><span>SLOT</span><b id="diagSlot">—</b></div>
               <div><span>STATE</span><b id="diagState">idle</b></div>
@@ -314,8 +314,19 @@
       <section class="history-playlists-only history-audit-pane-hidden" aria-label="Game media playlist and source registry">
         <div class="history-media-sources-toolbar">
           <div><small>ACTIVE SOURCE REGISTRY</small><strong>Game Media Playlists & Primary Sources</strong><span>These are the playlist, channel, API, and website lanes Sports Big Board is currently using for GAME media. Silver-only sources are labeled separately.</span></div>
-          <div><label><span>LEAGUE</span><select id="historyMediaSourcesLeague"><option value="">ALL LEAGUES</option><option>MLB</option><option>NFL</option><option>NBA</option><option>NHL</option><option>EPL</option><option>MLS</option></select></label><button id="historyMediaSourcesRefresh" type="button">REFRESH SOURCES</button></div>
+          <div><label><span>LEAGUE</span><select id="historyMediaSourcesLeague"><option value="">ALL LEAGUES</option><option>MLB</option><option>NFL</option><option>NBA</option><option>NHL</option><option>EPL</option><option>MLS</option></select></label><button id="historyScheduleSyncNow" type="button">SYNC SCHEDULE NOW</button><button id="historyMediaSourcesRefresh" type="button">REFRESH SOURCES</button></div>
         </div>
+        <form id="historyMediaPlaylistForm" class="history-media-playlist-form">
+          <input id="historyMediaPlaylistId" type="hidden">
+          <label><span>LEAGUE</span><select id="historyMediaPlaylistLeague" required><option>MLB</option><option>NFL</option><option>NBA</option><option>NHL</option><option>EPL</option><option>MLS</option></select></label>
+          <label class="playlist-url"><span>YOUTUBE PLAYLIST URL / ID</span><input id="historyMediaPlaylistUrl" type="text" required placeholder="https://www.youtube.com/playlist?list=…"></label>
+          <label><span>SEASON START</span><input id="historyMediaPlaylistSeasonStart" type="number" min="2000" max="2100" placeholder="2026"></label>
+          <label><span>SEASON END</span><input id="historyMediaPlaylistSeasonEnd" type="number" min="2000" max="2100" placeholder="2026"></label>
+          <label><span>OBJECTIVE</span><select id="historyMediaPlaylistObjective"><option value="coverage">GAME COVERAGE</option><option value="quick">QUICK / GREEN</option><option value="extended">EXTENDED / PURPLE</option></select></label>
+          <label><span>PRIORITY</span><select id="historyMediaPlaylistPriority"><option>PRIMARY</option><option>SECONDARY</option><option>FALLBACK</option></select></label>
+          <label class="playlist-check"><input id="historyMediaPlaylistAuto" type="checkbox" checked><span>AUTO RECRAWL</span></label>
+          <div class="history-media-playlist-form-actions"><button id="historyMediaPlaylistSave" type="submit">ADD & CRAWL PLAYLIST</button><button id="historyMediaPlaylistCancel" type="button" class="hidden">CANCEL EDIT</button><span id="historyMediaPlaylistStatus">New playlists are crawled into the media library, then matched to canonical games.</span></div>
+        </form>
         <div id="historyMediaSourcesSummary" class="history-audit-best-summary history-media-sources-summary">Loading active media sources…</div>
         <div id="historyMediaSourcesGrid" class="history-media-sources-grid"><div class="history-media-sources-loading">Loading source registry…</div></div>
       </section>
@@ -339,7 +350,7 @@
               <button id="historyModeBalanced" type="button" data-mode="balanced" class="active" title="Normal mode: search yields briefly to playback">MIX</button>
               <button id="historyModePlayback" type="button" data-mode="playback" title="Pause background historical searching until changed">PLAYBACK PRIORITY</button>
             </div>
-            <small id="historySearchConsoleVersion">Frontend v4.1.22 • backend checking…</small>
+            <small id="historySearchConsoleVersion">Frontend v4.1.23 • backend checking…</small>
             <button id="historySearchConsoleCopyIssues" type="button" title="Copy every current error, rate limit, blocker and recent warning">COPY ISSUES</button>
             <button id="historySearchConsoleCopyAll" type="button" title="Copy the complete worker snapshot and terminal log">COPY FULL CONSOLE</button>
             <button id="historySearchConsoleDownload" type="button" title="Download the complete console as a text file">SAVE TXT</button>
@@ -419,16 +430,16 @@
     </section>
   </div>
 
-  <script src="config.js?v=4.1.22"></script>
-  <script src="api-runtime.js?v=4.1.22"></script>
+  <script src="config.js?v=4.1.23"></script>
+  <script src="api-runtime.js?v=4.1.23"></script>
   <script>
-  // v4.1.22 bootstrap is deliberately independent of app.js and YouTube.
+  // v4.1.23 bootstrap is deliberately independent of app.js and YouTube.
   // It proves the browser can reach the local API and captures startup errors.
   window.__SBB_BOOT_STARTED_AT = Date.now();
-  try { fetch('/api/client-log?event=BOOT_START&v=4.1.22', {cache:'no-store'}).catch(()=>{}); } catch(e) {}
+  try { fetch('/api/client-log?event=BOOT_START&v=4.1.23', {cache:'no-store'}).catch(()=>{}); } catch(e) {}
   window.__SBB_BOOT_STATUS_PROMISE__ = fetch('/api/status', {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('status HTTP '+r.status); return r.json(); })
-    .then(function(data){ try{fetch('/api/client-log?event=BOOT_STATUS_OK&v=4.1.22',{cache:'no-store'}).catch(()=>{});}catch(e){} return data; })
+    .then(function(data){ try{fetch('/api/client-log?event=BOOT_STATUS_OK&v=4.1.23',{cache:'no-store'}).catch(()=>{});}catch(e){} return data; })
     .catch(function(err){ try{fetch('/api/client-log?event=BOOT_STATUS_ERROR&detail='+encodeURIComponent(String(err)),{cache:'no-store'}).catch(()=>{});}catch(e){} throw err; });
   window.addEventListener('error', function(ev){
     try { fetch('/api/client-log?event=JS_ERROR&detail='+encodeURIComponent((ev.message||'error')+' @ '+(ev.filename||'')+':'+(ev.lineno||0)), {cache:'no-store'}).catch(()=>{}); } catch(e) {}
@@ -437,27 +448,27 @@
     try { fetch('/api/client-log?event=PROMISE_ERROR&detail='+encodeURIComponent(String(ev.reason?.stack||ev.reason||'unknown')), {cache:'no-store'}).catch(()=>{}); } catch(e) {}
   });
 </script>
-<script src="core-model.js?v=4.1.22"></script>
-<script src="architecture/score-date-store.js?v=4.1.22"></script>
-<script src="architecture/event-identity.js?v=4.1.22"></script>
-<script src="architecture/media-scope.js?v=4.1.22"></script>
-<script src="architecture/media-classifier.js?v=4.1.22"></script>
-<script src="architecture/playback-transports.js?v=4.1.22"></script>
-<script src="architecture/provider-health.js?v=4.1.22"></script>
-<script src="architecture/sport-media-policy.js?v=4.1.22"></script>
-<script src="architecture/media-manifest.js?v=4.1.22"></script>
-<script src="architecture/media-resolver.js?v=4.1.22"></script>
-<script src="architecture/game-center-policy.js?v=4.1.22"></script>
-<script src="architecture/selected-event-store.js?v=4.1.22"></script>
-<script src="architecture/game-center-contract.js?v=4.1.22"></script>
-<script src="architecture/media-work-priorities.js?v=4.1.22"></script>
-<script src="architecture/editorial-packages.js?v=4.1.22"></script>
-<script src="ui/player-visibility.js?v=4.1.22"></script>
-<script src="ui/info-drawer.js?v=4.1.22"></script>
-<script src="ui/settings-view.js?v=4.1.22"></script>
-<script src="ui/history-audit.js?v=4.1.22"></script>
-<script src="ui/game-center-view.js?v=4.1.22"></script>
-<script src="app.js?v=4.1.22"></script>
+<script src="core-model.js?v=4.1.23"></script>
+<script src="architecture/score-date-store.js?v=4.1.23"></script>
+<script src="architecture/event-identity.js?v=4.1.23"></script>
+<script src="architecture/media-scope.js?v=4.1.23"></script>
+<script src="architecture/media-classifier.js?v=4.1.23"></script>
+<script src="architecture/playback-transports.js?v=4.1.23"></script>
+<script src="architecture/provider-health.js?v=4.1.23"></script>
+<script src="architecture/sport-media-policy.js?v=4.1.23"></script>
+<script src="architecture/media-manifest.js?v=4.1.23"></script>
+<script src="architecture/media-resolver.js?v=4.1.23"></script>
+<script src="architecture/game-center-policy.js?v=4.1.23"></script>
+<script src="architecture/selected-event-store.js?v=4.1.23"></script>
+<script src="architecture/game-center-contract.js?v=4.1.23"></script>
+<script src="architecture/media-work-priorities.js?v=4.1.23"></script>
+<script src="architecture/editorial-packages.js?v=4.1.23"></script>
+<script src="ui/player-visibility.js?v=4.1.23"></script>
+<script src="ui/info-drawer.js?v=4.1.23"></script>
+<script src="ui/settings-view.js?v=4.1.23"></script>
+<script src="ui/history-audit.js?v=4.1.23"></script>
+<script src="ui/game-center-view.js?v=4.1.23"></script>
+<script src="app.js?v=4.1.23"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>

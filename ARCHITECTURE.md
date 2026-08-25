@@ -1,4 +1,14 @@
-# Sports Big Board v4.1.22 Architecture
+# Sports Big Board v4.1.23 Architecture
+
+## v4.1.23 catalog-first runtime and interactive source-management boundary
+
+The canonical SQLite catalog is now the runtime relationship authority, not merely a historical audit store. Provider schedule feeds, playlist crawlers, and discovery workers write normalized events/media/associations into the catalog; `/api/history/day` exposes resolved `eventPlans`; score cards consume those exact plans before any browser-side heuristic matching. Historical navigation is therefore read-first. Opening a date does not launch a full date discovery pass; exact-event discovery remains available only for a genuine missing-media interaction while background recovery continues independently.
+
+A rolling schedule-sync worker continuously upserts yesterday/today/future schedule rows. Startup/full sync covers today + 14 days (plus yesterday), while the recurring fast pass covers yesterday through +2 days every ten minutes. Schedule ingestion is safe ahead of game time because worker eligibility still requires live/final readiness before recap discovery. Today's frontend path hydrates catalog scores/media immediately and then refreshes live-provider scores, so persisted media can paint without sacrificing current score authority.
+
+Game Media Playlists is now a mutable source registry. Operator playlists are stored outside the repository in server state, expanded through `playlistItems.list + videos.list`, normalized into `history_source_media` first, and only then evaluated by Event Matcher v7 against canonical events. Playlist membership is provenance, not event identity: ambiguous/non-GAME assets remain unassigned/orphaned. Automatic recrawl retries those assets as schedules evolve. Disable/remove operations stop future crawling but preserve already-discovered media and event links.
+
+This release does not bump Discovery, Matcher, Rule Game, or Rule Collection generations. It changes ingestion/runtime ownership rather than rediscovery semantics, so deployment preserves existing catalog/media state and does not require a rebuild.
 
 ## v4.1.22 curated playlist recovery + source registry
 

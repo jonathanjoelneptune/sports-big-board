@@ -1,4 +1,4 @@
-/* v4.1.22 local/cloud settings UI. Never reads or displays saved secret values. */
+/* v4.1.23 local/cloud settings UI. Never reads or displays saved secret values. */
 (() => {
   const $=id=>document.getElementById(id);
   function statusText(row){return row?.configured?'CONFIGURED':'NOT SET';}

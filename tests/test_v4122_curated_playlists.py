@@ -7,7 +7,7 @@ import server
 
 class V4122CuratedPlaylistTests(unittest.TestCase):
     def test_release_versions_and_curated_source_versions(self):
-        self.assertEqual(server.APP_VERSION, "4.1.22")
+        self.assertEqual(server.APP_VERSION, "4.1.23")
         self.assertEqual(server.HISTORY_DISCOVERY_VERSION, 15)
         self.assertEqual(server.HISTORY_RULE_CATCHUP_VERSION, 10)
         nfl={x["key"]:x for x in server.HISTORY_OFFICIAL_CATCHUP_SOURCES["NFL"]}
@@ -78,7 +78,7 @@ class V4122CuratedPlaylistTests(unittest.TestCase):
 
     def test_media_source_registry_exposes_active_sources_and_links(self):
         reg=server._game_media_source_registry()
-        self.assertEqual(reg["version"],1)
+        self.assertEqual(reg["version"],2)
         rows=reg["rows"]
         self.assertTrue(rows)
         for league in ("MLB","NFL","NBA","NHL","EPL","MLS"):
