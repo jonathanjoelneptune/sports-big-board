@@ -44,6 +44,9 @@ class CloudStage1Tests(unittest.TestCase):
         self.assertIn('ensure_history_v4.py',deploy)
         self.assertIn('MIGRATION_BACKUP',deploy)
         self.assertIn('Restored pre-deploy history catalog',deploy)
+        self.assertIn('LOCAL_HEALTH_ATTEMPTS=90',deploy)
+        self.assertIn('Backend still starting',deploy)
+        self.assertIn('systemctl is-active --quiet sports-big-board',deploy)
     def test_autodeploy_setup_uses_keyless_repo_restricted_wif(self):
         setup=(ROOT/'cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh').read_text()
         for token in ('workload-identity-pools providers create-oidc',"assertion.repository == '$GITHUB_REPOSITORY'","assertion.ref == 'refs/heads/main'",'roles/iam.workloadIdentityUser','roles/compute.instanceAdmin.v1','GCP_WORKLOAD_IDENTITY_PROVIDER'):

@@ -11018,9 +11018,25 @@ if __name__ == "__main__":
     # Relationship upgrades are repairable application state. They must never
     # trigger a catalog reconstruction or reset discovery/backfill progress.
     pre_relationship_integrity=HISTORY_REPOSITORY.catalog_integrity()
-    relationship_issue_keys=("silverGameLeaks","collectionGameLeaks","lowConfidenceAssigned","crossEventAssignedAssets","lowConfidenceCollectionLinks")
-    force_relationship_repair=any(int(pre_relationship_integrity.get(k) or 0)>0 for k in relationship_issue_keys)
-    relationship_repair=HISTORY_REPOSITORY.repair_relationships(force=force_relationship_repair)
+    event_relationship_issue_keys=("silverGameLeaks","lowConfidenceAssigned","crossEventAssignedAssets")
+    collection_relationship_issue_keys=("collectionGameLeaks","lowConfidenceCollectionLinks")
+    force_event_relationship_repair=any(int(pre_relationship_integrity.get(k) or 0)>0 for k in event_relationship_issue_keys)
+    force_collection_relationship_repair=any(int(pre_relationship_integrity.get(k) or 0)>0 for k in collection_relationship_issue_keys)
+    print(
+        "Relationship repair plan:",
+        f"event={'FORCE' if force_event_relationship_repair else 'VERSION_CHECK'}",
+        f"collection={'FORCE' if force_collection_relationship_repair else 'VERSION_CHECK'}",
+        f"issues={{'silverGameLeaks':{int(pre_relationship_integrity.get('silverGameLeaks') or 0)},"
+        f"'collectionGameLeaks':{int(pre_relationship_integrity.get('collectionGameLeaks') or 0)},"
+        f"'lowConfidenceAssigned':{int(pre_relationship_integrity.get('lowConfidenceAssigned') or 0)},"
+        f"'crossEventAssignedAssets':{int(pre_relationship_integrity.get('crossEventAssignedAssets') or 0)},"
+        f"'lowConfidenceCollectionLinks':{int(pre_relationship_integrity.get('lowConfidenceCollectionLinks') or 0)}}}",
+        flush=True,
+    )
+    relationship_repair=HISTORY_REPOSITORY.repair_relationships(
+        force_event=force_event_relationship_repair,
+        force_collection=force_collection_relationship_repair,
+    )
     association_repair=relationship_repair.get("event") or {}
     print("Relationship repair:",json.dumps(relationship_repair,separators=(',',':')))
     if not relationship_repair.get("ok"):

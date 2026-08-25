@@ -220,9 +220,22 @@ else
   echo '[deploy] No historical catalog exists yet; v4 will initialize a fresh normalized catalog.'
 fi
 systemctl restart sports-big-board
+# Normal startup is fast, but a structurally healthy catalog may still need a
+# bounded in-place relationship repair before server.py opens port 8080.  As the
+# catalog grows, that repair can legitimately exceed the old ~48 second window.
+# Give it up to three minutes while still failing closed if the service dies.
 healthy=0
-for attempt in {1..24}; do
+LOCAL_HEALTH_ATTEMPTS=90
+for ((attempt=1; attempt<=LOCAL_HEALTH_ATTEMPTS; attempt++)); do
   if curl -fsS --max-time 5 http://127.0.0.1:8080/api/status > /tmp/sbb-health.json; then healthy=1; break; fi
+  if ! systemctl is-active --quiet sports-big-board; then
+    echo "[deploy] Backend service exited while waiting for local health (attempt ${attempt}/${LOCAL_HEALTH_ATTEMPTS})."
+    break
+  fi
+  if (( attempt % 15 == 0 )); then
+    echo "[deploy] Backend still starting (${attempt}/${LOCAL_HEALTH_ATTEMPTS}); waiting for bounded catalog repair/startup..."
+    journalctl -u sports-big-board --no-pager -n 12 || true
+  fi
   sleep 2
 done
 if [[ "$healthy" != "1" ]]; then

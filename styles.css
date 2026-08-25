@@ -3696,3 +3696,68 @@ body.sbb-search-priority .transport button,body.sbb-search-priority .recap-alt-b
 /* v4.1.23 — interactive playlist ingestion -------------------------------- */
 .history-media-playlist-form{display:grid;grid-template-columns:110px minmax(280px,2fr) 120px 120px 150px 130px 130px;gap:8px;align-items:end;margin:10px 0 12px;padding:10px;border:1px solid #2b3946;border-radius:10px;background:#091016}.history-media-playlist-form label{display:grid;gap:4px}.history-media-playlist-form label>span{font-size:9px;font-weight:900;letter-spacing:.07em;color:#82909d}.history-media-playlist-form input,.history-media-playlist-form select{min-width:0;background:#0c131a;color:#dbe4ec;border:1px solid #314151;border-radius:7px;padding:7px 8px;font:inherit}.history-media-playlist-form .playlist-check{display:flex;align-items:center;gap:7px;padding-bottom:8px}.history-media-playlist-form .playlist-check input{width:auto}.history-media-playlist-form-actions{grid-column:1/-1;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.history-media-playlist-form-actions span{font-size:10px;color:#8f9ca8}.history-media-source-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}.history-media-source-actions button{font-size:9px;padding:4px 6px}.history-media-source-stats{display:block;margin-top:4px;color:#7dd8ff!important}.history-media-source-disabled{opacity:.55}.history-media-source-error{color:#ff9a8e!important}.history-media-source-custom{outline:1px solid rgba(125,216,255,.15)}
 @media(max-width:1100px){.history-media-playlist-form{grid-template-columns:repeat(3,minmax(0,1fr))}.history-media-playlist-form .playlist-url{grid-column:span 2}}@media(max-width:650px){.history-media-playlist-form{grid-template-columns:1fr}.history-media-playlist-form .playlist-url{grid-column:auto}}
+
+/* v4.1.23 Android/mobile Historical Database Audit scroll repair.
+   Desktop keeps the fixed-shell/inner-table model. On narrow touch screens the
+   entire audit becomes the vertical scroll container so summary/console/filter
+   content can never consume the viewport and strand the table below it. */
+@media (max-width:900px){
+  .history-audit-modal{
+    align-items:flex-start;
+    height:100vh;
+    height:100dvh;
+    max-height:100dvh;
+    overflow:hidden;
+  }
+  .history-audit-shell{
+    width:100%;
+    height:100vh;
+    height:100dvh;
+    max-height:100dvh;
+    min-height:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+    touch-action:pan-y;
+  }
+  .history-audit-header,
+  .history-audit-tabs,
+  .history-audit-summary,
+  .history-audit-best-summary,
+  .history-search-console,
+  .history-recovery-controls,
+  .history-audit-filters,
+  .history-audit-footer{
+    flex:0 0 auto;
+  }
+  .history-audit-tabs{
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .history-audit-tabs::-webkit-scrollbar{display:none}
+  .history-audit-tabs button{flex:0 0 auto;white-space:nowrap}
+  .history-audit-table-wrap,
+  .history-silver-table-wrap{
+    flex:0 0 auto;
+    width:100%;
+    min-height:0;
+    max-height:none;
+    overflow-x:auto;
+    overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x pan-y;
+  }
+  .history-audit-table thead{position:static}
+  .history-silver-only,
+  .history-playlists-only{
+    flex:0 0 auto;
+    min-height:auto;
+    overflow:visible;
+  }
+  .history-playlists-only{padding:12px 10px 24px}
+  .history-search-console-output{height:120px;max-height:30dvh}
+}

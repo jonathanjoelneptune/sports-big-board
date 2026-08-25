@@ -844,9 +844,13 @@ class HistoryRepository:
             conn.commit()
         return {"skipped":False,"classifierVersion":target,"checkedAssets":checked,"keptAssets":kept,"removedLinks":removed_links,"createdLinks":created,"reasons":reasons}
 
-    def repair_relationships(self, force=False):
-        event=self.repair_event_associations(force=force)
-        collection=self.repair_collection_associations(force=force)
+    def repair_relationships(self, force=False, force_event=False, force_collection=False):
+        # Keep the historical ``force=True`` behavior for explicit maintenance,
+        # but allow startup/deploy callers to repair only the relationship family
+        # that actually drifted.  A collection-only leak must not force a full
+        # event-link revalidation across tens of thousands of GAME associations.
+        event=self.repair_event_associations(force=bool(force or force_event))
+        collection=self.repair_collection_associations(force=bool(force or force_collection))
         integrity=self.catalog_integrity()
         relationship_keys=("silverGameLeaks","collectionGameLeaks","lowConfidenceAssigned","crossEventAssignedAssets","lowConfidenceCollectionLinks")
         issues={k:int(integrity.get(k) or 0) for k in relationship_keys if int(integrity.get(k) or 0)>0}

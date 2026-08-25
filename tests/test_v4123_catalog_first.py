@@ -89,6 +89,19 @@ class V4123CatalogFirstTests(unittest.TestCase):
         self.assertIn("sbb-history-schedule-sync",backend)
         self.assertIn("sbb-media-playlist-crawler",backend)
 
+    def test_android_history_audit_uses_outer_vertical_scroll_container(self):
+        root=Path(__file__).resolve().parents[1]
+        css=(root/"styles.css").read_text(encoding="utf-8")
+        marker="/* v4.1.23 Android/mobile Historical Database Audit scroll repair."
+        self.assertIn(marker,css)
+        mobile=css[css.index(marker):]
+        self.assertIn("height:100dvh",mobile)
+        self.assertIn("overflow-y:auto",mobile)
+        self.assertIn("-webkit-overflow-scrolling:touch",mobile)
+        self.assertIn("touch-action:pan-y",mobile)
+        self.assertIn(".history-audit-table thead{position:static}",mobile)
+        self.assertIn("overflow-y:visible",mobile)
+
 
 if __name__ == "__main__":
     unittest.main()

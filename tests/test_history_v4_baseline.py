@@ -190,6 +190,23 @@ class HistoryV4BaselineTests(unittest.TestCase):
             self.assertEqual(before_attempts,final_attempts)
             self.assertEqual(before_day,final_day)
 
+    def test_relationship_repair_can_force_collection_without_forcing_event_scan(self):
+        with tempfile.TemporaryDirectory() as td:
+            db=Path(td)/"history.sqlite3"
+            repo=HistoryRepository(db)
+            calls=[]
+            original_event=repo.repair_event_associations
+            original_collection=repo.repair_collection_associations
+            try:
+                repo.repair_event_associations=lambda matcher_version=EVENT_MATCHER_VERSION,force=False: calls.append(("event",bool(force))) or {"skipped":True}
+                repo.repair_collection_associations=lambda classifier_version=MEDIA_CLASSIFIER_VERSION,force=False: calls.append(("collection",bool(force))) or {"skipped":False}
+                result=repo.repair_relationships(force_event=False,force_collection=True)
+            finally:
+                repo.repair_event_associations=original_event
+                repo.repair_collection_associations=original_collection
+            self.assertEqual(calls,[("event",False),("collection",True)])
+            self.assertTrue(result["ok"],result)
+
     def test_preflight_check_only_reports_repairable_drift_without_backup_or_failure(self):
         with tempfile.TemporaryDirectory() as td:
             state=Path(td); db=state/"cache"/"history.sqlite3"; db.parent.mkdir(parents=True)

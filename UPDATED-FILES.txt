@@ -1,58 +1,16 @@
-Sports Big Board v4.1.23 update-only package
-Base release: v4.1.22
-Changed/new files: 52
-Deleted files: 0
+Sports Big Board v4.1.23 deploy + Android audit hotfix
+Base: v4.1.23 GitHub repository
 
-CHANGED / NEW:
-ANDROID SETUP.md
-ARCHITECTURE.md
-CLOUD STAGE 1.md
-README.md
-START SPORTS BIG BOARD.bat
-START-ANDROID.sh
-V4 CATALOG REBUILD.md
-VERIFY.sh
-VERSION
-WINDOWS SETUP.md
-api-runtime.js
-app.js
-architecture/editorial-packages.js
-architecture/event-identity.js
-architecture/game-center-contract.js
-architecture/game-center-policy.js
-architecture/media-classifier.js
-architecture/media-manifest.js
-architecture/media-resolver.js
-architecture/media-scope.js
-architecture/media-work-priorities.js
-architecture/playback-transports.js
-architecture/provider-health.js
-architecture/score-date-store.js
-architecture/selected-event-store.js
-architecture/sport-media-policy.js
-core-model.js
-index.html
-sbb/__init__.py
-sbb/competition_registry.py
-sbb/editorial_registry.py
-sbb/event_matcher.py
+Changed files:
+cloud/gcp/DEPLOY-FROM-GITHUB.sh
 sbb/history_repository.py
-sbb/media_policy.py
-sbb/media_scope.py
-sbb/provider_registry.py
-sbb/youtube_gateway.py
 server.py
 styles.css
-tests/test_architecture.js
 tests/test_cloud_stage1.py
 tests/test_history_v4_baseline.py
-tests/test_live_freshness.py
-tests/test_regression_guards.py
-tests/test_v4121_parallel_recovery.py
-tests/test_v4122_curated_playlists.py
 tests/test_v4123_catalog_first.py
-ui/game-center-view.js
-ui/history-audit.js
-ui/info-drawer.js
-ui/player-visibility.js
-ui/settings-view.js
+
+Fixes:
+- Selective relationship repair: collection-only integrity drift no longer forces a full event-link repair before port 8080 opens.
+- Deployment local-health grace increased to a bounded 3 minutes, with immediate failure if systemd exits.
+- Android/mobile Historical Database Audit uses the full modal shell as the vertical scroll container; tables retain horizontal pan.
