@@ -7,7 +7,7 @@ import server
 
 class V4122CuratedPlaylistTests(unittest.TestCase):
     def test_release_versions_and_curated_source_versions(self):
-        self.assertEqual(server.APP_VERSION, "4.2.1")
+        self.assertEqual(server.APP_VERSION, "4.2.2")
         self.assertEqual(server.HISTORY_DISCOVERY_VERSION, 15)
         self.assertEqual(server.HISTORY_RULE_CATCHUP_VERSION, 10)
         nfl={x["key"]:x for x in server.HISTORY_OFFICIAL_CATCHUP_SOURCES["NFL"]}

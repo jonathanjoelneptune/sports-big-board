@@ -1,11 +1,26 @@
-# Sports Big Board v4.2.1
+# Sports Big Board v4.2.2
 
-> v4.2.1 is the **Milestone 1 Hardening** release. It is the first production stress-test-driven correction pass over the v4.2.0 Playback & Platform Reliability milestone.
+> v4.2.2 is the **Milestone 1 Final Hardening** release. It closes the specific edge cases exposed by the second deployed Milestone stress test while preserving the v4.2 platform architecture.
 
+## v4.2.2 — Milestone 1 Final Hardening
 
-## v4.2.1 — Milestone 1 Hardening
+- Dev Test is now an exclusive visual workspace: Game Center/Up Next/Settings are hidden while the Milestone Console is visible, but their logical drawer state is preserved for procedures and restored when Dev Test closes.
+- Playback stress testing separates sustained buffering from pause/resume ownership. A 12-second stream stall is logged as streaming-health failure instead of being mislabeled as an ownership failure.
+- Active/stalled playback has hard priority over background full-file cache completion. Playback telemetry creates a bounded pressure window and full-cache jobs defer/yield instead of competing for the upstream connection.
+- `schedule-sync` worker health is phase-aware and the worker renews heartbeats during its intentional long sleep, eliminating false stale-worker alarms.
+- Silver/roundup/Top Plays collection media can never become `SelectedEvent` or issue a Game Center request using a YouTube media id as if it were a sporting-event id.
+- Game Center background coverage is throttled, provider HTTP 429 responses create exponential provider cooldown, and Highlightly fallback prewarm is skipped when authoritative MLB/ESPN coverage already exists.
+- Historical browser hydration no longer calls the heavy legacy `/api/history/day` aggregate. It composes bounded `ribbon + roundups + discovery` contracts instead. The legacy endpoint remains available and now emits component-level `Server-Timing` so any future slow use is attributable.
+- Milestone telemetry exposes Game Center provider cooldown state and playback-pressure/full-cache-yield counters.
+- No catalog rebuild or soundtrack re-upload is required.
 
-The first deployed v4.2.0 stress test showed that playback ownership and the compact ribbon were healthy, but operator telemetry, historical discovery, schedule startup, and synchronous Director AI could still create multi-second backend contention. v4.2.1 is a focused hardening release: date-scoped bulk reads replace discovery N+1 work, read-only operator queries no longer take the process-wide writer lock, operator telemetry is staggered/cached, startup schedule sync is bounded and heartbeats per step, and Director AI enrichment is asynchronous behind an immediate deterministic ranking. The Milestone stress runner also uses explicit desired-state playback controls and scheduler failures are categorized for diagnosis. No catalog rebuild or soundtrack re-upload is required.
+### Recommended v4.2.2 acceptance workflow
+
+1. Deploy v4.2.2 and confirm the GitHub `production-smoke` job passes.
+2. Use Sports Big Board normally for several minutes, including historical dates and multiple direct/YouTube clips.
+3. Open **Dev → Milestone Release Console** and verify the normal Game Center surface is no longer visible behind it.
+4. Run **RUN DEV STRESS TEST**, then rerun any individual failed procedure once.
+5. Use **COPY FULL LOG** or **SAVE TXT** and send the complete result for Milestone 1 acceptance review.
 
 ## v4.2.0 — Milestone 1: Playback & Platform Reliability
 
@@ -21,9 +36,9 @@ The first deployed v4.2.0 stress test showed that playback ownership and the com
 - **Release/version hardening:** `VERSION` is the backend source of truth; CI verifies every cache-busted local JS/CSS generation, core-model version and server derivation. Deployment refuses to publish Pages until the public backend reports the same release, then runs a post-Pages production smoke test against `/api/status` and `/api/milestone/console`.
 - **No catalog rebuild required:** v4.2.0 preserves the existing normalized SQLite catalog, soundtrack bucket, discovery progress, source ledgers and worker state.
 
-### Recommended v4.2.1 acceptance workflow
+### Recommended v4.2.2 acceptance workflow
 
-1. Deploy v4.2.1 and confirm the GitHub `production-smoke` job passes.
+1. Deploy v4.2.2 and confirm the GitHub `production-smoke` job passes.
 2. Use Sports Big Board normally for a while: switch dates, leagues, recap tiers, Game Center, playback controls and resource modes.
 3. Open **Dev → Milestone Release Console** and run **RUN DEV STRESS TEST**.
 4. Run any individual Milestone Test Procedure again if a particular area deserves more exercise.

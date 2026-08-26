@@ -1,4 +1,4 @@
-/* v4.2.1 normalized Game Center browser contract.
+/* v4.2.2 normalized Game Center browser contract.
 
    Browser memory is HOT. Localhost SQLite is WARM. Provider identity belongs to
    the server: score-ribbon ids are aliases, not assumed MLB/ESPN ids. Every
@@ -34,6 +34,7 @@
     return {competition,eventId:requestId,key,...hints};
   }
   async function get(eventLike,{force=false,signal=null,timeoutMs=30000}={}){
+    if(window.SBB_MEDIA_SCOPE?.isCollection?.(eventLike))throw new Error('Game Center is unavailable for collection/roundup media');
     const ident=identity(eventLike); const {competition,key,date,away,home,start,gameNumber,provider}=ident;
     let requestId=ident.eventId;
     if(!competition||!requestId)throw new Error('Game Center requires a competition and event identity');

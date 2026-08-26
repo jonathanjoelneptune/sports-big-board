@@ -114,5 +114,5 @@ function boot(sharedStorage){
   assert.equal(one.context.SBB_SOUNDTRACK,sameApi,'duplicate script load must reuse singleton');
   assert.equal(one.Audio.instances.length,1,'duplicate script load must not create another Audio element');
 
-  console.log('PASS: v4.2.1 clip-scoped one-audio soundtrack runtime invariants');
+  console.log('PASS: v4.2.2 clip-scoped one-audio soundtrack runtime invariants');
 })().catch(err=>{console.error(err);process.exit(1);});

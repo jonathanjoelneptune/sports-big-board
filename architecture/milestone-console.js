@@ -4,7 +4,7 @@
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.2.1');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.2.2');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);
@@ -120,6 +120,7 @@
     lines.push(`mediaCache=${JSON.stringify(x.mediaCache||{})}`);
     lines.push(`mediaScheduler=${JSON.stringify(x.schedulers?.media||{})}`);
     lines.push(`gameCenterScheduler=${JSON.stringify(x.schedulers?.gameCenter||{})}`);
+    lines.push(`gameCenterProviders=${JSON.stringify(x.schedulers?.gameCenterProviders||{})}`);
     lines.push(`director=${JSON.stringify(x.director||{})}`);
     lines.push('');
     lines.push('[RECENT RELEASE EVENTS]');
@@ -247,23 +248,29 @@
     await step('playback: dev hook availability',async()=>{assert(h.version,'missing hook version');return {hookVersion:h.version,programSize:h.programSize()};});
     await step('playback: experience state',async()=>{if(!h.started())return skip('start Sports Big Board before running playback mutation tests');return {started:true,mediaKey:h.currentMediaKey(),state:h.playback()?.state};});
     await step('playback: wait for stable selected session',async()=>{if(!h.started()||!h.programSize())return skip('no active playable program');const pb=await waitFor(()=>{const p=h.playback();return p.mediaKey&&['playing','paused','ready','buffering','starting'].includes(p.state)?p:null;},{timeoutMs:12000,label:'stable selected playback session'});assert(audibleVideoCount(pb)<=1,`multiple audible video slots: ${JSON.stringify(pb.audible)}`);return pb;},{warnAboveMs:5000});
+    await step('playback: buffering health',async()=>{
+      if(!h.started()||!h.programSize())return skip('no active playable program');
+      const initial=h.playback();
+      if(!['starting','buffering'].includes(initial.state))return {state:initial.state,stallCount:initial.stallCount||0,stallTotalMs:initial.stallTotalMs||0};
+      try{
+        const settled=await waitFor(()=>{const p=h.playback();return ['playing','paused','ready','failed','ended'].includes(p.state)?p:null;},{timeoutMs:12000,label:'sustained buffering recovery'});
+        return {from:initial.state,to:settled.state,stallCount:settled.stallCount||0,stallTotalMs:settled.stallTotalMs||0};
+      }catch(err){
+        const p=h.playback();
+        throw new Error(`sustained ${p.state||initial.state} > 12000 ms • media=${p.mediaKey||initial.mediaKey||'?'} • stalls=${p.stallCount||0}/${Math.round(p.stallTotalMs||0)}ms`);
+      }
+    });
     await step('playback: pause/resume ownership',async()=>{
       if(!h.started()||!h.programSize())return skip('no active playable program');
-      let current=h.playback();
-      if(['starting','buffering'].includes(current.state))current=await waitFor(()=>{const p=h.playback();return ['playing','paused','ready','failed','ended'].includes(p.state)?p:null;},{timeoutMs:12000,label:'transient playback settle'});
-      // Desired-state hooks are intentionally non-toggle.  The v4.2.1 stress test
-      // could enter while the user had manually paused playback and then wait for a
-      // spontaneous PLAYING transition that would never occur.
-      assert(h.ensurePlaying?.()!==false,'unable to command playback playing');
-      current=await waitFor(()=>{const p=h.playback();return p.state==='playing'?p:null;},{timeoutMs:12000,label:'playback playing before pause'});
-      assert(audibleVideoCount(current)<=1,`multiple audible slots before pause: ${JSON.stringify(current.audible)}`);
+      // Ownership is tested independently from network health. A clip may be
+      // buffering and still correctly obey deterministic pause/resume authority.
       assert(h.ensurePaused?.()!==false,'unable to command playback paused');
       const paused=await waitFor(()=>{const p=h.playback();return ['paused','ready'].includes(p.state)?p:null;},{timeoutMs:6000,label:'playback pause'});
       assert(audibleVideoCount(paused)===0,`video remained audible after pause: ${JSON.stringify(paused.audible)}`);
       assert(h.ensurePlaying?.()!==false,'unable to command playback resume');
-      const resumed=await waitFor(()=>{const p=h.playback();return p.state==='playing'?p:null;},{timeoutMs:12000,label:'playback resume'});
+      const resumed=await waitFor(()=>{const p=h.playback();return ['playing','starting','buffering'].includes(p.state)?p:null;},{timeoutMs:6000,label:'playback resume command'});
       assert(audibleVideoCount(resumed)<=1,'multiple audible slots after resume');assert(!String(resumed.invariant||'').startsWith('ERROR'),resumed.invariant);
-      return {pausedState:paused.state,resumedState:resumed.state,audible:resumed.audible};
+      return {pausedState:paused.state,resumedState:resumed.state,audible:resumed.audible,streamingHealthy:resumed.state==='playing'};
     });
     await step('playback: next clip transition',async()=>{if(!h.started()||h.programSize()<2)return skip('fewer than two active program items');const before=h.currentMediaKey();const moved=await h.stressTuneNext();if(!moved)return skip('no eligible next program item');const pb=await waitFor(()=>{const p=h.playback();return p.mediaKey&&p.mediaKey!==before?p:null;},{timeoutMs:12000,label:'next media selection'});assert(audibleVideoCount(pb)<=1,'multiple audible video slots after clip change');return {before,after:pb.mediaKey,state:pb.state,source:pb.sourceExternalUrl};},{warnAboveMs:5000});
   }
@@ -402,8 +409,21 @@
   }
   function fallbackCopy(text,done){try{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand?.('copy');ta.remove();if(ok)done();else throw new Error('copy command unavailable');}catch(_){const el=$('milestoneCopyStatus');if(el)el.textContent='COPY FAILED';}}
   function saveText(){const blob=new Blob([textSnapshot()],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`sports-big-board-${VERSION}-milestone-console-${new Date().toISOString().replace(/[:.]/g,'-')}.txt`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);}
-  function open(){const m=$('milestoneConsoleModal');if(!m)return;m.classList.remove('hidden');m.setAttribute('aria-hidden','false');refresh();clearInterval(pollTimer);pollTimer=setInterval(refresh,2500);renderProcedures();renderStress();}
-  function close(){const m=$('milestoneConsoleModal');if(!m)return;m.classList.add('hidden');m.setAttribute('aria-hidden','true');clearInterval(pollTimer);pollTimer=0;try{refreshController?.abort('milestone console closed');}catch(_){}}
+  function open(){
+    const m=$('milestoneConsoleModal');if(!m)return;
+    // Dev Test is a modal workspace.  Keep the information drawer's logical state
+    // untouched so procedures may exercise/restore Game Center behind the modal,
+    // but visually suppress it while Dev Test owns the screen.
+    document.body.classList.add('sbb-milestone-open');
+    m.classList.remove('hidden');m.setAttribute('aria-hidden','false');
+    refresh();clearInterval(pollTimer);pollTimer=setInterval(refresh,2500);renderProcedures();renderStress();
+  }
+  function close(){
+    const m=$('milestoneConsoleModal');if(!m)return;
+    m.classList.add('hidden');m.setAttribute('aria-hidden','true');
+    document.body.classList.remove('sbb-milestone-open');
+    clearInterval(pollTimer);pollTimer=0;try{refreshController?.abort('milestone console closed');}catch(_){}
+  }
   async function reset(){try{await fetch('/api/milestone/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',cache:'no-store'});localEvents.length=0;stressRun=null;procedureResults={};await refresh();renderStress();renderProcedures();}catch(err){remember('ERROR','milestone reset failed',{error:String(err)});}}
   function toggleProcedures(){const p=$('milestoneProceduresPanel'),btn=$('milestoneProceduresToggle');if(!p)return;const show=p.classList.contains('hidden');p.classList.toggle('hidden',!show);btn?.setAttribute('aria-expanded',show?'true':'false');if(show)renderProcedures();}
   function bind(){

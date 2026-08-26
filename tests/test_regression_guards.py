@@ -24,7 +24,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertLess(block.index('const assoc=data.associations||{};'),block.index('assoc.assignedLinks'))
 
     def test_architecture_loaded_before_app(self):
-        ordered=['core-model.js?v=4.2.1','architecture/score-date-store.js?v=4.2.1','architecture/event-identity.js?v=4.2.1','architecture/media-scope.js?v=4.2.1','architecture/media-classifier.js?v=4.2.1','architecture/playback-transports.js?v=4.2.1','architecture/provider-health.js?v=4.2.1','architecture/sport-media-policy.js?v=4.2.1','architecture/media-manifest.js?v=4.2.1','architecture/media-resolver.js?v=4.2.1','architecture/game-center-policy.js?v=4.2.1','architecture/selected-event-store.js?v=4.2.1','architecture/game-center-contract.js?v=4.2.1','architecture/media-work-priorities.js?v=4.2.1','architecture/editorial-packages.js?v=4.2.1','ui/player-visibility.js?v=4.2.1','ui/info-drawer.js?v=4.2.1','ui/settings-view.js?v=4.2.1','ui/history-audit.js?v=4.2.1','ui/game-center-view.js?v=4.2.1','app.js?v=4.2.1']
+        ordered=['core-model.js?v=4.2.2','architecture/score-date-store.js?v=4.2.2','architecture/event-identity.js?v=4.2.2','architecture/media-scope.js?v=4.2.2','architecture/media-classifier.js?v=4.2.2','architecture/playback-transports.js?v=4.2.2','architecture/provider-health.js?v=4.2.2','architecture/sport-media-policy.js?v=4.2.2','architecture/media-manifest.js?v=4.2.2','architecture/media-resolver.js?v=4.2.2','architecture/game-center-policy.js?v=4.2.2','architecture/selected-event-store.js?v=4.2.2','architecture/game-center-contract.js?v=4.2.2','architecture/media-work-priorities.js?v=4.2.2','architecture/editorial-packages.js?v=4.2.2','ui/player-visibility.js?v=4.2.2','ui/info-drawer.js?v=4.2.2','ui/settings-view.js?v=4.2.2','ui/history-audit.js?v=4.2.2','ui/game-center-view.js?v=4.2.2','app.js?v=4.2.2']
         positions=[INDEX.index(x) for x in ordered]
         self.assertEqual(positions,sorted(positions))
 
@@ -383,8 +383,8 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("const btn=e.target.closest('[data-score-date-step]')",APP)
         self.assertIn('function stepScoreRibbonDate(delta)',APP)
         self.assertIn('date>today) date=today',APP)
-        self.assertIn('v4.2.1 — score ribbon recovery',STYLES)
-        self.assertIn('v4.2.1 — historical Date Browser',STYLES)
+        self.assertIn('v4.2.2 — score ribbon recovery',STYLES)
+        self.assertIn('v4.2.2 — historical Date Browser',STYLES)
         self.assertIn('.score-day-pager-right{right:3px!important',STYLES)
         self.assertIn('pointer-events:auto!important',STYLES)
 
@@ -393,7 +393,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("host.addEventListener('wheel',e=>",APP)
         self.assertIn("host.addEventListener('pointermove',e=>",APP)
         self.assertIn("host.classList.add('is-dragging')",APP)
-        self.assertIn('v4.2.1 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
+        self.assertIn('v4.2.2 — desktop score-ribbon browsing + full-surface date arrows',STYLES)
         self.assertIn('.score-ribbon>.score-cells{cursor:grab!important}',STYLES)
         self.assertIn('width:40px!important;',STYLES)
         self.assertIn('min-height:68px!important;',STYLES)
@@ -556,7 +556,7 @@ class RegressionGuards(unittest.TestCase):
         self.assertIn("content:'NOW WATCHING'",STYLES)
         self.assertIn('if(changed&&resolved?.date&&resolved.date!==scoreBrowseDate)',APP)
         self.assertIn('manually browses away while the SAME game keeps playing',APP)
-        self.assertNotIn('\\n\\n/* v4.2.1',STYLES)
+        self.assertNotIn('\\n\\n/* v4.2.2',STYLES)
 
     def test_unvalidated_official_nfl_feed_is_archived_but_never_hijacks_score_card(self):
         self.assertIn("'verifiedPlayable':False,'embedValidated':False,'externalOnly':True",SERVER)
@@ -862,7 +862,11 @@ class RegressionGuards(unittest.TestCase):
 
     def test_v281_historical_scores_hydrate_from_persistent_catalog_and_render_progressively(self):
         self.assertIn('async function hydrateScoreDateFromHistory(date,{scores=true}={})',APP)
-        self.assertIn('/api/history/day?date=',APP)
+        hydrate=APP[APP.index('async function hydrateScoreDateFromHistory(date,{scores=true}={})'):APP.index('function pumpHistoricalMediaSearchQueue')]
+        self.assertNotIn('/api/history/day?date=',hydrate)
+        self.assertIn('/api/history/ribbon?date=',hydrate)
+        self.assertIn('/api/history/roundups?date=',hydrate)
+        self.assertIn('/api/history/discovery?date=',hydrate)
         block=APP[APP.index('async function ensureScoreDateLoaded(date,{force=false}={})'):APP.index('async function selectHistoricalGameWithoutMedia',APP.index('async function ensureScoreDateLoaded(date,{force=false}={})'))]
         self.assertIn('renderScoresFromMatchesCombined(false)',block)
         self.assertIn('const needed=(date>=today||force)?',block)

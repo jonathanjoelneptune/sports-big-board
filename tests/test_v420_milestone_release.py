@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class MilestoneConsoleUnitTests(unittest.TestCase):
     def test_bounded_console_tracks_api_playback_and_errors(self):
         from sbb.milestone_console import MilestoneConsole
-        c=MilestoneConsole('4.2.1',max_events=220)
+        c=MilestoneConsole('4.2.2',max_events=220)
         c.record_endpoint('/api/history/ribbon',123.4,200)
         c.record_endpoint('/api/history/audit',6001,200)
         c.record_endpoint('/api/test',41,500,'boom')
@@ -14,7 +14,7 @@ class MilestoneConsoleUnitTests(unittest.TestCase):
         c.record_playback('first-frame',{'sessionId':'s1','state':'playing','firstFrameMs':212,'invariant':'OK'})
         c.record_playback('stall',{'sessionId':'s1','state':'buffering','stallCount':1,'invariant':'OK'})
         c.record_playback('stall-end',{'sessionId':'s1','state':'playing','lastStallMs':845,'invariant':'OK'})
-        snap=c.snapshot(frontend_version='4.2.1')
+        snap=c.snapshot(frontend_version='4.2.2')
         self.assertTrue(snap['versionMatch'])
         self.assertEqual(snap['playback']['firstFrame']['p50Ms'],212.0)
         self.assertEqual(snap['playback']['stallDuration']['p50Ms'],845.0)
@@ -57,7 +57,7 @@ class MilestoneReleaseContractTests(unittest.TestCase):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
         server=(ROOT/'server.py').read_text(encoding='utf-8')
         js=(ROOT/'architecture'/'milestone-console.js').read_text(encoding='utf-8')
-        for token in ('openMilestoneConsoleBtn','milestoneConsoleModal','architecture/milestone-console.js?v=4.2.1','milestoneConsoleOutput'):
+        for token in ('openMilestoneConsoleBtn','milestoneConsoleModal','architecture/milestone-console.js?v=4.2.2','milestoneConsoleOutput'):
             self.assertIn(token,html)
         for token in ("'/api/playback/telemetry'","'/api/milestone/client-event'","'/api/milestone/reset'","'/api/milestone/console'",'_milestone_release_snapshot','MILESTONE_CONSOLE.record_endpoint'):
             self.assertIn(token,server)
@@ -66,7 +66,7 @@ class MilestoneReleaseContractTests(unittest.TestCase):
 
     def test_playback_session_is_loaded_before_soundtrack_and_app(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
-        ps='architecture/playback-session.js?v=4.2.1'; mc='architecture/milestone-console.js?v=4.2.1'; st='architecture/site-soundtrack.js?v=4.2.1'; app='app.js?v=4.2.1'
+        ps='architecture/playback-session.js?v=4.2.2'; mc='architecture/milestone-console.js?v=4.2.2'; st='architecture/site-soundtrack.js?v=4.2.2'; app='app.js?v=4.2.2'
         self.assertLess(html.index(ps),html.index(mc)); self.assertLess(html.index(mc),html.index(st)); self.assertLess(html.index(st),html.index(app))
 
     def test_version_is_single_backend_source_and_ci_checks_generation(self):

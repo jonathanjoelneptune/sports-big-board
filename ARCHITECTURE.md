@@ -1,7 +1,11 @@
-# Sports Big Board v4.2.1 Architecture
+# Sports Big Board v4.2.2 — Milestone 1 Final Hardening
+
+The v4.2.2 boundary keeps the v4.2 ownership model but makes five invariants explicit: Dev Test visually owns the screen while open; collection media cannot become a game identity; foreground playback can force background full-cache work to yield; worker health is phase-aware; and historical UI hydration uses bounded date-scoped contracts rather than the legacy all-in-one day aggregate. Game Center background coverage also observes provider cooldown and avoids duplicate fallback prewarming when authoritative coverage exists.
+
+# Sports Big Board v4.2.2 Architecture
 
 
-## v4.2.1 — Milestone 1 Hardening
+## v4.2.2 — Milestone 1 Hardening
 
 Milestone 1 read-side architecture is hardened around **foreground work first**. SQLite remains in WAL mode, but hot operator/audit reads now use independent query-only connections instead of the repository writer lock. Historical discovery bulk-loads the date's event state and avoids nested catalog-integrity scans. Operator telemetry is a cache of independently refreshed components with staggered TTLs rather than one continuously repeating full snapshot. Startup schedule sync covers only the near-term window before background expansion and emits a heartbeat around each provider step. Director ranking is deterministic on the request path; optional AI enrichment is serialized and cached in the background. Milestone telemetry records component refresh errors, scheduler error categories, and the same repeatable stress procedures used for release acceptance.
 

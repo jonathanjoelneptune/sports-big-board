@@ -1,4 +1,4 @@
-/* Sports Big Board v4.2.1 — clip-scoped soundtrack.
+/* Sports Big Board v4.2.2 — clip-scoped soundtrack.
    One soundtrack Audio element exists. Every highlight clip gets one soundtrack
    track. Video pause/resume controls that same track; clip changes select a new
    track; long clips advance to another song when the current song ends. */
@@ -43,7 +43,7 @@
   let operationEpoch=0;
   let tabOwnsAudio=false;
 
-  // v4.2.1 invariant: exactly ONE soundtrack media element exists.
+  // v4.2.2 invariant: exactly ONE soundtrack media element exists.
   const activeAudio=new Audio();
   activeAudio.preload='auto';
   activeAudio.playsInline=true;

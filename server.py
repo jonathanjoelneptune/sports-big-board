@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sports Big Board v4.2.1 local/cloud backend.
+"""Sports Big Board v4.2.2 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
@@ -80,7 +80,7 @@ def _cors_allowed_origin(origin):
     return ""
 
 
-# v4.2.1 private soundtrack transport. The soundtrack bucket can remain under
+# v4.2.2 private soundtrack transport. The soundtrack bucket can remain under
 # enforced Public Access Prevention. The browser asks this backend for an MP3;
 # the backend prefers a short-lived V4 GCS signed redirect and falls back to an
 # authenticated range-capable stream if IAM signBlob is unavailable.
@@ -298,7 +298,7 @@ NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"  # verified @NFL channel
 # playlistItems.list + videos.list; search.list is never required. Known historical
 # playlist IDs provide immediate anchors while automatic enumeration remains primary.
 NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS = {
-    # v4.2.1 operator-pinned 2025-season weekly/playoff recap playlists.  The
+    # v4.2.2 operator-pinned 2025-season weekly/playoff recap playlists.  The
     # channel catalog supplies the authoritative title when available; these anchors
     # keep every known playlist reachable even if playlists.list misses/changes it.
     "PLRdw3IjKY2gm8m7heXMOfVPLVA8jDY_Jd":"2025 NFL Recap Playlist 01",
@@ -345,7 +345,7 @@ EPL_YOUTUBE_KNOWN_PLAYLISTS = {
     "PLR1b-6EyIaTs":{"title":"Premier League 2026-27 season","url":"https://www.youtube.com/playlist?list=PLR1b-6EyIaTs","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2026,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
     "PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E":{"title":"Premier League 2025-26 season","url":"https://www.youtube.com/playlist?list=PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2025,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
 }
-# v4.2.1 operator-curated GAME playlist registry. These playlist lanes use
+# v4.2.2 operator-curated GAME playlist registry. These playlist lanes use
 # playlistItems.list + videos.list only, never search.list.  Exact event association
 # still requires both teams plus explicit/published date evidence, so a trusted
 # playlist can improve discovery without weakening Event Matcher v7.
@@ -569,13 +569,13 @@ HISTORY_DB_AUDIT_STATE = {"generation":0,"running":False,"complete":False,"curso
 HISTORY_DB_AUDIT_BATCH = max(50,min(1000,int(os.environ.get("SBB_DB_AUDIT_BATCH","250") or 250)))
 HISTORY_OPERATOR_SNAPSHOT_LOCK = threading.RLock()
 HISTORY_OPERATOR_SNAPSHOT_STATE = {"ready":False,"generatedAt":0.0,"generationMs":0.0,"maxComponentMs":0.0,"error":"","greenGapQueue":{},"associations":{},"eventClaims":[],"silver":{},"mediaObjectives":{},"silverIdentity":{},"dbSummary":{},"catalogIntegrity":{},"officialCatchup":{},"componentTimings":{},"componentGeneratedAt":{},"componentErrors":{}}
-# v4.2.1 refreshes operator components independently.  The old 10-second monolithic
+# v4.2.2 refreshes operator components independently.  The old 10-second monolithic
 # snapshot could spend ~17 seconds scanning the catalog and immediately start again,
 # effectively turning diagnostics into a continuous database workload.
 HISTORY_OPERATOR_SNAPSHOT_INTERVAL = max(1,min(10,int(os.environ.get("SBB_OPERATOR_SNAPSHOT_INTERVAL","2") or 2)))
 
 
-# v4.2.1 rolling schedule + operator playlist state. Provider feeds write into the
+# v4.2.2 rolling schedule + operator playlist state. Provider feeds write into the
 # canonical catalog; the UI reads the catalog instead of reconstructing relationships.
 HISTORY_SCHEDULE_SYNC_INTERVAL = max(120,int(os.environ.get("SBB_SCHEDULE_SYNC_INTERVAL","600") or 600))
 HISTORY_SCHEDULE_SYNC_FUTURE_DAYS = max(3,min(21,int(os.environ.get("SBB_SCHEDULE_SYNC_FUTURE_DAYS","14") or 14)))
@@ -879,6 +879,16 @@ def _history_worker_beat(worker, phase=None, current=None, progress=False, block
         if progress: st["lastProgress"]=now
         st["iterations"]=int(st.get("iterations") or 0)+1
         if blocked: st["blocked"]=int(st.get("blocked") or 0)+1
+
+def _history_worker_health_status(name, st, now=None, startup_grace=75):
+    """Phase-aware heartbeat truth for milestone/operator surfaces."""
+    now=float(now or time.time()); hb=float((st or {}).get("heartbeat") or 0); phase=str((st or {}).get("phase") or "")
+    if not hb:return bool(now-SERVER_STARTED_AT<float(startup_grace))
+    age=max(0.0,now-hb)
+    threshold=240.0
+    if str(name)=="schedule-sync" and phase.startswith("sleeping"):
+        threshold=max(240.0,float(HISTORY_SCHEDULE_SYNC_INTERVAL)+90.0)
+    return age<threshold
 
 def _history_threads_status():
     names={t.name:bool(t.is_alive()) for t in threading.enumerate()}
@@ -1379,10 +1389,18 @@ def _game_center_coverage_pass(today=None,yesterday=None):
             for competition in ("NFL","NBA","NHL","MLS","EPL"):
                 try: results[f"{competition}:{date}:official"]=prewarm_espn_game_centers(competition,date,is_today)
                 except Exception as exc: results[f"{competition}:{date}:official"]={"error":f"{type(exc).__name__}: {exc}"}
-            # Highlightly is playback/Game-Center infrastructure, not historical
-            # search inventory. SEARCH mode preserves its quota for later playback.
+            # Highlightly is fallback Game Center coverage. Do not duplicate an
+            # authoritative MLB/ESPN day that already has known events; this was
+            # generating hundreds of redundant jobs and provider 429s.
             if _history_work_mode()!='search':
                 for competition,sport_key in (("MLB","mlb"),("NFL","nfl"),("NBA","nba"),("NHL","nhl"),("MLS","mls"),("EPL","epl")):
+                    official=results.get(f"{competition}:{date}:official") or {}
+                    known=sum(int(official.get(k) or 0) for k in ("live","final","scheduled"))
+                    cooldown,_=_game_center_background_cooldown(competition)
+                    if known>0:
+                        results[f"{competition}:{date}:highlightly"]={"skipped":"OFFICIAL_COVERAGE_AVAILABLE","officialEvents":known}; continue
+                    if cooldown>0:
+                        results[f"{competition}:{date}:highlightly"]={"skipped":"PROVIDER_COOLDOWN","cooldownSeconds":round(cooldown,1)}; continue
                     try:
                         payload=_prewarm_highlightly_call(sport_key,"matches",date,MEDIA_PREWARM_STATE.get("timezone") or "",force=False)
                         rows=(payload.get("data") if isinstance(payload,dict) else payload) or []
@@ -1408,7 +1426,7 @@ def _request_game_center_coverage(today=None,yesterday=None,force=False):
     with GAME_CENTER_COVERAGE_LOCK:
         if GAME_CENTER_COVERAGE_STATE.get("running"): return False
         last=float(GAME_CENTER_COVERAGE_STATE.get("lastRun") or 0)
-        if not force and time.time()-last<30: return False
+        if not force and time.time()-last<300: return False
         GAME_CENTER_COVERAGE_STATE["running"]=True
     def run():
         # _game_center_coverage_pass owns the state; clear the optimistic flag first.
@@ -1427,7 +1445,7 @@ def game_center_coverage_worker():
             time.sleep(60); continue
         try: _game_center_coverage_pass(_date_iso(0),_date_iso(-1))
         except Exception as exc: print(f"[SBB game-center] coverage worker warning: {type(exc).__name__}: {exc}",flush=True)
-        time.sleep(60)
+        time.sleep(5*60)
 
 def game_center_startup_prewarm_worker():
     """Prime every supported today/yesterday Game Center independently of clicks."""
@@ -5209,7 +5227,7 @@ def _history_schedule_sync_today():
 def _history_schedule_sync_once(full=False, *, startup_fast=False, worker='schedule-sync'):
     """Refresh persisted score schedules with heartbeat-visible progress.
 
-    v4.2.1 intentionally does a small startup pass (yesterday through +2 days)
+    v4.2.2 intentionally does a small startup pass (yesterday through +2 days)
     before any 14-day sweep.  Each league/date operation renews the worker heartbeat
     so a long provider call cannot make a healthy schedule worker look dead.
     """
@@ -5254,7 +5272,12 @@ def history_schedule_sync_worker():
         except Exception as exc:
             HISTORY_SCHEDULE_SYNC_STATE.update(running=False,current='',lastError=f'{type(exc).__name__}: {exc}')
             _history_worker_beat('schedule-sync',phase='error',current='',blocked=True)
-        time.sleep(HISTORY_SCHEDULE_SYNC_INTERVAL)
+        # Keep heartbeat truth fresh during the intentional long sleep. This does
+        # not count as progress; it only proves the worker thread is alive.
+        wake=time.time()+HISTORY_SCHEDULE_SYNC_INTERVAL
+        while time.time()<wake:
+            _history_worker_beat('schedule-sync',phase='sleeping',current=HISTORY_SCHEDULE_SYNC_STATE.get('today') or '',progress=False)
+            time.sleep(min(30,max(1,wake-time.time())))
 
 def _game_media_source_registry():
     """Operator-facing inventory of active GAME media sources and pinned playlists."""
@@ -7627,7 +7650,8 @@ GAME_CENTER_WORK_SCHEDULER = MediaWorkScheduler(workers=8, name="sbb-game-center
 MEDIA_FILE_CACHE_JOBS = {}
 MEDIA_FILE_CACHE_FULL_JOBS = {}
 MEDIA_FILE_CACHE_ACTIVE_STREAMS = set()
-MEDIA_FILE_CACHE_STATS = {"requests":0,"fullHits":0,"rangeHits":0,"misses":0,"prepared":0,"fullReady":0,"errors":0,"lastError":""}
+MEDIA_PLAYBACK_PRESSURE = {"until":0.0,"lastEvent":"","lastAt":0.0,"mediaKey":""}
+MEDIA_FILE_CACHE_STATS = {"requests":0,"fullHits":0,"rangeHits":0,"misses":0,"prepared":0,"fullReady":0,"errors":0,"lastError":"","fullYielded":0}
 
 MEDIA_ALLOWED_HOST_SUFFIXES=(
     "mlb.com","mlbstatic.com","espn.com","espncdn.com","nfl.com",
@@ -7657,6 +7681,24 @@ def _media_chunk_path(paths,index):
 
 def _media_chunk_bounds(index,total):
     start=int(index)*MEDIA_FILE_CACHE_CHUNK_BYTES; return start,min(int(total)-1,start+MEDIA_FILE_CACHE_CHUNK_BYTES-1)
+
+def _media_note_playback_pressure(event, session=None):
+    """Give active/stalled playback absolute priority over background full caching."""
+    event=str(event or "").lower(); session=session or {}; now=time.time()
+    state=str(session.get("state") or "").lower()
+    hold=0
+    if event in {"stall","buffering"} or state=="buffering": hold=18
+    elif event in {"selection","first-frame","playing","stall-end"} or state in {"starting","playing"}: hold=4
+    if not hold:return
+    with MEDIA_FILE_CACHE_LOCK:
+        MEDIA_PLAYBACK_PRESSURE["until"]=max(float(MEDIA_PLAYBACK_PRESSURE.get("until") or 0),now+hold)
+        MEDIA_PLAYBACK_PRESSURE["lastEvent"]=event or state
+        MEDIA_PLAYBACK_PRESSURE["lastAt"]=now
+        MEDIA_PLAYBACK_PRESSURE["mediaKey"]=str(session.get("mediaKey") or "")[:500]
+
+def _media_foreground_busy():
+    with MEDIA_FILE_CACHE_LOCK:
+        return bool(MEDIA_FILE_CACHE_ACTIVE_STREAMS) or time.time()<float(MEDIA_PLAYBACK_PRESSURE.get("until") or 0)
 
 def _media_diag(media_url, mode, **extra):
     key=_media_cache_key(media_url); row={"mode":mode,"at":time.time(),**extra}
@@ -7740,30 +7782,34 @@ def _fetch_media_range_to_file(media_url,start,end,path):
 def _media_cache_download_full(media_url):
     paths=_media_cache_paths(media_url)
     try:
-        # Full-file completion is deliberately background priority. Give startup
-        # range jobs and active player streams the network first; this is what lets
-        # server caching improve a click instead of competing with it.
-        deadline=time.time()+8.0
-        while time.time()<deadline:
-            with MEDIA_FILE_CACHE_LOCK:
-                busy=bool(MEDIA_FILE_CACHE_ACTIVE_STREAMS) or bool(MEDIA_FILE_CACHE_JOBS)
-            if not busy: break
-            time.sleep(0.20)
+        # Full-file completion is disposable background work. If foreground media
+        # is active or recent playback telemetry reports a stall, do not compete
+        # for the upstream socket at all. A later prepare/access can reschedule it.
+        deadline=time.time()+1.0
+        while time.time()<deadline and (_media_foreground_busy() or bool(MEDIA_FILE_CACHE_JOBS)):
+            time.sleep(0.10)
+        if _media_foreground_busy():
+            with MEDIA_FILE_CACHE_LOCK: MEDIA_FILE_CACHE_STATS["fullYielded"]+=1
+            return "DEFERRED_FOR_PLAYBACK"
         try: _media_cache_cleanup()
         except Exception: pass
         req=Request(media_url,headers=_media_request_headers(media_url=media_url))
         with urlopen(req,timeout=35) as resp:
             status=getattr(resp,"status",200)
             if status not in (200,206): return
-            tmp=paths["tmp"]
+            tmp=paths["tmp"]; yielded=False
             with tmp.open("wb") as out:
                 while True:
-                    with MEDIA_FILE_CACHE_LOCK:
-                        foreground_busy=bool(MEDIA_FILE_CACHE_ACTIVE_STREAMS)
-                    if foreground_busy: time.sleep(0.06)
+                    if _media_foreground_busy():
+                        yielded=True; break
                     chunk=resp.read(512*1024)
                     if not chunk: break
                     out.write(chunk)
+            if yielded:
+                try: tmp.unlink(missing_ok=True)
+                except Exception: pass
+                with MEDIA_FILE_CACHE_LOCK: MEDIA_FILE_CACHE_STATS["fullYielded"]+=1
+                return "YIELDED_TO_PLAYBACK"
             size=tmp.stat().st_size if tmp.exists() else 0
             if not size: return
             meta=_media_cache_meta(media_url)
@@ -7823,7 +7869,7 @@ def _media_cache_prepare(media_url,event_id="",media_date="",priority=0):
         if total and paths["head"].exists() and paths["head"].stat().st_size>=total:
             paths["head"].replace(paths["full"]); meta["fullReady"]=True; meta["fullSize"]=total; meta["headSize"]=0
         if total and total>MEDIA_FILE_CACHE_HEAD_BYTES and not meta.get("fullReady"):
-            # v4.2.1: extend the startup runway with fixed 8 MB chunks. The first
+            # v4.2.2: extend the startup runway with fixed 8 MB chunks. The first
             # 16 MB remains backwards-compatible as HEAD; chunks 2+ keep playback
             # local while the low-priority full-file cache finishes.
             for idx in range(2,min(MEDIA_FILE_CACHE_PREFETCH_CHUNKS,(total+MEDIA_FILE_CACHE_CHUNK_BYTES-1)//MEDIA_FILE_CACHE_CHUNK_BYTES)):
@@ -8054,6 +8100,7 @@ def _media_cache_serve_hybrid_head(handler,media_url,range_header,event_id="",me
 def _media_cache_summary():
     with MEDIA_FILE_CACHE_LOCK:
         stats=dict(MEDIA_FILE_CACHE_STATS); stats["stageJobs"]=len(MEDIA_FILE_CACHE_JOBS); stats["fullJobs"]=len(MEDIA_FILE_CACHE_FULL_JOBS); stats["activeStreams"]=len(MEDIA_FILE_CACHE_ACTIVE_STREAMS)
+        stats["playbackPressure"]={**MEDIA_PLAYBACK_PRESSURE,"remainingSeconds":round(max(0.0,float(MEDIA_PLAYBACK_PRESSURE.get("until") or 0)-time.time()),1)}
     files=list(MEDIA_FILE_CACHE_DIR.glob("*.mp4")); heads=list(MEDIA_FILE_CACHE_DIR.glob("*.head"))
     stats["fullFiles"]=len(files); stats["stagedFiles"]=len(heads); stats["chunkFiles"]=sum(1 for d in MEDIA_FILE_CACHE_DIR.glob("*.chunks") if d.is_dir() for _ in d.glob("*.part"))
     stats["bytesOnDisk"]=sum(x.stat().st_size for x in MEDIA_FILE_CACHE_DIR.iterdir() if x.is_file() and x.suffix in {".mp4",".head",".tail"})
@@ -8140,6 +8187,45 @@ GAME_CENTER_FETCH_LOCKS_LOCK = threading.Lock()
 GAME_CENTER_JOB_STATE = {}
 GAME_CENTER_JOB_STATE_LOCK = threading.Lock()
 GAME_CENTER_SUPPORTED = {"MLB","NFL","NBA","NHL","MLS","EPL"}
+GAME_CENTER_PROVIDER_HEALTH_LOCK = threading.Lock()
+GAME_CENTER_PROVIDER_HEALTH = {}
+
+def _game_center_provider_name_from_error(exc, hints=None):
+    url=str(getattr(exc,"url","") or "").lower(); hint=str((hints or {}).get("provider") or "").lower()
+    if "rapidapi" in url or "highlightly" in url or hint=="highlightly": return "highlightly"
+    if "espn" in url: return "espn"
+    if "mlb" in url: return "mlb"
+    return hint or "official"
+
+def _game_center_provider_note_failure(competition, exc, hints=None):
+    code=int(getattr(exc,"code",0) or 0)
+    if code!=429 and "429" not in str(exc): return 0.0
+    now=time.time(); provider=_game_center_provider_name_from_error(exc,hints); key=f"{str(competition).upper()}:{provider}"
+    retry_header=0
+    try: retry_header=int((getattr(exc,"headers",None) or {}).get("Retry-After") or 0)
+    except Exception: retry_header=0
+    with GAME_CENTER_PROVIDER_HEALTH_LOCK:
+        prior=dict(GAME_CENTER_PROVIDER_HEALTH.get(key) or {}); failures=int(prior.get("failures") or 0)+1
+        delay=max(retry_header,min(15*60,30*(2**min(5,failures-1))))
+        retry_at=now+delay
+        GAME_CENTER_PROVIDER_HEALTH[key]={"provider":provider,"competition":str(competition).upper(),"failures":failures,"retryAt":retry_at,"last429At":now,"lastError":f"{type(exc).__name__}: {exc}"[:700]}
+    MILESTONE_CONSOLE.record('game-center','WARN','Game Center provider entered 429 cooldown',{'competition':str(competition).upper(),'provider':provider,'delaySeconds':delay,'failures':failures})
+    return retry_at
+
+def _game_center_background_cooldown(competition):
+    now=time.time(); prefix=f"{str(competition).upper()}:"; best=0.0; detail={}
+    with GAME_CENTER_PROVIDER_HEALTH_LOCK:
+        for key,row in GAME_CENTER_PROVIDER_HEALTH.items():
+            if not key.startswith(prefix): continue
+            retry=float(row.get("retryAt") or 0)
+            if retry>now and retry>best: best=retry; detail=dict(row)
+    return max(0.0,best-now),detail
+
+def _game_center_provider_health_snapshot():
+    now=time.time()
+    with GAME_CENTER_PROVIDER_HEALTH_LOCK: rows=copy.deepcopy(GAME_CENTER_PROVIDER_HEALTH)
+    for row in rows.values(): row['cooldownSeconds']=round(max(0.0,float(row.get('retryAt') or 0)-now),1)
+    return rows
 
 
 def _game_center_status(data):
@@ -8544,7 +8630,8 @@ def _game_center_prepare_job(competition,event_id,hints=None):
             if requested_id: GAME_CENTER_JOB_STATE[f"{competition}:{requested_id}"]=state
         return "WARMED"
     except Exception as exc:
-        state={"lastOk":0.0,"lastError":f"{type(exc).__name__}: {exc}","retryAt":time.time()+5.0,"resolvedEventId":""}
+        provider_retry=_game_center_provider_note_failure(competition,exc,hints)
+        state={"lastOk":0.0,"lastError":f"{type(exc).__name__}: {exc}","retryAt":max(time.time()+5.0,provider_retry),"resolvedEventId":""}
         with GAME_CENTER_JOB_STATE_LOCK:
             GAME_CENTER_JOB_STATE[request_key]=state
             if requested_id: GAME_CENTER_JOB_STATE[f"{competition}:{requested_id}"]=state
@@ -8564,9 +8651,14 @@ def _game_center_validate_request(competition,event_id):
 def schedule_game_center_prepare(competition,event_id,priority,hints=None):
     try: competition,event_id=_game_center_validate_request(competition,event_id)
     except Exception: return None
-    hints=hints or {}
+    hints=hints or {}; priority=int(priority)
+    # Background all-day coverage must respect provider 429 cooldown. Foreground
+    # user intent is still allowed to consult cached/local identity and make one
+    # explicit attempt rather than being blocked by an unrelated league sweep.
+    cooldown,_=_game_center_background_cooldown(competition)
+    if cooldown>0 and priority<=MEDIA_PRIORITY["NEARBY_SCORE"]: return None
     key=_game_center_request_key(competition,event_id,hints)
-    return GAME_CENTER_WORK_SCHEDULER.submit(f"game-center:{key}",int(priority),_game_center_prepare_job,competition,event_id,hints)
+    return GAME_CENTER_WORK_SCHEDULER.submit(f"game-center:{key}",priority,_game_center_prepare_job,competition,event_id,hints)
 
 
 def _game_center_event_status(row):
@@ -9158,7 +9250,7 @@ def _history_day_event_plans(date):
 def _history_day_score_rows(date):
     """Return the canonical historical ribbon slate without any provider calls.
 
-    v4.2.1 deliberately separates the lightweight score-ribbon contract from the
+    v4.2.2 deliberately separates the lightweight score-ribbon contract from the
     much larger event/media plans.  Persisted history_day scoreboards are preferred
     because they carry the richest score/status fields.  Canonical catalog events
     fill any identity gaps so a relationship-only catalog still paints the ribbon.
@@ -9166,7 +9258,7 @@ def _history_day_score_rows(date):
     target=str(date or '')[:10]
     out={lg:[] for lg in HISTORY_LEAGUES}; seen={lg:set() for lg in HISTORY_LEAGUES}
     for lg in HISTORY_LEAGUES:
-        # v4.2.1 score inventory must not hydrate catalog media.  The compact
+        # v4.2.2 score inventory must not hydrate catalog media.  The compact
         # endpoint bulk-loads exact media separately after the score slate is known.
         state=HISTORY_REPOSITORY.get_league(target,lg,prefer_catalog=False)
         for raw in state.get('scores') or []:
@@ -9190,7 +9282,7 @@ def _history_day_score_rows(date):
 def _history_day_ribbon_plans(date,score_rows=None):
     """Compact exact-event media plans for score-ribbon first paint.
 
-    v4.2.1 performs one bulk SQLite media read for the entire date.  The prior
+    v4.2.2 performs one bulk SQLite media read for the entire date.  The prior
     implementation called ``event_media`` once per game, turning a 30-game ribbon
     into 30+ separate SQLite connections while backfill workers were writing.
     """
@@ -10261,7 +10353,7 @@ def history_operator_snapshot_worker():
 
     v4.2.0 rebuilt every expensive aggregate in one ~10 second cadence.  On the
     production catalog that cycle could take longer than its own interval and turn
-    diagnostics into a continuous scan.  v4.2.1 gives each component an independent
+    diagnostics into a continuous scan.  v4.2.2 gives each component an independent
     TTL, uses query-only SQLite connections in the repository, and always serves the
     last completed snapshot while a slower component refreshes in the background.
     """
@@ -10525,7 +10617,7 @@ def _milestone_release_snapshot(frontend_version=''):
     for name,st in workers.items():
         hb=float(st.get('heartbeat') or 0); age=(now-hb) if hb else None
         st['heartbeatAgeSeconds']=round(max(0,age),1) if age is not None else None
-        st['healthy']=bool((hb and age<240) or (not hb and now-SERVER_STARTED_AT<75))
+        st['healthy']=_history_worker_health_status(name,st,now,startup_grace=75)
         if not st['healthy']: unhealthy.append(name)
     if unhealthy: problems.append({'level':'ERROR','code':'WORKER_UNHEALTHY','message':'Worker heartbeat stale','detail':unhealthy})
     checks.append({'name':'worker heartbeats','ok':not unhealthy,'detail':f"{len(workers)-len(unhealthy)}/{len(workers)} healthy"})
@@ -10573,7 +10665,7 @@ def _milestone_release_snapshot(frontend_version=''):
         'checks':checks,'problems':problems,
         'history':{'threads':threads,'workers':workers,'workMode':dict(HISTORY_WORK_MODE_STATE),'operatorSnapshot':{'ready':bool(operator.get('ready')),'ageSeconds':round(operator_age,1) if operator_age is not None else None,'generationMs':operator.get('generationMs',0),'maxComponentMs':operator.get('maxComponentMs',0),'componentTimings':copy.deepcopy(operator.get('componentTimings') or {}),'componentGeneratedAt':copy.deepcopy(operator.get('componentGeneratedAt') or {}),'componentErrors':copy.deepcopy(operator.get('componentErrors') or {}),'error':operator.get('error','')},'greenPool':_green_pool_snapshot(now),'providerConcurrency':provider,'singleflight':_history_singleflight_status(),'databaseAudit':_history_database_audit_snapshot()},
         'database':{'summary':db_summary},
-        'schedulers':{'media':MEDIA_WORK_SCHEDULER.snapshot(),'gameCenter':GAME_CENTER_WORK_SCHEDULER.snapshot()},
+        'schedulers':{'media':MEDIA_WORK_SCHEDULER.snapshot(),'gameCenter':GAME_CENTER_WORK_SCHEDULER.snapshot(),'gameCenterProviders':_game_center_provider_health_snapshot()},
         'director':_program_rank_state(),
         'mediaCache':_media_cache_summary(),
     }
@@ -10630,6 +10722,7 @@ class Handler(SimpleHTTPRequestHandler):
             try:
                 length=min(64000,int(self.headers.get('Content-Length') or 0))
                 body=json.loads(self.rfile.read(length).decode('utf-8') or '{}')
+                _media_note_playback_pressure(body.get('event'),body.get('session') or {})
                 MILESTONE_CONSOLE.record_playback(body.get('event'),body.get('session') or {})
                 return send_json(self,{'ok':True,'version':APP_VERSION},200)
             except Exception as exc:
@@ -10881,10 +10974,18 @@ class Handler(SimpleHTTPRequestHandler):
         if parsed.path == "/api/history/day":
             qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]
             if not re.match(r'^\d{4}-\d{2}-\d{2}$',date): return send_json(self,{'ok':False,'error':'DATE_REQUIRED'},400)
-            _touch_history_focus(date,seconds=120)
-            day=HISTORY_REPOSITORY.get_day(date); score_rows=_history_day_score_rows(date); plans=_history_day_event_plans(date)
-            score_count=sum(len(rows or []) for rows in score_rows.values())
-            return send_json(self,{'ok':True,**day,'scoreRowsByLeague':score_rows,'scoreGameCount':score_count,'eventPlans':plans,'catalogFirst':True,'catalogEventCount':len(plans),'scoreInventoryComplete':_history_day_score_inventory_complete(date),'discoveryState':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary(include_integrity=False),'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE)},200)
+            started=time.perf_counter(); _touch_history_focus(date,seconds=120)
+            t=time.perf_counter(); day=HISTORY_REPOSITORY.get_day(date); day_ms=(time.perf_counter()-t)*1000
+            t=time.perf_counter(); score_rows=_history_day_score_rows(date); scores_ms=(time.perf_counter()-t)*1000
+            t=time.perf_counter(); plans=_history_day_event_plans(date); plans_ms=(time.perf_counter()-t)*1000
+            t=time.perf_counter(); inventory=_history_day_score_inventory_complete(date); inventory_ms=(time.perf_counter()-t)*1000
+            t=time.perf_counter(); discovery=_history_discovery_state(date); discovery_ms=(time.perf_counter()-t)*1000
+            operator=_history_operator_snapshot(); repository=copy.deepcopy(operator.get('dbSummary') or {})
+            if not repository: repository=HISTORY_REPOSITORY.summary(include_integrity=False)
+            score_count=sum(len(rows or []) for rows in score_rows.values()); total_ms=(time.perf_counter()-started)*1000
+            timing={'dayMs':round(day_ms,1),'scoresMs':round(scores_ms,1),'plansMs':round(plans_ms,1),'inventoryMs':round(inventory_ms,1),'discoveryMs':round(discovery_ms,1),'totalMs':round(total_ms,1)}
+            if total_ms>=5000:MILESTONE_CONSOLE.record('api','WARN','legacy history/day aggregate is slow',{'date':date,'timing':timing})
+            return send_json(self,{'ok':True,**day,'scoreRowsByLeague':score_rows,'scoreGameCount':score_count,'eventPlans':plans,'catalogFirst':True,'catalogEventCount':len(plans),'scoreInventoryComplete':inventory,'discoveryState':discovery,'repository':repository,'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE),'timing':timing},200,{'Server-Timing':f"day;dur={day_ms:.1f}, scores;dur={scores_ms:.1f}, plans;dur={plans_ms:.1f}, inventory;dur={inventory_ms:.1f}, discovery;dur={discovery_ms:.1f}, total;dur={total_ms:.1f}"})
 
         if parsed.path == "/api/history/roundups":
             qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]; league=str((qs.get('league') or ['ALL'])[-1]).upper()
@@ -10988,7 +11089,7 @@ class Handler(SimpleHTTPRequestHandler):
                     hb=float(st.get('heartbeat') or 0); lp=float(st.get('lastProgress') or 0)
                     st['heartbeatAgeSeconds']=int(max(0,now-hb)) if hb else None
                     st['progressAgeSeconds']=int(max(0,now-lp)) if lp else None
-                    st['healthy']=bool((hb and now-hb<240) or (not hb and now-SERVER_STARTED_AT<45))
+                    st['healthy']=_history_worker_health_status(name,st,now,startup_grace=45)
                 green_pool=_green_pool_snapshot(now)
                 pool_states=green_pool.get('workers') or {}
                 for name,pst in pool_states.items():

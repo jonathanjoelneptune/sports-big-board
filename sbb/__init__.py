@@ -1,1 +1,1 @@
-"""Sports Big Board v4.2.1 architecture services."""
+"""Sports Big Board v4.2.2 architecture services."""

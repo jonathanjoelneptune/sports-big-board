@@ -1,16 +1,14 @@
-Sports Big Board v4.2.1 — Milestone 1 Hardening
+Sports Big Board v4.2.2 — Milestone 1 Final Hardening
 
-This release is the first stress-test-driven hardening pass for Milestone 1. It addresses the production findings from the v4.2.0 Milestone Release Console rather than adding product surface area.
-
-Key corrections:
-- Historical discovery is date-scoped and bulk-loads event state instead of issuing per-game event reads.
-- Hot diagnostic/operator endpoints use compact summaries and cached integrity data instead of nesting whole-catalog integrity work.
-- Read-only operator/audit repository methods use independent query-only SQLite connections and do not wait on the process-wide writer lock.
-- Operator telemetry refreshes independent components on staggered TTLs and serves the last completed snapshot while expensive components refresh.
-- Schedule sync starts with a bounded near-term horizon and heartbeats before/after every league/date step, then defers the full horizon.
-- Director AI cannot block the UI request path: deterministic ranking returns immediately and AI enrichment is background/cached.
-- Stress pause/resume tests command desired state explicitly, eliminating the false failure seen when a test starts from an already-paused player.
-- Scheduler diagnostics classify timeout/not-found/parse/rate-limit/provider/cancelled errors and retain recent examples.
-- Milestone Console surfaces operator component failures instead of allowing a failed refresh to be silent.
+Focused corrections from the second deployed Milestone stress test:
+- Dev Test visually hides Game Center/Up Next/Settings while preserving their logical drawer state for test/restore operations.
+- Playback stress testing separates sustained buffering health from pause/resume ownership.
+- Stall/buffering telemetry creates foreground playback pressure; background full-file cache jobs defer/yield rather than competing with active playback.
+- schedule-sync health is phase-aware and heartbeats during its intentional sleep interval.
+- Silver/roundup/Top Plays collection media cannot become SelectedEvent or issue Game Center requests using media ids as event ids.
+- Game Center all-day coverage is throttled, 429 failures create exponential provider cooldown, and fallback Highlightly prewarm is skipped when authoritative coverage exists.
+- Historical UI hydration composes /api/history/ribbon + /api/history/roundups + /api/history/discovery instead of the legacy heavy /api/history/day aggregate.
+- The legacy /api/history/day route remains available with component-level Server-Timing and cached operator summary data.
+- Milestone telemetry now exposes Game Center provider cooldown and media playback-pressure/full-cache-yield state.
 
 No catalog rebuild. No soundtrack re-upload.

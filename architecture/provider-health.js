@@ -1,4 +1,4 @@
-/* Sports Big Board v4.2.1 — provider health / adaptive source preference.
+/* Sports Big Board v4.2.2 — provider health / adaptive source preference.
    Provider health is deliberately separate from media existence. A provider can
    be temporarily unhealthy without invalidating an event's discovered media. */
 (() => {

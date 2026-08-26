@@ -1,4 +1,4 @@
-/* v4.2.1 canonical event identity service. No UI or playback side effects. */
+/* v4.2.2 canonical event identity service. No UI or playback side effects. */
 (() => {
   const clean=v=>v==null?'':String(v).trim();
   const league=x=>clean(x?.competitionId||x?.__sbbLeague||x?.league?.id||x?.league||'SPORTS').toUpperCase();
