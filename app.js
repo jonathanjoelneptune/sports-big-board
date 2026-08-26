@@ -2406,7 +2406,16 @@ const PlaybackController={
       renderMetadata(); renderQueue(); setPlaybackUi('paused');
       return Promise.resolve(false);
     }
-    syncGameCenterToActivePlayback(item,{reason,source:userInitiated?'direct-tune':'program'});
+    const collectionScoped=!!window.SBB_MEDIA_SCOPE?.isCollection?.(item);
+    if(collectionScoped){
+      // Collection/roundup media is never a single-game Game Center authority.
+      // Preserve the v4.2.2 boundary explicitly inside the playback owner so a
+      // Silver package cannot inherit or manufacture a selected game.
+      try{window.SBB_SELECTED_EVENT?.clear?.({reason:'collection media has no Game Center event',source:'playback'});}catch(_){}
+      try{window.SBB_GAME_CENTER_VIEW?.clear?.('Game Center follows the active game video.');}catch(_){}
+    }else{
+      syncGameCenterToActivePlayback(item,{reason,source:userInitiated?'direct-tune':'program'});
+    }
     const token=++playbackSelectionToken;
     const previousActive=activeSlot;
     const standby=otherSlot(previousActive);
