@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sports Big Board v4.2.0 local/cloud backend.
+"""Sports Big Board v4.2.1 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
@@ -80,7 +80,7 @@ def _cors_allowed_origin(origin):
     return ""
 
 
-# v4.2.0 private soundtrack transport. The soundtrack bucket can remain under
+# v4.2.1 private soundtrack transport. The soundtrack bucket can remain under
 # enforced Public Access Prevention. The browser asks this backend for an MP3;
 # the backend prefers a short-lived V4 GCS signed redirect and falls back to an
 # authenticated range-capable stream if IAM signBlob is unavailable.
@@ -298,7 +298,7 @@ NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"  # verified @NFL channel
 # playlistItems.list + videos.list; search.list is never required. Known historical
 # playlist IDs provide immediate anchors while automatic enumeration remains primary.
 NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS = {
-    # v4.2.0 operator-pinned 2025-season weekly/playoff recap playlists.  The
+    # v4.2.1 operator-pinned 2025-season weekly/playoff recap playlists.  The
     # channel catalog supplies the authoritative title when available; these anchors
     # keep every known playlist reachable even if playlists.list misses/changes it.
     "PLRdw3IjKY2gm8m7heXMOfVPLVA8jDY_Jd":"2025 NFL Recap Playlist 01",
@@ -345,7 +345,7 @@ EPL_YOUTUBE_KNOWN_PLAYLISTS = {
     "PLR1b-6EyIaTs":{"title":"Premier League 2026-27 season","url":"https://www.youtube.com/playlist?list=PLR1b-6EyIaTs","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2026,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
     "PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E":{"title":"Premier League 2025-26 season","url":"https://www.youtube.com/playlist?list=PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2025,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
 }
-# v4.2.0 operator-curated GAME playlist registry. These playlist lanes use
+# v4.2.1 operator-curated GAME playlist registry. These playlist lanes use
 # playlistItems.list + videos.list only, never search.list.  Exact event association
 # still requires both teams plus explicit/published date evidence, so a trusted
 # playlist can improve discovery without weakening Event Matcher v7.
@@ -568,16 +568,19 @@ HISTORY_DB_AUDIT_LOCK = threading.RLock()
 HISTORY_DB_AUDIT_STATE = {"generation":0,"running":False,"complete":False,"cursor":0,"checked":0,"total":0,"startedAt":0.0,"completedAt":0.0,"lastRun":0.0,"lastError":"","issues":{"noVerifiedMedia":0,"staleDiscovery":0,"quarantinedLinks":0,"unknownDiscovery":0},"integrity":{},"silverIdentity":{}}
 HISTORY_DB_AUDIT_BATCH = max(50,min(1000,int(os.environ.get("SBB_DB_AUDIT_BATCH","250") or 250)))
 HISTORY_OPERATOR_SNAPSHOT_LOCK = threading.RLock()
-HISTORY_OPERATOR_SNAPSHOT_STATE = {"ready":False,"generatedAt":0.0,"generationMs":0.0,"error":"","greenGapQueue":{},"associations":{},"eventClaims":[],"silver":{},"mediaObjectives":{},"silverIdentity":{}}
-HISTORY_OPERATOR_SNAPSHOT_INTERVAL = max(5,min(60,int(os.environ.get("SBB_OPERATOR_SNAPSHOT_INTERVAL","10") or 10)))
+HISTORY_OPERATOR_SNAPSHOT_STATE = {"ready":False,"generatedAt":0.0,"generationMs":0.0,"maxComponentMs":0.0,"error":"","greenGapQueue":{},"associations":{},"eventClaims":[],"silver":{},"mediaObjectives":{},"silverIdentity":{},"dbSummary":{},"catalogIntegrity":{},"officialCatchup":{},"componentTimings":{},"componentGeneratedAt":{},"componentErrors":{}}
+# v4.2.1 refreshes operator components independently.  The old 10-second monolithic
+# snapshot could spend ~17 seconds scanning the catalog and immediately start again,
+# effectively turning diagnostics into a continuous database workload.
+HISTORY_OPERATOR_SNAPSHOT_INTERVAL = max(1,min(10,int(os.environ.get("SBB_OPERATOR_SNAPSHOT_INTERVAL","2") or 2)))
 
 
-# v4.2.0 rolling schedule + operator playlist state. Provider feeds write into the
+# v4.2.1 rolling schedule + operator playlist state. Provider feeds write into the
 # canonical catalog; the UI reads the catalog instead of reconstructing relationships.
 HISTORY_SCHEDULE_SYNC_INTERVAL = max(120,int(os.environ.get("SBB_SCHEDULE_SYNC_INTERVAL","600") or 600))
 HISTORY_SCHEDULE_SYNC_FUTURE_DAYS = max(3,min(21,int(os.environ.get("SBB_SCHEDULE_SYNC_FUTURE_DAYS","14") or 14)))
 HISTORY_SCHEDULE_SYNC_FULL_INTERVAL = max(3600,int(os.environ.get("SBB_SCHEDULE_SYNC_FULL_INTERVAL","21600") or 21600))
-HISTORY_SCHEDULE_SYNC_STATE = {"running":False,"lastRun":0.0,"lastFullRun":0.0,"today":"","dates":0,"events":0,"futureDays":HISTORY_SCHEDULE_SYNC_FUTURE_DAYS,"errors":[],"lastError":""}
+HISTORY_SCHEDULE_SYNC_STATE = {"running":False,"lastRun":0.0,"lastFullRun":0.0,"today":"","dates":0,"events":0,"futureDays":HISTORY_SCHEDULE_SYNC_FUTURE_DAYS,"current":"","completedSteps":0,"totalSteps":0,"startupFast":False,"errors":[],"lastError":""}
 OPERATOR_MEDIA_PLAYLISTS_FILE = STATE_DIR / "operator-media-playlists.json"
 OPERATOR_MEDIA_PLAYLISTS_LOCK = threading.RLock()
 OPERATOR_MEDIA_PLAYLIST_CRAWL_LOCK = threading.RLock()
@@ -5203,20 +5206,39 @@ def _history_schedule_sync_today():
     except Exception: return _client_date_iso(0)
 
 
-def _history_schedule_sync_once(full=False):
+def _history_schedule_sync_once(full=False, *, startup_fast=False, worker='schedule-sync'):
+    """Refresh persisted score schedules with heartbeat-visible progress.
+
+    v4.2.1 intentionally does a small startup pass (yesterday through +2 days)
+    before any 14-day sweep.  Each league/date operation renews the worker heartbeat
+    so a long provider call cannot make a healthy schedule worker look dead.
+    """
     today=_history_schedule_sync_today(); now=time.time(); last_full=float(HISTORY_SCHEDULE_SYNC_STATE.get('lastFullRun') or 0)
-    horizon=HISTORY_SCHEDULE_SYNC_FUTURE_DAYS if (full or now-last_full>=HISTORY_SCHEDULE_SYNC_FULL_INTERVAL) else 2
+    if startup_fast:
+        horizon=2
+    else:
+        horizon=HISTORY_SCHEDULE_SYNC_FUTURE_DAYS if (full or now-last_full>=HISTORY_SCHEDULE_SYNC_FULL_INTERVAL) else 2
     dates=[]; base=datetime.strptime(today,'%Y-%m-%d').date()
     for delta in range(-1,horizon+1): dates.append((base+timedelta(days=delta)).isoformat())
     events=0; errors=[]; tz=str(os.environ.get('SBB_SCHEDULE_TIMEZONE') or MEDIA_PREWARM_STATE.get('timezone') or 'America/Los_Angeles'); offset=MEDIA_PREWARM_STATE.get('utcOffsetMinutes')
-    HISTORY_SCHEDULE_SYNC_STATE.update(running=True,today=today,futureDays=HISTORY_SCHEDULE_SYNC_FUTURE_DAYS,lastError='')
+    total_steps=len(dates)*len(HISTORY_LEAGUES); completed_steps=0
+    HISTORY_SCHEDULE_SYNC_STATE.update(running=True,today=today,futureDays=HISTORY_SCHEDULE_SYNC_FUTURE_DAYS,current='',completedSteps=0,totalSteps=total_steps,startupFast=bool(startup_fast),lastError='')
     for date in dates:
         for league in HISTORY_LEAGUES:
+            current=f'{league} {date}'
+            HISTORY_SCHEDULE_SYNC_STATE.update(current=current,completedSteps=completed_steps)
+            _history_worker_beat(worker,phase='syncing',current=current,progress=True)
             try:
                 rows,source,cached,error=_history_get_league_scores(date,league,tz,offset,force=True); events+=len(rows or [])
                 if error and source=='UNAVAILABLE': errors.append(f'{league} {date}: {error}')
-            except Exception as exc: errors.append(f'{league} {date}: {type(exc).__name__}: {exc}')
-    HISTORY_SCHEDULE_SYNC_STATE.update(running=False,lastRun=time.time(),lastFullRun=(time.time() if horizon==HISTORY_SCHEDULE_SYNC_FUTURE_DAYS else last_full),dates=len(dates),events=events,errors=errors[-20:],lastError=(errors[-1] if errors else ''))
+            except Exception as exc:
+                errors.append(f'{league} {date}: {type(exc).__name__}: {exc}')
+            finally:
+                completed_steps+=1
+                HISTORY_SCHEDULE_SYNC_STATE.update(current=current,completedSteps=completed_steps,events=events,errors=errors[-20:],lastError=(errors[-1] if errors else ''))
+                _history_worker_beat(worker,phase='syncing',current=current,progress=True)
+    completed=time.time()
+    HISTORY_SCHEDULE_SYNC_STATE.update(running=False,lastRun=completed,lastFullRun=(completed if horizon==HISTORY_SCHEDULE_SYNC_FUTURE_DAYS and not startup_fast else last_full),dates=len(dates),events=events,current='',completedSteps=completed_steps,totalSteps=total_steps,startupFast=False,errors=errors[-20:],lastError=(errors[-1] if errors else ''))
     return dict(HISTORY_SCHEDULE_SYNC_STATE)
 
 
@@ -5225,10 +5247,13 @@ def history_schedule_sync_worker():
     first=True
     while True:
         try:
-            _history_worker_beat('schedule-sync',phase='syncing',current=_history_schedule_sync_today(),progress=False)
-            _history_schedule_sync_once(full=first); first=False
+            # Fast startup keeps the backend responsive immediately after deploy.
+            # The first full future-horizon refresh is deferred to a later cycle.
+            _history_schedule_sync_once(startup_fast=first,worker='schedule-sync'); first=False
             _history_worker_beat('schedule-sync',phase='sleeping',current=HISTORY_SCHEDULE_SYNC_STATE.get('today') or '',progress=True)
-        except Exception as exc: HISTORY_SCHEDULE_SYNC_STATE.update(running=False,lastError=f'{type(exc).__name__}: {exc}')
+        except Exception as exc:
+            HISTORY_SCHEDULE_SYNC_STATE.update(running=False,current='',lastError=f'{type(exc).__name__}: {exc}')
+            _history_worker_beat('schedule-sync',phase='error',current='',blocked=True)
         time.sleep(HISTORY_SCHEDULE_SYNC_INTERVAL)
 
 def _game_media_source_registry():
@@ -7475,6 +7500,10 @@ def _strict_epl_rows(payload):
     return _strict_soccer_rows(payload,"epl")
 
 PROGRAM_RANK_CACHE={}
+PROGRAM_RANK_LOCK=threading.RLock()
+PROGRAM_RANK_INFLIGHT=set()
+PROGRAM_RANK_SEMAPHORE=threading.Semaphore(1)
+PROGRAM_RANK_STATE={"scheduled":0,"completed":0,"errors":0,"lastError":"","lastCompletedAt":0.0}
 def _program_rank_key(mode,candidates,favorites,local_date):
     raw=json.dumps({'mode':mode,'c':candidates,'f':favorites,'d':local_date},sort_keys=True,ensure_ascii=False)
     return hashlib.sha1(raw.encode('utf-8')).hexdigest()
@@ -7483,7 +7512,7 @@ def _openai_program_rank(mode,candidates,favorites=None,local_date=''):
     candidates=list(candidates or [])[:40]; favorites=list(favorites or [])[:20]
     if not candidates: return []
     key=_program_rank_key(mode,candidates,favorites,local_date)
-    cached=PROGRAM_RANK_CACHE.get(key)
+    with PROGRAM_RANK_LOCK: cached=copy.deepcopy(PROGRAM_RANK_CACHE.get(key))
     if cached and time.time()-cached['savedAt']<600: return cached['data']
     if not read_openai_key(): return []
     schema={'type':'object','properties':{'items':{'type':'array','items':{'type':'object','properties':{
@@ -7521,11 +7550,57 @@ def _openai_program_rank(mode,candidates,favorites=None,local_date=''):
             parsed=json.loads(openai_output_text(response) or '{}')
             rows=parsed.get('items') or []
             if not isinstance(rows,list): raise ValueError('ranking result missing items array')
-            PROGRAM_RANK_CACHE[key]={'savedAt':time.time(),'data':rows}
+            with PROGRAM_RANK_LOCK: PROGRAM_RANK_CACHE[key]={'savedAt':time.time(),'data':rows}
             return rows
         except Exception as exc:
             last=exc; print(f'[SBB program-rank] retry {mode}: {type(exc).__name__}: {exc}',flush=True)
     raise last or RuntimeError('program ranking failed')
+
+
+def _program_rank_cached_or_schedule(mode,candidates,favorites=None,local_date=''):
+    """Return cached Director ranking immediately and refresh AI off-request.
+
+    The deterministic browser ranking is always available, so an OpenAI request must
+    never hold a UI/API request open for tens of seconds.  At most four unique keys
+    may be pending and only one upstream AI request executes at a time.
+    """
+    trimmed=list(candidates or [])[:40]; favorites=list(favorites or [])[:20]
+    if not trimmed: return {'data':[],'cached':False,'pending':False,'key':''}
+    key=_program_rank_key(mode,trimmed,favorites,local_date)
+    now=time.time()
+    with PROGRAM_RANK_LOCK:
+        cached=copy.deepcopy(PROGRAM_RANK_CACHE.get(key))
+        if cached and now-float(cached.get('savedAt') or 0)<600:
+            return {'data':cached.get('data') or [],'cached':True,'pending':False,'key':key}
+        if not read_openai_key():
+            return {'data':[],'cached':False,'pending':False,'key':key,'reason':'OPENAI_NOT_CONFIGURED'}
+        if key in PROGRAM_RANK_INFLIGHT:
+            return {'data':[],'cached':False,'pending':True,'key':key}
+        if len(PROGRAM_RANK_INFLIGHT)>=4:
+            return {'data':[],'cached':False,'pending':False,'key':key,'reason':'AI_QUEUE_FULL'}
+        PROGRAM_RANK_INFLIGHT.add(key); PROGRAM_RANK_STATE['scheduled']=int(PROGRAM_RANK_STATE.get('scheduled') or 0)+1
+
+    def run():
+        try:
+            with PROGRAM_RANK_SEMAPHORE:
+                _openai_program_rank(mode,trimmed,favorites,local_date)
+            with PROGRAM_RANK_LOCK:
+                PROGRAM_RANK_STATE['completed']=int(PROGRAM_RANK_STATE.get('completed') or 0)+1
+                PROGRAM_RANK_STATE['lastCompletedAt']=time.time(); PROGRAM_RANK_STATE['lastError']=''
+        except Exception as exc:
+            message=f'{type(exc).__name__}: {exc}'
+            with PROGRAM_RANK_LOCK:
+                PROGRAM_RANK_STATE['errors']=int(PROGRAM_RANK_STATE.get('errors') or 0)+1; PROGRAM_RANK_STATE['lastError']=message
+            print(f'[SBB program-rank] background {mode}: {message}',flush=True)
+        finally:
+            with PROGRAM_RANK_LOCK: PROGRAM_RANK_INFLIGHT.discard(key)
+    threading.Thread(target=run,daemon=True,name=f'sbb-program-rank-{mode}').start()
+    return {'data':[],'cached':False,'pending':True,'key':key}
+
+
+def _program_rank_state():
+    with PROGRAM_RANK_LOCK:
+        return {**copy.deepcopy(PROGRAM_RANK_STATE),'inflight':len(PROGRAM_RANK_INFLIGHT),'cacheEntries':len(PROGRAM_RANK_CACHE)}
 
 
 # v2.5.30 transport cache. This cache is deliberately independent from the
@@ -7748,7 +7823,7 @@ def _media_cache_prepare(media_url,event_id="",media_date="",priority=0):
         if total and paths["head"].exists() and paths["head"].stat().st_size>=total:
             paths["head"].replace(paths["full"]); meta["fullReady"]=True; meta["fullSize"]=total; meta["headSize"]=0
         if total and total>MEDIA_FILE_CACHE_HEAD_BYTES and not meta.get("fullReady"):
-            # v4.2.0: extend the startup runway with fixed 8 MB chunks. The first
+            # v4.2.1: extend the startup runway with fixed 8 MB chunks. The first
             # 16 MB remains backwards-compatible as HEAD; chunks 2+ keep playback
             # local while the low-priority full-file cache finishes.
             for idx in range(2,min(MEDIA_FILE_CACHE_PREFETCH_CHUNKS,(total+MEDIA_FILE_CACHE_CHUNK_BYTES-1)//MEDIA_FILE_CACHE_CHUNK_BYTES)):
@@ -8900,7 +8975,7 @@ def _history_inventory(date):
     event remains playable, but upgradeEligible stays true and the cloud backfill can
     revisit it when nextRetryAt becomes due.
     """
-    day=HISTORY_REPOSITORY.get_day(date); leagues={}
+    day=HISTORY_REPOSITORY.get_day(date); event_state_map=HISTORY_REPOSITORY.event_state_map_for_date(date); leagues={}
     total_games=completed=media_items=playable_media_items=candidate_media=archived_only_items=playable_games=0
     background_complete_games=catalog_complete_games=coverage_complete_games=quality_complete_games=upgrade_eligible_games=upgrade_due_games=0
     tier_counts={'green':0,'extended':0,'gold':0,'blue':0}; now=time.time()
@@ -8917,7 +8992,7 @@ def _history_inventory(date):
             event_id=_history_row_event_id(row)
             event_playable=[item for item in playable if _history_media_matches_row(item,row)]
             if event_playable: covered+=1
-            record=HISTORY_REPOSITORY.get_event(date,league,event_id) if event_id else None
+            record=event_state_map.get(HISTORY_REPOSITORY.canonical_event_key(league,event_id)) if event_id else None
             details=_history_discovery_details(record)
             version_ok=int(details.get('discoveryVersion') or 0)>=HISTORY_DISCOVERY_VERSION
             if record and float(record.get('lastDiscoveryAt') or 0)>0 and version_ok: searched+=1
@@ -9083,7 +9158,7 @@ def _history_day_event_plans(date):
 def _history_day_score_rows(date):
     """Return the canonical historical ribbon slate without any provider calls.
 
-    v4.2.0 deliberately separates the lightweight score-ribbon contract from the
+    v4.2.1 deliberately separates the lightweight score-ribbon contract from the
     much larger event/media plans.  Persisted history_day scoreboards are preferred
     because they carry the richest score/status fields.  Canonical catalog events
     fill any identity gaps so a relationship-only catalog still paints the ribbon.
@@ -9091,7 +9166,7 @@ def _history_day_score_rows(date):
     target=str(date or '')[:10]
     out={lg:[] for lg in HISTORY_LEAGUES}; seen={lg:set() for lg in HISTORY_LEAGUES}
     for lg in HISTORY_LEAGUES:
-        # v4.2.0 score inventory must not hydrate catalog media.  The compact
+        # v4.2.1 score inventory must not hydrate catalog media.  The compact
         # endpoint bulk-loads exact media separately after the score slate is known.
         state=HISTORY_REPOSITORY.get_league(target,lg,prefer_catalog=False)
         for raw in state.get('scores') or []:
@@ -9115,7 +9190,7 @@ def _history_day_score_rows(date):
 def _history_day_ribbon_plans(date,score_rows=None):
     """Compact exact-event media plans for score-ribbon first paint.
 
-    v4.2.0 performs one bulk SQLite media read for the entire date.  The prior
+    v4.2.1 performs one bulk SQLite media read for the entire date.  The prior
     implementation called ``event_media`` once per game, turning a 30-game ribbon
     into 30+ separate SQLite connections while backfill workers were writing.
     """
@@ -10132,11 +10207,11 @@ def _history_rule_collection_catchup_dates(base_date):
     return out
 
 
-def _history_rule_collection_catchup_snapshot():
+def _history_rule_collection_catchup_snapshot(identity_audit=None):
     state=copy.deepcopy(HISTORY_RULE_COLLECTION_CATCHUP_STATE)
     state['marker']=_history_rule_collection_catchup_key()
     state['complete']=bool(HISTORY_REPOSITORY.catalog_meta(state['marker'],'0')=='1')
-    state['identityAudit']=HISTORY_REPOSITORY.silver_identity_audit(league='EPL')
+    state['identityAudit']=copy.deepcopy(identity_audit or {})
     return state
 
 
@@ -10180,32 +10255,65 @@ def _history_operator_snapshot():
     with HISTORY_OPERATOR_SNAPSHOT_LOCK:
         return copy.deepcopy(HISTORY_OPERATOR_SNAPSHOT_STATE)
 
-def history_operator_snapshot_worker():
-    """Precompute expensive operator telemetry off the request path.
 
-    The Live Search Console polls frequently; it must never trigger whole-catalog
-    aggregation synchronously. A stale 10-second snapshot is far more useful than a
-    request that blocks the console (and other SQLite readers) for tens of seconds.
+def history_operator_snapshot_worker():
+    """Refresh operator telemetry as staggered, read-only components.
+
+    v4.2.0 rebuilt every expensive aggregate in one ~10 second cadence.  On the
+    production catalog that cycle could take longer than its own interval and turn
+    diagnostics into a continuous scan.  v4.2.1 gives each component an independent
+    TTL, uses query-only SQLite connections in the repository, and always serves the
+    last completed snapshot while a slower component refreshes in the background.
     """
     time.sleep(4)
+    next_due={}
+    # Fast operational truth stays fresh; expensive catalog-wide aggregates are
+    # deliberately staggered so they never all compete for SQLite/CPU at once.
+    components=[
+        ('eventClaims',5,lambda now:HISTORY_REPOSITORY.active_event_claims(now=now,limit=32)),
+        ('dbSummary',15,lambda now:HISTORY_REPOSITORY.summary(include_integrity=False)),
+        ('associations',45,lambda now:HISTORY_REPOSITORY.association_integrity_summary()),
+        ('silver',45,lambda now:HISTORY_REPOSITORY.silver_summary()),
+        ('greenGapQueue',60,lambda now:HISTORY_REPOSITORY.green_gap_summary(current_discovery_version=HISTORY_DISCOVERY_VERSION,now=now,recent_cutoff=_history_recent_cutoff())),
+        ('officialCatchup',60,lambda now:_history_official_catchup_snapshot(now)),
+        ('mediaObjectives',120,lambda now:HISTORY_REPOSITORY.media_objective_summary()),
+        ('silverIdentity',120,lambda now:HISTORY_REPOSITORY.silver_identity_audit(league='EPL')),
+        ('catalogIntegrity',120,lambda now:HISTORY_REPOSITORY.catalog_integrity()),
+    ]
     while True:
-        started=time.perf_counter(); now=time.time()
-        try:
-            payload={
-                'greenGapQueue':HISTORY_REPOSITORY.green_gap_summary(current_discovery_version=HISTORY_DISCOVERY_VERSION,now=now,recent_cutoff=_history_recent_cutoff()),
-                'associations':HISTORY_REPOSITORY.association_integrity_summary(),
-                'eventClaims':HISTORY_REPOSITORY.active_event_claims(now=now,limit=32),
-                'silver':HISTORY_REPOSITORY.silver_summary(),
-                'mediaObjectives':HISTORY_REPOSITORY.media_objective_summary(),
-                'silverIdentity':HISTORY_REPOSITORY.silver_identity_audit(league='EPL'),
-            }
-            with HISTORY_OPERATOR_SNAPSHOT_LOCK:
-                HISTORY_OPERATOR_SNAPSHOT_STATE.update(payload); HISTORY_OPERATOR_SNAPSHOT_STATE.update({'ready':True,'generatedAt':time.time(),'generationMs':round((time.perf_counter()-started)*1000,1),'error':''})
-        except Exception as exc:
-            with HISTORY_OPERATOR_SNAPSHOT_LOCK:
-                HISTORY_OPERATOR_SNAPSHOT_STATE.update({'error':f'{type(exc).__name__}: {exc}','generationMs':round((time.perf_counter()-started)*1000,1)})
-        elapsed=time.perf_counter()-started
-        time.sleep(max(1.0,HISTORY_OPERATOR_SNAPSHOT_INTERVAL-elapsed))
+        loop_started=time.perf_counter(); now=time.time(); refreshed=False; loop_errors=[]; max_component_ms=0.0
+        for name,interval,fn in components:
+            if now<float(next_due.get(name) or 0):
+                continue
+            component_started=time.perf_counter()
+            try:
+                value=fn(time.time())
+                elapsed_ms=round((time.perf_counter()-component_started)*1000,1); max_component_ms=max(max_component_ms,elapsed_ms)
+                with HISTORY_OPERATOR_SNAPSHOT_LOCK:
+                    HISTORY_OPERATOR_SNAPSHOT_STATE[name]=value
+                    HISTORY_OPERATOR_SNAPSHOT_STATE.setdefault('componentTimings',{})[name]=elapsed_ms
+                    HISTORY_OPERATOR_SNAPSHOT_STATE.setdefault('componentGeneratedAt',{})[name]=time.time()
+                    HISTORY_OPERATOR_SNAPSHOT_STATE.setdefault('componentErrors',{}).pop(name,None)
+                refreshed=True
+            except Exception as exc:
+                elapsed_ms=round((time.perf_counter()-component_started)*1000,1); max_component_ms=max(max_component_ms,elapsed_ms)
+                message=f'{type(exc).__name__}: {exc}'; loop_errors.append(f'{name}: {message}')
+                with HISTORY_OPERATOR_SNAPSHOT_LOCK:
+                    HISTORY_OPERATOR_SNAPSHOT_STATE.setdefault('componentTimings',{})[name]=elapsed_ms
+                    HISTORY_OPERATOR_SNAPSHOT_STATE.setdefault('componentErrors',{})[name]=message
+            finally:
+                next_due[name]=time.time()+float(interval)
+            # Yield between aggregates so foreground requests get scheduler/SQLite time.
+            time.sleep(0.12)
+        loop_ms=round((time.perf_counter()-loop_started)*1000,1)
+        with HISTORY_OPERATOR_SNAPSHOT_LOCK:
+            if refreshed:
+                HISTORY_OPERATOR_SNAPSHOT_STATE['ready']=True
+                HISTORY_OPERATOR_SNAPSHOT_STATE['generatedAt']=time.time()
+            HISTORY_OPERATOR_SNAPSHOT_STATE['generationMs']=loop_ms
+            HISTORY_OPERATOR_SNAPSHOT_STATE['maxComponentMs']=max(float(HISTORY_OPERATOR_SNAPSHOT_STATE.get('maxComponentMs') or 0),max_component_ms)
+            HISTORY_OPERATOR_SNAPSHOT_STATE['error']=' | '.join(loop_errors[-3:])
+        time.sleep(HISTORY_OPERATOR_SNAPSHOT_INTERVAL)
 
 def history_database_audit_worker():
     """Restartable, read-only database audit cursor for catalog quality checks."""
@@ -10395,12 +10503,13 @@ def _history_recovery_apply(payload):
     with HISTORY_ADMIN_RECOVERY_LOCK: HISTORY_ADMIN_RECOVERY_STATE.update({'lastAction':spec['action'],'lastAppliedAt':applied,'lastAppliedBy':'history-audit-ui','lastResult':copy.deepcopy(result)})
     return {'ok':True,'applied':True,'spec':spec,'result':result}
 
-def _history_recovery_status():
+def _history_recovery_status(operator_snapshot=None):
     with HISTORY_ADMIN_RECOVERY_LOCK: state=copy.deepcopy(HISTORY_ADMIN_RECOVERY_STATE)
     today=_client_date_iso(0,MEDIA_PREWARM_STATE.get('timezone') or '',MEDIA_PREWARM_STATE.get('utcOffsetMinutes'))
     cursors={lg:_history_cursor_settings(lg,today) for lg in HISTORY_LEAGUES}
     sources={lg:[{'key':x.get('key'),'version':x.get('version'),'objective':x.get('objective') or ''} for x in specs] for lg,specs in HISTORY_OFFICIAL_CATCHUP_SOURCES.items()}
-    return {'ok':True,'state':state,'cursors':cursors,'sources':sources,'databaseAudit':_history_database_audit_snapshot(),'silverIdentity':HISTORY_REPOSITORY.silver_identity_audit(league='EPL')}
+    op=operator_snapshot if isinstance(operator_snapshot,dict) else _history_operator_snapshot()
+    return {'ok':True,'state':state,'cursors':cursors,'sources':sources,'databaseAudit':_history_database_audit_snapshot(),'silverIdentity':copy.deepcopy(op.get('silverIdentity') or {})}
 
 
 def _milestone_release_snapshot(frontend_version=''):
@@ -10424,6 +10533,9 @@ def _milestone_release_snapshot(frontend_version=''):
     operator=_history_operator_snapshot(); operator_age=(now-float(operator.get('generatedAt') or 0)) if operator.get('generatedAt') else None
     operator_ok=bool(operator.get('ready')) and not operator.get('error') and operator_age is not None and operator_age<45
     if not operator_ok: problems.append({'level':'WARN','code':'OPERATOR_SNAPSHOT','message':'Operator telemetry snapshot is unavailable/stale','detail':{'ageSeconds':round(operator_age,1) if operator_age is not None else None,'error':operator.get('error','')}})
+    component_errors=copy.deepcopy(operator.get('componentErrors') or {})
+    if component_errors:
+        problems.append({'level':'WARN','code':'OPERATOR_COMPONENT_ERROR','message':'One or more operator telemetry components failed their latest refresh','detail':component_errors})
     checks.append({'name':'operator snapshot','ok':operator_ok,'detail':f"age {round(operator_age,1)}s" if operator_age is not None else 'not ready'})
 
     provider=_history_provider_status(); saturated=[]
@@ -10451,16 +10563,18 @@ def _milestone_release_snapshot(frontend_version=''):
     recent_errors=[x for x in (base.get('recent') or []) if str(x.get('level') or '').upper()=='ERROR'][-20:]
     if recent_errors: problems.append({'level':'ERROR','code':'RECENT_ERRORS','message':f'{len(recent_errors)} recent milestone error event(s)','detail':[{'at':x.get('at'),'category':x.get('category'),'message':x.get('message')} for x in recent_errors[-8:]]})
 
-    db_summary={}
-    try: db_summary=HISTORY_REPOSITORY.summary()
-    except Exception as exc:
-        problems.append({'level':'ERROR','code':'DB_SUMMARY','message':f'{type(exc).__name__}: {exc}'})
+    db_summary=copy.deepcopy(operator.get('dbSummary') or {})
+    if not db_summary:
+        try: db_summary=HISTORY_REPOSITORY.summary(include_integrity=False)
+        except Exception as exc:
+            problems.append({'level':'ERROR','code':'DB_SUMMARY','message':f'{type(exc).__name__}: {exc}'})
     extra={
         'release':{'backendVersion':APP_VERSION,'frontendVersion':str(frontend_version or ''),'versionMatch':version_match,'deploymentMode':DEPLOYMENT_MODE,'serverStartedAt':SERVER_STARTED_AT,'uptimeSeconds':int(max(0,now-SERVER_STARTED_AT))},
         'checks':checks,'problems':problems,
-        'history':{'threads':threads,'workers':workers,'workMode':dict(HISTORY_WORK_MODE_STATE),'operatorSnapshot':{'ready':bool(operator.get('ready')),'ageSeconds':round(operator_age,1) if operator_age is not None else None,'generationMs':operator.get('generationMs',0),'error':operator.get('error','')},'greenPool':_green_pool_snapshot(now),'providerConcurrency':provider,'singleflight':_history_singleflight_status(),'databaseAudit':_history_database_audit_snapshot()},
+        'history':{'threads':threads,'workers':workers,'workMode':dict(HISTORY_WORK_MODE_STATE),'operatorSnapshot':{'ready':bool(operator.get('ready')),'ageSeconds':round(operator_age,1) if operator_age is not None else None,'generationMs':operator.get('generationMs',0),'maxComponentMs':operator.get('maxComponentMs',0),'componentTimings':copy.deepcopy(operator.get('componentTimings') or {}),'componentGeneratedAt':copy.deepcopy(operator.get('componentGeneratedAt') or {}),'componentErrors':copy.deepcopy(operator.get('componentErrors') or {}),'error':operator.get('error','')},'greenPool':_green_pool_snapshot(now),'providerConcurrency':provider,'singleflight':_history_singleflight_status(),'databaseAudit':_history_database_audit_snapshot()},
         'database':{'summary':db_summary},
         'schedulers':{'media':MEDIA_WORK_SCHEDULER.snapshot(),'gameCenter':GAME_CENTER_WORK_SCHEDULER.snapshot()},
+        'director':_program_rank_state(),
         'mediaCache':_media_cache_summary(),
     }
     base['extra']=extra; base['problems']=problems; base['checks']=checks
@@ -10617,7 +10731,7 @@ class Handler(SimpleHTTPRequestHandler):
                 if row is None: return send_json(self,{'ok':False,'error':'HISTORY_EVENT_NOT_FOUND'},404)
                 result=_history_discover_event(date,league,row,force=bool(body.get('force',False)),allow_search_rescue=True,pass_target_tier=HISTORY_QUALITY_TARGET_TIER)
                 plan=_history_playback_plan(date,league,event_id)
-                return send_json(self,{'ok':True,'result':result,'plan':plan,'repository':HISTORY_REPOSITORY.summary()},200)
+                return send_json(self,{'ok':True,'result':result,'plan':plan,'repository':HISTORY_REPOSITORY.summary(include_integrity=False)},200)
             except Exception as exc:
                 return send_json(self,{'ok':False,'error':'HISTORY_EVENT_DISCOVERY_ERROR','message':f'{type(exc).__name__}: {exc}'},500)
         if parsed.path == '/api/history/media/runtime':
@@ -10640,7 +10754,7 @@ class Handler(SimpleHTTPRequestHandler):
                 if not re.match(r'^\d{4}-\d{2}-\d{2}$',date) or league not in HISTORY_LEAGUES or not isinstance(items,list):
                     return send_json(self,{'ok':False,'error':'BAD_HISTORY_MEDIA'},400)
                 HISTORY_REPOSITORY.put_media(date,league,items[:500],merge=True)
-                return send_json(self,{'ok':True,'date':date,'league':league,'items':len(items),'repository':HISTORY_REPOSITORY.summary()},200)
+                return send_json(self,{'ok':True,'date':date,'league':league,'items':len(items),'repository':HISTORY_REPOSITORY.summary(include_integrity=False)},200)
             except Exception as exc:
                 return send_json(self,{'ok':False,'error':'HISTORY_MEDIA_SAVE_ERROR','message':f'{type(exc).__name__}: {exc}'},500)
         if parsed.path == '/api/history/discover':
@@ -10654,7 +10768,7 @@ class Handler(SimpleHTTPRequestHandler):
                 deep=bool(body.get('deep',True)); force=bool(body.get('force',False))
                 _touch_history_focus(date,seconds=150)
                 started=trigger_history_discovery(date,deep=deep,force=force)
-                return send_json(self,{'ok':True,'started':started,'state':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary()},202 if started else 200)
+                return send_json(self,{'ok':True,'started':started,'state':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary(include_integrity=False)},202 if started else 200)
             except ValueError as exc:
                 return send_json(self,{'ok':False,'error':'BAD_HISTORY_DISCOVERY','message':str(exc)},400)
             except Exception as exc:
@@ -10684,8 +10798,8 @@ class Handler(SimpleHTTPRequestHandler):
                 if mode not in ('queue','top-plays','score-ribbon'): return send_json(self,{'ok':False,'error':'BAD_RANK_MODE'},400)
                 candidates=body.get('candidates') or []
                 if not isinstance(candidates,list): return send_json(self,{'ok':False,'error':'BAD_CANDIDATES'},400)
-                rows=_openai_program_rank(mode,candidates,body.get('favoriteTeams') or [],str(body.get('localDate') or ''))
-                return send_json(self,{'ok':True,'data':rows,'mode':mode,'model':OPENAI_MODEL if read_openai_key() else None})
+                ranked=_program_rank_cached_or_schedule(mode,candidates,body.get('favoriteTeams') or [],str(body.get('localDate') or ''))
+                return send_json(self,{'ok':True,'data':ranked.get('data') or [],'mode':mode,'model':OPENAI_MODEL if read_openai_key() else None,'cached':bool(ranked.get('cached')),'pending':bool(ranked.get('pending')),'fallback':'deterministic' if not ranked.get('data') else '', 'reason':ranked.get('reason') or '', 'director':_program_rank_state()})
             except Exception as exc:
                 print(f"[SBB program-rank] soft fallback {mode if 'mode' in locals() else 'unknown'}: {type(exc).__name__}: {exc}",flush=True)
                 return send_json(self,{
@@ -10693,7 +10807,8 @@ class Handler(SimpleHTTPRequestHandler):
                     'data':[],
                     'fallback':'deterministic',
                     'error':'PROGRAM_RANK_UNAVAILABLE',
-                    'message':f'{type(exc).__name__}: {exc}'
+                    'message':f'{type(exc).__name__}: {exc}',
+                    'director':_program_rank_state()
                 },200)
         return send_json(self,{'ok':False,'error':'NOT_FOUND'},404)
 
@@ -10769,7 +10884,7 @@ class Handler(SimpleHTTPRequestHandler):
             _touch_history_focus(date,seconds=120)
             day=HISTORY_REPOSITORY.get_day(date); score_rows=_history_day_score_rows(date); plans=_history_day_event_plans(date)
             score_count=sum(len(rows or []) for rows in score_rows.values())
-            return send_json(self,{'ok':True,**day,'scoreRowsByLeague':score_rows,'scoreGameCount':score_count,'eventPlans':plans,'catalogFirst':True,'catalogEventCount':len(plans),'scoreInventoryComplete':_history_day_score_inventory_complete(date),'discoveryState':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary(),'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE)},200)
+            return send_json(self,{'ok':True,**day,'scoreRowsByLeague':score_rows,'scoreGameCount':score_count,'eventPlans':plans,'catalogFirst':True,'catalogEventCount':len(plans),'scoreInventoryComplete':_history_day_score_inventory_complete(date),'discoveryState':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary(include_integrity=False),'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE)},200)
 
         if parsed.path == "/api/history/roundups":
             qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]; league=str((qs.get('league') or ['ALL'])[-1]).upper()
@@ -10783,7 +10898,7 @@ class Handler(SimpleHTTPRequestHandler):
             qs=parse_qs(parsed.query); date=str((qs.get('date') or [''])[-1])[:10]
             if not re.match(r'^\d{4}-\d{2}-\d{2}$',date): return send_json(self,{'ok':False,'error':'DATE_REQUIRED'},400)
             _touch_history_focus(date,seconds=120)
-            return send_json(self,{'ok':True,'state':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary()},200)
+            return send_json(self,{'ok':True,'state':_history_discovery_state(date),'repository':HISTORY_REPOSITORY.summary(include_integrity=False)},200)
 
         if parsed.path == "/api/history/admin/recovery":
             try: return send_json(self,_history_recovery_status(),200)
@@ -10799,7 +10914,7 @@ class Handler(SimpleHTTPRequestHandler):
             try:
                 qs=parse_qs(parsed.query); filters=_history_audit_filters(qs)
                 data=HISTORY_REPOSITORY.audit_catalog(**filters,current_discovery_version=HISTORY_DISCOVERY_VERSION,quality_target=HISTORY_QUALITY_TARGET_TIER)
-                return send_json(self,{'ok':True,**data,'repository':HISTORY_REPOSITORY.summary(),'background':_history_background_status(),'greenGap':dict(HISTORY_GREEN_GAP_STATE)},200)
+                return send_json(self,{'ok':True,**data,'repository':HISTORY_REPOSITORY.summary(include_integrity=False),'background':_history_background_status(),'greenGap':dict(HISTORY_GREEN_GAP_STATE)},200)
             except Exception as exc:
                 return send_json(self,{'ok':False,'error':'HISTORY_AUDIT_ERROR','message':f'{type(exc).__name__}: {exc}'},500)
 
@@ -10817,7 +10932,11 @@ class Handler(SimpleHTTPRequestHandler):
                 return send_json(self,{'ok':False,'error':'HISTORY_AUDIT_EXPORT_ERROR','message':f'{type(exc).__name__}: {exc}'},500)
 
         if parsed.path == "/api/history/catalog/integrity":
-            return send_json(self,{"ok":True,"version":APP_VERSION,"catalogSchemaVersion":CATALOG_SCHEMA_VERSION,"summary":HISTORY_REPOSITORY.summary(),"integrity":HISTORY_REPOSITORY.catalog_integrity()},200)
+            operator=_history_operator_snapshot(); integrity=copy.deepcopy(operator.get('catalogIntegrity') or {}); summary=copy.deepcopy(operator.get('dbSummary') or {})
+            if not summary: summary=HISTORY_REPOSITORY.summary(include_integrity=False)
+            if not integrity: integrity=HISTORY_REPOSITORY.catalog_integrity()
+            generated=float((operator.get('componentGeneratedAt') or {}).get('catalogIntegrity') or 0)
+            return send_json(self,{"ok":True,"version":APP_VERSION,"catalogSchemaVersion":CATALOG_SCHEMA_VERSION,"summary":summary,"integrity":integrity,"cached":bool(generated),"cacheAgeSeconds":round(max(0,time.time()-generated),1) if generated else None},200)
 
         if parsed.path == "/api/history/catalog/review":
             try:
@@ -10888,7 +11007,8 @@ class Handler(SimpleHTTPRequestHandler):
                 media_objectives=operator_snapshot.get('mediaObjectives') or {}
                 with HISTORY_MEDIA_AUDIT_LOCK: media_runtime=copy.deepcopy(HISTORY_MEDIA_AUDIT)
                 media_objectives['runtime']=media_runtime
-                official_catchup=_history_official_catchup_snapshot(now)
+                official_catchup=copy.deepcopy(operator_snapshot.get('officialCatchup') or {})
+                if not official_catchup: official_catchup=_history_official_catchup_snapshot(now)
                 rule_game_catchup=_history_rule_game_catchup_snapshot(official_catchup)
                 problems=[]
                 threads=_history_threads_status()
@@ -10918,8 +11038,8 @@ class Handler(SimpleHTTPRequestHandler):
                     'playbackSuspended':_history_playback_suspended(),'searchSuspended':_history_search_suspended(),
                     'threads':threads,'workers':workers,'background':bg,
                     'greenGap':copy.deepcopy(HISTORY_GREEN_GAP_STATE),'greenPool':green_pool,'greenGapQueue':qsum,'associations':associations,
-                    'eventClaims':claims,'providerConcurrency':providers,'discoveryEfficiency':_history_efficiency_snapshot(),'silver':silver,'mediaObjectives':media_objectives,'officialSourceCatchup':official_catchup,'ruleGameCatchup':rule_game_catchup,'ruleCollectionCatchup':_history_rule_collection_catchup_snapshot(),
-                    'databaseAudit':_history_database_audit_snapshot(),'recovery':_history_recovery_status(),'silverIdentity':operator_snapshot.get('silverIdentity') or {},'operatorSnapshot':{'ready':bool(operator_snapshot.get('ready')),'generatedAt':operator_snapshot.get('generatedAt',0),'ageSeconds':round(max(0,now-float(operator_snapshot.get('generatedAt') or 0)),1) if operator_snapshot.get('generatedAt') else None,'generationMs':operator_snapshot.get('generationMs',0),'error':operator_snapshot.get('error','')},
+                    'eventClaims':claims,'providerConcurrency':providers,'discoveryEfficiency':_history_efficiency_snapshot(),'silver':silver,'mediaObjectives':media_objectives,'officialSourceCatchup':official_catchup,'ruleGameCatchup':rule_game_catchup,'ruleCollectionCatchup':_history_rule_collection_catchup_snapshot(operator_snapshot.get('silverIdentity') or {}),
+                    'databaseAudit':_history_database_audit_snapshot(),'recovery':_history_recovery_status(operator_snapshot),'silverIdentity':operator_snapshot.get('silverIdentity') or {},'operatorSnapshot':{'ready':bool(operator_snapshot.get('ready')),'generatedAt':operator_snapshot.get('generatedAt',0),'ageSeconds':round(max(0,now-float(operator_snapshot.get('generatedAt') or 0)),1) if operator_snapshot.get('generatedAt') else None,'generationMs':operator_snapshot.get('generationMs',0),'maxComponentMs':operator_snapshot.get('maxComponentMs',0),'componentTimings':operator_snapshot.get('componentTimings') or {},'componentErrors':operator_snapshot.get('componentErrors') or {},'error':operator_snapshot.get('error','')},
                     'scheduleSync':dict(HISTORY_SCHEDULE_SYNC_STATE),'playlistCrawler':dict(OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE),'operatorPlaylists':len(_operator_media_playlist_rows(enabled_only=False)),
                     'backfill':copy.deepcopy(HISTORY_BACKFILL_STATE),'backfillFloorDate':HISTORY_BACKFILL_FLOOR_DATE,'activeDiscoveries':active,'focus':focus,
                     'youtubeGateway':gateway,'youtubeSearchBudget':budget_state,
@@ -10932,7 +11052,13 @@ class Handler(SimpleHTTPRequestHandler):
         if parsed.path == "/api/history/status":
             with HISTORY_DISCOVERY_LOCK:
                 active={d:copy.deepcopy(st) for d,st in HISTORY_DISCOVERY_STATE.items() if st.get('running')}
-            return send_json(self,{'ok':True,'version':APP_VERSION,'historyDiscoveryVersion':HISTORY_DISCOVERY_VERSION,'workMode':dict(HISTORY_WORK_MODE_STATE),'repository':HISTORY_REPOSITORY.summary(),'backfill':dict(HISTORY_BACKFILL_STATE),'backfillFloorDate':HISTORY_BACKFILL_FLOOR_DATE,'greenGap':dict(HISTORY_GREEN_GAP_STATE),'officialSourceCatchup':_history_official_catchup_snapshot(),'ruleGameCatchup':_history_rule_game_catchup_snapshot(),'ruleCollectionCatchup':_history_rule_collection_catchup_snapshot(),'mediaObjectives':{**HISTORY_REPOSITORY.media_objective_summary(),'runtime':copy.deepcopy(HISTORY_MEDIA_AUDIT)},'background':_history_background_status(),'activeDiscoveries':active,'daysTarget':len(_history_backfill_seed_dates(datetime.strptime(_client_date_iso(0,MEDIA_PREWARM_STATE.get('timezone') or '',MEDIA_PREWARM_STATE.get('utcOffsetMinutes')),'%Y-%m-%d').date())),'mediaBackfill':HISTORY_BACKFILL_MEDIA,'idleSeconds':HISTORY_IDLE_SECONDS,'idle':_history_server_idle()},200)
+            operator_snapshot=_history_operator_snapshot()
+            repository_summary=copy.deepcopy(operator_snapshot.get('dbSummary') or {}) or HISTORY_REPOSITORY.summary(include_integrity=False)
+            official_catchup=copy.deepcopy(operator_snapshot.get('officialCatchup') or {})
+            if not official_catchup: official_catchup=_history_official_catchup_snapshot()
+            media_objectives=copy.deepcopy(operator_snapshot.get('mediaObjectives') or {})
+            with HISTORY_MEDIA_AUDIT_LOCK: media_objectives['runtime']=copy.deepcopy(HISTORY_MEDIA_AUDIT)
+            return send_json(self,{'ok':True,'version':APP_VERSION,'historyDiscoveryVersion':HISTORY_DISCOVERY_VERSION,'workMode':dict(HISTORY_WORK_MODE_STATE),'repository':repository_summary,'backfill':dict(HISTORY_BACKFILL_STATE),'backfillFloorDate':HISTORY_BACKFILL_FLOOR_DATE,'greenGap':dict(HISTORY_GREEN_GAP_STATE),'officialSourceCatchup':official_catchup,'ruleGameCatchup':_history_rule_game_catchup_snapshot(official_catchup),'ruleCollectionCatchup':_history_rule_collection_catchup_snapshot(operator_snapshot.get('silverIdentity') or {}),'mediaObjectives':media_objectives,'background':_history_background_status(),'activeDiscoveries':active,'daysTarget':len(_history_backfill_seed_dates(datetime.strptime(_client_date_iso(0,MEDIA_PREWARM_STATE.get('timezone') or '',MEDIA_PREWARM_STATE.get('utcOffsetMinutes')),'%Y-%m-%d').date())),'mediaBackfill':HISTORY_BACKFILL_MEDIA,'idleSeconds':HISTORY_IDLE_SECONDS,'idle':_history_server_idle()},200)
 
         if parsed.path == "/api/settings":
             return send_json(self,_settings_payload(),200)

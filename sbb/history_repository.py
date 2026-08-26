@@ -42,7 +42,7 @@ class HistoryRepository:
 
         Re-running ``PRAGMA journal_mode=WAL`` on every short-lived connection can
         serialize otherwise independent readers behind catalog writers.  The journal
-        mode is persistent database state, so v4.2.0 configures it in ``_init_db``
+        mode is persistent database state, so v4.2.1 configures it in ``_init_db``
         and keeps normal connections cheap.
         """
         conn = sqlite3.connect(self.path, timeout=30)
@@ -499,7 +499,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.2.0 migration cooldowns already persisted in production.
+        """Release artificial v4.2.1 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -613,7 +613,7 @@ class HistoryRepository:
         """Summarize normalized assets discovered from one YouTube playlist."""
         pid=str(playlist_id or "").strip()
         if not pid: return {"assets":0,"assigned":0,"orphaned":0,"quarantined":0}
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             row=conn.execute("""SELECT COUNT(DISTINCT s.asset_key) assets,
               COUNT(DISTINCT CASE WHEN EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=s.asset_key AND em.association_state='ASSIGNED') THEN s.asset_key END) assigned,
               COUNT(DISTINCT CASE WHEN NOT EXISTS(SELECT 1 FROM history_event_media em WHERE em.asset_key=s.asset_key AND em.association_state='ASSIGNED') THEN s.asset_key END) orphaned,
@@ -624,7 +624,7 @@ class HistoryRepository:
     def database_audit_batch(self, *, offset=0, limit=250, current_discovery_version=0):
         """Read-only local catalog scan used by the restartable database-audit cursor."""
         offset=max(0,int(offset or 0)); limit=max(1,min(1000,int(limit or 250))); current=int(current_discovery_version or 0)
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             rows=conn.execute("""SELECT e.canonical_event_key,e.league,e.event_date,e.discovery_state,e.discovery_json,
               SUM(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count,
               SUM(CASE WHEN em.association_state='QUARANTINED' THEN 1 ELSE 0 END) quarantined_links
@@ -642,7 +642,7 @@ class HistoryRepository:
     def silver_identity_audit(self, *, league="EPL"):
         """Report whether Silver source identity obeys one provider video -> one asset."""
         league=str(league or "").upper()
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             row=conn.execute("""SELECT COUNT(*) links,COUNT(DISTINCT cm.asset_key) unique_assets,COUNT(DISTINCT c.collection_key) collections,
               COUNT(DISTINCT CASE WHEN s.provider_media_id<>'' THEN s.provider_media_id END) provider_ids,
               COUNT(DISTINCT CASE WHEN json_extract(s.asset_json,'$.youtubeId') IS NOT NULL AND json_extract(s.asset_json,'$.youtubeId')<>'' THEN json_extract(s.asset_json,'$.youtubeId') END) youtube_ids
@@ -653,7 +653,7 @@ class HistoryRepository:
 
     def get_event(self, date, league, event_id):
         league=str(league).upper(); event_id=str(event_id); key=self.canonical_event_key(league,event_id)
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             row=conn.execute("SELECT * FROM history_catalog_event WHERE canonical_event_key=?",(key,)).fetchone()
         if not row: return None
         return {"date":row["event_date"],"league":row["league"],"eventId":row["event_id"],"canonicalEventKey":row["canonical_event_key"],"event":self._load_obj(row["event_json"]),
@@ -682,7 +682,7 @@ class HistoryRepository:
                 if state==ASSIGNED:
                     competing=conn.execute("SELECT canonical_event_key,association_confidence,association_method FROM history_event_media WHERE asset_key=? AND association_state='ASSIGNED' AND canonical_event_key<>?",(asset_key,key)).fetchall()
                     if competing:
-                        # v4.2.0 distinguishes a broad candidate being encountered
+                        # v4.2.1 distinguishes a broad candidate being encountered
                         # for another game from a genuine strong-identity conflict.
                         # Preserve a previously proven assignment for ordinary title/
                         # team matches and quarantine only the new candidate link.
@@ -779,7 +779,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.2.0 treats collection membership as fully derived state.  Classifier
+        v4.2.1 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -882,12 +882,12 @@ class HistoryRepository:
         return {"event":event,"collection":collection,"integrity":integrity,"issues":issues,"ok":not bool(issues)}
 
     def media_objective_summary(self):
-        """Persisted v4.2.0 objective/category counts for operator audit."""
+        """Persisted v4.2.1 objective/category counts for operator audit."""
         out={"nflQuickGames":0,"nflExtendedGames":0,"nflBothGames":0,"nflGreenWithoutPurple":0,"nflMissingQuick":0,"nflMissingExtended":0,
              "mlsSnapshots":0,"mlsMatchHighlights":0,"mlsSnapshotGames":0,"mlsHighlightGames":0,"mlsBothGames":0,"mlsMissingSnapshot":0,"mlsMissingHighlights":0,
              "eplQuickGames":0,"eplExtendedGames":0,"eplBothGames":0,"eplMissingQuick":0,"eplMissingExtended":0,
              "bestGoalsCollections":0,"bestGoalsAssets":0,"bestSavesCollections":0,"bestSavesAssets":0}
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             def event_flags(league,quick_sql,extended_sql):
                 rows=conn.execute(f"""SELECT e.canonical_event_key,
                   MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND ({quick_sql}) THEN 1 ELSE 0 END) has_quick,
@@ -913,7 +913,7 @@ class HistoryRepository:
         return out
 
     def association_integrity_summary(self):
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             assigned=int(conn.execute("SELECT COUNT(*) FROM history_event_media WHERE association_state='ASSIGNED'").fetchone()[0] or 0)
             quarantined=int(conn.execute("SELECT COUNT(*) FROM history_event_media WHERE association_state='QUARANTINED'").fetchone()[0] or 0)
             cross=int(conn.execute("SELECT COUNT(*) FROM (SELECT asset_key FROM history_event_media WHERE association_state='ASSIGNED' GROUP BY asset_key HAVING COUNT(DISTINCT canonical_event_key)>1)").fetchone()[0] or 0)
@@ -954,8 +954,8 @@ class HistoryRepository:
     def ribbon_media_for_date(self, date, leagues=None, include_failed=False):
         """Bulk exact-event GAME media for one historical ribbon date.
 
-        v4.2.0 performed one ``event_media`` query per score card (the classic
-        N+1 pattern).  This v4.2.0 path resolves every assigned source asset for
+        v4.2.1 performed one ``event_media`` query per score card (the classic
+        N+1 pattern).  This v4.2.1 path resolves every assigned source asset for
         the requested day in a single SQLite read and groups the hydrated rows by
         canonical event key in memory.
         """
@@ -996,7 +996,7 @@ class HistoryRepository:
         """Return the persisted relationship state for one source asset/event pair."""
         key=self.canonical_event_key(league,event_id); asset_key=str(asset_key or "")
         if not key or not asset_key: return None
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             row=conn.execute("""SELECT em.association_state,em.association_confidence,em.association_method,em.association_evidence,em.matcher_version,
                 s.catalog_state,s.quarantine_reason,s.validation_state,s.runtime_state
               FROM history_event_media em JOIN history_source_media s ON s.asset_key=em.asset_key
@@ -1063,7 +1063,7 @@ class HistoryRepository:
     def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP", return_stats=False):
         """Promote only strictly proven league-wide roundup assets into Silver.
 
-        v4.2.0 keeps the legacy integer return by default, but can return precise
+        v4.2.1 keeps the legacy integer return by default, but can return precise
         idempotent telemetry so rule catch-up reports *new* assets/links rather than
         repeatedly calling rediscovered rows "accepted".
         """
@@ -1110,7 +1110,7 @@ class HistoryRepository:
 
     def roundup_media(self, date, league=None):
         date=str(date or "")[:10]; league=str(league or "").upper()
-        # v4.2.0: Silver is a latency-sensitive read. WAL/query_only means this
+        # v4.2.1: Silver is a latency-sensitive read. WAL/query_only means this
         # lookup never queues behind discovery writers or a database audit.
         with closing(self._read_connect()) as conn:
             league_sql=""
@@ -1218,9 +1218,25 @@ class HistoryRepository:
 
     def has_scores(self, date, league): return bool(self.get_league(date,league,prefer_catalog=False).get("scoresSavedAt"))
 
+    def event_state_map_for_date(self, date):
+        """Bulk canonical event/discovery state for one calendar day.
+
+        Historical discovery status used to perform one ``get_event`` SQLite query
+        for every final game.  This date-scoped map removes that N+1 read pattern.
+        """
+        date=str(date or "")[:10]
+        with closing(self._read_connect()) as conn:
+            rows=conn.execute("""SELECT canonical_event_key,league,event_id,event_date,event_json,discovery_state,discovery_json,
+              last_discovery_at,last_success_at,next_retry_at,last_error,updated_at,final_at
+              FROM history_catalog_event WHERE event_date=?""",(date,)).fetchall()
+        out={}
+        for row in rows:
+            out[str(row["canonical_event_key"])]={"date":row["event_date"],"league":row["league"],"eventId":row["event_id"],"canonicalEventKey":row["canonical_event_key"],"event":self._load_obj(row["event_json"]),"discoveryState":row["discovery_state"],"discovery":self._load_obj(row["discovery_json"]),"lastDiscoveryAt":float(row["last_discovery_at"] or 0),"finalAt":float(row["final_at"] or 0),"lastSuccessAt":float(row["last_success_at"] or 0),"nextRetryAt":float(row["next_retry_at"] or 0),"lastError":row["last_error"] or "","updatedAt":float(row["updated_at"] or 0)}
+        return out
+
     def green_gap_events(self, *, current_discovery_version=0, now=None, limit=24, recent_cooldown=2*60*60, archive_cooldown=24*60*60, recent_cutoff=""):
         now=float(now or time.time()); current=int(current_discovery_version or 0); limit=max(1,min(200,int(limit or 24))); cutoff=str(recent_cutoff or time.strftime("%Y-%m-%d",time.gmtime(now-2*86400)))[:10]
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             rows=conn.execute("""WITH flags AS (
                 SELECT em.canonical_event_key,
                   SUM(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count,
@@ -1263,7 +1279,7 @@ class HistoryRepository:
         coverage gap. Blue/None remain incomplete coverage.
         """
         now=float(now or time.time()); current=int(current_discovery_version or 0); cutoff=str(recent_cutoff or time.strftime("%Y-%m-%d",time.gmtime(now-2*86400)))[:10]
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             rows=conn.execute("""SELECT e.canonical_event_key,e.event_date,e.discovery_state,e.discovery_json,e.last_discovery_at,e.next_retry_at,e.claim_owner,e.claim_started_at,e.claim_expires_at,
                 SUM(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' THEN 1 ELSE 0 END) verified_count,
                 MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) has_gold,
@@ -1354,7 +1370,7 @@ class HistoryRepository:
     def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, preferred_league="", strict_preferred=False, limit=96, newest_first=True):
         """Newest-first official-source objective queue.
 
-        v4.2.0 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
+        v4.2.1 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
         objectives. A previously completed generic source pass cannot hide an unmet
         objective, and the three rule-migration leagues are scheduled ahead of legacy
         NHL source catch-up until their new objective ledgers are satisfied.
@@ -1363,7 +1379,7 @@ class HistoryRepository:
         leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_specs_for_league(source_versions,lg)]
         preferred=str(preferred_league or "").upper()
         if strict_preferred and preferred and preferred in leagues:
-            # v4.2.0 strict rule-migration lane: query only the assigned league.
+            # v4.2.1 strict rule-migration lane: query only the assigned league.
             # This avoids SQL LIMIT starvation where NFL/MLS rows can consume the
             # candidate window before an EPL-affinity worker ever sees EPL work.
             leagues=[preferred]
@@ -1425,7 +1441,7 @@ class HistoryRepository:
         result={"floorDate":floor,"status":"COMPLETE","total":0,"attempted":0,"checked":0,"remaining":0,"coverageUpgrades":0,"qualityUpgrades":0,"accepted":0,"leagues":{}}
         if not leagues or not floor or not today: return result
         marks=','.join('?' for _ in leagues)
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             rows=conn.execute(f"""SELECT e.canonical_event_key,e.league,e.event_date,
               MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='gold' THEN 1 ELSE 0 END) has_gold,
               MAX(CASE WHEN em.association_state='ASSIGNED' AND s.validation_state='VERIFIED' AND s.runtime_state<>'FAILED' AND s.scope='GAME' AND json_extract(s.asset_json,'$.recapTier')='green' THEN 1 ELSE 0 END) has_green,
@@ -1503,7 +1519,7 @@ class HistoryRepository:
 
     def active_event_claims(self, *, now=None, limit=50):
         now=float(now or time.time()); limit=max(1,min(500,int(limit or 50)))
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             rows=conn.execute("""SELECT canonical_event_key,league,event_id,event_date,claim_owner,claim_started_at,claim_expires_at
               FROM history_catalog_event WHERE claim_owner<>'' AND claim_expires_at>? ORDER BY claim_started_at ASC LIMIT ?""",(now,limit)).fetchall()
         return [{"canonicalEventKey":r["canonical_event_key"],"league":r["league"],"eventId":r["event_id"],"date":r["event_date"],
@@ -1515,7 +1531,7 @@ class HistoryRepository:
         The detailed collection audit endpoint remains the future dedicated Silver
         screen; this summary makes daily/weekly roundup growth observable now.
         """
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             day_col=int(conn.execute("SELECT COUNT(*) FROM history_collection WHERE scope='DAY_LEAGUE'").fetchone()[0] or 0)
             week_col=int(conn.execute("SELECT COUNT(*) FROM history_collection WHERE scope='WEEK_LEAGUE'").fetchone()[0] or 0)
             round_col=int(conn.execute("SELECT COUNT(*) FROM history_collection WHERE scope='ROUND_LEAGUE'").fetchone()[0] or 0)
@@ -1619,7 +1635,7 @@ class HistoryRepository:
         if date_to: clauses.append("event_date<=?"); params.append(str(date_to)[:10])
         if league: clauses.append("league=?"); params.append(league)
         where=(" WHERE "+" AND ".join(clauses)) if clauses else ""
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             events=conn.execute("SELECT * FROM history_catalog_event"+where+" ORDER BY event_date DESC,league,event_id",params).fetchall()
             assets=conn.execute("""SELECT e.canonical_event_key,s.*,em.association_confidence,em.association_method,em.association_evidence,em.matcher_version
               FROM history_catalog_event e JOIN history_event_media em ON em.canonical_event_key=e.canonical_event_key JOIN history_source_media s ON s.asset_key=em.asset_key
@@ -1863,7 +1879,7 @@ class HistoryRepository:
         return {"rows":out,"total":total,"limit":limit,"offset":offset,"summary":summary,"facets":{"collectionKinds":kinds}}
 
     def catalog_integrity(self):
-        with self._lock, closing(self._connect()) as conn:
+        with closing(self._read_connect()) as conn:
             scalar=lambda sql: int((conn.execute(sql).fetchone()[0] or 0))
             return {
                 "schemaVersion":CATALOG_SCHEMA_VERSION,
@@ -1884,14 +1900,32 @@ class HistoryRepository:
                 "sourceEnrichmentRecords":scalar("SELECT COUNT(*) FROM history_source_enrichment"),
             }
 
-    def summary(self):
-        with self._lock, closing(self._connect()) as conn:
-            day=conn.execute("SELECT COUNT(DISTINCT date) days,COUNT(*) league_days,MAX(scores_saved_at) last_scores,MAX(media_saved_at) last_media,MAX(discovery_saved_at) last_discovery FROM history_day").fetchone()
-            events=conn.execute("SELECT COUNT(*) events FROM history_catalog_event").fetchone(); media=conn.execute("SELECT COUNT(*) assets,SUM(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' THEN 1 ELSE 0 END) verified,SUM(CASE WHEN runtime_state='PLAYED' THEN 1 ELSE 0 END) played,SUM(CASE WHEN runtime_state='FAILED' THEN 1 ELSE 0 END) failed FROM history_source_media").fetchone()
-            collections=conn.execute("SELECT COUNT(*) collections FROM history_collection").fetchone(); deep=0
-            for row in conn.execute("SELECT discovery_json FROM history_day WHERE discovery_json IS NOT NULL AND discovery_json<>''"):
-                if self._load_obj(row[0]).get("deepComplete"): deep+=1
-        return {"catalogSchemaVersion":CATALOG_SCHEMA_VERSION,"days":int(day["days"] or 0),"leagueDays":int(day["league_days"] or 0),"events":int(events["events"] or 0),"assets":int(media["assets"] or 0),"verifiedAssets":int(media["verified"] or 0),"runtimePlayedAssets":int(media["played"] or 0),"runtimeFailedAssets":int(media["failed"] or 0),"collections":int(collections["collections"] or 0),"deepCompleteLeagueDays":deep,"lastScoresSavedAt":float(day["last_scores"] or 0),"lastMediaSavedAt":float(day["last_media"] or 0),"lastDiscoverySavedAt":float(day["last_discovery"] or 0),"integrity":self.catalog_integrity()}
+    def summary(self, *, include_integrity=True):
+        """Return compact catalog counters without taking the writer lock.
+
+        The operator/milestone surfaces call this frequently.  v4.2.1 keeps the
+        default integrity payload for compatibility, but lets hot read paths request
+        only cheap counters so a diagnostic poll can never trigger a full integrity
+        sweep.  Deep-complete counting is performed in SQLite instead of hydrating
+        every day-level discovery JSON row in Python.
+        """
+        with closing(self._read_connect()) as conn:
+            day=conn.execute("""SELECT COUNT(DISTINCT date) days,COUNT(*) league_days,
+              MAX(scores_saved_at) last_scores,MAX(media_saved_at) last_media,
+              MAX(discovery_saved_at) last_discovery,
+              SUM(CASE WHEN COALESCE(json_extract(discovery_json,'$.deepComplete'),0)=1 THEN 1 ELSE 0 END) deep_complete
+              FROM history_day""").fetchone()
+            events=conn.execute("SELECT COUNT(*) events FROM history_catalog_event").fetchone()
+            media=conn.execute("""SELECT COUNT(*) assets,
+              SUM(CASE WHEN validation_state='VERIFIED' AND runtime_state<>'FAILED' THEN 1 ELSE 0 END) verified,
+              SUM(CASE WHEN runtime_state='PLAYED' THEN 1 ELSE 0 END) played,
+              SUM(CASE WHEN runtime_state='FAILED' THEN 1 ELSE 0 END) failed
+              FROM history_source_media""").fetchone()
+            collections=conn.execute("SELECT COUNT(*) collections FROM history_collection").fetchone()
+        out={"catalogSchemaVersion":CATALOG_SCHEMA_VERSION,"days":int(day["days"] or 0),"leagueDays":int(day["league_days"] or 0),"events":int(events["events"] or 0),"assets":int(media["assets"] or 0),"verifiedAssets":int(media["verified"] or 0),"runtimePlayedAssets":int(media["played"] or 0),"runtimeFailedAssets":int(media["failed"] or 0),"collections":int(collections["collections"] or 0),"deepCompleteLeagueDays":int(day["deep_complete"] or 0),"lastScoresSavedAt":float(day["last_scores"] or 0),"lastMediaSavedAt":float(day["last_media"] or 0),"lastDiscoverySavedAt":float(day["last_discovery"] or 0)}
+        if include_integrity:
+            out["integrity"]=self.catalog_integrity()
+        return out
 
     # v3.x compatibility hook. v4 never mutates legacy event/media tables in place.
     def reclassify_media_scopes(self):

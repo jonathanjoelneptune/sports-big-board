@@ -8,7 +8,7 @@ class V4129SoundtrackPolishTests(unittest.TestCase):
         html=(ROOT/'index.html').read_text()
         self.assertIn('id="soundtrackNextBtn"',html)
         self.assertIn('id="diagSoundtrack"',html)
-        self.assertIn('architecture/site-soundtrack.js?v=4.2.0',html)
+        self.assertIn('architecture/site-soundtrack.js?v=4.2.1',html)
 
     def test_pause_truth_hard_stops_soundtrack(self):
         engine=(ROOT/'architecture/site-soundtrack.js').read_text()

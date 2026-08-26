@@ -1,0 +1,16 @@
+Sports Big Board v4.2.1 — Milestone 1 Hardening
+
+Acceptance basis: first deployed v4.2.0 Milestone Release Console stress test.
+
+Hardening focus:
+- date-scoped historical discovery without per-event N+1 reads or nested full-catalog integrity scans
+- query-only SQLite read connections for operator/audit summaries; no process-wide writer lock on hot reads
+- staggered cached operator telemetry instead of continuous monolithic catalog rescans
+- bounded startup schedule sync with per-step worker heartbeats and deferred full-horizon refresh
+- deterministic Director ranking returns immediately; optional OpenAI enrichment runs asynchronously in the background
+- desired-state stress playback controls (ensure playing / ensure paused) instead of ambiguous toggle sequencing
+- categorized Media/Game Center scheduler failures and recent-error diagnostics
+- operator component refresh failures surfaced explicitly in the Milestone Release Console
+- release remains fail-closed on version mismatch and keeps the production smoke retry hardening
+
+No database/catalog rebuild and no soundtrack re-upload are required.

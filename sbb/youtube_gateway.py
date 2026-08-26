@@ -1,4 +1,4 @@
-"""YouTube API gateway for Sports Big Board v4.2.0.
+"""YouTube API gateway for Sports Big Board v4.2.1.
 
 The gateway is deliberately operation-aware. A search.list quota/rate failure must
 never disable cheap metadata validation (videos.list) or official-channel history

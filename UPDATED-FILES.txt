@@ -1,83 +1,16 @@
-Sports Big Board v4.2.0 — Milestone 1: Playback & Platform Reliability
+Sports Big Board v4.2.1 — Milestone 1 Hardening
 
-Major focus:
-- authoritative observable playback session + deterministic A/B audio ownership invariant
-- first-frame, stall, API, worker, DB/operator, scheduler and media-cache telemetry
-- Dev Milestone Release Console with COPY FULL LOG / SAVE TXT
-- RUN DEV STRESS TEST + repeatable on-site Milestone Test Procedures
-- keyed media/Game Center work de-duplication and coordination telemetry
-- VERSION-derived release generation checks + backend-first deployment + production smoke handshake
-- exact Player Debug video source link
-- no catalog rebuild and no soundtrack re-upload
+This release is the first stress-test-driven hardening pass for Milestone 1. It addresses the production findings from the v4.2.0 Milestone Release Console rather than adding product surface area.
 
-Changed/new files from v4.1.32:
-CLOUD STAGE 1.md
-core-model.js
-WINDOWS SETUP.md
-START SPORTS BIG BOARD.bat
-START-ANDROID.sh
-V4 CATALOG REBUILD.md
-api-runtime.js
-VERIFY.sh
-app.js
-SOUNDTRACK%20SETUP.md
-ANDROID SETUP.md
-ARCHITECTURE.md
-VERSION
-index.html
-README.md
-styles.css
-SOUNDTRACK SETUP.md
-server.py
-tests/test_architecture.js
-tests/test_v4124_historical_ribbon.py
-tests/test_v420_milestone_release.py
-tests/test_v4121_parallel_recovery.py
-tests/test_v4125_historical_ribbon_performance.py
-tests/test_v4130_soundtrack_single_stream.py
-tests/test_live_freshness.py
-tests/test_v4122_curated_playlists.py
-tests/test_cloud_stage1.py
-tests/test_v4123_catalog_first.py
-tests/test_soundtrack_runtime.js
-tests/test_v4129_soundtrack_polish.py
-tests/test_history_v4_baseline.py
-tests/test_playback_session_runtime.js
-tests/test_regression_guards.py
-sbb/milestone_console.py
-sbb/media_scope.py
-sbb/__init__.py
-sbb/event_matcher.py
-sbb/media_policy.py
-sbb/history_repository.py
-sbb/competition_registry.py
-sbb/editorial_registry.py
-sbb/provider_registry.py
-sbb/youtube_gateway.py
-sbb/media_work_scheduler.py
-tools/check_release_version.py
-ui/history-audit.js
-ui/game-center-view.js
-ui/info-drawer.js
-ui/player-visibility.js
-ui/settings-view.js
-architecture/provider-health.js
-architecture/event-identity.js
-architecture/game-center-policy.js
-architecture/selected-event-store.js
-architecture/media-manifest.js
-architecture/playback-transports.js
-architecture/media-scope.js
-architecture/media-work-priorities.js
-architecture/game-center-contract.js
-architecture/site-soundtrack.js
-architecture/playback-session.js
-architecture/score-date-store.js
-architecture/media-resolver.js
-architecture/sport-media-policy.js
-architecture/editorial-packages.js
-architecture/media-classifier.js
-architecture/milestone-console.js
-cloud/github-pages/build_pages.py
-cloud/gcp/UPLOAD-SOUNDTRACK.sh
-.github/workflows/deploy-pages.yml
+Key corrections:
+- Historical discovery is date-scoped and bulk-loads event state instead of issuing per-game event reads.
+- Hot diagnostic/operator endpoints use compact summaries and cached integrity data instead of nesting whole-catalog integrity work.
+- Read-only operator/audit repository methods use independent query-only SQLite connections and do not wait on the process-wide writer lock.
+- Operator telemetry refreshes independent components on staggered TTLs and serves the last completed snapshot while expensive components refresh.
+- Schedule sync starts with a bounded near-term horizon and heartbeats before/after every league/date step, then defers the full horizon.
+- Director AI cannot block the UI request path: deterministic ranking returns immediately and AI enrichment is background/cached.
+- Stress pause/resume tests command desired state explicitly, eliminating the false failure seen when a test starts from an already-paused player.
+- Scheduler diagnostics classify timeout/not-found/parse/rate-limit/provider/cancelled errors and retain recent examples.
+- Milestone Console surfaces operator component failures instead of allowing a failed refresh to be silent.
+
+No catalog rebuild. No soundtrack re-upload.

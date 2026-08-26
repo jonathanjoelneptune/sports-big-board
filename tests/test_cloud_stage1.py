@@ -4,8 +4,8 @@ ROOT=Path(__file__).resolve().parents[1]
 class CloudStage1Tests(unittest.TestCase):
     def test_frontend_loads_api_runtime_before_bootstrap(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
-        self.assertIn('config.js?v=4.2.0',html); self.assertIn('api-runtime.js?v=4.2.0',html)
-        self.assertLess(html.index('api-runtime.js?v=4.2.0'),html.index('BOOT_START'))
+        self.assertIn('config.js?v=4.2.1',html); self.assertIn('api-runtime.js?v=4.2.1',html)
+        self.assertLess(html.index('api-runtime.js?v=4.2.1'),html.index('BOOT_START'))
     def test_api_runtime_routes_api_only(self):
         js=(ROOT/'api-runtime.js').read_text(encoding='utf-8')
         self.assertIn("input.startsWith('/api/')",js); self.assertIn('window.fetch = function',js); self.assertIn('window.SBB_API',js)
@@ -65,10 +65,13 @@ class CloudStage1Tests(unittest.TestCase):
 
     def test_workflow_has_post_pages_milestone_smoke(self):
         workflow=(ROOT/'.github/workflows/deploy-pages.yml').read_text()
-        for token in ('production-smoke:','Verify deployed frontend/backend handshake','architecture/milestone-console.js?v=${EXPECTED_VERSION}','/api/milestone/console?frontendVersion=$EXPECTED_VERSION'):
+        for token in ('production-smoke:','Verify deployed frontend/backend handshake','architecture/milestone-console.js?v=${EXPECTED_VERSION}','/api/milestone/console?frontendVersion=$EXPECTED_VERSION','fetch_backend_json()','--connect-timeout 5 --max-time 20','"backend-status"','"milestone-console"'):
             self.assertIn(token,workflow)
+        smoke=workflow.split('  production-smoke:',1)[1]
+        self.assertNotIn('curl --fail --silent --show-error --max-time 10 "$SBB_API_BASE_URL/api/status"',smoke)
+        self.assertNotIn('curl --fail --silent --show-error --max-time 10 "$SBB_API_BASE_URL/api/milestone/console',smoke)
 
     def test_version_file_matches_server(self):
-        self.assertEqual((ROOT/'VERSION').read_text().strip(),'4.2.0')
+        self.assertEqual((ROOT/'VERSION').read_text().strip(),'4.2.1')
         self.assertIn('APP_VERSION = (ROOT / "VERSION").read_text',(ROOT/'server.py').read_text())
 if __name__=='__main__': unittest.main()

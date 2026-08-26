@@ -40,9 +40,9 @@ class V4125HistoricalRibbonPerformanceTests(unittest.TestCase):
     def test_release_boundary_advances_to_4125(self):
         root=Path(__file__).resolve().parents[1]
         index=(root/'index.html').read_text(encoding='utf-8')
-        self.assertEqual(server.APP_VERSION,'4.2.0')
-        self.assertIn('app.js?v=4.2.0',index)
-        self.assertIn('styles.css?v=4.2.0',index)
+        self.assertEqual(server.APP_VERSION,'4.2.1')
+        self.assertIn('app.js?v=4.2.1',index)
+        self.assertIn('styles.css?v=4.2.1',index)
         self.assertNotIn('app.js?v=4.1.24',index)
 
     def test_score_rows_do_not_hydrate_catalog_media(self):

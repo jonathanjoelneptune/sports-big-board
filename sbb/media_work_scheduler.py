@@ -37,6 +37,7 @@ class MediaWorkScheduler:
     def __init__(self, workers=4, name="sbb-media-work"):
         self._q=PriorityQueue(); self._counter=itertools.count(); self._lock=Lock(); self._latest={}; self._threads=[]; self._active={}
         self._stats={"submitted":0,"reused":0,"superseded":0,"executed":0,"completed":0,"errors":0,"cancelled":0,"waitSeconds":0.0,"runSeconds":0.0}
+        self._error_categories={}; self._recent_errors=[]
         for i in range(max(1,int(workers))):
             t=Thread(target=self._worker,name=f"{name}-{i+1}",daemon=True); t.start(); self._threads.append(t)
 
@@ -60,6 +61,25 @@ class MediaWorkScheduler:
         self._q.put(_Task(sort_key=(-priority,next(self._counter)),key=key,generation=gen,fn=fn,args=args,kwargs=kwargs,future=fut,submitted_at=now))
         return fut
 
+    @staticmethod
+    def _error_category(exc):
+        text=f"{type(exc).__name__}: {exc}".lower()
+        code=getattr(exc,"code",None)
+        if code==404 or " 404" in text or "not found" in text: return "not-found"
+        if "timeout" in text or "timed out" in text: return "timeout"
+        if "cancel" in text or "obsolete" in text: return "cancelled-obsolete"
+        if "json" in text or "parse" in text or "decode" in text: return "parse"
+        if "rate" in text and "limit" in text: return "rate-limit"
+        if "http" in text or code is not None: return "provider-http"
+        return type(exc).__name__ or "exception"
+
+    def _record_error(self,task,exc):
+        category=self._error_category(exc); now=time.time()
+        with self._lock:
+            self._error_categories[category]=int(self._error_categories.get(category) or 0)+1
+            self._recent_errors.append({"at":now,"key":task.key,"category":category,"error":f"{type(exc).__name__}: {exc}"[:700]})
+            if len(self._recent_errors)>24:self._recent_errors=self._recent_errors[-24:]
+
     def _worker(self):
         worker_name=__import__('threading').current_thread().name
         while True:
@@ -82,6 +102,7 @@ class MediaWorkScheduler:
                     except BaseException as exc:
                         task.future.set_exception(exc)
                         with self._lock:self._stats["errors"]+=1
+                        self._record_error(task,exc)
             finally:
                 with self._lock:
                     if run_started:self._stats["runSeconds"]+=max(0.0,time.time()-run_started)
@@ -95,6 +116,7 @@ class MediaWorkScheduler:
         with self._lock:
             rows=[{"key":k,"priority":v["priority"],"done":v["future"].done(),"ageSeconds":round(max(0,now-float(v.get('submittedAt') or now)),2)} for k,v in self._latest.items()]
             active=[{**v,"worker":name,"runSeconds":round(max(0,now-float(v.get('startedAt') or now)),2)} for name,v in self._active.items()]
-            stats=dict(self._stats)
+            stats=dict(self._stats); error_categories=dict(self._error_categories); recent_errors=list(self._recent_errors[-12:])
         for k in ("waitSeconds","runSeconds"):stats[k]=round(float(stats.get(k) or 0),3)
-        return {"queued":self._q.qsize(),"activeOrQueued":len(rows),"active":active,"jobs":rows[:30],"stats":stats,"threadCount":len(self._threads),"threadsAlive":sum(1 for t in self._threads if t.is_alive())}
+        stats["errorCategories"]=error_categories
+        return {"queued":self._q.qsize(),"activeOrQueued":len(rows),"active":active,"jobs":rows[:30],"stats":stats,"recentErrors":recent_errors,"threadCount":len(self._threads),"threadsAlive":sum(1 for t in self._threads if t.is_alive())}

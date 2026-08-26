@@ -4,7 +4,7 @@
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.2.0');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.2.1');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);
@@ -107,7 +107,8 @@
     for(const [name,w] of workerRows)lines.push(`${w.healthy?'OK':'BAD'} ${name} • ${w.phase||'—'} • heartbeat=${w.heartbeatAgeSeconds??'—'}s • ${w.current||''}`);
     lines.push('');
     lines.push('[DATABASE / OPERATOR]');
-    lines.push(`operator ready=${!!hist.operatorSnapshot?.ready} age=${hist.operatorSnapshot?.ageSeconds??'—'}s generation=${hist.operatorSnapshot?.generationMs??'—'}ms error=${hist.operatorSnapshot?.error||'—'}`);
+    lines.push(`operator ready=${!!hist.operatorSnapshot?.ready} age=${hist.operatorSnapshot?.ageSeconds??'—'}s loop=${hist.operatorSnapshot?.generationMs??'—'}ms maxComponent=${hist.operatorSnapshot?.maxComponentMs??'—'}ms error=${hist.operatorSnapshot?.error||'—'}`);
+    lines.push(`operatorComponents=${JSON.stringify(hist.operatorSnapshot?.componentTimings||{})}`);
     lines.push(`database=${JSON.stringify(x.database?.summary||{})}`);
     lines.push(`databaseAudit=${JSON.stringify(hist.databaseAudit||{})}`);
     lines.push('');
@@ -119,6 +120,7 @@
     lines.push(`mediaCache=${JSON.stringify(x.mediaCache||{})}`);
     lines.push(`mediaScheduler=${JSON.stringify(x.schedulers?.media||{})}`);
     lines.push(`gameCenterScheduler=${JSON.stringify(x.schedulers?.gameCenter||{})}`);
+    lines.push(`director=${JSON.stringify(x.director||{})}`);
     lines.push('');
     lines.push('[RECENT RELEASE EVENTS]');
     for(const row of data.recent||[])lines.push(`${fmtTime(row.at)} • ${row.level||'INFO'} • ${row.source||'server'} • ${row.category||''} • ${row.message||''}${row.data?` • ${JSON.stringify(row.data)}`:''}`);
@@ -248,12 +250,18 @@
     await step('playback: pause/resume ownership',async()=>{
       if(!h.started()||!h.programSize())return skip('no active playable program');
       let current=h.playback();
-      if(['starting','buffering'].includes(current.state))current=await waitFor(()=>{const p=h.playback();return ['playing','failed','ended'].includes(p.state)?p:null;},{timeoutMs:10000,label:'transient playback settle'});
-      if(['paused','ready'].includes(current.state)){h.playPause();current=await waitFor(()=>{const p=h.playback();return p.state==='playing'?p:null;},{timeoutMs:10000,label:'playback playing before pause'});}
-      assert(current.state==='playing',`playback not playable for pause test: ${current.state}`);
-      h.playPause();const paused=await waitFor(()=>{const p=h.playback();return ['paused','ready'].includes(p.state)?p:null;},{timeoutMs:6000,label:'playback pause'});
+      if(['starting','buffering'].includes(current.state))current=await waitFor(()=>{const p=h.playback();return ['playing','paused','ready','failed','ended'].includes(p.state)?p:null;},{timeoutMs:12000,label:'transient playback settle'});
+      // Desired-state hooks are intentionally non-toggle.  The v4.2.1 stress test
+      // could enter while the user had manually paused playback and then wait for a
+      // spontaneous PLAYING transition that would never occur.
+      assert(h.ensurePlaying?.()!==false,'unable to command playback playing');
+      current=await waitFor(()=>{const p=h.playback();return p.state==='playing'?p:null;},{timeoutMs:12000,label:'playback playing before pause'});
+      assert(audibleVideoCount(current)<=1,`multiple audible slots before pause: ${JSON.stringify(current.audible)}`);
+      assert(h.ensurePaused?.()!==false,'unable to command playback paused');
+      const paused=await waitFor(()=>{const p=h.playback();return ['paused','ready'].includes(p.state)?p:null;},{timeoutMs:6000,label:'playback pause'});
       assert(audibleVideoCount(paused)===0,`video remained audible after pause: ${JSON.stringify(paused.audible)}`);
-      h.playPause();const resumed=await waitFor(()=>{const p=h.playback();return p.state==='playing'?p:null;},{timeoutMs:10000,label:'playback resume'});
+      assert(h.ensurePlaying?.()!==false,'unable to command playback resume');
+      const resumed=await waitFor(()=>{const p=h.playback();return p.state==='playing'?p:null;},{timeoutMs:12000,label:'playback resume'});
       assert(audibleVideoCount(resumed)<=1,'multiple audible slots after resume');assert(!String(resumed.invariant||'').startsWith('ERROR'),resumed.invariant);
       return {pausedState:paused.state,resumedState:resumed.state,audible:resumed.audible};
     });

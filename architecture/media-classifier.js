@@ -1,4 +1,4 @@
-/* v4.2.0 authoritative game-media taxonomy; Silver is a separate collection scope. */
+/* v4.2.1 authoritative game-media taxonomy; Silver is a separate collection scope. */
 (() => {
   const TIER=Object.freeze({COMMENTARY:'gold',QUICK:'green',EXTENDED:'extended',HIGHLIGHT_REEL:'blue'});
   const duration=item=>Number(item?.durationSeconds??item?.duration??0)||0;
