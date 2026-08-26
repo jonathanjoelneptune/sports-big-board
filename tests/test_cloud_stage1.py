@@ -71,6 +71,14 @@ class CloudStage1Tests(unittest.TestCase):
         self.assertNotIn('curl --fail --silent --show-error --max-time 10 "$SBB_API_BASE_URL/api/status"',smoke)
         self.assertNotIn('curl --fail --silent --show-error --max-time 10 "$SBB_API_BASE_URL/api/milestone/console',smoke)
 
+    def test_workflow_has_emergency_queue_bypass_and_deployment_watchdog(self):
+        workflow=(ROOT/'.github/workflows/deploy-pages.yml').read_text()
+        for token in ('emergency_bypass:','runner_image:','ubuntu-22.04',"format('sports-big-board-emergency-{0}', github.run_id)",'cancel-in-progress: true','timeout-minutes: 30'):
+            self.assertIn(token,workflow)
+        watchdog=(ROOT/'.github/workflows/deployment-watchdog.yml').read_text()
+        for token in ("cron: '*/15 * * * *'",'Detect repository/deployment drift','app.js?v=${EXPECTED_VERSION}','$SBB_API_BASE_URL/api/status','Sports Big Board deployment drift'):
+            self.assertIn(token,watchdog)
+
     def test_version_file_matches_server(self):
         self.assertEqual((ROOT/'VERSION').read_text().strip(),'4.2.2')
         self.assertIn('APP_VERSION = (ROOT / "VERSION").read_text',(ROOT/'server.py').read_text())
