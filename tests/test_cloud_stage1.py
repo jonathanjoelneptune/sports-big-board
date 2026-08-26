@@ -1,11 +1,12 @@
 import subprocess, tempfile, unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 class CloudStage1Tests(unittest.TestCase):
     def test_frontend_loads_api_runtime_before_bootstrap(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
-        self.assertIn('config.js?v=4.2.2',html); self.assertIn('api-runtime.js?v=4.2.2',html)
-        self.assertLess(html.index('api-runtime.js?v=4.2.2'),html.index('BOOT_START'))
+        self.assertIn(f'config.js?v={VERSION}',html); self.assertIn(f'api-runtime.js?v={VERSION}',html)
+        self.assertLess(html.index(f'api-runtime.js?v={VERSION}'),html.index('BOOT_START'))
     def test_api_runtime_routes_api_only(self):
         js=(ROOT/'api-runtime.js').read_text(encoding='utf-8')
         self.assertIn("input.startsWith('/api/')",js); self.assertIn('window.fetch = function',js); self.assertIn('window.SBB_API',js)
@@ -80,6 +81,7 @@ class CloudStage1Tests(unittest.TestCase):
             self.assertIn(token,watchdog)
 
     def test_version_file_matches_server(self):
-        self.assertEqual((ROOT/'VERSION').read_text().strip(),'4.2.2')
+        self.assertEqual((ROOT/'VERSION').read_text().strip(),VERSION)
+        self.assertEqual(VERSION,'4.3.0')
         self.assertIn('APP_VERSION = (ROOT / "VERSION").read_text',(ROOT/'server.py').read_text())
 if __name__=='__main__': unittest.main()

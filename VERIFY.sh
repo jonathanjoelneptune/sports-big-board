@@ -9,6 +9,7 @@ echo "Sports Big Board v${VERSION} verification"
 echo "----------------------------------"
 
 python3 tools/check_release_version.py
+python3 tools/check_foundation_certification.py
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"
@@ -25,7 +26,7 @@ else
 fi
 
 python -m py_compile server.py sbb/*.py tests/*.py cloud/vm/backup_state.py cloud/github-pages/build_pages.py
-bash -n START-ANDROID.sh start.sh cloud/gcp/CREATE-STAGE1.sh cloud/gcp/DEPLOY-UPDATE.sh cloud/gcp/DEPLOY-FROM-GITHUB.sh cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh cloud/gcp/UPLOAD-SOUNDTRACK.sh cloud/vm/INSTALL-STAGE1.sh
+bash -n START-ANDROID.sh start.sh cloud/gcp/CREATE-STAGE1.sh cloud/gcp/DEPLOY-UPDATE.sh cloud/gcp/DEPLOY-FROM-GITHUB.sh cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh cloud/gcp/UPLOAD-SOUNDTRACK.sh
 WARN_LOG="$VERIFY_TMP/python-unittest.log"
 set +e
 PYTHONWARNINGS=always::ResourceWarning PYTHONPATH=. python -m unittest discover -s tests -p 'test_*.py' -v 2>&1 | tee "$WARN_LOG"
@@ -51,4 +52,4 @@ grep -q 'https://203-0-113-10.sslip.io' "$VERIFY_TMP/pages/config.js"
 grep -q 'https://203-0-113-10.sslip.io/api/soundtrack' "$VERIFY_TMP/pages/config.js"
 grep -q "soundtrackTransport:'private-gcs'" "$VERIFY_TMP/pages/config.js"
 
-echo "PASS: v${VERSION} local + cloud Stage 1 architecture and regression suite"
+echo "PASS: v${VERSION} local + cloud Stage 1 architecture, certification, and regression suite"

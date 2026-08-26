@@ -1,11 +1,13 @@
 'use strict';
 const fs=require('fs'), vm=require('vm'), path=require('path'), assert=require('assert');
 const root=path.resolve(__dirname,'..');
+const releaseVersion=fs.readFileSync(path.join(root,'VERSION'),'utf8').trim();
 global.window=global;
 for(const f of ['core-model.js','architecture/score-date-store.js','architecture/event-identity.js','architecture/media-scope.js','architecture/media-classifier.js','architecture/playback-transports.js','architecture/provider-health.js','architecture/sport-media-policy.js','architecture/media-manifest.js','architecture/media-resolver.js','architecture/game-center-policy.js','architecture/selected-event-store.js','architecture/media-work-priorities.js','architecture/editorial-packages.js']){
   vm.runInThisContext(fs.readFileSync(path.join(root,f),'utf8'),{filename:f});
 }
-assert.equal(SBB_CORE.version,'4.2.2');
+assert.equal(SBB_CORE.version,releaseVersion);
+assert.equal(releaseVersion,'4.3.0');
 assert.deepEqual(SBB_CORE.enabledCompetitions().map(x=>x.id),['MLB','NFL','NBA','NHL','EPL','MLS']);
 assert.equal(SBB_CORE.COMPETITIONS.MLS.enabled,true);
 assert.equal(SBB_MEDIA_WORK.PRIORITY.VISIBLE_SCORE,'VISIBLE_SCORE');

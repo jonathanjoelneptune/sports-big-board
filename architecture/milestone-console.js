@@ -4,7 +4,7 @@
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.2.2');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.0');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);
@@ -432,6 +432,6 @@
     $('milestoneStressRun')?.addEventListener('click',runStressTest);$('milestoneStressStop')?.addEventListener('click',stopStressTest);$('milestoneProceduresToggle')?.addEventListener('click',toggleProcedures);$('milestoneProceduresRunAll')?.addEventListener('click',runAllProcedures);
     renderProcedures();renderStress();heartbeat();heartbeatTimer=setInterval(heartbeat,10000);setTimeout(refresh,1800);
   }
-  window.SBB_MILESTONE=Object.freeze({version:'1.1',release:VERSION,open,close,refresh,text:textSnapshot,record:post,runStressTest,stopStressTest,runProcedure,procedures:PROCEDURES.map(x=>({...x})),get stress(){return safe(stressRun);},get snapshot(){return latest;}});
+  window.SBB_MILESTONE=Object.freeze({version:'1.2',release:VERSION,open,close,refresh,reset,text:textSnapshot,record:post,runStressTest,stopStressTest,runProcedure,procedures:PROCEDURES.map(x=>({...x})),get stress(){return safe(stressRun);},get procedureResults(){return safe(procedureResults);},get snapshot(){return latest;}});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();

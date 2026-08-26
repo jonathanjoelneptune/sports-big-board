@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <title>Sports Big Board — v4.2.2</title>
+  <title>Sports Big Board — v4.3.0</title>
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://www.googlevideo.com">
   <link rel="preconnect" href="https://i.ytimg.com">
-  <link rel="stylesheet" href="styles.css?v=4.2.2" />
+  <link rel="stylesheet" href="styles.css?v=4.3.0" />
 </head>
 <body>
   <div id="launchScreen" class="sbb-launch-screen" role="dialog" aria-modal="true" aria-labelledby="launchTitle">
@@ -118,8 +118,8 @@
         <button class="nav">🏆 <span>Standings</span></button>
         <button id="leftRailSettingsBtn" class="nav">⚙ <span>Settings</span></button>
         <div class="proof-card">
-          <strong>v4.2.2</strong>
-          <span>V1B • Cache + background discovery</span>
+          <strong>v4.3.0</strong>
+          <span>FOUNDATION • Certification candidate</span>
           <small id="apiRailStatus">Checking API…</small>
           <small id="editorRailStatus">Editor: checking…</small>
         </div>
@@ -258,7 +258,7 @@
             <div id="queueList" class="queue-list"></div>
             <button id="debugToggle" class="debug-toggle" type="button">PLAYER DEBUG ▸</button>
             <div id="playbackDebug" class="playback-debug is-collapsed">
-              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v4.2.2</span></div>
+              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v4.3.0</span></div>
               <div><span>PROVIDER</span><b id="diagProvider">—</b></div>
               <div><span>SLOT</span><b id="diagSlot">—</b></div>
               <div><span>STATE</span><b id="diagState">idle</b></div>
@@ -308,9 +308,9 @@
               <button id="openHistoryAuditBtn" class="settings-save-btn" type="button">OPEN DATABASE AUDIT</button>
             </div>
             <div class="settings-card milestone-launch-card">
-              <div class="settings-card-title">DEV / RELEASE HEALTH</div>
-              <div class="history-audit-launch-copy"><strong>Milestone Release Console</strong><small>4.2 platform truth: playback ownership, first-frame/stall telemetry, API latency, worker coordination, database health, version handshake, and every captured warning/error.</small></div>
-              <button id="openMilestoneConsoleBtn" class="settings-save-btn" type="button">OPEN 4.2 RELEASE CONSOLE</button>
+              <div class="settings-card-title">DEV / FOUNDATION CERTIFICATION</div>
+              <div class="history-audit-launch-copy"><strong>Foundation Certification Console</strong><small>4.3 release truth: clean-window stress evidence, playback ownership, API latency, workers, database health, deployment handshake, and an exportable foundation certificate.</small></div>
+              <button id="openMilestoneConsoleBtn" class="settings-save-btn" type="button">OPEN 4.3 CERTIFICATION CONSOLE</button>
             </div>
           </div>
         </section>
@@ -324,7 +324,7 @@
     <div id="milestoneConsoleBackdrop" class="milestone-console-backdrop"></div>
     <section class="milestone-console-shell">
       <header class="milestone-console-header">
-        <div><small>DEV / PLATFORM HARDENING</small><h2>4.2 Milestone Release Console</h2><p>Persistent release-health ledger for integration testing. Errors, stalls, version mismatches and failed invariants are retained in the server process instead of failing silently.</p></div>
+        <div><small>DEV / FOUNDATION CERTIFICATION</small><h2>4.3 Foundation Certification Console</h2><p>Release-health telemetry remains available for diagnostics, while Foundation Certification starts from a clean observation window so stale pre-fix errors cannot invalidate current certification evidence.</p></div>
         <div class="milestone-console-actions"><strong id="milestoneConsoleOverall">CONNECTING…</strong><button id="milestoneStressRun" class="milestone-stress-run" type="button">RUN DEV STRESS TEST</button><button id="milestoneStressStop" type="button" disabled>STOP TEST</button><button id="milestoneProceduresToggle" type="button" aria-expanded="false">TEST PROCEDURES</button><button id="milestoneConsoleRefresh" type="button">REFRESH</button><button id="milestoneConsoleCopy" type="button">COPY FULL LOG</button><button id="milestoneConsoleDownload" type="button">SAVE TXT</button><button id="milestoneConsoleReset" type="button" title="Clear the current milestone observation window">RESET WINDOW</button><button id="milestoneConsoleClose" class="audit-close" type="button" aria-label="Close">×</button><em id="milestoneCopyStatus" aria-live="polite"></em></div>
       </header>
       <div class="milestone-console-stats">
@@ -340,7 +340,7 @@
       <div class="milestone-stress-strip"><div><span>DEV STRESS TEST</span><strong id="milestoneStressStatus">IDLE</strong></div><div class="milestone-stress-track"><i id="milestoneStressProgress"></i></div><small id="milestoneStressDetail">Runs repeatable playback, data, worker, drawer, soundtrack and resource-mode checks against the live site.</small></div>
       <div id="milestoneConsoleProblems" class="milestone-console-problems"><div class="milestone-problem ok"><strong>CONNECTING</strong><span>Waiting for backend milestone telemetry…</span></div></div>
       <section id="milestoneProceduresPanel" class="milestone-procedures hidden" aria-label="Milestone test procedures"><header><div><strong>MILESTONE TEST PROCEDURES</strong><small>Repeatable on-site acceptance checks. RUN executes the automated subset; use PASS / FAIL to record manual observations in the release log.</small></div><button id="milestoneProceduresRunAll" type="button">RUN ALL PROCEDURES</button></header><div id="milestoneProcedureList" class="milestone-procedure-list"></div></section>
-      <pre id="milestoneConsoleOutput" class="milestone-console-output" aria-live="polite">Connecting to 4.2 milestone telemetry…</pre>
+      <pre id="milestoneConsoleOutput" class="milestone-console-output" aria-live="polite">Connecting to 4.3 foundation telemetry…</pre>
     </section>
   </div>
 
@@ -395,7 +395,7 @@
               <button id="historyModeBalanced" type="button" data-mode="balanced" class="active" title="Normal mode: search yields briefly to playback">MIX</button>
               <button id="historyModePlayback" type="button" data-mode="playback" title="Pause background historical searching until changed">PLAYBACK PRIORITY</button>
             </div>
-            <small id="historySearchConsoleVersion">Frontend v4.2.2 • backend checking…</small>
+            <small id="historySearchConsoleVersion">Frontend v4.3.0 • backend checking…</small>
             <button id="historySearchConsoleCopyIssues" type="button" title="Copy every current error, rate limit, blocker and recent warning">COPY ISSUES</button>
             <button id="historySearchConsoleCopyAll" type="button" title="Copy the complete worker snapshot and terminal log">COPY FULL CONSOLE</button>
             <button id="historySearchConsoleDownload" type="button" title="Download the complete console as a text file">SAVE TXT</button>
@@ -475,16 +475,16 @@
     </section>
   </div>
 
-  <script src="config.js?v=4.2.2"></script>
-  <script src="api-runtime.js?v=4.2.2"></script>
+  <script src="config.js?v=4.3.0"></script>
+  <script src="api-runtime.js?v=4.3.0"></script>
   <script>
-  // v4.2.2 bootstrap is deliberately independent of app.js and YouTube.
+  // v4.3.0 bootstrap is deliberately independent of app.js and YouTube.
   // It proves the browser can reach the local API and captures startup errors.
   window.__SBB_BOOT_STARTED_AT = Date.now();
-  try { fetch('/api/client-log?event=BOOT_START&v=4.2.2', {cache:'no-store'}).catch(()=>{}); } catch(e) {}
+  try { fetch('/api/client-log?event=BOOT_START&v=4.3.0', {cache:'no-store'}).catch(()=>{}); } catch(e) {}
   window.__SBB_BOOT_STATUS_PROMISE__ = fetch('/api/status', {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('status HTTP '+r.status); return r.json(); })
-    .then(function(data){ try{fetch('/api/client-log?event=BOOT_STATUS_OK&v=4.2.2',{cache:'no-store'}).catch(()=>{});}catch(e){} return data; })
+    .then(function(data){ try{fetch('/api/client-log?event=BOOT_STATUS_OK&v=4.3.0',{cache:'no-store'}).catch(()=>{});}catch(e){} return data; })
     .catch(function(err){ try{fetch('/api/client-log?event=BOOT_STATUS_ERROR&detail='+encodeURIComponent(String(err)),{cache:'no-store'}).catch(()=>{});}catch(e){} throw err; });
   window.addEventListener('error', function(ev){
     try { fetch('/api/client-log?event=JS_ERROR&detail='+encodeURIComponent((ev.message||'error')+' @ '+(ev.filename||'')+':'+(ev.lineno||0)), {cache:'no-store'}).catch(()=>{}); } catch(e) {}
@@ -493,30 +493,31 @@
     try { fetch('/api/client-log?event=PROMISE_ERROR&detail='+encodeURIComponent(String(ev.reason?.stack||ev.reason||'unknown')), {cache:'no-store'}).catch(()=>{}); } catch(e) {}
   });
 </script>
-<script src="core-model.js?v=4.2.2"></script>
-<script src="architecture/score-date-store.js?v=4.2.2"></script>
-<script src="architecture/event-identity.js?v=4.2.2"></script>
-<script src="architecture/media-scope.js?v=4.2.2"></script>
-<script src="architecture/media-classifier.js?v=4.2.2"></script>
-<script src="architecture/playback-transports.js?v=4.2.2"></script>
-<script src="architecture/provider-health.js?v=4.2.2"></script>
-<script src="architecture/sport-media-policy.js?v=4.2.2"></script>
-<script src="architecture/media-manifest.js?v=4.2.2"></script>
-<script src="architecture/media-resolver.js?v=4.2.2"></script>
-<script src="architecture/game-center-policy.js?v=4.2.2"></script>
-<script src="architecture/selected-event-store.js?v=4.2.2"></script>
-<script src="architecture/game-center-contract.js?v=4.2.2"></script>
-<script src="architecture/media-work-priorities.js?v=4.2.2"></script>
-<script src="architecture/editorial-packages.js?v=4.2.2"></script>
-<script src="architecture/playback-session.js?v=4.2.2"></script>
-<script src="architecture/milestone-console.js?v=4.2.2"></script>
-<script src="architecture/site-soundtrack.js?v=4.2.2"></script>
-<script src="ui/player-visibility.js?v=4.2.2"></script>
-<script src="ui/info-drawer.js?v=4.2.2"></script>
-<script src="ui/settings-view.js?v=4.2.2"></script>
-<script src="ui/history-audit.js?v=4.2.2"></script>
-<script src="ui/game-center-view.js?v=4.2.2"></script>
-<script src="app.js?v=4.2.2"></script>
+<script src="core-model.js?v=4.3.0"></script>
+<script src="architecture/score-date-store.js?v=4.3.0"></script>
+<script src="architecture/event-identity.js?v=4.3.0"></script>
+<script src="architecture/media-scope.js?v=4.3.0"></script>
+<script src="architecture/media-classifier.js?v=4.3.0"></script>
+<script src="architecture/playback-transports.js?v=4.3.0"></script>
+<script src="architecture/provider-health.js?v=4.3.0"></script>
+<script src="architecture/sport-media-policy.js?v=4.3.0"></script>
+<script src="architecture/media-manifest.js?v=4.3.0"></script>
+<script src="architecture/media-resolver.js?v=4.3.0"></script>
+<script src="architecture/game-center-policy.js?v=4.3.0"></script>
+<script src="architecture/selected-event-store.js?v=4.3.0"></script>
+<script src="architecture/game-center-contract.js?v=4.3.0"></script>
+<script src="architecture/media-work-priorities.js?v=4.3.0"></script>
+<script src="architecture/editorial-packages.js?v=4.3.0"></script>
+<script src="architecture/playback-session.js?v=4.3.0"></script>
+<script src="architecture/milestone-console.js?v=4.3.0"></script>
+<script src="architecture/foundation-certification.js?v=4.3.0"></script>
+<script src="architecture/site-soundtrack.js?v=4.3.0"></script>
+<script src="ui/player-visibility.js?v=4.3.0"></script>
+<script src="ui/info-drawer.js?v=4.3.0"></script>
+<script src="ui/settings-view.js?v=4.3.0"></script>
+<script src="ui/history-audit.js?v=4.3.0"></script>
+<script src="ui/game-center-view.js?v=4.3.0"></script>
+<script src="app.js?v=4.3.0"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>

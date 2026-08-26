@@ -2,11 +2,12 @@ import threading, time, unittest
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
+VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 
 class MilestoneConsoleUnitTests(unittest.TestCase):
     def test_bounded_console_tracks_api_playback_and_errors(self):
         from sbb.milestone_console import MilestoneConsole
-        c=MilestoneConsole('4.2.2',max_events=220)
+        c=MilestoneConsole(VERSION,max_events=220)
         c.record_endpoint('/api/history/ribbon',123.4,200)
         c.record_endpoint('/api/history/audit',6001,200)
         c.record_endpoint('/api/test',41,500,'boom')
@@ -14,7 +15,7 @@ class MilestoneConsoleUnitTests(unittest.TestCase):
         c.record_playback('first-frame',{'sessionId':'s1','state':'playing','firstFrameMs':212,'invariant':'OK'})
         c.record_playback('stall',{'sessionId':'s1','state':'buffering','stallCount':1,'invariant':'OK'})
         c.record_playback('stall-end',{'sessionId':'s1','state':'playing','lastStallMs':845,'invariant':'OK'})
-        snap=c.snapshot(frontend_version='4.2.2')
+        snap=c.snapshot(frontend_version=VERSION)
         self.assertTrue(snap['versionMatch'])
         self.assertEqual(snap['playback']['firstFrame']['p50Ms'],212.0)
         self.assertEqual(snap['playback']['stallDuration']['p50Ms'],845.0)
@@ -37,7 +38,6 @@ class MilestoneConsoleUnitTests(unittest.TestCase):
         self.assertGreaterEqual(snap['stats']['reused'],1)
         self.assertEqual(snap['threadsAlive'],1)
 
-
     def test_media_work_scheduler_reuses_running_job_even_when_priority_increases(self):
         from sbb.media_work_scheduler import MediaWorkScheduler, PRIORITY
         gate=threading.Event(); started=threading.Event(); runs=[]
@@ -57,7 +57,7 @@ class MilestoneReleaseContractTests(unittest.TestCase):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
         server=(ROOT/'server.py').read_text(encoding='utf-8')
         js=(ROOT/'architecture'/'milestone-console.js').read_text(encoding='utf-8')
-        for token in ('openMilestoneConsoleBtn','milestoneConsoleModal','architecture/milestone-console.js?v=4.2.2','milestoneConsoleOutput'):
+        for token in ('openMilestoneConsoleBtn','milestoneConsoleModal',f'architecture/milestone-console.js?v={VERSION}','milestoneConsoleOutput'):
             self.assertIn(token,html)
         for token in ("'/api/playback/telemetry'","'/api/milestone/client-event'","'/api/milestone/reset'","'/api/milestone/console'",'_milestone_release_snapshot','MILESTONE_CONSOLE.record_endpoint'):
             self.assertIn(token,server)
@@ -66,8 +66,8 @@ class MilestoneReleaseContractTests(unittest.TestCase):
 
     def test_playback_session_is_loaded_before_soundtrack_and_app(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
-        ps='architecture/playback-session.js?v=4.2.2'; mc='architecture/milestone-console.js?v=4.2.2'; st='architecture/site-soundtrack.js?v=4.2.2'; app='app.js?v=4.2.2'
-        self.assertLess(html.index(ps),html.index(mc)); self.assertLess(html.index(mc),html.index(st)); self.assertLess(html.index(st),html.index(app))
+        ps=f'architecture/playback-session.js?v={VERSION}'; mc=f'architecture/milestone-console.js?v={VERSION}'; fc=f'architecture/foundation-certification.js?v={VERSION}'; st=f'architecture/site-soundtrack.js?v={VERSION}'; app=f'app.js?v={VERSION}'
+        self.assertLess(html.index(ps),html.index(mc)); self.assertLess(html.index(mc),html.index(fc)); self.assertLess(html.index(fc),html.index(st)); self.assertLess(html.index(st),html.index(app))
 
     def test_version_is_single_backend_source_and_ci_checks_generation(self):
         server=(ROOT/'server.py').read_text(encoding='utf-8')
@@ -75,8 +75,8 @@ class MilestoneReleaseContractTests(unittest.TestCase):
         checker=(ROOT/'tools'/'check_release_version.py').read_text(encoding='utf-8')
         self.assertIn('APP_VERSION = (ROOT / "VERSION").read_text',server)
         self.assertIn('tools/check_release_version.py',verify)
+        self.assertIn('tools/check_foundation_certification.py',verify)
         self.assertIn('stale cache generation',checker)
-
 
     def test_milestone_console_has_stress_test_and_repeatable_procedures(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')

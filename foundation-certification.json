@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "release": "4.3.0",
+  "name": "Sports Big Board Foundation Certification",
+  "certifiesBaseline": "4.2.2",
+  "certificationWindow": "clean milestone observation window",
+  "durableCatalogMutation": false,
+  "requiresCatalogRebuild": false,
+  "requiresSoundtrackUpload": false,
+  "requiredProcedures": [
+    "release-handshake",
+    "playback-cycle",
+    "historical-read",
+    "operator-load",
+    "resource-modes",
+    "game-center",
+    "soundtrack",
+    "ui-responsiveness"
+  ],
+  "blockingGates": [
+    "release-handshake",
+    "stress-suite",
+    "procedure-suite",
+    "step-debt",
+    "platform-checks",
+    "clean-window-errors",
+    "playback-invariant",
+    "worker-health",
+    "state-restore",
+    "legacy-read-isolation"
+  ],
+  "nonBlockingObservations": [
+    "clean-window warning count",
+    "provider cooldown telemetry",
+    "background scheduler warnings that do not fail a procedure or platform check"
+  ]
+}
