@@ -1,6 +1,6 @@
-# Sports Big Board v4.3.1 — Three-Tier Foundation Certification
+# Sports Big Board v4.3.2 — Three-Tier Foundation Certification
 
-v4.3.1 changes Foundation Certification from the short v4.3.0 stress certificate into a three-tier release gate. The prior v4.3.0 certificate is retained as Tier 1 baseline evidence only; it is not sufficient for overall Foundation Certification.
+v4.3.2 changes Foundation Certification from the short v4.3.0 stress certificate into a three-tier release gate. The prior v4.3.0 certificate is retained as Tier 1 baseline evidence only; it is not sufficient for overall Foundation Certification.
 
 ## Tier 1 — Functional / Stress Hardening
 
@@ -38,3 +38,10 @@ The UI may display **FOUNDATION CERTIFIED** only when:
 Otherwise overall status remains **CERTIFICATION IN PROGRESS** or **NOT CERTIFIED**.
 
 No certification tier rebuilds or deletes the durable historical catalog and no soundtrack/media upload is required.
+
+
+## v4.3.2 resilience closure
+
+- MLB extra-inning linescores reconcile a blank decisive extra-inning cell from the final authoritative run total without mutating the source Game Center payload.
+- Game Center background work has a scheduler-level 429 circuit breaker. A provider rate limit stops already-queued background jobs for that competition; explicit touch intent remains permitted.
+- Tier 3 records provider-circuit boundedness and preserves the complete chaos evidence through the clean post-chaos recovery window.

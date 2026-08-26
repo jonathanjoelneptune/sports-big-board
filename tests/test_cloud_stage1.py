@@ -82,6 +82,6 @@ class CloudStage1Tests(unittest.TestCase):
 
     def test_version_file_matches_server(self):
         self.assertEqual((ROOT/'VERSION').read_text().strip(),VERSION)
-        self.assertEqual(VERSION,'4.3.1')
+        self.assertEqual(VERSION,'4.3.2')
         self.assertIn('APP_VERSION = (ROOT / "VERSION").read_text',(ROOT/'server.py').read_text())
 if __name__=='__main__': unittest.main()

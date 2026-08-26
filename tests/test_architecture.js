@@ -3,11 +3,11 @@ const fs=require('fs'), vm=require('vm'), path=require('path'), assert=require('
 const root=path.resolve(__dirname,'..');
 const releaseVersion=fs.readFileSync(path.join(root,'VERSION'),'utf8').trim();
 global.window=global;
-for(const f of ['core-model.js','architecture/score-date-store.js','architecture/event-identity.js','architecture/media-scope.js','architecture/media-classifier.js','architecture/playback-transports.js','architecture/provider-health.js','architecture/sport-media-policy.js','architecture/media-manifest.js','architecture/media-resolver.js','architecture/game-center-policy.js','architecture/selected-event-store.js','architecture/media-work-priorities.js','architecture/editorial-packages.js']){
+for(const f of ['core-model.js','architecture/score-date-store.js','architecture/event-identity.js','architecture/media-scope.js','architecture/media-classifier.js','architecture/playback-transports.js','architecture/provider-health.js','architecture/sport-media-policy.js','architecture/media-manifest.js','architecture/media-resolver.js','architecture/game-center-policy.js','architecture/selected-event-store.js','architecture/game-center-linescore.js','architecture/media-work-priorities.js','architecture/editorial-packages.js']){
   vm.runInThisContext(fs.readFileSync(path.join(root,f),'utf8'),{filename:f});
 }
 assert.equal(SBB_CORE.version,releaseVersion);
-assert.equal(releaseVersion,'4.3.1');
+assert.equal(releaseVersion,'4.3.2');
 assert.deepEqual(SBB_CORE.enabledCompetitions().map(x=>x.id),['MLB','NFL','NBA','NHL','EPL','MLS']);
 assert.equal(SBB_CORE.COMPETITIONS.MLS.enabled,true);
 assert.equal(SBB_MEDIA_WORK.PRIORITY.VISIBLE_SCORE,'VISIBLE_SCORE');
@@ -15,6 +15,18 @@ assert.equal(SBB_EDITORIAL_PACKAGES.SERIES.MLB_TOP_PLAYS_DAILY.cadence,'daily');
 assert.equal(SBB_EDITORIAL_PACKAGES.SERIES.NBA_TOP_PLAYS_NIGHTLY.cadence,'nightly');
 assert.equal(SBB_EDITORIAL_PACKAGES.SERIES.NFL_TOP_PLAYS_WEEKLY.cadence,'weekly');
 assert.equal(SBB_SCORE_DATE.version,'1.0');
+assert.equal(SBB_GAME_CENTER_LINESCORE.version,'1.0');
+const extraBoard={away:{score:8},home:{score:6},totals:{away:{runs:8},home:{runs:6}},innings:[
+  {num:1,away:0,home:2},{num:2,away:0,home:3},{num:3,away:0,home:0},{num:4,away:3,home:0},{num:5,away:2,home:1},
+  {num:6,away:0,home:0},{num:7,away:0,home:0},{num:8,away:1,home:0},{num:9,away:0,home:0},{num:10,away:'',home:''}
+]};
+const extraDisplay=SBB_GAME_CENTER_LINESCORE.reconcile(extraBoard,'MLB');
+assert.equal(extraDisplay.find(x=>x.num===10).away,2);
+assert.equal(extraDisplay.find(x=>x.num===10).home,'');
+assert.equal(extraBoard.innings.find(x=>x.num===10).away,'');
+const regulation=SBB_GAME_CENTER_LINESCORE.reconcile({totals:{away:{runs:3},home:{runs:2}},innings:[{num:9,away:'',home:''}]},'MLB');
+assert.equal(regulation[0].away,'');
+console.log('PASS MLB extra-inning linescore reconciliation');
 const originalDateState=SBB_SCORE_DATE.snapshot();
 SBB_SCORE_DATE.setBrowseDate('2026-01-18');
 SBB_SCORE_DATE.setPlaybackDate('2026-01-18');

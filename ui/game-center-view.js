@@ -1,4 +1,4 @@
-/* v4.3.1 Game Center renderer. Active playback is the selected-event authority. */
+/* v4.3.2 Game Center renderer. Active playback is the selected-event authority. */
 (() => {
   const $=id=>document.getElementById(id);
   let selected=null,data=null,requestToken=0,pollTimer=null,requestAbort=null,activeSection='overview',playsMode='scoring',activePlayerSide='away';
@@ -59,7 +59,7 @@
     return `<div class="gc-card"><div class="gc-card-title">SCORING / KEY PLAYS</div>${scoring.length?scoring.map(p=>`<div class="gc-play-row scoring"><span>${esc(p.periodLabel||p.period||'')}</span><div><strong>${esc(p.description||'Scoring play')}</strong>${p.scoreAway!==''||p.scoreHome!==''?`<small>${esc(p.scoreAway)} – ${esc(p.scoreHome)}</small>`:''}</div></div>`).join(''):(enriching(gc)?'<div class="gc-empty-row">Loading scoring plays…</div>':'<div class="gc-empty-row">No scoring plays available.</div>')}</div>`;
   }
   function renderOverview(gc){
-    const s=gc.scoreboard||{},away=s.away||{},home=s.home||{},innings=s.innings||[];
+    const s=gc.scoreboard||{},away=s.away||{},home=s.home||{},innings=window.SBB_GAME_CENTER_LINESCORE?.reconcile?.(s,gc?.competitionId)||s.innings||[];
     let primary='';
     if(innings.length){
       const maxInnings=Math.max(9,innings.length||0),byNum=new Map(innings.map(x=>[Number(x.num),x]));

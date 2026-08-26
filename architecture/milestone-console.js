@@ -1,10 +1,10 @@
-/* Sports Big Board 4.3.1 three-tier certification console.
+/* Sports Big Board 4.3.2 three-tier certification console.
    Captures browser/runtime failures, runs repeatable dev procedures, and renders
    one exportable platform-health log. COPY FULL LOG is the canonical handoff. */
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.1');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.2');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);
@@ -75,6 +75,15 @@
     for(const p of PROCEDURES){const r=procedureResults[p.id];lines.push(`${r?.status||'NOT RUN'} • ${p.title}${r?.detail?` • ${r.detail}`:''}`);}
     return lines;
   }
+  function phaseRunSummaryLines(label,run){
+    const lines=[];lines.push(`[${label}]`);
+    if(!run){lines.push(`No ${label.toLowerCase()} run has been run in this browser tab.`);return lines;}
+    const duration=Math.max(0,Number((run.finishedAt||Date.now())-(run.startedAt||0))||0);
+    lines.push(`run=${run.id||'—'} • status=${run.status||'UNKNOWN'} • duration=${Math.round(duration)} ms • steps=${(run.steps||[]).length}`);
+    for(const x of run.steps||[])lines.push(`${x.status||'UNKNOWN'} • ${x.name||'step'} • ${Math.round(x.durationMs||0)} ms${x.detail?` • ${x.detail}`:''}${x.data?` • ${JSON.stringify(x.data)}`:''}`);
+    if(Array.isArray(run.samples))lines.push(`samples=${run.samples.length}`);
+    return lines;
+  }
   function textSnapshot(data=latest){
     if(!data)return 'MILESTONE RELEASE CONSOLE — no snapshot yet';
     const x=data.extra||{},rel=x.release||{},pb=data.playback||{},ps=pb.latest||{},hist=x.history||{},counts=data.problemCounts||{};
@@ -93,6 +102,10 @@
     lines.push(`first-frame samples=${pb.firstFrame?.samples||0} p50=${fmtMs(pb.firstFrame?.p50Ms)} p95=${fmtMs(pb.firstFrame?.p95Ms)} max=${fmtMs(pb.firstFrame?.maxMs)} • failures=${pb.failures||0}`);
     lines.push('');
     lines.push(...stressSummaryLines());
+    lines.push('');
+    lines.push(...phaseRunSummaryLines('TIER 2 SOAK',soakRun));
+    lines.push('');
+    lines.push(...phaseRunSummaryLines('TIER 3 CHAOS',chaosRun));
     lines.push('');
     lines.push('[PLATFORM CHECKS]');
     for(const c of data.checks||[])lines.push(`${c.ok?'PASS':'FAIL'} • ${c.name}: ${c.detail||''}`);
@@ -475,6 +488,17 @@
       await phaseStep(chaosRun,'chaos: live preflight',async()=>{assert(h.started?.()===true,'Sports Big Board must be started before Tier 3');assert(Number(h.programSize?.()||0)>0,'Tier 3 requires an active program');assert(!String(h.invariant?.()||'').startsWith('ERROR'),h.invariant?.());return {programSize:h.programSize?.(),mediaKey:h.currentMediaKey?.()};});
       await phaseStep(chaosRun,'chaos: background rerank storm preserves active clip',async()=>{const key=h.currentMediaKey?.();const sel=h.playback?.()?.selectionId;for(let i=0;i<40;i++){h.refreshProgram?.();if(i%5===0)await sleep(25);}assert(h.currentMediaKey?.()===key,'rerank storm changed active clip');assert(h.playback?.()?.selectionId===sel,'rerank storm created a new playback selection');return {mediaKey:key,selectionId:sel,bursts:40};});
       await phaseStep(chaosRun,'chaos: aborted request storm recovers',async()=>{const controllers=[];const jobs=[];for(let i=0;i<18;i++){const c=new AbortController();controllers.push(c);jobs.push(fetch(`/api/history/audit?limit=5&offset=${i*5}`,{cache:'no-store',signal:c.signal}).catch(e=>e?.name||String(e)));if(i%2===0)setTimeout(()=>c.abort(),5);}const settled=await Promise.allSettled(jobs);const recovery=await fetchTimed('/api/status',{timeoutMs:8000});assert(recovery.ok,'API did not recover after abort storm');return {requests:settled.length,recoveryMs:recovery.ms};},{warnAboveMs:5000});
+      await phaseStep(chaosRun,'chaos: provider rate-limit circuit remains bounded',async()=>{
+        const before=await fetchTimed(`/api/milestone/console?frontendVersion=${encodeURIComponent(VERSION)}&limit=30`,{timeoutMs:10000});
+        const bs=before.body?.extra?.schedulers?.gameCenter||{},providers=before.body?.extra?.schedulers?.gameCenterProviders||{};
+        const cooling=Object.values(providers).filter(x=>Number(x?.cooldownSeconds||0)>0);
+        await sleep(1600);
+        const after=await fetchTimed(`/api/milestone/console?frontendVersion=${encodeURIComponent(VERSION)}&limit=30`,{timeoutMs:10000});
+        const as=after.body?.extra?.schedulers?.gameCenter||{};
+        const bErr=Number(bs?.stats?.errors||0),aErr=Number(as?.stats?.errors||0),delta=Math.max(0,aErr-bErr),threads=Math.max(1,Number(as?.threadCount||bs?.threadCount||8));
+        if(cooling.length)assert(delta<=threads,`provider cooldown amplified into ${delta} new scheduler errors with ${threads} workers`);
+        return {coolingProviders:cooling.map(x=>({competition:x.competition,provider:x.provider,cooldownSeconds:x.cooldownSeconds})),errorDelta:delta,threadBound:threads,circuits:as?.circuits||{}};
+      });
       await phaseStep(chaosRun,'chaos: invalid route is isolated from playback',async()=>{const key=h.currentMediaKey?.();const r=await fetch('/api/__sbb_chaos_expected_404__',{cache:'no-store'});assert(r.status>=400,'invalid route unexpectedly succeeded');await sleep(250);assert(h.currentMediaKey?.()===key,'invalid API response changed playback');assert(!String(h.invariant?.()||'').startsWith('ERROR'),h.invariant?.());return {status:r.status,mediaKey:key};});
       await phaseStep(chaosRun,'chaos: standby disruption self-recovers',async()=>{const before=h.currentMediaKey?.(),d=h.chaosDisruptStandby?.();await sleep(900);assert(h.currentMediaKey?.()===before,'standby disruption changed active clip');assert(!String(h.invariant?.()||'').startsWith('ERROR'),h.invariant?.());return d;});
       await phaseStep(chaosRun,'chaos: resource-mode turbulence restores',async()=>{const originalMode=h.resourceMode?.()||'balanced';for(let cycle=0;cycle<3;cycle++)for(const mode of ['playback','search','balanced']){await h.setResourceMode?.(mode);await sleep(180);assert(h.resourceMode?.()===mode,`failed mode ${mode}`);}await h.setResourceMode?.(originalMode);return {cycles:3,restored:h.resourceMode?.()};},{warnAboveMs:7000});
@@ -511,6 +535,7 @@
     clearInterval(pollTimer);pollTimer=0;try{refreshController?.abort('milestone console closed');}catch(_){}
   }
   async function reset(){try{await fetch('/api/milestone/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',cache:'no-store'});localEvents.length=0;stressRun=null;soakRun=null;chaosRun=null;procedureResults={};await refresh();renderStress();renderProcedures();}catch(err){remember('ERROR','milestone reset failed',{error:String(err)});}}
+  async function resetObservationWindow(){try{await fetch('/api/milestone/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',cache:'no-store'});await refresh();}catch(err){remember('ERROR','milestone observation reset failed',{error:String(err)});throw err;}}
   function toggleProcedures(){const p=$('milestoneProceduresPanel'),btn=$('milestoneProceduresToggle');if(!p)return;const show=p.classList.contains('hidden');p.classList.toggle('hidden',!show);btn?.setAttribute('aria-expanded',show?'true':'false');if(show)renderProcedures();}
   function bind(){
     $('openMilestoneConsoleBtn')?.addEventListener('click',open);$('milestoneConsoleClose')?.addEventListener('click',close);$('milestoneConsoleBackdrop')?.addEventListener('click',close);
@@ -518,6 +543,6 @@
     $('milestoneStressRun')?.addEventListener('click',runStressTest);$('milestoneStressStop')?.addEventListener('click',stopStressTest);$('milestoneProceduresToggle')?.addEventListener('click',toggleProcedures);$('milestoneProceduresRunAll')?.addEventListener('click',runAllProcedures);
     renderProcedures();renderStress();heartbeat();heartbeatTimer=setInterval(heartbeat,10000);setTimeout(refresh,1800);
   }
-  window.SBB_MILESTONE=Object.freeze({version:'1.3',release:VERSION,open,close,refresh,reset,text:textSnapshot,record:post,runStressTest,runSoakTest,runChaosTest,stopStressTest,runProcedure,procedures:PROCEDURES.map(x=>({...x})),get stress(){return safe(stressRun);},get soak(){return safe(soakRun);},get chaos(){return safe(chaosRun);},get procedureResults(){return safe(procedureResults);},get snapshot(){return latest;}});
+  window.SBB_MILESTONE=Object.freeze({version:'1.3',release:VERSION,open,close,refresh,reset,resetObservationWindow,text:textSnapshot,record:post,runStressTest,runSoakTest,runChaosTest,stopStressTest,runProcedure,procedures:PROCEDURES.map(x=>({...x})),get stress(){return safe(stressRun);},get soak(){return safe(soakRun);},get chaos(){return safe(chaosRun);},get procedureResults(){return safe(procedureResults);},get snapshot(){return latest;}});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();

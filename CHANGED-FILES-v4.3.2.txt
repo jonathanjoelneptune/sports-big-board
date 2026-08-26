@@ -1,0 +1,31 @@
+Sports Big Board v4.3.2 — Tier 3 Resilience + Extra-Innings Game Center Hardening
+
+Upload these files at the repository root, preserving folder structure:
+
+VERSION
+app.js
+index.html
+core-model.js
+foundation-certification.json
+FOUNDATION-CERTIFICATION.md
+CHANGED-FILES-v4.3.2.txt
+architecture/milestone-console.js
+architecture/foundation-certification.js
+architecture/game-center-linescore.js
+ui/game-center-view.js
+ui/history-audit.js
+sbb/media_work_scheduler.py
+tools/check_foundation_certification.py
+tests/test_architecture.js
+tests/test_cloud_stage1.py
+tests/test_v430_foundation_certification.py
+tests/test_v432_resilience_extra_innings.py
+
+Behavioral fixes
+- MLB Game Center reconciles a blank decisive extra-inning line-score cell from the final run total.
+- Game Center background scheduler opens a competition-scoped circuit on provider HTTP 429 and cancels already-queued background jobs; explicit TOUCH_INTENT remains allowed.
+- Tier 3 adds a bounded provider-rate-limit phase.
+- Tier 3/soak evidence is included in COPY FULL LOG.
+- Post-chaos clean-window reset preserves the browser-side Tier 3 evidence instead of erasing the failed step.
+
+No database migration, catalog rebuild, or media re-upload is required.

@@ -4,7 +4,7 @@ ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 class V431FoundationCertificationTests(unittest.TestCase):
     def test_release_identity_and_three_tier_manifest(self):
-        self.assertEqual(VERSION,'4.3.1')
+        self.assertEqual(VERSION,'4.3.2')
         m=json.loads((ROOT/'foundation-certification.json').read_text())
         self.assertEqual(m['schemaVersion'],2);self.assertEqual(m['release'],VERSION);self.assertTrue(m['allThreeTiersRequired'])
         self.assertGreaterEqual(m['tiers']['tier2']['minimumDurationMs'],900000)
