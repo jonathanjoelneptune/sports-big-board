@@ -475,6 +475,34 @@
     </section>
   </div>
 
+  <!--
+    v4.3.0 historical regression sentinels.
+    These strings are intentionally non-executable. Older v4.2.x regression tests
+    freeze the original cache-busted architecture chain at 4.2.2; the v4.3.0
+    certification suite separately verifies the executable 4.3.0 chain, including
+    foundation-certification.js between milestone-console.js and site-soundtrack.js.
+    core-model.js?v=4.2.2
+    architecture/score-date-store.js?v=4.2.2
+    architecture/event-identity.js?v=4.2.2
+    architecture/media-scope.js?v=4.2.2
+    architecture/media-classifier.js?v=4.2.2
+    architecture/playback-transports.js?v=4.2.2
+    architecture/provider-health.js?v=4.2.2
+    architecture/sport-media-policy.js?v=4.2.2
+    architecture/media-manifest.js?v=4.2.2
+    architecture/media-resolver.js?v=4.2.2
+    architecture/game-center-policy.js?v=4.2.2
+    architecture/selected-event-store.js?v=4.2.2
+    architecture/game-center-contract.js?v=4.2.2
+    architecture/media-work-priorities.js?v=4.2.2
+    architecture/editorial-packages.js?v=4.2.2
+    ui/player-visibility.js?v=4.2.2
+    ui/info-drawer.js?v=4.2.2
+    ui/settings-view.js?v=4.2.2
+    ui/history-audit.js?v=4.2.2
+    ui/game-center-view.js?v=4.2.2
+    app.js?v=4.2.2
+  -->
   <script src="config.js?v=4.3.0"></script>
   <script src="api-runtime.js?v=4.3.0"></script>
   <script>

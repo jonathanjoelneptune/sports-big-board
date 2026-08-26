@@ -2,13 +2,14 @@ import unittest
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
+RELEASE_VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 
 class V4129SoundtrackPolishTests(unittest.TestCase):
     def test_soundtrack_controls_include_next_and_debug_song(self):
         html=(ROOT/'index.html').read_text()
         self.assertIn('id="soundtrackNextBtn"',html)
         self.assertIn('id="diagSoundtrack"',html)
-        self.assertIn('architecture/site-soundtrack.js?v=4.2.2',html)
+        self.assertIn(f'architecture/site-soundtrack.js?v={RELEASE_VERSION}',html)
 
     def test_pause_truth_hard_stops_soundtrack(self):
         engine=(ROOT/'architecture/site-soundtrack.js').read_text()

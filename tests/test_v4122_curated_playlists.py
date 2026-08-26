@@ -5,9 +5,13 @@ from unittest.mock import patch
 import server
 
 
+ROOT=Path(__file__).resolve().parents[1]
+RELEASE_VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
+
+
 class V4122CuratedPlaylistTests(unittest.TestCase):
     def test_release_versions_and_curated_source_versions(self):
-        self.assertEqual(server.APP_VERSION, "4.2.2")
+        self.assertEqual(server.APP_VERSION, RELEASE_VERSION)
         self.assertEqual(server.HISTORY_DISCOVERY_VERSION, 15)
         self.assertEqual(server.HISTORY_RULE_CATCHUP_VERSION, 10)
         nfl={x["key"]:x for x in server.HISTORY_OFFICIAL_CATCHUP_SOURCES["NFL"]}

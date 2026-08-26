@@ -7,13 +7,17 @@ import server
 from sbb.history_repository import HistoryRepository
 
 
+ROOT=Path(__file__).resolve().parents[1]
+RELEASE_VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
+
+
 class V4124HistoricalRibbonTests(unittest.TestCase):
     def test_release_boundary_and_static_cache_buster_advance(self):
         root=Path(__file__).resolve().parents[1]
         index=(root/'index.html').read_text(encoding='utf-8')
-        self.assertEqual(server.APP_VERSION,'4.2.2')
-        self.assertIn('app.js?v=4.2.2',index)
-        self.assertIn('styles.css?v=4.2.2',index)
+        self.assertEqual(server.APP_VERSION,RELEASE_VERSION)
+        self.assertIn(f'app.js?v={RELEASE_VERSION}',index)
+        self.assertIn(f'styles.css?v={RELEASE_VERSION}',index)
         self.assertNotIn('app.js?v=4.1.23',index)
 
     def test_persisted_seed_marker_is_authoritative_after_restart(self):

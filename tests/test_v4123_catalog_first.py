@@ -7,9 +7,13 @@ import server
 from sbb.history_repository import HistoryRepository
 
 
+ROOT=Path(__file__).resolve().parents[1]
+RELEASE_VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
+
+
 class V4123CatalogFirstTests(unittest.TestCase):
     def test_release_boundary_preserves_discovery_and_rule_versions(self):
-        self.assertEqual(server.APP_VERSION, "4.2.2")
+        self.assertEqual(server.APP_VERSION, RELEASE_VERSION)
         self.assertEqual(server.HISTORY_DISCOVERY_VERSION, 15)
         self.assertEqual(server.HISTORY_RULE_CATCHUP_VERSION, 10)
         self.assertEqual(server.HISTORY_RULE_COLLECTION_CATCHUP_VERSION, 8)
@@ -82,7 +86,7 @@ class V4123CatalogFirstTests(unittest.TestCase):
         self.assertIn("historyScheduleSyncNow",index)
         self.assertIn("ADD & CRAWL PLAYLIST",index)
         self.assertIn("savePlaylistForm",ui)
-        self.assertIn("data-playlist-action=\"crawl\"",ui)
+        self.assertIn('data-playlist-action="crawl"',ui)
         self.assertIn("/api/history/media-sources",ui)
         self.assertIn("history_media_playlist_crawler_worker",backend)
         self.assertIn("history_schedule_sync_worker",backend)

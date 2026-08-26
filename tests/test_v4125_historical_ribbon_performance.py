@@ -9,6 +9,10 @@ import server
 from sbb.history_repository import HistoryRepository
 
 
+ROOT=Path(__file__).resolve().parents[1]
+RELEASE_VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
+
+
 class V4125HistoricalRibbonPerformanceTests(unittest.TestCase):
     def _repo_with_two_games(self, td):
         repo=HistoryRepository(Path(td)/'history.sqlite3')
@@ -40,9 +44,9 @@ class V4125HistoricalRibbonPerformanceTests(unittest.TestCase):
     def test_release_boundary_advances_to_4125(self):
         root=Path(__file__).resolve().parents[1]
         index=(root/'index.html').read_text(encoding='utf-8')
-        self.assertEqual(server.APP_VERSION,'4.2.2')
-        self.assertIn('app.js?v=4.2.2',index)
-        self.assertIn('styles.css?v=4.2.2',index)
+        self.assertEqual(server.APP_VERSION,RELEASE_VERSION)
+        self.assertIn(f'app.js?v={RELEASE_VERSION}',index)
+        self.assertIn(f'styles.css?v={RELEASE_VERSION}',index)
         self.assertNotIn('app.js?v=4.1.24',index)
 
     def test_score_rows_do_not_hydrate_catalog_media(self):

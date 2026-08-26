@@ -1,6 +1,7 @@
 import json, unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+RELEASE_VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 
 class V4132SoundtrackClipScopedTests(unittest.TestCase):
     def test_exactly_one_audio_and_clip_scoped_contract(self):
@@ -39,6 +40,6 @@ class V4132SoundtrackClipScopedTests(unittest.TestCase):
         self.assertIn('aria-pressed="false"',html)
         self.assertIn('id="soundtrackNextBtn"',html)
         self.assertIn('id="diagSoundtrack"',html)
-        self.assertIn('architecture/site-soundtrack.js?v=4.2.2',html)
+        self.assertIn(f'architecture/site-soundtrack.js?v={RELEASE_VERSION}',html)
 
 if __name__=='__main__': unittest.main()
