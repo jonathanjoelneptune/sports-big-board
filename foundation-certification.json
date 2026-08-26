@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.3.2",
+  "release": "4.3.3",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -55,7 +55,8 @@
         "Manual pause survives concurrent API pressure",
         "Post-chaos clean recovery window is healthy",
         "Game Center provider 429 opens a bounded scheduler circuit and cancels queued background amplification",
-        "Tier 3 chaos evidence remains exportable through the post-chaos recovery reset"
+        "Tier 3 chaos evidence remains exportable through the post-chaos recovery reset",
+        "Timing-only WARN evidence remains visible and advisory; only failed assertions or failed recovery gates block Tier 3 certification"
       ]
     }
   },

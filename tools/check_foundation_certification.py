@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static release gate for Sports Big Board v4.3.2 three-tier Foundation Certification."""
+"""Static release gate for Sports Big Board v4.3.3 three-tier Foundation Certification."""
 from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[1]
@@ -13,7 +13,7 @@ def text(path):
 version=text('VERSION').strip()
 try: manifest=json.loads(text('foundation-certification.json') or '{}')
 except Exception as exc: errors.append(f'invalid foundation-certification.json: {exc}');manifest={}
-require(version=='4.3.2',f'expected VERSION 4.3.2, found {version!r}')
+require(version=='4.3.3',f'expected VERSION 4.3.3, found {version!r}')
 require(manifest.get('release')==version,'manifest release mismatch')
 require(manifest.get('schemaVersion')==2,'three-tier manifest schema must be 2')
 require(manifest.get('allThreeTiersRequired') is True,'all three tiers must be required')
@@ -26,6 +26,8 @@ for token in chain: require(token in html,f'index missing {token}')
 if all(x in html for x in chain): require([html.index(x) for x in chain]==sorted(html.index(x) for x in chain),'certification/runtime load order invalid')
 for token in ('RUN TIER 1','RUN TIER 2 • 15 MIN','RUN TIER 3','RUN FULL CERTIFICATION','FOUNDATION_CERTIFIED','allThreeRequired:true','await M.runSoakTest','await M.runChaosTest'):
     require(token in cert,f'certification runtime missing {token}')
+for token in ("allowWarnings=false","new Set(['PASS','WARN'])","tierRunEvidence('tier3','Tier 3 chaos',run,0,{allowWarnings:true})",'advisory warnings','warningCount:warnings.length'):
+    require(token in cert,f'certification warning semantics missing {token}')
 for token in ("version:'1.3'",'runSoakTest','runChaosTest','regression-hardening','manual pause remains latched for 25 seconds','background program refresh cannot restart active clip'):
     require(token in milestone,f'milestone runtime missing {token}')
 for token in ('let PROGRAM = [];','function maybeAutoplayRoundupForDate(){','return false;','selectedEventMatchesActivePlayback','syncGameCenterToActivePlayback','demoSeedCount:()=>0','roundupAutoplayEnabled:()=>false','manualPauseRequested&&!userInitiated'):

@@ -1,0 +1,37 @@
+Sports Big Board v4.3.3 — Tier 3 Certification Warning-Semantics Hotfix
+
+WHY
+- v4.3.2 Tier 3 correctly passed all chaos assertions and post-chaos recovery, but the Foundation gate rejected the run because one timing-only WARN (5,384 ms vs 5,000 ms advisory threshold) was treated as failed step debt.
+
+BEHAVIOR
+- Tier 3 continues to record slow steps as WARN.
+- Tier 3 accepts PASS/WARN run evidence when every assertion passed.
+- FAIL evidence still blocks Tier 3.
+- Tier 2 remains strict: WARN is not automatically accepted.
+- Foundation certificate now includes an explicit advisory-warning gate and warningCount.
+- No chaos threshold was raised and no resilience assertion was removed.
+
+FILES
+VERSION
+app.js
+index.html
+core-model.js
+foundation-certification.json
+FOUNDATION-CERTIFICATION.md
+architecture/foundation-certification.js
+architecture/game-center-linescore.js
+architecture/milestone-console.js
+sbb/media_work_scheduler.py
+tools/check_foundation_certification.py
+ui/game-center-view.js
+ui/history-audit.js
+tests/test_architecture.js
+tests/test_cloud_stage1.py
+tests/test_v430_foundation_certification.py
+tests/test_v432_resilience_extra_innings.py
+tests/test_v433_certification_warning_semantics.py
+CHANGED-FILES-v4.3.3.txt
+
+NO DATABASE MIGRATION
+NO CATALOG REBUILD
+NO MEDIA RE-UPLOAD

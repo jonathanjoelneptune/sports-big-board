@@ -1,4 +1,4 @@
-/* v4.3.2 Game Center renderer. Active playback is the selected-event authority. */
+/* v4.3.3 Game Center renderer. Active playback is the selected-event authority. */
 (() => {
   const $=id=>document.getElementById(id);
   let selected=null,data=null,requestToken=0,pollTimer=null,requestAbort=null,activeSection='overview',playsMode='scoring',activePlayerSide='away';
