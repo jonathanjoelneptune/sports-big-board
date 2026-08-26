@@ -4,6 +4,20 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      emergency_bypass:
+        description: Bypass the normal production concurrency lock
+        required: false
+        default: false
+        type: boolean
+      runner_image:
+        description: GitHub-hosted runner pool
+        required: true
+        default: ubuntu-latest
+        type: choice
+        options:
+          - ubuntu-latest
+          - ubuntu-22.04
 
 permissions:
   contents: read
@@ -11,13 +25,17 @@ permissions:
   id-token: write
 
 concurrency:
-  group: sports-big-board-production
-  cancel-in-progress: false
+  # Normal pushes serialize on one production lane.  A manually dispatched
+  # emergency run can opt into a unique lane so a stale GitHub concurrency
+  # reservation cannot hold the recovery deploy in QUEUED forever.
+  group: ${{ github.event_name == 'workflow_dispatch' && inputs.emergency_bypass && format('sports-big-board-emergency-{0}', github.run_id) || 'sports-big-board-production' }}
+  cancel-in-progress: true
 
 jobs:
   verify:
     name: Verify release
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && inputs.runner_image || 'ubuntu-latest' }}
+    timeout-minutes: 30
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -26,7 +44,8 @@ jobs:
 
   backend:
     name: Deploy cloud backend
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && inputs.runner_image || 'ubuntu-latest' }}
+    timeout-minutes: 30
     needs: verify
     steps:
       - name: Checkout repository
@@ -86,7 +105,8 @@ jobs:
 
   pages-build:
     name: Build GitHub Pages frontend
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && inputs.runner_image || 'ubuntu-latest' }}
+    timeout-minutes: 30
     needs: backend
     steps:
       - name: Checkout repository
@@ -109,7 +129,8 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && inputs.runner_image || 'ubuntu-latest' }}
+    timeout-minutes: 30
     needs: pages-build
     outputs:
       page_url: ${{ steps.deployment.outputs.page_url }}
@@ -120,7 +141,8 @@ jobs:
 
   production-smoke:
     name: Verify deployed frontend/backend handshake
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && inputs.runner_image || 'ubuntu-latest' }}
+    timeout-minutes: 30
     needs: pages-deploy
     steps:
       - name: Checkout repository

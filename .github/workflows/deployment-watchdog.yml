@@ -1,0 +1,63 @@
+name: Sports Big Board Deployment Watchdog
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deployment-drift:
+    name: Detect repository/deployment drift
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Compare main with deployed frontend/backend
+        env:
+          SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
+        run: |
+          set -euo pipefail
+          EXPECTED_VERSION="$(tr -d '[:space:]' < VERSION)"
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          PAGE_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${REPO_NAME}/"
+
+          echo "Repository main expects: $EXPECTED_VERSION"
+          echo "Frontend: $PAGE_URL"
+          echo "Backend:  $SBB_API_BASE_URL"
+
+          test -n "$SBB_API_BASE_URL" || { echo "Missing repository variable SBB_API_BASE_URL"; exit 1; }
+
+          frontend_ok=false
+          backend_ok=false
+          for attempt in {1..3}; do
+            if curl --fail --silent --show-error --connect-timeout 5 --max-time 15 \
+              -H 'Cache-Control: no-cache' "${PAGE_URL}?watchdog=${GITHUB_RUN_ID}-${attempt}" > /tmp/sbb-watchdog-index.html; then
+              if grep -q "app.js?v=${EXPECTED_VERSION}" /tmp/sbb-watchdog-index.html; then
+                frontend_ok=true
+              fi
+            fi
+            if curl --fail --silent --show-error --connect-timeout 5 --max-time 15 \
+              -H 'Cache-Control: no-cache' "$SBB_API_BASE_URL/api/status" > /tmp/sbb-watchdog-status.json; then
+              ACTUAL_BACKEND="$(python3 -c 'import json; print(json.load(open("/tmp/sbb-watchdog-status.json")).get("version", ""))')"
+              if [[ "$ACTUAL_BACKEND" == "$EXPECTED_VERSION" ]]; then
+                backend_ok=true
+              fi
+            fi
+            if [[ "$frontend_ok" == true && "$backend_ok" == true ]]; then
+              echo "PASS: repository, frontend and backend are all $EXPECTED_VERSION"
+              exit 0
+            fi
+            sleep 5
+          done
+
+          echo "::error title=Sports Big Board deployment drift::main expects $EXPECTED_VERSION but deployed state has not converged. frontend_ok=$frontend_ok backend_ok=$backend_ok"
+          echo "Frontend generation check:"
+          grep -o 'app.js?v=[^" ]*' /tmp/sbb-watchdog-index.html 2>/dev/null | head -1 || true
+          echo "Backend status:"
+          cat /tmp/sbb-watchdog-status.json 2>/dev/null || true
+          exit 1
