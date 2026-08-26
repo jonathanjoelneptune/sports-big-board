@@ -39,6 +39,6 @@ class V4132SoundtrackClipScopedTests(unittest.TestCase):
         self.assertIn('aria-pressed="false"',html)
         self.assertIn('id="soundtrackNextBtn"',html)
         self.assertIn('id="diagSoundtrack"',html)
-        self.assertIn('architecture/site-soundtrack.js?v=4.1.32',html)
+        self.assertIn('architecture/site-soundtrack.js?v=4.2.0',html)
 
 if __name__=='__main__': unittest.main()

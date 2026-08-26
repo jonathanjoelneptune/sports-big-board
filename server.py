@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sports Big Board v4.1.32 local/cloud backend.
+"""Sports Big Board v4.2.0 local/cloud backend.
 Serves the same-origin development app or an HTTPS API for the GitHub Pages frontend.
 Provider credentials and persistent historical state remain server-side.
 """
@@ -20,6 +20,7 @@ import pathlib
 import re
 import socket
 import time
+import traceback
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 from collections import deque
@@ -41,15 +42,25 @@ from sbb.catalog_contract import CATALOG_SCHEMA_VERSION
 from sbb.event_matcher import match_event as match_media_to_event
 from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
 from sbb.secrets import get_secret, set_secrets, status as secrets_status, migrate_legacy as migrate_legacy_secrets, SECRETS_FILE
+from sbb.milestone_console import MilestoneConsole
 
-APP_VERSION = "4.1.32"
+ROOT = pathlib.Path(__file__).resolve().parent
+APP_VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 PORT = int(os.environ.get("PORT", "8080"))
 BIND_HOST = os.environ.get("SBB_BIND_HOST", "127.0.0.1").strip() or "127.0.0.1"
-ROOT = pathlib.Path(__file__).resolve().parent
 STATE_DIR = pathlib.Path(os.environ.get("SBB_STATE_DIR") or (pathlib.Path.home() / ".sports-big-board")).expanduser()
 STATE_DIR.mkdir(parents=True, exist_ok=True)
 CLOUD_MODE = str(os.environ.get("SBB_CLOUD_MODE", "0")).lower() in ("1", "true", "yes", "on")
 DEPLOYMENT_MODE = "cloud-stage1" if CLOUD_MODE else "local"
+MILESTONE_CONSOLE = MilestoneConsole(APP_VERSION)
+
+_ORIGINAL_THREAD_EXCEPTOOK=threading.excepthook
+def _sbb_thread_excepthook(args):
+    try:
+        MILESTONE_CONSOLE.record('thread','ERROR',f'uncaught exception in {getattr(args.thread,"name","thread")}',{'type':getattr(args.exc_type,'__name__',str(args.exc_type)),'message':str(args.exc_value),'traceback':''.join(traceback.format_exception(args.exc_type,args.exc_value,args.exc_traceback))[-8000:]})
+    except Exception: pass
+    _ORIGINAL_THREAD_EXCEPTOOK(args)
+threading.excepthook=_sbb_thread_excepthook
 ALLOWED_ORIGINS = {x.strip().rstrip("/") for x in os.environ.get("SBB_ALLOWED_ORIGINS", "http://localhost:8080,http://127.0.0.1:8080").split(",") if x.strip()}
 ALLOWED_ORIGIN_SUFFIXES = tuple(x.strip().lower() for x in os.environ.get("SBB_ALLOWED_ORIGIN_SUFFIXES", ".github.io").split(",") if x.strip()) if CLOUD_MODE else tuple()
 
@@ -69,7 +80,7 @@ def _cors_allowed_origin(origin):
     return ""
 
 
-# v4.1.32 private soundtrack transport. The soundtrack bucket can remain under
+# v4.2.0 private soundtrack transport. The soundtrack bucket can remain under
 # enforced Public Access Prevention. The browser asks this backend for an MP3;
 # the backend prefers a short-lived V4 GCS signed redirect and falls back to an
 # authenticated range-capable stream if IAM signBlob is unavailable.
@@ -268,7 +279,7 @@ OPENAI_KEY_FILE = STATE_DIR / "openai-key"
 OPENAI_API_BASE = "https://api.openai.com/v1"
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-mini")
 YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
-YOUTUBE_GATEWAY = YouTubeGateway(user_agent="SportsBigBoard/4.1.32", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
+YOUTUBE_GATEWAY = YouTubeGateway(user_agent=f"SportsBigBoard/{APP_VERSION}", state_file=STATE_DIR / "cache" / "youtube_gateway_state.json", quota_timezone="America/Los_Angeles")
 
 def youtube_fetch_json(url, timeout=10):
     """Operation-aware YouTube broker.
@@ -287,7 +298,7 @@ NFL_YOUTUBE_CHANNEL_ID = "UCDVYQ4Zhbm3S2dlz7P1GBDg"  # verified @NFL channel
 # playlistItems.list + videos.list; search.list is never required. Known historical
 # playlist IDs provide immediate anchors while automatic enumeration remains primary.
 NFL_YOUTUBE_KNOWN_RECAP_PLAYLISTS = {
-    # v4.1.32 operator-pinned 2025-season weekly/playoff recap playlists.  The
+    # v4.2.0 operator-pinned 2025-season weekly/playoff recap playlists.  The
     # channel catalog supplies the authoritative title when available; these anchors
     # keep every known playlist reachable even if playlists.list misses/changes it.
     "PLRdw3IjKY2gm8m7heXMOfVPLVA8jDY_Jd":"2025 NFL Recap Playlist 01",
@@ -334,7 +345,7 @@ EPL_YOUTUBE_KNOWN_PLAYLISTS = {
     "PLR1b-6EyIaTs":{"title":"Premier League 2026-27 season","url":"https://www.youtube.com/playlist?list=PLR1b-6EyIaTs","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2026,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
     "PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E":{"title":"Premier League 2025-26 season","url":"https://www.youtube.com/playlist?list=PLXEMPXZ3PY1hMzinDc1TvSm8U2NUyz-0E","family":"epl-youtube-nbc","role":"season-highlights","seasonStart":2025,"channelId":EPL_YOUTUBE_NBC_CHANNEL_ID},
 }
-# v4.1.32 operator-curated GAME playlist registry. These playlist lanes use
+# v4.2.0 operator-curated GAME playlist registry. These playlist lanes use
 # playlistItems.list + videos.list only, never search.list.  Exact event association
 # still requires both teams plus explicit/published date evidence, so a trusted
 # playlist can improve discovery without weakening Event Matcher v7.
@@ -561,7 +572,7 @@ HISTORY_OPERATOR_SNAPSHOT_STATE = {"ready":False,"generatedAt":0.0,"generationMs
 HISTORY_OPERATOR_SNAPSHOT_INTERVAL = max(5,min(60,int(os.environ.get("SBB_OPERATOR_SNAPSHOT_INTERVAL","10") or 10)))
 
 
-# v4.1.32 rolling schedule + operator playlist state. Provider feeds write into the
+# v4.2.0 rolling schedule + operator playlist state. Provider feeds write into the
 # canonical catalog; the UI reads the catalog instead of reconstructing relationships.
 HISTORY_SCHEDULE_SYNC_INTERVAL = max(120,int(os.environ.get("SBB_SCHEDULE_SYNC_INTERVAL","600") or 600))
 HISTORY_SCHEDULE_SYNC_FUTURE_DAYS = max(3,min(21,int(os.environ.get("SBB_SCHEDULE_SYNC_FUTURE_DAYS","14") or 14)))
@@ -745,6 +756,8 @@ HISTORY_WORKER_LOCAL=threading.local()
 HISTORY_SINGLEFLIGHT_GUARD=threading.RLock()
 HISTORY_SINGLEFLIGHT_LOCKS={}
 HISTORY_SHARED_CATALOG_CACHE={}
+HISTORY_SINGLEFLIGHT_STATS_LOCK=threading.RLock()
+HISTORY_SINGLEFLIGHT_STATS={"calls":0,"waits":0,"waitSeconds":0.0,"cacheHits":0,"cacheMisses":0,"cacheEntries":0}
 
 def _history_singleflight_lock(key):
     key=str(key or '')
@@ -753,22 +766,42 @@ def _history_singleflight_lock(key):
 
 def _history_singleflight_call(key,fn):
     if not key: return fn()
-    with _history_singleflight_lock(key): return fn()
+    lock=_history_singleflight_lock(key); started=time.perf_counter()
+    acquired=lock.acquire(blocking=False)
+    if not acquired:
+        with HISTORY_SINGLEFLIGHT_STATS_LOCK: HISTORY_SINGLEFLIGHT_STATS['waits']=int(HISTORY_SINGLEFLIGHT_STATS.get('waits') or 0)+1
+        lock.acquire()
+    waited=max(0.0,time.perf_counter()-started)
+    with HISTORY_SINGLEFLIGHT_STATS_LOCK:
+        HISTORY_SINGLEFLIGHT_STATS['calls']=int(HISTORY_SINGLEFLIGHT_STATS.get('calls') or 0)+1
+        HISTORY_SINGLEFLIGHT_STATS['waitSeconds']=float(HISTORY_SINGLEFLIGHT_STATS.get('waitSeconds') or 0)+waited
+    try: return fn()
+    finally: lock.release()
 
 def _history_shared_catalog(key,fn,ttl=180):
     """Single-flight a reusable league/day catalog and retain it briefly in RAM."""
     key=str(key or ''); now=time.time()
     if not key: return fn()
-    with _history_singleflight_lock('catalog:'+key):
+    lock=_history_singleflight_lock('catalog:'+key); started=time.perf_counter(); acquired=lock.acquire(blocking=False)
+    if not acquired:
+        with HISTORY_SINGLEFLIGHT_STATS_LOCK: HISTORY_SINGLEFLIGHT_STATS['waits']=int(HISTORY_SINGLEFLIGHT_STATS.get('waits') or 0)+1
+        lock.acquire()
+    waited=max(0.0,time.perf_counter()-started)
+    try:
         cached=HISTORY_SHARED_CATALOG_CACHE.get(key)
         if cached and now-float(cached[0] or 0)<max(5,float(ttl or 180)):
+            with HISTORY_SINGLEFLIGHT_STATS_LOCK:
+                HISTORY_SINGLEFLIGHT_STATS['calls']=int(HISTORY_SINGLEFLIGHT_STATS.get('calls') or 0)+1; HISTORY_SINGLEFLIGHT_STATS['cacheHits']=int(HISTORY_SINGLEFLIGHT_STATS.get('cacheHits') or 0)+1; HISTORY_SINGLEFLIGHT_STATS['waitSeconds']=float(HISTORY_SINGLEFLIGHT_STATS.get('waitSeconds') or 0)+waited; HISTORY_SINGLEFLIGHT_STATS['cacheEntries']=len(HISTORY_SHARED_CATALOG_CACHE)
             return copy.deepcopy(cached[1])
+        with HISTORY_SINGLEFLIGHT_STATS_LOCK:
+            HISTORY_SINGLEFLIGHT_STATS['calls']=int(HISTORY_SINGLEFLIGHT_STATS.get('calls') or 0)+1; HISTORY_SINGLEFLIGHT_STATS['cacheMisses']=int(HISTORY_SINGLEFLIGHT_STATS.get('cacheMisses') or 0)+1; HISTORY_SINGLEFLIGHT_STATS['waitSeconds']=float(HISTORY_SINGLEFLIGHT_STATS.get('waitSeconds') or 0)+waited
         value=fn()
         HISTORY_SHARED_CATALOG_CACHE[key]=(time.time(),copy.deepcopy(value))
-        # Bound memory: these are short-lived day catalogs, not a second database.
         if len(HISTORY_SHARED_CATALOG_CACHE)>128:
             for old_key,_ in sorted(HISTORY_SHARED_CATALOG_CACHE.items(),key=lambda kv:float(kv[1][0] or 0))[:32]: HISTORY_SHARED_CATALOG_CACHE.pop(old_key,None)
+        with HISTORY_SINGLEFLIGHT_STATS_LOCK: HISTORY_SINGLEFLIGHT_STATS['cacheEntries']=len(HISTORY_SHARED_CATALOG_CACHE)
         return value
+    finally: lock.release()
 HISTORY_BACKGROUND_MEDIA_PAUSE_SECONDS = max(2,int(os.environ.get("SBB_HISTORY_BACKGROUND_MEDIA_PAUSE_SECONDS","8")))
 HISTORY_BACKGROUND_INTERACTIVE_PAUSE_SECONDS = max(1,int(os.environ.get("SBB_HISTORY_BACKGROUND_INTERACTIVE_PAUSE_SECONDS","3")))
 # v4.1.21 exposes an operator-controlled resource mode in the live Search Console.
@@ -816,12 +849,14 @@ def _history_search_suspended():
 SERVER_STARTED_AT = time.time()
 HISTORY_CONSOLE_LOCK = threading.RLock()
 HISTORY_CONSOLE_LINES = deque(maxlen=320)
+HISTORY_WORKER_HEALTH_LOCK = threading.RLock()
 HISTORY_WORKER_HEALTH = {
     **{f"green-gap-{i}":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""} for i in range(1,HISTORY_GREEN_WORKERS+1)},
     "date-backfill":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
     "database-audit":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
     "schedule-sync":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
     "playlist-crawler":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
+    "rule-collections":{"heartbeat":0.0,"phase":"starting","lastProgress":0.0,"iterations":0,"blocked":0,"current":""},
 }
 
 def _history_console_log(worker, level, message, **meta):
@@ -832,13 +867,15 @@ def _history_console_log(worker, level, message, **meta):
         print(f"[SBB {row['worker']}] {row['level']} {row['message']}",flush=True)
 
 def _history_worker_beat(worker, phase=None, current=None, progress=False, blocked=False):
-    now=time.time(); st=HISTORY_WORKER_HEALTH.setdefault(worker,{})
-    st["heartbeat"]=now
-    if phase is not None: st["phase"]=str(phase)
-    if current is not None: st["current"]=str(current)
-    if progress: st["lastProgress"]=now
-    st["iterations"]=int(st.get("iterations") or 0)+1
-    if blocked: st["blocked"]=int(st.get("blocked") or 0)+1
+    now=time.time()
+    with HISTORY_WORKER_HEALTH_LOCK:
+        st=HISTORY_WORKER_HEALTH.setdefault(worker,{})
+        st["heartbeat"]=now
+        if phase is not None: st["phase"]=str(phase)
+        if current is not None: st["current"]=str(current)
+        if progress: st["lastProgress"]=now
+        st["iterations"]=int(st.get("iterations") or 0)+1
+        if blocked: st["blocked"]=int(st.get("blocked") or 0)+1
 
 def _history_threads_status():
     names={t.name:bool(t.is_alive()) for t in threading.enumerate()}
@@ -891,6 +928,12 @@ def _history_provider_call(provider, fn):
 
 def _history_provider_status():
     with HISTORY_PROVIDER_STATE_LOCK: return copy.deepcopy(HISTORY_PROVIDER_STATE)
+
+def _history_singleflight_status():
+    with HISTORY_SINGLEFLIGHT_STATS_LOCK:
+        out=copy.deepcopy(HISTORY_SINGLEFLIGHT_STATS)
+    out['waitSeconds']=round(float(out.get('waitSeconds') or 0),3)
+    return out
 HISTORY_SCORE_FETCH_LOCK = threading.RLock()
 HISTORY_SCORE_FETCH_LOCKS = {}
 # Browsing a past date is foreground work. Keep that focus server-side so today's
@@ -1238,7 +1281,7 @@ def _prewarm_highlightly_call(sport_key,endpoint,date,timezone_value="",force=Fa
     if RATE_LIMIT_STATE.get("limited") and limited_since and time.time()-limited_since < 15*60:
         return cached
     url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.32"})
+    req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":f"SportsBigBoard/{APP_VERSION}"})
     try:
         with urlopen(req,timeout=15) as resp:
             data=json.loads(resp.read().decode("utf-8"))
@@ -1485,6 +1528,7 @@ def media_prewarm_worker():
         except Exception as exc:
             MEDIA_PREWARM_STATE["lastError"]=f"{type(exc).__name__}: {exc}"
             print(f"[SBB media-prewarm] worker error: {MEDIA_PREWARM_STATE['lastError']}",flush=True)
+            MILESTONE_CONSOLE.record('media-prewarm','ERROR','media prewarm worker error',{'error':MEDIA_PREWARM_STATE['lastError']})
         finally:
             MEDIA_PREWARM_STATE["refreshing"]=False
         time.sleep(60)
@@ -1734,6 +1778,7 @@ def editorial_background_worker():
                 refresh_editorial_snapshot(deep=False)
         except Exception as exc:
             print(f"[SBB warm-cache] worker error: {exc}",flush=True)
+            MILESTONE_CONSOLE.record('editorial-worker','ERROR','editorial warm-cache worker error',{'error':f'{type(exc).__name__}: {exc}'})
         time.sleep(30)
 
 _load_editorial_snapshot()
@@ -1799,7 +1844,7 @@ def openai_api_request(path, payload=None, method=None, timeout=20):
         raise RuntimeError("OPENAI_NOT_CONFIGURED")
     method=method or ("POST" if payload is not None else "GET")
     body=None if payload is None else json.dumps(payload).encode("utf-8")
-    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":"SportsBigBoard/4.1.32"}
+    headers={"Authorization":f"Bearer {key}","Content-Type":"application/json","User-Agent":f"SportsBigBoard/{APP_VERSION}"}
     req=Request(f"{OPENAI_API_BASE}{path}",data=body,headers=headers,method=method)
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -2334,12 +2379,13 @@ def _google_news_official_results(league):
     site_clause=' OR '.join(f'site:{d}' for d in sorted(trusted_domains))
     query=f'({terms}) ({site_clause}) {league} when:5d'
     url='https://news.google.com/rss/search?'+urlencode({'q':query,'hl':'en-US','gl':'US','ceid':'US:en'})
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.32'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':f'Mozilla/5.0 SportsBigBoard/{APP_VERSION}'})
     try:
         with urlopen(req,timeout=10) as resp: raw=resp.read()
         root=ET.fromstring(raw)
     except Exception as exc:
         print(f'[SBB key-info] {league} official news discovery failed: {type(exc).__name__}: {exc}',flush=True)
+        MILESTONE_CONSOLE.record('key-info','WARN','official news discovery failed',{'league':league,'error':f'{type(exc).__name__}: {exc}'})
         return []
     now=datetime.now(timezone.utc)
     reject=re.compile(r'rumou?r|mock draft|fantasy|power rankings|prediction|odds|betting|podcast|mailbag|opinion|what if|could trade|might trade|should trade|free agency tracker|transaction tracker|trade tracker|every .*deal|all .*deal|all .*signing|complete list|grades|winners and losers|top \d+',re.I)
@@ -2393,12 +2439,14 @@ def _espn_rss_results(league):
     """First-party ESPN headline feed. ESPN explicitly publishes these RSS feeds for aggregators."""
     league=str(league or '').upper(); url=ESPN_RSS.get(league)
     if not url: return []
-    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.32'})
+    req=Request(url,headers={'Accept':'application/rss+xml, application/xml, text/xml, */*','User-Agent':f'Mozilla/5.0 SportsBigBoard/{APP_VERSION}'})
     try:
         with urlopen(req,timeout=8) as resp: raw=resp.read()
         root=ET.fromstring(raw)
     except Exception as exc:
-        print(f'[SBB ESPN] {league} RSS failed: {type(exc).__name__}: {exc}',flush=True); return []
+        print(f'[SBB ESPN] {league} RSS failed: {type(exc).__name__}: {exc}',flush=True)
+        MILESTONE_CONSOLE.record('key-info','WARN','ESPN RSS discovery failed',{'league':league,'error':f'{type(exc).__name__}: {exc}'})
+        return []
     now=datetime.now(timezone.utc); out=[]
     reject=re.compile(r'rumou?r|mock draft|fantasy|power rankings|prediction|odds|betting|podcast|mailbag|ranked|winners and losers|grades|tracker|every .*deal|complete list',re.I)
     for node in root.findall('.//item')[:45]:
@@ -2639,7 +2687,7 @@ def _nfl_team_site_video_results(date, away, home, max_items=8):
     for host in hosts:
         page=f'https://{host}/video/'
         try:
-            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.32'})
+            req=Request(page,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':f'Mozilla/5.0 SportsBigBoard/{APP_VERSION}'})
             with urlopen(req,timeout=8) as resp: raw=resp.read().decode('utf-8','ignore')
         except Exception as exc:
             print(f'[SBB NFL] club video page failed {host}: {type(exc).__name__}: {exc}',flush=True); continue
@@ -2985,7 +3033,7 @@ def _highlightly_soccer_schedule(league,date):
         "x-rapidapi-key":read_key(),
         "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.32"
+        "User-Agent":f"SportsBigBoard/{APP_VERSION}"
     })
     with urlopen(req,timeout=12) as resp:
         payload=json.loads(resp.read().decode("utf-8"))
@@ -3089,7 +3137,7 @@ def _soccer_diagnostics():
                     "x-rapidapi-key":read_key(),
                     "x-rapidapi-host":cfg.get("rapidHost","football-highlights-api.p.rapidapi.com"),
                     "Accept":"application/json",
-                    "User-Agent":"SportsBigBoard/4.1.32"
+                    "User-Agent":f"SportsBigBoard/{APP_VERSION}"
                 })
                 with urlopen(req,timeout=12) as resp:
                     payload=json.loads(resp.read().decode("utf-8"))
@@ -3851,7 +3899,7 @@ def _nfl_game_highlights_source_pages(away,home):
 
 
 def _nfl_fetch_page_text(url,timeout=9):
-    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.32'})
+    req=Request(url,headers={'Accept':'text/html,application/xhtml+xml','User-Agent':f'Mozilla/5.0 SportsBigBoard/{APP_VERSION}'})
     with urlopen(req,timeout=timeout) as resp:
         return resp.read().decode('utf-8','ignore')
 
@@ -4008,7 +4056,7 @@ _SOCCER_TEAM_ALIASES = {
 
 
 def _official_fetch_page_text(url,timeout=10,referer=''):
-    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.32'}
+    headers={'Accept':'text/html,application/xhtml+xml','User-Agent':f'Mozilla/5.0 SportsBigBoard/{APP_VERSION}'}
     if referer: headers['Referer']=referer
     req=Request(url,headers=headers)
     with urlopen(req,timeout=timeout) as resp:
@@ -4461,7 +4509,7 @@ def _official_nfl_feed_videos(date, away, home):
         return []
     url=f"https://www.youtube.com/feeds/videos.xml?channel_id={NFL_YOUTUBE_CHANNEL_ID}"
     try:
-        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"SportsBigBoard/4.1.32"})
+        req=Request(url,headers={"Accept":"application/atom+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":f"SportsBigBoard/{APP_VERSION}"})
         with urlopen(req,timeout=9) as resp:
             raw=resp.read()
         root=ET.fromstring(raw)
@@ -4650,7 +4698,7 @@ def _youtube_oembed_probe(video_id,timeout=7):
     vid=str(video_id or '').strip()
     if not vid: return None
     url='https://www.youtube.com/oembed?'+urlencode({'url':f'https://www.youtube.com/watch?v={vid}','format':'json'})
-    req=Request(url,headers={'Accept':'application/json','User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.32'})
+    req=Request(url,headers={'Accept':'application/json','User-Agent':f'Mozilla/5.0 SportsBigBoard/{APP_VERSION}'})
     try:
         with urlopen(req,timeout=timeout) as resp:
             if getattr(resp,'status',200)!=200: return None
@@ -6223,7 +6271,7 @@ def _search_engine_youtube_links(query,max_results=18):
     # normal search result page on a phone connection.
     try:
         url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss','count':max(10,min(30,max_results*2))})
-        req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.32','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
+        req=Request(url,headers={'User-Agent':f'Mozilla/5.0 SportsBigBoard/{APP_VERSION}','Accept':'application/rss+xml,application/xml,text/xml;q=0.9,*/*;q=0.5','Accept-Language':'en-US,en;q=0.9'})
         with urlopen(req,timeout=9) as resp:
             blob=resp.read(1_500_000)
         root=ET.fromstring(blob)
@@ -6609,7 +6657,9 @@ def normalized_rapid_highlights(date, force_refresh=False, force_clips=False):
         futs=[ex.submit(work,g) for g in started]
         for fut in as_completed(futs):
             try: results.extend(fut.result() or [])
-            except Exception as exc: print(f'[SBB rapid] worker failed: {type(exc).__name__}: {exc}',flush=True)
+            except Exception as exc:
+                print(f'[SBB rapid] worker failed: {type(exc).__name__}: {exc}',flush=True)
+                MILESTONE_CONSOLE.record('rapid-media','WARN','rapid media worker item failed',{'error':f'{type(exc).__name__}: {exc}'})
     # Deduplicate by game/media identity.
     unique=[]; seen=set()
     for x in results:
@@ -6621,7 +6671,7 @@ def normalized_rapid_highlights(date, force_refresh=False, force_clips=False):
     return unique
 
 def fetch_json(url, timeout=15):
-    req = Request(url, headers={"Accept":"application/json", "User-Agent":"SportsBigBoard/4.1.32"})
+    req = Request(url, headers={"Accept":"application/json", "User-Agent":f"SportsBigBoard/{APP_VERSION}"})
     with urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
@@ -6971,6 +7021,7 @@ def _run_stats_discovery(date):
                 except Exception as exc:
                     source_errors+=1; missing+=1
                     print(f"[SBB coverage] worker failed: {type(exc).__name__}: {exc}",flush=True)
+                    MILESTONE_CONSOLE.record('coverage','WARN','coverage worker item failed',{'date':date,'error':f'{type(exc).__name__}: {exc}'})
                 update_coverage(date,status="SEARCHING",refreshing=True,searched=searched,found=recap_games+reel_games,playable=len(all_items),playableGames=recap_games+reel_games,recapGames=recap_games,reelGames=reel_games,missingGames=missing,noSource=missing,sourceErrors=source_errors,sourceErrorGames=source_errors,youtubeSearched=youtube_searched,youtubeFound=youtube_found,youtubeErrors=youtube_errors,message=f"Coverage {searched}/{total} • {recap_games} recaps • {reel_games} reels")
 
         STATS_CACHE[date]=(time.time(),all_items)
@@ -6980,11 +7031,15 @@ def _run_stats_discovery(date):
         # minute background cadence. This is server-only byte preparation; it has
         # no authority over browser playback state.
         try: prewarm_server_media_for_date(date,18)
-        except Exception as exc: print(f"[SBB media-cache] post-discovery prewarm warning: {type(exc).__name__}: {exc}",flush=True)
+        except Exception as exc:
+            print(f"[SBB media-cache] post-discovery prewarm warning: {type(exc).__name__}: {exc}",flush=True)
+            MILESTONE_CONSOLE.record('media-cache','WARN','post-discovery prewarm failed',{'date':date,'error':f'{type(exc).__name__}: {exc}'})
         status="READY" if missing==0 and source_errors==0 else "DEGRADED"
         update_coverage(date,status=status,refreshing=False,searched=total,found=recap_games+reel_games,playable=len(all_items),playableGames=recap_games+reel_games,recapGames=recap_games,reelGames=reel_games,missingGames=missing,noSource=missing,sourceErrors=source_errors,sourceErrorGames=source_errors,youtubeConfigured=bool(read_youtube_key()),youtubeSearched=youtube_searched,youtubeFound=youtube_found,youtubeErrors=youtube_errors,youtubeDone=True,message=f"Coverage complete • {recap_games} recaps • {reel_games} reels • {missing} missing")
     except Exception as exc:
-        update_coverage(date,status="ERROR",refreshing=False,sourceErrors=int(coverage_state(date).get("sourceErrors",0))+1,message=f"MLB coverage refresh failed: {type(exc).__name__}: {exc}")
+        message=f"MLB coverage refresh failed: {type(exc).__name__}: {exc}"
+        update_coverage(date,status="ERROR",refreshing=False,sourceErrors=int(coverage_state(date).get("sourceErrors",0))+1,message=message)
+        MILESTONE_CONSOLE.record('coverage','ERROR','coverage refresh failed',{'date':date,'error':message})
     finally:
         with DISCOVERY_LOCK: DISCOVERY_JOBS.pop(date,None)
 
@@ -7122,6 +7177,21 @@ def _update_settings_secrets(body):
     return _settings_payload()
 
 
+def _milestone_finish_request(handler, status, payload=None):
+    try:
+        started=float(getattr(handler,"_sbb_request_started_perf",0) or 0)
+        path=str(getattr(handler,"_sbb_request_path","") or "")
+        if not started or not path.startswith("/api/"): return
+        duration_ms=(time.perf_counter()-started)*1000
+        error=""
+        if isinstance(payload,dict) and int(status or 0)>=400:
+            error=str(payload.get("message") or payload.get("error") or "")
+        MILESTONE_CONSOLE.record_endpoint(path,duration_ms,status,error)
+        handler._sbb_request_started_perf=0
+    except Exception:
+        pass
+
+
 def send_json(handler, payload, status=200, headers=None):
     body = json.dumps(payload).encode("utf-8")
     try:
@@ -7134,11 +7204,16 @@ def send_json(handler, payload, status=200, headers=None):
         handler.send_header("Content-Length", str(len(body)))
         handler.end_headers()
         handler.wfile.write(body)
+        _milestone_finish_request(handler,status,payload)
         return True
     except (BrokenPipeError,ConnectionResetError,ConnectionAbortedError):
         # Mobile Chrome aggressively cancels superseded score/date requests. That
-        # is normal client behavior, not an upstream API failure, and should not
-        # trigger a second 502 write or a full traceback in Termux.
+        # is normal client behavior, not an upstream API failure. Record the
+        # cancellation so milestone testing can distinguish it from server stalls.
+        try:
+            MILESTONE_CONSOLE.record("api","INFO",f"client cancelled {getattr(handler,'_sbb_request_path','request')}",{"status":499})
+            _milestone_finish_request(handler,499,{"error":"CLIENT_CANCELLED"})
+        except Exception: pass
         return False
 
 
@@ -7151,8 +7226,10 @@ def send_bytes(handler, body, content_type='application/octet-stream', status=20
         if headers:
             for k,v in headers.items(): handler.send_header(k,v)
         handler.send_header('Content-Length',str(len(body)))
-        handler.end_headers(); handler.wfile.write(body); return True
+        handler.end_headers(); handler.wfile.write(body); _milestone_finish_request(handler,status,None); return True
     except (BrokenPipeError,ConnectionResetError,ConnectionAbortedError):
+        try: _milestone_finish_request(handler,499,{"error":"CLIENT_CANCELLED"})
+        except Exception: pass
         return False
 
 
@@ -7319,7 +7396,7 @@ def _football_day_fallback(date, sport_key, timezone_value=""):
     req=Request(url,headers={
         "x-rapidapi-key":key,
         "Accept":"application/json",
-        "User-Agent":"SportsBigBoard/4.1.32"
+        "User-Agent":f"SportsBigBoard/{APP_VERSION}"
     })
     with urlopen(req,timeout=15) as resp:
         data=json.loads(resp.read().decode("utf-8"))
@@ -7556,7 +7633,7 @@ def _media_request_headers(range_value=None,media_url=""):
     host=(urlparse(str(media_url or "")).hostname or "").lower()
     referer="https://www.espn.com/" if ("espn" in host or "akamai" in host) else ("https://www.nfl.com/" if "nfl" in host else "https://www.mlb.com/")
     headers={
-        "User-Agent":"Mozilla/5.0 SportsBigBoard/4.1.32",
+        "User-Agent":f"Mozilla/5.0 SportsBigBoard/{APP_VERSION}",
         "Accept":"video/mp4,video/*;q=0.9,*/*;q=0.8",
         "Referer":referer
     }
@@ -7671,7 +7748,7 @@ def _media_cache_prepare(media_url,event_id="",media_date="",priority=0):
         if total and paths["head"].exists() and paths["head"].stat().st_size>=total:
             paths["head"].replace(paths["full"]); meta["fullReady"]=True; meta["fullSize"]=total; meta["headSize"]=0
         if total and total>MEDIA_FILE_CACHE_HEAD_BYTES and not meta.get("fullReady"):
-            # v4.1.32: extend the startup runway with fixed 8 MB chunks. The first
+            # v4.2.0: extend the startup runway with fixed 8 MB chunks. The first
             # 16 MB remains backwards-compatible as HEAD; chunks 2+ keep playback
             # local while the low-priority full-file cache finishes.
             for idx in range(2,min(MEDIA_FILE_CACHE_PREFETCH_CHUNKS,(total+MEDIA_FILE_CACHE_CHUNK_BYTES-1)//MEDIA_FILE_CACHE_CHUNK_BYTES)):
@@ -8616,7 +8693,7 @@ def _history_validate_native_asset(item,timeout=6):
     """Positively probe one direct historical media URL before advertising green."""
     row=dict(item or {}); url=str(row.get('mediaUrl') or '').strip()
     if not url: return row
-    headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.1.32','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
+    headers={'User-Agent':f'Mozilla/5.0 SportsBigBoard/{APP_VERSION}','Accept':'video/*,*/*;q=0.8','Range':'bytes=0-0'}
     if 'espn' in url.lower(): headers['Referer']='https://www.espn.com/'
     source_type=str(row.get('sourceType') or '')
     external=str(row.get('externalUrl') or '').lower()
@@ -9006,7 +9083,7 @@ def _history_day_event_plans(date):
 def _history_day_score_rows(date):
     """Return the canonical historical ribbon slate without any provider calls.
 
-    v4.1.32 deliberately separates the lightweight score-ribbon contract from the
+    v4.2.0 deliberately separates the lightweight score-ribbon contract from the
     much larger event/media plans.  Persisted history_day scoreboards are preferred
     because they carry the richest score/status fields.  Canonical catalog events
     fill any identity gaps so a relationship-only catalog still paints the ribbon.
@@ -9014,7 +9091,7 @@ def _history_day_score_rows(date):
     target=str(date or '')[:10]
     out={lg:[] for lg in HISTORY_LEAGUES}; seen={lg:set() for lg in HISTORY_LEAGUES}
     for lg in HISTORY_LEAGUES:
-        # v4.1.32 score inventory must not hydrate catalog media.  The compact
+        # v4.2.0 score inventory must not hydrate catalog media.  The compact
         # endpoint bulk-loads exact media separately after the score slate is known.
         state=HISTORY_REPOSITORY.get_league(target,lg,prefer_catalog=False)
         for raw in state.get('scores') or []:
@@ -9038,7 +9115,7 @@ def _history_day_score_rows(date):
 def _history_day_ribbon_plans(date,score_rows=None):
     """Compact exact-event media plans for score-ribbon first paint.
 
-    v4.1.32 performs one bulk SQLite media read for the entire date.  The prior
+    v4.2.0 performs one bulk SQLite media read for the entire date.  The prior
     implementation called ``event_media`` once per game, turning a 30-game ribbon
     into 30+ separate SQLite connections while backfill workers were writing.
     """
@@ -10260,6 +10337,7 @@ def game_center_refresh_worker():
                 schedule_game_center_prepare(comp,event,priority)
         except Exception as exc:
             print(f"[SBB game-center] refresh worker warning: {type(exc).__name__}: {exc}",flush=True)
+            MILESTONE_CONSOLE.record('game-center-worker','WARN','game center refresh worker warning',{'error':f'{type(exc).__name__}: {exc}'})
         time.sleep(15)
 
 def _history_recovery_normalize(payload):
@@ -10324,7 +10402,79 @@ def _history_recovery_status():
     sources={lg:[{'key':x.get('key'),'version':x.get('version'),'objective':x.get('objective') or ''} for x in specs] for lg,specs in HISTORY_OFFICIAL_CATCHUP_SOURCES.items()}
     return {'ok':True,'state':state,'cursors':cursors,'sources':sources,'databaseAudit':_history_database_audit_snapshot(),'silverIdentity':HISTORY_REPOSITORY.silver_identity_audit(league='EPL')}
 
+
+def _milestone_release_snapshot(frontend_version=''):
+    """Assemble bounded release-health truth without whole-catalog scans."""
+    now=time.time(); problems=[]; checks=[]
+    threads=_history_threads_status()
+    dead=[x.get('name') for x in threads if not x.get('alive') and now-SERVER_STARTED_AT>75]
+    if dead: problems.append({'level':'ERROR','code':'THREAD_DEAD','message':'Expected background thread(s) not alive','detail':dead})
+    checks.append({'name':'background threads','ok':not dead,'detail':f"{sum(1 for x in threads if x.get('alive'))}/{len(threads)} alive"})
+
+    with HISTORY_WORKER_HEALTH_LOCK: workers=copy.deepcopy(HISTORY_WORKER_HEALTH)
+    unhealthy=[]
+    for name,st in workers.items():
+        hb=float(st.get('heartbeat') or 0); age=(now-hb) if hb else None
+        st['heartbeatAgeSeconds']=round(max(0,age),1) if age is not None else None
+        st['healthy']=bool((hb and age<240) or (not hb and now-SERVER_STARTED_AT<75))
+        if not st['healthy']: unhealthy.append(name)
+    if unhealthy: problems.append({'level':'ERROR','code':'WORKER_UNHEALTHY','message':'Worker heartbeat stale','detail':unhealthy})
+    checks.append({'name':'worker heartbeats','ok':not unhealthy,'detail':f"{len(workers)-len(unhealthy)}/{len(workers)} healthy"})
+
+    operator=_history_operator_snapshot(); operator_age=(now-float(operator.get('generatedAt') or 0)) if operator.get('generatedAt') else None
+    operator_ok=bool(operator.get('ready')) and not operator.get('error') and operator_age is not None and operator_age<45
+    if not operator_ok: problems.append({'level':'WARN','code':'OPERATOR_SNAPSHOT','message':'Operator telemetry snapshot is unavailable/stale','detail':{'ageSeconds':round(operator_age,1) if operator_age is not None else None,'error':operator.get('error','')}})
+    checks.append({'name':'operator snapshot','ok':operator_ok,'detail':f"age {round(operator_age,1)}s" if operator_age is not None else 'not ready'})
+
+    provider=_history_provider_status(); saturated=[]
+    for key,st in provider.items():
+        if int(st.get('waiting') or 0)>0 and int(st.get('active') or 0)>=int(st.get('limit') or 1): saturated.append(key)
+    if saturated: problems.append({'level':'INFO','code':'PROVIDER_QUEUE','message':'Provider lanes currently saturated','detail':saturated})
+
+    version_match=(not frontend_version) or str(frontend_version)==APP_VERSION
+    if not version_match: problems.insert(0,{'level':'ERROR','code':'VERSION_MISMATCH','message':f'Frontend {frontend_version} != backend {APP_VERSION}'})
+    checks.insert(0,{'name':'release handshake','ok':version_match,'detail':f'frontend {frontend_version or "?"} / backend {APP_VERSION}'})
+
+    base=MILESTONE_CONSOLE.snapshot(frontend_version=frontend_version,recent_limit=360)
+    latest=(base.get('playback') or {}).get('latest') or {}
+    invariant=str(latest.get('invariant') or 'OK')
+    if invariant.startswith('ERROR'):
+        problems.insert(0,{'level':'ERROR','code':'PLAYBACK_INVARIANT','message':invariant,'detail':latest.get('audible') or {}})
+    checks.append({'name':'playback ownership invariant','ok':not invariant.startswith('ERROR'),'detail':invariant})
+
+    slow=[]
+    for path,row in (base.get('api') or {}).items():
+        p95=row.get('p95Ms')
+        if isinstance(p95,(int,float)) and p95>=5000: slow.append({'path':path,'p95Ms':p95,'errors':row.get('errors',0)})
+    if slow: problems.append({'level':'WARN','code':'SLOW_API','message':'One or more API routes have p95 >= 5s','detail':slow[:12]})
+
+    recent_errors=[x for x in (base.get('recent') or []) if str(x.get('level') or '').upper()=='ERROR'][-20:]
+    if recent_errors: problems.append({'level':'ERROR','code':'RECENT_ERRORS','message':f'{len(recent_errors)} recent milestone error event(s)','detail':[{'at':x.get('at'),'category':x.get('category'),'message':x.get('message')} for x in recent_errors[-8:]]})
+
+    db_summary={}
+    try: db_summary=HISTORY_REPOSITORY.summary()
+    except Exception as exc:
+        problems.append({'level':'ERROR','code':'DB_SUMMARY','message':f'{type(exc).__name__}: {exc}'})
+    extra={
+        'release':{'backendVersion':APP_VERSION,'frontendVersion':str(frontend_version or ''),'versionMatch':version_match,'deploymentMode':DEPLOYMENT_MODE,'serverStartedAt':SERVER_STARTED_AT,'uptimeSeconds':int(max(0,now-SERVER_STARTED_AT))},
+        'checks':checks,'problems':problems,
+        'history':{'threads':threads,'workers':workers,'workMode':dict(HISTORY_WORK_MODE_STATE),'operatorSnapshot':{'ready':bool(operator.get('ready')),'ageSeconds':round(operator_age,1) if operator_age is not None else None,'generationMs':operator.get('generationMs',0),'error':operator.get('error','')},'greenPool':_green_pool_snapshot(now),'providerConcurrency':provider,'singleflight':_history_singleflight_status(),'databaseAudit':_history_database_audit_snapshot()},
+        'database':{'summary':db_summary},
+        'schedulers':{'media':MEDIA_WORK_SCHEDULER.snapshot(),'gameCenter':GAME_CENTER_WORK_SCHEDULER.snapshot()},
+        'mediaCache':_media_cache_summary(),
+    }
+    base['extra']=extra; base['problems']=problems; base['checks']=checks
+    error_count=sum(1 for p in problems if p.get('level')=='ERROR'); warn_count=sum(1 for p in problems if p.get('level')=='WARN')
+    base['overall']='ERROR' if error_count else ('WARN' if warn_count else 'HEALTHY')
+    base['problemCounts']={'errors':error_count,'warnings':warn_count,'info':sum(1 for p in problems if p.get('level')=='INFO')}
+    return base
+
 class Handler(SimpleHTTPRequestHandler):
+    def log_error(self, format, *args):
+        try: MILESTONE_CONSOLE.record('http','ERROR',format % args,{'path':getattr(self,'path','')})
+        except Exception: pass
+        return super().log_error(format,*args)
+
     def end_headers(self):
         origin=_cors_allowed_origin(self.headers.get("Origin"))
         if origin:
@@ -10358,8 +10508,31 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         parsed=urlparse(self.path)
+        self._sbb_request_path=parsed.path
+        self._sbb_request_started_perf=time.perf_counter()
         if parsed.path.startswith('/api/'):
             CLIENT_ACTIVITY_STATE['lastInteractive']=time.time()
+        if parsed.path == '/api/playback/telemetry':
+            try:
+                length=min(64000,int(self.headers.get('Content-Length') or 0))
+                body=json.loads(self.rfile.read(length).decode('utf-8') or '{}')
+                MILESTONE_CONSOLE.record_playback(body.get('event'),body.get('session') or {})
+                return send_json(self,{'ok':True,'version':APP_VERSION},200)
+            except Exception as exc:
+                MILESTONE_CONSOLE.record('playback','ERROR','telemetry ingest failed',{'error':f'{type(exc).__name__}: {exc}'})
+                return send_json(self,{'ok':False,'error':'PLAYBACK_TELEMETRY_ERROR','message':f'{type(exc).__name__}: {exc}'},400)
+        if parsed.path == '/api/milestone/client-event':
+            try:
+                length=min(96000,int(self.headers.get('Content-Length') or 0))
+                body=json.loads(self.rfile.read(length).decode('utf-8') or '{}')
+                MILESTONE_CONSOLE.record_client(body)
+                return send_json(self,{'ok':True,'version':APP_VERSION},200)
+            except Exception as exc:
+                MILESTONE_CONSOLE.record('milestone','ERROR','client-event ingest failed',{'error':f'{type(exc).__name__}: {exc}'})
+                return send_json(self,{'ok':False,'error':'MILESTONE_CLIENT_EVENT_ERROR','message':f'{type(exc).__name__}: {exc}'},400)
+        if parsed.path == '/api/milestone/reset':
+            MILESTONE_CONSOLE.reset()
+            return send_json(self,{'ok':True,'version':APP_VERSION},200)
         if parsed.path == '/api/settings/secrets':
             if CLOUD_MODE:
                 return send_json(self,{'ok':False,'error':'CLOUD_SECRETS_SERVER_MANAGED','message':'API credentials are managed on the cloud server and cannot be changed from the public web UI.'},403)
@@ -10526,6 +10699,8 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlparse(self.path)
+        self._sbb_request_path=parsed.path
+        self._sbb_request_started_perf=time.perf_counter()
         if parsed.path == '/api/media':
             CLIENT_ACTIVITY_STATE['lastMedia']=time.time()
         elif parsed.path.startswith('/api/'):
@@ -10540,6 +10715,16 @@ class Handler(SimpleHTTPRequestHandler):
                 media_qs=parse_qs(parsed.query); media_date=str((media_qs.get('date') or [''])[-1])[:10]
                 _touch_history_focus(media_date,seconds=120)
             except Exception: pass
+
+        if parsed.path == '/api/milestone/console':
+            try:
+                qs=parse_qs(parsed.query); frontend=str((qs.get('frontendVersion') or [''])[-1]); limit=int((qs.get('limit') or ['360'])[-1] or 360)
+                snapshot=_milestone_release_snapshot(frontend)
+                if limit < len(snapshot.get('recent') or []): snapshot['recent']=(snapshot.get('recent') or [])[-max(20,min(1000,limit)):]
+                return send_json(self,{'ok':True,**snapshot},200)
+            except Exception as exc:
+                MILESTONE_CONSOLE.record('milestone','ERROR','release console snapshot failed',{'error':f'{type(exc).__name__}: {exc}'})
+                return send_json(self,{'ok':False,'error':'MILESTONE_CONSOLE_ERROR','message':f'{type(exc).__name__}: {exc}'},500)
 
         if parsed.path.startswith("/api/soundtrack/tracks/"):
             return _serve_soundtrack_track(self, parsed.path)
@@ -10679,7 +10864,7 @@ class Handler(SimpleHTTPRequestHandler):
                     active={d:copy.deepcopy(st) for d,st in HISTORY_DISCOVERY_STATE.items() if st.get('running')}
                 with HISTORY_CONSOLE_LOCK:
                     lines=list(HISTORY_CONSOLE_LINES)[-limit:]
-                workers=copy.deepcopy(HISTORY_WORKER_HEALTH)
+                with HISTORY_WORKER_HEALTH_LOCK: workers=copy.deepcopy(HISTORY_WORKER_HEALTH)
                 for name,st in workers.items():
                     hb=float(st.get('heartbeat') or 0); lp=float(st.get('lastProgress') or 0)
                     st['heartbeatAgeSeconds']=int(max(0,now-hb)) if hb else None
@@ -10880,7 +11065,7 @@ class Handler(SimpleHTTPRequestHandler):
                 "persistentState": bool(STATE_DIR),
                 "rateLimit": {"remaining": RATE_LIMIT_STATE.get("remaining", ""), "limit": RATE_LIMIT_STATE.get("limit", ""), "limited": RATE_LIMIT_STATE.get("limited", False)},
                 "highlightlyRateLimited": RATE_LIMIT_STATE["limited"],
-                "phase": "V4.1.32 OPERATOR TELEMETRY + SILVER AUTHORITY + CHUNKED PLAYBACK",
+                "phase": f"V{APP_VERSION} MILESTONE 1 PLAYBACK + PLATFORM RELIABILITY",
                 "workMode":dict(HISTORY_WORK_MODE_STATE),
                 "highlightlyConfigured": bool(key),
                 "youtubeCooldownSeconds":max((row.get("cooldownSeconds",0) for row in YOUTUBE_GATEWAY.status().values()), default=0),
@@ -11207,7 +11392,7 @@ class Handler(SimpleHTTPRequestHandler):
                 flat.setdefault("leagueName",cfg["league"])
                 flat.setdefault("countryCode",cfg.get("countryCode",""))
             url=f'{cfg["base"]}{cfg["prefix"]}/{endpoint}?{urlencode(flat)}'
-            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":"SportsBigBoard/4.1.32"})
+            req=Request(url,headers={"x-rapidapi-key":key,"Accept":"application/json","User-Agent":f"SportsBigBoard/{APP_VERSION}"})
             cache_name=f"{sport_key}-{endpoint}-v2514" if sport_key in ("epl","mls") else f"{sport_key}-{endpoint}"
 
             # v1.9.1 quota control: proactively reuse a fresh server-side snapshot.
@@ -11341,7 +11526,7 @@ class Handler(SimpleHTTPRequestHandler):
             req = Request(url, headers={
                 "x-rapidapi-key": key,
                 "Accept": "application/json",
-                "User-Agent": "SportsBigBoard/4.1.32"
+                "User-Agent": f"SportsBigBoard/{APP_VERSION}"
             })
             try:
                 with urlopen(req, timeout=15) as resp:
@@ -11381,7 +11566,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT)
-    print("\nSports Big Board v4.1.32 — historical ribbon performance + catalog authority")
+    print(f"\nSports Big Board v{APP_VERSION} — Milestone 1: Playback & Platform Reliability")
     print(f"Bind: {BIND_HOST}:{PORT} • deployment: {DEPLOYMENT_MODE} • state: {STATE_DIR}")
     if not CLOUD_MODE: print(f"Open: http://localhost:{PORT}")
     print("Highlightly key:", "configured" if read_key() else "NOT CONFIGURED")

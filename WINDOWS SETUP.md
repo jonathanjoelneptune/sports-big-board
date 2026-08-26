@@ -1,4 +1,4 @@
-# Windows setup — Sports Big Board v4.1.32
+# Windows setup — Sports Big Board v4.2.0
 
 ## Normal launch
 
@@ -24,7 +24,7 @@ The first setup checks all three integrations:
 - YouTube Data API key
 - OpenAI API key
 
-Once stored, v4.1.32, v2.7, v3.0, etc. on that same Windows account reuse the file automatically. You should not need to paste keys again after each upgrade.
+Once stored, v4.2.0, v2.7, v3.0, etc. on that same Windows account reuse the file automatically. You should not need to paste keys again after each upgrade.
 
 If an older Sports Big Board release has a recognized saved key, setup migrates it automatically where possible.
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Sports Big Board v4.1.32 private soundtrack uploader.
+# Sports Big Board v4.2.0 private soundtrack uploader.
 # Accepts the six generated soundtrack ZIPs, one combined pool ZIP, or an already
 # extracted Sports-Big-Board-Soundtrack-Pool directory. Public Access Prevention
 # may remain enforced: the VM gets private objectViewer access and the browser
@@ -67,7 +67,7 @@ if ! gcloud storage buckets describe "gs://$BUCKET" >/dev/null 2>&1; then
   gcloud storage buckets create "gs://$BUCKET" --project="$PROJECT_ID" --location="$REGION" --uniform-bucket-level-access
 fi
 
-# Public Access Prevention is fully compatible with v4.1.32 and should remain
+# Public Access Prevention is fully compatible with v4.2.0 and should remain
 # enforced when required by organization/project policy.
 VM_SERVICE_ACCOUNT="$(gcloud compute instances describe "$VM_NAME" --zone "$ZONE" --project "$PROJECT_ID" --format='value(serviceAccounts.email)' | head -1)"
 [[ -n "$VM_SERVICE_ACCOUNT" ]] || { echo "Could not determine the $VM_NAME service account." >&2; exit 1; }
@@ -82,7 +82,7 @@ if gcloud iam service-accounts add-iam-policy-binding "$VM_SERVICE_ACCOUNT" --pr
     --member="serviceAccount:$VM_SERVICE_ACCOUNT" --role=roles/iam.serviceAccountTokenCreator >/dev/null 2>&1; then
   echo "Signed-URL capability enabled for $VM_SERVICE_ACCOUNT."
 else
-  echo "WARNING: Could not grant signBlob to the VM service account; v4.1.32 will use private proxy fallback." >&2
+  echo "WARNING: Could not grant signBlob to the VM service account; v4.2.0 will use private proxy fallback." >&2
 fi
 
 gcloud services enable iamcredentials.googleapis.com storage.googleapis.com --project "$PROJECT_ID" >/dev/null
@@ -107,4 +107,4 @@ echo "Sports Big Board private soundtrack uploaded."
 echo "Bucket: gs://$BUCKET"
 echo "Tracks: $(gcloud storage ls "gs://$BUCKET/tracks/" | wc -l | tr -d ' ')"
 echo "Public bucket access: NOT REQUIRED"
-echo "v4.1.32 browser transport: backend -> signed GCS redirect -> private proxy fallback"
+echo "v4.2.0 browser transport: backend -> signed GCS redirect -> private proxy fallback"

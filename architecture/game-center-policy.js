@@ -1,4 +1,4 @@
-/* Sports Big Board v4.1.32 — sport-aware Game Center section policy. */
+/* Sports Big Board v4.2.0 — sport-aware Game Center section policy. */
 (() => {
   const clean=v=>String(v??'').trim();
   function categoryFromTitle(title,sportId=''){

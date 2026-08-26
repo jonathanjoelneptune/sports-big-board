@@ -422,7 +422,8 @@ def backup_database(source_path, backup_path=None):
     if backup_path is None:
         stamp=datetime.utcnow().strftime("%Y%m%dT%H%M%SZ"); backup_path=source.with_name(f"{source.stem}-pre-v4-{stamp}{source.suffix}")
     backup=Path(backup_path); backup.parent.mkdir(parents=True,exist_ok=True)
-    with sqlite3.connect(source) as src, sqlite3.connect(backup) as dst: src.backup(dst)
+    with closing(sqlite3.connect(source)) as src, closing(sqlite3.connect(backup)) as dst:
+        src.backup(dst)
     return backup
 
 

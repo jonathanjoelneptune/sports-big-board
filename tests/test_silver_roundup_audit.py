@@ -1,4 +1,5 @@
 import tempfile
+from contextlib import closing
 import unittest
 from pathlib import Path
 
@@ -24,7 +25,7 @@ class SilverRoundupAuditTests(unittest.TestCase):
         # Inject a pre-v5 legacy smear so the audit can still surface/forensically
         # explain bad relationship state even though put_collection_media now prevents it.
         now=1.0; duplicate_key=repo._collection_key('DAY_LEAGUE','NBA','2026-08-21','DAILY_RECAP')
-        with repo._lock, repo._connect() as conn:
+        with repo._lock, closing(repo._connect()) as conn:
             conn.execute("INSERT INTO history_collection(collection_key,scope,league,period_key,collection_kind,title,metadata_json,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)",
                 (duplicate_key,'DAY_LEAGUE','NBA','2026-08-21','DAILY_RECAP','legacy duplicate','{}',now,now))
             conn.execute("INSERT INTO history_collection_media(collection_key,asset_key,association_confidence,association_method,association_evidence,classifier_version,rank_hint,first_associated_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)",
@@ -39,7 +40,7 @@ class SilverRoundupAuditTests(unittest.TestCase):
         }
         repo.put_source_media([leak],league='NBA',date='2026-08-20')
         leak_asset=repo.asset_key_for(leak); day20_key=repo._collection_key('DAY_LEAGUE','NBA','2026-08-20','DAILY_RECAP')
-        with repo._lock, repo._connect() as conn:
+        with repo._lock, closing(repo._connect()) as conn:
             conn.execute("UPDATE history_source_media SET scope='GAME' WHERE asset_key=?",(leak_asset,))
             conn.execute("INSERT INTO history_collection_media(collection_key,asset_key,association_confidence,association_method,association_evidence,classifier_version,rank_hint,first_associated_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)",
                 (day20_key,leak_asset,0.99,'LEGACY_TEST','game leak',4,1,now,now))
@@ -89,7 +90,7 @@ class SilverRoundupAuditTests(unittest.TestCase):
         repo.put_source_media([weekly],league='NBA',date='2026-04-03')
         repo.put_source_media([daily],league='MLB',date='2026-08-23')
         weekly_key=repo.asset_key_for(weekly); daily_key=repo.asset_key_for(daily)
-        with repo._lock, repo._connect() as conn:
+        with repo._lock, closing(repo._connect()) as conn:
             legacy=[
                 ('WEEK_LEAGUE:NBA:2026:W24:TOP_PLAYS','WEEK_LEAGUE','NBA','2026:W24','TOP_PLAYS',weekly_key),
                 ('DAY_LEAGUE:MLB:2026-08-22:DAILY_RECAP','DAY_LEAGUE','MLB','2026-08-22','DAILY_RECAP',daily_key),

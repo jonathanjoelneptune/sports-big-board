@@ -1,18 +1,28 @@
-# Sports Big Board v4.1.32
+# Sports Big Board v4.2.0
 
-> v4.1.32 is the **Clip-Scoped Soundtrack Simplification** release. It deliberately keeps the music model simple: one browser `Audio` element, one soundtrack song assigned to each highlight clip, a new song when the video clip changes, and automatic song advance only when a long highlight outlasts its current song.
+> v4.2.0 is the **Milestone 1 — Playback & Platform Reliability** release. It is intentionally a platform-hardening release: one observable playback-session authority, deterministic media/audio ownership checks, measurable playback performance, coordinated background work, bounded database/operator telemetry, release-generation enforcement, and a dedicated Milestone Release Console with repeatable on-site stress procedures.
 
-## v4.1.32 — clip-scoped soundtrack simplification
+## v4.2.0 — Milestone 1: Playback & Platform Reliability
 
-- **Truthful launch state:** before the red `START SPORTS BIG BOARD` action, soundtrack is genuinely OFF and video warmup cannot start hidden music. Launch explicitly turns soundtrack ON and the UI immediately reflects that state.
-- **One song per clip:** a new highlight media identity selects exactly one new soundtrack song. `starting / buffering / playing` changes for that same clip cannot select extra songs.
-- **Long-highlight continuation:** if the soundtrack song ends while the same video is still playing, the next shuffle-bag song begins automatically.
-- **Video pause/resume coupling:** pausing the highlight pauses its assigned soundtrack song at the same position; resuming the highlight resumes that song.
-- **Music control authority:** the soundtrack play/pause button controls the exact current clip song. If music is OFF, later clip changes remain silent until the user turns music back ON.
-- **Single audio invariant:** exactly one soundtrack `Audio` element exists. There is no crossfade player and no preload audio player.
-- **No-repeat library:** the 113-track shuffle bag remains persistent so the overall library still avoids repeats until the cycle is exhausted.
-- **Dev curation:** Player Debug continues to show the exact soundtrack title, tier, and track ID for later pruning.
-- **Private Cloud Storage audio boundary:** the existing private GCS/signed-URL transport remains unchanged; no soundtrack re-upload or catalog rebuild is required.
+- **Authoritative Playback Session:** `architecture/playback-session.js` owns the canonical selected event/media/clip, transport, active slot, state transitions, first-frame timing, stalls, failures, source URL, and audible-slot invariant. The existing provider adapters still execute transport-specific commands, but diagnostics, Dev Mode, milestone validation, and downstream consumers now read one session truth.
+- **Deterministic ownership diagnostics:** A/B video slots and the site soundtrack report audible ownership into the Playback Session. Two simultaneously audible video slots are an explicit invariant error instead of a silent playback condition. Player Debug includes the exact external video source link so suspect source audio can be checked outside Sports Big Board.
+- **Playback performance telemetry:** Selection-to-first-frame time, stall count/duration, failures, transport, slot, cache path and source are recorded and summarized with p50/p95/max samples. Slow/failing API paths are also tracked by the backend milestone ledger.
+- **Database/operator isolation retained and observed:** the SQL-paged Historical Database Audit, query-only WAL readers, compact historical ribbon, cached operator snapshot, Silver normalized authority, and chunked native-video cache remain the interactive read path. 4.2 surfaces their latency/age/error state in one release-health view so regressions cannot remain silent.
+- **Coordinated media work:** media-prewarm/full-cache and Game Center work use keyed priority schedulers with observable de-duplication, supersession and queue/run timing. Existing historical durable claims, provider semaphores and singleflight protections remain in force and are exposed in the Milestone Console.
+- **Milestone Release Console:** Dev Mode now has a dedicated release-health console with frontend/backend version handshake, playback session, first-frame/stall metrics, audio/video ownership, workers, DB/operator snapshot age, schedulers, media cache, API latency, recent warnings/errors, browser exceptions, unhandled promise rejections and background-thread failures.
+- **Run Dev Stress Test:** the console can exercise the deployed site through official test hooks: release handshake, playback pause/resume/clip changes, historical reads, concurrent operator load, resource-mode transitions, Game Center, soundtrack ownership and browser responsiveness. Every step records PASS/WARN/FAIL/SKIP plus latency and state, and the runner attempts to restore the user's original date/mode/drawer/soundtrack/playback state afterward.
+- **Repeatable Milestone Test Procedures:** each stress-test area can be run independently and can also receive manual PASS/FAIL observations. `COPY FULL LOG` / `SAVE TXT` exports the complete milestone evidence for post-test review.
+- **No silent frontend failures:** `window.error`, `unhandledrejection`, relevant SBB console warnings/errors, browser online/offline transitions and browser heartbeats are forwarded into the bounded backend milestone ledger. Backend uncaught thread exceptions, HTTP 5xx responses and >=5 s API calls are recorded as explicit events.
+- **Release/version hardening:** `VERSION` is the backend source of truth; CI verifies every cache-busted local JS/CSS generation, core-model version and server derivation. Deployment refuses to publish Pages until the public backend reports the same release, then runs a post-Pages production smoke test against `/api/status` and `/api/milestone/console`.
+- **No catalog rebuild required:** v4.2.0 preserves the existing normalized SQLite catalog, soundtrack bucket, discovery progress, source ledgers and worker state.
+
+### Recommended 4.2 acceptance workflow
+
+1. Deploy v4.2.0 and confirm the GitHub `production-smoke` job passes.
+2. Use Sports Big Board normally for a while: switch dates, leagues, recap tiers, Game Center, playback controls and resource modes.
+3. Open **Dev → Milestone Release Console** and run **RUN DEV STRESS TEST**.
+4. Run any individual Milestone Test Procedure again if a particular area deserves more exercise.
+5. Use **COPY FULL LOG** or **SAVE TXT** and send the resulting log for milestone review.
 
 ## v4.1.26 — operator telemetry, Silver authority, and playback smoothing
 

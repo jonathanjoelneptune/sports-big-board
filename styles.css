@@ -203,7 +203,7 @@
 
 /* v1.7.8 — playback-provider diagnostics */
 .playback-debug{margin-top:12px;border:1px solid #26323d;border-radius:10px;background:#0a0f14;padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:7px 12px;font-size:10px}
-.debug-head{grid-column:1/-1;display:flex;justify-content:space-between;color:#d8e0e8}.playback-debug>div:not(.debug-head){display:grid;gap:2px;min-width:0}.playback-debug span{color:#7f8b96;font-size:8px;font-weight:900;letter-spacing:.06em}.playback-debug b{font-weight:750;overflow-wrap:anywhere}.playback-debug i{font-style:normal}.debug-source{grid-column:1/-1}
+.debug-head{grid-column:1/-1;display:flex;justify-content:space-between;color:#d8e0e8}.playback-debug>div:not(.debug-head){display:grid;gap:2px;min-width:0}.playback-debug span{color:#7f8b96;font-size:8px;font-weight:900;letter-spacing:.06em}.playback-debug b{font-weight:750;overflow-wrap:anywhere}.playback-debug i{font-style:normal}.debug-source{grid-column:1/-1}.debug-source-link{color:#8fd3ff;text-decoration:none;font-weight:850}.debug-source-link:hover{text-decoration:underline}#diagInvariant[data-error="1"]{color:#ff6f61}
 @media(max-width:760px){.playback-debug{grid-template-columns:1fr 1fr}.queue-panel{min-height:520px}}
 
 /* v1.7.9: real native playback surfaces for MLB/direct-video adapters. */
@@ -2239,7 +2239,7 @@ body.sbb-fixed-controls .top-nav-header .big-board-fullscreen-btn{
 /* v2.5.25 hotfix: completed-game recap colors are invalid on live cards. */
 .score-card .score-media-strip{pointer-events:none}
 
-/* v4.1.32 — optional Game Center / Up Next drawer ------------------ */
+/* v4.2.0 — optional Game Center / Up Next drawer ------------------ */
 :root{--sbb-info-drawer-top:110px}
 .layout{position:relative!important;grid-template-columns:190px minmax(0,1fr)!important}
 .stage-card{grid-column:auto!important}
@@ -2338,14 +2338,14 @@ body.broadcast-mode .drawer-queue-panel .feed-note{display:none!important}
   .drawer-launch-btn{padding:8px 9px!important;font-size:9px!important}
 }
 .gc-basic-overview{padding:22px 16px;display:grid;gap:6px;text-align:center}.gc-basic-overview strong{font-size:18px}.gc-basic-overview span{font-size:11px;color:#a9bbc8}.gc-basic-overview small{font-size:9px;color:#657d8e}
-/* v4.1.32 final grid ownership: the secondary drawer must never reserve a third column. */
+/* v4.2.0 final grid ownership: the secondary drawer must never reserve a third column. */
 body.landscape-mode .layout,body.sbb-landscape .layout{grid-template-columns:190px minmax(0,1fr)!important}
 @media(max-width:1050px) and (min-width:761px){body.landscape-mode .layout,body.sbb-landscape .layout{grid-template-columns:70px minmax(0,1fr)!important}}
 body.portrait-mode .layout,body.sbb-portrait .layout{grid-template-columns:1fr!important}
 
 
-/* v4.1.32 — Game Center layout + latency hardening ------------------- */
-/* The placeholder and hydrated content are mutually exclusive. v4.1.32 added
+/* v4.2.0 — Game Center layout + latency hardening ------------------- */
+/* The placeholder and hydrated content are mutually exclusive. v4.2.0 added
    .hidden in JS but had no display rule for these two containers. */
 .game-center-empty.hidden,.game-center-content.hidden{display:none!important}
 
@@ -2389,7 +2389,7 @@ body.landscape-mode .stage-card,body.sbb-landscape .stage-card{
   .drawer-queue-panel .queue-list{overflow:visible!important;max-height:none!important}
 }
 
-/* v4.1.32 — integrated below-video Game Center + sticky video --------------- */
+/* v4.2.0 — integrated below-video Game Center + sticky video --------------- */
 .stage-card{display:block!important;overflow:visible!important;min-width:0!important}
 .stage-card>.player-topbar,.stage-card>.lower-third{position:relative;z-index:1}
 .stage-card>.stage{
@@ -2412,7 +2412,7 @@ body.landscape-mode .stage-card,body.sbb-landscape .stage-card{
 .drawer-queue-panel{height:auto!important;max-height:none!important;overflow:visible!important}
 .drawer-queue-panel .queue-list{overflow:visible!important;max-height:none!important}
 
-/* Keep Video Visible is presentation-only. v4.1.32 uses a fixed stage after
+/* Keep Video Visible is presentation-only. v4.2.0 uses a fixed stage after
    the scroll threshold instead of CSS sticky, which is unreliable in Android
    Chromium when the historical shell changes overflow modes. JS preserves the
    exact document-flow footprint with this placeholder. */
@@ -2457,7 +2457,7 @@ body.sbb-stage-sticky-active .stage-card>.stage{
   .info-drawer{position:static!important;inset:auto!important;width:100%!important;height:auto!important;max-height:none!important;margin-top:8px!important;box-shadow:none!important}
   .drawer-pane{overflow:visible!important}
 }
-/* v4.1.32 — deterministic shrink runway.
+/* v4.2.0 — deterministic shrink runway.
    JS changes only the fixed player + in-flow placeholder height. Game Center is
    never translated independently, so its flow edge cannot slide under the video
    while the shrink phase is active. Once minimum size is reached the Game Center
@@ -2475,7 +2475,7 @@ body.sbb-stage-minimized .gc-section-tabs{
   body.sbb-stage-sticky-active .stage-card>.stage{max-width:calc(100vw - 16px)!important;}
 }
 
-/* v4.1.32 coordinated shrink runway refinement.
+/* v4.2.0 coordinated shrink runway refinement.
    During the shrink phase the compact footer is removed from flow so the Game
    Center begins immediately below the visible video. The placeholder math in
    player-visibility.js then keeps that edge attached while the video shrinks.
@@ -2486,7 +2486,7 @@ body.sbb-stage-minimized .info-drawer-head{position:relative!important;top:auto!
 body.sbb-stage-minimized .gc-section-tabs{position:sticky!important;top:0!important;z-index:2!important}
 
 
-/* v4.1.32 — minimum-player scroll handoff.
+/* v4.2.0 — minimum-player scroll handoff.
    At minimum size the document/app-shell stops advancing. The full information
    surface is fixed directly below the player and its active pane becomes the
    scroll container. This prevents Game Center from disappearing underneath the
@@ -2521,7 +2521,7 @@ body.sbb-gc-scroll-locked .gc-section-tabs{position:sticky!important;top:0!impor
 body.sbb-gc-scroll-locked .stage-card>.player-footer{display:none!important}
 #app-shell:fullscreen body.sbb-gc-scroll-locked{overflow:hidden!important}
 
-/* v4.1.32 — bounded sticky workspace. Never changes document/body overflow.
+/* v4.2.0 — bounded sticky workspace. Never changes document/body overflow.
    At minimum size the complete information surface is fixed below the player and
    ONLY the active pane scrolls. This avoids Android Chromium's scroll reset when
    overflow:hidden is toggled on the root. */
@@ -2550,7 +2550,7 @@ body.sbb-gc-scroll-locked .drawer-pane:not(.hidden){
 body.sbb-gc-scroll-locked .game-center-content{min-height:max-content!important}
 body.sbb-gc-scroll-locked .gc-section-tabs{position:sticky!important;top:0!important;z-index:5!important}
 
-/* v4.1.32 compact workspace chrome hardening.
+/* v4.2.0 compact workspace chrome hardening.
    Keep the topbar's layout box so the runway geometry never jumps, but remove its
    visual/interactive chrome while the compact video + Game Center workspace owns
    the viewport. */
@@ -2560,7 +2560,7 @@ body.sbb-stage-sticky-active .stage-card>.player-topbar{
   pointer-events:none!important;
 }
 
-/* v4.1.32 — compact sticky Now Playing + transport companion.
+/* v4.2.0 — compact sticky Now Playing + transport companion.
    The normal topbar stays in flow (hidden) so the original runway geometry cannot
    jump. player-visibility.js mirrors only presentation state into this attached
    strip; the proxy buttons click the original transport controls and never own
@@ -2647,7 +2647,7 @@ body.sbb-stage-sticky-active .stage-card>.player-topbar{
   .sbb-compact-play{width:29px!important;height:29px!important;min-width:29px!important}
 }
 
-/* v4.1.32 — deliberate launch screen ------------------------------------ */
+/* v4.2.0 — deliberate launch screen ------------------------------------ */
 .sbb-launch-screen{
   position:fixed;inset:0;z-index:90000;display:grid;place-items:center;
   padding:max(22px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(22px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
@@ -2684,7 +2684,7 @@ body.sbb-stage-sticky-active .stage-card>.player-topbar{
   .sbb-launch-card{padding:10px 24px}.sbb-launch-rule{margin:13px 0 12px}.sbb-launch-card p{margin:9px 0 15px}.sbb-launch-card>small{margin-top:8px}
 }
 
-/* v4.1.32 — Game Center is an inset continuation of the page, not glass. */
+/* v4.2.0 — Game Center is an inset continuation of the page, not glass. */
 .stage-card{background:#070d12!important;border-color:#111d25!important}
 .info-drawer{
   background:#070d12!important;
@@ -2740,7 +2740,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .info-drawer{border-radius:10px!important}
 }
 
-/* v4.1.32 — PC is a true video + Game Center workspace ------------------
+/* v4.2.0 — PC is a true video + Game Center workspace ------------------
    On a wide fine-pointer screen the Game Center is no longer a drawer laid over
    the broadcast. It is the second column of the stage itself. The 16:9 player
    therefore scales to the remaining left-column width and stays completely in
@@ -2856,7 +2856,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   body.sbb-game-center-side .keyboard-help{display:none!important}
 }
 
-/* v4.1.32 — dedicated Yesterday / Today ribbon controls -----------------
+/* v4.2.0 — dedicated Yesterday / Today ribbon controls -----------------
    The day buttons own real columns instead of floating above the score track, so
    the right controls can never cover the last game. Either arrow loops the two
    faces forever; the center label always states the face currently being shown. */
@@ -2921,7 +2921,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 .score-empty-day strong{font-size:10px!important;font-weight:650!important;color:#a9bac5!important;text-transform:uppercase!important;letter-spacing:.06em!important}
 .score-empty-day span{font-size:10px!important;font-weight:450!important}
 
-/* v4.1.32 — desktop readability without turning the UI into bold display type. */
+/* v4.2.0 — desktop readability without turning the UI into bold display type. */
 @media (min-width:1100px) and (pointer:fine){
   .top-nav-header{min-height:46px!important;padding:5px 10px!important}
   .top-nav-header .brand{min-width:166px!important;height:36px!important}
@@ -2997,8 +2997,8 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 }
 
 
-/* v4.1.32 — score ribbon recovery ----------------------------------------
-   v4.1.32 nested the horizontal score track inside another grid to make room
+/* v4.2.0 — score ribbon recovery ----------------------------------------
+   v4.2.0 nested the horizontal score track inside another grid to make room
    for the day badge. On desktop that collapsed the team rows and left only the
    MLB/TODAY header visible. Return the proven direct flex track, reserve a slim
    top strip for the day indicator, and keep real scroll padding at both ends so
@@ -3067,7 +3067,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .score-day-arrow{font-size:9px!important}
 }
 
-/* v4.1.32 friendly loading states */
+/* v4.2.0 friendly loading states */
 @keyframes sbb-loading-spin{to{transform:rotate(360deg)}}
 .sbb-loading-spinner{
   display:inline-block;width:18px;height:18px;flex:0 0 18px;border-radius:50%;
@@ -3091,7 +3091,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .sbb-loading-spinner{width:16px;height:16px;flex-basis:16px}
 }
 
-/* v4.1.32 — player-team navigation + Game Center team identity */
+/* v4.2.0 — player-team navigation + Game Center team identity */
 .gc-team-copy{display:grid;gap:2px;min-width:0;align-items:center}
 .gc-team-away .gc-team-copy{text-align:left}
 .gc-team-home .gc-team-copy{text-align:right}
@@ -3128,7 +3128,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 .gc-mini-logo.hidden,.gc-mini-logo-fallback.hidden{display:none!important}
 .gc-mini-logo-fallback{font-size:6.5px;font-weight:700;color:#9aabb7}
 
-/* v4.1.32 — leave real vertical room for the media-availability rail.
+/* v4.2.0 — leave real vertical room for the media-availability rail.
    The larger score cards introduced in the readability pass were taller than
    the score track's usable content box, so the last 2–5 px were clipped. */
 .score-ribbon{height:96px!important;min-height:96px!important}
@@ -3150,7 +3150,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .score-day-pager{top:48px!important}
 }
 
-/* v4.1.32 — score-card geometry owns enough room for its footer controls.
+/* v4.2.0 — score-card geometry owns enough room for its footer controls.
    The footer is a real three-column row, so FINAL, the media label and the play
    button can never occupy the same pixels. The availability rail has its own
    bottom clearance instead of being clipped by the ribbon viewport. */
@@ -3238,7 +3238,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .score-day-pager{top:53px!important;height:60px!important}
 }
 
-/* v4.1.32 final ribbon polish — make the media action read as a compact control,
+/* v4.2.0 final ribbon polish — make the media action read as a compact control,
    not text competing with the score. Slightly wider cards also give the larger
    typography room to breathe without sacrificing the horizontal carousel. */
 .score-ribbon .score-card{
@@ -3285,7 +3285,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 }
 
 
-/* v4.1.32 — unmistakable current-game focus.
+/* v4.2.0 — unmistakable current-game focus.
    This is independent of the bottom media-tier rail: cyan means NOW WATCHING;
    gold/green/purple/blue still describe the available media package. */
 .score-card.now-playing-game{
@@ -3333,7 +3333,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .score-card.now-playing-game .score-card-top small::after{font-size:7px;padding:1px 4px}
 }
 
-/* v4.1.32 — historical Date Browser -----------------------------------
+/* v4.2.0 — historical Date Browser -----------------------------------
    The date is now a deliberate browsing context. Previous/next controls move one
    calendar day at a time, the center date opens the native picker, and Return to
    Today is the explicit full-session escape hatch back to live programming. */
@@ -3458,7 +3458,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .return-today-short{display:inline}
 }
 
-/* v4.1.32 — persistent top date control */
+/* v4.2.0 — persistent top date control */
 .top-date-controls{
   display:flex!important;
   align-items:center!important;
@@ -3511,7 +3511,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   text-align:center!important;
 }
 
-/* v4.1.32 — desktop score-ribbon browsing + full-surface date arrows */
+/* v4.2.0 — desktop score-ribbon browsing + full-surface date arrows */
 @media (min-width:761px) and (pointer:fine){
   .score-ribbon>.score-cells{cursor:grab!important}
   .score-ribbon>.score-cells.is-dragging{cursor:grabbing!important;user-select:none!important}
@@ -3578,11 +3578,11 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
   .score-ribbon>.score-cells{padding-left:38px!important;padding-right:38px!important;scroll-padding-left:38px!important;scroll-padding-right:38px!important}
 }
 
-/* v4.1.32 Historical Database Audit */
+/* v4.2.0 Historical Database Audit */
 .history-audit-launch-card{gap:12px}.history-audit-launch-copy{display:flex;flex-direction:column;gap:5px}.history-audit-launch-copy strong{font-size:14px}.history-audit-launch-copy small{color:var(--muted,#9aa4b2);line-height:1.45}.audit-open{overflow:hidden}.history-audit-modal{position:fixed;inset:0;z-index:10000;display:flex;align-items:stretch;justify-content:center;padding:18px}.history-audit-modal.hidden{display:none}.history-audit-backdrop{position:absolute;inset:0;background:rgba(3,7,18,.78);backdrop-filter:blur(8px)}.history-audit-shell{position:relative;z-index:1;width:min(1800px,100%);height:calc(100vh - 36px);background:#090d14;border:1px solid #28313e;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.55);display:flex;flex-direction:column;overflow:hidden}.history-audit-header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:18px 20px 14px;border-bottom:1px solid #222b36;background:linear-gradient(180deg,#101722,#0b1018)}.history-audit-header small{font-size:10px;letter-spacing:.16em;color:#7d8ba0}.history-audit-header h2{margin:3px 0 4px;font-size:24px}.history-audit-header p{margin:0;color:#9da9b9;font-size:12px}.history-audit-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.history-audit-actions button,.history-audit-footer button{border:1px solid #334155;background:#111827;color:#e5edf8;border-radius:9px;padding:9px 12px;font-size:11px;font-weight:800;letter-spacing:.04em;cursor:pointer}.history-audit-actions button:hover,.history-audit-footer button:hover:not(:disabled){background:#1d2837;border-color:#52647a}.history-audit-actions .audit-close{font-size:22px;line-height:20px;padding:7px 11px}.history-audit-summary{display:grid;grid-template-columns:repeat(7,minmax(95px,1fr));gap:8px;padding:12px 18px 8px}.history-audit-summary>div{background:#0f1621;border:1px solid #25303d;border-radius:10px;padding:9px 11px;display:flex;justify-content:space-between;align-items:center;gap:8px}.history-audit-summary span{font-size:9px;font-weight:800;letter-spacing:.08em;color:#8593a6}.history-audit-summary strong{font-size:18px}.history-audit-summary .gold{border-color:#7b6117}.history-audit-summary .green{border-color:#1e6a42}.history-audit-summary .purple{border-color:#5b3a8f}.history-audit-summary .blue{border-color:#285f83}.history-audit-best-summary{padding:0 20px 9px;color:#8d9bad;font-size:11px}.history-audit-filters{display:grid;grid-template-columns:145px 145px 115px 125px 160px minmax(220px,1fr);gap:9px;padding:10px 18px 12px;border-top:1px solid #18202a;border-bottom:1px solid #222b36}.history-audit-filters label{display:flex;flex-direction:column;gap:4px}.history-audit-filters label>span{font-size:9px;font-weight:800;letter-spacing:.08em;color:#7d899a}.history-audit-filters input,.history-audit-filters select{height:34px;background:#0d131c;border:1px solid #2c3745;border-radius:8px;color:#e7edf6;padding:0 9px;font:inherit;font-size:12px}.history-audit-table-wrap{position:relative;flex:1;overflow:auto}.history-audit-loading{position:sticky;top:0;z-index:5;background:#152131;color:#dce9f8;padding:7px 12px;text-align:center;font-size:11px;font-weight:700}.history-audit-table{width:100%;min-width:1500px;border-collapse:separate;border-spacing:0;font-size:11px}.history-audit-table thead{position:sticky;top:0;z-index:4}.history-audit-table th{background:#111925;color:#8997aa;text-align:left;font-size:9px;letter-spacing:.08em;padding:9px 8px;border-bottom:1px solid #334155;border-right:1px solid #202a36;white-space:nowrap}.history-audit-table th.gold{color:#f2ca58}.history-audit-table th.green{color:#68d391}.history-audit-table th.purple{color:#c4a7ff}.history-audit-table th.blue{color:#6bc7ff}.history-audit-table td{vertical-align:top;padding:8px;border-bottom:1px solid #1b2430;border-right:1px solid #18212c;background:#0b1018}.history-audit-table tbody tr:hover td{background:#101823}.history-audit-date{white-space:nowrap;color:#cbd5e1}.audit-league{display:inline-flex;padding:3px 6px;border-radius:6px;background:#1e293b;font-weight:800}.audit-game{min-width:170px}.audit-game strong{display:block;font-size:12px}.audit-game small{display:block;margin-top:3px;color:#66758a;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.audit-tier-cell{min-width:210px}.audit-tier-cell.gold{box-shadow:inset 3px 0 #a37c16}.audit-tier-cell.green{box-shadow:inset 3px 0 #238654}.audit-tier-cell.purple{box-shadow:inset 3px 0 #7143b2}.audit-tier-cell.blue{box-shadow:inset 3px 0 #2f80b3}.audit-media-link{display:flex;flex-direction:column;gap:2px;padding:5px 6px;margin-bottom:5px;border-radius:6px;background:#121b27;border:1px solid #253244;color:#dce6f2;text-decoration:none;max-width:260px}.audit-media-link:hover{border-color:#5a6d86}.audit-media-link strong{font-size:10px;line-height:1.25;white-space:normal}.audit-media-link small{font-size:9px;color:#8493a6}.audit-media-link.candidate{opacity:.62}.audit-media-link.failed{opacity:.45;text-decoration:line-through}.audit-more{display:block;font-size:9px;color:#7d8da2}.audit-empty{color:#4f5d70}.audit-best{display:inline-flex;padding:5px 7px;border-radius:7px;font-weight:900;font-size:9px}.tier-gold{background:#5b4610;color:#ffdf73}.tier-green{background:#123e2a;color:#82e4ac}.tier-extended{background:#362052;color:#d1b3ff}.tier-blue{background:#123851;color:#83d4ff}.tier-none{background:#252c36;color:#8290a1}.audit-status{min-width:145px}.audit-status strong{display:block;font-size:9px}.audit-status small{display:block;color:#69798d;margin-top:3px}.audit-no-results{text-align:center!important;padding:30px!important;color:#78879a}.history-audit-footer{display:flex;align-items:center;justify-content:center;gap:15px;padding:10px;border-top:1px solid #28313e;background:#0d131c}.history-audit-footer span{min-width:180px;text-align:center;color:#8f9db0;font-size:11px}.history-audit-footer button:disabled{opacity:.35;cursor:not-allowed}
 @media(max-width:900px){.history-audit-modal{padding:0}.history-audit-shell{height:100vh;border-radius:0;border:0}.history-audit-header{padding:12px;flex-direction:column}.history-audit-actions{width:100%;justify-content:flex-start}.history-audit-summary{grid-template-columns:repeat(2,1fr);padding:10px}.history-audit-filters{grid-template-columns:repeat(2,minmax(0,1fr));padding:10px}.history-audit-filters .audit-search{grid-column:1/-1}.history-audit-table{min-width:1350px}.history-audit-header h2{font-size:20px}}
 
-/* v4.1.32 — historical audit status projection --------------------------------
+/* v4.2.0 — historical audit status projection --------------------------------
    Raw UNKNOWN is migration/bookkeeping state, not user-facing catalog truth. */
 .history-audit-status-summary{padding-top:0;color:#718096}
 .audit-status strong{display:inline-flex;align-items:center;border-radius:6px;padding:4px 6px;background:#202938;color:#d9e4f2}
@@ -3596,14 +3596,14 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 .audit-status.status-candidate-only strong{background:#26354b;color:#afcdf5}
 .audit-status.status-no-media-found strong{background:#2b313a;color:#aeb9c7}
 
-/* v4.1.32 — live historical search console */
+/* v4.2.0 — live historical search console */
 .history-search-console{margin:2px 18px 10px;border:1px solid #26384b;border-radius:10px;background:#05090e;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(69,222,145,.03)}
 .history-search-console-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 10px;border-bottom:1px solid #1d2c39;background:#081019}.history-search-console-head>div{display:flex;align-items:center;gap:10px}.history-search-console-head span{font:800 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;color:#66d9a3}.history-search-console-head strong{font:800 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#d8ffe9}.history-search-console-head small{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:#637a8e}.history-search-console-head.mismatch{background:#211010;border-bottom-color:#5c2a2a}.history-search-console-head.mismatch strong{color:#ffadad}.history-search-console-head.problem strong{color:#ffd27a}
 .history-search-console-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:#15212c;border-bottom:1px solid #1d2c39}.history-search-console-stats>div{background:#081019;padding:7px 9px;min-width:0}.history-search-console-stats span{display:block;font:800 8px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;color:#65798b}.history-search-console-stats strong{display:block;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 10px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#d4e2ee}.history-search-console-problems{padding:7px 10px;background:#241714;border-bottom:1px solid #523128;color:#ffbd9e;font:10px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace}.history-search-console-problems.hidden{display:none}.history-search-console-output{height:154px;overflow:auto;margin:0;padding:9px 10px;background:#020507;color:#9be7ba;font:10px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word;scrollbar-color:#294237 #07100c}.history-search-console-output .warn{color:#f5d37b}
 @media(max-width:900px){.history-search-console{margin:0 10px 8px}.history-search-console-head{align-items:flex-start;flex-direction:column}.history-search-console-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.history-search-console-output{height:128px}}
 
 
-/* v4.1.32 — copyable worker diagnostics */
+/* v4.2.0 — copyable worker diagnostics */
 .history-search-console-title{display:flex;align-items:center;gap:10px;min-width:0}
 .history-search-console-tools{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-width:0;flex-wrap:wrap}
 .history-search-console-tools small{margin-right:4px}
@@ -3615,7 +3615,7 @@ body.sbb-game-center-below .info-drawer{margin-top:5px!important}
 .history-search-console-head.yielding strong{color:#a8c9df}
 @media(max-width:900px){.history-search-console-tools{justify-content:flex-start;width:100%}.history-search-console-tools small{width:100%;margin:0 0 2px}.history-search-console-tools button{padding:6px 8px}.history-search-console-tools em{text-align:left}}
 
-/* v4.1.32 — operator resource priority + search-priority playback lock */
+/* v4.2.0 — operator resource priority + search-priority playback lock */
 .history-resource-mode{display:inline-flex;align-items:center;border:1px solid #284457;border-radius:7px;overflow:hidden;background:#071018}
 .history-resource-mode button{border:0!important;border-right:1px solid #284457!important;border-radius:0!important;background:#09141d!important;color:#71889a!important;padding:5px 7px!important}
 .history-resource-mode button:last-child{border-right:0!important}
@@ -3633,7 +3633,7 @@ body.sbb-search-priority .transport button,body.sbb-search-priority .recap-alt-b
 @media(max-width:900px){.history-resource-mode{width:100%}.history-resource-mode button{flex:1;padding:7px 5px!important;font-size:7px!important}}
 
 
-/* v4.1.32 — Silver is a collection/roundup scope, not a game quality tier. */
+/* v4.2.0 — Silver is a collection/roundup scope, not a game quality tier. */
 .score-card.highlight-silver{
   box-shadow:inset 0 0 0 1px rgba(184,194,204,.42)!important;
   background:linear-gradient(180deg,rgba(184,194,204,.075),rgba(184,194,204,.025))!important;
@@ -3647,16 +3647,16 @@ body.sbb-search-priority .transport button,body.sbb-search-priority .recap-alt-b
 .roundup-card-sub{font-size:10px;color:#aeb8c3;font-weight:800}
 @media(max-width:760px),(pointer:coarse){.roundup-card{flex-basis:166px!important;min-width:166px!important}.roundup-card-line{font-size:11px}}
 
-/* v4.1.32 worker-pool observability */
+/* v4.2.0 worker-pool observability */
 .history-search-worker-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#15212c;border-bottom:1px solid #1d2c39}.history-search-worker-card{background:#071019;padding:7px 9px;min-width:0}.history-search-worker-card span{display:block;font:800 8px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.07em;color:#6c8397}.history-search-worker-card strong{display:block;margin-top:4px;color:#d7e8f5;font:800 9px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.history-search-worker-card small{display:block;margin-top:3px;color:#7fa995;font:8px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.history-search-worker-card.active{box-shadow:inset 3px 0 #45d98c}.history-search-worker-card.waiting{box-shadow:inset 3px 0 #ddb85d}.history-search-worker-card.paused{opacity:.72}.history-search-worker-card.error{box-shadow:inset 3px 0 #e16565}
 @media(max-width:1100px){.history-search-console-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.history-search-worker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.history-search-worker-grid{grid-template-columns:1fr}}
 
-/* v4.1.32 Silver roundup audit */
+/* v4.2.0 Silver roundup audit */
 .history-audit-tabs{display:flex;gap:6px;padding:10px 18px 4px;border-bottom:1px solid #18202a;background:#0b1119}.history-audit-tabs button{border:1px solid #2a3746;background:#0d151f;color:#8090a3;border-radius:8px;padding:8px 12px;font:900 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;cursor:pointer}.history-audit-tabs button:hover{border-color:#50677d;color:#d8e5f2}.history-audit-tabs button.active{background:#20242d;border-color:#a7aeb8;color:#eef2f6;box-shadow:inset 0 -2px #c5c9d0}.history-audit-pane-hidden{display:none!important}.history-audit-summary .silver{border-color:#7d8794;box-shadow:inset 3px 0 #a9b0b9}.history-audit-summary .warn{border-color:#73543b;box-shadow:inset 3px 0 #d9a15e}.history-silver-only{display:flex;flex:1;min-height:0;flex-direction:column}.history-silver-summary{grid-template-columns:repeat(7,minmax(95px,1fr))}.history-silver-summary-text{color:#aab3be}.history-silver-export-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 18px 10px;padding:10px 12px;border:1px solid #3f4752;border-radius:10px;background:#11161d}.history-silver-export-bar>div:first-child{min-width:0;display:flex;flex-direction:column;gap:3px}.history-silver-export-bar strong{font-size:10px;letter-spacing:.08em;color:#e5e9ee}.history-silver-export-bar small{font-size:9px;line-height:1.4;color:#8e99a6}.history-silver-export-actions{display:flex;gap:8px;flex:0 0 auto}.history-silver-export-actions button{border:1px solid #59636f;background:#20262e;color:#edf1f5;border-radius:8px;padding:9px 11px;font-size:10px;font-weight:900;letter-spacing:.04em;cursor:pointer;white-space:nowrap}.history-silver-export-actions button:hover{background:#2b333d;border-color:#89939e}.history-silver-filters{grid-template-columns:115px 110px 140px 170px 190px minmax(240px,1fr)}.history-silver-table-wrap{min-height:0}.history-silver-table{min-width:1750px}.history-silver-table td{vertical-align:middle}.history-silver-table tbody tr.silver-row-flagged td{background:#100f0d}.history-silver-table tbody tr.silver-row-flagged:hover td{background:#18150f}.silver-scope{display:inline-flex;padding:4px 7px;border-radius:6px;border:1px solid #59616d;background:#1c2027;color:#d9dde3;font-size:9px;font-weight:900;letter-spacing:.05em}.silver-collection{min-width:210px}.silver-collection strong,.silver-asset strong,.silver-validation strong,.silver-scope-intent strong,.silver-association strong{display:block;font-size:10px}.silver-collection small,.silver-asset small,.silver-validation small,.silver-scope-intent small,.silver-association small,.history-silver-table .audit-date small{display:block;margin-top:3px;color:#6f7c8c;font-size:8px;line-height:1.3;max-width:260px;overflow:hidden;text-overflow:ellipsis}.silver-asset{min-width:290px;max-width:360px}.silver-asset-link{color:#e4ebf3;text-decoration:none}.silver-asset-link:hover{color:#fff;text-decoration:underline}.silver-validation{min-width:105px}.silver-scope-intent{min-width:145px}.silver-association{min-width:170px}.silver-flags{min-width:220px;max-width:300px}.silver-flag{display:inline-flex;margin:2px 3px 2px 0;padding:3px 5px;border-radius:5px;border:1px solid #705c39;background:#2a2115;color:#e6c58a;font:800 7px/1.15 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.03em;white-space:normal}.silver-flag.danger{border-color:#743d3d;background:#2d1717;color:#f0a2a2}.silver-flag.clean{border-color:#315d45;background:#10251a;color:#8ed9ad}.history-silver-table th:nth-child(5){min-width:290px}.history-silver-table th:nth-child(11){min-width:220px}
 @media(max-width:900px){.history-audit-tabs{padding:8px 10px 4px}.history-silver-summary{grid-template-columns:repeat(2,1fr)}.history-silver-export-bar{margin:0 10px 10px;align-items:stretch;flex-direction:column}.history-silver-export-actions{width:100%}.history-silver-export-actions button{flex:1}.history-silver-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.history-silver-filters .audit-search{grid-column:1/-1}.history-silver-table{min-width:1650px}}
 
-/* v4.1.32 Historical Database Audit semantic color coding. Labels remain visible so color is supplemental, not the only identifier. */
+/* v4.2.0 Historical Database Audit semantic color coding. Labels remain visible so color is supplemental, not the only identifier. */
 .history-audit-summary{grid-template-columns:repeat(8,minmax(95px,1fr))}
 .history-audit-summary .coverage{border-color:#2f6e72;box-shadow:inset 3px 0 #56b8bd}
 .history-audit-coverage-complete{color:#8fdde0;font-weight:700}
@@ -3679,25 +3679,25 @@ body.sbb-search-priority .transport button,body.sbb-search-priority .recap-alt-b
 .silver-collection .silver-kind{margin-bottom:2px}
 @media(max-width:1100px){.history-audit-summary{grid-template-columns:repeat(4,minmax(95px,1fr))}}
 @media(max-width:900px){.history-audit-summary{grid-template-columns:repeat(2,1fr)}}
-/* v4.1.32 round-oriented Silver collections */
+/* v4.2.0 round-oriented Silver collections */
 .history-silver-summary{grid-template-columns:repeat(8,minmax(95px,1fr))}
 .silver-scope.scope-matchweek-matchday{background:#17352d;border-color:#4d927d;color:#b8f0de}
 .silver-kind.kind-scoring-roundup{background:#163e32;border-color:#4a9b7f;color:#bff3df;box-shadow:inset 2px 0 #67c6a4}
 @media(max-width:900px){.history-silver-summary{grid-template-columns:repeat(2,1fr)}}
 
-/* v4.1.32 — parallel catalog recovery + operator controls */
+/* v4.2.0 — parallel catalog recovery + operator controls */
 .history-recovery-controls{margin:14px 0;padding:14px;border:1px solid #314151;border-radius:12px;background:#0c131a;display:grid;gap:12px}.history-recovery-head{display:flex;align-items:center;justify-content:space-between;gap:14px}.history-recovery-head>div{display:grid;gap:3px}.history-recovery-head small,.history-recovery-grid label>span{font-size:9px;font-weight:900;letter-spacing:.08em;color:#82909d}.history-recovery-head strong{font-size:14px}.history-recovery-head span{font-size:11px;color:#9ca8b4}.history-recovery-grid{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:10px}.history-recovery-grid label{display:grid;gap:5px}.history-recovery-grid select,.history-recovery-grid input{width:100%;background:#0a1016;color:#dbe4ec;border:1px solid #2b3946;border-radius:8px;padding:8px;font:inherit}.history-recovery-grid label small{font-size:9px;color:#71808d}.history-recovery-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.history-recovery-actions .danger{border-color:#75403a;background:#291412;color:#ffb0a8}.history-recovery-actions .danger:disabled{opacity:.45;cursor:not-allowed}.history-recovery-actions span{font-size:10px;color:#93a1ae}.history-recovery-preview{padding:9px 10px;border:1px solid #23313d;border-radius:8px;background:#091016;color:#aab6c1;font-size:10px;line-height:1.45;white-space:pre-wrap}.history-worker-utilization{color:#7dd8ff}.history-catchup-position{color:#d7b66e}@media(max-width:850px){.history-recovery-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.history-recovery-grid{grid-template-columns:1fr}.history-recovery-head{align-items:flex-start;flex-direction:column}}
 
-/* v4.1.32 — collapsible recovery controls + operator media-source registry */
+/* v4.2.0 — collapsible recovery controls + operator media-source registry */
 .history-recovery-head-actions{display:flex;align-items:center;gap:8px}.history-recovery-body{display:grid;gap:12px}.history-recovery-controls.collapsed{padding-bottom:10px}.history-recovery-controls.collapsed .history-recovery-body{display:none}.history-recovery-controls.collapsed .history-recovery-head span{display:none}.history-recovery-head-actions button{white-space:nowrap}.history-recovery-controls:not(.collapsed) #historyRecoveryToggle{border-color:#5f7182;background:#19232d;color:#edf5fb}
 .history-playlists-only{display:flex;flex:1;min-height:0;flex-direction:column;padding:14px 18px 18px;overflow:auto}.history-media-sources-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:10px}.history-media-sources-toolbar>div:first-child{display:grid;gap:4px;min-width:0}.history-media-sources-toolbar small,.history-media-sources-toolbar label span{font-size:9px;font-weight:900;letter-spacing:.08em;color:#82909d}.history-media-sources-toolbar strong{font-size:16px}.history-media-sources-toolbar>div:first-child span{font-size:10px;line-height:1.4;color:#8f9daa;max-width:860px}.history-media-sources-toolbar>div:last-child{display:flex;align-items:flex-end;gap:8px;flex:0 0 auto}.history-media-sources-toolbar label{display:grid;gap:4px}.history-media-sources-toolbar select{min-width:145px;background:#0a1016;color:#dbe4ec;border:1px solid #2b3946;border-radius:8px;padding:8px;font:inherit}.history-media-sources-summary{margin:0 0 12px!important}.history-media-sources-grid{display:grid;gap:12px}.history-media-source-league{border:1px solid #2b3946;border-radius:12px;background:#0b1118;overflow:hidden}.history-media-source-league>summary{display:flex;align-items:center;gap:10px;cursor:pointer;padding:11px 13px;background:#0f1720;list-style:none}.history-media-source-league>summary::-webkit-details-marker{display:none}.history-media-source-league>summary strong{font-size:13px}.history-media-source-league>summary span{font-size:9px;color:#82909d}.history-media-source-league>summary::after{content:'▾';margin-left:auto;color:#8192a3}.history-media-source-league:not([open])>summary::after{content:'▸'}.history-media-source-table{width:100%;border-collapse:collapse;min-width:980px}.history-media-source-table th,.history-media-source-table td{padding:8px 10px;border-top:1px solid #1b2732;text-align:left;vertical-align:top;font-size:9px}.history-media-source-table th{color:#778899;font-weight:900;letter-spacing:.06em;background:#0a1016}.history-media-source-table td strong{display:block;font-size:10px;color:#dce7f1}.history-media-source-table td small{display:block;margin-top:3px;color:#778795;line-height:1.35}.history-media-source-link{color:#9fd7ff;text-decoration:none;word-break:break-all}.history-media-source-link:hover{text-decoration:underline;color:#d8f0ff}.media-source-priority,.media-source-kind,.media-source-trust{display:inline-flex;padding:3px 6px;border:1px solid #3c4a58;border-radius:6px;background:#121c26;color:#b9c7d5;font-size:8px;font-weight:900;letter-spacing:.04em;white-space:nowrap}.media-source-priority.priority-primary{border-color:#35684c;background:#102519;color:#8fe0af}.media-source-priority.priority-secondary{border-color:#536275;color:#18212c;color:#b9cbe0}.media-source-priority.priority-fallback{border-color:#73593a;background:#291f13;color:#e5c28b}.media-source-priority.priority-silver{border-color:#646a74;background:#22262d;color:#d3d8df}.history-media-sources-loading{padding:18px;border:1px dashed #2b3946;border-radius:10px;color:#81909e;text-align:center}.history-media-source-scroll{overflow:auto}
 @media(max-width:850px){.history-media-sources-toolbar{align-items:stretch;flex-direction:column}.history-media-sources-toolbar>div:last-child{width:100%}.history-media-sources-toolbar label{flex:1}.history-media-sources-toolbar select{width:100%;min-width:0}.history-recovery-head-actions{width:100%}.history-recovery-head-actions button{flex:1}}
 
-/* v4.1.32 — interactive playlist ingestion -------------------------------- */
+/* v4.2.0 — interactive playlist ingestion -------------------------------- */
 .history-media-playlist-form{display:grid;grid-template-columns:110px minmax(280px,2fr) 120px 120px 150px 130px 130px;gap:8px;align-items:end;margin:10px 0 12px;padding:10px;border:1px solid #2b3946;border-radius:10px;background:#091016}.history-media-playlist-form label{display:grid;gap:4px}.history-media-playlist-form label>span{font-size:9px;font-weight:900;letter-spacing:.07em;color:#82909d}.history-media-playlist-form input,.history-media-playlist-form select{min-width:0;background:#0c131a;color:#dbe4ec;border:1px solid #314151;border-radius:7px;padding:7px 8px;font:inherit}.history-media-playlist-form .playlist-check{display:flex;align-items:center;gap:7px;padding-bottom:8px}.history-media-playlist-form .playlist-check input{width:auto}.history-media-playlist-form-actions{grid-column:1/-1;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.history-media-playlist-form-actions span{font-size:10px;color:#8f9ca8}.history-media-source-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}.history-media-source-actions button{font-size:9px;padding:4px 6px}.history-media-source-stats{display:block;margin-top:4px;color:#7dd8ff!important}.history-media-source-disabled{opacity:.55}.history-media-source-error{color:#ff9a8e!important}.history-media-source-custom{outline:1px solid rgba(125,216,255,.15)}
 @media(max-width:1100px){.history-media-playlist-form{grid-template-columns:repeat(3,minmax(0,1fr))}.history-media-playlist-form .playlist-url{grid-column:span 2}}@media(max-width:650px){.history-media-playlist-form{grid-template-columns:1fr}.history-media-playlist-form .playlist-url{grid-column:auto}}
 
-/* v4.1.32 Android/mobile Historical Database Audit scroll repair.
+/* v4.2.0 Android/mobile Historical Database Audit scroll repair.
    Desktop keeps the fixed-shell/inner-table model. On narrow touch screens the
    entire audit becomes the vertical scroll container so summary/console/filter
    content can never consume the viewport and strand the table below it. */
@@ -3763,7 +3763,7 @@ body.sbb-search-priority .transport button,body.sbb-search-priority .recap-alt-b
 }
 
 
-/* v4.1.32 — persistent Sports Big Board soundtrack. The music controls are
+/* v4.2.0 — persistent Sports Big Board soundtrack. The music controls are
    deliberately smaller than video transport controls because they configure the
    site-level music bed rather than owning the active highlight. */
 .soundtrack-controls{position:relative;display:flex;align-items:center;gap:4px;margin-left:7px;padding-left:8px;border-left:1px solid #33404c;flex:0 0 auto}
@@ -3781,10 +3781,17 @@ body.sbb-search-priority .soundtrack-controls{opacity:.42;pointer-events:none}
 @media(max-width:760px){.soundtrack-controls{margin-left:3px;padding-left:5px;gap:2px}.soundtrack-btn{height:30px;min-width:30px;padding:0 6px;font-size:10px}.soundtrack-toggle{min-width:42px}.soundtrack-volume-popover{right:-4px;width:160px}.soundtrack-volume-popover input[type=range]{width:116px}}
 @media(max-width:480px){.soundtrack-controls{margin-left:1px;padding-left:4px}.soundtrack-btn{height:28px;min-width:28px;padding:0 5px}.soundtrack-toggle{min-width:39px}}
 
-/* v4.1.32 — soundtrack polish: keep volume UI above the video compositor and
+/* v4.2.0 — soundtrack polish: keep volume UI above the video compositor and
    add a compact skip control without enlarging the transport cluster. */
 .stage-card>.player-topbar{z-index:120!important;overflow:visible!important}
 .player-topbar .transport,.soundtrack-controls{overflow:visible!important}
 .soundtrack-next-btn{min-width:32px;width:32px;padding:0;font-size:11px}
 .soundtrack-volume-popover{top:auto!important;bottom:calc(100% + 8px)!important;z-index:9999!important}
 @media(max-width:760px){.soundtrack-next-btn{min-width:28px;width:28px;padding:0}.soundtrack-volume-popover{right:-2px!important}}
+
+/* v4.2 — Milestone Release Console */
+.milestone-console-modal{position:fixed;inset:0;z-index:1800;display:grid;place-items:center;padding:18px}.milestone-console-modal.hidden{display:none}.milestone-console-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(5px)}.milestone-console-shell{position:relative;z-index:1;width:min(1500px,96vw);height:min(900px,94vh);display:flex;flex-direction:column;background:#081018;border:1px solid #31414f;border-radius:14px;box-shadow:0 24px 80px rgba(0,0,0,.55);overflow:hidden}.milestone-console-header{display:flex;justify-content:space-between;gap:18px;padding:18px 20px;border-bottom:1px solid #23313d;background:#0b141d}.milestone-console-header small{color:#70c7ff;font-size:9px;font-weight:900;letter-spacing:.12em}.milestone-console-header h2{margin:3px 0 4px;font-size:22px}.milestone-console-header p{margin:0;max-width:820px;color:#94a5b4;font-size:11px;line-height:1.45}.milestone-console-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:7px;max-width:620px}.milestone-console-actions button{border:1px solid #334654;background:#111d27;color:#dce7ef;border-radius:7px;padding:7px 10px;font-size:9px;font-weight:900;letter-spacing:.05em;cursor:pointer}.milestone-console-actions>strong{padding:7px 10px;border-radius:7px;background:#10261d;color:#80e6a4;font-size:10px;letter-spacing:.08em}.milestone-console-actions>strong[data-state="warn"]{background:#322712;color:#ffd166}.milestone-console-actions>strong[data-state="error"],.milestone-console-actions>strong[data-state="connect error"]{background:#351516;color:#ff8178}.milestone-console-actions em{width:100%;text-align:right;color:#70c7ff;font-size:9px;font-style:normal;min-height:12px}.milestone-console-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px 16px;border-bottom:1px solid #1c2933}.milestone-console-stats>div{min-width:0;background:#0d1720;border:1px solid #1d2d39;border-radius:8px;padding:9px 10px;display:grid;gap:3px}.milestone-console-stats span{font-size:8px;color:#768999;font-weight:900;letter-spacing:.08em}.milestone-console-stats strong{font-size:11px;overflow-wrap:anywhere}.milestone-console-problems{display:flex;gap:8px;overflow-x:auto;padding:9px 16px;border-bottom:1px solid #1c2933;min-height:54px}.milestone-problem{flex:0 0 min(360px,75vw);border:1px solid #31414f;border-radius:8px;padding:8px 10px;display:grid;gap:3px;background:#0e1821}.milestone-problem strong{font-size:9px;letter-spacing:.05em}.milestone-problem span{font-size:10px;color:#aebbc5}.milestone-problem.error{border-color:#6b2929;background:#241011}.milestone-problem.error strong{color:#ff8178}.milestone-problem.warn{border-color:#725822;background:#261e0e}.milestone-problem.warn strong{color:#ffd166}.milestone-problem.ok{border-color:#245d42;background:#0d2017}.milestone-problem.ok strong{color:#80e6a4}.milestone-console-output{margin:0;flex:1;overflow:auto;padding:14px 16px;background:#050a0e;color:#cbd5dc;font:10px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word}.milestone-launch-card{border-color:#2b526b!important}
+@media(max-width:900px){.milestone-console-modal{padding:5px}.milestone-console-shell{width:100vw;height:100dvh;border-radius:0}.milestone-console-header{display:grid;padding:12px}.milestone-console-actions{justify-content:flex-start;max-width:none}.milestone-console-stats{grid-template-columns:1fr 1fr;padding:8px}.milestone-console-output{font-size:9px;padding:10px}.milestone-console-problems{padding:7px 8px}}
+/* v4.2 milestone release stress-test + repeatable acceptance procedures */
+.milestone-console-actions .milestone-stress-run{border-color:#2e8060;background:#103424;color:#96f0b8}.milestone-console-actions button:disabled{opacity:.38;cursor:not-allowed}.milestone-stress-strip{display:grid;grid-template-columns:auto minmax(160px,1fr) minmax(260px,2fr);align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid #1c2933;background:#09131b}.milestone-stress-strip>div:first-child{display:grid;gap:2px}.milestone-stress-strip span{font-size:8px;color:#708899;font-weight:900;letter-spacing:.09em}.milestone-stress-strip strong{font-size:10px;color:#91a6b5;letter-spacing:.06em}.milestone-stress-strip strong[data-state="running"]{color:#70c7ff}.milestone-stress-strip strong[data-state="pass"]{color:#80e6a4}.milestone-stress-strip strong[data-state="warn"]{color:#ffd166}.milestone-stress-strip strong[data-state="fail"],.milestone-stress-strip strong[data-state="stopped"]{color:#ff8178}.milestone-stress-track{height:7px;border-radius:99px;background:#15232e;overflow:hidden}.milestone-stress-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3f92c8,#73ddb0);transition:width .18s ease}.milestone-stress-strip small{color:#8194a3;font-size:9px;line-height:1.35}.milestone-procedures{max-height:42vh;overflow:auto;padding:10px 14px;border-bottom:1px solid #21303b;background:#08121a}.milestone-procedures.hidden{display:none}.milestone-procedures>header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:8px}.milestone-procedures>header>div{display:grid;gap:3px}.milestone-procedures>header strong{font-size:10px;letter-spacing:.08em;color:#b9d9ed}.milestone-procedures>header small{font-size:9px;color:#7f94a3;max-width:900px}.milestone-procedures button{border:1px solid #334654;background:#111d27;color:#dce7ef;border-radius:6px;padding:6px 9px;font-size:8px;font-weight:900;letter-spacing:.05em;cursor:pointer}.milestone-procedure-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.milestone-procedure{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;border:1px solid #1f303d;border-radius:8px;padding:8px 9px;background:#0c1720}.milestone-procedure[data-result="pass"]{border-color:#235f43}.milestone-procedure[data-result="fail"]{border-color:#6b2929}.milestone-procedure[data-result="warn"]{border-color:#725822}.milestone-procedure-copy{display:grid;gap:3px;min-width:0}.milestone-procedure-copy strong{font-size:9px;color:#d4e1ea}.milestone-procedure-copy small{font-size:9px;line-height:1.35;color:#8396a5}.milestone-procedure-copy em{font-size:8px;font-style:normal;color:#70c7ff;overflow-wrap:anywhere}.milestone-procedure-actions{display:flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:flex-end}.milestone-procedure-actions button[data-result="pass"]{color:#80e6a4}.milestone-procedure-actions button[data-result="fail"]{color:#ff8178}.milestone-procedure-actions button:disabled{opacity:.35}.milestone-console-output{min-height:140px}
+@media(max-width:900px){.milestone-stress-strip{grid-template-columns:1fr;gap:5px;padding:7px 8px}.milestone-procedure-list{grid-template-columns:1fr}.milestone-procedures{max-height:48vh;padding:8px}.milestone-procedures>header{display:grid}.milestone-procedure{grid-template-columns:1fr}.milestone-procedure-actions{justify-content:flex-start}}

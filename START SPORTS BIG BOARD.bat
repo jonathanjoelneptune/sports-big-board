@@ -14,7 +14,7 @@ if not defined SBBPY (
 )
 
 echo.
-echo Sports Big Board v4.1.32 - Windows
+echo Sports Big Board v4.2.0 - Windows
 echo ---------------------------------
 %SBBPY% setup_credentials.py
 if errorlevel 1 (

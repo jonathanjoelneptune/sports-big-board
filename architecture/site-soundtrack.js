@@ -1,10 +1,10 @@
-/* Sports Big Board v4.1.32 — clip-scoped soundtrack.
+/* Sports Big Board v4.2.0 — clip-scoped soundtrack.
    One soundtrack Audio element exists. Every highlight clip gets one soundtrack
    track. Video pause/resume controls that same track; clip changes select a new
    track; long clips advance to another song when the current song ends. */
 (() => {
   'use strict';
-  const RUNTIME_KEY='__SBB_SOUNDTRACK_SINGLETON_V132__';
+  const RUNTIME_KEY='__SBB_SOUNDTRACK_SINGLETON__';
   if(window[RUNTIME_KEY]?.api){ window.SBB_SOUNDTRACK=window[RUNTIME_KEY].api; return; }
   if(window[RUNTIME_KEY]?.initializing) return;
   window[RUNTIME_KEY]={initializing:true,api:null};
@@ -43,7 +43,7 @@
   let operationEpoch=0;
   let tabOwnsAudio=false;
 
-  // v4.1.32 invariant: exactly ONE soundtrack media element exists.
+  // v4.2.0 invariant: exactly ONE soundtrack media element exists.
   const activeAudio=new Audio();
   activeAudio.preload='auto';
   activeAudio.playsInline=true;
@@ -134,6 +134,7 @@
   function hardPause({reset=false,bump=true}={}){
     if(bump)bumpEpoch();
     try{activeAudio.pause();activeAudio.volume=0;}catch(_){ }
+    try{window.SBB_PLAYBACK_SESSION?.setAudible?.('soundtrack','site',false);}catch(_){ }
     if(reset){try{activeAudio.currentTime=0;}catch(_){ }}
   }
   function unloadActive(){
@@ -213,7 +214,9 @@
         if(activeAudio.__sbbTrackId===expectedTrackId&&(!soundtrackShouldRun()||!tabOwnsAudio))hardPause({reset:false,bump:false});
         return false;
       }
-      setActiveVolume();consecutiveFailures=0;ownerHeartbeat();renderUi();return true;
+      setActiveVolume();consecutiveFailures=0;ownerHeartbeat();
+      try{window.SBB_PLAYBACK_SESSION?.setAudible?.('soundtrack','site',!activeAudio.paused&&activeAudio.volume>0);}catch(_){ }
+      renderUi();return true;
     }catch(err){
       if(epoch!==operationEpoch||activeAudio.__sbbTrackId!==expectedTrackId)return false;
       if(err?.name!=='NotAllowedError'&&err?.name!=='AbortError')handleAudioFailure(err);
@@ -334,8 +337,8 @@
     // If the highlight is still running when a song ends, immediately continue with
     // another soundtrack song for that SAME clip.
     activeAudio.addEventListener('ended',()=>{if(activeAudio.__sbbTrackId===currentTrack?.id&&soundtrackShouldRun())advanceTrack('song-ended');});
-    activeAudio.addEventListener('playing',renderUi);
-    activeAudio.addEventListener('pause',renderUi);
+    activeAudio.addEventListener('playing',()=>{try{window.SBB_PLAYBACK_SESSION?.setAudible?.('soundtrack','site',activeAudio.volume>0);}catch(_){ }renderUi();});
+    activeAudio.addEventListener('pause',()=>{try{window.SBB_PLAYBACK_SESSION?.setAudible?.('soundtrack','site',false);}catch(_){ }renderUi();});
   }
   async function init(){
     if(initialized)return manifestPromise;
@@ -344,9 +347,44 @@
     manifestPromise=loadManifest();return manifestPromise;
   }
 
+
+  function devSnapshot(){
+    return {
+      enabled,available,experienceStarted,currentClipKey,volume:masterVolume,
+      currentTrackId:currentTrack?.id||'',currentTime:Number.isFinite(activeAudio.currentTime)?Math.max(0,activeAudio.currentTime):0,
+      remainingIds:bag.map(x=>x.id),playedIds:[...playedIds]
+    };
+  }
+  function devRestore(saved={}){
+    if(!saved||typeof saved!=='object')return false;
+    hardPause({reset:true,bump:true});
+    const byId=new Map(tracks.map(t=>[t.id,t]));
+    const target=byId.get(String(saved.currentTrackId||''))||null;
+    if(Number.isFinite(Number(saved.volume)))masterVolume=clamp(saved.volume,0,.5);
+    if(typeof saved.enabled==='boolean')enabled=saved.enabled;
+    if(typeof saved.experienceStarted==='boolean')experienceStarted=saved.experienceStarted;
+    if(saved.currentClipKey!=null)currentClipKey=String(saved.currentClipKey||'');
+    const remaining=[];const seen=new Set();
+    for(const id of Array.isArray(saved.remainingIds)?saved.remainingIds:[]){const t=byId.get(String(id));if(t&&!seen.has(t.id)&&t.id!==target?.id){seen.add(t.id);remaining.push(t);}}
+    bag=remaining;
+    playedIds=new Set((Array.isArray(saved.playedIds)?saved.playedIds:[]).map(String).filter(id=>byId.has(id)&&!seen.has(id)));
+    currentTrack=target;
+    if(currentTrack){
+      loadTrack(currentTrack);
+      const wanted=Math.max(0,Number(saved.currentTime||0));
+      if(wanted>0){
+        const seek=()=>{try{if(Number.isFinite(activeAudio.duration)&&activeAudio.duration>1)activeAudio.currentTime=Math.min(wanted,Math.max(0,activeAudio.duration-.5));}catch(_){ }activeAudio.removeEventListener('loadedmetadata',seek);};
+        if(activeAudio.readyState>=1)seek();else activeAudio.addEventListener('loadedmetadata',seek);
+      }
+    }else unloadActive();
+    saveStored();renderUi();
+    if(enabled&&soundtrackShouldRun())ensurePlaying({claim:true});
+    return true;
+  }
+
   const api=Object.freeze({
     __singleton:true,version:VERSION,init,startExperience,setPlaybackState,pauseForSearch,resumeFromSearch,setVolume,
-    toggle:toggleEnabled,skip:()=>advanceTrack('next'),
+    toggle:toggleEnabled,skip:()=>advanceTrack('next'),__devSnapshot:devSnapshot,__devRestore:devRestore,
     snapshot:()=>({
       enabled,available,experienceStarted,playbackState,currentClipKey,searchPaused,volume:masterVolume,
       currentTrack:currentTrack?{id:currentTrack.id,title:currentTrack.title,tier:currentTrack.tier,file:currentTrack.file,sourceFilename:currentTrack.sourceFilename}:null,

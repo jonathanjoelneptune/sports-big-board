@@ -1,6 +1,24 @@
-# Sports Big Board v4.1.32 Architecture
+# Sports Big Board v4.2.0 Architecture
 
-## v4.1.32 operator/read and playback boundary
+## v4.2.0 Milestone 1 reliability boundary
+
+Milestone 1 adds an explicit **Playback Session** above provider-specific A/B/native/YouTube adapters. The adapters still perform the actual player API calls, but selection identity, transport assignment, playback state, first-frame time, stalls, failures, source URL and audible ownership are emitted into `SBB_PLAYBACK_SESSION`. Dev Mode, the milestone console, soundtrack ownership reporting and diagnostics consume this single session snapshot rather than independently reconstructing playback truth.
+
+The observable pipeline is now:
+
+`Selected Event / Media → PlaybackController transport action → Playback Session truth → Dev + Milestone telemetry`
+
+A/B player slots report their audible state into the session. Two simultaneously audible video slots are an invariant failure and are logged immediately. The soundtrack remains a separate application audio service, but it also reports audible state to the same session so diagnostic output can distinguish site music from source-video audio. Player Debug exposes the exact external source URL for the active clip.
+
+The backend `MilestoneConsole` is a bounded in-memory operational ledger, not durable product state. It records API latency/error aggregates, playback telemetry, browser heartbeats/errors, stress/procedure results, background-thread exceptions and release problems. `/api/milestone/console` joins this ledger with inexpensive live truth: worker heartbeats, operator snapshot age, history singleflight/provider concurrency, database audit status, scheduler snapshots and media-cache state. The console deliberately avoids a new whole-catalog synchronous scan.
+
+`MediaWorkScheduler` now exposes keyed job reuse/supersession, queue age, active workers and aggregate wait/run/error counts. Foreground `/api/media` streaming never enters this scheduler and retains priority over background full-cache completion. Historical discovery continues to use its durable event claims, provider semaphores and existing singleflight protections; 4.2 makes those coordination layers visible rather than replacing proven recovery logic during the milestone.
+
+The browser stress harness talks only through `SBB_DEV_TEST_HOOKS`, a narrow test boundary over official UI/controller actions. It can run release handshake, playback ownership, historical reads, concurrent operator load, resource-mode transitions, Game Center, soundtrack and event-loop procedures. It snapshots user-visible state before the run and logs restoration failures explicitly. The harness is diagnostic only and never becomes a second PlaybackController.
+
+Release generation is fail-closed. `VERSION` must match the core model and every cache-busted local JS/CSS asset. GitHub Actions deploys the backend first, verifies its public version, publishes Pages only after that succeeds, then verifies the live Pages generation and `/api/milestone/console` handshake. This prevents a new frontend from silently operating against an old backend contract.
+
+## v4.1.26 operator/read and playback boundary
 
 The interactive operator surfaces are no longer allowed to perform expensive whole-catalog work synchronously. A background telemetry worker refreshes green-gap, association, claim, Silver, media-objective, and Silver-identity summaries into an in-memory snapshot. The Live Search Console only combines that snapshot with inexpensive live thread/worker state, so its frequent polling does not compete with discovery or playback.
 
@@ -41,7 +59,7 @@ Discovery v15, matcher v7, Rule Game Catch-up v9, EPL source v6, current media c
 
 ## v4.1.32 soundtrack boundary
 
-The soundtrack remains an application-level service rather than a MediaAsset or PlaybackController transport, but v4.1.32 intentionally makes its lifecycle **clip-scoped**. `architecture/site-soundtrack.js` owns exactly one browser `Audio` element and receives both coarse playback state and the canonical current media key from `app.js`. A changed media key hard-stops the old soundtrack song, chooses one new shuffle-bag track, and assigns it to the new highlight. Repeated `ready / starting / buffering / playing` transitions for the same media key cannot select additional songs.
+The soundtrack remains an application-level service rather than a MediaAsset or PlaybackController transport, but v4.2.0 intentionally makes its lifecycle **clip-scoped**. `architecture/site-soundtrack.js` owns exactly one browser `Audio` element and receives both coarse playback state and the canonical current media key from `app.js`. A changed media key hard-stops the old soundtrack song, chooses one new shuffle-bag track, and assigns it to the new highlight. Repeated `ready / starting / buffering / playing` transitions for the same media key cannot select additional songs.
 
 Before the red launch action, soundtrack is disabled and cannot autoplay during player warmup. `startExperience()` explicitly enables soundtrack for the first clip, which keeps the button state and audible state synchronized. Video pause/resume pauses/resumes the current clip song. If that song ends while the clip is still active, the engine advances to another song without changing the clip identity. Search Priority and tab hiding still suspend audio.
 

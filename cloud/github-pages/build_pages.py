@@ -16,12 +16,12 @@ for name in ('index.html','styles.css','app.js','core-model.js','api-runtime.js'
 for directory in ('architecture','ui'):
     shutil.copytree(root/directory,out/directory)
 # Soundtrack metadata ships with Pages, but the ~400 MB MP3 library never does.
-# Audio is served directly from a public-read Cloud Storage bucket.
+# Audio remains in private Cloud Storage and is reached through the backend signed/proxy boundary.
 (out/'assets'/'soundtrack').mkdir(parents=True,exist_ok=True)
 shutil.copy2(root/'assets'/'soundtrack'/'manifest.json',out/'assets'/'soundtrack'/'manifest.json')
 soundtrack=(os.environ.get('SBB_SOUNDTRACK_BASE_URL') or '').strip().rstrip('/')
 if not soundtrack:
-    # v4.1.32 keeps the GCS bucket private. The browser requests soundtrack
+    # v4.2.0 keeps the GCS bucket private. The browser requests soundtrack
     # tracks from the backend, which prefers a short-lived signed GCS redirect
     # and transparently falls back to authenticated proxy streaming.
     soundtrack=f'{api}/api/soundtrack'

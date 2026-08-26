@@ -21,6 +21,7 @@ import argparse
 import json
 import os
 import sqlite3
+from contextlib import closing
 import sys
 import traceback
 from datetime import datetime, timezone
@@ -96,7 +97,7 @@ def inspect_catalog(path: Path):
             "needsRebuild":False,"reason":"NEW_CATALOG","structuralOk":True,
         }
     try:
-        with sqlite3.connect(path) as conn:
+        with closing(sqlite3.connect(path)) as conn:
             version=0
             if _table_exists(conn,"history_catalog_meta"):
                 for meta_key in ("catalog_schema_version","catalogSchemaVersion","schemaVersion"):
