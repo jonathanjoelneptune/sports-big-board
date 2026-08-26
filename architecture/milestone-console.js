@@ -1,10 +1,10 @@
-/* Sports Big Board 4.3.3 three-tier certification console.
+/* Sports Big Board 4.3.4 three-tier certification console.
    Captures browser/runtime failures, runs repeatable dev procedures, and renders
    one exportable platform-health log. COPY FULL LOG is the canonical handoff. */
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.3');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.4');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);
@@ -455,30 +455,81 @@
     const row={name,status,durationMs,detail,data,at:Date.now()};run.steps.push(row);post(run.kind,status==='FAIL'?'ERROR':status==='WARN'?'WARN':'INFO',`${status} • ${name}`,{durationMs,detail,data,runId:run.id});return row;
   }
   function heapBytes(){try{return Number(performance?.memory?.usedJSHeapSize||0);}catch(_){return 0;}}
+  async function withTimeout(task,timeoutMs,label='operation'){
+    let timer=0;
+    try{
+      return await Promise.race([
+        Promise.resolve().then(task),
+        new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error(`${label} timed out after ${timeoutMs} ms`)),timeoutMs);})
+      ]);
+    }finally{if(timer)clearTimeout(timer);}
+  }
   async function runSoakTest({durationMs=900000,sampleMs=15000}={}){
     if(soakRun?.status==='RUNNING')return safe(soakRun);const h=hooks();stressStopRequested=false;
     durationMs=Math.max(60000,Number(durationMs)||900000);sampleMs=Math.max(5000,Number(sampleMs)||15000);
+    const expectedSamples=Math.max(1,Math.floor(durationMs/sampleMs));
+    const minimumSamples=Math.max(1,Math.floor(expectedSamples*0.90));
+    const maxAllowedSampleGapMs=Math.round(sampleMs*2.5);
+    const maxNoProgressMs=Math.max(30000,Math.min(45000,sampleMs*3));
+    const maxBufferingMs=Math.max(30000,Math.min(45000,sampleMs*3));
+    const transitionTimeoutMs=Math.max(8000,Math.min(12000,sampleMs-1000));
     const original={resourceMode:h.resourceMode?.(),scoreDate:h.scoreDate?.(),mediaKey:h.currentMediaKey?.(),playback:h.playback?.(),drawer:h.drawer?.()};
-    soakRun={kind:'soak',id:`soak-${Date.now().toString(36)}`,status:'RUNNING',startedAt:Date.now(),finishedAt:0,durationTargetMs:durationMs,sampleMs,steps:[],samples:[],original};
-    post('soak','INFO','TIER 2 SOAK STARTED',{runId:soakRun.id,durationMs,sampleMs});
-    const heap0=heapBytes();let priorKey=h.currentMediaKey?.()||'',priorTime=Number(h.currentTime?.()||0),restartRegressions=0,maxHeap=heap0,transitions=0;
+    soakRun={kind:'soak',id:`soak-${Date.now().toString(36)}`,status:'RUNNING',startedAt:Date.now(),finishedAt:0,durationTargetMs:durationMs,sampleMs,steps:[],samples:[],original,limits:{expectedSamples,minimumSamples,maxAllowedSampleGapMs,maxNoProgressMs,maxBufferingMs,transitionTimeoutMs}};
+    post('soak','INFO','TIER 2 SOAK STARTED',{runId:soakRun.id,durationMs,sampleMs,expectedSamples,minimumSamples,maxAllowedSampleGapMs,maxNoProgressMs,maxBufferingMs,transitionTimeoutMs});
+    const heap0=heapBytes();
+    let priorKey=h.currentMediaKey?.()||'',priorTime=Number(h.currentTime?.()||0),priorSelection=Number(h.playback?.()?.selectionId||0),restartRegressions=0,maxHeap=heap0,transitions=0,transitionWindows=0;
+    let nextSampleAt=soakRun.startedAt+sampleMs,lastSampleAt=soakRun.startedAt,maxSampleGapMs=0,longestNoProgressMs=0,longestBufferingMs=0,noProgressSince=0,bufferingSince=0,transitionTimeouts=0,decodeRecoveries=0,priorFailureCount=Number(h.playback?.()?.failureCount||0),priorError=String(h.playback?.()?.lastError||'');
     try{
-      assert(h.started?.()===true,'Sports Big Board must be started before Tier 2 soak');assert(Number(h.programSize?.()||0)>0,'Tier 2 requires an active program');h.ensurePlaying?.();await sleep(700);priorKey=h.currentMediaKey?.()||priorKey;priorTime=Number(h.currentTime?.()||priorTime);
+      assert(h.started?.()===true,'Sports Big Board must be started before Tier 2 soak');assert(Number(h.programSize?.()||0)>0,'Tier 2 requires an active program');h.ensurePlaying?.();await sleep(700);priorKey=h.currentMediaKey?.()||priorKey;priorTime=Number(h.currentTime?.()||priorTime);priorSelection=Number(h.playback?.()?.selectionId||priorSelection);
       while(Date.now()-soakRun.startedAt<durationMs){
-        if(stressStopRequested)throw new DOMException('soak stopped','AbortError');await sleep(Math.min(sampleMs,Math.max(0,durationMs-(Date.now()-soakRun.startedAt))));
-        const pb=h.playback?.()||{},ctx=h.snapshot?.()||{},key=h.currentMediaKey?.()||'',ct=Number(h.currentTime?.()||0),heap=heapBytes();maxHeap=Math.max(maxHeap,heap);
+        if(stressStopRequested)throw new DOMException('soak stopped','AbortError');
+        const waitMs=Math.max(0,nextSampleAt-Date.now());if(waitMs)await sleep(waitMs);
+        const now=Date.now();if(now-soakRun.startedAt>durationMs+sampleMs)break;
+        const sampleGapMs=now-lastSampleAt;maxSampleGapMs=Math.max(maxSampleGapMs,sampleGapMs);
+        if(soakRun.samples.length&&sampleGapMs>maxAllowedSampleGapMs)throw new Error(`soak telemetry gap ${sampleGapMs} ms exceeded ${maxAllowedSampleGapMs} ms`);
+        const pb=h.playback?.()||{},ctx=h.snapshot?.()||{},key=h.currentMediaKey?.()||'',ct=Number(h.currentTime?.()||0),heap=heapBytes(),state=String(pb.state||'');maxHeap=Math.max(maxHeap,heap);
         assert(!String(pb.invariant||'').startsWith('ERROR'),pb.invariant);assert(ctx.selectedEventMatchesActive!==false,'Game Center drifted from active game video');
-        if(key&&key===priorKey&&priorTime>10&&ct>0&&ct<priorTime-3&&!ctx.transitionInFlight){restartRegressions++;throw new Error(`same-media restart detected ${priorTime.toFixed(1)} -> ${ct.toFixed(1)}`);}
-        soakRun.samples.push({at:Date.now(),mediaKey:key,currentTime:ct,state:pb.state,selectionId:pb.selectionId,stallCount:pb.stallCount||0,heapBytes:heap,selectedEventMatchesActive:ctx.selectedEventMatchesActive});
-        priorKey=key;priorTime=ct;
-        const elapsed=Date.now()-soakRun.startedAt;if(elapsed>0&&Math.floor(elapsed/120000)>transitions){const moved=await h.stressTuneNextGame?.();if(moved){transitions++;await sleep(500);assert(h.selectedEventMatchesActive?.()===true,'Game Center failed after soak transition');priorKey=h.currentMediaKey?.()||'';priorTime=Number(h.currentTime?.()||0);}}
+        const selection=Number(pb.selectionId||0),sameMedia=!!key&&key===priorKey,sameSelection=sameMedia&&selection===priorSelection;
+        if(sameMedia&&priorTime>10&&ct>0&&ct<priorTime-3&&!ctx.transitionInFlight){restartRegressions++;throw new Error(`same-media restart detected ${priorTime.toFixed(1)} -> ${ct.toFixed(1)}`);}
+        if(sameMedia&&selection!==priorSelection&&!ctx.transitionInFlight)throw new Error(`same-media playback selection restarted ${priorSelection} -> ${selection}`);
+
+        if(sameSelection&&state==='playing'&&!ctx.transitionInFlight){
+          if(ct>priorTime+0.20){noProgressSince=0;}
+          else{if(!noProgressSince)noProgressSince=lastSampleAt;const stuckMs=now-noProgressSince;longestNoProgressMs=Math.max(longestNoProgressMs,stuckMs);if(stuckMs>maxNoProgressMs)throw new Error(`playing without forward progress for ${stuckMs} ms at ${ct.toFixed(3)}s`);}
+        }else noProgressSince=0;
+        if(sameSelection&&state==='buffering'&&!ctx.transitionInFlight){
+          if(!bufferingSince)bufferingSince=lastSampleAt;const bufferingMs=now-bufferingSince;longestBufferingMs=Math.max(longestBufferingMs,bufferingMs);if(bufferingMs>maxBufferingMs)throw new Error(`sustained buffering for ${bufferingMs} ms at ${ct.toFixed(3)}s`);
+        }else bufferingSince=0;
+
+        const failureCount=Number(pb.failureCount||0),lastError=String(pb.lastError||'');
+        if(failureCount>priorFailureCount||lastError&&lastError!==priorError){
+          if(/MEDIA_ERR_DECODE|PIPELINE_ERROR_DECODE/i.test(lastError))decodeRecoveries++;
+          // Failure evidence is allowed only if the playback controller already
+          // changed selection/media or recovered to an active state by this sample.
+          if(sameSelection&&['failed','ready'].includes(state))throw new Error(`playback failure did not self-recover: ${lastError||`failureCount ${failureCount}`}`);
+        }
+        soakRun.samples.push({at:now,mediaKey:key,currentTime:ct,state,selectionId:selection,stallCount:pb.stallCount||0,failureCount,lastError,heapBytes:heap,selectedEventMatchesActive:ctx.selectedEventMatchesActive,sampleGapMs});
+        lastSampleAt=now;priorKey=key;priorTime=ct;priorSelection=selection;priorFailureCount=failureCount;priorError=lastError;
+
+        const elapsed=now-soakRun.startedAt,transitionWindow=Math.floor(elapsed/120000);
+        if(elapsed>0&&transitionWindow>transitionWindows){
+          transitionWindows=transitionWindow;let moved=false;
+          try{moved=await withTimeout(()=>h.stressTuneNextGame?.(),transitionTimeoutMs,'soak game transition');}
+          catch(err){transitionTimeouts++;throw err;}
+          if(moved){transitions++;await sleep(500);assert(h.selectedEventMatchesActive?.()===true,'Game Center failed after soak transition');priorKey=h.currentMediaKey?.()||'';priorTime=Number(h.currentTime?.()||0);priorSelection=Number(h.playback?.()?.selectionId||0);noProgressSince=0;bufferingSince=0;}
+        }
         if(soakRun.samples.length%4===0){const x=await fetchTimed(`/api/milestone/console?frontendVersion=${encodeURIComponent(VERSION)}&limit=40`,{timeoutMs:10000});assert(x.body?.problemCounts?.errors===0,`milestone errors during soak: ${x.body?.problemCounts?.errors}`);const workers=Object.values(x.body?.extra?.history?.workers||{});assert(!workers.length||workers.every(w=>w?.healthy===true),'worker became unhealthy during soak');}
+        nextSampleAt+=sampleMs;while(nextSampleAt<=Date.now())nextSampleAt+=sampleMs;
       }
       const heapGrowth=maxHeap&&heap0?maxHeap-heap0:0;if(heap0&&heapGrowth>160*1024*1024&&maxHeap>heap0*2.5)throw new Error(`heap growth exceeded soak threshold: ${Math.round(heapGrowth/1048576)} MB`);
-      await phaseStep(soakRun,'soak: extended stability summary',async()=>({durationMs:Date.now()-soakRun.startedAt,samples:soakRun.samples.length,transitions,restartRegressions,heapStartBytes:heap0,heapMaxBytes:maxHeap,heapGrowthBytes:heapGrowth}));
+      const sampledSpanMs=soakRun.samples.length>1?Number(soakRun.samples.at(-1).at-soakRun.samples[0].at):0,coverageRatio=Math.min(1,soakRun.samples.length/expectedSamples),minimumSpanMs=Math.max(0,durationMs-(sampleMs*2.5));
+      assert(soakRun.samples.length>=minimumSamples,`soak telemetry coverage too low: ${soakRun.samples.length}/${expectedSamples} samples`);
+      assert(sampledSpanMs>=minimumSpanMs,`soak telemetry span too short: ${sampledSpanMs} ms < ${minimumSpanMs} ms`);
+      await phaseStep(soakRun,'soak: extended stability summary',async()=>({durationMs:Date.now()-soakRun.startedAt,samples:soakRun.samples.length,expectedSamples,minimumSamples,coverageRatio,sampledSpanMs,maxSampleGapMs,maxAllowedSampleGapMs,transitions,transitionWindows,transitionTimeouts,restartRegressions,longestNoProgressMs,maxNoProgressMs,longestBufferingMs,maxBufferingMs,decodeRecoveries,heapStartBytes:heap0,heapMaxBytes:maxHeap,heapGrowthBytes:heapGrowth}));
+      soakRun.coverage={samples:soakRun.samples.length,expectedSamples,minimumSamples,coverageRatio,sampledSpanMs,maxSampleGapMs,maxAllowedSampleGapMs,longestNoProgressMs,maxNoProgressMs,longestBufferingMs,maxBufferingMs,transitionWindows,transitionTimeouts,decodeRecoveries};
       soakRun.status=soakRun.steps.some(x=>x.status==='FAIL')?'FAIL':'PASS';
-    }catch(err){soakRun.status=err?.name==='AbortError'?'STOPPED':'FAIL';soakRun.steps.push({name:'soak: runtime',status:soakRun.status==='FAIL'?'FAIL':'WARN',durationMs:0,detail:String(err?.message||err),data:null,at:Date.now()});}
-    finally{soakRun.finishedAt=Date.now();try{if(original.scoreDate&&h.scoreDate?.()!==original.scoreDate)await h.setScoreDate?.(original.scoreDate);}catch(_){}try{if(original.mediaKey&&h.currentMediaKey?.()!==original.mediaKey)await h.restoreMediaKey?.(original.mediaKey);}catch(_){}try{if(original.resourceMode)await h.setResourceMode?.(original.resourceMode);}catch(_){}post('soak',soakRun.status==='PASS'?'INFO':'ERROR',`TIER 2 SOAK ${soakRun.status}`,{runId:soakRun.id,durationMs:soakRun.finishedAt-soakRun.startedAt,samples:soakRun.samples.length});await refresh();}
+    }catch(err){soakRun.status=err?.name==='AbortError'?'STOPPED':'FAIL';soakRun.coverage={samples:soakRun.samples.length,expectedSamples,minimumSamples,coverageRatio:Math.min(1,soakRun.samples.length/expectedSamples),sampledSpanMs:soakRun.samples.length>1?Number(soakRun.samples.at(-1).at-soakRun.samples[0].at):0,maxSampleGapMs,maxAllowedSampleGapMs,longestNoProgressMs,maxNoProgressMs,longestBufferingMs,maxBufferingMs,transitionWindows,transitionTimeouts,decodeRecoveries};soakRun.steps.push({name:'soak: runtime',status:soakRun.status==='FAIL'?'FAIL':'WARN',durationMs:0,detail:String(err?.message||err),data:safe(soakRun.coverage),at:Date.now()});}
+    finally{soakRun.finishedAt=Date.now();try{if(original.scoreDate&&h.scoreDate?.()!==original.scoreDate)await h.setScoreDate?.(original.scoreDate);}catch(_){}try{if(original.mediaKey&&h.currentMediaKey?.()!==original.mediaKey)await withTimeout(()=>h.restoreMediaKey?.(original.mediaKey),10000,'soak media restore');}catch(_){}try{if(original.resourceMode)await h.setResourceMode?.(original.resourceMode);}catch(_){}post('soak',soakRun.status==='PASS'?'INFO':'ERROR',`TIER 2 SOAK ${soakRun.status}`,{runId:soakRun.id,durationMs:soakRun.finishedAt-soakRun.startedAt,samples:soakRun.samples.length,coverage:soakRun.coverage});await refresh();}
     return safe(soakRun);
   }
   async function runChaosTest(){

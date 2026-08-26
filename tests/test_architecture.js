@@ -7,7 +7,7 @@ for(const f of ['core-model.js','architecture/score-date-store.js','architecture
   vm.runInThisContext(fs.readFileSync(path.join(root,f),'utf8'),{filename:f});
 }
 assert.equal(SBB_CORE.version,releaseVersion);
-assert.equal(releaseVersion,'4.3.3');
+assert.match(releaseVersion,/^\d+\.\d+\.\d+$/);
 assert.deepEqual(SBB_CORE.enabledCompetitions().map(x=>x.id),['MLB','NFL','NBA','NHL','EPL','MLS']);
 assert.equal(SBB_CORE.COMPETITIONS.MLS.enabled,true);
 assert.equal(SBB_MEDIA_WORK.PRIORITY.VISIBLE_SCORE,'VISIBLE_SCORE');

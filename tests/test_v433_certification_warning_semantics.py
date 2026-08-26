@@ -6,8 +6,8 @@ CERT=(ROOT/'architecture'/'foundation-certification.js').read_text(encoding='utf
 VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 
 
-def test_release_is_v433():
-    assert VERSION == '4.3.3'
+def test_release_retains_v433_warning_semantics_or_newer():
+    assert tuple(map(int, VERSION.split('.'))) >= (4,3,3)
 
 
 def test_tier3_allows_advisory_warn_without_allowing_fail():

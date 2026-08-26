@@ -4,12 +4,13 @@ from pathlib import Path
 from urllib.error import HTTPError
 
 ROOT=Path(__file__).resolve().parents[1]
+VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 
 class V432ExtraInningTests(unittest.TestCase):
     def test_extra_inning_reconciler_is_loaded_before_game_center_view(self):
         html=(ROOT/'index.html').read_text(encoding='utf-8')
-        helper='architecture/game-center-linescore.js?v=4.3.3'
-        view='ui/game-center-view.js?v=4.3.3'
+        helper=f'architecture/game-center-linescore.js?v={VERSION}'
+        view=f'ui/game-center-view.js?v={VERSION}'
         self.assertIn(helper,html);self.assertIn(view,html)
         self.assertLess(html.index(helper),html.index(view))
         gc=(ROOT/'ui/game-center-view.js').read_text(encoding='utf-8')

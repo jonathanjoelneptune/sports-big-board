@@ -1,6 +1,6 @@
-# Sports Big Board v4.3.3 — Three-Tier Foundation Certification
+# Sports Big Board v4.3.4 — Foundation Certification / Soak Progress Closure
 
-v4.3.3 changes Foundation Certification from the short v4.3.0 stress certificate into a three-tier release gate. The prior v4.3.0 certificate is retained as Tier 1 baseline evidence only; it is not sufficient for overall Foundation Certification.
+v4.3.4 changes Foundation Certification from the short v4.3.0 stress certificate into a three-tier release gate. The prior v4.3.0 certificate is retained as Tier 1 baseline evidence only; it is not sufficient for overall Foundation Certification.
 
 ## Tier 1 — Functional / Stress Hardening
 
@@ -40,14 +40,24 @@ Otherwise overall status remains **CERTIFICATION IN PROGRESS** or **NOT CERTIFIE
 No certification tier rebuilds or deletes the durable historical catalog and no soundtrack/media upload is required.
 
 
-## v4.3.3 resilience closure
+## v4.3.4 resilience closure
 
 - MLB extra-inning linescores reconcile a blank decisive extra-inning cell from the final authoritative run total without mutating the source Game Center payload.
 - Game Center background work has a scheduler-level 429 circuit breaker. A provider rate limit stops already-queued background jobs for that competition; explicit touch intent remains permitted.
 - Tier 3 records provider-circuit boundedness and preserves the complete chaos evidence through the clean post-chaos recovery window.
 
-## v4.3.3 advisory-warning semantics
+## v4.3.4 advisory-warning semantics
 
 Tier 3 distinguishes an advisory timing WARN from a failed resilience assertion. A chaos phase that completes all assertions but exceeds its `warnAboveMs` performance target remains visible as WARN evidence and is listed in the exported certificate. It does not by itself fail Tier 3. Any `FAIL` step, failed recovery gate, playback ownership violation, worker-health failure, or other assertion failure still blocks certification. Tier 2 remains strict and does not automatically accept WARN evidence.
 
 This change does not raise the aborted-request-storm 5-second warning target. The threshold remains useful telemetry; the certification gate now interprets it according to its intended severity.
+
+## v4.3.4 soak / playback-progress closure
+
+Tier 2 no longer passes on wall-clock duration alone. A 15-minute run must maintain continuous 15-second telemetry, capture at least 90% of expected samples, keep the maximum sampling gap below 37.5 seconds, and cover essentially the full soak window.
+
+While an active clip reports `playing`, its playback position must continue to advance. More than 45 seconds without forward progress fails Tier 2. More than 45 seconds of sustained buffering also fails Tier 2. Game-to-game transition calls are bounded so a hung transition cannot silently consume the remainder of the soak window.
+
+Unattended playback now treats native/provider playback failure as a recoverable channel event: the failed media asset is marked unusable for the runtime and the board automatically tunes the next eligible item. Explicit score-card sessions preserve their existing exact-game fallback behavior.
+
+The Tier 2 certificate now records sample coverage, observed sample span, maximum sample gap, longest no-progress interval, longest buffering interval, transition timeouts, and observed decode recoveries.

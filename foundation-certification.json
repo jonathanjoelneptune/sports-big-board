@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.3.3",
+  "release": "4.3.4",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -33,14 +33,24 @@
       "minimumDurationMs": 900000,
       "sampleIntervalMs": 15000,
       "requirements": [
+        "At least 90% of expected 15-second telemetry samples are captured across the full soak window",
+        "No telemetry gap exceeds 2.5 sample intervals",
+        "Playback currentTime advances while state is playing; sustained no-progress beyond 45 seconds fails",
+        "Sustained buffering beyond 45 seconds fails",
+        "Game-to-game soak transitions are bounded by timeout and may not silently consume the soak window",
+        "Media decode/provider failures must self-recover to another playable selection rather than strand unattended playback",
         "No playback ownership invariant violation",
-        "No same-media currentTime restart regression",
+        "No same-media currentTime restart or same-media reselection regression",
         "Game Center remains tied to game-scoped active media",
         "Workers remain healthy during periodic platform snapshots",
         "No milestone clean-window errors",
-        "No excessive JavaScript heap growth when browser heap telemetry is available",
-        "Repeated game transitions remain stable"
-      ]
+        "No excessive JavaScript heap growth when browser heap telemetry is available"
+      ],
+      "minimumTelemetryCoverageRatio": 0.9,
+      "maximumSampleGapMs": 37500,
+      "maximumNoProgressMs": 45000,
+      "maximumBufferingMs": 45000,
+      "transitionTimeoutMs": 12000
     },
     "tier3": {
       "name": "Controlled Chaos / Recovery",
