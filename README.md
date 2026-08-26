@@ -1,23 +1,18 @@
-# Sports Big Board v4.1.31
+# Sports Big Board v4.1.32
 
-> v4.1.31 is the **Persistent One-Stream Soundtrack** release. It makes the soundtrack truly site-level rather than clip-level: exactly one browser `Audio` element exists, the same song and timestamp persist across highlight changes, and the music button pauses/resumes that exact stream. Only Next, natural song completion, or an actual playback error selects another song.
+> v4.1.32 is the **Clip-Scoped Soundtrack Simplification** release. It deliberately keeps the music model simple: one browser `Audio` element, one soundtrack song assigned to each highlight clip, a new song when the video clip changes, and automatic song advance only when a long highlight outlasts its current song.
 
-## v4.1.31 — single-stream soundtrack hardening
+## v4.1.32 — clip-scoped soundtrack simplification
 
-- **Site-level music ownership:** one soundtrack engine sits above the A/B highlight players. Changing videos never recreates or restarts the current music track.
-- **Minimal controls:** a compact `♫ play/pause` control and soundtrack-volume button sit beside the existing video transport controls.
-- **Highlight-aware audio:** music runs during startup/buffering, ducks under actual highlight audio, pauses when the viewer pauses, and stays continuous through normal program transitions.
-- **113-track no-repeat library:** the normalized Mixkit manifest represents roughly 3 hours 41 minutes of audio. A weighted unique shuffle bag favors CORE tracks without repeating any enabled track until the bag is exhausted.
-- **Literally one soundtrack Audio element:** there is no second preload player. Video `READY / STARTING / BUFFERING` handoffs do not reload or replace the soundtrack. Next hard-stops the current song before loading the replacement.
-- **Persistent preference/session:** enabled state, volume, current track/position, exact remaining shuffle bag, and already-heard IDs survive reloads through v2 local storage. Browser autoplay restrictions remain respected and the v1 state migrates forward.
-- **Pause/Next race hardening:** highlight pause is immediate and authoritative, stale asynchronous `play()` completions are invalidated with an operation epoch, and soundtrack-control clicks are excluded from the generic autoplay-unlock path.
-- **Single-tab ownership:** a short local lease/BroadcastChannel claim prevents two Sports Big Board tabs from playing independent soundtrack streams at the same time.
-- **Dev curation:** Player Debug continues to show the exact soundtrack title, tier, and track ID so unwanted songs can be identified and removed later.
-- **Private Cloud Storage audio boundary:** GitHub Pages ships only the player and ~46 KB manifest. The GCS bucket remains private under Public Access Prevention. The backend prefers short-lived signed GCS redirects and falls back to authenticated private streaming; the repository explicitly ignores `assets/soundtrack/tracks/`.
-- **One-command private audio setup:** `cloud/gcp/UPLOAD-SOUNDTRACK.sh` accepts the six ZIPs, validates all track hashes, uploads the library, grants the VM private read access, and enables signed-URL capability when IAM permits it.
-- **No catalog rebuild:** soundtrack deployment is independent of SQLite, historical discovery, Silver media, Game Center, and API credentials.
-
-See **SOUNDTRACK SETUP.md** for the one-time six-ZIP Cloud Storage upload.
+- **Truthful launch state:** before the red `START SPORTS BIG BOARD` action, soundtrack is genuinely OFF and video warmup cannot start hidden music. Launch explicitly turns soundtrack ON and the UI immediately reflects that state.
+- **One song per clip:** a new highlight media identity selects exactly one new soundtrack song. `starting / buffering / playing` changes for that same clip cannot select extra songs.
+- **Long-highlight continuation:** if the soundtrack song ends while the same video is still playing, the next shuffle-bag song begins automatically.
+- **Video pause/resume coupling:** pausing the highlight pauses its assigned soundtrack song at the same position; resuming the highlight resumes that song.
+- **Music control authority:** the soundtrack play/pause button controls the exact current clip song. If music is OFF, later clip changes remain silent until the user turns music back ON.
+- **Single audio invariant:** exactly one soundtrack `Audio` element exists. There is no crossfade player and no preload audio player.
+- **No-repeat library:** the 113-track shuffle bag remains persistent so the overall library still avoids repeats until the cycle is exhausted.
+- **Dev curation:** Player Debug continues to show the exact soundtrack title, tier, and track ID for later pruning.
+- **Private Cloud Storage audio boundary:** the existing private GCS/signed-URL transport remains unchanged; no soundtrack re-upload or catalog rebuild is required.
 
 ## v4.1.26 — operator telemetry, Silver authority, and playback smoothing
 

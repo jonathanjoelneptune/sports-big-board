@@ -1,19 +1,19 @@
-/* Sports Big Board v4.1.31 — one-stream persistent site soundtrack.
-   The soundtrack belongs to the page/session, never to an individual highlight.
-   Exactly one Audio element exists. Video changes do not reload or advance music. */
+/* Sports Big Board v4.1.32 — clip-scoped soundtrack.
+   One soundtrack Audio element exists. Every highlight clip gets one soundtrack
+   track. Video pause/resume controls that same track; clip changes select a new
+   track; long clips advance to another song when the current song ends. */
 (() => {
   'use strict';
-  const RUNTIME_KEY='__SBB_SOUNDTRACK_SINGLETON_V131__';
+  const RUNTIME_KEY='__SBB_SOUNDTRACK_SINGLETON_V132__';
   if(window[RUNTIME_KEY]?.api){ window.SBB_SOUNDTRACK=window[RUNTIME_KEY].api; return; }
   if(window[RUNTIME_KEY]?.initializing) return;
   window[RUNTIME_KEY]={initializing:true,api:null};
 
-  const VERSION='1.3';
-  const STORAGE_KEY='sbb:soundtrack:v2';
-  const LEGACY_STORAGE_KEY='sbb:soundtrack:v1';
+  const VERSION='1.4';
+  const STORAGE_KEY='sbb:soundtrack:v3';
+  const LEGACY_KEYS=['sbb:soundtrack:v2','sbb:soundtrack:v1'];
   const OWNER_KEY='sbb:soundtrack:owner:v1';
   const OWNER_LEASE_MS=5000;
-  const END_GRACE_MS=6000;
   const MANIFEST_URL=new URL('assets/soundtrack/manifest.json',document.baseURI).toString();
   const cfg=window.SBB_CONFIG||{};
   const remoteBase=String(cfg.soundtrackBase||'').trim().replace(/\/+$/,'');
@@ -27,16 +27,13 @@
   let bag=[];
   let playedIds=new Set();
   let currentTrack=null;
+  let currentClipKey='';
   let playbackState='idle';
-  let sessionActive=false;
-  let videoPaused=false;
+  let experienceStarted=false;
+  let enabled=false;
   let searchPaused=false;
-  let enabled=true;
   let masterVolume=.16;
   let highlightDuckFactor=.625;
-  let resumeTrackId='';
-  let resumePosition=0;
-  let endTimer=0;
   let saveTimer=0;
   let ownerTimer=0;
   let consecutiveFailures=0;
@@ -46,7 +43,7 @@
   let operationEpoch=0;
   let tabOwnsAudio=false;
 
-  // v4.1.31 invariant: there is exactly ONE soundtrack media element.
+  // v4.1.32 invariant: exactly ONE soundtrack media element exists.
   const activeAudio=new Audio();
   activeAudio.preload='auto';
   activeAudio.playsInline=true;
@@ -61,19 +58,18 @@
   }
   function readStored(){
     const current=readJson(STORAGE_KEY);
-    if(current && typeof current==='object') return {...current,__legacy:false};
-    const legacy=readJson(LEGACY_STORAGE_KEY);
-    if(legacy && typeof legacy==='object') return {...legacy,__legacy:true};
-    return {__legacy:false};
+    if(current&&typeof current==='object')return current;
+    for(const key of LEGACY_KEYS){
+      const legacy=readJson(key);
+      if(legacy&&typeof legacy==='object')return legacy;
+    }
+    return {};
   }
   function saveStored(){
     try{
       localStorage.setItem(STORAGE_KEY,JSON.stringify({
-        version:2,
-        enabled,
+        version:3,
         volume:masterVolume,
-        currentTrackId:currentTrack?.id||'',
-        currentTime:Number.isFinite(activeAudio.currentTime)?Math.max(0,activeAudio.currentTime):0,
         remainingIds:bag.map(x=>x.id),
         playedIds:[...playedIds],
         savedAt:Date.now()
@@ -82,16 +78,13 @@
   }
   function hydrateStored(){
     const stored=readStored();
-    if(typeof stored.enabled==='boolean') enabled=stored.enabled;
-    if(Number.isFinite(Number(stored.volume))) masterVolume=clamp(stored.volume,0,.5);
-    resumeTrackId=String(stored.currentTrackId||'');
-    resumePosition=Math.max(0,Number(stored.currentTime||0));
+    if(Number.isFinite(Number(stored.volume)))masterVolume=clamp(stored.volume,0,.5);
     return stored;
   }
 
   function trackUrl(track){
     const file=String(track?.file||'').replace(/^\/+/, '');
-    if(remoteBase) return `${remoteBase}/${file}`;
+    if(remoteBase)return `${remoteBase}/${file}`;
     return new URL(`assets/soundtrack/${file}`,document.baseURI).toString();
   }
   function weightedShuffle(items){
@@ -109,53 +102,46 @@
     const seenRemaining=new Set();
     bag=[];
     for(const raw of remainingSource){
-      const id=String(raw||'');
-      const t=byId.get(id);
-      if(t && id!==currentTrack?.id && !seenRemaining.has(id)){seenRemaining.add(id);bag.push(t);}
+      const id=String(raw||''),t=byId.get(id);
+      if(t&&!seenRemaining.has(id)){seenRemaining.add(id);bag.push(t);}
     }
-    if(Array.isArray(stored.playedIds)){
-      playedIds=new Set(stored.playedIds.map(String).filter(id=>validIds.has(id)&&!seenRemaining.has(id)));
-    }else{
-      playedIds=new Set(tracks.map(t=>t.id).filter(id=>id!==currentTrack?.id&&!seenRemaining.has(id)));
-    }
-    if(currentTrack?.id) playedIds.add(currentTrack.id);
+    if(Array.isArray(stored.playedIds))playedIds=new Set(stored.playedIds.map(String).filter(id=>validIds.has(id)&&!seenRemaining.has(id)));
+    else playedIds=new Set(tracks.map(t=>t.id).filter(id=>!seenRemaining.has(id)));
     const accounted=new Set([...seenRemaining,...playedIds]);
-    if(currentTrack?.id) accounted.add(currentTrack.id);
     bag.push(...weightedShuffle(tracks.filter(t=>!accounted.has(t.id))));
-    if(!bag.length && tracks.length>1) rebuildCycle(currentTrack?.id||'');
+    if(!bag.length&&tracks.length)rebuildCycle('');
   }
   function drawNextTrack(){
-    if(currentTrack?.id) playedIds.add(currentTrack.id);
-    if(!bag.length) rebuildCycle(currentTrack?.id||'');
+    if(currentTrack?.id)playedIds.add(currentTrack.id);
+    if(!bag.length)rebuildCycle(currentTrack?.id||'');
     let next=bag.shift()||null;
-    if(!next && tracks.length===1) next=tracks[0];
-    if(next && currentTrack && next.id===currentTrack.id && tracks.length>1){
+    if(!next&&tracks.length===1)next=tracks[0];
+    if(next&&currentTrack&&next.id===currentTrack.id&&tracks.length>1){
       bag.push(next);next=bag.shift()||tracks.find(t=>t.id!==currentTrack.id)||next;
     }
     return next;
   }
-  function peekNextTrack(){
-    if(bag.length) return bag[0];
-    if(tracks.length<=1) return tracks[0]||null;
-    return tracks.find(t=>t.id!==currentTrack?.id)||tracks[0]||null;
-  }
 
   function soundtrackShouldRun(){
-    return enabled && available && sessionActive && !videoPaused && !searchPaused && !document.hidden;
+    return experienceStarted&&enabled&&available&&!searchPaused&&!document.hidden&&ACTIVE_STATES.has(playbackState);
   }
   function baseTargetVolume(){
-    if(!soundtrackShouldRun() || !tabOwnsAudio) return 0;
-    if(playbackState==='playing') return masterVolume*highlightDuckFactor;
-    return masterVolume;
+    if(!soundtrackShouldRun()||!tabOwnsAudio)return 0;
+    return playbackState==='playing'?masterVolume*highlightDuckFactor:masterVolume;
   }
-  function setActiveVolume(){ try{activeAudio.volume=clamp(baseTargetVolume(),0,1);}catch(_){ } }
+  function setActiveVolume(){try{activeAudio.volume=clamp(baseTargetVolume(),0,1);}catch(_){ }}
   function bumpEpoch(){operationEpoch+=1;return operationEpoch;}
   function hardPause({reset=false,bump=true}={}){
     if(bump)bumpEpoch();
     try{activeAudio.pause();activeAudio.volume=0;}catch(_){ }
     if(reset){try{activeAudio.currentTime=0;}catch(_){ }}
   }
-  function loadCurrentTrack(track,{position=0}={}){
+  function unloadActive(){
+    hardPause({reset:true,bump:true});
+    try{activeAudio.removeAttribute('src');activeAudio.load();}catch(_){ }
+    activeAudio.__sbbTrackId='';activeAudio.__sbbFailed=false;
+  }
+  function loadTrack(track){
     const epoch=bumpEpoch();
     try{activeAudio.pause();activeAudio.volume=0;activeAudio.removeAttribute('src');activeAudio.load();}catch(_){ }
     if(!track)return epoch;
@@ -163,25 +149,24 @@
     activeAudio.preload='auto';
     activeAudio.__sbbTrackId=track.id;
     activeAudio.__sbbFailed=false;
-    if(position>0){
-      const seek=()=>{
-        if(epoch!==operationEpoch||activeAudio.__sbbTrackId!==track.id){activeAudio.removeEventListener('loadedmetadata',seek);return;}
-        try{if(Number.isFinite(activeAudio.duration)&&activeAudio.duration>5)activeAudio.currentTime=Math.min(position,Math.max(0,activeAudio.duration-3));}catch(_){ }
-        activeAudio.removeEventListener('loadedmetadata',seek);
-      };
-      activeAudio.addEventListener('loadedmetadata',seek);
-    }
     try{activeAudio.load();}catch(_){ }
     return epoch;
   }
-
+  function announceTrack(reason='track-change'){
+    if(!currentTrack)return;
+    try{console.info('[SBB soundtrack] now playing',{id:currentTrack.id,title:currentTrack.title,tier:currentTrack.tier,clipKey:currentClipKey,reason});}catch(_){ }
+  }
+  function chooseNewTrack(reason='clip-change'){
+    hardPause({reset:true,bump:true});
+    const next=drawNextTrack();
+    currentTrack=next||null;
+    if(currentTrack){playedIds.add(currentTrack.id);announceTrack(reason);loadTrack(currentTrack);}else unloadActive();
+    saveStored();renderUi();
+    return currentTrack;
+  }
   function currentTrackDebugLabel(){
     if(!currentTrack)return '—';
     return `${currentTrack.title||currentTrack.id||'Unknown'} • ${currentTrack.tier||'ROTATION'} • ${currentTrack.id||'—'}`;
-  }
-  function announceTrack(reason='track-change'){
-    if(!currentTrack)return;
-    try{console.info('[SBB soundtrack] now playing',{id:currentTrack.id,title:currentTrack.title,tier:currentTrack.tier,reason});}catch(_){ }
   }
 
   function parseOwner(){
@@ -219,10 +204,9 @@
   async function ensurePlaying({claim=false}={}){
     if(!initialized)await init();
     if(!soundtrackShouldRun()||!currentTrack)return false;
-    clearTimeout(endTimer);endTimer=0;
     if(!claimOwnership({force:claim}))return false;
-    if(!activeAudio.src)loadCurrentTrack(currentTrack,{position:resumePosition});
-    const epoch=operationEpoch, expectedTrackId=currentTrack.id;
+    if(!activeAudio.src)loadTrack(currentTrack);
+    const epoch=operationEpoch,expectedTrackId=currentTrack.id;
     try{
       if(activeAudio.paused)await activeAudio.play();
       if(epoch!==operationEpoch||currentTrack?.id!==expectedTrackId||activeAudio.__sbbTrackId!==expectedTrackId||!soundtrackShouldRun()||!tabOwnsAudio){
@@ -236,24 +220,37 @@
       renderUi();return false;
     }
   }
-  function pauseNow(){hardPause({reset:false,bump:true});saveStored();renderUi();}
-  function scheduleEndGrace(){
-    clearTimeout(endTimer);
-    endTimer=setTimeout(()=>{
-      if(playbackState==='ended'){
-        sessionActive=false;
-        pauseNow();
-      }
-    },END_GRACE_MS);
+  function pauseNow(){hardPause({reset:false,bump:true});renderUi();}
+
+  function syncClip(rawKey,{reason='clip-change'}={}){
+    const key=String(rawKey||'').trim();
+    if(!key||key===currentClipKey)return false;
+    currentClipKey=key;
+    chooseNewTrack(reason);
+    return true;
+  }
+  function startExperience(rawClipKey=''){
+    experienceStarted=true;
+    enabled=true; // Every fresh board launch starts with soundtrack ON, matching the UI.
+    syncClip(rawClipKey,{reason:'experience-start'});
+    renderUi();
+    if(soundtrackShouldRun())ensurePlaying({claim:true});
+  }
+  function setPlaybackState(mode,rawClipKey=''){
+    const next=String(mode||'idle').toLowerCase();
+    playbackState=next;
+    const changedClip=syncClip(rawClipKey,{reason:'video-change'});
+    if(ACTIVE_STATES.has(next)){
+      if(experienceStarted&&enabled&&!searchPaused){ensurePlaying({claim:changedClip});setActiveVolume();}
+    }else if(next==='paused'||next==='ended'||next==='ready'||next==='idle'){
+      pauseNow();
+    }
+    renderUi();
   }
   function advanceTrack(reason='next'){
-    const resume=soundtrackShouldRun();
-    hardPause({reset:true,bump:true});
-    const next=drawNextTrack();
-    if(!next){renderUi();return;}
-    currentTrack=next;playedIds.add(next.id);announceTrack(reason);
-    loadCurrentTrack(currentTrack);saveStored();renderUi();
-    if(resume)ensurePlaying({claim:true});
+    const shouldResume=soundtrackShouldRun();
+    chooseNewTrack(reason);
+    if(shouldResume)ensurePlaying({claim:true});
   }
   function handleAudioFailure(err){
     if(activeAudio.__sbbTrackId!==currentTrack?.id||activeAudio.__sbbFailed)return;
@@ -262,34 +259,13 @@
     if(consecutiveFailures>=Math.min(8,Math.max(1,tracks.length))){available=false;pauseNow();renderUi();return;}
     advanceTrack('error-skip');
   }
-
-  // Highlight lifecycle is intentionally NOT a song lifecycle. Starting, buffering,
-  // ready/cued and automatic video changes keep the same song/position. Only an
-  // explicit PAUSED state pauses the soundtrack.
-  function setPlaybackState(mode){
-    const next=String(mode||'idle').toLowerCase();
-    const changed=next!==playbackState;
-    playbackState=next;
-    if(ACTIVE_STATES.has(next)){
-      clearTimeout(endTimer);endTimer=0;
-      sessionActive=true;videoPaused=false;
-      ensurePlaying({claim:false});setActiveVolume();
-    }else if(next==='paused'){
-      videoPaused=true;pauseNow();
-    }else if(next==='ended'){
-      if(sessionActive&&!videoPaused){ensurePlaying({claim:false});scheduleEndGrace();}
-    }else if(next==='ready'){
-      // READY is common during a clip handoff/cue. Do not pause or reload music.
-      if(sessionActive&&!videoPaused&&changed)ensurePlaying({claim:false});
-    }
-    renderUi();
-  }
   function pauseForSearch(){searchPaused=true;pauseNow();renderUi();}
-  function resumeFromSearch(){searchPaused=false;if(sessionActive&&!videoPaused)ensurePlaying({claim:false});renderUi();}
+  function resumeFromSearch(){searchPaused=false;if(soundtrackShouldRun())ensurePlaying({claim:false});renderUi();}
 
   function toggleEnabled(){
-    enabled=!enabled;available=true;consecutiveFailures=0;saveStored();renderUi();
-    if(enabled&&sessionActive&&!videoPaused&&!searchPaused)ensurePlaying({claim:true});
+    if(!experienceStarted)return;
+    enabled=!enabled;available=true;consecutiveFailures=0;renderUi();
+    if(enabled&&ACTIVE_STATES.has(playbackState)&&!searchPaused)ensurePlaying({claim:true});
     else if(!enabled){pauseNow();releaseOwnership();}
   }
   function setVolume(value){masterVolume=clamp(value,0,.5);saveStored();setActiveVolume();renderUi();}
@@ -305,8 +281,10 @@
       const sounding=soundtrackShouldRun()&&tabOwnsAudio&&!activeAudio.paused;
       toggle.textContent=enabled?'♫ Ⅱ':'♫ ▶';
       toggle.setAttribute('aria-pressed',enabled?'true':'false');
-      toggle.classList.toggle('is-enabled',enabled);toggle.classList.toggle('is-playing',sounding);toggle.classList.toggle('is-unavailable',!available);
-      toggle.title=!available?'Soundtrack files unavailable':(enabled?`Soundtrack on${currentTrack?.title?` • ${currentTrack.title}`:''}`:'Turn Sports Big Board soundtrack on');
+      toggle.classList.toggle('is-enabled',enabled);
+      toggle.classList.toggle('is-playing',sounding);
+      toggle.classList.toggle('is-unavailable',!available);
+      toggle.title=!experienceStarted?'Soundtrack starts with Sports Big Board':(!available?'Soundtrack files unavailable':(enabled?`Soundtrack on${currentTrack?.title?` • ${currentTrack.title}`:''}`:'Turn soundtrack on'));
       toggle.setAttribute('aria-label',enabled?'Pause Sports Big Board soundtrack':'Enable Sports Big Board soundtrack');
     }
     if(volBtn){
@@ -315,7 +293,7 @@
     }
     if(slider&&Math.abs(Number(slider.value)-masterVolume)>.001)slider.value=String(masterVolume);
     const debug=$('diagSoundtrack');
-    if(debug){debug.textContent=currentTrackDebugLabel();debug.title=currentTrack?.sourceFilename||currentTrack?.file||'';}
+    if(debug){debug.textContent=currentTrackDebugLabel();debug.title=`${currentTrack?.sourceFilename||currentTrack?.file||''}${currentClipKey?` • clip ${currentClipKey}`:''}`;}
     document.body?.classList.toggle('sbb-soundtrack-enabled',enabled);
   }
 
@@ -326,13 +304,10 @@
       manifest=await r.json();
       tracks=(Array.isArray(manifest?.tracks)?manifest.tracks:[]).filter(t=>t?.id&&t?.file&&t?.disabled!==true);
       const defs=manifest?.playbackDefaults||{};
-      if(Number.isFinite(Number(defs.defaultMusicVolume))&&!localStorage.getItem(STORAGE_KEY)&&!localStorage.getItem(LEGACY_STORAGE_KEY))masterVolume=clamp(defs.defaultMusicVolume,0,.5);
+      if(Number.isFinite(Number(defs.defaultMusicVolume))&&!localStorage.getItem(STORAGE_KEY)&&!LEGACY_KEYS.some(k=>localStorage.getItem(k)))masterVolume=clamp(defs.defaultMusicVolume,0,.5);
       const normal=Math.max(.001,Number(defs.defaultMusicVolume||.16)),duck=Math.max(0,Number(defs.highlightPlayingVolume||.10));
       highlightDuckFactor=clamp(duck/normal,0,1);
-      const stored=readStored();
-      currentTrack=tracks.find(t=>t.id===resumeTrackId)||weightedShuffle(tracks)[0]||null;
-      restoreCycle(stored);
-      if(currentTrack)loadCurrentTrack(currentTrack,{position:resumePosition});
+      restoreCycle(readStored());
       available=tracks.length>0;renderUi();return manifest;
     }).catch(err=>{available=false;console.warn('[SBB soundtrack] manifest unavailable',err);renderUi();return null;});
     return manifestPromise;
@@ -356,7 +331,9 @@
   }
   function bindAudio(){
     activeAudio.addEventListener('error',()=>handleAudioFailure(new Error('audio element error')));
-    activeAudio.addEventListener('ended',()=>{if(activeAudio.__sbbTrackId===currentTrack?.id)advanceTrack('ended');});
+    // If the highlight is still running when a song ends, immediately continue with
+    // another soundtrack song for that SAME clip.
+    activeAudio.addEventListener('ended',()=>{if(activeAudio.__sbbTrackId===currentTrack?.id&&soundtrackShouldRun())advanceTrack('song-ended');});
     activeAudio.addEventListener('playing',renderUi);
     activeAudio.addEventListener('pause',renderUi);
   }
@@ -368,20 +345,12 @@
   }
 
   const api=Object.freeze({
-    __singleton:true,
-    version:VERSION,
-    init,
-    setPlaybackState,
-    pauseForSearch,
-    resumeFromSearch,
-    setVolume,
-    toggle:toggleEnabled,
-    skip:()=>advanceTrack('next'),
+    __singleton:true,version:VERSION,init,startExperience,setPlaybackState,pauseForSearch,resumeFromSearch,setVolume,
+    toggle:toggleEnabled,skip:()=>advanceTrack('next'),
     snapshot:()=>({
-      enabled,available,playbackState,sessionActive,videoPaused,searchPaused,volume:masterVolume,
+      enabled,available,experienceStarted,playbackState,currentClipKey,searchPaused,volume:masterVolume,
       currentTrack:currentTrack?{id:currentTrack.id,title:currentTrack.title,tier:currentTrack.tier,file:currentTrack.file,sourceFilename:currentTrack.sourceFilename}:null,
-      nextTrackId:peekNextTrack()?.id||'',remainingInBag:bag.length,playedInCycle:playedIds.size,trackCount:tracks.length,
-      remoteBase,tabOwnsAudio,operationEpoch,audioElementCount:1
+      remainingInBag:bag.length,playedInCycle:playedIds.size,trackCount:tracks.length,remoteBase,tabOwnsAudio,operationEpoch,audioElementCount:1
     })
   });
   window.SBB_SOUNDTRACK=api;

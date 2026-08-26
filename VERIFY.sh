@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-echo "Sports Big Board v4.1.31 verification"
+echo "Sports Big Board v4.1.32 verification"
 echo "----------------------------------"
 
 if command -v node >/dev/null 2>&1; then
@@ -34,4 +34,4 @@ grep -q 'https://203-0-113-10.sslip.io' "$TMP/pages/config.js"
 grep -q 'https://203-0-113-10.sslip.io/api/soundtrack' "$TMP/pages/config.js"
 grep -q "soundtrackTransport:'private-gcs'" "$TMP/pages/config.js"
 
-echo "PASS: v4.1.31 local + cloud Stage 1 architecture and regression suite"
+echo "PASS: v4.1.32 local + cloud Stage 1 architecture and regression suite"

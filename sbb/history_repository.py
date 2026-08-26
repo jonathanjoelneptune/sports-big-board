@@ -42,7 +42,7 @@ class HistoryRepository:
 
         Re-running ``PRAGMA journal_mode=WAL`` on every short-lived connection can
         serialize otherwise independent readers behind catalog writers.  The journal
-        mode is persistent database state, so v4.1.31 configures it in ``_init_db``
+        mode is persistent database state, so v4.1.32 configures it in ``_init_db``
         and keeps normal connections cheap.
         """
         conn = sqlite3.connect(self.path, timeout=30)
@@ -499,7 +499,7 @@ class HistoryRepository:
         return now
 
     def release_rebuild_pending_events(self, current_discovery_version):
-        """Release artificial v4.1.31 migration cooldowns already persisted in production.
+        """Release artificial v4.1.32 migration cooldowns already persisted in production.
 
         This is intentionally narrow and idempotent: only events explicitly marked
         ``PENDING_CURRENT_DISCOVERY`` and still older than the current discovery
@@ -682,7 +682,7 @@ class HistoryRepository:
                 if state==ASSIGNED:
                     competing=conn.execute("SELECT canonical_event_key,association_confidence,association_method FROM history_event_media WHERE asset_key=? AND association_state='ASSIGNED' AND canonical_event_key<>?",(asset_key,key)).fetchall()
                     if competing:
-                        # v4.1.31 distinguishes a broad candidate being encountered
+                        # v4.1.32 distinguishes a broad candidate being encountered
                         # for another game from a genuine strong-identity conflict.
                         # Preserve a previously proven assignment for ordinary title/
                         # team matches and quarantine only the new candidate link.
@@ -779,7 +779,7 @@ class HistoryRepository:
     def repair_collection_associations(self, classifier_version=MEDIA_CLASSIFIER_VERSION, force=False):
         """Rebuild Silver relationships from SOURCE_MEDIA under the strict classifier.
 
-        v4.1.31 treats collection membership as fully derived state.  Classifier
+        v4.1.32 treats collection membership as fully derived state.  Classifier
         upgrades therefore re-evaluate source assets in place, re-key daily/weekly
         periods, and discard stale collection links without touching event discovery,
         backfill progress, verification history, or the source asset itself.
@@ -882,7 +882,7 @@ class HistoryRepository:
         return {"event":event,"collection":collection,"integrity":integrity,"issues":issues,"ok":not bool(issues)}
 
     def media_objective_summary(self):
-        """Persisted v4.1.31 objective/category counts for operator audit."""
+        """Persisted v4.1.32 objective/category counts for operator audit."""
         out={"nflQuickGames":0,"nflExtendedGames":0,"nflBothGames":0,"nflGreenWithoutPurple":0,"nflMissingQuick":0,"nflMissingExtended":0,
              "mlsSnapshots":0,"mlsMatchHighlights":0,"mlsSnapshotGames":0,"mlsHighlightGames":0,"mlsBothGames":0,"mlsMissingSnapshot":0,"mlsMissingHighlights":0,
              "eplQuickGames":0,"eplExtendedGames":0,"eplBothGames":0,"eplMissingQuick":0,"eplMissingExtended":0,
@@ -954,8 +954,8 @@ class HistoryRepository:
     def ribbon_media_for_date(self, date, leagues=None, include_failed=False):
         """Bulk exact-event GAME media for one historical ribbon date.
 
-        v4.1.31 performed one ``event_media`` query per score card (the classic
-        N+1 pattern).  This v4.1.31 path resolves every assigned source asset for
+        v4.1.32 performed one ``event_media`` query per score card (the classic
+        N+1 pattern).  This v4.1.32 path resolves every assigned source asset for
         the requested day in a single SQLite read and groups the hydrated rows by
         canonical event key in memory.
         """
@@ -1063,7 +1063,7 @@ class HistoryRepository:
     def put_collection_media(self, scope, league, period_key, rows, *, collection_kind="ROUNDUP", return_stats=False):
         """Promote only strictly proven league-wide roundup assets into Silver.
 
-        v4.1.31 keeps the legacy integer return by default, but can return precise
+        v4.1.32 keeps the legacy integer return by default, but can return precise
         idempotent telemetry so rule catch-up reports *new* assets/links rather than
         repeatedly calling rediscovered rows "accepted".
         """
@@ -1110,7 +1110,7 @@ class HistoryRepository:
 
     def roundup_media(self, date, league=None):
         date=str(date or "")[:10]; league=str(league or "").upper()
-        # v4.1.31: Silver is a latency-sensitive read. WAL/query_only means this
+        # v4.1.32: Silver is a latency-sensitive read. WAL/query_only means this
         # lookup never queues behind discovery writers or a database audit.
         with closing(self._read_connect()) as conn:
             league_sql=""
@@ -1354,7 +1354,7 @@ class HistoryRepository:
     def source_enrichment_events(self, source_versions, *, floor_date="", today="", now=None, preferred_league="", strict_preferred=False, limit=96, newest_first=True):
         """Newest-first official-source objective queue.
 
-        v4.1.31 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
+        v4.1.32 gives NFL, MLS and EPL independent Quick/Green and Extended/Purple
         objectives. A previously completed generic source pass cannot hide an unmet
         objective, and the three rule-migration leagues are scheduled ahead of legacy
         NHL source catch-up until their new objective ledgers are satisfied.
@@ -1363,7 +1363,7 @@ class HistoryRepository:
         leagues=[lg for lg in sorted((source_versions or {}).keys()) if self._source_specs_for_league(source_versions,lg)]
         preferred=str(preferred_league or "").upper()
         if strict_preferred and preferred and preferred in leagues:
-            # v4.1.31 strict rule-migration lane: query only the assigned league.
+            # v4.1.32 strict rule-migration lane: query only the assigned league.
             # This avoids SQL LIMIT starvation where NFL/MLS rows can consume the
             # candidate window before an EPL-affinity worker ever sees EPL work.
             leagues=[preferred]

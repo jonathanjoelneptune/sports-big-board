@@ -1,6 +1,6 @@
-# Sports Big Board v4.1.31 Architecture
+# Sports Big Board v4.1.32 Architecture
 
-## v4.1.31 operator/read and playback boundary
+## v4.1.32 operator/read and playback boundary
 
 The interactive operator surfaces are no longer allowed to perform expensive whole-catalog work synchronously. A background telemetry worker refreshes green-gap, association, claim, Silver, media-objective, and Silver-identity summaries into an in-memory snapshot. The Live Search Console only combines that snapshot with inexpensive live thread/worker state, so its frequent polling does not compete with discovery or playback.
 
@@ -39,11 +39,13 @@ Operator terminology is presentation-safe: catalog media coverage, media objecti
 Discovery v15, matcher v7, Rule Game Catch-up v9, EPL source v6, current media collectors, and provider concurrency limits remain unchanged. v4.1.21 requires no catalog rebuild.
 
 
-## v4.1.31 site soundtrack boundary
+## v4.1.32 soundtrack boundary
 
-The soundtrack is an application-level service, not a MediaAsset and not a PlaybackController transport. `architecture/site-soundtrack.js` owns exactly one browser `Audio` element, the unique weighted shuffle cycle, soundtrack volume/ducking, reload persistence, single-tab audio ownership, and Cloud Storage URL resolution. Highlight lifecycle is deliberately not song lifecycle: `ready`, `starting`, and `buffering` transitions during a clip handoff preserve the current song URL and timestamp. Only explicit video pause pauses the soundtrack; only Next, natural song completion, or a real soundtrack error selects another song. PlaybackController remains the sole owner of highlight video state and reports coarse UI states to the soundtrack engine.
+The soundtrack remains an application-level service rather than a MediaAsset or PlaybackController transport, but v4.1.32 intentionally makes its lifecycle **clip-scoped**. `architecture/site-soundtrack.js` owns exactly one browser `Audio` element and receives both coarse playback state and the canonical current media key from `app.js`. A changed media key hard-stops the old soundtrack song, chooses one new shuffle-bag track, and assigns it to the new highlight. Repeated `ready / starting / buffering / playing` transitions for the same media key cannot select additional songs.
 
-Soundtrack audio never enters MediaManifest, GAME/Silver classification, historical SQLite, provider health, or media-prewarm queues. GitHub Pages ships the manifest but not the MP3 payload. The bucket remains private. The backend track endpoint prefers a short-lived V4 signed GCS redirect, so normal music bandwidth still goes directly from Cloud Storage to the browser; if IAM signBlob is unavailable it falls back to a lightweight authenticated GCS proxy stream. Search Priority is allowed to suspend the soundtrack because that mode explicitly suspends all playback.
+Before the red launch action, soundtrack is disabled and cannot autoplay during player warmup. `startExperience()` explicitly enables soundtrack for the first clip, which keeps the button state and audible state synchronized. Video pause/resume pauses/resumes the current clip song. If that song ends while the clip is still active, the engine advances to another song without changing the clip identity. Search Priority and tab hiding still suspend audio.
+
+Soundtrack audio never enters MediaManifest, GAME/Silver classification, historical SQLite, provider health, or media-prewarm queues. GitHub Pages ships the manifest but not the MP3 payload. The private bucket and signed-GCS/private-proxy transport are unchanged.
 
 ## Product model
 
@@ -119,7 +121,7 @@ This distinction is observable in the History Audit as `Catalog Coverage Status`
 - `architecture/game-center-contract.js` — HOT browser Game Center cache, cancellation, timeout and localhost contract
 - `architecture/media-work-priorities.js` — semantic prewarm priorities
 - `architecture/editorial-packages.js` — league-level Top Plays registry/identity
-- `architecture/site-soundtrack.js` — exactly-one-Audio no-repeat soundtrack, persistent song continuity across video changes, pause/Next race guards, ducking, controls, singleton protection, single-tab ownership, and private Cloud Storage audio resolution
+- `architecture/site-soundtrack.js` — exactly-one-Audio clip-scoped soundtrack, one new song per highlight media key, long-clip song continuation, pause/resume coupling, controls, singleton protection, single-tab ownership, and private Cloud Storage audio resolution
 - `ui/game-center-view.js` — normalized Game Center rendering and current-request ownership
 - `ui/info-drawer.js` — Game Center / Up Next / Settings information surface
 - `ui/player-visibility.js` — below/side preference and Keep Video Visible presentation controller

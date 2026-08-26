@@ -1,13 +1,13 @@
-# Sports Big Board v4.1.31 — Cloud Stage 1
+# Sports Big Board v4.1.32 — Cloud Stage 1
 
-v4.1.31 keeps the existing always-on Stage 1 deployment while replacing the historical media catalog with the normalized v4 baseline. Application releases remain immutable; the persistent disk is reconstructed separately and only after a passing audit.
+v4.1.32 keeps the existing always-on Stage 1 deployment while replacing the historical media catalog with the normalized v4 baseline. Application releases remain immutable; the persistent disk is reconstructed separately and only after a passing audit.
 
 
-## v4.1.31 soundtrack storage
+## v4.1.32 soundtrack storage
 
 The soundtrack is intentionally outside both the GitHub repository and the Compute Engine persistent state disk. GitHub Pages serves `assets/soundtrack/manifest.json`; MP3s remain in a private Cloud Storage bucket named `<GCP_PROJECT_ID>-soundtrack`. Public Access Prevention may stay enforced. The browser requests `/api/soundtrack/tracks/<file>`; the backend normally returns a short-lived signed GCS redirect and falls back to authenticated private streaming if signBlob is unavailable.
 
-After deploying v4.1.31, perform the one-time upload described in `SOUNDTRACK SETUP.md`. For the current project:
+After deploying v4.1.32, perform the one-time upload described in `SOUNDTRACK SETUP.md`. For the current project:
 
 ```bash
 gcloud config set project sportsbigboard
@@ -16,7 +16,7 @@ bash cloud/gcp/UPLOAD-SOUNDTRACK.sh Sports-Big-Board-Soundtrack-Pack-*.zip
 
 The Pages build automatically points `soundtrackBase` at the deployed API `/api/soundtrack` boundary. An optional `SBB_SOUNDTRACK_BASE_URL` repository variable can still override the audio origin later if the library moves behind a CDN.
 
-## v4.1.31 one-push GitHub deployment
+## v4.1.32 one-push GitHub deployment
 
 Stage 1 can now deploy both halves of Sports Big Board from one push to `main`. After a one-time keyless Google/GitHub trust setup, uploading the complete unzipped repository contents to the root of the GitHub repository is the entire release process.
 
@@ -63,7 +63,7 @@ A normal backend Action should progress through these milestones:
 [upload] RELEASE UPLOAD COMPLETE.
 [remote] Starting v4 deployment and catalog preflight over the established key...
 ... v4 reconstruction / audit output ...
-[deploy] Backend v4.1.31-... is healthy.
+[deploy] Backend v4.1.32-... is healthy.
 ```
 
 If the initial bootstrap cannot propagate the key within the bounded retry window, the job exits before uploading a release and before touching the historical database. If direct-key reuse fails after bootstrap, it likewise exits before upload.
@@ -95,7 +95,7 @@ The browser no longer needs Termux or Windows CMD for normal use. Local launch s
 ## One-time Google Cloud deployment
 
 1. Open Google Cloud Console and launch **Cloud Shell**.
-2. Upload `sports-big-board-v4.1.31.zip` to Cloud Shell and extract it.
+2. Upload `sports-big-board-v4.1.32.zip` to Cloud Shell and extract it.
 3. Select the project that should own Sports Big Board:
 
 ```bash
@@ -144,7 +144,7 @@ In the GitHub repository:
 1. **Settings → Secrets and variables → Actions → Variables**
 2. Create repository variable `SBB_API_BASE_URL` with that HTTPS backend URL.
 3. **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-4. Push v4.1.31 to `main`.
+4. Push v4.1.32 to `main`.
 
 `.github/workflows/deploy-pages.yml` verifies the release, deploys the backend, verifies health, and only then publishes the static frontend. Backend code, SQLite databases, caches, and API credentials are never included in the Pages artifact.
 
@@ -200,13 +200,13 @@ In cloud mode API credentials are environment-managed on the server. The public 
 Android / Termux:
 
 ```bash
-cd ~/storage/downloads/sports-big-board-v4.1.31/sports-big-board-v4.1.31
+cd ~/storage/downloads/sports-big-board-v4.1.32/sports-big-board-v4.1.32
 bash START-ANDROID.sh
 ```
 
 Windows can continue using `START SPORTS BIG BOARD.bat`.
 
 
-### v4.1.31 catalog-preserving preflight
+### v4.1.32 catalog-preserving preflight
 
 The GitHub deployment stops the backend before catalog preflight. For a structurally healthy v4 database, preflight **does not reconstruct or replace `history.sqlite3`** even when matcher/classifier relationships require repair. It optionally creates a pre-repair rollback snapshot, starts the new backend, repairs relationships in place, and requires the backend health check to pass. Deployment rollback restores the pre-deploy snapshot when one was created. Full reconstruction is reserved for structural/legacy catalog failures only.

@@ -15,7 +15,7 @@ class V4128SoundtrackTests(unittest.TestCase):
         self.assertGreater(data.get('totalDurationSeconds',0),3*60*60)
         self.assertTrue(data.get('playbackDefaults',{}).get('repeatOnlyAfterBagExhausted'))
 
-    def test_browser_engine_is_site_level_and_persistent(self):
+    def test_browser_engine_is_clip_scoped_and_persistent_library(self):
         src=(ROOT/'architecture/site-soundtrack.js').read_text()
         for token in (
             'weightedShuffle', 'rebuildCycle', 'localStorage',
@@ -24,7 +24,7 @@ class V4128SoundtrackTests(unittest.TestCase):
         ):
             self.assertIn(token,src)
         app=(ROOT/'app.js').read_text()
-        self.assertIn('SBB_SOUNDTRACK?.setPlaybackState?.(mode)',app)
+        self.assertIn('SBB_SOUNDTRACK?.setPlaybackState?.(mode,soundtrackPlaybackClipKey())',app)
         self.assertIn('SBB_SOUNDTRACK?.pauseForSearch?.()',app)
         self.assertIn('SBB_SOUNDTRACK?.resumeFromSearch?.()',app)
         html=(ROOT/'index.html').read_text()

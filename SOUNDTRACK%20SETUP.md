@@ -1,6 +1,10 @@
-# Sports Big Board v4.1.31 Soundtrack Setup
+# Sports Big Board v4.1.32 Soundtrack Setup
 
-v4.1.31 supports the 113-track Sports Big Board soundtrack while keeping the ~408 MiB MP3 library in a **private Google Cloud Storage bucket**. Public Access Prevention may remain enforced.
+v4.1.32 supports the 113-track Sports Big Board soundtrack while keeping the ~408 MiB MP3 library in a **private Google Cloud Storage bucket**. Public Access Prevention may remain enforced.
+
+## Playback behavior in v4.1.32
+
+The private bucket setup is unchanged, but soundtrack behavior is now deliberately clip-scoped: the red launch button explicitly turns music ON; each new highlight clip receives a new soundtrack song; video pause/resume pauses/resumes that song; and if a long highlight outlasts its song, the next soundtrack track begins automatically. The engine uses exactly one browser Audio element.
 
 ## Runtime architecture
 
@@ -16,7 +20,7 @@ The expected bucket is:
 
 ## One-time / repair setup
 
-Place the six soundtrack ZIPs in one Cloud Shell directory and run from a v4.1.31 checkout:
+Place the six soundtrack ZIPs in one Cloud Shell directory and run from a v4.1.32 checkout:
 
 ```bash
 gcloud config set project sportsbigboard
@@ -37,7 +41,7 @@ If the Token Creator grant is blocked, the uploader prints a warning. Playback s
 
 ## Verification
 
-After v4.1.31 is deployed:
+After v4.1.32 is deployed:
 
 ```bash
 curl -s https://<BACKEND>/api/soundtrack/status

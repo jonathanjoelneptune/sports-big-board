@@ -1,0 +1,25 @@
+Sports Big Board v4.1.32 — clip-scoped soundtrack simplification
+
+Changed behavior:
+- one soundtrack Audio element total
+- soundtrack is explicitly enabled by the red START SPORTS BIG BOARD action
+- pre-launch UI is truthfully OFF and cannot autoplay music
+- every new highlight clip selects one new soundtrack song
+- video pause/resume pauses/resumes that clip song
+- if a song ends during a long highlight, the next soundtrack song continues
+- soundtrack toggle controls the exact current clip song
+- no crossfade or audio preloader
+
+Key changed files:
+VERSION
+app.js
+index.html
+styles.css
+architecture/site-soundtrack.js
+assets/soundtrack/manifest.json
+tests/test_soundtrack_runtime.js
+tests/test_v4130_soundtrack_single_stream.py
+README.md
+ARCHITECTURE.md
+SOUNDTRACK SETUP.md
+SOUNDTRACK%20SETUP.md

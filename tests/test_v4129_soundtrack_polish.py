@@ -8,13 +8,12 @@ class V4129SoundtrackPolishTests(unittest.TestCase):
         html=(ROOT/'index.html').read_text()
         self.assertIn('id="soundtrackNextBtn"',html)
         self.assertIn('id="diagSoundtrack"',html)
-        self.assertIn('architecture/site-soundtrack.js?v=4.1.31',html)
+        self.assertIn('architecture/site-soundtrack.js?v=4.1.32',html)
 
     def test_pause_truth_hard_stops_soundtrack(self):
         engine=(ROOT/'architecture/site-soundtrack.js').read_text()
-        self.assertIn("else if(next==='paused')",engine)
-        self.assertIn('videoPaused=true;pauseNow()',engine)
-        self.assertIn("pauseNow()",engine)
+        self.assertIn("next==='paused'||next==='ended'||next==='ready'||next==='idle'",engine)
+        self.assertIn('pauseNow()',engine)
         self.assertIn("$('soundtrackNextBtn')?.addEventListener",engine)
         self.assertIn("currentTrackDebugLabel",engine)
         app=(ROOT/'app.js').read_text()

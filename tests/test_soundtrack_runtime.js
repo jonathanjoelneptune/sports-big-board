@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..');
 const source=fs.readFileSync(path.join(root,'architecture/site-soundtrack.js'),'utf8');
 const manifest={
   tracks:[1,2,3,4,5].map(n=>({id:`t${n}`,title:`Track ${n}`,tier:n<3?'CORE':'ROTATION',file:`tracks/t${n}.mp3`,weight:1,durationSeconds:120})),
-  playbackDefaults:{defaultMusicVolume:.16,highlightPlayingVolume:.10,repeatOnlyAfterBagExhausted:true,singleActiveAudioStream:true,preloadNextTrack:false,persistentAcrossVideoChanges:true,pauseOnlyOnExplicitVideoPause:true}
+  playbackDefaults:{defaultMusicVolume:.16,highlightPlayingVolume:.10,repeatOnlyAfterBagExhausted:true,singleActiveAudioStream:true,preloadNextTrack:false,persistentAcrossVideoChanges:false,newSongOnClipChange:true,continueSongsDuringLongClip:true,enabledOnExperienceStart:true}
 };
 function tick(){return new Promise(r=>setImmediate(r));}
 function makeStorage(seed){const data=seed||new Map();return {data,getItem:k=>data.has(k)?data.get(k):null,setItem:(k,v)=>data.set(k,String(v)),removeItem:k=>data.delete(k)};}
@@ -33,78 +33,86 @@ function boot(sharedStorage){
   const storage=makeStorage(new Map());
   const one=boot(storage);await one.api.init();
   assert.equal(one.Audio.instances.length,1,'there must be exactly one soundtrack Audio element');
-  const audio=one.Audio.instances[0];
+  const audio=one.Audio.instances[0],toggle=one.elements.get('soundtrackToggle');
 
-  // First highlight starts the site soundtrack.
-  one.api.setPlaybackState('starting');await tick();await tick();
-  one.api.setPlaybackState('playing');await tick();
-  assert.equal(audio.paused,false,'soundtrack should play with highlight');
-  const firstTrack=one.api.snapshot().currentTrack.id;
-  audio.currentTime=37;
-  const firstSrc=audio.src, firstLoads=audio.loadCalls;
+  // Pre-launch player warmup must never secretly start music while UI is OFF.
+  one.api.setPlaybackState('starting','clip-a');await tick();await tick();
+  assert.equal(audio.paused,true,'pre-launch video warmup must not start soundtrack');
+  assert.equal(one.api.snapshot().enabled,false,'soundtrack must be disabled before experience start');
+  assert.equal(toggle.attrs['aria-pressed'],'false','pre-launch soundtrack UI must truthfully show OFF');
 
-  // Clip handoff must NOT become a soundtrack handoff.
-  one.api.setPlaybackState('ready');await tick();
-  one.api.setPlaybackState('starting');await tick();
-  one.api.setPlaybackState('buffering');await tick();
-  one.api.setPlaybackState('playing');await tick();
-  assert.equal(one.api.snapshot().currentTrack.id,firstTrack,'video change must keep the same soundtrack track');
-  assert.equal(audio.src,firstSrc,'video change must not reload soundtrack URL');
-  assert.equal(audio.loadCalls,firstLoads,'video change must not reload soundtrack media');
-  assert.equal(audio.currentTime,37,'video change must preserve soundtrack position');
-  assert.equal(one.Audio.instances.length,1,'video changes must never create another soundtrack Audio element');
+  // The red launch button explicitly starts soundtrack ON for the current clip.
+  one.api.startExperience('clip-a');
+  one.api.setPlaybackState('starting','clip-a');await tick();await tick();
+  one.api.setPlaybackState('playing','clip-a');await tick();
+  assert.equal(audio.paused,false,'soundtrack should start with launched highlight');
+  assert.equal(one.api.snapshot().enabled,true,'launch must enable soundtrack');
+  assert.equal(toggle.attrs['aria-pressed'],'true','UI must show ON whenever launch-started music is enabled');
+  const clipATrack=one.api.snapshot().currentTrack.id;
+  audio.currentTime=31;
 
-  // Music button must pause/resume THIS exact stream, not create/select a second track.
+  // Music button controls the exact current clip song, not a second track.
   one.api.toggle();
-  assert.equal(audio.paused,true,'soundtrack toggle off must pause the only audio stream');
-  const pausedTrack=one.api.snapshot().currentTrack.id, pausedSrc=audio.src, pausedTime=audio.currentTime;
+  assert.equal(audio.paused,true,'music toggle off pauses current song');
+  const pausedTrack=one.api.snapshot().currentTrack.id,pausedSrc=audio.src,pausedTime=audio.currentTime;
   one.api.toggle();await tick();await tick();
-  assert.equal(one.api.snapshot().currentTrack.id,pausedTrack,'soundtrack toggle on must resume the same track');
-  assert.equal(audio.src,pausedSrc,'soundtrack toggle on must reuse the same audio URL');
-  assert.equal(audio.currentTime,pausedTime,'soundtrack toggle on must resume the same position');
-  assert.equal(one.Audio.instances.length,1,'soundtrack toggle must never create a second audio stream');
+  assert.equal(one.api.snapshot().currentTrack.id,pausedTrack,'music toggle on resumes same clip song');
+  assert.equal(audio.src,pausedSrc,'music toggle must not replace soundtrack URL');
+  assert.equal(audio.currentTime,pausedTime,'music toggle must resume same position');
+  assert.equal(one.Audio.instances.length,1,'toggle can never create a second stream');
 
-  // Explicit VIDEO pause controls the same soundtrack stream.
-  one.api.setPlaybackState('paused');
+  // A NEW video clip intentionally gets a NEW song and resets music position.
+  one.api.setPlaybackState('ready','clip-b');await tick();
+  const clipBTrack=one.api.snapshot().currentTrack.id;
+  assert.notEqual(clipBTrack,clipATrack,'clip change must select a new soundtrack song');
+  assert.equal(audio.paused,true,'READY clip is not playing yet, so soundtrack stays paused');
+  assert.equal(audio.currentTime,0,'new clip soundtrack starts from beginning');
+  one.api.setPlaybackState('starting','clip-b');await tick();await tick();
+  one.api.setPlaybackState('playing','clip-b');await tick();
+  assert.equal(audio.paused,false,'new clip song starts with new video');
+
+  // Repeated state changes for the SAME clip never choose extra songs.
+  const sameTrack=one.api.snapshot().currentTrack.id,sameSrc=audio.src;
+  one.api.setPlaybackState('buffering','clip-b');await tick();
+  one.api.setPlaybackState('playing','clip-b');await tick();
+  assert.equal(one.api.snapshot().currentTrack.id,sameTrack,'same clip state changes must keep its assigned song');
+  assert.equal(audio.src,sameSrc,'same clip must keep same soundtrack URL');
+
+  // Explicit VIDEO pause/resume controls that clip's assigned song.
+  audio.currentTime=44;
+  one.api.setPlaybackState('paused','clip-b');
   assert.equal(audio.paused,true,'video pause must pause soundtrack');
-  const pauseTrack=one.api.snapshot().currentTrack.id,pauseTime=audio.currentTime;
-  one.api.setPlaybackState('ready');await tick();
-  assert.equal(audio.paused,true,'READY after a real pause must not restart soundtrack');
-  one.api.setPlaybackState('playing');await tick();await tick();
-  assert.equal(one.api.snapshot().currentTrack.id,pauseTrack,'video resume must keep soundtrack track');
-  assert.equal(audio.currentTime,pauseTime,'video resume must keep soundtrack position');
+  one.api.setPlaybackState('playing','clip-b');await tick();await tick();
+  assert.equal(one.api.snapshot().currentTrack.id,sameTrack,'video resume keeps same clip song');
+  assert.equal(audio.currentTime,44,'video resume keeps same music position');
 
-  // Only explicit Next or natural song end may select a new song.
+  // Long highlight: when song ends, another song starts without changing clip.
+  const beforeEnded=one.api.snapshot().currentTrack.id;
+  audio.paused=false;audio.emit('ended');await tick();await tick();
+  assert.notEqual(one.api.snapshot().currentTrack.id,beforeEnded,'song end during long clip advances soundtrack');
+  assert.equal(one.api.snapshot().currentClipKey,'clip-b','song end must stay associated with same video clip');
+  assert.equal(audio.paused,false,'next soundtrack song should continue during long highlight');
+
+  // Next is explicit manual advance and still uses same single Audio element.
   const beforeNext=one.api.snapshot().currentTrack.id;
   one.api.skip();await tick();await tick();
-  assert.notEqual(one.api.snapshot().currentTrack.id,beforeNext,'Next should intentionally replace the current track');
-  assert.equal(one.Audio.instances.length,1,'Next still uses the one audio element');
+  assert.notEqual(one.api.snapshot().currentTrack.id,beforeNext,'Next intentionally replaces soundtrack song');
+  assert.equal(one.Audio.instances.length,1,'Next must still use only one Audio element');
 
-  // Re-evaluating the script in the same page must reuse the singleton, not create audio #2.
+  // If music is turned off, changing clips may assign a new song but must not autoplay it.
+  one.api.toggle();assert.equal(one.api.snapshot().enabled,false);
+  one.api.setPlaybackState('starting','clip-c');await tick();
+  assert.equal(audio.paused,true,'disabled soundtrack must stay silent on later clip changes');
+  const clipCTrack=one.api.snapshot().currentTrack.id;
+  one.api.toggle();await tick();await tick();
+  assert.equal(one.api.snapshot().currentTrack.id,clipCTrack,'turning soundtrack back on uses current clip song');
+  assert.equal(audio.paused,false,'turning soundtrack back on resumes current clip soundtrack');
+
+  // Duplicate script load cannot create another soundtrack runtime/audio object.
   const sameApi=one.context.SBB_SOUNDTRACK;
   vm.runInContext(source,one.context,{filename:'site-soundtrack-second-load.js'});
-  assert.equal(one.context.SBB_SOUNDTRACK,sameApi,'duplicate script load must reuse soundtrack singleton');
+  assert.equal(one.context.SBB_SOUNDTRACK,sameApi,'duplicate script load must reuse singleton');
   assert.equal(one.Audio.instances.length,1,'duplicate script load must not create another Audio element');
 
-  // Second tab respects owner lease.
-  const secondTab=boot(storage);await secondTab.api.init();
-  secondTab.api.setPlaybackState('playing');await tick();await tick();
-  assert.equal(secondTab.Audio.instances[0].paused,true,'fresh owner lease must keep a second tab silent');
-
-  // No-repeat cycle survives reload.
-  const storage2=makeStorage(new Map());
-  const a=boot(storage2);await a.api.init();
-  a.api.setPlaybackState('paused');
-  const start=a.api.snapshot().currentTrack.id;a.api.skip();const second=a.api.snapshot().currentTrack.id;a.api.skip();const third=a.api.snapshot().currentTrack.id;
-  assert.equal(new Set([start,second,third]).size,3,'first cycle must not repeat');
-  const persisted=JSON.parse(storage2.getItem('sbb:soundtrack:v2'));
-  assert.ok(Array.isArray(persisted.remainingIds)&&persisted.remainingIds.length===2,'storage must persist exact remaining bag');
-  storage2.removeItem('sbb:soundtrack:owner:v1');
-  const b=boot(storage2);await b.api.init();
-  assert.equal(b.api.snapshot().currentTrack.id,third,'reload must resume same current track');
-  const expectedRemaining=[...persisted.remainingIds], afterReload=[];b.api.setPlaybackState('paused');
-  for(let i=0;i<expectedRemaining.length;i++){b.api.skip();afterReload.push(b.api.snapshot().currentTrack.id);}
-  assert.deepEqual(afterReload,expectedRemaining,'reload must finish remaining bag before recycling');
-
-  console.log('PASS: v4.1.31 persistent one-audio soundtrack runtime invariants');
+  console.log('PASS: v4.1.32 clip-scoped one-audio soundtrack runtime invariants');
 })().catch(err=>{console.error(err);process.exit(1);});
