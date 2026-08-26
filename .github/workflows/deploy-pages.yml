@@ -94,6 +94,8 @@ jobs:
       - name: Build static frontend
         env:
           SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+          SBB_SOUNDTRACK_BASE_URL: ${{ vars.SBB_SOUNDTRACK_BASE_URL }}
         run: python3 cloud/github-pages/build_pages.py "$SBB_API_BASE_URL" .pages-dist
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -109,7 +111,46 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: pages-build
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy frontend
         id: deployment
         uses: actions/deploy-pages@v4
+
+  production-smoke:
+    name: Verify deployed frontend/backend handshake
+    runs-on: ubuntu-latest
+    needs: pages-deploy
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Verify public milestone release
+        env:
+          PAGE_URL: ${{ needs.pages-deploy.outputs.page_url }}
+          SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
+        run: |
+          EXPECTED_VERSION="$(tr -d '[:space:]' < VERSION)"
+          PAGE_URL="${PAGE_URL%/}/"
+          echo "Checking frontend $PAGE_URL against backend $SBB_API_BASE_URL for $EXPECTED_VERSION"
+          for attempt in {1..24}; do
+            if curl --fail --silent --show-error --max-time 10 -H 'Cache-Control: no-cache' "${PAGE_URL}?release=${GITHUB_SHA}" > /tmp/sbb-index.html; then
+              if grep -q "app.js?v=${EXPECTED_VERSION}" /tmp/sbb-index.html && grep -q "architecture/milestone-console.js?v=${EXPECTED_VERSION}" /tmp/sbb-index.html; then
+                break
+              fi
+            fi
+            if [[ "$attempt" == "24" ]]; then echo "GitHub Pages is not serving the expected frontend generation"; cat /tmp/sbb-index.html 2>/dev/null || true; exit 1; fi
+            sleep 5
+          done
+          curl --fail --silent --show-error --max-time 10 "$SBB_API_BASE_URL/api/status" > /tmp/sbb-status.json
+          curl --fail --silent --show-error --max-time 10 "$SBB_API_BASE_URL/api/milestone/console?frontendVersion=$EXPECTED_VERSION&limit=40" > /tmp/sbb-milestone.json
+          python3 - <<'PY'
+          import json
+          expected=open('VERSION').read().strip()
+          status=json.load(open('/tmp/sbb-status.json'))
+          milestone=json.load(open('/tmp/sbb-milestone.json'))
+          assert status.get('version')==expected,(status.get('version'),expected)
+          assert milestone.get('version')==expected,(milestone.get('version'),expected)
+          assert milestone.get('versionMatch') is True,milestone.get('extra',{}).get('release')
+          print(f'PASS deployed frontend/backend milestone handshake: {expected}')
+          PY
