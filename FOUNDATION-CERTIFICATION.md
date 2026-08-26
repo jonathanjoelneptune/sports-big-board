@@ -1,48 +1,40 @@
-# Sports Big Board v4.3.0 — Foundation Certification
+# Sports Big Board v4.3.1 — Three-Tier Foundation Certification
 
-v4.3.0 is a certification release for the hardened v4.2.x platform. It intentionally does **not** add another feature layer, rebuild the historical catalog, re-upload soundtrack assets, or change the ownership model for playback, discovery, Game Center, or background workers.
+v4.3.1 changes Foundation Certification from the short v4.3.0 stress certificate into a three-tier release gate. The prior v4.3.0 certificate is retained as Tier 1 baseline evidence only; it is not sufficient for overall Foundation Certification.
 
-## Why v4.3.0 exists
+## Tier 1 — Functional / Stress Hardening
 
-The final v4.2.2 dev stress run demonstrated that the repaired platform can pass the complete live exercise, but the Milestone Release Console could still remain in an overall ERROR state because its observation window retained pre-fix errors and old latency samples. That is useful for diagnostics but unsuitable as a formal release verdict.
+Runs the release, playback, historical-read, operator-load, resource-mode, Game Center, soundtrack and responsiveness procedures plus a dedicated regression-hardening procedure.
 
-Foundation Certification separates those two concerns:
+The hardening procedure specifically verifies:
 
-1. Diagnostic telemetry may remain cumulative during normal development.
-2. A certification run begins by resetting only the in-memory milestone observation window.
-3. The existing eight release procedures run unchanged.
-4. A formal gate evaluator produces CERTIFIED or NOT_CERTIFIED from evidence created after that reset.
-5. The result can be copied or saved as JSON.
+- production startup has no legacy NBA/demo seed programming;
+- browsing dates or league filters never autoplays Silver roundup media;
+- Game Center follows the active game video after direct selection, Next and automatic A/B promotion;
+- a manual pause remains latched for at least 25 seconds under background refresh;
+- background programming refresh cannot silently replace/restart the active media selection.
 
-The reset does not delete or rebuild durable sports, media, historical, settings, or soundtrack data.
+## Tier 2 — Extended Soak
 
-## Blocking runtime gates
+Default duration: **15 minutes**, sampled every 15 seconds.
 
-- Release handshake: frontend and backend must both report v4.3.0.
-- Stress suite: the existing stress suite must finish PASS.
-- Eight procedures: release handshake, playback cycle, historical read, operator load, resource modes, Game Center, soundtrack, and UI responsiveness must all pass.
-- No step debt: no recorded stress step may be WARN, FAIL, or SKIP.
-- Platform checks: every server-supplied platform check must pass.
-- Clean-window errors: no ERROR-class release problems may be created in the certification window. Warnings remain visible as non-blocking observations unless they fail another gate.
-- Playback ownership: the one-audio playback invariant must remain OK.
-- Worker health: all registered historical/background workers must be healthy.
-- State restoration: the stress runner must restore playback, date, drawer, soundtrack, and resource mode without a restoration error.
-- Legacy read isolation: `/api/history/day` must not be used in the certification window. Date-scoped ribbon, roundup, discovery, and audit APIs remain the interactive path.
+The soak holds the real deployed application under live playback and background work, periodically checking playback ownership, active-video/Game Center identity, worker health, platform errors, event-loop/runtime state, same-media current-time regressions and browser heap growth when heap telemetry is available. It periodically advances to another game to ensure ownership remains correct across multiple transitions.
 
-## Build-time gates
+## Tier 3 — Controlled Chaos / Recovery
 
-`VERIFY.sh` runs both the existing release-generation checker and `tools/check_foundation_certification.py` before the full Python regression suite. The normal deployment workflow therefore refuses to deploy a mixed or incomplete Foundation Certification build.
+Tier 3 deliberately disturbs non-destructive runtime surfaces and then verifies recovery. It includes a background rerank storm, an aborted concurrent request storm, an expected invalid-route failure, standby-player disruption/re-preparation, repeated resource-mode turbulence, repeated game transitions, and API pressure while playback is manually paused.
 
-## Acceptance procedure after deployment
+Tier 3 is followed by a fresh milestone observation window. Frontend/backend handshake, workers, platform checks, clean errors and playback ownership must all recover before Tier 3 can contribute to overall certification.
 
-1. Open Sports Big Board normally and allow the app to reach a stable state.
-2. Open Settings → Foundation Certification Console.
-3. Click **RUN FOUNDATION CERTIFICATION**.
-4. Allow the suite to finish without manually changing playback or resource mode.
-5. Confirm the result reads **FOUNDATION CERTIFIED** and every gate is PASS.
-6. Use **SAVE JSON** to retain the release certificate with the stress run ID and gate evidence.
-7. The normal GitHub production smoke and 15-minute deployment watchdog remain responsible for frontend/backend deployment convergence.
+## Overall certification rule
 
-## Certification boundary
+The UI may display **FOUNDATION CERTIFIED** only when:
 
-The v4.3.0 certificate proves the foundation at the time and observation window in which it is run. Historical diagnostic errors from before the clean-window boundary remain useful in prior logs, but they do not contaminate the new certificate.
+1. Tier 1 = PASS;
+2. Tier 2 = PASS for at least the configured 15-minute minimum;
+3. Tier 3 = PASS; and
+4. the post-chaos recovery window = PASS.
+
+Otherwise overall status remains **CERTIFICATION IN PROGRESS** or **NOT CERTIFIED**.
+
+No certification tier rebuilds or deletes the durable historical catalog and no soundtrack/media upload is required.

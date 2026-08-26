@@ -1,0 +1,38 @@
+Sports Big Board v4.3.1 — Playback Hardening + Three-Tier Foundation Certification
+
+Upload these files to the repository root, preserving this exact folder structure:
+
+VERSION
+app.js
+index.html
+styles.css
+core-model.js
+foundation-certification.json
+FOUNDATION-CERTIFICATION.md
+CHANGED-FILES-v4.3.1.txt
+architecture/milestone-console.js
+architecture/foundation-certification.js
+ui/game-center-view.js
+ui/history-audit.js
+tools/check_foundation_certification.py
+tests/test_architecture.js
+tests/test_cloud_stage1.py
+tests/test_v430_foundation_certification.py
+tests/test_v431_playback_hardening.py
+tests/test_v431_three_tier_certification.py
+
+No server.py change is required. The backend derives APP_VERSION from VERSION.
+No database migration, catalog rebuild, or soundtrack/media re-upload is required.
+
+Primary hardening fixes:
+1. Game Center is bound to the active game video on tune, A/B promotion, and PLAYING confirmation; stale Game Center content clears for non-game collection media.
+2. Background program refresh preserves the exact active media key/object and cannot issue a redundant play request when the active assignment is already correct.
+3. Manual pause is latched against autonomous/background play paths until an explicit user/program transition releases it.
+4. Score-ribbon date/filter browsing cannot autoplay Silver roundups; pager hitboxes own their edge clicks.
+5. The legacy six-video NBA demo bootstrap and random startup index are removed. Production starts with an empty PROGRAM until verified live/catalog programming arrives.
+
+Certification changes:
+Tier 1 — Functional / Stress + regression hardening
+Tier 2 — 15-minute extended soak
+Tier 3 — Controlled chaos / recovery
+Overall FOUNDATION CERTIFIED is possible only when all three tiers and post-chaos recovery pass.

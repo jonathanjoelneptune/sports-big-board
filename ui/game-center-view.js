@@ -1,4 +1,4 @@
-/* v4.2.2 Game Center renderer. Consumes SelectedEvent + normalized data only. */
+/* v4.3.1 Game Center renderer. Active playback is the selected-event authority. */
 (() => {
   const $=id=>document.getElementById(id);
   let selected=null,data=null,requestToken=0,pollTimer=null,requestAbort=null,activeSection='overview',playsMode='scoring',activePlayerSide='away';
@@ -174,11 +174,19 @@
       errorView(evt,err);schedulePoll(null);
     }
   }
+
+  function clear(message='Game Center follows the active game video.'){
+    selected=null;data=null;requestToken++;
+    if(pollTimer){clearTimeout(pollTimer);pollTimer=null;}
+    if(requestAbort){try{requestAbort.abort();}catch(_){}requestAbort=null;}
+    $('gameCenterContent')?.classList.add('hidden');
+    const empty=$('gameCenterEmpty');if(empty){empty.classList.remove('hidden');const strong=empty.querySelector('strong'),span=empty.querySelector('span');if(strong)strong.textContent='GAME CENTER';if(span)span.textContent=message;}
+  }
   function init(){
     document.querySelectorAll('[data-gc-section]').forEach(btn=>btn.addEventListener('click',()=>selectSection(btn.dataset.gcSection)));
-    window.SBB_SELECTED_EVENT?.subscribe?.((event)=>{if(!event)return;selected=event;load(event);});
+    window.SBB_SELECTED_EVENT?.subscribe?.((event)=>{if(!event){clear();return;}selected=event;load(event);});
     const existing=window.SBB_SELECTED_EVENT?.get?.();if(existing){selected=existing;load(existing);}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  window.SBB_GAME_CENTER_VIEW=Object.freeze({version:'1.5',load,render,selectSection,get selected(){return selected;}});
+  window.SBB_GAME_CENTER_VIEW=Object.freeze({version:'1.6',load,render,clear,selectSection,get selected(){return selected;}});
 })();

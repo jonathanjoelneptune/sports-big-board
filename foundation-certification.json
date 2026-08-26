@@ -1,37 +1,63 @@
 {
-  "schemaVersion": 1,
-  "release": "4.3.0",
-  "name": "Sports Big Board Foundation Certification",
-  "certifiesBaseline": "4.2.2",
-  "certificationWindow": "clean milestone observation window",
+  "schemaVersion": 2,
+  "release": "4.3.1",
+  "certification": "FOUNDATION",
+  "overallStatusBeforeRun": "IN_PROGRESS",
+  "allThreeTiersRequired": true,
+  "tiers": {
+    "tier1": {
+      "name": "Functional / Stress Hardening",
+      "required": true,
+      "procedures": [
+        "release-handshake",
+        "playback-cycle",
+        "historical-read",
+        "operator-load",
+        "resource-modes",
+        "game-center",
+        "soundtrack",
+        "ui-responsiveness",
+        "regression-hardening"
+      ],
+      "reportedRegressionRequirements": [
+        "Game Center selected event follows the active game video on direct tune, Next, and automatic advance",
+        "Background program refresh cannot replace or restart the active media key",
+        "Manual pause remains latched for at least 25 seconds under background refresh",
+        "Score-ribbon date browsing cannot autoplay Silver daily/weekly roundup media",
+        "Production startup contains no legacy NBA/demo seed programming"
+      ]
+    },
+    "tier2": {
+      "name": "Extended Soak",
+      "required": true,
+      "minimumDurationMs": 900000,
+      "sampleIntervalMs": 15000,
+      "requirements": [
+        "No playback ownership invariant violation",
+        "No same-media currentTime restart regression",
+        "Game Center remains tied to game-scoped active media",
+        "Workers remain healthy during periodic platform snapshots",
+        "No milestone clean-window errors",
+        "No excessive JavaScript heap growth when browser heap telemetry is available",
+        "Repeated game transitions remain stable"
+      ]
+    },
+    "tier3": {
+      "name": "Controlled Chaos / Recovery",
+      "required": true,
+      "requirements": [
+        "Background rerank storm preserves active playback",
+        "Aborted concurrent request storm recovers",
+        "Expected invalid-route failure is isolated from playback",
+        "Standby-player disruption does not disturb active playback",
+        "Resource-mode turbulence restores the original mode",
+        "Repeated game transitions preserve Game Center ownership",
+        "Manual pause survives concurrent API pressure",
+        "Post-chaos clean recovery window is healthy"
+      ]
+    }
+  },
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
-  "requiresSoundtrackUpload": false,
-  "requiredProcedures": [
-    "release-handshake",
-    "playback-cycle",
-    "historical-read",
-    "operator-load",
-    "resource-modes",
-    "game-center",
-    "soundtrack",
-    "ui-responsiveness"
-  ],
-  "blockingGates": [
-    "release-handshake",
-    "stress-suite",
-    "procedure-suite",
-    "step-debt",
-    "platform-checks",
-    "clean-window-errors",
-    "playback-invariant",
-    "worker-health",
-    "state-restore",
-    "legacy-read-isolation"
-  ],
-  "nonBlockingObservations": [
-    "clean-window warning count",
-    "provider cooldown telemetry",
-    "background scheduler warnings that do not fail a procedure or platform check"
-  ]
+  "requiresMediaReupload": false
 }
