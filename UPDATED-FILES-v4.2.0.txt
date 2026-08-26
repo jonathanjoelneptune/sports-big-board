@@ -1,83 +1,77 @@
-Sports Big Board v4.2.0 — Milestone 1: Playback & Platform Reliability
-
-Major focus:
-- authoritative observable playback session + deterministic A/B audio ownership invariant
-- first-frame, stall, API, worker, DB/operator, scheduler and media-cache telemetry
-- Dev Milestone Release Console with COPY FULL LOG / SAVE TXT
-- RUN DEV STRESS TEST + repeatable on-site Milestone Test Procedures
-- keyed media/Game Center work de-duplication and coordination telemetry
-- VERSION-derived release generation checks + backend-first deployment + production smoke handshake
-- exact Player Debug video source link
-- no catalog rebuild and no soundtrack re-upload
-
-Changed/new files from v4.1.32:
-CLOUD STAGE 1.md
-core-model.js
-WINDOWS SETUP.md
-START SPORTS BIG BOARD.bat
-START-ANDROID.sh
-V4 CATALOG REBUILD.md
-api-runtime.js
-VERIFY.sh
-app.js
-SOUNDTRACK%20SETUP.md
+.github/workflows/deploy-pages.yml
 ANDROID SETUP.md
 ARCHITECTURE.md
-VERSION
-index.html
+CLOUD STAGE 1.md
 README.md
-styles.css
 SOUNDTRACK SETUP.md
-server.py
-tests/test_architecture.js
-tests/test_v4124_historical_ribbon.py
-tests/test_v420_milestone_release.py
-tests/test_v4121_parallel_recovery.py
-tests/test_v4125_historical_ribbon_performance.py
-tests/test_v4130_soundtrack_single_stream.py
-tests/test_live_freshness.py
-tests/test_v4122_curated_playlists.py
-tests/test_cloud_stage1.py
-tests/test_v4123_catalog_first.py
-tests/test_soundtrack_runtime.js
-tests/test_v4129_soundtrack_polish.py
-tests/test_history_v4_baseline.py
-tests/test_playback_session_runtime.js
-tests/test_regression_guards.py
-sbb/milestone_console.py
-sbb/media_scope.py
+SOUNDTRACK%20SETUP.md
+START SPORTS BIG BOARD.bat
+START-ANDROID.sh
+UPDATED-FILES.txt
+V4 CATALOG REBUILD.md
+VERIFY.sh
+VERSION
+WINDOWS SETUP.md
+api-runtime.js
+app.js
+architecture/editorial-packages.js
+architecture/event-identity.js
+architecture/game-center-contract.js
+architecture/game-center-policy.js
+architecture/media-classifier.js
+architecture/media-manifest.js
+architecture/media-resolver.js
+architecture/media-scope.js
+architecture/media-work-priorities.js
+architecture/milestone-console.js
+architecture/playback-session.js
+architecture/playback-transports.js
+architecture/provider-health.js
+architecture/score-date-store.js
+architecture/selected-event-store.js
+architecture/site-soundtrack.js
+architecture/sport-media-policy.js
+cloud/gcp/UPLOAD-SOUNDTRACK.sh
+cloud/github-pages/build_pages.py
+cloud/vm/backup_state.py
+core-model.js
+index.html
 sbb/__init__.py
-sbb/event_matcher.py
-sbb/media_policy.py
-sbb/history_repository.py
 sbb/competition_registry.py
 sbb/editorial_registry.py
+sbb/event_matcher.py
+sbb/history_rebuild.py
+sbb/history_repository.py
+sbb/media_policy.py
+sbb/media_scope.py
+sbb/media_work_scheduler.py
+sbb/milestone_console.py
 sbb/provider_registry.py
 sbb/youtube_gateway.py
-sbb/media_work_scheduler.py
+server.py
+styles.css
+tests/test_architecture.js
+tests/test_cloud_stage1.py
+tests/test_history_v4_baseline.py
+tests/test_live_freshness.py
+tests/test_playback_session_runtime.js
+tests/test_regression_guards.py
+tests/test_silver_roundup_audit.py
+tests/test_soundtrack_runtime.js
+tests/test_v4121_parallel_recovery.py
+tests/test_v4122_curated_playlists.py
+tests/test_v4123_catalog_first.py
+tests/test_v4124_historical_ribbon.py
+tests/test_v4125_historical_ribbon_performance.py
+tests/test_v4126_operator_silver_playback.py
+tests/test_v4129_soundtrack_polish.py
+tests/test_v4130_soundtrack_single_stream.py
+tests/test_v420_milestone_release.py
 tools/check_release_version.py
-ui/history-audit.js
+tools/ensure_history_v4.py
 ui/game-center-view.js
+ui/history-audit.js
 ui/info-drawer.js
 ui/player-visibility.js
 ui/settings-view.js
-architecture/provider-health.js
-architecture/event-identity.js
-architecture/game-center-policy.js
-architecture/selected-event-store.js
-architecture/media-manifest.js
-architecture/playback-transports.js
-architecture/media-scope.js
-architecture/media-work-priorities.js
-architecture/game-center-contract.js
-architecture/site-soundtrack.js
-architecture/playback-session.js
-architecture/score-date-store.js
-architecture/media-resolver.js
-architecture/sport-media-policy.js
-architecture/editorial-packages.js
-architecture/media-classifier.js
-architecture/milestone-console.js
-cloud/github-pages/build_pages.py
-cloud/gcp/UPLOAD-SOUNDTRACK.sh
-.github/workflows/deploy-pages.yml
+UPDATED-FILES-v4.2.0.txt
