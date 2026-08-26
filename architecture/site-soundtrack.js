@@ -1,18 +1,23 @@
-/* Sports Big Board v4.1.30 — single-stream persistent site soundtrack.
-   Exactly one soundtrack Audio element may ever play. A second Audio element may
-   preload the next file, but it is permanently muted and is never played. */
+/* Sports Big Board v4.1.31 — one-stream persistent site soundtrack.
+   The soundtrack belongs to the page/session, never to an individual highlight.
+   Exactly one Audio element exists. Video changes do not reload or advance music. */
 (() => {
   'use strict';
-  const VERSION='1.2';
+  const RUNTIME_KEY='__SBB_SOUNDTRACK_SINGLETON_V131__';
+  if(window[RUNTIME_KEY]?.api){ window.SBB_SOUNDTRACK=window[RUNTIME_KEY].api; return; }
+  if(window[RUNTIME_KEY]?.initializing) return;
+  window[RUNTIME_KEY]={initializing:true,api:null};
+
+  const VERSION='1.3';
   const STORAGE_KEY='sbb:soundtrack:v2';
   const LEGACY_STORAGE_KEY='sbb:soundtrack:v1';
   const OWNER_KEY='sbb:soundtrack:owner:v1';
   const OWNER_LEASE_MS=5000;
+  const END_GRACE_MS=6000;
   const MANIFEST_URL=new URL('assets/soundtrack/manifest.json',document.baseURI).toString();
   const cfg=window.SBB_CONFIG||{};
   const remoteBase=String(cfg.soundtrackBase||'').trim().replace(/\/+$/,'');
   const ACTIVE_STATES=new Set(['playing','starting','buffering']);
-  const HARD_PAUSE_STATES=new Set(['paused','ready']);
   const $=id=>document.getElementById(id);
   const clamp=(n,min,max)=>Math.max(min,Math.min(max,Number(n)||0));
   const TAB_ID=`tab-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,9)}`;
@@ -23,12 +28,15 @@
   let playedIds=new Set();
   let currentTrack=null;
   let playbackState='idle';
+  let sessionActive=false;
+  let videoPaused=false;
+  let searchPaused=false;
   let enabled=true;
   let masterVolume=.16;
   let highlightDuckFactor=.625;
   let resumeTrackId='';
   let resumePosition=0;
-  let pauseTimer=0;
+  let endTimer=0;
   let saveTimer=0;
   let ownerTimer=0;
   let consecutiveFailures=0;
@@ -37,20 +45,13 @@
   let manifestPromise=null;
   let operationEpoch=0;
   let tabOwnsAudio=false;
-  let preloadedTrackId='';
 
+  // v4.1.31 invariant: there is exactly ONE soundtrack media element.
   const activeAudio=new Audio();
   activeAudio.preload='auto';
   activeAudio.playsInline=true;
   activeAudio.volume=0;
-
-  // This element is only a network/cache warmer. It must never become audible.
-  const preloadAudio=new Audio();
-  preloadAudio.preload='auto';
-  preloadAudio.playsInline=true;
-  preloadAudio.muted=true;
-  preloadAudio.volume=0;
-  preloadAudio.addEventListener?.('play',()=>{ try{preloadAudio.pause();}catch(_){ } });
+  activeAudio.__sbbSoundtrack=true;
 
   let ownerChannel=null;
   try{ if(typeof BroadcastChannel==='function') ownerChannel=new BroadcastChannel('sbb-soundtrack-owner-v1'); }catch(_){ }
@@ -110,27 +111,21 @@
     for(const raw of remainingSource){
       const id=String(raw||'');
       const t=byId.get(id);
-      if(t && id!==currentTrack?.id && !seenRemaining.has(id)){
-        seenRemaining.add(id);bag.push(t);
-      }
+      if(t && id!==currentTrack?.id && !seenRemaining.has(id)){seenRemaining.add(id);bag.push(t);}
     }
     if(Array.isArray(stored.playedIds)){
       playedIds=new Set(stored.playedIds.map(String).filter(id=>validIds.has(id)&&!seenRemaining.has(id)));
     }else{
-      // v1 migration: anything not in the persisted remaining bag has already
-      // been heard in the current cycle. This preserves the no-repeat intent.
       playedIds=new Set(tracks.map(t=>t.id).filter(id=>id!==currentTrack?.id&&!seenRemaining.has(id)));
     }
     if(currentTrack?.id) playedIds.add(currentTrack.id);
     const accounted=new Set([...seenRemaining,...playedIds]);
     if(currentTrack?.id) accounted.add(currentTrack.id);
-    const newTracks=weightedShuffle(tracks.filter(t=>!accounted.has(t.id)));
-    bag.push(...newTracks);
+    bag.push(...weightedShuffle(tracks.filter(t=>!accounted.has(t.id))));
     if(!bag.length && tracks.length>1) rebuildCycle(currentTrack?.id||'');
   }
-  function markCurrentHeard(){ if(currentTrack?.id) playedIds.add(currentTrack.id); }
   function drawNextTrack(){
-    markCurrentHeard();
+    if(currentTrack?.id) playedIds.add(currentTrack.id);
     if(!bag.length) rebuildCycle(currentTrack?.id||'');
     let next=bag.shift()||null;
     if(!next && tracks.length===1) next=tracks[0];
@@ -142,43 +137,35 @@
   function peekNextTrack(){
     if(bag.length) return bag[0];
     if(tracks.length<=1) return tracks[0]||null;
-    return weightedShuffle(tracks.filter(t=>t.id!==currentTrack?.id))[0]||null;
+    return tracks.find(t=>t.id!==currentTrack?.id)||tracks[0]||null;
   }
 
+  function soundtrackShouldRun(){
+    return enabled && available && sessionActive && !videoPaused && !searchPaused && !document.hidden;
+  }
   function baseTargetVolume(){
-    if(!enabled || !available || document.hidden || !tabOwnsAudio) return 0;
+    if(!soundtrackShouldRun() || !tabOwnsAudio) return 0;
     if(playbackState==='playing') return masterVolume*highlightDuckFactor;
-    if(playbackState==='starting' || playbackState==='buffering') return masterVolume;
-    return 0;
+    return masterVolume;
   }
   function setActiveVolume(){ try{activeAudio.volume=clamp(baseTargetVolume(),0,1);}catch(_){ } }
-  function shouldSound(){ return enabled && available && !document.hidden && ACTIVE_STATES.has(playbackState); }
-
-  function bumpEpoch(){ operationEpoch+=1; return operationEpoch; }
-  function hardStopActive({reset=false,bump=true}={}){
-    if(bump) bumpEpoch();
-    clearTimeout(pauseTimer);pauseTimer=0;
-    try{activeAudio.pause();}catch(_){ }
-    try{activeAudio.volume=0;}catch(_){ }
-    if(reset){ try{activeAudio.currentTime=0;}catch(_){ } }
-  }
-  function unloadActive(){
-    hardStopActive({reset:false,bump:true});
-    try{activeAudio.removeAttribute('src');activeAudio.load();}catch(_){ }
-    activeAudio.__sbbTrackId='';
-    activeAudio.__sbbFailed=false;
+  function bumpEpoch(){operationEpoch+=1;return operationEpoch;}
+  function hardPause({reset=false,bump=true}={}){
+    if(bump)bumpEpoch();
+    try{activeAudio.pause();activeAudio.volume=0;}catch(_){ }
+    if(reset){try{activeAudio.currentTime=0;}catch(_){ }}
   }
   function loadCurrentTrack(track,{position=0}={}){
     const epoch=bumpEpoch();
     try{activeAudio.pause();activeAudio.volume=0;activeAudio.removeAttribute('src');activeAudio.load();}catch(_){ }
-    if(!track) return epoch;
+    if(!track)return epoch;
     activeAudio.src=trackUrl(track);
     activeAudio.preload='auto';
     activeAudio.__sbbTrackId=track.id;
     activeAudio.__sbbFailed=false;
     if(position>0){
       const seek=()=>{
-        if(epoch!==operationEpoch || activeAudio.__sbbTrackId!==track.id){activeAudio.removeEventListener('loadedmetadata',seek);return;}
+        if(epoch!==operationEpoch||activeAudio.__sbbTrackId!==track.id){activeAudio.removeEventListener('loadedmetadata',seek);return;}
         try{if(Number.isFinite(activeAudio.duration)&&activeAudio.duration>5)activeAudio.currentTime=Math.min(position,Math.max(0,activeAudio.duration-3));}catch(_){ }
         activeAudio.removeEventListener('loadedmetadata',seek);
       };
@@ -187,39 +174,22 @@
     try{activeAudio.load();}catch(_){ }
     return epoch;
   }
-  function primeNextTrack(){
-    const next=peekNextTrack();
-    preloadedTrackId=next?.id||'';
-    try{
-      preloadAudio.pause();preloadAudio.muted=true;preloadAudio.volume=0;
-      preloadAudio.removeAttribute('src');preloadAudio.load();
-      if(next){preloadAudio.src=trackUrl(next);preloadAudio.__sbbTrackId=next.id;preloadAudio.load();}
-    }catch(_){ }
-  }
 
   function currentTrackDebugLabel(){
-    if(!currentTrack) return '—';
+    if(!currentTrack)return '—';
     return `${currentTrack.title||currentTrack.id||'Unknown'} • ${currentTrack.tier||'ROTATION'} • ${currentTrack.id||'—'}`;
   }
   function announceTrack(reason='track-change'){
     if(!currentTrack)return;
     try{console.info('[SBB soundtrack] now playing',{id:currentTrack.id,title:currentTrack.title,tier:currentTrack.tier,reason});}catch(_){ }
   }
-  function setCurrentTrack(track,{position=0,reason='select'}={}){
-    currentTrack=track;
-    if(currentTrack?.id) playedIds.add(currentTrack.id);
-    announceTrack(reason);
-    loadCurrentTrack(currentTrack,{position});
-    primeNextTrack();
-    saveStored();renderUi();
-  }
 
   function parseOwner(){
     const row=readJson(OWNER_KEY);
-    if(!row || typeof row!=='object')return null;
+    if(!row||typeof row!=='object')return null;
     return {id:String(row.id||''),ts:Number(row.ts||0)};
   }
-  function ownerIsFresh(row){return !!row?.id && Date.now()-Number(row.ts||0)<OWNER_LEASE_MS;}
+  function ownerIsFresh(row){return !!row?.id&&Date.now()-Number(row.ts||0)<OWNER_LEASE_MS;}
   function writeOwner(){
     const row={id:TAB_ID,ts:Date.now()};
     try{localStorage.setItem(OWNER_KEY,JSON.stringify(row));}catch(_){ }
@@ -228,7 +198,7 @@
   }
   function claimOwnership({force=false}={}){
     const current=parseOwner();
-    if(!force && ownerIsFresh(current) && current.id!==TAB_ID){tabOwnsAudio=false;return false;}
+    if(!force&&ownerIsFresh(current)&&current.id!==TAB_ID){tabOwnsAudio=false;return false;}
     writeOwner();return true;
   }
   function releaseOwnership(){
@@ -237,103 +207,89 @@
     try{ownerChannel?.postMessage({type:'release',id:TAB_ID,ts:Date.now()});}catch(_){ }
     tabOwnsAudio=false;
   }
-  function pauseForOtherTab(){
-    tabOwnsAudio=false;
-    hardStopActive({reset:false,bump:true});
-    renderUi();
-  }
-  function ownerHeartbeat(){
-    if(tabOwnsAudio && shouldSound() && !activeAudio.paused)writeOwner();
-  }
+  function pauseForOtherTab(){tabOwnsAudio=false;hardPause({reset:false,bump:true});renderUi();}
+  function ownerHeartbeat(){if(tabOwnsAudio&&soundtrackShouldRun()&&!activeAudio.paused)writeOwner();}
   function onOwnerMessage(msg){
     const row=msg?.data||msg;
-    if(!row || row.id===TAB_ID)return;
+    if(!row||row.id===TAB_ID)return;
     if(row.type==='claim')pauseForOtherTab();
-    if(row.type==='release' && shouldSound() && !document.hidden)setTimeout(()=>ensurePlaying({claim:false}),120);
+    if(row.type==='release'&&soundtrackShouldRun()&&!document.hidden)setTimeout(()=>ensurePlaying({claim:false}),120);
   }
 
   async function ensurePlaying({claim=false}={}){
     if(!initialized)await init();
-    if(!shouldSound() || !currentTrack)return false;
-    clearTimeout(pauseTimer);pauseTimer=0;
+    if(!soundtrackShouldRun()||!currentTrack)return false;
+    clearTimeout(endTimer);endTimer=0;
     if(!claimOwnership({force:claim}))return false;
     if(!activeAudio.src)loadCurrentTrack(currentTrack,{position:resumePosition});
-    const epoch=operationEpoch;
-    const expectedTrackId=currentTrack.id;
+    const epoch=operationEpoch, expectedTrackId=currentTrack.id;
     try{
       if(activeAudio.paused)await activeAudio.play();
-      if(epoch!==operationEpoch || currentTrack?.id!==expectedTrackId || activeAudio.__sbbTrackId!==expectedTrackId || !shouldSound() || !tabOwnsAudio){
-        // Only stop the element if it still belongs to this stale request. If a
-        // newer Next already repurposed it, that newer request owns the player.
-        if(activeAudio.__sbbTrackId===expectedTrackId && (!shouldSound()||!tabOwnsAudio))hardStopActive({reset:false,bump:false});
+      if(epoch!==operationEpoch||currentTrack?.id!==expectedTrackId||activeAudio.__sbbTrackId!==expectedTrackId||!soundtrackShouldRun()||!tabOwnsAudio){
+        if(activeAudio.__sbbTrackId===expectedTrackId&&(!soundtrackShouldRun()||!tabOwnsAudio))hardPause({reset:false,bump:false});
         return false;
       }
-      setActiveVolume();
-      consecutiveFailures=0;
-      ownerHeartbeat();
-      renderUi();
-      return true;
+      setActiveVolume();consecutiveFailures=0;ownerHeartbeat();renderUi();return true;
     }catch(err){
-      if(epoch!==operationEpoch || activeAudio.__sbbTrackId!==expectedTrackId)return false;
-      if(err?.name!=='NotAllowedError' && err?.name!=='AbortError')handleAudioFailure(err);
+      if(epoch!==operationEpoch||activeAudio.__sbbTrackId!==expectedTrackId)return false;
+      if(err?.name!=='NotAllowedError'&&err?.name!=='AbortError')handleAudioFailure(err);
       renderUi();return false;
     }
   }
-  function pauseNow(){
-    hardStopActive({reset:false,bump:true});
-    saveStored();renderUi();
-  }
-  function scheduleEndedPause(){
-    clearTimeout(pauseTimer);
-    pauseTimer=setTimeout(()=>{if(playbackState==='ended')pauseNow();},2800);
+  function pauseNow(){hardPause({reset:false,bump:true});saveStored();renderUi();}
+  function scheduleEndGrace(){
+    clearTimeout(endTimer);
+    endTimer=setTimeout(()=>{
+      if(playbackState==='ended'){
+        sessionActive=false;
+        pauseNow();
+      }
+    },END_GRACE_MS);
   }
   function advanceTrack(reason='next'){
-    const resume=shouldSound();
-    hardStopActive({reset:true,bump:true});
+    const resume=soundtrackShouldRun();
+    hardPause({reset:true,bump:true});
     const next=drawNextTrack();
     if(!next){renderUi();return;}
-    currentTrack=next;
-    playedIds.add(next.id);
-    announceTrack(reason);
-    loadCurrentTrack(currentTrack);
-    primeNextTrack();
-    saveStored();renderUi();
+    currentTrack=next;playedIds.add(next.id);announceTrack(reason);
+    loadCurrentTrack(currentTrack);saveStored();renderUi();
     if(resume)ensurePlaying({claim:true});
   }
   function handleAudioFailure(err){
-    if(activeAudio.__sbbTrackId!==currentTrack?.id)return;
-    if(activeAudio.__sbbFailed)return;
-    activeAudio.__sbbFailed=true;
-    consecutiveFailures++;
+    if(activeAudio.__sbbTrackId!==currentTrack?.id||activeAudio.__sbbFailed)return;
+    activeAudio.__sbbFailed=true;consecutiveFailures++;
     console.warn('[SBB soundtrack] track unavailable',{track:activeAudio.__sbbTrackId,error:err?.message||String(err||'audio error'),base:remoteBase||'local'});
-    if(consecutiveFailures>=Math.min(8,Math.max(1,tracks.length))){
-      available=false;pauseNow();renderUi();return;
-    }
+    if(consecutiveFailures>=Math.min(8,Math.max(1,tracks.length))){available=false;pauseNow();renderUi();return;}
     advanceTrack('error-skip');
   }
 
+  // Highlight lifecycle is intentionally NOT a song lifecycle. Starting, buffering,
+  // ready/cued and automatic video changes keep the same song/position. Only an
+  // explicit PAUSED state pauses the soundtrack.
   function setPlaybackState(mode){
     const next=String(mode||'idle').toLowerCase();
     const changed=next!==playbackState;
     playbackState=next;
-    // Playback truth is authoritative, even when the same PAUSED/READY state is
-    // reported repeatedly by native controls or a YouTube iframe callback.
-    if(ACTIVE_STATES.has(playbackState)){
-      clearTimeout(pauseTimer);pauseTimer=0;
-      ensurePlaying({claim:false});
-      setActiveVolume();
-    }else if(HARD_PAUSE_STATES.has(playbackState)){
-      pauseNow();
-    }else if(playbackState==='ended' && changed){
-      scheduleEndedPause();
+    if(ACTIVE_STATES.has(next)){
+      clearTimeout(endTimer);endTimer=0;
+      sessionActive=true;videoPaused=false;
+      ensurePlaying({claim:false});setActiveVolume();
+    }else if(next==='paused'){
+      videoPaused=true;pauseNow();
+    }else if(next==='ended'){
+      if(sessionActive&&!videoPaused){ensurePlaying({claim:false});scheduleEndGrace();}
+    }else if(next==='ready'){
+      // READY is common during a clip handoff/cue. Do not pause or reload music.
+      if(sessionActive&&!videoPaused&&changed)ensurePlaying({claim:false});
     }
     renderUi();
   }
-  function pauseForSearch(){playbackState='paused';pauseNow();renderUi();}
+  function pauseForSearch(){searchPaused=true;pauseNow();renderUi();}
+  function resumeFromSearch(){searchPaused=false;if(sessionActive&&!videoPaused)ensurePlaying({claim:false});renderUi();}
 
   function toggleEnabled(){
     enabled=!enabled;available=true;consecutiveFailures=0;saveStored();renderUi();
-    if(enabled && ACTIVE_STATES.has(playbackState))ensurePlaying({claim:true});
+    if(enabled&&sessionActive&&!videoPaused&&!searchPaused)ensurePlaying({claim:true});
     else if(!enabled){pauseNow();releaseOwnership();}
   }
   function setVolume(value){masterVolume=clamp(value,0,.5);saveStored();setActiveVolume();renderUi();}
@@ -346,7 +302,7 @@
   function renderUi(){
     const toggle=$('soundtrackToggle'),volBtn=$('soundtrackVolumeBtn'),slider=$('soundtrackVolume');
     if(toggle){
-      const sounding=shouldSound()&&tabOwnsAudio&&!activeAudio.paused;
+      const sounding=soundtrackShouldRun()&&tabOwnsAudio&&!activeAudio.paused;
       toggle.textContent=enabled?'♫ Ⅱ':'♫ ▶';
       toggle.setAttribute('aria-pressed',enabled?'true':'false');
       toggle.classList.toggle('is-enabled',enabled);toggle.classList.toggle('is-playing',sounding);toggle.classList.toggle('is-unavailable',!available);
@@ -374,13 +330,10 @@
       const normal=Math.max(.001,Number(defs.defaultMusicVolume||.16)),duck=Math.max(0,Number(defs.highlightPlayingVolume||.10));
       highlightDuckFactor=clamp(duck/normal,0,1);
       const stored=readStored();
-      currentTrack=tracks.find(t=>t.id===resumeTrackId)||null;
-      if(!currentTrack)currentTrack=weightedShuffle(tracks)[0]||null;
+      currentTrack=tracks.find(t=>t.id===resumeTrackId)||weightedShuffle(tracks)[0]||null;
       restoreCycle(stored);
       if(currentTrack)loadCurrentTrack(currentTrack,{position:resumePosition});
-      primeNextTrack();
-      available=tracks.length>0;
-      renderUi();return manifest;
+      available=tracks.length>0;renderUi();return manifest;
     }).catch(err=>{available=false;console.warn('[SBB soundtrack] manifest unavailable',err);renderUi();return null;});
     return manifestPromise;
   }
@@ -390,13 +343,11 @@
     $('soundtrackVolumeBtn')?.addEventListener('click',ev=>{ev.stopPropagation();toggleVolumePopover();});
     $('soundtrackVolume')?.addEventListener('input',ev=>setVolume(ev.target.value));
     document.addEventListener('click',ev=>{if(!ev.target.closest?.('#soundtrackControls'))toggleVolumePopover(false);});
-    // Soundtrack controls must not invoke the generic autoplay-unlock path before
-    // their own click handler. That old ordering could restart the outgoing song.
-    document.addEventListener('pointerdown',ev=>{if(ev.target.closest?.('#soundtrackControls'))return;if(enabled&&ACTIVE_STATES.has(playbackState))ensurePlaying({claim:true});},{capture:true,passive:true});
-    document.addEventListener('keydown',ev=>{if(ev.target.closest?.('#soundtrackControls'))return;if(enabled&&ACTIVE_STATES.has(playbackState))ensurePlaying({claim:true});},{capture:true,passive:true});
+    document.addEventListener('pointerdown',ev=>{if(ev.target.closest?.('#soundtrackControls'))return;if(soundtrackShouldRun())ensurePlaying({claim:true});},{capture:true,passive:true});
+    document.addEventListener('keydown',ev=>{if(ev.target.closest?.('#soundtrackControls'))return;if(soundtrackShouldRun())ensurePlaying({claim:true});},{capture:true,passive:true});
     document.addEventListener('visibilitychange',()=>{
       if(document.hidden){pauseNow();releaseOwnership();}
-      else if(ACTIVE_STATES.has(playbackState))ensurePlaying({claim:false});
+      else if(soundtrackShouldRun())ensurePlaying({claim:false});
     });
     window.addEventListener('beforeunload',()=>{saveStored();releaseOwnership();});
     window.addEventListener('pagehide',releaseOwnership);
@@ -408,36 +359,32 @@
     activeAudio.addEventListener('ended',()=>{if(activeAudio.__sbbTrackId===currentTrack?.id)advanceTrack('ended');});
     activeAudio.addEventListener('playing',renderUi);
     activeAudio.addEventListener('pause',renderUi);
-    preloadAudio.addEventListener('error',()=>{
-      if(preloadedTrackId)console.debug?.('[SBB soundtrack] preload unavailable; active playback will retry normally',{track:preloadedTrackId});
-    });
   }
   async function init(){
     if(initialized)return manifestPromise;
-    initialized=true;
-    const stored=hydrateStored();
-    bindAudio();bindUi();renderUi();
-    saveTimer=setInterval(saveStored,5000);
-    ownerTimer=setInterval(ownerHeartbeat,2000);
-    manifestPromise=loadManifest(stored);
-    return manifestPromise;
+    initialized=true;hydrateStored();bindAudio();bindUi();renderUi();
+    saveTimer=setInterval(saveStored,5000);ownerTimer=setInterval(ownerHeartbeat,2000);
+    manifestPromise=loadManifest();return manifestPromise;
   }
 
-  window.SBB_SOUNDTRACK=Object.freeze({
+  const api=Object.freeze({
+    __singleton:true,
     version:VERSION,
     init,
     setPlaybackState,
     pauseForSearch,
+    resumeFromSearch,
     setVolume,
     toggle:toggleEnabled,
     skip:()=>advanceTrack('next'),
     snapshot:()=>({
-      enabled,available,playbackState,volume:masterVolume,
+      enabled,available,playbackState,sessionActive,videoPaused,searchPaused,volume:masterVolume,
       currentTrack:currentTrack?{id:currentTrack.id,title:currentTrack.title,tier:currentTrack.tier,file:currentTrack.file,sourceFilename:currentTrack.sourceFilename}:null,
-      nextTrackId:peekNextTrack()?.id||'',preloadedTrackId,
-      remainingInBag:bag.length,playedInCycle:playedIds.size,trackCount:tracks.length,
-      remoteBase,tabOwnsAudio,operationEpoch
+      nextTrackId:peekNextTrack()?.id||'',remainingInBag:bag.length,playedInCycle:playedIds.size,trackCount:tracks.length,
+      remoteBase,tabOwnsAudio,operationEpoch,audioElementCount:1
     })
   });
+  window.SBB_SOUNDTRACK=api;
+  window[RUNTIME_KEY]={initializing:false,api,audio:activeAudio};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init(),{once:true});else init();
 })();

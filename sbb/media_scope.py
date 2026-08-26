@@ -1,4 +1,4 @@
-"""Media scope + Silver collection classification for Sports Big Board v4.1.30.
+"""Media scope + Silver collection classification for Sports Big Board v4.1.31.
 
 Scope answers *what the media covers*. Intent answers *what kind of program it is*.
 Neither is the game's Gold/Green/Purple/Blue quality tier. Only GAME-scoped media
@@ -24,7 +24,7 @@ PLAYER = "PLAYER"
 SEASON_LEAGUE = "SEASON_LEAGUE"
 OTHER = "OTHER"
 # COLLECTION_SCOPES remains the broad taxonomy vocabulary for compatibility.
-# SILVER_SCOPES is the actual v4.1.30 presentation/promotion contract.
+# SILVER_SCOPES is the actual v4.1.31 presentation/promotion contract.
 COLLECTION_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, SEASON_LEAGUE}
 SILVER_SCOPES = {DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE}
 VALID_SCOPES = {GAME, DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, PLAYER, SEASON_LEAGUE, OTHER}
@@ -314,7 +314,7 @@ def _round_collection_signal(item, league=""):
     title=_title(item); league=str(league or (item or {}).get("league") or "").upper(); explicit_num,explicit_kind=_explicit_round_metadata(item)
     if league not in {"EPL","MLS"} or not title or _narrow_title(title): return False,""
     if _SCORING_ROUNDUP_RE.search(title): return True,"ROUND_SCORING_ROUNDUP_TITLE"
-    # v4.1.30: a trusted playlist collector may have already resolved Matchweek N
+    # v4.1.31: a trusted playlist collector may have already resolved Matchweek N
     # from title+description (e.g. "Opening Weekend" + "Match Week 1"). Carry that
     # explicit round identity directly into Silver instead of rediscovering it by date.
     if explicit_num and _SCORING_GOALS_PHRASE_RE.search(_text(item)): return True,"EXPLICIT_ROUND_SCORING_ROUNDUP"
@@ -338,7 +338,7 @@ def classify_with_reason(item, *, league="", date="", away="", home=""):
     item=item or {}; explicit=str(item.get("mediaScope") or "").upper(); title=_title(item); text=_text(item)
     if explicit in VALID_SCOPES:
         return explicit,float(item.get("mediaScopeConfidence") or 1.0),str(item.get("mediaScopeReason") or "EXPLICIT_SCOPE")
-    # v4.1.30: studio/reaction/postgame-show programming can remain in SOURCE_MEDIA,
+    # v4.1.31: studio/reaction/postgame-show programming can remain in SOURCE_MEDIA,
     # but may not become GAME media merely because a provider endpoint was event-scoped.
     if _NON_GAME_RECAP_PROGRAM_RE.search(text) and not re.search(r"\b(?:full game highlights|game highlights|full match highlights|match highlights|condensed game|extended highlights)\b",text,re.I):
         return OTHER,0.995,"NON_GAME_POSTGAME_OR_REACTION_PROGRAM"

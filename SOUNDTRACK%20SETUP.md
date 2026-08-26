@@ -1,6 +1,6 @@
-# Sports Big Board v4.1.30 Soundtrack Setup
+# Sports Big Board v4.1.31 Soundtrack Setup
 
-v4.1.30 supports the 113-track Sports Big Board soundtrack while keeping the ~408 MiB MP3 library in a **private Google Cloud Storage bucket**. Public Access Prevention may remain enforced.
+v4.1.31 supports the 113-track Sports Big Board soundtrack while keeping the ~408 MiB MP3 library in a **private Google Cloud Storage bucket**. Public Access Prevention may remain enforced.
 
 ## Runtime architecture
 
@@ -16,7 +16,7 @@ The expected bucket is:
 
 ## One-time / repair setup
 
-Place the six soundtrack ZIPs in one Cloud Shell directory and run from a v4.1.30 checkout:
+Place the six soundtrack ZIPs in one Cloud Shell directory and run from a v4.1.31 checkout:
 
 ```bash
 gcloud config set project sportsbigboard
@@ -37,7 +37,7 @@ If the Token Creator grant is blocked, the uploader prints a warning. Playback s
 
 ## Verification
 
-After v4.1.30 is deployed:
+After v4.1.31 is deployed:
 
 ```bash
 curl -s https://<BACKEND>/api/soundtrack/status

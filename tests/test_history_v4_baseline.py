@@ -531,7 +531,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             media={"youtubeId":"same","title":"Alpha Bears vs Beta Hawks Game Highlights","verifiedPlayable":True,"recapTier":"green","provider":"YOUTUBE"}
             self.assertEqual(repo.put_event_media("2026-08-20","NBA","a",[media]),1)
             self.assertEqual(repo.put_event_media("2026-08-21","NBA","b",[media]),0)
-            # v4.1.30 treats a broad rematch candidate as a harmless multi-event
+            # v4.1.31 treats a broad rematch candidate as a harmless multi-event
             # encounter: preserve the first proven assignment and quarantine only
             # the new candidate link instead of destroying both.
             self.assertEqual(len(repo.event_media("2026-08-20","NBA","a")),1)
@@ -545,7 +545,7 @@ class EventAssociationV402Tests(unittest.TestCase):
             repo=HistoryRepository(Path(td)/"history.sqlite3")
             event={"id":"761748","espnEventId":"761748","awayTeam":{"name":"Philadelphia Union"},"homeTeam":{"name":"Austin FC"}}
             repo.put_scores("2026-08-22","MLS",[event])
-            # Simulate a pre-v4.1.30 assigned row by directly inserting source/link.
+            # Simulate a pre-v4.1.31 assigned row by directly inserting source/link.
             wrong={"youtubeId":"wrong-espn-like","espnEventId":"761748","scoreEventId":"761748","title":"New York City FC vs. Philadelphia Union - Game Highlights","provider":"ESPN","sourceType":"espn-event-video","verifiedPlayable":False,"recapTier":"green"}
             repo.put_source_media([wrong],league="MLS",date="2026-08-22")
             import sqlite3 as _sqlite3, time as _time, json as _json

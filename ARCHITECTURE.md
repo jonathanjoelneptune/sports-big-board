@@ -1,6 +1,6 @@
-# Sports Big Board v4.1.30 Architecture
+# Sports Big Board v4.1.31 Architecture
 
-## v4.1.30 operator/read and playback boundary
+## v4.1.31 operator/read and playback boundary
 
 The interactive operator surfaces are no longer allowed to perform expensive whole-catalog work synchronously. A background telemetry worker refreshes green-gap, association, claim, Silver, media-objective, and Silver-identity summaries into an in-memory snapshot. The Live Search Console only combines that snapshot with inexpensive live thread/worker state, so its frequent polling does not compete with discovery or playback.
 
@@ -39,9 +39,9 @@ Operator terminology is presentation-safe: catalog media coverage, media objecti
 Discovery v15, matcher v7, Rule Game Catch-up v9, EPL source v6, current media collectors, and provider concurrency limits remain unchanged. v4.1.21 requires no catalog rebuild.
 
 
-## v4.1.30 site soundtrack boundary
+## v4.1.31 site soundtrack boundary
 
-The soundtrack is an application-level service, not a MediaAsset and not a PlaybackController transport. `architecture/site-soundtrack.js` owns one playable browser `Audio` element plus one permanently muted preload-only element, the unique weighted shuffle cycle, soundtrack volume/ducking, reload persistence, single-tab audio ownership, and Cloud Storage URL resolution. There is no crossfade state: the outgoing song is synchronously stopped before a Next/end transition loads the replacement. PlaybackController remains the sole owner of highlight video state; it reports only coarse UI playback states (`starting`, `buffering`, `playing`, `paused`, `ended`) to the soundtrack engine.
+The soundtrack is an application-level service, not a MediaAsset and not a PlaybackController transport. `architecture/site-soundtrack.js` owns exactly one browser `Audio` element, the unique weighted shuffle cycle, soundtrack volume/ducking, reload persistence, single-tab audio ownership, and Cloud Storage URL resolution. Highlight lifecycle is deliberately not song lifecycle: `ready`, `starting`, and `buffering` transitions during a clip handoff preserve the current song URL and timestamp. Only explicit video pause pauses the soundtrack; only Next, natural song completion, or a real soundtrack error selects another song. PlaybackController remains the sole owner of highlight video state and reports coarse UI states to the soundtrack engine.
 
 Soundtrack audio never enters MediaManifest, GAME/Silver classification, historical SQLite, provider health, or media-prewarm queues. GitHub Pages ships the manifest but not the MP3 payload. The bucket remains private. The backend track endpoint prefers a short-lived V4 signed GCS redirect, so normal music bandwidth still goes directly from Cloud Storage to the browser; if IAM signBlob is unavailable it falls back to a lightweight authenticated GCS proxy stream. Search Priority is allowed to suspend the soundtrack because that mode explicitly suspends all playback.
 
@@ -119,7 +119,7 @@ This distinction is observable in the History Audit as `Catalog Coverage Status`
 - `architecture/game-center-contract.js` — HOT browser Game Center cache, cancellation, timeout and localhost contract
 - `architecture/media-work-priorities.js` — semantic prewarm priorities
 - `architecture/editorial-packages.js` — league-level Top Plays registry/identity
-- `architecture/site-soundtrack.js` — single-playable-stream no-repeat soundtrack, preload-only next track, pause/Next race guards, ducking, controls, single-tab ownership, and private Cloud Storage audio resolution
+- `architecture/site-soundtrack.js` — exactly-one-Audio no-repeat soundtrack, persistent song continuity across video changes, pause/Next race guards, ducking, controls, singleton protection, single-tab ownership, and private Cloud Storage audio resolution
 - `ui/game-center-view.js` — normalized Game Center rendering and current-request ownership
 - `ui/info-drawer.js` — Game Center / Up Next / Settings information surface
 - `ui/player-visibility.js` — below/side preference and Keep Video Visible presentation controller

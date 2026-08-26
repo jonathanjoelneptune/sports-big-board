@@ -18,14 +18,15 @@ class V4128SoundtrackTests(unittest.TestCase):
     def test_browser_engine_is_site_level_and_persistent(self):
         src=(ROOT/'architecture/site-soundtrack.js').read_text()
         for token in (
-            'weightedShuffle', 'rebuildCycle', 'primeNextTrack', 'localStorage',
-            'setPlaybackState', 'highlightDuckFactor', 'pauseForSearch',
+            'weightedShuffle', 'rebuildCycle', 'localStorage',
+            'setPlaybackState', 'highlightDuckFactor', 'pauseForSearch', 'resumeFromSearch',
             'assets/soundtrack/manifest.json', 'soundtrackBase'
         ):
             self.assertIn(token,src)
         app=(ROOT/'app.js').read_text()
         self.assertIn('SBB_SOUNDTRACK?.setPlaybackState?.(mode)',app)
         self.assertIn('SBB_SOUNDTRACK?.pauseForSearch?.()',app)
+        self.assertIn('SBB_SOUNDTRACK?.resumeFromSearch?.()',app)
         html=(ROOT/'index.html').read_text()
         self.assertIn('id="soundtrackToggle"',html)
         self.assertIn('id="soundtrackVolume"',html)
