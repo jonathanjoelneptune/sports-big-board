@@ -3,6 +3,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 APP=(ROOT/'app.js').read_text(encoding='utf-8')
 INDEX=(ROOT/'index.html').read_text(encoding='utf-8')
+VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
+
 class V442TransitionAuthority(unittest.TestCase):
     def test_manual_next_is_authoritative(self):
         self.assertIn('function manualQueueAdvance(direction=1)',APP)
@@ -23,5 +25,6 @@ class V442TransitionAuthority(unittest.TestCase):
         self.assertIn('hot standby did not prove playback',APP)
     def test_dev_mode_ui_exists(self):
         self.assertIn('id="devModeToggleBtn"',INDEX)
-        self.assertIn('architecture/dev-mode.js?v=4.4.3',INDEX)
+        self.assertIn(f'architecture/dev-mode.js?v={VERSION}',INDEX)
+
 if __name__=='__main__': unittest.main()
