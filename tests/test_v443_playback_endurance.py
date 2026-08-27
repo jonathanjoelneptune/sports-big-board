@@ -5,8 +5,9 @@ APP=(ROOT/'app.js').read_text(encoding='utf-8')
 TERM=(ROOT/'architecture'/'playback-terminal.js').read_text(encoding='utf-8')
 INDEX=(ROOT/'index.html').read_text(encoding='utf-8')
 CORE=(ROOT/'core-model.js').read_text(encoding='utf-8')
+VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 
-class V443PlaybackEndurance(unittest.TestCase):
+class V443PlaybackEnduranceBaseline(unittest.TestCase):
     def test_semantic_recap_completion_prevents_same_game_alternate(self):
         block=APP[APP.index('function advanceAfterCompletedItem'):APP.index('function advance(direction=1)')]
         self.assertIn('!isFullRecapCandidate(finished)',block)
@@ -24,18 +25,17 @@ class V443PlaybackEndurance(unittest.TestCase):
     def test_recent_final_refill_is_three_days(self):
         self.assertIn('RECENT_HISTORY_AUTOFILL_DAYS=3',APP)
         self.assertIn('scheduleRecentHistoricalRecapFill(date)',APP)
-    def test_terminal_endurance_phases_and_failure_guards(self):
-        self.assertIn("label:'WARMUP',durationMs:5*60_000",TERM)
-        self.assertIn("label:'SOAK',durationMs:15*60_000",TERM)
-        self.assertIn("label:'HAMMER',durationMs:10*60_000",TERM)
+    def test_terminal_retains_v443_failure_guards(self):
+        self.assertIn('FIRST_FRAME_WATCHDOG_MS=28_000',TERM)
         self.assertIn('DUPLICATE_GAME_RECAP',TERM)
         self.assertIn('UNRECOVERABLE_NO_FIRST_FRAME',TERM)
         self.assertIn('chaosDisruptStandby',TERM)
+        self.assertIn('forcePlaybackEngineReset',TERM)
     def test_release_version_and_controls(self):
-        self.assertEqual((ROOT/'VERSION').read_text().strip(),'4.4.3')
+        self.assertRegex(VERSION,r'^\d+\.\d+\.\d+$')
         self.assertIn('playbackEnduranceStart',INDEX)
         self.assertIn('playbackEnduranceStop',INDEX)
-        self.assertIn('app.js?v=4.4.3',INDEX)
-        self.assertIn("version:'4.4.3'",CORE)
+        self.assertIn(f'app.js?v={VERSION}',INDEX)
+        self.assertIn(f"version:'{VERSION}'",CORE)
 
 if __name__=='__main__': unittest.main()
