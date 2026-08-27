@@ -19,6 +19,13 @@ class V434DeployRehearsalTests(unittest.TestCase):
                       'run: bash VERIFY.sh', 'Verify deployed frontend/backend handshake'):
             self.assertIn(token, src)
 
+    def test_deploy_rehearsal_resolves_reused_aliases_lexically(self):
+        src = (ROOT / 'tools' / 'check_deploy_rehearsal.py').read_text(encoding='utf-8')
+        self.assertIn('def scope_resolution_self_check()', src)
+        self.assertIn('def static_source_contract_scan(root: Path = ROOT)', src)
+        self.assertIn('scope_resolution_self_check()\n    workflow_chain_check()', src)
+        self.assertIn('Each test method/function gets its own lexical local binding table', src)
+
     def test_score_playback_failure_marks_runtime_truth_at_boundary_without_double_mark(self):
         app = (ROOT / 'app.js').read_text(encoding='utf-8')
         block = app[app.index("if(userPlaybackSession?.source==='score')"):
