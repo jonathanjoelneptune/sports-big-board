@@ -30,7 +30,10 @@ class V443PlaybackEnduranceBaseline(unittest.TestCase):
         self.assertIn('DUPLICATE_GAME_RECAP',TERM)
         self.assertIn('UNRECOVERABLE_NO_FIRST_FRAME',TERM)
         self.assertIn('chaosDisruptStandby',TERM)
-        self.assertIn('forcePlaybackEngineReset',TERM)
+        # v4.4.6 preserves the v4.4.3 systemic engine circuit breaker in app.js,
+        # but stale single-asset retries are deliberately quarantined locally.
+        self.assertIn('markRuntimeMediaFailed',TERM)
+        self.assertNotIn('forcePlaybackEngineReset?.()',TERM)
     def test_release_version_and_controls(self):
         self.assertRegex(VERSION,r'^\d+\.\d+\.\d+$')
         self.assertIn('playbackEnduranceStart',INDEX)

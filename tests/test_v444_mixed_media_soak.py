@@ -42,7 +42,7 @@ class V444MixedMediaSoak(unittest.TestCase):
         self.assertIn('fallbacks',TERM)
         self.assertIn('ASSET_BAD',TERM)
         self.assertIn('restoreMediaKey',TERM)
-        self.assertIn('forcePlaybackEngineReset',TERM)
+        self.assertIn('markRuntimeMediaFailed',TERM)
         self.assertIn('unrecoveredBlanks',TERM)
     def test_verify_executes_runtime_recovery(self):
         self.assertIn('node tests/test_v444_playback_recovery_runtime.js',VERIFY)

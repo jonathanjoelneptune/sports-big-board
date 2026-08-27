@@ -12,9 +12,9 @@ def value(name):
     return int(m.group(1)) if m else -1
 
 class V445RandomArchiveStress(unittest.TestCase):
-    def test_release(self):
-        self.assertEqual(VERSION,'4.4.5')
-        self.assertIn('Sports Big Board — v4.4.5',INDEX)
+    def test_release_baseline_or_newer(self):
+        self.assertGreaterEqual(tuple(map(int,VERSION.split('.'))),(4,4,5))
+        self.assertIn(f'Sports Big Board — v{VERSION}',INDEX)
         self.assertIn('random archive dates across 365 days',INDEX)
     def test_random_archive_policy_is_deliberately_broad(self):
         self.assertEqual(value('ARCHIVE_LOOKBACK_DAYS'),365)

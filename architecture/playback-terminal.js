@@ -1,4 +1,4 @@
-/* Sports Big Board v4.4.5 — Dev Playback Terminal + random-archive mixed-media endurance certification.
+/* Sports Big Board v4.4.6 — Dev Playback Terminal + historical-media quarantine / random-archive endurance certification.
    The terminal observes canonical playback and drives stress actions only through
    SBB_DEV_TEST_HOOKS / score-ribbon controls, preserving PlaybackController authority. */
 (() => {
@@ -32,7 +32,12 @@
     Object.freeze({id:'soak',label:'MIXED SOAK',durationMs:30*60_000,minTransitionMs:18_000,maxTransitionMs:32_000,disruptStandby:false}),
     Object.freeze({id:'hammer',label:'MIXED HAMMER',durationMs:20*60_000,minTransitionMs:8_000,maxTransitionMs:16_000,disruptStandby:true})
   ]);
+  const RECOVERY_PHASES=Object.freeze([
+    Object.freeze({id:'recovery-soak',label:'RECOVERY SOAK',durationMs:15*60_000,minTransitionMs:12_000,maxTransitionMs:22_000,disruptStandby:false}),
+    Object.freeze({id:'recovery-hammer',label:'RECOVERY HAMMER',durationMs:15*60_000,minTransitionMs:6_000,maxTransitionMs:12_000,disruptStandby:true})
+  ]);
   const ENDURANCE_TOTAL_MS=PHASES.reduce((n,p)=>n+p.durationMs,0);
+  const RECOVERY_TOTAL_MS=RECOVERY_PHASES.reduce((n,p)=>n+p.durationMs,0);
   const FIRST_FRAME_WATCHDOG_MS=28_000;
   const MIN_SUCCESSFUL_STARTS=150;
   const MIN_TRANSITIONS=149;
@@ -51,22 +56,27 @@
   const LONG_DATE_JUMP_DAYS=45;
   const ARCHIVE_DATE_LOAD_TIMEOUT_MS=4500;
   const ARCHIVE_DATE_MAX_ATTEMPTS=6;
+  const PROFILE_CONFIG=Object.freeze({
+    full:Object.freeze({id:'full',label:'FULL 60M',phases:PHASES,totalMs:ENDURANCE_TOTAL_MS,minStarts:MIN_SUCCESSFUL_STARTS,minTransitions:MIN_TRANSITIONS,minSports:MIN_SPORTS,minQualities:MIN_QUALITIES,minDates:MIN_DATES,minDateChanges:MIN_DATE_CHANGES,minTransports:MIN_TRANSPORTS,minMonths:MIN_MONTHS,minSpanDays:MIN_DATE_SPAN_DAYS,minLongJumps:MIN_LONG_DATE_JUMPS,preferNFL:false}),
+    recovery:Object.freeze({id:'recovery',label:'RECOVERY 30M',phases:RECOVERY_PHASES,totalMs:RECOVERY_TOTAL_MS,minStarts:45,minTransitions:44,minSports:3,minQualities:2,minDates:10,minDateChanges:10,minTransports:2,minMonths:6,minSpanDays:180,minLongJumps:8,preferNFL:true})
+  });
   let endurance={};
-  let seenMediaKeys=new Set(),seenEventKeys=new Set(),seenCardKeys=new Set(),seenStressDates=new Set(),attemptedStressDates=new Set(),mediaFailures=new Map(),successfulMediaKeys=new Set(),quarantinedMediaKeys=new Set();
+  let seenMediaKeys=new Set(),seenEventKeys=new Set(),seenCardKeys=new Set(),seenNoMediaCardKeys=new Set(),seenStressDates=new Set(),attemptedStressDates=new Set(),mediaFailures=new Map(),successfulMediaKeys=new Set(),quarantinedMediaKeys=new Set();
 
   function counterKeys(obj){return Object.entries(obj||{}).filter(([,n])=>Number(n)>0).map(([k])=>k);}
   function sportKeys(){return SPORT_IDS.filter(k=>Number(endurance.sports?.[k]||0)>0);}
   function bump(obj,key){key=clean(key||'UNKNOWN',40)||'UNKNOWN';obj[key]=(obj[key]||0)+1;return obj[key];}
   function resetEnduranceMemory(){
-    seenMediaKeys=new Set();seenEventKeys=new Set();seenCardKeys=new Set();seenStressDates=new Set();attemptedStressDates=new Set();mediaFailures=new Map();successfulMediaKeys=new Set();quarantinedMediaKeys=new Set();
+    seenMediaKeys=new Set();seenEventKeys=new Set();seenCardKeys=new Set();seenNoMediaCardKeys=new Set();seenStressDates=new Set();attemptedStressDates=new Set();mediaFailures=new Map();successfulMediaKeys=new Set();quarantinedMediaKeys=new Set();
   }
   function freshEndurance(status='IDLE'){
     return {
-      runId:'',status,reason:'',startedAt:0,endedAt:0,phase:'IDLE',phaseLabel:'IDLE',phaseStartedAt:0,nextTransitionAt:0,
-      successfulStarts:0,transitions:0,crossGameTransitions:0,standbyDisruptions:0,noFrameStreak:0,maxNoFrameStreak:0,
-      recoveryAttempts:0,retryAttempts:0,retrySuccesses:0,fallbacks:0,recoveredAfterReset:0,recoveryArmed:false,unrecoveredBlanks:0,
+      runId:'',profile:'full',status,reason:'',startedAt:0,endedAt:0,phase:'IDLE',phaseLabel:'IDLE',phaseStartedAt:0,nextTransitionAt:0,
+      successfulStarts:0,transitions:0,crossGameTransitions:0,standbyDisruptions:0,noFrameStreak:0,maxNoFrameStreak:0,rawNoFrameCount:0,
+      recoveryAttempts:0,retryAttempts:0,retrySuccesses:0,fallbacks:0,fallbackSuccesses:0,recoveredAfterReset:0,recoveryArmed:false,unrecoveredBlanks:0,
       engineIncidentsBase:0,engineResetsBase:0,engineIncidents:0,engineResets:0,lastAction:'',lastActionAt:0,lastFirstFrameAt:0,
-      lastRecap:null,duplicateRecaps:0,repeatViolations:0,duplicateSelections:0,duplicateCandidateRejects:0,preflightDuplicateSkips:0,assetBad:0,rapidTransitions:0,dateChanges:0,
+      lastRecap:null,duplicateRecaps:0,repeatViolations:0,duplicateSelections:0,duplicateCandidateRejects:0,preflightDuplicateSkips:0,
+      assetBad:0,staleMedia:0,noMediaSkips:0,quarantineReselections:0,rapidTransitions:0,dateChanges:0,
       randomDateAttempts:0,longDateJumps:0,archiveSpanDays:0,archiveDates:[],
       sportChanges:0,qualityChanges:0,transportChanges:0,uniqueMedia:0,uniqueEvents:0,
       sports:{},qualities:{},dates:{},months:{},transports:{},providers:{},
@@ -83,9 +93,10 @@
     endurance.lastAction=entry.message;endurance.lastActionAt=entry.at;
     return entry;
   }
+  function activeProfile(){return PROFILE_CONFIG[endurance.profile]||PROFILE_CONFIG.full;}
   function endurancePhaseAt(elapsed){
     let cursor=0;
-    for(const p of PHASES){if(elapsed<cursor+p.durationMs)return {...p,offsetMs:cursor};cursor+=p.durationMs;}
+    for(const p of activeProfile().phases){if(elapsed<cursor+p.durationMs)return {...p,offsetMs:cursor};cursor+=p.durationMs;}
     return null;
   }
   function nextTransitionDelay(phase){
@@ -100,8 +111,9 @@
       endurance.engineResets=Math.max(0,Number(engine.resets||0)-Number(endurance.engineResetsBase||0));
     }
     endurance.uniqueMedia=seenMediaKeys.size;endurance.uniqueEvents=seenEventKeys.size;
-    const elapsed=endurance.startedAt?Math.min(ENDURANCE_TOTAL_MS,Math.max(0,(endurance.endedAt||epoch())-endurance.startedAt)):0;
-    return {...endurance,elapsedMs:elapsed,totalMs:ENDURANCE_TOTAL_MS,remainingMs:Math.max(0,ENDURANCE_TOTAL_MS-elapsed),progress:ENDURANCE_TOTAL_MS?elapsed/ENDURANCE_TOTAL_MS:0,events:[...endurance.events]};
+    const profile=activeProfile(),totalMs=Number(profile.totalMs||ENDURANCE_TOTAL_MS);
+    const elapsed=endurance.startedAt?Math.min(totalMs,Math.max(0,(endurance.endedAt||epoch())-endurance.startedAt)):0;
+    return {...endurance,profileLabel:profile.label,elapsedMs:elapsed,totalMs,remainingMs:Math.max(0,totalMs-elapsed),progress:totalMs?elapsed/totalMs:0,events:[...endurance.events]};
   }
   function setEnduranceStatus(status,reason=''){
     endurance.status=status;endurance.reason=clean(reason,300);if(['PASS','FAIL','STOPPED'].includes(status))endurance.endedAt=epoch();render();
@@ -119,21 +131,22 @@
   }
   function failEndurance(reason){finishEndurance('FAIL',reason);}
   function passEndurance(){
-    const sports=sportKeys(),qualities=QUALITY_ROTATION.filter(q=>Number(endurance.qualities[q]||0)>0),dates=counterKeys(endurance.dates),transports=counterKeys(endurance.transports);
-    if(endurance.successfulStarts<MIN_SUCCESSFUL_STARTS)return failEndurance(`INSUFFICIENT_FIRST_FRAMES ${endurance.successfulStarts}/${MIN_SUCCESSFUL_STARTS}`);
-    if(endurance.transitions<MIN_TRANSITIONS)return failEndurance(`INSUFFICIENT_TRANSITIONS ${endurance.transitions}/${MIN_TRANSITIONS}`);
+    const cfg=activeProfile(),sports=sportKeys(),qualities=QUALITY_ROTATION.filter(q=>Number(endurance.qualities[q]||0)>0),dates=counterKeys(endurance.dates),transports=counterKeys(endurance.transports),months=counterKeys(endurance.months);
+    if(endurance.successfulStarts<cfg.minStarts)return failEndurance(`INSUFFICIENT_FIRST_FRAMES ${endurance.successfulStarts}/${cfg.minStarts}`);
+    if(endurance.transitions<cfg.minTransitions)return failEndurance(`INSUFFICIENT_TRANSITIONS ${endurance.transitions}/${cfg.minTransitions}`);
     if(seenMediaKeys.size!==endurance.successfulStarts||endurance.repeatViolations)return failEndurance(`REPEATED_MEDIA • ${seenMediaKeys.size} unique / ${endurance.successfulStarts} starts`);
-    if(sports.length<MIN_SPORTS)return failEndurance(`INSUFFICIENT_SPORT_DIVERSITY ${sports.length}/${MIN_SPORTS}`);
-    if(qualities.length<MIN_QUALITIES)return failEndurance(`INSUFFICIENT_COLOR_DIVERSITY ${qualities.join('/')||'NONE'} • need GREEN/PURPLE/BLUE`);
-    if(dates.length<MIN_DATES)return failEndurance(`INSUFFICIENT_DATE_DIVERSITY ${dates.length}/${MIN_DATES}`);
-    if(endurance.dateChanges<MIN_DATE_CHANGES)return failEndurance(`INSUFFICIENT_DATE_SWAPS ${endurance.dateChanges}/${MIN_DATE_CHANGES}`);
-    const months=counterKeys(endurance.months);if(months.length<MIN_MONTHS)return failEndurance(`INSUFFICIENT_MONTH_DIVERSITY ${months.length}/${MIN_MONTHS}`);
-    if(endurance.archiveSpanDays<MIN_DATE_SPAN_DAYS)return failEndurance(`INSUFFICIENT_ARCHIVE_SPAN ${endurance.archiveSpanDays}/${MIN_DATE_SPAN_DAYS} days`);
-    if(endurance.longDateJumps<MIN_LONG_DATE_JUMPS)return failEndurance(`INSUFFICIENT_LONG_DATE_JUMPS ${endurance.longDateJumps}/${MIN_LONG_DATE_JUMPS}`);
-    if(transports.length<MIN_TRANSPORTS)return failEndurance(`INSUFFICIENT_TRANSPORT_DIVERSITY ${transports.length}/${MIN_TRANSPORTS}`);
+    if(sports.length<cfg.minSports)return failEndurance(`INSUFFICIENT_SPORT_DIVERSITY ${sports.length}/${cfg.minSports}`);
+    if(qualities.length<cfg.minQualities)return failEndurance(`INSUFFICIENT_COLOR_DIVERSITY ${qualities.join('/')||'NONE'} • need ${cfg.minQualities} quality tiers`);
+    if(dates.length<cfg.minDates)return failEndurance(`INSUFFICIENT_DATE_DIVERSITY ${dates.length}/${cfg.minDates}`);
+    if(endurance.dateChanges<cfg.minDateChanges)return failEndurance(`INSUFFICIENT_DATE_SWAPS ${endurance.dateChanges}/${cfg.minDateChanges}`);
+    if(months.length<cfg.minMonths)return failEndurance(`INSUFFICIENT_MONTH_DIVERSITY ${months.length}/${cfg.minMonths}`);
+    if(endurance.archiveSpanDays<cfg.minSpanDays)return failEndurance(`INSUFFICIENT_ARCHIVE_SPAN ${endurance.archiveSpanDays}/${cfg.minSpanDays} days`);
+    if(endurance.longDateJumps<cfg.minLongJumps)return failEndurance(`INSUFFICIENT_LONG_DATE_JUMPS ${endurance.longDateJumps}/${cfg.minLongJumps}`);
+    if(transports.length<cfg.minTransports)return failEndurance(`INSUFFICIENT_TRANSPORT_DIVERSITY ${transports.length}/${cfg.minTransports}`);
     if(endurance.maxNoFrameStreak>2)return failEndurance(`NOFRAME_MAX ${endurance.maxNoFrameStreak} > 2`);
+    if(endurance.quarantineReselections)return failEndurance(`QUARANTINED_MEDIA_RESELECTED ${endurance.quarantineReselections}`);
     if(endurance.unrecoveredBlanks)return failEndurance(`UNRECOVERED_BLANKS ${endurance.unrecoveredBlanks}`);
-    finishEndurance('PASS',`60-minute random-archive mixed-media endurance passed • ${endurance.successfulStarts} unique starts • ${endurance.transitions} transitions • ${sports.length} sports • ${dates.length} dates • ${counterKeys(endurance.months).length} months • ${endurance.archiveSpanDays}d span • ${endurance.longDateJumps} long jumps`);
+    finishEndurance('PASS',`${cfg.label} random-archive recovery passed • ${endurance.successfulStarts} unique starts • ${endurance.transitions} transitions • ${sports.length} sports • ${dates.length} dates • ${months.length} months • ${endurance.archiveSpanDays}d span • ${endurance.staleMedia} stale assets quarantined`);
   }
   function stopEndurance(){
     if(endurance.status!=='RUNNING')return false;
@@ -196,16 +209,31 @@
     let cards=[];try{cards=[...(document.querySelectorAll?.('#scoreCells .score-card.has-highlights')||[])];}catch(_){cards=[];}
     return cards.filter(card=>!card?.disabled&&typeof card?.click==='function'&&!seenCardKeys.has(cardKey(card)));
   }
+  function noteNoMediaCards(date=''){
+    let cards=[];try{cards=[...(document.querySelectorAll?.('#scoreCells .score-card')||[])];}catch(_){cards=[];}
+    let added=0;
+    for(const card of cards){
+      if(card?.classList?.contains?.('has-highlights'))continue;
+      const key=cardKey(card);if(!key||seenNoMediaCardKeys.has(key))continue;
+      seenNoMediaCardKeys.add(key);endurance.noMediaSkips++;added++;
+    }
+    if(added)enduranceLog('no-media-skip',`NO_MEDIA_SKIP ${added} score card${added===1?'':'s'} on ${date||clean(hooks()?.scoreDate?.()||'',10)||'selected date'} • FIND RECAP / no playable asset`);
+    return added;
+  }
   function targetQuality(){return QUALITY_ROTATION[endurance.transitions%QUALITY_ROTATION.length];}
   function chooseRibbonCandidate(){
     const cards=ribbonCandidates();if(!cards.length)return null;
     const wanted=targetQuality(),sportCounts=endurance.sports||{},ranked=[];
     for(const card of cards){
       const quality=cardQuality(card),league=cardLeague(card),key=cardKey(card),mediaKey=cardMediaKey(card);
+      if(!mediaKey){
+        endurance.noMediaSkips++;seenCardKeys.add(key);enduranceLog('no-media-skip',`NO_MEDIA_SKIP ribbon card advertised highlights but resolved no playable media • ${league} ${quality}`,{cardKey:key});continue;
+      }
       if(mediaKey&&(seenMediaKeys.has(mediaKey)||quarantinedMediaKeys.has(mediaKey))){
-        endurance.preflightDuplicateSkips++;seenCardKeys.add(key);enduranceLog('duplicate-preflight-skip',`Skipped already-seen ribbon media before click • ${league} ${quality}`,{mediaKey});continue;
+        endurance.preflightDuplicateSkips++;seenCardKeys.add(key);enduranceLog('duplicate-preflight-skip',`Skipped already-seen/quarantined ribbon media before click • ${league} ${quality}`,{mediaKey});continue;
       }
       let score=0;if(quality===wanted)score+=180;if(quality!==endurance.lastQuality)score+=55;if(league!==endurance.lastLeague)score+=70;
+      if(activeProfile().preferNFL&&league==='NFL')score+=240;
       score+=Math.max(0,60-12*Number(sportCounts[league]||0));if(quality==='GREEN'||quality==='PURPLE'||quality==='BLUE')score+=20;
       ranked.push({card,quality,league,key,mediaKey,score:score+randomUnit()});
     }
@@ -229,7 +257,7 @@
       try{
         await Promise.resolve(h.setScoreDate(target));enduranceLog('date-probe',`Random archive probe ${before||'—'} → ${target}`);await sleep(350);
         const candidate=await waitForRibbonCandidate();
-        if(!candidate){enduranceLog('date-empty',`Random archive date ${target} had no unseen playable ribbon media`);continue;}
+        if(!candidate){noteNoMediaCards(target);enduranceLog('date-empty',`Random archive date ${target} had no unseen playable ribbon media • skipped without playback failure`);continue;}
         const jump=dateDistanceDays(target,before);if(before&&target!==before){endurance.dateChanges++;if(jump>=LONG_DATE_JUMP_DAYS)endurance.longDateJumps++;}
         seenStressDates.add(target);updateArchiveSpan(target);bump(endurance.months,target.slice(0,7));endurance.pendingDate=target;
         enduranceLog('date-swap',`Random archive date ${before||'—'} → ${target} • jump ${jump}d`,{jumpDays:jump,league:candidate.league,quality:candidate.quality});return candidate;
@@ -238,7 +266,7 @@
     return null;
   }
   function shouldRandomArchiveJump(phase){
-    const every=phase?.id==='hammer'?4:(phase?.id==='soak'?5:6);return endurance.transitions>0&&endurance.transitions%every===0;
+    const every=endurance.profile==='recovery'?3:(phase?.id==='hammer'?4:(phase?.id==='soak'?5:6));return endurance.transitions>0&&endurance.transitions%every===0;
   }
   async function tuneUnseenProgram(){
     const h=hooks();if(!h)return false;
@@ -247,6 +275,7 @@
       endurance.pendingStressSelection=true;
       let moved=await Promise.resolve(h.stressTuneNextGame?.());if(!moved)moved=await Promise.resolve(h.stressTuneNext?.());if(!moved){endurance.pendingStressSelection=false;return false;}
       const media=clean(h.currentMediaKey?.(),500),game=clean(h.currentGameKey?.(),240);
+      if(media&&quarantinedMediaKeys.has(media)){endurance.quarantineReselections++;endurance.pendingStressSelection=false;continue;}
       if((media&&seenMediaKeys.has(media))||(game&&seenEventKeys.has(game))){endurance.duplicateSelections++;endurance.pendingStressSelection=false;continue;}
       endurance.pendingQuality='';endurance.pendingDate=clean(h.scoreDate?.(),10);endurance.pendingLeague='';return true;
     }
@@ -273,17 +302,51 @@
     return recap?'GREEN':'BLUE';
   }
 
-  async function fallbackAfterNoFrame(row,reason){
+  function itemFromRow(row){
+    const key=clean(row?.mediaKey||'',500),base={title:row?.title||'',competitionId:inferLeague(row),league:inferLeague(row),provider:row?.provider||'',transport:row?.transport||'',eventId:row?.eventKey||'',matchId:String(row?.eventKey||'').split(':').pop()||''};
+    if(key.startsWith('youtube:'))return {...base,youtubeId:key.slice(8),id:key.slice(8),verifiedPlayable:true};
+    if(key.startsWith('direct:'))return {...base,mediaUrl:key.slice(7),id:key,verifiedPlayable:true};
+    return {...base,id:key,verifiedPlayable:true};
+  }
+  function quarantineStaleMedia(row,reason='repeated no-first-frame'){
+    const key=clean(row?.mediaKey||'',500);if(!key||quarantinedMediaKeys.has(key))return false;
+    quarantinedMediaKeys.add(key);endurance.assetBad++;endurance.staleMedia++;row.quarantined=true;
+    const item=itemFromRow(row);
+    try{window.markRuntimeMediaFailed?.(item,`HTTP 410 stale historical media after repeated no first frame • ${reason}`,{providerFailure:false});}catch(_){ }
+    endurance.noFrameStreak=0;
+    enduranceLog('asset-bad',`STALE_MEDIA quarantined after repeated no-first-frame starts • ${clean(row.title,100)}`,{mediaKey:key,eventKey:row.eventKey});
+    return true;
+  }
+  async function genericFallbackAwayFromBad(row,reason){
     const h=hooks();if(!h)return false;
-    const beforeGame=clean(row?.eventKey||h.currentGameKey?.(),240);let moved=false;
-    try{moved=await Promise.resolve(h.stressTuneNext?.());}catch(_){moved=false;}
-    if(!moved){try{moved=await Promise.resolve(h.stressTuneNextGame?.());}catch(_){moved=false;}}
-    if(moved){
+    const beforeGame=clean(row?.eventKey||h.currentGameKey?.(),240),badKey=clean(row?.mediaKey||'',500);
+    for(let attempt=0;attempt<24;attempt++){
+      let moved=false;
+      try{moved=await Promise.resolve(attempt===0?h.stressTuneNext?.():h.stressTuneNextGame?.());}catch(_){moved=false;}
+      if(!moved){try{moved=await Promise.resolve(h.stressTuneNext?.());}catch(_){moved=false;}}
+      if(!moved)continue;
+      const key=clean(h.currentMediaKey?.(),500);
+      if(key&&(key===badKey||quarantinedMediaKeys.has(key))){
+        endurance.quarantineReselections++;enduranceLog('quarantine-reselection',`Rejected quarantined fallback candidate • ${key}`,{mediaKey:key});continue;
+      }
+      if(key&&seenMediaKeys.has(key)){endurance.preflightDuplicateSkips++;continue;}
       endurance.fallbacks++;endurance.transitions++;const afterGame=clean(h.currentGameKey?.(),240);if(!beforeGame||!afterGame||beforeGame!==afterGame)endurance.crossGameTransitions++;
-      endurance.pendingQuality='';endurance.pendingDate=clean(h.scoreDate?.(),10);endurance.pendingLeague='';
-      enduranceLog('fallback',`${beforeGame&&afterGame===beforeGame?'Same-event':'Next-event'} fallback after ${reason}`,{mediaKey:row?.mediaKey||''});
+      endurance.pendingQuality='';endurance.pendingDate=clean(h.scoreDate?.(),10);endurance.pendingLeague='';endurance.pendingStressSelection=true;
+      enduranceLog('fallback',`${beforeGame&&afterGame===beforeGame?'Same-event':'Next-event'} fallback after ${reason}`,{mediaKey:badKey,nextMediaKey:key});return true;
     }
-    return moved;
+    return false;
+  }
+  async function fallbackAfterNoFrame(row,reason){
+    const failed=itemFromRow(row),badKey=clean(row?.mediaKey||'',500);
+    let moved=false;
+    // Product-owned score-session fallback has first priority: another verified
+    // source for the same game before the soak abandons that sporting event.
+    try{moved=window.tryScoreMediaFallback?.(failed,`HTTP 410 stale historical media • ${reason}`,{runtimeFailureAlreadyMarked:true})===true;}catch(_){moved=false;}
+    if(moved){
+      endurance.fallbacks++;endurance.transitions++;endurance.pendingQuality='';endurance.pendingDate=clean(hooks()?.scoreDate?.()||'',10);endurance.pendingLeague='';endurance.pendingStressSelection=true;
+      enduranceLog('fallback',`Same-event verified fallback after ${reason}`,{mediaKey:badKey});return true;
+    }
+    return genericFallbackAwayFromBad(row,reason);
   }
   function queueNoFrameRecovery(row,reason){
     const runId=endurance.runId;
@@ -294,17 +357,20 @@
       try{
         const h=hooks();const key=clean(row.mediaKey,500);const failures=Number(mediaFailures.get(key)||0);
         if(failures===1){
+          // One clean retry is useful evidence. Do not reset the whole playback
+          // engine for one historical asset; systemic engine health owns resets.
           endurance.retryAttempts++;endurance.recovery={stage:'retry',mediaKey:key,eventKey:row.eventKey};
-          let reset=false;try{reset=h?.forcePlaybackEngineReset?.()===true;}catch(_){ }
-          enduranceLog('retry',`${reset?'Clean engine reset + retry':'Retry'} • ${clean(row.title,100)}`,{mediaKey:key});
+          enduranceLog('retry',`Retry same historical asset once • ${clean(row.title,100)}`,{mediaKey:key});
           let retried=false;try{retried=await Promise.resolve(h?.restoreMediaKey?.(key));}catch(_){retried=false;}
-          if(!retried){const moved=await fallbackAfterNoFrame(row,`${reason} (retry unavailable)`);if(!moved){endurance.unrecoveredBlanks++;failEndurance(`UNRECOVERABLE_NO_FIRST_FRAME • ${clean(row.title,100)}`);}}
-        }else{
-          if(key&&!successfulMediaKeys.has(key)&&!quarantinedMediaKeys.has(key)){
-            quarantinedMediaKeys.add(key);endurance.assetBad++;enduranceLog('asset-bad',`ASSET_BAD after ${failures} independent no-frame starts • ${clean(row.title,100)}`,{mediaKey:key});
+          if(!retried){
+            quarantineStaleMedia(row,`${reason} (retry unavailable)`);
+            endurance.recovery={stage:'fallback',mediaKey:key,eventKey:row.eventKey};
+            const moved=await fallbackAfterNoFrame(row,`${reason} (retry unavailable)`);if(!moved){endurance.unrecoveredBlanks++;failEndurance(`UNRECOVERABLE_NO_FIRST_FRAME • ${clean(row.title,100)}`);}
           }
+        }else{
+          quarantineStaleMedia(row,reason);
           endurance.recovery={stage:'fallback',mediaKey:key,eventKey:row.eventKey};
-          const moved=await fallbackAfterNoFrame(row,reason);if(!moved){endurance.unrecoveredBlanks++;failEndurance(`UNRECOVERABLE_NO_FIRST_FRAME • no fallback for ${clean(row.title,100)}`);}
+          const moved=await fallbackAfterNoFrame(row,reason);if(!moved){endurance.unrecoveredBlanks++;failEndurance(`UNRECOVERABLE_NO_FIRST_FRAME • no fallback after quarantining ${clean(row.title,100)}`);}
         }
       }catch(err){endurance.unrecoveredBlanks++;failEndurance(`RECOVERY_EXCEPTION • ${err?.message||err}`);}
       finally{if(endurance.runId===runId)endurance.actionBusy=false;}
@@ -332,11 +398,19 @@
   function noteNoFrame(row,reason='session left without first frame'){
     if(!row||row.noFrameCounted||row.enduranceRunId!==endurance.runId||endurance.status!=='RUNNING')return;
     row.noFrameCounted=true;const key=clean(row.mediaKey,500);
+    if(key&&quarantinedMediaKeys.has(key)){
+      endurance.quarantineReselections++;endurance.unrecoveredBlanks++;
+      return failEndurance(`QUARANTINED_MEDIA_RESELECTED • ${clean(row.title,100)}`);
+    }
     if(key&&seenMediaKeys.has(key)){if(row.stressDriven)return rejectDuplicateStressCandidate(row,'before first frame');endurance.repeatViolations++;return failEndurance(`REPEATED_MEDIA_SELECTION before frame • ${clean(row.title,100)}`);}
-    endurance.noFrameStreak++;endurance.maxNoFrameStreak=Math.max(endurance.maxNoFrameStreak,endurance.noFrameStreak);
-    const failures=(Number(mediaFailures.get(key)||0)+1);if(key)mediaFailures.set(key,failures);
-    enduranceLog('no-frame',`${reason} • streak ${endurance.noFrameStreak} • asset attempt ${failures}`,{sessionId:row.sessionId,mediaKey:key});
-    if(endurance.noFrameStreak>2){endurance.unrecoveredBlanks++;return failEndurance(`UNRECOVERABLE_NO_FIRST_FRAME • streak ${endurance.noFrameStreak} • ${clean(row.title,100)}`);}
+    const failures=(Number(mediaFailures.get(key)||0)+1);if(key)mediaFailures.set(key,failures);endurance.rawNoFrameCount++;
+    if(failures===1){
+      endurance.noFrameStreak++;endurance.maxNoFrameStreak=Math.max(endurance.maxNoFrameStreak,endurance.noFrameStreak);
+    }
+    enduranceLog('no-frame',`${reason} • unresolved streak ${endurance.noFrameStreak} • asset attempt ${failures}`,{sessionId:row.sessionId,mediaKey:key});
+    // Repeated failure of one concrete historical asset is stale-media evidence,
+    // not a second/third system-wide blank. The retry path quarantines it and
+    // resets the unresolved streak before selecting another source.
     queueNoFrameRecovery(row,reason);
   }
   function noteFirstFrame(row){
@@ -354,6 +428,7 @@
     if(endurance.recoveryArmed){
       endurance.recoveredAfterReset++;
       if(endurance.recovery?.stage==='retry'&&endurance.recovery.mediaKey===key)endurance.retrySuccesses++;
+      if(endurance.recovery?.stage==='fallback')endurance.fallbackSuccesses++;
       enduranceLog('recovered',`${endurance.recovery?.stage==='retry'?'Retry':'Fallback'} produced first frame • ${clean(row.title,100)}`);
       endurance.recoveryArmed=false;endurance.recovery=null;
     }
@@ -411,11 +486,12 @@
     finally{if(endurance.runId===runId){endurance.actionBusy=false;endurance.nextTransitionAt=epoch()+nextTransitionDelay(phase);}}
   }
 
-  async function startEndurance(){
+  async function startEndurance(profile='full'){
     if(endurance.status==='RUNNING')return false;
     const h=hooks();if(!devEnabled()||!h)return false;
-    const engine=h.playbackEngine?.()||{};resetEnduranceMemory();endurance=freshEndurance('RUNNING');endurance.runId=`end-${epoch().toString(36)}`;endurance.startedAt=epoch();endurance.phase='warmup';endurance.phaseLabel='WARMUP';endurance.phaseStartedAt=endurance.startedAt;endurance.nextTransitionAt=endurance.startedAt+20_000;endurance.savedResourceMode=clean(h.resourceMode?.()||'balanced',24);endurance.savedMediaKey=clean(h.currentMediaKey?.(),500);endurance.savedScoreDate=clean(h.scoreDate?.(),20);endurance.engineIncidentsBase=Number(engine.incidents||0);endurance.engineResetsBase=Number(engine.resets||0);
-    enduranceLog('start','60-minute random-archive mixed-media endurance started • 365-day random date pool • 10m warmup → 30m mixed soak → 20m mixed hammer');clear();
+    profile=PROFILE_CONFIG[profile]?profile:'full';
+    const engine=h.playbackEngine?.()||{},cfg=PROFILE_CONFIG[profile];resetEnduranceMemory();endurance=freshEndurance('RUNNING');endurance.profile=profile;endurance.runId=`end-${epoch().toString(36)}`;endurance.startedAt=epoch();endurance.phase=cfg.phases[0].id;endurance.phaseLabel=cfg.phases[0].label;endurance.phaseStartedAt=endurance.startedAt;endurance.nextTransitionAt=endurance.startedAt+(profile==='recovery'?8_000:20_000);endurance.savedResourceMode=clean(h.resourceMode?.()||'balanced',24);endurance.savedMediaKey=clean(h.currentMediaKey?.(),500);endurance.savedScoreDate=clean(h.scoreDate?.(),20);endurance.engineIncidentsBase=Number(engine.incidents||0);endurance.engineResetsBase=Number(engine.resets||0);
+    enduranceLog('start',profile==='recovery'?'30-minute historical recovery validation started • NFL emphasized • 365-day random archive • stale media quarantined and skipped':'60-minute random-archive mixed-media endurance started • 365-day random date pool • 10m warmup → 30m mixed soak → 20m mixed hammer');clear();
     try{await h.setResourceMode?.('playback');}catch(err){return failEndurance(`PLAYBACK_MODE_FAILED • ${err?.message||err}`);}
     try{h.start?.();h.ensurePlaying?.();}catch(err){return failEndurance(`PLAYBACK_START_FAILED • ${err?.message||err}`);}
     if(Number(h.programSize?.()||0)<2&&ribbonCandidates().length<2)return failEndurance('INSUFFICIENT_PROGRAM • mixed endurance requires at least two playable items');
@@ -436,13 +512,13 @@
   }
 
   function renderEndurance(){
-    const status=document.getElementById('playbackEnduranceStatus'),detail=document.getElementById('playbackEnduranceDetail'),bar=document.getElementById('playbackEnduranceProgress'),start=document.getElementById('playbackEnduranceStart'),stop=document.getElementById('playbackEnduranceStop');if(!status||!detail)return;
-    const s=enduranceSnapshot(),sports=SPORT_IDS.filter(k=>Number(s.sports?.[k]||0)>0).length,colors=QUALITY_ROTATION.filter(q=>Number(s.qualities[q]||0)>0).length,dates=counterKeys(s.dates).length;
+    const status=document.getElementById('playbackEnduranceStatus'),detail=document.getElementById('playbackEnduranceDetail'),bar=document.getElementById('playbackEnduranceProgress'),start=document.getElementById('playbackEnduranceStart'),recovery=document.getElementById('playbackRecoveryStart'),stop=document.getElementById('playbackEnduranceStop');if(!status||!detail)return;
+    const s=enduranceSnapshot(),sports=SPORT_IDS.filter(k=>Number(s.sports?.[k]||0)>0).length,colors=QUALITY_ROTATION.filter(q=>Number(s.qualities[q]||0)>0).length,dates=counterKeys(s.dates).length,total=fmtClock(s.totalMs);
     status.textContent=s.status;status.dataset.state=s.status.toLowerCase();
-    if(s.status==='RUNNING')detail.textContent=`${s.phaseLabel} ${fmtClock(s.elapsedMs)} / 60:00 • STARTS ${s.successfulStarts} • UNIQUE ${s.uniqueMedia} • XITIONS ${s.transitions} • SPORTS ${sports} • COLORS ${colors}/3 • DATES ${dates} • SPAN ${s.archiveSpanDays}d • LONG JUMPS ${s.longDateJumps} • DUP REJECT ${s.duplicateCandidateRejects} • NOFRAME ${s.noFrameStreak}`;
-    else if(['PASS','FAIL','STOPPED'].includes(s.status))detail.textContent=`${s.reason} • ${fmtClock(s.elapsedMs)} • UNIQUE ${s.uniqueMedia} • SPORTS ${sports} • COLORS ${colors}/3 • DATES ${dates} • RETRIES ${s.retryAttempts} • FALLBACKS ${s.fallbacks} • BAD ${s.assetBad}`;
-    else detail.textContent='60:00 • GREEN/PURPLE/BLUE • multi-sport • random dates across 365 days • long archive jumps • duplicate candidates rejected before certification • retry → fallback recovery';
-    if(bar)bar.style.width=`${Math.max(0,Math.min(100,s.progress*100)).toFixed(1)}%`;if(start)start.disabled=s.status==='RUNNING';if(stop)stop.disabled=s.status!=='RUNNING';
+    if(s.status==='RUNNING')detail.textContent=`${s.profileLabel} • ${s.phaseLabel} ${fmtClock(s.elapsedMs)} / ${total} • STARTS ${s.successfulStarts} • UNIQUE ${s.uniqueMedia} • XITIONS ${s.transitions} • SPORTS ${sports} • COLORS ${colors}/3 • DATES ${dates} • STALE ${s.staleMedia} • NO MEDIA ${s.noMediaSkips} • FALLBACK OK ${s.fallbackSuccesses} • NOFRAME ${s.noFrameStreak}`;
+    else if(['PASS','FAIL','STOPPED'].includes(s.status))detail.textContent=`${s.reason} • ${fmtClock(s.elapsedMs)} • UNIQUE ${s.uniqueMedia} • SPORTS ${sports} • COLORS ${colors}/3 • DATES ${dates} • STALE ${s.staleMedia} • NO MEDIA ${s.noMediaSkips} • RETRIES ${s.retryAttempts} • FALLBACKS ${s.fallbacks}/${s.fallbackSuccesses}`;
+    else detail.textContent='60M full certification or 30M historical recovery • random 365-day dates • stale assets: retry once → quarantine → same-game fallback → next game • FIND RECAP/no media skipped';
+    if(bar)bar.style.width=`${Math.max(0,Math.min(100,s.progress*100)).toFixed(1)}%`;if(start)start.disabled=s.status==='RUNNING';if(recovery)recovery.disabled=s.status==='RUNNING';if(stop)stop.disabled=s.status!=='RUNNING';
   }
 
   function render(){
@@ -460,10 +536,10 @@
   window.addEventListener?.('sbb:dev-mode',render);
   document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('playbackTerminalClear')?.addEventListener('click',clear);
-    document.getElementById('playbackTerminalCopy')?.addEventListener('click',()=>{const s=enduranceSnapshot(),sports=SPORT_IDS.filter(k=>Number(s.sports?.[k]||0)>0).join(','),colors=QUALITY_ROTATION.filter(q=>Number(s.qualities[q]||0)>0).join(','),dates=counterKeys(s.dates).join(','),months=counterKeys(s.months).join(',');const head=`ENDURANCE\t${s.status}\t${s.phaseLabel}\tELAPSED=${fmtClock(s.elapsedMs)}\tSTARTS=${s.successfulStarts}\tUNIQUE=${s.uniqueMedia}\tTRANSITIONS=${s.transitions}\tSPORTS=${sports}\tCOLORS=${colors}\tDATES=${dates}\tMONTHS=${months}\tDATE_SWAPS=${s.dateChanges}\tDATE_SPAN=${s.archiveSpanDays}d\tLONG_JUMPS=${s.longDateJumps}\tRANDOM_DATE_TRIES=${s.randomDateAttempts}\tDUP_REJECTS=${s.duplicateCandidateRejects}\tPREFLIGHT_SKIPS=${s.preflightDuplicateSkips}\tNOFRAME_MAX=${s.maxNoFrameStreak}\tRESETS=${s.engineResets}\tRETRIES=${s.retryAttempts}\tRETRY_OK=${s.retrySuccesses}\tFALLBACKS=${s.fallbacks}\tASSET_BAD=${s.assetBad}\tREPEATS=${s.repeatViolations}\t${s.reason}`;const lines=snapshot().filter(r=>r.enduranceRunId===s.runId).map(r=>`${inferLeague(r)}\t${r.quality||''}\t${r.scoreDate||''}\t${r.transport}\t${r.provider}\tRESULT=${r.rejectedDuplicate?'DUPLICATE_REJECTED':'ACCEPTED'}\tPLAY=${fmtMs(r.playTimeMs)}\tBUFFER=${fmtMs(r.bufferTimeMs)}\tSTALLS=${r.stallCount}\tSTART=${r.firstFrameMs??''}\tEVENT=${r.eventKey}\tMEDIA=${r.mediaKey}\t${r.title}`);navigator.clipboard?.writeText?.([head,...lines].join('\n')).catch(()=>{});});
-    document.getElementById('playbackEnduranceStart')?.addEventListener('click',()=>startEndurance());document.getElementById('playbackEnduranceStop')?.addEventListener('click',stopEndurance);
+    document.getElementById('playbackTerminalCopy')?.addEventListener('click',()=>{const s=enduranceSnapshot(),sports=SPORT_IDS.filter(k=>Number(s.sports?.[k]||0)>0).join(','),colors=QUALITY_ROTATION.filter(q=>Number(s.qualities[q]||0)>0).join(','),dates=counterKeys(s.dates).join(','),months=counterKeys(s.months).join(',');const head=`ENDURANCE\t${s.status}\t${s.phaseLabel}\tPROFILE=${s.profile}\tELAPSED=${fmtClock(s.elapsedMs)}\tSTARTS=${s.successfulStarts}\tUNIQUE=${s.uniqueMedia}\tTRANSITIONS=${s.transitions}\tSPORTS=${sports}\tCOLORS=${colors}\tDATES=${dates}\tMONTHS=${months}\tDATE_SWAPS=${s.dateChanges}\tDATE_SPAN=${s.archiveSpanDays}d\tLONG_JUMPS=${s.longDateJumps}\tRANDOM_DATE_TRIES=${s.randomDateAttempts}\tDUP_REJECTS=${s.duplicateCandidateRejects}\tPREFLIGHT_SKIPS=${s.preflightDuplicateSkips}\tNO_MEDIA_SKIP=${s.noMediaSkips}\tSTALE_MEDIA=${s.staleMedia}\tNOFRAME_MAX=${s.maxNoFrameStreak}\tRAW_NOFRAME=${s.rawNoFrameCount}\tRESETS=${s.engineResets}\tRETRIES=${s.retryAttempts}\tRETRY_OK=${s.retrySuccesses}\tFALLBACKS=${s.fallbacks}\tFALLBACK_OK=${s.fallbackSuccesses}\tASSET_BAD=${s.assetBad}\tQUARANTINE_RESELECT=${s.quarantineReselections}\tREPEATS=${s.repeatViolations}\t${s.reason}`;const lines=snapshot().filter(r=>r.enduranceRunId===s.runId).map(r=>`${inferLeague(r)}\t${r.quality||''}\t${r.scoreDate||''}\t${r.transport}\t${r.provider}\tRESULT=${r.rejectedDuplicate?'DUPLICATE_REJECTED':(r.quarantined?'STALE_QUARANTINED':'ACCEPTED')}\tPLAY=${fmtMs(r.playTimeMs)}\tBUFFER=${fmtMs(r.bufferTimeMs)}\tSTALLS=${r.stallCount}\tSTART=${r.firstFrameMs??''}\tEVENT=${r.eventKey}\tMEDIA=${r.mediaKey}\t${r.title}`);navigator.clipboard?.writeText?.([head,...lines].join('\n')).catch(()=>{});});
+    document.getElementById('playbackEnduranceStart')?.addEventListener('click',()=>startEndurance('full'));document.getElementById('playbackRecoveryStart')?.addEventListener('click',()=>startEndurance('recovery'));document.getElementById('playbackEnduranceStop')?.addEventListener('click',stopEndurance);
     render();tickTimer=setInterval(render,500);enduranceTimer=setInterval(enduranceTick,1000);
   });
   try{const s=window.SBB_PLAYBACK_SESSION?.snapshot?.();if(s?.sessionId)ingest(s);}catch(_){ }
-  window.SBB_PLAYBACK_TERMINAL=Object.freeze({version:'1.3',snapshot,clear,ingest,render,endurance:Object.freeze({start:startEndurance,stop:stopEndurance,snapshot:enduranceSnapshot,phases:PHASES,totalMs:ENDURANCE_TOTAL_MS})});
+  window.SBB_PLAYBACK_TERMINAL=Object.freeze({version:'1.4',snapshot,clear,ingest,render,endurance:Object.freeze({start:()=>startEndurance('full'),startRecovery:()=>startEndurance('recovery'),stop:stopEndurance,snapshot:enduranceSnapshot,phases:PHASES,recoveryPhases:RECOVERY_PHASES,totalMs:ENDURANCE_TOTAL_MS,recoveryTotalMs:RECOVERY_TOTAL_MS})});
 })();

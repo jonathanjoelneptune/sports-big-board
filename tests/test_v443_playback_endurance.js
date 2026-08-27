@@ -26,11 +26,12 @@ assert(terminal.includes('FIRST_FRAME_WATCHDOG_MS=28_000'),'first-frame watchdog
 assert(terminal.includes('DUPLICATE_GAME_RECAP'),'same-game alternate recap failure guard missing');
 assert(terminal.includes('UNRECOVERABLE_NO_FIRST_FRAME'),'unrecoverable no-frame failure guard missing');
 assert(terminal.includes('chaosDisruptStandby'),'hammer standby disruption missing');
-assert(terminal.includes('forcePlaybackEngineReset'),'automatic playback engine reset missing');
+assert(terminal.includes('markRuntimeMediaFailed'),'stale-asset quarantine integration missing');
+assert(!terminal.includes('forcePlaybackEngineReset?.()'),'single stale asset must not reset the entire playback engine');
 assert(index.includes('id="playbackEnduranceStart"'),'terminal endurance start control missing');
 assert(index.includes('id="playbackEnduranceStop"'),'terminal endurance stop control missing');
 assert(index.includes(`architecture/playback-terminal.js?v=${version}`),'terminal cache-bust version stale');
 assert(index.includes(`app.js?v=${version}`),'app cache-bust version stale');
 assert(css.includes('.pt-endurance'),'endurance terminal styling missing');
 assert(core.includes(`version:'${version}'`),'core model version stale');
-console.log(`PASS: v${version} retains the v4.4.3 playback-resilience baseline`);
+console.log(`PASS: v${version} retains v4.4.3 resilience with v4.4.6 asset-local quarantine`);

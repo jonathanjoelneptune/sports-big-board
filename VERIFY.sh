@@ -17,6 +17,7 @@ python3 tools/check_ultimate_playback.py
 # immediately instead of becoming another post-upload hotfix cycle.
 python3 tools/check_deploy_rehearsal.py
 python3 -m unittest tests.test_v445_random_archive_stress
+python3 -m unittest tests.test_v446_historical_media_quarantine
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"
@@ -38,6 +39,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v443_playback_endurance_runtime.js
   node tests/test_v444_playback_recovery_runtime.js
   node tests/test_v445_duplicate_candidate_runtime.js
+  node tests/test_v446_stale_media_runtime.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi

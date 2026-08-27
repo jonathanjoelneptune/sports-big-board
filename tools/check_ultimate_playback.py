@@ -55,8 +55,8 @@ for token in ('PLAYBACK_ENGINE_FAILURE_THRESHOLD=3','TRANSIENT_UNPLAYABLE_MEDIA=
 completion=app[app.find('function advanceAfterCompletedItem'):app.find('function advance(direction=1)')]
 need('!isFullRecapCandidate(finished)' in completion,'v4.4.3 recap completion does not use semantic recap classification')
 need('!finished?.overview' not in completion,'v4.4.3 recap completion still depends on raw overview flag')
-for token in ('DUPLICATE_GAME_RECAP','UNRECOVERABLE_NO_FIRST_FRAME','chaosDisruptStandby','forcePlaybackEngineReset'):
-    need(token in terminal,f'v4.4.3 resilience guard missing {token}')
+for token in ('DUPLICATE_GAME_RECAP','UNRECOVERABLE_NO_FIRST_FRAME','chaosDisruptStandby','markRuntimeMediaFailed'):
+    need(token in terminal,f'v4.4.3+ resilience guard missing {token}')
 need('node tests/test_v443_playback_endurance.js' in verify,'VERIFY.sh does not execute v4.4.3 endurance baseline test')
 need('node tests/test_v443_playback_endurance_runtime.js' in verify,'VERIFY.sh does not execute v4.4.3 endurance runtime test')
 # v4.4.4 mixed-media endurance + playback recovery baseline retained.
@@ -74,8 +74,13 @@ for token in ('ARCHIVE_LOOKBACK_DAYS=365','ARCHIVE_MIN_JUMP_DAYS=45','LONG_DATE_
     need(token in terminal,f'v4.4.5 random-archive endurance missing {token}')
 need('python3 tools/check_release_manifest.py' in verify,'VERIFY.sh does not execute atomic release manifest gate first')
 need('node tests/test_v445_duplicate_candidate_runtime.js' in verify,'VERIFY.sh does not execute v4.4.5 duplicate-candidate runtime test')
+# v4.4.6 historical-media quarantine + graceful recovery.
+for token in ('RECOVERY_PHASES','RECOVERY_TOTAL_MS',"profile:'full'",'preferNFL:true','startRecovery','STALE_MEDIA','NO_MEDIA_SKIP','staleMedia','noMediaSkips','fallbackSuccesses','quarantineReselections','quarantineStaleMedia','markRuntimeMediaFailed','tryScoreMediaFallback','QUARANTINED_MEDIA_RESELECTED',"HTTP 410 stale historical media",'providerFailure:false'):
+    need(token in terminal,f'v4.4.6 historical-media recovery missing {token}')
+need('node tests/test_v446_stale_media_runtime.js' in verify,'VERIFY.sh does not execute v4.4.6 stale-media runtime test')
+need('python3 -m unittest tests.test_v446_historical_media_quarantine' in verify,'VERIFY.sh does not execute v4.4.6 static recovery contract')
 if errors:
     print('ULTIMATE PLAYBACK CHECK FAILED')
     for e in errors: print(' -',e)
     raise SystemExit(1)
-print(f'PASS: v{version} Ultimate Playback random-archive endurance/recovery contract is internally consistent')
+print(f'PASS: v{version} Ultimate Playback random-archive + historical-media quarantine/recovery contract is internally consistent')

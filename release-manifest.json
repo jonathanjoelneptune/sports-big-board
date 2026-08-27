@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.4.5",
-  "baseRelease": "4.4.4",
-  "title": "Random-Archive Stress & Duplicate-Candidate Rejection",
+  "release": "4.4.6",
+  "baseRelease": "4.4.5",
+  "title": "Historical Media Quarantine & Graceful Fallback",
   "atomic": true,
   "requiredFiles": [
     "VERSION",
@@ -11,99 +11,131 @@
     "architecture/playback-terminal.js",
     "foundation-certification.json",
     "VERIFY.sh",
-    "tools/check_release_manifest.py",
     "tools/check_ultimate_playback.py",
-    "tests/test_v442_transition_authority.py",
+    "tests/test_v443_playback_endurance.py",
+    "tests/test_v443_playback_endurance.js",
     "tests/test_v444_mixed_media_soak.py",
+    "tests/test_v444_playback_recovery_runtime.js",
     "tests/test_v445_random_archive_stress.py",
-    "tests/test_v445_duplicate_candidate_runtime.js",
+    "tests/test_v446_historical_media_quarantine.py",
+    "tests/test_v446_stale_media_runtime.js",
     "release-manifest.json",
-    "CHANGED-FILES-v4.4.5.txt"
+    "CHANGED-FILES-v4.4.6.txt"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.4.5"
+        "4.4.6"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.4.5",
+        "Sports Big Board \u2014 v4.4.6",
         "START 60M",
+        "START 30M RECOVERY",
         "random archive dates across 365 days",
-        "app.js?v=4.4.5",
-        "architecture/playback-terminal.js?v=4.4.5"
+        "FIND RECAP/no media skipped",
+        "app.js?v=4.4.6",
+        "architecture/playback-terminal.js?v=4.4.6"
       ],
       "forbidden": [
-        "?v=4.4.4"
+        "?v=4.4.5"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.4.5'"
+        "version:'4.4.6'"
       ]
     },
     "architecture/playback-terminal.js": {
       "required": [
+        "RECOVERY_PHASES",
+        "RECOVERY_TOTAL_MS",
+        "preferNFL:true",
+        "startRecovery",
+        "STALE_MEDIA",
+        "NO_MEDIA_SKIP",
+        "quarantineStaleMedia",
+        "markRuntimeMediaFailed",
+        "tryScoreMediaFallback",
+        "HTTP 410 stale historical media",
+        "providerFailure:false",
+        "fallbackSuccesses",
+        "quarantineReselections",
+        "QUARANTINED_MEDIA_RESELECTED",
         "ARCHIVE_LOOKBACK_DAYS=365",
-        "ARCHIVE_MIN_JUMP_DAYS=45",
-        "LONG_DATE_JUMP_DAYS=45",
-        "MIN_DATES=10",
-        "MIN_MONTHS=6",
-        "MIN_DATE_SPAN_DAYS=180",
-        "MIN_LONG_DATE_JUMPS=8",
-        "randomArchiveTarget",
-        "cardMediaKey",
-        "duplicateCandidateRejects",
-        "rejectDuplicateStressCandidate",
-        "filter(r=>r.enduranceRunId===s.runId)",
-        "SPORT_IDS"
+        "filter(r=>r.enduranceRunId===s.runId)"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.4.5\""
+        "\"release\": \"4.4.6\""
       ]
     },
     "VERIFY.sh": {
       "required": [
         "python3 tools/check_release_manifest.py",
-        "python3 -m unittest tests.test_v445_random_archive_stress",
-        "node tests/test_v445_duplicate_candidate_runtime.js"
+        "python3 -m unittest tests.test_v446_historical_media_quarantine",
+        "node tests/test_v446_stale_media_runtime.js",
+        "node tests/test_v444_playback_recovery_runtime.js"
       ]
     },
     "tools/check_ultimate_playback.py": {
       "required": [
-        "v4.4.5 random-archive stress + duplicate-candidate rejection",
-        "Ultimate Playback random-archive endurance/recovery contract"
-      ]
-    },
-    "tests/test_v442_transition_authority.py": {
-      "required": [
-        "VERSION=(ROOT/'VERSION').read_text",
-        "f'architecture/dev-mode.js?v={VERSION}'"
+        "v4.4.6 historical-media quarantine + graceful recovery",
+        "v4.4.6 stale-media runtime test"
       ]
     },
     "tests/test_v444_mixed_media_soak.py": {
+      "required": [
+        "markRuntimeMediaFailed"
+      ]
+    },
+    "tests/test_v444_playback_recovery_runtime.js": {
+      "required": [
+        "one stale-asset retry must not reset the whole playback engine",
+        "assert.equal(resetCalls,0"
+      ]
+    },
+    "tests/test_v445_random_archive_stress.py": {
       "required": [
         "test_release_baseline_or_newer",
         "self.assertGreaterEqual(tuple(map(int,VERSION.split"
       ],
       "forbidden": [
-        "self.assertEqual(VERSION,'4.4.4')"
+        "self.assertEqual(VERSION,'4.4.5')"
       ]
     },
-    "tests/test_v445_random_archive_stress.py": {
+    "tests/test_v446_historical_media_quarantine.py": {
       "required": [
-        "ARCHIVE_LOOKBACK_DAYS",
-        "duplicateCandidateRejects",
-        "python3 tools/check_release_manifest.py"
+        "START 30M RECOVERY",
+        "STALE_MEDIA",
+        "NO_MEDIA_SKIP",
+        "QUARANTINED_MEDIA_RESELECTED"
       ]
     },
-    "tests/test_v445_duplicate_candidate_runtime.js": {
+    "tests/test_v446_stale_media_runtime.js": {
       "required": [
-        "stress-selected duplicate must not be misclassified as a product failure",
-        "duplicateCandidateRejects"
+        "two failures of one historical asset should quarantine, not fail certification",
+        "fallbackSuccesses"
+      ]
+    },
+    "tests/test_v443_playback_endurance.py": {
+      "required": [
+        "markRuntimeMediaFailed",
+        "self.assertNotIn('forcePlaybackEngineReset?.()',TERM)"
+      ],
+      "forbidden": [
+        "self.assertIn('forcePlaybackEngineReset',TERM)"
+      ]
+    },
+    "tests/test_v443_playback_endurance.js": {
+      "required": [
+        "markRuntimeMediaFailed",
+        "single stale asset must not reset the entire playback engine"
+      ],
+      "forbidden": [
+        "terminal.includes('forcePlaybackEngineReset')"
       ]
     }
   },
@@ -113,8 +145,8 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v445_random_archive_stress",
-    "node tests/test_v445_duplicate_candidate_runtime.js",
+    "python3 -m unittest tests.test_v446_historical_media_quarantine",
+    "node tests/test_v446_stale_media_runtime.js",
     "bash VERIFY.sh"
   ]
 }
