@@ -2299,13 +2299,13 @@ function beginScorePlaybackSession({matchId,resumeItem,resumeIndex,selectionCoun
   };
 }
 
-function tryScoreMediaFallback(failedItem,reason='playback failure'){
+function tryScoreMediaFallback(failedItem,reason='playback failure',{runtimeFailureAlreadyMarked=false}={}){
   const session=userPlaybackSession;
   if(session?.source!=='score') return false;
   const failedKey=playbackItemKey(failedItem);
   session.failedMediaKeys ||= new Set();
   if(failedKey) session.failedMediaKeys.add(failedKey);
-  markRuntimeMediaFailed(failedItem,reason);
+  if(!runtimeFailureAlreadyMarked) markRuntimeMediaFailed(failedItem,reason);
   const candidate=(session.fallbackItems||[]).find(x=>{
     const key=playbackItemKey(x);
     return key && !session.failedMediaKeys.has(key) && runtimeMediaUsable(x);
@@ -2718,9 +2718,13 @@ function handlePlaybackFailure(slot, err, userInitiated=false){
   // the user through an identical gesture.
   if(userPlaybackSession?.source==='score'){
     const failed=clip(currentIndex);
+    // Runtime truth is recorded at the playback-failure boundary, then recovery
+    // may select another verified asset from this exact game. Keeping the mark
+    // here preserves the score-rail contract even as fallback internals evolve.
+    markRuntimeMediaFailed(failed,err?.message||'score playback failed');
     // First prefer another already-verified same-game asset. If none exists,
     // historical score sessions get one exact-game refresh before we give up.
-    if(tryScoreMediaFallback(failed,err?.message||'score playback failed')) return;
+    if(tryScoreMediaFallback(failed,err?.message||'score playback failed',{runtimeFailureAlreadyMarked:true})) return;
     if(tryHistoricalScoreMediaRecovery(failed,err?.message||'score playback failed')) return;
     finalizeScorePlaybackUnavailable(failed,'No playable recap source is available for this game right now.');
     return;

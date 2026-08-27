@@ -10,6 +10,10 @@ echo "----------------------------------"
 
 python3 tools/check_release_version.py
 python3 tools/check_foundation_certification.py
+# v4.3.4+: fast deploy rehearsal. This runs before Node and the 400+ Python tests
+# so stale exact-token regression guards and broken release overlays are caught
+# immediately instead of becoming another post-upload hotfix cycle.
+python3 tools/check_deploy_rehearsal.py
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"
@@ -52,4 +56,4 @@ grep -q 'https://203-0-113-10.sslip.io' "$VERIFY_TMP/pages/config.js"
 grep -q 'https://203-0-113-10.sslip.io/api/soundtrack' "$VERIFY_TMP/pages/config.js"
 grep -q "soundtrackTransport:'private-gcs'" "$VERIFY_TMP/pages/config.js"
 
-echo "PASS: v${VERSION} local + cloud Stage 1 architecture, certification, and regression suite"
+echo "PASS: v${VERSION} local + cloud Stage 1 architecture, certification, regression suite, and deploy rehearsal"
