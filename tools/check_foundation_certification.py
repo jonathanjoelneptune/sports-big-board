@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static release gate for Sports Big Board v4.3.8 three-tier Foundation Certification."""
+"""Static release gate for Sports Big Board v4.3.9 three-tier Foundation Certification."""
 from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[1]
@@ -15,7 +15,7 @@ try: manifest=json.loads(text('foundation-certification.json') or '{}')
 except Exception as exc: errors.append(f'invalid foundation-certification.json: {exc}');manifest={}
 try: version_tuple=tuple(int(x) for x in version.split('.'))
 except Exception: version_tuple=(0,)
-require(version_tuple>=(4,3,8),f'expected VERSION 4.3.8 or newer, found {version!r}')
+require(version_tuple>=(4,3,9),f'expected VERSION 4.3.9 or newer, found {version!r}')
 require(manifest.get('release')==version,'manifest release mismatch')
 require(manifest.get('schemaVersion')==2,'three-tier manifest schema must be 2')
 require(manifest.get('allThreeTiersRequired') is True,'all three tiers must be required')

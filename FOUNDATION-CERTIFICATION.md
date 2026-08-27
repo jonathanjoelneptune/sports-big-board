@@ -1,4 +1,4 @@
-# Sports Big Board v4.3.8 — Foundation Certification / Soak Progress Closure
+# Sports Big Board v4.3.9 — Foundation Certification / Soak Progress Closure
 
 v4.3.6 changes Foundation Certification from the short v4.3.0 stress certificate into a three-tier release gate. The prior v4.3.0 certificate is retained as Tier 1 baseline evidence only; it is not sufficient for overall Foundation Certification.
 
@@ -82,3 +82,7 @@ Tier 1 no longer fails on an unexplained numeric error count alone. Every error 
 Browser/media interruptions are not broadly whitelisted. Only a known transient media interruption (for example an interrupted browser `play()` promise) may be downgraded to `RECOVERED_ADVISORY`, and only when the same Tier 1 run proves a later successful playback step and ends in a `PLAYING` session with playback ownership invariant `OK`. Any other captured error remains actionable and blocks Tier 1. The post-chaos recovery gate uses the same explicit-record rule but does not downgrade errors without Tier 1 recovery evidence.
 
 The Milestone Console now records browser identity (user agent/client-hints brands, platform, vendor, language, visibility, online state, and available hardware hints) with error events and exposes that identity in the saved certification evidence.
+
+
+### v4.3.9 Game Center competition identity closure
+MLB fast Highlightly media is explicitly normalized to MLB rather than the generic SPORTS editorial namespace. Game Center ownership now requires a supported live competition, so generic SPORTS/editorial media can never issue an unsupported Game Center provider request.

@@ -67,12 +67,12 @@ if (location.protocol === 'file:') {
   });
 }
 
-/* Sports Big Board v4.3.8 — canonical event/media architecture foundation; v2.5.30 playback behavior preserved. */
+/* Sports Big Board v4.3.9 — canonical event/media architecture foundation; v2.5.30 playback behavior preserved. */
 
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.3.8'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.3.9'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -712,6 +712,7 @@ function scheduleLaunchGameCenterPopulate(){
     if(generation!==launchGameCenterGeneration || !sportsBigBoardStarted) return;
     const item=clip(currentIndex);
     if(!item || isContextItem(item) || isTopPlaysItem(item) || item.eventType || window.SBB_MEDIA_SCOPE?.isCollection?.(item)) return;
+    if(!gameCenterCompetitionSupported(item)) return;
     const match=launchScoreMatchForItem(item);
     const eventLike=match?gameCenterSelectionFromScoreMatch(match):item;
     const selected=syncSelectedEvent(eventLike,{reason:'launch game-center populate',source:'launch'});
@@ -763,7 +764,7 @@ function startSportsBigBoardExperience(){
   try{ window.SBB_SELECTED_EVENT?.clear?.({reason:'launch screen reset',source:'launch'}); }catch(_){}
   if(PROGRAM.length){
     showBumper(currentIndex,420,'STARTING SPORTS BIG BOARD');
-    // v4.3.8 launch bootstrap closure: every launch tune enters the canonical
+    // v4.3.9 launch bootstrap closure: every launch tune enters the canonical
     // PlaybackController immediately, even when a YouTube iframe exists but has
     // not fired onReady. The controller creates playback-session identity first;
     // startAssignedPlayback() then owns the bounded readiness wait and unattended
@@ -774,7 +775,7 @@ function startSportsBigBoardExperience(){
     confirmLaunchVisualPlayback(activeSlot,8000);
     scheduleLaunchGameCenterPopulate();
   }
-  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.3.8',{cache:'no-store'}).catch(()=>{}); }catch(_){}
+  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.3.9',{cache:'no-store'}).catch(()=>{}); }catch(_){}
 }
 function wireLaunchScreen(){
   const btn=$('launchPlayBtn');
@@ -849,7 +850,7 @@ window.onYouTubeIframeAPIReady = () => {
 function safeStartLiveData(){
   if(liveDataInitStarted) return;
   liveDataInitStarted=true;
-  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.3.8',{cache:'no-store'}).catch(()=>{}); }catch(e){}
+  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.3.9',{cache:'no-store'}).catch(()=>{}); }catch(e){}
   initLiveData().catch(err=>{
     console.warn('Live data startup failed',err);
     try{ fetch('/api/client-log?event=APP_LIVE_ERROR&detail='+encodeURIComponent(String(err?.stack||err)),{cache:'no-store'}).catch(()=>{}); }catch(e){}
@@ -2149,9 +2150,17 @@ function syncSelectedEvent(eventLike,{reason='playback',source='playback'}={}){
   return store?.select?.(eventLike,{reason,source})||null;
 }
 
+function gameCenterCompetitionId(item){
+  return String(item?.competitionId||item?.__sbbLeague||item?.league||'').toUpperCase();
+}
+function gameCenterCompetitionSupported(item){
+  const competitionId=gameCenterCompetitionId(item);
+  return !!competitionId && competitionId!=='SPORTS' && ENABLED_LIVE_LEAGUES.includes(competitionId);
+}
 function playbackOwnsGameCenter(item){
   if(!item||isContextItem(item)||isTopPlaysItem(item)||item.eventType)return false;
   if(window.SBB_MEDIA_SCOPE?.isCollection?.(item))return false;
+  if(!gameCenterCompetitionSupported(item))return false;
   return !!(item.gamePk||item.matchId||item.eventId||item.scoreEventId||item.gameCenterEventId||item.scoreGameKey||item.dateGameKey||launchScoreMatchForItem(item));
 }
 function gameCenterEventForPlayback(item){
@@ -3839,7 +3848,7 @@ async function refreshLiveData(first=false){
     const normalizedFast=normalizeHighlights([
       ...todayItems.map(x=>({...x,__sbbDate:today})),
       ...yesterdayItems.map(x=>({...x,__sbbDate:yesterday}))
-    ]);
+    ],'MLB');
     const fastCandidates = preferGameOverviews(applyCanonicalDatesToCandidates(normalizedFast,[...yesterdayMatches,...todayMatches]));
 
     indexHighlightsByMatch(fastCandidates);
@@ -5068,7 +5077,7 @@ function getMatchId(h){
   return String(h?.match?.id ?? h?.matchId ?? h?.matchID ?? h?.event?.id ?? h?.gameId ?? '');
 }
 
-function normalizeHighlights(items, league='SPORTS'){
+function normalizeHighlights(items, league=''){
   const seen=new Set();
   const out=[];
   for(const h of items){
