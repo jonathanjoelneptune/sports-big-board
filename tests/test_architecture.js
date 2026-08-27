@@ -3,7 +3,7 @@ const fs=require('fs'), vm=require('vm'), path=require('path'), assert=require('
 const root=path.resolve(__dirname,'..');
 const releaseVersion=fs.readFileSync(path.join(root,'VERSION'),'utf8').trim();
 global.window=global;
-for(const f of ['core-model.js','architecture/score-date-store.js','architecture/event-identity.js','architecture/media-scope.js','architecture/media-classifier.js','architecture/playback-transports.js','architecture/provider-health.js','architecture/sport-media-policy.js','architecture/media-manifest.js','architecture/media-resolver.js','architecture/game-center-policy.js','architecture/selected-event-store.js','architecture/game-center-linescore.js','architecture/media-work-priorities.js','architecture/editorial-packages.js']){
+for(const f of ['core-model.js','architecture/score-date-store.js','architecture/event-identity.js','architecture/media-scope.js','architecture/media-classifier.js','architecture/playback-transports.js','architecture/playback-readiness.js','architecture/provider-health.js','architecture/sport-media-policy.js','architecture/media-manifest.js','architecture/media-resolver.js','architecture/game-center-policy.js','architecture/selected-event-store.js','architecture/game-center-linescore.js','architecture/media-work-priorities.js','architecture/editorial-packages.js']){
   vm.runInThisContext(fs.readFileSync(path.join(root,f),'utf8'),{filename:f});
 }
 assert.equal(SBB_CORE.version,releaseVersion);

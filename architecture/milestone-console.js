@@ -1,10 +1,10 @@
-/* Sports Big Board 4.3.12 three-tier certification console.
+/* Sports Big Board 4.4.0 three-tier certification console.
    Captures browser/runtime failures, runs repeatable dev procedures, and renders
    one exportable platform-health log. COPY FULL LOG is the canonical handoff. */
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.12');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.4.0');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);

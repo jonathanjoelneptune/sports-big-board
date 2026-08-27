@@ -17,7 +17,7 @@
     return {
       version:'1.0', sessionId:'', selectionId:0, state:'idle', previousState:'',
       selectedAt:0, selectedPerf:0, firstFrameAt:0, firstFrameMs:null,
-      eventKey:'', mediaKey:'', clipKey:'', title:'', league:'', transport:'', slot:'',
+      eventKey:'', mediaKey:'', clipKey:'', title:'', league:'', provider:'', transport:'', slot:'',
       sourceUrl:'', sourceExternalUrl:'', reason:'', userInitiated:false,
       stallCount:0, stallTotalMs:0, stallStartedPerf:0, lastStallMs:0,
       failureCount:0, lastError:'', lastTransitionAt:0,
@@ -71,7 +71,7 @@
     Object.assign(state,{
       eventKey:String(meta.eventKey||state.eventKey||''),
       mediaKey, clipKey:String(meta.clipKey||mediaKey||state.clipKey||''),
-      title:String(meta.title||state.title||''), league:String(meta.league||state.league||''),
+      title:String(meta.title||state.title||''), league:String(meta.league||state.league||''), provider:String(meta.provider||state.provider||''),
       transport:String(meta.transport||state.transport||''), slot:String(meta.slot||state.slot||''),
       sourceUrl:String(meta.sourceUrl||state.sourceUrl||''), sourceExternalUrl:String(meta.sourceExternalUrl||state.sourceExternalUrl||''),
       reason:String(meta.reason||state.reason||''), userInitiated:!!meta.userInitiated,
@@ -81,7 +81,7 @@
   }
   function assign(meta={}){
     Object.assign(state,{
-      transport:String(meta.transport||state.transport||''), slot:String(meta.slot||state.slot||''),
+      provider:String(meta.provider||state.provider||''), transport:String(meta.transport||state.transport||''), slot:String(meta.slot||state.slot||''),
       sourceUrl:String(meta.sourceUrl||state.sourceUrl||''), sourceExternalUrl:String(meta.sourceExternalUrl||state.sourceExternalUrl||'')
     });
     emit(); return snapshot();
@@ -97,6 +97,7 @@
     if(prior==='buffering' && next!=='buffering'){ closeStall(perf); stallEnded=true; }
     state.previousState=prior; state.state=next; state.lastTransitionAt=nowEpoch();
     if(meta.slot!=null) state.slot=String(meta.slot||'');
+    if(meta.provider!=null) state.provider=String(meta.provider||'');
     if(meta.transport!=null) state.transport=String(meta.transport||'');
     if(meta.sourceUrl!=null) state.sourceUrl=String(meta.sourceUrl||'');
     if(meta.sourceExternalUrl!=null) state.sourceExternalUrl=String(meta.sourceExternalUrl||'');
@@ -116,6 +117,7 @@
       state.firstFrameMs=Math.max(0,Math.round(perf-(state.selectedPerf||perf)));
     }
     if(meta.slot!=null) state.slot=String(meta.slot||'');
+    if(meta.provider!=null) state.provider=String(meta.provider||'');
     if(meta.transport!=null) state.transport=String(meta.transport||'');
     if(meta.sourceUrl!=null) state.sourceUrl=String(meta.sourceUrl||'');
     if(meta.sourceExternalUrl!=null) state.sourceExternalUrl=String(meta.sourceExternalUrl||'');

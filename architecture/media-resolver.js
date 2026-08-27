@@ -29,7 +29,7 @@
     if(request===R().QUICK)score+=pol?.durationScore?.(Number((asset?.durationSeconds??asset?.duration) || 0),policy.quick)||0;
     if(request===R().EXTENDED)score+=pol?.durationScore?.(Number((asset?.durationSeconds??asset?.duration) || 0),policy.extended)||0;
     if(request===R().COMMENTARY)score+=pol?.durationScore?.(Number((asset?.durationSeconds??asset?.duration) || 0),policy.commentary)||0;
-    if(asset?.runtimeState==='playing')score+=20;if(asset?.runtimeState==='failed')score-=1000;
+    if(asset?.runtimeState==='playing')score+=20;if(asset?.runtimeState==='failed')score-=1000;score+=Number(window.SBB_PLAYBACK_READINESS?.rankBonus?.(asset)||0);
     score-=Math.min(42,Number(asset?.bufferingCount||0)*7);
     if(asset?.embedValidated===true)score+=10;if(asset?.externalOnly)score-=20;
     if(asset?.overview||asset?.programType==='recap')score+=8;
@@ -39,7 +39,7 @@
     const manifest=window.SBB_MEDIA_MANIFEST;
     if(assets.length)manifest?.ingest?.(eventLike,assets);
     if(externalAssets.length)manifest?.ingest?.(eventLike,externalAssets,{external:true});
-    const internal=(manifest?.playable?.(eventLike)||[]).filter(a=>a.runtimeState!=='failed');
+    const internal=(manifest?.playable?.(eventLike)||[]).filter(a=>a.runtimeState!=='failed'&&window.SBB_PLAYBACK_READINESS?.eligible?.(a)!==false);
     const external=manifest?.external?.(eventLike)||[];
     const ranked=internal.map(asset=>({asset,score:rankScore(eventLike,asset,request)})).sort((a,b)=>b.score-a.score);
     let primary=ranked.find(x=>requestMatches(x.asset,request))?.asset||null;

@@ -10,6 +10,7 @@ echo "----------------------------------"
 
 python3 tools/check_release_version.py
 python3 tools/check_foundation_certification.py
+python3 tools/check_ultimate_playback.py
 # v4.3.6+: fast deploy rehearsal. This runs before Node and the 400+ Python tests
 # so stale exact-token regression guards and broken release overlays are caught
 # immediately instead of becoming another post-upload hotfix cycle.
@@ -27,6 +28,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_soundtrack_runtime.js
   node tests/test_certification_error_evidence.js
   node tests/test_tier1_restoration_semantics.js
+  node tests/test_v440_playback_readiness.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi

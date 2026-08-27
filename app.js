@@ -67,12 +67,12 @@ if (location.protocol === 'file:') {
   });
 }
 
-/* Sports Big Board v4.3.12 — canonical event/media architecture foundation; v2.5.30 playback behavior preserved. */
+/* Sports Big Board v4.4.0 — Ultimate Playback: cross-sport readiness + verified hot standby on the certified v4.3.12 foundation. */
 
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.3.12'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.4.0'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -260,6 +260,16 @@ let swapRequestedAt = 0;
 let initialized = false;
 let warming = { A:false, B:false };
 let warmTimer = { A:null, B:null };
+// v4.4.0 Ultimate Playback: the inactive A/B slot is a real hot standby. It must
+// prove decoder progress before videoReady becomes true; slow/bad candidates are
+// rejected off-screen while the active program keeps playing.
+let standbyProbeTimer = { A:null, B:null };
+let standbyWarmStartedAt = { A:0, B:0 };
+const STANDBY_WARM_TIMEOUT_MS=8000;
+const STANDBY_MIN_PROGRESS_SECONDS=0.45;
+const STANDBY_REJECT_TTL_MS=5*60*1000;
+const standbyRejectedUntil=new Map();
+const ultimatePlaybackMetrics={transitions:0,hotStandbyHits:0,coldFallbacks:0,warmAttempts:0,warmReady:0,warmFailures:0};
 let bumperShownAt = 0;
 let bumperMinMs = 0;
 let activePlaybackState = null;
@@ -764,7 +774,7 @@ function startSportsBigBoardExperience(){
   try{ window.SBB_SELECTED_EVENT?.clear?.({reason:'launch screen reset',source:'launch'}); }catch(_){}
   if(PROGRAM.length){
     showBumper(currentIndex,420,'STARTING SPORTS BIG BOARD');
-    // v4.3.12 launch bootstrap closure: every launch tune enters the canonical
+    // v4.4.0 launch bootstrap closure: every launch tune enters the canonical
     // PlaybackController immediately, even when a YouTube iframe exists but has
     // not fired onReady. The controller creates playback-session identity first;
     // startAssignedPlayback() then owns the bounded readiness wait and unattended
@@ -775,7 +785,7 @@ function startSportsBigBoardExperience(){
     confirmLaunchVisualPlayback(activeSlot,8000);
     scheduleLaunchGameCenterPopulate();
   }
-  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.3.12',{cache:'no-store'}).catch(()=>{}); }catch(_){}
+  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.4.0',{cache:'no-store'}).catch(()=>{}); }catch(_){}
 }
 function wireLaunchScreen(){
   const btn=$('launchPlayBtn');
@@ -850,7 +860,7 @@ window.onYouTubeIframeAPIReady = () => {
 function safeStartLiveData(){
   if(liveDataInitStarted) return;
   liveDataInitStarted=true;
-  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.3.12',{cache:'no-store'}).catch(()=>{}); }catch(e){}
+  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.4.0',{cache:'no-store'}).catch(()=>{}); }catch(e){}
   initLiveData().catch(err=>{
     console.warn('Live data startup failed',err);
     try{ fetch('/api/client-log?event=APP_LIVE_ERROR&detail='+encodeURIComponent(String(err?.stack||err)),{cache:'no-store'}).catch(()=>{}); }catch(e){}
@@ -1098,7 +1108,7 @@ function finishPreparedNativeWarm(entry,ready){
   if(!entry || entry.settled || entry.destroyed) return;
   entry.settled=true;
   entry.warming=false;
-  entry.ready=!!ready && !!entry.video && entry.video.readyState>=2;
+  entry.ready=!!ready && !!entry.progressProved && !!entry.video && entry.video.readyState>=3;
   entry.expiresAt=Date.now()+SCORE_MEDIA_PRIME_TTL_MS;
   entry.lastWantedAt=Date.now();
   const v=entry.video;
@@ -1108,9 +1118,11 @@ function finishPreparedNativeWarm(entry,ready){
   }
   scoreMediaPrimeState.active=Math.max(0,scoreMediaPrimeState.active-1);
   if(!entry.ready){
+    try{window.SBB_PLAYBACK_READINESS?.noteWarmFailure?.(entry.item,'prepared native player failed readiness proof');}catch(_){}
     scoreMediaPrimeState.entries.delete(entry.key);
     destroyPreparedNativeEntry(entry);
   }else{
+    try{window.SBB_PLAYBACK_READINESS?.noteHotReady?.(entry.item,Math.max(0,Math.round(performance.now()-Number(entry.warmStartedAt||performance.now()))));}catch(_){}
     setPlaybackDiag({lastAction:'score media player hot-ready'});
   }
   drainScoreMediaPrimeQueue();
@@ -1126,7 +1138,7 @@ function startPreparedNativeWarm(job){
   v.controls=false;
   v.setAttribute('playsinline','');
   v.setAttribute('webkit-playsinline','');
-  const entry={key,item,video:v,warming:true,ready:false,settled:false,destroyed:false,generation:job.generation,lastWantedAt:Date.now(),keepUntil:Date.now()+SCORE_MEDIA_HYSTERESIS_MS,tier:job.tier||'hot',expiresAt:0};
+  const entry={key,item,video:v,warming:true,ready:false,progressProved:false,settled:false,destroyed:false,generation:job.generation,lastWantedAt:Date.now(),keepUntil:Date.now()+SCORE_MEDIA_HYSTERESIS_MS,tier:job.tier||'hot',expiresAt:0,warmStartedAt:performance.now()};
   scoreMediaPrimeState.entries.set(key,entry);
   scoreMediaPrimeState.active++;
   dock.appendChild(v);
@@ -1147,19 +1159,23 @@ function startPreparedNativeWarm(job){
     });
   };
   v.addEventListener('loadedmetadata',attemptMutedPlay,{once:true});
-  v.addEventListener('canplay',()=>{
-    attemptMutedPlay();
-    // If playing does not arrive quickly, canplay means the decoder already has
-    // enough buffered media to make adoption materially faster than a cold load.
-    setTimeout(()=>{ if(!entry.settled && v.readyState>=3) finishPreparedNativeWarm(entry,true); },220);
-  },{once:true});
+  v.addEventListener('canplay',()=>{ attemptMutedPlay(); },{once:true});
   v.addEventListener('playing',()=>{
-    // Let a couple of real frames decode, then park at the beginning. The same
-    // element is later adopted, so this buffer/decoder state survives the click.
-    setTimeout(()=>finishPreparedNativeWarm(entry,true),140);
+    // v4.4.0: a prepared player is HOT only after real decoder progress. `canplay`
+    // alone produced false-ready assets that later entered ACTIVE at currentTime=0.
+    const origin=Number(v.currentTime||0),started=performance.now();
+    const prove=()=>{
+      if(entry.settled||entry.destroyed)return;
+      const progressed=Number(v.currentTime||0)-origin>=STANDBY_MIN_PROGRESS_SECONDS;
+      const buffered=nativeBufferedAhead(v);
+      if(progressed&&v.readyState>=3&&(buffered>=0.75||v.readyState>=4)){entry.progressProved=true;finishPreparedNativeWarm(entry,true);return;}
+      if(performance.now()-started>=STANDBY_WARM_TIMEOUT_MS){finishPreparedNativeWarm(entry,false);return;}
+      setTimeout(prove,90);
+    };
+    prove();
   },{once:true});
   v.addEventListener('error',()=>finishPreparedNativeWarm(entry,false),{once:true});
-  setTimeout(()=>finishPreparedNativeWarm(entry,v.readyState>=3),10000);
+  setTimeout(()=>finishPreparedNativeWarm(entry,!!entry.progressProved),STANDBY_WARM_TIMEOUT_MS+250);
   try{ v.load(); attemptMutedPlay(); }catch(e){ finishPreparedNativeWarm(entry,false); }
 }
 function drainScoreMediaPrimeQueue(){
@@ -1241,11 +1257,11 @@ function primeScoreMediaItem(item,{priority=false,rank=0}={}){
   drainScoreMediaPrimeQueue();
   return true;
 }
-function takePreparedNativeEntry(item){
+function takePreparedNativeEntry(item,{allowUsable=false}={}){
   // A pointer click may arrive while the hidden player is still finishing its
   // formal warm cycle. loaded metadata (readyState>=1) is enough to adopt the exact element rather
   // than throwing away useful decoder/network progress and cold-loading again.
-  const entry=preparedNativeEntryForItem(item,{requireReady:true,allowUsable:true});
+  const entry=preparedNativeEntryForItem(item,{requireReady:true,allowUsable:!!allowUsable});
   if(!entry) return null;
   scoreMediaPrimeState.entries.delete(entry.key);
   const wasWarming=entry.warming&&!entry.settled;
@@ -1367,10 +1383,85 @@ function playbackItemKey(item){
   return window.SBB_PLAYBACK_TRANSPORTS?.playbackKey?.(item) || (isContextItem(item)?`context:${item.id||item.eventId||item.title||''}`:(isNativeItem(item)?`direct:${nativePlaybackUrl(item)}`:`youtube:${item.youtubeId||item.id||''}`));
 }
 
+function readinessRecord(item){
+  try{return window.SBB_PLAYBACK_READINESS?.snapshot?.().records?.find?.(x=>x.mediaKey===playbackItemKey(item))||null;}catch(_){return null;}
+}
+function readinessState(item){try{return window.SBB_PLAYBACK_READINESS?.state?.(item)||'DISCOVERED';}catch(_){return 'DISCOVERED';}}
+function standbyRejected(item){
+  const key=playbackItemKey(item),until=Number(standbyRejectedUntil.get(key)||0);
+  if(until&&until<=Date.now())standbyRejectedUntil.delete(key);
+  return until>Date.now();
+}
+function rejectStandbyForCycle(item){const key=playbackItemKey(item);if(key&&key!=='none')standbyRejectedUntil.set(key,Date.now()+STANDBY_REJECT_TTL_MS);}
+function clearStandbyProbe(slot){if(standbyProbeTimer[slot])clearTimeout(standbyProbeTimer[slot]);standbyProbeTimer[slot]=null;standbyWarmStartedAt[slot]=0;}
+function nativeBufferedAhead(v){
+  try{const t=Number(v?.currentTime||0),b=v?.buffered;if(!b?.length)return 0;for(let i=0;i<b.length;i++){if(t>=b.start(i)-0.05&&t<=b.end(i)+0.05)return Math.max(0,b.end(i)-t);}}catch(_){}
+  return 0;
+}
+function ultimatePlaybackMetricSnapshot(){
+  const m={...ultimatePlaybackMetrics};m.hotStandbyHitRate=m.transitions?Math.round((m.hotStandbyHits/m.transitions)*1000)/10:100;return m;
+}
+function noteHotStandbyReady(slot,item,startedAt=0){
+  if(!item||slot===activeSlot)return false;
+  videoReady[slot]=true;warming[slot]=false;clearStandbyProbe(slot);ultimatePlaybackMetrics.warmReady++;
+  const ms=Math.max(0,Math.round(performance.now()-Number(startedAt||performance.now())));
+  try{window.SBB_PLAYBACK_READINESS?.noteHotReady?.(item,ms);}catch(_){}
+  setPlaybackDiag({lastAction:`hot standby ${slot} ready in ${ms} ms`});updateDiagnostics();return true;
+}
+function nextReadinessCandidateIndex(afterIndex,{preferHot=false}={}){
+  if(!PROGRAM?.length)return-1;let fallback=-1;
+  for(let step=1;step<=PROGRAM.length;step++){
+    const idx=(Number(afterIndex||0)+step+PROGRAM.length)%PROGRAM.length,item=PROGRAM[idx];
+    if(idx===currentIndex||!item||!runtimeMediaUsable(item)||standbyRejected(item))continue;
+    const st=readinessState(item);
+    if(st==='QUARANTINED')continue;
+    if(st==='PLAYBACK_READY')return idx;
+    if(fallback<0)fallback=idx;
+  }
+  return preferHot?-1:fallback;
+}
+function standbyWarmFailed(slot,item,epoch,index,reason='standby warm failed'){
+  if(slot===activeSlot||!slotClaimIsCurrent(slot,epoch,item))return false;
+  clearStandbyProbe(slot);videoReady[slot]=false;warming[slot]=false;ultimatePlaybackMetrics.warmFailures++;rejectStandbyForCycle(item);
+  try{window.SBB_PLAYBACK_READINESS?.noteWarmFailure?.(item,reason);}catch(_){}
+  try{pauseSlot(slot);}catch(_){}
+  setPlaybackDiag({lastAction:`standby rejected: ${reason}`});updateDiagnostics();
+  const next=nextReadinessCandidateIndex(index);
+  if(next>=0&&next!==index)setTimeout(()=>{if(slot!==activeSlot)prepareStandby(slot,next);},80);
+  return true;
+}
+function armStandbyDeadline(slot,item,epoch,index){
+  clearStandbyProbe(slot);standbyWarmStartedAt[slot]=performance.now();ultimatePlaybackMetrics.warmAttempts++;
+  standbyProbeTimer[slot]=setTimeout(()=>{
+    standbyProbeTimer[slot]=null;
+    if(slot===activeSlot||!warming[slot]||videoReady[slot]||!slotClaimIsCurrent(slot,epoch,item))return;
+    standbyWarmFailed(slot,item,epoch,index,`hot standby did not prove playback within ${STANDBY_WARM_TIMEOUT_MS} ms`);
+  },STANDBY_WARM_TIMEOUT_MS);
+}
+function recordPlaybackPromotion(item,hotPrepared,reason=''){
+  if(/startup live program|launch screen play/i.test(String(reason||'')))return;
+  ultimatePlaybackMetrics.transitions++;
+  if(hotPrepared)ultimatePlaybackMetrics.hotStandbyHits++;else ultimatePlaybackMetrics.coldFallbacks++;
+  // Readiness is recorded when the standby proves itself, not again when promoted.
+  // Promotion metrics and readiness evidence are deliberately separate so one warm
+  // proof cannot inflate the asset's reliability score twice.
+}
+
+function preflightUpcomingProgram(fromIndex=currentIndex){
+  if(!PROGRAM?.length)return;
+  let prepared=0;
+  for(let step=1;step<=Math.min(PROGRAM.length,5);step++){
+    const idx=(Number(fromIndex||0)+step+PROGRAM.length)%PROGRAM.length,item=PROGRAM[idx];
+    if(!item||idx===currentIndex||!runtimeMediaUsable(item)||standbyRejected(item))continue;
+    try{window.SBB_PLAYBACK_READINESS?.state?.(item);}catch(_){}
+    if(isNativeItem(item)&&prepared<3){primeScoreMediaItem(item,{priority:true,rank:50000-step*1000});prepared++;}
+  }
+}
+
 function runtimeMediaUsable(item){
   if(!window.SBB_PLAYBACK_TRANSPORTS?.inAppPlayable?.(item) && (!item?.verifiedPlayable || !(item.youtubeId||item.mediaUrl))) return false;
   const key=playbackItemKey(item);
-  return (!key || !RUNTIME_UNPLAYABLE_MEDIA.has(key)) && item?.runtimeState!=='failed';
+  return (!key || !RUNTIME_UNPLAYABLE_MEDIA.has(key)) && item?.runtimeState!=='failed' && window.SBB_PLAYBACK_READINESS?.eligible?.(item)!==false;
 }
 const HISTORICAL_RUNTIME_REPORTED=new Set();
 function historicalAssetKey(item){
@@ -1536,6 +1627,7 @@ function playbackSessionDescriptor(item,extra={}){
     mediaKey:playbackItemKey(item), clipKey:playbackItemKey(item),
     title:String(item?.title||item?.name||''),
     league:String(item?.competitionId||item?.league||''), transport,
+    provider:String(item?.provider||item?.sourceType||item?.source||item?.sourceLabel||''),
     sourceUrl:String(item?.youtubeId||item?.mediaUrl||item?.externalUrl||item?.id||''),
     sourceExternalUrl:playbackExternalSourceUrl(item), ...extra
   };
@@ -2006,18 +2098,17 @@ function onState(slot, event){
     try{ players[slot]?.mute(); }catch(e){}
     if(warming[slot]){
       if(warmTimer[slot]) clearTimeout(warmTimer[slot]);
-      warmTimer[slot] = setTimeout(() => {
+      const confirm=()=>{
         if(!slotClaimIsCurrent(slot,epoch) || slot===activeSlot || !warming[slot]) return;
-        try{
-          players[slot]?.pauseVideo();
-          players[slot]?.seekTo(0, true);
-          players[slot]?.mute();
-          videoReady[slot] = true;
-          warming[slot] = false;
-        }catch(e){}
-        warmTimer[slot]=null;
-        updateDiagnostics();
-      }, 350);
+        let t=0;try{t=Number(players[slot]?.getCurrentTime?.()||0);}catch(_){}
+        if(t>=STANDBY_MIN_PROGRESS_SECONDS){
+          try{players[slot]?.pauseVideo();players[slot]?.seekTo(0,true);players[slot]?.mute();}catch(_){}
+          warmTimer[slot]=null;noteHotStandbyReady(slot,clip(slotAssignment[slot]?.programIndex??standbyIndex),standbyWarmStartedAt[slot]);
+          return;
+        }
+        warmTimer[slot]=setTimeout(confirm,120);
+      };
+      warmTimer[slot]=setTimeout(confirm,450);
     }else{
       try{ players[slot]?.pauseVideo(); }catch(e){}
     }
@@ -2027,46 +2118,70 @@ function onState(slot, event){
 }
 
 function prepareStandby(slot, index){
-  const item = clip(index); if(!item) return;
-  videoReady[slot] = false;
-  warming[slot] = true;
+  if(slot===activeSlot||!PROGRAM?.length)return false;
+  let item=clip(index);
+  if(!item||!runtimeMediaUsable(item)||standbyRejected(item)){
+    const fallback=nextReadinessCandidateIndex(index);
+    if(fallback<0)return false;
+    index=fallback;item=clip(index);
+  }
+  videoReady[slot]=false;
+  warming[slot]=true;
   launchRequested[slot]=false;
+  clearStandbyProbe(slot);
   if(warmTimer[slot]){ clearTimeout(warmTimer[slot]); warmTimer[slot]=null; }
   const epoch=configureSlotForItem(slot,item,false);
+  if(slotAssignment[slot])slotAssignment[slot].programIndex=index;
+  standbyIndex=(index+PROGRAM.length)%PROGRAM.length;
+  armStandbyDeadline(slot,item,epoch,index);
 
   if(isContextItem(item)){
-    videoReady[slot]=true; warming[slot]=false;
+    noteHotStandbyReady(slot,item,standbyWarmStartedAt[slot]);
   } else if(isNativeItem(item)){
     const v=nativeEl(slot);
     if(v){
       v.muted=true;
-      const warm=()=>{
-        if(!slotClaimIsCurrent(slot,epoch,item) || slot===activeSlot) return;
-        const p=v.play();
-        if(p?.then) p.then(()=>{
-          if(!slotClaimIsCurrent(slot,epoch,item) || slot===activeSlot) return;
-          if(warmTimer[slot]) clearTimeout(warmTimer[slot]);
-          warmTimer[slot]=setTimeout(()=>{
-            if(!slotClaimIsCurrent(slot,epoch,item) || slot===activeSlot || !warming[slot] || launchRequested[slot]) return;
-            try{ v.pause(); v.currentTime=0; }catch(e){}
-            if(!slotClaimIsCurrent(slot,epoch,item)) return;
-            videoReady[slot]=true; warming[slot]=false; warmTimer[slot]=null;
-            updateDiagnostics();
-          },300);
-        }).catch(()=>{});
+      const origin=Number(v.currentTime||0);
+      let playRequested=false;
+      const prove=()=>{
+        if(!slotClaimIsCurrent(slot,epoch,item)||slot===activeSlot||!warming[slot])return;
+        const progressed=Number(v.currentTime||0)-origin>=STANDBY_MIN_PROGRESS_SECONDS;
+        const buffered=nativeBufferedAhead(v);
+        if(progressed&&v.readyState>=3&&(buffered>=0.75||v.readyState>=4)){
+          try{v.pause();v.currentTime=0;v.muted=true;}catch(_){}
+          noteHotStandbyReady(slot,item,standbyWarmStartedAt[slot]);
+          return;
+        }
+        if(!playRequested&&v.readyState>=2){
+          playRequested=true;
+          try{const p=v.play();if(p?.catch)p.catch(err=>{if(slotClaimIsCurrent(slot,epoch,item)&&slot!==activeSlot)standbyWarmFailed(slot,item,epoch,index,`native standby play rejected: ${err?.message||err}`);});}
+          catch(err){standbyWarmFailed(slot,item,epoch,index,`native standby play rejected: ${err?.message||err}`);return;}
+        }
+        if(warming[slot])warmTimer[slot]=setTimeout(prove,90);
       };
-      if(v.readyState>=2) warm(); else v.addEventListener('canplay',warm,{once:true});
-    }
+      if(v.readyState>=2)prove();
+      else{
+        v.addEventListener('loadeddata',prove,{once:true});
+        v.addEventListener('canplay',prove,{once:true});
+      }
+      v.addEventListener('error',()=>standbyWarmFailed(slot,item,epoch,index,`native standby error: ${nativeErrorText(v)}`),{once:true});
+      try{v.load();}catch(err){standbyWarmFailed(slot,item,epoch,index,`native standby load failed: ${err?.message||err}`);}
+    }else standbyWarmFailed(slot,item,epoch,index,'native standby element unavailable');
   } else {
-    if(!playerReady[slot]){ warming[slot]=false; return; }
+    if(!playerReady[slot]){
+      // Keep the claim alive; createPlayer.onReady will re-enter prepareStandby for
+      // this index. The bounded deadline prevents an uninitialized iframe from
+      // sitting in standby forever.
+      return true;
+    }
     try{
       players[slot].mute();
       players[slot].loadVideoById({ videoId:item.youtubeId || item.id, startSeconds:0 });
-    }catch(e){ warming[slot]=false; }
+    }catch(e){ standbyWarmFailed(slot,item,epoch,index,`YouTube standby load failed: ${e?.message||e}`); }
   }
-  standbyIndex = (index + PROGRAM.length) % PROGRAM.length;
   updateDiagnostics();
   renderQueue();
+  return true;
 }
 
 function programGameIdentity(item){
@@ -2419,8 +2534,15 @@ function resumeGeneralProgramAfterSelection(){
 
 const PlaybackController={
   tuneProgramIndex(targetIndex,{userInitiated=false,reason='selection',restart=true}={}){
-    const item=clip(targetIndex);
+    let item=clip(targetIndex);
     if(!item) return Promise.reject(new Error(`No program item at index ${targetIndex}`));
+    // Automated programming never knowingly tunes an asset already quarantined by
+    // playback readiness. Explicit user selections retain their exact intent and
+    // may use the existing same-game recovery path if the source has changed.
+    if(!userInitiated&&window.SBB_PLAYBACK_READINESS?.eligible?.(item)===false){
+      const alternative=nextReadinessCandidateIndex(targetIndex);
+      if(alternative>=0){targetIndex=alternative;item=clip(targetIndex);reason=`${reason}: readiness skip`;}
+    }
     try{window.SBB_PLAYBACK_SESSION?.select?.(playbackSessionDescriptor(item,{reason,userInitiated}));}catch(_){}
     const itemDate=scoreEventDate(item); if(itemDate&&!isContextItem(item)&&!isTopPlaysItem(item)&&!item.eventType) setScorePlaybackDate(itemDate);
     if(!sportsBigBoardStarted){
@@ -2445,9 +2567,10 @@ const PlaybackController={
     const wantedKey=playbackItemKey(item);
     const standbyClaim=slotAssignment[standby];
     const standbyExact=!!(standbyClaim && standbyClaim.key===wantedKey && videoReady[standby]);
-    const preparedEntry=(!standbyExact && isNativeItem(item)) ? takePreparedNativeEntry(item) : null;
+    const preparedEntry=(!standbyExact && isNativeItem(item)) ? takePreparedNativeEntry(item,{allowUsable:userInitiated}) : null;
+    const preparedWasHot=!!preparedEntry?.ready;
     let targetSlot=(standbyExact || preparedEntry) ? standby : previousActive;
-    let hotPrepared=standbyExact;
+    let hotPrepared=standbyExact||preparedWasHot;
 
     // If the visible YouTube API has not initialized yet, retain the established
     // fallback to the other API-ready iframe. This is a cold assignment, not a
@@ -2467,7 +2590,7 @@ const PlaybackController={
     let epoch=null;
     if(preparedEntry){
       epoch=configurePreparedNativeSlot(targetSlot,item,preparedEntry,true);
-      hotPrepared=epoch!=null;
+      hotPrepared=epoch!=null&&preparedWasHot;
     }
     if(epoch==null){
       if(preparedEntry) destroyPreparedNativeEntry(preparedEntry);
@@ -2479,6 +2602,7 @@ const PlaybackController={
       try{ if(hotNative && hotNative.currentTime>0.03) hotNative.currentTime=0; }catch(e){}
     }
     if(userPlaybackSession?.source==='score') userPlaybackSession.preparedPlayer=!!hotPrepared;
+    recordPlaybackPromotion(item,!!hotPrepared,reason);
 
     activeSlot=targetSlot;
     try{window.SBB_PLAYBACK_SESSION?.assign?.(playbackSessionDescriptor(item,{slot:targetSlot}));}catch(_){}
@@ -2529,6 +2653,7 @@ const PlaybackController={
         const nextStandby=otherSlot(targetSlot);
         setTimeout(()=>{ if(token===playbackSelectionToken && nextStandby!==activeSlot) prepareStandby(nextStandby,nextIndex); },450);
       }
+      preflightUpcomingProgram(currentIndex);
     }).catch(err=>{ if(token===playbackSelectionToken && slotClaimIsCurrent(targetSlot,epoch,item)) handlePlaybackFailure(targetSlot,err,userInitiated); });
     return start;
   }
@@ -2617,9 +2742,21 @@ function advance(direction=1){
 }
 
 function performSwapWhenReady(slot, targetIndex, started){
-  const maxWait = 3200;
-  if(videoReady[slot] || performance.now() - started > maxWait){
-    doSwap(slot, targetIndex);
+  const maxWait = STANDBY_WARM_TIMEOUT_MS+750;
+  const claim=slotAssignment[slot];
+  // A failed target may already have been replaced off-screen by another candidate.
+  // Promote the exact item that actually proved HOT_READY, never the stale index.
+  if(videoReady[slot]&&claim){
+    const readyIndex=Number.isInteger(claim.programIndex)?claim.programIndex:targetIndex;
+    const readyItem=clip(readyIndex);
+    if(readyItem&&claim.key===playbackItemKey(readyItem)){doSwap(slot,readyIndex);return;}
+  }
+  if(performance.now()-started>maxWait){
+    transitionInFlight=false;
+    const fallback=nextReadinessCandidateIndex(targetIndex);
+    const chosen=fallback>=0?fallback:targetIndex;
+    showBumper(chosen,350,'PREPARING NEXT VIDEO');
+    PlaybackController.tuneProgramIndex(chosen,{userInitiated:false,reason:'hot standby unavailable; bounded cold fallback'}).catch(()=>{});
     return;
   }
   requestAnimationFrame(() => performSwapWhenReady(slot, targetIndex, started));
@@ -2629,6 +2766,12 @@ function doSwap(newActive, targetIndex){
   const oldActive = activeSlot;
   const item=clip(targetIndex);
   try{
+    const claimBefore=slotAssignment[newActive];
+    if(!item||!videoReady[newActive]||!claimBefore||claimBefore.key!==playbackItemKey(item)){
+      transitionInFlight=false;
+      return PlaybackController.tuneProgramIndex(targetIndex,{userInitiated:false,reason:'A/B promotion lost hot-ready claim'});
+    }
+    recordPlaybackPromotion(item,true,'automatic A/B promotion');
     try{ players[oldActive]?.mute(); }catch(e){}
     pauseSlot(oldActive);
     currentIndex = targetIndex;
@@ -2662,6 +2805,7 @@ function doSwap(newActive, targetIndex){
     $('swapCount').textContent = swapCount;
     const nextIndex = nextVisibleQueueIndex();
     if(nextIndex>=0) setTimeout(() => { if(oldActive!==activeSlot) prepareStandby(oldActive, nextIndex); }, 220);
+    preflightUpcomingProgram(currentIndex);
     renderMetadata();
     renderQueue();
   }catch(err){
@@ -2941,8 +3085,9 @@ function onPlayerError(slot, code){
       }else handlePlaybackFailure(slot,new Error(`YouTube player error ${code}`),false);
     }
   } else {
-    const next=nextVisibleQueueIndex();
-    if(next>=0) prepareStandby(slot,next);
+    const claim=slotAssignment[slot],idx=Number.isInteger(claim?.programIndex)?claim.programIndex:standbyIndex,item=clip(idx);
+    if(item&&claim)standbyWarmFailed(slot,item,claim.epoch,idx,`YouTube standby error ${code}`);
+    else{const next=nextVisibleQueueIndex();if(next>=0)prepareStandby(slot,next);}
   }
 }
 
@@ -5797,6 +5942,7 @@ function mergeLiveProgram(candidates, first){
       currentIndex=found>=0?found:0;
       const next=nextUnplayedIndex(PROGRAM,currentIndex,1);
       if(next>=0) prepareStandby(otherSlot(activeSlot),next);
+      preflightUpcomingProgram(currentIndex);
       renderQueue(); updateRecapAlternateButton();
       return;
     }
@@ -5807,7 +5953,7 @@ function mergeLiveProgram(candidates, first){
   if(first && !startupLiveAutoplayDone){
     startupLiveAutoplayDone=true;
     PROGRAM=GENERAL_PROGRAM;
-    const playableIndexes=PROGRAM.map((x,i)=>x?.verifiedPlayable&&(x.youtubeId||x.mediaUrl)&&!isGamePlayed(x)?i:-1).filter(i=>i>=0);
+    const playableIndexes=PROGRAM.map((x,i)=>x?.verifiedPlayable&&(x.youtubeId||x.mediaUrl)&&runtimeMediaUsable(x)&&!isGamePlayed(x)?i:-1).filter(i=>i>=0);
     if(!playableIndexes.length){ showAllCaughtUp(); return; }
     const target=playableIndexes[0];
     const item=PROGRAM[target];
@@ -5825,6 +5971,7 @@ function mergeLiveProgram(candidates, first){
       renderMetadata();
       renderQueue();
     }
+    preflightUpcomingProgram(target);
     return;
   }
 
@@ -5842,6 +5989,7 @@ function mergeLiveProgram(candidates, first){
   currentIndex=found>=0?found:Math.min(Math.max(0,currentIndex),Math.max(0,PROGRAM.length-1));
   const next=nextUnplayedIndex(PROGRAM,currentIndex,1);
   if(next>=0) prepareStandby(otherSlot(activeSlot), next);
+  preflightUpcomingProgram(currentIndex);
   // Reconcile assignment only. If the exact active claim is already correct, do not
   // issue another provider play() request merely because metadata refreshed.
   const claim=slotAssignment[activeSlot];
@@ -6463,7 +6611,8 @@ window.SBB_MILESTONE_CONTEXT=()=>{
     started:!!sportsBigBoardStarted,resourceMode:typeof sbbResourceMode==='function'?sbbResourceMode():'balanced',
     activeSlot,currentIndex,standbyIndex,transitionInFlight:!!transitionInFlight,manualPauseRequested:!!manualPauseRequested,
     currentItem:current?playbackSessionDescriptor(current):null,slotMedia:{...slotMedia},playerReady:{...playerReady},videoReady:{...videoReady},
-    slotAssignments:Object.fromEntries(Object.entries(slotAssignment||{}).map(([k,v])=>[k,v?{key:v.key,epoch:v.epoch}:null])),
+    playbackReadiness:window.SBB_PLAYBACK_READINESS?.snapshot?.()||null,ultimatePlayback:ultimatePlaybackMetricSnapshot(),
+    slotAssignments:Object.fromEntries(Object.entries(slotAssignment||{}).map(([k,v])=>[k,v?{key:v.key,epoch:v.epoch,programIndex:v.programIndex}:null])),
     native:nativeState,youtube:youtubeState,scoreBrowseDate:typeof scoreBrowseDate==='string'?scoreBrowseDate:'',scorePlaybackDate:typeof scorePlaybackDate==='string'?scorePlaybackDate:'',
     selectedEvent:window.SBB_SELECTED_EVENT?.get?.()||null,activeOwnsGameCenter:playbackOwnsGameCenter(current),selectedEventMatchesActive:selectedEventMatchesActivePlayback()
   };
@@ -6492,6 +6641,8 @@ window.SBB_DEV_TEST_HOOKS=Object.freeze({
   version:'1.1',
   snapshot:()=>window.SBB_MILESTONE_CONTEXT?.()||{},
   playback:()=>window.SBB_PLAYBACK_SESSION?.snapshot?.()||{},
+  playbackReadiness:()=>window.SBB_PLAYBACK_READINESS?.snapshot?.()||{},
+  ultimatePlayback:()=>ultimatePlaybackMetricSnapshot(),
   currentTime:()=>{try{if(slotMedia[activeSlot]==='youtube')return Number(players[activeSlot]?.getCurrentTime?.()||0);if(slotMedia[activeSlot]==='native')return Number(nativeEl(activeSlot)?.currentTime||0);return 0;}catch(_){return 0;}},
   selectedEvent:()=>window.SBB_SELECTED_EVENT?.get?.()||null,
   selectedEventMatchesActive:()=>selectedEventMatchesActivePlayback(),

@@ -170,3 +170,13 @@ class MediaWorkScheduler:
         for k in ("waitSeconds","runSeconds"):stats[k]=round(float(stats.get(k) or 0),3)
         stats["errorCategories"]=error_categories
         return {"queued":self._q.qsize(),"activeOrQueued":len(rows),"active":active,"jobs":rows[:30],"stats":stats,"recentErrors":recent_errors,"circuits":circuits,"threadCount":len(self._threads),"threadsAlive":sum(1 for t in self._threads if t.is_alive())}
+
+# v4.4.0: install the cross-sport playback-readiness persistence hook after
+# server import order settles. The hook listens to the already-authoritative
+# /api/playback/telemetry stream via MilestoneConsole.record_playback, so no sport
+# or provider needs its own reliability implementation.
+try:
+    from sbb.playback_readiness import schedule_milestone_hook_install as _install_playback_readiness
+    _install_playback_readiness()
+except Exception:
+    pass

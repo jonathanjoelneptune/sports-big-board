@@ -52,12 +52,12 @@
     return mark(eventLike,asset,{runtimeState:'buffering',bufferingCount:Number(prev.bufferingCount||0)+1,lastBufferingAt:Date.now()});
   }
   function list(eventLike,{includeExternal=true}={}){const m=ensure(eventLike);if(!m)return[];return [...m.assets.values()].filter(a=>includeExternal||!a.externalOnly).map(a=>({...a}));}
-  function playable(eventLike){return list(eventLike).filter(a=>a.runtimeState!=='failed'&&window.SBB_PLAYBACK_TRANSPORTS?.inAppPlayable?.(a));}
+  function playable(eventLike){return list(eventLike).filter(a=>a.runtimeState!=='failed'&&window.SBB_PLAYBACK_TRANSPORTS?.inAppPlayable?.(a)&&window.SBB_PLAYBACK_READINESS?.eligible?.(a)!==false);}
   function external(eventLike){return list(eventLike).filter(a=>a.externalOnly||(!window.SBB_PLAYBACK_TRANSPORTS?.inAppPlayable?.(a)&&a.externalUrl));}
   function availability(eventLike){
     const all=list(eventLike),c=window.SBB_MEDIA_CLASSIFIER;
     const avail={gold:false,green:false,extended:false,blue:false,internal:{gold:false,green:false,extended:false,blue:false},external:{gold:false,green:false,extended:false,blue:false}};
-    for(const a of all){const tier=c?.tier?.(a)||'blue';const bucket=window.SBB_PLAYBACK_TRANSPORTS?.inAppPlayable?.(a)&&a.runtimeState!=='failed'?'internal':'external';if(tier==='gold')avail.gold=avail[bucket].gold=true;else if(tier==='extended')avail.extended=avail[bucket].extended=true;else if(tier==='green')avail.green=avail[bucket].green=true;else avail.blue=avail[bucket].blue=true;}
+    for(const a of all){const tier=c?.tier?.(a)||'blue';const bucket=window.SBB_PLAYBACK_TRANSPORTS?.inAppPlayable?.(a)&&a.runtimeState!=='failed'&&window.SBB_PLAYBACK_READINESS?.eligible?.(a)!==false?'internal':'external';if(tier==='gold')avail.gold=avail[bucket].gold=true;else if(tier==='extended')avail.extended=avail[bucket].extended=true;else if(tier==='green')avail.green=avail[bucket].green=true;else avail.blue=avail[bucket].blue=true;}
     return avail;
   }
   function snapshotManifest(m){return m?{eventKey:m.eventKey,event:{...m.event},assets:[...m.assets.values()].map(x=>({...x})),updatedAt:m.updatedAt,revision:m.revision}:null;}
