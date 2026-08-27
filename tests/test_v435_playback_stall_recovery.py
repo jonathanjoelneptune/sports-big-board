@@ -19,7 +19,8 @@ class V435PlaybackStallRecoveryTests(unittest.TestCase):
         self.assertIn('handlePlaybackFailure(slot,new Error(', watchdog)
         self.assertNotIn('startAssignedPlayback(', watchdog)
         self.assertNotIn('restart:true', watchdog)
-        unattended = APP[APP.index('// v4.3.6 unattended playback recovery'):APP.index("setPlaybackUi('ready');", APP.index('// v4.3.6 unattended playback recovery'))]
+        failure = APP[APP.index('function handlePlaybackFailure'):APP.index('function retryActivePlaybackFromGesture')]
+        unattended = failure[failure.index('if(!userInitiated){'):failure.index("setPlaybackUi('ready');", failure.index('if(!userInitiated){'))]
         self.assertIn("reason:'automatic playback failure recovery'", unattended)
         self.assertIn('AUTO_MEDIA_FAILURE_SKIP', unattended)
 

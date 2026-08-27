@@ -1,4 +1,4 @@
-# Sports Big Board v4.3.6 — Foundation Certification / Soak Progress Closure
+# Sports Big Board v4.3.7 — Foundation Certification / Soak Progress Closure
 
 v4.3.6 changes Foundation Certification from the short v4.3.0 stress certificate into a three-tier release gate. The prior v4.3.0 certificate is retained as Tier 1 baseline evidence only; it is not sufficient for overall Foundation Certification.
 
@@ -69,3 +69,7 @@ The Tier 2 certificate now records sample coverage, observed sample span, maximu
 
 ### v4.3.6 startup recovery closure
 Tier 1 requires provider-neutral startup recovery: selected media that never reaches a first frame must fail over automatically rather than remain indefinitely in `starting`. The watchdog is assignment-scoped and may not restart the same stalled asset.
+
+### v4.3.7 launch bootstrap recovery closure
+
+The launch button now always enters the canonical PlaybackController path, including when a YouTube iframe exists but has not fired `onReady`. This creates playback-session identity immediately and places cold iframe readiness under the existing bounded 12-second readiness wait and unattended failover controller. The previous launch-only readiness branch could display `starting` without a session, timeout, or watchdog if the iframe never became ready.
