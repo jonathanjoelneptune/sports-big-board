@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.3.9",
+  "release": "4.3.10",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -29,7 +29,8 @@
         "Launch-started YouTube media enters a tracked playback session immediately and cannot remain indefinitely in starting while iframe readiness never arrives",
         "Every clean-window error capable of blocking certification is exported with timestamp, category/code, source, message, detail/data, and browser/runtime identity",
         "A count-only clean-window error with no corresponding exported error record cannot independently fail Tier 1; the diagnostic mismatch remains visible as an advisory",
-        "Known transient browser media interruptions are advisory only when a later PASS playback step plus a final PLAYING/OK playback session prove automatic recovery and are labeled RECOVERED_ADVISORY in the exported certificate"
+        "Known transient browser media interruptions are advisory only when a later PASS playback step plus a final PLAYING/OK playback session prove automatic recovery and are labeled RECOVERED_ADVISORY in the exported certificate",
+        "Post-test exact-state restoration is advisory unless final application health is bad; cleanup health requires restored resource mode, playback ownership OK, one soundtrack audio element, a selected media item on a started board, and Game Center consistency for game-scoped media"
       ]
     },
     "tier2": {
@@ -78,6 +79,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "prior hardening baseline; explicit error-evidence closure + Game Center competition identity hardening in v4.3.9",
+  "baseline": "prior hardening baseline; explicit error-evidence closure + Game Center competition identity + post-test restoration health semantics in v4.3.10",
   "status": "IN_PROGRESS"
 }

@@ -26,6 +26,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_playback_session_runtime.js
   node tests/test_soundtrack_runtime.js
   node tests/test_certification_error_evidence.js
+  node tests/test_tier1_restoration_semantics.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi
