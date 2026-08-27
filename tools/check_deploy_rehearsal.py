@@ -7,7 +7,7 @@ Python source-contract tests that still require an exact token removed or moved
 by the candidate release. It also validates the release overlay manifest,
 production workflow dependency chain, and unittest discoverability.
 
-v4.3.4 scope hardening: source aliases are resolved lexically. A local variable
+v4.3.5 scope hardening: source aliases are resolved lexically. A local variable
 such as ``src`` or ``policy`` belongs only to the test method that assigned it;
 it must never inherit a same-named binding from another test method.
 """

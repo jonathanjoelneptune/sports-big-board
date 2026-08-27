@@ -1,10 +1,10 @@
-/* Sports Big Board 4.3.4 three-tier certification console.
+/* Sports Big Board 4.3.5 three-tier certification console.
    Captures browser/runtime failures, runs repeatable dev procedures, and renders
    one exportable platform-health log. COPY FULL LOG is the canonical handoff. */
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.4');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.5');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);
@@ -267,11 +267,11 @@
       const initial=h.playback();
       if(!['starting','buffering'].includes(initial.state))return {state:initial.state,stallCount:initial.stallCount||0,stallTotalMs:initial.stallTotalMs||0};
       try{
-        const settled=await waitFor(()=>{const p=h.playback();return ['playing','paused','ready','failed','ended'].includes(p.state)?p:null;},{timeoutMs:12000,label:'sustained buffering recovery'});
-        return {from:initial.state,to:settled.state,stallCount:settled.stallCount||0,stallTotalMs:settled.stallTotalMs||0};
+        const settled=await waitFor(()=>{const p=h.playback();return ['playing','paused','ready','ended'].includes(p.state)?p:null;},{timeoutMs:20000,label:'bounded buffering recovery'});
+        return {from:initial.state,to:settled.state,initialMedia:initial.mediaKey,recoveredMedia:settled.mediaKey,recoveredByFailover:!!(initial.mediaKey&&settled.mediaKey&&initial.mediaKey!==settled.mediaKey),stallCount:settled.stallCount||0,stallTotalMs:settled.stallTotalMs||0};
       }catch(err){
         const p=h.playback();
-        throw new Error(`sustained ${p.state||initial.state} > 12000 ms • media=${p.mediaKey||initial.mediaKey||'?'} • stalls=${p.stallCount||0}/${Math.round(p.stallTotalMs||0)}ms`);
+        throw new Error(`buffering did not recover within 20000 ms • state=${p.state||initial.state} • media=${p.mediaKey||initial.mediaKey||'?'} • stalls=${p.stallCount||0}/${Math.round(p.stallTotalMs||0)}ms`);
       }
     });
     await step('playback: pause/resume ownership',async()=>{

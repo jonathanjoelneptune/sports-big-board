@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.3.4",
+  "release": "4.3.5",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -24,7 +24,8 @@
         "Background program refresh cannot replace or restart the active media key",
         "Manual pause remains latched for at least 25 seconds under background refresh",
         "Score-ribbon date browsing cannot autoplay Silver daily/weekly roundup media",
-        "Production startup contains no legacy NBA/demo seed programming"
+        "Production startup contains no legacy NBA/demo seed programming",
+        "Post-first-frame playback buffering self-recovers by failing over within a bounded window instead of hanging or restarting the same clip"
       ]
     },
     "tier2": {

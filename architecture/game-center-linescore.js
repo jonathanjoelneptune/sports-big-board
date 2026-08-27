@@ -1,4 +1,4 @@
-/* Sports Big Board v4.3.4 — MLB linescore reconciliation.
+/* Sports Big Board v4.3.5 — MLB linescore reconciliation.
    Some merged/provider snapshots expose the final total before the decisive extra-
    inning cell is populated. Reconcile only a blank final extra-inning cell from the
    authoritative game total; ordinary innings and zero-run cells are left alone. */

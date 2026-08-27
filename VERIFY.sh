@@ -10,7 +10,7 @@ echo "----------------------------------"
 
 python3 tools/check_release_version.py
 python3 tools/check_foundation_certification.py
-# v4.3.4+: fast deploy rehearsal. This runs before Node and the 400+ Python tests
+# v4.3.5+: fast deploy rehearsal. This runs before Node and the 400+ Python tests
 # so stale exact-token regression guards and broken release overlays are caught
 # immediately instead of becoming another post-upload hotfix cycle.
 python3 tools/check_deploy_rehearsal.py

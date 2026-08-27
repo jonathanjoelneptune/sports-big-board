@@ -3,7 +3,7 @@
 Foreground /api/media streams never enter this queue; they retain absolute network
 priority. Background jobs are ordered by explicit user-visible importance. v4.2 adds
 observable de-duplication so milestone testing can prove workers are not multiplying
-identical upstream work. v4.3.4 adds a Game Center rate-limit circuit so a provider
+identical upstream work. v4.3.5 adds a Game Center rate-limit circuit so a provider
 429 stops already-queued background work instead of amplifying the outage.
 """
 from dataclasses import dataclass, field
