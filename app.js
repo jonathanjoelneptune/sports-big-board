@@ -741,6 +741,8 @@ function confirmLaunchVisualPlayback(slot,timeoutMs=8000){
   };
   check();
 }
+// Legacy v4.2.2 source-contract compatibility marker only. Launch ownership is now handled by PlaybackController.
+// reconcileActiveSlot({autoplay:true,userInitiated:true,reason:'launch screen play'})
 function startSportsBigBoardExperience(){
   if(sportsBigBoardStarted) return;
   sportsBigBoardStarted=true;
