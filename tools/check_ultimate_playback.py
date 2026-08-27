@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import sys
 ROOT=Path(__file__).resolve().parents[1]
 errors=[]
 def need(cond,msg):
@@ -30,12 +29,11 @@ for token in ('playback_asset_health','reliability_score','quarantined_until','c
     need(token in backend,f'backend readiness persistence missing {token}')
 need('_install_playback_readiness()' in scheduler,'server import path does not schedule readiness persistence hook')
 need('node tests/test_v440_playback_readiness.js' in verify,'VERIFY.sh does not execute v4.4.0 browser readiness test')
-
 for token in ('hydrateFromServer','hydrate(payload.records','serverUpdatedAt'):
     need(token in readiness,f'v4.4.1 durable readiness hydration missing {token}')
 for token in ('SCORE_MEDIA_PRIME_MAX_ACTIVE = 1','STANDBY_ACTIVE_RUNWAY_SECONDS=5','backgroundWarmAllowed','updatePlaybackWarmPressure','STANDBY_TRANSITION_MAX_WAIT_MS=24000','never intentionally puts an unproven automatic candidate on air'):
     need(token in app,f'v4.4.1 on-air bandwidth protection missing {token}')
-terminal=text('architecture/playback-terminal.js');terminal_css=text('ui/playback-terminal.css')
+terminal=text('architecture/playback-terminal.js')
 for token in ('bufferTimeMs','playTimeMs','SBB_PLAYBACK_TERMINAL','playbackTerminalSummary'):
     need(token in terminal,f'playback terminal missing {token}')
 need('architecture/playback-terminal.js?v='+version in index,'playback terminal not loaded with current cache generation')
@@ -44,10 +42,6 @@ need('node tests/test_v441_playback_terminal.js' in verify,'VERIFY.sh does not e
 need('node tests/test_v441_readiness_hydration.js' in verify,'VERIFY.sh does not execute v4.4.1 readiness hydration test')
 need('_bootstrap_from_history_catalog' in backend,'v4.4.1 readiness database does not seed from existing runtime catalog truth')
 need("tests/test_v441_smooth_playback.py" in verify or "unittest discover" in verify,'VERIFY.sh does not cover v4.4.1 smooth-playback contracts')
-if errors:
-    print('ULTIMATE PLAYBACK CHECK FAILED')
-    for e in errors: print(' -',e)
-    raise SystemExit(1)
 devmode=text('architecture/dev-mode.js')
 for token in ('resetForLoad','SBB_DEV_MODE','sbb:dev-mode'):
     need(token in devmode,f'v4.4.2 dev-mode authority missing {token}')
@@ -55,14 +49,23 @@ need('id="devModeToggleBtn"' in index,'v4.4.2 settings Dev Mode toggle missing')
 need('manualQueueAdvance' in app and "reason:direction<0?'manual previous button':'manual next button'" in app,'v4.4.2 manual Next/Prev authority missing')
 need('transitionCritical=false' in app and 'transition-critical standby' in app and 'standby pending: readiness not proven' in app,'v4.4.2 transition-critical readiness distinction missing')
 need('node tests/test_v442_dev_mode.js' in verify,'VERIFY.sh does not execute v4.4.2 Dev Mode test')
-# v4.4.3 playback-engine resilience + terminal endurance contract.
+# v4.4.3 playback resilience baseline retained by v4.4.4.
 for token in ('PLAYBACK_ENGINE_FAILURE_THRESHOLD=3','TRANSIENT_UNPLAYABLE_MEDIA=new Map()','function resetPlaybackEngine','RECENT_HISTORY_AUTOFILL_DAYS=3','currentIsFullRecap:()=>isFullRecapCandidate'):
     need(token in app,f'v4.4.3 playback hardening missing {token}')
 completion=app[app.find('function advanceAfterCompletedItem'):app.find('function advance(direction=1)')]
 need('!isFullRecapCandidate(finished)' in completion,'v4.4.3 recap completion does not use semantic recap classification')
 need('!finished?.overview' not in completion,'v4.4.3 recap completion still depends on raw overview flag')
-for token in ("label:'WARMUP',durationMs:5*60_000","label:'SOAK',durationMs:15*60_000","label:'HAMMER',durationMs:10*60_000",'DUPLICATE_GAME_RECAP','UNRECOVERABLE_NO_FIRST_FRAME','chaosDisruptStandby'):
-    need(token in terminal,f'v4.4.3 endurance terminal missing {token}')
-need('node tests/test_v443_playback_endurance.js' in verify,'VERIFY.sh does not execute v4.4.3 endurance contract test')
+for token in ('DUPLICATE_GAME_RECAP','UNRECOVERABLE_NO_FIRST_FRAME','chaosDisruptStandby','forcePlaybackEngineReset'):
+    need(token in terminal,f'v4.4.3 resilience guard missing {token}')
+need('node tests/test_v443_playback_endurance.js' in verify,'VERIFY.sh does not execute v4.4.3 endurance baseline test')
 need('node tests/test_v443_playback_endurance_runtime.js' in verify,'VERIFY.sh does not execute v4.4.3 endurance runtime test')
-print(f'PASS: v{version} Ultimate Playback transition/dev-mode/endurance contract is internally consistent')
+# v4.4.4 mixed-media endurance + playback recovery contract.
+for token in ("label:'WARMUP',durationMs:10*60_000","label:'MIXED SOAK',durationMs:30*60_000","label:'MIXED HAMMER',durationMs:20*60_000",'MIN_SUCCESSFUL_STARTS=150','MIN_TRANSITIONS=149',"QUALITY_ROTATION=Object.freeze(['GREEN','PURPLE','BLUE'])",'MIN_SPORTS=3','MIN_DATES=3','MIN_DATE_CHANGES=10','MIN_TRANSPORTS=2','seenMediaKeys','switchStressDate','retryAttempts','fallbacks','ASSET_BAD','REPEATED_MEDIA','unrecoveredBlanks'):
+    need(token in terminal,f'v4.4.4 mixed-media endurance missing {token}')
+need("querySelectorAll?.('#scoreCells .score-card.has-highlights')" in terminal,'v4.4.4 endurance does not drive playable score-ribbon cards')
+need('node tests/test_v444_playback_recovery_runtime.js' in verify,'VERIFY.sh does not execute v4.4.4 recovery runtime test')
+if errors:
+    print('ULTIMATE PLAYBACK CHECK FAILED')
+    for e in errors: print(' -',e)
+    raise SystemExit(1)
+print(f'PASS: v{version} Ultimate Playback mixed-media endurance/recovery contract is internally consistent')

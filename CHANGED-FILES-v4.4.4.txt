@@ -1,35 +1,12 @@
-Sports Big Board v4.4.4 — Mixed-Media Soak & Playback Recovery
-
-ATOMIC RELEASE: every path below is required. Do not deploy a partial subset.
-The release-manifest checker verifies this list before the normal release gates run.
-
 VERSION
 index.html
-app.js
 core-model.js
-architecture/milestone-console.js
-architecture/foundation-certification.js
-architecture/playback-terminal.js
-foundation-certification.json
 VERIFY.sh
+foundation-certification.json
+architecture/playback-terminal.js
+tools/check_release_version.py
 tools/check_ultimate_playback.py
-tools/check_release_manifest.py
-tools/build_release_bundle.py
 tests/test_v443_playback_endurance.js
-tests/test_v443_playback_endurance_runtime.js
 tests/test_v443_playback_endurance.py
-tests/test_v444_playback_recovery_runtime.js
 tests/test_v444_mixed_media_soak.py
-release-manifest.json
-CHANGED-FILES-v4.4.4.txt
-
-Key changes:
-- 60-minute mixed-media endurance: 10m warmup / 30m mixed soak / 20m mixed hammer
-- no successful media asset may repeat during one endurance run
-- forced Green / Purple / Blue media-quality rotation when inventory exists
-- multi-sport, multi-date, score-ribbon and transport stress coverage
-- one clean same-asset retry before same-event fallback
-- repeated never-successful media is classified ASSET_BAD rather than silently skipped
-- zero unrecovered blank-player transitions allowed
-- release-manifest gate makes version, cache tokens, tests, VERIFY wiring and certification metadata atomic
-- upload-ready bundles are generated from the manifest with SHA-256 inventory
+tests/test_v444_playback_recovery_runtime.js
