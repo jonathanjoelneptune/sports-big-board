@@ -1,14 +1,31 @@
 # Sports Big Board Milestone 2 — Ultimate Playback
 
-## v4.4.2 — Playback Readiness + Hot Standby
+## v4.4.3 — Playback Engine Resilience + Endurance
 
-Milestone 1 is frozen at **v4.3.12 FOUNDATION_CERTIFIED**. v4.4.2 begins the next milestone without weakening the Foundation Tier 1–3 regression suite.
+Milestone 1 is frozen at **v4.3.12 FOUNDATION_CERTIFIED**. v4.4.3 continues Ultimate Playback without weakening the Foundation Tier 1–3 regression suite.
 
 ### Goal
 
 Make playback feel prepared rather than reactive across **all enabled competitions** (MLB, NFL, NBA, NHL, EPL, MLS, and future competitions). Content ranking remains sport-aware; playback readiness is deliberately sport-neutral.
 
-### v4.4.2 contract
+
+### v4.4.3 hardening contract
+
+- Full-recap completion uses the canonical recap classifier, not the legacy raw `overview` flag. A completed short recap cannot automatically roll into a longer alternate recap for the same game.
+- Score-card playback expands all attached media versions before ranking, preserving the editorial preference across Quick, Commentary, Extended and Blue options.
+- Generic startup/no-first-frame failures are transient. Only evidence that is asset-specific (for example YouTube 101/150, unsupported/decode errors, or 404/410-class failures) permanently removes an asset.
+- Three independent startup failures inside 25 seconds open a browser playback-engine incident and reset stale A/B assignments, hidden prepared state and transient blocks.
+- The score ribbon owns **zero extra browser decoders**. Predictive score warming is server-side; the canonical A/B player remains the only browser hot-standby path.
+- Historical final games from the preceding three days automatically queue recap discovery when their score cards have no playable media.
+- Dev Playback Terminal adds a **30-minute automated endurance run**: 5-minute warmup, 15-minute soak and 10-minute hammer.
+- The hammer phase deliberately disrupts standby before transitions. The runner watches first-frame proof, tracks engine incidents/resets, exercises next-game transitions, attempts controlled recovery, and fails on unrecoverable no-first-frame behavior.
+- The runner also fails if a different full-recap asset for the same canonical game starts immediately after a recap of that game already played, directly guarding the v4.4.2 same-game replay regression.
+
+### Endurance pass criteria
+
+A completed 30-minute run must finish without a playback invariant error, duplicate same-game recap, or unrecoverable no-frame failure, and must prove at least 12 first frames across at least 10 controlled transitions. The terminal exposes live phase, elapsed time, successful starts, transition count, no-frame streak, engine resets and standby disruptions, plus COPY output for the run record.
+
+### Ultimate Playback baseline contract
 
 - Every media asset receives a device readiness state: `DISCOVERED`, `VERIFIED`, `PLAYBACK_READY`, `DEGRADED`, or `QUARANTINED`.
 - Playback reliability is learned from the canonical playback-session telemetry, not from provider claims alone.
@@ -34,10 +51,9 @@ These are milestone targets, not hard release blockers until Ultimate Playback C
 
 ### Next phases
 
-- v4.4.2: readiness telemetry dashboard, cross-device/server ranking consumption, deeper predictive buffer-ahead policy.
-- v4.4.2: SBB-controlled cache for media sources that may legally be cached/rehosted.
-- v4.4.3: adaptive delivery/HLS-CMAF for SBB-controlled media.
-- v4.4.4: Ultimate Playback Certification torture suite.
+- v4.4.4: expand the terminal endurance contract toward the 100-transition Ultimate Playback certification torture suite.
+- v4.4.4+: adaptive delivery/HLS-CMAF for SBB-controlled media where caching/rehosting is permitted.
+- Continue cross-device/server readiness ranking and deeper predictive buffer-ahead policy without reintroducing browser decoder pressure.
 
 
 ## v4.4.2 — On-air bandwidth protection + durable readiness hydration

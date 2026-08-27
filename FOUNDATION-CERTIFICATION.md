@@ -5,7 +5,7 @@
 **Certified baseline:** v4.3.12  
 **Status:** FOUNDATION_CERTIFIED / CLOSED  
 
-v4.4.2 starts Milestone 2 — Ultimate Playback. The Foundation three-tier suite remains a required regression gate for later releases, but v4.3.12 is the frozen certification baseline.
+v4.4.3 continues Milestone 2 — Ultimate Playback. The Foundation three-tier suite remains a required regression gate for later releases, but v4.3.12 is the frozen certification baseline.
 
 
 v4.3.6 changes Foundation Certification from the short v4.3.0 stress certificate into a three-tier release gate. The prior v4.3.0 certificate is retained as Tier 1 baseline evidence only; it is not sufficient for overall Foundation Certification.

@@ -67,12 +67,12 @@ if (location.protocol === 'file:') {
   });
 }
 
-/* Sports Big Board v4.4.2 — Ultimate Playback: cross-sport readiness + verified hot standby on the certified v4.3.12 foundation. */
+/* Sports Big Board v4.4.3 — Ultimate Playback: cross-sport readiness + verified hot standby on the certified v4.3.12 foundation. */
 
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.4.2'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.4.3'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -137,6 +137,16 @@ const EXTERNAL_CANDIDATES_BY_LEAGUE=new Map();
 // policy. Once that exact asset fails, stop advertising it as playable for the
 // rest of the page session and recompute the ribbon from the remaining sources.
 const RUNTIME_UNPLAYABLE_MEDIA=new Set();
+// v4.4.3: a generic startup timeout is not proof that an asset is bad. Keep
+// transient source failures short-lived and watch clusters across independent
+// assets/providers for evidence that the shared browser playback engine is sick.
+const TRANSIENT_UNPLAYABLE_MEDIA=new Map();
+const PLAYBACK_ENGINE_FAILURE_WINDOW_MS=25_000;
+const PLAYBACK_ENGINE_FAILURE_THRESHOLD=3;
+const PLAYBACK_ENGINE_TRANSIENT_TTL_MS=45_000;
+const PLAYBACK_ENGINE_RESET_COOLDOWN_MS=8_000;
+const playbackEngineFailureSamples=[];
+const playbackEngineHealth={incidents:0,resets:0,lastIncidentAt:0,lastResetAt:0,lastReason:'',lastUniqueAssets:0,lastProviders:0,lastTransports:0,recovering:false};
 const LIVE_MATCHES_BY_LEAGUE = new Map();
 const INDEX_CANDIDATES_BY_LEAGUE = new Map();
 
@@ -302,15 +312,12 @@ let scoreMediaWarmReconcileTimer=null;
 let scoreServerWarmTimer=null;
 let scoreServerWarmSignature='';
 function scorePreparedLimit(){
-  // v4.4.2: protect the on-air stream.  The browser may keep a tiny decoded pool,
-  // but only one hidden decoder is allowed to actively consume bandwidth at once.
-  const conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
-  if(conn?.saveData) return 1;
-  const type=String(conn?.effectiveType||'').toLowerCase();
-  if(type==='2g'||type==='slow-2g') return 1;
-  return Number(navigator.deviceMemory||6)>=6?3:2;
+  // v4.4.3: only the canonical A/B player is allowed to own browser decoders.
+  // Score-ribbon prediction warms the server cache instead of creating a second
+  // hidden decoder pool that can exhaust Chromium after a long playback session.
+  return 0;
 }
-function scoreServerWarmLimit(){ return Math.min(5,scorePreparedLimit()+2); }
+function scoreServerWarmLimit(){ return 4; }
 let nativeBound = false;
 let manualPauseRequested = false;
 let visibilityResumeWanted = false;
@@ -786,7 +793,7 @@ function startSportsBigBoardExperience(){
     confirmLaunchVisualPlayback(activeSlot,8000);
     scheduleLaunchGameCenterPopulate();
   }
-  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.4.2',{cache:'no-store'}).catch(()=>{}); }catch(_){}
+  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.4.3',{cache:'no-store'}).catch(()=>{}); }catch(_){}
 }
 function wireLaunchScreen(){
   const btn=$('launchPlayBtn');
@@ -861,7 +868,7 @@ window.onYouTubeIframeAPIReady = () => {
 function safeStartLiveData(){
   if(liveDataInitStarted) return;
   liveDataInitStarted=true;
-  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.4.2',{cache:'no-store'}).catch(()=>{}); }catch(e){}
+  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.4.3',{cache:'no-store'}).catch(()=>{}); }catch(e){}
   initLiveData().catch(err=>{
     console.warn('Live data startup failed',err);
     try{ fetch('/api/client-log?event=APP_LIVE_ERROR&detail='+encodeURIComponent(String(err?.stack||err)),{cache:'no-store'}).catch(()=>{}); }catch(e){}
@@ -1323,6 +1330,14 @@ function reconcileScoreMediaWarmSet({intentItem=null}={}){
     ranked=ranked.map(x=>x.key===key?Object.assign({},x,{rank:x.rank+1000000,visible:true}):x).sort((a,b)=>b.rank-a.rank);
   }
   const hotLimit=scorePreparedLimit(), warmLimit=scoreServerWarmLimit();
+  if(hotLimit<=0){
+    scoreMediaPrimeState.queue=[];scoreMediaPrimeState.queued.clear();scoreMediaPrimeState.desiredHot.clear();
+    for(const [,entry] of [...scoreMediaPrimeState.entries.entries()]) destroyPreparedNativeEntry(entry);
+    scoreMediaPrimeState.entries.clear();scoreMediaPrimeState.active=0;
+    scoreMediaPrimeState.desiredWarm=new Set(ranked.slice(0,warmLimit).map(x=>x.key));
+    sendServerMediaWarmSet(ranked.slice(0,warmLimit));
+    return;
+  }
   const visible=ranked.filter(x=>x.visible);
   const desired=[]; const used=new Set();
   const add=x=>{if(x&&!used.has(x.key)&&desired.length<hotLimit){used.add(x.key);desired.push(x);}};
@@ -1373,7 +1388,7 @@ if(!window.__SBB_SCORE_WARM_HEARTBEAT__){
 function primeScoreIntent(item){
   if(!item) return;
   rememberRecentScoreMedia(item);
-  primeScoreMediaItem(item,{priority:true,rank:1000000});
+  if(scorePreparedLimit()>0) primeScoreMediaItem(item,{priority:true,rank:1000000});
   reconcileScoreMediaWarmSet({intentItem:item});
   // Do not launch a second server-side fetch on pointerdown. If this was already
   // WARM the server cache has it; otherwise the hidden player's /api/media stream
@@ -1527,19 +1542,80 @@ function recordPlaybackPromotion(item,hotPrepared,reason=''){
 
 function preflightUpcomingProgram(fromIndex=currentIndex){
   if(!PROGRAM?.length||!backgroundWarmAllowed())return;
+  const browserLimit=scorePreparedLimit();
   let prepared=0;
   for(let step=1;step<=Math.min(PROGRAM.length,5);step++){
     const idx=(Number(fromIndex||0)+step+PROGRAM.length)%PROGRAM.length,item=PROGRAM[idx];
     if(!item||idx===currentIndex||!runtimeMediaUsable(item)||standbyRejected(item))continue;
     try{window.SBB_PLAYBACK_READINESS?.state?.(item);}catch(_){}
-    if(isNativeItem(item)&&prepared<1){primeScoreMediaItem(item,{priority:true,rank:50000-step*1000});prepared++;}
+    if(browserLimit>0&&isNativeItem(item)&&prepared<browserLimit){primeScoreMediaItem(item,{priority:true,rank:50000-step*1000});prepared++;}
   }
 }
+
+function playbackFailureIsAssetSpecific(reason=''){
+  const text=String(reason||'').toLowerCase();
+  return /youtube error\s*(101|150)\b|media_err_decode|media_err_src_not_supported|http\s*(404|410)\b|\b(404|410)\b[^\n]*(not found|gone)|unsupported (media|source)|invalid (media|source) url|malformed (media|source)/i.test(text);
+}
+function playbackEngineSnapshot(){
+  const cutoff=Date.now()-PLAYBACK_ENGINE_FAILURE_WINDOW_MS;
+  const recent=playbackEngineFailureSamples.filter(x=>x.at>=cutoff);
+  return {...playbackEngineHealth,recent:recent.slice(-8),transientBlocked:[...TRANSIENT_UNPLAYABLE_MEDIA.entries()].filter(([,until])=>Number(until)>Date.now()).length};
+}
+function emitPlaybackEngine(type,extra={}){
+  const detail={type,at:Date.now(),...playbackEngineSnapshot(),...extra};
+  try{window.dispatchEvent(new CustomEvent('sbb:playback-engine',{detail}));}catch(_){}
+  return detail;
+}
+function clearAllPreparedScoreDecoders(){
+  scoreMediaPrimeState.queue=[];scoreMediaPrimeState.queued.clear();scoreMediaPrimeState.desiredHot.clear();scoreMediaPrimeState.desiredWarm.clear();
+  for(const [,entry] of [...scoreMediaPrimeState.entries.entries()]) destroyPreparedNativeEntry(entry);
+  scoreMediaPrimeState.entries.clear();scoreMediaPrimeState.active=0;
+  clearTimeout(scoreMediaWarmReconcileTimer);clearTimeout(scoreServerWarmTimer);scoreServerWarmSignature='';
+}
+function resetPlaybackEngine(reason='systemic playback startup failure'){
+  const nowMs=Date.now();
+  if(playbackEngineHealth.recovering||nowMs-playbackEngineHealth.lastResetAt<PLAYBACK_ENGINE_RESET_COOLDOWN_MS)return false;
+  playbackEngineHealth.recovering=true;playbackEngineHealth.resets++;playbackEngineHealth.lastResetAt=nowMs;playbackEngineHealth.lastReason=String(reason||'');
+  try{clearAllPreparedScoreDecoders();}catch(_){}
+  for(const slot of ['A','B']){
+    try{clearStandbyProbe(slot);}catch(_){}
+    try{clearTimeout(standbyDeferredTimer[slot]);standbyDeferredTimer[slot]=null;}catch(_){}
+    try{clearTimeout(warmTimer[slot]);warmTimer[slot]=null;}catch(_){}
+    try{players?.[slot]?.mute?.();players?.[slot]?.stopVideo?.();players?.[slot]?.clearVideo?.();}catch(_){}
+    try{const v=nativeEl(slot);if(v){v.muted=true;v.pause();v.removeAttribute('src');v.load();}}catch(_){}
+    try{slotAssignment[slot]=null;}catch(_){}
+    videoReady[slot]=false;warming[slot]=false;youtubeStartAwaitingReady[slot]=false;
+  }
+  transitionInFlight=false;TRANSIENT_UNPLAYABLE_MEDIA.clear();playbackEngineFailureSamples.splice(0);
+  setPlaybackDiag({lastAction:`PLAYBACK ENGINE RESET • ${String(reason||'systemic failure').slice(0,90)}`});
+  emitPlaybackEngine('reset',{reason:String(reason||'')});
+  setTimeout(()=>{playbackEngineHealth.recovering=false;emitPlaybackEngine('ready',{reason:'reset complete'});},900);
+  return true;
+}
+function noteTransientPlaybackFailure(item,reason='startup failure'){
+  const nowMs=Date.now(),key=playbackItemKey(item);
+  if(key&&key!=='none')TRANSIENT_UNPLAYABLE_MEDIA.set(key,nowMs+PLAYBACK_ENGINE_TRANSIENT_TTL_MS);
+  while(playbackEngineFailureSamples.length&&playbackEngineFailureSamples[0].at<nowMs-PLAYBACK_ENGINE_FAILURE_WINDOW_MS)playbackEngineFailureSamples.shift();
+  playbackEngineFailureSamples.push({at:nowMs,key,provider:String(item?.provider||item?.source||item?.sourceLabel||'UNKNOWN').toUpperCase(),transport:String(window.SBB_PLAYBACK_TRANSPORTS?.transportForAsset?.(item)||item?.transport||'UNKNOWN').toUpperCase(),reason:String(reason||'').slice(0,160)});
+  const recent=playbackEngineFailureSamples.filter(x=>x.at>=nowMs-PLAYBACK_ENGINE_FAILURE_WINDOW_MS);
+  const uniqueAssets=new Set(recent.map(x=>x.key).filter(Boolean)),providers=new Set(recent.map(x=>x.provider).filter(Boolean)),transports=new Set(recent.map(x=>x.transport).filter(Boolean));
+  emitPlaybackEngine('transient-failure',{reason:String(reason||''),uniqueAssets:uniqueAssets.size,providers:providers.size,transports:transports.size});
+  if(uniqueAssets.size>=PLAYBACK_ENGINE_FAILURE_THRESHOLD){
+    playbackEngineHealth.incidents++;playbackEngineHealth.lastIncidentAt=nowMs;playbackEngineHealth.lastReason=String(reason||'');playbackEngineHealth.lastUniqueAssets=uniqueAssets.size;playbackEngineHealth.lastProviders=providers.size;playbackEngineHealth.lastTransports=transports.size;
+    emitPlaybackEngine('incident',{reason:String(reason||''),uniqueAssets:uniqueAssets.size,providers:providers.size,transports:transports.size});
+    resetPlaybackEngine(`${uniqueAssets.size} unique startup failures in ${Math.round(PLAYBACK_ENGINE_FAILURE_WINDOW_MS/1000)}s`);
+    return true;
+  }
+  return false;
+}
+window.SBB_PLAYBACK_ENGINE=Object.freeze({version:'1.0',snapshot:playbackEngineSnapshot,reset:resetPlaybackEngine,noteTransientFailure:noteTransientPlaybackFailure});
 
 function runtimeMediaUsable(item){
   if(!window.SBB_PLAYBACK_TRANSPORTS?.inAppPlayable?.(item) && (!item?.verifiedPlayable || !(item.youtubeId||item.mediaUrl))) return false;
   const key=playbackItemKey(item);
-  return (!key || !RUNTIME_UNPLAYABLE_MEDIA.has(key)) && item?.runtimeState!=='failed' && window.SBB_PLAYBACK_READINESS?.eligible?.(item)!==false;
+  const transientUntil=Number(TRANSIENT_UNPLAYABLE_MEDIA.get(key)||0);
+  if(transientUntil&&transientUntil<=Date.now())TRANSIENT_UNPLAYABLE_MEDIA.delete(key);
+  return (!key || (!RUNTIME_UNPLAYABLE_MEDIA.has(key)&&Number(TRANSIENT_UNPLAYABLE_MEDIA.get(key)||0)<=Date.now())) && item?.runtimeState!=='failed' && window.SBB_PLAYBACK_READINESS?.eligible?.(item)!==false;
 }
 const HISTORICAL_RUNTIME_REPORTED=new Set();
 function historicalAssetKey(item){
@@ -1567,9 +1643,15 @@ function reportHistoricalRuntime(item,state,reason=''){
 }
 
 function markRuntimeMediaFailed(item,reason='runtime playback failure',{providerFailure=true}={}){
-  if(!item) return;
+  if(!item) return false;
   const key=playbackItemKey(item);
-  if(!key || key==='none') return;
+  if(!key || key==='none') return false;
+  if(!playbackFailureIsAssetSpecific(reason)){
+    noteTransientPlaybackFailure(item,reason);
+    try{console.warn('[SBB media truth] transient playback failure; asset preserved',{key,reason,title:item?.title||''});}catch(_){}
+    setTimeout(()=>{try{renderScoresFromMatchesCombined();}catch(_){}},PLAYBACK_ENGINE_TRANSIENT_TTL_MS+100);
+    return false;
+  }
   reportHistoricalRuntime(item,'FAILED',reason);
   RUNTIME_UNPLAYABLE_MEDIA.add(key);
   // If an official web URL still exists, preserve discovery truth separately from
@@ -1598,6 +1680,7 @@ function markRuntimeMediaFailed(item,reason='runtime playback failure',{provider
   // Score-card rails and play buttons must reflect what can actually still play,
   // not what a provider claimed was playable before the browser tried it.
   setTimeout(()=>{ try{ renderScoresFromMatchesCombined(); }catch(_){ } },0);
+  return true;
 }
 function mediaMatchesScoreGame(item,match){
   // Moment clips may legitimately name only one player/team. A full-game YouTube
@@ -2759,7 +2842,7 @@ function advanceAfterCompletedItem(){
   // the date-locked queue rather than falling back to today's general program.
   if(userPlaybackSession?.source==='score'){
     const selectionEnd=Math.max(0,userPlaybackSession.selectionCount-1);
-    const moreSameGame=!finished?.overview && currentIndex<selectionEnd && nextItem && sameGameProgramItem(finished,nextItem);
+    const moreSameGame=!isFullRecapCandidate(finished) && currentIndex<selectionEnd && nextItem && sameGameProgramItem(finished,nextItem);
     if(moreSameGame){
       showBumper(currentIndex+1,350,'CONTINUING HIGHLIGHT REEL');
       PlaybackController.tuneProgramIndex(currentIndex+1,{userInitiated:false,reason:'score reel continuation'});
@@ -2772,7 +2855,7 @@ function advanceAfterCompletedItem(){
 
   // A blue reel is one game-program: keep advancing only while the next clip is
   // from that same canonical game. When the reel ends, mark the game watched.
-  if(!finished?.overview && nextItem && sameGameProgramItem(finished,nextItem)){
+  if(!isFullRecapCandidate(finished) && nextItem && sameGameProgramItem(finished,nextItem)){
     advance(1);
     return;
   }
@@ -2856,7 +2939,7 @@ function performSwapWhenReady(slot, targetIndex, started){
     if(readyItem&&claim.key===playbackItemKey(readyItem)){doSwap(slot,readyIndex);return;}
   }
   if(performance.now()-started>STANDBY_TRANSITION_MAX_WAIT_MS){
-    // v4.4.2 never intentionally puts an unproven automatic candidate on air.
+    // v4.4.3 never intentionally puts an unproven automatic candidate on air.
     // If the current clip is still healthy, keep it visible. If it ended, keep
     // the bumper up and continue the off-screen candidate search.
     const current=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{};
@@ -3534,7 +3617,7 @@ function nextVisibleQueueIndex(){
     const current=clip(currentIndex);
     const immediate=(currentIndex+1)%PROGRAM.length;
     const next=PROGRAM[immediate];
-    if(current && next && !current.overview && sameGameProgramItem(current,next) && !isGamePlayed(next)) return immediate;
+    if(current && next && !isFullRecapCandidate(current) && sameGameProgramItem(current,next) && !isGamePlayed(next)) return immediate;
   }
   return visibleQueueEntries(1)[0]?.idx ?? -1;
 }
@@ -4624,6 +4707,24 @@ async function hydrateScoreDateFromHistory(date,{scores=true}={}){
   }
 }
 
+const RECENT_HISTORY_AUTOFILL_DAYS=3;
+const recentHistoryAutofillDates=new Set();
+function recentHistoryAgeDays(date){
+  const today=new Date(`${localDateISO(0)}T12:00:00`),day=new Date(`${String(date||'').slice(0,10)}T12:00:00`);
+  return Number.isFinite(day.getTime())?Math.round((today-day)/86_400_000):999;
+}
+function scheduleRecentHistoricalRecapFill(date){
+  date=String(date||'').slice(0,10);const age=recentHistoryAgeDays(date);
+  if(age<1||age>RECENT_HISTORY_AUTOFILL_DAYS||recentHistoryAutofillDates.has(date))return;
+  recentHistoryAutofillDates.add(date);
+  setTimeout(()=>{
+    const finals=scoreMatchesForDate(date).filter(isFinal),missing=finals.filter(match=>!scoreCardPlayableItems(match).length);
+    if(!missing.length)return;
+    setFeedNote(`${date} • automatically filling ${missing.length} recent recap${missing.length===1?'':'s'}…`);
+    Promise.allSettled(missing.map(match=>queueHistoricalGameMedia(match,{priority:true}))).then(()=>{if(scoreBrowseDate===date)renderScoresFromMatchesCombined(false);});
+  },700);
+}
+
 function pumpHistoricalMediaSearchQueue(){
   while(historicalMediaSearchActive<HISTORICAL_MEDIA_DISCOVERY_CONCURRENCY && historicalMediaSearchQueue.length){
     const job=historicalMediaSearchQueue.shift();
@@ -4762,6 +4863,7 @@ async function ensureScoreDateLoaded(date,{force=false}={}){
     if(date<today) hydrateScoreDateFromHistory(date,{scores:false}).then(()=>{if(scoreBrowseDate===date)renderScoresFromMatchesCombined(false);}).catch(()=>{});
     else hydrateScoreDateFromHistory(date,{scores:false}).catch(()=>{});
     for(const league of ENABLED_LIVE_LEAGUES) launchMedia(league,SCORE_DATE_STORE?.matches?.(date,league)||[]);
+    if(date<today)scheduleRecentHistoricalRecapFill(date);
     return ENABLED_LIVE_LEAGUES.map(league=>[league,{rows:SCORE_DATE_STORE?.matches?.(date,league)||[],cached:true}]);
   }
   if(SCORE_DATE_STORE?.isLoading?.(date)) return;
@@ -4807,6 +4909,7 @@ async function ensureScoreDateLoaded(date,{force=false}={}){
     return [];
   }finally{
     SCORE_DATE_STORE?.markLoading?.(date,false);
+    if(date<today)scheduleRecentHistoricalRecapFill(date);
     if(scoreBrowseDate===date){renderScoresFromMatchesCombined(false);renderActiveSportKeyInformation();}
   }
 }
@@ -6371,7 +6474,7 @@ function scoreCardPlayableItems(match){
 }
 
 function scoreCardPlaybackSelection(match,items){
-  const rankedLegacy=preferGameOverviews((items||[]).filter(Boolean));
+  const rankedLegacy=preferGameOverviews(expandMediaVersions((items||[]).filter(Boolean)));
   const request=match&&!isFinal(match)
     ? window.SBB_SPORT_MEDIA_POLICY?.REQUEST?.MOMENTS
     : null;
@@ -6751,10 +6854,12 @@ function devStressEnsurePaused(){
 }
 
 window.SBB_DEV_TEST_HOOKS=Object.freeze({
-  version:'1.1',
+  version:'1.2',
   snapshot:()=>window.SBB_MILESTONE_CONTEXT?.()||{},
   playback:()=>window.SBB_PLAYBACK_SESSION?.snapshot?.()||{},
   playbackReadiness:()=>window.SBB_PLAYBACK_READINESS?.snapshot?.()||{},
+  playbackEngine:()=>window.SBB_PLAYBACK_ENGINE?.snapshot?.()||{},
+  forcePlaybackEngineReset:()=>window.SBB_PLAYBACK_ENGINE?.reset?.('dev endurance forced reset')===true,
   ultimatePlayback:()=>ultimatePlaybackMetricSnapshot(),
   currentTime:()=>{try{if(slotMedia[activeSlot]==='youtube')return Number(players[activeSlot]?.getCurrentTime?.()||0);if(slotMedia[activeSlot]==='native')return Number(nativeEl(activeSlot)?.currentTime||0);return 0;}catch(_){return 0;}},
   selectedEvent:()=>window.SBB_SELECTED_EVENT?.get?.()||null,
@@ -6810,6 +6915,8 @@ window.SBB_DEV_TEST_HOOKS=Object.freeze({
   setScoreDate:date=>setScoreBrowseDate(String(date||localDateISO(0)),{animate:false,hold:1500,load:true}),
   returnToday:()=>returnToToday(),
   currentMediaKey:()=>playbackItemKey(clip(currentIndex)||{}),
+  currentGameKey:()=>programGameIdentity(clip(currentIndex)||{}),
+  currentIsFullRecap:()=>isFullRecapCandidate(clip(currentIndex)||{}),
   currentSourceUrl:()=>playbackExternalSourceUrl(clip(currentIndex)||{}),
   currentProgramIndex:()=>Number(currentIndex),
   restoreMediaKey:key=>{

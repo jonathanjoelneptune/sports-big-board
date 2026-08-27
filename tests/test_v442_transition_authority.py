@@ -23,5 +23,5 @@ class V442TransitionAuthority(unittest.TestCase):
         self.assertIn('hot standby did not prove playback',APP)
     def test_dev_mode_ui_exists(self):
         self.assertIn('id="devModeToggleBtn"',INDEX)
-        self.assertIn('architecture/dev-mode.js?v=4.4.2',INDEX)
+        self.assertIn('architecture/dev-mode.js?v=4.4.3',INDEX)
 if __name__=='__main__': unittest.main()

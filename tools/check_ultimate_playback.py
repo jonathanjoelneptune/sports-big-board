@@ -55,4 +55,14 @@ need('id="devModeToggleBtn"' in index,'v4.4.2 settings Dev Mode toggle missing')
 need('manualQueueAdvance' in app and "reason:direction<0?'manual previous button':'manual next button'" in app,'v4.4.2 manual Next/Prev authority missing')
 need('transitionCritical=false' in app and 'transition-critical standby' in app and 'standby pending: readiness not proven' in app,'v4.4.2 transition-critical readiness distinction missing')
 need('node tests/test_v442_dev_mode.js' in verify,'VERIFY.sh does not execute v4.4.2 Dev Mode test')
-print('PASS: v4.4.2 Ultimate Playback transition/dev-mode contract is internally consistent')
+# v4.4.3 playback-engine resilience + terminal endurance contract.
+for token in ('PLAYBACK_ENGINE_FAILURE_THRESHOLD=3','TRANSIENT_UNPLAYABLE_MEDIA=new Map()','function resetPlaybackEngine','RECENT_HISTORY_AUTOFILL_DAYS=3','currentIsFullRecap:()=>isFullRecapCandidate'):
+    need(token in app,f'v4.4.3 playback hardening missing {token}')
+completion=app[app.find('function advanceAfterCompletedItem'):app.find('function advance(direction=1)')]
+need('!isFullRecapCandidate(finished)' in completion,'v4.4.3 recap completion does not use semantic recap classification')
+need('!finished?.overview' not in completion,'v4.4.3 recap completion still depends on raw overview flag')
+for token in ("label:'WARMUP',durationMs:5*60_000","label:'SOAK',durationMs:15*60_000","label:'HAMMER',durationMs:10*60_000",'DUPLICATE_GAME_RECAP','UNRECOVERABLE_NO_FIRST_FRAME','chaosDisruptStandby'):
+    need(token in terminal,f'v4.4.3 endurance terminal missing {token}')
+need('node tests/test_v443_playback_endurance.js' in verify,'VERIFY.sh does not execute v4.4.3 endurance contract test')
+need('node tests/test_v443_playback_endurance_runtime.js' in verify,'VERIFY.sh does not execute v4.4.3 endurance runtime test')
+print(f'PASS: v{version} Ultimate Playback transition/dev-mode/endurance contract is internally consistent')
