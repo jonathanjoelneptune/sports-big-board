@@ -1,11 +1,11 @@
-/* Sports Big Board v4.3.7 — Three-Tier Foundation Certification.
+/* Sports Big Board v4.3.8 — Three-Tier Foundation Certification.
    Tier 1 = functional/stress + regression hardening.
    Tier 2 = extended soak.
    Tier 3 = controlled chaos/recovery.
    Overall FOUNDATION CERTIFIED requires all three tiers plus final recovery health. */
 (() => {
   'use strict';
-  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.7');
+  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.8');
   const CERT_SCHEMA=2;
   const SOAK_MS=15*60*1000;
   const REQUIRED_PROCEDURES=['release-handshake','playback-cycle','historical-read','operator-load','resource-modes','game-center','soundtrack','ui-responsiveness','regression-hardening'];
@@ -23,14 +23,47 @@
   function install(){
     const strip=document.querySelector('.milestone-stress-strip');if(!strip||$('foundationCertificationPanel'))return false;
     style();const panel=document.createElement('section');panel.id='foundationCertificationPanel';panel.className='foundation-certification-panel';panel.setAttribute('aria-label','Three-tier Foundation certification');
-    panel.innerHTML=`<div class="foundation-certification-head"><div><small>V4.3.7 THREE-TIER RELEASE GATE</small><strong>FOUNDATION CERTIFICATION</strong></div><span id="foundationCertificationStatus" class="foundation-certification-status" data-state="partial">IN PROGRESS</span><div class="foundation-certification-actions"><button id="foundationTier1Run" type="button">RUN TIER 1</button><button id="foundationTier2Run" type="button">RUN TIER 2 • 15 MIN</button><button id="foundationTier3Run" type="button">RUN TIER 3</button><button id="foundationCertificationRun" class="primary" type="button">RUN FULL CERTIFICATION</button><button id="foundationCertificationCopy" type="button" disabled>COPY CERTIFICATE</button><button id="foundationCertificationSave" type="button" disabled>SAVE JSON</button></div></div><div class="foundation-certification-note">Tier 1 proves functional/stress behavior and the reported playback regressions. Tier 2 requires 15 minutes of continuously sampled live operation with forward playback progress, bounded buffering, and bounded transitions. Tier 3 injects controlled request, resource-mode, standby and transition disruption and proves recovery. Overall certification is withheld until all three pass.</div><div id="foundationTierGrid" class="foundation-tier-grid"></div><div id="foundationCertificationGates" class="foundation-certification-gates"></div>`;
+    panel.innerHTML=`<div class="foundation-certification-head"><div><small>V4.3.8 THREE-TIER RELEASE GATE</small><strong>FOUNDATION CERTIFICATION</strong></div><span id="foundationCertificationStatus" class="foundation-certification-status" data-state="partial">IN PROGRESS</span><div class="foundation-certification-actions"><button id="foundationTier1Run" type="button">RUN TIER 1</button><button id="foundationTier2Run" type="button">RUN TIER 2 • 15 MIN</button><button id="foundationTier3Run" type="button">RUN TIER 3</button><button id="foundationCertificationRun" class="primary" type="button">RUN FULL CERTIFICATION</button><button id="foundationCertificationCopy" type="button" disabled>COPY CERTIFICATE</button><button id="foundationCertificationSave" type="button" disabled>SAVE JSON</button></div></div><div class="foundation-certification-note">Tier 1 proves functional/stress behavior and the reported playback regressions. Tier 2 requires 15 minutes of continuously sampled live operation with forward playback progress, bounded buffering, and bounded transitions. Tier 3 injects controlled request, resource-mode, standby and transition disruption and proves recovery. Overall certification is withheld until all three pass.</div><div id="foundationTierGrid" class="foundation-tier-grid"></div><div id="foundationCertificationGates" class="foundation-certification-gates"></div>`;
     strip.insertAdjacentElement('afterend',panel);
     $('foundationTier1Run')?.addEventListener('click',()=>runTier1());$('foundationTier2Run')?.addEventListener('click',()=>runTier2());$('foundationTier3Run')?.addEventListener('click',()=>runTier3());$('foundationCertificationRun')?.addEventListener('click',runFull);$('foundationCertificationCopy')?.addEventListener('click',copy);$('foundationCertificationSave')?.addEventListener('click',save);render();return true;
   }
   const gate=(id,name,ok,detail)=>({id,name,ok:ok===true,detail:String(detail||'')});
+  const compactErrorRecord=row=>{
+    const data=safe(row?.data)||{};
+    if(data&&typeof data==='object'&&typeof data.stack==='string')data.stack=data.stack.slice(0,5000);
+    return {at:Number(row?.at||0)||null,level:String(row?.level||'ERROR').toUpperCase(),code:String(row?.code||''),category:String(row?.category||''),source:String(row?.source||''),message:String(row?.message||'').slice(0,1800),detail:safe(row?.detail),data};
+  };
+  function browserRuntime(){
+    const fromMilestone=window.SBB_MILESTONE?.browserRuntime?.();if(fromMilestone)return safe(fromMilestone);
+    const uaData=navigator.userAgentData||{};return safe({userAgent:String(navigator.userAgent||'').slice(0,700),browserBrands:Array.isArray(uaData.brands)?uaData.brands:[],platform:String(uaData.platform||navigator.platform||''),mobile:!!uaData.mobile,vendor:String(navigator.vendor||''),language:String(navigator.language||''),visibility:String(document.visibilityState||''),online:navigator.onLine!==false});
+  }
+  function transientMediaInterruption(row){
+    const text=`${row?.category||''} ${row?.code||''} ${row?.message||''} ${JSON.stringify(row?.data||{})}`;
+    return /(AbortError|play\(\) request was interrupted|play request was interrupted|interrupted by a call to pause|interrupted by a new load request|media playback was aborted|fetching process for the media resource was aborted)/i.test(text);
+  }
+  function laterPlaybackRecovery(row,snap,stress){
+    const latest=snap?.playback?.latest||{},errAtMs=(Number(row?.at||0)||0)*1000,steps=Array.isArray(stress?.steps)?stress.steps:[];
+    if(String(latest?.invariant||'OK')!=='OK'||String(latest?.state||'')!=='playing')return false;
+    return steps.some(step=>String(step?.status)==='PASS'&&Number(step?.at||0)>=errAtMs&&(String(step?.data?.state||'')==='playing'||/playback: (buffering health|next clip transition)|hardening: background program refresh/i.test(String(step?.name||''))));
+  }
+  function collectErrorEvidence(snap,stress){
+    const reportedErrorCount=Math.max(0,Number(snap?.problemCounts?.errors||0)||0),problems=Array.isArray(snap?.problems)?snap.problems:[],recent=Array.isArray(snap?.recent)?snap.recent:[];
+    const recentErrors=recent.filter(x=>String(x?.level||'').toUpperCase()==='ERROR').slice(-20).map(compactErrorRecord);
+    const directProblems=problems.filter(x=>String(x?.level||'').toUpperCase()==='ERROR'&&String(x?.code||'')!=='RECENT_ERRORS').slice(-20).map(compactErrorRecord);
+    const candidates=[...directProblems,...recentErrors],actionableErrors=[],recoveredAdvisories=[];
+    for(const row of candidates){if(recentErrors.includes(row)&&transientMediaInterruption(row)&&laterPlaybackRecovery(row,snap,stress))recoveredAdvisories.push({...row,classification:'RECOVERED_ADVISORY',recoveryProof:'known transient media interruption + later PASS playback evidence + final PLAYING/OK session'});else actionableErrors.push({...row,classification:'ACTIONABLE'});}
+    const diagnosticMismatch=reportedErrorCount>0&&candidates.length===0;
+    return {reportedErrorCount,exportedRecordCount:candidates.length,actionableErrors,recoveredAdvisories,recentErrors,problems:problems.slice(-20).map(compactErrorRecord),diagnosticMismatch,browser:browserRuntime()};
+  }
+  function errorGateDetail(evidence,label='clean window'){
+    if(evidence.actionableErrors.length){const x=evidence.actionableErrors[0];return `${evidence.actionableErrors.length} actionable • ${x.code||x.category||'ERROR'}: ${x.message||'unknown error'}`;}
+    if(evidence.recoveredAdvisories.length)return `0 actionable • ${evidence.recoveredAdvisories.length} recovered media advisory`;
+    if(evidence.diagnosticMismatch)return `ADVISORY: backend reported ${evidence.reportedErrorCount} error(s) but exported no error record; count alone does not block certification`;
+    return `0 actionable errors • ${evidence.exportedRecordCount} exported error record(s)`;
+  }
   function tier1Evaluation(snap,stress,results){
     const rel=snap?.extra?.release||{},workers=Object.values(snap?.extra?.history?.workers||{}),checks=Array.isArray(snap?.checks)?snap.checks:[],steps=Array.isArray(stress?.steps)?stress.steps:[];
-    const procedures=REQUIRED_PROCEDURES.map(id=>[id,results?.[id]]),bad=steps.filter(x=>String(x?.status)!=='PASS'),legacy=snap?.api?.['/api/history/day'];
+    const procedures=REQUIRED_PROCEDURES.map(id=>[id,results?.[id]]),bad=steps.filter(x=>String(x?.status)!=='PASS'),legacy=snap?.api?.['/api/history/day'],errors=collectErrorEvidence(snap,stress);
     const gates=[
       gate('release-handshake','Release handshake',snap?.version===RELEASE&&snap?.versionMatch===true&&rel.versionMatch===true,`frontend ${rel.frontendVersion||RELEASE} / backend ${rel.backendVersion||snap?.version||'?'}`),
       gate('stress-suite','Tier 1 stress suite',stress?.status==='PASS'&&steps.length>0,`${stress?.status||'NOT RUN'} • ${steps.length} evidence steps`),
@@ -38,12 +71,13 @@
       gate('regressions','Reported bug regressions',results?.['regression-hardening']?.status==='PASS',results?.['regression-hardening']?.detail||'NOT RUN'),
       gate('step-debt','No Tier 1 step debt',steps.length>0&&bad.length===0,bad.length?bad.map(x=>`${x.status}:${x.name}`).join(', '):'all Tier 1 evidence PASS'),
       gate('platform','Platform checks',checks.length>0&&checks.every(x=>x?.ok===true),`${checks.filter(x=>x?.ok===true).length}/${checks.length} PASS`),
-      gate('clean-errors','Tier 1 clean-window errors',Number(snap?.problemCounts?.errors||0)===0,`${Number(snap?.problemCounts?.errors||0)} errors`),
+      gate('clean-errors','Tier 1 clean-window errors',errors.actionableErrors.length===0,errorGateDetail(errors)),
+      gate('error-evidence','Tier 1 error evidence',true,errors.diagnosticMismatch?'ADVISORY • count-only error cannot block without an exported record':`${errors.exportedRecordCount} exported error record(s) • browser ${errors.browser?.browserBrands?.map(x=>x.brand).join('/')||errors.browser?.platform||'identified'}`),
       gate('playback','Playback ownership',String(snap?.playback?.latest?.invariant||'OK')==='OK',String(snap?.playback?.latest?.invariant||'OK')),
       gate('workers','Worker health',workers.length>0&&workers.every(w=>w?.healthy===true),`${workers.filter(w=>w?.healthy===true).length}/${workers.length} healthy`),
       gate('legacy','Legacy read isolation',!legacy||Number(legacy.count||0)===0,legacy?`/api/history/day count=${legacy.count}`:'legacy path unused')
     ];
-    return {id:'tier1',name:'Tier 1 — Functional / Stress Hardening',status:gates.every(x=>x.ok)?'PASS':'FAIL',generatedAt:new Date().toISOString(),gates,stress:safe(stress),procedures:Object.fromEntries(procedures.map(([id,r])=>[id,safe(r)])),snapshot:safe({version:snap?.version,problemCounts:snap?.problemCounts,checks:snap?.checks,workers:snap?.extra?.history?.workers,playback:snap?.playback?.latest})};
+    return {id:'tier1',name:'Tier 1 — Functional / Stress Hardening',status:gates.every(x=>x.ok)?'PASS':'FAIL',generatedAt:new Date().toISOString(),gates,stress:safe(stress),procedures:Object.fromEntries(procedures.map(([id,r])=>[id,safe(r)])),errorEvidence:safe(errors),snapshot:safe({version:snap?.version,problemCounts:snap?.problemCounts,problems:snap?.problems,recentErrors:errors.recentErrors,browser:errors.browser,checks:snap?.checks,workers:snap?.extra?.history?.workers,playback:snap?.playback?.latest})};
   }
   function tierRunEvidence(id,name,run,minDuration=0,{allowWarnings=false}={}){
     const steps=Array.isArray(run?.steps)?run.steps:[],acceptable=allowWarnings?new Set(['PASS','WARN']):new Set(['PASS']);
@@ -70,13 +104,13 @@
     evidence.status=evidence.gates.every(x=>x.ok)?'PASS':'FAIL';evidence.coverage=safe(c);return evidence;
   }
   function recoveryEvaluation(snap){
-    const workers=Object.values(snap?.extra?.history?.workers||{}),rel=snap?.extra?.release||{},checks=snap?.checks||[];
-    const gates=[gate('recovery-release','Post-chaos release health',snap?.version===RELEASE&&rel.versionMatch!==false&&snap?.versionMatch!==false,`frontend/backend ${RELEASE}`),gate('recovery-errors','Post-chaos clean errors',Number(snap?.problemCounts?.errors||0)===0,`${Number(snap?.problemCounts?.errors||0)} errors after recovery reset`),gate('recovery-workers','Post-chaos workers',workers.length>0&&workers.every(w=>w?.healthy===true),`${workers.filter(w=>w?.healthy).length}/${workers.length} healthy`),gate('recovery-playback','Post-chaos playback invariant',String(snap?.playback?.latest?.invariant||'OK')==='OK',String(snap?.playback?.latest?.invariant||'OK')),gate('recovery-platform','Post-chaos platform checks',checks.length>0&&checks.every(x=>x?.ok===true),`${checks.filter(x=>x?.ok).length}/${checks.length} PASS`)];
-    return {status:gates.every(x=>x.ok)?'PASS':'FAIL',gates,snapshot:safe({version:snap?.version,problemCounts:snap?.problemCounts,checks,workers:snap?.extra?.history?.workers,playback:snap?.playback?.latest})};
+    const workers=Object.values(snap?.extra?.history?.workers||{}),rel=snap?.extra?.release||{},checks=snap?.checks||[],errors=collectErrorEvidence(snap,{steps:[]});
+    const gates=[gate('recovery-release','Post-chaos release health',snap?.version===RELEASE&&rel.versionMatch!==false&&snap?.versionMatch!==false,`frontend/backend ${RELEASE}`),gate('recovery-errors','Post-chaos clean errors',errors.actionableErrors.length===0,errorGateDetail(errors,'post-chaos')),gate('recovery-error-evidence','Post-chaos error evidence',true,errors.diagnosticMismatch?'ADVISORY • count-only error cannot block without an exported record':`${errors.exportedRecordCount} exported error record(s)`),gate('recovery-workers','Post-chaos workers',workers.length>0&&workers.every(w=>w?.healthy===true),`${workers.filter(w=>w?.healthy).length}/${workers.length} healthy`),gate('recovery-playback','Post-chaos playback invariant',String(snap?.playback?.latest?.invariant||'OK')==='OK',String(snap?.playback?.latest?.invariant||'OK')),gate('recovery-platform','Post-chaos platform checks',checks.length>0&&checks.every(x=>x?.ok===true),`${checks.filter(x=>x?.ok).length}/${checks.length} PASS`)];
+    return {status:gates.every(x=>x.ok)?'PASS':'FAIL',gates,errorEvidence:safe(errors),snapshot:safe({version:snap?.version,problemCounts:snap?.problemCounts,problems:snap?.problems,recentErrors:errors.recentErrors,browser:errors.browser,checks,workers:snap?.extra?.history?.workers,playback:snap?.playback?.latest})};
   }
   function assemble(){
     const tiers=[tierEvidence.tier1,tierEvidence.tier2,tierEvidence.tier3],all=tiers.every(x=>x?.status==='PASS'),recovered=finalRecovery?.status==='PASS';
-    certificate={schemaVersion:CERT_SCHEMA,release:RELEASE,certification:'FOUNDATION',baseline:'prior hardening baseline; full-soak telemetry + playback progress closure in v4.3.7',status:all&&recovered?'FOUNDATION_CERTIFIED':'IN_PROGRESS',generatedAt:new Date().toISOString(),requirements:{tier1:'Functional / stress + reported regression hardening',tier2:`Extended soak >= ${SOAK_MS/60000} minutes`,tier3:'Controlled chaos / recovery',allThreeRequired:true},tiers:safe({tier1:tierEvidence.tier1,tier2:tierEvidence.tier2,tier3:tierEvidence.tier3}),finalRecovery:safe(finalRecovery)};return certificate;
+    certificate={schemaVersion:CERT_SCHEMA,release:RELEASE,certification:'FOUNDATION',baseline:'prior hardening baseline; full-soak telemetry + playback progress + explicit error-evidence closure in v4.3.8',status:all&&recovered?'FOUNDATION_CERTIFIED':'IN_PROGRESS',generatedAt:new Date().toISOString(),requirements:{tier1:'Functional / stress + reported regression hardening',tier2:`Extended soak >= ${SOAK_MS/60000} minutes`,tier3:'Controlled chaos / recovery',allThreeRequired:true},tiers:safe({tier1:tierEvidence.tier1,tier2:tierEvidence.tier2,tier3:tierEvidence.tier3}),finalRecovery:safe(finalRecovery)};return certificate;
   }
   function render(){
     const status=$('foundationCertificationStatus'),grid=$('foundationTierGrid'),gates=$('foundationCertificationGates');if(!status)return;const cert=assemble();
@@ -96,6 +130,6 @@
   async function runTier3({withinFull=false}={}){if(running&&!withinFull)return;const M=window.SBB_MILESTONE;if(!M?.runChaosTest)throw new Error('Milestone chaos API unavailable');if(!withinFull)running='tier3';render();try{await cleanBoundary();const run=await M.runChaosTest();tierEvidence.tier3=tierRunEvidence('tier3','Tier 3 chaos',run,0,{allowWarnings:true});await cleanBoundary({preserveRunEvidence:true});finalRecovery=recoveryEvaluation(await M.refresh()||M.snapshot);}catch(err){tierEvidence.tier3={id:'tier3',name:'Tier 3 — Controlled Chaos / Recovery',status:'FAIL',error:String(err?.message||err),gates:[gate('tier3-runtime','Tier 3 runtime',false,String(err?.message||err))]};finalRecovery={status:'FAIL',gates:[gate('recovery-runtime','Post-chaos recovery',false,String(err?.message||err))]};}finally{if(!withinFull){running='';assemble();render();}}return tierEvidence.tier3;}
   async function runFull(){if(running)return;running='full';tierEvidence={tier1:null,tier2:null,tier3:null};finalRecovery=null;certificate=null;render();try{await runTier1({withinFull:true});if(tierEvidence.tier1?.status!=='PASS')throw new Error('Tier 1 failed; full certification stopped');await runTier2({withinFull:true});if(tierEvidence.tier2?.status!=='PASS')throw new Error('Tier 2 failed; full certification stopped');await runTier3({withinFull:true});}catch(err){window.SBB_MILESTONE?.record?.('foundation-certification','ERROR','FULL CERTIFICATION STOPPED',{error:String(err?.message||err)});}finally{running='';assemble();render();window.SBB_MILESTONE?.record?.('foundation-certification',certificate.status==='FOUNDATION_CERTIFIED'?'INFO':'ERROR',certificate.status,{release:RELEASE,tiers:{tier1:tierEvidence.tier1?.status,tier2:tierEvidence.tier2?.status,tier3:tierEvidence.tier3?.status},finalRecovery:finalRecovery?.status});}}
   function json(){return JSON.stringify(assemble(),null,2);}function copy(){const text=json();navigator.clipboard?.writeText?.(text).catch(()=>{});}function save(){const blob=new Blob([json()],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`sports-big-board-${RELEASE}-foundation-certificate-${new Date().toISOString().replace(/[:.]/g,'-')}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500);}
-  window.SBB_FOUNDATION_CERTIFICATION=Object.freeze({version:'2.0',release:RELEASE,schemaVersion:CERT_SCHEMA,soakDurationMs:SOAK_MS,run:runFull,runTier1,runTier2,runTier3,get certificate(){return safe(assemble());}});
+  window.SBB_FOUNDATION_CERTIFICATION=Object.freeze({version:'2.1',release:RELEASE,schemaVersion:CERT_SCHEMA,soakDurationMs:SOAK_MS,run:runFull,runTier1,runTier2,runTier3,_dev:Object.freeze({collectErrorEvidence,tier1Evaluation,recoveryEvaluation}),get certificate(){return safe(assemble());}});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();

@@ -1,10 +1,10 @@
-/* Sports Big Board 4.3.7 three-tier certification console.
+/* Sports Big Board 4.3.8 three-tier certification console.
    Captures browser/runtime failures, runs repeatable dev procedures, and renders
    one exportable platform-health log. COPY FULL LOG is the canonical handoff. */
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.7');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.8');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);
@@ -28,20 +28,37 @@
   ];
 
   function safe(value){try{return JSON.parse(JSON.stringify(value));}catch(_){return String(value);}}
+  function browserRuntime(){
+    const uaData=navigator.userAgentData||{};
+    return {
+      userAgent:String(navigator.userAgent||'').slice(0,700),
+      browserBrands:Array.isArray(uaData.brands)?uaData.brands.map(x=>({brand:String(x?.brand||''),version:String(x?.version||'')})).slice(0,8):[],
+      platform:String(uaData.platform||navigator.platform||'').slice(0,120),
+      mobile:!!uaData.mobile,
+      vendor:String(navigator.vendor||'').slice(0,160),
+      language:String(navigator.language||'').slice(0,60),
+      hardwareConcurrency:Number(navigator.hardwareConcurrency||0)||null,
+      deviceMemory:Number(navigator.deviceMemory||0)||null,
+      visibility:String(document.visibilityState||''),
+      online:navigator.onLine!==false
+    };
+  }
   function remember(level,message,data={}){
     localEvents.push({at:Date.now(),level:String(level||'INFO').toUpperCase(),message:String(message||''),data:safe(data)});
     if(localEvents.length>MAX_LOCAL)localEvents.splice(0,localEvents.length-MAX_LOCAL);
   }
   function post(kind,level,message,data={},extra={}){
-    remember(level,message,data);
+    const normalizedLevel=String(level||'INFO').toUpperCase();
+    const enrichedData=normalizedLevel==='ERROR'&&data&&typeof data==='object'&&!Array.isArray(data)?{...data,browser:browserRuntime()}:data;
+    remember(level,message,enrichedData);
     try{
-      const body={kind,level,message,data,tabId:TAB_ID,frontendVersion:VERSION,at:Date.now(),playback:window.SBB_PLAYBACK_SESSION?.snapshot?.()||{},...extra};
+      const body={kind,level:normalizedLevel,message,data:enrichedData,tabId:TAB_ID,frontendVersion:VERSION,at:Date.now(),playback:window.SBB_PLAYBACK_SESSION?.snapshot?.()||{},...extra};
       fetch('/api/milestone/client-event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),keepalive:true,cache:'no-store'}).catch(()=>{});
     }catch(_){ }
   }
   function heartbeat(){
     const context=window.SBB_MILESTONE_CONTEXT?.()||{};
-    post('heartbeat','INFO','browser heartbeat',{visibility:document.visibilityState,online:navigator.onLine,playback:window.SBB_PLAYBACK_SESSION?.snapshot?.()||{},soundtrack:window.SBB_SOUNDTRACK?.snapshot?.()||{},context},{url:location.href});
+    post('heartbeat','INFO','browser heartbeat',{visibility:document.visibilityState,online:navigator.onLine,browser:browserRuntime(),playback:window.SBB_PLAYBACK_SESSION?.snapshot?.()||{},soundtrack:window.SBB_SOUNDTRACK?.snapshot?.()||{},context},{url:location.href});
   }
 
   function onError(ev){
@@ -93,6 +110,8 @@
     lines.push(`Milestone: ${data.version||VERSION} • Overall: ${data.overall||'UNKNOWN'} • errors=${counts.errors||0} warnings=${counts.warnings||0}`);
     lines.push(`Version handshake: frontend ${rel.frontendVersion||VERSION} • backend ${rel.backendVersion||'?'} • ${rel.versionMatch?'MATCH':'MISMATCH'}`);
     lines.push(`Deployment: ${rel.deploymentMode||'?'} • backend uptime ${rel.uptimeSeconds||0}s`);
+    const runtime=browserRuntime();
+    lines.push(`Browser: ${runtime.browserBrands?.map(x=>`${x.brand} ${x.version}`).join(', ')||runtime.userAgent||'unknown'} • platform=${runtime.platform||'unknown'} • visibility=${runtime.visibility||'unknown'} • online=${runtime.online}`);
     lines.push('');
     lines.push('[PLAYBACK SESSION]');
     lines.push(`session=${ps.sessionId||'—'} • state=${ps.state||'idle'} • event=${ps.eventKey||'—'} • media=${ps.mediaKey||'—'}`);
@@ -594,6 +613,6 @@
     $('milestoneStressRun')?.addEventListener('click',runStressTest);$('milestoneStressStop')?.addEventListener('click',stopStressTest);$('milestoneProceduresToggle')?.addEventListener('click',toggleProcedures);$('milestoneProceduresRunAll')?.addEventListener('click',runAllProcedures);
     renderProcedures();renderStress();heartbeat();heartbeatTimer=setInterval(heartbeat,10000);setTimeout(refresh,1800);
   }
-  window.SBB_MILESTONE=Object.freeze({version:'1.3',release:VERSION,open,close,refresh,reset,resetObservationWindow,text:textSnapshot,record:post,runStressTest,runSoakTest,runChaosTest,stopStressTest,runProcedure,procedures:PROCEDURES.map(x=>({...x})),get stress(){return safe(stressRun);},get soak(){return safe(soakRun);},get chaos(){return safe(chaosRun);},get procedureResults(){return safe(procedureResults);},get snapshot(){return latest;}});
+  window.SBB_MILESTONE=Object.freeze({version:'1.3',release:VERSION,open,close,refresh,reset,resetObservationWindow,text:textSnapshot,record:post,browserRuntime,runStressTest,runSoakTest,runChaosTest,stopStressTest,runProcedure,procedures:PROCEDURES.map(x=>({...x})),get stress(){return safe(stressRun);},get soak(){return safe(soakRun);},get chaos(){return safe(chaosRun);},get procedureResults(){return safe(procedureResults);},get snapshot(){return latest;}});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();

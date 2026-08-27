@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static release gate for Sports Big Board v4.3.7 three-tier Foundation Certification."""
+"""Static release gate for Sports Big Board v4.3.8 three-tier Foundation Certification."""
 from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[1]
@@ -15,7 +15,7 @@ try: manifest=json.loads(text('foundation-certification.json') or '{}')
 except Exception as exc: errors.append(f'invalid foundation-certification.json: {exc}');manifest={}
 try: version_tuple=tuple(int(x) for x in version.split('.'))
 except Exception: version_tuple=(0,)
-require(version_tuple>=(4,3,4),f'expected VERSION 4.3.7 or newer, found {version!r}')
+require(version_tuple>=(4,3,8),f'expected VERSION 4.3.8 or newer, found {version!r}')
 require(manifest.get('release')==version,'manifest release mismatch')
 require(manifest.get('schemaVersion')==2,'three-tier manifest schema must be 2')
 require(manifest.get('allThreeTiersRequired') is True,'all three tiers must be required')
@@ -30,11 +30,11 @@ html=text('index.html');cert=text('architecture/foundation-certification.js');mi
 chain=[f'architecture/milestone-console.js?v={version}',f'architecture/foundation-certification.js?v={version}',f'architecture/site-soundtrack.js?v={version}',f'app.js?v={version}']
 for token in chain: require(token in html,f'index missing {token}')
 if all(x in html for x in chain): require([html.index(x) for x in chain]==sorted(html.index(x) for x in chain),'certification/runtime load order invalid')
-for token in ('RUN TIER 1','RUN TIER 2 • 15 MIN','RUN TIER 3','RUN FULL CERTIFICATION','FOUNDATION_CERTIFIED','allThreeRequired:true','await M.runSoakTest','await M.runChaosTest','tier2Evaluation','Tier 2 telemetry coverage','Tier 2 playback forward progress','Tier 2 bounded transitions'):
+for token in ('collectErrorEvidence','actionableErrors','recoveredAdvisories','diagnosticMismatch','Tier 1 error evidence','recentErrors:errors.recentErrors','browser:errors.browser','RUN TIER 1','RUN TIER 2 • 15 MIN','RUN TIER 3','RUN FULL CERTIFICATION','FOUNDATION_CERTIFIED','allThreeRequired:true','await M.runSoakTest','await M.runChaosTest','tier2Evaluation','Tier 2 telemetry coverage','Tier 2 playback forward progress','Tier 2 bounded transitions'):
     require(token in cert,f'certification runtime missing {token}')
 for token in ("allowWarnings=false","new Set(['PASS','WARN'])","tierRunEvidence('tier3','Tier 3 chaos',run,0,{allowWarnings:true})",'advisory warnings','warningCount:warnings.length'):
     require(token in cert,f'certification warning semantics missing {token}')
-for token in ("version:'1.3'",'runSoakTest','runChaosTest','regression-hardening','manual pause remains latched for 25 seconds','background program refresh cannot restart active clip','expectedSamples','minimumSamples','maxAllowedSampleGapMs','playing without forward progress','sustained buffering','soak game transition','withTimeout',"timeoutMs:20000,label:'bounded buffering recovery'",'recoveredByFailover'):
+for token in ("version:'1.3'",'browserRuntime','browser:browserRuntime()','runSoakTest','runChaosTest','regression-hardening','manual pause remains latched for 25 seconds','background program refresh cannot restart active clip','expectedSamples','minimumSamples','maxAllowedSampleGapMs','playing without forward progress','sustained buffering','soak game transition','withTimeout',"timeoutMs:20000,label:'bounded buffering recovery'",'recoveredByFailover'):
     require(token in milestone,f'milestone runtime missing {token}')
 for token in ('let PROGRAM = [];','function maybeAutoplayRoundupForDate(){','return false;','selectedEventMatchesActivePlayback','syncGameCenterToActivePlayback','demoSeedCount:()=>0','roundupAutoplayEnabled:()=>false','manualPauseRequested&&!userInitiated','SKIPPING UNAVAILABLE VIDEO','automatic playback failure recovery','AUTO_MEDIA_FAILURE_SKIP','PLAYBACK_BUFFER_STALL_RECOVERY_MS=8000','PLAYBACK_STALL_RECOVERY','Sustained playback buffering',"PlaybackController.tuneProgramIndex(currentIndex,{userInitiated:true,reason:'launch screen play'})",'waitForYouTubeSlotReady(slot,item,expectedEpoch,12000)'):
     require(token in app,f'playback hardening missing {token}')
@@ -47,6 +47,7 @@ for token in ('circuitRejected','game-center:','rate-limit'):
 require(f'architecture/game-center-linescore.js?v={version}' in html,'index missing Game Center linescore reconciler')
 require('score-date pager interaction hardening' in styles,'score pager hitbox hardening missing')
 require('tools/check_foundation_certification.py' in verify,'VERIFY.sh does not enforce certification checker')
+require('node tests/test_certification_error_evidence.js' in verify,'VERIFY.sh does not execute certification error-evidence behavior test')
 if errors:
     print('FOUNDATION CERTIFICATION CHECK FAILED')
     for e in errors: print(' -',e)

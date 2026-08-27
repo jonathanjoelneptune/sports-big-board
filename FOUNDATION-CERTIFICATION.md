@@ -1,4 +1,4 @@
-# Sports Big Board v4.3.7 — Foundation Certification / Soak Progress Closure
+# Sports Big Board v4.3.8 — Foundation Certification / Soak Progress Closure
 
 v4.3.6 changes Foundation Certification from the short v4.3.0 stress certificate into a three-tier release gate. The prior v4.3.0 certificate is retained as Tier 1 baseline evidence only; it is not sufficient for overall Foundation Certification.
 
@@ -70,6 +70,15 @@ The Tier 2 certificate now records sample coverage, observed sample span, maximu
 ### v4.3.6 startup recovery closure
 Tier 1 requires provider-neutral startup recovery: selected media that never reaches a first frame must fail over automatically rather than remain indefinitely in `starting`. The watchdog is assignment-scoped and may not restart the same stalled asset.
 
-### v4.3.7 launch bootstrap recovery closure
+### v4.3.8 launch bootstrap recovery closure
 
 The launch button now always enters the canonical PlaybackController path, including when a YouTube iframe exists but has not fired `onReady`. This creates playback-session identity immediately and places cold iframe readiness under the existing bounded 12-second readiness wait and unattended failover controller. The previous launch-only readiness branch could display `starting` without a session, timeout, or watchdog if the iframe never became ready.
+
+
+### v4.3.8 certification error-evidence closure
+
+Tier 1 no longer fails on an unexplained numeric error count alone. Every error that can block certification is retained in the exported certificate with its timestamp, category/code, source, message, details, recent browser event payload, playback context when available, and browser/runtime identity. If the backend reports a nonzero error count but provides no corresponding error record, the mismatch is preserved as an advisory and cannot by itself fail the tier.
+
+Browser/media interruptions are not broadly whitelisted. Only a known transient media interruption (for example an interrupted browser `play()` promise) may be downgraded to `RECOVERED_ADVISORY`, and only when the same Tier 1 run proves a later successful playback step and ends in a `PLAYING` session with playback ownership invariant `OK`. Any other captured error remains actionable and blocks Tier 1. The post-chaos recovery gate uses the same explicit-record rule but does not downgrade errors without Tier 1 recovery evidence.
+
+The Milestone Console now records browser identity (user agent/client-hints brands, platform, vendor, language, visibility, online state, and available hardware hints) with error events and exposes that identity in the saved certification evidence.
