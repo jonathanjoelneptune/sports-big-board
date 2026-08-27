@@ -14,6 +14,12 @@ class V438CertificationErrorEvidenceTests(unittest.TestCase):
         self.assertIn('transientMediaInterruption',CERT);self.assertIn('laterPlaybackRecovery',CERT)
         self.assertIn("String(latest?.state||'')!=='playing'",CERT)
         self.assertIn("String(step?.status)==='PASS'",CERT)
+    def test_watchdog_failure_can_be_advisory_only_with_explicit_failover_proof(self):
+        self.assertIn('recoveredPlaybackFailover',CERT)
+        self.assertIn("d.recoveredByFailover===true",CERT)
+        self.assertIn("String(d.initialMedia||'')===failedMedia",CERT)
+        self.assertIn("String(d.recoveredMedia)!==failedMedia",CERT)
+        self.assertIn("stress?.restorationHealth?.ok!==true",CERT)
     def test_browser_identity_is_captured_with_errors(self):
         for token in ('function browserRuntime()','browser:browserRuntime()','normalizedLevel===\'ERROR\'','userAgent','browserBrands','platform'):
             self.assertIn(token,MILESTONE)

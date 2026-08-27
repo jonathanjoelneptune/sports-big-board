@@ -59,3 +59,5 @@ grep -q 'https://203-0-113-10.sslip.io/api/soundtrack' "$VERIFY_TMP/pages/config
 grep -q "soundtrackTransport:'private-gcs'" "$VERIFY_TMP/pages/config.js"
 
 echo "PASS: v${VERSION} local + cloud Stage 1 architecture, certification, regression suite, and deploy rehearsal"
+
+python3 -m unittest tests.test_v4312_recovered_playback_failure_semantics
