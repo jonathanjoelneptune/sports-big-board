@@ -1,85 +1,109 @@
 {
   "schemaVersion": 1,
-  "release": "4.4.4",
-  "baseRelease": "4.4.3",
-  "title": "Mixed-Media Soak & Playback Recovery",
+  "release": "4.4.5",
+  "baseRelease": "4.4.4",
+  "title": "Random-Archive Stress & Duplicate-Candidate Rejection",
   "atomic": true,
   "requiredFiles": [
     "VERSION",
     "index.html",
-    "app.js",
     "core-model.js",
-    "architecture/milestone-console.js",
-    "architecture/foundation-certification.js",
     "architecture/playback-terminal.js",
     "foundation-certification.json",
     "VERIFY.sh",
-    "tools/check_ultimate_playback.py",
     "tools/check_release_manifest.py",
-    "tools/build_release_bundle.py",
-    "tests/test_v443_playback_endurance.js",
-    "tests/test_v443_playback_endurance_runtime.js",
-    "tests/test_v443_playback_endurance.py",
-    "tests/test_v444_playback_recovery_runtime.js",
+    "tools/check_ultimate_playback.py",
+    "tests/test_v442_transition_authority.py",
     "tests/test_v444_mixed_media_soak.py",
+    "tests/test_v445_random_archive_stress.py",
+    "tests/test_v445_duplicate_candidate_runtime.js",
     "release-manifest.json",
-    "CHANGED-FILES-v4.4.4.txt"
+    "CHANGED-FILES-v4.4.5.txt"
   ],
   "contracts": {
     "VERSION": {
-      "required": ["4.4.4"]
+      "required": [
+        "4.4.5"
+      ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board — v4.4.4",
+        "Sports Big Board \u2014 v4.4.5",
         "START 60M",
-        "app.js?v=4.4.4",
-        "architecture/playback-terminal.js?v=4.4.4"
+        "random archive dates across 365 days",
+        "app.js?v=4.4.5",
+        "architecture/playback-terminal.js?v=4.4.5"
       ],
-      "forbidden": ["?v=4.4.3"]
+      "forbidden": [
+        "?v=4.4.4"
+      ]
     },
     "core-model.js": {
-      "required": ["version:'4.4.4'"]
-    },
-    "app.js": {
-      "required": ["version:String(DOMAIN_MODEL?.version||'4.4.4')"]
-    },
-    "architecture/milestone-console.js": {
-      "required": ["window.SBB_CORE?.version||'4.4.4'"]
-    },
-    "architecture/foundation-certification.js": {
-      "required": ["window.SBB_CORE?.version||'4.4.4'"]
+      "required": [
+        "version:'4.4.5'"
+      ]
     },
     "architecture/playback-terminal.js": {
       "required": [
-        "label:'WARMUP',durationMs:10*60_000",
-        "label:'MIXED SOAK',durationMs:30*60_000",
-        "label:'MIXED HAMMER',durationMs:20*60_000",
-        "MIN_SUCCESSFUL_STARTS=150",
-        "MIN_TRANSITIONS=149",
-        "QUALITY_ROTATION=Object.freeze(['GREEN','PURPLE','BLUE'])",
-        "REPEATED_MEDIA",
-        "ASSET_BAD"
+        "ARCHIVE_LOOKBACK_DAYS=365",
+        "ARCHIVE_MIN_JUMP_DAYS=45",
+        "LONG_DATE_JUMP_DAYS=45",
+        "MIN_DATES=10",
+        "MIN_MONTHS=6",
+        "MIN_DATE_SPAN_DAYS=180",
+        "MIN_LONG_DATE_JUMPS=8",
+        "randomArchiveTarget",
+        "cardMediaKey",
+        "duplicateCandidateRejects",
+        "rejectDuplicateStressCandidate",
+        "filter(r=>r.enduranceRunId===s.runId)",
+        "SPORT_IDS"
       ]
     },
     "foundation-certification.json": {
-      "required": ["\"release\": \"4.4.4\""]
+      "required": [
+        "\"release\": \"4.4.5\""
+      ]
     },
     "VERIFY.sh": {
       "required": [
         "python3 tools/check_release_manifest.py",
-        "node tests/test_v444_playback_recovery_runtime.js"
+        "python3 -m unittest tests.test_v445_random_archive_stress",
+        "node tests/test_v445_duplicate_candidate_runtime.js"
       ]
     },
     "tools/check_ultimate_playback.py": {
-      "required": ["v4.4.4 mixed-media endurance + playback recovery contract"]
+      "required": [
+        "v4.4.5 random-archive stress + duplicate-candidate rejection",
+        "Ultimate Playback random-archive endurance/recovery contract"
+      ]
+    },
+    "tests/test_v442_transition_authority.py": {
+      "required": [
+        "VERSION=(ROOT/'VERSION').read_text",
+        "f'architecture/dev-mode.js?v={VERSION}'"
+      ]
     },
     "tests/test_v444_mixed_media_soak.py": {
       "required": [
-        "START 60M",
-        "node tests/test_v444_playback_recovery_runtime.js",
-        "release-manifest.json",
-        "tools/check_release_manifest.py"
+        "test_release_baseline_or_newer",
+        "self.assertGreaterEqual(tuple(map(int,VERSION.split"
+      ],
+      "forbidden": [
+        "self.assertEqual(VERSION,'4.4.4')"
+      ]
+    },
+    "tests/test_v445_random_archive_stress.py": {
+      "required": [
+        "ARCHIVE_LOOKBACK_DAYS",
+        "duplicateCandidateRejects",
+        "python3 tools/check_release_manifest.py"
+      ]
+    },
+    "tests/test_v445_duplicate_candidate_runtime.js": {
+      "required": [
+        "stress-selected duplicate must not be misclassified as a product failure",
+        "duplicateCandidateRejects"
       ]
     }
   },
@@ -89,6 +113,8 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
+    "python3 -m unittest tests.test_v445_random_archive_stress",
+    "node tests/test_v445_duplicate_candidate_runtime.js",
     "bash VERIFY.sh"
   ]
 }

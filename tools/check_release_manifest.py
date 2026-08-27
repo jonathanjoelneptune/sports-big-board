@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Atomic release-manifest gate for Sports Big Board.
 
-A release is invalid if any release-owned file is missing, stale, or not wired into
-VERIFY.sh. This runs before the rest of VERIFY.sh so partial uploads fail with one
-clear report rather than a sequence of stale-token surprises.
+Runs before every other release check. It verifies that the manual-upload file set
+is complete, all local cache generations match VERSION, VERIFY wires every named
+test, and historical Python regression tests do not pin VERSION to an older release.
 """
 from __future__ import annotations
+import ast
 import json
 import re
 from pathlib import Path
@@ -52,25 +53,45 @@ for rel,spec in (manifest.get('contracts') or {}).items():
     for token in spec.get('forbidden',[]) or []:
         if str(token) in text: fail(f"{rel}: contains forbidden token {token!r}")
 
-# Every local cache-busted JS/CSS reference must be from exactly this release.
+# Every executable local cache-busted JS/CSS reference must be exactly this release.
 index=texts.get('index.html',read('index.html'))
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     if found!=release: fail(f'index.html: stale cache generation {found} on {asset}; expected {release}')
     if not (ROOT/asset).is_file(): fail(f'index.html: referenced local asset is missing: {asset}')
 
-# VERIFY cannot name a release test that was omitted from the upload bundle.
 verify=texts.get('VERIFY.sh',read('VERIFY.sh'))
+if 'python3 tools/check_release_manifest.py' not in verify:
+    fail('VERIFY.sh does not execute tools/check_release_manifest.py')
 for test_path in re.findall(r'(tests/[A-Za-z0-9_.\-/]+\.(?:js|py))',verify):
     if not (ROOT/test_path).is_file(): fail(f'VERIFY.sh references missing test: {test_path}')
 
-# The human-facing changed-file list is machine-audited against the manifest.
+# Catch the exact regression that caused the v4.4.4 upload loop: an old test may
+# preserve a behavior baseline, but it may not assert that VERSION equals an older
+# literal semantic version. Version-aware tests must derive the current release.
+def semver_literal(node):
+    return node.value if isinstance(node,ast.Constant) and isinstance(node.value,str) and re.fullmatch(r'\d+\.\d+\.\d+',node.value) else None
+for test_path in sorted((ROOT/'tests').glob('test_*.py')):
+    try: tree=ast.parse(test_path.read_text(encoding='utf-8'),filename=str(test_path))
+    except SyntaxError as exc:
+        fail(f'{test_path.relative_to(ROOT)}:{exc.lineno}: syntax error: {exc.msg}')
+        continue
+    for node in ast.walk(tree):
+        if not isinstance(node,ast.Call) or not isinstance(node.func,ast.Attribute) or node.func.attr not in {'assertEqual','assertMultiLineEqual'} or len(node.args)<2:
+            continue
+        a,b=node.args[:2]
+        literal=None
+        if isinstance(a,ast.Name) and a.id=='VERSION': literal=semver_literal(b)
+        elif isinstance(b,ast.Name) and b.id=='VERSION': literal=semver_literal(a)
+        if literal and literal!=release:
+            fail(f'{test_path.relative_to(ROOT)}:{node.lineno}: hard-coded VERSION {literal} is stale; derive current VERSION or assert a minimum baseline')
+
 changed=f'CHANGED-FILES-v{release}.txt'
 changed_text=texts.get(changed,read(changed))
 for rel in required:
-    if rel not in changed_text: fail(f'{changed}: required manifest file not listed: {rel}')
+    if rel not in changed_text: fail(f'{changed}: required manual-upload file not listed: {rel}')
 
 if errors:
     print('RELEASE MANIFEST CHECK FAILED')
     for err in errors: print(' -',err)
     raise SystemExit(1)
-print(f'PASS: v{release} atomic release manifest is complete ({len(required)} required files)')
+print(f'PASS: v{release} atomic manual-upload manifest is complete ({len(required)} files)')

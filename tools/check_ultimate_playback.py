@@ -59,13 +59,23 @@ for token in ('DUPLICATE_GAME_RECAP','UNRECOVERABLE_NO_FIRST_FRAME','chaosDisrup
     need(token in terminal,f'v4.4.3 resilience guard missing {token}')
 need('node tests/test_v443_playback_endurance.js' in verify,'VERIFY.sh does not execute v4.4.3 endurance baseline test')
 need('node tests/test_v443_playback_endurance_runtime.js' in verify,'VERIFY.sh does not execute v4.4.3 endurance runtime test')
-# v4.4.4 mixed-media endurance + playback recovery contract.
-for token in ("label:'WARMUP',durationMs:10*60_000","label:'MIXED SOAK',durationMs:30*60_000","label:'MIXED HAMMER',durationMs:20*60_000",'MIN_SUCCESSFUL_STARTS=150','MIN_TRANSITIONS=149',"QUALITY_ROTATION=Object.freeze(['GREEN','PURPLE','BLUE'])",'MIN_SPORTS=3','MIN_DATES=3','MIN_DATE_CHANGES=10','MIN_TRANSPORTS=2','seenMediaKeys','switchStressDate','retryAttempts','fallbacks','ASSET_BAD','REPEATED_MEDIA','unrecoveredBlanks'):
-    need(token in terminal,f'v4.4.4 mixed-media endurance missing {token}')
+# v4.4.4 mixed-media endurance + playback recovery baseline retained.
+for token in ("label:'WARMUP',durationMs:10*60_000","label:'MIXED SOAK',durationMs:30*60_000","label:'MIXED HAMMER',durationMs:20*60_000",'MIN_SUCCESSFUL_STARTS=150','MIN_TRANSITIONS=149',"QUALITY_ROTATION=Object.freeze(['GREEN','PURPLE','BLUE'])",'MIN_SPORTS=3','MIN_TRANSPORTS=2','seenMediaKeys','switchStressDate','retryAttempts','fallbacks','ASSET_BAD','REPEATED_MEDIA','unrecoveredBlanks'):
+    need(token in terminal,f'v4.4.4 mixed-media endurance baseline missing {token}')
+import re
+def numeric_const(name):
+    m=re.search(rf'const {re.escape(name)}=(\d+)',terminal);return int(m.group(1)) if m else -1
+need(numeric_const('MIN_DATES')>=3,'v4.4.4 date diversity floor regressed below 3')
+need(numeric_const('MIN_DATE_CHANGES')>=10,'v4.4.4 date-change floor regressed below 10')
 need("querySelectorAll?.('#scoreCells .score-card.has-highlights')" in terminal,'v4.4.4 endurance does not drive playable score-ribbon cards')
 need('node tests/test_v444_playback_recovery_runtime.js' in verify,'VERIFY.sh does not execute v4.4.4 recovery runtime test')
+# v4.4.5 random-archive stress + duplicate-candidate rejection.
+for token in ('ARCHIVE_LOOKBACK_DAYS=365','ARCHIVE_MIN_JUMP_DAYS=45','LONG_DATE_JUMP_DAYS=45','MIN_DATES=10','MIN_DATE_CHANGES=12','MIN_MONTHS=6','MIN_DATE_SPAN_DAYS=180','MIN_LONG_DATE_JUMPS=8','SPORT_IDS','randomArchiveTarget','waitForRibbonCandidate','shouldRandomArchiveJump','cardMediaKey','scoreCardAvailability','playbackItemKey','duplicateCandidateRejects','preflightDuplicateSkips','rejectDuplicateStressCandidate','queueDuplicateCandidateReplacement','stressDriven',"filter(r=>r.enduranceRunId===s.runId)"):
+    need(token in terminal,f'v4.4.5 random-archive endurance missing {token}')
+need('python3 tools/check_release_manifest.py' in verify,'VERIFY.sh does not execute atomic release manifest gate first')
+need('node tests/test_v445_duplicate_candidate_runtime.js' in verify,'VERIFY.sh does not execute v4.4.5 duplicate-candidate runtime test')
 if errors:
     print('ULTIMATE PLAYBACK CHECK FAILED')
     for e in errors: print(' -',e)
     raise SystemExit(1)
-print(f'PASS: v{version} Ultimate Playback mixed-media endurance/recovery contract is internally consistent')
+print(f'PASS: v{version} Ultimate Playback random-archive endurance/recovery contract is internally consistent')
