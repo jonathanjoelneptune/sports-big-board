@@ -24,7 +24,19 @@ if f"version:'{version}'" not in core: errors.append('core-model version does no
 app=(root/'app.js').read_text(encoding='utf-8')
 if f"version:String(DOMAIN_MODEL?.version||'{version}')" not in app: errors.append('app architecture version/fallback does not match VERSION')
 history_ui=(root/'ui'/'history-audit.js').read_text(encoding='utf-8')
-if f"const FRONTEND_VERSION=String(window.SBB_CORE?.version||'{version}')" not in history_ui: errors.append('history audit frontend version/fallback does not match VERSION')
+# History Audit is loaded after core-model.js and must derive release identity from
+# the canonical core model. Do not duplicate a semantic version fallback here;
+# that created repeated release-only CI failures when the file was omitted from a bump.
+history_version_contract="const FRONTEND_VERSION=String(window.SBB_CORE?.version||'UNKNOWN')"
+if history_version_contract not in history_ui:
+    errors.append('history audit must derive frontend version from SBB_CORE without a hard-coded release fallback')
+if re.search(r"FRONTEND_VERSION\s*=.*?['\"]\d+\.\d+\.\d+['\"]",history_ui):
+    errors.append('history audit contains a hard-coded semantic version fallback')
+try:
+    if index.index('core-model.js') > index.index('ui/history-audit.js'):
+        errors.append('history audit loads before core-model.js; dynamic release identity would be unavailable')
+except ValueError:
+    errors.append('index is missing core-model.js or ui/history-audit.js')
 milestone=(root/'architecture'/'milestone-console.js').read_text(encoding='utf-8')
 if f"window.SBB_CORE?.version||'{version}'" not in milestone: errors.append('milestone console fallback version does not match VERSION')
 cert=(root/'architecture'/'foundation-certification.js').read_text(encoding='utf-8')
