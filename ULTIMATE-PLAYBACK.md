@@ -1,14 +1,14 @@
 # Sports Big Board Milestone 2 — Ultimate Playback
 
-## v4.4.1 — Playback Readiness + Hot Standby
+## v4.4.2 — Playback Readiness + Hot Standby
 
-Milestone 1 is frozen at **v4.3.12 FOUNDATION_CERTIFIED**. v4.4.1 begins the next milestone without weakening the Foundation Tier 1–3 regression suite.
+Milestone 1 is frozen at **v4.3.12 FOUNDATION_CERTIFIED**. v4.4.2 begins the next milestone without weakening the Foundation Tier 1–3 regression suite.
 
 ### Goal
 
 Make playback feel prepared rather than reactive across **all enabled competitions** (MLB, NFL, NBA, NHL, EPL, MLS, and future competitions). Content ranking remains sport-aware; playback readiness is deliberately sport-neutral.
 
-### v4.4.1 contract
+### v4.4.2 contract
 
 - Every media asset receives a device readiness state: `DISCOVERED`, `VERIFIED`, `PLAYBACK_READY`, `DEGRADED`, or `QUARANTINED`.
 - Playback reliability is learned from the canonical playback-session telemetry, not from provider claims alone.
@@ -34,15 +34,23 @@ These are milestone targets, not hard release blockers until Ultimate Playback C
 
 ### Next phases
 
-- v4.4.1: readiness telemetry dashboard, cross-device/server ranking consumption, deeper predictive buffer-ahead policy.
+- v4.4.2: readiness telemetry dashboard, cross-device/server ranking consumption, deeper predictive buffer-ahead policy.
 - v4.4.2: SBB-controlled cache for media sources that may legally be cached/rehosted.
 - v4.4.3: adaptive delivery/HLS-CMAF for SBB-controlled media.
 - v4.4.4: Ultimate Playback Certification torture suite.
 
 
-## v4.4.1 — On-air bandwidth protection + durable readiness hydration
+## v4.4.2 — On-air bandwidth protection + durable readiness hydration
 - Server readiness history now hydrates every browser, so a new device does not rediscover known-bad assets from scratch.
 - Active playback has bandwidth priority. Browser warm concurrency is one hidden decoder, the prepared pool is small, and server warm neighborhoods are bounded.
 - Hot standby preparation pauses whenever the on-air stream is starting/buffering or lacks at least ~5 seconds of safe buffer runway.
 - Automatic transitions never intentionally promote an unproven candidate. If no HOT_READY asset exists, the current healthy clip remains on air or the bumper remains visible while off-screen preparation continues.
 - Dev Mode adds a persistent Playback Terminal below the player with per-selection play time, cumulative buffer time across multiple stalls, startup time, transport, provider, readiness score and source/title.
+
+
+## v4.4.2 Transition Authority + Dev Mode Reliability
+- Manual NEXT/PREV is authoritative; hot standby is an accelerator, never a gate.
+- Background readiness timeout is PENDING, not an asset failure.
+- Transition-critical warming may run even when speculative warming is paused.
+- Dev Mode is ephemeral and defaults OFF on every page load; opening the certification console enables it.
+- Next infrastructure step: controlled direct-media byte-range/prefix cache for sources permitted to be cached/rehosted.

@@ -1,4 +1,4 @@
-/* Sports Big Board v4.4.1 — cross-sport playback readiness + durable server hydration.
+/* Sports Big Board v4.4.2 — cross-sport playback readiness + durable server hydration.
    Content identity belongs to events/competitions; this module only answers whether
    a media transport is healthy enough to put on air. It is intentionally agnostic to
    MLB/NFL/NBA/NHL/EPL/MLS and future competitions. */
@@ -157,7 +157,7 @@
   async function hydrateFromServer({force=false}={}){
     if(serverHydratePromise)return serverHydratePromise;
     if(!force&&Date.now()-lastServerHydrateAt<30000)return 0;
-    const version=String(window.SBB_CORE?.version||'4.4.1');
+    const version=String(window.SBB_CORE?.version||'4.4.2');
     const path=`/api/milestone/console?frontendVersion=${encodeURIComponent(version)}&limit=30`;
     const url=window.SBB_API?.url?.(path)||path;
     serverHydratePromise=fetch(url,{cache:'no-store'}).then(async r=>{

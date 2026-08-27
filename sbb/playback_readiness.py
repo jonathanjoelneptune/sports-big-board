@@ -1,6 +1,6 @@
 """Cross-sport playback readiness and reliability persistence for Sports Big Board.
 
-v4.4.1 keeps playback identity separate from sport identity.  Every transport/provider
+v4.4.2 keeps playback identity separate from sport identity.  Every transport/provider
 feeds the same health model using playback-session telemetry.  The browser still owns
 real decoder readiness; this store supplies durable history so bad assets stop getting
 re-discovered as if they were healthy on every session.
@@ -114,7 +114,7 @@ class PlaybackReadinessStore:
         """Seed durable readiness from pre-v4.4 runtime truth without rewriting history.
 
         The normalized history catalog already knows whether some assets were
-        actually PLAYED or FAILED.  v4.4.1 imports that evidence once so the new
+        actually PLAYED or FAILED.  v4.4.2 imports that evidence once so the new
         sidecar does not force every browser to rediscover those failures.
         """
         marker='history_runtime_bootstrap_v1'

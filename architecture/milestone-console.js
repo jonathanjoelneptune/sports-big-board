@@ -1,10 +1,10 @@
-/* Sports Big Board 4.4.1 three-tier certification console.
+/* Sports Big Board 4.4.2 three-tier certification console.
    Captures browser/runtime failures, runs repeatable dev procedures, and renders
    one exportable platform-health log. COPY FULL LOG is the canonical handoff. */
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.4.1');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.4.2');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);
@@ -620,8 +620,13 @@
   }
   function fallbackCopy(text,done){try{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand?.('copy');ta.remove();if(ok)done();else throw new Error('copy command unavailable');}catch(_){const el=$('milestoneCopyStatus');if(el)el.textContent='COPY FAILED';}}
   function saveText(){const blob=new Blob([textSnapshot()],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`sports-big-board-${VERSION}-milestone-console-${new Date().toISOString().replace(/[:.]/g,'-')}.txt`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);}
+  function devModeEnabled(){return window.SBB_DEV_MODE?.isEnabled?.()===true;}
+  function renderDevMode(){const b=$('devModeToggleBtn');if(!b)return;const on=devModeEnabled();b.textContent=`DEV MODE: ${on?'ON':'OFF'}`;b.setAttribute('aria-pressed',on?'true':'false');b.classList.toggle('active',on);}
+  function setDevMode(on,reason='settings'){try{window.SBB_DEV_MODE?.set?.(!!on,reason);}catch(_){}renderDevMode();}
+
   function open(){
     const m=$('milestoneConsoleModal');if(!m)return;
+    setDevMode(true,'certification console');
     // Dev Test is a modal workspace.  Keep the information drawer's logical state
     // untouched so procedures may exercise/restore Game Center behind the modal,
     // but visually suppress it while Dev Test owns the screen.
@@ -639,6 +644,7 @@
   async function resetObservationWindow(){try{await fetch('/api/milestone/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',cache:'no-store'});await refresh();}catch(err){remember('ERROR','milestone observation reset failed',{error:String(err)});throw err;}}
   function toggleProcedures(){const p=$('milestoneProceduresPanel'),btn=$('milestoneProceduresToggle');if(!p)return;const show=p.classList.contains('hidden');p.classList.toggle('hidden',!show);btn?.setAttribute('aria-expanded',show?'true':'false');if(show)renderProcedures();}
   function bind(){
+    renderDevMode();window.addEventListener?.('sbb:dev-mode',renderDevMode);$('devModeToggleBtn')?.addEventListener('click',()=>setDevMode(!devModeEnabled(),'settings toggle'));
     $('openMilestoneConsoleBtn')?.addEventListener('click',open);$('milestoneConsoleClose')?.addEventListener('click',close);$('milestoneConsoleBackdrop')?.addEventListener('click',close);
     $('milestoneConsoleRefresh')?.addEventListener('click',refresh);$('milestoneConsoleCopy')?.addEventListener('click',copyText);$('milestoneConsoleDownload')?.addEventListener('click',saveText);$('milestoneConsoleReset')?.addEventListener('click',reset);
     $('milestoneStressRun')?.addEventListener('click',runStressTest);$('milestoneStressStop')?.addEventListener('click',stopStressTest);$('milestoneProceduresToggle')?.addEventListener('click',toggleProcedures);$('milestoneProceduresRunAll')?.addEventListener('click',runAllProcedures);

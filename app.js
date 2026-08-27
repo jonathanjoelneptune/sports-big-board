@@ -67,12 +67,12 @@ if (location.protocol === 'file:') {
   });
 }
 
-/* Sports Big Board v4.4.1 — Ultimate Playback: cross-sport readiness + verified hot standby on the certified v4.3.12 foundation. */
+/* Sports Big Board v4.4.2 — Ultimate Playback: cross-sport readiness + verified hot standby on the certified v4.3.12 foundation. */
 
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.4.1'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.4.2'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -302,7 +302,7 @@ let scoreMediaWarmReconcileTimer=null;
 let scoreServerWarmTimer=null;
 let scoreServerWarmSignature='';
 function scorePreparedLimit(){
-  // v4.4.1: protect the on-air stream.  The browser may keep a tiny decoded pool,
+  // v4.4.2: protect the on-air stream.  The browser may keep a tiny decoded pool,
   // but only one hidden decoder is allowed to actively consume bandwidth at once.
   const conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
   if(conn?.saveData) return 1;
@@ -786,7 +786,7 @@ function startSportsBigBoardExperience(){
     confirmLaunchVisualPlayback(activeSlot,8000);
     scheduleLaunchGameCenterPopulate();
   }
-  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.4.1',{cache:'no-store'}).catch(()=>{}); }catch(_){}
+  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.4.2',{cache:'no-store'}).catch(()=>{}); }catch(_){}
 }
 function wireLaunchScreen(){
   const btn=$('launchPlayBtn');
@@ -861,7 +861,7 @@ window.onYouTubeIframeAPIReady = () => {
 function safeStartLiveData(){
   if(liveDataInitStarted) return;
   liveDataInitStarted=true;
-  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.4.1',{cache:'no-store'}).catch(()=>{}); }catch(e){}
+  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.4.2',{cache:'no-store'}).catch(()=>{}); }catch(e){}
   initLiveData().catch(err=>{
     console.warn('Live data startup failed',err);
     try{ fetch('/api/client-log?event=APP_LIVE_ERROR&detail='+encodeURIComponent(String(err?.stack||err)),{cache:'no-store'}).catch(()=>{}); }catch(e){}
@@ -1494,12 +1494,26 @@ function standbyWarmFailed(slot,item,epoch,index,reason='standby warm failed'){
   if(next>=0&&next!==index)setTimeout(()=>{if(slot!==activeSlot)prepareStandby(slot,next);},80);
   return true;
 }
-function armStandbyDeadline(slot,item,epoch,index){
+function armStandbyDeadline(slot,item,epoch,index,{transitionCritical=false}={}){
   clearStandbyProbe(slot);standbyWarmStartedAt[slot]=performance.now();ultimatePlaybackMetrics.warmAttempts++;
   standbyProbeTimer[slot]=setTimeout(()=>{
     standbyProbeTimer[slot]=null;
     if(slot===activeSlot||!warming[slot]||videoReady[slot]||!slotClaimIsCurrent(slot,epoch,item))return;
-    standbyWarmFailed(slot,item,epoch,index,`hot standby did not prove playback within ${STANDBY_WARM_TIMEOUT_MS} ms`);
+    // Background readiness is evidence, not airtime authority. A clip that simply
+    // has not proven buffer/progress yet must not be rejected or skipped. Only a
+    // transition-critical probe gets converted into a real warm failure.
+    if(!transitionCritical&&!transitionInFlight){
+      clearStandbyProbe(slot);videoReady[slot]=false;warming[slot]=false;
+      try{pauseSlot(slot);}catch(_){}
+      setPlaybackDiag({lastAction:`standby pending: readiness not proven in ${STANDBY_WARM_TIMEOUT_MS} ms`});updateDiagnostics();
+      if(slot!==activeSlot)deferStandbyWithoutPenalty(slot,index,1600);
+      return;
+    }
+    if(!transitionCritical&&transitionInFlight){
+      armStandbyDeadline(slot,item,epoch,index,{transitionCritical:true});
+      return;
+    }
+    standbyWarmFailed(slot,item,epoch,index,`transition-critical standby did not prove playback within ${STANDBY_WARM_TIMEOUT_MS} ms`);
   },STANDBY_WARM_TIMEOUT_MS);
 }
 function recordPlaybackPromotion(item,hotPrepared,reason=''){
@@ -2181,7 +2195,7 @@ function onState(slot, event){
   updateDiagnostics();
 }
 
-function prepareStandby(slot, index){
+function prepareStandby(slot, index,{transitionCritical=false}={}){
   if(slot===activeSlot||!PROGRAM?.length)return false;
   let item=clip(index);
   if(!item||!runtimeMediaUsable(item)||standbyRejected(item)){
@@ -2189,7 +2203,7 @@ function prepareStandby(slot, index){
     if(fallback<0)return false;
     index=fallback;item=clip(index);
   }
-  if(!backgroundWarmAllowed()){deferStandbyWithoutPenalty(slot,index,900);return false;}
+  if(!transitionCritical&&!backgroundWarmAllowed()){deferStandbyWithoutPenalty(slot,index,900);return false;}
   if(standbyDeferredTimer[slot]){clearTimeout(standbyDeferredTimer[slot]);standbyDeferredTimer[slot]=null;}
   videoReady[slot]=false;
   warming[slot]=true;
@@ -2199,7 +2213,7 @@ function prepareStandby(slot, index){
   const epoch=configureSlotForItem(slot,item,false);
   if(slotAssignment[slot])slotAssignment[slot].programIndex=index;
   standbyIndex=(index+PROGRAM.length)%PROGRAM.length;
-  armStandbyDeadline(slot,item,epoch,index);
+  armStandbyDeadline(slot,item,epoch,index,{transitionCritical});
 
   if(isContextItem(item)){
     noteHotStandbyReady(slot,item,standbyWarmStartedAt[slot]);
@@ -2778,6 +2792,22 @@ function advanceFullscreenSingleSlot(targetIndex){
   PlaybackController.tuneProgramIndex(targetIndex,{userInitiated:false,reason:'fullscreen automatic transition'});
 }
 
+function manualQueueAdvance(direction=1){
+  if(!initialized||!PROGRAM?.length)return false;
+  const targetIndex=direction<0?(currentIndex-1+PROGRAM.length)%PROGRAM.length:nextVisibleQueueIndex();
+  if(targetIndex<0){showAllCaughtUp();return false;}
+  manualPauseRequested=false;transitionRecoveryAttempts=0;
+  const standbySlot=otherSlot(activeSlot),claim=slotAssignment[standbySlot],targetItem=clip(targetIndex);
+  if(videoReady[standbySlot]&&claim&&targetItem&&claim.key===playbackItemKey(targetItem)){
+    transitionInFlight=true;showBumper(targetIndex,250,direction<0?'PREVIOUS':'NEXT');doSwap(standbySlot,targetIndex);return true;
+  }
+  // Manual transport controls are authoritative. Hot Standby may make the command
+  // instant, but missing readiness metadata must never make NEXT/PREV do nothing.
+  transitionInFlight=false;showBumper(targetIndex,250,direction<0?'PREVIOUS':'NEXT');
+  PlaybackController.tuneProgramIndex(targetIndex,{userInitiated:true,reason:direction<0?'manual previous button':'manual next button'});
+  return true;
+}
+
 function advance(direction=1){
   if(!initialized) return;
   if(transitionInFlight) return;
@@ -2809,7 +2839,15 @@ function advance(direction=1){
 
 function performSwapWhenReady(slot, targetIndex, started){
   const maxWait = STANDBY_WARM_TIMEOUT_MS+750;
-  const claim=slotAssignment[slot];
+  let claim=slotAssignment[slot];
+  // Once a transition is actually requested, preparing the next item is no longer
+  // speculative bandwidth. It is transition-critical and may run even though the
+  // previous clip has ended or has no remaining buffer runway.
+  const requestedItem=clip(targetIndex);
+  if(!videoReady[slot]&&(!warming[slot]||!claim||claim.key!==playbackItemKey(requestedItem))){
+    prepareStandby(slot,targetIndex,{transitionCritical:true});
+    claim=slotAssignment[slot];
+  }
   // A failed target may already have been replaced off-screen by another candidate.
   // Promote the exact item that actually proved HOT_READY, never the stale index.
   if(videoReady[slot]&&claim){
@@ -2818,12 +2856,12 @@ function performSwapWhenReady(slot, targetIndex, started){
     if(readyItem&&claim.key===playbackItemKey(readyItem)){doSwap(slot,readyIndex);return;}
   }
   if(performance.now()-started>STANDBY_TRANSITION_MAX_WAIT_MS){
-    // v4.4.1 never intentionally puts an unproven automatic candidate on air.
+    // v4.4.2 never intentionally puts an unproven automatic candidate on air.
     // If the current clip is still healthy, keep it visible. If it ended, keep
     // the bumper up and continue the off-screen candidate search.
     const current=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{};
     const fallback=nextReadinessCandidateIndex(Number.isInteger(claim?.programIndex)?claim.programIndex:targetIndex);
-    if(fallback>=0){showBumper(fallback,0,'PREPARING VERIFIED VIDEO');prepareStandby(slot,fallback);requestAnimationFrame(()=>performSwapWhenReady(slot,fallback,performance.now()));return;}
+    if(fallback>=0){showBumper(fallback,0,'PREPARING VERIFIED VIDEO');prepareStandby(slot,fallback,{transitionCritical:true});requestAnimationFrame(()=>performSwapWhenReady(slot,fallback,performance.now()));return;}
     transitionInFlight=false;
     if(current.state==='playing'||current.state==='paused'){hideBumper();setFeedNote('Next video is not playback-ready yet • keeping current video on air');}
     else{showBumper(targetIndex,0,'NO PLAYBACK-READY VIDEO');setFeedNote('No playback-ready video is available yet');}
@@ -2831,7 +2869,7 @@ function performSwapWhenReady(slot, targetIndex, started){
   }
   if(performance.now()-started>maxWait&&!warming[slot]&&!videoReady[slot]){
     const fallback=nextReadinessCandidateIndex(Number.isInteger(claim?.programIndex)?claim.programIndex:targetIndex);
-    if(fallback>=0)prepareStandby(slot,fallback);
+    if(fallback>=0)prepareStandby(slot,fallback,{transitionCritical:true});
   }
   requestAnimationFrame(() => performSwapWhenReady(slot, targetIndex, started));
 }
@@ -3716,7 +3754,7 @@ $('nextBtn').onclick = () => {
     return;
   }
   if(userPlaybackSession) cancelUserPlaybackSession();
-  advance(1);
+  manualQueueAdvance(1);
 };
 for(const [id,tier] of [['recapQuickBtn','green'],['recapExtendedBtn','extended'],['recapCommentaryBtn','gold']]){
   const btn=$(id); if(btn) btn.onclick=()=>switchRecapVersion(tier);
@@ -3729,7 +3767,7 @@ $('prevBtn').onclick = () => {
     return;
   }
   if(userPlaybackSession) cancelUserPlaybackSession();
-  advance(-1);
+  manualQueueAdvance(-1);
 };
 $('playBtn').onclick = () => {
   if(!sbbPlaybackAllowed({notify:true})) return;

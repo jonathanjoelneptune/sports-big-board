@@ -1,4 +1,4 @@
-/* Sports Big Board v4.4.1 — Dev Playback Terminal.
+/* Sports Big Board v4.4.2 — Dev Playback Terminal.
    Read-only observer of canonical playback session + Ultimate Playback readiness.
    It never controls playback. */
 (() => {
@@ -8,7 +8,7 @@
   const now=()=>performance.now();
   const fmtMs=ms=>`${(Math.max(0,Number(ms)||0)/1000).toFixed(1)}s`;
   const clean=(v,n=160)=>String(v??'').replace(/\s+/g,' ').trim().slice(0,n);
-  function devEnabled(){const q=new URLSearchParams(location.search);return document.body?.classList.contains('dev-mode')||document.body?.dataset?.sbbDev==='1'||q.get('dev')==='1'||q.get('debug')==='1';}
+  function devEnabled(){return window.SBB_DEV_MODE?.isEnabled?.()===true||document.body?.classList.contains('dev-mode')||document.body?.dataset?.sbbDev==='1';}
   function durationFor(row,kind,t=now()){
     let total=Number(row[kind+'Ms']||0);if(row.state===kind&&row.stateStartedPerf)total+=Math.max(0,t-row.stateStartedPerf);return total;
   }
@@ -42,7 +42,8 @@
     body.innerHTML=data.slice(0,20).map((r,i)=>{const item={mediaKey:r.mediaKey,competitionId:r.league,provider:r.provider,transport:r.transport};const ready=window.SBB_PLAYBACK_READINESS?.state?.(item)||'DISCOVERED',score=window.SBB_PLAYBACK_READINESS?.score?.(item)??80;const status=r.exitState||r.state.toUpperCase();const src=r.source?` title="${r.source.replace(/"/g,'&quot;')}"`:'';return `<div class="pt-row"><span>${String(data.length-i).padStart(2,'0')}</span><b class="pt-state">${status}</b><span>${r.league||'—'}</span><span>${r.transport||'—'}</span><span>${r.provider||'—'}</span><span>${fmtMs(r.playTimeMs)}</span><span>${fmtMs(r.bufferTimeMs)}</span><span>${r.stallCount}</span><span>${r.firstFrameMs==null?'—':Math.round(r.firstFrameMs)+'ms'}</span><span>${ready}</span><span>${Math.round(Number(score||0))}</span><span${src}>${(r.title||'Untitled').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span></div>`;}).join('')||'<div class="pt-empty">Waiting for playback sessions…</div>';
   }
   window.addEventListener?.('sbb:playback-session',ev=>ingest(ev?.detail||{}));
-  document.addEventListener('DOMContentLoaded',()=>{const q=new URLSearchParams(location.search);if(q.get('dev')==='1'||q.get('debug')==='1')document.body.dataset.sbbDev='1';document.getElementById('playbackTerminalClear')?.addEventListener('click',clear);document.getElementById('playbackTerminalCopy')?.addEventListener('click',()=>{const lines=snapshot().map(r=>`${r.league}\t${r.transport}\t${r.provider}\tPLAY=${fmtMs(r.playTimeMs)}\tBUFFER=${fmtMs(r.bufferTimeMs)}\tSTALLS=${r.stallCount}\tSTART=${r.firstFrameMs??''}\t${r.title}`);navigator.clipboard?.writeText?.(lines.join('\n')).catch(()=>{});});render();tickTimer=setInterval(render,500);});
+  window.addEventListener?.('sbb:dev-mode',render);
+  document.addEventListener('DOMContentLoaded',()=>{document.getElementById('playbackTerminalClear')?.addEventListener('click',clear);document.getElementById('playbackTerminalCopy')?.addEventListener('click',()=>{const lines=snapshot().map(r=>`${r.league}\t${r.transport}\t${r.provider}\tPLAY=${fmtMs(r.playTimeMs)}\tBUFFER=${fmtMs(r.bufferTimeMs)}\tSTALLS=${r.stallCount}\tSTART=${r.firstFrameMs??''}\t${r.title}`);navigator.clipboard?.writeText?.(lines.join('\n')).catch(()=>{});});render();tickTimer=setInterval(render,500);});
   try{const s=window.SBB_PLAYBACK_SESSION?.snapshot?.();if(s?.sessionId)ingest(s);}catch(_){}
   window.SBB_PLAYBACK_TERMINAL=Object.freeze({version:'1.0',snapshot,clear,ingest,render});
 })();

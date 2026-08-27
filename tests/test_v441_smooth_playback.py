@@ -1,6 +1,7 @@
 import unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+VERSION=(ROOT/'VERSION').read_text().strip()
 APP=(ROOT/'app.js').read_text(encoding='utf-8'); READY=(ROOT/'architecture/playback-readiness.js').read_text(encoding='utf-8'); INDEX=(ROOT/'index.html').read_text(encoding='utf-8')
 class V441SmoothPlaybackContracts(unittest.TestCase):
     def test_active_stream_has_priority_over_speculative_warmers(self):
@@ -12,5 +13,5 @@ class V441SmoothPlaybackContracts(unittest.TestCase):
         for token in ('hydrateFromServer','playbackReadiness','serverUpdatedAt','reliability_score'):
             self.assertIn(token,READY)
     def test_dev_terminal_is_below_player(self):
-        self.assertIn('id="playbackTerminal"',INDEX);self.assertIn('architecture/playback-terminal.js?v=4.4.1',INDEX);self.assertLess(INDEX.index('id="stage"'),INDEX.index('id="playbackTerminal"'));self.assertLess(INDEX.index('id="playbackTerminal"'),INDEX.index('lower-third player-footer'))
+        self.assertIn('id="playbackTerminal"',INDEX);self.assertIn(f'architecture/playback-terminal.js?v={VERSION}',INDEX);self.assertLess(INDEX.index('id="stage"'),INDEX.index('id="playbackTerminal"'));self.assertLess(INDEX.index('id="playbackTerminal"'),INDEX.index('lower-third player-footer'))
 if __name__=='__main__':unittest.main()
