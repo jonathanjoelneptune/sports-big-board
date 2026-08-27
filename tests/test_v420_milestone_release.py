@@ -91,12 +91,24 @@ class MilestoneReleaseContractTests(unittest.TestCase):
 
     def test_stress_test_restores_user_visible_state_and_logs_failures(self):
         js=(ROOT/'architecture'/'milestone-console.js').read_text(encoding='utf-8')
-        for token in ('original.resourceMode','original.scoreDate','original.drawer','original.soundtrackDev','original.mediaKey','restoreMediaKey','soundtrackDevRestore','stress restore resource mode failed','stress restore score date failed','stress restore media selection failed','stress restore drawer failed','stress restore soundtrack failed','stress restore playback failed','restoreFailed'):
+        # v4.3.10 preserves the original v4.2 restoration objective while making
+        # exact-state misses advisory.  Final application health, not a stale
+        # implementation-string contract, decides whether cleanup blocks Tier 1.
+        for token in (
+            'original.resourceMode','original.scoreDate','original.drawer','original.soundtrackDev','original.mediaKey',
+            'restoreMediaKey','soundtrackDevRestore','stressRun.restoration=[]','restoreAttempt',
+            'restore staging resource mode','restore score date','restore exact media selection','restore drawer state',
+            'restore soundtrack state','restore playback activity','restore original resource mode',
+            'stressRun.restorationHealth','post-test restoration left application unhealthy',
+            'post-test restoration completed with non-blocking advisories',
+        ):
             self.assertIn(token,js)
+        self.assertNotIn('restoreFailed',js)
         self.assertIn('timed out after ${timeoutMs} ms',js)
         self.assertIn('if(refreshPromise)return refreshPromise',js)
         self.assertNotIn('stressRun.completed=stressRun.steps.length',js)
         self.assertIn("post('stress-step'",js)
+        self.assertIn("post('stress-restore'",js)
         self.assertIn("post('stress','ERROR'",js)
 
     def test_sqlite_utility_connections_are_explicitly_closed(self):
