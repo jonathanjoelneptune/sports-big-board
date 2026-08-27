@@ -1,7 +1,3 @@
-Sports Big Board v4.4.3 — Playback Engine Resilience + Automated Endurance
-
-UPLOAD THESE FILES AT THESE EXACT REPOSITORY PATHS:
-
 VERSION
 app.js
 core-model.js
@@ -20,14 +16,3 @@ tests/test_v443_playback_endurance.js
 tests/test_v443_playback_endurance_runtime.js
 tests/test_v443_playback_endurance.py
 CHANGED-FILES-v4.4.3.txt
-
-Key changes:
-- semantic recap completion prevents automatic same-game alternate recap playback
-- alternate recap versions are expanded before score-card ranking
-- transient startup failures no longer permanently poison media assets
-- 3-asset / 25-second playback-engine failure circuit breaker with reset
-- score-ribbon hidden browser decoder pool disabled; server warming retained
-- automatic missing-recap fill for final games from the preceding 3 days
-- Playback Terminal 30-minute endurance: 5m warmup / 15m soak / 10m hammer
-- first-frame watchdog, controlled engine recovery, standby disruption, duplicate-recap failure guard
-- Ultimate Playback static gate now enforces the v4.4.3 endurance/resilience contract
