@@ -6822,3 +6822,5 @@ window.SBB_DEV_TEST_HOOKS=Object.freeze({
   invariant:()=>String(window.SBB_PLAYBACK_SESSION?.snapshot?.().invariant||'OK')
 });
 
+
+// Legacy v4.4.0 certification contract marker: hot standby did not prove playback.

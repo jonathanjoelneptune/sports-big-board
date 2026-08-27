@@ -19,6 +19,8 @@ class V442TransitionAuthority(unittest.TestCase):
         block=APP[APP.index('function armStandbyDeadline'):APP.index('function recordPlaybackPromotion')]
         self.assertIn('standby pending: readiness not proven',block)
         self.assertIn('if(!transitionCritical&&!transitionInFlight)',block)
+    def test_legacy_v440_hot_standby_contract_marker_is_preserved(self):
+        self.assertIn('hot standby did not prove playback',APP)
     def test_dev_mode_ui_exists(self):
         self.assertIn('id="devModeToggleBtn"',INDEX)
         self.assertIn('architecture/dev-mode.js?v=4.4.2',INDEX)
