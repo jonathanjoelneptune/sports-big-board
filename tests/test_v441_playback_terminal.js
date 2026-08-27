@@ -1,0 +1,9 @@
+ 'use strict';
+const fs=require('fs'),vm=require('vm'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..'),src=fs.readFileSync(path.join(root,'architecture/playback-terminal.js'),'utf8');
+let perf=1000;global.performance={now:()=>perf};global.location={search:'?dev=1'};Object.defineProperty(global,'navigator',{value:{clipboard:{writeText:async()=>{}}},configurable:true});global.setInterval=()=>0;global.clearInterval=()=>{};
+const listeners={};global.window=global;global.addEventListener=(n,fn)=>listeners[n]=fn;global.document={body:{classList:{contains:()=>false},dataset:{}},hidden:false,addEventListener:()=>{},getElementById:()=>null};
+global.URLSearchParams=URLSearchParams;global.SBB_PLAYBACK_READINESS={state:()=> 'PLAYBACK_READY',score:()=>97};
+vm.runInThisContext(src,{filename:'playback-terminal.js'});const T=SBB_PLAYBACK_TERMINAL;
+T.ingest({sessionId:'s1',selectionId:1,state:'starting',league:'NFL',provider:'YOUTUBE',transport:'YOUTUBE_EMBED',mediaKey:'youtube:a',title:'A'});perf+=500;T.ingest({sessionId:'s1',selectionId:1,state:'playing',firstFrameAt:1,firstFrameMs:500});perf+=2000;T.ingest({sessionId:'s1',selectionId:1,state:'buffering',stallCount:1});perf+=1500;T.ingest({sessionId:'s1',selectionId:1,state:'playing',stallCount:1,stallTotalMs:1500});perf+=1000;T.ingest({sessionId:'s1',selectionId:1,state:'buffering',stallCount:2});perf+=500;T.ingest({sessionId:'s1',selectionId:1,state:'playing',stallCount:2,stallTotalMs:2000});
+const row=T.snapshot()[0];assert(row.playTimeMs>=3000,'play time must accumulate across resumes');assert(row.bufferTimeMs>=2000,'buffer time must accumulate across multiple sessions');assert.equal(row.stallCount,2);assert.equal(row.firstFrameMs,500);console.log('PASS: v4.4.1 playback terminal cumulative play/buffer accounting');

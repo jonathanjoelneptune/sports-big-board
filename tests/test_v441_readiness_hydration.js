@@ -1,0 +1,16 @@
+'use strict';
+const fs=require('fs'),vm=require('vm'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..'),src=fs.readFileSync(path.join(root,'architecture/playback-readiness.js'),'utf8');
+const data=new Map(),listeners={};
+global.localStorage={getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,String(v))};
+global.window=global;global.addEventListener=(n,fn)=>listeners[n]=fn;global.setInterval=()=>0;global.clearInterval=()=>{};
+global.fetch=async()=>({ok:false,json:async()=>({})});
+global.SBB_CORE={version:'4.4.1'};global.SBB_PLAYBACK_TRANSPORTS={playbackKey:a=>a.mediaKey||'',transportForAsset:a=>a.transport||'DIRECT_VIDEO'};
+vm.runInThisContext(src,{filename:'playback-readiness.js'});const R=SBB_PLAYBACK_READINESS;
+const key='direct:https://cdn.test/bad.mp4';
+assert.equal(R.state({mediaKey:key,competitionId:'NBA'}),'DISCOVERED');
+const merged=R.hydrate([{media_key:key,competition_id:'NBA',provider:'ESPN',transport:'DIRECT_VIDEO',state:'QUARANTINED',reliability_score:28,selections:9,first_frames:3,failures:4,warm_failures:2,consecutive_failures:3,total_stall_ms:18000,quarantined_until:Date.now()/1000+600,updated_at:Date.now()/1000}]);
+assert.equal(merged,1);assert.equal(R.state({mediaKey:key,competitionId:'NBA'}),'QUARANTINED');assert.equal(R.eligible({mediaKey:key}),false);assert.equal(Math.round(R.score({mediaKey:key})),28);
+const good='youtube:good1234567';R.hydrate([{media_key:good,competition_id:'EPL',provider:'YOUTUBE',transport:'YOUTUBE_EMBED',state:'PLAYBACK_READY',reliability_score:97,selections:20,first_frames:20,hot_ready_count:12,failures:0,warm_failures:0,consecutive_failures:0,updated_at:Date.now()/1000}]);
+assert.equal(R.state({mediaKey:good,competitionId:'EPL'}),'PLAYBACK_READY');assert(R.rankBonus({mediaKey:good})>0);
+console.log('PASS: v4.4.1 cross-device readiness hydration applies durable quarantine/readiness');

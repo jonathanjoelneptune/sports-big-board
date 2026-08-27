@@ -1,4 +1,4 @@
-/* Sports Big Board v4.4.0 — cross-sport playback readiness + device reliability.
+/* Sports Big Board v4.4.1 — cross-sport playback readiness + durable server hydration.
    Content identity belongs to events/competitions; this module only answers whether
    a media transport is healthy enough to put on air. It is intentionally agnostic to
    MLB/NFL/NBA/NHL/EPL/MLS and future competitions. */
@@ -93,7 +93,7 @@
   function snapshot(){
     const rows=[...records.values()].map(x=>({...x,state:derive(x)}));
     const states={};for(const r of rows)states[r.state]=(states[r.state]||0)+1;
-    return {version:'1.0',assets:rows.length,states,records:rows.sort((a,b)=>Number(b.lastSeenAt||0)-Number(a.lastSeenAt||0)).slice(0,80)};
+    return {version:'1.1',assets:rows.length,states,records:rows.sort((a,b)=>Number(b.lastSeenAt||0)-Number(a.lastSeenAt||0)).slice(0,80)};
   }
   function notify(rec){for(const fn of [...listeners]){try{fn(clone(rec));}catch(_){}}}
   function subscribe(fn){if(typeof fn!=='function')return()=>{};listeners.add(fn);return()=>listeners.delete(fn);}
@@ -106,6 +106,70 @@
   }
   function sendTelemetry(event,asset,extra={}){
     try{const session={...descriptor(asset),...extra};fetch('/api/playback/telemetry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event,session}),keepalive:true,cache:'no-store'}).catch(()=>{});}catch(_){ }
+  }
+
+  function serverRowToRecord(row){
+    if(!row||typeof row!=='object')return null;
+    const key=clean(row.media_key||row.mediaKey,1800);if(!key)return null;
+    const updatedMs=Math.max(0,Number(row.updated_at||row.updatedAt||0))*1000;
+    return {mediaKey:key,
+      competitionId:clean(row.competition_id||row.competitionId||'',80).toUpperCase(),
+      provider:clean(row.provider||'',120).toUpperCase(),transport:clean(row.transport||'',120).toUpperCase(),
+      state:clean(row.state||'DISCOVERED',40).toUpperCase(),score:clamp(row.reliability_score??row.score??80),
+      selections:Number(row.selections||0),firstFrames:Number(row.first_frames||row.firstFrames||0),
+      hotReadyCount:Number(row.hot_ready_count||row.hotReadyCount||0),stalls:Number(row.stalls||0),
+      failures:Number(row.failures||0),warmFailures:Number(row.warm_failures||row.warmFailures||0),
+      recoveredFailovers:Number(row.recovered_failovers||row.recoveredFailovers||0),
+      consecutiveFailures:Number(row.consecutive_failures||row.consecutiveFailures||0),
+      totalStallMs:Number(row.total_stall_ms||row.totalStallMs||0),startupP50Ms:Number(row.startup_p50_ms||0),startupP95Ms:Number(row.startup_p95_ms||0),
+      quarantinedUntil:Math.max(0,Number(row.quarantined_until||row.quarantinedUntil||0))*1000,
+      lastError:clean(row.last_error||row.lastError||'',700),lastSuccessAt:Math.max(0,Number(row.last_success_at||0))*1000,
+      lastFailureAt:Math.max(0,Number(row.last_failure_at||0))*1000,serverUpdatedAt:updatedMs};
+  }
+  function hydrate(rows,{source='server'}={}){
+    let merged=0;
+    for(const raw of (Array.isArray(rows)?rows:[])){
+      const incoming=serverRowToRecord(raw);if(!incoming)continue;
+      const current=ensure(incoming.mediaKey);if(!current)continue;
+      if(Number(current.serverUpdatedAt||0)>Number(incoming.serverUpdatedAt||0))continue;
+      // The shared database is the cross-device reliability authority.  Counters
+      // use MAX rather than addition because this browser's telemetry is already
+      // represented in the server stream and must never be double-counted.
+      current.competitionId=incoming.competitionId||current.competitionId;
+      current.provider=incoming.provider||current.provider;current.transport=incoming.transport||current.transport;
+      current.score=incoming.score;current.selections=Math.max(Number(current.selections||0),incoming.selections);
+      current.firstFrames=Math.max(Number(current.firstFrames||0),incoming.firstFrames);
+      current.hotReadyCount=Math.max(Number(current.hotReadyCount||0),incoming.hotReadyCount);
+      current.stalls=Math.max(Number(current.stalls||0),incoming.stalls);current.failures=Math.max(Number(current.failures||0),incoming.failures);
+      current.warmFailures=Math.max(Number(current.warmFailures||0),incoming.warmFailures);
+      current.recoveredFailovers=Math.max(Number(current.recoveredFailovers||0),incoming.recoveredFailovers);
+      current.consecutiveFailures=Math.max(Number(current.consecutiveFailures||0),incoming.consecutiveFailures);
+      current.totalStallMs=Math.max(Number(current.totalStallMs||0),incoming.totalStallMs);
+      current.quarantinedUntil=Math.max(Number(current.quarantinedUntil||0),incoming.quarantinedUntil);
+      current.lastError=incoming.lastError||current.lastError;current.lastSuccessAt=Math.max(Number(current.lastSuccessAt||0),incoming.lastSuccessAt);
+      current.lastFailureAt=Math.max(Number(current.lastFailureAt||0),incoming.lastFailureAt);current.serverUpdatedAt=incoming.serverUpdatedAt;
+      current.state=derive(current);merged++;notify(current);
+    }
+    if(merged)schedulePersist();
+    return merged;
+  }
+  let serverHydratePromise=null,lastServerHydrateAt=0,serverHydrateRetryTimer=null,serverHydrateRetries=0;
+  async function hydrateFromServer({force=false}={}){
+    if(serverHydratePromise)return serverHydratePromise;
+    if(!force&&Date.now()-lastServerHydrateAt<30000)return 0;
+    const version=String(window.SBB_CORE?.version||'4.4.1');
+    const path=`/api/milestone/console?frontendVersion=${encodeURIComponent(version)}&limit=30`;
+    const url=window.SBB_API?.url?.(path)||path;
+    serverHydratePromise=fetch(url,{cache:'no-store'}).then(async r=>{
+      if(!r.ok)return 0;const data=await r.json();
+      const payload=data?.playbackReadiness||data?.extra?.playbackReadiness||null;
+      if(!Array.isArray(payload?.records)){
+        if(serverHydrateRetries<12&&!serverHydrateRetryTimer){serverHydrateRetries++;serverHydrateRetryTimer=setTimeout(()=>{serverHydrateRetryTimer=null;hydrateFromServer({force:true}).catch(()=>{});},750);}
+        return 0;
+      }
+      serverHydrateRetries=0;lastServerHydrateAt=Date.now();return hydrate(payload.records,{source:'server'});
+    }).catch(()=>0).finally(()=>{serverHydratePromise=null;});
+    return serverHydratePromise;
   }
 
   // Learn from the canonical playback session without becoming a second playback
@@ -122,5 +186,10 @@
   });
 
   restore();
-  window.SBB_PLAYBACK_READINESS=Object.freeze({version:'1.0',keyOf,descriptor,state,score,eligible,hotReady,rankBonus,noteSelection,noteFirstFrame,noteHotReady,noteStall,noteWarmFailure,noteFailure,noteRecoveredFailover,snapshot,subscribe,_derive:derive});
+  window.SBB_PLAYBACK_READINESS=Object.freeze({version:'1.1',keyOf,descriptor,state,score,eligible,hotReady,rankBonus,noteSelection,noteFirstFrame,noteHotReady,noteStall,noteWarmFailure,noteFailure,noteRecoveredFailover,snapshot,subscribe,hydrate,hydrateFromServer,_derive:derive});
+  window.__SBB_READINESS_HYDRATE_PROMISE__=hydrateFromServer({force:true});
+  if(typeof document!=='undefined'){
+    setInterval(()=>{if(!document.hidden)hydrateFromServer().catch(()=>{});},60000);
+    document.addEventListener?.('visibilitychange',()=>{if(!document.hidden)hydrateFromServer({force:true}).catch(()=>{});});
+  }
 })();

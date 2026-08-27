@@ -67,12 +67,12 @@ if (location.protocol === 'file:') {
   });
 }
 
-/* Sports Big Board v4.4.0 — Ultimate Playback: cross-sport readiness + verified hot standby on the certified v4.3.12 foundation. */
+/* Sports Big Board v4.4.1 — Ultimate Playback: cross-sport readiness + verified hot standby on the certified v4.3.12 foundation. */
 
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.4.0'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.4.1'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -264,8 +264,11 @@ let warmTimer = { A:null, B:null };
 // prove decoder progress before videoReady becomes true; slow/bad candidates are
 // rejected off-screen while the active program keeps playing.
 let standbyProbeTimer = { A:null, B:null };
+let standbyDeferredTimer = { A:null, B:null };
 let standbyWarmStartedAt = { A:0, B:0 };
 const STANDBY_WARM_TIMEOUT_MS=8000;
+const STANDBY_TRANSITION_MAX_WAIT_MS=24000;
+const STANDBY_ACTIVE_RUNWAY_SECONDS=5;
 const STANDBY_MIN_PROGRESS_SECONDS=0.45;
 const STANDBY_REJECT_TTL_MS=5*60*1000;
 const standbyRejectedUntil=new Map();
@@ -292,24 +295,22 @@ const scoreMediaPrimeState = {
   desiredHot:new Set(), desiredWarm:new Set(), candidates:[], recentKeys:[]
 };
 const SCORE_MEDIA_PRIME_TTL_MS = 20*60*1000;
-const SCORE_MEDIA_PRIME_MAX_ACTIVE = 3;
+const SCORE_MEDIA_PRIME_MAX_ACTIVE = 1;
 const SCORE_MEDIA_HYSTERESIS_MS = 12000;
 let scoreMediaPrimeGeneration = 0;
 let scoreMediaWarmReconcileTimer=null;
 let scoreServerWarmTimer=null;
 let scoreServerWarmSignature='';
 function scorePreparedLimit(){
+  // v4.4.1: protect the on-air stream.  The browser may keep a tiny decoded pool,
+  // but only one hidden decoder is allowed to actively consume bandwidth at once.
   const conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
-  if(conn?.saveData) return 4;
+  if(conn?.saveData) return 1;
   const type=String(conn?.effectiveType||'').toLowerCase();
-  if(type==='2g'||type==='slow-2g') return 4;
-  const mem=Number(navigator.deviceMemory||6);
-  if(mem>=8) return 8;
-  if(mem>=6) return 8;
-  if(mem<=3) return 5;
-  return 7;
+  if(type==='2g'||type==='slow-2g') return 1;
+  return Number(navigator.deviceMemory||6)>=6?3:2;
 }
-function scoreServerWarmLimit(){ return Math.min(20,scorePreparedLimit()+10); }
+function scoreServerWarmLimit(){ return Math.min(5,scorePreparedLimit()+2); }
 let nativeBound = false;
 let manualPauseRequested = false;
 let visibilityResumeWanted = false;
@@ -785,7 +786,7 @@ function startSportsBigBoardExperience(){
     confirmLaunchVisualPlayback(activeSlot,8000);
     scheduleLaunchGameCenterPopulate();
   }
-  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.4.0',{cache:'no-store'}).catch(()=>{}); }catch(_){}
+  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.4.1',{cache:'no-store'}).catch(()=>{}); }catch(_){}
 }
 function wireLaunchScreen(){
   const btn=$('launchPlayBtn');
@@ -860,7 +861,7 @@ window.onYouTubeIframeAPIReady = () => {
 function safeStartLiveData(){
   if(liveDataInitStarted) return;
   liveDataInitStarted=true;
-  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.4.0',{cache:'no-store'}).catch(()=>{}); }catch(e){}
+  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.4.1',{cache:'no-store'}).catch(()=>{}); }catch(e){}
   initLiveData().catch(err=>{
     console.warn('Live data startup failed',err);
     try{ fetch('/api/client-log?event=APP_LIVE_ERROR&detail='+encodeURIComponent(String(err?.stack||err)),{cache:'no-store'}).catch(()=>{}); }catch(e){}
@@ -1180,6 +1181,7 @@ function startPreparedNativeWarm(job){
 }
 function drainScoreMediaPrimeQueue(){
   prunePreparedNativePool();
+  if(!backgroundWarmAllowed()) return;
   const limit=scorePreparedLimit();
   // Drop obsolete queued work before it consumes a decoder. Pointer-intent jobs
   // are marked priority and survive one reconciliation cycle.
@@ -1284,6 +1286,7 @@ function rawNativeMediaUrl(item){
   return '';
 }
 function sendServerMediaWarmSet(rows){
+  if(!backgroundWarmAllowed()) return;
   const items=(rows||[]).filter(x=>isNativeItem(x.item)).slice(0,scoreServerWarmLimit()).map((x,i)=>({
     url:rawNativeMediaUrl(x.item), eventId:x.item?.eventId||x.item?.matchId||x.item?.gamePk||'', gamePk:x.item?.gamePk||'', date:x.item?.gameDate||x.item?.date||'',
     priority:i<scorePreparedLimit()?3:1, priorityClass:i<scorePreparedLimit()?(window.SBB_MEDIA_WORK?.PRIORITY.VISIBLE_SCORE||'VISIBLE_SCORE'):(window.SBB_MEDIA_WORK?.PRIORITY.NEARBY_SCORE||'NEARBY_SCORE')
@@ -1398,9 +1401,70 @@ function nativeBufferedAhead(v){
   try{const t=Number(v?.currentTime||0),b=v?.buffered;if(!b?.length)return 0;for(let i=0;i<b.length;i++){if(t>=b.start(i)-0.05&&t<=b.end(i)+0.05)return Math.max(0,b.end(i)-t);}}catch(_){}
   return 0;
 }
+function activePlaybackRunwaySeconds(){
+  try{
+    const s=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{};
+    if(s.state==='buffering'||s.state==='starting')return 0;
+    if(s.state==='paused'||s.state==='ended'||!sportsBigBoardStarted)return 999;
+    if(slotMedia[activeSlot]==='native'){
+      const v=nativeEl(activeSlot);if(!v)return 999;
+      const ahead=nativeBufferedAhead(v),remaining=Number.isFinite(v.duration)?Math.max(0,Number(v.duration||0)-Number(v.currentTime||0)):999;
+      // Reaching the end of a fully buffered clip is safe even though absolute
+      // buffer-ahead naturally falls below the normal runway threshold.
+      if(remaining<STANDBY_ACTIVE_RUNWAY_SECONDS+0.5&&ahead>=Math.max(0,remaining-0.35))return STANDBY_ACTIVE_RUNWAY_SECONDS+1;
+      return ahead;
+    }
+    if(slotMedia[activeSlot]==='youtube'){
+      const p=players[activeSlot];const dur=Number(p?.getDuration?.()||0),cur=Number(p?.getCurrentTime?.()||0),frac=Number(p?.getVideoLoadedFraction?.()||0);
+      if(dur>0&&frac>0)return Math.max(0,dur*frac-cur);
+    }
+  }catch(_){}
+  return 999;
+}
+function backgroundWarmAllowed(){
+  if(sbbResourceMode()==='search')return false;
+  const s=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{};
+  if(!sportsBigBoardStarted||!initialized||s.state==='paused'||s.state==='ended')return true;
+  if(s.state!=='playing')return false;
+  return activePlaybackRunwaySeconds()>=STANDBY_ACTIVE_RUNWAY_SECONDS;
+}
+function cancelPreparedWarmersForPlaybackPressure(){
+  scoreMediaPrimeState.queue=[];scoreMediaPrimeState.queued.clear();
+  for(const [key,entry] of [...scoreMediaPrimeState.entries.entries()]){
+    if(!entry?.warming)continue;
+    entry.settled=true;entry.warming=false;scoreMediaPrimeState.active=Math.max(0,scoreMediaPrimeState.active-1);
+    scoreMediaPrimeState.entries.delete(key);destroyPreparedNativeEntry(entry);
+  }
+  clearTimeout(scoreServerWarmTimer);
+}
+function deferStandbyWithoutPenalty(slot,index,delay=900){
+  if(slot===activeSlot)return false;
+  clearStandbyProbe(slot);if(warmTimer[slot]){clearTimeout(warmTimer[slot]);warmTimer[slot]=null;}
+  try{pauseSlot(slot);}catch(_){}warming[slot]=false;videoReady[slot]=false;
+  if(standbyDeferredTimer[slot])clearTimeout(standbyDeferredTimer[slot]);
+  standbyDeferredTimer[slot]=setTimeout(()=>{standbyDeferredTimer[slot]=null;if(slot!==activeSlot&&backgroundWarmAllowed())prepareStandby(slot,index);else if(slot!==activeSlot)deferStandbyWithoutPenalty(slot,index,900);},delay);
+  return true;
+}
+let warmPressureActive=false,warmPressureResumeTimer=null;
+function updatePlaybackWarmPressure(mode){
+  if(mode==='buffering'||mode==='starting'){
+    if(!warmPressureActive){warmPressureActive=true;cancelPreparedWarmersForPlaybackPressure();const standby=otherSlot(activeSlot),claim=slotAssignment[standby];if(warming[standby]&&claim)deferStandbyWithoutPenalty(standby,Number(claim.programIndex??standbyIndex),1200);}
+    clearTimeout(warmPressureResumeTimer);return;
+  }
+  if(mode==='playing'&&warmPressureActive){
+    clearTimeout(warmPressureResumeTimer);warmPressureResumeTimer=setTimeout(()=>{if(activePlaybackRunwaySeconds()<STANDBY_ACTIVE_RUNWAY_SECONDS)return;warmPressureActive=false;const next=nextVisibleQueueIndex();if(next>=0)prepareStandby(otherSlot(activeSlot),next);reconcileScoreMediaWarmSet();},1200);
+  }
+}
+function ultimatePlaybackRuntimeSnapshot(){
+  const session=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{};let currentTime=0,bufferAhead=null,duration=0;
+  try{if(slotMedia[activeSlot]==='native'){const v=nativeEl(activeSlot);currentTime=Number(v?.currentTime||0);duration=Number(v?.duration||0);bufferAhead=nativeBufferedAhead(v);}else if(slotMedia[activeSlot]==='youtube'){const p=players[activeSlot];currentTime=Number(p?.getCurrentTime?.()||0);duration=Number(p?.getDuration?.()||0);const f=Number(p?.getVideoLoadedFraction?.()||0);bufferAhead=duration>0&&f>0?Math.max(0,duration*f-currentTime):null;}}catch(_){}
+  const standby=otherSlot(activeSlot),claim=slotAssignment[standby];
+  return {activeSlot,mediaKey:session.mediaKey||'',state:session.state||'',currentTime,duration,bufferAhead,runway:activePlaybackRunwaySeconds(),standby:{slot:standby,ready:!!videoReady[standby],warming:!!warming[standby],mediaKey:claim?.key||'',programIndex:claim?.programIndex??null},metrics:ultimatePlaybackMetricSnapshot()};
+}
 function ultimatePlaybackMetricSnapshot(){
   const m={...ultimatePlaybackMetrics};m.hotStandbyHitRate=m.transitions?Math.round((m.hotStandbyHits/m.transitions)*1000)/10:100;return m;
 }
+window.SBB_ULTIMATE_PLAYBACK=Object.freeze({version:'1.1',metrics:ultimatePlaybackMetricSnapshot,runtimeSnapshot:ultimatePlaybackRuntimeSnapshot});
 function noteHotStandbyReady(slot,item,startedAt=0){
   if(!item||slot===activeSlot)return false;
   videoReady[slot]=true;warming[slot]=false;clearStandbyProbe(slot);ultimatePlaybackMetrics.warmReady++;
@@ -1448,13 +1512,13 @@ function recordPlaybackPromotion(item,hotPrepared,reason=''){
 }
 
 function preflightUpcomingProgram(fromIndex=currentIndex){
-  if(!PROGRAM?.length)return;
+  if(!PROGRAM?.length||!backgroundWarmAllowed())return;
   let prepared=0;
   for(let step=1;step<=Math.min(PROGRAM.length,5);step++){
     const idx=(Number(fromIndex||0)+step+PROGRAM.length)%PROGRAM.length,item=PROGRAM[idx];
     if(!item||idx===currentIndex||!runtimeMediaUsable(item)||standbyRejected(item))continue;
     try{window.SBB_PLAYBACK_READINESS?.state?.(item);}catch(_){}
-    if(isNativeItem(item)&&prepared<3){primeScoreMediaItem(item,{priority:true,rank:50000-step*1000});prepared++;}
+    if(isNativeItem(item)&&prepared<1){primeScoreMediaItem(item,{priority:true,rank:50000-step*1000});prepared++;}
   }
 }
 
@@ -2125,6 +2189,8 @@ function prepareStandby(slot, index){
     if(fallback<0)return false;
     index=fallback;item=clip(index);
   }
+  if(!backgroundWarmAllowed()){deferStandbyWithoutPenalty(slot,index,900);return false;}
+  if(standbyDeferredTimer[slot]){clearTimeout(standbyDeferredTimer[slot]);standbyDeferredTimer[slot]=null;}
   videoReady[slot]=false;
   warming[slot]=true;
   launchRequested[slot]=false;
@@ -2751,13 +2817,21 @@ function performSwapWhenReady(slot, targetIndex, started){
     const readyItem=clip(readyIndex);
     if(readyItem&&claim.key===playbackItemKey(readyItem)){doSwap(slot,readyIndex);return;}
   }
-  if(performance.now()-started>maxWait){
+  if(performance.now()-started>STANDBY_TRANSITION_MAX_WAIT_MS){
+    // v4.4.1 never intentionally puts an unproven automatic candidate on air.
+    // If the current clip is still healthy, keep it visible. If it ended, keep
+    // the bumper up and continue the off-screen candidate search.
+    const current=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{};
+    const fallback=nextReadinessCandidateIndex(Number.isInteger(claim?.programIndex)?claim.programIndex:targetIndex);
+    if(fallback>=0){showBumper(fallback,0,'PREPARING VERIFIED VIDEO');prepareStandby(slot,fallback);requestAnimationFrame(()=>performSwapWhenReady(slot,fallback,performance.now()));return;}
     transitionInFlight=false;
-    const fallback=nextReadinessCandidateIndex(targetIndex);
-    const chosen=fallback>=0?fallback:targetIndex;
-    showBumper(chosen,350,'PREPARING NEXT VIDEO');
-    PlaybackController.tuneProgramIndex(chosen,{userInitiated:false,reason:'hot standby unavailable; bounded cold fallback'}).catch(()=>{});
+    if(current.state==='playing'||current.state==='paused'){hideBumper();setFeedNote('Next video is not playback-ready yet • keeping current video on air');}
+    else{showBumper(targetIndex,0,'NO PLAYBACK-READY VIDEO');setFeedNote('No playback-ready video is available yet');}
     return;
+  }
+  if(performance.now()-started>maxWait&&!warming[slot]&&!videoReady[slot]){
+    const fallback=nextReadinessCandidateIndex(Number.isInteger(claim?.programIndex)?claim.programIndex:targetIndex);
+    if(fallback>=0)prepareStandby(slot,fallback);
   }
   requestAnimationFrame(() => performSwapWhenReady(slot, targetIndex, started));
 }
@@ -3529,6 +3603,7 @@ function soundtrackPlaybackClipKey(){
 }
 function setPlaybackUi(mode){
   if(mode==='buffering') armPlaybackBufferRecovery(); else clearPlaybackBufferRecovery();
+  updatePlaybackWarmPressure(mode);
   try{
     const item=clip(currentIndex);
     window.SBB_PLAYBACK_SESSION?.transition?.(mode,playbackSessionDescriptor(item,{slot:activeSlot}));

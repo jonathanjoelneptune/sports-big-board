@@ -13,7 +13,7 @@ global.SBB_PLAYBACK_TRANSPORTS={
 };
 vm.runInThisContext(source,{filename:'playback-readiness.js'});
 const R=SBB_PLAYBACK_READINESS;
-assert.equal(R.version,'1.0');
+assert(/^1\./.test(R.version),'readiness v1 contract should remain backward compatible');
 const nfl={mediaKey:'direct:https://x.test/nfl.mp4',competitionId:'NFL',provider:'DIRECT_VIDEO',mediaUrl:'https://x.test/nfl.mp4'};
 assert.equal(R.state(nfl),'DISCOVERED');
 R.noteHotReady(nfl,300);
@@ -27,4 +27,4 @@ assert.equal(R.state(bad),'QUARANTINED','repeated independent failures should qu
 assert.equal(R.eligible(bad),false);
 const epl={mediaKey:'youtube:abcdefghijk',competitionId:'EPL',youtubeId:'abcdefghijk',provider:'YOUTUBE'};
 R.noteHotReady(epl,650);assert.equal(R.state(epl),'PLAYBACK_READY');
-console.log('PASS: v4.4.0 cross-sport playback readiness + quarantine semantics');
+console.log('PASS: v4.4.x cross-sport playback readiness + quarantine semantics');
