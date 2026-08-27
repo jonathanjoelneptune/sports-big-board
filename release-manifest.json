@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "release": "4.4.4",
+  "baseRelease": "4.4.3",
+  "title": "Mixed-Media Soak & Playback Recovery",
+  "atomic": true,
+  "requiredFiles": [
+    "VERSION",
+    "index.html",
+    "app.js",
+    "core-model.js",
+    "architecture/milestone-console.js",
+    "architecture/foundation-certification.js",
+    "architecture/playback-terminal.js",
+    "foundation-certification.json",
+    "VERIFY.sh",
+    "tools/check_ultimate_playback.py",
+    "tools/check_release_manifest.py",
+    "tools/build_release_bundle.py",
+    "tests/test_v443_playback_endurance.js",
+    "tests/test_v443_playback_endurance_runtime.js",
+    "tests/test_v443_playback_endurance.py",
+    "tests/test_v444_playback_recovery_runtime.js",
+    "tests/test_v444_mixed_media_soak.py",
+    "release-manifest.json",
+    "CHANGED-FILES-v4.4.4.txt"
+  ],
+  "contracts": {
+    "VERSION": {
+      "required": ["4.4.4"]
+    },
+    "index.html": {
+      "required": [
+        "Sports Big Board — v4.4.4",
+        "START 60M",
+        "app.js?v=4.4.4",
+        "architecture/playback-terminal.js?v=4.4.4"
+      ],
+      "forbidden": ["?v=4.4.3"]
+    },
+    "core-model.js": {
+      "required": ["version:'4.4.4'"]
+    },
+    "app.js": {
+      "required": ["version:String(DOMAIN_MODEL?.version||'4.4.4')"]
+    },
+    "architecture/milestone-console.js": {
+      "required": ["window.SBB_CORE?.version||'4.4.4'"]
+    },
+    "architecture/foundation-certification.js": {
+      "required": ["window.SBB_CORE?.version||'4.4.4'"]
+    },
+    "architecture/playback-terminal.js": {
+      "required": [
+        "label:'WARMUP',durationMs:10*60_000",
+        "label:'MIXED SOAK',durationMs:30*60_000",
+        "label:'MIXED HAMMER',durationMs:20*60_000",
+        "MIN_SUCCESSFUL_STARTS=150",
+        "MIN_TRANSITIONS=149",
+        "QUALITY_ROTATION=Object.freeze(['GREEN','PURPLE','BLUE'])",
+        "REPEATED_MEDIA",
+        "ASSET_BAD"
+      ]
+    },
+    "foundation-certification.json": {
+      "required": ["\"release\": \"4.4.4\""]
+    },
+    "VERIFY.sh": {
+      "required": [
+        "python3 tools/check_release_manifest.py",
+        "node tests/test_v444_playback_recovery_runtime.js"
+      ]
+    },
+    "tools/check_ultimate_playback.py": {
+      "required": ["v4.4.4 mixed-media endurance + playback recovery contract"]
+    },
+    "tests/test_v444_mixed_media_soak.py": {
+      "required": [
+        "START 60M",
+        "node tests/test_v444_playback_recovery_runtime.js",
+        "release-manifest.json",
+        "tools/check_release_manifest.py"
+      ]
+    }
+  },
+  "verification": [
+    "python3 tools/check_release_manifest.py",
+    "python3 tools/check_release_version.py",
+    "python3 tools/check_foundation_certification.py",
+    "python3 tools/check_ultimate_playback.py",
+    "python3 tools/check_deploy_rehearsal.py",
+    "bash VERIFY.sh"
+  ]
+}

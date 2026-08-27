@@ -5,6 +5,7 @@ TERM=(ROOT/'architecture'/'playback-terminal.js').read_text(encoding='utf-8')
 INDEX=(ROOT/'index.html').read_text(encoding='utf-8')
 VERIFY=(ROOT/'VERIFY.sh').read_text(encoding='utf-8')
 VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
+MANIFEST=(ROOT/'release-manifest.json').read_text(encoding='utf-8')
 
 class V444MixedMediaSoak(unittest.TestCase):
     def test_release(self):
@@ -41,5 +42,10 @@ class V444MixedMediaSoak(unittest.TestCase):
         self.assertIn('unrecoveredBlanks',TERM)
     def test_verify_executes_runtime_recovery(self):
         self.assertIn('node tests/test_v444_playback_recovery_runtime.js',VERIFY)
+    def test_atomic_release_manifest_gate(self):
+        self.assertIn('\"release\": \"4.4.4\"',MANIFEST)
+        self.assertIn('release-manifest.json',MANIFEST)
+        self.assertIn('tools/check_release_manifest.py',MANIFEST)
+        self.assertIn('python3 tools/check_release_manifest.py',VERIFY)
 
 if __name__=='__main__': unittest.main()
