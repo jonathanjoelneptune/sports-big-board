@@ -29,7 +29,7 @@ class V434DeployRehearsalTests(unittest.TestCase):
     def test_score_playback_failure_marks_runtime_truth_at_boundary_without_double_mark(self):
         app = (ROOT / 'app.js').read_text(encoding='utf-8')
         block = app[app.index("if(userPlaybackSession?.source==='score')"):
-                    app.index("// v4.3.5 unattended playback recovery")]
+                    app.index("// v4.3.6 unattended playback recovery")]
         self.assertIn("markRuntimeMediaFailed(failed,err?.message||'score playback failed')", block)
         self.assertIn("runtimeFailureAlreadyMarked:true", block)
         fallback = app[app.index('function tryScoreMediaFallback'):

@@ -20,7 +20,7 @@ class V422UiIsolationTests(unittest.TestCase):
     def test_stress_separates_streaming_health_from_ownership(self):
         js=(ROOT/'architecture'/'milestone-console.js').read_text(encoding='utf-8')
         self.assertIn("await step('playback: buffering health'",js)
-        # v4.3.5+ verifies bounded recovery rather than pinning the old v4.2.2
+        # v4.3.6+ verifies bounded recovery rather than pinning the old v4.2.2
         # 12-second failure string. The streaming-health step may evolve, but it
         # must remain separate from pause/resume ownership and must prove that a
         # stalled asset either settles or fails over within a bounded interval.
@@ -28,7 +28,7 @@ class V422UiIsolationTests(unittest.TestCase):
         self.assertIn("label:'bounded buffering recovery'",buffering)
         self.assertIn('timeoutMs:20000',buffering)
         self.assertIn('recoveredByFailover:',buffering)
-        self.assertIn('buffering did not recover within 20000 ms',buffering)
+        self.assertIn('did not recover within 20000 ms',buffering)
         block=js[js.index("await step('playback: pause/resume ownership'"):js.index("await step('playback: next clip transition'")]
         self.assertIn('h.ensurePaused?.()',block)
         self.assertIn('h.ensurePlaying?.()',block)

@@ -1,10 +1,10 @@
-/* Sports Big Board 4.3.5 three-tier certification console.
+/* Sports Big Board 4.3.6 three-tier certification console.
    Captures browser/runtime failures, runs repeatable dev procedures, and renders
    one exportable platform-health log. COPY FULL LOG is the canonical handoff. */
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.5');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.6');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);
@@ -261,7 +261,7 @@
     const h=hooks();
     await step('playback: dev hook availability',async()=>{assert(h.version,'missing hook version');return {hookVersion:h.version,programSize:h.programSize()};});
     await step('playback: experience state',async()=>{if(!h.started())return skip('start Sports Big Board before running playback mutation tests');return {started:true,mediaKey:h.currentMediaKey(),state:h.playback()?.state};});
-    await step('playback: wait for stable selected session',async()=>{if(!h.started()||!h.programSize())return skip('no active playable program');const pb=await waitFor(()=>{const p=h.playback();return p.mediaKey&&['playing','paused','ready','buffering','starting'].includes(p.state)?p:null;},{timeoutMs:12000,label:'stable selected playback session'});assert(audibleVideoCount(pb)<=1,`multiple audible video slots: ${JSON.stringify(pb.audible)}`);return pb;},{warnAboveMs:5000});
+    await step('playback: wait for stable selected session',async()=>{if(!h.started()||!h.programSize())return skip('no active playable program');const pb=await waitFor(()=>{const p=h.playback();const mediaKey=p.mediaKey||h.currentMediaKey();return mediaKey&&['playing','paused','ready','buffering','starting'].includes(p.state)?{...p,mediaKey}:null;},{timeoutMs:12000,label:'stable selected playback session'});assert(audibleVideoCount(pb)<=1,`multiple audible video slots: ${JSON.stringify(pb.audible)}`);return pb;},{warnAboveMs:5000});
     await step('playback: buffering health',async()=>{
       if(!h.started()||!h.programSize())return skip('no active playable program');
       const initial=h.playback();
@@ -271,7 +271,7 @@
         return {from:initial.state,to:settled.state,initialMedia:initial.mediaKey,recoveredMedia:settled.mediaKey,recoveredByFailover:!!(initial.mediaKey&&settled.mediaKey&&initial.mediaKey!==settled.mediaKey),stallCount:settled.stallCount||0,stallTotalMs:settled.stallTotalMs||0};
       }catch(err){
         const p=h.playback();
-        throw new Error(`buffering did not recover within 20000 ms • state=${p.state||initial.state} • media=${p.mediaKey||initial.mediaKey||'?'} • stalls=${p.stallCount||0}/${Math.round(p.stallTotalMs||0)}ms`);
+        throw new Error(`startup/buffering did not recover within 20000 ms • state=${p.state||initial.state} • media=${p.mediaKey||h.currentMediaKey()||initial.mediaKey||'?'} • stalls=${p.stallCount||0}/${Math.round(p.stallTotalMs||0)}ms`);
       }
     });
     await step('playback: pause/resume ownership',async()=>{
