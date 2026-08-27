@@ -67,12 +67,12 @@ if (location.protocol === 'file:') {
   });
 }
 
-/* Sports Big Board v4.3.10 — canonical event/media architecture foundation; v2.5.30 playback behavior preserved. */
+/* Sports Big Board v4.3.11 — canonical event/media architecture foundation; v2.5.30 playback behavior preserved. */
 
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.3.10'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.3.11'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -764,7 +764,7 @@ function startSportsBigBoardExperience(){
   try{ window.SBB_SELECTED_EVENT?.clear?.({reason:'launch screen reset',source:'launch'}); }catch(_){}
   if(PROGRAM.length){
     showBumper(currentIndex,420,'STARTING SPORTS BIG BOARD');
-    // v4.3.10 launch bootstrap closure: every launch tune enters the canonical
+    // v4.3.11 launch bootstrap closure: every launch tune enters the canonical
     // PlaybackController immediately, even when a YouTube iframe exists but has
     // not fired onReady. The controller creates playback-session identity first;
     // startAssignedPlayback() then owns the bounded readiness wait and unattended
@@ -775,7 +775,7 @@ function startSportsBigBoardExperience(){
     confirmLaunchVisualPlayback(activeSlot,8000);
     scheduleLaunchGameCenterPopulate();
   }
-  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.3.10',{cache:'no-store'}).catch(()=>{}); }catch(_){}
+  try{ fetch('/api/client-log?event=USER_LAUNCH&v=4.3.11',{cache:'no-store'}).catch(()=>{}); }catch(_){}
 }
 function wireLaunchScreen(){
   const btn=$('launchPlayBtn');
@@ -850,7 +850,7 @@ window.onYouTubeIframeAPIReady = () => {
 function safeStartLiveData(){
   if(liveDataInitStarted) return;
   liveDataInitStarted=true;
-  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.3.10',{cache:'no-store'}).catch(()=>{}); }catch(e){}
+  try{ fetch('/api/client-log?event=APP_LIVE_START&v=4.3.11',{cache:'no-store'}).catch(()=>{}); }catch(e){}
   initLiveData().catch(err=>{
     console.warn('Live data startup failed',err);
     try{ fetch('/api/client-log?event=APP_LIVE_ERROR&detail='+encodeURIComponent(String(err?.stack||err)),{cache:'no-store'}).catch(()=>{}); }catch(e){}
@@ -1591,7 +1591,19 @@ const PlaybackAdapters={
       v.muted=!audible; startupMutedSlots[slot]=!audible;
       updateNativeDiag(slot,audible?'audible play requested':'muted autoplay requested');
       let p; try{p=v.play()}catch(err){ setPlaybackDiag({state:'rejected',error:`${err?.name||'Error'}: ${err?.message||err}`}); return Promise.reject(err); }
-      if(p?.then) return p.then(()=>{ updateNativeDiag(slot,'play() promise resolved'); return true; }).catch(err=>{ updateNativeDiag(slot,'play() promise rejected'); setPlaybackDiag({state:'rejected',error:`${err?.name||'Error'}: ${err?.message||err}`}); throw err; });
+      if(p?.then){
+        // Chrome may leave HTMLMediaElement.play() pending for an unbounded period
+        // while the element is buffering. PlaybackController must never wait on
+        // that provider promise before it starts first-frame recovery. Observe an
+        // immediate rejection, but acknowledge a still-pending play request after
+        // a short bounded window and let the assignment/first-frame watchdog own
+        // the rest of startup health.
+        const observed=Promise.resolve(p).then(()=>{ updateNativeDiag(slot,'play() promise resolved'); return true; }).catch(err=>{ updateNativeDiag(slot,'play() promise rejected'); setPlaybackDiag({state:'rejected',error:`${err?.name||'Error'}: ${err?.message||err}`}); throw err; });
+        return Promise.race([
+          observed,
+          new Promise(resolve=>setTimeout(()=>{updateNativeDiag(slot,'play() pending; controller startup deadline active');resolve(true);},NATIVE_PLAY_REQUEST_ACK_MS))
+        ]);
+      }
       return Promise.resolve(true);
     },
     pause(){ try{nativeEl(slot)?.pause();}catch(e){} },
@@ -2715,6 +2727,7 @@ let playbackExternalFallbackUrl='';
 // advance to the next eligible item (or same-game fallback for score-card sessions).
 const PLAYBACK_BUFFER_STALL_RECOVERY_MS=8000;
 const PLAYBACK_STARTUP_RECOVERY_MS=10000;
+const NATIVE_PLAY_REQUEST_ACK_MS=250;
 let playbackBufferRecoveryTimer=null;
 let playbackBufferRecoveryToken='';
 let playbackStartupRecoveryTimer=null;

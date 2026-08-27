@@ -1,4 +1,4 @@
-# Sports Big Board v4.3.10 — Foundation Certification / Soak Progress Closure
+# Sports Big Board v4.3.11 — Foundation Certification / Soak Progress Closure
 
 v4.3.6 changes Foundation Certification from the short v4.3.0 stress certificate into a three-tier release gate. The prior v4.3.0 certificate is retained as Tier 1 baseline evidence only; it is not sufficient for overall Foundation Certification.
 
@@ -84,14 +84,21 @@ Browser/media interruptions are not broadly whitelisted. Only a known transient 
 The Milestone Console now records browser identity (user agent/client-hints brands, platform, vendor, language, visibility, online state, and available hardware hints) with error events and exposes that identity in the saved certification evidence.
 
 
-### v4.3.10 Game Center competition identity closure
+### v4.3.11 Game Center competition identity closure
 MLB fast Highlightly media is explicitly normalized to MLB rather than the generic SPORTS editorial namespace. Game Center ownership now requires a supported live competition, so generic SPORTS/editorial media can never issue an unsupported Game Center provider request.
 
 
-### v4.3.10 Tier 1 post-test restoration semantics
+### v4.3.11 Tier 1 post-test restoration semantics
 
 Tier 1 certification is determined by the 24 functional/stress evidence steps, nine procedure results, clean error evidence, platform/worker health, playback ownership, and a final post-cleanup application-health check. Restoring the exact pre-test UI snapshot is cleanup rather than test evidence.
 
 Each cleanup action is now exported individually. If a live program rerank makes the exact original media, drawer state, score date, soundtrack position, or playback activity impossible to reproduce, that cleanup item is retained as an `ADVISORY` and does not invalidate otherwise-passing Tier 1 evidence.
 
 Cleanup becomes certification-fatal only when the board is actually left unhealthy after restoration, including an incorrect resource mode, playback ownership invariant failure, an invalid soundtrack audio-element count, a started board with no selected media, or Game Center drift on game-scoped active media. This prevents exact-snapshot bookkeeping from converting 24 passing stress steps and 9/9 passing procedures into a false Tier 1 failure.
+
+### v4.3.11 Native startup / Tier 2 recovery closure
+
+- Native `HTMLMediaElement.play()` acknowledgment is bounded to 250 ms so a browser-held pending promise cannot delay first-frame recovery.
+- Tier 2 buffering duration is measured continuously by playback assignment identity, including time spent in transition.
+- A timed-out soak transition is retained as evidence and gets a 20-second recovery window; only an unrecovered timeout blocks certification.
+- Tier 2 reports both transition timeouts and recovered transition timeouts.

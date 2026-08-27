@@ -1,10 +1,10 @@
-/* Sports Big Board 4.3.10 three-tier certification console.
+/* Sports Big Board 4.3.11 three-tier certification console.
    Captures browser/runtime failures, runs repeatable dev procedures, and renders
    one exportable platform-health log. COPY FULL LOG is the canonical handoff. */
 (() => {
   'use strict';
   if(window.SBB_MILESTONE) return;
-  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.10');
+  const VERSION=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.3.11');
   const TAB_ID=`milestone-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
   const COPY_FULL_LOG_LABEL='COPY FULL LOG';
   const $=id=>document.getElementById(id);
@@ -506,12 +506,13 @@
     const maxNoProgressMs=Math.max(30000,Math.min(45000,sampleMs*3));
     const maxBufferingMs=Math.max(30000,Math.min(45000,sampleMs*3));
     const transitionTimeoutMs=Math.max(8000,Math.min(12000,sampleMs-1000));
+    const transitionRecoveryMs=20000;
     const original={resourceMode:h.resourceMode?.(),scoreDate:h.scoreDate?.(),mediaKey:h.currentMediaKey?.(),playback:h.playback?.(),drawer:h.drawer?.()};
-    soakRun={kind:'soak',id:`soak-${Date.now().toString(36)}`,status:'RUNNING',startedAt:Date.now(),finishedAt:0,durationTargetMs:durationMs,sampleMs,steps:[],samples:[],original,limits:{expectedSamples,minimumSamples,maxAllowedSampleGapMs,maxNoProgressMs,maxBufferingMs,transitionTimeoutMs}};
-    post('soak','INFO','TIER 2 SOAK STARTED',{runId:soakRun.id,durationMs,sampleMs,expectedSamples,minimumSamples,maxAllowedSampleGapMs,maxNoProgressMs,maxBufferingMs,transitionTimeoutMs});
+    soakRun={kind:'soak',id:`soak-${Date.now().toString(36)}`,status:'RUNNING',startedAt:Date.now(),finishedAt:0,durationTargetMs:durationMs,sampleMs,steps:[],samples:[],original,limits:{expectedSamples,minimumSamples,maxAllowedSampleGapMs,maxNoProgressMs,maxBufferingMs,transitionTimeoutMs,transitionRecoveryMs}};
+    post('soak','INFO','TIER 2 SOAK STARTED',{runId:soakRun.id,durationMs,sampleMs,expectedSamples,minimumSamples,maxAllowedSampleGapMs,maxNoProgressMs,maxBufferingMs,transitionTimeoutMs,transitionRecoveryMs});
     const heap0=heapBytes();
     let priorKey=h.currentMediaKey?.()||'',priorTime=Number(h.currentTime?.()||0),priorSelection=Number(h.playback?.()?.selectionId||0),restartRegressions=0,maxHeap=heap0,transitions=0,transitionWindows=0;
-    let nextSampleAt=soakRun.startedAt+sampleMs,lastSampleAt=soakRun.startedAt,maxSampleGapMs=0,longestNoProgressMs=0,longestBufferingMs=0,noProgressSince=0,bufferingSince=0,transitionTimeouts=0,decodeRecoveries=0,priorFailureCount=Number(h.playback?.()?.failureCount||0),priorError=String(h.playback?.()?.lastError||'');
+    let nextSampleAt=soakRun.startedAt+sampleMs,lastSampleAt=soakRun.startedAt,maxSampleGapMs=0,longestNoProgressMs=0,longestBufferingMs=0,noProgressSince=0,bufferingSince=0,bufferingIdentity='',transitionTimeouts=0,transitionTimeoutRecoveries=0,decodeRecoveries=0,priorFailureCount=Number(h.playback?.()?.failureCount||0),priorError=String(h.playback?.()?.lastError||'');
     try{
       assert(h.started?.()===true,'Sports Big Board must be started before Tier 2 soak');assert(Number(h.programSize?.()||0)>0,'Tier 2 requires an active program');h.ensurePlaying?.();await sleep(700);priorKey=h.currentMediaKey?.()||priorKey;priorTime=Number(h.currentTime?.()||priorTime);priorSelection=Number(h.playback?.()?.selectionId||priorSelection);
       while(Date.now()-soakRun.startedAt<durationMs){
@@ -530,9 +531,14 @@
           if(ct>priorTime+0.20){noProgressSince=0;}
           else{if(!noProgressSince)noProgressSince=lastSampleAt;const stuckMs=now-noProgressSince;longestNoProgressMs=Math.max(longestNoProgressMs,stuckMs);if(stuckMs>maxNoProgressMs)throw new Error(`playing without forward progress for ${stuckMs} ms at ${ct.toFixed(3)}s`);}
         }else noProgressSince=0;
-        if(sameSelection&&state==='buffering'&&!ctx.transitionInFlight){
-          if(!bufferingSince)bufferingSince=lastSampleAt;const bufferingMs=now-bufferingSince;longestBufferingMs=Math.max(longestBufferingMs,bufferingMs);if(bufferingMs>maxBufferingMs)throw new Error(`sustained buffering for ${bufferingMs} ms at ${ct.toFixed(3)}s`);
-        }else bufferingSince=0;
+        if(state==='buffering'){
+          // Count the entire buffering streak for one assignment, including time
+          // spent inside a provider transition. The old transitionInFlight guard
+          // could reset this clock and under-report a real 45s startup stall as 15s.
+          const identity=`${selection}|${key}`;
+          if(bufferingIdentity!==identity){bufferingIdentity=identity;bufferingSince=now;}
+          const bufferingMs=Math.max(0,now-bufferingSince);longestBufferingMs=Math.max(longestBufferingMs,bufferingMs);if(bufferingMs>maxBufferingMs)throw new Error(`sustained buffering for ${bufferingMs} ms at ${ct.toFixed(3)}s`);
+        }else{bufferingSince=0;bufferingIdentity='';}
 
         const failureCount=Number(pb.failureCount||0),lastError=String(pb.lastError||'');
         if(failureCount>priorFailureCount||lastError&&lastError!==priorError){
@@ -547,9 +553,20 @@
         const elapsed=now-soakRun.startedAt,transitionWindow=Math.floor(elapsed/120000);
         if(elapsed>0&&transitionWindow>transitionWindows){
           transitionWindows=transitionWindow;let moved=false;
+          const beforeTransition={mediaKey:h.currentMediaKey?.()||'',selectionId:Number(h.playback?.()?.selectionId||0)};
           try{moved=await withTimeout(()=>h.stressTuneNextGame?.(),transitionTimeoutMs,'soak game transition');}
-          catch(err){transitionTimeouts++;throw err;}
-          if(moved){transitions++;await sleep(500);assert(h.selectedEventMatchesActive?.()===true,'Game Center failed after soak transition');priorKey=h.currentMediaKey?.()||'';priorTime=Number(h.currentTime?.()||0);priorSelection=Number(h.playback?.()?.selectionId||0);noProgressSince=0;bufferingSince=0;}
+          catch(err){
+            transitionTimeouts++;
+            // A timed-out caller promise is evidence, not automatically a product
+            // failure. The underlying controller may still complete or fail over.
+            // Give it a bounded recovery window and only abort the soak if playback
+            // or Game Center cannot return to a healthy state.
+            try{
+              await waitFor(()=>{const p=h.playback?.()||{},keyNow=h.currentMediaKey?.()||'',stateNow=String(p.state||'');const invariantOk=!String(p.invariant||'').startsWith('ERROR');const gcOk=h.selectedEventMatchesActive?.()!==false;const assignmentChanged=keyNow!==beforeTransition.mediaKey||Number(p.selectionId||0)!==beforeTransition.selectionId;const healthyState=['playing','paused','ready'].includes(stateNow);return invariantOk&&gcOk&&keyNow&&healthyState?{mediaKey:keyNow,selectionId:Number(p.selectionId||0),state:stateNow,assignmentChanged}:null;},{timeoutMs:transitionRecoveryMs,intervalMs:150,label:'soak transition timeout recovery'});
+              transitionTimeoutRecoveries++;moved=true;
+            }catch(recoveryErr){throw new Error(`${err?.message||err}; playback did not recover within ${transitionRecoveryMs} ms (${recoveryErr?.message||recoveryErr})`);}
+          }
+          if(moved){transitions++;await sleep(500);assert(h.selectedEventMatchesActive?.()===true,'Game Center failed after soak transition');priorKey=h.currentMediaKey?.()||'';priorTime=Number(h.currentTime?.()||0);priorSelection=Number(h.playback?.()?.selectionId||0);noProgressSince=0;bufferingSince=0;bufferingIdentity='';}
         }
         if(soakRun.samples.length%4===0){const x=await fetchTimed(`/api/milestone/console?frontendVersion=${encodeURIComponent(VERSION)}&limit=40`,{timeoutMs:10000});assert(x.body?.problemCounts?.errors===0,`milestone errors during soak: ${x.body?.problemCounts?.errors}`);const workers=Object.values(x.body?.extra?.history?.workers||{});assert(!workers.length||workers.every(w=>w?.healthy===true),'worker became unhealthy during soak');}
         nextSampleAt+=sampleMs;while(nextSampleAt<=Date.now())nextSampleAt+=sampleMs;
@@ -558,10 +575,10 @@
       const sampledSpanMs=soakRun.samples.length>1?Number(soakRun.samples.at(-1).at-soakRun.samples[0].at):0,coverageRatio=Math.min(1,soakRun.samples.length/expectedSamples),minimumSpanMs=Math.max(0,durationMs-(sampleMs*2.5));
       assert(soakRun.samples.length>=minimumSamples,`soak telemetry coverage too low: ${soakRun.samples.length}/${expectedSamples} samples`);
       assert(sampledSpanMs>=minimumSpanMs,`soak telemetry span too short: ${sampledSpanMs} ms < ${minimumSpanMs} ms`);
-      await phaseStep(soakRun,'soak: extended stability summary',async()=>({durationMs:Date.now()-soakRun.startedAt,samples:soakRun.samples.length,expectedSamples,minimumSamples,coverageRatio,sampledSpanMs,maxSampleGapMs,maxAllowedSampleGapMs,transitions,transitionWindows,transitionTimeouts,restartRegressions,longestNoProgressMs,maxNoProgressMs,longestBufferingMs,maxBufferingMs,decodeRecoveries,heapStartBytes:heap0,heapMaxBytes:maxHeap,heapGrowthBytes:heapGrowth}));
-      soakRun.coverage={samples:soakRun.samples.length,expectedSamples,minimumSamples,coverageRatio,sampledSpanMs,maxSampleGapMs,maxAllowedSampleGapMs,longestNoProgressMs,maxNoProgressMs,longestBufferingMs,maxBufferingMs,transitionWindows,transitionTimeouts,decodeRecoveries};
+      await phaseStep(soakRun,'soak: extended stability summary',async()=>({durationMs:Date.now()-soakRun.startedAt,samples:soakRun.samples.length,expectedSamples,minimumSamples,coverageRatio,sampledSpanMs,maxSampleGapMs,maxAllowedSampleGapMs,transitions,transitionWindows,transitionTimeouts,transitionTimeoutRecoveries,restartRegressions,longestNoProgressMs,maxNoProgressMs,longestBufferingMs,maxBufferingMs,decodeRecoveries,heapStartBytes:heap0,heapMaxBytes:maxHeap,heapGrowthBytes:heapGrowth}));
+      soakRun.coverage={samples:soakRun.samples.length,expectedSamples,minimumSamples,coverageRatio,sampledSpanMs,maxSampleGapMs,maxAllowedSampleGapMs,longestNoProgressMs,maxNoProgressMs,longestBufferingMs,maxBufferingMs,transitionWindows,transitionTimeouts,transitionTimeoutRecoveries,decodeRecoveries};
       soakRun.status=soakRun.steps.some(x=>x.status==='FAIL')?'FAIL':'PASS';
-    }catch(err){soakRun.status=err?.name==='AbortError'?'STOPPED':'FAIL';soakRun.coverage={samples:soakRun.samples.length,expectedSamples,minimumSamples,coverageRatio:Math.min(1,soakRun.samples.length/expectedSamples),sampledSpanMs:soakRun.samples.length>1?Number(soakRun.samples.at(-1).at-soakRun.samples[0].at):0,maxSampleGapMs,maxAllowedSampleGapMs,longestNoProgressMs,maxNoProgressMs,longestBufferingMs,maxBufferingMs,transitionWindows,transitionTimeouts,decodeRecoveries};soakRun.steps.push({name:'soak: runtime',status:soakRun.status==='FAIL'?'FAIL':'WARN',durationMs:0,detail:String(err?.message||err),data:safe(soakRun.coverage),at:Date.now()});}
+    }catch(err){soakRun.status=err?.name==='AbortError'?'STOPPED':'FAIL';soakRun.coverage={samples:soakRun.samples.length,expectedSamples,minimumSamples,coverageRatio:Math.min(1,soakRun.samples.length/expectedSamples),sampledSpanMs:soakRun.samples.length>1?Number(soakRun.samples.at(-1).at-soakRun.samples[0].at):0,maxSampleGapMs,maxAllowedSampleGapMs,longestNoProgressMs,maxNoProgressMs,longestBufferingMs,maxBufferingMs,transitionWindows,transitionTimeouts,transitionTimeoutRecoveries,decodeRecoveries};soakRun.steps.push({name:'soak: runtime',status:soakRun.status==='FAIL'?'FAIL':'WARN',durationMs:0,detail:String(err?.message||err),data:safe(soakRun.coverage),at:Date.now()});}
     finally{soakRun.finishedAt=Date.now();try{if(original.scoreDate&&h.scoreDate?.()!==original.scoreDate)await h.setScoreDate?.(original.scoreDate);}catch(_){}try{if(original.mediaKey&&h.currentMediaKey?.()!==original.mediaKey)await withTimeout(()=>h.restoreMediaKey?.(original.mediaKey),10000,'soak media restore');}catch(_){}try{if(original.resourceMode)await h.setResourceMode?.(original.resourceMode);}catch(_){}post('soak',soakRun.status==='PASS'?'INFO':'ERROR',`TIER 2 SOAK ${soakRun.status}`,{runId:soakRun.id,durationMs:soakRun.finishedAt-soakRun.startedAt,samples:soakRun.samples.length,coverage:soakRun.coverage});await refresh();}
     return safe(soakRun);
   }

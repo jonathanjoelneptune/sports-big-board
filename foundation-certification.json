@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.3.10",
+  "release": "4.3.11",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -42,8 +42,9 @@
         "At least 90% of expected 15-second telemetry samples are captured across the full soak window",
         "No telemetry gap exceeds 2.5 sample intervals",
         "Playback currentTime advances while state is playing; sustained no-progress beyond 45 seconds fails",
+        "Native video play-request acknowledgment is bounded so a pending HTMLMediaElement.play() Promise cannot delay first-frame recovery",
         "Sustained buffering beyond 45 seconds fails",
-        "Game-to-game soak transitions are bounded by timeout and may not silently consume the soak window",
+        "Timed-out game-transition calls are evidence and must recover within 20 seconds; only unrecovered transition timeouts fail the soak",
         "Media decode/provider failures must self-recover to another playable selection rather than strand unattended playback",
         "No playback ownership invariant violation",
         "No same-media currentTime restart or same-media reselection regression",
@@ -56,7 +57,8 @@
       "maximumSampleGapMs": 37500,
       "maximumNoProgressMs": 45000,
       "maximumBufferingMs": 45000,
-      "transitionTimeoutMs": 12000
+      "transitionTimeoutMs": 12000,
+      "transitionRecoveryMs": 20000
     },
     "tier3": {
       "name": "Controlled Chaos / Recovery",
@@ -79,6 +81,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "prior hardening baseline; explicit error-evidence closure + Game Center competition identity + post-test restoration health semantics in v4.3.10",
+  "baseline": "prior hardening baseline; bounded native startup + accurate buffering telemetry + recovered transition-timeout semantics in v4.3.11",
   "status": "IN_PROGRESS"
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static release gate for Sports Big Board v4.3.10 three-tier Foundation Certification."""
+"""Static release gate for Sports Big Board v4.3.11 three-tier Foundation Certification."""
 from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[1]
@@ -15,7 +15,7 @@ try: manifest=json.loads(text('foundation-certification.json') or '{}')
 except Exception as exc: errors.append(f'invalid foundation-certification.json: {exc}');manifest={}
 try: version_tuple=tuple(int(x) for x in version.split('.'))
 except Exception: version_tuple=(0,)
-require(version_tuple>=(4,3,10),f'expected VERSION 4.3.10 or newer, found {version!r}')
+require(version_tuple>=(4,3,11),f'expected VERSION 4.3.11 or newer, found {version!r}')
 require(manifest.get('release')==version,'manifest release mismatch')
 require(manifest.get('schemaVersion')==2,'three-tier manifest schema must be 2')
 require(manifest.get('allThreeTiersRequired') is True,'all three tiers must be required')
@@ -25,6 +25,7 @@ require(manifest.get('tiers',{}).get('tier2',{}).get('minimumTelemetryCoverageRa
 require(manifest.get('tiers',{}).get('tier2',{}).get('maximumSampleGapMs',999999)<=37500,'Tier 2 max sample gap must be <= 37.5s')
 require(manifest.get('tiers',{}).get('tier2',{}).get('maximumNoProgressMs',999999)<=45000,'Tier 2 no-progress limit must be <= 45s')
 require(manifest.get('tiers',{}).get('tier2',{}).get('maximumBufferingMs',999999)<=45000,'Tier 2 buffering limit must be <= 45s')
+require(manifest.get('tiers',{}).get('tier2',{}).get('transitionRecoveryMs',999999)<=20000,'Tier 2 transition recovery window must be <= 20s')
 require(manifest.get('durableCatalogMutation') is False,'certification may not mutate durable catalog')
 html=text('index.html');cert=text('architecture/foundation-certification.js');milestone=text('architecture/milestone-console.js');app=text('app.js');gc=text('ui/game-center-view.js');styles=text('styles.css');verify=text('VERIFY.sh');linescore=text('architecture/game-center-linescore.js');scheduler=text('sbb/media_work_scheduler.py')
 chain=[f'architecture/milestone-console.js?v={version}',f'architecture/foundation-certification.js?v={version}',f'architecture/site-soundtrack.js?v={version}',f'app.js?v={version}']
@@ -34,9 +35,9 @@ for token in ('collectErrorEvidence','actionableErrors','recoveredAdvisories','d
     require(token in cert,f'certification runtime missing {token}')
 for token in ("allowWarnings=false","new Set(['PASS','WARN'])","tierRunEvidence('tier3','Tier 3 chaos',run,0,{allowWarnings:true})",'advisory warnings','warningCount:warnings.length'):
     require(token in cert,f'certification warning semantics missing {token}')
-for token in ("version:'1.3'",'browserRuntime','browser:browserRuntime()','runSoakTest','runChaosTest','regression-hardening','manual pause remains latched for 25 seconds','background program refresh cannot restart active clip','stressRun.restoration=[]','restorationHealth','post-test restoration completed with non-blocking advisories','post-test restoration left application unhealthy','expectedSamples','minimumSamples','maxAllowedSampleGapMs','playing without forward progress','sustained buffering','soak game transition','withTimeout',"timeoutMs:20000,label:'bounded buffering recovery'",'recoveredByFailover'):
+for token in ("version:'1.3'",'browserRuntime','browser:browserRuntime()','runSoakTest','runChaosTest','regression-hardening','manual pause remains latched for 25 seconds','background program refresh cannot restart active clip','stressRun.restoration=[]','restorationHealth','post-test restoration completed with non-blocking advisories','post-test restoration left application unhealthy','expectedSamples','minimumSamples','maxAllowedSampleGapMs','playing without forward progress','sustained buffering','soak game transition','transitionTimeoutRecoveries',"label:'soak transition timeout recovery'",'withTimeout',"timeoutMs:20000,label:'bounded buffering recovery'",'recoveredByFailover'):
     require(token in milestone,f'milestone runtime missing {token}')
-for token in ('let PROGRAM = [];','function maybeAutoplayRoundupForDate(){','return false;','selectedEventMatchesActivePlayback','syncGameCenterToActivePlayback','demoSeedCount:()=>0','roundupAutoplayEnabled:()=>false','manualPauseRequested&&!userInitiated','SKIPPING UNAVAILABLE VIDEO','automatic playback failure recovery','AUTO_MEDIA_FAILURE_SKIP','PLAYBACK_BUFFER_STALL_RECOVERY_MS=8000','PLAYBACK_STALL_RECOVERY','Sustained playback buffering',"PlaybackController.tuneProgramIndex(currentIndex,{userInitiated:true,reason:'launch screen play'})",'waitForYouTubeSlotReady(slot,item,expectedEpoch,12000)'):
+for token in ('let PROGRAM = [];','function maybeAutoplayRoundupForDate(){','return false;','selectedEventMatchesActivePlayback','syncGameCenterToActivePlayback','demoSeedCount:()=>0','roundupAutoplayEnabled:()=>false','manualPauseRequested&&!userInitiated','SKIPPING UNAVAILABLE VIDEO','automatic playback failure recovery','AUTO_MEDIA_FAILURE_SKIP','PLAYBACK_BUFFER_STALL_RECOVERY_MS=8000','PLAYBACK_STALL_RECOVERY','Sustained playback buffering','NATIVE_PLAY_REQUEST_ACK_MS=250',"play() pending; controller startup deadline active","PlaybackController.tuneProgramIndex(currentIndex,{userInitiated:true,reason:'launch screen play'})",'waitForYouTubeSlotReady(slot,item,expectedEpoch,12000)'):
     require(token in app,f'playback hardening missing {token}')
 for token in ("function clear(message='Game Center follows the active game video.')","if(!event){clear();return;}","version:'1.6'"):
     require(token in gc,f'Game Center hardening missing {token}')
