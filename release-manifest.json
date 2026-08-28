@@ -1,29 +1,35 @@
 {
   "schemaVersion": 1,
-  "release": "4.4.7",
-  "baseRelease": "4.4.6",
-  "title": "Poisoned Player Containment \u2014 Media Intelligence Parked",
+  "release": "4.4.8",
+  "baseRelease": "4.4.7",
+  "title": "Recap Identity & Dynamic NFL Weekly Playlist Discovery",
   "atomic": true,
   "requiredFiles": [
-    "VERSION",
-    "index.html",
-    "core-model.js",
-    "foundation-certification.json",
-    "release-manifest.json",
     "VERIFY.sh",
+    "VERSION",
+    "architecture/media-classifier.js",
+    "architecture/media-resolver.js",
+    "architecture/nfl-recap-reconciliation.js",
     "architecture/playback-terminal.js",
     "architecture/poisoned-media-containment.js",
+    "architecture/recap-identity-guard.js",
     "architecture/site-soundtrack-muted.js",
-    "sbb/__init__.py",
     "cloud/gcp/DEPLOY-FROM-GITHUB.sh",
     "cloud/vm/INSTALL-STAGE1.sh",
-    "tools/check_release_manifest.py",
-    "tools/check_deploy_rehearsal.py",
-    "tools/check_ultimate_playback.py",
+    "core-model.js",
+    "foundation-certification.json",
+    "index.html",
+    "release-manifest.json",
+    "sbb/__init__.py",
+    "sbb/media_classifier.py",
+    "sbb/nfl_weekly_playlists.py",
     "tests/test_v434_deploy_rehearsal.py",
     "tests/test_v446_historical_media_quarantine.py",
     "tests/test_v446_stale_media_runtime.js",
     "tests/test_v447_poisoned_player_containment_runtime.js",
+    "tests/test_v448_nfl_weekly_playlists.py",
+    "tests/test_v448_recap_identity_runtime.js",
+    "tests/test_v448_recap_switch_runtime.js",
     "tests/test_v450_media_intelligence.py",
     "tests/test_v450_media_intelligence_runtime.js",
     "tests/test_v451_startup_stability_runtime.js",
@@ -33,43 +39,42 @@
     "tests/test_v453_media_intelligence_terminal_runtime.js",
     "tests/test_v454_media_intelligence_crawl.py",
     "tests/test_v455_youtube_media_intelligence.py",
-    "tests/test_v456_soundtrack_indicator_runtime.js"
+    "tests/test_v456_soundtrack_indicator_runtime.js",
+    "tools/check_deploy_rehearsal.py",
+    "tools/check_release_manifest.py",
+    "tools/check_ultimate_playback.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.4.7"
+        "4.4.8"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.4.7",
-        "START 60M",
-        "START 30M RECOVERY",
-        "architecture/playback-terminal.js?v=4.4.7",
-        "architecture/site-soundtrack.js?v=4.4.7",
-        "architecture/site-soundtrack-muted.js?v=4.4.7",
-        "architecture/poisoned-media-containment.js?v=4.4.7",
-        "window.SBB_SITE_SOUNDTRACK_MUTED=true",
-        "app.js?v=4.4.7"
+        "Sports Big Board \u2014 v4.4.8",
+        "architecture/media-classifier.js?v=4.4.8",
+        "architecture/media-resolver.js?v=4.4.8",
+        "architecture/poisoned-media-containment.js?v=4.4.8",
+        "app.js?v=4.4.8",
+        "architecture/nfl-recap-reconciliation.js?v=4.4.8",
+        "architecture/recap-identity-guard.js?v=4.4.8"
       ],
       "forbidden": [
-        "media-intelligence.js?v=",
-        "media-intelligence-console.js?v=",
-        "soundtrack-state-indicator.js?v=",
-        "?v=4.5."
+        "?v=4.5.",
+        "media-intelligence.js?v="
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.4.7'"
+        "version:'4.4.8'"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.4.7\"",
-        "poisoned-player containment",
-        "Media Intelligence is parked"
+        "\"release\": \"4.4.8\"",
+        "physical playback identity",
+        "dynamically discovered"
       ]
     },
     "architecture/poisoned-media-containment.js": {
@@ -106,11 +111,10 @@
     },
     "sbb/__init__.py": {
       "required": [
-        "Sports Big Board v4.2.2 architecture services."
+        "nfl_weekly_playlists"
       ],
       "forbidden": [
-        "media_intelligence",
-        "schedule_media_intelligence_install"
+        "media_intelligence"
       ]
     },
     "cloud/gcp/DEPLOY-FROM-GITHUB.sh": {
@@ -149,21 +153,89 @@
     },
     "VERIFY.sh": {
       "required": [
-        "node tests/test_v447_poisoned_player_containment_runtime.js"
+        "tests.test_v448_nfl_weekly_playlists",
+        "node tests/test_v448_recap_identity_runtime.js",
+        "node tests/test_v448_recap_switch_runtime.js"
       ],
       "forbidden": [
-        "test_v450_media_intelligence",
-        "test_v452_media_intelligence",
-        "test_v453_media_intelligence",
-        "test_v454_media_intelligence",
-        "test_v455_youtube_media_intelligence",
-        "test_v456_soundtrack_indicator"
+        "test_v450_media_intelligence"
       ]
     },
     "tests/test_v447_poisoned_player_containment_runtime.js": {
       "required": [
         "zero active blocked loads",
         "v4.4.7 asset-local poisoned-player containment"
+      ]
+    },
+    "architecture/media-classifier.js": {
+      "required": [
+        "version:'1.2'",
+        "Physical duration is tier truth",
+        "physicalKey"
+      ]
+    },
+    "architecture/media-resolver.js": {
+      "required": [
+        "version:'1.1'",
+        "uniquePhysical",
+        "physical playback media"
+      ]
+    },
+    "sbb/nfl_weekly_playlists.py": {
+      "required": [
+        "2026 Preseason Week 3 Game Recaps",
+        "2026 Preseason Week 4 Game Recaps",
+        "2026 Season Week 1 Game Recaps",
+        "playlists.list",
+        "does not use search.list",
+        "original_catalog(force=True)",
+        "REFRESH_SECONDS",
+        "PLAYLIST_ITEMS_REFRESH_SECONDS = 10 * 60",
+        "original_items(playlist,force=use_force)",
+        "refresh_weekly="
+      ]
+    },
+    "tests/test_v448_recap_identity_runtime.js": {
+      "required": [
+        "same YouTube video must collapse",
+        "genuine distinct quick recap"
+      ]
+    },
+    "tests/test_v448_nfl_weekly_playlists.py": {
+      "required": [
+        "2026 Preseason Week 3 Game Recaps",
+        "2026 Season Week 1 Game Recaps"
+      ]
+    },
+    "sbb/media_classifier.py": {
+      "required": [
+        "physical duration is authoritative",
+        "if d:",
+        "return 420<=d<=1500",
+        "mediaObjective"
+      ]
+    },
+    "architecture/nfl-recap-reconciliation.js": {
+      "required": [
+        "rapidHistoricalGameMedia(match,{force:true})",
+        "!ts.has('green')",
+        "ts.has('extended')||ts.has('blue')",
+        "renderScoresFromMatchesCombined(false)",
+        "MAX_AGE_DAYS=10"
+      ]
+    },
+    "architecture/recap-identity-guard.js": {
+      "required": [
+        "different physical",
+        "physicalKey(candidate)!==physicalKey(item)",
+        "distinctTargetForTier",
+        "does not have a different playable video"
+      ]
+    },
+    "tests/test_v448_recap_switch_runtime.js": {
+      "required": [
+        "same physical media must be skipped",
+        "differentMedia"
       ]
     }
   },
@@ -174,8 +246,11 @@
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
     "python3 -m unittest tests.test_v446_historical_media_quarantine",
+    "python3 -m unittest tests.test_v448_nfl_weekly_playlists",
     "node tests/test_v446_stale_media_runtime.js",
     "node tests/test_v447_poisoned_player_containment_runtime.js",
+    "node tests/test_v448_recap_identity_runtime.js",
+    "node tests/test_v448_recap_switch_runtime.js",
     "bash VERIFY.sh"
   ]
 }

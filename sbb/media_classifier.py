@@ -1,4 +1,9 @@
-"""Single authoritative server-side Gold/Green/Purple/Blue media classifier."""
+"""Single authoritative server-side Gold/Green/Purple/Blue media classifier.
+
+v4.4.8: when duration is known, physical duration is authoritative for Quick vs
+Extended. This prevents two discovery records for one physical video from being
+persisted as contradictory Green and Purple recap tiers.
+"""
 import re
 
 COMMENTARY="gold"
@@ -41,20 +46,25 @@ def is_commentary(item):
 
 def is_extended(item):
     if not is_recap_candidate(item) or is_commentary(item): return False
+    d=duration_seconds(item)
+    if d:
+        return 420<=d<=1500
     objective=str(item.get("mediaObjective") or "").upper()
     if objective=="EXTENDED": return True
     if objective=="QUICK": return False
-    d=duration_seconds(item); t=_text(item)
-    return item.get("recapTier")==EXTENDED or (420<=d<=1500) or (not d and bool(re.search(r"\bextended highlights?\b|\bcondensed game\b|\bextended recap\b",t)))
+    t=_text(item)
+    return item.get("recapTier")==EXTENDED or bool(re.search(r"\bextended highlights?\b|\bcondensed game\b|\bextended recap\b",t))
 
 def tier(item):
     if is_commentary(item): return COMMENTARY
     if not is_recap_candidate(item): return HIGHLIGHT_REEL
+    d=duration_seconds(item)
+    if d:
+        return EXTENDED if is_extended(item) else QUICK
     objective=str(item.get("mediaObjective") or "").upper()
     if objective=="QUICK": return QUICK
     if objective=="EXTENDED": return EXTENDED
-    if is_extended(item): return EXTENDED
-    return QUICK
+    return EXTENDED if is_extended(item) else QUICK
 
 def annotate(item):
     out=dict(item or {})

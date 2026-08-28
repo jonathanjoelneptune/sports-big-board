@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.4.7",
+  "release": "4.4.8",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -32,7 +32,10 @@
         "Known transient browser media interruptions are advisory only when a later PASS playback step plus a final PLAYING/OK playback session prove automatic recovery and are labeled RECOVERED_ADVISORY in the exported certificate",
         "Post-test exact-state restoration is advisory unless final application health is bad; cleanup health requires restored resource mode, playback ownership OK, one soundtrack audio element, a selected media item on a started board, and Game Center consistency for game-scoped media",
         "Playback watchdog failures that prove bounded automatic failover to a different PLAYING media asset and healthy post-test state are RECOVERED_ADVISORY rather than Tier 1 blockers.",
-        "Poisoned media is blocked before native/YouTube player assignment; any already-loading matching resources are torn down locally without resetting the healthy playback engine, and certification requires zero orphaned blocked loads."
+        "Poisoned media is blocked before native/YouTube player assignment; any already-loading matching resources are torn down locally without resetting the healthy playback engine, and certification requires zero orphaned blocked loads.",
+        "Recap tier availability is keyed to physical playback identity: the same YouTube ID/direct URL cannot be advertised as both Green Quick and Purple Extended.",
+        "Known physical duration outranks conflicting discovery-objective metadata when assigning Quick versus Extended recap tiers.",
+        "Recent NFL weekly recap playlists are dynamically discovered from the official NFL YouTube channel; missing expected preseason/regular-season week catalogs trigger a bounded refresh instead of waiting on the long-lived playlist cache."
       ]
     },
     "tier2": {
@@ -83,6 +86,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "Foundation Milestone 1 certified on v4.3.12; v4.4.7 returns to the exact v4.4.6 historical recovery/random-archive baseline and adds only asset-local poisoned-player containment. Media Intelligence is parked and the site soundtrack is temporarily muted.",
+  "baseline": "v4.4.8 extends the v4.4.7 poisoned-player-containment baseline with physical recap identity enforcement and dynamic official NFL weekly recap playlist discovery.",
   "status": "IN_PROGRESS"
 }

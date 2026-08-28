@@ -18,6 +18,7 @@ python3 tools/check_ultimate_playback.py
 python3 tools/check_deploy_rehearsal.py
 python3 -m unittest tests.test_v445_random_archive_stress
 python3 -m unittest tests.test_v446_historical_media_quarantine
+python3 -m unittest tests.test_v448_nfl_weekly_playlists
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"
@@ -41,6 +42,8 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v445_duplicate_candidate_runtime.js
   node tests/test_v446_stale_media_runtime.js
   node tests/test_v447_poisoned_player_containment_runtime.js
+  node tests/test_v448_recap_identity_runtime.js
+  node tests/test_v448_recap_switch_runtime.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi
