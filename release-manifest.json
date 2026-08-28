@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.5.3",
-  "baseRelease": "4.5.2",
-  "title": "Media Intelligence Playback Terminal & Auto-Scan",
+  "release": "4.5.4",
+  "baseRelease": "4.5.3",
+  "title": "Media Intelligence Crawl Hardening & Console Usability",
   "atomic": true,
   "requiredFiles": [
     "VERSION",
@@ -25,36 +25,38 @@
     "tests/test_v452_media_intelligence_console_runtime.js",
     "tests/test_v453_media_intelligence_terminal.py",
     "tests/test_v453_media_intelligence_terminal_runtime.js",
+    "tests/test_v454_media_intelligence_crawl.py",
     "tools/check_release_manifest.py",
     "tools/check_deploy_rehearsal.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.5.3"
+        "4.5.4"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.5.3",
-        "architecture/playback-terminal.js?v=4.5.3",
-        "architecture/media-intelligence-console.js?v=4.5.3",
+        "Sports Big Board \u2014 v4.5.4",
+        "architecture/playback-terminal.js?v=4.5.4",
+        "architecture/media-intelligence-console.js?v=4.5.4",
         "<span>MUSIC</span>",
         "<span>SITE MUSIC</span>"
       ],
       "forbidden": [
-        "?v=4.5.2"
+        "?v=4.5.3"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.5.3'"
+        "version:'4.5.4'"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.5.3\"",
-        "Media Intelligence"
+        "\"release\": \"4.5.4\"",
+        "Media Intelligence",
+        "prioritizes fresh unprocessed assets"
       ]
     },
     "architecture/media-intelligence.js": {
@@ -71,11 +73,15 @@
     },
     "architecture/media-intelligence-console.js": {
       "required": [
-        "apiPath(path)",
-        "window.SBB_API?.url?.(path)||path",
-        "SCAN CURRENT",
-        "KNOWN HAS MUSIC",
-        "KNOWN NO MUSIC"
+        "PROCESSED",
+        "CLASSIFIED",
+        "PENDING FRESH",
+        "SCAN FAILURES",
+        "failureReasons",
+        "attemptedAt",
+        "FAILURE TYPE",
+        "overflow-y:auto!important",
+        "foreground trickle="
       ]
     },
     "architecture/playback-terminal.js": {
@@ -86,37 +92,36 @@
         "MSCAN=",
         "SITE_MUSIC=",
         "priority:250",
-        "enrichMediaIntel(row,{autoQueue:true})"
+        "enrichMediaIntel(row,{autoQueue:true})",
+        "musicFailureKind"
       ]
     },
     "sbb/media_intelligence.py": {
       "required": [
-        "priority_request_level",
-        "priority_request_level() >= 900",
-        "scan_priority",
-        "request_scan",
-        "list_assets",
-        "validation_set"
+        "MUSIC_FOREGROUND_TRICKLE_SECONDS",
+        "MUSIC_FAILED_RETRY_BASE_SECONDS",
+        "attempted_at",
+        "failure_kind",
+        "fresh unprocessed assets",
+        "failureReasons",
+        "foreground_trickle = True",
+        "reason == \"playback-priority\"",
+        "reason == \"active-media\""
       ]
     },
     "sbb/media_intelligence_control.py": {
       "required": [
-        "def _find_server_context()",
-        "while not _INSTALLED:",
-        "routeVersion",
-        "body.get('priority')",
+        "recentFailures",
+        "store.list_assets('SCAN_FAILED',5)",
         "/api/media-intelligence/status",
-        "/api/media-intelligence/scan",
-        "def _install_routes("
-      ],
-      "forbidden": [
-        "deadline=time.time()+90"
+        "/api/media-intelligence/scan"
       ]
     },
     "VERIFY.sh": {
       "required": [
         "tests.test_v453_media_intelligence_terminal",
-        "test_v453_media_intelligence_terminal_runtime.js"
+        "test_v453_media_intelligence_terminal_runtime.js",
+        "tests.test_v454_media_intelligence_crawl"
       ]
     },
     "tools/check_release_manifest.py": {
@@ -147,6 +152,7 @@
     "node tests/test_v451_startup_stability_runtime.js",
     "node tests/test_v452_media_intelligence_console_runtime.js",
     "node tests/test_v453_media_intelligence_terminal_runtime.js",
+    "python3 -m unittest tests.test_v454_media_intelligence_crawl",
     "bash VERIFY.sh"
   ]
 }

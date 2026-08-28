@@ -85,7 +85,8 @@ class V453MediaIntelligenceTerminal(unittest.TestCase):
             self.assertEqual(store.priority_request_level(),1000)
             claimed=store.claim_next('test')
             self.assertEqual(claimed['asset_key'],'direct:two')
-            self.assertIn('priority_request_level() >= 900',WORKER)
+            self.assertIn('priority = self.store.priority_request_level()',WORKER)
+            self.assertIn('priority >= 900',WORKER)
 
 
 if __name__=='__main__': unittest.main()

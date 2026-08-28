@@ -40,6 +40,7 @@ def _status_payload(store):
         'mediaIntelligence':snap,
         'worker':worker,
         'validationSet':store.validation_set(3),
+        'recentFailures':store.list_assets('SCAN_FAILED',5),
         'generatedAt':time.time(),
     }
 

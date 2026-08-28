@@ -1,4 +1,4 @@
-/* Sports Big Board v4.5.3 — Dev Playback Terminal + historical-media quarantine / random-archive endurance certification.
+/* Sports Big Board v4.5.4 — Dev Playback Terminal + historical-media quarantine / random-archive endurance certification.
    The terminal observes canonical playback and drives stress actions only through
    SBB_DEV_TEST_HOOKS / score-ribbon controls, preserving PlaybackController authority. */
 (() => {
@@ -17,10 +17,12 @@
     row.musicRatio=Number(db.music_ratio??db.musicRatio??0)||0;
     row.musicScanVersion=Number(db.scan_version??db.musicScanVersion??0)||0;
     row.musicScannedAt=Number(db.scanned_at??db.musicScannedAt??0)||0;
+    row.musicAttemptedAt=Number(db.attempted_at??db.musicScanAttemptedAt??0)||0;
+    row.musicFailureKind=clean(db.failure_kind||db.musicFailureKind||'',50).toUpperCase();
     row.musicScanPriority=Number(db.scan_priority||0)||0;
     row.musicError=clean(db.last_error||'',180);
     const asset=db.asset||{};
-    try{window.SBB_MEDIA_INTELLIGENCE?.register?.({...asset,mediaKey:row.mediaKey,assetKey:db.asset_key||row.mediaKey,title:row.title,musicStatus:row.musicStatus,musicConfidence:row.musicConfidence,musicRatio:row.musicRatio,musicConflict:db.music_conflict!==0,musicScanVersion:row.musicScanVersion,musicScannedAt:row.musicScannedAt});}catch(_){ }
+    try{window.SBB_MEDIA_INTELLIGENCE?.register?.({...asset,mediaKey:row.mediaKey,assetKey:db.asset_key||row.mediaKey,title:row.title,musicStatus:row.musicStatus,musicConfidence:row.musicConfidence,musicRatio:row.musicRatio,musicConflict:db.music_conflict!==0,musicScanVersion:row.musicScanVersion,musicScannedAt:row.musicScannedAt,musicScanAttemptedAt:row.musicAttemptedAt,musicFailureKind:row.musicFailureKind});}catch(_){ }
   }
   async function requestMediaIntel(path,options={}){
     const target=apiPath(path),resp=await fetch(target,{cache:'no-store',...options});
@@ -64,9 +66,10 @@
     const confidence=Number(rowScan>0?row?.musicConfidence:(browserScan>0?browser.confidence:(row?.musicConfidence??browser.confidence??0)))||0;
     const ratio=Number(rowScan>0?row?.musicRatio:(browserScan>0?browser.ratio:(row?.musicRatio??browser.ratio??0)))||0;
     const scanned=scanVersion>0;
-    const display=status==='NOT_IN_DB'?'NOT IN DB':(!scanned&&status==='UNKNOWN'?'UNSCANNED':status.replaceAll('_',' '));
+    const failureKind=clean(row?.musicFailureKind||'',50).toUpperCase();
+    const display=status==='NOT_IN_DB'?'NOT IN DB':(status==='SCAN_FAILED'?`FAIL ${failureKind||'SCAN'}`:(!scanned&&status==='UNKNOWN'?'UNSCANNED':status.replaceAll('_',' ')));
     const site=status==='NO_MUSIC'&&scanned?'PLAY':'MUTE';
-    return {status,display,scanVersion,confidence,ratio,site,scanned};
+    return {status,display,scanVersion,confidence,ratio,site,scanned,failureKind,attemptedAt:Number(row?.musicAttemptedAt||0)||0};
   }
   const now=()=>performance.now();
   const epoch=()=>Date.now();
@@ -597,7 +600,7 @@
     const data=snapshot(),rt=window.SBB_ULTIMATE_PLAYBACK?.runtimeSnapshot?.()||{},metrics=rt.metrics||window.SBB_ULTIMATE_PLAYBACK?.metrics?.()||{},engine=hooks()?.playbackEngine?.()||{};
     const totalPlay=data.reduce((a,r)=>a+r.playTimeMs,0),totalBuffer=data.reduce((a,r)=>a+r.bufferTimeMs,0),ratio=totalPlay?100*totalBuffer/totalPlay:0;
     summary.textContent=`PLAY ${fmtMs(totalPlay)}  •  BUFFER ${fmtMs(totalBuffer)} (${ratio.toFixed(1)}%)  •  HOT ${Number(metrics.hotStandbyHitRate??100).toFixed(1)}%  •  RUNWAY ${rt.bufferAhead==null?'—':Number(rt.bufferAhead).toFixed(1)+'s'}  •  ENGINE ${Number(engine.incidents||0)}I/${Number(engine.resets||0)}R  •  NEXT ${rt.standby?.ready?'HOT_READY':rt.standby?.warming?'WARMING':'IDLE'}`;
-    body.innerHTML=data.slice(0,40).map((r,i)=>{const item={mediaKey:r.mediaKey,competitionId:r.league,provider:r.provider,transport:r.transport};const ready=window.SBB_PLAYBACK_READINESS?.state?.(item)||'DISCOVERED',score=window.SBB_PLAYBACK_READINESS?.score?.(item)??80;const rowStatus=r.exitState||r.state.toUpperCase();const src=r.source?` title="${esc(r.source)}"`:'';const mi=musicView(r),miTitle=r.musicError?` title="${esc(r.musicError)}"`:'';return `<div class="pt-row"><span>${String(data.length-i).padStart(2,'0')}</span><b class="pt-state">${esc(rowStatus)}</b><span>${esc(r.league||'—')}</span><span>${esc(r.transport||'—')}</span><span>${esc(r.provider||'—')}</span><span>${fmtMs(r.playTimeMs)}</span><span>${fmtMs(r.bufferTimeMs)}</span><span>${r.stallCount}</span><span>${r.firstFrameMs==null?'—':Math.round(r.firstFrameMs)+'ms'}</span><span>${esc(ready)}</span><span>${Math.round(Number(score||0))}</span><span${src}>${esc(`${r.quality?`[${r.quality}] `:''}${r.title||'Untitled'}`)}</span><b${miTitle}>${esc(mi.display)}</b><span>${mi.scanned?pct(mi.confidence):'—'}</span><span>${mi.scanned?pct(mi.ratio):'—'}</span><span>${mi.scanned?`v${mi.scanVersion}`:(r.musicAutoQueued?'QUEUED':'—')}</span><b>${mi.site}</b></div>`;}).join('')||'<div class="pt-empty">Waiting for playback sessions…</div>';
+    body.innerHTML=data.slice(0,40).map((r,i)=>{const item={mediaKey:r.mediaKey,competitionId:r.league,provider:r.provider,transport:r.transport};const ready=window.SBB_PLAYBACK_READINESS?.state?.(item)||'DISCOVERED',score=window.SBB_PLAYBACK_READINESS?.score?.(item)??80;const rowStatus=r.exitState||r.state.toUpperCase();const src=r.source?` title="${esc(r.source)}"`:'';const mi=musicView(r),miHelp=[mi.failureKind,r.musicError].filter(Boolean).join(' • '),miTitle=miHelp?` title="${esc(miHelp)}"`:'';return `<div class="pt-row"><span>${String(data.length-i).padStart(2,'0')}</span><b class="pt-state">${esc(rowStatus)}</b><span>${esc(r.league||'—')}</span><span>${esc(r.transport||'—')}</span><span>${esc(r.provider||'—')}</span><span>${fmtMs(r.playTimeMs)}</span><span>${fmtMs(r.bufferTimeMs)}</span><span>${r.stallCount}</span><span>${r.firstFrameMs==null?'—':Math.round(r.firstFrameMs)+'ms'}</span><span>${esc(ready)}</span><span>${Math.round(Number(score||0))}</span><span${src}>${esc(`${r.quality?`[${r.quality}] `:''}${r.title||'Untitled'}`)}</span><b${miTitle}>${esc(mi.display)}</b><span>${mi.scanned?pct(mi.confidence):'—'}</span><span>${mi.scanned?pct(mi.ratio):'—'}</span><span>${mi.scanned?`v${mi.scanVersion}`:(r.musicAutoQueued?'QUEUED':'—')}</span><b>${mi.site}</b></div>`;}).join('')||'<div class="pt-empty">Waiting for playback sessions…</div>';
     renderEndurance();
   }
 
@@ -620,5 +623,5 @@
     render();tickTimer=setInterval(render,500);enduranceTimer=setInterval(enduranceTick,1000);
   });
   try{const s=window.SBB_PLAYBACK_SESSION?.snapshot?.();if(s?.sessionId)ingest(s);}catch(_){ }
-  window.SBB_PLAYBACK_TERMINAL=Object.freeze({version:'1.5',snapshot,clear,ingest,render,endurance:Object.freeze({start:()=>startEndurance('full'),startRecovery:()=>startEndurance('recovery'),stop:stopEndurance,snapshot:enduranceSnapshot,phases:PHASES,recoveryPhases:RECOVERY_PHASES,totalMs:ENDURANCE_TOTAL_MS,recoveryTotalMs:RECOVERY_TOTAL_MS})});
+  window.SBB_PLAYBACK_TERMINAL=Object.freeze({version:'1.6',snapshot,clear,ingest,render,endurance:Object.freeze({start:()=>startEndurance('full'),startRecovery:()=>startEndurance('recovery'),stop:stopEndurance,snapshot:enduranceSnapshot,phases:PHASES,recoveryPhases:RECOVERY_PHASES,totalMs:ENDURANCE_TOTAL_MS,recoveryTotalMs:RECOVERY_TOTAL_MS})});
 })();

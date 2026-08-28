@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.5.3",
+  "release": "4.5.4",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -88,5 +88,6 @@
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
   "baseline": "Foundation Milestone 1 certified on v4.3.12; v4.5.0 began Product Expansion with persistent Media Intelligence music classification, an automatic existing-and-future media crawler, music-aware soundtrack arbitration, and poisoned-player pre-assignment containment while preserving the v4.4.6 random-archive recovery/endurance foundation. v4.5.1 removed the recursive playback-session/audio arbitration startup loop and the global src MutationObserver while preserving bounded poisoned-media containment. v4.5.2 adds operator-visible Media Intelligence status, database queries, priority SCAN CURRENT requests, and reusable HAS_MUSIC/NO_MUSIC validation examples v4.5.3 repairs the Media Intelligence operator API path, adds per-clip Media Intelligence columns to Playback Terminal, and automatically prioritizes successfully played unscanned media without allowing routine enrichment to compete with active playback.",
-  "status": "IN_PROGRESS"
+  "status": "IN_PROGRESS",
+  "mediaIntelligenceReleaseNote": "v4.5.4 prioritizes fresh unprocessed assets ahead of failed retries, records scan attempts and failure taxonomy, permits bandwidth-throttled foreground trickle outside explicit playback-priority mode, and makes the certification console vertically scrollable."
 }
