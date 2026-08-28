@@ -1,4 +1,4 @@
-"""Sports Big Board v4.5.0 media intelligence.
+"""Sports Big Board v4.5.2 media intelligence.
 
 A single, bandwidth-bounded background worker enriches every normalized media asset
 with durable music-presence intelligence. Existing catalog media is backfilled and
@@ -65,6 +65,13 @@ class MediaIntelligenceStore:
         conn.execute("PRAGMA busy_timeout=30000")
         return conn
 
+    @staticmethod
+    def _ensure_column(conn, table, name, ddl):
+        columns={str(row[1]) for row in conn.execute(f"PRAGMA table_info({table})").fetchall()}
+        if name not in columns:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {ddl}")
+
+
     def ensure_schema(self):
         now = time.time()
         with self._lock, closing(self._connect()) as conn:
@@ -87,10 +94,17 @@ class MediaIntelligenceStore:
                     claim_expires_at REAL NOT NULL DEFAULT 0,
                     created_at REAL NOT NULL DEFAULT 0,
                     updated_at REAL NOT NULL DEFAULT 0,
+                    scan_priority INTEGER NOT NULL DEFAULT 0,
+                    scan_requested_at REAL NOT NULL DEFAULT 0,
+                    scan_request_reason TEXT NOT NULL DEFAULT '',
                     FOREIGN KEY(asset_key) REFERENCES history_source_media(asset_key) ON DELETE CASCADE
                 )""")
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_media_intelligence_queue ON history_media_intelligence(scan_version,music_status,next_retry_at,claim_expires_at)")
+            self._ensure_column(conn, "history_media_intelligence", "scan_priority", "INTEGER NOT NULL DEFAULT 0")
+            self._ensure_column(conn, "history_media_intelligence", "scan_requested_at", "REAL NOT NULL DEFAULT 0")
+            self._ensure_column(conn, "history_media_intelligence", "scan_request_reason", "TEXT NOT NULL DEFAULT ''")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_media_intelligence_queue ON history_media_intelligence(scan_priority,scan_version,music_status,next_retry_at,claim_expires_at)")
             conn.execute("CREATE INDEX IF NOT EXISTS idx_media_intelligence_status ON history_media_intelligence(music_status,scanned_at)")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_media_intelligence_priority_queue ON history_media_intelligence(scan_priority DESC,scan_requested_at DESC,music_status,next_retry_at)")
             conn.execute("""
                 INSERT OR IGNORE INTO history_media_intelligence(asset_key,music_status,music_conflict,created_at,updated_at)
                 SELECT asset_key,'PENDING',1,?,? FROM history_source_media
@@ -120,7 +134,8 @@ class MediaIntelligenceStore:
             row = conn.execute("""
                 SELECT s.asset_key,s.provider,s.provider_media_id,s.canonical_url,s.title,
                        s.duration_seconds,s.published_at,s.validation_state,s.runtime_state,
-                       s.asset_json,mi.music_status,mi.scan_attempts,mi.scan_version
+                       s.asset_json,mi.music_status,mi.scan_attempts,mi.scan_version,
+                       mi.scan_priority,mi.scan_requested_at,mi.scan_request_reason
                 FROM history_source_media s
                 JOIN history_media_intelligence mi ON mi.asset_key=s.asset_key
                 WHERE UPPER(COALESCE(s.runtime_state,''))<>'FAILED'
@@ -134,6 +149,7 @@ class MediaIntelligenceStore:
                   AND (mi.claim_expires_at<=? OR mi.claim_owner=?)
                   AND mi.scan_attempts < ?
                 ORDER BY
+                  mi.scan_priority DESC, mi.scan_requested_at DESC,
                   CASE UPPER(COALESCE(s.runtime_state,'')) WHEN 'PLAYED' THEN 0 ELSE 1 END,
                   CASE UPPER(COALESCE(s.validation_state,'')) WHEN 'VERIFIED' THEN 0 ELSE 1 END,
                   s.last_seen_at DESC,s.updated_at DESC
@@ -145,7 +161,7 @@ class MediaIntelligenceStore:
             conn.execute("""
                 UPDATE history_media_intelligence
                 SET music_status='PENDING',claim_owner=?,claim_started_at=?,claim_expires_at=?,
-                    scan_attempts=scan_attempts+1,updated_at=?
+                    scan_attempts=scan_attempts+1,scan_priority=0,updated_at=?
                 WHERE asset_key=?
             """, (str(owner), now, now + lease_seconds, now, row["asset_key"]))
             conn.commit()
@@ -187,7 +203,7 @@ class MediaIntelligenceStore:
                   music_status=?,music_confidence=?,music_ratio=?,music_conflict=?,
                   scan_version=?,scan_duration_seconds=?,scanned_at=?,next_retry_at=?,
                   last_error='',details_json=?,claim_owner='',claim_started_at=0,
-                  claim_expires_at=0,updated_at=? WHERE asset_key=?
+                  claim_expires_at=0,scan_priority=0,updated_at=? WHERE asset_key=?
             """, (status, confidence, ratio, 1 if result.conflict else 0,
                   MUSIC_SCAN_VERSION, float(result.scanned_seconds or 0), now, next_retry,
                   json.dumps(details, ensure_ascii=False, separators=(",", ":"), default=str),
@@ -208,7 +224,7 @@ class MediaIntelligenceStore:
                 UPDATE history_media_intelligence SET music_status='SCAN_FAILED',
                   music_confidence=0,music_ratio=0,music_conflict=1,scan_version=?,
                   next_retry_at=?,last_error=?,claim_owner='',claim_started_at=0,
-                  claim_expires_at=0,updated_at=? WHERE asset_key=?
+                  claim_expires_at=0,scan_priority=0,updated_at=? WHERE asset_key=?
             """, (MUSIC_SCAN_VERSION, retry, text, now, asset_key))
             source = conn.execute("SELECT asset_json FROM history_source_media WHERE asset_key=?", (asset_key,)).fetchone()
             if source:
@@ -229,6 +245,114 @@ class MediaIntelligenceStore:
                              (json.dumps(asset, ensure_ascii=False, separators=(",", ":"), default=str), now, asset_key))
             conn.commit()
         return retry
+
+    def resolve_asset_key(self, asset_key):
+        raw=str(asset_key or '').strip()
+        if not raw: return ''
+        with self._lock, closing(self._connect()) as conn:
+            if conn.execute("SELECT 1 FROM history_source_media WHERE asset_key=? LIMIT 1",(raw,)).fetchone():
+                return raw
+            if raw.startswith('direct:'):
+                url=raw[7:]
+                row=conn.execute("SELECT asset_key FROM history_source_media WHERE canonical_url=? LIMIT 1",(url,)).fetchone()
+                if row: return str(row[0])
+                row=conn.execute("SELECT asset_key FROM history_source_media WHERE asset_json LIKE ? LIMIT 1",('%'+url.replace('%','%%')+'%',)).fetchone()
+                if row: return str(row[0])
+            if raw.startswith('youtube:'):
+                video_id=raw[8:]
+                row=conn.execute("SELECT asset_key FROM history_source_media WHERE provider_media_id=? LIMIT 1",(video_id,)).fetchone()
+                if row: return str(row[0])
+                row=conn.execute("SELECT asset_key FROM history_source_media WHERE asset_json LIKE ? LIMIT 1",('%'+video_id.replace('%','%%')+'%',)).fetchone()
+                if row: return str(row[0])
+        return ''
+
+    def request_scan(self, asset_key, *, priority=100, reason="operator-current"):
+        asset_key=self.resolve_asset_key(asset_key)
+        if not asset_key:
+            return None
+        now=time.time(); priority=max(1,min(1000,int(priority or 100)))
+        with self._lock, closing(self._connect()) as conn:
+            self._seed_missing_rows(conn, now)
+            source=conn.execute("SELECT asset_key,title,provider,canonical_url,asset_json FROM history_source_media WHERE asset_key=?",(asset_key,)).fetchone()
+            if not source:
+                return None
+            conn.execute("""
+                UPDATE history_media_intelligence SET
+                  music_status='PENDING',next_retry_at=0,scan_attempts=0,
+                  claim_owner='',claim_started_at=0,claim_expires_at=0,
+                  scan_priority=MAX(COALESCE(scan_priority,0),?),scan_requested_at=?,scan_request_reason=?,updated_at=?
+                WHERE asset_key=?
+            """,(priority,now,str(reason or 'operator')[:120],now,asset_key))
+            conn.commit()
+        return self.asset(asset_key)
+
+    def has_priority_request(self):
+        now=time.time()
+        with self._lock, closing(self._connect()) as conn:
+            self._seed_missing_rows(conn, now)
+            row=conn.execute("SELECT 1 FROM history_media_intelligence WHERE scan_priority>0 LIMIT 1").fetchone()
+            conn.commit()
+            return bool(row)
+
+    @staticmethod
+    def _row_payload(row):
+        if not row:
+            return None
+        payload=dict(row)
+        try:
+            asset=json.loads(payload.pop('asset_json','{}') or '{}')
+            if not isinstance(asset,dict): asset={}
+        except Exception:
+            asset={}
+        payload['asset']=asset
+        for key in ('league','competitionId','__sbbLeague'):
+            if asset.get(key): payload.setdefault('league',str(asset.get(key)).upper()); break
+        payload.setdefault('date',str(asset.get('date') or asset.get('gameDate') or asset.get('publishedAt') or '')[:10])
+        payload.setdefault('eventId',str(asset.get('eventId') or asset.get('matchId') or asset.get('gamePk') or ''))
+        return payload
+
+    def asset(self, asset_key):
+        asset_key=self.resolve_asset_key(asset_key)
+        if not asset_key: return None
+        with self._lock, closing(self._connect()) as conn:
+            row=conn.execute("""
+                SELECT s.asset_key,s.provider,s.provider_media_id,s.canonical_url,s.title,s.duration_seconds,s.published_at,
+                       s.validation_state,s.runtime_state,s.asset_json,
+                       mi.music_status,mi.music_confidence,mi.music_ratio,mi.music_conflict,mi.scan_version,
+                       mi.scan_duration_seconds,mi.scan_attempts,mi.scanned_at,mi.next_retry_at,mi.last_error,
+                       mi.scan_priority,mi.scan_requested_at,mi.scan_request_reason
+                FROM history_source_media s JOIN history_media_intelligence mi ON mi.asset_key=s.asset_key
+                WHERE s.asset_key=? LIMIT 1
+            """,(asset_key,)).fetchone()
+        return self._row_payload(row)
+
+    def list_assets(self, status='', limit=25):
+        status=str(status or '').strip().upper(); limit=max(1,min(100,int(limit or 25)))
+        if status and status not in MUSIC_STATUSES: status=''
+        where='WHERE mi.music_status=?' if status else ''
+        args=[status] if status else []
+        args.append(limit)
+        with self._lock, closing(self._connect()) as conn:
+            rows=conn.execute(f"""
+                SELECT s.asset_key,s.provider,s.provider_media_id,s.canonical_url,s.title,s.duration_seconds,s.published_at,
+                       s.validation_state,s.runtime_state,s.asset_json,
+                       mi.music_status,mi.music_confidence,mi.music_ratio,mi.music_conflict,mi.scan_version,
+                       mi.scan_duration_seconds,mi.scan_attempts,mi.scanned_at,mi.last_error,
+                       mi.scan_priority,mi.scan_requested_at,mi.scan_request_reason
+                FROM history_media_intelligence mi JOIN history_source_media s ON s.asset_key=mi.asset_key
+                {where}
+                ORDER BY CASE WHEN mi.music_status IN ('HAS_MUSIC','NO_MUSIC') THEN mi.music_confidence ELSE 0 END DESC,
+                         mi.scanned_at DESC,s.last_seen_at DESC LIMIT ?
+            """,args).fetchall()
+        return [self._row_payload(row) for row in rows]
+
+    def validation_set(self, per_status=3):
+        n=max(1,min(10,int(per_status or 3)))
+        return {
+            'hasMusic':self.list_assets('HAS_MUSIC',n),
+            'noMusic':self.list_assets('NO_MUSIC',n),
+            'unknown':self.list_assets('UNKNOWN',n),
+        }
 
     def snapshot(self):
         try:
@@ -465,8 +589,10 @@ class MediaIntelligenceWorker:
         self.name = str(name)
         self.owner = f"{os.getpid()}:{self.name}"
         self._stop = threading.Event()
+        self._wake = threading.Event()
         self._thread = None
         self._active_asset = ""
+        self._active_title = ""
         self._started_at = 0.0
         self._last_progress = 0.0
         self._last_error = ""
@@ -480,13 +606,20 @@ class MediaIntelligenceWorker:
         return self._thread
 
     def stop(self):
-        self._stop.set()
+        self._stop.set(); self._wake.set()
+
+    def wake(self):
+        self._wake.set()
+
+    def _wait(self, seconds):
+        self._wake.wait(max(0.0,float(seconds or 0))); self._wake.clear()
 
     def snapshot(self):
         snap = self.store.snapshot()
         snap.update({
             "alive": bool(self._thread and self._thread.is_alive()),
             "activeAsset": self._active_asset,
+            "activeTitle": self._active_title,
             "startedAt": self._started_at,
             "lastProgress": self._last_progress,
             "lastError": self._last_error,
@@ -500,23 +633,26 @@ class MediaIntelligenceWorker:
         while not self._stop.is_set():
             try:
                 reason = str(self.pause_reason() or "")
+                if reason == "active-media" and self.store.has_priority_request():
+                    reason = ""
                 if reason:
                     self.beat(self.name, phase=f"paused:{reason}", current="", progress=False, blocked=True)
-                    self._stop.wait(3.0)
+                    self._wait(3.0)
                     continue
                 deps = self.detector.dependency_status()
                 if not deps["ffmpeg"]:
                     self._last_error = "ffmpeg unavailable"
                     self.beat(self.name, phase="dependency-missing:ffmpeg", current="", progress=False, blocked=True)
-                    self._stop.wait(60.0)
+                    self._wait(60.0)
                     continue
                 row = self.store.claim_next(self.owner)
                 if not row:
                     self._active_asset = ""
                     self.beat(self.name, phase="sleeping:queue-empty", current="", progress=False)
-                    self._stop.wait(MUSIC_WORKER_IDLE_SECONDS)
+                    self._wait(MUSIC_WORKER_IDLE_SECONDS)
                     continue
                 self._active_asset = str(row.get("asset_key") or "")
+                self._active_title = str(row.get("title") or "")[:180]
                 self.beat(self.name, phase="analyzing", current=f"{self._active_asset} • {row.get('title','')[:90]}", progress=False)
                 try:
                     result = self.detector.analyze(row)
@@ -533,12 +669,13 @@ class MediaIntelligenceWorker:
                     self.log(self.name, "WARN", f"scan failed • retry in {max(0,int(retry-time.time()))}s • {self._last_error}")
                 finally:
                     self._active_asset = ""
-                self._stop.wait(MUSIC_WORKER_BALANCED_PAUSE)
+                    self._active_title = ""
+                self._wait(MUSIC_WORKER_BALANCED_PAUSE)
             except Exception as exc:
                 self._last_error = f"{type(exc).__name__}: {exc}"
                 self.log(self.name, "ERROR", self._last_error)
                 self.beat(self.name, phase="worker-error", current="", progress=False)
-                self._stop.wait(15.0)
+                self._wait(15.0)
 
 
 _INSTALL_LOCK = threading.Lock()
@@ -631,6 +768,12 @@ def schedule_media_intelligence_install():
 
     threading.Thread(target=install, name="sbb-media-intelligence-install", daemon=True).start()
 
+
+def wake_worker():
+    if _WORKER:
+        try: _WORKER.wake(); return True
+        except Exception: return False
+    return False
 
 def worker_snapshot():
     return _WORKER.snapshot() if _WORKER else {"alive": False, "scanVersion": MUSIC_SCAN_VERSION}

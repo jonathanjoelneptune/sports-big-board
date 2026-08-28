@@ -1,4 +1,4 @@
-"""Sports Big Board v4.5.0 architecture services."""
+"""Sports Big Board v4.5.2 architecture services."""
 import os
 
 # Media Intelligence installs itself asynchronously because the sbb package is
@@ -8,6 +8,8 @@ import os
 if str(os.environ.get("SBB_DISABLE_MEDIA_INTELLIGENCE", "0")).lower() not in ("1", "true", "yes", "on"):
     try:
         from sbb.media_intelligence import schedule_media_intelligence_install
+        from sbb.media_intelligence_control import schedule_media_intelligence_control_install
         schedule_media_intelligence_install()
+        schedule_media_intelligence_control_install()
     except Exception:
         pass

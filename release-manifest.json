@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.5.1",
-  "baseRelease": "4.5.0",
-  "title": "Media Intelligence Startup Stability Hotfix",
+  "release": "4.5.2",
+  "baseRelease": "4.5.1",
+  "title": "Media Intelligence Visibility & Priority Scanning",
   "atomic": true,
   "requiredFiles": [
     "VERSION",
@@ -12,97 +12,64 @@
     "release-manifest.json",
     "VERIFY.sh",
     "architecture/media-intelligence.js",
+    "architecture/media-intelligence-console.js",
+    "sbb/__init__.py",
+    "sbb/media_intelligence.py",
+    "sbb/media_intelligence_control.py",
     "tests/test_v434_deploy_rehearsal.py",
+    "tests/test_v450_media_intelligence.py",
     "tests/test_v450_media_intelligence_runtime.js",
     "tests/test_v451_startup_stability_runtime.js",
+    "tests/test_v452_media_intelligence_visibility.py",
+    "tests/test_v452_media_intelligence_console_runtime.js",
     "tools/check_release_manifest.py",
     "tools/check_deploy_rehearsal.py"
   ],
   "contracts": {
-    "VERSION": {
-      "required": [
-        "4.5.1"
-      ]
-    },
+    "VERSION": {"required": ["4.5.2"]},
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.5.1",
-        "architecture/media-intelligence.js?v=4.5.1",
-        "architecture/site-soundtrack.js?v=4.5.1",
-        "app.js?v=4.5.1"
+        "Sports Big Board — v4.5.2",
+        "architecture/media-intelligence.js?v=4.5.2",
+        "architecture/media-intelligence-console.js?v=4.5.2",
+        "architecture/site-soundtrack.js?v=4.5.2",
+        "app.js?v=4.5.2"
       ],
-      "forbidden": [
-        "?v=4.5.0"
-      ]
+      "forbidden": ["?v=4.5.1"]
     },
-    "core-model.js": {
-      "required": [
-        "version:'4.5.1'"
-      ]
-    },
-    "foundation-certification.json": {
-      "required": [
-        "\"release\": \"4.5.1\"",
-        "Media Intelligence"
-      ]
-    },
+    "core-model.js": {"required": ["version:'4.5.2'"]},
+    "foundation-certification.json": {"required": ["\"release\": \"4.5.2\"", "Media Intelligence"]},
     "architecture/media-intelligence.js": {
-      "required": [
-        "scheduleAudibleTruth",
-        "reported===wanted||audibleWritePending===wanted",
-        "queueMicrotask",
-        "no global src MutationObserver",
-        "installNativeGuards",
-        "preloadBlocks",
-        "abortMatchingResources",
-        "version:'1.1'"
-      ],
-      "forbidden": [
-        "new MutationObserver("
-      ]
+      "required": ["scheduleAudibleTruth", "installNativeGuards", "preloadBlocks", "abortMatchingResources", "version:'1.1'"],
+      "forbidden": ["new MutationObserver("]
+    },
+    "architecture/media-intelligence-console.js": {
+      "required": ["SCAN CURRENT", "KNOWN HAS MUSIC", "KNOWN NO MUSIC", "/api/media-intelligence/status", "/api/media-intelligence/scan", "registerDb"],
+      "forbidden": ["MutationObserver"]
+    },
+    "sbb/media_intelligence.py": {
+      "required": ["scan_priority", "request_scan", "list_assets", "validation_set", "wake_worker", "HAS_MUSIC", "NO_MUSIC"]
+    },
+    "sbb/media_intelligence_control.py": {
+      "required": ["/api/media-intelligence/status", "/api/media-intelligence/assets", "/api/media-intelligence/asset", "/api/media-intelligence/scan", "original_get", "original_post"]
     },
     "VERIFY.sh": {
       "required": [
         "python3 tools/check_release_manifest.py",
-        "node tests/test_v450_media_intelligence_runtime.js",
-        "node tests/test_v451_startup_stability_runtime.js"
+        "python3 -m unittest tests.test_v452_media_intelligence_visibility",
+        "node tests/test_v452_media_intelligence_console_runtime.js"
       ]
     },
     "tests/test_v434_deploy_rehearsal.py": {
-      "required": [
-        "test_deploy_rehearsal_preserves_source_and_workflow_guards",
-        "test_changed_files_bookkeeping_is_not_a_deploy_contract",
-        "CHANGED-FILES ignored"
-      ],
-      "forbidden": [
-        "def scope_resolution_self_check()",
-        "overlay_manifest_check"
-      ]
-    },
-    "tests/test_v451_startup_stability_runtime.js": {
-      "required": [
-        "startup feedback-loop and DOM-churn guards",
-        "new MutationObserver("
-      ]
+      "required": ["test_deploy_rehearsal_preserves_source_and_workflow_guards", "test_changed_files_bookkeeping_is_not_a_deploy_contract", "CHANGED-FILES ignored"],
+      "forbidden": ["def scope_resolution_self_check()", "overlay_manifest_check"]
     },
     "tools/check_release_manifest.py": {
-      "required": [
-        "CHANGED-FILES-vX.X.X.txt files are intentionally ignored",
-        "release manifest may not require bookkeeping file"
-      ],
-      "forbidden": [
-        "changed=f'CHANGED-FILES-v{release}.txt'"
-      ]
+      "required": ["CHANGED-FILES-vX.X.X.txt files are intentionally ignored", "release manifest may not require bookkeeping file"]
     },
     "tools/check_deploy_rehearsal.py": {
-      "required": [
-        "CHANGED-FILES-vX.X.X.txt bookkeeping is never read",
-        "CHANGED-FILES ignored"
-      ],
-      "forbidden": [
-        "overlay_manifest_check",
-        "CHANGED-FILES-v{VERSION}.txt"
-      ]
+      "required": ["CHANGED-FILES-vX.X.X.txt bookkeeping is never read", "CHANGED-FILES ignored"],
+      "forbidden": ["overlay_manifest_check", "CHANGED-FILES-v{VERSION}.txt"]
     }
   },
   "verification": [
@@ -111,9 +78,11 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v434_deploy_rehearsal",
+    "python3 -m unittest tests.test_v450_media_intelligence",
+    "python3 -m unittest tests.test_v452_media_intelligence_visibility",
     "node tests/test_v450_media_intelligence_runtime.js",
     "node tests/test_v451_startup_stability_runtime.js",
+    "node tests/test_v452_media_intelligence_console_runtime.js",
     "bash VERIFY.sh"
   ]
 }

@@ -86,6 +86,7 @@
       lastSuppress=suppress;if(suppress)stats.soundtrackSuppressions++;else stats.soundtrackAllows++;
       const info=decisionForKey(currentSession?.mediaKey||currentSession?.clipKey||'');
       notify('soundtrack-arbitration',{suppress,status:info.status,mediaKey:info.key});
+      try{console.info('[SBB media-intelligence] current clip',{mediaKey:info.key,status:info.status,conflict:info.conflict,confidence:info.confidence,ratio:info.ratio,scanVersion:info.scanVersion,scannedAt:info.scannedAt,siteSoundtrack:suppress?'MUTED':'ALLOWED'});}catch(_){ }
     }
     // IMPORTANT: this module subscribes to SBB_PLAYBACK_SESSION. Writing audible
     // truth synchronously from inside that subscription creates a recursive

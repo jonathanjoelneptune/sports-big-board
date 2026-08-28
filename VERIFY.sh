@@ -19,6 +19,7 @@ python3 tools/check_deploy_rehearsal.py
 python3 -m unittest tests.test_v445_random_archive_stress
 python3 -m unittest tests.test_v446_historical_media_quarantine
 python3 -m unittest tests.test_v450_media_intelligence
+python3 -m unittest tests.test_v452_media_intelligence_visibility
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"
@@ -43,6 +44,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v446_stale_media_runtime.js
   node tests/test_v450_media_intelligence_runtime.js
   node tests/test_v451_startup_stability_runtime.js
+  node tests/test_v452_media_intelligence_console_runtime.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi
