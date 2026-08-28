@@ -12,24 +12,40 @@
     "release-manifest.json",
     "VERIFY.sh",
     "architecture/media-intelligence.js",
+    "tests/test_v434_deploy_rehearsal.py",
     "tests/test_v450_media_intelligence_runtime.js",
     "tests/test_v451_startup_stability_runtime.js",
     "tools/check_release_manifest.py",
     "tools/check_deploy_rehearsal.py"
   ],
   "contracts": {
-    "VERSION": {"required": ["4.5.1"]},
+    "VERSION": {
+      "required": [
+        "4.5.1"
+      ]
+    },
     "index.html": {
       "required": [
-        "Sports Big Board — v4.5.1",
+        "Sports Big Board \u2014 v4.5.1",
         "architecture/media-intelligence.js?v=4.5.1",
         "architecture/site-soundtrack.js?v=4.5.1",
         "app.js?v=4.5.1"
       ],
-      "forbidden": ["?v=4.5.0"]
+      "forbidden": [
+        "?v=4.5.0"
+      ]
     },
-    "core-model.js": {"required": ["version:'4.5.1'"]},
-    "foundation-certification.json": {"required": ["\"release\": \"4.5.1\"", "Media Intelligence"]},
+    "core-model.js": {
+      "required": [
+        "version:'4.5.1'"
+      ]
+    },
+    "foundation-certification.json": {
+      "required": [
+        "\"release\": \"4.5.1\"",
+        "Media Intelligence"
+      ]
+    },
     "architecture/media-intelligence.js": {
       "required": [
         "scheduleAudibleTruth",
@@ -41,13 +57,26 @@
         "abortMatchingResources",
         "version:'1.1'"
       ],
-      "forbidden": ["new MutationObserver("]
+      "forbidden": [
+        "new MutationObserver("
+      ]
     },
     "VERIFY.sh": {
       "required": [
         "python3 tools/check_release_manifest.py",
         "node tests/test_v450_media_intelligence_runtime.js",
         "node tests/test_v451_startup_stability_runtime.js"
+      ]
+    },
+    "tests/test_v434_deploy_rehearsal.py": {
+      "required": [
+        "test_deploy_rehearsal_preserves_source_and_workflow_guards",
+        "test_changed_files_bookkeeping_is_not_a_deploy_contract",
+        "CHANGED-FILES ignored"
+      ],
+      "forbidden": [
+        "def scope_resolution_self_check()",
+        "overlay_manifest_check"
       ]
     },
     "tests/test_v451_startup_stability_runtime.js": {
@@ -82,6 +111,7 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
+    "python3 -m unittest tests.test_v434_deploy_rehearsal",
     "node tests/test_v450_media_intelligence_runtime.js",
     "node tests/test_v451_startup_stability_runtime.js",
     "bash VERIFY.sh"

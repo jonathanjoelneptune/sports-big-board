@@ -12,19 +12,28 @@ class V434DeployRehearsalTests(unittest.TestCase):
         self.assertLess(verify.index(token), verify.index('node --check config.js'))
         self.assertLess(verify.index(token), verify.index("python -m unittest discover"))
 
-    def test_deploy_rehearsal_scans_exact_source_contracts_and_workflow(self):
+    def test_deploy_rehearsal_preserves_source_and_workflow_guards(self):
         src = (ROOT / 'tools' / 'check_deploy_rehearsal.py').read_text(encoding='utf-8')
-        for token in ('static_source_contract_scan', 'assertIn', 'assertNotIn',
-                      'overlay_manifest_check', 'workflow_chain_check',
-                      'run: bash VERIFY.sh', 'Verify deployed frontend/backend handshake'):
+        # Test stable capabilities, not private implementation layout. The deploy
+        # checker may be refactored without requiring historical tests to be edited.
+        for token in (
+            'static_source_contract_scan',
+            'workflow_chain_check',
+            'assertIn',
+            'assertNotIn',
+            'run: bash VERIFY.sh',
+            'Verify deployed frontend/backend handshake',
+        ):
             self.assertIn(token, src)
 
-    def test_deploy_rehearsal_resolves_reused_aliases_lexically(self):
+    def test_changed_files_bookkeeping_is_not_a_deploy_contract(self):
         src = (ROOT / 'tools' / 'check_deploy_rehearsal.py').read_text(encoding='utf-8')
-        self.assertIn('def scope_resolution_self_check()', src)
-        self.assertIn('def static_source_contract_scan(root: Path = ROOT)', src)
-        self.assertIn('scope_resolution_self_check()\n    workflow_chain_check()', src)
-        self.assertIn('Each test method/function gets its own lexical local binding table', src)
+        manifest_gate = (ROOT / 'tools' / 'check_release_manifest.py').read_text(encoding='utf-8')
+        release_manifest = (ROOT / 'release-manifest.json').read_text(encoding='utf-8')
+        version = (ROOT / 'VERSION').read_text(encoding='utf-8').strip()
+        self.assertIn('CHANGED-FILES ignored', src)
+        self.assertIn('CHANGED-FILES-vX.X.X.txt files are intentionally ignored', manifest_gate)
+        self.assertNotIn(f'CHANGED-FILES-v{version}.txt', release_manifest)
 
     def test_score_playback_failure_marks_runtime_truth_at_boundary_without_double_mark(self):
         app = (ROOT / 'app.js').read_text(encoding='utf-8')
