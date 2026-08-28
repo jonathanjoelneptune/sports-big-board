@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.5.6",
+  "release": "4.4.7",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -32,9 +32,7 @@
         "Known transient browser media interruptions are advisory only when a later PASS playback step plus a final PLAYING/OK playback session prove automatic recovery and are labeled RECOVERED_ADVISORY in the exported certificate",
         "Post-test exact-state restoration is advisory unless final application health is bad; cleanup health requires restored resource mode, playback ownership OK, one soundtrack audio element, a selected media item on a started board, and Game Center consistency for game-scoped media",
         "Playback watchdog failures that prove bounded automatic failover to a different PLAYING media asset and healthy post-test state are RECOVERED_ADVISORY rather than Tier 1 blockers.",
-        "Quarantined media is blocked before player assignment and its native/YouTube resources are torn down without resetting healthy playback.",
-        "Media Intelligence soundtrack arbitration allows the site soundtrack only for confidently classified NO_MUSIC media; HAS_MUSIC, UNKNOWN, PENDING, and SCAN_FAILED media conservatively suppress it.",
-        "The soundtrack button exposes actual audio arbitration state: neutral when off/paused, green while the website soundtrack is audible, and yellow while Media Intelligence suppresses it for clip audio."
+        "Poisoned media is blocked before native/YouTube player assignment; any already-loading matching resources are torn down locally without resetting the healthy playback engine, and certification requires zero orphaned blocked loads."
       ]
     },
     "tier2": {
@@ -55,9 +53,7 @@
         "Game Center remains tied to game-scoped active media",
         "Workers remain healthy during periodic platform snapshots",
         "No milestone clean-window errors",
-        "No excessive JavaScript heap growth when browser heap telemetry is available",
-        "The Media Intelligence background crawler remains heartbeat-healthy, yields to active playback bandwidth, and makes durable progress when playback is idle.",
-        "Quarantine containment leaves zero orphaned or active blocked media loads after recovery."
+        "No excessive JavaScript heap growth when browser heap telemetry is available"
       ],
       "minimumTelemetryCoverageRatio": 0.9,
       "maximumSampleGapMs": 37500,
@@ -80,15 +76,13 @@
         "Post-chaos clean recovery window is healthy",
         "Game Center provider 429 opens a bounded scheduler circuit and cancels queued background amplification",
         "Tier 3 chaos evidence remains exportable through the post-chaos recovery reset",
-        "Timing-only WARN evidence remains visible and advisory; only failed assertions or failed recovery gates block Tier 3 certification",
-        "A deliberately poisoned media asset is blocked before reassignment, its load resources are aborted, and healthy fallback playback retains ownership."
+        "Timing-only WARN evidence remains visible and advisory; only failed assertions or failed recovery gates block Tier 3 certification"
       ]
     }
   },
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "Foundation Milestone 1 certified on v4.3.12; v4.5.0 began Product Expansion with persistent Media Intelligence music classification, an automatic existing-and-future media crawler, music-aware soundtrack arbitration, and poisoned-player pre-assignment containment while preserving the v4.4.6 random-archive recovery/endurance foundation. v4.5.1 removed the recursive playback-session/audio arbitration startup loop and the global src MutationObserver while preserving bounded poisoned-media containment. v4.5.2 adds operator-visible Media Intelligence status, database queries, priority SCAN CURRENT requests, and reusable HAS_MUSIC/NO_MUSIC validation examples v4.5.3 repairs the Media Intelligence operator API path, adds per-clip Media Intelligence columns to Playback Terminal, and automatically prioritizes successfully played unscanned media without allowing routine enrichment to compete with active playback. v4.5.4 hardened crawler scheduling/accounting, prioritized fresh assets ahead of failed retries, added failure taxonomy, and made the certification console vertically scrollable.",
-  "status": "IN_PROGRESS",
-  "mediaIntelligenceReleaseNote": "v4.5.5 refreshes stable yt-dlp and Deno on deployment, explicitly enables the YouTube JavaScript runtime, falls back to inventory-based audio-capable format selection when the default selector fails, distinguishes FORMAT_UNAVAILABLE failures, and reopens affected v4.5.4 failures once without touching successful classifications."
+  "baseline": "Foundation Milestone 1 certified on v4.3.12; v4.4.7 returns to the exact v4.4.6 historical recovery/random-archive baseline and adds only asset-local poisoned-player containment. Media Intelligence is parked and the site soundtrack is temporarily muted.",
+  "status": "IN_PROGRESS"
 }

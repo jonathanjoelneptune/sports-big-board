@@ -1,4 +1,4 @@
-/* Sports Big Board v4.5.4 — Dev Playback Terminal + historical-media quarantine / random-archive endurance certification.
+/* Sports Big Board v4.4.7 — Dev Playback Terminal + historical-media quarantine / random-archive endurance certification.
    The terminal observes canonical playback and drives stress actions only through
    SBB_DEV_TEST_HOOKS / score-ribbon controls, preserving PlaybackController authority. */
 (() => {
@@ -6,71 +6,6 @@
   if(window.SBB_PLAYBACK_TERMINAL)return;
 
   const rows=[],bySession=new Map();let lastSessionId='',tickTimer=null,enduranceTimer=null;
-  const mediaIntelAutoQueued=new Set(),mediaIntelPolls=new Map();
-  function apiPath(path){try{return window.SBB_API?.url?.(path)||path;}catch(_){return path;}}
-  const pct=v=>Number.isFinite(Number(v))?`${Math.round(Number(v)*100)}%`:'—';
-  function mediaIntelDecision(key){try{return window.SBB_MEDIA_INTELLIGENCE?.decisionForKey?.(key)||{};}catch(_){return {};}}
-  function applyMediaIntel(row,db){
-    if(!row||!db)return;
-    row.musicStatus=clean(db.music_status||db.musicStatus||'UNKNOWN',30).toUpperCase();
-    row.musicConfidence=Number(db.music_confidence??db.musicConfidence??0)||0;
-    row.musicRatio=Number(db.music_ratio??db.musicRatio??0)||0;
-    row.musicScanVersion=Number(db.scan_version??db.musicScanVersion??0)||0;
-    row.musicScannedAt=Number(db.scanned_at??db.musicScannedAt??0)||0;
-    row.musicAttemptedAt=Number(db.attempted_at??db.musicScanAttemptedAt??0)||0;
-    row.musicFailureKind=clean(db.failure_kind||db.musicFailureKind||'',50).toUpperCase();
-    row.musicScanPriority=Number(db.scan_priority||0)||0;
-    row.musicError=clean(db.last_error||'',180);
-    const asset=db.asset||{};
-    try{window.SBB_MEDIA_INTELLIGENCE?.register?.({...asset,mediaKey:row.mediaKey,assetKey:db.asset_key||row.mediaKey,title:row.title,musicStatus:row.musicStatus,musicConfidence:row.musicConfidence,musicRatio:row.musicRatio,musicConflict:db.music_conflict!==0,musicScanVersion:row.musicScanVersion,musicScannedAt:row.musicScannedAt,musicScanAttemptedAt:row.musicAttemptedAt,musicFailureKind:row.musicFailureKind});}catch(_){ }
-  }
-  async function requestMediaIntel(path,options={}){
-    const target=apiPath(path),resp=await fetch(target,{cache:'no-store',...options});
-    const data=await resp.json().catch(()=>({}));
-    if(!resp.ok){const err=new Error(data?.message||data?.error||`HTTP ${resp.status}`);err.status=resp.status;throw err;}
-    return data;
-  }
-  function scheduleMediaIntelPoll(row,attempt=0){
-    if(!row?.mediaKey||attempt>12||row.musicScanVersion>0)return;
-    const key=row.mediaKey;clearTimeout(mediaIntelPolls.get(key));
-    mediaIntelPolls.set(key,setTimeout(async()=>{
-      try{const data=await requestMediaIntel(`/api/media-intelligence/asset?assetKey=${encodeURIComponent(key)}`);if(data?.asset){applyMediaIntel(row,data.asset);render();}}
-      catch(_){ }
-      if(row.musicScanVersion<=0)scheduleMediaIntelPoll(row,attempt+1);else mediaIntelPolls.delete(key);
-    },Math.min(10000,2500+attempt*500)));
-  }
-  async function enrichMediaIntel(row,{autoQueue=false}={}){
-    const key=clean(row?.mediaKey||'',500);if(!key)return;
-    try{
-      const data=await requestMediaIntel(`/api/media-intelligence/asset?assetKey=${encodeURIComponent(key)}`);
-      if(data?.asset)applyMediaIntel(row,data.asset);
-      if(autoQueue&&row.musicScanVersion<=0&&!mediaIntelAutoQueued.has(key)){
-        mediaIntelAutoQueued.add(key);
-        try{
-          const queued=await requestMediaIntel('/api/media-intelligence/scan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assetKey:key,current:false,priority:250,reason:'playback-terminal-auto'})});
-          if(queued?.asset)applyMediaIntel(row,queued.asset);
-          row.musicAutoQueued=true;scheduleMediaIntelPoll(row,0);
-        }catch(err){row.musicError=clean(err?.message||err,180);}
-      }
-    }catch(err){
-      if(Number(err?.status)===404)row.musicStatus='NOT_IN_DB';
-      else row.musicError=clean(err?.message||err,180);
-    }
-    render();
-  }
-  function musicView(row){
-    const browser=mediaIntelDecision(row?.mediaKey||'');
-    const rowScan=Number(row?.musicScanVersion||0)||0,browserScan=Number(browser.scanVersion||0)||0;
-    const status=clean(rowScan>0?row?.musicStatus:(browserScan>0?browser.status:(row?.musicStatus||browser.status||'UNKNOWN')),30).toUpperCase();
-    const scanVersion=Math.max(rowScan,browserScan);
-    const confidence=Number(rowScan>0?row?.musicConfidence:(browserScan>0?browser.confidence:(row?.musicConfidence??browser.confidence??0)))||0;
-    const ratio=Number(rowScan>0?row?.musicRatio:(browserScan>0?browser.ratio:(row?.musicRatio??browser.ratio??0)))||0;
-    const scanned=scanVersion>0;
-    const failureKind=clean(row?.musicFailureKind||'',50).toUpperCase();
-    const display=status==='NOT_IN_DB'?'NOT IN DB':(status==='SCAN_FAILED'?`FAIL ${failureKind||'SCAN'}`:(!scanned&&status==='UNKNOWN'?'UNSCANNED':status.replaceAll('_',' ')));
-    const site=status==='NO_MUSIC'&&scanned?'PLAY':'MUTE';
-    return {status,display,scanVersion,confidence,ratio,site,scanned,failureKind,attemptedAt:Number(row?.musicAttemptedAt||0)||0};
-  }
   const now=()=>performance.now();
   const epoch=()=>Date.now();
   const fmtMs=ms=>`${(Math.max(0,Number(ms)||0)/1000).toFixed(1)}s`;
@@ -141,8 +76,8 @@
       recoveryAttempts:0,retryAttempts:0,retrySuccesses:0,fallbacks:0,fallbackSuccesses:0,recoveredAfterReset:0,recoveryArmed:false,unrecoveredBlanks:0,
       engineIncidentsBase:0,engineResetsBase:0,engineIncidents:0,engineResets:0,lastAction:'',lastActionAt:0,lastFirstFrameAt:0,
       lastRecap:null,duplicateRecaps:0,repeatViolations:0,duplicateSelections:0,duplicateCandidateRejects:0,preflightDuplicateSkips:0,
-      assetBad:0,staleMedia:0,noMediaSkips:0,quarantineReselections:0,preloadBlocks:0,quarantineAborts:0,orphanedLoads:0,activeBlockedLoads:0,rapidTransitions:0,dateChanges:0,
-      mediaIntelligenceBase:{preloadBlocks:0,quarantineAborts:0},randomDateAttempts:0,longDateJumps:0,archiveSpanDays:0,archiveDates:[],
+      assetBad:0,staleMedia:0,noMediaSkips:0,quarantineReselections:0,rapidTransitions:0,dateChanges:0,
+      randomDateAttempts:0,longDateJumps:0,archiveSpanDays:0,archiveDates:[],
       sportChanges:0,qualityChanges:0,transportChanges:0,uniqueMedia:0,uniqueEvents:0,
       sports:{},qualities:{},dates:{},months:{},transports:{},providers:{},
       lastLeague:'',lastQuality:'',lastDate:'',lastTransport:'',lastMediaKey:'',lastEventKey:'',
@@ -174,11 +109,6 @@
     if(endurance.startedAt){
       endurance.engineIncidents=Math.max(0,Number(engine.incidents||0)-Number(endurance.engineIncidentsBase||0));
       endurance.engineResets=Math.max(0,Number(engine.resets||0)-Number(endurance.engineResetsBase||0));
-      const mi=window.SBB_MEDIA_INTELLIGENCE?.snapshot?.()||{},base=endurance.mediaIntelligenceBase||{};
-      endurance.preloadBlocks=Math.max(0,Number(mi.preloadBlocks||0)-Number(base.preloadBlocks||0));
-      endurance.quarantineAborts=Math.max(0,Number(mi.quarantineAborts||0)-Number(base.quarantineAborts||0));
-      endurance.orphanedLoads=Math.max(0,Number(mi.orphanedLoads||0));
-      endurance.activeBlockedLoads=Math.max(0,Number(mi.activeBlockedLoads||0));
     }
     endurance.uniqueMedia=seenMediaKeys.size;endurance.uniqueEvents=seenEventKeys.size;
     const profile=activeProfile(),totalMs=Number(profile.totalMs||ENDURANCE_TOTAL_MS);
@@ -215,7 +145,8 @@
     if(transports.length<cfg.minTransports)return failEndurance(`INSUFFICIENT_TRANSPORT_DIVERSITY ${transports.length}/${cfg.minTransports}`);
     if(endurance.maxNoFrameStreak>2)return failEndurance(`NOFRAME_MAX ${endurance.maxNoFrameStreak} > 2`);
     if(endurance.quarantineReselections)return failEndurance(`QUARANTINED_MEDIA_RESELECTED ${endurance.quarantineReselections}`);
-    if(endurance.orphanedLoads||endurance.activeBlockedLoads)return failEndurance(`ORPHANED_QUARANTINE_LOADS ${Math.max(endurance.orphanedLoads,endurance.activeBlockedLoads)}`);
+    const poison=window.SBB_POISON_CONTAINMENT?.snapshot?.()||{};
+    if(Number(poison.activeBlockedLoads||poison.orphanedLoads||0)>0)return failEndurance(`ORPHANED_QUARANTINE_LOADS ${Number(poison.activeBlockedLoads||poison.orphanedLoads||0)}`);
     if(endurance.unrecoveredBlanks)return failEndurance(`UNRECOVERED_BLANKS ${endurance.unrecoveredBlanks}`);
     finishEndurance('PASS',`${cfg.label} random-archive recovery passed • ${endurance.successfulStarts} unique starts • ${endurance.transitions} transitions • ${sports.length} sports • ${dates.length} dates • ${months.length} months • ${endurance.archiveSpanDays}d span • ${endurance.staleMedia} stale assets quarantined`);
   }
@@ -346,7 +277,7 @@
       endurance.pendingStressSelection=true;
       let moved=await Promise.resolve(h.stressTuneNextGame?.());if(!moved)moved=await Promise.resolve(h.stressTuneNext?.());if(!moved){endurance.pendingStressSelection=false;return false;}
       const media=clean(h.currentMediaKey?.(),500),game=clean(h.currentGameKey?.(),240);
-      if(media&&(quarantinedMediaKeys.has(media)||window.SBB_MEDIA_INTELLIGENCE?.isQuarantined?.(media))){window.SBB_MEDIA_INTELLIGENCE?.abortMatchingResources?.('stress preflight');endurance.preflightDuplicateSkips++;endurance.pendingStressSelection=false;continue;}
+      if(media&&quarantinedMediaKeys.has(media)){endurance.quarantineReselections++;endurance.pendingStressSelection=false;continue;}
       if((media&&seenMediaKeys.has(media))||(game&&seenEventKeys.has(game))){endurance.duplicateSelections++;endurance.pendingStressSelection=false;continue;}
       endurance.pendingQuality='';endurance.pendingDate=clean(h.scoreDate?.(),10);endurance.pendingLeague='';return true;
     }
@@ -383,9 +314,8 @@
     const key=clean(row?.mediaKey||'',500);if(!key||quarantinedMediaKeys.has(key))return false;
     quarantinedMediaKeys.add(key);endurance.assetBad++;endurance.staleMedia++;row.quarantined=true;
     const item=itemFromRow(row);
-    try{window.SBB_MEDIA_INTELLIGENCE?.quarantine?.(item,`HTTP 410 stale historical media after repeated no first frame • ${reason}`);}catch(_){ }
+    try{window.SBB_POISON_CONTAINMENT?.quarantine?.(item,`HTTP 410 stale historical media after repeated no first frame • ${reason}`);}catch(_){ }
     try{window.markRuntimeMediaFailed?.(item,`HTTP 410 stale historical media after repeated no first frame • ${reason}`,{providerFailure:false});}catch(_){ }
-    try{window.SBB_MEDIA_INTELLIGENCE?.abortMatchingResources?.('stale-media quarantine');}catch(_){ }
     endurance.noFrameStreak=0;
     enduranceLog('asset-bad',`STALE_MEDIA quarantined after repeated no-first-frame starts • ${clean(row.title,100)}`,{mediaKey:key,eventKey:row.eventKey});
     return true;
@@ -399,8 +329,8 @@
       if(!moved){try{moved=await Promise.resolve(h.stressTuneNext?.());}catch(_){moved=false;}}
       if(!moved)continue;
       const key=clean(h.currentMediaKey?.(),500);
-      if(key&&(key===badKey||quarantinedMediaKeys.has(key)||window.SBB_MEDIA_INTELLIGENCE?.isQuarantined?.(key))){
-        window.SBB_MEDIA_INTELLIGENCE?.abortMatchingResources?.('fallback preflight');endurance.preflightDuplicateSkips++;enduranceLog('quarantine-preblocked',`Pre-blocked quarantined fallback candidate before resource use • ${key}`,{mediaKey:key});continue;
+      if(key&&(key===badKey||quarantinedMediaKeys.has(key))){
+        endurance.quarantineReselections++;enduranceLog('quarantine-reselection',`Rejected quarantined fallback candidate • ${key}`,{mediaKey:key});continue;
       }
       if(key&&seenMediaKeys.has(key)){endurance.preflightDuplicateSkips++;continue;}
       endurance.fallbacks++;endurance.transitions++;const afterGame=clean(h.currentGameKey?.(),240);if(!beforeGame||!afterGame||beforeGame!==afterGame)endurance.crossGameTransitions++;
@@ -525,14 +455,14 @@
     }
     lastSessionId=sid;let row=bySession.get(sid);
     if(!row){
-      row={sessionId:sid,selectionId:Number(session.selectionId||0),eventKey:clean(session.eventKey||'',240),title:clean(session.title||'Untitled',120),league:clean(session.league||'',20),provider:clean(session.provider||'',32),transport:clean(session.transport||'',28),mediaKey:clean(session.mediaKey||'',500),source:clean(session.sourceExternalUrl||session.sourceUrl||'',500),state:'selected',stateStartedPerf:t,playingMs:0,bufferingMs:0,firstFrameAt:0,firstFrameMs:null,firstFrameCounted:false,noFrameCounted:false,isRecap:false,quality:'',scoreDate:'',stallCount:0,sessionStallTotalMs:0,failureCount:0,lastError:'',createdPerf:t,selectedAt:Number(session.selectedAt||epoch()),exitState:'',enduranceRunId:endurance.status==='RUNNING'?endurance.runId:'',stressDriven:endurance.status==='RUNNING'&&endurance.pendingStressSelection===true,rejectedDuplicate:false,musicStatus:'UNKNOWN',musicConfidence:0,musicRatio:0,musicScanVersion:0,musicScannedAt:0,musicScanPriority:0,musicAutoQueued:false,musicError:''};
+      row={sessionId:sid,selectionId:Number(session.selectionId||0),eventKey:clean(session.eventKey||'',240),title:clean(session.title||'Untitled',120),league:clean(session.league||'',20),provider:clean(session.provider||'',32),transport:clean(session.transport||'',28),mediaKey:clean(session.mediaKey||'',500),source:clean(session.sourceExternalUrl||session.sourceUrl||'',500),state:'selected',stateStartedPerf:t,playingMs:0,bufferingMs:0,firstFrameAt:0,firstFrameMs:null,firstFrameCounted:false,noFrameCounted:false,isRecap:false,quality:'',scoreDate:'',stallCount:0,sessionStallTotalMs:0,failureCount:0,lastError:'',createdPerf:t,selectedAt:Number(session.selectedAt||epoch()),exitState:'',enduranceRunId:endurance.status==='RUNNING'?endurance.runId:'',stressDriven:endurance.status==='RUNNING'&&endurance.pendingStressSelection===true,rejectedDuplicate:false};
       bySession.set(sid,row);rows.unshift(row);if(rows.length>240){const gone=rows.pop();bySession.delete(gone.sessionId);}
     }
     const nextState=clean(session.state||row.state,24).toLowerCase();if(nextState&&nextState!==row.state){finalizeState(row,t);row.state=nextState;row.stateStartedPerf=t;}
     row.eventKey=clean(session.eventKey||row.eventKey,240);row.title=clean(session.title||row.title,120);row.league=clean(session.league||row.league,20);row.provider=clean(session.provider||row.provider,32);row.transport=clean(session.transport||row.transport,28);row.mediaKey=clean(session.mediaKey||row.mediaKey,500);row.source=clean(session.sourceExternalUrl||session.sourceUrl||row.source,500);
     const hadFrame=!!row.firstFrameAt;row.firstFrameAt=Math.max(Number(row.firstFrameAt||0),Number(session.firstFrameAt||0));if(session.firstFrameMs!=null)row.firstFrameMs=Number(session.firstFrameMs);
     row.stallCount=Math.max(Number(row.stallCount||0),Number(session.stallCount||0));row.sessionStallTotalMs=Math.max(Number(row.sessionStallTotalMs||0),Number(session.stallTotalMs||0));row.failureCount=Math.max(Number(row.failureCount||0),Number(session.failureCount||0));row.lastError=clean(session.lastError||row.lastError,180);
-    if(!hadFrame&&row.firstFrameAt){noteFirstFrame(row);enrichMediaIntel(row,{autoQueue:true});}
+    if(!hadFrame&&row.firstFrameAt)noteFirstFrame(row);
     if(row.state==='failed'&&!row.firstFrameAt)setTimeout(()=>noteNoFrame(row,`session failed before first frame${row.lastError?`: ${row.lastError}`:''}`),500);
     render();return row;
   }
@@ -563,7 +493,7 @@
     if(endurance.status==='RUNNING')return false;
     const h=hooks();if(!devEnabled()||!h)return false;
     profile=PROFILE_CONFIG[profile]?profile:'full';
-    const engine=h.playbackEngine?.()||{},cfg=PROFILE_CONFIG[profile];resetEnduranceMemory();endurance=freshEndurance('RUNNING');endurance.profile=profile;endurance.runId=`end-${epoch().toString(36)}`;endurance.startedAt=epoch();endurance.phase=cfg.phases[0].id;endurance.phaseLabel=cfg.phases[0].label;endurance.phaseStartedAt=endurance.startedAt;endurance.nextTransitionAt=endurance.startedAt+(profile==='recovery'?8_000:20_000);endurance.savedResourceMode=clean(h.resourceMode?.()||'balanced',24);endurance.savedMediaKey=clean(h.currentMediaKey?.(),500);endurance.savedScoreDate=clean(h.scoreDate?.(),20);endurance.engineIncidentsBase=Number(engine.incidents||0);endurance.engineResetsBase=Number(engine.resets||0);const miBase=window.SBB_MEDIA_INTELLIGENCE?.snapshot?.()||{};endurance.mediaIntelligenceBase={preloadBlocks:Number(miBase.preloadBlocks||0),quarantineAborts:Number(miBase.quarantineAborts||0)};
+    const engine=h.playbackEngine?.()||{},cfg=PROFILE_CONFIG[profile];resetEnduranceMemory();endurance=freshEndurance('RUNNING');endurance.profile=profile;endurance.runId=`end-${epoch().toString(36)}`;endurance.startedAt=epoch();endurance.phase=cfg.phases[0].id;endurance.phaseLabel=cfg.phases[0].label;endurance.phaseStartedAt=endurance.startedAt;endurance.nextTransitionAt=endurance.startedAt+(profile==='recovery'?8_000:20_000);endurance.savedResourceMode=clean(h.resourceMode?.()||'balanced',24);endurance.savedMediaKey=clean(h.currentMediaKey?.(),500);endurance.savedScoreDate=clean(h.scoreDate?.(),20);endurance.engineIncidentsBase=Number(engine.incidents||0);endurance.engineResetsBase=Number(engine.resets||0);
     enduranceLog('start',profile==='recovery'?'30-minute historical recovery validation started • NFL emphasized • 365-day random archive • stale media quarantined and skipped':'60-minute random-archive mixed-media endurance started • 365-day random date pool • 10m warmup → 30m mixed soak → 20m mixed hammer');clear();
     try{await h.setResourceMode?.('playback');}catch(err){return failEndurance(`PLAYBACK_MODE_FAILED • ${err?.message||err}`);}
     try{h.start?.();h.ensurePlaying?.();}catch(err){return failEndurance(`PLAYBACK_START_FAILED • ${err?.message||err}`);}
@@ -597,31 +527,22 @@
   function render(){
     const host=document.getElementById('playbackTerminal');if(!host)return;host.classList.toggle('is-visible',devEnabled());if(!devEnabled())return;
     const body=document.getElementById('playbackTerminalRows'),summary=document.getElementById('playbackTerminalSummary');if(!body||!summary)return;
-    const data=snapshot(),rt=window.SBB_ULTIMATE_PLAYBACK?.runtimeSnapshot?.()||{},metrics=rt.metrics||window.SBB_ULTIMATE_PLAYBACK?.metrics?.()||{},engine=hooks()?.playbackEngine?.()||{};
+    const data=snapshot(),rt=window.SBB_ULTIMATE_PLAYBACK?.runtimeSnapshot?.()||{},metrics=rt.metrics||window.SBB_ULTIMATE_PLAYBACK?.metrics?.()||{},engine=hooks()?.playbackEngine?.()||{},poison=window.SBB_POISON_CONTAINMENT?.snapshot?.()||{};
     const totalPlay=data.reduce((a,r)=>a+r.playTimeMs,0),totalBuffer=data.reduce((a,r)=>a+r.bufferTimeMs,0),ratio=totalPlay?100*totalBuffer/totalPlay:0;
-    summary.textContent=`PLAY ${fmtMs(totalPlay)}  •  BUFFER ${fmtMs(totalBuffer)} (${ratio.toFixed(1)}%)  •  HOT ${Number(metrics.hotStandbyHitRate??100).toFixed(1)}%  •  RUNWAY ${rt.bufferAhead==null?'—':Number(rt.bufferAhead).toFixed(1)+'s'}  •  ENGINE ${Number(engine.incidents||0)}I/${Number(engine.resets||0)}R  •  NEXT ${rt.standby?.ready?'HOT_READY':rt.standby?.warming?'WARMING':'IDLE'}`;
-    body.innerHTML=data.slice(0,40).map((r,i)=>{const item={mediaKey:r.mediaKey,competitionId:r.league,provider:r.provider,transport:r.transport};const ready=window.SBB_PLAYBACK_READINESS?.state?.(item)||'DISCOVERED',score=window.SBB_PLAYBACK_READINESS?.score?.(item)??80;const rowStatus=r.exitState||r.state.toUpperCase();const src=r.source?` title="${esc(r.source)}"`:'';const mi=musicView(r),miHelp=[mi.failureKind,r.musicError].filter(Boolean).join(' • '),miTitle=miHelp?` title="${esc(miHelp)}"`:'';return `<div class="pt-row"><span>${String(data.length-i).padStart(2,'0')}</span><b class="pt-state">${esc(rowStatus)}</b><span>${esc(r.league||'—')}</span><span>${esc(r.transport||'—')}</span><span>${esc(r.provider||'—')}</span><span>${fmtMs(r.playTimeMs)}</span><span>${fmtMs(r.bufferTimeMs)}</span><span>${r.stallCount}</span><span>${r.firstFrameMs==null?'—':Math.round(r.firstFrameMs)+'ms'}</span><span>${esc(ready)}</span><span>${Math.round(Number(score||0))}</span><span${src}>${esc(`${r.quality?`[${r.quality}] `:''}${r.title||'Untitled'}`)}</span><b${miTitle}>${esc(mi.display)}</b><span>${mi.scanned?pct(mi.confidence):'—'}</span><span>${mi.scanned?pct(mi.ratio):'—'}</span><span>${mi.scanned?`v${mi.scanVersion}`:(r.musicAutoQueued?'QUEUED':'—')}</span><b>${mi.site}</b></div>`;}).join('')||'<div class="pt-empty">Waiting for playback sessions…</div>';
+    summary.textContent=`PLAY ${fmtMs(totalPlay)}  •  BUFFER ${fmtMs(totalBuffer)} (${ratio.toFixed(1)}%)  •  HOT ${Number(metrics.hotStandbyHitRate??100).toFixed(1)}%  •  RUNWAY ${rt.bufferAhead==null?'—':Number(rt.bufferAhead).toFixed(1)+'s'}  •  ENGINE ${Number(engine.incidents||0)}I/${Number(engine.resets||0)}R  •  POISON ${Number(poison.quarantines||0)}Q/${Number(poison.preloadBlocks||0)}B/${Number(poison.orphanedLoads||0)}O  •  NEXT ${rt.standby?.ready?'HOT_READY':rt.standby?.warming?'WARMING':'IDLE'}`;
+    body.innerHTML=data.slice(0,40).map((r,i)=>{const item={mediaKey:r.mediaKey,competitionId:r.league,provider:r.provider,transport:r.transport};const ready=window.SBB_PLAYBACK_READINESS?.state?.(item)||'DISCOVERED',score=window.SBB_PLAYBACK_READINESS?.score?.(item)??80;const rowStatus=r.exitState||r.state.toUpperCase();const src=r.source?` title="${esc(r.source)}"`:'';return `<div class="pt-row"><span>${String(data.length-i).padStart(2,'0')}</span><b class="pt-state">${esc(rowStatus)}</b><span>${esc(r.league||'—')}</span><span>${esc(r.transport||'—')}</span><span>${esc(r.provider||'—')}</span><span>${fmtMs(r.playTimeMs)}</span><span>${fmtMs(r.bufferTimeMs)}</span><span>${r.stallCount}</span><span>${r.firstFrameMs==null?'—':Math.round(r.firstFrameMs)+'ms'}</span><span>${esc(ready)}</span><span>${Math.round(Number(score||0))}</span><span${src}>${esc(`${r.quality?`[${r.quality}] `:''}${r.title||'Untitled'}`)}</span></div>`;}).join('')||'<div class="pt-empty">Waiting for playback sessions…</div>';
     renderEndurance();
   }
 
   window.addEventListener?.('sbb:playback-session',ev=>ingest(ev?.detail||{}));
   window.addEventListener?.('sbb:playback-engine',ev=>{if(endurance.status==='RUNNING')enduranceLog('engine',`ENGINE ${clean(ev?.detail?.type||'event',30).toUpperCase()} • ${clean(ev?.detail?.reason||'',120)}`);render();});
   window.addEventListener?.('sbb:dev-mode',render);
-  function installMediaIntelColumns(){
-    // The terminal's runtime tests intentionally use a minimal headless document.
-    // Styling is optional there; only install it when a real DOM can create nodes.
-    if(typeof document==='undefined'||typeof document.createElement!=='function'||!document.head||typeof document.head.appendChild!=='function')return;
-    if(document.getElementById('sbbPlaybackTerminalMediaIntelStyle'))return;
-    const style=document.createElement('style');style.id='sbbPlaybackTerminalMediaIntelStyle';
-    style.textContent='.pt-columns,.pt-row{grid-template-columns:24px 104px 42px 108px 100px 52px 58px 38px 58px 110px 40px minmax(220px,1fr) 92px 52px 58px 50px 64px;min-width:1450px}.pt-body{overflow:auto}.pt-row>b:nth-last-child(5){color:#8de8ff}.pt-row>b:last-child{color:#ffe58d}@media(max-width:1100px){.pt-columns,.pt-row{grid-template-columns:22px 88px 40px 92px 80px 48px 52px 34px 52px 90px 34px minmax(170px,1fr) 84px 48px 52px 46px 58px;min-width:1320px}}';
-    document.head.appendChild(style);
-  }
-  document.addEventListener('DOMContentLoaded',()=>{installMediaIntelColumns();
+  document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('playbackTerminalClear')?.addEventListener('click',clear);
-    document.getElementById('playbackTerminalCopy')?.addEventListener('click',()=>{const s=enduranceSnapshot(),sports=SPORT_IDS.filter(k=>Number(s.sports?.[k]||0)>0).join(','),colors=QUALITY_ROTATION.filter(q=>Number(s.qualities[q]||0)>0).join(','),dates=counterKeys(s.dates).join(','),months=counterKeys(s.months).join(',');const head=`ENDURANCE\t${s.status}\t${s.phaseLabel}\tPROFILE=${s.profile}\tELAPSED=${fmtClock(s.elapsedMs)}\tSTARTS=${s.successfulStarts}\tUNIQUE=${s.uniqueMedia}\tTRANSITIONS=${s.transitions}\tSPORTS=${sports}\tCOLORS=${colors}\tDATES=${dates}\tMONTHS=${months}\tDATE_SWAPS=${s.dateChanges}\tDATE_SPAN=${s.archiveSpanDays}d\tLONG_JUMPS=${s.longDateJumps}\tRANDOM_DATE_TRIES=${s.randomDateAttempts}\tDUP_REJECTS=${s.duplicateCandidateRejects}\tPREFLIGHT_SKIPS=${s.preflightDuplicateSkips}\tNO_MEDIA_SKIP=${s.noMediaSkips}\tSTALE_MEDIA=${s.staleMedia}\tNOFRAME_MAX=${s.maxNoFrameStreak}\tRAW_NOFRAME=${s.rawNoFrameCount}\tRESETS=${s.engineResets}\tRETRIES=${s.retryAttempts}\tRETRY_OK=${s.retrySuccesses}\tFALLBACKS=${s.fallbacks}\tFALLBACK_OK=${s.fallbackSuccesses}\tASSET_BAD=${s.assetBad}\tQUARANTINE_RESELECT=${s.quarantineReselections}\tPRELOAD_BLOCKS=${s.preloadBlocks}\tQUARANTINE_ABORTS=${s.quarantineAborts}\tORPHANED_LOADS=${s.orphanedLoads}\tACTIVE_BLOCKED=${s.activeBlockedLoads}\tREPEATS=${s.repeatViolations}\t${s.reason}`;const lines=snapshot().filter(r=>r.enduranceRunId===s.runId).map(r=>`${inferLeague(r)}\t${r.quality||''}\t${r.scoreDate||''}\t${r.transport}\t${r.provider}\tRESULT=${r.rejectedDuplicate?'DUPLICATE_REJECTED':(r.quarantined?'STALE_QUARANTINED':'ACCEPTED')}\tPLAY=${fmtMs(r.playTimeMs)}\tBUFFER=${fmtMs(r.bufferTimeMs)}\tSTALLS=${r.stallCount}\tSTART=${r.firstFrameMs??''}\tEVENT=${r.eventKey}\tMEDIA=${r.mediaKey}\tMUSIC=${musicView(r).status}\tMCONF=${musicView(r).scanned?pct(musicView(r).confidence):''}\tMRATIO=${musicView(r).scanned?pct(musicView(r).ratio):''}\tMSCAN=${musicView(r).scanVersion||0}\tSITE_MUSIC=${musicView(r).site}\t${r.title}`);navigator.clipboard?.writeText?.([head,...lines].join('\n')).catch(()=>{});});
+    document.getElementById('playbackTerminalCopy')?.addEventListener('click',()=>{const s=enduranceSnapshot(),sports=SPORT_IDS.filter(k=>Number(s.sports?.[k]||0)>0).join(','),colors=QUALITY_ROTATION.filter(q=>Number(s.qualities[q]||0)>0).join(','),dates=counterKeys(s.dates).join(','),months=counterKeys(s.months).join(',');const head=`ENDURANCE\t${s.status}\t${s.phaseLabel}\tPROFILE=${s.profile}\tELAPSED=${fmtClock(s.elapsedMs)}\tSTARTS=${s.successfulStarts}\tUNIQUE=${s.uniqueMedia}\tTRANSITIONS=${s.transitions}\tSPORTS=${sports}\tCOLORS=${colors}\tDATES=${dates}\tMONTHS=${months}\tDATE_SWAPS=${s.dateChanges}\tDATE_SPAN=${s.archiveSpanDays}d\tLONG_JUMPS=${s.longDateJumps}\tRANDOM_DATE_TRIES=${s.randomDateAttempts}\tDUP_REJECTS=${s.duplicateCandidateRejects}\tPREFLIGHT_SKIPS=${s.preflightDuplicateSkips}\tNO_MEDIA_SKIP=${s.noMediaSkips}\tSTALE_MEDIA=${s.staleMedia}\tNOFRAME_MAX=${s.maxNoFrameStreak}\tRAW_NOFRAME=${s.rawNoFrameCount}\tRESETS=${s.engineResets}\tRETRIES=${s.retryAttempts}\tRETRY_OK=${s.retrySuccesses}\tFALLBACKS=${s.fallbacks}\tFALLBACK_OK=${s.fallbackSuccesses}\tASSET_BAD=${s.assetBad}\tQUARANTINE_RESELECT=${s.quarantineReselections}\tPRELOAD_BLOCKS=${Number((window.SBB_POISON_CONTAINMENT?.snapshot?.()||{}).preloadBlocks||0)}\tQUARANTINE_ABORTS=${Number((window.SBB_POISON_CONTAINMENT?.snapshot?.()||{}).quarantineAborts||0)}\tORPHANED_LOADS=${Number((window.SBB_POISON_CONTAINMENT?.snapshot?.()||{}).orphanedLoads||0)}\tREPEATS=${s.repeatViolations}\t${s.reason}`;const lines=snapshot().filter(r=>r.enduranceRunId===s.runId).map(r=>`${inferLeague(r)}\t${r.quality||''}\t${r.scoreDate||''}\t${r.transport}\t${r.provider}\tRESULT=${r.rejectedDuplicate?'DUPLICATE_REJECTED':(r.quarantined?'STALE_QUARANTINED':'ACCEPTED')}\tPLAY=${fmtMs(r.playTimeMs)}\tBUFFER=${fmtMs(r.bufferTimeMs)}\tSTALLS=${r.stallCount}\tSTART=${r.firstFrameMs??''}\tEVENT=${r.eventKey}\tMEDIA=${r.mediaKey}\t${r.title}`);navigator.clipboard?.writeText?.([head,...lines].join('\n')).catch(()=>{});});
     document.getElementById('playbackEnduranceStart')?.addEventListener('click',()=>startEndurance('full'));document.getElementById('playbackRecoveryStart')?.addEventListener('click',()=>startEndurance('recovery'));document.getElementById('playbackEnduranceStop')?.addEventListener('click',stopEndurance);
     render();tickTimer=setInterval(render,500);enduranceTimer=setInterval(enduranceTick,1000);
   });
   try{const s=window.SBB_PLAYBACK_SESSION?.snapshot?.();if(s?.sessionId)ingest(s);}catch(_){ }
-  window.SBB_PLAYBACK_TERMINAL=Object.freeze({version:'1.6',snapshot,clear,ingest,render,endurance:Object.freeze({start:()=>startEndurance('full'),startRecovery:()=>startEndurance('recovery'),stop:stopEndurance,snapshot:enduranceSnapshot,phases:PHASES,recoveryPhases:RECOVERY_PHASES,totalMs:ENDURANCE_TOTAL_MS,recoveryTotalMs:RECOVERY_TOTAL_MS})});
+  window.SBB_PLAYBACK_TERMINAL=Object.freeze({version:'1.4',snapshot,clear,ingest,render,endurance:Object.freeze({start:()=>startEndurance('full'),startRecovery:()=>startEndurance('recovery'),stop:stopEndurance,snapshot:enduranceSnapshot,phases:PHASES,recoveryPhases:RECOVERY_PHASES,totalMs:ENDURANCE_TOTAL_MS,recoveryTotalMs:RECOVERY_TOTAL_MS})});
 })();

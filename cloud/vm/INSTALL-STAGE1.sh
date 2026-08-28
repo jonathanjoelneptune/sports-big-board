@@ -14,27 +14,7 @@ ENV_FILE="$ENV_DIR/sbb.env"
 echo "[vm] Installing system packages..."
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y >/dev/null
-# v4.5.5 Media Intelligence uses ffmpeg for bounded audio sampling and the latest
-# stable yt-dlp plus Deno for current YouTube JavaScript challenge/format support.
-apt-get install -y python3 sqlite3 curl caddy ffmpeg unzip ca-certificates >/dev/null
-MEDIA_TOOL_TMP="$(mktemp -d)"
-case "$(uname -m)" in
-  x86_64|amd64) DENO_TARGET="x86_64-unknown-linux-gnu" ;;
-  aarch64|arm64) DENO_TARGET="aarch64-unknown-linux-gnu" ;;
-  *) echo "Unsupported architecture for Deno: $(uname -m)"; exit 1 ;;
-esac
-curl -fL --retry 3 --retry-delay 2 --connect-timeout 10 --max-time 180 \
-  -o "$MEDIA_TOOL_TMP/yt-dlp" \
-  https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp
-install -m 0755 "$MEDIA_TOOL_TMP/yt-dlp" /usr/local/bin/yt-dlp
-curl -fL --retry 3 --retry-delay 2 --connect-timeout 10 --max-time 180 \
-  -o "$MEDIA_TOOL_TMP/deno.zip" \
-  "https://github.com/denoland/deno/releases/latest/download/deno-${DENO_TARGET}.zip"
-unzip -q -o "$MEDIA_TOOL_TMP/deno.zip" -d "$MEDIA_TOOL_TMP/deno"
-install -m 0755 "$MEDIA_TOOL_TMP/deno/deno" /usr/local/bin/deno
-rm -rf "$MEDIA_TOOL_TMP"
-hash -r
-echo "[vm] yt-dlp $(yt-dlp --version) • $(deno --version | head -n 1)"
+apt-get install -y python3 sqlite3 curl caddy >/dev/null
 
 echo "[vm] Mounting persistent Sports Big Board state disk..."
 mkdir -p "$STATE_DIR"

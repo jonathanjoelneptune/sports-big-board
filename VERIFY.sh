@@ -18,11 +18,6 @@ python3 tools/check_ultimate_playback.py
 python3 tools/check_deploy_rehearsal.py
 python3 -m unittest tests.test_v445_random_archive_stress
 python3 -m unittest tests.test_v446_historical_media_quarantine
-python3 -m unittest tests.test_v450_media_intelligence
-python3 -m unittest tests.test_v452_media_intelligence_visibility
-python3 -m unittest tests.test_v453_media_intelligence_terminal
-python3 -m unittest tests.test_v454_media_intelligence_crawl
-python3 -m unittest tests.test_v455_youtube_media_intelligence
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"
@@ -45,11 +40,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v444_playback_recovery_runtime.js
   node tests/test_v445_duplicate_candidate_runtime.js
   node tests/test_v446_stale_media_runtime.js
-  node tests/test_v450_media_intelligence_runtime.js
-  node tests/test_v451_startup_stability_runtime.js
-  node tests/test_v452_media_intelligence_console_runtime.js
-  node tests/test_v453_media_intelligence_terminal_runtime.js
-  node tests/test_v456_soundtrack_indicator_runtime.js
+  node tests/test_v447_poisoned_player_containment_runtime.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi

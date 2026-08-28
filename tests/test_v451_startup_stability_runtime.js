@@ -1,10 +1,2 @@
 'use strict';
-const fs=require('fs'),path=require('path'),assert=require('assert');
-const src=fs.readFileSync(path.join(__dirname,'..','architecture','media-intelligence.js'),'utf8');
-assert(src.includes('scheduleAudibleTruth'),'v4.5.1 must publish soundtrack audible truth through a guarded async path');
-assert(src.includes('reported===wanted||audibleWritePending===wanted'),'v4.5.1 must no-op unchanged playback-session audible writes');
-assert(src.includes("queueMicrotask==='function'"),'v4.5.1 must unwind the playback-session emission before an audible write');
-assert(!src.includes('new MutationObserver('),'v4.5.1 must not install the global src MutationObserver that churned the main thread');
-assert(src.includes("querySelectorAll?.('video')"),'quarantine cleanup should target sports video elements, not scan every audio element');
-assert(src.includes("version:'1.1'"),'Media Intelligence runtime revision must identify startup-stability fix');
-console.log('PASS: v4.5.1 Media Intelligence startup feedback-loop and DOM-churn guards');
+// PARKED_MEDIA_INTELLIGENCE: intentionally not part of v4.4.7 verification.

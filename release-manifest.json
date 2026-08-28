@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.5.6",
-  "baseRelease": "4.5.5",
-  "title": "Soundtrack Arbitration State Indicator",
+  "release": "4.4.7",
+  "baseRelease": "4.4.6",
+  "title": "Poisoned Player Containment \u2014 Media Intelligence Parked",
   "atomic": true,
   "requiredFiles": [
     "VERSION",
@@ -11,130 +11,122 @@
     "foundation-certification.json",
     "release-manifest.json",
     "VERIFY.sh",
-    "architecture/media-intelligence.js",
-    "architecture/media-intelligence-console.js",
     "architecture/playback-terminal.js",
+    "architecture/poisoned-media-containment.js",
+    "architecture/site-soundtrack-muted.js",
     "sbb/__init__.py",
-    "sbb/media_intelligence.py",
-    "sbb/media_intelligence_control.py",
+    "cloud/gcp/DEPLOY-FROM-GITHUB.sh",
+    "cloud/vm/INSTALL-STAGE1.sh",
+    "tools/check_release_manifest.py",
+    "tools/check_deploy_rehearsal.py",
+    "tools/check_ultimate_playback.py",
     "tests/test_v434_deploy_rehearsal.py",
+    "tests/test_v446_historical_media_quarantine.py",
+    "tests/test_v446_stale_media_runtime.js",
+    "tests/test_v447_poisoned_player_containment_runtime.js",
     "tests/test_v450_media_intelligence.py",
     "tests/test_v450_media_intelligence_runtime.js",
     "tests/test_v451_startup_stability_runtime.js",
-    "tests/test_v452_media_intelligence_visibility.py",
     "tests/test_v452_media_intelligence_console_runtime.js",
+    "tests/test_v452_media_intelligence_visibility.py",
     "tests/test_v453_media_intelligence_terminal.py",
     "tests/test_v453_media_intelligence_terminal_runtime.js",
     "tests/test_v454_media_intelligence_crawl.py",
-    "tools/check_release_manifest.py",
-    "tools/check_deploy_rehearsal.py",
-    "cloud/gcp/DEPLOY-FROM-GITHUB.sh",
-    "cloud/vm/INSTALL-STAGE1.sh",
     "tests/test_v455_youtube_media_intelligence.py",
-    "tools/check_ultimate_playback.py",
-    "architecture/soundtrack-state-indicator.js",
     "tests/test_v456_soundtrack_indicator_runtime.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.5.6"
+        "4.4.7"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.5.6",
-        "architecture/playback-terminal.js?v=4.5.6",
-        "architecture/media-intelligence-console.js?v=4.5.6",
-        "<span>MUSIC</span>",
-        "<span>SITE MUSIC</span>",
-        "architecture/soundtrack-state-indicator.js?v=4.5.6"
+        "Sports Big Board \u2014 v4.4.7",
+        "START 60M",
+        "START 30M RECOVERY",
+        "architecture/playback-terminal.js?v=4.4.7",
+        "architecture/site-soundtrack.js?v=4.4.7",
+        "architecture/site-soundtrack-muted.js?v=4.4.7",
+        "architecture/poisoned-media-containment.js?v=4.4.7",
+        "window.SBB_SITE_SOUNDTRACK_MUTED=true",
+        "app.js?v=4.4.7"
       ],
       "forbidden": [
-        "?v=4.5.5"
+        "media-intelligence.js?v=",
+        "media-intelligence-console.js?v=",
+        "soundtrack-state-indicator.js?v=",
+        "?v=4.5."
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.5.6'"
+        "version:'4.4.7'"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.5.6\"",
-        "Media Intelligence",
-        "stable yt-dlp and Deno",
-        "FORMAT_UNAVAILABLE",
-        "soundtrack button exposes actual audio arbitration state"
+        "\"release\": \"4.4.7\"",
+        "poisoned-player containment",
+        "Media Intelligence is parked"
       ]
     },
-    "architecture/media-intelligence.js": {
+    "architecture/poisoned-media-containment.js": {
       "required": [
-        "scheduleAudibleTruth",
-        "installNativeGuards",
         "preloadBlocks",
-        "abortMatchingResources",
-        "version:'1.1'"
+        "quarantineAborts",
+        "orphanedLoads",
+        "activeBlockedLoads",
+        "installNativeGuards",
+        "patchYouTubePlayer",
+        "SBB_POISON_CONTAINMENT"
       ],
       "forbidden": [
-        "new MutationObserver("
+        "new MutationObserver(",
+        "SBB_MEDIA_INTELLIGENCE"
       ]
     },
-    "architecture/media-intelligence-console.js": {
+    "architecture/site-soundtrack-muted.js": {
       "required": [
-        "PROCESSED",
-        "CLASSIFIED",
-        "PENDING FRESH",
-        "SCAN FAILURES",
-        "failureReasons",
-        "attemptedAt",
-        "FAILURE TYPE",
-        "overflow-y:auto!important",
-        "foreground trickle=",
-        "ytDlpVersion",
-        "deno="
+        "SBB_SITE_SOUNDTRACK_MUTED",
+        "audio.muted=true",
+        "Site music temporarily muted"
       ]
     },
     "architecture/playback-terminal.js": {
       "required": [
-        "playback-terminal-auto",
-        "MCONF=",
-        "MRATIO=",
-        "MSCAN=",
-        "SITE_MUSIC=",
-        "priority:250",
-        "enrichMediaIntel(row,{autoQueue:true})",
-        "musicFailureKind"
+        "SBB_POISON_CONTAINMENT",
+        "ORPHANED_QUARANTINE_LOADS",
+        "PRELOAD_BLOCKS=",
+        "QUARANTINE_ABORTS=",
+        "ORPHANED_LOADS=",
+        "STALE_MEDIA"
       ]
     },
-    "sbb/media_intelligence.py": {
+    "sbb/__init__.py": {
       "required": [
-        "MUSIC_FOREGROUND_TRICKLE_SECONDS",
-        "fresh unprocessed assets",
-        "FORMAT_UNAVAILABLE",
-        "--js-runtimes",
-        "inventory-fallback",
-        "youtubeAudioFormatCount",
-        "v4.5.5-youtube-repair",
-        "ytDlpVersion",
-        "\"deno\": bool(self.deno)"
+        "Sports Big Board v4.2.2 architecture services."
+      ],
+      "forbidden": [
+        "media_intelligence",
+        "schedule_media_intelligence_install"
       ]
     },
-    "sbb/media_intelligence_control.py": {
-      "required": [
-        "recentFailures",
-        "store.list_assets('SCAN_FAILED',5)",
-        "/api/media-intelligence/status",
-        "/api/media-intelligence/scan"
+    "cloud/gcp/DEPLOY-FROM-GITHUB.sh": {
+      "forbidden": [
+        "Media Intelligence runtime dependencies",
+        "yt-dlp",
+        "deno"
       ]
     },
-    "VERIFY.sh": {
+    "cloud/vm/INSTALL-STAGE1.sh": {
       "required": [
-        "tests.test_v453_media_intelligence_terminal",
-        "test_v453_media_intelligence_terminal_runtime.js",
-        "tests.test_v454_media_intelligence_crawl",
-        "tests.test_v455_youtube_media_intelligence",
-        "test_v456_soundtrack_indicator_runtime.js"
+        "apt-get install -y python3 sqlite3 curl caddy"
+      ],
+      "forbidden": [
+        "yt-dlp",
+        "deno"
       ]
     },
     "tools/check_release_manifest.py": {
@@ -144,66 +136,34 @@
     },
     "tools/check_deploy_rehearsal.py": {
       "required": [
-        "CHANGED-FILES-vX.X.X.txt bookkeeping is never read",
-        "CHANGED-FILES ignored"
-      ],
-      "forbidden": [
-        "overlay_manifest_check",
-        "CHANGED-FILES-v{VERSION}.txt"
-      ]
-    },
-    "cloud/gcp/DEPLOY-FROM-GITHUB.sh": {
-      "required": [
-        "Refreshing Media Intelligence runtime dependencies",
-        "yt-dlp/yt-dlp/releases/latest/download/yt-dlp",
-        "denoland/deno/releases/latest/download/deno-",
-        "/usr/local/bin/yt-dlp",
-        "/usr/local/bin/deno"
-      ]
-    },
-    "cloud/vm/INSTALL-STAGE1.sh": {
-      "required": [
-        "stable yt-dlp plus Deno",
-        "yt-dlp/yt-dlp/releases/latest/download/yt-dlp",
-        "denoland/deno/releases/latest/download/deno-",
-        "install -m 0755 \"$MEDIA_TOOL_TMP/yt-dlp\" /usr/local/bin/yt-dlp",
-        "install -m 0755 \"$MEDIA_TOOL_TMP/deno/deno\" /usr/local/bin/deno"
-      ]
-    },
-    "tests/test_v455_youtube_media_intelligence.py": {
-      "required": [
-        "inventory_audio_fallback",
-        "FORMAT_UNAVAILABLE",
-        "v4.5.5-youtube-repair",
-        "denoland/deno/releases/latest/download/deno-"
+        "CHANGED-FILES ignored",
+        "static_source_contract_scan",
+        "workflow_chain_check"
       ]
     },
     "tools/check_ultimate_playback.py": {
       "required": [
-        "yt-dlp/yt-dlp/releases/latest/download/yt-dlp",
-        "denoland/deno/releases/latest/download/deno-",
-        "Media Intelligence runtime dependency contract"
+        "v4.4.7 asset-local poisoned-player containment",
+        "poisoned-player containment module not loaded"
+      ]
+    },
+    "VERIFY.sh": {
+      "required": [
+        "node tests/test_v447_poisoned_player_containment_runtime.js"
       ],
       "forbidden": [
-        "apt-get install -y ffmpeg yt-dlp' in deploy"
+        "test_v450_media_intelligence",
+        "test_v452_media_intelligence",
+        "test_v453_media_intelligence",
+        "test_v454_media_intelligence",
+        "test_v455_youtube_media_intelligence",
+        "test_v456_soundtrack_indicator"
       ]
     },
-    "architecture/soundtrack-state-indicator.js": {
+    "tests/test_v447_poisoned_player_containment_runtime.js": {
       "required": [
-        "OFF=neutral, PLAYING=green, SUPPRESSED=yellow",
-        "sbb-music-state-playing",
-        "sbb-music-state-suppressed",
-        "data-sbb-soundtrack-state",
-        "SBB_MEDIA_INTELLIGENCE",
-        "SBB_SOUNDTRACK",
-        "never touches audio or playback"
-      ]
-    },
-    "tests/test_v456_soundtrack_indicator_runtime.js": {
-      "required": [
-        "OFF/PLAYING/SUPPRESSED indicator",
-        "sbb-music-state-playing",
-        "sbb-music-state-suppressed"
+        "zero active blocked loads",
+        "v4.4.7 asset-local poisoned-player containment"
       ]
     }
   },
@@ -213,15 +173,9 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v450_media_intelligence",
-    "python3 -m unittest tests.test_v452_media_intelligence_visibility",
-    "python3 -m unittest tests.test_v453_media_intelligence_terminal",
-    "node tests/test_v451_startup_stability_runtime.js",
-    "node tests/test_v452_media_intelligence_console_runtime.js",
-    "node tests/test_v453_media_intelligence_terminal_runtime.js",
-    "python3 -m unittest tests.test_v454_media_intelligence_crawl",
-    "python3 -m unittest tests.test_v455_youtube_media_intelligence",
-    "node tests/test_v456_soundtrack_indicator_runtime.js",
+    "python3 -m unittest tests.test_v446_historical_media_quarantine",
+    "node tests/test_v446_stale_media_runtime.js",
+    "node tests/test_v447_poisoned_player_containment_runtime.js",
     "bash VERIFY.sh"
   ]
 }
