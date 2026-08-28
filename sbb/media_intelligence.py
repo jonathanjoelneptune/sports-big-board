@@ -1,4 +1,4 @@
-"""Sports Big Board v4.5.2 media intelligence.
+"""Sports Big Board v4.5.3 media intelligence.
 
 A single, bandwidth-bounded background worker enriches every normalized media asset
 with durable music-presence intelligence. Existing catalog media is backfilled and
@@ -286,13 +286,16 @@ class MediaIntelligenceStore:
             conn.commit()
         return self.asset(asset_key)
 
-    def has_priority_request(self):
+    def priority_request_level(self):
         now=time.time()
         with self._lock, closing(self._connect()) as conn:
             self._seed_missing_rows(conn, now)
-            row=conn.execute("SELECT 1 FROM history_media_intelligence WHERE scan_priority>0 LIMIT 1").fetchone()
+            row=conn.execute("SELECT COALESCE(MAX(scan_priority),0) FROM history_media_intelligence WHERE scan_priority>0").fetchone()
             conn.commit()
-            return bool(row)
+            return int((row[0] if row else 0) or 0)
+
+    def has_priority_request(self):
+        return self.priority_request_level() > 0
 
     @staticmethod
     def _row_payload(row):
@@ -633,7 +636,9 @@ class MediaIntelligenceWorker:
         while not self._stop.is_set():
             try:
                 reason = str(self.pause_reason() or "")
-                if reason == "active-media" and self.store.has_priority_request():
+                if reason == "active-media" and self.store.priority_request_level() >= 900:
+                    # Only explicit operator/current scans may borrow bandwidth from active playback.
+                    # Automatic played-clip enrichment remains queued until a normal background slot.
                     reason = ""
                 if reason:
                     self.beat(self.name, phase=f"paused:{reason}", current="", progress=False, blocked=True)

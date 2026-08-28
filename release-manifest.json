@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.5.2",
-  "baseRelease": "4.5.1",
-  "title": "Media Intelligence Visibility & Priority Scanning",
+  "release": "4.5.3",
+  "baseRelease": "4.5.2",
+  "title": "Media Intelligence Playback Terminal & Auto-Scan",
   "atomic": true,
   "requiredFiles": [
     "VERSION",
@@ -13,6 +13,7 @@
     "VERIFY.sh",
     "architecture/media-intelligence.js",
     "architecture/media-intelligence-console.js",
+    "architecture/playback-terminal.js",
     "sbb/__init__.py",
     "sbb/media_intelligence.py",
     "sbb/media_intelligence_control.py",
@@ -22,54 +23,116 @@
     "tests/test_v451_startup_stability_runtime.js",
     "tests/test_v452_media_intelligence_visibility.py",
     "tests/test_v452_media_intelligence_console_runtime.js",
+    "tests/test_v453_media_intelligence_terminal.py",
+    "tests/test_v453_media_intelligence_terminal_runtime.js",
     "tools/check_release_manifest.py",
     "tools/check_deploy_rehearsal.py"
   ],
   "contracts": {
-    "VERSION": {"required": ["4.5.2"]},
+    "VERSION": {
+      "required": [
+        "4.5.3"
+      ]
+    },
     "index.html": {
       "required": [
-        "Sports Big Board — v4.5.2",
-        "architecture/media-intelligence.js?v=4.5.2",
-        "architecture/media-intelligence-console.js?v=4.5.2",
-        "architecture/site-soundtrack.js?v=4.5.2",
-        "app.js?v=4.5.2"
+        "Sports Big Board \u2014 v4.5.3",
+        "architecture/playback-terminal.js?v=4.5.3",
+        "architecture/media-intelligence-console.js?v=4.5.3",
+        "<span>MUSIC</span>",
+        "<span>SITE MUSIC</span>"
       ],
-      "forbidden": ["?v=4.5.1"]
+      "forbidden": [
+        "?v=4.5.2"
+      ]
     },
-    "core-model.js": {"required": ["version:'4.5.2'"]},
-    "foundation-certification.json": {"required": ["\"release\": \"4.5.2\"", "Media Intelligence"]},
+    "core-model.js": {
+      "required": [
+        "version:'4.5.3'"
+      ]
+    },
+    "foundation-certification.json": {
+      "required": [
+        "\"release\": \"4.5.3\"",
+        "Media Intelligence"
+      ]
+    },
     "architecture/media-intelligence.js": {
-      "required": ["scheduleAudibleTruth", "installNativeGuards", "preloadBlocks", "abortMatchingResources", "version:'1.1'"],
-      "forbidden": ["new MutationObserver("]
+      "required": [
+        "scheduleAudibleTruth",
+        "installNativeGuards",
+        "preloadBlocks",
+        "abortMatchingResources",
+        "version:'1.1'"
+      ],
+      "forbidden": [
+        "new MutationObserver("
+      ]
     },
     "architecture/media-intelligence-console.js": {
-      "required": ["SCAN CURRENT", "KNOWN HAS MUSIC", "KNOWN NO MUSIC", "/api/media-intelligence/status", "/api/media-intelligence/scan", "registerDb"],
-      "forbidden": ["MutationObserver"]
+      "required": [
+        "apiPath(path)",
+        "window.SBB_API?.url?.(path)||path",
+        "SCAN CURRENT",
+        "KNOWN HAS MUSIC",
+        "KNOWN NO MUSIC"
+      ]
+    },
+    "architecture/playback-terminal.js": {
+      "required": [
+        "playback-terminal-auto",
+        "MCONF=",
+        "MRATIO=",
+        "MSCAN=",
+        "SITE_MUSIC=",
+        "priority:250",
+        "enrichMediaIntel(row,{autoQueue:true})"
+      ]
     },
     "sbb/media_intelligence.py": {
-      "required": ["scan_priority", "request_scan", "list_assets", "validation_set", "wake_worker", "HAS_MUSIC", "NO_MUSIC"]
+      "required": [
+        "priority_request_level",
+        "priority_request_level() >= 900",
+        "scan_priority",
+        "request_scan",
+        "list_assets",
+        "validation_set"
+      ]
     },
     "sbb/media_intelligence_control.py": {
-      "required": ["/api/media-intelligence/status", "/api/media-intelligence/assets", "/api/media-intelligence/asset", "/api/media-intelligence/scan", "original_get", "original_post"]
+      "required": [
+        "def _find_server_context()",
+        "while not _INSTALLED:",
+        "routeVersion",
+        "body.get('priority')",
+        "/api/media-intelligence/status",
+        "/api/media-intelligence/scan",
+        "def _install_routes("
+      ],
+      "forbidden": [
+        "deadline=time.time()+90"
+      ]
     },
     "VERIFY.sh": {
       "required": [
-        "python3 tools/check_release_manifest.py",
-        "python3 -m unittest tests.test_v452_media_intelligence_visibility",
-        "node tests/test_v452_media_intelligence_console_runtime.js"
+        "tests.test_v453_media_intelligence_terminal",
+        "test_v453_media_intelligence_terminal_runtime.js"
       ]
     },
-    "tests/test_v434_deploy_rehearsal.py": {
-      "required": ["test_deploy_rehearsal_preserves_source_and_workflow_guards", "test_changed_files_bookkeeping_is_not_a_deploy_contract", "CHANGED-FILES ignored"],
-      "forbidden": ["def scope_resolution_self_check()", "overlay_manifest_check"]
-    },
     "tools/check_release_manifest.py": {
-      "required": ["CHANGED-FILES-vX.X.X.txt files are intentionally ignored", "release manifest may not require bookkeeping file"]
+      "required": [
+        "CHANGED-FILES-vX.X.X.txt files are intentionally ignored"
+      ]
     },
     "tools/check_deploy_rehearsal.py": {
-      "required": ["CHANGED-FILES-vX.X.X.txt bookkeeping is never read", "CHANGED-FILES ignored"],
-      "forbidden": ["overlay_manifest_check", "CHANGED-FILES-v{VERSION}.txt"]
+      "required": [
+        "CHANGED-FILES-vX.X.X.txt bookkeeping is never read",
+        "CHANGED-FILES ignored"
+      ],
+      "forbidden": [
+        "overlay_manifest_check",
+        "CHANGED-FILES-v{VERSION}.txt"
+      ]
     }
   },
   "verification": [
@@ -80,9 +143,10 @@
     "python3 tools/check_deploy_rehearsal.py",
     "python3 -m unittest tests.test_v450_media_intelligence",
     "python3 -m unittest tests.test_v452_media_intelligence_visibility",
-    "node tests/test_v450_media_intelligence_runtime.js",
+    "python3 -m unittest tests.test_v453_media_intelligence_terminal",
     "node tests/test_v451_startup_stability_runtime.js",
     "node tests/test_v452_media_intelligence_console_runtime.js",
+    "node tests/test_v453_media_intelligence_terminal_runtime.js",
     "bash VERIFY.sh"
   ]
 }

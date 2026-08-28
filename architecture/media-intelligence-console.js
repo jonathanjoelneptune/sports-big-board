@@ -1,4 +1,4 @@
-/* Sports Big Board v4.5.2 — Media Intelligence operator visibility.
+/* Sports Big Board v4.5.3 — Media Intelligence operator visibility.
    Read-only database visibility plus explicit priority scan of the current clip.
    This module never owns playback/audio and never scans the DOM for media. */
 (() => {
@@ -10,7 +10,8 @@
   const esc=s=>clean(s,500).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const pct=v=>Number.isFinite(Number(v))?`${Math.round(Number(v)*100)}%`:'—';
   const age=epoch=>{const n=Number(epoch||0);if(!n)return '—';const sec=Math.max(0,Date.now()/1000-n);return sec<60?`${Math.round(sec)}s ago`:sec<3600?`${Math.round(sec/60)}m ago`:`${Math.round(sec/3600)}h ago`;};
-  async function request(path,options={}){const r=await fetch(path,{cache:'no-store',...options});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data?.message||data?.error||`HTTP ${r.status}`);return data;}
+  function apiPath(path){try{return window.SBB_API?.url?.(path)||path;}catch(_){return path;}}
+  async function request(path,options={}){const target=apiPath(path);const r=await fetch(target,{cache:'no-store',...options});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(`${data?.message||data?.error||`HTTP ${r.status}`} • ${target}`);return data;}
   function browserDecision(){return window.SBB_MEDIA_INTELLIGENCE?.snapshot?.()?.currentDecision||{};}
   function currentKey(){return clean(window.SBB_MEDIA_INTELLIGENCE?.snapshot?.()?.currentMediaKey||window.SBB_PLAYBACK_SESSION?.snapshot?.()?.mediaKey||'',2000);}
   function normalizeDb(row){if(!row)return null;return {key:row.asset_key||'',status:row.music_status||'UNKNOWN',confidence:Number(row.music_confidence||0),ratio:Number(row.music_ratio||0),scanVersion:Number(row.scan_version||0),scannedAt:Number(row.scanned_at||0),title:row.title||row.asset?.title||'',provider:row.provider||'',date:row.date||'',league:row.league||'',priority:Number(row.scan_priority||0),error:row.last_error||'',asset:row.asset||{}};}
@@ -82,6 +83,6 @@
     refresh();clearInterval(pollTimer);pollTimer=setInterval(()=>{if(!$('milestoneConsoleModal')?.classList?.contains('hidden'))refresh();},5000);
     window.SBB_PLAYBACK_SESSION?.subscribe?.(()=>{if(!$('milestoneConsoleModal')?.classList?.contains('hidden'))setTimeout(refreshCurrent,300);});
   }
-  const consoleApi=Object.freeze({version:'1.0',refresh,scanCurrent,get snapshot(){return latest;},get current(){return normalizeDb(currentDb);}});window.SBB_MEDIA_INTELLIGENCE_CONSOLE=consoleApi;
+  const consoleApi=Object.freeze({version:'1.1',refresh,scanCurrent,get snapshot(){return latest;},get current(){return normalizeDb(currentDb);}});window.SBB_MEDIA_INTELLIGENCE_CONSOLE=consoleApi;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();

@@ -1,4 +1,4 @@
-"""Sports Big Board v4.5.2 architecture services."""
+"""Sports Big Board v4.5.3 architecture services."""
 import os
 
 # Media Intelligence installs itself asynchronously because the sbb package is
