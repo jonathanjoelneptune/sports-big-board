@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.5.4",
-  "baseRelease": "4.5.3",
-  "title": "Media Intelligence Crawl Hardening & Console Usability",
+  "release": "4.5.5",
+  "baseRelease": "4.5.4",
+  "title": "YouTube Media Intelligence Reliability",
   "atomic": true,
   "requiredFiles": [
     "VERSION",
@@ -27,36 +27,41 @@
     "tests/test_v453_media_intelligence_terminal_runtime.js",
     "tests/test_v454_media_intelligence_crawl.py",
     "tools/check_release_manifest.py",
-    "tools/check_deploy_rehearsal.py"
+    "tools/check_deploy_rehearsal.py",
+    "cloud/gcp/DEPLOY-FROM-GITHUB.sh",
+    "cloud/vm/INSTALL-STAGE1.sh",
+    "tests/test_v455_youtube_media_intelligence.py",
+    "tools/check_ultimate_playback.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.5.4"
+        "4.5.5"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.5.4",
-        "architecture/playback-terminal.js?v=4.5.4",
-        "architecture/media-intelligence-console.js?v=4.5.4",
+        "Sports Big Board \u2014 v4.5.5",
+        "architecture/playback-terminal.js?v=4.5.5",
+        "architecture/media-intelligence-console.js?v=4.5.5",
         "<span>MUSIC</span>",
         "<span>SITE MUSIC</span>"
       ],
       "forbidden": [
-        "?v=4.5.3"
+        "?v=4.5.4"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.5.4'"
+        "version:'4.5.5'"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.5.4\"",
+        "\"release\": \"4.5.5\"",
         "Media Intelligence",
-        "prioritizes fresh unprocessed assets"
+        "stable yt-dlp and Deno",
+        "FORMAT_UNAVAILABLE"
       ]
     },
     "architecture/media-intelligence.js": {
@@ -81,7 +86,9 @@
         "attemptedAt",
         "FAILURE TYPE",
         "overflow-y:auto!important",
-        "foreground trickle="
+        "foreground trickle=",
+        "ytDlpVersion",
+        "deno="
       ]
     },
     "architecture/playback-terminal.js": {
@@ -99,14 +106,14 @@
     "sbb/media_intelligence.py": {
       "required": [
         "MUSIC_FOREGROUND_TRICKLE_SECONDS",
-        "MUSIC_FAILED_RETRY_BASE_SECONDS",
-        "attempted_at",
-        "failure_kind",
         "fresh unprocessed assets",
-        "failureReasons",
-        "foreground_trickle = True",
-        "reason == \"playback-priority\"",
-        "reason == \"active-media\""
+        "FORMAT_UNAVAILABLE",
+        "--js-runtimes",
+        "inventory-fallback",
+        "youtubeAudioFormatCount",
+        "v4.5.5-youtube-repair",
+        "ytDlpVersion",
+        "\"deno\": bool(self.deno)"
       ]
     },
     "sbb/media_intelligence_control.py": {
@@ -121,7 +128,8 @@
       "required": [
         "tests.test_v453_media_intelligence_terminal",
         "test_v453_media_intelligence_terminal_runtime.js",
-        "tests.test_v454_media_intelligence_crawl"
+        "tests.test_v454_media_intelligence_crawl",
+        "tests.test_v455_youtube_media_intelligence"
       ]
     },
     "tools/check_release_manifest.py": {
@@ -138,6 +146,42 @@
         "overlay_manifest_check",
         "CHANGED-FILES-v{VERSION}.txt"
       ]
+    },
+    "cloud/gcp/DEPLOY-FROM-GITHUB.sh": {
+      "required": [
+        "Refreshing Media Intelligence runtime dependencies",
+        "yt-dlp/yt-dlp/releases/latest/download/yt-dlp",
+        "denoland/deno/releases/latest/download/deno-",
+        "/usr/local/bin/yt-dlp",
+        "/usr/local/bin/deno"
+      ]
+    },
+    "cloud/vm/INSTALL-STAGE1.sh": {
+      "required": [
+        "stable yt-dlp plus Deno",
+        "yt-dlp/yt-dlp/releases/latest/download/yt-dlp",
+        "denoland/deno/releases/latest/download/deno-",
+        "install -m 0755 \"$MEDIA_TOOL_TMP/yt-dlp\" /usr/local/bin/yt-dlp",
+        "install -m 0755 \"$MEDIA_TOOL_TMP/deno/deno\" /usr/local/bin/deno"
+      ]
+    },
+    "tests/test_v455_youtube_media_intelligence.py": {
+      "required": [
+        "inventory_audio_fallback",
+        "FORMAT_UNAVAILABLE",
+        "v4.5.5-youtube-repair",
+        "denoland/deno/releases/latest/download/deno-"
+      ]
+    },
+    "tools/check_ultimate_playback.py": {
+      "required": [
+        "yt-dlp/yt-dlp/releases/latest/download/yt-dlp",
+        "denoland/deno/releases/latest/download/deno-",
+        "Media Intelligence runtime dependency contract"
+      ],
+      "forbidden": [
+        "apt-get install -y ffmpeg yt-dlp' in deploy"
+      ]
     }
   },
   "verification": [
@@ -153,6 +197,7 @@
     "node tests/test_v452_media_intelligence_console_runtime.js",
     "node tests/test_v453_media_intelligence_terminal_runtime.js",
     "python3 -m unittest tests.test_v454_media_intelligence_crawl",
+    "python3 -m unittest tests.test_v455_youtube_media_intelligence",
     "bash VERIFY.sh"
   ]
 }

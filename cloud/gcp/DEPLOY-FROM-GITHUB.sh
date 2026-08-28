@@ -176,17 +176,35 @@ rm -rf "$RELEASE_DIR"; mkdir -p "$RELEASE_DIR"
 tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
 chown -R root:root "$RELEASE_DIR"
 
-# v4.5.0 Media Intelligence analyzes bounded audio samples in the background.
-# Install decoder/resolver dependencies on every deployment so an existing Stage 1
-# VM receives the capability without requiring a one-off operator SSH session.
-echo "[deploy] Ensuring Media Intelligence runtime dependencies (ffmpeg + yt-dlp)..."
-if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v yt-dlp >/dev/null 2>&1; then
-  export DEBIAN_FRONTEND=noninteractive
-  apt-get update -y >/dev/null
-  apt-get install -y ffmpeg yt-dlp >/dev/null
-fi
+# v4.5.5 Media Intelligence YouTube reliability. YouTube now requires an external
+# JavaScript runtime for full yt-dlp format availability. Refresh the official stable
+# yt-dlp executable and Deno on every deployment instead of trusting a stale distro
+# package that may still exist on a long-lived Stage 1 VM.
+echo "[deploy] Refreshing Media Intelligence runtime dependencies (ffmpeg + stable yt-dlp + Deno)..."
+export DEBIAN_FRONTEND=noninteractive
+apt-get update -y >/dev/null
+apt-get install -y ffmpeg curl unzip ca-certificates >/dev/null
+MEDIA_TOOL_TMP="$(mktemp -d)"
+case "$(uname -m)" in
+  x86_64|amd64) DENO_TARGET="x86_64-unknown-linux-gnu" ;;
+  aarch64|arm64) DENO_TARGET="aarch64-unknown-linux-gnu" ;;
+  *) echo "[deploy] Unsupported architecture for Deno: $(uname -m)"; exit 1 ;;
+esac
+curl -fL --retry 3 --retry-delay 2 --connect-timeout 10 --max-time 180 \
+  -o "$MEDIA_TOOL_TMP/yt-dlp" \
+  https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp
+install -m 0755 "$MEDIA_TOOL_TMP/yt-dlp" /usr/local/bin/yt-dlp
+curl -fL --retry 3 --retry-delay 2 --connect-timeout 10 --max-time 180 \
+  -o "$MEDIA_TOOL_TMP/deno.zip" \
+  "https://github.com/denoland/deno/releases/latest/download/deno-${DENO_TARGET}.zip"
+unzip -q -o "$MEDIA_TOOL_TMP/deno.zip" -d "$MEDIA_TOOL_TMP/deno"
+install -m 0755 "$MEDIA_TOOL_TMP/deno/deno" /usr/local/bin/deno
+rm -rf "$MEDIA_TOOL_TMP"
+hash -r
 command -v ffmpeg >/dev/null
 command -v yt-dlp >/dev/null
+command -v deno >/dev/null
+echo "[deploy] yt-dlp $(yt-dlp --version) • $(deno --version | head -n 1)"
 
 # v4 catalog preflight is structural. Stop the old backend so SQLite is
 # quiescent. Structurally healthy normalized catalogs are preserved and may get

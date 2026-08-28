@@ -22,6 +22,7 @@ python3 -m unittest tests.test_v450_media_intelligence
 python3 -m unittest tests.test_v452_media_intelligence_visibility
 python3 -m unittest tests.test_v453_media_intelligence_terminal
 python3 -m unittest tests.test_v454_media_intelligence_crawl
+python3 -m unittest tests.test_v455_youtube_media_intelligence
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"

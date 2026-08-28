@@ -1,4 +1,4 @@
-"""Sports Big Board v4.5.4 media intelligence.
+"""Sports Big Board v4.5.5 media intelligence.
 
 A single, bandwidth-bounded background worker enriches every normalized media asset
 with durable music-presence intelligence. Existing catalog media is backfilled and
@@ -115,7 +115,8 @@ class MediaIntelligenceStore:
                 UPDATE history_media_intelligence SET
                   attempted_at=CASE WHEN attempted_at<=0 THEN COALESCE(NULLIF(updated_at,0),NULLIF(scanned_at,0),?) ELSE attempted_at END,
                   failure_kind=CASE
-                    WHEN failure_kind<>'' THEN failure_kind
+                    WHEN failure_kind<>'' AND NOT (failure_kind='YOUTUBE_RESOLVE' AND LOWER(COALESCE(last_error,'')) LIKE '%requested format is not available%') THEN failure_kind
+                    WHEN LOWER(COALESCE(last_error,'')) LIKE '%requested format is not available%' THEN 'FORMAT_UNAVAILABLE'
                     WHEN LOWER(COALESCE(last_error,'')) LIKE '%yt-dlp%' OR LOWER(COALESCE(last_error,'')) LIKE '%youtube%' THEN 'YOUTUBE_RESOLVE'
                     WHEN LOWER(COALESCE(last_error,'')) LIKE '%timeout%' OR LOWER(COALESCE(last_error,'')) LIKE '%timed out%' THEN 'TIMEOUT'
                     WHEN LOWER(COALESCE(last_error,'')) LIKE '%ffmpeg%' OR LOWER(COALESCE(last_error,'')) LIKE '%decode%' THEN 'FFMPEG_DECODE'
@@ -123,7 +124,17 @@ class MediaIntelligenceStore:
                     WHEN LOWER(COALESCE(last_error,'')) LIKE '%403%' OR LOWER(COALESCE(last_error,'')) LIKE '%404%' OR LOWER(COALESCE(last_error,'')) LIKE '%forbidden%' OR LOWER(COALESCE(last_error,'')) LIKE '%not found%' THEN 'UPSTREAM_HTTP'
                     ELSE 'OTHER'
                   END
-                WHERE music_status='SCAN_FAILED' AND (attempted_at<=0 OR failure_kind='')
+                WHERE music_status='SCAN_FAILED' AND (attempted_at<=0 OR failure_kind='' OR (failure_kind='YOUTUBE_RESOLVE' AND LOWER(COALESCE(last_error,'')) LIKE '%requested format is not available%'))
+            """,(now,))
+            # v4.5.5 repairs the resolver/runtime that caused the old format-unavailable
+            # failures. Re-open each affected row exactly once without giving it
+            # priority over the never-scanned backlog or touching successful results.
+            conn.execute("""
+                UPDATE history_media_intelligence SET
+                  scan_attempts=0,next_retry_at=0,scan_priority=0,
+                  scan_request_reason='v4.5.5-youtube-repair',updated_at=?
+                WHERE music_status='SCAN_FAILED' AND failure_kind='FORMAT_UNAVAILABLE'
+                  AND COALESCE(scan_request_reason,'')<>'v4.5.5-youtube-repair'
             """,(now,))
             conn.execute("CREATE INDEX IF NOT EXISTS idx_media_intelligence_queue ON history_media_intelligence(scan_priority,scan_version,music_status,next_retry_at,claim_expires_at)")
             conn.execute("CREATE INDEX IF NOT EXISTS idx_media_intelligence_status ON history_media_intelligence(music_status,scanned_at)")
@@ -246,6 +257,8 @@ class MediaIntelligenceStore:
     @staticmethod
     def failure_kind(error):
         text=f"{type(error).__name__}: {error}".lower()
+        if 'requested format is not available' in text:
+            return 'FORMAT_UNAVAILABLE'
         if 'yt-dlp' in text or 'youtube' in text:
             return 'YOUTUBE_RESOLVE'
         if 'timeout' in text or 'timed out' in text:
@@ -265,7 +278,7 @@ class MediaIntelligenceStore:
         with self._lock, closing(self._connect()) as conn:
             row = conn.execute("SELECT scan_attempts FROM history_media_intelligence WHERE asset_key=?", (asset_key,)).fetchone()
             attempts = int(row["scan_attempts"] or 1) if row else 1
-            base = max(MUSIC_FAILED_RETRY_BASE_SECONDS, 24*3600 if kind in ('YOUTUBE_RESOLVE','NO_SOURCE') else 0)
+            base = max(MUSIC_FAILED_RETRY_BASE_SECONDS, 12*3600 if kind=='FORMAT_UNAVAILABLE' else (24*3600 if kind in ('YOUTUBE_RESOLVE','NO_SOURCE') else 0))
             retry = now + min(MUSIC_FAILED_RETRY_MAX_SECONDS, base * (2 ** min(5, max(0, attempts - 1))))
             conn.execute("""
                 UPDATE history_media_intelligence SET music_status='SCAN_FAILED',
@@ -471,12 +484,34 @@ class MediaIntelligenceStore:
 class MusicDetector:
     """Conservative sustained-music detector using bounded PCM samples."""
 
-    def __init__(self, ffmpeg=None, ytdlp=None):
+    def __init__(self, ffmpeg=None, ytdlp=None, deno=None):
         self.ffmpeg = ffmpeg or shutil.which("ffmpeg")
         self.ytdlp = ytdlp or shutil.which("yt-dlp")
+        self.deno = deno or shutil.which("deno")
+        self._dependency_cache = None
+        self._last_source_details = {}
+
+    @staticmethod
+    def _tool_version(path, args=("--version",), timeout=5):
+        if not path:
+            return ""
+        try:
+            proc=subprocess.run([path,*args],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=timeout)
+            text=(proc.stdout or proc.stderr or "").strip().splitlines()
+            return text[0][:120] if proc.returncode==0 and text else ""
+        except Exception:
+            return ""
 
     def dependency_status(self):
-        return {"ffmpeg": bool(self.ffmpeg), "ytDlp": bool(self.ytdlp)}
+        if self._dependency_cache is None:
+            self._dependency_cache={
+                "ffmpeg": bool(self.ffmpeg),
+                "ytDlp": bool(self.ytdlp),
+                "deno": bool(self.deno),
+                "ytDlpVersion": self._tool_version(self.ytdlp),
+                "denoVersion": self._tool_version(self.deno, ("--version",)),
+            }
+        return dict(self._dependency_cache)
 
     @staticmethod
     def _youtube_id(row):
@@ -500,23 +535,75 @@ class MusicDetector:
                 return ""
         return ""
 
+    def _yt_base_args(self):
+        args=[self.ytdlp,"--no-playlist","--no-warnings","--quiet"]
+        # v4.5.5: yt-dlp now requires an external JavaScript runtime for full
+        # YouTube format availability. Deno is provisioned on the VM and is the
+        # recommended/default runtime; keep the argument explicit for diagnostics.
+        if self.deno:
+            args.extend(["--js-runtimes",f"deno:{self.deno}"])
+        return args
+
+    @staticmethod
+    def _format_score(fmt):
+        audio_only = str(fmt.get("vcodec") or "none") == "none"
+        acodec = str(fmt.get("acodec") or "none")
+        has_audio = acodec not in ("","none")
+        protocol = str(fmt.get("protocol") or "").lower()
+        direct_http = protocol.startswith("http") or protocol in ("https","m3u8_native","m3u8")
+        return (1 if has_audio else 0, 1 if audio_only else 0, 1 if direct_http else 0,
+                float(fmt.get("abr") or fmt.get("tbr") or 0), float(fmt.get("asr") or 0))
+
+    def _youtube_inventory_fallback(self, target):
+        proc=subprocess.run(
+            [*self._yt_base_args(),"--skip-download","--dump-single-json","-f","all",target],
+            stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=YTDLP_TIMEOUT_SECONDS,
+        )
+        if proc.returncode != 0:
+            raise RuntimeError(f"yt-dlp inventory failed: {(proc.stderr or proc.stdout).strip()[:420]}")
+        try:
+            payload=json.loads(proc.stdout or "{}")
+        except Exception as exc:
+            raise RuntimeError(f"yt-dlp inventory JSON invalid: {exc}")
+        formats=[x for x in (payload.get("formats") or []) if isinstance(x,dict) and str(x.get("url") or "").startswith(("https://","http://"))]
+        audio=[x for x in formats if str(x.get("acodec") or "none") not in ("","none")]
+        if not audio:
+            raise RuntimeError("yt-dlp inventory contains no audio-capable format")
+        chosen=max(audio,key=self._format_score)
+        self._last_source_details={
+            "youtubeResolver":"inventory-fallback",
+            "youtubeFormatId":str(chosen.get("format_id") or ""),
+            "youtubeFormatCount":len(formats),
+            "youtubeAudioFormatCount":len(audio),
+        }
+        return str(chosen.get("url") or "")
+
+    def _resolve_youtube_audio_url(self, youtube_id):
+        if not self.ytdlp:
+            raise RuntimeError("yt-dlp is required for YouTube media intelligence")
+        target=f"https://www.youtube.com/watch?v={youtube_id}"
+        self._last_source_details={"youtubeResolver":"primary"}
+        proc=subprocess.run(
+            [*self._yt_base_args(),"-f","bestaudio/best","-g",target],
+            stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=YTDLP_TIMEOUT_SECONDS,
+        )
+        url=next((line.strip() for line in (proc.stdout or "").splitlines() if line.strip().startswith(("https://","http://"))),"")
+        if proc.returncode==0 and url:
+            return url
+        primary_error=(proc.stderr or proc.stdout or "").strip()[:420]
+        # Do not turn a selector miss into a database failure. Inventory every
+        # available format and choose the best audio-capable direct URL ourselves.
+        try:
+            return self._youtube_inventory_fallback(target)
+        except Exception as fallback_exc:
+            raise RuntimeError(f"yt-dlp audio URL failed: {primary_error}; fallback: {fallback_exc}")
+
     def _source_url(self, row):
         asset = row.get("asset") or {}
+        self._last_source_details={}
         youtube_id = self._youtube_id(row)
         if youtube_id:
-            if not self.ytdlp:
-                raise RuntimeError("yt-dlp is required for YouTube media intelligence")
-            target = f"https://www.youtube.com/watch?v={youtube_id}"
-            proc = subprocess.run(
-                [self.ytdlp, "--no-playlist", "--no-warnings", "--quiet", "-f", "bestaudio/best", "-g", target],
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=YTDLP_TIMEOUT_SECONDS,
-            )
-            if proc.returncode != 0:
-                raise RuntimeError(f"yt-dlp audio URL failed: {(proc.stderr or proc.stdout).strip()[:300]}")
-            url = next((line.strip() for line in proc.stdout.splitlines() if line.strip()), "")
-            if not url:
-                raise RuntimeError("yt-dlp returned no audio URL")
-            return url, "youtube"
+            return self._resolve_youtube_audio_url(youtube_id), "youtube"
         for value in (asset.get("mediaUrl"), row.get("canonical_url"), asset.get("url")):
             text = str(value or "").strip()
             if text.startswith(("https://", "http://")):
@@ -661,6 +748,7 @@ class MusicDetector:
             "sampleSeconds": round(decoded_seconds, 2),
             "errors": errors[:4],
             "detector": "bounded-goertzel-v1",
+            **dict(self._last_source_details or {}),
         })
         return result
 

@@ -88,7 +88,8 @@ for token in ('musicStatus','musicConflict','soundtrackShouldSuppress','installN
 for token in ('history_media_intelligence','MUSIC_SCAN_VERSION','claim_next','MediaIntelligenceWorker','musicConflict','ffmpeg','yt-dlp','schedule_media_intelligence_install'):
     need(token in intelligence_backend,f'v4.5.0 server Media Intelligence missing {token}')
 need('schedule_media_intelligence_install()' in sbb_init,'sbb package does not auto-start Media Intelligence crawler')
-need('apt-get install -y ffmpeg yt-dlp' in deploy,'normal cloud deploy does not provision Media Intelligence audio dependencies')
+for token in ('yt-dlp/yt-dlp/releases/latest/download/yt-dlp','denoland/deno/releases/latest/download/deno-','/usr/local/bin/yt-dlp','/usr/local/bin/deno'):
+    need(token in deploy,f'normal cloud deploy missing Media Intelligence runtime dependency contract: {token}')
 for token in ('SBB_MEDIA_INTELLIGENCE','ORPHANED_QUARANTINE_LOADS','PRELOAD_BLOCKS=','QUARANTINE_ABORTS=','ORPHANED_LOADS='):
     need(token in terminal,f'v4.5.0 poison containment telemetry missing {token}')
 need('python3 -m unittest tests.test_v450_media_intelligence' in verify,'VERIFY.sh does not execute v4.5.0 Media Intelligence database test')

@@ -79,7 +79,7 @@
         <span>MEDIA KEY</span><code>${esc(currentKey()||'—')}</code>
       </div>${db?.error?`<div class="mi-error">${esc(db.error)}</div>`:''}`;
     }
-    const deps=worker.dependencies||{},active=$('mediaIntelligenceWorkerDetail');if(active)active.innerHTML=`<b>WORKER</b> ${worker.activeAsset?`ANALYZING • ${esc(worker.activeTitle||worker.activeAsset)}`:'WAITING'} • ffmpeg=${deps.ffmpeg?'OK':'MISSING'} • yt-dlp=${deps.ytDlp?'OK':'MISSING'} • foreground trickle=${Number(worker.foregroundTrickleSeconds||0)||'—'}s${worker.lastError?`<br><b>LAST ERROR</b> ${esc(worker.lastError)}`:''}`;
+    const deps=worker.dependencies||{},active=$('mediaIntelligenceWorkerDetail');if(active)active.innerHTML=`<b>WORKER</b> ${worker.activeAsset?`ANALYZING • ${esc(worker.activeTitle||worker.activeAsset)}`:'WAITING'} • ffmpeg=${deps.ffmpeg?'OK':'MISSING'} • yt-dlp=${deps.ytDlp?'OK':'MISSING'}${deps.ytDlpVersion?` (${esc(deps.ytDlpVersion)})`:''} • deno=${deps.deno?'OK':'MISSING'}${deps.denoVersion?` (${esc(deps.denoVersion)})`:''} • foreground trickle=${Number(worker.foregroundTrickleSeconds||0)||'—'}s${worker.lastError?`<br><b>LAST ERROR</b> ${esc(worker.lastError)}`:''}`;
     const failures=$('mediaIntelligenceFailures');if(failures)failures.innerHTML=failureHtml(snap.failureReasons,latest.recentFailures);
     const sets=latest.validationSet||{};const has=$('mediaIntelligenceKnownMusic'),no=$('mediaIntelligenceKnownNoMusic');if(has)has.innerHTML=listHtml(sets.hasMusic,'HAS_MUSIC');if(no)no.innerHTML=listHtml(sets.noMusic,'NO_MUSIC');
   }
