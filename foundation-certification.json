@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.5.5",
+  "release": "4.5.6",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -33,7 +33,8 @@
         "Post-test exact-state restoration is advisory unless final application health is bad; cleanup health requires restored resource mode, playback ownership OK, one soundtrack audio element, a selected media item on a started board, and Game Center consistency for game-scoped media",
         "Playback watchdog failures that prove bounded automatic failover to a different PLAYING media asset and healthy post-test state are RECOVERED_ADVISORY rather than Tier 1 blockers.",
         "Quarantined media is blocked before player assignment and its native/YouTube resources are torn down without resetting healthy playback.",
-        "Media Intelligence soundtrack arbitration allows the site soundtrack only for confidently classified NO_MUSIC media; HAS_MUSIC, UNKNOWN, PENDING, and SCAN_FAILED media conservatively suppress it."
+        "Media Intelligence soundtrack arbitration allows the site soundtrack only for confidently classified NO_MUSIC media; HAS_MUSIC, UNKNOWN, PENDING, and SCAN_FAILED media conservatively suppress it.",
+        "The soundtrack button exposes actual audio arbitration state: neutral when off/paused, green while the website soundtrack is audible, and yellow while Media Intelligence suppresses it for clip audio."
       ]
     },
     "tier2": {

@@ -185,7 +185,7 @@
   function playable(item){ return !!(item && item.verifiedPlayable && (item.youtubeId||item.mediaUrl)); }
 
   window.SBB_CORE=Object.freeze({
-    version:'4.5.5', TYPES, SPORTS, COMPETITIONS, competition, enabledCompetitions,
+    version:'4.5.6', TYPES, SPORTS, COMPETITIONS, competition, enabledCompetitions,
     participant, event, media, mediaAsset, mediaPackage, moment, statSection, gameCenter, editorialPackage, playable
   });
 })();

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.5.5",
-  "baseRelease": "4.5.4",
-  "title": "YouTube Media Intelligence Reliability",
+  "release": "4.5.6",
+  "baseRelease": "4.5.5",
+  "title": "Soundtrack Arbitration State Indicator",
   "atomic": true,
   "requiredFiles": [
     "VERSION",
@@ -31,37 +31,41 @@
     "cloud/gcp/DEPLOY-FROM-GITHUB.sh",
     "cloud/vm/INSTALL-STAGE1.sh",
     "tests/test_v455_youtube_media_intelligence.py",
-    "tools/check_ultimate_playback.py"
+    "tools/check_ultimate_playback.py",
+    "architecture/soundtrack-state-indicator.js",
+    "tests/test_v456_soundtrack_indicator_runtime.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.5.5"
+        "4.5.6"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.5.5",
-        "architecture/playback-terminal.js?v=4.5.5",
-        "architecture/media-intelligence-console.js?v=4.5.5",
+        "Sports Big Board \u2014 v4.5.6",
+        "architecture/playback-terminal.js?v=4.5.6",
+        "architecture/media-intelligence-console.js?v=4.5.6",
         "<span>MUSIC</span>",
-        "<span>SITE MUSIC</span>"
+        "<span>SITE MUSIC</span>",
+        "architecture/soundtrack-state-indicator.js?v=4.5.6"
       ],
       "forbidden": [
-        "?v=4.5.4"
+        "?v=4.5.5"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.5.5'"
+        "version:'4.5.6'"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.5.5\"",
+        "\"release\": \"4.5.6\"",
         "Media Intelligence",
         "stable yt-dlp and Deno",
-        "FORMAT_UNAVAILABLE"
+        "FORMAT_UNAVAILABLE",
+        "soundtrack button exposes actual audio arbitration state"
       ]
     },
     "architecture/media-intelligence.js": {
@@ -129,7 +133,8 @@
         "tests.test_v453_media_intelligence_terminal",
         "test_v453_media_intelligence_terminal_runtime.js",
         "tests.test_v454_media_intelligence_crawl",
-        "tests.test_v455_youtube_media_intelligence"
+        "tests.test_v455_youtube_media_intelligence",
+        "test_v456_soundtrack_indicator_runtime.js"
       ]
     },
     "tools/check_release_manifest.py": {
@@ -182,6 +187,24 @@
       "forbidden": [
         "apt-get install -y ffmpeg yt-dlp' in deploy"
       ]
+    },
+    "architecture/soundtrack-state-indicator.js": {
+      "required": [
+        "OFF=neutral, PLAYING=green, SUPPRESSED=yellow",
+        "sbb-music-state-playing",
+        "sbb-music-state-suppressed",
+        "data-sbb-soundtrack-state",
+        "SBB_MEDIA_INTELLIGENCE",
+        "SBB_SOUNDTRACK",
+        "never touches audio or playback"
+      ]
+    },
+    "tests/test_v456_soundtrack_indicator_runtime.js": {
+      "required": [
+        "OFF/PLAYING/SUPPRESSED indicator",
+        "sbb-music-state-playing",
+        "sbb-music-state-suppressed"
+      ]
     }
   },
   "verification": [
@@ -198,6 +221,7 @@
     "node tests/test_v453_media_intelligence_terminal_runtime.js",
     "python3 -m unittest tests.test_v454_media_intelligence_crawl",
     "python3 -m unittest tests.test_v455_youtube_media_intelligence",
+    "node tests/test_v456_soundtrack_indicator_runtime.js",
     "bash VERIFY.sh"
   ]
 }
