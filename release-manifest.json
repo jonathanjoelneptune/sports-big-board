@@ -14,7 +14,8 @@
     "architecture/media-intelligence.js",
     "tests/test_v450_media_intelligence_runtime.js",
     "tests/test_v451_startup_stability_runtime.js",
-    "CHANGED-FILES-v4.5.1.txt"
+    "tools/check_release_manifest.py",
+    "tools/check_deploy_rehearsal.py"
   ],
   "contracts": {
     "VERSION": {"required": ["4.5.1"]},
@@ -53,6 +54,25 @@
       "required": [
         "startup feedback-loop and DOM-churn guards",
         "new MutationObserver("
+      ]
+    },
+    "tools/check_release_manifest.py": {
+      "required": [
+        "CHANGED-FILES-vX.X.X.txt files are intentionally ignored",
+        "release manifest may not require bookkeeping file"
+      ],
+      "forbidden": [
+        "changed=f'CHANGED-FILES-v{release}.txt'"
+      ]
+    },
+    "tools/check_deploy_rehearsal.py": {
+      "required": [
+        "CHANGED-FILES-vX.X.X.txt bookkeeping is never read",
+        "CHANGED-FILES ignored"
+      ],
+      "forbidden": [
+        "overlay_manifest_check",
+        "CHANGED-FILES-v{VERSION}.txt"
       ]
     }
   },

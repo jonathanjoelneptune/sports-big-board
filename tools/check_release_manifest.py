@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Atomic release-manifest gate for Sports Big Board.
 
-Runs before every other release check. It verifies that the manual-upload file set
-is complete, all local cache generations match VERSION, VERIFY wires every named
-test, and historical Python regression tests do not pin VERSION to an older release.
+Runs before every other release check. It verifies that the current repository
+contains every release-owned file, all local cache generations match VERSION,
+VERIFY wires every named test, and historical Python regression tests do not pin
+VERSION to an older release.
+
+CHANGED-FILES-vX.X.X.txt files are intentionally ignored. They are historical
+bookkeeping only and are never deployment inputs or release gates.
 """
 from __future__ import annotations
 import ast
@@ -41,11 +45,18 @@ if int(manifest.get('schemaVersion') or 0)!=1: fail(f"unsupported manifest schem
 
 required=list(dict.fromkeys(str(x) for x in manifest.get('requiredFiles',[]) if str(x).strip()))
 if not required: fail('manifest requiredFiles is empty')
+# Bookkeeping files must never become release prerequisites again.
+for rel in required:
+    if re.fullmatch(r'CHANGED-FILES-v\d+\.\d+\.\d+\.txt',rel,re.I):
+        fail(f'release manifest may not require bookkeeping file: {rel}')
 texts={rel:read(rel) for rel in required}
 version=texts.get('VERSION',read('VERSION')).strip()
 if release and version!=release: fail(f'VERSION {version!r} does not match manifest release {release!r}')
 
 for rel,spec in (manifest.get('contracts') or {}).items():
+    if re.fullmatch(r'CHANGED-FILES-v\d+\.\d+\.\d+\.txt',str(rel),re.I):
+        fail(f'release manifest may not define bookkeeping contract: {rel}')
+        continue
     text=texts.get(rel)
     if text is None: text=read(rel)
     for token in spec.get('required',[]) or []:
@@ -65,9 +76,8 @@ if 'python3 tools/check_release_manifest.py' not in verify:
 for test_path in re.findall(r'(tests/[A-Za-z0-9_.\-/]+\.(?:js|py))',verify):
     if not (ROOT/test_path).is_file(): fail(f'VERIFY.sh references missing test: {test_path}')
 
-# Catch the exact regression that caused the v4.4.4 upload loop: an old test may
-# preserve a behavior baseline, but it may not assert that VERSION equals an older
-# literal semantic version. Version-aware tests must derive the current release.
+# An old behavior test may preserve a baseline, but it may not assert that VERSION
+# equals an older literal semantic version. Version-aware tests derive current truth.
 def semver_literal(node):
     return node.value if isinstance(node,ast.Constant) and isinstance(node.value,str) and re.fullmatch(r'\d+\.\d+\.\d+',node.value) else None
 for test_path in sorted((ROOT/'tests').glob('test_*.py')):
@@ -85,13 +95,8 @@ for test_path in sorted((ROOT/'tests').glob('test_*.py')):
         if literal and literal!=release:
             fail(f'{test_path.relative_to(ROOT)}:{node.lineno}: hard-coded VERSION {literal} is stale; derive current VERSION or assert a minimum baseline')
 
-changed=f'CHANGED-FILES-v{release}.txt'
-changed_text=texts.get(changed,read(changed))
-for rel in required:
-    if rel not in changed_text: fail(f'{changed}: required manual-upload file not listed: {rel}')
-
 if errors:
     print('RELEASE MANIFEST CHECK FAILED')
     for err in errors: print(' -',err)
     raise SystemExit(1)
-print(f'PASS: v{release} atomic manual-upload manifest is complete ({len(required)} files)')
+print(f'PASS: v{release} atomic repository manifest is complete ({len(required)} files; CHANGED-FILES ignored)')
