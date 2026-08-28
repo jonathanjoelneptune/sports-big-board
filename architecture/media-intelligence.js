@@ -1,4 +1,4 @@
-/* Sports Big Board v4.5.0 — Media Intelligence + poisoned-media containment.
+/* Sports Big Board v4.5.1 — Media Intelligence startup-stability + poisoned-media containment.
    One browser authority consumes persisted music intelligence and owns the hard
    quarantine boundary BEFORE media can be assigned to a native/YouTube player. */
 (() => {
@@ -7,7 +7,7 @@
 
   const registry=new Map(),quarantined=new Map(),blockedUrls=new Set(),blockedYoutubeIds=new Set(),listeners=new Set();
   const stats={registered:0,quarantineAborts:0,preloadBlocks:0,orphanedLoads:0,quarantines:0,soundtrackSuppressions:0,soundtrackAllows:0};
-  let currentSession=null,lastSuppress=null,ytPatchTimer=0;
+  let currentSession=null,lastSuppress=null,ytPatchTimer=0,audibleWritePending=null;
   const clean=(v,n=1000)=>String(v??'').trim().slice(0,n);
   const ACTIVE_AUDIO_STATES=new Set(['playing','buffering']);
   const ASSET_FAILURE_RE=/youtube error\s*(101|150)\b|media_err_decode|media_err_src_not_supported|http\s*(404|410)\b|\b(404|410)\b[^\n]*(not found|gone)|unsupported (media|source)|invalid (media|source) url|malformed (media|source)|stale historical media/i;
@@ -38,13 +38,17 @@
   function register(asset){
     if(!asset)return null;const key=playbackKey(asset);if(!key)return null;
     const next=intelligenceFrom(asset,key),prev=registry.get(key);
+    const changed=!prev||prev.status!==next.status||prev.conflict!==next.conflict||prev.confidence!==next.confidence||prev.ratio!==next.ratio||prev.scanVersion!==next.scanVersion||prev.scannedAt!==next.scannedAt;
     registry.set(key,{...(prev||{}),...next});
     // Add transport-stable aliases so session/media-manifest identities resolve to
     // the same database intelligence even when one path uses an explicit key.
     if(asset?.youtubeId)registry.set(`youtube:${clean(asset.youtubeId,200)}`,registry.get(key));
     if(asset?.mediaUrl)registry.set(`direct:${clean(asset.mediaUrl,1400)}`,registry.get(key));
-    stats.registered=registry.size;notify('registered',{key,status:next.status,conflict:next.conflict});
-    reconcileSoundtrack();return {...registry.get(key)};
+    stats.registered=registry.size;
+    if(changed)notify('registered',{key,status:next.status,conflict:next.conflict});
+    const activeKey=clean(currentSession?.mediaKey||currentSession?.clipKey||'',1500);
+    if(changed&&activeKey&&(activeKey===key||registry.get(activeKey)===registry.get(key)))reconcileSoundtrack();
+    return {...registry.get(key)};
   }
   function decisionForKey(rawKey){
     const key=clean(rawKey,1500),info=registry.get(key);
@@ -58,6 +62,22 @@
     if(!videoAudibleState)return false;
     return decisionForKey(session?.mediaKey||session?.clipKey||'').conflict!==false;
   }
+  function scheduleAudibleTruth(wanted){
+    wanted=!!wanted;
+    const reported=!!currentSession?.audible?.soundtrack;
+    if(reported===wanted||audibleWritePending===wanted)return;
+    audibleWritePending=wanted;
+    const run=()=>{
+      const target=audibleWritePending;audibleWritePending=null;
+      if(target==null)return;
+      try{
+        const snap=window.SBB_PLAYBACK_SESSION?.snapshot?.()||currentSession||{};
+        if(!!snap?.audible?.soundtrack===!!target)return;
+        window.SBB_PLAYBACK_SESSION?.setAudible?.('soundtrack','site',!!target);
+      }catch(_){ }
+    };
+    try{if(typeof queueMicrotask==='function')queueMicrotask(run);else Promise.resolve().then(run);}catch(_){setTimeout(run,0);}
+  }
   function reconcileSoundtrack(session=currentSession){
     if(session)currentSession=session;const audio=soundtrackAudio();if(!audio)return false;
     const suppress=soundtrackShouldSuppress(currentSession);
@@ -67,7 +87,12 @@
       const info=decisionForKey(currentSession?.mediaKey||currentSession?.clipKey||'');
       notify('soundtrack-arbitration',{suppress,status:info.status,mediaKey:info.key});
     }
-    try{window.SBB_PLAYBACK_SESSION?.setAudible?.('soundtrack','site',!suppress&&!audio.paused&&Number(audio.volume)>0);}catch(_){ }
+    // IMPORTANT: this module subscribes to SBB_PLAYBACK_SESSION. Writing audible
+    // truth synchronously from inside that subscription creates a recursive
+    // setAudible -> emit -> reconcileSoundtrack loop. Only publish a changed value,
+    // and do it in a microtask so the current session emission can fully unwind.
+    const wantedAudible=!suppress&&!audio.paused&&!audio.muted&&Number(audio.volume)>0;
+    scheduleAudibleTruth(wantedAudible);
     try{document.body?.setAttribute?.('data-sbb-media-music',decisionForKey(currentSession?.mediaKey||'').status);}catch(_){ }
     return suppress;
   }
@@ -130,12 +155,12 @@
   }
   function activeBlockedLoads(){
     let count=0;
-    try{for(const el of document.querySelectorAll?.('video,audio')||[]){const src=elementSource(el);if(src&&matchesBlockedSource(src))count++;}}catch(_){ }
+    try{for(const el of document.querySelectorAll?.('video')||[]){const src=elementSource(el);if(src&&matchesBlockedSource(src))count++;}}catch(_){ }
     try{for(const frame of document.querySelectorAll?.('iframe')||[]){const yt=youtubeIdFromValue(frame.src||'');if(yt&&blockedYoutubeIds.has(yt))count++;}}catch(_){ }
     return count;
   }
   function abortMatchingResources(reason='quarantine'){
-    try{for(const el of document.querySelectorAll?.('video,audio')||[]){const src=elementSource(el);if(src&&matchesBlockedSource(src))abortNativeElement(el,reason);}}catch(_){ }
+    try{for(const el of document.querySelectorAll?.('video')||[]){const src=elementSource(el);if(src&&matchesBlockedSource(src))abortNativeElement(el,reason);}}catch(_){ }
     try{for(const frame of document.querySelectorAll?.('iframe')||[]){const yt=youtubeIdFromValue(frame.src||'');if(yt&&blockedYoutubeIds.has(yt))stopYoutubeIframe(frame,yt);}}catch(_){ }
     const orphaned=activeBlockedLoads();stats.orphanedLoads=orphaned;return orphaned;
   }
@@ -183,11 +208,13 @@
     if(session?.state==='failed'&&ASSET_FAILURE_RE.test(clean(session?.lastError||'',500))){quarantine({mediaKey:session.mediaKey,sourceUrl:session.sourceUrl},session.lastError);}
     reconcileSoundtrack(session);
   });}catch(_){ }
-  try{new MutationObserver(()=>{abortMatchingResources('mutation guard');}).observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['src']});}catch(_){ }
+  // v4.5.1: no global src MutationObserver. Quarantine aborts immediately and
+  // on two bounded follow-up passes; prototype pre-assignment guards block any
+  // later reassignment without continuously rescanning the DOM.
   if(typeof window.markRuntimeMediaFailed!=='function')window.markRuntimeMediaFailed=(item,reason='runtime playback failure')=>{
     if(ASSET_FAILURE_RE.test(clean(reason,500)))return quarantine(item,reason);return false;
   };
-  const api=Object.freeze({version:'1.0',register,decisionForKey,musicStatus,quarantine,isQuarantined,abortMatchingResources,reconcileSoundtrack,snapshot,subscribe});
+  const api=Object.freeze({version:'1.1',register,decisionForKey,musicStatus,quarantine,isQuarantined,abortMatchingResources,reconcileSoundtrack,snapshot,subscribe});
   window.SBB_MEDIA_INTELLIGENCE=api;window.SBB_MEDIA_QUARANTINE=api;
   reconcileSoundtrack();
 })();

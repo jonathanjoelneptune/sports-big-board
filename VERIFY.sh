@@ -42,6 +42,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v445_duplicate_candidate_runtime.js
   node tests/test_v446_stale_media_runtime.js
   node tests/test_v450_media_intelligence_runtime.js
+  node tests/test_v451_startup_stability_runtime.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi
