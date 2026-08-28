@@ -8,8 +8,8 @@ VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 
 class V446HistoricalMediaQuarantine(unittest.TestCase):
     def test_release(self):
-        self.assertEqual(VERSION,'4.4.6')
-        self.assertIn('Sports Big Board — v4.4.6',INDEX)
+        self.assertGreaterEqual(tuple(map(int,VERSION.split('.'))),(4,4,6))
+        self.assertIn(f'Sports Big Board — v{VERSION}',INDEX)
         self.assertIn('START 30M RECOVERY',INDEX)
     def test_targeted_recovery_profile_exists_without_replacing_full_certification(self):
         for token in ("label:'RECOVERY SOAK',durationMs:15*60_000","label:'RECOVERY HAMMER',durationMs:15*60_000","RECOVERY_TOTAL_MS","profile:'full'","preferNFL:true","startRecovery"):

@@ -1,4 +1,4 @@
-/* Sports Big Board v4.4.6 — Dev Playback Terminal + historical-media quarantine / random-archive endurance certification.
+/* Sports Big Board v4.5.0 — Dev Playback Terminal + historical-media quarantine / random-archive endurance certification.
    The terminal observes canonical playback and drives stress actions only through
    SBB_DEV_TEST_HOOKS / score-ribbon controls, preserving PlaybackController authority. */
 (() => {
@@ -76,8 +76,8 @@
       recoveryAttempts:0,retryAttempts:0,retrySuccesses:0,fallbacks:0,fallbackSuccesses:0,recoveredAfterReset:0,recoveryArmed:false,unrecoveredBlanks:0,
       engineIncidentsBase:0,engineResetsBase:0,engineIncidents:0,engineResets:0,lastAction:'',lastActionAt:0,lastFirstFrameAt:0,
       lastRecap:null,duplicateRecaps:0,repeatViolations:0,duplicateSelections:0,duplicateCandidateRejects:0,preflightDuplicateSkips:0,
-      assetBad:0,staleMedia:0,noMediaSkips:0,quarantineReselections:0,rapidTransitions:0,dateChanges:0,
-      randomDateAttempts:0,longDateJumps:0,archiveSpanDays:0,archiveDates:[],
+      assetBad:0,staleMedia:0,noMediaSkips:0,quarantineReselections:0,preloadBlocks:0,quarantineAborts:0,orphanedLoads:0,activeBlockedLoads:0,rapidTransitions:0,dateChanges:0,
+      mediaIntelligenceBase:{preloadBlocks:0,quarantineAborts:0},randomDateAttempts:0,longDateJumps:0,archiveSpanDays:0,archiveDates:[],
       sportChanges:0,qualityChanges:0,transportChanges:0,uniqueMedia:0,uniqueEvents:0,
       sports:{},qualities:{},dates:{},months:{},transports:{},providers:{},
       lastLeague:'',lastQuality:'',lastDate:'',lastTransport:'',lastMediaKey:'',lastEventKey:'',
@@ -109,6 +109,11 @@
     if(endurance.startedAt){
       endurance.engineIncidents=Math.max(0,Number(engine.incidents||0)-Number(endurance.engineIncidentsBase||0));
       endurance.engineResets=Math.max(0,Number(engine.resets||0)-Number(endurance.engineResetsBase||0));
+      const mi=window.SBB_MEDIA_INTELLIGENCE?.snapshot?.()||{},base=endurance.mediaIntelligenceBase||{};
+      endurance.preloadBlocks=Math.max(0,Number(mi.preloadBlocks||0)-Number(base.preloadBlocks||0));
+      endurance.quarantineAborts=Math.max(0,Number(mi.quarantineAborts||0)-Number(base.quarantineAborts||0));
+      endurance.orphanedLoads=Math.max(0,Number(mi.orphanedLoads||0));
+      endurance.activeBlockedLoads=Math.max(0,Number(mi.activeBlockedLoads||0));
     }
     endurance.uniqueMedia=seenMediaKeys.size;endurance.uniqueEvents=seenEventKeys.size;
     const profile=activeProfile(),totalMs=Number(profile.totalMs||ENDURANCE_TOTAL_MS);
@@ -145,6 +150,7 @@
     if(transports.length<cfg.minTransports)return failEndurance(`INSUFFICIENT_TRANSPORT_DIVERSITY ${transports.length}/${cfg.minTransports}`);
     if(endurance.maxNoFrameStreak>2)return failEndurance(`NOFRAME_MAX ${endurance.maxNoFrameStreak} > 2`);
     if(endurance.quarantineReselections)return failEndurance(`QUARANTINED_MEDIA_RESELECTED ${endurance.quarantineReselections}`);
+    if(endurance.orphanedLoads||endurance.activeBlockedLoads)return failEndurance(`ORPHANED_QUARANTINE_LOADS ${Math.max(endurance.orphanedLoads,endurance.activeBlockedLoads)}`);
     if(endurance.unrecoveredBlanks)return failEndurance(`UNRECOVERED_BLANKS ${endurance.unrecoveredBlanks}`);
     finishEndurance('PASS',`${cfg.label} random-archive recovery passed • ${endurance.successfulStarts} unique starts • ${endurance.transitions} transitions • ${sports.length} sports • ${dates.length} dates • ${months.length} months • ${endurance.archiveSpanDays}d span • ${endurance.staleMedia} stale assets quarantined`);
   }
@@ -275,7 +281,7 @@
       endurance.pendingStressSelection=true;
       let moved=await Promise.resolve(h.stressTuneNextGame?.());if(!moved)moved=await Promise.resolve(h.stressTuneNext?.());if(!moved){endurance.pendingStressSelection=false;return false;}
       const media=clean(h.currentMediaKey?.(),500),game=clean(h.currentGameKey?.(),240);
-      if(media&&quarantinedMediaKeys.has(media)){endurance.quarantineReselections++;endurance.pendingStressSelection=false;continue;}
+      if(media&&(quarantinedMediaKeys.has(media)||window.SBB_MEDIA_INTELLIGENCE?.isQuarantined?.(media))){window.SBB_MEDIA_INTELLIGENCE?.abortMatchingResources?.('stress preflight');endurance.preflightDuplicateSkips++;endurance.pendingStressSelection=false;continue;}
       if((media&&seenMediaKeys.has(media))||(game&&seenEventKeys.has(game))){endurance.duplicateSelections++;endurance.pendingStressSelection=false;continue;}
       endurance.pendingQuality='';endurance.pendingDate=clean(h.scoreDate?.(),10);endurance.pendingLeague='';return true;
     }
@@ -312,7 +318,9 @@
     const key=clean(row?.mediaKey||'',500);if(!key||quarantinedMediaKeys.has(key))return false;
     quarantinedMediaKeys.add(key);endurance.assetBad++;endurance.staleMedia++;row.quarantined=true;
     const item=itemFromRow(row);
+    try{window.SBB_MEDIA_INTELLIGENCE?.quarantine?.(item,`HTTP 410 stale historical media after repeated no first frame • ${reason}`);}catch(_){ }
     try{window.markRuntimeMediaFailed?.(item,`HTTP 410 stale historical media after repeated no first frame • ${reason}`,{providerFailure:false});}catch(_){ }
+    try{window.SBB_MEDIA_INTELLIGENCE?.abortMatchingResources?.('stale-media quarantine');}catch(_){ }
     endurance.noFrameStreak=0;
     enduranceLog('asset-bad',`STALE_MEDIA quarantined after repeated no-first-frame starts • ${clean(row.title,100)}`,{mediaKey:key,eventKey:row.eventKey});
     return true;
@@ -326,8 +334,8 @@
       if(!moved){try{moved=await Promise.resolve(h.stressTuneNext?.());}catch(_){moved=false;}}
       if(!moved)continue;
       const key=clean(h.currentMediaKey?.(),500);
-      if(key&&(key===badKey||quarantinedMediaKeys.has(key))){
-        endurance.quarantineReselections++;enduranceLog('quarantine-reselection',`Rejected quarantined fallback candidate • ${key}`,{mediaKey:key});continue;
+      if(key&&(key===badKey||quarantinedMediaKeys.has(key)||window.SBB_MEDIA_INTELLIGENCE?.isQuarantined?.(key))){
+        window.SBB_MEDIA_INTELLIGENCE?.abortMatchingResources?.('fallback preflight');endurance.preflightDuplicateSkips++;enduranceLog('quarantine-preblocked',`Pre-blocked quarantined fallback candidate before resource use • ${key}`,{mediaKey:key});continue;
       }
       if(key&&seenMediaKeys.has(key)){endurance.preflightDuplicateSkips++;continue;}
       endurance.fallbacks++;endurance.transitions++;const afterGame=clean(h.currentGameKey?.(),240);if(!beforeGame||!afterGame||beforeGame!==afterGame)endurance.crossGameTransitions++;
@@ -490,7 +498,7 @@
     if(endurance.status==='RUNNING')return false;
     const h=hooks();if(!devEnabled()||!h)return false;
     profile=PROFILE_CONFIG[profile]?profile:'full';
-    const engine=h.playbackEngine?.()||{},cfg=PROFILE_CONFIG[profile];resetEnduranceMemory();endurance=freshEndurance('RUNNING');endurance.profile=profile;endurance.runId=`end-${epoch().toString(36)}`;endurance.startedAt=epoch();endurance.phase=cfg.phases[0].id;endurance.phaseLabel=cfg.phases[0].label;endurance.phaseStartedAt=endurance.startedAt;endurance.nextTransitionAt=endurance.startedAt+(profile==='recovery'?8_000:20_000);endurance.savedResourceMode=clean(h.resourceMode?.()||'balanced',24);endurance.savedMediaKey=clean(h.currentMediaKey?.(),500);endurance.savedScoreDate=clean(h.scoreDate?.(),20);endurance.engineIncidentsBase=Number(engine.incidents||0);endurance.engineResetsBase=Number(engine.resets||0);
+    const engine=h.playbackEngine?.()||{},cfg=PROFILE_CONFIG[profile];resetEnduranceMemory();endurance=freshEndurance('RUNNING');endurance.profile=profile;endurance.runId=`end-${epoch().toString(36)}`;endurance.startedAt=epoch();endurance.phase=cfg.phases[0].id;endurance.phaseLabel=cfg.phases[0].label;endurance.phaseStartedAt=endurance.startedAt;endurance.nextTransitionAt=endurance.startedAt+(profile==='recovery'?8_000:20_000);endurance.savedResourceMode=clean(h.resourceMode?.()||'balanced',24);endurance.savedMediaKey=clean(h.currentMediaKey?.(),500);endurance.savedScoreDate=clean(h.scoreDate?.(),20);endurance.engineIncidentsBase=Number(engine.incidents||0);endurance.engineResetsBase=Number(engine.resets||0);const miBase=window.SBB_MEDIA_INTELLIGENCE?.snapshot?.()||{};endurance.mediaIntelligenceBase={preloadBlocks:Number(miBase.preloadBlocks||0),quarantineAborts:Number(miBase.quarantineAborts||0)};
     enduranceLog('start',profile==='recovery'?'30-minute historical recovery validation started • NFL emphasized • 365-day random archive • stale media quarantined and skipped':'60-minute random-archive mixed-media endurance started • 365-day random date pool • 10m warmup → 30m mixed soak → 20m mixed hammer');clear();
     try{await h.setResourceMode?.('playback');}catch(err){return failEndurance(`PLAYBACK_MODE_FAILED • ${err?.message||err}`);}
     try{h.start?.();h.ensurePlaying?.();}catch(err){return failEndurance(`PLAYBACK_START_FAILED • ${err?.message||err}`);}
@@ -536,7 +544,7 @@
   window.addEventListener?.('sbb:dev-mode',render);
   document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('playbackTerminalClear')?.addEventListener('click',clear);
-    document.getElementById('playbackTerminalCopy')?.addEventListener('click',()=>{const s=enduranceSnapshot(),sports=SPORT_IDS.filter(k=>Number(s.sports?.[k]||0)>0).join(','),colors=QUALITY_ROTATION.filter(q=>Number(s.qualities[q]||0)>0).join(','),dates=counterKeys(s.dates).join(','),months=counterKeys(s.months).join(',');const head=`ENDURANCE\t${s.status}\t${s.phaseLabel}\tPROFILE=${s.profile}\tELAPSED=${fmtClock(s.elapsedMs)}\tSTARTS=${s.successfulStarts}\tUNIQUE=${s.uniqueMedia}\tTRANSITIONS=${s.transitions}\tSPORTS=${sports}\tCOLORS=${colors}\tDATES=${dates}\tMONTHS=${months}\tDATE_SWAPS=${s.dateChanges}\tDATE_SPAN=${s.archiveSpanDays}d\tLONG_JUMPS=${s.longDateJumps}\tRANDOM_DATE_TRIES=${s.randomDateAttempts}\tDUP_REJECTS=${s.duplicateCandidateRejects}\tPREFLIGHT_SKIPS=${s.preflightDuplicateSkips}\tNO_MEDIA_SKIP=${s.noMediaSkips}\tSTALE_MEDIA=${s.staleMedia}\tNOFRAME_MAX=${s.maxNoFrameStreak}\tRAW_NOFRAME=${s.rawNoFrameCount}\tRESETS=${s.engineResets}\tRETRIES=${s.retryAttempts}\tRETRY_OK=${s.retrySuccesses}\tFALLBACKS=${s.fallbacks}\tFALLBACK_OK=${s.fallbackSuccesses}\tASSET_BAD=${s.assetBad}\tQUARANTINE_RESELECT=${s.quarantineReselections}\tREPEATS=${s.repeatViolations}\t${s.reason}`;const lines=snapshot().filter(r=>r.enduranceRunId===s.runId).map(r=>`${inferLeague(r)}\t${r.quality||''}\t${r.scoreDate||''}\t${r.transport}\t${r.provider}\tRESULT=${r.rejectedDuplicate?'DUPLICATE_REJECTED':(r.quarantined?'STALE_QUARANTINED':'ACCEPTED')}\tPLAY=${fmtMs(r.playTimeMs)}\tBUFFER=${fmtMs(r.bufferTimeMs)}\tSTALLS=${r.stallCount}\tSTART=${r.firstFrameMs??''}\tEVENT=${r.eventKey}\tMEDIA=${r.mediaKey}\t${r.title}`);navigator.clipboard?.writeText?.([head,...lines].join('\n')).catch(()=>{});});
+    document.getElementById('playbackTerminalCopy')?.addEventListener('click',()=>{const s=enduranceSnapshot(),sports=SPORT_IDS.filter(k=>Number(s.sports?.[k]||0)>0).join(','),colors=QUALITY_ROTATION.filter(q=>Number(s.qualities[q]||0)>0).join(','),dates=counterKeys(s.dates).join(','),months=counterKeys(s.months).join(',');const head=`ENDURANCE\t${s.status}\t${s.phaseLabel}\tPROFILE=${s.profile}\tELAPSED=${fmtClock(s.elapsedMs)}\tSTARTS=${s.successfulStarts}\tUNIQUE=${s.uniqueMedia}\tTRANSITIONS=${s.transitions}\tSPORTS=${sports}\tCOLORS=${colors}\tDATES=${dates}\tMONTHS=${months}\tDATE_SWAPS=${s.dateChanges}\tDATE_SPAN=${s.archiveSpanDays}d\tLONG_JUMPS=${s.longDateJumps}\tRANDOM_DATE_TRIES=${s.randomDateAttempts}\tDUP_REJECTS=${s.duplicateCandidateRejects}\tPREFLIGHT_SKIPS=${s.preflightDuplicateSkips}\tNO_MEDIA_SKIP=${s.noMediaSkips}\tSTALE_MEDIA=${s.staleMedia}\tNOFRAME_MAX=${s.maxNoFrameStreak}\tRAW_NOFRAME=${s.rawNoFrameCount}\tRESETS=${s.engineResets}\tRETRIES=${s.retryAttempts}\tRETRY_OK=${s.retrySuccesses}\tFALLBACKS=${s.fallbacks}\tFALLBACK_OK=${s.fallbackSuccesses}\tASSET_BAD=${s.assetBad}\tQUARANTINE_RESELECT=${s.quarantineReselections}\tPRELOAD_BLOCKS=${s.preloadBlocks}\tQUARANTINE_ABORTS=${s.quarantineAborts}\tORPHANED_LOADS=${s.orphanedLoads}\tACTIVE_BLOCKED=${s.activeBlockedLoads}\tREPEATS=${s.repeatViolations}\t${s.reason}`;const lines=snapshot().filter(r=>r.enduranceRunId===s.runId).map(r=>`${inferLeague(r)}\t${r.quality||''}\t${r.scoreDate||''}\t${r.transport}\t${r.provider}\tRESULT=${r.rejectedDuplicate?'DUPLICATE_REJECTED':(r.quarantined?'STALE_QUARANTINED':'ACCEPTED')}\tPLAY=${fmtMs(r.playTimeMs)}\tBUFFER=${fmtMs(r.bufferTimeMs)}\tSTALLS=${r.stallCount}\tSTART=${r.firstFrameMs??''}\tEVENT=${r.eventKey}\tMEDIA=${r.mediaKey}\t${r.title}`);navigator.clipboard?.writeText?.([head,...lines].join('\n')).catch(()=>{});});
     document.getElementById('playbackEnduranceStart')?.addEventListener('click',()=>startEndurance('full'));document.getElementById('playbackRecoveryStart')?.addEventListener('click',()=>startEndurance('recovery'));document.getElementById('playbackEnduranceStop')?.addEventListener('click',stopEndurance);
     render();tickTimer=setInterval(render,500);enduranceTimer=setInterval(enduranceTick,1000);
   });

@@ -9,7 +9,7 @@ def text(p):
     if not q.is_file(): errors.append(f"missing {p}"); return ""
     return q.read_text(encoding='utf-8')
 version=text('VERSION').strip(); app=text('app.js'); index=text('index.html')
-readiness=text('architecture/playback-readiness.js'); session=text('architecture/playback-session.js'); backend=text('sbb/playback_readiness.py'); resolver=text('architecture/media-resolver.js'); manifest=text('architecture/media-manifest.js'); scheduler=text('sbb/media_work_scheduler.py'); verify=text('VERIFY.sh')
+readiness=text('architecture/playback-readiness.js'); session=text('architecture/playback-session.js'); backend=text('sbb/playback_readiness.py'); resolver=text('architecture/media-resolver.js'); manifest=text('architecture/media-manifest.js'); scheduler=text('sbb/media_work_scheduler.py'); verify=text('VERIFY.sh'); intelligence=text('architecture/media-intelligence.js'); intelligence_backend=text('sbb/media_intelligence.py'); sbb_init=text('sbb/__init__.py'); deploy=text('cloud/gcp/DEPLOY-FROM-GITHUB.sh')
 try: version_tuple=tuple(int(x) for x in version.split('.'))
 except Exception: version_tuple=(0,)
 need(version_tuple>=(4,4,2),f'expected v4.4.2 or newer, found {version}')
@@ -74,13 +74,27 @@ for token in ('ARCHIVE_LOOKBACK_DAYS=365','ARCHIVE_MIN_JUMP_DAYS=45','LONG_DATE_
     need(token in terminal,f'v4.4.5 random-archive endurance missing {token}')
 need('python3 tools/check_release_manifest.py' in verify,'VERIFY.sh does not execute atomic release manifest gate first')
 need('node tests/test_v445_duplicate_candidate_runtime.js' in verify,'VERIFY.sh does not execute v4.4.5 duplicate-candidate runtime test')
-# v4.4.6 historical-media quarantine + graceful recovery.
+# v4.5.0 historical-media quarantine + graceful recovery.
 for token in ('RECOVERY_PHASES','RECOVERY_TOTAL_MS',"profile:'full'",'preferNFL:true','startRecovery','STALE_MEDIA','NO_MEDIA_SKIP','staleMedia','noMediaSkips','fallbackSuccesses','quarantineReselections','quarantineStaleMedia','markRuntimeMediaFailed','tryScoreMediaFallback','QUARANTINED_MEDIA_RESELECTED',"HTTP 410 stale historical media",'providerFailure:false'):
-    need(token in terminal,f'v4.4.6 historical-media recovery missing {token}')
-need('node tests/test_v446_stale_media_runtime.js' in verify,'VERIFY.sh does not execute v4.4.6 stale-media runtime test')
-need('python3 -m unittest tests.test_v446_historical_media_quarantine' in verify,'VERIFY.sh does not execute v4.4.6 static recovery contract')
+    need(token in terminal,f'v4.5.0 historical-media recovery missing {token}')
+need('node tests/test_v446_stale_media_runtime.js' in verify,'VERIFY.sh does not execute v4.5.0 stale-media runtime test')
+need('python3 -m unittest tests.test_v446_historical_media_quarantine' in verify,'VERIFY.sh does not execute v4.5.0 static recovery contract')
+# v4.5.0 Media Intelligence + poisoned-player containment.
+need(version_tuple>=(4,5,0),f'expected v4.5.0 Media Intelligence release, found {version}')
+need(f'architecture/media-intelligence.js?v={version}' in index,'Media Intelligence browser authority not loaded at current cache generation')
+need(index.find(f'architecture/site-soundtrack.js?v={version}') < index.find(f'architecture/media-intelligence.js?v={version}') < index.find(f'app.js?v={version}'),'Media Intelligence load order must be soundtrack -> intelligence -> app')
+for token in ('musicStatus','musicConflict','soundtrackShouldSuppress','installNativeGuards','preloadBlocks','orphanedLoads','quarantine','markRuntimeMediaFailed'):
+    need(token in intelligence,f'v4.5.0 browser Media Intelligence missing {token}')
+for token in ('history_media_intelligence','MUSIC_SCAN_VERSION','claim_next','MediaIntelligenceWorker','musicConflict','ffmpeg','yt-dlp','schedule_media_intelligence_install'):
+    need(token in intelligence_backend,f'v4.5.0 server Media Intelligence missing {token}')
+need('schedule_media_intelligence_install()' in sbb_init,'sbb package does not auto-start Media Intelligence crawler')
+need('apt-get install -y ffmpeg yt-dlp' in deploy,'normal cloud deploy does not provision Media Intelligence audio dependencies')
+for token in ('SBB_MEDIA_INTELLIGENCE','ORPHANED_QUARANTINE_LOADS','PRELOAD_BLOCKS=','QUARANTINE_ABORTS=','ORPHANED_LOADS='):
+    need(token in terminal,f'v4.5.0 poison containment telemetry missing {token}')
+need('python3 -m unittest tests.test_v450_media_intelligence' in verify,'VERIFY.sh does not execute v4.5.0 Media Intelligence database test')
+need('node tests/test_v450_media_intelligence_runtime.js' in verify,'VERIFY.sh does not execute v4.5.0 browser Media Intelligence runtime test')
 if errors:
     print('ULTIMATE PLAYBACK CHECK FAILED')
     for e in errors: print(' -',e)
     raise SystemExit(1)
-print(f'PASS: v{version} Ultimate Playback random-archive + historical-media quarantine/recovery contract is internally consistent')
+print(f'PASS: v{version} Ultimate Playback + Media Intelligence/poison-containment contract is internally consistent')

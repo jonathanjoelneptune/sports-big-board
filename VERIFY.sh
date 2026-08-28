@@ -18,6 +18,7 @@ python3 tools/check_ultimate_playback.py
 python3 tools/check_deploy_rehearsal.py
 python3 -m unittest tests.test_v445_random_archive_stress
 python3 -m unittest tests.test_v446_historical_media_quarantine
+python3 -m unittest tests.test_v450_media_intelligence
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"
@@ -40,12 +41,13 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v444_playback_recovery_runtime.js
   node tests/test_v445_duplicate_candidate_runtime.js
   node tests/test_v446_stale_media_runtime.js
+  node tests/test_v450_media_intelligence_runtime.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi
 
 python -m py_compile server.py sbb/*.py tests/*.py cloud/vm/backup_state.py cloud/github-pages/build_pages.py
-bash -n START-ANDROID.sh start.sh cloud/gcp/CREATE-STAGE1.sh cloud/gcp/DEPLOY-UPDATE.sh cloud/gcp/DEPLOY-FROM-GITHUB.sh cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh cloud/gcp/UPLOAD-SOUNDTRACK.sh
+bash -n START-ANDROID.sh start.sh cloud/gcp/CREATE-STAGE1.sh cloud/gcp/DEPLOY-UPDATE.sh cloud/gcp/DEPLOY-FROM-GITHUB.sh cloud/gcp/ENABLE-GITHUB-AUTODEPLOY.sh cloud/gcp/UPLOAD-SOUNDTRACK.sh cloud/vm/INSTALL-STAGE1.sh
 WARN_LOG="$VERIFY_TMP/python-unittest.log"
 set +e
 PYTHONWARNINGS=always::ResourceWarning PYTHONPATH=. python -m unittest discover -s tests -p 'test_*.py' -v 2>&1 | tee "$WARN_LOG"

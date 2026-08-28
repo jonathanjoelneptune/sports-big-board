@@ -1,141 +1,153 @@
 {
   "schemaVersion": 1,
-  "release": "4.4.6",
-  "baseRelease": "4.4.5",
-  "title": "Historical Media Quarantine & Graceful Fallback",
+  "release": "4.5.0",
+  "baseRelease": "4.4.6",
+  "title": "Media Intelligence & Poisoned Player Containment",
   "atomic": true,
   "requiredFiles": [
     "VERSION",
     "index.html",
     "core-model.js",
-    "architecture/playback-terminal.js",
     "foundation-certification.json",
-    "VERIFY.sh",
-    "tools/check_ultimate_playback.py",
-    "tests/test_v443_playback_endurance.py",
-    "tests/test_v443_playback_endurance.js",
-    "tests/test_v444_mixed_media_soak.py",
-    "tests/test_v444_playback_recovery_runtime.js",
-    "tests/test_v445_random_archive_stress.py",
-    "tests/test_v446_historical_media_quarantine.py",
-    "tests/test_v446_stale_media_runtime.js",
     "release-manifest.json",
-    "CHANGED-FILES-v4.4.6.txt"
+    "VERIFY.sh",
+    "architecture/playback-terminal.js",
+    "architecture/media-intelligence.js",
+    "sbb/__init__.py",
+    "sbb/media_intelligence.py",
+    "cloud/gcp/DEPLOY-FROM-GITHUB.sh",
+    "cloud/vm/INSTALL-STAGE1.sh",
+    "tools/check_ultimate_playback.py",
+    "tests/test_v446_historical_media_quarantine.py",
+    "tests/test_v450_media_intelligence.py",
+    "tests/test_v450_media_intelligence_runtime.js",
+    "CHANGED-FILES-v4.5.0.txt"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.4.6"
+        "4.5.0"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.4.6",
+        "Sports Big Board — v4.5.0",
         "START 60M",
         "START 30M RECOVERY",
-        "random archive dates across 365 days",
-        "FIND RECAP/no media skipped",
-        "app.js?v=4.4.6",
-        "architecture/playback-terminal.js?v=4.4.6"
+        "architecture/media-intelligence.js?v=4.5.0",
+        "architecture/site-soundtrack.js?v=4.5.0",
+        "app.js?v=4.5.0"
       ],
       "forbidden": [
-        "?v=4.4.5"
+        "?v=4.4.6"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.4.6'"
+        "version:'4.5.0'"
+      ]
+    },
+    "architecture/media-intelligence.js": {
+      "required": [
+        "SBB_MEDIA_INTELLIGENCE",
+        "musicStatus",
+        "musicConflict",
+        "soundtrackShouldSuppress",
+        "installNativeGuards",
+        "preloadBlocks",
+        "orphanedLoads",
+        "markRuntimeMediaFailed",
+        "abortMatchingResources"
       ]
     },
     "architecture/playback-terminal.js": {
       "required": [
-        "RECOVERY_PHASES",
-        "RECOVERY_TOTAL_MS",
-        "preferNFL:true",
-        "startRecovery",
-        "STALE_MEDIA",
-        "NO_MEDIA_SKIP",
-        "quarantineStaleMedia",
-        "markRuntimeMediaFailed",
-        "tryScoreMediaFallback",
-        "HTTP 410 stale historical media",
-        "providerFailure:false",
-        "fallbackSuccesses",
-        "quarantineReselections",
-        "QUARANTINED_MEDIA_RESELECTED",
-        "ARCHIVE_LOOKBACK_DAYS=365",
-        "filter(r=>r.enduranceRunId===s.runId)"
-      ]
-    },
-    "foundation-certification.json": {
-      "required": [
-        "\"release\": \"4.4.6\""
-      ]
-    },
-    "VERIFY.sh": {
-      "required": [
-        "python3 tools/check_release_manifest.py",
-        "python3 -m unittest tests.test_v446_historical_media_quarantine",
-        "node tests/test_v446_stale_media_runtime.js",
-        "node tests/test_v444_playback_recovery_runtime.js"
-      ]
-    },
-    "tools/check_ultimate_playback.py": {
-      "required": [
-        "v4.4.6 historical-media quarantine + graceful recovery",
-        "v4.4.6 stale-media runtime test"
-      ]
-    },
-    "tests/test_v444_mixed_media_soak.py": {
-      "required": [
-        "markRuntimeMediaFailed"
-      ]
-    },
-    "tests/test_v444_playback_recovery_runtime.js": {
-      "required": [
-        "one stale-asset retry must not reset the whole playback engine",
-        "assert.equal(resetCalls,0"
-      ]
-    },
-    "tests/test_v445_random_archive_stress.py": {
-      "required": [
-        "test_release_baseline_or_newer",
-        "self.assertGreaterEqual(tuple(map(int,VERSION.split"
-      ],
-      "forbidden": [
-        "self.assertEqual(VERSION,'4.4.5')"
-      ]
-    },
-    "tests/test_v446_historical_media_quarantine.py": {
-      "required": [
-        "START 30M RECOVERY",
+        "SBB_MEDIA_INTELLIGENCE",
+        "ORPHANED_QUARANTINE_LOADS",
+        "PRELOAD_BLOCKS=",
+        "QUARANTINE_ABORTS=",
+        "ORPHANED_LOADS=",
         "STALE_MEDIA",
         "NO_MEDIA_SKIP",
         "QUARANTINED_MEDIA_RESELECTED"
       ]
     },
-    "tests/test_v446_stale_media_runtime.js": {
+    "sbb/media_intelligence.py": {
       "required": [
-        "two failures of one historical asset should quarantine, not fail certification",
-        "fallbackSuccesses"
+        "history_media_intelligence",
+        "MUSIC_SCAN_VERSION = 1",
+        "class MediaIntelligenceWorker",
+        "def claim_next",
+        "musicConflict",
+        "schedule_media_intelligence_install",
+        "ffmpeg",
+        "yt-dlp",
+        "_seed_missing_rows"
       ]
     },
-    "tests/test_v443_playback_endurance.py": {
+    "sbb/__init__.py": {
       "required": [
-        "markRuntimeMediaFailed",
-        "self.assertNotIn('forcePlaybackEngineReset?.()',TERM)"
-      ],
-      "forbidden": [
-        "self.assertIn('forcePlaybackEngineReset',TERM)"
+        "v4.5.0",
+        "schedule_media_intelligence_install()"
       ]
     },
-    "tests/test_v443_playback_endurance.js": {
+    "cloud/gcp/DEPLOY-FROM-GITHUB.sh": {
       "required": [
-        "markRuntimeMediaFailed",
-        "single stale asset must not reset the entire playback engine"
+        "Media Intelligence runtime dependencies",
+        "apt-get install -y ffmpeg yt-dlp"
+      ]
+    },
+    "cloud/vm/INSTALL-STAGE1.sh": {
+      "required": [
+        "ffmpeg yt-dlp"
+      ]
+    },
+    "foundation-certification.json": {
+      "required": [
+        "\"release\": \"4.5.0\"",
+        "Media Intelligence",
+        "poisoned-player"
+      ]
+    },
+    "VERIFY.sh": {
+      "required": [
+        "python3 tools/check_release_manifest.py",
+        "python3 -m unittest tests.test_v450_media_intelligence",
+        "node tests/test_v450_media_intelligence_runtime.js",
+        "python3 -m unittest tests.test_v446_historical_media_quarantine",
+        "node tests/test_v446_stale_media_runtime.js"
+      ]
+    },
+    "tools/check_ultimate_playback.py": {
+      "required": [
+        "Media Intelligence + poisoned-player containment",
+        "history_media_intelligence",
+        "ORPHANED_QUARANTINE_LOADS"
+      ]
+    },
+    "tests/test_v446_historical_media_quarantine.py": {
+      "required": [
+        "self.assertGreaterEqual(tuple(map(int,VERSION.split",
+        "self.assertIn(f'Sports Big Board — v{VERSION}',INDEX)"
       ],
       "forbidden": [
-        "terminal.includes('forcePlaybackEngineReset')"
+        "self.assertEqual(VERSION,'4.4.6')"
+      ]
+    },
+    "tests/test_v450_media_intelligence.py": {
+      "required": [
+        "test_existing_and_future_assets_are_automatically_queued",
+        "MediaIntelligenceStore",
+        "musicConflict",
+        "ffmpeg",
+        "yt-dlp"
+      ]
+    },
+    "tests/test_v450_media_intelligence_runtime.js": {
+      "required": [
+        "music-aware soundtrack arbitration",
+        "poisoned media pre-assignment containment",
+        "preloadBlocks"
       ]
     }
   },
@@ -145,8 +157,8 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v446_historical_media_quarantine",
-    "node tests/test_v446_stale_media_runtime.js",
+    "python3 -m unittest tests.test_v450_media_intelligence",
+    "node tests/test_v450_media_intelligence_runtime.js",
     "bash VERIFY.sh"
   ]
 }

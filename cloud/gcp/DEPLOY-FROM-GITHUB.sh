@@ -176,6 +176,18 @@ rm -rf "$RELEASE_DIR"; mkdir -p "$RELEASE_DIR"
 tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
 chown -R root:root "$RELEASE_DIR"
 
+# v4.5.0 Media Intelligence analyzes bounded audio samples in the background.
+# Install decoder/resolver dependencies on every deployment so an existing Stage 1
+# VM receives the capability without requiring a one-off operator SSH session.
+echo "[deploy] Ensuring Media Intelligence runtime dependencies (ffmpeg + yt-dlp)..."
+if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v yt-dlp >/dev/null 2>&1; then
+  export DEBIAN_FRONTEND=noninteractive
+  apt-get update -y >/dev/null
+  apt-get install -y ffmpeg yt-dlp >/dev/null
+fi
+command -v ffmpeg >/dev/null
+command -v yt-dlp >/dev/null
+
 # v4 catalog preflight is structural. Stop the old backend so SQLite is
 # quiescent. Structurally healthy normalized catalogs are preserved and may get
 # only a rollback snapshot for in-place relationship repair. Legacy/structurally

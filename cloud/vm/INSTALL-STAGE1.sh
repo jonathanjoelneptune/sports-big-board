@@ -14,7 +14,9 @@ ENV_FILE="$ENV_DIR/sbb.env"
 echo "[vm] Installing system packages..."
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y >/dev/null
-apt-get install -y python3 sqlite3 curl caddy >/dev/null
+# v4.5.0 Media Intelligence uses ffmpeg for bounded audio sampling and yt-dlp to
+# resolve YouTube audio without downloading full videos.
+apt-get install -y python3 sqlite3 curl caddy ffmpeg yt-dlp >/dev/null
 
 echo "[vm] Mounting persistent Sports Big Board state disk..."
 mkdir -p "$STATE_DIR"

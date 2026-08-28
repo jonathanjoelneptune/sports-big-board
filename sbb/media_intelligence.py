@@ -1,0 +1,636 @@
+"""Sports Big Board v4.5.0 media intelligence.
+
+A single, bandwidth-bounded background worker enriches every normalized media asset
+with durable music-presence intelligence. Existing catalog media is backfilled and
+newly discovered media is picked up automatically because history_source_media is
+the only queue source.
+
+The detector is deliberately conservative. NO_MUSIC is emitted only with strong
+evidence; uncertain material remains UNKNOWN, which causes the browser soundtrack
+to yield so Sports Big Board never intentionally layers two songs.
+"""
+from __future__ import annotations
+
+import array
+import json
+import math
+import os
+import re
+import shutil
+import sqlite3
+import subprocess
+import sys
+import threading
+import time
+import urllib.parse
+from contextlib import closing
+from dataclasses import dataclass
+
+MUSIC_SCAN_VERSION = 1
+MUSIC_STATUSES = ("PENDING", "HAS_MUSIC", "NO_MUSIC", "UNKNOWN", "SCAN_FAILED")
+DEFAULT_SAMPLE_SECONDS = max(4.0, min(12.0, float(os.environ.get("SBB_MUSIC_SAMPLE_SECONDS", "8") or 8)))
+DEFAULT_SAMPLE_COUNT = max(2, min(6, int(os.environ.get("SBB_MUSIC_SAMPLE_COUNT", "4") or 4)))
+MUSIC_WORKER_IDLE_SECONDS = max(5.0, float(os.environ.get("SBB_MUSIC_WORKER_IDLE_SECONDS", "20") or 20))
+MUSIC_WORKER_BALANCED_PAUSE = max(2.0, float(os.environ.get("SBB_MUSIC_WORKER_BALANCED_PAUSE", "8") or 8))
+MUSIC_ACTIVE_MEDIA_GRACE_SECONDS = max(5.0, float(os.environ.get("SBB_MUSIC_ACTIVE_MEDIA_GRACE_SECONDS", "15") or 15))
+MAX_SCAN_ATTEMPTS = max(2, min(12, int(os.environ.get("SBB_MUSIC_MAX_SCAN_ATTEMPTS", "6") or 6)))
+FFMPEG_TIMEOUT_SECONDS = max(8, min(90, int(os.environ.get("SBB_MUSIC_FFMPEG_TIMEOUT_SECONDS", "30") or 30)))
+YTDLP_TIMEOUT_SECONDS = max(10, min(90, int(os.environ.get("SBB_MUSIC_YTDLP_TIMEOUT_SECONDS", "30") or 30)))
+SAMPLE_RATE = 8000
+FRAME_SECONDS = 0.5
+FRAME_SAMPLES = int(SAMPLE_RATE * FRAME_SECONDS)
+ANALYSIS_FREQUENCIES = (110.0, 146.8, 196.0, 261.6, 329.6, 440.0, 587.3, 783.9, 1046.5, 1568.0, 2093.0, 3136.0)
+
+
+@dataclass
+class MusicResult:
+    status: str
+    confidence: float
+    ratio: float
+    conflict: bool
+    scanned_seconds: float
+    details: dict
+
+
+class MediaIntelligenceStore:
+    def __init__(self, db_path):
+        self.db_path = str(db_path)
+        self._lock = threading.RLock()
+        self.ensure_schema()
+
+    def _connect(self):
+        conn = sqlite3.connect(self.db_path, timeout=30)
+        conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA foreign_keys=ON")
+        conn.execute("PRAGMA busy_timeout=30000")
+        return conn
+
+    def ensure_schema(self):
+        now = time.time()
+        with self._lock, closing(self._connect()) as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS history_media_intelligence (
+                    asset_key TEXT PRIMARY KEY,
+                    music_status TEXT NOT NULL DEFAULT 'PENDING',
+                    music_confidence REAL NOT NULL DEFAULT 0,
+                    music_ratio REAL NOT NULL DEFAULT 0,
+                    music_conflict INTEGER NOT NULL DEFAULT 1,
+                    scan_version INTEGER NOT NULL DEFAULT 0,
+                    scan_duration_seconds REAL NOT NULL DEFAULT 0,
+                    scan_attempts INTEGER NOT NULL DEFAULT 0,
+                    scanned_at REAL NOT NULL DEFAULT 0,
+                    next_retry_at REAL NOT NULL DEFAULT 0,
+                    last_error TEXT NOT NULL DEFAULT '',
+                    details_json TEXT NOT NULL DEFAULT '{}',
+                    claim_owner TEXT NOT NULL DEFAULT '',
+                    claim_started_at REAL NOT NULL DEFAULT 0,
+                    claim_expires_at REAL NOT NULL DEFAULT 0,
+                    created_at REAL NOT NULL DEFAULT 0,
+                    updated_at REAL NOT NULL DEFAULT 0,
+                    FOREIGN KEY(asset_key) REFERENCES history_source_media(asset_key) ON DELETE CASCADE
+                )""")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_media_intelligence_queue ON history_media_intelligence(scan_version,music_status,next_retry_at,claim_expires_at)")
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_media_intelligence_status ON history_media_intelligence(music_status,scanned_at)")
+            conn.execute("""
+                INSERT OR IGNORE INTO history_media_intelligence(asset_key,music_status,music_conflict,created_at,updated_at)
+                SELECT asset_key,'PENDING',1,?,? FROM history_source_media
+            """, (now, now))
+            conn.commit()
+
+    @staticmethod
+    def _asset_json(row):
+        try:
+            value = json.loads(row["asset_json"] or "{}")
+            return value if isinstance(value, dict) else {}
+        except Exception:
+            return {}
+
+    def _seed_missing_rows(self, conn, now):
+        conn.execute("""
+            INSERT OR IGNORE INTO history_media_intelligence(asset_key,music_status,music_conflict,created_at,updated_at)
+            SELECT asset_key,'PENDING',1,?,? FROM history_source_media
+        """, (now, now))
+
+    def claim_next(self, owner, lease_seconds=420):
+        now = time.time()
+        lease_seconds = max(90, int(lease_seconds or 420))
+        with self._lock, closing(self._connect()) as conn:
+            conn.execute("BEGIN IMMEDIATE")
+            self._seed_missing_rows(conn, now)
+            row = conn.execute("""
+                SELECT s.asset_key,s.provider,s.provider_media_id,s.canonical_url,s.title,
+                       s.duration_seconds,s.published_at,s.validation_state,s.runtime_state,
+                       s.asset_json,mi.music_status,mi.scan_attempts,mi.scan_version
+                FROM history_source_media s
+                JOIN history_media_intelligence mi ON mi.asset_key=s.asset_key
+                WHERE UPPER(COALESCE(s.runtime_state,''))<>'FAILED'
+                  AND UPPER(COALESCE(s.validation_state,'CANDIDATE')) IN ('VERIFIED','CANDIDATE')
+                  AND (
+                       mi.scan_version < ?
+                       OR mi.music_status='PENDING'
+                       OR (mi.music_status='UNKNOWN' AND mi.next_retry_at<=?)
+                       OR (mi.music_status='SCAN_FAILED' AND mi.next_retry_at<=?)
+                  )
+                  AND (mi.claim_expires_at<=? OR mi.claim_owner=?)
+                  AND mi.scan_attempts < ?
+                ORDER BY
+                  CASE UPPER(COALESCE(s.runtime_state,'')) WHEN 'PLAYED' THEN 0 ELSE 1 END,
+                  CASE UPPER(COALESCE(s.validation_state,'')) WHEN 'VERIFIED' THEN 0 ELSE 1 END,
+                  s.last_seen_at DESC,s.updated_at DESC
+                LIMIT 1
+            """, (MUSIC_SCAN_VERSION, now, now, now, str(owner), MAX_SCAN_ATTEMPTS)).fetchone()
+            if not row:
+                conn.commit()
+                return None
+            conn.execute("""
+                UPDATE history_media_intelligence
+                SET music_status='PENDING',claim_owner=?,claim_started_at=?,claim_expires_at=?,
+                    scan_attempts=scan_attempts+1,updated_at=?
+                WHERE asset_key=?
+            """, (str(owner), now, now + lease_seconds, now, row["asset_key"]))
+            conn.commit()
+        item = dict(row)
+        item["asset"] = self._asset_json(row)
+        item["attempt"] = int(row["scan_attempts"] or 0) + 1
+        return item
+
+    def complete(self, asset_key, result: MusicResult):
+        now = time.time()
+        status = str(result.status or "UNKNOWN").upper()
+        if status not in MUSIC_STATUSES:
+            status = "UNKNOWN"
+        confidence = max(0.0, min(1.0, float(result.confidence or 0)))
+        ratio = max(0.0, min(1.0, float(result.ratio or 0)))
+        details = dict(result.details or {})
+        with self._lock, closing(self._connect()) as conn:
+            row = conn.execute("SELECT asset_json FROM history_source_media WHERE asset_key=?", (asset_key,)).fetchone()
+            if not row:
+                return False
+            try:
+                asset = json.loads(row["asset_json"] or "{}")
+                if not isinstance(asset, dict):
+                    asset = {}
+            except Exception:
+                asset = {}
+            asset.update({
+                "musicStatus": status,
+                "musicConfidence": round(confidence, 4),
+                "musicRatio": round(ratio, 4),
+                "musicConflict": bool(result.conflict),
+                "musicScanVersion": MUSIC_SCAN_VERSION,
+                "musicScannedAt": now,
+                "musicScanDuration": round(float(result.scanned_seconds or 0), 2),
+            })
+            next_retry = now + 30*24*3600 if status=='UNKNOWN' else 0
+            conn.execute("""
+                UPDATE history_media_intelligence SET
+                  music_status=?,music_confidence=?,music_ratio=?,music_conflict=?,
+                  scan_version=?,scan_duration_seconds=?,scanned_at=?,next_retry_at=?,
+                  last_error='',details_json=?,claim_owner='',claim_started_at=0,
+                  claim_expires_at=0,updated_at=? WHERE asset_key=?
+            """, (status, confidence, ratio, 1 if result.conflict else 0,
+                  MUSIC_SCAN_VERSION, float(result.scanned_seconds or 0), now, next_retry,
+                  json.dumps(details, ensure_ascii=False, separators=(",", ":"), default=str),
+                  now, asset_key))
+            conn.execute("UPDATE history_source_media SET asset_json=?,updated_at=? WHERE asset_key=?",
+                         (json.dumps(asset, ensure_ascii=False, separators=(",", ":"), default=str), now, asset_key))
+            conn.commit()
+        return True
+
+    def fail(self, asset_key, error):
+        now = time.time()
+        text = f"{type(error).__name__}: {error}"[:900]
+        with self._lock, closing(self._connect()) as conn:
+            row = conn.execute("SELECT scan_attempts FROM history_media_intelligence WHERE asset_key=?", (asset_key,)).fetchone()
+            attempts = int(row["scan_attempts"] or 1) if row else 1
+            retry = now + min(24 * 3600, 120 * (2 ** min(8, max(0, attempts - 1))))
+            conn.execute("""
+                UPDATE history_media_intelligence SET music_status='SCAN_FAILED',
+                  music_confidence=0,music_ratio=0,music_conflict=1,scan_version=?,
+                  next_retry_at=?,last_error=?,claim_owner='',claim_started_at=0,
+                  claim_expires_at=0,updated_at=? WHERE asset_key=?
+            """, (MUSIC_SCAN_VERSION, retry, text, now, asset_key))
+            source = conn.execute("SELECT asset_json FROM history_source_media WHERE asset_key=?", (asset_key,)).fetchone()
+            if source:
+                try:
+                    asset = json.loads(source["asset_json"] or "{}")
+                    if not isinstance(asset, dict):
+                        asset = {}
+                except Exception:
+                    asset = {}
+                asset.update({
+                    "musicStatus": "SCAN_FAILED",
+                    "musicConfidence": 0.0,
+                    "musicConflict": True,
+                    "musicScanVersion": MUSIC_SCAN_VERSION,
+                    "musicScannedAt": now,
+                })
+                conn.execute("UPDATE history_source_media SET asset_json=?,updated_at=? WHERE asset_key=?",
+                             (json.dumps(asset, ensure_ascii=False, separators=(",", ":"), default=str), now, asset_key))
+            conn.commit()
+        return retry
+
+    def snapshot(self):
+        try:
+            with closing(self._connect()) as conn:
+                rows = conn.execute("SELECT music_status,COUNT(*) n FROM history_media_intelligence GROUP BY music_status").fetchall()
+                counts = {str(r["music_status"]): int(r["n"] or 0) for r in rows}
+                total = int(conn.execute("SELECT COUNT(*) FROM history_source_media").fetchone()[0] or 0)
+                scanned = sum(counts.get(x, 0) for x in ("HAS_MUSIC", "NO_MUSIC", "UNKNOWN", "SCAN_FAILED"))
+                pending = max(0, total - scanned)
+                last = conn.execute("""
+                    SELECT mi.asset_key,mi.music_status,mi.music_confidence,mi.music_ratio,
+                           mi.scanned_at,s.title
+                    FROM history_media_intelligence mi
+                    JOIN history_source_media s ON s.asset_key=mi.asset_key
+                    WHERE mi.scanned_at>0 ORDER BY mi.scanned_at DESC LIMIT 1
+                """).fetchone()
+            return {
+                "total": total, "scanned": scanned, "pending": pending,
+                "hasMusic": counts.get("HAS_MUSIC", 0),
+                "noMusic": counts.get("NO_MUSIC", 0),
+                "unknown": counts.get("UNKNOWN", 0),
+                "failed": counts.get("SCAN_FAILED", 0),
+                "last": dict(last) if last else None,
+                "scanVersion": MUSIC_SCAN_VERSION,
+            }
+        except Exception as exc:
+            return {"error": f"{type(exc).__name__}: {exc}", "scanVersion": MUSIC_SCAN_VERSION}
+
+
+class MusicDetector:
+    """Conservative sustained-music detector using bounded PCM samples."""
+
+    def __init__(self, ffmpeg=None, ytdlp=None):
+        self.ffmpeg = ffmpeg or shutil.which("ffmpeg")
+        self.ytdlp = ytdlp or shutil.which("yt-dlp")
+
+    def dependency_status(self):
+        return {"ffmpeg": bool(self.ffmpeg), "ytDlp": bool(self.ytdlp)}
+
+    @staticmethod
+    def _youtube_id(row):
+        asset = row.get("asset") or {}
+        for key in ("youtubeId", "videoId"):
+            value = asset.get(key)
+            if value:
+                return str(value)
+        provider = str(row.get("provider") or "").lower()
+        provider_id = str(row.get("provider_media_id") or "")
+        if "youtube" in provider and provider_id:
+            return provider_id
+        url = str(asset.get("externalUrl") or row.get("canonical_url") or "")
+        if "youtu" in url:
+            try:
+                parsed = urllib.parse.urlparse(url)
+                if parsed.hostname and "youtu.be" in parsed.hostname:
+                    return parsed.path.strip("/").split("/")[0]
+                return (urllib.parse.parse_qs(parsed.query).get("v") or [""])[0]
+            except Exception:
+                return ""
+        return ""
+
+    def _source_url(self, row):
+        asset = row.get("asset") or {}
+        youtube_id = self._youtube_id(row)
+        if youtube_id:
+            if not self.ytdlp:
+                raise RuntimeError("yt-dlp is required for YouTube media intelligence")
+            target = f"https://www.youtube.com/watch?v={youtube_id}"
+            proc = subprocess.run(
+                [self.ytdlp, "--no-playlist", "--no-warnings", "--quiet", "-f", "bestaudio/best", "-g", target],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=YTDLP_TIMEOUT_SECONDS,
+            )
+            if proc.returncode != 0:
+                raise RuntimeError(f"yt-dlp audio URL failed: {(proc.stderr or proc.stdout).strip()[:300]}")
+            url = next((line.strip() for line in proc.stdout.splitlines() if line.strip()), "")
+            if not url:
+                raise RuntimeError("yt-dlp returned no audio URL")
+            return url, "youtube"
+        for value in (asset.get("mediaUrl"), row.get("canonical_url"), asset.get("url")):
+            text = str(value or "").strip()
+            if text.startswith(("https://", "http://")):
+                return text, "direct"
+        raise RuntimeError("no analyzable media URL")
+
+    @staticmethod
+    def _offsets(duration, count=DEFAULT_SAMPLE_COUNT):
+        duration = max(0.0, float(duration or 0))
+        count = max(2, int(count))
+        if duration <= DEFAULT_SAMPLE_SECONDS + 1:
+            return [0.0]
+        if duration > 0:
+            usable = max(0.0, duration - DEFAULT_SAMPLE_SECONDS - 1.0)
+            fractions = (0.04, 0.28, 0.58, 0.82, 0.94, 0.68)[:count]
+            return sorted({round(min(usable, max(0.0, usable * f)), 2) for f in fractions})
+        return [0.0, 35.0, 90.0, 180.0][:count]
+
+    def _decode_sample(self, source, offset):
+        if not self.ffmpeg:
+            raise RuntimeError("ffmpeg is required for media intelligence")
+        cmd = [
+            self.ffmpeg, "-nostdin", "-hide_banner", "-loglevel", "error",
+            "-ss", f"{max(0.0, offset):.2f}", "-i", source,
+            "-t", f"{DEFAULT_SAMPLE_SECONDS:.2f}", "-vn", "-sn", "-dn",
+            "-ac", "1", "-ar", str(SAMPLE_RATE), "-f", "s16le", "pipe:1",
+        ]
+        proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=FFMPEG_TIMEOUT_SECONDS)
+        if proc.returncode != 0 and not proc.stdout:
+            raise RuntimeError(f"ffmpeg sample failed: {proc.stderr.decode('utf-8','replace')[:300]}")
+        return proc.stdout
+
+    @staticmethod
+    def _goertzel_power(samples, freq):
+        n = len(samples)
+        if n < 32:
+            return 0.0
+        omega = 2.0 * math.pi * float(freq) / SAMPLE_RATE
+        coeff = 2.0 * math.cos(omega)
+        s_prev = 0.0
+        s_prev2 = 0.0
+        for value in samples:
+            x = float(value) / 32768.0
+            s = x + coeff * s_prev - s_prev2
+            s_prev2 = s_prev
+            s_prev = s
+        return max(0.0, s_prev2 * s_prev2 + s_prev * s_prev - coeff * s_prev * s_prev2) / max(1, n * n)
+
+    @classmethod
+    def analyze_pcm(cls, pcm_bytes):
+        values = array.array("h")
+        values.frombytes(pcm_bytes[: len(pcm_bytes) - (len(pcm_bytes) % 2)])
+        if sys.byteorder != "little":
+            values.byteswap()
+        if not values:
+            return {"activeFrames": 0, "tonalFrames": 0, "musicRatio": 0.0, "consecutiveTonal": 0, "rmsMean": 0.0}
+        active = 0
+        tonal = 0
+        consecutive = 0
+        longest = 0
+        rms_total = 0.0
+        frame_count = 0
+        for start in range(0, len(values) - FRAME_SAMPLES + 1, FRAME_SAMPLES):
+            frame = values[start:start + FRAME_SAMPLES]
+            frame_count += 1
+            mean_sq = sum((float(x) / 32768.0) ** 2 for x in frame) / len(frame)
+            rms = math.sqrt(max(0.0, mean_sq))
+            rms_total += rms
+            if rms < 0.006:
+                consecutive = 0
+                continue
+            active += 1
+            powers = [cls._goertzel_power(frame, f) for f in ANALYSIS_FREQUENCIES]
+            total = sum(powers)
+            if total <= 1e-12:
+                consecutive = 0
+                continue
+            top = sorted(powers, reverse=True)
+            concentration = sum(top[:3]) / total
+            is_tonal = concentration >= 0.56 and rms >= 0.009
+            if is_tonal:
+                tonal += 1
+                consecutive += 1
+                longest = max(longest, consecutive)
+            else:
+                consecutive = 0
+        ratio = tonal / active if active else 0.0
+        return {
+            "activeFrames": active,
+            "tonalFrames": tonal,
+            "musicRatio": ratio,
+            "consecutiveTonal": longest,
+            "rmsMean": rms_total / max(1, frame_count),
+        }
+
+    @classmethod
+    def classify_features(cls, feature_sets, scanned_seconds=0.0, title=""):
+        active = sum(int(x.get("activeFrames") or 0) for x in feature_sets)
+        tonal = sum(int(x.get("tonalFrames") or 0) for x in feature_sets)
+        ratio = tonal / active if active else 0.0
+        longest = max([int(x.get("consecutiveTonal") or 0) for x in feature_sets] or [0])
+        sample_music = sum(1 for x in feature_sets if float(x.get("musicRatio") or 0) >= 0.35 and int(x.get("activeFrames") or 0) >= 4)
+        title_hint = bool(re.search(r"\b(music|soundtrack|song|remix|anthem|mic'?d up)\b", str(title or ""), re.I))
+        if active == 0:
+            return MusicResult("NO_MUSIC", 0.97, 0.0, False, scanned_seconds, {"reason": "no-active-audio", "samples": feature_sets})
+        if title_hint or ratio >= 0.42 or sample_music >= max(1, math.ceil(len(feature_sets) / 2)) or longest >= 5:
+            confidence = min(0.99, 0.66 + max(0.0, ratio - 0.30) * 0.75 + min(0.18, longest * 0.02))
+            return MusicResult("HAS_MUSIC", confidence, ratio, True, scanned_seconds,
+                               {"reason": "sustained-tonal-audio", "samples": feature_sets, "titleHint": title_hint})
+        if active >= 12 and ratio <= 0.08 and longest <= 1 and sample_music == 0:
+            confidence = min(0.96, 0.74 + min(0.20, (0.08 - ratio) * 2.0) + min(0.08, active / 300.0))
+            return MusicResult("NO_MUSIC", confidence, ratio, False, scanned_seconds,
+                               {"reason": "sustained-nonmusical-audio", "samples": feature_sets})
+        confidence = min(0.80, 0.45 + abs(ratio - 0.20))
+        return MusicResult("UNKNOWN", confidence, ratio, True, scanned_seconds,
+                           {"reason": "ambiguous-audio-conservative-yield", "samples": feature_sets})
+
+    def analyze(self, row):
+        source, source_kind = self._source_url(row)
+        features = []
+        decoded_seconds = 0.0
+        errors = []
+        for offset in self._offsets(row.get("duration_seconds")):
+            try:
+                pcm = self._decode_sample(source, offset)
+                if not pcm:
+                    continue
+                decoded_seconds += len(pcm) / 2.0 / SAMPLE_RATE
+                feature = self.analyze_pcm(pcm)
+                feature["offset"] = offset
+                features.append(feature)
+            except subprocess.TimeoutExpired:
+                errors.append(f"offset {offset}: timeout")
+            except Exception as exc:
+                errors.append(f"offset {offset}: {type(exc).__name__}: {exc}")
+        if not features:
+            raise RuntimeError("no audio sample decoded" + (f" ({'; '.join(errors[:3])})" if errors else ""))
+        result = self.classify_features(features, decoded_seconds, row.get("title") or "")
+        result.details.update({
+            "sourceKind": source_kind,
+            "sampleCount": len(features),
+            "sampleSeconds": round(decoded_seconds, 2),
+            "errors": errors[:4],
+            "detector": "bounded-goertzel-v1",
+        })
+        return result
+
+
+class MediaIntelligenceWorker:
+    def __init__(self, db_path, *, pause_reason=None, beat=None, log=None, name="media-intelligence"):
+        self.store = MediaIntelligenceStore(db_path)
+        self.detector = MusicDetector()
+        self.pause_reason = pause_reason or (lambda: "")
+        self.beat = beat or (lambda *args, **kwargs: None)
+        self.log = log or (lambda *args, **kwargs: None)
+        self.name = str(name)
+        self.owner = f"{os.getpid()}:{self.name}"
+        self._stop = threading.Event()
+        self._thread = None
+        self._active_asset = ""
+        self._started_at = 0.0
+        self._last_progress = 0.0
+        self._last_error = ""
+
+    def start(self):
+        if self._thread and self._thread.is_alive():
+            return self._thread
+        self._started_at = time.time()
+        self._thread = threading.Thread(target=self._run, name="sbb-media-intelligence", daemon=True)
+        self._thread.start()
+        return self._thread
+
+    def stop(self):
+        self._stop.set()
+
+    def snapshot(self):
+        snap = self.store.snapshot()
+        snap.update({
+            "alive": bool(self._thread and self._thread.is_alive()),
+            "activeAsset": self._active_asset,
+            "startedAt": self._started_at,
+            "lastProgress": self._last_progress,
+            "lastError": self._last_error,
+            "dependencies": self.detector.dependency_status(),
+        })
+        return snap
+
+    def _run(self):
+        deps = self.detector.dependency_status()
+        self.log(self.name, "INFO", f"Media Intelligence worker starting • ffmpeg={deps['ffmpeg']} yt-dlp={deps['ytDlp']}")
+        while not self._stop.is_set():
+            try:
+                reason = str(self.pause_reason() or "")
+                if reason:
+                    self.beat(self.name, phase=f"paused:{reason}", current="", progress=False, blocked=True)
+                    self._stop.wait(3.0)
+                    continue
+                deps = self.detector.dependency_status()
+                if not deps["ffmpeg"]:
+                    self._last_error = "ffmpeg unavailable"
+                    self.beat(self.name, phase="dependency-missing:ffmpeg", current="", progress=False, blocked=True)
+                    self._stop.wait(60.0)
+                    continue
+                row = self.store.claim_next(self.owner)
+                if not row:
+                    self._active_asset = ""
+                    self.beat(self.name, phase="sleeping:queue-empty", current="", progress=False)
+                    self._stop.wait(MUSIC_WORKER_IDLE_SECONDS)
+                    continue
+                self._active_asset = str(row.get("asset_key") or "")
+                self.beat(self.name, phase="analyzing", current=f"{self._active_asset} • {row.get('title','')[:90]}", progress=False)
+                try:
+                    result = self.detector.analyze(row)
+                    self.store.complete(self._active_asset, result)
+                    self._last_progress = time.time()
+                    self._last_error = ""
+                    self.beat(self.name, phase="saved", current=self._active_asset, progress=True)
+                    self.log(self.name, "INFO",
+                             f"{result.status} confidence={result.confidence:.2f} music={result.ratio:.2f} • {row.get('title','')[:140]}")
+                except Exception as exc:
+                    self._last_error = f"{type(exc).__name__}: {exc}"
+                    retry = self.store.fail(self._active_asset, exc)
+                    self.beat(self.name, phase="scan-failed", current=self._active_asset, progress=True)
+                    self.log(self.name, "WARN", f"scan failed • retry in {max(0,int(retry-time.time()))}s • {self._last_error}")
+                finally:
+                    self._active_asset = ""
+                self._stop.wait(MUSIC_WORKER_BALANCED_PAUSE)
+            except Exception as exc:
+                self._last_error = f"{type(exc).__name__}: {exc}"
+                self.log(self.name, "ERROR", self._last_error)
+                self.beat(self.name, phase="worker-error", current="", progress=False)
+                self._stop.wait(15.0)
+
+
+_INSTALL_LOCK = threading.Lock()
+_INSTALL_STARTED = False
+_WORKER = None
+
+
+def schedule_media_intelligence_install():
+    """Attach the worker after server.py finishes constructing its globals."""
+    global _INSTALL_STARTED
+    with _INSTALL_LOCK:
+        if _INSTALL_STARTED:
+            return
+        _INSTALL_STARTED = True
+
+    def install():
+        global _WORKER
+        deadline = time.time() + 90
+        main = None
+        repo = None
+        while time.time() < deadline:
+            main = sys.modules.get("__main__")
+            repo = getattr(main, "HISTORY_REPOSITORY", None) if main else None
+            if repo is not None and getattr(repo, "path", None):
+                break
+            time.sleep(0.25)
+        if repo is None:
+            return
+
+        def pause_reason():
+            try:
+                mode = str(main._history_work_mode() or "balanced")
+                if mode == "playback":
+                    return "playback-priority"
+            except Exception:
+                pass
+            try:
+                last_media = float((getattr(main, "CLIENT_ACTIVITY_STATE", {}) or {}).get("lastMedia") or 0)
+                if last_media and time.time() - last_media < MUSIC_ACTIVE_MEDIA_GRACE_SECONDS:
+                    return "active-media"
+            except Exception:
+                pass
+            return ""
+
+        def beat(name, phase=None, current=None, progress=False, blocked=False):
+            try:
+                fn = getattr(main, "_history_worker_beat", None)
+                if fn:
+                    fn(name, phase=phase, current=current, progress=progress, blocked=blocked)
+            except Exception:
+                pass
+
+        def log(name, level, message):
+            try:
+                fn = getattr(main, "_history_console_log", None)
+                if fn:
+                    fn(name, level, message)
+                else:
+                    print(f"[SBB {name}] {level} {message}", flush=True)
+            except Exception:
+                pass
+
+        try:
+            health = getattr(main, "HISTORY_WORKER_HEALTH", None)
+            if isinstance(health, dict):
+                health.setdefault("media-intelligence", {
+                    "heartbeat": 0.0, "phase": "starting", "lastProgress": 0.0,
+                    "iterations": 0, "blocked": 0, "current": ""
+                })
+            _WORKER = MediaIntelligenceWorker(repo.path, pause_reason=pause_reason, beat=beat, log=log)
+            setattr(main, "MEDIA_INTELLIGENCE_WORKER", _WORKER)
+            # Extend the existing thread-health surface without changing server.py.
+            # Search Console / milestone diagnostics can therefore see the crawler
+            # beside the established history workers.
+            original_threads = getattr(main, "_history_threads_status", None)
+            if callable(original_threads) and not getattr(original_threads, "__sbb_media_intelligence_wrapped__", False):
+                def threads_with_media_intelligence():
+                    rows = list(original_threads() or [])
+                    if not any(str(x.get("name") or "")=="sbb-media-intelligence" for x in rows if isinstance(x, dict)):
+                        rows.append({"name":"sbb-media-intelligence","alive":bool(_WORKER and _WORKER._thread and _WORKER._thread.is_alive())})
+                    return rows
+                threads_with_media_intelligence.__sbb_media_intelligence_wrapped__ = True
+                setattr(main, "_history_threads_status", threads_with_media_intelligence)
+            _WORKER.start()
+        except Exception as exc:
+            try:
+                log("media-intelligence", "ERROR", f"worker install failed: {type(exc).__name__}: {exc}")
+            except Exception:
+                pass
+
+    threading.Thread(target=install, name="sbb-media-intelligence-install", daemon=True).start()
+
+
+def worker_snapshot():
+    return _WORKER.snapshot() if _WORKER else {"alive": False, "scanVersion": MUSIC_SCAN_VERSION}
