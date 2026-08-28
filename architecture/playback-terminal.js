@@ -605,6 +605,9 @@
   window.addEventListener?.('sbb:playback-engine',ev=>{if(endurance.status==='RUNNING')enduranceLog('engine',`ENGINE ${clean(ev?.detail?.type||'event',30).toUpperCase()} • ${clean(ev?.detail?.reason||'',120)}`);render();});
   window.addEventListener?.('sbb:dev-mode',render);
   function installMediaIntelColumns(){
+    // The terminal's runtime tests intentionally use a minimal headless document.
+    // Styling is optional there; only install it when a real DOM can create nodes.
+    if(typeof document==='undefined'||typeof document.createElement!=='function'||!document.head||typeof document.head.appendChild!=='function')return;
     if(document.getElementById('sbbPlaybackTerminalMediaIntelStyle'))return;
     const style=document.createElement('style');style.id='sbbPlaybackTerminalMediaIntelStyle';
     style.textContent='.pt-columns,.pt-row{grid-template-columns:24px 104px 42px 108px 100px 52px 58px 38px 58px 110px 40px minmax(220px,1fr) 92px 52px 58px 50px 64px;min-width:1450px}.pt-body{overflow:auto}.pt-row>b:nth-last-child(5){color:#8de8ff}.pt-row>b:last-child{color:#ffe58d}@media(max-width:1100px){.pt-columns,.pt-row{grid-template-columns:22px 88px 40px 92px 80px 48px 52px 34px 52px 90px 34px minmax(170px,1fr) 84px 48px 52px 46px 58px;min-width:1320px}}';
