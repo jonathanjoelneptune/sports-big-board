@@ -1,0 +1,24 @@
+Sports Big Board v4.6.10 — Historical Media Association & Schedule Identity Hardening
+
+REPLACE
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- VERIFY.sh
+- sbb/__init__.py
+
+ADD
+- sbb/historical_media_v4610.py
+- architecture/historical-media-v4610.js
+- tests/test_v4610_historical_media_association.py
+
+BEHAVIOR
+- Historical dates are database-first; FIND/search waits for DB media hydration.
+- Existing orphaned/quarantined GAME media is re-proved before external discovery.
+- Schedule/provider ID changes alias to the existing canonical event when identity is proven.
+- Ribbon reads expose media under canonical IDs and proven aliases without duplicating relationships.
+- Quick date changes are generation-safe.
+- Diagnostics report checked / ribbon-ready / genuinely missing counts.
+- No catalog rebuild or media reupload is required.

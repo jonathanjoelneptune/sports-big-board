@@ -29,6 +29,7 @@ python3 -m unittest tests.test_v466_special_event_polish
 python3 -m unittest tests.test_v467_tournament_realization_game_center
 python3 -m unittest tests.test_v468_special_event_media_statistics
 python3 -m unittest tests.test_v469_world_cup_ribbon_playback
+python3 -m unittest tests.test_v4610_historical_media_association
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.9",
-  "baseRelease": "4.6.8",
-  "title": "World Cup Ribbon Playback Final-State Fix",
+  "release": "4.6.10",
+  "baseRelease": "4.6.9",
+  "title": "Historical Media Association & Schedule Identity Hardening",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -10,59 +10,73 @@
     "index.html",
     "core-model.js",
     "foundation-certification.json",
-    "sbb/competition_builder_v467.py",
-    "tests/test_v468_special_event_media_statistics.py",
-    "tests/test_v469_world_cup_ribbon_playback.py"
+    "sbb/__init__.py",
+    "sbb/historical_media_v4610.py",
+    "architecture/historical-media-v4610.js",
+    "tests/test_v4610_historical_media_association.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.9"
+        "4.6.10"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.9",
-        "core-model.js?v=4.6.9",
-        "app.js?v=4.6.9",
-        "architecture/competition-builder.js?v=4.6.9",
-        "ui/history-audit-v468.js?v=4.6.9"
+        "Sports Big Board \u2014 v4.6.10",
+        "core-model.js?v=4.6.10",
+        "app.js?v=4.6.10",
+        "architecture/competition-builder.js?v=4.6.10",
+        "architecture/historical-media-v4610.js?v=4.6.10"
       ],
       "forbidden": [
-        "?v=4.6.8"
+        "?v=4.6.9"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.9'",
+        "version:'4.6.10'",
         "custom-competition overlay"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.9\"",
-        "provider terminal states such as FT to canonical FINAL",
-        "score-ribbon play arrow and click-to-play path"
+        "\"release\": \"4.6.10\"",
+        "Historical score-ribbon dates remain database-first",
+        "Schedule/provider event-id changes",
+        "Historical date switching is generation-safe"
       ]
     },
-    "sbb/competition_builder_v467.py": {
+    "sbb/__init__.py": {
       "required": [
-        "def _normalize_completed_soccer_event",
-        "def _event_status_is_final",
-        "\"status\": \"FINAL\" if completed else detail",
-        "\"providerStatus\": detail",
-        "parsed.path == \"/api/competition-builder/schedule\"",
-        "fifa.world",
-        "ESPN-SOCCER"
+        "historical_media_v4610",
+        "_install_historical_media_v4610()"
       ]
     },
-    "tests/test_v469_world_cup_ribbon_playback.py": {
+    "sbb/historical_media_v4610.py": {
       "required": [
-        "test_ft_is_normalized_to_final_for_ribbon_playback",
-        "test_stale_past_scheduled_result_is_normalized_to_final",
-        "test_live_or_today_match_is_not_forced_final",
-        "test_completed_espn_soccer_row_uses_canonical_final_status",
-        "test_stale_completed_rows_are_revisited"
+        "Sports Big Board v4.6.10",
+        "history_event_alias",
+        "DATE_TEAMS_TIME",
+        "def repair_date_associations",
+        "result[alias_key] = result[canonical_key]",
+        "HistoryRepository.ribbon_media_for_date = _ribbon_media_v4610"
+      ]
+    },
+    "architecture/historical-media-v4610.js": {
+      "required": [
+        "Sports Big Board v4.6.10",
+        "checking database media associations before search",
+        "await hydrateHistoricalRibbonFromCatalog(date)",
+        "state.deferredFill.add(date)",
+        "DB ASSOCIATION"
+      ]
+    },
+    "tests/test_v4610_historical_media_association.py": {
+      "required": [
+        "test_database_first_browser_barrier",
+        "test_backend_alias_and_date_repair_contract",
+        "test_schedule_alias_preserves_canonical_event_in_real_repository"
       ]
     },
     "VERIFY.sh": {
@@ -71,18 +85,8 @@
         "python3 tools/check_release_version.py",
         "python3 tools/check_foundation_certification.py",
         "python3 -m unittest tests.test_v468_special_event_media_statistics",
-        "python3 -m unittest tests.test_v469_world_cup_ribbon_playback"
-      ]
-    },
-    "tests/test_v468_special_event_media_statistics.py": {
-      "required": [
-        "VERSION = (ROOT / \"VERSION\").read_text(encoding=\"utf-8\").strip()",
-        "f'ui/history-audit-v468.js?v={VERSION}'",
-        "History Audit exposes a Statistics tab",
-        "base._register_media_sources(server, current, force_crawl=True)"
-      ],
-      "forbidden": [
-        "ui/history-audit-v468.js?v=4.6.8"
+        "python3 -m unittest tests.test_v469_world_cup_ribbon_playback",
+        "python3 -m unittest tests.test_v4610_historical_media_association"
       ]
     }
   },
@@ -92,9 +96,9 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v467_tournament_realization_game_center",
     "python3 -m unittest tests.test_v468_special_event_media_statistics",
     "python3 -m unittest tests.test_v469_world_cup_ribbon_playback",
+    "python3 -m unittest tests.test_v4610_historical_media_association",
     "bash VERIFY.sh"
   ]
 }
