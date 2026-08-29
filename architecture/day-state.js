@@ -1,25 +1,38 @@
-/* Sports Big Board v4.7.0 — Day State client + operator views.
+/* Sports Big Board v4.7.1 — Day State client + operator views.
    The backend owns the day. The browser renders a precomputed read model and keeps
    legacy provider paths as recovery/freshness fallbacks rather than first-paint work.
 */
 (() => {
   'use strict';
-  if (window.SBB_DAY_STATE?.version === '4.7.0') return;
+  if (window.SBB_DAY_STATE?.version === '4.7.1') return;
 
   const clean=v=>String(v??'').trim();
   const day=v=>clean(v).slice(0,10);
   const api=path=>window.SBB_API?.url?window.SBB_API.url(path):path;
   const state={cache:new Map(),inflight:new Map(),lastError:'',lastRendered:''};
 
-  async function json(path,options={}){
-    const r=await fetch(api(path),{cache:'no-store',...options});
-    const p=await r.json().catch(()=>({}));
-    if(!r.ok||p?.ok===false)throw new Error(p?.message||p?.error||`HTTP ${r.status}`);
-    return p;
+  async function json(path,options={},timeoutMs=1200){
+    const controller=typeof AbortController!=='undefined'?new AbortController():null;
+    const externalSignal=options?.signal;
+    const timer=controller&&timeoutMs>0?setTimeout(()=>controller.abort(),timeoutMs):null;
+    try{
+      const r=await fetch(api(path),{
+        cache:'no-store',
+        ...options,
+        signal:externalSignal||(controller?.signal)
+      });
+      const p=await r.json().catch(()=>({}));
+      if(!r.ok&&r.status!==202)throw new Error(p?.message||p?.error||`HTTP ${r.status}`);
+      if(p?.ok===false)throw new Error(p?.message||p?.error||`HTTP ${r.status}`);
+      return p;
+    }finally{
+      if(timer)clearTimeout(timer);
+    }
   }
 
   function apply(payload){
-    const date=day(payload?.date);if(!date)return 0;
+    const date=day(payload?.date);
+    if(!date||payload?.pending||(!payload?.scoreRowsByLeague&&!payload?.eventPlans))return 0;
     let count=0;
     const rows=payload?.scoreRowsByLeague||{};
     if(typeof storeScoreDateLeague==='function'){
@@ -36,11 +49,16 @@
     return count;
   }
 
-  async function load(date,{force=false}={}){
+  async function load(date,{force=false,timeoutMs=700}={}){
     date=day(date);if(!date)return null;
     if(!force&&state.inflight.has(date))return state.inflight.get(date);
-    const promise=json(`/api/day-state?date=${encodeURIComponent(date)}`)
-      .then(payload=>{state.lastError='';apply(payload);return payload;})
+    const promise=json(`/api/day-state?date=${encodeURIComponent(date)}`,{},timeoutMs)
+      .then(payload=>{
+        state.lastError='';
+        if(payload?.pending)return null;
+        apply(payload);
+        return payload;
+      })
       .catch(err=>{state.lastError=String(err?.message||err);throw err;})
       .finally(()=>state.inflight.delete(date));
     state.inflight.set(date,promise);
@@ -63,11 +81,14 @@
     const fallback=hydrateHistoricalRibbonFromCatalog;
     const wrapped=async function(date){
       try{
-        const payload=await load(date);
-        return {ok:true,games:Number(payload?.scoreGameCount||0),dayState:true};
-      }catch(_){
-        return fallback(date);
-      }
+        const payload=await load(date,{timeoutMs:650});
+        if(payload){
+          return {ok:true,games:Number(payload?.scoreGameCount||0),dayState:true};
+        }
+      }catch(_){}
+      // Cold, pending, timed-out, or unavailable Day State must never hold the
+      // ribbon hostage. Use the established historical ribbon loader immediately.
+      return fallback(date);
     };
     wrapped.__sbbDayState=true;wrapped.__sbbFallback=fallback;
     hydrateHistoricalRibbonFromCatalog=wrapped;
@@ -169,7 +190,7 @@
     const selected=day(dateInput?.value);
     const message=document.getElementById('historyDayStateMessage');
     try{
-      const [payload,status]=await Promise.all([load(selected,{force:true}),json('/api/day-state/status')]);
+      const [payload,status]=await Promise.all([load(selected,{force:true,timeoutMs:1800}),json('/api/day-state/status',{},1800)]);
       if(message)message.textContent=`Snapshot ${payload?.cache?.state||'READY'} • generated ${new Date((payload.generatedAt||0)*1000).toLocaleTimeString()}`;
       const s=payload.summary||{};
       const summary=document.getElementById('historyDayStateSummary');
@@ -211,7 +232,7 @@
   }
 
   window.SBB_DAY_STATE=Object.freeze({
-    version:'4.7.0',load,rebuild,apply,
+    version:'4.7.1',load,rebuild,apply,
     status:()=>json('/api/day-state/status'),
     registry:()=>json('/api/competition-registry'),
     cache:date=>state.cache.get(day(date))||null,

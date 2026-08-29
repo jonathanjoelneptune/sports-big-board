@@ -1,0 +1,36 @@
+Sports Big Board v4.7.1 — Non-Blocking Day State + Frontend Competition Projection
+
+REPLACE
+- VERIFY.sh
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- sbb/day_state.py
+- architecture/day-state.js
+- tests/test_v470_competition_registry_day_state.py
+
+ADD
+- architecture/competition-registry-projection.js
+- tests/test_v471_day_state_registry_resilience.py
+
+RIBBON FIX
+- Day State HTTP reads never synchronously build a snapshot.
+- Fresh snapshots return immediately.
+- Stale snapshots return immediately and rebuild in the background.
+- Cold dates return COLD_WARMING immediately; /api/history/ribbon falls through
+  to the established ribbon implementation for immediate first paint.
+- Browser Day State prepaint is bounded to ~650–700 ms.
+- User-focused dates move to the front of the Day State background queue.
+
+SPECIAL EVENT / DYNAMIC COMPETITION FIX
+- New persistent Frontend Competition Projection merges:
+  1) Competition Builder catalog,
+  2) Backend Competition Registry 2.0,
+  3) last-good browser dynamic competition metadata.
+- A transient API/bootstrap miss can no longer erase Special Events.
+- Completed/upcoming registry-backed special events remain discoverable.
+- Dynamic league buttons are restored from the same projection.
+- Core model uses the projection as a fallback and Builder definitions as the richer override.
+- Dev Competition Builder launcher retries when Settings DOM is created lazily.

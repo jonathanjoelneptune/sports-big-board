@@ -257,6 +257,14 @@ class DayStateEngine:
             return False
         with self.lock:
             if day in self.queued:
+                # A user-selected date must jump ahead of background tournament
+                # warmup rather than waiting behind every queued historical day.
+                if priority:
+                    try:
+                        self.queue.remove(day)
+                    except ValueError:
+                        pass
+                    self.queue.appendleft(day)
                 return False
             self.queued.add(day)
             if priority:
@@ -328,7 +336,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.0",
+            "engineVersion":"4.7.1",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -407,7 +415,7 @@ class DayStateEngine:
             queue = list(self.queue)
         return {
             "ok":True,
-            "version":"4.7.0",
+            "version":"4.7.1",
             "today":today,
             "builds":self.builds,
             "cacheHits":self.hits,
@@ -461,23 +469,73 @@ class DayStateEngine:
         day = _clean_date((qs.get("date") or [""])[-1])
         if not day:
             return self.server.send_json(handler, {"ok":False,"error":"DATE_REQUIRED"}, 400)
+
+        # v4.7.1: browser reads never build Day State synchronously. A selected
+        # date is moved to the front of the background queue; the request gets a
+        # fresh/stale snapshot immediately, or a PENDING response when no snapshot
+        # exists yet. This removes the cache-hit/cache-miss latency lottery.
         self.focus(day)
         try:
-            payload = self.get(day)
+            payload = self.get(day, allow_build=False)
         except Exception as exc:
-            return self.server.send_json(handler, {"ok":False,"error":"DAY_STATE_BUILD_FAILED","message":str(exc)}, 500)
-        return self.server.send_json(handler, payload, 200, {"X-SBB-Day-State":str((payload.get("cache") or {}).get("state") or "READY")})
+            return self.server.send_json(
+                handler,
+                {"ok":False,"error":"DAY_STATE_READ_FAILED","message":str(exc)},
+                500,
+            )
+
+        if payload is None:
+            return self.server.send_json(
+                handler,
+                {
+                    "ok":True,
+                    "pending":True,
+                    "date":day,
+                    "cache":{"state":"COLD_WARMING","ageSeconds":0},
+                    "message":"Day State is warming in the background.",
+                },
+                202,
+                {"X-SBB-Day-State":"COLD_WARMING"},
+            )
+
+        state = str((payload.get("cache") or {}).get("state") or "READY")
+        if state == "STALE":
+            self.enqueue(day, priority=True)
+            payload = dict(payload)
+            payload["refreshQueued"] = True
+            payload["cache"] = {**(payload.get("cache") or {}), "state":"STALE_REFRESHING"}
+            state = "STALE_REFRESHING"
+
+        return self.server.send_json(
+            handler,
+            payload,
+            200,
+            {"X-SBB-Day-State":state},
+        )
 
     def serve_ribbon(self, handler, parsed):
         qs = parse_qs(parsed.query)
         day = _clean_date((qs.get("date") or [""])[-1])
         if not day:
             return self.server.send_json(handler, {"ok":False,"error":"DATE_REQUIRED"}, 400)
+
+        # The ribbon route is cache-only. On a totally cold date, immediately
+        # hand control back to the established history-ribbon handler instead of
+        # blocking the HTTP request while Day State calculates the date.
         self.focus(day)
         try:
-            payload = self.get(day)
+            payload = self.get(day, allow_build=False)
         except Exception:
             return False
+        if payload is None:
+            return False
+
+        state = str((payload.get("cache") or {}).get("state") or "READY")
+        if state == "STALE":
+            self.enqueue(day, priority=True)
+            payload = dict(payload)
+            payload["cache"] = {**(payload.get("cache") or {}), "state":"STALE_REFRESHING"}
+
         # Exact backward-compatible /api/history/ribbon read model.
         return self.server.send_json(
             handler,
@@ -494,7 +552,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.0",
+                    "engineVersion":"4.7.1",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.0",
+  "release": "4.7.1",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -155,7 +155,15 @@
         "A persisted pre-proven special-event relationship may be restored after relationship repair only when the source asset's current normalized scope is GAME.",
         "If a newer media classifier changes a proof-bearing source asset from GAME to DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, or another collection scope, pre-proven restoration must not resurrect its quarantined event relationship.",
         "Trusted special-event persistence checks the normalized source scope before writing an ASSIGNED event link and fails closed with NON_GAME_SCOPE_PREPROVEN_REJECTED when that scope is not GAME.",
-        "The consolidated v4.6.16 canonical special-event persistence path may explicitly persist a deterministically proven game asset as scope GAME with reason SPECIAL_EVENT_CANONICAL_ASSOCIATION."
+        "The consolidated v4.6.16 canonical special-event persistence path may explicitly persist a deterministically proven game asset as scope GAME with reason SPECIAL_EVENT_CANONICAL_ASSOCIATION.",
+        "Day State browser-facing GET requests are stale-while-revalidate and never synchronously build a snapshot on the HTTP request thread.",
+        "A completely cold Day State date returns COLD_WARMING immediately while the existing /api/history/ribbon handler remains the immediate fallback for first paint.",
+        "A stale Day State snapshot is served immediately as STALE_REFRESHING and its date is promoted to the front of the background build queue.",
+        "The browser bounds Day State prepaint latency and immediately invokes the established historical ribbon fallback on pending, timeout, or unavailable Day State.",
+        "Frontend Competition Projection merges Competition Builder catalog data, backend Competition Registry 2.0 data, and the last good browser projection so transient bootstrap failures cannot erase dynamic competitions.",
+        "Configured special events remain visible in the SPECIAL EVENTS selector even when the richer Competition Builder catalog is temporarily unavailable; registry-backed completed/upcoming events remain discoverable.",
+        "The Dev Competition Builder launcher retries against lazily-created Settings DOM instead of assuming its anchor exists during initial page startup.",
+        "The canonical frontend competition model consults Frontend Competition Projection as a dynamic-competition fallback while allowing the richer Competition Builder definition to override it."
       ]
     },
     "tier2": {
@@ -206,6 +214,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.0 Competition Registry 2.0 + Day State Engine, with corrected normalized relationship ownership: silverGameLeaks is an event-link scope violation, core server.py owns repair routing, and legacy pre-proven special-event links cannot be restored after the normalized classifier says the asset is no longer GAME.",
+  "baseline": "v4.7.1 hardens the v4.7 architecture: Day State becomes non-blocking stale-while-revalidate, focused dates jump ahead of background warmup, and a persistent Frontend Competition Projection keeps dynamic leagues/special events present across transient catalog/bootstrap timing failures.",
   "status": "IN_PROGRESS"
 }

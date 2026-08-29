@@ -68,8 +68,8 @@ class V470CompetitionRegistryDayStateTests(unittest.TestCase):
         self.assertIn("REBUILD SNAPSHOT",UI)
 
     def test_release_contract(self):
-        self.assertEqual(VERSION,"4.7.0")
-        self.assertIn("architecture/day-state.js?v=4.7.0",INDEX)
+        self.assertTrue(VERSION.startswith("4.7."))
+        self.assertIn(f"architecture/day-state.js?v={VERSION}",INDEX)
         self.assertIn("from .day_state import install as _install_day_state",INIT)
         self.assertIn("_install_day_state()",INIT)
         self.assertIn("Competition Registry 2.0",CERT)
