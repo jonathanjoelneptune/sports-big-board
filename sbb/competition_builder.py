@@ -1,4 +1,4 @@
-"""Sports Big Board v4.6.5 — persistent custom competition builder.
+"""Sports Big Board v4.6.6 — persistent custom competition builder.
 
 Installs without modifying server.py:
 - persistent League / Special Event registry
@@ -36,6 +36,8 @@ SPORTS={"baseball","american-football","basketball","ice-hockey","football","ten
 LOGO_STRATEGIES={"AUTO","TEAM_LOGOS","COUNTRY_FLAGS","PROVIDED","NONE"}
 _COUNTRY_FLAG_CODES={"argentina":"ar","australia":"au","austria":"at","algeria":"dz","belgium":"be","bolivia":"bo","brazil":"br","cameroon":"cm","canada":"ca","cabo verde":"cv","cape verde":"cv","chile":"cl","china":"cn","colombia":"co","costa rica":"cr","croatia":"hr","curacao":"cw","curaçao":"cw","czech republic":"cz","czechia":"cz","denmark":"dk","dominican republic":"do","dr congo":"cd","ecuador":"ec","egypt":"eg","england":"gb-eng","france":"fr","germany":"de","ghana":"gh","greece":"gr","guatemala":"gt","haiti":"ht","honduras":"hn","hungary":"hu","iceland":"is","indonesia":"id","iran":"ir","ir iran":"ir","iraq":"iq","ireland":"ie","israel":"il","italy":"it","ivory coast":"ci","cote d ivoire":"ci","côte d’ivoire":"ci","jamaica":"jm","japan":"jp","jordan":"jo","korea republic":"kr","south korea":"kr","mexico":"mx","morocco":"ma","netherlands":"nl","new zealand":"nz","nigeria":"ng","north macedonia":"mk","norway":"no","panama":"pa","paraguay":"py","peru":"pe","poland":"pl","portugal":"pt","qatar":"qa","romania":"ro","saudi arabia":"sa","scotland":"gb-sct","senegal":"sn","serbia":"rs","slovakia":"sk","slovenia":"si","south africa":"za","spain":"es","sweden":"se","switzerland":"ch","tunisia":"tn","turkey":"tr","türkiye":"tr","ukraine":"ua","united arab emirates":"ae","united states":"us","usa":"us","u.s.a.":"us","uruguay":"uy","uzbekistan":"uz","venezuela":"ve","wales":"gb-wls"}
 _ASSOCIATION_REPAIR_AT={}
+_RESULT_RECONCILE_AT={}
+_PLACEHOLDER_PARTICIPANT_RE=re.compile(r"^(?:tba|tbd|to be (?:announced|determined)|winner(?: of)? (?:match|game)?\s*\d+|loser(?: of)? (?:match|game)?\s*\d+|winner\s+group\s+[a-z]|runner[- ]?up\s+group\s+[a-z]|\d+(?:st|nd|rd|th)?\s+(?:group\s+)?[a-z])$",re.I)
 
 def _today():
     try:
@@ -179,6 +181,7 @@ def normalize_event(comp,raw,idx=0):
         "competitionId":comp_id,"competitionName":comp["name"],"sportId":comp["sportId"],
         "__sbbLeague":comp_id,"__sbbDate":date,"date":date,"gameDate":date,"scheduledAt":scheduled,
         "away":away,"home":home,"awayTeam":away,"homeTeam":home,
+        "awayName":away_name,"homeName":home_name,"awayTeamName":away_name,"homeTeamName":home_name,
         "awayScore":away_score,"homeScore":home_score,
         "participants":[away,home],"status":status,
         "stage":str(raw.get("stage") or raw.get("round") or raw.get("phase") or ""),
@@ -256,9 +259,32 @@ def parse_schedule_text(text):
     if not rows:raise ValueError("Schedule text was not valid JSON or CSV with a header row.")
     return rows
 
+def _participant_name(event,side):
+    raw=(event or {}).get(f"{side}Team") or (event or {}).get(side) or ""
+    if isinstance(raw,dict):return str(raw.get("name") or raw.get("displayName") or raw.get("teamName") or "").strip()
+    return str(raw or "").strip()
+
+def _placeholder_participant(name):
+    text=str(name or "").strip()
+    if not text:return True
+    compact=re.sub(r"\s+"," ",text).strip()
+    return bool(_PLACEHOLDER_PARTICIPANT_RE.match(compact) or re.search(r"\b(?:winner|loser)\s+(?:of\s+)?(?:match|game)\b|\b(?:tba|tbd)\b",compact,re.I))
+
+def _event_needs_result_reconcile(event,today=None):
+    date=str((event or {}).get("date") or "")[:10]
+    today=str(today or _today())[:10]
+    if date and date>today:return False
+    away=_participant_name(event,"away");home=_participant_name(event,"home")
+    status=str((event or {}).get("status") or "").upper()
+    a_score=(event or {}).get("awayScore");h_score=(event or {}).get("homeScore")
+    score_missing=a_score in (None,"") or h_score in (None,"")
+    return _placeholder_participant(away) or _placeholder_participant(home) or (date and date<=today and score_missing and status not in {"POSTPONED","CANCELLED"})
+
 def _catalog_row(comp):
     x={k:v for k,v in comp.items() if k!="events"}
-    x["lifecycle"]=lifecycle(comp);x["mainRow"]=main_row(comp);x["eventsCount"]=len(comp.get("events") or [])
+    events=list(comp.get("events") or [])
+    x["lifecycle"]=lifecycle(comp);x["mainRow"]=main_row(comp);x["eventsCount"]=len(events)
+    x["placeholderEvents"]=sum(1 for ev in events if _event_needs_result_reconcile(ev))
     return x
 
 def catalog():
@@ -404,7 +430,7 @@ def _openai_schedule_request(server,model,prompt,use_web=True):
 def _official_page_text(url,limit=180000):
     url=str(url or "").strip()
     if not url:return ""
-    req=Request(url,headers={"User-Agent":"Mozilla/5.0 SportsBigBoard/4.6.2","Accept":"text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8"})
+    req=Request(url,headers={"User-Agent":"Mozilla/5.0 SportsBigBoard/4.6.6","Accept":"text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8"})
     with urlopen(req,timeout=25) as r:
         raw=r.read(2_000_000)
         ctype=str(r.headers.get("Content-Type") or "")
@@ -589,6 +615,136 @@ def discover_schedule(server,draft):
         "windowReports":window_reports
     }
 
+
+def _result_reconcile_schema():
+    props={
+        "eventId":{"type":"string"},"date":{"type":"string"},"away":{"type":"string"},"home":{"type":"string"},
+        "awayScore":{"type":["number","string","null"]},"homeScore":{"type":["number","string","null"]},
+        "status":{"type":"string"},"round":{"type":"string"},"stage":{"type":"string"},
+        "venue":{"type":"string"},"sourceUrl":{"type":"string"}
+    }
+    return {"type":"object","properties":{
+        "sourceUrls":{"type":"array","items":{"type":"string"}},
+        "results":{"type":"array","items":{"type":"object","properties":props,"required":list(props),"additionalProperties":False}}
+    },"required":["sourceUrls","results"],"additionalProperties":False}
+
+def _result_reconcile_prompt(comp,targets,source_urls):
+    rows=[]
+    for ev in targets:
+        rows.append(
+            f"eventId={ev.get('eventId')} | date={ev.get('date')} | scheduledAt={ev.get('scheduledAt','')} | "
+            f"round={ev.get('round') or ev.get('stage') or ''} | venue={ev.get('venue','')} | "
+            f"currently={_participant_name(ev,'away')} vs {_participant_name(ev,'home')}"
+        )
+    return f"""Resolve the ACTUAL played participants and final/current result for the listed games in {comp['name']}.
+This is a results-reconciliation task for a schedule that still contains bracket placeholders such as Winner Match 95.
+Preferred authoritative sources: {', '.join(source_urls[:5]) if source_urls else (comp.get('scheduleSourceUrl') or 'official organizer results')}
+
+Rules:
+- Search authoritative official competition/results sources first.
+- Every returned result MUST copy the supplied eventId exactly. Never invent a replacement ID.
+- Replace bracket placeholders with the teams/countries that actually played.
+- For games already played, return the actual score and status FINAL (or the official completed status).
+- Do not return hypothetical/potential matchups.
+- Do not change the event date merely because a source renders it in another timezone.
+- If one listed event cannot be verified, omit it rather than guessing.
+
+EVENTS TO RECONCILE:
+{chr(10).join(rows)}
+"""
+
+def _result_page_prompt(comp,targets,page,source_url):
+    rows=[]
+    for ev in targets:
+        rows.append(
+            f"eventId={ev.get('eventId')} | date={ev.get('date')} | time={ev.get('scheduledAt','')} | "
+            f"round={ev.get('round') or ev.get('stage') or ''} | currently={_participant_name(ev,'away')} vs {_participant_name(ev,'home')}"
+        )
+    return f"""Using ONLY the official page text below, resolve the actual played participants/results for the listed {comp['name']} games.
+Copy each supplied eventId exactly. Replace Winner/Loser/TBA placeholders with the teams that actually played. Preserve the listed event date. Omit anything the page does not support.
+
+EVENTS:
+{chr(10).join(rows)}
+
+OFFICIAL SOURCE URL: {source_url}
+--- OFFICIAL PAGE TEXT START ---
+{page}
+--- OFFICIAL PAGE TEXT END ---
+"""
+
+def _persist_event_reconciliation(server,comp,events):
+    rows=_load();cid=str(comp.get("id") or "").upper()
+    persisted=next((x for x in rows if str(x.get("id") or "").upper()==cid),None)
+    if not persisted:return None
+    persisted=dict(persisted);persisted["events"]=events;persisted["resultsReconciledAt"]=time.time();persisted["updatedAt"]=time.time()
+    rows=[x for x in rows if str(x.get("id") or "").upper()!=cid]+[persisted]
+    rows.sort(key=lambda x:(x.get("type")!="SPECIAL_EVENT",x.get("startDate") or "",x.get("name") or ""))
+    _save(rows)
+    _register_with_server(server,persisted)
+    return _find(cid)
+
+def reconcile_competition_results(server,comp,force=False):
+    """Replace past bracket placeholders with actual realized participants/results while preserving canonical event IDs."""
+    if not comp:return {"attempted":False,"updated":0,"targets":0,"remaining":0,"errors":["competition missing"]}
+    cid=str(comp.get("id") or "").upper();now=time.time()
+    if not force and now-float(_RESULT_RECONCILE_AT.get(cid) or 0)<6*3600:
+        remaining=sum(1 for ev in comp.get("events") or [] if _event_needs_result_reconcile(ev))
+        return {"attempted":False,"updated":0,"targets":remaining,"remaining":remaining,"errors":[]}
+    _RESULT_RECONCILE_AT[cid]=now
+    targets=[dict(ev) for ev in comp.get("events") or [] if _event_needs_result_reconcile(ev)]
+    if not targets:return {"attempted":False,"updated":0,"targets":0,"remaining":0,"errors":[]}
+
+    model=os.environ.get("SBB_COMPETITION_BUILDER_MODEL") or str(getattr(server,"OPENAI_MODEL","gpt-5-mini"))
+    source_urls=[]
+    for u in [comp.get("scheduleSourceUrl"),comp.get("scoreSourceUrl")]:
+        u=str(u or "").strip()
+        if u and u not in source_urls:source_urls.append(u)
+    page="";official=source_urls[0] if source_urls else ""
+    if official:
+        try:page=_official_page_text(official)
+        except Exception:page=""
+
+    resolved={};errors=[];sources=list(source_urls)
+    for i in range(0,len(targets),12):
+        batch=targets[i:i+12];data=None
+        try:
+            data=_openai_json_request(server,model,_result_reconcile_prompt(comp,batch,sources),_result_reconcile_schema(),"sports_competition_actual_results",use_web=True,max_output_tokens=6500,timeout=120)
+        except Exception as exc:
+            errors.append(f"web batch {i//12+1}: {type(exc).__name__}: {exc}")
+        if (not data or not data.get("results")) and page:
+            try:
+                data=_openai_json_request(server,model,_result_page_prompt(comp,batch,page,official),_result_reconcile_schema(),"sports_competition_actual_results_page",use_web=False,max_output_tokens=6500,timeout=120)
+            except Exception as exc:
+                errors.append(f"page batch {i//12+1}: {type(exc).__name__}: {exc}")
+        if not data:continue
+        for u in data.get("sourceUrls") or []:
+            u=str(u or "").strip()
+            if u and u not in sources:sources.append(u)
+        allowed={str(x.get("eventId") or "") for x in batch}
+        for row in data.get("results") or []:
+            eid=str(row.get("eventId") or "")
+            if eid in allowed and not _placeholder_participant(row.get("away")) and not _placeholder_participant(row.get("home")):
+                resolved[eid]=row
+
+    if not resolved:
+        return {"attempted":True,"updated":0,"targets":len(targets),"remaining":len(targets),"errors":errors[-12:],"sourceUrls":sources}
+
+    updated=[];changed=0
+    for idx,old in enumerate(comp.get("events") or []):
+        eid=str(old.get("eventId") or "")
+        row=resolved.get(eid)
+        if not row:
+            updated.append(old);continue
+        merged={**old,**row,"awayTeam":row.get("away"),"homeTeam":row.get("home"),"id":eid,"eventId":eid,"matchId":eid,"competitionId":cid,"competitionName":comp.get("name")}
+        # Keep the canonical identity stable so already-associated media remains attached.
+        normalized=normalize_event(comp,merged,idx)
+        normalized["id"]=eid;normalized["eventId"]=eid;normalized["matchId"]=eid
+        updated.append(normalized);changed+=1
+
+    persisted=_persist_event_reconciliation(server,comp,updated)
+    remaining=sum(1 for ev in (persisted or {}).get("events",updated) if _event_needs_result_reconcile(ev))
+    return {"attempted":True,"updated":changed,"targets":len(targets),"remaining":remaining,"errors":errors[-12:],"sourceUrls":sources}
+
 def _league_source_media(server,cid,limit=5000):
     repo=getattr(server,"HISTORY_REPOSITORY",None)
     if repo is None or not hasattr(repo,"_read_connect"):return []
@@ -696,7 +852,10 @@ def _handle_get(server,handler,parsed):
                 try:rows=server.HISTORY_REPOSITORY.event_media(ev.get("date"),cid,ev.get("eventId"),include_failed=False)
                 except Exception:rows=[]
             for item in rows or []:
-                x=dict(item);x.update({"league":cid,"competitionId":cid,"competitionName":comp["name"],"eventId":ev.get("eventId"),"matchId":ev.get("eventId"),"scoreEventId":ev.get("eventId"),"canonicalEventId":ev.get("eventId"),"date":ev.get("date"),"gameDate":ev.get("date"),"__sbbDate":ev.get("date"),"sport":comp["sportId"],"sportId":comp["sportId"],"away":ev.get("awayTeam"),"home":ev.get("homeTeam"),"awayTeam":ev.get("awayTeam"),"homeTeam":ev.get("homeTeam")});media.append(x)
+                away_team=ev.get("awayTeam") or {};home_team=ev.get("homeTeam") or {}
+                away_name=str(away_team.get("displayName") or away_team.get("name") or _participant_name(ev,"away"))
+                home_name=str(home_team.get("displayName") or home_team.get("name") or _participant_name(ev,"home"))
+                x=dict(item);x.update({"league":cid,"competitionId":cid,"competitionName":comp["name"],"eventId":ev.get("eventId"),"matchId":ev.get("eventId"),"scoreEventId":ev.get("eventId"),"canonicalEventId":ev.get("eventId"),"date":ev.get("date"),"gameDate":ev.get("date"),"__sbbDate":ev.get("date"),"sport":comp["sportId"],"sportId":comp["sportId"],"away":away_name,"home":home_name,"awayName":away_name,"homeName":home_name,"awayTeam":away_team,"homeTeam":home_team,"awayLogo":away_team.get("logo") or away_team.get("logoUrl") or "","homeLogo":home_team.get("logo") or home_team.get("logoUrl") or ""});media.append(x)
         return _send(server,handler,{"ok":True,"competition":_catalog_row(comp),"date":date,"media":media,"repairs":repairs,"health":_competition_health(server,comp,date)})
     if parsed.path=="/api/competition-builder/health":
         qs=parse_qs(parsed.query);cid=str((qs.get("id") or [""])[-1]).upper();date=str((qs.get("date") or [""])[-1])[:10];repair=str((qs.get("repair") or ["0"])[-1]).lower() in ("1","true","yes")
@@ -708,7 +867,7 @@ def _handle_get(server,handler,parsed):
             for ev in comp.get("events") or []:
                 if date and ev.get("date")!=date:continue
                 report.append(_repair_event_media(server,comp,_decorate_event_artwork(comp,ev),force=True))
-        return _send(server,handler,{"ok":True,"competition":_catalog_row(comp),"health":_competition_health(server,comp,date),"repair":report,"crawlEnrollment":_crawl_enrollment(server,comp)},200)
+        return _send(server,handler,{"ok":True,"competition":_catalog_row(comp),"health":_competition_health(server,comp,date),"repair":report,"placeholderEvents":sum(1 for ev in comp.get("events") or [] if _event_needs_result_reconcile(ev)),"crawlEnrollment":_crawl_enrollment(server,comp)},200)
     if parsed.path=="/api/competition-builder/definition":
         qs=parse_qs(parsed.query);comp=_find((qs.get("id") or [""])[-1])
         return _send(server,handler,{"ok":bool(comp),"persisted":bool(comp),"revision":_store_revision(),"competition":comp,"crawlEnrollment":_crawl_enrollment(server,comp) if comp else {}},200 if comp else 404)
@@ -721,6 +880,7 @@ def _handle_get(server,handler,parsed):
         if not comp:return False
         event=next((x for x in comp.get("events") or [] if str(x.get("eventId"))==eid),None)
         if not event:return _send(server,handler,{"ok":False,"error":"CUSTOM_EVENT_NOT_FOUND"},404)
+        event=_decorate_event_artwork(comp,event)
         return _send(server,handler,{"ok":True,"data":generic_game_center(comp,event),"resolvedEventId":eid,"cache":"CUSTOM-COMPETITION"},200)
     return False
 def _remove_operator_playlists(server,cid):
@@ -815,6 +975,12 @@ def _handle_post(server,handler,parsed):
             preview=discover_schedule(server,comp)
             saved=save_competition(comp,preview.get("events") or [],server)
             return _send(server,handler,{"ok":True,"competition":saved,"preview":preview},200)
+        if action=="reconcile_results":
+            comp=_find(body.get("id"))
+            if not comp:return _send(server,handler,{"ok":False,"error":"COMPETITION_NOT_FOUND"},404)
+            report=reconcile_competition_results(server,comp,force=True)
+            persisted=_find(comp.get("id"))
+            return _send(server,handler,{"ok":True,"competition":_catalog_row(persisted or comp),"resultsReconciliation":report,"revision":_store_revision()},200)
         return _send(server,handler,{"ok":False,"error":"UNKNOWN_ACTION"},400)
     except Exception as exc:
         return _send(server,handler,{"ok":False,"error":type(exc).__name__,"message":str(exc)},502 if action=="discover" else 400)
@@ -902,6 +1068,16 @@ def _refresh_active(server):
                     for x in rows:
                         if x.get("id")==comp.get("id"):x["lastAutoRefreshAt"]=time.time();x["lastRefreshError"]="auto refresh failed";x["updatedAt"]=time.time()
                     _save(rows)
+        except Exception:pass
+        # Realized-results reconciliation is separate from schedule discovery:
+        # past bracket placeholders are periodically replaced with the teams that
+        # actually played while preserving each canonical event ID/media binding.
+        try:
+            for comp in _load():
+                if not comp.get("enabled",True) or not comp.get("backgroundDiscovery",True):continue
+                if not any(_event_needs_result_reconcile(ev) for ev in comp.get("events") or []):continue
+                report=reconcile_competition_results(server,comp,force=False)
+                if report.get("attempted"):break
         except Exception:pass
         try:_run_generic_gap_once(server)
         except Exception:pass

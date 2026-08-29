@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.5",
+  "release": "4.6.6",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -58,7 +58,12 @@
         "Competition Builder persists an explicit participant artwork strategy; the FIFA World Cup defaults to country flags while future competitions can choose team logos, provided artwork, auto, or none.",
         "Competition Builder startup cannot recursively resolve the Special Events portal; the stable Special Events menu is read from the application DOM and may then be portaled to the viewport.",
         "Competition Builder startup exposes READY/ERROR boot state and surfaces a visible Special Events warning if initialization fails instead of silently removing all custom-competition UI.",
-        "The 4.6.4 custom competition runtime bridge, participant artwork strategy, canonical custom-media identity repair, and verified-media lookup rebuild remain required in 4.6.5."
+        "The 4.6.4 custom competition runtime bridge, participant artwork strategy, canonical custom-media identity repair, and verified-media lookup rebuild remain required in 4.6.6.",
+        "Special-event main-row eligibility is evaluated against the score ribbon browse date, so a historical tournament is treated as an active league while browsing dates inside its event window even after the real-world event has completed.",
+        "Special Events dropdown presentation does not expose internal event-count bookkeeping and instead presents a clean event identity plus date-relative active/completed status.",
+        "Past tournament bracket placeholders are reconciled to actual played participants/results from authoritative sources while preserving each canonical event ID so existing media associations remain intact.",
+        "Custom competition playback exposes explicit away/home display-name strings alongside rich participant objects and artwork so legacy title paths cannot render [object Object].",
+        "Participant artwork strategy is preserved through custom schedule hydration and Game Center; the FIFA World Cup AUTO/template strategy resolves country participants to flag artwork."
       ]
     },
     "tier2": {
@@ -109,6 +114,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.5 restores the complete v4.6.4 custom-competition runtime bridge by fixing Competition Builder startup recursion, while retaining World Cup country flags, custom score/media hydration, canonical event-media repair, and all inherited Foundation requirements.",
+  "baseline": "v4.6.6 polishes the stable custom-competition runtime: special events become date-relative first-class leagues while browsing their tournament window, completed bracket placeholders can reconcile to actual results without changing canonical media identity, and participant artwork/display names remain consistent through ribbon playback and Game Center.",
   "status": "IN_PROGRESS"
 }

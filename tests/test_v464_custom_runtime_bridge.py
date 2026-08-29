@@ -46,7 +46,8 @@ class V464CustomRuntimeBridgeTests(unittest.TestCase):
         self.assertIn("document.body.appendChild(menu)",src)
         self.assertIn("position:fixed;z-index:20050",src)
         self.assertIn("placeSpecialMenu()",src)
-        self.assertIn("c.mainRow===true&&mainRowEligible(c)",src)
+        self.assertIn("state.competitions.filter(c=>mainRowEligible(c,viewedDate))",src)
+        self.assertIn("const activeOnDate=(c,date=browseISO())",src)
 
     def test_custom_media_endpoint_forces_canonical_event_identity_and_can_repair(self):
         src=(ROOT/'sbb/competition_builder.py').read_text(encoding='utf-8')

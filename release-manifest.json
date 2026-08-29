@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.5",
-  "baseRelease": "4.6.4",
-  "title": "Competition Builder Startup Restoration",
+  "release": "4.6.6",
+  "baseRelease": "4.6.5",
+  "title": "Special Event Active Window & Results Reconciliation",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -19,24 +19,26 @@
     "tests/test_v462_competition_builder_research_delete.py",
     "tests/test_v463_special_event_ribbon.py",
     "tests/test_v464_custom_runtime_bridge.py",
-    "tests/test_v465_competition_builder_boot.py"
+    "tests/test_v465_competition_builder_boot.py",
+    "tests/test_v466_special_event_polish.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.5"
+        "4.6.6"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.5",
-        "app.js?v=4.6.5",
-        "architecture/competition-builder.js?v=4.6.5",
+        "Sports Big Board \u2014 v4.6.6",
+        "app.js?v=4.6.6",
+        "architecture/competition-builder.js?v=4.6.6",
         "id=\"sbbSpecialEventsWrap\"",
         "id=\"sbbSpecialEventsBtn\"",
         "id=\"sbbSpecialEventsMenu\""
       ],
       "forbidden": [
+        "?v=4.6.5",
         "?v=4.6.4",
         "?v=4.6.3",
         "?v=4.6.2",
@@ -47,33 +49,40 @@
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.5'",
+        "version:'4.6.6'",
         "custom-competition overlay",
         "window.SBB_COMPETITION_BUILDER"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.5\"",
-        "startup cannot recursively resolve the Special Events portal",
-        "READY/ERROR boot state",
-        "custom competition runtime bridge"
+        "\"release\": \"4.6.6\"",
+        "evaluated against the score ribbon browse date",
+        "does not expose internal event-count bookkeeping",
+        "bracket placeholders are reconciled to actual played participants/results",
+        "cannot render [object Object]",
+        "country participants to flag artwork"
       ]
     },
     "architecture/competition-builder.js": {
       "required": [
-        "version:'1.5'",
-        "const menu=$('sbbSpecialEventsMenu')",
-        "document.body.appendChild(menu)",
-        "document.documentElement.dataset.sbbCompetitionBuilder='READY'",
-        "document.documentElement.dataset.sbbCompetitionBuilder='ERROR'",
+        "version:'1.6'",
+        "const activeOnDate=(c,date=browseISO())",
+        "state.competitions.filter(c=>mainRowEligible(c,viewedDate))",
+        "sbb-special-event-status",
+        "activeHere?'ACTIVE':status",
+        "REFRESH RESULTS",
+        "action:'reconcile_results'",
+        "away:awayName,home:homeName",
+        "awayTeam,homeTeam",
+        "syncFilters();",
         "PARTICIPANT ARTWORK",
         "COUNTRY FLAGS",
-        "REPAIR MEDIA",
-        "rebuildVerifiedMediaIndex(SCORE_DATE_STORE?.allMedia?.(date)||media)",
-        "/api/competition-builder/health"
+        "const menu=$('sbbSpecialEventsMenu')",
+        "document.documentElement.dataset.sbbCompetitionBuilder='READY'"
       ],
       "forbidden": [
+        "c.mainRow===true&&mainRowEligible(c)",
         "const menu=ensureSpecialMenuPortal()"
       ]
     },
@@ -85,12 +94,16 @@
     },
     "sbb/competition_builder.py": {
       "required": [
-        "Sports Big Board v4.6.5",
-        "LOGO_STRATEGIES",
+        "Sports Big Board v4.6.6",
+        "def _event_needs_result_reconcile",
+        "def reconcile_competition_results",
+        "preserving canonical event IDs",
+        "action==\"reconcile_results\"",
+        "\"away\":away_name,\"home\":home_name",
+        "event=_decorate_event_artwork(comp,event)",
         "COUNTRY_FLAGS",
         "flagcdn.com/w80",
         "def _repair_event_media",
-        "def _competition_health",
         "scoreEventId",
         "canonicalEventId",
         "persist the registration before a crawler thread",
@@ -110,7 +123,8 @@
         "python3 -m unittest tests.test_v462_competition_builder_research_delete",
         "python3 -m unittest tests.test_v463_special_event_ribbon",
         "python3 -m unittest tests.test_v464_custom_runtime_bridge",
-        "python3 -m unittest tests.test_v465_competition_builder_boot"
+        "python3 -m unittest tests.test_v465_competition_builder_boot",
+        "python3 -m unittest tests.test_v466_special_event_polish"
       ]
     },
     "tests/test_v461_competition_builder_hardening.py": {
@@ -152,6 +166,14 @@
         "test_index_loads_builder_after_app_runtime",
         "test_v464_world_cup_runtime_bridge_is_retained"
       ]
+    },
+    "tests/test_v466_special_event_polish.py": {
+      "required": [
+        "test_special_event_main_row_follows_browsed_date_and_dropdown_has_no_game_count",
+        "test_results_reconciliation_preserves_canonical_event_id_and_replaces_actual_matchup",
+        "test_custom_playback_uses_string_names_while_preserving_rich_team_objects",
+        "test_dev_mode_has_explicit_actual_results_repair"
+      ]
     }
   },
   "verification": [
@@ -166,6 +188,7 @@
     "python3 -m unittest tests.test_v463_special_event_ribbon",
     "python3 -m unittest tests.test_v464_custom_runtime_bridge",
     "python3 -m unittest tests.test_v465_competition_builder_boot",
+    "python3 -m unittest tests.test_v466_special_event_polish",
     "bash VERIFY.sh"
   ]
 }

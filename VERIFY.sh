@@ -25,6 +25,7 @@ python3 -m unittest tests.test_v462_competition_builder_research_delete
 python3 -m unittest tests.test_v463_special_event_ribbon
 python3 -m unittest tests.test_v464_custom_runtime_bridge
 python3 -m unittest tests.test_v465_competition_builder_boot
+python3 -m unittest tests.test_v466_special_event_polish
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"
