@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.2",
-  "baseRelease": "4.6.1",
-  "title": "Competition Builder Research Completeness & Site-Wide Delete",
+  "release": "4.6.3",
+  "baseRelease": "4.6.2",
+  "title": "Special Events Selector & Score Ribbon Integration",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -16,23 +16,26 @@
     "sbb/competition_builder.py",
     "tests/test_v460_competition_builder.py",
     "tests/test_v461_competition_builder_hardening.py",
-    "tests/test_v462_competition_builder_research_delete.py"
+    "tests/test_v462_competition_builder_research_delete.py",
+    "tests/test_v463_special_event_ribbon.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.2"
+        "4.6.3"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board — v4.6.2",
-        "app.js?v=4.6.2",
-        "architecture/competition-builder.js?v=4.6.2",
-        "architecture/recap-identity-guard.js?v=4.6.2",
-        "architecture/nfl-recap-reconciliation.js?v=4.6.2"
+        "Sports Big Board \u2014 v4.6.3",
+        "app.js?v=4.6.3",
+        "architecture/competition-builder.js?v=4.6.3",
+        "id=\"sbbSpecialEventsWrap\"",
+        "id=\"sbbSpecialEventsBtn\"",
+        "id=\"sbbSpecialEventsMenu\""
       ],
       "forbidden": [
+        "?v=4.6.2",
         "?v=4.6.1",
         "?v=4.6.0",
         "?v=4.5."
@@ -40,31 +43,29 @@
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.2'",
+        "version:'4.6.3'",
         "custom-competition overlay",
         "window.SBB_COMPETITION_BUILDER"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.2\"",
-        "completeness-driven",
-        "rejects zero-event schedules",
-        "Dev Mode can delete a custom competition site-wide",
-        "104 and 38"
+        "\"release\": \"4.6.3\"",
+        "permanent top-level selector control",
+        "navigates the score ribbon into the event range",
+        "canonical ScoreDateStore browse-date authority"
       ]
     },
     "architecture/competition-builder.js": {
       "required": [
-        "version:'1.2'",
-        "CONFIRM DELETE",
-        "PARTIAL SCHEDULE — NOT READY TO CREATE",
-        "cbExpectedEvents",
-        "cbExpectedEvents').value='104'",
-        "cbExpectedEvents').value='38'",
-        ".sbb-builder-actions .hidden",
-        "action:'delete'",
-        "Schedule is incomplete"
+        "version:'1.3'",
+        "sbbSpecialEventsWrap",
+        "menu.innerHTML=''",
+        "window.SBB_SCORE_DATE?.subscribe",
+        "meta?.action==='browse'",
+        "if(c.endDate&&targetDate>c.endDate)targetDate=c.endDate",
+        "setScoreBrowseDate(targetDate",
+        "SCORE_DATE_STORE?.setMatches?.(date,c.id,rows)"
       ]
     },
     "sbb/__init__.py": {
@@ -97,7 +98,8 @@
     "VERIFY.sh": {
       "required": [
         "python3 -m unittest tests.test_v461_competition_builder_hardening",
-        "python3 -m unittest tests.test_v462_competition_builder_research_delete"
+        "python3 -m unittest tests.test_v462_competition_builder_research_delete",
+        "python3 -m unittest tests.test_v463_special_event_ribbon"
       ]
     },
     "tests/test_v461_competition_builder_hardening.py": {
@@ -115,6 +117,13 @@
         "test_delete_is_site_wide_and_purges_custom_history",
         "CONFIRM DELETE"
       ]
+    },
+    "tests/test_v463_special_event_ribbon.py": {
+      "required": [
+        "test_special_events_control_is_permanent_header_ui",
+        "test_completed_special_event_selection_navigates_into_event_range",
+        "test_custom_scores_follow_score_date_store_browse_authority"
+      ]
     }
   },
   "verification": [
@@ -126,6 +135,7 @@
     "python3 -m unittest tests.test_v460_competition_builder",
     "python3 -m unittest tests.test_v461_competition_builder_hardening",
     "python3 -m unittest tests.test_v462_competition_builder_research_delete",
+    "python3 -m unittest tests.test_v463_special_event_ribbon",
     "bash VERIFY.sh"
   ]
 }

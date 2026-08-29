@@ -1,4 +1,4 @@
-/* Sports Big Board v4.6.2 — Competition Builder Foundation.
+/* Sports Big Board v4.6.3 — Competition Builder Foundation.
    Data-driven League + Special Event UI over the canonical score/date/Game Center contracts. */
 (() => {
   'use strict';
@@ -15,8 +15,8 @@
   function injectCss(){
     if($('sbbCompetitionBuilderStyle'))return;
     const style=document.createElement('style');style.id='sbbCompetitionBuilderStyle';style.textContent=`
-      .sbb-special-wrap{position:relative;display:inline-flex}.sbb-special-menu{position:absolute;z-index:90;top:calc(100% + 6px);left:0;min-width:260px;max-height:360px;overflow:auto;padding:8px;background:#111820;border:1px solid rgba(255,255,255,.16);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.45)}
-      .sbb-special-menu.hidden{display:none}.sbb-special-menu button{display:flex!important;width:100%;justify-content:space-between;gap:14px;margin:2px 0!important}.sbb-special-menu small{opacity:.65}.sbb-active-event-filter::after{content:'LIVE EVENT';font-size:8px;margin-left:5px;opacity:.65}
+      .sbb-special-wrap{position:relative;display:inline-flex}.sbb-special-wrap.hidden{display:none!important}.sbb-special-menu{position:absolute;z-index:90;top:calc(100% + 6px);left:0;min-width:260px;max-height:360px;overflow:auto;padding:8px;background:#111820;border:1px solid rgba(255,255,255,.16);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.45)}
+      .sbb-special-menu.hidden{display:none}.sbb-special-menu button{display:flex!important;width:100%;justify-content:space-between;gap:14px;margin:2px 0!important}.sbb-special-menu small{opacity:.65}.sbb-special-menu button.selected{color:#dff8e8;border-color:#35694a!important;background:#101b15!important}.sbb-active-event-filter::after{content:'LIVE EVENT';font-size:8px;margin-left:5px;opacity:.65}
       .sbb-builder-launch-card.hidden{display:none}.sbb-builder-launch-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.sbb-builder-launch-actions button{flex:1;min-width:140px}.sbb-builder-competition-list{margin-top:10px;display:grid;gap:6px}.sbb-builder-competition-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.05)}.sbb-builder-row-actions{display:flex;gap:6px;align-items:center}.sbb-builder-competition-row button{min-width:0!important;flex:0 0 auto!important}.sbb-builder-competition-row small{opacity:.65}.sbb-builder-delete{border-color:rgba(255,90,90,.45)!important;color:#ff9b9b!important}.sbb-builder-delete.confirm{background:rgba(180,35,35,.28)!important;color:#fff!important}
       .sbb-builder-modal{position:fixed;z-index:10050;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:24px}.sbb-builder-modal.hidden{display:none}
       .sbb-builder-shell{width:min(920px,96vw);max-height:90vh;overflow:auto;background:#121920;border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
@@ -78,35 +78,85 @@
     try{if(typeof updateScoreDayPager==='function')updateScoreDayPager();}catch(_){}
   }
 
-  function selectCompetition(id){
+  async function selectCompetition(id){
     id=clean(id).toUpperCase();
+    const c=state.map[id]||null;
+    let targetDate='';
+    try{targetDate=clean(scoreBrowseDate||localISO()).slice(0,10);}catch(_){targetDate=localISO();}
+    // A completed/upcoming special event should open on a meaningful event date,
+    // not leave the user stranded on today's unrelated ribbon.
+    if(c?.type==='SPECIAL_EVENT'){
+      if(c.startDate&&targetDate<c.startDate)targetDate=c.startDate;
+      if(c.endDate&&targetDate>c.endDate)targetDate=c.endDate;
+    }
     try{scoreRibbonLeagueFilter=id;}catch(_){}
     const host=$('scoreFilters');
     host?.querySelectorAll('[data-score-filter]').forEach(b=>b.classList.toggle('active',clean(b.dataset.scoreFilter).toUpperCase()===id));
-    const special=$('sbbSpecialEventsBtn');if(special)special.classList.toggle('active',!host?.querySelector(`[data-score-filter="${CSS.escape(id)}"]`));
+    const special=$('sbbSpecialEventsBtn');
+    if(special){
+      special.classList.toggle('active',c?.type==='SPECIAL_EVENT');
+      special.setAttribute('aria-expanded','false');
+    }
+    $('sbbSpecialEventsMenu')?.querySelectorAll('[data-special-competition]').forEach(b=>b.classList.toggle('selected',clean(b.dataset.specialCompetition).toUpperCase()===id));
     try{scoreRibbonInteractionUntil=Date.now()+10000;}catch(_){}
-    loadDate(typeof scoreBrowseDate!=='undefined'?scoreBrowseDate:localISO(),{force:true});
+    try{
+      const current=clean(scoreBrowseDate||'').slice(0,10);
+      if(targetDate&&targetDate!==current&&typeof setScoreBrowseDate==='function'){
+        await setScoreBrowseDate(targetDate,{animate:true,hold:10000,load:false});
+      }
+    }catch(_){}
+    await loadDate(targetDate||localISO(),{force:true});
+    try{if(typeof renderScoresFromMatchesCombined==='function')renderScoresFromMatchesCombined(true);}catch(_){}
+    try{if(typeof updateScoreDayPager==='function')updateScoreDayPager();}catch(_){}
   }
 
   function syncFilters(){
     const host=$('scoreFilters');if(!host)return;
-    host.querySelectorAll('.sbb-dynamic-competition,.sbb-special-wrap').forEach(x=>x.remove());
-    const specials=state.competitions.filter(c=>c.type==='SPECIAL_EVENT').sort((a,b)=>(lifecycle(a)==='ACTIVE'?-1:1)-(lifecycle(b)==='ACTIVE'?-1:1)||(b.startDate||'').localeCompare(a.startDate||''));
-    if(specials.length){
-      const wrap=document.createElement('span');wrap.className='sbb-special-wrap';
-      const btn=document.createElement('button');btn.id='sbbSpecialEventsBtn';btn.type='button';btn.textContent='SPECIAL EVENTS ▾';
-      const menu=document.createElement('div');menu.className='sbb-special-menu hidden';menu.id='sbbSpecialEventsMenu';
+    host.querySelectorAll('.sbb-dynamic-competition').forEach(x=>x.remove());
+
+    const wrap=$('sbbSpecialEventsWrap');
+    const btn=$('sbbSpecialEventsBtn');
+    const menu=$('sbbSpecialEventsMenu');
+    const specials=state.competitions
+      .filter(c=>c.type==='SPECIAL_EVENT'&&c.enabled!==false)
+      .sort((a,b)=>{
+        const aa=lifecycle(a)==='ACTIVE'?0:(lifecycle(a)==='UPCOMING'?1:2);
+        const bb=lifecycle(b)==='ACTIVE'?0:(lifecycle(b)==='UPCOMING'?1:2);
+        return aa-bb||(b.startDate||'').localeCompare(a.startDate||'');
+      });
+
+    if(wrap&&btn&&menu){
+      wrap.classList.toggle('hidden',specials.length===0);
+      menu.innerHTML='';
       for(const c of specials){
-        const x=document.createElement('button');x.type='button';x.dataset.specialCompetition=c.id;x.innerHTML=`<span>${c.shortName||c.name}</span><small>${lifecycle(c)}</small>`;
-        x.addEventListener('click',ev=>{ev.stopPropagation();menu.classList.add('hidden');selectCompetition(c.id);});menu.appendChild(x);
+        const x=document.createElement('button');
+        x.type='button';x.dataset.specialCompetition=c.id;x.setAttribute('role','menuitem');
+        x.innerHTML=`<span>${c.shortName||c.name}</span><small>${lifecycle(c)} • ${Number(c.eventsCount||0)} games</small>`;
+        x.classList.toggle('selected',String(scoreRibbonLeagueFilter||'').toUpperCase()===c.id);
+        x.addEventListener('click',async ev=>{
+          ev.stopPropagation();menu.classList.add('hidden');btn.setAttribute('aria-expanded','false');
+          await selectCompetition(c.id);
+        });
+        menu.appendChild(x);
       }
-      btn.addEventListener('click',ev=>{ev.stopPropagation();menu.classList.toggle('hidden');});wrap.append(btn,menu);
-      const all=host.querySelector('[data-score-filter="ALL"]');all?.after(wrap);
+      if(!btn.dataset.sbbSpecialWired){
+        btn.dataset.sbbSpecialWired='1';
+        btn.addEventListener('click',ev=>{
+          ev.stopPropagation();
+          const opening=menu.classList.contains('hidden');
+          menu.classList.toggle('hidden',!opening);
+          btn.setAttribute('aria-expanded',opening?'true':'false');
+        });
+      }
     }
+
     let anchor=host.querySelector('[data-score-filter="MLS"]')||host.lastElementChild;
     for(const c of state.competitions.filter(mainRowEligible)){
       ensureRuntimeCompetition(c);
-      const b=document.createElement('button');b.type='button';b.className=`sbb-dynamic-competition ${c.type==='SPECIAL_EVENT'?'sbb-active-event-filter':''}`;b.dataset.scoreFilter=c.id;b.textContent=c.shortName||c.id;b.title=c.name;
+      const b=document.createElement('button');
+      b.type='button';
+      b.className=`sbb-dynamic-competition ${c.type==='SPECIAL_EVENT'?'sbb-active-event-filter':''}`;
+      b.dataset.scoreFilter=c.id;b.textContent=c.shortName||c.id;b.title=c.name;
       anchor.after(b);anchor=b;
     }
   }
@@ -272,16 +322,37 @@
   async function start(){
     injectCss();installDevLaunchers();await refreshCatalog({forceDate:true});
     let previous='';
+    // Directly follow the canonical score-date authority. This makes custom
+    // competition events first-class score-ribbon data rather than relying only
+    // on polling a global browse-date variable.
+    try{
+      window.SBB_SCORE_DATE?.subscribe?.((snap,meta)=>{
+        if(meta?.action==='browse'&&snap?.browseDate){
+          previous=snap.browseDate;
+          loadDate(snap.browseDate,{force:true}).catch(()=>{});
+        }
+      },{emitCurrent:true});
+    }catch(_){}
     setInterval(()=>{
       let d=localISO();try{d=clean(scoreBrowseDate||d).slice(0,10);}catch(_){}
       if(d!==previous){previous=d;loadDate(d,{force:true});}
+      // Reconcile the currently viewed custom-event date periodically so a
+      // normal built-in score refresh cannot leave a custom ribbon stale.
+      if(state.competitions.some(c=>(!c.startDate||d>=c.startDate)&&(!c.endDate||d<=c.endDate))){
+        loadDate(d,{force:false}).catch(()=>{});
+      }
       if(Date.now()-state.lastCatalogAt>5000)refreshCatalog();
     },1000);
     window.addEventListener('focus',()=>refreshCatalog({forceDate:true}));
     document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshCatalog({forceDate:true});});
-    document.addEventListener('click',e=>{if(!e.target.closest('.sbb-special-wrap'))$('sbbSpecialEventsMenu')?.classList.add('hidden');});
+    document.addEventListener('click',e=>{
+      if(!e.target.closest('.sbb-special-wrap')){
+        $('sbbSpecialEventsMenu')?.classList.add('hidden');
+        $('sbbSpecialEventsBtn')?.setAttribute('aria-expanded','false');
+      }
+    });
   }
 
-  window.SBB_COMPETITION_BUILDER=Object.freeze({version:'1.2',refresh:refreshCatalog,loadDate,competitionMap,lifecycle,mainRowEligible,openLeague:()=>openWizard('LEAGUE'),openSpecialEvent:()=>openWizard('SPECIAL_EVENT'),snapshot:()=>({competitions:state.competitions.length,specialEvents:state.competitions.filter(x=>x.type==='SPECIAL_EVENT').length,mainRow:state.competitions.filter(mainRowEligible).map(x=>x.id),lastDate:state.lastDate})});
+  window.SBB_COMPETITION_BUILDER=Object.freeze({version:'1.3',refresh:refreshCatalog,loadDate,competitionMap,lifecycle,mainRowEligible,openLeague:()=>openWizard('LEAGUE'),openSpecialEvent:()=>openWizard('SPECIAL_EVENT'),snapshot:()=>({competitions:state.competitions.length,specialEvents:state.competitions.filter(x=>x.type==='SPECIAL_EVENT').length,mainRow:state.competitions.filter(mainRowEligible).map(x=>x.id),lastDate:state.lastDate})});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

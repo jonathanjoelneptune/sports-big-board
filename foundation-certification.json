@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.2",
+  "release": "4.6.3",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -47,7 +47,10 @@
         "Competition Builder schedule discovery is completeness-driven: large tournaments are researched in bounded date windows, merged/deduplicated, and checked against an expected event count instead of relying on one giant model response.",
         "Site-wide competition creation rejects zero-event schedules and rejects incomplete schedules when an expected event count is known unless a future explicit override is introduced.",
         "Dev Mode can delete a custom competition site-wide, removing its persisted definition, history event relationships, operator playlist registrations, runtime registry entry, and history-league crawl enrollment.",
-        "World Cup and LLWS templates carry deterministic completeness targets of 104 and 38 competition games respectively."
+        "World Cup and LLWS templates carry deterministic completeness targets of 104 and 38 competition games respectively.",
+        "Special Events is a permanent top-level selector control; custom special-event catalog refreshes populate that stable control instead of transiently injecting/removing the control itself.",
+        "Selecting a completed or upcoming special event while browsing outside its event date range navigates the score ribbon into the event range before rendering its games.",
+        "Custom competition score hydration subscribes to the canonical ScoreDateStore browse-date authority so special-event games render on historical event dates across normal ribbon refreshes."
       ]
     },
     "tier2": {
@@ -98,6 +101,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.2 hardens Competition Builder schedule research with bounded multi-window discovery and completeness gates, and adds site-wide custom-competition deletion while preserving every inherited playback and Foundation requirement.",
+  "baseline": "v4.6.3 makes custom special events first-class score-ribbon navigation by stabilizing the Special Events selector and directly subscribing custom score hydration to the canonical browse-date store while preserving all inherited Foundation requirements.",
   "status": "IN_PROGRESS"
 }
