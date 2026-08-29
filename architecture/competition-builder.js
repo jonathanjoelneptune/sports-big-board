@@ -1,4 +1,4 @@
-/* Sports Big Board v4.6.3 — Competition Builder Foundation.
+/* Sports Big Board v4.6.4 — Competition Builder Foundation.
    Data-driven League + Special Event UI over the canonical score/date/Game Center contracts. */
 (() => {
   'use strict';
@@ -11,13 +11,25 @@
   const mainRowEligible=c=>!!c?.enabled&&(String(c.type)==='LEAGUE'||(String(c.type)==='SPECIAL_EVENT'&&lifecycle(c)==='ACTIVE'));
   const competitionMap=()=>({...state.map});
   const sportLabel=id=>({baseball:'Baseball','american-football':'American Football',basketball:'Basketball','ice-hockey':'Ice Hockey',football:'Soccer',tennis:'Tennis',motorsport:'Motorsport',athletics:'Track & Field','action-sports':'Action Sports','multi-sport':'Sports'}[id]||id);
+  function ensureSpecialMenuPortal(){
+    const menu=ensureSpecialMenuPortal();
+    if(menu&&menu.parentElement!==document.body)document.body.appendChild(menu);
+    return menu;
+  }
+  function placeSpecialMenu(){
+    const btn=$('sbbSpecialEventsBtn'),menu=ensureSpecialMenuPortal();if(!btn||!menu)return;
+    const r=btn.getBoundingClientRect(),margin=8;
+    const width=Math.min(420,Math.max(280,r.width+110));
+    const left=Math.max(margin,Math.min(window.innerWidth-width-margin,r.left));
+    menu.style.left=`${Math.round(left)}px`;menu.style.top=`${Math.round(r.bottom+6)}px`;menu.style.width=`${Math.round(width)}px`;
+  }
 
   function injectCss(){
     if($('sbbCompetitionBuilderStyle'))return;
     const style=document.createElement('style');style.id='sbbCompetitionBuilderStyle';style.textContent=`
-      .sbb-special-wrap{position:relative;display:inline-flex}.sbb-special-wrap.hidden{display:none!important}.sbb-special-menu{position:absolute;z-index:90;top:calc(100% + 6px);left:0;min-width:260px;max-height:360px;overflow:auto;padding:8px;background:#111820;border:1px solid rgba(255,255,255,.16);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.45)}
+      .sbb-special-wrap{position:relative;display:inline-flex}.sbb-special-wrap.hidden{display:none!important}.sbb-special-menu{position:fixed;z-index:20050;min-width:280px;max-width:min(420px,92vw);max-height:420px;overflow:auto;padding:8px;background:#111820;border:1px solid rgba(255,255,255,.16);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.45)}
       .sbb-special-menu.hidden{display:none}.sbb-special-menu button{display:flex!important;width:100%;justify-content:space-between;gap:14px;margin:2px 0!important}.sbb-special-menu small{opacity:.65}.sbb-special-menu button.selected{color:#dff8e8;border-color:#35694a!important;background:#101b15!important}.sbb-active-event-filter::after{content:'LIVE EVENT';font-size:8px;margin-left:5px;opacity:.65}
-      .sbb-builder-launch-card.hidden{display:none}.sbb-builder-launch-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.sbb-builder-launch-actions button{flex:1;min-width:140px}.sbb-builder-competition-list{margin-top:10px;display:grid;gap:6px}.sbb-builder-competition-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.05)}.sbb-builder-row-actions{display:flex;gap:6px;align-items:center}.sbb-builder-competition-row button{min-width:0!important;flex:0 0 auto!important}.sbb-builder-competition-row small{opacity:.65}.sbb-builder-delete{border-color:rgba(255,90,90,.45)!important;color:#ff9b9b!important}.sbb-builder-delete.confirm{background:rgba(180,35,35,.28)!important;color:#fff!important}
+      .sbb-builder-launch-card.hidden{display:none}.sbb-builder-launch-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.sbb-builder-launch-actions button{flex:1;min-width:140px}.sbb-builder-competition-list{margin-top:10px;display:grid;gap:6px}.sbb-builder-competition-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.05)}.sbb-builder-row-actions{display:flex;gap:6px;align-items:center}.sbb-builder-competition-row button{min-width:0!important;flex:0 0 auto!important}.sbb-builder-competition-row small{opacity:.65}.sbb-builder-repair{border-color:rgba(70,170,255,.45)!important;color:#9dd5ff!important}.sbb-builder-delete{border-color:rgba(255,90,90,.45)!important;color:#ff9b9b!important}.sbb-builder-delete.confirm{background:rgba(180,35,35,.28)!important;color:#fff!important}
       .sbb-builder-modal{position:fixed;z-index:10050;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:24px}.sbb-builder-modal.hidden{display:none}
       .sbb-builder-shell{width:min(920px,96vw);max-height:90vh;overflow:auto;background:#121920;border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
       .sbb-builder-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.sbb-builder-head h2{margin:2px 0}.sbb-builder-close{font-size:22px}.sbb-builder-steps{display:flex;gap:6px;margin:16px 0}.sbb-builder-step{flex:1;padding:8px;border-radius:8px;background:rgba(255,255,255,.06);text-align:center;font-size:11px}.sbb-builder-step.active{background:rgba(43,176,255,.2);outline:1px solid rgba(43,176,255,.45)}
@@ -43,18 +55,23 @@
   async function loadCompetitionDate(c,date,{force=false}={}){
     date=clean(date).slice(0,10);if(!date)return [];
     const key=`${c.id}:${date}`,previous=state.loaded.get(key);
-    if(!force&&previous&&Date.now()-previous<45000)return [];
-    state.loaded.set(key,Date.now());
+    if(!force&&previous&&Date.now()-previous<15000)return [];
     const [r,mr]=await Promise.all([
-      fetch(`/api/competition-builder/schedule?id=${encodeURIComponent(c.id)}&date=${encodeURIComponent(date)}`,{cache:'no-store'}),
-      fetch(`/api/competition-builder/media?id=${encodeURIComponent(c.id)}&date=${encodeURIComponent(date)}`,{cache:'no-store'}).catch(()=>null)
+      fetch(`/api/competition-builder/schedule?id=${encodeURIComponent(c.id)}&date=${encodeURIComponent(date)}&_=${Date.now()}`,{cache:'no-store'}),
+      fetch(`/api/competition-builder/media?id=${encodeURIComponent(c.id)}&date=${encodeURIComponent(date)}&_=${Date.now()}`,{cache:'no-store'}).catch(()=>null)
     ]);
-    if(!r.ok)return [];
+    if(!r.ok){state.loaded.delete(key);return [];}
     const p=await r.json(),rows=(p.events||[]).map(e=>normalizeMatch(c,e));
-    try{SCORE_DATE_STORE?.setMatches?.(date,c.id,rows);}catch(_){}
+    let media=[];
     try{
-      if(mr?.ok){const mp=await mr.json();SCORE_DATE_STORE?.setMedia?.(date,c.id,(mp.media||[]).map(x=>({...x,league:c.id,competitionId:c.id,competitionName:c.name,sport:x.sport||c.sportId,__sbbDate:x.__sbbDate||date})));}
-    }catch(_){}
+      if(mr?.ok){const mp=await mr.json();media=(mp.media||[]).map(x=>({...x,league:c.id,competitionId:c.id,competitionName:c.name,sport:x.sport||c.sportId,sportId:x.sportId||c.sportId,__sbbDate:x.__sbbDate||date}));}
+    }catch(_){media=[];}
+    try{SCORE_DATE_STORE?.setMatches?.(date,c.id,rows);}catch(_){}
+    try{SCORE_DATE_STORE?.setMedia?.(date,c.id,media);}catch(_){}
+    // The score-card click path uses the app's verified-media lookup, not merely
+    // the ScoreDateStore. Rebuild it whenever custom media is hydrated.
+    try{if(typeof rebuildVerifiedMediaIndex==='function')rebuildVerifiedMediaIndex(SCORE_DATE_STORE?.allMedia?.(date)||media);}catch(err){console.warn('[SBB custom] media index rebuild failed',err);}
+    state.loaded.set(key,Date.now());state.lastDate=date;
     try{
       if(typeof LIVE_MATCHES_BY_LEAGUE!=='undefined'){
         const today=localISO(),y=new Date();y.setDate(y.getDate()-1);const yesterday=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`;
@@ -64,9 +81,10 @@
       if(typeof SPORT_FEEDS==='object'&&SPORT_FEEDS[c.id]){
         const final=rows.filter(x=>/final|complete|finished/i.test(clean(x.status))).length;
         const live=rows.filter(x=>/live|progress|inning|half|quarter|period/i.test(clean(x.status))).length;
-        Object.assign(SPORT_FEEDS[c.id],{status:'ready',games:rows.length,eligible:rows.length,final,live,scheduled:Math.max(0,rows.length-final-live),lastChecked:Date.now()});
+        Object.assign(SPORT_FEEDS[c.id],{status:'ready',games:rows.length,eligible:rows.length,final,live,scheduled:Math.max(0,rows.length-final-live),highlights:media.length,lastChecked:Date.now()});
       }
     }catch(_){}
+    console.info('[SBB custom] hydrated',{competition:c.id,date,games:rows.length,media:media.length});
     return rows;
   }
 
@@ -74,7 +92,9 @@
     date=clean(date||localISO()).slice(0,10);
     const jobs=state.competitions.filter(c=>!c.startDate||!c.endDate||(date>=c.startDate&&date<=c.endDate)).map(c=>loadCompetitionDate(c,date,{force}).catch(()=>[]));
     await Promise.all(jobs);
+    try{if(typeof rebuildVerifiedMediaIndex==='function')rebuildVerifiedMediaIndex(SCORE_DATE_STORE?.allMedia?.(date)||[]);}catch(_){}
     try{if(typeof renderScoresFromMatchesCombined==='function')renderScoresFromMatchesCombined(false);}catch(_){}
+    requestAnimationFrame(()=>{try{if(typeof renderScoresFromMatchesCombined==='function')renderScoresFromMatchesCombined(false);}catch(_){}});
     try{if(typeof updateScoreDayPager==='function')updateScoreDayPager();}catch(_){}
   }
 
@@ -144,6 +164,7 @@
         btn.addEventListener('click',ev=>{
           ev.stopPropagation();
           const opening=menu.classList.contains('hidden');
+          if(opening)placeSpecialMenu();
           menu.classList.toggle('hidden',!opening);
           btn.setAttribute('aria-expanded',opening?'true':'false');
         });
@@ -151,7 +172,7 @@
     }
 
     let anchor=host.querySelector('[data-score-filter="MLS"]')||host.lastElementChild;
-    for(const c of state.competitions.filter(mainRowEligible)){
+    for(const c of state.competitions.filter(c=>c.mainRow===true&&mainRowEligible(c))){
       ensureRuntimeCompetition(c);
       const b=document.createElement('button');
       b.type='button';
@@ -180,6 +201,23 @@
     }
   }
 
+  async function repairCompetition(c,button){
+    if(!c?.id||!button)return;button.disabled=true;const prior=button.textContent;button.textContent='REPAIRING…';
+    try{
+      let date='';try{date=clean(scoreBrowseDate||'').slice(0,10);}catch(_){}
+      const within=date&&(!c.startDate||date>=c.startDate)&&(!c.endDate||date<=c.endDate);if(!within)date='';
+      const r=await fetch(`/api/competition-builder/health?id=${encodeURIComponent(c.id)}&date=${encodeURIComponent(date)}&repair=1&_=${Date.now()}`,{cache:'no-store'});
+      const p=await r.json();if(!r.ok||!p.ok)throw new Error(p.message||p.error||`HTTP ${r.status}`);
+      state.loaded.clear();await loadDate(date||c.endDate||c.startDate||localISO(),{force:true});
+      const h=p.health||{};alert(`${c.shortName||c.name} media repair started/completed.
+Events checked: ${h.events||0}
+Source candidates: ${h.sourceCandidates||0}
+Assigned media: ${h.assignedMedia||0}
+Playable media: ${h.playableMedia||0}
+Green: ${h.green||0} • Purple: ${h.purple||0} • Blue: ${h.blue||0}`);
+    }catch(err){alert(`Media repair failed: ${err.message}`);}finally{button.disabled=false;button.textContent=prior;}
+  }
+
   function renderCompetitionList(){
     const host=$('sbbCompetitionList');if(!host)return;
     if(!state.competitions.length){host.innerHTML='<small>No custom competitions have been created yet.</small>';return;}
@@ -189,8 +227,9 @@
       row.innerHTML=`<div><strong>${c.shortName||c.name}</strong><br><small>${c.type} • ${c.lifecycle||lifecycle(c)} • ${Number(c.eventsCount||0)} events • SERVER PERSISTED</small></div>`;
       const actions=document.createElement('div');actions.className='sbb-builder-row-actions';
       const view=document.createElement('button');view.type='button';view.textContent='VIEW';view.onclick=()=>selectCompetition(c.id);
+      const repair=document.createElement('button');repair.type='button';repair.className='sbb-builder-repair';repair.textContent='REPAIR MEDIA';repair.onclick=()=>repairCompetition(c,repair);
       const del=document.createElement('button');del.type='button';del.className='sbb-builder-delete';del.textContent='DELETE';del.onclick=()=>deleteCompetition(c,del);
-      actions.append(view,del);row.appendChild(actions);host.appendChild(row);
+      actions.append(view,repair,del);row.appendChild(actions);host.appendChild(row);
     }
   }
 
@@ -211,6 +250,7 @@
         <label>SHORT LABEL<input id="cbShort" placeholder="WORLD CUP"></label><label>SPORT<select id="cbSport"><option value="football">Soccer</option><option value="baseball">Baseball</option><option value="american-football">American Football</option><option value="basketball">Basketball</option><option value="ice-hockey">Ice Hockey</option><option value="tennis">Tennis</option><option value="motorsport">Motorsport</option><option value="multi-sport">Multi-sport</option></select></label>
         <label>START DATE<input id="cbStart" type="date"></label><label>END DATE<input id="cbEnd" type="date"></label>
         <label>FORMAT<select id="cbFormat"><option>GROUP + KNOCKOUT</option><option>DOUBLE ELIMINATION</option><option>KNOCKOUT</option><option>ROUND ROBIN</option><option>SEASON</option><option>CUSTOM</option></select></label><label>TYPE<input value="${type}" disabled></label>
+        <label class="sbb-builder-wide">PARTICIPANT ARTWORK<select id="cbLogoStrategy"><option value="AUTO">AUTO / USE AVAILABLE TEAM ART</option><option value="COUNTRY_FLAGS">COUNTRY FLAGS</option><option value="TEAM_LOGOS">TEAM / CLUB LOGOS</option><option value="PROVIDED">USE PROVIDED LOGO URLS</option><option value="NONE">TEXT ONLY / NO LOGOS</option></select></label>
       </div></div>
       <div class="sbb-builder-pane" data-step="1"><div class="sbb-builder-grid">
         <label>SCHEDULE MODE<select id="cbScheduleMode"><option value="AUTO_DISCOVER">OPENAI AUTO DISCOVER</option><option value="PASTE">PASTE JSON / CSV</option></select></label>
@@ -234,7 +274,7 @@
 
   function draft(type){
     const lines=id=>clean($(id)?.value).split(/\n+/).map(x=>x.trim()).filter(Boolean);
-    return {id:clean($('cbId')?.value).toUpperCase(),name:clean($('cbName')?.value),shortName:clean($('cbShort')?.value),type,sportId:clean($('cbSport')?.value),startDate:clean($('cbStart')?.value),endDate:clean($('cbEnd')?.value),format:clean($('cbFormat')?.value),scheduleMode:clean($('cbScheduleMode')?.value),scheduleSourceUrl:clean($('cbScheduleUrl')?.value),scoreSourceUrl:clean($('cbScheduleUrl')?.value),autoRefresh:$('cbAutoRefresh')?.value==='1',backgroundDiscovery:true,refreshMinutes:Number($('cbRefreshMinutes')?.value||30),expectedEventCount:Number($('cbExpectedEvents')?.value||0),allowIncompleteSchedule:false,enabled:true,mediaSources:{green:lines('cbGreen'),purple:lines('cbPurple'),blue:lines('cbBlue')}};
+    return {id:clean($('cbId')?.value).toUpperCase(),name:clean($('cbName')?.value),shortName:clean($('cbShort')?.value),type,sportId:clean($('cbSport')?.value),startDate:clean($('cbStart')?.value),endDate:clean($('cbEnd')?.value),format:clean($('cbFormat')?.value),logoStrategy:clean($('cbLogoStrategy')?.value||'AUTO'),scheduleMode:clean($('cbScheduleMode')?.value),scheduleSourceUrl:clean($('cbScheduleUrl')?.value),scoreSourceUrl:clean($('cbScheduleUrl')?.value),autoRefresh:$('cbAutoRefresh')?.value==='1',backgroundDiscovery:true,refreshMinutes:Number($('cbRefreshMinutes')?.value||30),expectedEventCount:Number($('cbExpectedEvents')?.value||0),allowIncompleteSchedule:false,enabled:true,mediaSources:{green:lines('cbGreen'),purple:lines('cbPurple'),blue:lines('cbBlue')}};
   }
 
   function scheduleCountFromText(){
@@ -259,9 +299,9 @@
 
   function applyTemplate(kind,type){
     if(kind==='WORLD_CUP'){
-      $('cbId').value='WC2026';$('cbName').value='2026 FIFA World Cup';$('cbShort').value='WORLD CUP';$('cbSport').value='football';$('cbStart').value='2026-06-11';$('cbEnd').value='2026-07-19';$('cbFormat').value='GROUP + KNOCKOUT';$('cbExpectedEvents').value='104';$('cbScheduleUrl').value='https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums';
+      $('cbId').value='WC2026';$('cbName').value='2026 FIFA World Cup';$('cbShort').value='WORLD CUP';$('cbSport').value='football';$('cbStart').value='2026-06-11';$('cbEnd').value='2026-07-19';$('cbFormat').value='GROUP + KNOCKOUT';$('cbLogoStrategy').value='COUNTRY_FLAGS';$('cbExpectedEvents').value='104';$('cbScheduleUrl').value='https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums';
     }else{
-      $('cbId').value='LLWS2026';$('cbName').value='2026 Little League Baseball World Series';$('cbShort').value='LLWS';$('cbSport').value='baseball';$('cbStart').value='2026-08-19';$('cbEnd').value='2026-08-30';$('cbFormat').value='DOUBLE ELIMINATION';$('cbExpectedEvents').value='38';$('cbScheduleUrl').value='https://www.littleleague.org/world-series/2026/llbws/tournaments/world-series/';
+      $('cbId').value='LLWS2026';$('cbName').value='2026 Little League Baseball World Series';$('cbShort').value='LLWS';$('cbSport').value='baseball';$('cbStart').value='2026-08-19';$('cbEnd').value='2026-08-30';$('cbFormat').value='DOUBLE ELIMINATION';$('cbLogoStrategy').value='AUTO';$('cbExpectedEvents').value='38';$('cbScheduleUrl').value='https://www.littleleague.org/world-series/2026/llbws/tournaments/world-series/';
     }
     $('sbbBuilderStatus').textContent='Template loaded. Review identity, then discover/import the schedule before saving.';
   }
@@ -320,14 +360,14 @@
   }
 
   async function start(){
-    injectCss();installDevLaunchers();await refreshCatalog({forceDate:true});
+    injectCss();ensureSpecialMenuPortal();installDevLaunchers();await refreshCatalog({forceDate:true});
     let previous='';
     // Directly follow the canonical score-date authority. This makes custom
     // competition events first-class score-ribbon data rather than relying only
     // on polling a global browse-date variable.
     try{
       window.SBB_SCORE_DATE?.subscribe?.((snap,meta)=>{
-        if(meta?.action==='browse'&&snap?.browseDate){
+        if(snap?.browseDate&&(meta?.action==='browse'||meta?.action==='snapshot')){
           previous=snap.browseDate;
           loadDate(snap.browseDate,{force:true}).catch(()=>{});
         }
@@ -344,15 +384,16 @@
       if(Date.now()-state.lastCatalogAt>5000)refreshCatalog();
     },1000);
     window.addEventListener('focus',()=>refreshCatalog({forceDate:true}));
+    window.addEventListener('resize',()=>{if(!$('sbbSpecialEventsMenu')?.classList.contains('hidden'))placeSpecialMenu();},{passive:true});
     document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshCatalog({forceDate:true});});
     document.addEventListener('click',e=>{
-      if(!e.target.closest('.sbb-special-wrap')){
+      if(!e.target.closest('.sbb-special-wrap')&&!e.target.closest('#sbbSpecialEventsMenu')){
         $('sbbSpecialEventsMenu')?.classList.add('hidden');
         $('sbbSpecialEventsBtn')?.setAttribute('aria-expanded','false');
       }
     });
   }
 
-  window.SBB_COMPETITION_BUILDER=Object.freeze({version:'1.3',refresh:refreshCatalog,loadDate,competitionMap,lifecycle,mainRowEligible,openLeague:()=>openWizard('LEAGUE'),openSpecialEvent:()=>openWizard('SPECIAL_EVENT'),snapshot:()=>({competitions:state.competitions.length,specialEvents:state.competitions.filter(x=>x.type==='SPECIAL_EVENT').length,mainRow:state.competitions.filter(mainRowEligible).map(x=>x.id),lastDate:state.lastDate})});
+  window.SBB_COMPETITION_BUILDER=Object.freeze({version:'1.4',refresh:refreshCatalog,loadDate,competitionMap,lifecycle,mainRowEligible,openLeague:()=>openWizard('LEAGUE'),openSpecialEvent:()=>openWizard('SPECIAL_EVENT'),snapshot:()=>({competitions:state.competitions.length,specialEvents:state.competitions.filter(x=>x.type==='SPECIAL_EVENT').length,mainRow:state.competitions.filter(mainRowEligible).map(x=>x.id),lastDate:state.lastDate})});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.3",
-  "baseRelease": "4.6.2",
-  "title": "Special Events Selector & Score Ribbon Integration",
+  "release": "4.6.4",
+  "baseRelease": "4.6.3",
+  "title": "Custom Competition Runtime Bridge & Participant Artwork",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -17,24 +17,26 @@
     "tests/test_v460_competition_builder.py",
     "tests/test_v461_competition_builder_hardening.py",
     "tests/test_v462_competition_builder_research_delete.py",
-    "tests/test_v463_special_event_ribbon.py"
+    "tests/test_v463_special_event_ribbon.py",
+    "tests/test_v464_custom_runtime_bridge.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.3"
+        "4.6.4"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.3",
-        "app.js?v=4.6.3",
-        "architecture/competition-builder.js?v=4.6.3",
+        "Sports Big Board \u2014 v4.6.4",
+        "app.js?v=4.6.4",
+        "architecture/competition-builder.js?v=4.6.4",
         "id=\"sbbSpecialEventsWrap\"",
         "id=\"sbbSpecialEventsBtn\"",
         "id=\"sbbSpecialEventsMenu\""
       ],
       "forbidden": [
+        "?v=4.6.3",
         "?v=4.6.2",
         "?v=4.6.1",
         "?v=4.6.0",
@@ -43,29 +45,32 @@
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.3'",
+        "version:'4.6.4'",
         "custom-competition overlay",
         "window.SBB_COMPETITION_BUILDER"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.3\"",
-        "permanent top-level selector control",
-        "navigates the score ribbon into the event range",
-        "canonical ScoreDateStore browse-date authority"
+        "\"release\": \"4.6.4\"",
+        "viewport-level portal",
+        "rebuilds the verified-media lookup",
+        "durably saved before asynchronous playlist crawl",
+        "force canonical competition/event identity",
+        "participant artwork strategy"
       ]
     },
     "architecture/competition-builder.js": {
       "required": [
-        "version:'1.3'",
-        "sbbSpecialEventsWrap",
-        "menu.innerHTML=''",
-        "window.SBB_SCORE_DATE?.subscribe",
-        "meta?.action==='browse'",
-        "if(c.endDate&&targetDate>c.endDate)targetDate=c.endDate",
-        "setScoreBrowseDate(targetDate",
-        "SCORE_DATE_STORE?.setMatches?.(date,c.id,rows)"
+        "version:'1.4'",
+        "document.body.appendChild(menu)",
+        "position:fixed;z-index:20050",
+        "rebuildVerifiedMediaIndex(SCORE_DATE_STORE?.allMedia?.(date)||media)",
+        "c.mainRow===true&&mainRowEligible(c)",
+        "PARTICIPANT ARTWORK",
+        "COUNTRY FLAGS",
+        "REPAIR MEDIA",
+        "/api/competition-builder/health"
       ]
     },
     "sbb/__init__.py": {
@@ -76,16 +81,16 @@
     },
     "sbb/competition_builder.py": {
       "required": [
-        "Sports Big Board v4.6.2",
-        "_discovery_plan",
-        "_date_windows",
-        "_merge_discovered_events",
-        "MULTI_WINDOW_RESEARCH",
-        "_missing_recovery_prompt",
-        "Cannot create a site-wide competition with zero schedule events",
-        "delete_competition",
-        "_purge_history_competition",
-        "_remove_operator_playlists"
+        "Sports Big Board v4.6.4",
+        "LOGO_STRATEGIES",
+        "COUNTRY_FLAGS",
+        "flagcdn.com/w80",
+        "def _repair_event_media",
+        "def _competition_health",
+        "scoreEventId",
+        "canonicalEventId",
+        "persist the registration before a crawler thread",
+        "force_crawl=False"
       ]
     },
     "tests/test_v460_competition_builder.py": {
@@ -99,7 +104,8 @@
       "required": [
         "python3 -m unittest tests.test_v461_competition_builder_hardening",
         "python3 -m unittest tests.test_v462_competition_builder_research_delete",
-        "python3 -m unittest tests.test_v463_special_event_ribbon"
+        "python3 -m unittest tests.test_v463_special_event_ribbon",
+        "python3 -m unittest tests.test_v464_custom_runtime_bridge"
       ]
     },
     "tests/test_v461_competition_builder_hardening.py": {
@@ -124,6 +130,15 @@
         "test_completed_special_event_selection_navigates_into_event_range",
         "test_custom_scores_follow_score_date_store_browse_authority"
       ]
+    },
+    "tests/test_v464_custom_runtime_bridge.py": {
+      "required": [
+        "test_world_cup_auto_artwork_uses_country_flags",
+        "test_operator_playlist_is_saved_before_async_crawl",
+        "test_frontend_rebuilds_verified_media_index_after_custom_hydration",
+        "test_special_event_dropdown_is_portaled_out_of_overflowing_filter_row",
+        "test_custom_media_endpoint_forces_canonical_event_identity_and_can_repair"
+      ]
     }
   },
   "verification": [
@@ -136,6 +151,7 @@
     "python3 -m unittest tests.test_v461_competition_builder_hardening",
     "python3 -m unittest tests.test_v462_competition_builder_research_delete",
     "python3 -m unittest tests.test_v463_special_event_ribbon",
+    "python3 -m unittest tests.test_v464_custom_runtime_bridge",
     "bash VERIFY.sh"
   ]
 }

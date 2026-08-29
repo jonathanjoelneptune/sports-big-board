@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.3",
+  "release": "4.6.4",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -50,7 +50,12 @@
         "World Cup and LLWS templates carry deterministic completeness targets of 104 and 38 competition games respectively.",
         "Special Events is a permanent top-level selector control; custom special-event catalog refreshes populate that stable control instead of transiently injecting/removing the control itself.",
         "Selecting a completed or upcoming special event while browsing outside its event date range navigates the score ribbon into the event range before rendering its games.",
-        "Custom competition score hydration subscribes to the canonical ScoreDateStore browse-date authority so special-event games render on historical event dates across normal ribbon refreshes."
+        "Custom competition score hydration subscribes to the canonical ScoreDateStore browse-date authority so special-event games render on historical event dates across normal ribbon refreshes.",
+        "Special Events dropdown content is rendered in a viewport-level portal so the horizontally scrolling league-filter container cannot clip its menu.",
+        "Custom competition date hydration rebuilds the verified-media lookup used by score-card playback after schedule/media enter ScoreDateStore.",
+        "Custom operator playlist registrations are durably saved before asynchronous playlist crawl begins; existing custom competitions re-enroll media sources on server startup.",
+        "Custom event-media responses force canonical competition/event identity from the event relationship and lazily repair matching unassigned custom source media.",
+        "Competition Builder persists an explicit participant artwork strategy; the FIFA World Cup defaults to country flags while future competitions can choose team logos, provided artwork, auto, or none."
       ]
     },
     "tier2": {
@@ -101,6 +106,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.3 makes custom special events first-class score-ribbon navigation by stabilizing the Special Events selector and directly subscribing custom score hydration to the canonical browse-date store while preserving all inherited Foundation requirements.",
+  "baseline": "v4.6.4 closes the custom-competition runtime bridge: Special Events dropdown portal, historical score hydration, canonical event-media playback association, playlist crawl ordering/repair, and configurable participant artwork while preserving all inherited Foundation requirements.",
   "status": "IN_PROGRESS"
 }

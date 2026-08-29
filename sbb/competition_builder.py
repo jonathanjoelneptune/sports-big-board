@@ -1,4 +1,4 @@
-"""Sports Big Board v4.6.2 — persistent custom competition builder.
+"""Sports Big Board v4.6.4 — persistent custom competition builder.
 
 Installs without modifying server.py:
 - persistent League / Special Event registry
@@ -33,6 +33,9 @@ _CRAWL_STATE={"worker":"STARTING","lastAt":0.0,"lastCompetition":"","lastEventId
 _CATALOG_REVISION=0
 ID_RE=re.compile(r"^[A-Z][A-Z0-9_-]{1,23}$")
 SPORTS={"baseball","american-football","basketball","ice-hockey","football","tennis","motorsport","athletics","action-sports","multi-sport"}
+LOGO_STRATEGIES={"AUTO","TEAM_LOGOS","COUNTRY_FLAGS","PROVIDED","NONE"}
+_COUNTRY_FLAG_CODES={"argentina":"ar","australia":"au","austria":"at","algeria":"dz","belgium":"be","bolivia":"bo","brazil":"br","cameroon":"cm","canada":"ca","cabo verde":"cv","cape verde":"cv","chile":"cl","china":"cn","colombia":"co","costa rica":"cr","croatia":"hr","curacao":"cw","curaçao":"cw","czech republic":"cz","czechia":"cz","denmark":"dk","dominican republic":"do","dr congo":"cd","ecuador":"ec","egypt":"eg","england":"gb-eng","france":"fr","germany":"de","ghana":"gh","greece":"gr","guatemala":"gt","haiti":"ht","honduras":"hn","hungary":"hu","iceland":"is","indonesia":"id","iran":"ir","ir iran":"ir","iraq":"iq","ireland":"ie","israel":"il","italy":"it","ivory coast":"ci","cote d ivoire":"ci","côte d’ivoire":"ci","jamaica":"jm","japan":"jp","jordan":"jo","korea republic":"kr","south korea":"kr","mexico":"mx","morocco":"ma","netherlands":"nl","new zealand":"nz","nigeria":"ng","north macedonia":"mk","norway":"no","panama":"pa","paraguay":"py","peru":"pe","poland":"pl","portugal":"pt","qatar":"qa","romania":"ro","saudi arabia":"sa","scotland":"gb-sct","senegal":"sn","serbia":"rs","slovakia":"sk","slovenia":"si","south africa":"za","spain":"es","sweden":"se","switzerland":"ch","tunisia":"tn","turkey":"tr","türkiye":"tr","ukraine":"ua","united arab emirates":"ae","united states":"us","usa":"us","u.s.a.":"us","uruguay":"uy","uzbekistan":"uz","venezuela":"ve","wales":"gb-wls"}
+_ASSOCIATION_REPAIR_AT={}
 
 def _today():
     try:
@@ -83,6 +86,44 @@ def _store_revision():
     try:return int(_STORE.stat().st_mtime_ns//1_000_000)
     except Exception:return int(_CATALOG_REVISION or 0)
 
+def _name_key(value):
+    text=str(value or "").strip().lower().replace("&"," and ")
+    text=re.sub(r"[^a-z0-9à-ÿ]+"," ",text,flags=re.I)
+    return re.sub(r"\s+"," ",text).strip()
+
+def _effective_logo_strategy(comp):
+    raw=str((comp or {}).get("logoStrategy") or "AUTO").upper().strip()
+    if raw not in LOGO_STRATEGIES:raw="AUTO"
+    if raw=="AUTO" and str((comp or {}).get("sportId") or "")=="football" and "world cup" in str((comp or {}).get("name") or "").lower():return "COUNTRY_FLAGS"
+    return raw
+
+def _country_code_for_name(name):
+    key=_name_key(name)
+    if key in _COUNTRY_FLAG_CODES:return _COUNTRY_FLAG_CODES[key]
+    key=re.sub(r"\b(national team|men|women|football|soccer|team)\b"," ",key)
+    return _COUNTRY_FLAG_CODES.get(re.sub(r"\s+"," ",key).strip(),"")
+
+def _decorate_team_artwork(comp,team):
+    team=dict(team or {});strategy=_effective_logo_strategy(comp)
+    if strategy=="NONE":
+        for key in ("logo","logoUrl","image","imageUrl"):team.pop(key,None)
+        return team
+    if strategy=="COUNTRY_FLAGS":
+        code=str(team.get("countryCode") or team.get("country") or "").lower().strip()
+        if len(code)>6 or not re.fullmatch(r"[a-z]{2}(?:-[a-z]{3})?",code):code=_country_code_for_name(team.get("name") or team.get("displayName"))
+        if code:
+            team["countryCode"]=code.upper();team["logo"]=f"https://flagcdn.com/w80/{code}.png";team["artworkType"]="COUNTRY_FLAG"
+        return team
+    if team.get("logo") or team.get("logoUrl") or team.get("image") or team.get("imageUrl"):team["artworkType"]="TEAM_LOGO" if strategy=="TEAM_LOGOS" else "PROVIDED"
+    return team
+
+def _decorate_event_artwork(comp,event):
+    event=dict(event or {})
+    away=_decorate_team_artwork(comp,event.get("awayTeam") or event.get("away") or {})
+    home=_decorate_team_artwork(comp,event.get("homeTeam") or event.get("home") or {})
+    event.update({"away":away,"home":home,"awayTeam":away,"homeTeam":home,"participants":[away,home],"logoStrategy":_effective_logo_strategy(comp)})
+    return event
+
 def _team(value,side="",score=None):
     if isinstance(value,dict):
         name=str(value.get("name") or value.get("displayName") or value.get("teamName") or value.get("region") or value.get("abbreviation") or "").strip()
@@ -132,7 +173,7 @@ def normalize_event(comp,raw,idx=0):
     comp_id=str(comp["id"]).upper()
     event_id=_event_id(comp_id,raw,date,away_name,home_name,idx)
     away=_team(away_raw,"away",away_score);home=_team(home_raw,"home",home_score)
-    return {
+    result={
         **raw,
         "id":event_id,"eventId":event_id,"matchId":event_id,
         "competitionId":comp_id,"competitionName":comp["name"],"sportId":comp["sportId"],
@@ -147,6 +188,7 @@ def normalize_event(comp,raw,idx=0):
         "sourceUrl":str(raw.get("sourceUrl") or raw.get("url") or comp.get("scheduleSourceUrl") or ""),
         "gameCenterProviderHint":"competition-builder"
     }
+    return _decorate_event_artwork(comp,result)
 
 def _normalize_sources(raw):
     raw=raw or {}
@@ -181,6 +223,7 @@ def normalize_definition(raw,existing=None):
         "id":cid,"name":name,"shortName":str(raw.get("shortName") or existing.get("shortName") or cid).strip(),
         "type":typ,"sportId":sport,"year":int(raw.get("year") or existing.get("year") or (start[:4] if start else datetime.now().year)),
         "startDate":start,"endDate":end,"format":str(raw.get("format") or existing.get("format") or "CUSTOM").upper(),
+        "logoStrategy":str(raw.get("logoStrategy") or existing.get("logoStrategy") or "AUTO").upper(),
         "enabled":bool(raw.get("enabled",existing.get("enabled",True))),
         "scheduleMode":str(raw.get("scheduleMode") or existing.get("scheduleMode") or "PASTE").upper(),
         "scheduleSourceUrl":str(raw.get("scheduleSourceUrl") or existing.get("scheduleSourceUrl") or "").strip(),
@@ -195,6 +238,8 @@ def normalize_definition(raw,existing=None):
         "gameCenterMode":"schedule",
         "createdAt":float(existing.get("createdAt") or now),"updatedAt":now
     }
+    if out["logoStrategy"] not in LOGO_STRATEGIES:out["logoStrategy"]="AUTO"
+    out["effectiveLogoStrategy"]=_effective_logo_strategy(out)
     out["lifecycle"]=lifecycle(out);out["mainRow"]=main_row(out)
     return out
 
@@ -257,11 +302,9 @@ def _register_with_server(server,comp):
         try:server.HISTORY_REPOSITORY.upsert_event(ev.get("date"),cid,ev.get("eventId"),ev)
         except Exception:pass
 
-def _register_media_sources(server,comp):
-    if not all(hasattr(server,n) for n in ("_operator_media_playlists_load","_operator_media_playlist_normalize","_operator_media_playlists_save","_operator_media_playlist_crawl_async")):return
-    rows=server._operator_media_playlists_load()
-    objective={"green":"quick","purple":"extended","blue":"coverage"}
-    changed=False
+def _register_media_sources(server,comp,force_crawl=False):
+    if not all(hasattr(server,n) for n in ("_operator_media_playlists_load","_operator_media_playlist_normalize","_operator_media_playlists_save","_operator_media_playlist_crawl_async")):return []
+    rows=server._operator_media_playlists_load();objective={"green":"quick","purple":"extended","blue":"coverage"};changed=False;crawl_ids=[]
     for tier,sources in (comp.get("mediaSources") or {}).items():
         for src in sources or []:
             url=str(src.get("url") or "").strip()
@@ -273,14 +316,19 @@ def _register_media_sources(server,comp):
             try:norm=server._operator_media_playlist_normalize(raw,existing)
             except Exception:continue
             if existing:
-                rows[rows.index(existing)]=norm
-            else:rows.append(norm)
-            changed=True
-            try:server._operator_media_playlist_crawl_async(norm.get("id"),force=False)
-            except Exception:pass
+                idx=rows.index(existing)
+                if rows[idx]!=norm:rows[idx]=norm;changed=True
+            else:rows.append(norm);changed=True
+            stats=(existing or {}).get("stats") or {}
+            if force_crawl or not float((existing or {}).get("lastCrawlAt") or 0) or int(stats.get("associatedThisCrawl") or 0)<=0:crawl_ids.append(str(norm.get("id") or ""))
+    # v4.6.4: persist the registration before a crawler thread can read it.
     if changed:
         try:server._operator_media_playlists_save(rows)
+        except Exception:return []
+    for playlist_id in dict.fromkeys(x for x in crawl_ids if x):
+        try:server._operator_media_playlist_crawl_async(playlist_id,force=bool(force_crawl))
         except Exception:pass
+    return list(dict.fromkeys(x for x in crawl_ids if x))
 
 def save_competition(raw,events=None,server=None):
     rows=_load();cid=str((raw or {}).get("id") or "").upper()
@@ -301,7 +349,7 @@ def save_competition(raw,events=None,server=None):
     _save(rows)
     if server:
         _register_with_server(server,comp)
-        _register_media_sources(server,comp)
+        _register_media_sources(server,comp,force_crawl=True)
     persisted=_find(comp["id"])
     if not persisted:raise RuntimeError("Competition was not readable from the server store after save.")
     return _catalog_row(persisted)
@@ -541,7 +589,57 @@ def discover_schedule(server,draft):
         "windowReports":window_reports
     }
 
+def _league_source_media(server,cid,limit=5000):
+    repo=getattr(server,"HISTORY_REPOSITORY",None)
+    if repo is None or not hasattr(repo,"_read_connect"):return []
+    out=[]
+    try:
+        conn=repo._read_connect()
+        try:
+            rows=conn.execute("SELECT asset_json FROM history_source_media WHERE asset_json LIKE ? OR asset_json LIKE ? ORDER BY updated_at DESC LIMIT ?",(f'%"league":"{cid}"%',f'%"competitionId":"{cid}"%',int(limit))).fetchall()
+            for row in rows:
+                try:
+                    item=json.loads(row[0] or "{}")
+                    if isinstance(item,dict):out.append(item)
+                except Exception:pass
+        finally:conn.close()
+    except Exception:pass
+    return out
+
+def _repair_event_media(server,comp,event,force=False):
+    cid=comp["id"];eid=str(event.get("eventId") or "");key=f"{cid}:{eid}";now=time.time()
+    if not force and now-float(_ASSOCIATION_REPAIR_AT.get(key) or 0)<120:return {"attempted":False,"assigned":0,"candidates":0}
+    _ASSOCIATION_REPAIR_AT[key]=now
+    try:existing=server.HISTORY_REPOSITORY.event_media(event.get("date"),cid,eid,include_failed=False)
+    except Exception:existing=[]
+    if existing and not force:return {"attempted":False,"assigned":len(existing),"candidates":0}
+    candidates=_league_source_media(server,cid);assigned=0
+    for item in candidates:
+        try:
+            scoped,evidence=server._history_media_match_evidence(dict(item),event)
+            if scoped.get("mediaScope")!="GAME" or str(evidence.get("associationState") or "")!="ASSIGNED":continue
+            decorated=dict(item);decorated.update({"league":cid,"competitionId":cid,"competitionName":comp["name"],"eventId":eid,"matchId":eid,"scoreEventId":eid,"canonicalEventId":eid,"date":event.get("date"),"gameDate":event.get("date"),"__sbbDate":event.get("date"),"away":event.get("awayTeam") or event.get("away"),"home":event.get("homeTeam") or event.get("home")})
+            assigned+=int(server.HISTORY_REPOSITORY.put_event_media(event.get("date"),cid,eid,[decorated]) or 0)
+        except Exception:continue
+    return {"attempted":True,"assigned":assigned,"candidates":len(candidates)}
+
+def _competition_health(server,comp,date=""):
+    events=[_decorate_event_artwork(comp,x) for x in (comp.get("events") or []) if not date or str(x.get("date") or "")[:10]==date]
+    assigned=playable=green=purple=blue=0;details=[]
+    for ev in events:
+        try:media=server.HISTORY_REPOSITORY.event_media(ev.get("date"),comp["id"],ev.get("eventId"),include_failed=False)
+        except Exception:media=[]
+        assigned+=len(media);p=[x for x in media if x.get("verifiedPlayable") and (x.get("youtubeId") or x.get("mediaUrl"))];playable+=len(p)
+        for x in p:
+            tier=str(x.get("recapTier") or "").lower()
+            if tier=="green":green+=1
+            elif tier=="extended":purple+=1
+            elif tier=="blue":blue+=1
+        details.append({"eventId":ev.get("eventId"),"date":ev.get("date"),"away":(ev.get("awayTeam") or {}).get("name"),"home":(ev.get("homeTeam") or {}).get("name"),"assigned":len(media),"playable":len(p)})
+    return {"competitionId":comp["id"],"date":date,"events":len(events),"assignedMedia":assigned,"playableMedia":playable,"green":green,"purple":purple,"blue":blue,"sourceCandidates":len(_league_source_media(server,comp["id"])),"eventDetails":details}
+
 def generic_game_center(comp,event):
+    event=_decorate_event_artwork(comp,event)
     away=event.get("awayTeam") or event.get("away") or {}
     home=event.get("homeTeam") or event.get("home") or {}
     live="LIVE" in str(event.get("status") or "").upper()
@@ -580,24 +678,37 @@ def _handle_get(server,handler,parsed):
         qs=parse_qs(parsed.query);cid=str((qs.get("id") or [""])[-1]).upper();date=str((qs.get("date") or [""])[-1])[:10]
         comp=_find(cid)
         if not comp:return _send(server,handler,{"ok":False,"error":"COMPETITION_NOT_FOUND"},404)
-        events=[x for x in comp.get("events") or [] if not date or x.get("date")==date]
+        events=[_decorate_event_artwork(comp,x) for x in comp.get("events") or [] if not date or x.get("date")==date]
         return _send(server,handler,{"ok":True,"competition":_catalog_row(comp),"date":date,"events":events})
     if parsed.path=="/api/competition-builder/media":
         qs=parse_qs(parsed.query);cid=str((qs.get("id") or [""])[-1]).upper();date=str((qs.get("date") or [""])[-1])[:10]
         comp=_find(cid)
         if not comp:return _send(server,handler,{"ok":False,"error":"COMPETITION_NOT_FOUND"},404)
-        media=[]
-        for ev in comp.get("events") or []:
-            if date and ev.get("date")!=date:continue
-            try:
-                rows=server.HISTORY_REPOSITORY.event_media(ev.get("date"),cid,ev.get("eventId"),include_failed=False)
-            except TypeError:
-                rows=server.HISTORY_REPOSITORY.event_media(ev.get("date"),cid,ev.get("eventId"))
-            except Exception:
-                rows=[]
+        media=[];repairs=[]
+        for ev0 in comp.get("events") or []:
+            if date and ev0.get("date")!=date:continue
+            ev=_decorate_event_artwork(comp,ev0)
+            try:rows=server.HISTORY_REPOSITORY.event_media(ev.get("date"),cid,ev.get("eventId"),include_failed=False)
+            except TypeError:rows=server.HISTORY_REPOSITORY.event_media(ev.get("date"),cid,ev.get("eventId"))
+            except Exception:rows=[]
+            if not rows:
+                repairs.append(_repair_event_media(server,comp,ev))
+                try:rows=server.HISTORY_REPOSITORY.event_media(ev.get("date"),cid,ev.get("eventId"),include_failed=False)
+                except Exception:rows=[]
             for item in rows or []:
-                x=dict(item);x.setdefault("league",cid);x.setdefault("competitionId",cid);x.setdefault("competitionName",comp["name"]);x.setdefault("eventId",ev.get("eventId"));x.setdefault("matchId",ev.get("eventId"));x.setdefault("date",ev.get("date"));x.setdefault("__sbbDate",ev.get("date"));x.setdefault("sport",comp["sportId"]);media.append(x)
-        return _send(server,handler,{"ok":True,"competition":_catalog_row(comp),"date":date,"media":media})
+                x=dict(item);x.update({"league":cid,"competitionId":cid,"competitionName":comp["name"],"eventId":ev.get("eventId"),"matchId":ev.get("eventId"),"scoreEventId":ev.get("eventId"),"canonicalEventId":ev.get("eventId"),"date":ev.get("date"),"gameDate":ev.get("date"),"__sbbDate":ev.get("date"),"sport":comp["sportId"],"sportId":comp["sportId"],"away":ev.get("awayTeam"),"home":ev.get("homeTeam"),"awayTeam":ev.get("awayTeam"),"homeTeam":ev.get("homeTeam")});media.append(x)
+        return _send(server,handler,{"ok":True,"competition":_catalog_row(comp),"date":date,"media":media,"repairs":repairs,"health":_competition_health(server,comp,date)})
+    if parsed.path=="/api/competition-builder/health":
+        qs=parse_qs(parsed.query);cid=str((qs.get("id") or [""])[-1]).upper();date=str((qs.get("date") or [""])[-1])[:10];repair=str((qs.get("repair") or ["0"])[-1]).lower() in ("1","true","yes")
+        comp=_find(cid)
+        if not comp:return _send(server,handler,{"ok":False,"error":"COMPETITION_NOT_FOUND"},404)
+        report=[]
+        if repair:
+            _register_media_sources(server,comp,force_crawl=True)
+            for ev in comp.get("events") or []:
+                if date and ev.get("date")!=date:continue
+                report.append(_repair_event_media(server,comp,_decorate_event_artwork(comp,ev),force=True))
+        return _send(server,handler,{"ok":True,"competition":_catalog_row(comp),"health":_competition_health(server,comp,date),"repair":report,"crawlEnrollment":_crawl_enrollment(server,comp)},200)
     if parsed.path=="/api/competition-builder/definition":
         qs=parse_qs(parsed.query);comp=_find((qs.get("id") or [""])[-1])
         return _send(server,handler,{"ok":bool(comp),"persisted":bool(comp),"revision":_store_revision(),"competition":comp,"crawlEnrollment":_crawl_enrollment(server,comp) if comp else {}},200 if comp else 404)
@@ -805,7 +916,10 @@ def _install_into_server():
         time.sleep(.2)
     if not server:return
     _SERVER=server
-    for comp in _load():_register_with_server(server,comp)
+    for comp in _load():
+        _register_with_server(server,comp)
+        try:_register_media_sources(server,comp,force_crawl=False)
+        except Exception:pass
     Handler=server.Handler
     if not getattr(Handler,"__sbbCompetitionBuilderInstalled",False):
         old_get=Handler.do_GET;old_post=Handler.do_POST
