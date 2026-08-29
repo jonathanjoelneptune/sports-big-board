@@ -35,7 +35,7 @@ class V4611LLWSEventIconTests(unittest.TestCase):
         self.assertIn("competitionMap", UI)
 
     def test_llws_template_is_complete_and_provider_ready(self):
-        self.assertIn('data-builder-template=\\"LLWS\\"', BUILDER)
+        self.assertIn("kind === 'LLWS'", UI)
         self.assertIn("LLWS2026", BUILDER)
         self.assertIn("2026 Little League Baseball World Series", BUILDER)
         self.assertIn("2026-08-19", BUILDER)
