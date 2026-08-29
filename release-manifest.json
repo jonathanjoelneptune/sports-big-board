@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "release": "4.7.2",
   "baseRelease": "4.7.1",
-  "title": "Frontend Boot Responsiveness",
+  "title": "Frontend Boot Responsiveness + Stable Verification Architecture",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -14,8 +14,7 @@
     "sbb/day_state.py",
     "architecture/day-state.js",
     "architecture/competition-registry-projection.js",
-    "tests/test_v471_day_state_registry_resilience.py",
-    "tests/test_v472_frontend_boot_responsiveness.py"
+    "tests/test_release_behavior_gate.py"
   ],
   "contracts": {
     "VERSION": {
@@ -77,26 +76,36 @@
         "idempotent"
       ]
     },
-    "tests/test_v471_day_state_registry_resilience.py": {
-      "required": [
-        "self.assertTrue(VERSION.startswith(\"4.7.\"))",
-        "f\"architecture/competition-registry-projection.js?v={VERSION}\""
-      ]
-    },
-    "tests/test_v472_frontend_boot_responsiveness.py": {
-      "required": [
-        "test_frontend_registry_does_not_observe_entire_document",
-        "test_registry_render_is_idempotent",
-        "test_dev_card_uses_narrow_retry_without_dom_observer",
-        "test_launch_screen_remains_static_before_start"
-      ]
-    },
     "VERIFY.sh": {
       "required": [
         "python3 tools/check_release_manifest.py",
         "python3 tools/check_release_version.py",
+        "python3 tools/check_foundation_certification.py",
+        "python3 tools/check_ultimate_playback.py",
+        "python3 tools/check_deploy_rehearsal.py",
+        "python3 -m unittest tests.test_release_behavior_gate",
+        "[legacy-advisory]",
+        "does not block deployment",
+        "node tests/test_architecture.js",
+        "python -m py_compile server.py sbb/*.py tests/*.py"
+      ],
+      "forbidden": [
         "python3 -m unittest tests.test_v471_day_state_registry_resilience",
         "python3 -m unittest tests.test_v472_frontend_boot_responsiveness"
+      ]
+    },
+    "tests/test_release_behavior_gate.py": {
+      "required": [
+        "class ReleaseBehaviorGate",
+        "test_launch_screen_has_interactive_start_control",
+        "test_day_state_http_reads_do_not_build_on_request_thread",
+        "test_dynamic_competitions_have_registry_builder_and_local_fallback",
+        "test_legacy_archive_is_advisory_not_release_blocking"
+      ],
+      "forbidden": [
+        "sbb-v471-restored",
+        "sbb-v472-restored",
+        "SELECT 1 FROM history_source_media"
       ]
     }
   },
@@ -106,8 +115,7 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v471_day_state_registry_resilience",
-    "python3 -m unittest tests.test_v472_frontend_boot_responsiveness",
+    "python3 -m unittest tests.test_release_behavior_gate",
     "bash VERIFY.sh"
   ]
 }

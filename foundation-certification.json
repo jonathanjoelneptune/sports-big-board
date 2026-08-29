@@ -167,7 +167,11 @@
         "Frontend Competition Projection must not attach a document-wide MutationObserver that calls render because registry rendering itself mutates Special Events DOM and can create an infinite observer/render loop.",
         "Frontend Competition Projection special-event and dynamic-league rendering is idempotent: unchanged registry state does not rewrite the same menu/filter DOM on every polling interval.",
         "Dev Competition Builder late-DOM recovery uses a narrow retry timer and does not require observing unrelated page mutations.",
-        "The launch screen and launchPlayBtn remain responsive while dynamic competition metadata initializes in the background."
+        "The launch screen and launchPlayBtn remain responsive while dynamic competition metadata initializes in the background.",
+        "Release-blocking verification is behavior- and architecture-contract based; historical tests may not block deployment solely because of release-specific CSS class names, exact SQL strings, private helper names, or superseded internal source markers.",
+        "Historical Python regression discovery remains available as a legacy-advisory diagnostic archive and does not block deployment when only archived implementation-pinning tests fail.",
+        "The stable tests/test_release_behavior_gate.py suite is the blocking Python release gate for launch responsiveness, non-blocking Day State, dynamic competition/Special Events projection, version handshake, and verification-script integrity.",
+        "Syntax, manifest, version, Foundation Certification, Ultimate Playback, JavaScript runtime/contract checks, shell syntax, workflow-chain checks, and Pages dry-build checks remain blocking."
       ]
     },
     "tier2": {
@@ -218,6 +222,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.2 preserves v4.7.1 non-blocking Day State and frontend competition persistence while restoring launch-screen responsiveness by removing the recursive document-wide registry MutationObserver and making registry DOM projection idempotent.",
+  "baseline": "v4.7.2 retains the launch-responsiveness fix and permanently separates blocking release behavior verification from the historical regression archive. Old implementation-pinning tests remain diagnostic but cannot veto deployment.",
   "status": "IN_PROGRESS"
 }
