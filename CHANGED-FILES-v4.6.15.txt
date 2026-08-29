@@ -1,0 +1,35 @@
+Sports Big Board v4.6.15 — Persistence-Aware Special Event Association
+
+REPLACE
+- VERIFY.sh
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- sbb/__init__.py
+- tests/test_v4614_media_facing_participant_aliases.py
+
+ADD
+- sbb/competition_builder_v4615.py
+- tests/test_v4615_persistence_aware_special_event_association.py
+
+ROOT CAUSE
+v4.6.14 could prove an LLWS title such as "Ohio vs Alabama | Full Game Highlights"
+against the imported participant aliases. HistoryRepository.put_event_media() then
+ran the older generic matcher again using only "West Side LL" and
+"Phenix City Youth Baseball LL", producing TITLE_TEAM_PAIR_CONFLICT and leaving
+the desired videos quarantined.
+
+FIX
+1. v4.6.15 decorates only internally-proven SPECIAL_EVENT_TITLE_ALIAS_PAIR results
+   with an exact canonical-event proof.
+2. Persistence accepts that proof only when league/event/key, both title aliases,
+   producer, proof schema, title fingerprint, and confidence all validate.
+3. The source asset is moved from QUARANTINED to ASSIGNED only for that exact event.
+4. Cross-event assigned assets are never stolen; the new candidate remains quarantined.
+5. Ordinary media continues through the original event matcher unchanged.
+6. Generic relationship repair is followed by restoration of still-valid internal
+   special-event proofs.
+7. Existing special-event SOURCE_MEDIA is automatically reassociated at startup;
+   no playlist redownload or schedule recreation is required.

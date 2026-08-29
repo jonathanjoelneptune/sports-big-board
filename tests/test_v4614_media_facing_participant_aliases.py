@@ -109,7 +109,7 @@ class V4614MediaFacingParticipantAliasTests(unittest.TestCase):
         self.assertIn("sbb-v4614-media-alias-reassociate",BACKEND)
 
     def test_release_contract(self):
-        self.assertIn("Sports Big Board — v4.6.14",INDEX)
+        self.assertIn(f"Sports Big Board — v{VERSION}",INDEX)
         self.assertIn("media-facing geographic identities",CERT)
         self.assertIn("SPECIAL_EVENT_TITLE_ALIAS_PAIR",CERT)
 

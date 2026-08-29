@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.14",
+  "release": "4.6.15",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -114,7 +114,14 @@
         "Special-event media titles containing public state/country identities such as Alabama, Ohio, Washington, Nicaragua, Czechia, Japan, Canada, South Korea, Pennsylvania, New Jersey, and Iowa can match the canonical schedule participant objects without rewriting those schedule objects.",
         "Common recap abbreviations and equivalents such as PA/NJ, DR/Dominican Republic, Curacao/Cura\u00e7ao, and Czechia/Czech Republic are normalized as media aliases.",
         "The special-event tournament crawler attempts a deterministic two-sided SPECIAL_EVENT_TITLE_ALIAS_PAIR match before falling back to the generic event matcher.",
-        "Existing special-event SOURCE_MEDIA orphans are automatically re-associated after the v4.6.14 media-alias layer installs; canonical event IDs and existing EVENT_MEDIA remain unchanged."
+        "Existing special-event SOURCE_MEDIA orphans are automatically re-associated after the v4.6.14 media-alias layer installs; canonical event IDs and existing EVENT_MEDIA remain unchanged.",
+        "Persistence accepts a deterministic special-event proof only when it is produced by the internal SBB special-event matcher, names the exact target league/event/canonical key, carries both title-side aliases, and has confidence of at least 0.90.",
+        "A SPECIAL_EVENT_TITLE_ALIAS_PAIR proof is not reinterpreted by the older canonical-team-only event matcher during the same put_event_media write.",
+        "Existing TITLE_TEAM_PAIR_CONFLICT quarantines can be released to ASSIGNED only after the exact special-event alias proof is re-established for the same canonical event.",
+        "A pre-proven special-event asset never steals an asset that is already ASSIGNED to another canonical event; the new candidate remains MULTI_EVENT_CANDIDATE_ENCOUNTER.",
+        "Ordinary built-in league and generic event-media persistence continues to use the original fail-closed event matcher with no bypass.",
+        "Relationship repair may run the normal generic revalidation, but still-valid persisted internal special-event proofs are restored before repair completes.",
+        "v4.6.15 automatically re-associates existing special-event SOURCE_MEDIA after installation so previously quarantined Full Game Highlights do not require playlist deletion or redownload."
       ]
     },
     "tier2": {
@@ -165,6 +172,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.14 preserves v4.6.13 tournament-wide association and fixes the remaining LLWS identity mismatch by deriving media-facing geographic aliases from the rich imported participant objects and directly proving two-sided recap/highlight title pairs.",
+  "baseline": "v4.6.15 preserves v4.6.14 media-facing alias resolution and fixes the persistence boundary that was re-quarantining already-proven special-event matches. Trusted internal alias-pair proofs persist to the exact canonical event while all ordinary media remains subject to the original fail-closed matcher and cross-event conflict protections.",
   "status": "IN_PROGRESS"
 }

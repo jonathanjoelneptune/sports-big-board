@@ -6,6 +6,7 @@ from .historical_media_v4610 import install as _install_historical_media_v4610
 from .competition_builder_v4612 import install as _install_competition_builder_v4612
 from .competition_builder_v4613 import install as _install_competition_builder_v4613
 from .competition_builder_v4614 import install as _install_competition_builder_v4614
+from .competition_builder_v4615 import install as _install_competition_builder_v4615
 
 _install_nfl_weekly_playlists()
 _install_competition_builder()
@@ -14,3 +15,4 @@ _install_historical_media_v4610()
 _install_competition_builder_v4612()
 _install_competition_builder_v4613()
 _install_competition_builder_v4614()
+_install_competition_builder_v4615()
