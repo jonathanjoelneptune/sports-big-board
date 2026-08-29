@@ -1,241 +1,90 @@
 {
   "schemaVersion": 1,
-  "release": "4.4.8",
-  "baseRelease": "4.4.7",
-  "title": "Recap Identity & Dynamic NFL Weekly Playlist Discovery",
+  "release": "4.6.0",
+  "baseRelease": "4.4.8",
+  "title": "Competition Builder Foundation",
   "atomic": true,
   "requiredFiles": [
-    "VERIFY.sh",
     "VERSION",
-    "architecture/media-classifier.js",
-    "architecture/media-resolver.js",
-    "architecture/nfl-recap-reconciliation.js",
-    "architecture/playback-terminal.js",
-    "architecture/poisoned-media-containment.js",
-    "architecture/recap-identity-guard.js",
-    "architecture/site-soundtrack-muted.js",
-    "cloud/gcp/DEPLOY-FROM-GITHUB.sh",
-    "cloud/vm/INSTALL-STAGE1.sh",
+    "index.html",
     "core-model.js",
     "foundation-certification.json",
-    "index.html",
     "release-manifest.json",
+    "architecture/competition-builder.js",
     "sbb/__init__.py",
-    "sbb/media_classifier.py",
-    "sbb/nfl_weekly_playlists.py",
-    "tests/test_v434_deploy_rehearsal.py",
-    "tests/test_v446_historical_media_quarantine.py",
-    "tests/test_v446_stale_media_runtime.js",
-    "tests/test_v447_poisoned_player_containment_runtime.js",
-    "tests/test_v448_nfl_weekly_playlists.py",
-    "tests/test_v448_recap_identity_runtime.js",
-    "tests/test_v448_recap_switch_runtime.js",
-    "tests/test_v450_media_intelligence.py",
-    "tests/test_v450_media_intelligence_runtime.js",
-    "tests/test_v451_startup_stability_runtime.js",
-    "tests/test_v452_media_intelligence_console_runtime.js",
-    "tests/test_v452_media_intelligence_visibility.py",
-    "tests/test_v453_media_intelligence_terminal.py",
-    "tests/test_v453_media_intelligence_terminal_runtime.js",
-    "tests/test_v454_media_intelligence_crawl.py",
-    "tests/test_v455_youtube_media_intelligence.py",
-    "tests/test_v456_soundtrack_indicator_runtime.js",
-    "tools/check_deploy_rehearsal.py",
-    "tools/check_release_manifest.py",
-    "tools/check_ultimate_playback.py"
+    "sbb/competition_builder.py",
+    "tests/test_v460_competition_builder.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.4.8"
+        "4.6.0"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.4.8",
-        "architecture/media-classifier.js?v=4.4.8",
-        "architecture/media-resolver.js?v=4.4.8",
-        "architecture/poisoned-media-containment.js?v=4.4.8",
-        "app.js?v=4.4.8",
-        "architecture/nfl-recap-reconciliation.js?v=4.4.8",
-        "architecture/recap-identity-guard.js?v=4.4.8"
+        "Sports Big Board \u2014 v4.6.0",
+        "app.js?v=4.6.0",
+        "architecture/competition-builder.js?v=4.6.0",
+        "architecture/recap-identity-guard.js?v=4.6.0",
+        "architecture/nfl-recap-reconciliation.js?v=4.6.0"
       ],
       "forbidden": [
-        "?v=4.5.",
-        "media-intelligence.js?v="
+        "?v=4.4.8",
+        "?v=4.5."
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.4.8'"
+        "version:'4.6.0'",
+        "custom-competition overlay",
+        "window.SBB_COMPETITION_BUILDER"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.4.8\"",
-        "physical playback identity",
-        "dynamically discovered"
+        "\"release\": \"4.6.0\"",
+        "Active special events appear in both Special Events and the main selector row"
       ]
     },
-    "architecture/poisoned-media-containment.js": {
+    "architecture/competition-builder.js": {
       "required": [
-        "preloadBlocks",
-        "quarantineAborts",
-        "orphanedLoads",
-        "activeBlockedLoads",
-        "installNativeGuards",
-        "patchYouTubePlayer",
-        "SBB_POISON_CONTAINMENT"
-      ],
-      "forbidden": [
-        "new MutationObserver(",
-        "SBB_MEDIA_INTELLIGENCE"
-      ]
-    },
-    "architecture/site-soundtrack-muted.js": {
-      "required": [
-        "SBB_SITE_SOUNDTRACK_MUTED",
-        "audio.muted=true",
-        "Site music temporarily muted"
-      ]
-    },
-    "architecture/playback-terminal.js": {
-      "required": [
-        "SBB_POISON_CONTAINMENT",
-        "ORPHANED_QUARANTINE_LOADS",
-        "PRELOAD_BLOCKS=",
-        "QUARANTINE_ABORTS=",
-        "ORPHANED_LOADS=",
-        "STALE_MEDIA"
+        "SPECIAL EVENTS \u25be",
+        "ADD LEAGUE",
+        "ADD SPECIAL EVENT",
+        "2026 WORLD CUP TEMPLATE",
+        "2026 LLWS TEMPLATE",
+        "mainRowEligible",
+        "SCORE_DATE_STORE?.setMatches",
+        "gameCenterProviderHint:'competition-builder'",
+        "SCORE_DATE_STORE?.setMedia",
+        "/api/competition-builder/media"
       ]
     },
     "sbb/__init__.py": {
       "required": [
-        "nfl_weekly_playlists"
-      ],
-      "forbidden": [
-        "media_intelligence"
+        "competition_builder",
+        "_install_competition_builder"
       ]
     },
-    "cloud/gcp/DEPLOY-FROM-GITHUB.sh": {
-      "forbidden": [
-        "Media Intelligence runtime dependencies",
-        "yt-dlp",
-        "deno"
-      ]
-    },
-    "cloud/vm/INSTALL-STAGE1.sh": {
+    "sbb/competition_builder.py": {
       "required": [
-        "apt-get install -y python3 sqlite3 curl caddy"
-      ],
-      "forbidden": [
-        "yt-dlp",
-        "deno"
+        "web_search",
+        "custom-competitions.json",
+        "generic_game_center",
+        "_operator_media_playlist_normalize",
+        "HISTORY_REPOSITORY.upsert_event",
+        "AUTO_DISCOVER",
+        "_generic_youtube_gap_search",
+        "30*60",
+        "/api/competition-builder/media"
       ]
     },
-    "tools/check_release_manifest.py": {
+    "tests/test_v460_competition_builder.py": {
       "required": [
-        "CHANGED-FILES-vX.X.X.txt files are intentionally ignored"
-      ]
-    },
-    "tools/check_deploy_rehearsal.py": {
-      "required": [
-        "CHANGED-FILES ignored",
-        "static_source_contract_scan",
-        "workflow_chain_check"
-      ]
-    },
-    "tools/check_ultimate_playback.py": {
-      "required": [
-        "v4.4.7 asset-local poisoned-player containment",
-        "poisoned-player containment module not loaded"
-      ]
-    },
-    "VERIFY.sh": {
-      "required": [
-        "tests.test_v448_nfl_weekly_playlists",
-        "node tests/test_v448_recap_identity_runtime.js",
-        "node tests/test_v448_recap_switch_runtime.js"
-      ],
-      "forbidden": [
-        "test_v450_media_intelligence"
-      ]
-    },
-    "tests/test_v447_poisoned_player_containment_runtime.js": {
-      "required": [
-        "zero active blocked loads",
-        "v4.4.7 asset-local poisoned-player containment"
-      ]
-    },
-    "architecture/media-classifier.js": {
-      "required": [
-        "version:'1.2'",
-        "Physical duration is tier truth",
-        "physicalKey"
-      ]
-    },
-    "architecture/media-resolver.js": {
-      "required": [
-        "version:'1.1'",
-        "uniquePhysical",
-        "physical playback media"
-      ]
-    },
-    "sbb/nfl_weekly_playlists.py": {
-      "required": [
-        "2026 Preseason Week 3 Game Recaps",
-        "2026 Preseason Week 4 Game Recaps",
-        "2026 Season Week 1 Game Recaps",
-        "playlists.list",
-        "does not use search.list",
-        "original_catalog(force=True)",
-        "REFRESH_SECONDS",
-        "PLAYLIST_ITEMS_REFRESH_SECONDS = 10 * 60",
-        "original_items(playlist,force=use_force)",
-        "refresh_weekly="
-      ]
-    },
-    "tests/test_v448_recap_identity_runtime.js": {
-      "required": [
-        "same YouTube video must collapse",
-        "genuine distinct quick recap"
-      ]
-    },
-    "tests/test_v448_nfl_weekly_playlists.py": {
-      "required": [
-        "2026 Preseason Week 3 Game Recaps",
-        "2026 Season Week 1 Game Recaps"
-      ]
-    },
-    "sbb/media_classifier.py": {
-      "required": [
-        "physical duration is authoritative",
-        "if d:",
-        "return 420<=d<=1500",
-        "mediaObjective"
-      ]
-    },
-    "architecture/nfl-recap-reconciliation.js": {
-      "required": [
-        "rapidHistoricalGameMedia(match,{force:true})",
-        "!ts.has('green')",
-        "ts.has('extended')||ts.has('blue')",
-        "renderScoresFromMatchesCombined(false)",
-        "MAX_AGE_DAYS=10"
-      ]
-    },
-    "architecture/recap-identity-guard.js": {
-      "required": [
-        "different physical",
-        "physicalKey(candidate)!==physicalKey(item)",
-        "distinctTargetForTier",
-        "does not have a different playable video"
-      ]
-    },
-    "tests/test_v448_recap_switch_runtime.js": {
-      "required": [
-        "same physical media must be skipped",
-        "differentMedia"
+        "test_special_event_lifecycle_and_selector_placement",
+        "test_schedule_normalizes_for_score_ribbon_and_game_center",
+        "test_frontend_contracts_are_present"
       ]
     }
   },
@@ -245,12 +94,7 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v446_historical_media_quarantine",
-    "python3 -m unittest tests.test_v448_nfl_weekly_playlists",
-    "node tests/test_v446_stale_media_runtime.js",
-    "node tests/test_v447_poisoned_player_containment_runtime.js",
-    "node tests/test_v448_recap_identity_runtime.js",
-    "node tests/test_v448_recap_switch_runtime.js",
+    "python3 -m unittest tests.test_v460_competition_builder",
     "bash VERIFY.sh"
   ]
 }
