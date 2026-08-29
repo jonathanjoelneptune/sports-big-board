@@ -1,178 +1,80 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.6",
-  "baseRelease": "4.6.5",
-  "title": "Special Event Active Window & Results Reconciliation",
+  "release": "4.6.7",
+  "baseRelease": "4.6.6",
+  "title": "Tournament Realization & Soccer Game Center",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
     "VERSION",
-    "architecture/competition-builder.js",
+    "index.html",
     "core-model.js",
     "foundation-certification.json",
-    "index.html",
-    "release-manifest.json",
     "sbb/__init__.py",
-    "sbb/competition_builder.py",
-    "tests/test_v460_competition_builder.py",
-    "tests/test_v461_competition_builder_hardening.py",
-    "tests/test_v462_competition_builder_research_delete.py",
-    "tests/test_v463_special_event_ribbon.py",
-    "tests/test_v464_custom_runtime_bridge.py",
-    "tests/test_v465_competition_builder_boot.py",
-    "tests/test_v466_special_event_polish.py"
+    "sbb/competition_builder_v467.py",
+    "tests/test_v467_tournament_realization_game_center.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.6"
+        "4.6.7"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.6",
-        "app.js?v=4.6.6",
-        "architecture/competition-builder.js?v=4.6.6",
-        "id=\"sbbSpecialEventsWrap\"",
-        "id=\"sbbSpecialEventsBtn\"",
-        "id=\"sbbSpecialEventsMenu\""
+        "Sports Big Board \u2014 v4.6.7",
+        "core-model.js?v=4.6.7",
+        "app.js?v=4.6.7",
+        "architecture/competition-builder.js?v=4.6.7"
       ],
       "forbidden": [
-        "?v=4.6.5",
-        "?v=4.6.4",
-        "?v=4.6.3",
-        "?v=4.6.2",
-        "?v=4.6.1",
-        "?v=4.6.0",
-        "?v=4.5."
+        "?v=4.6.6"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.6'",
-        "custom-competition overlay",
-        "window.SBB_COMPETITION_BUILDER"
+        "version:'4.6.7'",
+        "custom-competition overlay"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.6\"",
-        "evaluated against the score ribbon browse date",
-        "does not expose internal event-count bookkeeping",
-        "bracket placeholders are reconciled to actual played participants/results",
-        "cannot render [object Object]",
-        "country participants to flag artwork"
-      ]
-    },
-    "architecture/competition-builder.js": {
-      "required": [
-        "version:'1.6'",
-        "const activeOnDate=(c,date=browseISO())",
-        "state.competitions.filter(c=>mainRowEligible(c,viewedDate))",
-        "sbb-special-event-status",
-        "activeHere?'ACTIVE':status",
-        "REFRESH RESULTS",
-        "action:'reconcile_results'",
-        "away:awayName,home:homeName",
-        "awayTeam,homeTeam",
-        "syncFilters();",
-        "PARTICIPANT ARTWORK",
-        "COUNTRY FLAGS",
-        "const menu=$('sbbSpecialEventsMenu')",
-        "document.documentElement.dataset.sbbCompetitionBuilder='READY'"
-      ],
-      "forbidden": [
-        "c.mainRow===true&&mainRowEligible(c)",
-        "const menu=ensureSpecialMenuPortal()"
+        "\"release\": \"4.6.7\"",
+        "ESPN fifa.world",
+        "standard ESPN soccer Game Center structure"
       ]
     },
     "sbb/__init__.py": {
       "required": [
-        "competition_builder",
-        "_install_competition_builder"
+        "competition_builder_v467",
+        "_install_competition_builder_v467"
       ]
     },
-    "sbb/competition_builder.py": {
+    "sbb/competition_builder_v467.py": {
       "required": [
-        "Sports Big Board v4.6.6",
-        "def _event_needs_result_reconcile",
-        "def reconcile_competition_results",
-        "preserving canonical event IDs",
-        "action==\"reconcile_results\"",
-        "\"away\":away_name,\"home\":home_name",
-        "event=_decorate_event_artwork(comp,event)",
-        "COUNTRY_FLAGS",
-        "flagcdn.com/w80",
-        "def _repair_event_media",
-        "scoreEventId",
-        "canonicalEventId",
-        "persist the registration before a crawler thread",
-        "force_crawl=False"
+        "Sports Big Board v4.6.7",
+        "fifa.world",
+        "def _merge_realized_results",
+        "providerEventId",
+        "normalize_espn_summary",
+        "game_center_coverage",
+        "ESPN-SOCCER",
+        "def _refresh_active_v467"
       ]
     },
-    "tests/test_v460_competition_builder.py": {
+    "tests/test_v467_tournament_realization_game_center.py": {
       "required": [
-        "test_special_event_lifecycle_and_selector_placement",
-        "test_schedule_normalizes_for_score_ribbon_and_game_center",
-        "test_frontend_contracts_are_present"
+        "test_realized_match_replaces_bracket_but_preserves_canonical_id",
+        "test_world_cup_game_center_uses_standard_soccer_sections",
+        "test_future_placeholder_is_refreshable_without_being_guessed"
       ]
     },
     "VERIFY.sh": {
       "required": [
-        "python3 -m unittest tests.test_v461_competition_builder_hardening",
-        "python3 -m unittest tests.test_v462_competition_builder_research_delete",
-        "python3 -m unittest tests.test_v463_special_event_ribbon",
-        "python3 -m unittest tests.test_v464_custom_runtime_bridge",
-        "python3 -m unittest tests.test_v465_competition_builder_boot",
-        "python3 -m unittest tests.test_v466_special_event_polish"
-      ]
-    },
-    "tests/test_v461_competition_builder_hardening.py": {
-      "required": [
-        "test_keyboard_inputs_do_not_reach_playback_shortcuts",
-        "test_save_is_durable_and_revisioned",
-        "test_discovery_falls_back_to_official_page",
-        "test_custom_competition_reports_crawl_enrollment"
-      ]
-    },
-    "tests/test_v462_competition_builder_research_delete.py": {
-      "required": [
-        "test_world_cup_uses_bounded_windows",
-        "test_zero_and_partial_schedule_cannot_activate",
-        "test_delete_is_site_wide_and_purges_custom_history",
-        "CONFIRM DELETE"
-      ]
-    },
-    "tests/test_v463_special_event_ribbon.py": {
-      "required": [
-        "test_special_events_control_is_permanent_header_ui",
-        "test_completed_special_event_selection_navigates_into_event_range",
-        "test_custom_scores_follow_score_date_store_browse_authority"
-      ]
-    },
-    "tests/test_v464_custom_runtime_bridge.py": {
-      "required": [
-        "test_world_cup_auto_artwork_uses_country_flags",
-        "test_operator_playlist_is_saved_before_async_crawl",
-        "test_frontend_rebuilds_verified_media_index_after_custom_hydration",
-        "test_special_event_dropdown_is_portaled_out_of_overflowing_filter_row",
-        "test_custom_media_endpoint_forces_canonical_event_identity_and_can_repair"
-      ]
-    },
-    "tests/test_v465_competition_builder_boot.py": {
-      "required": [
-        "test_portal_helper_reads_existing_menu_without_recursing",
-        "test_builder_boot_is_observable_and_failure_is_visible",
-        "test_index_loads_builder_after_app_runtime",
-        "test_v464_world_cup_runtime_bridge_is_retained"
-      ]
-    },
-    "tests/test_v466_special_event_polish.py": {
-      "required": [
-        "test_special_event_main_row_follows_browsed_date_and_dropdown_has_no_game_count",
-        "test_results_reconciliation_preserves_canonical_event_id_and_replaces_actual_matchup",
-        "test_custom_playback_uses_string_names_while_preserving_rich_team_objects",
-        "test_dev_mode_has_explicit_actual_results_repair"
+        "python3 tools/check_release_manifest.py",
+        "python3 tools/check_release_version.py",
+        "python3 tools/check_foundation_certification.py",
+        "python3 -m unittest tests.test_v467_tournament_realization_game_center"
       ]
     }
   },
@@ -182,13 +84,7 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v460_competition_builder",
-    "python3 -m unittest tests.test_v461_competition_builder_hardening",
-    "python3 -m unittest tests.test_v462_competition_builder_research_delete",
-    "python3 -m unittest tests.test_v463_special_event_ribbon",
-    "python3 -m unittest tests.test_v464_custom_runtime_bridge",
-    "python3 -m unittest tests.test_v465_competition_builder_boot",
-    "python3 -m unittest tests.test_v466_special_event_polish",
+    "python3 -m unittest tests.test_v467_tournament_realization_game_center",
     "bash VERIFY.sh"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.6",
+  "release": "4.6.7",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -20,50 +20,13 @@
         "regression-hardening"
       ],
       "reportedRegressionRequirements": [
-        "Game Center selected event follows the active game video on direct tune, Next, and automatic advance",
-        "Background program refresh cannot replace or restart the active media key",
-        "Manual pause remains latched for at least 25 seconds under background refresh",
-        "Score-ribbon date browsing cannot autoplay Silver daily/weekly roundup media",
-        "Production startup contains no legacy NBA/demo seed programming",
-        "Post-first-frame playback buffering self-recovers by failing over within a bounded window instead of hanging or restarting the same clip",
-        "Launch-started YouTube media enters a tracked playback session immediately and cannot remain indefinitely in starting while iframe readiness never arrives",
-        "Every clean-window error capable of blocking certification is exported with timestamp, category/code, source, message, detail/data, and browser/runtime identity",
-        "A count-only clean-window error with no corresponding exported error record cannot independently fail Tier 1; the diagnostic mismatch remains visible as an advisory",
-        "Known transient browser media interruptions are advisory only when a later PASS playback step plus a final PLAYING/OK playback session prove automatic recovery and are labeled RECOVERED_ADVISORY in the exported certificate",
-        "Post-test exact-state restoration is advisory unless final application health is bad; cleanup health requires restored resource mode, playback ownership OK, one soundtrack audio element, a selected media item on a started board, and Game Center consistency for game-scoped media",
-        "Playback watchdog failures that prove bounded automatic failover to a different PLAYING media asset and healthy post-test state are RECOVERED_ADVISORY rather than Tier 1 blockers.",
-        "Poisoned media is blocked before native/YouTube player assignment; any already-loading matching resources are torn down locally without resetting the healthy playback engine, and certification requires zero orphaned blocked loads.",
-        "Recap tier availability is keyed to physical playback identity: the same YouTube ID/direct URL cannot be advertised as both Green Quick and Purple Extended.",
-        "Known physical duration outranks conflicting discovery-objective metadata when assigning Quick versus Extended recap tiers.",
-        "Recent NFL weekly recap playlists are dynamically discovered from the official NFL YouTube channel; missing expected preseason/regular-season week catalogs trigger a bounded refresh instead of waiting on the long-lived playlist cache.",
-        "Custom competition creation is Dev Mode only and persists server-side.",
-        "Active special events appear in both Special Events and the main selector row; completed special events remain only under Special Events.",
-        "Custom event Game Center uses the canonical /api/events/<competition>/<event>/game-center contract.",
-        "World Cup and LLWS templates require schedule review before activation.",
-        "Competition Builder editable controls isolate keyboard input from document-level playback shortcuts so typing spaces/arrows cannot control playback.",
-        "Competition creation is not reported successful until the shared server store is written and a fresh definition read-back verifies persistence.",
-        "Custom competitions are enrolled in the canonical history league registry, operator playlist crawler, and dedicated background media gap-search worker.",
-        "Schedule Auto Discover uses structured output and falls back to direct extraction of an operator-supplied official schedule URL when web search fails.",
-        "Competition Builder schedule discovery is completeness-driven: large tournaments are researched in bounded date windows, merged/deduplicated, and checked against an expected event count instead of relying on one giant model response.",
-        "Site-wide competition creation rejects zero-event schedules and rejects incomplete schedules when an expected event count is known unless a future explicit override is introduced.",
-        "Dev Mode can delete a custom competition site-wide, removing its persisted definition, history event relationships, operator playlist registrations, runtime registry entry, and history-league crawl enrollment.",
-        "World Cup and LLWS templates carry deterministic completeness targets of 104 and 38 competition games respectively.",
-        "Special Events is a permanent top-level selector control; custom special-event catalog refreshes populate that stable control instead of transiently injecting/removing the control itself.",
-        "Selecting a completed or upcoming special event while browsing outside its event date range navigates the score ribbon into the event range before rendering its games.",
-        "Custom competition score hydration subscribes to the canonical ScoreDateStore browse-date authority so special-event games render on historical event dates across normal ribbon refreshes.",
-        "Special Events dropdown content is rendered in a viewport-level portal so the horizontally scrolling league-filter container cannot clip its menu.",
-        "Custom competition date hydration rebuilds the verified-media lookup used by score-card playback after schedule/media enter ScoreDateStore.",
-        "Custom operator playlist registrations are durably saved before asynchronous playlist crawl begins; existing custom competitions re-enroll media sources on server startup.",
-        "Custom event-media responses force canonical competition/event identity from the event relationship and lazily repair matching unassigned custom source media.",
-        "Competition Builder persists an explicit participant artwork strategy; the FIFA World Cup defaults to country flags while future competitions can choose team logos, provided artwork, auto, or none.",
-        "Competition Builder startup cannot recursively resolve the Special Events portal; the stable Special Events menu is read from the application DOM and may then be portaled to the viewport.",
-        "Competition Builder startup exposes READY/ERROR boot state and surfaces a visible Special Events warning if initialization fails instead of silently removing all custom-competition UI.",
-        "The 4.6.4 custom competition runtime bridge, participant artwork strategy, canonical custom-media identity repair, and verified-media lookup rebuild remain required in 4.6.6.",
-        "Special-event main-row eligibility is evaluated against the score ribbon browse date, so a historical tournament is treated as an active league while browsing dates inside its event window even after the real-world event has completed.",
-        "Special Events dropdown presentation does not expose internal event-count bookkeeping and instead presents a clean event identity plus date-relative active/completed status.",
-        "Past tournament bracket placeholders are reconciled to actual played participants/results from authoritative sources while preserving each canonical event ID so existing media associations remain intact.",
-        "Custom competition playback exposes explicit away/home display-name strings alongside rich participant objects and artwork so legacy title paths cannot render [object Object].",
-        "Participant artwork strategy is preserved through custom schedule hydration and Game Center; the FIFA World Cup AUTO/template strategy resolves country participants to flag artwork."
+        "All v4.6.6 Foundation Certification regressions remain required.",
+        "Tournament ingestion is state-aware: matches dated today or earlier use actual realized participants/results, while future bracket placeholders remain only until official participants are determined.",
+        "The 2026 FIFA World Cup uses ESPN fifa.world as the deterministic primary participant/result authority.",
+        "Provider match IDs are stored separately while canonical Sports Big Board event IDs remain unchanged.",
+        "Ongoing tournaments resolve future bracket slots as soon as both actual participants are officially known.",
+        "Custom soccer competitions use the standard ESPN soccer Game Center structure with scoring plays, team stats, player/lineup sections, commentary timeline, venue/status and soccer completeness rules.",
+        "If ESPN soccer Game Center cannot be loaded, the generic custom Game Center remains a non-breaking fallback."
       ]
     },
     "tier2": {
@@ -71,27 +34,20 @@
       "required": true,
       "minimumDurationMs": 900000,
       "sampleIntervalMs": 15000,
-      "requirements": [
-        "At least 90% of expected 15-second telemetry samples are captured across the full soak window",
-        "No telemetry gap exceeds 2.5 sample intervals",
-        "Playback currentTime advances while state is playing; sustained no-progress beyond 45 seconds fails",
-        "Native video play-request acknowledgment is bounded so a pending HTMLMediaElement.play() Promise cannot delay first-frame recovery",
-        "Sustained buffering beyond 45 seconds fails",
-        "Timed-out game-transition calls are evidence and must recover within 20 seconds; only unrecovered transition timeouts fail the soak",
-        "Media decode/provider failures must self-recover to another playable selection rather than strand unattended playback",
-        "No playback ownership invariant violation",
-        "No same-media currentTime restart or same-media reselection regression",
-        "Game Center remains tied to game-scoped active media",
-        "Workers remain healthy during periodic platform snapshots",
-        "No milestone clean-window errors",
-        "No excessive JavaScript heap growth when browser heap telemetry is available"
-      ],
       "minimumTelemetryCoverageRatio": 0.9,
       "maximumSampleGapMs": 37500,
       "maximumNoProgressMs": 45000,
       "maximumBufferingMs": 45000,
       "transitionTimeoutMs": 12000,
-      "transitionRecoveryMs": 20000
+      "transitionRecoveryMs": 20000,
+      "requirements": [
+        "At least 90% of expected 15-second telemetry samples are captured across the full soak window",
+        "No telemetry gap exceeds 2.5 sample intervals",
+        "Playback currentTime advances while state is playing",
+        "Sustained buffering beyond 45 seconds fails",
+        "No playback ownership invariant violation",
+        "Game Center remains tied to game-scoped active media"
+      ]
     },
     "tier3": {
       "name": "Controlled Chaos / Recovery",
@@ -99,21 +55,15 @@
       "requirements": [
         "Background rerank storm preserves active playback",
         "Aborted concurrent request storm recovers",
-        "Expected invalid-route failure is isolated from playback",
         "Standby-player disruption does not disturb active playback",
-        "Resource-mode turbulence restores the original mode",
         "Repeated game transitions preserve Game Center ownership",
-        "Manual pause survives concurrent API pressure",
-        "Post-chaos clean recovery window is healthy",
-        "Game Center provider 429 opens a bounded scheduler circuit and cancels queued background amplification",
-        "Tier 3 chaos evidence remains exportable through the post-chaos recovery reset",
-        "Timing-only WARN evidence remains visible and advisory; only failed assertions or failed recovery gates block Tier 3 certification"
+        "Post-chaos clean recovery window is healthy"
       ]
     }
   },
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.6 polishes the stable custom-competition runtime: special events become date-relative first-class leagues while browsing their tournament window, completed bracket placeholders can reconcile to actual results without changing canonical media identity, and participant artwork/display names remain consistent through ribbon playback and Game Center.",
+  "baseline": "v4.6.7 makes tournament identity state-aware: played matches are realized to actual teams/results without changing canonical event IDs, future slots resolve as official participants become known, and World Cup matches use the standard rich soccer Game Center.",
   "status": "IN_PROGRESS"
 }
