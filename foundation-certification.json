@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.7",
+  "release": "4.6.8",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -69,7 +69,14 @@
         "Provider match IDs are stored separately while canonical Sports Big Board event IDs remain unchanged.",
         "Ongoing tournaments resolve future bracket slots as soon as both actual participants are officially known.",
         "Custom soccer competitions use the standard ESPN soccer Game Center structure with scoring plays, team stats, player/lineup sections, commentary timeline, venue/status and soccer completeness rules.",
-        "If ESPN soccer Game Center cannot be loaded, the generic custom Game Center remains a non-breaking fallback."
+        "If ESPN soccer Game Center cannot be loaded, the generic custom Game Center remains a non-breaking fallback.",
+        "History Audit exposes a Statistics tab with per-competition game/media coverage and includes dynamically registered special events.",
+        "Media Playlists dynamically exposes registered special-event competitions alongside MLB, NFL, NBA, NHL, EPL, and MLS.",
+        "Every competition can explicitly reprocess media from the Media Playlists or Statistics surfaces without deleting existing verified media.",
+        "Built-in league media reprocessing reopens the normal source-enrichment ledger so completed source checks become eligible again.",
+        "Special-event media reprocessing force-crawls every enabled operator playlist and runs canonical event-media association repair.",
+        "When tournament participant/result reconciliation changes an event from bracket identity to realized teams, registered competition playlists are force-crawled again automatically.",
+        "History Audit, Silver, playlist-management, and recovery league selectors are populated from the live competition/media registry rather than a six-league hard-coded list."
       ]
     },
     "tier2": {
@@ -120,6 +127,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.7 retains the full v4.6.6 Foundation Certification contract while making tournament identity state-aware: played matches are realized to actual teams/results without changing canonical event IDs, future slots resolve as official participants become known, and World Cup matches use the standard rich soccer Game Center.",
+  "baseline": "v4.6.8 makes special-event media a first-class operator workflow: Statistics reports coverage by competition, special-event playlists appear beside built-in leagues, per-competition media reprocessing can reopen/crawl/repair sources without deleting verified media, and realized tournament participant changes automatically trigger a fresh playlist crawl.",
   "status": "IN_PROGRESS"
 }

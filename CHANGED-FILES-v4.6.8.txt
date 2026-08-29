@@ -1,0 +1,26 @@
+Sports Big Board v4.6.8 — Special Event Media Statistics & Reprocessing
+
+REPLACE
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- VERIFY.sh
+- sbb/competition_builder_v467.py
+
+ADD
+- ui/history-audit-v468.js
+- tests/test_v468_special_event_media_statistics.py
+
+BEHAVIOR
+- Adds Statistics tab beside Game Media / Silver Roundups / Game Media Playlists.
+- Statistics reports per-competition game counts, verified-media coverage, no-media counts,
+  best recap tier counts, coverage-complete counts, playlist counts, associations and orphans.
+- Special events are dynamically included in Statistics and audit/media/recovery selectors.
+- Special-event playlists render in the Media Playlists tab using the existing source layout.
+- REPROCESS MEDIA is available for every competition.
+- Built-ins reopen source-enrichment work.
+- Special events also force-crawl operator playlists and run association repair.
+- Tournament matchup realization automatically force-crawls registered playlists when identities change.
+- Existing verified media is preserved.

@@ -416,6 +416,18 @@ def reconcile_competition_results(server, comp, force=False):
     repaired = 0
     if matched:
         current = persisted or {**comp, "events": updated}
+
+        # v4.6.8: participant/result realization changes the strongest matching
+        # evidence available to operator playlists. When an event actually changes,
+        # force-crawl the competition's registered playlists again so videos that
+        # were previously orphaned against Winner Match/TBA identities are
+        # immediately re-evaluated against the realized teams.
+        if changed:
+            try:
+                base._register_media_sources(server, current, force_crawl=True)
+            except Exception:
+                pass
+
         matched_set = set(matched)
         for event in current.get("events") or []:
             if _clean(event.get("eventId")) not in matched_set:

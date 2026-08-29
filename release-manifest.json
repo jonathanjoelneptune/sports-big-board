@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.7",
-  "baseRelease": "4.6.6",
-  "title": "Tournament Realization & Soccer Game Center",
+  "release": "4.6.8",
+  "baseRelease": "4.6.7",
+  "title": "Special Event Media Statistics & Reprocessing",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -10,63 +10,72 @@
     "index.html",
     "core-model.js",
     "foundation-certification.json",
-    "sbb/__init__.py",
     "sbb/competition_builder_v467.py",
-    "tests/test_v467_tournament_realization_game_center.py"
+    "ui/history-audit-v468.js",
+    "tests/test_v468_special_event_media_statistics.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.7"
+        "4.6.8"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.7",
-        "core-model.js?v=4.6.7",
-        "app.js?v=4.6.7",
-        "architecture/competition-builder.js?v=4.6.7"
+        "Sports Big Board \u2014 v4.6.8",
+        "id=\"historyAuditTabStatistics\"",
+        "id=\"historyStatisticsPane\"",
+        "ui/history-audit-v468.js?v=4.6.8",
+        "core-model.js?v=4.6.8",
+        "app.js?v=4.6.8",
+        "architecture/competition-builder.js?v=4.6.8"
       ],
       "forbidden": [
-        "?v=4.6.6"
+        "?v=4.6.7"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.7'",
+        "version:'4.6.8'",
         "custom-competition overlay"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.7\"",
-        "ESPN fifa.world",
-        "standard ESPN soccer Game Center structure"
-      ]
-    },
-    "sbb/__init__.py": {
-      "required": [
-        "competition_builder_v467",
-        "_install_competition_builder_v467"
+        "\"release\": \"4.6.8\"",
+        "History Audit exposes a Statistics tab",
+        "Special-event media reprocessing force-crawls every enabled operator playlist",
+        "registered competition playlists are force-crawled again automatically"
       ]
     },
     "sbb/competition_builder_v467.py": {
       "required": [
         "Sports Big Board v4.6.7",
+        "base._register_media_sources(server, current, force_crawl=True)",
+        "Winner Match/TBA identities",
         "fifa.world",
-        "def _merge_realized_results",
-        "providerEventId",
-        "normalize_espn_summary",
-        "game_center_coverage",
-        "ESPN-SOCCER",
-        "def _refresh_active_v467"
+        "ESPN-SOCCER"
       ]
     },
-    "tests/test_v467_tournament_realization_game_center.py": {
+    "ui/history-audit-v468.js": {
       "required": [
-        "test_realized_match_replaces_bracket_but_preserves_canonical_id",
-        "test_world_cup_game_center_uses_standard_soccer_sections",
-        "test_future_placeholder_is_refreshable_without_being_guessed"
+        "Sports Big Board v4.6.8",
+        "historyAuditTabStatistics",
+        "historyStatisticsBody",
+        "REPROCESS MEDIA",
+        "action:'source_reopen'",
+        "action:'crawl'",
+        "/api/competition-builder/health?id=",
+        "historyMediaPlaylistLeague",
+        "historyRecoveryLeague"
+      ]
+    },
+    "tests/test_v468_special_event_media_statistics.py": {
+      "required": [
+        "test_statistics_tab_is_a_first_class_audit_surface",
+        "test_dynamic_competition_selectors_include_special_events",
+        "test_per_competition_reprocess_reopens_and_recrawls_media",
+        "test_realized_tournament_identity_triggers_playlist_recrawl"
       ]
     },
     "VERIFY.sh": {
@@ -74,7 +83,8 @@
         "python3 tools/check_release_manifest.py",
         "python3 tools/check_release_version.py",
         "python3 tools/check_foundation_certification.py",
-        "python3 -m unittest tests.test_v467_tournament_realization_game_center"
+        "python3 -m unittest tests.test_v467_tournament_realization_game_center",
+        "python3 -m unittest tests.test_v468_special_event_media_statistics"
       ]
     }
   },
@@ -85,6 +95,7 @@
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
     "python3 -m unittest tests.test_v467_tournament_realization_game_center",
+    "python3 -m unittest tests.test_v468_special_event_media_statistics",
     "bash VERIFY.sh"
   ]
 }
