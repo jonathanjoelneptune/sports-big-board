@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.11",
-  "baseRelease": "4.6.10",
-  "title": "LLWS 2026 Reusable Special Event + Event Icons",
+  "release": "4.6.12",
+  "baseRelease": "4.6.11",
+  "title": "Generic Schedule Template + Playlist Match Rules",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -10,89 +10,99 @@
     "index.html",
     "core-model.js",
     "foundation-certification.json",
-    "sbb/competition_builder_v467.py",
-    "architecture/competition-builder-v4611.js",
-    "tests/test_v4610_historical_media_association.py",
-    "tests/test_v4611_llws_event_icons.py"
+    "sbb/__init__.py",
+    "sbb/competition_builder_v4612.py",
+    "architecture/competition-builder-v4612.js",
+    "tests/test_v4611_llws_event_icons.py",
+    "tests/test_v4612_schedule_template_playlist_matching.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.11"
+        "4.6.12"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.11",
-        "core-model.js?v=4.6.11",
-        "app.js?v=4.6.11",
-        "architecture/competition-builder.js?v=4.6.11",
-        "architecture/competition-builder-v4611.js?v=4.6.11",
-        "architecture/historical-media-v4610.js?v=4.6.11"
+        "Sports Big Board \u2014 v4.6.12",
+        "core-model.js?v=4.6.12",
+        "app.js?v=4.6.12",
+        "architecture/competition-builder-v4611.js?v=4.6.12",
+        "architecture/competition-builder-v4612.js?v=4.6.12",
+        "architecture/historical-media-v4610.js?v=4.6.12"
       ],
       "forbidden": [
-        "?v=4.6.10"
+        "?v=4.6.11"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.11'",
+        "version:'4.6.12'",
         "custom-competition overlay"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.11\"",
-        "Event Icon selector beside Sport",
-        "ESPN league slug llb",
-        "standard baseball Game Center structure",
-        "historical database-first hydration"
+        "\"release\": \"4.6.12\"",
+        "COPY TEMPLATE JSON",
+        "required/excluded playlist title phrases",
+        "participant aliases"
       ]
     },
-    "sbb/competition_builder_v467.py": {
+    "sbb/__init__.py": {
       "required": [
-        "v4.6.11 reusable ESPN provider mapping for LLWS baseball",
-        "def _espn_provider_for_comp",
-        "return \"baseball\", \"llb\", \"baseball\"",
-        "provider_sport = _espn_sport_for_comp(comp)",
-        "def _espn_baseball_linescore",
-        "def provider_game_center",
-        "\"MLB\" if profile == \"baseball\" else \"EPL\"",
-        "ESPN-CUSTOM-BASEBALL",
-        "fifa.world"
+        "competition_builder_v4612",
+        "_install_competition_builder_v4612()"
       ]
     },
-    "architecture/competition-builder-v4611.js": {
+    "sbb/competition_builder_v4612.py": {
       "required": [
-        "Sports Big Board v4.6.11",
-        "cbEventIcon",
-        "EVENT ICON",
-        "Little League",
-        "providerLeagueSlug = clean(d.providerLeagueSlug) || 'llb'",
-        "gameCenterProfile = clean(d.gameCenterProfile) || 'baseball'",
-        "sbb-special-event-icon",
-        "competitionMap",
-        "\u26be",
-        "\ud83c\udf0e",
-        "\ud83c\udfc6"
+        "Sports Big Board v4.6.12",
+        "requiredTitlePhrases",
+        "excludedTitlePhrases",
+        "def _wrap_server_matcher",
+        "PLAYLIST_TITLE_RULE",
+        "participantAliasMatch",
+        "def _update_media_rules",
+        "force_crawl=True"
+      ]
+    },
+    "architecture/competition-builder-v4612.js": {
+      "required": [
+        "Sports Big Board v4.6.12",
+        "COPY TEMPLATE JSON",
+        "GENERIC_SCHEDULE_TEMPLATE",
+        "cbGreenRequiredTitlePhrases",
+        "historyMediaPlaylistRequiredTitlePhrases",
+        "/api/competition-builder/media-rules",
+        "Full Game Highlights",
+        "aliases",
+        "providerEventId"
       ]
     },
     "tests/test_v4610_historical_media_association.py": {
       "required": [
         "VERSION = (ROOT / \"VERSION\").read_text(encoding=\"utf-8\").strip()",
         "f\"architecture/historical-media-v4610.js?v={VERSION}\""
-      ],
-      "forbidden": [
-        "architecture/historical-media-v4610.js?v=4.6.10"
       ]
     },
     "tests/test_v4611_llws_event_icons.py": {
       "required": [
-        "test_event_icon_selector_and_dropdown_contract",
-        "test_llws_template_is_complete_and_provider_ready",
-        "test_llws_espn_provider_mapping",
-        "test_llws_scoreboard_uses_baseball_llb_and_realized_teams",
-        "test_llws_game_center_uses_standard_baseball_shape"
+        "VERSION = (ROOT / \"VERSION\").read_text(encoding=\"utf-8\").strip()",
+        "f\"architecture/competition-builder-v4611.js?v={VERSION}\"",
+        "self.assertIn(\"kind === 'LLWS'\", UI)"
+      ],
+      "forbidden": [
+        "data-builder-template=\\\\\"LLWS\\\\\""
+      ]
+    },
+    "tests/test_v4612_schedule_template_playlist_matching.py": {
+      "required": [
+        "test_generic_schedule_template_copy_contract",
+        "test_playlist_title_rule_fields_are_reusable",
+        "test_title_rules_accept_full_game_and_reject_nonmatching_clips",
+        "test_participant_aliases_include_group_and_media_names",
+        "test_imported_participant_objects_preserve_alias_metadata"
       ]
     },
     "VERIFY.sh": {
@@ -101,7 +111,8 @@
         "python3 tools/check_release_version.py",
         "python3 tools/check_foundation_certification.py",
         "python3 -m unittest tests.test_v4610_historical_media_association",
-        "python3 -m unittest tests.test_v4611_llws_event_icons"
+        "python3 -m unittest tests.test_v4611_llws_event_icons",
+        "python3 -m unittest tests.test_v4612_schedule_template_playlist_matching"
       ]
     }
   },
@@ -111,10 +122,9 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v468_special_event_media_statistics",
-    "python3 -m unittest tests.test_v469_world_cup_ribbon_playback",
     "python3 -m unittest tests.test_v4610_historical_media_association",
     "python3 -m unittest tests.test_v4611_llws_event_icons",
+    "python3 -m unittest tests.test_v4612_schedule_template_playlist_matching",
     "bash VERIFY.sh"
   ]
 }

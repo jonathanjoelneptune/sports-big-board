@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.11",
+  "release": "4.6.12",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -94,7 +94,13 @@
         "The LLWS template defaults to baseball, the baseball event icon, ESPN league slug llb, provider sport baseball, and the standard baseball Game Center profile.",
         "2026 LLWS played games use ESPN baseball/llb as a deterministic participant/result authority while canonical Sports Big Board event IDs remain stable and unresolved future bracket participants remain placeholders only until official.",
         "Custom baseball special events with an ESPN provider mapping use the standard baseball Game Center structure including inning linescore, team stats, player sections, timeline/scoring plays when provided, with the generic custom Game Center retained as a non-breaking fallback.",
-        "LLWS automatically inherits special-event playlist enrollment, Statistics reporting, media reprocessing, historical database-first hydration, schedule aliases, and date-scoped media reassociation from the existing generic competition contracts."
+        "LLWS automatically inherits special-event playlist enrollment, Statistics reporting, media reprocessing, historical database-first hydration, schedule aliases, and date-scoped media reassociation from the existing generic competition contracts.",
+        "Competition Builder exposes a COPY TEMPLATE JSON control that copies the canonical generic special-event schedule import structure without generating Sports Big Board event IDs.",
+        "The generic schedule import structure supports rich away/home participant objects with name, displayName, group, abbreviation, and aliases plus scheduledAt, scores, provider IDs, gameNumber, round/stage, venue, city/country, and sourceUrl.",
+        "Custom competition media sources can persist optional required/excluded playlist title phrases; required phrases are OR-based and any excluded phrase rejects the candidate before GAME association.",
+        "Historical Database Game Media Playlists exposes the same required/excluded playlist title phrases for existing special-event sources and rule changes trigger a force recrawl without deleting existing source media.",
+        "Custom-event media association uses imported participant aliases, abbreviations, groups, and region identities as additional event-match evidence while preserving canonical event IDs.",
+        "LLWS template media matching defaults the Green source required phrase to Full Game Highlights while remaining operator-editable and reusable for other competitions."
       ]
     },
     "tier2": {
@@ -145,6 +151,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.11 proves the post-World-Cup Competition Builder is reusable by onboarding the 2026 Little League Baseball World Series through the generic special-event contracts, adding persistent selectable event icons, deterministic ESPN llb results, and a sport-native baseball Game Center while preserving v4.6.10 historical media hardening.",
+  "baseline": "v4.6.12 preserves v4.6.11 LLWS/event-icon support and makes special-event ingestion reusable: the wizard can copy the canonical generic schedule JSON, playlist sources can require/exclude title phrases, and participant aliases from imported schedules participate in media association.",
   "status": "IN_PROGRESS"
 }

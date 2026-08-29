@@ -1,0 +1,30 @@
+Sports Big Board v4.6.12 — Generic Schedule Template + Playlist Match Rules
+
+REPLACE
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- VERIFY.sh
+- sbb/__init__.py
+- tests/test_v4611_llws_event_icons.py
+
+ADD
+- architecture/competition-builder-v4612.js
+- sbb/competition_builder_v4612.py
+- tests/test_v4612_schedule_template_playlist_matching.py
+
+ALSO INCLUDED
+- tests/test_v4610_historical_media_association.py (unchanged dynamic-version guard)
+
+FEATURES
+1. COPY TEMPLATE JSON button in the Competition Builder schedule step.
+2. Generic reusable special-event JSON format with rich participant aliases/groups and provider metadata.
+3. Required title phrases and excluded title phrases for Green/Purple/Blue playlist sources.
+4. Same title-rule fields available from Historical Database > Game Media Playlists for existing custom events.
+5. Required phrase matching is OR-based; any excluded phrase rejects the candidate before association.
+6. Imported participant aliases/group/abbreviation values are tried as additional event-match evidence.
+7. Updating media rules persists them to the custom competition and starts a force recrawl.
+8. LLWS defaults Green required title phrase to "Full Game Highlights"; operators can change or clear it.
+9. Existing source media is preserved; rules affect association eligibility, not source-media retention.
