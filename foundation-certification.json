@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.0",
+  "release": "4.6.1",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -39,7 +39,11 @@
         "Custom competition creation is Dev Mode only and persists server-side.",
         "Active special events appear in both Special Events and the main selector row; completed special events remain only under Special Events.",
         "Custom event Game Center uses the canonical /api/events/<competition>/<event>/game-center contract.",
-        "World Cup and LLWS templates require schedule review before activation."
+        "World Cup and LLWS templates require schedule review before activation.",
+        "Competition Builder editable controls isolate keyboard input from document-level playback shortcuts so typing spaces/arrows cannot control playback.",
+        "Competition creation is not reported successful until the shared server store is written and a fresh definition read-back verifies persistence.",
+        "Custom competitions are enrolled in the canonical history league registry, operator playlist crawler, and dedicated background media gap-search worker.",
+        "Schedule Auto Discover uses structured output and falls back to direct extraction of an operator-supplied official schedule URL when web search fails."
       ]
     },
     "tier2": {
@@ -90,6 +94,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.0 Competition Builder extends the fully inherited v4.4.8 playback, recovery, poisoned-player containment, recap-identity, and dynamic NFL playlist certification baseline without removing any prior Foundation requirement.",
+  "baseline": "v4.6.1 hardens the v4.6.0 Competition Builder with keyboard isolation, verified site-wide persistence, robust schedule discovery fallback, and explicit custom-competition media crawl enrollment while preserving the complete inherited Foundation contract.",
   "status": "IN_PROGRESS"
 }

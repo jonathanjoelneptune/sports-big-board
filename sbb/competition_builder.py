@@ -1,4 +1,4 @@
-"""Sports Big Board v4.6.0 — persistent custom competition builder.
+"""Sports Big Board v4.6.1 — persistent custom competition builder.
 
 Installs without modifying server.py:
 - persistent League / Special Event registry
@@ -11,11 +11,12 @@ Installs without modifying server.py:
 Media Intelligence is intentionally unrelated and remains parked.
 """
 from __future__ import annotations
-import csv, hashlib, io, json, os, re, sys, threading, time
+import csv, hashlib, html, io, json, os, re, sys, threading, time
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse, unquote
+from urllib.request import Request, urlopen
 try:
     from zoneinfo import ZoneInfo
 except Exception:
@@ -28,6 +29,8 @@ _INSTALL_LOCK=threading.Lock()
 _INSTALLED=False
 _SERVER=None
 _REFRESH_THREAD=None
+_CRAWL_STATE={"worker":"STARTING","lastAt":0.0,"lastCompetition":"","lastEventId":"","found":0,"attempts":0,"errors":0,"lastError":""}
+_CATALOG_REVISION=0
 ID_RE=re.compile(r"^[A-Z][A-Z0-9_-]{1,23}$")
 SPORTS={"baseball","american-football","basketball","ice-hockey","football","tennis","motorsport","athletics","action-sports","multi-sport"}
 
@@ -61,12 +64,24 @@ def _load():
             return []
 
 def _save(rows):
+    global _CATALOG_REVISION
     with _LOCK:
         _STORE.parent.mkdir(parents=True,exist_ok=True)
+        _CATALOG_REVISION=max(int(time.time()*1000),int(_CATALOG_REVISION or 0)+1)
+        payload=json.dumps({"version":2,"revision":_CATALOG_REVISION,"updatedAt":time.time(),"competitions":rows},ensure_ascii=False,indent=2)
         tmp=_STORE.with_suffix(".tmp")
-        tmp.write_text(json.dumps({"version":1,"updatedAt":time.time(),"competitions":rows},ensure_ascii=False,indent=2),encoding="utf-8")
-        tmp.replace(_STORE)
+        with tmp.open("w",encoding="utf-8") as fh:
+            fh.write(payload);fh.flush();os.fsync(fh.fileno())
+        os.replace(tmp,_STORE)
     return rows
+
+def _store_revision():
+    try:
+        payload=json.loads(_STORE.read_text(encoding="utf-8"))
+        if isinstance(payload,dict) and payload.get("revision"):return int(payload.get("revision"))
+    except Exception:pass
+    try:return int(_STORE.stat().st_mtime_ns//1_000_000)
+    except Exception:return int(_CATALOG_REVISION or 0)
 
 def _team(value,side="",score=None):
     if isinstance(value,dict):
@@ -172,6 +187,7 @@ def normalize_definition(raw,existing=None):
         "scoreSourceUrl":str(raw.get("scoreSourceUrl") or existing.get("scoreSourceUrl") or raw.get("scheduleSourceUrl") or existing.get("scheduleSourceUrl") or "").strip(),
         "autoRefresh":bool(raw.get("autoRefresh",existing.get("autoRefresh",False))),
         "backgroundDiscovery":bool(raw.get("backgroundDiscovery",existing.get("backgroundDiscovery",True))),
+        "crawlEnabled":bool(raw.get("crawlEnabled",existing.get("crawlEnabled",True))),
         "refreshMinutes":max(5,min(1440,int(raw.get("refreshMinutes") or existing.get("refreshMinutes") or 30))),
         "mediaSources":_normalize_sources(raw.get("mediaSources") if "mediaSources" in raw else existing.get("mediaSources")),
         "gameCenterMode":"schedule",
@@ -207,6 +223,18 @@ def competition_map():
 def _find(cid):
     cid=str(cid or "").upper()
     return next((x for x in _load() if str(x.get("id")).upper()==cid),None)
+
+def _playlist_enrollment(server,comp):
+    rows=[]
+    try: rows=server._operator_media_playlists_load()
+    except Exception:return []
+    return [{"id":x.get("id"),"playlistId":x.get("playlistId"),"objective":x.get("objective"),"enabled":bool(x.get("enabled"))} for x in rows if str(x.get("league") or "").upper()==comp.get("id")]
+
+def _crawl_enrollment(server,comp):
+    history=False
+    try: history=comp.get("id") in tuple(server.HISTORY_LEAGUES)
+    except Exception:pass
+    return {"historyLeague":history,"backgroundDiscovery":bool(comp.get("backgroundDiscovery",True)),"crawlEnabled":bool(comp.get("crawlEnabled",True)),"operatorPlaylists":_playlist_enrollment(server,comp),"worker":dict(_CRAWL_STATE)}
 
 def _register_with_server(server,comp):
     cid=comp["id"]
@@ -259,10 +287,15 @@ def save_competition(raw,events=None,server=None):
     if events is None:events=raw.get("events") if isinstance(raw,dict) else None
     if events is None:events=(existing or {}).get("events") or []
     comp["events"]=[normalize_event(comp,x,i) for i,x in enumerate(events or [])]
+    comp["persistedAt"]=time.time();comp["crawlEnabled"]=bool(comp.get("crawlEnabled",True));comp["backgroundDiscovery"]=bool(comp.get("backgroundDiscovery",True))
     rows=[x for x in rows if str(x.get("id")).upper()!=comp["id"]];rows.append(comp);rows.sort(key=lambda x:(x.get("type")!="SPECIAL_EVENT",x.get("startDate") or "",x.get("name") or ""))
     _save(rows)
-    if server:_register_with_server(server,comp);_register_media_sources(server,comp)
-    return _catalog_row(comp)
+    if server:
+        _register_with_server(server,comp)
+        _register_media_sources(server,comp)
+    persisted=_find(comp["id"])
+    if not persisted:raise RuntimeError("Competition was not readable from the server store after save.")
+    return _catalog_row(persisted)
 
 def _extract_json(text):
     text=str(text or "").strip()
@@ -270,12 +303,48 @@ def _extract_json(text):
     except Exception:
         a=text.find("{");b=text.rfind("}")
         if a>=0 and b>a:return json.loads(text[a:b+1])
-        raise ValueError("OpenAI schedule discovery did not return parseable JSON.")
+        raise ValueError("Schedule discovery did not return parseable JSON.")
+
+def _schedule_schema():
+    event_props={
+        "eventId":{"type":"string"},"date":{"type":"string"},"scheduledAt":{"type":"string"},
+        "away":{"type":"string"},"home":{"type":"string"},"awayScore":{"type":["number","string","null"]},
+        "homeScore":{"type":["number","string","null"]},"status":{"type":"string"},"round":{"type":"string"},
+        "stage":{"type":"string"},"venue":{"type":"string"},"broadcast":{"type":"string"},"sourceUrl":{"type":"string"}
+    }
+    return {"type":"object","properties":{"sourceUrls":{"type":"array","items":{"type":"string"}},"sourceLabel":{"type":"string"},"events":{"type":"array","items":{"type":"object","properties":event_props,"required":list(event_props),"additionalProperties":False}}},"required":["sourceUrls","sourceLabel","events"],"additionalProperties":False}
+
+def _openai_schedule_request(server,model,prompt,use_web=True):
+    payload={"model":model,"input":prompt,"max_output_tokens":24000,"text":{"format":{"type":"json_schema","name":"sports_competition_schedule","strict":True,"schema":_schedule_schema()}}}
+    if use_web:
+        payload["tools"]=[{"type":"web_search"}]
+        payload["tool_choice"]="auto"
+        payload["include"]=["web_search_call.action.sources"]
+    resp=server.openai_api_request("/responses",payload,timeout=150)
+    if not isinstance(resp,dict):raise RuntimeError("OpenAI response was not an object")
+    if resp.get("ok") is False:raise RuntimeError(str(resp.get("error") or resp.get("detail") or "OpenAI request failed"))
+    text=server.openai_output_text(resp)
+    if not text:raise RuntimeError("OpenAI returned no schedule output")
+    return _extract_json(text)
+
+def _official_page_text(url,limit=120000):
+    url=str(url or "").strip()
+    if not url:return ""
+    req=Request(url,headers={"User-Agent":"Mozilla/5.0 SportsBigBoard/4.6.1","Accept":"text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8"})
+    with urlopen(req,timeout=25) as r:
+        raw=r.read(1_500_000)
+        ctype=str(r.headers.get("Content-Type") or "")
+    text=raw.decode("utf-8","replace")
+    if "json" in ctype.lower():return text[:limit]
+    text=re.sub(r"(?is)<script[^>]*>.*?</script>|<style[^>]*>.*?</style>"," ",text)
+    text=re.sub(r"(?s)<[^>]+>"," ",text)
+    text=html.unescape(re.sub(r"\s+"," ",text)).strip()
+    return text[:limit]
 
 def discover_schedule(server,draft):
     d=normalize_definition(draft,{})
-    official=str(d.get("scheduleSourceUrl") or "")
-    prompt=f"""Use web search to build a complete sports-event schedule/results dataset.
+    official=str(d.get("scheduleSourceUrl") or "").strip()
+    base=f"""Build a complete schedule/results dataset for this sports competition.
 Competition: {d['name']}
 Year/edition: {d['year']}
 Sport: {d['sportId']}
@@ -284,37 +353,33 @@ Start date: {d.get('startDate') or 'unknown'}
 End date: {d.get('endDate') or 'unknown'}
 Preferred official schedule/results URL: {official or 'find the official organizer source'}
 
-Prefer the official organizer/competition website. Do not invent games or scores.
-Return JSON only with this shape:
-{{
- "sourceUrls":["https://official..."],
- "sourceLabel":"official source description",
- "events":[
-   {{
-    "eventId":"stable source id or generated match number",
-    "date":"YYYY-MM-DD",
-    "scheduledAt":"ISO-8601 or date/time string",
-    "away":"participant/team 1",
-    "home":"participant/team 2",
-    "awayScore":0,
-    "homeScore":0,
-    "status":"FINAL|LIVE|SCHEDULED",
-    "round":"Group A / Round of 16 / Championship / etc",
-    "stage":"stage if known",
-    "venue":"venue if known",
-    "broadcast":"network/platform if known",
-    "sourceUrl":"official event/schedule URL"
-   }}
- ]
-}}
-For knockout/bracket games whose future participant is not yet known, preserve source labels like Winner Game 35 or TBA rather than guessing. Include every tournament game in the requested date range."""
+Use official organizer/competition sources whenever possible. Do not invent matches, participants, scores, dates, or results. Include every competition event in the configured date range. For unknown future bracket participants preserve source labels such as TBA or Winner Game 35 rather than guessing. Return the schedule in the required schema."""
     model=os.environ.get("SBB_COMPETITION_BUILDER_MODEL") or str(getattr(server,"OPENAI_MODEL","gpt-5-mini"))
-    resp=server.openai_api_request("/responses",{"model":model,"tools":[{"type":"web_search"}],"input":prompt,"max_output_tokens":20000},timeout=120)
-    text=server.openai_output_text(resp)
-    data=_extract_json(text)
+    errors=[]
+    try:
+        data=_openai_schedule_request(server,model,base,use_web=True)
+        mode="OPENAI_WEB_SEARCH"
+    except Exception as exc:
+        errors.append(f"web search: {type(exc).__name__}: {exc}")
+        data=None;mode=""
+    if data is None and official:
+        try:
+            page=_official_page_text(official)
+            if len(page)<200:raise RuntimeError("official page returned too little readable text")
+            prompt=base+f"\n\nThe operator supplied this official page. Extract the schedule from this page content first, and use only facts supported by it:\n--- OFFICIAL PAGE START ---\n{page}\n--- OFFICIAL PAGE END ---"
+            data=_openai_schedule_request(server,model,prompt,use_web=False)
+            mode="OFFICIAL_URL_EXTRACT"
+        except Exception as exc:
+            errors.append(f"official URL: {type(exc).__name__}: {exc}")
+            data=None
+    if data is None:
+        raise RuntimeError("Schedule discovery failed. " + " | ".join(errors) + ". Paste JSON/CSV remains available as a deterministic fallback.")
     events=data.get("events") or []
+    if not events:raise RuntimeError("Schedule discovery returned zero events; nothing was saved.")
     normalized=[normalize_event(d,x,i) for i,x in enumerate(events)]
-    return {"competition":_catalog_row({**d,"events":normalized}),"events":normalized,"sourceUrls":data.get("sourceUrls") or [],"sourceLabel":data.get("sourceLabel") or "OpenAI web search"}
+    source_urls=[str(x) for x in (data.get("sourceUrls") or []) if str(x).strip()]
+    if official and official not in source_urls:source_urls.insert(0,official)
+    return {"competition":_catalog_row({**d,"events":normalized}),"events":normalized,"sourceUrls":source_urls,"sourceLabel":data.get("sourceLabel") or mode,"discoveryMode":mode,"attemptErrors":errors}
 
 def generic_game_center(comp,event):
     away=event.get("awayTeam") or event.get("away") or {}
@@ -350,7 +415,7 @@ def _send(server,handler,payload,status=200):
 def _handle_get(server,handler,parsed):
     if parsed.path=="/api/competition-builder/catalog":
         rows=catalog()
-        return _send(server,handler,{"ok":True,"version":1,"today":_today(),"competitions":rows,"specialEvents":[x for x in rows if x.get("type")=="SPECIAL_EVENT"],"mainRow":[x for x in rows if x.get("mainRow")]})
+        return _send(server,handler,{"ok":True,"version":2,"revision":_store_revision(),"today":_today(),"competitions":rows,"specialEvents":[x for x in rows if x.get("type")=="SPECIAL_EVENT"],"mainRow":[x for x in rows if x.get("mainRow")],"crawl":dict(_CRAWL_STATE)})
     if parsed.path=="/api/competition-builder/schedule":
         qs=parse_qs(parsed.query);cid=str((qs.get("id") or [""])[-1]).upper();date=str((qs.get("date") or [""])[-1])[:10]
         comp=_find(cid)
@@ -375,7 +440,10 @@ def _handle_get(server,handler,parsed):
         return _send(server,handler,{"ok":True,"competition":_catalog_row(comp),"date":date,"media":media})
     if parsed.path=="/api/competition-builder/definition":
         qs=parse_qs(parsed.query);comp=_find((qs.get("id") or [""])[-1])
-        return _send(server,handler,{"ok":bool(comp),"competition":comp},200 if comp else 404)
+        return _send(server,handler,{"ok":bool(comp),"persisted":bool(comp),"revision":_store_revision(),"competition":comp,"crawlEnrollment":_crawl_enrollment(server,comp) if comp else {}},200 if comp else 404)
+    if parsed.path=="/api/competition-builder/crawl":
+        qs=parse_qs(parsed.query);comp=_find((qs.get("id") or [""])[-1])
+        return _send(server,handler,{"ok":True,"revision":_store_revision(),"worker":dict(_CRAWL_STATE),"crawlEnrollment":_crawl_enrollment(server,comp) if comp else {}},200)
     m=re.fullmatch(r"/api/events/([^/]+)/([^/]+)/game-center",parsed.path)
     if m:
         cid=unquote(m.group(1)).upper();eid=unquote(m.group(2));comp=_find(cid)
@@ -398,7 +466,9 @@ def _handle_post(server,handler,parsed):
             events=body.get("events")
             if events is None and body.get("scheduleText"):events=parse_schedule_text(body.get("scheduleText"))
             saved=save_competition(comp_raw,events,server)
-            return _send(server,handler,{"ok":True,"competition":saved,"catalog":catalog()},200)
+            persisted=_find(saved.get("id"))
+            if not persisted:raise RuntimeError("Server persistence verification failed after save")
+            return _send(server,handler,{"ok":True,"persisted":True,"revision":_store_revision(),"competition":saved,"crawlEnrollment":_crawl_enrollment(server,persisted),"catalog":catalog()},200)
         if action=="delete":
             cid=str(body.get("id") or "").upper();rows=[x for x in _load() if str(x.get("id")).upper()!=cid];_save(rows)
             try:
@@ -459,23 +529,27 @@ def _generic_youtube_gap_search(server,comp,event):
     return len(rows)
 
 _GENERIC_GAP_STATE={"lastAt":0.0,"competition":"","eventId":"","found":0,"error":""}
+_CUSTOM_CRAWL_INTERVAL=max(120,int(os.environ.get("SBB_CUSTOM_COMPETITION_CRAWL_INTERVAL","300") or 300))
 
 def _run_generic_gap_once(server):
     now=time.time()
-    if now-float(_GENERIC_GAP_STATE.get("lastAt") or 0)<30*60:return
+    if now-float(_GENERIC_GAP_STATE.get("lastAt") or 0)<_CUSTOM_CRAWL_INTERVAL:return
     try:
         if hasattr(server,"_history_server_idle") and not server._history_server_idle():return
     except Exception:return
     for comp in _load():
-        if not comp.get("enabled",True) or not comp.get("backgroundDiscovery",True):continue
+        if not comp.get("enabled",True) or not comp.get("backgroundDiscovery",True) or not comp.get("crawlEnabled",True):continue
         for ev in reversed(comp.get("events") or []):
             if str(ev.get("status") or "").upper() not in {"FINAL","COMPLETED","FINISHED"}:continue
             try:existing=server.HISTORY_REPOSITORY.event_media(ev.get("date"),comp["id"],ev.get("eventId"),include_failed=False)
             except Exception:existing=[]
             if any(x.get("verifiedPlayable") and (x.get("youtubeId") or x.get("mediaUrl")) for x in (existing or [])):continue
             _GENERIC_GAP_STATE.update(lastAt=now,competition=comp["id"],eventId=ev.get("eventId"),found=0,error="")
-            try:_GENERIC_GAP_STATE["found"]=_generic_youtube_gap_search(server,comp,ev)
-            except Exception as exc:_GENERIC_GAP_STATE["error"]=f"{type(exc).__name__}: {exc}"
+            _CRAWL_STATE.update(worker="RUNNING",lastAt=now,lastCompetition=comp["id"],lastEventId=ev.get("eventId"),attempts=int(_CRAWL_STATE.get("attempts") or 0)+1,lastError="")
+            try:
+                found=_generic_youtube_gap_search(server,comp,ev);_GENERIC_GAP_STATE["found"]=found;_CRAWL_STATE["found"]=int(_CRAWL_STATE.get("found") or 0)+int(found or 0);_CRAWL_STATE["worker"]="WAITING"
+            except Exception as exc:
+                msg=f"{type(exc).__name__}: {exc}";_GENERIC_GAP_STATE["error"]=msg;_CRAWL_STATE.update(worker="WAITING",errors=int(_CRAWL_STATE.get("errors") or 0)+1,lastError=msg)
             return
 
 def _refresh_active(server):
@@ -525,7 +599,8 @@ def _install_into_server():
             return old_post(self)
         Handler.do_GET=do_GET;Handler.do_POST=do_POST;Handler.__sbbCompetitionBuilderInstalled=True
     if _REFRESH_THREAD is None:
-        _REFRESH_THREAD=threading.Thread(target=_refresh_active,args=(server,),name="sbb-competition-refresh",daemon=True);_REFRESH_THREAD.start()
+        _CRAWL_STATE["worker"]="WAITING"
+        _REFRESH_THREAD=threading.Thread(target=_refresh_active,args=(server,),name="sbb-custom-competition-crawl",daemon=True);_REFRESH_THREAD.start()
 
 def install():
     global _INSTALLED

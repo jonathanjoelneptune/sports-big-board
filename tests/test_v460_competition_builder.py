@@ -36,12 +36,13 @@ class V460CompetitionBuilderTests(unittest.TestCase):
         for token in ("SPECIAL EVENTS ▾","ADD LEAGUE","ADD SPECIAL EVENT","mainRowEligible","/api/competition-builder","/api/competition-builder/media","SCORE_DATE_STORE?.setMedia","2026 WORLD CUP TEMPLATE","2026 LLWS TEMPLATE"):
             self.assertIn(token,src)
         index=(ROOT/"index.html").read_text(encoding="utf-8")
-        self.assertIn("architecture/competition-builder.js?v=4.6.0",index)
-        self.assertLess(index.index("app.js?v=4.6.0"),index.index("competition-builder.js?v=4.6.0"))
+        version=(ROOT/"VERSION").read_text(encoding="utf-8").strip()
+        self.assertIn(f"architecture/competition-builder.js?v={version}",index)
+        self.assertLess(index.index(f"app.js?v={version}"),index.index(f"competition-builder.js?v={version}"))
 
     def test_backend_openai_and_game_center_contracts(self):
         src=(ROOT/"sbb/competition_builder.py").read_text(encoding="utf-8")
-        for token in ('"tools":[{"type":"web_search"}]','/api/events/([^/]+)/([^/]+)/game-center','_operator_media_playlist_normalize','HISTORY_REPOSITORY.upsert_event','AUTO_DISCOVER','_generic_youtube_gap_search'):
+        for token in ('web_search','/api/events/([^/]+)/([^/]+)/game-center','_operator_media_playlist_normalize','HISTORY_REPOSITORY.upsert_event','AUTO_DISCOVER','_generic_youtube_gap_search'):
             self.assertIn(token,src)
 
 if __name__=="__main__":

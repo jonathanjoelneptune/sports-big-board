@@ -1,6 +1,6 @@
-/* Sports Big Board v4.6.0 — canonical sport/event/media domain model.
+/* Sports Big Board v4.6.1 — canonical sport/event/media domain model.
    Provider adapters normalize into SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT.
-   v4.6.0 adds a custom-competition overlay without changing the built-in provider contracts. */
+   v4.6.1 adds a custom-competition overlay without changing the built-in provider contracts. */
 (() => {
   const TYPES = Object.freeze({
     SPORT:'sport', COMPETITION:'competition', EVENT:'event', MEDIA_PACKAGE:'media-package',
@@ -77,5 +77,5 @@
   }
   function editorialPackage(input={}){const registry=window.SBB_EDITORIAL_PACKAGES;if(registry?.package)return registry.package(input);return {...input,entityType:TYPES.EDITORIAL_PACKAGE,editorialScope:clean(input.editorialScope||input.scope||'league'),editorialType:clean(input.editorialType||'top_plays'),cadence:clean(input.cadence||'daily'),competitionId:upper(input.competitionId||input.league),editorialPeriodKey:clean(input.editorialPeriodKey||input.topPlaysDate||input.publishedAt).slice(0,10)};}
   function playable(item){return !!(item&&item.verifiedPlayable&&(item.youtubeId||item.mediaUrl));}
-  window.SBB_CORE=Object.freeze({version:'4.6.0',TYPES,SPORTS,COMPETITIONS,competition,enabledCompetitions,participant,event,media,mediaAsset,mediaPackage,moment,statSection,gameCenter,editorialPackage,playable});
+  window.SBB_CORE=Object.freeze({version:'4.6.1',TYPES,SPORTS,COMPETITIONS,competition,enabledCompetitions,participant,event,media,mediaAsset,mediaPackage,moment,statSection,gameCenter,editorialPackage,playable});
 })();
