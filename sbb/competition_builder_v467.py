@@ -1,6 +1,7 @@
 """Sports Big Board v4.6.7 tournament realization + soccer Game Center patch.
 
 Keeps the v4.6.6 Competition Builder contracts intact while adding:
+- v4.6.11 reusable ESPN provider mapping for LLWS baseball (`baseball/llb`) plus sport-native Game Center;
 - deterministic realized tournament participants/results from a sport-native
   provider when available (2026 FIFA World Cup -> ESPN fifa.world), written into
   existing canonical schedule slots without changing Sports Big Board event IDs;
@@ -156,18 +157,46 @@ def _needs_realized_refresh(event, today=None):
     return False
 
 
-def _espn_slug_for_comp(comp):
-    explicit = _clean((comp or {}).get("espnLeagueSlug") or (comp or {}).get("providerLeagueSlug"))
+def _espn_provider_for_comp(comp):
+    """Return (sport, league slug, profile) for deterministic custom-event ESPN data.
+
+    v4.6.11 proves the Competition Builder is reusable beyond the FIFA World Cup by
+    enrolling the Little League Baseball World Series in the same provider contract.
+    Explicit provider fields always win so future special events can opt in without
+    another hard-coded adapter.
+    """
+    comp = comp or {}
+    explicit = _clean(comp.get("espnLeagueSlug") or comp.get("providerLeagueSlug"))
+    sport_id = _clean(comp.get("sportId"))
+    explicit_sport = _clean(comp.get("espnSport") or comp.get("providerSport"))
+    sport_map = {"football": "soccer", "baseball": "baseball", "american-football": "football", "basketball": "basketball", "ice-hockey": "hockey"}
     if explicit:
-        return explicit
-    if _clean((comp or {}).get("sportId")) != "football":
-        return ""
-    name = _clean((comp or {}).get("name")).lower()
-    short = _clean((comp or {}).get("shortName")).lower()
-    cid = _clean((comp or {}).get("id")).lower()
-    if "world cup" in name or "world cup" in short or cid in {"wc2026", "world_cup", "worldcup"}:
-        return "fifa.world"
-    return ""
+        sport = explicit_sport or sport_map.get(sport_id, sport_id)
+        profile = _clean(comp.get("gameCenterProfile") or sport_id or sport)
+        return sport, explicit, profile
+
+    name = _clean(comp.get("name")).lower()
+    short = _clean(comp.get("shortName")).lower()
+    cid = _clean(comp.get("id")).lower()
+    if sport_id == "football" and ("world cup" in name or "world cup" in short or cid in {"wc2026", "world_cup", "worldcup"}):
+        return "soccer", "fifa.world", "soccer"
+    if sport_id == "baseball" and (
+        "little league" in name or short in {"llws", "llbws"} or cid in {"llws2026", "llbws2026", "llws", "llbws"}
+    ):
+        return "baseball", "llb", "baseball"
+    return "", "", ""
+
+
+def _espn_slug_for_comp(comp):
+    return _espn_provider_for_comp(comp)[1]
+
+
+def _espn_sport_for_comp(comp):
+    return _espn_provider_for_comp(comp)[0]
+
+
+def _espn_profile_for_comp(comp):
+    return _espn_provider_for_comp(comp)[2]
 
 
 def _window_prompt_v467(d, window_start, window_end, source_urls, expected):
@@ -244,7 +273,8 @@ def _espn_scoreboard_rows(server, comp, start_date, end_date):
         return []
     api = _clean(getattr(server, "ESPN_SITE_API", "")) or "https://site.api.espn.com/apis/site/v2/sports"
     dates = start if start == end else f"{start}-{end}"
-    url = f"{api.rstrip('/')}/soccer/{slug}/scoreboard?dates={dates}&limit=250"
+    provider_sport = _espn_sport_for_comp(comp) or "soccer"
+    url = f"{api.rstrip('/')}/{provider_sport}/{slug}/scoreboard?dates={dates}&limit=250"
     payload = _espn_fetch(server, url, timeout=12)
     out = []
     for raw in (payload or {}).get("events") or []:
@@ -294,6 +324,8 @@ def _espn_scoreboard_rows(server, comp, start_date, end_date):
             "broadcast": "",
             "sourceUrl": source_url or url,
             "resultProvider": "ESPN",
+            "providerSport": provider_sport,
+            "providerLeagueSlug": slug,
         })
     return out
 
@@ -543,10 +575,40 @@ def _resolve_espn_event_id(server, comp, event):
     return ""
 
 
-def _canonicalize_soccer_game_center(comp, stored_event, provider_data, espn_id):
+def _espn_baseball_linescore(payload):
+    """Extract a standard baseball inning line from an ESPN summary header."""
+    header = (payload or {}).get("header") or {}
+    comps = header.get("competitions") or []
+    game = (comps[0] if comps else {}) or {}
+    sides = {}
+    for row in game.get("competitors") or []:
+        side = _clean(row.get("homeAway")).lower()
+        if side in {"away", "home"}:
+            sides[side] = row
+    away = sides.get("away") or {}
+    home = sides.get("home") or {}
+    away_lines = list(away.get("linescores") or [])
+    home_lines = list(home.get("linescores") or [])
+    innings = []
+    for idx in range(max(len(away_lines), len(home_lines))):
+        def value(rows):
+            if idx >= len(rows):
+                return ""
+            row = rows[idx]
+            if isinstance(row, dict):
+                return row.get("displayValue") if row.get("displayValue") is not None else row.get("value", "")
+            return row
+        innings.append({"num": idx + 1, "ordinal": str(idx + 1), "away": value(away_lines), "home": value(home_lines)})
+    return innings
+
+
+def _canonicalize_provider_game_center(comp, stored_event, provider_data, espn_id, payload=None):
     data = deepcopy(provider_data or {})
     canonical_id = _clean(stored_event.get("eventId"))
     cid = _clean(comp.get("id")).upper()
+    profile = _espn_profile_for_comp(comp) or _clean(comp.get("sportId"))
+    sport_id = _clean(comp.get("sportId")) or ("baseball" if profile == "baseball" else "football")
+    event_kind = "game" if sport_id in {"baseball", "american-football", "basketball", "ice-hockey"} else "match"
     stored_event = base._decorate_event_artwork(comp, stored_event)
     pevent = data.get("event") or {}
     pboard = data.get("scoreboard") or {}
@@ -565,8 +627,8 @@ def _canonicalize_soccer_game_center(comp, stored_event, provider_data, espn_id)
         "matchId": canonical_id,
         "competitionId": cid,
         "competitionName": comp.get("name"),
-        "sportId": "football",
-        "eventKind": "match",
+        "sportId": sport_id,
+        "eventKind": event_kind,
         "date": _date_key(stored_event),
         "gameDate": _date_key(stored_event),
         "awayTeam": away,
@@ -579,6 +641,8 @@ def _canonicalize_soccer_game_center(comp, stored_event, provider_data, espn_id)
     board = dict(pboard)
     board["away"] = {**(pboard.get("away") or {}), "team": away}
     board["home"] = {**(pboard.get("home") or {}), "team": home}
+    if profile == "baseball" and not board.get("innings"):
+        board["innings"] = _espn_baseball_linescore(payload or {})
     data.update({
         "competitionId": cid,
         "competitionName": comp.get("name"),
@@ -591,8 +655,9 @@ def _canonicalize_soccer_game_center(comp, stored_event, provider_data, espn_id)
     })
 
     shadow = deepcopy(data)
-    shadow["competitionId"] = "EPL"
-    shadow.setdefault("event", {})["competitionId"] = "EPL"
+    shadow_comp = "MLB" if profile == "baseball" else "EPL"
+    shadow["competitionId"] = shadow_comp
+    shadow.setdefault("event", {})["competitionId"] = shadow_comp
     coverage = game_center_coverage(shadow)
     data["coverage"] = coverage
     data["partial"] = not bool(coverage.get("complete"))
@@ -604,17 +669,22 @@ def _canonicalize_soccer_game_center(comp, stored_event, provider_data, espn_id)
     return data
 
 
-def soccer_game_center(server, comp, event):
-    slug = _espn_slug_for_comp(comp)
-    if not slug:
-        raise NotImplementedError("No soccer provider mapping configured")
+def _canonicalize_soccer_game_center(comp, stored_event, provider_data, espn_id):
+    # Compatibility wrapper retained for the v4.6.7 World Cup regression suite.
+    return _canonicalize_provider_game_center(comp, stored_event, provider_data, espn_id)
+
+
+def provider_game_center(server, comp, event):
+    sport, slug, profile = _espn_provider_for_comp(comp)
+    if not slug or not sport:
+        raise NotImplementedError("No ESPN provider mapping configured")
     key = f"{_clean(comp.get('id')).upper()}:{_clean(event.get('eventId'))}"
     now = time.time()
     with _LOCK:
         cached = _GAME_CENTER_CACHE.get(key)
     if cached:
         status = _clean((cached.get("data") or {}).get("event", {}).get("status")).lower()
-        ttl = 15 if re.search(r"live|progress|half|period", status) else (300 if re.search(r"final|finished|complete", status) else 60)
+        ttl = 15 if re.search(r"live|progress|half|period|inning", status) else (300 if re.search(r"final|finished|complete", status) else 60)
         if now - float(cached.get("savedAt") or 0) < ttl:
             return deepcopy(cached.get("data") or {})
 
@@ -622,16 +692,22 @@ def soccer_game_center(server, comp, event):
     if not espn_id:
         raise RuntimeError("ESPN event could not be resolved from the tournament matchup")
     api = _clean(getattr(server, "ESPN_SITE_API", "")) or "https://site.api.espn.com/apis/site/v2/sports"
-    payload = _espn_fetch(server, f"{api.rstrip('/')}/soccer/{slug}/summary?event={espn_id}", timeout=10)
-    normalized = normalize_espn_summary(payload, "EPL", espn_id)
-    data = _canonicalize_soccer_game_center(comp, event, normalized, espn_id)
+    payload = _espn_fetch(server, f"{api.rstrip('/')}/{sport}/{slug}/summary?event={espn_id}", timeout=10)
+    normalized_profile = "MLB" if profile == "baseball" else "EPL"
+    normalized = normalize_espn_summary(payload, normalized_profile, espn_id)
+    data = _canonicalize_provider_game_center(comp, event, normalized, espn_id, payload=payload)
     with _LOCK:
         _GAME_CENTER_CACHE[key] = {"savedAt": now, "data": deepcopy(data)}
     return data
 
 
+def soccer_game_center(server, comp, event):
+    # Compatibility name retained for the World Cup tests/callers.
+    return provider_game_center(server, comp, event)
+
+
 def _handle_get_v467(server, handler, parsed):
-    # v4.6.9: normalize already-persisted soccer FT/AET rows on the schedule read
+    # v4.6.9: normalize already-persisted provider-complete tournament rows on the schedule read
     # itself, so the score ribbon can expose verified recap media immediately
     # without waiting for the background reconciliation pass.
     if parsed.path == "/api/competition-builder/schedule":
@@ -667,18 +743,19 @@ def _handle_get_v467(server, handler, parsed):
                 return base._send(server, handler, {"ok": False, "error": "CUSTOM_EVENT_NOT_FOUND"}, 404)
             event = base._decorate_event_artwork(comp, event)
             try:
-                data = soccer_game_center(server, comp, event)
+                data = provider_game_center(server, comp, event)
+                cache_label = "ESPN-CUSTOM-BASEBALL" if _espn_profile_for_comp(comp) == "baseball" else "ESPN-SOCCER"
                 return base._send(server, handler, {
                     "ok": True,
                     "data": data,
                     "resolvedEventId": eid,
                     "providerEventId": data.get("providerEventId"),
-                    "cache": "ESPN-SOCCER",
+                    "cache": cache_label,
                 }, 200)
             except Exception as exc:
                 fallback = base.generic_game_center(comp, event)
                 fallback["providerError"] = f"{type(exc).__name__}: {exc}"
-                fallback["source"] = "competition-builder fallback after ESPN soccer Game Center error"
+                fallback["source"] = "competition-builder fallback after ESPN custom-event Game Center error"
                 return base._send(server, handler, {
                     "ok": True,
                     "data": fallback,

@@ -1,0 +1,27 @@
+Sports Big Board v4.6.11 — LLWS 2026 Reusable Special Event + Event Icons
+
+REPLACE
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- VERIFY.sh
+- sbb/competition_builder_v467.py
+- tests/test_v4610_historical_media_association.py
+
+ADD
+- architecture/competition-builder-v4611.js
+- tests/test_v4611_llws_event_icons.py
+
+BEHAVIOR
+- Adds Event Icon beside Sport in the Competition Builder Identity step.
+- Provides a prepopulated icon library and persists eventIcon with the competition.
+- Special Events dropdown renders the selected icon; older events receive sport-aware fallbacks.
+- World Cup defaults to the world icon; LLWS defaults to baseball.
+- 2026 LLWS remains completeness-gated at 38 games, Aug 19-30, from the official Little League schedule.
+- LLWS uses ESPN baseball/llb as deterministic results/participant authority.
+- LLWS uses the standard baseball-shaped Game Center through ESPN summary data, including inning linescore when exposed.
+- Generic custom Game Center remains the fallback if ESPN is temporarily unavailable.
+- LLWS inherits playlist enrollment, Statistics, media reprocessing, historical database-first hydration, aliases, and reassociation.
+- v4.6.10 regression test cache-generation guard is now VERSION-driven so future releases do not fail deploy rehearsal.

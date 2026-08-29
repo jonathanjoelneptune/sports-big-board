@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.10",
+  "release": "4.6.11",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -87,7 +87,14 @@
         "Schedule/provider event-id changes that are proven to be the same league/date/team/time matchup are stored as aliases to the existing canonical event instead of breaking historical media relationships.",
         "Bulk historical ribbon media is exposed under canonical event keys and all proven provider aliases while the underlying source-to-game relationship remains singular.",
         "Historical date switching is generation-safe: a late database hydration from a previously browsed date cannot launch recap search or repaint the current date.",
-        "Historical diagnostics distinguish database association readiness from genuine no-media state and report games checked, ribbon-ready games, and remaining missing games."
+        "Historical diagnostics distinguish database association readiness from genuine no-media state and report games checked, ribbon-ready games, and remaining missing games.",
+        "Competition Builder Identity exposes an Event Icon selector beside Sport with a prepopulated reusable icon library.",
+        "eventIcon is persisted as competition metadata and each Special Events dropdown row renders that event-specific icon with a sport-aware fallback for older competitions.",
+        "The 2026 Little League Baseball World Series template remains completeness-gated at 38 competition games, uses August 19-30, 2026, and points schedule discovery at the official Little League tournament schedule.",
+        "The LLWS template defaults to baseball, the baseball event icon, ESPN league slug llb, provider sport baseball, and the standard baseball Game Center profile.",
+        "2026 LLWS played games use ESPN baseball/llb as a deterministic participant/result authority while canonical Sports Big Board event IDs remain stable and unresolved future bracket participants remain placeholders only until official.",
+        "Custom baseball special events with an ESPN provider mapping use the standard baseball Game Center structure including inning linescore, team stats, player sections, timeline/scoring plays when provided, with the generic custom Game Center retained as a non-breaking fallback.",
+        "LLWS automatically inherits special-event playlist enrollment, Statistics reporting, media reprocessing, historical database-first hydration, schedule aliases, and date-scoped media reassociation from the existing generic competition contracts."
       ]
     },
     "tier2": {
@@ -138,6 +145,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.10 preserves v4.6.9 and hardens historical schedule/media identity: SQLite association and alias repair complete before FIND/search eligibility, schedule ID changes retain canonical game relationships, and stale date hydrations cannot trigger current-date work.",
+  "baseline": "v4.6.11 proves the post-World-Cup Competition Builder is reusable by onboarding the 2026 Little League Baseball World Series through the generic special-event contracts, adding persistent selectable event icons, deterministic ESPN llb results, and a sport-native baseball Game Center while preserving v4.6.10 historical media hardening.",
   "status": "IN_PROGRESS"
 }

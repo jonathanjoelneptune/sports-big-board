@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 INDEX = (ROOT / "index.html").read_text(encoding="utf-8")
 FRONTEND = (ROOT / "architecture" / "historical-media-v4610.js").read_text(encoding="utf-8")
 BACKEND = (ROOT / "sbb" / "historical_media_v4610.py").read_text(encoding="utf-8")
@@ -11,7 +12,7 @@ CERT = (ROOT / "foundation-certification.json").read_text(encoding="utf-8")
 
 class V4610HistoricalMediaAssociationTests(unittest.TestCase):
     def test_database_first_browser_barrier(self):
-        self.assertIn("architecture/historical-media-v4610.js?v=4.6.10", INDEX)
+        self.assertIn(f"architecture/historical-media-v4610.js?v={VERSION}", INDEX)
         self.assertIn("checking database media associations before search", FRONTEND)
         self.assertIn("await hydrateHistoricalRibbonFromCatalog(date)", FRONTEND)
         self.assertIn("state.deferredFill.add(date)", FRONTEND)

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.10",
-  "baseRelease": "4.6.9",
-  "title": "Historical Media Association & Schedule Identity Hardening",
+  "release": "4.6.11",
+  "baseRelease": "4.6.10",
+  "title": "LLWS 2026 Reusable Special Event + Event Icons",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -10,73 +10,89 @@
     "index.html",
     "core-model.js",
     "foundation-certification.json",
-    "sbb/__init__.py",
-    "sbb/historical_media_v4610.py",
-    "architecture/historical-media-v4610.js",
-    "tests/test_v4610_historical_media_association.py"
+    "sbb/competition_builder_v467.py",
+    "architecture/competition-builder-v4611.js",
+    "tests/test_v4610_historical_media_association.py",
+    "tests/test_v4611_llws_event_icons.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.10"
+        "4.6.11"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.10",
-        "core-model.js?v=4.6.10",
-        "app.js?v=4.6.10",
-        "architecture/competition-builder.js?v=4.6.10",
-        "architecture/historical-media-v4610.js?v=4.6.10"
+        "Sports Big Board \u2014 v4.6.11",
+        "core-model.js?v=4.6.11",
+        "app.js?v=4.6.11",
+        "architecture/competition-builder.js?v=4.6.11",
+        "architecture/competition-builder-v4611.js?v=4.6.11",
+        "architecture/historical-media-v4610.js?v=4.6.11"
       ],
       "forbidden": [
-        "?v=4.6.9"
+        "?v=4.6.10"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.10'",
+        "version:'4.6.11'",
         "custom-competition overlay"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.10\"",
-        "Historical score-ribbon dates remain database-first",
-        "Schedule/provider event-id changes",
-        "Historical date switching is generation-safe"
+        "\"release\": \"4.6.11\"",
+        "Event Icon selector beside Sport",
+        "ESPN league slug llb",
+        "standard baseball Game Center structure",
+        "historical database-first hydration"
       ]
     },
-    "sbb/__init__.py": {
+    "sbb/competition_builder_v467.py": {
       "required": [
-        "historical_media_v4610",
-        "_install_historical_media_v4610()"
+        "v4.6.11 reusable ESPN provider mapping for LLWS baseball",
+        "def _espn_provider_for_comp",
+        "return \"baseball\", \"llb\", \"baseball\"",
+        "provider_sport = _espn_sport_for_comp(comp)",
+        "def _espn_baseball_linescore",
+        "def provider_game_center",
+        "\"MLB\" if profile == \"baseball\" else \"EPL\"",
+        "ESPN-CUSTOM-BASEBALL",
+        "fifa.world"
       ]
     },
-    "sbb/historical_media_v4610.py": {
+    "architecture/competition-builder-v4611.js": {
       "required": [
-        "Sports Big Board v4.6.10",
-        "history_event_alias",
-        "DATE_TEAMS_TIME",
-        "def repair_date_associations",
-        "result[alias_key] = result[canonical_key]",
-        "HistoryRepository.ribbon_media_for_date = _ribbon_media_v4610"
-      ]
-    },
-    "architecture/historical-media-v4610.js": {
-      "required": [
-        "Sports Big Board v4.6.10",
-        "checking database media associations before search",
-        "await hydrateHistoricalRibbonFromCatalog(date)",
-        "state.deferredFill.add(date)",
-        "DB ASSOCIATION"
+        "Sports Big Board v4.6.11",
+        "cbEventIcon",
+        "EVENT ICON",
+        "Little League",
+        "providerLeagueSlug = clean(d.providerLeagueSlug) || 'llb'",
+        "gameCenterProfile = clean(d.gameCenterProfile) || 'baseball'",
+        "sbb-special-event-icon",
+        "competitionMap",
+        "\u26be",
+        "\ud83c\udf0e",
+        "\ud83c\udfc6"
       ]
     },
     "tests/test_v4610_historical_media_association.py": {
       "required": [
-        "test_database_first_browser_barrier",
-        "test_backend_alias_and_date_repair_contract",
-        "test_schedule_alias_preserves_canonical_event_in_real_repository"
+        "VERSION = (ROOT / \"VERSION\").read_text(encoding=\"utf-8\").strip()",
+        "f\"architecture/historical-media-v4610.js?v={VERSION}\""
+      ],
+      "forbidden": [
+        "architecture/historical-media-v4610.js?v=4.6.10"
+      ]
+    },
+    "tests/test_v4611_llws_event_icons.py": {
+      "required": [
+        "test_event_icon_selector_and_dropdown_contract",
+        "test_llws_template_is_complete_and_provider_ready",
+        "test_llws_espn_provider_mapping",
+        "test_llws_scoreboard_uses_baseball_llb_and_realized_teams",
+        "test_llws_game_center_uses_standard_baseball_shape"
       ]
     },
     "VERIFY.sh": {
@@ -84,9 +100,8 @@
         "python3 tools/check_release_manifest.py",
         "python3 tools/check_release_version.py",
         "python3 tools/check_foundation_certification.py",
-        "python3 -m unittest tests.test_v468_special_event_media_statistics",
-        "python3 -m unittest tests.test_v469_world_cup_ribbon_playback",
-        "python3 -m unittest tests.test_v4610_historical_media_association"
+        "python3 -m unittest tests.test_v4610_historical_media_association",
+        "python3 -m unittest tests.test_v4611_llws_event_icons"
       ]
     }
   },
@@ -99,6 +114,7 @@
     "python3 -m unittest tests.test_v468_special_event_media_statistics",
     "python3 -m unittest tests.test_v469_world_cup_ribbon_playback",
     "python3 -m unittest tests.test_v4610_historical_media_association",
+    "python3 -m unittest tests.test_v4611_llws_event_icons",
     "bash VERIFY.sh"
   ]
 }
