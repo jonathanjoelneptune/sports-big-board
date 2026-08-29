@@ -138,8 +138,6 @@
         "LLWS source migration re-reads the full persisted competition definition after save_competition because catalog rows intentionally omit events; startup reassociation therefore always retains the imported identity crosswalk.",
         "LittleLeague.org recap pages preserve publication metadata when available so repeated participant matchups can use the same bounded chronology tie-breaker as YouTube playlist media.",
         "Special-event orphan counts mean SOURCE_MEDIA assets with no durable ASSIGNED EVENT_MEDIA relationship; playable coverage is reported separately from association coverage.",
-        "Startup relationship repair routes silverGameLeaks to collection repair because Silver ownership is history_collection_media state, not event-link state.",
-        "A silverGameLeaks-only startup condition may not force a full event relationship revalidation while collection repair remains skipped.",
         "If both event-family and collection-family integrity drift are present, startup repair forces both families before the hard post-repair audit.",
         "The v4.6.16 relationship-routing correction installs synchronously during sbb import so it is active before server.py executes the backend startup repair gate.",
         "Competition Registry 2.0 is the backend authority for competition existence and retains the COMPETITIONS mutable-mapping, catalog(), and enabled_ids() compatibility contracts used by server.py and Competition Builder.",
@@ -151,7 +149,13 @@
         "The browser prepaints selected dates from /api/day-state and ingests the same compact catalog plans used by established ribbon logic; legacy provider/date loaders remain recovery/freshness fallbacks.",
         "Historical Database Audit exposes DAY STATE and BACKEND REGISTRY operator views showing snapshot freshness and whether dynamically-created competitions are enrolled in History and Day State.",
         "Backend Registry and Day State state survive frontend reloads; dynamic competition definitions remain sourced from the persistent Competition Builder store and are replayed into Competition Registry 2.0 on backend startup.",
-        "Day State facts are derived from the same snapshot as ribbon scores/media, including game counts, live/final counts, playable-game counts, and represented competitions."
+        "Day State facts are derived from the same snapshot as ribbon scores/media, including game counts, live/final counts, playable-game counts, and represented competitions.",
+        "The catalog integrity metric silverGameLeaks means an ASSIGNED event-media relationship whose current normalized source scope is not GAME; it is an event-link integrity condition and remains owned by event relationship repair.",
+        "Special-event media code does not monkeypatch HistoryRepository.repair_relationships or override the core server startup repair-family plan.",
+        "A persisted pre-proven special-event relationship may be restored after relationship repair only when the source asset's current normalized scope is GAME.",
+        "If a newer media classifier changes a proof-bearing source asset from GAME to DAY_LEAGUE, WEEK_LEAGUE, ROUND_LEAGUE, or another collection scope, pre-proven restoration must not resurrect its quarantined event relationship.",
+        "Trusted special-event persistence checks the normalized source scope before writing an ASSIGNED event link and fails closed with NON_GAME_SCOPE_PREPROVEN_REJECTED when that scope is not GAME.",
+        "The consolidated v4.6.16 canonical special-event persistence path may explicitly persist a deterministically proven game asset as scope GAME with reason SPECIAL_EVENT_CANONICAL_ASSOCIATION."
       ]
     },
     "tier2": {
@@ -202,6 +206,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.0 is an architectural milestone: Competition Registry 2.0 makes built-in and dynamically-created competitions first-class backend citizens, while Day State Engine continuously projects canonical schedules/scores/media into a persisted cache-first read model consumed by the existing ribbon contract. v4.6.16 special-event media and startup relationship-repair behavior remain preserved.",
+  "baseline": "v4.7.0 Competition Registry 2.0 + Day State Engine, with corrected normalized relationship ownership: silverGameLeaks is an event-link scope violation, core server.py owns repair routing, and legacy pre-proven special-event links cannot be restored after the normalized classifier says the asset is no longer GAME.",
   "status": "IN_PROGRESS"
 }

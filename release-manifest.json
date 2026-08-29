@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "release": "4.7.0",
   "baseRelease": "4.6.16",
-  "title": "Competition Registry 2.0 + Day State Engine",
+  "title": "Competition Registry 2.0 + Day State Engine + Relationship Integrity Correction",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -15,7 +15,11 @@
     "sbb/competition_registry.py",
     "sbb/day_state.py",
     "architecture/day-state.js",
-    "tests/test_v470_competition_registry_day_state.py"
+    "tests/test_v470_competition_registry_day_state.py",
+    "sbb/competition_builder_v4615.py",
+    "sbb/special_event_media_v4616.py",
+    "tests/test_v4615_persistence_aware_special_event_association.py",
+    "tests/test_v4616_special_event_media_pipeline.py"
   ],
   "contracts": {
     "VERSION": {
@@ -48,7 +52,9 @@
         "Competition Registry 2.0",
         "Day State Engine",
         "dynamically-created competition",
-        "/api/history/ribbon"
+        "/api/history/ribbon",
+        "silverGameLeaks means an ASSIGNED event-media relationship",
+        "does not monkeypatch HistoryRepository.repair_relationships"
       ]
     },
     "sbb/__init__.py": {
@@ -107,6 +113,41 @@
         "python3 tools/check_foundation_certification.py",
         "python3 -m unittest tests.test_v4616_special_event_media_pipeline",
         "python3 -m unittest tests.test_v470_competition_registry_day_state"
+      ]
+    },
+    "sbb/competition_builder_v4615.py": {
+      "required": [
+        "SELECT asset_key,scope,asset_json",
+        "normalizedMediaScope",
+        "NON_GAME_SCOPE_PREPROVEN_REJECTED",
+        "preprovenScopeRejected"
+      ]
+    },
+    "sbb/special_event_media_v4616.py": {
+      "required": [
+        "Startup relationship-repair routing is owned by server.py",
+        "non-GAME assets that still have ASSIGNED EVENT",
+        "event repair is the correct owner",
+        "SPECIAL_EVENT_CANONICAL_ASSOCIATION"
+      ],
+      "forbidden": [
+        "HistoryRepository.repair_relationships=_repair_relationships_v4616",
+        "def _relationship_repair_force_plan"
+      ]
+    },
+    "tests/test_v4615_persistence_aware_special_event_association.py": {
+      "required": [
+        "test_preproven_restore_is_blocked_when_current_scope_is_not_game",
+        "NON_GAME_SCOPE_PREPROVEN_REJECTED"
+      ]
+    },
+    "tests/test_v4616_special_event_media_pipeline.py": {
+      "required": [
+        "test_startup_relationship_repair_is_not_monkeypatched_by_special_event_media",
+        "test_silver_game_leak_semantics_are_event_link_integrity"
+      ],
+      "forbidden": [
+        "test_silver_game_leak_routes_to_collection_repair_not_event_repair"
       ]
     }
   },

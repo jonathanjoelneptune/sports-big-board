@@ -221,10 +221,36 @@ def _persist_one_preproven(repo, conn, *, raw, proof, league, event_id, key, eve
         (key,),
     ).fetchone()
     asset_parent = conn.execute(
-        "SELECT 1 FROM history_source_media WHERE asset_key=?",
+        "SELECT scope,asset_json FROM history_source_media WHERE asset_key=?",
         (asset_key,),
     ).fetchone()
     if not event_parent or not asset_parent:
+        return 0
+
+    # Normalized source scope is authoritative over an older special-event proof.
+    # A title-pair proof establishes WHICH game an asset belongs to only while the
+    # classifier still says the asset itself is GAME-scoped.  If a later classifier
+    # version determines that it is DAY/WEEK/ROUND/Silver material, fail closed and
+    # never recreate an event link that relationship repair just quarantined.
+    normalized_scope = _clean(asset_parent["scope"]).upper()
+    if normalized_scope != "GAME":
+        conn.execute(
+            """UPDATE history_event_media
+               SET association_state='QUARANTINED',
+                   association_confidence=0,
+                   association_method='NON_GAME_SCOPE_PREPROVEN_REJECTED',
+                   association_evidence=?,
+                   matcher_version=?,
+                   updated_at=?
+               WHERE canonical_event_key=? AND asset_key=?""",
+            (
+                f"pre-proven association rejected because normalized source scope is {normalized_scope or 'UNKNOWN'}",
+                EVENT_MATCHER_VERSION,
+                now,
+                key,
+                asset_key,
+            ),
+        )
         return 0
 
     competing = conn.execute(
@@ -391,10 +417,10 @@ def _put_event_media_v4615(repo, date, league, event_id, rows):
 
 
 def _preproven_source_rows(repo):
-    """Read persisted proof-bearing source assets without assuming current link state."""
+    """Read proof-bearing assets together with their CURRENT normalized scope."""
     with closing(repo._read_connect()) as conn:
         rows = conn.execute(
-            """SELECT asset_json
+            """SELECT asset_key,scope,asset_json
                FROM history_source_media
                WHERE asset_json LIKE '%"sbbPreprovenAssociation"%'"""
         ).fetchall()
@@ -402,17 +428,27 @@ def _preproven_source_rows(repo):
     for row in rows:
         item = repo._load_obj(row["asset_json"])
         if isinstance(item, dict):
+            item["assetKey"] = _clean(row["asset_key"])
+            item["mediaScope"] = _clean(row["scope"]).upper()
+            item["normalizedMediaScope"] = _clean(row["scope"]).upper()
             out.append(item)
     return out
 
 
 def _restore_preproven_links(repo):
-    """Restore exact proof-bearing links after a legacy relationship repair pass."""
+    """Restore only proof-bearing assets that remain normalized GAME media."""
     restored = 0
     checked = 0
+    scope_rejected = 0
     for item in _preproven_source_rows(repo):
         proof = item.get("sbbPreprovenAssociation")
         if not isinstance(proof, dict):
+            continue
+        # This is the critical v4.7.0 repair invariant.  Event relationship repair
+        # may quarantine a formerly-proven asset because a newer classifier now
+        # identifies it as collection/Silver material.  Do not resurrect that link.
+        if _clean(item.get("normalizedMediaScope") or item.get("mediaScope")).upper() != "GAME":
+            scope_rejected += 1
             continue
         league = _clean(proof.get("league")).upper()
         event_id = _clean(proof.get("eventId"))
@@ -436,7 +472,7 @@ def _restore_preproven_links(repo):
             )
             or 0
         )
-    return {"checked": checked, "restored": restored}
+    return {"checked": checked, "restored": restored, "scopeRejected": scope_rejected}
 
 
 def _repair_event_associations_v4615(repo, matcher_version=EVENT_MATCHER_VERSION, force=False):
@@ -448,6 +484,7 @@ def _repair_event_associations_v4615(repo, matcher_version=EVENT_MATCHER_VERSION
     result = dict(result or {})
     result["preprovenChecked"] = recovery["checked"]
     result["preprovenRestored"] = recovery["restored"]
+    result["preprovenScopeRejected"] = recovery.get("scopeRejected", 0)
     return result
 
 

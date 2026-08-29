@@ -174,6 +174,16 @@ class V4615PersistenceAwareSpecialEventAssociationTests(unittest.TestCase):
         self.assertEqual(target["associationState"],"QUARANTINED")
         self.assertEqual(existing_status["associationState"],"ASSIGNED")
 
+    def test_preproven_restore_is_blocked_when_current_scope_is_not_game(self):
+        # Source-contract regression for the deploy failure: relationship repair
+        # may quarantine a pre-proven link after the classifier changes its scope.
+        # Restoration must consult the CURRENT normalized scope and refuse it.
+        self.assertIn("SELECT asset_key,scope,asset_json",BACKEND)
+        self.assertIn('normalizedMediaScope',BACKEND)
+        self.assertIn('!= "GAME"',BACKEND)
+        self.assertIn("preprovenScopeRejected",BACKEND)
+        self.assertIn("NON_GAME_SCOPE_PREPROVEN_REJECTED",BACKEND)
+
     def test_relationship_repair_restores_still_valid_preproven_link(self):
         repo=self.repo()
         raw=self.proof_item()

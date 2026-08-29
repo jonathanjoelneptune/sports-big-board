@@ -175,45 +175,17 @@ class V4616SpecialEventMediaPipelineTests(unittest.TestCase):
         self.assertIn('"requiredTitlePhrases":["Recap:"]',BACKEND)
         self.assertIn('"requiredTitlePhrases":["Full Game Highlights"]',BACKEND)
 
-    def test_silver_game_leak_routes_to_collection_repair_not_event_repair(self):
-        plan=v4616._relationship_repair_force_plan(
-            {
-                "silverGameLeaks":23,
-                "collectionGameLeaks":0,
-                "lowConfidenceAssigned":0,
-                "crossEventAssignedAssets":0,
-                "lowConfidenceCollectionLinks":0,
-            },
-            requested_event=True,
-            requested_collection=False,
-        )
-        self.assertFalse(plan["forceEvent"])
-        self.assertTrue(plan["forceCollection"])
-        self.assertFalse(plan["eventIssue"])
-        self.assertTrue(plan["collectionIssue"])
+    def test_startup_relationship_repair_is_not_monkeypatched_by_special_event_media(self):
+        self.assertNotIn("HistoryRepository.repair_relationships=_repair_relationships_v4616",BACKEND)
+        self.assertNotIn("def _relationship_repair_force_plan",BACKEND)
+        self.assertIn("Startup relationship-repair routing is owned by server.py",BACKEND)
 
-    def test_real_event_and_collection_drift_force_both_relationship_families(self):
-        plan=v4616._relationship_repair_force_plan(
-            {
-                "silverGameLeaks":22,
-                "collectionGameLeaks":0,
-                "lowConfidenceAssigned":1,
-                "crossEventAssignedAssets":0,
-                "lowConfidenceCollectionLinks":0,
-            },
-            requested_event=True,
-            requested_collection=False,
-        )
-        self.assertTrue(plan["forceEvent"])
-        self.assertTrue(plan["forceCollection"])
-
-    def test_collection_repair_routing_is_installed_synchronously(self):
-        self.assertIn(
-            "HistoryRepository.repair_relationships=_repair_relationships_v4616",
-            BACKEND,
-        )
-        self.assertIn('"silverGameLeaks"',BACKEND)
-        self.assertIn("_COLLECTION_RELATIONSHIP_ISSUE_KEYS",BACKEND)
+    def test_silver_game_leak_semantics_are_event_link_integrity(self):
+        # catalog_integrity defines silverGameLeaks as an ASSIGNED event link whose
+        # current source scope is not GAME.  The special-event layer must therefore
+        # never redirect this condition to collection repair.
+        self.assertIn("non-GAME assets that still have ASSIGNED EVENT",BACKEND)
+        self.assertIn("event repair is the correct owner",BACKEND)
 
     def test_release_contract(self):
         self.assertIn(f"architecture/special-event-media-v4616.js?v={VERSION}",INDEX)
