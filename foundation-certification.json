@@ -121,7 +121,8 @@
         "A pre-proven special-event asset never steals an asset that is already ASSIGNED to another canonical event; the new candidate remains MULTI_EVENT_CANDIDATE_ENCOUNTER.",
         "Ordinary built-in league and generic event-media persistence continues to use the original fail-closed event matcher with no bypass.",
         "Relationship repair may run the normal generic revalidation, but still-valid persisted internal special-event proofs are restored before repair completes.",
-        "v4.6.15 automatically re-associates existing special-event SOURCE_MEDIA after installation so previously quarantined Full Game Highlights do not require playlist deletion or redownload."
+        "v4.6.15 automatically re-associates existing special-event SOURCE_MEDIA after installation so previously quarantined Full Game Highlights do not require playlist deletion or redownload.",
+        "Pre-proven special-event persistence creates or refreshes the canonical-event parent and validates both canonical-event and source-media foreign-key parents on the same SQLite transaction before writing history_event_media."
       ]
     },
     "tier2": {
@@ -172,6 +173,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.15 preserves v4.6.14 media-facing alias resolution and fixes the persistence boundary that was re-quarantining already-proven special-event matches. Trusted internal alias-pair proofs persist to the exact canonical event while all ordinary media remains subject to the original fail-closed matcher and cross-event conflict protections.",
+  "baseline": "v4.6.15 preserves the persistence-aware special-event proof contract and hardens its SQLite boundary by materializing and validating both relationship parent rows on the same transaction before EVENT_MEDIA insertion.",
   "status": "IN_PROGRESS"
 }

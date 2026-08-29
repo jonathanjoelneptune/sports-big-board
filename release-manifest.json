@@ -45,7 +45,8 @@
         "\"release\": \"4.6.15\"",
         "Persistence accepts a deterministic special-event proof",
         "SPECIAL_EVENT_TITLE_ALIAS_PAIR proof is not reinterpreted",
-        "MULTI_EVENT_CANDIDATE_ENCOUNTER"
+        "MULTI_EVENT_CANDIDATE_ENCOUNTER",
+        "same SQLite transaction"
       ]
     },
     "sbb/__init__.py": {
@@ -64,7 +65,10 @@
         "HistoryRepository.put_event_media = _put_event_media_v4615",
         "HistoryRepository.repair_event_associations = _repair_event_associations_v4615",
         "MULTI_EVENT_CANDIDATE_ENCOUNTER",
-        "sbb-v4615-preproven-quarantine-release"
+        "sbb-v4615-preproven-quarantine-release",
+        "SAME SQLite connection/transaction",
+        "SELECT 1 FROM history_catalog_event WHERE canonical_event_key=?",
+        "SELECT 1 FROM history_source_media WHERE asset_key=?"
       ]
     },
     "tests/test_v4614_media_facing_participant_aliases.py": {
@@ -83,7 +87,8 @@
         "test_existing_title_team_pair_quarantine_is_released_after_exact_reproof",
         "test_mismatched_canonical_key_cannot_bypass_legacy_matcher",
         "test_proven_asset_cannot_steal_an_existing_different_assignment",
-        "test_relationship_repair_restores_still_valid_preproven_link"
+        "test_relationship_repair_restores_still_valid_preproven_link",
+        "test_preproven_fk_parents_are_materialized_and_checked_on_same_transaction"
       ]
     },
     "VERIFY.sh": {

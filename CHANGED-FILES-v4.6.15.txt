@@ -47,3 +47,11 @@ FIX
 The fixture now establishes the first valid assignment through the trusted v4.6.15
 persistence contract and then proves that the same source asset cannot be assigned
 to a second canonical event. The production v4.6.15 implementation is unchanged.
+
+
+FK DEPLOY-GATE HARDENING
+- The trusted persistence path no longer relies on a parent event created on a different SQLite connection.
+- history_catalog_event is materialized/refreshed on the same transaction used for history_event_media.
+- history_catalog_event and history_source_media parents are explicitly SELECT-verified before the relationship INSERT.
+- A missing parent fails closed with return 0 instead of raising sqlite3.IntegrityError.
+- Regression and foundation contracts now require this invariant.

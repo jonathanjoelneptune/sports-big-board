@@ -189,6 +189,13 @@ class V4615PersistenceAwareSpecialEventAssociationTests(unittest.TestCase):
         self.assertEqual(status["associationState"],"ASSIGNED")
         self.assertGreaterEqual(result["preprovenChecked"],1)
 
+
+    def test_preproven_fk_parents_are_materialized_and_checked_on_same_transaction(self):
+        self.assertIn("SAME SQLite connection/transaction",BACKEND)
+        self.assertIn("SELECT 1 FROM history_catalog_event WHERE canonical_event_key=?",BACKEND)
+        self.assertIn("SELECT 1 FROM history_source_media WHERE asset_key=?",BACKEND)
+        self.assertNotIn("repo.upsert_event(date, league, event_id)\n        now = time.time()",BACKEND)
+
     def test_release_contract(self):
         self.assertIn(f"Sports Big Board — v{VERSION}",INDEX)
         self.assertIn("competition_builder_v4615",INIT)

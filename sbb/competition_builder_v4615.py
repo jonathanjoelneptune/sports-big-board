@@ -212,6 +212,21 @@ def _persist_one_preproven(repo, conn, *, raw, proof, league, event_id, key, eve
     if not asset_key:
         return 0
 
+    # Foreign-key hardening: both parent rows must be visible on this exact
+    # connection before history_event_media is written. If either invariant is
+    # violated, fail closed instead of allowing sqlite3.IntegrityError to abort
+    # verification/deployment.
+    event_parent = conn.execute(
+        "SELECT 1 FROM history_catalog_event WHERE canonical_event_key=?",
+        (key,),
+    ).fetchone()
+    asset_parent = conn.execute(
+        "SELECT 1 FROM history_source_media WHERE asset_key=?",
+        (asset_key,),
+    ).fetchone()
+    if not event_parent or not asset_parent:
+        return 0
+
     competing = conn.execute(
         """SELECT canonical_event_key,association_confidence,association_method
            FROM history_event_media
@@ -329,13 +344,28 @@ def _put_event_media_v4615(repo, date, league, event_id, rows):
 
     count = 0
     if proven:
-        repo.upsert_event(date, league, event_id)
         now = time.time()
         with repo._lock, closing(repo._connect()) as conn:
+            # v4.6.15 CI hardening: create/refresh the canonical-event parent on
+            # the SAME SQLite connection/transaction that will receive the
+            # history_event_media child row. This removes any cross-connection
+            # visibility/race assumption from the trusted persistence path.
+            conn.execute(
+                """INSERT INTO history_catalog_event(
+                     canonical_event_key,league,event_id,event_date,event_json,final_at,created_at,updated_at)
+                   VALUES(?,?,?,?,?,?,?,?)
+                   ON CONFLICT(canonical_event_key) DO UPDATE SET
+                     event_date=excluded.event_date,
+                     updated_at=excluded.updated_at""",
+                (key, league, event_id, date, repo._dump_obj({}), 0.0, now, now),
+            )
             erow = conn.execute(
                 "SELECT event_json,event_date FROM history_catalog_event WHERE canonical_event_key=?",
                 (key,),
             ).fetchone()
+            if not erow:
+                conn.rollback()
+                return 0
             event = repo._load_obj(erow["event_json"]) if erow else {}
             event_date = _clean(erow["event_date"] if erow else date)[:10]
             for raw, proof in proven:
