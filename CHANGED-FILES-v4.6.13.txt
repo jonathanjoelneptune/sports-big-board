@@ -1,0 +1,37 @@
+Sports Big Board v4.6.13 — Tournament-wide Playlist Association Hardening
+
+REPLACE
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- VERIFY.sh
+- sbb/__init__.py
+
+ADD
+- sbb/competition_builder_v4613.py
+- architecture/competition-builder-v4613.js
+- tests/test_v4613_tournament_playlist_association.py
+
+ROOT CAUSE
+The operator playlist crawler selected candidate events from a video's parsed or
+published date before the v4.6.12 alias-aware matcher ran. LLWS therefore ingested
+74 source assets but could leave them all orphaned even when titles/aliases proved
+the correct game.
+
+BEHAVIOR
+1. Built-in league playlist behavior is unchanged.
+2. SPECIAL_EVENT playlist media is title-rule filtered first.
+3. Each eligible asset is compared against the full competition schedule.
+4. Actual participant names plus imported aliases/groups/regions/abbreviations are
+   valid matchup evidence.
+5. If the same pair plays more than once, provider ID, title game number, explicit
+   title date, and bounded publication proximity are deterministic tie-breakers.
+6. Ambiguous repeated matchups remain orphaned; v4.6.13 never guesses.
+7. Existing downloaded operator-playlist source media is re-associated at startup
+   without redownloading it.
+8. Future special-event crawls store both internal operator and YouTube playlist IDs.
+9. Special-event Statistics WITH MEDIA is overwritten with durable playable
+   EVENT_MEDIA truth, matching what the ribbon can actually play.
+10. REPROCESS MEDIA automatically uses the new tournament-wide crawler.

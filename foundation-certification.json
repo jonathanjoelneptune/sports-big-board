@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.12",
+  "release": "4.6.13",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -100,7 +100,15 @@
         "Custom competition media sources can persist optional required/excluded playlist title phrases; required phrases are OR-based and any excluded phrase rejects the candidate before GAME association.",
         "Historical Database Game Media Playlists exposes the same required/excluded playlist title phrases for existing special-event sources and rule changes trigger a force recrawl without deleting existing source media.",
         "Custom-event media association uses imported participant aliases, abbreviations, groups, and region identities as additional event-match evidence while preserving canonical event IDs.",
-        "LLWS template media matching defaults the Green source required phrase to Full Game Highlights while remaining operator-editable and reusable for other competitions."
+        "LLWS template media matching defaults the Green source required phrase to Full Game Highlights while remaining operator-editable and reusable for other competitions.",
+        "Special-event operator playlist association compares every title-rule-eligible GAME asset against the full competition schedule before publication date can narrow candidates.",
+        "Required/excluded playlist title phrases are evaluated before tournament-wide event association so miscellaneous clips remain SOURCE_MEDIA and do not compete with configured game recaps.",
+        "Participant names, aliases, abbreviations, groups, and regions remain valid matchup evidence across the full competition candidate set.",
+        "Repeated participant matchups are resolved only by stronger provider identity, explicit title game number/date, or bounded publication-date proximity; unresolved ambiguity remains orphaned rather than guessed.",
+        "Already-downloaded special-event operator playlist orphans are re-associated from SOURCE_MEDIA at backend startup without redownloading or deleting source assets.",
+        "Future special-event playlist crawls persist both the internal operator playlist ID and provider YouTube playlist ID so multi-playlist title rules remain deterministic.",
+        "Special-event Statistics WITH MEDIA uses durable playable EVENT_MEDIA relationships that the score ribbon can actually consume instead of broad source-catalog availability.",
+        "REPROCESS MEDIA uses the tournament-wide special-event crawler so orphan counts and ribbon-ready game coverage converge on the same durable association truth."
       ]
     },
     "tier2": {
@@ -151,6 +159,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.12 preserves v4.6.11 LLWS/event-icon support and makes special-event ingestion reusable: the wizard can copy the canonical generic schedule JSON, playlist sources can require/exclude title phrases, and participant aliases from imported schedules participate in media association.",
+  "baseline": "v4.6.13 preserves v4.6.12 generic schedule/title-rule support and hardens special-event playlist association: curated media is matched against the full competition schedule first, existing orphaned source assets are re-proved without redownload, repeated matchups use deterministic tie-breakers, and Statistics reports durable playable EVENT_MEDIA.",
   "status": "IN_PROGRESS"
 }
