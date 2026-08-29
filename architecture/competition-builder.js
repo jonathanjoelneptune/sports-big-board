@@ -1,4 +1,4 @@
-/* Sports Big Board v4.6.4 — Competition Builder Foundation.
+/* Sports Big Board v4.6.5 — Competition Builder Foundation.
    Data-driven League + Special Event UI over the canonical score/date/Game Center contracts. */
 (() => {
   'use strict';
@@ -12,7 +12,7 @@
   const competitionMap=()=>({...state.map});
   const sportLabel=id=>({baseball:'Baseball','american-football':'American Football',basketball:'Basketball','ice-hockey':'Ice Hockey',football:'Soccer',tennis:'Tennis',motorsport:'Motorsport',athletics:'Track & Field','action-sports':'Action Sports','multi-sport':'Sports'}[id]||id);
   function ensureSpecialMenuPortal(){
-    const menu=ensureSpecialMenuPortal();
+    const menu=$('sbbSpecialEventsMenu');
     if(menu&&menu.parentElement!==document.body)document.body.appendChild(menu);
     return menu;
   }
@@ -394,6 +394,29 @@ Green: ${h.green||0} • Purple: ${h.purple||0} • Blue: ${h.blue||0}`);
     });
   }
 
-  window.SBB_COMPETITION_BUILDER=Object.freeze({version:'1.4',refresh:refreshCatalog,loadDate,competitionMap,lifecycle,mainRowEligible,openLeague:()=>openWizard('LEAGUE'),openSpecialEvent:()=>openWizard('SPECIAL_EVENT'),snapshot:()=>({competitions:state.competitions.length,specialEvents:state.competitions.filter(x=>x.type==='SPECIAL_EVENT').length,mainRow:state.competitions.filter(mainRowEligible).map(x=>x.id),lastDate:state.lastDate})});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+  const bootState={state:'PENDING',error:'',startedAt:Date.now(),readyAt:0};
+  function boot(){
+    bootState.state='STARTING';bootState.error='';
+    Promise.resolve().then(start).then(()=>{
+      bootState.state='READY';bootState.readyAt=Date.now();
+      document.documentElement.dataset.sbbCompetitionBuilder='READY';
+      console.info('[SBB competition builder] READY',window.SBB_COMPETITION_BUILDER?.snapshot?.());
+    }).catch(err=>{
+      bootState.state='ERROR';bootState.error=String(err?.stack||err?.message||err);
+      document.documentElement.dataset.sbbCompetitionBuilder='ERROR';
+      const wrap=$('sbbSpecialEventsWrap');
+      const btn=$('sbbSpecialEventsBtn');
+      if(wrap)wrap.classList.remove('hidden');
+      if(btn){btn.textContent='SPECIAL EVENTS ⚠';btn.title=`Competition Builder failed to start: ${String(err?.message||err)}`;}
+      console.error('[SBB competition builder] STARTUP FAILED',err);
+    });
+  }
+  window.SBB_COMPETITION_BUILDER=Object.freeze({
+    version:'1.5',
+    refresh:refreshCatalog,loadDate,competitionMap,lifecycle,mainRowEligible,
+    openLeague:()=>openWizard('LEAGUE'),openSpecialEvent:()=>openWizard('SPECIAL_EVENT'),
+    bootState:()=>({...bootState}),
+    snapshot:()=>({competitions:state.competitions.length,specialEvents:state.competitions.filter(x=>x.type==='SPECIAL_EVENT').length,mainRow:state.competitions.filter(mainRowEligible).map(x=>x.id),lastDate:state.lastDate,boot:bootState.state})
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.4",
+  "release": "4.6.5",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -55,7 +55,10 @@
         "Custom competition date hydration rebuilds the verified-media lookup used by score-card playback after schedule/media enter ScoreDateStore.",
         "Custom operator playlist registrations are durably saved before asynchronous playlist crawl begins; existing custom competitions re-enroll media sources on server startup.",
         "Custom event-media responses force canonical competition/event identity from the event relationship and lazily repair matching unassigned custom source media.",
-        "Competition Builder persists an explicit participant artwork strategy; the FIFA World Cup defaults to country flags while future competitions can choose team logos, provided artwork, auto, or none."
+        "Competition Builder persists an explicit participant artwork strategy; the FIFA World Cup defaults to country flags while future competitions can choose team logos, provided artwork, auto, or none.",
+        "Competition Builder startup cannot recursively resolve the Special Events portal; the stable Special Events menu is read from the application DOM and may then be portaled to the viewport.",
+        "Competition Builder startup exposes READY/ERROR boot state and surfaces a visible Special Events warning if initialization fails instead of silently removing all custom-competition UI.",
+        "The 4.6.4 custom competition runtime bridge, participant artwork strategy, canonical custom-media identity repair, and verified-media lookup rebuild remain required in 4.6.5."
       ]
     },
     "tier2": {
@@ -106,6 +109,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.4 closes the custom-competition runtime bridge: Special Events dropdown portal, historical score hydration, canonical event-media playback association, playlist crawl ordering/repair, and configurable participant artwork while preserving all inherited Foundation requirements.",
+  "baseline": "v4.6.5 restores the complete v4.6.4 custom-competition runtime bridge by fixing Competition Builder startup recursion, while retaining World Cup country flags, custom score/media hydration, canonical event-media repair, and all inherited Foundation requirements.",
   "status": "IN_PROGRESS"
 }

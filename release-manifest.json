@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.4",
-  "baseRelease": "4.6.3",
-  "title": "Custom Competition Runtime Bridge & Participant Artwork",
+  "release": "4.6.5",
+  "baseRelease": "4.6.4",
+  "title": "Competition Builder Startup Restoration",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -18,24 +18,26 @@
     "tests/test_v461_competition_builder_hardening.py",
     "tests/test_v462_competition_builder_research_delete.py",
     "tests/test_v463_special_event_ribbon.py",
-    "tests/test_v464_custom_runtime_bridge.py"
+    "tests/test_v464_custom_runtime_bridge.py",
+    "tests/test_v465_competition_builder_boot.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.4"
+        "4.6.5"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.4",
-        "app.js?v=4.6.4",
-        "architecture/competition-builder.js?v=4.6.4",
+        "Sports Big Board \u2014 v4.6.5",
+        "app.js?v=4.6.5",
+        "architecture/competition-builder.js?v=4.6.5",
         "id=\"sbbSpecialEventsWrap\"",
         "id=\"sbbSpecialEventsBtn\"",
         "id=\"sbbSpecialEventsMenu\""
       ],
       "forbidden": [
+        "?v=4.6.4",
         "?v=4.6.3",
         "?v=4.6.2",
         "?v=4.6.1",
@@ -45,32 +47,34 @@
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.4'",
+        "version:'4.6.5'",
         "custom-competition overlay",
         "window.SBB_COMPETITION_BUILDER"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.4\"",
-        "viewport-level portal",
-        "rebuilds the verified-media lookup",
-        "durably saved before asynchronous playlist crawl",
-        "force canonical competition/event identity",
-        "participant artwork strategy"
+        "\"release\": \"4.6.5\"",
+        "startup cannot recursively resolve the Special Events portal",
+        "READY/ERROR boot state",
+        "custom competition runtime bridge"
       ]
     },
     "architecture/competition-builder.js": {
       "required": [
-        "version:'1.4'",
+        "version:'1.5'",
+        "const menu=$('sbbSpecialEventsMenu')",
         "document.body.appendChild(menu)",
-        "position:fixed;z-index:20050",
-        "rebuildVerifiedMediaIndex(SCORE_DATE_STORE?.allMedia?.(date)||media)",
-        "c.mainRow===true&&mainRowEligible(c)",
+        "document.documentElement.dataset.sbbCompetitionBuilder='READY'",
+        "document.documentElement.dataset.sbbCompetitionBuilder='ERROR'",
         "PARTICIPANT ARTWORK",
         "COUNTRY FLAGS",
         "REPAIR MEDIA",
+        "rebuildVerifiedMediaIndex(SCORE_DATE_STORE?.allMedia?.(date)||media)",
         "/api/competition-builder/health"
+      ],
+      "forbidden": [
+        "const menu=ensureSpecialMenuPortal()"
       ]
     },
     "sbb/__init__.py": {
@@ -81,7 +85,7 @@
     },
     "sbb/competition_builder.py": {
       "required": [
-        "Sports Big Board v4.6.4",
+        "Sports Big Board v4.6.5",
         "LOGO_STRATEGIES",
         "COUNTRY_FLAGS",
         "flagcdn.com/w80",
@@ -105,7 +109,8 @@
         "python3 -m unittest tests.test_v461_competition_builder_hardening",
         "python3 -m unittest tests.test_v462_competition_builder_research_delete",
         "python3 -m unittest tests.test_v463_special_event_ribbon",
-        "python3 -m unittest tests.test_v464_custom_runtime_bridge"
+        "python3 -m unittest tests.test_v464_custom_runtime_bridge",
+        "python3 -m unittest tests.test_v465_competition_builder_boot"
       ]
     },
     "tests/test_v461_competition_builder_hardening.py": {
@@ -139,6 +144,14 @@
         "test_special_event_dropdown_is_portaled_out_of_overflowing_filter_row",
         "test_custom_media_endpoint_forces_canonical_event_identity_and_can_repair"
       ]
+    },
+    "tests/test_v465_competition_builder_boot.py": {
+      "required": [
+        "test_portal_helper_reads_existing_menu_without_recursing",
+        "test_builder_boot_is_observable_and_failure_is_visible",
+        "test_index_loads_builder_after_app_runtime",
+        "test_v464_world_cup_runtime_bridge_is_retained"
+      ]
     }
   },
   "verification": [
@@ -152,6 +165,7 @@
     "python3 -m unittest tests.test_v462_competition_builder_research_delete",
     "python3 -m unittest tests.test_v463_special_event_ribbon",
     "python3 -m unittest tests.test_v464_custom_runtime_bridge",
+    "python3 -m unittest tests.test_v465_competition_builder_boot",
     "bash VERIFY.sh"
   ]
 }

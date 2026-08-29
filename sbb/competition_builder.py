@@ -1,4 +1,4 @@
-"""Sports Big Board v4.6.4 — persistent custom competition builder.
+"""Sports Big Board v4.6.5 — persistent custom competition builder.
 
 Installs without modifying server.py:
 - persistent League / Special Event registry
