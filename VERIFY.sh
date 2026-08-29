@@ -16,6 +16,10 @@ python3 tools/check_ultimate_playback.py
 # and unittest discoverability only. Exact implementation-string assertions are
 # intentionally NOT pre-scanned; actual regression tests below are the authority.
 python3 tools/check_deploy_rehearsal.py
+
+# Active foundation contracts referenced by current release checkers.
+# These remain blocking even though the broad historical archive below is advisory.
+python3 -m unittest tests.test_v446_historical_media_quarantine
 # Stable blocking behavior gate.
 # Historical release-specific tests remain useful diagnostics but no longer veto
 # a modern release because an old CSS class/helper/SQL literal changed.

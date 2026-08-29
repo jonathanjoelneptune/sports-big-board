@@ -1,0 +1,23 @@
+Sports Big Board v4.7.2 — Foundation Verification Fix
+
+REPLACE
+- VERIFY.sh
+- tests/test_release_behavior_gate.py
+- release-manifest.json
+- foundation-certification.json
+
+WHY
+The stable-verification cleanup correctly made broad historical unittest discovery
+advisory, but it also removed one test that is still explicitly required by the
+active Ultimate Playback checker:
+
+  python3 -m unittest tests.test_v446_historical_media_quarantine
+
+PERMANENT POLICY
+1. Tests/commands referenced by active release checkers remain BLOCKING.
+2. Broad historical unittest discovery remains ADVISORY.
+3. Release-specific CSS names, SQL literals, helper names, and obsolete source
+   markers do not block unless an active checker intentionally defines them as a
+   foundation contract.
+4. tests/test_release_behavior_gate.py now protects the active checker-required
+   command list from future verification cleanup.

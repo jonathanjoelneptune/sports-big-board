@@ -62,6 +62,29 @@ class ReleaseBehaviorGate(unittest.TestCase):
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
+    def test_active_foundation_checker_contracts_remain_blocking(self):
+        # These commands are explicitly required by current release checkers.
+        # Future verification cleanup may not move them into the advisory archive.
+        required=(
+            "python3 tools/check_foundation_certification.py",
+            "python3 tools/check_ultimate_playback.py",
+            "python3 -m unittest tests.test_v446_historical_media_quarantine",
+            "node tests/test_certification_error_evidence.js",
+            "node tests/test_tier1_restoration_semantics.js",
+            "node tests/test_v440_playback_readiness.js",
+            "node tests/test_v441_playback_terminal.js",
+            "node tests/test_v441_readiness_hydration.js",
+            "node tests/test_v442_dev_mode.js",
+            "node tests/test_v443_playback_endurance.js",
+            "node tests/test_v443_playback_endurance_runtime.js",
+            "node tests/test_v444_playback_recovery_runtime.js",
+            "node tests/test_v445_duplicate_candidate_runtime.js",
+            "node tests/test_v446_stale_media_runtime.js",
+            "node tests/test_v447_poisoned_player_containment_runtime.js",
+        )
+        for command in required:
+            self.assertIn(command,VERIFY)
+
     def test_legacy_archive_is_advisory_not_release_blocking(self):
         self.assertIn("[legacy-advisory]",VERIFY)
         self.assertIn("does not block deployment",VERIFY)

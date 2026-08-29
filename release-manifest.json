@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "release": "4.7.2",
   "baseRelease": "4.7.1",
-  "title": "Frontend Boot Responsiveness + Stable Verification Architecture",
+  "title": "Frontend Boot Responsiveness + Stable Verification + Foundation Contracts",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -87,7 +87,9 @@
         "[legacy-advisory]",
         "does not block deployment",
         "node tests/test_architecture.js",
-        "python -m py_compile server.py sbb/*.py tests/*.py"
+        "python -m py_compile server.py sbb/*.py tests/*.py",
+        "Active foundation contracts referenced by current release checkers.",
+        "python3 -m unittest tests.test_v446_historical_media_quarantine"
       ],
       "forbidden": [
         "python3 -m unittest tests.test_v471_day_state_registry_resilience",
@@ -100,7 +102,8 @@
         "test_launch_screen_has_interactive_start_control",
         "test_day_state_http_reads_do_not_build_on_request_thread",
         "test_dynamic_competitions_have_registry_builder_and_local_fallback",
-        "test_legacy_archive_is_advisory_not_release_blocking"
+        "test_legacy_archive_is_advisory_not_release_blocking",
+        "test_active_foundation_checker_contracts_remain_blocking"
       ],
       "forbidden": [
         "sbb-v471-restored",

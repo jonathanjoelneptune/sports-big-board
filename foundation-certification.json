@@ -171,7 +171,10 @@
         "Release-blocking verification is behavior- and architecture-contract based; historical tests may not block deployment solely because of release-specific CSS class names, exact SQL strings, private helper names, or superseded internal source markers.",
         "Historical Python regression discovery remains available as a legacy-advisory diagnostic archive and does not block deployment when only archived implementation-pinning tests fail.",
         "The stable tests/test_release_behavior_gate.py suite is the blocking Python release gate for launch responsiveness, non-blocking Day State, dynamic competition/Special Events projection, version handshake, and verification-script integrity.",
-        "Syntax, manifest, version, Foundation Certification, Ultimate Playback, JavaScript runtime/contract checks, shell syntax, workflow-chain checks, and Pages dry-build checks remain blocking."
+        "Syntax, manifest, version, Foundation Certification, Ultimate Playback, JavaScript runtime/contract checks, shell syntax, workflow-chain checks, and Pages dry-build checks remain blocking.",
+        "Tests explicitly referenced by active release checkers remain blocking foundation contracts even when the broader historical Python regression archive is advisory.",
+        "The v4.4.6 tests.test_v446_historical_media_quarantine static recovery contract remains an explicit blocking VERIFY.sh command because check_ultimate_playback.py requires it.",
+        "Verification cleanup may move superseded implementation-pinning tests to advisory status but may not remove commands required by check_foundation_certification.py or check_ultimate_playback.py."
       ]
     },
     "tier2": {
@@ -222,6 +225,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.2 retains the launch-responsiveness fix and permanently separates blocking release behavior verification from the historical regression archive. Old implementation-pinning tests remain diagnostic but cannot veto deployment.",
+  "baseline": "v4.7.2 stable verification distinguishes active checker-required foundation contracts from the historical advisory archive. Foundation commands remain blocking; stale implementation-pinning tests remain advisory.",
   "status": "IN_PROGRESS"
 }
