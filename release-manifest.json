@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.13",
-  "baseRelease": "4.6.12",
-  "title": "Tournament-wide Playlist Association Hardening",
+  "release": "4.6.14",
+  "baseRelease": "4.6.13",
+  "title": "Media-Facing Participant Alias Resolution",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -11,81 +11,67 @@
     "core-model.js",
     "foundation-certification.json",
     "sbb/__init__.py",
-    "sbb/competition_builder_v4613.py",
-    "architecture/competition-builder-v4613.js",
-    "tests/test_v4613_tournament_playlist_association.py"
+    "sbb/competition_builder_v4614.py",
+    "tests/test_v4614_media_facing_participant_aliases.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.13"
+        "4.6.14"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.13",
-        "core-model.js?v=4.6.13",
-        "app.js?v=4.6.13",
-        "architecture/competition-builder-v4612.js?v=4.6.13",
-        "architecture/competition-builder-v4613.js?v=4.6.13",
-        "architecture/historical-media-v4610.js?v=4.6.13"
+        "Sports Big Board \u2014 v4.6.14",
+        "core-model.js?v=4.6.14",
+        "app.js?v=4.6.14",
+        "architecture/competition-builder-v4613.js?v=4.6.14",
+        "architecture/historical-media-v4610.js?v=4.6.14"
       ],
       "forbidden": [
-        "?v=4.6.12"
+        "?v=4.6.13"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.13'",
+        "version:'4.6.14'",
         "custom-competition overlay"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.13\"",
-        "full competition schedule before publication date",
-        "Already-downloaded special-event operator playlist orphans",
-        "durable playable EVENT_MEDIA"
+        "\"release\": \"4.6.14\"",
+        "media-facing geographic identities",
+        "SPECIAL_EVENT_TITLE_ALIAS_PAIR",
+        "PA/NJ"
       ]
     },
     "sbb/__init__.py": {
       "required": [
-        "competition_builder_v4613",
-        "_install_competition_builder_v4613()"
+        "competition_builder_v4614",
+        "_install_competition_builder_v4614()"
       ]
     },
-    "sbb/competition_builder_v4613.py": {
+    "sbb/competition_builder_v4614.py": {
       "required": [
-        "Sports Big Board v4.6.13",
-        "def _match_item_across_competition",
-        "def _choose_match",
-        "PUBLICATION_PROXIMITY",
-        "AMBIGUOUS_REPEATED_MATCHUP",
-        "def _reassociate_existing_competition",
-        "item[\"playlistId\"]",
-        "media-association-stats",
-        "gamesWithPlayableAssociatedMedia",
-        "sbb-v4613-startup-reassociate"
+        "Sports Big Board v4.6.14",
+        "def _media_alias_details",
+        "LOCATION_TAIL",
+        "US_STATE_FROM_ABBREVIATION",
+        "COMMON_MEDIA_EQUIVALENT",
+        "def _direct_title_pair_evidence",
+        "SPECIAL_EVENT_TITLE_ALIAS_PAIR",
+        "_match_item_across_competition_v4614",
+        "sbb-v4614-media-alias-reassociate"
       ]
     },
-    "architecture/competition-builder-v4613.js": {
+    "tests/test_v4614_media_facing_participant_aliases.py": {
       "required": [
-        "Sports Big Board v4.6.13",
-        "/api/competition-builder/media-association-stats",
-        "gamesWithPlayableAssociatedMedia",
-        "durable EVENT_MEDIA",
-        "data-v468-reprocess"
-      ]
-    },
-    "tests/test_v4613_tournament_playlist_association.py": {
-      "required": [
-        "test_special_event_crawler_compares_full_competition_before_date_narrowing",
-        "test_unique_matchup_wins_without_publication_date_gate",
-        "test_repeated_matchup_uses_explicit_title_date",
-        "test_repeated_matchup_can_use_nearby_publication_as_bounded_tiebreaker",
-        "test_far_publication_date_does_not_guess_between_repeated_matchups",
-        "test_existing_orphans_are_reassociated_without_redownload",
-        "test_statistics_use_durable_playable_event_media_for_special_events"
+        "test_imported_city_state_alias_derives_media_facing_state",
+        "test_imported_city_country_alias_derives_country",
+        "test_actual_2026_llws_title_forms_match_schedule_participants",
+        "test_little_league_green_recap_title_forms_use_same_alias_vocabulary",
+        "test_one_character_region_abbreviation_is_not_used_as_media_alias"
       ]
     },
     "VERIFY.sh": {
@@ -93,8 +79,8 @@
         "python3 tools/check_release_manifest.py",
         "python3 tools/check_release_version.py",
         "python3 tools/check_foundation_certification.py",
-        "python3 -m unittest tests.test_v4612_schedule_template_playlist_matching",
-        "python3 -m unittest tests.test_v4613_tournament_playlist_association"
+        "python3 -m unittest tests.test_v4613_tournament_playlist_association",
+        "python3 -m unittest tests.test_v4614_media_facing_participant_aliases"
       ]
     }
   },
@@ -104,8 +90,8 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v4612_schedule_template_playlist_matching",
     "python3 -m unittest tests.test_v4613_tournament_playlist_association",
+    "python3 -m unittest tests.test_v4614_media_facing_participant_aliases",
     "bash VERIFY.sh"
   ]
 }

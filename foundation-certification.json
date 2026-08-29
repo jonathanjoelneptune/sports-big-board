@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.13",
+  "release": "4.6.14",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -108,7 +108,13 @@
         "Already-downloaded special-event operator playlist orphans are re-associated from SOURCE_MEDIA at backend startup without redownloading or deleting source assets.",
         "Future special-event playlist crawls persist both the internal operator playlist ID and provider YouTube playlist ID so multi-playlist title rules remain deterministic.",
         "Special-event Statistics WITH MEDIA uses durable playable EVENT_MEDIA relationships that the score ribbon can actually consume instead of broad source-catalog availability.",
-        "REPROCESS MEDIA uses the tournament-wide special-event crawler so orphan counts and ribbon-ready game coverage converge on the same durable association truth."
+        "REPROCESS MEDIA uses the tournament-wide special-event crawler so orphan counts and ribbon-ready game coverage converge on the same durable association truth.",
+        "Special-event media association derives media-facing geographic identities from imported participant aliases, including the final state/country component of City, State/Country location aliases.",
+        "Imported participant group labels ending in Region contribute a media alias without the Region suffix while one-character abbreviations are excluded from title matching.",
+        "Special-event media titles containing public state/country identities such as Alabama, Ohio, Washington, Nicaragua, Czechia, Japan, Canada, South Korea, Pennsylvania, New Jersey, and Iowa can match the canonical schedule participant objects without rewriting those schedule objects.",
+        "Common recap abbreviations and equivalents such as PA/NJ, DR/Dominican Republic, Curacao/Cura\u00e7ao, and Czechia/Czech Republic are normalized as media aliases.",
+        "The special-event tournament crawler attempts a deterministic two-sided SPECIAL_EVENT_TITLE_ALIAS_PAIR match before falling back to the generic event matcher.",
+        "Existing special-event SOURCE_MEDIA orphans are automatically re-associated after the v4.6.14 media-alias layer installs; canonical event IDs and existing EVENT_MEDIA remain unchanged."
       ]
     },
     "tier2": {
@@ -159,6 +165,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.13 preserves v4.6.12 generic schedule/title-rule support and hardens special-event playlist association: curated media is matched against the full competition schedule first, existing orphaned source assets are re-proved without redownload, repeated matchups use deterministic tie-breakers, and Statistics reports durable playable EVENT_MEDIA.",
+  "baseline": "v4.6.14 preserves v4.6.13 tournament-wide association and fixes the remaining LLWS identity mismatch by deriving media-facing geographic aliases from the rich imported participant objects and directly proving two-sided recap/highlight title pairs.",
   "status": "IN_PROGRESS"
 }

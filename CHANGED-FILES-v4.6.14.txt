@@ -1,0 +1,33 @@
+Sports Big Board v4.6.14 — Media-Facing Participant Alias Resolution
+
+REPLACE
+- VERIFY.sh
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- sbb/__init__.py
+
+ADD
+- sbb/competition_builder_v4614.py
+- tests/test_v4614_media_facing_participant_aliases.py
+
+ROOT CAUSE
+The imported LLWS schedule correctly stores actual Little League clubs and rich location
+metadata, but ESPN/Little League media titles use simplified public identities such as
+Alabama, Ohio, Washington, Nicaragua, Czechia, Japan, PA and NJ. v4.6.13 still delegated
+that semantic step to the generic matcher, producing 74 SOURCE_MEDIA orphans / 0 durable
+associations.
+
+FIX
+- derive state/country alias from imported City, State/Country aliases
+- derive Canada/Japan/etc. from "... Region"
+- support PA/NJ and other US state abbreviations
+- support DR, Curacao/Curaçao, Czechia/Czech Republic equivalents
+- ignore unsafe one-character abbreviations
+- directly parse two-sided "<team> vs <team>" media titles
+- score both sides against each event across the full tournament schedule
+- preserve v4.6.13 tie-breakers for repeated matchups
+- automatically re-associate existing SOURCE_MEDIA after install
+- no schedule regeneration, playlist deletion, or media redownload required
