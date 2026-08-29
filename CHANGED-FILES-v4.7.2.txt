@@ -1,0 +1,18 @@
+Sports Big Board v4.7.2 — Frontend Boot Responsiveness
+
+ROOT CAUSE
+v4.7.1 Frontend Competition Projection installed a document-wide MutationObserver
+that called render() for every DOM mutation. render() itself rewrote the Special
+Events menu and dynamic competition filters, generating new mutations and creating
+a recursive observer/render loop. On page boot this could monopolize the browser
+main thread before the red START SPORTS BIG BOARD button became interactive.
+
+FIX
+- Remove the document-wide MutationObserver entirely.
+- Registry refresh remains boot + focus + visibility + 5-second polling.
+- Dev Competition Builder late-DOM installation remains on its narrow 1.5-second timer.
+- Special Events rendering is idempotent through specialRenderKey.
+- Dynamic league rendering is idempotent through leagueRenderKey.
+- Unchanged registry state no longer rewrites frontend DOM every poll.
+- Preserve v4.7.1 stale-while-revalidate Day State and frontend competition persistence.
+- Carry forward the corrected VERIFY.sh with real line breaks between v4.7 test commands.

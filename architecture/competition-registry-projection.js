@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.1 — Frontend Competition Projection.
+/* Sports Big Board v4.7.2 — Frontend Competition Projection.
    Backend Competition Registry 2.0 is authoritative for existence. Competition
    Builder remains the richer editor/catalog. The browser merges both sources,
    persists the last good dynamic projection, and never hides Special Events just
@@ -6,9 +6,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_FRONTEND_REGISTRY?.version==='4.7.1')return;
+  if(window.SBB_FRONTEND_REGISTRY?.version==='4.7.2')return;
 
-  const VERSION='4.7.1';
+  const VERSION='4.7.2';
   const STORAGE_KEY='sbb.frontendCompetitionProjection.v1';
   const clean=v=>String(v??'').trim();
   const upper=v=>clean(v).toUpperCase();
@@ -33,6 +33,8 @@
     errors:[],
     rendering:false,
     refreshPromise:null,
+    specialRenderKey:'',
+    leagueRenderKey:'',
   };
 
   function cachedRows(){
@@ -226,7 +228,7 @@
     style.textContent=`
       .sbb-v471-registry-source{opacity:.5;font-size:8px}
       .sbb-v471-registry-dynamic{position:relative}
-      #sbbSpecialEventsWrap.sbb-v471-restored{display:inline-flex!important}
+      #sbbSpecialEventsWrap.sbb-v472-restored{display:inline-flex!important}
     `;
     document.head.appendChild(style);
   }
@@ -267,15 +269,39 @@
       // Do not hide a menu already populated by Competition Builder merely because
       // this projection has not received a successful backend snapshot yet.
       if(!state.lastGoodAt)return;
-      wrap.classList.add('hidden');
-      wrap.classList.remove('sbb-v471-restored');
+      const emptyKey='EMPTY';
+      if(state.specialRenderKey!==emptyKey){
+        state.specialRenderKey=emptyKey;
+        wrap.classList.add('hidden');
+        wrap.classList.remove('sbb-v472-restored');
+        menu.innerHTML='';
+      }
       return;
     }
 
+    const selected=upper(window.scoreRibbonLeagueFilter||'');
+    const renderKey=JSON.stringify({
+      date:browseDate(),
+      selected,
+      rows:specials.map(row=>[
+        row.id,row.shortName||row.name,row.name,row.eventIcon||row.icon||'🏆',
+        row.startDate||'',row.endDate||'',row.enabled!==false
+      ])
+    });
+
     wrap.classList.remove('hidden');
-    wrap.classList.add('sbb-v471-restored');
+    wrap.classList.add('sbb-v472-restored');
     btn.textContent='SPECIAL EVENTS ▾';
     bindSpecialToggle();
+
+    // Avoid rewriting the same menu on every 5-second registry refresh.
+    if(state.specialRenderKey===renderKey){
+      menu.querySelectorAll('[data-special-competition]').forEach(button=>{
+        button.classList.toggle('selected',upper(button.dataset.specialCompetition)===selected);
+      });
+      return;
+    }
+    state.specialRenderKey=renderKey;
 
     menu.innerHTML='';
     for(const row of specials){
@@ -298,14 +324,20 @@
 
   function renderDynamicLeagues(){
     const host=document.getElementById('scoreFilters');if(!host)return;
-    host.querySelectorAll('.sbb-v471-registry-competition').forEach(x=>x.remove());
+    const rows=[...state.rows.values()].filter(visibleLeague);
+    const renderKey=JSON.stringify(rows.map(row=>[row.id,row.shortName||row.id,row.name,row.enabled!==false]));
+    if(state.leagueRenderKey===renderKey)return;
+    state.leagueRenderKey=renderKey;
+
+    host.querySelectorAll('.sbb-v472-registry-competition').forEach(x=>x.remove());
     const anchor=document.getElementById('sbbSpecialEventsWrap');
-    for(const row of [...state.rows.values()].filter(visibleLeague)){
+    for(const row of rows){
       const esc=(window.CSS&&typeof window.CSS.escape==="function")?window.CSS.escape(row.id):row.id.replace(/"/g,"\\\"");
-      if(host.querySelector(`[data-score-filter="${esc}"]`))continue;
+      // Never duplicate a built-in / Competition Builder-owned button.
+      if(host.querySelector(`[data-score-filter="${esc}"]:not(.sbb-v472-registry-competition)`))continue;
       const button=document.createElement('button');
       button.type='button';
-      button.className='sbb-dynamic-competition sbb-v471-registry-competition';
+      button.className='sbb-dynamic-competition sbb-v472-registry-competition';
       button.dataset.scoreFilter=row.id;
       button.textContent=row.shortName||row.id;
       button.title=row.name;
@@ -358,13 +390,18 @@
 
   function boot(){
     // Paint last-known dynamic competition metadata before waiting on either API.
+    // IMPORTANT: do not observe the whole document and call render() from DOM
+    // mutations. render() itself changes the Special Events DOM, so that pattern
+    // creates a recursive MutationObserver/render loop that can starve the main
+    // thread before the launch button becomes interactive.
     merge([],[]);
     refresh().catch(()=>{});
-    const observer=new MutationObserver(()=>queueMicrotask(render));
-    observer.observe(document.documentElement,{childList:true,subtree:true});
     window.addEventListener('focus',()=>refresh({force:true}).catch(()=>{}));
     document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh({force:true}).catch(()=>{});});
     setInterval(()=>refresh().catch(()=>{}),5000);
+
+    // Settings is created lazily. This narrow timer is enough to install the Dev
+    // card without watching unrelated DOM mutations anywhere else on the page.
     setInterval(ensureDevCard,1500);
   }
 

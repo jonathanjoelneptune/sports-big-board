@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.1",
+  "release": "4.7.2",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -163,7 +163,11 @@
         "Frontend Competition Projection merges Competition Builder catalog data, backend Competition Registry 2.0 data, and the last good browser projection so transient bootstrap failures cannot erase dynamic competitions.",
         "Configured special events remain visible in the SPECIAL EVENTS selector even when the richer Competition Builder catalog is temporarily unavailable; registry-backed completed/upcoming events remain discoverable.",
         "The Dev Competition Builder launcher retries against lazily-created Settings DOM instead of assuming its anchor exists during initial page startup.",
-        "The canonical frontend competition model consults Frontend Competition Projection as a dynamic-competition fallback while allowing the richer Competition Builder definition to override it."
+        "The canonical frontend competition model consults Frontend Competition Projection as a dynamic-competition fallback while allowing the richer Competition Builder definition to override it.",
+        "Frontend Competition Projection must not attach a document-wide MutationObserver that calls render because registry rendering itself mutates Special Events DOM and can create an infinite observer/render loop.",
+        "Frontend Competition Projection special-event and dynamic-league rendering is idempotent: unchanged registry state does not rewrite the same menu/filter DOM on every polling interval.",
+        "Dev Competition Builder late-DOM recovery uses a narrow retry timer and does not require observing unrelated page mutations.",
+        "The launch screen and launchPlayBtn remain responsive while dynamic competition metadata initializes in the background."
       ]
     },
     "tier2": {
@@ -214,6 +218,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.1 hardens the v4.7 architecture: Day State becomes non-blocking stale-while-revalidate, focused dates jump ahead of background warmup, and a persistent Frontend Competition Projection keeps dynamic leagues/special events present across transient catalog/bootstrap timing failures.",
+  "baseline": "v4.7.2 preserves v4.7.1 non-blocking Day State and frontend competition persistence while restoring launch-screen responsiveness by removing the recursive document-wide registry MutationObserver and making registry DOM projection idempotent.",
   "status": "IN_PROGRESS"
 }

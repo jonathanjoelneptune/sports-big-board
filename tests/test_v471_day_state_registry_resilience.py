@@ -56,8 +56,8 @@ class V471DayStateRegistryResilienceTests(unittest.TestCase):
         self.assertIn("SBB_COMPETITION_BUILDER?.competitionMap?.()",CORE)
 
     def test_release_contract(self):
-        self.assertEqual(VERSION,"4.7.1")
-        self.assertIn("architecture/competition-registry-projection.js?v=4.7.1",INDEX)
+        self.assertTrue(VERSION.startswith("4.7."))
+        self.assertIn(f"architecture/competition-registry-projection.js?v={VERSION}",INDEX)
         self.assertIn("stale-while-revalidate",CERT)
         self.assertIn("Frontend Competition Projection",CERT)
 

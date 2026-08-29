@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.1",
-  "baseRelease": "4.7.0",
-  "title": "Non-Blocking Day State + Frontend Competition Projection",
+  "release": "4.7.2",
+  "baseRelease": "4.7.1",
+  "title": "Frontend Boot Responsiveness",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -14,97 +14,89 @@
     "sbb/day_state.py",
     "architecture/day-state.js",
     "architecture/competition-registry-projection.js",
-    "tests/test_v470_competition_registry_day_state.py",
-    "tests/test_v471_day_state_registry_resilience.py"
+    "tests/test_v471_day_state_registry_resilience.py",
+    "tests/test_v472_frontend_boot_responsiveness.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.1"
+        "4.7.2"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.1",
-        "core-model.js?v=4.7.1",
-        "app.js?v=4.7.1",
-        "architecture/day-state.js?v=4.7.1",
-        "architecture/competition-registry-projection.js?v=4.7.1"
+        "Sports Big Board \u2014 v4.7.2",
+        "core-model.js?v=4.7.2",
+        "app.js?v=4.7.2",
+        "architecture/day-state.js?v=4.7.2",
+        "architecture/competition-registry-projection.js?v=4.7.2",
+        "id=\"launchPlayBtn\""
       ],
       "forbidden": [
-        "?v=4.7.0"
+        "?v=4.7.1"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.7.1'",
-        "SBB_FRONTEND_REGISTRY?.competitionMap?.()",
-        "SBB_COMPETITION_BUILDER?.competitionMap?.()"
-      ]
-    },
-    "foundation-certification.json": {
-      "required": [
-        "\"release\": \"4.7.1\"",
-        "stale-while-revalidate",
-        "Frontend Competition Projection",
-        "SPECIAL EVENTS",
-        "Dev Competition Builder"
+        "version:'4.7.2'",
+        "SBB_FRONTEND_REGISTRY?.competitionMap?.()"
       ]
     },
     "sbb/day_state.py": {
       "required": [
         "COLD_WARMING",
         "STALE_REFRESHING",
-        "allow_build=False",
-        "self.queue.remove(day)",
-        "self.queue.appendleft(day)",
-        "\"engineVersion\":\"4.7.1\""
+        "\"engineVersion\":\"4.7.2\""
       ]
     },
     "architecture/day-state.js": {
       "required": [
-        "Sports Big Board v4.7.1",
-        "timeoutMs=700",
-        "timeoutMs:650",
-        "if(payload?.pending)return null",
-        "return fallback(date)"
+        "Sports Big Board v4.7.2",
+        "version:'4.7.2'"
       ]
     },
     "architecture/competition-registry-projection.js": {
       "required": [
-        "Sports Big Board v4.7.1",
-        "Frontend Competition Projection",
-        "/api/competition-builder/catalog",
-        "/api/competition-registry",
-        "localStorage.setItem",
-        "sbbSpecialEventsWrap",
-        "SPECIAL EVENTS \u25be",
-        "function ensureDevCard()",
-        "setInterval(ensureDevCard,1500)"
+        "Sports Big Board v4.7.2",
+        "specialRenderKey",
+        "leagueRenderKey",
+        "recursive MutationObserver/render loop",
+        "setInterval(ensureDevCard,1500)",
+        "without watching unrelated DOM mutations"
+      ],
+      "forbidden": [
+        "new MutationObserver",
+        ".observe(document.documentElement"
       ]
     },
-    "tests/test_v470_competition_registry_day_state.py": {
+    "foundation-certification.json": {
       "required": [
-        "self.assertTrue(VERSION.startswith(\"4.7.\"))",
-        "f\"architecture/day-state.js?v={VERSION}\""
+        "\"release\": \"4.7.2\"",
+        "document-wide MutationObserver",
+        "launchPlayBtn remain responsive",
+        "idempotent"
       ]
     },
     "tests/test_v471_day_state_registry_resilience.py": {
       "required": [
-        "test_day_state_http_reads_never_build_synchronously",
-        "test_browser_day_state_prepaint_is_bounded_and_falls_back",
-        "test_frontend_registry_merges_builder_registry_and_last_good_cache",
-        "test_special_events_are_restored_from_frontend_projection",
-        "test_dev_competition_builder_launcher_retries_late_settings_dom"
+        "self.assertTrue(VERSION.startswith(\"4.7.\"))",
+        "f\"architecture/competition-registry-projection.js?v={VERSION}\""
+      ]
+    },
+    "tests/test_v472_frontend_boot_responsiveness.py": {
+      "required": [
+        "test_frontend_registry_does_not_observe_entire_document",
+        "test_registry_render_is_idempotent",
+        "test_dev_card_uses_narrow_retry_without_dom_observer",
+        "test_launch_screen_remains_static_before_start"
       ]
     },
     "VERIFY.sh": {
       "required": [
         "python3 tools/check_release_manifest.py",
         "python3 tools/check_release_version.py",
-        "python3 tools/check_foundation_certification.py",
-        "python3 -m unittest tests.test_v470_competition_registry_day_state",
-        "python3 -m unittest tests.test_v471_day_state_registry_resilience"
+        "python3 -m unittest tests.test_v471_day_state_registry_resilience",
+        "python3 -m unittest tests.test_v472_frontend_boot_responsiveness"
       ]
     }
   },
@@ -114,8 +106,8 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v470_competition_registry_day_state",
     "python3 -m unittest tests.test_v471_day_state_registry_resilience",
+    "python3 -m unittest tests.test_v472_frontend_boot_responsiveness",
     "bash VERIFY.sh"
   ]
 }
