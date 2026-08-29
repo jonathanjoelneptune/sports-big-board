@@ -33,3 +33,17 @@ FIX
    special-event proofs.
 7. Existing special-event SOURCE_MEDIA is automatically reassociated at startup;
    no playlist redownload or schedule recreation is required.
+
+
+CI HOTFIX
+- tests/test_v4615_persistence_aware_special_event_association.py
+
+WHY
+The cross-event safety regression fixture used the legacy put_event_media path to
+manufacture its first assignment. In CI that fixture hit a normalized-catalog
+foreign-key constraint before the v4.6.15 behavior under test was reached.
+
+FIX
+The fixture now establishes the first valid assignment through the trusted v4.6.15
+persistence contract and then proves that the same source asset cannot be assigned
+to a second canonical event. The production v4.6.15 implementation is unchanged.

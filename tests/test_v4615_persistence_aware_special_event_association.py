@@ -147,21 +147,15 @@ class V4615PersistenceAwareSpecialEventAssociationTests(unittest.TestCase):
         event2=self.event("g2")
         repo.upsert_event("2026-08-25","LLWS2026","g2",event2)
 
-        # Strong provider-id assignment to g2 exists first.
+        # Establish a valid pre-proven assignment to g2 first. This fixture is
+        # intentionally independent of the legacy repository matcher; the behavior
+        # under test is whether a second exact proof can steal an already-assigned
+        # source asset.
         existing=self.proof_item("g2","LLWS2026:g2")
-        existing.pop("sbbPreprovenAssociation",None)
-        existing["eventId"]="g2"
-        existing["matchId"]="g2"
-        existing["scoreEventId"]="g2"
-        existing["canonicalEventId"]="g2"
-        existing["espnEventId"]="g2"
         existing["youtubeId"]="shared-video"
-        # This first link must be independently valid under the legacy matcher.
-        existing["title"]="West Side LL vs Phenix City Youth Baseball LL | Full Game Highlights"
-        event2["espnEventId"]="g2"
-        repo.upsert_event("2026-08-25","LLWS2026","g2",event2)
+        existing["sbbPreprovenAssociation"]["titleFingerprint"]=v4615._title_fingerprint(existing["title"])
         self.assertEqual(
-            v4615._ORIGINAL_PUT_EVENT_MEDIA(
+            v4615._put_event_media_v4615(
                 repo,"2026-08-25","LLWS2026","g2",[existing]
             ),
             1,
