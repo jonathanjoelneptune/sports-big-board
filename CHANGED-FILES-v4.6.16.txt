@@ -1,0 +1,41 @@
+Sports Big Board v4.6.16 — Consolidated Special Event Media Pipeline
+
+REPLACE
+- VERIFY.sh
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- sbb/__init__.py
+
+ADD
+- sbb/special_event_media_v4616.py
+- architecture/special-event-media-v4616.js
+- tests/test_v4616_special_event_media_pipeline.py
+
+PIPELINE
+SOURCE -> ELIGIBLE -> CANDIDATES -> MATCHED -> PERSISTED -> PLAYABLE
+
+ROOT PROCESS FIXES
+1. Custom competition registry events, not flattened provider/history copies, own participant identity.
+   Imported aliases, region/group, abbreviation, official gameNumber and canonical event ID survive refreshes.
+2. Special-event media is matched across the full competition schedule. Official gameNumber is strongest;
+   two-sided participant aliases are next; date/publication chronology only breaks repeated-matchup ties.
+3. Proven special-event relationships are persisted directly into normalized history_event_media. The older
+   generic canonical-team matcher is not run a second time after proof. Parent existence and cross-event
+   conflicts are still fail-closed.
+4. Persisted source assets are canonicalized to GAME scope only after the durable relationship exists.
+   The ribbon and special-event Statistics therefore read the exact same EVENT_MEDIA truth.
+5. REASSOCIATE is database-only. RECRAWL SOURCES is the only control that revisits providers.
+6. ASSOCIATION AUDIT exposes per-asset eligibility, candidate count, selected game, method, persistence,
+   playability, and reason. Aggregate orphan counts no longer hide the failing stage.
+7. LLWS2026 is migrated in place to:
+   - GREEN: LittleLeague.org Game Recaps, required title phrase `Recap:`
+   - PURPLE: ESPN YouTube playlist PLJBIB5zsrIC8, required phrase `Full Game Highlights`
+8. LittleLeague recap pages capture publication date and duration metadata when present so repeated
+   matchups can be resolved safely. Direct MP4/HLS playback is used when exposed; Brightcove metadata
+   is retained as external transport evidence when a direct source is not exposed.
+9. Existing 75 LLWS source assets are reassociated without deleting/redownloading them.
+10. save_competition returns a catalog row without events; v4.6.16 explicitly re-reads the full persisted
+    definition before reassociation so the identity crosswalk cannot disappear during source migration.

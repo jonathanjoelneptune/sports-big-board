@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.15",
+  "release": "4.6.16",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -122,7 +122,22 @@
         "Ordinary built-in league and generic event-media persistence continues to use the original fail-closed event matcher with no bypass.",
         "Relationship repair may run the normal generic revalidation, but still-valid persisted internal special-event proofs are restored before repair completes.",
         "v4.6.15 automatically re-associates existing special-event SOURCE_MEDIA after installation so previously quarantined Full Game Highlights do not require playlist deletion or redownload.",
-        "Pre-proven special-event persistence creates or refreshes the canonical-event parent and validates both canonical-event and source-media foreign-key parents on the same SQLite transaction before writing history_event_media."
+        "Pre-proven special-event persistence creates or refreshes the canonical-event parent and validates both canonical-event and source-media foreign-key parents on the same SQLite transaction before writing history_event_media.",
+        "Special-event media association is consolidated into an explicit SOURCE -> ELIGIBLE -> CANDIDATES -> MATCHED -> PERSISTED -> PLAYABLE pipeline with per-asset audit output.",
+        "For custom competitions, the persistent custom-competition registry event is the participant-identity authority; normalized history/provider refreshes may update runtime metadata but may not erase imported aliases, groups, abbreviations, or official gameNumber.",
+        "Special-event participant crosswalks derive stable media-facing identities from imported team names, aliases, locations, groups, regions, and safe abbreviations before media association.",
+        "Special-event association prefers a unique official gameNumber when media names one, then evaluates the full tournament using participant alias pairs and deterministic repeated-matchup tie breakers.",
+        "REASSOCIATE is database-only and never revisits a provider; RECRAWL SOURCES is the only operator action that performs provider/network collection before reassociation.",
+        "Association Audit exposes every source asset's eligibility result, candidate count, selected canonical event, association method, persistence state, playability, and rejection reason.",
+        "Once a special-event media asset is durably assigned, its normalized source scope is GAME with SPECIAL_EVENT_CANONICAL_ASSOCIATION so Statistics and historical ribbon playback read the same EVENT_MEDIA truth.",
+        "Special-event WITH MEDIA means at least one durable playable assigned EVENT_MEDIA relationship, never merely a source candidate or broad catalog match.",
+        "v4.6.16 migrates LLWS2026 to two explicit sources without recreating the schedule: LittleLeague.org Game Recaps as Green and the ESPN 2026 LLWS YouTube playlist as Purple with Full Game Highlights title eligibility.",
+        "The WEB_RECAP_INDEX source adapter collects only Recap: video pages, preserves LittleLeague.org as the official external source, promotes direct MP4/HLS media when exposed, and records Brightcove embed metadata when direct media is not available.",
+        "For special events, custom-competition registry events are the identity authority; provider/history rows may enrich runtime metadata but cannot replace imported participant aliases, groups, abbreviations, or official gameNumber.",
+        "Once v4.6.16 proves a special-event title by official gameNumber or a deterministic two-sided participant-alias pair, persistence writes the normalized history_event_media relationship directly and does not run the legacy canonical-team-only matcher a second time.",
+        "LLWS source migration re-reads the full persisted competition definition after save_competition because catalog rows intentionally omit events; startup reassociation therefore always retains the imported identity crosswalk.",
+        "LittleLeague.org recap pages preserve publication metadata when available so repeated participant matchups can use the same bounded chronology tie-breaker as YouTube playlist media.",
+        "Special-event orphan counts mean SOURCE_MEDIA assets with no durable ASSIGNED EVENT_MEDIA relationship; playable coverage is reported separately from association coverage."
       ]
     },
     "tier2": {
@@ -173,6 +188,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.15 preserves the persistence-aware special-event proof contract and hardens its SQLite boundary by materializing and validating both relationship parent rows on the same transaction before EVENT_MEDIA insertion.",
+  "baseline": "v4.6.16 consolidates special-event media into one auditable association pipeline. Custom competition identity survives history refreshes, deterministic proofs persist directly to normalized EVENT_MEDIA, LLWS Green/Purple sources are explicit, and Statistics/ribbon playback share the same durable relationship truth.",
   "status": "IN_PROGRESS"
 }
