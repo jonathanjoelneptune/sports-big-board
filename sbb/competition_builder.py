@@ -1,4 +1,4 @@
-"""Sports Big Board v4.6.1 — persistent custom competition builder.
+"""Sports Big Board v4.6.2 — persistent custom competition builder.
 
 Installs without modifying server.py:
 - persistent League / Special Event registry
@@ -13,7 +13,7 @@ Media Intelligence is intentionally unrelated and remains parked.
 from __future__ import annotations
 import csv, hashlib, html, io, json, os, re, sys, threading, time
 from copy import deepcopy
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse, unquote
 from urllib.request import Request, urlopen
@@ -188,6 +188,8 @@ def normalize_definition(raw,existing=None):
         "autoRefresh":bool(raw.get("autoRefresh",existing.get("autoRefresh",False))),
         "backgroundDiscovery":bool(raw.get("backgroundDiscovery",existing.get("backgroundDiscovery",True))),
         "crawlEnabled":bool(raw.get("crawlEnabled",existing.get("crawlEnabled",True))),
+        "expectedEventCount":max(0,int(raw.get("expectedEventCount") or existing.get("expectedEventCount") or 0)),
+        "allowIncompleteSchedule":bool(raw.get("allowIncompleteSchedule",existing.get("allowIncompleteSchedule",False))),
         "refreshMinutes":max(5,min(1440,int(raw.get("refreshMinutes") or existing.get("refreshMinutes") or 30))),
         "mediaSources":_normalize_sources(raw.get("mediaSources") if "mediaSources" in raw else existing.get("mediaSources")),
         "gameCenterMode":"schedule",
@@ -286,8 +288,15 @@ def save_competition(raw,events=None,server=None):
     comp=normalize_definition(raw,existing)
     if events is None:events=raw.get("events") if isinstance(raw,dict) else None
     if events is None:events=(existing or {}).get("events") or []
-    comp["events"]=[normalize_event(comp,x,i) for i,x in enumerate(events or [])]
+    normalized=[normalize_event(comp,x,i) for i,x in enumerate(events or [])]
+    if not normalized:
+        raise ValueError("Cannot create a site-wide competition with zero schedule events. Discover or paste a schedule first.")
+    expected=int(comp.get("expectedEventCount") or 0)
+    if expected and len(normalized)<expected and not comp.get("allowIncompleteSchedule"):
+        raise ValueError(f"Schedule is incomplete: {len(normalized)}/{expected} events. Complete the schedule before site-wide creation.")
+    comp["events"]=normalized
     comp["persistedAt"]=time.time();comp["crawlEnabled"]=bool(comp.get("crawlEnabled",True));comp["backgroundDiscovery"]=bool(comp.get("backgroundDiscovery",True))
+    comp["scheduleComplete"]=bool(not expected or len(normalized)>=expected)
     rows=[x for x in rows if str(x.get("id")).upper()!=comp["id"]];rows.append(comp);rows.sort(key=lambda x:(x.get("type")!="SPECIAL_EVENT",x.get("startDate") or "",x.get("name") or ""))
     _save(rows)
     if server:
@@ -314,25 +323,42 @@ def _schedule_schema():
     }
     return {"type":"object","properties":{"sourceUrls":{"type":"array","items":{"type":"string"}},"sourceLabel":{"type":"string"},"events":{"type":"array","items":{"type":"object","properties":event_props,"required":list(event_props),"additionalProperties":False}}},"required":["sourceUrls","sourceLabel","events"],"additionalProperties":False}
 
-def _openai_schedule_request(server,model,prompt,use_web=True):
-    payload={"model":model,"input":prompt,"max_output_tokens":24000,"text":{"format":{"type":"json_schema","name":"sports_competition_schedule","strict":True,"schema":_schedule_schema()}}}
+def _discovery_plan_schema():
+    return {
+        "type":"object",
+        "properties":{
+            "expectedEventCount":{"type":"integer","minimum":0},
+            "sourceUrls":{"type":"array","items":{"type":"string"}},
+            "sourceLabel":{"type":"string"},
+            "notes":{"type":"string"}
+        },
+        "required":["expectedEventCount","sourceUrls","sourceLabel","notes"],
+        "additionalProperties":False
+    }
+
+def _openai_json_request(server,model,prompt,schema,name,use_web=True,max_output_tokens=9000,timeout=150):
+    payload={"model":model,"input":prompt,"max_output_tokens":max_output_tokens,
+             "text":{"format":{"type":"json_schema","name":name,"strict":True,"schema":schema}}}
     if use_web:
         payload["tools"]=[{"type":"web_search"}]
         payload["tool_choice"]="auto"
         payload["include"]=["web_search_call.action.sources"]
-    resp=server.openai_api_request("/responses",payload,timeout=150)
+    resp=server.openai_api_request("/responses",payload,timeout=timeout)
     if not isinstance(resp,dict):raise RuntimeError("OpenAI response was not an object")
     if resp.get("ok") is False:raise RuntimeError(str(resp.get("error") or resp.get("detail") or "OpenAI request failed"))
     text=server.openai_output_text(resp)
     if not text:raise RuntimeError("OpenAI returned no schedule output")
     return _extract_json(text)
 
-def _official_page_text(url,limit=120000):
+def _openai_schedule_request(server,model,prompt,use_web=True):
+    return _openai_json_request(server,model,prompt,_schedule_schema(),"sports_competition_schedule",use_web=use_web,max_output_tokens=9000)
+
+def _official_page_text(url,limit=180000):
     url=str(url or "").strip()
     if not url:return ""
-    req=Request(url,headers={"User-Agent":"Mozilla/5.0 SportsBigBoard/4.6.1","Accept":"text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8"})
+    req=Request(url,headers={"User-Agent":"Mozilla/5.0 SportsBigBoard/4.6.2","Accept":"text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8"})
     with urlopen(req,timeout=25) as r:
-        raw=r.read(1_500_000)
+        raw=r.read(2_000_000)
         ctype=str(r.headers.get("Content-Type") or "")
     text=raw.decode("utf-8","replace")
     if "json" in ctype.lower():return text[:limit]
@@ -341,45 +367,179 @@ def _official_page_text(url,limit=120000):
     text=html.unescape(re.sub(r"\s+"," ",text)).strip()
     return text[:limit]
 
-def discover_schedule(server,draft):
-    d=normalize_definition(draft,{})
-    official=str(d.get("scheduleSourceUrl") or "").strip()
-    base=f"""Build a complete schedule/results dataset for this sports competition.
+def _date_windows(start,end):
+    try:
+        a=datetime.strptime(str(start)[:10],"%Y-%m-%d").date()
+        b=datetime.strptime(str(end)[:10],"%Y-%m-%d").date()
+    except Exception:
+        return []
+    if b<a:return []
+    days=(b-a).days+1
+    span=7 if days<=60 else (14 if days<=210 else 30)
+    out=[];cur=a
+    while cur<=b:
+        stop=min(b,cur+timedelta(days=span-1))
+        out.append((cur.isoformat(),stop.isoformat()))
+        cur=stop+timedelta(days=1)
+        if len(out)>=24:break
+    return out
+
+def _event_merge_key(raw):
+    raw=raw or {}
+    explicit=str(raw.get("eventId") or raw.get("matchId") or raw.get("gameId") or raw.get("id") or "").strip()
+    if explicit:return "id:"+explicit
+    def k(v):return re.sub(r"[^a-z0-9]+","",str(v or "").lower())
+    return "|".join((str(raw.get("date") or "")[:10],k(raw.get("away") or raw.get("awayTeam")),k(raw.get("home") or raw.get("homeTeam")),str(raw.get("scheduledAt") or "")))
+
+def _merge_discovered_events(rows):
+    merged={}
+    for raw in rows or []:
+        if not isinstance(raw,dict):continue
+        key=_event_merge_key(raw)
+        if not key.strip("|"):continue
+        prev=merged.get(key,{})
+        obj=dict(prev)
+        for k,v in raw.items():
+            if v not in (None,"",[]):obj[k]=v
+            elif k not in obj:obj[k]=v
+        merged[key]=obj
+    return list(merged.values())
+
+def _discovery_plan(server,model,d,official):
+    prompt=f"""Research the authoritative schedule source for this sports competition.
 Competition: {d['name']}
 Year/edition: {d['year']}
 Sport: {d['sportId']}
-Competition type: {d['type']}
-Start date: {d.get('startDate') or 'unknown'}
-End date: {d.get('endDate') or 'unknown'}
-Preferred official schedule/results URL: {official or 'find the official organizer source'}
+Start: {d.get('startDate') or 'unknown'}
+End: {d.get('endDate') or 'unknown'}
+Operator-supplied official URL: {official or 'none'}
 
-Use official organizer/competition sources whenever possible. Do not invent matches, participants, scores, dates, or results. Include every competition event in the configured date range. For unknown future bracket participants preserve source labels such as TBA or Winner Game 35 rather than guessing. Return the schedule in the required schema."""
+Do NOT return individual games. Find the official organizer schedule/results source, determine the expected total number of competition games/events if published, and return only the requested structured plan. Prefer the official organizer over secondary sites."""
+    return _openai_json_request(server,model,prompt,_discovery_plan_schema(),"sports_competition_schedule_plan",use_web=True,max_output_tokens=1800,timeout=90)
+
+def _window_prompt(d,window_start,window_end,source_urls,expected):
+    return f"""Find every game/event for this competition whose event date is between {window_start} and {window_end}, inclusive.
+Competition: {d['name']}
+Year/edition: {d['year']}
+Sport: {d['sportId']}
+Full competition date range: {d.get('startDate') or 'unknown'} through {d.get('endDate') or 'unknown'}
+Expected total competition events: {expected or 'unknown'}
+Preferred authoritative sources: {', '.join(source_urls[:5]) if source_urls else 'official organizer source'}
+
+Return ONLY games whose event date falls inside this window. Use official organizer/competition sources whenever possible. Do not invent participants, scores, dates, or results. For unresolved future bracket positions, preserve labels such as TBA, Winner Game 35, or Loser Match 12 rather than guessing. Include all games in this date window."""
+
+def _window_official_page_prompt(d,window_start,window_end,page,source_url):
+    return f"""Extract every competition game whose event date is between {window_start} and {window_end}, inclusive, from the supplied official page text.
+Competition: {d['name']}
+Official source URL: {source_url}
+Do not invent any game. Ignore unrelated exhibitions or other competitions unless they are explicitly part of {d['name']}.
+Return only the requested structured schedule.
+
+--- OFFICIAL PAGE TEXT START ---
+{page}
+--- OFFICIAL PAGE TEXT END ---"""
+
+def _missing_recovery_prompt(d,source_urls,expected,known):
+    known_lines="\n".join(f"{x.get('date','')} | {x.get('away','')} vs {x.get('home','')} | {x.get('eventId','')}" for x in known[:220])
+    return f"""The schedule import for {d['name']} is incomplete.
+Expected total events: {expected}
+Already collected: {len(known)}
+Competition dates: {d.get('startDate')} through {d.get('endDate')}
+Preferred sources: {', '.join(source_urls[:5]) if source_urls else 'official organizer source'}
+
+Search for ONLY missing games that are not in the list below. Do not repeat known games and do not invent games.
+--- KNOWN GAMES ---
+{known_lines}
+--- END KNOWN GAMES ---"""
+
+def discover_schedule(server,draft):
+    d=normalize_definition(draft,{})
+    official=str(d.get("scheduleSourceUrl") or "").strip()
     model=os.environ.get("SBB_COMPETITION_BUILDER_MODEL") or str(getattr(server,"OPENAI_MODEL","gpt-5-mini"))
-    errors=[]
+    errors=[];window_reports=[];sources=[];source_label="";expected=int(d.get("expectedEventCount") or 0)
+
     try:
-        data=_openai_schedule_request(server,model,base,use_web=True)
-        mode="OPENAI_WEB_SEARCH"
+        plan=_discovery_plan(server,model,d,official)
+        for u in plan.get("sourceUrls") or []:
+            if str(u).strip() and str(u).strip() not in sources:sources.append(str(u).strip())
+        source_label=str(plan.get("sourceLabel") or "")
+        if not expected:expected=max(0,int(plan.get("expectedEventCount") or 0))
     except Exception as exc:
-        errors.append(f"web search: {type(exc).__name__}: {exc}")
-        data=None;mode=""
-    if data is None and official:
+        errors.append(f"plan: {type(exc).__name__}: {exc}")
+    if official and official not in sources:sources.insert(0,official)
+
+    page=""
+    if official:
         try:
             page=_official_page_text(official)
-            if len(page)<200:raise RuntimeError("official page returned too little readable text")
-            prompt=base+f"\n\nThe operator supplied this official page. Extract the schedule from this page content first, and use only facts supported by it:\n--- OFFICIAL PAGE START ---\n{page}\n--- OFFICIAL PAGE END ---"
-            data=_openai_schedule_request(server,model,prompt,use_web=False)
-            mode="OFFICIAL_URL_EXTRACT"
+            if len(page)<200:page=""
         except Exception as exc:
-            errors.append(f"official URL: {type(exc).__name__}: {exc}")
-            data=None
-    if data is None:
-        raise RuntimeError("Schedule discovery failed. " + " | ".join(errors) + ". Paste JSON/CSV remains available as a deterministic fallback.")
-    events=data.get("events") or []
-    if not events:raise RuntimeError("Schedule discovery returned zero events; nothing was saved.")
-    normalized=[normalize_event(d,x,i) for i,x in enumerate(events)]
-    source_urls=[str(x) for x in (data.get("sourceUrls") or []) if str(x).strip()]
-    if official and official not in source_urls:source_urls.insert(0,official)
-    return {"competition":_catalog_row({**d,"events":normalized}),"events":normalized,"sourceUrls":source_urls,"sourceLabel":data.get("sourceLabel") or mode,"discoveryMode":mode,"attemptErrors":errors}
+            errors.append(f"official page fetch: {type(exc).__name__}: {exc}")
+
+    windows=_date_windows(d.get("startDate"),d.get("endDate"))
+    if not windows:
+        windows=[(d.get("startDate") or "competition start",d.get("endDate") or "competition end")]
+    collected=[]
+
+    for ws,we in windows:
+        window_rows=[];mode="WEB_SEARCH";window_errors=[]
+        try:
+            data=_openai_json_request(server,model,_window_prompt(d,ws,we,sources,expected),_schedule_schema(),"sports_competition_schedule_window",use_web=True,max_output_tokens=9000,timeout=120)
+            window_rows=data.get("events") or []
+            for u in data.get("sourceUrls") or []:
+                u=str(u).strip()
+                if u and u not in sources:sources.append(u)
+        except Exception as exc:
+            window_errors.append(f"web: {type(exc).__name__}: {exc}")
+        if not window_rows and page:
+            try:
+                data=_openai_json_request(server,model,_window_official_page_prompt(d,ws,we,page,official),_schedule_schema(),"sports_competition_schedule_page_window",use_web=False,max_output_tokens=9000,timeout=120)
+                window_rows=data.get("events") or [];mode="OFFICIAL_PAGE"
+            except Exception as exc:
+                window_errors.append(f"page: {type(exc).__name__}: {exc}")
+        if not window_rows:
+            try:
+                broad=_window_prompt(d,ws,we,sources,expected)+"\nIf the official source cannot be indexed, use reputable sports schedule/result sources to corroborate the exact games for this window."
+                data=_openai_json_request(server,model,broad,_schedule_schema(),"sports_competition_schedule_broad_window",use_web=True,max_output_tokens=9000,timeout=120)
+                window_rows=data.get("events") or [];mode="BROAD_WEB_RECOVERY"
+            except Exception as exc:
+                window_errors.append(f"broad: {type(exc).__name__}: {exc}")
+        collected.extend(window_rows)
+        window_reports.append({"start":ws,"end":we,"events":len(window_rows),"mode":mode if window_rows else "FAILED","errors":window_errors})
+        errors.extend(f"{ws}..{we} {x}" for x in window_errors)
+
+    merged=_merge_discovered_events(collected)
+    if expected and 0<len(merged)<expected:
+        try:
+            data=_openai_json_request(server,model,_missing_recovery_prompt(d,sources,expected,merged),_schedule_schema(),"sports_competition_schedule_missing",use_web=True,max_output_tokens=9000,timeout=120)
+            merged=_merge_discovered_events(merged+(data.get("events") or []))
+            for u in data.get("sourceUrls") or []:
+                u=str(u).strip()
+                if u and u not in sources:sources.append(u)
+        except Exception as exc:
+            errors.append(f"missing recovery: {type(exc).__name__}: {exc}")
+
+    if not merged:
+        raise RuntimeError("Schedule discovery returned zero events after plan + date-window search + official-page fallback. Nothing was saved.")
+
+    normalized=[normalize_event(d,x,i) for i,x in enumerate(merged)]
+    found=len(normalized)
+    complete=bool(found>0 and (not expected or found>=expected))
+    ratio=(found/expected) if expected else 1.0
+    mode="MULTI_WINDOW_RESEARCH" if len(windows)>1 else "BOUNDED_RESEARCH"
+    return {
+        "competition":_catalog_row({**d,"expectedEventCount":expected,"events":normalized}),
+        "events":normalized,
+        "sourceUrls":sources,
+        "sourceLabel":source_label or mode,
+        "discoveryMode":mode,
+        "attemptErrors":errors[-20:],
+        "expectedEventCount":expected,
+        "discoveredEventCount":found,
+        "complete":complete,
+        "completenessRatio":ratio,
+        "windowReports":window_reports
+    }
 
 def generic_game_center(comp,event):
     away=event.get("awayTeam") or event.get("away") or {}
@@ -452,6 +612,72 @@ def _handle_get(server,handler,parsed):
         if not event:return _send(server,handler,{"ok":False,"error":"CUSTOM_EVENT_NOT_FOUND"},404)
         return _send(server,handler,{"ok":True,"data":generic_game_center(comp,event),"resolvedEventId":eid,"cache":"CUSTOM-COMPETITION"},200)
     return False
+def _remove_operator_playlists(server,cid):
+    removed=0
+    try:
+        rows=server._operator_media_playlists_load()
+        keep=[x for x in rows if str(x.get("league") or "").upper()!=cid]
+        removed=len(rows)-len(keep)
+        if removed:server._operator_media_playlists_save(keep)
+    except Exception:pass
+    return removed
+
+def _purge_history_competition(server,cid):
+    report={"events":0,"dayRows":0,"collections":0,"assignmentReviews":0}
+    repo=getattr(server,"HISTORY_REPOSITORY",None)
+    if repo is None or not hasattr(repo,"_connect"):return report
+    try:
+        lock=getattr(repo,"_lock",threading.RLock())
+        with lock:
+            conn=repo._connect()
+            try:
+                keys=[str(r[0]) for r in conn.execute("SELECT canonical_event_key FROM history_catalog_event WHERE league=?",(cid,)).fetchall()]
+                report["events"]=len(keys)
+                if keys:
+                    q=",".join("?" for _ in keys)
+                    for table in ("history_media_segment","history_discovery_attempt","history_source_enrichment","history_event_media"):
+                        try:conn.execute(f"DELETE FROM {table} WHERE canonical_event_key IN ({q})",keys)
+                        except Exception:pass
+                try:
+                    collections=[str(r[0]) for r in conn.execute("SELECT collection_key FROM history_collection WHERE league=?",(cid,)).fetchall()]
+                    report["collections"]=len(collections)
+                    if collections:
+                        q=",".join("?" for _ in collections)
+                        try:conn.execute(f"DELETE FROM history_collection_media WHERE collection_key IN ({q})",collections)
+                        except Exception:pass
+                    conn.execute("DELETE FROM history_collection WHERE league=?",(cid,))
+                except Exception:pass
+                try:
+                    cur=conn.execute("DELETE FROM history_assignment_review WHERE league=?",(cid,));report["assignmentReviews"]=max(0,int(cur.rowcount or 0))
+                except Exception:pass
+                try:
+                    cur=conn.execute("DELETE FROM history_day WHERE league=?",(cid,));report["dayRows"]=max(0,int(cur.rowcount or 0))
+                except Exception:pass
+                conn.execute("DELETE FROM history_catalog_event WHERE league=?",(cid,))
+                conn.commit()
+            finally:
+                conn.close()
+    except Exception as exc:
+        report["error"]=f"{type(exc).__name__}: {exc}"
+    return report
+
+def delete_competition(server,cid,purge=True):
+    cid=str(cid or "").upper().strip()
+    existing=_find(cid)
+    if not existing:raise ValueError("Competition does not exist.")
+    rows=[x for x in _load() if str(x.get("id")).upper()!=cid]
+    _save(rows)
+    playlist_count=_remove_operator_playlists(server,cid)
+    history_report=_purge_history_competition(server,cid) if purge else {}
+    try:
+        import sbb.competition_registry as registry
+        registry.COMPETITIONS.pop(cid,None)
+    except Exception:pass
+    try:
+        server.HISTORY_LEAGUES=tuple(x for x in tuple(server.HISTORY_LEAGUES) if str(x).upper()!=cid)
+    except Exception:pass
+    return {"id":cid,"name":existing.get("name"),"purged":bool(purge),"operatorPlaylists":playlist_count,"history":history_report,"revision":_store_revision()}
+
 
 def _handle_post(server,handler,parsed):
     if parsed.path!="/api/competition-builder":return False
@@ -470,12 +696,8 @@ def _handle_post(server,handler,parsed):
             if not persisted:raise RuntimeError("Server persistence verification failed after save")
             return _send(server,handler,{"ok":True,"persisted":True,"revision":_store_revision(),"competition":saved,"crawlEnrollment":_crawl_enrollment(server,persisted),"catalog":catalog()},200)
         if action=="delete":
-            cid=str(body.get("id") or "").upper();rows=[x for x in _load() if str(x.get("id")).upper()!=cid];_save(rows)
-            try:
-                import sbb.competition_registry as registry
-                registry.COMPETITIONS.pop(cid,None)
-            except Exception:pass
-            return _send(server,handler,{"ok":True,"deleted":cid,"catalog":catalog()},200)
+            result=delete_competition(server,body.get("id"),purge=body.get("purge",True) is not False)
+            return _send(server,handler,{"ok":True,"deleted":result,"revision":_store_revision(),"catalog":catalog()},200)
         if action=="refresh":
             comp=_find(body.get("id"))
             if not comp:return _send(server,handler,{"ok":False,"error":"COMPETITION_NOT_FOUND"},404)

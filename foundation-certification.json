@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.1",
+  "release": "4.6.2",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -43,7 +43,11 @@
         "Competition Builder editable controls isolate keyboard input from document-level playback shortcuts so typing spaces/arrows cannot control playback.",
         "Competition creation is not reported successful until the shared server store is written and a fresh definition read-back verifies persistence.",
         "Custom competitions are enrolled in the canonical history league registry, operator playlist crawler, and dedicated background media gap-search worker.",
-        "Schedule Auto Discover uses structured output and falls back to direct extraction of an operator-supplied official schedule URL when web search fails."
+        "Schedule Auto Discover uses structured output and falls back to direct extraction of an operator-supplied official schedule URL when web search fails.",
+        "Competition Builder schedule discovery is completeness-driven: large tournaments are researched in bounded date windows, merged/deduplicated, and checked against an expected event count instead of relying on one giant model response.",
+        "Site-wide competition creation rejects zero-event schedules and rejects incomplete schedules when an expected event count is known unless a future explicit override is introduced.",
+        "Dev Mode can delete a custom competition site-wide, removing its persisted definition, history event relationships, operator playlist registrations, runtime registry entry, and history-league crawl enrollment.",
+        "World Cup and LLWS templates carry deterministic completeness targets of 104 and 38 competition games respectively."
       ]
     },
     "tier2": {
@@ -94,6 +98,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.1 hardens the v4.6.0 Competition Builder with keyboard isolation, verified site-wide persistence, robust schedule discovery fallback, and explicit custom-competition media crawl enrollment while preserving the complete inherited Foundation contract.",
+  "baseline": "v4.6.2 hardens Competition Builder schedule research with bounded multi-window discovery and completeness gates, and adds site-wide custom-competition deletion while preserving every inherited playback and Foundation requirement.",
   "status": "IN_PROGRESS"
 }

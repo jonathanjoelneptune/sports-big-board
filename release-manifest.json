@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.1",
-  "baseRelease": "4.6.0",
-  "title": "Competition Builder Persistence & Operator Workflow Hardening",
+  "release": "4.6.2",
+  "baseRelease": "4.6.1",
+  "title": "Competition Builder Research Completeness & Site-Wide Delete",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -15,52 +15,56 @@
     "sbb/__init__.py",
     "sbb/competition_builder.py",
     "tests/test_v460_competition_builder.py",
-    "tests/test_v461_competition_builder_hardening.py"
+    "tests/test_v461_competition_builder_hardening.py",
+    "tests/test_v462_competition_builder_research_delete.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.1"
+        "4.6.2"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.1",
-        "app.js?v=4.6.1",
-        "architecture/competition-builder.js?v=4.6.1",
-        "architecture/recap-identity-guard.js?v=4.6.1",
-        "architecture/nfl-recap-reconciliation.js?v=4.6.1"
+        "Sports Big Board — v4.6.2",
+        "app.js?v=4.6.2",
+        "architecture/competition-builder.js?v=4.6.2",
+        "architecture/recap-identity-guard.js?v=4.6.2",
+        "architecture/nfl-recap-reconciliation.js?v=4.6.2"
       ],
       "forbidden": [
+        "?v=4.6.1",
         "?v=4.6.0",
         "?v=4.5."
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.1'",
+        "version:'4.6.2'",
         "custom-competition overlay",
         "window.SBB_COMPETITION_BUILDER"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.1\"",
-        "editable controls isolate keyboard input",
-        "fresh definition read-back verifies persistence",
-        "dedicated background media gap-search worker",
-        "direct extraction of an operator-supplied official schedule URL"
+        "\"release\": \"4.6.2\"",
+        "completeness-driven",
+        "rejects zero-event schedules",
+        "Dev Mode can delete a custom competition site-wide",
+        "104 and 38"
       ]
     },
     "architecture/competition-builder.js": {
       "required": [
-        "version:'1.1'",
-        "CREATED SITE-WIDE \u2713",
-        "Server read-back verification failed",
-        "lastCatalogAt>5000",
-        "matches?.('input,textarea,select')",
-        "/api/competition-builder/definition",
-        "sbbCompetitionList"
+        "version:'1.2'",
+        "CONFIRM DELETE",
+        "PARTIAL SCHEDULE — NOT READY TO CREATE",
+        "cbExpectedEvents",
+        "cbExpectedEvents').value='104'",
+        "cbExpectedEvents').value='38'",
+        ".sbb-builder-actions .hidden",
+        "action:'delete'",
+        "Schedule is incomplete"
       ]
     },
     "sbb/__init__.py": {
@@ -71,15 +75,16 @@
     },
     "sbb/competition_builder.py": {
       "required": [
-        "Sports Big Board v4.6.1",
-        "json_schema",
-        "OFFICIAL_URL_EXTRACT",
-        "_official_page_text",
-        "os.fsync",
-        "_store_revision",
-        "_crawl_enrollment",
-        "sbb-custom-competition-crawl",
-        "SBB_CUSTOM_COMPETITION_CRAWL_INTERVAL"
+        "Sports Big Board v4.6.2",
+        "_discovery_plan",
+        "_date_windows",
+        "_merge_discovered_events",
+        "MULTI_WINDOW_RESEARCH",
+        "_missing_recovery_prompt",
+        "Cannot create a site-wide competition with zero schedule events",
+        "delete_competition",
+        "_purge_history_competition",
+        "_remove_operator_playlists"
       ]
     },
     "tests/test_v460_competition_builder.py": {
@@ -91,7 +96,8 @@
     },
     "VERIFY.sh": {
       "required": [
-        "python3 -m unittest tests.test_v461_competition_builder_hardening"
+        "python3 -m unittest tests.test_v461_competition_builder_hardening",
+        "python3 -m unittest tests.test_v462_competition_builder_research_delete"
       ]
     },
     "tests/test_v461_competition_builder_hardening.py": {
@@ -100,6 +106,14 @@
         "test_save_is_durable_and_revisioned",
         "test_discovery_falls_back_to_official_page",
         "test_custom_competition_reports_crawl_enrollment"
+      ]
+    },
+    "tests/test_v462_competition_builder_research_delete.py": {
+      "required": [
+        "test_world_cup_uses_bounded_windows",
+        "test_zero_and_partial_schedule_cannot_activate",
+        "test_delete_is_site_wide_and_purges_custom_history",
+        "CONFIRM DELETE"
       ]
     }
   },
@@ -111,6 +125,7 @@
     "python3 tools/check_deploy_rehearsal.py",
     "python3 -m unittest tests.test_v460_competition_builder",
     "python3 -m unittest tests.test_v461_competition_builder_hardening",
+    "python3 -m unittest tests.test_v462_competition_builder_research_delete",
     "bash VERIFY.sh"
   ]
 }

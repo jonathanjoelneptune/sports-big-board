@@ -57,19 +57,23 @@ class V461CompetitionBuilderHardeningTests(unittest.TestCase):
             {'eventId':'g1','date':'2026-06-11','scheduledAt':'2026-06-11T12:00:00','away':'A','home':'B','awayScore':1,'homeScore':0,'status':'FINAL','round':'Group A','stage':'Group','venue':'Stadium','broadcast':'TV','sourceUrl':'https://official.test/g1'}
         ]}
         calls=[]
-        def request(_server,_model,_prompt,use_web=True):
+        def request(_server,_model,_prompt,_schema,_name,use_web=True,**kwargs):
             calls.append(use_web)
             if use_web: raise RuntimeError('web search unavailable')
             return result
-        with patch.object(cb,'_openai_schedule_request',side_effect=request), patch.object(cb,'_official_page_text',return_value='Official schedule page content '+('x'*500)):
+        with patch.object(cb,'_discovery_plan',return_value={'expectedEventCount':1,'sourceUrls':['https://official.test/schedule'],'sourceLabel':'Official','notes':''}), \
+             patch.object(cb,'_date_windows',return_value=[('2026-06-11','2026-06-11')]), \
+             patch.object(cb,'_openai_json_request',side_effect=request), \
+             patch.object(cb,'_official_page_text',return_value='Official schedule page content '+('x'*500)):
             out=cb.discover_schedule(server,{
                 'id':'WC2026','name':'2026 FIFA World Cup','type':'SPECIAL_EVENT','sportId':'football',
                 'startDate':'2026-06-11','endDate':'2026-07-19','scheduleSourceUrl':'https://official.test/schedule'
             })
         self.assertEqual(calls,[True,False])
-        self.assertEqual(out['discoveryMode'],'OFFICIAL_URL_EXTRACT')
+        self.assertTrue(out['complete'])
+        self.assertEqual(out['discoveredEventCount'],1)
         self.assertEqual(len(out['events']),1)
-        self.assertTrue(out['attemptErrors'])
+        self.assertEqual(out['windowReports'][0]['mode'],'OFFICIAL_PAGE')
 
     def test_custom_competition_reports_crawl_enrollment(self):
         server=_Server();server.HISTORY_LEAGUES=server.HISTORY_LEAGUES+('CUP26',)
