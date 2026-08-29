@@ -124,7 +124,26 @@ def _espn_slug_for_comp(comp):
 
 
 def _window_prompt_v467(d, window_start, window_end, source_urls, expected):
-    prompt = _ORIGINAL_WINDOW_PROMPT(d, window_start, window_end, source_urls, expected)
+    # v4.6.7 may receive either a fully persisted competition definition or a
+    # lightweight discovery/reconciliation draft. The inherited v4.6.6 prompt
+    # requires an explicit edition year, so normalize it here rather than making
+    # every caller manufacture one.
+    definition = dict(d or {})
+    if not definition.get("year"):
+        candidates = (
+            definition.get("startDate"),
+            window_start,
+            definition.get("endDate"),
+            definition.get("name"),
+        )
+        for value in candidates:
+            match = re.search(r"\\b(20\\d{2})\\b", _clean(value))
+            if match:
+                definition["year"] = int(match.group(1))
+                break
+    if not definition.get("year"):
+        definition["year"] = datetime.now(timezone.utc).year
+    prompt = _ORIGINAL_WINDOW_PROMPT(definition, window_start, window_end, source_urls, expected)
     today = base._today()
     return prompt + f"""
 
