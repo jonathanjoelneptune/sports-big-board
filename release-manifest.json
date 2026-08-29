@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.16",
-  "baseRelease": "4.6.15",
-  "title": "Consolidated Special Event Media Pipeline",
+  "release": "4.7.0",
+  "baseRelease": "4.6.16",
+  "title": "Competition Registry 2.0 + Day State Engine",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -12,99 +12,92 @@
     "foundation-certification.json",
     "release-manifest.json",
     "sbb/__init__.py",
-    "sbb/special_event_media_v4616.py",
-    "architecture/special-event-media-v4616.js",
-    "tests/test_v4616_special_event_media_pipeline.py"
+    "sbb/competition_registry.py",
+    "sbb/day_state.py",
+    "architecture/day-state.js",
+    "tests/test_v470_competition_registry_day_state.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.16"
+        "4.7.0"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.16",
-        "core-model.js?v=4.6.16",
-        "app.js?v=4.6.16",
-        "architecture/competition-builder-v4613.js?v=4.6.16",
-        "architecture/special-event-media-v4616.js?v=4.6.16",
-        "architecture/historical-media-v4610.js?v=4.6.16"
+        "Sports Big Board \u2014 v4.7.0",
+        "core-model.js?v=4.7.0",
+        "app.js?v=4.7.0",
+        "architecture/day-state.js?v=4.7.0",
+        "architecture/special-event-media-v4616.js?v=4.7.0",
+        "architecture/historical-media-v4610.js?v=4.7.0"
       ],
       "forbidden": [
-        "?v=4.6.15"
+        "?v=4.6.16"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.16'",
+        "version:'4.7.0'",
         "custom-competition overlay"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.16\"",
-        "SOURCE -> ELIGIBLE -> CANDIDATES -> MATCHED -> PERSISTED -> PLAYABLE",
-        "custom-competition registry event is the participant-identity authority",
-        "REASSOCIATE is database-only",
-        "Association Audit",
-        "LittleLeague.org Game Recaps as Green",
-        "ESPN 2026 LLWS YouTube playlist as Purple"
+        "\"release\": \"4.7.0\"",
+        "Competition Registry 2.0",
+        "Day State Engine",
+        "dynamically-created competition",
+        "/api/history/ribbon"
       ]
     },
     "sbb/__init__.py": {
       "required": [
-        "special_event_media_v4616",
-        "_install_special_event_media_v4616()"
+        "from .day_state import install as _install_day_state",
+        "_install_day_state()"
       ]
     },
-    "sbb/special_event_media_v4616.py": {
+    "sbb/competition_registry.py": {
       "required": [
-        "Sports Big Board v4.6.16",
-        "class SpecialEventMediaAssociator",
-        "def competition_records",
-        "CUSTOM_COMPETITION+HISTORY",
-        "def participant_crosswalk",
-        "def diagnose_item",
-        "def reassociate",
-        "def recrawl",
-        "def crawl_web_recap_source",
-        "SPECIAL_EVENT_CANONICAL_ASSOCIATION",
-        "media-association-audit",
-        "LLWS_GREEN_URL",
-        "LLWS_PURPLE_URL",
-        "requiredTitlePhrases\":[\"Recap:\"]",
-        "requiredTitlePhrases\":[\"Full Game Highlights\"]",
-        "def _persist_canonical_relationship",
-        "PERSISTENCE_PARENT_MISSING",
-        "CROSS_EVENT_ASSET_CONFLICT",
-        "save_competition returns a catalog row with events intentionally omitted",
-        "def _extract_published_at"
+        "Competition Registry 2.0",
+        "class CompetitionCatalog(dict)",
+        "COMPETITIONS = CompetitionCatalog",
+        "def subscribe(",
+        "backendRegistered",
+        "dayStateEnabled"
       ]
     },
-    "architecture/special-event-media-v4616.js": {
+    "sbb/day_state.py": {
       "required": [
-        "Sports Big Board v4.6.16",
-        "REASSOCIATE",
-        "RECRAWL SOURCES",
-        "ASSOCIATION AUDIT",
-        "media-association-audit",
-        "reassociate-media",
-        "recrawl-media"
+        "Sports Big Board Day State Engine",
+        "CREATE TABLE IF NOT EXISTS day_state",
+        "_history_day_score_rows",
+        "_history_day_ribbon_plans",
+        "_history_day_score_inventory_complete",
+        "if parsed.path == \"/api/day-state\":",
+        "if parsed.path == \"/api/competition-registry\":",
+        "if parsed.path == \"/api/history/ribbon\":",
+        "registry.subscribe(self._on_registry_event, replay=True)"
       ]
     },
-    "tests/test_v4616_special_event_media_pipeline.py": {
+    "architecture/day-state.js": {
       "required": [
-        "test_registry_identity_survives_flattened_history_refresh",
-        "test_crosswalk_derives_public_media_identities",
-        "test_real_llws_title_matches_imported_participant_identity",
-        "test_official_game_number_is_stronger_than_text_aliases",
-        "test_little_league_recap_index_parser_only_keeps_recap_pages",
-        "test_source_contract_separates_reassociate_and_recrawl",
-        "test_statistics_and_ribbon_share_durable_event_media_truth",
-        "test_direct_persistence_creates_the_same_durable_relation_ribbon_reads",
-        "test_llws_source_migration_returns_full_identity_definition",
-        "test_little_league_page_metadata_supports_repeated_matchup_tiebreaking"
+        "Sports Big Board v4.7.0",
+        "/api/day-state?date=",
+        "storeScoreDateLeague",
+        "ingestCompactCatalogPlans",
+        "DAY STATE",
+        "BACKEND REGISTRY",
+        "/api/competition-registry"
+      ]
+    },
+    "tests/test_v470_competition_registry_day_state.py": {
+      "required": [
+        "test_registry_is_observable_but_backwards_compatible_mapping",
+        "test_registry_event_enrolls_new_competition_in_history_and_day_state",
+        "test_day_state_intercepts_existing_history_ribbon_contract",
+        "test_browser_prepaints_from_day_state_and_keeps_fallback",
+        "test_operator_views_expose_day_state_and_backend_registry"
       ]
     },
     "VERIFY.sh": {
@@ -112,8 +105,8 @@
         "python3 tools/check_release_manifest.py",
         "python3 tools/check_release_version.py",
         "python3 tools/check_foundation_certification.py",
-        "python3 -m unittest tests.test_v4615_persistence_aware_special_event_association",
-        "python3 -m unittest tests.test_v4616_special_event_media_pipeline"
+        "python3 -m unittest tests.test_v4616_special_event_media_pipeline",
+        "python3 -m unittest tests.test_v470_competition_registry_day_state"
       ]
     }
   },
@@ -123,8 +116,8 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v4615_persistence_aware_special_event_association",
     "python3 -m unittest tests.test_v4616_special_event_media_pipeline",
+    "python3 -m unittest tests.test_v470_competition_registry_day_state",
     "bash VERIFY.sh"
   ]
 }

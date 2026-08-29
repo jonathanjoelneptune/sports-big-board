@@ -36,6 +36,7 @@ python3 -m unittest tests.test_v4613_tournament_playlist_association
 python3 -m unittest tests.test_v4614_media_facing_participant_aliases
 python3 -m unittest tests.test_v4615_persistence_aware_special_event_association
 python3 -m unittest tests.test_v4616_special_event_media_pipeline
+python3 -m unittest tests.test_v470_competition_registry_day_state
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + browser contract tests"

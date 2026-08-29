@@ -1,0 +1,45 @@
+Sports Big Board v4.7.0 — Competition Registry 2.0 + Day State Engine
+
+ARCHITECTURAL GOAL
+The backend continuously knows what competitions exist and what each sports day
+looks like. The main Big Board renders a precomputed read model rather than
+reconstructing historical ribbon state on every date selection.
+
+REPLACE
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- VERIFY.sh
+- sbb/__init__.py
+- sbb/competition_registry.py
+
+ADD
+- sbb/day_state.py
+- architecture/day-state.js
+- tests/test_v470_competition_registry_day_state.py
+
+COMPETITION REGISTRY 2.0
+- preserves existing COMPETITIONS / catalog() / enabled_ids() APIs
+- COMPETITIONS is now an observable dict-compatible CompetitionCatalog
+- existing Competition Builder registration automatically emits backend events
+- dynamic leagues and special events become backend citizens without hard-coded branches
+- registry removal automatically removes backend enrollment
+- operator BACKEND REGISTRY view exposes built-in/dynamic/history/day-state state
+
+DAY STATE ENGINE
+- persists snapshots in SBB_STATE_DIR/day-state.sqlite3
+- reuses existing canonical history score rows + ribbon event plans
+- warms today, yesterday, tomorrow and focused dates in the background
+- registry events queue all known dates for newly-created competitions
+- serves /api/day-state and /api/day-state/status
+- serves existing /api/history/ribbon cache-first with the same payload contract
+- browser prepaints from Day State while existing provider loaders remain fallback
+- operator DAY STATE view exposes snapshot freshness and rebuild control
+
+NO SECOND SPORTS TRUTH
+Day State does not invent schedules, scores, tiers or associations. It projects the
+same normalized catalog functions already used by the ribbon. If Day State says a
+Purple/Green asset is playable, it came from the same eventPlans relationship the
+ribbon consumes.

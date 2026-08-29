@@ -33,12 +33,14 @@ from . import competition_builder as base
 from . import competition_builder_v4613 as tournament
 from . import competition_builder_v4614 as aliases
 from .catalog_contract import ASSIGNED
+from .history_repository import HistoryRepository
 
 _INSTALLED=False
 _INSTALL_LOCK=threading.Lock()
 _AUDIT_LOCK=threading.RLock()
 _AUDIT_CACHE={}
 _ORIGINAL_HANDLE_GET=None
+_ORIGINAL_REPAIR_RELATIONSHIPS=HistoryRepository.repair_relationships
 
 LLWS_GREEN_URL="https://www.littleleague.org/videos/video-tags/little-league-baseball,game-recaps/"
 LLWS_PURPLE_URL="https://www.youtube.com/playlist?list=PLJBIB5zsrIC8"
@@ -620,6 +622,94 @@ def _handle_get_v4616(server,handler,parsed):
     return _ORIGINAL_HANDLE_GET(server,handler,parsed)
 
 
+
+_EVENT_RELATIONSHIP_ISSUE_KEYS=(
+    "lowConfidenceAssigned",
+    "crossEventAssignedAssets",
+)
+_COLLECTION_RELATIONSHIP_ISSUE_KEYS=(
+    "silverGameLeaks",
+    "collectionGameLeaks",
+    "lowConfidenceCollectionLinks",
+)
+
+
+def _relationship_repair_force_plan(integrity, requested_event=False, requested_collection=False):
+    """Route startup integrity drift to the relationship family that owns it.
+
+    server.py v4.6.16 currently counts ``silverGameLeaks`` as an event issue even
+    though Silver is represented by history_collection_media.  That can force a
+    35k+ event revalidation while leaving collection repair at VERSION_CHECK, then
+    fail the hard post-repair audit with the same Silver leak still present.
+
+    The repository layer is the final authority before repair executes, so repair
+    defensively corrects a misrouted startup request:
+      * event-link integrity -> event repair
+      * Silver/collection integrity -> collection repair
+      * a requested event FORCE caused only by collection drift is demoted back to
+        VERSION_CHECK, avoiding unnecessary full event revalidation
+      * an explicit global force=True remains untouched
+    """
+    integrity=dict(integrity or {})
+    event_issue=any(
+        int(integrity.get(key) or 0)>0
+        for key in _EVENT_RELATIONSHIP_ISSUE_KEYS
+    )
+    collection_issue=any(
+        int(integrity.get(key) or 0)>0
+        for key in _COLLECTION_RELATIONSHIP_ISSUE_KEYS
+    )
+
+    force_event=bool(requested_event)
+    force_collection=bool(requested_collection)
+
+    if collection_issue:
+        force_collection=True
+
+    # Narrow correction for the server.py startup routing bug.  Do not suppress an
+    # otherwise explicit event force unless collection drift is present and there
+    # is no actual event-family integrity issue.
+    if force_event and collection_issue and not event_issue:
+        force_event=False
+
+    if event_issue:
+        force_event=True
+
+    return {
+        "forceEvent":force_event,
+        "forceCollection":force_collection,
+        "eventIssue":event_issue,
+        "collectionIssue":collection_issue,
+    }
+
+
+def _repair_relationships_v4616(repo, force=False, force_event=False, force_collection=False):
+    """Correct relationship-family routing before the normalized repair executes."""
+    if force:
+        return _ORIGINAL_REPAIR_RELATIONSHIPS(
+            repo,
+            force=True,
+            force_event=force_event,
+            force_collection=force_collection,
+        )
+
+    try:
+        integrity=repo.catalog_integrity()
+    except Exception:
+        integrity={}
+
+    plan=_relationship_repair_force_plan(
+        integrity,
+        requested_event=force_event,
+        requested_collection=force_collection,
+    )
+    return _ORIGINAL_REPAIR_RELATIONSHIPS(
+        repo,
+        force=False,
+        force_event=plan["forceEvent"],
+        force_collection=plan["forceCollection"],
+    )
+
 def _install_when_ready():
     global _ORIGINAL_HANDLE_GET
     server=None
@@ -663,4 +753,11 @@ def install():
     with _INSTALL_LOCK:
         if _INSTALLED:return
         _INSTALLED=True
+
+    # Startup relationship repair runs from server.py immediately after imports.
+    # Install this repository-level routing correction synchronously so a
+    # silverGameLeaks-only catalog cannot reach that startup gate with collection
+    # repair incorrectly skipped.
+    HistoryRepository.repair_relationships=_repair_relationships_v4616
+
     threading.Thread(target=_install_when_ready,daemon=True,name="sbb-special-event-media-v4616-install").start()
