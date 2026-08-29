@@ -1,0 +1,26 @@
+Sports Big Board v4.6.9 — World Cup Ribbon Playback Final-State Fix
+
+REPLACE
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- VERIFY.sh
+- sbb/competition_builder_v467.py
+
+ADD
+- tests/test_v469_world_cup_ribbon_playback.py
+
+ROOT CAUSE
+Completed ESPN soccer matches can report FT/AET rather than literal FINAL. The score ribbon
+correctly suppresses postgame Green/Purple/Gold media for non-final games, so World Cup media
+could be discovered and associated but still have no play arrow.
+
+FIX
+- Completed provider soccer rows use canonical FINAL.
+- FT/AET provider wording is preserved separately.
+- Existing persisted FT/stale SCHEDULED scored rows normalize on schedule reads.
+- Background reconciliation revisits stale completion state.
+- Live/today/future matches are not forced final.
+- Canonical event IDs and existing media associations are preserved.

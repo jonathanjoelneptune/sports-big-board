@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.6.8",
-  "baseRelease": "4.6.7",
-  "title": "Special Event Media Statistics & Reprocessing",
+  "release": "4.6.9",
+  "baseRelease": "4.6.8",
+  "title": "World Cup Ribbon Playback Final-State Fix",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -11,71 +11,57 @@
     "core-model.js",
     "foundation-certification.json",
     "sbb/competition_builder_v467.py",
-    "ui/history-audit-v468.js",
-    "tests/test_v468_special_event_media_statistics.py"
+    "tests/test_v469_world_cup_ribbon_playback.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.6.8"
+        "4.6.9"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.6.8",
-        "id=\"historyAuditTabStatistics\"",
-        "id=\"historyStatisticsPane\"",
-        "ui/history-audit-v468.js?v=4.6.8",
-        "core-model.js?v=4.6.8",
-        "app.js?v=4.6.8",
-        "architecture/competition-builder.js?v=4.6.8"
+        "Sports Big Board \u2014 v4.6.9",
+        "core-model.js?v=4.6.9",
+        "app.js?v=4.6.9",
+        "architecture/competition-builder.js?v=4.6.9",
+        "ui/history-audit-v468.js?v=4.6.9"
       ],
       "forbidden": [
-        "?v=4.6.7"
+        "?v=4.6.8"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.6.8'",
+        "version:'4.6.9'",
         "custom-competition overlay"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.6.8\"",
-        "History Audit exposes a Statistics tab",
-        "Special-event media reprocessing force-crawls every enabled operator playlist",
-        "registered competition playlists are force-crawled again automatically"
+        "\"release\": \"4.6.9\"",
+        "provider terminal states such as FT to canonical FINAL",
+        "score-ribbon play arrow and click-to-play path"
       ]
     },
     "sbb/competition_builder_v467.py": {
       "required": [
-        "Sports Big Board v4.6.7",
-        "base._register_media_sources(server, current, force_crawl=True)",
-        "Winner Match/TBA identities",
+        "def _normalize_completed_soccer_event",
+        "def _event_status_is_final",
+        "\"status\": \"FINAL\" if completed else detail",
+        "\"providerStatus\": detail",
+        "parsed.path == \"/api/competition-builder/schedule\"",
         "fifa.world",
         "ESPN-SOCCER"
       ]
     },
-    "ui/history-audit-v468.js": {
+    "tests/test_v469_world_cup_ribbon_playback.py": {
       "required": [
-        "Sports Big Board v4.6.8",
-        "historyAuditTabStatistics",
-        "historyStatisticsBody",
-        "REPROCESS MEDIA",
-        "action:'source_reopen'",
-        "action:'crawl'",
-        "/api/competition-builder/health?id=",
-        "historyMediaPlaylistLeague",
-        "historyRecoveryLeague"
-      ]
-    },
-    "tests/test_v468_special_event_media_statistics.py": {
-      "required": [
-        "test_statistics_tab_is_a_first_class_audit_surface",
-        "test_dynamic_competition_selectors_include_special_events",
-        "test_per_competition_reprocess_reopens_and_recrawls_media",
-        "test_realized_tournament_identity_triggers_playlist_recrawl"
+        "test_ft_is_normalized_to_final_for_ribbon_playback",
+        "test_stale_past_scheduled_result_is_normalized_to_final",
+        "test_live_or_today_match_is_not_forced_final",
+        "test_completed_espn_soccer_row_uses_canonical_final_status",
+        "test_stale_completed_rows_are_revisited"
       ]
     },
     "VERIFY.sh": {
@@ -83,8 +69,8 @@
         "python3 tools/check_release_manifest.py",
         "python3 tools/check_release_version.py",
         "python3 tools/check_foundation_certification.py",
-        "python3 -m unittest tests.test_v467_tournament_realization_game_center",
-        "python3 -m unittest tests.test_v468_special_event_media_statistics"
+        "python3 -m unittest tests.test_v468_special_event_media_statistics",
+        "python3 -m unittest tests.test_v469_world_cup_ribbon_playback"
       ]
     }
   },
@@ -96,6 +82,7 @@
     "python3 tools/check_deploy_rehearsal.py",
     "python3 -m unittest tests.test_v467_tournament_realization_game_center",
     "python3 -m unittest tests.test_v468_special_event_media_statistics",
+    "python3 -m unittest tests.test_v469_world_cup_ribbon_playback",
     "bash VERIFY.sh"
   ]
 }

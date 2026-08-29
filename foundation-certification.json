@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.6.8",
+  "release": "4.6.9",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -76,7 +76,12 @@
         "Built-in league media reprocessing reopens the normal source-enrichment ledger so completed source checks become eligible again.",
         "Special-event media reprocessing force-crawls every enabled operator playlist and runs canonical event-media association repair.",
         "When tournament participant/result reconciliation changes an event from bracket identity to realized teams, registered competition playlists are force-crawled again automatically.",
-        "History Audit, Silver, playlist-management, and recovery league selectors are populated from the live competition/media registry rather than a six-league hard-coded list."
+        "History Audit, Silver, playlist-management, and recovery league selectors are populated from the live competition/media registry rather than a six-league hard-coded list.",
+        "Completed custom soccer events normalize provider terminal states such as FT to canonical FINAL before score-ribbon playback eligibility is evaluated.",
+        "A past custom soccer event with official scores cannot remain canonically SCHEDULED; it is exposed as FINAL while preserving the provider status separately.",
+        "Future and live custom soccer matches are never forced to FINAL merely because a score is present.",
+        "World Cup verified GAME media associated to a completed match remains eligible for the normal score-ribbon play arrow and click-to-play path.",
+        "Existing persisted World Cup FT/stale-completion rows are normalized on schedule reads and revisited by background result reconciliation without changing canonical event IDs."
       ]
     },
     "tier2": {
@@ -127,6 +132,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.6.8 makes special-event media a first-class operator workflow: Statistics reports coverage by competition, special-event playlists appear beside built-in leagues, per-competition media reprocessing can reopen/crawl/repair sources without deleting verified media, and realized tournament participant changes automatically trigger a fresh playlist crawl.",
+  "baseline": "v4.6.9 preserves v4.6.8 and fixes World Cup ribbon playback by normalizing completed soccer provider states such as FT to canonical FINAL while preserving live/future recap protections.",
   "status": "IN_PROGRESS"
 }

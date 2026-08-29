@@ -14,7 +14,7 @@ import threading
 import time
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
-from urllib.parse import unquote
+from urllib.parse import unquote, parse_qs
 
 try:
     from zoneinfo import ZoneInfo
@@ -96,16 +96,63 @@ def _placeholder_event(event):
     return base._placeholder_participant(_team_name(event, "away")) or base._placeholder_participant(_team_name(event, "home"))
 
 
+_FINAL_STATUS_RE = re.compile(
+    r"(?:\bfinal\b|\bfinished\b|\bended\b|\bcomplete(?:d)?\b|"
+    r"\bfull[ -]?time\b|^ft(?:\b|[- /])|^aet(?:\b|[- /])|ft[- /]?pens?\b)",
+    re.I,
+)
+
+
+def _event_status_is_final(value):
+    return bool(_FINAL_STATUS_RE.search(_clean(value)))
+
+
+def _event_scores_present(event):
+    event = event or {}
+    away = event.get("awayScore")
+    home = event.get("homeScore")
+    if away in (None, ""):
+        team = event.get("away") or event.get("awayTeam") or {}
+        if isinstance(team, dict):
+            away = team.get("score")
+    if home in (None, ""):
+        team = event.get("home") or event.get("homeTeam") or {}
+        if isinstance(team, dict):
+            home = team.get("score")
+    return away not in (None, "") and home not in (None, "")
+
+
+def _normalize_completed_soccer_event(event, today=None):
+    """Normalize completed provider soccer states to canonical FINAL."""
+    row = dict(event or {})
+    status = _clean(row.get("status"))
+    date = _date_key(row)
+    today = _clean(today or base._today())[:10]
+    cancelled = status.upper() in {"POSTPONED", "CANCELLED", "CANCELED", "ABANDONED"}
+    completed = bool(row.get("providerCompleted")) or _event_status_is_final(status)
+    if not completed and not cancelled and date and today and date < today and _event_scores_present(row):
+        completed = True
+    if completed and not cancelled:
+        if status and status.upper() != "FINAL":
+            row.setdefault("providerStatus", status)
+        row["status"] = "FINAL"
+        row["state"] = "FINAL"
+        row["providerCompleted"] = True
+    return row
+
+
 def _needs_realized_refresh(event, today=None):
-    """Refresh unresolved future bracket slots too, but only replace them when official teams exist."""
+    """Refresh unresolved participants, missing results, and stale completion states."""
     if _placeholder_event(event):
         return True
     date = _date_key(event)
     today = _clean(today or base._today())[:10]
     if date and date <= today:
         status = _clean((event or {}).get("status")).upper()
-        if status not in {"POSTPONED", "CANCELLED", "CANCELED"}:
-            return (event or {}).get("awayScore") in (None, "") or (event or {}).get("homeScore") in (None, "")
+        if status not in {"POSTPONED", "CANCELLED", "CANCELED", "ABANDONED"}:
+            if not _event_scores_present(event):
+                return True
+            return status != "FINAL"
     return False
 
 
@@ -237,7 +284,10 @@ def _espn_scoreboard_rows(server, comp, start_date, end_date):
             "home": home,
             "awayScore": away_row.get("score"),
             "homeScore": home_row.get("score"),
-            "status": detail.upper() if completed else detail,
+            "status": "FINAL" if completed else detail,
+            "state": "FINAL" if completed else detail,
+            "providerStatus": detail,
+            "providerCompleted": completed,
             "round": stage,
             "stage": stage,
             "venue": venue,
@@ -363,7 +413,9 @@ def _merge_realized_results(comp, realized_rows, target_ids=None):
             merged["providerEventId"] = provider_id
             if _espn_slug_for_comp(comp):
                 merged["espnEventId"] = provider_id
+        merged = _normalize_completed_soccer_event(merged)
         normalized = base.normalize_event(comp, merged, idx)
+        normalized = _normalize_completed_soccer_event(normalized)
         normalized["id"] = eid
         normalized["eventId"] = eid
         normalized["matchId"] = eid
@@ -579,6 +631,31 @@ def soccer_game_center(server, comp, event):
 
 
 def _handle_get_v467(server, handler, parsed):
+    # v4.6.9: normalize already-persisted soccer FT/AET rows on the schedule read
+    # itself, so the score ribbon can expose verified recap media immediately
+    # without waiting for the background reconciliation pass.
+    if parsed.path == "/api/competition-builder/schedule":
+        qs = parse_qs(parsed.query)
+        cid = _clean((qs.get("id") or [""])[-1]).upper()
+        date = _clean((qs.get("date") or [""])[-1])[:10]
+        comp = base._find(cid)
+        if not comp:
+            return base._send(server, handler, {"ok": False, "error": "COMPETITION_NOT_FOUND"}, 404)
+        events = []
+        for raw in comp.get("events") or []:
+            if date and _date_key(raw) != date:
+                continue
+            event = base._decorate_event_artwork(comp, raw)
+            if _espn_slug_for_comp(comp):
+                event = _normalize_completed_soccer_event(event)
+            events.append(event)
+        return base._send(server, handler, {
+            "ok": True,
+            "competition": base._catalog_row(comp),
+            "date": date,
+            "events": events,
+        }, 200)
+
     match = re.fullmatch(r"/api/events/([^/]+)/([^/]+)/game-center", parsed.path)
     if match:
         cid = unquote(match.group(1)).upper()
