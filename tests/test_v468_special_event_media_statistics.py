@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 INDEX = (ROOT / "index.html").read_text(encoding="utf-8")
 AUDIT = (ROOT / "ui" / "history-audit-v468.js").read_text(encoding="utf-8")
 TOURNAMENT = (ROOT / "sbb" / "competition_builder_v467.py").read_text(encoding="utf-8")
@@ -14,7 +15,7 @@ class V468SpecialEventMediaStatisticsTests(unittest.TestCase):
         self.assertIn('id="historyAuditTabStatistics"', INDEX)
         self.assertIn('id="historyStatisticsPane"', INDEX)
         self.assertIn('id="historyStatisticsBody"', INDEX)
-        self.assertIn('ui/history-audit-v468.js?v=4.6.8', INDEX)
+        self.assertIn(f'ui/history-audit-v468.js?v={VERSION}', INDEX)
         self.assertIn("loadStatistics", AUDIT)
         self.assertIn("coverageCompleteGames", AUDIT)
         self.assertIn("noVerifiedMediaGames", AUDIT)

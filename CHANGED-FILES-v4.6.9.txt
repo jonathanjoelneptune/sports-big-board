@@ -24,3 +24,16 @@ FIX
 - Background reconciliation revisits stale completion state.
 - Live/today/future matches are not forced final.
 - Canonical event IDs and existing media associations are preserved.
+
+
+CI HOTFIX
+- tests/test_v468_special_event_media_statistics.py
+
+WHY
+The v4.6.8 regression test hard-coded ui/history-audit-v468.js?v=4.6.8.
+v4.6.9 correctly changes the deployed cache-buster to ?v=4.6.9, so the deploy
+rehearsal rejected the stale test guard before unit tests ran.
+
+FIX
+The regression guard now derives the expected cache-buster from the repository
+VERSION file. This preserves the same assertion while making it release-agnostic.

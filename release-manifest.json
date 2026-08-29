@@ -11,6 +11,7 @@
     "core-model.js",
     "foundation-certification.json",
     "sbb/competition_builder_v467.py",
+    "tests/test_v468_special_event_media_statistics.py",
     "tests/test_v469_world_cup_ribbon_playback.py"
   ],
   "contracts": {
@@ -71,6 +72,17 @@
         "python3 tools/check_foundation_certification.py",
         "python3 -m unittest tests.test_v468_special_event_media_statistics",
         "python3 -m unittest tests.test_v469_world_cup_ribbon_playback"
+      ]
+    },
+    "tests/test_v468_special_event_media_statistics.py": {
+      "required": [
+        "VERSION = (ROOT / \"VERSION\").read_text(encoding=\"utf-8\").strip()",
+        "f'ui/history-audit-v468.js?v={VERSION}'",
+        "History Audit exposes a Statistics tab",
+        "base._register_media_sources(server, current, force_crawl=True)"
+      ],
+      "forbidden": [
+        "ui/history-audit-v468.js?v=4.6.8"
       ]
     }
   },
