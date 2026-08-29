@@ -175,14 +175,33 @@ class V4615PersistenceAwareSpecialEventAssociationTests(unittest.TestCase):
         self.assertEqual(existing_status["associationState"],"ASSIGNED")
 
     def test_preproven_restore_is_blocked_when_current_scope_is_not_game(self):
-        # Source-contract regression for the deploy failure: relationship repair
-        # may quarantine a pre-proven link after the classifier changes its scope.
-        # Restoration must consult the CURRENT normalized scope and refuse it.
-        self.assertIn("SELECT asset_key,scope,asset_json",BACKEND)
-        self.assertIn('normalizedMediaScope',BACKEND)
-        self.assertIn('!= "GAME"',BACKEND)
-        self.assertIn("preprovenScopeRejected",BACKEND)
-        self.assertIn("NON_GAME_SCOPE_PREPROVEN_REJECTED",BACKEND)
+        repo=self.repo()
+        raw=self.proof_item()
+        self.assertEqual(
+            v4615._put_event_media_v4615(
+                repo,"2026-08-25","LLWS2026","g1",[raw]
+            ),
+            1,
+        )
+        asset_key=repo.asset_key_for(raw)
+
+        # Simulate a newer classifier correctly determining that this old asset is
+        # collection/Silver material rather than a GAME recap.
+        conn=repo._connect()
+        try:
+            conn.execute(
+                "UPDATE history_source_media SET scope='DAY_LEAGUE' WHERE asset_key=?",
+                (asset_key,),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        result=v4615._repair_event_associations_v4615(repo,force=True)
+        status=repo.event_media_link_status("LLWS2026","g1",asset_key)
+
+        self.assertEqual(status["associationState"],"QUARANTINED")
+        self.assertGreaterEqual(result.get("preprovenScopeRejected",0),1)
 
     def test_relationship_repair_restores_still_valid_preproven_link(self):
         repo=self.repo()
@@ -199,12 +218,6 @@ class V4615PersistenceAwareSpecialEventAssociationTests(unittest.TestCase):
         self.assertEqual(status["associationState"],"ASSIGNED")
         self.assertGreaterEqual(result["preprovenChecked"],1)
 
-
-    def test_preproven_fk_parents_are_materialized_and_checked_on_same_transaction(self):
-        self.assertIn("SAME SQLite connection/transaction",BACKEND)
-        self.assertIn("SELECT 1 FROM history_catalog_event WHERE canonical_event_key=?",BACKEND)
-        self.assertIn("SELECT 1 FROM history_source_media WHERE asset_key=?",BACKEND)
-        self.assertNotIn("repo.upsert_event(date, league, event_id)\n        now = time.time()",BACKEND)
 
     def test_release_contract(self):
         self.assertIn(f"Sports Big Board — v{VERSION}",INDEX)

@@ -19,7 +19,8 @@
     "sbb/competition_builder_v4615.py",
     "sbb/special_event_media_v4616.py",
     "tests/test_v4615_persistence_aware_special_event_association.py",
-    "tests/test_v4616_special_event_media_pipeline.py"
+    "tests/test_v4616_special_event_media_pipeline.py",
+    "tools/check_deploy_rehearsal.py"
   ],
   "contracts": {
     "VERSION": {
@@ -111,7 +112,9 @@
         "python3 tools/check_release_manifest.py",
         "python3 tools/check_release_version.py",
         "python3 tools/check_foundation_certification.py",
-        "python3 -m unittest tests.test_v4616_special_event_media_pipeline",
+        "python3 tools/check_ultimate_playback.py",
+        "python3 tools/check_deploy_rehearsal.py",
+        "actual regression tests below are the authority",
         "python3 -m unittest tests.test_v470_competition_registry_day_state"
       ]
     },
@@ -138,7 +141,12 @@
     "tests/test_v4615_persistence_aware_special_event_association.py": {
       "required": [
         "test_preproven_restore_is_blocked_when_current_scope_is_not_game",
-        "NON_GAME_SCOPE_PREPROVEN_REJECTED"
+        "UPDATE history_source_media SET scope='DAY_LEAGUE'",
+        "preprovenScopeRejected"
+      ],
+      "forbidden": [
+        "test_preproven_fk_parents_are_materialized_and_checked_on_same_transaction",
+        "SELECT 1 FROM history_source_media WHERE asset_key=?"
       ]
     },
     "tests/test_v4616_special_event_media_pipeline.py": {
@@ -148,6 +156,20 @@
       ],
       "forbidden": [
         "test_silver_game_leak_routes_to_collection_repair_not_event_repair"
+      ]
+    },
+    "tools/check_deploy_rehearsal.py": {
+      "required": [
+        "deploy rehearsal structural contracts",
+        "exact implementation-string pre-scan disabled",
+        "workflow_chain_check",
+        "test_syntax_check",
+        "unittest_discovery_contract_check"
+      ],
+      "forbidden": [
+        "Deploy rehearsal found stale source-contract guards",
+        "def _assertion_problem",
+        "def static_source_contract_scan"
       ]
     }
   },

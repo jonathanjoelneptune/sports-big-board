@@ -12,9 +12,9 @@ python3 tools/check_release_manifest.py
 python3 tools/check_release_version.py
 python3 tools/check_foundation_certification.py
 python3 tools/check_ultimate_playback.py
-# v4.3.6+: fast deploy rehearsal. This runs before Node and the 400+ Python tests
-# so stale exact-token regression guards and broken release overlays are caught
-# immediately instead of becoming another post-upload hotfix cycle.
+# Fast structural deploy rehearsal. It validates workflow chaining, test syntax,
+# and unittest discoverability only. Exact implementation-string assertions are
+# intentionally NOT pre-scanned; actual regression tests below are the authority.
 python3 tools/check_deploy_rehearsal.py
 python3 -m unittest tests.test_v445_random_archive_stress
 python3 -m unittest tests.test_v446_historical_media_quarantine
