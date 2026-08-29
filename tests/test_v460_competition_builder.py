@@ -33,9 +33,21 @@ class V460CompetitionBuilderTests(unittest.TestCase):
 
     def test_frontend_contracts_are_present(self):
         src=(ROOT/"architecture/competition-builder.js").read_text(encoding="utf-8")
-        for token in ("SPECIAL EVENTS ▾","ADD LEAGUE","ADD SPECIAL EVENT","mainRowEligible","/api/competition-builder","/api/competition-builder/media","SCORE_DATE_STORE?.setMedia","2026 WORLD CUP TEMPLATE","2026 LLWS TEMPLATE"):
+        # Runtime Competition Builder capabilities belong to the module.
+        for token in ("ADD LEAGUE","ADD SPECIAL EVENT","mainRowEligible","/api/competition-builder","/api/competition-builder/media","SCORE_DATE_STORE?.setMedia","2026 WORLD CUP TEMPLATE","2026 LLWS TEMPLATE"):
             self.assertIn(token,src)
+
+        # v4.6.3 made Special Events a permanent application-owned header control.
+        # The builder now populates that stable control instead of manufacturing
+        # the entire dropdown at runtime.
         index=(ROOT/"index.html").read_text(encoding="utf-8")
+        self.assertIn("SPECIAL EVENTS ▾",index)
+        self.assertIn('id="sbbSpecialEventsWrap"',index)
+        self.assertIn('id="sbbSpecialEventsBtn"',index)
+        self.assertIn('id="sbbSpecialEventsMenu"',index)
+        self.assertIn("sbbSpecialEventsWrap",src)
+        self.assertIn("menu.innerHTML=''",src)
+
         version=(ROOT/"VERSION").read_text(encoding="utf-8").strip()
         self.assertIn(f"architecture/competition-builder.js?v={version}",index)
         self.assertLess(index.index(f"app.js?v={version}"),index.index(f"competition-builder.js?v={version}"))
