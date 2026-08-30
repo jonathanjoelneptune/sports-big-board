@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.13 — First-Paint Render Pipeline.
+/* Sports Big Board v4.7.14 — First-Paint Render Pipeline.
    A date transition owns one generation. All ribbon render requests made while
    that generation is loading are held and committed once when canonical data is
    ready. Score-card appendChild calls are staged in a DocumentFragment so each
@@ -6,9 +6,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_RENDER_PIPELINE?.version==='4.7.13')return;
+  if(window.SBB_RENDER_PIPELINE?.version==='4.7.14')return;
 
-  const VERSION='4.7.13';
+  const VERSION='4.7.14';
   const state={
     installed:false,calls:0,requested:0,executed:0,coalesced:0,reentrant:0,
     generationCoalesced:0,fragmentCommits:0,lastKey:'',lastStartedAt:0,

@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.13 — Efficiency Certification.
+/* Sports Big Board v4.7.14 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.13') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.14') return;
 
-  const VERSION = '4.7.13';
+  const VERSION = '4.7.14';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;

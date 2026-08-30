@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.13 — Frontend Competition Projection.
+/* Sports Big Board v4.7.14 — Frontend Competition Projection.
    Backend Competition Registry 2.0 is authoritative for existence. Competition
    Builder remains the richer editor/catalog. The browser merges both sources,
    persists the last good dynamic projection, and never hides Special Events just
@@ -6,9 +6,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_FRONTEND_REGISTRY?.version==='4.7.13')return;
+  if(window.SBB_FRONTEND_REGISTRY?.version==='4.7.14')return;
 
-  const VERSION='4.7.13';
+  const VERSION='4.7.14';
   const STORAGE_KEY='sbb.frontendCompetitionProjection.v1';
   const clean=v=>String(v??'').trim();
   const upper=v=>clean(v).toUpperCase();

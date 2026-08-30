@@ -59,6 +59,8 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v4712_day_state_render_model_runtime.js
   node tests/test_v4713_media_readiness_runtime.js
   python3 -m unittest tests.test_v4713_media_readiness
+  python3 -m unittest tests.test_v4714_cfb_ranked_season
+  python3 -m unittest tests.test_v4714_cfb_ranked_runtime
   python3 -m unittest tests.test_v4712_day_state_render_model
   python3 -m unittest tests.test_v4711_availability_index_thin_probe
   python3 -m unittest tests.test_v4710_cold_history_future_store

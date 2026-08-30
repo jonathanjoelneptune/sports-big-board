@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.13",
+  "release": "4.7.14",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -289,7 +289,18 @@
         "Every tested date line reports day-visible latency and known-media-ready latency/counts separately.",
         "Actual click-to-first-frame playback remains certified by Ultimate Playback; Efficiency Certification measures the prerequisite that already-known database media is attached and selectable before the click.",
         "Native cold-thin certification omits custom X-SBB headers and credentials so GitHub Pages cross-origin GETs do not trigger unnecessary CORS preflight failures.",
-        "tests/test_v4713_media_readiness_runtime.js and tests/test_v4713_media_readiness.py are blocking contracts for media readiness and cold-thin preflight avoidance."
+        "tests/test_v4713_media_readiness_runtime.js and tests/test_v4713_media_readiness.py are blocking contracts for media readiness and cold-thin preflight avoidance.",
+        "CFB is a first-class persistent American Football competition with stable league id CFB and season id CFB2026; next season resets seasonal state without creating a second permanent main-bar league.",
+        "CFB weekly membership is exactly every FBS game with at least one participant in the AP Top 25 snapshot applicable to that ESPN schedule week; ranked-v-ranked games appear once and carry both ranks.",
+        "Weekly AP rank snapshots are immutable after first successful persistence; historical games retain that week's rank labels even after subsequent polls change the team's rank or ranked status.",
+        "Future CFB weeks are never projected using an older poll. A week is materialized only when its AP Top 25 snapshot exists.",
+        "Recent materialized CFB weeks may refresh score/status data, but rank fields are rebuilt only from the already-frozen weekly snapshot.",
+        "CFB events carry clean participant names for media matching plus displayName/rank/apRank/rankLabel/rankWeek metadata for archived ranking display.",
+        "CFB schedule authority is ESPN FBS scoreboard groups=80; ranking authority is ESPN AP Top 25 rankings.",
+        "The operator playlist PLPydJJjt7Pb4 is enrolled as the primary Purple/Extended CFB media source with Full Game Highlights intent.",
+        "CFB exposes /api/cfb/status, /api/cfb/rankings, and POST /api/cfb/refresh diagnostics/control endpoints.",
+        "CFB is installed through Day State bootstrap and Competition Builder persistence so it participates in backend registry, History, Day State, Statistics, Playlists, Game Center, and dynamic frontend league navigation without a special-event branch.",
+        "tests/test_v4714_cfb_ranked_season.py and tests/test_v4714_cfb_ranked_runtime.py are blocking contracts."
       ]
     },
     "tier2": {
@@ -340,6 +351,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.13 preserves v4.7.12 navigation, Day State render-model, future schedule, Special Events, calendar, and playback architecture while adding an explicit known-database-media readiness clock between day-visible first paint and separate Ultimate Playback first-frame certification.",
+  "baseline": "v4.7.14 preserves v4.7.13 efficiency/media-readiness architecture and adds persistent CFB as a weekly AP Top 25 snapshot-driven season league using Competition Builder persistence rather than a wizard/special-event patch.",
   "status": "IN_PROGRESS"
 }

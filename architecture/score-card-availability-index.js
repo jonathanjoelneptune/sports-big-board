@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.13 — Day-State Score-Card Render Model.
+/* Sports Big Board v4.7.14 — Day-State Score-Card Render Model.
    Build one render-scoped availability model from canonical Day State eventPlans.
    SCHEDULED and thin score-only rows are known no-media first-paint states.
    eventPlans.playable is canonical verified playable media for completed games.
@@ -7,9 +7,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_SCORECARD_AVAILABILITY_INDEX?.version==='4.7.13')return;
+  if(window.SBB_SCORECARD_AVAILABILITY_INDEX?.version==='4.7.14')return;
 
-  const VERSION='4.7.13';
+  const VERSION='4.7.14';
   const state={
     installed:false,active:false,renderId:0,indexBuildMs:0,
     indexed:0,scheduled:0,thin:0,planPlayable:0,sessionVerified:0,

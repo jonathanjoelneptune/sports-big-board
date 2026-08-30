@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.13",
-  "baseRelease": "4.7.12",
-  "title": "Media Readiness Certification",
+  "release": "4.7.14",
+  "baseRelease": "4.7.13",
+  "title": "Persistent AP Top 25 College Football Season",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -43,115 +43,94 @@
     "tests/test_v4712_day_state_render_model_runtime.js",
     "tests/test_v4712_day_state_render_model.py",
     "tests/test_v4713_media_readiness_runtime.js",
-    "tests/test_v4713_media_readiness.py"
+    "tests/test_v4713_media_readiness.py",
+    "sbb/cfb_ranked.py",
+    "tests/test_v4714_cfb_ranked_season.py",
+    "tests/test_v4714_cfb_ranked_runtime.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.13"
+        "4.7.14"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.13",
-        "architecture/efficiency-certification.js?v=4.7.13",
-        "architecture/score-card-availability-index.js?v=4.7.13"
+        "Sports Big Board \u2014 v4.7.14",
+        "core-model.js?v=4.7.14",
+        "architecture/day-state.js?v=4.7.14"
       ],
       "forbidden": [
-        "?v=4.7.12"
+        "?v=4.7.13"
       ]
     },
-    "architecture/score-date-store.js": {
+    "core-model.js": {
       "required": [
-        "Sports Big Board v4.7.13 ScoreDateStore",
-        "version:'1.0'"
-      ],
-      "forbidden": [
-        "version:'1.1"
+        "version:'4.7.14'",
+        "CFB:{id:'CFB'",
+        "seasonId:'CFB2026'",
+        "scoreProvider:'cfb-ranked'",
+        "rankingSnapshotPolicy:'IMMUTABLE_WEEKLY'"
       ]
     },
-    "architecture/score-card-availability-index.js": {
+    "sbb/cfb_ranked.py": {
       "required": [
-        "Sports Big Board v4.7.13",
-        "knownDatabaseMedia:true",
-        "knownMediaGames",
-        "knownMediaAssets",
-        "readyKnownMediaKeys",
-        "mediaReadyGames",
-        "mediaReadyComplete",
-        "visibleMatch"
+        "AP Top 25 College Football season service",
+        "COMPETITION_ID='CFB'",
+        "SEASON_ID='CFB2026'",
+        "if not away_rank and not home_rank:continue",
+        "rankingFrozen':True",
+        "Immutable weekly archive",
+        "PLPydJJjt7Pb4",
+        "titleIncludePhrase':'full game highlights'",
+        "'/api/cfb/status'",
+        "'/api/cfb/rankings'",
+        "'/api/cfb/refresh'",
+        "builder.save_competition"
       ]
     },
-    "architecture/render-pipeline.js": {
+    "sbb/day_state.py": {
       "required": [
-        "Sports Big Board v4.7.13",
-        "availabilityKnownMediaGames",
-        "availabilityKnownMediaAssets",
-        "availabilityMediaReadyGames",
-        "availabilityMediaReadyComplete"
+        "\"engineVersion\":\"4.7.14\"",
+        "from . import cfb_ranked as _cfb_ranked",
+        "_cfb_ranked.install()"
       ]
     },
-    "architecture/efficiency-certification.js": {
+    "tests/test_v4714_cfb_ranked_season.py": {
       "required": [
-        "Sports Big Board v4.7.13",
-        "mediaReadyP95Ms",
-        "mediaReadyMaxMs",
-        "mediaReadyTimeouts",
-        "function mediaReadinessSnapshot",
-        "function waitForMediaReadiness",
-        "'MEDIA READINESS'",
-        "MEDIA_READY_P95=",
-        "MEDIA_READY_COVERAGE=",
-        "NO_KNOWN_DATABASE_MEDIA",
-        "credentials:'omit'"
-      ],
-      "forbidden": [
-        "headers:{'X-SBB-Efficiency-Run'"
+        "test_cfb_is_first_class_persistent_league",
+        "test_archived_rank_snapshot_is_immutable",
+        "test_future_weeks_are_not_projected_using_old_rankings",
+        "test_playlist_is_purple_extended_source"
       ]
     },
-    "tests/test_v4712_day_state_render_model_runtime.js": {
+    "tests/test_v4714_cfb_ranked_runtime.py": {
       "required": [
-        "parts[2]>=12",
-        "retains v4.7.12"
-      ],
-      "forbidden": [
-        "assert.strictEqual(VERSION,'4.7.12')"
-      ]
-    },
-    "tests/test_v4713_media_readiness_runtime.js": {
-      "required": [
-        "media-readiness certification + thin-probe preflight fix contracts",
-        "MEDIA_READY_P95=",
-        "knownDatabaseMedia:true"
-      ]
-    },
-    "tests/test_v4713_media_readiness.py": {
-      "required": [
-        "test_media_readiness_is_separate_from_first_paint",
-        "test_only_known_database_media_is_required",
-        "test_native_thin_probe_avoids_custom_header_preflight"
+        "test_espn_rankings_and_fbs_scoreboard_are_separate_authorities",
+        "test_score_refresh_does_not_change_rank_snapshot",
+        "test_diagnostics_and_manual_refresh_exist"
       ]
     },
     "tests/test_release_behavior_gate.py": {
       "required": [
-        "test_efficiency_certifies_known_media_readiness_separately",
-        "test_render_model_reports_known_database_media_consumption",
-        "test_native_thin_probe_does_not_force_cors_preflight",
-        "node tests/test_v4713_media_readiness_runtime.js"
+        "test_cfb_ap_top25_weekly_snapshot_contract",
+        "test_cfb_is_persistent_first_class_frontend_competition",
+        "test_cfb_playlist_and_diagnostics_contract",
+        "tests.test_v4714_cfb_ranked_season"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.13\"",
-        "DAY_VISIBLE and MEDIA_READY as separate clocks",
-        "Ultimate Playback first-frame certification",
-        "MEDIA_READY_P95"
+        "\"release\": \"4.7.14\"",
+        "weekly AP Top 25 snapshot",
+        "ranked-v-ranked games appear once",
+        "Future CFB weeks are never projected"
       ]
     },
     "VERIFY.sh": {
       "required": [
-        "node tests/test_v4713_media_readiness_runtime.js",
-        "python3 -m unittest tests.test_v4713_media_readiness",
+        "python3 -m unittest tests.test_v4714_cfb_ranked_season",
+        "python3 -m unittest tests.test_v4714_cfb_ranked_runtime",
         "[legacy-advisory]"
       ]
     }
@@ -180,6 +159,8 @@
     "python3 -m unittest tests.test_v4712_day_state_render_model",
     "node tests/test_v4713_media_readiness_runtime.js",
     "python3 -m unittest tests.test_v4713_media_readiness",
+    "python3 -m unittest tests.test_v4714_cfb_ranked_season",
+    "python3 -m unittest tests.test_v4714_cfb_ranked_runtime",
     "bash VERIFY.sh"
   ]
 }

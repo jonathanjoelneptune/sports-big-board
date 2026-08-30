@@ -517,7 +517,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.13",
+            "engineVersion":"4.7.14",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + 15,
@@ -655,7 +655,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.13",
+            "engineVersion":"4.7.14",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -742,7 +742,7 @@ class DayStateEngine:
                 pass
         return {
             "ok":True,
-            "version":"4.7.13",
+            "version":"4.7.14",
             "today":today,
             "builds":self.builds,
             "cacheHits":self.hits,
@@ -999,7 +999,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.13",
+                    "engineVersion":"4.7.14",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},
@@ -1083,3 +1083,10 @@ def install():
             return
         _INSTALLED = True
     threading.Thread(target=_install_into_server, daemon=True, name="sbb-day-state-install").start()
+
+# v4.7.14 persistent AP Top 25 College Football season service.
+try:
+    from . import cfb_ranked as _cfb_ranked
+    _cfb_ranked.install()
+except Exception:
+    pass

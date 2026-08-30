@@ -5,8 +5,10 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/"VERSION").read_text(encoding="utf-8").strip()
 INDEX=(ROOT/"index.html").read_text(encoding="utf-8")
+CORE_MODEL=(ROOT/"core-model.js").read_text(encoding="utf-8")
 CORE=(ROOT/"core-model.js").read_text(encoding="utf-8")
 DAY_BACKEND=(ROOT/"sbb"/"day_state.py").read_text(encoding="utf-8")
+CFB_RANKED=(ROOT/"sbb"/"cfb_ranked.py").read_text(encoding="utf-8")
 DAY_UI=(ROOT/"architecture"/"day-state.js").read_text(encoding="utf-8")
 REG_UI=(ROOT/"architecture"/"competition-registry-projection.js").read_text(encoding="utf-8")
 EFFICIENCY=(ROOT/"architecture"/"efficiency-certification.js").read_text(encoding="utf-8")
@@ -319,6 +321,23 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("credentials:'omit'",block)
         self.assertNotIn("X-SBB-Efficiency-Run",block)
 
+    def test_cfb_ap_top25_weekly_snapshot_contract(self):
+        self.assertIn("AP_TOP_25_EITHER_PARTICIPANT",CFB_RANKED)
+        self.assertIn("rankingFrozen':True",CFB_RANKED)
+        self.assertIn("Immutable weekly archive",CFB_RANKED)
+        self.assertIn("if not away_rank and not home_rank:continue",CFB_RANKED)
+
+    def test_cfb_is_persistent_first_class_frontend_competition(self):
+        self.assertIn("CFB:{id:'CFB'",CORE_MODEL)
+        self.assertIn("seasonId:'CFB2026'",CORE_MODEL)
+        self.assertIn("scoreProvider:'cfb-ranked'",CORE_MODEL)
+
+    def test_cfb_playlist_and_diagnostics_contract(self):
+        self.assertIn("PLPydJJjt7Pb4",CFB_RANKED)
+        self.assertIn("titleIncludePhrase':'full game highlights'",CFB_RANKED)
+        self.assertIn("'/api/cfb/status'",CFB_RANKED)
+        self.assertIn("'/api/cfb/refresh'",CFB_RANKED)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -355,6 +374,8 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "python3 -m unittest tests.test_v4712_day_state_render_model",
             "node tests/test_v4713_media_readiness_runtime.js",
             "python3 -m unittest tests.test_v4713_media_readiness",
+            "python3 -m unittest tests.test_v4714_cfb_ranked_season",
+            "python3 -m unittest tests.test_v4714_cfb_ranked_runtime",
             "python3 -m unittest tests.test_v4710_cold_history_future_store",
             "python3 -m unittest tests.test_v478_future_projection",
         )

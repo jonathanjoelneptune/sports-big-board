@@ -1,13 +1,13 @@
-/* Sports Big Board v4.7.13 — Date Transition Coordinator.
+/* Sports Big Board v4.7.14 — Date Transition Coordinator.
    Day State owns first paint. Legacy history is compatibility-only. Browser discovery
    is not an automatic side effect of moving the ribbon; enrichment is deferred
    until the selected date is stable and only when canonical inventory is incomplete.
 */
 (() => {
   'use strict';
-  if(window.SBB_DATE_TRANSITIONS?.version==='4.7.13')return;
+  if(window.SBB_DATE_TRANSITIONS?.version==='4.7.14')return;
 
-  const VERSION='4.7.13';
+  const VERSION='4.7.14';
   const state={
     generation:0,
     activeDate:'',
@@ -61,7 +61,7 @@
       if(selected && eventDate(selected) && eventDate(selected)!==date){
         window.SBB_SELECTED_EVENT?.clear?.({
           reason:'date-change',
-          source:'date-transition-v4713'
+          source:'date-transition-v4714'
         });
         state.staleSelectionsCleared+=1;
       }

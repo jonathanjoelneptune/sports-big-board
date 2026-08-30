@@ -1,0 +1,37 @@
+Sports Big Board v4.7.14 — Persistent AP Top 25 College Football Season
+
+CFB LEAGUE
+- Persistent league id: CFB
+- Season id: CFB2026
+- Display name: College Football 2026
+- Sport: American Football
+- Icon: 🏈
+- Season: 2026-08-29 through 2027-01-25
+- Schedule authority: ESPN FBS (group 80)
+- Ranking authority: AP Top 25 via ESPN rankings
+
+WEEKLY MEMBERSHIP
+- Each poll week freezes an immutable AP Top 25 snapshot.
+- Include every game with at least one ranked participant.
+- Ranked-v-ranked games appear once with both ranks attached.
+- Unranked opponents remain in the event without a rank.
+- Future weeks are not projected from the previous poll.
+- Historical ranks never change after the weekly snapshot is persisted.
+- Recent weeks can refresh score/status without changing frozen rank.
+
+MEDIA
+- Primary Purple/Extended source: Full Game Highlights | 2026-27
+- Playlist: https://www.youtube.com/playlist?list=PLPydJJjt7Pb4
+- Full Game Highlights intent is persisted with the operator source.
+
+ARCHITECTURE
+- CFB is installed through Day State bootstrap.
+- Schedule/rank service writes through Competition Builder persistence.
+- Therefore CFB participates in Registry, Day State, History, Statistics, Playlists,
+  Game Center and dynamic frontend league navigation like the other persistent leagues.
+- No special-event branch and no weekly manual wizard rebuild.
+
+DIAGNOSTICS
+- GET /api/cfb/status
+- GET /api/cfb/rankings
+- POST /api/cfb/refresh
