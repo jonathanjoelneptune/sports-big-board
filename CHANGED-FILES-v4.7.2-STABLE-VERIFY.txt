@@ -1,0 +1,21 @@
+Sports Big Board v4.7.2 — Stable Verification Architecture
+
+BLOCKING RELEASE GATES
+- manifest/version/certification
+- Ultimate Playback contracts
+- structural workflow/deploy rehearsal
+- tests/test_release_behavior_gate.py
+- JS runtime/contract checks
+- Python compilation
+- shell syntax
+- Pages dry build
+
+ADVISORY ONLY
+- historical unittest discovery across tests/test_*.py
+
+Historical tests still run and report failures. They no longer block deployment
+solely because an old release-specific class name, exact SQL string, helper name,
+or other internal implementation marker changed.
+
+Future release-critical behavior belongs in tests/test_release_behavior_gate.py
+or another explicitly blocking behavior suite.

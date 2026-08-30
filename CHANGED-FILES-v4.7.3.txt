@@ -1,0 +1,57 @@
+Sports Big Board v4.7.3 — Efficiency Instrumentation + Automated Efficiency Certification
+
+REPLACE
+- VERIFY.sh
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- sbb/day_state.py
+- architecture/day-state.js
+- architecture/competition-registry-projection.js
+- tests/test_release_behavior_gate.py
+
+ADD
+- architecture/efficiency-certification.js
+- tests/test_v473_efficiency_runtime.js
+
+DEV UI
+Settings / Dev Mode now includes EFFICIENCY CERTIFICATION:
+- RUN AUTO TEST
+- RUN HAMMER
+- COPY REPORT
+- RESET
+
+CONTINUOUS TELEMETRY
+- launch control ready time
+- START -> board time
+- first score-card paint after START
+- API request p50/p95/max
+- concurrent duplicate API requests
+- Day State cache headers
+- browser long tasks
+- DOM-node sampling
+- JS heap sampling when performance.memory is available
+
+AUTO TEST
+- saves active date + competition filter
+- read-only probes of status/registry/catalog/Day State
+- switches across multiple nearby and special-event dates
+- exercises multiple competition filters
+- records ribbon transition latency + cache state
+- records API latency/errors/duplicates
+- records long tasks, DOM growth, optional heap growth
+- restores original date + filter
+- produces PASS/WARN/FAIL report
+
+HAMMER
+- larger date set
+- two date-switch rounds
+- more competition filters
+- same automatic restoration and report
+
+VERIFICATION POLICY
+- active foundation contracts remain blocking
+- v4.7.3 efficiency runtime contract is blocking
+- broad historical Python archive remains advisory

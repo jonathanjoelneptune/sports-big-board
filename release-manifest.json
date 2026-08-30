@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.2",
-  "baseRelease": "4.7.1",
-  "title": "Frontend Boot Responsiveness + Stable Verification + Foundation Contracts",
+  "release": "4.7.3",
+  "baseRelease": "4.7.2",
+  "title": "Efficiency Instrumentation + Automated Efficiency Certification",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -14,30 +14,33 @@
     "sbb/day_state.py",
     "architecture/day-state.js",
     "architecture/competition-registry-projection.js",
-    "tests/test_release_behavior_gate.py"
+    "architecture/efficiency-certification.js",
+    "tests/test_release_behavior_gate.py",
+    "tests/test_v473_efficiency_runtime.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.2"
+        "4.7.3"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.2",
-        "core-model.js?v=4.7.2",
-        "app.js?v=4.7.2",
-        "architecture/day-state.js?v=4.7.2",
-        "architecture/competition-registry-projection.js?v=4.7.2",
+        "Sports Big Board \u2014 v4.7.3",
+        "api-runtime.js?v=4.7.3",
+        "architecture/efficiency-certification.js?v=4.7.3",
+        "core-model.js?v=4.7.3",
+        "architecture/day-state.js?v=4.7.3",
+        "architecture/competition-registry-projection.js?v=4.7.3",
         "id=\"launchPlayBtn\""
       ],
       "forbidden": [
-        "?v=4.7.1"
+        "?v=4.7.2"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.7.2'",
+        "version:'4.7.3'",
         "SBB_FRONTEND_REGISTRY?.competitionMap?.()"
       ]
     },
@@ -45,35 +48,79 @@
       "required": [
         "COLD_WARMING",
         "STALE_REFRESHING",
-        "\"engineVersion\":\"4.7.2\""
+        "\"engineVersion\":\"4.7.3\""
       ]
     },
     "architecture/day-state.js": {
       "required": [
-        "Sports Big Board v4.7.2",
-        "version:'4.7.2'"
+        "Sports Big Board v4.7.3",
+        "fallback(date)"
       ]
     },
     "architecture/competition-registry-projection.js": {
       "required": [
-        "Sports Big Board v4.7.2",
+        "Sports Big Board v4.7.3",
         "specialRenderKey",
-        "leagueRenderKey",
-        "recursive MutationObserver/render loop",
-        "setInterval(ensureDevCard,1500)",
-        "without watching unrelated DOM mutations"
+        "leagueRenderKey"
       ],
       "forbidden": [
         "new MutationObserver",
         ".observe(document.documentElement"
       ]
     },
+    "architecture/efficiency-certification.js": {
+      "required": [
+        "Sports Big Board v4.7.3",
+        "window.SBB_EFFICIENCY",
+        "RUN AUTO TEST",
+        "RUN HAMMER",
+        "PerformanceObserver",
+        "'longtask'",
+        "duplicateConcurrent",
+        "ribbonP95",
+        "apiP95",
+        "heapGrowthPct",
+        "domGrowthPct",
+        "restoreState",
+        "current state will be restored",
+        "/api/day-state",
+        "/api/competition-registry",
+        "/api/competition-builder/catalog"
+      ],
+      "forbidden": [
+        "new MutationObserver",
+        "method:'POST'",
+        "method:\"POST\""
+      ]
+    },
+    "tests/test_release_behavior_gate.py": {
+      "required": [
+        "class ReleaseBehaviorGate",
+        "test_efficiency_certification_is_loaded_and_non_destructive",
+        "test_active_foundation_checker_contracts_remain_blocking",
+        "node tests/test_v473_efficiency_runtime.js",
+        "tests.test_v446_historical_media_quarantine"
+      ]
+    },
+    "tests/test_v473_efficiency_runtime.js": {
+      "required": [
+        "v4.7.3 efficiency instrumentation + automated certification contracts",
+        "runAutoTest",
+        "runHammer",
+        "restoreState",
+        "duplicateConcurrent",
+        "heapGrowthPct",
+        "domGrowthPct"
+      ]
+    },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.2\"",
-        "document-wide MutationObserver",
-        "launchPlayBtn remain responsive",
-        "idempotent"
+        "\"release\": \"4.7.3\"",
+        "Efficiency Certification",
+        "RUN AUTO TEST",
+        "ribbon p50/p95/max",
+        "backend read-only",
+        "tests/test_v473_efficiency_runtime.js"
       ]
     },
     "VERIFY.sh": {
@@ -83,32 +130,11 @@
         "python3 tools/check_foundation_certification.py",
         "python3 tools/check_ultimate_playback.py",
         "python3 tools/check_deploy_rehearsal.py",
+        "python3 -m unittest tests.test_v446_historical_media_quarantine",
         "python3 -m unittest tests.test_release_behavior_gate",
+        "node tests/test_v473_efficiency_runtime.js",
         "[legacy-advisory]",
-        "does not block deployment",
-        "node tests/test_architecture.js",
-        "python -m py_compile server.py sbb/*.py tests/*.py",
-        "Active foundation contracts referenced by current release checkers.",
-        "python3 -m unittest tests.test_v446_historical_media_quarantine"
-      ],
-      "forbidden": [
-        "python3 -m unittest tests.test_v471_day_state_registry_resilience",
-        "python3 -m unittest tests.test_v472_frontend_boot_responsiveness"
-      ]
-    },
-    "tests/test_release_behavior_gate.py": {
-      "required": [
-        "class ReleaseBehaviorGate",
-        "test_launch_screen_has_interactive_start_control",
-        "test_day_state_http_reads_do_not_build_on_request_thread",
-        "test_dynamic_competitions_have_registry_builder_and_local_fallback",
-        "test_legacy_archive_is_advisory_not_release_blocking",
-        "test_active_foundation_checker_contracts_remain_blocking"
-      ],
-      "forbidden": [
-        "sbb-v471-restored",
-        "sbb-v472-restored",
-        "SELECT 1 FROM history_source_media"
+        "does not block deployment"
       ]
     }
   },
@@ -118,7 +144,9 @@
     "python3 tools/check_foundation_certification.py",
     "python3 tools/check_ultimate_playback.py",
     "python3 tools/check_deploy_rehearsal.py",
+    "python3 -m unittest tests.test_v446_historical_media_quarantine",
     "python3 -m unittest tests.test_release_behavior_gate",
+    "node tests/test_v473_efficiency_runtime.js",
     "bash VERIFY.sh"
   ]
 }

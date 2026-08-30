@@ -9,6 +9,7 @@ CORE=(ROOT/"core-model.js").read_text(encoding="utf-8")
 DAY_BACKEND=(ROOT/"sbb"/"day_state.py").read_text(encoding="utf-8")
 DAY_UI=(ROOT/"architecture"/"day-state.js").read_text(encoding="utf-8")
 REG_UI=(ROOT/"architecture"/"competition-registry-projection.js").read_text(encoding="utf-8")
+EFFICIENCY=(ROOT/"architecture"/"efficiency-certification.js").read_text(encoding="utf-8")
 VERIFY=(ROOT/"VERIFY.sh").read_text(encoding="utf-8")
 
 
@@ -59,6 +60,18 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("specialRenderKey",REG_UI)
         self.assertIn("leagueRenderKey",REG_UI)
 
+    def test_efficiency_certification_is_loaded_and_non_destructive(self):
+        self.assertIn(f"architecture/efficiency-certification.js?v={VERSION}",INDEX)
+        self.assertIn("window.SBB_EFFICIENCY",EFFICIENCY)
+        self.assertIn("runAutoTest",EFFICIENCY)
+        self.assertIn("runHammer",EFFICIENCY)
+        self.assertIn("restoreState",EFFICIENCY)
+        self.assertIn("PerformanceObserver",EFFICIENCY)
+        self.assertIn("duplicateConcurrent",EFFICIENCY)
+        self.assertNotIn("new MutationObserver",EFFICIENCY)
+        self.assertNotIn("method:'POST'",EFFICIENCY)
+        self.assertNotIn('method:"POST"',EFFICIENCY)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -81,6 +94,7 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "node tests/test_v445_duplicate_candidate_runtime.js",
             "node tests/test_v446_stale_media_runtime.js",
             "node tests/test_v447_poisoned_player_containment_runtime.js",
+            "node tests/test_v473_efficiency_runtime.js",
         )
         for command in required:
             self.assertIn(command,VERIFY)

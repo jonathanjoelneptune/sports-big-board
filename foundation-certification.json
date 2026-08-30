@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.2",
+  "release": "4.7.3",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -174,7 +174,15 @@
         "Syntax, manifest, version, Foundation Certification, Ultimate Playback, JavaScript runtime/contract checks, shell syntax, workflow-chain checks, and Pages dry-build checks remain blocking.",
         "Tests explicitly referenced by active release checkers remain blocking foundation contracts even when the broader historical Python regression archive is advisory.",
         "The v4.4.6 tests.test_v446_historical_media_quarantine static recovery contract remains an explicit blocking VERIFY.sh command because check_ultimate_playback.py requires it.",
-        "Verification cleanup may move superseded implementation-pinning tests to advisory status but may not remove commands required by check_foundation_certification.py or check_ultimate_playback.py."
+        "Verification cleanup may move superseded implementation-pinning tests to advisory status but may not remove commands required by check_foundation_certification.py or check_ultimate_playback.py.",
+        "Efficiency Certification continuously measures browser API latency, concurrent duplicate requests, main-thread long tasks, DOM-node count, optional JavaScript heap use, and launch responsiveness with bounded telemetry buffers.",
+        "Dev mode exposes an EFFICIENCY CERTIFICATION card with RUN AUTO TEST, RUN HAMMER, COPY REPORT, and RESET controls.",
+        "The automated efficiency test is backend read-only, saves the active ribbon date and competition filter, exercises multiple dates and competitions, and restores the exact browsing state when complete.",
+        "Efficiency certification reports distribution metrics including ribbon p50/p95/max and API p50/p95/max so intermittent latency is visible instead of being hidden by a single average.",
+        "Day State cache response headers are recorded during efficiency runs so READY, STALE_REFRESHING, and COLD_WARMING behavior can be correlated with ribbon latency.",
+        "The automated efficiency test records request failures, concurrent duplicate requests, ribbon timeouts, long-task counts/max duration, DOM growth, optional heap growth, and state-restoration success.",
+        "Efficiency instrumentation may not install a document-wide MutationObserver and may not issue backend mutation requests.",
+        "tests/test_v473_efficiency_runtime.js is a blocking browser contract for the Efficiency Certification surface and non-destructive automation guarantees."
       ]
     },
     "tier2": {
@@ -225,6 +233,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.2 stable verification distinguishes active checker-required foundation contracts from the historical advisory archive. Foundation commands remain blocking; stale implementation-pinning tests remain advisory.",
+  "baseline": "v4.7.3 adds continuous efficiency telemetry and automated, non-destructive Efficiency Certification on top of the v4.7 Day State/Competition Registry architecture. Functional foundation contracts remain blocking while historical implementation-pinning tests remain advisory.",
   "status": "IN_PROGRESS"
 }
