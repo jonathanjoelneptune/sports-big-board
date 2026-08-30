@@ -401,7 +401,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.6",
+            "engineVersion":"4.7.7",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -487,7 +487,7 @@ class DayStateEngine:
                 pass
         return {
             "ok":True,
-            "version":"4.7.6",
+            "version":"4.7.7",
             "today":today,
             "builds":self.builds,
             "cacheHits":self.hits,
@@ -640,7 +640,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.6",
+                    "engineVersion":"4.7.7",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},

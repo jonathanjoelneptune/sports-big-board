@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.6",
-  "baseRelease": "4.7.5",
-  "title": "Render Pipeline + Test Accuracy",
+  "release": "4.7.7",
+  "baseRelease": "4.7.6",
+  "title": "First-Paint Certification + Render Consolidation",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -26,116 +26,115 @@
     "tests/test_v473_efficiency_runtime.js",
     "tests/test_v474_efficiency_remediation_runtime.js",
     "tests/test_v475_enrichment_firewall_runtime.js",
-    "tests/test_v476_render_pipeline_runtime.js"
+    "tests/test_v476_render_pipeline_runtime.js",
+    "tests/test_v477_first_paint_render_consolidation_runtime.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.6"
+        "4.7.7"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.6",
-        "__SBB_PENDING_LAUNCH",
-        "architecture/future-date-navigation.js?v=4.7.6",
-        "architecture/render-pipeline.js?v=4.7.6",
-        "architecture/request-broker.js?v=4.7.6",
-        "architecture/date-transition-coordinator.js?v=4.7.6"
+        "Sports Big Board \u2014 v4.7.7",
+        "architecture/render-pipeline.js?v=4.7.7",
+        "architecture/date-transition-coordinator.js?v=4.7.7"
       ],
       "forbidden": [
-        "?v=4.7.5"
-      ]
-    },
-    "architecture/future-date-navigation.js": {
-      "required": [
-        "Sports Big Board v4.7.6",
-        "window.SBB_FUTURE_DATES",
-        "picker.removeAttribute('max')",
-        "setFutureShell",
-        "btn.disabled=false"
+        "?v=4.7.6"
       ]
     },
     "architecture/render-pipeline.js": {
       "required": [
-        "Sports Big Board v4.7.6",
-        "window.SBB_RENDER_PIPELINE",
-        "same-frame",
-        "durationMs",
-        "coalesced"
+        "Sports Big Board v4.7.7",
+        "beginGeneration",
+        "commitGeneration",
+        "generation-hold",
+        "generationCommit:true",
+        "document.createDocumentFragment()",
+        "fragmentCommits",
+        "buildMs",
+        "commitMs",
+        "emit('paint'",
+        "reasonCounts"
       ]
     },
     "architecture/date-transition-coordinator.js": {
       "required": [
-        "Sports Big Board v4.7.6",
-        "Future scheduled dates are valid Big Board dates",
-        "SBB_FUTURE_DATES.setFutureShell",
-        "Day State apply() already owns the normal first-paint render",
-        "cold-ribbon-fallback"
+        "Sports Big Board v4.7.7",
+        "SBB_RENDER_PIPELINE?.beginGeneration",
+        "SBB_RENDER_PIPELINE?.commitGeneration",
+        "transition owns exactly one first-paint ribbon commit"
       ],
       "forbidden": [
-        "if(d>today())d=today()"
-      ]
-    },
-    "architecture/request-broker.js": {
-      "required": [
-        "Sports Big Board v4.7.6",
-        "const runId=clean(window.__SBB_EFFICIENCY_RUN_ID",
-        "generation,runId"
+        "withReason?.('cold-ribbon-fallback'"
       ]
     },
     "architecture/day-state.js": {
       "required": [
-        "Sports Big Board v4.7.6",
-        "STORE_SCORE_ROWS",
-        "INGEST_MEDIA_PLANS",
-        "APPLY_TOTAL",
-        "day-state-apply"
+        "Sports Big Board v4.7.7",
+        "SBB_RENDER_PIPELINE.request('day-state-apply'",
+        "RIBBON_RENDER_REQUEST"
       ]
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "Sports Big Board v4.7.6",
-        "runId:String(d.runId",
-        "window.__SBB_EFFICIENCY_RUN_ID=runId",
-        "launchHandlerReadyMs",
-        "RENDER_P95=",
-        "DAY_APPLY_P95=",
-        "renderPipeline"
+        "Sports Big Board v4.7.7",
+        "function ribbonFirstUsable",
+        "function ribbonFullySettled",
+        "firstPaintMs",
+        "settleTimeout",
+        "First paint p95",
+        "First-paint timeouts",
+        "FULL_SETTLE_TIMEOUTS=",
+        "CARD_BUILD_P95=",
+        "DOM_COMMIT_P95=",
+        "BROWSER_PAINT_P95=",
+        "RENDER_REASONS="
       ]
     },
     "tests/test_v476_render_pipeline_runtime.js": {
       "required": [
-        "future-date + render-pipeline + efficiency-attribution contracts",
-        "SBB_FUTURE_DATES",
-        "SBB_RENDER_PIPELINE",
-        "RENDER_P95="
+        "parts[2]>=6",
+        "retains v4.7.6"
+      ],
+      "forbidden": [
+        "assert.strictEqual(VERSION,'4.7.6')"
+      ]
+    },
+    "tests/test_v477_first_paint_render_consolidation_runtime.js": {
+      "required": [
+        "first-paint certification + generation render consolidation contracts",
+        "beginGeneration",
+        "commitGeneration",
+        "DocumentFragment",
+        "CARD_BUILD_P95="
       ]
     },
     "tests/test_release_behavior_gate.py": {
       "required": [
-        "test_future_scheduled_dates_are_browsable",
-        "test_render_pipeline_coalesces_immediate_duplicate_ribbon_renders",
-        "test_efficiency_request_attribution_is_fixed_at_network_start",
-        "test_early_launch_bridge_exists_before_app_handler",
-        "node tests/test_v476_render_pipeline_runtime.js"
+        "test_date_transition_has_one_generation_owned_first_paint_commit",
+        "test_ribbon_cards_are_batched_off_dom_before_commit",
+        "test_efficiency_certifies_first_usable_paint_not_background_settle",
+        "node tests/test_v477_first_paint_render_consolidation_runtime.js"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.6\"",
-        "Future scheduled score-ribbon dates",
-        "Ribbon Render Pipeline",
-        "network transport begins",
-        "tests/test_v476_render_pipeline_runtime.js"
+        "\"release\": \"4.7.7\"",
+        "one Render Pipeline generation",
+        "DocumentFragment",
+        "first usable canonical score-card paint",
+        "tests/test_v477_first_paint_render_consolidation_runtime.js"
       ]
     },
     "VERIFY.sh": {
       "required": [
         "python3 -m unittest tests.test_v446_historical_media_quarantine",
         "python3 -m unittest tests.test_release_behavior_gate",
-        "node tests/test_v475_enrichment_firewall_runtime.js",
         "node tests/test_v476_render_pipeline_runtime.js",
+        "node tests/test_v477_first_paint_render_consolidation_runtime.js",
         "[legacy-advisory]"
       ]
     }
@@ -152,6 +151,7 @@
     "node tests/test_v474_efficiency_remediation_runtime.js",
     "node tests/test_v475_enrichment_firewall_runtime.js",
     "node tests/test_v476_render_pipeline_runtime.js",
+    "node tests/test_v477_first_paint_render_consolidation_runtime.js",
     "bash VERIFY.sh"
   ]
 }

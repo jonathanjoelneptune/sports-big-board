@@ -1,10 +1,10 @@
-/* Sports Big Board v4.7.6 — Day State client + operator views.
+/* Sports Big Board v4.7.7 — Day State client + operator views.
    The backend owns the day. The browser renders a precomputed read model and keeps
    legacy provider paths as recovery/freshness fallbacks rather than first-paint work.
 */
 (() => {
   'use strict';
-  if (window.SBB_DAY_STATE?.version === '4.7.6') return;
+  if (window.SBB_DAY_STATE?.version === '4.7.7') return;
 
   const clean=v=>String(v??'').trim();
   const day=v=>clean(v).slice(0,10);
@@ -62,15 +62,16 @@
     if(typeof scoreBrowseDate!=='undefined'&&scoreBrowseDate===date&&typeof renderScoresFromMatchesCombined==='function'){
       const renderStarted=performance.now();
       try{
-        if(window.SBB_RENDER_PIPELINE?.withReason){
-          window.SBB_RENDER_PIPELINE.withReason('day-state-apply',()=>renderScoresFromMatchesCombined(false));
+        const generation=Number(window.SBB_DATE_TRANSITIONS?.snapshot?.().generation||0);
+        if(window.SBB_RENDER_PIPELINE?.request){
+          window.SBB_RENDER_PIPELINE.request('day-state-apply',{generation,animate:false});
         }else{
           window.__SBB_RENDER_REASON='day-state-apply';
           renderScoresFromMatchesCombined(false);
           window.__SBB_RENDER_REASON='';
         }
       }finally{
-        emitPhase(date,'RIBBON_RENDER_CALL',performance.now()-renderStarted);
+        emitPhase(date,'RIBBON_RENDER_REQUEST',performance.now()-renderStarted);
       }
     }
     emitPhase(date,'APPLY_TOTAL',performance.now()-applyStarted,{games:count});
@@ -267,7 +268,7 @@
   }
 
   window.SBB_DAY_STATE=Object.freeze({
-    version:'4.7.6',load,rebuild,apply,
+    version:'4.7.7',load,rebuild,apply,
     status:()=>json('/api/day-state/status'),
     registry:()=>json('/api/competition-registry'),
     cache:date=>state.cache.get(day(date))||null,

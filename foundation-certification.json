@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.6",
+  "release": "4.7.7",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -214,7 +214,16 @@
         "Request Broker attaches the active efficiency run id when network transport begins and carries that immutable attribution through finish/error/metadata events.",
         "Efficiency Certification excludes network work that began before the active test run even if that request finishes during the run.",
         "Efficiency Certification records launch parse time, launch-handler-ready time, Render Pipeline p95/max/count/coalescing, and Day State STORE_SCORE_ROWS, INGEST_MEDIA_PLANS, and APPLY_TOTAL phase latency.",
-        "tests/test_v476_render_pipeline_runtime.js is a blocking browser contract for future-date navigation, launch readiness, render coalescing, and start-time efficiency attribution."
+        "tests/test_v476_render_pipeline_runtime.js is a blocking browser contract for future-date navigation, launch readiness, render coalescing, and start-time efficiency attribution.",
+        "Each score-ribbon date transition opens one Render Pipeline generation before shell/data work begins and releases exactly one canonical first-paint commit after Day State or fallback state is ready.",
+        "Render requests made by shell, Day State, historical compatibility, or other ribbon callers while the active date generation is held are coalesced instead of performing live DOM work independently.",
+        "The ribbon renderer stages score-card appendChild operations in a DocumentFragment and performs one live #scoreCells append commit per actual render.",
+        "Render Pipeline records card-build time, DOM-commit time, next-frame paint delay, generation-commit status, and render reason counts.",
+        "Day State apply requests a render from Render Pipeline instead of forcing a synchronous render while an active date generation is held.",
+        "Efficiency Certification uses first usable canonical score-card paint as the blocking ribbon performance metric; continued background refresh/full-settle state is reported separately and does not create a false first-paint timeout.",
+        "Future scheduled dates with visible scheduled game cards are first-paint complete even when Day State remains STALE_REFRESHING in the background.",
+        "Efficiency Certification reports first-paint p95/max/timeouts separately from full-settle p95/timeouts and reports CARD_BUILD_P95, DOM_COMMIT_P95, BROWSER_PAINT_P95, and RENDER_REASONS.",
+        "tests/test_v477_first_paint_render_consolidation_runtime.js is a blocking contract for generation-owned first paint, DocumentFragment ribbon commits, and first-paint-vs-settle certification semantics."
       ]
     },
     "tier2": {
@@ -265,6 +274,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.6 preserves the v4.7.5 Enrichment Firewall and focuses on frontend execution: future scheduled dates are browsable, launch input is captured early, Day State no longer causes a known double ribbon render, immediate duplicate renders are coalesced, and the efficiency test attributes network and render work to the correct run and phase.",
+  "baseline": "v4.7.7 preserves the v4.7.5/v4.7.6 network and enrichment architecture and consolidates frontend work: one generation-owned ribbon first paint per date transition, one DocumentFragment DOM commit per actual render, and efficiency certification based on first usable score-card paint rather than background settle.",
   "status": "IN_PROGRESS"
 }

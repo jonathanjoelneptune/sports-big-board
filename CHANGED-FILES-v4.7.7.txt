@@ -1,0 +1,10 @@
+Sports Big Board v4.7.7 — First-Paint Certification + Render Consolidation
+
+- One generation-owned first-paint ribbon commit per date transition.
+- Shell/Day State/legacy render callers are held and coalesced until canonical state is ready.
+- Score-card appendChild calls are staged in a DocumentFragment and committed once.
+- Efficiency certification blocks on first usable score-card paint, not background settle.
+- Full settle remains diagnostic as FULL_SETTLE_P95 / FULL_SETTLE_TIMEOUTS.
+- Render telemetry now separates CARD_BUILD, DOM_COMMIT, next-frame browser paint delay,
+  generation commits, and named render reasons.
+- v4.7.6 runtime contract is release-line aware so future 4.7.x patches do not stale-pin it.

@@ -145,7 +145,7 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("window.SBB_RENDER_PIPELINE",RENDER_PIPELINE)
         self.assertIn("same-frame",RENDER_PIPELINE)
         self.assertIn("durationMs",RENDER_PIPELINE)
-        self.assertIn("Day State apply() already owns the normal first-paint render",DATE_COORD)
+        self.assertIn("transition owns exactly one first-paint ribbon commit",DATE_COORD)
 
     def test_efficiency_request_attribution_is_fixed_at_network_start(self):
         self.assertIn("__SBB_EFFICIENCY_RUN_ID",BROKER)
@@ -157,6 +157,27 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("__SBB_LAUNCH_CONTROL_PARSED_AT=performance.now()",INDEX)
         self.assertIn("__SBB_PENDING_LAUNCH",INDEX)
         self.assertIn("launchHandlerReadyMs",EFFICIENCY)
+
+    def test_date_transition_has_one_generation_owned_first_paint_commit(self):
+        self.assertIn("beginGeneration",RENDER_PIPELINE)
+        self.assertIn("commitGeneration",RENDER_PIPELINE)
+        self.assertIn("generation-hold",RENDER_PIPELINE)
+        self.assertIn("SBB_RENDER_PIPELINE?.beginGeneration",DATE_COORD)
+        self.assertIn("SBB_RENDER_PIPELINE?.commitGeneration",DATE_COORD)
+
+    def test_ribbon_cards_are_batched_off_dom_before_commit(self):
+        self.assertIn("document.createDocumentFragment()",RENDER_PIPELINE)
+        self.assertIn("fragmentCommits",RENDER_PIPELINE)
+        self.assertIn("buildMs",RENDER_PIPELINE)
+        self.assertIn("commitMs",RENDER_PIPELINE)
+
+    def test_efficiency_certifies_first_usable_paint_not_background_settle(self):
+        self.assertIn("function ribbonFirstUsable",EFFICIENCY)
+        self.assertIn("function ribbonFullySettled",EFFICIENCY)
+        self.assertIn("FULL_SETTLE_TIMEOUTS=",EFFICIENCY)
+        self.assertIn("CARD_BUILD_P95=",EFFICIENCY)
+        self.assertIn("DOM_COMMIT_P95=",EFFICIENCY)
+        self.assertIn("BROWSER_PAINT_P95=",EFFICIENCY)
 
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
@@ -184,6 +205,7 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "node tests/test_v474_efficiency_remediation_runtime.js",
             "node tests/test_v475_enrichment_firewall_runtime.js",
             "node tests/test_v476_render_pipeline_runtime.js",
+            "node tests/test_v477_first_paint_render_consolidation_runtime.js",
         )
         for command in required:
             self.assertIn(command,VERIFY)

@@ -1,13 +1,13 @@
-/* Sports Big Board v4.7.6 — Date Transition Coordinator.
+/* Sports Big Board v4.7.7 — Date Transition Coordinator.
    Day State owns first paint. Legacy history is fallback-only. Browser discovery
    is not an automatic side effect of moving the ribbon; enrichment is deferred
    until the selected date is stable and only when canonical inventory is incomplete.
 */
 (() => {
   'use strict';
-  if(window.SBB_DATE_TRANSITIONS?.version==='4.7.6')return;
+  if(window.SBB_DATE_TRANSITIONS?.version==='4.7.7')return;
 
-  const VERSION='4.7.6';
+  const VERSION='4.7.7';
   const state={
     generation:0,
     activeDate:'',
@@ -61,7 +61,7 @@
       if(selected && eventDate(selected) && eventDate(selected)!==date){
         window.SBB_SELECTED_EVENT?.clear?.({
           reason:'date-change',
-          source:'date-transition-v475'
+          source:'date-transition-v477'
         });
         state.staleSelectionsCleared+=1;
       }
@@ -116,6 +116,7 @@
 
       clearStaleSelection(date);
       window.SBB_REQUEST_BROKER?.beginDate?.(date,generation);
+      window.SBB_RENDER_PIPELINE?.beginGeneration?.(generation,date);
 
       // Pure shell update: never let the old score-date path start provider,
       // roundup, custom-media or discovery work before Day State first paint.
@@ -163,13 +164,16 @@
         }
 
         if(generation===state.generation){
-          // Day State apply() already owns the normal first-paint render. Only the
-          // cold legacy fallback needs an explicit render here.
-          if(!payload){
-            try{
-              window.SBB_RENDER_PIPELINE?.withReason?.('cold-ribbon-fallback',()=>window.renderScoresFromMatchesCombined?.(false))
-                ?? window.renderScoresFromMatchesCombined?.(false);
-            }catch(_){}
+          // v4.7.7: the transition owns exactly one first-paint ribbon commit.
+          // Shell, Day State, and legacy compatibility render requests are held
+          // until canonical state is ready, then committed together.
+          try{
+            await window.SBB_RENDER_PIPELINE?.commitGeneration?.(generation,{
+              reason:state.firstPaintSource||'canonical-first-paint',
+              force:true
+            });
+          }catch(_){
+            try{window.renderScoresFromMatchesCombined?.(false);}catch(__){}
           }
           try{window.updateScoreDayPager?.();}catch(_){}
           scheduleEnrichment(date,generation,payload);
@@ -179,6 +183,7 @@
         return true;
       })().finally(()=>{
         if(generation===state.generation)state.currentPromise=null;
+        else window.SBB_RENDER_PIPELINE?.cancelGeneration?.(generation,'superseded-date');
       });
 
       return state.currentPromise;

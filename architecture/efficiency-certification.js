@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.6 — Efficiency Certification.
+/* Sports Big Board v4.7.7 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.6') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.7') return;
 
-  const VERSION = '4.7.6';
+  const VERSION = '4.7.7';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -201,12 +201,25 @@
 
   function onRenderEvent(ev){
     const d=ev?.detail||{};
-    if(d.type!=='render')return;
-    boundedPush(state.renderEvents,{
-      at:Date.now(),runId:String(window.__SBB_EFFICIENCY_RUN_ID||''),
-      durationMs:Number(d.durationMs)||0,reason:String(d.reason||''),
-      beforeNodes:Number(d.beforeNodes)||0,afterNodes:Number(d.afterNodes)||0
-    },MAX_SAMPLES);
+    if(d.type==='render'){
+      boundedPush(state.renderEvents,{
+        type:'render',at:Date.now(),runId:String(window.__SBB_EFFICIENCY_RUN_ID||''),
+        durationMs:Number(d.durationMs)||0,reason:String(d.reason||''),
+        buildMs:Number(d.buildMs)||0,commitMs:Number(d.commitMs)||0,
+        stagedNodes:Number(d.stagedNodes)||0,generation:Number(d.generation)||0,
+        generationCommit:!!d.generationCommit,
+        beforeNodes:Number(d.beforeNodes)||0,afterNodes:Number(d.afterNodes)||0
+      },MAX_SAMPLES);
+      return;
+    }
+    if(d.type==='paint'){
+      boundedPush(state.renderEvents,{
+        type:'paint',at:Date.now(),runId:String(window.__SBB_EFFICIENCY_RUN_ID||''),
+        paintDelayMs:Number(d.paintDelayMs)||0,reason:String(d.reason||''),
+        generation:Number(d.generation)||0,generationCommit:!!d.generationCommit,
+        afterNodes:Number(d.afterNodes)||0
+      },MAX_SAMPLES);
+    }
   }
   function onDayStatePhase(ev){
     const d=ev?.detail||{};
@@ -296,14 +309,25 @@
   // ----------------------------------------------------------
   // Ribbon transition measurement.
   // ----------------------------------------------------------
-  function ribbonSettled(date) {
-    const selected = browseDate();
-    if (selected !== date) return false;
-    const cells = document.getElementById('scoreCells');
-    if (!cells) return false;
-    const text = clean(cells.textContent).toLowerCase();
-    if (!text) return false;
-    if (text.includes('loading') || text.includes('scores…') || text.includes('scores...')) return false;
+  function ribbonFirstUsable(date) {
+    const selected=browseDate();
+    if(selected!==date)return false;
+    const cells=document.getElementById('scoreCells');
+    if(!cells||cells.dataset.scoreDay!==date)return false;
+    if(cells.querySelector('.score-card:not(.roundup-card)'))return true;
+    const empty=cells.querySelector('.score-empty-day');
+    if(empty){
+      const text=clean(empty.textContent).toLowerCase();
+      return !!text&&!text.includes('loading');
+    }
+    return false;
+  }
+
+  function ribbonFullySettled(date) {
+    if(!ribbonFirstUsable(date))return false;
+    const cells=document.getElementById('scoreCells');
+    const text=clean(cells?.textContent).toLowerCase();
+    if(text.includes('loading')||text.includes('scores…')||text.includes('scores...'))return false;
     return true;
   }
 
@@ -317,35 +341,54 @@
   }
 
   async function switchDate(date, timeoutMs=3500) {
-    const started = now();
-    const requestStart = state.requests.length;
-    let commandError = '';
-    try {
-      if (typeof window.setScoreBrowseDate !== 'function') throw new Error('setScoreBrowseDate unavailable');
-      window.scoreRibbonInteractionUntil = Date.now() + timeoutMs + 2500;
-      await Promise.resolve(window.setScoreBrowseDate(date,{animate:false,hold:timeoutMs+1000,load:true}));
-    } catch (err) {
-      commandError = clean(err?.message || err);
-    }
-    const settled = !commandError && await waitFor(()=>ribbonSettled(date),timeoutMs,40);
-    const elapsed = round(now()-started);
-    const reqs = state.requests.slice(requestStart).filter(r=>r.runId===state.currentRunId);
-    const cacheStates = reqs.map(r=>r.cacheState).filter(Boolean);
+    const started=now();
+    const requestStart=state.requests.length;
+    let commandError='';
+
+    if(typeof window.setScoreBrowseDate!=='function')commandError='setScoreBrowseDate unavailable';
+    window.scoreRibbonInteractionUntil=Date.now()+timeoutMs+2500;
+
+    const transitionPromise=commandError
+      ? Promise.resolve(false)
+      : Promise.resolve(window.setScoreBrowseDate(date,{
+          animate:false,hold:timeoutMs+1000,load:true
+        })).catch(err=>{
+          commandError=clean(err?.message||err);
+          return false;
+        });
+
+    const firstPaintObserved=await waitFor(
+      ()=>!!commandError||ribbonFirstUsable(date),
+      timeoutMs,
+      24
+    );
+    const firstPaintMs=round(now()-started);
+    const firstPaintOk=!!firstPaintObserved&&!commandError&&ribbonFirstUsable(date);
+
+    await Promise.race([transitionPromise,sleep(1200)]);
+    const settleStarted=now();
+    const fullySettled=firstPaintOk&&await waitFor(
+      ()=>ribbonFullySettled(date),
+      1200,
+      40
+    );
+    const fullSettleMs=fullySettled?round(firstPaintMs+(now()-settleStarted)):null;
+
+    const reqs=state.requests.slice(requestStart).filter(r=>r.runId===state.currentRunId);
+    const cacheStates=reqs.map(r=>r.cacheState).filter(Boolean);
     try{
       const cached=window.SBB_DAY_STATE?.cache?.(date);
       const cacheState=String(cached?.cache?.state||'');
       if(cacheState&&!cacheStates.includes(cacheState))cacheStates.push(cacheState);
     }catch(_){}
     const firstPaint=window.SBB_DATE_TRANSITIONS?.snapshot?.().firstPaintSource||'';
+
     return {
-      date,
-      elapsedMs:elapsed,
-      settled,
-      timeout:!settled,
-      commandError,
-      requestCount:reqs.length,
-      cacheStates,
-      firstPaint,
+      date,elapsedMs:firstPaintMs,firstPaintMs,firstPaintOk,
+      settled:fullySettled,fullSettleMs,
+      timeout:!firstPaintOk,
+      settleTimeout:firstPaintOk&&!fullySettled,
+      commandError,requestCount:reqs.length,cacheStates,firstPaint,
       apiMs:reqs.filter(r=>r.path.startsWith('/api/')).map(r=>r.durationMs),
     };
   }
@@ -357,7 +400,9 @@
       .find(x=>upper(x.dataset.scoreFilter)===id);
     try {
       if (button) {
-        button.click();
+        if(window.SBB_RENDER_PIPELINE?.withReason){
+          window.SBB_RENDER_PIPELINE.withReason('filter-change',()=>button.click());
+        }else button.click();
       } else if (window.SBB_FRONTEND_REGISTRY?.select) {
         await Promise.resolve(window.SBB_FRONTEND_REGISTRY.select(id));
       } else {
@@ -449,15 +494,20 @@
     const api=reqs.filter(r=>r.path.startsWith('/api/'));
     const apiMs=api.map(r=>r.durationMs).filter(Number.isFinite);
     const tasks=longTasksForRun(runId);
-    const renderRows=state.renderEvents.filter(x=>x.runId===runId);
+    const renderRows=state.renderEvents.filter(x=>x.runId===runId&&x.type==='render');
+    const paintRows=state.renderEvents.filter(x=>x.runId===runId&&x.type==='paint');
     const renderMs=renderRows.map(x=>x.durationMs).filter(Number.isFinite);
+    const buildMs=renderRows.map(x=>x.buildMs).filter(Number.isFinite);
+    const commitMs=renderRows.map(x=>x.commitMs).filter(Number.isFinite);
+    const paintMs=paintRows.map(x=>x.paintDelayMs).filter(Number.isFinite);
     const phaseRows=state.dayStatePhases.filter(x=>x.runId===runId);
     const phaseMap={};
     for(const row of phaseRows){
       const list=phaseMap[row.phase]||(phaseMap[row.phase]=[]);
       if(Number.isFinite(row.durationMs))list.push(row.durationMs);
     }
-    const ribbonMs=switches.filter(x=>x.settled).map(x=>x.elapsedMs);
+    const ribbonMs=switches.filter(x=>x.firstPaintOk).map(x=>x.firstPaintMs);
+    const settleMs=switches.filter(x=>x.settled&&Number.isFinite(x.fullSettleMs)).map(x=>x.fullSettleMs);
     const cacheStates={};
     for (const row of switches) for (const c of row.cacheStates||[]) cacheStates[c]=(cacheStates[c]||0)+1;
     const heapEnd=heapBytes();
@@ -474,8 +524,10 @@
       ribbonP50:round(percentile(ribbonMs,50)),
       ribbonP95:round(percentile(ribbonMs,95)),
       ribbonMax:round(ribbonMs.length?Math.max(...ribbonMs):null),
+      fullSettleP95:round(percentile(settleMs,95)),
+      fullSettleTimeouts:switches.filter(x=>x.settleTimeout).length,
       timeouts:switches.filter(x=>x.timeout).length,
-      wrongDate:switches.filter(x=>x.settled && x.date!==browseDate()).length,
+      wrongDate:switches.filter(x=>x.firstPaintOk && x.date!==browseDate()).length,
       filterSwitches:filters.length,
       filterFailures:filters.filter(x=>!x.ok).length,
       apiRequests:api.length,
@@ -495,7 +547,16 @@
       renderP95:round(percentile(renderMs,95)),
       renderMax:round(renderMs.length?Math.max(...renderMs):0),
       renderTotal:round(renderMs.reduce((a,b)=>a+b,0)),
-      renderCoalesced:Number(window.SBB_RENDER_PIPELINE?.snapshot?.().coalesced||0),
+      cardBuildP95:round(percentile(buildMs,95)),
+      domCommitP95:round(percentile(commitMs,95)),
+      browserPaintP95:round(percentile(paintMs,95)),
+      generationRenderCount:renderRows.filter(x=>x.generationCommit).length,
+      renderCoalesced:Math.max(0,Number(window.SBB_RENDER_PIPELINE?.snapshot?.().coalesced||0)-Number(baseline.renderCoalesced||0)),
+      renderReasonCounts:renderRows.reduce((acc,row)=>{
+        const key=String(row.reason||'unspecified');
+        acc[key]=(acc[key]||0)+1;
+        return acc;
+      },{}),
       dayApplyP95:round(percentile(phaseMap.APPLY_TOTAL||[],95)),
       scoreRowsP95:round(percentile(phaseMap.STORE_SCORE_ROWS||[],95)),
       mediaPlansP95:round(percentile(phaseMap.INGEST_MEDIA_PLANS||[],95)),
@@ -519,8 +580,8 @@
       ['Launch control parsed',metrics.launchParsedMs,'ms',THRESHOLDS.launchInteractiveMs,true],
       ['Launch handler ready',metrics.launchHandlerReadyMs,'ms',THRESHOLDS.launchInteractiveMs,true],
       ['START → board',metrics.startToBoardMs,'ms',THRESHOLDS.startToBoardMs,true],
-      ['Ribbon p95',metrics.ribbonP95,'ms',THRESHOLDS.ribbonP95Ms],
-      ['Ribbon max',metrics.ribbonMax,'ms',THRESHOLDS.ribbonMaxMs],
+      ['First paint p95',metrics.ribbonP95,'ms',THRESHOLDS.ribbonP95Ms],
+      ['First paint max',metrics.ribbonMax,'ms',THRESHOLDS.ribbonMaxMs],
       ['API p95',metrics.apiP95,'ms',THRESHOLDS.apiP95Ms],
       ['Broker-coalesced callers',metrics.duplicateConcurrent,'',THRESHOLDS.duplicateConcurrent],
       ['Max network req/date',metrics.networkPerDateMax,'',THRESHOLDS.networkPerDateMax],
@@ -528,7 +589,7 @@
       ['Longest task',metrics.longTaskMax,'ms',THRESHOLDS.longTaskMaxMs],
       ['DOM growth',metrics.domGrowthPct,'%',THRESHOLDS.domGrowthPct,true],
       ['Heap growth',metrics.heapGrowthPct,'%',THRESHOLDS.heapGrowthPct,true],
-      ['Ribbon timeouts',metrics.timeouts,'',THRESHOLDS.timeouts],
+      ['First-paint timeouts',metrics.timeouts,'',THRESHOLDS.timeouts],
       ['API 5xx',metrics.api5xx,'',THRESHOLDS.api5xx],
     ].map(([name,value,unit,threshold,optional])=>({
       name,value,unit,grade:gradeLow(value,threshold,{optional:!!optional}),
@@ -552,14 +613,17 @@
       `API_ERRORS=${m.apiErrors}  SUPERSEDED_ABORTS=${m.supersededAborts}  CACHE_HITS=${m.cacheHits}`,
       `DEFERRED=${m.deferred}  DEFERRED_ABORTS=${m.deferredAborts}  DEFERRED_RELEASES=${m.deferredReleases}`,
       `OPERATOR_MODULES=${window.SBB_OPERATOR_MODULES?.snapshot?.().loaded?'LOADED':'LAZY'}  FIRST_PAINT=${window.SBB_DATE_TRANSITIONS?.snapshot?.().firstPaintSource||'—'}`,
-      `RENDER_COUNT=${m.renderCount}  RENDER_P95=${m.renderP95??'N/A'}ms  RENDER_MAX=${m.renderMax??'N/A'}ms  RENDER_COALESCED=${m.renderCoalesced}`,
+      `RENDER_COUNT=${m.renderCount}  GENERATION_RENDERS=${m.generationRenderCount}  RENDER_COALESCED=${m.renderCoalesced}`,
+      `RENDER_P95=${m.renderP95??'N/A'}ms  CARD_BUILD_P95=${m.cardBuildP95??'N/A'}ms  DOM_COMMIT_P95=${m.domCommitP95??'N/A'}ms  BROWSER_PAINT_P95=${m.browserPaintP95??'N/A'}ms`,
+      `RENDER_REASONS=${Object.entries(m.renderReasonCounts||{}).map(([k,v])=>`${k}:${v}`).join(' ')||'none'}`,
       `DAY_APPLY_P95=${m.dayApplyP95??'N/A'}ms  SCORE_ROWS_P95=${m.scoreRowsP95??'N/A'}ms  MEDIA_PLANS_P95=${m.mediaPlansP95??'N/A'}ms`,
+      `FULL_SETTLE_P95=${m.fullSettleP95??'N/A'}ms  FULL_SETTLE_TIMEOUTS=${m.fullSettleTimeouts}`,
       `LONG_TASK_TOTAL=${m.longTaskTotal}ms  MAX_NETWORK_REQ/DATE=${m.networkPerDateMax}`,
       '',
       'SLOWEST ENDPOINTS',
       ...((report.slowestEndpoints||[]).map(x=>`${String(x.p95Ms).padStart(7)}ms p95  ${String(x.maxMs).padStart(7)}ms max  n=${String(x.count).padStart(3)}  ${x.path}`)),
       '',
-      ...report.switches.map(x=>`${x.settled?'PASS':'FAIL'} DATE ${x.date} ${x.elapsedMs}ms network=${x.requestCount} cache=${(x.cacheStates||[]).join(',')||'—'} paint=${x.firstPaint||'—'}`),
+      ...report.switches.map(x=>`${x.firstPaintOk?'PASS':'FAIL'} DATE ${x.date} first=${x.firstPaintMs}ms settle=${x.settled?(x.fullSettleMs+'ms'):'BACKGROUND'} network=${x.requestCount} cache=${(x.cacheStates||[]).join(',')||'—'} paint=${x.firstPaint||'—'}`),
     ].join('\n');
   }
 
@@ -595,6 +659,7 @@
       deferred:state.brokerDeferred,
       deferredAborts:state.brokerDeferredAborts,
       deferredReleases:state.brokerDeferredReleases,
+      renderCoalesced:Number(window.SBB_RENDER_PIPELINE?.snapshot?.().coalesced||0),
     };
     const started=now();
     state.currentRunId=runId;

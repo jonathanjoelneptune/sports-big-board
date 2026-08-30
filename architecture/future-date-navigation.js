@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.6 — Future Date Navigation.
+/* Sports Big Board v4.7.7 — Future Date Navigation.
    The original score ribbon historically clamped all dates after today back to
    today. Scheduled tournaments/leagues need tomorrow and later dates to remain
    browsable. This layer owns only the pager/date-picker policy; Day State remains
@@ -6,9 +6,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_FUTURE_DATES?.version==='4.7.6')return;
+  if(window.SBB_FUTURE_DATES?.version==='4.7.7')return;
 
-  const VERSION='4.7.6';
+  const VERSION='4.7.7';
   const clean=v=>String(v??'').trim();
   const day=v=>clean(v).slice(0,10);
 
