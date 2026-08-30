@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.14 — Efficiency Certification.
+/* Sports Big Board v4.7.15 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.14') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.15') return;
 
-  const VERSION = '4.7.14';
+  const VERSION = '4.7.15';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -121,6 +121,22 @@
         : null,
     };
   }
+  async function sampleDomWindow(samples=6,intervalMs=50){
+    const rows=[];
+    for(let i=0;i<samples;i++){
+      rows.push(nodeCount());
+      if(i<samples-1)await sleep(intervalMs);
+    }
+    return {
+      samples:rows,
+      min:rows.length?Math.min(...rows):null,
+      median:median(rows),
+      max:rows.length?Math.max(...rows):null,
+      spreadPct:rows.length>=2&&Math.min(...rows)>0
+        ? round(((Math.max(...rows)-Math.min(...rows))/Math.min(...rows))*100)
+        : null,
+    };
+  }
   const normalizeUrl = raw => {
     try {
       const u = new URL(typeof raw === 'string' ? raw : raw?.url || '', location.href);
@@ -190,6 +206,7 @@
       gradeLow(metrics.domGrowthPct,THRESHOLDS.domGrowthPct,{optional:true}),
       gradeLow(metrics.heapGrowthPct,THRESHOLDS.heapGrowthPct,{optional:true}),
     ];
+    if (grades.includes('FAIL')) return 'FAIL';
     return grades.includes('WARN') ? 'WARN' : 'PASS';
   }
 
@@ -274,6 +291,13 @@
         availabilityFallbacks:Number(d.availabilityFallbacks)||0,
         availabilityIndexBuildMs:Number(d.availabilityIndexBuildMs)||0,
         availabilityFallbackMs:Number(d.availabilityFallbackMs)||0,
+        availabilitySnapshotReused:!!d.availabilitySnapshotReused,
+        filterFastPath:!!d.filterFastPath,
+        cardBankBuild:!!d.cardBankBuild,
+        filterApplyMs:Number(d.filterApplyMs)||0,
+        visibleCards:Number(d.visibleCards)||0,
+        globalNodesBefore:Number(d.globalNodesBefore)||0,
+        globalNodesAfter:Number(d.globalNodesAfter)||0,
         stagedNodes:Number(d.stagedNodes)||0,generation:Number(d.generation)||0,
         generationCommit:!!d.generationCommit,
         beforeNodes:Number(d.beforeNodes)||0,afterNodes:Number(d.afterNodes)||0
@@ -472,22 +496,34 @@
     return null;
   }
 
+  // v4.7.13 compatibility marker: NO_KNOWN_DATABASE_MEDIA was the former zero-inventory label.
+  // v4.7.15 uses NO_KNOWN_PLAYABLE_MEDIA because verified session assets also count.
   function mediaReadinessSnapshot(date){
-    const row=latestRenderForDate(date);
-    if(!row)return {observed:false,known:0,ready:0,assets:0,complete:false,state:'NO_RENDER_SAMPLE'};
-    const known=Number(row.availabilityKnownMediaGames||0);
-    const ready=Number(row.availabilityMediaReadyGames||0);
-    const assets=Number(row.availabilityKnownMediaAssets||0);
+    const rows=window.SBB_RENDER_PIPELINE?.snapshot?.().samples||[];
+    let best=null;
+    for(let i=rows.length-1;i>=0;i--){
+      const row=rows[i];
+      if(String(row?.date||'').slice(0,10)!==date)continue;
+      if(!best)best=row;
+      if(Number(row?.availabilityKnownMediaGames||0)>0){best=row;break;}
+    }
+    let ledger=null;
+    try{ledger=window.SBB_SCORECARD_AVAILABILITY_INDEX?.forDate?.(date)||null;}catch(_){}
+    if(!best&&!ledger)return {observed:false,known:0,ready:0,assets:0,complete:false,state:'NO_RENDER_SAMPLE'};
+    const known=Math.max(Number(best?.availabilityKnownMediaGames||0),Number(ledger?.knownMediaGames||0));
+    const ready=Math.max(Number(best?.availabilityMediaReadyGames||0),Number(ledger?.mediaReadyGames||0));
+    const assets=Math.max(Number(best?.availabilityKnownMediaAssets||0),Number(ledger?.knownMediaAssets||0));
     return {
       observed:true,known,ready,assets,
       complete:known===0||ready>=known,
-      state:known===0?'NO_KNOWN_DATABASE_MEDIA':(ready>=known?'READY':'WAITING_FOR_KNOWN_MEDIA'),
-      renderReason:String(row.reason||''),
-      renderDurationMs:Number(row.durationMs)||0,
+      state:known===0?'NO_KNOWN_PLAYABLE_MEDIA':(ready>=known?'READY':'WAITING_FOR_KNOWN_MEDIA'),
+      renderReason:String(best?.reason||ledger?.snapshotReason||''),
+      renderDurationMs:Number(best?.durationMs)||0,
+      snapshotReused:!!(best?.availabilitySnapshotReused||ledger?.snapshotReused),
     };
   }
 
-  async function waitForMediaReadiness(date,dateStartedAt,{timeoutMs=2200,inventoryGraceMs=220}={}){
+  async function waitForMediaReadiness(date,dateStartedAt,{timeoutMs=2200,inventoryGraceMs=500}={}){
     const graceStarted=now();
     let snapshot=mediaReadinessSnapshot(date);
     while((!snapshot.observed||snapshot.known===0) && now()-graceStarted<inventoryGraceMs){
@@ -498,7 +534,7 @@
       return {ok:false,timeout:true,elapsedMs:null,known:0,ready:0,assets:0,state:'NO_RENDER_SAMPLE'};
     }
     if(snapshot.known===0){
-      return {ok:true,timeout:false,elapsedMs:null,known:0,ready:0,assets:0,state:'NO_KNOWN_DATABASE_MEDIA'};
+      return {ok:true,timeout:false,elapsedMs:null,known:0,ready:0,assets:0,state:'NO_KNOWN_PLAYABLE_MEDIA'};
     }
     const readinessStarted=now();
     while(now()-readinessStarted<timeoutMs){
@@ -557,7 +593,7 @@
     const fullSettleMs=fullySettled?round(firstPaintMs+(now()-settleStarted)):null;
 
     const mediaReady=firstPaintOk
-      ? await waitForMediaReadiness(date,started,{timeoutMs:2200,inventoryGraceMs:220})
+      ? await waitForMediaReadiness(date,started,{timeoutMs:2200,inventoryGraceMs:500})
       : {ok:false,timeout:false,elapsedMs:null,known:0,ready:0,assets:0,state:'NO_FIRST_PAINT'};
 
     const reqs=state.requests.slice(requestStart).filter(r=>r.runId===state.currentRunId);
@@ -822,7 +858,7 @@
     } catch (_) {}
   }
 
-  function makeMetrics({runId,switches,historyNavigation,coldThin,filters,probes,baseline,restoreOk,durationMs,memoryAfter}) {
+  function makeMetrics({runId,switches,historyNavigation,coldThin,filters,probes,baseline,restoreOk,durationMs,memoryAfter,domAfter}) {
     const reqs=requestsForRun(runId);
     const api=reqs.filter(r=>r.path.startsWith('/api/'));
     const apiMs=api.map(r=>r.durationMs).filter(Number.isFinite);
@@ -877,7 +913,9 @@
     for (const row of switches) for (const c of row.cacheStates||[]) cacheStates[c]=(cacheStates[c]||0)+1;
     const heapEnd=Number(memoryAfter?.min);
     const heapMedianEnd=Number(memoryAfter?.median);
-    const domEnd=nodeCount();
+    const domEnd=Number.isFinite(Number(domAfter?.median))?Number(domAfter.median):nodeCount();
+    const renderDomSamples=renderRows.map(x=>Number(x.globalNodesAfter||0)).filter(x=>x>0);
+    const domPeak=Math.max(Number(baseline.dom||0),Number(domAfter?.max||0),...renderDomSamples);
 
     return {
       durationMs:round(durationMs),
@@ -936,6 +974,10 @@
       cacheHits:Math.max(0,state.brokerCacheHits-(baseline.cacheHits||0)),
       networkPerDateMax:Math.max(0,...switches.map(x=>Number(x.requestCount||0))),
       renderCount:renderRows.length,
+      filterFastPaths:renderRows.filter(x=>x.filterFastPath).length,
+      cardBankBuilds:renderRows.filter(x=>x.cardBankBuild).length,
+      availabilitySnapshotReuses:renderRows.filter(x=>x.availabilitySnapshotReused).length,
+      filterApplyP95:round(percentile(renderRows.map(x=>x.filterApplyMs).filter(Number.isFinite),95)),
       renderP95:round(percentile(renderMs,95)),
       renderMax:round(renderMs.length?Math.max(...renderMs):0),
       renderTotal:round(renderMs.reduce((a,b)=>a+b,0)),
@@ -989,7 +1031,12 @@
       navigationActions,
       domStart:baseline.dom,
       domEnd,
+      domPeak,
       domGrowthPct:round(pct(baseline.dom,domEnd)),
+      domPeakGrowthPct:round(pct(baseline.dom,domPeak)),
+      domStartWindowSpreadPct:round(baseline.domWindowSpreadPct),
+      domEndWindowSpreadPct:round(domAfter?.spreadPct),
+      domSamples:Number(domAfter?.samples?.length||0),
       heapStart:baseline.heap,
       heapEnd:Number.isFinite(heapEnd)?heapEnd:null,
       heapMedianEnd:Number.isFinite(heapMedianEnd)?heapMedianEnd:null,
@@ -1049,6 +1096,7 @@
       `DEFERRED=${m.deferred}  DEFERRED_ABORTS=${m.deferredAborts}  DEFERRED_RELEASES=${m.deferredReleases}`,
       `OPERATOR_MODULES=${window.SBB_OPERATOR_MODULES?.snapshot?.().loaded?'LOADED':'LAZY'}  FIRST_PAINT=${window.SBB_DATE_TRANSITIONS?.snapshot?.().firstPaintSource||'—'}`,
       `RENDER_COUNT=${m.renderCount}  GENERATION_RENDERS=${m.generationRenderCount}  RENDER_COALESCED=${m.renderCoalesced}`,
+      `FILTER_FAST_PATHS=${m.filterFastPaths}  CARD_BANK_BUILDS=${m.cardBankBuilds}  AVAIL_SNAPSHOT_REUSES=${m.availabilitySnapshotReuses}  FILTER_APPLY_P95=${m.filterApplyP95??'N/A'}ms`,
       `DAY_VISIBLE_P95=${m.ribbonP95??'N/A'}ms  MEDIA_READY_P95=${m.mediaReadyP95??'N/A'}ms  MEDIA_READY_MAX=${m.mediaReadyMax??'N/A'}ms  MEDIA_READY_TIMEOUTS=${m.mediaReadyTimeouts}`,
       `MEDIA_KNOWN_GAMES=${m.mediaKnownGames}  MEDIA_READY_GAMES=${m.mediaReadyGames}  MEDIA_KNOWN_ASSETS=${m.mediaKnownAssets}  MEDIA_READY_COVERAGE=${m.mediaReadyCoveragePct??'N/A'}%`,
       `RENDER_P95=${m.renderP95??'N/A'}ms  CARD_BUILD_P95=${m.cardBuildP95??'N/A'}ms  DOM_COMMIT_P95=${m.domCommitP95??'N/A'}ms  BROWSER_PAINT_P95=${m.browserPaintP95??'N/A'}ms`,
@@ -1061,6 +1109,7 @@
       `DAY_APPLY_P95=${m.dayApplyP95??'N/A'}ms  SCORE_ROWS_P95=${m.scoreRowsP95??'N/A'}ms  MEDIA_PLANS_P95=${m.mediaPlansP95??'N/A'}ms`,
       `FULL_SETTLE_P95=${m.fullSettleP95??'N/A'}ms  FULL_SETTLE_TIMEOUTS=${m.fullSettleTimeouts}`,
       `MEMORY_SAMPLES=${m.heapSamples}  MEMORY_WINDOW_SPREAD=${m.heapWindowSpreadPct??'N/A'}%  HEAP_POST_MIN=${m.heapEnd??'N/A'}`,
+      `DOM_BASELINE=${m.domStart??'N/A'}  DOM_PEAK=${m.domPeak??'N/A'}  DOM_RESTORED=${m.domEnd??'N/A'}  DOM_STABLE_GROWTH=${m.domGrowthPct??'N/A'}%  DOM_PEAK_GROWTH=${m.domPeakGrowthPct??'N/A'}%  DOM_WINDOW_SPREAD=${m.domEndWindowSpreadPct??'N/A'}%`,
       `HISTORY_LEFT=${m.historyArrowLeft}  HISTORY_RIGHT=${m.historyArrowRight}  CALENDAR_JUMPS=${m.historyCalendarJumps}  HISTORY_MAX_NETWORK=${m.historyNavMaxNetwork}`,
       `COLD_THIN_P95=${m.coldThinP95??'N/A'}ms  COLD_THIN_MAX=${m.coldThinMax??'N/A'}ms  COLD_THIN_FAILURES=${m.coldThinFailures}  THIN_TRANSPORT=${window.SBB_NATIVE_TRANSPORT?.available?.()?'NATIVE':'UNAVAILABLE'}`,
       `LONG_TASK_COUNT=${m.longTaskCount}  LONG_TASK_TOTAL=${m.longTaskTotal}ms  NAV_ACTIONS=${m.navigationActions}  MAX_NETWORK_REQ/DATE=${m.networkPerDateMax}`,
@@ -1107,9 +1156,12 @@
 
     const runId=`eff-${Date.now()}-${Math.random().toString(36).slice(2,7)}`;
     const saved={date:browseDate(),filter:currentFilter()};
+    await raf();await raf();
+    const domBefore=await sampleDomWindow(5,40);
     const memoryBefore=await sampleHeapWindow(5,40);
     const baseline={
-      dom:nodeCount(),
+      dom:Number.isFinite(domBefore.median)?domBefore.median:nodeCount(),
+      domWindowSpreadPct:domBefore.spreadPct,
       heap:Number.isFinite(memoryBefore.median)?memoryBefore.median:heapBytes(),
       duplicateConcurrent:state.duplicateConcurrent,
       cacheHits:state.brokerCacheHits,
@@ -1156,12 +1208,13 @@
       // post-test sample is a more stable retained-memory signal than one random
       // V8 heap point immediately after the last render.
       await sleep(300);
+      const domAfter=await sampleDomWindow(mode==='hammer'?10:6,60);
       const memoryAfter=await sampleHeapWindow(mode==='hammer'?12:8,120);
       const durationMs=now()-started;
       state.currentRunId='';
       if(window.__SBB_EFFICIENCY_RUN_ID===runId)window.__SBB_EFFICIENCY_RUN_ID='';
       const metrics=makeMetrics({
-        runId,switches,historyNavigation,coldThin,filters,probes,baseline,restoreOk,durationMs,memoryAfter
+        runId,switches,historyNavigation,coldThin,filters,probes,baseline,restoreOk,durationMs,memoryAfter,domAfter
       });
       const result=overallGrade(metrics);
       const runRequests=requestsForRun(runId).filter(x=>x.path&&x.path.startsWith('/api/'));

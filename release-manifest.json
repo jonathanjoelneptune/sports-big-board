@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.14",
-  "baseRelease": "4.7.13",
-  "title": "Persistent AP Top 25 College Football Season",
+  "release": "4.7.15",
+  "baseRelease": "4.7.14",
+  "title": "Efficiency Hardening",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -46,27 +46,29 @@
     "tests/test_v4713_media_readiness.py",
     "sbb/cfb_ranked.py",
     "tests/test_v4714_cfb_ranked_season.py",
-    "tests/test_v4714_cfb_ranked_runtime.py"
+    "tests/test_v4714_cfb_ranked_runtime.py",
+    "tests/test_v4715_efficiency_hardening_runtime.js",
+    "tests/test_v4715_efficiency_hardening.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.14"
+        "4.7.15"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.14",
-        "core-model.js?v=4.7.14",
-        "architecture/day-state.js?v=4.7.14"
+        "Sports Big Board \u2014 v4.7.15",
+        "core-model.js?v=4.7.15",
+        "architecture/day-state.js?v=4.7.15"
       ],
       "forbidden": [
-        "?v=4.7.13"
+        "?v=4.7.14"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.7.14'",
+        "version:'4.7.15'",
         "CFB:{id:'CFB'",
         "seasonId:'CFB2026'",
         "scoreProvider:'cfb-ranked'",
@@ -91,7 +93,7 @@
     },
     "sbb/day_state.py": {
       "required": [
-        "\"engineVersion\":\"4.7.14\"",
+        "\"engineVersion\":\"4.7.15\"",
         "from . import cfb_ranked as _cfb_ranked",
         "_cfb_ranked.install()"
       ]
@@ -121,7 +123,7 @@
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.14\"",
+        "\"release\": \"4.7.15\"",
         "weekly AP Top 25 snapshot",
         "ranked-v-ranked games appear once",
         "Future CFB weeks are never projected"
@@ -131,7 +133,52 @@
       "required": [
         "python3 -m unittest tests.test_v4714_cfb_ranked_season",
         "python3 -m unittest tests.test_v4714_cfb_ranked_runtime",
-        "[legacy-advisory]"
+        "[legacy-advisory]",
+        "node tests/test_v4715_efficiency_hardening_runtime.js",
+        "python3 -m unittest tests.test_v4715_efficiency_hardening"
+      ]
+    },
+    "architecture/render-pipeline.js": {
+      "required": [
+        "Sports Big Board v4.7.15",
+        "filterFastPath",
+        "sbbCardBankDate",
+        "bankComplete",
+        "applyBankFilter",
+        "setCurrentFilter('ALL')"
+      ]
+    },
+    "architecture/score-card-availability-index.js": {
+      "required": [
+        "Sports Big Board v4.7.15",
+        "snapshotReused",
+        "forDate",
+        "reason.includes('filter-change')",
+        "knownPlayableMedia"
+      ]
+    },
+    "architecture/efficiency-certification.js": {
+      "required": [
+        "Sports Big Board v4.7.15",
+        "sampleDomWindow",
+        "NO_KNOWN_PLAYABLE_MEDIA",
+        "filterFastPaths",
+        "DOM_BASELINE=",
+        "grades.includes('FAIL')"
+      ]
+    },
+    "tests/test_v4715_efficiency_hardening_runtime.js": {
+      "required": [
+        "filter bank fast path",
+        "availability snapshot reuse",
+        "stabilized DOM certification"
+      ]
+    },
+    "tests/test_v4715_efficiency_hardening.py": {
+      "required": [
+        "test_filter_bank_fast_path_contract",
+        "test_availability_snapshot_reuse_contract",
+        "test_efficiency_dom_and_media_readiness_contract"
       ]
     }
   },
@@ -161,6 +208,8 @@
     "python3 -m unittest tests.test_v4713_media_readiness",
     "python3 -m unittest tests.test_v4714_cfb_ranked_season",
     "python3 -m unittest tests.test_v4714_cfb_ranked_runtime",
+    "node tests/test_v4715_efficiency_hardening_runtime.js",
+    "python3 -m unittest tests.test_v4715_efficiency_hardening",
     "bash VERIFY.sh"
   ]
 }

@@ -1,0 +1,84 @@
+Sports Big Board v4.7.15 — Efficiency Hardening
+Base deployed release: v4.7.14 UI-Hotfix
+
+UPLOAD THESE REPOSITORY FILES TO THE SAME PATHS IN GITHUB:
+
+ROOT
+  VERSION
+  VERIFY.sh
+  index.html
+  core-model.js
+  foundation-certification.json
+  release-manifest.json
+
+ARCHITECTURE
+  architecture/card-build-cache.js
+  architecture/render-pipeline.js
+  architecture/score-card-availability-index.js
+  architecture/efficiency-certification.js
+
+BACKEND RELEASE HANDSHAKE
+  sbb/day_state.py
+
+TESTS
+  tests/test_v4715_efficiency_hardening_runtime.js
+  tests/test_v4715_efficiency_hardening.py
+
+WHAT v4.7.15 CHANGES
+1. Filter fast path / DOM lifecycle
+   - Full renders build one complete all-league score-card bank for the selected date.
+   - League filter changes reuse the exact existing score-card DOM nodes and only
+     change visibility instead of rebuilding every card.
+   - The bank is validated against stable game identities before reuse. A stale or
+     incomplete bank automatically falls back to the canonical full render.
+   - Existing card click/playback handlers remain attached because game-card nodes
+     are reused, not cloned.
+
+2. Generation-scoped availability
+   - Score-card availability is indexed for the entire selected date rather than
+     only the currently visible league.
+   - Filter-only renders reuse the date snapshot.
+   - Date/media/Day-State renders rebuild it so freshness semantics are preserved.
+   - Canonical Day State playable media, verified session media, and positive legacy
+     resolution are all counted as already-known playable media.
+
+3. Media-readiness certification
+   - The efficiency test now consults both render telemetry and the authoritative
+     per-date availability ledger.
+   - Zero-inventory state is NO_KNOWN_PLAYABLE_MEDIA.
+   - This fixes the v4.7.14 mismatch where AVAIL_KNOWN_MEDIA_GAMES could be non-zero
+     while MEDIA_KNOWN_GAMES remained zero/N/A.
+
+4. DOM certification
+   - Baseline and restored DOM counts are sampled over stabilization windows.
+   - Report adds DOM baseline, peak, restored count, stable growth, peak growth,
+     filter fast paths, card-bank builds, availability snapshot reuse, and filter
+     apply p95.
+   - Any scored FAIL now propagates to the overall efficiency result.
+
+PRESERVED / NOT REDESIGNED
+  - Day State caching
+  - historical navigation and native thin transport
+  - request broker/deferred enrichment behavior
+  - lazy operator modules
+  - v4.7.14 persistent AP Top 25 CFB season/ranking architecture
+  - score-card playback selection and player ownership
+
+LOCAL VERIFICATION COMPLETED BEFORE PACKAGING
+  - New v4.7.15 JS + Python gates: PASS
+  - v4.7.3 through v4.7.15 JS architecture regression sweep: PASS
+  - Selected Python architecture/Day State/media/CFB suite: 35 tests PASS
+  - Stable release behavior gate: 47 tests PASS
+  - CFB v4.7.14 preservation suite: 10 tests PASS
+  - Local release-manifest contracts + all 51 cache-generation asset refs: PASS
+  - JavaScript/Python syntax checks for the release bundle: PASS
+
+AFTER DEPLOYMENT
+  1. Confirm the board reports v4.7.15.
+  2. Run Efficiency Certification AUTO again.
+  3. Key expected changes in the report:
+       FILTER_FAST_PATHS > 0
+       FILTER_APPLY_P95 should be far below the old ~241 ms filter rebuild
+       MEDIA_DATES should no longer be forced to 0 when known playable media exists
+       DOM_STABLE_GROWTH should be substantially lower than the v4.7.14 47.3% result
+  4. Send the resulting certification report back for review.
