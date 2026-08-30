@@ -13,7 +13,7 @@ const backend=fs.readFileSync('sbb/day_state.py','utf8');
 assert.strictEqual(VERSION,'4.7.10');
 assert(index.includes(`architecture/score-date-store.js?v=${VERSION}`));
 
-assert(store.includes("version:'1.1-v4.7.10'"));
+assert(store.includes("version:'1.0'"));
 assert(store.includes('do not clamp future scheduled dates to today'));
 assert(!store.includes('return raw>localDateISO(0)?localDateISO(0):raw'));
 

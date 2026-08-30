@@ -127,7 +127,7 @@
   }
 
   window.SBB_SCORE_DATE=Object.freeze({
-    version:'1.1-v4.7.10',
+    version:'1.0',
     localDateISO,normalizeDate,setBrowseDate,setPlaybackDate,
     setMatches,setMedia,addMedia,matches,media,allMatches,allMedia,
     hasMatchesSnapshot,hasLeagueMatchesSnapshot,loadedMatchLeagues,
