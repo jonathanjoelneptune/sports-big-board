@@ -4,14 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <title>Sports Big Board — v4.7.18</title>
+  <title>Sports Big Board — v4.7.19</title>
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://www.googlevideo.com">
   <link rel="preconnect" href="https://i.ytimg.com">
-  <link rel="stylesheet" href="styles.css?v=4.7.18" />
-  <link rel="stylesheet" href="ui/playback-terminal.css?v=4.7.18">
+  <link rel="stylesheet" href="styles.css?v=4.7.19" />
+  <link rel="stylesheet" href="ui/playback-terminal.css?v=4.7.19">
   <style id="sbbCfbLeagueOverride">
-    /* CFB is a permanent league chip. Legacy v4.7.18 navigation code may still
+    /* CFB is a permanent league chip. Legacy v4.7.19 navigation code may still
        add the special-event suppression class; this higher-specificity rule keeps
        the static league chip visible while the corrected navigation module loads. */
     html body #scoreFilters > button[data-score-filter="CFB"],
@@ -159,7 +159,7 @@
         <button class="nav">🏆 <span>Standings</span></button>
         <button id="leftRailSettingsBtn" class="nav">⚙ <span>Settings</span></button>
         <div class="proof-card">
-          <strong>v4.7.18</strong>
+          <strong>v4.7.19</strong>
           <span>FOUNDATION • 3-tier certification candidate</span>
           <small id="apiRailStatus">Checking API…</small>
           <small id="editorRailStatus">Editor: checking…</small>
@@ -306,7 +306,7 @@
             <div id="queueList" class="queue-list"></div>
             <button id="debugToggle" class="debug-toggle" type="button">PLAYER DEBUG ▸</button>
             <div id="playbackDebug" class="playback-debug is-collapsed">
-              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v4.7.18</span></div>
+              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v4.7.19</span></div>
               <div><span>PROVIDER</span><b id="diagProvider">—</b></div>
               <div><span>SLOT</span><b id="diagSlot">—</b></div>
               <div><span>STATE</span><b id="diagState">idle</b></div>
@@ -357,9 +357,9 @@
             </div>
             <div class="settings-card milestone-launch-card">
               <div class="settings-card-title">DEV / FOUNDATION CERTIFICATION</div>
-              <div class="history-audit-launch-copy"><strong>Foundation Certification Console</strong><small>4.7.18 release truth: Tier 1 stress/hardening, Tier 2 continuous-telemetry playback-progress soak, Tier 3 controlled chaos/recovery, and an exportable three-tier foundation certificate.</small></div>
+              <div class="history-audit-launch-copy"><strong>Foundation Certification Console</strong><small>4.7.19 release truth: Tier 1 stress/hardening, Tier 2 continuous-telemetry playback-progress soak, Tier 3 controlled chaos/recovery, and an exportable three-tier foundation certificate.</small></div>
               <button id="devModeToggleBtn" class="settings-save-btn" type="button" aria-pressed="false">DEV MODE: OFF</button>
-              <button id="openMilestoneConsoleBtn" class="settings-save-btn" type="button">OPEN 4.7.18 CERTIFICATION CONSOLE</button>
+              <button id="openMilestoneConsoleBtn" class="settings-save-btn" type="button">OPEN 4.7.19 CERTIFICATION CONSOLE</button>
             </div>
           </div>
         </section>
@@ -373,7 +373,7 @@
     <div id="milestoneConsoleBackdrop" class="milestone-console-backdrop"></div>
     <section class="milestone-console-shell">
       <header class="milestone-console-header">
-        <div><small>DEV / FOUNDATION CERTIFICATION</small><h2>4.7.18 Foundation Certification Console</h2><p>Three-tier release certification: functional/stress hardening, continuous-telemetry playback-progress soak, and controlled chaos/recovery. Overall Foundation Certification requires all three tiers.</p></div>
+        <div><small>DEV / FOUNDATION CERTIFICATION</small><h2>4.7.19 Foundation Certification Console</h2><p>Three-tier release certification: functional/stress hardening, continuous-telemetry playback-progress soak, and controlled chaos/recovery. Overall Foundation Certification requires all three tiers.</p></div>
         <div class="milestone-console-actions"><strong id="milestoneConsoleOverall">CONNECTING…</strong><button id="milestoneStressRun" class="milestone-stress-run" type="button">RUN DEV STRESS TEST</button><button id="milestoneStressStop" type="button" disabled>STOP TEST</button><button id="milestoneProceduresToggle" type="button" aria-expanded="false">TEST PROCEDURES</button><button id="milestoneConsoleRefresh" type="button">REFRESH</button><button id="milestoneConsoleCopy" type="button">COPY FULL LOG</button><button id="milestoneConsoleDownload" type="button">SAVE TXT</button><button id="milestoneConsoleReset" type="button" title="Clear the current milestone observation window">RESET WINDOW</button><button id="milestoneConsoleClose" class="audit-close" type="button" aria-label="Close">×</button><em id="milestoneCopyStatus" aria-live="polite"></em></div>
       </header>
       <div class="milestone-console-stats">
@@ -454,7 +454,7 @@
               <button id="historyModeBalanced" type="button" data-mode="balanced" class="active" title="Normal mode: search yields briefly to playback">MIX</button>
               <button id="historyModePlayback" type="button" data-mode="playback" title="Pause background historical searching until changed">PLAYBACK PRIORITY</button>
             </div>
-            <small id="historySearchConsoleVersion">Frontend v4.7.18 • backend checking…</small>
+            <small id="historySearchConsoleVersion">Frontend v4.7.19 • backend checking…</small>
             <button id="historySearchConsoleCopyIssues" type="button" title="Copy every current error, rate limit, blocker and recent warning">COPY ISSUES</button>
             <button id="historySearchConsoleCopyAll" type="button" title="Copy the complete worker snapshot and terminal log">COPY FULL CONSOLE</button>
             <button id="historySearchConsoleDownload" type="button" title="Download the complete console as a text file">SAVE TXT</button>
@@ -535,10 +535,10 @@
   </div>
 
   <!--
-    v4.7.18 historical regression sentinels.
+    v4.7.19 historical regression sentinels.
     These strings are intentionally non-executable. Older v4.2.x regression tests
-    freeze the original cache-busted architecture chain at 4.2.2; the v4.7.18
-    certification suite separately verifies the executable 4.7.18 chain, including
+    freeze the original cache-busted architecture chain at 4.2.2; the v4.7.19
+    certification suite separately verifies the executable 4.7.19 chain, including
     foundation-certification.js between milestone-console.js and site-soundtrack.js.
     core-model.js?v=4.2.2
     architecture/score-date-store.js?v=4.2.2
@@ -562,19 +562,19 @@
     ui/game-center-view.js?v=4.2.2
     app.js?v=4.2.2
   -->
-  <script src="config.js?v=4.7.18"></script>
-  <script src="api-runtime.js?v=4.7.18"></script>
-  <script src="architecture/native-transport.js?v=4.7.18"></script>
-  <script src="architecture/request-broker.js?v=4.7.18"></script>
-  <script src="architecture/efficiency-certification.js?v=4.7.18"></script>
+  <script src="config.js?v=4.7.19"></script>
+  <script src="api-runtime.js?v=4.7.19"></script>
+  <script src="architecture/native-transport.js?v=4.7.19"></script>
+  <script src="architecture/request-broker.js?v=4.7.19"></script>
+  <script src="architecture/efficiency-certification.js?v=4.7.19"></script>
   <script>
-  // v4.7.18 bootstrap is deliberately independent of app.js and YouTube.
+  // v4.7.19 bootstrap is deliberately independent of app.js and YouTube.
   // It proves the browser can reach the local API and captures startup errors.
   window.__SBB_BOOT_STARTED_AT = Date.now();
-  try { fetch('/api/client-log?event=BOOT_START&v=4.7.18', {cache:'no-store'}).catch(()=>{}); } catch(e) {}
+  try { fetch('/api/client-log?event=BOOT_START&v=4.7.19', {cache:'no-store'}).catch(()=>{}); } catch(e) {}
   window.__SBB_BOOT_STATUS_PROMISE__ = fetch('/api/status', {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('status HTTP '+r.status); return r.json(); })
-    .then(function(data){ try{fetch('/api/client-log?event=BOOT_STATUS_OK&v=4.7.18',{cache:'no-store'}).catch(()=>{});}catch(e){} return data; })
+    .then(function(data){ try{fetch('/api/client-log?event=BOOT_STATUS_OK&v=4.7.19',{cache:'no-store'}).catch(()=>{});}catch(e){} return data; })
     .catch(function(err){ try{fetch('/api/client-log?event=BOOT_STATUS_ERROR&detail='+encodeURIComponent(String(err)),{cache:'no-store'}).catch(()=>{});}catch(e){} throw err; });
   window.addEventListener('error', function(ev){
     try { fetch('/api/client-log?event=JS_ERROR&detail='+encodeURIComponent((ev.message||'error')+' @ '+(ev.filename||'')+':'+(ev.lineno||0)), {cache:'no-store'}).catch(()=>{}); } catch(e) {}
@@ -583,53 +583,53 @@
     try { fetch('/api/client-log?event=PROMISE_ERROR&detail='+encodeURIComponent(String(ev.reason?.stack||ev.reason||'unknown')), {cache:'no-store'}).catch(()=>{});} catch(e) {}
   });
 </script>
-<script src="core-model.js?v=4.7.18"></script>
-<script src="architecture/score-date-store.js?v=4.7.18"></script>
-<script src="architecture/event-identity.js?v=4.7.18"></script>
-<script src="architecture/media-scope.js?v=4.7.18"></script>
-<script src="architecture/media-classifier.js?v=4.7.18"></script>
-<script src="architecture/playback-transports.js?v=4.7.18"></script>
-<script src="architecture/playback-readiness.js?v=4.7.18"></script>
-<script src="architecture/provider-health.js?v=4.7.18"></script>
-<script src="architecture/sport-media-policy.js?v=4.7.18"></script>
-<script src="architecture/media-manifest.js?v=4.7.18"></script>
-<script src="architecture/media-resolver.js?v=4.7.18"></script>
-<script src="architecture/game-center-policy.js?v=4.7.18"></script>
-<script src="architecture/selected-event-store.js?v=4.7.18"></script>
-<script src="architecture/game-center-contract.js?v=4.7.18"></script>
-<script src="architecture/media-work-priorities.js?v=4.7.18"></script>
-<script src="architecture/editorial-packages.js?v=4.7.18"></script>
-<script src="architecture/playback-session.js?v=4.7.18"></script>
-<script src="architecture/dev-mode.js?v=4.7.18"></script>
-<script src="architecture/playback-terminal.js?v=4.7.18"></script>
-<script src="architecture/milestone-console.js?v=4.7.18"></script>
-<script src="architecture/foundation-certification.js?v=4.7.18"></script>
-<script src="architecture/site-soundtrack.js?v=4.7.18"></script>
+<script src="core-model.js?v=4.7.19"></script>
+<script src="architecture/score-date-store.js?v=4.7.19"></script>
+<script src="architecture/event-identity.js?v=4.7.19"></script>
+<script src="architecture/media-scope.js?v=4.7.19"></script>
+<script src="architecture/media-classifier.js?v=4.7.19"></script>
+<script src="architecture/playback-transports.js?v=4.7.19"></script>
+<script src="architecture/playback-readiness.js?v=4.7.19"></script>
+<script src="architecture/provider-health.js?v=4.7.19"></script>
+<script src="architecture/sport-media-policy.js?v=4.7.19"></script>
+<script src="architecture/media-manifest.js?v=4.7.19"></script>
+<script src="architecture/media-resolver.js?v=4.7.19"></script>
+<script src="architecture/game-center-policy.js?v=4.7.19"></script>
+<script src="architecture/selected-event-store.js?v=4.7.19"></script>
+<script src="architecture/game-center-contract.js?v=4.7.19"></script>
+<script src="architecture/media-work-priorities.js?v=4.7.19"></script>
+<script src="architecture/editorial-packages.js?v=4.7.19"></script>
+<script src="architecture/playback-session.js?v=4.7.19"></script>
+<script src="architecture/dev-mode.js?v=4.7.19"></script>
+<script src="architecture/playback-terminal.js?v=4.7.19"></script>
+<script src="architecture/milestone-console.js?v=4.7.19"></script>
+<script src="architecture/foundation-certification.js?v=4.7.19"></script>
+<script src="architecture/site-soundtrack.js?v=4.7.19"></script>
 <script>window.SBB_SITE_SOUNDTRACK_MUTED=true;</script>
-<script src="architecture/site-soundtrack-muted.js?v=4.7.18"></script>
-<script src="architecture/poisoned-media-containment.js?v=4.7.18"></script>
-<script src="ui/player-visibility.js?v=4.7.18"></script>
-<script src="ui/info-drawer.js?v=4.7.18"></script>
-<script src="ui/settings-view.js?v=4.7.18"></script>
-<script src="ui/history-audit.js?v=4.7.18"></script>
-<script src="ui/history-audit-v468.js?v=4.7.18"></script>
-<script src="architecture/game-center-linescore.js?v=4.7.18"></script>
-<script src="ui/game-center-view.js?v=4.7.18"></script>
-<script src="architecture/game-center-multisport-view.js?v=4.7.18"></script>
-<script src="app.js?v=4.7.18"></script>
-<script src="architecture/score-ribbon-identity-guard.js?v=4.7.18"></script>
-<script src="architecture/recap-identity-guard.js?v=4.7.18"></script>
-<script src="architecture/nfl-recap-reconciliation.js?v=4.7.18"></script>
-<script src="architecture/historical-media-v4610.js?v=4.7.18"></script>
-<script src="architecture/future-date-navigation.js?v=4.7.18"></script>
-<script src="architecture/day-state.js?v=4.7.18"></script>
-<script src="architecture/competition-registry-projection.js?v=4.7.18"></script>
-<script src="architecture/navigation-ui.js?v=4.7.18"></script>
-<script src="architecture/score-card-availability-index.js?v=4.7.18"></script>
-<script src="architecture/card-build-cache.js?v=4.7.18"></script>
-<script src="architecture/render-pipeline.js?v=4.7.18"></script>
-<script src="architecture/date-transition-coordinator.js?v=4.7.18"></script>
-<script src="architecture/operator-module-loader.js?v=4.7.18"></script>
+<script src="architecture/site-soundtrack-muted.js?v=4.7.19"></script>
+<script src="architecture/poisoned-media-containment.js?v=4.7.19"></script>
+<script src="ui/player-visibility.js?v=4.7.19"></script>
+<script src="ui/info-drawer.js?v=4.7.19"></script>
+<script src="ui/settings-view.js?v=4.7.19"></script>
+<script src="ui/history-audit.js?v=4.7.19"></script>
+<script src="ui/history-audit-v468.js?v=4.7.19"></script>
+<script src="architecture/game-center-linescore.js?v=4.7.19"></script>
+<script src="ui/game-center-view.js?v=4.7.19"></script>
+<script src="architecture/game-center-multisport-view.js?v=4.7.19"></script>
+<script src="app.js?v=4.7.19"></script>
+<script src="architecture/score-ribbon-identity-guard.js?v=4.7.19"></script>
+<script src="architecture/recap-identity-guard.js?v=4.7.19"></script>
+<script src="architecture/nfl-recap-reconciliation.js?v=4.7.19"></script>
+<script src="architecture/historical-media-v4610.js?v=4.7.19"></script>
+<script src="architecture/future-date-navigation.js?v=4.7.19"></script>
+<script src="architecture/day-state.js?v=4.7.19"></script>
+<script src="architecture/competition-registry-projection.js?v=4.7.19"></script>
+<script src="architecture/navigation-ui.js?v=4.7.19"></script>
+<script src="architecture/score-card-availability-index.js?v=4.7.19"></script>
+<script src="architecture/card-build-cache.js?v=4.7.19"></script>
+<script src="architecture/render-pipeline.js?v=4.7.19"></script>
+<script src="architecture/date-transition-coordinator.js?v=4.7.19"></script>
+<script src="architecture/operator-module-loader.js?v=4.7.19"></script>
 <script id="sbbCfbAuthorityFirewall">
 (() => {
   'use strict';

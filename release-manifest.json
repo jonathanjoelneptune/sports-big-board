@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.18",
-  "baseRelease": "4.7.17",
-  "title": "Persistent Game Center Linescores & Catalog Association Recovery",
+  "release": "4.7.19",
+  "baseRelease": "4.7.18",
+  "title": "Owning Runtime Path Recovery",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -67,30 +67,33 @@
     "sbb/game_center.py",
     "sbb/history_repository.py",
     "tests/test_v4718_game_center_runtime.js",
-    "tests/test_v4718_regression_recovery.py"
+    "tests/test_v4718_regression_recovery.py",
+    "sbb/runtime_path_repair_v4719.py",
+    "tests/test_v4719_game_center_runtime.js",
+    "tests/test_v4719_runtime_path_repair.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.18"
+        "4.7.19"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.18",
-        "core-model.js?v=4.7.18",
-        "architecture/day-state.js?v=4.7.18",
-        "architecture/score-ribbon-identity-guard.js?v=4.7.18",
-        "ui/game-center-view.js?v=4.7.18",
-        "architecture/game-center-multisport-view.js?v=4.7.18"
+        "Sports Big Board \u2014 v4.7.19",
+        "core-model.js?v=4.7.19",
+        "architecture/day-state.js?v=4.7.19",
+        "architecture/score-ribbon-identity-guard.js?v=4.7.19",
+        "ui/game-center-view.js?v=4.7.19",
+        "architecture/game-center-multisport-view.js?v=4.7.19"
       ],
       "forbidden": [
-        "?v=4.7.17"
+        "?v=4.7.18"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.7.18'",
+        "version:'4.7.19'",
         "CFB:{id:'CFB'",
         "seasonId:'CFB2026'",
         "scoreProvider:'cfb-ranked'",
@@ -120,7 +123,7 @@
     },
     "sbb/day_state.py": {
       "required": [
-        "\"engineVersion\":\"4.7.18\"",
+        "\"engineVersion\":\"4.7.19\"",
         "from . import cfb_ranked as _cfb_ranked",
         "_cfb_ranked.install()",
         "_sanitize_event_plans",
@@ -156,7 +159,7 @@
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.18\"",
+        "\"release\": \"4.7.19\"",
         "weekly AP Top 25 snapshot",
         "ranked-v-ranked games appear once",
         "Future CFB weeks are never projected"
@@ -170,7 +173,9 @@
         "node tests/test_v4715_efficiency_hardening_runtime.js",
         "python3 -m unittest tests.test_v4715_efficiency_hardening",
         "node tests/test_v4718_game_center_runtime.js",
-        "python3 -m unittest tests.test_v4718_regression_recovery"
+        "python3 -m unittest tests.test_v4718_regression_recovery",
+        "node tests/test_v4719_game_center_runtime.js",
+        "python3 -m unittest tests.test_v4719_runtime_path_repair"
       ]
     },
     "architecture/render-pipeline.js": {
@@ -285,7 +290,9 @@
         "history_readiness_repair",
         "_install_game_center_multisport()",
         "_install_history_readiness_repair()",
-        "cfb_trusted_youtube"
+        "cfb_trusted_youtube",
+        "runtime_path_repair_v4719",
+        "_install_runtime_path_repair_v4719()"
       ]
     },
     "architecture/game-center-linescore.js": {
@@ -300,13 +307,16 @@
     },
     "architecture/game-center-multisport-view.js": {
       "required": [
-        "Sports Big Board v4.7.18",
+        "Sports Big Board v4.7.19",
         "persistent multisport Game Center summary",
+        "PUBLIC Game Center cache/selected-event contracts",
+        "SBB_GAME_CENTER?.peek?.(event)",
+        "SBB_GAME_CENTER?.get?.(event",
         "gcPersistentSummary",
         "function baseballCard(gc)",
         "WIN PROBABILITY",
         "removeLegacyOverviewLinescore",
-        "version:'4.7.18'"
+        "version:'4.7.19'"
       ]
     },
     "tests/test_v4717_game_center_history.py": {
@@ -385,8 +395,8 @@
     },
     "tests/test_v4718_game_center_runtime.js": {
       "required": [
-        "persistent linescores + LLWS/Silver/CFB association recovery",
-        "gcPersistentSummary",
+        "persistent linescores + LLWS/Silver/CFB recovery contracts",
+        "version:'4.7.19'",
         "-tDiPDHU2fs"
       ]
     },
@@ -395,6 +405,40 @@
         "test_special_event_proven_relationship_survives_generic_read_guard",
         "test_silver_youtube_external_url_recovers_playable_transport",
         "test_known_usc_hint_works_without_youtube_search_quota"
+      ]
+    },
+    "sbb/runtime_path_repair_v4719.py": {
+      "required": [
+        "Sports Big Board v4.7.19",
+        "owning-runtime recovery",
+        "restore_special_event_links",
+        "SPECIAL_EVENT_",
+        "legacyDatabasePlayable",
+        "HistoryRepository.repair_event_associations = _repair_event_associations",
+        "_ORIGINAL_CFB_PERSIST",
+        "_invalidate_day_state([date])",
+        "-tDiPDHU2fs",
+        "scan_recent_missing",
+        "restore_silver_collection_links",
+        "V4719_LEGACY_SILVER_RESTORE"
+      ]
+    },
+    "tests/test_v4719_game_center_runtime.js": {
+      "required": [
+        "real Game Center public-cache linescore path",
+        "SBB_GAME_CENTER?.peek?.(event)",
+        "assert(!src.includes('view?.data?.()')",
+        "Q1",
+        "R</th><th>H</th><th>E"
+      ]
+    },
+    "tests/test_v4719_runtime_path_repair.py": {
+      "required": [
+        "test_legacy_silver_explicit_playable_proof_survives_candidate_normalization",
+        "test_quarantined_llws_special_proof_is_restored_even_after_scope_demoted_to_other",
+        "test_collection_scope_special_asset_is_not_resurrected_as_game",
+        "test_runtime_module_owns_cfb_day_state_invalidation",
+        "test_missing_legacy_silver_collection_edge_is_recreated"
       ]
     }
   },

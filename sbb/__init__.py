@@ -12,6 +12,7 @@ from .day_state import install as _install_day_state
 from .cfb_trusted_youtube import install as _install_cfb_trusted_youtube
 from .game_center_multisport import install as _install_game_center_multisport
 from .history_readiness_repair import install as _install_history_readiness_repair
+from .runtime_path_repair_v4719 import install as _install_runtime_path_repair_v4719
 
 _install_nfl_weekly_playlists()
 _install_competition_builder()
@@ -26,3 +27,6 @@ _install_day_state()
 _install_cfb_trusted_youtube()
 _install_game_center_multisport()
 _install_history_readiness_repair()
+# v4.7.19 must install LAST. It repairs the real post-install runtime methods
+# after the older compatibility layers above have finished wrapping them.
+_install_runtime_path_repair_v4719()

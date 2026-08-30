@@ -1,4 +1,9 @@
-/* Sports Big Board v4.7.18 — persistent multisport Game Center summary.
+/* Sports Big Board v4.7.19 — persistent multisport Game Center summary.
+   This module now binds to the PUBLIC Game Center cache/selected-event contracts,
+   not to private lexical state inside ui/game-center-view.js.  v4.7.18 attempted
+   view.data(), but the real frozen renderer never exported that method, so the
+   enhancement always received undefined in production.
+
    The line score is Game Center chrome, not tab content: it remains visible while
    OVERVIEW / TEAM STATS / PLAYERS / PLAYS change underneath it. MLB keeps the
    inning-by-inning R/H/E table; football/basketball/hockey use normalized periods.
@@ -10,7 +15,7 @@
   const blank=v=>v===null||v===undefined||String(v).trim()==='';
   const teamName=t=>t?.abbreviation||t?.shortName||t?.name||t?.displayName||'—';
   const pct=v=>{const n=Number(v);return Number.isFinite(n)?`${n.toFixed(n%1?1:0)}%`:'—';};
-  let scheduled=false,observer=null,rendering=false;
+  let scheduled=false,observer=null,rendering=false,currentData=null,currentEvent=null,loadGeneration=0;
 
   function installStyles(){
     if(document.getElementById('sbb-gc-persistent-styles'))return;
@@ -92,9 +97,45 @@
     }
   }
 
+  function cacheDataFor(event){
+    if(!event)return null;
+    try{return window.SBB_GAME_CENTER?.peek?.(event)||null;}catch(_){return null;}
+  }
+
+  function syncFromPublicCache(){
+    const event=window.SBB_SELECTED_EVENT?.get?.()||currentEvent;
+    if(!event)return false;
+    currentEvent=event;
+    const data=cacheDataFor(event);
+    if(data){currentData=data;return true;}
+    return false;
+  }
+
+  async function hydrate(event){
+    const generation=++loadGeneration;
+    currentEvent=event||null;currentData=null;schedule();
+    if(!event)return;
+    // The legacy Game Center renderer normally owns the request. Give it a short
+    // head start and consume the shared public cache rather than issuing a duplicate.
+    for(let attempt=0;attempt<8;attempt++){
+      if(generation!==loadGeneration)return;
+      const hit=cacheDataFor(event);
+      if(hit){currentData=hit;schedule();return;}
+      await new Promise(resolve=>setTimeout(resolve,attempt<3?75:125));
+    }
+    // If the renderer did not populate the shared cache (for example after a tab
+    // hot-reload), use the same canonical Game Center contract directly.
+    try{
+      const data=await window.SBB_GAME_CENTER?.get?.(event,{force:false,timeoutMs:30000});
+      if(generation!==loadGeneration)return;
+      if(data){currentData=data;schedule();}
+    }catch(_){ /* legacy renderer owns user-visible error state */ }
+  }
+
   function enhance(){
     scheduled=false;if(rendering)return;
-    const view=window.SBB_GAME_CENTER_VIEW,gc=view?.data?.(),host=ensureHost();
+    syncFromPublicCache();
+    const gc=currentData,host=ensureHost();
     if(!host)return;
     rendering=true;
     try{
@@ -113,11 +154,12 @@
     installStyles();const content=document.getElementById('gameCenterContent');
     if(!content){setTimeout(bind,100);return;}
     ensureHost();
-    observer=new MutationObserver(schedule);observer.observe(content,{childList:true,subtree:true,characterData:true});
-    window.addEventListener('sbb:selected-event-change',schedule);
-    window.addEventListener('sbb:selected-event-cleared',schedule);
-    schedule();
+    observer=new MutationObserver(()=>{syncFromPublicCache();schedule();});observer.observe(content,{childList:true,subtree:true,characterData:true});
+    window.SBB_SELECTED_EVENT?.subscribe?.(event=>hydrate(event));
+    const existing=window.SBB_SELECTED_EVENT?.get?.();if(existing)hydrate(existing);else schedule();
+    window.addEventListener('sbb:selected-event-change',()=>{const event=window.SBB_SELECTED_EVENT?.get?.();hydrate(event);});
+    window.addEventListener('sbb:selected-event-cleared',()=>hydrate(null));
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_GAME_CENTER_MULTISPORT_VIEW=Object.freeze({installed:true,version:'4.7.18',enhance,periodCard,baseballCard,probabilityCard,ensureHost});
+  window.SBB_GAME_CENTER_MULTISPORT_VIEW=Object.freeze({installed:true,version:'4.7.19',enhance,periodCard,baseballCard,probabilityCard,ensureHost,syncFromPublicCache,get data(){return currentData;}});
 })();

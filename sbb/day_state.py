@@ -618,7 +618,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.18",
+            "engineVersion":"4.7.19",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + 15,
@@ -767,7 +767,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.18",
+            "engineVersion":"4.7.19",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -810,7 +810,7 @@ class DayStateEngine:
         # Never carry a bad projection across a read-model generation change.
         # v4.7.18 specifically needs this to rebuild LLWS plans that 4.7.17's
         # generic sanitizer stripped even though EVENT_MEDIA remained assigned.
-        if cached and str(cached.get("engineVersion") or "") != "4.7.18":
+        if cached and str(cached.get("engineVersion") or "") != "4.7.19":
             cached = None
             with self.lock:
                 self.cache.pop(day, None)
@@ -1120,7 +1120,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.18",
+                    "engineVersion":"4.7.19",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},

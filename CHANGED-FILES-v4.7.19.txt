@@ -1,0 +1,36 @@
+Sports Big Board v4.7.19 — Owning Runtime Path Recovery
+======================================================
+
+Upload/replace these repository files, preserving the paths below:
+
+ROOT
+  VERIFY.sh
+  VERSION
+  index.html
+  core-model.js
+  foundation-certification.json
+  release-manifest.json
+
+architecture/
+  architecture/game-center-multisport-view.js
+
+sbb/
+  sbb/__init__.py
+  sbb/day_state.py
+  sbb/runtime_path_repair_v4719.py        [NEW]
+
+tests/
+  tests/test_v4718_game_center_runtime.js
+  tests/test_v4719_game_center_runtime.js [NEW]
+  tests/test_v4719_runtime_path_repair.py [NEW]
+
+Why these files changed
+-----------------------
+1. Game Center linescores now consume the real public selected-event/Game Center cache contract instead of the nonexistent private view.data() path.
+2. LLWS SPECIAL_EVENT canonical relationships are restored after generic repair, including the specific false-demotion from GAME to OTHER, while collection/player scope still fails closed.
+3. Silver legacy playback proof is honored and missing persisted DAY_LEAGUE collection links are reconstructed idempotently from existing Silver metadata.
+4. CFB trusted-source persistence invalidates Day State immediately. A bounded startup recovery retries the known NBC USC-SJSU acceptance asset (-tDiPDHU2fs) after Week 1 catalog materialization.
+5. Day State engine generation advances to 4.7.19 so stale v4.7.18 projections rebuild instead of preserving FIND states.
+6. Frontend asset URLs advance to 4.7.19 to guarantee browsers receive the corrected Game Center runtime.
+
+Do not delete the existing v4.7.18 source modules. v4.7.19 installs runtime_path_repair_v4719 LAST as a narrow compatibility/recovery layer over the existing architecture.
