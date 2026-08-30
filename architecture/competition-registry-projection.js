@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.8 — Frontend Competition Projection.
+/* Sports Big Board v4.7.9 — Frontend Competition Projection.
    Backend Competition Registry 2.0 is authoritative for existence. Competition
    Builder remains the richer editor/catalog. The browser merges both sources,
    persists the last good dynamic projection, and never hides Special Events just
@@ -6,9 +6,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_FRONTEND_REGISTRY?.version==='4.7.8')return;
+  if(window.SBB_FRONTEND_REGISTRY?.version==='4.7.9')return;
 
-  const VERSION='4.7.8';
+  const VERSION='4.7.9';
   const STORAGE_KEY='sbb.frontendCompetitionProjection.v1';
   const clean=v=>String(v??'').trim();
   const upper=v=>clean(v).toUpperCase();
@@ -55,10 +55,22 @@
     }catch(_){}
   }
 
+  function normalizedType(row,source=''){
+    const explicit=upper(row.type||row.competitionType||row.kind||row.mode);
+    if(['SPECIAL_EVENT','SPECIAL EVENT','EVENT','TOURNAMENT'].includes(explicit))return 'SPECIAL_EVENT';
+    if(row.specialEvent===true||row.isSpecialEvent===true)return 'SPECIAL_EVENT';
+    // Event Builder's eventIcon + bounded event dates is durable generic metadata
+    // for a special event. It also repairs older cached rows that were previously
+    // defaulted to LEAGUE before type was persisted consistently.
+    if(clean(row.eventIcon)&&(clean(row.startDate)||clean(row.endDate)))return 'SPECIAL_EVENT';
+    if(explicit==='LEAGUE')return 'LEAGUE';
+    return (row.custom||source==='REGISTRY')?'SPECIAL_EVENT':'LEAGUE';
+  }
+
   function normalized(row,source=''){
     row={...(row||{})};
     const id=upper(row.id);if(!id)return null;
-    const type=upper(row.type||((row.custom||source==='REGISTRY')?'SPECIAL_EVENT':'LEAGUE'));
+    const type=normalizedType(row,source);
     return {
       ...row,
       id,
@@ -228,7 +240,10 @@
     style.textContent=`
       .sbb-v471-registry-source{opacity:.5;font-size:8px}
       .sbb-v471-registry-dynamic{position:relative}
-      #sbbSpecialEventsWrap.sbb-v472-restored{display:inline-flex!important}
+      #sbbSpecialEventsWrap.sbb-v472-restored{display:inline-flex!important;position:relative!important}
+      #sbbSpecialEventsMenu{position:fixed!important;z-index:25000!important}
+      #sbbSpecialEventsMenu.hidden{display:none!important}
+      #scoreFilters>.sbb-v472-registry-competition.sbb-special-main-row-suppressed{display:none!important}
     `;
     document.head.appendChild(style);
   }
@@ -324,7 +339,12 @@
 
   function renderDynamicLeagues(){
     const host=document.getElementById('scoreFilters');if(!host)return;
-    const rows=[...state.rows.values()].filter(visibleLeague);
+    const specials=new Set([...state.rows.values()].filter(visibleSpecial).map(row=>upper(row.id)));
+    [...host.children].forEach(child=>{
+      const id=upper(child?.dataset?.scoreFilter);
+      if(id&&specials.has(id))child.classList.add('sbb-special-main-row-suppressed');
+    });
+    const rows=[...state.rows.values()].filter(visibleLeague).filter(row=>!specials.has(upper(row.id)));
     const renderKey=JSON.stringify(rows.map(row=>[row.id,row.shortName||row.id,row.name,row.enabled!==false]));
     if(state.leagueRenderKey===renderKey)return;
     state.leagueRenderKey=renderKey;

@@ -1,10 +1,10 @@
-/* Sports Big Board v4.7.8 — historical database-first media hardening.
+/* Sports Big Board v4.7.9 — historical database-first media hardening.
    The original v4.6.10 safety barrier remains for explicit legacy loads/search,
    but a Day State first-paint shell transition no longer creates a barrier that
    can never finish simply because load:false intentionally skipped legacy loading.
 */
 (() => {
-  if (window.SBB_HISTORICAL_MEDIA_HARDENING?.version === '4.7.8') return;
+  if (window.SBB_HISTORICAL_MEDIA_HARDENING?.version === '4.7.9') return;
   const todayISO = () => localDateISO(0);
   const original = {
     ensure: ensureScoreDateLoaded,
@@ -13,7 +13,7 @@
     queue: queueHistoricalGameMedia,
     scheduleFill: scheduleRecentHistoricalRecapFill,
   };
-  const state = {version:'4.7.8',generation:0,barriers:new Map(),deferredFill:new Set(),lastReport:new Map()};
+  const state = {version:'4.7.9',generation:0,barriers:new Map(),deferredFill:new Set(),lastReport:new Map()};
   const dateOf = value => String(value || '').slice(0,10);
   const isHistorical = date => /^\d{4}-\d{2}-\d{2}$/.test(dateOf(date)) && dateOf(date) < todayISO();
   const barrierFor = date => state.barriers.get(dateOf(date)) || null;

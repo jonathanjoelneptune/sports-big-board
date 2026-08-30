@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.8 — Efficiency Certification.
+/* Sports Big Board v4.7.9 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.8') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.9') return;
 
-  const VERSION = '4.7.8';
+  const VERSION = '4.7.9';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -25,6 +25,9 @@
     domGrowthPct:        {pass:5,    warn:15},
     heapGrowthPct:       {pass:15,   warn:30},
     timeouts:            {pass:0,    warn:0},
+    historyNavP95Ms:     {pass:600,  warn:1200},
+    historyNavMaxMs:     {pass:900,  warn:1800},
+    historyNavTimeouts:  {pass:0,    warn:0},
     api5xx:              {pass:0,    warn:0},
   });
 
@@ -149,7 +152,11 @@
       gradeLow(metrics.ribbonP95,THRESHOLDS.ribbonP95Ms)==='FAIL' ||
       gradeLow(metrics.ribbonMax,THRESHOLDS.ribbonMaxMs)==='FAIL' ||
       gradeLow(metrics.networkPerDateMax,THRESHOLDS.networkPerDateMax)==='FAIL' ||
+      gradeLow(metrics.historyNavP95,THRESHOLDS.historyNavP95Ms)==='FAIL' ||
+      gradeLow(metrics.historyNavMax,THRESHOLDS.historyNavMaxMs)==='FAIL' ||
       metrics.timeouts > 0 ||
+      metrics.historyNavTimeouts > 0 ||
+      metrics.historyNavWrongDate > 0 ||
       metrics.api5xx > 0 ||
       metrics.restoreOk === false ||
       gradeLow(metrics.longTaskMax,THRESHOLDS.longTaskMaxMs)==='FAIL'
@@ -161,6 +168,8 @@
       gradeLow(metrics.apiP95,THRESHOLDS.apiP95Ms),
       gradeLow(metrics.duplicateConcurrent,THRESHOLDS.duplicateConcurrent),
       gradeLow(metrics.networkPerDateMax,THRESHOLDS.networkPerDateMax),
+      gradeLow(metrics.historyNavP95,THRESHOLDS.historyNavP95Ms),
+      gradeLow(metrics.historyNavMax,THRESHOLDS.historyNavMaxMs),
       gradeLow(metrics.longTaskMax,THRESHOLDS.longTaskMaxMs),
       gradeLow(metrics.longTaskCount,THRESHOLDS.longTaskCount),
       gradeLow(metrics.domGrowthPct,THRESHOLDS.domGrowthPct,{optional:true}),
@@ -340,7 +349,18 @@
     if(selected!==date)return false;
     const cells=document.getElementById('scoreCells');
     if(!cells||cells.dataset.scoreDay!==date)return false;
-    if(cells.querySelector('.score-card:not(.roundup-card)'))return true;
+
+    // A scheduled/bracket game may render with a compatibility score-button /
+    // score-cell class instead of score-card. First paint is usable when any
+    // non-roundup child contains stable non-loading content.
+    const children=[...cells.children].filter(el=>!el.classList.contains('roundup-card'));
+    for(const el of children){
+      const text=clean(el.textContent).toLowerCase();
+      if(!text)continue;
+      if(text.includes('loading')||text.includes('scores…')||text.includes('scores...'))continue;
+      return true;
+    }
+
     const empty=cells.querySelector('.score-empty-day');
     if(empty){
       const text=clean(empty.textContent).toLowerCase();
@@ -495,6 +515,92 @@
     return [...new Set(dates.filter(Boolean))].slice(0,mode==='hammer'?16:8);
   }
 
+  function thanksgiving(year){
+    const first=new Date(Number(year),10,1,12);
+    const firstThursday=1+((4-first.getDay()+7)%7);
+    return localDateForTest(new Date(Number(year),10,firstThursday+21,12));
+  }
+
+  function localDateForTest(d){
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  function randomHistoricalDates(){
+    const nowDate=new Date();
+    const prior=nowDate.getFullYear()-1;
+    const current=nowDate.getFullYear();
+    return [
+      `${prior}-01-15`,
+      `${prior}-02-14`,
+      `${prior}-06-15`,
+      thanksgiving(prior),
+      `${current}-01-15`,
+      `${current}-06-15`,
+    ].filter(date=>date<today());
+  }
+
+  async function historicalArrowStep(delta,timeoutMs=2500){
+    const from=browseDate();
+    const expected=addDays(from,delta);
+    const requestStart=state.requests.length;
+    const started=now();
+    const button=document.querySelector(`[data-score-date-step="${delta}"]`);
+    if(!button)return {kind:delta<0?'LEFT':'RIGHT',from,expected,actual:browseDate(),ok:false,timeout:true,elapsedMs:0,requestCount:0,error:'arrow unavailable'};
+    try{
+      if(window.SBB_RENDER_PIPELINE?.withReason){
+        window.SBB_RENDER_PIPELINE.withReason(delta<0?'history-arrow-left':'history-arrow-right',()=>button.click());
+      }else button.click();
+      const observed=await waitFor(()=>browseDate()===expected&&ribbonFirstUsable(expected),timeoutMs,24);
+      const reqs=state.requests.slice(requestStart).filter(r=>r.runId===state.currentRunId);
+      return {
+        kind:delta<0?'LEFT':'RIGHT',from,expected,actual:browseDate(),
+        ok:!!observed&&browseDate()===expected&&ribbonFirstUsable(expected),
+        timeout:!observed,elapsedMs:round(now()-started),requestCount:reqs.length
+      };
+    }catch(err){
+      return {kind:delta<0?'LEFT':'RIGHT',from,expected,actual:browseDate(),ok:false,timeout:true,elapsedMs:round(now()-started),requestCount:0,error:clean(err?.message||err)};
+    }
+  }
+
+  async function historicalCalendarJump(date,timeoutMs=3000){
+    const from=browseDate();
+    const requestStart=state.requests.length;
+    const started=now();
+    try{
+      const action=window.SBB_DATE_NAV_UI?.selectDate
+        ? window.SBB_DATE_NAV_UI.selectDate(date,{source:'efficiency-calendar'})
+        : window.setScoreBrowseDate?.(date,{animate:false,hold:timeoutMs+1000,load:true});
+      await Promise.resolve(action);
+      const observed=await waitFor(()=>browseDate()===date&&ribbonFirstUsable(date),timeoutMs,24);
+      const reqs=state.requests.slice(requestStart).filter(r=>r.runId===state.currentRunId);
+      return {
+        kind:'CALENDAR',from,expected:date,actual:browseDate(),
+        ok:!!observed&&browseDate()===date&&ribbonFirstUsable(date),
+        timeout:!observed,elapsedMs:round(now()-started),requestCount:reqs.length
+      };
+    }catch(err){
+      return {kind:'CALENDAR',from,expected:date,actual:browseDate(),ok:false,timeout:true,elapsedMs:round(now()-started),requestCount:0,error:clean(err?.message||err)};
+    }
+  }
+
+  async function runHistoricalNavigationSweep(mode='auto'){
+    const rows=[];
+    const steps=mode==='hammer'?18:10;
+    for(let i=0;i<steps;i++){
+      rows.push(await historicalArrowStep(-1,mode==='hammer'?3200:2500));
+      await sleep(35);
+    }
+    for(let i=0;i<steps;i++){
+      rows.push(await historicalArrowStep(1,mode==='hammer'?3200:2500));
+      await sleep(35);
+    }
+    for(const date of randomHistoricalDates()){
+      rows.push(await historicalCalendarJump(date,mode==='hammer'?3800:3000));
+      await sleep(55);
+    }
+    return rows;
+  }
+
   function candidateFilters(mode) {
     const ids=[...document.querySelectorAll('#scoreFilters [data-score-filter]')]
       .map(x=>upper(x.dataset.scoreFilter)).filter(Boolean);
@@ -527,7 +633,7 @@
     } catch (_) {}
   }
 
-  function makeMetrics({runId,switches,filters,probes,baseline,restoreOk,durationMs,memoryAfter}) {
+  function makeMetrics({runId,switches,historyNavigation,filters,probes,baseline,restoreOk,durationMs,memoryAfter}) {
     const reqs=requestsForRun(runId);
     const api=reqs.filter(r=>r.path.startsWith('/api/'));
     const apiMs=api.map(r=>r.durationMs).filter(Number.isFinite);
@@ -549,6 +655,7 @@
     }
     const ribbonMs=switches.filter(x=>x.firstPaintOk).map(x=>x.firstPaintMs);
     const settleMs=switches.filter(x=>x.settled&&Number.isFinite(x.fullSettleMs)).map(x=>x.fullSettleMs);
+    const historyMs=(historyNavigation||[]).filter(x=>x.ok).map(x=>x.elapsedMs).filter(Number.isFinite);
     const cacheStates={};
     for (const row of switches) for (const c of row.cacheStates||[]) cacheStates[c]=(cacheStates[c]||0)+1;
     const heapEnd=Number(memoryAfter?.min);
@@ -570,6 +677,15 @@
       fullSettleTimeouts:switches.filter(x=>x.settleTimeout).length,
       timeouts:switches.filter(x=>x.timeout).length,
       wrongDate:switches.filter(x=>x.firstPaintOk && x.date!==browseDate()).length,
+      historyNavCount:(historyNavigation||[]).length,
+      historyNavP95:round(percentile(historyMs,95)),
+      historyNavMax:round(historyMs.length?Math.max(...historyMs):null),
+      historyNavTimeouts:(historyNavigation||[]).filter(x=>x.timeout||!x.ok).length,
+      historyNavWrongDate:(historyNavigation||[]).filter(x=>x.actual!==x.expected).length,
+      historyNavMaxNetwork:Math.max(0,...(historyNavigation||[]).map(x=>Number(x.requestCount||0))),
+      historyArrowLeft:(historyNavigation||[]).filter(x=>x.kind==='LEFT').length,
+      historyArrowRight:(historyNavigation||[]).filter(x=>x.kind==='RIGHT').length,
+      historyCalendarJumps:(historyNavigation||[]).filter(x=>x.kind==='CALENDAR').length,
       filterSwitches:filters.length,
       filterFailures:filters.filter(x=>!x.ok).length,
       apiRequests:api.length,
@@ -633,6 +749,9 @@
       ['API p95',metrics.apiP95,'ms',THRESHOLDS.apiP95Ms],
       ['Broker-coalesced callers',metrics.duplicateConcurrent,'',THRESHOLDS.duplicateConcurrent],
       ['Max network req/date',metrics.networkPerDateMax,'',THRESHOLDS.networkPerDateMax],
+      ['History nav p95',metrics.historyNavP95,'ms',THRESHOLDS.historyNavP95Ms],
+      ['History nav max',metrics.historyNavMax,'ms',THRESHOLDS.historyNavMaxMs],
+      ['History nav timeouts',metrics.historyNavTimeouts,'',THRESHOLDS.historyNavTimeouts],
       ['Long tasks >50ms',metrics.longTaskCount,'',THRESHOLDS.longTaskCount],
       ['Longest task',metrics.longTaskMax,'ms',THRESHOLDS.longTaskMaxMs],
       ['DOM growth',metrics.domGrowthPct,'%',THRESHOLDS.domGrowthPct,true],
@@ -652,7 +771,7 @@
     return [
       `Sports Big Board v${VERSION} Efficiency Certification`,
       `MODE=${report.mode.toUpperCase()}  RESULT=${report.result}  ELAPSED=${Math.round((m.durationMs||0)/1000)}s`,
-      `DATE_SWITCHES=${m.ribbonCount}  FILTER_SWITCHES=${m.filterSwitches}  API_REQUESTS=${m.apiRequests}`,
+      `DATE_SWITCHES=${m.ribbonCount}  HISTORY_NAV=${m.historyNavCount}  FILTER_SWITCHES=${m.filterSwitches}  API_REQUESTS=${m.apiRequests}`,
       `CACHE=${Object.entries(m.cacheStates||{}).map(([k,v])=>`${k}:${v}`).join(' ')||'none observed'}`,
       '',
       ...rows.map(r=>`${r.grade.padEnd(4)}  ${r.name.padEnd(30)} ${r.value==null?'N/A':r.value}${r.unit}`),
@@ -668,7 +787,11 @@
       `DAY_APPLY_P95=${m.dayApplyP95??'N/A'}ms  SCORE_ROWS_P95=${m.scoreRowsP95??'N/A'}ms  MEDIA_PLANS_P95=${m.mediaPlansP95??'N/A'}ms`,
       `FULL_SETTLE_P95=${m.fullSettleP95??'N/A'}ms  FULL_SETTLE_TIMEOUTS=${m.fullSettleTimeouts}`,
       `MEMORY_SAMPLES=${m.heapSamples}  MEMORY_WINDOW_SPREAD=${m.heapWindowSpreadPct??'N/A'}%  HEAP_POST_MIN=${m.heapEnd??'N/A'}`,
+      `HISTORY_LEFT=${m.historyArrowLeft}  HISTORY_RIGHT=${m.historyArrowRight}  CALENDAR_JUMPS=${m.historyCalendarJumps}  HISTORY_MAX_NETWORK=${m.historyNavMaxNetwork}`,
       `LONG_TASK_TOTAL=${m.longTaskTotal}ms  MAX_NETWORK_REQ/DATE=${m.networkPerDateMax}`,
+      '',
+      'HISTORICAL NAVIGATION',
+      ...((report.historyNavigation||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.kind.padEnd(8)} ${x.from} → ${x.expected} actual=${x.actual} ${x.elapsedMs}ms req=${x.requestCount}`)),
       '',
       'SLOWEST ENDPOINTS',
       ...((report.slowestEndpoints||[]).map(x=>`${String(x.p95Ms).padStart(7)}ms p95  ${String(x.maxMs).padStart(7)}ms max  n=${String(x.count).padStart(3)}  ${x.path}`)),
@@ -715,7 +838,7 @@
     const started=now();
     state.currentRunId=runId;
     window.__SBB_EFFICIENCY_RUN_ID=runId;
-    const switches=[],filters=[],probes=[];
+    const switches=[],historyNavigation=[],filters=[],probes=[];
 
     try {
       const launch=document.getElementById('launchScreen');
@@ -732,6 +855,8 @@
           await sleep(mode==='hammer'?80:140);
         }
       }
+
+      historyNavigation.push(...await runHistoricalNavigationSweep(mode));
 
       const filterIds=candidateFilters(mode);
       for (const id of filterIds) {
@@ -751,7 +876,7 @@
       state.currentRunId='';
       if(window.__SBB_EFFICIENCY_RUN_ID===runId)window.__SBB_EFFICIENCY_RUN_ID='';
       const metrics=makeMetrics({
-        runId,switches,filters,probes,baseline,restoreOk,durationMs,memoryAfter
+        runId,switches,historyNavigation,filters,probes,baseline,restoreOk,durationMs,memoryAfter
       });
       const result=overallGrade(metrics);
       const runRequests=requestsForRun(runId).filter(x=>x.path&&x.path.startsWith('/api/'));
@@ -775,6 +900,7 @@
         result,
         metrics,
         switches,
+        historyNavigation,
         filters,
         probes,
         slowestEndpoints,

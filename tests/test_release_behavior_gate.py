@@ -17,6 +17,7 @@ HIST_MEDIA=(ROOT/"architecture"/"historical-media-v4610.js").read_text(encoding=
 FUTURE_DATES=(ROOT/"architecture"/"future-date-navigation.js").read_text(encoding="utf-8")
 RENDER_PIPELINE=(ROOT/"architecture"/"render-pipeline.js").read_text(encoding="utf-8")
 CARD_CACHE=(ROOT/"architecture"/"card-build-cache.js").read_text(encoding="utf-8")
+NAVIGATION_UI=(ROOT/"architecture"/"navigation-ui.js").read_text(encoding="utf-8")
 VERIFY=(ROOT/"VERIFY.sh").read_text(encoding="utf-8")
 
 
@@ -200,6 +201,28 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("MEMORY_WINDOW_SPREAD=",EFFICIENCY)
         self.assertIn("CARD_CACHE_HITS=",EFFICIENCY)
 
+    def test_special_events_live_only_in_special_events_menu(self):
+        self.assertIn("function normalizedType",REG_UI)
+        self.assertIn("eventIcon",REG_UI)
+        self.assertIn("sbb-special-main-row-suppressed",REG_UI)
+        self.assertIn("#sbbSpecialEventsMenu",NAVIGATION_UI)
+        self.assertIn("window.SBB_FRONTEND_REGISTRY?.select",NAVIGATION_UI)
+
+    def test_date_picker_is_custom_themed_and_anchored(self):
+        self.assertIn("sbb-date-popover",NAVIGATION_UI)
+        self.assertIn("sbb-calendar-grid",NAVIGATION_UI)
+        self.assertIn("position:fixed",NAVIGATION_UI)
+        self.assertIn("scoreDatePicker",NAVIGATION_UI)
+        self.assertIn("topDateSelectBtn,#scoreDayIndicator",NAVIGATION_UI)
+
+    def test_auto_efficiency_sweeps_arrows_and_random_history(self):
+        self.assertIn("runHistoricalNavigationSweep",EFFICIENCY)
+        self.assertIn("historicalArrowStep",EFFICIENCY)
+        self.assertIn("historicalCalendarJump",EFFICIENCY)
+        self.assertIn("randomHistoricalDates",EFFICIENCY)
+        self.assertIn("thanksgiving",EFFICIENCY)
+        self.assertIn("History nav p95",EFFICIENCY)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -228,6 +251,7 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "node tests/test_v476_render_pipeline_runtime.js",
             "node tests/test_v477_first_paint_render_consolidation_runtime.js",
             "node tests/test_v478_future_projection_card_cache_runtime.js",
+            "node tests/test_v479_navigation_history_runtime.js",
             "python3 -m unittest tests.test_v478_future_projection",
         )
         for command in required:

@@ -1,0 +1,27 @@
+Sports Big Board v4.7.9 — Special Events Menu + Themed Calendar + Deep History Certification
+
+UI
+- LLWS, World Cup and all generic SPECIAL_EVENT competitions are forced into SPECIAL EVENTS.
+- Old cached special-event rows are repaired when eventIcon + bounded event dates prove event semantics.
+- Special Events menu is explicitly fixed-position, high-z-index and themed.
+- Any compatibility layer that emits a special event as a top-row data-score-filter button is suppressed.
+- Native browser date picker is disabled as visible UI.
+- New Sports Big Board themed calendar opens directly under the clicked date control.
+- Calendar includes month navigation, 42-day grid, today/selected styling, Today and Close actions.
+
+FIRST PAINT
+- Scheduled/bracket score-button and score-cell cards count as usable first paint.
+- Aug 30-style future schedule dates no longer fail merely because their card class differs from final-game cards.
+
+EFFICIENCY AUTO TEST
+- Existing representative date switches remain.
+- Adds 10 real LEFT-arrow transitions.
+- Adds 10 real RIGHT-arrow transitions back across the same path.
+- Adds calendar random access to prior-year Jan 15, Feb 14, Jun 15, prior Thanksgiving,
+  current-year Jan 15 and current-year Jun 15 when historical.
+- Every historical navigation verifies expected date, first usable ribbon paint, latency and request count.
+- Report adds HISTORY_NAV, History nav p95/max/timeouts, wrong-date protection,
+  HISTORY_LEFT/RIGHT/CALENDAR_JUMPS and detailed HISTORICAL NAVIGATION lines.
+
+CARD BUILD
+- Render-local helper cache additionally wraps scoreGameLookupKeys and scoreEventDate when available.

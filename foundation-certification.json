@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.8",
+  "release": "4.7.9",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -232,7 +232,18 @@
         "Efficiency Certification reports Day State games/scheduled/catalog candidate/catalog-added counts on every tested date so a future-date failure immediately distinguishes backend projection from frontend rendering.",
         "Efficiency Certification samples JS heap before the run and over a post-restore idle window; heap retention uses the minimum post-test sample rather than a single arbitrary V8 heap point.",
         "Heap retention remains an optional diagnostic and cannot independently make an otherwise healthy AUTO run fail; DOM retention, first-paint latency, API health, and main-thread latency remain the primary blocking signals.",
-        "tests/test_v478_future_projection_card_cache_runtime.js and tests/test_v478_future_projection.py are blocking contracts for future canonical schedule projection, render-local card caching, and stabilized memory certification."
+        "tests/test_v478_future_projection_card_cache_runtime.js and tests/test_v478_future_projection.py are blocking contracts for future canonical schedule projection, render-local card caching, and stabilized memory certification.",
+        "All competitions classified as SPECIAL_EVENT, including older cached rows identified by generic eventIcon plus bounded event dates, live only in the Special Events dropdown and may not render as permanent main-row league chips.",
+        "Special Events dropdown is a fixed high-z-index themed menu anchored to the Special Events control; its event items show icon, short/name text, lifecycle state, selected state, and route selection through Frontend Competition Projection.",
+        "Score date selection uses the Sports Big Board themed custom calendar popover anchored under the date control instead of relying on the browser-native date picker popup.",
+        "The hidden native scoreDatePicker remains a compatibility value holder only and is moved off-screen with pointer events disabled so browser calendar UI cannot appear in the middle of the page.",
+        "The custom date calendar supports previous/next month navigation, 42-day month grid, selected date, today state, Today action, Close action, outside-click dismissal, Escape dismissal, resize/scroll repositioning, and future/past dates.",
+        "Efficiency first-paint detection accepts any non-roundup score ribbon child with stable non-loading content, including scheduled/bracket compatibility score-button or score-cell cards.",
+        "AUTO efficiency certification performs ten real left-arrow date steps followed by ten real right-arrow date steps and verifies each expected date reaches usable first paint.",
+        "AUTO efficiency certification performs random-access calendar jumps to representative previous-year January, February, June, previous Thanksgiving, and current-year January and June dates when historical.",
+        "Historical navigation reports p95/max latency, timeouts, wrong-date results, maximum network requests per navigation, and individual left/right/calendar transition lines; timeout or wrong-date navigation is blocking.",
+        "Render-local card cache additionally memoizes scoreGameLookupKeys and scoreEventDate during a single ribbon render.",
+        "tests/test_v479_navigation_history_runtime.js is a blocking contract for Special Events placement, themed calendar ownership, scheduled-card first-paint semantics, and deep historical arrow/calendar navigation."
       ]
     },
     "tier2": {
@@ -283,6 +294,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.8 preserves the v4.7.5-v4.7.7 request/enrichment/render architecture and closes the remaining narrow gaps: future canonical schedule rows are projected directly by Day State, incomplete future snapshots self-repair only when the catalog proves missing games, repeated card helper calculations are render-local cached, and heap retention is measured over a post-restore stabilization window.",
+  "baseline": "v4.7.9 preserves the v4.7.5-v4.7.8 request, Day State, render, and memory architecture while correcting navigation UX and certification coverage: special events remain in their dropdown, the date picker is a themed anchored Big Board calendar, scheduled future cards satisfy first paint, and AUTO certification now exercises deep sequential left/right history plus random calendar dates.",
   "status": "IN_PROGRESS"
 }

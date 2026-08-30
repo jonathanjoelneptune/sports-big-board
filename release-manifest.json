@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.8",
-  "baseRelease": "4.7.7",
-  "title": "Future Schedule Projection + Card Build Optimization + Stable Memory Certification",
+  "release": "4.7.9",
+  "baseRelease": "4.7.8",
+  "title": "Special Events Menu + Themed Calendar + Deep History Certification",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -22,6 +22,7 @@
     "architecture/future-date-navigation.js",
     "architecture/card-build-cache.js",
     "architecture/render-pipeline.js",
+    "architecture/navigation-ui.js",
     "tests/test_release_behavior_gate.py",
     "tests/test_v472_frontend_boot_responsiveness.py",
     "tests/test_v473_efficiency_runtime.js",
@@ -30,118 +31,107 @@
     "tests/test_v476_render_pipeline_runtime.js",
     "tests/test_v477_first_paint_render_consolidation_runtime.js",
     "tests/test_v478_future_projection_card_cache_runtime.js",
-    "tests/test_v478_future_projection.py"
+    "tests/test_v478_future_projection.py",
+    "tests/test_v479_navigation_history_runtime.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.8"
+        "4.7.9"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.8",
-        "architecture/card-build-cache.js?v=4.7.8",
-        "architecture/render-pipeline.js?v=4.7.8"
+        "Sports Big Board \u2014 v4.7.9",
+        "architecture/competition-registry-projection.js?v=4.7.9",
+        "architecture/navigation-ui.js?v=4.7.9"
       ],
       "forbidden": [
-        "?v=4.7.7"
+        "?v=4.7.8"
       ]
     },
-    "sbb/day_state.py": {
+    "architecture/navigation-ui.js": {
       "required": [
-        "def _merge_future_catalog_rows",
-        "projectionDiagnostics",
-        "_future_catalog_event_count",
-        "FUTURE_CATALOG_REBUILT",
-        "canonical_future > projected_games",
-        "\"engineVersion\":\"4.7.8\""
+        "Sports Big Board v4.7.9",
+        "window.SBB_DATE_NAV_UI",
+        "sbb-date-popover",
+        "sbb-calendar-grid",
+        "scoreDatePicker",
+        "sbb-special-main-row-suppressed",
+        "#sbbSpecialEventsMenu",
+        "window.SBB_FRONTEND_REGISTRY?.select"
       ]
     },
-    "architecture/card-build-cache.js": {
+    "architecture/competition-registry-projection.js": {
       "required": [
-        "Sports Big Board v4.7.8",
-        "window.SBB_CARD_BUILD_CACHE",
-        "scoreCardAvailability",
-        "scoreCardPlayableItems",
-        "externalMediaItemsForGame",
-        "scoreFromMatch",
-        "WeakMap",
-        "beginRender",
-        "endRender"
-      ]
-    },
-    "architecture/render-pipeline.js": {
-      "required": [
-        "Sports Big Board v4.7.8",
-        "SBB_CARD_BUILD_CACHE?.beginRender",
-        "SBB_CARD_BUILD_CACHE?.endRender",
-        "cardCacheHits",
-        "cardCacheMisses",
-        "cardHelperMs",
-        "document.createDocumentFragment()"
+        "Sports Big Board v4.7.9",
+        "function normalizedType",
+        "eventIcon",
+        "SPECIAL_EVENT",
+        "sbb-special-main-row-suppressed"
       ]
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "Sports Big Board v4.7.8",
-        "sampleHeapWindow",
-        "Heap retained (stabilized)",
-        "MEMORY_WINDOW_SPREAD=",
-        "CARD_CACHE_HITS=",
-        "dayStateSummary",
-        "catalogCandidates",
-        "catalogAdded"
+        "Sports Big Board v4.7.9",
+        "function runHistoricalNavigationSweep",
+        "historicalArrowStep",
+        "historicalCalendarJump",
+        "randomHistoricalDates",
+        "thanksgiving",
+        "History nav p95",
+        "HISTORICAL NAVIGATION",
+        "const children=[...cells.children]"
       ]
     },
-    "tests/test_v477_first_paint_render_consolidation_runtime.js": {
+    "architecture/card-build-cache.js": {
       "required": [
-        "parts[2]>=7",
-        "retains v4.7.7"
-      ],
-      "forbidden": [
-        "assert.strictEqual(VERSION,'4.7.7')"
+        "Sports Big Board v4.7.9",
+        "scoreGameLookupKeys",
+        "scoreEventDate"
       ]
     },
     "tests/test_v478_future_projection_card_cache_runtime.js": {
       "required": [
-        "future schedule projection + card cache + stable memory contracts",
-        "FUTURE_CATALOG_REBUILT",
-        "CARD_CACHE_HITS=",
-        "sampleHeapWindow"
+        "parts[2]>=8",
+        "retains v4.7.8"
+      ],
+      "forbidden": [
+        "assert.strictEqual(VERSION,'4.7.8')"
       ]
     },
-    "tests/test_v478_future_projection.py": {
+    "tests/test_v479_navigation_history_runtime.js": {
       "required": [
-        "test_future_catalog_rows_are_merged_before_plans",
-        "test_future_incomplete_snapshot_has_narrow_repair"
+        "special-events menu + themed calendar + deep-history navigation contracts",
+        "runHistoricalNavigationSweep",
+        "sbb-date-popover",
+        "sbb-special-main-row-suppressed"
       ]
     },
     "tests/test_release_behavior_gate.py": {
       "required": [
-        "test_future_catalog_schedule_is_part_of_day_state_projection",
-        "test_card_helpers_are_cached_only_for_one_render",
-        "test_memory_certification_uses_post_restore_window",
-        "node tests/test_v478_future_projection_card_cache_runtime.js",
-        "python3 -m unittest tests.test_v478_future_projection"
+        "test_special_events_live_only_in_special_events_menu",
+        "test_date_picker_is_custom_themed_and_anchored",
+        "test_auto_efficiency_sweeps_arrows_and_random_history",
+        "node tests/test_v479_navigation_history_runtime.js"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.8\"",
-        "future history_catalog_event schedule rows",
-        "Render-Local Card Model Cache",
-        "post-restore idle window",
-        "tests/test_v478_future_projection_card_cache_runtime.js"
+        "\"release\": \"4.7.9\"",
+        "Special Events dropdown",
+        "themed custom calendar popover",
+        "ten real left-arrow date steps",
+        "previous Thanksgiving",
+        "tests/test_v479_navigation_history_runtime.js"
       ]
     },
     "VERIFY.sh": {
       "required": [
         "python3 -m unittest tests.test_v446_historical_media_quarantine",
         "python3 -m unittest tests.test_release_behavior_gate",
-        "node tests/test_v477_first_paint_render_consolidation_runtime.js",
         "node tests/test_v478_future_projection_card_cache_runtime.js",
-        "python3 -m unittest tests.test_v478_future_projection",
+        "node tests/test_v479_navigation_history_runtime.js",
         "[legacy-advisory]"
       ]
     }
@@ -161,6 +151,7 @@
     "node tests/test_v477_first_paint_render_consolidation_runtime.js",
     "node tests/test_v478_future_projection_card_cache_runtime.js",
     "python3 -m unittest tests.test_v478_future_projection",
+    "node tests/test_v479_navigation_history_runtime.js",
     "bash VERIFY.sh"
   ]
 }
