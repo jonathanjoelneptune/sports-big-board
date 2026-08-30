@@ -291,7 +291,7 @@
         "Native cold-thin certification omits custom X-SBB headers and credentials so GitHub Pages cross-origin GETs do not trigger unnecessary CORS preflight failures.",
         "tests/test_v4713_media_readiness_runtime.js and tests/test_v4713_media_readiness.py are blocking contracts for media readiness and cold-thin preflight avoidance.",
         "CFB is a first-class persistent American Football competition with stable league id CFB and season id CFB2026; next season resets seasonal state without creating a second permanent main-bar league.",
-        "CFB weekly membership is exactly every FBS game with at least one participant in the AP Top 25 snapshot applicable to that ESPN schedule week; ranked-v-ranked games appear once and carry both ranks.",
+        "CFB weekly membership is exactly every FBS game with at least one participant in the weekly AP Top 25 snapshot applicable to that ESPN schedule week; ranked-v-ranked games appear once and carry both ranks.",
         "Weekly AP rank snapshots are immutable after first successful persistence; historical games retain that week's rank labels even after subsequent polls change the team's rank or ranked status.",
         "Future CFB weeks are never projected using an older poll. A week is materialized only when its AP Top 25 snapshot exists.",
         "Recent materialized CFB weeks may refresh score/status data, but rank fields are rebuilt only from the already-frozen weekly snapshot.",
