@@ -8,6 +8,12 @@ from pathlib import Path
 # against the bundle by itself; the full repository uses the real modules.
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
+# Install a lightweight package shell so importing focused submodules does not
+# execute sbb/__init__.py and start unrelated runtime installers.
+pkg=types.ModuleType('sbb')
+pkg.__path__=[str(ROOT/'sbb')]
+pkg.__package__='sbb'
+sys.modules.setdefault('sbb',pkg)
 registry=types.ModuleType('sbb.competition_registry')
 registry.revision=lambda:1
 registry.catalog=lambda:[]
