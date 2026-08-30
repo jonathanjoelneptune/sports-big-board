@@ -27,9 +27,26 @@
 
   const now=()=>performance.now();
   const round=v=>Math.round(v*10)/10;
+  const clean=v=>String(v??'').trim();
+  const upper=v=>clean(v).toUpperCase();
+  function stableObjectKey(value){
+    if(!value||(typeof value!=='object'&&typeof value!=='function'))return '';
+    const league=upper(value.competitionId||value.__sbbLeague||value.league||value.sport||'SPORTS');
+    const date=clean(value.__sbbDate||value.gameDate||value.date||value.scheduledAt).slice(0,10);
+    const id=[value.scoreEventId,value.espnEventId,value.gameCenterEventId,value.matchId,value.gamePk,value.eventId,value.id]
+      .find(x=>x!==undefined&&x!==null&&clean(x)!=='');
+    if(id!==undefined)return `${league}|${date}|ID:${clean(id)}`;
+    const teamName=team=>upper(team?.name||team?.displayName||team?.shortDisplayName||team?.abbreviation||team||'');
+    const away=teamName(value.awayTeam||value.away||value.awayName);
+    const home=teamName(value.homeTeam||value.home||value.homeName);
+    return away||home?`${league}|${date}|PAIR:${away}|${home}`:'';
+  }
 
   function freshCaches(){
-    caches=new Map(TARGETS.map(name=>[name,new WeakMap()]));
+    // Day State frequently clones the same logical match while composing one
+    // render. Keep object identity as a fallback, but prefer a render-local stable
+    // event key so those clones share the expensive helper result.
+    caches=new Map(TARGETS.map(name=>[name,{stable:new Map(),object:new WeakMap()}]));
   }
   function freshBreakdown(){
     state.helperBreakdown=Object.fromEntries(
@@ -53,12 +70,15 @@
       }
 
       const cache=caches.get(name);
+      const stable=stableObjectKey(key);
+      const store=stable?cache?.stable:cache?.object;
+      const cacheKey=stable||key;
       const helper=state.helperBreakdown[name]||(state.helperBreakdown[name]={hits:0,misses:0,ms:0});
-      if(cache?.has(key)){
+      if(store?.has(cacheKey)){
         state.hits+=1;
         state.totalHits+=1;
         helper.hits+=1;
-        return cache.get(key);
+        return store.get(cacheKey);
       }
 
       state.misses+=1;
@@ -69,7 +89,7 @@
       const elapsed=now()-started;
       state.helperMs+=elapsed;
       helper.ms+=elapsed;
-      cache?.set(key,result);
+      store?.set(cacheKey,result);
       return result;
     };
     wrapped.__sbbCardBuildCache=true;

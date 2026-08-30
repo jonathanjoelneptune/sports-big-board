@@ -31,7 +31,8 @@
     catch(_){return clean(window.scoreBrowseDate).slice(0,10);}
   }
   function currentFilter(){
-    return upper(window.scoreRibbonLeagueFilter||'ALL')||'ALL';
+    const active=document.querySelector('#scoreFilters [data-score-filter].active');
+    return upper(active?.dataset?.scoreFilter||window.scoreRibbonLeagueFilter||'ALL')||'ALL';
   }
   function visibleMatch(match){
     const filter=currentFilter();
@@ -260,14 +261,17 @@
       const started=now();
       try{
         const result=originalPlayable(match);
-        // If the legacy path resolves media during this render, memoize by stable
-        // game aliases for subsequent object clones of the same card.
-        if(Array.isArray(result)&&result.length){
+        // Memoize both positive and empty legacy answers for this render. Day State
+        // supplies cloned match objects, so without the empty row the same no-media
+        // game can repeatedly execute the expensive legacy resolver while building
+        // one ribbon. The index is rebuilt on every render, so no-media truth is not
+        // carried across later media-readiness updates.
+        if(Array.isArray(result)){
           const found=planForMatch(match,currentDate());
           const known=Array.isArray(found?.plan?.playable)&&found.plan.playable.length>0;
           const gameKey=stableKey(match,currentDate());
-          putForMatch(match,{kind:'legacy-resolved',items:result,gameKey,knownDatabaseMedia:known});
-          if(known&&gameKey)readyKnownMediaKeys.add(gameKey);
+          putForMatch(match,{kind:result.length?'legacy-resolved':'legacy-empty',items:result,gameKey,knownDatabaseMedia:known});
+          if(known&&gameKey&&result.length)readyKnownMediaKeys.add(gameKey);
         }
         return result;
       }finally{

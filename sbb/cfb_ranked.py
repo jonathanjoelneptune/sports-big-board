@@ -104,7 +104,9 @@ def _ap_block(payload):
     for row in rankings:
         text=' '.join(str(row.get(k) or '') for k in ('name','shortName','headline','type')).lower()
         if 'ap top 25' in text or ('associated press' in text and '25' in text):return row
-    return rankings[0] if rankings else None
+    # Fail closed. Falling back to the first poll can silently turn the CFB board
+    # into Coaches/FCS/other-poll membership if ESPN changes response ordering.
+    return None
 
 
 def _parse_rankings(payload):
@@ -126,7 +128,9 @@ def _parse_rankings(payload):
         for key in (team_id,_norm(name),_norm(team.get('shortDisplayName')),_norm(abbr)):
             if key:teams[key]=row
     ranks.sort(key=lambda x:x['rank'])
-    if not ranks:raise RuntimeError('ESPN AP Top 25 block contained no ranked teams')
+    unique_teams={str(x.get('teamId') or _norm(x.get('name'))) for x in ranks if x.get('teamId') or x.get('name')}
+    if len(ranks)!=25 or len(unique_teams)!=25:
+        raise RuntimeError(f'ESPN AP Top 25 block was incomplete/ambiguous: {len(ranks)} rows, {len(unique_teams)} unique teams')
     poll_date=str(block.get('date') or block.get('published') or payload.get('timestamp') or '')
     fingerprint=hashlib.sha1(json.dumps(ranks,sort_keys=True).encode()).hexdigest()[:16]
     return {'week':week,'pollName':POLL_NAME,'pollDate':poll_date,'fingerprint':fingerprint,'ranks':ranks,'teams':teams}
@@ -266,12 +270,51 @@ def _materialize(state,current_snapshot):
     return list(by.values())
 
 
+def _sync_catalog_membership(server,events):
+    """Remove legacy CFB catalog rows that are outside authoritative AP membership.
+
+    Competition Builder upserts the current schedule but intentionally does not
+    delete normalized history events. An early CFB import could therefore leave
+    unranked-v-unranked games in history_catalog_event forever even after the
+    weekly AP filter became correct. The persisted weekly CFB state is authoritative
+    here, so obsolete CFB rows are removed while archived valid weeks remain.
+    """
+    repo=getattr(server,'HISTORY_REPOSITORY',None)
+    valid={str(x.get('eventId') or x.get('id') or '') for x in (events or []) if x.get('eventId') or x.get('id')}
+    if not repo or not hasattr(repo,'_connect') or not valid:return {'purged':0,'dates':[]}
+    lock=getattr(repo,'_lock',None);conn=None;stale=[]
+    if lock:lock.acquire()
+    try:
+        conn=repo._connect()
+        rows=conn.execute("SELECT event_id,event_date FROM history_catalog_event WHERE league=?",(COMPETITION_ID,)).fetchall()
+        stale=[(str(r['event_id']),str(r['event_date'] or '')[:10]) for r in rows if str(r['event_id']) not in valid]
+        if stale:
+            conn.executemany("DELETE FROM history_catalog_event WHERE league=? AND event_id=?",[(COMPETITION_ID,event_id) for event_id,_ in stale])
+            for day in sorted({d for _,d in stale if d}):
+                conn.execute("DELETE FROM history_day WHERE date=? AND league=?",(day,COMPETITION_ID))
+            conn.commit()
+    finally:
+        if conn is not None:conn.close()
+        if lock:lock.release()
+    stale_dates=sorted({d for _,d in stale if d})
+    if stale_dates:
+        try:
+            from . import day_state as _day_state
+            engine=getattr(_day_state,'_ENGINE',None)
+            if engine:
+                for day in stale_dates:
+                    with engine.lock:engine.cache.pop(day,None)
+                    threading.Thread(target=engine.build,args=(day,),daemon=True,name=f'sbb-cfb-daystate-rebuild-{day}').start()
+        except Exception:pass
+    return {'purged':len(stale),'dates':stale_dates}
+
+
 def _definition(event_count):
     return {
         'id':COMPETITION_ID,'seasonId':SEASON_ID,'name':NAME,'shortName':SHORT_NAME,
         'type':'LEAGUE','sportId':'american-football','year':SEASON,'seasonYear':SEASON,
         'startDate':START_DATE,'endDate':END_DATE,'format':'SEASON','logoStrategy':'AUTO',
-        'eventIcon':'🏈','enabled':True,'scheduleMode':'DYNAMIC_RANKED','scheduleSourceUrl':SCHEDULE_SOURCE,
+        'eventIcon':'🏈','enabled':True,'mainRow':True,'scheduleMode':'DYNAMIC_RANKED','scheduleSourceUrl':SCHEDULE_SOURCE,
         'scoreSourceUrl':SCHEDULE_SOURCE,'autoRefresh':True,'refreshMinutes':30,
         'backgroundDiscovery':True,'crawlEnabled':True,'allowIncompleteSchedule':True,
         'expectedEventCount':0,'expectedEventRange':[EXPECTED_GAMES_MIN,EXPECTED_GAMES_MAX],
@@ -305,10 +348,11 @@ def refresh(server,force=False):
         if changed and events:
             builder.save_competition(_definition(len(events)),events=events,server=server)
             state['publishedFingerprint']=new_fp
-        state['lastPollWeek']=int(current.get('week') or 0);state['lastRefreshAt']=time.time();state['eventCount']=len(events)
+        catalog_sync=_sync_catalog_membership(server,events) if events else {'purged':0,'dates':[]}
+        state['lastPollWeek']=int(current.get('week') or 0);state['lastRefreshAt']=time.time();state['eventCount']=len(events);state['catalogSync']=catalog_sync
         _save_state(state)
         with _LOCK:
-            _STATUS.update({'state':'READY','lastRefreshAt':time.time(),'lastSuccessAt':time.time(),'lastError':'','pollWeek':int(current.get('week') or 0),'snapshots':len(state.get('snapshots') or {}),'games':len(events),'changed':bool(changed),'elapsedMs':round((time.time()-started)*1000,1)})
+            _STATUS.update({'state':'READY','lastRefreshAt':time.time(),'lastSuccessAt':time.time(),'lastError':'','pollWeek':int(current.get('week') or 0),'snapshots':len(state.get('snapshots') or {}),'games':len(events),'changed':bool(changed),'stalePurged':int(catalog_sync.get('purged') or 0),'staleDates':catalog_sync.get('dates') or [],'elapsedMs':round((time.time()-started)*1000,1)})
         return {'ok':True,**status(),'competition':builder._find(COMPETITION_ID)}
     except Exception as exc:
         with _LOCK:_STATUS.update({'state':'DEGRADED','lastRefreshAt':time.time(),'lastError':f'{type(exc).__name__}: {exc}','elapsedMs':round((time.time()-started)*1000,1)})
@@ -340,7 +384,7 @@ def _install_into_server():
         from . import competition_registry as registry
         registry.register({
             'id':COMPETITION_ID,'name':NAME,'shortName':SHORT_NAME,'sportId':'american-football',
-            'type':'LEAGUE','enabled':True,'custom':False,'startDate':START_DATE,'endDate':END_DATE,
+            'type':'LEAGUE','enabled':True,'mainRow':True,'custom':False,'startDate':START_DATE,'endDate':END_DATE,
             'scoreProvider':'cfb-ranked','mediaProviders':['operator-playlist','youtube'],
             'gameCenterProvider':'competition-builder','historyEnabled':True,'dayStateEnabled':True,
             'eventIcon':'🏈','seasonId':SEASON_ID,'seasonYear':SEASON,

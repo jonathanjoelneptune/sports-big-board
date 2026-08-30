@@ -58,12 +58,14 @@
   function normalizedType(row,source=''){
     const explicit=upper(row.type||row.competitionType||row.kind||row.mode);
     if(['SPECIAL_EVENT','SPECIAL EVENT','EVENT','TOURNAMENT'].includes(explicit))return 'SPECIAL_EVENT';
-    if(row.specialEvent===true||row.isSpecialEvent===true)return 'SPECIAL_EVENT';
-    // Event Builder's eventIcon + bounded event dates is durable generic metadata
-    // for a special event. It also repairs older cached rows that were previously
-    // defaulted to LEAGUE before type was persisted consistently.
-    if(clean(row.eventIcon)&&(clean(row.startDate)||clean(row.endDate)))return 'SPECIAL_EVENT';
+    // Explicit registry/builder type is authoritative. In v4.7.14 CFB carried a
+    // football eventIcon plus bounded season dates, so the generic event heuristic
+    // incorrectly demoted the declared LEAGUE into the Special Events menu.
     if(explicit==='LEAGUE')return 'LEAGUE';
+    if(row.specialEvent===true||row.isSpecialEvent===true)return 'SPECIAL_EVENT';
+    // Event Builder's eventIcon + bounded event dates remains a legacy repair
+    // heuristic only when no explicit competition type was supplied.
+    if(clean(row.eventIcon)&&(clean(row.startDate)||clean(row.endDate)))return 'SPECIAL_EVENT';
     return (row.custom||source==='REGISTRY')?'SPECIAL_EVENT':'LEAGUE';
   }
 
@@ -350,7 +352,6 @@
     state.leagueRenderKey=renderKey;
 
     host.querySelectorAll('.sbb-v472-registry-competition').forEach(x=>x.remove());
-    const anchor=document.getElementById('sbbSpecialEventsWrap');
     for(const row of rows){
       const esc=(window.CSS&&typeof window.CSS.escape==="function")?window.CSS.escape(row.id):row.id.replace(/"/g,"\\\"");
       // Never duplicate a built-in / Competition Builder-owned button.
@@ -362,7 +363,10 @@
       button.textContent=row.shortName||row.id;
       button.title=row.name;
       button.addEventListener('click',()=>select(row));
-      if(anchor)host.insertBefore(button,anchor);else host.appendChild(button);
+      // Dynamic LEAGUE buttons belong after the built-in league buttons. The
+      // Special Events control lives near ALL at the start of the row, so inserting
+      // before that anchor incorrectly placed CFB inside the event-side controls.
+      host.appendChild(button);
     }
   }
 
