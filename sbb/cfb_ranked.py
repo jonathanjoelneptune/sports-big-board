@@ -1,4 +1,4 @@
-"""Sports Big Board v4.7.14 — AP Top 25 College Football season service.
+"""Sports Big Board v4.7.16 — AP Top 25 College Football season service.
 
 CFB is a persistent league whose weekly membership is determined by the AP Top 25
 snapshot applicable to that ESPN schedule week. Ranking snapshots are immutable
@@ -30,6 +30,7 @@ except Exception:
     ZoneInfo=None
 
 from . import competition_builder as builder
+from . import operator_playlist_contract as playlist_contract
 
 SEASON=2026
 COMPETITION_ID='CFB'
@@ -72,7 +73,7 @@ _STATUS={'state':'STARTING','lastRefreshAt':0.0,'lastSuccessAt':0.0,'lastError':
 
 
 def _fetch_json(url,timeout=12):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.7.14','Accept':'application/json'})
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.7.16','Accept':'application/json'})
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode('utf-8'))
 
@@ -407,7 +408,8 @@ def _definition(event_count):
         'participantArtwork':'AUTO_TEAM_ART',
         'mediaSources':{'green':[],'purple':[{
             'url':PURPLE_PLAYLIST,'priority':'PRIMARY','trust':'OPERATOR_TRUSTED','recrawlMinutes':60,
-            'titleIncludePhrase':'full game highlights','sourceLabel':'ESPN College Football — Full Game Highlights | 2026-27'
+            'titleIncludePhrase':'full game highlights','sourceLabel':'ESPN College Football — Full Game Highlights | 2026-27',
+            'sourceType':'espn-college-football-full-game-highlights'
         }],'blue':[]},
         'notes':'Persistent NCAA/FBS league filtered by the AP Top 25 snapshot applicable to each schedule week. Rankings are frozen into archived weekly events.'
     }
@@ -429,11 +431,13 @@ def refresh(server,force=False):
         try:existing=builder._find(COMPETITION_ID)
         except Exception:existing=None
         changed=force or not existing or new_fp!=old_fp
+        definition=_definition(len(events))
         if changed and events:
-            builder.save_competition(_definition(len(events)),events=events,server=server)
+            builder.save_competition(definition,events=events,server=server)
             state['publishedFingerprint']=new_fp
+        playlist_enrollment=playlist_contract.ensure_competition_sources(server,definition,force=bool(force or changed))
         catalog_sync=_sync_catalog_membership(server,events) if events else {'purged':0,'dates':[]}
-        state['lastPollWeek']=int(current.get('week') or 0);state['lastRefreshAt']=time.time();state['eventCount']=len(events);state['catalogSync']=catalog_sync
+        state['lastPollWeek']=int(current.get('week') or 0);state['lastRefreshAt']=time.time();state['eventCount']=len(events);state['catalogSync']=catalog_sync;state['playlistEnrollment']=playlist_enrollment
         _save_state(state)
         with _LOCK:
             _STATUS.update({'state':'READY','lastRefreshAt':time.time(),'lastSuccessAt':time.time(),'lastError':'','pollWeek':int(current.get('week') or 0),'snapshots':len(state.get('snapshots') or {}),'games':len(events),'changed':bool(changed),'stalePurged':int(catalog_sync.get('purged') or 0),'staleDates':catalog_sync.get('dates') or [],'elapsedMs':round((time.time()-started)*1000,1)})
@@ -459,7 +463,7 @@ def status():
     snapshots=[]
     for key,value in sorted((state.get('snapshots') or {}).items(),key=lambda kv:int(kv[0])):
         snapshots.append({'week':int(key),'fingerprint':(value or {}).get('fingerprint'),'pollDate':(value or {}).get('pollDate'),'teams':len((value or {}).get('ranks') or []),'verified':_snapshot_verified(value),'schemaVersion':int((value or {}).get('schemaVersion') or 0),'authority':(value or {}).get('authority') or ''})
-    return {**base,'competitionId':COMPETITION_ID,'seasonId':SEASON_ID,'season':SEASON,'startDate':START_DATE,'endDate':END_DATE,'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingSnapshotPolicy':'IMMUTABLE_WEEKLY','snapshotSchemaVersion':SNAPSHOT_SCHEMA_VERSION,'snapshotAuthority':SNAPSHOT_AUTHORITY,'rankingSourceUrl':RANKINGS_PAGE,'week1BootstrapTeams':len(WEEK1_AP_2026),'snapshotWeeks':snapshots,'snapshotMigrations':(state.get('snapshotMigrations') or [])[-10:],'statePath':str(_STATE_PATH)}
+    return {**base,'competitionId':COMPETITION_ID,'seasonId':SEASON_ID,'season':SEASON,'startDate':START_DATE,'endDate':END_DATE,'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingSnapshotPolicy':'IMMUTABLE_WEEKLY','snapshotSchemaVersion':SNAPSHOT_SCHEMA_VERSION,'snapshotAuthority':SNAPSHOT_AUTHORITY,'rankingSourceUrl':RANKINGS_PAGE,'week1BootstrapTeams':len(WEEK1_AP_2026),'snapshotWeeks':snapshots,'snapshotMigrations':(state.get('snapshotMigrations') or [])[-10:],'statePath':str(_STATE_PATH),'playlistEnrollment':state.get('playlistEnrollment') or {}}
 
 
 def _install_into_server():
@@ -470,6 +474,11 @@ def _install_into_server():
             break
         time.sleep(.2)
     if not server:return
+
+    # Repair/enroll the operator playlist contract even if the ranking network
+    # refresh is temporarily unavailable. The periodic refresh repeats this check.
+    try:playlist_contract.ensure_competition_sources(server,_definition(0),force=False)
+    except Exception:pass
 
     # Register CFB immediately so frontend/core/history understand the league even
     # if ESPN is temporarily unavailable during boot. Builder persistence will

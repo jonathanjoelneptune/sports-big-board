@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.15",
+  "release": "4.7.16",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -306,7 +306,14 @@
         "Efficiency Certification records filter fast-path count, card-bank builds, availability-snapshot reuse, filter-apply p95, stabilized DOM baseline/restored counts, DOM peak, and DOM sampling-window spread.",
         "DOM retained growth is measured after state restoration and a stabilization window rather than from a single immediate node count, while peak DOM growth remains diagnostic evidence.",
         "A FAIL grade in any scored efficiency metric cannot be downgraded to PASS by optional-metric aggregation.",
-        "tests/test_v4715_efficiency_hardening_runtime.js and tests/test_v4715_efficiency_hardening.py are blocking contracts for filter-node reuse, availability snapshot reuse, media-readiness accounting, and stabilized DOM certification."
+        "tests/test_v4715_efficiency_hardening_runtime.js and tests/test_v4715_efficiency_hardening.py are blocking contracts for filter-node reuse, availability snapshot reuse, media-readiness accounting, and stabilized DOM certification.",
+        "Same-day repeat matchups with distinct canonical event IDs are rendered as legitimate doubleheaders and labeled GAME 1 / GAME 2 in chronological scheduled-time order; exact duplicate event IDs are defensively hidden without deleting canonical card nodes.",
+        "MLB score-card playback rejects any media asset whose title explicitly names a calendar date different from the score event date, preventing a prior-day game in the same series from satisfying the current game.",
+        "Day State revalidates persisted EVENT_MEDIA relationships against the current evidence matcher before exposing compact eventPlans; stale date/team conflicts are removed at the read boundary and counted in mediaSafety diagnostics.",
+        "The College Football 2026 operator playlist PLPydJJjt7Pb4 is enrolled across the full 2026-27 season window as the PRIMARY Purple/Extended source and only playlist items whose title contains Full Game Highlights are admitted to the CFB crawler lane.",
+        "Competition-specific operator playlist metadata preserves titleIncludePhrase, sourceLabel, sourceType, season bounds, and include-all policy through normalization and curated crawler conversion.",
+        "tests/test_v4716_ribbon_identity_runtime.js and tests/test_v4716_ribbon_identity_playlist.py are blocking contracts for doubleheader identity, explicit MLB title-date safety, Day State stale-media revalidation, and CFB playlist enforcement.",
+        "A single physical YouTube/direct media asset cannot satisfy multiple canonical games on the same date unless provider event/game identity proves one unique owner; ambiguous doubleheader media is removed from every unresolved event plan until correctly associated."
       ]
     },
     "tier2": {
@@ -357,6 +364,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.15 preserves the v4.7.14 weekly AP Top 25 snapshot-driven CFB season and day-state/history/network architecture while hardening score-ribbon filter reuse, generation-scoped media availability, media-readiness accounting, and stabilized DOM efficiency certification.",
+  "baseline": "v4.7.16 preserves the v4.7.15 efficiency-hardened Day State, card-bank, history, network, playback, and AP Top 25 CFB architecture while adding doubleheader identity, stale media date revalidation, and enforced ESPN College Football Purple playlist policy.",
   "status": "IN_PROGRESS"
 }

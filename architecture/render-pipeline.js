@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.15 — Efficiency-Hardened First-Paint Render Pipeline.
+/* Sports Big Board v4.7.16 — Efficiency-Hardened First-Paint Render Pipeline.
    A date transition owns one generation. Full renders build one all-league card
    bank for the active date; league filters then reuse those exact score-card DOM
    nodes and only change visibility. Canonical date/media renders still use the
@@ -6,9 +6,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_RENDER_PIPELINE?.version==='4.7.15')return;
+  if(window.SBB_RENDER_PIPELINE?.version==='4.7.16')return;
 
-  const VERSION='4.7.15';
+  const VERSION='4.7.16';
   const state={
     installed:false,calls:0,requested:0,executed:0,coalesced:0,reentrant:0,
     generationCoalesced:0,fragmentCommits:0,lastKey:'',lastStartedAt:0,

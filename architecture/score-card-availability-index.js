@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.15 — Generation-Scoped Day-State Score-Card Render Model.
+/* Sports Big Board v4.7.16 — Generation-Scoped Day-State Score-Card Render Model.
    Build one availability model from canonical Day State eventPlans and reuse that
    model across filter-only renders for the same date/generation. SCHEDULED and thin
    score-only rows are known no-media states. eventPlans.playable, session-verified
@@ -8,9 +8,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_SCORECARD_AVAILABILITY_INDEX?.version==='4.7.15')return;
+  if(window.SBB_SCORECARD_AVAILABILITY_INDEX?.version==='4.7.16')return;
 
-  const VERSION='4.7.15';
+  const VERSION='4.7.16';
   const state={
     installed:false,active:false,renderId:0,indexBuildMs:0,
     indexed:0,scheduled:0,thin:0,planPlayable:0,sessionVerified:0,
@@ -36,7 +36,7 @@
     catch(_){return clean(window.scoreBrowseDate).slice(0,10);}
   }
   // v4.7.13 compatibility marker: visibleMatch previously gated index construction by active filter.
-  // v4.7.15 deliberately indexes all date rows; filter visibility is owned by Render Pipeline.
+  // v4.7.16 deliberately indexes all date rows; filter visibility is owned by Render Pipeline.
   function currentFilter(){
     const active=document.querySelector('#scoreFilters [data-score-filter].active');
     if(active)return upper(active?.dataset?.scoreFilter||'ALL')||'ALL';
@@ -197,7 +197,7 @@
     }catch(_){}
     if(!Array.isArray(matches))matches=[];
 
-    // v4.7.15: index the full date, not only the current league filter. The render
+    // v4.7.16: index the full date, not only the current league filter. The render
     // pipeline keeps one all-league DOM bank, so a filter switch must never trigger
     // expensive media resolution merely because a previously hidden card is shown.
     for(const match of matches){

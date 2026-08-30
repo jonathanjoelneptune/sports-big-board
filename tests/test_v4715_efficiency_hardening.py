@@ -34,7 +34,7 @@ class V4715EfficiencyHardeningTests(unittest.TestCase):
         refs=re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',INDEX)
         self.assertTrue(refs)
         self.assertTrue(all(v==VERSION for _,v in refs))
-        self.assertIn("version:'4.7.15'",(ROOT/'core-model.js').read_text(encoding='utf-8'))
+        self.assertIn(f"version:'{VERSION}'",(ROOT/'core-model.js').read_text(encoding='utf-8'))
 
 if __name__=='__main__':
     unittest.main()

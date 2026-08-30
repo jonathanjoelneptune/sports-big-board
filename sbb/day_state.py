@@ -65,6 +65,95 @@ def _plan_playable_count(plans):
             count += 1
     return count
 
+def _sanitize_event_plans(server, plans):
+    """Revalidate persisted EVENT_MEDIA at the Day State read boundary.
+
+    The normalized catalog may contain a relationship written by an older matcher.
+    Current Event Matcher evidence is authoritative: stale explicit-date/team
+    conflicts are removed from the compact ribbon plan before the browser sees them.
+    """
+    stats={"checked":0,"rejected":0,"errors":0,"ambiguousAssets":0,"ambiguousRejected":0}
+    matcher=getattr(server,"_history_media_match_evidence",None)
+    if not callable(matcher) or not isinstance(plans,dict):
+        return plans,stats
+    out={}
+    for key,raw in plans.items():
+        if not isinstance(raw,dict):
+            out[key]=raw;continue
+        plan=dict(raw)
+        event=dict(plan.get("event") or {})
+        league=str(plan.get("league") or str(key).split(":",1)[0] or event.get("competitionId") or event.get("__sbbLeague") or "").upper()
+        date=str(plan.get("date") or event.get("__sbbDate") or event.get("gameDate") or event.get("date") or "")[:10]
+        if league:
+            event.setdefault("competitionId",league);event.setdefault("__sbbLeague",league);event.setdefault("league",league)
+        if date:
+            event.setdefault("__sbbDate",date);event.setdefault("date",date);event.setdefault("gameDate",date)
+
+        def valid(item):
+            if not isinstance(item,dict):return False
+            stats["checked"]+=1
+            try:
+                scoped,evidence=matcher(dict(item),event)
+            except Exception:
+                # Do not erase otherwise-playable media because a new diagnostic
+                # helper itself failed. Explicit mismatches still fail closed.
+                stats["errors"]+=1;return True
+            ok=str((scoped or {}).get("mediaScope") or "").upper()=="GAME" and str((evidence or {}).get("associationState") or "").upper()=="ASSIGNED"
+            if not ok:stats["rejected"]+=1
+            return ok
+
+        for field in ("media","playable"):
+            values=plan.get(field)
+            if isinstance(values,list):plan[field]=[item for item in values if valid(item)]
+        playable=plan.get("playable") or []
+        plan["primary"]=playable[0] if playable else None
+        plan["catalogPlayableCount"]=len(playable)
+        plan["catalogTier"]=str((plan.get("primary") or {}).get("recapTier") or "").upper() or "NONE"
+        out[key]=plan
+
+    # A title-only team/date match is not sufficient to distinguish two games of a
+    # same-day doubleheader. One physical asset appearing under multiple canonical
+    # event plans is ambiguous unless provider identity proves one unique owner.
+    owners={}
+    def asset_key(item):
+        if not isinstance(item,dict):return ""
+        if item.get("youtubeId"):return "YT:"+str(item.get("youtubeId"))
+        if item.get("mediaUrl"):return "URL:"+str(item.get("mediaUrl"))
+        return "ID:"+str(item.get("assetKey") or item.get("id") or "") if (item.get("assetKey") or item.get("id")) else ""
+    def direct_identity(item,event):
+        media_ids={str(item.get(k)) for k in ("scoreEventId","matchId","espnEventId","canonicalEventId") if item.get(k) not in (None,"")}
+        event_ids={str(event.get(k)) for k in ("scoreEventId","matchId","espnEventId","canonicalEventId","eventId","id") if event.get(k) not in (None,"")}
+        if media_ids and event_ids and media_ids & event_ids:return True
+        return item.get("gamePk") not in (None,"") and event.get("gamePk") not in (None,"") and str(item.get("gamePk"))==str(event.get("gamePk"))
+    for key,plan in out.items():
+        if not isinstance(plan,dict):continue
+        event=plan.get("event") or {}
+        seen=set()
+        for item in plan.get("playable") or []:
+            physical=asset_key(item)
+            if not physical or physical in seen:continue
+            seen.add(physical);owners.setdefault(physical,[]).append((key,item,event))
+    for physical,found in owners.items():
+        plan_keys={x[0] for x in found}
+        if len(plan_keys)<2:continue
+        stats["ambiguousAssets"]+=1
+        proven={key for key,item,event in found if direct_identity(item,event)}
+        keep=next(iter(proven)) if len(proven)==1 else None
+        for key in plan_keys:
+            if key==keep:continue
+            plan=out.get(key) or {}
+            for field in ("media","playable"):
+                values=plan.get(field)
+                if not isinstance(values,list):continue
+                before=len(values);plan[field]=[item for item in values if asset_key(item)!=physical]
+                stats["ambiguousRejected"]+=before-len(plan[field])
+            playable=plan.get("playable") or []
+            plan["primary"]=playable[0] if playable else None
+            plan["catalogPlayableCount"]=len(playable)
+            plan["catalogTier"]=str((plan.get("primary") or {}).get("recapTier") or "").upper() or "NONE"
+    return out,stats
+
+
 def _event_identity(event):
     """Stable-enough canonical event identity for Day State row merging."""
     if not isinstance(event, dict):
@@ -517,7 +606,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.15",
+            "engineVersion":"4.7.16",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + 15,
@@ -632,6 +721,16 @@ class DayStateEngine:
             self.server, day, score_rows, self.today()
         )
         plans = plans_fn(day, score_rows)
+        media_safety_started = time.perf_counter()
+        plans, media_safety = _sanitize_event_plans(self.server, plans)
+        media_safety_ms = round((time.perf_counter()-media_safety_started)*1000.0,1)
+        projection_diagnostics = {**projection_diagnostics,
+            "mediaSafetyChecked":int(media_safety.get("checked") or 0),
+            "mediaSafetyRejected":int(media_safety.get("rejected") or 0),
+            "mediaSafetyErrors":int(media_safety.get("errors") or 0),
+            "mediaSafetyAmbiguousAssets":int(media_safety.get("ambiguousAssets") or 0),
+            "mediaSafetyAmbiguousRejected":int(media_safety.get("ambiguousRejected") or 0),
+        }
         inventory = bool(inventory_fn(day))
 
         games = sum(len(rows or []) for rows in score_rows.values())
@@ -655,7 +754,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.15",
+            "engineVersion":"4.7.16",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -672,7 +771,7 @@ class DayStateEngine:
             "scoreInventoryComplete":inventory,
             "summary":summary,
             "facts":self._build_facts(score_rows, plans, summary),
-            "timing":{"buildMs":round((time.perf_counter()-started)*1000.0,1)},
+            "timing":{"buildMs":round((time.perf_counter()-started)*1000.0,1),"mediaSafetyMs":media_safety_ms},
         }
         self.store.put(snapshot)
         with self.lock:
@@ -999,7 +1098,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.15",
+                    "engineVersion":"4.7.16",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},
@@ -1084,7 +1183,7 @@ def install():
         _INSTALLED = True
     threading.Thread(target=_install_into_server, daemon=True, name="sbb-day-state-install").start()
 
-# v4.7.15 persistent AP Top 25 College Football season service.
+# v4.7.16 persistent AP Top 25 College Football season service.
 try:
     from . import cfb_ranked as _cfb_ranked
     _cfb_ranked.install()

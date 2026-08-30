@@ -1,0 +1,76 @@
+Sports Big Board v4.7.16 — Doubleheader Identity & CFB Playlist Contract
+Base release: v4.7.15
+
+WHY THE "DUPLICATES" APPEARED
+- ARI/SF and BOS/NYY on 2026-08-29 were legitimate MLB doubleheaders, not duplicate schedule rows.
+- The ribbon did not distinguish the two games, so they appeared duplicated.
+- A separate correctness defect allowed stale media already associated under older catalog rules to surface for the wrong game date. The observed example was an August 28 ARI/SF recap offered while browsing August 29.
+
+WHAT v4.7.16 CHANGES
+1. Doubleheader identity
+   - Same-day repeated matchup with distinct event IDs is labeled GAME 1 / GAME 2 in scheduled-time order.
+   - Exact repeated canonical event IDs are defensively suppressed at presentation time.
+   - No canonical schedule rows are deleted or merged.
+
+2. MLB recap-date firewall
+   - Browser score-card playback rejects an MLB media asset when its title explicitly names a date different from the score event date.
+   - Day State revalidates persisted EVENT_MEDIA relationships against the current evidence matcher before publishing eventPlans.
+   - The same physical YouTube/direct asset cannot satisfy multiple same-day canonical games unless provider event/game identity proves one unique owner.
+
+3. College Football playlist enforcement
+   - CFB Purple/Extended playlist: Full Game Highlights | 2026-27
+   - Playlist ID: PLPydJJjt7Pb4
+   - Source: ESPN College Football
+   - Season bounds: 2026 through 2027 (preserves January postseason coverage)
+   - Objective: Extended / Purple
+   - Priority: PRIMARY
+   - Required title phrase: "full game highlights" (case-insensitive)
+   - Source metadata is now preserved through operator-playlist normalization and crawler conversion.
+   - Playlist enrollment/repair runs at server startup and during normal CFB refresh.
+
+4. v4.7.15 efficiency architecture preserved
+   - All-league card-bank filter fast path retained.
+   - Generation-scoped availability snapshot reuse retained.
+   - Stabilized DOM certification retained.
+   - Efficiency modules only receive the 4.7.16 release identity; their algorithms are unchanged.
+
+FILES TO UPLOAD TO REPOSITORY ROOT / PATHS
+- VERSION
+- index.html
+- core-model.js
+- VERIFY.sh
+- release-manifest.json
+- foundation-certification.json
+- architecture/render-pipeline.js
+- architecture/score-card-availability-index.js
+- architecture/card-build-cache.js
+- architecture/efficiency-certification.js
+- architecture/score-ribbon-identity-guard.js                  [NEW]
+- sbb/day_state.py
+- sbb/cfb_ranked.py
+- sbb/operator_playlist_contract.py                           [NEW]
+- tests/test_v4715_efficiency_hardening.py
+- tests/test_v4716_ribbon_identity_runtime.js                 [NEW]
+- tests/test_v4716_ribbon_identity_playlist.py                [NEW]
+
+FOCUSED VALIDATION
+- JavaScript syntax: PASS
+- v4.7.10-v4.7.13 retained runtime contracts: PASS
+- v4.7.14 CFB contracts: 10/10 PASS
+- v4.7.15 efficiency hardening contracts: PASS
+- v4.7.16 browser doubleheader/date guard: PASS
+- v4.7.16 backend stale-media + CFB playlist contracts: 3/3 PASS
+- Cache-generation handshake: all executable local JS/CSS references resolve to v4.7.16
+
+POST-DEPLOY CHECKS
+1. Browse 2026-08-29 with MLB selected.
+   - ARI/SF should display GAME 1 and GAME 2, not two indistinguishable cards.
+   - BOS/NYY should display GAME 1 and GAME 2.
+2. Click both ARI/SF cards.
+   - Neither card may offer/play a video whose title says August 28.
+   - One physical video must not be offered for both August 29 games unless canonical provider identity proves it.
+3. Open CFB / Media Playlists diagnostics.
+   - PLPydJJjt7Pb4 should be PRIMARY, EXTENDED, season 2026-2027.
+   - Crawler items must contain "Full Game Highlights" in the title.
+4. Re-run Efficiency AUTO.
+   - v4.7.15 fast-path gains should remain. The previous isolated 401 ms full-board long task is not the target of this correctness release.
