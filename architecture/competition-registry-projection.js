@@ -56,7 +56,11 @@
   }
 
   function normalizedType(row,source=''){
+    const id=upper(row.id);
     const explicit=upper(row.type||row.competitionType||row.kind||row.mode);
+    // CFB is a first-class built-in league. Legacy cached Builder rows from the
+    // first v4.7.14 rollout may still say SPECIAL_EVENT, so identity wins here.
+    if(id==='CFB')return 'LEAGUE';
     if(['SPECIAL_EVENT','SPECIAL EVENT','EVENT','TOURNAMENT'].includes(explicit))return 'SPECIAL_EVENT';
     // Explicit registry/builder type is authoritative. In v4.7.14 CFB carried a
     // football eventIcon plus bounded season dates, so the generic event heuristic
@@ -98,7 +102,10 @@
     // Registry proves backend existence/capabilities.
     for(const raw of registryRows||[]){
       const row=normalized(raw,'REGISTRY');
-      if(!row||row.sourceKind==='BUILT_IN')continue;
+      if(!row)continue;
+      // Built-in rows normally stay in core-model.js, but CFB was introduced via
+      // the ranked-season service. Accept its registry row as frontend authority.
+      if(row.sourceKind==='BUILT_IN'&&row.id!=='CFB')continue;
       next.set(row.id,{...(next.get(row.id)||{}),...row});
     }
 
@@ -131,7 +138,7 @@
   }
 
   function visibleLeague(row){
-    return !!row&&row.type==='LEAGUE'&&row.enabled!==false&&(row.custom||row.sourceKind==='DYNAMIC');
+    return !!row&&row.type==='LEAGUE'&&row.enabled!==false&&(row.id==='CFB'||row.custom||row.sourceKind==='DYNAMIC');
   }
 
   function competitionMap(){
@@ -341,7 +348,7 @@
 
   function renderDynamicLeagues(){
     const host=document.getElementById('scoreFilters');if(!host)return;
-    const specials=new Set([...state.rows.values()].filter(visibleSpecial).map(row=>upper(row.id)));
+    const specials=new Set([...state.rows.values()].filter(visibleSpecial).map(row=>upper(row.id)).filter(id=>id!=='CFB'));
     [...host.children].forEach(child=>{
       const id=upper(child?.dataset?.scoreFilter);
       if(id&&specials.has(id))child.classList.add('sbb-special-main-row-suppressed');

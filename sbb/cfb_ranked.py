@@ -42,9 +42,12 @@ EXPECTED_GAMES_MIN=280
 EXPECTED_GAMES_MAX=310
 SCHEDULE_SOURCE='https://www.espn.com/college-football/schedule/_/week/1/year/2026/seasontype/2'
 PURPLE_PLAYLIST='https://www.youtube.com/playlist?list=PLPydJJjt7Pb4'
+RANKINGS_PAGE='https://www.espn.com/college-football/rankings'
 RANKINGS_URL='https://site.api.espn.com/apis/site/v2/sports/football/college-football/rankings'
 SCOREBOARD_URL='https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard'
 POLL_NAME='AP Top 25'
+SNAPSHOT_SCHEMA_VERSION=2
+SNAPSHOT_AUTHORITY='ESPN_AP_TOP_25'
 REFRESH_SECONDS=max(300,int(os.environ.get('SBB_CFB_REFRESH_SECONDS','1800') or 1800))
 _STATE_DIR=Path(os.environ.get('SBB_STATE_DIR') or (Path.home()/'.sports-big-board')).expanduser()
 _STATE_PATH=_STATE_DIR/f'cfb-ranked-{SEASON}.json'
@@ -133,7 +136,17 @@ def _parse_rankings(payload):
         raise RuntimeError(f'ESPN AP Top 25 block was incomplete/ambiguous: {len(ranks)} rows, {len(unique_teams)} unique teams')
     poll_date=str(block.get('date') or block.get('published') or payload.get('timestamp') or '')
     fingerprint=hashlib.sha1(json.dumps(ranks,sort_keys=True).encode()).hexdigest()[:16]
-    return {'week':week,'pollName':POLL_NAME,'pollDate':poll_date,'fingerprint':fingerprint,'ranks':ranks,'teams':teams}
+    return {'schemaVersion':SNAPSHOT_SCHEMA_VERSION,'authority':SNAPSHOT_AUTHORITY,'authorityVerified':True,'week':week,'pollName':POLL_NAME,'pollDate':poll_date,'fingerprint':fingerprint,'ranks':ranks,'teams':teams}
+
+
+def _snapshot_verified(snapshot):
+    snapshot=snapshot or {}
+    if int(snapshot.get('schemaVersion') or 0)<SNAPSHOT_SCHEMA_VERSION:return False
+    if snapshot.get('authority')!=SNAPSHOT_AUTHORITY or snapshot.get('authorityVerified') is not True:return False
+    if str(snapshot.get('pollName') or '')!=POLL_NAME:return False
+    ranks=snapshot.get('ranks') or []
+    teams={str(x.get('teamId') or _norm(x.get('name'))) for x in ranks if x.get('teamId') or x.get('name')}
+    return len(ranks)==25 and len(teams)==25
 
 
 def _ranking_for_team(snapshot,team):
@@ -237,11 +250,19 @@ def _current_snapshot(state):
     payload=_fetch_json(f'{RANKINGS_URL}?'+urlencode({'season':SEASON}))
     parsed=_parse_rankings(payload);week=str(parsed['week'])
     existing=(state.get('snapshots') or {}).get(week)
-    if existing:
-        # Immutable weekly archive: never rewrite an already-persisted snapshot.
+    if _snapshot_verified(existing):
+        # Verified v2 snapshots remain immutable for the life of their week.
         parsed=existing
     else:
+        # One-time migration for v4.7.14-era snapshots. Before AP authority was
+        # fail-closed, a non-AP/partial response could be frozen forever. Replace
+        # only unverified legacy state, then freeze the verified AP snapshot.
         state.setdefault('snapshots',{})[week]=parsed
+        state.setdefault('snapshotMigrations',[]).append({
+            'week':int(week),'at':time.time(),'reason':'LEGACY_UNVERIFIED_AP_SNAPSHOT_REPLACED',
+            'oldFingerprint':(existing or {}).get('fingerprint'),'newFingerprint':parsed.get('fingerprint')
+        })
+    state['snapshotSchemaVersion']=SNAPSHOT_SCHEMA_VERSION
     return state,parsed
 
 
@@ -260,6 +281,17 @@ def _materialize(state,current_snapshot):
     for target in sorted(set(x for x in targets if x>0)):
         snap=state.get('snapshots',{}).get(str(target))
         if not snap:continue
+        if not _snapshot_verified(snap):
+            repaired=_ranking_payload_for_week(target)
+            if repaired:
+                state.setdefault('snapshots',{})[str(target)]=repaired
+                snap=repaired
+                state.setdefault('snapshotMigrations',[]).append({
+                    'week':target,'at':time.time(),'reason':'LEGACY_HISTORICAL_AP_SNAPSHOT_REPLACED'
+                })
+            else:
+                # Never materialize a schedule from a legacy/unverified poll.
+                continue
         rows=_schedule_for_week(snap,target,2)
         weeks[str(target)]={'week':target,'seasonType':2,'snapshotFingerprint':snap.get('fingerprint'),'updatedAt':time.time(),'events':rows}
     events=[]
@@ -318,7 +350,7 @@ def _definition(event_count):
         'scoreSourceUrl':SCHEDULE_SOURCE,'autoRefresh':True,'refreshMinutes':30,
         'backgroundDiscovery':True,'crawlEnabled':True,'allowIncompleteSchedule':True,
         'expectedEventCount':0,'expectedEventRange':[EXPECTED_GAMES_MIN,EXPECTED_GAMES_MAX],
-        'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingAuthority':'AP Top 25 via ESPN',
+        'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingAuthority':'AP Top 25 via ESPN','rankingSourceUrl':RANKINGS_PAGE,
         'rankingSnapshotPolicy':'IMMUTABLE_WEEKLY','rankingSeasonReset':True,
         'participantArtwork':'AUTO_TEAM_ART',
         'mediaSources':{'green':[],'purple':[{
@@ -364,8 +396,8 @@ def status():
     with _LOCK:base=deepcopy(_STATUS)
     snapshots=[]
     for key,value in sorted((state.get('snapshots') or {}).items(),key=lambda kv:int(kv[0])):
-        snapshots.append({'week':int(key),'fingerprint':(value or {}).get('fingerprint'),'pollDate':(value or {}).get('pollDate'),'teams':len((value or {}).get('ranks') or [])})
-    return {**base,'competitionId':COMPETITION_ID,'seasonId':SEASON_ID,'season':SEASON,'startDate':START_DATE,'endDate':END_DATE,'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingSnapshotPolicy':'IMMUTABLE_WEEKLY','snapshotWeeks':snapshots,'statePath':str(_STATE_PATH)}
+        snapshots.append({'week':int(key),'fingerprint':(value or {}).get('fingerprint'),'pollDate':(value or {}).get('pollDate'),'teams':len((value or {}).get('ranks') or []),'verified':_snapshot_verified(value),'schemaVersion':int((value or {}).get('schemaVersion') or 0),'authority':(value or {}).get('authority') or ''})
+    return {**base,'competitionId':COMPETITION_ID,'seasonId':SEASON_ID,'season':SEASON,'startDate':START_DATE,'endDate':END_DATE,'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingSnapshotPolicy':'IMMUTABLE_WEEKLY','snapshotSchemaVersion':SNAPSHOT_SCHEMA_VERSION,'snapshotAuthority':SNAPSHOT_AUTHORITY,'rankingSourceUrl':RANKINGS_PAGE,'snapshotWeeks':snapshots,'snapshotMigrations':(state.get('snapshotMigrations') or [])[-10:],'statePath':str(_STATE_PATH)}
 
 
 def _install_into_server():
