@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.10",
+  "release": "4.7.11",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -255,7 +255,18 @@
         "Efficiency Certification reports cold-history thin p95/max/failures and blocks on cold thin p95 above the defined failure threshold.",
         "Main-thread certification normalizes long-task load by the number of navigation/filter actions using long tasks per 10 actions and long-task milliseconds per action while retaining longest single task as a blocking latency signal.",
         "Render-local card helper profiling reports per-helper p95, hits, and misses so scoreCardAvailability, scoreCardPlayableItems, externalMediaItemsForGame, scoreFromMatch, scoreGameLookupKeys, and scoreEventDate can be optimized individually.",
-        "tests/test_v4710_cold_history_future_store_runtime.js and tests/test_v4710_cold_history_future_store.py are blocking contracts for future-date storage, Day State-only cold history, thin first paint, and normalized main-thread certification."
+        "tests/test_v4710_cold_history_future_store_runtime.js and tests/test_v4710_cold_history_future_store.py are blocking contracts for future-date storage, Day State-only cold history, thin first paint, and normalized main-thread certification.",
+        "Cold-history certification uses the dedicated GET /api/day-state/thin route rather than a thinProbe query sharing the ordinary /api/day-state broker/cache identity.",
+        "The dedicated thin-probe route performs only canonical catalog score projection and status counting; it does not write Day State cache/store, enqueue focus work, build media plans, run discovery, or call providers.",
+        "Cold-history thin-probe failures report HTTP status, error code, exception type, backend message, browser elapsed time, and backend thinCatalogMs so certification failures are diagnosable rather than N/A.",
+        "A render-scoped Score-Card Availability Index is keyed by stable canonical game identity and is rebuilt for every actual ribbon render.",
+        "Explicit scheduled games and score-only COLD_THIN_CATALOG snapshots bypass broad media candidate scanning because media cannot be a first-paint dependency for those states.",
+        "Games already present in verifiedPlayableItemsForGame use that canonical verified set directly during the render instead of rescanning broad media collections.",
+        "Unknown, live, or otherwise unresolved games preserve the certified legacy scoreCardPlayableItems implementation as an explicit fallback.",
+        "Render Pipeline reports availability index build time, indexed/verified/scheduled/thin counts, fast-path hits, fallback count, and fallback execution time.",
+        "Efficiency Certification reports AVAIL_INDEX_P95, AVAIL_FALLBACK_P95, AVAIL_FAST, and AVAIL_FALLBACKS alongside per-helper profiling.",
+        "ScoreDateStore public module API remains version 1.0.",
+        "tests/test_v4711_availability_index_thin_probe_runtime.js and tests/test_v4711_availability_index_thin_probe.py are blocking contracts."
       ]
     },
     "tier2": {
@@ -306,6 +317,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.10 preserves the v4.7.5-v4.7.9 broker, enrichment, render, special-event, calendar, and deep-history architecture while removing the last interactive cold-history dependency on /api/history/ribbon, fixing future scheduled storage at ScoreDateStore, and normalizing main-thread certification for the expanded 39-action navigation workload.",
+  "baseline": "v4.7.11 preserves v4.7.10 Day State-only history and future-date storage while repairing the certification thin probe and indexing known score-card media availability per render with certified fallback for unresolved games.",
   "status": "IN_PROGRESS"
 }

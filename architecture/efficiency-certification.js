@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.10 — Efficiency Certification.
+/* Sports Big Board v4.7.11 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.10') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.11') return;
 
-  const VERSION = '4.7.10';
+  const VERSION = '4.7.11';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -249,6 +249,14 @@
         cardCacheMisses:Number(d.cardCacheMisses)||0,
         cardHelperMs:Number(d.cardHelperMs)||0,
         cardHelpers:d.cardHelpers||{},
+        availabilityIndexed:Number(d.availabilityIndexed)||0,
+        availabilityScheduled:Number(d.availabilityScheduled)||0,
+        availabilityThin:Number(d.availabilityThin)||0,
+        availabilityVerified:Number(d.availabilityVerified)||0,
+        availabilityFastHits:Number(d.availabilityFastHits)||0,
+        availabilityFallbacks:Number(d.availabilityFallbacks)||0,
+        availabilityIndexBuildMs:Number(d.availabilityIndexBuildMs)||0,
+        availabilityFallbackMs:Number(d.availabilityFallbackMs)||0,
         stagedNodes:Number(d.stagedNodes)||0,generation:Number(d.generation)||0,
         generationCommit:!!d.generationCommit,
         beforeNodes:Number(d.beforeNodes)||0,afterNodes:Number(d.afterNodes)||0
@@ -613,19 +621,31 @@
     const rows=[];
     for(const date of (dates||[]).slice(0,4)){
       const started=now();
+      let status=0;
       try{
-        const response=await fetch(`/api/day-state?date=${encodeURIComponent(date)}&thinProbe=1`,{
-          cache:'no-store',headers:{'X-SBB-Efficiency-Run':state.currentRunId||''}
+        const response=await fetch(`/api/day-state/thin?date=${encodeURIComponent(date)}`,{
+          cache:'no-store',
+          sbbRequestClass:'SHARED_STATE',
+          headers:{'X-SBB-Efficiency-Run':state.currentRunId||''}
         });
+        status=Number(response.status||0);
         const payload=await response.json().catch(()=>({}));
         rows.push({
-          date,ok:response.ok&&!payload?.pending,
-          elapsedMs:round(now()-started),
+          date,ok:response.ok&&payload?.ok!==false&&!payload?.pending,
+          httpStatus:status,elapsedMs:round(now()-started),
           games:Number(payload?.summary?.games||0),
-          state:String(payload?.cache?.state||'')
+          state:String(payload?.cache?.state||''),
+          error:clean(payload?.error||''),
+          errorType:clean(payload?.errorType||''),
+          message:clean(payload?.message||''),
+          serverMs:Number(payload?.timing?.thinCatalogMs)||0
         });
       }catch(err){
-        rows.push({date,ok:false,elapsedMs:round(now()-started),games:0,error:clean(err?.message||err)});
+        rows.push({
+          date,ok:false,httpStatus:status,elapsedMs:round(now()-started),
+          games:0,state:'',error:'NETWORK_ERROR',
+          errorType:clean(err?.name||''),message:clean(err?.message||err),serverMs:0
+        });
       }
       await sleep(35);
     }
@@ -678,6 +698,8 @@
     const cacheHits=renderRows.map(x=>x.cardCacheHits).filter(Number.isFinite);
     const cacheMisses=renderRows.map(x=>x.cardCacheMisses).filter(Number.isFinite);
     const helperMs=renderRows.map(x=>x.cardHelperMs).filter(Number.isFinite);
+    const availabilityIndexMs=renderRows.map(x=>x.availabilityIndexBuildMs).filter(Number.isFinite);
+    const availabilityFallbackMs=renderRows.map(x=>x.availabilityFallbackMs).filter(Number.isFinite);
     const phaseRows=state.dayStatePhases.filter(x=>x.runId===runId);
     const phaseMap={};
     for(const row of phaseRows){
@@ -773,6 +795,14 @@
       cardCacheMisses:cacheMisses.reduce((a,b)=>a+b,0),
       cardHelperP95:round(percentile(helperMs,95)),
       cardHelperBreakdown,
+      availabilityIndexP95:round(percentile(availabilityIndexMs,95)),
+      availabilityFallbackP95:round(percentile(availabilityFallbackMs,95)),
+      availabilityIndexed:renderRows.reduce((a,b)=>a+Number(b.availabilityIndexed||0),0),
+      availabilityScheduled:renderRows.reduce((a,b)=>a+Number(b.availabilityScheduled||0),0),
+      availabilityThin:renderRows.reduce((a,b)=>a+Number(b.availabilityThin||0),0),
+      availabilityVerified:renderRows.reduce((a,b)=>a+Number(b.availabilityVerified||0),0),
+      availabilityFastHits:renderRows.reduce((a,b)=>a+Number(b.availabilityFastHits||0),0),
+      availabilityFallbacks:renderRows.reduce((a,b)=>a+Number(b.availabilityFallbacks||0),0),
       generationRenderCount:renderRows.filter(x=>x.generationCommit).length,
       renderCoalesced:Math.max(0,Number(window.SBB_RENDER_PIPELINE?.snapshot?.().coalesced||0)-Number(baseline.renderCoalesced||0)),
       renderReasonCounts:renderRows.reduce((acc,row)=>{
@@ -851,6 +881,8 @@
       `RENDER_P95=${m.renderP95??'N/A'}ms  CARD_BUILD_P95=${m.cardBuildP95??'N/A'}ms  DOM_COMMIT_P95=${m.domCommitP95??'N/A'}ms  BROWSER_PAINT_P95=${m.browserPaintP95??'N/A'}ms`,
       `CARD_CACHE_HITS=${m.cardCacheHits}  CARD_CACHE_MISSES=${m.cardCacheMisses}  CARD_HELPER_P95=${m.cardHelperP95??'N/A'}ms`,
       `CARD_HELPERS=${Object.entries(m.cardHelperBreakdown||{}).map(([k,v])=>`${k}:p95=${v.p95Ms??'N/A'}ms/h=${v.hits}/m=${v.misses}`).join(' ')||'none'}`,
+      `AVAIL_INDEX_P95=${m.availabilityIndexP95??'N/A'}ms  AVAIL_FALLBACK_P95=${m.availabilityFallbackP95??'N/A'}ms  AVAIL_FAST=${m.availabilityFastHits}  AVAIL_FALLBACKS=${m.availabilityFallbacks}`,
+      `AVAIL_INDEXED=${m.availabilityIndexed}  AVAIL_VERIFIED=${m.availabilityVerified}  AVAIL_SCHEDULED=${m.availabilityScheduled}  AVAIL_THIN=${m.availabilityThin}`,
       `RENDER_REASONS=${Object.entries(m.renderReasonCounts||{}).map(([k,v])=>`${k}:${v}`).join(' ')||'none'}`,
       `DAY_APPLY_P95=${m.dayApplyP95??'N/A'}ms  SCORE_ROWS_P95=${m.scoreRowsP95??'N/A'}ms  MEDIA_PLANS_P95=${m.mediaPlansP95??'N/A'}ms`,
       `FULL_SETTLE_P95=${m.fullSettleP95??'N/A'}ms  FULL_SETTLE_TIMEOUTS=${m.fullSettleTimeouts}`,
@@ -863,7 +895,7 @@
       ...((report.historyNavigation||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.kind.padEnd(8)} ${x.from} → ${x.expected} actual=${x.actual} ${x.elapsedMs}ms req=${x.requestCount}`)),
       '',
       'COLD HISTORY THIN PROBES',
-      ...((report.coldThin||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.date} ${x.elapsedMs}ms games=${x.games} state=${x.state||'—'}`)),
+      ...((report.coldThin||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.date} ${x.elapsedMs}ms server=${x.serverMs??0}ms http=${x.httpStatus||0} games=${x.games} state=${x.state||'—'}${x.ok?'':` error=${x.error||'—'} type=${x.errorType||'—'} message=${x.message||'—'}`}`)),
       '',
       'SLOWEST ENDPOINTS',
       ...((report.slowestEndpoints||[]).map(x=>`${String(x.p95Ms).padStart(7)}ms p95  ${String(x.maxMs).padStart(7)}ms max  n=${String(x.count).padStart(3)}  ${x.path}`)),

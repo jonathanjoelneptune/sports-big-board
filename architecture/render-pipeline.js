@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.10 — First-Paint Render Pipeline.
+/* Sports Big Board v4.7.11 — First-Paint Render Pipeline.
    A date transition owns one generation. All ribbon render requests made while
    that generation is loading are held and committed once when canonical data is
    ready. Score-card appendChild calls are staged in a DocumentFragment so each
@@ -6,9 +6,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_RENDER_PIPELINE?.version==='4.7.10')return;
+  if(window.SBB_RENDER_PIPELINE?.version==='4.7.11')return;
 
-  const VERSION='4.7.10';
+  const VERSION='4.7.11';
   const state={
     installed:false,calls:0,requested:0,executed:0,coalesced:0,reentrant:0,
     generationCoalesced:0,fragmentCommits:0,lastKey:'',lastStartedAt:0,
@@ -122,9 +122,13 @@
       state.executed+=1;
       state.lastStartedAt=started;
       incrementReason(reason);
+      const availabilityToken=window.SBB_SCORECARD_AVAILABILITY_INDEX?.beginRender?.({
+        generation:Number(meta.generation||0),reason
+      });
       const cacheToken=window.SBB_CARD_BUILD_CACHE?.beginRender?.({
         generation:Number(meta.generation||0),reason
       });
+      let availabilityStats=null;
       let cacheStats=null;
       let batched={result:undefined,buildMs:0,commitMs:0,stagedNodes:0};
       try{
@@ -133,6 +137,7 @@
         return batched.result;
       }finally{
         cacheStats=window.SBB_CARD_BUILD_CACHE?.endRender?.(cacheToken)||null;
+        availabilityStats=window.SBB_SCORECARD_AVAILABILITY_INDEX?.endRender?.(availabilityToken)||null;
         const finished=now();
         const duration=round(finished-started);
         const afterNodes=host?.childElementCount||0;
@@ -149,7 +154,15 @@
           cardCacheHits:Number(cacheStats?.hits||0),
           cardCacheMisses:Number(cacheStats?.misses||0),
           cardHelperMs:Number(cacheStats?.helperMs||0),
-          cardHelpers:cacheStats?.helpers||{}
+          cardHelpers:cacheStats?.helpers||{},
+          availabilityIndexed:Number(availabilityStats?.indexed||0),
+          availabilityScheduled:Number(availabilityStats?.scheduled||0),
+          availabilityThin:Number(availabilityStats?.thin||0),
+          availabilityVerified:Number(availabilityStats?.verified||0),
+          availabilityFastHits:Number(availabilityStats?.fastHits||0),
+          availabilityFallbacks:Number(availabilityStats?.fallbacks||0),
+          availabilityIndexBuildMs:Number(availabilityStats?.indexBuildMs||0),
+          availabilityFallbackMs:Number(availabilityStats?.fallbackMs||0)
         };
         state.samples.push(row);
         if(state.samples.length>250)state.samples.splice(0,state.samples.length-250);

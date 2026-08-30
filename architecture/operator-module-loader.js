@@ -1,13 +1,13 @@
-/* Sports Big Board v4.7.10 — Operator Module Loader.
+/* Sports Big Board v4.7.11 — Operator Module Loader.
    Competition Builder editing, playlist-rule editing, durable association stats
    and special-event media audit are operator tools. They are not part of normal
    ribbon playback and therefore do not poll, observe, or hydrate until requested.
 */
 (() => {
   'use strict';
-  if(window.SBB_OPERATOR_MODULES?.version==='4.7.10')return;
+  if(window.SBB_OPERATOR_MODULES?.version==='4.7.11')return;
 
-  const VERSION='4.7.10';
+  const VERSION='4.7.11';
   const scripts=[
     'architecture/competition-builder.js',
     'architecture/competition-builder-v4611.js',

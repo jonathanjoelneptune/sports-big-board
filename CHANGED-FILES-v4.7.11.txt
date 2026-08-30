@@ -1,0 +1,14 @@
+Sports Big Board v4.7.11 — Thin-Probe Repair + Render-Scoped Availability Index
+
+- Dedicated GET /api/day-state/thin certification route with no cache/store writes,
+  media plans, discovery, provider work, or focus-queue mutation.
+- Thin-probe failures now print HTTP status, backend error/errorType/message,
+  browser elapsed time, and backend thinCatalogMs.
+- Dedicated route has a separate Request Broker identity from ordinary Day State.
+- New render-scoped availability index keyed by stable canonical game identity.
+- SCHEDULED games skip broad media scans.
+- COLD_THIN_CATALOG score-only first paint skips broad media scans.
+- Already verified games use verifiedPlayableItemsForGame directly.
+- Unknown/live/unresolved games preserve original scoreCardPlayableItems fallback.
+- New AVAIL_INDEX_P95 / AVAIL_FALLBACK_P95 / AVAIL_FAST / AVAIL_FALLBACKS telemetry.
+- ScoreDateStore API version remains 1.0.

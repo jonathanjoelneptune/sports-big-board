@@ -1,13 +1,13 @@
-/* Sports Big Board v4.7.10 — Request Broker + Enrichment Firewall.
+/* Sports Big Board v4.7.11 — Request Broker + Enrichment Firewall.
    One transport request per identical GET. Shared-state TTL reuse, date-generation
    cancellation, and an explicit first-paint firewall keep expensive enrichment
    from waking up while the user is simply changing ribbon dates.
 */
 (() => {
   'use strict';
-  if (window.SBB_REQUEST_BROKER?.version === '4.7.10') return;
+  if (window.SBB_REQUEST_BROKER?.version === '4.7.11') return;
 
-  const VERSION='4.7.10';
+  const VERSION='4.7.11';
   const QUIET_MS=8000;
   const transportFetch=window.fetch.bind(window);
   const inflight=new Map();
@@ -78,6 +78,7 @@
     if(path==='/api/competition-builder/catalog')return 30000;
     if(path==='/api/editorial/key-info')return 60000;
     if(path==='/api/day-state')return 1600;
+    if(path==='/api/day-state/thin')return 0;
     if(path==='/api/day-state/status')return 5000;
     if(path==='/api/history/ribbon')return 3000;
     if(path==='/api/history/roundups')return 30000;
@@ -99,7 +100,8 @@
     if(
       path==='/api/competition-registry' ||
       path==='/api/competition-builder/catalog' ||
-      path==='/api/editorial/key-info'
+      path==='/api/editorial/key-info' ||
+      path==='/api/day-state/thin'
     ) return 'SHARED_STATE';
 
     if(

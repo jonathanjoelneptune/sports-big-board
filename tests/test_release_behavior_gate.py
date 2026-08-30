@@ -19,6 +19,7 @@ RENDER_PIPELINE=(ROOT/"architecture"/"render-pipeline.js").read_text(encoding="u
 CARD_CACHE=(ROOT/"architecture"/"card-build-cache.js").read_text(encoding="utf-8")
 NAVIGATION_UI=(ROOT/"architecture"/"navigation-ui.js").read_text(encoding="utf-8")
 SCORE_DATE_STORE=(ROOT/"architecture"/"score-date-store.js").read_text(encoding="utf-8")
+AVAILABILITY_INDEX=(ROOT/"architecture"/"score-card-availability-index.js").read_text(encoding="utf-8")
 VERIFY=(ROOT/"VERIFY.sh").read_text(encoding="utf-8")
 
 
@@ -250,6 +251,29 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("HISTORY_RIBBON_CALLS=",EFFICIENCY)
         self.assertIn("CARD_HELPERS=",EFFICIENCY)
 
+    def test_thin_probe_uses_dedicated_minimal_day_state_route(self):
+        self.assertIn("def serve_thin_probe",DAY_BACKEND)
+        self.assertIn('parsed.path == "/api/day-state/thin"',DAY_BACKEND)
+        self.assertIn("/api/day-state/thin?date=",EFFICIENCY)
+        self.assertIn("http=${x.httpStatus",EFFICIENCY)
+        self.assertIn("message=${x.message",EFFICIENCY)
+
+    def test_render_scoped_availability_index_preserves_certified_fallback(self):
+        self.assertIn("window.SBB_SCORECARD_AVAILABILITY_INDEX",AVAILABILITY_INDEX)
+        self.assertIn("stableKey",AVAILABILITY_INDEX)
+        self.assertIn("verifiedPlayableItemsForGame",AVAILABILITY_INDEX)
+        self.assertIn("kind:'scheduled'",AVAILABILITY_INDEX)
+        self.assertIn("kind:'thin-score-only'",AVAILABILITY_INDEX)
+        self.assertIn("originalPlayable(match)",AVAILABILITY_INDEX)
+        self.assertIn("SBB_SCORECARD_AVAILABILITY_INDEX?.beginRender",RENDER_PIPELINE)
+        self.assertIn("SBB_SCORECARD_AVAILABILITY_INDEX?.endRender",RENDER_PIPELINE)
+
+    def test_efficiency_reports_availability_index_work(self):
+        self.assertIn("AVAIL_INDEX_P95=",EFFICIENCY)
+        self.assertIn("AVAIL_FALLBACK_P95=",EFFICIENCY)
+        self.assertIn("AVAIL_FAST=",EFFICIENCY)
+        self.assertIn("AVAIL_FALLBACKS=",EFFICIENCY)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -280,6 +304,8 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "node tests/test_v478_future_projection_card_cache_runtime.js",
             "node tests/test_v479_navigation_history_runtime.js",
             "node tests/test_v4710_cold_history_future_store_runtime.js",
+            "node tests/test_v4711_availability_index_thin_probe_runtime.js",
+            "python3 -m unittest tests.test_v4711_availability_index_thin_probe",
             "python3 -m unittest tests.test_v4710_cold_history_future_store",
             "python3 -m unittest tests.test_v478_future_projection",
         )

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.10",
-  "baseRelease": "4.7.9",
-  "title": "Cold History Fast Path + Future Schedule Storage",
+  "release": "4.7.11",
+  "baseRelease": "4.7.10",
+  "title": "Thin-Probe Repair + Render-Scoped Availability Index",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -35,143 +35,132 @@
     "tests/test_v478_future_projection.py",
     "tests/test_v479_navigation_history_runtime.js",
     "tests/test_v4710_cold_history_future_store_runtime.js",
-    "tests/test_v4710_cold_history_future_store.py"
+    "tests/test_v4710_cold_history_future_store.py",
+    "architecture/score-card-availability-index.js",
+    "tests/test_v4711_availability_index_thin_probe_runtime.js",
+    "tests/test_v4711_availability_index_thin_probe.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.10"
+        "4.7.11"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.10",
-        "architecture/score-date-store.js?v=4.7.10",
-        "architecture/date-transition-coordinator.js?v=4.7.10",
-        "architecture/efficiency-certification.js?v=4.7.10"
+        "Sports Big Board \u2014 v4.7.11",
+        "architecture/score-card-availability-index.js?v=4.7.11",
+        "architecture/card-build-cache.js?v=4.7.11"
       ],
       "forbidden": [
-        "?v=4.7.9"
+        "?v=4.7.10"
       ]
     },
     "architecture/score-date-store.js": {
       "required": [
-        "Sports Big Board v4.7.10 ScoreDateStore",
-        "do not clamp future scheduled dates to today",
-        "return raw;",
-        "version:'1.0'"
+        "Sports Big Board v4.7.11 ScoreDateStore",
+        "version:'1.0'",
+        "do not clamp future scheduled dates to today"
       ],
       "forbidden": [
-        "return raw>localDateISO(0)?localDateISO(0):raw"
+        "version:'1.1"
       ]
     },
     "sbb/day_state.py": {
       "required": [
-        "def _catalog_score_rows_for_day",
-        "def _build_thin_catalog_snapshot",
-        "def _cold_historical_thin",
-        "COLD_THIN_CATALOG",
-        "thinProbe",
-        "thinSnapshot",
-        "\"eventPlans\":{}",
-        "Queue the full canonical build only after a cold thin snapshot",
-        "\"engineVersion\":\"4.7.10\""
+        "def serve_thin_probe",
+        "parsed.path == \"/api/day-state/thin\"",
+        "\"X-SBB-Day-State\":\"THIN_PROBE\"",
+        "\"errorType\":type(exc).__name__",
+        "\"engineVersion\":\"4.7.11\""
       ]
     },
-    "architecture/date-transition-coordinator.js": {
+    "architecture/score-card-availability-index.js": {
       "required": [
-        "Sports Big Board v4.7.10",
-        "interactive date navigation is Day State-only",
-        "COLD_THIN_CATALOG",
-        "DAY_STATE_PENDING_OR_EMPTY"
-      ],
-      "forbidden": [
-        "legacyRibbonFallback",
-        "COLD_CANONICAL_RIBBON"
-      ]
-    },
-    "architecture/card-build-cache.js": {
-      "required": [
-        "Sports Big Board v4.7.10",
-        "helperBreakdown",
-        "helpers:Object.fromEntries",
-        "scoreCardAvailability",
-        "scoreGameLookupKeys"
+        "Sports Big Board v4.7.11",
+        "window.SBB_SCORECARD_AVAILABILITY_INDEX",
+        "stableKey",
+        "verifiedPlayableItemsForGame",
+        "kind:'scheduled'",
+        "kind:'thin-score-only'",
+        "kind:'verified'",
+        "originalPlayable(match)",
+        "beginRender",
+        "endRender"
       ]
     },
     "architecture/render-pipeline.js": {
       "required": [
-        "Sports Big Board v4.7.10",
-        "cardHelpers:cacheStats?.helpers"
+        "Sports Big Board v4.7.11",
+        "SBB_SCORECARD_AVAILABILITY_INDEX?.beginRender",
+        "SBB_SCORECARD_AVAILABILITY_INDEX?.endRender",
+        "availabilityFastHits",
+        "availabilityFallbackMs"
       ]
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "Sports Big Board v4.7.10",
-        "Long tasks / 10 actions",
-        "Long-task ms / action",
-        "Cold history thin p95",
-        "probeColdThinHistory",
-        "HISTORY_RIBBON_CALLS=",
-        "CARD_HELPERS=",
-        "interactiveHistoryRibbonCalls",
-        "coldThinP95",
-        "longTasksPer10",
-        "longTaskMsPerNav"
+        "Sports Big Board v4.7.11",
+        "/api/day-state/thin?date=",
+        "AVAIL_INDEX_P95=",
+        "AVAIL_FALLBACK_P95=",
+        "AVAIL_FAST=",
+        "AVAIL_FALLBACKS=",
+        "http=${x.httpStatus",
+        "error=${x.error",
+        "message=${x.message"
       ]
     },
-    "tests/test_v479_navigation_history_runtime.js": {
+    "architecture/request-broker.js": {
       "required": [
-        "parts[2]>=9",
-        "retains v4.7.9"
-      ],
-      "forbidden": [
-        "assert.strictEqual(VERSION,'4.7.9')"
+        "Sports Big Board v4.7.11",
+        "path==='/api/day-state/thin'"
       ]
     },
     "tests/test_v4710_cold_history_future_store_runtime.js": {
       "required": [
-        "cold-history fast path + future store + normalized main-thread contracts",
-        "COLD_THIN_CATALOG",
-        "HISTORY_RIBBON_CALLS=",
-        "Long tasks / 10 actions"
+        "parts[2]>=10",
+        "retains v4.7.10"
+      ],
+      "forbidden": [
+        "assert.strictEqual(VERSION,'4.7.10')"
       ]
     },
-    "tests/test_v4710_cold_history_future_store.py": {
+    "tests/test_v4711_availability_index_thin_probe_runtime.js": {
       "required": [
-        "test_thin_snapshot_has_no_media_plan_builder",
-        "test_cold_past_thin_happens_before_focus_queue",
-        "test_score_store_preserves_future_dates",
-        "test_date_coordinator_has_no_history_ribbon_first_paint"
+        "thin-probe repair + render-scoped availability index contracts",
+        "originalCalls,1",
+        "stats.fastHits,2",
+        "stats.fallbacks,1"
+      ]
+    },
+    "tests/test_v4711_availability_index_thin_probe.py": {
+      "required": [
+        "test_thin_probe_has_dedicated_route_and_minimal_payload",
+        "test_probe_report_exposes_server_error_details",
+        "test_availability_index_keeps_unknown_fallback"
       ]
     },
     "tests/test_release_behavior_gate.py": {
       "required": [
-        "test_future_dates_are_preserved_by_score_date_store",
-        "test_interactive_history_first_paint_is_day_state_only",
-        "test_cold_history_thin_snapshot_excludes_media_enrichment",
-        "test_efficiency_normalizes_long_tasks_and_profiles_helpers",
-        "node tests/test_v4710_cold_history_future_store_runtime.js",
-        "python3 -m unittest tests.test_v4710_cold_history_future_store"
+        "test_thin_probe_uses_dedicated_minimal_day_state_route",
+        "test_render_scoped_availability_index_preserves_certified_fallback",
+        "test_efficiency_reports_availability_index_work",
+        "node tests/test_v4711_availability_index_thin_probe_runtime.js"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.10\"",
-        "ScoreDateStore preserves valid future",
-        "Interactive date navigation is Day State-only",
-        "score-only canonical snapshot",
-        "long tasks per 10 actions",
-        "tests/test_v4710_cold_history_future_store_runtime.js"
+        "\"release\": \"4.7.11\"",
+        "dedicated GET /api/day-state/thin",
+        "render-scoped Score-Card Availability Index",
+        "ScoreDateStore public module API remains version 1.0"
       ]
     },
     "VERIFY.sh": {
       "required": [
-        "python3 -m unittest tests.test_v446_historical_media_quarantine",
-        "python3 -m unittest tests.test_release_behavior_gate",
-        "node tests/test_v479_navigation_history_runtime.js",
-        "node tests/test_v4710_cold_history_future_store_runtime.js",
-        "python3 -m unittest tests.test_v4710_cold_history_future_store",
+        "node tests/test_v4711_availability_index_thin_probe_runtime.js",
+        "python3 -m unittest tests.test_v4711_availability_index_thin_probe",
         "[legacy-advisory]"
       ]
     }
@@ -194,6 +183,8 @@
     "node tests/test_v479_navigation_history_runtime.js",
     "node tests/test_v4710_cold_history_future_store_runtime.js",
     "python3 -m unittest tests.test_v4710_cold_history_future_store",
+    "node tests/test_v4711_availability_index_thin_probe_runtime.js",
+    "python3 -m unittest tests.test_v4711_availability_index_thin_probe",
     "bash VERIFY.sh"
   ]
 }

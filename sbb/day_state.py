@@ -517,7 +517,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.10",
+            "engineVersion":"4.7.11",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + 15,
@@ -655,7 +655,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.10",
+            "engineVersion":"4.7.11",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -742,7 +742,7 @@ class DayStateEngine:
                 pass
         return {
             "ok":True,
-            "version":"4.7.10",
+            "version":"4.7.11",
             "today":today,
             "builds":self.builds,
             "cacheHits":self.hits,
@@ -798,6 +798,65 @@ class DayStateEngine:
 
             time.sleep(1)
 
+    def serve_thin_probe(self, handler, parsed):
+        """Non-mutating score-only catalog projection used by efficiency certification."""
+        qs = parse_qs(parsed.query)
+        day = _clean_date((qs.get("date") or [""])[-1])
+        if not day:
+            return self.server.send_json(handler, {"ok":False,"error":"DATE_REQUIRED"}, 400)
+
+        started = time.perf_counter()
+        try:
+            score_rows, catalog_diag = _catalog_score_rows_for_day(self.server, day)
+            games = sum(len(rows or []) for rows in score_rows.values())
+            counts = {"LIVE":0,"FINAL":0,"SCHEDULED":0,"POSTPONED":0,"CANCELLED":0}
+            for rows in score_rows.values():
+                for event in rows or []:
+                    status = _event_status(event)
+                    counts[status] = counts.get(status, 0) + 1
+            elapsed = round((time.perf_counter()-started)*1000.0, 1)
+            return self.server.send_json(
+                handler,
+                {
+                    "ok":True,
+                    "date":day,
+                    "thinProbe":True,
+                    "scoreGameCount":games,
+                    "summary":{
+                        "games":games,
+                        "live":counts.get("LIVE",0),
+                        "final":counts.get("FINAL",0),
+                        "scheduled":counts.get("SCHEDULED",0),
+                        "postponed":counts.get("POSTPONED",0),
+                        "cancelled":counts.get("CANCELLED",0),
+                        "competitions":sum(1 for rows in score_rows.values() if rows),
+                    },
+                    "projectionDiagnostics":{
+                        "catalogCandidates":int(catalog_diag.get("catalogCandidates") or 0),
+                        "catalogProjected":int(catalog_diag.get("catalogProjected") or 0),
+                        "leagues":list(catalog_diag.get("leagues") or []),
+                    },
+                    "cache":{"state":"THIN_PROBE","ageSeconds":0},
+                    "timing":{"thinCatalogMs":elapsed},
+                },
+                200,
+                {"X-SBB-Day-State":"THIN_PROBE"},
+            )
+        except Exception as exc:
+            return self.server.send_json(
+                handler,
+                {
+                    "ok":False,
+                    "error":"THIN_PROBE_FAILED",
+                    "errorType":type(exc).__name__,
+                    "message":str(exc),
+                    "date":day,
+                    "timing":{"thinCatalogMs":round((time.perf_counter()-started)*1000.0,1)},
+                },
+                500,
+                {"X-SBB-Day-State":"THIN_PROBE_FAILED"},
+            )
+
     def serve_day_state(self, handler, parsed):
         qs = parse_qs(parsed.query)
         day = _clean_date((qs.get("date") or [""])[-1])
@@ -810,19 +869,9 @@ class DayStateEngine:
         # background worker is focused to replace it with the full snapshot.
         thin_probe = str((qs.get("thinProbe") or [""])[-1]).lower() in ("1","true","yes")
         if thin_probe:
-            try:
-                payload = dict(self._build_thin_catalog_snapshot(day, persist=False))
-                payload["cache"] = {"state":"THIN_PROBE","ageSeconds":0}
-                return self.server.send_json(
-                    handler, payload, 200,
-                    {"X-SBB-Day-State":"THIN_PROBE"},
-                )
-            except Exception as exc:
-                return self.server.send_json(
-                    handler,
-                    {"ok":False,"error":"THIN_PROBE_FAILED","message":str(exc)},
-                    500,
-                )
+            # Compatibility alias; certification uses the dedicated route so this
+            # request cannot collide with ordinary Day State cache/inflight identity.
+            return self.serve_thin_probe(handler, parsed)
 
         try:
             payload = self.get(day, allow_build=False)
@@ -950,7 +999,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.10",
+                    "engineVersion":"4.7.11",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},
@@ -988,6 +1037,8 @@ def _install_into_server():
 
         def do_GET(self):
             parsed = urlparse(self.path)
+            if parsed.path == "/api/day-state/thin":
+                return _ENGINE.serve_thin_probe(self, parsed)
             if parsed.path == "/api/day-state":
                 return _ENGINE.serve_day_state(self, parsed)
             if parsed.path == "/api/day-state/status":
