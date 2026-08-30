@@ -8,7 +8,16 @@ for(const f of ['core-model.js','architecture/score-date-store.js','architecture
 }
 assert.equal(SBB_CORE.version,releaseVersion);
 assert.match(releaseVersion,/^\d+\.\d+\.\d+$/);
-assert.deepEqual(SBB_CORE.enabledCompetitions().map(x=>x.id),['MLB','NFL','NBA','NHL','EPL','MLS']);
+const enabledCompetitionIds=SBB_CORE.enabledCompetitions().map(x=>x.id);
+for(const id of ['MLB','NFL','CFB','NBA','NHL','EPL','MLS']){
+  assert(enabledCompetitionIds.includes(id),`missing enabled competition ${id}`);
+}
+assert.equal(new Set(enabledCompetitionIds).size,enabledCompetitionIds.length);
+assert(!enabledCompetitionIds.includes('SPORTS'));
+assert.equal(SBB_CORE.COMPETITIONS.CFB.enabled,true);
+assert.equal(SBB_CORE.COMPETITIONS.CFB.sportId,'american-football');
+assert.equal(SBB_CORE.COMPETITIONS.CFB.selectionPolicy,'AP_TOP_25_EITHER_PARTICIPANT');
+assert.equal(SBB_CORE.COMPETITIONS.CFB.rankingSnapshotPolicy,'IMMUTABLE_WEEKLY');
 assert.equal(SBB_CORE.COMPETITIONS.MLS.enabled,true);
 assert.equal(SBB_MEDIA_WORK.PRIORITY.VISIBLE_SCORE,'VISIBLE_SCORE');
 assert.equal(SBB_EDITORIAL_PACKAGES.SERIES.MLB_TOP_PLAYS_DAILY.cadence,'daily');
