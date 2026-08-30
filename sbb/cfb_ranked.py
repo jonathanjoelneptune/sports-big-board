@@ -251,7 +251,7 @@ def _current_snapshot(state):
     parsed=_parse_rankings(payload);week=str(parsed['week'])
     existing=(state.get('snapshots') or {}).get(week)
     if _snapshot_verified(existing):
-        # Verified v2 snapshots remain immutable for the life of their week.
+        # Immutable weekly archive: verified v2 snapshots remain immutable for the life of their week.
         parsed=existing
     else:
         # One-time migration for v4.7.14-era snapshots. Before AP authority was
