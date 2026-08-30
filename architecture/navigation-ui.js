@@ -1,13 +1,13 @@
-/* Sports Big Board v4.7.12 — Navigation UI.
+/* Sports Big Board v4.7.13 — Navigation UI.
    Owns the themed score-date calendar and keeps all SPECIAL_EVENT competitions
    inside the Special Events dropdown instead of leaking event buttons into the
    permanent league row.
 */
 (() => {
   'use strict';
-  if(window.SBB_NAVIGATION_UI?.version==='4.7.12')return;
+  if(window.SBB_NAVIGATION_UI?.version==='4.7.13')return;
 
-  const VERSION='4.7.12';
+  const VERSION='4.7.13';
   const state={open:false,anchor:null,viewYear:0,viewMonth:0,selected:'',bound:false};
   const clean=v=>String(v??'').trim();
   const upper=v=>clean(v).toUpperCase();

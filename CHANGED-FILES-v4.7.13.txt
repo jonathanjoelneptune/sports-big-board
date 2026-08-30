@@ -1,0 +1,36 @@
+Sports Big Board v4.7.13 — Media Readiness Certification
+
+THREE PERFORMANCE STAGES
+
+1. DAY_VISIBLE
+- Existing first-paint measurement.
+- Answers: how quickly can the user reach a date and see usable scores/games?
+
+2. MEDIA_READY
+- New blocking efficiency measurement.
+- Answers: how quickly is media the database ALREADY KNOWS ABOUT attached and
+  selectable on the visible score cards?
+- Only canonical Day State eventPlans with non-empty playable arrays count.
+- Missing media/discovery does not delay or fail the date.
+- Dates with no known media are N/A rather than a timeout.
+
+3. CLICK → FIRST FRAME
+- Continues to be owned by Ultimate Playback certification.
+- Efficiency now certifies the prerequisite immediately before the click.
+
+NEW METRICS
+- Media ready p95
+- Media ready max
+- Media ready timeouts
+- MEDIA_DATES
+- MEDIA_KNOWN_GAMES
+- MEDIA_READY_GAMES
+- MEDIA_KNOWN_ASSETS
+- MEDIA_READY_COVERAGE
+- Per-date day= and media= values
+- MEDIA READINESS detail section
+
+COLD-THIN CERTIFICATION
+- Removes custom X-SBB-Efficiency-Run from native cross-origin thin-probe GET.
+- Uses credentials:'omit' so the diagnostic remains a simple CORS GET and does
+  not fail because of an unnecessary browser preflight.

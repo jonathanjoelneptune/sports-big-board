@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.12",
+  "release": "4.7.13",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -278,7 +278,18 @@
         "Efficiency Certification correlates PerformanceObserver long tasks against overlapping render intervals and reports the five longest tasks with date, render reason, render/build duration, plan/fast/fallback counts, and overlap.",
         "Efficiency Certification reports AVAIL_PLANS, AVAIL_PLAN_PLAYABLE, AVAIL_SESSION_VERIFIED, native thin transport state, and preserves existing AVAIL_INDEX/AVAIL_FALLBACK telemetry.",
         "ScoreDateStore public module API remains exactly version 1.0.",
-        "tests/test_v4712_day_state_render_model_runtime.js and tests/test_v4712_day_state_render_model.py are blocking contracts for native thin transport, Day State media render model, stable-key matching, legacy fallback, and long-task attribution."
+        "tests/test_v4712_day_state_render_model_runtime.js and tests/test_v4712_day_state_render_model.py are blocking contracts for native thin transport, Day State media render model, stable-key matching, legacy fallback, and long-task attribution.",
+        "Efficiency Certification measures DAY_VISIBLE and MEDIA_READY as separate clocks for every representative date.",
+        "DAY_VISIBLE remains the first usable score-ribbon paint and is not delayed by media discovery or playback preparation.",
+        "MEDIA_READY is measured only against visible games whose canonical Day State event plan already contains a non-empty playable array; genuinely missing media and background discovery are not allowed to hold date navigation open.",
+        "Render-scoped availability model counts visible known database media games/assets and records a game ready only after the score-card path consumes a non-empty canonical playable set for that stable game identity.",
+        "A date with zero known database media is reported as NO_KNOWN_DATABASE_MEDIA and is excluded from media-ready p95/max rather than treated as a timeout.",
+        "Dates with known database media must reach full known-media readiness within the MEDIA_READY timeout; media-ready p95/max/timeouts are blocking certification metrics.",
+        "Efficiency report includes MEDIA_DATES, MEDIA_READY_P95, MEDIA_READY_MAX, MEDIA_READY_TIMEOUTS, MEDIA_KNOWN_GAMES, MEDIA_READY_GAMES, MEDIA_KNOWN_ASSETS, and MEDIA_READY_COVERAGE.",
+        "Every tested date line reports day-visible latency and known-media-ready latency/counts separately.",
+        "Actual click-to-first-frame playback remains certified by Ultimate Playback; Efficiency Certification measures the prerequisite that already-known database media is attached and selectable before the click.",
+        "Native cold-thin certification omits custom X-SBB headers and credentials so GitHub Pages cross-origin GETs do not trigger unnecessary CORS preflight failures.",
+        "tests/test_v4713_media_readiness_runtime.js and tests/test_v4713_media_readiness.py are blocking contracts for media readiness and cold-thin preflight avoidance."
       ]
     },
     "tier2": {
@@ -329,6 +340,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.12 preserves the v4.7.10-v4.7.11 Day State-only navigation, future-date storage, special-event, calendar, and render-generation architecture. It fixes the certification transport boundary and moves known completed-game media onto the canonical Day State eventPlans render model while adding precise long-task render attribution.",
+  "baseline": "v4.7.13 preserves v4.7.12 navigation, Day State render-model, future schedule, Special Events, calendar, and playback architecture while adding an explicit known-database-media readiness clock between day-visible first paint and separate Ultimate Playback first-frame certification.",
   "status": "IN_PROGRESS"
 }

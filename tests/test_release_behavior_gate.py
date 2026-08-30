@@ -298,6 +298,27 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("'LONGEST TASKS'",EFFICIENCY)
         self.assertIn("availabilityFallbacks",EFFICIENCY)
 
+    def test_efficiency_certifies_known_media_readiness_separately(self):
+        self.assertIn("mediaReadyP95Ms",EFFICIENCY)
+        self.assertIn("function waitForMediaReadiness",EFFICIENCY)
+        self.assertIn("'MEDIA READINESS'",EFFICIENCY)
+        self.assertIn("MEDIA_READY_P95=",EFFICIENCY)
+        self.assertIn("MEDIA_READY_COVERAGE=",EFFICIENCY)
+
+    def test_render_model_reports_known_database_media_consumption(self):
+        self.assertIn("knownDatabaseMedia:true",AVAILABILITY_INDEX)
+        self.assertIn("knownMediaGames",AVAILABILITY_INDEX)
+        self.assertIn("mediaReadyGames",AVAILABILITY_INDEX)
+        self.assertIn("availabilityKnownMediaGames",RENDER_PIPELINE)
+        self.assertIn("availabilityMediaReadyGames",RENDER_PIPELINE)
+
+    def test_native_thin_probe_does_not_force_cors_preflight(self):
+        start=EFFICIENCY.index("async function probeColdThinHistory")
+        end=EFFICIENCY.index("function candidateFilters",start)
+        block=EFFICIENCY[start:end]
+        self.assertIn("credentials:'omit'",block)
+        self.assertNotIn("X-SBB-Efficiency-Run",block)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -332,6 +353,8 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "python3 -m unittest tests.test_v4711_availability_index_thin_probe",
             "node tests/test_v4712_day_state_render_model_runtime.js",
             "python3 -m unittest tests.test_v4712_day_state_render_model",
+            "node tests/test_v4713_media_readiness_runtime.js",
+            "python3 -m unittest tests.test_v4713_media_readiness",
             "python3 -m unittest tests.test_v4710_cold_history_future_store",
             "python3 -m unittest tests.test_v478_future_projection",
         )

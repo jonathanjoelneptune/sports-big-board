@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.12 — Efficiency Certification.
+/* Sports Big Board v4.7.13 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.12') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.13') return;
 
-  const VERSION = '4.7.12';
+  const VERSION = '4.7.13';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -17,6 +17,9 @@
     startToBoardMs:      {pass:1000, warn:2000},
     ribbonP95Ms:         {pass:500,  warn:1000},
     ribbonMaxMs:         {pass:900,  warn:1800},
+    mediaReadyP95Ms:     {pass:750,  warn:1500},
+    mediaReadyMaxMs:     {pass:1200, warn:2500},
+    mediaReadyTimeouts:  {pass:0,    warn:0},
     apiP95Ms:            {pass:300,  warn:800},
     duplicateConcurrent: {pass:2,    warn:10},
     networkPerDateMax:    {pass:6,    warn:12},
@@ -153,6 +156,9 @@
     if (
       gradeLow(metrics.ribbonP95,THRESHOLDS.ribbonP95Ms)==='FAIL' ||
       gradeLow(metrics.ribbonMax,THRESHOLDS.ribbonMaxMs)==='FAIL' ||
+      gradeLow(metrics.mediaReadyP95,THRESHOLDS.mediaReadyP95Ms)==='FAIL' ||
+      gradeLow(metrics.mediaReadyMax,THRESHOLDS.mediaReadyMaxMs)==='FAIL' ||
+      metrics.mediaReadyTimeouts > 0 ||
       gradeLow(metrics.networkPerDateMax,THRESHOLDS.networkPerDateMax)==='FAIL' ||
       gradeLow(metrics.historyNavP95,THRESHOLDS.historyNavP95Ms)==='FAIL' ||
       gradeLow(metrics.historyNavMax,THRESHOLDS.historyNavMaxMs)==='FAIL' ||
@@ -170,6 +176,8 @@
     const grades = [
       gradeLow(metrics.ribbonP95,THRESHOLDS.ribbonP95Ms),
       gradeLow(metrics.ribbonMax,THRESHOLDS.ribbonMaxMs),
+      gradeLow(metrics.mediaReadyP95,THRESHOLDS.mediaReadyP95Ms,{optional:true}),
+      gradeLow(metrics.mediaReadyMax,THRESHOLDS.mediaReadyMaxMs,{optional:true}),
       gradeLow(metrics.apiP95,THRESHOLDS.apiP95Ms),
       gradeLow(metrics.duplicateConcurrent,THRESHOLDS.duplicateConcurrent),
       gradeLow(metrics.networkPerDateMax,THRESHOLDS.networkPerDateMax),
@@ -258,6 +266,10 @@
         availabilityPlanCount:Number(d.availabilityPlanCount)||0,
         availabilityPlanPlayable:Number(d.availabilityPlanPlayable)||0,
         availabilitySessionVerified:Number(d.availabilitySessionVerified)||0,
+        availabilityKnownMediaGames:Number(d.availabilityKnownMediaGames)||0,
+        availabilityKnownMediaAssets:Number(d.availabilityKnownMediaAssets)||0,
+        availabilityMediaReadyGames:Number(d.availabilityMediaReadyGames)||0,
+        availabilityMediaReadyComplete:d.availabilityMediaReadyComplete!==false,
         availabilityFastHits:Number(d.availabilityFastHits)||0,
         availabilityFallbacks:Number(d.availabilityFallbacks)||0,
         availabilityIndexBuildMs:Number(d.availabilityIndexBuildMs)||0,
@@ -449,6 +461,67 @@
     return false;
   }
 
+  function latestRenderForDate(date){
+    try{
+      const rows=window.SBB_RENDER_PIPELINE?.snapshot?.().samples||[];
+      for(let i=rows.length-1;i>=0;i--){
+        const row=rows[i];
+        if(String(row?.date||'').slice(0,10)===date)return row;
+      }
+    }catch(_){}
+    return null;
+  }
+
+  function mediaReadinessSnapshot(date){
+    const row=latestRenderForDate(date);
+    if(!row)return {observed:false,known:0,ready:0,assets:0,complete:false,state:'NO_RENDER_SAMPLE'};
+    const known=Number(row.availabilityKnownMediaGames||0);
+    const ready=Number(row.availabilityMediaReadyGames||0);
+    const assets=Number(row.availabilityKnownMediaAssets||0);
+    return {
+      observed:true,known,ready,assets,
+      complete:known===0||ready>=known,
+      state:known===0?'NO_KNOWN_DATABASE_MEDIA':(ready>=known?'READY':'WAITING_FOR_KNOWN_MEDIA'),
+      renderReason:String(row.reason||''),
+      renderDurationMs:Number(row.durationMs)||0,
+    };
+  }
+
+  async function waitForMediaReadiness(date,dateStartedAt,{timeoutMs=2200,inventoryGraceMs=220}={}){
+    const graceStarted=now();
+    let snapshot=mediaReadinessSnapshot(date);
+    while((!snapshot.observed||snapshot.known===0) && now()-graceStarted<inventoryGraceMs){
+      await sleep(24);
+      snapshot=mediaReadinessSnapshot(date);
+    }
+    if(!snapshot.observed){
+      return {ok:false,timeout:true,elapsedMs:null,known:0,ready:0,assets:0,state:'NO_RENDER_SAMPLE'};
+    }
+    if(snapshot.known===0){
+      return {ok:true,timeout:false,elapsedMs:null,known:0,ready:0,assets:0,state:'NO_KNOWN_DATABASE_MEDIA'};
+    }
+    const readinessStarted=now();
+    while(now()-readinessStarted<timeoutMs){
+      snapshot=mediaReadinessSnapshot(date);
+      if(snapshot.known>0&&snapshot.complete){
+        return {
+          ok:true,timeout:false,elapsedMs:round(now()-dateStartedAt),
+          known:snapshot.known,ready:snapshot.ready,assets:snapshot.assets,
+          state:'READY',renderReason:snapshot.renderReason,
+          renderDurationMs:snapshot.renderDurationMs
+        };
+      }
+      await sleep(28);
+    }
+    snapshot=mediaReadinessSnapshot(date);
+    return {
+      ok:false,timeout:true,elapsedMs:null,
+      known:snapshot.known,ready:snapshot.ready,assets:snapshot.assets,
+      state:snapshot.state||'MEDIA_READY_TIMEOUT',
+      renderReason:snapshot.renderReason,renderDurationMs:snapshot.renderDurationMs
+    };
+  }
+
   async function switchDate(date, timeoutMs=3500) {
     const started=now();
     const requestStart=state.requests.length;
@@ -483,6 +556,10 @@
     );
     const fullSettleMs=fullySettled?round(firstPaintMs+(now()-settleStarted)):null;
 
+    const mediaReady=firstPaintOk
+      ? await waitForMediaReadiness(date,started,{timeoutMs:2200,inventoryGraceMs:220})
+      : {ok:false,timeout:false,elapsedMs:null,known:0,ready:0,assets:0,state:'NO_FIRST_PAINT'};
+
     const reqs=state.requests.slice(requestStart).filter(r=>r.runId===state.currentRunId);
     const cacheStates=reqs.map(r=>r.cacheState).filter(Boolean);
     try{
@@ -507,6 +584,13 @@
     return {
       date,elapsedMs:firstPaintMs,firstPaintMs,firstPaintOk,
       settled:fullySettled,fullSettleMs,
+      mediaReadyOk:!!mediaReady.ok,
+      mediaReadyMs:mediaReady.elapsedMs,
+      mediaReadyTimeout:!!mediaReady.timeout&&Number(mediaReady.known||0)>0,
+      mediaKnownGames:Number(mediaReady.known||0),
+      mediaReadyGames:Number(mediaReady.ready||0),
+      mediaKnownAssets:Number(mediaReady.assets||0),
+      mediaReadyState:String(mediaReady.state||''),
       timeout:!firstPaintOk,
       settleTimeout:firstPaintOk&&!fullySettled,
       commandError,requestCount:reqs.length,cacheStates,firstPaint,dayStateSummary,
@@ -676,9 +760,11 @@
         const target=window.SBB_NATIVE_TRANSPORT?.url?.(path)
           || window.SBB_API?.url?.(path)
           || path;
+        // Keep the native diagnostic a CORS "simple" GET. Custom X-SBB
+        // headers trigger a browser preflight on GitHub Pages deployments.
         const response=await transport(target,{
           cache:'no-store',
-          headers:{'X-SBB-Efficiency-Run':state.currentRunId||''}
+          credentials:'omit'
         });
         status=Number(response.status||0);
         const payload=await response.json().catch(()=>({}));
@@ -759,6 +845,7 @@
       if(Number.isFinite(row.durationMs))list.push(row.durationMs);
     }
     const ribbonMs=switches.filter(x=>x.firstPaintOk).map(x=>x.firstPaintMs);
+    const mediaReadyMs=switches.filter(x=>x.mediaReadyOk&&x.mediaKnownGames>0&&Number.isFinite(x.mediaReadyMs)).map(x=>x.mediaReadyMs);
     const settleMs=switches.filter(x=>x.settled&&Number.isFinite(x.fullSettleMs)).map(x=>x.fullSettleMs);
     const historyMs=(historyNavigation||[]).filter(x=>x.ok).map(x=>x.elapsedMs).filter(Number.isFinite);
     const coldThinMs=(coldThin||[]).filter(x=>x.ok).map(x=>x.elapsedMs).filter(Number.isFinite);
@@ -803,6 +890,18 @@
       ribbonP50:round(percentile(ribbonMs,50)),
       ribbonP95:round(percentile(ribbonMs,95)),
       ribbonMax:round(ribbonMs.length?Math.max(...ribbonMs):null),
+      mediaReadyDates:switches.filter(x=>x.mediaKnownGames>0).length,
+      mediaReadyP95:round(percentile(mediaReadyMs,95)),
+      mediaReadyMax:round(mediaReadyMs.length?Math.max(...mediaReadyMs):null),
+      mediaReadyTimeouts:switches.filter(x=>x.mediaReadyTimeout).length,
+      mediaKnownGames:switches.reduce((sum,x)=>sum+Number(x.mediaKnownGames||0),0),
+      mediaReadyGames:switches.reduce((sum,x)=>sum+Number(x.mediaReadyGames||0),0),
+      mediaKnownAssets:switches.reduce((sum,x)=>sum+Number(x.mediaKnownAssets||0),0),
+      mediaReadyCoveragePct:(()=>{
+        const known=switches.reduce((sum,x)=>sum+Number(x.mediaKnownGames||0),0);
+        const ready=switches.reduce((sum,x)=>sum+Math.min(Number(x.mediaReadyGames||0),Number(x.mediaKnownGames||0)),0);
+        return known?round((ready/known)*100):null;
+      })(),
       fullSettleP95:round(percentile(settleMs,95)),
       fullSettleTimeouts:switches.filter(x=>x.settleTimeout).length,
       timeouts:switches.filter(x=>x.timeout).length,
@@ -853,6 +952,8 @@
       availabilityPlanCount:renderRows.reduce((a,b)=>a+Number(b.availabilityPlanCount||0),0),
       availabilityPlanPlayable:renderRows.reduce((a,b)=>a+Number(b.availabilityPlanPlayable||0),0),
       availabilitySessionVerified:renderRows.reduce((a,b)=>a+Number(b.availabilitySessionVerified||0),0),
+      availabilityKnownMediaGames:renderRows.reduce((a,b)=>a+Number(b.availabilityKnownMediaGames||0),0),
+      availabilityMediaReadyGames:renderRows.reduce((a,b)=>a+Number(b.availabilityMediaReadyGames||0),0),
       availabilityScheduled:renderRows.reduce((a,b)=>a+Number(b.availabilityScheduled||0),0),
       availabilityThin:renderRows.reduce((a,b)=>a+Number(b.availabilityThin||0),0),
       availabilityFastHits:renderRows.reduce((a,b)=>a+Number(b.availabilityFastHits||0),0),
@@ -908,6 +1009,9 @@
       ['START → board',metrics.startToBoardMs,'ms',THRESHOLDS.startToBoardMs,true],
       ['First paint p95',metrics.ribbonP95,'ms',THRESHOLDS.ribbonP95Ms],
       ['First paint max',metrics.ribbonMax,'ms',THRESHOLDS.ribbonMaxMs],
+      ['Media ready p95',metrics.mediaReadyP95,'ms',THRESHOLDS.mediaReadyP95Ms,true],
+      ['Media ready max',metrics.mediaReadyMax,'ms',THRESHOLDS.mediaReadyMaxMs,true],
+      ['Media ready timeouts',metrics.mediaReadyTimeouts,'',THRESHOLDS.mediaReadyTimeouts],
       ['API p95',metrics.apiP95,'ms',THRESHOLDS.apiP95Ms],
       ['Broker-coalesced callers',metrics.duplicateConcurrent,'',THRESHOLDS.duplicateConcurrent],
       ['Max network req/date',metrics.networkPerDateMax,'',THRESHOLDS.networkPerDateMax],
@@ -935,7 +1039,7 @@
     return [
       `Sports Big Board v${VERSION} Efficiency Certification`,
       `MODE=${report.mode.toUpperCase()}  RESULT=${report.result}  ELAPSED=${Math.round((m.durationMs||0)/1000)}s`,
-      `DATE_SWITCHES=${m.ribbonCount}  HISTORY_NAV=${m.historyNavCount}  FILTER_SWITCHES=${m.filterSwitches}  API_REQUESTS=${m.apiRequests}`,
+      `DATE_SWITCHES=${m.ribbonCount}  MEDIA_DATES=${m.mediaReadyDates}  HISTORY_NAV=${m.historyNavCount}  FILTER_SWITCHES=${m.filterSwitches}  API_REQUESTS=${m.apiRequests}`,
       `CACHE=${Object.entries(m.cacheStates||{}).map(([k,v])=>`${k}:${v}`).join(' ')||'none observed'}`,
       '',
       ...rows.map(r=>`${r.grade.padEnd(4)}  ${r.name.padEnd(30)} ${r.value==null?'N/A':r.value}${r.unit}`),
@@ -945,11 +1049,14 @@
       `DEFERRED=${m.deferred}  DEFERRED_ABORTS=${m.deferredAborts}  DEFERRED_RELEASES=${m.deferredReleases}`,
       `OPERATOR_MODULES=${window.SBB_OPERATOR_MODULES?.snapshot?.().loaded?'LOADED':'LAZY'}  FIRST_PAINT=${window.SBB_DATE_TRANSITIONS?.snapshot?.().firstPaintSource||'—'}`,
       `RENDER_COUNT=${m.renderCount}  GENERATION_RENDERS=${m.generationRenderCount}  RENDER_COALESCED=${m.renderCoalesced}`,
+      `DAY_VISIBLE_P95=${m.ribbonP95??'N/A'}ms  MEDIA_READY_P95=${m.mediaReadyP95??'N/A'}ms  MEDIA_READY_MAX=${m.mediaReadyMax??'N/A'}ms  MEDIA_READY_TIMEOUTS=${m.mediaReadyTimeouts}`,
+      `MEDIA_KNOWN_GAMES=${m.mediaKnownGames}  MEDIA_READY_GAMES=${m.mediaReadyGames}  MEDIA_KNOWN_ASSETS=${m.mediaKnownAssets}  MEDIA_READY_COVERAGE=${m.mediaReadyCoveragePct??'N/A'}%`,
       `RENDER_P95=${m.renderP95??'N/A'}ms  CARD_BUILD_P95=${m.cardBuildP95??'N/A'}ms  DOM_COMMIT_P95=${m.domCommitP95??'N/A'}ms  BROWSER_PAINT_P95=${m.browserPaintP95??'N/A'}ms`,
       `CARD_CACHE_HITS=${m.cardCacheHits}  CARD_CACHE_MISSES=${m.cardCacheMisses}  CARD_HELPER_P95=${m.cardHelperP95??'N/A'}ms`,
       `CARD_HELPERS=${Object.entries(m.cardHelperBreakdown||{}).map(([k,v])=>`${k}:p95=${v.p95Ms??'N/A'}ms/h=${v.hits}/m=${v.misses}`).join(' ')||'none'}`,
       `AVAIL_INDEX_P95=${m.availabilityIndexP95??'N/A'}ms  AVAIL_FALLBACK_P95=${m.availabilityFallbackP95??'N/A'}ms  AVAIL_FAST=${m.availabilityFastHits}  AVAIL_FALLBACKS=${m.availabilityFallbacks}`,
       `AVAIL_INDEXED=${m.availabilityIndexed}  AVAIL_PLANS=${m.availabilityPlanCount}  AVAIL_PLAN_PLAYABLE=${m.availabilityPlanPlayable}  AVAIL_SESSION_VERIFIED=${m.availabilitySessionVerified}  AVAIL_SCHEDULED=${m.availabilityScheduled}  AVAIL_THIN=${m.availabilityThin}`,
+      `AVAIL_KNOWN_MEDIA_GAMES=${m.availabilityKnownMediaGames}  AVAIL_MEDIA_READY_GAMES=${m.availabilityMediaReadyGames}`,
       `RENDER_REASONS=${Object.entries(m.renderReasonCounts||{}).map(([k,v])=>`${k}:${v}`).join(' ')||'none'}`,
       `DAY_APPLY_P95=${m.dayApplyP95??'N/A'}ms  SCORE_ROWS_P95=${m.scoreRowsP95??'N/A'}ms  MEDIA_PLANS_P95=${m.mediaPlansP95??'N/A'}ms`,
       `FULL_SETTLE_P95=${m.fullSettleP95??'N/A'}ms  FULL_SETTLE_TIMEOUTS=${m.fullSettleTimeouts}`,
@@ -961,6 +1068,9 @@
       'LONGEST TASKS',
       ...((m.longestTasks||[]).map((x,i)=>`${i+1}. ${x.durationMs}ms source=${x.source||'—'} date=${x.date||'—'} reason=${x.reason||'—'} render=${x.renderDurationMs||0}ms build=${x.cardBuildMs||0}ms plan=${x.availabilityPlanPlayable||0} fast=${x.availabilityFastHits||0} fallback=${x.availabilityFallbacks||0} overlap=${x.overlapMs||0}ms`)),
       '',
+      'MEDIA READINESS',
+      ...report.switches.map(x=>`${x.mediaKnownGames>0?(x.mediaReadyOk?'PASS':'FAIL'):'NA'} DATE ${x.date} day=${x.firstPaintMs}ms media=${x.mediaReadyMs==null?'N/A':(x.mediaReadyMs+'ms')} known=${x.mediaKnownGames} ready=${x.mediaReadyGames} assets=${x.mediaKnownAssets} state=${x.mediaReadyState||'—'}`),
+      '',
       'HISTORICAL NAVIGATION',
       ...((report.historyNavigation||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.kind.padEnd(8)} ${x.from} → ${x.expected} actual=${x.actual} ${x.elapsedMs}ms req=${x.requestCount}`)),
       '',
@@ -970,7 +1080,7 @@
       'SLOWEST ENDPOINTS',
       ...((report.slowestEndpoints||[]).map(x=>`${String(x.p95Ms).padStart(7)}ms p95  ${String(x.maxMs).padStart(7)}ms max  n=${String(x.count).padStart(3)}  ${x.path}`)),
       '',
-      ...report.switches.map(x=>`${x.firstPaintOk?'PASS':'FAIL'} DATE ${x.date} first=${x.firstPaintMs}ms settle=${x.settled?(x.fullSettleMs+'ms'):'BACKGROUND'} network=${x.requestCount} cache=${(x.cacheStates||[]).join(',')||'—'} paint=${x.firstPaint||'—'} games=${x.dayStateSummary?.games??'—'} scheduled=${x.dayStateSummary?.scheduled??'—'} catalog=${x.dayStateSummary?.catalogCandidates??'—'} added=${x.dayStateSummary?.catalogAdded??'—'}`),
+      ...report.switches.map(x=>`${x.firstPaintOk?'PASS':'FAIL'} DATE ${x.date} day=${x.firstPaintMs}ms media=${x.mediaReadyMs==null?'N/A':(x.mediaReadyMs+'ms')} known=${x.mediaKnownGames} ready=${x.mediaReadyGames} settle=${x.settled?(x.fullSettleMs+'ms'):'BACKGROUND'} network=${x.requestCount} cache=${(x.cacheStates||[]).join(',')||'—'} paint=${x.firstPaint||'—'} games=${x.dayStateSummary?.games??'—'} scheduled=${x.dayStateSummary?.scheduled??'—'} catalog=${x.dayStateSummary?.catalogCandidates??'—'} added=${x.dayStateSummary?.catalogAdded??'—'}`),
     ].join('\n');
   }
 

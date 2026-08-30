@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.12 — Day-State Score-Card Render Model.
+/* Sports Big Board v4.7.13 — Day-State Score-Card Render Model.
    Build one render-scoped availability model from canonical Day State eventPlans.
    SCHEDULED and thin score-only rows are known no-media first-paint states.
    eventPlans.playable is canonical verified playable media for completed games.
@@ -7,18 +7,20 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_SCORECARD_AVAILABILITY_INDEX?.version==='4.7.12')return;
+  if(window.SBB_SCORECARD_AVAILABILITY_INDEX?.version==='4.7.13')return;
 
-  const VERSION='4.7.12';
+  const VERSION='4.7.13';
   const state={
     installed:false,active:false,renderId:0,indexBuildMs:0,
     indexed:0,scheduled:0,thin:0,planPlayable:0,sessionVerified:0,
-    planCount:0,fastHits:0,fallbacks:0,fallbackMs:0,last:null,
+    planCount:0,knownMediaGames:0,knownMediaAssets:0,
+    fastHits:0,fallbacks:0,fallbackMs:0,last:null,
     totalFastHits:0,totalFallbacks:0
   };
   let originalPlayable=null;
   let rows=new Map();
   let planAliases=new Map();
+  let readyKnownMediaKeys=new Set();
   const now=()=>performance.now();
   const round=v=>Math.round(Number(v||0)*10)/10;
   const clean=v=>String(v??'').trim();
@@ -27,6 +29,13 @@
   function currentDate(){
     try{return clean(window.SBB_SCORE_DATE?.snapshot?.().browseDate||window.scoreBrowseDate).slice(0,10);}
     catch(_){return clean(window.scoreBrowseDate).slice(0,10);}
+  }
+  function currentFilter(){
+    return upper(window.scoreRibbonLeagueFilter||'ALL')||'ALL';
+  }
+  function visibleMatch(match){
+    const filter=currentFilter();
+    return filter==='ALL'||leagueFor(match)===filter;
   }
   function leagueFor(value){
     return upper(value?.competitionId||value?.__sbbLeague||value?.league||value?.sport||'SPORTS');
@@ -157,8 +166,10 @@
   function buildIndex(){
     const started=now();
     rows=new Map();
+    readyKnownMediaKeys=new Set();
     state.indexed=0;state.scheduled=0;state.thin=0;
     state.planPlayable=0;state.sessionVerified=0;state.planCount=0;
+    state.knownMediaGames=0;state.knownMediaAssets=0;
     const date=currentDate();
     const payload=dayStatePayload(date);
     const thin=thinScoreOnly(payload);
@@ -173,17 +184,18 @@
     if(!Array.isArray(matches))matches=[];
 
     for(const match of matches){
+      if(!visibleMatch(match))continue;
       const key=stableKey(match,date);
       if(!key)continue;
       state.indexed+=1;
 
       if(explicitStatus(match)==='SCHEDULED'){
-        rows.set(key,{kind:'scheduled',items:[]});
+        putForMatch(match,{kind:'scheduled',items:[],gameKey:key});
         state.scheduled+=1;
         continue;
       }
       if(thin){
-        rows.set(key,{kind:'thin-score-only',items:[]});
+        putForMatch(match,{kind:'thin-score-only',items:[],gameKey:key});
         state.thin+=1;
         continue;
       }
@@ -192,17 +204,22 @@
       const planItems=found?.plan?.playable;
       if(Array.isArray(planItems)&&planItems.length){
         const lg=upper(found.league||leagueFor(match));
-        rows.set(key,{
+        const row={
           kind:'day-state-plan',
+          gameKey:key,
+          knownDatabaseMedia:true,
           items:decoratePlayable(planItems,{date,league:lg,plan:found.plan,key:found.key})
-        });
+        };
+        putForMatch(match,row);
         state.planPlayable+=1;
+        state.knownMediaGames+=1;
+        state.knownMediaAssets+=row.items.length;
         continue;
       }
 
       const verified=directVerified(match);
       if(verified.length){
-        rows.set(key,{kind:'session-verified',items:verified});
+        putForMatch(match,{kind:'session-verified',items:verified,gameKey:key});
         state.sessionVerified+=1;
       }
     }
@@ -233,6 +250,9 @@
       if(hit){
         state.fastHits+=1;
         state.totalFastHits+=1;
+        if(hit.knownDatabaseMedia&&hit.gameKey&&Array.isArray(hit.items)&&hit.items.length){
+          readyKnownMediaKeys.add(hit.gameKey);
+        }
         return Array.isArray(hit.items)?hit.items.slice():[];
       }
       state.fallbacks+=1;
@@ -243,7 +263,11 @@
         // If the legacy path resolves media during this render, memoize by stable
         // game aliases for subsequent object clones of the same card.
         if(Array.isArray(result)&&result.length){
-          putForMatch(match,{kind:'legacy-resolved',items:result});
+          const found=planForMatch(match,currentDate());
+          const known=Array.isArray(found?.plan?.playable)&&found.plan.playable.length>0;
+          const gameKey=stableKey(match,currentDate());
+          putForMatch(match,{kind:'legacy-resolved',items:result,gameKey,knownDatabaseMedia:known});
+          if(known&&gameKey)readyKnownMediaKeys.add(gameKey);
         }
         return result;
       }finally{
@@ -270,16 +294,20 @@
     if(!state.active)return state.last;
     if(token&&Number(token)!==state.renderId)return state.last;
     const report={
-      renderId:state.renderId,indexed:state.indexed,
-      planCount:state.planCount,
+      renderId:state.renderId,date:currentDate(),filter:currentFilter(),
+      indexed:state.indexed,planCount:state.planCount,
       scheduled:state.scheduled,thin:state.thin,
       planPlayable:state.planPlayable,sessionVerified:state.sessionVerified,
+      knownMediaGames:state.knownMediaGames,
+      knownMediaAssets:state.knownMediaAssets,
+      mediaReadyGames:readyKnownMediaKeys.size,
+      mediaReadyComplete:state.knownMediaGames===0||readyKnownMediaKeys.size>=state.knownMediaGames,
       fastHits:state.fastHits,fallbacks:state.fallbacks,
       indexBuildMs:state.indexBuildMs,fallbackMs:round(state.fallbackMs)
     };
     state.last=report;
     state.active=false;
-    rows=new Map();planAliases=new Map();
+    rows=new Map();planAliases=new Map();readyKnownMediaKeys=new Set();
     try{
       window.dispatchEvent(new CustomEvent('sbb:availability-index',{
         detail:{...report,at:Date.now()}
