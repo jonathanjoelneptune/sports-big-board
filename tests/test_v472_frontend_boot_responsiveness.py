@@ -11,6 +11,12 @@ CERT=(ROOT/"foundation-certification.json").read_text(encoding="utf-8")
 
 
 class V472FrontendBootResponsivenessTests(unittest.TestCase):
+    """v4.7.2 established the frontend-boot responsiveness baseline.
+
+    This historical test deliberately follows the current 4.7.x release instead
+    of pinning the repository to the original 4.7.2 patch version.
+    """
+
     def test_frontend_registry_does_not_observe_entire_document(self):
         self.assertNotIn("new MutationObserver",REG)
         self.assertNotIn(".observe(document.documentElement",REG)
@@ -31,12 +37,19 @@ class V472FrontendBootResponsivenessTests(unittest.TestCase):
         self.assertIn('id="launchScreen"',INDEX)
         self.assertNotIn("MutationObserver",REG)
 
-    def test_release_handshake(self):
-        self.assertEqual(VERSION,"4.7.2")
-        self.assertIn("Sports Big Board — v4.7.2",INDEX)
-        self.assertIn("architecture/competition-registry-projection.js?v=4.7.2",INDEX)
-        self.assertIn("version:'4.7.2'",CORE)
-        self.assertIn("version:'4.7.2'",DAY)
+    def test_release_line_handshake(self):
+        # v4.7.2 is the minimum baseline; later 4.7.x releases inherit the same
+        # launch-responsiveness contract and use the current VERSION dynamically.
+        parts=tuple(int(x) for x in VERSION.split("."))
+        self.assertGreaterEqual(parts,(4,7,2))
+        self.assertEqual(parts[:2],(4,7))
+        self.assertIn(f"Sports Big Board — v{VERSION}",INDEX)
+        self.assertIn(
+            f"architecture/competition-registry-projection.js?v={VERSION}",
+            INDEX,
+        )
+        self.assertIn(f"version:'{VERSION}'",CORE)
+        self.assertIn(f"version:'{VERSION}'",DAY)
         self.assertIn("launch-screen responsiveness",CERT)
 
 
