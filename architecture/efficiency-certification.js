@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.7 — Efficiency Certification.
+/* Sports Big Board v4.7.8 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.7') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.8') return;
 
-  const VERSION = '4.7.7';
+  const VERSION = '4.7.8';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -90,6 +90,29 @@
     try { return Number(performance.memory?.usedJSHeapSize) || null; }
     catch (_) { return null; }
   };
+  const median = values => {
+    const xs=values.filter(Number.isFinite).sort((a,b)=>a-b);
+    if(!xs.length)return null;
+    const mid=Math.floor(xs.length/2);
+    return xs.length%2?xs[mid]:(xs[mid-1]+xs[mid])/2;
+  };
+  async function sampleHeapWindow(samples=6,intervalMs=80){
+    const rows=[];
+    for(let i=0;i<samples;i++){
+      const value=heapBytes();
+      if(Number.isFinite(value))rows.push(value);
+      if(i<samples-1)await sleep(intervalMs);
+    }
+    return {
+      samples:rows,
+      min:rows.length?Math.min(...rows):null,
+      median:median(rows),
+      max:rows.length?Math.max(...rows):null,
+      spreadPct:rows.length>=2&&Math.min(...rows)>0
+        ? round(((Math.max(...rows)-Math.min(...rows))/Math.min(...rows))*100)
+        : null,
+    };
+  }
   const normalizeUrl = raw => {
     try {
       const u = new URL(typeof raw === 'string' ? raw : raw?.url || '', location.href);
@@ -206,6 +229,9 @@
         type:'render',at:Date.now(),runId:String(window.__SBB_EFFICIENCY_RUN_ID||''),
         durationMs:Number(d.durationMs)||0,reason:String(d.reason||''),
         buildMs:Number(d.buildMs)||0,commitMs:Number(d.commitMs)||0,
+        cardCacheHits:Number(d.cardCacheHits)||0,
+        cardCacheMisses:Number(d.cardCacheMisses)||0,
+        cardHelperMs:Number(d.cardHelperMs)||0,
         stagedNodes:Number(d.stagedNodes)||0,generation:Number(d.generation)||0,
         generationCommit:!!d.generationCommit,
         beforeNodes:Number(d.beforeNodes)||0,afterNodes:Number(d.afterNodes)||0
@@ -382,13 +408,25 @@
       if(cacheState&&!cacheStates.includes(cacheState))cacheStates.push(cacheState);
     }catch(_){}
     const firstPaint=window.SBB_DATE_TRANSITIONS?.snapshot?.().firstPaintSource||'';
+    let dayStateSummary={games:null,scheduled:null,catalogCandidates:null,catalogAdded:null};
+    try{
+      const cached=window.SBB_DAY_STATE?.cache?.(date)||{};
+      const summary=cached.summary||{};
+      const projection=cached.projectionDiagnostics||{};
+      dayStateSummary={
+        games:Number.isFinite(Number(summary.games))?Number(summary.games):null,
+        scheduled:Number.isFinite(Number(summary.scheduled))?Number(summary.scheduled):null,
+        catalogCandidates:Number.isFinite(Number(projection.catalogCandidates))?Number(projection.catalogCandidates):null,
+        catalogAdded:Number.isFinite(Number(projection.catalogAdded))?Number(projection.catalogAdded):null,
+      };
+    }catch(_){}
 
     return {
       date,elapsedMs:firstPaintMs,firstPaintMs,firstPaintOk,
       settled:fullySettled,fullSettleMs,
       timeout:!firstPaintOk,
       settleTimeout:firstPaintOk&&!fullySettled,
-      commandError,requestCount:reqs.length,cacheStates,firstPaint,
+      commandError,requestCount:reqs.length,cacheStates,firstPaint,dayStateSummary,
       apiMs:reqs.filter(r=>r.path.startsWith('/api/')).map(r=>r.durationMs),
     };
   }
@@ -489,7 +527,7 @@
     } catch (_) {}
   }
 
-  function makeMetrics({runId,switches,filters,probes,baseline,restoreOk,durationMs}) {
+  function makeMetrics({runId,switches,filters,probes,baseline,restoreOk,durationMs,memoryAfter}) {
     const reqs=requestsForRun(runId);
     const api=reqs.filter(r=>r.path.startsWith('/api/'));
     const apiMs=api.map(r=>r.durationMs).filter(Number.isFinite);
@@ -500,6 +538,9 @@
     const buildMs=renderRows.map(x=>x.buildMs).filter(Number.isFinite);
     const commitMs=renderRows.map(x=>x.commitMs).filter(Number.isFinite);
     const paintMs=paintRows.map(x=>x.paintDelayMs).filter(Number.isFinite);
+    const cacheHits=renderRows.map(x=>x.cardCacheHits).filter(Number.isFinite);
+    const cacheMisses=renderRows.map(x=>x.cardCacheMisses).filter(Number.isFinite);
+    const helperMs=renderRows.map(x=>x.cardHelperMs).filter(Number.isFinite);
     const phaseRows=state.dayStatePhases.filter(x=>x.runId===runId);
     const phaseMap={};
     for(const row of phaseRows){
@@ -510,7 +551,8 @@
     const settleMs=switches.filter(x=>x.settled&&Number.isFinite(x.fullSettleMs)).map(x=>x.fullSettleMs);
     const cacheStates={};
     for (const row of switches) for (const c of row.cacheStates||[]) cacheStates[c]=(cacheStates[c]||0)+1;
-    const heapEnd=heapBytes();
+    const heapEnd=Number(memoryAfter?.min);
+    const heapMedianEnd=Number(memoryAfter?.median);
     const domEnd=nodeCount();
 
     return {
@@ -550,6 +592,9 @@
       cardBuildP95:round(percentile(buildMs,95)),
       domCommitP95:round(percentile(commitMs,95)),
       browserPaintP95:round(percentile(paintMs,95)),
+      cardCacheHits:cacheHits.reduce((a,b)=>a+b,0),
+      cardCacheMisses:cacheMisses.reduce((a,b)=>a+b,0),
+      cardHelperP95:round(percentile(helperMs,95)),
       generationRenderCount:renderRows.filter(x=>x.generationCommit).length,
       renderCoalesced:Math.max(0,Number(window.SBB_RENDER_PIPELINE?.snapshot?.().coalesced||0)-Number(baseline.renderCoalesced||0)),
       renderReasonCounts:renderRows.reduce((acc,row)=>{
@@ -567,8 +612,11 @@
       domEnd,
       domGrowthPct:round(pct(baseline.dom,domEnd)),
       heapStart:baseline.heap,
-      heapEnd,
+      heapEnd:Number.isFinite(heapEnd)?heapEnd:null,
+      heapMedianEnd:Number.isFinite(heapMedianEnd)?heapMedianEnd:null,
       heapGrowthPct:round(pct(baseline.heap,heapEnd)),
+      heapWindowSpreadPct:round(memoryAfter?.spreadPct),
+      heapSamples:Number(memoryAfter?.samples?.length||0),
       restoreOk,
       cacheStates,
       probeFailures:probes.filter(x=>!x.ok).length,
@@ -588,7 +636,7 @@
       ['Long tasks >50ms',metrics.longTaskCount,'',THRESHOLDS.longTaskCount],
       ['Longest task',metrics.longTaskMax,'ms',THRESHOLDS.longTaskMaxMs],
       ['DOM growth',metrics.domGrowthPct,'%',THRESHOLDS.domGrowthPct,true],
-      ['Heap growth',metrics.heapGrowthPct,'%',THRESHOLDS.heapGrowthPct,true],
+      ['Heap retained (stabilized)',metrics.heapGrowthPct,'%',THRESHOLDS.heapGrowthPct,true],
       ['First-paint timeouts',metrics.timeouts,'',THRESHOLDS.timeouts],
       ['API 5xx',metrics.api5xx,'',THRESHOLDS.api5xx],
     ].map(([name,value,unit,threshold,optional])=>({
@@ -615,15 +663,17 @@
       `OPERATOR_MODULES=${window.SBB_OPERATOR_MODULES?.snapshot?.().loaded?'LOADED':'LAZY'}  FIRST_PAINT=${window.SBB_DATE_TRANSITIONS?.snapshot?.().firstPaintSource||'—'}`,
       `RENDER_COUNT=${m.renderCount}  GENERATION_RENDERS=${m.generationRenderCount}  RENDER_COALESCED=${m.renderCoalesced}`,
       `RENDER_P95=${m.renderP95??'N/A'}ms  CARD_BUILD_P95=${m.cardBuildP95??'N/A'}ms  DOM_COMMIT_P95=${m.domCommitP95??'N/A'}ms  BROWSER_PAINT_P95=${m.browserPaintP95??'N/A'}ms`,
+      `CARD_CACHE_HITS=${m.cardCacheHits}  CARD_CACHE_MISSES=${m.cardCacheMisses}  CARD_HELPER_P95=${m.cardHelperP95??'N/A'}ms`,
       `RENDER_REASONS=${Object.entries(m.renderReasonCounts||{}).map(([k,v])=>`${k}:${v}`).join(' ')||'none'}`,
       `DAY_APPLY_P95=${m.dayApplyP95??'N/A'}ms  SCORE_ROWS_P95=${m.scoreRowsP95??'N/A'}ms  MEDIA_PLANS_P95=${m.mediaPlansP95??'N/A'}ms`,
       `FULL_SETTLE_P95=${m.fullSettleP95??'N/A'}ms  FULL_SETTLE_TIMEOUTS=${m.fullSettleTimeouts}`,
+      `MEMORY_SAMPLES=${m.heapSamples}  MEMORY_WINDOW_SPREAD=${m.heapWindowSpreadPct??'N/A'}%  HEAP_POST_MIN=${m.heapEnd??'N/A'}`,
       `LONG_TASK_TOTAL=${m.longTaskTotal}ms  MAX_NETWORK_REQ/DATE=${m.networkPerDateMax}`,
       '',
       'SLOWEST ENDPOINTS',
       ...((report.slowestEndpoints||[]).map(x=>`${String(x.p95Ms).padStart(7)}ms p95  ${String(x.maxMs).padStart(7)}ms max  n=${String(x.count).padStart(3)}  ${x.path}`)),
       '',
-      ...report.switches.map(x=>`${x.firstPaintOk?'PASS':'FAIL'} DATE ${x.date} first=${x.firstPaintMs}ms settle=${x.settled?(x.fullSettleMs+'ms'):'BACKGROUND'} network=${x.requestCount} cache=${(x.cacheStates||[]).join(',')||'—'} paint=${x.firstPaint||'—'}`),
+      ...report.switches.map(x=>`${x.firstPaintOk?'PASS':'FAIL'} DATE ${x.date} first=${x.firstPaintMs}ms settle=${x.settled?(x.fullSettleMs+'ms'):'BACKGROUND'} network=${x.requestCount} cache=${(x.cacheStates||[]).join(',')||'—'} paint=${x.firstPaint||'—'} games=${x.dayStateSummary?.games??'—'} scheduled=${x.dayStateSummary?.scheduled??'—'} catalog=${x.dayStateSummary?.catalogCandidates??'—'} added=${x.dayStateSummary?.catalogAdded??'—'}`),
     ].join('\n');
   }
 
@@ -650,9 +700,10 @@
 
     const runId=`eff-${Date.now()}-${Math.random().toString(36).slice(2,7)}`;
     const saved={date:browseDate(),filter:currentFilter()};
+    const memoryBefore=await sampleHeapWindow(5,40);
     const baseline={
       dom:nodeCount(),
-      heap:heapBytes(),
+      heap:Number.isFinite(memoryBefore.median)?memoryBefore.median:heapBytes(),
       duplicateConcurrent:state.duplicateConcurrent,
       cacheHits:state.brokerCacheHits,
       supersededAborts:state.brokerSupersededAborts,
@@ -691,10 +742,17 @@
       switches.push({date:browseDate(),elapsedMs:0,settled:false,timeout:true,commandError:clean(err?.message||err),requestCount:0,cacheStates:[]});
     } finally {
       const restoreOk=await restoreState(saved);
+      // Heap is sampled after restore over a short idle window. The minimum
+      // post-test sample is a more stable retained-memory signal than one random
+      // V8 heap point immediately after the last render.
+      await sleep(300);
+      const memoryAfter=await sampleHeapWindow(mode==='hammer'?12:8,120);
       const durationMs=now()-started;
       state.currentRunId='';
       if(window.__SBB_EFFICIENCY_RUN_ID===runId)window.__SBB_EFFICIENCY_RUN_ID='';
-      const metrics=makeMetrics({runId,switches,filters,probes,baseline,restoreOk,durationMs});
+      const metrics=makeMetrics({
+        runId,switches,filters,probes,baseline,restoreOk,durationMs,memoryAfter
+      });
       const result=overallGrade(metrics);
       const runRequests=requestsForRun(runId).filter(x=>x.path&&x.path.startsWith('/api/'));
       const endpointMap=new Map();

@@ -1,0 +1,35 @@
+Sports Big Board v4.7.8 — Future Schedule Projection + Card Build Optimization + Stable Memory Certification
+
+1. FUTURE SCHEDULE PROJECTION
+- Day State merges canonical history_catalog_event rows for future dates before plans/summary.
+- Existing score rows win; only missing canonical events are appended.
+- Minimal imported future events receive competition/date/id/SCHEDULED defaults.
+- projectionDiagnostics reports catalogCandidates/catalogAdded/rowsBefore/rowsAfter.
+- If a cached future snapshot has fewer games than the canonical catalog proves,
+  /api/day-state performs one serialized local rebuild and returns FUTURE_CATALOG_REBUILT.
+- This specifically closes the Aug 30 class of failure without making normal history reads synchronous.
+
+2. CARD BUILD OPTIMIZATION
+- New render-local WeakMap cache wraps:
+  scoreCardAvailability
+  scoreCardPlayableItems
+  externalMediaItemsForGame
+  scoreFromMatch
+- Cache lifetime is exactly one actual ribbon render.
+- Media freshness between renders is unchanged.
+- Render report records card-cache hits/misses and helper execution p95.
+
+3. STABLE MEMORY CERTIFICATION
+- Baseline heap uses a short pre-run sample window.
+- Post-test heap is sampled after state restore over an idle window.
+- Retained heap uses the minimum post-test sample instead of one random V8 point.
+- Report includes memory sample count and within-window spread.
+- Heap remains diagnostic rather than an independent AUTO-run blocker.
+
+4. DATE DIAGNOSTICS
+Every efficiency date line now reports:
+  games=
+  scheduled=
+  catalog=
+  added=
+so future projection problems are visible immediately.

@@ -65,6 +65,93 @@ def _plan_playable_count(plans):
             count += 1
     return count
 
+def _event_identity(event):
+    """Stable-enough canonical event identity for Day State row merging."""
+    if not isinstance(event, dict):
+        return ""
+    for key in ("scoreEventId","matchId","espnEventId","gamePk","canonicalEventId","eventId","id"):
+        value = event.get(key)
+        if value not in (None, ""):
+            return str(value)
+    return ""
+
+
+def _merge_future_catalog_rows(server, day, score_rows, today):
+    """Merge future canonical catalog rows into the ribbon read model.
+
+    The legacy history-day score cache was designed around completed/current dates
+    and can legitimately be empty for a future tournament date even though
+    history_catalog_event already owns scheduled games. Day State is the canonical
+    read model, so future scheduled catalog rows must be projected here rather than
+    making the browser rediscover them.
+    """
+    normalized = {
+        str(league or "").upper(): [dict(row) for row in (rows or []) if isinstance(row, dict)]
+        for league, rows in (score_rows or {}).items()
+    }
+    diagnostics = {
+        "future": bool(day and today and day > today),
+        "catalogCandidates": 0,
+        "catalogAdded": 0,
+        "rowsBefore": sum(len(rows) for rows in normalized.values()),
+        "rowsAfter": 0,
+        "leaguesAdded": [],
+    }
+    if not diagnostics["future"]:
+        diagnostics["rowsAfter"] = diagnostics["rowsBefore"]
+        return normalized, diagnostics
+
+    repo = getattr(server, "HISTORY_REPOSITORY", None)
+    if repo is None or not hasattr(repo, "catalog_events"):
+        diagnostics["rowsAfter"] = diagnostics["rowsBefore"]
+        return normalized, diagnostics
+
+    try:
+        catalog = repo.catalog_events(date_from=day, date_to=day, limit=50000) or []
+    except Exception:
+        catalog = []
+
+    diagnostics["catalogCandidates"] = len(catalog)
+    existing = {}
+    for league, rows in normalized.items():
+        existing[league] = {_event_identity(row) for row in rows if _event_identity(row)}
+
+    leagues_added = set()
+    for catalog_row in catalog:
+        if not isinstance(catalog_row, dict):
+            continue
+        league = str(catalog_row.get("league") or "").upper()
+        if not league:
+            continue
+        event_id = str(catalog_row.get("eventId") or "")
+        event = dict(catalog_row.get("event") or {})
+        identity = _event_identity(event) or event_id
+        if identity and identity in existing.setdefault(league, set()):
+            continue
+
+        # The catalog normally stores the complete schedule JSON. The defaults
+        # below make even a minimal imported bracket row renderable as SCHEDULED.
+        event.setdefault("competitionId", league)
+        event.setdefault("league", league)
+        event.setdefault("__sbbLeague", league)
+        event.setdefault("__sbbDate", day)
+        event.setdefault("date", day)
+        if event_id:
+            event.setdefault("eventId", event_id)
+            event.setdefault("id", event_id)
+        if not event.get("status"):
+            event["status"] = "SCHEDULED"
+
+        normalized.setdefault(league, []).append(event)
+        if identity:
+            existing[league].add(identity)
+        diagnostics["catalogAdded"] += 1
+        leagues_added.add(league)
+
+    diagnostics["rowsAfter"] = sum(len(rows) for rows in normalized.values())
+    diagnostics["leaguesAdded"] = sorted(leagues_added)
+    return normalized, diagnostics
+
 
 class DayStateStore:
     def __init__(self, path=_DB_PATH):
@@ -319,6 +406,16 @@ class DayStateEngine:
         self.focus_dates[day] = time.time() + max(30, int(seconds or 180))
         self.enqueue(day, priority=True)
 
+    def _future_catalog_event_count(self, day):
+        if not day or day <= self.today():
+            return 0
+        try:
+            return int(self.server.HISTORY_REPOSITORY.catalog_event_count(
+                date_from=day, date_to=day
+            ) or 0)
+        except Exception:
+            return 0
+
     def _source_revision(self):
         parts = [f"registry:{registry.revision()}"]
         for name in ("HISTORY_SCHEDULE_SYNC_STATE", "HISTORY_DATABASE_AUDIT_STATE", "OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE"):
@@ -377,6 +474,9 @@ class DayStateEngine:
         inventory_fn = getattr(self.server, "_history_day_score_inventory_complete")
 
         score_rows = score_rows_fn(day)
+        score_rows, projection_diagnostics = _merge_future_catalog_rows(
+            self.server, day, score_rows, self.today()
+        )
         plans = plans_fn(day, score_rows)
         inventory = bool(inventory_fn(day))
 
@@ -401,7 +501,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.7",
+            "engineVersion":"4.7.8",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -410,6 +510,7 @@ class DayStateEngine:
             "sourceRevision":self._source_revision(),
             "scoreRowsByLeague":score_rows,
             "scoreGameCount":games,
+            "projectionDiagnostics":projection_diagnostics,
             "eventPlans":plans,
             "catalogFirst":True,
             "compact":True,
@@ -487,7 +588,7 @@ class DayStateEngine:
                 pass
         return {
             "ok":True,
-            "version":"4.7.7",
+            "version":"4.7.8",
             "today":today,
             "builds":self.builds,
             "cacheHits":self.hits,
@@ -564,18 +665,51 @@ class DayStateEngine:
             )
 
         if payload is None:
-            return self.server.send_json(
-                handler,
-                {
-                    "ok":True,
-                    "pending":True,
-                    "date":day,
-                    "cache":{"state":"COLD_WARMING","ageSeconds":0},
-                    "message":"Day State is warming in the background.",
-                },
-                202,
-                {"X-SBB-Day-State":"COLD_WARMING"},
-            )
+            # Future schedule rows are local canonical catalog reads. When the
+            # catalog already proves scheduled games exist, do one serialized
+            # canonical build instead of returning a cold placeholder that cannot
+            # produce a future score card.
+            canonical_future = self._future_catalog_event_count(day)
+            if canonical_future > 0:
+                try:
+                    payload = dict(self.build(day))
+                    payload["cache"] = {
+                        **(payload.get("cache") or {}),
+                        "state":"FUTURE_CATALOG_REBUILT",
+                        "ageSeconds":0,
+                    }
+                except Exception:
+                    payload = None
+            if payload is None:
+                return self.server.send_json(
+                    handler,
+                    {
+                        "ok":True,
+                        "pending":True,
+                        "date":day,
+                        "cache":{"state":"COLD_WARMING","ageSeconds":0},
+                        "message":"Day State is warming in the background.",
+                    },
+                    202,
+                    {"X-SBB-Day-State":"COLD_WARMING"},
+                )
+
+        # A pre-v4.7.8 or otherwise incomplete future snapshot may be "fresh" by
+        # age while still missing canonical scheduled events. Repair only that
+        # proven mismatch; normal current/history reads remain nonblocking.
+        if day > self.today():
+            canonical_future = self._future_catalog_event_count(day)
+            projected_games = int((payload.get("summary") or {}).get("games") or 0)
+            if canonical_future > projected_games:
+                try:
+                    payload = dict(self.build(day))
+                    payload["cache"] = {
+                        **(payload.get("cache") or {}),
+                        "state":"FUTURE_CATALOG_REBUILT",
+                        "ageSeconds":0,
+                    }
+                except Exception:
+                    pass
 
         state = str((payload.get("cache") or {}).get("state") or "READY")
         if state == "STALE":
@@ -640,7 +774,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.7",
+                    "engineVersion":"4.7.8",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},

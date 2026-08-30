@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.7",
+  "release": "4.7.8",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -223,7 +223,16 @@
         "Efficiency Certification uses first usable canonical score-card paint as the blocking ribbon performance metric; continued background refresh/full-settle state is reported separately and does not create a false first-paint timeout.",
         "Future scheduled dates with visible scheduled game cards are first-paint complete even when Day State remains STALE_REFRESHING in the background.",
         "Efficiency Certification reports first-paint p95/max/timeouts separately from full-settle p95/timeouts and reports CARD_BUILD_P95, DOM_COMMIT_P95, BROWSER_PAINT_P95, and RENDER_REASONS.",
-        "tests/test_v477_first_paint_render_consolidation_runtime.js is a blocking contract for generation-owned first paint, DocumentFragment ribbon commits, and first-paint-vs-settle certification semantics."
+        "tests/test_v477_first_paint_render_consolidation_runtime.js is a blocking contract for generation-owned first paint, DocumentFragment ribbon commits, and first-paint-vs-settle certification semantics.",
+        "Day State merges future history_catalog_event schedule rows into scoreRowsByLeague before media plans and summary generation so future tournament dates render scheduled canonical games even when the legacy history-day score cache is empty.",
+        "A future Day State snapshot that contains fewer games than the canonical catalog proves for that date is narrowly rebuilt under the per-date build mutex and returned as FUTURE_CATALOG_REBUILT; normal current and historical reads remain nonblocking.",
+        "Day State exposes projectionDiagnostics with future, catalogCandidates, catalogAdded, rowsBefore, rowsAfter, and leaguesAdded so future schedule projection can be audited without inference.",
+        "Render-Local Card Model Cache memoizes scoreCardAvailability, scoreCardPlayableItems, externalMediaItemsForGame, and scoreFromMatch only for one actual ribbon render and resets all WeakMap caches immediately afterward.",
+        "Render Pipeline records per-render card-cache hits, misses, and helper execution time without changing generation-owned first-paint or DocumentFragment commit semantics.",
+        "Efficiency Certification reports Day State games/scheduled/catalog candidate/catalog-added counts on every tested date so a future-date failure immediately distinguishes backend projection from frontend rendering.",
+        "Efficiency Certification samples JS heap before the run and over a post-restore idle window; heap retention uses the minimum post-test sample rather than a single arbitrary V8 heap point.",
+        "Heap retention remains an optional diagnostic and cannot independently make an otherwise healthy AUTO run fail; DOM retention, first-paint latency, API health, and main-thread latency remain the primary blocking signals.",
+        "tests/test_v478_future_projection_card_cache_runtime.js and tests/test_v478_future_projection.py are blocking contracts for future canonical schedule projection, render-local card caching, and stabilized memory certification."
       ]
     },
     "tier2": {
@@ -274,6 +283,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.7 preserves the v4.7.5/v4.7.6 network and enrichment architecture and consolidates frontend work: one generation-owned ribbon first paint per date transition, one DocumentFragment DOM commit per actual render, and efficiency certification based on first usable score-card paint rather than background settle.",
+  "baseline": "v4.7.8 preserves the v4.7.5-v4.7.7 request/enrichment/render architecture and closes the remaining narrow gaps: future canonical schedule rows are projected directly by Day State, incomplete future snapshots self-repair only when the catalog proves missing games, repeated card helper calculations are render-local cached, and heap retention is measured over a post-restore stabilization window.",
   "status": "IN_PROGRESS"
 }

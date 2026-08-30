@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.7 — First-Paint Render Pipeline.
+/* Sports Big Board v4.7.8 — First-Paint Render Pipeline.
    A date transition owns one generation. All ribbon render requests made while
    that generation is loading are held and committed once when canonical data is
    ready. Score-card appendChild calls are staged in a DocumentFragment so each
@@ -6,9 +6,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_RENDER_PIPELINE?.version==='4.7.7')return;
+  if(window.SBB_RENDER_PIPELINE?.version==='4.7.8')return;
 
-  const VERSION='4.7.7';
+  const VERSION='4.7.8';
   const state={
     installed:false,calls:0,requested:0,executed:0,coalesced:0,reentrant:0,
     generationCoalesced:0,fragmentCommits:0,lastKey:'',lastStartedAt:0,
@@ -122,12 +122,17 @@
       state.executed+=1;
       state.lastStartedAt=started;
       incrementReason(reason);
+      const cacheToken=window.SBB_CARD_BUILD_CACHE?.beginRender?.({
+        generation:Number(meta.generation||0),reason
+      });
+      let cacheStats=null;
       let batched={result:undefined,buildMs:0,commitMs:0,stagedNodes:0};
       try{
         batched=withFragment(host,()=>original(animate));
         state.lastResult=batched.result;
         return batched.result;
       }finally{
+        cacheStats=window.SBB_CARD_BUILD_CACHE?.endRender?.(cacheToken)||null;
         const finished=now();
         const duration=round(finished-started);
         const afterNodes=host?.childElementCount||0;
@@ -140,7 +145,10 @@
           at:Date.now(),durationMs:duration,key,reason,beforeNodes,afterNodes,
           buildMs:batched.buildMs,commitMs:batched.commitMs,
           stagedNodes:batched.stagedNodes,generation:Number(meta.generation||0),
-          generationCommit:!!meta.generationCommit
+          generationCommit:!!meta.generationCommit,
+          cardCacheHits:Number(cacheStats?.hits||0),
+          cardCacheMisses:Number(cacheStats?.misses||0),
+          cardHelperMs:Number(cacheStats?.helperMs||0)
         };
         state.samples.push(row);
         if(state.samples.length>250)state.samples.splice(0,state.samples.length-250);

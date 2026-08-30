@@ -16,6 +16,7 @@ OPERATOR_LOADER=(ROOT/"architecture"/"operator-module-loader.js").read_text(enco
 HIST_MEDIA=(ROOT/"architecture"/"historical-media-v4610.js").read_text(encoding="utf-8")
 FUTURE_DATES=(ROOT/"architecture"/"future-date-navigation.js").read_text(encoding="utf-8")
 RENDER_PIPELINE=(ROOT/"architecture"/"render-pipeline.js").read_text(encoding="utf-8")
+CARD_CACHE=(ROOT/"architecture"/"card-build-cache.js").read_text(encoding="utf-8")
 VERIFY=(ROOT/"VERIFY.sh").read_text(encoding="utf-8")
 
 
@@ -179,6 +180,26 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("DOM_COMMIT_P95=",EFFICIENCY)
         self.assertIn("BROWSER_PAINT_P95=",EFFICIENCY)
 
+    def test_future_catalog_schedule_is_part_of_day_state_projection(self):
+        self.assertIn("def _merge_future_catalog_rows",DAY_BACKEND)
+        self.assertIn("projectionDiagnostics",DAY_BACKEND)
+        self.assertIn("FUTURE_CATALOG_REBUILT",DAY_BACKEND)
+        self.assertIn("canonical_future > projected_games",DAY_BACKEND)
+
+    def test_card_helpers_are_cached_only_for_one_render(self):
+        self.assertIn("window.SBB_CARD_BUILD_CACHE",CARD_CACHE)
+        self.assertIn("WeakMap",CARD_CACHE)
+        self.assertIn("beginRender",CARD_CACHE)
+        self.assertIn("endRender",CARD_CACHE)
+        self.assertIn("SBB_CARD_BUILD_CACHE?.beginRender",RENDER_PIPELINE)
+        self.assertIn("SBB_CARD_BUILD_CACHE?.endRender",RENDER_PIPELINE)
+
+    def test_memory_certification_uses_post_restore_window(self):
+        self.assertIn("sampleHeapWindow",EFFICIENCY)
+        self.assertIn("Heap retained (stabilized)",EFFICIENCY)
+        self.assertIn("MEMORY_WINDOW_SPREAD=",EFFICIENCY)
+        self.assertIn("CARD_CACHE_HITS=",EFFICIENCY)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -206,6 +227,8 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "node tests/test_v475_enrichment_firewall_runtime.js",
             "node tests/test_v476_render_pipeline_runtime.js",
             "node tests/test_v477_first_paint_render_consolidation_runtime.js",
+            "node tests/test_v478_future_projection_card_cache_runtime.js",
+            "python3 -m unittest tests.test_v478_future_projection",
         )
         for command in required:
             self.assertIn(command,VERIFY)

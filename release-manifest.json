@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.7",
-  "baseRelease": "4.7.6",
-  "title": "First-Paint Certification + Render Consolidation",
+  "release": "4.7.8",
+  "baseRelease": "4.7.7",
+  "title": "Future Schedule Projection + Card Build Optimization + Stable Memory Certification",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -20,6 +20,7 @@
     "architecture/historical-media-v4610.js",
     "architecture/operator-module-loader.js",
     "architecture/future-date-navigation.js",
+    "architecture/card-build-cache.js",
     "architecture/render-pipeline.js",
     "tests/test_release_behavior_gate.py",
     "tests/test_v472_frontend_boot_responsiveness.py",
@@ -27,114 +28,120 @@
     "tests/test_v474_efficiency_remediation_runtime.js",
     "tests/test_v475_enrichment_firewall_runtime.js",
     "tests/test_v476_render_pipeline_runtime.js",
-    "tests/test_v477_first_paint_render_consolidation_runtime.js"
+    "tests/test_v477_first_paint_render_consolidation_runtime.js",
+    "tests/test_v478_future_projection_card_cache_runtime.js",
+    "tests/test_v478_future_projection.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.7"
+        "4.7.8"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.7",
-        "architecture/render-pipeline.js?v=4.7.7",
-        "architecture/date-transition-coordinator.js?v=4.7.7"
+        "Sports Big Board \u2014 v4.7.8",
+        "architecture/card-build-cache.js?v=4.7.8",
+        "architecture/render-pipeline.js?v=4.7.8"
       ],
       "forbidden": [
-        "?v=4.7.6"
+        "?v=4.7.7"
+      ]
+    },
+    "sbb/day_state.py": {
+      "required": [
+        "def _merge_future_catalog_rows",
+        "projectionDiagnostics",
+        "_future_catalog_event_count",
+        "FUTURE_CATALOG_REBUILT",
+        "canonical_future > projected_games",
+        "\"engineVersion\":\"4.7.8\""
+      ]
+    },
+    "architecture/card-build-cache.js": {
+      "required": [
+        "Sports Big Board v4.7.8",
+        "window.SBB_CARD_BUILD_CACHE",
+        "scoreCardAvailability",
+        "scoreCardPlayableItems",
+        "externalMediaItemsForGame",
+        "scoreFromMatch",
+        "WeakMap",
+        "beginRender",
+        "endRender"
       ]
     },
     "architecture/render-pipeline.js": {
       "required": [
-        "Sports Big Board v4.7.7",
-        "beginGeneration",
-        "commitGeneration",
-        "generation-hold",
-        "generationCommit:true",
-        "document.createDocumentFragment()",
-        "fragmentCommits",
-        "buildMs",
-        "commitMs",
-        "emit('paint'",
-        "reasonCounts"
-      ]
-    },
-    "architecture/date-transition-coordinator.js": {
-      "required": [
-        "Sports Big Board v4.7.7",
-        "SBB_RENDER_PIPELINE?.beginGeneration",
-        "SBB_RENDER_PIPELINE?.commitGeneration",
-        "transition owns exactly one first-paint ribbon commit"
-      ],
-      "forbidden": [
-        "withReason?.('cold-ribbon-fallback'"
-      ]
-    },
-    "architecture/day-state.js": {
-      "required": [
-        "Sports Big Board v4.7.7",
-        "SBB_RENDER_PIPELINE.request('day-state-apply'",
-        "RIBBON_RENDER_REQUEST"
+        "Sports Big Board v4.7.8",
+        "SBB_CARD_BUILD_CACHE?.beginRender",
+        "SBB_CARD_BUILD_CACHE?.endRender",
+        "cardCacheHits",
+        "cardCacheMisses",
+        "cardHelperMs",
+        "document.createDocumentFragment()"
       ]
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "Sports Big Board v4.7.7",
-        "function ribbonFirstUsable",
-        "function ribbonFullySettled",
-        "firstPaintMs",
-        "settleTimeout",
-        "First paint p95",
-        "First-paint timeouts",
-        "FULL_SETTLE_TIMEOUTS=",
-        "CARD_BUILD_P95=",
-        "DOM_COMMIT_P95=",
-        "BROWSER_PAINT_P95=",
-        "RENDER_REASONS="
-      ]
-    },
-    "tests/test_v476_render_pipeline_runtime.js": {
-      "required": [
-        "parts[2]>=6",
-        "retains v4.7.6"
-      ],
-      "forbidden": [
-        "assert.strictEqual(VERSION,'4.7.6')"
+        "Sports Big Board v4.7.8",
+        "sampleHeapWindow",
+        "Heap retained (stabilized)",
+        "MEMORY_WINDOW_SPREAD=",
+        "CARD_CACHE_HITS=",
+        "dayStateSummary",
+        "catalogCandidates",
+        "catalogAdded"
       ]
     },
     "tests/test_v477_first_paint_render_consolidation_runtime.js": {
       "required": [
-        "first-paint certification + generation render consolidation contracts",
-        "beginGeneration",
-        "commitGeneration",
-        "DocumentFragment",
-        "CARD_BUILD_P95="
+        "parts[2]>=7",
+        "retains v4.7.7"
+      ],
+      "forbidden": [
+        "assert.strictEqual(VERSION,'4.7.7')"
+      ]
+    },
+    "tests/test_v478_future_projection_card_cache_runtime.js": {
+      "required": [
+        "future schedule projection + card cache + stable memory contracts",
+        "FUTURE_CATALOG_REBUILT",
+        "CARD_CACHE_HITS=",
+        "sampleHeapWindow"
+      ]
+    },
+    "tests/test_v478_future_projection.py": {
+      "required": [
+        "test_future_catalog_rows_are_merged_before_plans",
+        "test_future_incomplete_snapshot_has_narrow_repair"
       ]
     },
     "tests/test_release_behavior_gate.py": {
       "required": [
-        "test_date_transition_has_one_generation_owned_first_paint_commit",
-        "test_ribbon_cards_are_batched_off_dom_before_commit",
-        "test_efficiency_certifies_first_usable_paint_not_background_settle",
-        "node tests/test_v477_first_paint_render_consolidation_runtime.js"
+        "test_future_catalog_schedule_is_part_of_day_state_projection",
+        "test_card_helpers_are_cached_only_for_one_render",
+        "test_memory_certification_uses_post_restore_window",
+        "node tests/test_v478_future_projection_card_cache_runtime.js",
+        "python3 -m unittest tests.test_v478_future_projection"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.7\"",
-        "one Render Pipeline generation",
-        "DocumentFragment",
-        "first usable canonical score-card paint",
-        "tests/test_v477_first_paint_render_consolidation_runtime.js"
+        "\"release\": \"4.7.8\"",
+        "future history_catalog_event schedule rows",
+        "Render-Local Card Model Cache",
+        "post-restore idle window",
+        "tests/test_v478_future_projection_card_cache_runtime.js"
       ]
     },
     "VERIFY.sh": {
       "required": [
         "python3 -m unittest tests.test_v446_historical_media_quarantine",
         "python3 -m unittest tests.test_release_behavior_gate",
-        "node tests/test_v476_render_pipeline_runtime.js",
         "node tests/test_v477_first_paint_render_consolidation_runtime.js",
+        "node tests/test_v478_future_projection_card_cache_runtime.js",
+        "python3 -m unittest tests.test_v478_future_projection",
         "[legacy-advisory]"
       ]
     }
@@ -152,6 +159,8 @@
     "node tests/test_v475_enrichment_firewall_runtime.js",
     "node tests/test_v476_render_pipeline_runtime.js",
     "node tests/test_v477_first_paint_render_consolidation_runtime.js",
+    "node tests/test_v478_future_projection_card_cache_runtime.js",
+    "python3 -m unittest tests.test_v478_future_projection",
     "bash VERIFY.sh"
   ]
 }
