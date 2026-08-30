@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.11",
+  "release": "4.7.12",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -266,7 +266,19 @@
         "Render Pipeline reports availability index build time, indexed/verified/scheduled/thin counts, fast-path hits, fallback count, and fallback execution time.",
         "Efficiency Certification reports AVAIL_INDEX_P95, AVAIL_FALLBACK_P95, AVAIL_FAST, and AVAIL_FALLBACKS alongside per-helper profiling.",
         "ScoreDateStore public module API remains version 1.0.",
-        "tests/test_v4711_availability_index_thin_probe_runtime.js and tests/test_v4711_availability_index_thin_probe.py are blocking contracts."
+        "tests/test_v4711_availability_index_thin_probe_runtime.js and tests/test_v4711_availability_index_thin_probe.py are blocking contracts.",
+        "Native Transport Snapshot captures the browser fetch implementation before Request Broker installation; it is reserved for certification diagnostics while normal application traffic remains broker-owned.",
+        "Cold-history thin certification resolves /api/day-state/thin through SBB_API and sends the request through Native Transport Snapshot, so the diagnostic cannot be coalesced, deferred, generation-aborted, or pointed at the GitHub Pages origin.",
+        "Score-card render model uses canonical Day State eventPlans and catalogPlanForScoreGame as the primary completed-game media source.",
+        "A Day State event plan with a non-empty playable array bypasses broad media pool scanning and supplies those canonical playable assets directly to scoreCardPlayableItems for that render.",
+        "Render-model game matching is stable-key based and tolerates cloned match objects using event ids, scoreGameLookupKeys aliases, and date/team pair fallback.",
+        "Scheduled games and COLD_THIN_CATALOG rows remain no-media first-paint fast paths; session verified media remains a secondary fast path.",
+        "Unknown, live, unresolved, or plan-without-playable games retain the original certified scoreCardPlayableItems implementation as fallback; newly resolved fallback media is memoized only for the active render.",
+        "Render Pipeline emits performance-time start/end boundaries plus date, filter, Day State plan count, plan-playable count, session-verified count, fast hits, and fallback counts.",
+        "Efficiency Certification correlates PerformanceObserver long tasks against overlapping render intervals and reports the five longest tasks with date, render reason, render/build duration, plan/fast/fallback counts, and overlap.",
+        "Efficiency Certification reports AVAIL_PLANS, AVAIL_PLAN_PLAYABLE, AVAIL_SESSION_VERIFIED, native thin transport state, and preserves existing AVAIL_INDEX/AVAIL_FALLBACK telemetry.",
+        "ScoreDateStore public module API remains exactly version 1.0.",
+        "tests/test_v4712_day_state_render_model_runtime.js and tests/test_v4712_day_state_render_model.py are blocking contracts for native thin transport, Day State media render model, stable-key matching, legacy fallback, and long-task attribution."
       ]
     },
     "tier2": {
@@ -317,6 +329,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.11 preserves v4.7.10 Day State-only history and future-date storage while repairing the certification thin probe and indexing known score-card media availability per render with certified fallback for unresolved games.",
+  "baseline": "v4.7.12 preserves the v4.7.10-v4.7.11 Day State-only navigation, future-date storage, special-event, calendar, and render-generation architecture. It fixes the certification transport boundary and moves known completed-game media onto the canonical Day State eventPlans render model while adding precise long-task render attribution.",
   "status": "IN_PROGRESS"
 }

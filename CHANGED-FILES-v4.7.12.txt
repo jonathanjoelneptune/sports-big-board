@@ -1,0 +1,45 @@
+Sports Big Board v4.7.12 — Native Thin Transport + Day State Score-Card Render Model
+
+COLD-THIN CERTIFICATION TRANSPORT
+- New architecture/native-transport.js captures browser fetch before Request Broker.
+- Native transport resolves paths through SBB_API at call time.
+- AUTO cold-history thin probes use native transport directly.
+- Thin probe no longer participates in Request Broker coalescing, date generations,
+  enrichment deferral, aborts, or GitHub Pages-relative routing.
+- Normal application network traffic remains Request Broker-owned.
+
+DAY STATE SCORE-CARD RENDER MODEL
+- eventPlans is now the primary completed-game media source during ribbon rendering.
+- catalogPlanForScoreGame is used first; Day State eventPlans aliases provide fallback.
+- plan.playable is returned directly for known completed games.
+- Stable matching tolerates cloned match objects using ids, scoreGameLookupKeys,
+  and date/team-pair aliases.
+- Scheduled and COLD_THIN_CATALOG games remain zero-media first-paint fast paths.
+- Session verified media remains a secondary fast path.
+- Unknown/live/unresolved games still use the original scoreCardPlayableItems resolver.
+- A successful legacy fallback is memoized only for the remainder of that render.
+
+LONG-TASK ATTRIBUTION
+- Render Pipeline now emits performance-time start/end, date and filter.
+- PerformanceObserver long tasks are correlated to overlapping render intervals.
+- Report lists five longest tasks with:
+  date
+  render reason
+  render duration
+  card-build duration
+  Day State plan-playable count
+  availability fast hits
+  availability fallbacks
+  overlap time
+
+NEW TELEMETRY
+- AVAIL_PLANS
+- AVAIL_PLAN_PLAYABLE
+- AVAIL_SESSION_VERIFIED
+- THIN_TRANSPORT=NATIVE/UNAVAILABLE
+- LONGEST TASKS detailed section
+
+COMPATIBILITY
+- ScoreDateStore public API remains exactly 1.0.
+- Future-date storage, Aug. 30 scheduled games, Day State-only historical navigation,
+  themed calendar, Special Events menu and generation-owned first paint are unchanged.

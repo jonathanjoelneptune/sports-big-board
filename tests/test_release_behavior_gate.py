@@ -20,6 +20,7 @@ CARD_CACHE=(ROOT/"architecture"/"card-build-cache.js").read_text(encoding="utf-8
 NAVIGATION_UI=(ROOT/"architecture"/"navigation-ui.js").read_text(encoding="utf-8")
 SCORE_DATE_STORE=(ROOT/"architecture"/"score-date-store.js").read_text(encoding="utf-8")
 AVAILABILITY_INDEX=(ROOT/"architecture"/"score-card-availability-index.js").read_text(encoding="utf-8")
+NATIVE_TRANSPORT=(ROOT/"architecture"/"native-transport.js").read_text(encoding="utf-8")
 VERIFY=(ROOT/"VERIFY.sh").read_text(encoding="utf-8")
 
 
@@ -274,6 +275,29 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("AVAIL_FAST=",EFFICIENCY)
         self.assertIn("AVAIL_FALLBACKS=",EFFICIENCY)
 
+    def test_native_certification_transport_is_captured_before_request_broker(self):
+        self.assertIn("capturedFetch",NATIVE_TRANSPORT)
+        self.assertLess(
+            INDEX.index("architecture/native-transport.js"),
+            INDEX.index("architecture/request-broker.js")
+        )
+        self.assertIn("window.SBB_NATIVE_TRANSPORT?.fetch",EFFICIENCY)
+        self.assertIn("window.SBB_NATIVE_TRANSPORT?.url?.(path)",EFFICIENCY)
+
+    def test_day_state_event_plans_drive_known_score_card_media(self):
+        self.assertIn("canonical Day State eventPlans",AVAILABILITY_INDEX)
+        self.assertIn("catalogPlanForScoreGame",AVAILABILITY_INDEX)
+        self.assertIn("payload?.eventPlans",AVAILABILITY_INDEX)
+        self.assertIn("kind:'day-state-plan'",AVAILABILITY_INDEX)
+        self.assertIn("originalPlayable(match)",AVAILABILITY_INDEX)
+
+    def test_long_task_attribution_links_main_thread_to_render_context(self):
+        self.assertIn("perfStartedAt",RENDER_PIPELINE)
+        self.assertIn("perfFinishedAt",RENDER_PIPELINE)
+        self.assertIn("function attributeLongTask",EFFICIENCY)
+        self.assertIn("'LONGEST TASKS'",EFFICIENCY)
+        self.assertIn("availabilityFallbacks",EFFICIENCY)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -306,6 +330,8 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "node tests/test_v4710_cold_history_future_store_runtime.js",
             "node tests/test_v4711_availability_index_thin_probe_runtime.js",
             "python3 -m unittest tests.test_v4711_availability_index_thin_probe",
+            "node tests/test_v4712_day_state_render_model_runtime.js",
+            "python3 -m unittest tests.test_v4712_day_state_render_model",
             "python3 -m unittest tests.test_v4710_cold_history_future_store",
             "python3 -m unittest tests.test_v478_future_projection",
         )

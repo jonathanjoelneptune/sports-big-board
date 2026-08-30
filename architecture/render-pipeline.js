@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.11 — First-Paint Render Pipeline.
+/* Sports Big Board v4.7.12 — First-Paint Render Pipeline.
    A date transition owns one generation. All ribbon render requests made while
    that generation is loading are held and committed once when canonical data is
    ready. Score-card appendChild calls are staged in a DocumentFragment so each
@@ -6,9 +6,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_RENDER_PIPELINE?.version==='4.7.11')return;
+  if(window.SBB_RENDER_PIPELINE?.version==='4.7.12')return;
 
-  const VERSION='4.7.11';
+  const VERSION='4.7.12';
   const state={
     installed:false,calls:0,requested:0,executed:0,coalesced:0,reentrant:0,
     generationCoalesced:0,fragmentCommits:0,lastKey:'',lastStartedAt:0,
@@ -147,7 +147,10 @@
         state.totalDurationMs=round(state.totalDurationMs+duration);
         state.maxDurationMs=Math.max(state.maxDurationMs,duration);
         const row={
-          at:Date.now(),durationMs:duration,key,reason,beforeNodes,afterNodes,
+          at:Date.now(),durationMs:duration,key,reason,
+          date:currentDate(),filter:currentFilter(),
+          perfStartedAt:round(started),perfFinishedAt:round(finished),
+          beforeNodes,afterNodes,
           buildMs:batched.buildMs,commitMs:batched.commitMs,
           stagedNodes:batched.stagedNodes,generation:Number(meta.generation||0),
           generationCommit:!!meta.generationCommit,
@@ -158,7 +161,9 @@
           availabilityIndexed:Number(availabilityStats?.indexed||0),
           availabilityScheduled:Number(availabilityStats?.scheduled||0),
           availabilityThin:Number(availabilityStats?.thin||0),
-          availabilityVerified:Number(availabilityStats?.verified||0),
+          availabilityPlanCount:Number(availabilityStats?.planCount||0),
+          availabilityPlanPlayable:Number(availabilityStats?.planPlayable||0),
+          availabilitySessionVerified:Number(availabilityStats?.sessionVerified||0),
           availabilityFastHits:Number(availabilityStats?.fastHits||0),
           availabilityFallbacks:Number(availabilityStats?.fallbacks||0),
           availabilityIndexBuildMs:Number(availabilityStats?.indexBuildMs||0),

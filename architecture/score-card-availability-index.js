@@ -1,21 +1,24 @@
-/* Sports Big Board v4.7.11 — Render-Scoped Score-Card Availability Index.
-   Build one lightweight known-media index per actual ribbon render. Scheduled games,
-   score-only cold history, and already-verified media avoid broad candidate scans.
-   Unknown/live/unresolved games preserve the certified legacy resolver unchanged.
+/* Sports Big Board v4.7.12 — Day-State Score-Card Render Model.
+   Build one render-scoped availability model from canonical Day State eventPlans.
+   SCHEDULED and thin score-only rows are known no-media first-paint states.
+   eventPlans.playable is canonical verified playable media for completed games.
+   Session verified media is a secondary fast path. Unknown/live/unresolved games
+   preserve the certified legacy scoreCardPlayableItems resolver unchanged.
 */
 (() => {
   'use strict';
-  if(window.SBB_SCORECARD_AVAILABILITY_INDEX?.version==='4.7.11')return;
+  if(window.SBB_SCORECARD_AVAILABILITY_INDEX?.version==='4.7.12')return;
 
-  const VERSION='4.7.11';
+  const VERSION='4.7.12';
   const state={
     installed:false,active:false,renderId:0,indexBuildMs:0,
-    indexed:0,scheduled:0,thin:0,verified:0,
-    fastHits:0,fallbacks:0,fallbackMs:0,last:null,
+    indexed:0,scheduled:0,thin:0,planPlayable:0,sessionVerified:0,
+    planCount:0,fastHits:0,fallbacks:0,fallbackMs:0,last:null,
     totalFastHits:0,totalFallbacks:0
   };
   let originalPlayable=null;
   let rows=new Map();
+  let planAliases=new Map();
   const now=()=>performance.now();
   const round=v=>Math.round(Number(v||0)*10)/10;
   const clean=v=>String(v??'').trim();
@@ -25,22 +28,43 @@
     try{return clean(window.SBB_SCORE_DATE?.snapshot?.().browseDate||window.scoreBrowseDate).slice(0,10);}
     catch(_){return clean(window.scoreBrowseDate).slice(0,10);}
   }
-
-  function stableKey(match){
-    if(!match)return '';
+  function leagueFor(value){
+    return upper(value?.competitionId||value?.__sbbLeague||value?.league||value?.sport||'SPORTS');
+  }
+  function eventIds(value){
+    return [
+      value?.scoreEventId,value?.espnEventId,value?.gameCenterEventId,
+      value?.matchId,value?.gamePk,value?.eventId,value?.id
+    ].filter(x=>x!==undefined&&x!==null&&clean(x)!=='').map(x=>clean(x));
+  }
+  function pairKey(value,date=currentDate()){
+    const lg=leagueFor(value);
+    const away=clean(value?.away?.name||value?.awayTeam?.name||value?.awayName||value?.away);
+    const home=clean(value?.home?.name||value?.homeTeam?.name||value?.homeName||value?.home);
+    const d=clean(value?.__sbbDate||value?.gameDate||value?.date||date).slice(0,10);
+    if(!away&&!home)return '';
+    return `PAIR:${lg}:${d}:${upper(away)}:${upper(home)}`;
+  }
+  function aliasesFor(value,date=currentDate()){
+    const aliases=[];
+    const lg=leagueFor(value);
+    for(const id of eventIds(value))aliases.push(`ID:${lg}:${id}`);
     try{
       if(typeof scoreGameLookupKeys==='function'){
-        const keys=scoreGameLookupKeys(match);
-        if(Array.isArray(keys)&&keys.length)return `LOOKUP:${keys.map(String).sort().join('|')}`;
+        const keys=scoreGameLookupKeys(value);
+        if(Array.isArray(keys)){
+          for(const key of keys){
+            const k=clean(key);
+            if(k)aliases.push(`LOOKUP:${upper(k)}`);
+          }
+        }
       }
     }catch(_){}
-    const league=upper(match.competitionId||match.__sbbLeague||match.league||match.sport||'SPORTS');
-    const id=clean(match.scoreEventId||match.espnEventId||match.gameCenterEventId||match.matchId||match.gamePk||match.eventId||match.id);
-    if(id)return `${league}:ID:${id}`;
-    const away=clean(match.away?.name||match.awayTeam?.name||match.awayName||match.away);
-    const home=clean(match.home?.name||match.homeTeam?.name||match.homeName||match.home);
-    const date=clean(match.__sbbDate||match.gameDate||match.date||currentDate()).slice(0,10);
-    return `${league}:PAIR:${date}:${upper(away)}:${upper(home)}`;
+    const pair=pairKey(value,date);if(pair)aliases.push(pair);
+    return [...new Set(aliases)];
+  }
+  function stableKey(value,date=currentDate()){
+    return aliasesFor(value,date)[0]||'';
   }
 
   function explicitStatus(match){
@@ -57,15 +81,67 @@
     return '';
   }
 
-  function thinScoreOnly(date){
+  function dayStatePayload(date){
+    try{return window.SBB_DAY_STATE?.cache?.(date)||null;}catch(_){return null;}
+  }
+  function thinScoreOnly(payload){
+    return !!(
+      payload?.thinSnapshot ||
+      payload?.projectionDiagnostics?.thinCatalog ||
+      payload?.cache?.state==='COLD_THIN_CATALOG'
+    );
+  }
+
+  function decoratePlayable(items,{date,league,plan,key}){
+    return (Array.isArray(items)?items:[]).map(item=>({
+      ...item,
+      __sbbDate:item?.__sbbDate||date,
+      __sbbLeague:item?.__sbbLeague||league,
+      competitionId:item?.competitionId||league,
+      league:item?.league||league,
+      canonicalEventKey:item?.canonicalEventKey||plan?.canonicalEventKey||key||'',
+      __sbbCatalogExact:true
+    }));
+  }
+
+  function addPlanAliases(key,plan,date){
+    if(!plan||typeof plan!=='object')return;
+    const lg=upper(plan.league||clean(key).split(':')[0]||leagueFor(plan.event));
+    const ev=plan.event||{};
+    const all=new Set();
+    if(clean(key))all.add(`CANON:${clean(key)}`);
+    if(clean(plan.canonicalEventKey))all.add(`CANON:${clean(plan.canonicalEventKey)}`);
+    for(const id of [plan.eventId,...eventIds(ev)].filter(x=>x!==undefined&&x!==null&&clean(x)!=='')){
+      all.add(`ID:${lg}:${clean(id)}`);
+    }
+    for(const alias of aliasesFor({...ev,competitionId:lg,__sbbLeague:lg},date))all.add(alias);
+    for(const alias of all)planAliases.set(alias,{key,plan,league:lg});
+  }
+
+  function buildPlanAliases(payload,date){
+    planAliases=new Map();
+    const plans=payload?.eventPlans;
+    if(!plans||typeof plans!=='object')return 0;
+    let count=0;
+    for(const [key,plan] of Object.entries(plans)){
+      addPlanAliases(key,plan,date);count+=1;
+    }
+    return count;
+  }
+
+  function planForMatch(match,date){
+    // App's canonical map is the most direct lookup after ingestCompactCatalogPlans.
     try{
-      const payload=window.SBB_DAY_STATE?.cache?.(date);
-      return !!(
-        payload?.thinSnapshot ||
-        payload?.projectionDiagnostics?.thinCatalog ||
-        payload?.cache?.state==='COLD_THIN_CATALOG'
-      );
-    }catch(_){return false;}
+      if(typeof catalogPlanForScoreGame==='function'){
+        const plan=catalogPlanForScoreGame(match);
+        if(plan)return {key:clean(plan.canonicalEventKey),plan,league:leagueFor(match)};
+      }
+    }catch(_){}
+    for(const alias of aliasesFor(match,date)){
+      const found=planAliases.get(alias);
+      if(found)return found;
+    }
+    return null;
   }
 
   function directVerified(match){
@@ -81,9 +157,13 @@
   function buildIndex(){
     const started=now();
     rows=new Map();
-    state.indexed=0;state.scheduled=0;state.thin=0;state.verified=0;
+    state.indexed=0;state.scheduled=0;state.thin=0;
+    state.planPlayable=0;state.sessionVerified=0;state.planCount=0;
     const date=currentDate();
-    const thin=thinScoreOnly(date);
+    const payload=dayStatePayload(date);
+    const thin=thinScoreOnly(payload);
+    state.planCount=buildPlanAliases(payload,date);
+
     let matches=[];
     try{
       matches=typeof scoreMatchesForDate==='function'
@@ -93,9 +173,10 @@
     if(!Array.isArray(matches))matches=[];
 
     for(const match of matches){
-      const key=stableKey(match);
+      const key=stableKey(match,date);
       if(!key)continue;
       state.indexed+=1;
+
       if(explicitStatus(match)==='SCHEDULED'){
         rows.set(key,{kind:'scheduled',items:[]});
         state.scheduled+=1;
@@ -106,13 +187,38 @@
         state.thin+=1;
         continue;
       }
+
+      const found=planForMatch(match,date);
+      const planItems=found?.plan?.playable;
+      if(Array.isArray(planItems)&&planItems.length){
+        const lg=upper(found.league||leagueFor(match));
+        rows.set(key,{
+          kind:'day-state-plan',
+          items:decoratePlayable(planItems,{date,league:lg,plan:found.plan,key:found.key})
+        });
+        state.planPlayable+=1;
+        continue;
+      }
+
       const verified=directVerified(match);
       if(verified.length){
-        rows.set(key,{kind:'verified',items:verified});
-        state.verified+=1;
+        rows.set(key,{kind:'session-verified',items:verified});
+        state.sessionVerified+=1;
       }
     }
     state.indexBuildMs=round(now()-started);
+  }
+
+  function lookup(match){
+    for(const alias of aliasesFor(match,currentDate())){
+      const hit=rows.get(alias);
+      if(hit)return hit;
+    }
+    return null;
+  }
+
+  function putForMatch(match,row){
+    for(const alias of aliasesFor(match,currentDate()))rows.set(alias,row);
   }
 
   function install(){
@@ -123,7 +229,7 @@
 
     function indexedPlayable(match){
       if(!state.active)return originalPlayable(match);
-      const hit=rows.get(stableKey(match));
+      const hit=lookup(match);
       if(hit){
         state.fastHits+=1;
         state.totalFastHits+=1;
@@ -132,8 +238,17 @@
       state.fallbacks+=1;
       state.totalFallbacks+=1;
       const started=now();
-      try{return originalPlayable(match);}
-      finally{state.fallbackMs+=now()-started;}
+      try{
+        const result=originalPlayable(match);
+        // If the legacy path resolves media during this render, memoize by stable
+        // game aliases for subsequent object clones of the same card.
+        if(Array.isArray(result)&&result.length){
+          putForMatch(match,{kind:'legacy-resolved',items:result});
+        }
+        return result;
+      }finally{
+        state.fallbackMs+=now()-started;
+      }
     }
     indexedPlayable.__sbbAvailabilityIndex=true;
     indexedPlayable.__sbbOriginal=originalPlayable;
@@ -156,14 +271,20 @@
     if(token&&Number(token)!==state.renderId)return state.last;
     const report={
       renderId:state.renderId,indexed:state.indexed,
-      scheduled:state.scheduled,thin:state.thin,verified:state.verified,
+      planCount:state.planCount,
+      scheduled:state.scheduled,thin:state.thin,
+      planPlayable:state.planPlayable,sessionVerified:state.sessionVerified,
       fastHits:state.fastHits,fallbacks:state.fallbacks,
       indexBuildMs:state.indexBuildMs,fallbackMs:round(state.fallbackMs)
     };
     state.last=report;
     state.active=false;
-    rows=new Map();
-    try{window.dispatchEvent(new CustomEvent('sbb:availability-index',{detail:{...report,at:Date.now()}}));}catch(_){}
+    rows=new Map();planAliases=new Map();
+    try{
+      window.dispatchEvent(new CustomEvent('sbb:availability-index',{
+        detail:{...report,at:Date.now()}
+      }));
+    }catch(_){}
     return report;
   }
 

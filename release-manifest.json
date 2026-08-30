@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.11",
-  "baseRelease": "4.7.10",
-  "title": "Thin-Probe Repair + Render-Scoped Availability Index",
+  "release": "4.7.12",
+  "baseRelease": "4.7.11",
+  "title": "Native Thin Transport + Day State Score-Card Render Model",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -38,27 +38,40 @@
     "tests/test_v4710_cold_history_future_store.py",
     "architecture/score-card-availability-index.js",
     "tests/test_v4711_availability_index_thin_probe_runtime.js",
-    "tests/test_v4711_availability_index_thin_probe.py"
+    "tests/test_v4711_availability_index_thin_probe.py",
+    "architecture/native-transport.js",
+    "tests/test_v4712_day_state_render_model_runtime.js",
+    "tests/test_v4712_day_state_render_model.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.11"
+        "4.7.12"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.11",
-        "architecture/score-card-availability-index.js?v=4.7.11",
-        "architecture/card-build-cache.js?v=4.7.11"
+        "Sports Big Board \u2014 v4.7.12",
+        "architecture/native-transport.js?v=4.7.12",
+        "architecture/request-broker.js?v=4.7.12",
+        "architecture/score-card-availability-index.js?v=4.7.12",
+        "architecture/render-pipeline.js?v=4.7.12"
       ],
       "forbidden": [
-        "?v=4.7.10"
+        "?v=4.7.11"
+      ]
+    },
+    "architecture/native-transport.js": {
+      "required": [
+        "Sports Big Board v4.7.12",
+        "capturedFetch",
+        "window.SBB_API?.url",
+        "window.SBB_NATIVE_TRANSPORT"
       ]
     },
     "architecture/score-date-store.js": {
       "required": [
-        "Sports Big Board v4.7.11 ScoreDateStore",
+        "Sports Big Board v4.7.12 ScoreDateStore",
         "version:'1.0'",
         "do not clamp future scheduled dates to today"
       ],
@@ -66,101 +79,91 @@
         "version:'1.1"
       ]
     },
-    "sbb/day_state.py": {
-      "required": [
-        "def serve_thin_probe",
-        "parsed.path == \"/api/day-state/thin\"",
-        "\"X-SBB-Day-State\":\"THIN_PROBE\"",
-        "\"errorType\":type(exc).__name__",
-        "\"engineVersion\":\"4.7.11\""
-      ]
-    },
     "architecture/score-card-availability-index.js": {
       "required": [
-        "Sports Big Board v4.7.11",
-        "window.SBB_SCORECARD_AVAILABILITY_INDEX",
-        "stableKey",
-        "verifiedPlayableItemsForGame",
+        "Sports Big Board v4.7.12",
+        "canonical Day State eventPlans",
+        "catalogPlanForScoreGame",
+        "payload?.eventPlans",
+        "plan?.playable",
+        "kind:'day-state-plan'",
         "kind:'scheduled'",
         "kind:'thin-score-only'",
-        "kind:'verified'",
-        "originalPlayable(match)",
-        "beginRender",
-        "endRender"
+        "legacy-resolved",
+        "originalPlayable(match)"
       ]
     },
     "architecture/render-pipeline.js": {
       "required": [
-        "Sports Big Board v4.7.11",
-        "SBB_SCORECARD_AVAILABILITY_INDEX?.beginRender",
-        "SBB_SCORECARD_AVAILABILITY_INDEX?.endRender",
-        "availabilityFastHits",
-        "availabilityFallbackMs"
+        "Sports Big Board v4.7.12",
+        "perfStartedAt",
+        "perfFinishedAt",
+        "availabilityPlanCount",
+        "availabilityPlanPlayable",
+        "availabilitySessionVerified"
       ]
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "Sports Big Board v4.7.11",
-        "/api/day-state/thin?date=",
-        "AVAIL_INDEX_P95=",
-        "AVAIL_FALLBACK_P95=",
-        "AVAIL_FAST=",
-        "AVAIL_FALLBACKS=",
-        "http=${x.httpStatus",
-        "error=${x.error",
-        "message=${x.message"
-      ]
-    },
-    "architecture/request-broker.js": {
-      "required": [
-        "Sports Big Board v4.7.11",
-        "path==='/api/day-state/thin'"
-      ]
-    },
-    "tests/test_v4710_cold_history_future_store_runtime.js": {
-      "required": [
-        "parts[2]>=10",
-        "retains v4.7.10"
-      ],
-      "forbidden": [
-        "assert.strictEqual(VERSION,'4.7.10')"
+        "Sports Big Board v4.7.12",
+        "window.SBB_NATIVE_TRANSPORT?.fetch",
+        "window.SBB_NATIVE_TRANSPORT?.url?.(path)",
+        "function attributeLongTask",
+        "'LONGEST TASKS'",
+        "AVAIL_PLANS=",
+        "AVAIL_PLAN_PLAYABLE=",
+        "AVAIL_SESSION_VERIFIED=",
+        "THIN_TRANSPORT="
       ]
     },
     "tests/test_v4711_availability_index_thin_probe_runtime.js": {
       "required": [
-        "thin-probe repair + render-scoped availability index contracts",
+        "parts[2]>=11",
+        "retains v4.7.11"
+      ],
+      "forbidden": [
+        "assert.strictEqual(VERSION,'4.7.11')"
+      ]
+    },
+    "tests/test_v4712_day_state_render_model_runtime.js": {
+      "required": [
+        "native thin transport + Day State render model + long-task attribution contracts",
         "originalCalls,1",
-        "stats.fastHits,2",
+        "stats.planPlayable>=1",
         "stats.fallbacks,1"
       ]
     },
-    "tests/test_v4711_availability_index_thin_probe.py": {
+    "tests/test_v4712_day_state_render_model.py": {
       "required": [
-        "test_thin_probe_has_dedicated_route_and_minimal_payload",
-        "test_probe_report_exposes_server_error_details",
-        "test_availability_index_keeps_unknown_fallback"
+        "test_native_transport_precedes_request_broker",
+        "test_thin_probe_uses_native_api_aware_transport",
+        "test_day_state_event_plans_are_primary_media_fast_path",
+        "test_long_tasks_are_correlated_to_render_intervals"
       ]
     },
     "tests/test_release_behavior_gate.py": {
       "required": [
-        "test_thin_probe_uses_dedicated_minimal_day_state_route",
-        "test_render_scoped_availability_index_preserves_certified_fallback",
-        "test_efficiency_reports_availability_index_work",
-        "node tests/test_v4711_availability_index_thin_probe_runtime.js"
+        "test_native_certification_transport_is_captured_before_request_broker",
+        "test_day_state_event_plans_drive_known_score_card_media",
+        "test_long_task_attribution_links_main_thread_to_render_context",
+        "node tests/test_v4712_day_state_render_model_runtime.js",
+        "python3 -m unittest tests.test_v4712_day_state_render_model"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.11\"",
-        "dedicated GET /api/day-state/thin",
-        "render-scoped Score-Card Availability Index",
-        "ScoreDateStore public module API remains version 1.0"
+        "\"release\": \"4.7.12\"",
+        "Native Transport Snapshot captures the browser fetch",
+        "canonical Day State eventPlans",
+        "five longest tasks",
+        "ScoreDateStore public module API remains exactly version 1.0"
       ]
     },
     "VERIFY.sh": {
       "required": [
         "node tests/test_v4711_availability_index_thin_probe_runtime.js",
-        "python3 -m unittest tests.test_v4711_availability_index_thin_probe",
+        "node tests/test_v4712_day_state_render_model_runtime.js",
+        "python3 -m unittest tests.test_v4712_day_state_render_model",
         "[legacy-advisory]"
       ]
     }
@@ -185,6 +188,8 @@
     "python3 -m unittest tests.test_v4710_cold_history_future_store",
     "node tests/test_v4711_availability_index_thin_probe_runtime.js",
     "python3 -m unittest tests.test_v4711_availability_index_thin_probe",
+    "node tests/test_v4712_day_state_render_model_runtime.js",
+    "python3 -m unittest tests.test_v4712_day_state_render_model",
     "bash VERIFY.sh"
   ]
 }

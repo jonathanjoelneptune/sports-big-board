@@ -26,7 +26,7 @@ class V4711ThinProbeAvailabilityIndexTests(unittest.TestCase):
     def test_availability_index_keeps_unknown_fallback(self):
         self.assertIn('stableKey',INDEX)
         self.assertIn('originalPlayable(match)',INDEX)
-        self.assertIn("kind:'verified'",INDEX)
+        self.assertTrue("kind:'verified'" in INDEX or "kind:'session-verified'" in INDEX)
         self.assertIn("kind:'scheduled'",INDEX)
         self.assertIn("kind:'thin-score-only'",INDEX)
 if __name__=="__main__": unittest.main()

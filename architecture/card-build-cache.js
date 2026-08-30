@@ -1,13 +1,13 @@
-/* Sports Big Board v4.7.11 — Render-Local Card Model Cache.
+/* Sports Big Board v4.7.12 — Render-Local Card Model Cache.
    Score-card construction repeatedly asks the same pure helper questions for one
    match. Cache those answers only for the lifetime of one ribbon render so media
    freshness semantics stay unchanged while duplicate calculation disappears.
 */
 (() => {
   'use strict';
-  if(window.SBB_CARD_BUILD_CACHE?.version==='4.7.11')return;
+  if(window.SBB_CARD_BUILD_CACHE?.version==='4.7.12')return;
 
-  const VERSION='4.7.11';
+  const VERSION='4.7.12';
   const TARGETS=[
     'scoreCardAvailability',
     'scoreCardPlayableItems',

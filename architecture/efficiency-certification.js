@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.11 — Efficiency Certification.
+/* Sports Big Board v4.7.12 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.11') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.12') return;
 
-  const VERSION = '4.7.11';
+  const VERSION = '4.7.12';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -244,6 +244,9 @@
       boundedPush(state.renderEvents,{
         type:'render',at:Date.now(),runId:String(window.__SBB_EFFICIENCY_RUN_ID||''),
         durationMs:Number(d.durationMs)||0,reason:String(d.reason||''),
+        date:String(d.date||''),filter:String(d.filter||''),
+        perfStartedAt:Number(d.perfStartedAt),
+        perfFinishedAt:Number(d.perfFinishedAt),
         buildMs:Number(d.buildMs)||0,commitMs:Number(d.commitMs)||0,
         cardCacheHits:Number(d.cardCacheHits)||0,
         cardCacheMisses:Number(d.cardCacheMisses)||0,
@@ -252,7 +255,9 @@
         availabilityIndexed:Number(d.availabilityIndexed)||0,
         availabilityScheduled:Number(d.availabilityScheduled)||0,
         availabilityThin:Number(d.availabilityThin)||0,
-        availabilityVerified:Number(d.availabilityVerified)||0,
+        availabilityPlanCount:Number(d.availabilityPlanCount)||0,
+        availabilityPlanPlayable:Number(d.availabilityPlanPlayable)||0,
+        availabilitySessionVerified:Number(d.availabilitySessionVerified)||0,
         availabilityFastHits:Number(d.availabilityFastHits)||0,
         availabilityFallbacks:Number(d.availabilityFallbacks)||0,
         availabilityIndexBuildMs:Number(d.availabilityIndexBuildMs)||0,
@@ -286,17 +291,59 @@
   // ----------------------------------------------------------
   // Browser main-thread and resource samples.
   // ----------------------------------------------------------
+  function attributeLongTask(startTime,durationMs,runId){
+    const start=Number(startTime)||0,end=start+(Number(durationMs)||0);
+    let best=null,bestOverlap=0,bestDistance=Infinity;
+    for(const row of state.renderEvents){
+      if(row.type!=='render'||row.runId!==runId)continue;
+      const rs=Number(row.perfStartedAt),re=Number(row.perfFinishedAt);
+      if(!Number.isFinite(rs)||!Number.isFinite(re))continue;
+      const overlap=Math.max(0,Math.min(end,re)-Math.max(start,rs));
+      const distance=Math.min(Math.abs(start-re),Math.abs(end-rs));
+      if(overlap>bestOverlap||(overlap===bestOverlap&&distance<bestDistance)){
+        best=row;bestOverlap=overlap;bestDistance=distance;
+      }
+    }
+    if(best&&(bestOverlap>0||bestDistance<=24)){
+      return {
+        source:'RENDER',
+        date:String(best.date||best.key?.split?.('|')?.[0]||''),
+        reason:String(best.reason||''),
+        renderKey:String(best.key||''),
+        renderDurationMs:Number(best.durationMs)||0,
+        cardBuildMs:Number(best.buildMs)||0,
+        availabilityFastHits:Number(best.availabilityFastHits)||0,
+        availabilityFallbacks:Number(best.availabilityFallbacks)||0,
+        availabilityPlanPlayable:Number(best.availabilityPlanPlayable)||0,
+        overlapMs:round(bestOverlap),
+      };
+    }
+    return {
+      source:'NON_RENDER',
+      date:browseDate(),
+      reason:'unattributed-main-thread',
+      renderKey:'',
+      renderDurationMs:0,cardBuildMs:0,
+      availabilityFastHits:0,availabilityFallbacks:0,
+      availabilityPlanPlayable:0,overlapMs:0,
+    };
+  }
+
   try {
     if ('PerformanceObserver' in window) {
       const supported = PerformanceObserver.supportedEntryTypes || [];
       if (supported.includes('longtask')) {
         const po = new PerformanceObserver(list => {
           for (const entry of list.getEntries()) {
+            const runId=state.currentRunId;
+            const durationMs=round(entry.duration);
+            const attribution=attributeLongTask(entry.startTime,durationMs,runId);
             boundedPush(state.longTasks,{
               at:Date.now(),
-              runId:state.currentRunId,
-              durationMs:round(entry.duration),
+              runId,
+              durationMs,
               startTime:round(entry.startTime),
+              ...attribution,
             },MAX_LONG_TASKS);
           }
         });
@@ -623,9 +670,14 @@
       const started=now();
       let status=0;
       try{
-        const response=await fetch(`/api/day-state/thin?date=${encodeURIComponent(date)}`,{
+        const transport=window.SBB_NATIVE_TRANSPORT?.fetch;
+        if(typeof transport!=='function')throw new Error('Native certification transport unavailable');
+        const path=`/api/day-state/thin?date=${encodeURIComponent(date)}`;
+        const target=window.SBB_NATIVE_TRANSPORT?.url?.(path)
+          || window.SBB_API?.url?.(path)
+          || path;
+        const response=await transport(target,{
           cache:'no-store',
-          sbbRequestClass:'SHARED_STATE',
           headers:{'X-SBB-Efficiency-Run':state.currentRunId||''}
         });
         status=Number(response.status||0);
@@ -798,9 +850,11 @@
       availabilityIndexP95:round(percentile(availabilityIndexMs,95)),
       availabilityFallbackP95:round(percentile(availabilityFallbackMs,95)),
       availabilityIndexed:renderRows.reduce((a,b)=>a+Number(b.availabilityIndexed||0),0),
+      availabilityPlanCount:renderRows.reduce((a,b)=>a+Number(b.availabilityPlanCount||0),0),
+      availabilityPlanPlayable:renderRows.reduce((a,b)=>a+Number(b.availabilityPlanPlayable||0),0),
+      availabilitySessionVerified:renderRows.reduce((a,b)=>a+Number(b.availabilitySessionVerified||0),0),
       availabilityScheduled:renderRows.reduce((a,b)=>a+Number(b.availabilityScheduled||0),0),
       availabilityThin:renderRows.reduce((a,b)=>a+Number(b.availabilityThin||0),0),
-      availabilityVerified:renderRows.reduce((a,b)=>a+Number(b.availabilityVerified||0),0),
       availabilityFastHits:renderRows.reduce((a,b)=>a+Number(b.availabilityFastHits||0),0),
       availabilityFallbacks:renderRows.reduce((a,b)=>a+Number(b.availabilityFallbacks||0),0),
       generationRenderCount:renderRows.filter(x=>x.generationCommit).length,
@@ -818,6 +872,19 @@
       longTaskTotal:round(tasks.reduce((a,b)=>a+(b.durationMs||0),0)),
       longTasksPer10:round(longTasksPer10),
       longTaskMsPerNav:round(longTaskMsPerNav),
+      longestTasks:[...tasks].sort((a,b)=>(b.durationMs||0)-(a.durationMs||0)).slice(0,5).map(row=>({
+        durationMs:round(row.durationMs),
+        source:String(row.source||''),
+        date:String(row.date||''),
+        reason:String(row.reason||''),
+        renderKey:String(row.renderKey||''),
+        renderDurationMs:round(Number(row.renderDurationMs)||0),
+        cardBuildMs:round(Number(row.cardBuildMs)||0),
+        availabilityFastHits:Number(row.availabilityFastHits)||0,
+        availabilityFallbacks:Number(row.availabilityFallbacks)||0,
+        availabilityPlanPlayable:Number(row.availabilityPlanPlayable)||0,
+        overlapMs:round(Number(row.overlapMs)||0),
+      })),
       navigationActions,
       domStart:baseline.dom,
       domEnd,
@@ -882,14 +949,17 @@
       `CARD_CACHE_HITS=${m.cardCacheHits}  CARD_CACHE_MISSES=${m.cardCacheMisses}  CARD_HELPER_P95=${m.cardHelperP95??'N/A'}ms`,
       `CARD_HELPERS=${Object.entries(m.cardHelperBreakdown||{}).map(([k,v])=>`${k}:p95=${v.p95Ms??'N/A'}ms/h=${v.hits}/m=${v.misses}`).join(' ')||'none'}`,
       `AVAIL_INDEX_P95=${m.availabilityIndexP95??'N/A'}ms  AVAIL_FALLBACK_P95=${m.availabilityFallbackP95??'N/A'}ms  AVAIL_FAST=${m.availabilityFastHits}  AVAIL_FALLBACKS=${m.availabilityFallbacks}`,
-      `AVAIL_INDEXED=${m.availabilityIndexed}  AVAIL_VERIFIED=${m.availabilityVerified}  AVAIL_SCHEDULED=${m.availabilityScheduled}  AVAIL_THIN=${m.availabilityThin}`,
+      `AVAIL_INDEXED=${m.availabilityIndexed}  AVAIL_PLANS=${m.availabilityPlanCount}  AVAIL_PLAN_PLAYABLE=${m.availabilityPlanPlayable}  AVAIL_SESSION_VERIFIED=${m.availabilitySessionVerified}  AVAIL_SCHEDULED=${m.availabilityScheduled}  AVAIL_THIN=${m.availabilityThin}`,
       `RENDER_REASONS=${Object.entries(m.renderReasonCounts||{}).map(([k,v])=>`${k}:${v}`).join(' ')||'none'}`,
       `DAY_APPLY_P95=${m.dayApplyP95??'N/A'}ms  SCORE_ROWS_P95=${m.scoreRowsP95??'N/A'}ms  MEDIA_PLANS_P95=${m.mediaPlansP95??'N/A'}ms`,
       `FULL_SETTLE_P95=${m.fullSettleP95??'N/A'}ms  FULL_SETTLE_TIMEOUTS=${m.fullSettleTimeouts}`,
       `MEMORY_SAMPLES=${m.heapSamples}  MEMORY_WINDOW_SPREAD=${m.heapWindowSpreadPct??'N/A'}%  HEAP_POST_MIN=${m.heapEnd??'N/A'}`,
       `HISTORY_LEFT=${m.historyArrowLeft}  HISTORY_RIGHT=${m.historyArrowRight}  CALENDAR_JUMPS=${m.historyCalendarJumps}  HISTORY_MAX_NETWORK=${m.historyNavMaxNetwork}`,
-      `COLD_THIN_P95=${m.coldThinP95??'N/A'}ms  COLD_THIN_MAX=${m.coldThinMax??'N/A'}ms  COLD_THIN_FAILURES=${m.coldThinFailures}`,
+      `COLD_THIN_P95=${m.coldThinP95??'N/A'}ms  COLD_THIN_MAX=${m.coldThinMax??'N/A'}ms  COLD_THIN_FAILURES=${m.coldThinFailures}  THIN_TRANSPORT=${window.SBB_NATIVE_TRANSPORT?.available?.()?'NATIVE':'UNAVAILABLE'}`,
       `LONG_TASK_COUNT=${m.longTaskCount}  LONG_TASK_TOTAL=${m.longTaskTotal}ms  NAV_ACTIONS=${m.navigationActions}  MAX_NETWORK_REQ/DATE=${m.networkPerDateMax}`,
+      '',
+      'LONGEST TASKS',
+      ...((m.longestTasks||[]).map((x,i)=>`${i+1}. ${x.durationMs}ms source=${x.source||'—'} date=${x.date||'—'} reason=${x.reason||'—'} render=${x.renderDurationMs||0}ms build=${x.cardBuildMs||0}ms plan=${x.availabilityPlanPlayable||0} fast=${x.availabilityFastHits||0} fallback=${x.availabilityFallbacks||0} overlap=${x.overlapMs||0}ms`)),
       '',
       'HISTORICAL NAVIGATION',
       ...((report.historyNavigation||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.kind.padEnd(8)} ${x.from} → ${x.expected} actual=${x.actual} ${x.elapsedMs}ms req=${x.requestCount}`)),

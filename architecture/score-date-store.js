@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.11 ScoreDateStore.
+/* Sports Big Board v4.7.12 ScoreDateStore.
    Date browsing is application context, not playback ownership. Past, current,
    and future scheduled dates are all valid score-state keys. Playback keeps its
    own date and does not constrain ribbon browsing.
@@ -14,7 +14,7 @@
   function normalizeDate(value){
     const raw=cleanDate(value);
     if(!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return localDateISO(0);
-    // v4.7.11: do not clamp future scheduled dates to today. The registry and
+    // v4.7.12: do not clamp future scheduled dates to today. The registry and
     // Day State determine whether the date has games; storage preserves the date.
     return raw;
   }
