@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.17",
+  "release": "4.7.18",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -112,7 +112,7 @@
         "Special-event media association derives media-facing geographic identities from imported participant aliases, including the final state/country component of City, State/Country location aliases.",
         "Imported participant group labels ending in Region contribute a media alias without the Region suffix while one-character abbreviations are excluded from title matching.",
         "Special-event media titles containing public state/country identities such as Alabama, Ohio, Washington, Nicaragua, Czechia, Japan, Canada, South Korea, Pennsylvania, New Jersey, and Iowa can match the canonical schedule participant objects without rewriting those schedule objects.",
-        "Common recap abbreviations and equivalents such as PA/NJ, DR/Dominican Republic, Curacao/Cura\u00e7ao, and Czechia/Czech Republic are normalized as media aliases.",
+        "Common recap abbreviations and equivalents such as PA/NJ, DR/Dominican Republic, Curacao/Curaçao, and Czechia/Czech Republic are normalized as media aliases.",
         "The special-event tournament crawler attempts a deterministic two-sided SPECIAL_EVENT_TITLE_ALIAS_PAIR match before falling back to the generic event matcher.",
         "Existing special-event SOURCE_MEDIA orphans are automatically re-associated after the v4.6.14 media-alias layer installs; canonical event IDs and existing EVENT_MEDIA remain unchanged.",
         "Persistence accepts a deterministic special-event proof only when it is produced by the internal SBB special-event matcher, names the exact target league/event/canonical key, carries both title-side aliases, and has confidence of at least 0.90.",
@@ -369,6 +369,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.17 preserves the v4.7.16 doubleheader, CFB trusted-source, UI-transition, and v4.7.15 efficiency architecture while adding College Football Game Center, normalized multisport line scores, optional ESPN win probability, and database-first historical media readiness.",
+  "baseline": "v4.7.18 preserves the v4.7.16 doubleheader, CFB trusted-source, UI-transition, and v4.7.15 efficiency architecture while adding College Football Game Center, normalized multisport line scores, optional ESPN win probability, and database-first historical media readiness.",
   "status": "IN_PROGRESS"
 }

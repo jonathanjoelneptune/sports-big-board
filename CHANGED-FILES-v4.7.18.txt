@@ -1,0 +1,67 @@
+Sports Big Board v4.7.18 — Persistent Game Center Linescores & Catalog Association Recovery
+
+MANUAL GITHUB UPLOAD
+====================
+Upload/replace the following repository paths exactly as shown:
+
+REPLACE
+- VERSION
+- index.html
+- core-model.js
+- foundation-certification.json
+- release-manifest.json
+- VERIFY.sh
+- architecture/game-center-multisport-view.js
+- sbb/cfb_trusted_youtube.py
+- sbb/day_state.py
+- sbb/history_readiness_repair.py
+- tests/test_v4717_game_center_runtime.js
+
+ADD
+- tests/test_v4718_game_center_runtime.js
+- tests/test_v4718_regression_recovery.py
+
+WHAT v4.7.18 FIXES
+==================
+1. Persistent Game Center linescores
+   - MLB inning-by-inning R/H/E is shown directly beneath the score header.
+   - CFB/NFL/NBA quarter linescores and NHL period linescores use the same persistent area.
+   - The line score remains visible while OVERVIEW / TEAM STATS / PLAYERS / PLAYS changes.
+   - Win Probability remains immediately below the line score when ESPN supplies it.
+
+2. LLWS recap association recovery
+   - Day State no longer reinterprets a normalized SPECIAL_EVENT_* association with the weaker generic matcher.
+   - Exact canonical LLWS relationships proven by the special-event pipeline remain playable.
+   - Ordinary stale/incorrect event-media relationships still fail closed.
+   - Persisted Day State snapshots from an older engine generation are rebuilt on first access.
+
+3. Silver Daily Recap readiness recovery
+   - SQLite VERIFIED/runtime state is authoritative at hydration time.
+   - Older YouTube Silver rows can recover youtubeId from externalUrl/canonical URL/provider media ID without provider search.
+   - A verified Silver asset therefore no longer becomes PENDING only because old asset_json omitted verifiedPlayable/youtubeId.
+
+4. CFB trusted-source freshness + USC repair
+   - Trusted source stack remains ESPN College Football, Big Ten Football, ACC Digital Network, Big 12 Conference, NBC Sports, CFB on FOX, SEC Network, CBS Sports, then participating schools' official athletics channels.
+   - Recent completed-date source catalogs refresh on a short TTL instead of becoming a 30-day archive immediately after midnight.
+   - Empty recent catalogs retry quickly.
+   - A small recent-CFB gap worker revisits only missing recent games and persists matched media to normalized EVENT_MEDIA.
+   - The confirmed NBC Sports USC-SJSU recap (-tDiPDHU2fs) is seeded through the same exact two-team/date matcher and persistence path as other trusted-source results.
+
+POST-DEPLOY ACCEPTANCE CHECKS
+=============================
+A. Open SJSU 26 - USC 42 Game Center and switch to PLAYS. Q1/Q2/Q3/Q4/T must remain visible above the tabs.
+B. Open an MLB game and switch to PLAYS. Inning columns + R/H/E must remain visible above the tabs.
+C. Visit LLWS dates: previously associated games should be PLAYABLE rather than FIND RECAP.
+D. Visit historical dates with Silver Daily Recap: verified stored roundups should show WATCH rather than PENDING.
+E. Visit Aug. 29 CFB: SJSU-USC should acquire the NBC Sports 8:18 Extended/Purple recap.
+F. Run GitHub Actions Verify Release, then Efficiency Certification.
+
+VALIDATION PERFORMED BEFORE PACKAGING
+=====================================
+- 53 executable JS/CSS cache references in index.html are all v4.7.18.
+- Available release-manifest contracts for the changed-file workspace pass.
+- v4.7.3 through v4.7.18 retained JavaScript architecture/runtime gates available in the workspace pass.
+- v4.7.17 Game Center regression test is release-aware and passes at v4.7.18.
+- v4.7.18 persistent Game Center / LLWS / Silver / CFB runtime gate passes.
+- Python syntax checks pass for changed Python modules/tests.
+- VERIFY.sh shell syntax passes.

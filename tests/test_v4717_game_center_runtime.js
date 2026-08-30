@@ -15,8 +15,9 @@ const view=fs.readFileSync('architecture/game-center-multisport-view.js','utf8')
 assert(view.includes('WIN PROBABILITY'));
 assert(view.includes('s.winProbability'));
 assert(view.includes('sbb-multisport-linescore'));
+const releaseVersion=fs.readFileSync('VERSION','utf8').trim();
 const index=fs.readFileSync('index.html','utf8');
-const base=index.indexOf('ui/game-center-view.js?v=4.7.17');
-const enhanced=index.indexOf('architecture/game-center-multisport-view.js?v=4.7.17');
+const base=index.indexOf(`ui/game-center-view.js?v=${releaseVersion}`);
+const enhanced=index.indexOf(`architecture/game-center-multisport-view.js?v=${releaseVersion}`);
 assert(base>=0&&enhanced>base,'multisport view must load after the established Game Center owner');
-console.log('PASS: v4.7.17 CFB Game Center + multisport linescore + win probability presentation');
+console.log(`PASS: ${releaseVersion} retains v4.7.17 CFB Game Center + multisport linescore + win probability presentation`);

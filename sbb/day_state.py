@@ -72,7 +72,7 @@ def _sanitize_event_plans(server, plans):
     Current Event Matcher evidence is authoritative: stale explicit-date/team
     conflicts are removed from the compact ribbon plan before the browser sees them.
     """
-    stats={"checked":0,"rejected":0,"errors":0,"ambiguousAssets":0,"ambiguousRejected":0}
+    stats={"checked":0,"rejected":0,"errors":0,"ambiguousAssets":0,"ambiguousRejected":0,"specialProofAccepted":0}
     matcher=getattr(server,"_history_media_match_evidence",None)
     if not callable(matcher) or not isinstance(plans,dict):
         return plans,stats
@@ -92,6 +92,18 @@ def _sanitize_event_plans(server, plans):
         def valid(item):
             if not isinstance(item,dict):return False
             stats["checked"]+=1
+            # SPECIAL_EVENT relationships (LLWS and future tournament builders) are
+            # already persisted only after a deterministic alias/game-number proof.
+            # ribbon_media_for_date injects associationMethod from the normalized
+            # relationship row, so an exact canonical key + SPECIAL_EVENT method is
+            # stronger evidence than the legacy generic title matcher can recreate.
+            # Re-running the generic matcher here used to erase valid LLWS links.
+            method=str(item.get("associationMethod") or "").upper()
+            canonical=str(item.get("canonicalEventKey") or "")
+            scope=str(item.get("mediaScope") or "").upper()
+            if method.startswith("SPECIAL_EVENT_") and canonical==str(key) and scope=="GAME":
+                stats["specialProofAccepted"]+=1
+                return True
             try:
                 scoped,evidence=matcher(dict(item),event)
             except Exception:
@@ -606,7 +618,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.17",
+            "engineVersion":"4.7.18",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + 15,
@@ -730,6 +742,7 @@ class DayStateEngine:
             "mediaSafetyErrors":int(media_safety.get("errors") or 0),
             "mediaSafetyAmbiguousAssets":int(media_safety.get("ambiguousAssets") or 0),
             "mediaSafetyAmbiguousRejected":int(media_safety.get("ambiguousRejected") or 0),
+            "mediaSafetySpecialProofAccepted":int(media_safety.get("specialProofAccepted") or 0),
         }
         inventory = bool(inventory_fn(day))
 
@@ -754,7 +767,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.17",
+            "engineVersion":"4.7.18",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -792,6 +805,15 @@ class DayStateEngine:
             if cached:
                 with self.lock:
                     self.cache[day] = cached
+
+        # A persisted historical snapshot is a projection, not durable truth.
+        # Never carry a bad projection across a read-model generation change.
+        # v4.7.18 specifically needs this to rebuild LLWS plans that 4.7.17's
+        # generic sanitizer stripped even though EVENT_MEDIA remained assigned.
+        if cached and str(cached.get("engineVersion") or "") != "4.7.18":
+            cached = None
+            with self.lock:
+                self.cache.pop(day, None)
 
         if cached and not force:
             age = max(0, now - float(cached.get("generatedAt") or 0))
@@ -841,7 +863,7 @@ class DayStateEngine:
                 pass
         return {
             "ok":True,
-            "version":"4.7.17",
+            "version":"4.7.18",
             "today":today,
             "builds":self.builds,
             "cacheHits":self.hits,
@@ -1098,7 +1120,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.17",
+                    "engineVersion":"4.7.18",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},
