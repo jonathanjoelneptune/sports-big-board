@@ -1,10 +1,10 @@
-/* Sports Big Board v4.7.3 — Day State client + operator views.
+/* Sports Big Board v4.7.4 — Day State client + operator views.
    The backend owns the day. The browser renders a precomputed read model and keeps
    legacy provider paths as recovery/freshness fallbacks rather than first-paint work.
 */
 (() => {
   'use strict';
-  if (window.SBB_DAY_STATE?.version === '4.7.3') return;
+  if (window.SBB_DAY_STATE?.version === '4.7.4') return;
 
   const clean=v=>String(v??'').trim();
   const day=v=>clean(v).slice(0,10);
@@ -226,13 +226,20 @@
 
   function boot(){
     ensureOperatorViews();
-    new MutationObserver(ensureOperatorViews).observe(document.documentElement,{childList:true,subtree:true});
+    // Settings / Historical Database Audit can be created lazily. A narrow retry
+    // is sufficient; observing every DOM mutation on the entire application is not.
+    const operatorTimer=setInterval(()=>{
+      ensureOperatorViews();
+      if(document.getElementById('historyAuditTabDayState'))clearInterval(operatorTimer);
+    },1500);
+    setTimeout(()=>clearInterval(operatorTimer),15000);
+    window.addEventListener('focus',ensureOperatorViews);
     const initial=day((typeof scoreBrowseDate!=='undefined'&&scoreBrowseDate)||((typeof localDateISO==='function')?localDateISO(0):''));
     if(initial)load(initial).catch(()=>{});
   }
 
   window.SBB_DAY_STATE=Object.freeze({
-    version:'4.7.3',load,rebuild,apply,
+    version:'4.7.4',load,rebuild,apply,
     status:()=>json('/api/day-state/status'),
     registry:()=>json('/api/competition-registry'),
     cache:date=>state.cache.get(day(date))||null,

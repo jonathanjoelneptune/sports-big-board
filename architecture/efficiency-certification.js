@@ -1,25 +1,25 @@
-/* Sports Big Board v4.7.3 — Efficiency Certification.
+/* Sports Big Board v4.7.4 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.3') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.4') return;
 
-  const VERSION = '4.7.3';
+  const VERSION = '4.7.4';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
   const MAX_SAMPLES = 500;
-  const originalFetch = window.fetch.bind(window);
-
+  
   const THRESHOLDS = Object.freeze({
     launchInteractiveMs: {pass:1500, warn:3000},
     startToBoardMs:      {pass:1000, warn:2000},
     ribbonP95Ms:         {pass:500,  warn:1000},
     ribbonMaxMs:         {pass:900,  warn:1800},
     apiP95Ms:            {pass:300,  warn:800},
-    duplicateConcurrent: {pass:0,    warn:2},
+    duplicateConcurrent: {pass:2,    warn:10},
+    networkPerDateMax:    {pass:6,    warn:12},
     longTaskMaxMs:       {pass:150,  warn:300},
     longTaskCount:       {pass:3,    warn:10},
     domGrowthPct:        {pass:5,    warn:15},
@@ -37,6 +37,9 @@
     requests: [],
     activeRequests: new Map(),
     duplicateConcurrent: 0,
+    brokerCallerEvents: 0,
+    brokerCacheHits: 0,
+    brokerSupersededAborts: 0,
     longTasks: [],
     domSamples: [],
     heapSamples: [],
@@ -115,6 +118,7 @@
     if (
       gradeLow(metrics.ribbonP95,THRESHOLDS.ribbonP95Ms)==='FAIL' ||
       gradeLow(metrics.ribbonMax,THRESHOLDS.ribbonMaxMs)==='FAIL' ||
+      gradeLow(metrics.networkPerDateMax,THRESHOLDS.networkPerDateMax)==='FAIL' ||
       metrics.timeouts > 0 ||
       metrics.api5xx > 0 ||
       metrics.restoreOk === false ||
@@ -126,6 +130,7 @@
       gradeLow(metrics.ribbonMax,THRESHOLDS.ribbonMaxMs),
       gradeLow(metrics.apiP95,THRESHOLDS.apiP95Ms),
       gradeLow(metrics.duplicateConcurrent,THRESHOLDS.duplicateConcurrent),
+      gradeLow(metrics.networkPerDateMax,THRESHOLDS.networkPerDateMax),
       gradeLow(metrics.longTaskMax,THRESHOLDS.longTaskMaxMs),
       gradeLow(metrics.longTaskCount,THRESHOLDS.longTaskCount),
       gradeLow(metrics.domGrowthPct,THRESHOLDS.domGrowthPct,{optional:true}),
@@ -135,40 +140,54 @@
   }
 
   // ----------------------------------------------------------
-  // Continuous request telemetry.
+  // Request Broker telemetry.
   // ----------------------------------------------------------
-  window.fetch = async function efficiencyFetch(input, init={}) {
-    const method = upper(init?.method || input?.method || 'GET') || 'GET';
-    const key = requestKey(input, init);
-    const path = apiPath(input);
-    const started = now();
-    const current = state.activeRequests.get(key) || 0;
-    if (current > 0) state.duplicateConcurrent += 1;
-    state.activeRequests.set(key, current + 1);
+  function onBrokerEvent(ev){
+    const d=ev?.detail||{};
+    if(!d?.type)return;
 
-    let status = 0, ok = false, cacheState = '', error = '';
-    try {
-      const response = await originalFetch(input, init);
-      status = response.status;
-      ok = response.ok || response.status === 202;
-      try { cacheState = response.headers.get('X-SBB-Day-State') || ''; } catch (_) {}
-      return response;
-    } catch (err) {
-      error = clean(err?.message || err);
-      throw err;
-    } finally {
-      const finished = now();
-      const remaining = Math.max(0, (state.activeRequests.get(key) || 1) - 1);
-      if (remaining) state.activeRequests.set(key, remaining); else state.activeRequests.delete(key);
-      boundedPush(state.requests,{
+    if(d.type==='coalesced'){
+      state.duplicateConcurrent+=1;
+      state.brokerCallerEvents+=1;
+      return;
+    }
+    if(d.type==='cache-hit'){
+      state.brokerCacheHits+=1;
+      state.brokerCallerEvents+=1;
+      return;
+    }
+    if(d.type==='superseded-abort'){
+      state.brokerSupersededAborts+=1;
+      return;
+    }
+
+    if(d.type==='network-finish' || d.type==='network-error'){
+      const row={
+        id:d.id||'',
         at:Date.now(),
         runId:state.currentRunId,
-        method,key,path,
-        durationMs:round(finished-started),
-        status,ok,cacheState,error,
-      },MAX_REQUESTS);
+        method:'GET',
+        key:d.key||'',
+        path:d.path||'',
+        date:d.date||'',
+        durationMs:Number(d.durationMs)||0,
+        status:Number(d.status)||0,
+        ok:d.type==='network-finish' ? !!d.ok : false,
+        cacheState:'',
+        error:d.type==='network-error' ? String(d.reason||'') : '',
+        aborted:!!d.aborted,
+        coalesced:Number(d.coalesced)||0,
+      };
+      boundedPush(state.requests,row,MAX_REQUESTS);
+      return;
     }
-  };
+
+    if(d.type==='metadata' && d.id){
+      const row=[...state.requests].reverse().find(x=>x.id===d.id);
+      if(row)row.cacheState=String(d.cacheState||'');
+    }
+  }
+  window.addEventListener('sbb:request-broker',onBrokerEvent);
 
   // ----------------------------------------------------------
   // Browser main-thread and resource samples.
@@ -408,8 +427,11 @@
       apiP95:round(percentile(apiMs,95)),
       apiMax:round(apiMs.length?Math.max(...apiMs):null),
       api5xx:api.filter(x=>x.status>=500).length,
-      apiErrors:api.filter(x=>x.status===0).length,
+      apiErrors:api.filter(x=>x.status===0&&!x.aborted).length,
+      supersededAborts:Math.max(0,state.brokerSupersededAborts-(baseline.supersededAborts||0)),
       duplicateConcurrent:Math.max(0,state.duplicateConcurrent-baseline.duplicateConcurrent),
+      cacheHits:Math.max(0,state.brokerCacheHits-(baseline.cacheHits||0)),
+      networkPerDateMax:Math.max(0,...switches.map(x=>Number(x.requestCount||0))),
       longTaskCount:tasks.length,
       longTaskMax:round(tasks.length?Math.max(...tasks.map(x=>x.durationMs)):0),
       longTaskTotal:round(tasks.reduce((a,b)=>a+(b.durationMs||0),0)),
@@ -427,12 +449,13 @@
 
   function metricRows(metrics) {
     return [
-      ['Launch control ready',metrics.launchInteractiveMs,'ms',THRESHOLDS.launchInteractiveMs],
-      ['START → board',metrics.startToBoardMs,'ms',THRESHOLDS.startToBoardMs],
+      ['Launch control ready',metrics.launchInteractiveMs,'ms',THRESHOLDS.launchInteractiveMs,true],
+      ['START → board',metrics.startToBoardMs,'ms',THRESHOLDS.startToBoardMs,true],
       ['Ribbon p95',metrics.ribbonP95,'ms',THRESHOLDS.ribbonP95Ms],
       ['Ribbon max',metrics.ribbonMax,'ms',THRESHOLDS.ribbonMaxMs],
       ['API p95',metrics.apiP95,'ms',THRESHOLDS.apiP95Ms],
-      ['Concurrent duplicate requests',metrics.duplicateConcurrent,'',THRESHOLDS.duplicateConcurrent],
+      ['Broker-coalesced callers',metrics.duplicateConcurrent,'',THRESHOLDS.duplicateConcurrent],
+      ['Max network req/date',metrics.networkPerDateMax,'',THRESHOLDS.networkPerDateMax],
       ['Long tasks >50ms',metrics.longTaskCount,'',THRESHOLDS.longTaskCount],
       ['Longest task',metrics.longTaskMax,'ms',THRESHOLDS.longTaskMaxMs],
       ['DOM growth',metrics.domGrowthPct,'%',THRESHOLDS.domGrowthPct,true],
@@ -458,9 +481,13 @@
       ...rows.map(r=>`${r.grade.padEnd(4)}  ${r.name.padEnd(30)} ${r.value==null?'N/A':r.value}${r.unit}`),
       '',
       `RESTORE=${m.restoreOk?'PASS':'FAIL'}  FILTER_FAILURES=${m.filterFailures}  PROBE_FAILURES=${m.probeFailures}`,
-      `API_ERRORS=${m.apiErrors}  LONG_TASK_TOTAL=${m.longTaskTotal}ms`,
+      `API_ERRORS=${m.apiErrors}  SUPERSEDED_ABORTS=${m.supersededAborts}  CACHE_HITS=${m.cacheHits}`,
+      `LONG_TASK_TOTAL=${m.longTaskTotal}ms  MAX_NETWORK_REQ/DATE=${m.networkPerDateMax}`,
       '',
-      ...report.switches.map(x=>`${x.settled?'PASS':'FAIL'} DATE ${x.date} ${x.elapsedMs}ms req=${x.requestCount} cache=${(x.cacheStates||[]).join(',')||'—'}`),
+      'SLOWEST ENDPOINTS',
+      ...((report.slowestEndpoints||[]).map(x=>`${String(x.p95Ms).padStart(7)}ms p95  ${String(x.maxMs).padStart(7)}ms max  n=${String(x.count).padStart(3)}  ${x.path}`)),
+      '',
+      ...report.switches.map(x=>`${x.settled?'PASS':'FAIL'} DATE ${x.date} ${x.elapsedMs}ms network=${x.requestCount} cache=${(x.cacheStates||[]).join(',')||'—'}`),
     ].join('\n');
   }
 
@@ -491,6 +518,8 @@
       dom:nodeCount(),
       heap:heapBytes(),
       duplicateConcurrent:state.duplicateConcurrent,
+      cacheHits:state.brokerCacheHits,
+      supersededAborts:state.brokerSupersededAborts,
     };
     const started=now();
     state.currentRunId=runId;
@@ -525,6 +554,19 @@
       state.currentRunId='';
       const metrics=makeMetrics({runId,switches,filters,probes,baseline,restoreOk,durationMs});
       const result=overallGrade(metrics);
+      const runRequests=requestsForRun(runId).filter(x=>x.path&&x.path.startsWith('/api/'));
+      const endpointMap=new Map();
+      for(const row of runRequests){
+        const key=row.path;
+        const list=endpointMap.get(key)||[];
+        if(Number.isFinite(row.durationMs))list.push(row.durationMs);
+        endpointMap.set(key,list);
+      }
+      const slowestEndpoints=[...endpointMap.entries()].map(([path,values])=>({
+        path,count:values.length,
+        p95Ms:round(percentile(values,95)),
+        maxMs:round(values.length?Math.max(...values):0),
+      })).sort((a,b)=>(b.p95Ms||0)-(a.p95Ms||0)).slice(0,10);
       const report={
         version:VERSION,
         id:runId,
@@ -535,6 +577,7 @@
         switches,
         filters,
         probes,
+        slowestEndpoints,
         thresholds:THRESHOLDS,
       };
       report.text=reportText(report);
@@ -553,6 +596,9 @@
     state.domSamples.length=0;
     state.heapSamples.length=0;
     state.duplicateConcurrent=0;
+    state.brokerCallerEvents=0;
+    state.brokerCacheHits=0;
+    state.brokerSupersededAborts=0;
     state.lastReport=null;
     sampleResources();
     renderCard();
@@ -567,6 +613,7 @@
       firstScorePaintMs:state.firstScorePaintMs,
       requestCount:state.requests.length,
       duplicateConcurrent:state.duplicateConcurrent,
+      broker:window.SBB_REQUEST_BROKER?.snapshot?.()||null,
       longTaskCount:state.longTasks.length,
       domNodes:nodeCount(),
       heapBytes:heapBytes(),

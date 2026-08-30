@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.3",
+  "release": "4.7.4",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -182,7 +182,17 @@
         "Day State cache response headers are recorded during efficiency runs so READY, STALE_REFRESHING, and COLD_WARMING behavior can be correlated with ribbon latency.",
         "The automated efficiency test records request failures, concurrent duplicate requests, ribbon timeouts, long-task counts/max duration, DOM growth, optional heap growth, and state-restoration success.",
         "Efficiency instrumentation may not install a document-wide MutationObserver and may not issue backend mutation requests.",
-        "tests/test_v473_efficiency_runtime.js is a blocking browser contract for the Efficiency Certification surface and non-destructive automation guarantees."
+        "tests/test_v473_efficiency_runtime.js is a blocking browser contract for the Efficiency Certification surface and non-destructive automation guarantees.",
+        "Request Broker is the single browser network arbitration layer for API GET traffic: concurrent identical GETs share one transport request and each consumer receives its own Response clone.",
+        "Request Broker normalizes cache-buster query parameters, provides short-TTL reuse for read-only registry/Day State/history endpoints, and never coalesces non-GET, Range, soundtrack-stream, export, or download requests.",
+        "Interactive date changes create a monotonically increasing generation and abort superseded date-scoped Day State/ribbon/roundup/discovery transport work.",
+        "Date Transition Coordinator bypasses the older Day State wrapper's dual-path behavior and invokes the app date setter with load:false so roundups cannot block score-ribbon first paint.",
+        "Day State is the primary first-paint source. The legacy historical ribbon loader is invoked only when no Day State payload is available for a historical date.",
+        "Roundups and discovery are background enrichment after first paint rather than prerequisites for changing the ribbon date.",
+        "Day State operator-view installation uses a narrow retry timer and may not install a document-wide MutationObserver.",
+        "Efficiency Certification consumes Request Broker network telemetry rather than wrapping window.fetch a second time, and distinguishes network requests, coalesced callers, cache hits, superseded aborts, and endpoint p95/max latency.",
+        "Efficiency Certification reports maximum network requests per date and the ten slowest API endpoint families so request storms and backend hotspots are directly attributable.",
+        "tests/test_v474_efficiency_remediation_runtime.js is a blocking browser contract for Request Broker, Date Transition Coordinator, non-blocking enrichment, and broker-native efficiency telemetry."
       ]
     },
     "tier2": {
@@ -233,6 +243,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.3 adds continuous efficiency telemetry and automated, non-destructive Efficiency Certification on top of the v4.7 Day State/Competition Registry architecture. Functional foundation contracts remain blocking while historical implementation-pinning tests remain advisory.",
+  "baseline": "v4.7.4 remediates the v4.7.3 efficiency findings with a single GET Request Broker, generation-owned date transitions, Day State-first ribbon paint, fallback-only legacy history loading, deferred roundups/discovery, removal of the remaining global Day State DOM observer, and broker-native efficiency telemetry.",
   "status": "IN_PROGRESS"
 }

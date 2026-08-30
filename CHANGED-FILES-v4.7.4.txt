@@ -1,0 +1,41 @@
+Sports Big Board v4.7.4 — Request Broker + Day State First-Paint Efficiency Remediation
+
+PRIMARY FINDINGS ADDRESSED FROM v4.7.3 AUTO TEST
+- 310 API requests / 8 date switches
+- 110 concurrent duplicate callers
+- API p95 ~15.5 s
+- ribbon p95 ~26.3 s
+- individual dates producing 44–92 requests
+- 84 long tasks / 2.06 s max
+- Day State cache state not attributable in telemetry
+
+NEW ARCHITECTURE
+1. REQUEST BROKER
+   - coalesces concurrent identical API GET requests
+   - each caller receives its own Response clone
+   - strips cache-buster-only query parameters from request identity
+   - short TTL reuse for registry/status/Day State/history reads
+   - excludes mutation, Range, soundtrack stream, export, and download traffic
+   - aborts superseded interactive date-scoped requests
+   - emits network/coalescing/cache/abort telemetry
+
+2. DATE TRANSITION COORDINATOR
+   - one monotonically increasing generation per selected ribbon date
+   - app shell date change uses load:false
+   - Day State is first-paint authority
+   - legacy historical ribbon is fallback-only
+   - roundups/discovery run after first paint
+   - obsolete date generations cannot launch fallback/enrichment over the new date
+
+3. DAY STATE
+   - removes remaining document-wide MutationObserver
+   - operator view uses narrow retry timer only
+
+4. EFFICIENCY CERTIFICATION
+   - reads actual Request Broker network telemetry
+   - distinguishes network requests vs broker-coalesced callers
+   - records short-TTL cache hits and superseded aborts
+   - cache state comes from Day State response body, not a CORS-only header
+   - reports max network requests/date
+   - reports ten slowest endpoint families by p95/max
+   - startup timings are informational when the current test did not observe START

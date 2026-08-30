@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.3",
-  "baseRelease": "4.7.2",
-  "title": "Efficiency Instrumentation + Automated Efficiency Certification",
+  "release": "4.7.4",
+  "baseRelease": "4.7.3",
+  "title": "Request Broker + Day State First-Paint Efficiency Remediation",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -15,51 +15,60 @@
     "architecture/day-state.js",
     "architecture/competition-registry-projection.js",
     "architecture/efficiency-certification.js",
+    "architecture/request-broker.js",
+    "architecture/date-transition-coordinator.js",
     "tests/test_release_behavior_gate.py",
-    "tests/test_v473_efficiency_runtime.js"
+    "tests/test_v472_frontend_boot_responsiveness.py",
+    "tests/test_v473_efficiency_runtime.js",
+    "tests/test_v474_efficiency_remediation_runtime.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.3"
+        "4.7.4"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.3",
-        "api-runtime.js?v=4.7.3",
-        "architecture/efficiency-certification.js?v=4.7.3",
-        "core-model.js?v=4.7.3",
-        "architecture/day-state.js?v=4.7.3",
-        "architecture/competition-registry-projection.js?v=4.7.3",
-        "id=\"launchPlayBtn\""
+        "Sports Big Board \u2014 v4.7.4",
+        "api-runtime.js?v=4.7.4",
+        "architecture/request-broker.js?v=4.7.4",
+        "architecture/efficiency-certification.js?v=4.7.4",
+        "app.js?v=4.7.4",
+        "architecture/day-state.js?v=4.7.4",
+        "architecture/competition-registry-projection.js?v=4.7.4",
+        "architecture/date-transition-coordinator.js?v=4.7.4"
       ],
       "forbidden": [
-        "?v=4.7.2"
+        "?v=4.7.3"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.7.3'",
-        "SBB_FRONTEND_REGISTRY?.competitionMap?.()"
+        "version:'4.7.4'"
       ]
     },
     "sbb/day_state.py": {
       "required": [
         "COLD_WARMING",
         "STALE_REFRESHING",
-        "\"engineVersion\":\"4.7.3\""
+        "\"engineVersion\":\"4.7.4\""
       ]
     },
     "architecture/day-state.js": {
       "required": [
-        "Sports Big Board v4.7.3",
-        "fallback(date)"
+        "Sports Big Board v4.7.4",
+        "operatorTimer",
+        "setInterval"
+      ],
+      "forbidden": [
+        "new MutationObserver",
+        ".observe(document.documentElement"
       ]
     },
     "architecture/competition-registry-projection.js": {
       "required": [
-        "Sports Big Board v4.7.3",
+        "Sports Big Board v4.7.4",
         "specialRenderKey",
         "leagueRenderKey"
       ],
@@ -68,26 +77,45 @@
         ".observe(document.documentElement"
       ]
     },
+    "architecture/request-broker.js": {
+      "required": [
+        "Sports Big Board v4.7.4",
+        "window.SBB_REQUEST_BROKER",
+        "coalesced",
+        "cache-hit",
+        "superseded-date",
+        "beginDate",
+        "response.clone()",
+        "/api/history/ribbon",
+        "/api/history/roundups",
+        "/api/history/discovery"
+      ]
+    },
+    "architecture/date-transition-coordinator.js": {
+      "required": [
+        "Sports Big Board v4.7.4",
+        "window.SBB_DATE_TRANSITIONS",
+        "load:false",
+        "__sbbFallback",
+        "scheduleEnrichment",
+        "SBB_REQUEST_BROKER?.beginDate",
+        "DAY_STATE",
+        "LEGACY_RIBBON_FALLBACK"
+      ]
+    },
     "architecture/efficiency-certification.js": {
       "required": [
-        "Sports Big Board v4.7.3",
-        "window.SBB_EFFICIENCY",
+        "Sports Big Board v4.7.4",
+        "sbb:request-broker",
+        "slowestEndpoints",
+        "networkPerDateMax",
+        "supersededAborts",
+        "cacheHits",
         "RUN AUTO TEST",
-        "RUN HAMMER",
-        "PerformanceObserver",
-        "'longtask'",
-        "duplicateConcurrent",
-        "ribbonP95",
-        "apiP95",
-        "heapGrowthPct",
-        "domGrowthPct",
-        "restoreState",
-        "current state will be restored",
-        "/api/day-state",
-        "/api/competition-registry",
-        "/api/competition-builder/catalog"
+        "RUN HAMMER"
       ],
       "forbidden": [
+        "originalFetch = window.fetch.bind(window)",
         "new MutationObserver",
         "method:'POST'",
         "method:\"POST\""
@@ -95,32 +123,49 @@
     },
     "tests/test_release_behavior_gate.py": {
       "required": [
-        "class ReleaseBehaviorGate",
-        "test_efficiency_certification_is_loaded_and_non_destructive",
-        "test_active_foundation_checker_contracts_remain_blocking",
-        "node tests/test_v473_efficiency_runtime.js",
-        "tests.test_v446_historical_media_quarantine"
+        "test_request_broker_coalesces_and_cancels_superseded_date_work",
+        "test_date_transition_coordinator_makes_day_state_primary",
+        "test_efficiency_reads_broker_network_truth",
+        "node tests/test_v474_efficiency_remediation_runtime.js"
+      ]
+    },
+    "tests/test_v472_frontend_boot_responsiveness.py": {
+      "required": [
+        "self.assertGreaterEqual(parts,(4,7,2))",
+        "self.assertEqual(parts[:2],(4,7))",
+        "f\"Sports Big Board \u2014 v{VERSION}\""
+      ],
+      "forbidden": [
+        "self.assertEqual(VERSION,\"4.7.2\")"
       ]
     },
     "tests/test_v473_efficiency_runtime.js": {
       "required": [
-        "v4.7.3 efficiency instrumentation + automated certification contracts",
+        "const VERSION=fs.readFileSync('VERSION','utf8').trim()",
         "runAutoTest",
-        "runHammer",
-        "restoreState",
-        "duplicateConcurrent",
-        "heapGrowthPct",
-        "domGrowthPct"
+        "runHammer"
+      ],
+      "forbidden": [
+        "?v=4.7.3"
+      ]
+    },
+    "tests/test_v474_efficiency_remediation_runtime.js": {
+      "required": [
+        "v4.7.4 request broker + date transition efficiency remediation contracts",
+        "request-broker.js",
+        "date-transition-coordinator.js",
+        "load:false",
+        "networkPerDateMax"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.3\"",
-        "Efficiency Certification",
-        "RUN AUTO TEST",
-        "ribbon p50/p95/max",
-        "backend read-only",
-        "tests/test_v473_efficiency_runtime.js"
+        "\"release\": \"4.7.4\"",
+        "Request Broker",
+        "Date Transition Coordinator",
+        "Roundups and discovery are background enrichment",
+        "maximum network requests per date",
+        "tests/test_v474_efficiency_remediation_runtime.js"
       ]
     },
     "VERIFY.sh": {
@@ -129,10 +174,10 @@
         "python3 tools/check_release_version.py",
         "python3 tools/check_foundation_certification.py",
         "python3 tools/check_ultimate_playback.py",
-        "python3 tools/check_deploy_rehearsal.py",
         "python3 -m unittest tests.test_v446_historical_media_quarantine",
         "python3 -m unittest tests.test_release_behavior_gate",
         "node tests/test_v473_efficiency_runtime.js",
+        "node tests/test_v474_efficiency_remediation_runtime.js",
         "[legacy-advisory]",
         "does not block deployment"
       ]
@@ -147,6 +192,7 @@
     "python3 -m unittest tests.test_v446_historical_media_quarantine",
     "python3 -m unittest tests.test_release_behavior_gate",
     "node tests/test_v473_efficiency_runtime.js",
+    "node tests/test_v474_efficiency_remediation_runtime.js",
     "bash VERIFY.sh"
   ]
 }

@@ -10,6 +10,8 @@ DAY_BACKEND=(ROOT/"sbb"/"day_state.py").read_text(encoding="utf-8")
 DAY_UI=(ROOT/"architecture"/"day-state.js").read_text(encoding="utf-8")
 REG_UI=(ROOT/"architecture"/"competition-registry-projection.js").read_text(encoding="utf-8")
 EFFICIENCY=(ROOT/"architecture"/"efficiency-certification.js").read_text(encoding="utf-8")
+BROKER=(ROOT/"architecture"/"request-broker.js").read_text(encoding="utf-8")
+DATE_COORD=(ROOT/"architecture"/"date-transition-coordinator.js").read_text(encoding="utf-8")
 VERIFY=(ROOT/"VERIFY.sh").read_text(encoding="utf-8")
 
 
@@ -42,6 +44,8 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("AbortController",DAY_UI)
         self.assertIn("pending",DAY_UI)
         self.assertIn("fallback(date)",DAY_UI)
+        self.assertNotIn("new MutationObserver",DAY_UI)
+        self.assertNotIn(".observe(document.documentElement",DAY_UI)
 
     def test_dynamic_competitions_have_registry_builder_and_local_fallback(self):
         self.assertIn("/api/competition-builder/catalog",REG_UI)
@@ -72,6 +76,27 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertNotIn("method:'POST'",EFFICIENCY)
         self.assertNotIn('method:"POST"',EFFICIENCY)
 
+    def test_request_broker_coalesces_and_cancels_superseded_date_work(self):
+        self.assertIn("window.SBB_REQUEST_BROKER",BROKER)
+        self.assertIn("coalesced",BROKER)
+        self.assertIn("cache-hit",BROKER)
+        self.assertIn("superseded-date",BROKER)
+        self.assertIn("beginDate",BROKER)
+
+    def test_date_transition_coordinator_makes_day_state_primary(self):
+        self.assertIn("window.SBB_DATE_TRANSITIONS",DATE_COORD)
+        self.assertIn("load:false",DATE_COORD)
+        self.assertIn("__sbbFallback",DATE_COORD)
+        self.assertIn("scheduleEnrichment",DATE_COORD)
+        self.assertIn("SBB_REQUEST_BROKER?.beginDate",DATE_COORD)
+
+    def test_efficiency_reads_broker_network_truth(self):
+        self.assertIn("sbb:request-broker",EFFICIENCY)
+        self.assertIn("slowestEndpoints",EFFICIENCY)
+        self.assertIn("networkPerDateMax",EFFICIENCY)
+        self.assertIn("supersededAborts",EFFICIENCY)
+        self.assertNotIn("originalFetch = window.fetch.bind(window)",EFFICIENCY)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -95,6 +120,7 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "node tests/test_v446_stale_media_runtime.js",
             "node tests/test_v447_poisoned_player_containment_runtime.js",
             "node tests/test_v473_efficiency_runtime.js",
+            "node tests/test_v474_efficiency_remediation_runtime.js",
         )
         for command in required:
             self.assertIn(command,VERIFY)
