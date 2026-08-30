@@ -117,6 +117,16 @@
       }
       #sbbSpecialEventsMenu .sbb-special-event-status.active{color:#91ecaf;border-color:#34714d;background:#10241a}
       #scoreFilters>.sbb-special-main-row-suppressed{display:none!important}
+
+      /* CFB's compatibility rule uses inline-flex. Center the text on both axes
+         so the chip behaves like every other permanent sport filter. */
+      #scoreFilters>button[data-score-filter="CFB"]{
+        display:inline-flex!important;
+        align-items:center!important;
+        justify-content:center!important;
+        text-align:center!important;
+        line-height:1!important;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -250,8 +260,6 @@
     const btn=document.getElementById('sbbSpecialEventsBtn');
     if(!host||!wrap||!menu||!btn)return;
 
-    // Any dynamic compatibility layer that tries to render a special event as a
-    // permanent league chip is suppressed. The event exists only in this menu.
     [...host.children].forEach(child=>{
       const id=upper(child?.dataset?.scoreFilter);
       if(id&&ids.has(id))child.classList.add('sbb-special-main-row-suppressed');
@@ -298,8 +306,23 @@
     state.bound=true;
     injectStyle();ensureCalendar();
 
-    // Capture before legacy handlers can invoke the browser-native date picker.
+    // Capture before the app's delegated score-filter handler. If a permanent
+    // sport is already active, a second click is routed through the existing ALL
+    // button so every downstream filter/render path sees the normal ALL action.
     document.addEventListener('click',ev=>{
+      const filterBtn=ev.target?.closest?.('#scoreFilters [data-score-filter]');
+      if(filterBtn){
+        const id=upper(filterBtn.dataset.scoreFilter||'ALL');
+        if(id!=='ALL'&&filterBtn.classList.contains('active')){
+          const all=document.querySelector('#scoreFilters [data-score-filter="ALL"]');
+          if(all){
+            ev.preventDefault();ev.stopImmediatePropagation();
+            all.click();
+            return;
+          }
+        }
+      }
+
       const dateAnchor=ev.target?.closest?.('#topDateSelectBtn,#scoreDayIndicator');
       if(dateAnchor){
         ev.preventDefault();ev.stopImmediatePropagation();
