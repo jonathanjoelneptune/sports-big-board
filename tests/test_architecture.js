@@ -24,7 +24,7 @@ assert.equal(SBB_EDITORIAL_PACKAGES.SERIES.MLB_TOP_PLAYS_DAILY.cadence,'daily');
 assert.equal(SBB_EDITORIAL_PACKAGES.SERIES.NBA_TOP_PLAYS_NIGHTLY.cadence,'nightly');
 assert.equal(SBB_EDITORIAL_PACKAGES.SERIES.NFL_TOP_PLAYS_WEEKLY.cadence,'weekly');
 assert.equal(SBB_SCORE_DATE.version,'1.0');
-assert.equal(SBB_GAME_CENTER_LINESCORE.version,'1.0');
+assert.equal(SBB_GAME_CENTER_LINESCORE.version,'2.0');
 const extraBoard={away:{score:8},home:{score:6},totals:{away:{runs:8},home:{runs:6}},innings:[
   {num:1,away:0,home:2},{num:2,away:0,home:3},{num:3,away:0,home:0},{num:4,away:3,home:0},{num:5,away:2,home:1},
   {num:6,away:0,home:0},{num:7,away:0,home:0},{num:8,away:1,home:0},{num:9,away:0,home:0},{num:10,away:'',home:''}
