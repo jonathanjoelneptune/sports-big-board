@@ -1,23 +1,31 @@
-/* Sports Big Board v4.7.4 — Request Broker.
-   One transport request per identical GET. Short TTL read reuse, date-generation
-   cancellation for superseded interactive work, and broker-native telemetry.
+/* Sports Big Board v4.7.5 — Request Broker + Enrichment Firewall.
+   One transport request per identical GET. Shared-state TTL reuse, date-generation
+   cancellation, and an explicit first-paint firewall keep expensive enrichment
+   from waking up while the user is simply changing ribbon dates.
 */
 (() => {
   'use strict';
-  if (window.SBB_REQUEST_BROKER?.version === '4.7.4') return;
+  if (window.SBB_REQUEST_BROKER?.version === '4.7.5') return;
 
-  const VERSION='4.7.4';
+  const VERSION='4.7.5';
+  const QUIET_MS=8000;
   const transportFetch=window.fetch.bind(window);
   const inflight=new Map();
+  const deferred=new Map();
   const cache=new Map();
   const stats={
     callers:0,network:0,coalesced:0,cacheHits:0,errors:0,
-    supersededAborts:0,activeDate:'',generation:0
+    supersededAborts:0,deferred:0,deferredAborts:0,deferredReleases:0,
+    activeDate:'',generation:0,quietUntil:0
   };
 
   const clean=v=>String(v??'').trim();
   const upper=v=>clean(v).toUpperCase();
   const now=()=>performance.now();
+  const today=()=>{
+    const d=new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  };
 
   function urlOf(input){
     try{
@@ -38,13 +46,18 @@
     return `${method} ${u.origin}${u.pathname}${u.search}`;
   }
 
-  function pathOf(input){
-    return urlOf(input)?.pathname||'';
-  }
+  function pathOf(input){ return urlOf(input)?.pathname||''; }
 
   function dateOf(input){
-    try{return clean(urlOf(input)?.searchParams?.get('date')).slice(0,10);}
-    catch(_){return '';}
+    try{
+      const u=urlOf(input);
+      return clean(
+        u?.searchParams?.get('date') ||
+        u?.searchParams?.get('day') ||
+        u?.searchParams?.get('startDate') ||
+        u?.searchParams?.get('from')
+      ).slice(0,10);
+    }catch(_){return '';}
   }
 
   function excluded(path,init={}){
@@ -59,25 +72,71 @@
     );
   }
 
-  function ttlFor(path){
-    if(path==='/api/status')return 750;
-    if(path==='/api/competition-registry')return 1800;
-    if(path==='/api/competition-builder/catalog')return 1800;
-    if(path==='/api/day-state')return 900;
-    if(path==='/api/day-state/status')return 1200;
-    if(path==='/api/history/ribbon')return 1400;
-    if(path==='/api/history/roundups')return 3500;
-    if(path==='/api/history/discovery')return 1400;
+  function ttlFor(path,input){
+    if(path==='/api/status')return 2000;
+    if(path==='/api/competition-registry')return 30000;
+    if(path==='/api/competition-builder/catalog')return 30000;
+    if(path==='/api/editorial/key-info')return 60000;
+    if(path==='/api/day-state')return 1600;
+    if(path==='/api/day-state/status')return 5000;
+    if(path==='/api/history/ribbon')return 3000;
+    if(path==='/api/history/roundups')return 30000;
+    if(path==='/api/history/discovery')return 10000;
+    if(path==='/api/competition-builder/schedule'){
+      const d=dateOf(input);return d&&d<today()?60000:12000;
+    }
+    if(path==='/api/competition-builder/media')return 60000;
     return 0;
   }
 
-  function isInteractiveDatePath(path){
-    return (
+  function requestClass(path,input){
+    if(
       path==='/api/day-state' ||
       path==='/api/history/ribbon' ||
+      path==='/api/status'
+    ) return 'FIRST_PAINT';
+
+    if(
+      path==='/api/competition-registry' ||
+      path==='/api/competition-builder/catalog' ||
+      path==='/api/editorial/key-info'
+    ) return 'SHARED_STATE';
+
+    if(
+      path==='/api/competition-builder/media' ||
+      path==='/api/rapid-team-videos' ||
+      /\/api\/events\/[^/]+\/[^/]+\/game-center$/.test(path)
+    ) return 'ON_DEMAND';
+
+    if(
+      path==='/api/history/discovery' ||
       path==='/api/history/roundups' ||
-      path==='/api/history/discovery'
-    );
+      path==='/api/competition-builder/schedule'
+    ) return 'IDLE_ENRICHMENT';
+
+    if(path==='/api/soccer/schedule'){
+      const d=dateOf(input);
+      return d && d<today() ? 'IDLE_ENRICHMENT' : 'LIVE_PROVIDER';
+    }
+
+    return 'NORMAL';
+  }
+
+  function operatorActive(){
+    try{
+      const audit=document.getElementById('historyAuditModal');
+      if(audit && !audit.classList.contains('hidden'))return true;
+      const builder=document.getElementById('sbbBuilderModal');
+      if(builder && !builder.classList.contains('hidden'))return true;
+    }catch(_){}
+    return false;
+  }
+
+  function recentSelectedEvent(){
+    try{
+      const selected=window.SBB_SELECTED_EVENT?.get?.();
+      return !!(selected?.selectedAt && Date.now()-Number(selected.selectedAt)<4000);
+    }catch(_){return false;}
   }
 
   function emit(type,detail={}){
@@ -133,10 +192,25 @@
     });
   }
 
+  function abortDeferred(reason='superseded-date'){
+    for(const [key,row] of [...deferred.entries()]){
+      if(row.generation===stats.generation && row.date===stats.activeDate)continue;
+      clearTimeout(row.timer);
+      deferred.delete(key);
+      stats.deferredAborts+=1;
+      emit('deferred-abort',{
+        key,rowClass:row.rowClass,path:row.path,date:row.date,
+        generation:row.generation,reason
+      });
+      row.reject(new DOMException('Deferred enrichment superseded','AbortError'));
+    }
+  }
+
   function beginDate(date,generation){
     date=clean(date).slice(0,10);
     stats.activeDate=date;
     stats.generation=Number(generation||stats.generation+1);
+    stats.quietUntil=now()+QUIET_MS;
 
     for(const entry of inflight.values()){
       if(!entry.interactive || !entry.date || entry.date===date)continue;
@@ -147,14 +221,67 @@
       });
       try{entry.controller.abort('superseded-date');}catch(_){}
     }
+    abortDeferred('superseded-date');
     return stats.generation;
   }
 
-  window.fetch=function brokeredFetch(input,init={}){
+  function shouldDefer(path,input,init,rowClass){
+    if(init?.__sbbBrokerRelease)return false;
+    if(!stats.activeDate || now()>=stats.quietUntil)return false;
+    if(operatorActive())return false;
+    if(clean(init?.sbbRequestClass).toUpperCase()==='ON_DEMAND')return false;
+    if(rowClass==='ON_DEMAND' && recentSelectedEvent())return false;
+    if(!['ON_DEMAND','IDLE_ENRICHMENT'].includes(rowClass))return false;
+
+    const d=dateOf(input);
+    if(d && d!==stats.activeDate)return false;
+    return true;
+  }
+
+  function deferFetch(input,init,key,path,rowClass){
+    const existing=deferred.get(key);
+    if(existing){
+      stats.coalesced+=1;
+      emit('coalesced',{key,path,date:existing.date,generation:existing.generation,deferred:true});
+      return existing.promise.then(r=>r.clone());
+    }
+
+    const generation=stats.generation;
+    const date=dateOf(input)||stats.activeDate;
+    const waitMs=Math.max(50,stats.quietUntil-now());
+    stats.deferred+=1;
+    emit('deferred',{key,path,date,generation,rowClass,waitMs:Math.round(waitMs)});
+
+    let resolve,reject;
+    const promise=new Promise((res,rej)=>{resolve=res;reject=rej;});
+    const row={key,path,date,generation,rowClass,promise,resolve,reject,timer:null};
+    row.timer=setTimeout(async()=>{
+      deferred.delete(key);
+      if(generation!==stats.generation || date!==stats.activeDate){
+        stats.deferredAborts+=1;
+        emit('deferred-abort',{key,path,date,generation,rowClass,reason:'generation-changed'});
+        reject(new DOMException('Deferred enrichment superseded','AbortError'));
+        return;
+      }
+      stats.deferredReleases+=1;
+      emit('deferred-release',{key,path,date,generation,rowClass});
+      try{
+        const response=await brokeredFetch(input,{...init,__sbbBrokerRelease:true});
+        resolve(response);
+      }catch(err){reject(err);}
+    },waitMs);
+    deferred.set(key,row);
+    return promise;
+  }
+
+  function brokeredFetch(input,init={}){
     const method=upper(init?.method || input?.method || 'GET') || 'GET';
     const path=pathOf(input);
     if(method!=='GET' || excluded(path,{...init,method})){
-      return transportFetch(input,init);
+      const transportInit={...init};
+      delete transportInit.__sbbBrokerRelease;
+      delete transportInit.sbbRequestClass;
+      return transportFetch(input,transportInit);
     }
 
     stats.callers+=1;
@@ -175,54 +302,63 @@
       return consume(existing,init?.signal);
     }
 
+    const rowClass=requestClass(path,input);
+    if(shouldDefer(path,input,init,rowClass)){
+      return deferFetch(input,init,key,path,rowClass);
+    }
+
     const controller=new AbortController();
-    const date=dateOf(input);
+    const requestDate=dateOf(input);
+    const boundDate=requestDate || (
+      ['ON_DEMAND','IDLE_ENRICHMENT'].includes(rowClass) ? stats.activeDate : ''
+    );
     const interactive=!!(
       stats.activeDate &&
-      date &&
-      date===stats.activeDate &&
-      isInteractiveDatePath(path)
+      boundDate &&
+      boundDate===stats.activeDate &&
+      ['FIRST_PAINT','ON_DEMAND','IDLE_ENRICHMENT'].includes(rowClass)
     );
     const id=`req-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
     const started=now();
     const generation=stats.generation;
     const transportInit={...init,signal:controller.signal};
+    delete transportInit.__sbbBrokerRelease;
+    delete transportInit.sbbRequestClass;
+
     const entry={
-      id,key,path,date,interactive,generation,controller,
+      id,key,path,date:boundDate,rowClass,interactive,generation,controller,
       started,settled:false,consumers:0,coalesced:0,promise:null
     };
 
     stats.network+=1;
-    emit('network-start',{id,key,path,date,interactive,generation});
+    emit('network-start',{id,key,path,date:boundDate,rowClass,interactive,generation});
 
     entry.promise=transportFetch(input,transportInit)
       .then(response=>{
         entry.settled=true;
         const durationMs=Math.round((now()-started)*10)/10;
-        const ttl=ttlFor(path);
+        const ttl=ttlFor(path,input);
 
-        if(response.ok && ttl>0){
+        if((response.ok||response.status===202) && ttl>0){
           try{
             cache.set(key,{
-              response:response.clone(),path,date,
+              response:response.clone(),path,date:boundDate,
               storedAt:now(),expiresAt:now()+ttl
             });
           }catch(_){}
         }
 
         emit('network-finish',{
-          id,key,path,date,interactive,generation,
+          id,key,path,date:boundDate,rowClass,interactive,generation,
           status:response.status,ok:response.ok||response.status===202,
           durationMs,coalesced:entry.coalesced
         });
 
-        // X-SBB-Day-State is not necessarily CORS-exposed on older backend builds.
-        // Read cache state from a cloned JSON body instead, without delaying consumers.
         if(path==='/api/day-state'){
           try{
             response.clone().json().then(payload=>{
               const cacheState=clean(payload?.cache?.state || (payload?.pending?'COLD_WARMING':''));
-              emit('metadata',{id,key,path,date,cacheState});
+              emit('metadata',{id,key,path,date:boundDate,cacheState});
             }).catch(()=>{});
           }catch(_){}
         }
@@ -234,7 +370,7 @@
         const reason=clean(controller.signal.reason || err?.message || err);
         if(!aborted)stats.errors+=1;
         emit('network-error',{
-          id,key,path,date,interactive,generation,
+          id,key,path,date:boundDate,rowClass,interactive,generation,
           durationMs:Math.round((now()-started)*10)/10,
           aborted,reason
         });
@@ -244,7 +380,9 @@
 
     inflight.set(key,entry);
     return consume(entry,init?.signal);
-  };
+  }
+
+  window.fetch=brokeredFetch;
 
   window.SBB_REQUEST_BROKER=Object.freeze({
     version:VERSION,
@@ -254,11 +392,15 @@
       version:VERSION,
       ...stats,
       inflight:inflight.size,
+      deferredCount:deferred.size,
       cached:cache.size,
       active:[...inflight.values()].map(x=>({
-        id:x.id,path:x.path,date:x.date,interactive:x.interactive,
+        id:x.id,path:x.path,date:x.date,rowClass:x.rowClass,interactive:x.interactive,
         generation:x.generation,consumers:x.consumers,coalesced:x.coalesced,
         ageMs:Math.round(now()-x.started)
+      })),
+      deferred:[...deferred.values()].map(x=>({
+        path:x.path,date:x.date,rowClass:x.rowClass,generation:x.generation
       }))
     })
   });

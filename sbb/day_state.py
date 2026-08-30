@@ -164,7 +164,8 @@ class DayStateEngine:
     HOT_LIVE_SECONDS = 15
     HOT_TODAY_SECONDS = 20
     HOT_NEAR_SECONDS = 60
-    HISTORICAL_SECONDS = 6 * 60 * 60
+    HISTORICAL_SECONDS = 12 * 60 * 60
+    HISTORICAL_COMPLETE_SECONDS = 24 * 60 * 60
 
     def __init__(self, server, store=None):
         self.server = server
@@ -176,8 +177,12 @@ class DayStateEngine:
         self.focus_dates = {}
         self.running = True
         self.last_build = {}
+        self.build_locks = {}
         self.last_error = ""
         self.builds = 0
+        self.prewarm_queued = 0
+        self.prewarm_built = 0
+        self.next_today_refresh = 0.0
         self.hits = 0
         self.misses = 0
         self.registry_events = 0
@@ -202,7 +207,17 @@ class DayStateEngine:
             delta = abs((datetime.strptime(day, "%Y-%m-%d").date() - datetime.strptime(today, "%Y-%m-%d").date()).days)
         except Exception:
             delta = 99
-        return self.HOT_NEAR_SECONDS if delta <= 2 else self.HISTORICAL_SECONDS
+        if delta <= 2:
+            return self.HOT_NEAR_SECONDS
+        if (
+            day < today
+            and bool(snapshot.get("scoreInventoryComplete"))
+            and int(summary.get("live") or 0) == 0
+            and int(summary.get("scheduled") or 0) == 0
+            and int(summary.get("games") or 0) > 0
+        ):
+            return self.HISTORICAL_COMPLETE_SECONDS
+        return self.HISTORICAL_SECONDS
 
     def _on_registry_event(self, event):
         self.registry_events += 1
@@ -228,16 +243,18 @@ class DayStateEngine:
         # milliseconds. Queue a delayed competition sweep instead of racing it.
         threading.Thread(
             target=self._enqueue_competition_dates_after_registration,
-            args=(cid,),
+            args=(cid, comp),
             daemon=True,
             name=f"sbb-day-state-enroll-{cid.lower()}",
         ).start()
 
-    def _enqueue_competition_dates_after_registration(self, cid):
-        # Competition Builder publishes the registry entry immediately before it
-        # upserts that competition's canonical schedule rows. Retry briefly so a
-        # large tournament cannot lose its historical Day State enrollment to that
-        # intentional ordering.
+    def _enqueue_competition_dates_after_registration(self, cid, comp=None):
+        # Competition Builder publishes registry membership immediately before its
+        # schedule rows. Retry briefly, then warm SPECIAL_EVENT dates in the
+        # background. Dynamic leagues do not enqueue an entire season.
+        comp = dict(comp or {})
+        if comp.get("dayStateEnabled", True) is False:
+            return
         rows = []
         for attempt in range(10):
             time.sleep(0.35 if attempt < 3 else 0.75)
@@ -247,9 +264,31 @@ class DayStateEngine:
                 rows = []
             if rows:
                 break
+
         dates = sorted({_clean_date(row.get("date")) for row in rows if _clean_date(row.get("date"))})
-        for day in dates:
-            self.enqueue(day, priority=True)
+        if not dates:
+            return
+
+        today = datetime.strptime(self.today(), "%Y-%m-%d").date()
+        typ = str(comp.get("type") or "").upper()
+        if typ == "SPECIAL_EVENT":
+            # Warm the closest completed dates first, then upcoming event dates.
+            def rank(value):
+                d = datetime.strptime(value, "%Y-%m-%d").date()
+                delta = (d - today).days
+                return (1 if delta > 0 else 0, abs(delta))
+            dates.sort(key=rank)
+        else:
+            # A data-driven league may contain hundreds/thousands of dates. Day
+            # State only prewarms its near-live window; old dates remain on-demand.
+            dates = [
+                value for value in dates
+                if abs((datetime.strptime(value, "%Y-%m-%d").date() - today).days) <= 2
+            ]
+
+        for value in dates:
+            if self.enqueue(value, priority=False):
+                self.prewarm_queued += 1
 
     def enqueue(self, day, *, priority=False):
         day = _clean_date(day)
@@ -301,10 +340,36 @@ class DayStateEngine:
         ]
         return facts
 
+    def _build_mutex(self, day):
+        with self.lock:
+            mutex = self.build_locks.get(day)
+            if mutex is None:
+                mutex = threading.Lock()
+                self.build_locks[day] = mutex
+            return mutex
+
     def build(self, day):
         day = _clean_date(day)
         if not day:
             raise ValueError("YYYY-MM-DD day required")
+        requested_at = time.time()
+        mutex = self._build_mutex(day)
+        with mutex:
+            # Collapse a worker build and a simultaneous cold ribbon fallback into
+            # one canonical computation.
+            with self.lock:
+                concurrent = self.cache.get(day)
+            if not concurrent:
+                concurrent = self.store.get(day)
+                if concurrent:
+                    with self.lock:
+                        self.cache[day] = concurrent
+            if concurrent and float(concurrent.get("generatedAt") or 0) >= requested_at - 0.05:
+                return concurrent
+
+            return self._build_locked(day)
+
+    def _build_locked(self, day):
         started = time.perf_counter()
 
         score_rows_fn = getattr(self.server, "_history_day_score_rows")
@@ -336,7 +401,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.4",
+            "engineVersion":"4.7.5",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -413,9 +478,16 @@ class DayStateEngine:
         now = time.time()
         with self.lock:
             queue = list(self.queue)
+        snapshots = self.store.status(31)
+        for row in snapshots:
+            try:
+                snap = self.store.get(row.get("day"))
+                row["stale_after"] = float(row.get("generated_at") or 0) + self.freshness_seconds(row.get("day"), snap or {})
+            except Exception:
+                pass
         return {
             "ok":True,
-            "version":"4.7.1",
+            "version":"4.7.5",
             "today":today,
             "builds":self.builds,
             "cacheHits":self.hits,
@@ -424,8 +496,10 @@ class DayStateEngine:
             "queue":queue[:25],
             "registryEvents":self.registry_events,
             "registryRevision":registry.revision(),
+            "prewarmQueued":self.prewarm_queued,
+            "prewarmBuilt":self.prewarm_built,
             "lastError":self.last_error,
-            "snapshots":self.store.status(31),
+            "snapshots":snapshots,
             "focusDates":[day for day,until in self.focus_dates.items() if until>now],
         }
 
@@ -434,6 +508,7 @@ class DayStateEngine:
         today = datetime.strptime(self.today(), "%Y-%m-%d").date()
         for delta in (-1,0,1,2):
             self.enqueue((today + timedelta(days=delta)).isoformat(), priority=(delta in (0,-1)))
+        self.next_today_refresh = time.time()
 
         while self.running:
             now = time.time()
@@ -443,8 +518,12 @@ class DayStateEngine:
                 else:
                     self.enqueue(day, priority=True)
 
-            # Keep live/today snapshots continuously hot.
-            self.enqueue(self.today(), priority=True)
+            # v4.7.5 fairness: today's snapshot gets a timed refresh slot instead
+            # of being appended to the front on every loop. This lets tournament
+            # prewarm dates actually drain from the queue.
+            if now >= self.next_today_refresh:
+                self.enqueue(self.today(), priority=True)
+                self.next_today_refresh = now + self.HOT_TODAY_SECONDS
 
             day = None
             with self.lock:
@@ -454,15 +533,15 @@ class DayStateEngine:
             if day:
                 try:
                     self.get(day, force=True)
+                    if day != self.today():
+                        self.prewarm_built += 1
                     self.last_error = ""
                 except Exception as exc:
                     self.last_error = f"{type(exc).__name__}: {exc}"
-                # Live/current day refreshes more aggressively.
-                delay = 2 if day == self.today() else 0.1
-                time.sleep(delay)
+                time.sleep(0.15 if day != self.today() else 0.5)
                 continue
 
-            time.sleep(2)
+            time.sleep(1)
 
     def serve_day_state(self, handler, parsed):
         qs = parse_qs(parsed.query)
@@ -528,7 +607,16 @@ class DayStateEngine:
         except Exception:
             return False
         if payload is None:
-            return False
+            # The fallback route is allowed to wait for the canonical Day State
+            # build, but build() is serialized per date so it cannot duplicate a
+            # background worker calculation. The completed snapshot is persisted
+            # for every later ribbon visit.
+            try:
+                payload = self.get(day, allow_build=True)
+                payload = dict(payload)
+                payload["cache"] = {**(payload.get("cache") or {}), "state":"COLD_FALLBACK_REBUILT"}
+            except Exception:
+                return False
 
         state = str((payload.get("cache") or {}).get("state") or "READY")
         if state == "STALE":
@@ -552,7 +640,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.4",
+                    "engineVersion":"4.7.5",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},

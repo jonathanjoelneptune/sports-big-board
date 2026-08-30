@@ -12,6 +12,8 @@ REG_UI=(ROOT/"architecture"/"competition-registry-projection.js").read_text(enco
 EFFICIENCY=(ROOT/"architecture"/"efficiency-certification.js").read_text(encoding="utf-8")
 BROKER=(ROOT/"architecture"/"request-broker.js").read_text(encoding="utf-8")
 DATE_COORD=(ROOT/"architecture"/"date-transition-coordinator.js").read_text(encoding="utf-8")
+OPERATOR_LOADER=(ROOT/"architecture"/"operator-module-loader.js").read_text(encoding="utf-8")
+HIST_MEDIA=(ROOT/"architecture"/"historical-media-v4610.js").read_text(encoding="utf-8")
 VERIFY=(ROOT/"VERIFY.sh").read_text(encoding="utf-8")
 
 
@@ -34,11 +36,16 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertNotIn("new MutationObserver",REG_UI)
         self.assertNotIn(".observe(document.documentElement",REG_UI)
 
-    def test_day_state_http_reads_do_not_build_on_request_thread(self):
-        serve=DAY_BACKEND[DAY_BACKEND.index("def serve_day_state"):DAY_BACKEND.index("def engine()")]
-        self.assertGreaterEqual(serve.count("allow_build=False"),2)
-        self.assertIn("COLD_WARMING",serve)
-        self.assertIn("STALE_REFRESHING",serve)
+    def test_day_state_endpoint_is_nonblocking_and_cold_ribbon_build_is_serialized(self):
+        day_read=DAY_BACKEND[DAY_BACKEND.index("def serve_day_state"):DAY_BACKEND.index("def serve_ribbon")]
+        ribbon=DAY_BACKEND[DAY_BACKEND.index("def serve_ribbon"):DAY_BACKEND.index("def engine()")]
+        self.assertIn("allow_build=False",day_read)
+        self.assertIn("COLD_WARMING",day_read)
+        self.assertIn("STALE_REFRESHING",day_read)
+        self.assertIn("allow_build=False",ribbon)
+        self.assertIn("allow_build=True",ribbon)
+        self.assertIn("COLD_FALLBACK_REBUILT",ribbon)
+        self.assertIn("self.build_locks",DAY_BACKEND)
 
     def test_browser_day_state_has_bounded_fallback(self):
         self.assertIn("AbortController",DAY_UI)
@@ -97,6 +104,34 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("supersededAborts",EFFICIENCY)
         self.assertNotIn("originalFetch = window.fetch.bind(window)",EFFICIENCY)
 
+    def test_enrichment_firewall_keeps_expensive_work_out_of_first_paint(self):
+        self.assertIn("Enrichment Firewall",BROKER)
+        self.assertIn("deferred-abort",BROKER)
+        self.assertIn("deferred-release",BROKER)
+        self.assertIn("ON_DEMAND",BROKER)
+        self.assertIn("IDLE_ENRICHMENT",BROKER)
+        self.assertNotIn("fetch(`/api/history/discovery",DATE_COORD)
+
+    def test_operator_stack_is_lazy_not_normal_big_board_startup(self):
+        self.assertIn(f"architecture/operator-module-loader.js?v={VERSION}",INDEX)
+        self.assertNotIn(f'<script src="architecture/competition-builder.js?v={VERSION}"></script>',INDEX)
+        self.assertNotIn(f'<script src="architecture/competition-builder-v4611.js?v={VERSION}"></script>',INDEX)
+        self.assertNotIn(f'<script src="architecture/competition-builder-v4612.js?v={VERSION}"></script>',INDEX)
+        self.assertNotIn(f'<script src="architecture/competition-builder-v4613.js?v={VERSION}"></script>',INDEX)
+        self.assertIn("window.SBB_OPERATOR_MODULES",OPERATOR_LOADER)
+        self.assertNotIn("new MutationObserver",OPERATOR_LOADER)
+
+    def test_day_state_shell_transition_bypasses_legacy_media_barrier(self):
+        self.assertIn("dayStateFirstPaint",HIST_MEDIA)
+        self.assertIn("__sbbOriginal=original.setDate",HIST_MEDIA)
+        self.assertIn("unwrapSetter",DATE_COORD)
+
+    def test_special_event_history_is_prewarmer_enrolled(self):
+        self.assertIn("HISTORICAL_COMPLETE_SECONDS",DAY_BACKEND)
+        self.assertIn('if typ == "SPECIAL_EVENT"',DAY_BACKEND)
+        self.assertIn("prewarm_queued",DAY_BACKEND)
+        self.assertIn("v4.7.5 fairness",DAY_BACKEND)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -121,6 +156,7 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "node tests/test_v447_poisoned_player_containment_runtime.js",
             "node tests/test_v473_efficiency_runtime.js",
             "node tests/test_v474_efficiency_remediation_runtime.js",
+            "node tests/test_v475_enrichment_firewall_runtime.js",
         )
         for command in required:
             self.assertIn(command,VERIFY)

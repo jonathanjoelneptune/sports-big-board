@@ -1,0 +1,45 @@
+Sports Big Board v4.7.5 — Enrichment Firewall + Warm Historical State
+
+EFFICIENCY GOAL
+Ordinary ribbon browsing may request only first-paint state. Expensive enrichment,
+operator tooling, provider backfill and media discovery are not date-change work.
+
+KEY CHANGES
+1. Enrichment Firewall
+   - FIRST_PAINT: /api/day-state, /api/history/ribbon, status
+   - SHARED_STATE: registry/catalog/editorial with longer TTL reuse
+   - ON_DEMAND: Game Center, Competition Builder media, rapid-team-videos
+   - IDLE_ENRICHMENT: roundups, discovery, historical soccer/provider schedule,
+     Competition Builder schedule
+   - expensive work is deferred for the first 8 seconds of a date generation and
+     canceled entirely if the user moves to another date
+
+2. Operator Module Loader
+   - Competition Builder + v4611/v4612/v4613 + special-event media audit are no
+     longer normal startup scripts
+   - Special Events remain available from Registry Projection + Day State
+   - operator modules load only when Add League/Add Special Event or Historical
+     Database Audit is actually used
+
+3. Date Transition Coordinator
+   - clears stale selected Game Center event when date changes
+   - unwraps legacy date wrappers and performs a pure load:false shell transition
+   - no automatic browser historical discovery/media search
+   - roundups wait 10 stable seconds and are skipped when inventory is complete
+
+4. Historical Media Barrier
+   - load:false/dayStateFirstPaint does not create an unfinished legacy barrier
+   - explicit legacy database-before-search behavior remains intact
+
+5. Warm Historical State
+   - one build mutex per date collapses worker + cold-fallback duplication
+   - cold /api/history/ribbon fallback produces and persists the canonical Day State
+   - today's timed refresh no longer starves queued special-event dates
+   - SPECIAL_EVENT schedules enqueue all dates for prewarm
+   - complete historical snapshots stay warm for 24 hours
+
+6. Efficiency Report
+   - launch probe attaches immediately instead of waiting for DOMContentLoaded
+   - deferred/released/aborted enrichment is reported
+   - operator module lazy/loaded status is reported
+   - Date Transition first-paint source is reported

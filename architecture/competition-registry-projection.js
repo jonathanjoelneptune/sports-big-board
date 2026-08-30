@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.4 — Frontend Competition Projection.
+/* Sports Big Board v4.7.5 — Frontend Competition Projection.
    Backend Competition Registry 2.0 is authoritative for existence. Competition
    Builder remains the richer editor/catalog. The browser merges both sources,
    persists the last good dynamic projection, and never hides Special Events just
@@ -6,9 +6,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_FRONTEND_REGISTRY?.version==='4.7.4')return;
+  if(window.SBB_FRONTEND_REGISTRY?.version==='4.7.5')return;
 
-  const VERSION='4.7.4';
+  const VERSION='4.7.5';
   const STORAGE_KEY='sbb.frontendCompetitionProjection.v1';
   const clean=v=>String(v??'').trim();
   const upper=v=>clean(v).toUpperCase();
@@ -137,7 +137,7 @@
     };
   }
 
-  async function json(path,timeoutMs=1400){
+  async function json(path,timeoutMs=2500){
     const controller=typeof AbortController!=='undefined'?new AbortController():null;
     const timer=controller?setTimeout(()=>controller.abort(),timeoutMs):null;
     try{
@@ -349,7 +349,7 @@
   function ensureDevCard(){
     if(document.getElementById('sbbCompetitionBuilderCard'))return true;
     const builder=window.SBB_COMPETITION_BUILDER;
-    if(!builder?.openLeague||!builder?.openSpecialEvent)return false;
+    if(!builder?.openLeague||!builder?.openSpecialEvent)return !!document.getElementById('sbbCompetitionBuilderLazyCard');
     const anchor=document.querySelector('.milestone-launch-card')||document.querySelector('.settings-card:last-of-type');
     if(!anchor)return false;
 
@@ -398,11 +398,11 @@
     refresh().catch(()=>{});
     window.addEventListener('focus',()=>refresh({force:true}).catch(()=>{}));
     document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh({force:true}).catch(()=>{});});
-    setInterval(()=>refresh().catch(()=>{}),5000);
+    setInterval(()=>refresh().catch(()=>{}),30000);
 
     // Settings is created lazily. This narrow timer is enough to install the Dev
     // card without watching unrelated DOM mutations anywhere else on the page.
-    setInterval(ensureDevCard,1500);
+    setInterval(()=>{if(window.SBB_COMPETITION_BUILDER)ensureDevCard();},5000);
   }
 
   window.SBB_FRONTEND_REGISTRY=Object.freeze({

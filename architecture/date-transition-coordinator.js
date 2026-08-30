@@ -1,12 +1,13 @@
-/* Sports Big Board v4.7.4 — Date Transition Coordinator.
-   Day State owns first paint. Legacy history reconstruction is fallback-only.
-   Roundups/media enrichment never blocks the ribbon date transition.
+/* Sports Big Board v4.7.5 — Date Transition Coordinator.
+   Day State owns first paint. Legacy history is fallback-only. Browser discovery
+   is not an automatic side effect of moving the ribbon; enrichment is deferred
+   until the selected date is stable and only when canonical inventory is incomplete.
 */
 (() => {
   'use strict';
-  if(window.SBB_DATE_TRANSITIONS?.version==='4.7.4')return;
+  if(window.SBB_DATE_TRANSITIONS?.version==='4.7.5')return;
 
-  const VERSION='4.7.4';
+  const VERSION='4.7.5';
   const state={
     generation:0,
     activeDate:'',
@@ -15,6 +16,8 @@
     lastElapsedMs:0,
     fallbacks:0,
     enrichments:0,
+    enrichmentSkipped:0,
+    staleSelectionsCleared:0,
   };
 
   const clean=v=>String(v??'').trim();
@@ -31,35 +34,61 @@
     return d;
   }
 
-  function idle(fn,timeout=350){
-    if(typeof requestIdleCallback==='function'){
-      requestIdleCallback(()=>fn(),{timeout});
-    }else{
-      setTimeout(fn,80);
+  function unwrapSetter(fn){
+    const seen=new Set();
+    let current=fn;
+    while(current?.__sbbOriginal && !seen.has(current)){
+      seen.add(current);
+      current=current.__sbbOriginal;
     }
+    return current||fn;
   }
 
-  function scheduleEnrichment(date,generation){
-    idle(()=>{
+  function eventDate(event){
+    return day(
+      event?.date ||
+      event?.scheduledAt ||
+      event?.startTime ||
+      event?.startDate ||
+      event?.__sbbDate
+    );
+  }
+
+  function clearStaleSelection(date){
+    try{
+      const selected=window.SBB_SELECTED_EVENT?.get?.();
+      if(selected && eventDate(selected) && eventDate(selected)!==date){
+        window.SBB_SELECTED_EVENT?.clear?.({
+          reason:'date-change',
+          source:'date-transition-v475'
+        });
+        state.staleSelectionsCleared+=1;
+      }
+    }catch(_){}
+  }
+
+  function scheduleEnrichment(date,generation,payload){
+    const complete=!!payload?.scoreInventoryComplete;
+    const games=Number(payload?.summary?.games||payload?.scoreGameCount||0);
+    if(complete && games>0){
+      state.enrichmentSkipped+=1;
+      return;
+    }
+
+    // Roundups are editorial enrichment only. Give first paint ten quiet seconds
+    // and abandon the work completely if the user moves to another date.
+    setTimeout(()=>{
       if(generation!==state.generation || date!==state.activeDate)return;
       state.enrichments+=1;
-
-      // Roundups are useful, but they are not a prerequisite for score ribbon paint.
       try{
         if(typeof loadRoundupsForDate==='function'){
           Promise.resolve(loadRoundupsForDate(date)).catch(()=>{});
         }
       }catch(_){}
+    },10000);
 
-      // Discovery is background-only. Request Broker coalesces any other consumer.
-      if(date<today()){
-        try{
-          fetch(`/api/history/discovery?date=${encodeURIComponent(date)}`,{
-            cache:'no-store'
-          }).catch(()=>{});
-        }catch(_){}
-      }
-    });
+    // Historical discovery/media search is intentionally NOT launched here.
+    // Discovery is owned by backend workers or explicit user/operator actions.
   }
 
   function install(){
@@ -67,9 +96,7 @@
     if(window.setScoreBrowseDate.__sbbDateCoordinator)return true;
 
     const wrappedBefore=window.setScoreBrowseDate;
-    // day-state.js wraps the app setter and exposes the app setter here.
-    // Bypass that wrapper so there is exactly one Day State request per transition.
-    const shellSetter=wrappedBefore.__sbbOriginal || wrappedBefore;
+    const shellSetter=unwrapSetter(wrappedBefore);
 
     const ribbonWrapped=window.hydrateHistoricalRibbonFromCatalog;
     const legacyRibbonFallback=
@@ -86,12 +113,13 @@
       state.firstPaintSource='';
       const started=now();
 
+      clearStaleSelection(date);
       window.SBB_REQUEST_BROKER?.beginDate?.(date,generation);
 
-      // Update selected date, labels and existing cached score rows immediately.
-      // Crucially: load:false prevents the old setter from blocking on roundups.
+      // Pure shell update: never let the old score-date path start provider,
+      // roundup, custom-media or discovery work before Day State first paint.
       const shellPromise=Promise.resolve(
-        shellSetter(date,{...options,load:false})
+        shellSetter(date,{...options,load:false,dayStateFirstPaint:true})
       ).catch(()=>false);
 
       state.currentPromise=(async()=>{
@@ -112,7 +140,7 @@
           try{
             payload=await window.SBB_DAY_STATE?.load?.(date,{
               force:false,
-              timeoutMs:700
+              timeoutMs:750
             });
             if(payload)state.firstPaintSource='DAY_STATE';
           }catch(_){}
@@ -120,11 +148,12 @@
 
         if(generation!==state.generation)return true;
 
-        // Historical fallback is now single-purpose: ribbon rows + media plans only.
-        // Do not run the old ribbon+roundups+discovery aggregate path for first paint.
+        // /api/history/ribbon is now the canonical cold fallback. The backend
+        // serializes the Day State build so it cannot race a second equivalent
+        // historical calculation in the worker.
         if(!payload && date<today() && typeof legacyRibbonFallback==='function'){
           state.fallbacks+=1;
-          state.firstPaintSource='LEGACY_RIBBON_FALLBACK';
+          state.firstPaintSource='COLD_CANONICAL_RIBBON';
           try{await legacyRibbonFallback(date);}catch(_){}
         }else if(!payload){
           state.firstPaintSource='LIVE_OR_EXISTING_CACHE';
@@ -133,7 +162,7 @@
         if(generation===state.generation){
           try{window.renderScoresFromMatchesCombined?.(false);}catch(_){}
           try{window.updateScoreDayPager?.();}catch(_){}
-          scheduleEnrichment(date,generation);
+          scheduleEnrichment(date,generation,payload);
         }
 
         state.lastElapsedMs=Math.round((now()-started)*10)/10;
@@ -149,14 +178,11 @@
     transition.__sbbOriginal=shellSetter;
     transition.__sbbLegacyWrapped=wrappedBefore;
     window.setScoreBrowseDate=transition;
-
     return true;
   }
 
   function boot(){
     install();
-    // app.js and day-state.js are loaded before this module, but retain a narrow
-    // retry for unusual deferred-script environments. No document observer.
     const timer=setInterval(()=>{
       if(install())clearInterval(timer);
     },250);
@@ -175,6 +201,8 @@
       lastElapsedMs:state.lastElapsedMs,
       fallbacks:state.fallbacks,
       enrichments:state.enrichments,
+      enrichmentSkipped:state.enrichmentSkipped,
+      staleSelectionsCleared:state.staleSelectionsCleared,
     })
   });
 

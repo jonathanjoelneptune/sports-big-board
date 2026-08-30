@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.4 — Efficiency Certification.
+/* Sports Big Board v4.7.5 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.4') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.5') return;
 
-  const VERSION = '4.7.4';
+  const VERSION = '4.7.5';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -30,6 +30,7 @@
 
   const state = {
     installedAt: performance.now(),
+    launchParsedMs: Number(window.__SBB_LAUNCH_CONTROL_PARSED_AT)||null,
     launchInteractiveMs: null,
     launchClickAt: null,
     startToBoardMs: null,
@@ -40,6 +41,9 @@
     brokerCallerEvents: 0,
     brokerCacheHits: 0,
     brokerSupersededAborts: 0,
+    brokerDeferred: 0,
+    brokerDeferredAborts: 0,
+    brokerDeferredReleases: 0,
     longTasks: [],
     domSamples: [],
     heapSamples: [],
@@ -160,6 +164,9 @@
       state.brokerSupersededAborts+=1;
       return;
     }
+    if(d.type==='deferred'){state.brokerDeferred+=1;return;}
+    if(d.type==='deferred-abort'){state.brokerDeferredAborts+=1;return;}
+    if(d.type==='deferred-release'){state.brokerDeferredReleases+=1;return;}
 
     if(d.type==='network-finish' || d.type==='network-error'){
       const row={
@@ -249,9 +256,9 @@
     },{capture:true});
     return true;
   }
-  if (document.readyState === 'loading') {
+  if(!installLaunchProbe() && document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded',installLaunchProbe,{once:true});
-  } else installLaunchProbe();
+  }
   setInterval(() => { if (state.launchInteractiveMs == null) installLaunchProbe(); },1000);
 
   // ----------------------------------------------------------
@@ -411,6 +418,7 @@
 
     return {
       durationMs:round(durationMs),
+      launchParsedMs:state.launchParsedMs,
       launchInteractiveMs:state.launchInteractiveMs,
       startToBoardMs:state.startToBoardMs,
       firstScorePaintMs:state.firstScorePaintMs,
@@ -429,6 +437,9 @@
       api5xx:api.filter(x=>x.status>=500).length,
       apiErrors:api.filter(x=>x.status===0&&!x.aborted).length,
       supersededAborts:Math.max(0,state.brokerSupersededAborts-(baseline.supersededAborts||0)),
+      deferred:Math.max(0,state.brokerDeferred-(baseline.deferred||0)),
+      deferredAborts:Math.max(0,state.brokerDeferredAborts-(baseline.deferredAborts||0)),
+      deferredReleases:Math.max(0,state.brokerDeferredReleases-(baseline.deferredReleases||0)),
       duplicateConcurrent:Math.max(0,state.duplicateConcurrent-baseline.duplicateConcurrent),
       cacheHits:Math.max(0,state.brokerCacheHits-(baseline.cacheHits||0)),
       networkPerDateMax:Math.max(0,...switches.map(x=>Number(x.requestCount||0))),
@@ -482,6 +493,8 @@
       '',
       `RESTORE=${m.restoreOk?'PASS':'FAIL'}  FILTER_FAILURES=${m.filterFailures}  PROBE_FAILURES=${m.probeFailures}`,
       `API_ERRORS=${m.apiErrors}  SUPERSEDED_ABORTS=${m.supersededAborts}  CACHE_HITS=${m.cacheHits}`,
+      `DEFERRED=${m.deferred}  DEFERRED_ABORTS=${m.deferredAborts}  DEFERRED_RELEASES=${m.deferredReleases}`,
+      `OPERATOR_MODULES=${window.SBB_OPERATOR_MODULES?.snapshot?.().loaded?'LOADED':'LAZY'}  FIRST_PAINT=${window.SBB_DATE_TRANSITIONS?.snapshot?.().firstPaintSource||'—'}`,
       `LONG_TASK_TOTAL=${m.longTaskTotal}ms  MAX_NETWORK_REQ/DATE=${m.networkPerDateMax}`,
       '',
       'SLOWEST ENDPOINTS',
@@ -520,6 +533,9 @@
       duplicateConcurrent:state.duplicateConcurrent,
       cacheHits:state.brokerCacheHits,
       supersededAborts:state.brokerSupersededAborts,
+      deferred:state.brokerDeferred,
+      deferredAborts:state.brokerDeferredAborts,
+      deferredReleases:state.brokerDeferredReleases,
     };
     const started=now();
     state.currentRunId=runId;
@@ -599,6 +615,9 @@
     state.brokerCallerEvents=0;
     state.brokerCacheHits=0;
     state.brokerSupersededAborts=0;
+    state.brokerDeferred=0;
+    state.brokerDeferredAborts=0;
+    state.brokerDeferredReleases=0;
     state.lastReport=null;
     sampleResources();
     renderCard();
@@ -608,12 +627,15 @@
     return {
       version:VERSION,
       running:state.running,
+      launchParsedMs:state.launchParsedMs,
       launchInteractiveMs:state.launchInteractiveMs,
       startToBoardMs:state.startToBoardMs,
       firstScorePaintMs:state.firstScorePaintMs,
       requestCount:state.requests.length,
       duplicateConcurrent:state.duplicateConcurrent,
       broker:window.SBB_REQUEST_BROKER?.snapshot?.()||null,
+      dateTransition:window.SBB_DATE_TRANSITIONS?.snapshot?.()||null,
+      operatorModules:window.SBB_OPERATOR_MODULES?.snapshot?.()||null,
       longTaskCount:state.longTasks.length,
       domNodes:nodeCount(),
       heapBytes:heapBytes(),

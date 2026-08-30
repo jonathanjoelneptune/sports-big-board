@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.4",
+  "release": "4.7.5",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -192,7 +192,20 @@
         "Day State operator-view installation uses a narrow retry timer and may not install a document-wide MutationObserver.",
         "Efficiency Certification consumes Request Broker network telemetry rather than wrapping window.fetch a second time, and distinguishes network requests, coalesced callers, cache hits, superseded aborts, and endpoint p95/max latency.",
         "Efficiency Certification reports maximum network requests per date and the ten slowest API endpoint families so request storms and backend hotspots are directly attributable.",
-        "tests/test_v474_efficiency_remediation_runtime.js is a blocking browser contract for Request Broker, Date Transition Coordinator, non-blocking enrichment, and broker-native efficiency telemetry."
+        "tests/test_v474_efficiency_remediation_runtime.js is a blocking browser contract for Request Broker, Date Transition Coordinator, non-blocking enrichment, and broker-native efficiency telemetry.",
+        "Enrichment Firewall classifies API reads into FIRST_PAINT, SHARED_STATE, ON_DEMAND, IDLE_ENRICHMENT, LIVE_PROVIDER, or NORMAL and defers expensive non-first-paint work during the active ribbon transition quiet window.",
+        "Competition Builder schedule/media, rapid-team-videos, historical discovery, historical roundups, historical soccer schedules, and background Game Center reads may not start transport work during the first-paint quiet window unless they are explicit operator/on-demand work.",
+        "Competition Registry and Competition Builder catalog are shared application state with longer Request Broker TTLs rather than five-second transport polling.",
+        "Competition Builder, builder overlays, durable association statistics, and special-event media audit are loaded by Operator Module Loader only when the user opens builder/operator surfaces; they are not normal Big Board startup modules.",
+        "Special Events remain available while operator modules are unloaded because Frontend Competition Projection and backend Competition Registry 2.0 remain the normal competition-existence path.",
+        "Date Transition Coordinator does not automatically launch historical discovery/media search after a ribbon change and clears a selected event that belongs to the prior date.",
+        "Day State first-paint transitions bypass the legacy historical-media barrier when load:false/dayStateFirstPaint is intentional, while explicit legacy loads retain the database-before-search barrier.",
+        "Day State serializes snapshot builds per date so a cold ribbon fallback and background prewarmer cannot perform the same canonical historical calculation twice.",
+        "Day State worker refreshes today on a timed cadence rather than pushing today to the front on every loop, allowing registered special-event prewarm dates to drain.",
+        "Registered SPECIAL_EVENT schedules enqueue all canonical event dates for Day State background prewarm; data-driven league schedules prewarm only the near-live window.",
+        "Completed historical Day State snapshots with complete score inventory have a 24-hour freshness window, while incomplete historical snapshots refresh sooner.",
+        "Efficiency Certification reports deferred enrichment, deferred abort/release counts, lazy/loaded operator state, and the Date Transition first-paint source.",
+        "tests/test_v475_enrichment_firewall_runtime.js is a blocking browser contract for lazy operator modules, Enrichment Firewall, canonical cold builds, and special-event Day State prewarming."
       ]
     },
     "tier2": {
@@ -243,6 +256,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.4 remediates the v4.7.3 efficiency findings with a single GET Request Broker, generation-owned date transitions, Day State-first ribbon paint, fallback-only legacy history loading, deferred roundups/discovery, removal of the remaining global Day State DOM observer, and broker-native efficiency telemetry.",
+  "baseline": "v4.7.5 adds an Enrichment Firewall and Warm Historical State layer: operator-only Competition Builder modules are lazy, ordinary date changes are Day State/ribbon only, automatic browser discovery is removed, shared registry/catalog reads are long-lived, cold historical builds are serialized, and special-event dates prewarm without today's refresh starving the background queue.",
   "status": "IN_PROGRESS"
 }
