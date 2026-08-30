@@ -18,6 +18,7 @@ FUTURE_DATES=(ROOT/"architecture"/"future-date-navigation.js").read_text(encodin
 RENDER_PIPELINE=(ROOT/"architecture"/"render-pipeline.js").read_text(encoding="utf-8")
 CARD_CACHE=(ROOT/"architecture"/"card-build-cache.js").read_text(encoding="utf-8")
 NAVIGATION_UI=(ROOT/"architecture"/"navigation-ui.js").read_text(encoding="utf-8")
+SCORE_DATE_STORE=(ROOT/"architecture"/"score-date-store.js").read_text(encoding="utf-8")
 VERIFY=(ROOT/"VERIFY.sh").read_text(encoding="utf-8")
 
 
@@ -97,7 +98,9 @@ class ReleaseBehaviorGate(unittest.TestCase):
     def test_date_transition_coordinator_makes_day_state_primary(self):
         self.assertIn("window.SBB_DATE_TRANSITIONS",DATE_COORD)
         self.assertIn("load:false",DATE_COORD)
-        self.assertIn("__sbbFallback",DATE_COORD)
+        self.assertIn("interactive date navigation is Day State-only",DATE_COORD)
+        self.assertNotIn("legacyRibbonFallback",DATE_COORD)
+        self.assertNotIn("COLD_CANONICAL_RIBBON",DATE_COORD)
         self.assertIn("scheduleEnrichment",DATE_COORD)
         self.assertIn("SBB_REQUEST_BROKER?.beginDate",DATE_COORD)
 
@@ -223,6 +226,30 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("thanksgiving",EFFICIENCY)
         self.assertIn("History nav p95",EFFICIENCY)
 
+    def test_future_dates_are_preserved_by_score_date_store(self):
+        self.assertIn("do not clamp future scheduled dates to today",SCORE_DATE_STORE)
+        self.assertIn("return raw;",SCORE_DATE_STORE)
+        self.assertNotIn("return raw>localDateISO(0)?localDateISO(0):raw",SCORE_DATE_STORE)
+
+    def test_interactive_history_first_paint_is_day_state_only(self):
+        self.assertIn("interactive date navigation is Day State-only",DATE_COORD)
+        self.assertNotIn("legacyRibbonFallback",DATE_COORD)
+        self.assertNotIn("COLD_CANONICAL_RIBBON",DATE_COORD)
+        self.assertIn("COLD_THIN_CATALOG",DAY_BACKEND)
+
+    def test_cold_history_thin_snapshot_excludes_media_enrichment(self):
+        self.assertIn("def _build_thin_catalog_snapshot",DAY_BACKEND)
+        self.assertIn('"eventPlans":{}',DAY_BACKEND)
+        self.assertIn("thinSnapshot",DAY_BACKEND)
+        self.assertIn("thinProbe",DAY_BACKEND)
+
+    def test_efficiency_normalizes_long_tasks_and_profiles_helpers(self):
+        self.assertIn("Long tasks / 10 actions",EFFICIENCY)
+        self.assertIn("Long-task ms / action",EFFICIENCY)
+        self.assertIn("Cold history thin p95",EFFICIENCY)
+        self.assertIn("HISTORY_RIBBON_CALLS=",EFFICIENCY)
+        self.assertIn("CARD_HELPERS=",EFFICIENCY)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -252,6 +279,8 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "node tests/test_v477_first_paint_render_consolidation_runtime.js",
             "node tests/test_v478_future_projection_card_cache_runtime.js",
             "node tests/test_v479_navigation_history_runtime.js",
+            "node tests/test_v4710_cold_history_future_store_runtime.js",
+            "python3 -m unittest tests.test_v4710_cold_history_future_store",
             "python3 -m unittest tests.test_v478_future_projection",
         )
         for command in required:

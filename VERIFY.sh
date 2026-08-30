@@ -54,6 +54,8 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v477_first_paint_render_consolidation_runtime.js
   node tests/test_v478_future_projection_card_cache_runtime.js
   node tests/test_v479_navigation_history_runtime.js
+  node tests/test_v4710_cold_history_future_store_runtime.js
+  python3 -m unittest tests.test_v4710_cold_history_future_store
   python3 -m unittest tests.test_v478_future_projection
   node tests/test_v448_recap_identity_runtime.js
   node tests/test_v448_recap_switch_runtime.js

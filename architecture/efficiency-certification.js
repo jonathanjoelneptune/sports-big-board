@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.9 — Efficiency Certification.
+/* Sports Big Board v4.7.10 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.9') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.10') return;
 
-  const VERSION = '4.7.9';
+  const VERSION = '4.7.10';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -21,7 +21,9 @@
     duplicateConcurrent: {pass:2,    warn:10},
     networkPerDateMax:    {pass:6,    warn:12},
     longTaskMaxMs:       {pass:150,  warn:300},
-    longTaskCount:       {pass:3,    warn:10},
+    longTasksPer10:      {pass:4,    warn:8},
+    longTaskMsPerNav:    {pass:80,   warn:160},
+    coldThinP95Ms:       {pass:300,  warn:600},
     domGrowthPct:        {pass:5,    warn:15},
     heapGrowthPct:       {pass:15,   warn:30},
     timeouts:            {pass:0,    warn:0},
@@ -157,6 +159,9 @@
       metrics.timeouts > 0 ||
       metrics.historyNavTimeouts > 0 ||
       metrics.historyNavWrongDate > 0 ||
+      metrics.coldThinFailures > 0 ||
+      gradeLow(metrics.coldThinP95,THRESHOLDS.coldThinP95Ms)==='FAIL' ||
+      metrics.interactiveHistoryRibbonCalls > 0 ||
       metrics.api5xx > 0 ||
       metrics.restoreOk === false ||
       gradeLow(metrics.longTaskMax,THRESHOLDS.longTaskMaxMs)==='FAIL'
@@ -170,8 +175,10 @@
       gradeLow(metrics.networkPerDateMax,THRESHOLDS.networkPerDateMax),
       gradeLow(metrics.historyNavP95,THRESHOLDS.historyNavP95Ms),
       gradeLow(metrics.historyNavMax,THRESHOLDS.historyNavMaxMs),
+      gradeLow(metrics.coldThinP95,THRESHOLDS.coldThinP95Ms),
       gradeLow(metrics.longTaskMax,THRESHOLDS.longTaskMaxMs),
-      gradeLow(metrics.longTaskCount,THRESHOLDS.longTaskCount),
+      gradeLow(metrics.longTasksPer10,THRESHOLDS.longTasksPer10),
+      gradeLow(metrics.longTaskMsPerNav,THRESHOLDS.longTaskMsPerNav),
       gradeLow(metrics.domGrowthPct,THRESHOLDS.domGrowthPct,{optional:true}),
       gradeLow(metrics.heapGrowthPct,THRESHOLDS.heapGrowthPct,{optional:true}),
     ];
@@ -241,6 +248,7 @@
         cardCacheHits:Number(d.cardCacheHits)||0,
         cardCacheMisses:Number(d.cardCacheMisses)||0,
         cardHelperMs:Number(d.cardHelperMs)||0,
+        cardHelpers:d.cardHelpers||{},
         stagedNodes:Number(d.stagedNodes)||0,generation:Number(d.generation)||0,
         generationCommit:!!d.generationCommit,
         beforeNodes:Number(d.beforeNodes)||0,afterNodes:Number(d.afterNodes)||0
@@ -601,6 +609,29 @@
     return rows;
   }
 
+  async function probeColdThinHistory(dates){
+    const rows=[];
+    for(const date of (dates||[]).slice(0,4)){
+      const started=now();
+      try{
+        const response=await fetch(`/api/day-state?date=${encodeURIComponent(date)}&thinProbe=1`,{
+          cache:'no-store',headers:{'X-SBB-Efficiency-Run':state.currentRunId||''}
+        });
+        const payload=await response.json().catch(()=>({}));
+        rows.push({
+          date,ok:response.ok&&!payload?.pending,
+          elapsedMs:round(now()-started),
+          games:Number(payload?.summary?.games||0),
+          state:String(payload?.cache?.state||'')
+        });
+      }catch(err){
+        rows.push({date,ok:false,elapsedMs:round(now()-started),games:0,error:clean(err?.message||err)});
+      }
+      await sleep(35);
+    }
+    return rows;
+  }
+
   function candidateFilters(mode) {
     const ids=[...document.querySelectorAll('#scoreFilters [data-score-filter]')]
       .map(x=>upper(x.dataset.scoreFilter)).filter(Boolean);
@@ -633,7 +664,7 @@
     } catch (_) {}
   }
 
-  function makeMetrics({runId,switches,historyNavigation,filters,probes,baseline,restoreOk,durationMs,memoryAfter}) {
+  function makeMetrics({runId,switches,historyNavigation,coldThin,filters,probes,baseline,restoreOk,durationMs,memoryAfter}) {
     const reqs=requestsForRun(runId);
     const api=reqs.filter(r=>r.path.startsWith('/api/'));
     const apiMs=api.map(r=>r.durationMs).filter(Number.isFinite);
@@ -656,6 +687,31 @@
     const ribbonMs=switches.filter(x=>x.firstPaintOk).map(x=>x.firstPaintMs);
     const settleMs=switches.filter(x=>x.settled&&Number.isFinite(x.fullSettleMs)).map(x=>x.fullSettleMs);
     const historyMs=(historyNavigation||[]).filter(x=>x.ok).map(x=>x.elapsedMs).filter(Number.isFinite);
+    const coldThinMs=(coldThin||[]).filter(x=>x.ok).map(x=>x.elapsedMs).filter(Number.isFinite);
+    const navigationActions=switches.length+(historyNavigation||[]).length+filters.length;
+    const longTasksPer10=navigationActions>0?(tasks.length/navigationActions)*10:0;
+    const longTaskMsPerNav=navigationActions>0?(tasks.reduce((a,b)=>a+(b.durationMs||0),0)/navigationActions):0;
+
+    const helperAggregate={};
+    for(const row of renderRows){
+      for(const [name,stat] of Object.entries(row.cardHelpers||{})){
+        const slot=helperAggregate[name]||(helperAggregate[name]={hits:0,misses:0,totalMs:0,samples:[]});
+        slot.hits+=Number(stat?.hits||0);
+        slot.misses+=Number(stat?.misses||0);
+        const ms=Number(stat?.ms||0);
+        slot.totalMs+=ms;
+        if(Number.isFinite(ms))slot.samples.push(ms);
+      }
+    }
+    const cardHelperBreakdown=Object.fromEntries(
+      Object.entries(helperAggregate).map(([name,row])=>[name,{
+        hits:row.hits,
+        misses:row.misses,
+        totalMs:round(row.totalMs),
+        p95Ms:round(percentile(row.samples,95))
+      }])
+    );
+
     const cacheStates={};
     for (const row of switches) for (const c of row.cacheStates||[]) cacheStates[c]=(cacheStates[c]||0)+1;
     const heapEnd=Number(memoryAfter?.min);
@@ -686,6 +742,10 @@
       historyArrowLeft:(historyNavigation||[]).filter(x=>x.kind==='LEFT').length,
       historyArrowRight:(historyNavigation||[]).filter(x=>x.kind==='RIGHT').length,
       historyCalendarJumps:(historyNavigation||[]).filter(x=>x.kind==='CALENDAR').length,
+      coldThinCount:(coldThin||[]).length,
+      coldThinP95:round(percentile(coldThinMs,95)),
+      coldThinMax:round(coldThinMs.length?Math.max(...coldThinMs):null),
+      coldThinFailures:(coldThin||[]).filter(x=>!x.ok).length,
       filterSwitches:filters.length,
       filterFailures:filters.filter(x=>!x.ok).length,
       apiRequests:api.length,
@@ -694,6 +754,7 @@
       apiMax:round(apiMs.length?Math.max(...apiMs):null),
       api5xx:api.filter(x=>x.status>=500).length,
       apiErrors:api.filter(x=>x.status===0&&!x.aborted).length,
+      interactiveHistoryRibbonCalls:api.filter(x=>x.path==='/api/history/ribbon').length,
       supersededAborts:Math.max(0,state.brokerSupersededAborts-(baseline.supersededAborts||0)),
       deferred:Math.max(0,state.brokerDeferred-(baseline.deferred||0)),
       deferredAborts:Math.max(0,state.brokerDeferredAborts-(baseline.deferredAborts||0)),
@@ -711,6 +772,7 @@
       cardCacheHits:cacheHits.reduce((a,b)=>a+b,0),
       cardCacheMisses:cacheMisses.reduce((a,b)=>a+b,0),
       cardHelperP95:round(percentile(helperMs,95)),
+      cardHelperBreakdown,
       generationRenderCount:renderRows.filter(x=>x.generationCommit).length,
       renderCoalesced:Math.max(0,Number(window.SBB_RENDER_PIPELINE?.snapshot?.().coalesced||0)-Number(baseline.renderCoalesced||0)),
       renderReasonCounts:renderRows.reduce((acc,row)=>{
@@ -724,6 +786,9 @@
       longTaskCount:tasks.length,
       longTaskMax:round(tasks.length?Math.max(...tasks.map(x=>x.durationMs)):0),
       longTaskTotal:round(tasks.reduce((a,b)=>a+(b.durationMs||0),0)),
+      longTasksPer10:round(longTasksPer10),
+      longTaskMsPerNav:round(longTaskMsPerNav),
+      navigationActions,
       domStart:baseline.dom,
       domEnd,
       domGrowthPct:round(pct(baseline.dom,domEnd)),
@@ -752,7 +817,9 @@
       ['History nav p95',metrics.historyNavP95,'ms',THRESHOLDS.historyNavP95Ms],
       ['History nav max',metrics.historyNavMax,'ms',THRESHOLDS.historyNavMaxMs],
       ['History nav timeouts',metrics.historyNavTimeouts,'',THRESHOLDS.historyNavTimeouts],
-      ['Long tasks >50ms',metrics.longTaskCount,'',THRESHOLDS.longTaskCount],
+      ['Cold history thin p95',metrics.coldThinP95,'ms',THRESHOLDS.coldThinP95Ms],
+      ['Long tasks / 10 actions',metrics.longTasksPer10,'',THRESHOLDS.longTasksPer10],
+      ['Long-task ms / action',metrics.longTaskMsPerNav,'ms',THRESHOLDS.longTaskMsPerNav],
       ['Longest task',metrics.longTaskMax,'ms',THRESHOLDS.longTaskMaxMs],
       ['DOM growth',metrics.domGrowthPct,'%',THRESHOLDS.domGrowthPct,true],
       ['Heap retained (stabilized)',metrics.heapGrowthPct,'%',THRESHOLDS.heapGrowthPct,true],
@@ -777,21 +844,26 @@
       ...rows.map(r=>`${r.grade.padEnd(4)}  ${r.name.padEnd(30)} ${r.value==null?'N/A':r.value}${r.unit}`),
       '',
       `RESTORE=${m.restoreOk?'PASS':'FAIL'}  FILTER_FAILURES=${m.filterFailures}  PROBE_FAILURES=${m.probeFailures}`,
-      `API_ERRORS=${m.apiErrors}  SUPERSEDED_ABORTS=${m.supersededAborts}  CACHE_HITS=${m.cacheHits}`,
+      `API_ERRORS=${m.apiErrors}  HISTORY_RIBBON_CALLS=${m.interactiveHistoryRibbonCalls}  SUPERSEDED_ABORTS=${m.supersededAborts}  CACHE_HITS=${m.cacheHits}`,
       `DEFERRED=${m.deferred}  DEFERRED_ABORTS=${m.deferredAborts}  DEFERRED_RELEASES=${m.deferredReleases}`,
       `OPERATOR_MODULES=${window.SBB_OPERATOR_MODULES?.snapshot?.().loaded?'LOADED':'LAZY'}  FIRST_PAINT=${window.SBB_DATE_TRANSITIONS?.snapshot?.().firstPaintSource||'—'}`,
       `RENDER_COUNT=${m.renderCount}  GENERATION_RENDERS=${m.generationRenderCount}  RENDER_COALESCED=${m.renderCoalesced}`,
       `RENDER_P95=${m.renderP95??'N/A'}ms  CARD_BUILD_P95=${m.cardBuildP95??'N/A'}ms  DOM_COMMIT_P95=${m.domCommitP95??'N/A'}ms  BROWSER_PAINT_P95=${m.browserPaintP95??'N/A'}ms`,
       `CARD_CACHE_HITS=${m.cardCacheHits}  CARD_CACHE_MISSES=${m.cardCacheMisses}  CARD_HELPER_P95=${m.cardHelperP95??'N/A'}ms`,
+      `CARD_HELPERS=${Object.entries(m.cardHelperBreakdown||{}).map(([k,v])=>`${k}:p95=${v.p95Ms??'N/A'}ms/h=${v.hits}/m=${v.misses}`).join(' ')||'none'}`,
       `RENDER_REASONS=${Object.entries(m.renderReasonCounts||{}).map(([k,v])=>`${k}:${v}`).join(' ')||'none'}`,
       `DAY_APPLY_P95=${m.dayApplyP95??'N/A'}ms  SCORE_ROWS_P95=${m.scoreRowsP95??'N/A'}ms  MEDIA_PLANS_P95=${m.mediaPlansP95??'N/A'}ms`,
       `FULL_SETTLE_P95=${m.fullSettleP95??'N/A'}ms  FULL_SETTLE_TIMEOUTS=${m.fullSettleTimeouts}`,
       `MEMORY_SAMPLES=${m.heapSamples}  MEMORY_WINDOW_SPREAD=${m.heapWindowSpreadPct??'N/A'}%  HEAP_POST_MIN=${m.heapEnd??'N/A'}`,
       `HISTORY_LEFT=${m.historyArrowLeft}  HISTORY_RIGHT=${m.historyArrowRight}  CALENDAR_JUMPS=${m.historyCalendarJumps}  HISTORY_MAX_NETWORK=${m.historyNavMaxNetwork}`,
-      `LONG_TASK_TOTAL=${m.longTaskTotal}ms  MAX_NETWORK_REQ/DATE=${m.networkPerDateMax}`,
+      `COLD_THIN_P95=${m.coldThinP95??'N/A'}ms  COLD_THIN_MAX=${m.coldThinMax??'N/A'}ms  COLD_THIN_FAILURES=${m.coldThinFailures}`,
+      `LONG_TASK_COUNT=${m.longTaskCount}  LONG_TASK_TOTAL=${m.longTaskTotal}ms  NAV_ACTIONS=${m.navigationActions}  MAX_NETWORK_REQ/DATE=${m.networkPerDateMax}`,
       '',
       'HISTORICAL NAVIGATION',
       ...((report.historyNavigation||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.kind.padEnd(8)} ${x.from} → ${x.expected} actual=${x.actual} ${x.elapsedMs}ms req=${x.requestCount}`)),
+      '',
+      'COLD HISTORY THIN PROBES',
+      ...((report.coldThin||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.date} ${x.elapsedMs}ms games=${x.games} state=${x.state||'—'}`)),
       '',
       'SLOWEST ENDPOINTS',
       ...((report.slowestEndpoints||[]).map(x=>`${String(x.p95Ms).padStart(7)}ms p95  ${String(x.maxMs).padStart(7)}ms max  n=${String(x.count).padStart(3)}  ${x.path}`)),
@@ -838,7 +910,7 @@
     const started=now();
     state.currentRunId=runId;
     window.__SBB_EFFICIENCY_RUN_ID=runId;
-    const switches=[],historyNavigation=[],filters=[],probes=[];
+    const switches=[],historyNavigation=[],coldThin=[],filters=[],probes=[];
 
     try {
       const launch=document.getElementById('launchScreen');
@@ -857,6 +929,7 @@
       }
 
       historyNavigation.push(...await runHistoricalNavigationSweep(mode));
+      coldThin.push(...await probeColdThinHistory(randomHistoricalDates()));
 
       const filterIds=candidateFilters(mode);
       for (const id of filterIds) {
@@ -876,7 +949,7 @@
       state.currentRunId='';
       if(window.__SBB_EFFICIENCY_RUN_ID===runId)window.__SBB_EFFICIENCY_RUN_ID='';
       const metrics=makeMetrics({
-        runId,switches,historyNavigation,filters,probes,baseline,restoreOk,durationMs,memoryAfter
+        runId,switches,historyNavigation,coldThin,filters,probes,baseline,restoreOk,durationMs,memoryAfter
       });
       const result=overallGrade(metrics);
       const runRequests=requestsForRun(runId).filter(x=>x.path&&x.path.startsWith('/api/'));
@@ -901,6 +974,7 @@
         metrics,
         switches,
         historyNavigation,
+        coldThin,
         filters,
         probes,
         slowestEndpoints,

@@ -1,13 +1,13 @@
-/* Sports Big Board v4.7.9 — Render-Local Card Model Cache.
+/* Sports Big Board v4.7.10 — Render-Local Card Model Cache.
    Score-card construction repeatedly asks the same pure helper questions for one
    match. Cache those answers only for the lifetime of one ribbon render so media
    freshness semantics stay unchanged while duplicate calculation disappears.
 */
 (() => {
   'use strict';
-  if(window.SBB_CARD_BUILD_CACHE?.version==='4.7.9')return;
+  if(window.SBB_CARD_BUILD_CACHE?.version==='4.7.10')return;
 
-  const VERSION='4.7.9';
+  const VERSION='4.7.10';
   const TARGETS=[
     'scoreCardAvailability',
     'scoreCardPlayableItems',
@@ -18,16 +18,23 @@
   ];
   const state={
     active:false,renderId:0,hits:0,misses:0,helperMs:0,
-    installed:[],current:null,last:null,totalHits:0,totalMisses:0
+    installed:[],current:null,last:null,totalHits:0,totalMisses:0,
+    helperBreakdown:{}
   };
   const originals=new Map();
   let caches=new Map();
+  freshBreakdown();
 
   const now=()=>performance.now();
   const round=v=>Math.round(v*10)/10;
 
   function freshCaches(){
     caches=new Map(TARGETS.map(name=>[name,new WeakMap()]));
+  }
+  function freshBreakdown(){
+    state.helperBreakdown=Object.fromEntries(
+      TARGETS.map(name=>[name,{hits:0,misses:0,ms:0}])
+    );
   }
 
   function wrap(name){
@@ -46,17 +53,22 @@
       }
 
       const cache=caches.get(name);
+      const helper=state.helperBreakdown[name]||(state.helperBreakdown[name]={hits:0,misses:0,ms:0});
       if(cache?.has(key)){
         state.hits+=1;
         state.totalHits+=1;
+        helper.hits+=1;
         return cache.get(key);
       }
 
       state.misses+=1;
       state.totalMisses+=1;
+      helper.misses+=1;
       const started=now();
       const result=original.apply(this,args);
-      state.helperMs+=now()-started;
+      const elapsed=now()-started;
+      state.helperMs+=elapsed;
+      helper.ms+=elapsed;
       cache?.set(key,result);
       return result;
     };
@@ -80,6 +92,7 @@
     state.misses=0;
     state.helperMs=0;
     freshCaches();
+    freshBreakdown();
     state.current={
       renderId:state.renderId,
       generation:Number(meta.generation||0),
@@ -100,6 +113,13 @@
       hits:state.hits,
       misses:state.misses,
       helperMs:round(state.helperMs),
+      helpers:Object.fromEntries(Object.entries(state.helperBreakdown).map(
+        ([name,row])=>[name,{
+          hits:Number(row.hits||0),
+          misses:Number(row.misses||0),
+          ms:round(Number(row.ms||0))
+        }]
+      )),
       elapsedMs:round(now()-Number(current.startedAt||now())),
       installed:[...state.installed],
     };

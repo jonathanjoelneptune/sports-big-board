@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.9",
+  "release": "4.7.10",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -243,7 +243,19 @@
         "AUTO efficiency certification performs random-access calendar jumps to representative previous-year January, February, June, previous Thanksgiving, and current-year January and June dates when historical.",
         "Historical navigation reports p95/max latency, timeouts, wrong-date results, maximum network requests per navigation, and individual left/right/calendar transition lines; timeout or wrong-date navigation is blocking.",
         "Render-local card cache additionally memoizes scoreGameLookupKeys and scoreEventDate during a single ribbon render.",
-        "tests/test_v479_navigation_history_runtime.js is a blocking contract for Special Events placement, themed calendar ownership, scheduled-card first-paint semantics, and deep historical arrow/calendar navigation."
+        "tests/test_v479_navigation_history_runtime.js is a blocking contract for Special Events placement, themed calendar ownership, scheduled-card first-paint semantics, and deep historical arrow/calendar navigation.",
+        "ScoreDateStore preserves valid future YYYY-MM-DD keys for browse date, match snapshots, media snapshots, loading state, and lookups; future scheduled dates may not be normalized back to today.",
+        "The Aug 30 class of future-schedule regression is fixed at the data-store boundary: Day State rows for a future date remain stored under that exact future date and are therefore available to scoreMatchesForDate and the standard ribbon renderer.",
+        "Interactive date navigation is Day State-only for first paint. Date Transition Coordinator may not call /api/history/ribbon or a legacy history-ribbon fallback when a Day State snapshot is cold.",
+        "A totally cold historical Day State request builds a score-only canonical snapshot from history_catalog_event without media plans, discovery, provider calls, roundups, or historical-media association before first paint.",
+        "Cold historical thin snapshots are produced before the selected date is focused into the background full-build queue so the worker cannot race the thin path and hold first paint behind a multi-second full build.",
+        "Cold thin snapshots are persisted briefly as COLD_THIN_CATALOG and replaced asynchronously by the focused full Day State build.",
+        "The Day State thinProbe query is a non-mutating certification path that measures the cold score-only catalog projection even when the ordinary date snapshot has already been warmed by an earlier test run.",
+        "Efficiency Certification treats any /api/history/ribbon request during an AUTO/HAMMER run as a blocking regression because interactive first paint no longer depends on that endpoint.",
+        "Efficiency Certification reports cold-history thin p95/max/failures and blocks on cold thin p95 above the defined failure threshold.",
+        "Main-thread certification normalizes long-task load by the number of navigation/filter actions using long tasks per 10 actions and long-task milliseconds per action while retaining longest single task as a blocking latency signal.",
+        "Render-local card helper profiling reports per-helper p95, hits, and misses so scoreCardAvailability, scoreCardPlayableItems, externalMediaItemsForGame, scoreFromMatch, scoreGameLookupKeys, and scoreEventDate can be optimized individually.",
+        "tests/test_v4710_cold_history_future_store_runtime.js and tests/test_v4710_cold_history_future_store.py are blocking contracts for future-date storage, Day State-only cold history, thin first paint, and normalized main-thread certification."
       ]
     },
     "tier2": {
@@ -294,6 +306,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.9 preserves the v4.7.5-v4.7.8 request, Day State, render, and memory architecture while correcting navigation UX and certification coverage: special events remain in their dropdown, the date picker is a themed anchored Big Board calendar, scheduled future cards satisfy first paint, and AUTO certification now exercises deep sequential left/right history plus random calendar dates.",
+  "baseline": "v4.7.10 preserves the v4.7.5-v4.7.9 broker, enrichment, render, special-event, calendar, and deep-history architecture while removing the last interactive cold-history dependency on /api/history/ribbon, fixing future scheduled storage at ScoreDateStore, and normalizing main-thread certification for the expanded 39-action navigation workload.",
   "status": "IN_PROGRESS"
 }

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.9",
-  "baseRelease": "4.7.8",
-  "title": "Special Events Menu + Themed Calendar + Deep History Certification",
+  "release": "4.7.10",
+  "baseRelease": "4.7.9",
+  "title": "Cold History Fast Path + Future Schedule Storage",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -12,6 +12,7 @@
     "foundation-certification.json",
     "release-manifest.json",
     "sbb/day_state.py",
+    "architecture/score-date-store.js",
     "architecture/request-broker.js",
     "architecture/date-transition-coordinator.js",
     "architecture/day-state.js",
@@ -32,106 +33,145 @@
     "tests/test_v477_first_paint_render_consolidation_runtime.js",
     "tests/test_v478_future_projection_card_cache_runtime.js",
     "tests/test_v478_future_projection.py",
-    "tests/test_v479_navigation_history_runtime.js"
+    "tests/test_v479_navigation_history_runtime.js",
+    "tests/test_v4710_cold_history_future_store_runtime.js",
+    "tests/test_v4710_cold_history_future_store.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.9"
+        "4.7.10"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.9",
-        "architecture/competition-registry-projection.js?v=4.7.9",
-        "architecture/navigation-ui.js?v=4.7.9"
+        "Sports Big Board \u2014 v4.7.10",
+        "architecture/score-date-store.js?v=4.7.10",
+        "architecture/date-transition-coordinator.js?v=4.7.10",
+        "architecture/efficiency-certification.js?v=4.7.10"
       ],
       "forbidden": [
-        "?v=4.7.8"
+        "?v=4.7.9"
       ]
     },
-    "architecture/navigation-ui.js": {
+    "architecture/score-date-store.js": {
       "required": [
-        "Sports Big Board v4.7.9",
-        "window.SBB_DATE_NAV_UI",
-        "sbb-date-popover",
-        "sbb-calendar-grid",
-        "scoreDatePicker",
-        "sbb-special-main-row-suppressed",
-        "#sbbSpecialEventsMenu",
-        "window.SBB_FRONTEND_REGISTRY?.select"
+        "Sports Big Board v4.7.10 ScoreDateStore",
+        "do not clamp future scheduled dates to today",
+        "return raw;",
+        "version:'1.1-v4.7.10'"
+      ],
+      "forbidden": [
+        "return raw>localDateISO(0)?localDateISO(0):raw"
       ]
     },
-    "architecture/competition-registry-projection.js": {
+    "sbb/day_state.py": {
       "required": [
-        "Sports Big Board v4.7.9",
-        "function normalizedType",
-        "eventIcon",
-        "SPECIAL_EVENT",
-        "sbb-special-main-row-suppressed"
+        "def _catalog_score_rows_for_day",
+        "def _build_thin_catalog_snapshot",
+        "def _cold_historical_thin",
+        "COLD_THIN_CATALOG",
+        "thinProbe",
+        "thinSnapshot",
+        "\"eventPlans\":{}",
+        "Queue the full canonical build only after a cold thin snapshot",
+        "\"engineVersion\":\"4.7.10\""
       ]
     },
-    "architecture/efficiency-certification.js": {
+    "architecture/date-transition-coordinator.js": {
       "required": [
-        "Sports Big Board v4.7.9",
-        "function runHistoricalNavigationSweep",
-        "historicalArrowStep",
-        "historicalCalendarJump",
-        "randomHistoricalDates",
-        "thanksgiving",
-        "History nav p95",
-        "HISTORICAL NAVIGATION",
-        "const children=[...cells.children]"
+        "Sports Big Board v4.7.10",
+        "interactive date navigation is Day State-only",
+        "COLD_THIN_CATALOG",
+        "DAY_STATE_PENDING_OR_EMPTY"
+      ],
+      "forbidden": [
+        "legacyRibbonFallback",
+        "COLD_CANONICAL_RIBBON"
       ]
     },
     "architecture/card-build-cache.js": {
       "required": [
-        "Sports Big Board v4.7.9",
-        "scoreGameLookupKeys",
-        "scoreEventDate"
+        "Sports Big Board v4.7.10",
+        "helperBreakdown",
+        "helpers:Object.fromEntries",
+        "scoreCardAvailability",
+        "scoreGameLookupKeys"
       ]
     },
-    "tests/test_v478_future_projection_card_cache_runtime.js": {
+    "architecture/render-pipeline.js": {
       "required": [
-        "parts[2]>=8",
-        "retains v4.7.8"
-      ],
-      "forbidden": [
-        "assert.strictEqual(VERSION,'4.7.8')"
+        "Sports Big Board v4.7.10",
+        "cardHelpers:cacheStats?.helpers"
+      ]
+    },
+    "architecture/efficiency-certification.js": {
+      "required": [
+        "Sports Big Board v4.7.10",
+        "Long tasks / 10 actions",
+        "Long-task ms / action",
+        "Cold history thin p95",
+        "probeColdThinHistory",
+        "HISTORY_RIBBON_CALLS=",
+        "CARD_HELPERS=",
+        "interactiveHistoryRibbonCalls",
+        "coldThinP95",
+        "longTasksPer10",
+        "longTaskMsPerNav"
       ]
     },
     "tests/test_v479_navigation_history_runtime.js": {
       "required": [
-        "special-events menu + themed calendar + deep-history navigation contracts",
-        "runHistoricalNavigationSweep",
-        "sbb-date-popover",
-        "sbb-special-main-row-suppressed"
+        "parts[2]>=9",
+        "retains v4.7.9"
+      ],
+      "forbidden": [
+        "assert.strictEqual(VERSION,'4.7.9')"
+      ]
+    },
+    "tests/test_v4710_cold_history_future_store_runtime.js": {
+      "required": [
+        "cold-history fast path + future store + normalized main-thread contracts",
+        "COLD_THIN_CATALOG",
+        "HISTORY_RIBBON_CALLS=",
+        "Long tasks / 10 actions"
+      ]
+    },
+    "tests/test_v4710_cold_history_future_store.py": {
+      "required": [
+        "test_thin_snapshot_has_no_media_plan_builder",
+        "test_cold_past_thin_happens_before_focus_queue",
+        "test_score_store_preserves_future_dates",
+        "test_date_coordinator_has_no_history_ribbon_first_paint"
       ]
     },
     "tests/test_release_behavior_gate.py": {
       "required": [
-        "test_special_events_live_only_in_special_events_menu",
-        "test_date_picker_is_custom_themed_and_anchored",
-        "test_auto_efficiency_sweeps_arrows_and_random_history",
-        "node tests/test_v479_navigation_history_runtime.js"
+        "test_future_dates_are_preserved_by_score_date_store",
+        "test_interactive_history_first_paint_is_day_state_only",
+        "test_cold_history_thin_snapshot_excludes_media_enrichment",
+        "test_efficiency_normalizes_long_tasks_and_profiles_helpers",
+        "node tests/test_v4710_cold_history_future_store_runtime.js",
+        "python3 -m unittest tests.test_v4710_cold_history_future_store"
       ]
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.9\"",
-        "Special Events dropdown",
-        "themed custom calendar popover",
-        "ten real left-arrow date steps",
-        "previous Thanksgiving",
-        "tests/test_v479_navigation_history_runtime.js"
+        "\"release\": \"4.7.10\"",
+        "ScoreDateStore preserves valid future",
+        "Interactive date navigation is Day State-only",
+        "score-only canonical snapshot",
+        "long tasks per 10 actions",
+        "tests/test_v4710_cold_history_future_store_runtime.js"
       ]
     },
     "VERIFY.sh": {
       "required": [
         "python3 -m unittest tests.test_v446_historical_media_quarantine",
         "python3 -m unittest tests.test_release_behavior_gate",
-        "node tests/test_v478_future_projection_card_cache_runtime.js",
         "node tests/test_v479_navigation_history_runtime.js",
+        "node tests/test_v4710_cold_history_future_store_runtime.js",
+        "python3 -m unittest tests.test_v4710_cold_history_future_store",
         "[legacy-advisory]"
       ]
     }
@@ -152,6 +192,8 @@
     "node tests/test_v478_future_projection_card_cache_runtime.js",
     "python3 -m unittest tests.test_v478_future_projection",
     "node tests/test_v479_navigation_history_runtime.js",
+    "node tests/test_v4710_cold_history_future_store_runtime.js",
+    "python3 -m unittest tests.test_v4710_cold_history_future_store",
     "bash VERIFY.sh"
   ]
 }

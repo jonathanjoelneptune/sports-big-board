@@ -1,0 +1,30 @@
+Sports Big Board v4.7.10 — Cold History Fast Path + Future Schedule Storage
+
+ROOT CAUSE FIX — AUG 30
+- ScoreDateStore still normalized every future date back to today.
+- Day State correctly returned Aug 30 games, but setMatches(Aug 30) stored them under Aug 29.
+- ScoreDateStore v1.1 now preserves every valid YYYY-MM-DD date exactly.
+- Future Day State matches/media/loading state now live under the requested future date.
+
+COLD HISTORY FIRST PAINT
+- Interactive Date Transition Coordinator no longer calls /api/history/ribbon.
+- Cold past /api/day-state requests receive a score-only COLD_THIN_CATALOG snapshot.
+- Thin snapshot reads only canonical history_catalog_event rows.
+- No media plans, discovery, provider calls, roundups or association work occur before first paint.
+- Thin snapshot is produced before the date is queued for the full background build.
+- Background worker then replaces the short-lived thin snapshot with full Day State.
+- /api/history/ribbon remains available only for compatibility paths outside interactive date navigation.
+
+CERTIFICATION
+- Any /api/history/ribbon request during AUTO/HAMMER is now a blocking regression.
+- Adds non-mutating thinProbe checks so cold-history speed is tested even after dates have warmed.
+- Reports Cold history thin p95/max/failures.
+
+MAIN THREAD
+- Raw long-task count is no longer compared against the old 13-action test threshold.
+- Adds Long tasks / 10 actions.
+- Adds Long-task ms / action.
+- Longest single task remains a blocking latency signal.
+
+CARD BUILD PROFILING
+- Per-helper p95/hit/miss data is now reported for each cached score-card helper.

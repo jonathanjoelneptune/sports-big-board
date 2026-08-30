@@ -1,13 +1,13 @@
-/* Sports Big Board v4.7.9 — Date Transition Coordinator.
-   Day State owns first paint. Legacy history is fallback-only. Browser discovery
+/* Sports Big Board v4.7.10 — Date Transition Coordinator.
+   Day State owns first paint. Legacy history is compatibility-only. Browser discovery
    is not an automatic side effect of moving the ribbon; enrichment is deferred
    until the selected date is stable and only when canonical inventory is incomplete.
 */
 (() => {
   'use strict';
-  if(window.SBB_DATE_TRANSITIONS?.version==='4.7.9')return;
+  if(window.SBB_DATE_TRANSITIONS?.version==='4.7.10')return;
 
-  const VERSION='4.7.9';
+  const VERSION='4.7.10';
   const state={
     generation:0,
     activeDate:'',
@@ -61,7 +61,7 @@
       if(selected && eventDate(selected) && eventDate(selected)!==date){
         window.SBB_SELECTED_EVENT?.clear?.({
           reason:'date-change',
-          source:'date-transition-v477'
+          source:'date-transition-v4710'
         });
         state.staleSelectionsCleared+=1;
       }
@@ -98,12 +98,6 @@
 
     const wrappedBefore=window.setScoreBrowseDate;
     const shellSetter=unwrapSetter(wrappedBefore);
-
-    const ribbonWrapped=window.hydrateHistoricalRibbonFromCatalog;
-    const legacyRibbonFallback=
-      ribbonWrapped?.__sbbFallback ||
-      ribbonWrapped ||
-      null;
 
     async function transition(value,options={}){
       const date=normalize(value);
@@ -152,15 +146,12 @@
 
         if(generation!==state.generation)return true;
 
-        // /api/history/ribbon is now the canonical cold fallback. The backend
-        // serializes the Day State build so it cannot race a second equivalent
-        // historical calculation in the worker.
-        if(!payload && date<today() && typeof legacyRibbonFallback==='function'){
-          state.fallbacks+=1;
-          state.firstPaintSource='COLD_CANONICAL_RIBBON';
-          try{await legacyRibbonFallback(date);}catch(_){}
-        }else if(!payload){
-          state.firstPaintSource='LIVE_OR_EXISTING_CACHE';
+        // v4.7.10: interactive date navigation is Day State-only. A cold past
+        // date is served by the backend's score-only COLD_THIN_CATALOG snapshot.
+        // /api/history/ribbon remains compatibility-only and is never a first-paint
+        // dependency of the Big Board date coordinator.
+        if(!payload){
+          state.firstPaintSource='DAY_STATE_PENDING_OR_EMPTY';
         }
 
         if(generation===state.generation){

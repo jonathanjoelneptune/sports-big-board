@@ -76,6 +76,76 @@ def _event_identity(event):
     return ""
 
 
+def _catalog_score_rows_for_day(server, day):
+    """Fast canonical score-only projection for one date.
+
+    This path intentionally does not build media plans, run discovery, contact
+    providers, or assemble historical enrichment. It is safe for first paint.
+    """
+    rows_by_league = {}
+    diagnostics = {
+        "catalogCandidates": 0,
+        "catalogProjected": 0,
+        "leagues": [],
+    }
+    repo = getattr(server, "HISTORY_REPOSITORY", None)
+    if repo is None or not hasattr(repo, "catalog_events"):
+        return rows_by_league, diagnostics
+
+    try:
+        catalog = repo.catalog_events(date_from=day, date_to=day, limit=50000) or []
+    except Exception:
+        catalog = []
+
+    diagnostics["catalogCandidates"] = len(catalog)
+    seen = {}
+    leagues = set()
+
+    for catalog_row in catalog:
+        if not isinstance(catalog_row, dict):
+            continue
+        league = str(catalog_row.get("league") or "").upper()
+        if not league:
+            continue
+
+        event_id = str(catalog_row.get("eventId") or "")
+        event = dict(catalog_row.get("event") or {})
+        # Older catalog rows may expose useful canonical fields at the outer row.
+        if not event:
+            for key in (
+                "id","eventId","matchId","scoreEventId","espnEventId","gamePk",
+                "date","gameDate","scheduledAt","status","away","home",
+                "awayScore","homeScore","league","competitionId"
+            ):
+                if catalog_row.get(key) not in (None, ""):
+                    event[key] = catalog_row.get(key)
+
+        identity = _event_identity(event) or event_id
+        league_seen = seen.setdefault(league, set())
+        if identity and identity in league_seen:
+            continue
+
+        event.setdefault("competitionId", league)
+        event.setdefault("league", league)
+        event.setdefault("__sbbLeague", league)
+        event.setdefault("__sbbDate", day)
+        event.setdefault("date", day)
+        if event_id:
+            event.setdefault("eventId", event_id)
+            event.setdefault("id", event_id)
+        if not event.get("status"):
+            event["status"] = "SCHEDULED"
+
+        rows_by_league.setdefault(league, []).append(event)
+        if identity:
+            league_seen.add(identity)
+        diagnostics["catalogProjected"] += 1
+        leagues.add(league)
+
+    diagnostics["leagues"] = sorted(leagues)
+    return rows_by_league, diagnostics
+
+
 def _merge_future_catalog_rows(server, day, score_rows, today):
     """Merge future canonical catalog rows into the ribbon read model.
 
@@ -416,6 +486,90 @@ class DayStateEngine:
         except Exception:
             return 0
 
+    def _build_thin_catalog_snapshot(self, day, *, persist=True):
+        """Build a score-only historical Day State snapshot for first paint."""
+        day = _clean_date(day)
+        if not day:
+            raise ValueError("YYYY-MM-DD day required")
+        started = time.perf_counter()
+        score_rows, catalog_diag = _catalog_score_rows_for_day(self.server, day)
+
+        games = sum(len(rows or []) for rows in score_rows.values())
+        status_counts = {"LIVE":0,"FINAL":0,"SCHEDULED":0,"POSTPONED":0,"CANCELLED":0}
+        for rows in score_rows.values():
+            for event in rows or []:
+                status = _event_status(event)
+                status_counts[status] = status_counts.get(status, 0) + 1
+
+        summary = {
+            "games":games,
+            "live":status_counts.get("LIVE",0),
+            "final":status_counts.get("FINAL",0),
+            "scheduled":status_counts.get("SCHEDULED",0),
+            "postponed":status_counts.get("POSTPONED",0),
+            "cancelled":status_counts.get("CANCELLED",0),
+            "playable":0,
+            "competitions":sum(1 for rows in score_rows.values() if rows),
+        }
+        generated = time.time()
+        # Thin snapshots exist only to give the browser immediate canonical scores.
+        # The focused background worker replaces them with a full snapshot.
+        snapshot = {
+            "ok":True,
+            "version":str(getattr(self.server, "APP_VERSION", "")),
+            "engineVersion":"4.7.10",
+            "date":day,
+            "generatedAt":generated,
+            "staleAfter":generated + 15,
+            "freshForSeconds":15,
+            "registryRevision":registry.revision(),
+            "sourceRevision":self._source_revision(),
+            "scoreRowsByLeague":score_rows,
+            "scoreGameCount":games,
+            "projectionDiagnostics":{
+                "future":False,
+                "thinCatalog":True,
+                "catalogCandidates":catalog_diag.get("catalogCandidates",0),
+                "catalogAdded":catalog_diag.get("catalogProjected",0),
+                "rowsBefore":0,
+                "rowsAfter":games,
+                "leaguesAdded":catalog_diag.get("leagues",[]),
+            },
+            "eventPlans":{},
+            "catalogFirst":True,
+            "compact":True,
+            "catalogEventCount":catalog_diag.get("catalogCandidates",0),
+            "scoreInventoryComplete":False,
+            "thinSnapshot":True,
+            "summary":summary,
+            "facts":self._build_facts(score_rows, {}, summary),
+            "timing":{
+                "thinCatalogMs":round((time.perf_counter()-started)*1000.0,1),
+                "buildMs":round((time.perf_counter()-started)*1000.0,1),
+            },
+        }
+        if persist:
+            self.store.put(snapshot)
+            with self.lock:
+                self.cache[day] = snapshot
+                self.last_build[day] = generated
+        return snapshot
+
+    def _cold_historical_thin(self, day):
+        if not day or day >= self.today():
+            return None
+        try:
+            payload = dict(self._build_thin_catalog_snapshot(day, persist=True))
+            payload["cache"] = {
+                **(payload.get("cache") or {}),
+                "state":"COLD_THIN_CATALOG",
+                "ageSeconds":0,
+            }
+            return payload
+        except Exception as exc:
+            self.last_error = f"thin:{type(exc).__name__}: {exc}"
+            return None
+
     def _source_revision(self):
         parts = [f"registry:{registry.revision()}"]
         for name in ("HISTORY_SCHEDULE_SYNC_STATE", "HISTORY_DATABASE_AUDIT_STATE", "OPERATOR_MEDIA_PLAYLIST_CRAWL_STATE"):
@@ -501,7 +655,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.9",
+            "engineVersion":"4.7.10",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -588,7 +742,7 @@ class DayStateEngine:
                 pass
         return {
             "ok":True,
-            "version":"4.7.9",
+            "version":"4.7.10",
             "today":today,
             "builds":self.builds,
             "cacheHits":self.hits,
@@ -650,11 +804,26 @@ class DayStateEngine:
         if not day:
             return self.server.send_json(handler, {"ok":False,"error":"DATE_REQUIRED"}, 400)
 
-        # v4.7.1: browser reads never build Day State synchronously. A selected
-        # date is moved to the front of the background queue; the request gets a
-        # fresh/stale snapshot immediately, or a PENDING response when no snapshot
-        # exists yet. This removes the cache-hit/cache-miss latency lottery.
-        self.focus(day)
+        # v4.7.10: interactive browser reads never wait for the expensive full
+        # historical build. Read a persisted snapshot first. A totally cold past
+        # date gets a local score-only catalog projection immediately, then the
+        # background worker is focused to replace it with the full snapshot.
+        thin_probe = str((qs.get("thinProbe") or [""])[-1]).lower() in ("1","true","yes")
+        if thin_probe:
+            try:
+                payload = dict(self._build_thin_catalog_snapshot(day, persist=False))
+                payload["cache"] = {"state":"THIN_PROBE","ageSeconds":0}
+                return self.server.send_json(
+                    handler, payload, 200,
+                    {"X-SBB-Day-State":"THIN_PROBE"},
+                )
+            except Exception as exc:
+                return self.server.send_json(
+                    handler,
+                    {"ok":False,"error":"THIN_PROBE_FAILED","message":str(exc)},
+                    500,
+                )
+
         try:
             payload = self.get(day, allow_build=False)
         except Exception as exc:
@@ -663,6 +832,13 @@ class DayStateEngine:
                 {"ok":False,"error":"DAY_STATE_READ_FAILED","message":str(exc)},
                 500,
             )
+
+        if payload is None and day < self.today():
+            payload = self._cold_historical_thin(day)
+
+        # Queue the full canonical build only after a cold thin snapshot has been
+        # produced, so the worker cannot race first paint and hold it for seconds.
+        self.focus(day)
 
         if payload is None:
             # Future schedule rows are local canonical catalog reads. When the
@@ -774,7 +950,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.9",
+                    "engineVersion":"4.7.10",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},
