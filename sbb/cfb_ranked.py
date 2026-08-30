@@ -1,4 +1,4 @@
-"""Sports Big Board v4.7.16 — AP Top 25 College Football season service.
+"""Sports Big Board v4.7.17 — AP Top 25 College Football season service.
 
 CFB is a persistent league whose weekly membership is determined by the AP Top 25
 snapshot applicable to that ESPN schedule week. Ranking snapshots are immutable
@@ -73,7 +73,7 @@ _STATUS={'state':'STARTING','lastRefreshAt':0.0,'lastSuccessAt':0.0,'lastError':
 
 
 def _fetch_json(url,timeout=12):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.7.16','Accept':'application/json'})
+    req=Request(url,headers={'User-Agent':'Mozilla/5.0 SportsBigBoard/4.7.17','Accept':'application/json'})
     with urlopen(req,timeout=timeout) as resp:
         return json.loads(resp.read().decode('utf-8'))
 
@@ -489,7 +489,7 @@ def _install_into_server():
             'id':COMPETITION_ID,'name':NAME,'shortName':SHORT_NAME,'sportId':'american-football',
             'type':'LEAGUE','enabled':True,'mainRow':True,'custom':False,'startDate':START_DATE,'endDate':END_DATE,
             'scoreProvider':'cfb-ranked','mediaProviders':['operator-playlist','youtube'],
-            'gameCenterProvider':'competition-builder','historyEnabled':True,'dayStateEnabled':True,
+            'gameCenterProvider':'espn','historyEnabled':True,'dayStateEnabled':True,
             'eventIcon':'🏈','seasonId':SEASON_ID,'seasonYear':SEASON,
             'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingSnapshotPolicy':'IMMUTABLE_WEEKLY'
         },source='BUILT_IN')

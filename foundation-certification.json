@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.16",
+  "release": "4.7.17",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -313,7 +313,12 @@
         "The College Football 2026 operator playlist PLPydJJjt7Pb4 is enrolled across the full 2026-27 season window as the PRIMARY Purple/Extended source and only playlist items whose title contains Full Game Highlights are admitted to the CFB crawler lane.",
         "Competition-specific operator playlist metadata preserves titleIncludePhrase, sourceLabel, sourceType, season bounds, and include-all policy through normalization and curated crawler conversion.",
         "tests/test_v4716_ribbon_identity_runtime.js and tests/test_v4716_ribbon_identity_playlist.py are blocking contracts for doubleheader identity, explicit MLB title-date safety, Day State stale-media revalidation, and CFB playlist enforcement.",
-        "A single physical YouTube/direct media asset cannot satisfy multiple canonical games on the same date unless provider event/game identity proves one unique owner; ambiguous doubleheader media is removed from every unresolved event plan until correctly associated."
+        "A single physical YouTube/direct media asset cannot satisfy multiple canonical games on the same date unless provider event/game identity proves one unique owner; ambiguous doubleheader media is removed from every unresolved event plan until correctly associated.",
+        "CFB Game Center resolves the selected ESPN college-football event through the shared normalized Game Center contract and preserves the AP Top 25 score identity.",
+        "Game Center displays a top linescore for MLB by inning plus R/H/E, NFL/CFB/NBA by quarter plus total, and NHL by period plus total when provider period data is available.",
+        "ESPN win probability is normalized into the Game Center read model and displayed only when the provider supplies win-probability samples; its absence never blocks Game Center.",
+        "Historical GAME media whose normalized database validation_state is VERIFIED, whose runtime_state is not FAILED, and which has a playable YouTube/direct transport hydrates as verifiedPlayable even when legacy asset_json omitted that flag.",
+        "A historical date such as May 13 must prefer already-assigned verified database media before advertising FIND/search for the same canonical game."
       ]
     },
     "tier2": {
@@ -364,6 +369,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.16 preserves the v4.7.15 efficiency-hardened Day State, card-bank, history, network, playback, and AP Top 25 CFB architecture while adding doubleheader identity, stale media date revalidation, and enforced ESPN College Football Purple playlist policy.",
+  "baseline": "v4.7.17 preserves the v4.7.16 doubleheader, CFB trusted-source, UI-transition, and v4.7.15 efficiency architecture while adding College Football Game Center, normalized multisport line scores, optional ESPN win probability, and database-first historical media readiness.",
   "status": "IN_PROGRESS"
 }

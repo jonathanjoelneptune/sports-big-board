@@ -10,6 +10,8 @@ from .competition_builder_v4615 import install as _install_competition_builder_v
 from .special_event_media_v4616 import install as _install_special_event_media_v4616
 from .day_state import install as _install_day_state
 from .cfb_trusted_youtube import install as _install_cfb_trusted_youtube
+from .game_center_multisport import install as _install_game_center_multisport
+from .history_readiness_repair import install as _install_history_readiness_repair
 
 _install_nfl_weekly_playlists()
 _install_competition_builder()
@@ -22,3 +24,5 @@ _install_competition_builder_v4615()
 _install_special_event_media_v4616()
 _install_day_state()
 _install_cfb_trusted_youtube()
+_install_game_center_multisport()
+_install_history_readiness_repair()

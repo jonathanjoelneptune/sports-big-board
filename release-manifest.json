@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.16",
-  "baseRelease": "4.7.15",
-  "title": "Doubleheader Identity & CFB Playlist Contract",
+  "release": "4.7.17",
+  "baseRelease": "4.7.16",
+  "title": "CFB Game Center, Multisport Linescores & Historical Readiness",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -52,32 +52,48 @@
     "architecture/score-ribbon-identity-guard.js",
     "sbb/operator_playlist_contract.py",
     "tests/test_v4716_ribbon_identity_runtime.js",
-    "tests/test_v4716_ribbon_identity_playlist.py"
+    "tests/test_v4716_ribbon_identity_playlist.py",
+    "sbb/__init__.py",
+    "sbb/game_center_multisport.py",
+    "sbb/history_readiness_repair.py",
+    "architecture/game-center-linescore.js",
+    "architecture/game-center-multisport-view.js",
+    "tests/test_v4717_game_center_history.py",
+    "tests/test_v4717_game_center_runtime.js",
+    "sbb/cfb_trusted_youtube.py",
+    "architecture/game-center-contract.js",
+    "architecture/game-center-policy.js",
+    "ui/game-center-view.js",
+    "sbb/game_center.py",
+    "sbb/history_repository.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.16"
+        "4.7.17"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.16",
-        "core-model.js?v=4.7.16",
-        "architecture/day-state.js?v=4.7.16",
-        "architecture/score-ribbon-identity-guard.js?v=4.7.16"
+        "Sports Big Board \u2014 v4.7.17",
+        "core-model.js?v=4.7.17",
+        "architecture/day-state.js?v=4.7.17",
+        "architecture/score-ribbon-identity-guard.js?v=4.7.17",
+        "ui/game-center-view.js?v=4.7.17",
+        "architecture/game-center-multisport-view.js?v=4.7.17"
       ],
       "forbidden": [
-        "?v=4.7.15"
+        "?v=4.7.16"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.7.16'",
+        "version:'4.7.17'",
         "CFB:{id:'CFB'",
         "seasonId:'CFB2026'",
         "scoreProvider:'cfb-ranked'",
-        "rankingSnapshotPolicy:'IMMUTABLE_WEEKLY'"
+        "rankingSnapshotPolicy:'IMMUTABLE_WEEKLY'",
+        "gameCenterProvider:'espn'"
       ]
     },
     "sbb/cfb_ranked.py": {
@@ -96,12 +112,13 @@
         "builder.save_competition",
         "operator_playlist_contract as playlist_contract",
         "playlist_contract.ensure_competition_sources",
-        "espn-college-football-full-game-highlights"
+        "espn-college-football-full-game-highlights",
+        "'gameCenterProvider':'espn'"
       ]
     },
     "sbb/day_state.py": {
       "required": [
-        "\"engineVersion\":\"4.7.16\"",
+        "\"engineVersion\":\"4.7.17\"",
         "from . import cfb_ranked as _cfb_ranked",
         "_cfb_ranked.install()",
         "_sanitize_event_plans",
@@ -133,7 +150,7 @@
     },
     "foundation-certification.json": {
       "required": [
-        "\"release\": \"4.7.16\"",
+        "\"release\": \"4.7.17\"",
         "weekly AP Top 25 snapshot",
         "ranked-v-ranked games appear once",
         "Future CFB weeks are never projected"
@@ -198,7 +215,10 @@
         "sbb-exact-duplicate",
         "media-date-reject",
         "explicitTitleDates",
-        "scoreCardPlayableItems"
+        "scoreCardPlayableItems",
+        "sbb-filter-hidden",
+        "applyFilterTruth",
+        "sbb-ribbon-scrolling"
       ]
     },
     "sbb/operator_playlist_contract.py": {
@@ -226,6 +246,122 @@
         "test_cfb_playlist_contract_is_enforced_end_to_end",
         "PLPydJJjt7Pb4",
         "seasonEnd"
+      ]
+    },
+    "sbb/game_center_multisport.py": {
+      "required": [
+        "Sports Big Board v4.7.17",
+        "college-football",
+        "scoreboard",
+        "periods",
+        "winProbability",
+        "ESPN Game Summary",
+        "CFB",
+        "american-football"
+      ]
+    },
+    "sbb/history_readiness_repair.py": {
+      "required": [
+        "Sports Big Board v4.7.17",
+        "database-first historical ribbon readiness",
+        "validation == \"VERIFIED\"",
+        "databaseVerifiedPlayable",
+        "runtime == \"FAILED\""
+      ]
+    },
+    "sbb/__init__.py": {
+      "required": [
+        "game_center_multisport",
+        "history_readiness_repair",
+        "_install_game_center_multisport()",
+        "_install_history_readiness_repair()",
+        "cfb_trusted_youtube"
+      ]
+    },
+    "architecture/game-center-linescore.js": {
+      "required": [
+        "Sports Big Board v4.7.17",
+        "Q${n}",
+        "P${n}",
+        "version:'2.0'",
+        "periods",
+        "reconcile"
+      ]
+    },
+    "architecture/game-center-multisport-view.js": {
+      "required": [
+        "Sports Big Board v4.7.17",
+        "WIN PROBABILITY",
+        "sbb-multisport-linescore",
+        "s.winProbability",
+        "SBB_GAME_CENTER_MULTISPORT_VIEW"
+      ]
+    },
+    "tests/test_v4717_game_center_history.py": {
+      "required": [
+        "test_cfb_espn_summary_adds_quarter_linescore_and_win_probability",
+        "test_cfb_fetch_uses_espn_college_football_summary",
+        "test_may_13_style_verified_database_asset_hydrates_playable"
+      ]
+    },
+    "tests/test_v4717_game_center_runtime.js": {
+      "required": [
+        "CFB Game Center + multisport linescore + win probability presentation",
+        "Q1",
+        "P1",
+        "game-center-multisport-view.js?v=4.7.17"
+      ]
+    },
+    "sbb/cfb_trusted_youtube.py": {
+      "required": [
+        "ESPN College Football",
+        "Big Ten Football",
+        "ACC Digital Network",
+        "Big 12 Conference",
+        "NBC Sports",
+        "CFB on FOX",
+        "SEC Network",
+        "CBS Sports",
+        "participating schools",
+        "TRUSTED_NETWORK_SOURCES"
+      ]
+    },
+    "architecture/game-center-contract.js": {
+      "required": [
+        "version:'1.8'",
+        "/game-center?",
+        "resolvedEventId",
+        "competition"
+      ]
+    },
+    "architecture/game-center-policy.js": {
+      "required": [
+        "SBB_GAME_CENTER_POLICY",
+        "categoryFromTitle"
+      ]
+    },
+    "ui/game-center-view.js": {
+      "required": [
+        "version:'1.6'",
+        "renderOverview",
+        "SBB_GAME_CENTER_VIEW",
+        "Game Center follows the active game video."
+      ]
+    },
+    "sbb/game_center.py": {
+      "required": [
+        "fetch_espn_game_center",
+        "normalize_espn_summary",
+        "_espn_status_parts",
+        "game_center_coverage"
+      ]
+    },
+    "sbb/history_repository.py": {
+      "required": [
+        "def _hydrate_asset",
+        "def ribbon_media_for_date",
+        "validation_state",
+        "runtime_state"
       ]
     }
   },
@@ -259,6 +395,8 @@
     "python3 -m unittest tests.test_v4715_efficiency_hardening",
     "node tests/test_v4716_ribbon_identity_runtime.js",
     "python3 -m unittest tests.test_v4716_ribbon_identity_playlist",
+    "python3 -m unittest tests.test_v4717_game_center_history",
+    "node tests/test_v4717_game_center_runtime.js",
     "bash VERIFY.sh"
   ]
 }
