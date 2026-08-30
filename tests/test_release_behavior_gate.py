@@ -14,6 +14,8 @@ BROKER=(ROOT/"architecture"/"request-broker.js").read_text(encoding="utf-8")
 DATE_COORD=(ROOT/"architecture"/"date-transition-coordinator.js").read_text(encoding="utf-8")
 OPERATOR_LOADER=(ROOT/"architecture"/"operator-module-loader.js").read_text(encoding="utf-8")
 HIST_MEDIA=(ROOT/"architecture"/"historical-media-v4610.js").read_text(encoding="utf-8")
+FUTURE_DATES=(ROOT/"architecture"/"future-date-navigation.js").read_text(encoding="utf-8")
+RENDER_PIPELINE=(ROOT/"architecture"/"render-pipeline.js").read_text(encoding="utf-8")
 VERIFY=(ROOT/"VERIFY.sh").read_text(encoding="utf-8")
 
 
@@ -132,6 +134,30 @@ class ReleaseBehaviorGate(unittest.TestCase):
         self.assertIn("prewarm_queued",DAY_BACKEND)
         self.assertIn("v4.7.5 fairness",DAY_BACKEND)
 
+    def test_future_scheduled_dates_are_browsable(self):
+        self.assertIn("window.SBB_FUTURE_DATES",FUTURE_DATES)
+        self.assertIn("picker.removeAttribute('max')",FUTURE_DATES)
+        self.assertIn("setFutureShell",FUTURE_DATES)
+        self.assertIn("Future scheduled dates are valid Big Board dates",DATE_COORD)
+        self.assertNotIn("if(d>today())d=today()",DATE_COORD)
+
+    def test_render_pipeline_coalesces_immediate_duplicate_ribbon_renders(self):
+        self.assertIn("window.SBB_RENDER_PIPELINE",RENDER_PIPELINE)
+        self.assertIn("same-frame",RENDER_PIPELINE)
+        self.assertIn("durationMs",RENDER_PIPELINE)
+        self.assertIn("Day State apply() already owns the normal first-paint render",DATE_COORD)
+
+    def test_efficiency_request_attribution_is_fixed_at_network_start(self):
+        self.assertIn("__SBB_EFFICIENCY_RUN_ID",BROKER)
+        self.assertIn("runId:String(d.runId",EFFICIENCY)
+        self.assertIn("RENDER_P95=",EFFICIENCY)
+        self.assertIn("DAY_APPLY_P95=",EFFICIENCY)
+
+    def test_early_launch_bridge_exists_before_app_handler(self):
+        self.assertIn("__SBB_LAUNCH_CONTROL_PARSED_AT=performance.now()",INDEX)
+        self.assertIn("__SBB_PENDING_LAUNCH",INDEX)
+        self.assertIn("launchHandlerReadyMs",EFFICIENCY)
+
     def test_verify_script_has_no_literal_escaped_command_joins(self):
         self.assertIsNone(re.search(r'\\n(?:python3|python|node|bash)',VERIFY))
 
@@ -157,6 +183,7 @@ class ReleaseBehaviorGate(unittest.TestCase):
             "node tests/test_v473_efficiency_runtime.js",
             "node tests/test_v474_efficiency_remediation_runtime.js",
             "node tests/test_v475_enrichment_firewall_runtime.js",
+            "node tests/test_v476_render_pipeline_runtime.js",
         )
         for command in required:
             self.assertIn(command,VERIFY)

@@ -1,0 +1,19 @@
+Sports Big Board v4.7.6 — Render Pipeline + Test Accuracy
+
+FIXES
+- Future scheduled dates are no longer clamped back to today.
+- Score date picker has no today-only max; forward date button stays available.
+- Early launch bridge captures START before legacy DOMContentLoaded wiring.
+- Day State successful first paint renders once; coordinator no longer renders it again.
+- Ribbon Render Pipeline suppresses only same-state immediate duplicate renders.
+- Network efficiency-run attribution is fixed at request START, not request FINISH.
+- Pre-existing discovery/Game Center work can no longer contaminate a new efficiency run.
+- Day State apply reports score-row ingest, media-plan ingest, render-call and total apply phases.
+- Efficiency report includes render p95/max/count/coalescing and Day State phase p95 values.
+- Cache state is taken from the Day State payload even when no network request occurred.
+
+EXPECTED NEXT TEST
+The Aug 30 future-date timeout should disappear. API p95 should no longer include
+requests that started before RUN AUTO TEST. If long tasks remain, RENDER_P95/MAX and
+DAY_APPLY_P95 will identify whether the remaining cost is score-card DOM rendering
+or Day State ingestion.

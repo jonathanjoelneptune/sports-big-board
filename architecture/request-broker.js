@@ -1,13 +1,13 @@
-/* Sports Big Board v4.7.5 — Request Broker + Enrichment Firewall.
+/* Sports Big Board v4.7.6 — Request Broker + Enrichment Firewall.
    One transport request per identical GET. Shared-state TTL reuse, date-generation
    cancellation, and an explicit first-paint firewall keep expensive enrichment
    from waking up while the user is simply changing ribbon dates.
 */
 (() => {
   'use strict';
-  if (window.SBB_REQUEST_BROKER?.version === '4.7.5') return;
+  if (window.SBB_REQUEST_BROKER?.version === '4.7.6') return;
 
-  const VERSION='4.7.5';
+  const VERSION='4.7.6';
   const QUIET_MS=8000;
   const transportFetch=window.fetch.bind(window);
   const inflight=new Map();
@@ -321,17 +321,21 @@
     const id=`req-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
     const started=now();
     const generation=stats.generation;
+    // Attribute the request to the efficiency run that existed when transport
+    // STARTED. A request that began before an AUTO test may finish during it, but
+    // it must never contaminate that run's API p95/error statistics.
+    const runId=clean(window.__SBB_EFFICIENCY_RUN_ID||'');
     const transportInit={...init,signal:controller.signal};
     delete transportInit.__sbbBrokerRelease;
     delete transportInit.sbbRequestClass;
 
     const entry={
-      id,key,path,date:boundDate,rowClass,interactive,generation,controller,
+      id,key,path,date:boundDate,rowClass,interactive,generation,runId,controller,
       started,settled:false,consumers:0,coalesced:0,promise:null
     };
 
     stats.network+=1;
-    emit('network-start',{id,key,path,date:boundDate,rowClass,interactive,generation});
+    emit('network-start',{id,key,path,date:boundDate,rowClass,interactive,generation,runId});
 
     entry.promise=transportFetch(input,transportInit)
       .then(response=>{
@@ -349,7 +353,7 @@
         }
 
         emit('network-finish',{
-          id,key,path,date:boundDate,rowClass,interactive,generation,
+          id,key,path,date:boundDate,rowClass,interactive,generation,runId,
           status:response.status,ok:response.ok||response.status===202,
           durationMs,coalesced:entry.coalesced
         });
@@ -358,7 +362,7 @@
           try{
             response.clone().json().then(payload=>{
               const cacheState=clean(payload?.cache?.state || (payload?.pending?'COLD_WARMING':''));
-              emit('metadata',{id,key,path,date:boundDate,cacheState});
+              emit('metadata',{id,key,path,date:boundDate,cacheState,runId});
             }).catch(()=>{});
           }catch(_){}
         }
@@ -370,7 +374,7 @@
         const reason=clean(controller.signal.reason || err?.message || err);
         if(!aborted)stats.errors+=1;
         emit('network-error',{
-          id,key,path,date:boundDate,rowClass,interactive,generation,
+          id,key,path,date:boundDate,rowClass,interactive,generation,runId,
           durationMs:Math.round((now()-started)*10)/10,
           aborted,reason
         });
@@ -396,7 +400,7 @@
       cached:cache.size,
       active:[...inflight.values()].map(x=>({
         id:x.id,path:x.path,date:x.date,rowClass:x.rowClass,interactive:x.interactive,
-        generation:x.generation,consumers:x.consumers,coalesced:x.coalesced,
+        generation:x.generation,runId:x.runId,consumers:x.consumers,coalesced:x.coalesced,
         ageMs:Math.round(now()-x.started)
       })),
       deferred:[...deferred.values()].map(x=>({

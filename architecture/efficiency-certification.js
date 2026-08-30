@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.5 — Efficiency Certification.
+/* Sports Big Board v4.7.6 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.5') return;
+  if (window.SBB_EFFICIENCY?.version === '4.7.6') return;
 
-  const VERSION = '4.7.5';
+  const VERSION = '4.7.6';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -31,7 +31,8 @@
   const state = {
     installedAt: performance.now(),
     launchParsedMs: Number(window.__SBB_LAUNCH_CONTROL_PARSED_AT)||null,
-    launchInteractiveMs: null,
+    launchHandlerReadyMs: null,
+    launchInteractiveMs: Number(window.__SBB_LAUNCH_CONTROL_PARSED_AT)||null,
     launchClickAt: null,
     startToBoardMs: null,
     firstScorePaintMs: null,
@@ -45,6 +46,8 @@
     brokerDeferredAborts: 0,
     brokerDeferredReleases: 0,
     longTasks: [],
+    renderEvents: [],
+    dayStatePhases: [],
     domSamples: [],
     heapSamples: [],
     running: false,
@@ -172,7 +175,7 @@
       const row={
         id:d.id||'',
         at:Date.now(),
-        runId:state.currentRunId,
+        runId:String(d.runId||''),
         method:'GET',
         key:d.key||'',
         path:d.path||'',
@@ -195,6 +198,26 @@
     }
   }
   window.addEventListener('sbb:request-broker',onBrokerEvent);
+
+  function onRenderEvent(ev){
+    const d=ev?.detail||{};
+    if(d.type!=='render')return;
+    boundedPush(state.renderEvents,{
+      at:Date.now(),runId:String(window.__SBB_EFFICIENCY_RUN_ID||''),
+      durationMs:Number(d.durationMs)||0,reason:String(d.reason||''),
+      beforeNodes:Number(d.beforeNodes)||0,afterNodes:Number(d.afterNodes)||0
+    },MAX_SAMPLES);
+  }
+  function onDayStatePhase(ev){
+    const d=ev?.detail||{};
+    boundedPush(state.dayStatePhases,{
+      at:Date.now(),runId:String(window.__SBB_EFFICIENCY_RUN_ID||''),
+      date:String(d.date||''),phase:String(d.phase||''),
+      durationMs:Number(d.durationMs)||0
+    },MAX_SAMPLES);
+  }
+  window.addEventListener('sbb:render-pipeline',onRenderEvent);
+  window.addEventListener('sbb:day-state-phase',onDayStatePhase);
 
   // ----------------------------------------------------------
   // Browser main-thread and resource samples.
@@ -233,7 +256,12 @@
     const button = document.getElementById('launchPlayBtn');
     const launch = document.getElementById('launchScreen');
     if (!button || !launch) return false;
-    if (state.launchInteractiveMs == null) state.launchInteractiveMs = round(now());
+    if (state.launchInteractiveMs == null) {
+      state.launchInteractiveMs = round(Number(window.__SBB_LAUNCH_CONTROL_PARSED_AT)||now());
+    }
+    if(button.dataset.wired==='1' && state.launchHandlerReadyMs==null){
+      state.launchHandlerReadyMs=round(now());
+    }
     if (button.dataset.sbbEfficiencyBound === '1') return true;
     button.dataset.sbbEfficiencyBound = '1';
     button.addEventListener('click',() => {
@@ -259,7 +287,11 @@
   if(!installLaunchProbe() && document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded',installLaunchProbe,{once:true});
   }
-  setInterval(() => { if (state.launchInteractiveMs == null) installLaunchProbe(); },1000);
+  setInterval(() => {
+    installLaunchProbe();
+    const b=document.getElementById('launchPlayBtn');
+    if(b?.dataset?.wired==='1' && state.launchHandlerReadyMs==null)state.launchHandlerReadyMs=round(now());
+  },500);
 
   // ----------------------------------------------------------
   // Ribbon transition measurement.
@@ -297,8 +329,14 @@
     }
     const settled = !commandError && await waitFor(()=>ribbonSettled(date),timeoutMs,40);
     const elapsed = round(now()-started);
-    const reqs = state.requests.slice(requestStart);
+    const reqs = state.requests.slice(requestStart).filter(r=>r.runId===state.currentRunId);
     const cacheStates = reqs.map(r=>r.cacheState).filter(Boolean);
+    try{
+      const cached=window.SBB_DAY_STATE?.cache?.(date);
+      const cacheState=String(cached?.cache?.state||'');
+      if(cacheState&&!cacheStates.includes(cacheState))cacheStates.push(cacheState);
+    }catch(_){}
+    const firstPaint=window.SBB_DATE_TRANSITIONS?.snapshot?.().firstPaintSource||'';
     return {
       date,
       elapsedMs:elapsed,
@@ -307,6 +345,7 @@
       commandError,
       requestCount:reqs.length,
       cacheStates,
+      firstPaint,
       apiMs:reqs.filter(r=>r.path.startsWith('/api/')).map(r=>r.durationMs),
     };
   }
@@ -410,6 +449,14 @@
     const api=reqs.filter(r=>r.path.startsWith('/api/'));
     const apiMs=api.map(r=>r.durationMs).filter(Number.isFinite);
     const tasks=longTasksForRun(runId);
+    const renderRows=state.renderEvents.filter(x=>x.runId===runId);
+    const renderMs=renderRows.map(x=>x.durationMs).filter(Number.isFinite);
+    const phaseRows=state.dayStatePhases.filter(x=>x.runId===runId);
+    const phaseMap={};
+    for(const row of phaseRows){
+      const list=phaseMap[row.phase]||(phaseMap[row.phase]=[]);
+      if(Number.isFinite(row.durationMs))list.push(row.durationMs);
+    }
     const ribbonMs=switches.filter(x=>x.settled).map(x=>x.elapsedMs);
     const cacheStates={};
     for (const row of switches) for (const c of row.cacheStates||[]) cacheStates[c]=(cacheStates[c]||0)+1;
@@ -419,6 +466,7 @@
     return {
       durationMs:round(durationMs),
       launchParsedMs:state.launchParsedMs,
+      launchHandlerReadyMs:state.launchHandlerReadyMs,
       launchInteractiveMs:state.launchInteractiveMs,
       startToBoardMs:state.startToBoardMs,
       firstScorePaintMs:state.firstScorePaintMs,
@@ -443,6 +491,14 @@
       duplicateConcurrent:Math.max(0,state.duplicateConcurrent-baseline.duplicateConcurrent),
       cacheHits:Math.max(0,state.brokerCacheHits-(baseline.cacheHits||0)),
       networkPerDateMax:Math.max(0,...switches.map(x=>Number(x.requestCount||0))),
+      renderCount:renderRows.length,
+      renderP95:round(percentile(renderMs,95)),
+      renderMax:round(renderMs.length?Math.max(...renderMs):0),
+      renderTotal:round(renderMs.reduce((a,b)=>a+b,0)),
+      renderCoalesced:Number(window.SBB_RENDER_PIPELINE?.snapshot?.().coalesced||0),
+      dayApplyP95:round(percentile(phaseMap.APPLY_TOTAL||[],95)),
+      scoreRowsP95:round(percentile(phaseMap.STORE_SCORE_ROWS||[],95)),
+      mediaPlansP95:round(percentile(phaseMap.INGEST_MEDIA_PLANS||[],95)),
       longTaskCount:tasks.length,
       longTaskMax:round(tasks.length?Math.max(...tasks.map(x=>x.durationMs)):0),
       longTaskTotal:round(tasks.reduce((a,b)=>a+(b.durationMs||0),0)),
@@ -460,7 +516,8 @@
 
   function metricRows(metrics) {
     return [
-      ['Launch control ready',metrics.launchInteractiveMs,'ms',THRESHOLDS.launchInteractiveMs,true],
+      ['Launch control parsed',metrics.launchParsedMs,'ms',THRESHOLDS.launchInteractiveMs,true],
+      ['Launch handler ready',metrics.launchHandlerReadyMs,'ms',THRESHOLDS.launchInteractiveMs,true],
       ['START → board',metrics.startToBoardMs,'ms',THRESHOLDS.startToBoardMs,true],
       ['Ribbon p95',metrics.ribbonP95,'ms',THRESHOLDS.ribbonP95Ms],
       ['Ribbon max',metrics.ribbonMax,'ms',THRESHOLDS.ribbonMaxMs],
@@ -495,12 +552,14 @@
       `API_ERRORS=${m.apiErrors}  SUPERSEDED_ABORTS=${m.supersededAborts}  CACHE_HITS=${m.cacheHits}`,
       `DEFERRED=${m.deferred}  DEFERRED_ABORTS=${m.deferredAborts}  DEFERRED_RELEASES=${m.deferredReleases}`,
       `OPERATOR_MODULES=${window.SBB_OPERATOR_MODULES?.snapshot?.().loaded?'LOADED':'LAZY'}  FIRST_PAINT=${window.SBB_DATE_TRANSITIONS?.snapshot?.().firstPaintSource||'—'}`,
+      `RENDER_COUNT=${m.renderCount}  RENDER_P95=${m.renderP95??'N/A'}ms  RENDER_MAX=${m.renderMax??'N/A'}ms  RENDER_COALESCED=${m.renderCoalesced}`,
+      `DAY_APPLY_P95=${m.dayApplyP95??'N/A'}ms  SCORE_ROWS_P95=${m.scoreRowsP95??'N/A'}ms  MEDIA_PLANS_P95=${m.mediaPlansP95??'N/A'}ms`,
       `LONG_TASK_TOTAL=${m.longTaskTotal}ms  MAX_NETWORK_REQ/DATE=${m.networkPerDateMax}`,
       '',
       'SLOWEST ENDPOINTS',
       ...((report.slowestEndpoints||[]).map(x=>`${String(x.p95Ms).padStart(7)}ms p95  ${String(x.maxMs).padStart(7)}ms max  n=${String(x.count).padStart(3)}  ${x.path}`)),
       '',
-      ...report.switches.map(x=>`${x.settled?'PASS':'FAIL'} DATE ${x.date} ${x.elapsedMs}ms network=${x.requestCount} cache=${(x.cacheStates||[]).join(',')||'—'}`),
+      ...report.switches.map(x=>`${x.settled?'PASS':'FAIL'} DATE ${x.date} ${x.elapsedMs}ms network=${x.requestCount} cache=${(x.cacheStates||[]).join(',')||'—'} paint=${x.firstPaint||'—'}`),
     ].join('\n');
   }
 
@@ -539,6 +598,7 @@
     };
     const started=now();
     state.currentRunId=runId;
+    window.__SBB_EFFICIENCY_RUN_ID=runId;
     const switches=[],filters=[],probes=[];
 
     try {
@@ -568,6 +628,7 @@
       const restoreOk=await restoreState(saved);
       const durationMs=now()-started;
       state.currentRunId='';
+      if(window.__SBB_EFFICIENCY_RUN_ID===runId)window.__SBB_EFFICIENCY_RUN_ID='';
       const metrics=makeMetrics({runId,switches,filters,probes,baseline,restoreOk,durationMs});
       const result=overallGrade(metrics);
       const runRequests=requestsForRun(runId).filter(x=>x.path&&x.path.startsWith('/api/'));
@@ -618,6 +679,8 @@
     state.brokerDeferred=0;
     state.brokerDeferredAborts=0;
     state.brokerDeferredReleases=0;
+    state.renderEvents.length=0;
+    state.dayStatePhases.length=0;
     state.lastReport=null;
     sampleResources();
     renderCard();
@@ -628,6 +691,7 @@
       version:VERSION,
       running:state.running,
       launchParsedMs:state.launchParsedMs,
+      launchHandlerReadyMs:state.launchHandlerReadyMs,
       launchInteractiveMs:state.launchInteractiveMs,
       startToBoardMs:state.startToBoardMs,
       firstScorePaintMs:state.firstScorePaintMs,
@@ -635,6 +699,7 @@
       duplicateConcurrent:state.duplicateConcurrent,
       broker:window.SBB_REQUEST_BROKER?.snapshot?.()||null,
       dateTransition:window.SBB_DATE_TRANSITIONS?.snapshot?.()||null,
+      renderPipeline:window.SBB_RENDER_PIPELINE?.snapshot?.()||null,
       operatorModules:window.SBB_OPERATOR_MODULES?.snapshot?.()||null,
       longTaskCount:state.longTasks.length,
       domNodes:nodeCount(),

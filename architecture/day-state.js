@@ -1,10 +1,10 @@
-/* Sports Big Board v4.7.5 — Day State client + operator views.
+/* Sports Big Board v4.7.6 — Day State client + operator views.
    The backend owns the day. The browser renders a precomputed read model and keeps
    legacy provider paths as recovery/freshness fallbacks rather than first-paint work.
 */
 (() => {
   'use strict';
-  if (window.SBB_DAY_STATE?.version === '4.7.5') return;
+  if (window.SBB_DAY_STATE?.version === '4.7.6') return;
 
   const clean=v=>String(v??'').trim();
   const day=v=>clean(v).slice(0,10);
@@ -30,22 +30,50 @@
     }
   }
 
+  function emitPhase(date,phase,durationMs,extra={}){
+    try{
+      window.dispatchEvent(new CustomEvent('sbb:day-state-phase',{
+        detail:{date,phase,durationMs:Math.round(durationMs*10)/10,at:Date.now(),...extra}
+      }));
+    }catch(_){}
+  }
+
   function apply(payload){
     const date=day(payload?.date);
     if(!date||payload?.pending||(!payload?.scoreRowsByLeague&&!payload?.eventPlans))return 0;
+    const applyStarted=performance.now();
     let count=0;
     const rows=payload?.scoreRowsByLeague||{};
+
+    const rowsStarted=performance.now();
     if(typeof storeScoreDateLeague==='function'){
       for(const [league,games] of Object.entries(rows)){
         if(!Array.isArray(games))continue;
         storeScoreDateLeague(String(league).toUpperCase(),date,games);count+=games.length;
       }
     }
+    emitPhase(date,'STORE_SCORE_ROWS',performance.now()-rowsStarted,{games:count});
+
+    const plansStarted=performance.now();
     if(typeof ingestCompactCatalogPlans==='function')ingestCompactCatalogPlans(payload,date);
+    emitPhase(date,'INGEST_MEDIA_PLANS',performance.now()-plansStarted);
+
     state.cache.set(date,payload);state.lastRendered=date;
     if(typeof scoreBrowseDate!=='undefined'&&scoreBrowseDate===date&&typeof renderScoresFromMatchesCombined==='function'){
-      renderScoresFromMatchesCombined(false);
+      const renderStarted=performance.now();
+      try{
+        if(window.SBB_RENDER_PIPELINE?.withReason){
+          window.SBB_RENDER_PIPELINE.withReason('day-state-apply',()=>renderScoresFromMatchesCombined(false));
+        }else{
+          window.__SBB_RENDER_REASON='day-state-apply';
+          renderScoresFromMatchesCombined(false);
+          window.__SBB_RENDER_REASON='';
+        }
+      }finally{
+        emitPhase(date,'RIBBON_RENDER_CALL',performance.now()-renderStarted);
+      }
     }
+    emitPhase(date,'APPLY_TOTAL',performance.now()-applyStarted,{games:count});
     return count;
   }
 
@@ -239,7 +267,7 @@
   }
 
   window.SBB_DAY_STATE=Object.freeze({
-    version:'4.7.5',load,rebuild,apply,
+    version:'4.7.6',load,rebuild,apply,
     status:()=>json('/api/day-state/status'),
     registry:()=>json('/api/competition-registry'),
     cache:date=>state.cache.get(day(date))||null,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "release": "4.7.5",
+  "release": "4.7.6",
   "certification": "FOUNDATION",
   "overallStatusBeforeRun": "IN_PROGRESS",
   "allThreeTiersRequired": true,
@@ -205,7 +205,16 @@
         "Registered SPECIAL_EVENT schedules enqueue all canonical event dates for Day State background prewarm; data-driven league schedules prewarm only the near-live window.",
         "Completed historical Day State snapshots with complete score inventory have a 24-hour freshness window, while incomplete historical snapshots refresh sooner.",
         "Efficiency Certification reports deferred enrichment, deferred abort/release counts, lazy/loaded operator state, and the Date Transition first-paint source.",
-        "tests/test_v475_enrichment_firewall_runtime.js is a blocking browser contract for lazy operator modules, Enrichment Firewall, canonical cold builds, and special-event Day State prewarming."
+        "tests/test_v475_enrichment_firewall_runtime.js is a blocking browser contract for lazy operator modules, Enrichment Firewall, canonical cold builds, and special-event Day State prewarming.",
+        "Future scheduled score-ribbon dates are valid navigation targets and may not be clamped to the current local date; the date picker and forward pager remain enabled so upcoming tournament games can be inspected.",
+        "An early launch bridge is attached when the launch button is parsed so the user's START action is captured before the legacy DOMContentLoaded launch wiring completes.",
+        "Ribbon Render Pipeline preserves the first synchronous render call but suppresses only immediate same-state duplicate renders inside one browser frame and records render duration/node telemetry.",
+        "Day State apply owns the normal Day State first-paint render; Date Transition Coordinator may not unconditionally issue a second render after a successful Day State payload.",
+        "Cold historical fallback retains one explicit ribbon render because no Day State apply occurred.",
+        "Request Broker attaches the active efficiency run id when network transport begins and carries that immutable attribution through finish/error/metadata events.",
+        "Efficiency Certification excludes network work that began before the active test run even if that request finishes during the run.",
+        "Efficiency Certification records launch parse time, launch-handler-ready time, Render Pipeline p95/max/count/coalescing, and Day State STORE_SCORE_ROWS, INGEST_MEDIA_PLANS, and APPLY_TOTAL phase latency.",
+        "tests/test_v476_render_pipeline_runtime.js is a blocking browser contract for future-date navigation, launch readiness, render coalescing, and start-time efficiency attribution."
       ]
     },
     "tier2": {
@@ -256,6 +265,6 @@
   "durableCatalogMutation": false,
   "requiresCatalogRebuild": false,
   "requiresMediaReupload": false,
-  "baseline": "v4.7.5 adds an Enrichment Firewall and Warm Historical State layer: operator-only Competition Builder modules are lazy, ordinary date changes are Day State/ribbon only, automatic browser discovery is removed, shared registry/catalog reads are long-lived, cold historical builds are serialized, and special-event dates prewarm without today's refresh starving the background queue.",
+  "baseline": "v4.7.6 preserves the v4.7.5 Enrichment Firewall and focuses on frontend execution: future scheduled dates are browsable, launch input is captured early, Day State no longer causes a known double ribbon render, immediate duplicate renders are coalesced, and the efficiency test attributes network and render work to the correct run and phase.",
   "status": "IN_PROGRESS"
 }

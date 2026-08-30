@@ -50,6 +50,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v473_efficiency_runtime.js
   node tests/test_v474_efficiency_remediation_runtime.js
   node tests/test_v475_enrichment_firewall_runtime.js
+  node tests/test_v476_render_pipeline_runtime.js
   node tests/test_v448_recap_identity_runtime.js
   node tests/test_v448_recap_switch_runtime.js
 else

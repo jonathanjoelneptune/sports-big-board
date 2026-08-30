@@ -1,13 +1,13 @@
-/* Sports Big Board v4.7.5 — Date Transition Coordinator.
+/* Sports Big Board v4.7.6 — Date Transition Coordinator.
    Day State owns first paint. Legacy history is fallback-only. Browser discovery
    is not an automatic side effect of moving the ribbon; enrichment is deferred
    until the selected date is stable and only when canonical inventory is incomplete.
 */
 (() => {
   'use strict';
-  if(window.SBB_DATE_TRANSITIONS?.version==='4.7.5')return;
+  if(window.SBB_DATE_TRANSITIONS?.version==='4.7.6')return;
 
-  const VERSION='4.7.5';
+  const VERSION='4.7.6';
   const state={
     generation:0,
     activeDate:'',
@@ -30,7 +30,8 @@
   function normalize(value){
     let d=day(value||today());
     if(!/^\d{4}-\d{2}-\d{2}$/.test(d))d=today();
-    if(d>today())d=today();
+    // Future scheduled dates are valid Big Board dates. Day State decides whether
+    // games exist; the navigation layer must not clamp tomorrow back to today.
     return d;
   }
 
@@ -119,7 +120,9 @@
       // Pure shell update: never let the old score-date path start provider,
       // roundup, custom-media or discovery work before Day State first paint.
       const shellPromise=Promise.resolve(
-        shellSetter(date,{...options,load:false,dayStateFirstPaint:true})
+        date>today() && window.SBB_FUTURE_DATES?.setFutureShell
+          ? window.SBB_FUTURE_DATES.setFutureShell(date,{hold:options?.hold})
+          : shellSetter(date,{...options,load:false,dayStateFirstPaint:true})
       ).catch(()=>false);
 
       state.currentPromise=(async()=>{
@@ -160,7 +163,14 @@
         }
 
         if(generation===state.generation){
-          try{window.renderScoresFromMatchesCombined?.(false);}catch(_){}
+          // Day State apply() already owns the normal first-paint render. Only the
+          // cold legacy fallback needs an explicit render here.
+          if(!payload){
+            try{
+              window.SBB_RENDER_PIPELINE?.withReason?.('cold-ribbon-fallback',()=>window.renderScoresFromMatchesCombined?.(false))
+                ?? window.renderScoresFromMatchesCombined?.(false);
+            }catch(_){}
+          }
           try{window.updateScoreDayPager?.();}catch(_){}
           scheduleEnrichment(date,generation,payload);
         }
