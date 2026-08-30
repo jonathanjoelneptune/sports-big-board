@@ -9,6 +9,7 @@ from .competition_builder_v4614 import install as _install_competition_builder_v
 from .competition_builder_v4615 import install as _install_competition_builder_v4615
 from .special_event_media_v4616 import install as _install_special_event_media_v4616
 from .day_state import install as _install_day_state
+from .cfb_trusted_youtube import install as _install_cfb_trusted_youtube
 
 _install_nfl_weekly_playlists()
 _install_competition_builder()
@@ -20,3 +21,4 @@ _install_competition_builder_v4614()
 _install_competition_builder_v4615()
 _install_special_event_media_v4616()
 _install_day_state()
+_install_cfb_trusted_youtube()
