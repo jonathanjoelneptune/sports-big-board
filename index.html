@@ -10,6 +10,14 @@
   <link rel="preconnect" href="https://i.ytimg.com">
   <link rel="stylesheet" href="styles.css?v=4.7.14" />
   <link rel="stylesheet" href="ui/playback-terminal.css?v=4.7.14">
+  <style id="sbbCfbLeagueOverride">
+    /* CFB is a permanent league chip. Legacy v4.7.14 navigation code may still
+       add the special-event suppression class; this higher-specificity rule keeps
+       the static league chip visible while the corrected navigation module loads. */
+    html body #scoreFilters > button[data-score-filter="CFB"],
+    html body #scoreFilters > button[data-score-filter="CFB"].sbb-special-main-row-suppressed{display:inline-flex!important}
+    #sbbSpecialEventsMenu [data-special-competition="CFB"]{display:none!important}
+  </style>
 </head>
 <body>
   <div id="launchScreen" class="sbb-launch-screen" role="dialog" aria-modal="true" aria-labelledby="launchTitle">
@@ -85,7 +93,7 @@
         </span>
         <button type="button" data-score-filter="MLB">MLB</button><button type="button" data-score-filter="NFL">NFL</button>
         <button type="button" data-score-filter="NBA">NBA</button><button type="button" data-score-filter="NHL">NHL</button>
-        <button type="button" data-score-filter="EPL">EPL</button><button type="button" data-score-filter="MLS">MLS</button>
+        <button type="button" data-score-filter="EPL">EPL</button><button type="button" data-score-filter="MLS">MLS</button><button type="button" data-score-filter="CFB">CFB</button>
       </div>
     </header>
     <section class="key-info-ribbon" aria-live="polite">
@@ -620,6 +628,88 @@
 <script src="architecture/render-pipeline.js?v=4.7.14"></script>
 <script src="architecture/date-transition-coordinator.js?v=4.7.14"></script>
 <script src="architecture/operator-module-loader.js?v=4.7.14"></script>
+<script id="sbbCfbAuthorityFirewall">
+(() => {
+  'use strict';
+  if(window.SBB_CFB_AUTHORITY_FIREWALL?.installed)return;
+  const VERSION='2026-W1-AP';
+  const WEEK1_IDS=new Set(['194','2483','61','87','251','84','2390','245','145','201','99','2641','333','30','252','130','264','213','2567','2633','254','2294','248','97','142']);
+  const WEEK1_NAMES=new Set(['Ohio State','Oregon','Georgia','Notre Dame','Texas','Indiana','Miami','Texas A&M','Ole Miss','Oklahoma','LSU','Texas Tech','Alabama','USC','BYU','Michigan','Washington','Penn State','SMU','Tennessee','Utah','Iowa','Houston','Louisville','Missouri'].map(norm));
+  const weekIds=new Map([[1,WEEK1_IDS]]),weekNames=new Map([[1,WEEK1_NAMES]]);
+  const api=path=>window.SBB_API?.url?window.SBB_API.url(path):path;
+  function norm(v){return String(v??'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();}
+  function team(game,side){return game?.[side]||game?.[`${side}Team`]||{};}
+  function teamId(value){return String(value?.id||value?.teamId||value?.uid||'').trim();}
+  function teamName(value){return norm(value?.name||value?.displayName||value?.shortDisplayName||value?.location||value?.abbreviation||'');}
+  function weekOf(game,date=''){
+    const raw=Number(game?.cfbWeek||game?.week||game?.rankWeek||0);
+    if(raw>0)return raw;
+    const snap=String(game?.rankingSnapshotId||'').match(/:AP:(\d+)/i);if(snap)return Number(snap[1]);
+    const d=String(game?.date||game?.gameDate||game?.__sbbDate||date||'').slice(0,10);
+    if(d>='2026-08-24'&&d<='2026-09-06')return 1;
+    return 0;
+  }
+  function allowed(game,date=''){
+    const week=weekOf(game,date),ids=weekIds.get(week),names=weekNames.get(week);
+    if(!ids&&!names)return false; // fail closed until that AP snapshot is known
+    const away=team(game,'away'),home=team(game,'home');
+    const aid=teamId(away),hid=teamId(home),an=teamName(away),hn=teamName(home);
+    return !!((aid&&ids?.has(aid))||(hid&&ids?.has(hid))||(an&&names?.has(an))||(hn&&names?.has(hn)));
+  }
+  function filter(date,rows){return (Array.isArray(rows)?rows:[]).filter(game=>allowed(game,date));}
+
+  async function refreshAuthority(){
+    try{
+      const r=await fetch(api('/api/cfb/rankings'),{cache:'no-store'});if(!r.ok)return false;
+      const payload=await r.json();
+      for(const [key,snapshot] of Object.entries(payload?.snapshots||{})){
+        const week=Number(key||snapshot?.week||0);if(!week||week===1)continue;
+        const ranks=Array.isArray(snapshot?.ranks)?snapshot.ranks:[];
+        if(ranks.length!==25)continue;
+        const ids=new Set(ranks.map(x=>String(x?.teamId||'')).filter(Boolean));
+        const names=new Set(ranks.map(x=>norm(x?.name||'')).filter(Boolean));
+        if(ids.size===25||names.size===25){weekIds.set(week,ids);weekNames.set(week,names);}
+      }
+      refilterResident();return true;
+    }catch(_){return false;}
+  }
+
+  const original=window.storeScoreDateLeague;
+  if(typeof original==='function'&&!original.__sbbCfbAuthority){
+    const wrapped=function(league,date,rows){
+      const lg=String(league||'').toUpperCase();
+      return original.call(this,league,date,lg==='CFB'?filter(date,rows):rows);
+    };
+    wrapped.__sbbCfbAuthority=true;wrapped.__sbbOriginal=original;
+    window.storeScoreDateLeague=wrapped;
+    try{storeScoreDateLeague=wrapped;}catch(_){}
+  }
+
+  function refilterResident(){
+    const store=window.SBB_SCORE_DATE;if(!store?.matches||!store?.setMatches)return;
+    const dates=new Set();
+    try{dates.add(store.snapshot?.().browseDate);dates.add(store.snapshot?.().today);}catch(_){}
+    try{dates.add(store.localDateISO?.(-1));dates.add(store.localDateISO?.(0));}catch(_){}
+    for(const date of dates){
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date||'')))continue;
+      if(store.hasLeagueMatchesSnapshot?.(date,'CFB'))store.setMatches(date,'CFB',filter(date,store.matches(date,'CFB')));
+    }
+    try{window.renderScoresFromMatchesCombined?.(false);}catch(_){}
+  }
+
+  window.SBB_CFB_AUTHORITY_FIREWALL=Object.freeze({installed:true,version:VERSION,allowed,filter,refreshAuthority,snapshot:()=>({weeks:[...weekIds.keys()].sort((a,b)=>a-b),week1Teams:WEEK1_IDS.size})});
+  refilterResident();refreshAuthority();
+  // Ask the backend to reconcile once per browser session. The UI remains
+  // fail-closed even if that refresh is temporarily unavailable.
+  try{
+    if(sessionStorage.getItem('sbb.cfb.authority.refresh.2026w1')!=='1'){
+      sessionStorage.setItem('sbb.cfb.authority.refresh.2026w1','1');
+      fetch(api('/api/cfb/refresh'),{method:'POST',cache:'no-store'}).catch(()=>{});
+      setTimeout(refreshAuthority,1800);setTimeout(refilterResident,2200);
+    }
+  }catch(_){}
+})();
+</script>
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>

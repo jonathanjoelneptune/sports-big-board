@@ -48,6 +48,20 @@ SCOREBOARD_URL='https://site.api.espn.com/apis/site/v2/sports/football/college-f
 POLL_NAME='AP Top 25'
 SNAPSHOT_SCHEMA_VERSION=2
 SNAPSHOT_AUTHORITY='ESPN_AP_TOP_25'
+# Verified ESPN AP Top 25 shown on the official rankings page for the opening
+# 2026 poll. This one-time bootstrap prevents a legacy Coaches/other-poll Week 1
+# snapshot from remaining frozen forever. Later weeks continue to come from ESPN.
+WEEK1_AP_2026=[
+    (1,'194','Ohio State','OSU'),(2,'2483','Oregon','ORE'),(3,'61','Georgia','UGA'),
+    (4,'87','Notre Dame','ND'),(5,'251','Texas','TEX'),(6,'84','Indiana','IND'),
+    (7,'2390','Miami','MIA'),(8,'245','Texas A&M','TA&M'),(9,'145','Ole Miss','MISS'),
+    (10,'201','Oklahoma','OU'),(11,'99','LSU','LSU'),(12,'2641','Texas Tech','TTU'),
+    (13,'333','Alabama','ALA'),(14,'30','USC','USC'),(14,'252','BYU','BYU'),
+    (16,'130','Michigan','MICH'),(17,'264','Washington','WASH'),(18,'213','Penn State','PSU'),
+    (19,'2567','SMU','SMU'),(20,'2633','Tennessee','TENN'),(21,'254','Utah','UTAH'),
+    (22,'2294','Iowa','IOWA'),(23,'248','Houston','HOU'),(24,'97','Louisville','LOU'),
+    (25,'142','Missouri','MIZ'),
+]
 REFRESH_SECONDS=max(300,int(os.environ.get('SBB_CFB_REFRESH_SECONDS','1800') or 1800))
 _STATE_DIR=Path(os.environ.get('SBB_STATE_DIR') or (Path.home()/'.sports-big-board')).expanduser()
 _STATE_PATH=_STATE_DIR/f'cfb-ranked-{SEASON}.json'
@@ -137,6 +151,21 @@ def _parse_rankings(payload):
     poll_date=str(block.get('date') or block.get('published') or payload.get('timestamp') or '')
     fingerprint=hashlib.sha1(json.dumps(ranks,sort_keys=True).encode()).hexdigest()[:16]
     return {'schemaVersion':SNAPSHOT_SCHEMA_VERSION,'authority':SNAPSHOT_AUTHORITY,'authorityVerified':True,'week':week,'pollName':POLL_NAME,'pollDate':poll_date,'fingerprint':fingerprint,'ranks':ranks,'teams':teams}
+
+
+def _bootstrap_week1_snapshot():
+    ranks=[];teams={}
+    for rank,team_id,name,abbr in WEEK1_AP_2026:
+        row={'rank':rank,'teamId':team_id,'name':name,'abbreviation':abbr,
+             'logo':f'https://a.espncdn.com/i/teamlogos/ncaa/500/{team_id}.png'}
+        ranks.append(row)
+        for key in (team_id,_norm(name),_norm(abbr)):
+            if key:teams[key]=row
+    fingerprint=hashlib.sha1(json.dumps(ranks,sort_keys=True).encode()).hexdigest()[:16]
+    return {'schemaVersion':SNAPSHOT_SCHEMA_VERSION,'authority':SNAPSHOT_AUTHORITY,
+            'authorityVerified':True,'week':1,'pollName':POLL_NAME,
+            'pollDate':'2026 PRESEASON','fingerprint':fingerprint,'ranks':ranks,'teams':teams,
+            'bootstrap':'OFFICIAL_ESPN_AP_TOP25_2026_WEEK1'}
 
 
 def _snapshot_verified(snapshot):
@@ -237,6 +266,10 @@ def _event_rows(payload,snapshot,week,season_type=2):
 
 
 def _ranking_payload_for_week(week,current_payload=None):
+    # Week 1 is pinned to the official ESPN AP Top 25 captured for the opening
+    # poll. This repairs any legacy snapshot that was accidentally frozen from a
+    # different poll before AP authority became fail-closed.
+    if int(week)==1:return _bootstrap_week1_snapshot()
     # ESPN accepts season/week on many deployments. For a historical week, only
     # accept the response when its own week evidence agrees so a current poll can
     # never overwrite an archived snapshot.
@@ -250,7 +283,15 @@ def _current_snapshot(state):
     payload=_fetch_json(f'{RANKINGS_URL}?'+urlencode({'season':SEASON}))
     parsed=_parse_rankings(payload);week=str(parsed['week'])
     existing=(state.get('snapshots') or {}).get(week)
-    if _snapshot_verified(existing):
+    if int(week)==1:
+        pinned=_bootstrap_week1_snapshot()
+        if (existing or {}).get('fingerprint')!=pinned.get('fingerprint'):
+            state.setdefault('snapshotMigrations',[]).append({
+                'week':1,'at':time.time(),'reason':'OFFICIAL_AP_WEEK1_BOOTSTRAP_APPLIED',
+                'oldFingerprint':(existing or {}).get('fingerprint'),'newFingerprint':pinned.get('fingerprint')
+            })
+        parsed=pinned;state.setdefault('snapshots',{})['1']=pinned
+    elif _snapshot_verified(existing):
         # Immutable weekly archive: verified v2 snapshots remain immutable for the life of their week.
         parsed=existing
     else:
@@ -280,6 +321,8 @@ def _materialize(state,current_snapshot):
     if str(week-1) in state.get('snapshots',{}):targets.append(week-1)
     for target in sorted(set(x for x in targets if x>0)):
         snap=state.get('snapshots',{}).get(str(target))
+        if target==1:
+            snap=_bootstrap_week1_snapshot();state.setdefault('snapshots',{})['1']=snap
         if not snap:continue
         if not _snapshot_verified(snap):
             repaired=_ranking_payload_for_week(target)
@@ -334,9 +377,18 @@ def _sync_catalog_membership(server,events):
             from . import day_state as _day_state
             engine=getattr(_day_state,'_ENGINE',None)
             if engine:
+                # Delete the durable Day State snapshot too. Otherwise the browser
+                # can keep receiving a pre-fix CFB row even after catalog cleanup.
+                ds_conn=None
+                try:
+                    ds_conn=engine.store._connect()
+                    ds_conn.executemany('DELETE FROM day_state WHERE day=?',[(day,) for day in stale_dates])
+                    ds_conn.commit()
+                finally:
+                    if ds_conn is not None:ds_conn.close()
                 for day in stale_dates:
                     with engine.lock:engine.cache.pop(day,None)
-                    threading.Thread(target=engine.build,args=(day,),daemon=True,name=f'sbb-cfb-daystate-rebuild-{day}').start()
+                    engine.enqueue(day,priority=True)
         except Exception:pass
     return {'purged':len(stale),'dates':stale_dates}
 
@@ -391,13 +443,23 @@ def refresh(server,force=False):
         return {'ok':False,**status()}
 
 
+def _allowed_event_ids_by_date(state=None):
+    state=state or _load_state();out={}
+    for value in (state.get('weeks') or {}).values():
+        for event in (value or {}).get('events') or []:
+            event_id=str(event.get('eventId') or event.get('id') or '')
+            day=str(event.get('date') or event.get('gameDate') or '')[:10]
+            if event_id and day:out.setdefault(day,[]).append(event_id)
+    return {day:sorted(set(ids)) for day,ids in out.items()}
+
+
 def status():
     state=_load_state()
     with _LOCK:base=deepcopy(_STATUS)
     snapshots=[]
     for key,value in sorted((state.get('snapshots') or {}).items(),key=lambda kv:int(kv[0])):
         snapshots.append({'week':int(key),'fingerprint':(value or {}).get('fingerprint'),'pollDate':(value or {}).get('pollDate'),'teams':len((value or {}).get('ranks') or []),'verified':_snapshot_verified(value),'schemaVersion':int((value or {}).get('schemaVersion') or 0),'authority':(value or {}).get('authority') or ''})
-    return {**base,'competitionId':COMPETITION_ID,'seasonId':SEASON_ID,'season':SEASON,'startDate':START_DATE,'endDate':END_DATE,'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingSnapshotPolicy':'IMMUTABLE_WEEKLY','snapshotSchemaVersion':SNAPSHOT_SCHEMA_VERSION,'snapshotAuthority':SNAPSHOT_AUTHORITY,'rankingSourceUrl':RANKINGS_PAGE,'snapshotWeeks':snapshots,'snapshotMigrations':(state.get('snapshotMigrations') or [])[-10:],'statePath':str(_STATE_PATH)}
+    return {**base,'competitionId':COMPETITION_ID,'seasonId':SEASON_ID,'season':SEASON,'startDate':START_DATE,'endDate':END_DATE,'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingSnapshotPolicy':'IMMUTABLE_WEEKLY','snapshotSchemaVersion':SNAPSHOT_SCHEMA_VERSION,'snapshotAuthority':SNAPSHOT_AUTHORITY,'rankingSourceUrl':RANKINGS_PAGE,'week1BootstrapTeams':len(WEEK1_AP_2026),'snapshotWeeks':snapshots,'snapshotMigrations':(state.get('snapshotMigrations') or [])[-10:],'statePath':str(_STATE_PATH)}
 
 
 def _install_into_server():
@@ -431,7 +493,16 @@ def _install_into_server():
             parsed=urlparse(self.path)
             if parsed.path=='/api/cfb/status':return server.send_json(self,{'ok':True,**status()},200)
             if parsed.path=='/api/cfb/rankings':
-                state=_load_state();return server.send_json(self,{'ok':True,'season':SEASON,'snapshots':state.get('snapshots') or {},'weeks':{k:{'week':v.get('week'),'eventCount':len(v.get('events') or []),'updatedAt':v.get('updatedAt')} for k,v in (state.get('weeks') or {}).items()}},200)
+                state=_load_state()
+                # Week 1 is authoritative even before the first network refresh.
+                state.setdefault('snapshots',{})['1']=_bootstrap_week1_snapshot()
+                return server.send_json(self,{
+                    'ok':True,'season':SEASON,'pollName':POLL_NAME,
+                    'snapshots':state.get('snapshots') or {},
+                    'rankedTeamIdsByWeek':{str(k):[str(x.get('teamId') or '') for x in ((v or {}).get('ranks') or []) if x.get('teamId')] for k,v in (state.get('snapshots') or {}).items()},
+                    'allowedEventIdsByDate':{day:ids for day,ids in _allowed_event_ids_by_date(state).items()},
+                    'weeks':{k:{'week':v.get('week'),'eventCount':len(v.get('events') or []),'updatedAt':v.get('updatedAt')} for k,v in (state.get('weeks') or {}).items()}
+                },200)
             return old_get(self)
         def do_POST(self):
             parsed=urlparse(self.path)

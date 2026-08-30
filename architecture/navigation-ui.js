@@ -26,11 +26,15 @@
 
   function strongSpecial(row){
     if(!row)return false;
+    const id=upper(row.id);
     const explicit=upper(row.type||row.competitionType||row.kind||row.mode);
+    // CFB is a normal first-class league. Explicit LEAGUE metadata must win over
+    // the legacy eventIcon + bounded-dates heuristic used by Event Builder.
+    if(id==='CFB'||explicit==='LEAGUE')return false;
     if(['SPECIAL_EVENT','SPECIAL EVENT','EVENT','TOURNAMENT'].includes(explicit))return true;
     if(row.specialEvent===true||row.isSpecialEvent===true)return true;
-    // Event Builder gives special events a dedicated eventIcon. This is a
-    // generic metadata signal, not a hard-coded World Cup/LLWS list.
+    // Event Builder gives special events a dedicated eventIcon. Use this only
+    // when the competition did not explicitly declare itself as a league.
     if(clean(row.eventIcon)&&(clean(row.startDate)||clean(row.endDate)))return true;
     return false;
   }
