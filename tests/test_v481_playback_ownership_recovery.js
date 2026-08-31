@@ -12,11 +12,11 @@ const cert=read('architecture/comprehensive-site-certification.js');
 const watchdog=read('architecture/playback-progress-watchdog.js');
 const verify=read('VERIFY.sh');
 
-assert.strictEqual(version,'4.8.1');
-assert(index.includes('<title>Sports Big Board — v4.8.1</title>'));
-assert(index.includes('app.js?v=4.8.1'));
-assert(index.includes('architecture/playback-progress-watchdog.js?v=4.8.1'));
-assert(index.includes('architecture/comprehensive-site-certification.js?v=4.8.1'));
+const vp=version.split('.').map(Number);assert.strictEqual(vp[0],4);assert.strictEqual(vp[1],8);assert(vp[2]>=1);
+assert(index.includes(`<title>Sports Big Board — v${version}</title>`));
+assert(index.includes(`app.js?v=${version}`));
+assert(index.includes(`architecture/playback-progress-watchdog.js?v=${version}`));
+assert(index.includes(`architecture/comprehensive-site-certification.js?v=${version}`));
 
 // Game Center authority belongs to the score event for the entire score-card
 // session, including primary -> alternate/fallback media transitions.
@@ -50,8 +50,8 @@ for(const token of [
 
 // Comprehensive Certification must expose intermittent/race evidence even when
 // the final media eventually plays.
+assert(/const VERSION='2\.[12]'/.test(cert));
 for(const token of [
-  "const VERSION='2.1'",
   'waitForPlaybackQuiescence',
   'engineResetsDelta',
   'engineIncidentsDelta',
@@ -82,4 +82,4 @@ for(const forbidden of ['401864494','USC_EVENT_FOUND','San José','San Jose']){
   assert(!watchdog.includes(forbidden),`watchdog must remain game-agnostic: ${forbidden}`);
 }
 
-console.log('PASS: v4.8.1 score-session ownership + local-stall containment + race telemetry');
+console.log(`PASS: retained v4.8.1 score-session ownership + local-stall containment under v${version}`);

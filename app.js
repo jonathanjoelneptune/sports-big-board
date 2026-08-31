@@ -1395,6 +1395,57 @@ function primeScoreIntent(item){
   // is now the priority request and will populate the cache opportunistically.
 }
 
+// v4.8.2: direct/native media is not allowed to become the automatic on-air
+// primary merely because an upstream catalog said it was playable. A native asset
+// becomes HOT only after the browser has proved real decoder/clock progress (or the
+// durable readiness authority already records a prior successful first frame).
+const SCORE_MEDIA_PREFLIGHT_WAIT_MS=3000;
+const SCORE_MEDIA_PREFLIGHT_STATE=new Map();
+function scoreMediaReadiness(item){
+  const key=playbackItemKey(item),state=String(readinessState(item)||'DISCOVERED').toUpperCase();
+  if(!item)return {mediaKey:key,disposition:'NONE',state,prewarm:false};
+  if(!isNativeItem(item))return {mediaKey:key,disposition:state==='QUARANTINED'?'QUARANTINED':(state==='DEGRADED'?'DEGRADED':'EMBED_READY'),state,prewarm:false};
+  const standby=otherSlot(activeSlot),claim=slotAssignment[standby];
+  if(claim&&claim.key===key&&videoReady[standby])return {mediaKey:key,disposition:'HOT_READY',state,prewarm:false,source:'standby'};
+  const entry=preparedNativeEntryForItem(item,{requireReady:false});
+  if(entry?.ready&&entry?.progressProved)return {mediaKey:key,disposition:'HOT_READY',state,prewarm:false,source:'prepared-player'};
+  if(state==='PLAYBACK_READY'||state==='VERIFIED')return {mediaKey:key,disposition:'PROVEN_RUNTIME',state,prewarm:false,source:'readiness-history'};
+  if(entry?.warming||scoreMediaPrimeState.queued.has(nativePrimeKey(item)))return {mediaKey:key,disposition:'PREWARMING',state,prewarm:true,source:'prepared-player'};
+  return {mediaKey:key,disposition:'COLD_UPSTREAM',state,prewarm:true,source:'upstream-only'};
+}
+function scoreMediaAirReady(item){
+  if(!item||!runtimeMediaUsable(item))return false;
+  const r=scoreMediaReadiness(item);
+  if(!isNativeItem(item))return r.disposition!=='QUARANTINED'&&r.disposition!=='DEGRADED';
+  return r.disposition==='HOT_READY'||r.disposition==='PROVEN_RUNTIME';
+}
+function rememberScoreMediaPreflight(item,patch={}){
+  const key=playbackItemKey(item);if(!key||key==='none')return null;
+  const row={mediaKey:key,at:Date.now(),...(SCORE_MEDIA_PREFLIGHT_STATE.get(key)||{}),...patch};
+  SCORE_MEDIA_PREFLIGHT_STATE.set(key,row);
+  if(SCORE_MEDIA_PREFLIGHT_STATE.size>96){const oldest=[...SCORE_MEDIA_PREFLIGHT_STATE.entries()].sort((a,b)=>(a[1].at||0)-(b[1].at||0)).slice(0,SCORE_MEDIA_PREFLIGHT_STATE.size-80);for(const [k] of oldest)SCORE_MEDIA_PREFLIGHT_STATE.delete(k);}
+  return row;
+}
+function scoreMediaPreflightSnapshot(itemOrKey){
+  const key=typeof itemOrKey==='string'?String(itemOrKey):playbackItemKey(itemOrKey);
+  return key?{...(SCORE_MEDIA_PREFLIGHT_STATE.get(key)||{})}:{};
+}
+async function waitForScoreMediaHot(item,timeoutMs=SCORE_MEDIA_PREFLIGHT_WAIT_MS){
+  if(!isNativeItem(item))return {ok:true,readiness:scoreMediaReadiness(item),elapsedMs:0};
+  const started=performance.now();primeScoreIntent(item);rememberScoreMediaPreflight(item,{attempted:true,result:'PREWARMING',readinessBefore:scoreMediaReadiness(item).disposition});
+  while(performance.now()-started<timeoutMs){
+    const readiness=scoreMediaReadiness(item);
+    if(scoreMediaAirReady(item)){rememberScoreMediaPreflight(item,{attempted:true,result:readiness.disposition,elapsedMs:Math.round(performance.now()-started)});return {ok:true,readiness,elapsedMs:Math.round(performance.now()-started)};}
+    // A completed failed warm removes its entry. Do not spin for the entire timeout
+    // after the browser has already proved this source cannot become HOT.
+    const entry=preparedNativeEntryForItem(item,{requireReady:false});
+    if(!entry&&!scoreMediaPrimeState.queued.has(nativePrimeKey(item))&&performance.now()-started>500)break;
+    await new Promise(resolve=>setTimeout(resolve,90));
+  }
+  const readiness=scoreMediaReadiness(item);rememberScoreMediaPreflight(item,{attempted:true,result:'PREWARM_TIMEOUT',elapsedMs:Math.round(performance.now()-started),readinessAfter:readiness.disposition});
+  return {ok:false,readiness,elapsedMs:Math.round(performance.now()-started)};
+}
+
 
 function playbackItemKey(item){
   if(!item) return 'none';
@@ -2556,7 +2607,9 @@ function programForScoreDate(date){
     if(gameId&&seenGames.has(gameId)) continue;
     if(gameId) seenGames.add(gameId);
     for(const item of selection.selectionItems){
-      if(item?.verifiedPlayable&&(item.youtubeId||item.mediaUrl)) out.push(item);
+      // Automatic date programming may only put browser-proven native media on air.
+      // Cold upstream assets remain visible on the score card and continue warming.
+      if(item?.verifiedPlayable&&(item.youtubeId||item.mediaUrl)&&scoreMediaAirReady(item)) out.push(item);
     }
   }
   return out;
@@ -2657,23 +2710,46 @@ function tryScoreMediaFallback(failedItem,reason='playback failure',{runtimeFail
   session.failedMediaKeys ||= new Set();
   if(failedKey) session.failedMediaKeys.add(failedKey);
   if(!runtimeFailureAlreadyMarked) markRuntimeMediaFailed(failedItem,reason);
-  const candidate=(session.fallbackItems||[]).find(x=>{
+  const eligible=(session.fallbackItems||[]).filter(x=>{
     const key=playbackItemKey(x);
     return key && !session.failedMediaKeys.has(key) && runtimeMediaUsable(x);
   });
-  if(!candidate) return false;
-  const slotIndex=Math.max(0,Math.min(currentIndex,PROGRAM.length-1));
-  PROGRAM[slotIndex]=candidate;
-  session.provider=providerForItem(candidate);
-  transitionInFlight=false;
-  transitionRecoveryAttempts=0;
-  clearPlaybackRecovery();
-  setPlaybackUi('starting');
-  showBumper(slotIndex,0,'LOADING ANOTHER VIDEO');
-  try{
-    fetch('/api/client-log?event=SCORE_MEDIA_FALLBACK&detail='+encodeURIComponent(`${session.matchId}|${failedKey}|${playbackItemKey(candidate)}|${reason}`),{cache:'no-store'}).catch(()=>{});
-  }catch(_){ }
-  queueMicrotask(()=>PlaybackController.tuneProgramIndex(slotIndex,{userInitiated:false,reason:`score media fallback: ${reason}`,restart:true}));
+  let candidate=eligible.find(scoreMediaAirReady);
+  const tuneCandidate=chosen=>{
+    if(userPlaybackSession!==session||!chosen)return false;
+    const slotIndex=Math.max(0,Math.min(currentIndex,PROGRAM.length-1));
+    PROGRAM[slotIndex]=chosen;
+    session.provider=providerForItem(chosen);
+    transitionInFlight=false;
+    transitionRecoveryAttempts=0;
+    clearPlaybackRecovery();
+    setPlaybackUi('starting');
+    showBumper(slotIndex,0,'LOADING ANOTHER VIDEO');
+    try{fetch('/api/client-log?event=SCORE_MEDIA_FALLBACK&detail='+encodeURIComponent(`${session.matchId}|${failedKey}|${playbackItemKey(chosen)}|${reason}`),{cache:'no-store'}).catch(()=>{});}catch(_){ }
+    queueMicrotask(()=>PlaybackController.tuneProgramIndex(slotIndex,{userInitiated:false,reason:`score media fallback: ${reason}`,restart:true}));
+    return true;
+  };
+  if(candidate)return tuneCandidate(candidate);
+
+  // No proven fallback exists yet. Prime exactly one native candidate off-air and
+  // keep the score event authoritative while it proves real decoder progress.
+  const cold=eligible.find(x=>isNativeItem(x)&&['COLD_UPSTREAM','PREWARMING'].includes(scoreMediaReadiness(x).disposition));
+  if(!cold)return false;
+  const coldKey=playbackItemKey(cold);
+  rememberScoreMediaPreflight(cold,{attempted:true,result:'PREWARMING',readinessBefore:scoreMediaReadiness(cold).disposition,primaryRejected:true});
+  setPlaybackUi('starting');showBumper(Math.max(0,currentIndex),0,'PREPARING FALLBACK VIDEO');
+  waitForScoreMediaHot(cold,SCORE_MEDIA_PREFLIGHT_WAIT_MS).then(proof=>{
+    if(userPlaybackSession!==session)return;
+    if(proof.ok){rememberScoreMediaPreflight(cold,{attempted:true,result:proof.readiness?.disposition||'HOT_READY',primaryRejected:true});tuneCandidate(cold);return;}
+    session.failedMediaKeys.add(coldKey);
+    rememberScoreMediaPreflight(cold,{attempted:true,result:'PREWARM_TIMEOUT',primaryRejected:true});
+    if(tryScoreMediaFallback(failedItem,`${reason}: cold fallback prewarm failed`,{runtimeFailureAlreadyMarked:true}))return;
+    if(tryHistoricalScoreMediaRecovery(cold,`${reason}: cold fallback prewarm failed`))return;
+    finalizeScorePlaybackUnavailable(cold,'No browser-proven recap source is available for this game right now.');
+  }).catch(()=>{
+    if(userPlaybackSession!==session)return;session.failedMediaKeys.add(coldKey);
+    if(!tryHistoricalScoreMediaRecovery(cold,`${reason}: fallback prewarm error`))finalizeScorePlaybackUnavailable(cold,'No browser-proven recap source is available for this game right now.');
+  });
   return true;
 }
 function finalizeScorePlaybackUnavailable(item,reason='No playable recap source is available for this game right now.'){
@@ -2700,7 +2776,7 @@ function tryHistoricalScoreMediaRecovery(failedItem,reason='historical playback 
   setFeedNote(`${gameLabel(match)} • refreshing historical recap source`);
   showBumper(Math.max(0,currentIndex),0,'REFRESHING RECAP');
   try{ fetch('/api/client-log?event=HISTORY_PLAYBACK_REFRESH&detail='+encodeURIComponent(`${session.matchId}|${reason}`),{cache:'no-store'}).catch(()=>{}); }catch(_){ }
-  rapidHistoricalGameMedia(match,{force:true}).then(rows=>{
+  rapidHistoricalGameMedia(match,{force:true}).then(async rows=>{
     if(userPlaybackSession!==session) return;
     const failed=session.failedMediaKeys||new Set();
     const pool=[...new Map([...(rows||[]),...scoreCardPlayableItems(match)]
@@ -2712,11 +2788,18 @@ function tryHistoricalScoreMediaRecovery(failedItem,reason='historical playback 
       finalizeScorePlaybackUnavailable(failedItem,'Historical recap search completed, but no source could be verified for embedded playback.');
       return;
     }
+    let recovered=resolved.primary;
+    if(isNativeItem(recovered)&&!scoreMediaAirReady(recovered)){
+      rememberScoreMediaPreflight(recovered,{attempted:true,result:'PREWARMING',readinessBefore:scoreMediaReadiness(recovered).disposition,primaryRejected:true});
+      const proof=await waitForScoreMediaHot(recovered,SCORE_MEDIA_PREFLIGHT_WAIT_MS);
+      if(userPlaybackSession!==session)return;
+      if(!proof.ok){session.failedMediaKeys.add(playbackItemKey(recovered));finalizeScorePlaybackUnavailable(recovered,'Historical recap was found, but its direct-video transport could not prove browser playback readiness.');return;}
+    }
     const slotIndex=Math.max(0,Math.min(currentIndex,PROGRAM.length-1));
-    PROGRAM[slotIndex]=resolved.primary;
+    PROGRAM[slotIndex]=recovered;
     session.fallbackItems=resolved.ranked;
     session.selectionCount=Math.max(1,resolved.selectionItems.length||1);
-    session.provider=providerForItem(resolved.primary);
+    session.provider=providerForItem(recovered);
     clearPlaybackRecovery();
     renderScoresFromMatchesCombined(false);
     queueMicrotask(()=>PlaybackController.tuneProgramIndex(slotIndex,{userInitiated:false,reason:'historical exact-source refresh',restart:true}));
@@ -6468,8 +6551,33 @@ function catalogPlanForScoreGame(match){
   return null;
 }
 
+const SCORE_PLAYABLE_ITEMS_CACHE_TTL_MS=1500;
+const SCORE_PLAYABLE_ITEMS_CACHE_MAX=160;
+const SCORE_PLAYABLE_ITEMS_CACHE=new Map();
+const SCORE_PLAYABLE_ITEMS_CACHE_STATS={hits:0,misses:0,evictions:0};
+function scorePlayableItemsCacheKey(match){
+  if(!match)return '';
+  const stable=scoreRibbonStableGameKey(match)||`${String(match.competitionId||match.__sbbLeague||match.league||'SPORTS').toUpperCase()}:${String(match.scoreEventId||match.espnEventId||match.matchId||match.gamePk||match.eventId||match.id||'')}`;
+  return `${stable}|${isFinal(match)?'F':'N'}`;
+}
+function scorePlayableItemsCacheGet(match){
+  const key=scorePlayableItemsCacheKey(match),row=key?SCORE_PLAYABLE_ITEMS_CACHE.get(key):null;
+  if(!row||performance.now()-row.at>SCORE_PLAYABLE_ITEMS_CACHE_TTL_MS){if(row)SCORE_PLAYABLE_ITEMS_CACHE.delete(key);SCORE_PLAYABLE_ITEMS_CACHE_STATS.misses++;return null;}
+  SCORE_PLAYABLE_ITEMS_CACHE_STATS.hits++;
+  // Runtime quarantine remains authoritative even during the short cache window.
+  return row.items.filter(runtimeMediaUsable);
+}
+function scorePlayableItemsCachePut(match,items){
+  const key=scorePlayableItemsCacheKey(match);if(!key)return items;
+  SCORE_PLAYABLE_ITEMS_CACHE.set(key,{at:performance.now(),items:[...(items||[])]});
+  if(SCORE_PLAYABLE_ITEMS_CACHE.size>SCORE_PLAYABLE_ITEMS_CACHE_MAX){const first=SCORE_PLAYABLE_ITEMS_CACHE.keys().next().value;if(first){SCORE_PLAYABLE_ITEMS_CACHE.delete(first);SCORE_PLAYABLE_ITEMS_CACHE_STATS.evictions++;}}
+  return items;
+}
+function scorePlayableItemsCacheSnapshot(){return {size:SCORE_PLAYABLE_ITEMS_CACHE.size,...SCORE_PLAYABLE_ITEMS_CACHE_STATS,ttlMs:SCORE_PLAYABLE_ITEMS_CACHE_TTL_MS};}
+
 function scoreCardPlayableItems(match){
   if(!match) return [];
+  const cached=scorePlayableItemsCacheGet(match);if(cached)return cached;
   const lg=String(match.competitionId||match.__sbbLeague||match.league||'SPORTS').toUpperCase();
   const away=match.awayTeam||match.away||{}, home=match.homeTeam||match.home||{};
   const sc=scoreFromMatch(match);
@@ -6520,7 +6628,7 @@ function scoreCardPlayableItems(match){
     [...manifestPlayable,...discovered].filter(Boolean).map(x=>[String(x.id||x.youtubeId||x.mediaUrl||x.externalUrl||x.assetKey||''),x])
   ).values()].filter(x=>String(x?.id||x?.youtubeId||x?.mediaUrl||x?.externalUrl||x?.assetKey||'')).filter(runtimeMediaUsable);
   if(!isFinal(match)) items=items.filter(x=>!isFullRecapCandidate(x)&&!isExtendedRecap(x)&&!isGoldRecap(x));
-  return preferGameOverviews(items);
+  return scorePlayableItemsCachePut(match,preferGameOverviews(items));
 }
 
 function scoreCardPlaybackSelection(match,items){
@@ -6533,18 +6641,31 @@ function scoreCardPlaybackSelection(match,items){
   const resolved=request
     ? (window.SBB_MEDIA_RESOLVER?.resolve?.(match||{},request,{assets:rankedLegacy})||null)
     : (window.SBB_MEDIA_RESOLVER?.resolveBest?.(match||{},{assets:rankedLegacy})||null);
-  const ranked=resolved?.ranked?.length?resolved.ranked:rankedLegacy;
+  // Keep the resolver order but retain every same-game candidate so a cold direct
+  // upstream source can be bypassed in favor of a browser-proven alternative.
+  const ranked=[...new Map([...(resolved?.ranked||[]),...rankedLegacy].filter(Boolean).map(x=>[playbackItemKey(x),x])).values()];
   let primary=resolved?.primary||null;
   if(!primary && ranked.length){
     primary=match&&!isFinal(match)
       ? ranked.find(x=>!isFullRecapCandidate(x)&&!isExtendedRecap(x)&&!isGoldRecap(x))||null
       : ranked.find(isGoldRecap)||ranked.find(x=>isFullRecapCandidate(x)&&!isExtendedRecap(x)&&!isGoldRecap(x))||ranked.find(isExtendedRecap)||ranked[0];
   }
-  if(!primary) return {ranked,primary:null,selectionItems:[],resolved};
+  if(!primary) return {ranked,primary:null,editorialPrimary:null,selectionItems:[],resolved,primaryRejected:false};
+  const editorialPrimary=primary;
+  let primaryRejected=false;
+  const readinessBefore=scoreMediaReadiness(editorialPrimary);
+  if(isNativeItem(editorialPrimary)&&!scoreMediaAirReady(editorialPrimary)){
+    const alternative=ranked.find(x=>playbackItemKey(x)!==playbackItemKey(editorialPrimary)&&scoreMediaAirReady(x));
+    if(alternative){
+      primary=alternative;primaryRejected=true;
+      rememberScoreMediaPreflight(editorialPrimary,{attempted:true,result:'BYPASSED_COLD',readinessBefore:readinessBefore.disposition,primaryRejected:true,selectedMediaKey:playbackItemKey(primary)});
+      primeScoreIntent(editorialPrimary); // improve it off-air for a later attempt.
+    }
+  }
   if(isFullRecapCandidate(primary)) primary=attachRecapAlternates(primary,ranked);
   let selectionItems=[primary];
   if(!primary.overview && !isFullRecapCandidate(primary)){
-    selectionItems=ranked.filter(x=>sameGameProgramItem(x,primary));
+    selectionItems=ranked.filter(x=>sameGameProgramItem(x,primary)&&scoreMediaAirReady(x));
     selectionItems=[...new Map(selectionItems.map(x=>[String(x.id||x.youtubeId||x.mediaUrl),x])).values()];
     selectionItems.sort((a,b)=>{
       const aa=a.chronology||[9,999,0,0,0], bb=b.chronology||[9,999,0,0,0];
@@ -6552,10 +6673,11 @@ function scoreCardPlaybackSelection(match,items){
       return publishedTimeMs(a)-publishedTimeMs(b);
     });
     if(selectionItems.length) primary=selectionItems[0];
+    else selectionItems=[primary];
   }
-  return {ranked,primary,selectionItems,resolved};
+  return {ranked,primary,editorialPrimary,selectionItems,resolved,primaryRejected,readinessBefore:readinessBefore.disposition};
 }
-function scoreCardPrimaryItem(match,items){ return scoreCardPlaybackSelection(match,items).primary; }
+function scoreCardPrimaryItem(match,items){ const s=scoreCardPlaybackSelection(match,items);return s.editorialPrimary||s.primary; }
 function scoreCardAvailability(match){
   const items=scoreCardPlayableItems(match);
   const externalItems=externalMediaItemsForGame(match);
@@ -6569,7 +6691,7 @@ function scoreCardAvailability(match){
   // link that ejects the viewer to another website.
   const availability=manifestAvailability?.internal||mediaAvailability(items);
   const type=selection.primary?highlightType(items,selection.primary):'none';
-  return {items,externalItems,externalPrimary,availability,primary:selection.primary,type,externalOnly:false,archivedExternal:!selection.primary&&!!externalPrimary};
+  return {items,externalItems,externalPrimary,availability,primary:selection.primary,editorialPrimary:selection.editorialPrimary,primaryRejected:!!selection.primaryRejected,readinessBefore:selection.readinessBefore||'',type,externalOnly:false,archivedExternal:!selection.primary&&!!externalPrimary};
 }
 
 function silverRoundupKindLabel(kind){
@@ -6697,7 +6819,7 @@ function renderScoresFromMatchesCombined(animate=false){
   applyScoreRibbonFocusVisuals({scroll:false});
 }
 
-function playGameHighlights(matchId, match, providedItems=null){
+async function playGameHighlights(matchId, match, providedItems=null){
   if(!sbbPlaybackAllowed({notify:true})){
     if(match)syncSelectedEvent(gameCenterSelectionFromScoreMatch(match),{reason:'score-card selection while search priority active',source:'score-ribbon'});
     return;
@@ -6718,18 +6840,42 @@ function playGameHighlights(matchId, match, providedItems=null){
     return;
   }
 
-  const resolvedSelection=scoreCardPlaybackSelection(match,items);
+  let resolvedSelection=scoreCardPlaybackSelection(match,items);
   let primary=resolvedSelection.primary;
-  const selectionItems=resolvedSelection.selectionItems;
+  let selectionItems=resolvedSelection.selectionItems;
+  const editorialPrimary=resolvedSelection.editorialPrimary||primary;
   if(match){
     // The score event owns sporting-event identity. A media item's gamePk can be
     // mis-associated even when the video itself remains playable, so it must never
     // become Game Center authority. Launch and score clicks share this exact adapter.
     syncSelectedEvent(gameCenterSelectionFromScoreMatch(match),{reason:'score-card selection',source:'score-ribbon'});
   }
-  if(!primary) return;
+  if(!primary) return false;
+  // If the editorial primary is an unproven direct/native source and no proven
+  // alternative was available, hold it off-air while its hidden decoder proves
+  // real clock progress. This is the boundary that prevents COLD_UPSTREAM media
+  // from becoming ACTIVE at currentTime=0.
+  if(editorialPrimary&&playbackItemKey(primary)===playbackItemKey(editorialPrimary)&&isNativeItem(primary)&&!scoreMediaAirReady(primary)){
+    const initial=scoreMediaReadiness(primary);rememberScoreMediaPreflight(primary,{attempted:true,result:'PREWARMING',readinessBefore:initial.disposition,primaryRejected:false});
+    setFeedNote(`${gameLabel(match)} • preparing verified video`);showBumper(Math.max(0,currentIndex),0,'PREPARING VERIFIED VIDEO');
+    const proof=await waitForScoreMediaHot(primary,SCORE_MEDIA_PREFLIGHT_WAIT_MS);
+    if(!proof.ok){
+      setPlaybackUi('ready');setVideoLoadingOverlay(false);setFeedNote(`${gameLabel(match)} • video source is still being prepared`);
+      const kicker=$('bumperKicker');if(kicker)kicker.textContent='VIDEO STILL PREPARING';
+      const subtitle=$('bumperSubtitle');if(subtitle)subtitle.textContent='Sports Big Board kept an unproven upstream source off-air. Choose another game or retry shortly.';
+      rememberScoreMediaPreflight(primary,{attempted:true,result:'PREWARM_TIMEOUT',primaryRejected:true});
+      return false;
+    }
+    resolvedSelection=scoreCardPlaybackSelection(match,items);primary=resolvedSelection.primary;selectionItems=resolvedSelection.selectionItems;
+    if(!primary)return false;
+  }
+  if(editorialPrimary&&playbackItemKey(primary)!==playbackItemKey(editorialPrimary)){
+    rememberScoreMediaPreflight(editorialPrimary,{attempted:true,result:'BYPASSED_COLD',primaryRejected:true,selectedMediaKey:playbackItemKey(primary)});
+  }else if(editorialPrimary){
+    const readiness=scoreMediaReadiness(editorialPrimary);rememberScoreMediaPreflight(editorialPrimary,{attempted:isNativeItem(editorialPrimary),result:isNativeItem(editorialPrimary)?readiness.disposition:'NOT_REQUIRED',primaryRejected:false,selectedMediaKey:playbackItemKey(primary)});
+  }
   rememberRecentScoreMedia(primary);
-  const selectedMediaWasPrepared=isScoreMediaPrimed(primary);
+  const selectedMediaWasPrepared=isScoreMediaPrimed(primary)||scoreMediaAirReady(primary);
   // v4.3.6: score selection also tells localhost to stage the exact native
   // asset at touch-intent priority. This does not create a second playback owner;
   // it only makes the proxy cache fill ahead of the active decoder when possible.
@@ -6761,6 +6907,7 @@ function playGameHighlights(matchId, match, providedItems=null){
     fetch('/api/client-log?event=SCORE_CLICK_TUNE&detail='+encodeURIComponent(`${matchId}|${primary.id||primary.youtubeId||''}|${kind}|provider=${providerForItem(primary)}|preparedAtClick=${selectedMediaWasPrepared?1:0}`),{cache:'no-store'}).catch(()=>{});
   }catch(e){}
   PlaybackController.tuneProgramIndex(0,{userInitiated:true,reason:'score-card selection'});
+  return true;
 }
 
 function gameLabel(m){
@@ -6909,6 +7056,10 @@ window.SBB_DEV_TEST_HOOKS=Object.freeze({
   playback:()=>window.SBB_PLAYBACK_SESSION?.snapshot?.()||{},
   playbackReadiness:()=>window.SBB_PLAYBACK_READINESS?.snapshot?.()||{},
   playbackEngine:()=>window.SBB_PLAYBACK_ENGINE?.snapshot?.()||{},
+  scoreMediaReadiness:item=>scoreMediaReadiness(item),
+  scoreMediaPreflight:itemOrKey=>scoreMediaPreflightSnapshot(itemOrKey),
+  scorePlayableCache:()=>scorePlayableItemsCacheSnapshot(),
+  scoreCardProbe:match=>{const a=scoreCardAvailability(match),editorial=a?.editorialPrimary||a?.primary,selected=a?.primary;return {editorialMediaKey:playbackItemKey(editorial),selectedMediaKey:playbackItemKey(selected),readinessBefore:scoreMediaReadiness(editorial).disposition,primaryRejected:!!a?.primaryRejected,selectedReadiness:scoreMediaReadiness(selected).disposition};},
   forcePlaybackEngineReset:()=>window.SBB_PLAYBACK_ENGINE?.reset?.('dev endurance forced reset')===true,
   ultimatePlayback:()=>ultimatePlaybackMetricSnapshot(),
   currentTime:()=>{try{if(slotMedia[activeSlot]==='youtube')return Number(players[activeSlot]?.getCurrentTime?.()||0);if(slotMedia[activeSlot]==='native')return Number(nativeEl(activeSlot)?.currentTime||0);return 0;}catch(_){return 0;}},

@@ -1,0 +1,119 @@
+SPORTS BIG BOARD v4.8.2
+Comprehensive Certification: Cold-Upstream Readiness + Game Center Identity
+
+PURPOSE
+-------
+v4.8.2 follows the v4.8.1 comprehensive run that proved the destructive board-wide
+playback failure was contained (0 engine resets, 0 engine incidents, 0 Game Center
+ownership failures), while exposing three narrower problems:
+
+1. All 3/8 active playback failures were unproven ESPN direct-video COLD_UPSTREAM assets.
+2. NBA/NHL Game Centers could not resolve score identity to the canonical ESPN event.
+3. scoreCardPlayableItems remained a dominant synchronous helper cost during rendering.
+
+IMPLEMENTED
+-----------
+P0 - Cold-upstream readiness boundary
+- Added COLD_UPSTREAM -> PREWARMING -> HOT_READY / PROVEN_RUNTIME lifecycle for direct/native media.
+- A direct/native source cannot become the automatic on-air primary until the browser
+  proves actual decoder/media-clock progress, or durable playback readiness already
+  records a previous successful first frame.
+- If a proven same-game source exists, cold editorial media is bypassed off-air and
+  warmed in the background.
+- If no proven alternative exists, the score click waits up to 3 seconds for hidden
+  browser-level progress proof. Failure leaves the board healthy and the source off-air.
+- Applied the same rule to initial score selection, automatic date programming,
+  same-game fallback, and historical exact-source recovery.
+- Preserves all v4.8.1 local failure containment, playback ownership, and engine-reset
+  recovery semantics. No game/team/event-specific exceptions were added.
+
+P1 - Game Center identity normalization
+- Added sbb/game_center_runtime_v482.py.
+- NBA/NHL unresolved score aliases now resolve date + away/home fingerprint against
+  the existing authoritative ESPN day scoreboard.
+- Exact requested ESPN IDs are still verified against the sporting-event fingerprint
+  before they are trusted.
+- Ambiguous or mismatched fingerprints fail closed.
+- Existing CFB Game Center runtime enrollment remains unchanged.
+- LLWS2026/WC2026 and other competitions without a Game Center provider are not
+  silently enrolled.
+
+P1 - Explicit unsupported Game Center certification
+- Comprehensive Certification schema advanced from 2.1 to 2.2.
+- Supported Game Center competitions: MLB, NFL, CFB, NBA, NHL, MLS, EPL.
+- Unsupported sampled competitions report N/A / NO_GAME_CENTER_PROVIDER instead of
+  counting as runtime failures.
+- Expected-supported NBA/NHL resolver failures remain true failures.
+
+P1 - Playback readiness telemetry
+Each active playback matrix row now records:
+- readinessBefore
+- prewarm YES/NO and prewarm result
+- primaryRejected YES/NO
+- actual progress time
+- fallback hops
+- engine-reset delta
+- Game Center ownership
+- playback invariant
+
+The matrix summary also reports prewarmAttempts and primaryRejected counts.
+
+P1 - scoreCardPlayableItems first performance reduction
+- Added a 1.5-second stable-game cache (max 160 games) around the expensive media
+  candidate assembly path.
+- Runtime quarantine is re-applied on cache hits so stale cached candidates cannot
+  bypass current playback truth.
+- Added cache hit/miss/eviction telemetry to the comprehensive report as
+  SCORE_PLAYABLE_CACHE.
+
+RELEASE / VERIFICATION
+----------------------
+- VERSION: 4.8.2
+- Comprehensive Certification schema: 2.2
+- All 55 executable cache-busted JS/CSS references use v4.8.2.
+- Retained v4.8.0 seeded certification contract: PASS.
+- Retained v4.8.1 playback ownership/local-stall containment contract: PASS.
+- New v4.8.2 cold-upstream + support-boundary contract: PASS.
+- New NBA/NHL backend score-identity unit tests: 4/4 PASS.
+- Retained v4.7.3 through v4.7.13 architecture JS baselines exercised locally: PASS.
+- Retained v4.7.26 Game Center safeguard contract: PASS.
+- JS syntax checks on app.js, architecture/*.js, ui/*.js: PASS.
+- Python syntax checks on new backend runtime/init: PASS.
+
+FILES TO REPLACE / ADD
+----------------------
+VERIFY.sh
+VERSION
+app.js
+core-model.js
+index.html
+release-manifest.json
+architecture/comprehensive-site-certification.js
+architecture/efficiency-certification.js
+sbb/__init__.py
+sbb/game_center_runtime_v482.py
+tests/test_v481_playback_ownership_recovery.js
+tests/test_v482_cold_upstream_game_center.js
+tests/test_v482_game_center_runtime.py
+
+NEXT COMPREHENSIVE RUN - WHAT TO LOOK FOR
+-----------------------------------------
+PLAYBACK MATRIX
+- engineResets=0
+- gcOwnershipFailures=0
+- ESPN direct rows should either show HOT_READY/PROVEN_RUNTIME, or show
+  readinessBefore=COLD_UPSTREAM with prewarm/bypass evidence rather than an on-air
+  progress timeout.
+- primaryRejected=YES is healthy when a cold upstream source was safely replaced by
+  a proven same-game source.
+- fallback hops should fall from the v4.8.1 run's 6/8 level.
+
+GAME CENTER
+- NBA/NHL sampled events should resolve through canonical ESPN IDs and stop producing
+  "Unable to resolve ... Game Center event from score identity".
+- LLWS2026/WC2026 samples should display N/A UNSUPPORTED rather than FAIL.
+
+PERFORMANCE
+- Review SCORE_PLAYABLE_CACHE hit/miss counts and scoreCardPlayableItems p95.
+- Longest-task and heap-retention failures remain independent certification targets;
+  v4.8.2 begins the helper-cost reduction but does not waive those gates.

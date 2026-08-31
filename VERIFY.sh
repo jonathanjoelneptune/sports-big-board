@@ -19,6 +19,7 @@ python3 tools/check_deploy_rehearsal.py
 # release-line implementation-pinning tests run in the legacy advisory sweep.
 python3 -m unittest tests.test_v446_historical_media_quarantine
 python3 -m unittest tests.test_release_behavior_gate
+python3 -m unittest tests.test_v482_game_center_runtime
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + stable browser contracts"
@@ -70,6 +71,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v4726_comprehensive_site_certification.js
   node tests/test_v480_comprehensive_certification.js
   node tests/test_v481_playback_ownership_recovery.js
+  node tests/test_v482_cold_upstream_game_center.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi

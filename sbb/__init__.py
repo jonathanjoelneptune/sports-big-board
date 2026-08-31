@@ -15,6 +15,7 @@ from .history_readiness_repair import install as _install_history_readiness_repa
 from .runtime_path_repair_v4720 import install as _install_runtime_path_repair_v4720
 from .database_authority import install as _install_database_authority
 from .game_center_runtime_v4721 import install as _install_game_center_runtime_v4721
+from .game_center_runtime_v482 import install as _install_game_center_runtime_v482
 
 _install_nfl_weekly_playlists()
 _install_competition_builder()
@@ -35,3 +36,4 @@ _install_history_readiness_repair()
 _install_runtime_path_repair_v4720()
 _install_database_authority()
 _install_game_center_runtime_v4721()
+_install_game_center_runtime_v482()

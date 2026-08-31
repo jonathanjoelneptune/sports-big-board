@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.8.1",
-  "baseRelease": "4.8.0",
-  "title": "Comprehensive Certification Playback Ownership + Recovery Hardening",
+  "release": "4.8.2",
+  "baseRelease": "4.8.1",
+  "title": "Comprehensive Certification Cold-Upstream Readiness + Game Center Identity",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -11,9 +11,12 @@
     "core-model.js",
     "foundation-certification.json",
     "release-manifest.json",
+    "app.js",
     "architecture/comprehensive-site-certification.js",
     "architecture/efficiency-certification.js",
     "architecture/playback-progress-watchdog.js",
+    "sbb/__init__.py",
+    "sbb/game_center_runtime_v482.py",
     "tools/check_release_manifest.py",
     "tools/check_release_version.py",
     "tools/check_foundation_certification.py",
@@ -22,36 +25,37 @@
     "tests/test_release_behavior_gate.py",
     "tests/test_v4726_comprehensive_site_certification.js",
     "tests/test_v480_comprehensive_certification.js",
-    "app.js",
-    "tests/test_v481_playback_ownership_recovery.js"
+    "tests/test_v481_playback_ownership_recovery.js",
+    "tests/test_v482_cold_upstream_game_center.js",
+    "tests/test_v482_game_center_runtime.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.8.1"
+        "4.8.2"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.8.1",
-        "core-model.js?v=4.8.1",
-        "architecture/efficiency-certification.js?v=4.8.1",
-        "architecture/comprehensive-site-certification.js?v=4.8.1",
-        "architecture/playback-progress-watchdog.js?v=4.8.1",
-        "app.js?v=4.8.1"
+        "Sports Big Board — v4.8.2",
+        "core-model.js?v=4.8.2",
+        "architecture/efficiency-certification.js?v=4.8.2",
+        "architecture/comprehensive-site-certification.js?v=4.8.2",
+        "architecture/playback-progress-watchdog.js?v=4.8.2",
+        "app.js?v=4.8.2"
       ],
       "forbidden": [
-        "?v=4.8.0"
+        "?v=4.8.1"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.8.1'"
+        "version:'4.8.2'"
       ]
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "const VERSION = '4.8.1'",
+        "const VERSION = '4.8.2'",
         "Efficiency Certification"
       ],
       "forbidden": [
@@ -60,7 +64,7 @@
     },
     "architecture/comprehensive-site-certification.js": {
       "required": [
-        "const VERSION='2.1'",
+        "const VERSION='2.2'",
         "seededRng",
         "certificationDates",
         "gameCenterUiExercise",
@@ -72,34 +76,21 @@
         "engineResets",
         "gameCenterOwnershipFailures",
         "waitForPlaybackQuiescence",
-        "gcOwned="
+        "gcOwned=",
+        "GAME_CENTER_EXPECTED_SUPPORTED",
+        "unsupportedReason",
+        "prewarmAttempts",
+        "primaryRejections",
+        "readinessBefore=",
+        "primaryRejected=",
+        "SCORE_PLAYABLE_CACHE"
       ],
       "forbidden": [
         "USC_EVENT_FOUND",
         "401864494",
         "San Jose",
-        "San Jos\u00e9",
+        "San José",
         "san jose"
-      ]
-    },
-    "tools/check_foundation_certification.py": {
-      "required": [
-        "Foundation is a retained baseline",
-        "foundation_tuple<=version_tuple"
-      ]
-    },
-    "tools/check_release_manifest.py": {
-      "required": [
-        "historical_versioned",
-        "current_line"
-      ]
-    },
-    "VERIFY.sh": {
-      "required": [
-        "node tests/test_v480_comprehensive_certification.js",
-        "v4.7 JavaScript regression archive",
-        "node tests/test_v481_playback_ownership_recovery.js",
-        "v4.8 comprehensive certification architecture"
       ]
     },
     "architecture/playback-progress-watchdog.js": {
@@ -118,7 +109,7 @@
         "401864494",
         "USC_EVENT_FOUND",
         "San Jose",
-        "San Jos\u00e9"
+        "San José"
       ]
     },
     "app.js": {
@@ -129,10 +120,61 @@
         "scoreSessionGameCenterAuthority",
         "score-session authority",
         "playback engine reset recovery",
-        "recoveryWasScore"
+        "recoveryWasScore",
+        "SCORE_MEDIA_PREFLIGHT_WAIT_MS",
+        "COLD_UPSTREAM",
+        "scoreMediaAirReady",
+        "waitForScoreMediaHot",
+        "BYPASSED_COLD",
+        "PREWARM_TIMEOUT",
+        "SCORE_PLAYABLE_ITEMS_CACHE_TTL_MS",
+        "scorePlayableItemsCacheGet",
+        "scorePlayableCache:()=>scorePlayableItemsCacheSnapshot()"
       ],
       "forbidden": [
         "transitionInFlight=false;TRANSIENT_UNPLAYABLE_MEDIA.clear()"
+      ]
+    },
+    "sbb/__init__.py": {
+      "required": [
+        "game_center_runtime_v482",
+        "_install_game_center_runtime_v482()"
+      ]
+    },
+    "sbb/game_center_runtime_v482.py": {
+      "required": [
+        "_TARGETS = frozenset({\"NBA\", \"NHL\"})",
+        "_resolve_from_espn_scoreboard",
+        "_espn_scoreboard",
+        "_same_team_pair",
+        "_resolve_game_center_event_id"
+      ],
+      "forbidden": [
+        "401864494",
+        "USC Trojans",
+        "San José"
+      ]
+    },
+    "tools/check_foundation_certification.py": {
+      "required": [
+        "Foundation is a retained baseline",
+        "foundation_tuple<=version_tuple"
+      ]
+    },
+    "tools/check_release_manifest.py": {
+      "required": [
+        "historical_versioned",
+        "current_line"
+      ]
+    },
+    "VERIFY.sh": {
+      "required": [
+        "node tests/test_v480_comprehensive_certification.js",
+        "node tests/test_v481_playback_ownership_recovery.js",
+        "node tests/test_v482_cold_upstream_game_center.js",
+        "python3 -m unittest tests.test_v482_game_center_runtime",
+        "v4.7 JavaScript regression archive",
+        "v4.8 comprehensive certification architecture"
       ]
     }
   }
