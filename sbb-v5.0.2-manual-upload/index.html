@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Sports Big Board — v5.0.2</title>
+  <script id="sbbThemeBoot">
+    (()=>{try{localStorage.setItem('sbb.theme','dark');}catch(_){}document.documentElement.dataset.sbbTheme='dark';})();
+  </script>
+  <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preconnect" href="https://www.googlevideo.com">
+  <link rel="preconnect" href="https://i.ytimg.com">
+  <link rel="stylesheet" href="styles.css?v=5.0.2" />
+  <link rel="stylesheet" href="ui/playback-terminal.css?v=5.0.2">
+  <style id="sbbCfbLeagueOverride">
+    /* CFB is a permanent league chip. Legacy v5.0.2 navigation code may still
+       add the special-event suppression class; this higher-specificity rule keeps
+       the static league chip visible while the corrected navigation module loads. */
+    html body #scoreFilters > button[data-score-filter="CFB"],
+    html body #scoreFilters > button[data-score-filter="CFB"].sbb-special-main-row-suppressed{display:inline-flex!important}
+    #sbbSpecialEventsMenu [data-special-competition="CFB"]{display:none!important}
+  </style>
+
+
+  <style id="sbbThemeTemporaryDisable">
+    #themeToggleBtn,.theme-toggle-btn{display:none!important}
+  </style>
+  <style id="sbbLightModeTheme">
+    :root{--sbb-light-bg:#edf1f4;--sbb-light-panel:#f8fafc;--sbb-light-panel2:#e5ebf0;--sbb-light-line:#c6d0d9;--sbb-light-text:#18232d;--sbb-light-muted:#657482;--sbb-light-red:#c73f3a;--sbb-light-blue:#246fae}
+    html[data-sbb-theme="light"]{color-scheme:light;--bg:var(--sbb-light-bg);--panel:var(--sbb-light-panel);--panel2:var(--sbb-light-panel2);--line:var(--sbb-light-line);--text:var(--sbb-light-text);--muted:var(--sbb-light-muted);--accent:var(--sbb-light-red);--blue:var(--sbb-light-blue);--green:#2f7b59}
+    html[data-sbb-theme="light"] body,
+    html[data-sbb-theme="light"] #app-shell{background:var(--sbb-light-bg)!important;color:var(--sbb-light-text)!important}
+    html[data-sbb-theme="light"] :is(.top-nav-header,.key-info-ribbon,.score-ribbon,.mobile-live-bar,.player-topbar,.info-drawer,.info-drawer-tabs,.drawer-pane,.settings-pane,.history-audit-shell,.history-audit-header,.milestone-console,.milestone-console-header,.milestone-procedures,.queue-panel,.side-rail,.left-rail,.right-rail,.gc-section-tabs,.gc-persistent-summary){
+      background:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
+    }
+    html[data-sbb-theme="light"] :is([class*="-card"],[class*="-panel"],[class*="-popover"],[class*="-menu"],[class*="-modal"],.gc-card,.gc-overview-grid,.score-cell,.score-day-indicator,.key-info-item,.proof-card){
+      background-color:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
+    }
+    html[data-sbb-theme="light"] :is(.stage-card,.game-center-shell,.game-center-content,#gameCenterContent){background:var(--sbb-light-panel2)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] .stage{background:#dce3e9!important;border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] :is(h1,h2,h3,h4,strong,b,.gc-card-title,.settings-card-title,.league-chip,.score-cell b,.score-day-indicator){color:var(--sbb-light-text)!important}
+    html[data-sbb-theme="light"] :is(p,small,.muted,.settings-hint,.settings-message,.current-posted,.current-duration,.keyboard-help,.gc-win-latest){color:var(--sbb-light-muted)!important}
+    html[data-sbb-theme="light"] :is(button,input,select,textarea,.utility-btn,.transport-btn,.soundtrack-btn,.drawer-launch-btn,.nav,.info-drawer-tab,.gc-section-tab,.settings-save-btn,.top-date-select-btn,.return-today-btn,.score-day-arrow,.score-filters button){
+      background:#f7f9fb!important;color:var(--sbb-light-text)!important;border-color:#b9c5cf!important;box-shadow:none!important
+    }
+    html[data-sbb-theme="light"] :is(button,input,select,textarea):hover{border-color:var(--sbb-light-blue)!important}
+    html[data-sbb-theme="light"] :is(button.active,[aria-selected="true"],[aria-pressed="true"],.score-filters button.active,.gc-section-tab.active,.info-drawer-tab.active){
+      background:#d9e8f4!important;color:#124e7e!important;border-color:var(--sbb-light-blue)!important
+    }
+    html[data-sbb-theme="light"] :is(.primary,.transport-play,.sbb-launch-play){background:var(--sbb-light-red)!important;color:#fff!important;border-color:var(--sbb-light-red)!important}
+    html[data-sbb-theme="light"] :is(table,thead,tbody,tr,th,td,.gc-linescore,.gc-player-table){color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] :is(th,thead tr){background:#dde5eb!important}
+    html[data-sbb-theme="light"] :is(td,tbody tr:nth-child(even)){background:#f8fafc!important}
+    html[data-sbb-theme="light"] tbody tr:nth-child(odd){background:#eef3f6!important}
+    html[data-sbb-theme="light"] :is(.score-cells,.key-info-track,.gc-table-scroll){scrollbar-color:#9baab7 #e1e7ec}
+    html[data-sbb-theme="light"] :is(.sbb-launch-screen,.local-file-warning){background:rgba(229,235,240,.97)!important;color:var(--sbb-light-text)!important}
+    html[data-sbb-theme="light"] :is(.sbb-launch-card,.local-file-card){background:#fbfcfd!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important;box-shadow:0 18px 50px rgba(31,51,68,.16)!important}
+    html[data-sbb-theme="light"] :is(.bumper,.bumper-content,.context-program){color:#f8fafc}
+    html[data-sbb-theme="light"] :is(.history-audit-row,.milestone-procedure-item,.api-connection-row,.settings-toggle-row,.settings-field){border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] :is(.score-cell:hover,.key-info-item:hover,.gc-card:hover){box-shadow:0 4px 16px rgba(36,111,174,.10)!important}
+    html[data-sbb-theme="light"] a{color:#155f98}
+    html[data-sbb-theme="light"] code{background:#e0e6eb;color:#24313c;border-color:#c7d1d9}
+    html[data-sbb-theme="light"] .on-air-badge{background:var(--sbb-light-red)!important;color:white!important}
+    html[data-sbb-theme="light"] :is(.target-green,.target-extended,.target-gold){filter:saturate(.82) brightness(.98)}
+    html[data-sbb-theme="light"] :is(.coverage-pipeline,.coverage-head,.coverage-steps,.coverage-detail,.sport-feed-diagnostics,.sport-feed-head,.sport-feed-grid,.sport-feed-chip,.queue-list,.queue-item,.test-notes,.lower-third,.controls,.score-day-pager,.score-day-pager-left,.score-day-pager-right,.game-center-hero,.gc-header,.gc-scoreboard,.gc-team,.gc-section,.gc-overview-card,.gc-stat-card,.gc-player-section,.gc-timeline,.gc-timeline-item,.history-audit-table-wrap,.history-silver-export-bar,.history-audit-summary,.settings-section,.settings-card,.settings-group,.drawer-section,.drawer-card,.milestone-procedure-item){
+      background-color:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
+    }
+    /* v5.0.2 stability hotfix: Light Mode is CSS-owned. These selectors are
+       intentionally more specific than lazily injected dark component styles, so
+       a normal render can never flash a black first-party surface before a JS
+       observer re-tints it. Actual image/video/iframe pixels remain untouched. */
+    html[data-sbb-theme="light"] body :is(.player-layer,.youtube-player-host,.native-player,.video-loading-overlay,.player-footer,.player-status,.utility-controls,.soundtrack-controls,.sbb-special-menu,.sbb-date-popover,.sbb-builder-shell,.sbb-builder-status,.sbb-builder-review,.sbb-builder-step,.sbb-builder-competition-row,.history-recovery-controls,.history-search-console,.history-audit-pane,.history-audit-content,.milestone-console-body,.milestone-console-log,.coverage-body,.coverage-pipeline-body){
+      background:var(--sbb-light-panel)!important;background-color:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important;box-shadow:none!important
+    }
+    html[data-sbb-theme="light"] body .sbb-builder-modal{background:rgba(222,228,234,.86)!important}
+    html[data-sbb-theme="light"] body .sbb-date-popover:before{background:var(--sbb-light-panel)!important;border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] body #sbbSpecialEventsMenu,
+    html[data-sbb-theme="light"] body #sbbSpecialEventsMenu button{background:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] body #sbbSpecialEventsMenu button:hover{background:#e1ebf3!important;border-color:var(--sbb-light-blue)!important}
+    html[data-sbb-theme="light"] body #sbbSpecialEventsMenu button.selected{background:#d9e8f4!important;border-color:var(--sbb-light-blue)!important;color:#124e7e!important}
+    html[data-sbb-theme="light"] body .sbb-calendar-day{background:#f7f9fb!important;color:var(--sbb-light-text)!important;border-color:#d5dde4!important}
+    html[data-sbb-theme="light"] body .sbb-calendar-day.selected{background:#d9e8f4!important;color:#124e7e!important;border-color:var(--sbb-light-blue)!important}
+    html[data-sbb-theme="light"] body .sbb-calendar-day.today{background:#e2f1e9!important;color:#256346!important;border-color:#5c9d79!important}
+    /* Special Events dropdown is the sole visible navigation home for active
+       tournament buttons. Competition Builder may recreate an active-event chip,
+       but CSS suppresses it in the same style calculation, eliminating flicker. */
+    #scoreFilters > .sbb-active-event-filter,
+    #scoreFilters > button[data-score-filter="LLWS2026"].sbb-dynamic-competition{display:none!important}
+    html[data-sbb-theme="light"] [data-sbb-light-auto="1"]{
+      background-color:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
+    }
+    html[data-sbb-theme="light"] [data-sbb-light-auto="2"]{
+      background-color:var(--sbb-light-panel2)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
+    }
+    .theme-toggle-btn{min-width:92px;height:34px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--line,#25303a);border-radius:9px;background:var(--panel2,#111820);color:var(--text,#f6f8fa);font:800 10px/1 system-ui,sans-serif;letter-spacing:.08em;cursor:pointer}
+    .theme-toggle-btn:hover{border-color:var(--blue,#2494ff)}
+    .theme-toggle-icon{font-size:14px;line-height:1}
+    @media(max-width:860px){.theme-toggle-label{display:none}.theme-toggle-btn{min-width:38px;width:38px;padding:0}}
+  </style>
+
+</head>
+<body>
+  <div id="launchScreen" class="sbb-launch-screen" role="dialog" aria-modal="true" aria-labelledby="launchTitle">
+    <div class="sbb-launch-glow" aria-hidden="true"></div>
+    <div class="sbb-launch-card">
+      <div class="sbb-launch-brand" aria-label="Sports Big Board">
+        <span class="sbb-launch-mark" aria-hidden="true">⬢</span>
+        <div><strong>SPORTS</strong><span>BIG BOARD</span></div>
+      </div>
+      <div class="sbb-launch-rule"></div>
+      <h1 id="launchTitle">YOUR SPORTS. ONE BIG BOARD.</h1>
+      <p>Live scores, recaps, highlights and Game Center in one continuous sports channel.</p>
+      <button id="launchPlayBtn" class="sbb-launch-play" type="button" aria-label="Start Sports Big Board">
+        <span class="sbb-launch-play-icon" aria-hidden="true">▶</span>
+        <span>START SPORTS BIG BOARD</span>
+      </button>
+      <script>
+        window.__SBB_LAUNCH_CONTROL_PARSED_AT=performance.now();
+        (() => {
+          const btn=document.getElementById('launchPlayBtn');
+          if(!btn)return;
+          btn.dataset.sbbEarlyLaunch='1';
+          btn.addEventListener('click',() => {
+            window.__SBB_EARLY_LAUNCH_CLICK_AT ||= performance.now();
+            if(btn.dataset.wired==='1')return;
+            window.__SBB_PENDING_LAUNCH=true;
+            btn.dataset.sbbPendingLaunch='1';
+            const tryStart=() => {
+              if(!window.__SBB_PENDING_LAUNCH)return true;
+              if(window.SBB_START?.start){
+                window.__SBB_PENDING_LAUNCH=false;
+                btn.dataset.sbbPendingLaunch='0';
+                window.__SBB_LAUNCH_HANDLER_READY_AT ||= performance.now();
+                window.SBB_START.start();
+                return true;
+              }
+              return false;
+            };
+            if(tryStart())return;
+            const timer=setInterval(()=>{if(tryStart())clearInterval(timer);},50);
+            setTimeout(()=>clearInterval(timer),15000);
+          },{capture:true});
+        })();
+      </script>
+      <small>Scores and coverage warm up while you are here.</small>
+    </div>
+  </div>
+  <div id="localFileWarning" class="local-file-warning hidden">
+    <div class="local-file-card">
+      <div class="warning-kicker">YOUTUBE PLAYBACK SETUP</div>
+      <h2>Open Sports Big Board through localhost</h2>
+      <p>YouTube blocks embedded playback when this page is opened directly as a <code>file://</code> page. This page must be served through localhost. On Windows, double-click <strong>START SPORTS BIG BOARD.bat</strong>. On Android/Termux, run <strong>bash START-ANDROID.sh</strong>.</p>
+      <p class="warning-path">The working address will be <strong>http://localhost:8080</strong>.</p>
+    </div>
+  </div>
+  <div id="app-shell">
+    <header class="top-nav-header">
+
+      <div class="brand"><span class="brand-mark">⬢</span><div><strong>SPORTS</strong><span>BIG BOARD</span></div></div>
+
+      <button id="bigBoardFullscreenBtn" class="big-board-fullscreen-btn" type="button" aria-label="Fullscreen Sports Big Board" title="Fullscreen Sports Big Board">
+      <span class="bbfs-corners" aria-hidden="true">⛶</span>
+    </button>
+    <button id="themeToggleBtn" class="theme-toggle-btn" type="button" aria-pressed="false" aria-label="Switch to light mode" title="Switch color theme"><span class="theme-toggle-icon" aria-hidden="true">☀</span><span class="theme-toggle-label">LIGHT</span></button>
+    <div class="top-date-controls" aria-label="Score date controls">
+      <button id="topDateSelectBtn" class="top-date-select-btn" type="button" aria-label="Select a score date"><span class="top-date-search" aria-hidden="true">⌕</span><span id="topDateSelectLabel">SELECT DATE</span></button>
+      <button id="returnTodayBtn" class="return-today-btn hidden" type="button" aria-label="Return to today and start today playback"><span aria-hidden="true">↩</span> <span class="return-today-long">RETURN TO TODAY</span><span class="return-today-short">TODAY</span></button>
+    </div>
+    <div id="scoreFilters" class="score-filters" aria-label="Score ribbon sport filters">
+        <button type="button" data-score-filter="ALL" class="active">ALL</button>
+        <span id="sbbSpecialEventsWrap" class="sbb-special-wrap hidden" aria-label="Special events">
+          <button id="sbbSpecialEventsBtn" type="button" aria-haspopup="true" aria-expanded="false">SPECIAL EVENTS ▾</button>
+          <div id="sbbSpecialEventsMenu" class="sbb-special-menu hidden" role="menu"></div>
+        </span>
+        <button type="button" data-score-filter="MLB">MLB</button><button type="button" data-score-filter="NFL">NFL</button>
+        <button type="button" data-score-filter="NBA">NBA</button><button type="button" data-score-filter="NHL">NHL</button>
+        <button type="button" data-score-filter="EPL">EPL</button><button type="button" data-score-filter="MLS">MLS</button><button type="button" data-score-filter="CFB">CFB</button>
+      </div>
+    </header>
+    <section class="key-info-ribbon" aria-live="polite">
+
+      <div class="key-info-label"><strong>KEY INFO</strong><span id="keyInfoState">Checking updates…</span></div>
+      <div id="keyInfoTrack" class="key-info-track"><div class="key-info-empty">Loading official league updates…</div></div>
+
+    </section>
+    <section class="score-ribbon" aria-label="Scores">
+
+      <div id="scoreDayPager" class="score-day-pager score-day-pager-left" aria-label="Previous score date">
+        <button type="button" class="score-day-arrow" data-score-date-step="-1" aria-label="Previous score date" title="Previous date"><span aria-hidden="true">‹</span></button>
+      </div>
+
+      <button id="scoreDayIndicator" class="score-day-indicator" type="button" data-score-day="today" aria-label="Choose score date" title="Choose a date">TODAY • AUG 22</button>
+      <input id="scoreDatePicker" class="score-date-picker" type="date" aria-label="Choose score date">
+      <div id="scoreCells" class="score-cells"><div class="score-cell"><span>MLB</span><b>Loading</b><b>scores…</b><small>LIVE DATA</small></div></div>
+
+      <div id="scoreDayPagerRight" class="score-day-pager score-day-pager-right" aria-label="Next score date">
+        <button type="button" class="score-day-arrow" data-score-date-step="1" aria-label="Next score date" title="Next date"><span aria-hidden="true">›</span></button>
+      </div>
+    </section>
+    <div class="mobile-live-bar">
+
+      <div id="mobileDataStatus" class="mobile-data-state">DATA: CHECKING</div>
+      <div id="mobileLiveSummary">Connecting to Highlightly…</div><div id="quotaSummary" class="quota-summary">API —</div>
+
+    </div>
+    <section class="sport-feed-diagnostics" aria-live="polite">
+      <div class="sport-feed-head"><strong>LIVE FEEDS</strong><span id="sportFeedSummary">Checking MLB / NFL / NBA / NHL / EPL / MLS…</span><span id="sportCallSummary" class="sport-call-summary">—</span> <span id="rapidHighlightStatus" class="muted">RAPID waiting</span><span id="mediaPrewarmStatus" class="muted">PREWARM starting</span><span id="editorStatusBadge" class="editor-status-badge">EDITOR: CHECKING</span><span id="dataStatus" class="data-pill">DATA: CHECKING</span><span id="bufferStatus" class="status-pill">STANDBY: STARTING</span></div>
+      <div class="sport-feed-grid">
+        <div class="sport-feed-chip checking" id="feedMLB"><b>MLB</b><span>CHECKING</span><small>—</small></div>
+        <div class="sport-feed-chip checking" id="feedNFL"><b>NFL</b><span>CHECKING</span><small>—</small></div>
+        <div class="sport-feed-chip checking" id="feedNBA"><b>NBA</b><span>CHECKING</span><small>—</small></div>
+        <div class="sport-feed-chip checking" id="feedNHL"><b>NHL</b><span>CHECKING</span><small>—</small></div>
+        <div class="sport-feed-chip checking" id="feedEPL"><b>EPL</b><span>CHECKING</span><small>—</small></div>
+        <div class="sport-feed-chip checking" id="feedMLS"><b>MLS</b><span>CHECKING</span><small>—</small></div>
+      </div>
+    </section>
+    <section id="coveragePipeline" class="coverage-pipeline" aria-live="polite">
+      <div class="coverage-head">
+        <strong>MEDIA: STARTING</strong>
+        <span id="coverageSummary">Preparing highlight discovery…</span>
+      </div>
+      <div class="coverage-steps">
+        <span id="coverageCache" class="coverage-step active">CACHE</span>
+        <span id="coverageScores" class="coverage-step">SCORES</span>
+        <span id="coverageHighlightly" class="coverage-step">HIGHLIGHTLY</span>
+        <span id="coverageMlb" class="coverage-step">MLB SEARCH</span>
+        <span id="coverageYoutube" class="coverage-step">YOUTUBE / LOCAL</span>
+        <span id="coverageValidate" class="coverage-step">VIDEO CHECK</span>
+        <span id="coverageReady" class="coverage-step">READY</span>
+      </div>
+      <div id="coverageDetail" class="coverage-detail">0 completed • 0 playable • discovery not started</div>
+    </section>
+
+    <main class="layout">
+      <aside class="left-rail">
+        <button class="nav active">▶ <span>Around the League</span></button>
+        <button class="nav">★ <span>My Teams</span></button>
+        <button class="nav">◉ <span>Live Games</span></button>
+        <button class="nav">▦ <span>Scores</span></button>
+        <button class="nav">🏆 <span>Standings</span></button>
+        <button id="leftRailSettingsBtn" class="nav">⚙ <span>Settings</span></button>
+        <div class="proof-card">
+          <strong>v5.0.2</strong>
+          <span>FOUNDATION • 3-tier certification candidate</span>
+          <small id="apiRailStatus">Checking API…</small>
+          <small id="editorRailStatus">Editor: checking…</small>
+        </div>
+      </aside>
+
+      <section class="stage-card">
+        <div class="player-topbar">
+          <div class="now-playing-copy">
+            <div class="now-playing-meta-row"><span class="league-chip" id="currentLeague">NBA</span><span id="currentPosted" class="current-posted">Posted time unavailable</span><span id="currentDuration" class="current-duration"></span><span id="currentRecapPair" class="current-recap-pair hidden"></span></div>
+            <h1 id="currentTitle">Loading highlight…</h1>
+            <p id="currentSubtitle">Dual-player prebuffer test</p>
+          </div>
+          <div class="transport" aria-label="Playback controls">
+            <div id="recapAltButtons" class="recap-alt-buttons hidden" aria-label="Available recap versions">
+              <button id="recapQuickBtn" class="recap-alt-btn target-green hidden" aria-label="Switch to quick recap" title="Watch quick/full recap">+ QUICK</button>
+              <button id="recapExtendedBtn" class="recap-alt-btn target-extended hidden" aria-label="Switch to extended recap" title="Watch extended recap">+ EXTENDED</button>
+              <button id="recapCommentaryBtn" class="recap-alt-btn target-gold hidden" aria-label="Switch to commentary recap" title="Watch commentary recap">+ COMMENTARY</button>
+            </div>
+            <button id="prevBtn" class="transport-btn" aria-label="Previous highlight" title="Previous highlight">⏮</button>
+            <button id="playBtn" class="transport-btn transport-play primary" aria-label="Pause" title="Play or pause">Ⅱ</button>
+            <button id="nextBtn" class="transport-btn" aria-label="Next highlight" title="Next highlight">⏭</button>
+            <div id="soundtrackControls" class="soundtrack-controls" aria-label="Sports Big Board soundtrack">
+              <button id="soundtrackToggle" class="soundtrack-btn soundtrack-toggle" type="button" aria-pressed="false" aria-label="Enable Sports Big Board soundtrack" title="Soundtrack starts with Sports Big Board">♫ ▶</button>
+              <button id="soundtrackNextBtn" class="soundtrack-btn soundtrack-next-btn" type="button" aria-label="Next soundtrack song" title="Next soundtrack song">⏭</button>
+              <button id="soundtrackVolumeBtn" class="soundtrack-btn soundtrack-volume-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="soundtrackVolumePopover" aria-label="Soundtrack volume" title="Soundtrack volume">🔉</button>
+              <div id="soundtrackVolumePopover" class="soundtrack-volume-popover hidden" role="group" aria-label="Soundtrack volume">
+                <span aria-hidden="true">♫</span>
+                <input id="soundtrackVolume" type="range" min="0" max="0.5" step="0.01" value="0.16" aria-label="Soundtrack volume level">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="stage" id="stage">
+          <div class="player-layer active" id="layerA">
+            <div id="playerA" class="youtube-player-host"></div>
+            <video id="nativeA" class="native-player hidden" playsinline preload="auto" controls></video>
+            <div id="contextA" class="context-program hidden"></div>
+          </div>
+          <div class="player-layer" id="layerB">
+            <div id="playerB" class="youtube-player-host"></div>
+            <video id="nativeB" class="native-player hidden" playsinline preload="auto" controls></video>
+            <div id="contextB" class="context-program hidden"></div>
+          </div>
+
+          <div id="bumper" class="bumper hidden">
+            <div id="bumperBackdrop" class="bumper-backdrop"></div>
+            <div class="bumper-content">
+              <div class="bumper-copy">
+                <div class="bumper-kicker" id="bumperKicker">COMING UP NEXT</div>
+                <div class="bumper-league" id="bumperLeague">NBA</div>
+                <div class="bumper-title" id="bumperTitle">Preparing highlight…</div>
+                <div class="bumper-subtitle" id="bumperSubtitle">Official highlight package</div>
+                <div id="bumperAction" class="bumper-action hidden"></div>
+                <div class="bumper-brand">SPORTS BIG BOARD</div>
+              </div>
+              <div class="bumper-art">
+                <img id="bumperThumb" src="" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div id="searchPriorityPlaybackLock" class="search-priority-playback-lock hidden" role="status" aria-live="polite">
+            <strong>SEARCH PRIORITY</strong>
+            <span>Playback is temporarily suspended while historical discovery has priority.</span>
+          </div>
+          <div id="videoLoadingOverlay" class="video-loading-overlay hidden" role="status" aria-live="polite">
+            <span class="sbb-loading-spinner" aria-hidden="true"></span>
+            <span id="videoLoadingText">Loading video…</span>
+          </div>
+          <div class="on-air-badge" id="onAirBadge">STARTING</div>
+          <div class="keyboard-help">SPACE pause • → next • F fullscreen</div>
+        </div>
+
+        <section id="playbackTerminal" class="playback-terminal" aria-label="Dev playback terminal">
+          <div class="pt-head"><strong>PLAYBACK TERMINAL</strong><span id="playbackTerminalSummary" class="pt-summary">Waiting for playback telemetry…</span><div class="pt-actions"><button id="playbackTerminalCopy" type="button">COPY</button><button id="playbackTerminalClear" type="button">CLEAR</button></div></div>
+          <div class="pt-endurance"><strong>ENDURANCE</strong><b id="playbackEnduranceStatus" data-state="idle">IDLE</b><span id="playbackEnduranceDetail">60M full certification or 30M historical recovery • GREEN/PURPLE/BLUE • multi-sport • random archive dates across 365 days • stale media: retry once → quarantine → same-game fallback → next game • FIND RECAP/no media skipped</span><div class="pt-endurance-progress" aria-hidden="true"><i id="playbackEnduranceProgress"></i></div><button id="playbackEnduranceStart" type="button">START 60M</button><button id="playbackRecoveryStart" type="button">START 30M RECOVERY</button><button id="playbackEnduranceStop" type="button" disabled>STOP</button></div>
+          <div class="pt-columns"><span>#</span><span>STATE</span><span>LG</span><span>TYPE</span><span>SOURCE</span><span>PLAY</span><span>BUFFER</span><span>STL</span><span>START</span><span>READINESS</span><span>SCORE</span><span>TITLE</span></div>
+          <div id="playbackTerminalRows" class="pt-body"><div class="pt-empty">Waiting for playback sessions…</div></div>
+        </section>
+
+        <div class="lower-third player-footer">
+          <div class="player-status">
+            <div class="metric-grid">
+              <div><span>TRANSITION</span><b id="lastTransition">—</b></div>
+              <div><span>STANDBY</span><b id="standbyState">—</b></div>
+              <div><span>SWAPS</span><b id="swapCount">0</b></div>
+            </div>
+            <div class="utility-controls">
+              <button id="gameCenterDrawerBtn" class="utility-btn drawer-launch-btn" type="button">GAME CENTER</button>
+              <button id="upNextDrawerBtn" class="utility-btn drawer-launch-btn" type="button">UP NEXT</button>
+              <button id="settingsDrawerBtn" class="utility-btn drawer-launch-btn" type="button">SETTINGS</button>
+              <button id="bumperToggle" class="utility-btn">Bumper: Always</button>
+              <button id="fullscreenBtn" class="utility-btn" aria-label="Fullscreen" title="Fullscreen">⛶</button>
+            </div>
+          </div>
+        </div>
+
+      <aside id="infoDrawer" class="info-drawer is-closed" aria-hidden="true" aria-label="Sports Big Board information drawer">
+        <div class="info-drawer-head">
+          <div class="info-drawer-tabs" role="tablist" aria-label="Information drawer">
+            <button id="gameCenterTabBtn" class="info-drawer-tab active" type="button" role="tab" aria-selected="true" data-drawer-tab="game-center">GAME CENTER</button>
+            <button id="upNextTabBtn" class="info-drawer-tab" type="button" role="tab" aria-selected="false" data-drawer-tab="up-next">UP NEXT</button>
+            <button id="settingsTabBtn" class="info-drawer-tab" type="button" role="tab" aria-selected="false" data-drawer-tab="settings">SETTINGS</button>
+          </div>
+          <button id="infoDrawerClose" class="info-drawer-close" type="button" aria-label="Close information drawer" title="Close">×</button>
+        </div>
+
+        <section id="gameCenterPane" class="drawer-pane game-center-pane" data-drawer-pane="game-center">
+          <div class="game-center-empty" id="gameCenterEmpty">
+            <strong>GAME CENTER</strong>
+            <span>Select a game from the score ribbon to see its scoreboard, stats, players and plays.</span>
+          </div>
+          <div id="gameCenterContent" class="game-center-content hidden">
+            <div class="gc-hero">
+              <div id="gcAwayTeam" class="gc-team gc-team-away">
+                <span class="gc-team-logo-wrap"><img class="gc-team-logo" alt=""><span class="gc-team-logo-fallback">AWY</span></span>
+                <span class="gc-team-copy"><span class="gc-team-abbr">AWAY</span><strong class="gc-team-name">Away</strong></span>
+                <b class="gc-team-score">—</b>
+              </div>
+              <div class="gc-status"><strong id="gcStatus">—</strong><span id="gcVenue">—</span><small id="gcUpdated">—</small></div>
+              <div id="gcHomeTeam" class="gc-team gc-team-home">
+                <b class="gc-team-score">—</b>
+                <span class="gc-team-copy"><span class="gc-team-abbr">HOME</span><strong class="gc-team-name">Home</strong></span>
+                <span class="gc-team-logo-wrap"><img class="gc-team-logo" alt=""><span class="gc-team-logo-fallback">HME</span></span>
+              </div>
+            </div>
+            <div id="gcSections" class="gc-section-tabs" role="tablist" aria-label="Game Center sections">
+              <button class="gc-section-tab active" type="button" data-gc-section="overview">OVERVIEW</button>
+              <button class="gc-section-tab" type="button" data-gc-section="team-stats">TEAM STATS</button>
+              <button class="gc-section-tab" type="button" data-gc-section="players">PLAYERS</button>
+              <button class="gc-section-tab" type="button" data-gc-section="plays">PLAYS</button>
+            </div>
+            <div id="gcOverview" class="gc-section" data-gc-pane="overview"></div>
+            <div id="gcTeamStats" class="gc-section hidden" data-gc-pane="team-stats"></div>
+            <div id="gcPlayers" class="gc-section hidden" data-gc-pane="players"></div>
+            <div id="gcPlays" class="gc-section hidden" data-gc-pane="plays"></div>
+          </div>
+        </section>
+
+        <section id="upNextPane" class="drawer-pane hidden" data-drawer-pane="up-next">
+          <div class="queue-panel drawer-queue-panel">
+            <div class="panel-head"><div><small>PROGRAMMING</small><h2>Up Next</h2></div><button id="shuffleBtn">Shuffle</button></div><div id="feedNote" class="feed-note">Loading Highlightly MLB feed…</div>
+            <div id="queueList" class="queue-list"></div>
+            <button id="debugToggle" class="debug-toggle" type="button">PLAYER DEBUG ▸</button>
+            <div id="playbackDebug" class="playback-debug is-collapsed">
+              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v5.0.2</span></div>
+              <div><span>PROVIDER</span><b id="diagProvider">—</b></div>
+              <div><span>SLOT</span><b id="diagSlot">—</b></div>
+              <div><span>STATE</span><b id="diagState">idle</b></div>
+              <div><span>ERROR</span><b id="diagError">—</b></div>
+              <div><span>READY / NETWORK</span><b><i id="diagReady">—</i> / <i id="diagNetwork">—</i></b></div>
+              <div><span>SESSION</span><b id="diagSession">—</b></div>
+              <div><span>FIRST FRAME</span><b id="diagFirstFrame">—</b></div>
+              <div><span>STALLS</span><b id="diagStalls">0</b></div>
+              <div><span>AUDIO INVARIANT</span><b id="diagInvariant">OK</b></div>
+              <div class="debug-source"><span>MEDIA KEY</span><b id="diagMediaKey">—</b></div>
+              <div class="debug-source"><span>SOURCE</span><b id="diagSource">—</b></div>
+              <div class="debug-source"><span>VIDEO SOURCE LINK</span><b><a id="diagSourceLink" class="debug-source-link" href="#" target="_blank" rel="noopener">—</a></b></div>
+              <div class="debug-source"><span>SOUNDTRACK</span><b id="diagSoundtrack">—</b></div>
+              <div class="debug-source"><span>LAST ACTION</span><b id="diagAction">—</b></div>
+            </div>
+            <div class="test-notes">
+              <strong>Playback health</strong>
+              <span>✓ Prepared-player adoption remains isolated</span>
+              <span>✓ Queue can continue unattended</span>
+              <span>✓ Game Center never controls playback</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="settingsPane" class="drawer-pane settings-pane hidden" data-drawer-pane="settings">
+          <div class="settings-grid">
+            <div class="settings-card">
+              <div class="settings-card-title">VIEWING</div>
+              <label class="settings-toggle-row"><span><strong>Keep Video Visible</strong><small>Shrink and pin the video while you scroll Game Center.</small></span><input id="keepVideoVisibleToggle" type="checkbox"></label>
+              <label class="settings-field"><span>Game Center layout</span><select id="gameCenterLayoutSelect"><option value="below">Below video (mobile/tablet)</option><option value="side">Embedded right side (PC)</option></select></label>
+              <small id="gameCenterLayoutHint" class="settings-hint">PC uses the embedded right-side Game Center; mobile/tablet use below-video.</small>
+            </div>
+            <div class="settings-card">
+              <div class="settings-card-title">API CONNECTIONS</div>
+              <div class="api-connection-row"><span><b>Highlightly</b><small>Scores and sports data</small></span><strong id="settingsHighlightlyStatus">Checking…</strong></div>
+              <input id="settingsHighlightlyKey" class="settings-secret-input" type="password" autocomplete="off" placeholder="Enter replacement key only if needed">
+              <div class="api-connection-row"><span><b>YouTube</b><small>Official highlight discovery</small></span><strong id="settingsYoutubeStatus">Checking…</strong></div>
+              <input id="settingsYoutubeKey" class="settings-secret-input" type="password" autocomplete="off" placeholder="Enter replacement key only if needed">
+              <div class="api-connection-row"><span><b>OpenAI</b><small>Editorial ranking</small></span><strong id="settingsOpenaiStatus">Checking…</strong></div>
+              <input id="settingsOpenaiKey" class="settings-secret-input" type="password" autocomplete="off" placeholder="Enter replacement key only if needed">
+              <button id="saveApiSettingsBtn" class="settings-save-btn" type="button">SAVE API SETTINGS</button>
+              <div id="apiSettingsMessage" class="settings-message">Keys are stored once per machine outside release folders.</div>
+            </div>
+            <div class="settings-card history-audit-launch-card">
+              <div class="settings-card-title">HISTORICAL DATABASE</div>
+              <div class="history-audit-launch-copy"><strong>Audit game media and Silver roundups</strong><small>Inspect Gold, Green, Purple and Blue game assets or switch to Daily/Weekly/Matchweek Silver collections with integrity flags, source evidence, filters, and CSV/XLSX export.</small></div>
+              <button id="openHistoryAuditBtn" class="settings-save-btn" type="button">OPEN DATABASE AUDIT</button>
+            </div>
+            <div class="settings-card milestone-launch-card">
+              <div class="settings-card-title">DEV / FOUNDATION CERTIFICATION</div>
+              <div class="history-audit-launch-copy"><strong>Foundation Certification Console</strong><small>5.0.2 release truth: Tier 1 stress/hardening, Tier 2 continuous-telemetry playback-progress soak, Tier 3 controlled chaos/recovery, and an exportable three-tier foundation certificate.</small></div>
+              <button id="devModeToggleBtn" class="settings-save-btn" type="button" aria-pressed="false">DEV MODE: OFF</button>
+              <button id="openMilestoneConsoleBtn" class="settings-save-btn" type="button">OPEN 5.0.2 CERTIFICATION CONSOLE</button>
+            </div>
+          </div>
+        </section>
+      </aside>
+      </section>
+    </main>
+  </div>
+
+
+  <div id="milestoneConsoleModal" class="milestone-console-modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Milestone release console">
+    <div id="milestoneConsoleBackdrop" class="milestone-console-backdrop"></div>
+    <section class="milestone-console-shell">
+      <header class="milestone-console-header">
+        <div><small>DEV / FOUNDATION CERTIFICATION</small><h2>5.0.2 Foundation Certification Console</h2><p>Three-tier release certification: functional/stress hardening, continuous-telemetry playback-progress soak, and controlled chaos/recovery. Overall Foundation Certification requires all three tiers.</p></div>
+        <div class="milestone-console-actions"><strong id="milestoneConsoleOverall">CONNECTING…</strong><button id="milestoneStressRun" class="milestone-stress-run" type="button">RUN DEV STRESS TEST</button><button id="milestoneStressStop" type="button" disabled>STOP TEST</button><button id="milestoneProceduresToggle" type="button" aria-expanded="false">TEST PROCEDURES</button><button id="milestoneConsoleRefresh" type="button">REFRESH</button><button id="milestoneConsoleCopy" type="button">COPY FULL LOG</button><button id="milestoneConsoleDownload" type="button">SAVE TXT</button><button id="milestoneConsoleReset" type="button" title="Clear the current milestone observation window">RESET WINDOW</button><button id="milestoneConsoleClose" class="audit-close" type="button" aria-label="Close">×</button><em id="milestoneCopyStatus" aria-live="polite"></em></div>
+      </header>
+      <div class="milestone-console-stats">
+        <div><span>VERSION</span><strong id="milestoneVersion">—</strong></div>
+        <div><span>PLAYBACK</span><strong id="milestonePlayback">—</strong></div>
+        <div><span>FIRST FRAME</span><strong id="milestoneFirstFrame">—</strong></div>
+        <div><span>STALLS</span><strong id="milestoneStalls">—</strong></div>
+        <div><span>OWNERSHIP</span><strong id="milestoneInvariant">—</strong></div>
+        <div><span>WORKERS</span><strong id="milestoneWorkers">—</strong></div>
+        <div><span>DB TELEMETRY</span><strong id="milestoneDb">—</strong></div>
+        <div><span>PROBLEMS</span><strong id="milestoneProblems">—</strong></div>
+      </div>
+      <div class="milestone-stress-strip"><div><span>DEV STRESS TEST</span><strong id="milestoneStressStatus">IDLE</strong></div><div class="milestone-stress-track"><i id="milestoneStressProgress"></i></div><small id="milestoneStressDetail">Runs repeatable playback, data, worker, drawer, soundtrack and resource-mode checks against the live site.</small></div>
+      <div id="milestoneConsoleProblems" class="milestone-console-problems"><div class="milestone-problem ok"><strong>CONNECTING</strong><span>Waiting for backend milestone telemetry…</span></div></div>
+      <section id="milestoneProceduresPanel" class="milestone-procedures hidden" aria-label="Milestone test procedures"><header><div><strong>MILESTONE TEST PROCEDURES</strong><small>Repeatable on-site acceptance checks. RUN executes the automated subset; use PASS / FAIL to record manual observations in the release log.</small></div><button id="milestoneProceduresRunAll" type="button">RUN ALL PROCEDURES</button></header><div id="milestoneProcedureList" class="milestone-procedure-list"></div></section>
+      <pre id="milestoneConsoleOutput" class="milestone-console-output" aria-live="polite">Connecting to 4.3 foundation telemetry…</pre>
+    </section>
+  </div>
+
+  <div id="historyAuditModal" class="history-audit-modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Historical database audit">
+    <div id="historyAuditBackdrop" class="history-audit-backdrop"></div>
+    <section class="history-audit-shell">
+      <header class="history-audit-header">
+        <div><small>DEV / DATA QUALITY</small><h2>Historical Database Audit</h2><p id="historyAuditMessage">Read-only view of the persistent cloud catalog.</p></div>
+        <div class="history-audit-actions"><button id="historyAuditRefresh" type="button">REFRESH</button><button id="historyAuditCsv" type="button">EXPORT CSV</button><button id="historyAuditXlsx" type="button">EXPORT XLSX</button><button id="historyAuditClose" class="audit-close" type="button" aria-label="Close">×</button></div>
+      </header>
+      <div class="history-audit-tabs" role="tablist" aria-label="Historical database audit views">
+        <button id="historyAuditTabGames" class="active" type="button" role="tab" aria-selected="true">GAME MEDIA</button>
+        <button id="historyAuditTabSilver" type="button" role="tab" aria-selected="false">SILVER ROUNDUPS</button>
+        <button id="historyAuditTabPlaylists" type="button" role="tab" aria-selected="false">GAME MEDIA PLAYLISTS</button>
+        <button id="historyAuditTabStatistics" type="button" role="tab" aria-selected="false">STATISTICS</button>
+      </div>
+      <section id="historyStatisticsPane" class="history-statistics-only history-audit-pane-hidden" aria-label="Competition media statistics">
+        <div id="historyStatisticsSummary" class="history-audit-best-summary">Competition statistics: loading…</div>
+        <div class="history-audit-table-wrap">
+          <table class="history-audit-table">
+            <thead><tr><th>COMPETITION</th><th>TYPE</th><th>GAMES</th><th>WITH MEDIA</th><th>NO MEDIA</th><th>BEST GOLD</th><th>BEST GREEN</th><th>BEST PURPLE</th><th>BEST BLUE</th><th>COVERAGE COMPLETE</th><th>PLAYLISTS</th><th>ASSOCIATIONS</th><th>ACTIONS</th></tr></thead>
+            <tbody id="historyStatisticsBody"><tr><td colspan="13">Open Statistics to load competition coverage.</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="history-playlists-only history-audit-pane-hidden" aria-label="Game media playlist and source registry">
+        <div class="history-media-sources-toolbar">
+          <div><small>ACTIVE SOURCE REGISTRY</small><strong>Game Media Playlists & Primary Sources</strong><span>These are the playlist, channel, API, and website lanes Sports Big Board is currently using for GAME media. Silver-only sources are labeled separately.</span></div>
+          <div><label><span>LEAGUE</span><select id="historyMediaSourcesLeague"><option value="">ALL LEAGUES</option><option>MLB</option><option>NFL</option><option>NBA</option><option>NHL</option><option>EPL</option><option>MLS</option></select></label><button id="historyScheduleSyncNow" type="button">SYNC SCHEDULE NOW</button><button id="historyMediaSourcesRefresh" type="button">REFRESH SOURCES</button></div>
+        </div>
+        <form id="historyMediaPlaylistForm" class="history-media-playlist-form">
+          <input id="historyMediaPlaylistId" type="hidden">
+          <label><span>LEAGUE</span><select id="historyMediaPlaylistLeague" required><option>MLB</option><option>NFL</option><option>NBA</option><option>NHL</option><option>EPL</option><option>MLS</option></select></label>
+          <label class="playlist-url"><span>YOUTUBE PLAYLIST URL / ID</span><input id="historyMediaPlaylistUrl" type="text" required placeholder="https://www.youtube.com/playlist?list=…"></label>
+          <label><span>SEASON START</span><input id="historyMediaPlaylistSeasonStart" type="number" min="2000" max="2100" placeholder="2026"></label>
+          <label><span>SEASON END</span><input id="historyMediaPlaylistSeasonEnd" type="number" min="2000" max="2100" placeholder="2026"></label>
+          <label><span>OBJECTIVE</span><select id="historyMediaPlaylistObjective"><option value="coverage">GAME COVERAGE</option><option value="quick">QUICK / GREEN</option><option value="extended">EXTENDED / PURPLE</option></select></label>
+          <label><span>PRIORITY</span><select id="historyMediaPlaylistPriority"><option>PRIMARY</option><option>SECONDARY</option><option>FALLBACK</option></select></label>
+          <label class="playlist-check"><input id="historyMediaPlaylistAuto" type="checkbox" checked><span>AUTO RECRAWL</span></label>
+          <div class="history-media-playlist-form-actions"><button id="historyMediaPlaylistSave" type="submit">ADD & CRAWL PLAYLIST</button><button id="historyMediaPlaylistCancel" type="button" class="hidden">CANCEL EDIT</button><span id="historyMediaPlaylistStatus">New playlists are crawled into the media library, then matched to canonical games.</span></div>
+        </form>
+        <div id="historyMediaSourcesSummary" class="history-audit-best-summary history-media-sources-summary">Loading active media sources…</div>
+        <div id="historyMediaSourcesGrid" class="history-media-sources-grid"><div class="history-media-sources-loading">Loading source registry…</div></div>
+      </section>
+      <div class="history-audit-summary history-game-only">
+        <div><span>GAMES</span><strong id="historyAuditGames">0</strong></div><div><span>VERIFIED ASSETS</span><strong id="historyAuditVerified">0</strong></div>
+        <div class="gold"><span>GOLD</span><strong id="historyAuditGold">0</strong></div><div class="green"><span>GREEN</span><strong id="historyAuditGreen">0</strong></div>
+        <div class="purple"><span>PURPLE</span><strong id="historyAuditPurple">0</strong></div><div class="blue"><span>BLUE</span><strong id="historyAuditBlue">0</strong></div>
+        <div class="coverage"><span>COVERAGE COMPLETE</span><strong id="historyAuditCoverageComplete">0</strong></div>
+        <div><span>UPGRADE ELIGIBLE</span><strong id="historyAuditUpgrade">0</strong></div>
+      </div>
+      <div id="historyAuditBestSummary" class="history-audit-best-summary history-game-only">Best per game: loading…</div>
+      <div id="historyAuditStatusSummary" class="history-audit-best-summary history-audit-status-summary history-game-only">Catalog coverage: loading…</div>
+      <div id="historyAuditGreenCoverageSummary" class="history-audit-best-summary history-audit-green-coverage history-game-only">Quick recap coverage: loading…</div>
+      <div id="historyAuditCoverageCompleteSummary" class="history-audit-best-summary history-audit-coverage-complete history-game-only">Coverage complete (Gold / Green / Purple): loading…</div>
+      <section class="history-search-console" aria-label="Historical search worker console">
+        <div class="history-search-console-head">
+          <div class="history-search-console-title"><span>LIVE SEARCH CONSOLE</span><strong id="historySearchConsoleOverall">CONNECTING…</strong></div>
+          <div class="history-search-console-tools">
+            <div class="history-resource-mode" role="group" aria-label="Search and playback priority">
+              <button id="historyModeSearch" type="button" data-mode="search" title="Suspend playback and dedicate resources to historical search">SEARCH PRIORITY</button>
+              <button id="historyModeBalanced" type="button" data-mode="balanced" class="active" title="Normal mode: search yields briefly to playback">MIX</button>
+              <button id="historyModePlayback" type="button" data-mode="playback" title="Pause background historical searching until changed">PLAYBACK PRIORITY</button>
+            </div>
+            <small id="historySearchConsoleVersion">Frontend v5.0.2 • backend checking…</small>
+            <button id="historySearchConsoleCopyIssues" type="button" title="Copy every current error, rate limit, blocker and recent warning">COPY ISSUES</button>
+            <button id="historySearchConsoleCopyAll" type="button" title="Copy the complete worker snapshot and terminal log">COPY FULL CONSOLE</button>
+            <button id="historySearchConsoleDownload" type="button" title="Download the complete console as a text file">SAVE TXT</button>
+            <em id="historySearchConsoleCopyStatus" aria-live="polite"></em>
+          </div>
+        </div>
+        <div class="history-search-console-stats">
+          <div><span>GREEN POOL</span><strong id="historySearchConsoleWorker">—</strong></div>
+          <div><span>GREEN GAPS DUE</span><strong id="historySearchConsoleQueue">—</strong></div>
+          <div><span>BACKGROUND</span><strong id="historySearchConsoleBackground">—</strong></div>
+          <div><span>YOUTUBE SEARCH</span><strong id="historySearchConsoleYoutube">—</strong></div>
+          <div><span>SEARCH BUDGET</span><strong id="historySearchConsoleBudget">—</strong></div>
+          <div><span>SILVER COLLECTIONS</span><strong id="historySearchConsoleSilver">—</strong></div>
+        </div>
+        <div id="historySearchWorkerGrid" class="history-search-worker-grid" aria-label="Historical worker pool status"></div>
+        <div id="historySearchConsoleProblems" class="history-search-console-problems hidden"></div>
+        <pre id="historySearchConsoleOutput" class="history-search-console-output" aria-live="polite">Connecting to cloud search workers…</pre>
+      </section>
+      <section id="historyRecoveryPanel" class="history-recovery-controls history-game-only collapsed" aria-label="Historical recovery controls">
+        <div class="history-recovery-head"><div><small>OPERATOR RECOVERY</small><strong>Catch-up & Database Cursors</strong><span>Preview first. Existing media is always preserved.</span></div><div class="history-recovery-head-actions"><button id="historyRecoveryRefresh" type="button">REFRESH STATE</button><button id="historyRecoveryToggle" type="button" aria-expanded="false">EXPAND ▾</button></div></div>
+        <div class="history-recovery-body">
+        <div class="history-recovery-grid">
+          <label><span>ACTION</span><select id="historyRecoveryAction"><option value="cursor_restart">RESTART CATCH-UP CURSOR</option><option value="source_reopen">REOPEN SOURCE AUDIT</option><option value="database_audit_restart">RESTART DATABASE AUDIT CURSOR</option></select></label>
+          <label><span>LEAGUE</span><select id="historyRecoveryLeague"><option value="ALL">ALL LEAGUES</option><option>MLB</option><option>NFL</option><option>NBA</option><option>NHL</option><option>EPL</option><option>MLS</option></select></label>
+          <label><span>START / UPPER DATE</span><input id="historyRecoveryStartDate" type="date"><small>Blank = today</small></label>
+          <label><span>DIRECTION</span><select id="historyRecoveryDirection"><option value="newest">NEWEST → OLDEST</option><option value="oldest">OLDEST → NEWEST</option></select></label>
+          <label><span>SOURCE</span><select id="historyRecoverySource"><option value="">ALL SOURCES</option></select></label>
+          <label><span>OBJECTIVE</span><select id="historyRecoveryObjective"><option value="">ALL OBJECTIVES</option><option value="quick">QUICK / GREEN</option><option value="extended">EXTENDED / PURPLE</option></select></label>
+        </div>
+        <div class="history-recovery-actions"><button id="historyRecoveryPreview" type="button">PREVIEW RESET</button><button id="historyRecoveryApply" class="danger" type="button" disabled>APPLY PREVIEWED RESET</button><span id="historyRecoveryStatus">No reset previewed.</span></div>
+        <div id="historyRecoveryPreviewText" class="history-recovery-preview">Cursor restart only changes traversal position/leases. Reopen Source Audit is the separate control that makes completed provider checks eligible again.</div>
+        <div id="historyDatabaseAuditStatus" class="history-recovery-preview">Database audit: checking…</div>
+        </div>
+      </section>
+      <div class="history-audit-filters history-game-only">
+        <label><span>FROM</span><input id="historyAuditDateFrom" type="date"></label><label><span>TO</span><input id="historyAuditDateTo" type="date"></label>
+        <label><span>LEAGUE</span><select id="historyAuditLeague"><option value="">ALL</option><option>MLB</option><option>NFL</option><option>NBA</option><option>NHL</option><option>EPL</option><option>MLS</option></select></label>
+        <label><span>BEST TIER</span><select id="historyAuditBestTier"><option value="">ALL</option><option value="gold">GOLD</option><option value="green">GREEN</option><option value="extended">PURPLE</option><option value="blue">BLUE</option><option value="none">NONE</option></select></label>
+        <label><span>STATUS</span><select id="historyAuditStatus"><option value="">ALL</option><option value="unindexed">INDEX PASS PENDING</option><option value="searched-empty">SOURCE EXHAUSTED EMPTY</option><option value="coverage">VERIFIED COVERAGE COMPLETE</option><option value="upgrade">UPGRADE ELIGIBLE</option><option value="partial">PARTIAL</option><option value="complete">QUALITY COMPLETE</option><option value="degraded">PROVIDER DEGRADED</option><option value="candidate">CANDIDATE ONLY</option><option value="failed">RUNTIME FAILED</option><option value="no-media">NO VERIFIED MEDIA</option></select></label>
+        <label class="audit-search"><span>SEARCH</span><input id="historyAuditSearch" type="search" placeholder="Team, matchup, title or event ID"></label>
+      </div>
+      <div class="history-audit-table-wrap history-game-only">
+        <div id="historyAuditLoading" class="history-audit-loading hidden">Loading database…</div>
+        <table class="history-audit-table"><thead><tr><th>DATE</th><th>LEAGUE</th><th>GAME</th><th class="gold">GOLD</th><th class="green">GREEN</th><th class="purple">PURPLE</th><th class="blue">BLUE</th><th>BEST</th><th>STATUS</th></tr></thead><tbody id="historyAuditTableBody"><tr><td colspan="9">Open the audit to load data.</td></tr></tbody></table>
+      </div>
+      <footer class="history-audit-footer history-game-only"><button id="historyAuditPrev" type="button">← PREVIOUS</button><span id="historyAuditPageLabel">0 games</span><button id="historyAuditNext" type="button">NEXT →</button></footer>
+      <section class="history-silver-only history-audit-pane-hidden" aria-label="Silver roundup media audit">
+        <div class="history-audit-summary history-silver-summary">
+          <div class="silver"><span>COLLECTIONS</span><strong id="historySilverCollections">0</strong></div>
+          <div class="silver"><span>ASSET LINKS</span><strong id="historySilverLinks">0</strong></div>
+          <div><span>UNIQUE ASSETS</span><strong id="historySilverUniqueAssets">0</strong></div>
+          <div><span>DAILY</span><strong id="historySilverDaily">0</strong></div>
+          <div><span>WEEKLY</span><strong id="historySilverWeekly">0</strong></div>
+          <div><span>MATCHWEEK / MATCHDAY</span><strong id="historySilverRound">0</strong></div>
+          <div class="warn"><span>SUSPICIOUS LINKS</span><strong id="historySilverSuspicious">0</strong></div>
+          <div><span>LARGEST COLLECTION</span><strong id="historySilverLargest">0</strong></div>
+        </div>
+        <div id="historySilverSummaryText" class="history-audit-best-summary history-silver-summary-text">Silver collection integrity: loading…</div>
+        <div class="history-silver-export-bar" aria-label="Silver roundup export controls">
+          <div><strong>FULL SILVER EXPORT</strong><small>Exports every Silver asset link matching the filters below, including full URLs, collection identity, validation, scope/intent evidence, association evidence, source metadata, duplicate counts, and integrity flags.</small></div>
+          <div class="history-silver-export-actions"><button id="historySilverCsv" type="button">EXPORT SILVER CSV</button><button id="historySilverXlsx" type="button">EXPORT SILVER XLSX</button></div>
+        </div>
+        <div class="history-audit-filters history-silver-filters">
+          <label><span>SCOPE</span><select id="historySilverScope"><option value="">ALL</option><option value="DAY_LEAGUE">DAILY</option><option value="WEEK_LEAGUE">WEEKLY</option><option value="ROUND_LEAGUE">MATCHWEEK / MATCHDAY</option></select></label>
+          <label><span>LEAGUE</span><select id="historySilverLeague"><option value="">ALL</option><option>MLB</option><option>NFL</option><option>NBA</option><option>NHL</option><option>EPL</option><option>MLS</option></select></label>
+          <label><span>KIND</span><select id="historySilverKind"><option value="">ALL</option><option value="DAILY_RECAP">DAILY RECAP</option><option value="WEEKLY_RECAP">WEEKLY RECAP</option><option value="TOP_PLAYS">TOP PLAYS</option><option value="BEST_GOALS">BEST GOALS</option><option value="BEST_SAVES">BEST SAVES</option><option value="SCORING_ROUNDUP">SCORING ROUNDUP</option><option value="ROUNDUP">ROUNDUP</option></select></label>
+          <label><span>FLAG</span><select id="historySilverFlag"><option value="">ALL</option><option value="SUSPICIOUS">SUSPICIOUS</option><option value="LARGE_COLLECTION">LARGE COLLECTION</option><option value="MULTI_COLLECTION_ASSET">MULTI-COLLECTION ASSET</option><option value="DUPLICATE_ACROSS_PERIODS">DUPLICATE PERIODS</option><option value="CROSS_SCOPE_DUPLICATE">CROSS SCOPE</option><option value="GAME_SCOPE_ASSET">GAME-SCOPE LEAK</option><option value="LOW_CONFIDENCE">LOW CONFIDENCE</option><option value="PERIOD_DATE_MISMATCH">DATE MISMATCH</option><option value="LEAGUE_MISMATCH">LEAGUE MISMATCH</option><option value="RUNTIME_FAILED">RUNTIME FAILED</option></select></label>
+          <label><span>PERIOD</span><input id="historySilverPeriod" type="text" placeholder="2026-08-23 or week key"></label>
+          <label class="audit-search"><span>SEARCH</span><input id="historySilverSearch" type="search" placeholder="Title, provider, URL or asset key"></label>
+        </div>
+        <div class="history-audit-table-wrap history-silver-table-wrap">
+          <div id="historySilverLoading" class="history-audit-loading hidden">Loading Silver collections…</div>
+          <table class="history-audit-table history-silver-table"><thead><tr><th>PERIOD</th><th>SCOPE</th><th>LEAGUE</th><th>COLLECTION</th><th>ASSET</th><th>PROVIDER</th><th>DURATION</th><th>VALIDATION</th><th>SCOPE / INTENT</th><th>ASSOCIATION</th><th>FLAGS</th></tr></thead><tbody id="historySilverTableBody"><tr><td colspan="11">Open Silver Roundups to load collection media.</td></tr></tbody></table>
+        </div>
+        <footer class="history-audit-footer"><button id="historySilverPrev" type="button">← PREVIOUS</button><span id="historySilverPageLabel">0 assets</span><button id="historySilverNext" type="button">NEXT →</button></footer>
+      </section>
+    </section>
+  </div>
+
+  <!--
+    v5.0.2 historical regression sentinels.
+    These strings are intentionally non-executable. Older v4.2.x regression tests
+    freeze the original cache-busted architecture chain at 4.2.2; the v5.0.2
+    certification suite separately verifies the executable 5.0.2 chain, including
+    foundation-certification.js between milestone-console.js and site-soundtrack.js.
+    core-model.js?v=4.2.2
+    architecture/score-date-store.js?v=4.2.2
+    architecture/event-identity.js?v=4.2.2
+    architecture/media-scope.js?v=4.2.2
+    architecture/media-classifier.js?v=4.2.2
+    architecture/playback-transports.js?v=4.2.2
+    architecture/provider-health.js?v=4.2.2
+    architecture/sport-media-policy.js?v=4.2.2
+    architecture/media-manifest.js?v=4.2.2
+    architecture/media-resolver.js?v=4.2.2
+    architecture/game-center-policy.js?v=4.2.2
+    architecture/selected-event-store.js?v=4.2.2
+    architecture/game-center-contract.js?v=4.2.2
+    architecture/media-work-priorities.js?v=4.2.2
+    architecture/editorial-packages.js?v=4.2.2
+    ui/player-visibility.js?v=4.2.2
+    ui/info-drawer.js?v=4.2.2
+    ui/settings-view.js?v=4.2.2
+    ui/history-audit.js?v=4.2.2
+    ui/game-center-view.js?v=4.2.2
+    app.js?v=4.2.2
+  -->
+  <script src="config.js?v=5.0.2"></script>
+  <script src="api-runtime.js?v=5.0.2"></script>
+  <script src="architecture/native-transport.js?v=5.0.2"></script>
+  <script src="architecture/main-thread-guard-v5.js?v=5.0.2"></script>
+<script src="architecture/score-media-plan-v5.js?v=5.0.2"></script>
+  <script src="architecture/request-broker.js?v=5.0.2"></script>
+  <script src="architecture/efficiency-certification.js?v=5.0.2"></script>
+  <script src="architecture/comprehensive-site-certification.js?v=5.0.2"></script>
+  <script>
+  // v5.0.2 bootstrap is deliberately independent of app.js and YouTube.
+  // It proves the browser can reach the local API and captures startup errors.
+  window.__SBB_BOOT_STARTED_AT = Date.now();
+  try { fetch('/api/client-log?event=BOOT_START&v=5.0.2', {cache:'no-store'}).catch(()=>{}); } catch(e) {}
+  window.__SBB_BOOT_STATUS_PROMISE__ = fetch('/api/status', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('status HTTP '+r.status); return r.json(); })
+    .then(function(data){ try{fetch('/api/client-log?event=BOOT_STATUS_OK&v=5.0.2',{cache:'no-store'}).catch(()=>{});}catch(e){} return data; })
+    .catch(function(err){ try{fetch('/api/client-log?event=BOOT_STATUS_ERROR&detail='+encodeURIComponent(String(err)),{cache:'no-store'}).catch(()=>{});}catch(e){} throw err; });
+  window.addEventListener('error', function(ev){
+    try { fetch('/api/client-log?event=JS_ERROR&detail='+encodeURIComponent((ev.message||'error')+' @ '+(ev.filename||'')+':'+(ev.lineno||0)), {cache:'no-store'}).catch(()=>{}); } catch(e) {}
+  });
+  window.addEventListener('unhandledrejection', function(ev){
+    try { fetch('/api/client-log?event=PROMISE_ERROR&detail='+encodeURIComponent(String(ev.reason?.stack||ev.reason||'unknown')), {cache:'no-store'}).catch(()=>{});} catch(e) {}
+  });
+</script>
+<script src="core-model.js?v=5.0.2"></script>
+<script src="architecture/score-date-store.js?v=5.0.2"></script>
+<script src="architecture/event-identity.js?v=5.0.2"></script>
+<script src="architecture/app-store-v5.js?v=5.0.2"></script>
+<script src="architecture/media-scope.js?v=5.0.2"></script>
+<script src="architecture/media-classifier.js?v=5.0.2"></script>
+<script src="architecture/playback-transports.js?v=5.0.2"></script>
+<script src="architecture/playback-readiness.js?v=5.0.2"></script>
+<script src="architecture/provider-health.js?v=5.0.2"></script>
+<script src="architecture/sport-media-policy.js?v=5.0.2"></script>
+<script src="architecture/media-manifest.js?v=5.0.2"></script>
+<script src="architecture/media-resolver.js?v=5.0.2"></script>
+<script src="architecture/game-center-policy.js?v=5.0.2"></script>
+<script src="architecture/selected-event-store.js?v=5.0.2"></script>
+<script src="architecture/game-center-contract.js?v=5.0.2"></script>
+<script id="sbbGameCenterStabilityV4725">
+(() => {
+  'use strict';
+  const base=window.SBB_GAME_CENTER;
+  if(!base||base.__sbbStabilityV4725)return;
+  const inflight=new Map(),cooldown=new Map();
+  const MAX_MS=9000,FINAL_COOLDOWN_MS=30000;
+  const clean=v=>String(v??'').trim();
+  const isFinal=(evt,data)=>/final|finished|completed|complete|game over/i.test(clean(data?.event?.status||evt?.status||''));
+  const partial=data=>!!(data?.coverage?.complete===false||data?.partial===true||(data?.quality?.level&&data.quality.level!=='rich'));
+  function stableFinal(data,evt){
+    if(!data||!isFinal(evt,data)||!partial(data))return data;
+    const out={...data,partial:false,stabilityDeferredEnrichment:true};
+    out.coverage={...(data.coverage||{}),complete:true,stabilityDeferred:true};
+    out.quality={...(data.quality||{}),level:'rich',stabilityDeferred:true};
+    return out;
+  }
+  function linkedController(external){
+    const controller=new AbortController();
+    if(external){
+      if(external.aborted)controller.abort(external.reason);
+      else external.addEventListener('abort',()=>controller.abort(external.reason),{once:true});
+    }
+    return controller;
+  }
+  async function get(evt,options={}){
+    const ident=base.identity(evt),key=ident?.key||`${ident?.competition||''}:${ident?.eventId||''}`;
+    const hit=base.peek(evt);
+    if(!options.force&&hit&&isFinal(evt,hit)&&Date.now()-(cooldown.get(key)||0)<FINAL_COOLDOWN_MS){
+      return stableFinal(hit,evt);
+    }
+    if(inflight.has(key))return inflight.get(key);
+    const controller=linkedController(options.signal);
+    let timedOut=false;
+    const timer=setTimeout(()=>{timedOut=true;try{controller.abort();}catch(_){}},Math.min(MAX_MS,Number(options.timeoutMs)||MAX_MS));
+    const promise=base.get(evt,{...options,signal:controller.signal,timeoutMs:Math.min(8000,Number(options.timeoutMs)||8000)})
+      .then(data=>{cooldown.set(key,Date.now());return stableFinal(data,evt);})
+      .catch(err=>{
+        const resident=base.peek(evt);
+        if(resident){cooldown.set(key,Date.now());return stableFinal(resident,evt);}
+        if(timedOut&&!options.signal?.aborted)throw new Error('Game Center timed out without blocking the board. Tap Retry to try again.');
+        throw err;
+      })
+      .finally(()=>{clearTimeout(timer);if(inflight.get(key)===promise)inflight.delete(key);});
+    inflight.set(key,promise);
+    return promise;
+  }
+  window.SBB_GAME_CENTER=Object.freeze({...base,version:'1.9-stability',get,__sbbStabilityV4725:true,stabilitySnapshot:()=>({inflight:inflight.size,cooldowns:cooldown.size,maxRequestMs:MAX_MS})});
+})();
+</script>
+<script src="architecture/media-work-priorities.js?v=5.0.2"></script>
+<script src="architecture/editorial-packages.js?v=5.0.2"></script>
+<script src="architecture/playback-session.js?v=5.0.2"></script>
+<script src="architecture/playback-orchestrator-v5.js?v=5.0.2"></script>
+<script src="architecture/dev-mode.js?v=5.0.2"></script>
+<script src="architecture/playback-terminal.js?v=5.0.2"></script>
+<script src="architecture/milestone-console.js?v=5.0.2"></script>
+<script src="architecture/foundation-certification.js?v=5.0.2"></script>
+<script src="architecture/site-soundtrack.js?v=5.0.2"></script>
+<script>window.SBB_SITE_SOUNDTRACK_MUTED=true;</script>
+<script src="architecture/site-soundtrack-muted.js?v=5.0.2"></script>
+<script src="architecture/poisoned-media-containment.js?v=5.0.2"></script>
+<script src="ui/player-visibility.js?v=5.0.2"></script>
+<script src="ui/info-drawer.js?v=5.0.2"></script>
+<script src="ui/settings-view.js?v=5.0.2"></script>
+<script src="ui/history-audit.js?v=5.0.2"></script>
+<script src="ui/history-audit-v468.js?v=5.0.2"></script>
+<script src="architecture/game-center-linescore.js?v=5.0.2"></script>
+<script src="ui/game-center-view.js?v=5.0.2"></script>
+<script src="architecture/game-center-multisport-view.js?v=5.0.2"></script>
+<script src="app.js?v=5.0.2"></script>
+<script src="architecture/playback-progress-watchdog.js?v=5.0.2"></script>
+<script src="architecture/score-ribbon-identity-guard.js?v=5.0.2"></script>
+<script src="architecture/recap-identity-guard.js?v=5.0.2"></script>
+<script src="architecture/nfl-recap-reconciliation.js?v=5.0.2"></script>
+<script src="architecture/historical-media-v4610.js?v=5.0.2"></script>
+<script src="architecture/future-date-navigation.js?v=5.0.2"></script>
+<script src="architecture/day-state.js?v=5.0.2"></script>
+<script src="architecture/competition-registry-projection.js?v=5.0.2"></script>
+<script src="architecture/navigation-ui.js?v=5.0.2"></script>
+<script src="architecture/score-card-availability-index.js?v=5.0.2"></script>
+<script src="architecture/card-build-cache.js?v=5.0.2"></script>
+<script src="architecture/render-pipeline.js?v=5.0.2"></script>
+<script src="architecture/date-transition-coordinator.js?v=5.0.2"></script>
+<script src="architecture/operator-module-loader.js?v=5.0.2"></script>
+<script id="sbbCfbAuthorityFirewall">
+(() => {
+  'use strict';
+  if(window.SBB_CFB_AUTHORITY_FIREWALL?.installed)return;
+  const VERSION='2026-W1-AP';
+  const WEEK1_IDS=new Set(['194','2483','61','87','251','84','2390','245','145','201','99','2641','333','30','252','130','264','213','2567','2633','254','2294','248','97','142']);
+  const WEEK1_NAMES=new Set(['Ohio State','Oregon','Georgia','Notre Dame','Texas','Indiana','Miami','Texas A&M','Ole Miss','Oklahoma','LSU','Texas Tech','Alabama','USC','BYU','Michigan','Washington','Penn State','SMU','Tennessee','Utah','Iowa','Houston','Louisville','Missouri'].map(norm));
+  const weekIds=new Map([[1,WEEK1_IDS]]),weekNames=new Map([[1,WEEK1_NAMES]]);
+  const api=path=>window.SBB_API?.url?window.SBB_API.url(path):path;
+  function norm(v){return String(v??'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();}
+  function team(game,side){return game?.[side]||game?.[`${side}Team`]||{};}
+  function teamId(value){return String(value?.id||value?.teamId||value?.uid||'').trim();}
+  function teamName(value){return norm(value?.name||value?.displayName||value?.shortDisplayName||value?.location||value?.abbreviation||'');}
+  function weekOf(game,date=''){
+    const raw=Number(game?.cfbWeek||game?.week||game?.rankWeek||0);
+    if(raw>0)return raw;
+    const snap=String(game?.rankingSnapshotId||'').match(/:AP:(\d+)/i);if(snap)return Number(snap[1]);
+    const d=String(game?.date||game?.gameDate||game?.__sbbDate||date||'').slice(0,10);
+    if(d>='2026-08-24'&&d<='2026-09-06')return 1;
+    return 0;
+  }
+  function allowed(game,date=''){
+    const week=weekOf(game,date),ids=weekIds.get(week),names=weekNames.get(week);
+    if(!ids&&!names)return false; // fail closed until that AP snapshot is known
+    const away=team(game,'away'),home=team(game,'home');
+    const aid=teamId(away),hid=teamId(home),an=teamName(away),hn=teamName(home);
+    return !!((aid&&ids?.has(aid))||(hid&&ids?.has(hid))||(an&&names?.has(an))||(hn&&names?.has(hn)));
+  }
+  function filter(date,rows){return (Array.isArray(rows)?rows:[]).filter(game=>allowed(game,date));}
+
+  async function refreshAuthority(){
+    try{
+      const r=await fetch(api('/api/cfb/rankings'),{cache:'no-store'});if(!r.ok)return false;
+      const payload=await r.json();
+      for(const [key,snapshot] of Object.entries(payload?.snapshots||{})){
+        const week=Number(key||snapshot?.week||0);if(!week||week===1)continue;
+        const ranks=Array.isArray(snapshot?.ranks)?snapshot.ranks:[];
+        if(ranks.length!==25)continue;
+        const ids=new Set(ranks.map(x=>String(x?.teamId||'')).filter(Boolean));
+        const names=new Set(ranks.map(x=>norm(x?.name||'')).filter(Boolean));
+        if(ids.size===25||names.size===25){weekIds.set(week,ids);weekNames.set(week,names);}
+      }
+      refilterResident();return true;
+    }catch(_){return false;}
+  }
+
+  const original=window.storeScoreDateLeague;
+  if(typeof original==='function'&&!original.__sbbCfbAuthority){
+    const wrapped=function(league,date,rows){
+      const lg=String(league||'').toUpperCase();
+      return original.call(this,league,date,lg==='CFB'?filter(date,rows):rows);
+    };
+    wrapped.__sbbCfbAuthority=true;wrapped.__sbbOriginal=original;
+    window.storeScoreDateLeague=wrapped;
+    try{storeScoreDateLeague=wrapped;}catch(_){}
+  }
+
+  function refilterResident(){
+    const store=window.SBB_SCORE_DATE;if(!store?.matches||!store?.setMatches)return;
+    const dates=new Set();
+    try{dates.add(store.snapshot?.().browseDate);dates.add(store.snapshot?.().today);}catch(_){}
+    try{dates.add(store.localDateISO?.(-1));dates.add(store.localDateISO?.(0));}catch(_){}
+    for(const date of dates){
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date||'')))continue;
+      if(store.hasLeagueMatchesSnapshot?.(date,'CFB'))store.setMatches(date,'CFB',filter(date,store.matches(date,'CFB')));
+    }
+    try{window.renderScoresFromMatchesCombined?.(false);}catch(_){}
+  }
+
+  window.SBB_CFB_AUTHORITY_FIREWALL=Object.freeze({installed:true,version:VERSION,allowed,filter,refreshAuthority,snapshot:()=>({weeks:[...weekIds.keys()].sort((a,b)=>a-b),week1Teams:WEEK1_IDS.size})});
+  refilterResident();refreshAuthority();
+  // Ask the backend to reconcile once per browser session. The UI remains
+  // fail-closed even if that refresh is temporarily unavailable.
+  try{
+    if(sessionStorage.getItem('sbb.cfb.authority.refresh.2026w1')!=='1'){
+      sessionStorage.setItem('sbb.cfb.authority.refresh.2026w1','1');
+      fetch(api('/api/cfb/refresh'),{method:'POST',cache:'no-store'}).catch(()=>{});
+      setTimeout(refreshAuthority,1800);setTimeout(refilterResident,2200);
+    }
+  }catch(_){}
+})();
+</script>
+
+<script id="sbbThemeRuntime">
+(() => {
+  'use strict';
+  const KEY='sbb.theme';
+  const root=document.documentElement;
+  const button=()=>document.getElementById('themeToggleBtn');
+  function current(){return root.dataset.sbbTheme==='light'?'light':'dark';}
+  function syncButton(){
+    const btn=button();if(!btn)return;
+    const light=current()==='light';
+    btn.setAttribute('aria-pressed',String(light));
+    btn.setAttribute('aria-label',light?'Switch to dark mode':'Switch to light mode');
+    btn.title=light?'Switch to dark mode':'Switch to light mode';
+    const icon=btn.querySelector('.theme-toggle-icon');if(icon)icon.textContent=light?'☾':'☀';
+    const label=btn.querySelector('.theme-toggle-label');if(label)label.textContent=light?'DARK':'LIGHT';
+  }
+  function setTheme(value,persist=true){
+    const theme=value==='light'?'light':'dark';
+    root.dataset.sbbTheme=theme;
+    if(persist){try{localStorage.setItem(KEY,theme);}catch(_){}}
+    syncButton();
+    window.dispatchEvent(new CustomEvent('sbb:themechange',{detail:{theme}}));
+    return theme;
+  }
+  function toggle(){return setTheme(current()==='light'?'dark':'light');}
+  function bind(){button()?.addEventListener('click',toggle);syncButton();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
+  window.SBB_THEME=Object.freeze({version:'1.2',current,set:setTheme,toggle,mode:'CSS_ONLY_NO_MUTATION_OBSERVER'});
+})();
+</script>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>

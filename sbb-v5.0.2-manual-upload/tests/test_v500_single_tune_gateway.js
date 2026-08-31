@@ -1,0 +1,68 @@
+'use strict';
+const assert=require('assert');
+const fs=require('fs');
+const path=require('path');
+const ROOT=path.resolve(__dirname,'..');
+const read=rel=>fs.readFileSync(path.join(ROOT,rel),'utf8');
+const version=read('VERSION').trim();
+const index=read('index.html');
+const app=read('app.js');
+const cert=read('architecture/comprehensive-site-certification.js');
+const manifest=JSON.parse(read('release-manifest.json'));
+assert(/^5\.0\.\d+$/.test(version),'v5.0.x single-gateway baseline');
+assert.strictEqual(manifest.release,version);
+assert(index.includes(`architecture/app-store-v5.js?v=${version}`));
+assert(index.includes(`architecture/playback-orchestrator-v5.js?v=${version}`));
+assert(index.indexOf(`architecture/app-store-v5.js?v=${version}`)<index.indexOf(`architecture/selected-event-store.js?v=${version}`));
+assert(index.indexOf(`architecture/playback-orchestrator-v5.js?v=${version}`)<index.indexOf(`app.js?v=${version}`));
+
+const direct=(app.match(/PlaybackController\.tuneProgramIndex\(/g)||[]).length;
+const gateway=(app.match(/tuneProgramIndexV5\(/g)||[]).length;
+assert.strictEqual(direct,2,'only adapter binding + emergency gateway fallback may call legacy controller directly');
+assert(gateway>=20,'all existing tune entry points should use the v5 gateway');
+assert(app.includes("bindAdapter?.({name:'legacy-a-b-player'"));
+assert(app.includes('promotePrepared:(slot,index,options)=>doSwapLegacy(slot,index,options)'));
+assert(app.includes('function promotePreparedV5'));
+assert.strictEqual((app.match(/\bdoSwap\(/g)||[]).length,0,'no external path may call the legacy hot-swap function directly');
+assert((app.match(/promotePreparedV5\(/g)||[]).length>=3,'prepared promotions must route through v5');
+
+const start=app.indexOf('async function playGameHighlights');
+const end=app.indexOf('\nfunction gameLabel',start);
+const score=app.slice(start,end);
+const intent=score.indexOf('beginScoreIntent');
+const planResolve=score.indexOf('resolveScoreIntentMediaPlan');
+const legacySession=score.indexOf('beginScorePlaybackSession');
+assert(intent>=0&&planResolve>=0&&legacySession>=0);
+assert(intent<planResolve,'v5 transaction must exist before media-plan preparation/fallback can wait or fail');
+assert(intent<legacySession,'v5 transaction precedes legacy compatibility session');
+const planHelperStart=app.indexOf('async function resolveScoreIntentMediaPlan');
+const planHelperEnd=app.indexOf('\nasync function playGameHighlights',planHelperStart);
+const planHelper=app.slice(planHelperStart,planHelperEnd);
+assert(planHelper.includes('waitForScoreMediaHot'),'v5 media-plan helper owns current-session prewarm');
+assert(planHelper.includes('candidateRejected'),'failed candidates must be rejected inside the same v5 transaction');
+assert(score.includes('transactionId:v5TransactionId'));
+assert(score.includes("v5?.unavailable?.(v5TransactionId"));
+
+const syncStart=app.indexOf('function syncGameCenterToActivePlayback');
+const syncEnd=app.indexOf('\nfunction selectedEventMatchesActivePlayback',syncStart);
+const sync=app.slice(syncStart,syncEnd);
+assert(sync.includes('SBB_PLAYBACK_ORCHESTRATOR?.ownershipSnapshot?.()'));
+assert(sync.indexOf('if(v5Ownership?.transactionId)')<sync.indexOf('scoreSessionGameCenterAuthority'));
+assert(cert.includes('V5 UNIFIED RUNTIME ARCHITECTURE'));
+assert(cert.includes('waitForV5Intent'));
+assert(cert.includes('score-card click did not create v5 playback intent'));
+assert(cert.includes('ADAPTER_BOUND='));
+
+const histStart=app.indexOf('async function selectHistoricalGameWithoutMedia');
+const histEnd=app.indexOf('\nasync function refreshSoccerLeague',histStart);
+const hist=app.slice(histStart,histEnd);
+assert(hist.includes("beginScoreIntent?.(authority,{reason:'historical score selection: resolving media'"));
+assert(hist.includes('playGameHighlights(')&&hist.includes('{transactionId}'),'historical on-demand media must continue the click-time v5 transaction');
+assert(hist.includes("v5?.unavailable?.(transactionId,'Historical media search completed without a playable recap.')"));
+const launchStart=app.indexOf('function scheduleLaunchGameCenterPopulate');
+const launchEnd=app.indexOf('\nfunction confirmLaunchVisualPlayback',launchStart);
+const launch=app.slice(launchStart,launchEnd);
+assert(launch.includes('SBB_PLAYBACK_ORCHESTRATOR?.ownershipSnapshot?.()'));
+assert(launch.includes('window.SBB_SELECTED_EVENT?.get?.()'),'launch Game Center must follow SelectedEvent under v5');
+
+console.log(`PASS: ${version} single tune gateway + intent-before-prewarm + Game Center one-way ownership contracts`);

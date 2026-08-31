@@ -1,0 +1,78 @@
+Sports Big Board v5.0.2 — Media Plan Continuity + Pathological Score-Click Guard
+
+PURPOSE
+- Preserve the v5.0.1 UI-thread fix while closing two remaining failure classes:
+  1. A failed/prewarm-timeout media candidate could end a v5 transaction UNAVAILABLE even when other same-game candidates remained.
+  2. One unusually dense game could perform pathological recap/media work in the synchronous score-click/UI path.
+
+ARCHITECTURE CHANGES
+1. Deterministic Media Plan continuity
+   - Adds candidate attempt/rejection/exhaustion state to SBB_APP_STORE schema 1.2.
+   - A single candidate failure can no longer legitimately terminate a non-empty Media Plan.
+   - PLAYBACK_UNAVAILABLE with untried plan candidates is an explicit invariant error.
+   - Same transactionId survives candidate 1 -> candidate 2 -> candidate N.
+
+2. Cooperative score media planning
+   - New architecture/score-media-plan-v5.js.
+   - Date media scans run in bounded chunks and yield to the browser between chunks.
+   - Exact/canonical event candidates remain first.
+   - Planning telemetry records total scanned, accepted, yields, build time and max chunk time.
+
+3. Current-session direct-video readiness
+   - Historical PLAYBACK_READY/VERIFIED is now PROVEN_HISTORY ranking evidence.
+   - Direct/native media becomes air-ready only after current-session HOT_READY / HOT_THIS_SESSION proof.
+   - Unproven upstream media stays off-air while preparation occurs.
+
+4. Indexed and bounded recap alternatives
+   - Replaces hot-path full RECAP_CANDIDATE_REGISTRY scans with a canonical-game recap index.
+   - Index rebuilds only when registry membership changes.
+   - Repeated UI lookups use a short cache.
+   - Recap alternatives are capped at four per tier and twelve total per event.
+   - This is generalized protection for any unusually dense/ambiguous game; no USC/team/event-ID runtime exception exists.
+
+5. Sport-aware Game Center completeness
+   - Final-game payload quality is checked by sport.
+   - Sparse football shells no longer automatically report complete simply because the request returned successfully.
+
+CERTIFICATION 3.2
+- Adds Media Plan candidate/attempt/rejection/exhaustion telemetry.
+- Adds score-plan build/yield/max-chunk telemetry.
+- Adds recap-index lookup telemetry.
+- Reports Game Center payload-quality reason.
+
+REGRESSION COVERAGE
+- New tests/test_v502_media_plan_continuity.js:
+  * scans a 2,400-item pathological date pool with cooperative browser yields;
+  * proves candidate #1 may fail while candidate #2 continues in the same transaction;
+  * proves premature UNAVAILABLE is an invariant error;
+  * proves UNAVAILABLE is valid after the plan is explicitly exhausted;
+  * asserts hot global recap-registry scan pattern is removed.
+- Updated retained v5.0.0 single-gateway contract for the new Media Plan helper boundary.
+- Updated retained v5.0.1 UI-thread contract to accept Certification schema 3.1+.
+
+LOCAL VALIDATION
+PASS tests/test_playback_session_runtime.js
+PASS tests/test_v473_efficiency_runtime.js
+PASS tests/test_v474_efficiency_remediation_runtime.js
+PASS tests/test_v476_render_pipeline_runtime.js
+PASS tests/test_v477_first_paint_render_consolidation_runtime.js
+PASS tests/test_v479_navigation_history_runtime.js
+PASS tests/test_v4712_day_state_render_model_runtime.js
+PASS tests/test_v4713_media_readiness_runtime.js
+PASS tests/test_v480_comprehensive_certification.js
+PASS tests/test_v481_playback_ownership_recovery.js
+PASS tests/test_v482_cold_upstream_game_center.js
+PASS tests/test_v500_runtime_architecture.js
+PASS tests/test_v500_single_tune_gateway.js
+PASS tests/test_v501_ui_thread_hardening.js
+PASS tests/test_v502_media_plan_continuity.js
+PASS JavaScript syntax for changed runtime/tests
+PASS VERIFY.sh shell syntax
+PASS release-manifest JSON syntax
+PASS 59/59 executable local JS/CSS references use v5.0.2
+PASS no stale ?v=5.0.1 references in index.html
+PASS no named USC / San Jose / event 401864494 exception in v5 runtime files
+PASS old hot `for(const x of RECAP_CANDIDATE_REGISTRY.values()) add(x);` lookup count = 0
+
+NOTE
+A complete repository VERIFY.sh run requires the unchanged backend/cloud/test files that are present in GitHub but are not duplicated in this minimal manual-upload overlay. GitHub Actions remains the authoritative whole-repository verification after upload.
