@@ -74,6 +74,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v482_cold_upstream_game_center.js
   node tests/test_v500_runtime_architecture.js
   node tests/test_v500_single_tune_gateway.js
+  node tests/test_v501_ui_thread_hardening.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi

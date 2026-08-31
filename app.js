@@ -72,7 +72,7 @@ if (location.protocol === 'file:') {
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.0'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.1'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -1889,7 +1889,10 @@ function setPlaybackDiag(patch={}){
   const pairs={diagProvider:'provider',diagSlot:'slot',diagState:'state',diagError:'error',diagReady:'readyState',diagNetwork:'networkState',diagSource:'source',diagAction:'lastAction'};
   for(const [id,key] of Object.entries(pairs)){ const el=$(id); if(el) el.textContent=String(PLAYBACK_DIAG[key] ?? '—'); }
 }
+let lastPlaybackSessionDiagKey='';
 function renderPlaybackSessionDiag(snapshot=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{}){
+  const diagKey=[snapshot.sessionId,snapshot.mediaKey,snapshot.firstFrameMs,snapshot.stallCount,snapshot.stallTotalMs,snapshot.invariant,snapshot.sourceExternalUrl].join('|');
+  if(diagKey===lastPlaybackSessionDiagKey)return;lastPlaybackSessionDiagKey=diagKey;
   const set=(id,value)=>{const el=$(id);if(el)el.textContent=String(value??'—');};
   set('diagSession',snapshot.sessionId||'—');
   set('diagMediaKey',snapshot.mediaKey||'—');
@@ -3898,7 +3901,14 @@ function soundtrackPlaybackClipKey(){
     return String(playbackItemKey(item)||item.youtubeId||item.mediaUrl||item.id||'');
   }catch(_){ return ''; }
 }
+let lastPlaybackUiMode='';
 function setPlaybackUi(mode){
+  mode=String(mode||'starting').toLowerCase();
+  // v5.0.1: the native transport is sampled every 250 ms. UI/session state is
+  // edge-triggered, not level-triggered: an unchanged PLAYING observation must be
+  // effectively free and must not redispatch through the v5 state graph.
+  if(mode===lastPlaybackUiMode)return;
+  lastPlaybackUiMode=mode;
   if(mode==='buffering') armPlaybackBufferRecovery(); else clearPlaybackBufferRecovery();
   updatePlaybackWarmPressure(mode);
   try{
@@ -3974,10 +3984,8 @@ function startPlaybackSync(){
     }
     if(slotMedia[activeSlot]==='native'){
       const v=nativeEl(activeSlot); if(!v) return;
-      if(v.ended) setPlaybackUi('ended');
-      else if(v.paused) setPlaybackUi('paused');
-      else if(v.readyState<3) setPlaybackUi('buffering');
-      else setPlaybackUi('playing');
+      const observed=v.ended?'ended':(v.paused?'paused':(v.readyState<3?'buffering':'playing'));
+      if(observed!==lastPlaybackUiMode)setPlaybackUi(observed);
       return;
     }
     const p = players[activeSlot];

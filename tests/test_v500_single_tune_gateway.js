@@ -9,7 +9,7 @@ const index=read('index.html');
 const app=read('app.js');
 const cert=read('architecture/comprehensive-site-certification.js');
 const manifest=JSON.parse(read('release-manifest.json'));
-assert.strictEqual(version,'5.0.0');
+assert(/^5\.0\.\d+$/.test(version),'v5.0.x single-gateway baseline');
 assert.strictEqual(manifest.release,version);
 assert(index.includes(`architecture/app-store-v5.js?v=${version}`));
 assert(index.includes(`architecture/playback-orchestrator-v5.js?v=${version}`));
@@ -60,4 +60,4 @@ const launch=app.slice(launchStart,launchEnd);
 assert(launch.includes('SBB_PLAYBACK_ORCHESTRATOR?.ownershipSnapshot?.()'));
 assert(launch.includes('window.SBB_SELECTED_EVENT?.get?.()'),'launch Game Center must follow SelectedEvent under v5');
 
-console.log('PASS: v5.0.0 single tune gateway + intent-before-prewarm + Game Center one-way ownership contracts');
+console.log(`PASS: ${version} single tune gateway + intent-before-prewarm + Game Center one-way ownership contracts`);

@@ -1,14 +1,14 @@
-/* Sports Big Board v5.0.0 — Unified Runtime Comprehensive Certification Architecture.
+/* Sports Big Board v5.0.1 — Unified Runtime Comprehensive Certification Architecture.
    Whole-site certification drives real navigation, Game Center UI, score-card
    playback, recovery, APIs, workers, discovery, rendering and memory. Selection is
    deliberately game-agnostic and seeded so every run is broad yet reproducible.
 */
 (() => {
   'use strict';
-  if (window.SBB_SITE_CERTIFICATION?.version === '2.2') return;
+  if (window.SBB_SITE_CERTIFICATION?.version === '3.1') return;
 
-  const VERSION='3.0';
-  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.0');
+  const VERSION='3.1';
+  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.1');
   const PLAYBACK_TARGET=8;
   const PLAYBACK_MIN_STARTS=5;
   const PLAYBACK_CONFIRM_TIMEOUT_MS=12500;
@@ -33,6 +33,9 @@
   function seededRng(seed){let x=(normalizeSeed(seed)||0x9e3779b9)>>>0;return()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return (x>>>0)/4294967296;};}
   function seededShuffle(rows,rng){const out=[...(rows||[])];for(let i=out.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[out[i],out[j]]=[out[j],out[i]];}return out;}
   function hooks(){return window.SBB_DEV_TEST_HOOKS||null;}
+  function mainThreadGuard(){return window.SBB_MAIN_THREAD_GUARD||null;}
+  async function yieldUi(){try{return await (mainThreadGuard()?.yieldToBrowser?.()||Promise.resolve(true));}catch(_){return true;}}
+  async function requireResponsiveUi(){try{return await (mainThreadGuard()?.waitForBreathingRoom?.({timeoutMs:2500,maxFrameMs:240})??Promise.resolve(true));}catch(_){return true;}}
 
   /* Playback progress/recovery is a production authority owned by
      architecture/playback-progress-watchdog.js. Comprehensive Certification
@@ -178,8 +181,8 @@
   async function waitForSelection(beforeId,timeoutMs=5500){const deadline=Date.now()+timeoutMs;while(Date.now()<deadline){const s=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{};if(n(s.selectionId)>n(beforeId)&&clean(s.mediaKey))return s;await sleep(80);}return null;}
   function engineSnapshot(){try{return window.SBB_PLAYBACK_ENGINE?.snapshot?.()||{};}catch(_){return {};}}
   function v5RuntimeSnapshot(){
-    const app=window.SBB_APP_STORE?.snapshot?.()||null,orchestrator=window.SBB_PLAYBACK_ORCHESTRATOR,ownership=orchestrator?.ownershipSnapshot?.()||{};
-    return {installed:!!app&&!!orchestrator,appStore:!!app,orchestrator:!!orchestrator,adapterBound:!!orchestrator?.adapterSnapshot?.().bound,schema:app?.schema||'',transactionId:app?.playback?.transactionId||'',playbackState:app?.playback?.state||'IDLE',eventKey:app?.playback?.eventKey||'',selectedEventKey:ownership.selectedEventKey||app?.selection?.eventKey||'',owned:ownership.owned!==false,invariant:app?.invariant||'MISSING'};
+    const app=window.SBB_APP_STORE?.snapshot?.()||null,health=window.SBB_APP_STORE?.healthSnapshot?.()||{},orchestrator=window.SBB_PLAYBACK_ORCHESTRATOR,ownership=orchestrator?.ownershipSnapshot?.()||{};
+    return {installed:!!app&&!!orchestrator,appStore:!!app,orchestrator:!!orchestrator,adapterBound:!!orchestrator?.adapterSnapshot?.().bound,schema:app?.schema||'',transactionId:app?.playback?.transactionId||'',playbackState:app?.playback?.state||'IDLE',eventKey:app?.playback?.eventKey||'',selectedEventKey:ownership.selectedEventKey||app?.selection?.eventKey||'',owned:ownership.owned!==false,invariant:app?.invariant||'MISSING',storeHealth:health};
   }
   async function waitForV5Intent(beforeTransactionId='',timeoutMs=1600){
     const deadline=Date.now()+timeoutMs;while(Date.now()<deadline){const snap=v5RuntimeSnapshot();if(snap.transactionId&&snap.transactionId!==beforeTransactionId)return snap;await sleep(40);}return null;
@@ -206,20 +209,24 @@
     installProgressWatchdog();const h=hooks(),ps=window.SBB_PLAYBACK_SESSION;
     if(!h?.setScoreDate||!ps?.snapshot)return {available:false,result:'FAIL',reason:'Dev interaction hooks or playback session unavailable',target:PLAYBACK_TARGET,attempts:0,starts:0,fail:0,rows:[]};
     const saved={date:clean(h.scoreDate?.(),10),mediaKey:clean(h.currentMediaKey?.()),mode:clean(window.SBB_RESOURCE_MODE||'balanced'),session:ps.snapshot()},rng=seededRng(seed^0xa5a5a5a5);
+    const mainThreadBefore=mainThreadGuard()?.snapshot?.()||{};
     const datePlan=seededShuffle([...new Set([...(dates||[]),...certificationDates(seed)])],rng),seenMedia=new Set(),seenGames=new Set(),leagueCounts={},qualityCounts={},rows=[];
     let dateSwitches=0;
     try{
       try{await Promise.resolve(h.setResourceMode?.('playback'));}catch(_){}
       for(const date of datePlan){
         if(rows.length>=PLAYBACK_TARGET)break;
-        try{if(clean(h.scoreDate?.(),10)!==date){await Promise.resolve(h.setScoreDate(date));dateSwitches++;await sleep(220);}}catch(err){rows.push({ok:false,date,stage:'date',error:clean(err?.message||err)});continue;}
+        if(!(await requireResponsiveUi())){rows.push({ok:false,date,stage:'ui-thread',error:'main thread remained saturated before date interaction'});break;}
+        try{if(clean(h.scoreDate?.(),10)!==date){await Promise.resolve(h.setScoreDate(date));dateSwitches++;await sleep(220);await yieldUi();}}catch(err){rows.push({ok:false,date,stage:'date',error:clean(err?.message||err)});continue;}
         let cards=await waitForCards();let perDate=0;
         while(cards.length&&rows.length<PLAYBACK_TARGET&&perDate<2){
           const candidate=choosePlaybackCard(cards,{seenMedia,seenGames,leagueCounts,qualityCounts,rng,date});if(!candidate)break;
           seenMedia.add(candidate.mediaKey);seenGames.add(candidate.gameKey);perDate++;
           const before=ps.snapshot(),v5Before=v5RuntimeSnapshot(),engineBefore=engineSnapshot(),started=now();let selection=null,progressResult=null,intent=null,error='';
           try{
+            if(!(await requireResponsiveUi()))throw new Error('main thread remained saturated before playback click');
             candidate.card.click();
+            await yieldUi();
             intent=await waitForV5Intent(v5Before.transactionId);
             if(!intent)throw new Error('score-card click did not create v5 playback intent');
             selection=await waitForSelection(before.selectionId);
@@ -237,7 +244,8 @@
       }
       if(rows.filter(x=>x.ok).length<PLAYBACK_MIN_STARTS){
         for(let i=0;i<PLAYBACK_TARGET&&rows.filter(x=>x.ok).length<PLAYBACK_MIN_STARTS;i++){
-          const before=ps.snapshot();let moved=false;try{moved=await Promise.resolve(h.stressTuneNextGame?.());if(!moved)moved=await Promise.resolve(h.stressTuneNext?.());}catch(_){}
+          if(!(await requireResponsiveUi())){rows.push({ok:false,date:clean(h.scoreDate?.(),10),stage:'ui-thread',error:'main thread remained saturated before fallback stress tune'});break;}
+          const before=ps.snapshot();let moved=false;try{moved=await Promise.resolve(h.stressTuneNextGame?.());if(!moved)moved=await Promise.resolve(h.stressTuneNext?.());await yieldUi();}catch(_){}
           if(!moved)break;const selection=await waitForSelection(before.selectionId);if(!selection||seenMedia.has(clean(selection.mediaKey)))continue;seenMedia.add(clean(selection.mediaKey));const engineBefore=engineSnapshot(),started=now(),pr=await waitForProgress({selectionId:selection.selectionId,mediaKey:selection.mediaKey});await waitForPlaybackQuiescence(pr.ok?1800:3200);const final=pr.session||ps.snapshot(),league=upper(final.league||'UNKNOWN'),engineAfter=engineSnapshot(),engineResetsDelta=Math.max(0,n(engineAfter.resets)-n(engineBefore.resets)),engineIncidentsDelta=Math.max(0,n(engineAfter.incidents)-n(engineBefore.incidents)),gameCenterOwned=gameCenterOwnershipOk(),ok=!!pr.ok&&String(final.invariant||'OK')==='OK'&&gameCenterOwned&&engineResetsDelta===0;leagueCounts[league]=n(leagueCounts[league])+1;rows.push({ok,date:clean(h.scoreDate?.(),10),league,quality:'PROGRAM',gameKey:clean(final.eventKey),candidateMediaKey:clean(selection.mediaKey),mediaKey:clean(final.mediaKey),provider:upper(final.provider),transport:upper(final.transport),elapsedMs:round(now()-started),firstProgressMs:pr.snap?.firstProgressMs??null,fallbackHops:n(pr.fallbackHops),invariant:clean(final.invariant||'OK'),gameCenterOwned,engineResetsDelta,engineIncidentsDelta,error:ok?'':clean(pr.reason||(!gameCenterOwned?'Game Center ownership lost during program playback':(engineResetsDelta?'playback engine reset during program playback':'')))});
         }
       }
@@ -249,7 +257,8 @@
     const successful=rows.filter(x=>x.ok),fail=rows.filter(x=>!x.ok).length,leagues=[...new Set(successful.map(x=>x.league).filter(Boolean))],qualities=[...new Set(successful.map(x=>x.quality).filter(q=>q&&q!=='UNKNOWN'))],transports=[...new Set(successful.map(x=>x.transport).filter(Boolean))],providers=[...new Set(successful.map(x=>x.provider).filter(Boolean))],testedDates=[...new Set(successful.map(x=>x.date).filter(Boolean))],fallbacks=rows.reduce((a,x)=>a+n(x.fallbackHops),0),engineResets=rows.reduce((a,x)=>a+n(x.engineResetsDelta),0),engineIncidents=rows.reduce((a,x)=>a+n(x.engineIncidentsDelta),0),gameCenterOwnershipFailures=rows.filter(x=>x.gameCenterOwned===false).length,prewarmAttempts=rows.filter(x=>x.prewarmAttempted).length,primaryRejections=rows.filter(x=>x.primaryRejected).length;
     const result=successful.length>=PLAYBACK_MIN_STARTS&&fail===0&&engineResets===0&&gameCenterOwnershipFailures===0&&leagues.length>=2&&testedDates.length>=2?'PASS':(successful.length>=PLAYBACK_MIN_STARTS&&engineResets===0?'WARN':'FAIL');
     const scorePlayableCache=h.scorePlayableCache?.()||{};
-    return {available:true,result,target:PLAYBACK_TARGET,attempts:rows.length,starts:successful.length,fail,dateSwitches,leagues,qualities,transports,providers,dates:testedDates,fallbacks,engineResets,engineIncidents,gameCenterOwnershipFailures,prewarmAttempts,primaryRejections,scorePlayableCache,uniqueMedia:seenMedia.size,p95FirstProgressMs:round(percentile(successful.map(x=>Number(x.firstProgressMs)).filter(Number.isFinite),95)),rows};
+    const mainThread=mainThreadGuard()?.delta?.(mainThreadBefore)||mainThreadGuard()?.snapshot?.()||{};
+    return {available:true,result,target:PLAYBACK_TARGET,attempts:rows.length,starts:successful.length,fail,dateSwitches,leagues,qualities,transports,providers,dates:testedDates,fallbacks,engineResets,engineIncidents,gameCenterOwnershipFailures,prewarmAttempts,primaryRejections,scorePlayableCache,mainThread,uniqueMedia:seenMedia.size,p95FirstProgressMs:round(percentile(successful.map(x=>Number(x.firstProgressMs)).filter(Number.isFinite),95)),rows};
   }
 
   function workerLines(summary){return (summary?.workers||[]).map(w=>`${w.healthy?'PASS':'WARN'} ${w.name.padEnd(18)} phase=${w.phase} heartbeat=${w.heartbeatAgeSeconds}s progress=${w.progressAgeSeconds}s jobs/hr=${round(w.jobsPerHour)||0} busy=${round(w.busyPercent)||0}% wait=${round(w.providerWaitPercent)||0}%${w.current?` current=${w.current}`:''}${w.provider?` provider=${w.provider}`:''}`).join('\n')||'No worker telemetry returned.';}
@@ -261,6 +270,7 @@
     if(play.result==='FAIL'||play.fail>0)out.push(`P0 PLAYBACK: ${play.fail||0}/${play.attempts||0} active interactions failed; inspect PLAYBACK INTERACTION MATRIX and progress-watchdog evidence.`);
     if(n(play.engineResets)>0)out.push(`P0 PLAYBACK ENGINE: ${play.engineResets} global engine reset${play.engineResets===1?'':'s'} occurred during active interaction coverage. A local media failure must not destabilize the whole board.`);
     if(n(play.gameCenterOwnershipFailures)>0)out.push(`P0 GAME CENTER OWNERSHIP: ${play.gameCenterOwnershipFailures} playback interaction${play.gameCenterOwnershipFailures===1?'':'s'} lost the active game's event binding.`);
+    if(n(play.mainThread?.criticalDelta)>0)out.push(`P0 UI THREAD: ${play.mainThread.criticalDelta} critical event-loop stall${play.mainThread.criticalDelta===1?'':'s'} occurred during active playback; max observed lag=${play.mainThread.maxLagMs||0}ms.`);
     if(play.result!=='FAIL'&&play.fallbacks>0)out.push(`P1 PLAYBACK RECOVERY: ${play.fallbacks} fallback hop${play.fallbacks===1?'':'s'} were required. Playback recovered, but the original asset/transport should be reviewed.`);
     if(gc.fail>0)out.push(`P1 GAME CENTER: ${gc.fail}/${gc.supported||gc.rows.length} supported seeded Game Centers failed.`);if(n(gc.unsupported)>0)out.push(`P2 GAME CENTER COVERAGE: ${gc.unsupported} sampled competition${gc.unsupported===1?' is':'s are'} intentionally unsupported and reported N/A.`);
     if(ui.fail>0)out.push(`P1 GAME CENTER UI: ${ui.fail}/${ui.attempted} view interactions failed.`);
@@ -274,7 +284,7 @@
   }
   function overall(report){
     const eff=report.efficiency?.result||'WARN',gc=report.gameCenter||{},back=report.backendAfter?.summary||{},play=report.playback||{},ui=report.interactions?.gameCenterUi||{},arch=report.architecture||{},apiFails=(report.backendAfter?.probes||[]).filter(x=>!x.ok).length;
-    if(!arch.installed||!arch.adapterBound||arch.invariant!=='OK'||apiFails||eff==='FAIL'||play.result==='FAIL'||play.fail>0||n(play.engineResets)>0||n(play.gameCenterOwnershipFailures)>0||gc.fail>Math.max(1,Math.floor((gc.supported||gc.rows?.length||0)*.25))||ui.fail>0)return 'FAIL';
+    if(!arch.installed||!arch.adapterBound||arch.invariant!=='OK'||apiFails||eff==='FAIL'||play.result==='FAIL'||play.fail>0||n(play.engineResets)>0||n(play.gameCenterOwnershipFailures)>0||n(play.mainThread?.criticalDelta)>0||gc.fail>Math.max(1,Math.floor((gc.supported||gc.rows?.length||0)*.25))||ui.fail>0)return 'FAIL';
     if(eff==='WARN'||play.result==='WARN'||play.fallbacks>0||gc.fail>0||(back.configuredWorkers&&back.healthyWorkers<back.configuredWorkers))return 'WARN';return 'PASS';
   }
 
@@ -289,6 +299,7 @@
       '==================== 0. V5 UNIFIED RUNTIME ARCHITECTURE ====================',
       `APP_STORE=${arch.appStore?'YES':'NO'} schema=${arch.schema||'—'} ORCHESTRATOR=${arch.orchestrator?'YES':'NO'} ADAPTER_BOUND=${arch.adapterBound?'YES':'NO'} invariant=${arch.invariant||'MISSING'}`,
       `TRANSACTION state=${arch.playbackState||'IDLE'} id=${arch.transactionId||'—'} event=${arch.eventKey||'—'} selected=${arch.selectedEventKey||'—'} owned=${arch.owned===false?'NO':'YES'}`,
+      `APP_STORE dispatches=${arch.storeHealth?.dispatches||0} commits=${arch.storeHealth?.commits||0} noops=${arch.storeHealth?.noops||0} snapshots=${arch.storeHealth?.snapshots||0} maxDispatch=${round(arch.storeHealth?.maxDispatchMs)||0}ms maxEmit=${round(arch.storeHealth?.maxEmitMs)||0}ms`,
       '',
       '==================== 1. RELEASE / API HEALTH ====================',
       ...r.backendAfter.probes.map(x=>`${x.ok?'PASS':'FAIL'} ${x.path.padEnd(46)} HTTP=${x.status} ${x.elapsedMs}ms bytes=${x.bytes}${x.error?` error=${x.error}`:''}`),
@@ -306,6 +317,7 @@
       `PLAYBACK_MATRIX result=${p.result||'FAIL'} target=${p.target||PLAYBACK_TARGET} attempts=${p.attempts||0} starts=${p.starts||0} fail=${p.fail||0} uniqueMedia=${p.uniqueMedia||0} fallbacks=${p.fallbacks||0} prewarmAttempts=${p.prewarmAttempts||0} primaryRejected=${p.primaryRejections||0} engineResets=${p.engineResets||0} engineIncidents=${p.engineIncidents||0} gcOwnershipFailures=${p.gameCenterOwnershipFailures||0} p95FirstProgress=${p.p95FirstProgressMs??'N/A'}ms`,
       `DIVERSITY leagues=${(p.leagues||[]).join(',')||'NONE'} qualities=${(p.qualities||[]).join(',')||'NONE'} transports=${(p.transports||[]).join(',')||'NONE'} providers=${(p.providers||[]).join(',')||'NONE'} dates=${(p.dates||[]).join(',')||'NONE'}`,
       `SCORE_PLAYABLE_CACHE size=${p.scorePlayableCache?.size||0} hits=${p.scorePlayableCache?.hits||0} misses=${p.scorePlayableCache?.misses||0} evictions=${p.scorePlayableCache?.evictions||0} ttl=${p.scorePlayableCache?.ttlMs||0}ms`,
+      `UI_THREAD warnings=${p.mainThread?.warningDelta||0} critical=${p.mainThread?.criticalDelta||0} maxLag=${p.mainThread?.maxLagMs||0}ms lastLag=${p.mainThread?.lastLagMs||0}ms`,
       ...(p.rows||[]).map((x,i)=>`${x.ok?'PASS':'FAIL'} #${String(i+1).padStart(2,'0')} ${x.date||'—'} ${x.league||'—'} ${x.quality||'—'} ${x.provider||'—'}/${x.transport||'—'} readinessBefore=${x.readinessBefore||'UNKNOWN'} prewarm=${x.prewarmAttempted?'YES':'NO'}:${x.prewarmResult||'NOT_REQUIRED'} primaryRejected=${x.primaryRejected?'YES':'NO'} progress=${x.firstProgressMs??'N/A'}ms fallbackHops=${x.fallbackHops||0} engineReset+${x.engineResetsDelta||0} gcOwned=${x.gameCenterOwned===false?'NO':'YES'} invariant=${x.invariant||'—'} v5=${x.v5State||'—'} tx=${x.v5TransactionId||'—'} media=${x.mediaKey||x.candidateMediaKey||'—'}${x.error?` ERROR=${x.error}`:''}`),
       '',
       '==================== 5. DATABASE / DISCOVERY ====================',

@@ -1,11 +1,11 @@
-/* Sports Big Board v5.0.0 — Playback Orchestrator.
+/* Sports Big Board v5.0.1 — Playback Orchestrator.
    This is the only browser service allowed to own a playback transaction. Media
    preparation and the legacy A/B implementation are adapters beneath this layer;
    they cannot own SelectedEvent or create competing application state. */
 (() => {
   'use strict';
-  if(window.SBB_PLAYBACK_ORCHESTRATOR?.version==='5.0.0')return;
-  const VERSION='5.0.0';
+  if(window.SBB_PLAYBACK_ORCHESTRATOR?.version==='5.0.1')return;
+  const VERSION='5.0.1';
   const store=window.SBB_APP_STORE;
   if(!store)throw new Error('v5 Playback Orchestrator requires SBB_APP_STORE');
   let adapter=null;
@@ -25,7 +25,7 @@
     if(!eventLike)return null;
     try{return window.SBB_CORE?.event?.(eventLike,eventLike.competitionId||eventLike.__sbbLeague||eventLike.league)||{...eventLike};}catch(_){return {...eventLike};}
   };
-  const current=()=>store.snapshot().playback;
+  const current=()=>store.playbackSnapshot?.()||store.snapshot().playback;
   const txMatches=id=>!!id&&current().transactionId===id;
   const descriptor=item=>({
     mediaKey:mediaKey(item),title:clean(item?.title||item?.name),provider:clean(item?.provider||item?.source||item?.sourceLabel),
@@ -128,14 +128,20 @@
 
   // Playback Session is telemetry/adapter truth below the v5 transaction. Mirror
   // provider progress upward, but never let those callbacks modify SelectedEvent.
+  // v5.0.1: Playback Session may emit provider metadata/audibility updates while
+  // the transport state itself is unchanged. Mirror only material state changes
+  // upward. This breaks the old 250 ms native-video feedback fanout that could
+  // repeatedly clone/render application state while the video kept playing.
   try{window.SBB_PLAYBACK_SESSION?.subscribe?.(session=>{
     const pb=current();if(!pb.transactionId)return;
     const sessionEvent=clean(session?.eventKey);if(pb.eventKey&&sessionEvent&&pb.eventKey!==sessionEvent)return;
-    if(session?.selectionId)store.dispatch({type:'PLAYBACK_LEGACY_SELECTION',payload:{transactionId:pb.transactionId,selectionId:session.selectionId}});
-    const state=clean(session?.state).toLowerCase();
-    if(state==='playing')store.dispatch({type:'PLAYBACK_PLAYING',payload:{transactionId:pb.transactionId}});
-    else if(state==='failed')store.dispatch({type:'PLAYBACK_FAILED',payload:{transactionId:pb.transactionId,error:session?.lastError}});
-    else if(state==='ended')store.dispatch({type:'PLAYBACK_ENDED',payload:{transactionId:pb.transactionId}});
+    const selectionId=Number(session?.selectionId)||0;
+    if(selectionId&&selectionId!==Number(pb.legacySelectionId||0))store.dispatch({type:'PLAYBACK_LEGACY_SELECTION',payload:{transactionId:pb.transactionId,selectionId}});
+    const sessionState=clean(session?.state).toLowerCase();
+    const appState=clean((store.playbackSnapshot?.()||current()).state).toLowerCase();
+    if(sessionState==='playing'&&appState!=='playing')store.dispatch({type:'PLAYBACK_PLAYING',payload:{transactionId:pb.transactionId}});
+    else if(sessionState==='failed'&&appState!=='failed')store.dispatch({type:'PLAYBACK_FAILED',payload:{transactionId:pb.transactionId,error:session?.lastError}});
+    else if(sessionState==='ended'&&appState!=='ended')store.dispatch({type:'PLAYBACK_ENDED',payload:{transactionId:pb.transactionId}});
   });}catch(_){ }
 
   window.SBB_PLAYBACK_ORCHESTRATOR=Object.freeze({version:VERSION,beginIntent,beginScoreIntent,beginProgramIntent,setPlan,preparing,prewarmResult,selectMedia,recovering,unavailable,failed,ended,bindAdapter,requestTune,requestPreparedPromotion,tuneProgramIndex,ownershipSnapshot,ownsSelectedEvent,snapshot:()=>store.snapshot().playback,adapterSnapshot:()=>({bound:!!adapter,boundAt:adapterBoundAt})});

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "5.0.0",
-  "baseRelease": "4.8.2",
-  "title": "Unified Runtime Architecture Foundation",
+  "release": "5.0.1",
+  "baseRelease": "5.0.0",
+  "title": "Unified Runtime UI-Thread Hardening",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -46,44 +46,48 @@
     "tests/test_v482_cold_upstream_game_center.js",
     "tests/test_v482_game_center_runtime.py",
     "tests/test_v500_runtime_architecture.js",
-    "tests/test_v500_single_tune_gateway.js"
+    "tests/test_v500_single_tune_gateway.js",
+    "architecture/main-thread-guard-v5.js",
+    "tests/test_v501_ui_thread_hardening.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "5.0.0"
+        "5.0.1"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v5.0.0",
-        "core-model.js?v=5.0.0",
-        "architecture/app-store-v5.js?v=5.0.0",
-        "architecture/selected-event-store.js?v=5.0.0",
-        "architecture/playback-session.js?v=5.0.0",
-        "architecture/playback-orchestrator-v5.js?v=5.0.0",
-        "architecture/comprehensive-site-certification.js?v=5.0.0",
-        "app.js?v=5.0.0"
+        "Sports Big Board — v5.0.1",
+        "core-model.js?v=5.0.1",
+        "architecture/main-thread-guard-v5.js?v=5.0.1",
+        "architecture/app-store-v5.js?v=5.0.1",
+        "architecture/playback-session.js?v=5.0.1",
+        "architecture/playback-orchestrator-v5.js?v=5.0.1",
+        "architecture/comprehensive-site-certification.js?v=5.0.1",
+        "app.js?v=5.0.1"
       ],
       "forbidden": [
+        "?v=5.0.0",
         "?v=4.8.2"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'5.0.0'"
+        "version:'5.0.1'"
       ]
     },
     "architecture/app-store-v5.js": {
       "required": [
-        "window.SBB_APP_STORE",
+        "const VERSION='5.0.1'",
+        "const SCHEMA='1.1'",
+        "compactEvent",
+        "branch-local and idempotent",
         "PLAYBACK_INTENT_BEGIN",
-        "PLAYBACK_PREPARING",
-        "PLAYBACK_UNAVAILABLE",
-        "PLAYBACK_RECOVERING",
-        "transactionActive",
-        "invariant",
-        "atomic ownership boundary"
+        "PLAYBACK_PLAYING",
+        "legacySelectionId",
+        "healthSnapshot",
+        "transactionActive"
       ]
     },
     "architecture/selected-event-store.js": {
@@ -103,49 +107,48 @@
         "beginIntent",
         "transactionId",
         "intentId",
-        "state:'preparing'"
+        "state:'preparing'",
+        "transport polling is observation",
+        "if(next===state.state&&sameMeta)return snapshot()"
       ]
     },
     "architecture/playback-orchestrator-v5.js": {
       "required": [
+        "const VERSION='5.0.1'",
         "window.SBB_PLAYBACK_ORCHESTRATOR",
-        "beginScoreIntent",
-        "beginProgramIntent",
         "bindAdapter",
         "requestTune",
-        "ownershipSnapshot",
-        "beginIntent",
-        "requestPreparedPromotion"
+        "requestPreparedPromotion",
+        "Playback Session may emit",
+        "selectionId!==Number(pb.legacySelectionId",
+        "appState!=='playing'"
       ]
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "const VERSION = '5.0.0'",
+        "const VERSION = '5.0.1'",
         "Efficiency Certification"
       ]
     },
     "architecture/comprehensive-site-certification.js": {
       "required": [
-        "const VERSION='3.0'",
+        "const VERSION='3.1'",
         "V5 UNIFIED RUNTIME ARCHITECTURE",
-        "v5RuntimeSnapshot",
-        "waitForV5Intent",
-        "ADAPTER_BOUND=",
-        "SBB_PLAYBACK_ORCHESTRATOR",
-        "SBB_APP_STORE",
+        "mainThreadGuard",
+        "requireResponsiveUi",
+        "UI_THREAD warnings=",
+        "criticalDelta",
         "playbackInteractionMatrix",
-        "gameCenterUiExercise",
-        "ACTIVE PLAYBACK INTERACTION MATRIX",
-        "SEED=${r.seed}",
+        "waitForV5Intent",
         "gcOwned=",
-        "readinessBefore=",
-        "SCORE_PLAYABLE_CACHE"
+        "SCORE_PLAYABLE_CACHE",
+        "APP_STORE dispatches="
       ],
       "forbidden": [
         "USC_EVENT_FOUND",
         "401864494",
         "San Jose",
-        "San Jos\u00e9",
+        "San José",
         "san jose"
       ]
     },
@@ -155,13 +158,12 @@
         "SBB_PLAYBACK_ORCHESTRATOR?.bindAdapter",
         "beginScoreIntent",
         "transactionId:v5TransactionId",
-        "ownershipSnapshot",
         "waitForScoreMediaHot",
         "tryScoreMediaFallback",
-        "finalizeScorePlaybackUnavailable",
-        "function promotePreparedV5",
-        "promotePrepared:(slot,index,options)=>doSwapLegacy(slot,index,options)",
-        "historical score selection: resolving media"
+        "let lastPlaybackUiMode=''",
+        "if(mode===lastPlaybackUiMode)return;",
+        "if(observed!==lastPlaybackUiMode)setPlaybackUi(observed);",
+        "let lastPlaybackSessionDiagKey=''"
       ]
     },
     "tools/check_release_manifest.py": {
@@ -174,6 +176,7 @@
       "required": [
         "node tests/test_v500_runtime_architecture.js",
         "node tests/test_v500_single_tune_gateway.js",
+        "node tests/test_v501_ui_thread_hardening.js",
         "node tests/test_v480_comprehensive_certification.js",
         "node tests/test_v481_playback_ownership_recovery.js",
         "node tests/test_v482_cold_upstream_game_center.js",
@@ -275,6 +278,33 @@
         "function bindAdapter",
         "function requestTune",
         "function tuneProgramIndex"
+      ]
+    },
+    "architecture/main-thread-guard-v5.js": {
+      "required": [
+        "SBB_MAIN_THREAD_GUARD",
+        "CRITICAL_LAG_MS",
+        "waitForBreathingRoom",
+        "yieldToBrowser",
+        "criticalDelta"
+      ]
+    },
+    "tests/test_v501_ui_thread_hardening.js": {
+      "required": [
+        "100 duplicate PLAYING observations",
+        "providerPayload",
+        "critical event-loop",
+        "v5.0.1 UI-thread hardening"
+      ]
+    },
+    "tests/test_v500_runtime_architecture.js": {
+      "required": [
+        "v5.0.x runtime architecture baseline"
+      ]
+    },
+    "tests/test_v500_single_tune_gateway.js": {
+      "required": [
+        "v5.0.x single-gateway baseline"
       ]
     }
   }

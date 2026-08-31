@@ -1,4 +1,4 @@
-/* Sports Big Board v5.0.0 playback adapter/session telemetry.
+/* Sports Big Board v5.0.1 playback adapter/session telemetry.
    SBB_APP_STORE + SBB_PLAYBACK_ORCHESTRATOR own the application transaction.
    This module remains the transport/session telemetry boundary beneath that owner. */
 (() => {
@@ -100,14 +100,24 @@
     emit(); scheduleTelemetry('selection'); return snapshot();
   }
   function assign(meta={}){
-    Object.assign(state,{
+    const next={
       provider:String(meta.provider||state.provider||''), transport:String(meta.transport||state.transport||''), slot:String(meta.slot||state.slot||''),
       sourceUrl:String(meta.sourceUrl||state.sourceUrl||''), sourceExternalUrl:String(meta.sourceExternalUrl||state.sourceExternalUrl||'')
-    });
-    emit(); return snapshot();
+    };
+    if(next.provider===state.provider&&next.transport===state.transport&&next.slot===state.slot&&next.sourceUrl===state.sourceUrl&&next.sourceExternalUrl===state.sourceExternalUrl)return snapshot();
+    Object.assign(state,next);emit(); return snapshot();
   }
   function transition(next,meta={}){
     next=String(next||'idle').toLowerCase();
+    const sameMeta=(meta.slot==null||String(meta.slot||'')===state.slot)
+      &&(meta.provider==null||String(meta.provider||'')===state.provider)
+      &&(meta.transport==null||String(meta.transport||'')===state.transport)
+      &&(meta.sourceUrl==null||String(meta.sourceUrl||'')===state.sourceUrl)
+      &&(meta.sourceExternalUrl==null||String(meta.sourceExternalUrl||'')===state.sourceExternalUrl);
+    // v5.0.1: transport polling is observation, not a state transition. Native
+    // video is sampled every 250 ms; identical PLAYING reports must not fan out to
+    // every session subscriber and the v5 application store.
+    if(next===state.state&&sameMeta)return snapshot();
     const perf=nowPerf();
     const prior=state.state;
     let stallStarted=false,stallEnded=false;
@@ -150,10 +160,12 @@
     transition('failed',meta); scheduleTelemetry('failure'); return snapshot();
   }
   function setAudible(kind,id,audible){
+    let changed=false;
     if(kind==='video'){
-      if(String(id).toUpperCase()==='A') state.audible.videoA=!!audible;
-      if(String(id).toUpperCase()==='B') state.audible.videoB=!!audible;
-    }else if(kind==='soundtrack') state.audible.soundtrack=!!audible;
+      if(String(id).toUpperCase()==='A'&&state.audible.videoA!==!!audible){state.audible.videoA=!!audible;changed=true;}
+      if(String(id).toUpperCase()==='B'&&state.audible.videoB!==!!audible){state.audible.videoB=!!audible;changed=true;}
+    }else if(kind==='soundtrack'&&state.audible.soundtrack!==!!audible){state.audible.soundtrack=!!audible;changed=true;}
+    if(!changed)return state.invariant;
     auditInvariant(); emit(); return state.invariant;
   }
   function clearVideoAudible(){ state.audible.videoA=false; state.audible.videoB=false; auditInvariant(); emit(); }

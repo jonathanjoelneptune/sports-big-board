@@ -1,0 +1,125 @@
+Sports Big Board v5.0.1 — UI-Thread / Feedback-Loop Hardening
+===============================================================
+
+WHY THIS RELEASE EXISTS
+-----------------------
+Observed failure: while a game video continued playing normally, the Sports Big Board
+UI became non-responsive and clicks no longer executed. The same board lock could still
+be reproduced around the known USC playback path.
+
+The continued video progress is important evidence: the media transport was alive while
+the browser's application/UI thread was being saturated.
+
+ROOT CAUSE CLOSED IN v5.0.1
+---------------------------
+The v5.0.0 control plane made every Playback Session emission observable by the new
+orchestrator/App Store. Native/direct video is sampled by the legacy playback-sync loop
+at 250 ms. That loop could repeatedly publish the same PLAYING state even though nothing
+material changed.
+
+Under v5.0.0 the duplicate observation could fan out as:
+
+  native poll (250 ms)
+      -> setPlaybackUi(PLAYING)
+      -> Playback Session emit
+      -> v5 Orchestrator mirror
+      -> App Store dispatch
+      -> deep clone of current state/event payload
+      -> subscribers / diagnostics / DOM work
+
+This work could repeat indefinitely while the video decoder continued independently.
+Large score/provider payloads made the cost worse.
+
+v5.0.1 changes this control plane from level-triggered to edge-triggered:
+
+  transport poll -> no material change -> NO session emit -> NO orchestrator mirror
+                 -> NO App Store commit -> NO duplicate DOM work
+
+IMPLEMENTED
+-----------
+1. architecture/app-store-v5.js
+   - v5.0.1 / schema 1.1.
+   - Branch-local immutable updates instead of deep-cloning the entire state per action.
+   - Compact canonical event projection for the hot playback state.
+   - Duplicate PLAYING, legacy-selection and equivalent state updates are no-ops.
+   - Added dispatch/commit/no-op/snapshot/max-dispatch/max-emit health telemetry.
+
+2. architecture/playback-orchestrator-v5.js
+   - Mirrors Playback Session only when selection/state materially changes.
+   - Duplicate PLAYING observations do not dispatch App Store actions.
+
+3. architecture/playback-session.js
+   - Repeated identical transitions no longer emit.
+   - Repeated identical adapter assignment no longer emits.
+   - Repeated unchanged audible ownership no longer emits.
+
+4. app.js
+   - setPlaybackUi() is idempotent through lastPlaybackUiMode.
+   - Native 250 ms sync only publishes a UI state transition when the observed state changes.
+   - Playback diagnostic DOM rendering is key-deduplicated.
+
+5. architecture/main-thread-guard-v5.js (new)
+   - Measures browser event-loop delay every 250 ms.
+   - WARN threshold: 350 ms.
+   - CRITICAL threshold: 1200 ms.
+   - Provides cooperative browser-frame yielding to certification only.
+   - Never owns or changes playback.
+
+6. architecture/comprehensive-site-certification.js
+   - Schema 3.1.
+   - Stops stacking interactions if the browser is already saturated.
+   - Yields between high-impact interactions.
+   - Reports UI_THREAD warning/critical/max-lag evidence.
+   - Reports App Store dispatch/commit/no-op/max-dispatch/max-emit evidence.
+   - A critical UI-thread stall is blocking certification evidence.
+
+7. tests/test_v501_ui_thread_hardening.js (new)
+   - Uses a deliberately large USC-like event/provider payload.
+   - Verifies provider/timeline bulk data never enters the hot App Store projection.
+   - Feeds 100 duplicate PLAYING observations through Playback Session -> Orchestrator.
+   - Verifies zero additional App Store revisions from those duplicate observations.
+   - Verifies duplicate app-level PLAYBACK_PLAYING actions are no-ops.
+
+8. Release handshake / retained v5 tests
+   - VERSION / core-model / index cache generation -> 5.0.1.
+   - Retained v5.0 architecture tests accept the v5.0.x foundation line.
+
+NO GAME-SPECIFIC FIX
+--------------------
+There is no USC event ID, team-name, league-specific, or media-ID exception in this
+hardening. USC remains a useful regression trigger, but the fix applies to every game,
+transport and certification interaction.
+
+LOCAL VALIDATION COMPLETED
+--------------------------
+PASS: JavaScript syntax for all changed/new JS files.
+PASS: VERIFY.sh shell syntax.
+PASS: release-manifest.json parses.
+PASS: 58/58 executable local JS/CSS references use cache generation 5.0.1.
+PASS: tests/test_playback_session_runtime.js
+PASS: tests/test_v500_runtime_architecture.js
+PASS: tests/test_v500_single_tune_gateway.js
+PASS: tests/test_v501_ui_thread_hardening.js
+PASS: tests/test_v480_comprehensive_certification.js
+PASS: tests/test_v481_playback_ownership_recovery.js
+PASS: tests/test_v482_cold_upstream_game_center.js
+PASS: tests/test_v473_efficiency_runtime.js
+PASS: tests/test_v474_efficiency_remediation_runtime.js
+PASS: tests/test_v476_render_pipeline_runtime.js
+PASS: tests/test_v477_first_paint_render_consolidation_runtime.js
+PASS: tests/test_v479_navigation_history_runtime.js
+
+The local validation workspace is a frontend/release snapshot rather than a full clone of
+all unchanged backend files, so the complete repository VERIFY.sh cannot be executed
+locally. GitHub Actions remains the authoritative full-repository gate.
+
+NEXT COMPREHENSIVE RUN — KEY NEW EVIDENCE
+-----------------------------------------
+Expected healthy values:
+  UI_THREAD critical=0
+  APP_STORE maxDispatch low/stable
+  APP_STORE maxEmit low/stable
+  APP_STORE noops > 0 during normal playback (duplicate observations safely suppressed)
+
+The most important acceptance test is behavioral: the site must remain clickable and
+responsive for the full run, including while USC and native/direct video are playing.

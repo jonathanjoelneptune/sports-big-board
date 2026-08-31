@@ -106,3 +106,17 @@ v5.0.0 fixes the browser control plane first. The next architecture stages shoul
 - **5.5 source build modernization:** evaluate TypeScript/Vite after ownership migration is stable; this is not required for the v5 runtime invariant.
 
 No catalog rebuild is required for v5.0.0.
+
+## v5.0.1 — UI-thread and feedback-loop hardening
+
+The unified control plane is **edge-triggered**. Provider/player polling is observation, not an application state transition. Repeated `PLAYING`, identical audibility, or identical adapter metadata must not emit a Playback Session update or create an App Store commit.
+
+The App Store stores a compact canonical event projection in the hot playback tree. Rich provider responses, media collections, Game Center timelines, and other large acquisition payloads remain outside the frequently cloned runtime state. `SelectedEvent` may retain the richer score event needed by Game Center, but the playback transaction carries only identity, teams, date/status, scores, and ownership metadata.
+
+The browser main-thread guard measures event-loop lag independently of playback. Comprehensive Certification yields a browser frame before high-impact interactions and refuses to stack another synthetic interaction while the UI thread remains saturated. Main-thread critical stalls are blocking certification evidence.
+
+The v5.0.1 feedback rule is:
+
+`transport poll → no change → no session emit → no orchestrator mirror → no App Store commit → no DOM work`
+
+Only a material edge such as `STARTING → PLAYING`, a new selection ID, fallback, failure, end, or ownership change propagates upward.

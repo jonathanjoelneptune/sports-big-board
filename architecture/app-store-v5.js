@@ -1,22 +1,38 @@
-/* Sports Big Board v5.0.0 — Unified Runtime App Store.
-   One reducer-owned state tree is the canonical browser control plane. UI modules,
-   playback preparation, player adapters and Game Center consume this state; they do
-   not independently reconstruct ownership from media/player callbacks. */
+/* Sports Big Board v5.0.1 — Unified Runtime App Store.
+   The v5 control plane remains the canonical browser state authority, but state
+   commits are now branch-local and idempotent. Large provider/score payloads are
+   projected into a compact event record before entering the hot playback state.
+   This prevents repeated player telemetry from deep-cloning provider payloads on
+   the browser main thread while a video is already playing. */
 (() => {
   'use strict';
-  if (window.SBB_APP_STORE?.version === '5.0.0') return;
+  if (window.SBB_APP_STORE?.version === '5.0.1') return;
 
-  const VERSION='5.0.0';
-  const SCHEMA='1.0';
+  const VERSION='5.0.1';
+  const SCHEMA='1.1';
   const listeners=new Set();
   let revision=0;
   let intentSequence=0;
+  const stats={dispatches:0,commits:0,noops:0,snapshots:0,maxDispatchMs:0,maxEmitMs:0,lastDispatchMs:0,lastAction:'BOOT'};
 
-  const clone=value=>{
-    try{return structuredClone(value);}catch(_){return JSON.parse(JSON.stringify(value));}
-  };
   const clean=value=>String(value??'').trim();
   const now=()=>Date.now();
+  const perfNow=()=>typeof performance!=='undefined'&&performance.now?performance.now():Date.now();
+  const clone=value=>{
+    if(value==null)return value;
+    try{return structuredClone(value);}catch(_){return JSON.parse(JSON.stringify(value));}
+  };
+  const teamProjection=(team,side='')=>{
+    if(!team)return null;
+    if(typeof team==='string')return {id:'',name:team,displayName:team,shortName:'',abbreviation:'',side};
+    return {
+      id:clean(team.id??team.teamId??team.clubId),
+      name:clean(team.name??team.teamName??team.displayName),
+      displayName:clean(team.displayName??team.name??team.teamName),
+      shortName:clean(team.shortName),abbreviation:clean(team.abbreviation??team.abbr),
+      logo:clean(team.logo??team.logoUrl??team.image??team.imageUrl),side:clean(team.side||side)
+    };
+  };
   const eventKeyOf=eventLike=>{
     if(!eventLike)return '';
     try{return clean(window.SBB_EVENT_IDENTITY?.key?.(eventLike));}catch(_){ }
@@ -24,6 +40,28 @@
     const id=clean(eventLike.canonicalEventId||eventLike.espnEventId||eventLike.scoreEventId||eventLike.eventId||eventLike.matchId||eventLike.gamePk||eventLike.id);
     return competition&&id?`${competition}:${id}`:id;
   };
+  function compactEvent(eventLike){
+    if(!eventLike)return null;
+    const raw=eventLike||{};
+    const parts=Array.isArray(raw.participants)?raw.participants:[];
+    const away=teamProjection(raw.awayTeam||raw.away||parts.find(x=>String(x?.side||'').toLowerCase()==='away')||parts[0],'away');
+    const home=teamProjection(raw.homeTeam||raw.home||parts.find(x=>String(x?.side||'').toLowerCase()==='home')||parts[1],'home');
+    const competitionId=clean(raw.competitionId||raw.__sbbLeague||raw.league?.id||raw.league).toUpperCase();
+    const eventId=clean(raw.eventId||raw.scoreEventId||raw.espnEventId||raw.matchId||raw.gamePk||raw.id);
+    return {
+      entityType:'EVENT',sportId:clean(raw.sportId||raw.sport),competitionId,
+      competitionName:clean(raw.competitionName||raw.league?.name),eventId,
+      canonicalEventKey:eventKeyOf(raw),canonicalEventId:clean(raw.canonicalEventId),
+      scoreEventId:clean(raw.scoreEventId),espnEventId:clean(raw.espnEventId),gameCenterEventId:clean(raw.gameCenterEventId),
+      matchId:clean(raw.matchId),gamePk:clean(raw.gamePk),id:clean(raw.id),
+      scheduledAt:clean(raw.scheduledAt||raw.date||raw.gameDate),date:clean(raw.date||raw.gameDate||raw.__sbbDate),
+      status:clean(raw.status?.type?.name||raw.status?.abstractGameState||raw.status?.description||raw.status||raw.state?.status),
+      venue:clean(raw.venue?.name||raw.venue),awayTeam:away,homeTeam:home,participants:[away,home].filter(Boolean),
+      awayScore:raw.awayScore??raw.score?.awayScore??raw.away?.score??null,
+      homeScore:raw.homeScore??raw.score?.homeScore??raw.home?.score??null,
+      gameCenterProviderHint:clean(raw.gameCenterProviderHint),rankingSnapshotId:clean(raw.rankingSnapshotId)
+    };
+  }
   const freshPlayback=()=>({
     transactionId:'',intentId:0,state:'IDLE',source:'',reason:'',userInitiated:false,
     eventKey:'',event:null,requestedAt:0,updatedAt:0,
@@ -44,8 +82,7 @@
 
   function audit(next){
     let invariant='OK';
-    const playback=next.playback||{};
-    const selection=next.selection||{};
+    const playback=next.playback||{},selection=next.selection||{};
     if(playback.transactionId&&playback.eventKey){
       if(!selection.eventKey) invariant='ERROR: PLAYBACK EVENT WITHOUT SELECTED EVENT';
       else if(selection.eventKey!==playback.eventKey) invariant=`ERROR: EVENT OWNERSHIP ${selection.eventKey} != ${playback.eventKey}`;
@@ -53,105 +90,88 @@
     if(next.gameCenter?.eventKey&&selection.eventKey&&next.gameCenter.eventKey!==selection.eventKey){
       invariant=`ERROR: GAME CENTER ${next.gameCenter.eventKey} != SELECTED ${selection.eventKey}`;
     }
-    next.invariant=invariant;
-    return next;
+    if(next.invariant===invariant)return next;
+    return {...next,invariant};
   }
+  function snapshot(){stats.snapshots++;return clone(state);}
+  function playbackSnapshot(){return clone(state.playback);}
+  function selectionSnapshot(){return clone(state.selection);}
+  function healthSnapshot(){return {...stats,revision:state.revision,listenerCount:listeners.size,schema:SCHEMA};}
   function emit(action){
-    const snap=snapshot();
+    const started=perfNow(),snap=snapshot();
     try{window.dispatchEvent(new CustomEvent('sbb:app-state',{detail:{state:snap,action}}));}catch(_){ }
     for(const fn of [...listeners]){try{fn(snap,action);}catch(err){console.warn('[SBB v5 app-store] listener failed',err);}}
+    stats.maxEmitMs=Math.max(stats.maxEmitMs,perfNow()-started);
   }
+  const txOk=(current,payload)=>!payload.transactionId||payload.transactionId===current.playback.transactionId;
+  const same=(a,b)=>clean(a)===clean(b);
   function reduce(current,action){
-    const next=clone(current); const type=clean(action?.type).toUpperCase(); const payload=action?.payload||{};
-    next.lastAction=type||'UNKNOWN';
+    const type=clean(action?.type).toUpperCase(),payload=action?.payload||{};
+    if(!type)return current;
     switch(type){
-      case 'BROWSE_SET':
-        if(payload.date!=null)next.browse.date=clean(payload.date).slice(0,10);
-        if(payload.leagueFilter!=null)next.browse.leagueFilter=clean(payload.leagueFilter).toUpperCase()||'ALL';
-        break;
+      case 'BROWSE_SET': { const date=payload.date!=null?clean(payload.date).slice(0,10):current.browse.date,leagueFilter=payload.leagueFilter!=null?(clean(payload.leagueFilter).toUpperCase()||'ALL'):current.browse.leagueFilter;if(date===current.browse.date&&leagueFilter===current.browse.leagueFilter)return current;return {...current,browse:{date,leagueFilter},lastAction:type}; }
       case 'SELECT_EVENT': {
-        const event=payload.event?clone(payload.event):null; const eventKey=clean(payload.eventKey)||eventKeyOf(event);
-        next.selection={event,eventKey,source:clean(payload.source),reason:clean(payload.reason),selectedAt:now()};
-        next.gameCenter={eventKey,state:eventKey?'SELECTED':'IDLE',updatedAt:now(),error:''};
-        break;
+        const event=compactEvent(payload.event),eventKey=clean(payload.eventKey)||eventKeyOf(event),source=clean(payload.source),reason=clean(payload.reason);
+        if(eventKey===current.selection.eventKey&&source===current.selection.source&&reason===current.selection.reason)return current;
+        return {...current,selection:{event,eventKey,source,reason,selectedAt:now()},gameCenter:{eventKey,state:eventKey?'SELECTED':'IDLE',updatedAt:now(),error:''},lastAction:type};
       }
       case 'CLEAR_EVENT':
-        next.selection={event:null,eventKey:'',source:clean(payload.source),reason:clean(payload.reason),selectedAt:now()};
-        next.gameCenter={eventKey:'',state:'IDLE',updatedAt:now(),error:''};
-        break;
+        if(!current.selection.eventKey&&!current.gameCenter.eventKey)return current;
+        return {...current,selection:{event:null,eventKey:'',source:clean(payload.source),reason:clean(payload.reason),selectedAt:now()},gameCenter:{eventKey:'',state:'IDLE',updatedAt:now(),error:''},lastAction:type};
       case 'PLAYBACK_INTENT_BEGIN': {
-        const event=payload.event?clone(payload.event):null; const eventKey=clean(payload.eventKey)||eventKeyOf(event);
-        const intentId=++intentSequence;
-        // v5 atomic ownership boundary: selecting the sporting event and opening its
-        // playback transaction are one reducer commit. No listener can observe a
-        // new selected game paired with the previous playback transaction.
-        next.selection={event,eventKey,source:clean(payload.source)||'program',reason:clean(payload.reason),selectedAt:now()};
-        next.gameCenter={eventKey,state:eventKey?'SELECTED':'IDLE',updatedAt:now(),error:''};
-        next.playback={...freshPlayback(),transactionId:`pb-${now().toString(36)}-${intentId.toString(36)}`,intentId,
-          state:'INTENT',source:clean(payload.source)||'program',reason:clean(payload.reason),userInitiated:!!payload.userInitiated,
-          eventKey,event,requestedAt:now(),updatedAt:now()};
-        break;
+        const event=compactEvent(payload.event),eventKey=clean(payload.eventKey)||eventKeyOf(event),intentId=++intentSequence,t=now();
+        const source=clean(payload.source)||'program',reason=clean(payload.reason);
+        const selection={event,eventKey,source,reason,selectedAt:t};
+        const playback={...freshPlayback(),transactionId:`pb-${t.toString(36)}-${intentId.toString(36)}`,intentId,state:'INTENT',source,reason,userInitiated:!!payload.userInitiated,eventKey,event,requestedAt:t,updatedAt:t};
+        return {...current,selection,gameCenter:{eventKey,state:eventKey?'SELECTED':'IDLE',updatedAt:t,error:''},playback,lastAction:type};
       }
-      case 'PLAYBACK_PLAN':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.mediaPlan=Array.isArray(payload.mediaPlan)?clone(payload.mediaPlan):[];
-        next.playback.updatedAt=now();
-        break;
-      case 'PLAYBACK_PREPARING':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.state='PREPARING';next.playback.updatedAt=now();
-        next.playback.prewarm={state:'PREPARING',mediaKey:clean(payload.mediaKey),startedAt:now(),completedAt:0,result:''};
-        break;
-      case 'PLAYBACK_PREWARM_RESULT':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.prewarm={...next.playback.prewarm,state:payload.ok?'READY':'FAILED',completedAt:now(),result:clean(payload.result)};
-        next.playback.updatedAt=now();
-        break;
-      case 'PLAYBACK_MEDIA_SELECTED':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.state='SELECTED';next.playback.activeMediaKey=clean(payload.mediaKey);next.playback.provider=clean(payload.provider);next.playback.transport=clean(payload.transport);next.playback.candidateIndex=Number.isFinite(payload.candidateIndex)?payload.candidateIndex:next.playback.candidateIndex;next.playback.updatedAt=now();
-        break;
+      case 'PLAYBACK_PLAN': {
+        if(!txOk(current,payload))return current;const mediaPlan=Array.isArray(payload.mediaPlan)?clone(payload.mediaPlan):[];
+        return {...current,playback:{...current.playback,mediaPlan,updatedAt:now()},lastAction:type};
+      }
+      case 'PLAYBACK_PREPARING': {
+        if(!txOk(current,payload))return current;const mediaKey=clean(payload.mediaKey);
+        if(current.playback.state==='PREPARING'&&current.playback.prewarm.mediaKey===mediaKey)return current;
+        const t=now();return {...current,playback:{...current.playback,state:'PREPARING',updatedAt:t,prewarm:{state:'PREPARING',mediaKey,startedAt:t,completedAt:0,result:''}},lastAction:type};
+      }
+      case 'PLAYBACK_PREWARM_RESULT': {
+        if(!txOk(current,payload))return current;const targetState=payload.ok?'READY':'FAILED',result=clean(payload.result);
+        if(current.playback.prewarm.state===targetState&&current.playback.prewarm.result===result)return current;
+        return {...current,playback:{...current.playback,prewarm:{...current.playback.prewarm,state:targetState,completedAt:now(),result},updatedAt:now()},lastAction:type};
+      }
+      case 'PLAYBACK_MEDIA_SELECTED': {
+        if(!txOk(current,payload))return current;const mediaKey=clean(payload.mediaKey),provider=clean(payload.provider),transport=clean(payload.transport),candidateIndex=Number.isFinite(payload.candidateIndex)?payload.candidateIndex:current.playback.candidateIndex;
+        if(current.playback.state==='SELECTED'&&current.playback.activeMediaKey===mediaKey&&current.playback.provider===provider&&current.playback.transport===transport&&current.playback.candidateIndex===candidateIndex)return current;
+        return {...current,playback:{...current.playback,state:'SELECTED',activeMediaKey:mediaKey,provider,transport,candidateIndex,updatedAt:now()},lastAction:type};
+      }
       case 'PLAYBACK_STARTING':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.state='STARTING';next.playback.attempts+=1;next.playback.updatedAt=now();break;
+        if(!txOk(current,payload))return current;
+        return {...current,playback:{...current.playback,state:'STARTING',attempts:current.playback.attempts+1,updatedAt:now()},lastAction:type};
       case 'PLAYBACK_PLAYING':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.state='PLAYING';next.playback.updatedAt=now();next.playback.error='';break;
-      case 'PLAYBACK_PROGRESS':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.state='PLAYING';next.playback.progressSeconds=Math.max(next.playback.progressSeconds,Number(payload.seconds)||0);next.playback.lastProgressAt=now();next.playback.updatedAt=now();break;
-      case 'PLAYBACK_RECOVERING':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.state='RECOVERING';next.playback.recoveries+=1;next.playback.error=clean(payload.error);next.playback.updatedAt=now();break;
+        if(!txOk(current,payload))return current;
+        if(current.playback.state==='PLAYING'&&!current.playback.error)return current;
+        return {...current,playback:{...current.playback,state:'PLAYING',updatedAt:now(),error:''},lastAction:type};
+      case 'PLAYBACK_PROGRESS': { if(!txOk(current,payload))return current;const seconds=Math.max(current.playback.progressSeconds,Number(payload.seconds)||0);if(current.playback.state==='PLAYING'&&seconds<=current.playback.progressSeconds+.049)return current;return {...current,playback:{...current.playback,state:'PLAYING',progressSeconds:seconds,lastProgressAt:now(),updatedAt:now()},lastAction:type}; }
+      case 'PLAYBACK_RECOVERING': { if(!txOk(current,payload))return current;const error=clean(payload.error);if(current.playback.state==='RECOVERING'&&current.playback.error===error)return current;return {...current,playback:{...current.playback,state:'RECOVERING',recoveries:current.playback.recoveries+1,error,updatedAt:now()},lastAction:type}; }
       case 'PLAYBACK_FAILED':
-      case 'PLAYBACK_UNAVAILABLE':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.state=type==='PLAYBACK_FAILED'?'FAILED':'UNAVAILABLE';next.playback.error=clean(payload.error||payload.reason);next.playback.updatedAt=now();break;
-      case 'PLAYBACK_ENDED':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.state='ENDED';next.playback.updatedAt=now();break;
-      case 'PLAYBACK_LEGACY_SELECTION':
-        if(payload.transactionId&&payload.transactionId!==next.playback.transactionId)break;
-        next.playback.legacySelectionId=Number(payload.selectionId)||0;next.playback.updatedAt=now();break;
-      case 'PLAYBACK_RESET':
-        next.playback=freshPlayback();break;
-      case 'GAME_CENTER_STATE':
-        if(payload.eventKey&&next.selection.eventKey&&payload.eventKey!==next.selection.eventKey)break;
-        next.gameCenter={eventKey:clean(payload.eventKey)||next.selection.eventKey,state:clean(payload.state)||'IDLE',updatedAt:now(),error:clean(payload.error)};break;
-      default: return current;
+      case 'PLAYBACK_UNAVAILABLE': { if(!txOk(current,payload))return current;const target=type==='PLAYBACK_FAILED'?'FAILED':'UNAVAILABLE',error=clean(payload.error||payload.reason);if(current.playback.state===target&&current.playback.error===error)return current;return {...current,playback:{...current.playback,state:target,error,updatedAt:now()},lastAction:type}; }
+      case 'PLAYBACK_ENDED': if(!txOk(current,payload)||current.playback.state==='ENDED')return current;return {...current,playback:{...current.playback,state:'ENDED',updatedAt:now()},lastAction:type};
+      case 'PLAYBACK_LEGACY_SELECTION': { if(!txOk(current,payload))return current;const selectionId=Number(payload.selectionId)||0;if(selectionId===current.playback.legacySelectionId)return current;return {...current,playback:{...current.playback,legacySelectionId:selectionId,updatedAt:now()},lastAction:type}; }
+      case 'PLAYBACK_RESET': if(current.playback.state==='IDLE'&&!current.playback.transactionId)return current;return {...current,playback:freshPlayback(),lastAction:type};
+      case 'GAME_CENTER_STATE': { if(payload.eventKey&&current.selection.eventKey&&payload.eventKey!==current.selection.eventKey)return current;const eventKey=clean(payload.eventKey)||current.selection.eventKey,gcState=clean(payload.state)||'IDLE',error=clean(payload.error);if(current.gameCenter.eventKey===eventKey&&current.gameCenter.state===gcState&&current.gameCenter.error===error)return current;return {...current,gameCenter:{eventKey,state:gcState,updatedAt:now(),error},lastAction:type}; }
+      default:return current;
     }
-    next.revision=++revision;
-    return audit(next);
   }
   function dispatch(action){
-    const next=reduce(state,action);
-    if(next===state)return snapshot();
-    state=next;emit(action);return snapshot();
+    const started=perfNow();stats.dispatches++;stats.lastAction=clean(action?.type).toUpperCase()||'UNKNOWN';
+    let next=reduce(state,action);
+    if(next===state){stats.noops++;stats.lastDispatchMs=perfNow()-started;stats.maxDispatchMs=Math.max(stats.maxDispatchMs,stats.lastDispatchMs);return snapshot();}
+    next={...audit(next),revision:++revision,version:VERSION,schema:SCHEMA};state=next;stats.commits++;emit(action);
+    stats.lastDispatchMs=perfNow()-started;stats.maxDispatchMs=Math.max(stats.maxDispatchMs,stats.lastDispatchMs);return snapshot();
   }
-  function snapshot(){return clone(state);}
   function subscribe(fn,{emitCurrent=false}={}){if(typeof fn!=='function')return()=>{};listeners.add(fn);if(emitCurrent)try{fn(snapshot(),{type:'SNAPSHOT'});}catch(_){}return()=>listeners.delete(fn);}
   function currentTransaction(){return state.playback.transactionId||'';}
   function transactionActive(id=''){const tx=clean(id)||currentTransaction();return !!tx&&tx===state.playback.transactionId&&!['IDLE','ENDED','FAILED','UNAVAILABLE'].includes(state.playback.state);}
 
-  window.SBB_APP_STORE=Object.freeze({version:VERSION,schema:SCHEMA,dispatch,snapshot,subscribe,eventKeyOf,currentTransaction,transactionActive});
+  window.SBB_APP_STORE=Object.freeze({version:VERSION,schema:SCHEMA,dispatch,snapshot,playbackSnapshot,selectionSnapshot,healthSnapshot,subscribe,eventKeyOf,compactEvent,currentTransaction,transactionActive});
 })();

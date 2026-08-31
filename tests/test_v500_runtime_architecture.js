@@ -6,7 +6,7 @@ const vm=require('vm');
 const ROOT=path.resolve(__dirname,'..');
 const read=rel=>fs.readFileSync(path.join(ROOT,rel),'utf8');
 const version=read('VERSION').trim();
-assert.strictEqual(version,'5.0.0');
+assert(/^5\.0\.\d+$/.test(version),'v5.0.x runtime architecture baseline');
 
 const listeners={};
 const eventListeners={};
@@ -24,10 +24,10 @@ vm.createContext(sandbox);
 for(const file of ['architecture/app-store-v5.js','architecture/selected-event-store.js','architecture/playback-session.js','architecture/playback-orchestrator-v5.js']){
   vm.runInContext(read(file),sandbox,{filename:file});
 }
-assert.strictEqual(window.SBB_APP_STORE.version,'5.0.0');
+assert.strictEqual(window.SBB_APP_STORE.version,version);
 assert.strictEqual(window.SBB_SELECTED_EVENT.version,'5.0.0');
 assert.strictEqual(window.SBB_PLAYBACK_SESSION.version,'2.0');
-assert.strictEqual(window.SBB_PLAYBACK_ORCHESTRATOR.version,'5.0.0');
+assert.strictEqual(window.SBB_PLAYBACK_ORCHESTRATOR.version,version);
 
 const game={competitionId:'CFB',eventId:'evt-1',name:'Away @ Home',away:{name:'Away'},home:{name:'Home'}};
 const tx=window.SBB_PLAYBACK_ORCHESTRATOR.beginScoreIntent(game,{reason:'test click',userInitiated:true});
@@ -83,4 +83,4 @@ assert.strictEqual(app.playback.state,'STARTING');
 assert.strictEqual(app.playback.activeMediaKey,'youtube:abc');
 assert.strictEqual(app.invariant,'OK');
 
-console.log('PASS: v5.0.0 unified App Store + intent-first playback + SelectedEvent ownership runtime');
+console.log(`PASS: ${version} unified App Store + intent-first playback + SelectedEvent ownership runtime`);
