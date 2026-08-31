@@ -92,22 +92,44 @@ def _sanitize_event_plans(server, plans):
         def valid(item):
             if not isinstance(item,dict):return False
             stats["checked"]+=1
-            # EVENT_MEDIA is the normalized relationship authority. Plans arrive
-            # here only from ASSIGNED rows, and ribbon_media_for_date injects the
-            # exact canonical key from that row. Day State must not run a second,
-            # weaker title/team matcher and erase a relationship that the catalog
-            # has already accepted. Repository relationship repair owns demotion.
+            # EVENT_MEDIA is the normalized relationship authority for persisted
+            # ownership, but not every historical matcher result is equally strong.
+            # Durable exact/provider/special-event proof may survive a later generic
+            # matcher disagreement. Ordinary TITLE_TEAM_PAIR-style relationships
+            # still pass through the current matcher so stale wrong-team/date links
+            # continue to fail closed.
             method=str(item.get("associationMethod") or "").upper()
             canonical=str(item.get("canonicalEventKey") or "")
             scope=str(item.get("mediaScope") or "").upper()
-            if canonical==str(key) and scope=="GAME":
+            runtime=str(item.get("runtimeCatalogState") or item.get("runtimeState") or "").upper()
+            if runtime=="FAILED" or runtime=="FAILED-QUARANTINED":
+                stats["rejected"]+=1
+                return False
+
+            strong_methods={
+                "PROVIDER_EVENT_ID","PROVIDER_SOURCE_EVENT_ID","PROVIDER_GAME_PK",
+                "EXACT_EVENT_ID","CANONICAL_EVENT_ID",
+            }
+            direct_ids={str(item.get(k)) for k in ("scoreEventId","matchId","espnEventId","canonicalEventId") if item.get(k) not in (None,"")}
+            event_ids={str(event.get(k)) for k in ("scoreEventId","matchId","espnEventId","canonicalEventId","eventId","id") if event.get(k) not in (None,"")}
+            game_pk_match=(item.get("gamePk") not in (None,"") and event.get("gamePk") not in (None,"") and str(item.get("gamePk"))==str(event.get("gamePk")))
+            proof=item.get("sbbPreprovenAssociation")
+            proof_ok=(isinstance(proof,dict)
+                      and str(proof.get("associationState") or "").upper()=="ASSIGNED"
+                      and str(proof.get("canonicalEventKey") or canonical)==str(key))
+            durable=(method.startswith("SPECIAL_EVENT_") or method in strong_methods
+                     or bool(direct_ids and event_ids and direct_ids & event_ids)
+                     or game_pk_match or proof_ok)
+            if canonical==str(key) and scope=="GAME" and durable:
                 stats["persistedAssignedAccepted"]+=1
                 if method.startswith("SPECIAL_EVENT_"):
                     stats["specialProofAccepted"]+=1
                 return True
-            # Compatibility only for legacy plans that predate canonical-key
-            # hydration. These rows still have to prove themselves under the current
-            # matcher before they can appear.
+
+            # Ordinary persisted title/team associations remain valid when the
+            # current matcher can still prove them. This preserves good historical
+            # links while rejecting stale/wrong associations like an old same-team
+            # recap attached to a different date or game.
             try:
                 scoped,evidence=matcher(dict(item),event)
             except Exception:
