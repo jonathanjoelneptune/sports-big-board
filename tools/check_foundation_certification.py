@@ -5,6 +5,12 @@ Foundation is a retained baseline. Beginning with v4.8, a newer comprehensive
 certification release may advance VERSION without rewriting the unchanged
 foundation manifest, provided the foundation manifest is not newer than VERSION
 and every live foundation runtime contract still passes.
+
+v5 changes the application ownership boundary: launch still must enter the
+canonical playback path, but it does so through the v5 orchestrator gateway rather
+than calling the legacy PlaybackController directly. The gate therefore preserves
+the behavioral requirement while accepting the architecture appropriate to the
+active major release.
 """
 from pathlib import Path
 import json
@@ -46,8 +52,23 @@ for token in ("allowWarnings=false","new Set(['PASS','WARN'])","tierRunEvidence(
     require(token in cert,f'certification warning semantics missing {token}')
 for token in ("version:'1.3'",'browserRuntime','browser:browserRuntime()','runSoakTest','runChaosTest','regression-hardening','manual pause remains latched for 25 seconds','background program refresh cannot restart active clip','stressRun.restoration=[]','restorationHealth','post-test restoration completed with non-blocking advisories','post-test restoration left application unhealthy','expectedSamples','minimumSamples','maxAllowedSampleGapMs','playing without forward progress','sustained buffering','soak game transition','transitionTimeoutRecoveries',"label:'soak transition timeout recovery'",'withTimeout',"timeoutMs:20000,label:'bounded buffering recovery'",'recoveredByFailover'):
     require(token in milestone,f'milestone runtime missing {token}')
-for token in ('let PROGRAM = [];','function maybeAutoplayRoundupForDate(){','return false;','selectedEventMatchesActivePlayback','syncGameCenterToActivePlayback','demoSeedCount:()=>0','roundupAutoplayEnabled:()=>false','manualPauseRequested&&!userInitiated','SKIPPING UNAVAILABLE VIDEO','automatic playback failure recovery','AUTO_MEDIA_FAILURE_SKIP','PLAYBACK_BUFFER_STALL_RECOVERY_MS=8000','PLAYBACK_STALL_RECOVERY','Sustained playback buffering','NATIVE_PLAY_REQUEST_ACK_MS=250',"play() pending; controller startup deadline active","PlaybackController.tuneProgramIndex(currentIndex,{userInitiated:true,reason:'launch screen play'})",'waitForYouTubeSlotReady(slot,item,expectedEpoch,12000)'):
+for token in ('let PROGRAM = [];','function maybeAutoplayRoundupForDate(){','return false;','selectedEventMatchesActivePlayback','syncGameCenterToActivePlayback','demoSeedCount:()=>0','roundupAutoplayEnabled:()=>false','manualPauseRequested&&!userInitiated','SKIPPING UNAVAILABLE VIDEO','automatic playback failure recovery','AUTO_MEDIA_FAILURE_SKIP','PLAYBACK_BUFFER_STALL_RECOVERY_MS=8000','PLAYBACK_STALL_RECOVERY','Sustained playback buffering','NATIVE_PLAY_REQUEST_ACK_MS=250',"play() pending; controller startup deadline active",'waitForYouTubeSlotReady(slot,item,expectedEpoch,12000)'):
     require(token in app,f'playback hardening missing {token}')
+
+# Retained Foundation behavior: pressing launch must enter the canonical playback
+# authority. v4 used a direct PlaybackController call. v5 intentionally forbids
+# that application-level ownership and routes launch through the unified gateway.
+legacy_launch="PlaybackController.tuneProgramIndex(currentIndex,{userInitiated:true,reason:'launch screen play'})"
+v5_launch_gateway="tuneProgramIndexV5(currentIndex,{userInitiated:true,reason:'launch screen play'})"
+if version_tuple >= (5,0,0):
+    require(v5_launch_gateway in app,'playback hardening missing v5 launch -> unified orchestrator gateway')
+    require(f'architecture/playback-orchestrator-v5.js?v={version}' in html,'index missing v5 playback orchestrator at current cache generation')
+    orchestrator=text('architecture/playback-orchestrator-v5.js')
+    for token in ('window.SBB_PLAYBACK_ORCHESTRATOR','function bindAdapter','function requestTune','function tuneProgramIndex'):
+        require(token in orchestrator,f'v5 playback orchestrator missing {token}')
+else:
+    require(legacy_launch in app,f'playback hardening missing {legacy_launch}')
+
 for token in ("function clear(message='Game Center follows the active game video.')","if(!event){clear();return;}","version:'1.6'"):
     require(token in gc,f'Game Center hardening missing {token}')
 for token in ('SBB_GAME_CENTER_LINESCORE','const missing=total-known'):

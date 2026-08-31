@@ -1,0 +1,30 @@
+Sports Big Board v5.0.0 — Foundation Gate Architecture Correction
+
+WHY CI FAILED
+The v5.0.0 repository itself passed the atomic release manifest and version handshake.
+The retained Foundation Certification checker then failed because it required the old
+v4 implementation detail:
+
+  PlaybackController.tuneProgramIndex(currentIndex,{userInitiated:true,reason:'launch screen play'})
+
+v5.0.0 intentionally replaced that application-level direct controller ownership with:
+
+  tuneProgramIndexV5(currentIndex,{userInitiated:true,reason:'launch screen play'})
+
+which routes launch through SBB_PLAYBACK_ORCHESTRATOR before the legacy A/B adapter.
+
+CORRECTION
+- tools/check_foundation_certification.py
+  * Keeps all retained Foundation Certification behavioral checks.
+  * v4 releases must still prove the original direct PlaybackController launch path.
+  * v5+ releases must prove the launch -> tuneProgramIndexV5 gateway.
+  * v5+ additionally requires playback-orchestrator-v5.js to be loaded with the
+    current cache generation and verifies its adapter/tune boundary exists.
+
+- release-manifest.json
+  * Adds an atomic contract for the architecture-aware Foundation checker so a
+    future manual upload cannot silently restore the old hard-coded launch assertion.
+
+VERSION
+Remains 5.0.0. The original v5.0.0 did not pass verification/deploy, and no product
+runtime behavior was changed by this correction.

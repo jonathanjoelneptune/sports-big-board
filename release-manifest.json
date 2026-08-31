@@ -266,6 +266,16 @@
       "required": [
         "parts[0]>4"
       ]
+    },
+    "tools/check_foundation_certification.py": {
+      "required": [
+        "v5_launch_gateway",
+        "tuneProgramIndexV5(currentIndex,{userInitiated:true,reason:'launch screen play'})",
+        "architecture/playback-orchestrator-v5.js?v={version}",
+        "function bindAdapter",
+        "function requestTune",
+        "function tuneProgramIndex"
+      ]
     }
   }
 }
