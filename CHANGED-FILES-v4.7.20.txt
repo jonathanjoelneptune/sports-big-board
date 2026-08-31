@@ -1,0 +1,84 @@
+Sports Big Board v4.7.20 — Game Center + Historical Playback Regression Recovery
+Base: v4.7.19
+
+ROOT CAUSES CONFIRMED
+1. Game Center `no-active-consumers`
+   - architecture/request-broker.js immediately aborted an interactive shared GET when
+     the last consumer released it.
+   - A replacement Game Center load could attach to that already-aborted inflight entry
+     before its promise/finally removed the entry, surfacing the literal abort reason
+     `no-active-consumers` in Game Center.
+   - v4.7.19's multisport linescore module also issued a fallback SBB_GAME_CENTER.get(),
+     creating a second request owner and making the handoff race much easier to hit.
+
+2. Historical WATCH -> FIND regression
+   - v4.7.19 invalidated every prior Day State generation even when the historical
+     snapshot was healthy.
+   - Rebuilt Day State then re-ran the generic media matcher over relationships already
+     persisted as canonical ASSIGNED EVENT_MEDIA, which could strip playable media at
+     the read boundary.
+
+3. LLWS still FIND
+   - Recovering only relationship rows that still contained SPECIAL_EVENT_* proof was
+     insufficient once generic repair had already overwritten/demoted legacy evidence.
+   - v4.7.20 replays the actual v4.6.16 special-event associator against persisted LLWS
+     source media after competition/source registration is ready.
+
+FILES TO UPLOAD
+VERIFY.sh
+VERSION
+index.html
+core-model.js
+foundation-certification.json
+release-manifest.json
+architecture/request-broker.js
+architecture/game-center-multisport-view.js
+sbb/__init__.py
+sbb/day_state.py
+sbb/runtime_path_repair_v4720.py
+tests/test_v4718_game_center_runtime.js
+tests/test_v4719_game_center_runtime.js
+tests/test_v4720_request_broker_runtime.js
+tests/test_v4720_game_center_runtime.js
+tests/test_v4720_runtime_recovery.py
+CHANGED-FILES-v4.7.20.txt
+
+BEHAVIORAL CHANGES
+- Request Broker adds a 75 ms orphan-consumer grace period.
+- New requests never coalesce onto an already-aborted or settled inflight entry.
+- Old inflight finally handlers delete the map entry only if they still own that key,
+  preventing an old aborted request from deleting its replacement request.
+- ui/game-center-view.js remains the sole Game Center request owner.
+- Multisport linescore/win-probability chrome is read-only and consumes SBB_GAME_CENTER.peek().
+- Day State accepts exact canonical GAME media already returned from normalized ASSIGNED
+  EVENT_MEDIA instead of re-proving it with the generic title/team matcher.
+- Non-empty historical snapshots survive read-model generation changes for first paint
+  while v4.7.20 refreshes them in the background.
+- Targeted Day State refreshes are regression guarded: a repair cannot replace a day
+  with fewer games or fewer playable cards than the snapshot it started with.
+- LLWS startup recovery invokes special_event_media_v4616.reassociate() directly and
+  refreshes only dates with actual playable LLWS associations.
+- Silver compatibility and CFB trusted-source recovery from v4.7.19 are retained.
+
+HARD ACCEPTANCE CHECKS AFTER DEPLOY
+A. Open the same ARI at SF Aug. 28 Game Center shown in the failure screenshot.
+   EXPECT: Game Center loads; `no-active-consumers` must never appear.
+B. Switch rapidly between two game cards and back.
+   EXPECT: replacement Game Center loads normally; no self-aborted shared request.
+C. In an MLB Game Center select PLAYS.
+   EXPECT: inning linescore + R/H/E remains above the tabs.
+D. In a CFB/NFL Game Center select PLAYS.
+   EXPECT: Q1/Q2/Q3/Q4/T remains above the tabs.
+E. Navigate Aug. 28 and other recently viewed historical dates.
+   EXPECT: previously playable normalized event media remains WATCH, not stripped to FIND
+   by Day State read-time rematching.
+F. Navigate LLWS dates.
+   EXPECT: persisted source media is replayed through the special-event associator and
+   proven games show their playable recap tier instead of FIND.
+
+ROLLBACK / DATA SAFETY
+- No catalog rebuild.
+- No media reupload.
+- No destructive history migration.
+- Existing v4.7.19 runtime module may remain in the repository; v4.7.20 __init__.py no
+  longer installs it. The new v4.7.20 recovery module is installed last instead.

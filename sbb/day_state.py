@@ -72,7 +72,7 @@ def _sanitize_event_plans(server, plans):
     Current Event Matcher evidence is authoritative: stale explicit-date/team
     conflicts are removed from the compact ribbon plan before the browser sees them.
     """
-    stats={"checked":0,"rejected":0,"errors":0,"ambiguousAssets":0,"ambiguousRejected":0,"specialProofAccepted":0}
+    stats={"checked":0,"rejected":0,"errors":0,"ambiguousAssets":0,"ambiguousRejected":0,"specialProofAccepted":0,"persistedAssignedAccepted":0}
     matcher=getattr(server,"_history_media_match_evidence",None)
     if not callable(matcher) or not isinstance(plans,dict):
         return plans,stats
@@ -92,23 +92,25 @@ def _sanitize_event_plans(server, plans):
         def valid(item):
             if not isinstance(item,dict):return False
             stats["checked"]+=1
-            # SPECIAL_EVENT relationships (LLWS and future tournament builders) are
-            # already persisted only after a deterministic alias/game-number proof.
-            # ribbon_media_for_date injects associationMethod from the normalized
-            # relationship row, so an exact canonical key + SPECIAL_EVENT method is
-            # stronger evidence than the legacy generic title matcher can recreate.
-            # Re-running the generic matcher here used to erase valid LLWS links.
+            # EVENT_MEDIA is the normalized relationship authority. Plans arrive
+            # here only from ASSIGNED rows, and ribbon_media_for_date injects the
+            # exact canonical key from that row. Day State must not run a second,
+            # weaker title/team matcher and erase a relationship that the catalog
+            # has already accepted. Repository relationship repair owns demotion.
             method=str(item.get("associationMethod") or "").upper()
             canonical=str(item.get("canonicalEventKey") or "")
             scope=str(item.get("mediaScope") or "").upper()
-            if method.startswith("SPECIAL_EVENT_") and canonical==str(key) and scope=="GAME":
-                stats["specialProofAccepted"]+=1
+            if canonical==str(key) and scope=="GAME":
+                stats["persistedAssignedAccepted"]+=1
+                if method.startswith("SPECIAL_EVENT_"):
+                    stats["specialProofAccepted"]+=1
                 return True
+            # Compatibility only for legacy plans that predate canonical-key
+            # hydration. These rows still have to prove themselves under the current
+            # matcher before they can appear.
             try:
                 scoped,evidence=matcher(dict(item),event)
             except Exception:
-                # Do not erase otherwise-playable media because a new diagnostic
-                # helper itself failed. Explicit mismatches still fail closed.
                 stats["errors"]+=1;return True
             ok=str((scoped or {}).get("mediaScope") or "").upper()=="GAME" and str((evidence or {}).get("associationState") or "").upper()=="ASSIGNED"
             if not ok:stats["rejected"]+=1
@@ -618,7 +620,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.19",
+            "engineVersion":"4.7.20",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + 15,
@@ -743,6 +745,7 @@ class DayStateEngine:
             "mediaSafetyAmbiguousAssets":int(media_safety.get("ambiguousAssets") or 0),
             "mediaSafetyAmbiguousRejected":int(media_safety.get("ambiguousRejected") or 0),
             "mediaSafetySpecialProofAccepted":int(media_safety.get("specialProofAccepted") or 0),
+            "mediaSafetyPersistedAssignedAccepted":int(media_safety.get("persistedAssignedAccepted") or 0),
         }
         inventory = bool(inventory_fn(day))
 
@@ -767,7 +770,7 @@ class DayStateEngine:
         snapshot = {
             "ok":True,
             "version":str(getattr(self.server, "APP_VERSION", "")),
-            "engineVersion":"4.7.19",
+            "engineVersion":"4.7.20",
             "date":day,
             "generatedAt":generated,
             "staleAfter":generated + ttl,
@@ -806,14 +809,23 @@ class DayStateEngine:
                 with self.lock:
                     self.cache[day] = cached
 
-        # A persisted historical snapshot is a projection, not durable truth.
-        # Never carry a bad projection across a read-model generation change.
-        # v4.7.18 specifically needs this to rebuild LLWS plans that 4.7.17's
-        # generic sanitizer stripped even though EVENT_MEDIA remained assigned.
-        if cached and str(cached.get("engineVersion") or "") != "4.7.19":
-            cached = None
-            with self.lock:
-                self.cache.pop(day, None)
+        # Historical snapshots are valuable first-paint state. v4.7.19 discarded
+        # every prior generation before proving that the replacement projection was
+        # at least as complete, which turned healthy historical WATCH cards into
+        # FIND while the new read model caught up. Preserve a non-empty historical
+        # snapshot across generation changes and refresh it in the background. Only
+        # empty/incomplete generation rows are discarded for cold catalog recovery.
+        if cached and str(cached.get("engineVersion") or "") != "4.7.20":
+            old_engine=str(cached.get("engineVersion") or "UNKNOWN")
+            old_games=int((cached.get("summary") or {}).get("games") or cached.get("scoreGameCount") or 0)
+            if day < self.today() and old_games>0:
+                cached=dict(cached)
+                cached["engineCompatibility"]={"state":"PRESERVED_NONEMPTY_HISTORY","from":old_engine,"to":"4.7.20"}
+                self.enqueue(day, priority=True)
+            else:
+                cached = None
+                with self.lock:
+                    self.cache.pop(day, None)
 
         if cached and not force:
             age = max(0, now - float(cached.get("generatedAt") or 0))
@@ -1120,7 +1132,7 @@ class DayStateEngine:
                 "scoreInventoryComplete":bool(payload.get("scoreInventoryComplete")),
                 "timing":{"dayStateMs":0.0, **(payload.get("timing") or {})},
                 "dayState":{
-                    "engineVersion":"4.7.19",
+                    "engineVersion":"4.7.20",
                     "generatedAt":payload.get("generatedAt"),
                     "cache":payload.get("cache") or {},
                     "summary":payload.get("summary") or {},

@@ -10,7 +10,7 @@ for(const token of [
   'function periodCard(gc)',
   'removeLegacyOverviewLinescore',
   'WIN PROBABILITY',
-  "version:'4.7.19'"
+  "version:'4.7.20'"
 ]) assert(view.includes(token),`missing persistent Game Center token ${token}`);
 const day=fs.readFileSync('sbb/day_state.py','utf8');
 assert(day.includes('SPECIAL_EVENT_'));
@@ -24,4 +24,4 @@ assert(cfb.includes('RECENT_ARCHIVE_TTL_SECONDS'));
 assert(cfb.includes('KNOWN_MEDIA_HINTS'));
 assert(cfb.includes('-tDiPDHU2fs'));
 assert(cfb.includes('scan_recent_missing'));
-console.log('PASS: v4.7.19 retains persistent linescores + LLWS/Silver/CFB recovery contracts');
+console.log('PASS: v4.7.20 retains persistent linescores + LLWS/Silver/CFB recovery contracts');

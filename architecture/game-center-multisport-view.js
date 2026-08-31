@@ -1,4 +1,4 @@
-/* Sports Big Board v4.7.19 — persistent multisport Game Center summary.
+/* Sports Big Board v4.7.20 — persistent multisport Game Center summary.
    This module now binds to the PUBLIC Game Center cache/selected-event contracts,
    not to private lexical state inside ui/game-center-view.js.  v4.7.18 attempted
    view.data(), but the real frozen renderer never exported that method, so the
@@ -15,7 +15,7 @@
   const blank=v=>v===null||v===undefined||String(v).trim()==='';
   const teamName=t=>t?.abbreviation||t?.shortName||t?.name||t?.displayName||'—';
   const pct=v=>{const n=Number(v);return Number.isFinite(n)?`${n.toFixed(n%1?1:0)}%`:'—';};
-  let scheduled=false,observer=null,rendering=false,currentData=null,currentEvent=null,loadGeneration=0;
+  let scheduled=false,observer=null,rendering=false,currentData=null,currentEvent=null;
 
   function installStyles(){
     if(document.getElementById('sbb-gc-persistent-styles'))return;
@@ -111,25 +111,10 @@
     return false;
   }
 
-  async function hydrate(event){
-    const generation=++loadGeneration;
-    currentEvent=event||null;currentData=null;schedule();
-    if(!event)return;
-    // The legacy Game Center renderer normally owns the request. Give it a short
-    // head start and consume the shared public cache rather than issuing a duplicate.
-    for(let attempt=0;attempt<8;attempt++){
-      if(generation!==loadGeneration)return;
-      const hit=cacheDataFor(event);
-      if(hit){currentData=hit;schedule();return;}
-      await new Promise(resolve=>setTimeout(resolve,attempt<3?75:125));
-    }
-    // If the renderer did not populate the shared cache (for example after a tab
-    // hot-reload), use the same canonical Game Center contract directly.
-    try{
-      const data=await window.SBB_GAME_CENTER?.get?.(event,{force:false,timeoutMs:30000});
-      if(generation!==loadGeneration)return;
-      if(data){currentData=data;schedule();}
-    }catch(_){ /* legacy renderer owns user-visible error state */ }
+  function selectionChanged(event){
+    currentEvent=event||null;
+    currentData=event?cacheDataFor(event):null;
+    schedule();
   }
 
   function enhance(){
@@ -154,12 +139,16 @@
     installStyles();const content=document.getElementById('gameCenterContent');
     if(!content){setTimeout(bind,100);return;}
     ensureHost();
+    // ui/game-center-view.js is the ONLY request owner. This enhancement only reads
+    // the public cache after the owner renders/mutates Game Center DOM. A second
+    // SBB_GAME_CENTER.get() consumer was the v4.7.19 trigger for Request Broker
+    // `no-active-consumers` races during selection replacement.
     observer=new MutationObserver(()=>{syncFromPublicCache();schedule();});observer.observe(content,{childList:true,subtree:true,characterData:true});
-    window.SBB_SELECTED_EVENT?.subscribe?.(event=>hydrate(event));
-    const existing=window.SBB_SELECTED_EVENT?.get?.();if(existing)hydrate(existing);else schedule();
-    window.addEventListener('sbb:selected-event-change',()=>{const event=window.SBB_SELECTED_EVENT?.get?.();hydrate(event);});
-    window.addEventListener('sbb:selected-event-cleared',()=>hydrate(null));
+    window.SBB_SELECTED_EVENT?.subscribe?.(selectionChanged);
+    selectionChanged(window.SBB_SELECTED_EVENT?.get?.()||null);
+    window.addEventListener('sbb:selected-event-change',()=>selectionChanged(window.SBB_SELECTED_EVENT?.get?.()||null));
+    window.addEventListener('sbb:selected-event-cleared',()=>selectionChanged(null));
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_GAME_CENTER_MULTISPORT_VIEW=Object.freeze({installed:true,version:'4.7.19',enhance,periodCard,baseballCard,probabilityCard,ensureHost,syncFromPublicCache,get data(){return currentData;}});
+  window.SBB_GAME_CENTER_MULTISPORT_VIEW=Object.freeze({installed:true,version:'4.7.20',enhance,periodCard,baseballCard,probabilityCard,ensureHost,syncFromPublicCache,get data(){return currentData;}});
 })();

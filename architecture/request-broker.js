@@ -1,14 +1,15 @@
-/* Sports Big Board v4.7.14 — Request Broker + Enrichment Firewall.
+/* Sports Big Board v4.7.20 — Request Broker + Enrichment Firewall.
    One transport request per identical GET. Shared-state TTL reuse, date-generation
    cancellation, and an explicit first-paint firewall keep expensive enrichment
    from waking up while the user is simply changing ribbon dates.
 */
 (() => {
   'use strict';
-  if (window.SBB_REQUEST_BROKER?.version === '4.7.14') return;
+  if (window.SBB_REQUEST_BROKER?.version === '4.7.20') return;
 
-  const VERSION='4.7.14';
+  const VERSION='4.7.20';
   const QUIET_MS=8000;
+  const ORPHAN_ABORT_GRACE_MS=75;
   const transportFetch=window.fetch.bind(window);
   const inflight=new Map();
   const deferred=new Map();
@@ -162,7 +163,21 @@
     catch(_){cache.delete(key);return null;}
   }
 
+  function armOrphanAbort(entry){
+    if(entry.abortTimer)clearTimeout(entry.abortTimer);
+    entry.abortTimer=setTimeout(()=>{
+      entry.abortTimer=null;
+      // A replacement Game Center load often attaches immediately after the old
+      // view aborts its consumer. Give that replacement a small grace window so
+      // it inherits the live transport instead of an already-aborted promise.
+      if(!entry.settled && entry.interactive && entry.consumers===0 && inflight.get(entry.key)===entry){
+        try{entry.controller.abort('no-active-consumers');}catch(_){}
+      }
+    },ORPHAN_ABORT_GRACE_MS);
+  }
+
   function consume(entry,signal){
+    if(entry.abortTimer){clearTimeout(entry.abortTimer);entry.abortTimer=null;}
     entry.consumers+=1;
     return new Promise((resolve,reject)=>{
       let done=false;
@@ -174,9 +189,7 @@
       };
       const onAbort=()=>{
         release();
-        if(!entry.settled && entry.interactive && entry.consumers===0){
-          try{entry.controller.abort('no-active-consumers');}catch(_){}
-        }
+        if(!entry.settled && entry.interactive && entry.consumers===0)armOrphanAbort(entry);
         reject(new DOMException('Aborted','AbortError'));
       };
       if(signal?.aborted)return onAbort();
@@ -293,7 +306,15 @@
     const cached=cachedClone(key);
     if(cached)return Promise.resolve(cached);
 
-    const existing=inflight.get(key);
+    let existing=inflight.get(key);
+    // Never attach a new caller to a transport whose last consumer already caused
+    // it to abort. The old promise can remain in the map until its finally handler
+    // runs; treating it as reusable is what surfaced `no-active-consumers` to the
+    // replacement Game Center request.
+    if(existing && (existing.settled || existing.controller?.signal?.aborted)){
+      if(inflight.get(key)===existing)inflight.delete(key);
+      existing=null;
+    }
     if(existing){
       stats.coalesced+=1;
       existing.coalesced+=1;
@@ -333,7 +354,7 @@
 
     const entry={
       id,key,path,date:boundDate,rowClass,interactive,generation,runId,controller,
-      started,settled:false,consumers:0,coalesced:0,promise:null
+      started,settled:false,consumers:0,coalesced:0,promise:null,abortTimer:null
     };
 
     stats.network+=1;
@@ -382,7 +403,7 @@
         });
         throw err;
       })
-      .finally(()=>inflight.delete(key));
+      .finally(()=>{if(entry.abortTimer)clearTimeout(entry.abortTimer);if(inflight.get(key)===entry)inflight.delete(key);});
 
     inflight.set(key,entry);
     return consume(entry,init?.signal);
