@@ -1,14 +1,14 @@
-/* Sports Big Board v5.0.1 — Unified Runtime Comprehensive Certification Architecture.
+/* Sports Big Board v5.0.2 — Unified Runtime Comprehensive Certification Architecture.
    Whole-site certification drives real navigation, Game Center UI, score-card
    playback, recovery, APIs, workers, discovery, rendering and memory. Selection is
    deliberately game-agnostic and seeded so every run is broad yet reproducible.
 */
 (() => {
   'use strict';
-  if (window.SBB_SITE_CERTIFICATION?.version === '3.1') return;
+  if (window.SBB_SITE_CERTIFICATION?.version === '3.2') return;
 
-  const VERSION='3.1';
-  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.1');
+  const VERSION='3.2';
+  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.2');
   const PLAYBACK_TARGET=8;
   const PLAYBACK_MIN_STARTS=5;
   const PLAYBACK_CONFIRM_TIMEOUT_MS=12500;
@@ -136,14 +136,25 @@
   }
   const GAME_CENTER_EXPECTED_SUPPORTED=new Set(['MLB','NFL','CFB','NBA','NHL','MLS','EPL']);
   function gameCenterSupport(league){const lg=upper(league);return {league:lg,supported:GAME_CENTER_EXPECTED_SUPPORTED.has(lg),reason:GAME_CENTER_EXPECTED_SUPPORTED.has(lg)?'SUPPORTED':'NO_GAME_CENTER_PROVIDER'};}
+  function gameCenterPayloadQuality(league,gc,event){
+    const lg=upper(league),board=gc?.scoreboard||{},innings=(board.innings||[]).length,periods=(board.periods||[]).length,timeline=(gc?.timeline||[]).length,scoring=(gc?.scoringPlays||[]).length,players=(gc?.playerStatSections||[]).length,providerComplete=gc?.coverage?.complete!==false;
+    if(!gc)return {complete:false,reason:'NO_PAYLOAD',innings,periods,timeline,scoring,players};
+    if(!finalish(event))return {complete:providerComplete,reason:providerComplete?'PROVIDER_COMPLETE':'PROVIDER_PARTIAL',innings,periods,timeline,scoring,players};
+    let rich=true,reason='SPORT_AWARE_COMPLETE';
+    if(lg==='MLB'){rich=innings>=7&&(timeline>=20||players>=2);reason=rich?'SPORT_AWARE_COMPLETE':'FINAL_MLB_PAYLOAD_TOO_SPARSE';}
+    else if(lg==='NFL'||lg==='CFB'){rich=(periods>=4&&(timeline>=20||players>=4))||timeline>=50;reason=rich?'SPORT_AWARE_COMPLETE':`FINAL_${lg}_PAYLOAD_TOO_SPARSE`;}
+    else if(lg==='NBA'||lg==='NHL'){rich=(periods>=3&&(timeline>=20||players>=2))||timeline>=50;reason=rich?'SPORT_AWARE_COMPLETE':`FINAL_${lg}_PAYLOAD_TOO_SPARSE`;}
+    else if(lg==='MLS'||lg==='EPL'){rich=timeline>=5||scoring>=1||players>=2;reason=rich?'SPORT_AWARE_COMPLETE':`FINAL_${lg}_PAYLOAD_TOO_SPARSE`;}
+    return {complete:providerComplete&&rich,reason:providerComplete?reason:'PROVIDER_PARTIAL',innings,periods,timeline,scoring,players};
+  }
   async function probeGameCenter(event,index){
     const league=upper(event.competitionId||event.__sbbLeague||event.league),label=eventLabel(event,league),support=gameCenterSupport(league),started=now();
     const base={event,label,league,date:clean(event.__sbbDate||event.date).slice(0,10),eventId:clean(event.eventId||event.scoreEventId||event.gamePk||event.id)};
     if(!support.supported)return {...base,ok:false,unsupported:true,unsupportedReason:support.reason,elapsedMs:0,bytes:0,coverageComplete:false,quality:'',partial:false,innings:0,periods:0,timeline:0,scoringPlays:0,playerSections:0,winProbability:0,error:''};
     const controller=new AbortController(),timer=setTimeout(()=>controller.abort(new DOMException('Certification hard timeout','TimeoutError')),7500);
     try{
-      const gc=await window.SBB_GAME_CENTER?.get?.(event,{force:index===0,signal:controller.signal,timeoutMs:6500});const elapsedMs=round(now()-started),bytes=jsonBytes(gc),board=gc?.scoreboard||{};
-      return {...base,ok:!!gc,unsupported:false,elapsedMs,bytes,coverageComplete:gc?.coverage?.complete!==false,quality:clean(gc?.quality?.level),partial:!!gc?.partial,innings:(board.innings||[]).length,periods:(board.periods||[]).length,timeline:(gc?.timeline||[]).length,scoringPlays:(gc?.scoringPlays||[]).length,playerSections:(gc?.playerStatSections||[]).length,winProbability:(gc?.winProbability||board.winProbability||[]).length,error:''};
+      const gc=await window.SBB_GAME_CENTER?.get?.(event,{force:index===0,signal:controller.signal,timeoutMs:6500});const elapsedMs=round(now()-started),bytes=jsonBytes(gc),board=gc?.scoreboard||{},payloadQuality=gameCenterPayloadQuality(league,gc,event);
+      return {...base,ok:!!gc&&payloadQuality.complete,unsupported:false,elapsedMs,bytes,coverageComplete:payloadQuality.complete,quality:clean(gc?.quality?.level),partial:!!gc?.partial,innings:payloadQuality.innings,periods:payloadQuality.periods,timeline:payloadQuality.timeline,scoringPlays:payloadQuality.scoring,playerSections:payloadQuality.players,winProbability:(gc?.winProbability||board.winProbability||[]).length,completenessReason:payloadQuality.reason,error:payloadQuality.complete?'':payloadQuality.reason};
     }catch(err){
       const message=`${clean(err?.name)}: ${clean(err?.message||err)}`;
       // A provider-not-implemented response is a capability boundary, not a runtime
@@ -182,7 +193,7 @@
   function engineSnapshot(){try{return window.SBB_PLAYBACK_ENGINE?.snapshot?.()||{};}catch(_){return {};}}
   function v5RuntimeSnapshot(){
     const app=window.SBB_APP_STORE?.snapshot?.()||null,health=window.SBB_APP_STORE?.healthSnapshot?.()||{},orchestrator=window.SBB_PLAYBACK_ORCHESTRATOR,ownership=orchestrator?.ownershipSnapshot?.()||{};
-    return {installed:!!app&&!!orchestrator,appStore:!!app,orchestrator:!!orchestrator,adapterBound:!!orchestrator?.adapterSnapshot?.().bound,schema:app?.schema||'',transactionId:app?.playback?.transactionId||'',playbackState:app?.playback?.state||'IDLE',eventKey:app?.playback?.eventKey||'',selectedEventKey:ownership.selectedEventKey||app?.selection?.eventKey||'',owned:ownership.owned!==false,invariant:app?.invariant||'MISSING',storeHealth:health};
+    return {installed:!!app&&!!orchestrator,appStore:!!app,orchestrator:!!orchestrator,adapterBound:!!orchestrator?.adapterSnapshot?.().bound,schema:app?.schema||'',transactionId:app?.playback?.transactionId||'',playbackState:app?.playback?.state||'IDLE',eventKey:app?.playback?.eventKey||'',selectedEventKey:ownership.selectedEventKey||app?.selection?.eventKey||'',owned:ownership.owned!==false,invariant:app?.invariant||'MISSING',planCandidates:(app?.playback?.mediaPlan||[]).length,planAttempted:n(app?.playback?.planAttempted),planRejected:n(app?.playback?.planRejected),planExhausted:!!app?.playback?.planExhausted,candidateIndex:n(app?.playback?.candidateIndex),storeHealth:health};
   }
   async function waitForV5Intent(beforeTransactionId='',timeoutMs=1600){
     const deadline=Date.now()+timeoutMs;while(Date.now()<deadline){const snap=v5RuntimeSnapshot();if(snap.transactionId&&snap.transactionId!==beforeTransactionId)return snap;await sleep(40);}return null;
@@ -234,11 +245,11 @@
             progressResult=await waitForProgress({selectionId:selection.selectionId,mediaKey:selection.mediaKey,timeoutMs:PLAYBACK_CONFIRM_TIMEOUT_MS});
             await waitForPlaybackQuiescence(progressResult?.ok?1800:3200);
           }catch(err){error=clean(err?.message||err);}
-          const v5After=v5RuntimeSnapshot(),final=progressResult?.session||ps.snapshot(),engineAfter=engineSnapshot(),engineResetsDelta=Math.max(0,n(engineAfter.resets)-n(engineBefore.resets)),engineIncidentsDelta=Math.max(0,n(engineAfter.incidents)-n(engineBefore.incidents)),gameCenterOwned=gameCenterOwnershipOk(),preflight=h.scoreMediaPreflight?.(candidate.editorialMediaKey)||{};
+          const v5After=v5RuntimeSnapshot(),final=progressResult?.session||ps.snapshot(),engineAfter=engineSnapshot(),engineResetsDelta=Math.max(0,n(engineAfter.resets)-n(engineBefore.resets)),engineIncidentsDelta=Math.max(0,n(engineAfter.incidents)-n(engineBefore.incidents)),gameCenterOwned=gameCenterOwnershipOk(),preflight=h.scoreMediaPreflight?.(candidate.editorialMediaKey)||{},scoreIntent=h.scoreIntentPlan?.()||{},recapIndex=h.recapIndex?.()||{};
           const primaryRejected=!!candidate.primaryRejected||!!preflight.primaryRejected||(candidate.editorialMediaKey&&clean(final.mediaKey||selection?.mediaKey)!==candidate.editorialMediaKey);
           const ok=!!progressResult?.ok&&String(final.invariant||'OK')==='OK'&&gameCenterOwned&&engineResetsDelta===0;
           leagueCounts[candidate.league]=n(leagueCounts[candidate.league])+1;qualityCounts[candidate.quality]=n(qualityCounts[candidate.quality])+1;
-          rows.push({ok,date,league:candidate.league,quality:candidate.quality,gameKey:candidate.gameKey,candidateMediaKey:candidate.mediaKey,editorialMediaKey:candidate.editorialMediaKey,mediaKey:clean(final.mediaKey||selection?.mediaKey),readinessBefore:candidate.readinessBefore||'UNKNOWN',prewarmAttempted:!!preflight.attempted,prewarmResult:clean(preflight.result||'NOT_REQUIRED'),primaryRejected,provider:upper(final.provider),transport:upper(final.transport),elapsedMs:round(now()-started),firstProgressMs:progressResult?.snap?.firstProgressMs??null,fallbackHops:n(progressResult?.fallbackHops),invariant:clean(final.invariant||'OK'),gameCenterOwned,engineResetsDelta,engineIncidentsDelta,v5TransactionId:v5After.transactionId||intent?.transactionId||'',v5State:v5After.playbackState||'',v5Invariant:v5After.invariant||'',error:error||(!progressResult?.ok?clean(progressResult?.reason||final.lastError||'no advancing media clock'):(!gameCenterOwned?'Game Center ownership lost during score playback':(engineResetsDelta?`playback engine reset ${engineResetsDelta} time(s) during interaction`:'')))});
+          rows.push({ok,date,league:candidate.league,quality:candidate.quality,gameKey:candidate.gameKey,candidateMediaKey:candidate.mediaKey,editorialMediaKey:candidate.editorialMediaKey,mediaKey:clean(final.mediaKey||selection?.mediaKey),readinessBefore:candidate.readinessBefore||'UNKNOWN',prewarmAttempted:!!preflight.attempted,prewarmResult:clean(preflight.result||'NOT_REQUIRED'),primaryRejected,provider:upper(final.provider),transport:upper(final.transport),elapsedMs:round(now()-started),firstProgressMs:progressResult?.snap?.firstProgressMs??null,fallbackHops:n(progressResult?.fallbackHops),invariant:clean(final.invariant||'OK'),gameCenterOwned,engineResetsDelta,engineIncidentsDelta,v5TransactionId:v5After.transactionId||intent?.transactionId||'',v5State:v5After.playbackState||'',v5Invariant:v5After.invariant||'',planCandidates:v5After.planCandidates,planAttempted:v5After.planAttempted,planRejected:v5After.planRejected,planExhausted:v5After.planExhausted,candidateIndex:v5After.candidateIndex,planBuildMs:round(n(scoreIntent?.last?.elapsedMs)),planYields:n(scoreIntent?.last?.yields),planMaxChunkMs:round(n(scoreIntent?.last?.maxChunkMs)),recapLookupMaxMs:round(n(recapIndex?.maxLookupMs)),error:error||(!progressResult?.ok?clean(progressResult?.reason||final.lastError||'no advancing media clock'):(!gameCenterOwned?'Game Center ownership lost during score playback':(engineResetsDelta?`playback engine reset ${engineResetsDelta} time(s) during interaction`:'')))});
           cards=visiblePlayableCards();
         }
       }
@@ -254,11 +265,11 @@
       try{if(saved.mediaKey)await Promise.resolve(h.restoreMediaKey?.(saved.mediaKey));}catch(_){}
       try{await Promise.resolve(h.setResourceMode?.(saved.mode||'balanced'));}catch(_){}
     }
-    const successful=rows.filter(x=>x.ok),fail=rows.filter(x=>!x.ok).length,leagues=[...new Set(successful.map(x=>x.league).filter(Boolean))],qualities=[...new Set(successful.map(x=>x.quality).filter(q=>q&&q!=='UNKNOWN'))],transports=[...new Set(successful.map(x=>x.transport).filter(Boolean))],providers=[...new Set(successful.map(x=>x.provider).filter(Boolean))],testedDates=[...new Set(successful.map(x=>x.date).filter(Boolean))],fallbacks=rows.reduce((a,x)=>a+n(x.fallbackHops),0),engineResets=rows.reduce((a,x)=>a+n(x.engineResetsDelta),0),engineIncidents=rows.reduce((a,x)=>a+n(x.engineIncidentsDelta),0),gameCenterOwnershipFailures=rows.filter(x=>x.gameCenterOwned===false).length,prewarmAttempts=rows.filter(x=>x.prewarmAttempted).length,primaryRejections=rows.filter(x=>x.primaryRejected).length;
+    const successful=rows.filter(x=>x.ok),fail=rows.filter(x=>!x.ok).length,leagues=[...new Set(successful.map(x=>x.league).filter(Boolean))],qualities=[...new Set(successful.map(x=>x.quality).filter(q=>q&&q!=='UNKNOWN'))],transports=[...new Set(successful.map(x=>x.transport).filter(Boolean))],providers=[...new Set(successful.map(x=>x.provider).filter(Boolean))],testedDates=[...new Set(successful.map(x=>x.date).filter(Boolean))],fallbacks=rows.reduce((a,x)=>a+n(x.fallbackHops),0),engineResets=rows.reduce((a,x)=>a+n(x.engineResetsDelta),0),engineIncidents=rows.reduce((a,x)=>a+n(x.engineIncidentsDelta),0),gameCenterOwnershipFailures=rows.filter(x=>x.gameCenterOwned===false).length,prewarmAttempts=rows.filter(x=>x.prewarmAttempted).length,primaryRejections=rows.filter(x=>x.primaryRejected).length,maxScorePlanMs=Math.max(0,...rows.map(x=>n(x.planBuildMs))),maxScorePlanChunkMs=Math.max(0,...rows.map(x=>n(x.planMaxChunkMs))),scorePlanYields=rows.reduce((a,x)=>a+n(x.planYields),0),maxRecapLookupMs=Math.max(0,...rows.map(x=>n(x.recapLookupMaxMs)));
     const result=successful.length>=PLAYBACK_MIN_STARTS&&fail===0&&engineResets===0&&gameCenterOwnershipFailures===0&&leagues.length>=2&&testedDates.length>=2?'PASS':(successful.length>=PLAYBACK_MIN_STARTS&&engineResets===0?'WARN':'FAIL');
     const scorePlayableCache=h.scorePlayableCache?.()||{};
     const mainThread=mainThreadGuard()?.delta?.(mainThreadBefore)||mainThreadGuard()?.snapshot?.()||{};
-    return {available:true,result,target:PLAYBACK_TARGET,attempts:rows.length,starts:successful.length,fail,dateSwitches,leagues,qualities,transports,providers,dates:testedDates,fallbacks,engineResets,engineIncidents,gameCenterOwnershipFailures,prewarmAttempts,primaryRejections,scorePlayableCache,mainThread,uniqueMedia:seenMedia.size,p95FirstProgressMs:round(percentile(successful.map(x=>Number(x.firstProgressMs)).filter(Number.isFinite),95)),rows};
+    return {available:true,result,target:PLAYBACK_TARGET,attempts:rows.length,starts:successful.length,fail,dateSwitches,leagues,qualities,transports,providers,dates:testedDates,fallbacks,engineResets,engineIncidents,gameCenterOwnershipFailures,prewarmAttempts,primaryRejections,maxScorePlanMs,maxScorePlanChunkMs,scorePlanYields,maxRecapLookupMs,scorePlayableCache,mainThread,uniqueMedia:seenMedia.size,p95FirstProgressMs:round(percentile(successful.map(x=>Number(x.firstProgressMs)).filter(Number.isFinite),95)),rows};
   }
 
   function workerLines(summary){return (summary?.workers||[]).map(w=>`${w.healthy?'PASS':'WARN'} ${w.name.padEnd(18)} phase=${w.phase} heartbeat=${w.heartbeatAgeSeconds}s progress=${w.progressAgeSeconds}s jobs/hr=${round(w.jobsPerHour)||0} busy=${round(w.busyPercent)||0}% wait=${round(w.providerWaitPercent)||0}%${w.current?` current=${w.current}`:''}${w.provider?` provider=${w.provider}`:''}`).join('\n')||'No worker telemetry returned.';}
@@ -298,7 +309,7 @@
       '',
       '==================== 0. V5 UNIFIED RUNTIME ARCHITECTURE ====================',
       `APP_STORE=${arch.appStore?'YES':'NO'} schema=${arch.schema||'—'} ORCHESTRATOR=${arch.orchestrator?'YES':'NO'} ADAPTER_BOUND=${arch.adapterBound?'YES':'NO'} invariant=${arch.invariant||'MISSING'}`,
-      `TRANSACTION state=${arch.playbackState||'IDLE'} id=${arch.transactionId||'—'} event=${arch.eventKey||'—'} selected=${arch.selectedEventKey||'—'} owned=${arch.owned===false?'NO':'YES'}`,
+      `TRANSACTION state=${arch.playbackState||'IDLE'} id=${arch.transactionId||'—'} event=${arch.eventKey||'—'} selected=${arch.selectedEventKey||'—'} owned=${arch.owned===false?'NO':'YES'} plan=${arch.planAttempted||0}/${arch.planCandidates||0} rejected=${arch.planRejected||0} exhausted=${arch.planExhausted?'YES':'NO'}`,
       `APP_STORE dispatches=${arch.storeHealth?.dispatches||0} commits=${arch.storeHealth?.commits||0} noops=${arch.storeHealth?.noops||0} snapshots=${arch.storeHealth?.snapshots||0} maxDispatch=${round(arch.storeHealth?.maxDispatchMs)||0}ms maxEmit=${round(arch.storeHealth?.maxEmitMs)||0}ms`,
       '',
       '==================== 1. RELEASE / API HEALTH ====================',
@@ -314,11 +325,11 @@
       ...(ui.rows||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.label} time=${x.elapsedMs}ms sections=${x.sections||0}${x.error?` ERROR=${x.error}`:''}`),
       '',
       '==================== 4. ACTIVE PLAYBACK INTERACTION MATRIX ====================',
-      `PLAYBACK_MATRIX result=${p.result||'FAIL'} target=${p.target||PLAYBACK_TARGET} attempts=${p.attempts||0} starts=${p.starts||0} fail=${p.fail||0} uniqueMedia=${p.uniqueMedia||0} fallbacks=${p.fallbacks||0} prewarmAttempts=${p.prewarmAttempts||0} primaryRejected=${p.primaryRejections||0} engineResets=${p.engineResets||0} engineIncidents=${p.engineIncidents||0} gcOwnershipFailures=${p.gameCenterOwnershipFailures||0} p95FirstProgress=${p.p95FirstProgressMs??'N/A'}ms`,
+      `PLAYBACK_MATRIX result=${p.result||'FAIL'} target=${p.target||PLAYBACK_TARGET} attempts=${p.attempts||0} starts=${p.starts||0} fail=${p.fail||0} uniqueMedia=${p.uniqueMedia||0} fallbacks=${p.fallbacks||0} prewarmAttempts=${p.prewarmAttempts||0} primaryRejected=${p.primaryRejections||0} engineResets=${p.engineResets||0} engineIncidents=${p.engineIncidents||0} gcOwnershipFailures=${p.gameCenterOwnershipFailures||0} p95FirstProgress=${p.p95FirstProgressMs??'N/A'}ms planBuildMax=${p.maxScorePlanMs||0}ms planChunkMax=${p.maxScorePlanChunkMs||0}ms planYields=${p.scorePlanYields||0} recapLookupMax=${p.maxRecapLookupMs||0}ms`,
       `DIVERSITY leagues=${(p.leagues||[]).join(',')||'NONE'} qualities=${(p.qualities||[]).join(',')||'NONE'} transports=${(p.transports||[]).join(',')||'NONE'} providers=${(p.providers||[]).join(',')||'NONE'} dates=${(p.dates||[]).join(',')||'NONE'}`,
       `SCORE_PLAYABLE_CACHE size=${p.scorePlayableCache?.size||0} hits=${p.scorePlayableCache?.hits||0} misses=${p.scorePlayableCache?.misses||0} evictions=${p.scorePlayableCache?.evictions||0} ttl=${p.scorePlayableCache?.ttlMs||0}ms`,
       `UI_THREAD warnings=${p.mainThread?.warningDelta||0} critical=${p.mainThread?.criticalDelta||0} maxLag=${p.mainThread?.maxLagMs||0}ms lastLag=${p.mainThread?.lastLagMs||0}ms`,
-      ...(p.rows||[]).map((x,i)=>`${x.ok?'PASS':'FAIL'} #${String(i+1).padStart(2,'0')} ${x.date||'—'} ${x.league||'—'} ${x.quality||'—'} ${x.provider||'—'}/${x.transport||'—'} readinessBefore=${x.readinessBefore||'UNKNOWN'} prewarm=${x.prewarmAttempted?'YES':'NO'}:${x.prewarmResult||'NOT_REQUIRED'} primaryRejected=${x.primaryRejected?'YES':'NO'} progress=${x.firstProgressMs??'N/A'}ms fallbackHops=${x.fallbackHops||0} engineReset+${x.engineResetsDelta||0} gcOwned=${x.gameCenterOwned===false?'NO':'YES'} invariant=${x.invariant||'—'} v5=${x.v5State||'—'} tx=${x.v5TransactionId||'—'} media=${x.mediaKey||x.candidateMediaKey||'—'}${x.error?` ERROR=${x.error}`:''}`),
+      ...(p.rows||[]).map((x,i)=>`${x.ok?'PASS':'FAIL'} #${String(i+1).padStart(2,'0')} ${x.date||'—'} ${x.league||'—'} ${x.quality||'—'} ${x.provider||'—'}/${x.transport||'—'} readinessBefore=${x.readinessBefore||'UNKNOWN'} prewarm=${x.prewarmAttempted?'YES':'NO'}:${x.prewarmResult||'NOT_REQUIRED'} primaryRejected=${x.primaryRejected?'YES':'NO'} progress=${x.firstProgressMs??'N/A'}ms fallbackHops=${x.fallbackHops||0} plan=${x.planAttempted||0}/${x.planCandidates||0} rejected=${x.planRejected||0} exhausted=${x.planExhausted?'YES':'NO'} planBuild=${x.planBuildMs||0}ms/y${x.planYields||0} engineReset+${x.engineResetsDelta||0} gcOwned=${x.gameCenterOwned===false?'NO':'YES'} invariant=${x.invariant||'—'} v5=${x.v5State||'—'} tx=${x.v5TransactionId||'—'} media=${x.mediaKey||x.candidateMediaKey||'—'}${x.error?` ERROR=${x.error}`:''}`),
       '',
       '==================== 5. DATABASE / DISCOVERY ====================',
       `CATALOG games=${b.catalog?.games||0} verifiedAssets=${b.catalog?.verifiedAssets||0} coverageComplete=${b.catalog?.coverageComplete||0} noVerifiedMedia=${b.catalog?.noVerifiedMedia||0}`,
@@ -339,7 +350,7 @@
       '',
       '==================== 8. GAME CENTER CENSUS ====================',
       `GAME_CENTER sampled=${gc.rows?.length||0} supported=${gc.supported||0} pass=${gc.pass||0} fail=${gc.fail||0} unsupported=${gc.unsupported||0} p95=${gc.p95Ms??'N/A'}ms max=${gc.maxMs??'N/A'}ms`,
-      ...(gc.rows||[]).map(x=>`${x.unsupported?'N/A':(x.ok?'PASS':'FAIL')} ${x.label} id=${x.eventId||'—'} time=${x.elapsedMs}ms payload=${round(x.bytes/1024)||0}KB complete=${x.coverageComplete?'YES':'NO'} innings=${x.innings} periods=${x.periods} timeline=${x.timeline} players=${x.playerSections} winprob=${x.winProbability}${x.unsupported?` UNSUPPORTED=${x.unsupportedReason||'NO_PROVIDER'}`:(x.error?` ERROR=${x.error}`:'')}`),
+      ...(gc.rows||[]).map(x=>`${x.unsupported?'N/A':(x.ok?'PASS':'FAIL')} ${x.label} id=${x.eventId||'—'} time=${x.elapsedMs}ms payload=${round(x.bytes/1024)||0}KB complete=${x.coverageComplete?'YES':'NO'} quality=${x.completenessReason||'—'} innings=${x.innings} periods=${x.periods} timeline=${x.timeline} players=${x.playerSections} winprob=${x.winProbability}${x.unsupported?` UNSUPPORTED=${x.unsupportedReason||'NO_PROVIDER'}`:(x.error?` ERROR=${x.error}`:'')}`),
       '',
       'DAY-STATE PROBES',
       ...(gc.dayProbes||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.path} HTTP=${x.status} ${x.elapsedMs}ms games=${x.games}`),

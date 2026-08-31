@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "5.0.1",
-  "baseRelease": "5.0.0",
-  "title": "Unified Runtime UI-Thread Hardening",
+  "release": "5.0.2",
+  "baseRelease": "5.0.1",
+  "title": "Unified Runtime Media Plan Continuity + Pathological Score Guard",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -48,44 +48,53 @@
     "tests/test_v500_runtime_architecture.js",
     "tests/test_v500_single_tune_gateway.js",
     "architecture/main-thread-guard-v5.js",
-    "tests/test_v501_ui_thread_hardening.js"
+    "tests/test_v501_ui_thread_hardening.js",
+    "architecture/score-media-plan-v5.js",
+    "tests/test_v502_media_plan_continuity.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "5.0.1"
+        "5.0.2"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board — v5.0.1",
-        "core-model.js?v=5.0.1",
-        "architecture/main-thread-guard-v5.js?v=5.0.1",
-        "architecture/app-store-v5.js?v=5.0.1",
-        "architecture/playback-session.js?v=5.0.1",
-        "architecture/playback-orchestrator-v5.js?v=5.0.1",
-        "architecture/comprehensive-site-certification.js?v=5.0.1",
-        "app.js?v=5.0.1"
+        "Sports Big Board \u2014 v5.0.2",
+        "core-model.js?v=5.0.2",
+        "architecture/main-thread-guard-v5.js?v=5.0.2",
+        "architecture/score-media-plan-v5.js?v=5.0.2",
+        "architecture/app-store-v5.js?v=5.0.2",
+        "architecture/playback-session.js?v=5.0.2",
+        "architecture/playback-orchestrator-v5.js?v=5.0.2",
+        "architecture/comprehensive-site-certification.js?v=5.0.2",
+        "app.js?v=5.0.2"
       ],
       "forbidden": [
+        "?v=5.0.1",
         "?v=5.0.0",
         "?v=4.8.2"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'5.0.1'"
+        "version:'5.0.2'"
       ]
     },
     "architecture/app-store-v5.js": {
       "required": [
-        "const VERSION='5.0.1'",
-        "const SCHEMA='1.1'",
+        "const VERSION='5.0.2'",
+        "const SCHEMA='1.2'",
         "compactEvent",
         "branch-local and idempotent",
         "PLAYBACK_INTENT_BEGIN",
-        "PLAYBACK_PLAYING",
-        "legacySelectionId",
+        "PLAYBACK_CANDIDATE_ATTEMPT",
+        "PLAYBACK_CANDIDATE_REJECTED",
+        "PLAYBACK_PLAN_EXHAUSTED",
+        "planAttempted",
+        "planRejected",
+        "planExhausted",
+        "UNAVAILABLE BEFORE MEDIA PLAN EXHAUSTED",
         "healthSnapshot",
         "transactionActive"
       ]
@@ -114,11 +123,13 @@
     },
     "architecture/playback-orchestrator-v5.js": {
       "required": [
-        "const VERSION='5.0.1'",
+        "const VERSION='5.0.2'",
         "window.SBB_PLAYBACK_ORCHESTRATOR",
         "bindAdapter",
         "requestTune",
-        "requestPreparedPromotion",
+        "candidateAttempt",
+        "candidateRejected",
+        "planExhausted",
         "Playback Session may emit",
         "selectionId!==Number(pb.legacySelectionId",
         "appState!=='playing'"
@@ -126,13 +137,13 @@
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "const VERSION = '5.0.1'",
+        "const VERSION = '5.0.2'",
         "Efficiency Certification"
       ]
     },
     "architecture/comprehensive-site-certification.js": {
       "required": [
-        "const VERSION='3.1'",
+        "const VERSION='3.2'",
         "V5 UNIFIED RUNTIME ARCHITECTURE",
         "mainThreadGuard",
         "requireResponsiveUi",
@@ -142,13 +153,18 @@
         "waitForV5Intent",
         "gcOwned=",
         "SCORE_PLAYABLE_CACHE",
-        "APP_STORE dispatches="
+        "APP_STORE dispatches=",
+        "gameCenterPayloadQuality",
+        "PAYLOAD_TOO_SPARSE",
+        "planCandidates",
+        "planBuildMax=",
+        "recapLookupMax="
       ],
       "forbidden": [
         "USC_EVENT_FOUND",
         "401864494",
         "San Jose",
-        "San José",
+        "San Jos\u00e9",
         "san jose"
       ]
     },
@@ -163,7 +179,26 @@
         "let lastPlaybackUiMode=''",
         "if(mode===lastPlaybackUiMode)return;",
         "if(observed!==lastPlaybackUiMode)setPlaybackUi(observed);",
-        "let lastPlaybackSessionDiagKey=''"
+        "let lastPlaybackSessionDiagKey=''",
+        "scoreCardPlayableItemsForIntent",
+        "resolveScoreIntentMediaPlan",
+        "candidateAttempt",
+        "candidateRejected",
+        "planExhausted",
+        "PROVEN_HISTORY",
+        "HOT_THIS_SESSION",
+        "RECAP_CANDIDATE_INDEX",
+        "indexedRecapCandidatesFor",
+        "scoreIntentPlan",
+        "recapIndex",
+        "MAX_RECAP_ALTERNATES_PER_TIER=4",
+        "MAX_RECAP_ALTERNATES_TOTAL=12",
+        "RECAP_ALTERNATE_CACHE_TTL_MS=2000",
+        "scoreCardPlayableItemsForIntent(match)",
+        "window.__SBB_LAST_SCORE_INTENT_PLAN__"
+      ],
+      "forbidden": [
+        "for(const x of RECAP_CANDIDATE_REGISTRY.values()) add(x);"
       ]
     },
     "tools/check_release_manifest.py": {
@@ -176,11 +211,12 @@
       "required": [
         "node tests/test_v500_runtime_architecture.js",
         "node tests/test_v500_single_tune_gateway.js",
-        "node tests/test_v501_ui_thread_hardening.js",
         "node tests/test_v480_comprehensive_certification.js",
         "node tests/test_v481_playback_ownership_recovery.js",
         "node tests/test_v482_cold_upstream_game_center.js",
-        "v5 unified runtime"
+        "v5 unified runtime",
+        "node tests/test_v501_ui_thread_hardening.js",
+        "node tests/test_v502_media_plan_continuity.js"
       ]
     },
     "sbb/__init__.py": {
@@ -212,7 +248,13 @@
         "SBB_PLAYBACK_ORCHESTRATOR",
         "Selected Event",
         "5.1 canonical backend event identity",
-        "Nothing points backward"
+        "Nothing points backward",
+        "v5.0.2 \u2014 Media-plan continuity",
+        "PLAYBACK_PLAN_EXHAUSTED",
+        "PROVEN_HISTORY",
+        "score-media-plan-v5.js",
+        "RECAP_CANDIDATE_INDEX",
+        "sport-aware"
       ]
     },
     "tests/test_v473_efficiency_runtime.js": {
@@ -291,10 +333,11 @@
     },
     "tests/test_v501_ui_thread_hardening.js": {
       "required": [
+        "v5.0.1+ UI-thread hardening baseline",
         "100 duplicate PLAYING observations",
         "providerPayload",
         "critical event-loop",
-        "v5.0.1 UI-thread hardening"
+        "retains v5.0.1 UI-thread hardening"
       ]
     },
     "tests/test_v500_runtime_architecture.js": {
@@ -305,6 +348,27 @@
     "tests/test_v500_single_tune_gateway.js": {
       "required": [
         "v5.0.x single-gateway baseline"
+      ]
+    },
+    "architecture/score-media-plan-v5.js": {
+      "required": [
+        "SBB_SCORE_MEDIA_PLAN",
+        "DEFAULT_CHUNK_ITEMS",
+        "DEFAULT_CHUNK_BUDGET_MS",
+        "yieldToBrowser",
+        "includeDateItem",
+        "maxChunkMs",
+        "dateCount",
+        "scanned"
+      ]
+    },
+    "tests/test_v502_media_plan_continuity.js": {
+      "required": [
+        "v5.0.2 media-plan continuity",
+        "2400",
+        "pathological date scan",
+        "UNAVAILABLE BEFORE MEDIA PLAN EXHAUSTED",
+        "global recap registry scans"
       ]
     }
   }

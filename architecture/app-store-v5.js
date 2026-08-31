@@ -1,4 +1,4 @@
-/* Sports Big Board v5.0.1 — Unified Runtime App Store.
+/* Sports Big Board v5.0.2 — Unified Runtime App Store.
    The v5 control plane remains the canonical browser state authority, but state
    commits are now branch-local and idempotent. Large provider/score payloads are
    projected into a compact event record before entering the hot playback state.
@@ -6,10 +6,10 @@
    the browser main thread while a video is already playing. */
 (() => {
   'use strict';
-  if (window.SBB_APP_STORE?.version === '5.0.1') return;
+  if (window.SBB_APP_STORE?.version === '5.0.2') return;
 
-  const VERSION='5.0.1';
-  const SCHEMA='1.1';
+  const VERSION='5.0.2';
+  const SCHEMA='1.2';
   const listeners=new Set();
   let revision=0;
   let intentSequence=0;
@@ -66,6 +66,7 @@
     transactionId:'',intentId:0,state:'IDLE',source:'',reason:'',userInitiated:false,
     eventKey:'',event:null,requestedAt:0,updatedAt:0,
     mediaPlan:[],candidateIndex:-1,activeMediaKey:'',provider:'',transport:'',
+    planAttempted:0,planRejected:0,attemptedMediaKeys:[],rejectedMediaKeys:[],planExhausted:false,
     attempts:0,recoveries:0,progressSeconds:0,lastProgressAt:0,error:'',
     prewarm:{state:'IDLE',mediaKey:'',startedAt:0,completedAt:0,result:''},
     legacySelectionId:0
@@ -89,6 +90,9 @@
     }
     if(next.gameCenter?.eventKey&&selection.eventKey&&next.gameCenter.eventKey!==selection.eventKey){
       invariant=`ERROR: GAME CENTER ${next.gameCenter.eventKey} != SELECTED ${selection.eventKey}`;
+    }
+    if(playback.state==='UNAVAILABLE'&&Array.isArray(playback.mediaPlan)&&playback.mediaPlan.length&&!playback.planExhausted){
+      invariant='ERROR: UNAVAILABLE BEFORE MEDIA PLAN EXHAUSTED';
     }
     if(next.invariant===invariant)return next;
     return {...next,invariant};
@@ -133,6 +137,20 @@
         if(!txOk(current,payload))return current;const mediaKey=clean(payload.mediaKey);
         if(current.playback.state==='PREPARING'&&current.playback.prewarm.mediaKey===mediaKey)return current;
         const t=now();return {...current,playback:{...current.playback,state:'PREPARING',updatedAt:t,prewarm:{state:'PREPARING',mediaKey,startedAt:t,completedAt:0,result:''}},lastAction:type};
+      }
+      case 'PLAYBACK_CANDIDATE_ATTEMPT': {
+        if(!txOk(current,payload))return current;const mediaKey=clean(payload.mediaKey),candidateIndex=Number.isFinite(payload.candidateIndex)?payload.candidateIndex:current.playback.candidateIndex;
+        if(!mediaKey)return current;const attempted=current.playback.attemptedMediaKeys||[];const seen=attempted.includes(mediaKey);
+        if(seen&&candidateIndex===current.playback.candidateIndex)return current;
+        return {...current,playback:{...current.playback,candidateIndex,planAttempted:current.playback.planAttempted+(seen?0:1),attemptedMediaKeys:seen?attempted:[...attempted,mediaKey],updatedAt:now()},lastAction:type};
+      }
+      case 'PLAYBACK_CANDIDATE_REJECTED': {
+        if(!txOk(current,payload))return current;const mediaKey=clean(payload.mediaKey);if(!mediaKey)return current;const rejected=current.playback.rejectedMediaKeys||[];if(rejected.includes(mediaKey))return current;
+        return {...current,playback:{...current.playback,planRejected:current.playback.planRejected+1,rejectedMediaKeys:[...rejected,mediaKey],error:clean(payload.reason),updatedAt:now()},lastAction:type};
+      }
+      case 'PLAYBACK_PLAN_EXHAUSTED': {
+        if(!txOk(current,payload)||current.playback.planExhausted)return current;
+        return {...current,playback:{...current.playback,planExhausted:true,error:clean(payload.reason||current.playback.error),updatedAt:now()},lastAction:type};
       }
       case 'PLAYBACK_PREWARM_RESULT': {
         if(!txOk(current,payload))return current;const targetState=payload.ok?'READY':'FAILED',result=clean(payload.result);

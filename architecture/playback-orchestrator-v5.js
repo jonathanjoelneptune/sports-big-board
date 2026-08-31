@@ -1,11 +1,11 @@
-/* Sports Big Board v5.0.1 — Playback Orchestrator.
+/* Sports Big Board v5.0.2 — Playback Orchestrator.
    This is the only browser service allowed to own a playback transaction. Media
    preparation and the legacy A/B implementation are adapters beneath this layer;
    they cannot own SelectedEvent or create competing application state. */
 (() => {
   'use strict';
-  if(window.SBB_PLAYBACK_ORCHESTRATOR?.version==='5.0.1')return;
-  const VERSION='5.0.1';
+  if(window.SBB_PLAYBACK_ORCHESTRATOR?.version==='5.0.2')return;
+  const VERSION='5.0.2';
   const store=window.SBB_APP_STORE;
   if(!store)throw new Error('v5 Playback Orchestrator requires SBB_APP_STORE');
   let adapter=null;
@@ -77,6 +77,18 @@
     if(!txMatches(transactionId))return false;
     store.dispatch({type:'PLAYBACK_PREWARM_RESULT',payload:{transactionId,mediaKey:mediaKey(item),ok,result}});return true;
   }
+  function candidateAttempt(transactionId,item,{candidateIndex=-1}={}){
+    if(!txMatches(transactionId)||!item)return false;
+    store.dispatch({type:'PLAYBACK_CANDIDATE_ATTEMPT',payload:{transactionId,mediaKey:mediaKey(item),candidateIndex}});return true;
+  }
+  function candidateRejected(transactionId,item,reason='candidate rejected'){
+    if(!txMatches(transactionId)||!item)return false;
+    store.dispatch({type:'PLAYBACK_CANDIDATE_REJECTED',payload:{transactionId,mediaKey:mediaKey(item),reason}});return true;
+  }
+  function planExhausted(transactionId,reason='media plan exhausted'){
+    if(!txMatches(transactionId))return false;
+    store.dispatch({type:'PLAYBACK_PLAN_EXHAUSTED',payload:{transactionId,reason}});return true;
+  }
   function selectMedia(transactionId,item,{candidateIndex=0}={}){
     if(!txMatches(transactionId)||!item)return false;
     const d=descriptor(item);store.dispatch({type:'PLAYBACK_MEDIA_SELECTED',payload:{transactionId,candidateIndex,...d}});return true;
@@ -144,5 +156,5 @@
     else if(sessionState==='ended'&&appState!=='ended')store.dispatch({type:'PLAYBACK_ENDED',payload:{transactionId:pb.transactionId}});
   });}catch(_){ }
 
-  window.SBB_PLAYBACK_ORCHESTRATOR=Object.freeze({version:VERSION,beginIntent,beginScoreIntent,beginProgramIntent,setPlan,preparing,prewarmResult,selectMedia,recovering,unavailable,failed,ended,bindAdapter,requestTune,requestPreparedPromotion,tuneProgramIndex,ownershipSnapshot,ownsSelectedEvent,snapshot:()=>store.snapshot().playback,adapterSnapshot:()=>({bound:!!adapter,boundAt:adapterBoundAt})});
+  window.SBB_PLAYBACK_ORCHESTRATOR=Object.freeze({version:VERSION,beginIntent,beginScoreIntent,beginProgramIntent,setPlan,preparing,prewarmResult,candidateAttempt,candidateRejected,planExhausted,selectMedia,recovering,unavailable,failed,ended,bindAdapter,requestTune,requestPreparedPromotion,tuneProgramIndex,ownershipSnapshot,ownsSelectedEvent,snapshot:()=>store.snapshot().playback,adapterSnapshot:()=>({bound:!!adapter,boundAt:adapterBoundAt})});
 })();

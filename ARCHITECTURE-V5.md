@@ -120,3 +120,62 @@ The v5.0.1 feedback rule is:
 `transport poll → no change → no session emit → no orchestrator mirror → no App Store commit → no DOM work`
 
 Only a material edge such as `STARTING → PLAYING`, a new selection ID, fallback, failure, end, or ownership change propagates upward.
+
+## v5.0.2 — Media-plan continuity and pathological event containment
+
+v5.0.2 strengthens the score-click path without introducing any game-specific
+branching. A score playback transaction owns a complete ordered Media Plan. One
+failed candidate may be rejected, but it may not terminate the transaction while
+another eligible candidate remains.
+
+The transaction-level rule is:
+
+```text
+INTENT -> PLAN(candidate 0, 1, 2 ...)
+             |
+             +-> attempt candidate 0 -> reject
+             +-> attempt candidate 1 -> select -> STARTING -> PLAYING
+```
+
+`UNAVAILABLE` is valid only after `PLAYBACK_PLAN_EXHAUSTED`. The App Store records
+`planAttempted`, `planRejected`, `attemptedMediaKeys`, `rejectedMediaKeys`, and
+`planExhausted`; an `UNAVAILABLE` transaction with a non-empty unexhausted plan is
+an architecture invariant error.
+
+### Current-session readiness
+
+Durable `PLAYBACK_READY` / verified history improves ranking, but it is no longer
+proof that a direct/native asset is ready in this browser session. Native media
+must be either `HOT_READY` from the prepared-player pool or `HOT_THIS_SESSION`
+from observed advancing playback before automatic activation. Historical proof is
+reported as `PROVEN_HISTORY` and is prewarmed again.
+
+### Cooperative score planning
+
+`architecture/score-media-plan-v5.js` owns bounded, cooperative scanning for an
+intent-time score media plan. Exact event candidates are retained first. When the
+fallback date-wide media pool must be examined, matching is processed in small
+chunks and yields to `SBB_MAIN_THREAD_GUARD` / the browser between chunks. A
+single unusually dense event therefore cannot monopolize the UI thread while its
+media plan is assembled.
+
+### Indexed and bounded recap alternates
+
+The old recap hot path searched the entire recent recap registry from player/UI
+metadata code. v5.0.2 replaces that with `RECAP_CANDIDATE_INDEX`, keyed by
+canonical event/game identities. The global registry is scanned only when its
+membership changes in background work. UI lookups are indexed, short-lived
+cached, and bounded to four alternatives per tier / twelve total alternatives.
+This prevents one event with an unusually dense or ambiguous media history from
+turning metadata or recap-button refresh into a large synchronous workload.
+
+### Game Center completeness
+
+Comprehensive Certification schema 3.2 adds sport-aware final-game payload
+quality. A successful HTTP response or `coverage.complete` flag alone is no
+longer sufficient. Final MLB/football/basketball/hockey/soccer samples must carry
+reasonable sport-specific scoreboard/play-by-play/stat evidence. Sparse shells
+are reported as `*_PAYLOAD_TOO_SPARSE` rather than `complete=YES`.
+
+v5.0.2 remains game-agnostic. Known difficult games are regression evidence, not
+runtime exceptions.

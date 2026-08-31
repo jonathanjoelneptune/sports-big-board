@@ -6,7 +6,7 @@ const vm=require('vm');
 const ROOT=path.resolve(__dirname,'..');
 const read=rel=>fs.readFileSync(path.join(ROOT,rel),'utf8');
 const version=read('VERSION').trim();
-assert.strictEqual(version,'5.0.1');
+assert(/^5\.0\.(?:[1-9]\d*)$/.test(version),'v5.0.1+ UI-thread hardening baseline');
 const app=read('app.js');
 const index=read('index.html');
 const cert=read('architecture/comprehensive-site-certification.js');
@@ -14,7 +14,8 @@ assert(index.includes(`architecture/main-thread-guard-v5.js?v=${version}`));
 assert(app.includes("let lastPlaybackUiMode='';"));
 assert(app.includes("if(mode===lastPlaybackUiMode)return;"));
 assert(app.includes("if(observed!==lastPlaybackUiMode)setPlaybackUi(observed);"));
-assert(cert.includes("const VERSION='3.1'"));
+const certSchema=(cert.match(/const VERSION='(\d+)\.(\d+)'/)||[]).slice(1).map(Number);
+assert(certSchema.length===2 && (certSchema[0]>3 || (certSchema[0]===3 && certSchema[1]>=1)),'certification schema 3.1+ required');
 assert(cert.includes('requireResponsiveUi'));
 assert(cert.includes('UI_THREAD warnings='));
 
@@ -87,4 +88,4 @@ assert.strictEqual(guardAfter.critical,1,'critical event-loop lag must increment
 assert.strictEqual(guardDelta.criticalDelta,1,'critical event-loop lag must be visible in certification delta telemetry');
 assert(guardAfter.maxLagMs>=1200,'critical event-loop lag must preserve the observed peak');
 
-console.log('PASS: v5.0.1 UI-thread hardening removes duplicate playback fanout and compact-projects hot event state');
+console.log(`PASS: ${version} retains v5.0.1 UI-thread hardening: duplicate playback fanout suppressed and hot event state compact-projected`);

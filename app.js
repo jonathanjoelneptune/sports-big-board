@@ -230,6 +230,18 @@ const contextTimer={A:null,B:null};
 let HIGHLIGHTS_BY_MATCH = new Map();
 let ALL_GAME_CANDIDATES = new Map();
 let RECAP_CANDIDATE_REGISTRY = new Map(); // v2.3.0 cross-source canonical recap packages
+// v5.0.2: recap alternates are indexed by canonical event/game identity. The old
+// hot path scanned the entire recent recap registry every time metadata/alternate
+// controls refreshed; one dense event could monopolize the UI thread while video
+// playback continued. Global scans now happen only when the background registry is
+// rebuilt, never during player/UI updates.
+const RECAP_CANDIDATE_INDEX=new Map();
+let RECAP_CANDIDATE_INDEX_REVISION=0;
+const RECAP_ALTERNATE_CACHE=new Map();
+const RECAP_INDEX_STATS={rebuilds:0,lookups:0,candidatesExamined:0,maxLookupMs:0,lastLookupMs:0,indexKeys:0};
+const MAX_RECAP_ALTERNATES_PER_TIER=4;
+const MAX_RECAP_ALTERNATES_TOTAL=12;
+const RECAP_ALTERNATE_CACHE_TTL_MS=2000;
 let LAST_YESTERDAY_MATCHES = [];
 let LAST_COMPLETED_MATCHES = [];
 
@@ -1403,6 +1415,11 @@ function primeScoreIntent(item){
 // durable readiness authority already records a prior successful first frame).
 const SCORE_MEDIA_PREFLIGHT_WAIT_MS=3000;
 const SCORE_MEDIA_PREFLIGHT_STATE=new Map();
+const SCORE_MEDIA_SESSION_HOT_KEYS=new Set();
+try{window.addEventListener('sbb:playback-progress-confirmed',ev=>{
+  const detail=ev?.detail||{},key=String(detail.mediaKey||'');
+  if(key.startsWith('direct:'))SCORE_MEDIA_SESSION_HOT_KEYS.add(key);
+});}catch(_){}
 function scoreMediaReadiness(item){
   const key=playbackItemKey(item),state=String(readinessState(item)||'DISCOVERED').toUpperCase();
   if(!item)return {mediaKey:key,disposition:'NONE',state,prewarm:false};
@@ -1411,7 +1428,12 @@ function scoreMediaReadiness(item){
   if(claim&&claim.key===key&&videoReady[standby])return {mediaKey:key,disposition:'HOT_READY',state,prewarm:false,source:'standby'};
   const entry=preparedNativeEntryForItem(item,{requireReady:false});
   if(entry?.ready&&entry?.progressProved)return {mediaKey:key,disposition:'HOT_READY',state,prewarm:false,source:'prepared-player'};
-  if(state==='PLAYBACK_READY'||state==='VERIFIED')return {mediaKey:key,disposition:'PROVEN_RUNTIME',state,prewarm:false,source:'readiness-history'};
+  if(SCORE_MEDIA_SESSION_HOT_KEYS.has(key))return {mediaKey:key,disposition:'HOT_THIS_SESSION',state,prewarm:false,source:'session-progress'};
+  // Historical reliability is ranking evidence, not proof that this browser/session
+  // currently has decoder/network runway. v5.0.2 therefore prewarms it again before
+  // automatic on-air use.
+  // Historical reliability is ranking evidence only; current-session proof is required. The candidate is kept an unproven upstream source off-air until current-session progress is proven.
+  if(state==='PLAYBACK_READY'||state==='VERIFIED')return {mediaKey:key,disposition:'PROVEN_HISTORY',state,prewarm:true,source:'readiness-history'};
   if(entry?.warming||scoreMediaPrimeState.queued.has(nativePrimeKey(item)))return {mediaKey:key,disposition:'PREWARMING',state,prewarm:true,source:'prepared-player'};
   return {mediaKey:key,disposition:'COLD_UPSTREAM',state,prewarm:true,source:'upstream-only'};
 }
@@ -1419,7 +1441,7 @@ function scoreMediaAirReady(item){
   if(!item||!runtimeMediaUsable(item))return false;
   const r=scoreMediaReadiness(item);
   if(!isNativeItem(item))return r.disposition!=='QUARANTINED'&&r.disposition!=='DEGRADED';
-  return r.disposition==='HOT_READY'||r.disposition==='PROVEN_RUNTIME';
+  return r.disposition==='HOT_READY'||r.disposition==='HOT_THIS_SESSION';
 }
 function rememberScoreMediaPreflight(item,patch={}){
   const key=playbackItemKey(item);if(!key||key==='none')return null;
@@ -2716,6 +2738,10 @@ function beginScorePlaybackSession({matchId,resumeItem,resumeIndex,selectionCoun
   };
 }
 
+function scorePlanCandidateIndex(session,item){
+  const list=session?.fallbackItems||[],key=playbackItemKey(item),i=list.findIndex(x=>playbackItemKey(x)===key);return i>=0?i:0;
+}
+
 function tryScoreMediaFallback(failedItem,reason='playback failure',{runtimeFailureAlreadyMarked=false}={}){
   const session=userPlaybackSession;
   if(session?.source!=='score') return false;
@@ -2723,6 +2749,7 @@ function tryScoreMediaFallback(failedItem,reason='playback failure',{runtimeFail
   const failedKey=playbackItemKey(failedItem);
   session.failedMediaKeys ||= new Set();
   if(failedKey) session.failedMediaKeys.add(failedKey);
+  try{window.SBB_PLAYBACK_ORCHESTRATOR?.candidateRejected?.(session.transactionId,failedItem,reason);}catch(_){}
   if(!runtimeFailureAlreadyMarked) markRuntimeMediaFailed(failedItem,reason);
   const eligible=(session.fallbackItems||[]).filter(x=>{
     const key=playbackItemKey(x);
@@ -2734,7 +2761,8 @@ function tryScoreMediaFallback(failedItem,reason='playback failure',{runtimeFail
     const slotIndex=Math.max(0,Math.min(currentIndex,PROGRAM.length-1));
     PROGRAM[slotIndex]=chosen;
     session.provider=providerForItem(chosen);
-    try{window.SBB_PLAYBACK_ORCHESTRATOR?.selectMedia?.(session.transactionId,chosen,{candidateIndex:slotIndex});}catch(_){}
+    const planIndex=scorePlanCandidateIndex(session,chosen);
+    try{window.SBB_PLAYBACK_ORCHESTRATOR?.candidateAttempt?.(session.transactionId,chosen,{candidateIndex:planIndex});window.SBB_PLAYBACK_ORCHESTRATOR?.selectMedia?.(session.transactionId,chosen,{candidateIndex:planIndex});}catch(_){}
     transitionInFlight=false;
     transitionRecoveryAttempts=0;
     clearPlaybackRecovery();
@@ -2751,24 +2779,26 @@ function tryScoreMediaFallback(failedItem,reason='playback failure',{runtimeFail
   const cold=eligible.find(x=>isNativeItem(x)&&['COLD_UPSTREAM','PREWARMING'].includes(scoreMediaReadiness(x).disposition));
   if(!cold)return false;
   const coldKey=playbackItemKey(cold);
+  try{window.SBB_PLAYBACK_ORCHESTRATOR?.candidateAttempt?.(session.transactionId,cold,{candidateIndex:scorePlanCandidateIndex(session,cold)});}catch(_){}
   rememberScoreMediaPreflight(cold,{attempted:true,result:'PREWARMING',readinessBefore:scoreMediaReadiness(cold).disposition,primaryRejected:true});
   setPlaybackUi('starting');showBumper(Math.max(0,currentIndex),0,'PREPARING FALLBACK VIDEO');
   waitForScoreMediaHot(cold,SCORE_MEDIA_PREFLIGHT_WAIT_MS).then(proof=>{
     if(userPlaybackSession!==session)return;
     if(proof.ok){rememberScoreMediaPreflight(cold,{attempted:true,result:proof.readiness?.disposition||'HOT_READY',primaryRejected:true});tuneCandidate(cold);return;}
     session.failedMediaKeys.add(coldKey);
+    try{window.SBB_PLAYBACK_ORCHESTRATOR?.candidateRejected?.(session.transactionId,cold,'fallback PREWARM_TIMEOUT');}catch(_){}
     rememberScoreMediaPreflight(cold,{attempted:true,result:'PREWARM_TIMEOUT',primaryRejected:true});
     if(tryScoreMediaFallback(failedItem,`${reason}: cold fallback prewarm failed`,{runtimeFailureAlreadyMarked:true}))return;
     if(tryHistoricalScoreMediaRecovery(cold,`${reason}: cold fallback prewarm failed`))return;
     finalizeScorePlaybackUnavailable(cold,'No browser-proven recap source is available for this game right now.');
   }).catch(()=>{
-    if(userPlaybackSession!==session)return;session.failedMediaKeys.add(coldKey);
+    if(userPlaybackSession!==session)return;session.failedMediaKeys.add(coldKey);try{window.SBB_PLAYBACK_ORCHESTRATOR?.candidateRejected?.(session.transactionId,cold,'fallback prewarm error');}catch(_){}
     if(!tryHistoricalScoreMediaRecovery(cold,`${reason}: fallback prewarm error`))finalizeScorePlaybackUnavailable(cold,'No browser-proven recap source is available for this game right now.');
   });
   return true;
 }
 function finalizeScorePlaybackUnavailable(item,reason='No playable recap source is available for this game right now.'){
-  try{window.SBB_PLAYBACK_ORCHESTRATOR?.unavailable?.(userPlaybackSession?.transactionId,reason);}catch(_){}
+  try{window.SBB_PLAYBACK_ORCHESTRATOR?.planExhausted?.(userPlaybackSession?.transactionId,reason);window.SBB_PLAYBACK_ORCHESTRATOR?.unavailable?.(userPlaybackSession?.transactionId,reason);}catch(_){}
   try{ markRuntimeMediaFailed(item,reason,{providerFailure:false}); }catch(_){ }
   clearPlaybackRecovery();
   transitionInFlight=false;
@@ -2800,23 +2830,25 @@ function tryHistoricalScoreMediaRecovery(failedItem,reason='historical playback 
       .map(x=>[playbackItemKey(x),x])).values()]
       .filter(x=>{const key=playbackItemKey(x);return key&&!failed.has(key)&&runtimeMediaUsable(x);});
     const resolved=scoreCardPlaybackSelection(match,pool);
+    try{window.SBB_PLAYBACK_ORCHESTRATOR?.setPlan?.(session.transactionId,resolved.ranked||pool,{reason:'historical exact-source refresh'});}catch(_){}
     if(!resolved.primary){
       finalizeScorePlaybackUnavailable(failedItem,'Historical recap search completed, but no source could be verified for embedded playback.');
       return;
     }
     let recovered=resolved.primary;
+    try{window.SBB_PLAYBACK_ORCHESTRATOR?.candidateAttempt?.(session.transactionId,recovered,{candidateIndex:Math.max(0,(resolved.ranked||[]).findIndex(x=>playbackItemKey(x)===playbackItemKey(recovered)))});}catch(_){}
     if(isNativeItem(recovered)&&!scoreMediaAirReady(recovered)){
       rememberScoreMediaPreflight(recovered,{attempted:true,result:'PREWARMING',readinessBefore:scoreMediaReadiness(recovered).disposition,primaryRejected:true});
       const proof=await waitForScoreMediaHot(recovered,SCORE_MEDIA_PREFLIGHT_WAIT_MS);
       if(userPlaybackSession!==session)return;
-      if(!proof.ok){session.failedMediaKeys.add(playbackItemKey(recovered));finalizeScorePlaybackUnavailable(recovered,'Historical recap was found, but its direct-video transport could not prove browser playback readiness.');return;}
+      if(!proof.ok){session.failedMediaKeys.add(playbackItemKey(recovered));try{window.SBB_PLAYBACK_ORCHESTRATOR?.candidateRejected?.(session.transactionId,recovered,'historical recovery PREWARM_TIMEOUT');}catch(_){}finalizeScorePlaybackUnavailable(recovered,'Historical recap was found, but its direct-video transport could not prove browser playback readiness.');return;}
     }
     const slotIndex=Math.max(0,Math.min(currentIndex,PROGRAM.length-1));
     PROGRAM[slotIndex]=recovered;
     session.fallbackItems=resolved.ranked;
     session.selectionCount=Math.max(1,resolved.selectionItems.length||1);
     session.provider=providerForItem(recovered);
-    try{window.SBB_PLAYBACK_ORCHESTRATOR?.selectMedia?.(session.transactionId,recovered,{candidateIndex:slotIndex});}catch(_){}
+    try{window.SBB_PLAYBACK_ORCHESTRATOR?.selectMedia?.(session.transactionId,recovered,{candidateIndex:Math.max(0,(resolved.ranked||[]).findIndex(x=>playbackItemKey(x)===playbackItemKey(recovered)))});}catch(_){}
     clearPlaybackRecovery();
     renderScoresFromMatchesCombined(false);
     queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:'historical exact-source refresh',restart:true}));
@@ -3609,8 +3641,45 @@ function mediaAvailabilityRail(avail){
   }
   return rail;
 }
+function recapIndexKeys(item){
+  if(!item)return [];
+  const keys=[];const add=k=>{k=String(k||'');if(k&&!keys.includes(k))keys.push(k);};
+  try{add(window.SBB_EVENT_IDENTITY?.key?.(item));}catch(_){}
+  add(canonicalRecapMatchKey(item));add(candidateGroupKey(item));
+  const lg=String(item.competitionId||item.__sbbLeague||item.league||'').toUpperCase();
+  for(const id of [item.canonicalEventId,item.scoreEventId,item.espnEventId,item.gameCenterEventId,item.matchId,item.gamePk,item.eventId].filter(Boolean))add(`${lg}:${id}`);
+  return keys;
+}
+function rebuildRecapCandidateIndex(){
+  RECAP_CANDIDATE_INDEX.clear();
+  for(const [id,item] of RECAP_CANDIDATE_REGISTRY){
+    for(const key of recapIndexKeys(item)){
+      let group=RECAP_CANDIDATE_INDEX.get(key);if(!group){group=new Set();RECAP_CANDIDATE_INDEX.set(key,group);}group.add(id);
+    }
+  }
+  RECAP_CANDIDATE_INDEX_REVISION++;RECAP_ALTERNATE_CACHE.clear();RECAP_INDEX_STATS.rebuilds++;RECAP_INDEX_STATS.indexKeys=RECAP_CANDIDATE_INDEX.size;
+}
+function indexedRecapCandidatesFor(item){
+  const started=performance.now(),out=[],seen=new Set();
+  for(const key of recapIndexKeys(item))for(const id of RECAP_CANDIDATE_INDEX.get(key)||[]){if(seen.has(id))continue;const x=RECAP_CANDIDATE_REGISTRY.get(id);if(x){seen.add(id);out.push(x);}}
+  const elapsed=performance.now()-started;RECAP_INDEX_STATS.lookups++;RECAP_INDEX_STATS.candidatesExamined+=out.length;RECAP_INDEX_STATS.lastLookupMs=elapsed;RECAP_INDEX_STATS.maxLookupMs=Math.max(RECAP_INDEX_STATS.maxLookupMs,elapsed);return out;
+}
+function indexedAllGameCandidatesFor(item){
+  const out=[],seen=new Set();for(const key of recapIndexKeys(item))for(const x of ALL_GAME_CANDIDATES.get(key)||[]){const id=String(x?.id||x?.youtubeId||x?.mediaUrl||'');if(id&&!seen.has(id)){seen.add(id);out.push(x);}}
+  return out;
+}
+function recapCandidateIndexSnapshot(){return {revision:RECAP_CANDIDATE_INDEX_REVISION,registrySize:RECAP_CANDIDATE_REGISTRY.size,indexKeys:RECAP_CANDIDATE_INDEX.size,cacheSize:RECAP_ALTERNATE_CACHE.size,...RECAP_INDEX_STATS};}
+window.SBB_RECAP_INDEX=Object.freeze({snapshot:recapCandidateIndexSnapshot});
+
+function boundedRecapAlternatives(items){
+  const sorted=[...(items||[])].sort((a,b)=>overviewQuality(b)-overviewQuality(a)),out=[],perTier=new Map();
+  for(const x of sorted){const tier=recapTier(x),count=Number(perTier.get(tier)||0);if(count>=MAX_RECAP_ALTERNATES_PER_TIER)continue;perTier.set(tier,count+1);out.push(x);if(out.length>=MAX_RECAP_ALTERNATES_TOTAL)break;}
+  return out;
+}
 function recapAlternatesFor(item){
   if(!item || !isFullRecapCandidate(item)) return [];
+  const cacheKey=playbackItemKey(item),cached=RECAP_ALTERNATE_CACHE.get(cacheKey);
+  if(cached&&cached.revision===RECAP_CANDIDATE_INDEX_REVISION&&Date.now()-cached.at<RECAP_ALTERNATE_CACHE_TTL_MS)return cached.items.slice();
   const candidates=[];
   const add=(x)=>{
     if(!x || x.id===item.id || !isFullRecapCandidate(x) || !x.verifiedPlayable || !(x.youtubeId||x.mediaUrl)) return;
@@ -3618,10 +3687,12 @@ function recapAlternatesFor(item){
     if(!candidates.some(y=>y.id===x.id)) candidates.push(x);
   };
   for(const x of (Array.isArray(item.recapAlternates)?item.recapAlternates:[])) add(x);
-  for(const x of RECAP_CANDIDATE_REGISTRY.values()) add(x);
-  for(const group of ALL_GAME_CANDIDATES.values()) for(const x of group) add(x);
-  candidates.sort((a,b)=>overviewQuality(b)-overviewQuality(a));
-  return candidates;
+  for(const x of indexedRecapCandidatesFor(item)) add(x);
+  for(const x of indexedAllGameCandidatesFor(item)) add(x);
+  const bounded=boundedRecapAlternatives(candidates);
+  RECAP_ALTERNATE_CACHE.set(cacheKey,{revision:RECAP_CANDIDATE_INDEX_REVISION,at:Date.now(),items:bounded.slice()});
+  if(RECAP_ALTERNATE_CACHE.size>160){const first=RECAP_ALTERNATE_CACHE.keys().next().value;if(first)RECAP_ALTERNATE_CACHE.delete(first);}
+  return bounded;
 }
 function recapTargetForTier(item,tier){
   const alts=recapAlternatesFor(item);
@@ -5850,9 +5921,8 @@ function attachRecapAlternates(primary,overviews){
     if(!alternatives.some(y=>y.id===x.id)) alternatives.push(x);
   };
   for(const x of (overviews||[])) add(x);
-  for(const x of RECAP_CANDIDATE_REGISTRY.values()) add(x);
-  alternatives.sort((a,b)=>overviewQuality(b)-overviewQuality(a));
-  return {...primary,recapAlternates:alternatives};
+  for(const x of indexedRecapCandidatesFor(primary)) add(x);
+  return {...primary,recapAlternates:boundedRecapAlternatives(alternatives)};
 }
 
 function candidateGroupKey(item){
@@ -6191,14 +6261,17 @@ function isFreshProgrammingItem(item){
 }
 
 function updateRecapCandidateRegistry(items){
-  const now=Date.now();
+  const now=Date.now();let changed=false;
   for(const x of items||[]){
-    if(isFullRecapCandidate(x) && x.verifiedPlayable && (x.youtubeId||x.mediaUrl)) RECAP_CANDIDATE_REGISTRY.set(String(x.id),x);
+    if(isFullRecapCandidate(x) && x.verifiedPlayable && (x.youtubeId||x.mediaUrl)){
+      const id=String(x.id||x.youtubeId||x.mediaUrl),prior=RECAP_CANDIDATE_REGISTRY.get(id);RECAP_CANDIDATE_REGISTRY.set(id,x);if(!prior)changed=true;
+    }
   }
-  for(const [id,x] of RECAP_CANDIDATE_REGISTRY){
+  for(const [id,x] of [...RECAP_CANDIDATE_REGISTRY]){
     const ms=publishedTimeMs(x)||itemGameDateMs(x)||now;
-    if(now-ms>96*3600_000) RECAP_CANDIDATE_REGISTRY.delete(id);
+    if(now-ms>96*3600_000){RECAP_CANDIDATE_REGISTRY.delete(id);changed=true;}
   }
+  if(changed)rebuildRecapCandidateIndex();
 }
 function collapseCanonicalGameMedia(items){
   const clusters=[];
@@ -6686,6 +6759,75 @@ function scoreCardPlayableItems(match){
   return scorePlayableItemsCachePut(match,preferGameOverviews(items));
 }
 
+async function scoreCardPlayableItemsForIntent(match){
+  if(!match)return {items:[],metrics:{source:'none'}};
+  const cached=scorePlayableItemsCacheGet(match);if(cached)return {items:cached,metrics:{source:'cache',total:cached.length,elapsedMs:0,yields:0}};
+  const started=performance.now(),lg=String(match.competitionId||match.__sbbLeague||match.league||'SPORTS').toUpperCase();
+  const away=match.awayTeam||match.away||{},home=match.homeTeam||match.home||{},sc=scoreFromMatch(match),matchId=String(match.id??match.matchId??match.eventId??'');
+  const key=gameKey(teamAbbr(away,''),teamAbbr(home,'')),date=String(match.__sbbDate||match.date||'').slice(0,10),exact=[];
+  const catalogPlan=catalogPlanForScoreGame(match);
+  if(catalogPlan)exact.push(...[...(catalogPlan.playable||[]),...(catalogPlan.media||[])].map(x=>({...x,__sbbCatalogExact:true,canonicalEventKey:x?.canonicalEventKey||catalogPlan.canonicalEventKey||''})));
+  if(matchId){exact.push(...(HIGHLIGHTS_BY_MATCH.get(`match:${lg}:${matchId}`)||[]));exact.push(...(HIGHLIGHTS_BY_MATCH.get(`match:${matchId}`)||[]));}
+  if(date&&key&&key!=='-'){exact.push(...(HIGHLIGHTS_BY_MATCH.get(`scoregame:${date}::${key}::${sc.away}-${sc.home}`)||[]));exact.push(...(HIGHLIGHTS_BY_MATCH.get(`game:${date}:${key}`)||[]));}
+  try{await window.SBB_SCORE_MEDIA_PLAN?.yieldToBrowser?.();}catch(_){}
+  if(typeof verifiedPlayableItemsForGame==='function')try{exact.push(...(verifiedPlayableItemsForGame(match,lg)||[]));}catch(_){}
+  const canonicalKeys=new Set([match.scoreEventId,match.espnEventId,match.gameCenterEventId,match.matchId,match.gamePk,match.eventId,match.id].filter(x=>x!==undefined&&x!==null&&String(x)!=='').map(x=>`${lg}:${String(x)}`));
+  const scopeCtx={away:away.displayName||away.name||away.abbreviation||'',home:home.displayName||home.name||home.abbreviation||''};
+  const includeDateItem=x=>{
+    const xl=String(x?.competitionId||x?.__sbbLeague||x?.league||'').toUpperCase(),direct=canonicalKeys.has(String(x?.canonicalEventKey||''));
+    if(xl&&xl!==lg)return false;
+    if(!(direct||(mediaMatchesScoreGame(x,match)&&(sameGameProgramItem(x,match)||scoreRibbonStableGameKey(x)===scoreRibbonStableGameKey(match)))))return false;
+    return !window.SBB_MEDIA_SCOPE||window.SBB_MEDIA_SCOPE.isGame(x,scopeCtx);
+  };
+  const exactFiltered=exact.filter(x=>(!window.SBB_MEDIA_SCOPE||window.SBB_MEDIA_SCOPE.isGame(x,scopeCtx))&&(x?.__sbbCatalogExact===true||mediaMatchesScoreGame(x,match)));
+  const dateItems=date?scoreMediaForDate(date):[];
+  let planned={items:exactFiltered,metrics:{source:'exact-only',exactCount:exactFiltered.length,dateCount:dateItems.length,scanned:0,accepted:0,total:exactFiltered.length,yields:0,maxChunkMs:0,elapsedMs:performance.now()-started}};
+  if(dateItems.length&&window.SBB_SCORE_MEDIA_PLAN?.build){
+    planned=await window.SBB_SCORE_MEDIA_PLAN.build({exactItems:exactFiltered,dateItems,includeDateItem,isUsable:x=>!!x,keyFor:x=>String(x?.id||x?.youtubeId||x?.mediaUrl||x?.externalUrl||x?.assetKey||'')});
+  }
+  let discovered=planned.items||[];
+  try{window.SBB_MEDIA_MANIFEST?.ingest?.(match,discovered);}catch(_){}
+  try{await window.SBB_SCORE_MEDIA_PLAN?.yieldToBrowser?.();}catch(_){}
+  let manifestPlayable=[];try{manifestPlayable=window.SBB_MEDIA_MANIFEST?.playable?.(match)||[];}catch(_){manifestPlayable=[];}
+  let items=[...new Map([...manifestPlayable,...discovered].filter(Boolean).map(x=>[String(x.id||x.youtubeId||x.mediaUrl||x.externalUrl||x.assetKey||''),x])).values()]
+    .filter(x=>String(x?.id||x?.youtubeId||x?.mediaUrl||x?.externalUrl||x?.assetKey||'')).filter(runtimeMediaUsable);
+  if(!isFinal(match))items=items.filter(x=>!isFullRecapCandidate(x)&&!isExtendedRecap(x)&&!isGoldRecap(x));
+  try{await window.SBB_SCORE_MEDIA_PLAN?.yieldToBrowser?.();}catch(_){}
+  items=preferGameOverviews(items);
+  scorePlayableItemsCachePut(match,items);
+  const metrics={...(planned.metrics||{}),source:planned.metrics?.source||'chunked-date',total:items.length,elapsedMs:Math.round(performance.now()-started),recapIndex:recapCandidateIndexSnapshot()};
+  return {items,metrics};
+}
+
+function scoreSelectionItemsForCandidate(match,candidate,ranked){
+  if(!candidate)return [];
+  if(isFullRecapCandidate(candidate))return [attachRecapAlternates(candidate,ranked)];
+  let list=(ranked||[]).filter(x=>sameGameProgramItem(x,candidate)&&scoreMediaAirReady(x));
+  list=[...new Map(list.map(x=>[String(x.id||x.youtubeId||x.mediaUrl),x])).values()];
+  list.sort((a,b)=>{const aa=a.chronology||[9,999,0,0,0],bb=b.chronology||[9,999,0,0,0];for(let i=0;i<Math.max(aa.length,bb.length);i++){const d=(aa[i]||0)-(bb[i]||0);if(d)return d;}return publishedTimeMs(a)-publishedTimeMs(b);});
+  return list.length?list:[candidate];
+}
+async function resolveScoreIntentMediaPlan(match,selection,transactionId){
+  const v5=window.SBB_PLAYBACK_ORCHESTRATOR,ranked=[...new Map((selection?.ranked||[]).filter(Boolean).map(x=>[playbackItemKey(x),x])).values()];
+  const first=selection?.primary||null,order=[...new Map([first,...ranked].filter(Boolean).map(x=>[playbackItemKey(x),x])).values()];
+  let rejected=0,attempted=0;
+  for(const candidate of order){
+    const candidateIndex=Math.max(0,ranked.findIndex(x=>playbackItemKey(x)===playbackItemKey(candidate)));attempted++;try{v5?.candidateAttempt?.(transactionId,candidate,{candidateIndex});}catch(_){}
+    if(!runtimeMediaUsable(candidate)){rejected++;try{v5?.candidateRejected?.(transactionId,candidate,'runtime media unavailable');}catch(_){}continue;}
+    if(isNativeItem(candidate)&&!scoreMediaAirReady(candidate)){
+      const before=scoreMediaReadiness(candidate);rememberScoreMediaPreflight(candidate,{attempted:true,result:'PREWARMING',readinessBefore:before.disposition,primaryRejected:candidate!==selection?.editorialPrimary});
+      try{v5?.preparing?.(transactionId,candidate,{readiness:before.disposition});}catch(_){}
+      setFeedNote(`${gameLabel(match)} • preparing verified video`);showBumper(Math.max(0,currentIndex),0,'PREPARING VERIFIED VIDEO');
+      const proof=await waitForScoreMediaHot(candidate,SCORE_MEDIA_PREFLIGHT_WAIT_MS);
+      try{v5?.prewarmResult?.(transactionId,candidate,{ok:!!proof.ok,result:proof.ok?(proof.readiness?.disposition||'HOT_READY'):'PREWARM_TIMEOUT'});}catch(_){}
+      if(!proof.ok){rejected++;rememberScoreMediaPreflight(candidate,{attempted:true,result:'PREWARM_TIMEOUT',primaryRejected:true});try{v5?.candidateRejected?.(transactionId,candidate,'PREWARM_TIMEOUT');}catch(_){}try{await window.SBB_SCORE_MEDIA_PLAN?.yieldToBrowser?.();}catch(_){}continue;}
+    }
+    const selectionItems=scoreSelectionItemsForCandidate(match,candidate,ranked);return {primary:selectionItems[0]||candidate,selectionItems,ranked,candidateIndex,attempted,rejected,exhausted:false};
+  }
+  try{v5?.planExhausted?.(transactionId,'All eligible media candidates were exhausted before browser playback readiness could be proved.');}catch(_){}
+  return {primary:null,selectionItems:[],ranked,candidateIndex:-1,attempted,rejected,exhausted:true};
+}
+
 function scoreCardPlaybackSelection(match,items){
   const rankedLegacy=preferGameOverviews(expandMediaVersions((items||[]).filter(Boolean)));
   const request=match&&!isFinal(match)
@@ -6891,12 +7033,15 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
     : (match?v5?.beginScoreIntent?.(gameCenterSelectionFromScoreMatch(match),{reason:'score-card selection',userInitiated:true,playbackDate:intentPlaybackDate})||'':'');
   let items=Array.isArray(providedItems)?providedItems.filter(Boolean):[];
   if(match){
-    const current=scoreCardPlayableItems(match);
-    items=[...new Map(
-      [...items,...current]
-        .filter(x=>x?.verifiedPlayable&&(x.youtubeId||x.mediaUrl))
-        .map(x=>[String(x.id||x.youtubeId||x.mediaUrl),x])
-    ).values()];
+    // v5.0.2: intent-time media planning is cooperative. A pathological event may
+    // have a large date/media pool, but candidate matching yields between bounded
+    // chunks so the browser remains clickable while the plan is assembled.
+    try{await window.SBB_MAIN_THREAD_GUARD?.waitForBreathingRoom?.({timeoutMs:1800,maxFrameMs:220});}catch(_){}
+    const planned=await scoreCardPlayableItemsForIntent(match);
+    items=[...new Map([...items,...(planned.items||[])]
+      .filter(x=>x?.verifiedPlayable&&(x.youtubeId||x.mediaUrl))
+      .map(x=>[String(x.id||x.youtubeId||x.mediaUrl),x])).values()];
+    try{window.__SBB_LAST_SCORE_INTENT_PLAN__={at:Date.now(),matchId:String(matchId||''),eventKey:String(window.SBB_EVENT_IDENTITY?.key?.(match)||''),...(planned.metrics||{})};}catch(_){}
   }
   if(!items.length){
     try{v5?.unavailable?.(v5TransactionId,'No playable media was resolved for the selected event.');}catch(_){}
@@ -6907,38 +7052,24 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
   }
 
   let resolvedSelection=scoreCardPlaybackSelection(match,items);
-  let primary=resolvedSelection.primary;
-  let selectionItems=resolvedSelection.selectionItems;
-  const editorialPrimary=resolvedSelection.editorialPrimary||primary;
+  const editorialPrimary=resolvedSelection.editorialPrimary||resolvedSelection.primary;
   try{if(v5TransactionId)v5?.setPlan?.(v5TransactionId,resolvedSelection.ranked||items,{matchId});}catch(_){}
-  if(!primary){try{v5?.unavailable?.(v5TransactionId,'No eligible media candidate remained after resolution.');}catch(_){}return false;}
-  // If the editorial primary is an unproven direct/native source and no proven
-  // alternative was available, hold it off-air while its hidden decoder proves
-  // real clock progress. This is the boundary that prevents COLD_UPSTREAM media
-  // from becoming ACTIVE at currentTime=0.
-  if(editorialPrimary&&playbackItemKey(primary)===playbackItemKey(editorialPrimary)&&isNativeItem(primary)&&!scoreMediaAirReady(primary)){
-    const initial=scoreMediaReadiness(primary);rememberScoreMediaPreflight(primary,{attempted:true,result:'PREWARMING',readinessBefore:initial.disposition,primaryRejected:false});
-    try{v5?.preparing?.(v5TransactionId,primary,{readiness:initial.disposition});}catch(_){}
-    setFeedNote(`${gameLabel(match)} • preparing verified video`);showBumper(Math.max(0,currentIndex),0,'PREPARING VERIFIED VIDEO');
-    const proof=await waitForScoreMediaHot(primary,SCORE_MEDIA_PREFLIGHT_WAIT_MS);
-    try{v5?.prewarmResult?.(v5TransactionId,primary,{ok:!!proof.ok,result:proof.ok?(proof.readiness?.disposition||'HOT_READY'):'PREWARM_TIMEOUT'});}catch(_){}
-    if(!proof.ok){
-      setPlaybackUi('ready');setVideoLoadingOverlay(false);setFeedNote(`${gameLabel(match)} • video source is still being prepared`);
-      const kicker=$('bumperKicker');if(kicker)kicker.textContent='VIDEO STILL PREPARING';
-      const subtitle=$('bumperSubtitle');if(subtitle)subtitle.textContent='Sports Big Board kept an unproven upstream source off-air. Choose another game or retry shortly.';
-      rememberScoreMediaPreflight(primary,{attempted:true,result:'PREWARM_TIMEOUT',primaryRejected:true});
-      try{v5?.unavailable?.(v5TransactionId,'Selected media did not prove browser readiness before the prewarm deadline.');}catch(_){}
-      return false;
-    }
-    resolvedSelection=scoreCardPlaybackSelection(match,items);primary=resolvedSelection.primary;selectionItems=resolvedSelection.selectionItems;
-    if(!primary){try{v5?.unavailable?.(v5TransactionId,'Media prewarm completed but no eligible candidate remained.');}catch(_){}return false;}
+  if(!(resolvedSelection.ranked||[]).length){try{v5?.planExhausted?.(v5TransactionId,'No eligible media candidate remained after resolution.');v5?.unavailable?.(v5TransactionId,'No eligible media candidate remained after resolution.');}catch(_){}return false;}
+  const planResult=await resolveScoreIntentMediaPlan(match,resolvedSelection,v5TransactionId);
+  let primary=planResult.primary,selectionItems=planResult.selectionItems;
+  if(!primary){
+    setPlaybackUi('ready');setVideoLoadingOverlay(false);setFeedNote(`${gameLabel(match)} • no browser-ready recap source`);
+    const kicker=$('bumperKicker');if(kicker)kicker.textContent='VIDEO UNAVAILABLE';
+    const subtitle=$('bumperSubtitle');if(subtitle)subtitle.textContent='Sports Big Board tried every eligible media candidate without allowing one bad source to block the interface.';
+    try{v5?.unavailable?.(v5TransactionId,'All eligible media candidates were exhausted before browser playback readiness could be proved.');}catch(_){}
+    return false;
   }
   if(editorialPrimary&&playbackItemKey(primary)!==playbackItemKey(editorialPrimary)){
     rememberScoreMediaPreflight(editorialPrimary,{attempted:true,result:'BYPASSED_COLD',primaryRejected:true,selectedMediaKey:playbackItemKey(primary)});
   }else if(editorialPrimary){
     const readiness=scoreMediaReadiness(editorialPrimary);rememberScoreMediaPreflight(editorialPrimary,{attempted:isNativeItem(editorialPrimary),result:isNativeItem(editorialPrimary)?readiness.disposition:'NOT_REQUIRED',primaryRejected:false,selectedMediaKey:playbackItemKey(primary)});
   }
-  try{if(v5TransactionId){v5?.setPlan?.(v5TransactionId,resolvedSelection.ranked||items,{matchId});v5?.selectMedia?.(v5TransactionId,primary,{candidateIndex:Math.max(0,(resolvedSelection.ranked||[]).findIndex(x=>playbackItemKey(x)===playbackItemKey(primary)))});}}catch(_){}
+  try{if(v5TransactionId){v5?.setPlan?.(v5TransactionId,planResult.ranked||resolvedSelection.ranked||items,{matchId});v5?.selectMedia?.(v5TransactionId,primary,{candidateIndex:Math.max(0,Number(planResult.candidateIndex)||0)});}}catch(_){}
   rememberRecentScoreMedia(primary);
   const selectedMediaWasPrepared=isScoreMediaPrimed(primary)||scoreMediaAirReady(primary);
   // v4.3.6: score selection also tells localhost to stage the exact native
@@ -7124,6 +7255,8 @@ window.SBB_DEV_TEST_HOOKS=Object.freeze({
   scoreMediaReadiness:item=>scoreMediaReadiness(item),
   scoreMediaPreflight:itemOrKey=>scoreMediaPreflightSnapshot(itemOrKey),
   scorePlayableCache:()=>scorePlayableItemsCacheSnapshot(),
+  scoreIntentPlan:()=>({last:{...(window.__SBB_LAST_SCORE_INTENT_PLAN__||{})},planner:window.SBB_SCORE_MEDIA_PLAN?.snapshot?.()||{}}),
+  recapIndex:()=>recapCandidateIndexSnapshot(),
   scoreCardProbe:match=>{const a=scoreCardAvailability(match),editorial=a?.editorialPrimary||a?.primary,selected=a?.primary;return {editorialMediaKey:playbackItemKey(editorial),selectedMediaKey:playbackItemKey(selected),readinessBefore:scoreMediaReadiness(editorial).disposition,primaryRejected:!!a?.primaryRejected,selectedReadiness:scoreMediaReadiness(selected).disposition};},
   forcePlaybackEngineReset:()=>window.SBB_PLAYBACK_ENGINE?.reset?.('dev endurance forced reset')===true,
   ultimatePlayback:()=>ultimatePlaybackMetricSnapshot(),
