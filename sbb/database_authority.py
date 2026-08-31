@@ -16,8 +16,8 @@ import time
 
 from .history_repository import HistoryRepository
 
-VERSION = "4.7.21-database-authority-1"
-RECOVERY_VERSION = 4721
+VERSION = "4.7.21-database-authority-2"
+RECOVERY_VERSION = 4722
 _LOCK = threading.Lock()
 _INSTALLED = False
 _ORIG = {}
@@ -319,6 +319,90 @@ def recover(repo, *, force=False):
     return {"skipped": False, "marker": RECOVERY_VERSION, "event": event, "silver": silver, "days": days, "before": before, "after": diagnose(repo)}
 
 
+
+def _llws_source_inventory(repo):
+    """Return durable LLWS source media directly from the normalized database.
+
+    Earlier generic relationship repair could demote a valid LLWS asset to OTHER
+    or quarantine its event edge. The special-event associator must therefore not
+    depend on the league-source helper seeing only currently classified LLWS rows.
+    This query is local-only and deliberately includes prior LLWS relationship
+    history plus unmistakable Little League provenance retained in SOURCE_MEDIA.
+    """
+    items=[];seen=set()
+    try:
+        with closing(repo._read_connect()) as conn:
+            rows=conn.execute("""
+                SELECT DISTINCT s.*
+                FROM history_source_media s
+                LEFT JOIN history_event_media em ON em.asset_key=s.asset_key
+                LEFT JOIN history_catalog_event e ON e.canonical_event_key=em.canonical_event_key
+                WHERE UPPER(COALESCE(e.league,''))='LLWS2026'
+                   OR UPPER(COALESCE(json_extract(s.asset_json,'$.competitionId'),''))='LLWS2026'
+                   OR UPPER(COALESCE(json_extract(s.asset_json,'$.__sbbLeague'),''))='LLWS2026'
+                   OR LOWER(COALESCE(s.channel_name,'')) LIKE '%little league%'
+                   OR LOWER(COALESCE(s.asset_json,'')) LIKE '%little league%'
+                   OR LOWER(COALESCE(s.asset_json,'')) LIKE '%littleleague%'
+                   OR UPPER(COALESCE(s.asset_json,'')) LIKE '%SPECIAL_EVENT_%'
+                ORDER BY s.updated_at DESC
+            """).fetchall()
+        for row in rows:
+            if str(_row(row,'runtime_state','')).upper()=='FAILED':
+                continue
+            try:item=repo._hydrate_asset(row)
+            except Exception:item=_fill_transport(_obj(_row(row,'asset_json','{}')),row)
+            if not isinstance(item,dict):continue
+            key=str(item.get('assetKey') or _row(row,'asset_key','') or '')
+            if not key or key in seen:continue
+            seen.add(key)
+            item.setdefault('assetKey',key)
+            item.setdefault('league','LLWS2026');item.setdefault('competitionId','LLWS2026');item.setdefault('__sbbLeague','LLWS2026')
+            _fill_transport(item,row)
+            items.append(item)
+    except Exception:
+        return []
+    return items
+
+
+def _recover_llws_owner(server, repo):
+    """Replay the actual v4.6.16 LLWS alias/game-number owner over durable sources."""
+    from . import special_event_media_v4616 as special
+    comp=special._ensure_llws_sources(server)
+    if not isinstance(comp,dict) or str(comp.get('id') or '').upper()!='LLWS2026':
+        return {'ready':False,'reason':'COMPETITION_NOT_READY','sourceItems':0}
+    items=_llws_source_inventory(repo)
+    if not items:
+        return {'ready':False,'reason':'SOURCE_INVENTORY_EMPTY','sourceItems':0}
+    result=special.SpecialEventMediaAssociator(server,comp).associate(items)
+    durable=special.durable_stats(server,comp)
+    dates=sorted({str(r.get('date') or '')[:10] for r in special.competition_records(server,comp) if str(r.get('date') or '')[:10]})
+    try:
+        from . import runtime_path_repair_v4720 as runtime
+        runtime._invalidate_day_state(dates)
+    except Exception:pass
+    summary=dict((result or {}).get('summary') or {})
+    return {'ready':True,'sourceItems':len(items),'summary':summary,'durable':durable,'dates':dates}
+
+
+def _llws_recovery_worker(server,repo):
+    """Bounded local retry so recovery waits for competition/history startup order."""
+    last=None
+    for attempt in range(24):
+        try:
+            result=_recover_llws_owner(server,repo)
+            durable=dict(result.get('durable') or {})
+            snapshot=(int(durable.get('sourceAssets') or result.get('sourceItems') or 0),
+                      int(durable.get('associatedAssets') or 0),
+                      int(durable.get('gamesWithoutPlayableAssociatedMedia') or 0))
+            if result.get('ready'):
+                print('[SBB database-authority] LLWS owner recovery '+json.dumps({'attempt':attempt+1,'sourceAssets':snapshot[0],'associatedAssets':snapshot[1],'missingGames':snapshot[2],'summary':result.get('summary') or {}},separators=(',',':'),default=str),flush=True)
+            if result.get('ready') and snapshot[0]>0 and snapshot[2]==0:
+                return
+            last=snapshot
+        except Exception as exc:
+            print(f'[SBB database-authority] LLWS recovery deferred: {type(exc).__name__}: {exc}',flush=True)
+        time.sleep(5)
+
 def _startup():
     server = None
     for _ in range(300):
@@ -329,6 +413,10 @@ def _startup():
     try:
         repo = server.HISTORY_REPOSITORY; print("[SBB database-authority] audit "+json.dumps(diagnose(repo), separators=(",", ":")), flush=True); result = recover(repo)
         if not result.get("skipped"): print("[SBB database-authority] recovery "+json.dumps({"event": result["event"], "silver": result["silver"], "after": result["after"]}, separators=(",", ":"), default=str), flush=True)
+        # LLWS recovery is intentionally NOT gated by the generic recovery marker.
+        # The special-event owner and its source inventory can become ready later in
+        # startup, and older destructive repair may already have overwritten scope.
+        threading.Thread(target=_llws_recovery_worker,args=(server,repo),daemon=True,name='sbb-database-authority-llws').start()
     except Exception as exc: print(f"[SBB database-authority] recovery deferred: {type(exc).__name__}: {exc}", flush=True)
 
 
@@ -343,4 +431,4 @@ def install():
     threading.Thread(target=_startup, daemon=True, name="sbb-database-authority-recovery").start(); return True
 
 
-__all__ = ["VERSION", "RECOVERY_VERSION", "install", "diagnose", "recover", "_authoritative_playability", "_repair_relationships"]
+__all__ = ["VERSION", "RECOVERY_VERSION", "install", "diagnose", "recover", "_authoritative_playability", "_repair_relationships", "_llws_source_inventory", "_recover_llws_owner"]

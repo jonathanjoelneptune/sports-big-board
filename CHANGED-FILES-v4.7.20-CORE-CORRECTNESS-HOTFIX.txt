@@ -1,0 +1,25 @@
+Sports Big Board v4.7.20 Core Correctness Hotfix
+Internal recovery policy: v4.7.21 / database authority revision 2
+
+Upload/replace these repository files preserving paths:
+
+REPLACE
+  index.html
+  VERIFY.sh
+  sbb/__init__.py
+  sbb/day_state.py
+  sbb/database_authority.py
+  tests/test_v4721_database_authority.py
+
+ADD
+  sbb/game_center_runtime_v4721.py
+  tests/test_v4721_core_correctness_recovery.py
+
+What this repairs
+1. Historical days with an empty legacy history_day score cache now fill missing games from canonical history_catalog_event for ALL dates, not only future dates.
+2. LLWS recovery reads durable Little League source inventory directly from history_source_media / prior LLWS relationships and replays the actual v4.6.16 special-event alias/game-number associator. It is not gated by the old one-time generic recovery marker.
+3. Database-authority recovery marker advances to 4722 so the non-destructive event/Silver recovery runs once more after deployment.
+4. CFB is enrolled in the live server Game Center support set and its canonical ESPN event IDs are indexed from the persisted CFB weekly state / history catalog.
+5. Game Center markup now provides the gcSections anchor already required by architecture/game-center-multisport-view.js, allowing the persistent MLB innings + R/H/E and CFB/NFL/NBA/NHL period table to render above every tab.
+
+No public VERSION, release-manifest, core-model, or frontend cache-generation change.

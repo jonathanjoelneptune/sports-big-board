@@ -74,6 +74,8 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v4720_request_broker_runtime.js
   node tests/test_v4720_game_center_runtime.js
   python3 -m unittest tests.test_v4720_runtime_recovery
+  python3 -m unittest tests.test_v4721_database_authority
+  python3 -m unittest tests.test_v4721_core_correctness_recovery
   python3 -m unittest tests.test_v4712_day_state_render_model
   python3 -m unittest tests.test_v4711_availability_index_thin_probe
   python3 -m unittest tests.test_v4710_cold_history_future_store
@@ -112,4 +114,3 @@ grep -q 'https://203-0-113-10.sslip.io/api/soundtrack' "$VERIFY_TMP/pages/config
 grep -q "soundtrackTransport:'private-gcs'" "$VERIFY_TMP/pages/config.js"
 
 echo "PASS: v${VERSION} blocking release behavior gate, architecture, certification, syntax, and deploy rehearsal"
-

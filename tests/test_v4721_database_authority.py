@@ -245,7 +245,7 @@ class V4721DatabaseAuthorityTests(unittest.TestCase):
                 marker = conn.execute("SELECT value FROM history_catalog_meta WHERE key='database_authority_recovery_version'").fetchone()[0]
             self.assertEqual(event_states, ['ASSIGNED','ASSIGNED'])
             self.assertEqual(silver_edges, 2)
-            self.assertEqual(marker, '4721')
+            self.assertEqual(marker, str(mod.RECOVERY_VERSION))
 
 
 class V4721GameCenterCoverageTests(unittest.TestCase):

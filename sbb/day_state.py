@@ -277,13 +277,12 @@ def _catalog_score_rows_for_day(server, day):
 
 
 def _merge_future_catalog_rows(server, day, score_rows, today):
-    """Merge future canonical catalog rows into the ribbon read model.
+    """Merge canonical catalog rows missing from the ribbon read model.
 
-    The legacy history-day score cache was designed around completed/current dates
-    and can legitimately be empty for a future tournament date even though
-    history_catalog_event already owns scheduled games. Day State is the canonical
-    read model, so future scheduled catalog rows must be projected here rather than
-    making the browser rediscover them.
+    The legacy history-day score cache can be absent for historical as well as
+    future dates even though history_catalog_event still owns the canonical game.
+    Provider/history-day rows remain primary; this merge fills only missing event
+    identities so stale compatibility caches cannot erase an otherwise healthy day.
     """
     normalized = {
         str(league or "").upper(): [dict(row) for row in (rows or []) if isinstance(row, dict)]
@@ -291,16 +290,21 @@ def _merge_future_catalog_rows(server, day, score_rows, today):
     }
     diagnostics = {
         "future": bool(day and today and day > today),
+        "catalogMergeScope": "ALL_DATES",
         "catalogCandidates": 0,
         "catalogAdded": 0,
         "rowsBefore": sum(len(rows) for rows in normalized.values()),
         "rowsAfter": 0,
         "leaguesAdded": [],
     }
-    if not diagnostics["future"]:
-        diagnostics["rowsAfter"] = diagnostics["rowsBefore"]
-        return normalized, diagnostics
 
+    # v4.7.21 correctness recovery: history_catalog_event is the canonical
+    # schedule/event authority on historical dates too. The legacy history_day
+    # score cache can legitimately be absent even when canonical events and media
+    # still exist. Merge only identities missing from the legacy/provider rows so
+    # catalog recovery cannot overwrite fresher scores/status, but a historical
+    # date can never become an empty ribbon merely because the compatibility
+    # score cache is missing.
     repo = getattr(server, "HISTORY_REPOSITORY", None)
     if repo is None or not hasattr(repo, "catalog_events"):
         diagnostics["rowsAfter"] = diagnostics["rowsBefore"]
