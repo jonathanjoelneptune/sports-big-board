@@ -1,0 +1,104 @@
+Sports Big Board v4.7.20 — Comprehensive Site Certification + Game Center Watchdog
+=================================================================================
+
+REPLACE
+-------
+index.html
+architecture/game-center-contract.js
+sbb/runtime_path_repair_v4720.py
+sbb/game_center_runtime_v4721.py
+tests/test_v4723_daystate_theme_innings.py
+VERIFY.sh
+
+ADD
+---
+architecture/comprehensive-site-certification.js
+tests/test_v4726_comprehensive_site_certification.js
+
+WHAT THIS DOES
+--------------
+1. COMPREHENSIVE SITE CERTIFICATION
+   Adds one Dev-mode Settings card: RUN COMPREHENSIVE TEST.
+
+   One run captures and prints a single verbose report containing:
+   - release/frontend/backend/discovery version handshake
+   - API status/latency/errors
+   - the existing automated Efficiency Certification in full
+   - date switching, historical navigation, filters, render pipeline, long tasks,
+     DOM retention, heap retention, card-cache/helper performance and Day State
+   - database catalog games, verified assets, coverage completion, games with no
+     verified media, Index Pass Pending, Source Exhausted Empty and Silver counts
+   - database-audit progress and issues
+   - every background worker's phase, heartbeat/progress age, jobs/hour, busy %,
+     provider-wait %, current job/provider and health
+   - green-gap/discovery queue counters
+   - YouTube search budget, playlist crawler, schedule sync and provider concurrency
+   - every configured media source/playlist with items/hydrated/assets/assigned/
+     orphaned/quarantined counts
+   - before/after crawl/database deltas during the certification window
+   - Game Center census across MLB/CFB/NFL/NBA/NHL/MLS/EPL, explicitly including
+     SJSU-USC when the Aug. 29 canonical event is present
+   - Game Center resolution latency, pass/fail, payload KB, completeness, innings,
+     periods, timeline size, player sections and win-probability points
+   - passive live playback first-frame/stall/buffer/failure/invariant metrics
+   - automatically generated prioritized ACTION ITEMS
+
+   COPY FULL REPORT produces the paste-ready text requested for ChatGPT analysis.
+
+2. GAME CENTER WATCHDOG
+   - preserves browser contract version 1.8 for compatibility
+   - adds watchdogVersion=v4726 diagnostics
+   - single-flight request ownership per canonical game fingerprint
+   - fetch-level timeout <= 7 seconds
+   - total preparation ceiling <= 10 seconds
+   - maximum 8 HTTP-202/pending polls
+   - 30-second cooldown for incomplete historical finals
+   - partial-cache reuse rather than 2-second provider hammering
+   - normalized payload guard: timeline <= 500, scoring <= 150, probability <= 240,
+     player rows <= 120 per section
+   - diagnostic snapshot exposes requests/cache hits/coalescing/timeouts/payload size
+
+3. CFB BACKEND WIRING
+   Retains the previous bounded CFB enrollment:
+   - CFB explicitly supported by the server Game Center resolver
+   - canonical ESPN event IDs come from cfb_ranked/history catalog
+   - no second click-time CFB scoreboard discovery lookup
+   - per-date CFB resolver cache
+   - SBB_BACKEND_WIRING diagnostic metadata
+
+4. ALWAYS-ON BACKGROUND WORKERS
+   Retains the requested policy that all five worker threads are always eligible.
+   Provider budgets, SQLite claims, cooldowns and normal resource checks throttle
+   expensive work rather than balanced-worker-limit parking threads for hours.
+
+5. LIGHT MODE
+   Remains hidden/disabled as requested.
+
+6. CI COMPATIBILITY
+   Updates the stale v4.7.23 test that previously required the old
+   "idx not in {1,4,5}" balanced-worker gate. It now verifies the always-on policy.
+   VERIFY.sh adds the new comprehensive certification/browser-watchdog contract test.
+
+HOW TO RUN AFTER DEPLOYMENT
+---------------------------
+1. Start Sports Big Board normally.
+2. Enable DEV MODE.
+3. Open Settings.
+4. Find COMPREHENSIVE SITE CERTIFICATION.
+5. Click RUN COMPREHENSIVE TEST.
+6. Leave the tab visible until it completes (normally roughly 30-120 seconds).
+7. Click COPY FULL REPORT and paste the complete output into ChatGPT.
+
+For the best playback/buffer sample, have a normal recap actively playing when the
+run reaches the playback observation phase. If nothing is playing, playback metrics
+are reported as N/A rather than manufacturing a playback success.
+
+VALIDATION PERFORMED
+--------------------
+PASS architecture/comprehensive-site-certification.js syntax
+PASS architecture/game-center-contract.js syntax
+PASS sbb/runtime_path_repair_v4720.py compile
+PASS sbb/game_center_runtime_v4721.py compile
+PASS corrected tests/test_v4723_daystate_theme_innings.py compile
+PASS tests/test_v4726_comprehensive_site_certification.js
+PASS VERIFY.sh shell syntax
