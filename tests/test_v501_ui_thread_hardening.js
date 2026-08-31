@@ -62,4 +62,29 @@ const rev=window.SBB_APP_STORE.snapshot().revision;
 for(let i=0;i<100;i++)window.SBB_APP_STORE.dispatch({type:'PLAYBACK_PLAYING',payload:{transactionId:tx}});
 assert.strictEqual(window.SBB_APP_STORE.snapshot().revision,rev);
 
+
+// The responsiveness guard must classify a genuinely critical event-loop stall,
+// not merely expose threshold constants. Simulate a >1.2 s delayed 250 ms tick.
+const guardSource=read('architecture/main-thread-guard-v5.js');
+let guardNow=1000,guardTimer=null;
+const guardWindow={};guardWindow.window=guardWindow;
+const guardSandbox={
+  window:guardWindow,console,Date,Math,Number,String,Object,Array,Set,Map,JSON,RegExp,Promise,Error,
+  performance:{now:()=>guardNow},
+  setInterval:(fn,ms)=>{assert.strictEqual(ms,250);guardTimer=fn;return 1;},
+  clearInterval:()=>{},setTimeout:(fn)=>{fn();return 1;},
+  requestAnimationFrame:fn=>{fn();return 1;}
+};
+vm.createContext(guardSandbox);
+vm.runInContext(guardSource,guardSandbox,{filename:'architecture/main-thread-guard-v5.js'});
+assert(guardTimer,'main-thread guard must install its 250 ms sampler');
+const guardBefore=guardWindow.SBB_MAIN_THREAD_GUARD.snapshot();
+guardNow=2600; // expected tick was 1250 => 1350 ms lag, above the 1200 ms critical threshold.
+guardTimer();
+const guardAfter=guardWindow.SBB_MAIN_THREAD_GUARD.snapshot();
+const guardDelta=guardWindow.SBB_MAIN_THREAD_GUARD.delta(guardBefore);
+assert.strictEqual(guardAfter.critical,1,'critical event-loop lag must increment the guard critical counter');
+assert.strictEqual(guardDelta.criticalDelta,1,'critical event-loop lag must be visible in certification delta telemetry');
+assert(guardAfter.maxLagMs>=1200,'critical event-loop lag must preserve the observed peak');
+
 console.log('PASS: v5.0.1 UI-thread hardening removes duplicate playback fanout and compact-projects hot event state');
