@@ -179,3 +179,32 @@ are reported as `*_PAYLOAD_TOO_SPARSE` rather than `complete=YES`.
 
 v5.0.2 remains game-agnostic. Known difficult games are regression evidence, not
 runtime exceptions.
+
+
+## v5.0.3 — Score-click authority and pathological-event hardening
+
+v5.0.3 closes the remaining pre-orchestrator score-click bypass. A score-card
+click may synchronously create only the v5 event/playback intent. It may not call
+`scoreCardPlayableItems()` from the DOM handler, prewarm hidden decoders from
+pointer events, recursively expand an unbounded `recapAlternates` graph, or run a
+whole-ribbon warm reconciliation before yielding to the browser.
+
+The canonical path is now:
+
+`CLICK -> PLAYBACK_INTENT_BEGIN -> browser yield -> cooperative Media Plan -> candidate attempts -> adapter tune`.
+
+`scoreCardPlayableItemsForIntent()` owns click-time media resolution. Legacy
+`scoreCardPlayableItems()` remains a render/read helper only. Media-version graph
+expansion is iterative and bounded to 96 assets / depth 2. Visible-card warming is
+post-render background work; pointerenter, pointerdown and focus perform no media
+or decoder work.
+
+SelectedEvent is also transaction-protected at both the SelectedEvent store and
+App Store reducer boundaries. Helpers, certification cleanup and player callbacks
+cannot clear an event beneath an active event-owned transaction. Score-session
+startup failures remain local Media Plan evidence and cannot trigger the global A/B
+engine-reset threshold.
+
+A small `SBB_SCORE_CLICK_TRACE` breadcrumb records the last completed click stage
+so a pathological event can be diagnosed after reload without adding a game-specific
+production branch. Known difficult games remain regression fixtures only.

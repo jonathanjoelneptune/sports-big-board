@@ -1,11 +1,11 @@
-/* Sports Big Board v5.0.2 — Playback Orchestrator.
+/* Sports Big Board v5.0.3 — Playback Orchestrator.
    This is the only browser service allowed to own a playback transaction. Media
    preparation and the legacy A/B implementation are adapters beneath this layer;
    they cannot own SelectedEvent or create competing application state. */
 (() => {
   'use strict';
-  if(window.SBB_PLAYBACK_ORCHESTRATOR?.version==='5.0.2')return;
-  const VERSION='5.0.2';
+  if(window.SBB_PLAYBACK_ORCHESTRATOR?.version==='5.0.3')return;
+  const VERSION='5.0.3';
   const store=window.SBB_APP_STORE;
   if(!store)throw new Error('v5 Playback Orchestrator requires SBB_APP_STORE');
   let adapter=null;

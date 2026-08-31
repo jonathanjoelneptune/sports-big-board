@@ -1,0 +1,68 @@
+Sports Big Board v5.0.3 — Score Click Authority / Pathological Event Hardening
+
+ROOT CAUSE CLOSED
+- v5.0.2 still evaluated scoreCardPlayableItems(m) as an argument to playGameHighlights()
+  directly inside the ribbon click handler.
+- JavaScript evaluates function arguments before entering playGameHighlights(), so the old
+  synchronous resolver could monopolize the main thread before the v5 intent, cooperative
+  Media Plan builder, main-thread yields, or score-click telemetry existed.
+- This exactly permits the prior video to keep playing while the board stops responding.
+
+RUNTIME CHANGES
+- Score-ribbon click now passes no precomputed media. The synchronous click boundary creates
+  v5 ownership only; media planning starts asynchronously after the transaction exists.
+- Removed pointerenter / pointerdown / focus score-media priming from individual score cards.
+- primeScoreIntent() may prime only the exact candidate immediately; whole-ribbon warm-set
+  reconciliation is deferred.
+- Historical no-media score clicks also use the cooperative planner instead of re-running
+  scoreCardPlayableItems() synchronously.
+- Ordinary playGameHighlights() callers cannot inject a precomputed media array unless marked
+  trustedProvidedItems=true.
+- Nested recap/media alternate expansion is iterative, depth-limited to 2, capped at 96 total
+  expanded assets, and each recapAlternates edge is capped by the existing 12-alternate limit.
+- Score-session startup failures remain local and do not contribute to the destructive global
+  playback-engine reset threshold.
+- App Store schema 1.3 prevents CLEAR_EVENT underneath an active event-owned transaction unless
+  the v5 orchestrator explicitly owns the teardown (or force=true).
+- SelectedEvent applies the same active-transaction clear protection.
+
+DIAGNOSTICS / CERTIFICATION
+- Comprehensive Certification schema 3.3.
+- Persistent score-click breadcrumb records stages including CLICK_RECEIVED, INTENT_CREATED,
+  PLAN_START, PLAN_BUILT, SELECTION_START, SELECTION_RESOLVED, CANDIDATE_PLAN_RESOLVED,
+  PROGRAM_COMMITTED, TUNE_REQUESTED and TUNE_DISPATCHED.
+- Last breadcrumb is persisted in sessionStorage so it survives a page reload after a browser
+  lock and can show the last completed stage.
+- Playback rows report clickStage and bounded media-version expansion telemetry.
+
+REGRESSION COVERAGE
+- New blocking tests/test_v503_score_click_authority.js proves:
+  * no synchronous scoreCardPlayableItems(m) argument from ribbon click;
+  * no pointer/focus pre-click media prime;
+  * bounded iterative alternate expansion;
+  * local score failure containment;
+  * active SelectedEvent cannot be cleared by certification/legacy cleanup;
+  * v5.0.3 diagnostics/certification contracts exist.
+- Retained v5.0.0, v5.0.1, v5.0.2 and v4.8 runtime/playback contracts pass in the merged
+  frontend validation workspace.
+
+LOCAL VALIDATION
+PASS test_v500_runtime_architecture.js
+PASS test_v500_single_tune_gateway.js
+PASS test_v501_ui_thread_hardening.js
+PASS test_v502_media_plan_continuity.js
+PASS test_v503_score_click_authority.js
+PASS test_v480_comprehensive_certification.js
+PASS test_v481_playback_ownership_recovery.js
+PASS test_v482_cold_upstream_game_center.js
+PASS test_v473_efficiency_runtime.js
+PASS test_v474_efficiency_remediation_runtime.js
+PASS test_v476_render_pipeline_runtime.js
+PASS test_v477_first_paint_render_consolidation_runtime.js
+PASS test_v479_navigation_history_runtime.js
+PASS test_v4712_day_state_render_model_runtime.js
+PASS test_v4713_media_readiness_runtime.js
+59/59 executable JS/CSS references use cache generation v5.0.3.
+JS syntax checks pass for app.js and the locally available architecture/UI modules.
+Full repository VERIFY.sh is left to GitHub Actions because the local validation snapshot does
+not contain every unchanged backend file (for example sbb/day_state.py).

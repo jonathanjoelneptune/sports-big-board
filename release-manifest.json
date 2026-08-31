@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "5.0.2",
-  "baseRelease": "5.0.1",
-  "title": "Unified Runtime Media Plan Continuity + Pathological Score Guard",
+  "release": "5.0.3",
+  "baseRelease": "5.0.2",
+  "title": "Unified Runtime Score Click Authority + USC Regression Hardening",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -50,41 +50,39 @@
     "architecture/main-thread-guard-v5.js",
     "tests/test_v501_ui_thread_hardening.js",
     "architecture/score-media-plan-v5.js",
-    "tests/test_v502_media_plan_continuity.js"
+    "tests/test_v502_media_plan_continuity.js",
+    "tests/test_v503_score_click_authority.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "5.0.2"
+        "5.0.3"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v5.0.2",
-        "core-model.js?v=5.0.2",
-        "architecture/main-thread-guard-v5.js?v=5.0.2",
-        "architecture/score-media-plan-v5.js?v=5.0.2",
-        "architecture/app-store-v5.js?v=5.0.2",
-        "architecture/playback-session.js?v=5.0.2",
-        "architecture/playback-orchestrator-v5.js?v=5.0.2",
-        "architecture/comprehensive-site-certification.js?v=5.0.2",
-        "app.js?v=5.0.2"
+        "Sports Big Board \u2014 v5.0.3",
+        "core-model.js?v=5.0.3",
+        "architecture/app-store-v5.js?v=5.0.3",
+        "architecture/playback-orchestrator-v5.js?v=5.0.3",
+        "architecture/score-media-plan-v5.js?v=5.0.3",
+        "architecture/comprehensive-site-certification.js?v=5.0.3",
+        "app.js?v=5.0.3"
       ],
       "forbidden": [
-        "?v=5.0.1",
-        "?v=5.0.0",
-        "?v=4.8.2"
+        "?v=5.0.2",
+        "?v=5.0.1"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'5.0.2'"
+        "version:'5.0.3'"
       ]
     },
     "architecture/app-store-v5.js": {
       "required": [
-        "const VERSION='5.0.2'",
-        "const SCHEMA='1.2'",
+        "const VERSION='5.0.3'",
+        "const SCHEMA='1.3'",
         "compactEvent",
         "branch-local and idempotent",
         "PLAYBACK_INTENT_BEGIN",
@@ -96,7 +94,8 @@
         "planExhausted",
         "UNAVAILABLE BEFORE MEDIA PLAN EXHAUSTED",
         "healthSnapshot",
-        "transactionActive"
+        "transactionActive",
+        "source!=='v5-orchestrator'&&payload.force!==true"
       ]
     },
     "architecture/selected-event-store.js": {
@@ -107,7 +106,8 @@
         "legacyPlaybackMutation",
         "SELECT_EVENT",
         "CLEAR_EVENT",
-        "storeAlreadySelected"
+        "storeAlreadySelected",
+        "source!=='v5-orchestrator'&&meta.force!==true"
       ]
     },
     "architecture/playback-session.js": {
@@ -123,7 +123,7 @@
     },
     "architecture/playback-orchestrator-v5.js": {
       "required": [
-        "const VERSION='5.0.2'",
+        "const VERSION='5.0.3'",
         "window.SBB_PLAYBACK_ORCHESTRATOR",
         "bindAdapter",
         "requestTune",
@@ -137,13 +137,13 @@
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "const VERSION = '5.0.2'",
+        "const VERSION = '5.0.3'",
         "Efficiency Certification"
       ]
     },
     "architecture/comprehensive-site-certification.js": {
       "required": [
-        "const VERSION='3.2'",
+        "const VERSION='3.3'",
         "V5 UNIFIED RUNTIME ARCHITECTURE",
         "mainThreadGuard",
         "requireResponsiveUi",
@@ -158,7 +158,11 @@
         "PAYLOAD_TOO_SPARSE",
         "planCandidates",
         "planBuildMax=",
-        "recapLookupMax="
+        "recapLookupMax=",
+        "SCORE_CLICK_TRACE stage=",
+        "mediaExpansion",
+        "clickStage=",
+        "expansion="
       ],
       "forbidden": [
         "USC_EVENT_FOUND",
@@ -195,10 +199,24 @@
         "MAX_RECAP_ALTERNATES_TOTAL=12",
         "RECAP_ALTERNATE_CACHE_TTL_MS=2000",
         "scoreCardPlayableItemsForIntent(match)",
-        "window.__SBB_LAST_SCORE_INTENT_PLAN__"
+        "window.__SBB_LAST_SCORE_INTENT_PLAN__",
+        "MAX_MEDIA_VERSION_EXPANSION=96",
+        "MAX_MEDIA_VERSION_DEPTH=2",
+        "SCORE_CLICK_TRACE_KEY",
+        "scoreClickTrace",
+        "mediaVersionExpansion",
+        "m,null,{source:'score-ribbon'}",
+        "activeV5?.transactionId&&activeV5?.source==='score'",
+        "score-session startup failure",
+        "scheduleScoreMediaWarmReconcile(90)",
+        "options?.trustedProvidedItems===true"
       ],
       "forbidden": [
-        "for(const x of RECAP_CANDIDATE_REGISTRY.values()) add(x);"
+        "for(const x of RECAP_CANDIDATE_REGISTRY.values()) add(x);",
+        "cell.addEventListener('pointerdown',()=>primeScoreIntent(primaryForPrime)",
+        "cell.addEventListener('pointerenter',()=>primeScoreIntent(primaryForPrime)",
+        "cell.addEventListener('focus',()=>primeScoreIntent(primaryForPrime)",
+        "const playable=scoreCardPlayableItems(match);"
       ]
     },
     "tools/check_release_manifest.py": {
@@ -216,7 +234,8 @@
         "node tests/test_v482_cold_upstream_game_center.js",
         "v5 unified runtime",
         "node tests/test_v501_ui_thread_hardening.js",
-        "node tests/test_v502_media_plan_continuity.js"
+        "node tests/test_v502_media_plan_continuity.js",
+        "node tests/test_v503_score_click_authority.js"
       ]
     },
     "sbb/__init__.py": {
@@ -254,7 +273,9 @@
         "PROVEN_HISTORY",
         "score-media-plan-v5.js",
         "RECAP_CANDIDATE_INDEX",
-        "sport-aware"
+        "sport-aware",
+        "v5.0.3 \u2014 Score-click authority",
+        "score-click"
       ]
     },
     "tests/test_v473_efficiency_runtime.js": {
@@ -364,11 +385,21 @@
     },
     "tests/test_v502_media_plan_continuity.js": {
       "required": [
-        "v5.0.2 media-plan continuity",
+        "v5.0.2+ media-plan continuity baseline",
         "2400",
         "pathological date scan",
         "UNAVAILABLE BEFORE MEDIA PLAN EXHAUSTED",
         "global recap registry scans"
+      ]
+    },
+    "tests/test_v503_score_click_authority.js": {
+      "required": [
+        "v5.0.3 score-click authority",
+        "legacy synchronous score resolver",
+        "1000000",
+        "MAX_MEDIA_VERSION_EXPANSION=96",
+        "PLAYBACK EVENT WITHOUT SELECTED EVENT",
+        "score-session startup failure"
       ]
     }
   }

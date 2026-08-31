@@ -72,7 +72,7 @@ if (location.protocol === 'file:') {
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.1'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.3'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -1402,11 +1402,11 @@ if(!window.__SBB_SCORE_WARM_HEARTBEAT__){
 function primeScoreIntent(item){
   if(!item) return;
   rememberRecentScoreMedia(item);
+  // v5.0.3: explicit score intent may start only the exact candidate prewarm here.
+  // Whole-ribbon reprioritization is deferred so pointer/click intent never walks
+  // every score card or decoder synchronously before the v5 transaction can yield.
   if(scorePreparedLimit()>0) primeScoreMediaItem(item,{priority:true,rank:1000000});
-  reconcileScoreMediaWarmSet({intentItem:item});
-  // Do not launch a second server-side fetch on pointerdown. If this was already
-  // WARM the server cache has it; otherwise the hidden player's /api/media stream
-  // is now the priority request and will populate the cache opportunistically.
+  scheduleScoreMediaWarmReconcile(90);
 }
 
 // v4.8.2: direct/native media is not allowed to become the automatic on-air
@@ -1701,6 +1701,11 @@ function resetPlaybackEngine(reason='systemic playback startup failure'){
   return true;
 }
 function noteTransientPlaybackFailure(item,reason='startup failure'){
+  const activeV5=window.SBB_APP_STORE?.playbackSnapshot?.()||window.SBB_APP_STORE?.snapshot?.().playback||null;
+  // v5.0.3: an explicit score transaction owns a bounded same-event Media Plan.
+  // Candidate/startup failures inside that transaction are local evidence and may
+  // never contribute to the destructive global A/B engine-reset threshold.
+  if(activeV5?.transactionId&&activeV5?.source==='score')return noteLocalPlaybackFailure(item,`score-session startup failure: ${reason}`);
   const nowMs=Date.now(),key=playbackItemKey(item);
   if(key&&key!=='none')TRANSIENT_UNPLAYABLE_MEDIA.set(key,nowMs+PLAYBACK_ENGINE_TRANSIENT_TTL_MS);
   while(playbackEngineFailureSamples.length&&playbackEngineFailureSamples[0].at<nowMs-PLAYBACK_ENGINE_FAILURE_WINDOW_MS)playbackEngineFailureSamples.shift();
@@ -3603,17 +3608,25 @@ function isGoldRecap(item){ return window.SBB_MEDIA_CLASSIFIER?.commentary?.(ite
 function recapTier(item){ return window.SBB_MEDIA_CLASSIFIER?.tier?.(item) || 'blue'; }
 function scoreHighlightTypeForItem(item){ return window.SBB_MEDIA_CLASSIFIER?.scoreType?.(item) || 'clips'; }
 function mediaTierLabel(tier){ return window.SBB_MEDIA_CLASSIFIER?.label?.(tier) || ''; }
+const MAX_MEDIA_VERSION_EXPANSION=96;
+const MAX_MEDIA_VERSION_DEPTH=2;
+const MEDIA_VERSION_EXPANSION_STATS={calls:0,truncated:0,maxExpanded:0,maxQueued:0};
 function expandMediaVersions(items){
-  const out=[], seen=new Set();
-  const add=(x)=>{
-    if(!x || !(x.youtubeId||x.mediaUrl)) return;
-    const key=String(x.id||x.youtubeId||x.mediaUrl||'');
-    if(key && seen.has(key)) return;
-    if(key) seen.add(key);
-    out.push(x);
-    if(Array.isArray(x.recapAlternates)) for(const alt of x.recapAlternates) add(alt);
-  };
-  for(const x of (items||[])) add(x);
+  // v5.0.3: persisted/provider media can contain nested recapAlternates. Never
+  // recursively walk an unbounded object graph on the UI thread. Expansion is
+  // iterative, deduplicated, depth-limited and globally capped per resolution.
+  const out=[],seen=new Set(),queue=(items||[]).filter(Boolean).map(item=>({item,depth:0}));
+  let head=0;MEDIA_VERSION_EXPANSION_STATS.calls++;MEDIA_VERSION_EXPANSION_STATS.maxQueued=Math.max(MEDIA_VERSION_EXPANSION_STATS.maxQueued,queue.length);
+  while(head<queue.length&&out.length<MAX_MEDIA_VERSION_EXPANSION){
+    const {item:x,depth}=queue[head++];
+    if(!x||!(x.youtubeId||x.mediaUrl))continue;
+    const key=String(x.id||x.youtubeId||x.mediaUrl||'');if(!key||seen.has(key))continue;seen.add(key);out.push(x);
+    if(depth>=MAX_MEDIA_VERSION_DEPTH||!Array.isArray(x.recapAlternates))continue;
+    for(const alt of x.recapAlternates.slice(0,MAX_RECAP_ALTERNATES_TOTAL))queue.push({item:alt,depth:depth+1});
+    MEDIA_VERSION_EXPANSION_STATS.maxQueued=Math.max(MEDIA_VERSION_EXPANSION_STATS.maxQueued,queue.length-head);
+  }
+  if(head<queue.length){MEDIA_VERSION_EXPANSION_STATS.truncated++;}
+  MEDIA_VERSION_EXPANSION_STATS.maxExpanded=Math.max(MEDIA_VERSION_EXPANSION_STATS.maxExpanded,out.length);
   return out;
 }
 function mediaAvailability(items){
@@ -5177,11 +5190,12 @@ async function selectHistoricalGameWithoutMedia(match){
   window.SBB_INFO_DRAWER?.open?.('game-center',{automatic:false});
   setFeedNote(`${gameLabel(match)} • finding a playable recap…`);
   try{v5?.preparing?.(transactionId,null,{phase:'historical-media-search'});}catch(_){}
-  const found=await queueHistoricalGameMedia(match,{priority:true});
+  await queueHistoricalGameMedia(match,{priority:true});
   if(scoreBrowseDate===scoreEventDate(match)) renderScoresFromMatchesCombined(false);
-  const playable=scoreCardPlayableItems(match);
-  if(playable.length) playGameHighlights(`${String(match.__sbbLeague||match.competitionId||match.league).toUpperCase()}:${String(match.id??match.matchId??match.eventId??'')}`,match,playable,{transactionId});
-  else{try{v5?.unavailable?.(transactionId,'Historical media search completed without a playable recap.');}catch(_){}setFeedNote(`${gameLabel(match)} • Game Center loaded • no playable recap found yet`);}
+  // v5.0.3: historical click recovery enters the same cooperative planner. Never
+  // re-run the legacy synchronous scoreCardPlayableItems() resolver on the click.
+  const started=await playGameHighlights(`${String(match.__sbbLeague||match.competitionId||match.league).toUpperCase()}:${String(match.id??match.matchId??match.eventId??'')}`,match,null,{transactionId});
+  if(!started)setFeedNote(`${gameLabel(match)} • Game Center loaded • no playable recap found yet`);
 }
 
 async function refreshSoccerLeague(league,today,yesterday,allCandidates){
@@ -6856,7 +6870,7 @@ function scoreCardPlaybackSelection(match,items){
     if(alternative){
       primary=alternative;primaryRejected=true;
       rememberScoreMediaPreflight(editorialPrimary,{attempted:true,result:'BYPASSED_COLD',readinessBefore:readinessBefore.disposition,primaryRejected:true,selectedMediaKey:playbackItemKey(primary)});
-      primeScoreIntent(editorialPrimary); // improve it off-air for a later attempt.
+      scheduleScoreMediaWarmReconcile(120); // background scheduler may improve it later; click path stays bounded.
     }
   }
   if(isFullRecapCandidate(primary)) primary=attachRecapAlternates(primary,ranked);
@@ -6979,11 +6993,10 @@ function renderScoresFromMatchesCombined(animate=false){
       if(isNativeItem(primaryForPrime)){
         const primeKey=nativePrimeKey(primaryForPrime);
         scoreMediaPrimeState.candidates.push({key:primeKey,item:primaryForPrime,cell,match:m,final:isFinal(m)});
-        cell.addEventListener('pointerenter',()=>primeScoreIntent(primaryForPrime),{passive:true,once:true});
-        cell.addEventListener('pointerdown',()=>primeScoreIntent(primaryForPrime),{passive:true});
-        cell.addEventListener('focus',()=>primeScoreIntent(primaryForPrime),{once:true});
+        // v5.0.3: visible-card background warming is owned by the post-render
+        // scheduler. Pointerenter/pointerdown/focus perform zero decoder/media work.
       }
-      cell.onclick=()=>playGameHighlights(`${lg}:${matchId}`,m,scoreCardPlayableItems(m)); // explicit in-app tune; external-only media never hijacks the score card
+      cell.onclick=()=>playGameHighlights(`${lg}:${matchId}`,m,null,{source:'score-ribbon'}); // v5 authority: click never invokes the legacy synchronous resolver
     } else if(scoreBrowseDate<localDateISO(0) && isFinal(m)){
       // Historical dates auto-resolve every missing final. The card remains useful
       // during that search: tapping it opens Game Center and promotes this game's
@@ -7016,7 +7029,20 @@ function renderScoresFromMatchesCombined(animate=false){
   applyScoreRibbonFocusVisuals({scroll:false});
 }
 
+const SCORE_CLICK_TRACE_KEY='sports-big-board.score-click-trace.v1';
+const SCORE_CLICK_TRACE={sequence:0,last:null,history:[]};
+function markScoreClickStage(stage,match,detail={}){
+  const row={sequence:SCORE_CLICK_TRACE.sequence,at:Date.now(),perf:Math.round(performance.now()*10)/10,stage:String(stage||''),eventKey:String(window.SBB_EVENT_IDENTITY?.key?.(match)||''),date:String(scoreEventDate(match)||scoreBrowseDate||'').slice(0,10),...detail};
+  SCORE_CLICK_TRACE.last=row;SCORE_CLICK_TRACE.history.push(row);if(SCORE_CLICK_TRACE.history.length>32)SCORE_CLICK_TRACE.history=SCORE_CLICK_TRACE.history.slice(-32);
+  try{sessionStorage.setItem(SCORE_CLICK_TRACE_KEY,JSON.stringify(row));}catch(_){}
+  return row;
+}
+function beginScoreClickTrace(match){SCORE_CLICK_TRACE.sequence++;return markScoreClickStage('CLICK_RECEIVED',match);}
+function scoreClickTraceSnapshot(){let persisted=null;try{persisted=JSON.parse(sessionStorage.getItem(SCORE_CLICK_TRACE_KEY)||'null');}catch(_){}return {sequence:SCORE_CLICK_TRACE.sequence,last:SCORE_CLICK_TRACE.last?{...SCORE_CLICK_TRACE.last}:null,persisted,history:SCORE_CLICK_TRACE.history.slice(-16)};}
+window.SBB_SCORE_CLICK_TRACE=Object.freeze({snapshot:scoreClickTraceSnapshot});
+
 async function playGameHighlights(matchId, match, providedItems=null, options={}){
+  beginScoreClickTrace(match);
   if(!sbbPlaybackAllowed({notify:true})){
     if(match)syncSelectedEvent(gameCenterSelectionFromScoreMatch(match),{reason:'score-card selection while search priority active',source:'score-ribbon'});
     return;
@@ -7031,8 +7057,12 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
   const v5TransactionId=(requestedTransactionId&&activeV5.transactionId===requestedTransactionId)
     ? requestedTransactionId
     : (match?v5?.beginScoreIntent?.(gameCenterSelectionFromScoreMatch(match),{reason:'score-card selection',userInitiated:true,playbackDate:intentPlaybackDate})||'':'');
-  let items=Array.isArray(providedItems)?providedItems.filter(Boolean):[];
+  markScoreClickStage('INTENT_CREATED',match,{transactionId:v5TransactionId});
+  // v5.0.3: ordinary score clicks never accept a synchronously-computed legacy
+  // media array. Only an explicitly trusted asynchronous caller may seed items.
+  let items=options?.trustedProvidedItems===true&&Array.isArray(providedItems)?providedItems.filter(Boolean):[];
   if(match){
+    markScoreClickStage('PLAN_START',match);
     // v5.0.2: intent-time media planning is cooperative. A pathological event may
     // have a large date/media pool, but candidate matching yields between bounded
     // chunks so the browser remains clickable while the plan is assembled.
@@ -7042,8 +7072,10 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
       .filter(x=>x?.verifiedPlayable&&(x.youtubeId||x.mediaUrl))
       .map(x=>[String(x.id||x.youtubeId||x.mediaUrl),x])).values()];
     try{window.__SBB_LAST_SCORE_INTENT_PLAN__={at:Date.now(),matchId:String(matchId||''),eventKey:String(window.SBB_EVENT_IDENTITY?.key?.(match)||''),...(planned.metrics||{})};}catch(_){}
+    markScoreClickStage('PLAN_BUILT',match,{items:items.length,elapsedMs:Math.round(Number(planned.metrics?.elapsedMs)||0),yields:Number(planned.metrics?.yields)||0});
   }
   if(!items.length){
+    markScoreClickStage('UNAVAILABLE_NO_MEDIA',match);
     try{v5?.unavailable?.(v5TransactionId,'No playable media was resolved for the selected event.');}catch(_){}
     console.warn('[SBB score-click] no playable media',matchId,match);
     try{ fetch('/api/client-log?event=SCORE_CLICK_NO_MEDIA&detail='+encodeURIComponent(String(matchId||'')),{cache:'no-store'}).catch(()=>{}); }catch(e){}
@@ -7051,11 +7083,14 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
     return;
   }
 
+  markScoreClickStage('SELECTION_START',match,{items:items.length});
   let resolvedSelection=scoreCardPlaybackSelection(match,items);
+  markScoreClickStage('SELECTION_RESOLVED',match,{ranked:(resolvedSelection.ranked||[]).length});
   const editorialPrimary=resolvedSelection.editorialPrimary||resolvedSelection.primary;
   try{if(v5TransactionId)v5?.setPlan?.(v5TransactionId,resolvedSelection.ranked||items,{matchId});}catch(_){}
   if(!(resolvedSelection.ranked||[]).length){try{v5?.planExhausted?.(v5TransactionId,'No eligible media candidate remained after resolution.');v5?.unavailable?.(v5TransactionId,'No eligible media candidate remained after resolution.');}catch(_){}return false;}
   const planResult=await resolveScoreIntentMediaPlan(match,resolvedSelection,v5TransactionId);
+  markScoreClickStage('CANDIDATE_PLAN_RESOLVED',match,{attempted:Number(planResult.attempted)||0,rejected:Number(planResult.rejected)||0,exhausted:!!planResult.exhausted});
   let primary=planResult.primary,selectionItems=planResult.selectionItems;
   if(!primary){
     setPlaybackUi('ready');setVideoLoadingOverlay(false);setFeedNote(`${gameLabel(match)} • no browser-ready recap source`);
@@ -7092,6 +7127,7 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
   manualPauseRequested=false;
   visibilityResumeWanted=false;
   beginScorePlaybackSession({matchId,resumeItem,resumeIndex,selectionCount:selectionItems.length,preparedAtClick:selectedMediaWasPrepared,provider:providerForItem(primary),fallbackItems:resolvedSelection.ranked,playbackDate,match,transactionId:v5TransactionId});
+  markScoreClickStage('PROGRAM_COMMITTED',match,{selectionItems:selectionItems.length,mediaKey:playbackItemKey(primary)});
 
   const kind=(match && !isFinal(match))
     ? 'LIVE HIGHLIGHT'
@@ -7102,7 +7138,9 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
     console.info('[SBB score-click] authoritative tune',{matchId,primaryId:primary.id,youtubeId:primary.youtubeId,mediaUrl:primary.mediaUrl,selectionCount:selectionItems.length,final:isFinal(match),kind,preparedAtClick:selectedMediaWasPrepared});
     fetch('/api/client-log?event=SCORE_CLICK_TUNE&detail='+encodeURIComponent(`${matchId}|${primary.id||primary.youtubeId||''}|${kind}|provider=${providerForItem(primary)}|preparedAtClick=${selectedMediaWasPrepared?1:0}`),{cache:'no-store'}).catch(()=>{});
   }catch(e){}
+  markScoreClickStage('TUNE_REQUESTED',match,{mediaKey:playbackItemKey(primary)});
   tuneProgramIndexV5(0,{userInitiated:true,reason:'score-card selection'});
+  markScoreClickStage('TUNE_DISPATCHED',match,{mediaKey:playbackItemKey(primary)});
   return true;
 }
 
@@ -7257,6 +7295,8 @@ window.SBB_DEV_TEST_HOOKS=Object.freeze({
   scorePlayableCache:()=>scorePlayableItemsCacheSnapshot(),
   scoreIntentPlan:()=>({last:{...(window.__SBB_LAST_SCORE_INTENT_PLAN__||{})},planner:window.SBB_SCORE_MEDIA_PLAN?.snapshot?.()||{}}),
   recapIndex:()=>recapCandidateIndexSnapshot(),
+  scoreClickTrace:()=>scoreClickTraceSnapshot(),
+  mediaVersionExpansion:()=>({...MEDIA_VERSION_EXPANSION_STATS}),
   scoreCardProbe:match=>{const a=scoreCardAvailability(match),editorial=a?.editorialPrimary||a?.primary,selected=a?.primary;return {editorialMediaKey:playbackItemKey(editorial),selectedMediaKey:playbackItemKey(selected),readinessBefore:scoreMediaReadiness(editorial).disposition,primaryRejected:!!a?.primaryRejected,selectedReadiness:scoreMediaReadiness(selected).disposition};},
   forcePlaybackEngineReset:()=>window.SBB_PLAYBACK_ENGINE?.reset?.('dev endurance forced reset')===true,
   ultimatePlayback:()=>ultimatePlaybackMetricSnapshot(),

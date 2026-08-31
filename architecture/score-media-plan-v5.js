@@ -1,4 +1,4 @@
-/* Sports Big Board v5.0.2 — Score Media Plan Builder.
+/* Sports Big Board v5.0.3 — Score Media Plan Builder.
    Score-card playback intent must never monopolize the browser main thread while
    resolving a large date/media pool. Exact event candidates are kept first; any
    date-wide fallback scan is chunked and cooperatively yields between bounded

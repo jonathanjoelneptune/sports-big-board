@@ -1,4 +1,4 @@
-/* Sports Big Board v5.0.2 — Unified Runtime App Store.
+/* Sports Big Board v5.0.3 — Unified Runtime App Store.
    The v5 control plane remains the canonical browser state authority, but state
    commits are now branch-local and idempotent. Large provider/score payloads are
    projected into a compact event record before entering the hot playback state.
@@ -6,10 +6,10 @@
    the browser main thread while a video is already playing. */
 (() => {
   'use strict';
-  if (window.SBB_APP_STORE?.version === '5.0.2') return;
+  if (window.SBB_APP_STORE?.version === '5.0.3') return;
 
-  const VERSION='5.0.2';
-  const SCHEMA='1.2';
+  const VERSION='5.0.3';
+  const SCHEMA='1.3';
   const listeners=new Set();
   let revision=0;
   let intentSequence=0;
@@ -119,9 +119,15 @@
         if(eventKey===current.selection.eventKey&&source===current.selection.source&&reason===current.selection.reason)return current;
         return {...current,selection:{event,eventKey,source,reason,selectedAt:now()},gameCenter:{eventKey,state:eventKey?'SELECTED':'IDLE',updatedAt:now(),error:''},lastAction:type};
       }
-      case 'CLEAR_EVENT':
+      case 'CLEAR_EVENT': {
+        const source=clean(payload.source).toLowerCase();
+        // v5.0.3: SelectedEvent is inseparable from an active event-owned playback
+        // transaction. Only the orchestrator (or an explicit forced teardown) may
+        // clear it; certification/UI/player helpers cannot create EVENT WITHOUT SELECTED EVENT.
+        if(current.playback.transactionId&&current.playback.eventKey&&source!=='v5-orchestrator'&&payload.force!==true)return current;
         if(!current.selection.eventKey&&!current.gameCenter.eventKey)return current;
         return {...current,selection:{event:null,eventKey:'',source:clean(payload.source),reason:clean(payload.reason),selectedAt:now()},gameCenter:{eventKey:'',state:'IDLE',updatedAt:now(),error:''},lastAction:type};
+      }
       case 'PLAYBACK_INTENT_BEGIN': {
         const event=compactEvent(payload.event),eventKey=clean(payload.eventKey)||eventKeyOf(event),intentId=++intentSequence,t=now();
         const source=clean(payload.source)||'program',reason=clean(payload.reason);

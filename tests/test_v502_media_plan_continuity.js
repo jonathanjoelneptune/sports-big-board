@@ -6,7 +6,7 @@ const vm=require('vm');
 const ROOT=path.resolve(__dirname,'..');
 const read=rel=>fs.readFileSync(path.join(ROOT,rel),'utf8');
 const version=read('VERSION').trim();
-assert.strictEqual(version,'5.0.2');
+assert(/^5\.0\.(?:[2-9]|[1-9]\d+)$/.test(version),'v5.0.2+ media-plan continuity baseline');
 const app=read('app.js');
 const cert=read('architecture/comprehensive-site-certification.js');
 const index=read('index.html');
@@ -14,8 +14,8 @@ assert(index.includes(`architecture/score-media-plan-v5.js?v=${version}`));
 for(const token of [
   'scoreCardPlayableItemsForIntent','resolveScoreIntentMediaPlan','candidateAttempt','candidateRejected','planExhausted',
   'PROVEN_HISTORY','HOT_THIS_SESSION','indexedRecapCandidatesFor','RECAP_CANDIDATE_INDEX','MAX_RECAP_ALTERNATES_PER_TIER=4','MAX_RECAP_ALTERNATES_TOTAL=12','scoreIntentPlan','recapIndex'
-])assert(app.includes(token),`missing v5.0.2 media-plan token ${token}`);
-assert(cert.includes("const VERSION='3.2'"));
+])assert(app.includes(token),`missing v5.0.2+ media-plan token ${token}`);
+assert(/const VERSION='3\.[2-9]'/.test(cert),'v5.0.2+ certification schema baseline');
 assert(cert.includes('gameCenterPayloadQuality'));
 assert(cert.includes('PAYLOAD_TOO_SPARSE'));
 assert(cert.includes("lg==='NFL'||lg==='CFB'"));
@@ -73,5 +73,5 @@ assert(!app.includes('for(const x of RECAP_CANDIDATE_REGISTRY.values()) add(x);'
   w.SBB_PLAYBACK_ORCHESTRATOR.planExhausted(tx,'all tried');w.SBB_PLAYBACK_ORCHESTRATOR.unavailable(tx,'all tried');snap=w.SBB_APP_STORE.snapshot();
   assert.strictEqual(snap.playback.planAttempted,2);assert.strictEqual(snap.playback.planRejected,2);assert.strictEqual(snap.playback.planExhausted,true);assert.strictEqual(snap.playback.state,'UNAVAILABLE');assert.strictEqual(snap.invariant,'OK');
 
-  console.log('PASS: v5.0.2 media-plan continuity + cooperative score planning + indexed recap lookup contracts');
+  console.log(`PASS: ${version} retains v5.0.2 media-plan continuity + cooperative score planning + indexed recap lookup contracts`);
 })().catch(err=>{console.error(err);process.exitCode=1;});

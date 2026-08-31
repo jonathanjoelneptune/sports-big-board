@@ -1,4 +1,4 @@
-/* Sports Big Board v5.0.0 — SelectedEvent authority.
+/* Sports Big Board v5.0.0 — SelectedEvent authority (v5.0.3 ownership hardening).
    Sporting-event identity is independent of media/player state. Player callbacks
    cannot replace or clear the selected score event while a v5 playback transaction
    owns it. Game Center subscribes to this store only. */
@@ -51,9 +51,10 @@
     return snapshot();
   }
   function clear(meta={}){
-    // Player/media code is not allowed to destroy event ownership underneath an
-    // active transaction. Only the orchestrator/user-navigation path may do so.
-    if(protectedByV5()&&legacyPlaybackMutation(meta))return snapshot();
+    // v5.0.3: no helper/UI/certification/player path may clear SelectedEvent while
+    // an event-owned transaction is active. Teardown is an orchestrator operation.
+    const source=clean(meta.source).toLowerCase();
+    if(protectedByV5()&&source!=='v5-orchestrator'&&meta.force!==true)return snapshot();
     if(!current){
       if(!meta.storeAlreadySelected){try{window.SBB_APP_STORE?.dispatch?.({type:'CLEAR_EVENT',payload:{source:clean(meta.source),reason:clean(meta.reason)}});}catch(_){ }}
       return null;
