@@ -809,7 +809,7 @@ class DayStateEngine:
                 with self.lock:
                     self.cache[day] = cached
 
-        # Historical snapshots are valuable first-paint state. v4.7.19 discarded
+        # A persisted historical snapshot is valuable first-paint state. v4.7.19 discarded
         # every prior generation before proving that the replacement projection was
         # at least as complete, which turned healthy historical WATCH cards into
         # FIND while the new read model caught up. Preserve a non-empty historical
