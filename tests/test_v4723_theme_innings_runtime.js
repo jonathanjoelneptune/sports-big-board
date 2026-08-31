@@ -9,10 +9,12 @@ assert(gc.includes('RECONCILED FROM PLAY-BY-PLAY'),'reconciled linescore indicat
 assert(gc.includes('if(baseballEvent(gc))return baseballCard(gc);'),'baseball routing is still MLB-only');
 
 const index=fs.readFileSync('index.html','utf8');
-assert(index.includes('function retintDarkSurfaces()'),'dynamic light-mode dark-surface repair missing');
-assert(index.includes('data-sbb-light-auto="1"'),'auto-light surface CSS missing');
-assert(index.includes("attributeFilter:['class','style']"),'dynamic class/style changes are not monitored');
+assert(index.includes('CSS_ONLY_NO_MUTATION_OBSERVER'),'light mode is not using stable CSS ownership');
+assert(!index.includes('new MutationObserver(scheduleRetint)'),'whole-DOM light-mode observer is still active');
+assert(!index.includes('function retintDarkSurfaces()'),'computed retint loop is still active');
+assert(index.includes('#scoreFilters > .sbb-active-event-filter'),'special-event main-row flicker guard missing');
+assert(index.includes('body #sbbSpecialEventsMenu'),'late-injected special menu light override missing');
 assert(index.includes('.coverage-pipeline'),'coverage pipeline light-mode surface missing');
 assert(index.includes('.sport-feed-diagnostics'),'feed diagnostics light-mode surface missing');
 
-console.log('PASS: v4.7.20 follow-on day/theme/innings UI contracts');
+console.log('PASS: v4.7.20 stable light-theme + special-event ownership contracts');

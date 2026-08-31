@@ -62,6 +62,27 @@
     html[data-sbb-theme="light"] :is(.coverage-pipeline,.coverage-head,.coverage-steps,.coverage-detail,.sport-feed-diagnostics,.sport-feed-head,.sport-feed-grid,.sport-feed-chip,.queue-list,.queue-item,.test-notes,.lower-third,.controls,.score-day-pager,.score-day-pager-left,.score-day-pager-right,.game-center-hero,.gc-header,.gc-scoreboard,.gc-team,.gc-section,.gc-overview-card,.gc-stat-card,.gc-player-section,.gc-timeline,.gc-timeline-item,.history-audit-table-wrap,.history-silver-export-bar,.history-audit-summary,.settings-section,.settings-card,.settings-group,.drawer-section,.drawer-card,.milestone-procedure-item){
       background-color:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
     }
+    /* v4.7.20 stability hotfix: Light Mode is CSS-owned. These selectors are
+       intentionally more specific than lazily injected dark component styles, so
+       a normal render can never flash a black first-party surface before a JS
+       observer re-tints it. Actual image/video/iframe pixels remain untouched. */
+    html[data-sbb-theme="light"] body :is(.player-layer,.youtube-player-host,.native-player,.video-loading-overlay,.player-footer,.player-status,.utility-controls,.soundtrack-controls,.sbb-special-menu,.sbb-date-popover,.sbb-builder-shell,.sbb-builder-status,.sbb-builder-review,.sbb-builder-step,.sbb-builder-competition-row,.history-recovery-controls,.history-search-console,.history-audit-pane,.history-audit-content,.milestone-console-body,.milestone-console-log,.coverage-body,.coverage-pipeline-body){
+      background:var(--sbb-light-panel)!important;background-color:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important;box-shadow:none!important
+    }
+    html[data-sbb-theme="light"] body .sbb-builder-modal{background:rgba(222,228,234,.86)!important}
+    html[data-sbb-theme="light"] body .sbb-date-popover:before{background:var(--sbb-light-panel)!important;border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] body #sbbSpecialEventsMenu,
+    html[data-sbb-theme="light"] body #sbbSpecialEventsMenu button{background:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] body #sbbSpecialEventsMenu button:hover{background:#e1ebf3!important;border-color:var(--sbb-light-blue)!important}
+    html[data-sbb-theme="light"] body #sbbSpecialEventsMenu button.selected{background:#d9e8f4!important;border-color:var(--sbb-light-blue)!important;color:#124e7e!important}
+    html[data-sbb-theme="light"] body .sbb-calendar-day{background:#f7f9fb!important;color:var(--sbb-light-text)!important;border-color:#d5dde4!important}
+    html[data-sbb-theme="light"] body .sbb-calendar-day.selected{background:#d9e8f4!important;color:#124e7e!important;border-color:var(--sbb-light-blue)!important}
+    html[data-sbb-theme="light"] body .sbb-calendar-day.today{background:#e2f1e9!important;color:#256346!important;border-color:#5c9d79!important}
+    /* Special Events dropdown is the sole visible navigation home for active
+       tournament buttons. Competition Builder may recreate an active-event chip,
+       but CSS suppresses it in the same style calculation, eliminating flicker. */
+    #scoreFilters > .sbb-active-event-filter,
+    #scoreFilters > button[data-score-filter="LLWS2026"].sbb-dynamic-competition{display:none!important}
     html[data-sbb-theme="light"] [data-sbb-light-auto="1"]{
       background-color:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
     }
@@ -786,58 +807,18 @@
     const icon=btn.querySelector('.theme-toggle-icon');if(icon)icon.textContent=light?'☾':'☀';
     const label=btn.querySelector('.theme-toggle-label');if(label)label.textContent=light?'DARK':'LIGHT';
   }
-  const AUTO_EXCLUDE='.stage,.player-layer,.youtube-player-host,.native-player,.bumper,.bumper-backdrop,.context-program,.on-air-badge,.sbb-launch-glow,img,video,iframe,canvas,svg';
-  let autoFrame=0,autoObserver=null;
-  function darkSurface(el){
-    if(!(el instanceof Element)||el.matches(AUTO_EXCLUDE)||el.closest('.stage'))return 0;
-    const cs=getComputedStyle(el),m=String(cs.backgroundColor||'').match(/rgba?\(([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?\)/i);
-    if(!m)return 0;
-    const r=Number(m[1]),g=Number(m[2]),b=Number(m[3]),a=m[4]===undefined?1:Number(m[4]);
-    if(a<.28)return 0;
-    const luminance=.2126*r+.7152*g+.0722*b;
-    if(luminance>78)return 0;
-    return luminance<28?2:1;
-  }
-  function retintDarkSurfaces(){
-    autoFrame=0;
-    if(current()!=='light')return;
-    for(const el of document.body?.querySelectorAll('*')||[]){
-      const level=darkSurface(el);
-      if(level)el.dataset.sbbLightAuto=String(level);
-      else if(el.dataset.sbbLightAuto)delete el.dataset.sbbLightAuto;
-    }
-  }
-  function scheduleRetint(){
-    if(current()!=='light'||autoFrame)return;
-    autoFrame=requestAnimationFrame(retintDarkSurfaces);
-  }
-  function clearAutoRetint(){
-    if(autoFrame){cancelAnimationFrame(autoFrame);autoFrame=0;}
-    for(const el of document.querySelectorAll('[data-sbb-light-auto]'))delete el.dataset.sbbLightAuto;
-  }
-  function ensureAutoObserver(){
-    if(autoObserver||!document.body)return;
-    autoObserver=new MutationObserver(scheduleRetint);
-    autoObserver.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
-  }
   function setTheme(value,persist=true){
     const theme=value==='light'?'light':'dark';
     root.dataset.sbbTheme=theme;
     if(persist){try{localStorage.setItem(KEY,theme);}catch(_){}}
     syncButton();
-    if(theme==='light'){ensureAutoObserver();scheduleRetint();}else clearAutoRetint();
     window.dispatchEvent(new CustomEvent('sbb:themechange',{detail:{theme}}));
     return theme;
   }
   function toggle(){return setTheme(current()==='light'?'dark':'light');}
-  function bind(){
-    button()?.addEventListener('click',toggle);
-    syncButton();
-    ensureAutoObserver();
-    if(current()==='light')scheduleRetint();
-  }
+  function bind(){button()?.addEventListener('click',toggle);syncButton();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_THEME=Object.freeze({version:'1.1',current,set:setTheme,toggle,retint:retintDarkSurfaces});
+  window.SBB_THEME=Object.freeze({version:'1.2',current,set:setTheme,toggle,mode:'CSS_ONLY_NO_MUTATION_OBSERVER'});
 })();
 </script>
 

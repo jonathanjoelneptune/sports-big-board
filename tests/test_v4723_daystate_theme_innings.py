@@ -21,14 +21,21 @@ class V4723HotfixTests(unittest.TestCase):
         self.assertIn("baseballLinescoreFallback:'PLAY_BY_PLAY_RECONCILIATION'",src)
         self.assertIn("if(baseballEvent(gc))return baseballCard(gc);",src)
 
-    def test_light_mode_has_dynamic_dark_surface_cleanup(self):
+    def test_light_mode_is_static_css_owned_not_mutation_observer_owned(self):
         src=(ROOT/"index.html").read_text(encoding="utf-8")
-        self.assertIn('data-sbb-light-auto="1"',src)
-        self.assertIn("function retintDarkSurfaces()",src)
-        self.assertIn("function darkSurface(el)",src)
-        self.assertIn("attributeFilter:['class','style']",src)
-        self.assertIn(".coverage-pipeline",src)
-        self.assertIn(".sport-feed-diagnostics",src)
+        self.assertIn("CSS_ONLY_NO_MUTATION_OBSERVER",src)
+        self.assertNotIn("new MutationObserver(scheduleRetint)",src)
+        self.assertNotIn("function retintDarkSurfaces()",src)
+        self.assertIn("#scoreFilters > .sbb-active-event-filter",src)
+        self.assertIn("html[data-sbb-theme=\"light\"] body #sbbSpecialEventsMenu",src)
+
+    def test_balanced_background_has_general_gap_lane_and_stale_audit_rebase(self):
+        src=(ROOT/"sbb/runtime_path_repair_v4720.py").read_text(encoding="utf-8")
+        self.assertIn("def _install_background_progress_policy",src)
+        self.assertIn("idx not in {1,4,5}",src)
+        self.assertIn("def _restart_stale_database_audit",src)
+        self.assertIn("release_rebuild_pending_events",src)
+        self.assertIn("def _llws_periodic_recovery",src)
 
 if __name__=="__main__":
     unittest.main()

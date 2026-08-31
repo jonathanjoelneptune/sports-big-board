@@ -26,7 +26,7 @@ import time
 
 from .history_repository import HistoryRepository
 
-VERSION = "4.7.20-runtime-path-repair-llws2"
+VERSION = "4.7.20-runtime-path-repair-llws3"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 
@@ -667,6 +667,110 @@ def _cfb_has_known_usc(repo):
     return False
 
 
+
+
+def _install_background_progress_policy(server):
+    """Repair BALANCED-mode starvation without changing playback/search modes.
+
+    The production console exposed configured=5 / desired=1 while thousands of
+    current discovery-v15 rows and official-source enrichments were due. Worker 1
+    was held in strict NFL affinity by one retry-delayed event, while workers 2-5
+    were intentionally disabled by ``balanced-worker-limit``. BALANCED now keeps
+    three complementary lanes alive: NFL/assist (1), NHL/official float (4), and
+    general discovery gaps (5). SEARCH still enables all workers; PLAYBACK still
+    disables discovery workers.
+    """
+    original=getattr(server,"_history_green_worker_enabled",None)
+    if not callable(original):
+        return False
+    if getattr(original,"__sbbBalancedProgressV4724",False):
+        return True
+    def enabled(worker_index):
+        mode=str(server._history_work_mode() if hasattr(server,"_history_work_mode") else "balanced").lower()
+        idx=max(1,int(worker_index or 1))
+        if mode=="playback": return False,"playback-priority"
+        if mode=="balanced" and idx not in {1,4,5}: return False,"balanced-worker-limit"
+        return True,""
+    enabled.__sbbBalancedProgressV4724=True
+    enabled.__sbbOriginal=original
+    server._history_green_worker_enabled=enabled
+    try:
+        server.MILESTONE_CONSOLE.record("history-background","PASS","balanced background progress lanes restored",{"version":VERSION,"balancedWorkers":[1,4,5]})
+    except Exception:
+        pass
+    return True
+
+
+def _restart_stale_database_audit(server):
+    """Restart a persisted 0/0 or cardinality-stale read-only audit once.
+
+    A completed audit marker survived while the normalized catalog later grew to
+    thousands of events. That made the console report READY 0/0 indefinitely. The
+    audit is read-only; this only resets its cursor/generation so the existing audit
+    worker measures the catalog that actually exists now.
+    """
+    repo=getattr(server,"HISTORY_REPOSITORY",None)
+    state=getattr(server,"HISTORY_DB_AUDIT_STATE",None)
+    lock=getattr(server,"HISTORY_DB_AUDIT_LOCK",None)
+    if repo is None or not isinstance(state,dict) or lock is None:
+        return {"reset":False,"reason":"audit-owner-not-ready"}
+    try:
+        total=int(repo.catalog_event_count() or 0)
+        checked=int(state.get("checked") or state.get("cursor") or 0)
+        complete=bool(state.get("complete")) or bool(int(repo.catalog_meta("database_audit_complete","0") or 0))
+        # Do not continuously restart an audit that is merely catching up. This
+        # deployment generation resets only a clearly stale completed snapshot.
+        generation_marker=int(repo.catalog_meta("v4724_database_audit_rebase","0") or 0)
+        stale=bool(total>0 and complete and checked<total)
+        if not stale or generation_marker>=1:
+            return {"reset":False,"total":total,"checked":checked,"complete":complete}
+        with lock:
+            generation=max(int(state.get("generation") or 0),int(repo.catalog_meta("database_audit_generation","0") or 0))+1
+            state.update({"generation":generation,"running":False,"complete":False,"cursor":0,"checked":0,"total":total,"startedAt":0.0,"completedAt":0.0,"lastRun":0.0,"lastError":"","issues":{"noVerifiedMedia":0,"staleDiscovery":0,"quarantinedLinks":0,"unknownDiscovery":0},"integrity":{},"silverIdentity":{}})
+        repo.set_catalog_meta("database_audit_generation",str(generation))
+        repo.set_catalog_meta("database_audit_cursor","0")
+        repo.set_catalog_meta("database_audit_complete","0")
+        repo.set_catalog_meta("v4724_database_audit_rebase","1")
+        return {"reset":True,"total":total,"previousChecked":checked,"generation":generation}
+    except Exception as exc:
+        return {"reset":False,"reason":f"{type(exc).__name__}: {exc}"}
+
+
+def _release_current_discovery_pending(server):
+    repo=getattr(server,"HISTORY_REPOSITORY",None)
+    version=int(getattr(server,"HISTORY_DISCOVERY_VERSION",0) or 0)
+    if repo is None or not version or not hasattr(repo,"release_rebuild_pending_events"):
+        return 0
+    try:
+        return int(repo.release_rebuild_pending_events(version) or 0)
+    except Exception:
+        return 0
+
+
+def _llws_periodic_recovery(server):
+    """Keep local LLWS reassociation alive after the short startup window.
+
+    PlaylistItems/video APIs remain usable even when YouTube Search quota is gone,
+    and the deterministic ESPN manifest requires no provider call. Retry the real
+    special-event owner until persisted sources are associated, then keep a low-rate
+    safety check while the tournament/schedule projection settles.
+    """
+    last_signature=None
+    for attempt in range(90):
+        try:
+            owner=_llws_owner_reassociate(server)
+            stats=owner.get("stats") or {}
+            signature=(int(stats.get("sourceAssets") or 0),int(stats.get("associatedAssets") or 0),int(stats.get("gamesWithPlayableAssociatedMedia") or 0),int(stats.get("gamesWithoutPlayableAssociatedMedia") or 0))
+            if signature!=last_signature:
+                print(f"[SBB v4.7.20] LLWS periodic recovery source={signature[0]} associated={signature[1]} playableGames={signature[2]} missingGames={signature[3]}",flush=True)
+                last_signature=signature
+            if signature[0]>0 and signature[1]>0 and signature[3]==0:
+                break
+        except Exception as exc:
+            if attempt in {0,5,20,60}:
+                print(f"[SBB v4.7.20] LLWS periodic recovery waiting: {type(exc).__name__}: {exc}",flush=True)
+        time.sleep(20 if attempt<15 else 60)
+
 def _startup_runtime_recovery():
     # Wait for server.py + CFB ranked schedule registration.  Run quickly at first,
     # then back off; the loop is bounded and exits once the known acceptance asset
@@ -685,6 +789,14 @@ def _startup_runtime_recovery():
     if server is None:
         return
     repo = server.HISTORY_REPOSITORY
+    _install_background_progress_policy(server)
+    audit_rebase=_restart_stale_database_audit(server)
+    released_pending=_release_current_discovery_pending(server)
+    try:
+        print(f"[SBB v4.7.20] background progress policy balanced=1,4,5 audit={audit_rebase} releasedCurrentDiscovery={released_pending}",flush=True)
+    except Exception:
+        pass
+    threading.Thread(target=_llws_periodic_recovery,args=(server,),daemon=True,name="sbb-v4724-llws-periodic-recovery").start()
     try:
         recovered = restore_special_event_links(repo)
         if recovered.get("restored"):
@@ -782,4 +894,5 @@ __all__ = [
     "VERSION", "install", "restore_special_event_links", "restore_silver_collection_links", "_invalidate_day_state", "_llws_owner_reassociate", "_install_llws_trailing_code_alias_bridge", "_seed_llws_espn_playlist_manifest", "LLWS_ESPN_2026_GAME_MANIFEST",
     "_hydrate_asset", "_roundup_media", "_cfb_persist_results",
     "_repair_day_state_catalog_projection", "_day_state_get",
+    "_install_background_progress_policy", "_restart_stale_database_audit", "_release_current_discovery_pending", "_llws_periodic_recovery",
 ]

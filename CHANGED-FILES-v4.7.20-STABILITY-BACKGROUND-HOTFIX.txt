@@ -1,0 +1,53 @@
+Sports Big Board v4.7.20 — Stability + Background Progress Hotfix
+==================================================================
+
+REPLACE
+-------
+index.html
+sbb/runtime_path_repair_v4720.py
+tests/test_v4723_daystate_theme_innings.py
+tests/test_v4723_theme_innings_runtime.js
+
+PURPOSE
+-------
+1. Light Mode
+   - Removes the whole-DOM MutationObserver/computed-style re-tint loop.
+   - Light mode is now CSS-owned, eliminating black/light flashing caused by
+     normal class/style mutations racing the next requestAnimationFrame.
+   - Adds high-specificity light overrides for lazily injected navigation,
+     Special Events, Competition Builder, player chrome, diagnostics and audit UI.
+   - Actual image/video/iframe pixels remain media-owned.
+
+2. Special Events / LLWS ribbon stability
+   - Active SPECIAL_EVENT chips created by Competition Builder are always hidden
+     from the permanent sport row in the same CSS style calculation.
+   - LLWS remains in Special Events instead of appearing/disappearing between
+     Competition Builder and Navigation UI reconciliation cycles.
+
+3. Background discovery progress
+   - BALANCED mode now enables workers 1, 4 and 5 instead of only worker 1:
+       worker 1 = NFL-first + assist
+       worker 4 = NHL / official-source float
+       worker 5 = general discovery-gap queue
+   - SEARCH mode still enables all workers.
+   - PLAYBACK mode still pauses discovery workers.
+   - Releases eligible PENDING_CURRENT_DISCOVERY rows for the current discovery version.
+
+4. Database audit
+   - A completed-but-stale audit such as READY 0/0 while catalog events exist is
+     automatically rebased once and rerun by the existing read-only audit worker.
+
+5. LLWS
+   - Keeps the real LLWS special-event reassociation owner running periodically
+     after startup instead of giving up after the short startup recovery window.
+   - Uses the persisted ESPN playlist manifest / PlaylistItems path; does not
+     require YouTube Search quota.
+
+VALIDATION
+----------
+PASS Python compilation
+PASS updated blocking v4.7.20 v4723 Python tests (4/4)
+PASS updated blocking v4.7.20 v4723 browser contract
+PASS inline theme-runtime JavaScript syntax
+PASS existing v4.7.20 release-manifest required tokens retained
+No VERSION or cache-generation change.
