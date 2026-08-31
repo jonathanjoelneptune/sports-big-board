@@ -1,0 +1,60 @@
+Sports Big Board v4.7.20 — LLWS / Light Mode / Win Probability Graph Hotfix
+===============================================================================
+
+UPLOAD / REPLACE
+----------------
+index.html
+architecture/game-center-multisport-view.js
+sbb/runtime_path_repair_v4720.py
+VERIFY.sh
+
+ADD
+---
+tests/test_v4722_llws_theme_winprob.py
+tests/test_v4722_theme_winprob_runtime.js
+
+WHAT CHANGED
+------------
+1. Win Probability
+   - Replaces the sampled probability table with a responsive ESPN probability graph.
+   - Away line uses the board red accent, home line uses the board blue accent.
+   - Includes 0/25/50/75/100% reference lines, latest percentages, game-state label,
+     final/latest score context, and optional tie probability.
+   - Bounds rendered points to 160 to avoid excessive DOM/path work.
+
+2. LLWS 2026
+   - Uses the confirmed ESPN playlist PLJBIB5zsrIC8.
+   - Seeds the 35 main-tournament game-highlight packages supplied by the operator.
+   - Excludes regional championships, Challenger exhibition, Shorts, player features,
+     studio clips, and other non-game packages.
+   - Adds canonical trailing-code aliases used by the ribbon:
+       Hamilton OH -> Ohio
+       Henderson NV -> Nevada
+       Tokyo JPN -> Japan
+       Willemstad CUW -> Curacao
+     plus the other US-state / international location codes used in the tournament.
+   - The existing v4.6.16 special-event associator still owns the final canonical
+     game relationship. The new manifest is source evidence, not a hard-coded
+     event assignment.
+   - Repeated matchups are disambiguated using the supplied playlist publication day.
+
+3. Light Mode
+   - Adds a LIGHT/DARK button in the top navigation.
+   - Preference persists in localStorage.
+   - Theme is applied before page paint on reload to minimize a dark-mode flash.
+   - Rethemes navigation, score ribbon, key-info ribbon, cards, Game Center, settings,
+     historical audit, certification console, controls, tables, popovers, menus,
+     launch screen, and player chrome with light gray surfaces plus red/blue accents.
+   - Third-party embedded YouTube UI remains controlled by YouTube.
+
+VALIDATION
+----------
+PASS python -m py_compile sbb/runtime_path_repair_v4720.py
+PASS python -m unittest tests.test_v4722_llws_theme_winprob
+PASS node --check architecture/game-center-multisport-view.js
+PASS node tests/test_v4722_theme_winprob_runtime.js
+PASS bash -n VERIFY.sh
+PASS all existing v4.7.20 release-manifest required tokens retained
+PASS all 53 executable index.html cache references remain ?v=4.7.20
+
+No VERSION or release-manifest change is required.

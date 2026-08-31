@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Sports Big Board — v4.7.20</title>
+  <script id="sbbThemeBoot">
+    (()=>{try{document.documentElement.dataset.sbbTheme=localStorage.getItem('sbb.theme')==='light'?'light':'dark';}catch(_){document.documentElement.dataset.sbbTheme='dark';}})();
+  </script>
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://www.googlevideo.com">
   <link rel="preconnect" href="https://i.ytimg.com">
@@ -18,6 +21,50 @@
     html body #scoreFilters > button[data-score-filter="CFB"].sbb-special-main-row-suppressed{display:inline-flex!important}
     #sbbSpecialEventsMenu [data-special-competition="CFB"]{display:none!important}
   </style>
+
+  <style id="sbbLightModeTheme">
+    :root{--sbb-light-bg:#edf1f4;--sbb-light-panel:#f8fafc;--sbb-light-panel2:#e5ebf0;--sbb-light-line:#c6d0d9;--sbb-light-text:#18232d;--sbb-light-muted:#657482;--sbb-light-red:#c73f3a;--sbb-light-blue:#246fae}
+    html[data-sbb-theme="light"]{color-scheme:light;--bg:var(--sbb-light-bg);--panel:var(--sbb-light-panel);--panel2:var(--sbb-light-panel2);--line:var(--sbb-light-line);--text:var(--sbb-light-text);--muted:var(--sbb-light-muted);--accent:var(--sbb-light-red);--blue:var(--sbb-light-blue);--green:#2f7b59}
+    html[data-sbb-theme="light"] body,
+    html[data-sbb-theme="light"] #app-shell{background:var(--sbb-light-bg)!important;color:var(--sbb-light-text)!important}
+    html[data-sbb-theme="light"] :is(.top-nav-header,.key-info-ribbon,.score-ribbon,.mobile-live-bar,.player-topbar,.info-drawer,.info-drawer-tabs,.drawer-pane,.settings-pane,.history-audit-shell,.history-audit-header,.milestone-console,.milestone-console-header,.milestone-procedures,.queue-panel,.side-rail,.left-rail,.right-rail,.gc-section-tabs,.gc-persistent-summary){
+      background:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
+    }
+    html[data-sbb-theme="light"] :is([class*="-card"],[class*="-panel"],[class*="-popover"],[class*="-menu"],[class*="-modal"],.gc-card,.gc-overview-grid,.score-cell,.score-day-indicator,.key-info-item,.proof-card){
+      background-color:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
+    }
+    html[data-sbb-theme="light"] :is(.stage-card,.game-center-shell,.game-center-content,#gameCenterContent){background:var(--sbb-light-panel2)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] .stage{background:#dce3e9!important;border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] :is(h1,h2,h3,h4,strong,b,.gc-card-title,.settings-card-title,.league-chip,.score-cell b,.score-day-indicator){color:var(--sbb-light-text)!important}
+    html[data-sbb-theme="light"] :is(p,small,.muted,.settings-hint,.settings-message,.current-posted,.current-duration,.keyboard-help,.gc-win-latest){color:var(--sbb-light-muted)!important}
+    html[data-sbb-theme="light"] :is(button,input,select,textarea,.utility-btn,.transport-btn,.soundtrack-btn,.drawer-launch-btn,.nav,.info-drawer-tab,.gc-section-tab,.settings-save-btn,.top-date-select-btn,.return-today-btn,.score-day-arrow,.score-filters button){
+      background:#f7f9fb!important;color:var(--sbb-light-text)!important;border-color:#b9c5cf!important;box-shadow:none!important
+    }
+    html[data-sbb-theme="light"] :is(button,input,select,textarea):hover{border-color:var(--sbb-light-blue)!important}
+    html[data-sbb-theme="light"] :is(button.active,[aria-selected="true"],[aria-pressed="true"],.score-filters button.active,.gc-section-tab.active,.info-drawer-tab.active){
+      background:#d9e8f4!important;color:#124e7e!important;border-color:var(--sbb-light-blue)!important
+    }
+    html[data-sbb-theme="light"] :is(.primary,.transport-play,.sbb-launch-play){background:var(--sbb-light-red)!important;color:#fff!important;border-color:var(--sbb-light-red)!important}
+    html[data-sbb-theme="light"] :is(table,thead,tbody,tr,th,td,.gc-linescore,.gc-player-table){color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] :is(th,thead tr){background:#dde5eb!important}
+    html[data-sbb-theme="light"] :is(td,tbody tr:nth-child(even)){background:#f8fafc!important}
+    html[data-sbb-theme="light"] tbody tr:nth-child(odd){background:#eef3f6!important}
+    html[data-sbb-theme="light"] :is(.score-cells,.key-info-track,.gc-table-scroll){scrollbar-color:#9baab7 #e1e7ec}
+    html[data-sbb-theme="light"] :is(.sbb-launch-screen,.local-file-warning){background:rgba(229,235,240,.97)!important;color:var(--sbb-light-text)!important}
+    html[data-sbb-theme="light"] :is(.sbb-launch-card,.local-file-card){background:#fbfcfd!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important;box-shadow:0 18px 50px rgba(31,51,68,.16)!important}
+    html[data-sbb-theme="light"] :is(.bumper,.bumper-content,.context-program){color:#f8fafc}
+    html[data-sbb-theme="light"] :is(.history-audit-row,.milestone-procedure-item,.api-connection-row,.settings-toggle-row,.settings-field){border-color:var(--sbb-light-line)!important}
+    html[data-sbb-theme="light"] :is(.score-cell:hover,.key-info-item:hover,.gc-card:hover){box-shadow:0 4px 16px rgba(36,111,174,.10)!important}
+    html[data-sbb-theme="light"] a{color:#155f98}
+    html[data-sbb-theme="light"] code{background:#e0e6eb;color:#24313c;border-color:#c7d1d9}
+    html[data-sbb-theme="light"] .on-air-badge{background:var(--sbb-light-red)!important;color:white!important}
+    html[data-sbb-theme="light"] :is(.target-green,.target-extended,.target-gold){filter:saturate(.82) brightness(.98)}
+    .theme-toggle-btn{min-width:92px;height:34px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--line,#25303a);border-radius:9px;background:var(--panel2,#111820);color:var(--text,#f6f8fa);font:800 10px/1 system-ui,sans-serif;letter-spacing:.08em;cursor:pointer}
+    .theme-toggle-btn:hover{border-color:var(--blue,#2494ff)}
+    .theme-toggle-icon{font-size:14px;line-height:1}
+    @media(max-width:860px){.theme-toggle-label{display:none}.theme-toggle-btn{min-width:38px;width:38px;padding:0}}
+  </style>
+
 </head>
 <body>
   <div id="launchScreen" class="sbb-launch-screen" role="dialog" aria-modal="true" aria-labelledby="launchTitle">
@@ -81,6 +128,7 @@
       <button id="bigBoardFullscreenBtn" class="big-board-fullscreen-btn" type="button" aria-label="Fullscreen Sports Big Board" title="Fullscreen Sports Big Board">
       <span class="bbfs-corners" aria-hidden="true">⛶</span>
     </button>
+    <button id="themeToggleBtn" class="theme-toggle-btn" type="button" aria-pressed="false" aria-label="Switch to light mode" title="Switch color theme"><span class="theme-toggle-icon" aria-hidden="true">☀</span><span class="theme-toggle-label">LIGHT</span></button>
     <div class="top-date-controls" aria-label="Score date controls">
       <button id="topDateSelectBtn" class="top-date-select-btn" type="button" aria-label="Select a score date"><span class="top-date-search" aria-hidden="true">⌕</span><span id="topDateSelectLabel">SELECT DATE</span></button>
       <button id="returnTodayBtn" class="return-today-btn hidden" type="button" aria-label="Return to today and start today playback"><span aria-hidden="true">↩</span> <span class="return-today-long">RETURN TO TODAY</span><span class="return-today-short">TODAY</span></button>
@@ -712,6 +760,41 @@
   }catch(_){}
 })();
 </script>
+
+<script id="sbbThemeRuntime">
+(() => {
+  'use strict';
+  const KEY='sbb.theme';
+  const root=document.documentElement;
+  const button=()=>document.getElementById('themeToggleBtn');
+  function current(){return root.dataset.sbbTheme==='light'?'light':'dark';}
+  function syncButton(){
+    const btn=button();if(!btn)return;
+    const light=current()==='light';
+    btn.setAttribute('aria-pressed',String(light));
+    btn.setAttribute('aria-label',light?'Switch to dark mode':'Switch to light mode');
+    btn.title=light?'Switch to dark mode':'Switch to light mode';
+    const icon=btn.querySelector('.theme-toggle-icon');if(icon)icon.textContent=light?'☾':'☀';
+    const label=btn.querySelector('.theme-toggle-label');if(label)label.textContent=light?'DARK':'LIGHT';
+  }
+  function setTheme(value,persist=true){
+    const theme=value==='light'?'light':'dark';
+    root.dataset.sbbTheme=theme;
+    if(persist){try{localStorage.setItem(KEY,theme);}catch(_){}}
+    syncButton();
+    window.dispatchEvent(new CustomEvent('sbb:themechange',{detail:{theme}}));
+    return theme;
+  }
+  function toggle(){return setTheme(current()==='light'?'dark':'light');}
+  function bind(){
+    button()?.addEventListener('click',toggle);
+    syncButton();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
+  window.SBB_THEME=Object.freeze({version:'1.0',current,set:setTheme,toggle});
+})();
+</script>
+
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>

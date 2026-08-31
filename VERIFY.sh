@@ -76,6 +76,8 @@ if command -v node >/dev/null 2>&1; then
   python3 -m unittest tests.test_v4720_runtime_recovery
   python3 -m unittest tests.test_v4721_database_authority
   python3 -m unittest tests.test_v4721_core_correctness_recovery
+  python3 -m unittest tests.test_v4722_llws_theme_winprob
+  node tests/test_v4722_theme_winprob_runtime.js
   python3 -m unittest tests.test_v4712_day_state_render_model
   python3 -m unittest tests.test_v4711_availability_index_thin_probe
   python3 -m unittest tests.test_v4710_cold_history_future_store

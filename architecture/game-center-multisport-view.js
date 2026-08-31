@@ -27,9 +27,24 @@
       #gcPersistentSummary .gc-card-title{display:flex;align-items:center;justify-content:space-between;gap:8px}
       #gcPersistentSummary .gc-card-title small{font-size:9px;opacity:.62;font-weight:700;letter-spacing:.08em}
       #gcPersistentSummary .gc-linescore th,#gcPersistentSummary .gc-linescore td{white-space:nowrap}
-      #gcPersistentSummary .gc-win-prob-table th:first-child{min-width:78px;text-align:left}
-      #gcPersistentSummary .gc-win-prob-table tr.latest{font-weight:800}
-      #gcPersistentSummary .gc-win-prob-table small{display:block;font-size:9px;opacity:.58;font-weight:600}
+      #gcPersistentSummary .gc-win-chart{padding:4px 4px 8px}
+      #gcPersistentSummary .gc-win-chart svg{display:block;width:100%;height:auto;min-height:180px;max-height:280px;overflow:visible}
+      #gcPersistentSummary .gc-win-grid{stroke:var(--line,#25303a);stroke-width:1;opacity:.7;vector-effect:non-scaling-stroke}
+      #gcPersistentSummary .gc-win-grid-mid{stroke:var(--muted,#8f9aa6);stroke-dasharray:5 5;opacity:.7}
+      #gcPersistentSummary .gc-win-line{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+      #gcPersistentSummary .gc-win-away{stroke:var(--accent,#ef3b2d)}
+      #gcPersistentSummary .gc-win-home{stroke:var(--blue,#2494ff)}
+      #gcPersistentSummary .gc-win-tie{stroke:var(--muted,#8f9aa6);stroke-width:2;stroke-dasharray:5 4}
+      #gcPersistentSummary .gc-win-dot-away{fill:var(--accent,#ef3b2d)}
+      #gcPersistentSummary .gc-win-dot-home{fill:var(--blue,#2494ff)}
+      #gcPersistentSummary .gc-win-axis{fill:var(--muted,#8f9aa6);font-size:11px;font-weight:700}
+      #gcPersistentSummary .gc-win-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:2px 8px 0;font-size:11px;font-weight:800}
+      #gcPersistentSummary .gc-win-legend span{display:inline-flex;align-items:center;gap:6px}
+      #gcPersistentSummary .gc-win-swatch{width:18px;height:3px;border-radius:999px;background:currentColor}
+      #gcPersistentSummary .gc-win-legend-away{color:var(--accent,#ef3b2d)}
+      #gcPersistentSummary .gc-win-legend-home{color:var(--blue,#2494ff)}
+      #gcPersistentSummary .gc-win-legend-tie{color:var(--muted,#8f9aa6)}
+      #gcPersistentSummary .gc-win-latest{margin-left:auto;color:var(--muted,#8f9aa6);font-weight:700}
       @media(max-width:720px){#gcPersistentSummary{padding-left:5px;padding-right:5px}.gc-table-scroll{overflow-x:auto}}
     `;
     document.head.appendChild(style);
@@ -67,7 +82,7 @@
     return `<div class="gc-card sbb-multisport-linescore" data-sbb-gc-enhancement="linescore"><div class="gc-card-title">LINESCORE</div><div class="gc-table-scroll"><table class="gc-linescore"><thead><tr><th></th>${heads}<th>T</th></tr></thead><tbody>${row(teamName(away.team),'away',away.score)}${row(teamName(home.team),'home',home.score)}</tbody></table></div></div>`;
   }
 
-  function sampledProbability(rows,max=12){
+  function sampledProbability(rows,max=160){
     rows=(rows||[]).filter(x=>x&&Number.isFinite(Number(x.away))&&Number.isFinite(Number(x.home)));
     if(rows.length<=max)return rows;
     const chosen=[];const seen=new Set();
@@ -75,18 +90,58 @@
       const idx=Math.round(i*(rows.length-1)/(max-1));
       if(!seen.has(idx)){seen.add(idx);chosen.push(rows[idx]);}
     }
+    if(chosen[chosen.length-1]!==rows[rows.length-1])chosen.push(rows[rows.length-1]);
     return chosen;
+  }
+  function clampProbability(v){const n=Number(v);return Number.isFinite(n)?Math.max(0,Math.min(100,n)):0;}
+  function probabilityPoints(rows,key,left,top,width,height){
+    const span=Math.max(1,rows.length-1);
+    return rows.map((r,i)=>{
+      const x=left+(i/span)*width;
+      const y=top+((100-clampProbability(r?.[key]))/100)*height;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
   }
 
   function probabilityCard(gc){
     const s=gc?.scoreboard||{},rows=sampledProbability(s.winProbability||gc?.winProbability||[]);
     if(!rows.length)return '';
     const away=teamName(s.away?.team),home=teamName(s.home?.team),showTie=rows.some(r=>Number(r.tie||0)>0.05);
-    const body=rows.map((r,i)=>{
-      const score=(!blank(r.scoreAway)||!blank(r.scoreHome))?`<small>${esc(r.scoreAway)}–${esc(r.scoreHome)}</small>`:'';
-      return `<tr class="${i===rows.length-1?'latest':''}"><th><span>${esc(r.label||'')}</span>${score}</th><td>${pct(r.away)}</td><td>${pct(r.home)}</td>${showTie?`<td>${pct(r.tie||0)}</td>`:''}</tr>`;
+    const W=820,H=260,left=44,right=16,top=18,bottom=34,plotW=W-left-right,plotH=H-top-bottom;
+    const awayPts=probabilityPoints(rows,'away',left,top,plotW,plotH);
+    const homePts=probabilityPoints(rows,'home',left,top,plotW,plotH);
+    const tiePts=showTie?probabilityPoints(rows,'tie',left,top,plotW,plotH):'';
+    const grid=[100,75,50,25,0].map(v=>{
+      const y=top+((100-v)/100)*plotH;
+      const cls=v===50?'gc-win-grid gc-win-grid-mid':'gc-win-grid';
+      return `<line class="${cls}" x1="${left}" x2="${W-right}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"></line><text class="gc-win-axis" x="${left-7}" y="${(y+4).toFixed(1)}" text-anchor="end">${v}%</text>`;
     }).join('');
-    return `<div class="gc-card sbb-win-probability" data-sbb-gc-enhancement="win-probability"><div class="gc-card-title">WIN PROBABILITY <small>ESPN</small></div><div class="gc-table-scroll"><table class="gc-player-table gc-win-prob-table"><thead><tr><th>GAME</th><th>${esc(away)}</th><th>${esc(home)}</th>${showTie?'<th>TIE</th>':''}</tr></thead><tbody>${body}</tbody></table></div></div>`;
+    const last=rows[rows.length-1],lastX=W-right;
+    const awayY=top+((100-clampProbability(last.away))/100)*plotH;
+    const homeY=top+((100-clampProbability(last.home))/100)*plotH;
+    const latestScore=(!blank(last.scoreAway)||!blank(last.scoreHome))?` • ${esc(last.scoreAway)}–${esc(last.scoreHome)}`:'';
+    const latestLabel=`${esc(last.label||'LATEST')}${latestScore}`;
+    return `<div class="gc-card sbb-win-probability" data-sbb-gc-enhancement="win-probability">
+      <div class="gc-card-title">WIN PROBABILITY <small>ESPN</small></div>
+      <div class="gc-win-legend">
+        <span class="gc-win-legend-away"><i class="gc-win-swatch"></i>${esc(away)} ${pct(last.away)}</span>
+        <span class="gc-win-legend-home"><i class="gc-win-swatch"></i>${esc(home)} ${pct(last.home)}</span>
+        ${showTie?`<span class="gc-win-legend-tie"><i class="gc-win-swatch"></i>TIE ${pct(last.tie||0)}</span>`:''}
+        <span class="gc-win-latest">${latestLabel}</span>
+      </div>
+      <div class="gc-win-chart">
+        <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Win probability graph for ${esc(away)} and ${esc(home)}">
+          ${grid}
+          <polyline class="gc-win-line gc-win-away" points="${awayPts}"></polyline>
+          <polyline class="gc-win-line gc-win-home" points="${homePts}"></polyline>
+          ${showTie?`<polyline class="gc-win-line gc-win-tie" points="${tiePts}"></polyline>`:''}
+          <circle class="gc-win-dot-away" cx="${lastX}" cy="${awayY.toFixed(1)}" r="4"><title>${esc(away)} ${pct(last.away)} • ${latestLabel}</title></circle>
+          <circle class="gc-win-dot-home" cx="${lastX}" cy="${homeY.toFixed(1)}" r="4"><title>${esc(home)} ${pct(last.home)} • ${latestLabel}</title></circle>
+          <text class="gc-win-axis" x="${left}" y="${H-8}">START</text>
+          <text class="gc-win-axis" x="${W-right}" y="${H-8}" text-anchor="end">LATEST</text>
+        </svg>
+      </div>
+    </div>`;
   }
 
   function removeLegacyOverviewLinescore(){
@@ -150,5 +205,5 @@
     window.addEventListener('sbb:selected-event-cleared',()=>selectionChanged(null));
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_GAME_CENTER_MULTISPORT_VIEW=Object.freeze({installed:true,version:'4.7.20',enhance,periodCard,baseballCard,probabilityCard,ensureHost,syncFromPublicCache,get data(){return currentData;}});
+  window.SBB_GAME_CENTER_MULTISPORT_VIEW=Object.freeze({installed:true,version:'4.7.20',winProbabilityView:'GRAPH_1',enhance,periodCard,baseballCard,probabilityCard,ensureHost,syncFromPublicCache,get data(){return currentData;}});
 })();

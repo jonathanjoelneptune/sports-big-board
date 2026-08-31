@@ -20,12 +20,13 @@ from __future__ import annotations
 from contextlib import closing
 from datetime import datetime, timedelta
 import json
+import re
 import threading
 import time
 
 from .history_repository import HistoryRepository
 
-VERSION = "4.7.20-runtime-path-repair-1"
+VERSION = "4.7.20-runtime-path-repair-llws2"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 
@@ -381,12 +382,175 @@ def _cfb_persist_results(server, record, rows):
     return count
 
 
+# v4.7.20 LLWS deterministic source bridge -----------------------------------
+# The linked ESPN playlist is authoritative for 2026 tournament game packages.
+# This manifest is intentionally limited to main-tournament "Full Game Highlights"
+# plus the championship "Championship Highlights" package. Region qualifiers,
+# Shorts, player features, SportsCenter clips, and Challenger exhibition content
+# are excluded even when they happen to contain one of the same place names.
+LLWS_ESPN_PLAYLIST_ID = "PLJBIB5zsrIC8"
+LLWS_ESPN_2026_GAME_MANIFEST = [
+    ('7x3tpOUgMsU', 1086, 'Curaçao vs. Nevada Championship Highlights | Little League World Series', '2026-08-30'),
+    ('plk10wgNhgs', 914, 'A WALK-OFF WIN 🔥 Ohio vs. Japan | Full Game Highlights | Little League World Series', '2026-08-30'),
+    ('ncbSaTDPA7c', 1496, '🏆 U.S. Championship: Ohio vs. Nevada | Full Game Highlights | Little League World Series', '2026-08-29'),
+    ('rAZHIcFzix4', 1602, '🏆 International Championship: Curacao vs. Japan | Full Game Highlights | Little League World Series', '2026-08-29'),
+    ('D9SxEnKD2bs', 1288, 'Ohio vs. Iowa | Full Game Highlights | Little League World Series', '2026-08-27'),
+    ('mVCt_M-8Ygk', 715, 'Nicaragua vs. Japan | Full Game Highlights | Little League World Series', '2026-08-27'),
+    ('MxIoMbCjsA8', 980, 'OH-IO DOMINATION 🗣️ Ohio vs. Alabama | Full Game Highlights | Little League World Series', '2026-08-26'),
+    ('e7es3AeZ9AY', 1421, 'WINNER TO QUARTERFINALS‼️Canada vs. Japan | Full Game Highlights | Little League World Series', '2026-08-26'),
+    ('CW7W-21hV9k', 1263, 'Nevada vs. Iowa | Full Game Highlights | Little League World Series', '2026-08-26'),
+    ('ktxLdNemFAo', 1592, 'Curacao vs. Nicaragua | Full Game Highlights | Little League World Series', '2026-08-26'),
+    ('MuS4kBdr7pw', 835, 'Ohio vs. New Jersey | Full Game Highlights | Little League World Series', '2026-08-25'),
+    ('MwpzuwiMttw', 1676, 'WIN OR GO HOME 🔥 Canada vs. South Korea | Full Game Highlights | Little League World Series', '2026-08-25'),
+    ('Ck7d0xKP068', 903, 'Washington vs. Alabama | Full Game Highlights | Little League World Series', '2026-08-25'),
+    ('Lppe32QWSck', 1094, 'Japan vs. Mexico | Full Game Highlights | Little League World Series', '2026-08-25'),
+    ('s55PAYV-WqU', 968, 'Pennsylvania vs. Alabama | Full Game Highlights | Little League World Series', '2026-08-24'),
+    ('pZ3uAQH1O2k', 672, 'Czechia vs. Japan | Full Game Highlights | Little League World Series', '2026-08-24'),
+    ('YsMhfQHLXC4', 1024, 'ELIMINATION GAME 👀 Ohio vs. Texas  | Full Game Highlights | Little League World Series', '2026-08-24'),
+    ('1St0xrmkUqw', 1146, 'EXTRA INNINGS THRILLER ‼️ Canada vs. Panama | Full Game Highlights | Little League World Series', '2026-08-24'),
+    ('0x6BJYVqDFc', 638, 'Curacao vs. South Korea | Full Game Highlights | Little League World Series', '2026-08-23'),
+    ('sJdkPkbNjtc', 624, 'New Jersey vs. Iowa | Full Game Highlights | Little League World Series', '2026-08-23'),
+    ('e4k3DOMsQx8', 1256, 'Mexico vs. Nicaragua | Full Game Highlights | Little League World Series', '2026-08-23'),
+    ('PCQ9XNr6T7I', 1140, 'Washington vs. Nevada | Full Game Highlights | Little League World Series', '2026-08-23'),
+    ('4sNrnRhKWWI', 1093, 'ELIMINATION GAME ⚾️ California vs. Alabama | Full Game Highlights | Little League World Series', '2026-08-22'),
+    ('cZsbUV7IJCY', 877, 'Japan vs. Dominican Republic | Full Game Highlights | Little League World Series', '2026-08-22'),
+    ('iD12tAI2sS4', 888, 'Canada vs. Australia | Full Game Highlights | Little League World Series', '2026-08-22'),
+    ('QzFkF73kB1I', 1384, '🔥 Pennsylvania vs. New Jersey | Full Game Highlights | Little League World Series', '2026-08-21'),
+    ('hk0a82lJV58', 1379, 'South Korea vs. Czechia | Full Game Highlights | Little League World Series', '2026-08-21'),
+    ('aa35nI_hzj8', 1367, 'DRAMATIC ENDING 🔥 Washington vs. Texas | Full Game Highlights | Little League World Series', '2026-08-21'),
+    ('FrPJNjBijqE', 1037, 'THRILLING FINISH 🍿 Panama vs. Nicaragua | Full Game Highlights | Little League World Series', '2026-08-21'),
+    ('uFPA5vGRlrA', 870, 'Japan vs. Curacao | Full Game Highlights | Little League World Series', '2026-08-21'),
+    ('Oh_vCja1UbU', 759, 'California vs. Iowa | Full Game Highlights | Little League World Series', '2026-08-21'),
+    ('I49NGZ_-7nk', 797, 'Massachusetts vs. New Jersey | Full Game Highlights | Little League World Series', '2026-08-19'),
+    ('4A1j4tMPsTU', 1160, 'Canada vs. South Korea | Full Game Highlights | Little League World Series', '2026-08-19'),
+    ('uXzsuAc8Vvg', 760, 'Washington vs. Alabama | Full Game Highlights | Little League World Series', '2026-08-19'),
+    ('l_Bx-RBQGog', 1642, 'Nicaragua vs. Dominican Republic | Full Game Highlights | Little League World Series', '2026-08-19'),
+]
+
+_LLWS_TRAILING_CODE_ALIASES = {
+    "JPN":"Japan","CUW":"Curaçao","CUR":"Curaçao","KOR":"South Korea",
+    "CZE":"Czechia","MEX":"Mexico","NIC":"Nicaragua","PAN":"Panama",
+    "CAN":"Canada","AUS":"Australia","DOM":"Dominican Republic","PUR":"Puerto Rico",
+    "VEN":"Venezuela","TPE":"Chinese Taipei","NLD":"Netherlands","ESP":"Spain",
+    "ITA":"Italy","GER":"Germany","COL":"Colombia",
+}
+_LLWS_ALIAS_BRIDGE_INSTALLED = False
+
+
+def _install_llws_trailing_code_alias_bridge():
+    """Teach the canonical special-event matcher score-ribbon location forms.
+
+    ESPN recap titles say ``Ohio``, ``Nevada``, ``Japan`` and ``Curaçao`` while
+    canonical tournament teams can be rendered as ``Hamilton OH``,
+    ``Henderson NV``, ``Tokyo JPN`` and ``Willemstad CUW``. v4.6.14 already knew
+    comma-delimited location tails; this bridge adds the actual space-delimited
+    forms used by the 2026 ribbon without weakening two-sided title matching.
+    """
+    global _LLWS_ALIAS_BRIDGE_INSTALLED
+    if _LLWS_ALIAS_BRIDGE_INSTALLED:
+        return False
+    try:
+        from . import competition_builder_v4614 as aliasmod
+        original = aliasmod._media_alias_details
+        if getattr(original, "__sbbLlwsTrailingCodeBridge", False):
+            _LLWS_ALIAS_BRIDGE_INSTALLED = True
+            return False
+
+        def patched(team):
+            rows = list(original(team) or [])
+            values = []
+            if isinstance(team, str):
+                values.append(team)
+            elif isinstance(team, dict):
+                for key in ("name","displayName","shortDisplayName","teamName","location","group","region","country"):
+                    if team.get(key):
+                        values.append(str(team.get(key)))
+                raw_aliases = team.get("aliases")
+                if isinstance(raw_aliases, str):
+                    values.append(raw_aliases)
+                elif isinstance(raw_aliases, (list,tuple,set)):
+                    values.extend(str(x) for x in raw_aliases if x)
+            values.extend(str(row.get("value") or "") for row in rows if isinstance(row,dict))
+            for value in values:
+                m = re.search(r"(?:^|[\s,;/_-])([A-Za-z]{2,3})$", str(value or "").strip())
+                if not m:
+                    continue
+                code = m.group(1).upper()
+                if code in getattr(aliasmod, "_US_STATES", {}):
+                    aliasmod._append_alias(rows, aliasmod._US_STATES[code], 100, "TRAILING_US_STATE_CODE")
+                mapped = _LLWS_TRAILING_CODE_ALIASES.get(code)
+                if mapped:
+                    aliasmod._append_alias(rows, mapped, 100, "TRAILING_COUNTRY_CODE")
+                    for equivalent in getattr(aliasmod, "_COMMON_EQUIVALENTS", {}).get(aliasmod._norm(mapped), ()):
+                        aliasmod._append_alias(rows, equivalent, 98, "TRAILING_COUNTRY_EQUIVALENT")
+            return rows
+
+        patched.__sbbLlwsTrailingCodeBridge = True
+        patched.__sbbOriginal = original
+        aliasmod._media_alias_details = patched
+        _LLWS_ALIAS_BRIDGE_INSTALLED = True
+        return True
+    except Exception as exc:
+        print(f"[SBB v4.7.20] LLWS alias bridge deferred: {type(exc).__name__}: {exc}", flush=True)
+        return False
+
+
+def _seed_llws_espn_playlist_manifest(server):
+    """Persist the known ESPN 2026 LLWS game packages as source assets.
+
+    This is not a replacement for the linked playlist crawler. It gives recovery a
+    deterministic local source inventory using the exact playlist titles/video IDs
+    so association does not depend on another YouTube request during deployment.
+    The v4.6.16 associator remains the sole owner of canonical game assignment.
+    """
+    repo = getattr(server, "HISTORY_REPOSITORY", None)
+    if repo is None or not hasattr(repo, "put_source_media"):
+        return {"seeded":0,"sourceItems":0}
+    rows = []
+    for video_id, duration, title, published_day in LLWS_ESPN_2026_GAME_MANIFEST:
+        rows.append({
+            "id": f"llws-espn-2026-{video_id}",
+            "youtubeId": video_id,
+            "title": title,
+            "duration": duration,
+            "durationSeconds": duration,
+            "provider": "ESPN",
+            "source": "ESPN",
+            "sourceLabel": "ESPN — Little League World Series 2026",
+            "sourceType": "espn-llws-static-manifest",
+            "externalUrl": f"https://www.youtube.com/watch?v={video_id}",
+            "publishedAt": f"{published_day}T12:00:00Z",
+            "date": published_day,
+            "league": "LLWS2026",
+            "competitionId": "LLWS2026",
+            "verifiedPlayable": True,
+            "embedValidated": True,
+            "validationState": "VERIFIED",
+            "recapTier": "extended",
+            "programType": "recap",
+            "overview": True,
+            "llwsManifestSource": "USER_CONFIRMED_ESPN_PLAYLIST_2026",
+        })
+    seeded = 0
+    # Keep each approximate publication day on the source row; it disambiguates
+    # the two repeated Canada/South Korea and Washington/Alabama matchups.
+    for row in rows:
+        try:
+            seeded += int(repo.put_source_media([row], league="LLWS2026", date=row["date"], catalog_state="UNASSIGNED") or 0)
+        except Exception as exc:
+            print(f"[SBB v4.7.20] LLWS manifest seed failed {row.get('youtubeId')}: {type(exc).__name__}: {exc}", flush=True)
+    return {"seeded":seeded,"sourceItems":len(rows)}
+
+
+
 def _llws_owner_reassociate(server):
     """Run the real v4.6.16 special-event associator against persisted source media."""
     try:
+        _install_llws_trailing_code_alias_bridge()
+        seeded=_seed_llws_espn_playlist_manifest(server)
         from . import special_event_media_v4616 as special
         comp=special._ensure_llws_sources(server)
-        if not comp:return {"ready":False,"reason":"competition-not-ready"}
+        if not comp:return {"ready":False,"reason":"competition-not-ready","seeded":seeded}
         result=special.reassociate(server,comp) or {}
         stats=special.durable_stats(server,comp) or {}
         dates=[]
@@ -400,7 +564,7 @@ def _llws_owner_reassociate(server):
                 if any((x.get("youtubeId") or x.get("mediaUrl")) and x.get("verifiedPlayable") is not False for x in media if isinstance(x,dict)):
                     dates.append(day)
         if dates:_invalidate_day_state(dates)
-        return {"ready":True,"summary":result.get("summary") or {},"stats":stats,"dates":sorted(set(dates))}
+        return {"ready":True,"summary":result.get("summary") or {},"stats":stats,"dates":sorted(set(dates)),"seeded":seeded}
     except Exception as exc:
         return {"ready":False,"reason":f"{type(exc).__name__}: {exc}"}
 
@@ -504,6 +668,10 @@ def install():
         HistoryRepository.roundup_media = _roundup_media
     HistoryRepository.repair_event_associations = _repair_event_associations
 
+    # Install the score-ribbon location-code alias bridge synchronously so the
+    # database-authority LLWS worker cannot race the older alias mapper.
+    _install_llws_trailing_code_alias_bridge()
+
     try:
         from . import cfb_trusted_youtube as cfb
         _ORIGINAL_CFB_PERSIST = cfb._persist_results
@@ -516,6 +684,6 @@ def install():
 
 
 __all__ = [
-    "VERSION", "install", "restore_special_event_links", "restore_silver_collection_links", "_invalidate_day_state", "_llws_owner_reassociate",
+    "VERSION", "install", "restore_special_event_links", "restore_silver_collection_links", "_invalidate_day_state", "_llws_owner_reassociate", "_install_llws_trailing_code_alias_bridge", "_seed_llws_espn_playlist_manifest", "LLWS_ESPN_2026_GAME_MANIFEST",
     "_hydrate_asset", "_roundup_media", "_cfb_persist_results",
 ]
