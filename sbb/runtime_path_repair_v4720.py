@@ -670,32 +670,33 @@ def _cfb_has_known_usc(repo):
 
 
 def _install_background_progress_policy(server):
-    """Repair BALANCED-mode starvation without changing playback/search modes.
+    """Keep all configured historical workers alive in every work mode.
 
-    The production console exposed configured=5 / desired=1 while thousands of
-    current discovery-v15 rows and official-source enrichments were due. Worker 1
-    was held in strict NFL affinity by one retry-delayed event, while workers 2-5
-    were intentionally disabled by ``balanced-worker-limit``. BALANCED now keeps
-    three complementary lanes alive: NFL/assist (1), NHL/official float (4), and
-    general discovery gaps (5). SEARCH still enables all workers; PLAYBACK still
-    disables discovery workers.
+    Worker availability is no longer used as the resource throttle.  All five
+    worker threads may claim work continuously; provider budgets, SQLite claims,
+    playback/search suspension checks and per-provider cooldowns remain the actual
+    governors.  This prevents one affinity lane or one exhausted provider from
+    administratively parking the rest of the historical pipeline for hours.
     """
     original=getattr(server,"_history_green_worker_enabled",None)
     if not callable(original):
         return False
-    if getattr(original,"__sbbBalancedProgressV4724",False):
+    if getattr(original,"__sbbAlwaysOnWorkersV4725",False):
         return True
     def enabled(worker_index):
-        mode=str(server._history_work_mode() if hasattr(server,"_history_work_mode") else "balanced").lower()
-        idx=max(1,int(worker_index or 1))
-        if mode=="playback": return False,"playback-priority"
-        if mode=="balanced" and idx not in {1,4,5}: return False,"balanced-worker-limit"
+        # Always keep the worker thread eligible.  PLAYBACK/Search Priority still
+        # governs expensive provider work through the server's existing suspension
+        # and provider-budget checks; local index/association/audit work may proceed.
+        max(1,int(worker_index or 1))
         return True,""
-    enabled.__sbbBalancedProgressV4724=True
+    enabled.__sbbAlwaysOnWorkersV4725=True
     enabled.__sbbOriginal=original
     server._history_green_worker_enabled=enabled
     try:
-        server.MILESTONE_CONSOLE.record("history-background","PASS","balanced background progress lanes restored",{"version":VERSION,"balancedWorkers":[1,4,5]})
+        server.MILESTONE_CONSOLE.record(
+            "history-background","PASS","all background workers always eligible",
+            {"version":VERSION,"workers":[1,2,3,4,5],"throttleOwner":"provider-budgets-and-claims"}
+        )
     except Exception:
         pass
     return True
@@ -793,7 +794,7 @@ def _startup_runtime_recovery():
     audit_rebase=_restart_stale_database_audit(server)
     released_pending=_release_current_discovery_pending(server)
     try:
-        print(f"[SBB v4.7.20] background progress policy balanced=1,4,5 audit={audit_rebase} releasedCurrentDiscovery={released_pending}",flush=True)
+        print(f"[SBB v4.7.20] background progress policy alwaysOn=1,2,3,4,5 audit={audit_rebase} releasedCurrentDiscovery={released_pending}",flush=True)
     except Exception:
         pass
     threading.Thread(target=_llws_periodic_recovery,args=(server,),daemon=True,name="sbb-v4724-llws-periodic-recovery").start()

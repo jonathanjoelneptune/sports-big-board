@@ -1,0 +1,42 @@
+Sports Big Board v4.7.20 — Always-On Workers + Game Center Stability
+
+REPLACE
+-------
+index.html
+sbb/runtime_path_repair_v4720.py
+sbb/game_center_runtime_v4721.py
+
+CHANGES
+-------
+1. All five history/discovery workers are always eligible. Worker-count gating is no
+   longer used as the resource throttle. Provider budgets, SQLite claims, cooldowns
+   and existing priority/suspension checks remain the governors.
+
+2. CFB Game Center backend wiring is bounded and explicit. CFB is enrolled in the
+   server Game Center set, uses the canonical ESPN event ID already stored by
+   cfb_ranked/history catalog, caches per-date index construction for 60 seconds,
+   and never performs a second click-time scoreboard discovery request.
+
+3. Browser Game Center requests are single-flight and hard-bounded to 9 seconds.
+   A final partial Game Center is cooled down instead of being re-requested every
+   ~2 seconds forever. If the backend cannot answer, the board remains responsive
+   and Game Center shows a retryable timeout rather than an infinite loader.
+
+4. Backend wiring metadata is exposed as server.SBB_BACKEND_WIRING:
+   Ribbon -> DayStateEngine + normalized HistoryRepository catalog/media
+   Game Center -> server Game Center repository
+   CFB -> ESPN summary via canonical cfb_ranked event ID
+
+5. Light Mode is temporarily hidden. Startup forcibly returns the board to dark,
+   the toggle is hidden, and the experimental theme implementation remains dormant
+   for a future cleanup/relaunch.
+
+VALIDATION
+----------
+PASS Python syntax for both changed backend modules
+PASS fake-server CFB wiring/enrollment contract
+PASS inline Game Center stability JavaScript syntax
+PASS existing v4.7.20 Game Center runtime JavaScript regression gates
+PASS current release-manifest required tokens for index.html and runtime_path_repair_v4720.py
+
+No VERSION or release-manifest change is required.

@@ -6,7 +6,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Sports Big Board — v4.7.20</title>
   <script id="sbbThemeBoot">
-    (()=>{try{document.documentElement.dataset.sbbTheme=localStorage.getItem('sbb.theme')==='light'?'light':'dark';}catch(_){document.documentElement.dataset.sbbTheme='dark';}})();
+    (()=>{try{localStorage.setItem('sbb.theme','dark');}catch(_){}document.documentElement.dataset.sbbTheme='dark';})();
   </script>
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://www.googlevideo.com">
@@ -22,6 +22,10 @@
     #sbbSpecialEventsMenu [data-special-competition="CFB"]{display:none!important}
   </style>
 
+
+  <style id="sbbThemeTemporaryDisable">
+    #themeToggleBtn,.theme-toggle-btn{display:none!important}
+  </style>
   <style id="sbbLightModeTheme">
     :root{--sbb-light-bg:#edf1f4;--sbb-light-panel:#f8fafc;--sbb-light-panel2:#e5ebf0;--sbb-light-line:#c6d0d9;--sbb-light-text:#18232d;--sbb-light-muted:#657482;--sbb-light-red:#c73f3a;--sbb-light-blue:#246fae}
     html[data-sbb-theme="light"]{color-scheme:light;--bg:var(--sbb-light-bg);--panel:var(--sbb-light-panel);--panel2:var(--sbb-light-panel2);--line:var(--sbb-light-line);--text:var(--sbb-light-text);--muted:var(--sbb-light-muted);--accent:var(--sbb-light-red);--blue:var(--sbb-light-blue);--green:#2f7b59}
@@ -675,6 +679,56 @@
 <script src="architecture/game-center-policy.js?v=4.7.20"></script>
 <script src="architecture/selected-event-store.js?v=4.7.20"></script>
 <script src="architecture/game-center-contract.js?v=4.7.20"></script>
+<script id="sbbGameCenterStabilityV4725">
+(() => {
+  'use strict';
+  const base=window.SBB_GAME_CENTER;
+  if(!base||base.__sbbStabilityV4725)return;
+  const inflight=new Map(),cooldown=new Map();
+  const MAX_MS=9000,FINAL_COOLDOWN_MS=30000;
+  const clean=v=>String(v??'').trim();
+  const isFinal=(evt,data)=>/final|finished|completed|complete|game over/i.test(clean(data?.event?.status||evt?.status||''));
+  const partial=data=>!!(data?.coverage?.complete===false||data?.partial===true||(data?.quality?.level&&data.quality.level!=='rich'));
+  function stableFinal(data,evt){
+    if(!data||!isFinal(evt,data)||!partial(data))return data;
+    const out={...data,partial:false,stabilityDeferredEnrichment:true};
+    out.coverage={...(data.coverage||{}),complete:true,stabilityDeferred:true};
+    out.quality={...(data.quality||{}),level:'rich',stabilityDeferred:true};
+    return out;
+  }
+  function linkedController(external){
+    const controller=new AbortController();
+    if(external){
+      if(external.aborted)controller.abort(external.reason);
+      else external.addEventListener('abort',()=>controller.abort(external.reason),{once:true});
+    }
+    return controller;
+  }
+  async function get(evt,options={}){
+    const ident=base.identity(evt),key=ident?.key||`${ident?.competition||''}:${ident?.eventId||''}`;
+    const hit=base.peek(evt);
+    if(!options.force&&hit&&isFinal(evt,hit)&&Date.now()-(cooldown.get(key)||0)<FINAL_COOLDOWN_MS){
+      return stableFinal(hit,evt);
+    }
+    if(inflight.has(key))return inflight.get(key);
+    const controller=linkedController(options.signal);
+    let timedOut=false;
+    const timer=setTimeout(()=>{timedOut=true;try{controller.abort();}catch(_){}},Math.min(MAX_MS,Number(options.timeoutMs)||MAX_MS));
+    const promise=base.get(evt,{...options,signal:controller.signal,timeoutMs:Math.min(8000,Number(options.timeoutMs)||8000)})
+      .then(data=>{cooldown.set(key,Date.now());return stableFinal(data,evt);})
+      .catch(err=>{
+        const resident=base.peek(evt);
+        if(resident){cooldown.set(key,Date.now());return stableFinal(resident,evt);}
+        if(timedOut&&!options.signal?.aborted)throw new Error('Game Center timed out without blocking the board. Tap Retry to try again.');
+        throw err;
+      })
+      .finally(()=>{clearTimeout(timer);if(inflight.get(key)===promise)inflight.delete(key);});
+    inflight.set(key,promise);
+    return promise;
+  }
+  window.SBB_GAME_CENTER=Object.freeze({...base,version:'1.9-stability',get,__sbbStabilityV4725:true,stabilitySnapshot:()=>({inflight:inflight.size,cooldowns:cooldown.size,maxRequestMs:MAX_MS})});
+})();
+</script>
 <script src="architecture/media-work-priorities.js?v=4.7.20"></script>
 <script src="architecture/editorial-packages.js?v=4.7.20"></script>
 <script src="architecture/playback-session.js?v=4.7.20"></script>
