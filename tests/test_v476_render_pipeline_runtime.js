@@ -11,7 +11,7 @@ const broker=fs.readFileSync('architecture/request-broker.js','utf8');
 const day=fs.readFileSync('architecture/day-state.js','utf8');
 const efficiency=fs.readFileSync('architecture/efficiency-certification.js','utf8');
 
-assert(parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=6)));
+assert(parts[0]>4 || (parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=6))));
 assert(index.includes(`architecture/future-date-navigation.js?v=${VERSION}`));
 assert(index.includes(`architecture/render-pipeline.js?v=${VERSION}`));
 assert(future.includes('window.SBB_FUTURE_DATES'));

@@ -12,7 +12,7 @@ const registry=fs.readFileSync('architecture/competition-registry-projection.js'
 const efficiency=fs.readFileSync('architecture/efficiency-certification.js','utf8');
 const dayBackend=fs.readFileSync('sbb/day_state.py','utf8');
 
-assert(parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=5)));
+assert(parts[0]>4 || (parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=5))));
 
 assert(index.includes(`architecture/operator-module-loader.js?v=${VERSION}`));
 assert(!index.includes(`<script src="architecture/competition-builder.js?v=${VERSION}"></script>`));

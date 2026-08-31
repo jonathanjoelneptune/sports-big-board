@@ -72,7 +72,7 @@ if (location.protocol === 'file:') {
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'4.4.3'),domain:!!DOMAIN_MODEL,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.0'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -731,9 +731,10 @@ function scheduleLaunchGameCenterPopulate(){
     const item=clip(currentIndex);
     if(!item || isContextItem(item) || isTopPlaysItem(item) || item.eventType || window.SBB_MEDIA_SCOPE?.isCollection?.(item)) return;
     if(!gameCenterCompetitionSupported(item)) return;
-    const match=launchScoreMatchForItem(item);
-    const eventLike=match?gameCenterSelectionFromScoreMatch(match):item;
-    const selected=syncSelectedEvent(eventLike,{reason:'launch game-center populate',source:'launch'});
+    const v5Ownership=window.SBB_PLAYBACK_ORCHESTRATOR?.ownershipSnapshot?.()||null;
+    const selected=v5Ownership?.transactionId
+      ? (window.SBB_SELECTED_EVENT?.get?.()||null)
+      : (()=>{const match=launchScoreMatchForItem(item);const eventLike=match?gameCenterSelectionFromScoreMatch(match):item;return syncSelectedEvent(eventLike,{reason:'launch game-center populate legacy fallback',source:'launch'});})();
     if(!selected) return;
     // The splash owns the clean pre-launch state. Once Play is pressed, the current
     // broadcast game should own Game Center as well. Re-run the local resolver after
@@ -788,7 +789,7 @@ function startSportsBigBoardExperience(){
     // startAssignedPlayback() then owns the bounded readiness wait and unattended
     // failover path. The old readiness-only branch could remain in `starting`
     // forever with no session, timeout, or watchdog if onReady never arrived.
-    PlaybackController.tuneProgramIndex(currentIndex,{userInitiated:true,reason:'launch screen play'})
+    tuneProgramIndexV5(currentIndex,{userInitiated:true,reason:'launch screen play'})
       .catch(()=>{}); // PlaybackController already records and recovers start failure.
     confirmLaunchVisualPlayback(activeSlot,8000);
     scheduleLaunchGameCenterPopulate();
@@ -850,6 +851,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
   wireStickyControlBar();wireScoreFilters();},{once:true}); else setTimeout(()=>{wireFavoriteTeamsUi();wireDiagnosticsToggle();wireLaunchScreen();wireScoreFilters();},0);
 const otherSlot = s => s === 'A' ? 'B' : 'A';
 const clip = i => PROGRAM.length ? PROGRAM[((i % PROGRAM.length) + PROGRAM.length) % PROGRAM.length] : null;
+window.SBB_V5_LEGACY_CLIP=i=>clip(i);
 
 window.onYouTubeIframeAPIReady = () => {
   bindNativePlayers();
@@ -1672,7 +1674,7 @@ function resetPlaybackEngine(reason='systemic playback startup failure'){
     let target=currentIndex,item=clip(target);
     if(!item||!runtimeMediaUsable(item)){const next=nextVisibleQueueIndex();if(next<0)return;target=next;item=clip(target);}
     if(!item)return;
-    PlaybackController.tuneProgramIndex(target,{userInitiated:false,reason:'playback engine reset recovery',restart:true}).catch(err=>console.warn('[SBB playback] reset recovery tune failed',err));
+    tuneProgramIndexV5(target,{userInitiated:false,reason:'playback engine reset recovery',restart:true}).catch(err=>console.warn('[SBB playback] reset recovery tune failed',err));
   },900);
   return true;
 }
@@ -2256,7 +2258,7 @@ function reconcileActiveSlot({autoplay=true,userInitiated=false,reason='active r
   const reassigned=!claim || claim.key!==playbackItemKey(item);
   const epoch=reassigned ? configureSlotForItem(activeSlot,item,true) : promoteSlotClaim(activeSlot,item);
   if(autoplay){
-    if(reassigned) startAssignedPlayback(activeSlot,item,{userInitiated,reason,restart:true,epoch}).catch(err=>handlePlaybackFailure(activeSlot,err,userInitiated));
+    if(reassigned) tuneProgramIndexV5(currentIndex,{userInitiated,reason:`${reason}: active reconcile`}).catch(err=>handlePlaybackFailure(activeSlot,err,userInitiated));
     else adapterForSlot(activeSlot).play(userInitiated).catch(err=>handlePlaybackFailure(activeSlot,err,userInitiated));
   }
   return reassigned;
@@ -2300,8 +2302,7 @@ function createPlayer(slot, videoId, autoplay){
               // startAssignedPlayback() owns the pending wait and will issue the
               // muted loadVideoById/playVideo as soon as this callback returns.
             }else{
-              startAssignedPlayback(slot,item,{userInitiated:false,reason:'player-ready bootstrap',restart:false,epoch})
-                .then(()=>waitForFirstPlayback(slot,{timeoutMs:12000,epoch}))
+              tuneProgramIndexV5(currentIndex,{userInitiated:false,reason:'player-ready bootstrap through v5'})
                 .catch(err=>handlePlaybackFailure(slot,err,false));
             }
           }else{
@@ -2494,7 +2495,7 @@ function continueNewlyDiscoveredDateMedia(){
   currentIndex=target; standbyIndex=target;
   setFeedNote(`More ${formatScoreDateLabel(date)} coverage is ready • continuing this date`);
   showBumper(target,600,'MORE FROM THIS DATE');
-  PlaybackController.tuneProgramIndex(target,{userInitiated:false,reason:'new date media discovered'});
+  tuneProgramIndexV5(target,{userInitiated:false,reason:'new date media discovered'});
   return true;
 }
 
@@ -2553,6 +2554,12 @@ function scoreSessionGameCenterAuthority(){
 }
 function syncGameCenterToActivePlayback(item=clip(currentIndex),{reason='active playback',source='playback'}={}){
   const store=window.SBB_SELECTED_EVENT;
+  const v5Ownership=window.SBB_PLAYBACK_ORCHESTRATOR?.ownershipSnapshot?.();
+  // v5.0: sporting-event ownership is established at intent time. Player/media
+  // callbacks may report progress but can never redefine or clear SelectedEvent.
+  if(v5Ownership?.transactionId){
+    return v5Ownership.eventKey ? (store?.get?.()||null) : null;
+  }
   // v4.8.1: the score event, not whichever media package is currently rendering,
   // owns Game Center for the entire explicit score-card session. A quick recap may
   // fail over to an extended recap whose asset metadata is sparse; that transition
@@ -2573,6 +2580,8 @@ function syncGameCenterToActivePlayback(item=clip(currentIndex),{reason='active 
   return syncSelectedEvent(eventLike,{reason,source});
 }
 function selectedEventMatchesActivePlayback(){
+  const v5Ownership=window.SBB_PLAYBACK_ORCHESTRATOR?.ownershipSnapshot?.();
+  if(v5Ownership?.transactionId)return !!v5Ownership.owned;
   const item=clip(currentIndex),selected=window.SBB_SELECTED_EVENT?.get?.()||null;
   const scoreAuthority=scoreSessionGameCenterAuthority();
   if(scoreAuthority){if(!selected)return false;return !!window.SBB_EVENT_IDENTITY?.same?.(selected,scoreAuthority)||sameGameProgramItem(selected,scoreAuthority);}
@@ -2622,7 +2631,7 @@ function playDailyRoundup(date,{userInitiated=true}={}){
   userPlaybackSession=null;activatePlaybackDateContext(date,{source:'silver-roundup'});
   const dateProgram=programForScoreDate(date);PROGRAM=[...roundup,...dateProgram.filter(x=>!roundup.some(r=>playbackItemKey(r)===playbackItemKey(x)))];currentIndex=0;standbyIndex=PROGRAM.length>1?1:0;manualPauseRequested=false;visibilityResumeWanted=false;
   setFeedNote(`${formatScoreDateLabel(date)} • daily roundup`);showBumper(0,500,'DAILY ROUNDUP');
-  PlaybackController.tuneProgramIndex(0,{userInitiated,reason:'Silver daily roundup'});renderQueue();return true;
+  tuneProgramIndexV5(0,{userInitiated,reason:'Silver daily roundup'});renderQueue();return true;
 }
 function maybeAutoplayRoundupForDate(){
   // v4.3.6: score/date browsing is strictly non-authoritative for playback.
@@ -2650,7 +2659,7 @@ function resumeDateProgramAfterSelection(){
   currentIndex=0; standbyIndex=0;
   setFeedNote(`Continuing ${formatScoreDateLabel(date)} • ${PROGRAM.length} program${PROGRAM.length===1?'':'s'} available`);
   showBumper(0,650,'UP NEXT FROM THIS DATE');
-  PlaybackController.tuneProgramIndex(0,{userInitiated:false,reason:'continue selected date queue'});
+  tuneProgramIndexV5(0,{userInitiated:false,reason:'continue selected date queue'});
 }
 async function returnToToday(){
   const today=localDateISO(0);
@@ -2675,16 +2684,17 @@ async function returnToToday(){
   manualPauseRequested=false; visibilityResumeWanted=false;
   setFeedNote(`Back to Today • starting today's available coverage`);
   showBumper(target,700,'RETURNING TO TODAY');
-  PlaybackController.tuneProgramIndex(target,{userInitiated:true,reason:'return to today'});
+  tuneProgramIndexV5(target,{userInitiated:true,reason:'return to today'});
   return true;
 }
 
-function beginScorePlaybackSession({matchId,resumeItem,resumeIndex,selectionCount,preparedAtClick=false,provider='',fallbackItems=[],playbackDate='',match=null}){
+function beginScorePlaybackSession({matchId,resumeItem,resumeIndex,selectionCount,preparedAtClick=false,provider='',fallbackItems=[],playbackDate='',match=null,transactionId=''}){
   const fallbacks=[...new Map((Array.isArray(fallbackItems)?fallbackItems:[])
     .filter(x=>runtimeMediaUsable(x))
     .map(x=>[playbackItemKey(x),x])).values()];
   userPlaybackSession={
     source:'score',
+    transactionId:String(transactionId||window.SBB_APP_STORE?.currentTransaction?.()||''),
     matchId:String(matchId||''),
     playbackDate:String(playbackDate||scorePlaybackDate||''),
     resumeItemId:String(resumeItem?.id||''),
@@ -2706,6 +2716,7 @@ function beginScorePlaybackSession({matchId,resumeItem,resumeIndex,selectionCoun
 function tryScoreMediaFallback(failedItem,reason='playback failure',{runtimeFailureAlreadyMarked=false}={}){
   const session=userPlaybackSession;
   if(session?.source!=='score') return false;
+  try{window.SBB_PLAYBACK_ORCHESTRATOR?.recovering?.(session.transactionId,reason);}catch(_){}
   const failedKey=playbackItemKey(failedItem);
   session.failedMediaKeys ||= new Set();
   if(failedKey) session.failedMediaKeys.add(failedKey);
@@ -2720,13 +2731,14 @@ function tryScoreMediaFallback(failedItem,reason='playback failure',{runtimeFail
     const slotIndex=Math.max(0,Math.min(currentIndex,PROGRAM.length-1));
     PROGRAM[slotIndex]=chosen;
     session.provider=providerForItem(chosen);
+    try{window.SBB_PLAYBACK_ORCHESTRATOR?.selectMedia?.(session.transactionId,chosen,{candidateIndex:slotIndex});}catch(_){}
     transitionInFlight=false;
     transitionRecoveryAttempts=0;
     clearPlaybackRecovery();
     setPlaybackUi('starting');
     showBumper(slotIndex,0,'LOADING ANOTHER VIDEO');
     try{fetch('/api/client-log?event=SCORE_MEDIA_FALLBACK&detail='+encodeURIComponent(`${session.matchId}|${failedKey}|${playbackItemKey(chosen)}|${reason}`),{cache:'no-store'}).catch(()=>{});}catch(_){ }
-    queueMicrotask(()=>PlaybackController.tuneProgramIndex(slotIndex,{userInitiated:false,reason:`score media fallback: ${reason}`,restart:true}));
+    queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:`score media fallback: ${reason}`,restart:true}));
     return true;
   };
   if(candidate)return tuneCandidate(candidate);
@@ -2753,6 +2765,7 @@ function tryScoreMediaFallback(failedItem,reason='playback failure',{runtimeFail
   return true;
 }
 function finalizeScorePlaybackUnavailable(item,reason='No playable recap source is available for this game right now.'){
+  try{window.SBB_PLAYBACK_ORCHESTRATOR?.unavailable?.(userPlaybackSession?.transactionId,reason);}catch(_){}
   try{ markRuntimeMediaFailed(item,reason,{providerFailure:false}); }catch(_){ }
   clearPlaybackRecovery();
   transitionInFlight=false;
@@ -2800,9 +2813,10 @@ function tryHistoricalScoreMediaRecovery(failedItem,reason='historical playback 
     session.fallbackItems=resolved.ranked;
     session.selectionCount=Math.max(1,resolved.selectionItems.length||1);
     session.provider=providerForItem(recovered);
+    try{window.SBB_PLAYBACK_ORCHESTRATOR?.selectMedia?.(session.transactionId,recovered,{candidateIndex:slotIndex});}catch(_){}
     clearPlaybackRecovery();
     renderScoresFromMatchesCombined(false);
-    queueMicrotask(()=>PlaybackController.tuneProgramIndex(slotIndex,{userInitiated:false,reason:'historical exact-source refresh',restart:true}));
+    queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:'historical exact-source refresh',restart:true}));
   }).catch(err=>{
     if(userPlaybackSession!==session) return;
     console.warn('[SBB history playback] exact refresh failed',err);
@@ -2825,7 +2839,7 @@ function resumeGeneralProgramAfterSelection(){
   if(target<0){ showAllCaughtUp(); return; }
   setFeedNote(`Around the League queue resumed • ${playedGameIds.size} watched this session`);
   showBumper(target,900,'BACK TO AROUND THE LEAGUE');
-  PlaybackController.tuneProgramIndex(target,{userInitiated:false,reason:'resume after score selection'});
+  tuneProgramIndexV5(target,{userInitiated:false,reason:'resume after score selection'});
 }
 
 const PlaybackController={
@@ -2955,6 +2969,35 @@ const PlaybackController={
   }
 };
 window.SBB_PLAYBACK_CONTROLLER=PlaybackController;
+try{window.SBB_PLAYBACK_ORCHESTRATOR?.bindAdapter?.({name:'legacy-a-b-player',tuneProgramIndex:(index,options)=>PlaybackController.tuneProgramIndex(index,options),promotePrepared:(slot,index,options)=>doSwapLegacy(slot,index,options)});}catch(err){console.error('[SBB v5] playback adapter bind failed',err);}
+function tuneProgramIndexV5(index,options={}){
+  const orchestrator=window.SBB_PLAYBACK_ORCHESTRATOR;
+  if(!orchestrator?.requestTune)return PlaybackController.tuneProgramIndex(index,options);
+  const item=clip(index);
+  let transactionId=userPlaybackSession?.source==='score'?String(userPlaybackSession.transactionId||''):'';
+  const active=orchestrator.snapshot?.()||{};
+  if(!transactionId||active.transactionId!==transactionId||!window.SBB_APP_STORE?.transactionActive?.(transactionId)){
+    const authority=(item&&playbackOwnsGameCenter(item))?(knownMatchForMedia(item)||gameCenterEventForPlayback(item)||item):null;
+    transactionId=orchestrator.beginIntent(authority,{source:window.SBB_MEDIA_SCOPE?.isCollection?.(item)?'collection':'program',reason:options.reason||'program tune',userInitiated:!!options.userInitiated});
+    try{orchestrator.setPlan(transactionId,item?[item]:[],{legacyProgramIndex:index});}catch(_){}
+  }
+  if(item)try{orchestrator.selectMedia(transactionId,item,{candidateIndex:index});}catch(_){}
+  return orchestrator.requestTune(transactionId,index,options);
+}
+function promotePreparedV5(slot,index,options={}){
+  const orchestrator=window.SBB_PLAYBACK_ORCHESTRATOR;
+  if(!orchestrator?.requestPreparedPromotion)return doSwapLegacy(slot,index,options);
+  const item=clip(index);
+  let transactionId=userPlaybackSession?.source==='score'?String(userPlaybackSession.transactionId||''):'';
+  const active=orchestrator.snapshot?.()||{};
+  if(!transactionId||active.transactionId!==transactionId||!window.SBB_APP_STORE?.transactionActive?.(transactionId)){
+    const authority=(item&&playbackOwnsGameCenter(item))?(knownMatchForMedia(item)||gameCenterEventForPlayback(item)||item):null;
+    transactionId=orchestrator.beginIntent(authority,{source:window.SBB_MEDIA_SCOPE?.isCollection?.(item)?'collection':'program',reason:options.reason||'prepared A/B promotion',userInitiated:!!options.userInitiated});
+    try{orchestrator.setPlan(transactionId,item?[item]:[],{legacyProgramIndex:index});}catch(_){}
+  }
+  if(item)try{orchestrator.selectMedia(transactionId,item,{candidateIndex:index});}catch(_){}
+  return orchestrator.requestPreparedPromotion(transactionId,slot,index,options);
+}
 
 function advanceAfterCompletedItem(){
   const finished=clip(currentIndex);
@@ -2978,7 +3021,7 @@ function advanceAfterCompletedItem(){
     const moreSameGame=!isFullRecapCandidate(finished) && currentIndex<selectionEnd && nextItem && sameGameProgramItem(finished,nextItem);
     if(moreSameGame){
       showBumper(currentIndex+1,350,'CONTINUING HIGHLIGHT REEL');
-      PlaybackController.tuneProgramIndex(currentIndex+1,{userInitiated:false,reason:'score reel continuation'});
+      tuneProgramIndexV5(currentIndex+1,{userInitiated:false,reason:'score reel continuation'});
       return;
     }
     markGamePlayed(finished);
@@ -3005,7 +3048,7 @@ function advanceAfterCompletedItem(){
 function advanceFullscreenSingleSlot(targetIndex){
   if(!initialized||transitionInFlight) return;
   if(bumperMode==='auto') showBumper(targetIndex,500); else if(bumperMode==='always') showBumper(targetIndex,1000);
-  PlaybackController.tuneProgramIndex(targetIndex,{userInitiated:false,reason:'fullscreen automatic transition'});
+  tuneProgramIndexV5(targetIndex,{userInitiated:false,reason:'fullscreen automatic transition'});
 }
 
 function manualQueueAdvance(direction=1){
@@ -3015,12 +3058,12 @@ function manualQueueAdvance(direction=1){
   manualPauseRequested=false;transitionRecoveryAttempts=0;
   const standbySlot=otherSlot(activeSlot),claim=slotAssignment[standbySlot],targetItem=clip(targetIndex);
   if(videoReady[standbySlot]&&claim&&targetItem&&claim.key===playbackItemKey(targetItem)){
-    transitionInFlight=true;showBumper(targetIndex,250,direction<0?'PREVIOUS':'NEXT');doSwap(standbySlot,targetIndex);return true;
+    transitionInFlight=true;showBumper(targetIndex,250,direction<0?'PREVIOUS':'NEXT');promotePreparedV5(standbySlot,targetIndex,{userInitiated:true,reason:direction<0?'manual previous hot promotion':'manual next hot promotion'});return true;
   }
   // Manual transport controls are authoritative. Hot Standby may make the command
   // instant, but missing readiness metadata must never make NEXT/PREV do nothing.
   transitionInFlight=false;showBumper(targetIndex,250,direction<0?'PREVIOUS':'NEXT');
-  PlaybackController.tuneProgramIndex(targetIndex,{userInitiated:true,reason:direction<0?'manual previous button':'manual next button'});
+  tuneProgramIndexV5(targetIndex,{userInitiated:true,reason:direction<0?'manual previous button':'manual next button'});
   return true;
 }
 
@@ -3069,7 +3112,7 @@ function performSwapWhenReady(slot, targetIndex, started){
   if(videoReady[slot]&&claim){
     const readyIndex=Number.isInteger(claim.programIndex)?claim.programIndex:targetIndex;
     const readyItem=clip(readyIndex);
-    if(readyItem&&claim.key===playbackItemKey(readyItem)){doSwap(slot,readyIndex);return;}
+    if(readyItem&&claim.key===playbackItemKey(readyItem)){promotePreparedV5(slot,readyIndex,{userInitiated:false,reason:'automatic hot standby promotion'});return;}
   }
   if(performance.now()-started>STANDBY_TRANSITION_MAX_WAIT_MS){
     // v4.4.3 never intentionally puts an unproven automatic candidate on air.
@@ -3090,14 +3133,14 @@ function performSwapWhenReady(slot, targetIndex, started){
   requestAnimationFrame(() => performSwapWhenReady(slot, targetIndex, started));
 }
 
-function doSwap(newActive, targetIndex){
+function doSwapLegacy(newActive, targetIndex){
   const oldActive = activeSlot;
   const item=clip(targetIndex);
   try{
     const claimBefore=slotAssignment[newActive];
     if(!item||!videoReady[newActive]||!claimBefore||claimBefore.key!==playbackItemKey(item)){
       transitionInFlight=false;
-      return PlaybackController.tuneProgramIndex(targetIndex,{userInitiated:false,reason:'A/B promotion lost hot-ready claim'});
+      return tuneProgramIndexV5(targetIndex,{userInitiated:false,reason:'A/B promotion lost hot-ready claim'});
     }
     recordPlaybackPromotion(item,true,'automatic A/B promotion');
     try{ players[oldActive]?.mute(); }catch(e){}
@@ -3307,7 +3350,7 @@ function handlePlaybackFailure(slot, err, userInitiated=false){
     if(next>=0 && next!==currentIndex){
       setPlaybackUi('starting');showBumper(next,350,'SKIPPING UNAVAILABLE VIDEO');
       try{fetch('/api/client-log?event=AUTO_MEDIA_FAILURE_SKIP&detail='+encodeURIComponent(`${failedKey}|${err?.message||err}`),{cache:'no-store'}).catch(()=>{});}catch(_){}
-      queueMicrotask(()=>PlaybackController.tuneProgramIndex(next,{userInitiated:false,reason:'automatic playback failure recovery'}));
+      queueMicrotask(()=>tuneProgramIndexV5(next,{userInitiated:false,reason:'automatic playback failure recovery'}));
       return;
     }
   }
@@ -3636,7 +3679,7 @@ function switchRecapVersion(targetTier=null){
   if(!manualRecapAlternate) manualRecapAlternate={index:currentIndex,base:current};
   PROGRAM[currentIndex]={...target,recapAlternates:[current,...recapAlternatesFor(current).filter(x=>x.id!==target.id)]};
   renderMetadata(); renderQueue(); updateRecapAlternateButton();
-  PlaybackController.tuneProgramIndex(currentIndex,{userInitiated:true,reason:`recap version selection:${recapTier(target)}`});
+  tuneProgramIndexV5(currentIndex,{userInitiated:true,reason:`recap version selection:${recapTier(target)}`});
 }
 
 function restoreManualRecapBase(){
@@ -3781,7 +3824,7 @@ function renderQueue(){
       const reelPos=Number(item.reelIndex)||idx+1;
       const reelCount=Number(item.reelCount)||PROGRAM.length;
       row.innerHTML=`<div class="queue-num">${reelPos}</div>${queueThumbHtml(item)}<div class="queue-copy"><strong>${escapeHtml(displayProgramTitle(item))}</strong><span class="queue-meta-diagnostic">${itemMatchesFavoriteTeam(item)?'<b class="favorite-queue-badge">★ FAVORITE</b> • ':''}${escapeHtml(item.league || 'SPORT')} • ${kind} • ${escapeHtml(sourceLabel)} • ${stateLabel} • ${reelPos}/${reelCount}${postedAge}</span><span class="queue-meta-polished">${itemMatchesFavoriteTeam(item)?'<b class="favorite-queue-badge">★ FAVORITE</b>':''}${postedText?`${itemMatchesFavoriteTeam(item)?' • ':''}${escapeHtml(postedText)}`:''}</span>${queueRecapPairHtml(item)}</div>${queueDurationHtml(item)}`;
-      row.onclick=()=>{ if(idx!==currentIndex) PlaybackController.tuneProgramIndex(idx,{userInitiated:true,reason:'score reel clip selection'}); };
+      row.onclick=()=>{ if(idx!==currentIndex) tuneProgramIndexV5(idx,{userInitiated:true,reason:'score reel clip selection'}); };
       list.appendChild(row);
     }
     if(currentIndex>0){
@@ -3826,7 +3869,7 @@ function jumpTo(index){
   if(manualRecapAlternate) restoreManualRecapBase();
   if(userPlaybackSession) cancelUserPlaybackSession();
   showBumper(index, bumperMode === 'always' ? 900 : 400);
-  PlaybackController.tuneProgramIndex(index,{userInitiated:true,reason:'queue selection'});
+  tuneProgramIndexV5(index,{userInitiated:true,reason:'queue selection'});
 }
 
 function updateDiagnostics(){
@@ -3966,7 +4009,7 @@ $('nextBtn').onclick = () => {
   if(!sbbPlaybackAllowed({notify:true})) return;
   if(userPlaybackSession?.source==='score' && currentIndex+1<userPlaybackSession.selectionCount){
     showBumper(currentIndex+1,300,'NEXT HIGHLIGHT');
-    PlaybackController.tuneProgramIndex(currentIndex+1,{userInitiated:true,reason:'manual score reel next'});
+    tuneProgramIndexV5(currentIndex+1,{userInitiated:true,reason:'manual score reel next'});
     return;
   }
   if(userPlaybackSession) cancelUserPlaybackSession();
@@ -3979,7 +4022,7 @@ $('prevBtn').onclick = () => {
   if(!sbbPlaybackAllowed({notify:true})) return;
   if(userPlaybackSession?.source==='score' && currentIndex>0 && currentIndex<userPlaybackSession.selectionCount){
     showBumper(currentIndex-1,300,'PREVIOUS HIGHLIGHT');
-    PlaybackController.tuneProgramIndex(currentIndex-1,{userInitiated:true,reason:'manual score reel previous'});
+    tuneProgramIndexV5(currentIndex-1,{userInitiated:true,reason:'manual score reel previous'});
     return;
   }
   if(userPlaybackSession) cancelUserPlaybackSession();
@@ -5048,14 +5091,18 @@ async function ensureScoreDateLoaded(date,{force=false}={}){
 }
 async function selectHistoricalGameWithoutMedia(match){
   if(!match) return;
-  const selected=syncSelectedEvent(gameCenterSelectionFromScoreMatch(match),{reason:'historical score selection',source:'score-ribbon'});
+  const v5=window.SBB_PLAYBACK_ORCHESTRATOR;
+  const authority=gameCenterSelectionFromScoreMatch(match);
+  const transactionId=v5?.beginScoreIntent?.(authority,{reason:'historical score selection: resolving media',userInitiated:true})||'';
+  if(!transactionId)syncSelectedEvent(authority,{reason:'historical score selection legacy fallback',source:'score-ribbon'});
   window.SBB_INFO_DRAWER?.open?.('game-center',{automatic:false});
   setFeedNote(`${gameLabel(match)} • finding a playable recap…`);
+  try{v5?.preparing?.(transactionId,null,{phase:'historical-media-search'});}catch(_){}
   const found=await queueHistoricalGameMedia(match,{priority:true});
   if(scoreBrowseDate===scoreEventDate(match)) renderScoresFromMatchesCombined(false);
   const playable=scoreCardPlayableItems(match);
-  if(playable.length) playGameHighlights(`${String(match.__sbbLeague||match.competitionId||match.league).toUpperCase()}:${String(match.id??match.matchId??match.eventId??'')}`,match,playable);
-  else setFeedNote(`${gameLabel(match)} • Game Center loaded • no playable recap found yet`);
+  if(playable.length) playGameHighlights(`${String(match.__sbbLeague||match.competitionId||match.league).toUpperCase()}:${String(match.id??match.matchId??match.eventId??'')}`,match,playable,{transactionId});
+  else{try{v5?.unavailable?.(transactionId,'Historical media search completed without a playable recap.');}catch(_){}setFeedNote(`${gameLabel(match)} • Game Center loaded • no playable recap found yet`);}
 }
 
 async function refreshSoccerLeague(league,today,yesterday,allCandidates){
@@ -6314,7 +6361,7 @@ function mergeLiveProgram(candidates, first){
     // provider player is ready. If YouTube is still booting, only record the
     // assignment; createPlayer(onReady) will start that exact item later.
     if(isContextItem(item) || isNativeItem(item) || playerReady[activeSlot] || playerReady[otherSlot(activeSlot)]){
-      PlaybackController.tuneProgramIndex(target,{userInitiated:false,reason:'startup live program'});
+      tuneProgramIndexV5(target,{userInitiated:false,reason:'startup live program'});
     }else{
       configureSlotForItem(activeSlot,item,true);
       renderMetadata();
@@ -6819,11 +6866,21 @@ function renderScoresFromMatchesCombined(animate=false){
   applyScoreRibbonFocusVisuals({scroll:false});
 }
 
-async function playGameHighlights(matchId, match, providedItems=null){
+async function playGameHighlights(matchId, match, providedItems=null, options={}){
   if(!sbbPlaybackAllowed({notify:true})){
     if(match)syncSelectedEvent(gameCenterSelectionFromScoreMatch(match),{reason:'score-card selection while search priority active',source:'score-ribbon'});
     return;
   }
+  const v5=window.SBB_PLAYBACK_ORCHESTRATOR;
+  const intentPlaybackDate=scoreEventDate(match)||scoreBrowseDate||localDateISO(0);
+  // v5.0 invariant: a user intent and SelectedEvent exist BEFORE candidate
+  // resolution or prewarm. Historical media search may hand us the transaction it
+  // opened at click time; otherwise create the score intent synchronously here.
+  const requestedTransactionId=String(options?.transactionId||'');
+  const activeV5=v5?.snapshot?.()||{};
+  const v5TransactionId=(requestedTransactionId&&activeV5.transactionId===requestedTransactionId)
+    ? requestedTransactionId
+    : (match?v5?.beginScoreIntent?.(gameCenterSelectionFromScoreMatch(match),{reason:'score-card selection',userInitiated:true,playbackDate:intentPlaybackDate})||'':'');
   let items=Array.isArray(providedItems)?providedItems.filter(Boolean):[];
   if(match){
     const current=scoreCardPlayableItems(match);
@@ -6834,6 +6891,7 @@ async function playGameHighlights(matchId, match, providedItems=null){
     ).values()];
   }
   if(!items.length){
+    try{v5?.unavailable?.(v5TransactionId,'No playable media was resolved for the selected event.');}catch(_){}
     console.warn('[SBB score-click] no playable media',matchId,match);
     try{ fetch('/api/client-log?event=SCORE_CLICK_NO_MEDIA&detail='+encodeURIComponent(String(matchId||'')),{cache:'no-store'}).catch(()=>{}); }catch(e){}
     setFeedNote(isFinal(match)?'Recap is still being prepared for playback':'No playable live highlight is available yet');
@@ -6844,36 +6902,35 @@ async function playGameHighlights(matchId, match, providedItems=null){
   let primary=resolvedSelection.primary;
   let selectionItems=resolvedSelection.selectionItems;
   const editorialPrimary=resolvedSelection.editorialPrimary||primary;
-  if(match){
-    // The score event owns sporting-event identity. A media item's gamePk can be
-    // mis-associated even when the video itself remains playable, so it must never
-    // become Game Center authority. Launch and score clicks share this exact adapter.
-    syncSelectedEvent(gameCenterSelectionFromScoreMatch(match),{reason:'score-card selection',source:'score-ribbon'});
-  }
-  if(!primary) return false;
+  try{if(v5TransactionId)v5?.setPlan?.(v5TransactionId,resolvedSelection.ranked||items,{matchId});}catch(_){}
+  if(!primary){try{v5?.unavailable?.(v5TransactionId,'No eligible media candidate remained after resolution.');}catch(_){}return false;}
   // If the editorial primary is an unproven direct/native source and no proven
   // alternative was available, hold it off-air while its hidden decoder proves
   // real clock progress. This is the boundary that prevents COLD_UPSTREAM media
   // from becoming ACTIVE at currentTime=0.
   if(editorialPrimary&&playbackItemKey(primary)===playbackItemKey(editorialPrimary)&&isNativeItem(primary)&&!scoreMediaAirReady(primary)){
     const initial=scoreMediaReadiness(primary);rememberScoreMediaPreflight(primary,{attempted:true,result:'PREWARMING',readinessBefore:initial.disposition,primaryRejected:false});
+    try{v5?.preparing?.(v5TransactionId,primary,{readiness:initial.disposition});}catch(_){}
     setFeedNote(`${gameLabel(match)} • preparing verified video`);showBumper(Math.max(0,currentIndex),0,'PREPARING VERIFIED VIDEO');
     const proof=await waitForScoreMediaHot(primary,SCORE_MEDIA_PREFLIGHT_WAIT_MS);
+    try{v5?.prewarmResult?.(v5TransactionId,primary,{ok:!!proof.ok,result:proof.ok?(proof.readiness?.disposition||'HOT_READY'):'PREWARM_TIMEOUT'});}catch(_){}
     if(!proof.ok){
       setPlaybackUi('ready');setVideoLoadingOverlay(false);setFeedNote(`${gameLabel(match)} • video source is still being prepared`);
       const kicker=$('bumperKicker');if(kicker)kicker.textContent='VIDEO STILL PREPARING';
       const subtitle=$('bumperSubtitle');if(subtitle)subtitle.textContent='Sports Big Board kept an unproven upstream source off-air. Choose another game or retry shortly.';
       rememberScoreMediaPreflight(primary,{attempted:true,result:'PREWARM_TIMEOUT',primaryRejected:true});
+      try{v5?.unavailable?.(v5TransactionId,'Selected media did not prove browser readiness before the prewarm deadline.');}catch(_){}
       return false;
     }
     resolvedSelection=scoreCardPlaybackSelection(match,items);primary=resolvedSelection.primary;selectionItems=resolvedSelection.selectionItems;
-    if(!primary)return false;
+    if(!primary){try{v5?.unavailable?.(v5TransactionId,'Media prewarm completed but no eligible candidate remained.');}catch(_){}return false;}
   }
   if(editorialPrimary&&playbackItemKey(primary)!==playbackItemKey(editorialPrimary)){
     rememberScoreMediaPreflight(editorialPrimary,{attempted:true,result:'BYPASSED_COLD',primaryRejected:true,selectedMediaKey:playbackItemKey(primary)});
   }else if(editorialPrimary){
     const readiness=scoreMediaReadiness(editorialPrimary);rememberScoreMediaPreflight(editorialPrimary,{attempted:isNativeItem(editorialPrimary),result:isNativeItem(editorialPrimary)?readiness.disposition:'NOT_REQUIRED',primaryRejected:false,selectedMediaKey:playbackItemKey(primary)});
   }
+  try{if(v5TransactionId){v5?.setPlan?.(v5TransactionId,resolvedSelection.ranked||items,{matchId});v5?.selectMedia?.(v5TransactionId,primary,{candidateIndex:Math.max(0,(resolvedSelection.ranked||[]).findIndex(x=>playbackItemKey(x)===playbackItemKey(primary)))});}}catch(_){}
   rememberRecentScoreMedia(primary);
   const selectedMediaWasPrepared=isScoreMediaPrimed(primary)||scoreMediaAirReady(primary);
   // v4.3.6: score selection also tells localhost to stage the exact native
@@ -6895,7 +6952,7 @@ async function playGameHighlights(matchId, match, providedItems=null){
   standbyIndex=0;
   manualPauseRequested=false;
   visibilityResumeWanted=false;
-  beginScorePlaybackSession({matchId,resumeItem,resumeIndex,selectionCount:selectionItems.length,preparedAtClick:selectedMediaWasPrepared,provider:providerForItem(primary),fallbackItems:resolvedSelection.ranked,playbackDate,match});
+  beginScorePlaybackSession({matchId,resumeItem,resumeIndex,selectionCount:selectionItems.length,preparedAtClick:selectedMediaWasPrepared,provider:providerForItem(primary),fallbackItems:resolvedSelection.ranked,playbackDate,match,transactionId:v5TransactionId});
 
   const kind=(match && !isFinal(match))
     ? 'LIVE HIGHLIGHT'
@@ -6906,7 +6963,7 @@ async function playGameHighlights(matchId, match, providedItems=null){
     console.info('[SBB score-click] authoritative tune',{matchId,primaryId:primary.id,youtubeId:primary.youtubeId,mediaUrl:primary.mediaUrl,selectionCount:selectionItems.length,final:isFinal(match),kind,preparedAtClick:selectedMediaWasPrepared});
     fetch('/api/client-log?event=SCORE_CLICK_TUNE&detail='+encodeURIComponent(`${matchId}|${primary.id||primary.youtubeId||''}|${kind}|provider=${providerForItem(primary)}|preparedAtClick=${selectedMediaWasPrepared?1:0}`),{cache:'no-store'}).catch(()=>{});
   }catch(e){}
-  PlaybackController.tuneProgramIndex(0,{userInitiated:true,reason:'score-card selection'});
+  tuneProgramIndexV5(0,{userInitiated:true,reason:'score-card selection'});
   return true;
 }
 
@@ -7077,11 +7134,11 @@ window.SBB_DEV_TEST_HOOKS=Object.freeze({
   nextClip:()=>{ const b=$('nextBtn'); if(!b)throw new Error('nextBtn unavailable'); b.click(); return true; },
   stressTuneNext:()=>{
     const target=nextVisibleQueueIndex();if(target<0)return Promise.resolve(false);
-    return PlaybackController.tuneProgramIndex(target,{userInitiated:false,reason:'milestone stress next'}).then(()=>true);
+    return tuneProgramIndexV5(target,{userInitiated:false,reason:'milestone stress next'}).then(()=>true);
   },
   stressTuneNextGame:()=>{
     const here=clip(currentIndex);const hereGame=programGameIdentity(here);
-    for(let step=1;step<=PROGRAM.length;step++){const idx=(currentIndex+step)%PROGRAM.length,item=PROGRAM[idx];if(playbackOwnsGameCenter(item)&&programGameIdentity(item)!==hereGame)return PlaybackController.tuneProgramIndex(idx,{userInitiated:false,reason:'milestone next-game ownership'}).then(()=>true);}
+    for(let step=1;step<=PROGRAM.length;step++){const idx=(currentIndex+step)%PROGRAM.length,item=PROGRAM[idx];if(playbackOwnsGameCenter(item)&&programGameIdentity(item)!==hereGame)return tuneProgramIndexV5(idx,{userInitiated:false,reason:'milestone next-game ownership'}).then(()=>true);}
     return Promise.resolve(false);
   },
   chaosDisruptStandby:()=>{
@@ -7124,7 +7181,7 @@ window.SBB_DEV_TEST_HOOKS=Object.freeze({
     const wanted=String(key||'');if(!wanted)return Promise.resolve(false);
     const idx=(PROGRAM||[]).findIndex(item=>playbackItemKey(item)===wanted);
     if(idx<0)return Promise.resolve(false);
-    return PlaybackController.tuneProgramIndex(idx,{userInitiated:false,reason:'milestone stress restore'}).then(()=>true).catch(()=>false);
+    return tuneProgramIndexV5(idx,{userInitiated:false,reason:'milestone stress restore'}).then(()=>true).catch(()=>false);
   },
   programSize:()=>Array.isArray(PROGRAM)?PROGRAM.length:0,
   invariant:()=>String(window.SBB_PLAYBACK_SESSION?.snapshot?.().invariant||'OK')

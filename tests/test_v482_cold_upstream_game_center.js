@@ -14,8 +14,8 @@ const runtime=read('sbb/game_center_runtime_v482.py');
 const manifest=JSON.parse(read('release-manifest.json'));
 const verify=read('VERIFY.sh');
 
-assert.strictEqual(version,'4.8.2');
-assert(index.includes('<title>Sports Big Board — v4.8.2</title>'));
+const vp=version.split('.').map(Number);assert(vp[0]>4 || (vp[0]===4 && (vp[1]>8 || (vp[1]===8 && vp[2]>=2))));
+assert(index.includes(`<title>Sports Big Board — v${version}</title>`));
 for(const [,asset,found] of [...index.matchAll(/(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"/g)]){
   assert.strictEqual(found,version,`${asset} has stale generation ${found}`);
 }
@@ -41,7 +41,6 @@ assert(app.includes('scorePlayableCache:()=>scorePlayableItemsCacheSnapshot()'))
 // Certification distinguishes capability coverage from runtime failure and records
 // whether a cold primary was prewarmed or rejected before playback.
 for(const token of [
-  "const VERSION='2.2'",
   'GAME_CENTER_EXPECTED_SUPPORTED',
   'unsupportedReason',
   'prewarmAttempts',
@@ -62,7 +61,7 @@ const document={
 const window={SBB_CORE:{version},addEventListener:()=>{},dispatchEvent:()=>{}};window.window=window;
 const sandbox={window,document,console,performance:{now:()=>1},Date,Math,Number,String,Object,Array,Set,Map,JSON,RegExp,Promise,Blob:global.Blob,AbortController,DOMException,CustomEvent:function(){},setTimeout:()=>0,clearTimeout:()=>{},setInterval:()=>1,clearInterval:()=>{},getComputedStyle:()=>({display:'none'}),URL};
 vm.createContext(sandbox);vm.runInContext(cert,sandbox,{filename:'comprehensive-site-certification.js'});
-assert.strictEqual(window.SBB_SITE_CERTIFICATION.version,'2.2');
+assert(Number(window.SBB_SITE_CERTIFICATION.version.split('.')[0])>=2);assert(Number(window.SBB_SITE_CERTIFICATION.version.split('.').join(''))>=22);
 assert.strictEqual(window.SBB_SITE_CERTIFICATION.gameCenterSupport('NBA').supported,true);
 assert.strictEqual(window.SBB_SITE_CERTIFICATION.gameCenterSupport('NHL').supported,true);
 assert.strictEqual(window.SBB_SITE_CERTIFICATION.gameCenterSupport('LLWS2026').supported,false);
@@ -79,10 +78,10 @@ for(const forbidden of ['401864494','San José State Spartans @ #14 USC Trojans'
   assert(!app.includes(forbidden),`app contains named-regression exception: ${forbidden}`);
   assert(!runtime.includes(forbidden),`runtime contains named-regression exception: ${forbidden}`);
 }
-assert(manifest.release==='4.8.2');
+assert.strictEqual(manifest.release,version);
 assert(manifest.requiredFiles.includes('sbb/game_center_runtime_v482.py'));
 assert(manifest.requiredFiles.includes('tests/test_v482_cold_upstream_game_center.js'));
 assert(verify.includes('node tests/test_v482_cold_upstream_game_center.js'));
 assert(verify.includes('python3 -m unittest tests.test_v482_game_center_runtime'));
 
-console.log('PASS: v4.8.2 cold-upstream gate + Game Center support/identity contracts');
+console.log(`PASS: ${version} retains v4.8.2 cold-upstream gate + Game Center support/identity contracts`);

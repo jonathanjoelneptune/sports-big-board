@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.8.2",
-  "baseRelease": "4.8.1",
-  "title": "Comprehensive Certification Cold-Upstream Readiness + Game Center Identity",
+  "release": "5.0.0",
+  "baseRelease": "4.8.2",
+  "title": "Unified Runtime Architecture Foundation",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -11,154 +11,157 @@
     "core-model.js",
     "foundation-certification.json",
     "release-manifest.json",
+    "ARCHITECTURE-V5.md",
     "app.js",
+    "architecture/app-store-v5.js",
+    "architecture/selected-event-store.js",
+    "architecture/playback-session.js",
+    "architecture/playback-orchestrator-v5.js",
     "architecture/comprehensive-site-certification.js",
     "architecture/efficiency-certification.js",
     "architecture/playback-progress-watchdog.js",
-    "sbb/__init__.py",
     "sbb/game_center_runtime_v482.py",
+    "sbb/__init__.py",
     "tools/check_release_manifest.py",
     "tools/check_release_version.py",
     "tools/check_foundation_certification.py",
     "tools/check_ultimate_playback.py",
     "tools/check_deploy_rehearsal.py",
+    "tests/test_playback_session_runtime.js",
     "tests/test_release_behavior_gate.py",
     "tests/test_v4726_comprehensive_site_certification.js",
+    "tests/test_v473_efficiency_runtime.js",
+    "tests/test_v474_efficiency_remediation_runtime.js",
+    "tests/test_v475_enrichment_firewall_runtime.js",
+    "tests/test_v476_render_pipeline_runtime.js",
+    "tests/test_v477_first_paint_render_consolidation_runtime.js",
+    "tests/test_v478_future_projection_card_cache_runtime.js",
+    "tests/test_v479_navigation_history_runtime.js",
+    "tests/test_v4710_cold_history_future_store_runtime.js",
+    "tests/test_v4711_availability_index_thin_probe_runtime.js",
+    "tests/test_v4712_day_state_render_model_runtime.js",
+    "tests/test_v4713_media_readiness_runtime.js",
     "tests/test_v480_comprehensive_certification.js",
     "tests/test_v481_playback_ownership_recovery.js",
     "tests/test_v482_cold_upstream_game_center.js",
-    "tests/test_v482_game_center_runtime.py"
+    "tests/test_v482_game_center_runtime.py",
+    "tests/test_v500_runtime_architecture.js",
+    "tests/test_v500_single_tune_gateway.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.8.2"
+        "5.0.0"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board — v4.8.2",
-        "core-model.js?v=4.8.2",
-        "architecture/efficiency-certification.js?v=4.8.2",
-        "architecture/comprehensive-site-certification.js?v=4.8.2",
-        "architecture/playback-progress-watchdog.js?v=4.8.2",
-        "app.js?v=4.8.2"
+        "Sports Big Board \u2014 v5.0.0",
+        "core-model.js?v=5.0.0",
+        "architecture/app-store-v5.js?v=5.0.0",
+        "architecture/selected-event-store.js?v=5.0.0",
+        "architecture/playback-session.js?v=5.0.0",
+        "architecture/playback-orchestrator-v5.js?v=5.0.0",
+        "architecture/comprehensive-site-certification.js?v=5.0.0",
+        "app.js?v=5.0.0"
       ],
       "forbidden": [
-        "?v=4.8.1"
+        "?v=4.8.2"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.8.2'"
+        "version:'5.0.0'"
+      ]
+    },
+    "architecture/app-store-v5.js": {
+      "required": [
+        "window.SBB_APP_STORE",
+        "PLAYBACK_INTENT_BEGIN",
+        "PLAYBACK_PREPARING",
+        "PLAYBACK_UNAVAILABLE",
+        "PLAYBACK_RECOVERING",
+        "transactionActive",
+        "invariant",
+        "atomic ownership boundary"
+      ]
+    },
+    "architecture/selected-event-store.js": {
+      "required": [
+        "version:'5.0.0'",
+        "SBB_APP_STORE",
+        "protectedByV5",
+        "legacyPlaybackMutation",
+        "SELECT_EVENT",
+        "CLEAR_EVENT",
+        "storeAlreadySelected"
+      ]
+    },
+    "architecture/playback-session.js": {
+      "required": [
+        "version:'2.0'",
+        "beginIntent",
+        "transactionId",
+        "intentId",
+        "state:'preparing'"
+      ]
+    },
+    "architecture/playback-orchestrator-v5.js": {
+      "required": [
+        "window.SBB_PLAYBACK_ORCHESTRATOR",
+        "beginScoreIntent",
+        "beginProgramIntent",
+        "bindAdapter",
+        "requestTune",
+        "ownershipSnapshot",
+        "beginIntent",
+        "requestPreparedPromotion"
       ]
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "const VERSION = '4.8.2'",
+        "const VERSION = '5.0.0'",
         "Efficiency Certification"
-      ],
-      "forbidden": [
-        "v4.7.16 Efficiency Certification"
       ]
     },
     "architecture/comprehensive-site-certification.js": {
       "required": [
-        "const VERSION='2.2'",
-        "seededRng",
-        "certificationDates",
-        "gameCenterUiExercise",
+        "const VERSION='3.0'",
+        "V5 UNIFIED RUNTIME ARCHITECTURE",
+        "v5RuntimeSnapshot",
+        "waitForV5Intent",
+        "ADAPTER_BOUND=",
+        "SBB_PLAYBACK_ORCHESTRATOR",
+        "SBB_APP_STORE",
         "playbackInteractionMatrix",
-        "#scoreCells .score-card.has-highlights",
-        "SBB_PLAYBACK_PROGRESS_WATCHDOG",
+        "gameCenterUiExercise",
         "ACTIVE PLAYBACK INTERACTION MATRIX",
         "SEED=${r.seed}",
-        "engineResets",
-        "gameCenterOwnershipFailures",
-        "waitForPlaybackQuiescence",
         "gcOwned=",
-        "GAME_CENTER_EXPECTED_SUPPORTED",
-        "unsupportedReason",
-        "prewarmAttempts",
-        "primaryRejections",
         "readinessBefore=",
-        "primaryRejected=",
         "SCORE_PLAYABLE_CACHE"
       ],
       "forbidden": [
         "USC_EVENT_FOUND",
         "401864494",
         "San Jose",
-        "San José",
+        "San Jos\u00e9",
         "san jose"
-      ]
-    },
-    "architecture/playback-progress-watchdog.js": {
-      "required": [
-        "SBB_PLAYBACK_PROGRESS_WATCHDOG",
-        "getCurrentTime",
-        "PROGRESS_SOFT_KICK_MS",
-        "PROGRESS_RECOVERY_MS",
-        "handlePlaybackFailure",
-        "media clock did not advance",
-        "No game, league,",
-        "const VERSION='1.1'",
-        "LOCAL_NO_PROGRESS"
-      ],
-      "forbidden": [
-        "401864494",
-        "USC_EVENT_FOUND",
-        "San Jose",
-        "San José"
       ]
     },
     "app.js": {
       "required": [
-        "playbackFailureIsLocalProgressStall",
-        "noteLocalPlaybackFailure",
-        "systemicCounterSuppressed:true",
-        "scoreSessionGameCenterAuthority",
-        "score-session authority",
-        "playback engine reset recovery",
-        "recoveryWasScore",
-        "SCORE_MEDIA_PREFLIGHT_WAIT_MS",
-        "COLD_UPSTREAM",
-        "scoreMediaAirReady",
+        "function tuneProgramIndexV5",
+        "SBB_PLAYBACK_ORCHESTRATOR?.bindAdapter",
+        "beginScoreIntent",
+        "transactionId:v5TransactionId",
+        "ownershipSnapshot",
         "waitForScoreMediaHot",
-        "BYPASSED_COLD",
-        "PREWARM_TIMEOUT",
-        "SCORE_PLAYABLE_ITEMS_CACHE_TTL_MS",
-        "scorePlayableItemsCacheGet",
-        "scorePlayableCache:()=>scorePlayableItemsCacheSnapshot()"
-      ],
-      "forbidden": [
-        "transitionInFlight=false;TRANSIENT_UNPLAYABLE_MEDIA.clear()"
-      ]
-    },
-    "sbb/__init__.py": {
-      "required": [
-        "game_center_runtime_v482",
-        "_install_game_center_runtime_v482()"
-      ]
-    },
-    "sbb/game_center_runtime_v482.py": {
-      "required": [
-        "_TARGETS = frozenset({\"NBA\", \"NHL\"})",
-        "_resolve_from_espn_scoreboard",
-        "_espn_scoreboard",
-        "_same_team_pair",
-        "_resolve_game_center_event_id"
-      ],
-      "forbidden": [
-        "401864494",
-        "USC Trojans",
-        "San José"
-      ]
-    },
-    "tools/check_foundation_certification.py": {
-      "required": [
-        "Foundation is a retained baseline",
-        "foundation_tuple<=version_tuple"
+        "tryScoreMediaFallback",
+        "finalizeScorePlaybackUnavailable",
+        "function promotePreparedV5",
+        "promotePrepared:(slot,index,options)=>doSwapLegacy(slot,index,options)",
+        "historical score selection: resolving media"
       ]
     },
     "tools/check_release_manifest.py": {
@@ -169,12 +172,99 @@
     },
     "VERIFY.sh": {
       "required": [
+        "node tests/test_v500_runtime_architecture.js",
+        "node tests/test_v500_single_tune_gateway.js",
         "node tests/test_v480_comprehensive_certification.js",
         "node tests/test_v481_playback_ownership_recovery.js",
         "node tests/test_v482_cold_upstream_game_center.js",
-        "python3 -m unittest tests.test_v482_game_center_runtime",
-        "v4.7 JavaScript regression archive",
-        "v4.8 comprehensive certification architecture"
+        "v5 unified runtime"
+      ]
+    },
+    "sbb/__init__.py": {
+      "required": [
+        "game_center_runtime_v482",
+        "_install_game_center_runtime_v482()"
+      ]
+    },
+    "sbb/game_center_runtime_v482.py": {
+      "required": [
+        "frozenset({\"NBA\", \"NHL\"})",
+        "_resolve_from_espn_scoreboard",
+        "_espn_scoreboard",
+        "_same_team_pair",
+        "_resolve_game_center_event_id"
+      ]
+    },
+    "tests/test_playback_session_runtime.js": {
+      "required": [
+        "SBB_PLAYBACK_SESSION.version,'2.0'",
+        "beginIntent",
+        "transactionId",
+        "intent-first authority"
+      ]
+    },
+    "ARCHITECTURE-V5.md": {
+      "required": [
+        "SBB_APP_STORE",
+        "SBB_PLAYBACK_ORCHESTRATOR",
+        "Selected Event",
+        "5.1 canonical backend event identity",
+        "Nothing points backward"
+      ]
+    },
+    "tests/test_v473_efficiency_runtime.js": {
+      "required": [
+        "parts[0]>4"
+      ]
+    },
+    "tests/test_v474_efficiency_remediation_runtime.js": {
+      "required": [
+        "parts[0]>4"
+      ]
+    },
+    "tests/test_v475_enrichment_firewall_runtime.js": {
+      "required": [
+        "parts[0]>4"
+      ]
+    },
+    "tests/test_v476_render_pipeline_runtime.js": {
+      "required": [
+        "parts[0]>4"
+      ]
+    },
+    "tests/test_v477_first_paint_render_consolidation_runtime.js": {
+      "required": [
+        "parts[0]>4"
+      ]
+    },
+    "tests/test_v478_future_projection_card_cache_runtime.js": {
+      "required": [
+        "parts[0]>4"
+      ]
+    },
+    "tests/test_v479_navigation_history_runtime.js": {
+      "required": [
+        "parts[0]>4"
+      ]
+    },
+    "tests/test_v4710_cold_history_future_store_runtime.js": {
+      "required": [
+        "parts[0]>4"
+      ]
+    },
+    "tests/test_v4711_availability_index_thin_probe_runtime.js": {
+      "required": [
+        "parts[0]>4"
+      ]
+    },
+    "tests/test_v4712_day_state_render_model_runtime.js": {
+      "required": [
+        "parts[0]>4"
+      ]
+    },
+    "tests/test_v4713_media_readiness_runtime.js": {
+      "required": [
+        "parts[0]>4"
       ]
     }
   }

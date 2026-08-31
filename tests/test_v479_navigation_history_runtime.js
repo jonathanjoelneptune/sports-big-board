@@ -9,7 +9,7 @@ const registry=fs.readFileSync('architecture/competition-registry-projection.js'
 const efficiency=fs.readFileSync('architecture/efficiency-certification.js','utf8');
 const cache=fs.readFileSync('architecture/card-build-cache.js','utf8');
 
-assert(parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=9)));
+assert(parts[0]>4 || (parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=9))));
 assert(index.includes(`architecture/navigation-ui.js?v=${VERSION}`));
 assert(nav.includes('window.SBB_DATE_NAV_UI'));
 assert(nav.includes('sbb-date-popover'));

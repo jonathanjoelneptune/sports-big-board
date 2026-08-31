@@ -1,7 +1,6 @@
-/* Sports Big Board 4.2 playback session authority.
-   This store is the single source of truth for WHAT is selected, WHICH transport
-   owns it, and HOW playback is progressing. Player adapters remain responsible for
-   provider-specific API calls; every UI/diagnostic consumer reads this session. */
+/* Sports Big Board v5.0.0 playback adapter/session telemetry.
+   SBB_APP_STORE + SBB_PLAYBACK_ORCHESTRATOR own the application transaction.
+   This module remains the transport/session telemetry boundary beneath that owner. */
 (() => {
   'use strict';
   if (window.SBB_PLAYBACK_SESSION) return;
@@ -15,7 +14,7 @@
   function nowEpoch(){ return Date.now(); }
   function freshState(){
     return {
-      version:'1.0', sessionId:'', selectionId:0, state:'idle', previousState:'',
+      version:'2.0', transactionId:'', intentId:0, sessionId:'', selectionId:0, state:'idle', previousState:'',
       selectedAt:0, selectedPerf:0, firstFrameAt:0, firstFrameMs:null,
       eventKey:'', mediaKey:'', clipKey:'', title:'', league:'', provider:'', transport:'', slot:'',
       sourceUrl:'', sourceExternalUrl:'', reason:'', userInitiated:false,
@@ -58,8 +57,27 @@
     if(audibleVideos.length>1) console.error('[SBB playback-session] invariant violation: multiple audible video slots',snapshot());
   }
 
+  function currentTransactionId(meta={}){
+    if(meta.transactionId) return String(meta.transactionId);
+    try{return String(window.SBB_APP_STORE?.snapshot?.().playback?.transactionId||'');}catch(_){return '';}
+  }
+  function beginIntent(meta={}){
+    state=freshState();
+    state.sessionId=`intent-${nowEpoch().toString(36)}-${(++sequence).toString(36)}`;
+    state.selectionId=sequence;
+    state.transactionId=currentTransactionId(meta);
+    state.intentId=Number(meta.intentId)||Number(window.SBB_APP_STORE?.snapshot?.().playback?.intentId)||0;
+    state.selectedAt=nowEpoch(); state.selectedPerf=nowPerf();
+    Object.assign(state,{
+      eventKey:String(meta.eventKey||''),title:String(meta.title||''),league:String(meta.league||''),
+      reason:String(meta.reason||'playback intent'),userInitiated:!!meta.userInitiated,
+      transport:'PENDING',previousState:'idle',state:'preparing',lastTransitionAt:nowEpoch(),lastError:''
+    });
+    emit();scheduleTelemetry('intent');return snapshot();
+  }
+
   function select(meta={}){
-    // PlaybackController calls select exactly once for each tune operation. Even a
+    // PlaybackController selects a concrete media attempt beneath the v5 transaction.
     // replay of the same media is a new playback attempt and needs fresh first-frame,
     // stall and failure accounting. Reusing the previous session here made replay
     // latency invisible and carried stale first-frame truth across restarts.
@@ -67,6 +85,8 @@
     state=freshState();
     state.sessionId=`ps-${nowEpoch().toString(36)}-${(++sequence).toString(36)}`;
     state.selectionId=sequence;
+    state.transactionId=currentTransactionId(meta);
+    state.intentId=Number(meta.intentId)||Number(window.SBB_APP_STORE?.snapshot?.().playback?.intentId)||0;
     state.selectedAt=nowEpoch(); state.selectedPerf=nowPerf();
     Object.assign(state,{
       eventKey:String(meta.eventKey||state.eventKey||''),
@@ -143,7 +163,7 @@
   function reset(reason='reset'){ for(const timer of telemetryTimers)clearTimeout(timer);telemetryTimers.clear();state=freshState(); state.reason=String(reason||'reset'); emit(); }
 
   window.SBB_PLAYBACK_SESSION=Object.freeze({
-    version:'1.0', select, assign, transition, markFirstFrame, fail, setAudible,
+    version:'2.0', beginIntent, select, assign, transition, markFirstFrame, fail, setAudible,
     clearVideoAudible, note, snapshot, subscribe, reset
   });
 })();

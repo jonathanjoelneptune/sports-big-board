@@ -9,7 +9,7 @@ const render=fs.readFileSync('architecture/render-pipeline.js','utf8');
 const efficiency=fs.readFileSync('architecture/efficiency-certification.js','utf8');
 const backend=fs.readFileSync('sbb/day_state.py','utf8');
 
-assert(parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=8)));
+assert(parts[0]>4 || (parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=8))));
 assert(index.includes(`architecture/card-build-cache.js?v=${VERSION}`));
 assert(index.indexOf(`architecture/card-build-cache.js?v=${VERSION}`) <
        index.indexOf(`architecture/render-pipeline.js?v=${VERSION}`));

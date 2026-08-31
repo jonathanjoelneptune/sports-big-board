@@ -6,7 +6,7 @@ const parts=VERSION.split('.').map(Number);
 const index=fs.readFileSync('index.html','utf8');
 const src=fs.readFileSync('architecture/efficiency-certification.js','utf8');
 
-assert(parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=3)));
+assert(parts[0]>4 || (parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=3))));
 assert(index.includes(`architecture/efficiency-certification.js?v=${VERSION}`));
 assert(src.includes("window.SBB_EFFICIENCY"));
 assert(src.includes("runAutoTest"));

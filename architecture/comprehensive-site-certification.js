@@ -1,4 +1,4 @@
-/* Sports Big Board v4.8.2 — Comprehensive Certification Architecture.
+/* Sports Big Board v5.0.0 — Unified Runtime Comprehensive Certification Architecture.
    Whole-site certification drives real navigation, Game Center UI, score-card
    playback, recovery, APIs, workers, discovery, rendering and memory. Selection is
    deliberately game-agnostic and seeded so every run is broad yet reproducible.
@@ -7,8 +7,8 @@
   'use strict';
   if (window.SBB_SITE_CERTIFICATION?.version === '2.2') return;
 
-  const VERSION='2.2';
-  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'4.8.2');
+  const VERSION='3.0';
+  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.0');
   const PLAYBACK_TARGET=8;
   const PLAYBACK_MIN_STARTS=5;
   const PLAYBACK_CONFIRM_TIMEOUT_MS=12500;
@@ -177,7 +177,15 @@
   }
   async function waitForSelection(beforeId,timeoutMs=5500){const deadline=Date.now()+timeoutMs;while(Date.now()<deadline){const s=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{};if(n(s.selectionId)>n(beforeId)&&clean(s.mediaKey))return s;await sleep(80);}return null;}
   function engineSnapshot(){try{return window.SBB_PLAYBACK_ENGINE?.snapshot?.()||{};}catch(_){return {};}}
+  function v5RuntimeSnapshot(){
+    const app=window.SBB_APP_STORE?.snapshot?.()||null,orchestrator=window.SBB_PLAYBACK_ORCHESTRATOR,ownership=orchestrator?.ownershipSnapshot?.()||{};
+    return {installed:!!app&&!!orchestrator,appStore:!!app,orchestrator:!!orchestrator,adapterBound:!!orchestrator?.adapterSnapshot?.().bound,schema:app?.schema||'',transactionId:app?.playback?.transactionId||'',playbackState:app?.playback?.state||'IDLE',eventKey:app?.playback?.eventKey||'',selectedEventKey:ownership.selectedEventKey||app?.selection?.eventKey||'',owned:ownership.owned!==false,invariant:app?.invariant||'MISSING'};
+  }
+  async function waitForV5Intent(beforeTransactionId='',timeoutMs=1600){
+    const deadline=Date.now()+timeoutMs;while(Date.now()<deadline){const snap=v5RuntimeSnapshot();if(snap.transactionId&&snap.transactionId!==beforeTransactionId)return snap;await sleep(40);}return null;
+  }
   function gameCenterOwnershipOk(){
+    try{const v5=window.SBB_PLAYBACK_ORCHESTRATOR?.ownershipSnapshot?.();if(v5?.transactionId)return !!v5.owned;}catch(_){}
     try{if(typeof window.selectedEventMatchesActivePlayback==='function')return !!window.selectedEventMatchesActivePlayback();}catch(_){}
     const session=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{},selected=window.SBB_SELECTED_EVENT?.get?.()||null;
     // Score-card interactions are game scoped. If a selected media session exists but
@@ -209,13 +217,21 @@
         while(cards.length&&rows.length<PLAYBACK_TARGET&&perDate<2){
           const candidate=choosePlaybackCard(cards,{seenMedia,seenGames,leagueCounts,qualityCounts,rng,date});if(!candidate)break;
           seenMedia.add(candidate.mediaKey);seenGames.add(candidate.gameKey);perDate++;
-          const before=ps.snapshot(),engineBefore=engineSnapshot(),started=now();let selection=null,progressResult=null,error='';
-          try{candidate.card.click();selection=await waitForSelection(before.selectionId);if(!selection)throw new Error('score-card click did not create playback selection');progressResult=await waitForProgress({selectionId:selection.selectionId,mediaKey:selection.mediaKey,timeoutMs:PLAYBACK_CONFIRM_TIMEOUT_MS});await waitForPlaybackQuiescence(progressResult?.ok?1800:3200);}catch(err){error=clean(err?.message||err);}
-          const final=progressResult?.session||ps.snapshot(),engineAfter=engineSnapshot(),engineResetsDelta=Math.max(0,n(engineAfter.resets)-n(engineBefore.resets)),engineIncidentsDelta=Math.max(0,n(engineAfter.incidents)-n(engineBefore.incidents)),gameCenterOwned=gameCenterOwnershipOk(),preflight=h.scoreMediaPreflight?.(candidate.editorialMediaKey)||{};
+          const before=ps.snapshot(),v5Before=v5RuntimeSnapshot(),engineBefore=engineSnapshot(),started=now();let selection=null,progressResult=null,intent=null,error='';
+          try{
+            candidate.card.click();
+            intent=await waitForV5Intent(v5Before.transactionId);
+            if(!intent)throw new Error('score-card click did not create v5 playback intent');
+            selection=await waitForSelection(before.selectionId);
+            if(!selection){const stalled=v5RuntimeSnapshot();throw new Error(`v5 intent ${stalled.playbackState||'UNKNOWN'} did not reach media selection`);}
+            progressResult=await waitForProgress({selectionId:selection.selectionId,mediaKey:selection.mediaKey,timeoutMs:PLAYBACK_CONFIRM_TIMEOUT_MS});
+            await waitForPlaybackQuiescence(progressResult?.ok?1800:3200);
+          }catch(err){error=clean(err?.message||err);}
+          const v5After=v5RuntimeSnapshot(),final=progressResult?.session||ps.snapshot(),engineAfter=engineSnapshot(),engineResetsDelta=Math.max(0,n(engineAfter.resets)-n(engineBefore.resets)),engineIncidentsDelta=Math.max(0,n(engineAfter.incidents)-n(engineBefore.incidents)),gameCenterOwned=gameCenterOwnershipOk(),preflight=h.scoreMediaPreflight?.(candidate.editorialMediaKey)||{};
           const primaryRejected=!!candidate.primaryRejected||!!preflight.primaryRejected||(candidate.editorialMediaKey&&clean(final.mediaKey||selection?.mediaKey)!==candidate.editorialMediaKey);
           const ok=!!progressResult?.ok&&String(final.invariant||'OK')==='OK'&&gameCenterOwned&&engineResetsDelta===0;
           leagueCounts[candidate.league]=n(leagueCounts[candidate.league])+1;qualityCounts[candidate.quality]=n(qualityCounts[candidate.quality])+1;
-          rows.push({ok,date,league:candidate.league,quality:candidate.quality,gameKey:candidate.gameKey,candidateMediaKey:candidate.mediaKey,editorialMediaKey:candidate.editorialMediaKey,mediaKey:clean(final.mediaKey||selection?.mediaKey),readinessBefore:candidate.readinessBefore||'UNKNOWN',prewarmAttempted:!!preflight.attempted,prewarmResult:clean(preflight.result||'NOT_REQUIRED'),primaryRejected,provider:upper(final.provider),transport:upper(final.transport),elapsedMs:round(now()-started),firstProgressMs:progressResult?.snap?.firstProgressMs??null,fallbackHops:n(progressResult?.fallbackHops),invariant:clean(final.invariant||'OK'),gameCenterOwned,engineResetsDelta,engineIncidentsDelta,error:error||(!progressResult?.ok?clean(progressResult?.reason||final.lastError||'no advancing media clock'):(!gameCenterOwned?'Game Center ownership lost during score playback':(engineResetsDelta?`playback engine reset ${engineResetsDelta} time(s) during interaction`:'')))});
+          rows.push({ok,date,league:candidate.league,quality:candidate.quality,gameKey:candidate.gameKey,candidateMediaKey:candidate.mediaKey,editorialMediaKey:candidate.editorialMediaKey,mediaKey:clean(final.mediaKey||selection?.mediaKey),readinessBefore:candidate.readinessBefore||'UNKNOWN',prewarmAttempted:!!preflight.attempted,prewarmResult:clean(preflight.result||'NOT_REQUIRED'),primaryRejected,provider:upper(final.provider),transport:upper(final.transport),elapsedMs:round(now()-started),firstProgressMs:progressResult?.snap?.firstProgressMs??null,fallbackHops:n(progressResult?.fallbackHops),invariant:clean(final.invariant||'OK'),gameCenterOwned,engineResetsDelta,engineIncidentsDelta,v5TransactionId:v5After.transactionId||intent?.transactionId||'',v5State:v5After.playbackState||'',v5Invariant:v5After.invariant||'',error:error||(!progressResult?.ok?clean(progressResult?.reason||final.lastError||'no advancing media clock'):(!gameCenterOwned?'Game Center ownership lost during score playback':(engineResetsDelta?`playback engine reset ${engineResetsDelta} time(s) during interaction`:'')))});
           cards=visiblePlayableCards();
         }
       }
@@ -239,7 +255,8 @@
   function workerLines(summary){return (summary?.workers||[]).map(w=>`${w.healthy?'PASS':'WARN'} ${w.name.padEnd(18)} phase=${w.phase} heartbeat=${w.heartbeatAgeSeconds}s progress=${w.progressAgeSeconds}s jobs/hr=${round(w.jobsPerHour)||0} busy=${round(w.busyPercent)||0}% wait=${round(w.providerWaitPercent)||0}%${w.current?` current=${w.current}`:''}${w.provider?` provider=${w.provider}`:''}`).join('\n')||'No worker telemetry returned.';}
   function sourceLines(summary){const rows=(summary?.sources||[]).filter(x=>x.active);return rows.slice(0,40).map(x=>`${x.league.padEnd(8)} ${x.kind.slice(0,18).padEnd(18)} items=${x.playlistItems} hydrated=${x.hydrated} assets=${x.assets} assigned=${x.assigned} orphaned=${x.orphaned} quarantined=${x.quarantined}${x.lastError?` ERROR=${x.lastError}`:''}`).join('\n')||'No source rows returned.';}
   function actionItems(report){
-    const out=[],eff=report.efficiency?.metrics||{},gc=report.gameCenter||{},back=report.backendAfter?.summary||{},play=report.playback||{},ui=report.interactions?.gameCenterUi||{};
+    const out=[],eff=report.efficiency?.metrics||{},gc=report.gameCenter||{},back=report.backendAfter?.summary||{},play=report.playback||{},ui=report.interactions?.gameCenterUi||{},arch=report.architecture||{};
+    if(!arch.installed||!arch.adapterBound||arch.invariant!=='OK')out.push(`P0 V5 ARCHITECTURE: appStore=${arch.appStore?'YES':'NO'} orchestrator=${arch.orchestrator?'YES':'NO'} adapter=${arch.adapterBound?'YES':'NO'} invariant=${arch.invariant||'MISSING'}.`);
     const apiFails=(report.backendAfter?.probes||[]).filter(x=>!x.ok);if(apiFails.length)out.push(`P0 API HEALTH: ${apiFails.length} certification endpoint${apiFails.length===1?'':'s'} failed or timed out: ${apiFails.map(x=>x.path).join(', ')}.`);
     if(play.result==='FAIL'||play.fail>0)out.push(`P0 PLAYBACK: ${play.fail||0}/${play.attempts||0} active interactions failed; inspect PLAYBACK INTERACTION MATRIX and progress-watchdog evidence.`);
     if(n(play.engineResets)>0)out.push(`P0 PLAYBACK ENGINE: ${play.engineResets} global engine reset${play.engineResets===1?'':'s'} occurred during active interaction coverage. A local media failure must not destabilize the whole board.`);
@@ -256,18 +273,22 @@
     if(!out.length)out.push('No critical actionable failures detected. Repeat with the recorded seed when comparing releases; use a fresh seed for additional coverage.');return out;
   }
   function overall(report){
-    const eff=report.efficiency?.result||'WARN',gc=report.gameCenter||{},back=report.backendAfter?.summary||{},play=report.playback||{},ui=report.interactions?.gameCenterUi||{},apiFails=(report.backendAfter?.probes||[]).filter(x=>!x.ok).length;
-    if(apiFails||eff==='FAIL'||play.result==='FAIL'||play.fail>0||n(play.engineResets)>0||n(play.gameCenterOwnershipFailures)>0||gc.fail>Math.max(1,Math.floor((gc.supported||gc.rows?.length||0)*.25))||ui.fail>0)return 'FAIL';
+    const eff=report.efficiency?.result||'WARN',gc=report.gameCenter||{},back=report.backendAfter?.summary||{},play=report.playback||{},ui=report.interactions?.gameCenterUi||{},arch=report.architecture||{},apiFails=(report.backendAfter?.probes||[]).filter(x=>!x.ok).length;
+    if(!arch.installed||!arch.adapterBound||arch.invariant!=='OK'||apiFails||eff==='FAIL'||play.result==='FAIL'||play.fail>0||n(play.engineResets)>0||n(play.gameCenterOwnershipFailures)>0||gc.fail>Math.max(1,Math.floor((gc.supported||gc.rows?.length||0)*.25))||ui.fail>0)return 'FAIL';
     if(eff==='WARN'||play.result==='WARN'||play.fallbacks>0||gc.fail>0||(back.configuredWorkers&&back.healthyWorkers<back.configuredWorkers))return 'WARN';return 'PASS';
   }
 
   function reportText(r){
     if(!r)return 'No comprehensive certification report yet.';
-    const b=r.backendAfter?.summary||{},d=r.backendDelta||{},gc=r.gameCenter||{},p=r.playback||{},eff=r.efficiency||{},ui=r.interactions?.gameCenterUi||{},w=r.progressWatchdog||{};
+    const b=r.backendAfter?.summary||{},d=r.backendDelta||{},gc=r.gameCenter||{},p=r.playback||{},eff=r.efficiency||{},ui=r.interactions?.gameCenterUi||{},w=r.progressWatchdog||{},arch=r.architecture||{};
     const lines=[
       `SPORTS BIG BOARD v${RELEASE} — COMPREHENSIVE SITE CERTIFICATION`,
       `RESULT=${r.result}  ELAPSED=${round(r.elapsedMs/1000)}s  CAPTURED=${r.finishedAt}  SEED=${r.seed}`,
       `CERT_SCHEMA=${VERSION}  FRONTEND=${window.SBB_CORE?.version||'UNKNOWN'}  BACKEND=${b.backendVersion||'UNKNOWN'}  DISCOVERY=v${b.discoveryVersion||0}  MODE=${String(b.workMode||'unknown').toUpperCase()}`,
+      '',
+      '==================== 0. V5 UNIFIED RUNTIME ARCHITECTURE ====================',
+      `APP_STORE=${arch.appStore?'YES':'NO'} schema=${arch.schema||'—'} ORCHESTRATOR=${arch.orchestrator?'YES':'NO'} ADAPTER_BOUND=${arch.adapterBound?'YES':'NO'} invariant=${arch.invariant||'MISSING'}`,
+      `TRANSACTION state=${arch.playbackState||'IDLE'} id=${arch.transactionId||'—'} event=${arch.eventKey||'—'} selected=${arch.selectedEventKey||'—'} owned=${arch.owned===false?'NO':'YES'}`,
       '',
       '==================== 1. RELEASE / API HEALTH ====================',
       ...r.backendAfter.probes.map(x=>`${x.ok?'PASS':'FAIL'} ${x.path.padEnd(46)} HTTP=${x.status} ${x.elapsedMs}ms bytes=${x.bytes}${x.error?` error=${x.error}`:''}`),
@@ -285,7 +306,7 @@
       `PLAYBACK_MATRIX result=${p.result||'FAIL'} target=${p.target||PLAYBACK_TARGET} attempts=${p.attempts||0} starts=${p.starts||0} fail=${p.fail||0} uniqueMedia=${p.uniqueMedia||0} fallbacks=${p.fallbacks||0} prewarmAttempts=${p.prewarmAttempts||0} primaryRejected=${p.primaryRejections||0} engineResets=${p.engineResets||0} engineIncidents=${p.engineIncidents||0} gcOwnershipFailures=${p.gameCenterOwnershipFailures||0} p95FirstProgress=${p.p95FirstProgressMs??'N/A'}ms`,
       `DIVERSITY leagues=${(p.leagues||[]).join(',')||'NONE'} qualities=${(p.qualities||[]).join(',')||'NONE'} transports=${(p.transports||[]).join(',')||'NONE'} providers=${(p.providers||[]).join(',')||'NONE'} dates=${(p.dates||[]).join(',')||'NONE'}`,
       `SCORE_PLAYABLE_CACHE size=${p.scorePlayableCache?.size||0} hits=${p.scorePlayableCache?.hits||0} misses=${p.scorePlayableCache?.misses||0} evictions=${p.scorePlayableCache?.evictions||0} ttl=${p.scorePlayableCache?.ttlMs||0}ms`,
-      ...(p.rows||[]).map((x,i)=>`${x.ok?'PASS':'FAIL'} #${String(i+1).padStart(2,'0')} ${x.date||'—'} ${x.league||'—'} ${x.quality||'—'} ${x.provider||'—'}/${x.transport||'—'} readinessBefore=${x.readinessBefore||'UNKNOWN'} prewarm=${x.prewarmAttempted?'YES':'NO'}:${x.prewarmResult||'NOT_REQUIRED'} primaryRejected=${x.primaryRejected?'YES':'NO'} progress=${x.firstProgressMs??'N/A'}ms fallbackHops=${x.fallbackHops||0} engineReset+${x.engineResetsDelta||0} gcOwned=${x.gameCenterOwned===false?'NO':'YES'} invariant=${x.invariant||'—'} media=${x.mediaKey||x.candidateMediaKey||'—'}${x.error?` ERROR=${x.error}`:''}`),
+      ...(p.rows||[]).map((x,i)=>`${x.ok?'PASS':'FAIL'} #${String(i+1).padStart(2,'0')} ${x.date||'—'} ${x.league||'—'} ${x.quality||'—'} ${x.provider||'—'}/${x.transport||'—'} readinessBefore=${x.readinessBefore||'UNKNOWN'} prewarm=${x.prewarmAttempted?'YES':'NO'}:${x.prewarmResult||'NOT_REQUIRED'} primaryRejected=${x.primaryRejected?'YES':'NO'} progress=${x.firstProgressMs??'N/A'}ms fallbackHops=${x.fallbackHops||0} engineReset+${x.engineResetsDelta||0} gcOwned=${x.gameCenterOwned===false?'NO':'YES'} invariant=${x.invariant||'—'} v5=${x.v5State||'—'} tx=${x.v5TransactionId||'—'} media=${x.mediaKey||x.candidateMediaKey||'—'}${x.error?` ERROR=${x.error}`:''}`),
       '',
       '==================== 5. DATABASE / DISCOVERY ====================',
       `CATALOG games=${b.catalog?.games||0} verifiedAssets=${b.catalog?.verifiedAssets||0} coverageComplete=${b.catalog?.coverageComplete||0} noVerifiedMedia=${b.catalog?.noVerifiedMedia||0}`,
@@ -338,7 +359,7 @@
       const gameCenterUi=await gameCenterUiExercise(gameCenter);
       const playback=await playbackInteractionMatrix(seed,gameCenter.dates);
       const backendAfter=await backendSnapshot();
-      const report={version:VERSION,release:RELEASE,seed,startedAt:new Date(Date.now()-(now()-started)).toISOString(),finishedAt:new Date().toISOString(),elapsedMs:round(now()-started),backendBefore,backendAfter,backendDelta:backendDelta(backendBefore,backendAfter),efficiency,interactions:{gameCenterUi},gameCenter,playback,progressWatchdog:progressPublic()};
+      const report={version:VERSION,release:RELEASE,seed,startedAt:new Date(Date.now()-(now()-started)).toISOString(),finishedAt:new Date().toISOString(),elapsedMs:round(now()-started),architecture:v5RuntimeSnapshot(),backendBefore,backendAfter,backendDelta:backendDelta(backendBefore,backendAfter),efficiency,interactions:{gameCenterUi},gameCenter,playback,progressWatchdog:progressPublic()};
       report.actions=actionItems(report);report.result=overall(report);report.text=reportText(report);state.lastReport=report;
       try{localStorage.setItem('sbb.site-certification.last',JSON.stringify(report));}catch(_){}
       try{window.dispatchEvent(new CustomEvent('sbb:site-certification',{detail:report}));}catch(_){}

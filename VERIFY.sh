@@ -14,9 +14,9 @@ python3 tools/check_foundation_certification.py
 python3 tools/check_ultimate_playback.py
 python3 tools/check_deploy_rehearsal.py
 
-# v4.8 establishes a new certification release line. Stable behavior/foundation
-# gates and retained v4.7 architecture baselines remain blocking. Only superseded
-# release-line implementation-pinning tests run in the legacy advisory sweep.
+# v5.0 establishes the Unified Runtime architecture line. Stable behavior/foundation
+# gates and retained v4.7/v4.8 contracts remain blocking while the control plane
+# migrates behind one App Store + Playback Orchestrator.
 python3 -m unittest tests.test_v446_historical_media_quarantine
 python3 -m unittest tests.test_release_behavior_gate
 python3 -m unittest tests.test_v482_game_center_runtime
@@ -72,12 +72,14 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v480_comprehensive_certification.js
   node tests/test_v481_playback_ownership_recovery.js
   node tests/test_v482_cold_upstream_game_center.js
+  node tests/test_v500_runtime_architecture.js
+  node tests/test_v500_single_tune_gateway.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi
 
 # Preserve the v4.7 browser-contract archive as diagnostic evidence without letting
-# old release-line version assertions block the new v4.8 certification line.
+# old release-line version assertions block the v5 architecture line.
 if command -v node >/dev/null 2>&1; then
   echo "[legacy-advisory] Running v4.7 JavaScript regression archive (does not block deployment)"
   NODE_LEGACY_RC=0
@@ -92,7 +94,7 @@ if command -v node >/dev/null 2>&1; then
   set -e
   if [[ $NODE_LEGACY_RC -ne 0 ]]; then
     echo "[legacy-advisory] WARNING: one or more v4.7 JavaScript regression contracts reported failures under v${VERSION}." >&2
-    echo "[legacy-advisory] These results are diagnostic; current-line v4.8 contracts remain blocking." >&2
+    echo "[legacy-advisory] These results are diagnostic; current-line v5 contracts remain blocking." >&2
   fi
 fi
 
@@ -124,4 +126,4 @@ grep -q 'https://203-0-113-10.sslip.io' "$VERIFY_TMP/pages/config.js"
 grep -q 'https://203-0-113-10.sslip.io/api/soundtrack' "$VERIFY_TMP/pages/config.js"
 grep -q "soundtrackTransport:'private-gcs'" "$VERIFY_TMP/pages/config.js"
 
-echo "PASS: v${VERSION} stable behavior gates + v4.8 comprehensive certification architecture + deploy rehearsal"
+echo "PASS: v${VERSION} stable behavior gates + v5 unified runtime architecture + comprehensive certification + deploy rehearsal"

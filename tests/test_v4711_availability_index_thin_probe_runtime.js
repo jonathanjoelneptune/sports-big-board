@@ -9,7 +9,7 @@ const efficiency=fs.readFileSync('architecture/efficiency-certification.js','utf
 const broker=fs.readFileSync('architecture/request-broker.js','utf8');
 const backend=fs.readFileSync('sbb/day_state.py','utf8');
 
-assert(parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=11)));
+assert(parts[0]>4 || (parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=11))));
 assert(index.includes(`architecture/score-card-availability-index.js?v=${VERSION}`));
 assert(index.indexOf(`architecture/score-card-availability-index.js?v=${VERSION}`) <
        index.indexOf(`architecture/card-build-cache.js?v=${VERSION}`));

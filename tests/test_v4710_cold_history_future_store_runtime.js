@@ -9,7 +9,7 @@ const efficiency=fs.readFileSync('architecture/efficiency-certification.js','utf
 const card=fs.readFileSync('architecture/card-build-cache.js','utf8');
 const render=fs.readFileSync('architecture/render-pipeline.js','utf8');
 const backend=fs.readFileSync('sbb/day_state.py','utf8');
-assert(parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=10)));
+assert(parts[0]>4 || (parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=10))));
 assert(index.includes(`architecture/score-date-store.js?v=${VERSION}`));
 assert(store.includes("version:'1.0'"));
 assert(store.includes('do not clamp future scheduled dates to today'));

@@ -1,0 +1,102 @@
+Sports Big Board v5.0.0 — Unified Runtime Architecture Foundation
+=================================================================
+
+PURPOSE
+-------
+Replace the patch-based browser playback control plane with one deterministic
+Selected Event -> Playback Intent -> Media Plan -> Playback Transaction -> Player
+Adapter ownership chain, while preserving the existing UI, catalog, providers,
+A/B players, history/discovery system and v4.8 recovery/readiness behavior.
+
+NEW FILES
+---------
+architecture/app-store-v5.js
+architecture/playback-orchestrator-v5.js
+ARCHITECTURE-V5.md
+tests/test_v500_runtime_architecture.js
+tests/test_v500_single_tune_gateway.js
+
+REPLACED / UPDATED
+------------------
+VERSION
+index.html
+core-model.js
+app.js
+architecture/selected-event-store.js
+architecture/playback-session.js
+architecture/playback-progress-watchdog.js
+architecture/comprehensive-site-certification.js
+architecture/efficiency-certification.js
+VERIFY.sh
+release-manifest.json
+tests/test_playback_session_runtime.js
+tests/test_v480_comprehensive_certification.js
+tests/test_v481_playback_ownership_recovery.js
+tests/test_v482_cold_upstream_game_center.js
+tests/test_v473_efficiency_runtime.js
+tests/test_v474_efficiency_remediation_runtime.js
+tests/test_v475_enrichment_firewall_runtime.js
+tests/test_v476_render_pipeline_runtime.js
+tests/test_v477_first_paint_render_consolidation_runtime.js
+tests/test_v478_future_projection_card_cache_runtime.js
+tests/test_v479_navigation_history_runtime.js
+tests/test_v4710_cold_history_future_store_runtime.js
+tests/test_v4711_availability_index_thin_probe_runtime.js
+tests/test_v4712_day_state_render_model_runtime.js
+tests/test_v4713_media_readiness_runtime.js
+
+RETAINED COMPATIBILITY FILES INCLUDED IN OVERLAY
+-----------------------------------------------
+sbb/__init__.py
+sbb/game_center_runtime_v482.py
+
+KEY v5.0.0 BEHAVIOR
+-------------------
+- Score playback intent exists before media lookup or prewarm can wait/fail.
+- Event selection + playback intent are one atomic App Store reducer transition.
+- Prewarm timeout ends the transaction UNAVAILABLE without losing Selected Event.
+- Historical score clicks create a transaction before on-demand media search.
+- Game Center cannot be redirected by active media/player callbacks.
+- Launch Game Center follows the already-selected event under v5.
+- All normal PlaybackController tune calls route through tuneProgramIndexV5().
+- Hot A/B standby promotions route through promotePreparedV5().
+- Existing A/B implementation binds once as the v5 legacy player adapter.
+- Playback Session v2.0 can represent PREPARING intent with no media selected yet.
+- Comprehensive Certification schema 3.0 reports App Store, transaction,
+  adapter binding, event ownership and v5 invariant.
+
+INTENTIONALLY NOT REBUILT IN 5.0.0
+---------------------------------
+- SQLite catalog / 27k+ verified media inventory
+- Day State / score ribbon data path
+- historical discovery / workers
+- media tier taxonomy and Event Matcher
+- provider acquisition stack
+- existing A/B player mechanics beneath the adapter boundary
+
+NEXT 5.x ARCHITECTURE WORK
+--------------------------
+5.1 persistent canonical Event ID + provider alias service
+5.2 backend MediaPlan authority
+5.3 extract legacy A/B internals into explicit player adapters
+5.4 retire versioned runtime wrappers/hotfix layers
+
+LOCAL VALIDATION COMPLETED
+--------------------------
+- JavaScript syntax: PASS for all changed/new JS files
+- Python syntax: PASS for retained v4.8.2 Game Center runtime/tests
+- Shell syntax: PASS for VERIFY.sh
+- v5 unified App Store/intent/SelectedEvent runtime test: PASS
+- v5 single tune + prepared-promotion gateway test: PASS
+- playback-session v2 intent/telemetry runtime: PASS
+- retained v4.8 comprehensive playback watchdog contract: PASS
+- retained v4.8.1 score ownership/local-stall containment: PASS
+- retained v4.8.2 cold-upstream/Game Center contract: PASS
+- retained v4.8.2 Python Game Center runtime tests: PASS (4 tests)
+- retained v4.7.3 and v4.7.4 frontend efficiency contracts: PASS in merged workspace
+- 57 executable cache-busted JS/CSS references all use v5.0.0
+
+NOTE
+----
+Full GitHub VERIFY remains the authoritative deployment gate because the manual
+upload overlay does not contain every unchanged backend/source/test file locally.

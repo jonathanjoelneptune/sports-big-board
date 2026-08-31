@@ -12,7 +12,7 @@ const cert=read('architecture/comprehensive-site-certification.js');
 const watchdog=read('architecture/playback-progress-watchdog.js');
 const verify=read('VERIFY.sh');
 
-const vp=version.split('.').map(Number);assert.strictEqual(vp[0],4);assert.strictEqual(vp[1],8);assert(vp[2]>=1);
+const vp=version.split('.').map(Number);assert(vp[0]>4 || (vp[0]===4 && (vp[1]>8 || (vp[1]===8 && vp[2]>=1))));
 assert(index.includes(`<title>Sports Big Board — v${version}</title>`));
 assert(index.includes(`app.js?v=${version}`));
 assert(index.includes(`architecture/playback-progress-watchdog.js?v=${version}`));
@@ -50,7 +50,7 @@ for(const token of [
 
 // Comprehensive Certification must expose intermittent/race evidence even when
 // the final media eventually plays.
-assert(/const VERSION='2\.[12]'/.test(cert));
+assert(/const VERSION='(?:2\.[1-9]\d*|[3-9]\.\d+)'/.test(cert));
 for(const token of [
   'waitForPlaybackQuiescence',
   'engineResetsDelta',
