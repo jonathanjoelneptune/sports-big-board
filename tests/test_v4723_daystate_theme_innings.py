@@ -27,12 +27,19 @@ class V4723HotfixTests(unittest.TestCase):
         self.assertNotIn("new MutationObserver(scheduleRetint)",src)
         self.assertNotIn("function retintDarkSurfaces()",src)
         self.assertIn("#scoreFilters > .sbb-active-event-filter",src)
-        self.assertIn("html[data-sbb-theme=\"light\"] body #sbbSpecialEventsMenu",src)
+        self.assertIn('html[data-sbb-theme="light"] body #sbbSpecialEventsMenu',src)
 
-    def test_balanced_background_has_general_gap_lane_and_stale_audit_rebase(self):
+    def test_background_workers_are_always_on_and_stale_audit_rebases(self):
         src=(ROOT/"sbb/runtime_path_repair_v4720.py").read_text(encoding="utf-8")
         self.assertIn("def _install_background_progress_policy",src)
-        self.assertIn("idx not in {1,4,5}",src)
+        # v4.7.20 always-on worker policy intentionally replaces the old balanced
+        # lane gate (idx not in {1,4,5}). All five workers remain eligible while
+        # provider budgets, SQLite claims, suspension checks and cooldowns govern
+        # actual work.
+        self.assertIn("__sbbAlwaysOnWorkersV4725",src)
+        self.assertIn('return True,""',src)
+        self.assertIn('"workers":[1,2,3,4,5]',src)
+        self.assertIn('"throttleOwner":"provider-budgets-and-claims"',src)
         self.assertIn("def _restart_stale_database_audit",src)
         self.assertIn("release_rebuild_pending_events",src)
         self.assertIn("def _llws_periodic_recovery",src)
