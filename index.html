@@ -59,6 +59,15 @@
     html[data-sbb-theme="light"] code{background:#e0e6eb;color:#24313c;border-color:#c7d1d9}
     html[data-sbb-theme="light"] .on-air-badge{background:var(--sbb-light-red)!important;color:white!important}
     html[data-sbb-theme="light"] :is(.target-green,.target-extended,.target-gold){filter:saturate(.82) brightness(.98)}
+    html[data-sbb-theme="light"] :is(.coverage-pipeline,.coverage-head,.coverage-steps,.coverage-detail,.sport-feed-diagnostics,.sport-feed-head,.sport-feed-grid,.sport-feed-chip,.queue-list,.queue-item,.test-notes,.lower-third,.controls,.score-day-pager,.score-day-pager-left,.score-day-pager-right,.game-center-hero,.gc-header,.gc-scoreboard,.gc-team,.gc-section,.gc-overview-card,.gc-stat-card,.gc-player-section,.gc-timeline,.gc-timeline-item,.history-audit-table-wrap,.history-silver-export-bar,.history-audit-summary,.settings-section,.settings-card,.settings-group,.drawer-section,.drawer-card,.milestone-procedure-item){
+      background-color:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
+    }
+    html[data-sbb-theme="light"] [data-sbb-light-auto="1"]{
+      background-color:var(--sbb-light-panel)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
+    }
+    html[data-sbb-theme="light"] [data-sbb-light-auto="2"]{
+      background-color:var(--sbb-light-panel2)!important;color:var(--sbb-light-text)!important;border-color:var(--sbb-light-line)!important
+    }
     .theme-toggle-btn{min-width:92px;height:34px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--line,#25303a);border-radius:9px;background:var(--panel2,#111820);color:var(--text,#f6f8fa);font:800 10px/1 system-ui,sans-serif;letter-spacing:.08em;cursor:pointer}
     .theme-toggle-btn:hover{border-color:var(--blue,#2494ff)}
     .theme-toggle-icon{font-size:14px;line-height:1}
@@ -777,11 +786,46 @@
     const icon=btn.querySelector('.theme-toggle-icon');if(icon)icon.textContent=light?'☾':'☀';
     const label=btn.querySelector('.theme-toggle-label');if(label)label.textContent=light?'DARK':'LIGHT';
   }
+  const AUTO_EXCLUDE='.stage,.player-layer,.youtube-player-host,.native-player,.bumper,.bumper-backdrop,.context-program,.on-air-badge,.sbb-launch-glow,img,video,iframe,canvas,svg';
+  let autoFrame=0,autoObserver=null;
+  function darkSurface(el){
+    if(!(el instanceof Element)||el.matches(AUTO_EXCLUDE)||el.closest('.stage'))return 0;
+    const cs=getComputedStyle(el),m=String(cs.backgroundColor||'').match(/rgba?\(([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?\)/i);
+    if(!m)return 0;
+    const r=Number(m[1]),g=Number(m[2]),b=Number(m[3]),a=m[4]===undefined?1:Number(m[4]);
+    if(a<.28)return 0;
+    const luminance=.2126*r+.7152*g+.0722*b;
+    if(luminance>78)return 0;
+    return luminance<28?2:1;
+  }
+  function retintDarkSurfaces(){
+    autoFrame=0;
+    if(current()!=='light')return;
+    for(const el of document.body?.querySelectorAll('*')||[]){
+      const level=darkSurface(el);
+      if(level)el.dataset.sbbLightAuto=String(level);
+      else if(el.dataset.sbbLightAuto)delete el.dataset.sbbLightAuto;
+    }
+  }
+  function scheduleRetint(){
+    if(current()!=='light'||autoFrame)return;
+    autoFrame=requestAnimationFrame(retintDarkSurfaces);
+  }
+  function clearAutoRetint(){
+    if(autoFrame){cancelAnimationFrame(autoFrame);autoFrame=0;}
+    for(const el of document.querySelectorAll('[data-sbb-light-auto]'))delete el.dataset.sbbLightAuto;
+  }
+  function ensureAutoObserver(){
+    if(autoObserver||!document.body)return;
+    autoObserver=new MutationObserver(scheduleRetint);
+    autoObserver.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
   function setTheme(value,persist=true){
     const theme=value==='light'?'light':'dark';
     root.dataset.sbbTheme=theme;
     if(persist){try{localStorage.setItem(KEY,theme);}catch(_){}}
     syncButton();
+    if(theme==='light'){ensureAutoObserver();scheduleRetint();}else clearAutoRetint();
     window.dispatchEvent(new CustomEvent('sbb:themechange',{detail:{theme}}));
     return theme;
   }
@@ -789,9 +833,11 @@
   function bind(){
     button()?.addEventListener('click',toggle);
     syncButton();
+    ensureAutoObserver();
+    if(current()==='light')scheduleRetint();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_THEME=Object.freeze({version:'1.0',current,set:setTheme,toggle});
+  window.SBB_THEME=Object.freeze({version:'1.1',current,set:setTheme,toggle,retint:retintDarkSurfaces});
 })();
 </script>
 

@@ -1,0 +1,68 @@
+Sports Big Board v4.7.20 — Light Mode / Missing Days / Baseball Linescore Hotfix 2
+===================================================================================
+
+THIS PACKAGE IS CUMULATIVE
+--------------------------
+It includes the prior LLWS playlist association + win-probability graph + Light Mode
+hotfix, plus the follow-on corrections below.
+
+UPLOAD / REPLACE
+----------------
+index.html
+architecture/game-center-multisport-view.js
+sbb/runtime_path_repair_v4720.py
+VERIFY.sh
+
+ADD
+---
+tests/test_v4722_llws_theme_winprob.py
+tests/test_v4722_theme_winprob_runtime.js
+tests/test_v4723_daystate_theme_innings.py
+tests/test_v4723_theme_innings_runtime.js
+
+FOLLOW-ON FIXES
+---------------
+1. Light Mode dark-surface cleanup
+   - Expands explicit light-theme coverage to diagnostics, coverage pipeline,
+     queue rows, Game Center surfaces, history audit, settings, controls, and
+     other first-party surfaces.
+   - Adds a dynamic computed-style safety pass. If a first-party surface is
+     created later with an opaque dark background, Light Mode automatically
+     marks and re-themes it.
+   - Watches dynamic class/style changes as well as newly-created DOM nodes.
+   - Deliberately excludes the actual video/player viewport, images, canvases,
+     SVG graphics, bumpers and third-party iframes so media itself is not washed out.
+   - Switching back to Dark Mode removes all automatic light-surface markers.
+
+2. Some dates missing games
+   - Fixes cache-fresh but cardinality-incomplete Day State snapshots on ALL dates,
+     not only future dates.
+   - Every Day State read now merges missing canonical history_catalog_event
+     identities before the ribbon sees the snapshot.
+   - Existing provider/history score rows stay primary, so this repair fills missing
+     games without overwriting fresher scores or statuses.
+   - The repaired projection is persisted so the same date does not repeatedly need
+     the correction.
+   - This is a local database merge only; it does not trigger provider/network work.
+
+3. Baseball inning-by-inning linescore
+   - MLB/baseball Game Center no longer depends on scoreboard.innings being complete.
+   - Missing or partial inning rows are reconciled from normalized play-by-play
+     cumulative scores.
+   - If timeline is absent, scoring plays are used as a secondary source.
+   - A live 0-0 game can reconstruct zero-run innings through the current inning.
+   - Partial provider inning rows are merged with reconstructed rows instead of
+     replacing good provider data.
+   - Baseball detection is sport-aware rather than MLB-ID-only.
+   - Reconstructed linescores are labeled "RECONCILED FROM PLAY-BY-PLAY".
+
+VALIDATION
+----------
+PASS node --check architecture/game-center-multisport-view.js
+PASS python -m py_compile sbb/runtime_path_repair_v4720.py
+PASS node tests/test_v4722_theme_winprob_runtime.js
+PASS node tests/test_v4723_theme_innings_runtime.js
+PASS python -m unittest tests.test_v4722_llws_theme_winprob tests.test_v4723_daystate_theme_innings
+PASS bash -n VERIFY.sh
+
+Release/version handshake remains v4.7.20.

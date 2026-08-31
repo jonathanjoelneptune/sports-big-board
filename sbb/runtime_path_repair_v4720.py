@@ -34,6 +34,7 @@ _ORIGINAL_HYDRATE = None
 _ORIGINAL_ROUNDUP_MEDIA = None
 _ORIGINAL_REPAIR_EVENT_ASSOCIATIONS = None
 _ORIGINAL_CFB_PERSIST = None
+_ORIGINAL_DAY_STATE_GET = None
 
 
 def _row_value(row, key, default=""):
@@ -102,6 +103,88 @@ def _roundup_media(self, date, league=None):
 def _snapshot_quality(snapshot):
     summary=(snapshot or {}).get("summary") or {}
     return int(summary.get("games") or (snapshot or {}).get("scoreGameCount") or 0), int(summary.get("playable") or 0)
+
+
+def _repair_day_state_catalog_projection(engine, day, payload):
+    """Fill canonical games omitted by a stale/partial Day State snapshot.
+
+    Day State already merges history_catalog_event while rebuilding, but an older
+    non-empty snapshot can remain cache-fresh for hours. Previously only FUTURE
+    dates compared the cached projection with canonical catalog authority. That
+    meant a historical day could show *some* games and still silently omit others.
+
+    This read-boundary repair is local SQLite only. It merges missing identities
+    using the same canonical helper as a full build, never overwrites fresher score
+    rows, and persists the repaired projection so the correction is not repeated.
+    """
+    if not isinstance(payload, dict):
+        return payload
+    try:
+        from . import day_state as daymod
+        rows = payload.get("scoreRowsByLeague") or {}
+        merged, diag = daymod._merge_future_catalog_rows(
+            engine.server, str(day or "")[:10], rows, engine.today()
+        )
+        before = sum(len(v or []) for v in rows.values()) if isinstance(rows, dict) else 0
+        after = sum(len(v or []) for v in merged.values()) if isinstance(merged, dict) else 0
+        if after <= before:
+            return payload
+
+        out = dict(payload)
+        out["scoreRowsByLeague"] = merged
+        out["scoreGameCount"] = after
+
+        counts = {"LIVE":0,"FINAL":0,"SCHEDULED":0,"POSTPONED":0,"CANCELLED":0}
+        for league_rows in merged.values():
+            for event in league_rows or []:
+                state = daymod._event_status(event)
+                counts[state] = counts.get(state, 0) + 1
+
+        summary = dict(out.get("summary") or {})
+        summary.update({
+            "games": after,
+            "live": counts.get("LIVE", 0),
+            "final": counts.get("FINAL", 0),
+            "scheduled": counts.get("SCHEDULED", 0),
+            "postponed": counts.get("POSTPONED", 0),
+            "cancelled": counts.get("CANCELLED", 0),
+            "competitions": sum(1 for league_rows in merged.values() if league_rows),
+        })
+        out["summary"] = summary
+        projection = dict(out.get("projectionDiagnostics") or {})
+        projection["v4723ReadBoundaryCatalogRepair"] = {
+            "rowsBefore": before,
+            "rowsAfter": after,
+            "catalogAdded": after-before,
+            "leaguesAdded": list(diag.get("leaguesAdded") or []),
+            "scope": "ALL_DATES",
+        }
+        out["projectionDiagnostics"] = projection
+        try:
+            out["facts"] = engine._build_facts(
+                merged, out.get("eventPlans") or {}, summary
+            )
+        except Exception:
+            pass
+
+        # Persist the repaired score projection. Media plans may still be warming,
+        # but canonical games must never disappear while that enrichment catches up.
+        try:
+            persisted = dict(out)
+            persisted.pop("cache", None)
+            engine.store.put(persisted)
+            with engine.lock:
+                engine.cache[str(day)[:10]] = persisted
+        except Exception:
+            pass
+        return out
+    except Exception:
+        return payload
+
+
+def _day_state_get(self, day, *, allow_build=True, force=False):
+    payload = _ORIGINAL_DAY_STATE_GET(self, day, allow_build=allow_build, force=force)
+    return _repair_day_state_catalog_projection(self, day, payload)
 
 
 def _invalidate_day_state(days):
@@ -652,7 +735,7 @@ def _startup_runtime_recovery():
 
 def install():
     global _INSTALLED, _ORIGINAL_HYDRATE, _ORIGINAL_ROUNDUP_MEDIA
-    global _ORIGINAL_REPAIR_EVENT_ASSOCIATIONS, _ORIGINAL_CFB_PERSIST
+    global _ORIGINAL_REPAIR_EVENT_ASSOCIATIONS, _ORIGINAL_CFB_PERSIST, _ORIGINAL_DAY_STATE_GET
     with _INSTALL_LOCK:
         if _INSTALLED:
             return False
@@ -667,6 +750,18 @@ def install():
     if callable(_ORIGINAL_ROUNDUP_MEDIA):
         HistoryRepository.roundup_media = _roundup_media
     HistoryRepository.repair_event_associations = _repair_event_associations
+
+    # A cache-fresh historical snapshot can still be cardinality-incomplete.
+    # Patch the actual Day State read owner so canonical catalog games are merged
+    # before any caller (day-state or ribbon) can observe a partial day.
+    try:
+        from . import day_state as daymod
+        _ORIGINAL_DAY_STATE_GET = daymod.DayStateEngine.get
+        if not getattr(_ORIGINAL_DAY_STATE_GET, "__sbbCatalogReadRepair", False):
+            _day_state_get.__sbbCatalogReadRepair = True
+            daymod.DayStateEngine.get = _day_state_get
+    except Exception:
+        _ORIGINAL_DAY_STATE_GET = None
 
     # Install the score-ribbon location-code alias bridge synchronously so the
     # database-authority LLWS worker cannot race the older alias mapper.
@@ -686,4 +781,5 @@ def install():
 __all__ = [
     "VERSION", "install", "restore_special_event_links", "restore_silver_collection_links", "_invalidate_day_state", "_llws_owner_reassociate", "_install_llws_trailing_code_alias_bridge", "_seed_llws_espn_playlist_manifest", "LLWS_ESPN_2026_GAME_MANIFEST",
     "_hydrate_asset", "_roundup_media", "_cfb_persist_results",
+    "_repair_day_state_catalog_projection", "_day_state_get",
 ]

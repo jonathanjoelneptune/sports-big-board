@@ -15,6 +15,7 @@
   const blank=v=>v===null||v===undefined||String(v).trim()==='';
   const teamName=t=>t?.abbreviation||t?.shortName||t?.name||t?.displayName||'—';
   const pct=v=>{const n=Number(v);return Number.isFinite(n)?`${n.toFixed(n%1?1:0)}%`:'—';};
+  const number=v=>{if(blank(v))return null;const n=Number(v);return Number.isFinite(n)?n:null;};
   let scheduled=false,observer=null,rendering=false,currentData=null,currentEvent=null;
 
   function installStyles(){
@@ -62,18 +63,106 @@
     return host;
   }
 
+  function baseballEvent(gc){
+    const s=gc?.scoreboard||{},event=gc?.event||{};
+    const comp=String(gc?.competitionId||event.competitionId||'').toUpperCase();
+    const sport=String(event.sportId||gc?.sportId||s.sportId||'').toLowerCase();
+    return comp==='MLB'||sport==='baseball'||sport.includes('baseball')||String(s.lineScoreType||'').toLowerCase()==='innings'||Array.isArray(s.innings);
+  }
+
+  function timelineInnings(gc){
+    const timeline=(gc?.timeline||[]).filter(row=>row&&typeof row==='object');
+    const scoring=(gc?.scoringPlays||[]).filter(row=>row&&typeof row==='object');
+    const rows=timeline.length?timeline:scoring;
+    const cumulative=new Map();
+    for(let i=0;i<rows.length;i++){
+      const row=rows[i];
+      let inning=Number(row.period||row.inning||0);
+      if(!inning){
+        const m=String(row.periodLabel||row.label||'').match(/(?:top|bottom|inning)?\s*(\d{1,2})/i);
+        inning=m?Number(m[1]):0;
+      }
+      if(!Number.isFinite(inning)||inning<1)continue;
+      const away=number(row.scoreAway??row.awayScore);
+      const home=number(row.scoreHome??row.homeScore);
+      if(away===null&&home===null)continue;
+      const cur=cumulative.get(inning)||{num:inning,away:null,home:null,index:-1};
+      // Later play-by-play rows own the inning-end cumulative score.
+      if(i>=cur.index){
+        if(away!==null)cur.away=away;
+        if(home!==null)cur.home=home;
+        cur.index=i;
+      }
+      cumulative.set(inning,cur);
+    }
+    const ordered=[...cumulative.values()].sort((a,b)=>a.num-b.num);
+    if(!ordered.length){
+      // A live 0-0 game can have no scoring rows at all. If the provider gives
+      // current inning + 0-0 totals, the inning breakdown through that inning is
+      // deterministically all zeroes.
+      const s=gc?.scoreboard||{},current=Number(s.inning||s.currentInning||0);
+      const ta=number(s?.totals?.away?.runs??s?.away?.score),th=number(s?.totals?.home?.runs??s?.home?.score);
+      if(current>0&&ta===0&&th===0)return Array.from({length:current},(_,i)=>({num:i+1,ordinal:String(i+1),away:0,home:0,__sbbDerived:true}));
+      return [];
+    }
+    const byNum=new Map(ordered.map(row=>[row.num,row]));
+    const s=gc?.scoreboard||{},current=Number(s.inning||s.currentInning||0);
+    const lastKnown=ordered[ordered.length-1];
+    const totalAway=number(s?.totals?.away?.runs??s?.away?.score),totalHome=number(s?.totals?.home?.runs??s?.home?.score);
+    const canExtend=current>lastKnown.num&&totalAway!==null&&totalHome!==null&&lastKnown.away===totalAway&&lastKnown.home===totalHome;
+    const maxInning=Math.max(lastKnown.num,canExtend?current:0);
+    const out=[];let prevAway=0,prevHome=0;
+    for(let inning=1;inning<=maxInning;inning++){
+      const row=byNum.get(inning);
+      const awayCum=row?.away===null||row?.away===undefined?prevAway:row.away;
+      const homeCum=row?.home===null||row?.home===undefined?prevHome:row.home;
+      out.push({
+        num:inning,
+        ordinal:String(inning),
+        away:Math.max(0,awayCum-prevAway),
+        home:Math.max(0,homeCum-prevHome),
+        __sbbDerived:true
+      });
+      prevAway=awayCum;prevHome=homeCum;
+    }
+    return out;
+  }
+
+  function baseballInnings(gc){
+    const s=gc?.scoreboard||{};
+    const supplied=window.SBB_GAME_CENTER_LINESCORE?.reconcile?.(s,'MLB')||s.innings||[];
+    const derived=timelineInnings(gc);
+    if(!supplied.length)return derived;
+    if(!derived.length)return supplied;
+    const byNum=new Map();
+    for(const row of derived)byNum.set(Number(row.num||0),{...row});
+    for(const row of supplied){
+      const n=Number(row?.num||0);
+      if(!n)continue;
+      const fallback=byNum.get(n)||{};
+      byNum.set(n,{
+        ...fallback,...row,
+        away:blank(row?.away)?fallback.away:row.away,
+        home:blank(row?.home)?fallback.home:row.home,
+        __sbbDerived:blank(row?.away)||blank(row?.home)||!!fallback.__sbbDerived
+      });
+    }
+    return [...byNum.values()].filter(row=>Number(row.num||0)>0).sort((a,b)=>Number(a.num)-Number(b.num));
+  }
+
   function baseballCard(gc){
-    const s=gc?.scoreboard||{},innings=window.SBB_GAME_CENTER_LINESCORE?.reconcile?.(s,'MLB')||s.innings||[];
+    const s=gc?.scoreboard||{},innings=baseballInnings(gc);
     if(!innings.length)return '';
     const away=s.away||{},home=s.home||{},tot=s.totals||{};
+    const derived=innings.some(x=>x?.__sbbDerived);
     const heads=innings.map(x=>`<th>${esc(x.num||'')}</th>`).join('');
     const row=(label,side)=>`<tr><th class="gc-lines-team">${esc(label)}</th>${innings.map(x=>`<td>${esc(blank(x?.[side])?'':x[side])}</td>`).join('')}<th>${esc(tot?.[side]?.runs??s?.[side]?.score??'—')}</th><th>${esc(tot?.[side]?.hits??'—')}</th><th>${esc(tot?.[side]?.errors??'—')}</th></tr>`;
-    return `<div class="gc-card sbb-multisport-linescore sbb-baseball-linescore" data-sbb-gc-enhancement="linescore"><div class="gc-card-title">LINESCORE</div><div class="gc-table-scroll"><table class="gc-linescore"><thead><tr><th></th>${heads}<th>R</th><th>H</th><th>E</th></tr></thead><tbody>${row(teamName(away.team),'away')}${row(teamName(home.team),'home')}</tbody></table></div></div>`;
+    return `<div class="gc-card sbb-multisport-linescore sbb-baseball-linescore" data-sbb-gc-enhancement="linescore"><div class="gc-card-title">LINESCORE${derived?'<small>RECONCILED FROM PLAY-BY-PLAY</small>':''}</div><div class="gc-table-scroll"><table class="gc-linescore"><thead><tr><th></th>${heads}<th>R</th><th>H</th><th>E</th></tr></thead><tbody>${row(teamName(away.team),'away')}${row(teamName(home.team),'home')}</tbody></table></div></div>`;
   }
 
   function periodCard(gc){
     const s=gc?.scoreboard||{},comp=String(gc?.competitionId||gc?.event?.competitionId||'').toUpperCase();
-    if(comp==='MLB')return baseballCard(gc);
+    if(baseballEvent(gc))return baseballCard(gc);
     const rows=window.SBB_GAME_CENTER_LINESCORE?.periods?.(s,comp)||s.periods||[];
     if(!rows.length)return '';
     const away=s.away||{},home=s.home||{};
@@ -205,5 +294,5 @@
     window.addEventListener('sbb:selected-event-cleared',()=>selectionChanged(null));
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_GAME_CENTER_MULTISPORT_VIEW=Object.freeze({installed:true,version:'4.7.20',winProbabilityView:'GRAPH_1',enhance,periodCard,baseballCard,probabilityCard,ensureHost,syncFromPublicCache,get data(){return currentData;}});
+  window.SBB_GAME_CENTER_MULTISPORT_VIEW=Object.freeze({installed:true,version:'4.7.20',winProbabilityView:'GRAPH_1',baseballLinescoreFallback:'PLAY_BY_PLAY_RECONCILIATION',enhance,periodCard,baseballCard,baseballInnings,timelineInnings,probabilityCard,ensureHost,syncFromPublicCache,get data(){return currentData;}});
 })();
