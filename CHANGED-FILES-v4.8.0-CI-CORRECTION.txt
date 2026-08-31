@@ -1,0 +1,57 @@
+Sports Big Board v4.8.0 — CI Release Gate Correction
+=====================================================
+
+Cause of failed GitHub Actions run #200
+---------------------------------------
+The v4.8.0 VERIFY.sh moved the retained v4.7 efficiency/navigation/Day State
+architecture contract commands into the advisory archive. The stable
+ReleaseBehaviorGate explicitly requires those current foundation contracts to
+remain blocking. CI therefore failed before the JavaScript contract phase.
+
+Correction
+----------
+1. Restore every command required by
+   tests.test_release_behavior_gate.test_active_foundation_checker_contracts_remain_blocking
+   to the blocking VERIFY.sh path.
+2. Keep the v4.8.0 release number unchanged because the first v4.8.0 deployment
+   never passed verification/deployed.
+3. Update the retained v4.7.3-v4.7.13 JavaScript architecture tests so their
+   release guard means "v4.7.N or any later 4.x release" instead of requiring
+   major.minor to equal exactly 4.7.
+4. Preserve every underlying behavior assertion in those tests.
+5. Keep superseded v4.7 release-line implementation tests in the advisory archive.
+
+Corrective files
+----------------
+VERIFY.sh
+tests/test_v473_efficiency_runtime.js
+tests/test_v474_efficiency_remediation_runtime.js
+tests/test_v475_enrichment_firewall_runtime.js
+tests/test_v476_render_pipeline_runtime.js
+tests/test_v477_first_paint_render_consolidation_runtime.js
+tests/test_v478_future_projection_card_cache_runtime.js
+tests/test_v479_navigation_history_runtime.js
+tests/test_v4710_cold_history_future_store_runtime.js
+tests/test_v4711_availability_index_thin_probe_runtime.js
+tests/test_v4712_day_state_render_model_runtime.js
+tests/test_v4713_media_readiness_runtime.js
+
+Local validation
+----------------
+PASS: VERIFY.sh shell syntax
+PASS: all 33 commands required by the stable release-behavior gate are present
+PASS: v4.8.0 test_v473_efficiency_runtime.js
+PASS: v4.8.0 test_v474_efficiency_remediation_runtime.js
+PASS: v4.8.0 test_v475_enrichment_firewall_runtime.js
+PASS: v4.8.0 test_v476_render_pipeline_runtime.js
+PASS: v4.8.0 test_v477_first_paint_render_consolidation_runtime.js
+PASS: v4.8.0 test_v478_future_projection_card_cache_runtime.js
+PASS: v4.8.0 test_v479_navigation_history_runtime.js
+PASS: v4.8.0 test_v4710_cold_history_future_store_runtime.js
+PASS: v4.8.0 test_v4711_availability_index_thin_probe_runtime.js
+PASS: v4.8.0 test_v4712_day_state_render_model_runtime.js
+PASS: v4.8.0 test_v4713_media_readiness_runtime.js
+
+No production runtime behavior is changed by this correction. It repairs release
+verification semantics only; the v4.8.0 Comprehensive Certification architecture
+and Playback Progress Watchdog remain unchanged.

@@ -2,10 +2,11 @@ const fs=require('fs');
 const assert=require('assert');
 
 const VERSION=fs.readFileSync('VERSION','utf8').trim();
+const parts=VERSION.split('.').map(Number);
 const index=fs.readFileSync('index.html','utf8');
 const src=fs.readFileSync('architecture/efficiency-certification.js','utf8');
 
-assert(/^4\.7\.\d+$/.test(VERSION));
+assert(parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=3)));
 assert(index.includes(`architecture/efficiency-certification.js?v=${VERSION}`));
 assert(src.includes("window.SBB_EFFICIENCY"));
 assert(src.includes("runAutoTest"));

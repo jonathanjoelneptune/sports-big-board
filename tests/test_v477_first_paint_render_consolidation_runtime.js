@@ -9,8 +9,7 @@ const coordinator=fs.readFileSync('architecture/date-transition-coordinator.js',
 const day=fs.readFileSync('architecture/day-state.js','utf8');
 const efficiency=fs.readFileSync('architecture/efficiency-certification.js','utf8');
 
-assert.deepStrictEqual(parts.slice(0,2),[4,7]);
-assert(parts[2]>=7);
+assert(parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=7)));
 assert(index.indexOf(`architecture/render-pipeline.js?v=${VERSION}`) <
        index.indexOf(`architecture/date-transition-coordinator.js?v=${VERSION}`));
 assert(render.includes('beginGeneration'));

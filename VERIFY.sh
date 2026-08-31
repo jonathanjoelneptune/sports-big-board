@@ -15,8 +15,8 @@ python3 tools/check_ultimate_playback.py
 python3 tools/check_deploy_rehearsal.py
 
 # v4.8 establishes a new certification release line. Stable behavior/foundation
-# gates remain blocking; release-line-specific v4.7 tests run in the legacy
-# advisory sweep below so old 4.7 version assertions cannot block a 4.8 release.
+# gates and retained v4.7 architecture baselines remain blocking. Only superseded
+# release-line implementation-pinning tests run in the legacy advisory sweep.
 python3 -m unittest tests.test_v446_historical_media_quarantine
 python3 -m unittest tests.test_release_behavior_gate
 
@@ -42,6 +42,29 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v445_duplicate_candidate_runtime.js
   node tests/test_v446_stale_media_runtime.js
   node tests/test_v447_poisoned_player_containment_runtime.js
+
+  # Retained v4.7 architecture baselines remain blocking under the v4.8 line.
+  # Their version guards accept v4.7.N or later 4.x releases while preserving
+  # the underlying efficiency/navigation/Day State behavior assertions.
+  node tests/test_v473_efficiency_runtime.js
+  node tests/test_v474_efficiency_remediation_runtime.js
+  node tests/test_v475_enrichment_firewall_runtime.js
+  node tests/test_v476_render_pipeline_runtime.js
+  node tests/test_v477_first_paint_render_consolidation_runtime.js
+  node tests/test_v478_future_projection_card_cache_runtime.js
+  node tests/test_v479_navigation_history_runtime.js
+  node tests/test_v4710_cold_history_future_store_runtime.js
+  node tests/test_v4711_availability_index_thin_probe_runtime.js
+  python3 -m unittest tests.test_v4711_availability_index_thin_probe
+  node tests/test_v4712_day_state_render_model_runtime.js
+  python3 -m unittest tests.test_v4712_day_state_render_model
+  node tests/test_v4713_media_readiness_runtime.js
+  python3 -m unittest tests.test_v4713_media_readiness
+  python3 -m unittest tests.test_v4714_cfb_ranked_season
+  python3 -m unittest tests.test_v4714_cfb_ranked_runtime
+  python3 -m unittest tests.test_v4710_cold_history_future_store
+  python3 -m unittest tests.test_v478_future_projection
+
   node tests/test_v448_recap_identity_runtime.js
   node tests/test_v448_recap_switch_runtime.js
   node tests/test_v4726_comprehensive_site_certification.js

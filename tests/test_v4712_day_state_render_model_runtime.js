@@ -7,7 +7,7 @@ const nativeTransport=fs.readFileSync('architecture/native-transport.js','utf8')
 const availability=fs.readFileSync('architecture/score-card-availability-index.js','utf8');
 const render=fs.readFileSync('architecture/render-pipeline.js','utf8');
 const efficiency=fs.readFileSync('architecture/efficiency-certification.js','utf8');
-assert.deepStrictEqual(parts.slice(0,2),[4,7]);assert(parts[2]>=12);
+assert(parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=12)));
 assert(index.includes(`architecture/native-transport.js?v=${VERSION}`));
 assert(index.indexOf(`architecture/native-transport.js?v=${VERSION}`)<index.indexOf(`architecture/request-broker.js?v=${VERSION}`));
 assert(nativeTransport.includes('capturedFetch'));
