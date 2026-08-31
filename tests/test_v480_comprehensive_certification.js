@@ -13,11 +13,12 @@ const efficiency=read('architecture/efficiency-certification.js');
 const watchdog=read('architecture/playback-progress-watchdog.js');
 const verify=read('VERIFY.sh');
 
-assert.strictEqual(version,'4.8.0');
-assert(index.includes('<title>Sports Big Board — v4.8.0</title>'));
-assert(core.includes("version:'4.8.0'"));
-assert(efficiency.includes("const VERSION = '4.8.0'"));
-assert(cert.includes("const VERSION='2.0'"));
+const versionParts=version.split('.').map(Number);
+assert.strictEqual(versionParts[0],4);assert.strictEqual(versionParts[1],8);assert(versionParts[2]>=0);
+assert(index.includes(`<title>Sports Big Board — v${version}</title>`));
+assert(core.includes(`version:'${version}'`));
+assert(efficiency.includes(`const VERSION = '${version}'`));
+assert(/const VERSION='2\.\d+'/.test(cert));
 assert(cert.includes('Whole-site certification'));
 assert(cert.includes('seededRng'));
 assert(cert.includes('certificationDates'));
@@ -28,7 +29,7 @@ assert(cert.includes('waitForProgress'));
 assert(cert.includes('gameCenterUiExercise'));
 assert(cert.includes("['overview','team-stats','players','plays']"));
 assert(cert.includes('SBB_PLAYBACK_PROGRESS_WATCHDOG'));
-assert(index.includes('architecture/playback-progress-watchdog.js?v=4.8.0'));
+assert(index.includes(`architecture/playback-progress-watchdog.js?v=${version}`));
 assert(watchdog.includes('No game, league'));
 assert(watchdog.includes('getCurrentTime'));
 assert(watchdog.includes('PROGRESS_SOFT_KICK_MS'));
@@ -49,7 +50,7 @@ for(const forbidden of ['USC_EVENT_FOUND','401864494','San Jose','San José','sa
 // Every executable local cache-busted asset must use the release generation.
 const refs=[...index.matchAll(/(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"/g)];
 assert(refs.length>40,'expected full frontend asset chain');
-for(const [,asset,found] of refs)assert.strictEqual(found,'4.8.0',`${asset} has stale generation ${found}`);
+for(const [,asset,found] of refs)assert.strictEqual(found,version,`${asset} has stale generation ${found}`);
 
 // The seed planner must be reproducible without requiring a browser run.
 const listeners={};
@@ -64,12 +65,12 @@ const document={
   head:{appendChild:()=>{}},
   createElement:()=>({style:{},classList:{toggle:()=>{}},appendChild:()=>{}})
 };
-const window={SBB_CORE:{version:'4.8.0'},addEventListener:()=>{},dispatchEvent:()=>{}};
+const window={SBB_CORE:{version},addEventListener:()=>{},dispatchEvent:()=>{}};
 window.window=window;
 const sandbox={window,document,console,performance:{now:()=>perfNow},Date,Math,Number,String,Object,Array,Set,Map,JSON,RegExp,Promise,Blob:global.Blob,AbortController,DOMException,CustomEvent:function(){},setTimeout:()=>0,clearTimeout:()=>{},setInterval:(fn,ms)=>{intervals.push({fn,ms});return intervals.length;},clearInterval:()=>{},getComputedStyle:()=>({display:'none'}),URL};
 vm.createContext(sandbox);
 vm.runInContext(cert,sandbox,{filename:'comprehensive-site-certification.js'});
-assert.strictEqual(window.SBB_SITE_CERTIFICATION.version,'2.0');
+assert(/^2\./.test(window.SBB_SITE_CERTIFICATION.version));
 const a=Array.from(window.SBB_SITE_CERTIFICATION.certificationDates(123456));
 const b=Array.from(window.SBB_SITE_CERTIFICATION.certificationDates(123456));
 assert.deepStrictEqual(a,b,'same seed must reproduce same date plan');
@@ -86,7 +87,7 @@ const wdWindow={SBB_PLAYBACK_SESSION:{snapshot:()=>({...session}),subscribe:fn=>
 const wdSandbox={window:wdWindow,document:{hidden:false,getElementById:()=>null},console,performance:{now:()=>wdNow},Date,Math,Number,String,Object,Array,Set,Map,JSON,RegExp,Promise,Error,CustomEvent:function(){},setTimeout:()=>0,clearTimeout:()=>{},setInterval:(fn,ms)=>{wdIntervals.push({fn,ms});return wdIntervals.length;},clearInterval:()=>{}};
 wdSandbox.players={A:{getCurrentTime:()=>mediaClock,getPlayerState:()=>1,playVideo:()=>{playKicks++;}}};
 wdSandbox.manualPauseRequested=false;
-wdSandbox.handlePlaybackFailure=(slot,err,providerFailure)=>{recoveries++;assert.strictEqual(slot,'A');assert.strictEqual(providerFailure,false);assert(String(err.message).includes('media clock did not advance'));};
+wdSandbox.handlePlaybackFailure=(slot,err,providerFailure)=>{recoveries++;assert.strictEqual(slot,'A');assert.strictEqual(providerFailure,false);assert(String(err.message).includes('LOCAL_NO_PROGRESS'));assert(String(err.message).includes('media clock did not advance'));};
 vm.createContext(wdSandbox);vm.runInContext(watchdog,wdSandbox,{filename:'playback-progress-watchdog.js'});
 const progressTimer=wdIntervals.find(x=>x.ms===250);assert(progressTimer,'progress watchdog interval should be installed');
 wdNow=100;progressTimer.fn();
@@ -102,4 +103,4 @@ mediaClock=10.35;wdNow=9350;progressTimer.fn();
 const goodSnap=wdWindow.SBB_PLAYBACK_PROGRESS_WATCHDOG.snapshot();
 assert.strictEqual(goodSnap.confirmed,true);assert.strictEqual(goodSnap.selectionId,2);assert.strictEqual(recoveries,1);assert.strictEqual(playKicks,1);
 
-console.log('PASS: v4.8.0 seeded whole-site certification + active playback progress/recovery contract');
+console.log(`PASS: ${version} retains v4.8 seeded whole-site certification + active playback progress/recovery contract`);

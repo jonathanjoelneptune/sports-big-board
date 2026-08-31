@@ -1556,6 +1556,21 @@ function playbackFailureIsAssetSpecific(reason=''){
   const text=String(reason||'').toLowerCase();
   return /youtube error\s*(101|150)\b|media_err_decode|media_err_src_not_supported|http\s*(404|410)\b|\b(404|410)\b[^\n]*(not found|gone)|unsupported (media|source)|invalid (media|source) url|malformed (media|source)/i.test(text);
 }
+// v4.8.1: a transport that claims PLAYING while its clock is frozen is a local
+// playback-attempt failure, not evidence that the entire A/B engine is corrupt.
+// Keep the exact asset out of rotation briefly so same-game fallback can proceed,
+// but do not add it to the three-unique-assets systemic-reset counter.
+function playbackFailureIsLocalProgressStall(reason=''){
+  return /LOCAL_NO_PROGRESS|media clock did not advance|non[- ]advancing (?:media|playback)|playback progress (?:confirmation )?timeout/i.test(String(reason||''));
+}
+function noteLocalPlaybackFailure(item,reason='local playback progress failure'){
+  const key=playbackItemKey(item),nowMs=Date.now();
+  if(key&&key!=='none') TRANSIENT_UNPLAYABLE_MEDIA.set(key,nowMs+PLAYBACK_ENGINE_TRANSIENT_TTL_MS);
+  emitPlaybackEngine('local-progress-failure',{reason:String(reason||''),key,systemicCounterSuppressed:true});
+  try{console.warn('[SBB media truth] local progress failure; systemic reset counter suppressed',{key,reason,title:item?.title||''});}catch(_){}
+  setTimeout(()=>{try{renderScoresFromMatchesCombined();}catch(_){}},PLAYBACK_ENGINE_TRANSIENT_TTL_MS+100);
+  return false;
+}
 function playbackEngineSnapshot(){
   const cutoff=Date.now()-PLAYBACK_ENGINE_FAILURE_WINDOW_MS;
   const recent=playbackEngineFailureSamples.filter(x=>x.at>=cutoff);
@@ -1575,6 +1590,7 @@ function clearAllPreparedScoreDecoders(){
 function resetPlaybackEngine(reason='systemic playback startup failure'){
   const nowMs=Date.now();
   if(playbackEngineHealth.recovering||nowMs-playbackEngineHealth.lastResetAt<PLAYBACK_ENGINE_RESET_COOLDOWN_MS)return false;
+  const recoveryItem=clip(currentIndex),recoveryKey=playbackItemKey(recoveryItem),recoverySelectionId=Number(window.SBB_PLAYBACK_SESSION?.snapshot?.().selectionId||0),recoveryWasScore=userPlaybackSession?.source==='score';
   playbackEngineHealth.recovering=true;playbackEngineHealth.resets++;playbackEngineHealth.lastResetAt=nowMs;playbackEngineHealth.lastReason=String(reason||'');
   try{clearAllPreparedScoreDecoders();}catch(_){}
   for(const slot of ['A','B']){
@@ -1586,10 +1602,27 @@ function resetPlaybackEngine(reason='systemic playback startup failure'){
     try{slotAssignment[slot]=null;}catch(_){}
     videoReady[slot]=false;warming[slot]=false;youtubeStartAwaitingReady[slot]=false;
   }
-  transitionInFlight=false;TRANSIENT_UNPLAYABLE_MEDIA.clear();playbackEngineFailureSamples.splice(0);
+  transitionInFlight=false;
+  // Preserve recent per-asset transient quarantine across an engine reset. Clearing
+  // it here immediately re-advertised the same failing media and could create an
+  // engine-reset/reselect loop. Only expired entries are removed.
+  for(const [key,until] of [...TRANSIENT_UNPLAYABLE_MEDIA.entries()]) if(Number(until||0)<=nowMs) TRANSIENT_UNPLAYABLE_MEDIA.delete(key);
+  playbackEngineFailureSamples.splice(0);
   setPlaybackDiag({lastAction:`PLAYBACK ENGINE RESET • ${String(reason||'systemic failure').slice(0,90)}`});
-  emitPlaybackEngine('reset',{reason:String(reason||'')});
-  setTimeout(()=>{playbackEngineHealth.recovering=false;emitPlaybackEngine('ready',{reason:'reset complete'});},900);
+  emitPlaybackEngine('reset',{reason:String(reason||''),recoveryKey,recoveryWasScore});
+  setTimeout(()=>{
+    playbackEngineHealth.recovering=false;emitPlaybackEngine('ready',{reason:'reset complete'});
+    // Score-card failure recovery already owns same-game fallback. Do not race it
+    // with an engine-level retune. For unattended programming, recover only if no
+    // newer selection has taken ownership while the engine was resetting.
+    if(recoveryWasScore||!sportsBigBoardStarted||manualPauseRequested)return;
+    const snap=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{};
+    if(Number(snap.selectionId||0)!==recoverySelectionId||['playing','paused'].includes(String(snap.state||'')))return;
+    let target=currentIndex,item=clip(target);
+    if(!item||!runtimeMediaUsable(item)){const next=nextVisibleQueueIndex();if(next<0)return;target=next;item=clip(target);}
+    if(!item)return;
+    PlaybackController.tuneProgramIndex(target,{userInitiated:false,reason:'playback engine reset recovery',restart:true}).catch(err=>console.warn('[SBB playback] reset recovery tune failed',err));
+  },900);
   return true;
 }
 function noteTransientPlaybackFailure(item,reason='startup failure'){
@@ -1646,6 +1679,10 @@ function markRuntimeMediaFailed(item,reason='runtime playback failure',{provider
   if(!item) return false;
   const key=playbackItemKey(item);
   if(!key || key==='none') return false;
+  if(playbackFailureIsLocalProgressStall(reason)){
+    noteLocalPlaybackFailure(item,reason);
+    return false;
+  }
   if(!playbackFailureIsAssetSpecific(reason)){
     noteTransientPlaybackFailure(item,reason);
     try{console.warn('[SBB media truth] transient playback failure; asset preserved',{key,reason,title:item?.title||''});}catch(_){}
@@ -2458,8 +2495,19 @@ function gameCenterEventForPlayback(item){
   const scoreMatch=launchScoreMatchForItem(item);
   return scoreMatch?gameCenterSelectionFromScoreMatch(scoreMatch):item;
 }
+function scoreSessionGameCenterAuthority(){
+  const session=userPlaybackSession;
+  if(session?.source!=='score'||!session.match)return null;
+  return gameCenterSelectionFromScoreMatch(session.match);
+}
 function syncGameCenterToActivePlayback(item=clip(currentIndex),{reason='active playback',source='playback'}={}){
   const store=window.SBB_SELECTED_EVENT;
+  // v4.8.1: the score event, not whichever media package is currently rendering,
+  // owns Game Center for the entire explicit score-card session. A quick recap may
+  // fail over to an extended recap whose asset metadata is sparse; that transition
+  // must never clear the already-authoritative sporting event.
+  const scoreAuthority=scoreSessionGameCenterAuthority();
+  if(scoreAuthority)return syncSelectedEvent(scoreAuthority,{reason:`${reason}: score-session authority`,source:'score-ribbon'});
   if(!playbackOwnsGameCenter(item)){
     store?.clear?.({reason:'active media has no game event',source});
     window.SBB_GAME_CENTER_VIEW?.clear?.('Game Center follows the active game video.');
@@ -2475,6 +2523,8 @@ function syncGameCenterToActivePlayback(item=clip(currentIndex),{reason='active 
 }
 function selectedEventMatchesActivePlayback(){
   const item=clip(currentIndex),selected=window.SBB_SELECTED_EVENT?.get?.()||null;
+  const scoreAuthority=scoreSessionGameCenterAuthority();
+  if(scoreAuthority){if(!selected)return false;return !!window.SBB_EVENT_IDENTITY?.same?.(selected,scoreAuthority)||sameGameProgramItem(selected,scoreAuthority);}
   if(!playbackOwnsGameCenter(item))return !selected;
   const expected=gameCenterEventForPlayback(item);if(!expected||!selected)return false;
   return !!window.SBB_EVENT_IDENTITY?.same?.(selected,expected)||sameGameProgramItem(selected,expected);

@@ -1,0 +1,60 @@
+Sports Big Board v4.8.1 — Playback Ownership + Recovery Hardening
+
+PURPOSE
+- Fix intermittent board-wide freezes exposed by Comprehensive Certification and known score-card playback cases.
+- Keep the fix game-agnostic; no USC, TEX/CHW, or event-ID special cases are introduced.
+- Preserve the original score event as Game Center authority across primary -> fallback media transitions.
+- Contain frozen-clock playback locally instead of counting it toward destructive global engine-reset escalation.
+- Make legitimate global engine resets preserve recent transient quarantines and avoid racing score-session recovery.
+- Expand Comprehensive Certification telemetry so a visually successful run cannot hide engine resets or Game Center ownership loss.
+
+RUNTIME CHANGES
+1. app.js
+   - Adds playbackFailureIsLocalProgressStall() and noteLocalPlaybackFailure().
+   - LOCAL_NO_PROGRESS / non-advancing-clock failures temporarily suppress that exact asset without incrementing the systemic three-asset reset counter.
+   - resetPlaybackEngine() no longer clears recent transient asset quarantines.
+   - Non-score unattended playback can re-establish a valid owner after a legitimate global reset if no newer selection took ownership.
+   - Score-card recovery remains the sole same-game fallback owner during a reset, preventing recovery races.
+   - scoreSessionGameCenterAuthority() binds Game Center to the score event for the full explicit score-card session.
+   - Same-game quick/extended/fallback media swaps cannot clear Game Center merely because the fallback asset has sparse event metadata.
+
+2. architecture/playback-progress-watchdog.js
+   - Version 1.1.
+   - Frozen-clock recovery is explicitly classified as LOCAL_NO_PROGRESS before delegating to canonical playback failure/fallback handling.
+
+3. architecture/comprehensive-site-certification.js
+   - Certification schema 2.1.
+   - Adds playback-quiescence gating between interactions.
+   - Records engineResetsDelta, engineIncidentsDelta, and gameCenterOwned on each playback interaction.
+   - Any global engine reset during the active playback matrix is blocking evidence.
+   - Any Game Center ownership loss during score playback is blocking evidence.
+   - Report summary includes engineResets, engineIncidents, and gcOwnershipFailures even when final playback eventually succeeds.
+
+4. Release/version files
+   - VERSION = 4.8.1.
+   - All local JS/CSS cache generations in index.html = 4.8.1.
+   - core-model.js and Efficiency Certification identify 4.8.1.
+   - release-manifest.json defines the v4.8.1 atomic release and new contracts.
+   - VERIFY.sh runs the new v4.8.1 regression test.
+
+TESTS
+- tests/test_v4726_comprehensive_site_certification.js now follows current VERSION for the cache-generation assertion while retaining the legacy Game Center safeguards.
+- tests/test_v480_comprehensive_certification.js remains a blocking v4.8 architecture baseline and accepts later v4.8 patch releases.
+- tests/test_v481_playback_ownership_recovery.js validates:
+  * score-session Game Center authority,
+  * local-stall systemic-reset suppression,
+  * transient quarantine preservation across engine reset,
+  * engine reset recovery ownership,
+  * expanded race/ownership certification telemetry,
+  * game-agnostic architecture.
+
+LOCAL VALIDATION COMPLETED
+- JavaScript syntax: PASS for app.js, v4.8.1 watchdog, comprehensive certification, efficiency certification, and changed tests.
+- All available retained v4.7.3-v4.7.13 runtime architecture tests: PASS under 4.8.1.
+- v4.7.26 retained Game Center safeguard test: PASS.
+- v4.8 comprehensive certification contract: PASS.
+- v4.8.1 playback ownership/recovery contract: PASS.
+- index.html local cache-busted executable assets checked: 55 refs, 0 stale versions.
+
+UPLOAD
+Upload the contents of this package to the repository root, preserving folders.

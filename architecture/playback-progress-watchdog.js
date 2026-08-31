@@ -1,4 +1,4 @@
-/* Sports Big Board v4.8.0 — Playback Progress Watchdog.
+/* Sports Big Board v4.8.1 — Playback Progress Watchdog.
    Production recovery authority for the gap between provider state and actual
    media progress. A provider may report PLAYING before decoded media time moves.
    We require the transport clock to advance, issue one soft play kick, then hand
@@ -9,7 +9,7 @@
   'use strict';
   if(window.SBB_PLAYBACK_PROGRESS_WATCHDOG)return;
 
-  const VERSION='1.0';
+  const VERSION='1.1';
   const PROGRESS_EPSILON_SECONDS=.20;
   const PROGRESS_SOFT_KICK_MS=3500;
   const PROGRESS_RECOVERY_MS=8000;
@@ -75,7 +75,7 @@
     if(progress.lastReason==='recovery-delegated')return;
     progress.lastReason='recovery-delegated';progress.recoveries++;progress.timeouts++;
     record('recovery',{clock:clock.clock,elapsedMs:round(now()-progress.selectedPerf)});
-    const err=new Error(`Playback transport reported start but media clock did not advance within ${PROGRESS_RECOVERY_MS} ms`);
+    const err=new Error(`LOCAL_NO_PROGRESS: Playback transport reported start but media clock did not advance within ${PROGRESS_RECOVERY_MS} ms`);
     try{
       const paused=(typeof manualPauseRequested!=='undefined')&&manualPauseRequested;if(paused||document.hidden)return;
       if(typeof handlePlaybackFailure==='function')handlePlaybackFailure(clock.slot||progress.slot,err,false);

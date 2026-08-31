@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.8.0",
-  "baseRelease": "4.7.20",
-  "title": "Comprehensive Certification Architecture",
+  "release": "4.8.1",
+  "baseRelease": "4.8.0",
+  "title": "Comprehensive Certification Playback Ownership + Recovery Hardening",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -21,35 +21,37 @@
     "tools/check_deploy_rehearsal.py",
     "tests/test_release_behavior_gate.py",
     "tests/test_v4726_comprehensive_site_certification.js",
-    "tests/test_v480_comprehensive_certification.js"
+    "tests/test_v480_comprehensive_certification.js",
+    "app.js",
+    "tests/test_v481_playback_ownership_recovery.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.8.0"
+        "4.8.1"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board — v4.8.0",
-        "core-model.js?v=4.8.0",
-        "architecture/efficiency-certification.js?v=4.8.0",
-        "architecture/comprehensive-site-certification.js?v=4.8.0",
-        "architecture/playback-progress-watchdog.js?v=4.8.0",
-        "app.js?v=4.8.0"
+        "Sports Big Board \u2014 v4.8.1",
+        "core-model.js?v=4.8.1",
+        "architecture/efficiency-certification.js?v=4.8.1",
+        "architecture/comprehensive-site-certification.js?v=4.8.1",
+        "architecture/playback-progress-watchdog.js?v=4.8.1",
+        "app.js?v=4.8.1"
       ],
       "forbidden": [
-        "?v=4.7.20"
+        "?v=4.8.0"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.8.0'"
+        "version:'4.8.1'"
       ]
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "const VERSION = '4.8.0'",
+        "const VERSION = '4.8.1'",
         "Efficiency Certification"
       ],
       "forbidden": [
@@ -58,7 +60,7 @@
     },
     "architecture/comprehensive-site-certification.js": {
       "required": [
-        "const VERSION='2.0'",
+        "const VERSION='2.1'",
         "seededRng",
         "certificationDates",
         "gameCenterUiExercise",
@@ -66,13 +68,17 @@
         "#scoreCells .score-card.has-highlights",
         "SBB_PLAYBACK_PROGRESS_WATCHDOG",
         "ACTIVE PLAYBACK INTERACTION MATRIX",
-        "SEED=${r.seed}"
+        "SEED=${r.seed}",
+        "engineResets",
+        "gameCenterOwnershipFailures",
+        "waitForPlaybackQuiescence",
+        "gcOwned="
       ],
       "forbidden": [
         "USC_EVENT_FOUND",
         "401864494",
         "San Jose",
-        "San José",
+        "San Jos\u00e9",
         "san jose"
       ]
     },
@@ -92,6 +98,7 @@
       "required": [
         "node tests/test_v480_comprehensive_certification.js",
         "v4.7 JavaScript regression archive",
+        "node tests/test_v481_playback_ownership_recovery.js",
         "v4.8 comprehensive certification architecture"
       ]
     },
@@ -103,13 +110,29 @@
         "PROGRESS_RECOVERY_MS",
         "handlePlaybackFailure",
         "media clock did not advance",
-        "No game, league,"
+        "No game, league,",
+        "const VERSION='1.1'",
+        "LOCAL_NO_PROGRESS"
       ],
       "forbidden": [
         "401864494",
         "USC_EVENT_FOUND",
         "San Jose",
-        "San José"
+        "San Jos\u00e9"
+      ]
+    },
+    "app.js": {
+      "required": [
+        "playbackFailureIsLocalProgressStall",
+        "noteLocalPlaybackFailure",
+        "systemicCounterSuppressed:true",
+        "scoreSessionGameCenterAuthority",
+        "score-session authority",
+        "playback engine reset recovery",
+        "recoveryWasScore"
+      ],
+      "forbidden": [
+        "transitionInFlight=false;TRANSIENT_UNPLAYABLE_MEDIA.clear()"
       ]
     }
   }

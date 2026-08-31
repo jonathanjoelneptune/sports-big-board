@@ -3,6 +3,7 @@ const assert=require('assert');
 const fs=require('fs');
 const path=require('path');
 const ROOT=path.resolve(__dirname,'..');
+const VERSION=fs.readFileSync(path.join(ROOT,'VERSION'),'utf8').trim();
 const cert=fs.readFileSync(path.join(ROOT,'architecture/comprehensive-site-certification.js'),'utf8');
 const gc=fs.readFileSync(path.join(ROOT,'architecture/game-center-contract.js'),'utf8');
 const index=fs.readFileSync(path.join(ROOT,'index.html'),'utf8');
@@ -24,7 +25,7 @@ assert(cert.includes('ACTION ITEMS'));
 assert(cert.includes('SBB_PLAYBACK_PROGRESS_WATCHDOG'));
 assert(!cert.includes('USC_EVENT_FOUND'));
 assert(!cert.includes('401864494'));
-assert(index.includes('architecture/comprehensive-site-certification.js?v=4.8.0'));
+assert(index.includes(`architecture/comprehensive-site-certification.js?v=${VERSION}`));
 
 assert(gc.includes("watchdogVersion:'v4726'"));
 assert(gc.includes('pending after ${polls} checks'));
