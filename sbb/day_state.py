@@ -117,7 +117,12 @@ def _sanitize_event_plans(server, plans):
             proof_ok=(isinstance(proof,dict)
                       and str(proof.get("associationState") or "").upper()=="ASSIGNED"
                       and str(proof.get("canonicalEventKey") or canonical)==str(key))
-            durable=(method.startswith("SPECIAL_EVENT_") or method in strong_methods
+            # ribbon_media_for_date() injects assetKey from history_source_media.
+            # Its presence, together with the exact canonical event key and GAME
+            # scope, proves this plan came from an ASSIGNED normalized EVENT_MEDIA
+            # relationship rather than an untrusted legacy/browser-shaped plan.
+            normalized_asset=bool(str(item.get("assetKey") or "").strip())
+            durable=(normalized_asset or method.startswith("SPECIAL_EVENT_") or method in strong_methods
                      or bool(direct_ids and event_ids and direct_ids & event_ids)
                      or game_pk_match or proof_ok)
             if canonical==str(key) and scope=="GAME" and durable:
