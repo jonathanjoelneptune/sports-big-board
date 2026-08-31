@@ -13,6 +13,7 @@ from .cfb_trusted_youtube import install as _install_cfb_trusted_youtube
 from .game_center_multisport import install as _install_game_center_multisport
 from .history_readiness_repair import install as _install_history_readiness_repair
 from .runtime_path_repair_v4720 import install as _install_runtime_path_repair_v4720
+from .database_authority import install as _install_database_authority
 
 _install_nfl_weekly_playlists()
 _install_competition_builder()
@@ -27,6 +28,8 @@ _install_day_state()
 _install_cfb_trusted_youtube()
 _install_game_center_multisport()
 _install_history_readiness_repair()
-# v4.7.20 installs LAST so regression-safe recovery wraps the final runtime methods
-# after the older compatibility layers above have finished wrapping them.
+# Preserve v4.7.20's bounded owner-specific LLWS/CFB recovery underneath the final
+# database-authority policy. The final policy prevents generic startup repair from
+# reinterpreting durable event/collection relationships again.
 _install_runtime_path_repair_v4720()
+_install_database_authority()

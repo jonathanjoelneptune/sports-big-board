@@ -2,8 +2,9 @@
 
 Adds College Football to the existing ESPN Game Summary adapter and normalizes
 period-by-period line scores plus ESPN win probability into the shared Game Center
-contract.  This module patches sbb.game_center at package initialization so the
-server's normal imports automatically receive the expanded implementation.
+contract.  v4.7.21 also makes period linescores part of the completeness contract
+for live/final football, basketball and hockey so stale pre-linescore cache records
+are automatically enriched instead of remaining permanently "complete".
 """
 from __future__ import annotations
 
@@ -12,7 +13,7 @@ import threading
 
 from . import game_center as _gc
 
-VERSION = "4.7.17-game-center-multisport-1"
+VERSION = "4.7.21-game-center-multisport-2"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 _ORIGINAL_NORMALIZE = _gc.normalize_espn_summary
@@ -231,16 +232,32 @@ def fetch_espn_game_center(competition, event_id, fetch_json, site_api_base):
 
 
 def game_center_coverage(data):
+    """Extend base coverage with the persistent multisport linescore contract.
+
+    Old cached NFL/NBA/NHL records could satisfy the base richness checks without
+    ``scoreboard.periods`` and therefore never refresh.  CFB inherits NFL richness.
+    A live/final period sport is now incomplete until at least one normalized period
+    is present. Scheduled games remain complete without a linescore.
+    """
     data = data or {}
     comp = str(data.get("competitionId") or ((data.get("event") or {}).get("competitionId")) or "").upper()
-    if comp != "CFB":
-        return _ORIGINAL_COVERAGE(data)
-    # CFB has the same richness expectations as the NFL Game Center contract.
-    probe = copy.deepcopy(data)
-    probe["competitionId"] = "NFL"
-    probe.setdefault("event", {})["competitionId"] = "NFL"
-    result = dict(_ORIGINAL_COVERAGE(probe))
-    result["competitionId"] = "CFB"
+    if comp == "CFB":
+        probe = copy.deepcopy(data)
+        probe["competitionId"] = "NFL"
+        probe.setdefault("event", {})["competitionId"] = "NFL"
+        result = dict(_ORIGINAL_COVERAGE(probe))
+        result["competitionId"] = "CFB"
+    else:
+        result = dict(_ORIGINAL_COVERAGE(data))
+
+    periods = [x for x in (((data.get("scoreboard") or {}).get("periods")) or []) if isinstance(x, dict)]
+    result["periods"] = len(periods)
+    if comp in {"NFL", "CFB", "NBA", "NHL"} and (result.get("final") or result.get("live")) and not periods:
+        missing = list(result.get("missing") or [])
+        if "linescore" not in missing:
+            missing.append("linescore")
+        result["missing"] = missing
+        result["complete"] = False
     return result
 
 

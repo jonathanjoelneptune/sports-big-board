@@ -16,11 +16,14 @@ from urllib.parse import parse_qs, urlparse
 
 from .history_repository import HistoryRepository
 
-VERSION = "4.7.18-history-readiness-2"
+VERSION = "4.7.18-history-readiness-3"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 _ORIGINAL_HYDRATE = HistoryRepository._hydrate_asset
-_ORIGINAL_ROUNDUP_MEDIA = HistoryRepository.roundup_media
+# Lightweight compatibility tests/adapters may expose hydration without the
+# optional Silver collection API. Importing this repair must not require an
+# unrelated repository capability just to repair GAME media readiness.
+_ORIGINAL_ROUNDUP_MEDIA = getattr(HistoryRepository, "roundup_media", None)
 _YOUTUBE_ID_RE = re.compile(r"^[A-Za-z0-9_-]{6,20}$")
 
 
@@ -121,6 +124,8 @@ def _hydrate_asset(row):
 
 def _roundup_media(self, date, league=None):
     """Keep Silver read-only and database-first while repairing old transport JSON."""
+    if not callable(_ORIGINAL_ROUNDUP_MEDIA):
+        return []
     rows = _ORIGINAL_ROUNDUP_MEDIA(self, date, league)
     for item in rows or []:
         if not isinstance(item, dict):
@@ -139,7 +144,8 @@ def install():
         if _INSTALLED:
             return False
         HistoryRepository._hydrate_asset = staticmethod(_hydrate_asset)
-        HistoryRepository.roundup_media = _roundup_media
+        if callable(_ORIGINAL_ROUNDUP_MEDIA):
+            HistoryRepository.roundup_media = _roundup_media
         _INSTALLED = True
         return True
 
