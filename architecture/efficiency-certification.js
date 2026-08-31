@@ -1,12 +1,12 @@
-/* Sports Big Board v4.7.16 — Efficiency Certification.
+/* Sports Big Board v4.8.0 — Efficiency Certification.
    Lightweight continuous instrumentation plus scripted, non-destructive
    efficiency tests. Backend access is GET-only; test state is restored.
 */
 (() => {
   'use strict';
-  if (window.SBB_EFFICIENCY?.version === '4.7.16') return;
+  if (window.SBB_EFFICIENCY?.version === '4.8.0') return;
 
-  const VERSION = '4.7.16';
+  const VERSION = '4.8.0';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;
@@ -497,7 +497,7 @@
   }
 
   // v4.7.13 compatibility marker: NO_KNOWN_DATABASE_MEDIA was the former zero-inventory label.
-  // v4.7.16 uses NO_KNOWN_PLAYABLE_MEDIA because verified session assets also count.
+  // v4.8.0 uses NO_KNOWN_PLAYABLE_MEDIA because verified session assets also count.
   function mediaReadinessSnapshot(date){
     const rows=window.SBB_RENDER_PIPELINE?.snapshot?.().samples||[];
     let best=null;

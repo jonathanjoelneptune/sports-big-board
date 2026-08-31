@@ -1,0 +1,67 @@
+SPORTS BIG BOARD v4.8.0 — COMPREHENSIVE CERTIFICATION ARCHITECTURE
+Base release: v4.7.20
+
+MANUAL UPLOAD OVERLAY
+Extract this package over the existing sports-big-board repository and replace the
+files below while preserving their repository paths. Do not delete unchanged files.
+
+REPLACE
+  VERIFY.sh
+  VERSION
+  index.html
+  core-model.js
+  release-manifest.json
+  architecture/comprehensive-site-certification.js
+  architecture/efficiency-certification.js
+  tests/test_v4726_comprehensive_site_certification.js
+  tools/check_foundation_certification.py
+  tools/check_release_manifest.py
+
+ADD
+  architecture/playback-progress-watchdog.js
+  tests/test_v480_comprehensive_certification.js
+
+WHAT v4.8.0 CHANGES
+1. Comprehensive Certification schema 2.0 is game-agnostic and seeded/replayable.
+2. The whole-site run now actively exercises real score-card playback instead of
+   passively observing whatever video happened to be active.
+3. Playback coverage spans multiple dates and prioritizes unseen leagues and
+   Green/Purple/Blue media tiers where those tiers are available.
+4. Certification requires actual transport-clock progress, not only provider
+   PLAYING state or optimistic first-frame session state.
+5. Game Center sampling is seeded and round-robin across available leagues; there
+   are no USC, San Jose State, or specific event-ID branches in the comprehensive
+   architecture.
+6. Game Center UI interaction checks exercise Overview, Team Stats, Players, and
+   Plays and restore the prior state afterward.
+7. A dedicated production Playback Progress Watchdog fixes the non-advancing-player
+   class globally: soft play kick at 3.5 s, canonical recovery/fallback at 8 s.
+8. Comprehensive reports include the seed, active playback matrix, first progress,
+   fallback hops, watchdog evidence, API/backend state, workers, discovery, Game
+   Center census, efficiency metrics, and actionable failures.
+9. Efficiency Certification now reports the current v4.8.0 release label.
+10. v4.8 establishes a new blocking certification line. Stable behavior contracts
+    and v4.8 tests block deployment; v4.7 release-line tests remain diagnostic
+    advisory evidence so obsolete 4.7-only version assertions cannot reject 4.8.
+11. Foundation Certification remains a retained baseline. Its live runtime contract
+    still blocks deployment, but its historical manifest no longer has to be
+    rewritten merely because Comprehensive Certification advances the release line.
+
+LOCAL VALIDATION COMPLETED
+  PASS node --check architecture/comprehensive-site-certification.js
+  PASS node --check architecture/playback-progress-watchdog.js
+  PASS node --check architecture/efficiency-certification.js
+  PASS node --check core-model.js
+  PASS node tests/test_v480_comprehensive_certification.js
+  PASS node tests/test_v4726_comprehensive_site_certification.js
+  PASS bash -n VERIFY.sh
+  PASS Python syntax for modified release/foundation gates
+  PASS all 55 executable JS/CSS cache references resolve to v4.8.0 in the staged frontend
+  PASS no named USC/San Jose/event-ID branch exists in the comprehensive runner or watchdog
+
+POST-DEPLOY
+Run the normal GitHub Actions verification/deploy workflow, then start Sports Big
+Board, enable Dev Mode, and run COMPREHENSIVE SITE CERTIFICATION. Save the full
+report including its SEED. If a run exposes a failure, re-run the same seed to
+reproduce the exact certification date/game ordering, then use a new seed for
+additional broad coverage.

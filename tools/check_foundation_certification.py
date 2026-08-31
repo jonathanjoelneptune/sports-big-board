@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Static release gate for Sports Big Board v4.3.11 three-tier Foundation Certification."""
+"""Static gate for the three-tier Sports Big Board Foundation Certification.
+
+Foundation is a retained baseline. Beginning with v4.8, a newer comprehensive
+certification release may advance VERSION without rewriting the unchanged
+foundation manifest, provided the foundation manifest is not newer than VERSION
+and every live foundation runtime contract still passes.
+"""
 from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[1]
@@ -15,8 +21,11 @@ try: manifest=json.loads(text('foundation-certification.json') or '{}')
 except Exception as exc: errors.append(f'invalid foundation-certification.json: {exc}');manifest={}
 try: version_tuple=tuple(int(x) for x in version.split('.'))
 except Exception: version_tuple=(0,)
+try: foundation_tuple=tuple(int(x) for x in str(manifest.get('release','')).split('.'))
+except Exception: foundation_tuple=(0,)
 require(version_tuple>=(4,3,11),f'expected VERSION 4.3.11 or newer, found {version!r}')
-require(manifest.get('release')==version,'manifest release mismatch')
+require(foundation_tuple>=(4,3,11),'foundation manifest release is invalid or too old')
+require(foundation_tuple<=version_tuple,f'foundation manifest {manifest.get("release")!r} cannot be newer than release {version!r}')
 require(manifest.get('schemaVersion')==2,'three-tier manifest schema must be 2')
 require(manifest.get('allThreeTiersRequired') is True,'all three tiers must be required')
 for tier in ('tier1','tier2','tier3'): require(manifest.get('tiers',{}).get(tier,{}).get('required') is True,f'{tier} must be required')
@@ -54,4 +63,4 @@ if errors:
     print('FOUNDATION CERTIFICATION CHECK FAILED')
     for e in errors: print(' -',e)
     raise SystemExit(1)
-print(f'PASS: Sports Big Board v{version} three-tier Foundation Certification contract is internally consistent')
+print(f'PASS: Sports Big Board v{version} retains Foundation Certification baseline v{manifest.get("release")} with all live contracts intact')

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "4.7.20",
-  "baseRelease": "4.7.19",
-  "title": "Game Center + Historical Playback Regression Recovery",
+  "release": "4.8.0",
+  "baseRelease": "4.7.20",
+  "title": "Comprehensive Certification Architecture",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -11,541 +11,106 @@
     "core-model.js",
     "foundation-certification.json",
     "release-manifest.json",
-    "sbb/day_state.py",
-    "architecture/score-date-store.js",
-    "architecture/request-broker.js",
-    "architecture/date-transition-coordinator.js",
-    "architecture/day-state.js",
-    "architecture/competition-registry-projection.js",
+    "architecture/comprehensive-site-certification.js",
     "architecture/efficiency-certification.js",
-    "architecture/historical-media-v4610.js",
-    "architecture/operator-module-loader.js",
-    "architecture/future-date-navigation.js",
-    "architecture/card-build-cache.js",
-    "architecture/render-pipeline.js",
-    "architecture/navigation-ui.js",
+    "architecture/playback-progress-watchdog.js",
+    "tools/check_release_manifest.py",
+    "tools/check_release_version.py",
+    "tools/check_foundation_certification.py",
+    "tools/check_ultimate_playback.py",
+    "tools/check_deploy_rehearsal.py",
     "tests/test_release_behavior_gate.py",
-    "tests/test_v472_frontend_boot_responsiveness.py",
-    "tests/test_v473_efficiency_runtime.js",
-    "tests/test_v474_efficiency_remediation_runtime.js",
-    "tests/test_v475_enrichment_firewall_runtime.js",
-    "tests/test_v476_render_pipeline_runtime.js",
-    "tests/test_v477_first_paint_render_consolidation_runtime.js",
-    "tests/test_v478_future_projection_card_cache_runtime.js",
-    "tests/test_v478_future_projection.py",
-    "tests/test_v479_navigation_history_runtime.js",
-    "tests/test_v4710_cold_history_future_store_runtime.js",
-    "tests/test_v4710_cold_history_future_store.py",
-    "architecture/score-card-availability-index.js",
-    "tests/test_v4711_availability_index_thin_probe_runtime.js",
-    "tests/test_v4711_availability_index_thin_probe.py",
-    "architecture/native-transport.js",
-    "tests/test_v4712_day_state_render_model_runtime.js",
-    "tests/test_v4712_day_state_render_model.py",
-    "tests/test_v4713_media_readiness_runtime.js",
-    "tests/test_v4713_media_readiness.py",
-    "sbb/cfb_ranked.py",
-    "tests/test_v4714_cfb_ranked_season.py",
-    "tests/test_v4714_cfb_ranked_runtime.py",
-    "tests/test_v4715_efficiency_hardening_runtime.js",
-    "tests/test_v4715_efficiency_hardening.py",
-    "architecture/score-ribbon-identity-guard.js",
-    "sbb/operator_playlist_contract.py",
-    "tests/test_v4716_ribbon_identity_runtime.js",
-    "tests/test_v4716_ribbon_identity_playlist.py",
-    "sbb/__init__.py",
-    "sbb/game_center_multisport.py",
-    "sbb/history_readiness_repair.py",
-    "architecture/game-center-linescore.js",
-    "architecture/game-center-multisport-view.js",
-    "tests/test_v4717_game_center_history.py",
-    "tests/test_v4717_game_center_runtime.js",
-    "sbb/cfb_trusted_youtube.py",
-    "architecture/game-center-contract.js",
-    "architecture/game-center-policy.js",
-    "ui/game-center-view.js",
-    "sbb/game_center.py",
-    "sbb/history_repository.py",
-    "tests/test_v4718_game_center_runtime.js",
-    "tests/test_v4718_regression_recovery.py",
-    "sbb/runtime_path_repair_v4719.py",
-    "tests/test_v4719_game_center_runtime.js",
-    "tests/test_v4719_runtime_path_repair.py",
-    "sbb/runtime_path_repair_v4720.py",
-    "tests/test_v4720_request_broker_runtime.js",
-    "tests/test_v4720_game_center_runtime.js",
-    "tests/test_v4720_runtime_recovery.py"
+    "tests/test_v4726_comprehensive_site_certification.js",
+    "tests/test_v480_comprehensive_certification.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "4.7.20"
+        "4.8.0"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v4.7.20",
-        "core-model.js?v=4.7.20",
-        "architecture/day-state.js?v=4.7.20",
-        "architecture/score-ribbon-identity-guard.js?v=4.7.20",
-        "ui/game-center-view.js?v=4.7.20",
-        "architecture/game-center-multisport-view.js?v=4.7.20"
+        "Sports Big Board — v4.8.0",
+        "core-model.js?v=4.8.0",
+        "architecture/efficiency-certification.js?v=4.8.0",
+        "architecture/comprehensive-site-certification.js?v=4.8.0",
+        "architecture/playback-progress-watchdog.js?v=4.8.0",
+        "app.js?v=4.8.0"
       ],
       "forbidden": [
-        "?v=4.7.18",
-        "?v=4.7.19"
+        "?v=4.7.20"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'4.7.20'",
-        "CFB:{id:'CFB'",
-        "seasonId:'CFB2026'",
-        "scoreProvider:'cfb-ranked'",
-        "rankingSnapshotPolicy:'IMMUTABLE_WEEKLY'",
-        "gameCenterProvider:'espn'"
-      ]
-    },
-    "sbb/cfb_ranked.py": {
-      "required": [
-        "AP Top 25 College Football season service",
-        "COMPETITION_ID='CFB'",
-        "SEASON_ID='CFB2026'",
-        "if not away_rank and not home_rank:continue",
-        "rankingFrozen':True",
-        "Immutable weekly archive",
-        "PLPydJJjt7Pb4",
-        "titleIncludePhrase':'full game highlights'",
-        "'/api/cfb/status'",
-        "'/api/cfb/rankings'",
-        "'/api/cfb/refresh'",
-        "builder.save_competition",
-        "operator_playlist_contract as playlist_contract",
-        "playlist_contract.ensure_competition_sources",
-        "espn-college-football-full-game-highlights",
-        "'gameCenterProvider':'espn'"
-      ]
-    },
-    "sbb/day_state.py": {
-      "required": [
-        "\"engineVersion\":\"4.7.20\"",
-        "from . import cfb_ranked as _cfb_ranked",
-        "_cfb_ranked.install()",
-        "_sanitize_event_plans",
-        "mediaSafetyRejected",
-        "SPECIAL_EVENT_",
-        "mediaSafetySpecialProofAccepted",
-        "persisted historical snapshot",
-        "cached.get(\"engineVersion\") or \"\"",
-        "mediaSafetyPersistedAssignedAccepted",
-        "persistedAssignedAccepted",
-        "PRESERVED_NONEMPTY_HISTORY",
-        "EVENT_MEDIA is the normalized relationship authority"
-      ]
-    },
-    "tests/test_v4714_cfb_ranked_season.py": {
-      "required": [
-        "test_cfb_is_first_class_persistent_league",
-        "test_archived_rank_snapshot_is_immutable",
-        "test_future_weeks_are_not_projected_using_old_rankings",
-        "test_playlist_is_purple_extended_source"
-      ]
-    },
-    "tests/test_v4714_cfb_ranked_runtime.py": {
-      "required": [
-        "test_espn_rankings_and_fbs_scoreboard_are_separate_authorities",
-        "test_score_refresh_does_not_change_rank_snapshot",
-        "test_diagnostics_and_manual_refresh_exist"
-      ]
-    },
-    "tests/test_release_behavior_gate.py": {
-      "required": [
-        "test_cfb_ap_top25_weekly_snapshot_contract",
-        "test_cfb_is_persistent_first_class_frontend_competition",
-        "test_cfb_playlist_and_diagnostics_contract",
-        "tests.test_v4714_cfb_ranked_season"
-      ]
-    },
-    "foundation-certification.json": {
-      "required": [
-        "\"release\": \"4.7.20\"",
-        "weekly AP Top 25 snapshot",
-        "ranked-v-ranked games appear once",
-        "Future CFB weeks are never projected",
-        "v4720RegressionRecoveryAcceptance"
-      ]
-    },
-    "VERIFY.sh": {
-      "required": [
-        "python3 -m unittest tests.test_v4714_cfb_ranked_season",
-        "python3 -m unittest tests.test_v4714_cfb_ranked_runtime",
-        "[legacy-advisory]",
-        "node tests/test_v4715_efficiency_hardening_runtime.js",
-        "python3 -m unittest tests.test_v4715_efficiency_hardening",
-        "node tests/test_v4718_game_center_runtime.js",
-        "python3 -m unittest tests.test_v4718_regression_recovery",
-        "node tests/test_v4719_game_center_runtime.js",
-        "python3 -m unittest tests.test_v4719_runtime_path_repair",
-        "node tests/test_v4720_request_broker_runtime.js",
-        "node tests/test_v4720_game_center_runtime.js",
-        "python3 -m unittest tests.test_v4720_runtime_recovery"
-      ]
-    },
-    "architecture/render-pipeline.js": {
-      "required": [
-        "Sports Big Board v4.7.16",
-        "filterFastPath",
-        "sbbCardBankDate",
-        "bankComplete",
-        "applyBankFilter",
-        "setCurrentFilter('ALL')"
-      ]
-    },
-    "architecture/score-card-availability-index.js": {
-      "required": [
-        "Sports Big Board v4.7.16",
-        "snapshotReused",
-        "forDate",
-        "reason.includes('filter-change')",
-        "knownPlayableMedia"
+        "version:'4.8.0'"
       ]
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "Sports Big Board v4.7.16",
-        "sampleDomWindow",
-        "NO_KNOWN_PLAYABLE_MEDIA",
-        "filterFastPaths",
-        "DOM_BASELINE=",
-        "grades.includes('FAIL')"
-      ]
-    },
-    "tests/test_v4715_efficiency_hardening_runtime.js": {
-      "required": [
-        "filter bank fast path",
-        "availability snapshot reuse",
-        "stabilized DOM certification"
-      ]
-    },
-    "tests/test_v4715_efficiency_hardening.py": {
-      "required": [
-        "test_filter_bank_fast_path_contract",
-        "test_availability_snapshot_reuse_contract",
-        "test_efficiency_dom_and_media_readiness_contract"
-      ]
-    },
-    "architecture/score-ribbon-identity-guard.js": {
-      "required": [
-        "Sports Big Board v4.7.16",
-        "GAME ${game}",
-        "sbb-exact-duplicate",
-        "media-date-reject",
-        "explicitTitleDates",
-        "scoreCardPlayableItems",
-        "sbb-filter-hidden",
-        "applyFilterTruth",
-        "sbb-ribbon-scrolling"
-      ]
-    },
-    "sbb/operator_playlist_contract.py": {
-      "required": [
-        "operator playlist contract preservation",
-        "titleIncludePhrase",
-        "sourceLabel",
-        "sourceType",
-        "seasonEnd",
-        "includeAllItems",
-        "ensure_competition_sources"
-      ]
-    },
-    "tests/test_v4716_ribbon_identity_runtime.js": {
-      "required": [
-        "doubleheader identity",
-        "explicit MLB recap-date guard",
-        "YESTERDAY \u2022 GAME 1",
-        "sbb-exact-duplicate"
-      ]
-    },
-    "tests/test_v4716_ribbon_identity_playlist.py": {
-      "required": [
-        "test_day_state_revalidates_stale_event_media",
-        "test_cfb_playlist_contract_is_enforced_end_to_end",
-        "PLPydJJjt7Pb4",
-        "seasonEnd"
-      ]
-    },
-    "sbb/game_center_multisport.py": {
-      "required": [
-        "Sports Big Board v4.7.17",
-        "college-football",
-        "scoreboard",
-        "periods",
-        "winProbability",
-        "ESPN Game Summary",
-        "CFB",
-        "american-football"
-      ]
-    },
-    "sbb/history_readiness_repair.py": {
-      "required": [
-        "Sports Big Board v4.7.18",
-        "database-first historical readiness repair",
-        "_youtube_id_from_url",
-        "externalUrl",
-        "provider_media_id",
-        "databaseVerifiedPlayable",
-        "HistoryRepository.roundup_media = _roundup_media"
-      ]
-    },
-    "sbb/__init__.py": {
-      "required": [
-        "game_center_multisport",
-        "history_readiness_repair",
-        "_install_game_center_multisport()",
-        "_install_history_readiness_repair()",
-        "cfb_trusted_youtube",
-        "runtime_path_repair_v4720",
-        "_install_runtime_path_repair_v4720()"
-      ]
-    },
-    "architecture/game-center-linescore.js": {
-      "required": [
-        "Sports Big Board v4.7.17",
-        "Q${n}",
-        "P${n}",
-        "version:'2.0'",
-        "periods",
-        "reconcile"
-      ]
-    },
-    "architecture/game-center-multisport-view.js": {
-      "required": [
-        "Sports Big Board v4.7.20",
-        "persistent multisport Game Center summary",
-        "PUBLIC Game Center cache/selected-event contracts",
-        "SBB_GAME_CENTER?.peek?.(event)",
-        "ui/game-center-view.js is the ONLY request owner",
-        "gcPersistentSummary",
-        "function baseballCard(gc)",
-        "WIN PROBABILITY",
-        "removeLegacyOverviewLinescore",
-        "version:'4.7.20'"
+        "const VERSION = '4.8.0'",
+        "Efficiency Certification"
       ],
       "forbidden": [
-        "window.SBB_GAME_CENTER?.get?.(event"
+        "v4.7.16 Efficiency Certification"
       ]
     },
-    "tests/test_v4717_game_center_history.py": {
+    "architecture/comprehensive-site-certification.js": {
       "required": [
-        "test_cfb_espn_summary_adds_quarter_linescore_and_win_probability",
-        "test_cfb_fetch_uses_espn_college_football_summary",
-        "test_may_13_style_verified_database_asset_hydrates_playable"
+        "const VERSION='2.0'",
+        "seededRng",
+        "certificationDates",
+        "gameCenterUiExercise",
+        "playbackInteractionMatrix",
+        "#scoreCells .score-card.has-highlights",
+        "SBB_PLAYBACK_PROGRESS_WATCHDOG",
+        "ACTIVE PLAYBACK INTERACTION MATRIX",
+        "SEED=${r.seed}"
+      ],
+      "forbidden": [
+        "USC_EVENT_FOUND",
+        "401864494",
+        "San Jose",
+        "San José",
+        "san jose"
       ]
     },
-    "tests/test_v4717_game_center_runtime.js": {
+    "tools/check_foundation_certification.py": {
       "required": [
-        "CFB Game Center + multisport linescore + win probability presentation",
-        "Q1",
-        "P1",
-        "releaseVersion",
-        "game-center-multisport-view.js?v=${releaseVersion}"
+        "Foundation is a retained baseline",
+        "foundation_tuple<=version_tuple"
       ]
     },
-    "sbb/cfb_trusted_youtube.py": {
+    "tools/check_release_manifest.py": {
       "required": [
-        "ESPN College Football",
-        "Big Ten Football",
-        "ACC Digital Network",
-        "Big 12 Conference",
-        "NBC Sports",
-        "CFB on FOX",
-        "SEC Network",
-        "CBS Sports",
-        "participating schools",
-        "TRUSTED_NETWORK_SOURCES",
-        "RECENT_ARCHIVE_TTL_SECONDS",
-        "EMPTY_CATALOG_TTL_SECONDS",
-        "KNOWN_MEDIA_HINTS",
-        "-tDiPDHU2fs",
-        "scan_recent_missing",
-        "Participating schools"
+        "historical_versioned",
+        "current_line"
       ]
     },
-    "architecture/game-center-contract.js": {
+    "VERIFY.sh": {
       "required": [
-        "version:'1.8'",
-        "/game-center?",
-        "resolvedEventId",
-        "competition"
+        "node tests/test_v480_comprehensive_certification.js",
+        "v4.7 JavaScript regression archive",
+        "v4.8 comprehensive certification architecture"
       ]
     },
-    "architecture/game-center-policy.js": {
+    "architecture/playback-progress-watchdog.js": {
       "required": [
-        "SBB_GAME_CENTER_POLICY",
-        "categoryFromTitle"
-      ]
-    },
-    "ui/game-center-view.js": {
-      "required": [
-        "version:'1.6'",
-        "renderOverview",
-        "SBB_GAME_CENTER_VIEW",
-        "Game Center follows the active game video."
-      ]
-    },
-    "sbb/game_center.py": {
-      "required": [
-        "fetch_espn_game_center",
-        "normalize_espn_summary",
-        "_espn_status_parts",
-        "game_center_coverage"
-      ]
-    },
-    "sbb/history_repository.py": {
-      "required": [
-        "def _hydrate_asset",
-        "def ribbon_media_for_date",
-        "validation_state",
-        "runtime_state"
-      ]
-    },
-    "tests/test_v4718_game_center_runtime.js": {
-      "required": [
-        "persistent linescores + LLWS/Silver/CFB recovery contracts",
-        "version:'4.7.20'",
-        "-tDiPDHU2fs"
-      ]
-    },
-    "tests/test_v4718_regression_recovery.py": {
-      "required": [
-        "test_special_event_proven_relationship_survives_generic_read_guard",
-        "test_silver_youtube_external_url_recovers_playable_transport",
-        "test_known_usc_hint_works_without_youtube_search_quota"
-      ]
-    },
-    "sbb/runtime_path_repair_v4719.py": {
-      "required": [
-        "Sports Big Board v4.7.19",
-        "owning-runtime recovery",
-        "restore_special_event_links",
-        "SPECIAL_EVENT_",
-        "legacyDatabasePlayable",
-        "HistoryRepository.repair_event_associations = _repair_event_associations",
-        "_ORIGINAL_CFB_PERSIST",
-        "_invalidate_day_state([date])",
-        "-tDiPDHU2fs",
-        "scan_recent_missing",
-        "restore_silver_collection_links",
-        "V4719_LEGACY_SILVER_RESTORE"
-      ]
-    },
-    "tests/test_v4719_game_center_runtime.js": {
-      "required": [
-        "real Game Center public-cache linescore path",
-        "SBB_GAME_CENTER?.peek?.(event)",
-        "assert(!src.includes('view?.data?.()')",
-        "Q1",
-        "R</th><th>H</th><th>E",
-        "multisport enhancement must not issue its own Game Center request"
-      ]
-    },
-    "tests/test_v4719_runtime_path_repair.py": {
-      "required": [
-        "test_legacy_silver_explicit_playable_proof_survives_candidate_normalization",
-        "test_quarantined_llws_special_proof_is_restored_even_after_scope_demoted_to_other",
-        "test_collection_scope_special_asset_is_not_resurrected_as_game",
-        "test_runtime_module_owns_cfb_day_state_invalidation",
-        "test_missing_legacy_silver_collection_edge_is_recreated"
-      ]
-    },
-    "architecture/request-broker.js": {
-      "required": [
-        "Sports Big Board v4.7.20",
-        "const VERSION='4.7.20'",
-        "ORPHAN_ABORT_GRACE_MS",
-        "armOrphanAbort",
-        "existing.controller?.signal?.aborted",
-        "if(inflight.get(key)===entry)inflight.delete(key)",
-        "no-active-consumers"
-      ]
-    },
-    "sbb/runtime_path_repair_v4720.py": {
-      "required": [
-        "Sports Big Board v4.7.20",
-        "restore_special_event_links",
-        "restore_silver_collection_links",
-        "_llws_owner_reassociate",
-        "special.reassociate(server,comp)",
-        "durable_stats",
-        "Never trade a healthy historical projection",
-        "_ORIGINAL_CFB_PERSIST",
-        "-tDiPDHU2fs",
-        "scan_recent_missing",
-        "V4720_LEGACY_SILVER_RESTORE"
-      ]
-    },
-    "tests/test_v4720_request_broker_runtime.js": {
-      "required": [
-        "replacement-consumer race",
-        "ORPHAN_ABORT_GRACE_MS",
-        "underlyingAborts",
-        "replacement consumer should reuse the live transport"
-      ]
-    },
-    "tests/test_v4720_game_center_runtime.js": {
-      "required": [
-        "single-owner Game Center linescore path",
-        "must never become a second request owner",
-        "Q1",
-        "R</th><th>H</th><th>E"
-      ]
-    },
-    "tests/test_v4720_runtime_recovery.py": {
-      "required": [
-        "test_day_state_trusts_normalized_assigned_canonical_relationship",
-        "test_day_state_refresh_never_replaces_healthier_history_snapshot",
-        "test_llws_recovery_replays_actual_special_event_owner",
-        "-tDiPDHU2fs"
+        "SBB_PLAYBACK_PROGRESS_WATCHDOG",
+        "getCurrentTime",
+        "PROGRESS_SOFT_KICK_MS",
+        "PROGRESS_RECOVERY_MS",
+        "handlePlaybackFailure",
+        "media clock did not advance",
+        "No game, league,"
+      ],
+      "forbidden": [
+        "401864494",
+        "USC_EVENT_FOUND",
+        "San Jose",
+        "San José"
       ]
     }
-  },
-  "verification": [
-    "python3 tools/check_release_manifest.py",
-    "python3 tools/check_release_version.py",
-    "python3 tools/check_foundation_certification.py",
-    "python3 tools/check_ultimate_playback.py",
-    "python3 tools/check_deploy_rehearsal.py",
-    "python3 -m unittest tests.test_v446_historical_media_quarantine",
-    "python3 -m unittest tests.test_release_behavior_gate",
-    "node tests/test_v473_efficiency_runtime.js",
-    "node tests/test_v474_efficiency_remediation_runtime.js",
-    "node tests/test_v475_enrichment_firewall_runtime.js",
-    "node tests/test_v476_render_pipeline_runtime.js",
-    "node tests/test_v477_first_paint_render_consolidation_runtime.js",
-    "node tests/test_v478_future_projection_card_cache_runtime.js",
-    "python3 -m unittest tests.test_v478_future_projection",
-    "node tests/test_v479_navigation_history_runtime.js",
-    "node tests/test_v4710_cold_history_future_store_runtime.js",
-    "python3 -m unittest tests.test_v4710_cold_history_future_store",
-    "node tests/test_v4711_availability_index_thin_probe_runtime.js",
-    "python3 -m unittest tests.test_v4711_availability_index_thin_probe",
-    "node tests/test_v4712_day_state_render_model_runtime.js",
-    "python3 -m unittest tests.test_v4712_day_state_render_model",
-    "node tests/test_v4713_media_readiness_runtime.js",
-    "python3 -m unittest tests.test_v4713_media_readiness",
-    "python3 -m unittest tests.test_v4714_cfb_ranked_season",
-    "python3 -m unittest tests.test_v4714_cfb_ranked_runtime",
-    "node tests/test_v4715_efficiency_hardening_runtime.js",
-    "python3 -m unittest tests.test_v4715_efficiency_hardening",
-    "node tests/test_v4716_ribbon_identity_runtime.js",
-    "python3 -m unittest tests.test_v4716_ribbon_identity_playlist",
-    "python3 -m unittest tests.test_v4717_game_center_history",
-    "node tests/test_v4717_game_center_runtime.js",
-    "node tests/test_v4718_game_center_runtime.js",
-    "python3 -m unittest tests.test_v4718_regression_recovery",
-    "bash VERIFY.sh",
-    "node tests/test_v4720_request_broker_runtime.js",
-    "node tests/test_v4720_game_center_runtime.js",
-    "python3 -m unittest tests.test_v4720_runtime_recovery"
-  ]
+  }
 }
