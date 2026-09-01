@@ -1,0 +1,19 @@
+Sports Big Board v5.1.14 — Backend Inspector Authority + NCAAF Game Center Route Fix
+
+Upload these files to the repository root, preserving paths and replacing existing files.
+
+What changed
+- NCAAF Game Center now bypasses Competition Builder's generic schedule/results shell and enters the shared football Game Center pipeline.
+- NCAAF still uses Competition Builder for its AP-ranked schedule/catalog; only the Game Center route bypasses the generic custom-competition response.
+- Backend Inspector date ranges auto-load instead of waiting for every date accordion to be opened.
+- Backend Inspector now reads /api/history/discovery for the same media database audit used by the main board's historical media rail.
+- New read-only /api/backend-inspector/date endpoint exposes authoritative per-event history_event_media relationships plus already-cached Game Center readiness without launching provider fetches.
+- Date summaries show active games, completed/audited games, DB playable games, ribbon-ready games, Green, Purple/Extended, Gold, Blue, and cached rich/partial Game Centers.
+- Per-game rows compare authoritative DB media against the compact ribbon plan and flag RIBBON DRIFT when the frontend projection is missing media the DB still owns.
+- Retired CFB is excluded from active counts and displayed only as contamination diagnostics.
+- Namespace reset now drops stale Day State/cache JSON snapshots that still contain retired CFB so they rebuild cleanly.
+
+Deployment policy
+- VERIFY.sh remains non-blocking.
+- No release manifest, checksum, file-presence, token-content, or verifier-order gate is required.
+- Functional deployment/runtime behavior is the acceptance path.

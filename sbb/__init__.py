@@ -13,6 +13,7 @@ from .game_center_multisport import install as _install_game_center_multisport
 from .history_readiness_repair import install as _install_history_readiness_repair
 from .runtime_path_repair_v5110 import install as _install_runtime_path_repair_v5110
 from .database_authority import install as _install_database_authority
+from .backend_inspector_api import install as _install_backend_inspector_api
 
 _install_nfl_weekly_playlists()
 _install_competition_builder()
@@ -35,4 +36,5 @@ from .ncaaf_ranked import install as _install_ncaaf_ranked
 _install_ncaaf_namespace_reset()
 _install_runtime_path_repair_v5110()
 _install_database_authority()
+_install_backend_inspector_api()
 _install_ncaaf_ranked()

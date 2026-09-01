@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 import json, os, sqlite3, threading, time
 
-VERSION="5.1.13-ncaaf-namespace-reset-2"
+VERSION="5.1.14-ncaaf-namespace-reset-3"
 STATE_DIR=Path(os.environ.get("SBB_STATE_DIR") or (Path.home()/".sports-big-board")).expanduser()
 MARKER=STATE_DIR/"ncaaf-v5111-cfb-retired.json"
 _LOCK=threading.Lock();_DONE=False
@@ -40,6 +40,16 @@ def _purge_sqlite(path):
                 if col in cols:
                     try: conn.execute(f"DELETE FROM {_q(table)} WHERE UPPER(COALESCE({_q(col)},'')) LIKE 'CFB:%'")
                     except Exception: pass
+            # Day State stores a complete date projection as JSON. Older snapshots
+            # can therefore contain a retired CFB row even after every normalized
+            # CFB table row was deleted. Drop only cache/snapshot JSON rows that
+            # explicitly contain a CFB namespace marker; the engine will rebuild
+            # them from the now-clean normalized repositories.
+            if any(token in table.lower() for token in ("day_state","snapshot","cache")):
+                for col in ("payload_json","snapshot_json","data_json","payload"):
+                    if col in cols:
+                        try: conn.execute(f"DELETE FROM {_q(table)} WHERE UPPER(COALESCE({_q(col)},'')) LIKE '%\"CFB\"%'")
+                        except Exception: pass
             changed=conn.total_changes-before
             if changed:stats["tables"][table]=changed;stats["rows"]+=changed
         conn.commit()

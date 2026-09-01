@@ -1,4 +1,4 @@
-"""Sports Big Board v5.1.13 — populated NCAAF Game Center.
+"""Sports Big Board v5.1.14 — populated NCAAF Game Center.
 
 NCAAF keeps ESPN event identity because the ranked schedule/ribbon is built from
 ESPN/AP data.  Detailed Game Center data uses the same American-football model as
@@ -23,11 +23,11 @@ import sys
 import threading
 import time
 from datetime import datetime, timedelta, timezone
-from urllib.parse import urlencode
+from urllib.parse import urlencode, parse_qs, urlparse, unquote
 
 from . import game_center as _gc
 
-VERSION = "5.1.13-ncaaf-game-center-2"
+VERSION = "5.1.14-ncaaf-game-center-3"
 _TARGET = "NCAAF"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
@@ -414,9 +414,94 @@ def _highlightly_enrichment(server, espn_data, event_id, hints):
         return out
 
 
+
+def _bool_qs(qs, name, default=False):
+    raw = _clean((qs.get(name) or ["1" if default else "0"])[-1]).lower()
+    return raw in {"1", "true", "yes", "on"}
+
+
+def _serve_shared_ncaaf_game_center(server, handler, parsed):
+    """Bypass Competition Builder's generic Game Center for NCAAF.
+
+    NCAAF is intentionally persisted by Competition Builder for its AP-ranked
+    schedule, but its detailed Game Center is *not* a generic custom-competition
+    shell.  This handler sits above Competition Builder and invokes the shared
+    normalized Game Center pipeline directly.
+    """
+    match = re.fullmatch(r"/api/events/NCAAF/([^/]+)/game-center", parsed.path, re.I)
+    if not match:
+        return False
+    event_id = unquote(match.group(1))
+    qs = parse_qs(parsed.query)
+    force = _bool_qs(qs, "refresh", False) or _bool_qs(qs, "force", False)
+    async_mode = not (_clean((qs.get("async") or ["1"])[-1]).lower() in {"0", "false", "no", "off"})
+    hints = {
+        "date": _clean((qs.get("date") or [""])[-1])[:10],
+        "away": _clean((qs.get("away") or [""])[-1]),
+        "home": _clean((qs.get("home") or [""])[-1]),
+        "start": _clean((qs.get("start") or [""])[-1]),
+        "gameNumber": _clean((qs.get("gameNumber") or [""])[-1]),
+        # Preserve the caller's score-provider hint for diagnostics only.  It no
+        # longer determines which Game Center implementation handles NCAAF.
+        "provider": _clean((qs.get("provider") or [""])[-1]),
+    }
+    try:
+        if async_mode:
+            data, cache_state, pending, resolved_event_id = server._game_center_open(
+                _TARGET, event_id, force=force, hints=hints
+            )
+            if pending:
+                return server.send_json(
+                    handler,
+                    {
+                        "ok": True,
+                        "pending": True,
+                        "cache": "PENDING",
+                        "competition": _TARGET,
+                        "eventId": event_id,
+                        "resolvedEventId": str(resolved_event_id or ""),
+                        "retryAfterMs": 500,
+                        "contract": "1.0",
+                        "route": "NCAAF_SHARED_FOOTBALL",
+                    },
+                    202,
+                    {"X-SBB-GameCenter-Cache": "PENDING", "Retry-After": "1"},
+                )
+        else:
+            resolved_event_id = server._resolve_game_center_event_id(
+                _TARGET, event_id, hints, allow_fetch=True
+            )
+            if not resolved_event_id:
+                raise ValueError("Unable to resolve NCAAF Game Center event")
+            data, cache_state = server._game_center_get(
+                _TARGET, resolved_event_id, force=force
+            )
+            pending = False
+        return server.send_json(
+            handler,
+            {
+                "ok": True,
+                "data": data,
+                "cache": cache_state,
+                "pending": False,
+                "resolvedEventId": str(resolved_event_id or event_id),
+                "contract": "1.0",
+                "route": "NCAAF_SHARED_FOOTBALL",
+            },
+            200,
+            {"X-SBB-GameCenter-Cache": str(cache_state or "")},
+        )
+    except NotImplementedError as exc:
+        return server.send_json(handler, {"ok": False, "error": "GAME_CENTER_PROVIDER_NOT_IMPLEMENTED", "message": str(exc), "competition": _TARGET}, 501)
+    except ValueError as exc:
+        return server.send_json(handler, {"ok": False, "error": "BAD_GAME_CENTER_EVENT", "message": str(exc)}, 400)
+    except Exception as exc:
+        return server.send_json(handler, {"ok": False, "error": "GAME_CENTER_ERROR", "message": f"{type(exc).__name__}: {exc}"}, 502)
+
+
 def _patch_server(server):
     """Install the NCAAF completeness fallback after server.py owns its globals."""
-    if getattr(server, "__sbbNcaafGameCenterV5112", False):
+    if getattr(server, "__sbbNcaafGameCenterV5114", False):
         return True
     required = (
         "GAME_CENTER_SUPPORTED",
@@ -424,8 +509,18 @@ def _patch_server(server):
         "_game_center_needs_enrichment",
         "_highlightly_gc_fetch_json",
         "_same_team_pair",
+        "_game_center_open",
+        "_resolve_game_center_event_id",
+        "_game_center_get",
+        "send_json",
+        "Handler",
     )
     if not all(hasattr(server, name) for name in required):
+        return False
+    # Competition Builder owns the NCAAF schedule, so wait until its generic
+    # handler is installed and then wrap *above* it.  Otherwise a race can put
+    # the generic custom Game Center back on top after this patch.
+    if not getattr(server.Handler, "__sbbCompetitionBuilderInstalled", False):
         return False
 
     supported = getattr(server, "GAME_CENTER_SUPPORTED", None)
@@ -457,7 +552,20 @@ def _patch_server(server):
         return _rewrite_public_identity(enriched, event_id, _clean((enriched or {}).get("highlightlyMatchId")))
 
     server._game_center_refresh = game_center_refresh
-    server.__sbbNcaafGameCenterV5112 = True
+
+    Handler = server.Handler
+    if not getattr(Handler, "__sbbNcaafSharedGameCenterRouteV5114", False):
+        old_get = Handler.do_GET
+        def do_GET(self):
+            parsed = urlparse(self.path)
+            handled = _serve_shared_ncaaf_game_center(server, self, parsed)
+            if handled is not False:
+                return handled
+            return old_get(self)
+        Handler.do_GET = do_GET
+        Handler.__sbbNcaafSharedGameCenterRouteV5114 = True
+
+    server.__sbbNcaafGameCenterV5114 = True
     try:
         wiring = getattr(server, "SBB_BACKEND_WIRING", None)
         if isinstance(wiring, dict):
@@ -469,7 +577,7 @@ def _patch_server(server):
         server.MILESTONE_CONSOLE.record(
             "game-center",
             "PASS",
-            "v5.1.13 NCAAF populated football Game Center installed",
+            "v5.1.14 NCAAF shared football Game Center route installed",
             {"primary": "ESPN college-football", "fallback": "Highlightly NCAA FBS", "namespace": _TARGET},
         )
     except Exception:
@@ -493,7 +601,7 @@ def install():
         _gc.fetch_espn_game_center = fetch_espn_game_center
         _gc.game_center_coverage = game_center_coverage
         _INSTALLED = True
-    threading.Thread(target=_worker, daemon=True, name="sbb-ncaaf-game-center-v5112").start()
+    threading.Thread(target=_worker, daemon=True, name="sbb-ncaaf-game-center-v5114").start()
     return True
 
 
