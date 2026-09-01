@@ -17,7 +17,7 @@ import threading
 import time
 from urllib.parse import parse_qs, urlparse
 
-VERSION = "5.1.16-backend-inspector-api-3"
+VERSION = "5.1.17-backend-inspector-api-4"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -267,6 +267,8 @@ def _date_payload(server, date):
         "playableGames": 0,
         "mediaAssets": 0,
         "playableAssets": 0,
+        "lockedGames": 0,
+        "lockedAssets": 0,
         "tiers": {"green": 0, "extended": 0, "purple": 0, "gold": 0, "blue": 0},
         "gcCached": 0,
         "gcRich": 0,
@@ -289,6 +291,7 @@ def _date_payload(server, date):
             media = _media_summary(server, date, league, event_id, score_row=row, catalog_rows=catalog_by_league.get(league) or [])
             gc = _game_center_summary(server, league, event_id)
             key = f"{league}:{event_id}"
+            locked_assets=sum(1 for x in (media.get("media") or []) if isinstance(x,dict) and x.get("mediaAuthorityLocked"))
             games[key] = {
                 "league": league,
                 "eventId": event_id,
@@ -296,6 +299,7 @@ def _date_payload(server, date):
                 "playable": media.get("playable") or [],
                 "mediaCount": media.get("mediaCount") or 0,
                 "playableCount": media.get("playableCount") or 0,
+                "lockedAssets": locked_assets,
                 "tiers": media.get("tiers") or {},
                 "resolvedMediaEventId": media.get("resolvedMediaEventId") or event_id,
                 "mediaIdentityResolution": media.get("identityResolution") or "EXACT",
@@ -308,6 +312,9 @@ def _date_payload(server, date):
                 summary["playableGames"] += 1
             summary["mediaAssets"] += int(media.get("mediaCount") or 0)
             summary["playableAssets"] += int(media.get("playableCount") or 0)
+            summary["lockedAssets"] += int(locked_assets or 0)
+            if locked_assets:
+                summary["lockedGames"] += 1
             for tier in ("green", "extended", "gold", "blue"):
                 summary["tiers"][tier] += int((media.get("tiers") or {}).get(tier) or 0)
             summary["tiers"]["purple"] = summary["tiers"]["extended"]

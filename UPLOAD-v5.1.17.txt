@@ -1,0 +1,19 @@
+Sports Big Board v5.1.17 — Durable Media + Tennis Game Center + Active Special Events
+
+Upload the CONTENTS of this folder to the repository root, preserving paths.
+Replace existing files when prompted.
+
+Focused changes:
+- fixes the live custom-tennis Game Center dispatch so a Competition Builder tennis event cannot be rejected by the generic server provider gate before the tennis adapter runs
+- US Open / future tennis events use the shared ESPN ATP/WTA tennis adapter with set scores, match stats, player facts, round/court/tournament context and country artwork when available
+- tennis participants use readable surnames in compact/ribbon identity instead of generated three-letter initials
+- tennis Competition Builder artwork defaults to country flags; country/group/region/alias metadata can supply the flag country
+- active Special Events are promoted onto the normal sports row while active and for 4 days after endDate; they remain permanently available in the Special Events dropdown
+- adds durable verified event-media locks: once exact GAME media is assigned + verified + playable, later rediscovery/audit/classifier changes cannot silently downgrade the game back to FIND MEDIA
+- runtime FAILED remains the only automatic playback veto; the durable relationship stays stored for later revalidation
+- Backend Inspector exposes LOCKED media badges so durable authority is visible
+- carries forward v5.1.16 recent MLB recovery, LLWS conflict quarantine, retired CFB suppression and compact-ribbon authority recovery
+- NCAAF Game Center remains untouched
+- no manifest/checksum/token/inventory deployment gates were added
+
+VERIFY.sh remains intentionally non-blocking.

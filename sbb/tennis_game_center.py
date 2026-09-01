@@ -1,4 +1,4 @@
-"""Sports Big Board v5.1.16 — sport-aware tennis Game Center for custom events.
+"""Sports Big Board v5.1.17 — sport-aware tennis Game Center for custom events.
 
 Competition Builder remains the schedule/media authority for user-created tennis
 competitions.  This adapter only replaces the generic schedule/results Game Center
@@ -21,7 +21,7 @@ from urllib.request import Request, urlopen
 
 from . import competition_builder as base
 
-VERSION = "5.1.16-tennis-game-center-1"
+VERSION = "5.1.17-tennis-game-center-2"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 _ORIGINAL_GAME_CENTER = getattr(base, "generic_game_center", None)
@@ -73,7 +73,7 @@ def _target_names(shell):
 
 
 def _fetch_json(url,timeout=8):
-    req=Request(url,headers={"Accept":"application/json","User-Agent":"SportsBigBoard/5.1.16 tennis-game-center"})
+    req=Request(url,headers={"Accept":"application/json","User-Agent":"SportsBigBoard/5.1.17 tennis-game-center"})
     with urlopen(req,timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8"))
 
@@ -435,6 +435,284 @@ def install():
         base.generic_game_center=generic_game_center
         _INSTALLED=True
         return True
+
+
+__all__=["VERSION","install","peek_tennis_game_center","generic_game_center","_tennis_game_center","_normalize","_resolve_match"]
+
+# ---------------------------------------------------------------------------
+# v5.1.17 live-route + tennis presentation patch
+# ---------------------------------------------------------------------------
+import sys as _sys
+from urllib.parse import parse_qs as _parse_qs, urlparse as _urlparse, unquote as _unquote
+
+VERSION = "5.1.17-tennis-game-center-2"
+_PRESENTATION_INSTALLED = False
+_SERVER_ROUTE_INSTALLED = False
+_ROUTE_LOCK = threading.RLock()
+_ROUTE_RESULTS = {}
+_ROUTE_JOBS = {}
+_ROUTE_FINAL_TTL = 6 * 60 * 60.0
+_ROUTE_LIVE_TTL = 30.0
+_ROUTE_ERROR_TTL = 25.0
+
+_ORIGINAL_EFFECTIVE_LOGO_STRATEGY = getattr(base, "_effective_logo_strategy", None)
+_ORIGINAL_DECORATE_TEAM_ARTWORK = getattr(base, "_decorate_team_artwork", None)
+_ORIGINAL_NORMALIZE_EVENT = getattr(base, "normalize_event", None)
+
+# Common IOC/ATP/WTA three-letter country codes. Competition Builder schedules
+# often carry these rather than ISO-2 values; flagcdn uses ISO-2.
+_TENNIS_COUNTRY_3_TO_2 = {
+    "ARG":"ar","AUS":"au","AUT":"at","BEL":"be","BIH":"ba","BOL":"bo","BRA":"br","BUL":"bg",
+    "CAN":"ca","CHI":"cl","CHN":"cn","COL":"co","CRO":"hr","CYP":"cy","CZE":"cz","DEN":"dk",
+    "ECU":"ec","EGY":"eg","ESP":"es","EST":"ee","FIN":"fi","FRA":"fr","GBR":"gb","GEO":"ge",
+    "GER":"de","GRE":"gr","HUN":"hu","INA":"id","IND":"in","IRL":"ie","ISR":"il","ITA":"it",
+    "JPN":"jp","KAZ":"kz","KOR":"kr","LAT":"lv","LTU":"lt","LUX":"lu","MAR":"ma","MDA":"md",
+    "MEX":"mx","MNE":"me","NED":"nl","NOR":"no","NZL":"nz","PAR":"py","PER":"pe","POL":"pl",
+    "POR":"pt","ROU":"ro","RSA":"za","SRB":"rs","SLO":"si","SVK":"sk","SUI":"ch","SWE":"se",
+    "TPE":"tw","TUN":"tn","TUR":"tr","UAE":"ae","UKR":"ua","URU":"uy","USA":"us","UZB":"uz",
+    "VEN":"ve","VIE":"vn"
+}
+
+
+def _tennis_last_name(value):
+    text=_clean(value)
+    text=re.sub(r"^#?\d+\s+", "", text).strip()
+    if not text:return ""
+    # Doubles/team labels keep one compact surname per player.
+    if re.search(r"\s[/&+]\s|/|&",text):
+        parts=re.split(r"\s*(?:/|&|\+)\s*",text)
+        names=[_tennis_last_name(x) for x in parts if _clean(x)]
+        return "/".join(x for x in names if x)[:22]
+    if "," in text:
+        return text.split(",",1)[0].strip()[:18]
+    parts=text.split()
+    if len(parts)==1:return parts[0][:18]
+    particles={"de","del","della","di","da","dos","van","von","der","le","la"}
+    if len(parts)>=2 and parts[-2].lower() in particles:
+        return (parts[-2]+" "+parts[-1])[:18]
+    return parts[-1][:18]
+
+
+def _country_hint(team):
+    if not isinstance(team,dict):return ""
+    for key in ("countryCode","country","nation","nationality","group","region"):
+        value=_clean(team.get(key))
+        if value:return value
+    aliases=team.get("aliases") or []
+    if isinstance(aliases,str):aliases=[aliases]
+    country_lookup=getattr(base,"_country_code_for_name",None)
+    if callable(country_lookup):
+        for value in aliases:
+            if _clean(country_lookup(value)):return _clean(value)
+    return ""
+
+
+def _tennis_effective_logo_strategy(comp):
+    if _clean((comp or {}).get("sportId")).lower()=="tennis":
+        raw=_clean((comp or {}).get("logoStrategy") or "AUTO").upper()
+        if raw in {"","AUTO","TEAM_LOGOS"}:return "COUNTRY_FLAGS"
+    if callable(_ORIGINAL_EFFECTIVE_LOGO_STRATEGY):return _ORIGINAL_EFFECTIVE_LOGO_STRATEGY(comp)
+    return "AUTO"
+
+
+def _tennis_decorate_team_artwork(comp,team):
+    obj=dict(team or {})
+    if _clean((comp or {}).get("sportId")).lower()=="tennis":
+        full=_clean(obj.get("displayName") or obj.get("name"))
+        short=_tennis_last_name(full)
+        if full:
+            obj["name"]=_clean(obj.get("name") or full)
+            obj["displayName"]=full
+        if short:
+            obj["shortName"]=short
+            # The ribbon gives abbreviation visual priority. A readable surname is
+            # more useful for tennis than three generated initials (STE/YAS).
+            obj["abbreviation"]=short
+            aliases=obj.get("aliases") or []
+            if isinstance(aliases,str):aliases=[aliases]
+            obj["aliases"]=list(dict.fromkeys([*aliases,full,short]))
+        hint=_country_hint(obj)
+        lookup=getattr(base,"_country_code_for_name",None)
+        code=""
+        if callable(lookup):
+            code=_clean(lookup(hint))
+        if not code:
+            raw=_clean(obj.get("countryCode"))
+            code=_TENNIS_COUNTRY_3_TO_2.get(raw.upper(),"")
+            if not code and re.fullmatch(r"[a-z]{2}(?:-[a-z]{3})?",raw.lower()):code=raw.lower()
+        if code:
+            obj["countryCode"]=code.upper()
+            obj.setdefault("country",hint)
+    if callable(_ORIGINAL_DECORATE_TEAM_ARTWORK):
+        return _ORIGINAL_DECORATE_TEAM_ARTWORK(comp,obj)
+    return obj
+
+
+def _tennis_normalize_event(comp,raw,idx=0):
+    if not callable(_ORIGINAL_NORMALIZE_EVENT):return raw
+    event=_ORIGINAL_NORMALIZE_EVENT(comp,raw,idx)
+    if _clean((comp or {}).get("sportId")).lower()!="tennis":return event
+    away=_tennis_decorate_team_artwork(comp,event.get("awayTeam") or event.get("away") or {})
+    home=_tennis_decorate_team_artwork(comp,event.get("homeTeam") or event.get("home") or {})
+    event.update({"away":away,"home":home,"awayTeam":away,"homeTeam":home,"participants":[away,home],"logoStrategy":"COUNTRY_FLAGS","gameCenterProviderHint":"tennis"})
+    return event
+
+
+def _install_tennis_presentation():
+    global _PRESENTATION_INSTALLED
+    if _PRESENTATION_INSTALLED:return False
+    if callable(_ORIGINAL_EFFECTIVE_LOGO_STRATEGY):base._effective_logo_strategy=_tennis_effective_logo_strategy
+    if callable(_ORIGINAL_DECORATE_TEAM_ARTWORK):base._decorate_team_artwork=_tennis_decorate_team_artwork
+    if callable(_ORIGINAL_NORMALIZE_EVENT):base.normalize_event=_tennis_normalize_event
+    _PRESENTATION_INSTALLED=True
+    return True
+
+
+def _find_comp(cid):
+    finder=getattr(base,"_find",None)
+    if callable(finder):
+        try:return finder(cid)
+        except Exception:return None
+    service=getattr(base,"SERVICE",None)
+    if service is not None and hasattr(service,"get"):
+        try:return service.get(cid)
+        except Exception:return None
+    return None
+
+
+def _find_event(comp,eid):
+    for event in (comp or {}).get("events") or []:
+        if not isinstance(event,dict):continue
+        ids={_clean(event.get(k)) for k in ("eventId","matchId","gameId","id","providerEventId","espnEventId") if event.get(k) not in (None,"")}
+        if _clean(eid) in ids:return event
+    return None
+
+
+def _route_key(cid,eid):return (_clean(cid).upper(),_clean(eid))
+
+
+def _result_get(key):
+    now=time.time()
+    with _ROUTE_LOCK:
+        row=_ROUTE_RESULTS.get(key)
+        if row and now<float(row.get("expiresAt") or 0):return copy.deepcopy(row)
+        if row:_ROUTE_RESULTS.pop(key,None)
+    return None
+
+
+def _result_put(key,data=None,error=""):
+    data=copy.deepcopy(data) if isinstance(data,dict) else None
+    status=_clean((((data or {}).get("scoreboard") or {}).get("status") or ((data or {}).get("event") or {}).get("status"))).lower()
+    final=any(x in status for x in ("final","complete","finished","post")) and not bool((data or {}).get("live"))
+    ttl=_ROUTE_ERROR_TTL if error else (_ROUTE_FINAL_TTL if final else _ROUTE_LIVE_TTL)
+    row={"data":data,"error":_clean(error),"at":time.time(),"expiresAt":time.time()+ttl}
+    with _ROUTE_LOCK:_ROUTE_RESULTS[key]=row
+    return row
+
+
+def _start_route_job(comp,event,request_eid=""):
+    cid=_clean((comp or {}).get("id")).upper();eid=_clean(request_eid or (event or {}).get("eventId") or (event or {}).get("id"));key=_route_key(cid,eid)
+    with _ROUTE_LOCK:
+        job=_ROUTE_JOBS.get(key)
+        if job and job.get("pending"):return False
+        _ROUTE_JOBS[key]={"pending":True,"startedAt":time.time(),"error":""}
+    def run():
+        try:
+            event_view=event
+            decorate=getattr(base,"_decorate_event_artwork",None)
+            if callable(decorate):event_view=decorate(comp,event)
+            data=_tennis_game_center(comp,event_view)
+            if isinstance(data,dict):
+                data.setdefault("gameCenterArchitecture","TENNIS_SHARED_CUSTOM_EVENT")
+                data.setdefault("competitionId",cid)
+            _result_put(key,data=data)
+            error=""
+        except Exception as exc:
+            error=f"{type(exc).__name__}: {exc}"
+            _result_put(key,error=error)
+        with _ROUTE_LOCK:_ROUTE_JOBS[key]={"pending":False,"completedAt":time.time(),"error":error}
+    threading.Thread(target=run,daemon=True,name=f"sbb-tennis-gc-{cid[-8:]}-{eid[-8:]}").start()
+    return True
+
+
+def _serve_tennis_game_center(server,handler,parsed):
+    match=re.fullmatch(r"/api/events/([^/]+)/([^/]+)/game-center",parsed.path,re.I)
+    if not match:return False
+    cid=_unquote(match.group(1)).upper();eid=_unquote(match.group(2));comp=_find_comp(cid)
+    if not comp or _clean(comp.get("sportId")).lower()!="tennis":return False
+    event=_find_event(comp,eid)
+    if not event:
+        return server.send_json(handler,{"ok":False,"error":"CUSTOM_TENNIS_EVENT_NOT_FOUND","competition":cid,"eventId":eid},404)
+    qs=_parse_qs(parsed.query)
+    force=_clean((qs.get("refresh") or qs.get("force") or [""])[-1]).lower() in {"1","true","yes","on"}
+    async_mode=_clean((qs.get("async") or ["1"])[-1]).lower() not in {"0","false","no","off"}
+    key=_route_key(cid,eid)
+    if force:
+        with _ROUTE_LOCK:_ROUTE_RESULTS.pop(key,None)
+    hit=_result_get(key)
+    if hit and not hit.get("error"):
+        return server.send_json(handler,{"ok":True,"data":hit.get("data"),"cache":"TENNIS_DIRECT_HIT","pending":False,"resolvedEventId":eid,"route":"CUSTOM_TENNIS_DIRECT"},200,{"X-SBB-GameCenter-Cache":"TENNIS_DIRECT_HIT"})
+    if hit and hit.get("error") and not force:
+        return server.send_json(handler,{"ok":False,"error":"TENNIS_GAME_CENTER_PROVIDER_ERROR","message":hit.get("error"),"competition":cid,"eventId":eid},502)
+    if not async_mode:
+        try:
+            event_view=event
+            decorate=getattr(base,"_decorate_event_artwork",None)
+            if callable(decorate):event_view=decorate(comp,event)
+            data=_tennis_game_center(comp,event_view)
+            _result_put(key,data=data)
+            return server.send_json(handler,{"ok":True,"data":data,"cache":"TENNIS_DIRECT_REFRESH","pending":False,"resolvedEventId":eid,"route":"CUSTOM_TENNIS_DIRECT"},200)
+        except Exception as exc:
+            return server.send_json(handler,{"ok":False,"error":"TENNIS_GAME_CENTER_ERROR","message":f"{type(exc).__name__}: {exc}"},502)
+    with _ROUTE_LOCK:job=dict(_ROUTE_JOBS.get(key) or {})
+    if force or not job or not job.get("pending"):
+        _start_route_job(comp,event,eid)
+    return server.send_json(handler,{"ok":True,"pending":True,"cache":"PENDING","competition":cid,"eventId":eid,"resolvedEventId":eid,"retryAfterMs":450,"route":"CUSTOM_TENNIS_DIRECT"},202,{"X-SBB-GameCenter-Cache":"PENDING","Retry-After":"1"})
+
+
+def _patch_server_v5117(server):
+    global _SERVER_ROUTE_INSTALLED
+    if getattr(server,"__sbbTennisGameCenterV5117",False):return True
+    if not hasattr(server,"Handler") or not hasattr(server,"send_json"):return False
+    if not getattr(server.Handler,"__sbbCompetitionBuilderInstalled",False):return False
+    Handler=server.Handler
+    old_get=Handler.do_GET
+    def do_GET(self):
+        parsed=_urlparse(self.path)
+        handled=_serve_tennis_game_center(server,self,parsed)
+        if handled is not False:return handled
+        return old_get(self)
+    Handler.do_GET=do_GET
+    Handler.__sbbTennisGameCenterRouteV5117=True
+    server.__sbbTennisGameCenterV5117=True
+    _SERVER_ROUTE_INSTALLED=True
+    try:
+        server.SBB_BACKEND_WIRING.setdefault("gameCenter",{})["tennis"]="custom competition sportId=tennis -> direct async ESPN ATP/WTA tennis adapter"
+        server.MILESTONE_CONSOLE.record("game-center","PASS","v5.1.17 custom tennis Game Center direct route installed",{})
+    except Exception:pass
+    return True
+
+
+def _route_worker_v5117():
+    for _ in range(600):
+        server=_sys.modules.get("__main__")
+        if server is not None and _patch_server_v5117(server):return
+        time.sleep(.2)
+
+
+# Redefine install so v5.1.17 owns both the Competition Builder sport adapter and
+# the live server route. This fixes the v5.1.16 issue where generic server dispatch
+# could answer 501 before Competition Builder's wrapped generic_game_center ran.
+def install():
+    global _INSTALLED
+    with _INSTALL_LOCK:
+        if _INSTALLED:return False
+        if not callable(_ORIGINAL_GAME_CENTER):return False
+        base.generic_game_center=generic_game_center
+        _install_tennis_presentation()
+        _INSTALLED=True
+    threading.Thread(target=_route_worker_v5117,daemon=True,name="sbb-tennis-game-center-v5117").start()
+    return True
 
 
 __all__=["VERSION","install","peek_tennis_game_center","generic_game_center","_tennis_game_center","_normalize","_resolve_match"]

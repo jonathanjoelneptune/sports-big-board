@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Sports Big Board — Backend Inspector</title>
-  <script src="config.js?v=5.1.16"></script>
-  <script src="architecture/curated-media-overrides.js?v=5.1.16"></script>
+  <script src="config.js?v=5.1.17"></script>
+  <script src="architecture/curated-media-overrides.js?v=5.1.17"></script>
   <style>
     :root{
       color-scheme:dark;
@@ -48,7 +48,7 @@
 <body>
   <div class="top">
     <div class="top-inner">
-      <div class="brand"><span class="mark">⬢</span><div><strong>SPORTS BIG BOARD</strong><span>BACKEND INSPECTOR • v5.1.16</span></div></div>
+      <div class="brand"><span class="mark">⬢</span><div><strong>SPORTS BIG BOARD</strong><span>BACKEND INSPECTOR • v5.1.17</span></div></div>
       <div class="top-actions">
         <a class="link-btn" href="index.html">OPEN BIG BOARD</a>
         <button class="btn" id="refreshLoaded">REFRESH LOADED</button>
@@ -280,7 +280,7 @@
     </div><div class="kv" style="margin-top:8px"><div class="k">DB tiers</div><code>green ${Number(tiers.green||0)} • purple/extended ${Number(tiers.extended||0)} • gold ${Number(tiers.gold||0)} • blue ${Number(tiers.blue||0)}</code><div class="k">Compact ribbon ready</div><code>${ribbonReady}</code><div class="k">Catalog complete</div><code>${Number(inv?.catalogCompleteGames||0)} / ${Number(inv?.completedGames||0)}</code><div class="k">Quality complete</div><code>${Number(inv?.qualityCompleteGames||0)} / ${Number(inv?.completedGames||0)}</code><div class="k">Upgrade eligible</div><code>${Number(inv?.upgradeEligibleGames||0)}${inv?.upgradeDue?' • UPGRADE DUE':''}</code></div></div>`;
   }
 
-  function authorityMediaFlags(authority,compact,row){const a=authority?{media:authority.media||[],playable:authority.playable||[]}:null;const plan=a||compact;const playable=playableItems(plan),all=planItems(plan),curated=curatedItems(row);let html=playable.length?badge(`${playable.length} DB PLAYABLE`,'good'):(all.length?badge(`${all.length} DB MEDIA / 0 PLAY`,'warn'):badge('NO DB MEDIA','bad'));if(curated.length)html+=badge(`${curated.length} CURATED FRONTEND`,'info');if(authority&&playableItems(compact).length!==playable.length)html+=badge('RIBBON DRIFT','warn');return html}
+  function authorityMediaFlags(authority,compact,row){const a=authority?{media:authority.media||[],playable:authority.playable||[]}:null;const plan=a||compact;const playable=playableItems(plan),all=planItems(plan),curated=curatedItems(row),locked=all.filter(x=>x?.mediaAuthorityLocked).length;let html=playable.length?badge(`${playable.length} DB PLAYABLE`,'good'):(all.length?badge(`${all.length} DB MEDIA / 0 PLAY`,'warn'):badge('NO DB MEDIA','bad'));if(locked)html+=badge(`${locked} LOCKED`,'good');if(curated.length)html+=badge(`${curated.length} CURATED FRONTEND`,'info');if(authority&&playableItems(compact).length!==playable.length)html+=badge('RIBBON DRIFT','warn');return html}
   function gameCenterBadge(date,league,row){const d=state.days.get(date),key=gcKey(league,row),g=d?.gameCenters?.get(key);if(g){if(g.loading)return badge('GC LOADING','info');if(g.error)return badge('GC ERROR','bad');const data=g.data||{},complete=data.coverage?.complete===true&&!data.partial;return badge(complete?'GC RICH':'GC PARTIAL',complete?'good':'warn')}const cached=authorityGame(d,league,row)?.gameCenter;if(cached?.state==='RICH')return badge('GC RICH CACHED','good');if(cached?.state==='PARTIAL')return badge('GC PARTIAL CACHED','warn');return badge('GC NOT CACHED','neutral')}
   function gcKey(league,row){return `${upper(league)}:${eventId(row)||teamKey(eventAway(row))+'-'+teamKey(eventHome(row))}`}
 
