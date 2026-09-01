@@ -81,6 +81,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v505_curated_media_override.js
   node tests/test_v506_curated_fast_lane.js
   node tests/test_v507_event_reconstitution.js
+  python3 -m unittest tests.test_v508_cfb_game_center
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi

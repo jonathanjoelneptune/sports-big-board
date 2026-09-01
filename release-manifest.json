@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "5.0.7",
-  "baseRelease": "5.0.5",
-  "title": "Curated Isolation Fast Lane + Pathological Event Containment",
+  "release": "5.0.8",
+  "baseRelease": "5.0.7",
+  "title": "Native CFB Game Center Capability + Pathological Event Containment",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -13,6 +13,7 @@
     "release-manifest.json",
     "ARCHITECTURE-V5.md",
     "app.js",
+    "ui/game-center-view.js",
     "architecture/app-store-v5.js",
     "architecture/selected-event-store.js",
     "architecture/playback-session.js",
@@ -57,24 +58,26 @@
     "architecture/curated-media-overrides.js",
     "tests/test_v505_curated_media_override.js",
     "tests/test_v506_curated_fast_lane.js",
-    "tests/test_v507_event_reconstitution.js"
+    "tests/test_v507_event_reconstitution.js",
+    "sbb/game_center_runtime_v508.py",
+    "tests/test_v508_cfb_game_center.py"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "5.0.7"
+        "5.0.8"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v5.0.7",
-        "core-model.js?v=5.0.7",
-        "architecture/app-store-v5.js?v=5.0.7",
-        "architecture/playback-orchestrator-v5.js?v=5.0.7",
-        "architecture/score-media-plan-v5.js?v=5.0.7",
-        "architecture/comprehensive-site-certification.js?v=5.0.7",
-        "architecture/curated-media-overrides.js?v=5.0.7",
-        "app.js?v=5.0.7"
+        "Sports Big Board \u2014 v5.0.8",
+        "core-model.js?v=5.0.8",
+        "architecture/app-store-v5.js?v=5.0.8",
+        "architecture/playback-orchestrator-v5.js?v=5.0.8",
+        "architecture/score-media-plan-v5.js?v=5.0.8",
+        "architecture/comprehensive-site-certification.js?v=5.0.8",
+        "architecture/curated-media-overrides.js?v=5.0.8",
+        "app.js?v=5.0.8"
       ],
       "forbidden": [
         "?v=5.0.1",
@@ -82,17 +85,18 @@
         "?v=5.0.3",
         "?v=5.0.4",
         "?v=5.0.5",
-        "?v=5.0.6"
+        "?v=5.0.6",
+        "?v=5.0.7"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'5.0.7'"
+        "version:'5.0.8'"
       ]
     },
     "architecture/app-store-v5.js": {
       "required": [
-        "const VERSION='5.0.7'",
+        "const VERSION='5.0.8'",
         "const SCHEMA='1.4'",
         "compactEvent",
         "branch-local and idempotent",
@@ -111,7 +115,7 @@
     },
     "architecture/selected-event-store.js": {
       "required": [
-        "version:'5.0.7'",
+        "version:'5.0.8'",
         "const canonical=project(eventLike)",
         "__sbbReconstituted:true"
       ],
@@ -132,7 +136,7 @@
     },
     "architecture/playback-orchestrator-v5.js": {
       "required": [
-        "const VERSION='5.0.7'",
+        "const VERSION='5.0.8'",
         "window.SBB_PLAYBACK_ORCHESTRATOR",
         "bindAdapter",
         "requestTune",
@@ -146,7 +150,7 @@
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "const VERSION = '5.0.7'",
+        "const VERSION = '5.0.8'",
         "Efficiency Certification"
       ]
     },
@@ -208,7 +212,9 @@
         "v5.0.7 Event Reconstitution",
         "window.SBB_APP_STORE?.compactEvent?.(rebuilt)",
         "if(item?.__sbbCuratedOverride)return []",
-        "if(item.__sbbCuratedOverride)return []"
+        "if(item.__sbbCuratedOverride)return []",
+        "v5.0.8: built-in score availability is not the Game Center capability contract",
+        "return !!competition.gameCenterProvider;"
       ],
       "forbidden": [
         "for(const x of RECAP_CANDIDATE_REGISTRY.values()) add(x);",
@@ -240,13 +246,17 @@
         "node tests/test_v503_score_click_authority.js",
         "node tests/test_v504_score_date_resilience.js",
         "node tests/test_v505_curated_media_override.js",
-        "node tests/test_v506_curated_fast_lane.js"
+        "node tests/test_v506_curated_fast_lane.js",
+        "node tests/test_v507_event_reconstitution.js",
+        "python3 -m unittest tests.test_v508_cfb_game_center"
       ]
     },
     "sbb/__init__.py": {
       "required": [
         "game_center_runtime_v482",
-        "_install_game_center_runtime_v482()"
+        "_install_game_center_runtime_v482()",
+        "game_center_runtime_v508",
+        "_install_game_center_runtime_v508()"
       ]
     },
     "sbb/game_center_runtime_v482.py": {
@@ -289,7 +299,14 @@
         "exact curated asset",
         "v5.0.7 Event Reconstitution",
         "Raw score/provider rows are read models",
-        "SelectedEvent"
+        "SelectedEvent",
+        "v5.0.8 \u2014 Native CFB Game Center",
+        "football/college-football",
+        "Game Center capability boundary",
+        "v4.7.21 local authority",
+        "gameCenterProvider",
+        "30 seconds",
+        "duplicate-render suppression"
       ]
     },
     "tests/test_v473_efficiency_runtime.js": {
@@ -473,6 +490,48 @@
         "recapBlock"
       ],
       "forbidden": []
+    },
+    "sbb/game_center_runtime_v508.py": {
+      "required": [
+        "5.0.8-cfb-game-center-1",
+        "_TARGET = \"CFB\"",
+        "_ESPN_SLUG = \"college-football\"",
+        "GAME_CENTER_SUPPORTED",
+        "_multisport_cfb_adapter_ready",
+        "game_center_multisport",
+        "_resolve_from_espn_scoreboard",
+        "__sbbGameCenterRuntimeV508",
+        "v508CfbCapability",
+        "v5.0.8 LOCAL-FIRST",
+        "v4721 local-first",
+        "Cold-state rescue only"
+      ],
+      "forbidden": [
+        "-tDiPDHU2fs"
+      ]
+    },
+    "tests/test_v508_cfb_game_center.py": {
+      "required": [
+        "401864494",
+        "San Jose State Spartans",
+        "USC Trojans",
+        "football/college-football",
+        "youtubeId:'-tDiPDHU2fs'",
+        "_resolve_from_espn_scoreboard",
+        "test_v4721_local_identity_is_first_and_network_free",
+        "test_cold_local_index_gets_one_bounded_espn_fingerprint_rescue",
+        "test_final_partial_game_center_is_contained_on_browser_main_thread",
+        "return !!competition.gameCenterProvider;"
+      ]
+    },
+    "ui/game-center-view.js": {
+      "required": [
+        "v5.0.8: a completed partial Game Center must not rebuild",
+        "const finalPartial=partial&&final;",
+        "finalPartial?30000:2200",
+        "if(gc!==data)render(gc);",
+        "if(resident!==data)render(resident);"
+      ]
     }
   }
 }

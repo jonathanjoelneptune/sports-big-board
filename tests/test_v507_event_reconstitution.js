@@ -1,6 +1,8 @@
 const fs=require('fs');
 const vm=require('vm');
 const assert=require('assert');
+const version=fs.readFileSync('VERSION','utf8').trim();
+assert(/^5\.0\.\d+$/.test(version),'v5.0.x event reconstitution baseline');
 const app=fs.readFileSync('app.js','utf8');
 const storeSrc=fs.readFileSync('architecture/app-store-v5.js','utf8');
 const selectedSrc=fs.readFileSync('architecture/selected-event-store.js','utf8');
@@ -13,7 +15,7 @@ assert(recapBlock.includes('if(item?.__sbbCuratedOverride)return []'));
 assert(recapBlock.includes('if(item.__sbbCuratedOverride)return []'));
 for(const token of ['CURATED_METADATA_START','CURATED_METADATA_DONE','CURATED_QUEUE_START','CURATED_QUEUE_DONE'])assert(app.includes(token),token);
 
-assert(selectedSrc.includes("version:'5.0.7'"));
+assert(selectedSrc.includes(`version:'${version}'`));
 assert(selectedSrc.includes('const canonical=project(eventLike)'));
 assert(!selectedSrc.includes('SBB_CORE?.event'));
 
@@ -35,4 +37,4 @@ const selected=window.SBB_SELECTED_EVENT.get();
 assert(selected.__sbbReconstituted===true);
 for(const forbidden of ['providerPayload','media','recapAlternates','associationEvidence','eventPlans']) assert(!(forbidden in selected),forbidden);
 assert(JSON.stringify(selected).length<12000);
-console.log('PASS: v5.0.7 event reconstitution strips pathological provider/media baggage before SelectedEvent');
+console.log(`PASS: ${version} event reconstitution strips pathological provider/media baggage before SelectedEvent`);

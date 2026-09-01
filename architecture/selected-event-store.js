@@ -1,9 +1,9 @@
-/* Sports Big Board v5.0.7 — SelectedEvent Event Reconstitution authority.
+/* Sports Big Board v5.0.8 — SelectedEvent Event Reconstitution authority.
    SelectedEvent accepts only the compact sporting-event schema produced by the v5
    App Store. Raw score/provider/media rows never cross this boundary. */
 (() => {
   'use strict';
-  if(window.SBB_SELECTED_EVENT?.version==='5.0.7')return;
+  if(window.SBB_SELECTED_EVENT?.version==='5.0.8')return;
   let current=null;
   let revision=0;
   const listeners=new Set();
@@ -50,5 +50,5 @@
     emit({action:'clear',...meta});return null;
   }
   function subscribe(fn,{emitCurrent=false}={}){if(typeof fn!=='function')return()=>{};listeners.add(fn);if(emitCurrent)fn(snapshot(),{revision,action:'snapshot'});return()=>listeners.delete(fn);}
-  window.SBB_SELECTED_EVENT=Object.freeze({version:'5.0.7',select,clear,get:snapshot,subscribe,keyOf,project,get revision(){return revision;}});
+  window.SBB_SELECTED_EVENT=Object.freeze({version:'5.0.8',select,clear,get:snapshot,subscribe,keyOf,project,get revision(){return revision;}});
 })();

@@ -1,0 +1,17 @@
+Sports Big Board v5.0.8 manual upload
+
+1. Open the repository root on GitHub.
+2. Upload the contents of this bundle, preserving architecture/, ui/, sbb/, and tests/ folders.
+3. Commit the upload.
+4. Let the Deploy Sports Big Board workflow run.
+5. Confirm VERIFY.sh reports PASS, including tests.test_v508_cfb_game_center.
+6. After deployment, open Aug. 29, 2026 and click San Jose State @ USC first.
+
+Expected regression behavior:
+- exact curated USC recap remains -tDiPDHU2fs;
+- playback starts through CURATED_FAST_LANE without re-entering the automated media graph;
+- CFB Game Center first uses the existing local CFB event authority;
+- if local identity is cold, one bounded ESPN College Football date/team verification may resolve event 401864494;
+- completed partial Game Center data does not rebuild every 2.2 seconds while video plays;
+- Game Center renders football data or fails boundedly without freezing the board;
+- the board remains clickable/responsive throughout.

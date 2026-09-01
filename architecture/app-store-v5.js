@@ -1,15 +1,15 @@
-/* Sports Big Board v5.0.7 — Unified Runtime App Store.
+/* Sports Big Board v5.0.8 — Unified Runtime App Store.
    The v5 control plane remains the canonical browser state authority, but state
    commits are now branch-local and idempotent. Large provider/score payloads are
    projected into a compact event record before entering ANY v5 event authority.
-   v5.0.7 makes this projection the reconstitution boundary for SelectedEvent too.
+   v5.0.8 makes this projection the reconstitution boundary for SelectedEvent too.
    This prevents repeated player telemetry from deep-cloning provider payloads on
    the browser main thread while a video is already playing. */
 (() => {
   'use strict';
-  if (window.SBB_APP_STORE?.version === '5.0.7') return;
+  if (window.SBB_APP_STORE?.version === '5.0.8') return;
 
-  const VERSION='5.0.7';
+  const VERSION='5.0.8';
   const SCHEMA='1.4';
   const listeners=new Set();
   let revision=0;

@@ -256,3 +256,57 @@ checks Game Center ownership, engine-reset count, and the v5 invariant.
 - `SBB_SELECTED_EVENT` applies the same compact projection to every selection path.
 - Media arrays, provider payloads, recap alternates, cached plans, association evidence, and unknown derived fields cannot enter SelectedEvent/Game Center.
 - This is the runtime equivalent of deleting and rebuilding a corrupted event element while preserving the authoritative score/result.
+
+## v5.0.8 — Native CFB Game Center
+
+v5.0.8 closes the College Football Game Center capability boundary that remained
+outside the v5 event/playback architecture. CFB was already a first-class score and
+media competition, so a CFB score click could legitimately create SelectedEvent and
+start its recap while the backend still rejected CFB as an unsupported Game Center
+competition. That split authority could leave the right panel cycling through
+Loading Game Center while the playback transaction was active.
+
+The existing multisport adapter already had CFB detailed-summary support through
+ESPN `football/college-football`, including American-football normalization,
+quarter linescores, win probability, team/player statistics, scoring plays, and
+play-by-play. The v4.7.21 runtime also already maintained a bounded local CFB
+identity index from ranked-state/history data. v5.0.8 does not replace either
+layer. It keeps that v4.7.21 local authority as the network-free fast path and adds
+a cached ESPN CFB day-scoreboard rescue only when the local identity index is cold
+or incomplete. A score-ribbon event ID is never accepted from that rescue until
+viewer date plus away/home team identity match the sporting event.
+
+The frontend Game Center boundary is now capability-based as well. A built-in
+competition must explicitly declare `gameCenterProvider` in the canonical core
+competition registry; merely being present in `ENABLED_LIVE_LEAGUES` is no longer
+enough to advertise Game Center support. CFB explicitly declares ESPN.
+
+The browser view also contains final-partial Game Centers. Previously a completed
+football event that remained partial could revisit the same resident payload every
+2.2 seconds and synchronously rebuild Overview, Team Stats, Players, and Plays even
+while video was active. v5.0.8 does not re-render when `peek()` and `get()` return
+the same object, and slows completed partial enrichment probes to 30 seconds. Live
+and genuinely preparing partial Game Centers retain their faster polling behavior.
+
+The boundary remains one-way and independent of playback:
+
+```text
+CFB score click
+  -> SelectedEvent / playback intent
+  -> curated or automated media plan
+
+SelectedEvent
+  -> CFB Game Center capability
+  -> verified ESPN CFB event identity
+  -> football/college-football summary
+```
+
+Game Center cannot choose media, retry playback, or redirect SelectedEvent. CFB
+Game Center resolution cannot trust an arbitrary numeric score ID without the
+sporting-event fingerprint. Existing browser single-flight, timeout, and payload
+bounds remain in force, with v5.0.8 adding duplicate-render suppression and a
+30-second completed-partial cooldown so Game Center cannot monopolize the main
+thread during playback. The San Jose State at USC
+Aug. 29 regression fixture specifically verifies the formerly pathological event,
+while the curated `-tDiPDHU2fs` recap remains unchanged and outside this Game Center
+fix.

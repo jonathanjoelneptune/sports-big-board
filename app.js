@@ -72,7 +72,7 @@ if (location.protocol === 'file:') {
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.7'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,curatedMedia:!!window.SBB_CURATED_MEDIA,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.8'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,curatedMedia:!!window.SBB_CURATED_MEDIA,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -2580,7 +2580,15 @@ function gameCenterCompetitionId(item){
 }
 function gameCenterCompetitionSupported(item){
   const competitionId=gameCenterCompetitionId(item);
-  return !!competitionId && competitionId!=='SPORTS' && ENABLED_LIVE_LEAGUES.includes(competitionId);
+  if(!competitionId||competitionId==='SPORTS')return false;
+  // v5.0.8: built-in score availability is not the Game Center capability contract.
+  // Core competition metadata must explicitly name a Game Center provider. Unknown
+  // custom competitions retain the legacy live-league fallback for compatibility.
+  const competition=window.SBB_CORE?.competition?.(competitionId);
+  if(competition&&competition.id===competitionId&&window.SBB_CORE?.COMPETITIONS?.[competitionId]){
+    return !!competition.gameCenterProvider;
+  }
+  return ENABLED_LIVE_LEAGUES.includes(competitionId);
 }
 function playbackOwnsGameCenter(item){
   if(!item||isContextItem(item)||isTopPlaysItem(item)||item.eventType)return false;

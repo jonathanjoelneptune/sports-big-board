@@ -150,11 +150,16 @@
   }
   function schedulePoll(gc){
     if(pollTimer)clearTimeout(pollTimer);if(!selected)return;
-    const live=!!gc?.live||/live|progress|inning|quarter|half|period/i.test(String(gc?.event?.status||selected?.status||''));
+    const status=String(gc?.event?.status||gc?.scoreboard?.status||selected?.status||'');
+    const final=/final|finished|game over|completed|complete|post/i.test(status);
+    const live=!final&&(!!gc?.live||/live|progress|inning|quarter|half|period/i.test(status));
     const partial=enriching(gc);
-    // Partial data is useful immediately, but localhost may already be merging a
-    // richer fallback. Recheck localhost quickly without blocking playback.
-    pollTimer=setTimeout(()=>load(selected,{force:false,background:true}),partial?2200:(live?15000:60000));
+    // v5.0.8: a completed partial Game Center must not rebuild a large football
+    // payload every 2.2 seconds while playback is active. Non-final partials keep
+    // the fast enrichment probe; final partials cool down to a bounded 30 seconds.
+    const finalPartial=partial&&final;
+    const delay=partial?(finalPartial?30000:2200):(live?15000:60000);
+    pollTimer=setTimeout(()=>load(selected,{force:false,background:true}),delay);
   }
   async function load(evt,{force=false,background=false}={}){
     if(!evt)return;
@@ -165,10 +170,15 @@
     const token=++requestToken;
     if(requestAbort)requestAbort.abort();requestAbort=new AbortController();
     const resident=window.SBB_GAME_CENTER?.peek?.(evt)||null;
-    if(resident)render(resident);else if(!background)basicShell(evt,'Loading Game Center…');
+    if(resident){if(resident!==data)render(resident);}
+    else if(!background)basicShell(evt,'Loading Game Center…');
     try{
       const gc=await window.SBB_GAME_CENTER.get(evt,{force,signal:requestAbort.signal,timeoutMs:30000});
-      if(token!==requestToken)return;render(gc);schedulePoll(gc);
+      if(token!==requestToken)return;
+      // v5.0.8: peek() and get() frequently return the exact same resident object.
+      // Avoid a second synchronous rebuild of overview/stats/players/PBP in that case.
+      if(gc!==data)render(gc);
+      schedulePoll(gc);
     }catch(err){
       if(token!==requestToken||err?.name==='AbortError')return;
       errorView(evt,err);schedulePoll(null);

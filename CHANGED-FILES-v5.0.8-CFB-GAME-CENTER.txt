@@ -1,0 +1,32 @@
+Sports Big Board v5.0.8 — Native CFB Game Center + Final-Partial Containment
+
+UPLOAD THESE FILES TO THE SAME PATHS IN THE REPOSITORY:
+
+VERSION
+index.html
+core-model.js
+app.js
+release-manifest.json
+VERIFY.sh
+ARCHITECTURE-V5.md
+architecture/app-store-v5.js
+architecture/selected-event-store.js
+architecture/playback-orchestrator-v5.js
+architecture/efficiency-certification.js
+ui/game-center-view.js
+sbb/__init__.py
+sbb/game_center_runtime_v508.py
+tests/test_v507_event_reconstitution.js
+tests/test_v508_cfb_game_center.py
+
+WHAT CHANGED
+- CFB Game Center uses the existing v4.7.21 local ranked-state/history identity authority first.
+- Adds one bounded/cached ESPN football/college-football scoreboard rescue only when local CFB identity is cold.
+- Built-in frontend Game Center support now requires an explicit core gameCenterProvider instead of merely being an enabled live league.
+- Completed partial Game Centers no longer rebuild the same large DOM every 2.2 seconds.
+- Identical resident Game Center objects are not synchronously re-rendered a second time.
+- Final partial enrichment polling cools to 30 seconds; live/preparing paths keep faster polling.
+- Existing multisport ESPN CFB summary normalization remains the detailed-data owner.
+- San Jose State @ USC curated playback remains unchanged: YouTube -tDiPDHU2fs.
+- Adds blocking v5.0.8 regressions for local-first identity, cold-state rescue, capability gating, and final-partial containment.
+- Synchronizes v5.0.8 release/cache identities and current-line architecture versions.
