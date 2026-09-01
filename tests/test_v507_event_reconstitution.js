@@ -1,0 +1,38 @@
+const fs=require('fs');
+const vm=require('vm');
+const assert=require('assert');
+const app=fs.readFileSync('app.js','utf8');
+const storeSrc=fs.readFileSync('architecture/app-store-v5.js','utf8');
+const selectedSrc=fs.readFileSync('architecture/selected-event-store.js','utf8');
+assert(app.includes('v5.0.7 Event Reconstitution'));
+const gcBlock=app.slice(app.indexOf('function gameCenterSelectionFromScoreMatch'),app.indexOf('function scheduleLaunchGameCenterPopulate'));
+assert(!gcBlock.includes('return {...match'));
+assert(gcBlock.includes('window.SBB_APP_STORE?.compactEvent?.(rebuilt)'));
+const recapBlock=app.slice(app.indexOf('function indexedRecapCandidatesFor'),app.indexOf('function recapTargetForTier'));
+assert(recapBlock.includes('if(item?.__sbbCuratedOverride)return []'));
+assert(recapBlock.includes('if(item.__sbbCuratedOverride)return []'));
+for(const token of ['CURATED_METADATA_START','CURATED_METADATA_DONE','CURATED_QUEUE_START','CURATED_QUEUE_DONE'])assert(app.includes(token),token);
+
+assert(selectedSrc.includes("version:'5.0.7'"));
+assert(selectedSrc.includes('const canonical=project(eventLike)'));
+assert(!selectedSrc.includes('SBB_CORE?.event'));
+
+const listeners={};
+const window={dispatchEvent(){},addEventListener(){},SBB_EVENT_IDENTITY:{key(e){return `${e.competitionId}:event:${e.eventId}`;}}};
+const sandbox={window,console,CustomEvent:function(){},structuredClone:global.structuredClone,setTimeout,clearTimeout,performance};
+vm.createContext(sandbox);
+vm.runInContext(storeSrc,sandbox);
+vm.runInContext(selectedSrc,sandbox);
+
+const pathological={competitionId:'CFB',eventId:'401864494',scoreEventId:'401864494',espnEventId:'401864494',date:'2026-08-29',status:'FINAL',awayTeam:{name:'San Jose State Spartans',abbreviation:'SJSU'},homeTeam:{name:'#14 USC Trojans',abbreviation:'USC'},awayScore:26,homeScore:42,providerPayload:'x'.repeat(2_000_000),media:Array.from({length:5000},(_,i)=>({id:i,blob:'x'.repeat(200)})),recapAlternates:Array.from({length:500},(_,i)=>({id:i})),associationEvidence:{huge:'x'.repeat(500000)},eventPlans:Array.from({length:1000},()=>({}))};
+const projected=window.SBB_APP_STORE.compactEvent(pathological);
+assert.equal(projected.eventId,'401864494');
+assert.equal(projected.homeTeam.abbreviation,'USC');
+for(const forbidden of ['providerPayload','media','recapAlternates','associationEvidence','eventPlans']) assert(!(forbidden in projected),forbidden);
+assert(JSON.stringify(projected).length<10000);
+window.SBB_SELECTED_EVENT.select(pathological,{source:'score-ribbon',reason:'regression'});
+const selected=window.SBB_SELECTED_EVENT.get();
+assert(selected.__sbbReconstituted===true);
+for(const forbidden of ['providerPayload','media','recapAlternates','associationEvidence','eventPlans']) assert(!(forbidden in selected),forbidden);
+assert(JSON.stringify(selected).length<12000);
+console.log('PASS: v5.0.7 event reconstitution strips pathological provider/media baggage before SelectedEvent');

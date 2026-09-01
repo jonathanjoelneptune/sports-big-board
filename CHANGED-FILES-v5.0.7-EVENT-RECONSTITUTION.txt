@@ -1,0 +1,31 @@
+Sports Big Board v5.0.7 — Event Reconstitution
+
+Purpose
+- Preserve authoritative Aug. 29 score/result rows.
+- Treat every provider/Day-State score row as untrusted derived input at the SelectedEvent boundary.
+- Rebuild a fresh allow-listed sporting Event before SelectedEvent/Game Center.
+- Prevent pathological event-specific media/provider graphs from entering event authority.
+
+Changed
+- VERSION
+- index.html cache generations
+- app.js strict gameCenterSelectionFromScoreMatch reconstitution
+- architecture/app-store-v5.js release/schema 1.4
+- architecture/selected-event-store.js strict projection authority
+- architecture/comprehensive-site-certification.js schema 3.7 evidence
+- core-model.js release identity
+- VERIFY.sh
+- release-manifest.json
+- tests/test_v507_event_reconstitution.js
+- ARCHITECTURE-V5.md
+
+USC handling
+- The authoritative score event is NOT deleted.
+- Its derived object graph is effectively discarded at click time.
+- SelectedEvent receives only event identity, date/status, teams, score, venue, provider-id hints and ranking metadata.
+- Curated v5.0.6 playback isolation remains intact.
+
+Additional clean-room containment
+- Curated active media cannot query RECAP_CANDIDATE_INDEX or ALL_GAME_CANDIDATES.
+- Recap-version UI/queue metadata returns no automated alternates for curated media.
+- This closes the post-PROGRAM_COMMITTED path that could reopen the old event graph after the fast lane had already selected the correct video.

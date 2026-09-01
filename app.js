@@ -72,7 +72,7 @@ if (location.protocol === 'file:') {
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.6'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,curatedMedia:!!window.SBB_CURATED_MEDIA,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.7'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,curatedMedia:!!window.SBB_CURATED_MEDIA,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -732,8 +732,24 @@ function gameCenterSelectionFromScoreMatch(match){
   const scoreGamePk=competitionId==='MLB'?String(match.gamePk||''):'';
   const espnEventId=String(match.espnEventId||'');
   const gameCenterProviderHint=String(match.gameCenterProviderHint||match.scoreProvider||((competitionId==='MLB'&&scoreGamePk&&scoreEventId===scoreGamePk)?'mlb-stats':(espnEventId&&scoreEventId===espnEventId?'espn':'highlightly'))).toLowerCase();
-  return {...match,competitionId,scoreEventId,eventId:scoreEventId||scoreGamePk||espnEventId,
-    gamePk:scoreGamePk,gameCenterEventId:scoreEventId||scoreGamePk||espnEventId,gameCenterProviderHint};
+  // v5.0.7 Event Reconstitution: a score/provider row is NOT an Event authority.
+  // Build a fresh allow-listed sporting-event record instead of spreading match.
+  // Media arrays, provider blobs, cached plans, association evidence and any other
+  // derived baggage therefore cannot cross into SelectedEvent / Game Center.
+  const rebuilt={
+    competitionId,scoreEventId,eventId:scoreEventId||scoreGamePk||espnEventId,
+    gamePk:scoreGamePk,espnEventId,gameCenterEventId:scoreEventId||scoreGamePk||espnEventId,
+    matchId:String(match.matchId||''),id:String(match.id||''),gameCenterProviderHint,
+    scheduledAt:match.scheduledAt||match.date||match.gameDate||match.__sbbDate||'',
+    date:match.gameDate||match.__sbbDate||String(match.scheduledAt||match.date||'').slice(0,10),
+    status:match.status,venue:match.venue,
+    awayTeam:match.awayTeam||match.away||null,homeTeam:match.homeTeam||match.home||null,
+    awayScore:match.awayScore??match.score?.awayScore??match.away?.score??null,
+    homeScore:match.homeScore??match.score?.homeScore??match.home?.score??null,
+    gameNumber:match.gameNumber||match.doubleHeaderGame||0,
+    rankingSnapshotId:match.rankingSnapshotId||'',scoreProvider:match.scoreProvider||''
+  };
+  return window.SBB_APP_STORE?.compactEvent?.(rebuilt)||rebuilt;
 }
 function scheduleLaunchGameCenterPopulate(){
   const generation=++launchGameCenterGeneration;
@@ -3697,11 +3713,14 @@ function rebuildRecapCandidateIndex(){
   RECAP_CANDIDATE_INDEX_REVISION++;RECAP_ALTERNATE_CACHE.clear();RECAP_INDEX_STATS.rebuilds++;RECAP_INDEX_STATS.indexKeys=RECAP_CANDIDATE_INDEX.size;
 }
 function indexedRecapCandidatesFor(item){
+  // v5.0.7 clean-room rule: curated corrections never query the automated recap index.
+  if(item?.__sbbCuratedOverride)return [];
   const started=performance.now(),out=[],seen=new Set();
   for(const key of recapIndexKeys(item))for(const id of RECAP_CANDIDATE_INDEX.get(key)||[]){if(seen.has(id))continue;const x=RECAP_CANDIDATE_REGISTRY.get(id);if(x){seen.add(id);out.push(x);}}
   const elapsed=performance.now()-started;RECAP_INDEX_STATS.lookups++;RECAP_INDEX_STATS.candidatesExamined+=out.length;RECAP_INDEX_STATS.lastLookupMs=elapsed;RECAP_INDEX_STATS.maxLookupMs=Math.max(RECAP_INDEX_STATS.maxLookupMs,elapsed);return out;
 }
 function indexedAllGameCandidatesFor(item){
+  if(item?.__sbbCuratedOverride)return [];
   const out=[],seen=new Set();for(const key of recapIndexKeys(item))for(const x of ALL_GAME_CANDIDATES.get(key)||[]){const id=String(x?.id||x?.youtubeId||x?.mediaUrl||'');if(id&&!seen.has(id)){seen.add(id);out.push(x);}}
   return out;
 }
@@ -3715,6 +3734,10 @@ function boundedRecapAlternatives(items){
 }
 function recapAlternatesFor(item){
   if(!item || !isFullRecapCandidate(item)) return [];
+  // v5.0.7: once a curated asset is active, metadata/queue controls must not
+  // reopen that event's automated association graph. This was the remaining
+  // post-commit path capable of reintroducing a pathological event graph.
+  if(item.__sbbCuratedOverride)return [];
   const cacheKey=playbackItemKey(item),cached=RECAP_ALTERNATE_CACHE.get(cacheKey);
   if(cached&&cached.revision===RECAP_CANDIDATE_INDEX_REVISION&&Date.now()-cached.at<RECAP_ALTERNATE_CACHE_TTL_MS)return cached.items.slice();
   const candidates=[];
@@ -3801,6 +3824,8 @@ function restoreManualRecapBase(){
 }
 function renderMetadata(){
   const item = clip(currentIndex);
+  const curatedMeta=!!item?.__sbbCuratedOverride;
+  if(curatedMeta)try{markScoreClickStage('CURATED_METADATA_START',userPlaybackSession?.match||item,{mediaKey:playbackItemKey(item)});}catch(_){}
   if(item&&!isContextItem(item)&&!isTopPlaysItem(item)&&!item.eventType) focusScoreRibbonForGame(item,{force:false});
   document.querySelector('.stage-card')?.classList.toggle('context-active',isContextItem(item));
   $('currentLeague').textContent = isTopPlaysItem(item)?(item.editorialScope==='league'?`${String(item.competitionId||item.originalLeague||item.league||'').toUpperCase()} TOP PLAYS`:'TOP PLAYS'):item.league;
@@ -3816,6 +3841,7 @@ function renderMetadata(){
   }
   setPlaybackDiag({provider:providerForItem(item),slot:activeSlot,source:item.youtubeId||item.mediaUrl||item.id||'—'});
   updateRecapAlternateButton();
+  if(curatedMeta)try{markScoreClickStage('CURATED_METADATA_DONE',userPlaybackSession?.match||item,{mediaKey:playbackItemKey(item)});}catch(_){}
 }
 
 function formatDuration(seconds){
@@ -3912,6 +3938,8 @@ function nextVisibleQueueIndex(){
 function renderQueue(){
   const list = $('queueList');
   if(!list) return;
+  const curatedQueue=!!clip(currentIndex)?.__sbbCuratedOverride;
+  if(curatedQueue)try{markScoreClickStage('CURATED_QUEUE_START',userPlaybackSession?.match||clip(currentIndex),{mediaKey:playbackItemKey(clip(currentIndex))});}catch(_){}
   list.innerHTML = '';
 
   // A multi-clip game takeover is a mini-program of its own. Keep the visible
@@ -3944,6 +3972,7 @@ function renderQueue(){
       note.textContent=`${currentIndex} clip${currentIndex===1?'':'s'} completed • ${Math.max(0,userPlaybackSession.selectionCount-currentIndex-1)} remaining`;
       list.appendChild(note);
     }
+    if(curatedQueue)try{markScoreClickStage('CURATED_QUEUE_DONE',userPlaybackSession?.match||clip(currentIndex),{mediaKey:playbackItemKey(clip(currentIndex))});}catch(_){}
     return;
   }
 
@@ -3975,6 +4004,7 @@ function renderQueue(){
     row.onclick=()=>jumpTo(idx);
     list.appendChild(row);
   });
+  if(curatedQueue)try{markScoreClickStage('CURATED_QUEUE_DONE',userPlaybackSession?.match||clip(currentIndex),{mediaKey:playbackItemKey(clip(currentIndex))});}catch(_){}
 }
 function jumpTo(index){
   if(manualRecapAlternate) restoreManualRecapBase();
@@ -5084,7 +5114,7 @@ async function loadScoreDateLeagueMatches(league,date){
       const rows=responseItems(payload).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:lg},date)===date);
       return {rows:storeScoreDateLeague(lg,date,rows),error:null,source:payload?.source||'HISTORY'};
     }catch(err){
-      console.warn(`[SBB v5.0.6] ${lg} canonical historical score load failed; preserving last-known-good rows`,date,err);
+      console.warn(`[SBB v5.0.7] ${lg} canonical historical score load failed; preserving last-known-good rows`,date,err);
       return {rows:preserveScoreDateLeagueOnError(lg,date,err,{source:'HISTORY'}),error:err,source:'HISTORY ERROR'};
     }
   }
@@ -5092,7 +5122,7 @@ async function loadScoreDateLeagueMatches(league,date){
   try{
     const payload=await apiJson(`/api/espn/scoreboard?league=${encodeURIComponent(lg)}&date=${encodeURIComponent(date)}&timezone=${encodeURIComponent(timezone)}&utcOffsetMinutes=${encodeURIComponent(utcOffsetMinutes)}`);
     rows=responseItems(payload).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:lg},date)===date);
-  }catch(err){firstError=err;console.warn(`[SBB v5.0.6] ${lg} score load failed; preserving last-known-good rows`,date,err);}
+  }catch(err){firstError=err;console.warn(`[SBB v5.0.7] ${lg} score load failed; preserving last-known-good rows`,date,err);}
   if(firstError)return {rows:preserveScoreDateLeagueOnError(lg,date,firstError,{source:'ESPN'}),error:firstError,source:'ESPN ERROR'};
   return {rows:storeScoreDateLeague(lg,date,rows,{source:'ESPN'}),error:null,source:'ESPN'};
 }
@@ -6921,7 +6951,7 @@ function scoreCardPlaybackSelection(match,items){
 }
 function scoreCardPrimaryItem(match,items){ const s=scoreCardPlaybackSelection(match,items);return s.editorialPrimary||s.primary; }
 function scoreCardAvailability(match){
-  // v5.0.6: a curated correction is a clean authority boundary, not another input
+  // v5.0.7: a curated correction is a clean authority boundary, not another input
   // to the legacy media graph. Rendering the card must never scan or merge the
   // event's automated associations before the user has even clicked it.
   let curated=[];try{curated=(window.SBB_CURATED_MEDIA?.itemsFor?.(match)||[]).filter(x=>x?.verifiedPlayable&&(x.youtubeId||x.mediaUrl));}catch(_){}
@@ -7102,7 +7132,7 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
     ? requestedTransactionId
     : (match?v5?.beginScoreIntent?.(gameCenterSelectionFromScoreMatch(match),{reason:'score-card selection',userInitiated:true,playbackDate:intentPlaybackDate})||'':'');
   markScoreClickStage('INTENT_CREATED',match,{transactionId:v5TransactionId});
-  // v5.0.6 curated fast lane: a human-corrected event is isolated from the
+  // v5.0.7 curated fast lane: a human-corrected event is isolated from the
   // automated media graph until its exact known-good asset has been dispatched.
   // This restores the v5.0.4 containment behavior while retaining deterministic
   // correction of the physical video. Generic fallback candidates hydrate later.
@@ -7180,7 +7210,7 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
   const resumeIndex=currentIndex;
   const playbackDate=scoreEventDate(match)||scoreBrowseDate||localDateISO(0);
   activatePlaybackDateContext(playbackDate,{source:'score-ribbon'});
-  // v5.0.6: score takeover commits only the selected game's media. Building the
+  // v5.0.7: score takeover commits only the selected game's media. Building the
   // rest of a date is background/continuation work and may never delay this click.
   PROGRAM=[...selectionItems];
   currentIndex=0;

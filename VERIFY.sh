@@ -80,6 +80,7 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v504_score_date_resilience.js
   node tests/test_v505_curated_media_override.js
   node tests/test_v506_curated_fast_lane.js
+  node tests/test_v507_event_reconstitution.js
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi

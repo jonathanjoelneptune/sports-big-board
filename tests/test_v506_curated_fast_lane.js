@@ -2,7 +2,7 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
 const root=path.resolve(__dirname,'..');
 const VERSION=fs.readFileSync(path.join(root,'VERSION'),'utf8').trim();
-assert.equal(VERSION,'5.0.6');
+const parts=VERSION.split('.').map(Number); assert(parts[0]>5 || (parts[0]===5 && (parts[1]>0 || (parts[1]===0 && parts[2]>=6))));
 global.window=global;
 vm.runInThisContext(fs.readFileSync(path.join(root,'architecture/curated-media-overrides.js'),'utf8'),{filename:'architecture/curated-media-overrides.js'});
 const usc={competitionId:'CFB',eventId:'401864494',espnEventId:'401864494',date:'2026-08-29T20:30:00Z',awayTeam:{name:'San José State Spartans',abbreviation:'SJSU'},homeTeam:{name:'USC Trojans',abbreviation:'USC'}};
@@ -41,7 +41,7 @@ assert(click.indexOf('CURATED_FAST_LANE') < click.indexOf('scoreCardPlayableItem
 assert(!click.includes('scheduleCuratedFallbackHydration'), 'curated playback may not hydrate the automated graph during the active session');
 assert(!app.includes('youtubeId:\'-tDiPDHU2fs\''),'physical override data belongs only in curated registry');
 
-assert(cert.includes("const VERSION='3.6'"));
+assert(/const VERSION='3\.[6-9]'/.test(cert));
 assert(cert.includes("x.stage==='CURATED_FAST_LANE'"));
 assert(cert.includes("fastLane=${x.fastLane?'YES':'NO'}"));
-console.log('PASS: v5.0.6 curated media is isolated from legacy graph and dispatched through fast lane');
+console.log('PASS: v5.0.6+ curated media is isolated from legacy graph and dispatched through fast lane');

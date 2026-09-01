@@ -228,7 +228,7 @@ the application still contains no event-specific playback branch.
 
 The v5.0.5 implementation proved that merely putting a curated asset first was not
 enough. A pathological event could still enter the old automated association and
-alternate graph during the same click. v5.0.6 therefore establishes a stronger
+alternate graph during the same click. v5.0.7 therefore establishes a stronger
 boundary: **curated media never enters the automated media graph for the active
 curated score session.**
 
@@ -248,3 +248,11 @@ Entries marked as regression fixtures are actively exercised by Comprehensive
 Certification schema 3.6. Certification requires the `CURATED_FAST_LANE` breadcrumb,
 verifies the configured physical media selection and media-clock advancement, and
 checks Game Center ownership, engine-reset count, and the v5 invariant.
+
+
+## v5.0.7 Event Reconstitution
+- Raw score/provider rows are read models, not event authority objects.
+- `gameCenterSelectionFromScoreMatch()` reconstructs an allow-listed Event instead of spreading the source row.
+- `SBB_SELECTED_EVENT` applies the same compact projection to every selection path.
+- Media arrays, provider payloads, recap alternates, cached plans, association evidence, and unknown derived fields cannot enter SelectedEvent/Game Center.
+- This is the runtime equivalent of deleting and rebuilding a corrupted event element while preserving the authoritative score/result.

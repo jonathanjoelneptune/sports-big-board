@@ -1,4 +1,4 @@
-/* Sports Big Board v5.0.6 — Unified Runtime Comprehensive Certification Architecture.
+/* Sports Big Board v5.0.7 — Unified Runtime Comprehensive Certification Architecture.
    Whole-site certification drives real navigation, Game Center UI, score-card
    playback, recovery, APIs, workers, discovery, rendering and memory. Selection is
    deliberately game-agnostic and seeded so every run is broad yet reproducible.
@@ -7,8 +7,8 @@
   'use strict';
   if (window.SBB_SITE_CERTIFICATION?.version === '3.5') return;
 
-  const VERSION='3.6';
-  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.6');
+  const VERSION='3.7';
+  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.7');
   const PLAYBACK_TARGET=8;
   const PLAYBACK_MIN_STARTS=5;
   const PLAYBACK_CONFIRM_TIMEOUT_MS=12500;
@@ -350,6 +350,7 @@
       '',
       '==================== 0. V5 UNIFIED RUNTIME ARCHITECTURE ====================',
       `APP_STORE=${arch.appStore?'YES':'NO'} schema=${arch.schema||'—'} ORCHESTRATOR=${arch.orchestrator?'YES':'NO'} ADAPTER_BOUND=${arch.adapterBound?'YES':'NO'} invariant=${arch.invariant||'MISSING'}`,
+      `EVENT_RECONSTITUTION=${window.SBB_SELECTED_EVENT?.version==='5.0.7'?'YES':'NO'} selectedKeys=${Object.keys(window.SBB_SELECTED_EVENT?.get?.()||{}).length} selectedBytes=${(()=>{try{return JSON.stringify(window.SBB_SELECTED_EVENT?.get?.()||{}).length}catch(_){return -1}})()}`,
       `TRANSACTION state=${arch.playbackState||'IDLE'} id=${arch.transactionId||'—'} event=${arch.eventKey||'—'} selected=${arch.selectedEventKey||'—'} owned=${arch.owned===false?'NO':'YES'} plan=${arch.planAttempted||0}/${arch.planCandidates||0} rejected=${arch.planRejected||0} exhausted=${arch.planExhausted?'YES':'NO'}`,
       `APP_STORE dispatches=${arch.storeHealth?.dispatches||0} commits=${arch.storeHealth?.commits||0} noops=${arch.storeHealth?.noops||0} snapshots=${arch.storeHealth?.snapshots||0} maxDispatch=${round(arch.storeHealth?.maxDispatchMs)||0}ms maxEmit=${round(arch.storeHealth?.maxEmitMs)||0}ms`,
       '',
