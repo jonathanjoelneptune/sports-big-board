@@ -20,6 +20,9 @@ python3 tools/check_deploy_rehearsal.py
 python3 -m unittest tests.test_v446_historical_media_quarantine
 python3 -m unittest tests.test_release_behavior_gate
 python3 -m unittest tests.test_v482_game_center_runtime
+# v5.0.8 CFB Game Center is a Python/backend capability and must be verified
+# even on hosts where optional browser/Node contract execution is unavailable.
+python3 -m unittest tests.test_v508_cfb_game_center
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + stable browser contracts"
@@ -81,7 +84,6 @@ if command -v node >/dev/null 2>&1; then
   node tests/test_v505_curated_media_override.js
   node tests/test_v506_curated_fast_lane.js
   node tests/test_v507_event_reconstitution.js
-  python3 -m unittest tests.test_v508_cfb_game_center
 else
   echo "[verify] Node not installed: skipping optional Node execution checks"
 fi

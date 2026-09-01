@@ -30,3 +30,14 @@ WHAT CHANGED
 - San Jose State @ USC curated playback remains unchanged: YouTube -tDiPDHU2fs.
 - Adds blocking v5.0.8 regressions for local-first identity, cold-state rescue, capability gating, and final-partial containment.
 - Synchronizes v5.0.8 release/cache identities and current-line architecture versions.
+
+R2 RELEASE-GATE CORRECTION
+- Removed a redundant manifest assertion that required the private helper name
+  _resolve_from_espn_scoreboard to literally appear in the v5.0.8 TEST source.
+  The real cold-state rescue behavior remains blocking through
+  test_cold_local_index_gets_one_bounded_espn_fingerprint_rescue.
+- CFB Game Center Python verification now runs outside the optional Node/browser
+  branch in VERIFY.sh, so backend CFB capability is always tested.
+- Retains release-integrity checks for required files, VERSION/cache generation,
+  deploy rehearsal, syntax, and current-line runtime contracts because those can
+  still prevent a broken deployment even when they are not end-user interactions.

@@ -15,3 +15,10 @@ Expected regression behavior:
 - completed partial Game Center data does not rebuild every 2.2 seconds while video plays;
 - Game Center renders football data or fails boundedly without freezing the board;
 - the board remains clickable/responsive throughout.
+
+R2 verification note:
+- Use this R2 bundle instead of the original v5.0.8 ZIP.
+- The release manifest no longer fails on a private-helper name that the functional
+  unit test does not need to mention.
+- tests.test_v508_cfb_game_center now runs as a mandatory Python gate even if Node
+  is unavailable; browser/Node contracts remain additional gates when Node exists.
