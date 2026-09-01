@@ -11,7 +11,7 @@ if not api or parsed.scheme!='https' or not parsed.netloc:
     raise SystemExit('SBB_API_BASE_URL must be a public https:// URL')
 if out.exists(): shutil.rmtree(out)
 out.mkdir(parents=True)
-for name in ('index.html','styles.css','app.js','core-model.js','api-runtime.js'):
+for name in ('index.html','backend.html','styles.css','app.js','core-model.js','api-runtime.js'):
     shutil.copy2(root/name,out/name)
 for directory in ('architecture','ui'):
     shutil.copytree(root/directory,out/directory)
@@ -21,12 +21,10 @@ for directory in ('architecture','ui'):
 shutil.copy2(root/'assets'/'soundtrack'/'manifest.json',out/'assets'/'soundtrack'/'manifest.json')
 soundtrack=(os.environ.get('SBB_SOUNDTRACK_BASE_URL') or '').strip().rstrip('/')
 if not soundtrack:
-    # v4.2.2 keeps the GCS bucket private. The browser requests soundtrack
-    # tracks from the backend, which prefers a short-lived signed GCS redirect
-    # and transparently falls back to authenticated proxy streaming.
     soundtrack=f'{api}/api/soundtrack'
 config=f"window.SBB_CONFIG = Object.freeze({{apiBase:{json.dumps(api)},soundtrackBase:{json.dumps(soundtrack)},soundtrackTransport:'private-gcs',deployment:'github-pages'}});\n"
 (out/'config.js').write_text(config,encoding='utf-8')
 (out/'.nojekyll').write_text('',encoding='utf-8')
 print(f'Built GitHub Pages frontend -> {out}')
 print(f'API base -> {api}')
+print('Backend Inspector -> backend.html')

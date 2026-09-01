@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Sports Big Board — Backend Inspector</title>
+  <script src="config.js?v=5.1.13"></script>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#071016;--panel:#0b151d;--panel2:#0f1d27;--line:#233643;
+      --text:#edf6fb;--muted:#8fa6b4;--green:#2ed27d;--blue:#4cb5ff;
+      --yellow:#f2c94c;--red:#ff5b5b;--purple:#b890ff;--cyan:#4de3e3;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:13px/1.4 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,select{font:inherit}
+    a{color:var(--blue)}
+    .top{position:sticky;top:0;z-index:10;background:rgba(7,16,22,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .top-inner{max-width:1600px;margin:auto;padding:12px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:9px;min-width:240px}.mark{color:#ff4d4d;font-size:18px}.brand strong{display:block;font-size:13px;letter-spacing:.04em}.brand span{display:block;color:var(--muted);font-size:10px;letter-spacing:.12em}
+    .top-actions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .btn,.link-btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:7px;padding:7px 10px;cursor:pointer;text-decoration:none;font-weight:800;font-size:11px;letter-spacing:.04em}
+    .btn:hover,.link-btn:hover{border-color:var(--blue)}.btn.primary{background:#123149;border-color:#245f86}.btn.danger{border-color:#703337;color:#ffabab}
+    .shell{max-width:1600px;margin:auto;padding:16px 18px 60px}
+    .hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start;margin-bottom:14px}
+    .hero h1{margin:0 0 4px;font-size:22px}.hero p{margin:0;color:var(--muted);max-width:980px}.api-box{text-align:right;color:var(--muted);font-size:11px}.api-box code{display:block;margin-top:3px;color:var(--cyan);max-width:520px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .status-grid{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px;margin:12px 0 16px}.stat{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:10px}.stat b{display:block;font-size:18px}.stat span{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+    .toolbar{display:flex;gap:8px;align-items:end;flex-wrap:wrap;border:1px solid var(--line);background:var(--panel);padding:10px;border-radius:9px;margin-bottom:12px}.field{display:flex;flex-direction:column;gap:4px}.field label{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.09em}.field input{background:#071119;color:var(--text);border:1px solid var(--line);border-radius:6px;padding:7px 8px}
+    .spacer{flex:1}
+    .legend{display:flex;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:10px;margin:0 0 12px}.legend span{display:inline-flex;gap:5px;align-items:center}.dot{width:8px;height:8px;border-radius:50%;display:inline-block}.dot.green{background:var(--green)}.dot.yellow{background:var(--yellow)}.dot.red{background:var(--red)}.dot.blue{background:var(--blue)}
+    .date-list{display:flex;flex-direction:column;gap:7px}.date-card{border:1px solid var(--line);border-radius:9px;background:var(--panel);overflow:hidden}.date-card[open]{border-color:#315067}.date-summary{list-style:none;display:grid;grid-template-columns:140px minmax(160px,1fr) auto;gap:10px;align-items:center;padding:10px 12px;cursor:pointer}.date-summary::-webkit-details-marker{display:none}.date-title{font-weight:900;font-size:13px}.date-sub{color:var(--muted);font-size:10px}.badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.badge{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;padding:3px 7px;font-size:9px;font-weight:900;letter-spacing:.05em;white-space:nowrap}.badge.good{color:#9dffc6;border-color:#246943;background:#0e2c1c}.badge.warn{color:#ffe59a;border-color:#705c27;background:#2b2411}.badge.bad{color:#ffb4b4;border-color:#703337;background:#2d1114}.badge.info{color:#a9ddff;border-color:#2d5d7d;background:#102638}.badge.neutral{color:#b8c7d0}.date-body{border-top:1px solid var(--line);padding:12px}.loading{color:var(--muted);padding:12px}.error{border:1px solid #703337;background:#2d1114;color:#ffc3c3;padding:10px;border-radius:7px}
+    .day-overview{display:grid;grid-template-columns:repeat(6,minmax(100px,1fr));gap:7px;margin-bottom:10px}.mini{background:#09141c;border:1px solid var(--line);border-radius:7px;padding:8px}.mini b{font-size:15px;display:block}.mini span{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.07em}
+    .section{border:1px solid var(--line);border-radius:8px;margin-top:9px;overflow:hidden}.section>summary{list-style:none;background:#0b1821;padding:8px 10px;cursor:pointer;font-weight:900}.section>summary::-webkit-details-marker{display:none}.section-body{padding:9px}
+    .league{margin-top:9px}.league>summary{display:flex;align-items:center;gap:8px}.league-chip{font-size:9px;border:1px solid #37627e;color:#b9e6ff;background:#102536;border-radius:5px;padding:2px 6px}.league-count{color:var(--muted);font-size:10px}
+    .game-list{display:flex;flex-direction:column;gap:7px}.game{border:1px solid var(--line);border-radius:8px;background:#08131a;overflow:hidden}.game>summary{list-style:none;display:grid;grid-template-columns:55px minmax(240px,1fr) 100px minmax(180px,auto);gap:9px;align-items:center;padding:8px 9px;cursor:pointer}.game>summary::-webkit-details-marker{display:none}.matchup{font-weight:900}.teamsub{color:var(--muted);font-size:9px}.score{text-align:center;font-weight:950;font-size:16px}.gameflags{display:flex;gap:5px;justify-content:flex-end;flex-wrap:wrap}.game-body{border-top:1px solid var(--line);padding:10px}
+    .two-col{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(420px,1.4fr);gap:10px}.card{border:1px solid var(--line);background:#0a161e;border-radius:7px;padding:9px}.card h4{margin:0 0 7px;font-size:11px;text-transform:uppercase;letter-spacing:.07em}.kv{display:grid;grid-template-columns:145px minmax(0,1fr);gap:4px 8px;font-size:11px}.kv .k{color:var(--muted)}.kv code{overflow-wrap:anywhere;color:#d5efff}
+    table{width:100%;border-collapse:collapse;font-size:10px}th,td{border-bottom:1px solid #1d2d37;padding:6px;text-align:left;vertical-align:top}th{color:var(--muted);font-size:9px;text-transform:uppercase}.media-title{font-weight:800}.url{max-width:390px;overflow-wrap:anywhere}.yes{color:var(--green);font-weight:900}.no{color:var(--muted)}
+    .gc-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}.gc-summary{display:grid;grid-template-columns:repeat(6,minmax(82px,1fr));gap:6px}.gc-metric{border:1px solid var(--line);background:#071219;border-radius:6px;padding:7px}.gc-metric b{display:block;font-size:14px}.gc-metric span{color:var(--muted);font-size:8px;text-transform:uppercase}.plays{max-height:240px;overflow:auto}.play{padding:5px 0;border-bottom:1px solid #1b2932;font-size:10px}.play b{color:#c9eaff}.play span{color:var(--muted);margin-left:5px}
+    pre{margin:0;background:#050b0f;border:1px solid #1f303b;border-radius:6px;padding:9px;max-height:420px;overflow:auto;font:10px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#c9dce7;white-space:pre-wrap;overflow-wrap:anywhere}.raw-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}
+    .endpoint{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:10px;margin:14px 0}.endpoint-row{display:flex;gap:8px}.endpoint-row input{flex:1;background:#071119;color:var(--text);border:1px solid var(--line);border-radius:6px;padding:7px}.endpoint-links{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+    .empty{color:var(--muted);padding:8px;font-style:italic}
+    @media(max-width:950px){.status-grid{grid-template-columns:repeat(2,1fr)}.day-overview{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.game>summary{grid-template-columns:45px 1fr auto}.gameflags{grid-column:1/-1;justify-content:flex-start}.date-summary{grid-template-columns:1fr}.badges{justify-content:flex-start}.api-box{text-align:left}.hero{grid-template-columns:1fr}.gc-summary{grid-template-columns:repeat(3,1fr)}}
+  </style>
+</head>
+<body>
+  <div class="top">
+    <div class="top-inner">
+      <div class="brand"><span class="mark">⬢</span><div><strong>SPORTS BIG BOARD</strong><span>BACKEND INSPECTOR • v5.1.13</span></div></div>
+      <div class="top-actions">
+        <a class="link-btn" href="index.html">OPEN BIG BOARD</a>
+        <button class="btn" id="refreshLoaded">REFRESH LOADED</button>
+        <button class="btn" id="loadVisible">LOAD VISIBLE SUMMARIES</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <h1>Backend Inspector</h1>
+        <p>Read-only production view of the data feeding the score ribbon, Day State, media plans, and Game Center. Expand a date, then a league/game, to determine whether missing information is already present in the backend or is being lost in the frontend.</p>
+      </div>
+      <div class="api-box">API BASE<code id="apiBaseText">detecting…</code></div>
+    </section>
+
+    <section class="status-grid">
+      <div class="stat"><b id="backendVersion">—</b><span>Backend Version</span></div>
+      <div class="stat"><b id="backendHealth">—</b><span>Backend Health</span></div>
+      <div class="stat"><b id="loadedDates">0</b><span>Loaded Dates</span></div>
+      <div class="stat"><b id="loadedGames">0</b><span>Games Seen</span></div>
+      <div class="stat"><b id="loadedMedia">0</b><span>Playable Media</span></div>
+    </section>
+
+    <section class="toolbar">
+      <div class="field"><label>Start date</label><input id="startDate" type="date"></div>
+      <div class="field"><label>End date</label><input id="endDate" type="date"></div>
+      <button class="btn primary" id="buildRange">BUILD DATE LIST</button>
+      <button class="btn" data-preset="today">TODAY</button>
+      <button class="btn" data-preset="14">LAST 14 DAYS</button>
+      <button class="btn" data-preset="30">LAST 30 DAYS</button>
+      <div class="spacer"></div>
+      <label style="color:var(--muted);font-size:10px"><input id="hideEmpty" type="checkbox"> HIDE LOADED EMPTY DATES</label>
+    </section>
+
+    <div class="legend">
+      <span><i class="dot green"></i> backend data populated</span>
+      <span><i class="dot yellow"></i> partial/incomplete</span>
+      <span><i class="dot red"></i> error, mismatch, or retired CFB contamination</span>
+      <span><i class="dot blue"></i> data available but not yet probed</span>
+    </div>
+
+    <section class="endpoint">
+      <div class="raw-head"><strong>Direct API Console</strong><span style="color:var(--muted);font-size:10px">Fetch any read-only backend endpoint</span></div>
+      <div class="endpoint-row"><input id="endpointPath" value="/api/status"><button class="btn" id="endpointFetch">FETCH</button></div>
+      <div class="endpoint-links">
+        <button class="btn" data-endpoint="/api/status">STATUS</button>
+        <button class="btn" data-endpoint="/api/day-state/status">DAY STATE STATUS</button>
+        <button class="btn" data-endpoint="/api/competition-registry">COMPETITION REGISTRY</button>
+      </div>
+      <pre id="endpointOutput">Choose an endpoint or enter any /api/... path.</pre>
+    </section>
+
+    <section id="dateList" class="date-list"></section>
+  </main>
+
+<script>
+(() => {
+  'use strict';
+  const apiBase=String(window.SBB_CONFIG?.apiBase||'').replace(/\/$/,'');
+  const $=id=>document.getElementById(id);
+  const state={days:new Map(), cards:new Map()};
+  $('apiBaseText').textContent=apiBase||location.origin;
+
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const upper=s=>String(s||'').toUpperCase();
+  const clean=s=>String(s??'').trim();
+  const dateISO=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const addDays=(iso,n)=>{const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return dateISO(d)};
+  const prettyDate=iso=>{try{return new Intl.DateTimeFormat(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'}).format(new Date(iso+'T12:00:00'))}catch(_){return iso}};
+  const teamLabel=t=>clean(t?.abbreviation||t?.shortName||t?.displayName||t?.name||t);
+  const teamName=t=>clean(t?.displayName||t?.name||t?.shortName||t?.abbreviation||t);
+  const teamKey=t=>teamLabel(t).toLowerCase().replace(/[^a-z0-9]/g,'');
+  const eventLeague=e=>upper(e?.competitionId||e?.__sbbLeague||e?.league||'');
+  const eventIds=e=>['gameCenterEventId','scoreEventId','espnEventId','gamePk','canonicalEventId','eventId','matchId','id'].map(k=>clean(e?.[k])).filter(Boolean);
+  const eventId=e=>eventIds(e)[0]||'';
+  const eventAway=e=>e?.awayTeam||e?.away||((e?.participants||[]).find(x=>x?.side==='away'))||{};
+  const eventHome=e=>e?.homeTeam||e?.home||((e?.participants||[]).find(x=>x?.side==='home'))||{};
+  const eventDate=e=>clean(e?.scheduledGameDate||e?.__sbbDate||e?.gameDate||e?.date||e?.scheduledAt).slice(0,10);
+  const scoreValue=(e,side)=>{
+    const direct=e?.[side+'Score']; if(direct!==undefined&&direct!==null&&direct!=='')return direct;
+    const obj=e?.[side]; if(obj&&typeof obj==='object'&&obj.score!==undefined)return obj.score;
+    return '';
+  };
+  const statusText=e=>{const s=e?.status;if(typeof s==='string')return s;return clean(s?.type||s?.name||s?.description||s?.state||s?.detail)};
+  const safeUrl=value=>{try{const u=new URL(String(value||''),location.href);return /^https?:$/.test(u.protocol)?u.href:''}catch(_){return ''}};
+  const json=v=>JSON.stringify(v,null,2);
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+  async function fetchJSON(path,{signal}={}){
+    const url=/^https?:\/\//i.test(path)?path:apiBase+path;
+    const r=await fetch(url,{cache:'no-store',signal,headers:{'Accept':'application/json'}});
+    let data=null;try{data=await r.json()}catch(_){data={ok:false,error:'NON_JSON_RESPONSE',status:r.status}}
+    if(!r.ok&&r.status!==202){const err=new Error(data?.message||data?.error||`HTTP ${r.status}`);err.status=r.status;err.payload=data;throw err}
+    return {status:r.status,data,url};
+  }
+
+  function dayPayload(p){return p?.snapshot||p||{}}
+  function scoreRows(p){return dayPayload(p).scoreRowsByLeague||{}}
+  function plans(p){return dayPayload(p).eventPlans||{}}
+  function leagueCounts(p){const out={};for(const [lg,rows] of Object.entries(scoreRows(p)))out[upper(lg)]=(rows||[]).length;return out}
+  function comparableCounts(a,b){const aa=leagueCounts(a),bb=leagueCounts(b),keys=[...new Set([...Object.keys(aa),...Object.keys(bb)])].sort();return keys.map(k=>`${k}:${aa[k]||0}/${bb[k]||0}`).join('|')}
+  function readModelMismatch(a,b){if(!a||!b)return false;const aa=leagueCounts(a),bb=leagueCounts(b),keys=new Set([...Object.keys(aa),...Object.keys(bb)]);for(const k of keys)if((aa[k]||0)!==(bb[k]||0))return true;return false}
+  function planItems(plan){return Array.isArray(plan?.media)?plan.media:[]}
+  function playableItems(plan){return Array.isArray(plan?.playable)?plan.playable:[]}
+  function mediaPhysicalKey(m){return clean(m?.youtubeId||m?.mediaUrl||m?.externalUrl||m?.assetKey||m?.id||json(m))}
+
+  function findPlan(dayPlans,league,row){
+    const ids=new Set(eventIds(row));const away=teamKey(eventAway(row)),home=teamKey(eventHome(row));
+    let teamFallback=null;
+    for(const [key,p] of Object.entries(dayPlans||{})){
+      if(!p||typeof p!=='object')continue;
+      const ev=p.event||{};const plg=upper(p.league||eventLeague(ev)||String(key).split(':',1)[0]);
+      if(plg&&league&&plg!==league)continue;
+      const pids=eventIds(ev);if(ids.size&&pids.some(x=>ids.has(x)))return {key,plan:p};
+      if(!teamFallback&&away&&home&&teamKey(eventAway(ev))===away&&teamKey(eventHome(ev))===home)teamFallback={key,plan:p};
+    }
+    return teamFallback||{key:'',plan:null};
+  }
+
+  function badge(text,kind='neutral'){return `<span class="badge ${kind}">${esc(text)}</span>`}
+  function countPlayable(day){let n=0;for(const p of Object.values(plans(day)||{}))n+=playableItems(p).length;return n}
+  function countMedia(day){const seen=new Set();for(const p of Object.values(plans(day)||{}))for(const m of planItems(p)){const k=mediaPhysicalKey(m);if(k)seen.add(k)}return seen.size}
+  function totalGames(day){return Object.values(scoreRows(day)||{}).reduce((n,r)=>n+(r||[]).length,0)}
+  function cfbContamination(day){return (scoreRows(day)?.CFB||[]).length>0||Object.entries(plans(day)||{}).some(([k,p])=>upper(p?.league||eventLeague(p?.event)||String(k).split(':')[0])==='CFB')}
+
+  function updateGlobal(){
+    let dates=0,games=0,media=0;
+    for(const d of state.days.values())if(d.ribbon||d.dayState){dates++;const p=d.ribbon||d.dayState;games+=totalGames(p);media+=countPlayable(p)}
+    $('loadedDates').textContent=dates;$('loadedGames').textContent=games;$('loadedMedia').textContent=media;
+  }
+
+  function dateSummaryHTML(date,d){
+    if(d?.loading)return `<span class="date-sub">Loading backend data…</span>`;
+    if(d?.error&&!d.ribbon&&!d.dayState)return `<span class="date-sub" style="color:var(--red)">${esc(d.error)}</span>`;
+    if(!d?.ribbon&&!d?.dayState)return `<span class="date-sub">Not loaded. Expand this date to inspect it.</span>`;
+    const p=d.ribbon||d.dayState,games=totalGames(p),playable=countPlayable(p),allMedia=countMedia(p),leagueN=Object.values(leagueCounts(p)).filter(Boolean).length;
+    return `<span class="date-sub">${games} games • ${leagueN} leagues • ${playable} playable / ${allMedia} found media</span>`;
+  }
+
+  function dateBadgesHTML(d){
+    if(d?.loading)return badge('LOADING','info');
+    if(!d?.ribbon&&!d?.dayState)return badge('NOT LOADED','neutral');
+    const p=d.ribbon||d.dayState;const games=totalGames(p),playable=countPlayable(p);let html='';
+    html+=badge(`${games} GAMES`,games?'good':'neutral');
+    html+=badge(`${playable} PLAYABLE`,playable?'good':'warn');
+    if(d.ribbon&&d.dayState)html+=readModelMismatch(d.ribbon,d.dayState)?badge('READ MODEL MISMATCH','bad'):badge('READ MODELS MATCH','good');
+    else html+=badge('ONE READ MODEL','warn');
+    if(d.gameCenters?.size){let rich=0,partial=0,errors=0,loading=0;for(const g of d.gameCenters.values()){if(g?.loading)loading++;else if(g?.error)errors++;else if(g?.data){const ok=g.data.coverage?.complete!==false&&!g.data.partial;if(ok)rich++;else partial++;}}html+=badge(`GC ${rich} RICH / ${partial} PARTIAL / ${errors} ERR${loading?` / ${loading} LOAD`:''}`,(errors||partial)?'warn':'good');}
+    else html+=badge('GC NOT PROBED','info');
+    if(cfbContamination(p))html+=badge('CFB DATA PRESENT','bad');
+    if(d.error)html+=badge('PARTIAL ERROR','warn');
+    return html;
+  }
+
+  function makeDateCard(date){
+    const details=document.createElement('details');details.className='date-card';details.dataset.date=date;
+    details.innerHTML=`<summary class="date-summary"><div><div class="date-title">${esc(prettyDate(date))}</div><div>${esc(date)}</div></div><div class="date-summary-copy">${dateSummaryHTML(date,null)}</div><div class="badges">${dateBadgesHTML(null)}</div></summary><div class="date-body"><div class="loading">Expand to load.</div></div>`;
+    details.addEventListener('toggle',()=>{if(details.open&&!state.days.get(date)?.loaded)loadDate(date)});
+    state.cards.set(date,details);return details;
+  }
+
+  function buildRange(start,end){
+    const out=$('dateList');out.innerHTML='';state.cards.clear();
+    if(!start||!end||start>end){out.innerHTML='<div class="error">Choose a valid start and end date.</div>';return}
+    let cur=start,guard=0;while(cur<=end&&guard<800){out.appendChild(makeDateCard(cur));cur=addDays(cur,1);guard++}
+    applyHideEmpty();
+  }
+
+  function updateDateCard(date){
+    const card=state.cards.get(date),d=state.days.get(date)||{};if(!card)return;
+    card.querySelector('.date-summary-copy').innerHTML=dateSummaryHTML(date,d);card.querySelector('.badges').innerHTML=dateBadgesHTML(d);
+    if(d.loaded)card.querySelector('.date-body').innerHTML=renderDateBody(date,d);
+    applyHideEmpty();updateGlobal();
+  }
+
+  async function loadDate(date,force=false){
+    const prev=state.days.get(date)||{};if(prev.loading)return;if(prev.loaded&&!force)return;
+    const d={...prev,loading:true,error:''};state.days.set(date,d);updateDateCard(date);
+    const [ribbonRes,dayRes]=await Promise.allSettled([
+      fetchJSON(`/api/history/ribbon?date=${encodeURIComponent(date)}`),
+      fetchJSON(`/api/day-state?date=${encodeURIComponent(date)}`)
+    ]);
+    d.loading=false;d.loaded=true;d.loadedAt=Date.now();
+    if(ribbonRes.status==='fulfilled')d.ribbon=ribbonRes.value.data;else d.ribbon=null;
+    if(dayRes.status==='fulfilled')d.dayState=dayRes.value.data;else d.dayState=null;
+    const errors=[];if(ribbonRes.status==='rejected')errors.push('ribbon: '+ribbonRes.reason.message);if(dayRes.status==='rejected')errors.push('day-state: '+dayRes.reason.message);d.error=errors.join(' | ');
+    state.days.set(date,d);updateDateCard(date);
+  }
+
+  function renderDateBody(date,d){
+    if(!d.ribbon&&!d.dayState)return `<div class="error">${esc(d.error||'No backend response')}</div>`;
+    const p=d.ribbon||d.dayState;const rows=scoreRows(p);const dayPlans=plans(p);const counts=leagueCounts(p);const games=totalGames(p);const playable=countPlayable(p);const found=countMedia(p);
+    const inventory=dayPayload(p).scoreInventoryComplete;const timing=dayPayload(p).timing||{};
+    let html='';
+    if(d.error)html+=`<div class="error">One read model failed: ${esc(d.error)}</div>`;
+    if(cfbContamination(p))html+=`<div class="error"><strong>RETIRED CFB DATA DETECTED.</strong> The backend is still emitting CFB rows or plans on this date.</div>`;
+    if(d.ribbon&&d.dayState&&readModelMismatch(d.ribbon,d.dayState))html+=`<div class="error"><strong>BACKEND READ-MODEL DISCONNECT.</strong> Ribbon counts and Day State counts differ: ${esc(comparableCounts(d.ribbon,d.dayState))}</div>`;
+    html+=`<div class="day-overview">
+      <div class="mini"><b>${games}</b><span>Games</span></div><div class="mini"><b>${Object.values(counts).filter(Boolean).length}</b><span>Leagues</span></div>
+      <div class="mini"><b>${found}</b><span>Media Found</span></div><div class="mini"><b>${playable}</b><span>Playable Media</span></div>
+      <div class="mini"><b>${inventory===true?'YES':inventory===false?'NO':'—'}</b><span>Inventory Complete</span></div><div class="mini"><b>${clean(timing.totalMs||timing.dayStateMs||'—')}</b><span>Backend ms</span></div>
+    </div>`;
+    html+=`<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px"><button class="btn" onclick="window.SBB_INSPECTOR.probeDate('${esc(date)}')">PROBE ALL GAME CENTERS</button><button class="btn" onclick="window.SBB_INSPECTOR.refreshDate('${esc(date)}')">REFRESH DATE</button></div>`;
+    const leagues=Object.keys(rows).sort((a,b)=>a.localeCompare(b));
+    if(!games)html+=`<div class="empty">Backend currently reports no games for this date.</div>`;
+    for(const league of leagues){const list=rows[league]||[];if(!list.length)continue;html+=`<details class="section league" open><summary><span class="league-chip">${esc(league)}</span><span>${esc(league)}</span><span class="league-count">${list.length} games</span></summary><div class="section-body"><div class="game-list">`;
+      list.forEach((row,i)=>{const foundPlan=findPlan(dayPlans,upper(league),row);html+=renderGame(date,upper(league),row,foundPlan.key,foundPlan.plan,i)});
+      html+=`</div></div></details>`;
+    }
+    html+=rawBlock('RAW RIBBON JSON',d.ribbon,'ribbon-'+date)+rawBlock('RAW DAY STATE JSON',d.dayState,'day-'+date);
+    return html;
+  }
+
+  function mediaFlags(plan){const playable=playableItems(plan),all=planItems(plan);if(playable.length)return badge(`${playable.length} PLAYABLE`,'good');if(all.length)return badge(`${all.length} MEDIA / 0 PLAYABLE`,'warn');return badge('NO MEDIA','bad')}
+  function gameCenterBadge(date,league,row){const d=state.days.get(date),key=gcKey(league,row),g=d?.gameCenters?.get(key);if(!g)return badge('GC NOT PROBED','info');if(g.loading)return badge('GC LOADING','info');if(g.error)return badge('GC ERROR','bad');const data=g.data||{};const complete=data.coverage?.complete!==false&&!data.partial;return badge(complete?'GC RICH':'GC PARTIAL',complete?'good':'warn')}
+  function gcKey(league,row){return `${league}:${eventId(row)||teamKey(eventAway(row))+'-'+teamKey(eventHome(row))}`}
+
+  function renderGame(date,league,row,planKey,plan,index){
+    const away=eventAway(row),home=eventHome(row),as=scoreValue(row,'away'),hs=scoreValue(row,'home'),status=statusText(row)||'UNKNOWN';
+    const ids=eventIds(row);const provider=clean(row?.gameCenterProviderHint||row?.scoreProvider||row?.provider||'');const key=gcKey(league,row);
+    return `<details class="game" data-gc-key="${esc(key)}"><summary><span class="league-chip">${esc(league)}</span><div><div class="matchup">${esc(teamName(away)||'Away')} @ ${esc(teamName(home)||'Home')}</div><div class="teamsub">${esc(status)} • ${esc(clean(row?.scheduledAt||row?.date||''))}</div></div><div class="score">${esc(as)} ${as!==''||hs!==''?'–':''} ${esc(hs)}</div><div class="gameflags">${mediaFlags(plan)}${gameCenterBadge(date,league,row)}</div></summary><div class="game-body">
+      <div class="two-col"><div class="card"><h4>Backend Identity</h4><div class="kv">
+        <div class="k">Competition</div><code>${esc(league)}</code><div class="k">Event ID used</div><code>${esc(eventId(row)||'—')}</code><div class="k">All IDs</div><code>${esc(ids.join(' • ')||'—')}</code>
+        <div class="k">Provider hint</div><code>${esc(provider||'—')}</code><div class="k">Date</div><code>${esc(eventDate(row)||date)}</code><div class="k">Status</div><code>${esc(status)}</code>
+        <div class="k">Away</div><code>${esc(teamName(away))} [${esc(teamLabel(away))}]</code><div class="k">Home</div><code>${esc(teamName(home))} [${esc(teamLabel(home))}]</code><div class="k">Media plan key</div><code>${esc(planKey||'NO PLAN')}</code>
+      </div></div><div class="card"><h4>Media Found</h4>${renderMedia(plan)}</div></div>
+      <div class="card" style="margin-top:10px"><h4>Game Center</h4><div class="gc-host" data-gc-host="${esc(key)}">${renderGameCenterState(date,league,row)}</div></div>
+      ${rawBlock('RAW SCORE EVENT',row,`event-${date}-${league}-${index}`)}${rawBlock('RAW MEDIA PLAN',plan,`plan-${date}-${league}-${index}`)}
+    </div></details>`;
+  }
+
+  function renderMedia(plan){
+    if(!plan)return '<div class="empty">No event media plan exists for this backend game.</div>';
+    const playable=new Set(playableItems(plan).map(mediaPhysicalKey));const all=[];const seen=new Set();for(const m of [...playableItems(plan),...planItems(plan)]){const k=mediaPhysicalKey(m);if(!k||seen.has(k))continue;seen.add(k);all.push(m)}
+    if(!all.length)return '<div class="empty">The media plan exists, but contains no media candidates.</div>';
+    let html='<table><thead><tr><th>Playable</th><th>Tier</th><th>Title / Source</th><th>Link</th><th>Association</th></tr></thead><tbody>';
+    for(const m of all){const k=mediaPhysicalKey(m),yt=clean(m?.youtubeId),url=safeUrl(m?.mediaUrl||m?.externalUrl||(yt?`https://www.youtube.com/watch?v=${yt}`:''));const title=clean(m?.title||m?.name||m?.headline||m?.id||'Media');const source=clean(m?.sourceName||m?.source||m?.channelTitle||m?.provider||'');html+=`<tr><td class="${playable.has(k)?'yes':'no'}">${playable.has(k)?'YES':'NO'}</td><td>${esc(upper(m?.recapTier||m?.tier||'—'))}</td><td><div class="media-title">${esc(title)}</div><div class="teamsub">${esc(source)}</div></td><td class="url">${url?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(yt?`YouTube ${yt}`:url)}</a>`:'—'}</td><td>${esc(m?.associationMethod||m?.mediaScope||'—')}</td></tr>`}
+    return html+'</tbody></table>';
+  }
+
+  function rawBlock(title,value,id){
+    if(value===undefined||value===null)return '';
+    const text=json(value);return `<details class="section"><summary>${esc(title)}</summary><div class="section-body"><div class="raw-head"><span>${esc(title)}</span><button class="btn" onclick="window.SBB_INSPECTOR.copyRaw('${esc(id)}')">COPY JSON</button></div><pre id="raw-${esc(id)}">${esc(text)}</pre></div></details>`;
+  }
+
+  function renderGameCenterState(date,league,row){
+    const d=state.days.get(date),key=gcKey(league,row),g=d?.gameCenters?.get(key);const id=eventId(row);
+    if(!id)return '<div class="error">No backend event ID is available, so Game Center cannot be requested.</div>';
+    if(!g)return `<div class="gc-head"><button class="btn primary" onclick="window.SBB_INSPECTOR.loadGC('${esc(date)}','${esc(league)}','${esc(key)}')">LOAD GAME CENTER</button><span class="date-sub">Lazy loaded so browsing dates does not hammer the backend.</span></div>`;
+    if(g.loading)return '<div class="loading">Loading/polling Game Center…</div>';
+    if(g.error)return `<div class="error">${esc(g.error)}</div><div style="margin-top:7px"><button class="btn" onclick="window.SBB_INSPECTOR.loadGC('${esc(date)}','${esc(league)}','${esc(key)}',true)">RETRY / FORCE REFRESH</button></div>`;
+    return renderGameCenter(g.data,g.apiUrl);
+  }
+
+  function renderGameCenter(data,apiUrl){
+    data=data||{};const cov=data.coverage||{};const sections=data.playerStatSections||[];const playerRows=sections.reduce((n,s)=>n+(s?.rows||[]).length,0);const teamStats=data.teamStats||[];const timeline=data.timeline||[];const scoring=data.scoringPlays||[];const complete=cov.complete!==false&&!data.partial;let html=`<div class="gc-head">${badge(complete?'COMPLETE':'PARTIAL',complete?'good':'warn')}${badge(clean(data.source||'UNKNOWN SOURCE'),'info')} ${apiUrl?`<a class="link-btn" href="${esc(apiUrl)}" target="_blank" rel="noopener">OPEN RAW API</a>`:''}</div>`;
+    html+=`<div class="gc-summary"><div class="gc-metric"><b>${complete?'YES':'NO'}</b><span>Complete</span></div><div class="gc-metric"><b>${teamStats.length}</b><span>Team Stats</span></div><div class="gc-metric"><b>${sections.length}</b><span>Player Sections</span></div><div class="gc-metric"><b>${playerRows}</b><span>Player Rows</span></div><div class="gc-metric"><b>${timeline.length}</b><span>Plays</span></div><div class="gc-metric"><b>${scoring.length}</b><span>Scoring Plays</span></div></div>`;
+    const enrich=data.ncaafEnrichment;if(enrich)html+=`<div class="card" style="margin-top:8px"><h4>NCAAF Enrichment</h4><pre>${esc(json(enrich))}</pre></div>`;
+    if(teamStats.length){html+='<details class="section"><summary>TEAM STATS</summary><div class="section-body"><table><thead><tr><th>Stat</th><th>Away</th><th>Home</th></tr></thead><tbody>';for(const s of teamStats.slice(0,60))html+=`<tr><td>${esc(s?.label)}</td><td>${esc(s?.away)}</td><td>${esc(s?.home)}</td></tr>`;html+='</tbody></table></div></details>'}
+    if(scoring.length){html+='<details class="section"><summary>SCORING PLAYS</summary><div class="section-body plays">';for(const p of scoring.slice(0,100))html+=`<div class="play"><b>${esc(p?.periodLabel||'')}</b><span>${esc(p?.description||'')}</span></div>`;html+='</div></details>'}
+    if(sections.length){html+='<details class="section"><summary>PLAYER SECTIONS</summary><div class="section-body">';for(const s of sections)html+=`<div class="play"><b>${esc(s?.title||'Players')}</b><span>${(s?.rows||[]).length} rows</span></div>`;html+='</div></details>'}
+    html+=rawBlock('RAW GAME CENTER JSON',data,'gc-'+Math.random().toString(36).slice(2));return html;
+  }
+
+  function findGame(date,league,key){
+    const d=state.days.get(date),p=d?.ribbon||d?.dayState;if(!p)return null;for(const row of scoreRows(p)?.[league]||[])if(gcKey(league,row)===key)return row;return null;
+  }
+
+  async function loadGC(date,league,key,force=false){
+    const d=state.days.get(date);if(!d)return;d.gameCenters ||= new Map();const row=findGame(date,league,key);if(!row)return;
+    const existing=d.gameCenters.get(key);if(existing?.loading)return;d.gameCenters.set(key,{loading:true});rerenderGCHost(date,league,row);
+    try{
+      const id=eventId(row);const params=new URLSearchParams({async:'1',date,away:teamLabel(eventAway(row)),home:teamLabel(eventHome(row))});const start=clean(row?.scheduledAt||row?.date||'');const provider=clean(row?.gameCenterProviderHint||row?.scoreProvider||row?.provider||'');if(start)params.set('start',start);if(provider)params.set('provider',provider);if(force)params.set('refresh','1');
+      const path=`/api/events/${encodeURIComponent(league)}/${encodeURIComponent(id)}/game-center?${params}`;let response=await fetchJSON(path),polls=0;while((response.status===202||response.data?.pending)&&polls<10){polls++;await sleep(Math.max(350,Math.min(1200,Number(response.data?.retryAfterMs)||600)));params.delete('refresh');response=await fetchJSON(`/api/events/${encodeURIComponent(league)}/${encodeURIComponent(response.data?.resolvedEventId||id)}/game-center?${params}`)}
+      if(response.status===202||response.data?.pending)throw new Error('Game Center remained pending after 10 polls');const data=response.data?.data||response.data;d.gameCenters.set(key,{loading:false,data,apiUrl:response.url});
+    }catch(err){d.gameCenters.set(key,{loading:false,error:err.message||String(err)})}
+    rerenderGCHost(date,league,row);updateDateCardBadgesOnly(date);
+  }
+
+  function rerenderGCHost(date,league,row){const card=state.cards.get(date);if(!card)return;const key=gcKey(league,row),host=card.querySelector(`[data-gc-host="${CSS.escape(key)}"]`);if(host)host.innerHTML=renderGameCenterState(date,league,row);const game=card.querySelector(`.game[data-gc-key="${CSS.escape(key)}"]`);if(game){const flags=game.querySelector('.gameflags');const p=findPlan(plans((state.days.get(date)?.ribbon||state.days.get(date)?.dayState)),league,row).plan;if(flags)flags.innerHTML=mediaFlags(p)+gameCenterBadge(date,league,row)}}
+  function updateDateCardBadgesOnly(date){const card=state.cards.get(date),d=state.days.get(date);if(card&&d)card.querySelector('.badges').innerHTML=dateBadgesHTML(d)}
+
+  async function probeDate(date){const d=state.days.get(date),p=d?.ribbon||d?.dayState;if(!p)return;const jobs=[];for(const [league,rows] of Object.entries(scoreRows(p)))for(const row of rows||[])jobs.push(()=>loadGC(date,upper(league),gcKey(upper(league),row)));for(let i=0;i<jobs.length;i+=3)await Promise.all(jobs.slice(i,i+3).map(fn=>fn()))}
+
+  async function loadVisible(){const cards=[...state.cards.values()].filter(c=>c.style.display!=='none');for(let i=0;i<cards.length;i+=4)await Promise.all(cards.slice(i,i+4).map(c=>loadDate(c.dataset.date)))}
+  async function refreshLoaded(){const dates=[...state.days.entries()].filter(([,d])=>d.loaded).map(([date])=>date);for(let i=0;i<dates.length;i+=4)await Promise.all(dates.slice(i,i+4).map(date=>loadDate(date,true)))}
+  function applyHideEmpty(){const hide=$('hideEmpty').checked;for(const [date,card] of state.cards){const d=state.days.get(date),p=d?.ribbon||d?.dayState;card.style.display=hide&&d?.loaded&&p&&totalGames(p)===0?'none':''}}
+
+  async function loadStatus(){try{const r=await fetchJSON('/api/status'),v=r.data?.version||'—';$('backendVersion').textContent=v;$('backendHealth').textContent=r.data?.ok===false?'ERROR':'ONLINE';$('backendHealth').style.color=r.data?.ok===false?'var(--red)':'var(--green)'}catch(err){$('backendVersion').textContent='—';$('backendHealth').textContent='OFFLINE';$('backendHealth').style.color='var(--red)'}}
+  async function endpointFetch(path){path=clean(path||$('endpointPath').value);if(!path.startsWith('/'))path='/'+path;$('endpointPath').value=path;$('endpointOutput').textContent='Loading…';try{const r=await fetchJSON(path);$('endpointOutput').textContent=json(r.data)}catch(err){$('endpointOutput').textContent=json(err.payload||{error:err.message})}}
+
+  window.SBB_INSPECTOR={
+    loadGC,probeDate,refreshDate:date=>loadDate(date,true),
+    copyRaw:async id=>{const el=$('raw-'+id);if(!el)return;try{await navigator.clipboard.writeText(el.textContent);const old=el.style.borderColor;el.style.borderColor='var(--green)';setTimeout(()=>el.style.borderColor=old,700)}catch(_){} }
+  };
+
+  $('buildRange').addEventListener('click',()=>buildRange($('startDate').value,$('endDate').value));
+  $('loadVisible').addEventListener('click',loadVisible);$('refreshLoaded').addEventListener('click',refreshLoaded);$('hideEmpty').addEventListener('change',applyHideEmpty);$('endpointFetch').addEventListener('click',()=>endpointFetch());$('endpointPath').addEventListener('keydown',e=>{if(e.key==='Enter')endpointFetch()});
+  document.querySelectorAll('[data-endpoint]').forEach(b=>b.addEventListener('click',()=>endpointFetch(b.dataset.endpoint)));
+  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>{const today=dateISO(new Date()),p=b.dataset.preset;if(p==='today'){$('startDate').value=today;$('endDate').value=today}else{const n=Number(p)||14;$('startDate').value=addDays(today,-n);$('endDate').value=today}buildRange($('startDate').value,$('endDate').value)}));
+
+  const today=dateISO(new Date());$('startDate').value=addDays(today,-14);$('endDate').value=addDays(today,7);buildRange($('startDate').value,$('endDate').value);loadStatus();
+})();
+</script>
+</body>
+</html>

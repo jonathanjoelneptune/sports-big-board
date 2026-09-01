@@ -1,4 +1,4 @@
-"""Sports Big Board v5.1.12 — populated NCAAF Game Center.
+"""Sports Big Board v5.1.13 — populated NCAAF Game Center.
 
 NCAAF keeps ESPN event identity because the ranked schedule/ribbon is built from
 ESPN/AP data.  Detailed Game Center data uses the same American-football model as
@@ -27,7 +27,7 @@ from urllib.parse import urlencode
 
 from . import game_center as _gc
 
-VERSION = "5.1.12-ncaaf-game-center-2"
+VERSION = "5.1.13-ncaaf-game-center-2"
 _TARGET = "NCAAF"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
@@ -469,7 +469,7 @@ def _patch_server(server):
         server.MILESTONE_CONSOLE.record(
             "game-center",
             "PASS",
-            "v5.1.12 NCAAF populated football Game Center installed",
+            "v5.1.13 NCAAF populated football Game Center installed",
             {"primary": "ESPN college-football", "fallback": "Highlightly NCAA FBS", "namespace": _TARGET},
         )
     except Exception:
