@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Sports Big Board — Backend Inspector</title>
-  <script src="config.js?v=5.1.14"></script>
-  <script src="architecture/curated-media-overrides.js?v=5.1.14"></script>
+  <script src="config.js?v=5.1.15"></script>
+  <script src="architecture/curated-media-overrides.js?v=5.1.15"></script>
   <style>
     :root{
       color-scheme:dark;
@@ -48,11 +48,11 @@
 <body>
   <div class="top">
     <div class="top-inner">
-      <div class="brand"><span class="mark">⬢</span><div><strong>SPORTS BIG BOARD</strong><span>BACKEND INSPECTOR • v5.1.14</span></div></div>
+      <div class="brand"><span class="mark">⬢</span><div><strong>SPORTS BIG BOARD</strong><span>BACKEND INSPECTOR • v5.1.15</span></div></div>
       <div class="top-actions">
         <a class="link-btn" href="index.html">OPEN BIG BOARD</a>
         <button class="btn" id="refreshLoaded">REFRESH LOADED</button>
-        <button class="btn" id="loadVisible">REFRESH FILTERED RANGE</button>
+        <button class="btn" id="loadVisible">LOAD FILTERED RANGE (MANUAL)</button>
       </div>
     </div>
   </div>
@@ -82,7 +82,7 @@
       <button class="btn" data-preset="today">TODAY</button>
       <button class="btn" data-preset="14">LAST 14 DAYS</button>
       <button class="btn" data-preset="30">LAST 30 DAYS</button>
-      <span style="color:var(--muted);font-size:10px">Filtered dates auto-load ribbon + media DB audit + cached Game Center state.</span><div class="spacer"></div>
+      <span style="color:var(--muted);font-size:10px">Date ranges are local only. Expand a date to load its ribbon + authoritative media DB + cached Game Center snapshot. The inspector does no background range loading.</span><div class="spacer"></div>
       <label style="color:var(--muted);font-size:10px"><input id="hideEmpty" type="checkbox"> HIDE LOADED EMPTY DATES</label>
     </section>
 
@@ -187,16 +187,16 @@
   }
 
   function dateSummaryHTML(date,d){
-    if(d?.loading)return `<span class="date-sub">Loading ribbon + media database audit + cached Game Center…</span>`;
+    if(d?.loading)return `<span class="date-sub">Loading one date: ribbon + authoritative media DB + cached Game Center…</span>`;
     if(d?.error&&!d.ribbon&&!d.dayState)return `<span class="date-sub" style="color:var(--red)">${esc(d.error)}</span>`;
-    if(!d?.loaded)return `<span class="date-sub">Queued for automatic backend inspection…</span>`;
+    if(!d?.loaded)return `<span class="date-sub">Not loaded. Expand this date to inspect it.</span>`;
     const p=d.ribbon||d.dayState,inv=inventory(d),auth=authoritySummary(d),active=Number(auth.activeGames||totalActiveGames(p));
     const completed=Number(inv.completedGames||0),dbReady=Number(inv.playableGames??auth.playableGames??0),ribbonReady=ribbonReadyGames(p),frontReady=frontendReadyGames(p),gcRich=Number(auth.gcRich||0),gcPartial=Number(auth.gcPartial||0);
     return `<span class="date-sub">${active} active games • DB ${dbReady}/${completed||active} playable • frontend ${frontReady} ready (${ribbonReady} compact) • GC cache ${gcRich} rich / ${gcPartial} partial</span>`;
   }
 
   function dateBadgesHTML(d){
-    if(d?.loading)return badge('LOADING','info');if(!d?.loaded)return badge('QUEUED','neutral');
+    if(d?.loading)return badge('LOADING','info');if(!d?.loaded)return badge('NOT LOADED','neutral');
     const p=d.ribbon||d.dayState,inv=inventory(d),auth=authoritySummary(d),tiers=authorityTierGames(d);let html='';
     const active=Number(auth.activeGames||totalActiveGames(p)),dbReady=Number(inv.playableGames??auth.playableGames??0),completed=Number(inv.completedGames||active),ribbonReady=ribbonReadyGames(p),frontReady=frontendReadyGames(p);
     html+=badge(`${active} ACTIVE`,active?'good':'neutral');html+=badge(`DB ${dbReady}/${completed} READY`,dbReady?'good':'warn');html+=badge(`FRONTEND ${frontReady} READY`,frontReady===dbReady?'good':'warn');html+=badge(`COMPACT ${ribbonReady}`,ribbonReady===frontReady?'good':'warn');
@@ -208,7 +208,7 @@
 
   function makeDateCard(date){
     const details=document.createElement('details');details.className='date-card';details.dataset.date=date;
-    details.innerHTML=`<summary class="date-summary"><div><div class="date-title">${esc(prettyDate(date))}</div><div>${esc(date)}</div></div><div class="date-summary-copy">${dateSummaryHTML(date,null)}</div><div class="badges">${dateBadgesHTML(null)}</div></summary><div class="date-body"><div class="loading">Automatic inspection queued.</div></div>`;
+    details.innerHTML=`<summary class="date-summary"><div><div class="date-title">${esc(prettyDate(date))}</div><div>${esc(date)}</div></div><div class="date-summary-copy">${dateSummaryHTML(date,null)}</div><div class="badges">${dateBadgesHTML(null)}</div></summary><div class="date-body"><div class="loading">Expand this date to inspect it. No backend request has been made.</div></div>`;
     details.addEventListener('toggle',()=>{const d=state.days.get(date);if(details.open){if(!d?.loaded&&!d?.loading)loadDate(date);else updateDateCard(date)}});
     state.cards.set(date,details);return details;
   }
@@ -217,11 +217,11 @@
     const out=$('dateList');out.innerHTML='';state.cards.clear();state.days.clear();state.rangeGeneration++;
     if(!start||!end||start>end){out.innerHTML='<div class="error">Choose a valid start and end date.</div>';return}
     let cur=start,guard=0,dates=[];while(cur<=end&&guard<800){out.appendChild(makeDateCard(cur));dates.push(cur);cur=addDays(cur,1);guard++}
-    applyHideEmpty();autoLoadDates(dates,state.rangeGeneration);
-  }
-
-  async function autoLoadDates(dates,generation){
-    for(let i=0;i<dates.length;i+=4){if(generation!==state.rangeGeneration)return;await Promise.all(dates.slice(i,i+4).map(date=>loadDate(date)));}
+    applyHideEmpty();
+    // A single-date request is explicit enough to load immediately. Multi-day
+    // ranges stay completely local until the operator expands a date or presses
+    // the manual range button. This keeps the inspector off the board's hot path.
+    if(dates.length===1){const card=state.cards.get(dates[0]);if(card)card.open=true;}
   }
 
   function updateDateCard(date){
@@ -234,15 +234,16 @@
   async function loadDate(date,force=false){
     const prev=state.days.get(date)||{};if(prev.loading)return;if(prev.loaded&&!force)return;
     const d={...prev,loading:true,error:''};state.days.set(date,d);updateDateCard(date);
+    // Keep a normal date inspection bounded to two reads. The authoritative
+    // inspector endpoint already reconciles normalized media DB + cached GC.
+    // Day State/discovery remain available in the Direct API Console when needed.
     const requests=await Promise.allSettled([
       fetchJSON(`/api/history/ribbon?date=${encodeURIComponent(date)}`),
-      fetchJSON(`/api/day-state?date=${encodeURIComponent(date)}`),
-      fetchJSON(`/api/history/discovery?date=${encodeURIComponent(date)}`),
       fetchJSON(`/api/backend-inspector/date?date=${encodeURIComponent(date)}`)
     ]);
-    const [ribbonRes,dayRes,discoveryRes,authorityRes]=requests;d.loading=false;d.loaded=true;d.loadedAt=Date.now();
-    d.ribbon=ribbonRes.status==='fulfilled'?ribbonRes.value.data:null;d.dayState=dayRes.status==='fulfilled'?dayRes.value.data:null;d.discovery=discoveryRes.status==='fulfilled'?discoveryRes.value.data:null;d.authority=authorityRes.status==='fulfilled'?authorityRes.value.data:null;
-    const names=['ribbon','day-state','media-audit','authority'];const errors=[];requests.forEach((r,i)=>{if(r.status==='rejected')errors.push(`${names[i]}: ${r.reason.message}`)});d.error=errors.join(' | ');
+    const [ribbonRes,authorityRes]=requests;d.loading=false;d.loaded=true;d.loadedAt=Date.now();
+    d.ribbon=ribbonRes.status==='fulfilled'?ribbonRes.value.data:null;d.dayState=null;d.discovery=null;d.authority=authorityRes.status==='fulfilled'?authorityRes.value.data:null;
+    const names=['ribbon','authority'];const errors=[];requests.forEach((r,i)=>{if(r.status==='rejected')errors.push(`${names[i]}: ${r.reason.message}`)});d.error=errors.join(' | ');
     state.days.set(date,d);updateDateCard(date);
   }
 
@@ -268,14 +269,14 @@
       list.forEach((row,i)=>{const compact=findPlan(dayPlans,upper(league),row),authority=authorityGame(d,league,row);html+=renderGame(date,upper(league),row,compact.key,compact.plan,authority,i)});html+=`</div></div></details>`;
     }
     if(retired){const retiredRows=scoreRows(p)?.CFB||[];html+=`<details class="section"><summary style="color:var(--red)">RETIRED CFB RAW DATA (${retiredRows.length})</summary><div class="section-body"><pre>${esc(json(retiredRows))}</pre></div></details>`}
-    html+=rawBlock('RAW MEDIA DATABASE AUDIT',d.discovery,'audit-'+date)+rawBlock('RAW AUTHORITATIVE MEDIA + GC CACHE',d.authority,'authority-'+date)+rawBlock('RAW RIBBON JSON',d.ribbon,'ribbon-'+date)+rawBlock('RAW DAY STATE JSON',d.dayState,'day-'+date);return html;
+    html+=rawBlock('RAW AUTHORITATIVE MEDIA + GC CACHE',d.authority,'authority-'+date)+rawBlock('RAW RIBBON JSON',d.ribbon,'ribbon-'+date);return html;
   }
 
   function renderAuditCard(inv,auth,ribbonReady,frontReady){
-    const tiers=inv?.tiers||{};return `<div class="card" style="margin-bottom:10px"><h4>Media Database Audit vs Frontend Projection</h4><div class="gc-summary">
-      <div class="gc-metric"><b>${Number(inv?.games||auth?.activeGames||0)}</b><span>DB Games</span></div><div class="gc-metric"><b>${Number(inv?.completedGames||0)}</b><span>Completed</span></div>
+    const tiers=(inv?.tiers&&Object.keys(inv.tiers).length)?inv.tiers:(auth?.tiers||{});return `<div class="card" style="margin-bottom:10px"><h4>Media Database Audit vs Frontend Projection</h4><div class="gc-summary">
+      <div class="gc-metric"><b>${Number(inv?.games||auth?.activeGames||0)}</b><span>DB Games</span></div><div class="gc-metric"><b>${Number(inv?.completedGames||auth?.activeGames||0)}</b><span>Completed</span></div>
       <div class="gc-metric"><b>${Number(inv?.playableGames??auth?.playableGames??0)}</b><span>Playable Games</span></div><div class="gc-metric"><b>${Number(inv?.playableMedia||auth?.playableAssets||0)}</b><span>Verified Assets</span></div>
-      <div class="gc-metric"><b>${Number(inv?.candidateMedia||0)}</b><span>Candidates</span></div><div class="gc-metric"><b>${frontReady}</b><span>Frontend Ready</span></div>
+      <div class="gc-metric"><b>${Number(inv?.candidateMedia??auth?.mediaAssets??0)}</b><span>Candidates</span></div><div class="gc-metric"><b>${frontReady}</b><span>Frontend Ready</span></div>
     </div><div class="kv" style="margin-top:8px"><div class="k">DB tiers</div><code>green ${Number(tiers.green||0)} • purple/extended ${Number(tiers.extended||0)} • gold ${Number(tiers.gold||0)} • blue ${Number(tiers.blue||0)}</code><div class="k">Compact ribbon ready</div><code>${ribbonReady}</code><div class="k">Catalog complete</div><code>${Number(inv?.catalogCompleteGames||0)} / ${Number(inv?.completedGames||0)}</code><div class="k">Quality complete</div><code>${Number(inv?.qualityCompleteGames||0)} / ${Number(inv?.completedGames||0)}</code><div class="k">Upgrade eligible</div><code>${Number(inv?.upgradeEligibleGames||0)}${inv?.upgradeDue?' • UPGRADE DUE':''}</code></div></div>`;
   }
 
@@ -331,8 +332,8 @@
   function rerenderGCHost(date,league,row){const card=state.cards.get(date);if(!card)return;const key=gcKey(league,row),host=card.querySelector(`[data-gc-host="${CSS.escape(key)}"]`);if(host)host.innerHTML=renderGameCenterState(date,league,row);const game=card.querySelector(`.game[data-gc-key="${CSS.escape(key)}"]`);if(game){const flags=game.querySelector('.gameflags'),d=state.days.get(date),compact=findPlan(plans(d?.ribbon||d?.dayState),league,row).plan,authority=authorityGame(d,league,row);if(flags)flags.innerHTML=authorityMediaFlags(authority,compact,row)+gameCenterBadge(date,league,row)}}
   function updateDateCardBadgesOnly(date){const card=state.cards.get(date),d=state.days.get(date);if(card&&d)card.querySelector('.badges').innerHTML=dateBadgesHTML(d)}
   async function probeDate(date){const d=state.days.get(date),p=d?.ribbon||d?.dayState;if(!p)return;const jobs=[];for(const [league,rows] of Object.entries(activeRows(p)))for(const row of rows||[])jobs.push(()=>loadGC(date,upper(league),gcKey(upper(league),row)));for(let i=0;i<jobs.length;i+=3)await Promise.all(jobs.slice(i,i+3).map(fn=>fn()))}
-  async function loadVisible(){const cards=[...state.cards.values()].filter(c=>c.style.display!=='none');for(let i=0;i<cards.length;i+=4)await Promise.all(cards.slice(i,i+4).map(c=>loadDate(c.dataset.date,true)))}
-  async function refreshLoaded(){const dates=[...state.days.entries()].filter(([,d])=>d.loaded).map(([date])=>date);for(let i=0;i<dates.length;i+=4)await Promise.all(dates.slice(i,i+4).map(date=>loadDate(date,true)))}
+  async function loadVisible(){const cards=[...state.cards.values()].filter(c=>c.style.display!=='none');for(const c of cards)await loadDate(c.dataset.date,true)}
+  async function refreshLoaded(){const dates=[...state.days.entries()].filter(([,d])=>d.loaded).map(([date])=>date);for(const date of dates)await loadDate(date,true)}
   function applyHideEmpty(){const hide=$('hideEmpty').checked;for(const [date,card] of state.cards){const d=state.days.get(date),p=d?.ribbon||d?.dayState;card.style.display=hide&&d?.loaded&&p&&totalActiveGames(p)===0?'none':''}}
   async function loadStatus(){try{const r=await fetchJSON('/api/status'),v=r.data?.version||'—';$('backendVersion').textContent=v;$('backendHealth').textContent=r.data?.ok===false?'ERROR':'ONLINE';$('backendHealth').style.color=r.data?.ok===false?'var(--red)':'var(--green)'}catch(err){$('backendVersion').textContent='—';$('backendHealth').textContent='OFFLINE';$('backendHealth').style.color='var(--red)'}}
   async function endpointFetch(path){path=clean(path||$('endpointPath').value);if(!path.startsWith('/'))path='/'+path;$('endpointPath').value=path;$('endpointOutput').textContent='Loading…';try{const r=await fetchJSON(path);$('endpointOutput').textContent=json(r.data)}catch(err){$('endpointOutput').textContent=json(err.payload||{error:err.message})}}

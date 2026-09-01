@@ -1,0 +1,33 @@
+Sports Big Board v5.1.15 — Startup Recovery + NCAAF Canonical Game Center
+
+Upload the CONTENTS of this folder to the repository root, preserving paths.
+Replace existing files when prompted.
+
+Purpose
+-------
+This is a focused recovery release for regressions introduced by v5.1.14.
+
+1. Startup performance recovery
+   - The retired-CFB database/cache purge is now a one-time maintenance action.
+   - A successful retirement marker causes future restarts to skip all database scans.
+   - If an older installation still needs cleanup, it is scheduled in the background
+     instead of blocking normal backend startup.
+
+2. Backend Inspector isolation
+   - Date ranges no longer auto-query every date.
+   - Expanding one date loads only that date.
+   - A normal date inspection uses two bounded reads: ribbon + authoritative media/GC cache.
+   - Day State/discovery deep reads remain available through the Direct API Console.
+   - Manual range loading is sequential instead of four concurrent dates at a time.
+   - The inspector never provider-probes Game Center unless explicitly requested.
+
+3. NCAAF Game Center identity fix
+   - NCAAF trusts the canonical numeric ESPN event ID already carried by the score row.
+   - The NCAAF route no longer asks the generic cross-provider resolver to rediscover it.
+   - Async Game Center requests use a small NCAAF-only background job/cache lane.
+   - ESPN college-football remains primary; the verified NCAA completeness fallback remains.
+
+Deployment verification policy
+------------------------------
+VERIFY.sh remains intentionally non-blocking. No release manifest, filename/token,
+checksum, repository-completeness, or historical verifier-order gates are added.

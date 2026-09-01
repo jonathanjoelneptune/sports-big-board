@@ -7,10 +7,10 @@ from __future__ import annotations
 from pathlib import Path
 import json, os, sqlite3, threading, time
 
-VERSION="5.1.14-ncaaf-namespace-reset-3"
+VERSION="5.1.15-ncaaf-namespace-reset-4"
 STATE_DIR=Path(os.environ.get("SBB_STATE_DIR") or (Path.home()/".sports-big-board")).expanduser()
 MARKER=STATE_DIR/"ncaaf-v5111-cfb-retired.json"
-_LOCK=threading.Lock();_DONE=False
+_LOCK=threading.Lock();_DONE=False;_STARTED=False
 
 CFB_FILE_PATTERNS=("cfb-ranked-*.json","*cfb*cache*","*cfb*game*center*","*CFB*cache*","*CFB*game*center*")
 LEAGUE_COLUMNS=("league","competition_id","competitionId","competition","league_id","leagueId")
@@ -72,10 +72,28 @@ def _purge_custom_competitions():
         return removed
     except Exception:return 0
 
-def purge():
+def _marker_result():
+    if not MARKER.exists():
+        return None
+    try:
+        value=json.loads(MARKER.read_text(encoding="utf-8"))
+        return value if isinstance(value,dict) and value.get("ok") else None
+    except Exception:
+        return None
+
+def purge(force=False):
     global _DONE
+    force=bool(force) or str(os.environ.get("SBB_FORCE_CFB_PURGE") or "").lower() in ("1","true","yes","on")
     with _LOCK:
-        if _DONE:return {"ok":True,"alreadyDone":True}
+        if _DONE and not force:return {"ok":True,"alreadyDone":True,"version":VERSION}
+        # v5.1.15 startup recovery: retirement is a one-time maintenance action.
+        # v5.1.15 rescanned every persistent sqlite/cache file on every restart,
+        # which could invalidate Day State snapshots while the board was starting.
+        # A successful marker means the destructive cleanup already completed.
+        prior=None if force else _marker_result()
+        if prior:
+            _DONE=True
+            return {"ok":True,"alreadyDone":True,"reason":"CFB_RETIREMENT_ALREADY_APPLIED","marker":str(MARKER),"previousVersion":prior.get("version"),"version":VERSION}
         STATE_DIR.mkdir(parents=True,exist_ok=True)
         files=[]
         for pattern in CFB_FILE_PATTERNS:
@@ -113,4 +131,21 @@ def purge():
         _DONE=True
         return result
 
-def install(): return purge()
+def install():
+    global _STARTED,_DONE
+    # Never make normal backend startup wait on a repository-wide cleanup. If the
+    # v5.1.15 marker exists this returns immediately; on an older installation the
+    # one-time purge is scheduled after import and the frontend already rejects CFB.
+    prior=_marker_result()
+    if prior:
+        _DONE=True
+        return {"ok":True,"alreadyDone":True,"reason":"CFB_RETIREMENT_ALREADY_APPLIED","version":VERSION}
+    with _LOCK:
+        if _STARTED:
+            return {"ok":True,"scheduled":True,"version":VERSION}
+        _STARTED=True
+    def run():
+        try: purge()
+        except Exception: pass
+    threading.Thread(target=run,daemon=True,name="sbb-cfb-retirement-once-v5115").start()
+    return {"ok":True,"scheduled":True,"version":VERSION}

@@ -1,4 +1,4 @@
-"""Sports Big Board v5.1.14 backend inspector read model.
+"""Sports Big Board v5.1.15 backend inspector read model.
 
 One bounded, read-only endpoint exposes the authoritative normalized media
 relationships and already-cached Game Center readiness for every game on a date.
@@ -17,7 +17,7 @@ import threading
 import time
 from urllib.parse import parse_qs, urlparse
 
-VERSION = "5.1.14-backend-inspector-api-1"
+VERSION = "5.1.15-backend-inspector-api-2"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -165,25 +165,35 @@ def _media_summary(server, date, league, event_id, score_row=None, catalog_rows=
 
 
 def _game_center_summary(server, league, event_id):
-    repo = getattr(server, "GAME_CENTER_REPOSITORY", None)
-    if repo is None or not event_id:
+    if not event_id:
         return {"state": "MISS", "cached": False}
-    resolved = ""
+    direct_data=None
+    if _clean(league).upper()=="NCAAF":
+        try:
+            from .ncaaf_game_center import peek_direct_game_center
+            direct_data=peek_direct_game_center(event_id)
+        except Exception:
+            direct_data=None
+    repo = getattr(server, "GAME_CENTER_REPOSITORY", None)
+    if repo is None and direct_data is None:
+        return {"state": "MISS", "cached": False}
+    resolved = str(event_id) if direct_data is not None else ""
     try:
         resolved = _clean(repo.resolve_alias(league, event_id))
     except Exception:
         resolved = ""
-    record = None
-    for candidate in (resolved, event_id):
-        if not candidate:
-            continue
-        try:
-            record = repo.get(league, candidate)
-        except Exception:
-            record = None
-        if record:
-            resolved = candidate
-            break
+    record = {"data": direct_data, "provider": "NCAAF canonical ESPN direct cache"} if direct_data is not None else None
+    if record is None:
+        for candidate in (resolved, event_id):
+            if not candidate:
+                continue
+            try:
+                record = repo.get(league, candidate)
+            except Exception:
+                record = None
+            if record:
+                resolved = candidate
+                break
     if not record:
         return {"state": "MISS", "cached": False, "resolvedEventId": resolved or event_id}
 
@@ -327,7 +337,7 @@ def _install_into_server():
         return
 
     Handler = server.Handler
-    if getattr(Handler, "__sbbBackendInspectorApiV5114", False):
+    if getattr(Handler, "__sbbBackendInspectorApiV5115", False):
         return
     old_get = Handler.do_GET
 
@@ -345,7 +355,7 @@ def _install_into_server():
         return old_get(self)
 
     Handler.do_GET = do_GET
-    Handler.__sbbBackendInspectorApiV5114 = True
+    Handler.__sbbBackendInspectorApiV5115 = True
 
 
 def install():
@@ -354,7 +364,7 @@ def install():
         if _INSTALLED:
             return False
         _INSTALLED = True
-    threading.Thread(target=_install_into_server, daemon=True, name="sbb-backend-inspector-api-v5114").start()
+    threading.Thread(target=_install_into_server, daemon=True, name="sbb-backend-inspector-api-v5115").start()
     return True
 
 
