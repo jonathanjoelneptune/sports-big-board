@@ -11,7 +11,13 @@ const render=fs.readFileSync('architecture/render-pipeline.js','utf8');
 const backend=fs.readFileSync('sbb/day_state.py','utf8');
 assert(parts[0]>4 || (parts[0]===4 && (parts[1]>7 || (parts[1]===7 && parts[2]>=10))));
 assert(index.includes(`architecture/score-date-store.js?v=${VERSION}`));
-assert(store.includes("version:'1.0'"));
+// v4.7.10 introduced the independent browse/playback ScoreDateStore. Later releases
+// may advance the store schema while retaining this baseline. Verify 1.0-or-newer
+// instead of pinning the implementation forever to the original 1.0 literal.
+const storeVersion=store.match(/version:'(\d+)\.(\d+)'/);
+assert(storeVersion,'ScoreDateStore must expose a semantic module version');
+const storeMajor=Number(storeVersion[1]),storeMinor=Number(storeVersion[2]);
+assert(storeMajor>1 || (storeMajor===1 && storeMinor>=0),`ScoreDateStore ${storeVersion[0]} predates v4.7.10 baseline`);
 assert(store.includes('do not clamp future scheduled dates to today'));
 assert(!store.includes('return raw>localDateISO(0)?localDateISO(0):raw'));
 assert(coordinator.includes('interactive date navigation is Day State-only'));
@@ -28,4 +34,4 @@ assert(render.includes('cardHelpers:cacheStats?.helpers'));
 assert(efficiency.includes('Long tasks / 10 actions'));
 assert(efficiency.includes('Cold history thin p95'));
 assert(efficiency.includes('HISTORY_RIBBON_CALLS='));
-console.log(`PASS: ${VERSION} retains v4.7.10 cold-history + future-store baseline`);
+console.log(`PASS: ${VERSION} retains v4.7.10 cold-history + future-store baseline (ScoreDateStore ${storeMajor}.${storeMinor})`);
