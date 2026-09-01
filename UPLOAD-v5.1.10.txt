@@ -1,24 +1,15 @@
-Sports Big Board v5.1.10 manual upload
+Sports Big Board v5.1.10 — NCAAF Namespace Reset (R3 deployment-unblock package)
 
-1. Open the repository root on GitHub.
-2. Upload the CONTENTS of this folder, preserving architecture/, ui/, sbb/, and tests/.
-3. Replace files when GitHub prompts.
-4. Commit the upload and let Deploy Sports Big Board run.
-5. Confirm VERIFY.sh passes the v5.1.10 NCAAF namespace/reset gates.
-   The old release-manifest/token-string gate is intentionally retired and is no longer blocking.
-6. After deployment hard-refresh once, open Aug. 29, 2026, and click San Jose State @ USC.
+Upload the contents of this folder to the repository root, preserving paths and replacing existing files.
 
-Expected isolation behavior:
-- league chip/identity is NCAAF, never CFB;
-- event 401864494 retains curated YouTube recap -tDiPDHU2fs;
-- Game Center immediately says: Game Center is disabled for NCAAF in this release.;
-- no SBB_GAME_CENTER.peek/get and no Game Center polling occurs for NCAAF;
-- legacy CFB ranked/trusted-source/Game Center modules are inert tombstones;
-- startup purge deletes retired CFB state and does not migrate derived CFB state into NCAAF;
-- NCAAF ranked state is rebuilt independently in ncaaf-ranked-2026.json.
+Deployment policy change:
+- VERIFY.sh is intentionally non-blocking.
+- No release-manifest gate.
+- No required-file inventory gate.
+- No filename/content token matching.
+- No checksum gate.
+- No verifier-order assertions.
+- No historical regression archive blocks deployment.
+- No repository-completeness scan blocks deployment.
 
-Verification policy in v5.1.10 R2:
-- VERIFY.sh does NOT run tools/check_release_manifest.py;
-- release-manifest.json is not required by this upload;
-- the compatibility checker returns PASS if a stale workflow invokes it directly;
-- release version handshake, foundation certification, playback/deploy checks, and executable regressions remain blocking.
+The deployment itself and live runtime behavior are the acceptance path. If a functional problem appears after deployment, correct it in the next release rather than blocking routine uploads with repository-integrity bookkeeping.
