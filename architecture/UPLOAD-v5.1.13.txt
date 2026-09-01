@@ -1,0 +1,21 @@
+Sports Big Board v5.1.13 — Backend Inspector
+
+Upload these files to the repository root, preserving paths and replacing existing files.
+
+Purpose
+- Add backend.html, a read-only Backend Inspector secondary webpage.
+- Inspect dates as expandable accordions without changing the main Sports Big Board UI state.
+- Show backend games, score identities, media plans, playable media links, Game Center completeness, team/player/play counts, provider sources, and raw JSON.
+- Compare /api/history/ribbon with /api/day-state and flag read-model count mismatches.
+- Flag any retired CFB rows/plans if they reappear.
+- Add a BACKEND shortcut to the main page header on desktop.
+- Include backend.html in GitHub Pages deployment output.
+- Preserve the v5.1.12 populated NCAAF Game Center work.
+
+Backend Inspector URL after deployment
+  https://jonathanjoelneptune.github.io/sports-big-board/backend.html
+
+Deployment policy
+- VERIFY.sh remains non-blocking.
+- No release manifest, checksum, file-presence, token-content, or verifier-order gate is required.
+- Functional deployment/runtime behavior is the acceptance path.
