@@ -1,0 +1,20 @@
+Sports Big Board v5.0.7 CI correction
+
+Reason
+------
+The v5.0.7 release package accidentally retained the v5.0.6 internal VERSION
+constant in architecture/efficiency-certification.js. The retained v4.8 whole-site
+certification correctly requires the Efficiency Certification report identity to
+match repository VERSION. release-manifest.json also accidentally required the
+stale v5.0.6 token.
+
+Files replaced
+--------------
+architecture/efficiency-certification.js
+  - const VERSION = '5.0.7'
+
+release-manifest.json
+  - efficiency-certification contract now requires const VERSION = '5.0.7'
+
+No playback, USC event-reconstitution, curated-media, Game Center, score-date,
+or player behavior changed in this correction. Stay on release v5.0.7.
