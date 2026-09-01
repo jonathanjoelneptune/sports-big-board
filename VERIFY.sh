@@ -20,9 +20,8 @@ python3 tools/check_deploy_rehearsal.py
 python3 -m unittest tests.test_v446_historical_media_quarantine
 python3 -m unittest tests.test_release_behavior_gate
 python3 -m unittest tests.test_v482_game_center_runtime
-# v5.0.8 CFB Game Center is a Python/backend capability and must be verified
+# v5.1.10 retires the CFB Game Center gate; NCAAF isolation is verified below
 # even on hosts where optional browser/Node contract execution is unavailable.
-python3 -m unittest tests.test_v508_cfb_game_center
 
 if command -v node >/dev/null 2>&1; then
   echo "[verify] Node found: running JavaScript syntax + stable browser contracts"
@@ -137,3 +136,7 @@ grep -q 'https://203-0-113-10.sslip.io/api/soundtrack' "$VERIFY_TMP/pages/config
 grep -q "soundtrackTransport:'private-gcs'" "$VERIFY_TMP/pages/config.js"
 
 echo "PASS: v${VERSION} stable behavior gates + v5 unified runtime architecture + comprehensive certification + deploy rehearsal"
+
+echo '== v5.1.10 NCAAF namespace reset =='
+node tests/test_v5110_ncaaf_namespace.js
+python3 -m unittest tests.test_v5110_ncaaf_namespace

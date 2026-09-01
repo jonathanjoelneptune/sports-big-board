@@ -1,0 +1,17 @@
+Sports Big Board v5.1.10 manual upload
+
+1. Open the repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, ui/, sbb/, and tests/.
+3. Replace files when GitHub prompts.
+4. Commit the upload and let Deploy Sports Big Board run.
+5. Confirm VERIFY.sh passes the v5.1.10 NCAAF namespace/reset gates.
+6. After deployment hard-refresh once, open Aug. 29, 2026, and click San Jose State @ USC.
+
+Expected isolation behavior:
+- league chip/identity is NCAAF, never CFB;
+- event 401864494 retains curated YouTube recap -tDiPDHU2fs;
+- Game Center immediately says: Game Center is disabled for NCAAF in this release.;
+- no SBB_GAME_CENTER.peek/get and no Game Center polling occurs for NCAAF;
+- legacy CFB ranked/trusted-source/Game Center modules are inert tombstones;
+- startup purge deletes retired CFB state and does not migrate derived CFB state into NCAAF;
+- NCAAF ranked state is rebuilt independently in ncaaf-ranked-2026.json.

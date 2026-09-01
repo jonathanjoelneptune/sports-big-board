@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const root=require('path').resolve(__dirname,'..');
+const core=fs.readFileSync(root+'/core-model.js','utf8');
+assert(core.includes("NCAAF:{id:'NCAAF'"));assert(!core.includes("CFB:{id:'CFB'"));
+assert(core.includes("scoreProvider:'ncaaf-ranked'"));assert(core.includes("gameCenterProvider:''"));
+const view=fs.readFileSync(root+'/ui/game-center-view.js','utf8');
+assert(view.includes("competitionId==='NCAAF'"));
+assert(view.includes('ZERO SBB_GAME_CENTER.peek/get/polling for NCAAF'));
+assert(view.indexOf("competitionId==='NCAAF'") < view.indexOf('SBB_GAME_CENTER?.peek'));
+const curated=fs.readFileSync(root+'/architecture/curated-media-overrides.js','utf8');
+assert(curated.includes("competitionId:'NCAAF'"));assert(curated.includes("youtubeId:'-tDiPDHU2fs'"));assert(curated.includes('401864494'));
+const html=fs.readFileSync(root+'/index.html','utf8');assert(html.includes('data-score-filter="NCAAF"'));assert(!html.includes('data-score-filter="CFB"'));
+console.log('PASS v5.1.10 NCAAF frontend namespace/isolation');

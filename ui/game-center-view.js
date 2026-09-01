@@ -154,7 +154,7 @@
     const final=/final|finished|game over|completed|complete|post/i.test(status);
     const live=!final&&(!!gc?.live||/live|progress|inning|quarter|half|period/i.test(status));
     const partial=enriching(gc);
-    // v5.0.8: a completed partial Game Center must not rebuild a large football
+    // v5.1.10: a completed partial Game Center must not rebuild a large football
     // payload every 2.2 seconds while playback is active. Non-final partials keep
     // the fast enrichment probe; final partials cool down to a bounded 30 seconds.
     const finalPartial=partial&&final;
@@ -163,6 +163,14 @@
   }
   async function load(evt,{force=false,background=false}={}){
     if(!evt)return;
+    const competitionId=String(evt?.competitionId||evt?.__sbbLeague||evt?.league||'').toUpperCase();
+    if(competitionId==='NCAAF'){
+      selected=evt;data=null;requestToken++;
+      if(pollTimer){clearTimeout(pollTimer);pollTimer=null;}
+      if(requestAbort){try{requestAbort.abort();}catch(_){}requestAbort=null;}
+      clear('Game Center is disabled for NCAAF in this release.');
+      return; // v5.1.10 isolation: ZERO SBB_GAME_CENTER.peek/get/polling for NCAAF.
+    }
     const oldKey=String(selected?.eventId||selected?.matchId||selected?.gamePk||selected?.scoreGameKey||'');
     const newKey=String(evt?.eventId||evt?.matchId||evt?.gamePk||evt?.scoreGameKey||'');
     if(newKey && newKey!==oldKey) activePlayerSide='away';
@@ -175,7 +183,7 @@
     try{
       const gc=await window.SBB_GAME_CENTER.get(evt,{force,signal:requestAbort.signal,timeoutMs:30000});
       if(token!==requestToken)return;
-      // v5.0.8: peek() and get() frequently return the exact same resident object.
+      // v5.1.10: peek() and get() frequently return the exact same resident object.
       // Avoid a second synchronous rebuild of overview/stats/players/PBP in that case.
       if(gc!==data)render(gc);
       schedulePoll(gc);

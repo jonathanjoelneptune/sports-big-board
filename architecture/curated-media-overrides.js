@@ -1,4 +1,4 @@
-/* Sports Big Board v5.0.6 — Curated Event Media Overrides.
+/* Sports Big Board v5.1.10 — Curated Event Media Overrides.
 
    Automated discovery remains the default media authority.  This registry is a
    deliberately small, explicit correction layer for sporting events where a human
@@ -34,8 +34,8 @@
 
   const ENTRIES=Object.freeze([
     Object.freeze({
-      id:'cfb-2026-08-29-sjsu-usc-recap',
-      competitionId:'CFB',
+      id:'ncaaf-2026-08-29-sjsu-usc-recap',
+      competitionId:'NCAAF',
       date:'2026-08-29',
       providerEventIds:Object.freeze(['401864494']),
       awayTokens:Object.freeze(['san jose state','san jose state spartans','sjsu']),

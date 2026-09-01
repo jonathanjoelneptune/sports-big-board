@@ -26,7 +26,7 @@ vm.createContext(sandbox);
 vm.runInContext(storeSrc,sandbox);
 vm.runInContext(selectedSrc,sandbox);
 
-const pathological={competitionId:'CFB',eventId:'401864494',scoreEventId:'401864494',espnEventId:'401864494',date:'2026-08-29',status:'FINAL',awayTeam:{name:'San Jose State Spartans',abbreviation:'SJSU'},homeTeam:{name:'#14 USC Trojans',abbreviation:'USC'},awayScore:26,homeScore:42,providerPayload:'x'.repeat(2_000_000),media:Array.from({length:5000},(_,i)=>({id:i,blob:'x'.repeat(200)})),recapAlternates:Array.from({length:500},(_,i)=>({id:i})),associationEvidence:{huge:'x'.repeat(500000)},eventPlans:Array.from({length:1000},()=>({}))};
+const pathological={competitionId:'NCAAF',eventId:'401864494',scoreEventId:'401864494',espnEventId:'401864494',date:'2026-08-29',status:'FINAL',awayTeam:{name:'San Jose State Spartans',abbreviation:'SJSU'},homeTeam:{name:'#14 USC Trojans',abbreviation:'USC'},awayScore:26,homeScore:42,providerPayload:'x'.repeat(2_000_000),media:Array.from({length:5000},(_,i)=>({id:i,blob:'x'.repeat(200)})),recapAlternates:Array.from({length:500},(_,i)=>({id:i})),associationEvidence:{huge:'x'.repeat(500000)},eventPlans:Array.from({length:1000},()=>({}))};
 const projected=window.SBB_APP_STORE.compactEvent(pathological);
 assert.equal(projected.eventId,'401864494');
 assert.equal(projected.homeTeam.abbreviation,'USC');

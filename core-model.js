@@ -23,7 +23,7 @@
   const COMPETITIONS = Object.freeze({
     MLB:{id:'MLB',sportId:'baseball',name:'Major League Baseball',enabled:true,scoreProvider:'highlightly',mediaProviders:['mlb-stats','espn','highlightly','youtube'],gameCenterProvider:'highlightly',gameCenterFallback:'mlb-stats'},
     NFL:{id:'NFL',sportId:'american-football',name:'National Football League',enabled:true,scoreProvider:'espn',mediaProviders:['espn','nfl-club','nfl-feed','highlightly','youtube'],gameCenterProvider:'highlightly',gameCenterFallback:'espn'},
-    CFB:{id:'CFB',sportId:'american-football',name:'College Football 2026',shortName:'CFB',enabled:true,scoreProvider:'cfb-ranked',mediaProviders:['operator-playlist','youtube'],gameCenterProvider:'espn',seasonId:'CFB2026',seasonYear:2026,startDate:'2026-08-29',endDate:'2027-01-25',eventIcon:'🏈',selectionPolicy:'AP_TOP_25_EITHER_PARTICIPANT',rankingSnapshotPolicy:'IMMUTABLE_WEEKLY'},
+    NCAAF:{id:'NCAAF',sportId:'american-football',name:'College Football 2026',shortName:'NCAAF',enabled:true,scoreProvider:'ncaaf-ranked',mediaProviders:['operator-playlist','youtube'],gameCenterProvider:'',gameCenterDisabled:true,seasonId:'NCAAF2026',seasonYear:2026,startDate:'2026-08-29',endDate:'2027-01-25',eventIcon:'🏈',selectionPolicy:'AP_TOP_25_EITHER_PARTICIPANT',rankingSnapshotPolicy:'IMMUTABLE_WEEKLY'},
     NBA:{id:'NBA',sportId:'basketball',name:'National Basketball Association',enabled:true,scoreProvider:'espn',mediaProviders:['espn','highlightly','youtube'],gameCenterProvider:'highlightly',gameCenterFallback:'espn'},
     NHL:{id:'NHL',sportId:'ice-hockey',name:'National Hockey League',enabled:true,scoreProvider:'espn',mediaProviders:['espn','highlightly','youtube'],gameCenterProvider:'highlightly',gameCenterFallback:'espn'},
     EPL:{id:'EPL',sportId:'football',name:'Premier League',enabled:true,scoreProvider:'espn',mediaProviders:['espn','club-sites','highlightly','youtube'],gameCenterProvider:'highlightly',gameCenterFallback:'espn'},
@@ -81,5 +81,5 @@
   }
   function editorialPackage(input={}){const registry=window.SBB_EDITORIAL_PACKAGES;if(registry?.package)return registry.package(input);return {...input,entityType:TYPES.EDITORIAL_PACKAGE,editorialScope:clean(input.editorialScope||input.scope||'league'),editorialType:clean(input.editorialType||'top_plays'),cadence:clean(input.cadence||'daily'),competitionId:upper(input.competitionId||input.league),editorialPeriodKey:clean(input.editorialPeriodKey||input.topPlaysDate||input.publishedAt).slice(0,10)};}
   function playable(item){return !!(item&&item.verifiedPlayable&&(item.youtubeId||item.mediaUrl));}
-  window.SBB_CORE=Object.freeze({version:'5.0.8',TYPES,SPORTS,COMPETITIONS,competition,enabledCompetitions,participant,event,media,mediaAsset,mediaPackage,moment,statSection,gameCenter,editorialPackage,playable});
+  window.SBB_CORE=Object.freeze({version:'5.1.10',TYPES,SPORTS,COMPETITIONS,competition,enabledCompetitions,participant,event,media,mediaAsset,mediaPackage,moment,statSection,gameCenter,editorialPackage,playable});
 })();
