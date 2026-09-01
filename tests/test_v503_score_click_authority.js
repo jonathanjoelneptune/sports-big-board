@@ -51,9 +51,10 @@ assert(app.includes('score-session startup failure'));
 
 // State authorities protect event ownership while a v5 transaction is active.
 assert(storeSource.includes(`const VERSION='${version}'`));
-assert(storeSource.includes("const SCHEMA='1.3'"));
+const storeSchema=(storeSource.match(/const SCHEMA='(\d+)\.(\d+)'/)||[]).slice(1).map(Number);
+assert(storeSchema.length===2 && (storeSchema[0]>1 || (storeSchema[0]===1 && storeSchema[1]>=3)),'App Store schema 1.3+ required');
 assert(storeSource.includes("source!=='v5-orchestrator'&&payload.force!==true"));
-assert(selectedSource.includes("version:'5.0.0'"));
+assert(selectedSource.includes(`version:'${version}'`),'SelectedEvent authority must track the current v5.0.x release');
 assert(selectedSource.includes("source!=='v5-orchestrator'&&meta.force!==true"));
 assert(/const VERSION='3\.[3-9]+'/.test(cert),'certification schema must retain 3.3+ score-click telemetry');
 assert(cert.includes('SCORE_CLICK_TRACE stage='));
