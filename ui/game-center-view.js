@@ -50,7 +50,7 @@
     const s=gc?.scoreboard||{},bits=[];
     if(s.status) bits.push(s.status);
     if(s.inningOrdinal||s.inning) bits.push([s.inningState,s.inningOrdinal||s.inning].filter(Boolean).join(' '));
-    else if(s.period!=null||s.clock){const prefix=gc?.competitionId==='NFL'?`Q${s.period}`:(gc?.competitionId==='MLS'||gc?.competitionId==='EPL'?`H${s.period}`:`P${s.period}`);bits.push([s.period!=null?prefix:'',s.clock].filter(Boolean).join(' • '));}
+    else if(s.period!=null||s.clock){const sport=String(gc?.sportId||gc?.event?.sportId||'').toLowerCase();const prefix=sport==='tennis'?`SET ${s.period}`:(gc?.competitionId==='NFL'?`Q${s.period}`:(gc?.competitionId==='MLS'||gc?.competitionId==='EPL'?`H${s.period}`:`P${s.period}`));bits.push([s.period!=null?prefix:'',s.clock].filter(Boolean).join(' • '));}
     if(s.outs!=null&&gc?.live) bits.push(`${s.outs} out${Number(s.outs)===1?'':'s'}`);
     return bits.filter(Boolean).join(' • ')||gc?.event?.status||'—';
   }
@@ -198,5 +198,5 @@
     const existing=window.SBB_SELECTED_EVENT?.get?.();if(existing){selected=existing;load(existing);}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  window.SBB_GAME_CENTER_VIEW=Object.freeze({version:'1.6',load,render,clear,selectSection,get selected(){return selected;}});
+  window.SBB_GAME_CENTER_VIEW=Object.freeze({version:'1.7',load,render,clear,selectSection,get selected(){return selected;}});
 })();

@@ -17,7 +17,7 @@ import threading
 import time
 from urllib.parse import parse_qs, urlparse
 
-VERSION = "5.1.15-backend-inspector-api-2"
+VERSION = "5.1.16-backend-inspector-api-3"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -168,10 +168,17 @@ def _game_center_summary(server, league, event_id):
     if not event_id:
         return {"state": "MISS", "cached": False}
     direct_data=None
+    direct_provider=""
     if _clean(league).upper()=="NCAAF":
         try:
             from .ncaaf_game_center import peek_direct_game_center
-            direct_data=peek_direct_game_center(event_id)
+            direct_data=peek_direct_game_center(event_id);direct_provider="NCAAF canonical ESPN direct cache" if direct_data is not None else ""
+        except Exception:
+            direct_data=None
+    if direct_data is None:
+        try:
+            from .tennis_game_center import peek_tennis_game_center
+            direct_data=peek_tennis_game_center(league,event_id);direct_provider="ESPN Tennis in-memory cache" if direct_data is not None else ""
         except Exception:
             direct_data=None
     repo = getattr(server, "GAME_CENTER_REPOSITORY", None)
@@ -182,7 +189,7 @@ def _game_center_summary(server, league, event_id):
         resolved = _clean(repo.resolve_alias(league, event_id))
     except Exception:
         resolved = ""
-    record = {"data": direct_data, "provider": "NCAAF canonical ESPN direct cache"} if direct_data is not None else None
+    record = {"data": direct_data, "provider": direct_provider or "direct Game Center cache"} if direct_data is not None else None
     if record is None:
         for candidate in (resolved, event_id):
             if not candidate:
@@ -337,7 +344,7 @@ def _install_into_server():
         return
 
     Handler = server.Handler
-    if getattr(Handler, "__sbbBackendInspectorApiV5115", False):
+    if getattr(Handler, "__sbbBackendInspectorApiV5116", False):
         return
     old_get = Handler.do_GET
 
@@ -355,7 +362,7 @@ def _install_into_server():
         return old_get(self)
 
     Handler.do_GET = do_GET
-    Handler.__sbbBackendInspectorApiV5115 = True
+    Handler.__sbbBackendInspectorApiV5116 = True
 
 
 def install():
@@ -364,7 +371,7 @@ def install():
         if _INSTALLED:
             return False
         _INSTALLED = True
-    threading.Thread(target=_install_into_server, daemon=True, name="sbb-backend-inspector-api-v5115").start()
+    threading.Thread(target=_install_into_server, daemon=True, name="sbb-backend-inspector-api-v5116").start()
     return True
 
 

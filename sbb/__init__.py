@@ -38,3 +38,9 @@ _install_runtime_path_repair_v5110()
 _install_database_authority()
 _install_backend_inspector_api()
 _install_ncaaf_ranked()
+
+# v5.1.16: narrow post-install adapters. Keep NCAAF Game Center unchanged.
+from .media_runtime_repair_v5116 import install as _install_media_runtime_repair_v5116
+from .tennis_game_center import install as _install_tennis_game_center
+_install_media_runtime_repair_v5116()
+_install_tennis_game_center()

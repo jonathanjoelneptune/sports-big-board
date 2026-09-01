@@ -1,0 +1,15 @@
+Sports Big Board v5.1.16 — Media Continuity + Tennis Game Center
+
+Upload the CONTENTS of this folder to the repository root, preserving paths.
+Replace existing files when prompted.
+
+Focused changes:
+- keeps the working NCAAF Game Center path unchanged
+- recent MLB finals with zero authoritative media are re-opened through the existing discovery pipeline in a delayed, low-priority recovery lane
+- special-event/NFL compact ribbon plans recover already-authoritative DB media when the compact projection is empty
+- obviously wrong LLWS links restored by the old v4.7.21 database-authority recovery are quarantined/filtered
+- retired CFB rows and plans are suppressed from production read models
+- Competition Builder sportId=tennis now gets an ESPN Tennis Game Center with tournament/draw/round/court, set-by-set scoring, match/player facts and set timeline
+- no manifest/checksum/token/inventory deployment gates were added
+
+VERIFY.sh remains intentionally non-blocking.
