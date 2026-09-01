@@ -72,7 +72,7 @@ if (location.protocol === 'file:') {
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.3'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.4'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -5026,14 +5026,20 @@ function queueHistoricalGameMedia(match,{priority=false}={}){
   pumpHistoricalMediaSearchQueue();
   return promise;
 }
-function storeScoreDateLeague(league,date,rows){
+function storeScoreDateLeague(league,date,rows,{source='',authoritative=true}={}){
   const lg=String(league||'SPORTS').toUpperCase();
   const marked=(rows||[]).map(raw=>{
     const m={...raw,__sbbLeague:lg,__sbbDate:date,__sbbDay:date===localDateISO(0)?'today':(date===localDateISO(-1)?'yesterday':'historical'),competitionId:lg,competitionName:LEAGUES[lg]?.competition||lg,sportId:LEAGUES[lg]?.sport||'sports'};
     return window.SBB_CORE?.event?window.SBB_CORE.event(m,lg):m;
   });
-  SCORE_DATE_STORE?.setMatches?.(date,lg,marked);
+  SCORE_DATE_STORE?.setMatches?.(date,lg,marked,{source,authoritative});
   return marked;
+}
+function preserveScoreDateLeagueOnError(league,date,error,{source=''}={}){
+  const lg=String(league||'SPORTS').toUpperCase();
+  const prior=SCORE_DATE_STORE?.matches?.(date,lg)||[];
+  try{SCORE_DATE_STORE?.recordMatchFailure?.(date,lg,error,{source});}catch(_){}
+  return prior;
 }
 function storeScoreDateMedia(league,date,rows,{append=false}={}){
   const lg=String(league||'SPORTS').toUpperCase();
@@ -5054,16 +5060,17 @@ async function loadScoreDateLeagueMatches(league,date){
       const rows=responseItems(payload).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:lg},date)===date);
       return {rows:storeScoreDateLeague(lg,date,rows),error:null,source:payload?.source||'HISTORY'};
     }catch(err){
-      console.warn(`[SBB v4.3.6] ${lg} canonical historical score load failed`,date,err);
-      return {rows:storeScoreDateLeague(lg,date,[]),error:err,source:'HISTORY ERROR'};
+      console.warn(`[SBB v5.0.4] ${lg} canonical historical score load failed; preserving last-known-good rows`,date,err);
+      return {rows:preserveScoreDateLeagueOnError(lg,date,err,{source:'HISTORY'}),error:err,source:'HISTORY ERROR'};
     }
   }
   let rows=[],firstError=null;
   try{
     const payload=await apiJson(`/api/espn/scoreboard?league=${encodeURIComponent(lg)}&date=${encodeURIComponent(date)}&timezone=${encodeURIComponent(timezone)}&utcOffsetMinutes=${encodeURIComponent(utcOffsetMinutes)}`);
     rows=responseItems(payload).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:lg},date)===date);
-  }catch(err){firstError=err;console.warn(`[SBB v4.3.6] ${lg} score load failed`,date,err);}
-  return {rows:storeScoreDateLeague(lg,date,rows),error:firstError,source:'ESPN'};
+  }catch(err){firstError=err;console.warn(`[SBB v5.0.4] ${lg} score load failed; preserving last-known-good rows`,date,err);}
+  if(firstError)return {rows:preserveScoreDateLeagueOnError(lg,date,firstError,{source:'ESPN'}),error:firstError,source:'ESPN ERROR'};
+  return {rows:storeScoreDateLeague(lg,date,rows,{source:'ESPN'}),error:null,source:'ESPN'};
 }
 
 async function rapidHistoricalGameMedia(match,{force=false}={}){
@@ -6943,9 +6950,11 @@ function renderScoresFromMatchesCombined(animate=false){
     host.dataset.scoreDay=scoreBrowseDate;
     const loading=!!SCORE_DATE_STORE?.isLoading?.(scoreBrowseDate);
     const historyError=HISTORICAL_SCORE_LOAD_ERRORS.get(scoreBrowseDate)||'';
+    const storeHealth=SCORE_DATE_STORE?.dateHealth?.(scoreBrowseDate)||{};
     host.innerHTML='';host.appendChild(buildSilverRoundupScoreCard(scoreBrowseDate));
     const empty=document.createElement('div');empty.className='score-empty score-empty-day';
-    const emptyText=loading?'Loading games…':(historyError?'Historical catalog unavailable — tap the date to retry':'No games listed');
+    const transientStoreError=Number(storeHealth.errorLeagues||0)>0&&Number(storeHealth.authoritativeLeagues||0)===0;
+    const emptyText=loading?'Loading games…':(historyError||transientStoreError?'Score inventory temporarily unavailable — retrying preserves last-known-good games':'No games listed');
     empty.innerHTML=`<strong>${escapeHtml(formatScoreDateLabel(scoreBrowseDate))}</strong><span>${escapeHtml(emptyText)}</span>`;host.appendChild(empty);
     updateScoreDayPager();
     return;

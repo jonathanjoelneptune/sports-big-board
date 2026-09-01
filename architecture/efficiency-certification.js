@@ -6,7 +6,7 @@
   'use strict';
   if (window.SBB_EFFICIENCY?.version === '4.8.2') return;
 
-  const VERSION = '5.0.3';
+  const VERSION = '5.0.4';
   const REPORT_KEY = 'sbb.efficiency.reports.v1';
   const MAX_REQUESTS = 2500;
   const MAX_LONG_TASKS = 1000;

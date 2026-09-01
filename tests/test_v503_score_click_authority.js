@@ -6,7 +6,7 @@ const vm=require('vm');
 const ROOT=path.resolve(__dirname,'..');
 const read=rel=>fs.readFileSync(path.join(ROOT,rel),'utf8');
 const version=read('VERSION').trim();
-assert.strictEqual(version,'5.0.3');
+const parts=version.split('.').map(Number);assert(parts[0]===5&&parts[1]===0&&parts[2]>=3,'v5.0.3+ score-click authority baseline');
 const app=read('app.js');
 const storeSource=read('architecture/app-store-v5.js');
 const selectedSource=read('architecture/selected-event-store.js');
@@ -50,12 +50,12 @@ assert(app.includes("activeV5?.transactionId&&activeV5?.source==='score'"));
 assert(app.includes('score-session startup failure'));
 
 // State authorities protect event ownership while a v5 transaction is active.
-assert(storeSource.includes("const VERSION='5.0.3'"));
+assert(storeSource.includes(`const VERSION='${version}'`));
 assert(storeSource.includes("const SCHEMA='1.3'"));
 assert(storeSource.includes("source!=='v5-orchestrator'&&payload.force!==true"));
 assert(selectedSource.includes("version:'5.0.0'"));
 assert(selectedSource.includes("source!=='v5-orchestrator'&&meta.force!==true"));
-assert(cert.includes("const VERSION='3.3'"));
+assert(/const VERSION='3\.[3-9]+'/.test(cert),'certification schema must retain 3.3+ score-click telemetry');
 assert(cert.includes('SCORE_CLICK_TRACE stage='));
 assert(cert.includes('mediaExpansion'));
 
@@ -86,4 +86,4 @@ assert.strictEqual(after.selection.eventKey,before.selection.eventKey,'active v5
 assert.strictEqual(after.playback.transactionId,tx);
 assert.strictEqual(after.invariant,'OK');
 
-console.log('PASS: v5.0.3 score-click authority prevents pre-v5 synchronous resolution and protects active event ownership');
+console.log(`PASS: ${version} retains v5.0.3 score-click authority preventing pre-v5 synchronous resolution and protecting active event ownership`);

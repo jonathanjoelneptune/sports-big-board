@@ -1,0 +1,26 @@
+Sports Big Board v5.0.4 — Last-Known-Good Score Read Model
+
+Problem proven by v5.0.3 certification:
+- 2026-08-29 successfully loaded 39 games and 15 media-ready games during certification.
+- A later transient per-league score refresh could nevertheless write [] on error.
+- ScoreDateStore treated that error-produced empty array as an authoritative snapshot,
+  allowing a healthy date to render "No games listed" even though catalog/Day State data still existed.
+
+Changes:
+1. architecture/score-date-store.js
+   - schema 1.1
+   - provider/network failures are recorded separately via recordMatchFailure().
+   - last-known-good rows are preserved.
+   - error-only dates do not become authoritative empty snapshots.
+   - explicit successful empty responses remain authoritative.
+   - dateHealth(date) exposes game count, authoritative/empty/error leagues.
+2. app.js
+   - historical and ESPN score-load errors preserve resident rows instead of storeScoreDateLeague(..., []).
+   - empty ribbon distinguishes temporary inventory failure from a real successful no-games date.
+3. Comprehensive Certification schema 3.4
+   - adds SCORE_DATE_HEALTH telemetry for playback-tested dates.
+4. tests/test_v504_score_date_resilience.js
+   - proves Aug-29-like inventory survives transient refresh errors.
+5. Release/version/cache/manifest/VERIFY advanced to v5.0.4.
+
+This release does not special-case USC or Aug. 29. The rule applies to every date and league.

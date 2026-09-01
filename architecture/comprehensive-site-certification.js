@@ -1,4 +1,4 @@
-/* Sports Big Board v5.0.3 — Unified Runtime Comprehensive Certification Architecture.
+/* Sports Big Board v5.0.4 — Unified Runtime Comprehensive Certification Architecture.
    Whole-site certification drives real navigation, Game Center UI, score-card
    playback, recovery, APIs, workers, discovery, rendering and memory. Selection is
    deliberately game-agnostic and seeded so every run is broad yet reproducible.
@@ -7,8 +7,8 @@
   'use strict';
   if (window.SBB_SITE_CERTIFICATION?.version === '3.2') return;
 
-  const VERSION='3.3';
-  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.3');
+  const VERSION='3.4';
+  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.4');
   const PLAYBACK_TARGET=8;
   const PLAYBACK_MIN_STARTS=5;
   const PLAYBACK_CONFIRM_TIMEOUT_MS=12500;
@@ -328,6 +328,7 @@
       `PLAYBACK_MATRIX result=${p.result||'FAIL'} target=${p.target||PLAYBACK_TARGET} attempts=${p.attempts||0} starts=${p.starts||0} fail=${p.fail||0} uniqueMedia=${p.uniqueMedia||0} fallbacks=${p.fallbacks||0} prewarmAttempts=${p.prewarmAttempts||0} primaryRejected=${p.primaryRejections||0} engineResets=${p.engineResets||0} engineIncidents=${p.engineIncidents||0} gcOwnershipFailures=${p.gameCenterOwnershipFailures||0} p95FirstProgress=${p.p95FirstProgressMs??'N/A'}ms planBuildMax=${p.maxScorePlanMs||0}ms planChunkMax=${p.maxScorePlanChunkMs||0}ms planYields=${p.scorePlanYields||0} recapLookupMax=${p.maxRecapLookupMs||0}ms`,
       `DIVERSITY leagues=${(p.leagues||[]).join(',')||'NONE'} qualities=${(p.qualities||[]).join(',')||'NONE'} transports=${(p.transports||[]).join(',')||'NONE'} providers=${(p.providers||[]).join(',')||'NONE'} dates=${(p.dates||[]).join(',')||'NONE'}`,
       `SCORE_PLAYABLE_CACHE size=${p.scorePlayableCache?.size||0} hits=${p.scorePlayableCache?.hits||0} misses=${p.scorePlayableCache?.misses||0} evictions=${p.scorePlayableCache?.evictions||0} ttl=${p.scorePlayableCache?.ttlMs||0}ms`,
+      `SCORE_DATE_HEALTH ${(p.dates||[]).map(d=>{const h=p.scoreDateHealth?.[d]||{};return `${d}:games=${h.games||0}/auth=${h.authoritativeLeagues||0}/errors=${h.errorLeagues||0}`;}).join(' ')||'NONE'}`,
       `SCORE_CLICK_TRACE stage=${p.scoreClickTrace?.last?.stage||p.scoreClickTrace?.persisted?.stage||'—'} event=${p.scoreClickTrace?.last?.eventKey||p.scoreClickTrace?.persisted?.eventKey||'—'} expansionMax=${p.maxMediaExpansion||0} truncated=${p.mediaExpansionTruncated||0}`,
       `UI_THREAD warnings=${p.mainThread?.warningDelta||0} critical=${p.mainThread?.criticalDelta||0} maxLag=${p.mainThread?.maxLagMs||0}ms lastLag=${p.mainThread?.lastLagMs||0}ms`,
       ...(p.rows||[]).map((x,i)=>`${x.ok?'PASS':'FAIL'} #${String(i+1).padStart(2,'0')} ${x.date||'—'} ${x.league||'—'} ${x.quality||'—'} ${x.provider||'—'}/${x.transport||'—'} readinessBefore=${x.readinessBefore||'UNKNOWN'} prewarm=${x.prewarmAttempted?'YES':'NO'}:${x.prewarmResult||'NOT_REQUIRED'} primaryRejected=${x.primaryRejected?'YES':'NO'} progress=${x.firstProgressMs??'N/A'}ms fallbackHops=${x.fallbackHops||0} plan=${x.planAttempted||0}/${x.planCandidates||0} rejected=${x.planRejected||0} exhausted=${x.planExhausted?'YES':'NO'} planBuild=${x.planBuildMs||0}ms/y${x.planYields||0} clickStage=${x.scoreClickStage||'—'} expansion=${x.mediaExpansionMax||0} engineReset+${x.engineResetsDelta||0} gcOwned=${x.gameCenterOwned===false?'NO':'YES'} invariant=${x.invariant||'—'} v5=${x.v5State||'—'} tx=${x.v5TransactionId||'—'} media=${x.mediaKey||x.candidateMediaKey||'—'}${x.error?` ERROR=${x.error}`:''}`),

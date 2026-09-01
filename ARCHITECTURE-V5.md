@@ -208,3 +208,13 @@ engine-reset threshold.
 A small `SBB_SCORE_CLICK_TRACE` breadcrumb records the last completed click stage
 so a pathological event can be diagnosed after reload without adding a game-specific
 production branch. Known difficult games remain regression fixtures only.
+
+## v5.0.4 — Last-known-good score read model
+
+Score inventory is now a durable browser read model rather than a mirror of the
+most recent transport result. A provider/network error may record ERROR metadata,
+but it cannot replace a previously valid date/league scoreboard with an empty
+array. Only a successful authoritative response may establish an empty league.
+`SBB_SCORE_DATE.dateHealth(date)` exposes games, authoritative leagues, empty
+leagues, and transient errors for certification. This prevents a healthy date from
+collapsing to “No games listed” because a later refresh failed.
