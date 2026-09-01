@@ -246,7 +246,7 @@ def _event_rows(payload,snapshot,week,season_type=2):
         away_obj=_team_obj(away_team,away_rank,week);home_obj=_team_obj(home_team,home_rank,week)
         status=_status(comp)
         row={
-            'id':event_id,'eventId':event_id,'espnEventId':event_id,'scoreEventId':event_id,
+            'id':event_id,'eventId':event_id,'espnEventId':event_id,'scoreEventId':event_id,'gameCenterEventId':event_id,'gameCenterProviderHint':'espn',
             'date':date,'gameDate':date,'scheduledAt':str(ev.get('date') or date),
             'away':away_obj,'home':home_obj,'awayTeam':away_obj,'homeTeam':home_obj,
             'awayScore':_score(away),'homeScore':_score(home),'status':status,
@@ -398,7 +398,7 @@ def _definition(event_count):
         'id':COMPETITION_ID,'seasonId':SEASON_ID,'name':NAME,'shortName':SHORT_NAME,
         'type':'LEAGUE','sportId':'american-football','year':SEASON,'seasonYear':SEASON,
         'startDate':START_DATE,'endDate':END_DATE,'format':'SEASON','logoStrategy':'AUTO',
-        'eventIcon':'🏈','enabled':True,'mainRow':True,'gameCenterProvider':'','gameCenterDisabled':True,'scheduleMode':'DYNAMIC_RANKED','scheduleSourceUrl':SCHEDULE_SOURCE,
+        'eventIcon':'🏈','enabled':True,'mainRow':True,'gameCenterProvider':'espn','gameCenterFallback':'espn','scheduleMode':'DYNAMIC_RANKED','scheduleSourceUrl':SCHEDULE_SOURCE,
         'scoreSourceUrl':SCHEDULE_SOURCE,'autoRefresh':True,'refreshMinutes':30,
         'backgroundDiscovery':True,'crawlEnabled':True,'allowIncompleteSchedule':True,
         'expectedEventCount':0,'expectedEventRange':[EXPECTED_GAMES_MIN,EXPECTED_GAMES_MAX],
@@ -480,14 +480,14 @@ def _install_into_server():
             'id':COMPETITION_ID,'name':NAME,'shortName':SHORT_NAME,'sportId':'american-football',
             'type':'LEAGUE','enabled':True,'mainRow':True,'custom':False,'startDate':START_DATE,'endDate':END_DATE,
             'scoreProvider':'ncaaf-ranked','mediaProviders':['operator-playlist','youtube'],
-            'gameCenterProvider':'','gameCenterDisabled':True,'historyEnabled':True,'dayStateEnabled':True,
+            'gameCenterProvider':'espn','gameCenterFallback':'espn','historyEnabled':True,'dayStateEnabled':True,
             'eventIcon':'🏈','seasonId':SEASON_ID,'seasonYear':SEASON,
             'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingSnapshotPolicy':'IMMUTABLE_WEEKLY'
         },source='BUILT_IN')
     except Exception:pass
 
     Handler=server.Handler
-    if not getattr(Handler,'__sbbCfbRankedInstalled',False):
+    if not getattr(Handler,'__sbbNcaafRankedInstalled',False):
         old_get=Handler.do_GET;old_post=Handler.do_POST
         def do_GET(self):
             parsed=urlparse(self.path)
@@ -510,7 +510,7 @@ def _install_into_server():
                 threading.Thread(target=refresh,args=(server,True),daemon=True,name='sbb-ncaaf-manual-refresh').start()
                 return server.send_json(self,{'ok':True,'started':True,'status':status()},202)
             return old_post(self)
-        Handler.do_GET=do_GET;Handler.do_POST=do_POST;Handler.__sbbCfbRankedInstalled=True
+        Handler.do_GET=do_GET;Handler.do_POST=do_POST;Handler.__sbbNcaafRankedInstalled=True
 
     def worker():
         # First refresh soon after all Competition Builder/server helpers are ready.

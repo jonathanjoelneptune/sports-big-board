@@ -393,17 +393,20 @@ function addCalendarDays(date,delta){
   const x=new Date(y||1970,(m||1)-1,d||1,12,0,0,0); x.setDate(x.getDate()+Number(delta||0));
   return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
 }
+function activeScoreCompetition(item){
+  return String(item?.__sbbLeague||item?.competitionId||item?.league||'').toUpperCase()!=='CFB';
+}
 function scoreMatchesForDate(date){
   const wanted=String(date||scoreBrowseDate).slice(0,10);
-  const resident=SCORE_DATE_STORE?.allMatches?.(wanted)||[];
+  const resident=(SCORE_DATE_STORE?.allMatches?.(wanted)||[]).filter(activeScoreCompetition);
   if(resident.length || SCORE_DATE_STORE?.hasMatchesSnapshot?.(wanted)) return resident;
   const today=localDateISO(0),yesterday=localDateISO(-1),rows=[];
   if(wanted===today||wanted===yesterday){
     for(const state of LIVE_MATCHES_BY_LEAGUE.values()) rows.push(...(wanted===today?(state?.today||[]):(state?.yesterday||[])));
   }
-  return rows;
+  return rows.filter(activeScoreCompetition);
 }
-function scoreMediaForDate(date){ return SCORE_DATE_STORE?.allMedia?.(date)||[]; }
+function scoreMediaForDate(date){ return (SCORE_DATE_STORE?.allMedia?.(date)||[]).filter(activeScoreCompetition); }
 function roundupLeague(item){return String(item?.competitionId||item?.__sbbLeague||item?.league||'SPORTS').toUpperCase();}
 function roundupDate(item){
   const raw=String(item?.collectionPeriodKey||item?.gameDate||item?.__sbbDate||item?.date||item?.publishedAt||'');
@@ -2623,7 +2626,7 @@ function syncGameCenterToActivePlayback(item=clip(currentIndex),{reason='active 
   if(!playbackOwnsGameCenter(item)){
     const competitionId=gameCenterCompetitionId(item);
     store?.clear?.({reason:'active media has no game event',source});
-    window.SBB_GAME_CENTER_VIEW?.clear?.(competitionId==='NCAAF'?'Game Center is disabled for NCAAF in this release.':'Game Center follows the active game video.');
+    window.SBB_GAME_CENTER_VIEW?.clear?.('Game Center follows the active game video.');
     return null;
   }
   const eventLike=gameCenterEventForPlayback(item);
@@ -5091,6 +5094,7 @@ function queueHistoricalGameMedia(match,{priority=false}={}){
 }
 function storeScoreDateLeague(league,date,rows,{source='',authoritative=true}={}){
   const lg=String(league||'SPORTS').toUpperCase();
+  if(lg==='CFB') return []; // retired namespace: never re-enter the ribbon store
   const marked=(rows||[]).map(raw=>{
     const m={...raw,__sbbLeague:lg,__sbbDate:date,__sbbDay:date===localDateISO(0)?'today':(date===localDateISO(-1)?'yesterday':'historical'),competitionId:lg,competitionName:LEAGUES[lg]?.competition||lg,sportId:LEAGUES[lg]?.sport||'sports'};
     return window.SBB_CORE?.event?window.SBB_CORE.event(m,lg):m;
@@ -5106,6 +5110,7 @@ function preserveScoreDateLeagueOnError(league,date,error,{source=''}={}){
 }
 function storeScoreDateMedia(league,date,rows,{append=false}={}){
   const lg=String(league||'SPORTS').toUpperCase();
+  if(lg==='CFB') return [];
   const prepared=(rows||[]).map(x=>({...x,__sbbDate:x.__sbbDate||date,gameDate:x.gameDate||date,competitionId:x.competitionId||lg,league:lg,sport:x.sport||LEAGUES[lg]?.sport||'sports'}));
   if(append) SCORE_DATE_STORE?.addMedia?.(date,lg,prepared); else SCORE_DATE_STORE?.setMedia?.(date,lg,prepared);
   return prepared;

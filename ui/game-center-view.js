@@ -163,14 +163,6 @@
   }
   async function load(evt,{force=false,background=false}={}){
     if(!evt)return;
-    const competitionId=String(evt?.competitionId||evt?.__sbbLeague||evt?.league||'').toUpperCase();
-    if(competitionId==='NCAAF'){
-      selected=evt;data=null;requestToken++;
-      if(pollTimer){clearTimeout(pollTimer);pollTimer=null;}
-      if(requestAbort){try{requestAbort.abort();}catch(_){}requestAbort=null;}
-      clear('Game Center is disabled for NCAAF in this release.');
-      return; // v5.1.10 isolation: ZERO SBB_GAME_CENTER.peek/get/polling for NCAAF.
-    }
     const oldKey=String(selected?.eventId||selected?.matchId||selected?.gamePk||selected?.scoreGameKey||'');
     const newKey=String(evt?.eventId||evt?.matchId||evt?.gamePk||evt?.scoreGameKey||'');
     if(newKey && newKey!==oldKey) activePlayerSide='away';

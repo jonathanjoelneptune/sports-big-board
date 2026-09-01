@@ -25,6 +25,8 @@ _install_competition_builder_v4615()
 _install_special_event_media_v4616()
 _install_day_state()
 _install_game_center_multisport()
+from .ncaaf_game_center import install as _install_ncaaf_game_center
+_install_ncaaf_game_center()
 _install_history_readiness_repair()
 
 from .ncaaf_namespace_reset import install as _install_ncaaf_namespace_reset

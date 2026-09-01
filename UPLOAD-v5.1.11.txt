@@ -1,0 +1,12 @@
+Sports Big Board v5.1.11 — NCAAF Ribbon Cleanup + Shared Football Game Center
+
+Upload the CONTENTS of this folder to the repository root, preserving paths and replacing existing files.
+
+Functional changes:
+- Retired CFB rows/media are rejected at the browser score-store/read boundary, so CFB cannot render beside NCAAF.
+- NCAAF Game Center is enabled again using ESPN college-football data through the same shared football normalization/completeness architecture as NFL.
+- NCAAF events carry their exact ESPN event id into Game Center requests.
+- No retired CFB-specific Game Center runtime is restored.
+- VERIFY.sh remains the non-blocking deployment preflight from v5.1.10 R3.
+
+No checksum or release-manifest package is included.
