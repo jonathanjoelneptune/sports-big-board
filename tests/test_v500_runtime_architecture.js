@@ -25,7 +25,7 @@ for(const file of ['architecture/app-store-v5.js','architecture/selected-event-s
   vm.runInContext(read(file),sandbox,{filename:file});
 }
 assert.strictEqual(window.SBB_APP_STORE.version,version);
-assert.strictEqual(window.SBB_SELECTED_EVENT.version,'5.0.0');
+assert.strictEqual(window.SBB_SELECTED_EVENT.version,version,'SelectedEvent authority must track the current v5.0.x release');
 assert.strictEqual(window.SBB_PLAYBACK_SESSION.version,'2.0');
 assert.strictEqual(window.SBB_PLAYBACK_ORCHESTRATOR.version,version);
 

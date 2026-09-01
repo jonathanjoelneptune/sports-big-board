@@ -1,0 +1,26 @@
+Sports Big Board v5.0.7 — CI Correction R2
+
+Cause
+-----
+The retained v5.0.0 runtime architecture test still asserted that
+SBB_SELECTED_EVENT.version must equal the literal string "5.0.0".
+
+v5.0.7 intentionally advances SelectedEvent to the current release version
+because Event Reconstitution is implemented in that authority module.
+The product module is correct; the retained test was pinned to an obsolete
+implementation version.
+
+Correction
+----------
+- tests/test_v500_runtime_architecture.js
+  - Replace the literal SelectedEvent version assertion with a requirement that
+    SBB_SELECTED_EVENT.version equals repository VERSION.
+  - This remains blocking and is stricter for future releases: a stale
+    SelectedEvent module will still fail verification.
+
+Audit
+-----
+- tests/test_v500_single_tune_gateway.js already uses the current repository
+  VERSION and contains no equivalent 5.0.0 SelectedEvent version pin.
+- No production/runtime files are changed by this correction.
+- Release remains v5.0.7.
