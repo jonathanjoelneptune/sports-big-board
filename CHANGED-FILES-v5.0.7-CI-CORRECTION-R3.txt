@@ -1,0 +1,24 @@
+Sports Big Board v5.0.7 CI Correction R3
+
+Cause
+-----
+The retained v5 runtime architecture test correctly requires release-tracking v5 authority modules to match repository VERSION. SBB_PLAYBACK_ORCHESTRATOR still reported 5.0.6 even though VERSION, App Store, SelectedEvent, core-model, page generation, and efficiency certification were at 5.0.7.
+
+Changes
+-------
+- architecture/playback-orchestrator-v5.js
+  - Header advanced to v5.0.7.
+  - idempotent load guard advanced from 5.0.6 to 5.0.7.
+  - VERSION advanced from 5.0.6 to 5.0.7.
+  - No behavioral playback logic changed.
+- release-manifest.json
+  - Playback Orchestrator contract now requires const VERSION='5.0.7'.
+
+Validation
+----------
+- JavaScript syntax check passed for playback-orchestrator-v5.js.
+- JavaScript syntax check passed for test_v500_runtime_architecture.js.
+- No remaining release-tracking 5.0.6 executable identity was found in the v5 authority modules included in the release overlay.
+- Manifest and orchestrator agree on 5.0.7.
+
+Release remains v5.0.7 because the release has not yet passed verification/deployed successfully.
