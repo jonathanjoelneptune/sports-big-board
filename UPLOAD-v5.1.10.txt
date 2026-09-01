@@ -5,6 +5,7 @@ Sports Big Board v5.1.10 manual upload
 3. Replace files when GitHub prompts.
 4. Commit the upload and let Deploy Sports Big Board run.
 5. Confirm VERIFY.sh passes the v5.1.10 NCAAF namespace/reset gates.
+   The old release-manifest/token-string gate is intentionally retired and is no longer blocking.
 6. After deployment hard-refresh once, open Aug. 29, 2026, and click San Jose State @ USC.
 
 Expected isolation behavior:
@@ -15,3 +16,9 @@ Expected isolation behavior:
 - legacy CFB ranked/trusted-source/Game Center modules are inert tombstones;
 - startup purge deletes retired CFB state and does not migrate derived CFB state into NCAAF;
 - NCAAF ranked state is rebuilt independently in ncaaf-ranked-2026.json.
+
+Verification policy in v5.1.10 R2:
+- VERIFY.sh does NOT run tools/check_release_manifest.py;
+- release-manifest.json is not required by this upload;
+- the compatibility checker returns PASS if a stale workflow invokes it directly;
+- release version handshake, foundation certification, playback/deploy checks, and executable regressions remain blocking.

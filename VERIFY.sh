@@ -8,7 +8,8 @@ trap 'rm -rf "$VERIFY_TMP"' EXIT
 echo "Sports Big Board v${VERSION} verification"
 echo "----------------------------------"
 
-python3 tools/check_release_manifest.py
+# v5.1.10+: release-manifest/token-string gating is retired. Verification is
+# behavior-, syntax-, version-handshake-, certification-, and deploy-based.
 python3 tools/check_release_version.py
 python3 tools/check_foundation_certification.py
 python3 tools/check_ultimate_playback.py
