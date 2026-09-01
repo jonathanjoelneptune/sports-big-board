@@ -1,0 +1,42 @@
+Sports Big Board v5.0.4 — Architecture Test Contract Correction
+
+WHY CI FAILED
+-------------
+The v5.0.4 runtime intentionally advances architecture/score-date-store.js from
+ScoreDateStore 1.0 to 1.1 to add last-known-good score inventory semantics.
+The retained stable test tests/test_architecture.js still asserted exactly 1.0,
+so VERIFY.sh failed after all release/manifest/Foundation/Python gates had passed.
+
+CORRECTION
+----------
+Replaces tests/test_architecture.js only.
+
+The stable architecture test now:
+- requires SBB_SCORE_DATE.version === '1.1'
+- requires recordMatchFailure()
+- requires dateHealth()
+- verifies a temporary provider failure preserves the previously stored NFL score row
+- verifies dateHealth() records the league error
+- preserves the prior enabled competition, media policy, Game Center, SelectedEvent,
+  media resolver, and sequential Game Center alias handoff assertions
+
+VALIDATION
+----------
+PASS node --check tests/test_architecture.js
+PASS node tests/test_architecture.js against the merged v5.0.4 frontend workspace
+  PASS MLB extra-inning linescore reconciliation
+  PASS independent browse/playback date store + last-known-good failure semantics
+  PASS browser architecture contracts
+  PASS provider-independent media resolver + Game Center policy
+  PASS Game Center sequential alias handoff
+PASS retained playback-session runtime
+PASS v4.7.3 efficiency contract
+PASS v4.7.4 request-broker contract
+
+The broader local validation workspace does not contain every unchanged backend file
+from the repository (for example sbb/day_state.py), so GitHub Actions remains the
+full-repository verification authority for later gates.
+
+VERSION
+-------
+Remain at v5.0.4. The prior v5.0.4 upload did not pass verification/deploy.

@@ -23,7 +23,11 @@ assert.equal(SBB_MEDIA_WORK.PRIORITY.VISIBLE_SCORE,'VISIBLE_SCORE');
 assert.equal(SBB_EDITORIAL_PACKAGES.SERIES.MLB_TOP_PLAYS_DAILY.cadence,'daily');
 assert.equal(SBB_EDITORIAL_PACKAGES.SERIES.NBA_TOP_PLAYS_NIGHTLY.cadence,'nightly');
 assert.equal(SBB_EDITORIAL_PACKAGES.SERIES.NFL_TOP_PLAYS_WEEKLY.cadence,'weekly');
-assert.equal(SBB_SCORE_DATE.version,'1.0');
+// v5.0.4: ScoreDateStore 1.1 adds last-known-good inventory and failure metadata.
+// The stable architecture contract must advance with that module rather than pin 1.0.
+assert.equal(SBB_SCORE_DATE.version,'1.1');
+assert.equal(typeof SBB_SCORE_DATE.recordMatchFailure,'function');
+assert.equal(typeof SBB_SCORE_DATE.dateHealth,'function');
 assert.equal(SBB_GAME_CENTER_LINESCORE.version,'2.0');
 const extraBoard={away:{score:8},home:{score:6},totals:{away:{runs:8},home:{runs:6}},innings:[
   {num:1,away:0,home:2},{num:2,away:0,home:3},{num:3,away:0,home:0},{num:4,away:3,home:0},{num:5,away:2,home:1},
@@ -45,9 +49,14 @@ assert.equal(SBB_SCORE_DATE.snapshot().browseDate,'2026-01-18');
 assert.equal(SBB_SCORE_DATE.snapshot().playbackDate,'2026-01-18');
 assert.equal(SBB_SCORE_DATE.allMatches('2026-01-18')[0].id,'historical-nfl');
 assert.equal(SBB_SCORE_DATE.allMedia('2026-01-18')[0].id,'historical-recap');
+// v5.0.4 read-model regression inside the stable architecture gate: a provider
+// failure records ERROR metadata but may not destroy the last-known-good rows.
+SBB_SCORE_DATE.recordMatchFailure('2026-01-18','NFL',new Error('temporary provider timeout'),{source:'TEST'});
+assert.equal(SBB_SCORE_DATE.allMatches('2026-01-18')[0].id,'historical-nfl');
+assert.equal(SBB_SCORE_DATE.dateHealth('2026-01-18').errorLeagues,1);
 SBB_SCORE_DATE.setBrowseDate(originalDateState.today);
 SBB_SCORE_DATE.setPlaybackDate(originalDateState.today);
-console.log('PASS independent browse/playback date store');
+console.log('PASS independent browse/playback date store + last-known-good failure semantics');
 
 const mlbEvent=SBB_CORE.event({gamePk:824155,date:'2026-08-19T23:10:00Z',awayTeam:{abbreviation:'TOR'},homeTeam:{abbreviation:'TB'}},'MLB');
 assert.equal(mlbEvent.eventId,'824155');
