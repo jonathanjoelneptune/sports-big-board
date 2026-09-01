@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "5.0.5",
-  "baseRelease": "5.0.4",
-  "title": "Curated Event Media Override + Deterministic Playback Regression",
+  "release": "5.0.6",
+  "baseRelease": "5.0.5",
+  "title": "Curated Isolation Fast Lane + Pathological Event Containment",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -55,40 +55,42 @@
     "architecture/score-date-store.js",
     "tests/test_v504_score_date_resilience.js",
     "architecture/curated-media-overrides.js",
-    "tests/test_v505_curated_media_override.js"
+    "tests/test_v505_curated_media_override.js",
+    "tests/test_v506_curated_fast_lane.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "5.0.5"
+        "5.0.6"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board \u2014 v5.0.5",
-        "core-model.js?v=5.0.5",
-        "architecture/app-store-v5.js?v=5.0.5",
-        "architecture/playback-orchestrator-v5.js?v=5.0.5",
-        "architecture/score-media-plan-v5.js?v=5.0.5",
-        "architecture/comprehensive-site-certification.js?v=5.0.5",
-        "architecture/curated-media-overrides.js?v=5.0.5",
-        "app.js?v=5.0.5"
+        "Sports Big Board — v5.0.6",
+        "core-model.js?v=5.0.6",
+        "architecture/app-store-v5.js?v=5.0.6",
+        "architecture/playback-orchestrator-v5.js?v=5.0.6",
+        "architecture/score-media-plan-v5.js?v=5.0.6",
+        "architecture/comprehensive-site-certification.js?v=5.0.6",
+        "architecture/curated-media-overrides.js?v=5.0.6",
+        "app.js?v=5.0.6"
       ],
       "forbidden": [
         "?v=5.0.1",
         "?v=5.0.2",
         "?v=5.0.3",
-        "?v=5.0.4"
+        "?v=5.0.4",
+        "?v=5.0.5"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'5.0.5'"
+        "version:'5.0.6'"
       ]
     },
     "architecture/app-store-v5.js": {
       "required": [
-        "const VERSION='5.0.5'",
+        "const VERSION='5.0.6'",
         "const SCHEMA='1.3'",
         "compactEvent",
         "branch-local and idempotent",
@@ -130,7 +132,7 @@
     },
     "architecture/playback-orchestrator-v5.js": {
       "required": [
-        "const VERSION='5.0.5'",
+        "const VERSION='5.0.6'",
         "window.SBB_PLAYBACK_ORCHESTRATOR",
         "bindAdapter",
         "requestTune",
@@ -144,13 +146,13 @@
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "const VERSION = '5.0.5'",
+        "const VERSION = '5.0.6'",
         "Efficiency Certification"
       ]
     },
     "architecture/comprehensive-site-certification.js": {
       "required": [
-        "const VERSION='3.5'",
+        "const VERSION='3.6'",
         "V5 UNIFIED RUNTIME ARCHITECTURE",
         "mainThreadGuard",
         "requireResponsiveUi",
@@ -175,13 +177,15 @@
         "curatedMediaRegression",
         "CURATED MEDIA REGRESSION",
         "CURATED_MEDIA attempted=",
-        "regressionFixtures"
+        "regressionFixtures",
+        "CURATED_FAST_LANE",
+        "fastLane="
       ],
       "forbidden": [
         "USC_EVENT_FOUND",
         "401864494",
         "San Jose",
-        "San Jos\u00e9",
+        "San José",
         "san jose"
       ]
     },
@@ -226,16 +230,22 @@
         "preserveScoreDateLeagueOnError",
         "preserving last-known-good rows",
         "Score inventory temporarily unavailable",
-        "SBB_CURATED_MEDIA?.apply?.(match",
-        "SBB_CURATED_MEDIA?.preferred?.(match",
-        "curatedOverrideId"
+        "curatedOverrideId",
+        "curatedScoreClickItems",
+        "CURATED_FAST_LANE",
+        "PROGRAM=[...selectionItems]",
+        "handleCuratedPlaybackFailure",
+        "Automated media associations remain isolated"
       ],
       "forbidden": [
         "for(const x of RECAP_CANDIDATE_REGISTRY.values()) add(x);",
         "cell.addEventListener('pointerdown',()=>primeScoreIntent(primaryForPrime)",
         "cell.addEventListener('pointerenter',()=>primeScoreIntent(primaryForPrime)",
         "cell.addEventListener('focus',()=>primeScoreIntent(primaryForPrime)",
-        "const playable=scoreCardPlayableItems(match);"
+        "const playable=scoreCardPlayableItems(match);",
+        "SBB_CURATED_MEDIA?.apply?.(match",
+        "SBB_CURATED_MEDIA?.preferred?.(match",
+        "scheduleCuratedFallbackHydration"
       ]
     },
     "tools/check_release_manifest.py": {
@@ -256,7 +266,8 @@
         "node tests/test_v502_media_plan_continuity.js",
         "node tests/test_v503_score_click_authority.js",
         "node tests/test_v504_score_date_resilience.js",
-        "node tests/test_v505_curated_media_override.js"
+        "node tests/test_v505_curated_media_override.js",
+        "node tests/test_v506_curated_fast_lane.js"
       ]
     },
     "sbb/__init__.py": {
@@ -289,17 +300,20 @@
         "Selected Event",
         "5.1 canonical backend event identity",
         "Nothing points backward",
-        "v5.0.2 \u2014 Media-plan continuity",
+        "v5.0.2 — Media-plan continuity",
         "PLAYBACK_PLAN_EXHAUSTED",
         "PROVEN_HISTORY",
         "score-media-plan-v5.js",
         "RECAP_CANDIDATE_INDEX",
         "sport-aware",
-        "v5.0.4 \u2014 Score-click authority",
+        "v5.0.4 — Score-click authority",
         "score-click",
-        "v5.0.4 \u2014 Last-known-good score read model",
+        "v5.0.4 — Last-known-good score read model",
         "dateHealth(date)",
-        "v5.0.5 \u2014 Curated event media corrections"
+        "v5.0.6 — Curated isolation fast lane",
+        "curated media never enters the automated media graph",
+        "CURATED_FAST_LANE",
+        "exact curated asset"
       ]
     },
     "tests/test_v473_efficiency_runtime.js": {
@@ -461,9 +475,18 @@
     },
     "tests/test_v505_curated_media_override.js": {
       "required": [
-        "v5.0.5 curated event-media override",
+        "retains v5.0.5 curated event-media registry",
         "-tDiPDHU2fs",
         "curated asset must lead the media plan"
+      ]
+    },
+    "tests/test_v506_curated_fast_lane.js": {
+      "required": [
+        "v5.0.6 curated media is isolated from legacy graph and dispatched through fast lane",
+        "generic score resolver must not consume curated override data",
+        "CURATED_FAST_LANE",
+        "handleCuratedPlaybackFailure",
+        "curated failure must not re-enter automated graph"
       ]
     }
   }

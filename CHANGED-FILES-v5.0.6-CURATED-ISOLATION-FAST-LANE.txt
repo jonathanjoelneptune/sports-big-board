@@ -1,0 +1,56 @@
+Sports Big Board v5.0.6 — Curated Isolation Fast Lane + Pathological Event Containment
+
+WHY THIS RELEASE EXISTS
+-----------------------
+v5.0.4 was the first build in which the known San Jose State @ USC event stopped
+poisoning the board. v5.0.5 then added the exact human-curated YouTube recap, but
+USC began freezing the page again even though the correct extended clip appeared.
+That A/B result isolates the regression to how curated media was integrated, not to
+the physical YouTube video itself.
+
+ROOT CAUSE / ARCHITECTURE CORRECTION
+------------------------------------
+v5.0.5 inserted the curated asset into the same generic score-card/media-selection
+pipeline that consumes the event's automated associations and alternate graph. For
+a pathological event, putting the correct asset at rank #1 did not prevent the old
+graph from being traversed around it.
+
+v5.0.6 turns curated corrections into an isolated fast lane:
+- score-card availability short-circuits from SBB_CURATED_MEDIA for a curated event;
+- a click creates the v5 SelectedEvent/playback transaction before media work;
+- CURATED_FAST_LANE yields to the browser and dispatches only the exact curated item;
+- score takeover commits only that selected game's media, never a synchronous whole-date program;
+- the generic score resolver, cooperative generic planner, and legacy selection graph
+  do not consume curated override data;
+- the active curated session does not hydrate the automated fallback graph;
+- if the curated embed fails, handleCuratedPlaybackFailure preserves board/event
+  ownership and offers the exact curated YouTube URL instead of entering automated
+  historical/fallback association logic.
+
+USC CURATED REGRESSION FIXTURE
+------------------------------
+Competition: CFB
+Date: 2026-08-29
+ESPN/provider event: 401864494
+Match: San Jose State @ USC
+Curated YouTube ID: -tDiPDHU2fs
+Curated URL: https://www.youtube.com/watch?v=-tDiPDHU2fs
+
+The event-specific data remains only in architecture/curated-media-overrides.js.
+There is no USC/event-ID conditional in app.js.
+
+CERTIFICATION
+-------------
+Comprehensive Certification schema: 3.6
+Curated fixture playback must show the CURATED_FAST_LANE breadcrumb, select the
+configured physical media, advance its media clock, preserve Game Center ownership,
+avoid engine resets, and retain invariant=OK.
+
+NEW BLOCKING TEST
+-----------------
+tests/test_v506_curated_fast_lane.js
+- proves generic score resolver/planner/ranking do not consume curated overrides;
+- proves card availability short-circuits before generic resolution;
+- proves click uses CURATED_FAST_LANE and only the selected game's program;
+- proves curated failure short-circuits before automated fallback resolution;
+- proves certification requires the fast-lane breadcrumb.

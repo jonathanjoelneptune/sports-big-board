@@ -2,7 +2,7 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
 const root=path.resolve(__dirname,'..');
 const VERSION=fs.readFileSync(path.join(root,'VERSION'),'utf8').trim();
-assert.equal(VERSION,'5.0.5');
+{const [a,b,c]=VERSION.split('.').map(Number);assert(a>5||(a===5&&(b>0||(b===0&&c>=5))),'v5.0.5+ required');}
 global.window=global;
 vm.runInThisContext(fs.readFileSync(path.join(root,'architecture/curated-media-overrides.js'),'utf8'),{filename:'architecture/curated-media-overrides.js'});
 assert.equal(SBB_CURATED_MEDIA.version,'1.0');
@@ -25,9 +25,9 @@ const app=fs.readFileSync(path.join(root,'app.js'),'utf8');
 const cert=fs.readFileSync(path.join(root,'architecture/comprehensive-site-certification.js'),'utf8');
 assert(index.includes(`architecture/curated-media-overrides.js?v=${VERSION}`));
 assert(index.indexOf(`architecture/curated-media-overrides.js?v=${VERSION}`)<index.indexOf(`architecture/media-manifest.js?v=${VERSION}`));
-for(const token of ['SBB_CURATED_MEDIA?.apply?.(match','SBB_CURATED_MEDIA?.preferred?.(match','curatedOverrideId'])assert(app.includes(token),token);
+for(const token of ['curatedScoreClickItems','curatedOverrideId'])assert(app.includes(token),token);
 assert(!app.includes('-tDiPDHU2fs'),'event-specific override data belongs in the registry, not app.js');
-assert(cert.includes("const VERSION='3.5'"));
+assert(/const VERSION='3\.[5-9]'/.test(cert));
 for(const token of ['curatedMediaRegression','CURATED MEDIA REGRESSION','CURATED_MEDIA attempted=','regressionFixtures'])assert(cert.includes(token),token);
 assert(!cert.includes('401864494'),'whole-site certification must consume generic curated fixtures rather than hard-code USC');
-console.log('PASS: v5.0.5 curated event-media override + deterministic regression fixture');
+console.log(`PASS: ${VERSION} retains v5.0.5 curated event-media registry + deterministic regression fixture`);

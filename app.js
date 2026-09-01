@@ -72,7 +72,7 @@ if (location.protocol === 'file:') {
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.5'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,curatedMedia:!!window.SBB_CURATED_MEDIA,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.6'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,curatedMedia:!!window.SBB_CURATED_MEDIA,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -2737,6 +2737,8 @@ function beginScorePlaybackSession({matchId,resumeItem,resumeIndex,selectionCoun
     firstPlayLogged:false,
     startedAt:Date.now(),
     fallbackItems:fallbacks,
+    curatedFastLane:!!fallbacks.some(x=>x?.__sbbCuratedOverride),
+    curatedOverrideId:String(fallbacks.find(x=>x?.__sbbCuratedOverride)?.curatedOverrideId||''),
     failedMediaKeys:new Set(),
     match:match||null,
     historyRefreshAttempted:false
@@ -3348,6 +3350,23 @@ function clearPlaybackRecovery(){
   const action=$('bumperAction'); if(action){ action.classList.add('hidden'); action.textContent=''; }
 }
 
+function handleCuratedPlaybackFailure(item,reason='Curated playback failed'){
+  const session=userPlaybackSession;
+  if(session?.source!=='score'||!(session.curatedFastLane||item?.__sbbCuratedOverride))return false;
+  const failed=item||clip(currentIndex);
+  try{markRuntimeMediaFailed(failed,reason,{providerFailure:false});}catch(_){}
+  try{window.SBB_PLAYBACK_ORCHESTRATOR?.candidateRejected?.(session.transactionId,failed,reason);window.SBB_PLAYBACK_ORCHESTRATOR?.planExhausted?.(session.transactionId,reason);window.SBB_PLAYBACK_ORCHESTRATOR?.unavailable?.(session.transactionId,reason);}catch(_){}
+  clearPlaybackRecovery();transitionInFlight=false;setVideoLoadingOverlay(false);setPlaybackUi('ready');
+  const url=String(failed?.curatedSourceUrl||failed?.externalUrl||(failed?.youtubeId?`https://www.youtube.com/watch?v=${failed.youtubeId}`:'')||'');
+  playbackExternalFallbackUrl=url;
+  const kicker=$('bumperKicker');if(kicker)kicker.textContent=url?'WATCH ON YOUTUBE':'VIDEO UNAVAILABLE';
+  const subtitle=$('bumperSubtitle');if(subtitle)subtitle.textContent=url?'The curated recap could not start in the embedded player. Open the exact curated video directly.':'The curated recap could not start. Automated media associations remain isolated to keep the board responsive.';
+  const action=$('bumperAction');if(action){action.textContent=url?'↗ OPEN CURATED RECAP':'';action.classList.toggle('hidden',!url);}
+  $('bumper')?.classList.remove('hidden','needs-tap');if(url)$('bumper')?.classList.add('external-fallback');
+  try{markScoreClickStage('CURATED_EXTERNAL_FALLBACK',session.match||failed,{mediaKey:playbackItemKey(failed),reason:String(reason||'')});}catch(_){}
+  return true;
+}
+
 function handlePlaybackFailure(slot, err, userInitiated=false){
   if(slot!==activeSlot) return;
   clearPlaybackStartupRecovery();
@@ -3365,6 +3384,10 @@ function handlePlaybackFailure(slot, err, userInitiated=false){
   // the user through an identical gesture.
   if(userPlaybackSession?.source==='score'){
     const failed=clip(currentIndex);
+    // Curated corrections are intentionally isolated from the automated media graph.
+    // If the exact human-curated asset cannot embed, offer that physical video
+    // directly rather than re-entering the pathological legacy association graph.
+    if(handleCuratedPlaybackFailure(failed,err?.message||'curated playback failed')) return;
     // Runtime truth is recorded at the playback-failure boundary, then recovery
     // may select another verified asset from this exact game. Keeping the mark
     // here preserves the score-rail contract even as fallback internals evolve.
@@ -3463,6 +3486,7 @@ function onPlayerError(slot, code){
   console.warn('YouTube player error', slot, code);
   if(slot === activeSlot){
     const failed=clip(currentIndex);
+    if(handleCuratedPlaybackFailure(failed,`YouTube player error ${code}`)) return;
     // Error 153 is not a bad video. It means YouTube did not receive the HTTP
     // Referer / API-client identity it now requires. v4.3.6 explicitly serves
     // strict-origin-when-cross-origin and passes origin + widget_referrer. Never
@@ -5060,7 +5084,7 @@ async function loadScoreDateLeagueMatches(league,date){
       const rows=responseItems(payload).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:lg},date)===date);
       return {rows:storeScoreDateLeague(lg,date,rows),error:null,source:payload?.source||'HISTORY'};
     }catch(err){
-      console.warn(`[SBB v5.0.5] ${lg} canonical historical score load failed; preserving last-known-good rows`,date,err);
+      console.warn(`[SBB v5.0.6] ${lg} canonical historical score load failed; preserving last-known-good rows`,date,err);
       return {rows:preserveScoreDateLeagueOnError(lg,date,err,{source:'HISTORY'}),error:err,source:'HISTORY ERROR'};
     }
   }
@@ -5068,7 +5092,7 @@ async function loadScoreDateLeagueMatches(league,date){
   try{
     const payload=await apiJson(`/api/espn/scoreboard?league=${encodeURIComponent(lg)}&date=${encodeURIComponent(date)}&timezone=${encodeURIComponent(timezone)}&utcOffsetMinutes=${encodeURIComponent(utcOffsetMinutes)}`);
     rows=responseItems(payload).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:lg},date)===date);
-  }catch(err){firstError=err;console.warn(`[SBB v5.0.5] ${lg} score load failed; preserving last-known-good rows`,date,err);}
+  }catch(err){firstError=err;console.warn(`[SBB v5.0.6] ${lg} score load failed; preserving last-known-good rows`,date,err);}
   if(firstError)return {rows:preserveScoreDateLeagueOnError(lg,date,firstError,{source:'ESPN'}),error:firstError,source:'ESPN ERROR'};
   return {rows:storeScoreDateLeague(lg,date,rows,{source:'ESPN'}),error:null,source:'ESPN'};
 }
@@ -6726,7 +6750,7 @@ function scorePlayableItemsCacheSnapshot(){return {size:SCORE_PLAYABLE_ITEMS_CAC
 
 function scoreCardPlayableItems(match){
   if(!match) return [];
-  const cached=scorePlayableItemsCacheGet(match);if(cached)return window.SBB_CURATED_MEDIA?.apply?.(match,cached)||cached;
+  const cached=scorePlayableItemsCacheGet(match);if(cached)return cached;
   const lg=String(match.competitionId||match.__sbbLeague||match.league||'SPORTS').toUpperCase();
   const away=match.awayTeam||match.away||{}, home=match.homeTeam||match.home||{};
   const sc=scoreFromMatch(match);
@@ -6765,7 +6789,6 @@ function scoreCardPlayableItems(match){
     pools.flat().filter(x=>(!window.SBB_MEDIA_SCOPE||window.SBB_MEDIA_SCOPE.isGame(x,scopeCtx))&&(x?.__sbbCatalogExact===true||mediaMatchesScoreGame(x,match)))
       .map(x=>[String(x.id||x.youtubeId||x.mediaUrl||x.externalUrl),x])
   ).values()];
-  discovered=window.SBB_CURATED_MEDIA?.apply?.(match,discovered)||discovered; // v5.0.5 human-curated event correction precedes automated ranking
   try{ window.SBB_MEDIA_MANIFEST?.ingest?.(match,discovered); }catch(_){ }
   // v4.3.6: an empty (or partial) browser manifest may never erase exact media
   // returned by the authoritative SQLite catalog.  JavaScript [] is truthy, so
@@ -6778,17 +6801,15 @@ function scoreCardPlayableItems(match){
     [...manifestPlayable,...discovered].filter(Boolean).map(x=>[String(x.id||x.youtubeId||x.mediaUrl||x.externalUrl||x.assetKey||''),x])
   ).values()].filter(x=>String(x?.id||x?.youtubeId||x?.mediaUrl||x?.externalUrl||x?.assetKey||'')).filter(runtimeMediaUsable);
   if(!isFinal(match)) items=items.filter(x=>!isFullRecapCandidate(x)&&!isExtendedRecap(x)&&!isGoldRecap(x));
-  items=window.SBB_CURATED_MEDIA?.apply?.(match,items)||items;
   return scorePlayableItemsCachePut(match,preferGameOverviews(items));
 }
 
 async function scoreCardPlayableItemsForIntent(match){
   if(!match)return {items:[],metrics:{source:'none'}};
-  const cached=scorePlayableItemsCacheGet(match);if(cached){const applied=window.SBB_CURATED_MEDIA?.apply?.(match,cached)||cached;return {items:applied,metrics:{source:'cache',total:applied.length,curated:applied.filter(x=>x?.__sbbCuratedOverride).length,elapsedMs:0,yields:0}};}
+  const cached=scorePlayableItemsCacheGet(match);if(cached)return {items:cached,metrics:{source:'cache',total:cached.length,elapsedMs:0,yields:0}};
   const started=performance.now(),lg=String(match.competitionId||match.__sbbLeague||match.league||'SPORTS').toUpperCase();
   const away=match.awayTeam||match.away||{},home=match.homeTeam||match.home||{},sc=scoreFromMatch(match),matchId=String(match.id??match.matchId??match.eventId??'');
   const key=gameKey(teamAbbr(away,''),teamAbbr(home,'')),date=String(match.__sbbDate||match.date||'').slice(0,10),exact=[];
-  try{exact.push(...(window.SBB_CURATED_MEDIA?.itemsFor?.(match)||[]));}catch(_){}
   const catalogPlan=catalogPlanForScoreGame(match);
   if(catalogPlan)exact.push(...[...(catalogPlan.playable||[]),...(catalogPlan.media||[])].map(x=>({...x,__sbbCatalogExact:true,canonicalEventKey:x?.canonicalEventKey||catalogPlan.canonicalEventKey||''})));
   if(matchId){exact.push(...(HIGHLIGHTS_BY_MATCH.get(`match:${lg}:${matchId}`)||[]));exact.push(...(HIGHLIGHTS_BY_MATCH.get(`match:${matchId}`)||[]));}
@@ -6817,9 +6838,9 @@ async function scoreCardPlayableItemsForIntent(match){
     .filter(x=>String(x?.id||x?.youtubeId||x?.mediaUrl||x?.externalUrl||x?.assetKey||'')).filter(runtimeMediaUsable);
   if(!isFinal(match))items=items.filter(x=>!isFullRecapCandidate(x)&&!isExtendedRecap(x)&&!isGoldRecap(x));
   try{await window.SBB_SCORE_MEDIA_PLAN?.yieldToBrowser?.();}catch(_){}
-  items=window.SBB_CURATED_MEDIA?.apply?.(match,preferGameOverviews(items))||preferGameOverviews(items);
+  items=preferGameOverviews(items);
   scorePlayableItemsCachePut(match,items);
-  const metrics={...(planned.metrics||{}),source:planned.metrics?.source||'chunked-date',total:items.length,curated:items.filter(x=>x?.__sbbCuratedOverride).length,elapsedMs:Math.round(performance.now()-started),recapIndex:recapCandidateIndexSnapshot()};
+  const metrics={...(planned.metrics||{}),source:planned.metrics?.source||'chunked-date',total:items.length,elapsedMs:Math.round(performance.now()-started),recapIndex:recapCandidateIndexSnapshot()};
   return {items,metrics};
 }
 
@@ -6853,8 +6874,7 @@ async function resolveScoreIntentMediaPlan(match,selection,transactionId){
 }
 
 function scoreCardPlaybackSelection(match,items){
-  const expanded=preferGameOverviews(expandMediaVersions((items||[]).filter(Boolean)));
-  const rankedLegacy=window.SBB_CURATED_MEDIA?.apply?.(match,expanded)||expanded;
+  const rankedLegacy=preferGameOverviews(expandMediaVersions((items||[]).filter(Boolean)));
   const request=match&&!isFinal(match)
     ? window.SBB_SPORT_MEDIA_POLICY?.REQUEST?.MOMENTS
     : null;
@@ -6865,10 +6885,8 @@ function scoreCardPlaybackSelection(match,items){
     : (window.SBB_MEDIA_RESOLVER?.resolveBest?.(match||{},{assets:rankedLegacy})||null);
   // Keep the resolver order but retain every same-game candidate so a cold direct
   // upstream source can be bypassed in favor of a browser-proven alternative.
-  let ranked=[...new Map([...(resolved?.ranked||[]),...rankedLegacy].filter(Boolean).map(x=>[playbackItemKey(x),x])).values()];
-  ranked=window.SBB_CURATED_MEDIA?.apply?.(match,ranked)||ranked;
-  const curatedPrimary=window.SBB_CURATED_MEDIA?.preferred?.(match,ranked)||null;
-  let primary=curatedPrimary||resolved?.primary||null;
+  const ranked=[...new Map([...(resolved?.ranked||[]),...rankedLegacy].filter(Boolean).map(x=>[playbackItemKey(x),x])).values()];
+  let primary=resolved?.primary||null;
   if(!primary && ranked.length){
     primary=match&&!isFinal(match)
       ? ranked.find(x=>!isFullRecapCandidate(x)&&!isExtendedRecap(x)&&!isGoldRecap(x))||null
@@ -6899,10 +6917,18 @@ function scoreCardPlaybackSelection(match,items){
     if(selectionItems.length) primary=selectionItems[0];
     else selectionItems=[primary];
   }
-  return {ranked,primary,editorialPrimary,selectionItems,resolved,primaryRejected,readinessBefore:readinessBefore.disposition,curatedOverride:!!primary?.__sbbCuratedOverride,curatedOverrideId:String(primary?.curatedOverrideId||'')};
+  return {ranked,primary,editorialPrimary,selectionItems,resolved,primaryRejected,readinessBefore:readinessBefore.disposition};
 }
 function scoreCardPrimaryItem(match,items){ const s=scoreCardPlaybackSelection(match,items);return s.editorialPrimary||s.primary; }
 function scoreCardAvailability(match){
+  // v5.0.6: a curated correction is a clean authority boundary, not another input
+  // to the legacy media graph. Rendering the card must never scan or merge the
+  // event's automated associations before the user has even clicked it.
+  let curated=[];try{curated=(window.SBB_CURATED_MEDIA?.itemsFor?.(match)||[]).filter(x=>x?.verifiedPlayable&&(x.youtubeId||x.mediaUrl));}catch(_){}
+  if(curated.length){
+    const primary=curated[0],availability=mediaAvailability(curated);
+    return {items:curated,externalItems:[],externalPrimary:null,availability,primary,editorialPrimary:primary,primaryRejected:false,readinessBefore:scoreMediaReadiness(primary).disposition,type:highlightType(curated,primary),externalOnly:false,archivedExternal:false,curatedFastLane:true,curatedOverrideId:String(primary.curatedOverrideId||'')};
+  }
   const items=scoreCardPlayableItems(match);
   const externalItems=externalMediaItemsForGame(match);
   const selection=scoreCardPlaybackSelection(match,items);
@@ -7056,6 +7082,9 @@ function beginScoreClickTrace(match){SCORE_CLICK_TRACE.sequence++;return markSco
 function scoreClickTraceSnapshot(){let persisted=null;try{persisted=JSON.parse(sessionStorage.getItem(SCORE_CLICK_TRACE_KEY)||'null');}catch(_){}return {sequence:SCORE_CLICK_TRACE.sequence,last:SCORE_CLICK_TRACE.last?{...SCORE_CLICK_TRACE.last}:null,persisted,history:SCORE_CLICK_TRACE.history.slice(-16)};}
 window.SBB_SCORE_CLICK_TRACE=Object.freeze({snapshot:scoreClickTraceSnapshot});
 
+function curatedScoreClickItems(match){
+  try{return (window.SBB_CURATED_MEDIA?.itemsFor?.(match)||[]).filter(x=>x?.verifiedPlayable&&(x.youtubeId||x.mediaUrl));}catch(_){return [];}
+}
 async function playGameHighlights(matchId, match, providedItems=null, options={}){
   beginScoreClickTrace(match);
   if(!sbbPlaybackAllowed({notify:true})){
@@ -7073,14 +7102,21 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
     ? requestedTransactionId
     : (match?v5?.beginScoreIntent?.(gameCenterSelectionFromScoreMatch(match),{reason:'score-card selection',userInitiated:true,playbackDate:intentPlaybackDate})||'':'');
   markScoreClickStage('INTENT_CREATED',match,{transactionId:v5TransactionId});
-  // v5.0.3: ordinary score clicks never accept a synchronously-computed legacy
-  // media array. Only an explicitly trusted asynchronous caller may seed items.
+  // v5.0.6 curated fast lane: a human-corrected event is isolated from the
+  // automated media graph until its exact known-good asset has been dispatched.
+  // This restores the v5.0.4 containment behavior while retaining deterministic
+  // correction of the physical video. Generic fallback candidates hydrate later.
+  const curatedClickItems=match?curatedScoreClickItems(match):[];
+  const curatedFastLane=curatedClickItems.length>0;
   let items=options?.trustedProvidedItems===true&&Array.isArray(providedItems)?providedItems.filter(Boolean):[];
-  if(match){
+  if(curatedFastLane){
+    markScoreClickStage('CURATED_FAST_LANE',match,{items:curatedClickItems.length,overrideId:String(curatedClickItems[0]?.curatedOverrideId||'')});
+    try{await window.SBB_MAIN_THREAD_GUARD?.yieldToBrowser?.();}catch(_){}
+    items=[...curatedClickItems];
+    try{window.__SBB_LAST_SCORE_INTENT_PLAN__={at:Date.now(),matchId:String(matchId||''),eventKey:String(window.SBB_EVENT_IDENTITY?.key?.(match)||''),source:'CURATED_FAST_LANE',total:items.length,yields:1,elapsedMs:0};}catch(_){}
+    markScoreClickStage('PLAN_BUILT',match,{items:items.length,elapsedMs:0,yields:1,curatedFastLane:true});
+  }else if(match){
     markScoreClickStage('PLAN_START',match);
-    // v5.0.2: intent-time media planning is cooperative. A pathological event may
-    // have a large date/media pool, but candidate matching yields between bounded
-    // chunks so the browser remains clickable while the plan is assembled.
     try{await window.SBB_MAIN_THREAD_GUARD?.waitForBreathingRoom?.({timeoutMs:1800,maxFrameMs:220});}catch(_){}
     const planned=await scoreCardPlayableItemsForIntent(match);
     items=[...new Map([...items,...(planned.items||[])]
@@ -7098,13 +7134,21 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
     return;
   }
 
-  markScoreClickStage('SELECTION_START',match,{items:items.length});
-  let resolvedSelection=scoreCardPlaybackSelection(match,items);
-  markScoreClickStage('SELECTION_RESOLVED',match,{ranked:(resolvedSelection.ranked||[]).length});
+  markScoreClickStage('SELECTION_START',match,{items:items.length,curatedFastLane});
+  let resolvedSelection;
+  if(curatedFastLane){
+    const primary=items[0];
+    resolvedSelection={ranked:[...items],primary,editorialPrimary:primary,selectionItems:[primary],resolved:null,primaryRejected:false,readinessBefore:scoreMediaReadiness(primary).disposition,curatedOverride:true,curatedOverrideId:String(primary.curatedOverrideId||'')};
+  }else resolvedSelection=scoreCardPlaybackSelection(match,items);
+  markScoreClickStage('SELECTION_RESOLVED',match,{ranked:(resolvedSelection.ranked||[]).length,curatedFastLane});
   const editorialPrimary=resolvedSelection.editorialPrimary||resolvedSelection.primary;
   try{if(v5TransactionId)v5?.setPlan?.(v5TransactionId,resolvedSelection.ranked||items,{matchId});}catch(_){}
   if(!(resolvedSelection.ranked||[]).length){try{v5?.planExhausted?.(v5TransactionId,'No eligible media candidate remained after resolution.');v5?.unavailable?.(v5TransactionId,'No eligible media candidate remained after resolution.');}catch(_){}return false;}
-  const planResult=await resolveScoreIntentMediaPlan(match,resolvedSelection,v5TransactionId);
+  let planResult;
+  if(curatedFastLane){
+    try{v5?.candidateAttempt?.(v5TransactionId,editorialPrimary,{candidateIndex:0});}catch(_){}
+    planResult={primary:editorialPrimary,selectionItems:[editorialPrimary],ranked:[...items],candidateIndex:0,attempted:1,rejected:0,exhausted:false};
+  }else planResult=await resolveScoreIntentMediaPlan(match,resolvedSelection,v5TransactionId);
   markScoreClickStage('CANDIDATE_PLAN_RESOLVED',match,{attempted:Number(planResult.attempted)||0,rejected:Number(planResult.rejected)||0,exhausted:!!planResult.exhausted});
   let primary=planResult.primary,selectionItems=planResult.selectionItems;
   if(!primary){
@@ -7136,7 +7180,9 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
   const resumeIndex=currentIndex;
   const playbackDate=scoreEventDate(match)||scoreBrowseDate||localDateISO(0);
   activatePlaybackDateContext(playbackDate,{source:'score-ribbon'});
-  PROGRAM=dateProgramWithSelectionFirst(playbackDate,selectionItems);
+  // v5.0.6: score takeover commits only the selected game's media. Building the
+  // rest of a date is background/continuation work and may never delay this click.
+  PROGRAM=[...selectionItems];
   currentIndex=0;
   standbyIndex=0;
   manualPauseRequested=false;
@@ -7155,7 +7201,7 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
   }catch(e){}
   markScoreClickStage('TUNE_REQUESTED',match,{mediaKey:playbackItemKey(primary)});
   tuneProgramIndexV5(0,{userInitiated:true,reason:'score-card selection'});
-  markScoreClickStage('TUNE_DISPATCHED',match,{mediaKey:playbackItemKey(primary)});
+  markScoreClickStage('TUNE_DISPATCHED',match,{mediaKey:playbackItemKey(primary),curatedFastLane});
   return true;
 }
 

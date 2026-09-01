@@ -1,4 +1,4 @@
-/* Sports Big Board v5.0.5 — Curated Event Media Overrides.
+/* Sports Big Board v5.0.6 — Curated Event Media Overrides.
 
    Automated discovery remains the default media authority.  This registry is a
    deliberately small, explicit correction layer for sporting events where a human

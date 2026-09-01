@@ -1,4 +1,4 @@
-/* Sports Big Board v5.0.5 — Unified Runtime Comprehensive Certification Architecture.
+/* Sports Big Board v5.0.6 — Unified Runtime Comprehensive Certification Architecture.
    Whole-site certification drives real navigation, Game Center UI, score-card
    playback, recovery, APIs, workers, discovery, rendering and memory. Selection is
    deliberately game-agnostic and seeded so every run is broad yet reproducible.
@@ -7,8 +7,8 @@
   'use strict';
   if (window.SBB_SITE_CERTIFICATION?.version === '3.5') return;
 
-  const VERSION='3.5';
-  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.5');
+  const VERSION='3.6';
+  const RELEASE=String(window.SBB_RELEASE_VERSION||window.SBB_CORE?.version||'5.0.6');
   const PLAYBACK_TARGET=8;
   const PLAYBACK_MIN_STARTS=5;
   const PLAYBACK_CONFIRM_TIMEOUT_MS=12500;
@@ -232,6 +232,9 @@
           if(!card)throw new Error(`curated fixture ${fixture.id} score card not found on ${date}`);
           if(!(await requireResponsiveUi()))throw new Error('main thread remained saturated before curated playback click');
           card.click();await yieldUi();
+          const clickTrace=h.scoreClickTrace?.()||{};
+          const fastLaneSeen=[...(clickTrace.history||[]),clickTrace.last,clickTrace.persisted].filter(Boolean).some(x=>x.stage==='CURATED_FAST_LANE');
+          if(!fastLaneSeen)throw new Error('curated fixture did not enter the isolated CURATED_FAST_LANE');
           selection=await waitForSelection(before.selectionId,6500);
           if(!selection)throw new Error('curated score click did not reach media selection');
           const expected=new Set((fixture.youtubeIds||[]).map(id=>`youtube:${id}`));
@@ -240,9 +243,10 @@
           if(!progressResult?.ok)throw new Error(clean(progressResult?.reason||'curated media clock did not advance'));
           await waitForPlaybackQuiescence(1800);
         }catch(err){error=clean(err?.message||err);}
-        const final=progressResult?.session||ps.snapshot(),engineAfter=engineSnapshot(),engineResetsDelta=Math.max(0,n(engineAfter.resets)-n(engineBefore.resets)),gameCenterOwned=gameCenterOwnershipOk(),v5=v5RuntimeSnapshot();
-        const ok=!error&&!!selection&&gameCenterOwned&&engineResetsDelta===0&&v5.invariant==='OK';
-        rows.push({ok,id:fixture.id,date,league:fixture.competitionId||cardLeague(card),label:clean(card?.textContent||fixture.id).replace(/\s+/g,' ').slice(0,140),expected:(fixture.youtubeIds||[]).map(id=>`youtube:${id}`).join(','),mediaKey:clean(final.mediaKey||selection?.mediaKey),elapsedMs:round(now()-started),firstProgressMs:progressResult?.snap?.firstProgressMs??null,engineResetsDelta,gameCenterOwned,invariant:v5.invariant||'',error:error||(!gameCenterOwned?'Game Center ownership lost during curated playback':(engineResetsDelta?'playback engine reset during curated playback':''))});
+        const final=progressResult?.session||ps.snapshot(),engineAfter=engineSnapshot(),engineResetsDelta=Math.max(0,n(engineAfter.resets)-n(engineBefore.resets)),gameCenterOwned=gameCenterOwnershipOk(),v5=v5RuntimeSnapshot(),trace=h.scoreClickTrace?.()||{};
+        const fastLaneSeen=[...(trace.history||[]),trace.last,trace.persisted].filter(Boolean).some(x=>x.stage==='CURATED_FAST_LANE');
+        const ok=!error&&!!selection&&fastLaneSeen&&gameCenterOwned&&engineResetsDelta===0&&v5.invariant==='OK';
+        rows.push({ok,id:fixture.id,date,league:fixture.competitionId||cardLeague(card),label:clean(card?.textContent||fixture.id).replace(/\s+/g,' ').slice(0,140),expected:(fixture.youtubeIds||[]).map(id=>`youtube:${id}`).join(','),mediaKey:clean(final.mediaKey||selection?.mediaKey),elapsedMs:round(now()-started),firstProgressMs:progressResult?.snap?.firstProgressMs??null,fastLane:fastLaneSeen,engineResetsDelta,gameCenterOwned,invariant:v5.invariant||'',error:error||(!fastLaneSeen?'Curated fast lane was bypassed':(!gameCenterOwned?'Game Center ownership lost during curated playback':(engineResetsDelta?'playback engine reset during curated playback':'')))});
         await yieldUi();
       }
     }finally{
@@ -363,7 +367,7 @@
       '',
       '==================== 4. CURATED MEDIA REGRESSION ====================',
       `CURATED_MEDIA attempted=${curated.attempted||0} pass=${curated.pass||0} fail=${curated.fail||0}`,
-      ...(curated.rows||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.id} ${x.date||'—'} ${x.league||'—'} expected=${x.expected||'—'} selected=${x.mediaKey||'—'} progress=${x.firstProgressMs??'N/A'}ms engineReset+${x.engineResetsDelta||0} gcOwned=${x.gameCenterOwned===false?'NO':'YES'} invariant=${x.invariant||'—'}${x.error?` ERROR=${x.error}`:''}`),
+      ...(curated.rows||[]).map(x=>`${x.ok?'PASS':'FAIL'} ${x.id} ${x.date||'—'} ${x.league||'—'} expected=${x.expected||'—'} selected=${x.mediaKey||'—'} progress=${x.firstProgressMs??'N/A'}ms fastLane=${x.fastLane?'YES':'NO'} engineReset+${x.engineResetsDelta||0} gcOwned=${x.gameCenterOwned===false?'NO':'YES'} invariant=${x.invariant||'—'}${x.error?` ERROR=${x.error}`:''}`),
       '',
       '==================== 5. ACTIVE PLAYBACK INTERACTION MATRIX ====================',
       `PLAYBACK_MATRIX result=${p.result||'FAIL'} target=${p.target||PLAYBACK_TARGET} attempts=${p.attempts||0} starts=${p.starts||0} fail=${p.fail||0} uniqueMedia=${p.uniqueMedia||0} fallbacks=${p.fallbacks||0} prewarmAttempts=${p.prewarmAttempts||0} primaryRejected=${p.primaryRejections||0} engineResets=${p.engineResets||0} engineIncidents=${p.engineIncidents||0} gcOwnershipFailures=${p.gameCenterOwnershipFailures||0} p95FirstProgress=${p.p95FirstProgressMs??'N/A'}ms planBuildMax=${p.maxScorePlanMs||0}ms planChunkMax=${p.maxScorePlanChunkMs||0}ms planYields=${p.scorePlanYields||0} recapLookupMax=${p.maxRecapLookupMs||0}ms`,

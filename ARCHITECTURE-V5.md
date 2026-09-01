@@ -219,21 +219,32 @@ array. Only a successful authoritative response may establish an empty league.
 leagues, and transient errors for certification. This prevents a healthy date from
 collapsing to “No games listed” because a later refresh failed.
 
-## v5.0.5 — Curated event media corrections
+## v5.0.6 — Curated isolation fast lane
 
 Automated discovery and ranking remain the default media authority. When a human
 operator has identified the exact recap that should represent a specific sporting
-event, the correction is expressed as data in `architecture/curated-media-overrides.js`.
-The application does not contain event-specific playback branches.
+event, the correction remains data in `architecture/curated-media-overrides.js`;
+the application still contains no event-specific playback branch.
 
-Curated media enters the same v5 Media Plan as discovered assets, but it is ordered
-first for the matching canonical event. It therefore receives normal Playback
-Orchestrator ownership, quarantine, watchdog, fallback, and player-adapter handling.
-If a curated source later fails, the transaction may continue through automated
-same-event candidates rather than becoming a special-case dead end.
+The v5.0.5 implementation proved that merely putting a curated asset first was not
+enough. A pathological event could still enter the old automated association and
+alternate graph during the same click. v5.0.6 therefore establishes a stronger
+boundary: **curated media never enters the automated media graph for the active
+curated score session.**
+
+A matching score card short-circuits availability from the curated registry. On
+click, the v5 transaction and SelectedEvent are created first, the browser yields,
+and `CURATED_FAST_LANE` dispatches the exact curated asset as a one-item Media Plan.
+The rest of the date is not synchronously built and automated same-event candidates
+are not hydrated while that curated session owns playback.
+
+If the exact curated asset cannot embed, `handleCuratedPlaybackFailure` fails closed:
+it preserves SelectedEvent and board responsiveness and offers the exact curated
+source URL as an external fallback. It does not re-enter `scoreCardPlayableItems`,
+historical recovery, or the automated alternate graph. This trades speculative
+fallback breadth for deterministic containment on a human-corrected event.
 
 Entries marked as regression fixtures are actively exercised by Comprehensive
-Certification. The certification resolves the score card generically through the
-registry, verifies that the configured physical media is actually selected, requires
-media-clock advancement, and checks that Game Center ownership and the v5 invariant
-remain intact.
+Certification schema 3.6. Certification requires the `CURATED_FAST_LANE` breadcrumb,
+verifies the configured physical media selection and media-clock advancement, and
+checks Game Center ownership, engine-reset count, and the v5 invariant.
