@@ -1,0 +1,75 @@
+Sports Big Board v5.0.5 — Curated Event Media Override + Deterministic Regression
+
+Primary objective
+-----------------
+Use the operator-selected recap for the 2026-08-29 San Jose State @ USC CFB event
+without introducing a one-off playback branch.  The exact curated source is:
+  https://www.youtube.com/watch?v=-tDiPDHU2fs
+  YouTube ID: -tDiPDHU2fs
+  ESPN/score event: 401864494
+
+Architecture
+------------
+- New architecture/curated-media-overrides.js registry.
+- Curated entries are data-driven and reusable for future event corrections.
+- Matching uses canonical provider IDs first, with date/team fingerprint fallback.
+- Curated media is inserted at the front of the event Media Plan and becomes the
+  editorial primary while retaining normal v5 quarantine, watchdog, recovery,
+  Game Center ownership and same-event fallback behavior.
+- app.js contains no USC/event-specific conditional or YouTube ID.
+- The exact USC URL/ID exists only in the curated registry and regression test.
+
+Certification
+-------------
+- Comprehensive Certification schema 3.5.
+- New CURATED MEDIA REGRESSION section.
+- Every registry entry marked regressionFixture is actively selected from the real
+  score ribbon, must choose its configured physical media, must advance the media
+  clock, must keep Game Center ownership, must preserve the v5 invariant, and must
+  not trigger a global engine reset.
+- The general randomized playback matrix remains game-agnostic.
+
+Release-gate carry-forward
+--------------------------
+- Includes the v5.0.4 ScoreDateStore v1.1 retained-test correction for
+  tests/test_v4710_cold_history_future_store_runtime.js so v5.0.5 does not regress
+  the prior last-known-good score read-model CI fix.
+
+Changed / added files
+---------------------
+ARCHITECTURE-V5.md
+VERSION
+VERIFY.sh
+app.js
+core-model.js
+release-manifest.json
+index.html
+architecture/app-store-v5.js
+architecture/playback-orchestrator-v5.js
+architecture/efficiency-certification.js
+architecture/comprehensive-site-certification.js
+architecture/curated-media-overrides.js (new)
+tests/test_v4710_cold_history_future_store_runtime.js
+tests/test_v505_curated_media_override.js (new)
+
+Local validation
+----------------
+PASS tests/test_architecture.js
+PASS tests/test_playback_session_runtime.js
+PASS tests/test_v480_comprehensive_certification.js
+PASS tests/test_v481_playback_ownership_recovery.js
+PASS tests/test_v482_cold_upstream_game_center.js
+PASS tests/test_v500_runtime_architecture.js
+PASS tests/test_v500_single_tune_gateway.js
+PASS tests/test_v501_ui_thread_hardening.js
+PASS tests/test_v502_media_plan_continuity.js
+PASS tests/test_v503_score_click_authority.js
+PASS tests/test_v504_score_date_resilience.js
+PASS tests/test_v505_curated_media_override.js
+PASS JavaScript syntax for changed runtime modules
+PASS VERIFY.sh shell syntax
+PASS local release-manifest token/forbidden checks for available files
+
+Note: the local frontend validation snapshot does not contain every unchanged backend
+file/tool from the full repository, so GitHub Actions remains the authoritative full
+VERIFY.sh execution.

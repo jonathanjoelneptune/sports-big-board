@@ -181,9 +181,9 @@ v5.0.2 remains game-agnostic. Known difficult games are regression evidence, not
 runtime exceptions.
 
 
-## v5.0.3 — Score-click authority and pathological-event hardening
+## v5.0.4 — Score-click authority and pathological-event hardening
 
-v5.0.3 closes the remaining pre-orchestrator score-click bypass. A score-card
+v5.0.4 closes the remaining pre-orchestrator score-click bypass. A score-card
 click may synchronously create only the v5 event/playback intent. It may not call
 `scoreCardPlayableItems()` from the DOM handler, prewarm hidden decoders from
 pointer events, recursively expand an unbounded `recapAlternates` graph, or run a
@@ -218,3 +218,22 @@ array. Only a successful authoritative response may establish an empty league.
 `SBB_SCORE_DATE.dateHealth(date)` exposes games, authoritative leagues, empty
 leagues, and transient errors for certification. This prevents a healthy date from
 collapsing to “No games listed” because a later refresh failed.
+
+## v5.0.5 — Curated event media corrections
+
+Automated discovery and ranking remain the default media authority. When a human
+operator has identified the exact recap that should represent a specific sporting
+event, the correction is expressed as data in `architecture/curated-media-overrides.js`.
+The application does not contain event-specific playback branches.
+
+Curated media enters the same v5 Media Plan as discovered assets, but it is ordered
+first for the matching canonical event. It therefore receives normal Playback
+Orchestrator ownership, quarantine, watchdog, fallback, and player-adapter handling.
+If a curated source later fails, the transaction may continue through automated
+same-event candidates rather than becoming a special-case dead end.
+
+Entries marked as regression fixtures are actively exercised by Comprehensive
+Certification. The certification resolves the score card generically through the
+registry, verifies that the configured physical media is actually selected, requires
+media-clock advancement, and checks that Game Center ownership and the v5 invariant
+remain intact.

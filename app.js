@@ -72,7 +72,7 @@ if (location.protocol === 'file:') {
 
 const DOMAIN_MODEL = window.SBB_CORE || null;
 if(DOMAIN_MODEL) console.info(`[SBB] domain model ${DOMAIN_MODEL.version}: SPORT → COMPETITION → EVENT → MEDIA_PACKAGE → MEDIA_ASSET → MOMENT`);
-window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.4'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
+window.SBB_ARCHITECTURE=Object.freeze({version:String(DOMAIN_MODEL?.version||'5.0.5'),domain:!!DOMAIN_MODEL,appStore:!!window.SBB_APP_STORE,playbackOrchestrator:!!window.SBB_PLAYBACK_ORCHESTRATOR,scoreDate:!!window.SBB_SCORE_DATE,eventIdentity:!!window.SBB_EVENT_IDENTITY,mediaClassifier:!!window.SBB_MEDIA_CLASSIFIER,playbackTransports:!!window.SBB_PLAYBACK_TRANSPORTS,playbackReadiness:!!window.SBB_PLAYBACK_READINESS,providerHealth:!!window.SBB_PROVIDER_HEALTH,sportMediaPolicy:!!window.SBB_SPORT_MEDIA_POLICY,mediaManifest:!!window.SBB_MEDIA_MANIFEST,mediaResolver:!!window.SBB_MEDIA_RESOLVER,curatedMedia:!!window.SBB_CURATED_MEDIA,gameCenterPolicy:!!window.SBB_GAME_CENTER_POLICY,selectedEvent:!!window.SBB_SELECTED_EVENT,gameCenter:!!window.SBB_GAME_CENTER,mediaWork:!!window.SBB_MEDIA_WORK,editorialPackages:!!window.SBB_EDITORIAL_PACKAGES,siteSoundtrack:!!window.SBB_SOUNDTRACK,infoDrawer:!!window.SBB_INFO_DRAWER});
 
 // v4.3.6 operator resource mode. SEARCH suspends every playback path so the cloud
 // box can dedicate bandwidth/CPU to historical discovery. PLAYBACK leaves known
@@ -5060,7 +5060,7 @@ async function loadScoreDateLeagueMatches(league,date){
       const rows=responseItems(payload).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:lg},date)===date);
       return {rows:storeScoreDateLeague(lg,date,rows),error:null,source:payload?.source||'HISTORY'};
     }catch(err){
-      console.warn(`[SBB v5.0.4] ${lg} canonical historical score load failed; preserving last-known-good rows`,date,err);
+      console.warn(`[SBB v5.0.5] ${lg} canonical historical score load failed; preserving last-known-good rows`,date,err);
       return {rows:preserveScoreDateLeagueOnError(lg,date,err,{source:'HISTORY'}),error:err,source:'HISTORY ERROR'};
     }
   }
@@ -5068,7 +5068,7 @@ async function loadScoreDateLeagueMatches(league,date){
   try{
     const payload=await apiJson(`/api/espn/scoreboard?league=${encodeURIComponent(lg)}&date=${encodeURIComponent(date)}&timezone=${encodeURIComponent(timezone)}&utcOffsetMinutes=${encodeURIComponent(utcOffsetMinutes)}`);
     rows=responseItems(payload).filter(row=>canonicalScheduledGameDate({...row,__sbbLeague:lg},date)===date);
-  }catch(err){firstError=err;console.warn(`[SBB v5.0.4] ${lg} score load failed; preserving last-known-good rows`,date,err);}
+  }catch(err){firstError=err;console.warn(`[SBB v5.0.5] ${lg} score load failed; preserving last-known-good rows`,date,err);}
   if(firstError)return {rows:preserveScoreDateLeagueOnError(lg,date,firstError,{source:'ESPN'}),error:firstError,source:'ESPN ERROR'};
   return {rows:storeScoreDateLeague(lg,date,rows,{source:'ESPN'}),error:null,source:'ESPN'};
 }
@@ -6726,7 +6726,7 @@ function scorePlayableItemsCacheSnapshot(){return {size:SCORE_PLAYABLE_ITEMS_CAC
 
 function scoreCardPlayableItems(match){
   if(!match) return [];
-  const cached=scorePlayableItemsCacheGet(match);if(cached)return cached;
+  const cached=scorePlayableItemsCacheGet(match);if(cached)return window.SBB_CURATED_MEDIA?.apply?.(match,cached)||cached;
   const lg=String(match.competitionId||match.__sbbLeague||match.league||'SPORTS').toUpperCase();
   const away=match.awayTeam||match.away||{}, home=match.homeTeam||match.home||{};
   const sc=scoreFromMatch(match);
@@ -6765,6 +6765,7 @@ function scoreCardPlayableItems(match){
     pools.flat().filter(x=>(!window.SBB_MEDIA_SCOPE||window.SBB_MEDIA_SCOPE.isGame(x,scopeCtx))&&(x?.__sbbCatalogExact===true||mediaMatchesScoreGame(x,match)))
       .map(x=>[String(x.id||x.youtubeId||x.mediaUrl||x.externalUrl),x])
   ).values()];
+  discovered=window.SBB_CURATED_MEDIA?.apply?.(match,discovered)||discovered; // v5.0.5 human-curated event correction precedes automated ranking
   try{ window.SBB_MEDIA_MANIFEST?.ingest?.(match,discovered); }catch(_){ }
   // v4.3.6: an empty (or partial) browser manifest may never erase exact media
   // returned by the authoritative SQLite catalog.  JavaScript [] is truthy, so
@@ -6777,15 +6778,17 @@ function scoreCardPlayableItems(match){
     [...manifestPlayable,...discovered].filter(Boolean).map(x=>[String(x.id||x.youtubeId||x.mediaUrl||x.externalUrl||x.assetKey||''),x])
   ).values()].filter(x=>String(x?.id||x?.youtubeId||x?.mediaUrl||x?.externalUrl||x?.assetKey||'')).filter(runtimeMediaUsable);
   if(!isFinal(match)) items=items.filter(x=>!isFullRecapCandidate(x)&&!isExtendedRecap(x)&&!isGoldRecap(x));
+  items=window.SBB_CURATED_MEDIA?.apply?.(match,items)||items;
   return scorePlayableItemsCachePut(match,preferGameOverviews(items));
 }
 
 async function scoreCardPlayableItemsForIntent(match){
   if(!match)return {items:[],metrics:{source:'none'}};
-  const cached=scorePlayableItemsCacheGet(match);if(cached)return {items:cached,metrics:{source:'cache',total:cached.length,elapsedMs:0,yields:0}};
+  const cached=scorePlayableItemsCacheGet(match);if(cached){const applied=window.SBB_CURATED_MEDIA?.apply?.(match,cached)||cached;return {items:applied,metrics:{source:'cache',total:applied.length,curated:applied.filter(x=>x?.__sbbCuratedOverride).length,elapsedMs:0,yields:0}};}
   const started=performance.now(),lg=String(match.competitionId||match.__sbbLeague||match.league||'SPORTS').toUpperCase();
   const away=match.awayTeam||match.away||{},home=match.homeTeam||match.home||{},sc=scoreFromMatch(match),matchId=String(match.id??match.matchId??match.eventId??'');
   const key=gameKey(teamAbbr(away,''),teamAbbr(home,'')),date=String(match.__sbbDate||match.date||'').slice(0,10),exact=[];
+  try{exact.push(...(window.SBB_CURATED_MEDIA?.itemsFor?.(match)||[]));}catch(_){}
   const catalogPlan=catalogPlanForScoreGame(match);
   if(catalogPlan)exact.push(...[...(catalogPlan.playable||[]),...(catalogPlan.media||[])].map(x=>({...x,__sbbCatalogExact:true,canonicalEventKey:x?.canonicalEventKey||catalogPlan.canonicalEventKey||''})));
   if(matchId){exact.push(...(HIGHLIGHTS_BY_MATCH.get(`match:${lg}:${matchId}`)||[]));exact.push(...(HIGHLIGHTS_BY_MATCH.get(`match:${matchId}`)||[]));}
@@ -6814,9 +6817,9 @@ async function scoreCardPlayableItemsForIntent(match){
     .filter(x=>String(x?.id||x?.youtubeId||x?.mediaUrl||x?.externalUrl||x?.assetKey||'')).filter(runtimeMediaUsable);
   if(!isFinal(match))items=items.filter(x=>!isFullRecapCandidate(x)&&!isExtendedRecap(x)&&!isGoldRecap(x));
   try{await window.SBB_SCORE_MEDIA_PLAN?.yieldToBrowser?.();}catch(_){}
-  items=preferGameOverviews(items);
+  items=window.SBB_CURATED_MEDIA?.apply?.(match,preferGameOverviews(items))||preferGameOverviews(items);
   scorePlayableItemsCachePut(match,items);
-  const metrics={...(planned.metrics||{}),source:planned.metrics?.source||'chunked-date',total:items.length,elapsedMs:Math.round(performance.now()-started),recapIndex:recapCandidateIndexSnapshot()};
+  const metrics={...(planned.metrics||{}),source:planned.metrics?.source||'chunked-date',total:items.length,curated:items.filter(x=>x?.__sbbCuratedOverride).length,elapsedMs:Math.round(performance.now()-started),recapIndex:recapCandidateIndexSnapshot()};
   return {items,metrics};
 }
 
@@ -6850,7 +6853,8 @@ async function resolveScoreIntentMediaPlan(match,selection,transactionId){
 }
 
 function scoreCardPlaybackSelection(match,items){
-  const rankedLegacy=preferGameOverviews(expandMediaVersions((items||[]).filter(Boolean)));
+  const expanded=preferGameOverviews(expandMediaVersions((items||[]).filter(Boolean)));
+  const rankedLegacy=window.SBB_CURATED_MEDIA?.apply?.(match,expanded)||expanded;
   const request=match&&!isFinal(match)
     ? window.SBB_SPORT_MEDIA_POLICY?.REQUEST?.MOMENTS
     : null;
@@ -6861,8 +6865,10 @@ function scoreCardPlaybackSelection(match,items){
     : (window.SBB_MEDIA_RESOLVER?.resolveBest?.(match||{},{assets:rankedLegacy})||null);
   // Keep the resolver order but retain every same-game candidate so a cold direct
   // upstream source can be bypassed in favor of a browser-proven alternative.
-  const ranked=[...new Map([...(resolved?.ranked||[]),...rankedLegacy].filter(Boolean).map(x=>[playbackItemKey(x),x])).values()];
-  let primary=resolved?.primary||null;
+  let ranked=[...new Map([...(resolved?.ranked||[]),...rankedLegacy].filter(Boolean).map(x=>[playbackItemKey(x),x])).values()];
+  ranked=window.SBB_CURATED_MEDIA?.apply?.(match,ranked)||ranked;
+  const curatedPrimary=window.SBB_CURATED_MEDIA?.preferred?.(match,ranked)||null;
+  let primary=curatedPrimary||resolved?.primary||null;
   if(!primary && ranked.length){
     primary=match&&!isFinal(match)
       ? ranked.find(x=>!isFullRecapCandidate(x)&&!isExtendedRecap(x)&&!isGoldRecap(x))||null
@@ -6893,7 +6899,7 @@ function scoreCardPlaybackSelection(match,items){
     if(selectionItems.length) primary=selectionItems[0];
     else selectionItems=[primary];
   }
-  return {ranked,primary,editorialPrimary,selectionItems,resolved,primaryRejected,readinessBefore:readinessBefore.disposition};
+  return {ranked,primary,editorialPrimary,selectionItems,resolved,primaryRejected,readinessBefore:readinessBefore.disposition,curatedOverride:!!primary?.__sbbCuratedOverride,curatedOverrideId:String(primary?.curatedOverrideId||'')};
 }
 function scoreCardPrimaryItem(match,items){ const s=scoreCardPlaybackSelection(match,items);return s.editorialPrimary||s.primary; }
 function scoreCardAvailability(match){
@@ -7144,7 +7150,7 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
   setFeedNote(`${gameLabel(match)} • ${kind.toLowerCase()}`);
   showBumper(0,500,kind);
   try{
-    console.info('[SBB score-click] authoritative tune',{matchId,primaryId:primary.id,youtubeId:primary.youtubeId,mediaUrl:primary.mediaUrl,selectionCount:selectionItems.length,final:isFinal(match),kind,preparedAtClick:selectedMediaWasPrepared});
+    console.info('[SBB score-click] authoritative tune',{matchId,primaryId:primary.id,youtubeId:primary.youtubeId,mediaUrl:primary.mediaUrl,selectionCount:selectionItems.length,final:isFinal(match),kind,preparedAtClick:selectedMediaWasPrepared,curatedOverride:!!primary.__sbbCuratedOverride,curatedOverrideId:String(primary.curatedOverrideId||'')});
     fetch('/api/client-log?event=SCORE_CLICK_TUNE&detail='+encodeURIComponent(`${matchId}|${primary.id||primary.youtubeId||''}|${kind}|provider=${providerForItem(primary)}|preparedAtClick=${selectedMediaWasPrepared?1:0}`),{cache:'no-store'}).catch(()=>{});
   }catch(e){}
   markScoreClickStage('TUNE_REQUESTED',match,{mediaKey:playbackItemKey(primary)});

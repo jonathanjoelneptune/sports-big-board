@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "release": "5.0.4",
-  "baseRelease": "5.0.3",
-  "title": "Unified Runtime Last-Known-Good Score Read Model",
+  "release": "5.0.5",
+  "baseRelease": "5.0.4",
+  "title": "Curated Event Media Override + Deterministic Playback Regression",
   "atomic": true,
   "requiredFiles": [
     "VERIFY.sh",
@@ -53,38 +53,42 @@
     "tests/test_v502_media_plan_continuity.js",
     "tests/test_v503_score_click_authority.js",
     "architecture/score-date-store.js",
-    "tests/test_v504_score_date_resilience.js"
+    "tests/test_v504_score_date_resilience.js",
+    "architecture/curated-media-overrides.js",
+    "tests/test_v505_curated_media_override.js"
   ],
   "contracts": {
     "VERSION": {
       "required": [
-        "5.0.4"
+        "5.0.5"
       ]
     },
     "index.html": {
       "required": [
-        "Sports Big Board — v5.0.4",
-        "core-model.js?v=5.0.4",
-        "architecture/app-store-v5.js?v=5.0.4",
-        "architecture/playback-orchestrator-v5.js?v=5.0.4",
-        "architecture/score-media-plan-v5.js?v=5.0.4",
-        "architecture/comprehensive-site-certification.js?v=5.0.4",
-        "app.js?v=5.0.4"
+        "Sports Big Board \u2014 v5.0.5",
+        "core-model.js?v=5.0.5",
+        "architecture/app-store-v5.js?v=5.0.5",
+        "architecture/playback-orchestrator-v5.js?v=5.0.5",
+        "architecture/score-media-plan-v5.js?v=5.0.5",
+        "architecture/comprehensive-site-certification.js?v=5.0.5",
+        "architecture/curated-media-overrides.js?v=5.0.5",
+        "app.js?v=5.0.5"
       ],
       "forbidden": [
-        "?v=5.0.2",
         "?v=5.0.1",
-        "?v=5.0.3"
+        "?v=5.0.2",
+        "?v=5.0.3",
+        "?v=5.0.4"
       ]
     },
     "core-model.js": {
       "required": [
-        "version:'5.0.4'"
+        "version:'5.0.5'"
       ]
     },
     "architecture/app-store-v5.js": {
       "required": [
-        "const VERSION='5.0.4'",
+        "const VERSION='5.0.5'",
         "const SCHEMA='1.3'",
         "compactEvent",
         "branch-local and idempotent",
@@ -126,7 +130,7 @@
     },
     "architecture/playback-orchestrator-v5.js": {
       "required": [
-        "const VERSION='5.0.4'",
+        "const VERSION='5.0.5'",
         "window.SBB_PLAYBACK_ORCHESTRATOR",
         "bindAdapter",
         "requestTune",
@@ -140,13 +144,13 @@
     },
     "architecture/efficiency-certification.js": {
       "required": [
-        "const VERSION = '5.0.4'",
+        "const VERSION = '5.0.5'",
         "Efficiency Certification"
       ]
     },
     "architecture/comprehensive-site-certification.js": {
       "required": [
-        "const VERSION='3.4'",
+        "const VERSION='3.5'",
         "V5 UNIFIED RUNTIME ARCHITECTURE",
         "mainThreadGuard",
         "requireResponsiveUi",
@@ -167,13 +171,17 @@
         "clickStage=",
         "expansion=",
         "SCORE_DATE_HEALTH",
-        "scoreDateHealth"
+        "scoreDateHealth",
+        "curatedMediaRegression",
+        "CURATED MEDIA REGRESSION",
+        "CURATED_MEDIA attempted=",
+        "regressionFixtures"
       ],
       "forbidden": [
         "USC_EVENT_FOUND",
         "401864494",
         "San Jose",
-        "San José",
+        "San Jos\u00e9",
         "san jose"
       ]
     },
@@ -217,7 +225,10 @@
         "options?.trustedProvidedItems===true",
         "preserveScoreDateLeagueOnError",
         "preserving last-known-good rows",
-        "Score inventory temporarily unavailable"
+        "Score inventory temporarily unavailable",
+        "SBB_CURATED_MEDIA?.apply?.(match",
+        "SBB_CURATED_MEDIA?.preferred?.(match",
+        "curatedOverrideId"
       ],
       "forbidden": [
         "for(const x of RECAP_CANDIDATE_REGISTRY.values()) add(x);",
@@ -244,7 +255,8 @@
         "node tests/test_v501_ui_thread_hardening.js",
         "node tests/test_v502_media_plan_continuity.js",
         "node tests/test_v503_score_click_authority.js",
-        "node tests/test_v504_score_date_resilience.js"
+        "node tests/test_v504_score_date_resilience.js",
+        "node tests/test_v505_curated_media_override.js"
       ]
     },
     "sbb/__init__.py": {
@@ -277,16 +289,17 @@
         "Selected Event",
         "5.1 canonical backend event identity",
         "Nothing points backward",
-        "v5.0.2 — Media-plan continuity",
+        "v5.0.2 \u2014 Media-plan continuity",
         "PLAYBACK_PLAN_EXHAUSTED",
         "PROVEN_HISTORY",
         "score-media-plan-v5.js",
         "RECAP_CANDIDATE_INDEX",
         "sport-aware",
-        "v5.0.3 — Score-click authority",
+        "v5.0.4 \u2014 Score-click authority",
         "score-click",
-        "v5.0.4 — Last-known-good score read model",
-        "dateHealth(date)"
+        "v5.0.4 \u2014 Last-known-good score read model",
+        "dateHealth(date)",
+        "v5.0.5 \u2014 Curated event media corrections"
       ]
     },
     "tests/test_v473_efficiency_runtime.js": {
@@ -428,6 +441,29 @@
         "temporary provider timeout",
         "error-only date is not an authoritative empty snapshot",
         "legacy error=>empty snapshot path must be removed"
+      ]
+    },
+    "architecture/curated-media-overrides.js": {
+      "required": [
+        "version:'1.0'",
+        "cfb-2026-08-29-sjsu-usc-recap",
+        "401864494",
+        "-tDiPDHU2fs",
+        "regressionFixture:true",
+        "function apply",
+        "function preferred",
+        "function regressionFixtures"
+      ],
+      "forbidden": [
+        "if(matchId===",
+        "if(eventId==="
+      ]
+    },
+    "tests/test_v505_curated_media_override.js": {
+      "required": [
+        "v5.0.5 curated event-media override",
+        "-tDiPDHU2fs",
+        "curated asset must lead the media plan"
       ]
     }
   }
