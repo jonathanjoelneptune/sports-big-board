@@ -398,7 +398,7 @@ def _definition(event_count):
         'id':COMPETITION_ID,'seasonId':SEASON_ID,'name':NAME,'shortName':SHORT_NAME,
         'type':'LEAGUE','sportId':'american-football','year':SEASON,'seasonYear':SEASON,
         'startDate':START_DATE,'endDate':END_DATE,'format':'SEASON','logoStrategy':'AUTO',
-        'eventIcon':'🏈','enabled':True,'mainRow':True,'gameCenterProvider':'espn','gameCenterFallback':'espn','scheduleMode':'DYNAMIC_RANKED','scheduleSourceUrl':SCHEDULE_SOURCE,
+        'eventIcon':'🏈','enabled':True,'mainRow':True,'gameCenterProvider':'espn','gameCenterFallback':'highlightly','scheduleMode':'DYNAMIC_RANKED','scheduleSourceUrl':SCHEDULE_SOURCE,
         'scoreSourceUrl':SCHEDULE_SOURCE,'autoRefresh':True,'refreshMinutes':30,
         'backgroundDiscovery':True,'crawlEnabled':True,'allowIncompleteSchedule':True,
         'expectedEventCount':0,'expectedEventRange':[EXPECTED_GAMES_MIN,EXPECTED_GAMES_MAX],
@@ -480,7 +480,7 @@ def _install_into_server():
             'id':COMPETITION_ID,'name':NAME,'shortName':SHORT_NAME,'sportId':'american-football',
             'type':'LEAGUE','enabled':True,'mainRow':True,'custom':False,'startDate':START_DATE,'endDate':END_DATE,
             'scoreProvider':'ncaaf-ranked','mediaProviders':['operator-playlist','youtube'],
-            'gameCenterProvider':'espn','gameCenterFallback':'espn','historyEnabled':True,'dayStateEnabled':True,
+            'gameCenterProvider':'espn','gameCenterFallback':'highlightly','historyEnabled':True,'dayStateEnabled':True,
             'eventIcon':'🏈','seasonId':SEASON_ID,'seasonYear':SEASON,
             'selectionPolicy':'AP_TOP_25_EITHER_PARTICIPANT','rankingSnapshotPolicy':'IMMUTABLE_WEEKLY'
         },source='BUILT_IN')

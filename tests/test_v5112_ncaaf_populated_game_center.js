@@ -1,0 +1,11 @@
+const fs=require('fs');
+const assert=require('assert');
+const core=fs.readFileSync('core-model.js','utf8');
+const app=fs.readFileSync('app.js','utf8');
+const view=fs.readFileSync('ui/game-center-view.js','utf8');
+assert(core.includes("version:'5.1.12'"));
+assert(core.includes("NCAAF:{id:'NCAAF'"));
+assert(core.includes("gameCenterProvider:'espn',gameCenterFallback:'highlightly'"));
+assert(app.includes("if(lg==='CFB') return []"));
+assert(!view.includes('Game Center is disabled for NCAAF'));
+console.log('PASS v5.1.12 NCAAF frontend identity/ribbon/Game Center contract');

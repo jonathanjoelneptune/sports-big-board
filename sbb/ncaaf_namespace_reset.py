@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 import json, os, sqlite3, threading, time
 
-VERSION="5.1.11-ncaaf-namespace-reset-2"
+VERSION="5.1.12-ncaaf-namespace-reset-2"
 STATE_DIR=Path(os.environ.get("SBB_STATE_DIR") or (Path.home()/".sports-big-board")).expanduser()
 MARKER=STATE_DIR/"ncaaf-v5111-cfb-retired.json"
 _LOCK=threading.Lock();_DONE=False

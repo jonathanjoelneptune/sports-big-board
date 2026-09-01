@@ -1,0 +1,16 @@
+Sports Big Board v5.1.12 — Populated NCAAF Game Center
+
+Upload these files to the repository root, preserving paths and replacing existing files.
+
+Purpose
+- Keep ESPN as the canonical NCAAF event identity and score source.
+- Use ESPN college-football Game Summary first.
+- If ESPN returns only a score shell, resolve the exact NCAA FBS game in Highlightly by date + teams.
+- Pull Highlightly match detail and player box score, normalize through the shared NFL football contract, and merge.
+- Populate quarter scoring, team stats, player sections, scoring plays and play-by-play when the provider exposes them.
+- Do not revive any retired CFB runtime.
+
+Deployment policy
+- VERIFY.sh remains non-blocking.
+- No release manifest or checksum gate is required.
+- Functional deployment/runtime behavior is the acceptance path.
