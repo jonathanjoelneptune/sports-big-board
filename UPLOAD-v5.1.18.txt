@@ -1,0 +1,20 @@
+Sports Big Board v5.1.18 — Date Stability + Tennis Cache/Presentation
+
+Upload the contents of this package to the repository root and replace files.
+
+Primary changes
+- Prevent transient empty score projections from erasing a previously non-empty date.
+- Persist last-known-good score/day snapshots in the browser for immediate repeat date browsing.
+- Add /api/day-state/fast score-only canonical fallback. It does not run media discovery or Game Center work.
+- Persist rich tennis Game Centers across backend restarts.
+- After one tennis match is resolved, warm the remaining matches for that competition/date in the background.
+- Delayed startup warm for active tennis today/yesterday, starting after normal board startup.
+- Tennis score display uses #rank F. Lastname when rank is available; F. Lastname otherwise.
+- Tennis score cards display compact round badges such as R1, R2, R3, R16, QF, SF, F.
+- Tennis Game Center may extend vertically into unused page space on desktop.
+- Existing v5.1.17 durable media authority and active Special Events behavior are retained.
+
+Deployment philosophy
+- VERIFY.sh is non-blocking.
+- No manifest/token/file-name integrity gate.
+- No checksum file.

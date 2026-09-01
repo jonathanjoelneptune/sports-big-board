@@ -1,4 +1,4 @@
-"""Sports Big Board v5.1.17 — sport-aware tennis Game Center for custom events.
+"""Sports Big Board v5.1.18 — sport-aware tennis Game Center for custom events.
 
 Competition Builder remains the schedule/media authority for user-created tennis
 competitions.  This adapter only replaces the generic schedule/results Game Center
@@ -21,7 +21,7 @@ from urllib.request import Request, urlopen
 
 from . import competition_builder as base
 
-VERSION = "5.1.17-tennis-game-center-2"
+VERSION = "5.1.18-tennis-game-center-3"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 _ORIGINAL_GAME_CENTER = getattr(base, "generic_game_center", None)
@@ -73,7 +73,7 @@ def _target_names(shell):
 
 
 def _fetch_json(url,timeout=8):
-    req=Request(url,headers={"Accept":"application/json","User-Agent":"SportsBigBoard/5.1.17 tennis-game-center"})
+    req=Request(url,headers={"Accept":"application/json","User-Agent":"SportsBigBoard/5.1.18 tennis-game-center"})
     with urlopen(req,timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8"))
 
@@ -355,7 +355,8 @@ def _normalize(row,comp,shell):
 
     def team(c):
         athlete=c.get("athlete") or {}
-        return {"id":_clean(c.get("id")),"name":_competitor_name(c),"displayName":_competitor_name(c),"shortName":_clean(athlete.get("shortName")),"abbreviation":_last_name(_competitor_name(c))[:3].upper(),"logo":_flag(c),"country":_country(c),"rank":_rank(c)}
+        rank=_rank(c); full=_competitor_name(c); compact=_tennis_compact_name(full,rank)
+        return {"id":_clean(c.get("id")),"name":full,"displayName":full,"shortName":compact or _clean(athlete.get("shortName")),"abbreviation":compact or _last_name(full)[:3].upper(),"logo":_flag(c),"country":_country(c),"rank":rank}
 
     event_id=_clean((shell or {}).get("eventId") or ((shell or {}).get("event") or {}).get("eventId"))
     match_id=_clean(match.get("id"))
@@ -445,7 +446,7 @@ __all__=["VERSION","install","peek_tennis_game_center","generic_game_center","_t
 import sys as _sys
 from urllib.parse import parse_qs as _parse_qs, urlparse as _urlparse, unquote as _unquote
 
-VERSION = "5.1.17-tennis-game-center-2"
+VERSION = "5.1.18-tennis-game-center-3"
 _PRESENTATION_INSTALLED = False
 _SERVER_ROUTE_INSTALLED = False
 _ROUTE_LOCK = threading.RLock()
@@ -493,6 +494,26 @@ def _tennis_last_name(value):
     return parts[-1][:18]
 
 
+def _tennis_compact_name(value, rank=""):
+    text=_clean(value)
+    text=re.sub(r"^#?\d+\s+", "", text).strip()
+    if not text:return ""
+    # Singles: First initial + readable surname. Doubles: compact each player.
+    if re.search(r"\s[/&+]\s|/|&",text):
+        parts=re.split(r"\s*(?:/|&|\+)\s*",text)
+        label="/".join(_tennis_compact_name(x,"") for x in parts if _clean(x))
+    else:
+        parts=text.split()
+        if len(parts)<=1:label=text
+        else:
+            surname=_tennis_last_name(text)
+            first=parts[0][:1].upper()+"." if parts[0] else ""
+            label=f"{first} {surname}".strip()
+    rank_text=_clean(rank)
+    if rank_text and rank_text not in {"0","999","—"}:label=f"#{rank_text} {label}"
+    return label[:24]
+
+
 def _country_hint(team):
     if not isinstance(team,dict):return ""
     for key in ("countryCode","country","nation","nationality","group","region"):
@@ -519,7 +540,7 @@ def _tennis_decorate_team_artwork(comp,team):
     obj=dict(team or {})
     if _clean((comp or {}).get("sportId")).lower()=="tennis":
         full=_clean(obj.get("displayName") or obj.get("name"))
-        short=_tennis_last_name(full)
+        short=_tennis_compact_name(full,obj.get("rank") or obj.get("seed") or obj.get("ranking"))
         if full:
             obj["name"]=_clean(obj.get("name") or full)
             obj["displayName"]=full
@@ -688,7 +709,7 @@ def _patch_server_v5117(server):
     _SERVER_ROUTE_INSTALLED=True
     try:
         server.SBB_BACKEND_WIRING.setdefault("gameCenter",{})["tennis"]="custom competition sportId=tennis -> direct async ESPN ATP/WTA tennis adapter"
-        server.MILESTONE_CONSOLE.record("game-center","PASS","v5.1.17 custom tennis Game Center direct route installed",{})
+        server.MILESTONE_CONSOLE.record("game-center","PASS","v5.1.18 custom tennis Game Center direct route installed",{})
     except Exception:pass
     return True
 
@@ -716,3 +737,203 @@ def install():
 
 
 __all__=["VERSION","install","peek_tennis_game_center","generic_game_center","_tennis_game_center","_normalize","_resolve_match"]
+
+# ---------------------------------------------------------------------------
+# v5.1.18 persistent tournament-day cache + presentation feed
+# ---------------------------------------------------------------------------
+from pathlib import Path as _Path
+
+_PERSIST_LOCK=threading.RLock()
+_PERSIST_PATH=_Path(getattr(base,"_STATE_DIR",_Path.home()/".sports-big-board"))/"tennis-game-center-v5118.json"
+_PERSIST_FINAL_TTL=30*24*60*60.0
+_PERSIST_LIVE_TTL=120.0
+_DATE_WARM_LOCK=threading.RLock()
+_DATE_WARMING=set()
+
+
+def _persistent_load():
+    try:
+        raw=json.loads(_PERSIST_PATH.read_text(encoding="utf-8")) if _PERSIST_PATH.exists() else {}
+        return raw if isinstance(raw,dict) else {}
+    except Exception:return {}
+
+
+def _persistent_save(rows):
+    try:
+        _PERSIST_PATH.parent.mkdir(parents=True,exist_ok=True)
+        tmp=_PERSIST_PATH.with_suffix('.tmp')
+        tmp.write_text(json.dumps(rows,separators=(",",":"),ensure_ascii=False),encoding="utf-8")
+        tmp.replace(_PERSIST_PATH)
+    except Exception:pass
+
+
+def _persist_key(key):return "|".join(str(x or "") for x in key[:2])
+
+
+def _persistent_get(key):
+    now=time.time();k=_persist_key(key)
+    with _PERSIST_LOCK:
+        rows=_persistent_load();row=rows.get(k)
+        if not isinstance(row,dict):return None
+        if now>=float(row.get("expiresAt") or 0):
+            rows.pop(k,None);_persistent_save(rows);return None
+        return copy.deepcopy(row)
+
+
+def _persistent_put(key,row):
+    if not isinstance(row,dict) or row.get("error") or not isinstance(row.get("data"),dict):return
+    data=row["data"];status=_clean(((data.get("scoreboard") or {}).get("status") or (data.get("event") or {}).get("status"))).lower()
+    final=any(x in status for x in ("final","complete","finished","post")) and not bool(data.get("live"))
+    ttl=_PERSIST_FINAL_TTL if final else _PERSIST_LIVE_TTL
+    saved={"data":copy.deepcopy(data),"error":"","at":time.time(),"expiresAt":time.time()+ttl,"final":final,"version":VERSION}
+    with _PERSIST_LOCK:
+        rows=_persistent_load();rows[_persist_key(key)]=saved
+        if len(rows)>1200:
+            order=sorted(rows,key=lambda k:float((rows[k] or {}).get("at") or 0),reverse=True)
+            rows={k:rows[k] for k in order[:1000]}
+        _persistent_save(rows)
+
+
+# Override route cache functions: memory first, then durable cache.
+def _result_get(key):
+    now=time.time()
+    with _ROUTE_LOCK:
+        row=_ROUTE_RESULTS.get(key)
+        if row and now<float(row.get("expiresAt") or 0):return copy.deepcopy(row)
+        if row:_ROUTE_RESULTS.pop(key,None)
+    disk=_persistent_get(key)
+    if disk:
+        with _ROUTE_LOCK:_ROUTE_RESULTS[key]=copy.deepcopy(disk)
+        return disk
+    return None
+
+
+def _result_put(key,data=None,error=""):
+    data=copy.deepcopy(data) if isinstance(data,dict) else None
+    status=_clean((((data or {}).get("scoreboard") or {}).get("status") or ((data or {}).get("event") or {}).get("status"))).lower()
+    final=any(x in status for x in ("final","complete","finished","post")) and not bool((data or {}).get("live"))
+    ttl=_ROUTE_ERROR_TTL if error else (_PERSIST_FINAL_TTL if final else _PERSIST_LIVE_TTL)
+    row={"data":data,"error":_clean(error),"at":time.time(),"expiresAt":time.time()+ttl}
+    with _ROUTE_LOCK:_ROUTE_RESULTS[key]=row
+    if not error and data:_persistent_put(key,row)
+    return row
+
+
+def peek_tennis_game_center(competition_id,event_id):
+    key=_route_key(competition_id,event_id);hit=_result_get(key)
+    if hit and hit.get("data"):return copy.deepcopy(hit["data"])
+    comp=_clean(competition_id).upper();eid=_clean(event_id);now=time.time()
+    with _CACHE_LOCK:
+        for ckey,row in list(_CACHE.items()):
+            if now>=float(row.get("expiresAt") or 0):_CACHE.pop(ckey,None);continue
+            if ckey[0]==comp and ckey[1]==eid:return copy.deepcopy(row.get("data"))
+    return None
+
+
+def _warm_competition_date(comp,date,exclude_eid=""):
+    cid=_clean((comp or {}).get("id")).upper();date=_clean(date)[:10];warm_key=(cid,date)
+    if not cid or not date:return False
+    with _DATE_WARM_LOCK:
+        if warm_key in _DATE_WARMING:return False
+        _DATE_WARMING.add(warm_key)
+    def run():
+        try:
+            # Fetch at most two provider boards once; every event resolver then hits
+            # the in-process board cache rather than the network.
+            for tour in ("atp","wta"):
+                try:_scoreboard(tour,date)
+                except Exception:pass
+            events=[x for x in (comp or {}).get("events") or [] if _clean(x.get("date") or x.get("gameDate") or x.get("scheduledAt"))[:10]==date][:96]
+            for event in events:
+                eid=_clean(event.get("eventId") or event.get("id"));key=_route_key(cid,eid)
+                if not eid or eid==exclude_eid or _result_get(key):continue
+                try:
+                    view=event;decorate=getattr(base,"_decorate_event_artwork",None)
+                    if callable(decorate):view=decorate(comp,event)
+                    data=_tennis_game_center(comp,view)
+                    if isinstance(data,dict) and ((data.get("tennis") or {}).get("matchId")):
+                        data.setdefault("gameCenterArchitecture","TENNIS_SHARED_CUSTOM_EVENT")
+                        _result_put(key,data=data)
+                except Exception:continue
+        finally:
+            with _DATE_WARM_LOCK:_DATE_WARMING.discard(warm_key)
+    threading.Thread(target=run,daemon=True,name=f"sbb-tennis-date-warm-{cid[-8:]}-{date}").start();return True
+
+
+def _start_route_job(comp,event,request_eid=""):
+    cid=_clean((comp or {}).get("id")).upper();eid=_clean(request_eid or (event or {}).get("eventId") or (event or {}).get("id"));key=_route_key(cid,eid)
+    with _ROUTE_LOCK:
+        job=_ROUTE_JOBS.get(key)
+        if job and job.get("pending"):return False
+        _ROUTE_JOBS[key]={"pending":True,"startedAt":time.time(),"error":""}
+    def run():
+        error=""
+        try:
+            view=event;decorate=getattr(base,"_decorate_event_artwork",None)
+            if callable(decorate):view=decorate(comp,event)
+            data=_tennis_game_center(comp,view)
+            if isinstance(data,dict):data.setdefault("gameCenterArchitecture","TENNIS_SHARED_CUSTOM_EVENT");data.setdefault("competitionId",cid)
+            _result_put(key,data=data)
+            date=_clean((event or {}).get("date") or (event or {}).get("gameDate") or (event or {}).get("scheduledAt"))[:10]
+            if date:_warm_competition_date(comp,date,exclude_eid=eid)
+        except Exception as exc:
+            error=f"{type(exc).__name__}: {exc}";_result_put(key,error=error)
+        with _ROUTE_LOCK:_ROUTE_JOBS[key]={"pending":False,"completedAt":time.time(),"error":error}
+    threading.Thread(target=run,daemon=True,name=f"sbb-tennis-gc-{cid[-8:]}-{eid[-8:]}").start();return True
+
+
+def _presentation_event(comp,event):
+    away=event.get("awayTeam") or event.get("away") or {};home=event.get("homeTeam") or event.get("home") or {}
+    eid=_clean(event.get("eventId") or event.get("id"));hit=_result_get(_route_key(comp.get("id"),eid));gc=(hit or {}).get("data") or {}
+    board=gc.get("scoreboard") or {};ga=(board.get("away") or {}).get("team") or {};gh=(board.get("home") or {}).get("team") or {}
+    def person(schedule,resolved):
+        full=_clean(resolved.get("displayName") or resolved.get("name") or schedule.get("displayName") or schedule.get("name"))
+        rank=_clean(resolved.get("rank") or schedule.get("rank") or schedule.get("seed"))
+        return {"name":full,"displayName":full,"shortName":_tennis_compact_name(full,rank),"abbreviation":_tennis_compact_name(full,rank),
+                "rank":rank,"country":_clean(resolved.get("country") or schedule.get("country")),"countryCode":_clean(schedule.get("countryCode")),
+                "logo":_clean(resolved.get("logo") or resolved.get("logoUrl") or schedule.get("logo") or schedule.get("logoUrl"))}
+    tennis=gc.get("tennis") or {};round_name=_clean(tennis.get("round") or event.get("round") or event.get("stage"))
+    return {"eventId":eid,"date":_clean(event.get("date") or event.get("gameDate"))[:10],"awayTeam":person(away,ga),"homeTeam":person(home,gh),
+            "round":round_name,"draw":_clean(tennis.get("draw") or event.get("draw") or event.get("group")),"court":_clean(tennis.get("court") or event.get("venue")),
+            "gameCenterCached":bool(gc),"gameCenterComplete":bool((gc.get("coverage") or {}).get("complete"))}
+
+
+def _serve_tennis_presentation(server,handler,parsed):
+    if parsed.path!="/api/tennis/presentation":return False
+    qs=_parse_qs(parsed.query);cid=_clean((qs.get("competition") or qs.get("id") or [""])[-1]).upper();date=_clean((qs.get("date") or [""])[-1])[:10]
+    comp=_find_comp(cid)
+    if not comp or _clean(comp.get("sportId")).lower()!="tennis":return server.send_json(handler,{"ok":False,"error":"TENNIS_COMPETITION_NOT_FOUND"},404)
+    events=[x for x in comp.get("events") or [] if not date or _clean(x.get("date") or x.get("gameDate") or x.get("scheduledAt"))[:10]==date]
+    if date:_warm_competition_date(comp,date)
+    rows=[_presentation_event(comp,x) for x in events]
+    return server.send_json(handler,{"ok":True,"version":VERSION,"competitionId":cid,"date":date,"rows":rows,"warming":bool((cid,date) in _DATE_WARMING)},200)
+
+
+_old_serve_tennis_game_center_v5118=_serve_tennis_game_center
+def _serve_tennis_game_center(server,handler,parsed):
+    presented=_serve_tennis_presentation(server,handler,parsed)
+    if presented is not False:return presented
+    return _old_serve_tennis_game_center_v5118(server,handler,parsed)
+
+
+def _active_tennis_prewarm_worker():
+    # Delayed startup work only. It never blocks server launch or score-ribbon first paint.
+    time.sleep(30)
+    server=_sys.modules.get("__main__")
+    for _ in range(12):
+        try:
+            idle=getattr(server,"_history_server_idle",None)
+            if not callable(idle) or idle():break
+        except Exception:break
+        time.sleep(5)
+    today=datetime.utcnow().date()
+    for comp in list(getattr(base,"_load",lambda:[])() or []):
+        if _clean(comp.get("sportId")).lower()!="tennis" or comp.get("enabled",True) is False:continue
+        dates=sorted({_clean(x.get("date") or x.get("gameDate") or x.get("scheduledAt"))[:10] for x in comp.get("events") or [] if _clean(x.get("date") or x.get("gameDate") or x.get("scheduledAt"))})
+        for d in dates:
+            try:dd=datetime.strptime(d,"%Y-%m-%d").date()
+            except Exception:continue
+            if abs((dd-today).days)<=1:_warm_competition_date(comp,d)
+
+# Install delayed date warm exactly once when this module is imported by v5.1.18.
+threading.Thread(target=_active_tennis_prewarm_worker,daemon=True,name="sbb-tennis-active-prewarm-v5118").start()

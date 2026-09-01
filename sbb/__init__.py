@@ -46,3 +46,7 @@ from .tennis_game_center import install as _install_tennis_game_center
 _install_media_runtime_repair_v5116()
 _install_media_authority_v5117()
 _install_tennis_game_center()
+
+# v5.1.18: score-only fallback for slow historical read models.
+from .day_state_fast_path_v5118 import install as _install_day_state_fast_path_v5118
+_install_day_state_fast_path_v5118()
