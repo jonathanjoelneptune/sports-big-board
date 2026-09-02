@@ -1,0 +1,71 @@
+SPORTS BIG BOARD v5.2.10 — SCROLL & MOTION SMOOTHNESS
+=====================================================
+
+MANUAL GITHUB UPLOAD
+Upload the CONTENTS of this folder to the repository root in ONE commit.
+Preserve the architecture/, ui/, tools/, and tests/ paths.
+Replace existing files when prompted.
+Do not upload the enclosing Sports-Big-Board-v5.2.10-manual-upload folder.
+
+IMPORTANT RELEASE INTEGRITY
+The same commit contains VERSION=5.2.10 and the frontend v5.2.10 generation.
+Allow the normal Deploy Sports Big Board workflow to deploy BOTH backend and
+GitHub Pages from this commit. Do not deploy the frontend and backend from
+separate commits.
+
+CHANGED FILES
+VERSION
+VERIFY.sh
+index.html
+architecture/VERSION
+architecture/key-info-current-v520.js
+architecture/scroll-motion-smoothness-v5210.js  (NEW)
+ui/player-visibility.js
+tools/check_release_version.py
+tests/test_v529_release_integrity.py
+tests/test_v5210_motion_smoothness.py            (NEW)
+
+WHAT v5.2.10 CHANGES
+1. Ordinary vertical scrolling is passive and zero-work unless the below-video
+   Game Center shrink runway is actually eligible and open.
+2. preventDefault wheel/touch listeners are installed ONLY during the final
+   minimum-size Game Center scroll lock and removed immediately on unlock.
+3. Keep Video Visible captures geometry once and visually shrinks the fixed
+   video with translate3d()+scale() rather than changing width/height each frame.
+4. Score ribbon cards use browser-level virtualization (content-visibility:auto)
+   so large tournament days keep every card/scroll coordinate but offscreen cards
+   may skip rendering.
+5. Sports Ticker, score ribbon, and diagnostic regions use layout/paint/style
+   containment to reduce cross-page invalidation.
+6. Offscreen diagnostic/operator regions are paint-suspended while preserving
+   layout size.
+7. During active scrolling, noncritical diagnostic animations/transitions are
+   paused so the gesture gets the frame budget first.
+8. New Settings card: SCROLL / MOTION CERTIFICATION.
+   RUN MOTION TEST measures:
+     - detected display refresh rate
+     - Sports Ticker frame pacing
+     - horizontal Score Ribbon frame pacing
+     - vertical page frame pacing
+     - p95/worst frame time
+     - estimated dropped frames
+     - long tasks
+     - Keep Video Visible scroll-controller diagnostics
+9. Sports Ticker remains compositor-owned with zero per-frame ticker JavaScript.
+10. Release preflight now requires the v5.2.10 motion module and conditional
+    scroll-controller contracts before deployment may proceed.
+
+AFTER DEPLOYMENT
+1. Confirm Settings -> RELEASE STATUS says Frontend 5.2.10 / Backend 5.2.10 / MATCHED.
+2. Scroll the page normally with Game Center closed. It should feel lighter.
+3. Horizontally scroll a large score day such as a US Open day.
+4. Watch Sports Ticker at your preferred speed.
+5. Open Settings -> SCROLL / MOTION CERTIFICATION -> RUN MOTION TEST.
+6. Use COPY MOTION REPORT and send the report back for the next tuning pass.
+7. If you still want to tune ticker cadence, use SPORTS TICKER / TUNING separately.
+
+LOCAL/PREFLIGHT CHECK
+bash VERIFY.sh
+
+Expected final line:
+PASS: v5.2.10 atomic release and scroll/motion preflight complete

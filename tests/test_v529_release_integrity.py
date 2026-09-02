@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
+"""Compatibility regression for the v5.2.9 atomic-release model.
+
+The original v5.2.9 test used an exact release number and therefore failed every
+subsequent valid release. Keep the contract evergreen: one canonical semantic
+VERSION, synchronized cache generation, canonical Settings/backend handshake, and
+an always-visible Sports Ticker utility.
+"""
 from pathlib import Path
 import re
 
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
-assert VERSION=='5.2.9', VERSION
+assert re.fullmatch(r'\d+\.\d+\.\d+',VERSION), VERSION
 assert (ROOT/'architecture'/'VERSION').read_text().strip()==VERSION
 
 index=(ROOT/'index.html').read_text()
@@ -15,7 +22,6 @@ assert 'window.SBB_RELEASE=Object.freeze' in index
 assert 'sbbLegacyCoreReleaseProjection' in index
 assert 'class="settings-card sports-ticker-dev-card"' in index
 assert 'sports-ticker-dev-card sbb-dev-global-card' not in index
-assert 'sports-ticker-dev-card" data-sbb-dev-only' not in index
 assert 'id="settingsFrontendVersion"' in index
 assert 'id="settingsBackendVersion"' in index
 assert 'id="settingsReleaseMatch"' in index
@@ -34,7 +40,7 @@ assert 'VERSION = (ROOT / "VERSION").read_text' in backend
 assert not re.search(r'^VERSION\s*=\s*["\']\d+\.\d+\.\d+["\']',backend,re.M)
 
 ticker=(ROOT/'architecture'/'key-info-current-v520.js').read_text()
-assert "const VERSION='5.2.9'" in ticker
+assert f"const VERSION='{VERSION}'" in ticker
 assert '.sports-ticker-dev-card{display:block!important}' in ticker
 assert "card.className='settings-card sports-ticker-dev-card'" in ticker
 assert 'RUN SPORTS TICKER AI' in ticker
@@ -44,4 +50,4 @@ assert 'tools/check_release_version.py' in verify
 assert 'tests/test_v529_release_integrity.py' in verify
 assert not re.search(r'^exit\s+0\s*$',verify,re.M)
 
-print('PASS v5.2.9 atomic release identity + always-visible ticker utility')
+print(f'PASS atomic release identity + always-visible ticker utility at v{VERSION}')

@@ -94,6 +94,43 @@ try:
 except ValueError:
     errors.append('index is missing core/release/settings/history release surfaces')
 
+
+# v5.2.10 scroll/motion integrity. The performance fix must be part of the
+# atomic frontend generation and the historical scroll controller may not
+# reintroduce permanent blocking gesture listeners.
+motion=text(Path('architecture')/'scroll-motion-smoothness-v5210.js')
+if f"const VERSION='{version}'" not in motion:
+    errors.append('scroll/motion module does not match deployment VERSION')
+for required in ['content-visibility:auto','sbb-scroll-active','RUN MOTION TEST','runCertification','SBB_SCROLL_MOTION']:
+    if required not in motion:
+        errors.append(f'scroll/motion module missing required contract: {required}')
+
+visibility=text(Path('ui')/'player-visibility.js')
+if "version:'1.7'" not in visibility:
+    errors.append('player visibility controller is not the v1.7 conditional-scroll generation')
+if "if(!canUseSticky()){diag.scrollNoops++;return;}" not in visibility:
+    errors.append('ordinary page scrolling is not a zero-work path')
+if 'bindLockGestures()' not in visibility or 'unbindLockGestures()' not in visibility:
+    errors.append('blocking Game Center gestures are not conditionally bound/unbound')
+if "stage.style.setProperty('transform',`translate3d(" not in visibility:
+    errors.append('sticky-player shrink is not compositor-transform based')
+if "document.addEventListener('wheel',onUpperWheel,{passive:false,capture:true});" not in visibility:
+    errors.append('locked Game Center reverse-wheel contract missing')
+# Those non-passive listeners are legal only inside bindLockGestures, not init.
+init_tail=visibility.split('function init(){',1)[-1] if 'function init(){' in visibility else ''
+init_body=init_tail.split('}',1)[0]
+if "addEventListener('wheel',onUpperWheel" in init_body or "addEventListener('touchmove',onUpperTouchMove" in init_body:
+    errors.append('blocking wheel/touch listeners are permanently registered during init')
+
+try:
+    visibility_pos=index.index(f'<script src="ui/player-visibility.js?v={version}"')
+    motion_pos=index.index(f'<script src="architecture/scroll-motion-smoothness-v5210.js?v={version}"')
+    settings_pos2=index.index(f'<script src="ui/settings-view.js?v={version}"')
+    if not (visibility_pos < motion_pos < settings_pos2):
+        errors.append('scroll/motion module load order is unsafe')
+except ValueError:
+    errors.append('index is missing v5.2.10 scroll/motion release surfaces')
+
 if errors:
     print('RELEASE INTEGRITY CHECK FAILED')
     for error in errors:

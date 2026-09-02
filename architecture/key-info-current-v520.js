@@ -1,4 +1,4 @@
-/* Sports Big Board v5.2.9 — compositor Sports Ticker + always-visible operator tuning.
+/* Sports Big Board v5.2.10 — compositor Sports Ticker + always-visible operator tuning.
 
    v5.2.7 removed segmented animation restarts, but its requestAnimationFrame loop
    still performed layout reads while recycling stories. Those reads competed with
@@ -8,9 +8,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_KEY_INFO_CURRENT?.version==='5.2.9')return;
+  if(window.SBB_KEY_INFO_CURRENT?.version==='5.2.10')return;
 
-  const VERSION='5.2.9';
+  const VERSION='5.2.10';
   const REFRESH_MS=20*60*1000;
   const CACHE_KEY='sbb.sports-ticker.v1';
   const LEGACY_CACHE_KEYS=['sbb.sports-ticker.v524','sbb.current-news.v522'];
