@@ -1,0 +1,13 @@
+'use strict';
+const fs=require('fs'),assert=require('assert');
+const src=fs.readFileSync('architecture/date-transition-coordinator.js','utf8');
+assert(src.includes("const VERSION='5.2.2'"));
+assert(src.includes('snapshotFirst(date'),'prepared snapshot must be the date first-paint authority');
+assert(src.indexOf("let payload=await snapshotFirst") < src.indexOf('shellSetter(date'),'snapshot lookup must occur before date shell changes');
+assert(src.includes("window.SBB_DAY_STATE?.load?.(date,{force:false,timeoutMs:850})"),'only one bounded Day State fallback is allowed');
+const loads=(src.match(/SBB_DAY_STATE\?\.load\?\./g)||[]).length;
+assert.strictEqual(loads,1,'date convergence must not poll Day State repeatedly');
+assert(src.includes('sbb-ribbon-skeleton'));
+assert(!src.includes("line1.textContent='Loading games"),'ugly loading card must be retired');
+assert(src.includes('snapshotFirst(date,{apply:true,timeoutMs:1200})'),'cold convergence must poll cheap RibbonSnapshot');
+console.log('PASS v5.2.2 instant historical date convergence');

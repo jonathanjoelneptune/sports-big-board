@@ -1,0 +1,71 @@
+Sports Big Board v5.2.2 — Interaction Priority + Instant Historical Ribbon
+=======================================================================
+
+Upload the contents of this package to the repository root, preserving folders.
+This is a delta from v5.2.1. No repository deletes are required.
+
+Files to replace/add
+--------------------
+VERSION
+index.html
+architecture/virtual-ribbon-v520.js
+architecture/date-transition-coordinator.js
+architecture/key-info-current-v520.js
+sbb/ribbon_snapshot_v520.py
+sbb/current_news_v522.py                 (new)
+sbb/__init__.py
+
+Targeted tests are included under tests/ and are not deployment gates.
+
+What changed
+------------
+1. Ribbon input is interaction-only.
+   - Mouse wheel over the score ribbon is converted to horizontal motion with one
+     scrollLeft write per animation frame.
+   - Wheel handling does no media lookup, rendering, provider work, or per-event work.
+   - Ribbon geometry is sampled once after a render, not on each wheel event.
+   - The old anonymous scroll -> media warm listener is physically removed by
+     replacing the rendering surface once and preventing it from reattaching.
+   - Background media priming does not run on large (>32 game) score days.
+
+2. Ordinary large days no longer virtual-recycle during scroll.
+   - <=96 games are mounted once and then left alone while scrolling.
+   - Only extreme >96-game days virtualize, and recycling happens after 480 ms idle.
+
+3. Recent dates are a prepared lookup bank.
+   - RibbonSnapshot backend now has a bundle endpoint and a persistent recent bank.
+   - Server opportunistically prepares today-14 through today+2 from already-built
+     Day State snapshots after startup.
+   - Browser downloads that recent bank in one request, so common previous/next date
+     navigation normally paints from memory.
+
+4. Date change no longer launches repeated Day State reads.
+   - Prepared RibbonSnapshot is looked up before the visible date shell changes.
+   - There is only one bounded Day State fallback.
+   - Cold convergence polls the cheap RibbonSnapshot endpoint, not Day State.
+   - Legacy automatic date-transition roundup/media enrichment was removed.
+   - The old textual "Loading games / CANONICAL DAY STATE" card is retired; rare
+     cold misses use a neutral skeleton while the backend snapshot finishes.
+
+5. KEY INFO is now a true current-news lane.
+   - New /api/current-news endpoint is cache-only on the interactive request path.
+   - Existing editorial desk/cache rows are preferred.
+   - A persistent ESPN-news fallback is maintained by a background worker.
+   - Browser stores the last good current-news snapshot for instant first paint.
+   - Score/date changes do not trigger news rerenders or news network calls.
+
+Verification run before packaging
+---------------------------------
+PASS v5.2.2 persistent current-news Key Info invariants
+PASS v5.2.2 interaction-priority ribbon invariants
+PASS v5.2.2 scroll ownership + current-safe cache
+PASS v5.2.2 instant historical date convergence
+PASS v5.2.2 prepared recent RibbonSnapshot bank
+PASS canonical ribbon media/date authority regression
+PASS v5.2.2 RibbonSnapshot authority revision + bundle
+PASS v5.2.2 cache-only current-news backend
+PASS JavaScript syntax checks
+PASS Python compilation
+
+Deployment philosophy remains unchanged: no checksum, manifest, token-match,
+repository-completeness, or verifier-order gate is added by this release.

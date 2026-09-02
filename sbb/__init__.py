@@ -67,3 +67,7 @@ _install_game_center_identity_v5122()
 
 # DayStateEngine remains the sole date authority. Tennis ribbon presentation is a
 # backend read-model projection, not a browser-side score authority.
+
+# v5.2.2: cache-only current-news read model for the Key Info lane.
+from .current_news_v522 import install as _install_current_news_v522
+_install_current_news_v522()

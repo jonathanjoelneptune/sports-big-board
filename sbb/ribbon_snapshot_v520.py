@@ -1,18 +1,14 @@
-"""Sports Big Board v5.2.1 — server-prepared ribbon snapshot authority.
+"""Sports Big Board v5.2.2 — prepared RibbonSnapshot bank.
 
-The browser should never have to discover what a score card means. Day State remains
-canonical event/media truth; this service continuously serializes its already-built
-read model into a tiny persistent hot cache that is safe to serve without running
-provider, media, matcher, or Game Center work on the request thread.
+Day State remains the sole score/media read-model authority. This service only
+serializes Day State snapshots that already exist into a tiny SQLite/memory cache so
+interactive ribbon requests never run providers, media discovery, Game Center, or
+matchers.
 
-Hot path:
-    providers/workers -> canonical repositories -> Day State
-                                              -> RibbonSnapshotStore
-browser -> GET /api/ribbon-snapshot?date=YYYY-MM-DD -> SQLite/memory only
-
-The service never builds a Day State snapshot itself. A cold miss focuses the normal
-Day State worker and returns 202. This preserves one backend authority and prevents
-ribbon first-paint requests from competing with media/provider work.
+v5.2.2 adds a recent-date bank and one bundle lookup. The server opportunistically
+materializes the previous 14 days, today, and the next 2 days after startup. A browser
+can therefore hydrate common back/forward navigation in one request before the user
+ever selects those dates.
 """
 from __future__ import annotations
 
@@ -30,10 +26,10 @@ from urllib.parse import parse_qs, urlparse
 
 from . import day_state
 
-VERSION = "5.2.1-ribbon-snapshot-2"
+VERSION = "5.2.2-ribbon-snapshot-3"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _DB_PATH = _STATE_DIR / "ribbon-snapshot.sqlite3"
-_DATE_RE = __import__('re').compile(r"^\d{4}-\d{2}-\d{2}$")
+_DATE_RE = __import__("re").compile(r"^\d{4}-\d{2}-\d{2}$")
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 _SERVER = None
@@ -48,6 +44,10 @@ _STATS = {
     "unchanged": 0,
     "hotRefreshes": 0,
     "coldFocused": 0,
+    "bundleServed": 0,
+    "bundleDays": 0,
+    "startupPrimed": 0,
+    "startupMissing": 0,
     "lastError": "",
     "lastWriteAt": 0.0,
 }
@@ -73,17 +73,13 @@ def _revision(snapshot):
         str(summary.get("games") or snapshot.get("scoreGameCount") or 0),
         str(summary.get("playable") or 0),
         str(summary.get("live") or 0),
+        str(summary.get("final") or 0),
     ])
     return hashlib.sha1(basis.encode("utf-8")).hexdigest()[:16]
 
 
 def _project(snapshot):
-    """Return the complete, already-renderable ribbon read model.
-
-    Keep scoreRowsByLeague + eventPlans intact because those two objects are the
-    browser's existing canonical ingestion contract. Everything expensive (aliases,
-    flags, round names, media associations) has already been resolved by Day State.
-    """
+    """Return the complete already-renderable ribbon contract."""
     if not isinstance(snapshot, dict) or not _clean_date(snapshot.get("date")):
         return None
     out = {
@@ -132,8 +128,16 @@ class RibbonSnapshotStore:
             con.commit()
 
     def _connect(self):
-        con = sqlite3.connect(self.path, timeout=1.0)
+        # Dedicated tiny read-model DB. WAL prevents its background writer from
+        # stalling simultaneous interactive reads.
+        con = sqlite3.connect(self.path, timeout=0.35)
         con.row_factory = sqlite3.Row
+        try:
+            con.execute("PRAGMA journal_mode=WAL")
+            con.execute("PRAGMA synchronous=NORMAL")
+            con.execute("PRAGMA busy_timeout=300")
+        except Exception:
+            pass
         return con
 
     def put(self, payload):
@@ -188,6 +192,37 @@ class RibbonSnapshotStore:
             self.memory[day] = payload
             return dict(payload)
 
+    def get_many(self, days):
+        wanted = [_clean_date(x) for x in days]
+        wanted = list(dict.fromkeys(x for x in wanted if x))
+        if not wanted:
+            return {}
+        out = {}
+        missing = []
+        with self.lock:
+            for day in wanted:
+                hit = self.memory.get(day)
+                if hit:
+                    out[day] = dict(hit)
+                else:
+                    missing.append(day)
+            if missing:
+                marks = ",".join("?" for _ in missing)
+                try:
+                    with closing(self._connect()) as con:
+                        rows = con.execute(f"SELECT day,payload_json FROM ribbon_snapshot WHERE day IN ({marks})", tuple(missing)).fetchall()
+                    for row in rows:
+                        try:
+                            payload = json.loads(row["payload_json"])
+                        except Exception:
+                            continue
+                        day = str(row["day"])
+                        self.memory[day] = payload
+                        out[day] = dict(payload)
+                except Exception:
+                    pass
+        return out
+
     def status(self, limit=14):
         with self.lock, closing(self._connect()) as con:
             rows = con.execute("""
@@ -206,7 +241,7 @@ def _engine():
 
 def _refresh_from_day_state(day):
     engine = _engine()
-    if not engine:
+    if not engine or _STORE is None:
         return None
     try:
         snapshot = engine.get(day, allow_build=False)
@@ -230,19 +265,78 @@ def _hot_days(engine):
     return sorted(values)
 
 
+def _recent_days(engine, past=14, future=2):
+    center = datetime.strptime(engine.today(), "%Y-%m-%d").date()
+    return [(center + timedelta(days=d)).isoformat() for d in range(-max(0, past), max(0, future) + 1)]
+
+
+def _focus_missing(day):
+    engine = _engine()
+    if not engine:
+        return
+    try:
+        engine.focus(day)
+        _STATS["coldFocused"] += 1
+    except Exception:
+        pass
+
+
+def _startup_prime_recent():
+    """Populate the recent bank without putting provider work on request threads.
+
+    First consume already-persisted Day State snapshots. Missing historical rows are
+    focused gradually so the normal Day State worker may fill them later. This work
+    begins only after normal backend startup has had a chance to settle.
+    """
+    if _STOP.wait(2.0):
+        return
+    engine = _engine()
+    if not engine or _STORE is None:
+        return
+    days = _recent_days(engine, 14, 2)
+    resident = _STORE.get_many(days)
+    for day in days:
+        if _STOP.is_set():
+            return
+        if day in resident:
+            continue
+        payload = _refresh_from_day_state(day)
+        if payload:
+            _STATS["startupPrimed"] += 1
+        else:
+            _STATS["startupMissing"] += 1
+            # Focus one missing day at a time with a small gap. The Day State
+            # worker owns any actual build/provider work.
+            _focus_missing(day)
+        _STOP.wait(0.08)
+
+    # One second pass captures rows the Day State worker completed quickly.
+    if _STOP.wait(3.0):
+        return
+    for day in days:
+        if _STOP.is_set():
+            return
+        if _STORE.get(day):
+            continue
+        if _refresh_from_day_state(day):
+            _STATS["startupPrimed"] += 1
+        _STOP.wait(0.04)
+
+
 def _worker():
-    # Day State already performs the actual builds. This loop only snapshots rows
-    # that already exist, so it cannot steal provider/media bandwidth from startup.
+    # Only hot/focused days are refreshed repeatedly. The recent historical bank is
+    # primed once at startup and thereafter changes only if the Day State worker
+    # focuses/rebuilds a date.
     while not _STOP.is_set():
         engine = _engine()
         if not engine or _STORE is None:
-            _STOP.wait(0.25)
+            _STOP.wait(0.35)
             continue
         for day in _hot_days(engine):
             if _STOP.is_set():
                 return
             _refresh_from_day_state(day)
-        _STOP.wait(2.0)
+        _STOP.wait(4.0)
 
 
 def _serve(server, handler, parsed):
@@ -263,7 +357,7 @@ def _serve(server, handler, parsed):
             "Cache-Control": "no-store",
         })
 
-    # One local SQLite/memory read from Day State is still cheap. Never call build().
+    # One local Day State read is allowed; build/provider work is not.
     payload = _refresh_from_day_state(day)
     if payload:
         _STATS["hits"] += 1
@@ -275,13 +369,7 @@ def _serve(server, handler, parsed):
         })
 
     _STATS["misses"] += 1
-    engine = _engine()
-    if engine:
-        try:
-            engine.focus(day)
-            _STATS["coldFocused"] += 1
-        except Exception:
-            pass
+    _focus_missing(day)
     return server.send_json(handler, {
         "ok": True,
         "pending": True,
@@ -289,6 +377,59 @@ def _serve(server, handler, parsed):
         "ribbonSnapshotVersion": VERSION,
         "message": "Ribbon snapshot warming from canonical Day State.",
     }, 202, {"X-SBB-Ribbon-Snapshot": "WARMING", "Cache-Control": "no-store"})
+
+
+def _bundle_days(center, past, future):
+    try:
+        base = datetime.strptime(center, "%Y-%m-%d").date()
+    except Exception:
+        return []
+    return [(base + timedelta(days=d)).isoformat() for d in range(-past, future + 1)]
+
+
+def _serve_bundle(server, handler, parsed):
+    qs = parse_qs(parsed.query)
+    engine = _engine()
+    default_center = engine.today() if engine else datetime.now().date().isoformat()
+    center = _clean_date((qs.get("center") or [default_center])[-1]) or default_center
+    try:
+        past = max(0, min(30, int((qs.get("past") or ["14"])[-1])))
+        future = max(0, min(7, int((qs.get("future") or ["2"])[-1])))
+    except Exception:
+        past, future = 14, 2
+    days = _bundle_days(center, past, future)
+    rows = _STORE.get_many(days) if _STORE else {}
+
+    # Materialize only already-existing Day State read models for missing days.
+    # This remains provider-free and typically resolves historical misses from the
+    # Day State SQLite cache in a few milliseconds.
+    missing = []
+    for day in days:
+        if day in rows:
+            continue
+        payload = _refresh_from_day_state(day)
+        if payload:
+            rows[day] = payload
+        else:
+            missing.append(day)
+
+    # Ask the background worker to prepare only a few near-center misses. Do not
+    # turn one bundle request into 17 provider builds.
+    for day in missing[:3]:
+        _focus_missing(day)
+
+    _STATS["bundleServed"] += 1
+    _STATS["bundleDays"] += len(rows)
+    return server.send_json(handler, {
+        "ok": True,
+        "version": VERSION,
+        "center": center,
+        "past": past,
+        "future": future,
+        "snapshots": rows,
+        "missing": missing,
+        "count": len(rows),
+    }, 200, {"X-SBB-Ribbon-Bundle": "HIT", "Cache-Control": "no-store"})
 
 
 def _install_into_server():
@@ -309,13 +450,15 @@ def _install_into_server():
     _SERVER = server
     _STORE = RibbonSnapshotStore()
     Handler = server.Handler
-    if not getattr(Handler, "__sbbRibbonSnapshotV520", False):
+    if not getattr(Handler, "__sbbRibbonSnapshotV522", False):
         old_get = Handler.do_GET
 
         def do_GET(self):
             parsed = urlparse(self.path)
             if parsed.path == "/api/ribbon-snapshot":
                 return _serve(server, self, parsed)
+            if parsed.path == "/api/ribbon-snapshot/bundle":
+                return _serve_bundle(server, self, parsed)
             if parsed.path == "/api/ribbon-snapshot/status":
                 return server.send_json(self, {
                     "ok": True,
@@ -325,9 +468,10 @@ def _install_into_server():
             return old_get(self)
 
         Handler.do_GET = do_GET
-        Handler.__sbbRibbonSnapshotV520 = True
+        Handler.__sbbRibbonSnapshotV522 = True
 
-    threading.Thread(target=_worker, daemon=True, name="sbb-ribbon-snapshot-v520").start()
+    threading.Thread(target=_worker, daemon=True, name="sbb-ribbon-snapshot-v522").start()
+    threading.Thread(target=_startup_prime_recent, daemon=True, name="sbb-ribbon-prime-recent-v522").start()
 
 
 def install():
@@ -336,8 +480,8 @@ def install():
         if _INSTALLED:
             return
         _INSTALLED = True
-    threading.Thread(target=_install_into_server, daemon=True, name="sbb-ribbon-snapshot-install-v520").start()
+    threading.Thread(target=_install_into_server, daemon=True, name="sbb-ribbon-snapshot-install-v522").start()
 
 
 def diagnostics():
-    return {**_STATS, "installed": _INSTALLED, "store": (_STORE.status(7) if _STORE else [])}
+    return {**_STATS, "installed": _INSTALLED, "store": (_STORE.status(18) if _STORE else [])}
