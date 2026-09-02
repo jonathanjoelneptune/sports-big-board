@@ -17,7 +17,7 @@ import threading
 import time
 from urllib.parse import parse_qs, urlparse
 
-VERSION = "5.1.18-backend-inspector-api-4"
+VERSION = "5.1.19-backend-inspector-api-5"
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")

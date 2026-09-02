@@ -123,7 +123,12 @@
       persist();
     }
     render();
-    return snapshot();
+    const snap=snapshot();
+    // v5.1.19: registry updates are an explicit projection edge. Presentation
+    // layers may refresh labels from canonical competition metadata without
+    // polling, observing the whole document, or mutating event authority.
+    try{window.dispatchEvent(new CustomEvent('sbb:competition-registry-updated',{detail:snap}));}catch(_){}
+    return snap;
   }
 
   function visibleSpecial(row){

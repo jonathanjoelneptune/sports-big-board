@@ -1,0 +1,61 @@
+Sports Big Board v5.1.19 — Canonical Architecture Consolidation
+
+Upload the contents of this package to the repository root and replace files.
+No repository deletions are required. Retired v5.1.18 filenames are included as
+inert tombstones so an older cached page cannot reinstall the retired authorities.
+
+Primary architecture changes
+- Restore one browser score/date authority: canonical Day State -> ScoreDateStore.
+- Remove the v5.1.18 authoritative score-only /api/day-state/fast path.
+- Remove the v5.1.18 localStorage Day State and ScoreDateStore authority wrappers.
+- ScoreDateStore now merges canonical updates by stable provider aliases and event
+  fingerprint, blocks transient destructive empties, and preserves its separate
+  media cache across score refreshes.
+- Dynamic competition sport/name metadata is projected from Competition Registry,
+  preventing custom tennis competitions from degrading to generic "sports" rows.
+- Existing verified/locked media remains attached to the canonical event/media
+  relationship. v5.1.19 performs no blanket rediscovery during date navigation.
+
+Tennis consolidation
+- Exactly one executable tennis frontend module: architecture/tennis-presentation.js.
+- Tennis presentation performs no fetches, no ScoreDateStore writes, and no polling.
+- Ribbon player labels use #rank F. Lastname when rank is known.
+- Round labels normalize to R1/R2/R3/R16/QF/SF/F; unresolved "Round" shows no badge.
+- Competition Registry sportId=tennis owns Game Center routing.
+- Selected Event identity is reconstructed from Competition Builder, History
+  Repository, or bounded request identity hints. Generic Game Center no longer owns
+  a registry-declared tennis competition merely because Builder memory is cold.
+- Tennis provider work is selected-match-only. There is no startup/date-wide or
+  post-click tournament Game Center prewarm.
+- ATP/WTA scoreboard calls are single-flight/coalesced per tour/date.
+- Final rich tennis Game Centers persist in a stable cache. Valid v5.1.18 cached
+  Game Centers migrate once and are reused without another provider call.
+- /api/tennis/presentation remains compatibility-only and performs zero provider work.
+
+Backend/performance intent
+- Date navigation no longer launches the v5.1.18 score fast-path race plus rich
+  Day State race.
+- Tennis date navigation no longer fans out into dozens of Game Center resolutions.
+- Existing media and Game Center read models are reused instead of rediscovered.
+
+Deployment smoke checks
+1. Open AUG 30 and AUG 31 repeatedly. Games must remain populated and previously
+   verified highlights must remain available after refresh/date switching.
+2. Click a USOPEN-2026 score. Game Center must route as TENNIS_CANONICAL rather than
+   "provider not implemented for USOPEN-2026".
+3. Confirm tennis ribbon names remain readable and generic ROUND badges do not appear.
+4. Switch among multiple dates. Backend date reads should not trigger tournament-wide
+   tennis Game Center warming.
+5. In DevTools, `SBB_SCORE_DATE.diagnostics()` should show the canonical store and
+   `SBB_TENNIS_PRESENTATION.version` should report 5.1.19.
+
+Verification included in this package
+- tests/test_v5119_score_date_store.js
+- tests/test_v5119_tennis_presentation.js
+- tests/test_v5119_architecture.py
+- tests/test_v5119_tennis_architecture.py
+
+Deployment philosophy
+- VERIFY.sh remains non-blocking.
+- Runtime behavior and the v5.1.19 architecture tests are the release acceptance path.
+- No checksum file or repository-integrity manifest gate is added.
