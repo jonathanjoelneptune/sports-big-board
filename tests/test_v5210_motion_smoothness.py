@@ -3,7 +3,8 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
-assert VERSION=='5.2.10', VERSION
+parts=tuple(int(x) for x in VERSION.split('.'))
+assert parts >= (5,2,10), VERSION
 
 index=(ROOT/'index.html').read_text()
 assert f'ui/player-visibility.js?v={VERSION}' in index
@@ -51,4 +52,4 @@ assert "engine:'COMPOSITOR_WAAPI_LOOP'" in ticker
 assert 'mainThreadPerFrame:false' in ticker
 assert 'forcedLayoutReadsPerFrame:0' in ticker
 
-print('PASS v5.2.10 conditional scrolling + compositor motion + score virtualization + motion certification')
+print(f'PASS v5.2.10+ conditional scrolling + compositor motion + score virtualization + motion certification at v{VERSION}')

@@ -1,4 +1,4 @@
-/* Sports Big Board v5.2.10 — Scroll & Motion Smoothness.
+/* Sports Big Board v5.2.11 — Scroll & Motion Smoothness.
 
    Shared frame-budget coordinator for vertical page scrolling, the score ribbon,
    and the Sports Ticker. It relies on native/compositor scrolling rather than
@@ -7,8 +7,8 @@
    and a measurable motion certification surface. */
 (() => {
   'use strict';
-  if(window.SBB_SCROLL_MOTION?.version==='5.2.10')return;
-  const VERSION='5.2.10';
+  if(window.SBB_SCROLL_MOTION?.version==='5.2.11')return;
+  const VERSION='5.2.11';
   const $=id=>document.getElementById(id);
   const state={scrolling:false,lastInputAt:0,scrollEvents:0,scoreScrollEvents:0,deferred:0,flushed:0,offscreenSuspended:0,lastReport:null,refreshHz:null};
   let idleTimer=0,flushTimer=0,io=null,certRunning=false;
@@ -17,7 +17,7 @@
   function injectStyle(){
     if($('sbbScrollMotionStyle'))return;
     const style=document.createElement('style');style.id='sbbScrollMotionStyle';style.textContent=`
-      /* v5.2.10: native scroll surfaces own their motion. */
+      /* v5.2.11: native scroll surfaces own their motion. */
       html{scroll-behavior:auto!important}
       body{scroll-behavior:auto!important}
       #keyInfoTrack,.score-ribbon,.score-ribbon>.score-cells{contain:layout paint style!important;isolation:isolate}
@@ -169,7 +169,7 @@
   }
   function setStatus(text,cls=''){const el=$('motionCertStatus');if(!el)return;el.textContent=text;el.className=`motion-cert-status ${cls}`.trim();}
   function renderCertState(value){ensureCertUi();const r=$('motionCertResult'),btn=$('motionCertRun');if(r)r.textContent=value;if(btn)btn.disabled=value==='RUNNING';setStatus(value==='RUNNING'?'Sampling frame pacing. The board will perform short controlled scroll movements.':'','');}
-  function renderReport(report){ensureCertUi();const hz=$('motionCertHz'),p95=$('motionCertP95'),ot=$('motionCertOnTime'),res=$('motionCertResult'),pre=$('motionCertReport'),btn=$('motionCertRun');if(hz)hz.textContent=`${report.refreshHz} Hz`;if(p95)p95.textContent=`${report.summary.worstP95Ms} ms`;if(ot)ot.textContent=`${report.summary.minimumOnTimePct}%`;if(res)res.textContent=report.status;if(pre)pre.textContent=reportText(report);if(btn)btn.disabled=false;setStatus(report.status==='PASS'?'Frame pacing passed the v5.2.10 motion gate.':report.status==='WARN'?'Frame pacing is usable but still has measurable misses.':'Frame pacing failed the motion gate.',report.status==='PASS'?'good':report.status==='WARN'?'warn':'bad');}
+  function renderReport(report){ensureCertUi();const hz=$('motionCertHz'),p95=$('motionCertP95'),ot=$('motionCertOnTime'),res=$('motionCertResult'),pre=$('motionCertReport'),btn=$('motionCertRun');if(hz)hz.textContent=`${report.refreshHz} Hz`;if(p95)p95.textContent=`${report.summary.worstP95Ms} ms`;if(ot)ot.textContent=`${report.summary.minimumOnTimePct}%`;if(res)res.textContent=report.status;if(pre)pre.textContent=reportText(report);if(btn)btn.disabled=false;setStatus(report.status==='PASS'?'Frame pacing passed the v5.2.11 motion gate.':report.status==='WARN'?'Frame pacing is usable but still has measurable misses.':'Frame pacing failed the motion gate.',report.status==='PASS'?'good':report.status==='WARN'?'warn':'bad');}
 
   function init(){injectStyle();bindScrollSignals();installOffscreenSuspension();ensureCertUi();window.addEventListener('sbb:drawer-state',()=>defer(()=>{}));}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();

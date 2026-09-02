@@ -1,4 +1,4 @@
-/* Sports Big Board v5.2.10 — compositor Sports Ticker + always-visible operator tuning.
+/* Sports Big Board v5.2.11 — compositor Sports Ticker + always-visible operator tuning.
 
    v5.2.7 removed segmented animation restarts, but its requestAnimationFrame loop
    still performed layout reads while recycling stories. Those reads competed with
@@ -8,9 +8,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_KEY_INFO_CURRENT?.version==='5.2.10')return;
+  if(window.SBB_KEY_INFO_CURRENT?.version==='5.2.11')return;
 
-  const VERSION='5.2.10';
+  const VERSION='5.2.11';
   const REFRESH_MS=20*60*1000;
   const CACHE_KEY='sbb.sports-ticker.v1';
   const LEGACY_CACHE_KEYS=['sbb.sports-ticker.v524','sbb.current-news.v522'];
@@ -269,7 +269,7 @@
   function manualStatus(text,kind=''){ensureDevUtility();const el=document.getElementById('sportsTickerAiRefreshStatus');if(!el)return;el.textContent=text;el.classList.toggle('good',kind==='good');el.classList.toggle('bad',kind==='bad');}
   async function manualRefresh(){
     if(manualInflight)return manualInflight;ensureDevUtility();const btn=document.getElementById('sportsTickerAiRefreshBtn');state.manualRuns++;
-    manualInflight=(async()=>{const oldLabel=btn?.textContent||'RUN SPORTS TICKER AI';if(btn){btn.disabled=true;btn.textContent='RUNNING SPORTS TICKER AI…';}manualStatus('Collecting fresh sports news…');try{const accepted=await requestJson('/api/sports-ticker/refresh',{method:'POST',timeoutMs:5000}),requestedAt=Number(accepted?.requestedAt||0);manualStatus('Fresh sources requested • OpenAI editorial pass running…');let finalStatus=null;for(let attempt=0;attempt<80;attempt++){await sleep(1250);const status=await requestJson('/api/sports-ticker/status',{timeoutMs:3000}),running=!!(status?.refreshing||status?.manualRunning),completed=Number(status?.manualCompletedAt||0);if(running){manualStatus(`OpenAI Sports Ticker running… ${Number(status?.manualSourceCount||0)||'fresh'} source items`);continue;}if(status?.manualLastError)throw new Error(status.manualLastError);if(!requestedAt||completed>=requestedAt){finalStatus=status;break;}}if(!finalStatus)throw new Error('Sports Ticker AI refresh did not complete before the operator timeout.');if(inflight){try{await inflight;}catch(_){}}await refresh(true,{restart:true,replace:true});const mode=clean(finalStatus?.source||currentSource||'OPENAI_SPORTS_TICKER');manualStatus(`Updated • ${currentRows.length} stories • ${mode}`,'good');return currentRows.slice();}catch(err){state.manualErrors++;state.lastError=String(err?.message||err);manualStatus(`Refresh failed: ${state.lastError}`,'bad');throw err;}finally{if(btn){btn.disabled=false;btn.textContent=oldLabel;}manualInflight=null;}})();return manualInflight;
+    manualInflight=(async()=>{const oldLabel=btn?.textContent||'RUN SPORTS TICKER AI';if(btn){btn.disabled=true;btn.textContent='RUNNING SPORTS TICKER AI…';}manualStatus('Collecting fresh sports news…');try{const accepted=await requestJson('/api/sports-ticker/refresh',{method:'POST',timeoutMs:5000}),requestedAt=Number(accepted?.requestedAt||0);manualStatus('Fresh sources requested • OpenAI editorial pass running…');let finalStatus=null;for(let attempt=0;attempt<240;attempt++){await sleep(1250);const status=await requestJson('/api/sports-ticker/status',{timeoutMs:3000}),running=!!(status?.refreshing||status?.manualRunning),completed=Number(status?.manualCompletedAt||0);if(running){const retryAt=Number(status?.openaiRetryAt||0),retrySeconds=Math.max(0,Math.ceil(retryAt-Date.now()/1000));if(retrySeconds>0)manualStatus(`OpenAI rate limited • retrying in ${retrySeconds}s • previous ticker remains live`);else manualStatus(`OpenAI Sports Ticker running… ${Number(status?.manualOpenAIProcessed||0)||0} AI-reviewed • ${Number(status?.manualSourceCount||0)||'fresh'} source items`);continue;}if(status?.manualLastError)throw new Error(status.manualLastError);if(!requestedAt||completed>=requestedAt){finalStatus=status;break;}}if(!finalStatus)throw new Error('Sports Ticker AI refresh did not complete before the 5-minute operator timeout; the previous ticker remains live.');if(inflight){try{await inflight;}catch(_){}}await refresh(true,{restart:true,replace:true});const mode=clean(finalStatus?.source||currentSource||'OPENAI_SPORTS_TICKER');manualStatus(`Updated • ${currentRows.length} stories • ${mode}`,'good');return currentRows.slice();}catch(err){state.manualErrors++;state.lastError=String(err?.message||err);manualStatus(`Refresh failed: ${state.lastError}`,'bad');throw err;}finally{if(btn){btn.disabled=false;btn.textContent=oldLabel;}manualInflight=null;}})();return manualInflight;
   }
   function bindDevButton(){const btn=document.getElementById('sportsTickerAiRefreshBtn');if(!btn||btn.dataset.sbbTickerBound==='1')return;btn.dataset.sbbTickerBound='1';btn.addEventListener('click',()=>{void manualRefresh().catch(()=>{});});}
 

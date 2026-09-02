@@ -1,0 +1,46 @@
+Sports Big Board v5.2.11 — OpenAI Sports Ticker Rate-Limit Hardening
+
+UPLOAD
+1. Unzip this package.
+2. Upload the CONTENTS of Sports-Big-Board-v5.2.11-manual-upload to the repository root.
+3. Preserve the architecture/, sbb/, tests/, and tools/ paths.
+4. Replace the files already present. Do not upload the enclosing folder itself.
+5. Upload the entire set in one GitHub commit so frontend/backend release identity advances atomically.
+
+WHY THIS RELEASE
+A manual RUN SPORTS TICKER AI could previously pass up to 40 stories through six-record batches, with each batch retrying three times. One click could therefore burst as many as 21 OpenAI requests and trigger HTTP 429.
+
+V5.2.11 CHANGES
+- Replaces the legacy Sports Ticker AI request storm with paced 20-record batches.
+- Automatic ticker AI: at most 20 AI-reviewed candidates / 1 batch per pass.
+- Manual ticker AI: at most 40 AI-reviewed candidates / 2 batches per pass.
+- Remaining qualifying ticker stories are retained as deterministic rules-fill items so the feed can remain verbose without multiplying OpenAI requests.
+- Serializes Sports Ticker OpenAI work against the legacy editorial refresh lock.
+- Honors Retry-After when OpenAI provides it.
+- Uses bounded exponential backoff with jitter for temporary 429 rate limits.
+- Stops retrying immediately for quota/spend/credit errors such as credit_balance_exhausted or insufficient_quota.
+- Preserves the last-good Sports Ticker on every OpenAI failure.
+- Adds a backend cooldown after persistent 429s so repeated button clicks cannot hammer the API.
+- The Settings utility now displays the active retry countdown while the previous ticker continues scrolling.
+- Operator wait window expanded to five minutes so a legitimate Retry-After can complete without a false browser timeout.
+- v5.2.10 motion/scroll performance improvements are retained unchanged.
+- Frontend, backend, cache generation, and deployment preflight advance together to v5.2.11.
+
+EXPECTED MANUAL REFRESH STATUS
+Normal:
+  Collecting fresh sports news…
+  OpenAI Sports Ticker running…
+  Updated • <N> stories • OPENAI_SPORTS_TICKER
+
+Temporary rate limit:
+  OpenAI rate limited • retrying in <N>s • previous ticker remains live
+
+Persistent temporary limit:
+  Refresh failed: OpenAI rate limit persisted ... Last-good Sports Ticker retained; retry in about 60s.
+
+Quota/spend/credit limit:
+  Refresh failed: OpenAI quota/spend limit: <provider message>. Last-good Sports Ticker retained.
+  This cannot be corrected by retry logic; review the OpenAI API project's billing/limits.
+
+VERIFY
+GitHub Actions VERIFY.sh now checks the v5.2.11 rate-limit contract in addition to release identity and motion integrity.

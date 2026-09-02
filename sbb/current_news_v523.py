@@ -1,4 +1,4 @@
-"""Sports Big Board v5.2.6 — operator-refreshable Sports Ticker intelligence snapshot.
+"""Sports Big Board v5.2.11 — rate-limit-aware operator-refreshable Sports Ticker intelligence snapshot.
 
 The interactive board only reads a persisted last-good edition. Collection, rules,
 and the existing OpenAI editorial layer run in a background daemon every 20 minutes.
@@ -15,17 +15,26 @@ import re
 import sys
 import threading
 import time
+import random
+from email.utils import parsedate_to_datetime
+from urllib.error import HTTPError
 from pathlib import Path
 from urllib.parse import urlparse
 
 from . import current_news_v522 as source_v522
 
-VERSION = "5.2.6-sports-ticker-3"
+VERSION = "5.2.11-sports-ticker-4"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _STATE_PATH = _STATE_DIR / "sports-ticker.json"
 _MIGRATION_PATHS = (_STATE_DIR / "sports-ticker-v524.json", _STATE_DIR / "key-info-intelligence-v523.json")
 _REFRESH_SECONDS = 20 * 60
 _MAX_ROWS = 150
+_OPENAI_BATCH_SIZE = 20
+_OPENAI_MAX_CANDIDATES_AUTO = 20
+_OPENAI_MAX_CANDIDATES_MANUAL = 40
+_OPENAI_BATCH_PACE_SECONDS = 2.5
+_OPENAI_MAX_ATTEMPTS = 3
+_OPENAI_LIMIT_CODES = {"credit_balance_exhausted","organization_usage_limit_exceeded","organization_spend_limit_exceeded","project_spend_limit_exceeded"}
 _INSTALL_LOCK = threading.Lock()
 _MANUAL_LOCK = threading.Lock()
 _CACHE_LOCK = threading.RLock()
@@ -37,7 +46,10 @@ _STATE = {"version": VERSION, "installed": False, "refreshing": False, "lastRefr
           "lastError": "", "openaiRuns": 0, "ruleRuns": 0, "served": 0, "refreshSeconds": _REFRESH_SECONDS,
           "newItemsLastRefresh": 0, "revision": 0, "ordering": "NEW_FIRST_STABLE",
           "manualRunning": False, "manualRuns": 0, "manualRequestedAt": 0.0, "manualCompletedAt": 0.0,
-          "manualSourceCount": 0, "manualLastError": "", "manualLastResult": "", "openaiConfigured": False}
+          "manualSourceCount": 0, "manualLastError": "", "manualLastResult": "", "openaiConfigured": False,
+          "manualOpenAIProcessed": 0, "manualOpenAIBatches": 0, "manualOpenAIRetries": 0,
+          "openaiRequests": 0, "openai429s": 0, "openaiCooldownUntil": 0.0, "openaiRetryAt": 0.0,
+          "openaiLastLimitCode": "", "openaiLastRequestId": "", "openaiLastLimitMessage": ""}
 
 _NOISE = re.compile(r"\b(prediction|predictions|preview|mock draft|fantasy|betting|odds|picks?|mailbag|podcast|best .* list|top \d+ list|power rankings? preview)\b", re.I)
 _CATEGORY_PATTERNS = [
@@ -245,6 +257,135 @@ def _merge_new_first(fresh,old,now=None):
     merged=(new+retained)[:_MAX_ROWS]
     return merged,len(new)
 
+
+class OpenAITickerRateLimited(RuntimeError):
+    pass
+
+class OpenAITickerQuotaError(RuntimeError):
+    pass
+
+class OpenAITickerBusy(RuntimeError):
+    pass
+
+def _retry_after_seconds(exc):
+    try:
+        raw=_clean(getattr(exc,"headers",{}).get("Retry-After") or getattr(exc,"headers",{}).get("retry-after"))
+    except Exception:
+        raw=""
+    if not raw:return 0.0
+    try:return max(0.0,float(raw))
+    except Exception:pass
+    try:
+        dt=parsedate_to_datetime(raw)
+        return max(0.0,dt.timestamp()-time.time())
+    except Exception:return 0.0
+
+def _openai_http_error_info(exc):
+    body=""
+    try:body=exc.read().decode("utf-8","ignore")[:5000]
+    except Exception:body=""
+    payload={}
+    try:payload=json.loads(body or "{}")
+    except Exception:payload={}
+    err=payload.get("error") if isinstance(payload,dict) else {}
+    if not isinstance(err,dict):err={}
+    code=_clean(err.get("code"));typ=_clean(err.get("type"));message=_clean(err.get("message")) or _clean(body) or str(exc)
+    try:request_id=_clean(getattr(exc,"headers",{}).get("x-request-id") or getattr(exc,"headers",{}).get("X-Request-Id"))
+    except Exception:request_id=""
+    return {"status":int(getattr(exc,"code",0) or 0),"code":code,"type":typ,"message":message[:900],"retryAfter":_retry_after_seconds(exc),"requestId":request_id}
+
+def _is_nonretryable_limit(info):
+    return _clean(info.get("code")) in _OPENAI_LIMIT_CODES or _clean(info.get("type"))=="insufficient_quota"
+
+def _openai_request_with_backoff(server,payload,*,manual=False):
+    request_fn=getattr(server,"openai_api_request",None)
+    if not callable(request_fn):raise RuntimeError("Sports Ticker OpenAI request function is unavailable")
+    started=time.time();last_info={}
+    for attempt in range(1,_OPENAI_MAX_ATTEMPTS+1):
+        _STATE["openaiRetryAt"]=0.0
+        try:
+            _STATE["openaiRequests"]+=1
+            return request_fn("/responses",payload=payload,timeout=70)
+        except HTTPError as exc:
+            info=_openai_http_error_info(exc);last_info=info
+            if info.get("requestId"):_STATE["openaiLastRequestId"]=info["requestId"]
+            if int(info.get("status") or 0)!=429:
+                raise RuntimeError(f"OpenAI HTTP {info.get('status')}: {info.get('message')}") from exc
+            _STATE["openai429s"]+=1;_STATE["openaiLastLimitCode"]=_clean(info.get("code") or info.get("type"));_STATE["openaiLastLimitMessage"]=_clean(info.get("message"))[:500]
+            if _is_nonretryable_limit(info):
+                _STATE["openaiCooldownUntil"]=max(float(_STATE.get("openaiCooldownUntil") or 0),time.time()+300)
+                raise OpenAITickerQuotaError(f"OpenAI quota/spend limit: {info.get('message')}. Last-good Sports Ticker retained.") from exc
+            if attempt>=_OPENAI_MAX_ATTEMPTS:
+                cooldown=max(30.0,float(info.get("retryAfter") or 0),60.0)
+                _STATE["openaiCooldownUntil"]=max(float(_STATE.get("openaiCooldownUntil") or 0),time.time()+cooldown)
+                raise OpenAITickerRateLimited(f"OpenAI rate limit persisted after {attempt} attempts. Last-good Sports Ticker retained; retry in about {int(cooldown)}s.") from exc
+            base=max(float(info.get("retryAfter") or 0),4.0*(2**(attempt-1)))
+            delay=min(45.0,base+random.uniform(.6,2.2))
+            _STATE["manualOpenAIRetries"]+=1;_STATE["openaiRetryAt"]=time.time()+delay
+            _STATE["openaiCooldownUntil"]=max(float(_STATE.get("openaiCooldownUntil") or 0),_STATE["openaiRetryAt"])
+            time.sleep(delay)
+        except Exception:
+            raise
+        if time.time()-started>75:break
+    raise OpenAITickerRateLimited(f"OpenAI rate limit did not clear. Last-good Sports Ticker retained. {last_info}")
+
+def _sports_ticker_openai_editorialize(server,raw,*,manual=False):
+    """Low-burst Sports Ticker editorial pass.
+
+    v5.2.11 replaces the legacy six-record / three-retry request storm with at most
+    one automatic or two manual batches. Requests are serialized against the
+    legacy editorial worker, paced between successful batches, and rate-limit
+    retries use Retry-After or bounded exponential backoff with jitter.
+    """
+    rules=_normalize(raw,"RULES_SPORTS_TICKER")
+    if not rules:return []
+    max_candidates=_OPENAI_MAX_CANDIDATES_MANUAL if manual else _OPENAI_MAX_CANDIDATES_AUTO
+    candidates=rules[:max_candidates]
+    categories=["BREAKING","CHAMPIONSHIP","CLINCH","ELIMINATION","UPSET","RECORD_WATCH","RECORD","MILESTONE","STREAK","PLAYOFF","RANKING","TRANSACTION","INJURY","RETURN","COACHING","SUSPENSION","TOURNAMENT","RESULT","SCHEDULE","RETIREMENT","DRAFT","RECRUITING","AWARD","UPDATE"]
+    schema={"type":"object","properties":{"items":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string"},"keep":{"type":"boolean"},"importance":{"type":"integer"},"category":{"type":"string","enum":categories},"headline":{"type":"string"}},"required":["id","keep","importance","category","headline"],"additionalProperties":False}}},"required":["items"],"additionalProperties":False}
+    prompt_prefix=("You are the Sports Big Board Sports Ticker editor. Use ONLY supplied source records and never add facts. "
+                   "Keep consequential sports information: breaking developments, injuries, transactions, records and record watches, milestones, playoff movement, rankings, streaks, tournament advancement, major results, clinches/eliminations, coaching changes and schedule changes. "
+                   "Suppress opinion, predictions, generic rankings/listicles, fantasy/betting filler and duplicates. Rewrite kept headlines as concise factual ticker headlines. Return exactly the structured schema.")
+    decisions={};lock=getattr(server,"EDITORIAL_REFRESH_LOCK",None);acquired=False
+    if lock is not None:
+        try:acquired=lock.acquire(timeout=45 if manual else .25)
+        except Exception:acquired=False
+        if not acquired:raise OpenAITickerBusy("OpenAI editorial desk is busy with another refresh; last-good Sports Ticker retained")
+    try:
+        for offset in range(0,len(candidates),_OPENAI_BATCH_SIZE):
+            batch=candidates[offset:offset+_OPENAI_BATCH_SIZE]
+            source=[]
+            for row in batch:
+                source.append({"id":_ticker_key(row),"league":_clean(row.get("league") or "SPORT"),"headline":_clean(row.get("headline") or row.get("title"))[:220],"category":_clean(row.get("category") or row.get("eventType") or "UPDATE"),"importance":int(row.get("importance") or 0),"publishedAt":_clean(row.get("publishedAt") or row.get("timestamp") or row.get("date")),"source":_clean(row.get("sourceLabel") or row.get("source"))[:80]})
+            payload={"model":getattr(server,"OPENAI_MODEL","gpt-5-mini"),"input":prompt_prefix+"\n\nSOURCE RECORDS:\n"+json.dumps(source,ensure_ascii=False),"max_output_tokens":3600,"text":{"format":{"type":"json_schema","name":"sports_big_board_ticker","strict":True,"schema":schema}}}
+            response=_openai_request_with_backoff(server,payload,manual=manual)
+            text_fn=getattr(server,"openai_output_text",None);parse_fn=getattr(server,"_openai_json_object",None)
+            text=text_fn(response) if callable(text_fn) else _clean(response.get("output_text") if isinstance(response,dict) else "")
+            parsed=parse_fn(text) if callable(parse_fn) else json.loads(text or "{}")
+            rows=parsed.get("items") if isinstance(parsed,dict) else None
+            if not isinstance(rows,list):raise RuntimeError("OpenAI Sports Ticker structured result did not contain an items array")
+            for decision in rows:
+                if isinstance(decision,dict) and _clean(decision.get("id")):decisions[_clean(decision.get("id"))]=decision
+            _STATE["manualOpenAIBatches"]+=1
+            if offset+_OPENAI_BATCH_SIZE<len(candidates):time.sleep(_OPENAI_BATCH_PACE_SECONDS)
+    finally:
+        if acquired:
+            try:lock.release()
+            except Exception:pass
+    out=[]
+    candidate_keys={_ticker_key(x) for x in candidates}
+    for row in rules:
+        key=_ticker_key(row);decision=decisions.get(key)
+        if key in candidate_keys and decision is not None:
+            if not decision.get("keep"):continue
+            item=dict(row);item["headline"]=_clean(decision.get("headline")) or item.get("headline");item["title"]=item["headline"];item["shortHeadline"]=item["headline"][:140]
+            item["importance"]=max(0,min(100,int(decision.get("importance") or item.get("importance") or 0)));item["category"]=_clean(decision.get("category")) or item.get("category");item["eventType"]=item["category"]
+            item["editorialProvider"]="OPENAI_SPORTS_TICKER";out.append(item)
+        else:
+            item=dict(row);item["editorialProvider"]="RULES_FILL";out.append(item)
+    _STATE["manualOpenAIProcessed"]=len(candidates)
+    return out[:_MAX_ROWS]
+
 def _refresh(server,force=False,seed_rows=None,replace=False,require_openai=False,fresh_only=False,manual=False):
     if _STATE["refreshing"] or (_STATE.get("manualRunning") and not manual): return False
     _STATE["refreshing"]=True
@@ -255,23 +396,30 @@ def _refresh(server,force=False,seed_rows=None,replace=False,require_openai=Fals
         if not force and sig and sig==old_sig and old_rows and age<_REFRESH_SECONDS:
             _STATE["newItemsLastRefresh"]=0;return True
         edited=[];provider="RULES_SPORTS_TICKER"
-        editor=getattr(server,"openai_editorialize_events",None);key_reader=getattr(server,"read_openai_key",None)
-        key=""
+        key_reader=getattr(server,"read_openai_key",None);key=""
         try:key=key_reader() if callable(key_reader) else ""
         except Exception:key=""
         _STATE["openaiConfigured"]=bool(key)
-        if require_openai and (not key or not callable(editor)):
+        if require_openai and not key:
             raise RuntimeError("OpenAI is not configured on the Sports Big Board backend")
-        if raw and callable(editor) and key:
+        cooldown=max(0.0,float(_STATE.get("openaiCooldownUntil") or 0)-time.time())
+        if raw and key and cooldown<=0:
             try:
-                edited=list(editor(raw[:160]) or [])
+                edited=list(_sports_ticker_openai_editorialize(server,raw,manual=manual) or [])
                 if edited:
-                    provider="OPENAI_SPORTS_TICKER";_STATE["openaiRuns"]+=1
+                    provider="OPENAI_SPORTS_TICKER";_STATE["openaiRuns"]+=1;_STATE["openaiCooldownUntil"]=0.0;_STATE["openaiRetryAt"]=0.0
                 elif require_openai:
                     raise RuntimeError("OpenAI returned no Sports Ticker editorial rows")
+            except (OpenAITickerRateLimited,OpenAITickerQuotaError,OpenAITickerBusy) as exc:
+                _STATE["lastError"]=f"OpenAI: {type(exc).__name__}: {exc}"[:600]
+                if require_openai:raise
+                if old_rows:return True
             except Exception as exc:
-                if require_openai: raise
-                _STATE["lastError"]=f"OpenAI: {type(exc).__name__}: {exc}"[:300]
+                if require_openai:raise
+                _STATE["lastError"]=f"OpenAI: {type(exc).__name__}: {exc}"[:600]
+                if old_rows:return True
+        elif require_openai and cooldown>0:
+            raise OpenAITickerRateLimited(f"OpenAI is cooling down after a rate limit. Try again in {int(cooldown)+1}s. Last-good Sports Ticker remains live.")
         fresh=_normalize(edited,provider) if edited else _normalize(raw,provider)
         if fresh:
             if replace:
@@ -310,10 +458,13 @@ def _start_manual_refresh(server):
         except Exception:key=""
         _STATE["openaiConfigured"]=bool(key)
         if not key:raise RuntimeError("OpenAI key is not configured on the backend")
+        cooldown=max(0.0,float(_STATE.get("openaiCooldownUntil") or 0)-time.time())
+        if cooldown>0:raise RuntimeError(f"OpenAI is cooling down after a rate limit. Try again in {int(cooldown)+1}s. Last-good Sports Ticker remains live.")
         requested=time.time();_STATE["manualRunning"]=True;_STATE["manualRuns"]+=1
         _STATE["manualRequestedAt"]=requested;_STATE["manualCompletedAt"]=0.0;_STATE["manualSourceCount"]=0
+        _STATE["manualOpenAIProcessed"]=0;_STATE["manualOpenAIBatches"]=0;_STATE["manualOpenAIRetries"]=0;_STATE["openaiRetryAt"]=0.0
         _STATE["manualLastError"]="";_STATE["manualLastResult"]="STARTED"
-        threading.Thread(target=_manual_refresh_worker,args=(server,requested),daemon=True,name="sbb-sports-ticker-manual-v526").start()
+        threading.Thread(target=_manual_refresh_worker,args=(server,requested),daemon=True,name="sbb-sports-ticker-manual-v5211").start()
         return True,requested
 
 def _worker():
@@ -350,7 +501,7 @@ def _install_into_server():
             if seeded:_persist(seeded,"RULES_SPORTS_TICKER",_signature(seeded))
         except Exception: pass
     Handler=server.Handler
-    if not getattr(Handler,"__sbbSportsTickerV526",False):
+    if not getattr(Handler,"__sbbSportsTickerV5211",False):
         old_get=Handler.do_GET;old_post=getattr(Handler,"do_POST",None)
         def do_GET(self):
             parsed=urlparse(self.path)
@@ -372,16 +523,16 @@ def _install_into_server():
             if callable(old_post):return old_post(self)
             try:self.send_error(404)
             except Exception:pass
-        Handler.do_GET=do_GET;Handler.do_POST=do_POST;Handler.__sbbSportsTickerV526=True
+        Handler.do_GET=do_GET;Handler.do_POST=do_POST;Handler.__sbbSportsTickerV5211=True
     _STATE["installed"]=True
-    threading.Thread(target=_worker,daemon=True,name="sbb-sports-ticker-v526").start()
+    threading.Thread(target=_worker,daemon=True,name="sbb-sports-ticker-v5211").start()
 
 def install():
     global _INSTALLED
     with _INSTALL_LOCK:
         if _INSTALLED:return False
         _INSTALLED=True
-    threading.Thread(target=_install_into_server,daemon=True,name="sbb-sports-ticker-install-v526").start();return True
+    threading.Thread(target=_install_into_server,daemon=True,name="sbb-sports-ticker-install-v5211").start();return True
 
 def diagnostics():
     with _CACHE_LOCK:return {**copy.deepcopy(_STATE),"cacheCount":len(_CACHE.get("data") or []),"source":_CACHE.get("source") or ""}

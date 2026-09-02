@@ -95,7 +95,7 @@ except ValueError:
     errors.append('index is missing core/release/settings/history release surfaces')
 
 
-# v5.2.10 scroll/motion integrity. The performance fix must be part of the
+# v5.2.11 scroll/motion integrity. The performance fix must be part of the
 # atomic frontend generation and the historical scroll controller may not
 # reintroduce permanent blocking gesture listeners.
 motion=text(Path('architecture')/'scroll-motion-smoothness-v5210.js')
@@ -129,7 +129,33 @@ try:
     if not (visibility_pos < motion_pos < settings_pos2):
         errors.append('scroll/motion module load order is unsafe')
 except ValueError:
-    errors.append('index is missing v5.2.10 scroll/motion release surfaces')
+    errors.append('index is missing v5.2.11 scroll/motion release surfaces')
+
+
+# v5.2.11 OpenAI Sports Ticker rate-limit integrity. Manual refreshes must not
+# fall back to the legacy six-record / three-retry request storm.
+ticker_backend=text(Path('sbb')/'current_news_v523.py')
+for required in [
+    '_OPENAI_BATCH_SIZE = 20',
+    '_OPENAI_MAX_CANDIDATES_MANUAL = 40',
+    'class OpenAITickerRateLimited',
+    'class OpenAITickerQuotaError',
+    '_openai_request_with_backoff',
+    'Retry-After',
+    'openaiCooldownUntil',
+    'Last-good Sports Ticker retained',
+    'EDITORIAL_REFRESH_LOCK',
+]:
+    if required not in ticker_backend:
+        errors.append(f'Sports Ticker OpenAI rate-limit contract missing: {required}')
+if 'editor(raw[:160])' in ticker_backend:
+    errors.append('Sports Ticker still uses the legacy bursty OpenAI editorial call')
+if ticker_backend.count('request_fn("/responses"') != 1:
+    errors.append('Sports Ticker OpenAI request path is not centralized through bounded backoff')
+
+ticker_frontend=ticker
+if 'attempt<240' not in ticker_frontend or 'OpenAI rate limited • retrying in' not in ticker_frontend:
+    errors.append('Sports Ticker UI does not expose bounded OpenAI backoff/cooldown status')
 
 if errors:
     print('RELEASE INTEGRITY CHECK FAILED')
