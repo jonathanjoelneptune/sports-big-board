@@ -29,6 +29,8 @@ if architecture_version!=version:
 index=text(Path('index.html'))
 if f'<title>Sports Big Board — v{version}</title>' not in index:
     errors.append('index title does not match VERSION')
+if 'const tabTitle=`Sports Big Board — v${version}`' not in index or "window.addEventListener('pageshow',syncTabTitle)" not in index:
+    errors.append('browser tab title is not reasserted from canonical release identity')
 if f'<meta name="sbb-release-version" content="{version}"' not in index:
     errors.append('index canonical sbb-release-version meta does not match VERSION')
 if 'window.SBB_RELEASE_VERSION=version' not in index or 'window.SBB_RELEASE=Object.freeze' not in index:
@@ -218,6 +220,33 @@ try:
         errors.append('Broadcast Design System stylesheet load order is unsafe')
 except ValueError:
     errors.append('index is missing Broadcast Design System load surface')
+
+
+# v5.2.14 Premium Masthead + Sports Ticker + Score Ribbon. This remains a
+# presentation-only late override. It must not replace native scrolling or add
+# animation/blur work that competes with the v5.2.10 motion budget.
+premium=text(Path('ui')/'premium-masthead-v5214.css')
+if f'ui/premium-masthead-v5214.css?v={version}' not in index:
+    errors.append('index is missing synchronized v5.2.14 premium masthead stylesheet')
+for required in [
+    '.top-nav-header{', '.score-filters{', '.key-info-ribbon{',
+    '.sbb-sports-ticker-conveyor .key-info-item{', '.score-ribbon{',
+    '.score-cell.now-watching,', '.score-team-score{',
+    '@media (max-width:760px)', '@media (prefers-reduced-motion:reduce)'
+]:
+    if required not in premium:
+        errors.append(f'Premium masthead missing required contract: {required}')
+for forbidden in ['backdrop-filter','filter:blur(','animation:','scroll-snap-type:']:
+    if forbidden in premium:
+        errors.append(f'Premium masthead contains performance-risk presentation rule: {forbidden}')
+try:
+    design_pos2=index.index(f'ui/broadcast-design-v5213.css?v={version}')
+    premium_pos=index.index(f'ui/premium-masthead-v5214.css?v={version}')
+    head_end2=index.index('</head>')
+    if not (design_pos2 < premium_pos < head_end2):
+        errors.append('Premium masthead stylesheet load order is unsafe')
+except ValueError:
+    errors.append('index is missing premium masthead load surface')
 
 if errors:
     print('RELEASE INTEGRITY CHECK FAILED')

@@ -1,0 +1,66 @@
+SPORTS BIG BOARD v5.2.14 — PREMIUM MASTHEAD + SPORTS TICKER + SCORE RIBBON
+Manual GitHub upload package
+
+UPLOAD
+1. Open the sports-big-board repository on GitHub.
+2. Upload the CONTENTS of this folder to the repository root.
+3. Preserve the architecture/, sbb/, tools/, tests/, and ui/ paths.
+4. Replace existing files when prompted.
+5. Upload all files in one commit so frontend/backend/database-audit release identity advances atomically.
+6. After deploy, hard refresh once and confirm Settings → RELEASE STATUS shows Frontend 5.2.14 / Backend 5.2.14 / MATCHED.
+
+CHANGED FILES
+VERSION
+architecture/VERSION
+index.html
+ui/premium-masthead-v5214.css
+architecture/key-info-current-v520.js
+architecture/scroll-motion-smoothness-v5210.js
+architecture/splash-preload-v5212.js
+sbb/current_news_v523.py
+tools/check_release_version.py
+tests/test_v5213_broadcast_design.py
+tests/test_v5214_premium_masthead.py
+VERIFY.sh
+UPLOAD-v5.2.14.txt
+
+PURPOSE
+v5.2.14 is the second UI-polish pass. It focuses only on the top broadcast surface: masthead navigation, Sports Ticker, and score ribbon. Stable playback, date ownership, score ownership, Sports Ticker data/animation ownership, Game Center, media discovery, and scroll mechanics are not changed.
+
+PREMIUM MASTHEAD
+- Stronger Sports Big Board brand hierarchy.
+- Fullscreen becomes a quiet circular utility control.
+- Backend Inspector remains available but is visually de-emphasized.
+- Date controls become compact rounded broadcast controls.
+- League navigation becomes clean text tabs with a blue active underline instead of boxed buttons.
+- Special Events stays in the same functional location and uses the same navigation ownership.
+
+SPORTS TICKER
+- Newsroom-style ticker label with subtle live indicator.
+- More editorial headline typography and less box chrome.
+- Category pills keep their news-type colors.
+- Updates use quiet separators instead of individual card borders.
+- Existing compositor animation, tuning values, speed, one/two-line setting, and date independence are untouched.
+
+SCORE RIBBON
+- More generous score-card typography and spacing.
+- Borderless television-scoreboard rail with quiet separators.
+- Stronger score numerals and team readability.
+- Premium selected / Now Watching surface without expensive effects.
+- Green / Purple / Gold / Blue recap availability retains subtle bottom accents.
+- Previous/next date arrows become quieter edge controls.
+- Existing native horizontal scrolling and score-card click behavior are untouched.
+
+BROWSER TAB RELEASE IDENTITY
+The visible browser tab is now reasserted from the canonical release identity on DOMContentLoaded and pageshow. The release verifier explicitly checks this contract in addition to the static <title>, so future releases cannot intentionally pass verification with an old tab-version label.
+
+PERFORMANCE GUARDRAILS
+- No backdrop-filter.
+- No blur effects.
+- No new continuous animations.
+- No scroll snapping or segmented scroll points.
+- No new per-frame JavaScript.
+- No changes to the v5.2.10 compositor/scroll architecture.
+
+ROLLBACK
+v5.2.14 polish is isolated in ui/premium-masthead-v5214.css, loaded after ui/broadcast-design-v5213.css. Removing the v5.2.14 stylesheet link restores the v5.2.13 top-surface presentation without changing application behavior.
