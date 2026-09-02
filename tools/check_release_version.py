@@ -282,10 +282,10 @@ except ValueError:
 # canonical queueList and the repaired NEXT control delegates to the established
 # queue-row click/tune path rather than creating a second programming owner.
 upnext_css=text(Path('ui')/'editorial-slugs-up-next-v5216.css')
-upnext_js=text(Path('ui')/'up-next-experience-v5216.js')
+upnext_js=text(Path('ui')/'up-next-experience-v5217.js')
 if f'ui/editorial-slugs-up-next-v5216.css?v={version}' not in index:
     errors.append('index is missing synchronized v5.2.17 editorial/up-next stylesheet')
-if f'<script src="ui/up-next-experience-v5216.js?v={version}"></script>' not in index:
+if f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>' not in index:
     errors.append('index is missing synchronized v5.2.17 integrated Up Next module')
 for required in [
     '.key-info-item .key-info-type{', 'border-radius:2px!important',
@@ -310,13 +310,50 @@ try:
     upnext_css_pos=index.index(f'ui/editorial-slugs-up-next-v5216.css?v={version}')
     app_pos2=index.index(f'<script src="app.js?v={version}"></script>')
     ticker_pos2=index.index(f'<script src="architecture/key-info-current-v520.js?v={version}"></script>')
-    upnext_js_pos=index.index(f'<script src="ui/up-next-experience-v5216.js?v={version}"></script>')
+    upnext_js_pos=index.index(f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>')
     if not (watching_pos2 < upnext_css_pos < index.index('</head>')):
         errors.append('v5.2.17 visual stylesheet load order is unsafe')
     if not (app_pos2 < ticker_pos2 < upnext_js_pos):
         errors.append('v5.2.17 Up Next module must load after app and ticker ownership')
 except ValueError:
     errors.append('index is missing v5.2.17 Up Next release surfaces')
+
+
+# v5.2.17 Drawer Polish + Harmonized Controls. These are late presentation and
+# drawer-integration layers; they must be synchronized and load after Up Next.
+polish_css=text(Path('ui')/'harmonized-controls-drawer-v5217.css')
+polish_js=text(Path('ui')/'harmonized-controls-drawer-v5217.js')
+if f'ui/harmonized-controls-drawer-v5217.css?v={version}' not in index:
+    errors.append('index is missing synchronized v5.2.17 harmonized-controls stylesheet')
+if f'<script src="ui/harmonized-controls-drawer-v5217.js?v={version}"></script>' not in index:
+    errors.append('index is missing synchronized v5.2.17 drawer-polish module')
+for required in [
+    '.player-footer .utility-controls{display:none!important}',
+    '#drawerCollapseToggle{', 'body.sbb-drawer-collapsed #infoDrawer{',
+    '#gameCenterPane .next-up-dock{',
+    '.sbb-sports-ticker-conveyor .key-info-item .key-info-type{',
+    '#nextBtn::after{content:none!important;display:none!important}'
+]:
+    if required not in polish_css:
+        errors.append(f'v5.2.17 harmonized-controls visual contract missing: {required}')
+for required in [
+    'SBB_DRAWER_POLISH', 'setTransportLabels()', 'ensureDrawerToggle()',
+    "STORAGE_KEY='sbb.drawer.collapsed.v1'",
+    "document.body.classList.toggle('sbb-drawer-collapsed'"
+]:
+    if required not in polish_js:
+        errors.append(f'v5.2.17 drawer-polish behavior contract missing: {required}')
+try:
+    upnext_js_pos2=index.index(f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>')
+    polish_js_pos=index.index(f'<script src="ui/harmonized-controls-drawer-v5217.js?v={version}"></script>')
+    old_css_pos=index.index(f'ui/editorial-slugs-up-next-v5216.css?v={version}')
+    polish_css_pos=index.index(f'ui/harmonized-controls-drawer-v5217.css?v={version}')
+    if not (old_css_pos < polish_css_pos < index.index('</head>')):
+        errors.append('v5.2.17 harmonized-controls stylesheet load order is unsafe')
+    if not (upnext_js_pos2 < polish_js_pos):
+        errors.append('v5.2.17 drawer polish must load after integrated Up Next')
+except ValueError:
+    errors.append('index is missing v5.2.17 drawer-polish release surfaces')
 
 if errors:
     print('RELEASE INTEGRITY CHECK FAILED')
