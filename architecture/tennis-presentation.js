@@ -1,6 +1,6 @@
-/* Sports Big Board v5.1.21 — thin tennis ribbon renderer.
+/* Sports Big Board v5.1.22 — thin tennis ribbon renderer.
 
-   v5.1.21 moves tennis presentation authority to the backend Day State read model.
+   v5.1.22 moves tennis presentation authority to the backend Day State read model.
    Score rows arrive with final ribbon names, country-flag artwork and round labels.
    This browser module performs no name parsing, country mapping, provider lookup,
    score-store transformation, MutationObserver work, geometry reads or scroll-time
@@ -8,9 +8,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_TENNIS_PRESENTATION?.version==='5.1.21')return;
+  if(window.SBB_TENNIS_PRESENTATION?.version==='5.1.22')return;
 
-  const VERSION='5.1.21';
+  const VERSION='5.1.22';
   const clean=v=>String(v??'').trim();
 
   function isTennis(evt){
@@ -29,7 +29,13 @@
   // builder does not yet read directly. It is already computed by the backend;
   // this pass only copies one string into the existing top-right DOM node.
   function decorateCards(){
-    document.querySelectorAll('.score-card').forEach(card=>{
+    const host=document.getElementById('scoreCells');
+    if(!host)return;
+    // Render-pipeline card banks are immutable for one event identity. Inspect each
+    // newly-created card exactly once; repeated media/status renders do zero tennis
+    // DOM work. Scrolling never calls this function.
+    host.querySelectorAll(':scope > .score-card:not([data-sbb-tennis-v5122])').forEach(card=>{
+      card.dataset.sbbTennisV5122='1';
       const match=card.__sbbMatch;
       if(!isTennis(match))return;
       card.classList.add('sbb-tennis-score-card');
@@ -40,6 +46,12 @@
         node.title=clean(match?.roundName||match?.round||match?.stage||label);
         node.dataset.sbbTennisRound='1';
       }
+      // Flags already come from the backend and are lazy-loaded by the generic card
+      // builder. Decode them asynchronously so a newly-visible flag cannot block a
+      // wheel/drag frame on dense tournament ribbons.
+      card.querySelectorAll('.score-team-logo').forEach(img=>{
+        try{img.decoding='async';img.fetchPriority='low';}catch(_){}
+      });
     });
   }
 

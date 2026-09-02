@@ -15,7 +15,7 @@ assert(source.includes("authority:'BACKEND_DAY_STATE'"),'backend presentation au
 const cards=[];
 const document={
   readyState:'complete',body:{classList:{toggle(){}}},
-  getElementById(){return null;},createElement(){return {id:'',textContent:'',appendChild(){}};},
+  getElementById(id){return id==='scoreCells'?{querySelectorAll(){return cards;}}:null;},createElement(){return {id:'',textContent:'',appendChild(){}};},
   querySelectorAll(sel){return sel==='.score-card'?cards:[];},
   addEventListener(){},head:{appendChild(){}}
 };
@@ -27,7 +27,7 @@ vm.createContext(context);
 vm.runInContext(source,context,{filename:'tennis-presentation.js'});
 const ui=context.SBB_TENNIS_PRESENTATION;
 assert(ui,'tennis presentation installed');
-assert.equal(ui.version,'5.1.21');
+assert.equal(ui.version,'5.1.22');
 assert.equal(ui.authority,'BACKEND_DAY_STATE');
 const match={sportId:'tennis',__sbbTennisPresentation:'5.1.21-backend-tennis-ribbon-1',ribbonContextLabel:'ROUND 2'};
 assert.equal(ui.roundRibbonLabel(match),'ROUND 2');
@@ -35,4 +35,4 @@ assert.strictEqual(ui.preparedMatch(match),match);
 const rows=[match];assert.strictEqual(ui.prepareRows('USOPEN-2026',rows),rows);
 assert.equal(ui.countryCodeOf({countryCode:'RU'}),'RU');
 assert.equal(ui.flagEmoji({flagEmoji:'🇷🇺'}),'🇷🇺');
-console.log('PASS v5.1.21 thin tennis frontend invariants');
+console.log('PASS v5.1.21/22 thin tennis frontend invariants');

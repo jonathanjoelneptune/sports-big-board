@@ -1,0 +1,70 @@
+Sports Big Board v5.1.22
+========================
+
+Purpose
+-------
+1. Make dense score-ribbon scrolling, especially tennis, feel immediate and resistant to wheel/drag stalls.
+2. Repair random Game Center identity failures when a score-provider id changes even though the completed Game Center already exists in SQLite.
+3. Make custom tennis Game Center routing deterministic so registry-defined events such as USOPEN-2026 never fall through to the fixed MLB/NFL/NBA/NHL/MLS/EPL provider validator.
+
+Files to upload to the repository root
+--------------------------------------
+VERSION
+index.html
+architecture/ribbon-fast-scroll-v5122.js
+architecture/tennis-presentation.js
+sbb/__init__.py
+sbb/tennis_ribbon_projection.py
+sbb/game_center_identity_v5122.py
+tests/test_v5121_architecture.py
+tests/test_v5121_tennis_backend.py
+tests/test_v5121_tennis_frontend.js
+tests/test_v5122_ribbon_fast_scroll.js
+tests/test_v5122_game_center_identity.py
+
+Ribbon scrolling changes
+------------------------
+- Intercepts the legacy high-frequency desktop wheel/pointermove path in capture phase.
+- Accumulates movement and performs at most one scrollLeft write per animation frame.
+- Caches ribbon geometry outside pointermove/wheel hot loops.
+- Disables smooth-scroll contention on the ribbon while the user is directly scrolling.
+- Suppresses automatic score-card focus scrolling during an active wheel/drag gesture.
+- Tennis presentation now inspects each newly-created score card once instead of rescanning already-prepared cards on repeated renders.
+- Tennis flag images remain backend-owned and lazy-loaded; their image decode is marked asynchronous/low priority.
+
+Game Center identity changes
+----------------------------
+- Adds persistent SQLite table game_center_fingerprints.
+- Existing game_centers rows are backfilled at backend startup.
+- Lookup order is now:
+    existing provider alias / exact cached id
+    -> persistent event fingerprint (competition + date + away + home)
+    -> bounded cached-date SQLite rescue
+    -> provider schedule lookup only if still unresolved
+- A successful fingerprint rescue immediately writes the current score-provider id into game_center_aliases, making subsequent clicks O(1).
+- Ambiguous same-day/same-team matches fail closed unless game number or start time clearly resolves the event.
+- New successful Game Centers are indexed immediately for future score-provider alias changes.
+
+Tennis Game Center routing
+--------------------------
+- The generic backend _game_center_open boundary now checks Competition Registry sportId.
+- sportId=tennis is handed directly to the existing canonical tennis adapter.
+- This does not depend on HTTP Handler wrapper installation order.
+- USOPEN-2026 and other custom tennis competitions therefore cannot produce "Game Center provider not implemented for <competition>" from the fixed-league validator.
+
+Verification performed
+----------------------
+PASS v5.1.22 durable Game Center identity and deterministic tennis routing
+PASS v5.1.22 frame-budgeted ribbon scrolling invariants
+PASS v5.1.21/22 backend-first tennis ribbon architecture invariants
+PASS v5.1.21 backend tennis alias/flag projection invariants
+PASS v5.1.21/22 thin tennis frontend invariants
+Python modules compile successfully.
+JavaScript modules pass node --check.
+
+Recommended deployment smoke test
+---------------------------------
+1. Open a tennis-heavy US Open date and continuously mouse-wheel/drag the ribbon in both directions.
+2. While still on that date, click several tennis cards. Game Center should go PENDING briefly if cold, then populate without a fixed-league "provider not implemented" error.
+3. Click several MLB games that previously had Game Center data. A changed score alias should resolve immediately from the local fingerprint/alias database rather than ending in "Unable to resolve MLB Game Center event from score identity".
+4. Re-click one of those repaired MLB games. It should use the newly-written persistent alias on subsequent opens.

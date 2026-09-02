@@ -25,7 +25,7 @@ _install_competition_builder_v4613()
 _install_competition_builder_v4614()
 _install_competition_builder_v4615()
 _install_special_event_media_v4616()
-# v5.1.21: install the backend tennis presentation projection before Day State
+# v5.1.22: install the backend tennis presentation projection before Day State
 # starts its worker. The browser receives already-renderable names/flags/rounds.
 _install_tennis_ribbon_projection()
 _install_day_state()
@@ -51,5 +51,11 @@ _install_media_runtime_repair_v5116()
 _install_media_authority_v5117()
 _install_tennis_game_center()
 
-# v5.1.21: DayStateEngine remains the sole date authority. Tennis ribbon presentation
-# is a backend read-model projection, not a browser-side score authority.
+# v5.1.22: durable event-fingerprint Game Center lookup + deterministic tennis routing.
+# This installs after the canonical tennis adapter so generic /api/events/... requests
+# cannot fall through to fixed-league provider validation.
+from .game_center_identity_v5122 import install as _install_game_center_identity_v5122
+_install_game_center_identity_v5122()
+
+# DayStateEngine remains the sole date authority. Tennis ribbon presentation is a
+# backend read-model projection, not a browser-side score authority.
