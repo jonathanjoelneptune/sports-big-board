@@ -29,6 +29,10 @@ _install_special_event_media_v4616()
 # starts its worker. The browser receives already-renderable names/flags/rounds.
 _install_tennis_ribbon_projection()
 _install_day_state()
+# v5.2.0: persist already-built Day State into a request-cheap RibbonSnapshot.
+# This never builds/provider-fetches on the ribbon request thread.
+from .ribbon_snapshot_v520 import install as _install_ribbon_snapshot_v520
+_install_ribbon_snapshot_v520()
 _install_game_center_multisport()
 from .ncaaf_game_center import install as _install_ncaaf_game_center
 _install_ncaaf_game_center()

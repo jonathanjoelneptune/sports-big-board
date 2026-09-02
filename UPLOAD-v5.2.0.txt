@@ -1,0 +1,108 @@
+Sports Big Board v5.2.0 — Virtual Ribbon Architecture
+=====================================================
+
+PURPOSE
+-------
+This release changes the scaling model of the score ribbon. The backend owns a
+continuously prepared RibbonSnapshot and the browser mounts only a small moving
+window of score cards. A 100–200 match tennis/sports day therefore does not create
+100–200 live ribbon DOM cards or run full-bank layout validation while scrolling.
+
+It also repairs KEY INFO so it is always a CURRENT NEWS lane, even while browsing a
+historical sports date, and adds interaction budgeting so nonessential media/ribbon
+reconciliation yields while the user is actively scrolling the ribbon or page.
+
+FILES TO UPLOAD TO THE REPOSITORY ROOT
+--------------------------------------
+VERSION
+index.html
+architecture/virtual-ribbon-v520.js
+architecture/key-info-current-v520.js
+architecture/ribbon-fast-scroll-v5122.js
+architecture/tennis-presentation.js
+sbb/__init__.py
+sbb/ribbon_snapshot_v520.py
+sbb/game_center_identity_v5122.py
+sbb/tennis_ribbon_projection.py
+tests/test_v520_virtual_ribbon.js
+tests/test_v520_key_info.js
+tests/test_v520_ribbon_snapshot.py
+
+VIRTUAL RIBBON
+--------------
+- Complete date inventory remains in canonical Day State / ScoreDateStore data.
+- The browser mounts roughly 20–30 game cards instead of every game on the day.
+- Offscreen games are represented by lightweight left/right flex spacers.
+- Cards are recycled only when the viewport approaches the mounted overscan edge.
+- The established score-card factory still creates the actual visible cards, so
+  score colors, media rails, clicks, team/player flags, tennis names, and playback
+  behavior remain on the existing card contract.
+- The old v4.7 full-bank performance wrapper is bypassed for virtual rendering. It
+  therefore no longer performs a whole-page DOM census or validates every score
+  card on a 100+ event day.
+- v5.1.22's requestAnimationFrame wheel/drag input layer remains in place.
+- The old score-ribbon scroll media-warm callback is coalesced and deferred until
+  user interaction is idle.
+
+SERVER-PREPARED RIBBON SNAPSHOT
+-------------------------------
+- New persistent database: ~/.sports-big-board/ribbon-snapshot.sqlite3
+- New read-only endpoint: /api/ribbon-snapshot?date=YYYY-MM-DD
+- New diagnostics endpoint: /api/ribbon-snapshot/status
+- Day State remains the only event/media authority.
+- RibbonSnapshot never performs provider/media/Game Center work and never calls a
+  Day State build from the HTTP request path.
+- The background snapshot worker only serializes Day State snapshots that already
+  exist for today, nearby dates, and currently focused dates.
+- A totally cold date returns 202 and focuses the normal Day State worker.
+
+INSTANT / ADJACENT DATE LOADING
+-------------------------------
+- Canonical RibbonSnapshot responses are persisted in the browser Cache API.
+- The current date reads durable browser state first, then refreshes from backend.
+- Previous/next two dates are network/cache-prefetched as DATA ONLY. They are not
+  ingested/rendered while the user is interacting.
+- When the user selects a prefetched date, its resident snapshot is synchronously
+  applied before the ordinary date-transition request begins.
+- This specifically targets the previous behavior where clicking back a date could
+  block for several seconds before the ribbon appeared.
+
+KEY INFO
+--------
+- KEY INFO no longer queries the selected historical score date.
+- It evaluates the existing editorial feed against TODAY/current time at all times.
+- Browsing August 22 while the real date is September 1 therefore still shows
+  September 1 current sports news.
+- It refreshes every five minutes even while historical browsing is active.
+- If a custom Special Event filter has no dedicated editorial items, the ticker
+  falls back to general current sports news instead of saying there are no saved
+  historical updates.
+- UI language now says CURRENT NEWS instead of "saved key-information".
+
+PAGE/RIBBON INTERACTION BUDGET
+------------------------------
+- Ribbon and page wheel/touch/scroll gestures temporarily enter interaction mode.
+- Nonessential ribbon/media re-renders yield until the interaction is idle.
+- Long offscreen Game Center/history/queue cards use CSS content-visibility so the
+  browser can skip their layout/paint while they are outside the viewport.
+- Adjacent-date prefetch never calls Day State apply(), preventing background
+  prefetch from causing a main-thread hitch while the user scrolls video/Game Center.
+
+CARRY-FORWARD
+-------------
+- v5.1.22 durable Game Center fingerprint lookup remains unchanged.
+- v5.1.22 deterministic custom-tennis Game Center routing remains unchanged.
+- v5.1.21 backend tennis aliases/flags/round presentation remain unchanged.
+- v5.1.17+ durable verified media ownership remains unchanged.
+
+VERIFICATION PERFORMED
+----------------------
+PASS v5.2.0 virtual ribbon / adjacent snapshot invariants
+PASS v5.2.0 current KEY INFO invariants
+PASS v5.2.0 backend-prepared RibbonSnapshot invariants
+Python module compile: PASS
+JavaScript syntax checks: PASS
+
+As requested for Sports Big Board deployment, there is no checksum file, release
+manifest gate, token/content gate, repository-completeness gate, or verifier-order
+gate in this package.

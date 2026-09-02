@@ -1,0 +1,13 @@
+'use strict';
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..');
+const src=fs.readFileSync(path.join(root,'architecture/key-info-current-v520.js'),'utf8');
+const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
+assert(src.includes("const VERSION='5.2.0'"));
+assert(src.includes('withBrowseDate(today()'),'KEY INFO must evaluate current day regardless of score browse date');
+assert(src.includes('await originalRefresh(true'),'current news refresh must bypass historicalForegroundActive');
+assert(src.includes('CURRENT NEWS'),'UI should no longer describe news as saved browse-date information');
+assert(src.includes("withFilter('ALL'"),'special-event filters should fall back to general current news instead of an empty ticker');
+assert(!src.includes('No saved key-information'),'retired wording must not return');
+assert(index.includes('architecture/key-info-current-v520.js?v=5.2.0'));
+console.log('PASS v5.2.0 current KEY INFO invariants');
