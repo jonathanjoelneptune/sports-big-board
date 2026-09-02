@@ -1,0 +1,248 @@
+/* Sports Big Board v5.2.19 — Game Center Readability + Full Content Scroll
+   Layout/presentation only: keep every Game Center row, make the active section
+   below the section buttons the single vertical scroll surface, keep Coming Up
+   locked below it, and increase readability without altering provider data. */
+
+:root{
+  --sbb-gc-readable-text:#e9f1f6;
+  --sbb-gc-readable-muted:#8fa5b5;
+  --sbb-gc-readable-blue:#69bcff;
+  --sbb-gc-readable-line:rgba(151,184,207,.16);
+}
+
+/* The embedded desktop drawer owns one bounded workspace. Previous legacy rules
+   set drawer panes to height:0; this final layer gives Game Center the actual
+   available height and makes only the selected content pane scroll. */
+@media (min-width:1100px) and (pointer:fine){
+  body.sbb-game-center-side #infoDrawer{
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+  body.sbb-game-center-side #gameCenterPane.drawer-pane:not(.hidden){
+    display:grid!important;
+    grid-template-rows:minmax(0,1fr) auto!important;
+    flex:1 1 0!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:hidden!important;
+  }
+}
+
+/* Scoreboard and the four selection buttons stay fixed. EVERYTHING below the
+   selection buttons is the one scroll region. */
+#gameCenterPane #gameCenterContent{
+  height:100%!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  display:grid!important;
+  grid-template-rows:auto auto minmax(0,1fr)!important;
+}
+#gameCenterPane #gameCenterContent>.gc-hero{
+  grid-row:1!important;
+  min-height:0!important;
+}
+#gameCenterPane #gameCenterContent>#gcSections{
+  grid-row:2!important;
+  position:relative!important;
+  top:auto!important;
+  z-index:8!important;
+}
+#gameCenterPane #gameCenterContent>[data-gc-pane]:not(.hidden){
+  grid-row:3!important;
+  display:grid!important;
+  align-content:start!important;
+  min-height:0!important;
+  height:auto!important;
+  max-height:100%!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior-y:contain!important;
+  scrollbar-gutter:stable!important;
+  scrollbar-width:thin!important;
+  -webkit-overflow-scrolling:touch!important;
+  padding:10px 10px 18px!important;
+}
+#gameCenterPane #gameCenterContent>[data-gc-pane].hidden{display:none!important}
+
+/* Never create a second vertical scrollbar inside tables. Horizontal overflow is
+   retained for wide stat tables, while the active Game Center section owns Y. */
+#gameCenterPane .gc-table-scroll{
+  width:100%!important;
+  max-width:100%!important;
+  max-height:none!important;
+  overflow-x:auto!important;
+  overflow-y:visible!important;
+}
+#gameCenterPane .gc-player-card,
+#gameCenterPane .gc-player-table,
+#gameCenterPane .gc-player-table tbody,
+#gameCenterPane .gc-player-table tbody tr{
+  max-height:none!important;
+}
+#gameCenterPane .gc-player-table tbody{display:table-row-group!important}
+#gameCenterPane .gc-player-table tbody tr{display:table-row!important}
+
+/* Coming Up remains outside Game Center's scrolling content. */
+#gameCenterPane>.next-up-dock{
+  grid-row:2!important;
+  align-self:end!important;
+  flex:0 0 auto!important;
+  max-height:148px!important;
+  overflow:hidden!important;
+  position:relative!important;
+  z-index:12!important;
+  background:#071018!important;
+  border-top:1px solid var(--sbb-gc-readable-line)!important;
+  box-shadow:0 -10px 25px rgba(0,0,0,.20)!important;
+}
+#gameCenterPane .next-up-dock-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+#gameCenterPane .next-up-dock-card small{
+  display:block!important;
+  margin:2px 5px 5px!important;
+  color:#6f8799!important;
+  font-size:7.5px!important;
+  font-weight:750!important;
+  letter-spacing:.07em!important;
+  text-align:left!important;
+}
+
+/* Strong, unmistakable section selection. */
+#gameCenterPane #gcSections{
+  gap:6px!important;
+  padding:7px 9px!important;
+}
+#gameCenterPane #gcSections .gc-section-tab{
+  min-height:36px!important;
+  border-radius:8px!important;
+  border:1px solid rgba(126,157,181,.16)!important;
+  background:#09141c!important;
+  color:#8297a6!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:750!important;
+  letter-spacing:.045em!important;
+}
+#gameCenterPane #gcSections .gc-section-tab.active,
+#gameCenterPane #gcSections .gc-section-tab[aria-selected="true"]{
+  background:linear-gradient(180deg,#163d58 0%,#102d42 100%)!important;
+  border-color:rgba(105,188,255,.55)!important;
+  color:#f4faff!important;
+  box-shadow:inset 0 0 0 1px rgba(105,188,255,.09),0 0 0 1px rgba(105,188,255,.04)!important;
+}
+
+/* Approximately 45–50% larger than the tiny broadcast diagnostic typography
+   this panel inherited during the early polish pass. */
+#gameCenterPane .gc-team-abbr{font-size:9px!important}
+#gameCenterPane .gc-team-name{font-size:13px!important;line-height:1.18!important;font-weight:720!important;max-width:160px!important}
+#gameCenterPane .gc-team-score{font-size:35px!important}
+#gameCenterPane .gc-status strong{font-size:10.5px!important}
+#gameCenterPane .gc-status span{font-size:9px!important}
+#gameCenterPane .gc-status small{font-size:8px!important}
+
+#gameCenterPane .gc-card-title{
+  min-height:34px!important;
+  padding:0 11px!important;
+  font-size:9.5px!important;
+  line-height:1!important;
+  font-weight:850!important;
+  letter-spacing:.09em!important;
+  color:#9ab0bf!important;
+}
+#gameCenterPane :is(.gc-linescore,.gc-stat-compare,.gc-player-table){
+  color:var(--sbb-gc-readable-text)!important;
+}
+#gameCenterPane :is(.gc-linescore,.gc-stat-compare) th,
+#gameCenterPane :is(.gc-linescore,.gc-stat-compare) td{
+  padding:9px 8px!important;
+  font-size:11.5px!important;
+  line-height:1.2!important;
+}
+#gameCenterPane :is(.gc-linescore,.gc-stat-compare) thead th{
+  font-size:9.5px!important;
+  font-weight:800!important;
+  color:#91a7b6!important;
+}
+#gameCenterPane .gc-stat-compare tbody th{
+  font-size:10px!important;
+  font-weight:750!important;
+  color:#a2b5c1!important;
+}
+
+#gameCenterPane .gc-player-table th,
+#gameCenterPane .gc-player-table td{
+  padding:9px 8px!important;
+  font-size:11px!important;
+  line-height:1.18!important;
+}
+#gameCenterPane .gc-player-table thead th{
+  position:sticky!important;
+  top:0!important;
+  z-index:3!important;
+  background:#071018!important;
+  color:#91a8b8!important;
+  font-size:9.5px!important;
+  font-weight:800!important;
+  letter-spacing:.035em!important;
+}
+#gameCenterPane .gc-player-table tbody th{
+  min-width:108px!important;
+  color:#edf4f8!important;
+  font-size:11px!important;
+  font-weight:700!important;
+}
+
+/* Team selectors use readable full names, with room for MLB/NFL/NBA/NHL clubs. */
+#gameCenterPane .gc-player-team-tabs{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  margin-bottom:8px!important;
+}
+#gameCenterPane .gc-player-team-tab{
+  min-height:48px!important;
+  height:auto!important;
+  padding:6px 12px!important;
+  border-radius:9px!important;
+  font-size:11.5px!important;
+  line-height:1.15!important;
+  font-weight:750!important;
+}
+#gameCenterPane .gc-player-team-tab span:last-child{
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+#gameCenterPane .gc-player-team-tab.active,
+#gameCenterPane .gc-player-team-tab[aria-selected="true"]{
+  background:linear-gradient(180deg,#153b55 0%,#0e2a3d 100%)!important;
+  border-color:rgba(105,188,255,.54)!important;
+  color:#f3faff!important;
+  box-shadow:inset 0 0 0 1px rgba(105,188,255,.08)!important;
+}
+#gameCenterPane .gc-mini-logo-wrap{width:29px!important;height:29px!important;min-width:29px!important}
+#gameCenterPane .gc-mini-logo{width:24px!important;height:24px!important}
+
+#gameCenterPane .gc-play-row{
+  grid-template-columns:72px minmax(0,1fr)!important;
+  gap:12px!important;
+  padding:12px 11px!important;
+}
+#gameCenterPane .gc-play-row>span{font-size:9.5px!important}
+#gameCenterPane .gc-play-row strong{font-size:11.5px!important;line-height:1.38!important}
+#gameCenterPane .gc-play-row small{font-size:10px!important;line-height:1.3!important}
+#gameCenterPane .gc-empty-row,.game-center-empty span{font-size:11px!important;line-height:1.45!important}
+#gameCenterPane .gc-basic-overview strong{font-size:16px!important}
+#gameCenterPane .gc-basic-overview span{font-size:11px!important}
+#gameCenterPane .gc-basic-overview small{font-size:9.5px!important}
+
+/* Make the long-player-table scrollbar easy to see without looking like dev UI. */
+#gameCenterPane #gameCenterContent>[data-gc-pane]:not(.hidden)::-webkit-scrollbar{width:8px}
+#gameCenterPane #gameCenterContent>[data-gc-pane]:not(.hidden)::-webkit-scrollbar-track{background:#071018}
+#gameCenterPane #gameCenterContent>[data-gc-pane]:not(.hidden)::-webkit-scrollbar-thumb{background:#28404f;border-radius:8px;border:2px solid #071018}
+
+@media (max-width:1099px){
+  #gameCenterPane #gameCenterContent>[data-gc-pane]:not(.hidden){overflow-y:visible!important;max-height:none!important}
+  #gameCenterPane>.next-up-dock{max-height:none!important}
+}

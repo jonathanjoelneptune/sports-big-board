@@ -8,7 +8,7 @@ index=(ROOT/'index.html').read_text()
 css=(ROOT/'ui'/'editorial-slugs-up-next-v5216.css').read_text()
 js=(ROOT/'ui'/'up-next-experience-v5217.js').read_text()
 
-assert version=='5.2.18', version
+assert version=='5.2.19', version
 assert f'ui/editorial-slugs-up-next-v5216.css?v={version}' in index
 assert f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>' in index
 assert index.index(f'ui/premium-now-watching-v5215.css?v={version}') < index.index(f'ui/editorial-slugs-up-next-v5216.css?v={version}') < index.index('</head>')
@@ -37,25 +37,27 @@ for token in [
 ]:
     assert token in css, token
 
-# Integration mirrors canonical queue rows and delegates clicks to the already
-# established queue handlers. No independent PROGRAM or playback state is stored.
+# Integration now prefers the canonical visibleQueueEntries() API so the shelf
+# cannot mistake the current row for the next program. DOM rows remain fallback.
 for token in [
-    'sourceRows()', 'renderDock()', 'patchRenderQueue()', 'canonicalNextRow()',
-    'repairNextButton()', 'row.click()', 'nextVisibleQueueIndex()',
-    "reason:'manual next control v5.2.18 fallback'"
+    'sourceRows()', 'canonicalProgramEntries(wanted=3)', 'visibleQueueEntries(wanted)',
+    'renderDock()', 'patchRenderQueue()', 'canonicalNextRow()', 'repairNextButton()',
+    'row.click()', 'nextVisibleQueueIndex()', 'tuneEntry(entry)',
+    "reason:'manual next control v5.2.19 fallback'"
 ]:
     assert token in js, token
 for forbidden in ['let PROGRAM', 'const PROGRAM', 'setInterval(', 'new MutationObserver']:
     assert forbidden not in js, forbidden
 
-# The repaired top NEXT button intentionally replaces the stale onclick and first
-# uses the exact next canonical queue row; fallback uses the existing tune owner.
+# The repaired top NEXT button uses the same canonical visible-queue entry as the
+# shelf; DOM row and nextVisibleQueueIndex remain bounded fallbacks.
 assert "btn.onclick=()=>{" in js
+assert 'const entry=canonicalProgramEntries(1)[0];' in js
+assert 'if(entry&&tuneEntry(entry))return;' in js
 assert 'const row=canonicalNextRow();' in js
-assert 'if(row){row.click();return;}' in js
 
 # Atomic cache generation remains required across the whole release.
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version, f'{asset}: {found} != {version}'
 
-print('PASS v5.2.18 editorial slugs + integrated Up Next + NEXT transport repair')
+print('PASS v5.2.19 editorial slugs + integrated Up Next + NEXT transport repair')

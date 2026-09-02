@@ -1,0 +1,33 @@
+Sports Big Board v5.2.19 — Game Center Readability + Full Content Scroll
+
+MANUAL GITHUB UPLOAD
+1. Open the repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when GitHub prompts.
+4. Commit all changed files together so frontend/backend/database-audit release identity stays atomic.
+5. Let Deploy Sports Big Board complete before hard-refreshing the site.
+
+PRIMARY USER-VISIBLE CHANGES
+- Game Center retains every provider-rendered player/team/play row; nothing is clipped to the visible viewport.
+- Scoreboard and OVERVIEW / TEAM STATS / PLAYERS / KEY PLAYS remain fixed.
+- Everything below the four Game Center selection buttons becomes the single vertical scroll surface.
+- Coming Up remains locked to the bottom of the right-side workspace outside that scroll surface.
+- Coming Up now uses canonical visibleQueueEntries() so it shows the next distinct programs instead of echoing the current item.
+- Active Game Center section has a much stronger selected state.
+- Player team-selection buttons display full team names and are larger/easier to read.
+- Baseball player-stat headings are normalized to standard abbreviations such as AB, R, H, HR, RBI, BB, K, IP and ERA where the provider label is recognized.
+- Game Center text/table sizing is increased roughly 45-50% from the prior tiny broadcast typography.
+
+YOUTUBE TITLE NOTE
+YouTube's standard embedded-player title overlay is controlled by YouTube. The deprecated showinfo parameter no longer provides a supported way to hide that title while retaining the normal YouTube controls. This release therefore does not use a brittle cross-origin overlay hack or replace the certified player controls.
+
+FUNCTIONAL BOUNDARIES
+- No Game Center provider/data ownership changes.
+- No player/team rows are removed or sliced by this release.
+- No second PROGRAM model or playback owner.
+- No new per-frame JavaScript.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.2.19 Game Center Readability + Full Content Scroll preflight complete

@@ -1,12 +1,13 @@
-/* Sports Big Board v5.2.18 — Integrated Up Next + NEXT transport repair.
-   Reuses the canonical #queueList and its established onclick handlers. It does
-   not create a second PROGRAM, selection model, playback owner, or date owner. */
+/* Sports Big Board v5.2.19 — Integrated Up Next + NEXT transport repair.
+   The visual shelf now reads the canonical visibleQueueEntries() result instead
+   of trusting queue DOM ordering/current-row classes. It does not create a second
+   PROGRAM, selection model, playback owner, or date owner. */
 (() => {
   'use strict';
-  if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.2.18') return;
+  if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.2.19') return;
 
-  const VERSION='5.2.18';
-  const state={renders:0,dockClicks:0,nextClicks:0,nextFallbacks:0,lastError:''};
+  const VERSION='5.2.19';
+  const state={renders:0,dockClicks:0,nextClicks:0,nextFallbacks:0,lastError:'',source:'none'};
   const $=id=>document.getElementById(id);
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -35,8 +36,70 @@
     return dock;
   }
 
+  // Kept as a DOM fallback for startup/legacy paths, but the normal shelf source
+  // is canonicalProgramEntries() below.
   function sourceRows(){
-    return [...document.querySelectorAll('#queueList .queue-item')].filter(row=>!row.classList.contains('current'));
+    const currentTitle=String($('currentTitle')?.textContent||'').trim().toLowerCase();
+    return [...document.querySelectorAll('#queueList .queue-item')].filter(row=>{
+      if(row.classList.contains('current'))return false;
+      const title=String(row.querySelector('.queue-copy>strong')?.textContent||'').trim().toLowerCase();
+      return !(currentTitle&&title&&title===currentTitle);
+    });
+  }
+
+  function canonicalProgramEntries(wanted=3){
+    try{
+      if(typeof visibleQueueEntries==='function'){
+        const entries=visibleQueueEntries(wanted);
+        if(Array.isArray(entries)&&entries.length){state.source='visibleQueueEntries';return entries;}
+      }
+    }catch(err){state.lastError=String(err?.message||err);}
+    state.source='queue-dom-fallback';
+    return sourceRows().slice(0,wanted).map((row,i)=>({row,idx:null,item:null,position:i}));
+  }
+
+  function itemTitle(item,row){
+    if(item){
+      try{if(typeof displayProgramTitle==='function')return String(displayProgramTitle(item)||'').trim();}catch(_){}
+      return String(item?.title||item?.subtitle||'Upcoming sports highlight').trim();
+    }
+    return String(row?.querySelector('.queue-copy>strong')?.textContent||'Upcoming sports highlight').trim();
+  }
+  function itemThumb(item,row){
+    if(item){
+      const thumb=String(item?.thumbnail||item?.thumbnailUrl||item?.image||item?.imageUrl||'').trim();
+      if(thumb)return thumb;
+      const id=String(item?.youtubeId||item?.videoId||'').trim();
+      if(id)return `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg`;
+    }
+    return String(row?.querySelector('.queue-thumb-wrap img')?.src||'').trim();
+  }
+  function itemDuration(item,row){
+    if(item){
+      try{
+        if(typeof formatDuration==='function'){
+          const d=formatDuration(item?.generatedTopPlays ? item?.topPlaysTotalDuration : (item?.durationSeconds ?? item?.duration));
+          if(d)return String(d);
+        }
+      }catch(_){}
+    }
+    return String(row?.querySelector('.queue-duration-col')?.textContent||'').trim();
+  }
+  function itemLeague(item){return String(item?.league||item?.competitionId||'').toUpperCase();}
+
+  function tuneEntry(entry){
+    state.dockClicks++;
+    try{
+      if(entry?.row){entry.row.click();return true;}
+      const idx=Number(entry?.idx);
+      if(!Number.isFinite(idx)||idx<0)return false;
+      if(typeof jumpTo==='function'){jumpTo(idx);return true;}
+      if(typeof tuneProgramIndexV5==='function'){
+        tuneProgramIndexV5(idx,{userInitiated:true,reason:'Coming Up card selection v5.2.19'});
+        return true;
+      }
+    }catch(err){state.lastError=String(err?.message||err);}
+    return false;
   }
 
   function renderDock(){
@@ -44,9 +107,9 @@
     const grid=$('nextUpDockGrid');
     if(!dock||!grid) return;
     syncDrawerTabState();
-    const rows=sourceRows().slice(0,3);
+    const entries=canonicalProgramEntries(3);
     grid.replaceChildren();
-    if(!rows.length){
+    if(!entries.length){
       const empty=document.createElement('div');
       empty.className='next-up-dock-empty';
       empty.textContent='Programming queue is building…';
@@ -54,19 +117,20 @@
       state.renders++;
       return;
     }
-    rows.forEach((row,i)=>{
+    entries.forEach((entry,i)=>{
+      const item=entry.item||null,row=entry.row||null;
       const card=document.createElement('button');
       card.type='button';
       card.className='next-up-dock-card';
-      const img=row.querySelector('.queue-thumb-wrap img');
-      const fallback=row.querySelector('.queue-thumb-fallback');
-      const title=row.querySelector('.queue-copy>strong')?.textContent?.trim()||'Upcoming sports highlight';
-      const duration=row.querySelector('.queue-duration-col')?.textContent?.trim()||'';
-      const visual=img?.src
-        ? `<img src="${esc(img.src)}" alt="">`
-        : `<div class="next-up-dock-fallback">${esc(fallback?.textContent?.trim()||'SBB')}</div>`;
-      card.innerHTML=`<div class="next-up-dock-visual">${visual}<span class="next-up-dock-index">${i+1}</span>${duration?`<span class="next-up-dock-duration">${esc(duration)}</span>`:''}</div><strong>${esc(title)}</strong>`;
-      card.addEventListener('click',()=>{state.dockClicks++;row.click();});
+      const title=itemTitle(item,row);
+      const duration=itemDuration(item,row);
+      const thumb=itemThumb(item,row);
+      const league=itemLeague(item);
+      const visual=thumb
+        ? `<img src="${esc(thumb)}" alt="">`
+        : `<div class="next-up-dock-fallback">${esc(league||'SBB')}</div>`;
+      card.innerHTML=`<div class="next-up-dock-visual">${visual}<span class="next-up-dock-index">${i+1}</span>${duration?`<span class="next-up-dock-duration">${esc(duration)}</span>`:''}</div><strong>${esc(title)}</strong>${league?`<small>${esc(league)}</small>`:''}`;
+      card.addEventListener('click',()=>tuneEntry(entry));
       grid.appendChild(card);
     });
     state.renders++;
@@ -94,8 +158,8 @@
 
   function canonicalNextRow(){
     try{if(typeof renderQueue==='function')renderQueue();}catch(_){}
-    const rows=[...document.querySelectorAll('#queueList .queue-item')];
-    return rows.find(row=>!row.classList.contains('current'))||null;
+    const rows=sourceRows();
+    return rows[0]||null;
   }
 
   function fallbackNext(){
@@ -104,7 +168,7 @@
       const target=nextVisibleQueueIndex();
       if(target<0)return false;
       if(typeof showBumper==='function')showBumper(target,400,'UP NEXT');
-      tuneProgramIndexV5(target,{userInitiated:true,reason:'manual next control v5.2.18 fallback'});
+      tuneProgramIndexV5(target,{userInitiated:true,reason:'manual next control v5.2.19 fallback'});
       state.nextFallbacks++;
       return true;
     }catch(err){state.lastError=String(err?.message||err);return false;}
@@ -118,12 +182,14 @@
       state.nextClicks++;
       try{
         if(typeof sbbPlaybackAllowed==='function'&&!sbbPlaybackAllowed({notify:true}))return;
+        const entry=canonicalProgramEntries(1)[0];
+        if(entry&&tuneEntry(entry))return;
         const row=canonicalNextRow();
         if(row){row.click();return;}
         if(!fallbackNext()&&typeof showAllCaughtUp==='function')showAllCaughtUp();
       }catch(err){
         state.lastError=String(err?.message||err);
-        if(!fallbackNext())console.error('[SBB v5.2.18] NEXT control failed',err);
+        if(!fallbackNext())console.error('[SBB v5.2.19] NEXT control failed',err);
       }
     };
     return true;
@@ -136,7 +202,6 @@
     repairNextButton();
     bindDrawerTabs();
     renderDock();
-    // Some legacy boot paths replace or populate the queue shortly after app load.
     setTimeout(()=>{patchRenderQueue();repairNextButton();renderDock();},350);
     setTimeout(()=>renderDock(),1200);
   }
