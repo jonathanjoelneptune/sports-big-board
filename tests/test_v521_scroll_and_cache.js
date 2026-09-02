@@ -1,0 +1,12 @@
+const fs=require('fs');
+const v=fs.readFileSync('architecture/virtual-ribbon-v520.js','utf8');
+const fast=fs.readFileSync('architecture/ribbon-fast-scroll-v5122.js','utf8');
+if(!v.includes("const VERSION='5.2.1'"))throw Error('virtual version');
+if(!v.includes('const WINDOW_MIN=64'))throw Error('large idle window missing');
+if(!v.includes("scheduleRender('virtual-scroll-idle'"))throw Error('scroll-idle recycling missing');
+if(v.includes("for(const name of ['wheel','touchmove'])"))throw Error('global wheel capture still active');
+if(!v.includes('snapshotFreshEnough'))throw Error('near-date cache freshness guard missing');
+if(!v.includes('if(dayDistance(date)>-2)return'))throw Error('today/yesterday persistent cache guard missing');
+if(!fast.includes('native score-ribbon scroll compatibility bridge'))throw Error('legacy scroll bridge not retired');
+if(/addEventListener\(['"]wheel/.test(fast)||/pointermove/.test(fast))throw Error('legacy JS scroll owner still installed');
+console.log('PASS v5.2.1 native scrolling + current-safe ribbon cache');

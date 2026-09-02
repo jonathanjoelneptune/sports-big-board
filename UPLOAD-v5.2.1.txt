@@ -1,0 +1,124 @@
+Sports Big Board v5.2.1 — Ribbon Authority + Native Scroll Recovery
+==================================================================
+
+UPLOAD
+------
+Upload the contents of this ZIP to the sports-big-board repository root and replace
+files with the same names. Preserve architecture/, sbb/, and tests/ directories.
+No repository deletes are required.
+
+WHY THIS RELEASE EXISTS
+-----------------------
+v5.2.0 exposed two independent problems:
+
+1. The normalized media database could own verified/locked playable media while a
+   persisted Day State generation still had no compact EventPlan. That produced
+   BACKEND INSPECTOR "RIBBON DRIFT" and FIND RECAP even though the backend already
+   owned the correct asset.
+
+2. v5.1.22's JavaScript wheel/pointer scroll owner remained loaded underneath the
+   v5.2 virtual ribbon. v5.2 also recycled the virtual card window during active
+   scroll input. Long wheel gestures could therefore cause repeated main-thread DOM
+   reconstruction while another script was controlling scrollLeft.
+
+V5.2.1 ARCHITECTURE
+-------------------
+CANONICAL DATE / MEDIA READ BOUNDARY
+
+  history_catalog_event
+        +
+  history_event_media + durable media locks
+        ↓
+  Ribbon Authority v5.2.1
+        ↓
+  Day State
+        ↓
+  RibbonSnapshot
+        ↓
+  browser renderer
+
+Ribbon Authority runs at DayStateEngine.get(). It does no provider work. It makes
+bounded SQLite/memory reads only.
+
+For every requested date it:
+- proves score rows against that date's canonical catalog event IDs;
+- rejects a strong provider event ID that belongs to a different date;
+- reads authoritative day media in one bulk ribbon_media_for_date() query;
+- rebuilds compact EventPlans from normalized DB media;
+- preserves an exact-identity curated override only when DB media does not exist;
+- recomputes the date's playable count from those authoritative plans;
+- emits ribbonProjectionDrift=0 by construction.
+
+This means a locked DB recap can no longer disappear merely because an older Day
+State snapshot had no plan. A rebuilt media plan does not require media discovery.
+
+DATE CONTAMINATION GUARD
+------------------------
+A score row carrying a strong event/provider ID is accepted for a requested date
+only when that ID belongs to the canonical catalog for that date. Same teams alone
+cannot rescue a mismatched strong ID. This prevents a prior-night MLB result/media
+asset from entering TODAY just because the same teams are scheduled again.
+
+TENNIS STATUS RECONCILIATION
+----------------------------
+Existing persisted tennis Game Centers are read once per ribbon request window, not
+once per match. Their final status/sets can correct stale Competition Builder status
+without any provider call. For recent tennis dates, ATP/WTA status refresh is also
+scheduled off-thread and coalesced; the interactive ribbon request never waits for it.
+
+SCROLLING
+---------
+The v5.1.22 JavaScript wheel/pointer scroll controller is now an inert compatibility
+bridge. The browser compositor owns ribbon scrolling natively.
+
+The virtual ribbon now:
+- mounts up to a 64-card working window before recycling;
+- never rebuilds the card window during active wheel/touch scrolling;
+- waits for 140 ms of scroll idle before moving the virtual window;
+- defers media warming to requestIdleCallback after interaction;
+- does not use a permanent will-change scroll layer.
+
+This intentionally trades a modest number of lightweight score cards for much less
+main-thread churn. A 62-game date normally scrolls without virtual recycling at all.
+
+CURRENT-DATE BROWSER CACHE SAFETY
+---------------------------------
+The browser no longer persists TODAY, YESTERDAY, or future RibbonSnapshots across
+sessions. Those dates live in memory only and have strict freshness limits:
+- today: 20 seconds
+- yesterday: 90 seconds
+- future: 30 seconds
+
+Only completed historical dates older than yesterday use durable browser Cache API
+first paint. v5.2.1 uses a new cache namespace, so stale v5.2.0 near-date snapshots
+are not reused.
+
+RIBBON SNAPSHOT REVISION
+------------------------
+RibbonSnapshot revisions now include ribbonAuthorityRevision. A media asset/status
+change therefore invalidates a snapshot even when total game/playable counts stay
+the same.
+
+CHANGED FILES
+-------------
+VERSION
+index.html
+architecture/ribbon-fast-scroll-v5122.js
+architecture/virtual-ribbon-v520.js
+sbb/__init__.py
+sbb/ribbon_authority_v521.py           NEW
+sbb/ribbon_snapshot_v520.py
+tests/test_v521_ribbon_authority.py    NEW
+tests/test_v521_scroll_and_cache.js    NEW
+tests/test_v521_snapshot_revision.py   NEW
+
+TARGETED CHECKS RUN
+-------------------
+PASS v5.2.1 canonical ribbon media/date authority
+PASS v5.2.1 RibbonSnapshot tracks authority revision
+PASS v5.2.1 native scrolling + current-safe ribbon cache
+PASS Python compile
+PASS JavaScript syntax
+
+There is no checksum, release-manifest, repository-token, filename-content, or
+blocking VERIFY gate in this package.

@@ -1,4 +1,4 @@
-/* Sports Big Board v5.2.0 — Virtual Ribbon + instant snapshot client.
+/* Sports Big Board v5.2.1 — idle-recycled virtual ribbon + current-safe snapshot client.
 
    Large sports days are data, not DOM. Day State / RibbonSnapshot remains the
    authority; this layer keeps only the visible score-card window mounted and lets
@@ -11,12 +11,12 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_VIRTUAL_RIBBON?.version==='5.2.0')return;
+  if(window.SBB_VIRTUAL_RIBBON?.version==='5.2.1')return;
 
-  const VERSION='5.2.0';
-  const CACHE_NAME='sbb-ribbon-snapshots-v520';
-  const WINDOW_MIN=20;
-  const OVERSCAN=6;
+  const VERSION='5.2.1';
+  const CACHE_NAME='sbb-ribbon-snapshots-v521';
+  const WINDOW_MIN=64;
+  const OVERSCAN=18;
   const PREFETCH_RADIUS=2;
   const MAX_CACHE_DAYS=9;
   const state={
@@ -31,7 +31,7 @@
   let host=null,baseRenderer=null,legacyRenderer=null,sourceRowsFn=null;
   let pipeline=null,virtualRenderer=null,renderRAF=0,pendingReason='',rendering=false;
   let virtualStart=0,virtualEnd=0,virtualTotal=0,currentRows=[];
-  let interactionUntil=0,interactionTimer=0,mediaWarmTimer=0;
+  let interactionUntil=0,interactionTimer=0,mediaWarmTimer=0,scrollIdleTimer=0;
   let installedDateSetter=null;
 
   const clean=v=>String(v??'').trim();
@@ -52,14 +52,13 @@
     clearTimeout(interactionTimer);
     interactionTimer=setTimeout(()=>document.documentElement?.classList.remove('sbb-user-scrolling'),Math.max(80,ms+40));
   }
-  for(const name of ['wheel','touchmove'])window.addEventListener(name,()=>noteInteraction(320),{passive:true,capture:true});
-  window.addEventListener('scroll',()=>noteInteraction(180),{passive:true,capture:true});
+  window.addEventListener('scroll',()=>noteInteraction(220),{passive:true});
 
   function injectStyle(){
     if(document.getElementById('sbbVirtualRibbonStyle'))return;
     const style=document.createElement('style');style.id='sbbVirtualRibbonStyle';
     style.textContent=`
-      .score-ribbon>.score-cells.sbb-virtual-ribbon{overflow-x:auto!important;overflow-y:hidden!important;contain:layout paint style;will-change:scroll-position}
+      .score-ribbon>.score-cells.sbb-virtual-ribbon{overflow-x:auto!important;overflow-y:hidden!important;contain:layout paint style}
       .score-ribbon>.score-cells.sbb-virtual-ribbon>.sbb-vr-spacer{height:1px;min-height:1px;align-self:center;pointer-events:none;visibility:hidden}
       .score-ribbon>.score-cells.sbb-virtual-ribbon .score-card{contain:layout paint style;content-visibility:visible}
       html.sbb-user-scrolling .score-card,html.sbb-user-scrolling .gc-card,html.sbb-user-scrolling .info-drawer{transition:none!important;animation:none!important}
@@ -175,7 +174,7 @@
     if(renderRAF&&!force){state.coalesced++;return;}
     if(renderRAF){cancelAnimationFrame(renderRAF);renderRAF=0;}
     const run=()=>{renderRAF=0;const why=pendingReason;pendingReason='';renderNow(animate,why);};
-    const essential=/date|first|day-state|filter|virtual-scroll|snapshot/i.test(reason);
+    const essential=/date|first|day-state|filter|snapshot/i.test(reason);
     if(interactionActive()&&!essential){
       state.interactionDeferrals++;
       setTimeout(()=>scheduleRender(reason,animate,{force:true}),220);
@@ -185,17 +184,18 @@
   }
 
   function onRibbonScroll(){
-    noteInteraction(220);
+    // Browser/compositor owns the gesture. Never rebuild cards while wheel/touch
+    // input is active. A generously oversized mounted window lets the user move
+    // freely; recycling happens only after scrolling has been idle for 140 ms.
+    noteInteraction(260);
     if(rendering||virtualTotal<=WINDOW_MIN)return;
-    if(renderRAF)return;
-    renderRAF=requestAnimationFrame(()=>{
-      renderRAF=0;
+    clearTimeout(scrollIdleTimer);
+    scrollIdleTimer=setTimeout(()=>{
+      scrollIdleTimer=0;
       const next=desiredWindow(currentRows);
-      // Stay inside the mounted overscan buffer; only recycle when the viewport is
-      // approaching an edge. This prevents DOM churn during ordinary pixel scroll.
       if(next.start===virtualStart&&next.end===virtualEnd)return;
-      scheduleRender('virtual-scroll',false,{force:true});
-    });
+      scheduleRender('virtual-scroll-idle',false,{force:true});
+    },140);
   }
 
   function patchMediaWarmScheduler(){
@@ -204,9 +204,14 @@
     if(typeof original!=='function'||original.__sbbV520Deferred)return;
     const wrapped=function(delay=0,...args){
       clearTimeout(mediaWarmTimer);
-      const wait=interactionActive()?700:Math.max(120,Number(delay)||0);
-      if(interactionActive())state.mediaWarmDeferrals++;
-      mediaWarmTimer=setTimeout(()=>{mediaWarmTimer=0;try{original(Math.max(0,Number(delay)||0),...args);}catch(_){}},wait);
+      const busy=interactionActive();
+      const wait=busy?1100:Math.max(250,Number(delay)||0);
+      if(busy)state.mediaWarmDeferrals++;
+      mediaWarmTimer=setTimeout(()=>{
+        mediaWarmTimer=0;
+        const run=()=>{if(interactionActive()){state.mediaWarmDeferrals++;return wrapped(500,...args)}try{original(Math.max(0,Number(delay)||0),...args);}catch(_){}};
+        if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:1800});else setTimeout(run,0);
+      },wait);
     };
     wrapped.__sbbV520Deferred=true;wrapped.__sbbOriginal=original;
     try{window.scheduleScoreMediaWarmReconcile=wrapped;}catch(_){}
@@ -218,17 +223,35 @@
     return new Request(`${location.origin}${base}__sbb_ribbon_snapshot__?date=${encodeURIComponent(date)}`);
   }
   async function cacheOpen(){try{return window.caches?await window.caches.open(CACHE_NAME):null;}catch(_){return null;}}
+  function dayDistance(date){
+    try{return Math.round((new Date(`${date}T12:00:00`)-new Date(`${today()}T12:00:00`))/86400000);}catch(_){return 99;}
+  }
+  function snapshotFreshEnough(payload,date){
+    if(!payload||payload?.pending||clean(payload?.date).slice(0,10)!==date)return false;
+    const distance=dayDistance(date);
+    const cachedAt=Number(payload.__sbbBrowserCachedAt||0);
+    const generatedMs=Number(payload.generatedAt||0)*1000;
+    const stamp=Math.max(cachedAt,generatedMs);
+    if(!stamp)return distance<=-2;
+    const age=Date.now()-stamp;
+    if(distance===0)return age<=20000;
+    if(distance===-1)return age<=90000;
+    if(distance>0)return age<=30000;
+    return true;
+  }
   async function readCachedSnapshot(date,{apply=true}={}){
     date=clean(date).slice(0,10);if(!date)return null;
     if(memorySnapshots.has(date)){
-      const payload=memorySnapshots.get(date);state.snapshotCacheHits++;
-      if(apply)try{window.SBB_DAY_STATE?.apply?.(payload);}catch(_){}
-      return payload;
+      const payload=memorySnapshots.get(date);
+      if(snapshotFreshEnough(payload,date)){
+        state.snapshotCacheHits++;if(apply)try{window.SBB_DAY_STATE?.apply?.(payload);}catch(_){}return payload;
+      }
+      memorySnapshots.delete(date);
     }
     const cache=await cacheOpen();if(!cache)return null;
     try{
       const response=await cache.match(cacheKey(date));if(!response)return null;
-      const payload=await response.json();if(payload?.date!==date||payload?.pending)return null;
+      const payload=await response.json();if(!snapshotFreshEnough(payload,date)){try{await cache.delete(cacheKey(date));}catch(_){}return null;}
       memorySnapshots.set(date,payload);state.snapshotCacheHits++;
       if(apply)try{window.SBB_DAY_STATE?.apply?.(payload);}catch(_){}
       return payload;
@@ -236,10 +259,12 @@
   }
   async function writeCachedSnapshot(payload){
     const date=clean(payload?.date).slice(0,10);if(!date||payload?.pending)return;
-    memorySnapshots.set(date,payload);
+    const stamped={...payload,__sbbBrowserCachedAt:Date.now()};
+    memorySnapshots.set(date,stamped);
+    if(dayDistance(date)>-2)return;
     const cache=await cacheOpen();if(!cache)return;
     try{
-      const body=JSON.stringify({...payload,__sbbBrowserCachedAt:Date.now()});
+      const body=JSON.stringify(stamped);
       await cache.put(cacheKey(date),new Response(body,{headers:{'Content-Type':'application/json'}}));
       // Keep the cache intentionally tiny. Delete dates farthest from today.
       const keys=await cache.keys();
@@ -300,7 +325,7 @@
       // Adjacent days are normally already in memory. Apply that canonical read
       // model synchronously before the date shell starts so back/forward feels local.
       const resident=memorySnapshots.get(date);
-      if(resident)try{window.SBB_DAY_STATE?.apply?.(resident);}catch(_){}
+      if(resident&&snapshotFreshEnough(resident,date))try{window.SBB_DAY_STATE?.apply?.(resident);}catch(_){}
       else void readCachedSnapshot(date,{apply:true});
       const result=original(value,options);
       void fetchSnapshot(date,{apply:true});
@@ -314,6 +339,7 @@
   }
 
   function installPipeline(){
+    try{window.SBB_RIBBON_FAST_SCROLL?.destroy?.();}catch(_){}
     host=document.getElementById('scoreCells');
     const current=window.renderScoresFromMatchesCombined;
     if(!host||typeof current!=='function')return false;
@@ -339,7 +365,7 @@
     const old=window.SBB_RENDER_PIPELINE;
     if(old){
       pipeline=Object.freeze({
-        ...old,version:'5.2.0-virtual',
+        ...old,version:'5.2.1-virtual',
         request(reason='request',options={}){scheduleRender(reason,!!options?.animate);return Promise.resolve(true);},
         commitGeneration(generation,options={}){scheduleRender(options?.reason||'generation-commit',!!options?.animate,{force:true});return Promise.resolve(true);},
         diagnostics(){return {virtual:true,...state,legacy:(old.diagnostics?.()||old.snapshot?.()||null)};},
@@ -371,7 +397,7 @@
     setTimeout(()=>prefetchAround(d),250);
     setTimeout(()=>patchMediaWarmScheduler(),800);
     setTimeout(()=>patchDateSetter(),800);
-    document.title=document.title.replace(/v\d+\.\d+\.\d+/i,'v5.2.0');
+    document.title=document.title.replace(/v\d+\.\d+\.\d+/i,'v5.2.1');
   }
 
   window.SBB_VIRTUAL_RIBBON=Object.freeze({

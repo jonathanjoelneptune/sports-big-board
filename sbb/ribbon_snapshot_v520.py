@@ -1,4 +1,4 @@
-"""Sports Big Board v5.2.0 — server-prepared ribbon snapshot authority.
+"""Sports Big Board v5.2.1 — server-prepared ribbon snapshot authority.
 
 The browser should never have to discover what a score card means. Day State remains
 canonical event/media truth; this service continuously serializes its already-built
@@ -30,7 +30,7 @@ from urllib.parse import parse_qs, urlparse
 
 from . import day_state
 
-VERSION = "5.2.0-ribbon-snapshot-1"
+VERSION = "5.2.1-ribbon-snapshot-2"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _DB_PATH = _STATE_DIR / "ribbon-snapshot.sqlite3"
 _DATE_RE = __import__('re').compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -67,6 +67,7 @@ def _revision(snapshot):
     basis = "|".join([
         str(snapshot.get("date") or ""),
         str(snapshot.get("sourceRevision") or ""),
+        str(snapshot.get("ribbonAuthorityRevision") or ""),
         str(snapshot.get("registryRevision") or ""),
         str(snapshot.get("generatedAt") or ""),
         str(summary.get("games") or snapshot.get("scoreGameCount") or 0),
@@ -103,6 +104,8 @@ def _project(snapshot):
         "scoreInventoryComplete": bool(snapshot.get("scoreInventoryComplete")),
         "summary": snapshot.get("summary") or {},
         "projectionDiagnostics": snapshot.get("projectionDiagnostics") or {},
+        "ribbonAuthorityVersion": snapshot.get("ribbonAuthorityVersion") or "",
+        "ribbonAuthorityRevision": snapshot.get("ribbonAuthorityRevision") or "",
         "cache": {"state": "RIBBON_SNAPSHOT", "ageSeconds": 0},
     }
     out["ribbonRevision"] = _revision(out)
@@ -239,7 +242,7 @@ def _worker():
             if _STOP.is_set():
                 return
             _refresh_from_day_state(day)
-        _STOP.wait(5.0)
+        _STOP.wait(2.0)
 
 
 def _serve(server, handler, parsed):

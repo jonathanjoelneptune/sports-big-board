@@ -9,6 +9,7 @@ from .competition_builder_v4614 import install as _install_competition_builder_v
 from .competition_builder_v4615 import install as _install_competition_builder_v4615
 from .special_event_media_v4616 import install as _install_special_event_media_v4616
 from .day_state import install as _install_day_state
+from .ribbon_authority_v521 import install as _install_ribbon_authority_v521
 from .tennis_ribbon_projection import install as _install_tennis_ribbon_projection
 from .game_center_multisport import install as _install_game_center_multisport
 from .history_readiness_repair import install as _install_history_readiness_repair
@@ -28,6 +29,9 @@ _install_special_event_media_v4616()
 # v5.1.22: install the backend tennis presentation projection before Day State
 # starts its worker. The browser receives already-renderable names/flags/rounds.
 _install_tennis_ribbon_projection()
+# v5.2.1: one backend ribbon authority boundary reconciles canonical catalog date
+# ownership and durable media before any Day State/RibbonSnapshot response.
+_install_ribbon_authority_v521()
 _install_day_state()
 # v5.2.0: persist already-built Day State into a request-cheap RibbonSnapshot.
 # This never builds/provider-fetches on the ribbon request thread.
