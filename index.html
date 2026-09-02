@@ -4,15 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <title>Sports Big Board — v5.2.7</title>
+  <title>Sports Big Board — v5.2.8</title>
   <script id="sbbThemeBoot">
     (()=>{try{localStorage.setItem('sbb.theme','dark');}catch(_){}document.documentElement.dataset.sbbTheme='dark';})();
   </script>
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://www.googlevideo.com">
   <link rel="preconnect" href="https://i.ytimg.com">
-  <link rel="stylesheet" href="styles.css?v=5.2.7" />
-  <link rel="stylesheet" href="ui/playback-terminal.css?v=5.2.7">
+  <link rel="stylesheet" href="styles.css?v=5.2.8" />
+  <link rel="stylesheet" href="ui/playback-terminal.css?v=5.2.8">
   <style id="sbbCfbLeagueOverride">
     /* NCAAF is a permanent league chip. Legacy v5.1.10 navigation code may still
        add the special-event suppression class; this higher-specificity rule keeps
@@ -400,7 +400,7 @@
             <div id="queueList" class="queue-list"></div>
             <button id="debugToggle" class="debug-toggle" type="button">PLAYER DEBUG ▸</button>
             <div id="playbackDebug" class="playback-debug is-collapsed">
-              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v5.2.7</span></div>
+              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v5.2.8</span></div>
               <div><span>PROVIDER</span><b id="diagProvider">—</b></div>
               <div><span>SLOT</span><b id="diagSlot">—</b></div>
               <div><span>STATE</span><b id="diagState">idle</b></div>
@@ -456,7 +456,7 @@
                 <label class="sports-ticker-dev-field"><span>TICKER HEIGHT <output id="sportsTickerHeightValue">40px</output></span><input id="sportsTickerHeight" type="range" min="32" max="72" step="1" value="40"></label>
                 <label class="sports-ticker-dev-field"><span>HEADLINE FONT <output id="sportsTickerFontSizeValue">10.5px</output></span><input id="sportsTickerFontSize" type="range" min="8" max="18" step="0.5" value="10.5"></label>
                 <label class="sports-ticker-dev-field"><span>HEADLINE LINES</span><select id="sportsTickerLines"><option value="1" selected>1 LINE</option><option value="2">2 LINES</option></select></label>
-                <label class="sports-ticker-dev-field"><span>SCROLL SPEED <output id="sportsTickerSpeedValue">30px/s</output></span><input id="sportsTickerSpeed" type="range" min="8" max="90" step="1" value="30"></label>
+                <label class="sports-ticker-dev-field"><span>SCROLL SPEED <output id="sportsTickerSpeedValue">20px/s</output></span><input id="sportsTickerSpeed" type="range" min="4" max="60" step="1" value="20"></label>
                 <label class="sports-ticker-dev-field"><span>STORY SPACING <output id="sportsTickerGapValue">18px</output></span><input id="sportsTickerGap" type="range" min="0" max="48" step="1" value="18"></label>
               </div>
               <div class="sports-ticker-dev-actions">
@@ -465,7 +465,7 @@
                 <button id="sportsTickerCopyTuningBtn" class="settings-save-btn" type="button">COPY TUNING VALUES</button>
                 <button id="sportsTickerAiRefreshBtn" class="settings-save-btn" type="button">RUN SPORTS TICKER AI</button>
               </div>
-              <code id="sportsTickerTuningSummary" class="sports-ticker-tuning-summary">height=40px | font=10.5px | lines=1 | speed=30px/s | gap=18px</code>
+              <code id="sportsTickerTuningSummary" class="sports-ticker-tuning-summary">height=40px | font=10.5px | lines=1 | speed=20px/s | gap=18px</code>
               <small id="sportsTickerAiRefreshStatus" class="sports-ticker-dev-status" aria-live="polite">Five clicks on the Sports Big Board logo enables all Dev utilities at once. RUN SPORTS TICKER AI forces fresh source collection and a new OpenAI editorial pass.</small>
             </div>
             <div class="settings-card milestone-launch-card sbb-dev-global-card" data-sbb-dev-only="1">
@@ -674,14 +674,14 @@
     ui/game-center-view.js?v=4.2.2
     app.js?v=4.2.2
   -->
-  <script src="config.js?v=5.2.7"></script>
-  <script src="api-runtime.js?v=5.2.7"></script>
-  <script src="architecture/native-transport.js?v=5.2.7"></script>
-  <script src="architecture/main-thread-guard-v5.js?v=5.2.7"></script>
-<script src="architecture/score-media-plan-v5.js?v=5.2.7"></script>
-  <script src="architecture/request-broker.js?v=5.2.7"></script>
-  <script src="architecture/efficiency-certification.js?v=5.2.7"></script>
-  <script src="architecture/comprehensive-site-certification.js?v=5.2.7"></script>
+  <script src="config.js?v=5.2.8"></script>
+  <script src="api-runtime.js?v=5.2.8"></script>
+  <script src="architecture/native-transport.js?v=5.2.8"></script>
+  <script src="architecture/main-thread-guard-v5.js?v=5.2.8"></script>
+<script src="architecture/score-media-plan-v5.js?v=5.2.8"></script>
+  <script src="architecture/request-broker.js?v=5.2.8"></script>
+  <script src="architecture/efficiency-certification.js?v=5.2.8"></script>
+  <script src="architecture/comprehensive-site-certification.js?v=5.2.8"></script>
   <script>
   // v5.1.10 bootstrap is deliberately independent of app.js and YouTube.
   // It proves the browser can reach the local API and captures startup errors.
@@ -698,22 +698,22 @@
     try { fetch('/api/client-log?event=PROMISE_ERROR&detail='+encodeURIComponent(String(ev.reason?.stack||ev.reason||'unknown')), {cache:'no-store'}).catch(()=>{});} catch(e) {}
   });
 </script>
-<script src="core-model.js?v=5.2.7"></script>
-<script src="architecture/score-date-store.js?v=5.2.7"></script>
-<script src="architecture/event-identity.js?v=5.2.7"></script>
-<script src="architecture/app-store-v5.js?v=5.2.7"></script>
-<script src="architecture/media-scope.js?v=5.2.7"></script>
-<script src="architecture/media-classifier.js?v=5.2.7"></script>
-<script src="architecture/playback-transports.js?v=5.2.7"></script>
-<script src="architecture/playback-readiness.js?v=5.2.7"></script>
-<script src="architecture/provider-health.js?v=5.2.7"></script>
-<script src="architecture/sport-media-policy.js?v=5.2.7"></script>
-<script src="architecture/curated-media-overrides.js?v=5.2.7"></script>
-<script src="architecture/media-manifest.js?v=5.2.7"></script>
-<script src="architecture/media-resolver.js?v=5.2.7"></script>
-<script src="architecture/game-center-policy.js?v=5.2.7"></script>
-<script src="architecture/selected-event-store.js?v=5.2.7"></script>
-<script src="architecture/game-center-contract.js?v=5.2.7"></script>
+<script src="core-model.js?v=5.2.8"></script>
+<script src="architecture/score-date-store.js?v=5.2.8"></script>
+<script src="architecture/event-identity.js?v=5.2.8"></script>
+<script src="architecture/app-store-v5.js?v=5.2.8"></script>
+<script src="architecture/media-scope.js?v=5.2.8"></script>
+<script src="architecture/media-classifier.js?v=5.2.8"></script>
+<script src="architecture/playback-transports.js?v=5.2.8"></script>
+<script src="architecture/playback-readiness.js?v=5.2.8"></script>
+<script src="architecture/provider-health.js?v=5.2.8"></script>
+<script src="architecture/sport-media-policy.js?v=5.2.8"></script>
+<script src="architecture/curated-media-overrides.js?v=5.2.8"></script>
+<script src="architecture/media-manifest.js?v=5.2.8"></script>
+<script src="architecture/media-resolver.js?v=5.2.8"></script>
+<script src="architecture/game-center-policy.js?v=5.2.8"></script>
+<script src="architecture/selected-event-store.js?v=5.2.8"></script>
+<script src="architecture/game-center-contract.js?v=5.2.8"></script>
 <script id="sbbGameCenterStabilityV4725">
 (() => {
   'use strict';
@@ -764,46 +764,46 @@
   window.SBB_GAME_CENTER=Object.freeze({...base,version:'1.9-stability',get,__sbbStabilityV4725:true,stabilitySnapshot:()=>({inflight:inflight.size,cooldowns:cooldown.size,maxRequestMs:MAX_MS})});
 })();
 </script>
-<script src="architecture/media-work-priorities.js?v=5.2.7"></script>
-<script src="architecture/editorial-packages.js?v=5.2.7"></script>
-<script src="architecture/playback-session.js?v=5.2.7"></script>
-<script src="architecture/playback-orchestrator-v5.js?v=5.2.7"></script>
-<script src="architecture/dev-mode.js?v=5.2.7"></script>
-<script src="architecture/playback-terminal.js?v=5.2.7"></script>
-<script src="architecture/milestone-console.js?v=5.2.7"></script>
-<script src="architecture/foundation-certification.js?v=5.2.7"></script>
-<script src="architecture/site-soundtrack.js?v=5.2.7"></script>
+<script src="architecture/media-work-priorities.js?v=5.2.8"></script>
+<script src="architecture/editorial-packages.js?v=5.2.8"></script>
+<script src="architecture/playback-session.js?v=5.2.8"></script>
+<script src="architecture/playback-orchestrator-v5.js?v=5.2.8"></script>
+<script src="architecture/dev-mode.js?v=5.2.8"></script>
+<script src="architecture/playback-terminal.js?v=5.2.8"></script>
+<script src="architecture/milestone-console.js?v=5.2.8"></script>
+<script src="architecture/foundation-certification.js?v=5.2.8"></script>
+<script src="architecture/site-soundtrack.js?v=5.2.8"></script>
 <script>window.SBB_SITE_SOUNDTRACK_MUTED=true;</script>
-<script src="architecture/site-soundtrack-muted.js?v=5.2.7"></script>
-<script src="architecture/poisoned-media-containment.js?v=5.2.7"></script>
-<script src="ui/player-visibility.js?v=5.2.7"></script>
-<script src="ui/info-drawer.js?v=5.2.7"></script>
-<script src="ui/settings-view.js?v=5.2.7"></script>
-<script src="ui/history-audit.js?v=5.2.7"></script>
-<script src="ui/history-audit-v468.js?v=5.2.7"></script>
-<script src="architecture/game-center-linescore.js?v=5.2.7"></script>
-<script src="ui/game-center-view.js?v=5.2.7"></script>
-<script src="architecture/game-center-multisport-view.js?v=5.2.7"></script>
-<script src="app.js?v=5.2.7"></script>
-<script src="architecture/key-info-current-v520.js?v=5.2.7"></script>
-<script src="architecture/ribbon-fast-scroll-v5122.js?v=5.2.7"></script>
-<script src="architecture/playback-progress-watchdog.js?v=5.2.7"></script>
-<script src="architecture/score-ribbon-identity-guard.js?v=5.2.7"></script>
-<script src="architecture/recap-identity-guard.js?v=5.2.7"></script>
-<script src="architecture/nfl-recap-reconciliation.js?v=5.2.7"></script>
-<script src="architecture/historical-media-v4610.js?v=5.2.7"></script>
-<script src="architecture/future-date-navigation.js?v=5.2.7"></script>
-<script src="architecture/day-state.js?v=5.2.7"></script>
-<script src="architecture/competition-registry-projection.js?v=5.2.7"></script>
-<script src="architecture/active-special-events-v5117.js?v=5.2.7"></script>
-<script src="architecture/tennis-presentation.js?v=5.2.7"></script>
-<script src="architecture/navigation-ui.js?v=5.2.7"></script>
-<script src="architecture/score-card-availability-index.js?v=5.2.7"></script>
-<script src="architecture/card-build-cache.js?v=5.2.7"></script>
-<script src="architecture/render-pipeline.js?v=5.2.7"></script>
-<script src="architecture/date-transition-coordinator.js?v=5.2.7"></script>
-<script src="architecture/virtual-ribbon-v520.js?v=5.2.7"></script>
-<script src="architecture/operator-module-loader.js?v=5.2.7"></script>
+<script src="architecture/site-soundtrack-muted.js?v=5.2.8"></script>
+<script src="architecture/poisoned-media-containment.js?v=5.2.8"></script>
+<script src="ui/player-visibility.js?v=5.2.8"></script>
+<script src="ui/info-drawer.js?v=5.2.8"></script>
+<script src="ui/settings-view.js?v=5.2.8"></script>
+<script src="ui/history-audit.js?v=5.2.8"></script>
+<script src="ui/history-audit-v468.js?v=5.2.8"></script>
+<script src="architecture/game-center-linescore.js?v=5.2.8"></script>
+<script src="ui/game-center-view.js?v=5.2.8"></script>
+<script src="architecture/game-center-multisport-view.js?v=5.2.8"></script>
+<script src="app.js?v=5.2.8"></script>
+<script src="architecture/key-info-current-v520.js?v=5.2.8"></script>
+<script src="architecture/ribbon-fast-scroll-v5122.js?v=5.2.8"></script>
+<script src="architecture/playback-progress-watchdog.js?v=5.2.8"></script>
+<script src="architecture/score-ribbon-identity-guard.js?v=5.2.8"></script>
+<script src="architecture/recap-identity-guard.js?v=5.2.8"></script>
+<script src="architecture/nfl-recap-reconciliation.js?v=5.2.8"></script>
+<script src="architecture/historical-media-v4610.js?v=5.2.8"></script>
+<script src="architecture/future-date-navigation.js?v=5.2.8"></script>
+<script src="architecture/day-state.js?v=5.2.8"></script>
+<script src="architecture/competition-registry-projection.js?v=5.2.8"></script>
+<script src="architecture/active-special-events-v5117.js?v=5.2.8"></script>
+<script src="architecture/tennis-presentation.js?v=5.2.8"></script>
+<script src="architecture/navigation-ui.js?v=5.2.8"></script>
+<script src="architecture/score-card-availability-index.js?v=5.2.8"></script>
+<script src="architecture/card-build-cache.js?v=5.2.8"></script>
+<script src="architecture/render-pipeline.js?v=5.2.8"></script>
+<script src="architecture/date-transition-coordinator.js?v=5.2.8"></script>
+<script src="architecture/virtual-ribbon-v520.js?v=5.2.8"></script>
+<script src="architecture/operator-module-loader.js?v=5.2.8"></script>
 <script id="sbbCfbAuthorityFirewall">
 (() => {
   'use strict';

@@ -1,0 +1,46 @@
+Sports Big Board v5.2.8 — Smooth Compositor Ticker + Reliable Unified Dev Mode
+
+UPLOAD
+1. Open the sports-big-board repository on GitHub.
+2. Upload the CONTENTS of this package to the repository root, preserving paths.
+3. Replace existing files when GitHub prompts you.
+4. Do not upload the enclosing Sports-Big-Board-v5.2.8-manual-upload folder itself.
+
+CHANGED REPOSITORY FILES
+- VERSION
+- architecture/VERSION
+- index.html
+- architecture/dev-mode.js
+- architecture/key-info-current-v520.js
+- tests/test_v528_sports_ticker.js
+- tests/test_v528_release_handshake.py
+
+WHAT CHANGED
+- Five clicks anywhere on the top Sports Big Board brand now unlock ALL Dev utilities.
+- The gesture is captured globally, has a 6-second window, persists for the browser session,
+  and displays a visible "DEV MODE ON • ALL DEV UTILITIES ENABLED" confirmation.
+- The Sports Ticker Dev Utility self-injects into Settings if the static card is ever absent.
+- Sports Ticker animation no longer runs JavaScript every frame.
+- One infinite linear transform animation is handed to the browser compositor/GPU.
+- Layout measurement occurs only when ticker content/font/spacing changes, never in the
+  per-frame animation path.
+- Default ticker speed is 20 px/sec. Dev range is now 4-60 px/sec.
+- Ticker remains completely independent of score-date navigation.
+- New Sports Ticker editions still begin with newly updated stories first.
+- Colored category/type pills remain enabled.
+- RUN SPORTS TICKER AI remains in the Sports Ticker Dev Utility.
+
+VERIFY AFTER DEPLOY
+1. Hard refresh once after GitHub Pages deploys v5.2.8.
+2. Click the SPORTS BIG BOARD brand 5 times. A DEV MODE ON confirmation should appear.
+3. Open Settings. DEV / SPORTS TICKER should be visible without any second Dev toggle.
+4. Change Scroll Speed live. Start around 20, then try 16, 12 and 8 px/sec.
+5. Use COPY TUNING VALUES and send the result back when the motion feels right.
+6. Change score dates repeatedly. The ticker must keep moving without restarting.
+7. RUN SPORTS TICKER AI should force a fresh source collection/OpenAI edition.
+
+LOCAL STATIC CHECKS
+node --check architecture/dev-mode.js
+node --check architecture/key-info-current-v520.js
+node tests/test_v528_sports_ticker.js
+python tests/test_v528_release_handshake.py
