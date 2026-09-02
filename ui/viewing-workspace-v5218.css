@@ -1,0 +1,303 @@
+/* Sports Big Board v5.2.18 — Game Center Workspace Reflow
+   Presentation/layout ownership only. Playback, queue selection, score/date
+   ownership and Game Center data providers remain unchanged. */
+
+:root{
+  --sbb-control-radius:9px;
+  --sbb-control-height:32px;
+  --sbb-control-line:rgba(126,157,181,.22);
+  --sbb-control-bg:#0b1620;
+  --sbb-control-text:#dce7ef;
+  --sbb-control-blue:#63b7ff;
+  --sbb-control-green:#6fd79c;
+  --sbb-drawer-collapsed-width:36px;
+}
+
+/* --------------------------------------------------------------------------
+   One control language. Rounded rectangles are the default; color is reserved
+   for active/forward/commit actions instead of decorating every button equally.
+   -------------------------------------------------------------------------- */
+html body :is(.transport-btn,.soundtrack-btn,.info-drawer-tab,.gc-section-tab,.settings-save-btn,#shuffleBtn,.top-date-select-btn,.return-today-btn,.score-filters>button){
+  border-radius:var(--sbb-control-radius)!important;
+  border:1px solid var(--sbb-control-line)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+html body :is(.info-drawer-tab,.gc-section-tab,#shuffleBtn,.top-date-select-btn,.return-today-btn,.score-filters>button){
+  background:linear-gradient(180deg,#0e1b25 0%,#0a141c 100%)!important;
+  color:#9fb0bd!important;
+}
+html body :is(.info-drawer-tab,.gc-section-tab,#shuffleBtn,.top-date-select-btn,.return-today-btn,.score-filters>button):hover{
+  border-color:rgba(99,183,255,.35)!important;
+  color:#edf5fa!important;
+}
+html body :is(.info-drawer-tab.active,.info-drawer-tab[aria-selected="true"],.gc-section-tab.active,.gc-section-tab[aria-selected="true"]){
+  background:linear-gradient(180deg,#14344b 0%,#0d283b 100%)!important;
+  border-color:rgba(99,183,255,.44)!important;
+  color:#f1f8fc!important;
+}
+html body .settings-save-btn{
+  background:linear-gradient(180deg,#102b3d 0%,#0b202e 100%)!important;
+  border-color:rgba(99,183,255,.28)!important;
+  color:#dcecf6!important;
+}
+html body :is(#saveApiSettingsBtn,#openHistoryAuditBtn,#sportsTickerAiRefreshBtn){
+  background:linear-gradient(180deg,#143d2c 0%,#0d2b1f 100%)!important;
+  border-color:rgba(111,215,156,.38)!important;
+  color:#edfff5!important;
+}
+
+/* --------------------------------------------------------------------------
+   PREV / NEXT: no inherited icon pseudo-content, no font-size:0 remnants.
+   -------------------------------------------------------------------------- */
+body.sbb-game-center-side .player-topbar #prevBtn,
+body.sbb-game-center-side .player-topbar #nextBtn,
+#prevBtn,#nextBtn{
+  width:auto!important;
+  min-width:68px!important;
+  height:32px!important;
+  min-height:32px!important;
+  padding:0 13px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:9px!important;
+  font-size:9.5px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:.075em!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+#prevBtn{
+  background:linear-gradient(180deg,#0d1a24 0%,#09141c 100%)!important;
+  border-color:rgba(126,157,181,.24)!important;
+  color:#c7d4dd!important;
+}
+#nextBtn{
+  background:linear-gradient(180deg,#16415d 0%,#0f3046 100%)!important;
+  border-color:rgba(99,183,255,.46)!important;
+  color:#f0f8fd!important;
+}
+#prevBtn::before,#prevBtn::after,#nextBtn::before,#nextBtn::after{content:none!important;display:none!important}
+
+/* The under-video utility strip is now entirely redundant. */
+.player-footer,.lower-third.player-footer{display:none!important}
+
+/* --------------------------------------------------------------------------
+   Desktop video + drawer grid. Collapsing changes the ACTUAL grid allocation,
+   so the player receives the width vacated by Game Center.
+   -------------------------------------------------------------------------- */
+@media (min-width:1100px) and (pointer:fine){
+  body.sbb-game-center-side .stage-card{
+    grid-template-columns:minmax(0,1fr) clamp(430px,36vw,610px)!important;
+    grid-template-rows:auto auto!important;
+    transition:grid-template-columns .22s ease!important;
+  }
+  body.sbb-game-center-side .stage-card>.player-topbar{grid-column:1!important;grid-row:1!important}
+  body.sbb-game-center-side .stage-card>.stage{grid-column:1!important;grid-row:2!important}
+  body.sbb-game-center-side .info-drawer{grid-column:2!important;grid-row:1 / span 2!important;height:100%!important;min-height:0!important}
+
+  body.sbb-game-center-side.sbb-drawer-collapsed .stage-card{
+    grid-template-columns:minmax(0,1fr) var(--sbb-drawer-collapsed-width)!important;
+  }
+  body.sbb-game-center-side.sbb-drawer-collapsed .stage-card>.player-topbar,
+  body.sbb-game-center-side.sbb-drawer-collapsed .stage-card>.stage{
+    border-right-color:rgba(126,157,181,.14)!important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Drawer handle. One chevron, no visible helper text.
+   -------------------------------------------------------------------------- */
+#infoDrawer{position:relative!important}
+#infoDrawerClose{display:none!important}
+#drawerCollapseToggle{
+  position:absolute!important;
+  z-index:30!important;
+  top:10px!important;
+  left:8px!important;
+  width:28px!important;
+  min-width:28px!important;
+  height:28px!important;
+  min-height:28px!important;
+  padding:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid rgba(126,157,181,.26)!important;
+  border-radius:8px!important;
+  background:linear-gradient(180deg,#11202a 0%,#0b151d 100%)!important;
+  color:#d5e2ea!important;
+  font-size:17px!important;
+  font-weight:650!important;
+  line-height:1!important;
+  box-shadow:none!important;
+}
+#drawerCollapseToggle:hover{border-color:rgba(99,183,255,.45)!important;color:#fff!important;background:#142633!important}
+#infoDrawer .info-drawer-head{padding-left:43px!important}
+body.sbb-drawer-collapsed #infoDrawer{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  overflow:hidden!important;
+  background:#081119!important;
+}
+body.sbb-drawer-collapsed #infoDrawer .info-drawer-head,
+body.sbb-drawer-collapsed #infoDrawer .drawer-pane{display:none!important}
+body.sbb-drawer-collapsed #drawerCollapseToggle{
+  top:10px!important;
+  left:4px!important;
+  width:28px!important;
+  height:38px!important;
+  border-radius:8px!important;
+}
+body.sbb-drawer-collapsed #infoDrawer::after{
+  content:"";
+  position:absolute;
+  top:56px;bottom:8px;left:50%;
+  width:1px;
+  background:linear-gradient(180deg,rgba(99,183,255,.18),rgba(126,157,181,.05),transparent);
+  transform:translateX(-50%);
+}
+
+/* --------------------------------------------------------------------------
+   Game Center geometry:
+   hero -> tabs -> ONE scrollable active pane
+   Coming Up is outside that scroll container and remains locked to the bottom.
+   -------------------------------------------------------------------------- */
+#gameCenterPane{
+  height:100%!important;
+  min-height:0!important;
+  padding:0!important;
+  display:grid!important;
+  grid-template-rows:minmax(0,1fr) auto!important;
+  overflow:hidden!important;
+  background:#071018!important;
+}
+#gameCenterPane #gameCenterContent{
+  min-height:0!important;
+  height:100%!important;
+  overflow:hidden!important;
+  display:grid!important;
+  grid-template-rows:auto auto minmax(0,1fr)!important;
+  align-content:stretch!important;
+}
+#gameCenterPane .gc-hero{grid-row:1!important;position:relative!important;top:auto!important}
+#gameCenterPane #gcSections{
+  grid-row:2!important;
+  position:relative!important;
+  top:auto!important;
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:5px!important;
+  padding:6px 8px!important;
+  background:#08121a!important;
+  border-bottom:1px solid rgba(157,184,204,.10)!important;
+}
+#gameCenterPane .gc-section-tab{
+  min-width:0!important;
+  width:100%!important;
+  min-height:31px!important;
+  padding:0 7px!important;
+  border-radius:8px!important;
+  border:1px solid rgba(126,157,181,.15)!important;
+  font-size:7.5px!important;
+  letter-spacing:.055em!important;
+}
+#gameCenterPane .gc-section{
+  grid-row:3!important;
+  min-height:0!important;
+  height:100%!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  scrollbar-width:thin!important;
+  align-content:start!important;
+}
+#gameCenterPane .gc-section.hidden{display:none!important}
+
+/* The old multisport summary remains as an internal data/render source only.
+   v5.2.18 mirrors its line score/probability into Overview. */
+#gcPersistentSummary{display:none!important}
+#gcOverviewBroadcastSummary{
+  display:grid!important;
+  gap:8px!important;
+  margin:0 0 9px!important;
+}
+#gcOverviewBroadcastSummary:empty{display:none!important}
+
+/* Coming Up occupies a stable bottom shelf and can never bisect stats/tables. */
+#gameCenterPane .next-up-dock{
+  grid-row:2!important;
+  flex:0 0 auto!important;
+  margin:0!important;
+  padding:8px 10px 9px!important;
+  border-top:1px solid rgba(157,184,204,.105)!important;
+  border-bottom:0!important;
+  background:linear-gradient(180deg,#09141c 0%,#071018 100%)!important;
+  box-shadow:0 -8px 22px rgba(0,0,0,.12)!important;
+}
+#gameCenterPane .next-up-dock-head{margin-bottom:6px!important}
+#gameCenterPane .next-up-dock-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+#gameCenterPane .next-up-dock-card{border-radius:8px!important}
+#gameCenterPane .next-up-dock-visual{aspect-ratio:16/8.2!important}
+#gameCenterPane .next-up-dock-card strong{min-height:25px!important;font-size:7.2px!important;line-height:1.2!important}
+
+/* --------------------------------------------------------------------------
+   Sports Ticker: headline first, category as a quiet editorial subtitle.
+   -------------------------------------------------------------------------- */
+html body .sbb-sports-ticker-conveyor .key-info-item{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-areas:"headline" "category"!important;
+  align-content:center!important;
+  justify-items:start!important;
+  row-gap:1px!important;
+  padding-top:5px!important;
+  padding-bottom:5px!important;
+}
+html body .sbb-sports-ticker-conveyor .key-info-item strong{
+  grid-area:headline!important;
+  width:100%!important;
+  max-width:min(72vw,980px)!important;
+  font-size:10.2px!important;
+  line-height:1.12!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html body .sbb-sports-ticker-conveyor .key-info-item .key-info-type{
+  grid-area:category!important;
+  position:static!important;
+  display:block!important;
+  width:auto!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:var(--sbb-slug-accent,#7f96a6)!important;
+  font:760 6.7px/1.1 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace!important;
+  letter-spacing:.075em!important;
+  text-transform:uppercase!important;
+  opacity:.88!important;
+}
+html body .sbb-sports-ticker-conveyor .key-info-item .key-info-type::after{display:none!important}
+
+@media (max-width:1100px){
+  #drawerCollapseToggle{display:none!important}
+  #gameCenterPane .next-up-dock-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #gameCenterPane #gameCenterContent{height:auto!important;overflow:visible!important;display:block!important}
+  #gameCenterPane .gc-section{height:auto!important;overflow:visible!important}
+}
+@media (max-width:760px){
+  #gameCenterPane .next-up-dock-grid{grid-template-columns:1fr!important}
+}
+@media (prefers-reduced-motion:reduce){
+  body.sbb-game-center-side .stage-card,#drawerCollapseToggle{transition:none!important}
+}

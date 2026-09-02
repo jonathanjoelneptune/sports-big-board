@@ -222,12 +222,12 @@ except ValueError:
     errors.append('index is missing Broadcast Design System load surface')
 
 
-# v5.2.17 Premium Masthead + Sports Ticker + Score Ribbon. This remains a
+# v5.2.18 Premium Masthead + Sports Ticker + Score Ribbon. This remains a
 # presentation-only late override. It must not replace native scrolling or add
 # animation/blur work that competes with the v5.2.10 motion budget.
 premium=text(Path('ui')/'premium-masthead-v5214.css')
 if f'ui/premium-masthead-v5214.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.2.17 premium masthead stylesheet')
+    errors.append('index is missing synchronized v5.2.18 premium masthead stylesheet')
 for required in [
     '.top-nav-header{', '.score-filters{', '.key-info-ribbon{',
     '.sbb-sports-ticker-conveyor .key-info-item{', '.score-ribbon{',
@@ -249,13 +249,13 @@ except ValueError:
     errors.append('index is missing premium masthead load surface')
 
 
-# v5.2.17 Premium Now Watching Experience. This is a presentation-only late
+# v5.2.18 Premium Now Watching Experience. This is a presentation-only late
 # override over the already-certified viewing/player/Game Center DOM. It may
 # visually join the player and embedded information surface, but may not add a
 # second playback owner, scroll controller, or continuously animated effect.
 now_watching=text(Path('ui')/'premium-now-watching-v5215.css')
 if f'ui/premium-now-watching-v5215.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.2.17 Premium Now Watching stylesheet')
+    errors.append('index is missing synchronized v5.2.18 Premium Now Watching stylesheet')
 for required in [
     '.now-playing-copy::before{', '.transport-play.primary{',
     'body.sbb-info-open.diagnostics-off .layout{', '.gc-hero{',
@@ -278,15 +278,15 @@ except ValueError:
     errors.append('index is missing Premium Now Watching load surface')
 
 
-# v5.2.17 Editorial Slugs + Integrated Up Next. The visual queue mirrors the
+# v5.2.18 Editorial Slugs + Integrated Up Next. The visual queue mirrors the
 # canonical queueList and the repaired NEXT control delegates to the established
 # queue-row click/tune path rather than creating a second programming owner.
 upnext_css=text(Path('ui')/'editorial-slugs-up-next-v5216.css')
 upnext_js=text(Path('ui')/'up-next-experience-v5217.js')
 if f'ui/editorial-slugs-up-next-v5216.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.2.17 editorial/up-next stylesheet')
+    errors.append('index is missing synchronized v5.2.18 editorial/up-next stylesheet')
 if f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.2.17 integrated Up Next module')
+    errors.append('index is missing synchronized v5.2.18 integrated Up Next module')
 for required in [
     '.key-info-item .key-info-type{', 'border-radius:2px!important',
     'box-shadow:inset 3px 0 0 var(--sbb-slug-accent)!important',
@@ -294,17 +294,17 @@ for required in [
     '#nextBtn::after{'
 ]:
     if required not in upnext_css:
-        errors.append(f'v5.2.17 visual contract missing: {required}')
+        errors.append(f'v5.2.18 visual contract missing: {required}')
 for required in [
     'SBB_UP_NEXT_EXPERIENCE', 'sourceRows()', 'renderDock()', 'patchRenderQueue()',
     'repairNextButton()', 'canonicalNextRow()', 'row.click()', 'nextVisibleQueueIndex()',
-    "reason:'manual next control v5.2.17 fallback'"
+    "reason:'manual next control v5.2.18 fallback'"
 ]:
     if required not in upnext_js:
-        errors.append(f'v5.2.17 Up Next behavior contract missing: {required}')
+        errors.append(f'v5.2.18 Up Next behavior contract missing: {required}')
 for forbidden in ['setInterval(', 'requestAnimationFrame(loop', 'new MutationObserver']:
     if forbidden in upnext_js:
-        errors.append(f'v5.2.17 Up Next module adds continuous observation/work: {forbidden}')
+        errors.append(f'v5.2.18 Up Next module adds continuous observation/work: {forbidden}')
 try:
     watching_pos2=index.index(f'ui/premium-now-watching-v5215.css?v={version}')
     upnext_css_pos=index.index(f'ui/editorial-slugs-up-next-v5216.css?v={version}')
@@ -312,21 +312,21 @@ try:
     ticker_pos2=index.index(f'<script src="architecture/key-info-current-v520.js?v={version}"></script>')
     upnext_js_pos=index.index(f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>')
     if not (watching_pos2 < upnext_css_pos < index.index('</head>')):
-        errors.append('v5.2.17 visual stylesheet load order is unsafe')
+        errors.append('v5.2.18 visual stylesheet load order is unsafe')
     if not (app_pos2 < ticker_pos2 < upnext_js_pos):
-        errors.append('v5.2.17 Up Next module must load after app and ticker ownership')
+        errors.append('v5.2.18 Up Next module must load after app and ticker ownership')
 except ValueError:
-    errors.append('index is missing v5.2.17 Up Next release surfaces')
+    errors.append('index is missing v5.2.18 Up Next release surfaces')
 
 
-# v5.2.17 Drawer Polish + Harmonized Controls. These are late presentation and
+# v5.2.18 Drawer Polish + Harmonized Controls. These are late presentation and
 # drawer-integration layers; they must be synchronized and load after Up Next.
 polish_css=text(Path('ui')/'harmonized-controls-drawer-v5217.css')
 polish_js=text(Path('ui')/'harmonized-controls-drawer-v5217.js')
 if f'ui/harmonized-controls-drawer-v5217.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.2.17 harmonized-controls stylesheet')
+    errors.append('index is missing synchronized v5.2.18 harmonized-controls stylesheet')
 if f'<script src="ui/harmonized-controls-drawer-v5217.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.2.17 drawer-polish module')
+    errors.append('index is missing synchronized v5.2.18 drawer-polish module')
 for required in [
     '.player-footer .utility-controls{display:none!important}',
     '#drawerCollapseToggle{', 'body.sbb-drawer-collapsed #infoDrawer{',
@@ -335,25 +335,68 @@ for required in [
     '#nextBtn::after{content:none!important;display:none!important}'
 ]:
     if required not in polish_css:
-        errors.append(f'v5.2.17 harmonized-controls visual contract missing: {required}')
+        errors.append(f'v5.2.18 harmonized-controls visual contract missing: {required}')
 for required in [
     'SBB_DRAWER_POLISH', 'setTransportLabels()', 'ensureDrawerToggle()',
     "STORAGE_KEY='sbb.drawer.collapsed.v1'",
     "document.body.classList.toggle('sbb-drawer-collapsed'"
 ]:
     if required not in polish_js:
-        errors.append(f'v5.2.17 drawer-polish behavior contract missing: {required}')
+        errors.append(f'v5.2.18 drawer-polish behavior contract missing: {required}')
 try:
     upnext_js_pos2=index.index(f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>')
     polish_js_pos=index.index(f'<script src="ui/harmonized-controls-drawer-v5217.js?v={version}"></script>')
     old_css_pos=index.index(f'ui/editorial-slugs-up-next-v5216.css?v={version}')
     polish_css_pos=index.index(f'ui/harmonized-controls-drawer-v5217.css?v={version}')
     if not (old_css_pos < polish_css_pos < index.index('</head>')):
-        errors.append('v5.2.17 harmonized-controls stylesheet load order is unsafe')
+        errors.append('v5.2.18 harmonized-controls stylesheet load order is unsafe')
     if not (upnext_js_pos2 < polish_js_pos):
-        errors.append('v5.2.17 drawer polish must load after integrated Up Next')
+        errors.append('v5.2.18 drawer polish must load after integrated Up Next')
 except ValueError:
-    errors.append('index is missing v5.2.17 drawer-polish release surfaces')
+    errors.append('index is missing v5.2.18 drawer-polish release surfaces')
+
+
+# v5.2.18 Game Center Workspace Reflow. The final late layer owns the actual
+# desktop grid collapse, line-score placement and fixed Coming Up shelf.
+workspace_css=text(Path('ui')/'viewing-workspace-v5218.css')
+workspace_js=text(Path('ui')/'viewing-workspace-v5218.js')
+if f'ui/viewing-workspace-v5218.css?v={version}' not in index:
+    errors.append('index is missing synchronized v5.2.18 viewing-workspace stylesheet')
+if f'<script src="ui/viewing-workspace-v5218.js?v={version}"></script>' not in index:
+    errors.append('index is missing synchronized v5.2.18 viewing-workspace module')
+for required in [
+    'body.sbb-game-center-side.sbb-drawer-collapsed .stage-card{',
+    'grid-template-columns:minmax(0,1fr) var(--sbb-drawer-collapsed-width)!important',
+    '#gameCenterPane #gameCenterContent{',
+    'grid-template-rows:auto auto minmax(0,1fr)!important',
+    '#gcPersistentSummary{display:none!important}',
+    '#gcOverviewBroadcastSummary{',
+    '#gameCenterPane .next-up-dock{',
+    '.player-footer,.lower-third.player-footer{display:none!important}',
+    '#prevBtn::before,#prevBtn::after,#nextBtn::before,#nextBtn::after{content:none!important;display:none!important}'
+]:
+    if required not in workspace_css:
+        errors.append(f'v5.2.18 viewing-workspace visual contract missing: {required}')
+for required in [
+    'SBB_VIEWING_WORKSPACE', 'setTransportLabels()', 'ensureDrawerToggle()',
+    "STORAGE_KEY='sbb.drawer.collapsed.v2'", 'notifyLayout()',
+    'renderOverviewEnhancements()', 'SBB_GAME_CENTER_MULTISPORT_VIEW',
+    "line=line.replace(/>LINESCORE(?=<|\\s)/,'>LINE SCORE')",
+    "window.dispatchEvent(new Event('resize'))"
+]:
+    if required not in workspace_js:
+        errors.append(f'v5.2.18 viewing-workspace behavior contract missing: {required}')
+try:
+    old_polish_css=index.index(f'ui/harmonized-controls-drawer-v5217.css?v={version}')
+    workspace_css_pos=index.index(f'ui/viewing-workspace-v5218.css?v={version}')
+    old_polish_js=index.index(f'<script src="ui/harmonized-controls-drawer-v5217.js?v={version}"></script>')
+    workspace_js_pos=index.index(f'<script src="ui/viewing-workspace-v5218.js?v={version}"></script>')
+    if not (old_polish_css < workspace_css_pos < index.index('</head>')):
+        errors.append('v5.2.18 viewing-workspace stylesheet must load after v5.2.17 polish')
+    if not (old_polish_js < workspace_js_pos):
+        errors.append('v5.2.18 viewing-workspace module must load after v5.2.17 polish')
+except ValueError:
+    errors.append('index is missing v5.2.18 viewing-workspace release surfaces')
 
 if errors:
     print('RELEASE INTEGRITY CHECK FAILED')

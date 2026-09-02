@@ -1,0 +1,30 @@
+Sports Big Board v5.2.18 — Game Center Workspace Reflow
+
+MANUAL GITHUB UPLOAD
+1. Open the repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when GitHub prompts.
+4. Commit all changed files together so frontend/backend/database-audit release identity stays atomic.
+5. Let Deploy Sports Big Board finish, then hard-refresh the site once.
+
+PRIMARY USER-VISIBLE CHANGES
+- Game Center is now structured as: scoreboard hero -> full-width Overview/Team Stats/Players/Plays tabs -> one scrollable active content pane.
+- Line score and win probability appear only inside Overview. The old persistent above-tabs line score is hidden.
+- COMING UP is locked to the bottom of the Game Center workspace and is outside the Game Center scroll area, so it cannot bisect Team Stats/Players/Plays.
+- The entire redundant player footer is removed.
+- PREV and NEXT are rebuilt as plain centered text controls with no inherited icon/pseudo-content conflicts.
+- The drawer collapse control is a single chevron button with no visible helper text.
+- Collapsing the drawer changes the actual desktop stage grid from the normal Game Center column to a 36px handle rail; the video receives the freed width and a resize event is emitted.
+- Sports Ticker keeps headline-first layout with the category as a subtle subtitle.
+
+FUNCTIONAL BOUNDARIES
+- No second playback owner.
+- No second queue/program model.
+- No score/date/ticker ownership changes.
+- Game Center continues to use the existing public cache and renderer.
+- The Overview enhancement reuses the existing multisport periodCard/probabilityCard functions.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.2.18 Game Center Workspace Reflow preflight complete

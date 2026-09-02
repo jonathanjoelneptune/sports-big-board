@@ -1,11 +1,11 @@
-/* Sports Big Board v5.2.17 — Integrated Up Next + NEXT transport repair.
+/* Sports Big Board v5.2.18 — Integrated Up Next + NEXT transport repair.
    Reuses the canonical #queueList and its established onclick handlers. It does
    not create a second PROGRAM, selection model, playback owner, or date owner. */
 (() => {
   'use strict';
-  if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.2.17') return;
+  if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.2.18') return;
 
-  const VERSION='5.2.17';
+  const VERSION='5.2.18';
   const state={renders:0,dockClicks:0,nextClicks:0,nextFallbacks:0,lastError:''};
   const $=id=>document.getElementById(id);
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -104,7 +104,7 @@
       const target=nextVisibleQueueIndex();
       if(target<0)return false;
       if(typeof showBumper==='function')showBumper(target,400,'UP NEXT');
-      tuneProgramIndexV5(target,{userInitiated:true,reason:'manual next control v5.2.17 fallback'});
+      tuneProgramIndexV5(target,{userInitiated:true,reason:'manual next control v5.2.18 fallback'});
       state.nextFallbacks++;
       return true;
     }catch(err){state.lastError=String(err?.message||err);return false;}
@@ -123,7 +123,7 @@
         if(!fallbackNext()&&typeof showAllCaughtUp==='function')showAllCaughtUp();
       }catch(err){
         state.lastError=String(err?.message||err);
-        if(!fallbackNext())console.error('[SBB v5.2.17] NEXT control failed',err);
+        if(!fallbackNext())console.error('[SBB v5.2.18] NEXT control failed',err);
       }
     };
     return true;
