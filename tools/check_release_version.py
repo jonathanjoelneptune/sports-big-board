@@ -198,9 +198,31 @@ try:
 except ValueError:
     errors.append('index is missing synchronized splash preload release surface')
 
+# v5.2.13 Broadcast Design System. Presentation is isolated in a late-loading
+# override stylesheet so the stable playback/data DOM and ownership code remain
+# unchanged. Avoid expensive blur/glass effects that would regress motion quality.
+design=text(Path('ui')/'broadcast-design-v5213.css')
+if f'ui/broadcast-design-v5213.css?v={version}' not in index:
+    errors.append('index is missing synchronized Broadcast Design System stylesheet')
+for required in ['--sbb-surface:','.top-nav-header{','.key-info-ribbon{','.score-ribbon{','.stage-card{','.info-drawer{','.gc-hero{','.settings-card{']:
+    if required not in design:
+        errors.append(f'Broadcast Design System missing required contract: {required}')
+for forbidden in ['backdrop-filter','filter:blur(','animation:']:
+    if forbidden in design:
+        errors.append(f'Broadcast Design System contains performance-heavy presentation rule: {forbidden}')
+try:
+    base_style_pos=index.index(f'styles.css?v={version}')
+    design_pos=index.index(f'ui/broadcast-design-v5213.css?v={version}')
+    head_end=index.index('</head>')
+    if not (base_style_pos < design_pos < head_end):
+        errors.append('Broadcast Design System stylesheet load order is unsafe')
+except ValueError:
+    errors.append('index is missing Broadcast Design System load surface')
+
 if errors:
     print('RELEASE INTEGRITY CHECK FAILED')
     for error in errors:
         print(' -',error)
     raise SystemExit(1)
 print(f'PASS: frontend + backend + database-audit release inputs are synchronized at {version}')
+

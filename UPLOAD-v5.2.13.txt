@@ -1,0 +1,63 @@
+SPORTS BIG BOARD v5.2.13 — BROADCAST DESIGN SYSTEM
+Manual GitHub upload package
+
+UPLOAD
+1. Open the sports-big-board repository on GitHub.
+2. Upload the CONTENTS of this folder to the repository root.
+3. Preserve the architecture/, sbb/, tools/, tests/, and ui/ paths.
+4. Replace existing files when prompted.
+5. Upload all files in one commit so frontend/backend release identity advances atomically.
+
+CHANGED FILES
+VERSION
+architecture/VERSION
+index.html
+ui/broadcast-design-v5213.css
+architecture/key-info-current-v520.js
+architecture/scroll-motion-smoothness-v5210.js
+architecture/splash-preload-v5212.js
+sbb/current_news_v523.py
+tools/check_release_version.py
+tests/test_v5213_broadcast_design.py
+VERIFY.sh
+UPLOAD-v5.2.13.txt
+
+PURPOSE
+v5.2.13 is a presentation-only Broadcast Design System pass on the stable v5.2.12 foundation.
+It does NOT change playback ownership, score/date ownership, Sports Ticker behavior, Game Center data flow, scrolling mechanics, or media discovery logic.
+
+VISUAL CHANGES
+- Unified dark broadcast color tokens and surface hierarchy.
+- Softer, lower-contrast borders instead of boxed dashboard chrome.
+- Consistent 6/9/12/16/20 px radius family.
+- Consistent control sizing and focus states.
+- Cleaner masthead and league-navigation treatment.
+- Cleaner Sports Ticker framing and edge fades.
+- Cleaner score cards with calmer hover/active states.
+- Premium unified player surface with stronger title hierarchy.
+- Circular transport and soundtrack controls.
+- More restrained player footer and utility controls.
+- Cleaner information drawer and underline-style Game Center tabs.
+- Larger, clearer Game Center score hierarchy.
+- Cleaner Up Next and Settings cards.
+- Refined thin scrollbars.
+- Broadcast Mode suppresses developer diagnostics cleanly while leaving them available when diagnostics are enabled.
+
+PERFORMANCE GUARDRAILS
+- No backdrop-filter.
+- No CSS blur effects.
+- No new continuous animations.
+- No new JavaScript UI behavior.
+- Existing compositor ticker and scroll/motion architecture is untouched.
+
+EXPECTED VERIFY OUTPUT
+PASS: frontend + backend + database-audit release inputs are synchronized at 5.2.13
+PASS atomic release identity + always-visible ticker utility at v5.2.13
+PASS v5.2.10+ conditional scrolling + compositor motion + score virtualization + motion certification at v5.2.13
+PASS v5.2.13 OpenAI Sports Ticker rate-limit invariants
+PASS v5.2.13 splash loads data + cues/preloads exact first video without bypassing launch gesture
+PASS v5.2.13 broadcast design system presentation invariants
+PASS: v5.2.13 atomic release + Broadcast Design System preflight complete
+
+ROLLBACK
+The design system is isolated in ui/broadcast-design-v5213.css and loaded after legacy presentation CSS. If a visual issue is found, removing that link restores the prior visual layer without touching application behavior.
