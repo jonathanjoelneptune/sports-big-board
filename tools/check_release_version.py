@@ -222,12 +222,12 @@ except ValueError:
     errors.append('index is missing Broadcast Design System load surface')
 
 
-# v5.2.15 Premium Masthead + Sports Ticker + Score Ribbon. This remains a
+# v5.2.16 Premium Masthead + Sports Ticker + Score Ribbon. This remains a
 # presentation-only late override. It must not replace native scrolling or add
 # animation/blur work that competes with the v5.2.10 motion budget.
 premium=text(Path('ui')/'premium-masthead-v5214.css')
 if f'ui/premium-masthead-v5214.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.2.15 premium masthead stylesheet')
+    errors.append('index is missing synchronized v5.2.16 premium masthead stylesheet')
 for required in [
     '.top-nav-header{', '.score-filters{', '.key-info-ribbon{',
     '.sbb-sports-ticker-conveyor .key-info-item{', '.score-ribbon{',
@@ -249,13 +249,13 @@ except ValueError:
     errors.append('index is missing premium masthead load surface')
 
 
-# v5.2.15 Premium Now Watching Experience. This is a presentation-only late
+# v5.2.16 Premium Now Watching Experience. This is a presentation-only late
 # override over the already-certified viewing/player/Game Center DOM. It may
 # visually join the player and embedded information surface, but may not add a
 # second playback owner, scroll controller, or continuously animated effect.
 now_watching=text(Path('ui')/'premium-now-watching-v5215.css')
 if f'ui/premium-now-watching-v5215.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.2.15 Premium Now Watching stylesheet')
+    errors.append('index is missing synchronized v5.2.16 Premium Now Watching stylesheet')
 for required in [
     '.now-playing-copy::before{', '.transport-play.primary{',
     'body.sbb-info-open.diagnostics-off .layout{', '.gc-hero{',
@@ -276,6 +276,47 @@ try:
         errors.append('Premium Now Watching stylesheet load order is unsafe')
 except ValueError:
     errors.append('index is missing Premium Now Watching load surface')
+
+
+# v5.2.16 Editorial Slugs + Integrated Up Next. The visual queue mirrors the
+# canonical queueList and the repaired NEXT control delegates to the established
+# queue-row click/tune path rather than creating a second programming owner.
+upnext_css=text(Path('ui')/'editorial-slugs-up-next-v5216.css')
+upnext_js=text(Path('ui')/'up-next-experience-v5216.js')
+if f'ui/editorial-slugs-up-next-v5216.css?v={version}' not in index:
+    errors.append('index is missing synchronized v5.2.16 editorial/up-next stylesheet')
+if f'<script src="ui/up-next-experience-v5216.js?v={version}"></script>' not in index:
+    errors.append('index is missing synchronized v5.2.16 integrated Up Next module')
+for required in [
+    '.key-info-item .key-info-type{', 'border-radius:2px!important',
+    'box-shadow:inset 3px 0 0 var(--sbb-slug-accent)!important',
+    '.next-up-dock{', '#upNextPane .queue-list{', '#upNextPane .queue-item{',
+    '#nextBtn::after{'
+]:
+    if required not in upnext_css:
+        errors.append(f'v5.2.16 visual contract missing: {required}')
+for required in [
+    'SBB_UP_NEXT_EXPERIENCE', 'sourceRows()', 'renderDock()', 'patchRenderQueue()',
+    'repairNextButton()', 'canonicalNextRow()', 'row.click()', 'nextVisibleQueueIndex()',
+    "reason:'manual next control v5.2.16 fallback'"
+]:
+    if required not in upnext_js:
+        errors.append(f'v5.2.16 Up Next behavior contract missing: {required}')
+for forbidden in ['setInterval(', 'requestAnimationFrame(loop', 'new MutationObserver']:
+    if forbidden in upnext_js:
+        errors.append(f'v5.2.16 Up Next module adds continuous observation/work: {forbidden}')
+try:
+    watching_pos2=index.index(f'ui/premium-now-watching-v5215.css?v={version}')
+    upnext_css_pos=index.index(f'ui/editorial-slugs-up-next-v5216.css?v={version}')
+    app_pos2=index.index(f'<script src="app.js?v={version}"></script>')
+    ticker_pos2=index.index(f'<script src="architecture/key-info-current-v520.js?v={version}"></script>')
+    upnext_js_pos=index.index(f'<script src="ui/up-next-experience-v5216.js?v={version}"></script>')
+    if not (watching_pos2 < upnext_css_pos < index.index('</head>')):
+        errors.append('v5.2.16 visual stylesheet load order is unsafe')
+    if not (app_pos2 < ticker_pos2 < upnext_js_pos):
+        errors.append('v5.2.16 Up Next module must load after app and ticker ownership')
+except ValueError:
+    errors.append('index is missing v5.2.16 Up Next release surfaces')
 
 if errors:
     print('RELEASE INTEGRITY CHECK FAILED')

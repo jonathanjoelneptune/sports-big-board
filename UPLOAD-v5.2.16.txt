@@ -1,0 +1,28 @@
+Sports Big Board v5.2.16 — Editorial Slugs + Integrated Up Next
+
+MANUAL GITHUB UPLOAD
+1. Open the repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when GitHub prompts.
+4. Commit all changed files together so frontend/backend/database-audit release identity stays atomic.
+5. Let Deploy Sports Big Board complete before hard-refreshing the site.
+
+PRIMARY USER-VISIBLE CHANGES
+- Sports Ticker category labels are true-centered broadcast editorial slugs, not rounded pills.
+- Category color remains useful through a narrow colored blade/accent.
+- Game Center now exposes a persistent COMING UP shelf with three visual queue cards.
+- The full UP NEXT tab is a thumbnail-first two-column programming card grid with much less text.
+- The top NEXT transport control is repaired by delegating to the same canonical queue-row click path used by Up Next itself.
+- If the queue row is temporarily unavailable, NEXT falls back to nextVisibleQueueIndex + the existing tune owner.
+
+FUNCTIONAL BOUNDARIES
+- No second PROGRAM model.
+- No second playback owner.
+- No date/ticker ownership changes.
+- No continuous MutationObserver or per-frame Up Next JavaScript.
+- Existing queue item click handlers remain the canonical tune path.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.2.16 Editorial Slugs + Integrated Up Next preflight complete
