@@ -1,0 +1,58 @@
+SPORTS BIG BOARD v5.2.4 — SPORTS TICKER + HISTORICAL RIBBON STABILITY
+====================================================================
+
+MANUAL GITHUB UPLOAD
+Upload the CONTENTS of this package to the repository root, preserving folders.
+Replace files when prompted. No repository deletes are required.
+
+Changed files
+-------------
+VERSION
+architecture/VERSION
+architecture/key-info-current-v520.js
+architecture/date-transition-coordinator.js
+sbb/current_news_v523.py
+
+Optional verification files
+---------------------------
+tests/test_v524_sports_ticker.js
+tests/test_v524_sports_ticker.py
+
+What changed
+------------
+1. KEY INFO is now SPORTS TICKER. CURRENT NEWS wording is removed at runtime.
+2. The ticker browser path reads only a prepared snapshot and never performs OpenAI
+   or sports-news discovery in response to a user action.
+3. The backend prepares/persists a new edition every 20 minutes (3x/hour), keeps up
+   to 150 consequential entries, and serves last-good data if a refresh fails.
+4. /api/sports-ticker is canonical. /api/current-news remains a compatibility alias.
+5. Ticker categories now cover breaking news, championships, clinches/eliminations,
+   playoff movement, rankings, records/record watch, milestones, streaks, major
+   results/upsets, transactions, injuries/returns, coaching/discipline, tournaments,
+   schedules, draft/recruiting, awards, and retirements.
+6. Historical score-date changes do not refresh the Sports Ticker.
+7. Date transition ownership is reasserted after legacy v5.2.2 boot wrappers finish,
+   preventing the old virtual-ribbon wrapper from independently fetching the selected
+   date and prefetching +/-3 dates on every transition.
+8. Cold convergence is bounded to four follow-up reads, for a hard maximum of five
+   RibbonSnapshot reads per transition instead of an open request fan-out.
+9. NCAAF league pill is explicitly vertically centered through the common pill box.
+
+Targeted verification
+---------------------
+node tests/test_v524_sports_ticker.js
+python tests/test_v524_sports_ticker.py
+python -m py_compile sbb/current_news_v523.py
+node --check architecture/key-info-current-v520.js
+node --check architecture/date-transition-coordinator.js
+
+Manual smoke checks
+-------------------
+1. Load the board. Header should say SPORTS TICKER; CURRENT NEWS should not appear.
+2. NCAAF pill should be vertically centered with the other league pills.
+3. In DevTools Network, navigate repeatedly across historical dates including July 7.
+   The Sports Ticker must make zero requests because of date changes.
+4. A single cold date may make a bounded RibbonSnapshot lookup/convergence sequence;
+   it must not fan out into adjacent-date snapshot requests.
+5. /api/sports-ticker/status should report refreshSeconds=1200 and a persisted source.
+6. If a ticker refresh fails, the previous edition must remain visible.
