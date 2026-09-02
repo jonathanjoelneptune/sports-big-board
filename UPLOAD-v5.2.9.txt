@@ -1,0 +1,58 @@
+Sports Big Board v5.2.9 — Atomic Release Identity + Always-Visible Sports Ticker Tuning
+
+MANUAL GITHUB UPLOAD
+Upload the CONTENTS of this folder to the repository root, preserving each path.
+Do not upload the enclosing Sports-Big-Board-v5.2.9-manual-upload folder.
+
+CHANGED FILES
+- VERSION
+- architecture/VERSION
+- index.html
+- architecture/key-info-current-v520.js
+- ui/settings-view.js
+- sbb/release_identity_v523.py
+- tools/check_release_version.py
+- VERIFY.sh
+- tests/test_v529_release_integrity.py
+
+CRITICAL FIXES
+1. One deployment release identity
+   - VERSION and architecture/VERSION are 5.2.9.
+   - index.html declares canonical frontend release 5.2.9.
+   - ui/settings-view.js may READ release identity but may never overwrite it.
+   - backend release identity reads the repository VERSION file instead of hard-coding 5.2.3.
+   - server.py already reads APP_VERSION from VERSION, so the same commit deploys backend v5.2.9.
+
+2. Real blocking deployment preflight
+   - VERIFY.sh is no longer a no-op.
+   - It runs tools/check_release_version.py before backend/frontend deployment.
+   - A stale settings frontend identity, mixed cache generation, backend release hard-code,
+     missing ticker utility, or mismatched VERSION now fails deployment before publish.
+
+3. Settings release status
+   - New RELEASE STATUS card shows Frontend, Backend, and MATCHED/MISMATCH.
+   - It calls /api/release-identity with the canonical frontend version.
+
+4. Sports Ticker tuning is always visible
+   - The Sports Ticker / Tuning card is no longer hidden behind Dev Mode.
+   - Height, font size, 1/2 line mode, speed, spacing, Pause/Resume, Reset,
+     Copy Tuning Values, and RUN SPORTS TICKER AI are directly available in Settings.
+   - Five clicks on the SPORTS BIG BOARD logo still enables every OTHER Dev-only panel at once.
+
+EXPECTED GITHUB ACTION ORDER
+Verify release -> Deploy cloud backend -> Verify backend version -> Build Pages ->
+Publish Pages -> Verify deployed frontend/backend handshake.
+
+EXPECTED POST-DEPLOY STATE
+- Settings > RELEASE STATUS: Frontend 5.2.9 / Backend 5.2.9 / MATCHED
+- Database Audit: Frontend v5.2.9 / Backend v5.2.9 with no release mismatch
+- Background workers are not paused for frontend-backend-version-mismatch
+- Settings always contains SPORTS TICKER / TUNING
+
+LOCAL/TARGETED VERIFICATION
+bash VERIFY.sh
+
+Expected:
+PASS: frontend + backend + database-audit release inputs are synchronized at 5.2.9
+PASS v5.2.9 atomic release identity + always-visible ticker utility
+PASS: release-integrity preflight complete

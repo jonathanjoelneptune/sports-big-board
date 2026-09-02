@@ -1,4 +1,4 @@
-/* Sports Big Board v5.2.8 — compositor-owned Sports Ticker + self-healing Dev utility.
+/* Sports Big Board v5.2.9 — compositor Sports Ticker + always-visible operator tuning.
 
    v5.2.7 removed segmented animation restarts, but its requestAnimationFrame loop
    still performed layout reads while recycling stories. Those reads competed with
@@ -8,9 +8,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_KEY_INFO_CURRENT?.version==='5.2.8')return;
+  if(window.SBB_KEY_INFO_CURRENT?.version==='5.2.9')return;
 
-  const VERSION='5.2.8';
+  const VERSION='5.2.9';
   const REFRESH_MS=20*60*1000;
   const CACHE_KEY='sbb.sports-ticker.v1';
   const LEGACY_CACHE_KEYS=['sbb.sports-ticker.v524','sbb.current-news.v522'];
@@ -84,8 +84,8 @@
 
   function utilityMarkup(){
     return `
-      <div class="settings-card-title">DEV / SPORTS TICKER</div>
-      <div class="history-audit-launch-copy"><strong>Sports Ticker Dev Utility</strong><small>Live-tune the ticker until movement is calm and non-distracting. Changes apply immediately and persist in this browser. The v5.2.8 ticker runs on one compositor transform with zero per-frame JavaScript.</small></div>
+      <div class="settings-card-title">SPORTS TICKER / TUNING</div>
+      <div class="history-audit-launch-copy"><strong>Sports Ticker Dev Utility</strong><small>Live-tune the ticker until movement is calm and non-distracting. Changes apply immediately and persist in this browser. The ticker runs on one compositor transform with zero per-frame JavaScript. This utility is always available in Settings.</small></div>
       <div class="sports-ticker-dev-grid" aria-label="Sports Ticker tuning controls">
         <label class="sports-ticker-dev-field"><span>TICKER HEIGHT <output id="sportsTickerHeightValue">40px</output></span><input id="sportsTickerHeight" type="range" min="32" max="72" step="1" value="40"></label>
         <label class="sports-ticker-dev-field"><span>HEADLINE FONT <output id="sportsTickerFontSizeValue">10.5px</output></span><input id="sportsTickerFontSize" type="range" min="8" max="18" step="0.5" value="10.5"></label>
@@ -108,7 +108,7 @@
     const grid=document.querySelector('#settingsPane .settings-grid');if(!grid)return false;
     let card=grid.querySelector('.sports-ticker-dev-card');
     if(!card){
-      card=document.createElement('div');card.className='settings-card sports-ticker-dev-card sbb-dev-global-card';card.dataset.sbbDevOnly='1';card.innerHTML=utilityMarkup();
+      card=document.createElement('div');card.className='settings-card sports-ticker-dev-card';card.innerHTML=utilityMarkup();
       const milestone=grid.querySelector('.milestone-launch-card');if(milestone)grid.insertBefore(card,milestone);else grid.appendChild(card);state.devUtilityInjections++;
     }
     bindDevControls();syncDevControls();return true;
@@ -140,8 +140,7 @@
         .sbb-sports-ticker-conveyor .key-info-item.championship .key-info-type,.sbb-sports-ticker-conveyor .key-info-item.clinch .key-info-type,.sbb-sports-ticker-conveyor .key-info-item.elimination .key-info-type,.sbb-sports-ticker-conveyor .key-info-item.playoff .key-info-type,.sbb-sports-ticker-conveyor .key-info-item.award .key-info-type{background:#3a3014!important;border-color:#8d7934!important;color:#ffe38a!important}
         .sbb-sports-ticker-conveyor .key-info-item.ranking .key-info-type,.sbb-sports-ticker-conveyor .key-info-item.tournament .key-info-type,.sbb-sports-ticker-conveyor .key-info-item.schedule .key-info-type{background:#103536!important;border-color:#357a7b!important;color:#9ce9e8!important}
         .sbb-sports-ticker-conveyor .key-info-item.retirement .key-info-type{background:#2b2d31!important;border-color:#666d76!important;color:#d5d9df!important}
-        .sports-ticker-dev-card{display:none!important}
-        html[data-sbb-dev="1"] .sports-ticker-dev-card,body[data-sbb-dev="1"] .sports-ticker-dev-card,body.dev-mode .sports-ticker-dev-card{display:block!important}
+        .sports-ticker-dev-card{display:block!important}
         .sports-ticker-dev-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
         .sports-ticker-dev-field{display:grid;gap:5px;padding:9px 10px;border:1px solid var(--line,#25303a);border-radius:9px;background:#0b1117}
         .sports-ticker-dev-field>span{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:9px;font-weight:850;letter-spacing:.045em;color:#c7d0d9}

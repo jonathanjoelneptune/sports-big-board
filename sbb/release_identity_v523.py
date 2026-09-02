@@ -1,17 +1,20 @@
-"""Sports Big Board v5.2.3 — single release identity + safe mismatch policy.
+"""Sports Big Board release identity and safe mismatch policy.
 
-One deployment release identity is authoritative. A frontend/backend mismatch pauses
-OPTIONAL discovery/backfill only. Integrity work (result finalization, trusted playlist
-catch-up, cached Game Center persistence, snapshots and Key Info) remains always-on.
+The repository VERSION file is the only deployment release authority. This historical
+module filename is retained for import compatibility, but it contains no hard-coded
+semantic release number. A frontend/backend mismatch pauses optional discovery only;
+integrity/read paths remain available while a deployment converges.
 """
 from __future__ import annotations
 
 import sys
 import threading
 import time
+from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-VERSION = "5.2.3"
+ROOT = Path(__file__).resolve().parents[1]
+VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 _INSTALL_LOCK = threading.Lock()
 _STATE_LOCK = threading.RLock()
 _INSTALLED = False
@@ -32,12 +35,17 @@ def _clean(value):
     return str(value or "").strip()
 
 
+def _backend_version(server):
+    return _clean(getattr(server, "APP_VERSION", VERSION)) or VERSION
+
+
 def _record_frontend(server, frontend_version):
     frontend = _clean(frontend_version)
-    backend = _clean(getattr(server, "APP_VERSION", VERSION)) or VERSION
+    backend = _backend_version(server)
     if not frontend:
         return
     with _STATE_LOCK:
+        _STATE["version"] = backend
         _STATE["frontendVersion"] = frontend
         _STATE["frontendSeenAt"] = time.time()
         _STATE["versionMatch"] = frontend == backend
@@ -45,12 +53,8 @@ def _record_frontend(server, frontend_version):
 
 
 def _active_mismatch(server):
-    """Only a recently observed mismatched frontend pauses optional discovery.
-
-    A stale browser tab must not hold discovery forever. Integrity lanes never consult
-    this function and therefore continue during a mismatch.
-    """
-    backend = _clean(getattr(server, "APP_VERSION", VERSION)) or VERSION
+    """Only a recently observed mismatched frontend pauses optional discovery."""
+    backend = _backend_version(server)
     with _STATE_LOCK:
         frontend = _clean(_STATE.get("frontendVersion"))
         seen = float(_STATE.get("frontendSeenAt") or 0)
@@ -61,26 +65,22 @@ def _install_mismatch_guard(server):
     global _ORIGINAL_SEARCH_SUSPENDED, _ORIGINAL_GREEN_ENABLED
     if getattr(server, "__sbbReleaseMismatchGuardV523", False):
         return
-
     original_search = getattr(server, "_history_search_suspended", None)
     original_green = getattr(server, "_history_green_worker_enabled", None)
     _ORIGINAL_SEARCH_SUSPENDED = original_search
     _ORIGINAL_GREEN_ENABLED = original_green
-
     if callable(original_search):
-        def _history_search_suspended_v523():
+        def _history_search_suspended_release():
             if _active_mismatch(server):
                 return True
             return bool(original_search())
-        server._history_search_suspended = _history_search_suspended_v523
-
+        server._history_search_suspended = _history_search_suspended_release
     if callable(original_green):
-        def _history_green_worker_enabled_v523(worker_index):
+        def _history_green_worker_enabled_release(worker_index):
             if _active_mismatch(server):
                 return False, "frontend-backend-version-mismatch"
             return original_green(worker_index)
-        server._history_green_worker_enabled = _history_green_worker_enabled_v523
-
+        server._history_green_worker_enabled = _history_green_worker_enabled_release
     server.__sbbReleaseMismatchGuardV523 = True
 
 
@@ -96,17 +96,14 @@ def _install_into_server():
     if not server:
         return
 
-    # Retire stale component-release metadata. Component versions may be displayed,
-    # but only APP_VERSION/VERSION determines deployment compatibility.
     try:
         from . import backend_inspector_api
-        backend_inspector_api.VERSION = "5.2.3-backend-inspector-api"
+        backend_inspector_api.VERSION = f"{_backend_version(server)}-backend-inspector-api"
         _STATE["backendInspectorPatched"] = True
     except Exception:
         pass
 
     _install_mismatch_guard(server)
-
     Handler = server.Handler
     if not getattr(Handler, "__sbbReleaseIdentityV523", False):
         old_get = Handler.do_GET
@@ -118,17 +115,18 @@ def _install_into_server():
                 frontend = _clean((qs.get("frontendVersion") or [""])[-1])
                 if frontend:
                     _record_frontend(server, frontend)
-                backend = _clean(getattr(server, "APP_VERSION", VERSION)) or VERSION
+                backend = _backend_version(server)
                 mismatch = _active_mismatch(server)
                 with _STATE_LOCK:
                     state = dict(_STATE)
+                observed_frontend = state.get("frontendVersion") or frontend
                 return server.send_json(self, {
                     "ok": True,
                     "version": backend,
-                    "release": VERSION,
+                    "release": backend,
                     "backendVersion": backend,
-                    "frontendVersion": state.get("frontendVersion") or frontend,
-                    "versionMatch": (state.get("frontendVersion") or frontend or backend) == backend,
+                    "frontendVersion": observed_frontend,
+                    "versionMatch": (observed_frontend or backend) == backend,
                     "optionalDiscoveryPausedForMismatch": mismatch,
                     "integrityPausedForMismatch": False,
                     "workerPolicy": {
@@ -143,6 +141,7 @@ def _install_into_server():
         Handler.__sbbReleaseIdentityV523 = True
 
     with _STATE_LOCK:
+        _STATE["version"] = _backend_version(server)
         _STATE["installed"] = True
 
 
@@ -152,7 +151,7 @@ def install():
         if _INSTALLED:
             return False
         _INSTALLED = True
-    threading.Thread(target=_install_into_server, daemon=True, name="sbb-release-identity-v523").start()
+    threading.Thread(target=_install_into_server, daemon=True, name="sbb-release-identity").start()
     return True
 
 

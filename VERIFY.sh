@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-# Sports Big Board deployment preflight intentionally stays non-blocking.
-echo "Sports Big Board v5.2.3 upload preflight"
-echo "No manifest, checksum, repository token, filename, or content-integrity gates."
-exit 0
+set -euo pipefail
+
+echo "Sports Big Board release-integrity preflight"
+python3 tools/check_release_version.py
+python3 tests/test_v529_release_integrity.py
+node --check ui/settings-view.js
+node --check architecture/key-info-current-v520.js
+python3 -m py_compile sbb/release_identity_v523.py
+
+echo "PASS: release-integrity preflight complete"

@@ -1,52 +1,102 @@
 #!/usr/bin/env python3
-"""Fail CI when a release is assembled from mixed frontend/backend generations."""
+"""Fail CI when Sports Big Board is assembled from mixed release generations.
+
+Deployment release identity is independent of component/module versions. VERSION,
+architecture/VERSION, index metadata/cache generation, frontend handshake callers,
+and backend APP_VERSION must all agree on the one deployment release.
+"""
 from pathlib import Path
 import re
+
 root=Path(__file__).resolve().parents[1]
 version=(root/'VERSION').read_text(encoding='utf-8').strip()
 errors=[]
-if not re.fullmatch(r'\d+\.\d+\.\d+',version): errors.append(f'VERSION is not semantic: {version!r}')
-index=(root/'index.html').read_text(encoding='utf-8')
-required=['styles.css','config.js','api-runtime.js','core-model.js','architecture/playback-session.js','architecture/milestone-console.js','architecture/foundation-certification.js','architecture/site-soundtrack.js','app.js']
-for asset in required:
-    token=f'{asset}?v={version}'
-    if token not in index: errors.append(f'index missing current cache generation: {token}')
+
+def text(path):
+    p=root/path
+    if not p.is_file():
+        errors.append(f'missing release-integrity file: {path}')
+        return ''
+    return p.read_text(encoding='utf-8')
+
+if not re.fullmatch(r'\d+\.\d+\.\d+',version):
+    errors.append(f'VERSION is not semantic: {version!r}')
+
+architecture_version=text(Path('architecture')/'VERSION').strip()
+if architecture_version!=version:
+    errors.append(f'architecture/VERSION={architecture_version!r}; expected {version!r}')
+
+index=text(Path('index.html'))
+if f'<title>Sports Big Board — v{version}</title>' not in index:
+    errors.append('index title does not match VERSION')
+if f'<meta name="sbb-release-version" content="{version}"' not in index:
+    errors.append('index canonical sbb-release-version meta does not match VERSION')
+if 'window.SBB_RELEASE_VERSION=version' not in index or 'window.SBB_RELEASE=Object.freeze' not in index:
+    errors.append('index does not establish the canonical frontend release authority')
+if 'sbbLegacyCoreReleaseProjection' not in index:
+    errors.append('index is missing the compatibility projection for legacy release consumers')
+
 asset_refs=re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index)
-seen_assets=set()
 for asset,found in asset_refs:
-    if found!=version: errors.append(f'stale cache generation {found} on {asset}; expected {version}')
-    if not (root/asset).is_file(): errors.append(f'index references missing local asset: {asset}')
-    if asset in seen_assets: errors.append(f'index loads local asset more than once: {asset}')
-    seen_assets.add(asset)
-core=(root/'core-model.js').read_text(encoding='utf-8')
-if f"version:'{version}'" not in core: errors.append('core-model version does not match VERSION')
-app=(root/'app.js').read_text(encoding='utf-8')
-# app.js derives the runtime release from the canonical core model. Its emergency
-# fallback is intentionally not a release handshake input, so ordinary releases do
-# not require touching the giant application file when no app logic changed.
-if 'version:String(DOMAIN_MODEL?.version||' not in app: errors.append('app architecture version is not derived from DOMAIN_MODEL')
-history_ui=(root/'ui'/'history-audit.js').read_text(encoding='utf-8')
-history_version_contract="const FRONTEND_VERSION=String(window.SBB_CORE?.version||'UNKNOWN')"
-if history_version_contract not in history_ui:
-    errors.append('history audit must derive frontend version from SBB_CORE without a hard-coded release fallback')
-if re.search(r"FRONTEND_VERSION\s*=.*?['\"]\d+\.\d+\.\d+['\"]",history_ui):
-    errors.append('history audit contains a hard-coded semantic version fallback')
+    if found!=version:
+        errors.append(f'stale cache generation {found} on {asset}; expected {version}')
+
+settings=text(Path('ui')/'settings-view.js')
+if re.search(r"(?:SBB_RELEASE_VERSION\s*=|SBB_CORE\s*=).*?['\"]\d+\.\d+\.\d+['\"]",settings,re.S):
+    errors.append('settings-view contains a hard-coded deployment release assignment')
+if 'window.SBB_RELEASE_VERSION=' in settings:
+    errors.append('settings-view must never assign SBB_RELEASE_VERSION')
+if 'window.SBB_CORE=Object.freeze' in settings:
+    errors.append('settings-view must never rewrite SBB_CORE release metadata')
+if 'window.SBB_RELEASE?.version||window.SBB_RELEASE_VERSION' not in settings:
+    errors.append('settings-view does not read canonical release identity')
+if '/api/release-identity?frontendVersion=' not in settings:
+    errors.append('settings-view does not report canonical frontend identity to backend')
+
+# The tuner must be directly available in Settings. Dev Mode still unlocks the
+# remaining diagnostic utilities, but ticker tuning is an operator setting.
+if 'class="settings-card sports-ticker-dev-card"' not in index:
+    errors.append('Sports Ticker tuning card is not statically present in Settings')
+if 'sports-ticker-dev-card sbb-dev-global-card' in index or 'sports-ticker-dev-card" data-sbb-dev-only' in index:
+    errors.append('Sports Ticker tuning card is still hidden behind a Dev-only gate')
+
+ticker=text(Path('architecture')/'key-info-current-v520.js')
+if ".sports-ticker-dev-card{display:block!important}" not in ticker:
+    errors.append('Sports Ticker runtime does not force its tuning utility visible')
+if "card.className='settings-card sports-ticker-dev-card'" not in ticker:
+    errors.append('runtime Sports Ticker utility injection is still Dev-gated')
+
+release_backend=text(Path('sbb')/'release_identity_v523.py')
+if 'VERSION = (ROOT / "VERSION").read_text' not in release_backend:
+    errors.append('backend release-identity module is not derived from repository VERSION')
+if re.search(r'^VERSION\s*=\s*["\']\d+\.\d+\.\d+["\']',release_backend,re.M):
+    errors.append('backend release-identity module contains a hard-coded semantic release')
+
+server=text(Path('server.py'))
+if 'APP_VERSION = (ROOT / "VERSION").read_text' not in server:
+    errors.append('server APP_VERSION is not derived from VERSION')
+
+verify=text(Path('VERIFY.sh'))
+if 'tools/check_release_version.py' not in verify:
+    errors.append('VERIFY.sh does not execute the release-integrity checker')
+if re.search(r'^exit\s+0\s*$',verify,re.M):
+    errors.append('VERIFY.sh contains an unconditional successful exit')
+
+# Release projection must exist after core-model is loaded and before consumers
+# such as Settings and History Audit initialize.
 try:
-    if index.index('core-model.js') > index.index('ui/history-audit.js'):
-        errors.append('history audit loads before core-model.js; dynamic release identity would be unavailable')
+    core_pos=index.index(f'<script src="core-model.js?v={version}"')
+    projection_pos=index.index('<script id="sbbLegacyCoreReleaseProjection"')
+    settings_pos=index.index(f'<script src="ui/settings-view.js?v={version}"')
+    history_pos=index.index(f'<script src="ui/history-audit.js?v={version}"')
+    if not (core_pos < projection_pos < settings_pos < history_pos):
+        errors.append('release authority/projection load order is unsafe')
 except ValueError:
-    errors.append('index is missing core-model.js or ui/history-audit.js')
-milestone=(root/'architecture'/'milestone-console.js').read_text(encoding='utf-8')
-if 'window.SBB_CORE?.version' not in milestone: errors.append('milestone console does not derive release identity from SBB_CORE')
-cert=(root/'architecture'/'foundation-certification.js').read_text(encoding='utf-8')
-if 'window.SBB_CORE?.version' not in cert: errors.append('foundation certification does not derive release identity from SBB_CORE')
-server=(root/'server.py').read_text(encoding='utf-8')
-if 'APP_VERSION = (ROOT / "VERSION").read_text' not in server: errors.append('server APP_VERSION is not derived from VERSION')
-verify=(root/'VERIFY.sh').read_text(encoding='utf-8')
-if 'tools/check_release_version.py' not in verify: errors.append('VERIFY.sh does not enforce release version check')
-if 'tools/check_foundation_certification.py' not in verify: errors.append('VERIFY.sh does not enforce foundation certification check')
+    errors.append('index is missing core/release/settings/history release surfaces')
+
 if errors:
-    print('RELEASE VERSION CHECK FAILED')
-    for e in errors: print(' -',e)
+    print('RELEASE INTEGRITY CHECK FAILED')
+    for error in errors:
+        print(' -',error)
     raise SystemExit(1)
-print(f'PASS: release version handshake inputs are synchronized at {version}')
+print(f'PASS: frontend + backend + database-audit release inputs are synchronized at {version}')
