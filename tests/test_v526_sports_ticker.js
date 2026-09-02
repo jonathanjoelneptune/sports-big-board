@@ -1,0 +1,24 @@
+const fs=require('fs');
+const path=require('path');
+const root=path.resolve(__dirname,'..');
+const js=fs.readFileSync(path.join(root,'architecture','key-info-current-v520.js'),'utf8');
+function need(ok,msg){if(!ok){console.error('FAIL',msg);process.exitCode=1;}else console.log('PASS',msg);}
+need(js.includes("const VERSION='5.2.6'"),'Sports Ticker module is v5.2.6');
+need(js.includes('const SPEED_PX_PER_SECOND=72'),'ticker has constant pixel-per-second speed');
+need(js.includes('const WINDOW_NODES=28'),'ticker uses a bounded recycling window');
+need(js.includes("className='sbb-sports-ticker-conveyor'"),'ticker owns a dedicated conveyor instead of the legacy giant marquee');
+need(js.includes('conveyorGroup.animate('),'ticker movement uses compositor-friendly Web Animations transform');
+need(js.includes('first.remove();')&&js.includes('appendNextNode();'),'ticker recycles one story node at a time');
+need(js.includes('state.recycledItems++'),'ticker records recycling telemetry');
+need(!js.includes('totalChars=rows.reduce'),'character-count duration heuristic is retired');
+need(js.includes('.key-info-item.breaking .key-info-type'),'BREAKING pill color is restored');
+need(js.includes('.key-info-item.transaction .key-info-type'),'TRANSACTION pill color is restored');
+need(js.includes('.key-info-item.record .key-info-type'),'RECORD pill color is restored');
+need(js.includes('.key-info-item.result .key-info-type'),'RESULT pill color is restored');
+need(js.includes('.key-info-item.championship .key-info-type'),'CHAMPIONSHIP pill color is restored');
+need(js.includes("'/api/sports-ticker/refresh'"),'manual Sports Ticker refresh endpoint is wired');
+need(js.includes("method:'POST'"),'manual Sports Ticker control issues POST');
+need(js.includes('restart:true,replace:true'),'manual refresh visibly loads the authoritative fresh edition');
+need(js.includes('renderActiveSportKeyInformation=renderNoop')&&js.includes('refreshKeyInformation=refreshNoop'),'score-date legacy ticker entry points remain no-ops');
+need(js.includes('window.SBB_SPORTS_TICKER=apiObject'),'Sports Ticker has a first-class runtime API');
+if(process.exitCode)process.exit(process.exitCode);

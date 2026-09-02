@@ -1,0 +1,62 @@
+Sports Big Board v5.2.6 — Smooth Sports Ticker + Manual AI Refresh
+
+UPLOAD / REPLACE
+----------------
+VERSION
+index.html
+architecture/VERSION
+architecture/key-info-current-v520.js
+sbb/current_news_v523.py
+tests/test_v526_sports_ticker.js
+tests/test_v526_sports_ticker.py
+tests/test_v526_release_handshake.py
+
+WHAT CHANGED
+------------
+1. Smooth Sports Ticker conveyor
+   - Retires the giant duplicated 150-story marquee layer.
+   - Keeps only a bounded 28-node conveyor in the live DOM.
+   - Uses Web Animations translate3d at a constant 72 pixels/second.
+   - Recycles one story only after it completely clears the left edge.
+   - Date changes and sport-filter changes remain strict ticker no-ops.
+   - Normal 20-minute edition updates preserve a visible story anchor when possible.
+
+2. News-type pill colors restored
+   - BREAKING: red
+   - INJURY / SUSPENSION: orange-red
+   - TRANSACTION / COACHING / RECRUITING / DRAFT: blue
+   - RECORD / RECORD WATCH / MILESTONE: purple
+   - RESULT / UPSET / STREAK / RETURN: green
+   - CHAMPIONSHIP / CLINCH / ELIMINATION / PLAYOFF / AWARD: gold
+   - RANKING / TOURNAMENT / SCHEDULE: teal
+   - RETIREMENT: neutral gray
+
+3. Dev operator AI refresh
+   - Turn DEV MODE ON in Settings.
+   - A new RUN SPORTS TICKER AI button appears in the DEV / FOUNDATION CERTIFICATION card.
+   - The button POSTs /api/sports-ticker/refresh.
+   - Backend collects fresh current league-news source rows first.
+   - Then it requires and runs the configured OpenAI editorial model.
+   - The resulting edition replaces stale prior membership instead of carrying old rows forever.
+   - Browser polls status and immediately reloads the completed edition from story #1.
+   - If OpenAI is not configured, the button shows a visible failure instead of silently using rules.
+
+VERIFY
+------
+node tests/test_v526_sports_ticker.js
+python tests/test_v526_sports_ticker.py
+python tests/test_v526_release_handshake.py
+./VERIFY.sh
+
+MANUAL SMOKE
+------------
+1. Watch the Sports Ticker for 30-60 seconds. Motion should remain even and continuous,
+   with no periodic lurch caused by a huge duplicated marquee.
+2. Change score dates repeatedly. Sports Ticker speed/position must not reset.
+3. Confirm the category pill changes color across BREAKING, TRANSACTION, RECORD,
+   RESULT, PLAYOFF/CHAMPIONSHIP, etc.
+4. Open Settings -> DEV / FOUNDATION CERTIFICATION and turn DEV MODE ON.
+5. Click RUN SPORTS TICKER AI.
+6. Status should progress through fresh collection -> OpenAI run -> Updated.
+7. The completed edition should restart at its newly generated first story and old stale
+   membership that was not part of the fresh/current edition should disappear.

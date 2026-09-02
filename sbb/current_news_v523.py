@@ -1,4 +1,4 @@
-"""Sports Big Board v5.2.5 — stable new-first Sports Ticker intelligence snapshot.
+"""Sports Big Board v5.2.6 — operator-refreshable Sports Ticker intelligence snapshot.
 
 The interactive board only reads a persisted last-good edition. Collection, rules,
 and the existing OpenAI editorial layer run in a background daemon every 20 minutes.
@@ -20,13 +20,14 @@ from urllib.parse import urlparse
 
 from . import current_news_v522 as source_v522
 
-VERSION = "5.2.5-sports-ticker-2"
+VERSION = "5.2.6-sports-ticker-3"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _STATE_PATH = _STATE_DIR / "sports-ticker.json"
 _MIGRATION_PATHS = (_STATE_DIR / "sports-ticker-v524.json", _STATE_DIR / "key-info-intelligence-v523.json")
 _REFRESH_SECONDS = 20 * 60
 _MAX_ROWS = 150
 _INSTALL_LOCK = threading.Lock()
+_MANUAL_LOCK = threading.Lock()
 _CACHE_LOCK = threading.RLock()
 _INSTALLED = False
 _SERVER = None
@@ -34,7 +35,9 @@ _STOP = threading.Event()
 _CACHE = {"savedAt": 0.0, "source": "", "data": [], "sourceSignature": ""}
 _STATE = {"version": VERSION, "installed": False, "refreshing": False, "lastRefreshAt": 0.0,
           "lastError": "", "openaiRuns": 0, "ruleRuns": 0, "served": 0, "refreshSeconds": _REFRESH_SECONDS,
-          "newItemsLastRefresh": 0, "revision": 0, "ordering": "NEW_FIRST_STABLE"}
+          "newItemsLastRefresh": 0, "revision": 0, "ordering": "NEW_FIRST_STABLE",
+          "manualRunning": False, "manualRuns": 0, "manualRequestedAt": 0.0, "manualCompletedAt": 0.0,
+          "manualSourceCount": 0, "manualLastError": "", "manualLastResult": "", "openaiConfigured": False}
 
 _NOISE = re.compile(r"\b(prediction|predictions|preview|mock draft|fantasy|betting|odds|picks?|mailbag|podcast|best .* list|top \d+ list|power rankings? preview)\b", re.I)
 _CATEGORY_PATTERNS = [
@@ -95,27 +98,72 @@ def _persist(rows, source, signature):
         tmp.write_text(json.dumps(payload,ensure_ascii=False,separators=(",",":"),default=str),encoding="utf-8");os.replace(tmp,_STATE_PATH)
     except Exception: pass
 
-def _raw_rows(server):
-    rows=[]
+def _recent_enough(row, max_age_seconds=36*60*60):
+    raw=_clean(row.get("publishedAt") or row.get("updatedAt") or row.get("timestamp") or row.get("date"))
+    if not raw:return False
+    try:
+        from datetime import datetime
+        ts=datetime.fromisoformat(raw.replace("Z","+00:00")).timestamp()
+        return (time.time()-ts) <= max_age_seconds
+    except Exception:return False
+
+def _collect_live_source_rows():
+    """Explicit operator refresh: hit the existing current-news league feeds now.
+
+    This is never called from an interactive GET. It runs only in the manual refresh
+    worker, so provider/network work remains outside the board's request lane.
+    """
+    rows=[];seen=set();feeds=dict(getattr(source_v522,"_FEEDS",{}) or {})
+    try:
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        fetch=getattr(source_v522,"_fetch_json",None);normalize=getattr(source_v522,"_normalize_article",None)
+        if not feeds or not callable(fetch) or not callable(normalize):return []
+        with ThreadPoolExecutor(max_workers=min(6,len(feeds)),thread_name_prefix="sbb-ticker-manual") as pool:
+            futures={pool.submit(fetch,url):league for league,url in feeds.items()}
+            for future in as_completed(futures):
+                league=futures[future]
+                try:payload=future.result() or {}
+                except Exception:continue
+                for raw in (payload.get("articles") or payload.get("news") or []):
+                    try:item=normalize(raw,league)
+                    except Exception:item=None
+                    if not item:continue
+                    key=re.sub(r"[^a-z0-9]+"," ",_clean(item.get("title")).lower()).strip()
+                    if not key or key in seen:continue
+                    seen.add(key);rows.append(dict(item))
+        rows.sort(key=lambda x:_timestamp(x),reverse=True)
+        if rows:
+            try:source_v522._persist(rows[:30],"ESPN_NEWS_MANUAL")
+            except Exception:pass
+        return rows[:80]
+    except Exception as exc:
+        _STATE["manualLastError"]=f"source collection: {type(exc).__name__}: {exc}"[:300]
+        return []
+
+def _raw_rows(server, seed_rows=None, fresh_only=False):
+    rows=[dict(x) for x in (seed_rows or []) if isinstance(x,dict)]
     try:
         lock=getattr(server,"EDITORIAL_SNAPSHOT_LOCK",None)
         if lock:
             with lock: snap=copy.deepcopy(getattr(server,"EDITORIAL_SNAPSHOT",{}) or {})
         else: snap=copy.deepcopy(getattr(server,"EDITORIAL_SNAPSHOT",{}) or {})
-        rows.extend(dict(x) for x in (snap.get("data") or []) if isinstance(x,dict))
+        desk=[dict(x) for x in (snap.get("data") or []) if isinstance(x,dict)]
+        rows.extend(x for x in desk if (not fresh_only or _recent_enough(x)))
     except Exception: pass
     try:
-        rows.extend(dict(x) for x in source_v522._desk_rows(server) if isinstance(x,dict))
+        desk=[dict(x) for x in source_v522._desk_rows(server) if isinstance(x,dict)]
+        rows.extend(x for x in desk if (not fresh_only or _recent_enough(x)))
     except Exception: pass
-    try:
-        fallback,_=source_v522._rows(server);rows.extend(dict(x) for x in fallback if isinstance(x,dict))
-    except Exception: pass
-    # Consume any already-materialized server ticker/cache candidates without causing provider work.
-    for name in ("_bootstrap_key_info_from_caches","_cached_key_info_events","_current_ticker_rows"):
+    if not fresh_only:
         try:
-            fn=getattr(server,name,None)
-            if callable(fn): rows.extend(dict(x) for x in (fn() or []) if isinstance(x,dict))
+            fallback,_=source_v522._rows(server);rows.extend(dict(x) for x in fallback if isinstance(x,dict))
         except Exception: pass
+        # Consume already-materialized server candidates without causing provider work.
+        for name in ("_bootstrap_key_info_from_caches","_cached_key_info_events","_current_ticker_rows"):
+            try:
+                fn=getattr(server,name,None)
+                if callable(fn): rows.extend(dict(x) for x in (fn() or []) if isinstance(x,dict))
+            except Exception: pass
     out=[];seen=set()
     for row in rows:
         title=_clean(row.get("title") or row.get("headline") or row.get("shortHeadline"))
@@ -197,31 +245,76 @@ def _merge_new_first(fresh,old,now=None):
     merged=(new+retained)[:_MAX_ROWS]
     return merged,len(new)
 
-def _refresh(server,force=False):
-    if _STATE["refreshing"]: return False
+def _refresh(server,force=False,seed_rows=None,replace=False,require_openai=False,fresh_only=False,manual=False):
+    if _STATE["refreshing"] or (_STATE.get("manualRunning") and not manual): return False
     _STATE["refreshing"]=True
     try:
-        raw=_raw_rows(server);sig=_signature(raw)
+        raw=_raw_rows(server,seed_rows=seed_rows,fresh_only=fresh_only);sig=_signature(raw)
         with _CACHE_LOCK:
             old_sig=_CACHE.get("sourceSignature") or "";old_rows=[dict(x) for x in (_CACHE.get("data") or [])];age=time.time()-float(_CACHE.get("savedAt") or 0)
         if not force and sig and sig==old_sig and old_rows and age<_REFRESH_SECONDS:
             _STATE["newItemsLastRefresh"]=0;return True
         edited=[];provider="RULES_SPORTS_TICKER"
-        if raw and callable(getattr(server,"openai_editorialize_events",None)) and callable(getattr(server,"read_openai_key",None)):
+        editor=getattr(server,"openai_editorialize_events",None);key_reader=getattr(server,"read_openai_key",None)
+        key=""
+        try:key=key_reader() if callable(key_reader) else ""
+        except Exception:key=""
+        _STATE["openaiConfigured"]=bool(key)
+        if require_openai and (not key or not callable(editor)):
+            raise RuntimeError("OpenAI is not configured on the Sports Big Board backend")
+        if raw and callable(editor) and key:
             try:
-                if server.read_openai_key():
-                    edited=list(server.openai_editorialize_events(raw[:160]) or []);provider="OPENAI_SPORTS_TICKER";_STATE["openaiRuns"]+=1
-            except Exception as exc: _STATE["lastError"]=f"OpenAI: {type(exc).__name__}: {exc}"[:300]
+                edited=list(editor(raw[:160]) or [])
+                if edited:
+                    provider="OPENAI_SPORTS_TICKER";_STATE["openaiRuns"]+=1
+                elif require_openai:
+                    raise RuntimeError("OpenAI returned no Sports Ticker editorial rows")
+            except Exception as exc:
+                if require_openai: raise
+                _STATE["lastError"]=f"OpenAI: {type(exc).__name__}: {exc}"[:300]
         fresh=_normalize(edited,provider) if edited else _normalize(raw,provider)
         if fresh:
-            merged,new_count=_merge_new_first(fresh,old_rows)
+            if replace:
+                old_keys={_ticker_key(x) for x in old_rows if _ticker_key(x)}
+                merged=[dict(x) for x in fresh[:_MAX_ROWS]];new_count=sum(1 for x in merged if _ticker_key(x) not in old_keys)
+            else:
+                merged,new_count=_merge_new_first(fresh,old_rows)
             _persist(merged,provider,sig);_STATE["lastRefreshAt"]=time.time();_STATE["lastError"]=""
             _STATE["newItemsLastRefresh"]=new_count;_STATE["revision"]+=1
             if provider!="OPENAI_SPORTS_TICKER": _STATE["ruleRuns"]+=1
             return True
         _STATE["newItemsLastRefresh"]=0
-        return bool(old_rows) # stale is always better than blank
+        return bool(old_rows) # stale is always better than blank for automatic refreshes
     finally: _STATE["refreshing"]=False
+
+def _manual_refresh_worker(server,requested_at):
+    try:
+        live=_collect_live_source_rows();_STATE["manualSourceCount"]=len(live)
+        if not live:raise RuntimeError("Fresh sports-news collection returned no stories")
+        ok=_refresh(server,force=True,seed_rows=live,replace=True,require_openai=True,fresh_only=True,manual=True)
+        if not ok:raise RuntimeError("Sports Ticker AI refresh produced no usable edition")
+        _STATE["manualCompletedAt"]=time.time();_STATE["manualLastError"]=""
+        _STATE["manualLastResult"]=f"OPENAI refreshed {len(_CACHE.get('data') or [])} stories from {len(live)} fresh source rows"
+    except Exception as exc:
+        _STATE["manualCompletedAt"]=time.time();_STATE["manualLastError"]=f"{type(exc).__name__}: {exc}"[:300]
+        _STATE["manualLastResult"]="FAILED"
+    finally:
+        _STATE["manualRunning"]=False
+
+def _start_manual_refresh(server):
+    with _MANUAL_LOCK:
+        if _STATE.get("manualRunning") or _STATE.get("refreshing"):
+            raise RuntimeError("A Sports Ticker refresh is already running")
+        try:
+            reader=getattr(server,"read_openai_key",None);key=reader() if callable(reader) else ""
+        except Exception:key=""
+        _STATE["openaiConfigured"]=bool(key)
+        if not key:raise RuntimeError("OpenAI key is not configured on the backend")
+        requested=time.time();_STATE["manualRunning"]=True;_STATE["manualRuns"]+=1
+        _STATE["manualRequestedAt"]=requested;_STATE["manualCompletedAt"]=0.0;_STATE["manualSourceCount"]=0
+        _STATE["manualLastError"]="";_STATE["manualLastResult"]="STARTED"
+        threading.Thread(target=_manual_refresh_worker,args=(server,requested),daemon=True,name="sbb-sports-ticker-manual-v526").start()
+        return True,requested
 
 def _worker():
     if _STOP.wait(3.0): return
@@ -238,7 +331,7 @@ def _response():
     with _CACHE_LOCK:
         rows=[dict(x) for x in (_CACHE.get("data") or []) if isinstance(x,dict)];saved=float(_CACHE.get("savedAt") or 0);source=_clean(_CACHE.get("source")) or "SPORTS_TICKER_CACHE"
     return {"ok":True,"version":VERSION,"current":True,"sportsTicker":True,"data":rows[:_MAX_ROWS],"count":len(rows[:_MAX_ROWS]),
-            "source":source,"savedAt":saved,"refreshing":bool(_STATE["refreshing"]),"refreshSeconds":_REFRESH_SECONDS,
+            "source":source,"savedAt":saved,"refreshing":bool(_STATE["refreshing"] or _STATE.get("manualRunning")),"manualRunning":bool(_STATE.get("manualRunning")),"refreshSeconds":_REFRESH_SECONDS,
             "nextRefreshAt":saved+_REFRESH_SECONDS if saved else 0,"categories":sorted({str(x.get("eventType") or "") for x in rows if x.get("eventType")}),
             "ordering":"NEW_FIRST_STABLE","revision":int(_STATE.get("revision") or 0),"newItemsLastRefresh":int(_STATE.get("newItemsLastRefresh") or 0)}
 
@@ -257,8 +350,8 @@ def _install_into_server():
             if seeded:_persist(seeded,"RULES_SPORTS_TICKER",_signature(seeded))
         except Exception: pass
     Handler=server.Handler
-    if not getattr(Handler,"__sbbSportsTickerV525",False):
-        old_get=Handler.do_GET
+    if not getattr(Handler,"__sbbSportsTickerV526",False):
+        old_get=Handler.do_GET;old_post=getattr(Handler,"do_POST",None)
         def do_GET(self):
             parsed=urlparse(self.path)
             if parsed.path in {"/api/sports-ticker","/api/current-news"}:
@@ -267,16 +360,28 @@ def _install_into_server():
             if parsed.path in {"/api/sports-ticker/status","/api/current-news/status"}:
                 payload=_response();payload.update(copy.deepcopy(_STATE));return server.send_json(self,payload,200,{"Cache-Control":"no-store"})
             return old_get(self)
-        Handler.do_GET=do_GET;Handler.__sbbSportsTickerV525=True
+        def do_POST(self):
+            parsed=urlparse(self.path)
+            if parsed.path=="/api/sports-ticker/refresh":
+                try:
+                    started,requested=_start_manual_refresh(server)
+                except RuntimeError as exc:
+                    return server.send_json(self,{**_response(),"ok":False,"error":str(exc)},409,{"Cache-Control":"no-store"})
+                payload=_response();payload.update({"ok":True,"accepted":bool(started),"requestedAt":requested,"manualRunning":True})
+                return server.send_json(self,payload,202,{"Cache-Control":"no-store"})
+            if callable(old_post):return old_post(self)
+            try:self.send_error(404)
+            except Exception:pass
+        Handler.do_GET=do_GET;Handler.do_POST=do_POST;Handler.__sbbSportsTickerV526=True
     _STATE["installed"]=True
-    threading.Thread(target=_worker,daemon=True,name="sbb-sports-ticker-v525").start()
+    threading.Thread(target=_worker,daemon=True,name="sbb-sports-ticker-v526").start()
 
 def install():
     global _INSTALLED
     with _INSTALL_LOCK:
         if _INSTALLED:return False
         _INSTALLED=True
-    threading.Thread(target=_install_into_server,daemon=True,name="sbb-sports-ticker-install-v525").start();return True
+    threading.Thread(target=_install_into_server,daemon=True,name="sbb-sports-ticker-install-v526").start();return True
 
 def diagnostics():
     with _CACHE_LOCK:return {**copy.deepcopy(_STATE),"cacheCount":len(_CACHE.get("data") or []),"source":_CACHE.get("source") or ""}
