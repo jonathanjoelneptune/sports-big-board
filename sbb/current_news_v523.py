@@ -1,4 +1,4 @@
-"""Sports Big Board v5.2.4 — prepared Sports Ticker intelligence snapshot.
+"""Sports Big Board v5.2.5 — stable new-first Sports Ticker intelligence snapshot.
 
 The interactive board only reads a persisted last-good edition. Collection, rules,
 and the existing OpenAI editorial layer run in a background daemon every 20 minutes.
@@ -20,10 +20,10 @@ from urllib.parse import urlparse
 
 from . import current_news_v522 as source_v522
 
-VERSION = "5.2.4-sports-ticker-1"
+VERSION = "5.2.5-sports-ticker-2"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
-_STATE_PATH = _STATE_DIR / "sports-ticker-v524.json"
-_LEGACY_STATE_PATH = _STATE_DIR / "key-info-intelligence-v523.json"
+_STATE_PATH = _STATE_DIR / "sports-ticker.json"
+_MIGRATION_PATHS = (_STATE_DIR / "sports-ticker-v524.json", _STATE_DIR / "key-info-intelligence-v523.json")
 _REFRESH_SECONDS = 20 * 60
 _MAX_ROWS = 150
 _INSTALL_LOCK = threading.Lock()
@@ -33,7 +33,8 @@ _SERVER = None
 _STOP = threading.Event()
 _CACHE = {"savedAt": 0.0, "source": "", "data": [], "sourceSignature": ""}
 _STATE = {"version": VERSION, "installed": False, "refreshing": False, "lastRefreshAt": 0.0,
-          "lastError": "", "openaiRuns": 0, "ruleRuns": 0, "served": 0, "refreshSeconds": _REFRESH_SECONDS}
+          "lastError": "", "openaiRuns": 0, "ruleRuns": 0, "served": 0, "refreshSeconds": _REFRESH_SECONDS,
+          "newItemsLastRefresh": 0, "revision": 0, "ordering": "NEW_FIRST_STABLE"}
 
 _NOISE = re.compile(r"\b(prediction|predictions|preview|mock draft|fantasy|betting|odds|picks?|mailbag|podcast|best .* list|top \d+ list|power rankings? preview)\b", re.I)
 _CATEGORY_PATTERNS = [
@@ -71,14 +72,16 @@ def _clean(v): return str(v or "").strip()
 
 def _load():
     global _CACHE
-    for path in (_STATE_PATH, _LEGACY_STATE_PATH):
+    for path in (_STATE_PATH, *_MIGRATION_PATHS):
         try:
             payload=json.loads(path.read_text(encoding="utf-8"))
             if isinstance(payload,dict) and isinstance(payload.get("data"),list):
                 with _CACHE_LOCK:
                     _CACHE={"savedAt":float(payload.get("savedAt") or 0),"source":_clean(payload.get("source")),
-                            "data":[dict(x) for x in payload.get("data") if isinstance(x,dict)],
+                            "data":[dict(x) for x in payload.get("data") if isinstance(x,dict)][:_MAX_ROWS],
                             "sourceSignature":_clean(payload.get("sourceSignature"))}
+                if path != _STATE_PATH and _CACHE.get("data"):
+                    _persist(_CACHE["data"], _CACHE.get("source") or "MIGRATED_SPORTS_TICKER", _CACHE.get("sourceSignature") or "")
                 return True
         except Exception: pass
     return False
@@ -136,6 +139,23 @@ def _category(row):
         if pattern.search(text): return label
     return ""
 
+def _ticker_key(row):
+    explicit=_clean(row.get("tickerKey"))
+    if explicit:return explicit
+    title=_clean(row.get("shortHeadline") or row.get("headline") or row.get("title"))
+    ident=_clean(row.get("id") or row.get("eventId") or row.get("gameId") or row.get("sourceUrl") or row.get("externalUrl"))
+    category=_clean(row.get("category") or row.get("eventType"))
+    raw=f"{ident}|{title}|{category}".lower()
+    return hashlib.sha1(raw.encode("utf-8","ignore")).hexdigest()[:24] if title else ""
+
+def _timestamp(row):
+    raw=_clean(row.get("publishedAt") or row.get("updatedAt") or row.get("timestamp") or row.get("date"))
+    if not raw:return 0.0
+    try:
+        from datetime import datetime
+        return datetime.fromisoformat(raw.replace("Z","+00:00")).timestamp()
+    except Exception:return 0.0
+
 def _normalize(rows,provider):
     out=[];seen=set()
     for row in rows:
@@ -144,15 +164,38 @@ def _normalize(rows,provider):
         cat=_category(row)
         if not cat: continue
         compact=re.sub(r"\s+"," ",title).strip()[:200]
-        key=re.sub(r"[^a-z0-9]+"," ",compact.lower()).strip()
-        if not key or key in seen: continue
-        seen.add(key);item=dict(row)
+        item=dict(row)
         item.update({"eventType":cat,"category":cat,"title":compact,"headline":compact,"shortHeadline":compact[:140],
                      "importance":max(int(item.get("importance") or 0),_IMPORTANCE.get(cat,45)),"sportsTicker":True,
                      "keyInfo":True,"contextOnly":True,"editorialProvider":provider,"verifiedPlayable":False})
-        out.append(item)
-    out.sort(key=lambda x:(int(x.get("importance") or 0),_clean(x.get("publishedAt") or x.get("date"))),reverse=True)
+        key=_ticker_key(item)
+        if not key or key in seen:continue
+        seen.add(key);item["tickerKey"]=key;out.append(item)
+    # Fresh candidates are newest-first; importance breaks ties. Stable session ordering
+    # is applied by _merge_new_first so an old story never jumps around the conveyor.
+    out.sort(key=lambda x:(_timestamp(x),int(x.get("importance") or 0)),reverse=True)
     return out[:_MAX_ROWS]
+
+def _merge_new_first(fresh,old,now=None):
+    now=float(now or time.time());old=[dict(x) for x in old if isinstance(x,dict)]
+    old_by={_ticker_key(x):x for x in old if _ticker_key(x)}
+    fresh_by={_ticker_key(x):x for x in fresh if _ticker_key(x)}
+    new=[]
+    for item in fresh:
+        key=_ticker_key(item)
+        if not key or key in old_by:continue
+        row=dict(item);row.setdefault("firstSeenAt",now);row["lastSeenAt"]=now;new.append(row)
+    retained=[];seen=set()
+    for prior in old:
+        key=_ticker_key(prior)
+        if not key or key in seen:continue
+        seen.add(key)
+        if key in fresh_by:
+            row={**prior,**fresh_by[key]};row["firstSeenAt"]=prior.get("firstSeenAt") or now;row["lastSeenAt"]=now
+        else:row=prior
+        retained.append(row)
+    merged=(new+retained)[:_MAX_ROWS]
+    return merged,len(new)
 
 def _refresh(server,force=False):
     if _STATE["refreshing"]: return False
@@ -160,19 +203,23 @@ def _refresh(server,force=False):
     try:
         raw=_raw_rows(server);sig=_signature(raw)
         with _CACHE_LOCK:
-            old_sig=_CACHE.get("sourceSignature") or "";old_rows=list(_CACHE.get("data") or []);age=time.time()-float(_CACHE.get("savedAt") or 0)
-        if not force and sig and sig==old_sig and old_rows and age<_REFRESH_SECONDS: return True
+            old_sig=_CACHE.get("sourceSignature") or "";old_rows=[dict(x) for x in (_CACHE.get("data") or [])];age=time.time()-float(_CACHE.get("savedAt") or 0)
+        if not force and sig and sig==old_sig and old_rows and age<_REFRESH_SECONDS:
+            _STATE["newItemsLastRefresh"]=0;return True
         edited=[];provider="RULES_SPORTS_TICKER"
         if raw and callable(getattr(server,"openai_editorialize_events",None)) and callable(getattr(server,"read_openai_key",None)):
             try:
                 if server.read_openai_key():
                     edited=list(server.openai_editorialize_events(raw[:160]) or []);provider="OPENAI_SPORTS_TICKER";_STATE["openaiRuns"]+=1
             except Exception as exc: _STATE["lastError"]=f"OpenAI: {type(exc).__name__}: {exc}"[:300]
-        normalized=_normalize(edited,provider) if edited else _normalize(raw,provider)
-        if normalized:
-            _persist(normalized,provider,sig);_STATE["lastRefreshAt"]=time.time();_STATE["lastError"]=""
+        fresh=_normalize(edited,provider) if edited else _normalize(raw,provider)
+        if fresh:
+            merged,new_count=_merge_new_first(fresh,old_rows)
+            _persist(merged,provider,sig);_STATE["lastRefreshAt"]=time.time();_STATE["lastError"]=""
+            _STATE["newItemsLastRefresh"]=new_count;_STATE["revision"]+=1
             if provider!="OPENAI_SPORTS_TICKER": _STATE["ruleRuns"]+=1
             return True
+        _STATE["newItemsLastRefresh"]=0
         return bool(old_rows) # stale is always better than blank
     finally: _STATE["refreshing"]=False
 
@@ -192,7 +239,8 @@ def _response():
         rows=[dict(x) for x in (_CACHE.get("data") or []) if isinstance(x,dict)];saved=float(_CACHE.get("savedAt") or 0);source=_clean(_CACHE.get("source")) or "SPORTS_TICKER_CACHE"
     return {"ok":True,"version":VERSION,"current":True,"sportsTicker":True,"data":rows[:_MAX_ROWS],"count":len(rows[:_MAX_ROWS]),
             "source":source,"savedAt":saved,"refreshing":bool(_STATE["refreshing"]),"refreshSeconds":_REFRESH_SECONDS,
-            "nextRefreshAt":saved+_REFRESH_SECONDS if saved else 0,"categories":sorted({str(x.get("eventType") or "") for x in rows if x.get("eventType")})}
+            "nextRefreshAt":saved+_REFRESH_SECONDS if saved else 0,"categories":sorted({str(x.get("eventType") or "") for x in rows if x.get("eventType")}),
+            "ordering":"NEW_FIRST_STABLE","revision":int(_STATE.get("revision") or 0),"newItemsLastRefresh":int(_STATE.get("newItemsLastRefresh") or 0)}
 
 def _install_into_server():
     global _SERVER
@@ -209,7 +257,7 @@ def _install_into_server():
             if seeded:_persist(seeded,"RULES_SPORTS_TICKER",_signature(seeded))
         except Exception: pass
     Handler=server.Handler
-    if not getattr(Handler,"__sbbSportsTickerV524",False):
+    if not getattr(Handler,"__sbbSportsTickerV525",False):
         old_get=Handler.do_GET
         def do_GET(self):
             parsed=urlparse(self.path)
@@ -219,16 +267,16 @@ def _install_into_server():
             if parsed.path in {"/api/sports-ticker/status","/api/current-news/status"}:
                 payload=_response();payload.update(copy.deepcopy(_STATE));return server.send_json(self,payload,200,{"Cache-Control":"no-store"})
             return old_get(self)
-        Handler.do_GET=do_GET;Handler.__sbbSportsTickerV524=True
+        Handler.do_GET=do_GET;Handler.__sbbSportsTickerV525=True
     _STATE["installed"]=True
-    threading.Thread(target=_worker,daemon=True,name="sbb-sports-ticker-v524").start()
+    threading.Thread(target=_worker,daemon=True,name="sbb-sports-ticker-v525").start()
 
 def install():
     global _INSTALLED
     with _INSTALL_LOCK:
         if _INSTALLED:return False
         _INSTALLED=True
-    threading.Thread(target=_install_into_server,daemon=True,name="sbb-sports-ticker-install-v524").start();return True
+    threading.Thread(target=_install_into_server,daemon=True,name="sbb-sports-ticker-install-v525").start();return True
 
 def diagnostics():
     with _CACHE_LOCK:return {**copy.deepcopy(_STATE),"cacheCount":len(_CACHE.get("data") or []),"source":_CACHE.get("source") or ""}

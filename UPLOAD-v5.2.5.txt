@@ -1,0 +1,120 @@
+Sports Big Board v5.2.5 — Continuous Sports Ticker + Release Handshake Repair
+=============================================================================
+
+UPLOAD METHOD
+-------------
+Upload the CONTENTS of this package to the repository root, preserving folders,
+and replace the existing files with the same names.
+
+This is a changed-files-only manual GitHub upload package. Do not create an extra
+Sports-Big-Board-v5.2.5-manual-upload folder in the repository.
+
+FILES TO REPLACE / ADD
+----------------------
+VERSION
+index.html
+architecture/VERSION
+architecture/date-transition-coordinator.js
+architecture/key-info-current-v520.js
+sbb/current_news_v523.py
+tests/test_v525_sports_ticker.js
+tests/test_v525_sports_ticker.py
+tests/test_v525_release_handshake.py
+UPLOAD-v5.2.5.txt
+
+WHY v5.2.4 FAILED TO DEPLOY
+---------------------------
+The v5.2.4 delta changed VERSION to 5.2.4 but omitted index.html. The deployment
+handshake reads VERSION, then waits for GitHub Pages to serve both:
+
+  app.js?v=<VERSION>
+  architecture/milestone-console.js?v=<VERSION>
+
+GitHub Pages was therefore still serving the exact v5.2.3 index generation while
+the repository declared v5.2.4. The handshake correctly failed before backend
+verification.
+
+v5.2.5 includes index.html and synchronizes the executable cache-busting generation
+to 5.2.5. A targeted regression test now checks those exact handshake tokens.
+
+SPORTS TICKER CONTINUITY
+------------------------
+The old app renderer is date-oriented and rebuilds #keyInfoTrack from scratch. It
+also hard-caps the marquee at 20 items. v5.2.4 wrapped that renderer, so a legacy
+setScoreBrowseDate call could still call renderActiveSportKeyInformation() and
+restart the ticker animation.
+
+v5.2.5 gives SPORTS TICKER exclusive ownership:
+
+- Score-date changes do not fetch the ticker.
+- Score-date changes do not render the ticker.
+- Score-date changes do not replace #keyInfoTrack.
+- Sport/filter changes do not rerender the ticker.
+- Legacy refreshKeyInformation calls become strict no-ops after ticker ownership.
+- The ticker's own reader checks the persisted /api/sports-ticker edition every
+  20 minutes (three times per hour).
+- Up to 150 ticker items are rendered. The established item renderer is reused in
+  20-item staging batches so existing click behavior is retained beyond the old
+  20-item display limit.
+- When an edition contains genuinely new stories, those stories are prepended to
+  the ordered ticker.
+- Existing stories keep their browser-session order even if the backend reranks them.
+- Before replacing the marquee for a real new edition, the current CSS transform is
+  captured. The width of the new prefix is measured and converted to a negative
+  animation delay, preserving the same on-screen story position instead of jumping
+  back to the start.
+- If an edition contains no new stories, the ticker DOM is not rebuilt at all.
+- Stale last-good ticker data remains visible if refresh fails.
+
+BACKEND TICKER ORDERING
+-----------------------
+The background Sports Ticker worker remains on the 20-minute cadence. OpenAI/rules
+work stays off the interactive request path.
+
+The persisted edition now uses NEW_FIRST_STABLE ordering:
+
+1. Newly discovered or materially updated story keys are inserted first.
+2. Existing stories keep their prior relative order.
+3. Existing metadata can update without reshuffling the conveyor.
+4. Last-good rows remain available through failed/empty refreshes.
+5. The persistent state migrates from sports-ticker-v524.json to the stable
+   sports-ticker.json path automatically.
+
+NCAAF PILL
+----------
+index.html now makes the permanent NCAAF sport pill an inline-flex item with
+align-items:center, justify-content:center and align-self:center.
+
+HISTORICAL NAVIGATION
+---------------------
+The bounded v5.2.4 single-owner historical date coordinator is carried forward as
+v5.2.5. Its maximum planned RibbonSnapshot reads per transition remains five. The
+Sports Ticker is now explicitly outside that transaction.
+
+TARGETED VERIFICATION
+---------------------
+From the repository root after upload:
+
+  node tests/test_v525_sports_ticker.js
+  python tests/test_v525_sports_ticker.py
+  python tests/test_v525_release_handshake.py
+  node --check architecture/key-info-current-v520.js
+  node --check architecture/date-transition-coordinator.js
+  python -m py_compile sbb/current_news_v523.py
+  ./VERIFY.sh
+
+MANUAL SMOKE CHECK
+------------------
+1. Start the board and confirm the visible heading says SPORTS TICKER.
+2. Watch a specific ticker story move across the ribbon.
+3. Change score dates several times, including a historical date such as July 7.
+4. Confirm that exact ticker story continues moving without jumping back to the
+   beginning and no ticker loading state appears.
+5. In DevTools Network, date changes should create zero /api/sports-ticker and zero
+   /api/current-news requests.
+6. Confirm the ticker can contain more than 20 entries.
+7. After a prepared backend edition gains a new story, confirm it is ordered at the
+   front while the currently visible ticker position remains visually continuous.
+8. Confirm the NCAAF pill is vertically centered with the other sport pills.
+
+This package intentionally follows the Sports Big Board manual-upload workflow.

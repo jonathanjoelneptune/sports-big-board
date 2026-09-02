@@ -1,4 +1,4 @@
-/* Sports Big Board v5.2.4 — single-owner prepared-snapshot date convergence.
+/* Sports Big Board v5.2.5 — single-owner prepared-snapshot date convergence.
 
    Date navigation is a lookup, not a discovery workflow. This coordinator owns the
    visible date transition. It deliberately strips legacy wrappers that independently
@@ -6,8 +6,8 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_DATE_TRANSITIONS?.version==='5.2.4')return;
-  const VERSION='5.2.4';
+  if(window.SBB_DATE_TRANSITIONS?.version==='5.2.5')return;
+  const VERSION='5.2.5';
   const CONVERGENCE_DELAYS=[600,1800,5000,12000];
   const state={generation:0,activeDate:'',currentPromise:null,firstPaintSource:'',lastElapsedMs:0,
     convergenceRuns:0,convergenceReads:0,convergenceCompleted:0,convergenceSuperseded:0,
@@ -22,13 +22,13 @@
   function unwrapSetter(fn){const seen=new Set();let cur=fn;while(cur?.__sbbOriginal&&!seen.has(cur)){seen.add(cur);cur=cur.__sbbOriginal;}return cur||fn;}
   function inventory(payload){const games=Math.max(0,Number(payload?.summary?.games??payload?.scoreGameCount??0)||0),complete=payload?.scoreInventoryComplete===true;return {games,complete,hasGames:games>0,authoritativeEmpty:complete&&games===0,pending:!!payload?.pending};}
   function eventDate(evt){return day(evt?.date||evt?.scheduledAt||evt?.startTime||evt?.startDate||evt?.__sbbDate);}
-  function clearStaleSelection(date){try{const selected=window.SBB_SELECTED_EVENT?.get?.();if(selected&&eventDate(selected)&&eventDate(selected)!==date){window.SBB_SELECTED_EVENT?.clear?.({reason:'date-change',source:'date-transition-v524'});state.staleSelectionsCleared++;}}catch(_){}}
+  function clearStaleSelection(date){try{const selected=window.SBB_SELECTED_EVENT?.get?.();if(selected&&eventDate(selected)&&eventDate(selected)!==date){window.SBB_SELECTED_EVENT?.clear?.({reason:'date-change',source:'date-transition-v525'});state.staleSelectionsCleared++;}}catch(_){}}
   function scoreHost(){return document.getElementById('scoreCells');}
   function hasRealCards(){const host=scoreHost();return !!host&&[...host.querySelectorAll('.score-card')].some(c=>!!c.__sbbMatch||!!clean(c.dataset?.sbbGameKey));}
 
   function injectStyle(){
-    if(document.getElementById('sbbDateTransitionV524Style'))return;
-    const style=document.createElement('style');style.id='sbbDateTransitionV524Style';
+    if(document.getElementById('sbbDateTransitionV525Style'))return;
+    const style=document.createElement('style');style.id='sbbDateTransitionV525Style';
     style.textContent=`
       .sbb-day-state-pending .score-empty-day,.sbb-day-state-pending .sbb-day-state-loading{display:none!important}
       .sbb-ribbon-skeleton{display:flex;gap:0;min-width:100%;height:84px;overflow:hidden;pointer-events:none}
@@ -68,7 +68,7 @@
   }
   function install(){
     if(typeof window.setScoreBrowseDate!=='function')return false;
-    if(window.setScoreBrowseDate.__sbbDateCoordinatorV524)return true;
+    if(window.setScoreBrowseDate.__sbbDateCoordinatorV525)return true;
     const wrappedBefore=window.setScoreBrowseDate,shellSetter=unwrapSetter(wrappedBefore);
     async function transition(value,options={}){
       const date=normalize(value);if(state.currentPromise&&state.activeDate===date)return state.currentPromise;
@@ -95,7 +95,7 @@
       })().finally(()=>{if(generation===state.generation)state.currentPromise=null;else window.SBB_RENDER_PIPELINE?.cancelGeneration?.(generation,'superseded-date');});
       return state.currentPromise;
     }
-    transition.__sbbDateCoordinator=true;transition.__sbbDateCoordinatorV524=true;transition.__sbbOriginal=shellSetter;transition.__sbbLegacyWrapped=wrappedBefore;
+    transition.__sbbDateCoordinator=true;transition.__sbbDateCoordinatorV525=true;transition.__sbbOriginal=shellSetter;transition.__sbbLegacyWrapped=wrappedBefore;
     window.setScoreBrowseDate=transition;try{setScoreBrowseDate=transition;}catch(_){}state.ownershipReasserts++;return true;
   }
   function boot(){
