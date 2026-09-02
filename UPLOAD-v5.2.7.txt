@@ -1,0 +1,68 @@
+Sports Big Board v5.2.7 — Calm Continuous Ticker + Unified Dev Utilities
+
+UPLOAD / REPLACE
+----------------
+VERSION
+index.html
+architecture/VERSION
+architecture/dev-mode.js
+architecture/key-info-current-v520.js
+sbb/current_news_v523.py
+tests/test_v527_sports_ticker.js
+tests/test_v527_sports_ticker.py
+tests/test_v527_release_handshake.py
+
+WHAT CHANGED
+------------
+1. One global Dev Mode
+   - Five clicks on the SPORTS BIG BOARD logo is the single Dev Mode gesture.
+   - The global state is applied to both <html> and <body> and broadcast through
+     one sbb:dev-mode event.
+   - The extra DEV MODE ON/OFF button inside Settings is removed.
+   - Developer cards use the same global state, so there is no second level to unlock.
+
+2. Dedicated Sports Ticker Dev Utility
+   - TICKER HEIGHT: 32-72 px
+   - HEADLINE FONT: 8-18 px
+   - HEADLINE LINES: 1 or 2
+   - SCROLL SPEED: 8-90 px/sec
+   - STORY SPACING: 0-48 px
+   - PAUSE / RESUME TICKER
+   - RESET TUNING
+   - COPY TUNING VALUES
+   - RUN SPORTS TICKER AI
+   - Tuning changes apply live and persist in browser localStorage.
+
+3. Smoother, calmer movement
+   - Default speed reduced from 72 px/sec to 30 px/sec.
+   - Retires the v5.2.6 per-story Web Animation start/finish/restart cycle.
+   - One requestAnimationFrame clock runs continuously for the conveyor lifetime.
+   - Story nodes recycle underneath the running clock without restarting motion.
+   - Busy frames are capped rather than followed by a distracting catch-up jump.
+   - Still keeps only a bounded 28 story nodes in the live DOM.
+
+4. Existing ticker behavior preserved
+   - News-type pill colors remain active.
+   - Score-date changes remain strict ticker no-ops.
+   - Manual RUN SPORTS TICKER AI continues to collect fresh source rows, require
+     OpenAI, create an authoritative new edition, and replace stale membership.
+
+VERIFY
+------
+node --check architecture/dev-mode.js
+node --check architecture/key-info-current-v520.js
+node tests/test_v527_sports_ticker.js
+python tests/test_v527_sports_ticker.py
+python tests/test_v527_release_handshake.py
+
+MANUAL TUNING
+-------------
+1. Click the SPORTS BIG BOARD logo five times within about 2.6 seconds.
+2. Open Settings. All Dev cards should now be available without another Dev toggle.
+3. Open DEV / SPORTS TICKER.
+4. Start around the new defaults: height 40px, font 10.5px, 1 line, speed 30px/s,
+   spacing 18px.
+5. Tune speed downward first if the crawl still draws too much attention. A useful
+   calm range to evaluate is roughly 18-30 px/s.
+6. Try two-line mode only with enough ticker height to keep the text comfortable.
+7. Click COPY TUNING VALUES and send the resulting line back for hard-coding later.
