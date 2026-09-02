@@ -1,0 +1,75 @@
+Sports Big Board v5.1.21 — Backend-First Tennis Ribbon
+
+Upload the contents of this package to the repository root and replace files.
+No repository deletions are required.
+
+Release goal
+- Make the score ribbon a thin renderer. Tennis names, player identity aliases,
+  nationality flags and round context are now projected on the backend before the
+  browser receives Day State.
+- Remove the v5.1.20 tennis scroll/layout hot path so horizontal score-ribbon
+  scrolling remains smooth even on tennis-heavy dates.
+
+Backend tennis alias authority
+- New sbb/tennis_ribbon_projection.py installs before DayStateEngine starts.
+- Persistent SQLite database: ~/.sports-big-board/tennis-ribbon-aliases.sqlite3.
+- tennis_player_profile stores canonical long name, backend short name, country,
+  flag artwork, provider id and rank metadata.
+- tennis_player_alias maps schedule/provider aliases to the canonical profile.
+  Ambiguous shorthand aliases fail closed instead of guessing the wrong player.
+- tennis_board_day records bounded provider-warm state so ATP/WTA scoreboards are
+  not repeatedly fetched for the same date.
+- A full/background Day State build may warm missing aliases once from the ESPN
+  ATP + WTA date scoreboards. The two provider reads are parallel and coalesced.
+- Cold historical first paint NEVER waits on ESPN. It uses only the persistent
+  alias database, then the already-existing Day State background build enriches
+  the date if a profile is missing.
+
+Day State output
+Tennis teams now arrive with ready-to-render fields including:
+- canonicalName / fullName / displayName
+- abbreviation / shortName / ribbonName (for example #6 M. Andreeva)
+- providerAbbreviation retained for diagnostics
+- countryCode / flagEmoji / flagUrl
+- logo / logoUrl / image / imageUrl pointing at country-flag artwork
+- aliases
+
+Tennis events now arrive with:
+- __sbbTennisPresentation backend marker
+- tennisRoundShort
+- ribbonContextLabel / tennisRibbonLabel
+
+Frontend performance change
+- Removed browser player-name parsing and abbreviation expansion.
+- Removed browser IOC/country-name conversion tables.
+- Removed ScoreDateStore tennis row wrapping/reprojection.
+- Removed tennis scroll listener.
+- Removed getBoundingClientRect/getClientRects geometry reads.
+- Removed scroll-anchor capture/restore scans.
+- Removed post-render team-name and flag DOM rewrites.
+- Generic buildTeamRow now gets exactly what it already expects: team.abbreviation
+  is the final player label and team.logo is the final country flag.
+- The only remaining tennis-specific card pass copies the backend's already-built
+  ribbonContextLabel into the legacy top-right round slot. It performs no parsing.
+
+Why flags should now appear
+The generic score-card renderer already reads team.logo/logoUrl/image for artwork.
+v5.1.21 supplies the nationality flag in those exact fields before card creation,
+so no tennis-specific image replacement is required in the browser.
+
+Verification included
+- tests/test_v5121_tennis_backend.py
+- tests/test_v5121_tennis_frontend.js
+- tests/test_v5121_architecture.py
+
+Recommended deployment check
+1. Hard refresh after deploy so index.html loads ?v=5.1.21 assets.
+2. Open a US Open date. Player labels should be final on the first paint.
+3. Confirm country flags appear in the normal logo slot without a later DOM swap.
+4. Drag/trackpad-scroll the tennis-heavy ribbon continuously. There should be no
+   tennis scroll handler and no layout-read hitching.
+5. Switch away and back to the same date. Once the backend alias DB has warmed,
+   the date should use persistent aliases/flags without new tennis provider work.
+6. Inspect /api/day-state?date=YYYY-MM-DD. projectionDiagnostics should include
+   tennisBackendProjectionVersion, alias hit/miss counts, flag counts and the
+   persistent alias-store counts.

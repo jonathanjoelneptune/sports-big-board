@@ -9,6 +9,7 @@ from .competition_builder_v4614 import install as _install_competition_builder_v
 from .competition_builder_v4615 import install as _install_competition_builder_v4615
 from .special_event_media_v4616 import install as _install_special_event_media_v4616
 from .day_state import install as _install_day_state
+from .tennis_ribbon_projection import install as _install_tennis_ribbon_projection
 from .game_center_multisport import install as _install_game_center_multisport
 from .history_readiness_repair import install as _install_history_readiness_repair
 from .runtime_path_repair_v5110 import install as _install_runtime_path_repair_v5110
@@ -24,6 +25,9 @@ _install_competition_builder_v4613()
 _install_competition_builder_v4614()
 _install_competition_builder_v4615()
 _install_special_event_media_v4616()
+# v5.1.21: install the backend tennis presentation projection before Day State
+# starts its worker. The browser receives already-renderable names/flags/rounds.
+_install_tennis_ribbon_projection()
 _install_day_state()
 _install_game_center_multisport()
 from .ncaaf_game_center import install as _install_ncaaf_game_center
@@ -47,4 +51,5 @@ _install_media_runtime_repair_v5116()
 _install_media_authority_v5117()
 _install_tennis_game_center()
 
-# v5.1.19: no score-only server patch. DayStateEngine is the sole date authority.
+# v5.1.21: DayStateEngine remains the sole date authority. Tennis ribbon presentation
+# is a backend read-model projection, not a browser-side score authority.
