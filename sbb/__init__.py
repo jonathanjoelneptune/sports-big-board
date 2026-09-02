@@ -71,3 +71,15 @@ _install_game_center_identity_v5122()
 # v5.2.2: cache-only current-news read model for the Key Info lane.
 from .current_news_v522 import install as _install_current_news_v522
 _install_current_news_v522()
+
+# v5.2.3: correctness/inspection/editorial work is explicitly outside the interactive
+# request lane. These modules only consume already-canonical repositories on requests;
+# provider/OpenAI/database materialization work runs in daemon integrity workers.
+from .release_identity_v523 import install as _install_release_identity_v523
+from .integrity_lane_v523 import install as _install_integrity_lane_v523
+from .backend_snapshot_v523 import install as _install_backend_snapshot_v523
+from .current_news_v523 import install as _install_current_news_v523
+_install_release_identity_v523()
+_install_integrity_lane_v523()
+_install_backend_snapshot_v523()
+_install_current_news_v523()

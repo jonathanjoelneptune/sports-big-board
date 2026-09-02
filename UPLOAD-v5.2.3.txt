@@ -1,0 +1,71 @@
+SPORTS BIG BOARD v5.2.3 — INTEGRITY + MATERIALIZED BACKEND + KEY INFO INTELLIGENCE
+
+Upload the contents of this ZIP to the repository root, preserving folders.
+Replace files when prompted. No repository deletions are required.
+
+Changed / new files:
+  VERSION
+  VERIFY.sh
+  index.html
+  architecture/VERSION
+  architecture/VERIFY.sh
+  sbb/__init__.py
+  sbb/release_identity_v523.py
+  sbb/integrity_lane_v523.py
+  sbb/backend_snapshot_v523.py
+  sbb/current_news_v523.py
+  ui/settings-view.js
+
+WHAT THIS RELEASE DOES
+
+1. ALWAYS-ON INTEGRITY LANE
+   - Tennis final/result reconciliation runs independently of PLAYBACK/SEARCH mode.
+   - Recently completed tennis Game Centers are warmed/persisted in the background.
+   - Recent tennis media gaps kick trusted operator-playlist recrawls without using
+     YouTube Search quota.
+   - Deep historical discovery remains optional work and still obeys work-mode controls.
+
+2. RELEASE-MISMATCH SAFETY
+   - The browser reports its canonical release to /api/release-identity.
+   - If a recently active frontend version does not match the backend, OPTIONAL
+     discovery/backfill is paused automatically.
+   - Integrity workers are NOT paused by a version mismatch, so score correction,
+     trusted playlists, Game Center caching, Key Info, and audit snapshots keep working.
+   - The mismatch expires after 15 minutes without seeing that stale frontend, so an
+     abandoned old browser tab cannot suppress discovery forever.
+
+3. MATERIALIZED BACKEND AUDIT
+   - The expensive Historical Database Audit is built in a low-priority daemon roughly
+     every five minutes and persisted as backend-audit-snapshot-v523.json.gz.
+   - Existing snapshots load into RAM at backend startup.
+   - /api/history/audit filters and paginates the RAM snapshot instead of rescanning
+     8,000+ games / 28,000+ assets every time Backend is opened.
+   - Rebuilds yield while the site is being actively used.
+   - /api/backend-snapshot/status reports readiness/build age.
+
+4. KEY INFO INTELLIGENCE
+   - /api/current-news stays cache-only on the interactive request path.
+   - A background editorial worker uses the existing server-side OpenAI editorial layer
+     when configured, then keeps only consequential facts: records, milestones, streaks,
+     injuries, trades/signings, roster/coaching changes, suspensions, clinches, major
+     upsets, retirements and similar changes.
+   - Predictions, previews, rankings/listicles, fantasy/betting and generic feature
+     headlines are filtered out.
+   - Last-good Key Info survives restarts and is never replaced by an empty pass.
+
+5. PLAYLIST / TENNIS CATCH-UP
+   - Yesterday's unresolved tennis matches are promoted to a high-priority integrity
+     queue and reconciled against ESPN tennis results until terminal.
+   - Recently FINAL tennis matches without media trigger the wizard-defined trusted
+     playlist path every 15 minutes at most.
+   - This path uses playlists / playlistItems / videos and can keep working even when
+     YouTube Search quota is exhausted.
+
+Useful diagnostics after deploy:
+  /api/release-identity?frontendVersion=5.2.3
+  /api/integrity/status
+  /api/backend-snapshot/status
+  /api/current-news/status
+
+Deployment verification remains intentionally non-blocking. There are no checksums,
+manifests, filename/token gates, or repository-completeness gates in this package.

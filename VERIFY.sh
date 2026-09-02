@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-set -u
-VERSION="$(tr -d '[:space:]' < VERSION 2>/dev/null || echo 5.1.19)"
-echo "Sports Big Board v${VERSION} deployment preflight"
-echo "----------------------------------"
-echo "PASS: blocking repository integrity verification is disabled"
-echo "      Deployment/runtime behavior is the release acceptance path."
+# Sports Big Board deployment preflight intentionally stays non-blocking.
+echo "Sports Big Board v5.2.3 upload preflight"
+echo "No manifest, checksum, repository token, filename, or content-integrity gates."
 exit 0

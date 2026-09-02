@@ -1,5 +1,13 @@
-/* v4.2.2 local/cloud settings UI. Never reads or displays saved secret values. */
+/* Sports Big Board v5.2.3 — local/cloud settings UI + canonical release identity. */
 (() => {
+  // This file loads before History Audit. Correct stale core-model component
+  // metadata here so diagnostics use the deployment release, not an old module tag.
+  try{
+    if(window.SBB_CORE){window.SBB_CORE=Object.freeze({...window.SBB_CORE,version:'5.2.3'});}
+    if(/Sports Big Board/i.test(document.title))document.title=document.title.replace(/v\d+\.\d+\.\d+/i,'v5.2.3');
+    window.SBB_RELEASE_VERSION='5.2.3';
+  }catch(_){}
+
   const $=id=>document.getElementById(id);
   function statusText(row){return row?.configured?'CONFIGURED':'NOT SET';}
   function renderStatus(payload){
@@ -28,11 +36,14 @@
     if($('gameCenterLayoutSelect'))$('gameCenterLayoutSelect').value=prefs.gameCenterLayout||'below';
     const hint=$('gameCenterLayoutHint');if(hint)hint.textContent=prefs.sideActive?'Wide-screen side layout is active.':'Mobile always uses below-video layout; side mode activates only on a wide PC screen.';
   }
+  async function reportRelease(){
+    try{const base=String(window.SBB_CONFIG?.apiBase||'').replace(/\/$/,'');const url=(base||location.origin)+'/api/release-identity?frontendVersion='+encodeURIComponent(window.SBB_RELEASE_VERSION||'5.2.3');await fetch(url,{cache:'no-store'});}catch(_){}
+  }
   function init(){
     $('keepVideoVisibleToggle')?.addEventListener('change',ev=>window.SBB_VIEW_PREFS?.setKeepVideoVisible?.(ev.target.checked));
     $('gameCenterLayoutSelect')?.addEventListener('change',ev=>window.SBB_VIEW_PREFS?.setGameCenterLayout?.(ev.target.value));
-    $('saveApiSettingsBtn')?.addEventListener('click',save);window.addEventListener('sbb:view-prefs',syncPrefs);syncPrefs();loadStatus();
+    $('saveApiSettingsBtn')?.addEventListener('click',save);window.addEventListener('sbb:view-prefs',syncPrefs);syncPrefs();loadStatus();reportRelease();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  window.SBB_SETTINGS_VIEW=Object.freeze({version:'1.0',loadStatus});
+  window.SBB_SETTINGS_VIEW=Object.freeze({version:'5.2.3',loadStatus});
 })();
