@@ -7,7 +7,7 @@ version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
 css=(ROOT/'ui'/'broadcast-design-v5213.css').read_text()
 
-assert version=='5.2.14', version
+assert version=='5.2.15', version
 assert f'ui/broadcast-design-v5213.css?v={version}' in index
 assert index.index('styles.css?v='+version) < index.index('ui/broadcast-design-v5213.css?v='+version) < index.index('</head>')
 
@@ -22,7 +22,7 @@ required=[
 for token in required:
     assert token in css, f'missing broadcast design contract: {token}'
 
-# v5.2.14 is presentation-only. Do not introduce script behavior or expensive
+# v5.2.15 is presentation-only. Do not introduce script behavior or expensive
 # glass/blur effects that can regress the v5.2.10 motion work.
 for forbidden in ['<script', 'backdrop-filter', 'filter:blur(', 'animation:']:
     assert forbidden not in css, f'performance/behavior regression in design CSS: {forbidden}'
@@ -37,4 +37,4 @@ assert f'<title>Sports Big Board — v{version}</title>' in index
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version, f'{asset} cache version {found} != {version}'
 
-print('PASS v5.2.14 broadcast design system presentation invariants')
+print('PASS v5.2.15 broadcast design system presentation invariants')

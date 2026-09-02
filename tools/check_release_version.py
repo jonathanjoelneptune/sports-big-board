@@ -222,12 +222,12 @@ except ValueError:
     errors.append('index is missing Broadcast Design System load surface')
 
 
-# v5.2.14 Premium Masthead + Sports Ticker + Score Ribbon. This remains a
+# v5.2.15 Premium Masthead + Sports Ticker + Score Ribbon. This remains a
 # presentation-only late override. It must not replace native scrolling or add
 # animation/blur work that competes with the v5.2.10 motion budget.
 premium=text(Path('ui')/'premium-masthead-v5214.css')
 if f'ui/premium-masthead-v5214.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.2.14 premium masthead stylesheet')
+    errors.append('index is missing synchronized v5.2.15 premium masthead stylesheet')
 for required in [
     '.top-nav-header{', '.score-filters{', '.key-info-ribbon{',
     '.sbb-sports-ticker-conveyor .key-info-item{', '.score-ribbon{',
@@ -247,6 +247,35 @@ try:
         errors.append('Premium masthead stylesheet load order is unsafe')
 except ValueError:
     errors.append('index is missing premium masthead load surface')
+
+
+# v5.2.15 Premium Now Watching Experience. This is a presentation-only late
+# override over the already-certified viewing/player/Game Center DOM. It may
+# visually join the player and embedded information surface, but may not add a
+# second playback owner, scroll controller, or continuously animated effect.
+now_watching=text(Path('ui')/'premium-now-watching-v5215.css')
+if f'ui/premium-now-watching-v5215.css?v={version}' not in index:
+    errors.append('index is missing synchronized v5.2.15 Premium Now Watching stylesheet')
+for required in [
+    '.now-playing-copy::before{', '.transport-play.primary{',
+    'body.sbb-info-open.diagnostics-off .layout{', '.gc-hero{',
+    '.gc-team-score{', '.gc-section-tabs{', '.gc-play-row.scoring{',
+    '.game-center-empty{', '@media (max-width:760px)',
+    '@media (prefers-reduced-motion:reduce)'
+]:
+    if required not in now_watching:
+        errors.append(f'Premium Now Watching missing required contract: {required}')
+for forbidden in ['backdrop-filter','filter:blur(','animation:','scroll-snap-type:']:
+    if forbidden in now_watching:
+        errors.append(f'Premium Now Watching contains performance-risk presentation rule: {forbidden}')
+try:
+    masthead_pos=index.index(f'ui/premium-masthead-v5214.css?v={version}')
+    watching_pos=index.index(f'ui/premium-now-watching-v5215.css?v={version}')
+    head_end3=index.index('</head>')
+    if not (masthead_pos < watching_pos < head_end3):
+        errors.append('Premium Now Watching stylesheet load order is unsafe')
+except ValueError:
+    errors.append('index is missing Premium Now Watching load surface')
 
 if errors:
     print('RELEASE INTEGRITY CHECK FAILED')

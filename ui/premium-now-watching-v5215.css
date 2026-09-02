@@ -1,0 +1,593 @@
+/* Sports Big Board v5.2.15 — Premium Now Watching Experience
+   Presentation-only late override. Playback ownership, media selection, Game Center
+   data, drawer behavior and scroll mechanics remain unchanged. */
+
+:root{
+  --sbb-watch-bg:#071018;
+  --sbb-watch-panel:#0a151e;
+  --sbb-watch-panel-2:#0d1a24;
+  --sbb-watch-panel-3:#101f2a;
+  --sbb-watch-line:rgba(157,184,204,.105);
+  --sbb-watch-line-strong:rgba(157,184,204,.18);
+  --sbb-watch-text:#f4f7f9;
+  --sbb-watch-muted:#7e91a1;
+  --sbb-watch-blue:#63b7ff;
+  --sbb-watch-red:#ff625d;
+}
+
+/* ---------- One premium desktop viewing workspace ---------- */
+@media (min-width:1100px){
+  body.sbb-info-open.diagnostics-off .layout{
+    gap:0!important;
+    align-items:stretch!important;
+  }
+  body.sbb-info-open.diagnostics-off .layout>.stage-card{
+    border-radius:15px 0 0 15px!important;
+    border-right-color:transparent!important;
+    box-shadow:0 18px 46px rgba(0,0,0,.22)!important;
+  }
+  body.sbb-info-open.diagnostics-off .layout>.info-drawer{
+    border-radius:0 15px 15px 0!important;
+    border-left:1px solid rgba(99,183,255,.14)!important;
+    overflow:hidden!important;
+    box-shadow:12px 18px 46px rgba(0,0,0,.16)!important;
+  }
+  body.sbb-info-open.diagnostics-off .info-drawer-close{display:none!important}
+}
+
+/* ---------- Now Watching program header ---------- */
+.player-topbar{
+  min-height:70px!important;
+  padding:10px 13px 10px 14px!important;
+  gap:16px!important;
+  background:linear-gradient(180deg,#0b1720 0%,#09131b 100%)!important;
+  border-bottom:1px solid var(--sbb-watch-line)!important;
+}
+.now-playing-copy{
+  min-width:0!important;
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  grid-template-areas:
+    "watch meta"
+    "title title"
+    "subtitle subtitle"!important;
+  align-content:center!important;
+  column-gap:8px!important;
+  row-gap:2px!important;
+}
+.now-playing-copy::before{
+  content:"NOW WATCHING";
+  grid-area:watch;
+  align-self:center;
+  color:#86c8ff;
+  font:850 7px/1.1 system-ui,sans-serif;
+  letter-spacing:.12em;
+  white-space:nowrap;
+}
+.now-playing-meta-row{
+  grid-area:meta!important;
+  min-width:0!important;
+  margin:0!important;
+  gap:6px!important;
+  align-items:center!important;
+  overflow:hidden!important;
+}
+.now-playing-meta-row .league-chip{
+  min-height:18px!important;
+  padding:0 6px!important;
+  border-radius:999px!important;
+  background:rgba(99,183,255,.09)!important;
+  border-color:rgba(99,183,255,.19)!important;
+  color:#bce1ff!important;
+  font-size:7px!important;
+}
+.current-posted,.current-duration,.current-recap-pair{
+  color:#718594!important;
+  font-size:7.5px!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+  overflow:hidden!important;
+}
+.player-topbar h1,#currentTitle{
+  grid-area:title!important;
+  min-width:0!important;
+  margin:1px 0 0!important;
+  color:var(--sbb-watch-text)!important;
+  font-size:16.5px!important;
+  line-height:1.17!important;
+  font-weight:780!important;
+  letter-spacing:-.018em!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  overflow:hidden!important;
+}
+#currentSubtitle{
+  grid-area:subtitle!important;
+  margin:0!important;
+  color:#718594!important;
+  font-size:8.5px!important;
+  line-height:1.25!important;
+}
+#currentSubtitle:empty{display:none!important}
+
+/* ---------- Calm premium transport deck ---------- */
+.transport{
+  flex:0 0 auto!important;
+  gap:5px!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+}
+.recap-alt-buttons{
+  gap:4px!important;
+  margin-right:3px!important;
+  padding-right:8px!important;
+  border-right:1px solid var(--sbb-watch-line)!important;
+}
+.recap-alt-btn{
+  min-height:27px!important;
+  padding:0 9px!important;
+  border-radius:999px!important;
+  background:#0d1b25!important;
+  font-size:7px!important;
+  letter-spacing:.06em!important;
+  box-shadow:none!important;
+}
+.transport-btn,.soundtrack-btn{
+  width:33px!important;
+  min-width:33px!important;
+  height:33px!important;
+  border-radius:999px!important;
+  border:1px solid var(--sbb-watch-line)!important;
+  background:#0d1a24!important;
+  color:#9babb7!important;
+  box-shadow:none!important;
+}
+.transport-btn:hover,.soundtrack-btn:hover{
+  background:#152631!important;
+  border-color:var(--sbb-watch-line-strong)!important;
+  color:#f7fafc!important;
+}
+.transport-play.primary{
+  width:39px!important;
+  min-width:39px!important;
+  height:39px!important;
+  background:#f3f7fa!important;
+  border-color:#f3f7fa!important;
+  color:#09121a!important;
+  box-shadow:0 5px 16px rgba(0,0,0,.2)!important;
+}
+.transport-play.primary:hover{
+  background:#fff!important;
+  border-color:#fff!important;
+  color:#061019!important;
+}
+.soundtrack-controls{
+  margin-left:3px!important;
+  padding-left:8px!important;
+  gap:4px!important;
+  border-left:1px solid var(--sbb-watch-line)!important;
+  opacity:.78!important;
+}
+.soundtrack-controls:hover,.soundtrack-controls:focus-within{opacity:1!important}
+.soundtrack-volume-popover{
+  border:1px solid var(--sbb-watch-line-strong)!important;
+  border-radius:10px!important;
+  background:#0c1821!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.32)!important;
+}
+
+/* ---------- Video canvas ---------- */
+.stage{
+  position:relative!important;
+  background:#010304!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.018),inset 0 -1px 0 rgba(255,255,255,.02)!important;
+}
+.stage::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border:1px solid rgba(255,255,255,.025);
+  box-sizing:border-box;
+}
+.on-air-badge{
+  min-height:24px!important;
+  padding:0 9px!important;
+  border-radius:7px!important;
+  background:rgba(255,98,93,.94)!important;
+  color:#fff!important;
+  box-shadow:0 4px 14px rgba(0,0,0,.26)!important;
+  font-size:8px!important;
+  letter-spacing:.08em!important;
+}
+.keyboard-help{
+  opacity:0!important;
+  transition:opacity .16s ease!important;
+  color:#c2cdd5!important;
+  background:rgba(3,8,12,.66)!important;
+  border-radius:7px!important;
+  padding:5px 7px!important;
+}
+.stage:hover .keyboard-help{opacity:.56!important}
+.video-loading-overlay{
+  background:rgba(2,7,10,.78)!important;
+  color:#dce6ed!important;
+}
+
+/* ---------- Minimal secondary control dock ---------- */
+.player-footer,.lower-third{
+  min-height:39px!important;
+  background:#08121a!important;
+  border-top:1px solid var(--sbb-watch-line)!important;
+}
+.player-status{
+  min-height:39px!important;
+  padding:4px 9px!important;
+}
+body.diagnostics-off .metric-grid{display:none!important}
+body.diagnostics-off .player-status{justify-content:center!important}
+body.diagnostics-off .utility-controls{margin-inline:auto!important}
+.utility-controls{gap:4px!important}
+.utility-btn,.drawer-launch-btn{
+  min-height:28px!important;
+  padding:0 9px!important;
+  border:1px solid transparent!important;
+  border-radius:7px!important;
+  background:transparent!important;
+  color:#718493!important;
+  font-size:7px!important;
+  letter-spacing:.055em!important;
+  box-shadow:none!important;
+}
+.utility-btn:hover,.drawer-launch-btn:hover{
+  background:rgba(255,255,255,.045)!important;
+  border-color:var(--sbb-watch-line)!important;
+  color:#dce6ed!important;
+}
+#gameCenterDrawerBtn,#upNextDrawerBtn,#settingsDrawerBtn{
+  color:#8ba0af!important;
+}
+#fullscreenBtn{
+  width:28px!important;
+  min-width:28px!important;
+  padding:0!important;
+  border-radius:999px!important;
+}
+#bumperToggle{
+  color:#657987!important;
+  border-left:1px solid var(--sbb-watch-line)!important;
+  border-radius:0 7px 7px 0!important;
+  margin-left:3px!important;
+}
+
+/* ---------- Drawer as the other half of Now Watching ---------- */
+.info-drawer{
+  background:var(--sbb-watch-bg)!important;
+}
+.info-drawer-head{
+  min-height:49px!important;
+  padding:6px 8px!important;
+  background:#09141c!important;
+  border-bottom:1px solid var(--sbb-watch-line)!important;
+}
+.info-drawer-tabs{
+  min-width:0!important;
+  width:100%!important;
+  gap:3px!important;
+  padding:3px!important;
+  border:1px solid rgba(157,184,204,.07)!important;
+  border-radius:10px!important;
+  background:#071018!important;
+}
+.info-drawer-tab{
+  flex:1 1 0!important;
+  min-height:34px!important;
+  padding:0 10px!important;
+  border:1px solid transparent!important;
+  border-radius:8px!important;
+  color:#738695!important;
+  font-size:8px!important;
+  letter-spacing:.055em!important;
+}
+.info-drawer-tab:hover{
+  background:#0d1a24!important;
+  color:#b8c7d1!important;
+}
+.info-drawer-tab.active,.info-drawer-tab[aria-selected="true"]{
+  background:#102331!important;
+  border-color:rgba(99,183,255,.24)!important;
+  color:#e0f2ff!important;
+  box-shadow:inset 0 0 0 1px rgba(99,183,255,.035)!important;
+}
+.info-drawer-close{
+  flex:0 0 auto!important;
+  margin-left:5px!important;
+}
+.drawer-pane,.game-center-content,.game-center-pane{
+  background:var(--sbb-watch-bg)!important;
+}
+
+/* ---------- Premium Game Center scoreboard ---------- */
+.gc-hero{
+  min-height:100px!important;
+  padding:14px 15px!important;
+  background:linear-gradient(180deg,#0d1b25 0%,#09141d 100%)!important;
+  border-bottom:1px solid var(--sbb-watch-line)!important;
+  position:relative!important;
+}
+.gc-hero::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:17px;
+  bottom:17px;
+  width:1px;
+  background:linear-gradient(180deg,transparent,rgba(157,184,204,.10),transparent);
+  pointer-events:none;
+}
+.gc-team{
+  gap:9px!important;
+  min-width:0!important;
+}
+.gc-team-logo-wrap{
+  width:42px!important;
+  height:42px!important;
+  border-radius:13px!important;
+  background:#111f2a!important;
+  border:1px solid var(--sbb-watch-line)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+.gc-team-logo{max-width:31px!important;max-height:31px!important}
+.gc-team-copy{min-width:0!important}
+.gc-team-abbr{
+  color:#6f8494!important;
+  font-size:7px!important;
+  letter-spacing:.09em!important;
+}
+.gc-team-name{
+  max-width:126px!important;
+  color:#e5edf2!important;
+  font-size:10.5px!important;
+  line-height:1.15!important;
+  font-weight:740!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.gc-team-score{
+  min-width:28px!important;
+  color:#fff!important;
+  font-size:33px!important;
+  line-height:.95!important;
+  font-weight:820!important;
+  letter-spacing:-.035em!important;
+  font-variant-numeric:tabular-nums!important;
+}
+.gc-status{
+  z-index:1!important;
+  min-width:88px!important;
+  gap:3px!important;
+  color:#718493!important;
+  text-align:center!important;
+}
+.gc-status strong{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:21px!important;
+  padding:0 7px!important;
+  border:1px solid var(--sbb-watch-line)!important;
+  border-radius:999px!important;
+  background:#08121a!important;
+  color:#dce8ef!important;
+  font-size:8px!important;
+  font-weight:800!important;
+}
+.gc-status span,.gc-status small{
+  color:#687d8d!important;
+  font-size:7px!important;
+  line-height:1.2!important;
+}
+
+.gc-section-tabs{
+  min-height:43px!important;
+  padding:5px 8px 0!important;
+  gap:5px!important;
+  background:#08121a!important;
+  border-bottom:1px solid var(--sbb-watch-line)!important;
+}
+.gc-section-tab{
+  min-height:37px!important;
+  padding:0 10px!important;
+  border:0!important;
+  border-bottom:2px solid transparent!important;
+  border-radius:0!important;
+  color:#6f8291!important;
+  font-size:7.5px!important;
+  letter-spacing:.055em!important;
+}
+.gc-section-tab:hover{color:#b7c7d2!important}
+.gc-section-tab.active{
+  color:#e7f4ff!important;
+  border-bottom-color:var(--sbb-watch-blue)!important;
+  background:transparent!important;
+}
+.gc-section{
+  padding:9px!important;
+  background:var(--sbb-watch-bg)!important;
+}
+.gc-card,.gc-overview-card,.gc-stat-card,.gc-player-section,.gc-timeline-item,.gc-linescore{
+  border:1px solid var(--sbb-watch-line)!important;
+  border-radius:11px!important;
+  background:#0a161f!important;
+  box-shadow:none!important;
+}
+.gc-card+.gc-card{margin-top:8px!important}
+.gc-card-title{
+  min-height:29px!important;
+  display:flex!important;
+  align-items:center!important;
+  padding:0 10px!important;
+  color:#7890a1!important;
+  border-bottom:1px solid rgba(157,184,204,.075)!important;
+  font-size:7px!important;
+  font-weight:850!important;
+  letter-spacing:.105em!important;
+}
+.gc-table-scroll{scrollbar-width:thin!important}
+.gc-linescore,.gc-stat-compare,.gc-player-table{
+  width:100%!important;
+  border-collapse:collapse!important;
+  font-variant-numeric:tabular-nums!important;
+}
+.gc-linescore th,.gc-linescore td,
+.gc-stat-compare th,.gc-stat-compare td,
+.gc-player-table th,.gc-player-table td{
+  border-color:rgba(157,184,204,.07)!important;
+}
+.gc-linescore thead th,.gc-player-table thead th,.gc-stat-compare thead th{
+  color:#667d8d!important;
+  background:#08131b!important;
+  font-size:7px!important;
+  letter-spacing:.05em!important;
+}
+.gc-linescore tbody th,.gc-linescore tbody td,
+.gc-stat-compare tbody th,.gc-stat-compare tbody td,
+.gc-player-table tbody th,.gc-player-table tbody td{
+  color:#d4dfe6!important;
+  background:transparent!important;
+}
+.gc-lines-team{color:#9ed4ff!important;font-weight:800!important}
+.gc-basic-overview{
+  padding:18px 12px!important;
+  gap:4px!important;
+  text-align:center!important;
+}
+.gc-basic-overview strong{
+  color:#eef5f8!important;
+  font-size:15px!important;
+  letter-spacing:-.015em!important;
+}
+.gc-basic-overview span,.gc-basic-overview small{color:#728696!important}
+.gc-play-row{
+  min-height:48px!important;
+  padding:8px 10px!important;
+  gap:9px!important;
+  border-bottom:1px solid rgba(157,184,204,.065)!important;
+  background:transparent!important;
+}
+.gc-play-row:last-child{border-bottom:0!important}
+.gc-play-row>span{
+  color:#75bfff!important;
+  font-size:7px!important;
+  font-weight:850!important;
+  letter-spacing:.035em!important;
+}
+.gc-play-row strong{
+  color:#dce6ec!important;
+  font-size:8.5px!important;
+  line-height:1.35!important;
+  font-weight:650!important;
+}
+.gc-play-row small{
+  color:#718493!important;
+  font-size:7px!important;
+}
+.gc-play-row.scoring{
+  box-shadow:inset 2px 0 0 rgba(99,183,255,.65)!important;
+  background:rgba(99,183,255,.025)!important;
+}
+.gc-empty-row{
+  padding:22px 12px!important;
+  color:#687d8c!important;
+  text-align:center!important;
+  font-size:8px!important;
+}
+.gc-player-team-tabs,.gc-play-filter{
+  gap:5px!important;
+  margin:0 0 8px!important;
+  padding:3px!important;
+  border:1px solid var(--sbb-watch-line)!important;
+  border-radius:9px!important;
+  background:#08131b!important;
+}
+.gc-player-team-tab,.gc-play-filter button{
+  min-height:31px!important;
+  border:1px solid transparent!important;
+  border-radius:7px!important;
+  background:transparent!important;
+  color:#738797!important;
+  font-size:7px!important;
+  font-weight:800!important;
+  letter-spacing:.05em!important;
+}
+.gc-player-team-tab.active,.gc-play-filter button.active{
+  background:#102331!important;
+  border-color:rgba(99,183,255,.20)!important;
+  color:#dff2ff!important;
+}
+
+/* ---------- Loading / empty Game Center ---------- */
+.game-center-empty{
+  min-height:180px!important;
+  padding:28px!important;
+  color:#728695!important;
+  background:linear-gradient(180deg,#09141c,#071018)!important;
+  text-align:center!important;
+}
+.game-center-empty strong{
+  color:#dce7ed!important;
+  font-size:12px!important;
+  letter-spacing:.08em!important;
+}
+.game-center-empty span{
+  max-width:330px!important;
+  color:#6f8392!important;
+  line-height:1.45!important;
+}
+.gc-loading{
+  min-height:90px!important;
+  color:#738695!important;
+}
+
+/* ---------- Responsive preservation ---------- */
+@media (max-width:1099px){
+  .player-topbar{
+    min-height:64px!important;
+    padding:9px 10px!important;
+    gap:8px!important;
+  }
+  .now-playing-copy::before{font-size:6.5px!important}
+  .player-topbar h1,#currentTitle{font-size:15px!important}
+  .transport-play.primary{width:36px!important;min-width:36px!important;height:36px!important}
+  .gc-team-logo-wrap{width:38px!important;height:38px!important}
+  .gc-team-score{font-size:30px!important}
+}
+@media (max-width:760px){
+  .player-topbar{
+    min-height:auto!important;
+    padding:8px!important;
+  }
+  .now-playing-copy{
+    grid-template-columns:auto minmax(0,1fr)!important;
+  }
+  .player-topbar h1,#currentTitle{
+    font-size:13.5px!important;
+    -webkit-line-clamp:2!important;
+  }
+  .current-posted{display:none!important}
+  .transport{gap:4px!important}
+  .transport-btn,.soundtrack-btn{width:30px!important;min-width:30px!important;height:30px!important}
+  .transport-play.primary{width:34px!important;min-width:34px!important;height:34px!important}
+  .recap-alt-buttons{max-width:44vw!important;overflow-x:auto!important}
+  .gc-hero{min-height:88px!important;padding:10px 8px!important}
+  .gc-team-logo-wrap{width:34px!important;height:34px!important;border-radius:10px!important}
+  .gc-team-name{max-width:82px!important;font-size:9px!important}
+  .gc-team-score{font-size:27px!important}
+  .gc-status{min-width:70px!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .keyboard-help{transition:none!important}
+}

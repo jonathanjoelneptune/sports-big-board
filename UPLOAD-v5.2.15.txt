@@ -1,0 +1,36 @@
+Sports Big Board v5.2.15 — Premium Now Watching Experience
+==========================================================
+
+Manual GitHub upload
+--------------------
+Upload the CONTENTS of this folder directly into the sports-big-board repository root.
+Preserve all folder paths and replace files with the same names.
+Do not upload the enclosing manual-upload folder itself.
+
+Release intent
+--------------
+Presentation-only UI polish on top of the stable v5.2.14 systems.
+
+Key visual changes:
+- Video + Game Center read as one cohesive Now Watching workspace on desktop.
+- Stronger Now Watching program hierarchy and calmer metadata.
+- Premium transport/control treatment without changing control behavior.
+- Cleaner video frame, ON AIR treatment, loading state and secondary control dock.
+- Game Center upgraded with a larger scoreboard hero, segmented drawer navigation,
+  cleaner tabs, softer cards/tables and more readable scoring/key-play rows.
+- Broadcast Mode hides developer transition metrics while preserving every control.
+- Responsive/mobile layouts remain supported.
+
+Functional invariants
+---------------------
+NO changes to playback ownership, player A/B logic, score selection, Sports Ticker,
+Game Center data/provider logic, date navigation, scrolling, discovery or backend APIs.
+
+Version integrity
+-----------------
+Frontend/backend/database release identity: 5.2.15.
+Browser tab title remains canonical and cache-busters are advanced to 5.2.15.
+
+Verification
+------------
+GitHub Actions VERIFY.sh now includes the v5.2.15 Now Watching presentation test.
