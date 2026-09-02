@@ -95,7 +95,7 @@ except ValueError:
     errors.append('index is missing core/release/settings/history release surfaces')
 
 
-# v5.2.11 scroll/motion integrity. The performance fix must be part of the
+# v5.2.12 scroll/motion integrity. The performance fix must be part of the
 # atomic frontend generation and the historical scroll controller may not
 # reintroduce permanent blocking gesture listeners.
 motion=text(Path('architecture')/'scroll-motion-smoothness-v5210.js')
@@ -129,12 +129,14 @@ try:
     if not (visibility_pos < motion_pos < settings_pos2):
         errors.append('scroll/motion module load order is unsafe')
 except ValueError:
-    errors.append('index is missing v5.2.11 scroll/motion release surfaces')
+    errors.append('index is missing synchronized scroll/motion release surfaces')
 
 
-# v5.2.11 OpenAI Sports Ticker rate-limit integrity. Manual refreshes must not
+# v5.2.12 OpenAI Sports Ticker rate-limit integrity. Manual refreshes must not
 # fall back to the legacy six-record / three-retry request storm.
 ticker_backend=text(Path('sbb')/'current_news_v523.py')
+if f'VERSION = "{version}-sports-ticker-4"' not in ticker_backend:
+    errors.append('Sports Ticker backend component version does not match deployment VERSION')
 for required in [
     '_OPENAI_BATCH_SIZE = 20',
     '_OPENAI_MAX_CANDIDATES_MANUAL = 40',
@@ -156,6 +158,45 @@ if ticker_backend.count('request_fn("/responses"') != 1:
 ticker_frontend=ticker
 if 'attempt<240' not in ticker_frontend or 'OpenAI rate limited • retrying in' not in ticker_frontend:
     errors.append('Sports Ticker UI does not expose bounded OpenAI backoff/cooldown status')
+
+
+# v5.2.12 splash preload integrity. The splash may warm data/media but must never
+# become a second playback authority or bypass the user's audible-play gesture.
+splash=text(Path('architecture')/'splash-preload-v5212.js')
+if f"const VERSION='{version}'" not in splash:
+    errors.append('splash preload module does not match deployment VERSION')
+for required in [
+    'SBB_SPLASH_PRELOAD',
+    'safeStartLiveData',
+    'prepareStandby',
+    'transitionCritical:true',
+    'HOT_STANDBY',
+    'cueVideoById',
+    "v.preload='auto'",
+    'assignmentMatches',
+    'experienceStarted',
+    'Loading scores and first video',
+    'First video prepared',
+]:
+    if required not in splash:
+        errors.append(f'splash preload contract missing: {required}')
+# Prelaunch warming may cue or preload, but never start video. The canonical
+# launch gesture remains the only audible/play command.
+for forbidden in ['.loadVideoById(', '.playVideo(', 'v.play(']:
+    if forbidden in splash:
+        errors.append(f'splash preload illegally starts playback before launch: {forbidden}')
+if '<link rel="preload" href="https://www.youtube.com/iframe_api" as="script" fetchpriority="high">' not in index:
+    errors.append('index does not network-preload the YouTube iframe API during splash')
+if 'id="launchWarmStatus"' not in index:
+    errors.append('splash does not expose preload readiness status')
+try:
+    app_pos=index.index(f'<script src="app.js?v={version}"></script>')
+    splash_pos=index.index(f'<script src="architecture/splash-preload-v5212.js?v={version}"></script>')
+    ticker_pos=index.index(f'<script src="architecture/key-info-current-v520.js?v={version}"></script>')
+    if not (app_pos < splash_pos < ticker_pos):
+        errors.append('splash preload module load order is unsafe')
+except ValueError:
+    errors.append('index is missing synchronized splash preload release surface')
 
 if errors:
     print('RELEASE INTEGRITY CHECK FAILED')

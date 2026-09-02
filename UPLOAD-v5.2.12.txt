@@ -1,0 +1,79 @@
+Sports Big Board v5.2.12 — Splash Background Preload
+====================================================
+
+Manual GitHub upload
+--------------------
+Upload the CONTENTS of this folder to the repository root. Preserve the folder
+paths. Do not upload the enclosing Sports-Big-Board-v5.2.12-manual-upload folder.
+
+Changed/new files
+-----------------
+VERSION
+VERIFY.sh
+index.html
+architecture/VERSION
+architecture/key-info-current-v520.js
+architecture/scroll-motion-smoothness-v5210.js
+architecture/splash-preload-v5212.js   (NEW)
+sbb/current_news_v523.py
+tests/test_v5211_openai_rate_limit.py
+tests/test_v5212_splash_preload.py      (NEW)
+tools/check_release_version.py
+
+What v5.2.12 changes
+--------------------
+1. The splash screen is now a loading cover rather than a playback cold-start.
+   Live score/news data was already allowed to initialize behind the splash; the
+   new layer reinforces that startup and additionally prepares the exact first
+   program selected by Sports Big Board.
+
+2. The first video uses the EXISTING A/B Hot Standby system whenever possible:
+   - the inactive player loads the exact first program muted;
+   - real decoder/progress readiness is proved;
+   - the player is paused and rewound to 0;
+   - on START, PlaybackController promotes that already-buffered slot.
+   No separate playback authority is introduced.
+
+3. Safe fallback preparation:
+   - YouTube: cueVideoById only (never prelaunch playVideo/loadVideoById from the
+     splash helper itself);
+   - native/direct video: preload=auto, muted and paused.
+
+4. YouTube iframe API download is network-preloaded from <head> while the splash
+   is visible, instead of waiting until the footer script request begins.
+
+5. Splash readiness text now progresses through states such as:
+   Loading scores and first video…
+   Buffering first video in background…
+   First video buffered • tap to start
+
+   The red START button is never disabled. If the viewer clicks before warming
+   completes, the existing normal PlaybackController startup path takes over.
+
+6. Atomic release identity advances together to 5.2.12. VERSION remains the
+   backend authority; frontend assets, Sports Ticker component versions, motion
+   module, and deployment verification are advanced in the same upload.
+
+Verification
+------------
+The release preflight verifies:
+- frontend/backend/database-audit release identity = 5.2.12;
+- existing motion-smoothness contracts remain intact;
+- existing OpenAI Sports Ticker rate-limit protections remain intact;
+- splash preloader loads after app.js and before post-app modules;
+- Hot Standby is used for real first-video buffering;
+- splash helper never directly starts playback before the launch gesture;
+- JavaScript/Python syntax checks pass.
+
+After deployment
+----------------
+1. Confirm Settings -> RELEASE STATUS shows Frontend 5.2.12 / Backend 5.2.12 / MATCHED.
+2. Hard-refresh once.
+3. Leave the splash visible for a few seconds.
+4. Watch the line under START SPORTS BIG BOARD. It should reach
+   "First video buffered • tap to start" when Hot Standby is ready.
+5. Press START. The first video should begin substantially faster because the exact
+   media was already initialized/buffered behind the splash.
+
+If START is pressed immediately, startup still works normally; preloading is an
+optimization, never a prerequisite.
