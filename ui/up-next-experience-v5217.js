@@ -21,8 +21,8 @@
 
   function ensureDock(){
     const drawer=$('infoDrawer');
-    const head=drawer?.querySelector('.info-drawer-head');
-    if(!drawer||!head) return null;
+    const pane=$('gameCenterPane');
+    if(!drawer||!pane) return null;
     let dock=$('nextUpDock');
     if(!dock){
       dock=document.createElement('section');
@@ -30,8 +30,8 @@
       dock.className='next-up-dock';
       dock.setAttribute('aria-label','Coming up next');
       dock.innerHTML='<div class="next-up-dock-head"><strong>Coming Up</strong><span>Programming queue</span></div><div id="nextUpDockGrid" class="next-up-dock-grid"></div>';
-      head.insertAdjacentElement('afterend',dock);
     }
+    if(dock.parentElement!==pane) pane.appendChild(dock);
     return dock;
   }
 
@@ -112,8 +112,8 @@
 
   function repairNextButton(){
     const btn=$('nextBtn');
-    if(!btn||btn.__sbbNextV5216)return false;
-    btn.__sbbNextV5216=true;
+    if(!btn||btn.__sbbNextV5217)return false;
+    btn.__sbbNextV5217=true;
     btn.onclick=()=>{
       state.nextClicks++;
       try{

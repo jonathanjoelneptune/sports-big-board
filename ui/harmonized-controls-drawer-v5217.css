@@ -1,0 +1,259 @@
+/* Sports Big Board v5.2.17 — Harmonized Controls + Collapsible Drawer
+   - harmonize pill/button language across the broadcast surface
+   - move Coming Up dock to the bottom of Game Center so it no longer pushes hero content down
+   - collapse the right drawer to a slim handle so the video can expand
+   - remove redundant utility controls below the video
+   - reduce Sports Ticker category weight so it reads as a subtitle, not a pill */
+
+:root{
+  --sbb-control-radius:10px;
+  --sbb-control-radius-tight:8px;
+  --sbb-control-height:30px;
+  --sbb-control-pad:0 12px;
+  --sbb-control-line:rgba(120,152,178,.20);
+  --sbb-control-bg:#0b1620;
+  --sbb-control-bg-strong:#0d1b27;
+  --sbb-control-text:#dce7ef;
+  --sbb-control-muted:#95aabc;
+  --sbb-control-blue:#63b7ff;
+  --sbb-control-blue-deep:#123a57;
+  --sbb-control-green:#6fd79c;
+  --sbb-control-green-deep:#103b2a;
+}
+
+/* ------------------------------------------------------------------
+   Harmonized controls
+   ------------------------------------------------------------------ */
+html body :is(.transport-btn,.soundtrack-btn,.info-drawer-tab,.gc-section-tab,.settings-save-btn,#shuffleBtn,.top-date-select-btn,.return-today-btn,.score-day-arrow,.score-filters>button,.nav){
+  border-radius:var(--sbb-control-radius)!important;
+}
+html body :is(.transport-btn,.soundtrack-btn,.info-drawer-tab,.gc-section-tab,#shuffleBtn,.top-date-select-btn,.return-today-btn,.score-day-arrow,.score-filters>button){
+  min-height:var(--sbb-control-height)!important;
+  padding:var(--sbb-control-pad)!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  border:1px solid var(--sbb-control-line)!important;
+  background:linear-gradient(180deg,rgba(14,25,35,.98) 0%,rgba(9,18,26,.98) 100%)!important;
+  color:var(--sbb-control-text)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03)!important;
+}
+html body :is(.transport-btn,.soundtrack-btn,.info-drawer-tab,.gc-section-tab,#shuffleBtn,.top-date-select-btn,.return-today-btn,.score-day-arrow,.score-filters>button):hover{
+  border-color:rgba(99,183,255,.32)!important;
+  color:#f2f7fb!important;
+}
+html body :is(.info-drawer-tab.active,.gc-section-tab.active,[aria-selected="true"].info-drawer-tab,[aria-selected="true"].gc-section-tab){
+  background:linear-gradient(180deg,rgba(20,54,79,.96) 0%,rgba(12,36,55,.96) 100%)!important;
+  border-color:rgba(99,183,255,.44)!important;
+  color:#edf6fc!important;
+  box-shadow:inset 0 0 0 1px rgba(99,183,255,.10)!important;
+}
+#playBtn{
+  background:linear-gradient(180deg,rgba(18,72,51,.98) 0%,rgba(14,51,37,.98) 100%)!important;
+  border-color:rgba(111,215,156,.42)!important;
+  color:#f3fff8!important;
+}
+#nextBtn{
+  background:linear-gradient(180deg,rgba(18,58,87,.98) 0%,rgba(12,42,63,.98) 100%)!important;
+  border-color:rgba(99,183,255,.42)!important;
+  color:#eff7fd!important;
+}
+#prevBtn{
+  background:linear-gradient(180deg,rgba(13,27,39,.98) 0%,rgba(10,20,29,.98) 100%)!important;
+  border-color:rgba(120,152,178,.22)!important;
+  color:#d8e6ef!important;
+}
+
+#nextBtn::after{content:none!important;display:none!important}
+#shuffleBtn,
+html body .settings-save-btn{
+  background:linear-gradient(180deg,rgba(15,37,55,.96) 0%,rgba(10,27,40,.96) 100%)!important;
+  border-color:rgba(99,183,255,.28)!important;
+  color:#dcebf5!important;
+}
+#saveApiSettingsBtn,
+#openHistoryAuditBtn,
+#sportsTickerAiRefreshBtn{
+  background:linear-gradient(180deg,rgba(17,64,44,.96) 0%,rgba(11,42,29,.96) 100%)!important;
+  border-color:rgba(111,215,156,.34)!important;
+  color:#f1fff7!important;
+}
+html body .recap-alt-btn{
+  border-radius:var(--sbb-control-radius-tight)!important;
+}
+.transport .transport-btn{
+  min-width:60px!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  letter-spacing:.08em!important;
+  line-height:1!important;
+}
+.transport .transport-btn .transport-label{
+  width:100%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  text-align:center;
+  white-space:nowrap;
+}
+.transport .transport-btn .transport-label .chev{
+  color:var(--sbb-control-blue);
+  font-size:12px;
+  line-height:1;
+}
+.transport .transport-btn#prevBtn .transport-label .chev{
+  color:#a9bfce;
+}
+
+/* Remove redundant buttons beneath the player. */
+html body .player-footer .utility-controls{display:none!important}
+html body .player-footer{padding-top:4px!important;padding-bottom:2px!important;min-height:0!important}
+html body .player-status{padding-bottom:0!important}
+
+/* ------------------------------------------------------------------
+   Drawer collapse / expand
+   ------------------------------------------------------------------ */
+#infoDrawer{
+  position:relative!important;
+  transition:width .24s ease,min-width .24s ease,flex-basis .24s ease,opacity .18s ease!important;
+}
+#infoDrawerClose{display:none!important}
+#drawerCollapseToggle{
+  position:absolute;
+  top:9px;
+  right:10px;
+  z-index:10;
+  width:28px;
+  height:28px;
+  padding:0!important;
+  border-radius:8px!important;
+  border:1px solid rgba(120,152,178,.24)!important;
+  background:linear-gradient(180deg,rgba(15,29,40,.98) 0%,rgba(10,19,27,.98) 100%)!important;
+  color:#d9e6ee!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  cursor:pointer;
+}
+#drawerCollapseToggle:hover{border-color:rgba(99,183,255,.34)!important;color:#f2f8fc!important}
+body.sbb-drawer-collapsed #infoDrawer{
+  width:34px!important;
+  min-width:34px!important;
+  max-width:34px!important;
+  flex:0 0 34px!important;
+  overflow:visible!important;
+}
+body.sbb-drawer-collapsed #infoDrawer .info-drawer-head,
+body.sbb-drawer-collapsed #infoDrawer .drawer-pane{display:none!important}
+body.sbb-drawer-collapsed #drawerCollapseToggle{
+  position:sticky;
+  top:10px;
+  right:auto;
+  left:3px;
+  width:28px;
+}
+body.sbb-drawer-collapsed #drawerCollapseToggle .drawer-collapse-label{display:none}
+body.sbb-drawer-collapsed #infoDrawer::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-left:1px solid rgba(120,152,178,.18);
+  background:linear-gradient(180deg,rgba(10,18,26,.96) 0%,rgba(8,14,20,.96) 100%);
+  z-index:-1;
+}
+
+/* ------------------------------------------------------------------
+   Keep Game Center aligned. The Coming Up shelf now docks to the bottom.
+   ------------------------------------------------------------------ */
+#gameCenterPane{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:0!important;
+}
+#gameCenterPane #gameCenterContent,
+#gameCenterPane #gameCenterEmpty{
+  flex:1 1 auto!important;
+  min-height:0!important;
+}
+#gameCenterPane .next-up-dock{
+  margin-top:auto!important;
+  padding:8px 10px 9px!important;
+  border-top:1px solid rgba(157,184,204,.105)!important;
+  border-bottom:0!important;
+  background:linear-gradient(180deg,#08121a 0%,#09141c 100%)!important;
+}
+#gameCenterPane .next-up-dock-head{margin-bottom:6px!important}
+#gameCenterPane .next-up-dock-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:7px!important;
+}
+#gameCenterPane .next-up-dock-card{
+  border-radius:8px!important;
+}
+#gameCenterPane .next-up-dock-card strong{
+  min-height:26px!important;
+  font-size:7.2px!important;
+  line-height:1.22!important;
+}
+#gameCenterPane .next-up-dock-visual{aspect-ratio:16/8!important}
+
+/* ------------------------------------------------------------------
+   Sports Ticker: category becomes a subtle subtitle under the headline.
+   ------------------------------------------------------------------ */
+html body .sbb-sports-ticker-conveyor .key-info-item{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-areas:"headline" "category"!important;
+  align-content:center!important;
+  justify-items:start!important;
+  row-gap:1px!important;
+  padding-top:5px!important;
+  padding-bottom:5px!important;
+}
+html body .sbb-sports-ticker-conveyor .key-info-item strong{
+  grid-area:headline!important;
+  width:100%!important;
+  max-width:min(72vw,980px)!important;
+  font-size:10.2px!important;
+  line-height:1.12!important;
+  letter-spacing:-.006em!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html body .sbb-sports-ticker-conveyor .key-info-item .key-info-type{
+  grid-area:category!important;
+  position:static!important;
+  display:block!important;
+  min-width:0!important;
+  min-height:0!important;
+  width:auto!important;
+  height:auto!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:var(--sbb-slug-accent)!important;
+  font:760 6.8px/1.12 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace!important;
+  letter-spacing:.075em!important;
+  text-transform:uppercase!important;
+  white-space:nowrap!important;
+  opacity:.90!important;
+}
+html body .sbb-sports-ticker-conveyor .key-info-item .key-info-type::after{display:none!important}
+html body .sbb-sports-ticker-conveyor .key-info-item small{display:none!important}
+
+@media (max-width:1100px){
+  body.sbb-drawer-collapsed #infoDrawer{display:none!important}
+  #gameCenterPane .next-up-dock-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media (max-width:760px){
+  #gameCenterPane .next-up-dock-grid{grid-template-columns:1fr!important}
+}
+@media (prefers-reduced-motion:reduce){
+  #infoDrawer,.transport-btn,#drawerCollapseToggle{transition:none!important}
+}

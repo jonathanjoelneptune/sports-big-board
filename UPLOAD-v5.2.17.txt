@@ -1,0 +1,29 @@
+Sports Big Board v5.2.17 — Drawer Polish + Harmonized Controls
+
+MANUAL GITHUB UPLOAD
+1. Open the repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when GitHub prompts.
+4. Commit all changed files together so frontend/backend/database-audit release identity stays atomic.
+5. Let Deploy Sports Big Board complete before hard-refreshing the site.
+
+PRIMARY USER-VISIBLE CHANGES
+- COMING UP cards stay integrated into Game Center but now dock to the bottom of the pane, so they no longer push the Game Center hero/status block downward.
+- The right-side information drawer can be collapsed to a slim arrow handle so the video can expand.
+- Redundant controls under the video are removed.
+- PREV and NEXT become centered labeled transport pills.
+- The viewing-surface buttons and tabs use one harmonized rounded-rectangle control language.
+- Primary actions are colorized where it makes sense, especially Play, Next, active tabs, and important Settings actions.
+- Sports Ticker categories now read as a subtle subtitle below each headline rather than a large pill.
+
+FUNCTIONAL BOUNDARIES
+- No second PROGRAM model.
+- No second playback owner.
+- No date/ticker ownership changes.
+- No continuous MutationObserver or per-frame Up Next JavaScript.
+- Existing queue item click handlers remain the canonical tune path.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.2.17 Drawer Polish + Harmonized Controls preflight complete

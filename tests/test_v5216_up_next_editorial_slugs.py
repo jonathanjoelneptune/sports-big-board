@@ -6,13 +6,13 @@ ROOT=Path(__file__).resolve().parents[1]
 version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
 css=(ROOT/'ui'/'editorial-slugs-up-next-v5216.css').read_text()
-js=(ROOT/'ui'/'up-next-experience-v5216.js').read_text()
+js=(ROOT/'ui'/'up-next-experience-v5217.js').read_text()
 
-assert version=='5.2.16', version
+assert version=='5.2.17', version
 assert f'ui/editorial-slugs-up-next-v5216.css?v={version}' in index
-assert f'<script src="ui/up-next-experience-v5216.js?v={version}"></script>' in index
+assert f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>' in index
 assert index.index(f'ui/premium-now-watching-v5215.css?v={version}') < index.index(f'ui/editorial-slugs-up-next-v5216.css?v={version}') < index.index('</head>')
-assert index.index(f'app.js?v={version}') < index.index(f'architecture/key-info-current-v520.js?v={version}') < index.index(f'ui/up-next-experience-v5216.js?v={version}')
+assert index.index(f'app.js?v={version}') < index.index(f'architecture/key-info-current-v520.js?v={version}') < index.index(f'ui/up-next-experience-v5217.js?v={version}')
 
 # Editorial slugs are centered, squared-off broadcast labels, not rounded SaaS pills.
 for token in [
@@ -42,7 +42,7 @@ for token in [
 for token in [
     'sourceRows()', 'renderDock()', 'patchRenderQueue()', 'canonicalNextRow()',
     'repairNextButton()', 'row.click()', 'nextVisibleQueueIndex()',
-    "reason:'manual next control v5.2.16 fallback'"
+    "reason:'manual next control v5.2.17 fallback'"
 ]:
     assert token in js, token
 for forbidden in ['let PROGRAM', 'const PROGRAM', 'setInterval(', 'new MutationObserver']:
@@ -58,4 +58,4 @@ assert 'if(row){row.click();return;}' in js
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version, f'{asset}: {found} != {version}'
 
-print('PASS v5.2.16 editorial slugs + integrated Up Next + NEXT transport repair')
+print('PASS v5.2.17 editorial slugs + integrated Up Next + NEXT transport repair')
