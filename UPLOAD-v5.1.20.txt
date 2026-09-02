@@ -1,0 +1,64 @@
+Sports Big Board v5.1.20 — State Convergence + Stable Ribbon
+
+Upload the contents of this package to the repository root and replace files.
+No repository deletions are required.
+
+Files changed
+- VERSION
+- index.html
+- architecture/date-transition-coordinator.js
+- architecture/tennis-presentation.js
+- ui/game-center-view.js
+- tests/test_v5120_architecture.py
+- tests/test_v5120_tennis_presentation.js
+- tests/test_v5120_game_center_identity.js
+
+Historical date convergence
+- A cold or slow Day State response is now LOADING, never authoritative EMPTY.
+- The selected date stays alive through bounded same-date canonical rereads for
+  roughly three minutes, so the user no longer has to leave Aug 22 and come back.
+- Thin score snapshots paint immediately; later full Day State plans enrich the
+  same date in place with recap/media colors.
+- "No games" is authoritative only when scoreInventoryComplete=true and games=0.
+- This does not add browser-side historical provider/media discovery.
+
+Game Center stability
+- Game Center loading is keyed to canonical sporting-event identity.
+- Repeated SelectedEvent notifications for the SAME game join the existing request
+  instead of aborting/restarting it.
+- Only a different game or explicit Retry cancels an active Game Center load.
+- Resident Game Center cache renders immediately when available.
+- A 12-second view watchdog guarantees the drawer cannot remain on an infinite
+  "Loading Game Center..." spinner; it becomes a visible Retry state.
+
+Tennis ribbon stability
+- Tennis player labels are projected before score-card construction. Provider
+  three-letter abbreviations no longer paint first and expand a frame later.
+- The ribbon preserves the visible-game horizontal anchor across same-date renders.
+- US Open round context replaces TODAY/weekday in the card header:
+  ROUND 1 / ROUND 2 / ROUND 3 / R16 / QF / SEMIS / FINAL.
+- Nationality flags use canonical country/nationality/group metadata in the fixed
+  score-card logo slot. No country is guessed when canonical metadata is absent.
+
+Verification
+Run from the repository root after upload:
+  node tests/test_v5120_tennis_presentation.js
+  node tests/test_v5120_game_center_identity.js
+  python tests/test_v5120_architecture.py
+  ./VERIFY.sh
+
+Manual smoke checks
+1. Cold-load a historical date such as Aug 22. If the first canonical read is slow,
+   the ribbon must say Loading games... and populate without leaving the date.
+2. After cards appear, recap/media colors should enrich in place without moving the
+   ribbon to another horizontal position.
+3. Open TOR-CLE or another completed historical Game Center. Same-game playback or
+   selection churn must not reset its request; the detail pane must resolve or show
+   Retry within 12 seconds.
+4. Browse USOPEN-2026. Player names must appear in compact form on the first visible
+   frame, the ribbon must remain scrollable, flags should appear when canonical
+   nationality is available, and the header should show round instead of TODAY.
+5. In DevTools verify:
+   SBB_DATE_TRANSITIONS.version === '5.1.20'
+   SBB_TENNIS_PRESENTATION.version === '5.1.20'
+   SBB_GAME_CENTER_VIEW.version === '1.8-v5.1.20'

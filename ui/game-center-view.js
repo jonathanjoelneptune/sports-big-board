@@ -1,8 +1,15 @@
-/* v4.3.6 Game Center renderer. Active playback is the selected-event authority. */
+/* Sports Big Board v5.1.20 — identity-stable Game Center renderer.
+   Repeated SelectedEvent notifications for the SAME canonical game join one load.
+   Only a different game or explicit Retry may abort an active request. A view-level
+   watchdog guarantees the drawer can never remain on an infinite loading spinner.
+*/
 (() => {
   const $=id=>document.getElementById(id);
-  let selected=null,data=null,requestToken=0,pollTimer=null,requestAbort=null,activeSection='overview',playsMode='scoring',activePlayerSide='away';
+  const UI_WATCHDOG_MS=12000;
+  let selected=null,data=null,requestToken=0,pollTimer=null,activeRequest=null,activeSection='overview',playsMode='scoring',activePlayerSide='away';
+  const diagnostics={loads:0,joined:0,aborted:0,watchdogs:0,lastKey:'',lastResult:'',lastElapsedMs:0};
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const clean=v=>String(v??'').trim();
   const enriching=gc=>gc?.coverage?.complete===false||gc?.partial===true||(gc?.quality?.level&&gc.quality.level!=='rich');
   const teamName=t=>t?.abbreviation||t?.shortName||t?.name||'—';
   const teamLong=t=>t?.name||t?.displayName||t?.abbreviation||'—';
@@ -38,6 +45,17 @@
     return {away:evt?.awayTeam||evt?.away||parts.find(x=>x.side==='away')||parts[0]||{},home:evt?.homeTeam||evt?.home||parts.find(x=>x.side==='home')||parts[1]||{}};
   }
   function eventScore(evt,side){ return evt?.[`${side}Score`]??evt?.[`score${side[0].toUpperCase()+side.slice(1)}`]??evt?.score?.[`${side}Score`]??evt?.[side]?.score??''; }
+  function eventKey(evt){
+    if(!evt)return '';
+    try{const key=clean(window.SBB_GAME_CENTER?.identity?.(evt)?.key);if(key)return key;}catch(_){}
+    try{const key=clean(window.SBB_EVENT_IDENTITY?.key?.(evt));if(key)return key;}catch(_){}
+    const comp=clean(evt?.competitionId||evt?.__sbbLeague||evt?.league).toUpperCase();
+    const id=[evt?.gameCenterEventId,evt?.scoreEventId,evt?.espnEventId,evt?.gamePk,evt?.eventId,evt?.matchId,evt?.id].find(v=>clean(v));
+    if(id)return `${comp}:ID:${clean(id)}`;
+    const parts=eventParticipants(evt),name=t=>clean(t?.name||t?.displayName||t?.shortName||t?.abbreviation).toLowerCase().replace(/[^a-z0-9]+/g,'');
+    const date=clean(evt?.date||evt?.scheduledAt||evt?.gameDate).slice(0,10);
+    return `${comp}:${date}:${name(parts.away)}:${name(parts.home)}`;
+  }
   function basicShell(evt,message='Loading game data…'){
     $('gameCenterEmpty')?.classList.add('hidden'); $('gameCenterContent')?.classList.remove('hidden');
     const {away,home}=eventParticipants(evt||{}); setTeam('gcAwayTeam',away,eventScore(evt,'away')); setTeam('gcHomeTeam',home,eventScore(evt,'home'));
@@ -80,9 +98,7 @@
     const explicit=String(sec?.teamSide||'').toLowerCase();
     if(explicit==='away'||explicit==='home') return explicit;
     const title=String(sec?.title||'').toLowerCase();
-    const candidates=[
-      ['away',awayTeam],['home',homeTeam]
-    ];
+    const candidates=[['away',awayTeam],['home',homeTeam]];
     for(const [side,team] of candidates){
       for(const token of [team?.id,team?.abbreviation,team?.shortName,team?.name,team?.displayName]){
         const value=String(token||'').trim().toLowerCase();
@@ -154,49 +170,105 @@
     const final=/final|finished|game over|completed|complete|post/i.test(status);
     const live=!final&&(!!gc?.live||/live|progress|inning|quarter|half|period/i.test(status));
     const partial=enriching(gc);
-    // v5.1.10: a completed partial Game Center must not rebuild a large football
-    // payload every 2.2 seconds while playback is active. Non-final partials keep
-    // the fast enrichment probe; final partials cool down to a bounded 30 seconds.
     const finalPartial=partial&&final;
     const delay=partial?(finalPartial?30000:2200):(live?15000:60000);
     pollTimer=setTimeout(()=>load(selected,{force:false,background:true}),delay);
   }
+  function abortActive(reason='Selection changed'){
+    const active=activeRequest;
+    if(!active)return false;
+    activeRequest=null;
+    if(active.watchdog)clearTimeout(active.watchdog);
+    diagnostics.aborted+=1;
+    try{active.controller.abort(new DOMException(reason,'AbortError'));}catch(_){try{active.controller.abort();}catch(__){}}
+    return true;
+  }
   async function load(evt,{force=false,background=false}={}){
-    if(!evt)return;
-    const oldKey=String(selected?.eventId||selected?.matchId||selected?.gamePk||selected?.scoreGameKey||'');
-    const newKey=String(evt?.eventId||evt?.matchId||evt?.gamePk||evt?.scoreGameKey||'');
-    if(newKey && newKey!==oldKey) activePlayerSide='away';
+    if(!evt)return null;
+    const key=eventKey(evt),oldKey=eventKey(selected);
+    if(key&&oldKey&&key!==oldKey)activePlayerSide='away';
     selected=evt;
-    const token=++requestToken;
-    if(requestAbort)requestAbort.abort();requestAbort=new AbortController();
+    diagnostics.lastKey=key;
+
     const resident=window.SBB_GAME_CENTER?.peek?.(evt)||null;
     if(resident){if(resident!==data)render(resident);}
-    else if(!background)basicShell(evt,'Loading Game Center…');
-    try{
-      const gc=await window.SBB_GAME_CENTER.get(evt,{force,signal:requestAbort.signal,timeoutMs:30000});
-      if(token!==requestToken)return;
-      // v5.1.10: peek() and get() frequently return the exact same resident object.
-      // Avoid a second synchronous rebuild of overview/stats/players/PBP in that case.
-      if(gc!==data)render(gc);
-      schedulePoll(gc);
-    }catch(err){
-      if(token!==requestToken||err?.name==='AbortError')return;
-      errorView(evt,err);schedulePoll(null);
+    else if(!background&&!activeRequest)basicShell(evt,'Loading Game Center…');
+
+    // v5.1.20: repeated ownership/selection notifications for the same sporting
+    // event must join the existing transaction. They may refresh the selected
+    // shell metadata, but they can never reset the provider request underneath it.
+    if(!force&&activeRequest&&activeRequest.key===key){
+      diagnostics.joined+=1;
+      return activeRequest.promise;
     }
+
+    if(activeRequest)abortActive(force?'Explicit Game Center retry':'Different Game Center selected');
+    const token=++requestToken;
+    const controller=new AbortController();
+    const started=performance.now();
+    let watchdogFired=false;
+    diagnostics.loads+=1;
+
+    if(!resident&&!background)basicShell(evt,'Loading Game Center…');
+
+    const promise=(async()=>{
+      try{
+        const gc=await window.SBB_GAME_CENTER.get(evt,{force,signal:controller.signal,timeoutMs:10000});
+        if(token!==requestToken)return null;
+        if(gc!==data)render(gc);
+        diagnostics.lastResult='READY';
+        diagnostics.lastElapsedMs=Math.round((performance.now()-started)*10)/10;
+        schedulePoll(gc);
+        return gc;
+      }catch(err){
+        if(token!==requestToken)return null;
+        if(watchdogFired)return null; // terminal UI was already rendered by watchdog
+        if(err?.name==='AbortError')return null;
+        diagnostics.lastResult='ERROR';
+        diagnostics.lastElapsedMs=Math.round((performance.now()-started)*10)/10;
+        errorView(evt,err);schedulePoll(null);
+        return null;
+      }finally{
+        const active=activeRequest;
+        if(active?.token===token){
+          if(active.watchdog)clearTimeout(active.watchdog);
+          activeRequest=null;
+        }
+      }
+    })();
+
+    const watchdog=setTimeout(()=>{
+      const active=activeRequest;
+      if(!active||active.token!==token||token!==requestToken)return;
+      watchdogFired=true;
+      diagnostics.watchdogs+=1;
+      diagnostics.lastResult='WATCHDOG';
+      diagnostics.lastElapsedMs=Math.round((performance.now()-started)*10)/10;
+      try{controller.abort(new DOMException('Game Center view watchdog','TimeoutError'));}catch(_){try{controller.abort();}catch(__){}}
+      errorView(evt,new Error('Game Center did not finish loading within 12 seconds. Tap Retry to try again.'));
+      schedulePoll(null);
+    },UI_WATCHDOG_MS);
+
+    activeRequest={key,token,controller,promise,watchdog,started};
+    return promise;
   }
 
   function clear(message='Game Center follows the active game video.'){
     selected=null;data=null;requestToken++;
     if(pollTimer){clearTimeout(pollTimer);pollTimer=null;}
-    if(requestAbort){try{requestAbort.abort();}catch(_){}requestAbort=null;}
+    abortActive('Game Center cleared');
     $('gameCenterContent')?.classList.add('hidden');
     const empty=$('gameCenterEmpty');if(empty){empty.classList.remove('hidden');const strong=empty.querySelector('strong'),span=empty.querySelector('span');if(strong)strong.textContent='GAME CENTER';if(span)span.textContent=message;}
   }
   function init(){
     document.querySelectorAll('[data-gc-section]').forEach(btn=>btn.addEventListener('click',()=>selectSection(btn.dataset.gcSection)));
-    window.SBB_SELECTED_EVENT?.subscribe?.((event)=>{if(!event){clear();return;}selected=event;load(event);});
-    const existing=window.SBB_SELECTED_EVENT?.get?.();if(existing){selected=existing;load(existing);}
+    window.SBB_SELECTED_EVENT?.subscribe?.((event)=>{if(!event){clear();return;}load(event);});
+    const existing=window.SBB_SELECTED_EVENT?.get?.();if(existing)load(existing);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  window.SBB_GAME_CENTER_VIEW=Object.freeze({version:'1.7',load,render,clear,selectSection,get selected(){return selected;}});
+  window.SBB_GAME_CENTER_VIEW=Object.freeze({
+    version:'1.8-v5.1.20',load,render,clear,selectSection,eventKey,
+    snapshot:()=>({version:'1.8-v5.1.20',activeKey:activeRequest?.key||'',active:!!activeRequest,...diagnostics}),
+    get selected(){return selected;}
+  });
 })();
