@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Sports Big Board v5.3.4 Complete Browse Inventory + Deploy Safety preflight"
+echo "Sports Big Board v5.3.5 Persistent Browse + Context + Game Center Identity preflight"
 python3 tools/check_release_version.py
 python3 tests/test_v529_release_integrity.py
 python3 tests/test_v5210_motion_smoothness.py
@@ -21,6 +21,7 @@ python3 tests/test_v531_browse_ux_timeline.py
 python3 tests/test_v532_team_browse_queue_flow.py
 python3 tests/test_v533_browse_integration.py
 python3 tests/test_v534_complete_browse_deploy_safety.py
+python3 tests/test_v535_persistent_browse_context_identity.py
 node --check ui/settings-view.js
 node --check ui/up-next-experience-v5217.js
 node --check ui/harmonized-controls-drawer-v5217.js
@@ -28,7 +29,7 @@ node --check ui/viewing-workspace-v5218.js
 node --check ui/game-center-readability-v5219.js
 node --check ui/game-center-scroll-v5220.js
 node --check ui/collapse-viewport-fit-v5221.js
-node --check ui/browse-curated-programming-v534.js
+node --check ui/browse-curated-programming-v535.js
 node --check ui/workspace-viewport-fit-v531.js
 node --check architecture/score-interrupt-queue-v5220.js
 node --check ui/player-visibility.js
@@ -38,4 +39,4 @@ node --check architecture/splash-preload-v5212.js
 python3 -m py_compile sbb/release_identity_v523.py sbb/current_news_v523.py
 bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh
 
-echo "PASS: v5.3.4 Complete Browse Inventory + Deploy Safety preflight complete"
+echo "PASS: v5.3.5 Persistent Browse + Context + Game Center Identity preflight complete"

@@ -1,0 +1,35 @@
+Sports Big Board v5.3.5 — Persistent Browse + Context Ribbon + Game Center Identity
+
+MANUAL GITHUB UPLOAD
+1. Open the sports-big-board repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, cloud/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when GitHub prompts.
+4. Commit every changed file together so frontend/backend release identity stays atomic.
+5. Let Deploy Sports Big Board complete before hard-refreshing the site.
+
+PRIMARY USER-VISIBLE CHANGES
+- Team/Player Browse participant inventories are now persisted in browser storage by league/tournament.
+- After a complete league scan succeeds once, reopening Team Browse or Player Browse uses the saved complete list immediately instead of re-reading thousands of audit rows before the menu can populate.
+- Saved inventories refresh in the background after six hours so new teams/players with verified highlights are incorporated without blocking the menu.
+- On a first-ever uncached league open, today's known participants appear immediately while the complete verified-highlight inventory is built and saved.
+- The curated Team/Player Browse ribbon measures the real standard score-ribbon height before switching modes and uses exactly that same vertical slot. Selecting a team/player should therefore no longer move the video/Game Center vertically.
+- PLAY ALL and EXIT now appear at both the left and right ends of the curated ribbon. The left pair replaces the old TEAM BROWSE kicker area.
+- Historical curated clips now explicitly select their own historical event identity in SelectedEvent/Game Center. A Sep 1 highlight can no longer inherit the Sep 2 Game Center merely because the same two teams are playing again.
+- Score-ribbon interrupts remain authoritative: while a user-interrupt game is active, the curated queue does not overwrite its selected Game Center event.
+
+TEAM / PLAYER FOCUS SPORTS TICKER — PHASE 1
+- When an actual team/player is selected, the normal generic Sports Ticker is replaced by a contextual focus ribbon for that entity.
+- It uses data Sports Big Board already owns: verified-highlight library size, provider record/standing fields when available, recent results, current W/L/T streak, next five scheduled catalog games, and matching current Sports Ticker news.
+- Exiting Team/Player Browse restores the normal Sports Ticker.
+- This intentionally does NOT make Team Browse dependent on a third-party ranking scrape. A TeamRankings/external-stat adapter can be added next as an enrichment source for deeper league ranks and specialty metrics while keeping the core experience reliable.
+
+PRESERVED v5.3.4 DEPLOYMENT / DATABASE SAFETY
+- Safe disk cleanup before deployment.
+- --check-only structural preflight for healthy normalized catalogs.
+- No relationship-only full database duplicate.
+- AUDIT_ONLY_DATABASE_AUTHORITY startup remains non-mutating.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.3.5 Persistent Browse + Context + Game Center Identity preflight complete
