@@ -1,10 +1,10 @@
-/* Sports Big Board v5.3.0 — explicit Game Center scroll owner.
+/* Sports Big Board v5.3.1 — explicit Game Center scroll owner.
    Moves the four existing provider-owned Game Center panes into one dedicated
    scroll surface. IDs and renderer ownership do not change. */
 (() => {
   'use strict';
-  if(window.SBB_GAME_CENTER_SCROLL?.version==='5.3.0')return;
-  const VERSION='5.3.0';
+  if(window.SBB_GAME_CENTER_SCROLL?.version==='5.3.1')return;
+  const VERSION='5.3.1';
   const $=id=>document.getElementById(id);
   const state={installed:false,moves:0,tabResets:0,lastError:''};
 

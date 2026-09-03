@@ -1,0 +1,26 @@
+Sports Big Board v5.3.1 — Browse UX + Curated Timeline + Viewport Fit
+
+MANUAL GITHUB UPLOAD
+1. Open the sports-big-board repository root on GitHub.
+2. Upload the CONTENTS of this folder while preserving architecture/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace files when GitHub prompts.
+4. Commit the release files together so frontend/backend/database-audit identity remains atomic.
+5. Allow Deploy Sports Big Board to finish, then hard-refresh once.
+
+PRIMARY CHANGES
+- TEAM BROWSE / PLAYER BROWSE now sits directly beside the selected competition tab instead of living at the far-right edge of navigation.
+- Active curated browsing exposes a clear EXIT BROWSE × control.
+- Browse popover anchors below the Browse control, stays above Game Center, keeps its header/search fixed, and scrolls the team/player list internally.
+- Opening Browse primes the competition entity catalog so users can see teams/players without knowing an exact search string first.
+- Curated timeline cards use a date header pill above each game.
+- Cards no longer display recap counts.
+- FULL RECAP / EXTENDED / HIGHLIGHTS / GOLD use their media-tier colors.
+- Historical card scores are lazy-enriched from the canonical /api/history/scores endpoint only as cards approach the visible timeline.
+- A card click starts that game and automatically queues every older filtered game after it.
+- The ambiguous + is replaced by explicit + QUEUE / ✓ QUEUED manual-selection controls.
+- The video is viewport-fit whether Game Center is open or collapsed, preventing unnecessary page-height overflow.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.3.1 Browse UX + Curated Timeline preflight complete

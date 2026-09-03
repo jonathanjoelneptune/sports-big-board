@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Sports Big Board v5.3.0 Browse + Curated Programming preflight"
+echo "Sports Big Board v5.3.1 Browse UX + Curated Timeline preflight"
 python3 tools/check_release_version.py
 python3 tests/test_v529_release_integrity.py
 python3 tests/test_v5210_motion_smoothness.py
@@ -17,6 +17,7 @@ python3 tests/test_v5219_game_center_readability.py
 python3 tests/test_v5220_gc_scroll_interrupt_queue.py
 python3 tests/test_v5221_collapse_viewport_fit.py
 python3 tests/test_v530_browse_curated_programming.py
+python3 tests/test_v531_browse_ux_timeline.py
 node --check ui/settings-view.js
 node --check ui/up-next-experience-v5217.js
 node --check ui/harmonized-controls-drawer-v5217.js
@@ -24,7 +25,8 @@ node --check ui/viewing-workspace-v5218.js
 node --check ui/game-center-readability-v5219.js
 node --check ui/game-center-scroll-v5220.js
 node --check ui/collapse-viewport-fit-v5221.js
-node --check ui/browse-curated-programming-v530.js
+node --check ui/browse-curated-programming-v531.js
+node --check ui/workspace-viewport-fit-v531.js
 node --check architecture/score-interrupt-queue-v5220.js
 node --check ui/player-visibility.js
 node --check architecture/key-info-current-v520.js
@@ -32,4 +34,4 @@ node --check architecture/scroll-motion-smoothness-v5210.js
 node --check architecture/splash-preload-v5212.js
 python3 -m py_compile sbb/release_identity_v523.py sbb/current_news_v523.py
 
-echo "PASS: v5.3.0 Browse + Curated Programming preflight complete"
+echo "PASS: v5.3.1 Browse UX + Curated Timeline preflight complete"
