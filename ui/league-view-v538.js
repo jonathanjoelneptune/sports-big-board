@@ -1,11 +1,11 @@
-/* Sports Big Board v5.3.9 — League View + recap context.
+/* Sports Big Board v5.3.10 — League View + recap context.
    Keeps multi-game/daily recap playback from inheriting a stale single-game
    Game Center and turns the former Up Next drawer into a persistent league view. */
 (() => {
   'use strict';
-  if (window.SBB_LEAGUE_VIEW?.version === '5.3.9') return;
+  if (window.SBB_LEAGUE_VIEW?.version === '5.3.10') return;
 
-  const VERSION = '5.3.9';
+  const VERSION = '5.3.10';
   const $ = id => document.getElementById(id);
   const clean = value => String(value ?? '').trim();
   const esc = value => clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -101,18 +101,51 @@
     if(row.wins!==''||row.losses!=='')return [row.wins,row.losses,row.ties].filter(x=>clean(x)!=='').join('-');
     return clean(row.points)||'—';
   }
-  function tableForGroup(group){
+  function rowMarkup(row){
+    return `<tr><td><span class="league-view-team">${row.logo?`<img src="${esc(row.logo)}" alt="" loading="lazy">`:''}<b>${esc(row.abbreviation||row.name)}</b><small>${esc(row.name)}</small></span></td><td>${esc(rowRecord(row))}</td><td>${esc(row.gamesBehind||row.points||row.pct||'—')}</td><td>${esc(row.streak||'—')}</td></tr>`;
+  }
+  function tableForGroup(group,{compact=false,title=''}={}){
     const rows=(group?.entries||[]).slice(0,20); if(!rows.length)return '';
-    return `<section class="league-view-card"><div class="league-view-card-head"><strong>${esc(group.name||'STANDINGS')}</strong><span>${rows.length} TEAMS</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr><th>TEAM</th><th>REC</th><th>GB / PTS</th><th>STRK</th></tr></thead><tbody>${rows.map(row=>`<tr><td><span class="league-view-team">${row.logo?`<img src="${esc(row.logo)}" alt="" loading="lazy">`:''}<b>${esc(row.abbreviation||row.name)}</b><small>${esc(row.name)}</small></span></td><td>${esc(rowRecord(row))}</td><td>${esc(row.gamesBehind||row.points||row.pct||'—')}</td><td>${esc(row.streak||'—')}</td></tr>`).join('')}</tbody></table></div></section>`;
+    return `<section class="league-view-card league-view-standings-card${compact?' compact':''}"><div class="league-view-card-head"><strong>${esc(title||group.name||'STANDINGS')}</strong><span>${rows.length} TEAMS</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr><th>TEAM</th><th>REC</th><th>GB / PTS</th><th>STRK</th></tr></thead><tbody>${rows.map(rowMarkup).join('')}</tbody></table></div></section>`;
+  }
+  function wildcardCard(rows,title='WILD CARD'){
+    if(!rows?.length)return '';
+    return `<section class="league-view-card league-view-wildcard"><div class="league-view-card-head"><strong>${esc(title)}</strong><span>NON-DIVISION LEADERS</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr><th>TEAM</th><th>REC</th><th>GB / PTS</th><th>STRK</th></tr></thead><tbody>${rows.slice(0,8).map(rowMarkup).join('')}</tbody></table></div></section>`;
+  }
+  function conferenceBoard(rows,league){
+    if(!Array.isArray(rows)||rows.length<2)return '';
+    const wanted=league==='MLB'?['AL','NL']:(league==='NFL'?['AFC','NFC']:['EAST','WEST']);
+    const ordered=wanted.map(key=>rows.find(x=>upper(x?.key)===key)).filter(Boolean);
+    if(ordered.length<2)return '';
+    return `<div class="league-view-conference-grid">${ordered.map(conf=>{
+      let inner='';
+      if(Array.isArray(conf.divisions)&&conf.divisions.length){for(const division of conf.divisions)inner+=tableForGroup(division,{compact:true,title:division.name});}
+      else if(Array.isArray(conf.standings)&&conf.standings.length)inner+=tableForGroup({name:conf.name,entries:conf.standings},{compact:true,title:'CONFERENCE STANDINGS'});
+      if(league==='MLB')inner+=wildcardCard(conf.wildcard||[],'WILD CARD');
+      return `<section class="league-view-conference"><div class="league-view-conference-head"><strong>${esc(conf.name||conf.key)}</strong><span>${league==='MLB'?'DIVISIONS + WILD CARD':'CONFERENCE'}</span></div>${inner}</section>`;
+    }).join('')}</div>`;
   }
   function playoffCard(rows,league){
-    if(!rows?.length)return '';
-    const title=league==='MLB'?'WILD CARD / PLAYOFF RACE':'PLAYOFF SEED RACE';
+    if(!rows?.length||league==='MLB')return '';
+    const title='PLAYOFF SEED RACE';
     return `<section class="league-view-card league-view-race"><div class="league-view-card-head"><strong>${title}</strong><span>CURRENT</span></div><div class="league-view-race-grid">${rows.slice(0,16).map(row=>`<div><b>${esc(row.seed||'•')}</b>${row.logo?`<img src="${esc(row.logo)}" alt="" loading="lazy">`:''}<span>${esc(row.abbreviation||row.name)}</span><small>${esc(rowRecord(row))}</small></div>`).join('')}</div></section>`;
   }
   function rankingsCard(rows){
     if(!rows?.length)return '';
     return `<section class="league-view-card"><div class="league-view-card-head"><strong>AP TOP 25</strong><span>NCAAF</span></div><div class="league-view-ranking-list">${rows.slice(0,25).map(row=>`<div><b>${esc(row.rank)}</b>${row.logo?`<img src="${esc(row.logo)}" alt="" loading="lazy">`:''}<span>${esc(row.name)}</span><small>${esc(row.record||'')}</small></div>`).join('')}</div></section>`;
+  }
+  function pulseList(title,rows,value){
+    if(!rows?.length)return '';
+    return `<div class="league-view-pulse-group"><strong>${esc(title)}</strong>${rows.slice(0,4).map(row=>`<div>${row.logo?`<img src="${esc(row.logo)}" alt="" loading="lazy">`:''}<span>${esc(row.abbreviation||row.name)}</span><b>${esc(value(row))}</b></div>`).join('')}</div>`;
+  }
+  function pulseCard(leaders){
+    if(!leaders||(!leaders.bestRecord?.length&&!leaders.hotStreaks?.length&&!leaders.bestDifferential?.length))return '';
+    const parts=[
+      pulseList('BEST RECORD',leaders.bestRecord,row=>rowRecord(row)),
+      pulseList('HOT STREAK',leaders.hotStreaks,row=>clean(row.streak)||'—'),
+      pulseList('DIFFERENTIAL',leaders.bestDifferential,row=>clean(row.differential)||'—')
+    ].filter(Boolean).join('');
+    return parts?`<section class="league-view-card league-view-pulse"><div class="league-view-card-head"><strong>LEAGUE PULSE</strong><span>AT A GLANCE</span></div><div class="league-view-pulse-grid">${parts}</div></section>`:'';
   }
   function gameText(game){
     const a=game?.away||{},h=game?.home||{};const names=(a.abbreviation||a.name)&& (h.abbreviation||h.name)?`${a.abbreviation||a.name} ${a.score||''} · ${h.abbreviation||h.name} ${h.score||''}`:clean(game?.name);
@@ -143,14 +176,17 @@
     else if(state.error&&!payload.standings?.length&&!context?.games?.length)body=`<div class="league-view-empty"><strong>LEAGUE VIEW TEMPORARILY UNAVAILABLE</strong><span>${esc(state.error)}</span></div>`;
     else{
       if(payload.rankings?.length)body+=rankingsCard(payload.rankings);
-      for(const group of payload.standings||[])body+=tableForGroup(group);
+      const conferenceLayout=conferenceBoard(payload.conferences||[],league);
+      if(conferenceLayout)body+=conferenceLayout;
+      else for(const group of payload.standings||[])body+=tableForGroup(group);
       body+=playoffCard(payload.playoffRace||[],league);
+      body+=pulseCard(payload.leaders||{});
       body+=roundsCard(payload.games||[],special);
       body+=gamesCard(payload.games||[],special);
       if(special)body+=localEventCard(context);
       if(!body)body='<div class="league-view-empty"><strong>LEAGUE CONTEXT</strong><span>No public standings table is available for this event yet. Big Board event highlights remain available in the ribbon and Team Browse.</span></div>';
     }
-    root.innerHTML=`<div class="league-view-head"><div><small>${special?'SPECIAL EVENT':'LEAGUE VIEW'}</small><h2>${esc(label)}</h2><span class="league-view-muted">Standings · playoff context · rankings · recent results</span></div><div class="league-view-head-actions">${updated?`<span class="league-view-updated">UPDATED ${esc(updated)}</span>`:''}<button id="leagueViewRefresh" type="button" title="Refresh League View">↻</button></div></div><div class="league-view-content">${body}</div>`;
+    root.innerHTML=`<div class="league-view-head"><div><small>${special?'SPECIAL EVENT':'LEAGUE VIEW'}</small><h2>${esc(label)}</h2><span class="league-view-muted">Standings · playoff race · leaders · recent results</span></div><div class="league-view-head-actions">${updated?`<span class="league-view-updated">UPDATED ${esc(updated)}</span>`:''}<button id="leagueViewRefresh" type="button" title="Refresh League View">↻</button></div></div><div class="league-view-content">${body}</div>`;
     $('leagueViewRefresh')?.addEventListener('click',()=>refresh(true));
   }
 

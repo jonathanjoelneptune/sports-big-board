@@ -1,4 +1,4 @@
-/* Sports Big Board v5.3.9 — League View */
+/* Sports Big Board v5.3.10 — League View */
 #upNextPane{min-height:0;overflow:hidden!important}
 .league-view-root{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);background:#07121a;color:#eaf2f7}
 .league-view-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 13px 10px;border-bottom:1px solid rgba(126,157,180,.18);background:linear-gradient(180deg,#0d1c28,#09151e)}
@@ -38,7 +38,7 @@ html[data-sbb-team-theme="on"] .league-view-rounds span{color:var(--sbb-team-tex
 
 
 /* ======================================================================
-   v5.3.9 — drawer exclusivity + high-contrast league marks
+   v5.3.10 — drawer exclusivity + high-contrast league marks
    ====================================================================== */
 
 /* Earlier desktop Game Center layout rules intentionally use display:grid!important.
@@ -63,4 +63,71 @@ body.sbb-game-center-side #infoDrawer .drawer-pane.hidden{
   padding:2px!important;
   box-sizing:border-box!important;
   object-fit:contain!important;
+}
+
+/* ======================================================================
+   v5.3.10 — denser conference/division League View
+   ====================================================================== */
+.league-view-content{padding:6px!important;gap:6px!important}
+.league-view-head{padding:9px 10px 8px!important}
+.league-view-card{border-radius:8px!important}
+.league-view-card-head{height:24px!important;padding:0 7px!important}
+.league-view-table th{height:20px!important;padding:0 4px!important}
+.league-view-table td{height:27px!important;padding:2px 4px!important}
+.league-view-games>div,.league-view-rounds>div{padding:5px 6px!important}
+
+.league-view-conference-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;align-items:start;
+}
+.league-view-conference{
+  min-width:0;display:grid;gap:5px;padding:0 0 1px;
+  border:1px solid rgba(125,157,181,.18);border-radius:9px;overflow:hidden;
+  background:#08141d;
+}
+.league-view-conference-head{
+  min-height:30px;display:flex;align-items:center;justify-content:space-between;gap:6px;
+  padding:0 7px;background:linear-gradient(180deg,#153047,#0c202e);
+  border-bottom:1px solid rgba(125,157,181,.18)
+}
+.league-view-conference-head strong{color:#f1f8fc;font:950 7.3px/1 system-ui,sans-serif;letter-spacing:.09em}
+.league-view-conference-head span{color:#78a0b9;font:800 5.7px/1 system-ui,sans-serif;letter-spacing:.07em}
+.league-view-conference>.league-view-card{margin:0 5px 5px;border-radius:7px!important}
+.league-view-conference>.league-view-card:last-child{margin-bottom:5px}
+.league-view-standings-card.compact .league-view-card-head{height:22px!important}
+.league-view-standings-card.compact .league-view-card-head strong{font-size:6.3px!important}
+.league-view-standings-card.compact .league-view-card-head span{display:none}
+.league-view-standings-card.compact .league-view-table{font-size:6.7px!important}
+.league-view-standings-card.compact .league-view-table th{font-size:5.2px!important}
+.league-view-standings-card.compact .league-view-table th:first-child{width:47%!important}
+.league-view-standings-card.compact .league-view-team{grid-template-columns:17px minmax(0,1fr)!important;gap:4px!important}
+.league-view-standings-card.compact .league-view-team img{width:17px!important;height:17px!important}
+.league-view-standings-card.compact .league-view-team b{font-size:6.7px!important}
+.league-view-standings-card.compact .league-view-team small{display:none!important}
+.league-view-wildcard .league-view-card-head span{font-size:5.1px!important}
+.league-view-wildcard .league-view-table th:first-child{width:47%!important}
+.league-view-wildcard .league-view-team{grid-template-columns:17px minmax(0,1fr)!important;gap:4px!important}
+.league-view-wildcard .league-view-team img{width:17px!important;height:17px!important}
+.league-view-wildcard .league-view-team b{font-size:6.7px!important}
+.league-view-wildcard .league-view-team small{display:none!important}
+
+.league-view-pulse-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(125,157,181,.08)}
+.league-view-pulse-group{min-width:0;padding:5px;background:#0a1721}
+.league-view-pulse-group>strong{display:block;margin-bottom:4px;color:#78a8c7;font:900 5.7px/1 system-ui,sans-serif;letter-spacing:.08em}
+.league-view-pulse-group>div{min-width:0;display:grid;grid-template-columns:16px minmax(0,1fr) auto;align-items:center;gap:3px;min-height:22px;border-top:1px solid rgba(125,157,181,.06)}
+.league-view-pulse-group img{width:15px;height:15px;object-fit:contain;background:#fff;border-radius:4px;padding:1px;box-sizing:border-box}
+.league-view-pulse-group span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#e6eef3;font:780 6.2px/1 system-ui,sans-serif}
+.league-view-pulse-group b{color:#f0cb61;font:850 6.1px/1 system-ui,sans-serif}
+
+html[data-sbb-theme="light"] .league-view-conference{background:#f6fafc;border-color:#d4dee5}
+html[data-sbb-theme="light"] .league-view-conference-head{background:linear-gradient(180deg,#eaf3f8,#dbeaf2);border-color:#c9d8e1}
+html[data-sbb-theme="light"] .league-view-conference-head strong,html[data-sbb-theme="light"] .league-view-pulse-group span{color:#1d2b35}
+html[data-sbb-theme="light"] .league-view-pulse-group{background:#f8fbfc}
+html[data-sbb-team-theme="on"] .league-view-conference{background:var(--sbb-team-bg)!important;border-color:color-mix(in srgb,var(--sbb-team-line) 45%,transparent)!important}
+html[data-sbb-team-theme="on"] .league-view-conference-head{background:linear-gradient(180deg,var(--sbb-team-gradient-start),var(--sbb-team-gradient-end))!important;border-color:var(--sbb-team-line)!important}
+html[data-sbb-team-theme="on"] .league-view-conference-head strong,html[data-sbb-team-theme="on"] .league-view-pulse-group span{color:var(--sbb-team-text)!important}
+html[data-sbb-team-theme="on"] .league-view-pulse-group{background:var(--sbb-team-surface-raised)!important}
+
+@media(max-width:560px){
+  .league-view-conference-grid{grid-template-columns:1fr}
+  .league-view-pulse-grid{grid-template-columns:1fr}
 }

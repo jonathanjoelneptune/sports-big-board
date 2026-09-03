@@ -1,4 +1,4 @@
-"""Sports Big Board v5.3.9 — cached League View read model.
+"""Sports Big Board v5.3.10 — cached League View read model.
 
 League View is intentionally read-only. It never owns scores, playback, selected-event
 identity, or the historical catalog. It projects public league standings, playoff seed
@@ -19,7 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
-VERSION = "5.3.9-league-view-1"
+VERSION = "5.3.10-league-view-2"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _CACHE_PATH = _STATE_DIR / "league-view-v538.json"
 _TTL_SECONDS = 10 * 60
@@ -78,7 +78,7 @@ def _persist_cache():
 
 
 def _http_json(url, timeout=7.0):
-    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.9", "Accept": "application/json"})
+    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.10", "Accept": "application/json"})
     with urlopen(req, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8", "replace"))
 
@@ -148,10 +148,11 @@ def _parse_standings(payload):
     groups = []
     seen = set()
 
-    def walk(node, parent=""):
+    def walk(node, parent="", path=()):
         if not isinstance(node, dict):
             return
         name = _group_name(node, parent or "STANDINGS")
+        current_path = tuple(x for x in (*path, name) if x)
         standings = node.get("standings") if isinstance(node.get("standings"), dict) else {}
         entries = standings.get("entries") if isinstance(standings.get("entries"), list) else []
         if entries:
@@ -160,16 +161,133 @@ def _parse_standings(payload):
             signature = (name, tuple(x.get("id") or x.get("name") for x in rows))
             if rows and signature not in seen:
                 seen.add(signature)
-                groups.append({"name": name, "entries": rows})
+                groups.append({"name": name, "parent": parent, "path": list(current_path), "entries": rows})
         for child in node.get("children") or []:
-            walk(child, name)
+            walk(child, name, current_path)
 
     if isinstance(payload, dict):
         walk(payload)
-        for child in payload.get("children") or []:
-            walk(child)
-    return groups[:20]
+    return groups[:28]
 
+
+def _number(value, default=None):
+    raw = _clean(value).replace(",", "")
+    if not raw:
+        return default
+    try:
+        return float(re.sub(r"[^0-9+\-.]", "", raw))
+    except Exception:
+        return default
+
+
+def _conference_key(league, group):
+    text = " ".join([_clean(group.get("parent")), *[str(x) for x in group.get("path") or []], _clean(group.get("name"))]).upper()
+    if league == "MLB":
+        if "AMERICAN LEAGUE" in text or re.search(r"\bAL\b", text): return "AL"
+        if "NATIONAL LEAGUE" in text or re.search(r"\bNL\b", text): return "NL"
+    if league == "NFL":
+        if re.search(r"\bAFC\b|AMERICAN FOOTBALL CONFERENCE", text): return "AFC"
+        if re.search(r"\bNFC\b|NATIONAL FOOTBALL CONFERENCE", text): return "NFC"
+    if league in {"NBA", "NHL"}:
+        if "EASTERN CONFERENCE" in text or re.search(r"\bEAST\b", text): return "EAST"
+        if "WESTERN CONFERENCE" in text or re.search(r"\bWEST\b", text): return "WEST"
+    return ""
+
+
+def _division_name(league, group):
+    name = _clean(group.get("name")).upper()
+    text = " ".join([_clean(group.get("parent")), name]).upper()
+    if league == "MLB":
+        for token in ("EAST", "CENTRAL", "WEST"):
+            if token in name and ("LEAGUE" not in name or len(name.split()) > 2): return token
+    if league == "NFL":
+        for token in ("EAST", "NORTH", "SOUTH", "WEST"):
+            if token in name: return token
+    if league == "NHL":
+        for token in ("ATLANTIC", "METROPOLITAN", "CENTRAL", "PACIFIC"):
+            if token in name: return token
+    return ""
+
+
+def _conference_layout(league, groups):
+    if league not in {"MLB", "NFL", "NBA", "NHL"}:
+        return []
+    buckets = {}
+    team_conf = {}
+    division_leaders = set()
+    for group in groups:
+        conf = _conference_key(league, group)
+        if not conf:
+            continue
+        bucket = buckets.setdefault(conf, {"key": conf, "name": conf, "divisions": [], "standings": [], "wildcard": []})
+        if league == "MLB": bucket["name"] = "AMERICAN LEAGUE" if conf == "AL" else "NATIONAL LEAGUE"
+        elif league == "NFL": bucket["name"] = conf
+        else: bucket["name"] = "EASTERN CONFERENCE" if conf == "EAST" else "WESTERN CONFERENCE"
+        rows = [dict(x) for x in group.get("entries") or []]
+        for row in rows:
+            key = row.get("id") or _norm(row.get("name"));
+            if key: team_conf[key] = conf
+        division = _division_name(league, group)
+        if division:
+            # Prefer the most specific group for a division and avoid duplicate
+            # conference-summary rows that happen to contain the same teams.
+            if not any(x.get("name") == division for x in bucket["divisions"]):
+                bucket["divisions"].append({"name": division, "entries": rows})
+                if rows:
+                    leader_key = rows[0].get("id") or _norm(rows[0].get("name"))
+                    if leader_key: division_leaders.add(leader_key)
+        elif ("CONFERENCE" in _clean(group.get("name")).upper() or (league == "MLB" and _clean(group.get("name")).upper() in {"AMERICAN LEAGUE", "NATIONAL LEAGUE"})):
+            if len(rows) > len(bucket["standings"]): bucket["standings"] = rows
+
+    if league == "MLB":
+        all_teams = {}
+        for bucket in buckets.values():
+            for division in bucket["divisions"]:
+                for row in division["entries"]:
+                    key = row.get("id") or _norm(row.get("name"))
+                    if key: all_teams[key] = row
+        seeded = []
+        for key,row in all_teams.items():
+            seed = _seed_number(row.get("seed"))
+            if seed < 999 and seed >= 4 and key not in division_leaders:
+                seeded.append((seed,key,row))
+        for conf,bucket in buckets.items():
+            rows = [row for seed,key,row in seeded if team_conf.get(key) == conf]
+            if not rows:
+                rows = []
+                for division in bucket["divisions"]:
+                    for row in division["entries"]:
+                        key = row.get("id") or _norm(row.get("name"))
+                        if key and key not in division_leaders: rows.append(row)
+                dedup={}
+                for row in rows:
+                    key=row.get("id") or _norm(row.get("name")); dedup.setdefault(key,row)
+                rows=list(dedup.values())
+                rows.sort(key=lambda row: (-( _number(row.get("pct"), -1) or -1), _number(row.get("gamesBehind"), 999) or 999, _norm(row.get("name"))))
+            else:
+                rows.sort(key=lambda row: (_seed_number(row.get("seed")), _norm(row.get("name"))))
+            bucket["wildcard"] = rows[:8]
+    return [buckets[key] for key in ("AL","NL","AFC","NFC","EAST","WEST") if key in buckets]
+
+
+def _league_leaders(groups):
+    teams = {}
+    for group in groups:
+        for row in group.get("entries") or []:
+            key = row.get("id") or _norm(row.get("name"))
+            if not key: continue
+            prior = teams.get(key)
+            if prior is None or sum(bool(row.get(k)) for k in ("pct","streak","differential","seed")) > sum(bool(prior.get(k)) for k in ("pct","streak","differential","seed")):
+                teams[key] = dict(row)
+    rows=list(teams.values())
+    by_record=sorted(rows,key=lambda row: (-(_number(row.get("pct"), -1) or -1), _norm(row.get("name"))))[:4]
+    def streak_score(row):
+        m=re.match(r"W\s*(\d+)", _clean(row.get("streak")).upper());return int(m.group(1)) if m else -1
+    hot=sorted(rows,key=lambda row:(-streak_score(row),_norm(row.get("name"))))
+    hot=[x for x in hot if streak_score(x)>0][:4]
+    diff=sorted(rows,key=lambda row:(-(_number(row.get("differential"), -10**9) or -10**9),_norm(row.get("name"))))
+    diff=[x for x in diff if _number(x.get("differential"), None) is not None][:4]
+    return {"bestRecord":by_record,"hotStreaks":hot,"bestDifferential":diff}
 
 def _seed_number(value):
     try:
@@ -178,22 +296,32 @@ def _seed_number(value):
         return 999
 
 
-def _playoff_race(groups):
+def _playoff_race(groups, league=""):
     # Entries can occur in both conference and division nodes. Deduplicate by team
     # and keep the richest row, then sort any published playoff seed to the front.
     teams = {}
+    division_leaders = set()
     for group in groups:
-        for row in group.get("entries") or []:
+        division = _division_name(league, group)
+        rows = group.get("entries") or []
+        if division and rows:
+            key = rows[0].get("id") or _norm(rows[0].get("name"))
+            if key: division_leaders.add(key)
+        for row in rows:
             key = row.get("id") or _norm(row.get("name"))
             if not key:
                 continue
             prior = teams.get(key)
             if prior is None or (row.get("seed") and not prior.get("seed")):
                 teams[key] = dict(row)
-    seeded = [row for row in teams.values() if row.get("seed")]
+    seeded = []
+    for key,row in teams.items():
+        seed=_seed_number(row.get("seed"))
+        if not row.get("seed"): continue
+        if league == "MLB" and (key in division_leaders or seed <= 3): continue
+        seeded.append(row)
     seeded.sort(key=lambda row: (_seed_number(row.get("seed")), _norm(row.get("name"))))
     return seeded[:16]
-
 
 def _competition_team(competitor):
     team = competitor.get("team") if isinstance(competitor.get("team"), dict) else {}
@@ -319,7 +447,9 @@ def _payload(league, force=False):
         "specialEvent": league not in CORE_LEAGUES,
         "savedAt": now,
         "standings": standings,
-        "playoffRace": _playoff_race(standings),
+        "playoffRace": _playoff_race(standings, league),
+        "conferences": _conference_layout(league, standings),
+        "leaders": _league_leaders(standings),
         "rankings": source.get("rankings") or [],
         "games": source.get("games") or [],
         "source": "ESPN_PUBLIC_ENRICHMENT",

@@ -1,4 +1,4 @@
-"""Sports Big Board v5.3.9 — participant metadata + Team Focus enrichment.
+"""Sports Big Board v5.3.10 — participant metadata + Team Focus enrichment.
 
 Two cache-only browser endpoints are installed:
   /api/browse/participants?league=MLB
@@ -25,7 +25,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
-VERSION = "5.3.9-team-focus-2"
+VERSION = "5.3.10-team-focus-3"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _PARTICIPANT_PATH = _STATE_DIR / "browse-participants-v538.json"
 _FOCUS_PATH = _STATE_DIR / "team-focus-v538.json"
@@ -229,9 +229,40 @@ def _atomic_json(path, payload):
         pass
 
 
+def _participant_subject(value):
+    if not isinstance(value, dict): return value
+    # Tennis providers commonly wrap a person in athlete/player while team sports
+    # use team. Resolve the human/team object before reading name/country artwork.
+    for key in ("athlete", "player", "team"):
+        row = value.get(key)
+        if isinstance(row, dict): return row
+    return value
+
+
+def _country_flag_url(country):
+    raw = _clean(country).upper()
+    if not raw: return ""
+    aliases = {
+        "UNITED STATES":"USA", "UNITED KINGDOM":"GBR", "GREAT BRITAIN":"GBR",
+        "SPAIN":"ESP", "FRANCE":"FRA", "GERMANY":"GER", "ITALY":"ITA",
+        "AUSTRALIA":"AUS", "CANADA":"CAN", "BRAZIL":"BRA", "ARGENTINA":"ARG",
+        "SERBIA":"SRB", "CROATIA":"CRO", "CZECH REPUBLIC":"CZE", "CZECHIA":"CZE",
+        "SWITZERLAND":"SUI", "AUSTRIA":"AUT", "BELGIUM":"BEL", "NETHERLANDS":"NED",
+        "POLAND":"POL", "UKRAINE":"UKR", "KAZAKHSTAN":"KAZ", "CHINA":"CHN",
+        "JAPAN":"JPN", "SOUTH KOREA":"KOR", "MEXICO":"MEX", "COLOMBIA":"COL",
+        "CHILE":"CHI", "SOUTH AFRICA":"RSA", "NEW ZEALAND":"NZL", "GREECE":"GRE",
+        "PORTUGAL":"POR", "ROMANIA":"ROU", "BULGARIA":"BUL", "DENMARK":"DEN",
+        "SWEDEN":"SWE", "NORWAY":"NOR", "FINLAND":"FIN",
+    }
+    code = aliases.get(raw, raw)
+    if not re.fullmatch(r"[A-Z]{2,3}", code): return ""
+    return f"https://a.espncdn.com/i/teamlogos/countries/500/{code.lower()}.png"
+
+
 def _logo_from(value):
     if not isinstance(value, dict): return ""
-    team = value.get("team") if isinstance(value.get("team"), dict) else value
+    team = _participant_subject(value)
+    if not isinstance(team, dict): return ""
     for key in ("logo","logoUrl","image","imageUrl","flag","flagUrl","countryFlag","headshot"):
         raw = team.get(key)
         if isinstance(raw, str) and raw.strip(): return raw.strip()
@@ -248,35 +279,44 @@ def _logo_from(value):
         flag = country.get("flag") or country.get("logo")
         if isinstance(flag, dict): flag = flag.get("href") or flag.get("url")
         if _clean(flag): return _clean(flag)
-    return ""
+        country = country.get("abbreviation") or country.get("code") or country.get("name") or ""
+    return _country_flag_url(country or team.get("countryCode") or team.get("countryAbbreviation"))
 
 
 def _participant_meta(value):
     if isinstance(value, str): return {"name": _clean(value), "abbreviation":"", "logo":"", "country":""}
     if not isinstance(value, dict): return None
-    team = value.get("team") if isinstance(value.get("team"), dict) else value
-    name = _clean(team.get("displayName") or team.get("name") or team.get("shortDisplayName") or team.get("location") or team.get("abbreviation"))
+    team = _participant_subject(value)
+    if not isinstance(team, dict): return None
+    name = _clean(team.get("displayName") or team.get("fullName") or team.get("name") or team.get("shortDisplayName") or team.get("location") or team.get("abbreviation"))
     if not name: return None
     abbreviation = _clean(team.get("abbreviation") or team.get("abbr") or team.get("shortName"))
-    country = team.get("country") or team.get("countryCode") or team.get("countryAbbreviation") or ""
+    country = team.get("country") or team.get("countryCode") or team.get("countryAbbreviation") or value.get("country") or ""
     if isinstance(country, dict): country = country.get("abbreviation") or country.get("code") or country.get("name") or ""
     country = _clean(country)
-    logo = _logo_from(value)
-    if not logo and country and re.fullmatch(r"[A-Za-z]{2,3}", country):
-        logo = f"https://a.espncdn.com/i/teamlogos/countries/500/{country.lower()}.png"
+    logo = _logo_from(value) or _country_flag_url(country)
     return {"name":name,"abbreviation":abbreviation,"logo":logo,"country":country}
 
 
 def _event_participant_rows(event):
     if not isinstance(event, dict): return []
     values=[]
-    for key in ("away", "awayTeam", "home", "homeTeam"):
+    for key in ("away", "awayTeam", "home", "homeTeam", "athlete", "player"):
         if event.get(key) is not None: values.append(event.get(key))
-    for key in ("participants", "competitors"):
+    for key in ("participants", "competitors", "athletes", "players"):
         rows=event.get(key)
         if isinstance(rows,list): values.extend(rows)
-    out=[];seen=set()
+    # Some tennis event models wrap each competitor and then put the actual
+    # singles/doubles athletes one level deeper. Flatten that one bounded level.
+    expanded=[]
     for value in values:
+        expanded.append(value)
+        if isinstance(value,dict):
+            for key in ("participants","athletes","players"):
+                rows=value.get(key)
+                if isinstance(rows,list): expanded.extend(rows)
+    out=[];seen=set()
+    for value in expanded:
         row=_participant_meta(value)
         if not row: continue
         key=_norm(row["name"])
@@ -352,7 +392,7 @@ def _refresh_participants(server, force=False):
 
 
 def _http_text(url, timeout=6.0):
-    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.9 (+team-focus-cache)", "Accept": "text/html,application/json;q=0.9,*/*;q=0.8"})
+    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.10 (+team-focus-cache)", "Accept": "text/html,application/json;q=0.9,*/*;q=0.8"})
     with urlopen(req, timeout=timeout) as resp:
         return resp.read().decode("utf-8", "replace")
 
@@ -533,7 +573,7 @@ def _install_into_server():
     loaded = _load_json(_PARTICIPANT_PATH, {})
     if not (isinstance(loaded, dict) and isinstance(loaded.get("leagues"), dict)):
         # Preserve the v5.3.7 inventory immediately, then refresh metadata/logos in
-        # the background into the v5.3.9 cache.
+        # the background into the v5.3.10 cache.
         loaded = _load_json(_STATE_DIR / "browse-participants-v537.json", {})
     if not (isinstance(loaded, dict) and isinstance(loaded.get("leagues"), dict)):
         loaded = _load_json(_STATE_DIR / "browse-participants-v536.json", {})

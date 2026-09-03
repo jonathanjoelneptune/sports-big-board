@@ -1,13 +1,13 @@
-/* Sports Big Board v5.3.9 — Focus Integration + Full Team Theme
+/* Sports Big Board v5.3.10 — Focus Integration + Full Team Theme
    User-facing content discovery over the existing score/calendar + historical
    catalog. No second playback owner: curated results become normal PROGRAM items
    and therefore inherit PlaybackController, Hot Standby, Up Next and score-card
    interrupt/resume behavior. */
 (() => {
   'use strict';
-  if(window.SBB_CURATED_BROWSE?.version==='5.3.9') return;
+  if(window.SBB_CURATED_BROWSE?.version==='5.3.10') return;
 
-  const VERSION='5.3.9';
+  const VERSION='5.3.10';
   const FAVORITES_KEY='sbb.curation.favorites.v1';
   const ENTITY_CATALOG_KEY='sbb.browse.entity-catalog.v535';
   const ENTITY_CATALOG_TTL_MS=6*60*60*1000;
@@ -424,14 +424,18 @@
   }
   function installLegacyCfbGuard(){
     hideLegacyCfb();if(state.cfbObserver)return;const filters=$('scoreFilters');if(!filters)return;
+    // v5.3.10: the special-event header is display-only. Do not observe/filter its
+    // attributes or repeatedly reposition Browse controls from a score-row mutation
+    // callback. v5.3.9 accidentally created a feedback loop between the synthetic
+    // event chip and the canonical score-filter renderer that could freeze the page.
     let repairQueued=false;
     state.cfbObserver=new MutationObserver(()=>{
       hideLegacyCfb();
-      if(!state.specialContext||repairQueued)return;
+      if(!state.specialContext||repairQueued||$('sbbActiveSpecialChip')?.isConnected)return;
       repairQueued=true;
-      queueMicrotask(()=>{repairQueued=false;if(!state.specialContext)return;syncSpecialContextUi();placeBrowseControls();});
+      requestAnimationFrame(()=>{repairQueued=false;if(state.specialContext&&!$('sbbActiveSpecialChip')?.isConnected){syncSpecialContextUi();placeBrowseControls();}});
     });
-    state.cfbObserver.observe(filters,{childList:true,subtree:true,attributes:true,attributeFilter:['data-score-filter','data-special-competition']});
+    state.cfbObserver.observe(filters,{childList:true,subtree:true});
   }
   function isCoreLeague(league){return ['MLB','NFL','NBA','NHL','EPL','MLS','NCAAF'].includes(clean(league).toUpperCase());}
   function specialEventLabel(button,league){return clean(button?.textContent).replace(/[▾▼]/g,'').trim()||leagueLabel(league);}
@@ -446,12 +450,21 @@
   function syncSpecialContextUi(){
     let chip=$('sbbActiveSpecialChip');const mlb=document.querySelector('#scoreFilters [data-score-filter="MLB"]');
     if(state.specialContext){
-      if(!chip){chip=document.createElement('button');chip.id='sbbActiveSpecialChip';chip.type='button';chip.className='sbb-active-special-chip active';}
+      if(!chip){
+        chip=document.createElement('button');chip.id='sbbActiveSpecialChip';chip.type='button';
+        chip.className='sbb-active-special-chip active';chip.tabIndex=-1;chip.setAttribute('aria-disabled','true');
+      }
+      // IMPORTANT: never give this presentation-only header data-score-filter.
+      // The canonical score ribbon owns that namespace. The event context itself is
+      // carried by state.specialContext, preserving the pre-v5.3.9 working browse
+      // flow while still keeping FIFA WC / LLWS / US OPEN visible in the top row.
+      chip.removeAttribute('data-score-filter');
+      chip.dataset.sbbSpecialContext=state.specialContext.league;
+      const shortLabel=specialEventShortLabel(state.specialContext.league,state.specialContext.label);
+      if(chip.textContent!==shortLabel)chip.textContent=shortLabel;
+      chip.title=`Active special event: ${state.specialContext.label}`;
       if(mlb&&chip.parentElement!==mlb.parentElement)mlb.insertAdjacentElement('beforebegin',chip);
       else if(mlb&&chip.nextElementSibling!==mlb)mlb.insertAdjacentElement('beforebegin',chip);
-      const shortLabel=specialEventShortLabel(state.specialContext.league,state.specialContext.label);
-      if(chip.dataset.scoreFilter!==state.specialContext.league)chip.dataset.scoreFilter=state.specialContext.league;
-      if(chip.textContent!==shortLabel)chip.textContent=shortLabel;
       chip.hidden=false;chip.classList.add('active');
     }else if(chip){chip.remove();}
     $('sbbSpecialExitBtn')?.classList.toggle('hidden',!state.specialContext);
@@ -501,7 +514,7 @@
   }
   async function fetchFullEntityCatalog(league,{forceMetadata=false}={}){
     const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return [];
-    // v5.3.9 prefers the backend's persisted participant index. It is built from
+    // v5.3.10 prefers the backend's persisted participant index. It is built from
     // all catalog events that own verified/playable media and is warmed in the
     // background, so opening Team/Player Browse does not scan the audit catalog.
     try{
@@ -509,7 +522,7 @@
       const entities=Array.isArray(data?.entities)?data.entities:[];const names=Array.isArray(data?.participants)?data.participants.map(clean).filter(Boolean):entities.map(x=>clean(x?.name)).filter(Boolean);
       if(response.ok&&data?.ok&&names.length){rememberEntityMetadata(selected,entities.length?entities:names.map(name=>({name})));return [...new Set(names)].sort((a,b)=>a.localeCompare(b));}
     }catch(_){}
-    // Compatibility fallback for a backend that has not completed the v5.3.9
+    // Compatibility fallback for a backend that has not completed the v5.3.10
     // participant-index warmup yet.
     let offset=0,total=Infinity,rows=[];
     while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS){
@@ -533,7 +546,7 @@
       const names=await state.entityCatalogInflight.get(league);if(render&&state.open&&state.league===league)renderSuggestions(names,$('sbbBrowseSearch')?.value||'');return names;
     }
     if(render&&state.open&&!cached.length){const host=$('sbbBrowseSuggestions');if(host)host.insertAdjacentHTML('afterbegin',`<div class="sbb-browse-cache-status">Building complete ${state.entityType==='player'?'player':'team'} library once; future opens are instant.</div>`);}
-    const promise=fetchFullEntityCatalog(league,{forceMetadata:isCoreLeague(league)&&entityMetadataCoverage(league)<0.60}).then(names=>{if(names.length){const meta=[...(state.entityMetaCache.get(league)?.values?.()||[])];persistEntityCatalog(league,names,meta);}return names.length?names:cached;}).finally(()=>state.entityCatalogInflight.delete(league));
+    const promise=fetchFullEntityCatalog(league,{forceMetadata:(isCoreLeague(league)||isTennis(league))&&entityMetadataCoverage(league)<0.75}).then(names=>{if(names.length){const meta=[...(state.entityMetaCache.get(league)?.values?.()||[])];persistEntityCatalog(league,names,meta);}return names.length?names:cached;}).finally(()=>state.entityCatalogInflight.delete(league));
     state.entityCatalogInflight.set(league,promise);
     try{const names=await promise;if(render&&state.open&&state.league===league)renderSuggestions(names,$('sbbBrowseSearch')?.value||'');return names;}catch(err){
       const fallback=cached.length?cached:currentEntities(league);if(render&&state.open&&state.league===league)renderSuggestions(fallback,$('sbbBrowseSearch')?.value||'');return fallback;
@@ -544,13 +557,25 @@
     const host=$('sbbBrowseFavorites');if(!host)return;const fav=favoritesFor(state.league);host.classList.toggle('hidden',!fav.length);
     host.innerHTML=fav.length?`<span>★ FAVORITES</span>${fav.map(name=>`<button type="button" data-browse-entity="${esc(name)}">${esc(name)}</button>`).join('')}`:'';
   }
+  function countryFlagGlyph(country){
+    const raw=clean(country).toUpperCase();if(!raw)return '';
+    const map={USA:'US',GBR:'GB',ENG:'GB',SCO:'GB',WAL:'GB',ESP:'ES',FRA:'FR',GER:'DE',DEU:'DE',ITA:'IT',AUS:'AU',CAN:'CA',BRA:'BR',ARG:'AR',MEX:'MX',JPN:'JP',CHN:'CN',KOR:'KR',SRB:'RS',CRO:'HR',CZE:'CZ',SVK:'SK',POL:'PL',SUI:'CH',CHE:'CH',AUT:'AT',BEL:'BE',NED:'NL',NLD:'NL',DEN:'DK',DNK:'DK',SWE:'SE',NOR:'NO',FIN:'FI',GRE:'GR',GRC:'GR',POR:'PT',PRT:'PT',ROU:'RO',BUL:'BG',UKR:'UA',KAZ:'KZ',RSA:'ZA',ZAF:'ZA',COL:'CO',CHI:'CL',CHL:'CL',PER:'PE',URU:'UY',ECU:'EC',NZL:'NZ'};
+    const iso=(/^[A-Z]{2}$/.test(raw)?raw:map[raw]);if(!iso)return '';
+    return String.fromCodePoint(...iso.split('').map(ch=>127397+ch.charCodeAt(0)));
+  }
+  function entityMark(meta,name){
+    const logo=clean(meta?.logo);if(logo)return `<span class="sbb-browse-entity-logo"><img src="${esc(logo)}" alt="${esc(name)} ${state.entityType==='player'?'flag':'logo'}" loading="lazy"></span>`;
+    const flag=state.entityType==='player'?countryFlagGlyph(meta?.country):'';
+    if(flag)return `<span class="sbb-browse-entity-logo sbb-player-flag-glyph" role="img" aria-label="${esc(clean(meta?.country)||'country')} flag">${flag}</span>`;
+    return `<span class="sbb-browse-entity-logo fallback">◇</span>`;
+  }
   function renderSuggestions(names=[],query=''){
     const host=$('sbbBrowseSuggestions');if(!host)return;state.suggestionRows=Array.isArray(names)?names:[];
     const q=norm(query),merged=[];const seen=new Set();const source=[...favoritesFor(state.league),...(state.suggestionRows.length?state.suggestionRows:currentEntities(state.league))];
     for(const name of source){const key=norm(name);if(!key||seen.has(key)||(q&&!key.includes(q)))continue;seen.add(key);merged.push(clean(name));}
     merged.sort((a,b)=>(Number(isFavorite(state.league,b))-Number(isFavorite(state.league,a)))||a.localeCompare(b));
     if(!merged.length){host.innerHTML=`<div class="sbb-browse-empty">${query?'No matching '+(state.entityType==='player'?'players':'teams')+' with verified highlights found.':'No '+(state.entityType==='player'?'players':'teams')+' with verified highlights are available yet.'}</div>`;return;}
-    host.innerHTML=merged.map(name=>{const meta=entityMetaFor(name),logo=clean(meta.logo);return `<div class="sbb-browse-suggestion"><button class="sbb-browse-entity" type="button" data-browse-entity="${esc(name)}">${logo?`<span class="sbb-browse-entity-logo"><img src="${esc(logo)}" alt="${esc(name)} logo" loading="lazy"></span>`:`<span class="sbb-browse-entity-logo fallback">◇</span>`}<span class="sbb-browse-entity-name">${esc(name)}</span><small>ALL DATES</small></button><button class="sbb-browse-star ${isFavorite(state.league,name)?'active':''}" type="button" data-browse-star="${esc(name)}" aria-label="${isFavorite(state.league,name)?'Remove':'Add'} ${esc(name)} favorite">${isFavorite(state.league,name)?'★':'☆'}</button></div>`}).join('');
+    host.innerHTML=merged.map(name=>{const meta=entityMetaFor(name);return `<div class="sbb-browse-suggestion"><button class="sbb-browse-entity" type="button" data-browse-entity="${esc(name)}">${entityMark(meta,name)}<span class="sbb-browse-entity-name">${esc(name)}</span><small>ALL DATES</small></button><button class="sbb-browse-star ${isFavorite(state.league,name)?'active':''}" type="button" data-browse-star="${esc(name)}" aria-label="${isFavorite(state.league,name)?'Remove':'Add'} ${esc(name)} favorite">${isFavorite(state.league,name)?'★':'☆'}</button></div>`}).join('');
   }
   async function searchSuggestions(value){
     const query=clean(value);state.lastQuery=query;const names=await primeEntityCatalog({render:false});if(query!==state.lastQuery)return;renderSuggestions(names,query);
@@ -747,7 +772,7 @@
     try{if(typeof renderQueue==='function')renderQueue();}catch(_){}
     try{if(typeof setFeedNote==='function')setFeedNote(`Curated programming • ${label} • ${state.queueItems.length} video${state.queueItems.length===1?'':'s'}`);}catch(_){}
     if(typeof tuneProgramIndexV5==='function'){
-      tuneProgramIndexV5(bounded,{userInitiated:true,reason:`v5.3.9 curated programming: ${label}`});
+      tuneProgramIndexV5(bounded,{userInitiated:true,reason:`v5.3.10 curated programming: ${label}`});
       const selected=state.queueItems[bounded];setTimeout(()=>syncCuratedGameCenterContext(selected),0);setTimeout(()=>syncCuratedGameCenterContext(selected),180);return true;
     }
     return false;

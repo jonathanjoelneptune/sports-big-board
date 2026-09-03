@@ -10,7 +10,7 @@ league=(ROOT/'ui'/'league-view-v538.js').read_text()
 league_css=(ROOT/'ui'/'league-view-v538.css').read_text()
 pause=(ROOT/'architecture'/'playback-early-pause-recovery-v538.js').read_text()
 
-assert version=='5.3.9',version
+assert version=='5.3.10',version
 
 # Team selection tunes the newest playable historical game automatically.
 for token in [
@@ -56,8 +56,8 @@ assert '.sbb-browse-entity-logo img{' in browse_css
 for token in [
     'function specialEventShortLabel(',
     "'WC2026':'FIFA WC'",
-    'queueMicrotask(()=>{repairQueued=false',
-    'syncSpecialContextUi();placeBrowseControls();',
+    "chip.removeAttribute('data-score-filter')",
+    'requestAnimationFrame(()=>{repairQueued=false',
 ]:
     assert token in browse, token
 
@@ -66,11 +66,11 @@ for token in [
     'manualPause:false',
     'manualPauseKey',
     'providerControlInteractionAt',
-    "markUserPause('embedded provider controls')",
+    "markUserPause('embedded provider pause')",
     'setCanonicalManualPause(true)',
     'manualPauseRequested',
     'function confirmProviderPause()',
-    'for(const ms of [80,250,650])setTimeout(confirmProviderPause,ms)',
+    'for(const ms of [80,250,650,1100])setTimeout(confirmProviderPause,ms)',
     "window.addEventListener('blur'",
     'function userPaused(){return !!(state.manualPause&&state.manualPauseKey===state.key);}',
 ]:
@@ -99,4 +99,4 @@ for token in [
 ]:
     assert token in index, token
 
-print('PASS v5.3.9 team auto-tune + exclusive drawer + playback-owned League View + persistent event context + manual-pause latch + compact team ticker')
+print('PASS v5.3.10 team auto-tune + exclusive drawer + playback-owned League View + persistent event context + manual-pause latch + compact team ticker')

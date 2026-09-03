@@ -1,0 +1,63 @@
+Sports Big Board v5.3.10 — Special Event Stability + Playback Continuity + League View
+
+PRIMARY RUNTIME CHANGES
+-----------------------
+1. ui/browse-curated-programming-v537.js
+   - Restores the previously working Special Event browse path while retaining the persistent active-event header.
+   - The FIFA WC / LLWS / US OPEN header chip is presentation-only and is no longer registered as a canonical score-filter button.
+   - Removes the v5.3.9 mutation feedback loop that could freeze the page after selecting a Special Event.
+   - Special-event header repair is bounded to one animation-frame repair only when the chip is actually removed.
+   - Tennis participant inventories request richer metadata and Player Browse now renders country flags when available.
+
+2. ui/browse-curated-programming-v537.css
+   - Active Special Event header is non-interactive/display-only.
+   - Adds readable white-backed player flag tiles and keeps compact Browse rows.
+
+3. architecture/playback-progress-watchdog-v5310.js (NEW)
+   - Installs before the retained legacy startup watchdog and becomes the canonical startup-progress guard.
+   - A selection that has demonstrated real clock progress can never later be skipped by this startup watchdog.
+   - Playback recovery is suppressed when the provider is playing, the clock moves, or transport state is unknown.
+   - Failure/fallback is delegated only after positive stalled/paused/buffering evidence and a confirmation sample.
+
+4. architecture/playback-early-pause-recovery-v538.js
+   - Removes UI-text pause heuristics.
+   - User pause and embedded-player pause remain authoritative.
+   - Soft resume/reload only occurs after positive provider PAUSED state and never while media is playing or buffering.
+   - Extends embedded YouTube pause confirmation probes to 80/250/650/1100 ms.
+
+5. sbb/league_view_v538.py
+   - Adds hierarchy-aware conference/league and division modeling for MLB, NFL, NBA, and NHL.
+   - MLB is split into American League and National League contexts.
+   - Division winners are explicitly removed from MLB Wild Card rows.
+   - Adds compact League Pulse data: best record, hot streaks, and best differential.
+
+6. ui/league-view-v538.js / ui/league-view-v538.css
+   - Two-column league/conference presentation where the sport naturally has two sides.
+   - MLB AL and NL columns each contain division tables plus their own Wild Card table.
+   - Denser cards, tighter padding, compact tables, League Pulse, bracket/series context, and today/recent games.
+   - Responsive fallback collapses to one column on narrow screens.
+
+7. sbb/team_focus_v537.py
+   - Participant extraction understands athlete/player wrappers used by tennis feeds.
+   - Adds country-code/country-name flag resolution and ESPN country flag artwork fallback.
+   - Flattens bounded nested athlete/player lists for tennis event inventories.
+
+RELEASE / TEST SURFACES
+-----------------------
+- VERSION
+- architecture/VERSION
+- index.html
+- tools/check_release_version.py
+- VERIFY.sh
+- tests/test_v538_league_view_theme_hardening.py
+- tests/test_v539_team_context_drawer_sync.py
+- tests/test_v5310_special_event_playback_league_view.py (NEW)
+- Existing release-version/cache-busted files carried forward at v5.3.10.
+
+PRESERVED CONTRACTS
+-------------------
+- Sports Ticker OpenAI limits remain: 20 automatic candidates, 40 manual candidates, 20-record batches.
+- Team Browse newest-highlight autoplay remains.
+- League View continues to follow the league of the active playback item.
+- Game Center / League View / Settings remain mutually exclusive drawer panes.
+- NCAAF remains the only college-football namespace exposed to the UI.
