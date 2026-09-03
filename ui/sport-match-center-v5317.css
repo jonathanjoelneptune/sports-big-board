@@ -1,0 +1,22 @@
+/* Sports Big Board v5.3.17 — fallback Match Center for tennis and competitions
+   without a rich Game Center provider. */
+#sbbSportMatchCenter{display:none}
+body.sbb-sport-match-center-active:not(.sbb-special-event-match-center) #gameCenterPane{position:relative!important;overflow:hidden!important}
+body.sbb-sport-match-center-active:not(.sbb-special-event-match-center) #gameCenterContent,
+body.sbb-sport-match-center-active:not(.sbb-special-event-match-center) #gameCenterEmpty{display:none!important}
+body.sbb-sport-match-center-active:not(.sbb-special-event-match-center) #sbbSportMatchCenter{
+  position:absolute;inset:0;z-index:38;display:grid!important;grid-template-rows:auto auto auto auto;align-content:start;gap:10px;
+  padding:20px 14px;overflow:auto;background:linear-gradient(180deg,#0b1923,#07121a);color:#edf6fb;
+}
+.sbb-smc-kicker{color:#6ec6ff;font:950 6.7px/1 system-ui,sans-serif;letter-spacing:.18em}
+.sbb-smc-competition{color:#f2f8fb;font:950 15px/1.1 system-ui,sans-serif;letter-spacing:-.015em;text-transform:uppercase}
+.sbb-smc-scoreboard{display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);align-items:center;gap:7px;padding:12px 8px;border:1px solid rgba(116,166,197,.18);border-radius:10px;background:rgba(7,19,28,.72)}
+.sbb-smc-team{min-width:0;display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:7px}
+.sbb-smc-home{grid-template-columns:auto minmax(0,1fr) 34px;text-align:right}.sbb-smc-home .sbb-smc-mark{grid-column:3}.sbb-smc-home .sbb-smc-copy{grid-column:2;grid-row:1}.sbb-smc-home .sbb-smc-score{grid-column:1;grid-row:1}
+.sbb-smc-mark{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid rgba(255,255,255,.75);overflow:hidden;color:#07121a;font:900 9px/1 system-ui,sans-serif}
+.sbb-smc-mark img{max-width:86%;max-height:86%;object-fit:contain}.sbb-smc-mark.image-failed img{display:none}.sbb-smc-mark b{font-size:15px}
+.sbb-smc-copy{min-width:0;display:grid;gap:2px}.sbb-smc-copy small{color:#7895a8;font:850 6px/1 system-ui,sans-serif;letter-spacing:.1em}.sbb-smc-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#f4f9fc;font:850 9px/1.15 system-ui,sans-serif}
+.sbb-smc-score{color:#fff;font:950 22px/1 system-ui,sans-serif}.sbb-smc-status{text-align:center;display:grid;gap:4px}.sbb-smc-status strong{color:#dbeaf3;font:900 7px/1.2 system-ui,sans-serif}.sbb-smc-status span{color:#7894a6;font:700 6.4px/1.3 system-ui,sans-serif}
+.sbb-smc-note{display:grid;gap:5px;padding:11px;border:1px solid rgba(116,166,197,.14);border-radius:9px;background:rgba(11,27,39,.66)}.sbb-smc-note strong{color:#73c5f8;font:900 6.5px/1 system-ui,sans-serif;letter-spacing:.13em}.sbb-smc-note span{color:#a9bdc9;font:680 8px/1.5 system-ui,sans-serif}
+.sbb-smc-retry{justify-self:start;height:27px;padding:0 10px;border:1px solid rgba(104,190,243,.34);border-radius:7px;background:#102b3d;color:#dff4ff;font:850 6.6px/1 system-ui,sans-serif;letter-spacing:.08em}.sbb-smc-retry:hover{background:#153a52;border-color:rgba(104,190,243,.62)}
+html[data-sbb-team-theme="on"] body.sbb-sport-match-center-active:not(.sbb-special-event-match-center) #sbbSportMatchCenter{background:linear-gradient(180deg,var(--sbb-team-gradient-start),var(--sbb-team-bg))!important;color:var(--sbb-team-text)!important}

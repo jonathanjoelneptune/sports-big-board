@@ -1,0 +1,45 @@
+Sports Big Board v5.3.17 manual GitHub upload
+Queue Performance + Sport Match Center
+
+1. Extract this ZIP.
+2. Open the sports-big-board repository root on GitHub.
+3. Upload the CONTENTS of the extracted folder, preserving every included path.
+4. Replace existing files when GitHub prompts.
+5. Commit the upload as one v5.3.17 release.
+6. Let Deploy Sports Big Board run and confirm VERIFY.sh passes.
+7. Hard-refresh the deployed page after GitHub Pages completes.
+
+PRIMARY ACCEPTANCE CHECKS
+A. Normal league scope controls
+   - Select MLB, NFL, NBA, NHL, EPL, MLS, or NCAAF.
+   - Expected: TODAY, ALL, and TEAM BROWSE slide out as one clearly green subordinate control group.
+   - The selected league remains visually distinct from those scope controls.
+   - Special Event navigation and the red EXIT EVENT treatment remain unchanged.
+
+B. Dense historical score-date responsiveness
+   - Browse to a dense historical NBA date, including June playoff dates, and click a game.
+   - Expected: the selected video begins tuning immediately and the rest of the page remains responsive.
+   - Expected: League View, Game Center, drawer controls, score ribbon, scrolling, and navigation remain clickable while the same-league/day queue is being assembled.
+   - The queue is built one match per browser task. There is no all-at-once programForScoreDate() call inside the score click.
+   - Coming Up should progressively gain the other playback-ready games from that same league/date.
+
+C. Score-ribbon league/day queue retained
+   - Click any score-ribbon game on a date with multiple playable games in that league.
+   - Expected: the clicked game remains first, with other same-league/same-day games behind it.
+   - NEXT/PREV must continue through that queue.
+   - A blue multi-clip reel remains contiguous before moving to the next game.
+
+D. Tennis / unsupported detailed Game Center
+   - Select a tennis match or another competition whose detailed provider is unavailable/fails.
+   - Expected: do NOT leave a GAME CENTER UNAVAILABLE error card.
+   - Expected: the drawer changes to MATCH CENTER and retains the selected participants, score/status, competition/tournament, round/date/venue when available.
+   - RETRY DETAILED GAME CENTER remains available when the provider failure may be temporary.
+   - If a rich Game Center response later succeeds, the normal detailed Game Center automatically replaces the fallback.
+
+E. Special Events
+   - FIFA WC / US Open / LLWS keep their existing curated Match Center ownership.
+   - The new generic Sport Match Center must not cover or fight the Special Event Match Center.
+
+This release retains the previous score-ribbon league/day queue behavior, Wild Card GB calculation, compact EPL/MLS form layout, Special Event media-health audit, authoritative FIFA Match Center, and League View improvements.
+
+Do not upload the outer folder itself into the repository. Upload its contents so VERSION, index.html, ui/, architecture/, sbb/, tests/, tools/, and the other included paths land at their existing repository locations.

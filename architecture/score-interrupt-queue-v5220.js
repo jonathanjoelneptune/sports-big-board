@@ -1,13 +1,13 @@
-/* Sports Big Board v5.3.16 — score-ribbon league-day queue + interrupt preservation.
-   A score-card click starts the clicked game immediately, then PROGRAM expands to
-   every playback-ready game from that same league and date. NEXT/PREV therefore
-   remain useful after a score selection instead of operating on a one-game queue.
-   Explicit Team/Player Focus queues are still preserved as true interrupts. */
+/* Sports Big Board v5.3.17 — non-blocking score-ribbon league-day queue + interrupt preservation.
+   A score-card click starts the clicked game immediately. The rest of that league/day
+   is then assembled incrementally across browser tasks so a dense historical NBA/MLB
+   date cannot monopolize the main thread while video continues playing. NEXT/PREV
+   remain useful, and explicit Team/Player Focus queues remain true interrupts. */
 (() => {
   'use strict';
-  if(window.SBB_SCORE_INTERRUPT_QUEUE?.version==='5.3.16')return;
-  const VERSION='5.3.16';
-  const state={snapshot:null,captures:0,resumes:0,projected:0,leagueDayBuilds:0,lastLeagueDay:'',lastLeagueDayCount:0,lastReason:'',lastError:''};
+  if(window.SBB_SCORE_INTERRUPT_QUEUE?.version==='5.3.17')return;
+  const VERSION='5.3.17';
+  const state={snapshot:null,captures:0,resumes:0,projected:0,leagueDayBuilds:0,lastLeagueDay:'',lastLeagueDayCount:0,lastReason:'',lastError:'',buildEpoch:0,buildActive:false,buildProcessed:0,buildTotal:0,buildMaxMatchMs:0,buildLastMatchMs:0,buildStartedAt:0,buildCompletedAt:0};
 
   const clean=v=>String(v??'').trim();
   const itemId=item=>clean(item?.id||item?.youtubeId||item?.videoId||item?.mediaUrl);
@@ -22,63 +22,131 @@
     return clean(match?.__sbbLeague||match?.competitionId||match?.league).toUpperCase();
   }
 
-  function withLeagueFilter(league,callback){
-    if(!league||typeof callback!=='function')return [];
-    let previous='ALL';
+  const BUILD_YIELD_MS=0;
+  const BUILD_RENDER_EVERY=3;
+
+  function scoreRowsForLeagueDate(date,league){
     try{
-      previous=typeof scoreRibbonLeagueFilter!=='undefined'?scoreRibbonLeagueFilter:'ALL';
-      scoreRibbonLeagueFilter=league;
-      return callback()||[];
+      if(typeof scoreMatchesForDate!=='function')return [];
+      return (scoreMatchesForDate(date)||[])
+        .filter(match=>matchLeague(match)===league)
+        .sort((a,b)=>{
+          try{return new Date(a?.scheduledAt||a?.date||0)-new Date(b?.scheduledAt||b?.date||0);}catch(_){return 0;}
+        });
     }catch(err){state.lastError=String(err?.message||err);return [];}
-    finally{try{scoreRibbonLeagueFilter=previous;}catch(_){}}
   }
 
-  function expandScoreSelectionToLeagueDay(){
+  function queueStillOwned(build){
     try{
-      const session=(typeof userPlaybackSession!=='undefined')?userPlaybackSession:null;
+      if(!build||build.epoch!==state.buildEpoch)return false;
+      if(document.body?.dataset?.sbbCuratedPlaybackOwner)return false;
+      if(!Array.isArray(PROGRAM)||PROGRAM.length<build.selected.length)return false;
+      for(let i=0;i<build.selected.length;i++)if(itemId(PROGRAM[i])!==itemId(build.selected[i]))return false;
+      return true;
+    }catch(_){return false;}
+  }
+
+  function scheduleRender(build,{final=false}={}){
+    if(!queueStillOwned(build))return;
+    if(final||!build.renderQueued){
+      build.renderQueued=true;
+      const run=()=>{
+        build.renderQueued=false;if(!queueStillOwned(build))return;
+        try{if(typeof renderQueue==='function')renderQueue();}catch(_){}
+        if(final){try{if(typeof preflightUpcomingProgram==='function')preflightUpcomingProgram(currentIndex);}catch(_){}}
+      };
+      if(typeof requestAnimationFrame==='function')requestAnimationFrame(run);else setTimeout(run,0);
+    }
+  }
+
+  function commitBuiltQueue(build,{final=false}={}){
+    if(!queueStillOwned(build))return false;
+    const merged=[...build.selected,...build.remainder];
+    PROGRAM=merged;
+    // Do not reset currentIndex while the viewer is already playing/advancing.
+    // The selected-game prefix never changes, so appending can safely happen live.
+    if(currentIndex>=PROGRAM.length)currentIndex=Math.max(0,PROGRAM.length-1);
+    standbyIndex=PROGRAM.length>1?Math.min(Math.max(1,Number(standbyIndex)||1),PROGRAM.length-1):0;
+    if(build.session){
+      build.session.leagueDayQueue=true;build.session.queueLeague=build.league;build.session.queueDate=build.date;build.session.queueLength=PROGRAM.length;
+      // selectionCount intentionally remains the number of clips in the clicked
+      // game, not the entire date queue. NEXT can leave that game normally.
+    }
+    state.lastLeagueDayCount=PROGRAM.length;
+    if(final)scheduleRender(build,{final:true});
+    return true;
+  }
+
+  function mediaForMatch(match){
+    try{
+      if(typeof scoreCardPlayableItems!=='function'||typeof scoreCardPlaybackSelection!=='function')return [];
+      const selection=scoreCardPlaybackSelection(match,scoreCardPlayableItems(match));
+      if(!selection?.primary||!selection?.selectionItems?.length)return [];
+      return selection.selectionItems.filter(item=>{
+        try{return !!(item?.verifiedPlayable&&(item.youtubeId||item.mediaUrl)&&(typeof scoreMediaAirReady!=='function'||scoreMediaAirReady(item)));}
+        catch(_){return false;}
+      });
+    }catch(err){state.lastError=String(err?.message||err);return [];}
+  }
+
+  function scheduleLeagueDayQueueExpansion(sessionOverride=null){
+    try{
+      const session=sessionOverride||((typeof userPlaybackSession!=='undefined')?userPlaybackSession:null);
       if(session?.source!=='score'||!Array.isArray(PROGRAM)||!PROGRAM.length)return false;
       const date=clean(session.playbackDate||session.match?.date||session.match?.gameDate).slice(0,10);
       const league=matchLeague(session.match)||matchLeague(PROGRAM[0]);
-      if(!date||!league||typeof programForScoreDate!=='function')return false;
-
-      // app.js intentionally commits the clicked game's exact media first so the
-      // click is never delayed. This post-commit hook keeps those exact selected
-      // clip(s) at the front, then appends the rest of the clicked league/date.
+      if(!date||!league)return false;
       const selectedCount=Math.max(1,Math.min(Number(session.selectionCount)||1,PROGRAM.length));
       const selected=PROGRAM.slice(0,selectedCount).filter(Boolean);
-      const queue=withLeagueFilter(league,()=>{
-        if(typeof dateProgramWithSelectionFirst==='function')return dateProgramWithSelectionFirst(date,selected);
-        const base=programForScoreDate(date);
-        const remainder=(base||[]).filter(item=>!selected.some(sel=>itemId(item)===itemId(sel)||sameGame(item,sel)));
-        return [...selected,...remainder];
-      });
-      if(!queue.length)return false;
+      if(!selected.length)return false;
+      const epoch=++state.buildEpoch;
+      const selectedGameKeys=new Set(selected.map(gameKey).filter(Boolean));
+      const seenMedia=new Set(selected.map(itemId).filter(Boolean));
+      const build={epoch,session,date,league,selected,remainder:[],selectedGameKeys,seenMedia,rows:[],index:0,renderQueued:false,startedAt:performance.now()};
+      state.buildActive=true;state.buildProcessed=0;state.buildTotal=0;state.buildMaxMatchMs=0;state.buildLastMatchMs=0;state.buildStartedAt=Date.now();state.buildCompletedAt=0;
+      state.leagueDayBuilds++;state.lastLeagueDay=`${league}:${date}`;state.lastLeagueDayCount=selected.length;state.lastReason=`building ${league} ${date} queue without blocking playback`;
 
-      // Dedupe exact media assets while preserving multiple clips that intentionally
-      // form one blue highlight reel. same-game items are therefore not collapsed.
-      const seen=new Set(),deduped=[];
-      for(const item of queue){
-        if(!item)continue;
-        const key=itemId(item)||`${gameKey(item)}:${deduped.length}`;
-        if(key&&seen.has(key))continue;
-        if(key)seen.add(key);
-        deduped.push(item);
-      }
-      if(!deduped.length)return false;
-      PROGRAM=[...deduped];
-      currentIndex=0;
-      standbyIndex=0;
-      session.leagueDayQueue=true;
-      session.queueLeague=league;
-      session.queueDate=date;
-      session.queueLength=PROGRAM.length;
-      state.leagueDayBuilds++;
-      state.lastLeagueDay=`${league}:${date}`;
-      state.lastLeagueDayCount=PROGRAM.length;
-      state.lastReason=`score selection expanded to ${league} ${date}`;
-      try{if(typeof renderQueue==='function')renderQueue();}catch(_){}
+      // The first task runs only after the click handler/tune request has returned.
+      // Match resolution is deliberately one game per task: even if one historical
+      // event is expensive, the browser gets a paint/input opportunity before the next.
+      setTimeout(()=>{
+        if(!queueStillOwned(build)){if(epoch===state.buildEpoch)state.buildActive=false;return;}
+        build.rows=scoreRowsForLeagueDate(date,league);
+        build.rows=build.rows.filter(match=>{
+          let key='';try{key=typeof scoreRibbonStableGameKey==='function'?clean(scoreRibbonStableGameKey(match)):'';}catch(_){}
+          return !key||!build.selectedGameKeys.has(key);
+        });
+        state.buildTotal=build.rows.length;
+
+        const pump=()=>{
+          if(!queueStillOwned(build)){if(epoch===state.buildEpoch)state.buildActive=false;return;}
+          if(build.index>=build.rows.length){
+            commitBuiltQueue(build,{final:true});
+            if(epoch===state.buildEpoch){state.buildActive=false;state.buildCompletedAt=Date.now();state.lastReason=`${league} ${date} queue ready`;state.lastLeagueDayCount=PROGRAM.length;}
+            return;
+          }
+          const match=build.rows[build.index++],t0=performance.now();
+          const items=mediaForMatch(match);
+          const elapsed=performance.now()-t0;state.buildLastMatchMs=Math.round(elapsed*10)/10;state.buildMaxMatchMs=Math.max(state.buildMaxMatchMs,state.buildLastMatchMs);
+          if(elapsed>32)console.warn('[SBB v5.3.17] slow score-date match projection yielded after one match',{league,date,ms:Math.round(elapsed),match:clean(match?.name||match?.title||match?.eventId||match?.id)});
+          for(const item of items){
+            const itemGame=gameKey(item);if(itemGame&&build.selectedGameKeys.has(itemGame))continue;
+            const mediaKey=itemId(item);if(mediaKey&&build.seenMedia.has(mediaKey))continue;
+            if(mediaKey)build.seenMedia.add(mediaKey);build.remainder.push(item);
+          }
+          state.buildProcessed=build.index;
+          commitBuiltQueue(build,{final:false});
+          if(build.index===1||build.index%BUILD_RENDER_EVERY===0)scheduleRender(build);
+          setTimeout(pump,BUILD_YIELD_MS);
+        };
+        setTimeout(pump,BUILD_YIELD_MS);
+      },0);
       return true;
-    }catch(err){state.lastError=String(err?.message||err);return false;}
+    }catch(err){state.lastError=String(err?.message||err);state.buildActive=false;return false;}
+  }
+
+  function cancelLeagueDayBuild(reason='queue ownership changed'){
+    state.buildEpoch++;state.buildActive=false;state.lastReason=reason;return true;
   }
 
   function currentProgramSnapshot(){
@@ -190,14 +258,14 @@
 
   function patchScoreSessionQueue(){
     try{
-      if(typeof beginScorePlaybackSession!=='function'||beginScorePlaybackSession.__sbbLeagueDayV5316)return false;
+      if(typeof beginScorePlaybackSession!=='function'||beginScorePlaybackSession.__sbbLeagueDayV5317)return false;
       const original=beginScorePlaybackSession;
       const wrapped=function(...args){
         const result=original.apply(this,args);
-        expandScoreSelectionToLeagueDay();
+        scheduleLeagueDayQueueExpansion((typeof userPlaybackSession!=='undefined')?userPlaybackSession:null);
         return result;
       };
-      wrapped.__sbbLeagueDayV5316=true;wrapped.__sbbOriginal=original;
+      wrapped.__sbbLeagueDayV5317=true;wrapped.__sbbOriginal=original;
       beginScorePlaybackSession=wrapped;
       try{window.beginScorePlaybackSession=wrapped;}catch(_){}
       return true;
@@ -228,6 +296,7 @@
     document.addEventListener('click',event=>{
       const card=event.target?.closest?.('.score-card');
       if(!card)return;
+      cancelLeagueDayBuild('new score-ribbon selection');
       capture('score-ribbon click');
       // If the click did not become a score playback session, discard the stale
       // snapshot shortly afterward. A real session keeps it until resume/cancel.
@@ -247,5 +316,5 @@
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  window.SBB_SCORE_INTERRUPT_QUEUE=Object.freeze({version:VERSION,active,entries,play,capture,clear,restoreQueue,expandLeagueDay:expandScoreSelectionToLeagueDay,snapshot:()=>({version:VERSION,active:active(),captures:state.captures,resumes:state.resumes,projected:state.projected,leagueDayBuilds:state.leagueDayBuilds,lastLeagueDay:state.lastLeagueDay,lastLeagueDayCount:state.lastLeagueDayCount,lastReason:state.lastReason,lastError:state.lastError,queued:state.snapshot?.program?.length||0,resumeIndex:state.snapshot?resumeIndex((typeof userPlaybackSession!=='undefined'?userPlaybackSession:null),state.snapshot):-1})});
+  window.SBB_SCORE_INTERRUPT_QUEUE=Object.freeze({version:VERSION,active,entries,play,capture,clear,restoreQueue,expandLeagueDay:scheduleLeagueDayQueueExpansion,cancelLeagueDayBuild,leagueDayBuildSnapshot:()=>({active:state.buildActive,epoch:state.buildEpoch,processed:state.buildProcessed,total:state.buildTotal,maxMatchMs:state.buildMaxMatchMs,lastMatchMs:state.buildLastMatchMs,startedAt:state.buildStartedAt,completedAt:state.buildCompletedAt}),snapshot:()=>({version:VERSION,active:active(),captures:state.captures,resumes:state.resumes,projected:state.projected,leagueDayBuilds:state.leagueDayBuilds,lastLeagueDay:state.lastLeagueDay,lastLeagueDayCount:state.lastLeagueDayCount,lastReason:state.lastReason,lastError:state.lastError,buildActive:state.buildActive,buildProcessed:state.buildProcessed,buildTotal:state.buildTotal,buildMaxMatchMs:state.buildMaxMatchMs,queued:state.snapshot?.program?.length||0,resumeIndex:state.snapshot?resumeIndex((typeof userPlaybackSession!=='undefined'?userPlaybackSession:null),state.snapshot):-1})});
 })();
