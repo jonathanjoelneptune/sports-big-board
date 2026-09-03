@@ -28,3 +28,8 @@ C. Exit boundary
    - Expected: curated ownership is released and normal daily score-card playback/queue behavior resumes.
 
 Do not upload the outer folder itself into the repository. Upload its contents so VERSION, index.html, ui/, architecture/, sbb/, tests/, tools/, and cloud/ land at their existing repository paths.
+
+R2 VERIFY SYNCHRONIZATION
+- This complete package includes the corrected v5.3.5 compatibility test and v5.3.10 special-event regression test.
+- Both now accept the deployed v5.3.13 release, preventing the two sequential CI failures seen in upload runs #277 and #278.
+- Re-upload this entire package contents to ensure every v5.3.13 regression file is synchronized, rather than applying another one-file hotfix.

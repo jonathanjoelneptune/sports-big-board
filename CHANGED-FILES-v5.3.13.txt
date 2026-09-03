@@ -1,5 +1,11 @@
 Sports Big Board v5.3.13 — Special Event Ownership + Symmetric Standings
 
+R2 VERIFY SYNCHRONIZATION
+- tests/test_v535_persistent_browse_context_identity.py is synchronized to v5.3.13.
+- tests/test_v5310_special_event_playback_league_view.py is synchronized to v5.3.13.
+- This R2 package is intended as the complete v5.3.13 overlay so all release tests and runtime files are replaced together.
+
+
 USER-VISIBLE FIXES
 - Special Event playback is now a hard ownership boundary. While FIFA WC / LLWS / US Open curated playback is active, stale MLB score-session or score-interrupt state cannot retake PROGRAM, Game Center, or failure recovery ownership.
 - A curated selection commits its PROGRAM/currentIndex identity before the transport is tuned. If a World Cup embed fails synchronously, failure handling now sees the selected soccer match rather than the previously playing MLB item.
