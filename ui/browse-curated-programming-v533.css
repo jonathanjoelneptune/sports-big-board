@@ -1,0 +1,169 @@
+/* Sports Big Board v5.3.3 — Browse UX + Curated Timeline
+   Contextual team/player browse control, anchored browse popover, date-headed
+   highlight timeline, explicit queue affordance, scores, and media-tier color. */
+
+#sbbBrowseSubnav{
+  position:relative;
+  height:30px;
+  display:inline-flex;
+  align-items:center;
+  gap:0;
+  margin-left:-1px;
+  padding-left:0;
+  white-space:nowrap;
+  transform-origin:left center;
+}
+#sbbBrowseSubnav.hidden{display:none!important}
+#sbbBrowseSubnav.sbb-browse-subnav-enter{animation:sbb-browse-subnav-in .24s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sbb-browse-subnav-in{from{opacity:0;transform:translateX(-12px) scaleX(.88)}to{opacity:1;transform:translateX(0) scaleX(1)}}
+#scoreFilters button[data-score-filter]:has(+ #sbbBrowseSubnav:not(.hidden)){
+  border-radius:9px 0 0 9px!important;
+  border-right-color:rgba(99,183,255,.32)!important;
+}
+#sbbBrowseBtn{
+  height:30px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:0 11px 0 10px;
+  border:1px solid rgba(99,183,255,.32);
+  border-left:0;
+  border-radius:0 9px 9px 0;
+  background:linear-gradient(180deg,rgba(16,42,61,.97),rgba(9,27,40,.97));
+  color:#cfeaff;
+  white-space:nowrap;
+  font:820 8.4px/1 system-ui,sans-serif;
+  letter-spacing:.072em;
+  box-shadow:inset 1px 0 rgba(255,255,255,.025);
+}
+#sbbBrowseBtn::before{content:"";width:3px;height:13px;border-radius:3px;background:#63b7ff;opacity:.72;margin-right:1px}
+#sbbBrowseBtn b{font:900 10px/1 system-ui,sans-serif;color:#7cc7ff;transform:translateY(-1px)}
+#sbbBrowseBtn:hover,#sbbBrowseBtn[aria-expanded="true"]{
+  border-color:rgba(99,183,255,.58);
+  border-left:0;
+  background:linear-gradient(180deg,rgba(21,61,89,.99),rgba(11,37,56,.99));
+  color:#f4fbff;
+}
+.sbb-browse-popover.hidden,.sbb-browse-popover[hidden]{display:none!important}
+.sbb-browse-popover{
+  position:fixed;
+  z-index:12000;
+  width:min(430px,calc(100vw - 18px));
+  min-height:300px;
+  display:grid;
+  grid-template-rows:auto auto auto auto minmax(0,1fr);
+  overflow:hidden;
+  scrollbar-gutter:stable;
+  padding:13px;
+  border:1px solid rgba(125,157,181,.24);
+  border-radius:14px;
+  background:linear-gradient(180deg,#0c1822 0%,#08121a 100%);
+  box-shadow:0 26px 72px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.025);
+  color:#edf5fa;
+}
+.sbb-browse-popover .hidden{display:none!important}
+.sbb-browse-popover-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px}
+.sbb-browse-popover-head>div{display:grid;gap:2px}
+.sbb-browse-popover-head span{color:#6dbdff;font:850 7px/1 system-ui,sans-serif;letter-spacing:.16em}
+.sbb-browse-popover-head strong{font:780 17px/1.1 system-ui,sans-serif;letter-spacing:-.02em}
+#sbbBrowseClose{width:31px;height:31px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(125,157,181,.18);border-radius:9px;background:#0c1720;color:#aabac7;font:500 20px/1 system-ui,sans-serif}
+#sbbBrowseClose:hover{color:white;border-color:rgba(99,183,255,.4)}
+.sbb-browse-primary-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+.sbb-browse-primary-actions button{min-height:38px;padding:7px 10px;border:1px solid rgba(125,157,181,.18);border-radius:10px;background:#0d1a24;color:#dbe7ef;font:780 8px/1.15 system-ui,sans-serif;letter-spacing:.075em;text-align:center}
+.sbb-browse-primary-actions button:hover{border-color:rgba(99,183,255,.4);background:#102433}
+#sbbBrowseRanked:not(.hidden){grid-column:1/-1;background:linear-gradient(180deg,rgba(49,41,15,.88),rgba(31,27,13,.88));border-color:rgba(236,197,80,.28);color:#f3db87}
+.sbb-browse-search-wrap{display:grid;gap:6px;margin:8px 0 11px}
+.sbb-browse-search-wrap>span{color:#7f96a7;font:800 7px/1 system-ui,sans-serif;letter-spacing:.12em}
+#sbbBrowseSearch{width:100%;height:39px;padding:0 12px;border:1px solid rgba(125,157,181,.2);border-radius:10px;background:#07121a;color:#eff6fa;outline:0;font:650 12px/1 system-ui,sans-serif}
+#sbbBrowseSearch:focus{border-color:rgba(99,183,255,.55);box-shadow:0 0 0 2px rgba(99,183,255,.08)}
+.sbb-browse-favorites{display:flex;align-items:center;gap:6px;overflow:auto;padding:2px 0 9px;scrollbar-width:none}
+.sbb-browse-favorites::-webkit-scrollbar{display:none}
+.sbb-browse-favorites>span{flex:0 0 auto;color:#f1cf68;font:800 7px/1 system-ui,sans-serif;letter-spacing:.1em}
+.sbb-browse-favorites button{flex:0 0 auto;height:28px;padding:0 9px;border:1px solid rgba(241,207,104,.2);border-radius:8px;background:rgba(56,47,17,.35);color:#e9d895;font:720 9px/1 system-ui,sans-serif}
+.sbb-browse-suggestions{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#294255 transparent;display:grid;align-content:start;border-top:1px solid rgba(125,157,181,.1)}
+.sbb-browse-suggestion{display:grid;grid-template-columns:minmax(0,1fr) 36px;align-items:center;border-bottom:1px solid rgba(125,157,181,.08)}
+.sbb-browse-entity{min-width:0;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px;border:0;background:transparent;color:#e8f0f5;text-align:left}
+.sbb-browse-entity span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:720 11px/1.2 system-ui,sans-serif}
+.sbb-browse-entity small{flex:0 0 auto;color:#678092;font:760 6.5px/1 system-ui,sans-serif;letter-spacing:.09em}
+.sbb-browse-entity:hover{background:rgba(99,183,255,.055)}
+.sbb-browse-star{width:30px;height:30px;border:0;background:transparent;color:#516779;font-size:17px;line-height:1}
+.sbb-browse-star:hover,.sbb-browse-star.active{color:#efcc62}
+.sbb-browse-empty{padding:22px 8px;color:#73899a;font:600 10px/1.45 system-ui,sans-serif;text-align:center}
+
+body.sbb-curation-active .score-ribbon{display:none!important}
+.sbb-curation-ribbon.hidden,.sbb-curation-ribbon[hidden]{display:none!important}
+.sbb-curation-ribbon{
+  border-top:1px solid rgba(125,157,181,.12);
+  border-bottom:1px solid rgba(125,157,181,.15);
+  background:#08121a;
+  min-height:124px;
+}
+.sbb-curation-toolbar{height:40px;display:flex;align-items:center;gap:10px;padding:0 8px 0 10px;border-bottom:1px solid rgba(125,157,181,.1);background:#09151e}
+#sbbCurationBack{height:29px;flex:0 0 auto;padding:0 12px;border:1px solid rgba(221,116,123,.28);border-radius:8px;background:rgba(71,24,29,.46);color:#f0b5b8;font:820 8px/1 system-ui,sans-serif;letter-spacing:.08em}
+#sbbCurationBack:hover{border-color:rgba(236,125,132,.55);background:rgba(93,29,35,.62);color:#ffe6e8}
+.sbb-curation-context{min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:8px;align-items:end;flex:1}
+.sbb-curation-context>span{grid-row:1/3;align-self:center;color:#68baff;font:850 7px/1 system-ui,sans-serif;letter-spacing:.14em}
+.sbb-curation-context strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#edf4f8;font:790 12.5px/1.05 system-ui,sans-serif}
+.sbb-curation-context small{color:#7b91a1;font:650 8px/1.05 system-ui,sans-serif}
+.sbb-curation-actions{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.sbb-curation-actions button{height:28px;padding:0 10px;border:1px solid rgba(125,157,181,.18);border-radius:8px;background:#0b1822;color:#b8c9d5;font:800 7.5px/1 system-ui,sans-serif;letter-spacing:.08em}
+#sbbCurationPlay{min-width:82px;background:linear-gradient(180deg,rgba(18,67,47,.98),rgba(11,45,31,.98));border-color:rgba(111,215,156,.34);color:#f0fff6}
+#sbbCurationPlay:disabled{opacity:.38;cursor:default}
+
+.sbb-curation-cards{height:110px;display:flex;gap:7px;overflow-x:auto;overflow-y:hidden;padding:4px 8px 7px;scrollbar-width:thin;scrollbar-color:#24394a transparent;overscroll-behavior-inline:contain}
+.sbb-curation-card-shell{flex:0 0 274px;min-width:0;height:97px;display:grid;grid-template-rows:19px minmax(0,1fr);align-self:start}
+.sbb-curation-date-pill{justify-self:start;align-self:end;position:relative;z-index:2;margin-left:7px;margin-bottom:-1px;height:20px;display:inline-flex;align-items:center;padding:0 7px;border:1px solid rgba(127,153,173,.22);border-bottom-color:#0a1620;border-radius:7px 7px 0 0;background:#0c1822;color:#9fb2c0;font:820 7.8px/1 system-ui,sans-serif;letter-spacing:.08em;white-space:nowrap}
+.sbb-curation-card{position:relative;display:grid;grid-template-columns:122px minmax(0,1fr);min-width:0;border:1px solid rgba(125,157,181,.13);border-radius:9px;overflow:hidden;background:#0a1620;color:#eaf2f7;cursor:pointer;outline:0}
+.sbb-curation-card:hover,.sbb-curation-card:focus-visible{border-color:rgba(99,183,255,.42);background:#0d1c28}
+.sbb-curation-thumb{position:relative;overflow:hidden;background:#101b24}
+.sbb-curation-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.sbb-curation-thumb-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#8195a4;font:850 11px/1 system-ui,sans-serif;letter-spacing:.08em}
+.sbb-curation-play{position:absolute;left:7px;bottom:6px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(3,9,14,.78);color:#fff;font-size:9px;padding-left:1px}
+.sbb-curation-card-copy{min-width:0;display:grid;grid-template-rows:minmax(0,1fr) auto auto;align-content:center;gap:4px;padding:8px 9px}
+.sbb-curation-card-copy strong{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;color:#f0f6fa;font:790 11.4px/1.18 system-ui,sans-serif}
+.sbb-curation-result{justify-self:start;color:#c9d8e1;font:850 9.4px/1 system-ui,sans-serif;letter-spacing:.02em}
+.sbb-curation-result[data-result="W"]{color:#78dda3}.sbb-curation-result[data-result="L"]{color:#ef8c91}.sbb-curation-result[data-result="T"]{color:#d6c786}
+.sbb-curation-media-tier{justify-self:start;font:850 8px/1 system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.sbb-curation-media-tier.tier-gold{color:#e6c759}.sbb-curation-media-tier.tier-green{color:#67d493}.sbb-curation-media-tier.tier-extended{color:#b788ff}.sbb-curation-media-tier.tier-blue{color:#65b8ff}
+.sbb-curation-loading,.sbb-curation-empty{height:100%;min-width:420px;display:flex;align-items:center;justify-content:center;gap:9px;color:#8198a8;font:650 9px/1.3 system-ui,sans-serif}
+.sbb-curation-loading span{width:13px;height:13px;border-radius:50%;border:2px solid rgba(99,183,255,.18);border-top-color:#63b7ff;animation:sbb-curation-spin .8s linear infinite}
+@keyframes sbb-curation-spin{to{transform:rotate(360deg)}}
+.sbb-curation-empty{display:grid;align-content:center;text-align:center;gap:3px}
+.sbb-curation-empty strong{color:#c4d3dd;font-size:10px}.sbb-curation-empty span{color:#718897;font-size:8px}
+
+html[data-sbb-theme="light"] .sbb-browse-popover,
+html[data-sbb-theme="light"] .sbb-curation-ribbon{background:#f7fafc!important;color:#1c2b36!important;border-color:#c8d4dd!important}
+html[data-sbb-theme="light"] .sbb-curation-toolbar{background:#eef3f7!important;border-color:#d3dde5!important}
+html[data-sbb-theme="light"] .sbb-curation-card{background:#fff!important;color:#1d2b35!important;border-color:#d1dbe3!important}
+html[data-sbb-theme="light"] .sbb-curation-card-copy strong{color:#1d2b35!important}
+html[data-sbb-theme="light"] .sbb-curation-date-pill{background:#f4f7f9!important;border-color:#c9d4dc!important;color:#526876!important}
+
+@media(max-width:980px){
+  #sbbBrowseBtn,#sbbBrowseExit{order:0}
+  .sbb-curation-card-shell{flex-basis:224px}
+  .sbb-curation-card{grid-template-columns:96px minmax(0,1fr)}
+}
+@media(max-width:680px){
+  .sbb-browse-primary-actions{grid-template-columns:1fr}
+  #sbbBrowseRanked:not(.hidden){grid-column:auto}
+  .sbb-curation-toolbar{height:auto;min-height:44px;flex-wrap:wrap;padding:5px 7px}
+  .sbb-curation-context{order:2;flex-basis:100%}
+  .sbb-curation-cards{height:104px}
+  .sbb-curation-card-shell{height:91px;flex-basis:214px}
+}
+@media(prefers-reduced-motion:reduce){.sbb-curation-loading span,#sbbBrowseSubnav{animation:none!important}}
+
+
+/* v5.3.3: a curated competition with no Game Center implementation must never
+   reveal the previously selected game's stale panel beneath the neutral state. */
+body.sbb-curated-no-game-center #gameCenterContent{display:none!important}
+body.sbb-curated-no-game-center #gameCenterEmpty{display:flex!important;flex:1 1 auto!important}
+body.sbb-curated-no-game-center #gameCenterPane{grid-template-rows:auto minmax(0,1fr) auto!important}
+body.sbb-curated-no-game-center #nextUpDock{margin-top:auto!important}
+
+/* Fullscreen keeps the submenu and popover in the same visual hierarchy. */
+:fullscreen #sbbBrowseSubnav,
+:-webkit-full-screen #sbbBrowseSubnav{z-index:12010}
+:fullscreen .sbb-browse-popover,
+:-webkit-full-screen .sbb-browse-popover{z-index:12020}

@@ -1,0 +1,29 @@
+Sports Big Board v5.3.3 — Browse Integration + Context Sync
+
+MANUAL GITHUB UPLOAD
+1. Open the sports-big-board repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when GitHub prompts.
+4. Commit every changed file together so frontend/backend/database-audit release identity stays atomic.
+5. Let Deploy Sports Big Board complete before hard-refreshing the site.
+
+PRIMARY USER-VISIBLE CHANGES
+- TEAM BROWSE / PLAYER BROWSE is visually joined to the selected league as a true submenu rather than a disconnected top-level button.
+- The Browse popover is hosted inside the fullscreenable app shell and repositions on fullscreen changes, so it remains usable in browser fullscreen.
+- The curated media ribbon exists only while a curated Team / Player / Ranked / Seeded / All Highlights view is active.
+- The old DAY back button is replaced by a clear EXIT action on the right side of the curated toolbar.
+- Curated timeline matchup, score, date, and media-tier typography is larger and easier to scan.
+- Starting a curated competition that has no Game Center implementation (for example US Open tennis) clears/hides stale Game Center content from the previously watched sport while preserving Coming Up.
+- Existing chronological queue behavior is unchanged: clicking a card starts there and continues through every older result in the current curated library.
+
+FUNCTIONAL BOUNDARIES
+- No second playback owner.
+- No new PROGRAM model.
+- No polling loop or continuous browse observer.
+- Score-ribbon interrupt/resume behavior remains authoritative.
+- Historical catalog and verified media remain the Browse data source.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.3.3 Browse Integration + Context Sync preflight complete
