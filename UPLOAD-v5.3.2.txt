@@ -1,0 +1,29 @@
+Sports Big Board v5.3.2 — Team Browse + Queue Flow
+
+MANUAL GITHUB UPLOAD
+1. Open the repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when GitHub prompts.
+4. Commit all changed files together so frontend/backend/database-audit release identity stays atomic.
+5. Let Deploy Sports Big Board complete before hard-refreshing the site.
+
+PRIMARY USER-VISIBLE CHANGES
+- TEAM BROWSE / PLAYER BROWSE is now an animated contextual sub-control that visually grows out of the selected league tab.
+- Browse popover X now reliably closes the panel using both the native hidden attribute and explicit hidden CSS.
+- Selecting a team/player immediately closes Browse and opens the curated timeline.
+- The per-card + QUEUE control is removed. The timeline itself defines the queue.
+- PLAY ALL starts with the first visible curated card and continues newest-to-oldest.
+- Clicking any later card performs the same action starting at that card, then continues through all older results.
+- Curated queue titles explicitly identify the selected entity and opponent, e.g. “San Diego Padres at Cincinnati Reds” or “San Diego Padres vs Pittsburgh Pirates”.
+- Up Next / Coming Up prefers the curated matchup title while preserving the source video title for playback metadata.
+
+FUNCTIONAL BOUNDARIES
+- No second PROGRAM model.
+- No second playback owner.
+- No continuous MutationObserver or polling loop.
+- Existing score-interrupt/resume behavior remains authoritative.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.3.2 Team Browse + Queue Flow preflight complete

@@ -1,8 +1,8 @@
-/* Sports Big Board v5.3.1 — Workspace Viewport Fit */
+/* Sports Big Board v5.3.2 — Workspace Viewport Fit */
 (() => {
   'use strict';
-  if(window.SBB_WORKSPACE_VIEWPORT_FIT?.version==='5.3.1') return;
-  const VERSION='5.3.1';
+  if(window.SBB_WORKSPACE_VIEWPORT_FIT?.version==='5.3.2') return;
+  const VERSION='5.3.2';
   const $=id=>document.getElementById(id);
   let queued=false;
   function desktop(){return window.matchMedia?.('(min-width:1100px) and (pointer:fine)')?.matches===true;}

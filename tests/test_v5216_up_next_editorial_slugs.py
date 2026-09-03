@@ -8,7 +8,7 @@ index=(ROOT/'index.html').read_text()
 css=(ROOT/'ui'/'editorial-slugs-up-next-v5216.css').read_text()
 js=(ROOT/'ui'/'up-next-experience-v5217.js').read_text()
 
-assert version=='5.3.1', version
+assert version=='5.3.2', version
 assert f'ui/editorial-slugs-up-next-v5216.css?v={version}' in index
 assert f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>' in index
 assert index.index(f'ui/premium-now-watching-v5215.css?v={version}') < index.index(f'ui/editorial-slugs-up-next-v5216.css?v={version}') < index.index('</head>')
@@ -43,7 +43,7 @@ for token in [
     'sourceRows()', 'canonicalProgramEntries(wanted=3)', 'visibleQueueEntries(wanted)',
     'renderDock()', 'patchRenderQueue()', 'canonicalNextRow()', 'repairNextButton()',
     'row.click()', 'nextVisibleQueueIndex()', 'tuneEntry(entry)',
-    "reason:'manual next control v5.3.1 fallback'"
+    "reason:'manual next control v5.3.2 fallback'"
 ]:
     assert token in js, token
 for forbidden in ['let PROGRAM', 'const PROGRAM', 'setInterval(', 'new MutationObserver']:
@@ -60,4 +60,4 @@ assert 'const row=canonicalNextRow();' in js
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version, f'{asset}: {found} != {version}'
 
-print('PASS v5.3.1 editorial slugs + integrated Up Next + NEXT transport repair')
+print('PASS v5.3.2 editorial slugs + integrated Up Next + NEXT transport repair')

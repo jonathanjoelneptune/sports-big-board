@@ -1,12 +1,12 @@
-/* Sports Big Board v5.3.1 — Integrated Up Next + NEXT transport repair.
+/* Sports Big Board v5.3.2 — Integrated Up Next + NEXT transport repair.
    The visual shelf now reads the canonical visibleQueueEntries() result instead
    of trusting queue DOM ordering/current-row classes. It does not create a second
    PROGRAM, selection model, playback owner, or date owner. */
 (() => {
   'use strict';
-  if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.3.1') return;
+  if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.3.2') return;
 
-  const VERSION='5.3.1';
+  const VERSION='5.3.2';
   const state={renders:0,dockClicks:0,nextClicks:0,nextFallbacks:0,interruptRenders:0,lastError:'',source:'none'};
   const $=id=>document.getElementById(id);
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -62,6 +62,7 @@
 
   function itemTitle(item,row){
     if(item){
+      const curated=String(item?.queueTitle||'').trim();if(curated)return curated;
       try{if(typeof displayProgramTitle==='function')return String(displayProgramTitle(item)||'').trim();}catch(_){}
       return String(item?.title||item?.subtitle||'Upcoming sports highlight').trim();
     }
@@ -98,7 +99,7 @@
       if(!Number.isFinite(idx)||idx<0)return false;
       if(typeof jumpTo==='function'){jumpTo(idx);return true;}
       if(typeof tuneProgramIndexV5==='function'){
-        tuneProgramIndexV5(idx,{userInitiated:true,reason:'Coming Up card selection v5.3.1'});
+        tuneProgramIndexV5(idx,{userInitiated:true,reason:'Coming Up card selection v5.3.2'});
         return true;
       }
     }catch(err){state.lastError=String(err?.message||err);}
@@ -201,7 +202,7 @@
       const target=nextVisibleQueueIndex();
       if(target<0)return false;
       if(typeof showBumper==='function')showBumper(target,400,'UP NEXT');
-      tuneProgramIndexV5(target,{userInitiated:true,reason:'manual next control v5.3.1 fallback'});
+      tuneProgramIndexV5(target,{userInitiated:true,reason:'manual next control v5.3.2 fallback'});
       state.nextFallbacks++;
       return true;
     }catch(err){state.lastError=String(err?.message||err);return false;}
@@ -222,7 +223,7 @@
         if(!fallbackNext()&&typeof showAllCaughtUp==='function')showAllCaughtUp();
       }catch(err){
         state.lastError=String(err?.message||err);
-        if(!fallbackNext())console.error('[SBB v5.3.1] NEXT control failed',err);
+        if(!fallbackNext())console.error('[SBB v5.3.2] NEXT control failed',err);
       }
     };
     return true;
