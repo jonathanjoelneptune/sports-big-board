@@ -7,7 +7,7 @@ version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
 css=(ROOT/'ui'/'premium-masthead-v5214.css').read_text()
 
-assert version=='5.2.19', version
+assert version=='5.2.20', version
 assert f'<title>Sports Big Board — v{version}</title>' in index
 assert 'const tabTitle=`Sports Big Board — v${version}`' in index
 assert "window.addEventListener('pageshow',syncTabTitle)" in index
@@ -38,4 +38,4 @@ for id_ in ['scoreFilters','keyInfoTrack','scoreCells','scoreDayIndicator']:
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version, f'{asset} cache version {found} != {version}'
 
-print('PASS v5.2.19 premium masthead + ticker + score ribbon presentation invariants')
+print('PASS v5.2.20 premium masthead + ticker + score ribbon presentation invariants')

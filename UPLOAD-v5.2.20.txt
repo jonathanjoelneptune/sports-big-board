@@ -1,0 +1,33 @@
+Sports Big Board v5.2.20 — Game Center Scroll + Score Interrupt Queue
+
+MANUAL GITHUB UPLOAD
+1. Open the repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when GitHub prompts.
+4. Commit every uploaded file together so frontend/backend/database-audit identity remains atomic.
+5. Let Deploy Sports Big Board complete, then hard-refresh the browser once.
+
+PRIMARY FIXES
+- Game Center now has one explicit vertical scrollbar below OVERVIEW / TEAM STATS / PLAYERS / KEY PLAYS.
+- The scoreboard and section buttons stay fixed while all rows beneath them scroll.
+- Player tables are not capped by the UI; all provider-returned batters/pitchers remain reachable.
+- Key Plays and Team Stats use the same full-height scrolling surface.
+- COMING UP stays locked below Game Center and never becomes part of the scrolling region.
+- A score-ribbon click is treated as a temporary programming interrupt.
+- The exact pre-click PROGRAM queue and interrupted item are captured before score takeover.
+- While the selected recap is playing, COMING UP projects the original queue beginning with the interrupted program.
+- The full UP NEXT list also projects that preserved queue rather than collapsing to the selected game's temporary PROGRAM.
+- When the selected score recap/reel ends, the original queue is restored and the interrupted program resumes, then normal programming continues.
+- Repeated score clicks during the same interrupt preserve the original pre-interrupt queue.
+
+OWNERSHIP / PERFORMANCE BOUNDARIES
+- No second player or playback controller.
+- Score playback still uses the existing tuneProgramIndexV5 / PlaybackController path.
+- The new interrupt module only snapshots/restores PROGRAM at the existing score-session boundary.
+- Game Center provider/rendering ownership remains unchanged; panes are only re-parented into one explicit scroll container.
+- No setInterval, per-frame loop, or continuous MutationObserver was added.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.2.20 Game Center Scroll + Interrupt Queue preflight complete

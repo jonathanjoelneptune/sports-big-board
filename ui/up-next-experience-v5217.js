@@ -1,13 +1,13 @@
-/* Sports Big Board v5.2.19 — Integrated Up Next + NEXT transport repair.
+/* Sports Big Board v5.2.20 — Integrated Up Next + NEXT transport repair.
    The visual shelf now reads the canonical visibleQueueEntries() result instead
    of trusting queue DOM ordering/current-row classes. It does not create a second
    PROGRAM, selection model, playback owner, or date owner. */
 (() => {
   'use strict';
-  if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.2.19') return;
+  if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.2.20') return;
 
-  const VERSION='5.2.19';
-  const state={renders:0,dockClicks:0,nextClicks:0,nextFallbacks:0,lastError:'',source:'none'};
+  const VERSION='5.2.20';
+  const state={renders:0,dockClicks:0,nextClicks:0,nextFallbacks:0,interruptRenders:0,lastError:'',source:'none'};
   const $=id=>document.getElementById(id);
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -49,6 +49,8 @@
 
   function canonicalProgramEntries(wanted=3){
     try{
+      const interrupt=window.SBB_SCORE_INTERRUPT_QUEUE?.entries?.(wanted);
+      if(Array.isArray(interrupt)&&interrupt.length){state.source='score-interrupt-projection';return interrupt;}
       if(typeof visibleQueueEntries==='function'){
         const entries=visibleQueueEntries(wanted);
         if(Array.isArray(entries)&&entries.length){state.source='visibleQueueEntries';return entries;}
@@ -90,16 +92,46 @@
   function tuneEntry(entry){
     state.dockClicks++;
     try{
+      if(entry?.interruptResume&&window.SBB_SCORE_INTERRUPT_QUEUE?.play?.(entry))return true;
       if(entry?.row){entry.row.click();return true;}
       const idx=Number(entry?.idx);
       if(!Number.isFinite(idx)||idx<0)return false;
       if(typeof jumpTo==='function'){jumpTo(idx);return true;}
       if(typeof tuneProgramIndexV5==='function'){
-        tuneProgramIndexV5(idx,{userInitiated:true,reason:'Coming Up card selection v5.2.19'});
+        tuneProgramIndexV5(idx,{userInitiated:true,reason:'Coming Up card selection v5.2.20'});
         return true;
       }
     }catch(err){state.lastError=String(err?.message||err);}
     return false;
+  }
+
+  function renderInterruptQueueList(){
+    const api=window.SBB_SCORE_INTERRUPT_QUEUE;
+    if(!api?.active?.())return false;
+    const list=$('queueList');
+    if(!list)return false;
+    const entries=api.entries?.(7)||[];
+    list.replaceChildren();
+    if(!entries.length)return true;
+    entries.forEach((entry,i)=>{
+      const item=entry.item||null;
+      const row=document.createElement('div');
+      row.className=`queue-item ${i===0?'next':''} interrupt-resume-queue-item`;
+      row.setAttribute('role','button');
+      row.tabIndex=0;
+      const title=itemTitle(item,null);
+      const duration=itemDuration(item,null);
+      const thumb=itemThumb(item,null);
+      const league=itemLeague(item);
+      const visual=thumb?`<div class="queue-thumb-wrap"><img src="${esc(thumb)}" alt=""></div>`:`<div class="queue-thumb-wrap"><div class="queue-thumb-fallback">${esc(league||'SBB')}</div></div>`;
+      row.innerHTML=`<div class="queue-num">${i+1}</div>${visual}<div class="queue-copy"><strong>${esc(title)}</strong><span class="queue-meta-polished">${i===0?'RESUMES AFTER SELECTED HIGHLIGHT':'QUEUED'}${league?` • ${esc(league)}`:''}</span></div><div class="queue-duration-col">${esc(duration||'—')}</div>`;
+      const play=()=>tuneEntry(entry);
+      row.addEventListener('click',play);
+      row.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();play();}});
+      list.appendChild(row);
+    });
+    state.interruptRenders++;
+    return true;
   }
 
   function renderDock(){
@@ -107,6 +139,7 @@
     const grid=$('nextUpDockGrid');
     if(!dock||!grid) return;
     syncDrawerTabState();
+    renderInterruptQueueList();
     const entries=canonicalProgramEntries(3);
     grid.replaceChildren();
     if(!entries.length){
@@ -146,7 +179,7 @@
     const original=renderQueue;
     const wrapped=function(...args){
       const result=original.apply(this,args);
-      queueMicrotask(renderDock);
+      queueMicrotask(()=>{renderInterruptQueueList();renderDock();});
       return result;
     };
     wrapped.__sbbUpNextV5216=true;
@@ -168,7 +201,7 @@
       const target=nextVisibleQueueIndex();
       if(target<0)return false;
       if(typeof showBumper==='function')showBumper(target,400,'UP NEXT');
-      tuneProgramIndexV5(target,{userInitiated:true,reason:'manual next control v5.2.19 fallback'});
+      tuneProgramIndexV5(target,{userInitiated:true,reason:'manual next control v5.2.20 fallback'});
       state.nextFallbacks++;
       return true;
     }catch(err){state.lastError=String(err?.message||err);return false;}
@@ -189,7 +222,7 @@
         if(!fallbackNext()&&typeof showAllCaughtUp==='function')showAllCaughtUp();
       }catch(err){
         state.lastError=String(err?.message||err);
-        if(!fallbackNext())console.error('[SBB v5.2.19] NEXT control failed',err);
+        if(!fallbackNext())console.error('[SBB v5.2.20] NEXT control failed',err);
       }
     };
     return true;
@@ -201,11 +234,12 @@
     patchRenderQueue();
     repairNextButton();
     bindDrawerTabs();
+    renderInterruptQueueList();
     renderDock();
     setTimeout(()=>{patchRenderQueue();repairNextButton();renderDock();},350);
     setTimeout(()=>renderDock(),1200);
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  window.SBB_UP_NEXT_EXPERIENCE=Object.freeze({version:VERSION,render:renderDock,snapshot:()=>({...state,activeTab:activeDrawerTab(),dockItems:$('nextUpDockGrid')?.children?.length||0})});
+  window.SBB_UP_NEXT_EXPERIENCE=Object.freeze({version:VERSION,render:renderDock,renderInterruptQueueList,snapshot:()=>({...state,activeTab:activeDrawerTab(),dockItems:$('nextUpDockGrid')?.children?.length||0})});
 })();

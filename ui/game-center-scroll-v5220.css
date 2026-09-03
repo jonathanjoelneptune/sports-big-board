@@ -1,0 +1,107 @@
+/* Sports Big Board v5.2.20 — Game Center hard scroll surface
+   The previous layers put overflow on the individual tab panes, but inherited
+   height/min-content rules could still let those panes expand and get clipped.
+   v5.2.20 introduces one explicit, bounded vertical scroll owner beneath the
+   Game Center section buttons. The scoreboard and tabs stay fixed above it and
+   Coming Up remains a separate locked shelf below it. */
+
+@media (min-width:1100px) and (pointer:fine){
+  body.sbb-game-center-side #infoDrawer{
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    overflow:hidden!important;
+  }
+  body.sbb-game-center-side #gameCenterPane.drawer-pane:not(.hidden){
+    display:grid!important;
+    grid-template-rows:minmax(0,1fr) auto!important;
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    overflow:hidden!important;
+  }
+  body.sbb-game-center-side #gameCenterContent{
+    display:grid!important;
+    grid-template-rows:auto auto minmax(0,1fr)!important;
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    overflow:hidden!important;
+  }
+  body.sbb-game-center-side #gameCenterContent>.gc-hero{
+    grid-row:1!important;
+    flex:0 0 auto!important;
+  }
+  body.sbb-game-center-side #gameCenterContent>#gcSections{
+    grid-row:2!important;
+    flex:0 0 auto!important;
+  }
+  body.sbb-game-center-side #gcContentScroller{
+    grid-row:3!important;
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    overflow-y:scroll!important;
+    overflow-x:hidden!important;
+    overscroll-behavior-y:contain!important;
+    scrollbar-gutter:stable!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:#345267 #071018!important;
+    -webkit-overflow-scrolling:touch!important;
+    padding:0!important;
+  }
+  body.sbb-game-center-side #gcContentScroller::-webkit-scrollbar{width:10px!important}
+  body.sbb-game-center-side #gcContentScroller::-webkit-scrollbar-track{background:#071018!important}
+  body.sbb-game-center-side #gcContentScroller::-webkit-scrollbar-thumb{
+    background:#345267!important;
+    border:2px solid #071018!important;
+    border-radius:10px!important;
+  }
+  body.sbb-game-center-side #gcContentScroller>[data-gc-pane]:not(.hidden){
+    display:grid!important;
+    align-content:start!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:max-content!important;
+    max-height:none!important;
+    overflow:visible!important;
+    padding:10px 10px 22px!important;
+  }
+  body.sbb-game-center-side #gcContentScroller>[data-gc-pane].hidden{display:none!important}
+
+  /* There is one vertical scrollbar only. Wide tables may still pan horizontally. */
+  body.sbb-game-center-side #gcContentScroller .gc-table-scroll{
+    max-height:none!important;
+    overflow-x:auto!important;
+    overflow-y:visible!important;
+  }
+  body.sbb-game-center-side #gcContentScroller :is(.gc-player-card,.gc-player-table,.gc-player-table tbody,.gc-player-table tbody tr,.gc-plays-card,.gc-stat-compare){
+    max-height:none!important;
+  }
+
+  /* Keep the programming shelf outside the Game Center scroll owner. */
+  body.sbb-game-center-side #gameCenterPane>.next-up-dock{
+    grid-row:2!important;
+    align-self:end!important;
+    flex:0 0 auto!important;
+    position:relative!important;
+    z-index:20!important;
+    max-height:152px!important;
+    overflow:hidden!important;
+  }
+}
+
+/* The active Game Center section should remain unmistakable after scrolling. */
+#gameCenterPane #gcSections .gc-section-tab.active,
+#gameCenterPane #gcSections .gc-section-tab[aria-selected="true"]{
+  background:linear-gradient(180deg,#1b4b6b 0%,#12364f 100%)!important;
+  border-color:rgba(105,188,255,.68)!important;
+  color:#fff!important;
+  box-shadow:inset 0 0 0 1px rgba(105,188,255,.13),0 0 12px rgba(57,153,220,.08)!important;
+}
+
+@media (max-width:1099px){
+  #gcContentScroller{display:contents!important}
+}
