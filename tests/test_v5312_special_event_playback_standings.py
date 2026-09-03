@@ -11,7 +11,7 @@ backend_path=ROOT/'sbb'/'league_view_v538.py'
 backend=backend_path.read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
 
-assert version=='5.3.17',version
+assert version=='5.3.18',version
 
 # Special-event playback is a hard context boundary. A failed World Cup source
 # must try a same-game source or the next curated event and may not fall through
@@ -24,8 +24,8 @@ for token in [
     'function primeCuratedAlternates(games=[])',
     'function clearStalePlaybackPresentation()',
     'function patchPlaybackFailure()',
-    "v5.3.17 same-game curated fallback",
-    "v5.3.17 next special-event highlight after unavailable source",
+    "v5.3.18 same-game curated fallback",
+    "v5.3.18 next special-event highlight after unavailable source",
     'showCuratedUnavailable(item,err?.message||err)',
 ]:
     assert token in browse,token
@@ -47,7 +47,7 @@ assert "league==='MLB'?'Divisions · Wild Card'" in league
 assert "league==='NFL'?'Divisions · Wild Card'" in league
 assert "((league==='MLB'||league==='NFL')&&i===2)" in league
 assert "if(league==='MLB'||league==='NFL'||league==='NHL')inner+=wildcardCard" in league
-assert 'v5.3.17 — standings-first hierarchy' in league_css
+assert 'v5.3.18 — standings-first hierarchy' in league_css
 
 # Provider feeds sometimes return only AL/NL or AFC/NFC tables. Prove the backend
 # synthesizes familiar divisions from those provider records and then excludes
@@ -79,4 +79,4 @@ assert {r['abbreviation'] for r in layout[0]['wildcard']}.isdisjoint({'NYY','CLE
 assert {r['abbreviation'] for r in layout[1]['wildcard']}.isdisjoint({'PHI','MIL','LAD'})
 
 assert 'tests/test_v5312_special_event_playback_standings.py' in verify
-print('PASS v5.3.17 special-event playback isolation + Game Center freshness + division/Wild Card League View')
+print('PASS v5.3.18 special-event playback isolation + Game Center freshness + division/Wild Card League View')

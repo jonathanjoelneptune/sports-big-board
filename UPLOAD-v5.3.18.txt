@@ -1,0 +1,56 @@
+Sports Big Board v5.3.18 manual GitHub upload
+Verified Play All + Fast Start
+
+1. Extract this ZIP.
+2. Open the sports-big-board repository root on GitHub.
+3. Upload the CONTENTS of the extracted folder, preserving every included path.
+4. Replace existing files when GitHub prompts.
+5. Commit the upload as one v5.3.18 release.
+6. Let Deploy Sports Big Board run and confirm VERIFY.sh passes.
+7. Hard-refresh the deployed page after GitHub Pages completes.
+
+PRIMARY ACCEPTANCE CHECKS
+A. Compact normal-league scope controls
+   - Select MLB, NFL, NBA, NHL, EPL, MLS, or NCAAF.
+   - Expected: TODAY, ALL, and TEAM BROWSE remain the green subordinate control group, but are slightly smaller than v5.3.17.
+   - Expected: there is visible horizontal space between the three pills and between the selected league and the subordinate group.
+   - Special Event navigation and EXIT EVENT remain unchanged.
+
+B. Verified-only Play All
+   - Open Team Browse / Player Browse on a day that contains a mix of completed, live, scheduled, and media-less games.
+   - Press PLAY ALL.
+   - Expected: only completed games with an exact verified media source enter the automatic queue.
+   - TODAY is strict: live, scheduled, postponed, delayed, suspended, and games without an authoritative FINAL/completed state are excluded.
+   - Historical dates may also use a verified recap as completion evidence when score enrichment is still catching up.
+   - One best source is queued per game. Other verified sources for that same game are retained as fallbacks rather than duplicate sequential programs.
+
+C. Green/Purple + browser-proof preference
+   - When more than one verified package exists for a completed game, prefer media already proven to play in this browser first.
+   - Within comparable readiness, prefer Green quick recap, then Purple/extended recap, then other verified recap/highlight packages.
+   - A database-verified clip keeps its verifiedAt, runtimeSuccessAt, runtime state, and embed eligibility when converted into a Browse queue item. It should not be downgraded to an unknown/cold candidate merely because it came through Team Browse.
+
+D. Bounded fast start / no infinite Play All loading
+   - Start PLAY ALL on an MLB date/team with several known clips.
+   - Expected: the first verified source is dispatched to the player immediately; Play All does not wait for another discovery/search round before tuning it.
+   - A browser-proven verified source gets about 5.5 seconds to visibly start; another verified source gets about 7.5 seconds.
+   - If it still has not begun, Big Board tries a verified alternate for the SAME game first, then moves to the next eligible completed game.
+   - A slow source therefore cannot leave PLAY ALL stuck on an indefinite loading state.
+   - Successful Team/Player Browse playback is now recorded as browser-health proof, not only Special Event playback, so the same known source can be prioritized on later Play All runs.
+
+E. Individual game clicks remain authoritative
+   - Click an individual game card directly.
+   - Expected: the user's exact selection is still honored. The conservative completed/verified Play All filter applies only to PLAY ALL and does not remove direct manual selection behavior.
+
+F. Retained v5.3.17 behavior
+   - Dense historical NBA/date score selections keep the UI responsive while the same-league/day queue is assembled.
+   - Tennis and other competitions without a rich provider Game Center fall back to MATCH CENTER rather than GAME CENTER UNAVAILABLE.
+   - FIFA WC / US Open / LLWS retain their dedicated Special Event Match Center ownership.
+
+VALIDATION COMPLETED FOR THIS MANUAL UPDATE OVERLAY
+   - 25 focused regressions from v5.2.16 through v5.3.18 passed.
+   - Included JavaScript files passed node --check.
+   - Included Python modules/tests compiled successfully.
+   - VERIFY.sh and cloud/gcp/DEPLOY-FROM-GITHUB.sh passed shell syntax checks.
+   - The complete repository's VERIFY.sh remains the deployment gate after these files are overlaid on main.
+
+Do not upload the outer folder itself into the repository. Upload its contents so VERSION, index.html, ui/, architecture/, sbb/, tests/, tools/, and the other included paths land at their existing repository locations.

@@ -9,11 +9,11 @@ version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
 interrupt=(ROOT/'architecture'/'score-interrupt-queue-v5220.js').read_text()
 
-assert version=='5.3.17', version
+assert version=='5.3.18', version
 assert f'<script src="architecture/score-interrupt-queue-v5220.js?v={version}"></script>' in index
 
 # The prior queue behavior is retained: score selection becomes a same-league/same-date
-# queue with the clicked game's media fixed at the front. v5.3.17 performs that
+# queue with the clicked game's media fixed at the front. v5.3.18 performs that
 # projection asynchronously so the click/tune itself remains responsive.
 for token in [
     'non-blocking score-ribbon league-day queue + interrupt preservation',
@@ -89,4 +89,4 @@ with tempfile.TemporaryDirectory() as td:
     assert payload['queueLength']==3, payload
     assert payload['selectionCount']==1, payload
 
-print('PASS v5.3.17 retains league/day score queue while yielding construction off the score click')
+print('PASS v5.3.18 retains league/day score queue while yielding construction off the score click')

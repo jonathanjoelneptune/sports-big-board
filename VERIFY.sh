@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Sports Big Board v5.3.17 Queue Performance + Sport Match Center preflight"
+echo "Sports Big Board v5.3.18 Verified Play All + Fast Start preflight"
 python3 tools/check_release_version.py
 python3 tests/test_v529_release_integrity.py
 python3 tests/test_v5210_motion_smoothness.py
@@ -34,6 +34,7 @@ python3 tests/test_v5314_league_navigation_event_brackets.py
 python3 tests/test_v5315_wildcard_media_match_center.py
 python3 tests/test_v5316_score_ribbon_league_day_queue.py
 python3 tests/test_v5317_queue_performance_match_center.py
+python3 tests/test_v5318_verified_play_all_fast_start.py
 node --check ui/settings-view.js
 node --check ui/up-next-experience-v5217.js
 node --check ui/harmonized-controls-drawer-v5217.js
@@ -56,4 +57,4 @@ node --check architecture/splash-preload-v5212.js
 python3 -m py_compile sbb/release_identity_v523.py sbb/current_news_v523.py
 bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh
 
-echo "PASS: v5.3.17 Queue Performance + Sport Match Center preflight complete"
+echo "PASS: v5.3.18 Verified Play All + Fast Start preflight complete"

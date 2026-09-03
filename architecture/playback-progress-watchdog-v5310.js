@@ -1,4 +1,4 @@
-/* Sports Big Board v5.3.17 — conservative playback progress watchdog.
+/* Sports Big Board v5.3.18 — conservative playback progress watchdog.
    This replacement loads before the legacy v4.8.1 watchdog and owns its public
    interface. A video that has demonstrated real clock progress is never failed by
    the startup watchdog later in that selection. Recovery requires positive stall
