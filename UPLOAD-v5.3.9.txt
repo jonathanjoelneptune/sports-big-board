@@ -1,0 +1,38 @@
+Sports Big Board v5.3.9 — Team Context + Drawer Sync
+
+MANUAL GITHUB UPLOAD
+1. Open the sports-big-board repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, cloud/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when prompted.
+4. Commit every uploaded file together as one v5.3.9 release.
+5. Let Deploy Sports Big Board / VERIFY.sh finish before hard-refreshing the board.
+
+USER-VISIBLE CHANGES
+- Opening a Team Browse context now automatically starts the newest playable team highlight and builds the older-history queue behind it.
+- The right Team Focus controls match the compact top-menu action styling and read Play All and Exit Event.
+- GAME CENTER, LEAGUE VIEW, and SETTINGS are mutually exclusive drawer views. League View or Settings fully replaces Game Center instead of leaving Game Center rendered beneath the selected pane.
+- Team Browse rows now show a white-backed logo tile and the full team name only. The redundant second three-character abbreviation chip is removed.
+- Team and focus logos receive white-backed tiles so dark or transparent marks stay visible across team themes.
+- A selected Special Event remains visible in the main sports row for the life of the context. Example: SPECIAL EVENTS → FIFA WC → TEAM BROWSE → EXIT EVENT. The event chip is repaired automatically if the score-filter row rerenders.
+- League View follows the sport/event actually being played. A score-card interrupt or MLB recap switches League View to MLB instead of leaving a previously browsed World Cup context active.
+- Team Sports Ticker cells are centered, content-sized, and use less horizontal padding so short items such as STREAK do not consume oversized space.
+
+PLAYBACK PAUSE FIX
+- Explicit user pause is now a persistent, selection-scoped state instead of a 12-second suppression window.
+- The ~5-second early-pause watchdog still provides one soft resume and one bounded recovery for genuine unexpected pauses.
+- Once the user intentionally pauses, the watchdog cannot restart that same selection until the user explicitly resumes or a different selection takes ownership.
+- YouTube/provider control interaction is detected through iframe focus so a pause performed on embedded provider controls is also treated as user intent.
+
+PRESERVED v5.3.8 BEHAVIOR
+- League View standings/playoff/bracket read model.
+- Daily/multi-game recap handling.
+- Today-backward Team Focus history cutoff.
+- WCAG-derived team palette/theme database and team-tinted surfaces.
+- Expanded Sports Ticker editorial categories.
+- Sports Ticker OpenAI limiter remains certified at 20 automatic / 40 manual candidates with component identity v5.3.9-sports-ticker-4.
+- NCAAF remains the only college-football namespace; visible legacy CFB controls remain retired.
+
+VERIFY
+This package adds tests/test_v539_team_context_drawer_sync.py and keeps the retained v5.3.x regression suite in the deployment gate.
+Expected final line:
+PASS: v5.3.9 Team Context + Drawer Sync preflight complete

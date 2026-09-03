@@ -1,4 +1,4 @@
-/* Sports Big Board v5.3.8 — Persistent Browse + Context Ribbon + Event Identity
+/* Sports Big Board v5.3.9 — Persistent Browse + Context Ribbon + Event Identity
    Contextual team/player browse control, anchored browse popover, date-headed
    highlight timeline, explicit queue affordance, scores, and media-tier color. */
 
@@ -174,7 +174,7 @@ html[data-sbb-theme="light"] .sbb-curation-date-pill{background:#f4f7f9!importan
 @media(prefers-reduced-motion:reduce){.sbb-curation-loading span,#sbbBrowseSubnav{animation:none!important}}
 
 
-/* v5.3.8: a curated competition with no Game Center implementation must never
+/* v5.3.9: a curated competition with no Game Center implementation must never
    reveal the previously selected game's stale panel beneath the neutral state. */
 body.sbb-curated-no-game-center #gameCenterContent{display:none!important}
 body.sbb-curated-no-game-center #gameCenterEmpty{display:flex!important;flex:1 1 auto!important}
@@ -192,7 +192,7 @@ body.sbb-curated-no-game-center #nextUpDock{margin-top:auto!important}
 #sbbCurationPlayLeft{min-width:56px}
 
 /* ======================================================================
-   v5.3.8 — Team Focus enrichment + full-height curated rail
+   v5.3.9 — Team Focus enrichment + full-height curated rail
    ====================================================================== */
 
 /* The curated rail is exactly the scoreboard rail's captured height. There is
@@ -335,7 +335,7 @@ html[data-sbb-team-theme="on"] #sbbFocusExit{border-color:color-mix(in srgb,var(
 @media(prefers-reduced-motion:reduce){#sbbEntityTickerTrack.is-overflowing .sbb-entity-info-conveyor{animation:none!important}}
 
 /* ======================================================================
-   v5.3.8 — Focus integration, participant marks, full team skin
+   v5.3.9 — Focus integration, participant marks, full team skin
    ====================================================================== */
 
 /* CFB is retired. NCAAF is the only college-football ribbon namespace. */
@@ -374,7 +374,7 @@ html[data-sbb-team-theme="on"] #sbbFocusExit{border-color:color-mix(in srgb,var(
 .sbb-entity-identity-copy{align-self:center!important;justify-content:center!important}
 .sbb-entity-identity-copy>span{font-size:9.6px!important;line-height:1.05!important}
 
-/* NEXT is one compact game per item now, so it does not need the huge v5.3.8
+/* NEXT is one compact game per item now, so it does not need the huge v5.3.9
    reservation. Many independent RESULT / NEXT / RANK / NEWS cells make the lane
    long enough to behave as an actual continuously moving team ticker. */
 .sbb-entity-info-item.next{min-width:145px!important;max-width:220px!important}
@@ -510,7 +510,7 @@ html[data-sbb-team-theme="on"][data-sbb-team-theme-light="1"] :is(
 ){background:#fff!important;color:var(--sbb-team-text)!important}
 
 /* ======================================================================
-   v5.3.8 — Theme hardening, accessible contrast, event-context controls
+   v5.3.9 — Theme hardening, accessible contrast, event-context controls
    ====================================================================== */
 
 /* Browse rows carry a mark, compact short code, full name, and scope label. */
@@ -655,4 +655,126 @@ html[data-sbb-team-theme="on"] #sbbSpecialEventsMenu button{
 html[data-sbb-team-theme="on"] #sbbSpecialEventsMenu button:hover{
   background:color-mix(in srgb,var(--sbb-team-secondary) 18%,var(--sbb-team-surface-raised))!important;
   border-color:var(--sbb-team-accent)!important;
+}
+
+
+/* ======================================================================
+   v5.3.9 — context polish: compact ticker, white logo tiles, action language
+   ====================================================================== */
+
+/* Team Browse no longer repeats the team abbreviation after the crest. Every
+   transparent mark sits on a clean white tile so dark/one-color team artwork
+   remains legible in every board theme. */
+.sbb-browse-entity{
+  grid-template-columns:32px minmax(0,1fr) auto!important;
+  gap:9px!important;
+}
+.sbb-browse-entity-abbr{display:none!important}
+.sbb-browse-entity-logo{
+  width:30px!important;height:30px!important;
+  background:#fff!important;
+  border-color:rgba(255,255,255,.88)!important;
+  box-shadow:0 1px 5px rgba(0,0,0,.18)!important;
+  padding:2px!important;box-sizing:border-box!important;
+}
+.sbb-browse-entity-logo img{
+  width:100%!important;height:100%!important;object-fit:contain!important;
+  transform:none!important;
+}
+.sbb-browse-entity-logo.fallback{background:#fff!important;color:#496172!important}
+
+/* Focus identity marks use the same high-contrast white presentation. */
+.sbb-entity-logo{
+  background:#fff!important;border:1px solid rgba(255,255,255,.9)!important;
+  padding:3px!important;box-sizing:border-box!important;
+  box-shadow:0 1px 6px rgba(0,0,0,.16)!important;
+}
+.sbb-entity-logo img{transform:none!important;object-fit:contain!important}
+
+/* Match the top-menu event action language. Both right-side focus controls use
+   the same compact broadcast font/geometry and exact title-case labels. */
+.sbb-entity-focus-controls{gap:6px!important;padding-inline:7px!important}
+.sbb-entity-focus-controls button{
+  height:30px!important;min-width:72px!important;padding:0 10px!important;
+  border-radius:9px!important;
+  font:900 7.5px/1 system-ui,sans-serif!important;
+  letter-spacing:.075em!important;
+  text-transform:none!important;
+}
+#sbbFocusPlayAll{
+  background:linear-gradient(180deg,#45e28d 0%,#15934f 100%)!important;
+  border-color:#75ffb3!important;color:#052514!important;
+}
+#sbbFocusExit{
+  background:linear-gradient(180deg,#7d2027 0%,#54151b 100%)!important;
+  border-color:rgba(255,112,112,.62)!important;color:#fff4f4!important;
+}
+
+/* Team Sports Ticker cells size to their actual content rather than reserving a
+   generic wide slot. Labels/details are centered and horizontal padding is kept
+   tight; NEWS retains a larger readable maximum. */
+.sbb-entity-info-item:not(.identity){
+  min-width:max-content!important;
+  width:max-content!important;
+  max-width:360px!important;
+  padding:3px 8px!important;
+  justify-items:center!important;
+  text-align:center!important;
+}
+.sbb-entity-info-item:not(.identity) strong,
+.sbb-entity-info-item:not(.identity) span{
+  text-align:center!important;
+  justify-self:center!important;
+}
+.sbb-entity-info-item.recent,
+.sbb-entity-info-item.next,
+.sbb-entity-info-item.ranking,
+.sbb-entity-info-item.record,
+.sbb-entity-info-item.standing,
+.sbb-entity-info-item.streak{
+  min-width:max-content!important;
+  width:max-content!important;
+  max-width:250px!important;
+}
+.sbb-entity-info-item.news{
+  min-width:220px!important;
+  width:auto!important;
+  max-width:420px!important;
+  padding-inline:11px!important;
+}
+
+/* The temporary event chip is intentionally the same height/font family as the
+   neighboring Special Events / Team Browse / Exit Event controls. */
+#sbbActiveSpecialChip,.sbb-active-special-chip{
+  height:30px!important;
+  font:900 7.5px/1 system-ui,sans-serif!important;
+  letter-spacing:.075em!important;
+  text-transform:none!important;
+}
+
+@media(max-width:760px){
+  .sbb-browse-entity{grid-template-columns:28px minmax(0,1fr) auto!important}
+  .sbb-browse-entity-logo{width:27px!important;height:27px!important}
+  .sbb-entity-focus-controls button{min-width:62px!important;padding-inline:7px!important}
+}
+
+/* Center the identity copy as well so every Team Sports Ticker text block uses
+   the same broadcast alignment. Keep the crest distinct, but remove the legacy
+   oversized text reservation/padding around the team name. */
+.sbb-entity-info-item.identity{
+  min-width:max-content!important;
+  width:max-content!important;
+  max-width:260px!important;
+  padding:2px 9px!important;
+  justify-content:center!important;
+  text-align:center!important;
+}
+.sbb-entity-identity-copy{
+  justify-items:center!important;
+  text-align:center!important;
+}
+.sbb-entity-identity-copy strong,
+.sbb-entity-identity-copy>span{
+  text-align:center!important;
+  justify-self:center!important;
 }

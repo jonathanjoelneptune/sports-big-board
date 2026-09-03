@@ -1,0 +1,55 @@
+Sports Big Board v5.3.9 — Team Context + Drawer Sync
+
+UPLOAD / REPLACE
+- VERSION
+- architecture/VERSION
+- architecture/key-info-current-v520.js
+- architecture/playback-early-pause-recovery-v538.js
+- architecture/score-interrupt-queue-v5220.js
+- architecture/scroll-motion-smoothness-v5210.js
+- architecture/splash-preload-v5212.js
+- cloud/gcp/DEPLOY-FROM-GITHUB.sh
+- index.html
+- sbb/__init__.py
+- sbb/current_news_v523.py
+- sbb/league_view_v538.py
+- sbb/team_focus_v537.py
+- tools/check_release_version.py
+- VERIFY.sh
+- ui/browse-curated-programming-v537.css
+- ui/browse-curated-programming-v537.js
+- ui/collapse-viewport-fit-v5221.css
+- ui/collapse-viewport-fit-v5221.js
+- ui/editorial-slugs-up-next-v5216.css
+- ui/game-center-readability-v5219.css
+- ui/game-center-readability-v5219.js
+- ui/game-center-scroll-v5220.css
+- ui/game-center-scroll-v5220.js
+- ui/harmonized-controls-drawer-v5217.css
+- ui/harmonized-controls-drawer-v5217.js
+- ui/league-view-v538.css
+- ui/league-view-v538.js
+- ui/up-next-experience-v5217.js
+- ui/viewing-workspace-v5218.css
+- ui/viewing-workspace-v5218.js
+- ui/workspace-viewport-fit-v531.css
+- ui/workspace-viewport-fit-v531.js
+- retained version-synchronized tests included in this upload
+
+ADD
+- tests/test_v539_team_context_drawer_sync.py
+- UPLOAD-v5.3.9.txt
+- CHANGED-FILES-v5.3.9.txt
+
+PRIMARY v5.3.9 RUNTIME CHANGES
+- Team Browse automatically starts the newest playable recap when a team context opens.
+- Team Focus actions use the compact masthead action style and exact labels Play All / Exit Event.
+- League View and Settings are exclusive drawer panes; hidden Game Center content no longer remains visible underneath them.
+- Team Browse rows use a white-backed logo tile + full team name; the redundant second abbreviation chip is removed.
+- Active Special Event chips persist across score-filter/ribbon rerenders and use compact event labels such as FIFA WC.
+- Manual pause is selection-scoped and persistent. The early-pause watchdog no longer resumes an intentional user pause after a timeout, including provider-control pauses detected through iframe focus.
+- League View resolves context from the currently selected/playing event before retained special-event navigation context, so an MLB recap shows MLB League View even after browsing World Cup.
+- Team Sports Ticker cells are centered and content-sized with reduced horizontal padding.
+
+NOTE
+The broad replace set is intentional because v5.3.9 advances the canonical frontend/backend release identity and cache generation atomically. Upload the complete package rather than mixing individual v5.3.8 and v5.3.9 versioned files.

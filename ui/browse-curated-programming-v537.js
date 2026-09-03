@@ -1,13 +1,13 @@
-/* Sports Big Board v5.3.8 — Focus Integration + Full Team Theme
+/* Sports Big Board v5.3.9 — Focus Integration + Full Team Theme
    User-facing content discovery over the existing score/calendar + historical
    catalog. No second playback owner: curated results become normal PROGRAM items
    and therefore inherit PlaybackController, Hot Standby, Up Next and score-card
    interrupt/resume behavior. */
 (() => {
   'use strict';
-  if(window.SBB_CURATED_BROWSE?.version==='5.3.8') return;
+  if(window.SBB_CURATED_BROWSE?.version==='5.3.9') return;
 
-  const VERSION='5.3.8';
+  const VERSION='5.3.9';
   const FAVORITES_KEY='sbb.curation.favorites.v1';
   const ENTITY_CATALOG_KEY='sbb.browse.entity-catalog.v535';
   const ENTITY_CATALOG_TTL_MS=6*60*60*1000;
@@ -261,7 +261,7 @@
     }
     if(!$('sbbEntityFocusControls')){
       const ribbon=document.querySelector('.key-info-ribbon');
-      if(ribbon){const controls=document.createElement('div');controls.id='sbbEntityFocusControls';controls.className='sbb-entity-focus-controls hidden';controls.innerHTML='<button id="sbbFocusPlayAll" type="button">PLAY ALL</button><button id="sbbFocusExit" type="button">EXIT</button>';ribbon.appendChild(controls);}
+      if(ribbon){const controls=document.createElement('div');controls.id='sbbEntityFocusControls';controls.className='sbb-entity-focus-controls hidden';controls.innerHTML='<button id="sbbFocusPlayAll" type="button">Play All</button><button id="sbbFocusExit" type="button">Exit Event</button>';ribbon.appendChild(controls);}
     }
     if(!$('teamThemeToggle')){
       const grid=document.querySelector('#settingsPane .settings-grid');
@@ -424,15 +424,35 @@
   }
   function installLegacyCfbGuard(){
     hideLegacyCfb();if(state.cfbObserver)return;const filters=$('scoreFilters');if(!filters)return;
-    state.cfbObserver=new MutationObserver(()=>hideLegacyCfb());state.cfbObserver.observe(filters,{childList:true,subtree:true,attributes:true,attributeFilter:['data-score-filter','data-special-competition']});
+    let repairQueued=false;
+    state.cfbObserver=new MutationObserver(()=>{
+      hideLegacyCfb();
+      if(!state.specialContext||repairQueued)return;
+      repairQueued=true;
+      queueMicrotask(()=>{repairQueued=false;if(!state.specialContext)return;syncSpecialContextUi();placeBrowseControls();});
+    });
+    state.cfbObserver.observe(filters,{childList:true,subtree:true,attributes:true,attributeFilter:['data-score-filter','data-special-competition']});
   }
   function isCoreLeague(league){return ['MLB','NFL','NBA','NHL','EPL','MLS','NCAAF'].includes(clean(league).toUpperCase());}
   function specialEventLabel(button,league){return clean(button?.textContent).replace(/[▾▼]/g,'').trim()||leagueLabel(league);}
+  function specialEventShortLabel(league,label=''){
+    const key=clean(league).toUpperCase();
+    const fixed={'WC2026':'FIFA WC','WORLD-CUP-2026':'FIFA WC','FIFA-WORLD-CUP-2026':'FIFA WC','LLWS2026':'LLWS','USOPEN-2026':'US OPEN'};
+    if(fixed[key])return fixed[key];
+    const raw=clean(label)||leagueLabel(key);
+    const compact=raw.replace(/\b20\d{2}\b/g,'').replace(/\bWORLD CUP\b/i,'WC').replace(/\s+/g,' ').trim();
+    return compact.length<=12?compact:compact.split(/\s+/).map(x=>x[0]).join('').slice(0,10).toUpperCase();
+  }
   function syncSpecialContextUi(){
     let chip=$('sbbActiveSpecialChip');const mlb=document.querySelector('#scoreFilters [data-score-filter="MLB"]');
     if(state.specialContext){
-      if(!chip){chip=document.createElement('button');chip.id='sbbActiveSpecialChip';chip.type='button';chip.className='sbb-active-special-chip active';mlb?.insertAdjacentElement('beforebegin',chip);}
-      chip.dataset.scoreFilter=state.specialContext.league;chip.textContent=state.specialContext.label;chip.hidden=false;chip.classList.add('active');
+      if(!chip){chip=document.createElement('button');chip.id='sbbActiveSpecialChip';chip.type='button';chip.className='sbb-active-special-chip active';}
+      if(mlb&&chip.parentElement!==mlb.parentElement)mlb.insertAdjacentElement('beforebegin',chip);
+      else if(mlb&&chip.nextElementSibling!==mlb)mlb.insertAdjacentElement('beforebegin',chip);
+      const shortLabel=specialEventShortLabel(state.specialContext.league,state.specialContext.label);
+      if(chip.dataset.scoreFilter!==state.specialContext.league)chip.dataset.scoreFilter=state.specialContext.league;
+      if(chip.textContent!==shortLabel)chip.textContent=shortLabel;
+      chip.hidden=false;chip.classList.add('active');
     }else if(chip){chip.remove();}
     $('sbbSpecialExitBtn')?.classList.toggle('hidden',!state.specialContext);
   }
@@ -481,7 +501,7 @@
   }
   async function fetchFullEntityCatalog(league,{forceMetadata=false}={}){
     const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return [];
-    // v5.3.8 prefers the backend's persisted participant index. It is built from
+    // v5.3.9 prefers the backend's persisted participant index. It is built from
     // all catalog events that own verified/playable media and is warmed in the
     // background, so opening Team/Player Browse does not scan the audit catalog.
     try{
@@ -489,7 +509,7 @@
       const entities=Array.isArray(data?.entities)?data.entities:[];const names=Array.isArray(data?.participants)?data.participants.map(clean).filter(Boolean):entities.map(x=>clean(x?.name)).filter(Boolean);
       if(response.ok&&data?.ok&&names.length){rememberEntityMetadata(selected,entities.length?entities:names.map(name=>({name})));return [...new Set(names)].sort((a,b)=>a.localeCompare(b));}
     }catch(_){}
-    // Compatibility fallback for a backend that has not completed the v5.3.8
+    // Compatibility fallback for a backend that has not completed the v5.3.9
     // participant-index warmup yet.
     let offset=0,total=Infinity,rows=[];
     while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS){
@@ -530,7 +550,7 @@
     for(const name of source){const key=norm(name);if(!key||seen.has(key)||(q&&!key.includes(q)))continue;seen.add(key);merged.push(clean(name));}
     merged.sort((a,b)=>(Number(isFavorite(state.league,b))-Number(isFavorite(state.league,a)))||a.localeCompare(b));
     if(!merged.length){host.innerHTML=`<div class="sbb-browse-empty">${query?'No matching '+(state.entityType==='player'?'players':'teams')+' with verified highlights found.':'No '+(state.entityType==='player'?'players':'teams')+' with verified highlights are available yet.'}</div>`;return;}
-    host.innerHTML=merged.map(name=>{const meta=entityMetaFor(name),logo=clean(meta.logo),abbr=clean(meta.abbreviation)||shortEntityName(name);return `<div class="sbb-browse-suggestion"><button class="sbb-browse-entity" type="button" data-browse-entity="${esc(name)}">${logo?`<span class="sbb-browse-entity-logo"><img src="${esc(logo)}" alt="${esc(name)} logo" loading="lazy"></span>`:`<span class="sbb-browse-entity-logo fallback">◇</span>`}<span class="sbb-browse-entity-abbr">${esc(abbr.slice(0,5).toUpperCase())}</span><span class="sbb-browse-entity-name">${esc(name)}</span><small>ALL DATES</small></button><button class="sbb-browse-star ${isFavorite(state.league,name)?'active':''}" type="button" data-browse-star="${esc(name)}" aria-label="${isFavorite(state.league,name)?'Remove':'Add'} ${esc(name)} favorite">${isFavorite(state.league,name)?'★':'☆'}</button></div>`}).join('');
+    host.innerHTML=merged.map(name=>{const meta=entityMetaFor(name),logo=clean(meta.logo);return `<div class="sbb-browse-suggestion"><button class="sbb-browse-entity" type="button" data-browse-entity="${esc(name)}">${logo?`<span class="sbb-browse-entity-logo"><img src="${esc(logo)}" alt="${esc(name)} logo" loading="lazy"></span>`:`<span class="sbb-browse-entity-logo fallback">◇</span>`}<span class="sbb-browse-entity-name">${esc(name)}</span><small>ALL DATES</small></button><button class="sbb-browse-star ${isFavorite(state.league,name)?'active':''}" type="button" data-browse-star="${esc(name)}" aria-label="${isFavorite(state.league,name)?'Remove':'Add'} ${esc(name)} favorite">${isFavorite(state.league,name)?'★':'☆'}</button></div>`}).join('');
   }
   async function searchSuggestions(value){
     const query=clean(value);state.lastQuery=query;const names=await primeEntityCatalog({render:false});if(query!==state.lastQuery)return;renderSuggestions(names,query);
@@ -602,7 +622,8 @@
     window.dispatchEvent(new CustomEvent('sbb:browse-layout',{detail:{active}}));
     if(!active){setEntityTickerActive(false);clearTeamTheme();return;}
     const playableCount=queueItemsForGames(state.games).length;
-    const focusPlay=$('sbbFocusPlayAll');if(focusPlay){focusPlay.disabled=state.loading||!playableCount;focusPlay.textContent='PLAY ALL';}
+    const focusPlay=$('sbbFocusPlayAll');if(focusPlay){focusPlay.disabled=state.loading||!playableCount;focusPlay.textContent='Play All';}
+    const focusExit=$('sbbFocusExit');if(focusExit)focusExit.textContent='Exit Event';
     if(state.entity)scheduleEntityTickerRefresh();else setEntityTickerActive(false);
     if(state.loading){cards.innerHTML='<div class="sbb-curation-loading"><span></span><strong>Building team timeline…</strong></div>';return;}
     if(state.error){cards.innerHTML=`<div class="sbb-curation-empty"><strong>Browse unavailable</strong><span>${esc(state.error)}</span></div>`;return;}
@@ -620,6 +641,8 @@
   async function activateHistorical({entity='',all=false}={}){
     setOpen(false);
     state.mode='history';state.entity=clean(entity);state.facet=all?'ALL HIGHLIGHTS':'';state.loading=true;state.error='';state.games=[];state.selected.clear();state.teamFocusData=null;state.teamFocusKey='';renderCuration();
+    const autoPlayEntity=state.entityType==='team'?state.entity:'';
+    const autoPlayLeague=state.league;
     if(state.entity&&state.entityType!=='player')loadTeamFocusData().then(()=>{if(state.mode!=='daily'&&state.entity){scheduleEntityTickerRefresh();renderCuration();}});
     try{
       const rows=await fetchAuditRows(state.league,state.entity,MAX_AUDIT_ROWS);const filtered=state.entity?rows.filter(row=>gameHasEntity(row?.game,state.entity)):rows;
@@ -632,7 +655,17 @@
       const built=timelineRows.map(gameFromAuditRow).filter(Boolean);
       state.games=(state.entity?built:built.filter(game=>game.items?.length)).sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.eventId).localeCompare(String(a.eventId)));
     }catch(err){if(err?.name==='AbortError')return;state.error=`Could not load ${leagueLabel(state.league)} highlights: ${err?.message||err}`;}
-    finally{state.loading=false;renderCuration();}
+    finally{
+      state.loading=false;renderCuration();
+      // Entering a TEAM context is a tune action, not merely a filter action.
+      // Start the newest playable game automatically, while keeping older games
+      // queued in newest-to-oldest order. Player Browse and league-wide Browse
+      // remain browse-only until the user explicitly chooses a clip.
+      if(autoPlayEntity&&state.mode==='history'&&state.entity===autoPlayEntity&&state.league===autoPlayLeague&&!state.error){
+        const newestPlayable=state.games.findIndex(game=>Array.isArray(game?.items)&&game.items.length);
+        if(newestPlayable>=0)setTimeout(()=>{if(state.mode==='history'&&state.entity===autoPlayEntity&&state.league===autoPlayLeague)playFrom(newestPlayable);},0);
+      }
+    }
   }
   function rankedResidentGames(){
     const tennis=isTennis(state.league);return currentMatches(state.league).filter(match=>{
@@ -714,7 +747,7 @@
     try{if(typeof renderQueue==='function')renderQueue();}catch(_){}
     try{if(typeof setFeedNote==='function')setFeedNote(`Curated programming • ${label} • ${state.queueItems.length} video${state.queueItems.length===1?'':'s'}`);}catch(_){}
     if(typeof tuneProgramIndexV5==='function'){
-      tuneProgramIndexV5(bounded,{userInitiated:true,reason:`v5.3.8 curated programming: ${label}`});
+      tuneProgramIndexV5(bounded,{userInitiated:true,reason:`v5.3.9 curated programming: ${label}`});
       const selected=state.queueItems[bounded];setTimeout(()=>syncCuratedGameCenterContext(selected),0);setTimeout(()=>syncCuratedGameCenterContext(selected),180);return true;
     }
     return false;

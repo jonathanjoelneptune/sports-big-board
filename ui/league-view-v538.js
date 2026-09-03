@@ -1,11 +1,11 @@
-/* Sports Big Board v5.3.8 — League View + recap context.
+/* Sports Big Board v5.3.9 — League View + recap context.
    Keeps multi-game/daily recap playback from inheriting a stale single-game
    Game Center and turns the former Up Next drawer into a persistent league view. */
 (() => {
   'use strict';
-  if (window.SBB_LEAGUE_VIEW?.version === '5.3.8') return;
+  if (window.SBB_LEAGUE_VIEW?.version === '5.3.9') return;
 
-  const VERSION = '5.3.8';
+  const VERSION = '5.3.9';
   const $ = id => document.getElementById(id);
   const clean = value => String(value ?? '').trim();
   const esc = value => clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -25,11 +25,22 @@
     return null;
   }
   function currentLeague(){
-    const context=curatedContext(); if(context?.specialContext?.league)return normalizeLeague(context.specialContext.league);
-    if(context?.league && context.league!=='ALL')return normalizeLeague(context.league);
+    const aggregate=isAggregate();
+    // League View follows what is actually on screen, not the browse menu that
+    // happened to build the surrounding queue. A score-ribbon interrupt owns a
+    // SelectedEvent; a daily/league recap intentionally does not.
+    if(!aggregate){
+      try{
+        const selected=window.SBB_SELECTED_EVENT?.get?.();
+        const fromSelected=normalizeLeague(selected?.competitionId||selected?.league||selected?.sportLeague||selected?.competition);
+        if(fromSelected)return fromSelected;
+      }catch(_){}
+    }
     const item=activeProgram();
     const fromItem=normalizeLeague(item?.competitionId||item?.league||item?.sportLeague||item?.competition);
     if(fromItem)return fromItem;
+    const context=curatedContext(); if(context?.specialContext?.league)return normalizeLeague(context.specialContext.league);
+    if(context?.league && context.league!=='ALL')return normalizeLeague(context.league);
     try{const raw=normalizeLeague(scoreRibbonLeagueFilter);if(raw&&raw!=='ALL')return raw;}catch(_){}
     const active=document.querySelector('#scoreFilters [data-score-filter].active,#scoreFilters [data-score-filter][aria-pressed="true"]');
     return normalizeLeague(active?.dataset?.scoreFilter)||'MLB';
@@ -166,7 +177,9 @@
     $('scoreFilters')?.addEventListener('click',event=>{if(event.target.closest('[data-score-filter]'))setTimeout(()=>syncContext({forceRefresh:true}),50);});
     window.addEventListener('sbb:special-context',()=>setTimeout(()=>syncContext({forceRefresh:true}),30));
     window.addEventListener('sbb:curated-event-identity',()=>setTimeout(()=>syncContext(),30));
+    window.addEventListener('sbb:score-click-selection',()=>setTimeout(()=>syncContext({forceRefresh:true}),30));
     window.addEventListener('sbb:league-view-refresh',()=>refresh(true));
+    try{window.SBB_SELECTED_EVENT?.subscribe?.(()=>setTimeout(()=>syncContext({forceRefresh:true}),0));}catch(_){}
     const title=$('currentTitle');if(title){state.observer=new MutationObserver(()=>setTimeout(()=>syncContext(),0));state.observer.observe(title,{childList:true,subtree:true,characterData:true});}
     setTimeout(()=>syncContext({forceRefresh:true}),0);
     setTimeout(()=>syncContext(),1200);

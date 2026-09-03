@@ -1,4 +1,4 @@
-/* Sports Big Board v5.3.8 — League View */
+/* Sports Big Board v5.3.9 — League View */
 #upNextPane{min-height:0;overflow:hidden!important}
 .league-view-root{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);background:#07121a;color:#eaf2f7}
 .league-view-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 13px 10px;border-bottom:1px solid rgba(126,157,180,.18);background:linear-gradient(180deg,#0d1c28,#09151e)}
@@ -35,3 +35,32 @@ html[data-sbb-team-theme="on"] :is(.league-view-team small,.league-view-games sp
 @media(prefers-reduced-motion:reduce){.league-view-loading span{animation:none!important}}
 .league-view-rounds{display:grid}.league-view-rounds>div{display:grid;gap:4px;padding:7px 8px;border-bottom:1px solid rgba(125,157,181,.08)}.league-view-rounds>div:last-child{border-bottom:0}.league-view-rounds b{color:#f0cb61;font:850 6.7px/1 system-ui,sans-serif;letter-spacing:.04em}.league-view-rounds span{color:#dce7ed;font:720 6.7px/1.35 system-ui,sans-serif}
 html[data-sbb-team-theme="on"] .league-view-rounds span{color:var(--sbb-team-text)!important}html[data-sbb-team-theme="on"] .league-view-rounds b{color:var(--sbb-team-line)!important}
+
+
+/* ======================================================================
+   v5.3.9 — drawer exclusivity + high-contrast league marks
+   ====================================================================== */
+
+/* Earlier desktop Game Center layout rules intentionally use display:grid!important.
+   That rule must never defeat the drawer's .hidden state. Exactly one primary
+   drawer pane is visible at a time: Game Center, League View, or Settings. */
+#infoDrawer .drawer-pane.hidden,
+body.sbb-game-center-side #infoDrawer .drawer-pane.hidden{
+  display:none!important;
+}
+#infoDrawer .drawer-pane:not(.hidden){
+  min-height:0;
+}
+
+/* Transparent league/team marks are presented on white tiles for predictable
+   visibility across dark and team-themed backgrounds. */
+.league-view-team img,
+.league-view-race-grid img,
+.league-view-ranking-list img{
+  background:#fff!important;
+  border:1px solid rgba(255,255,255,.9)!important;
+  border-radius:5px!important;
+  padding:2px!important;
+  box-sizing:border-box!important;
+  object-fit:contain!important;
+}
