@@ -1,0 +1,61 @@
+Sports Big Board v5.3.8 — Manual Upload File Map
+
+UPLOAD / REPLACE
+- VERSION
+- architecture/VERSION
+- architecture/key-info-current-v520.js
+- architecture/score-interrupt-queue-v5220.js
+- architecture/scroll-motion-smoothness-v5210.js
+- architecture/splash-preload-v5212.js
+- cloud/gcp/DEPLOY-FROM-GITHUB.sh
+- index.html
+- sbb/__init__.py
+- sbb/current_news_v523.py
+- sbb/team_focus_v537.py
+- tools/check_release_version.py
+- VERIFY.sh
+- ui/browse-curated-programming-v537.css
+- ui/browse-curated-programming-v537.js
+- ui/collapse-viewport-fit-v5221.css
+- ui/collapse-viewport-fit-v5221.js
+- ui/editorial-slugs-up-next-v5216.css
+- ui/game-center-readability-v5219.css
+- ui/game-center-readability-v5219.js
+- ui/game-center-scroll-v5220.css
+- ui/game-center-scroll-v5220.js
+- ui/harmonized-controls-drawer-v5217.css
+- ui/harmonized-controls-drawer-v5217.js
+- ui/up-next-experience-v5217.js
+- ui/viewing-workspace-v5218.css
+- ui/viewing-workspace-v5218.js
+- ui/workspace-viewport-fit-v531.css
+- ui/workspace-viewport-fit-v531.js
+- tests/test_v5213_broadcast_design.py
+- tests/test_v5214_premium_masthead.py
+- tests/test_v5215_now_watching.py
+- tests/test_v5216_up_next_editorial_slugs.py
+- tests/test_v5217_drawer_polish.py
+- tests/test_v5218_workspace_reflow.py
+- tests/test_v5219_game_center_readability.py
+- tests/test_v5220_gc_scroll_interrupt_queue.py
+- tests/test_v5221_collapse_viewport_fit.py
+- tests/test_v530_browse_curated_programming.py
+- tests/test_v531_browse_ux_timeline.py
+- tests/test_v532_team_browse_queue_flow.py
+- tests/test_v533_browse_integration.py
+- tests/test_v534_complete_browse_deploy_safety.py
+- tests/test_v535_persistent_browse_context_identity.py
+- tests/test_v536_team_focus_enrichment.py
+- tests/test_v537_focus_integration_theme.py
+
+ADD
+- architecture/playback-early-pause-recovery-v538.js
+- sbb/league_view_v538.py
+- ui/league-view-v538.css
+- ui/league-view-v538.js
+- tests/test_v538_league_view_theme_hardening.py
+- UPLOAD-v5.3.8.txt
+- CHANGED-FILES-v5.3.8.txt
+
+NOTE
+The broad replace list is intentional. v5.3.8 advances the canonical frontend cache generation and retained regression fixtures as one atomic release even where behavior in a retained module did not otherwise change.

@@ -1,0 +1,61 @@
+Sports Big Board v5.3.8 — League View + Theme Hardening
+
+MANUAL GITHUB UPLOAD
+1. Open the sports-big-board repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, cloud/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when prompted.
+4. Commit every file together. VERSION, frontend cache generations, backend read models, theme data, playback recovery, and verification are one atomic release.
+5. Let Deploy Sports Big Board and VERIFY.sh complete before hard-refreshing the board.
+
+PRIMARY USER-VISIBLE CHANGES
+- UP NEXT is retired as a user-facing drawer destination. The existing pinned Coming Up cards remain; the right drawer button/tab is now LEAGUE VIEW.
+- League View is a cached league read model. MLB shows division standings plus available playoff/wild-card seed context; NFL/NBA/NHL show standings/playoff seed context; NCAAF adds AP Top 25; soccer shows league tables; special events show available group/round/event context.
+- Tournament/series metadata is surfaced as BRACKET / ROUNDS or SERIES CONTEXT when the provider publishes it.
+- Daily/multi-game recaps no longer inherit a stale single-game Game Center. Single-game SelectedEvent identity is cleared for aggregate recaps, Game Center becomes a neutral multi-game state, and an already-open drawer automatically moves to League View.
+- Single-game highlights continue to use normal Game Center behavior.
+- Team/Player Focus highlight rails now have TODAY as a hard future cutoff and sort backward chronologically. Future schedule rows remain available only to the NEXT ticker context.
+- RESULT ticker items now include both teams in compact form before the result/score, e.g. SD vs CIN · W 7-4.
+- Browse team rows now reserve explicit logo/flag + abbreviation + full-name columns. Core-league Browse requests force one metadata refresh when logo coverage is poor so stale name-only caches can self-heal.
+- CFB is hard-retired from the visible navigation. A scoped DOM guard removes any legacy CFB chip that older runtime code recreates; NCAAF is the only college-football namespace.
+- Clicking a Special Event enters a temporary event context. The active event chip is inserted immediately before MLB, the score/highlight ribbon switches to that event, Team/Player Browse filters inside the event, and EXIT EVENT returns to ALL.
+- PLAY ALL and EXIT are brighter, higher-priority actions.
+
+TEAM THEME / ACCESSIBILITY
+- Team theming now uses backend-derived semantic theme roles instead of directly trusting raw team colors.
+- The backend calculates WCAG-style relative luminance and contrast for normal text (4.5:1 target) and UI/control roles (3:1 target) and persists generated themes in team-theme-v538.json.
+- Theme roles include background, surface, raised surface, black replacement, primary text, muted text, line, button/text, selected/text, and gradient start/end colors.
+- App-owned generic black/charcoal wells are replaced with team-tinted dark/light surfaces; provider video pixels remain untouched.
+- Subtle gradients, raised surfaces, divider shading, and controlled shadows add depth without continuous animation or blur effects.
+- Team dropdown logos/marks use catalog metadata first and ESPN directory enrichment where supported.
+
+PLAYBACK RECOVERY
+- Adds a bounded early-pause watchdog for the intermittent ~5-second pause regression.
+- At ~5.2 seconds, an unexpected pause with no user pause intent gets one soft resume attempt.
+- At ~7.9 seconds, if it is still paused, the watchdog delegates one bounded recovery/reload to the canonical playback owner.
+- Explicit button/spacebar user pauses suppress recovery for 12 seconds.
+- No interval, continuous loop, or second playback owner is introduced.
+
+SPORTS TICKER
+- OpenAI Sports Ticker processing is intentionally more abundant while remaining factual.
+- Adds/expands WALK_OFF, COMEBACK, SHUTOUT, DEBUT, HOT, SLUMP, LEAGUE_LEADER, SERIES and BRACKET classification alongside RESULT, RECORD, STREAK, PLAYOFF, RANKING, TRANSACTION, INJURY and other existing categories.
+- Automatic/manual candidate limits and retained-row capacity are increased so the ticker favors useful at-a-glance updates over sparse output.
+
+BACKEND ENDPOINTS / DATA
+- GET /api/league-view?league=MLB
+- GET /api/browse/participants?league=MLB&refreshMetadata=1 (used automatically only when metadata coverage is weak)
+- Existing GET /api/team-focus remains the team context/theme source.
+- League View cache: league-view-v538.json
+- Browse participant cache: browse-participants-v538.json
+- Team Focus cache: team-focus-v538.json
+- Team theme database/cache: team-theme-v538.json
+
+VERIFY
+GitHub Actions remains the full-repository deployment gate.
+Focused checks added/updated in this handoff:
+- tests/test_v530_browse_curated_programming.py through tests/test_v538_league_view_theme_hardening.py
+- node --check ui/browse-curated-programming-v537.js
+- node --check ui/league-view-v538.js
+- node --check architecture/playback-early-pause-recovery-v538.js
+- python3 -m py_compile sbb/team_focus_v537.py sbb/league_view_v538.py sbb/current_news_v523.py sbb/__init__.py
+- bash -n VERIFY.sh
+- bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh

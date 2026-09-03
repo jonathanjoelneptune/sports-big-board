@@ -23,15 +23,15 @@ from urllib.parse import urlparse
 
 from . import current_news_v522 as source_v522
 
-VERSION = "5.3.7-sports-ticker-4"
+VERSION = "5.3.8-sports-ticker-5"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _STATE_PATH = _STATE_DIR / "sports-ticker.json"
 _MIGRATION_PATHS = (_STATE_DIR / "sports-ticker-v524.json", _STATE_DIR / "key-info-intelligence-v523.json")
 _REFRESH_SECONDS = 20 * 60
-_MAX_ROWS = 150
+_MAX_ROWS = 180
 _OPENAI_BATCH_SIZE = 20
-_OPENAI_MAX_CANDIDATES_AUTO = 20
-_OPENAI_MAX_CANDIDATES_MANUAL = 40
+_OPENAI_MAX_CANDIDATES_AUTO = 40
+_OPENAI_MAX_CANDIDATES_MANUAL = 60
 _OPENAI_BATCH_PACE_SECONDS = 2.5
 _OPENAI_MAX_ATTEMPTS = 3
 _OPENAI_LIMIT_CODES = {"credit_balance_exhausted","organization_usage_limit_exceeded","organization_spend_limit_exceeded","project_spend_limit_exceeded"}
@@ -70,7 +70,16 @@ _CATEGORY_PATTERNS = [
     ("COACHING", re.compile(r"\b(fired|hired|head coach|manager fired|manager hired|coaching change|steps down|resigns)\b", re.I)),
     ("SUSPENSION", re.compile(r"\b(suspend|suspension|banned|discipline|fined|eligibility ruling|waiver denied|waiver approved)\b", re.I)),
     ("TOURNAMENT", re.compile(r"\b(advances? to|quarterfinal|semifinal|final four|sweet 16|elite eight|knockout round|group winner|final matchup|game 7)\b", re.I)),
-    ("RESULT", re.compile(r"\b(walk-off|buzzer beater|overtime|extra innings?|comeback|no-hitter|perfect game|hat trick|cycle|shootout)\b", re.I)),
+    ("BRACKET", re.compile(r"\b(bracket|round of 16|round of 32|quarterfinal matchup|semifinal matchup|knockout draw)\b", re.I)),
+    ("WALK_OFF", re.compile(r"\b(walk[- ]off|walks? it off)\b", re.I)),
+    ("COMEBACK", re.compile(r"\b(comeback|rall(?:y|ies|ied)|erases? .* deficit|comes? from behind)\b", re.I)),
+    ("SHUTOUT", re.compile(r"\b(shutout|shuts? out|clean sheet|scoreless)\b", re.I)),
+    ("DEBUT", re.compile(r"\b(debut|first career start|major[- ]league debut|nfl debut|nba debut|nhl debut)\b", re.I)),
+    ("HOT", re.compile(r"\b(hot streak|surges?|wins? \d+ of (?:the )?last \d+|homers? in \d+ straight|on fire)\b", re.I)),
+    ("SLUMP", re.compile(r"\b(slump|skid|losing streak|drops? \d+ straight|lost \d+ of (?:the )?last \d+)\b", re.I)),
+    ("LEAGUE_LEADER", re.compile(r"\b(league lead|leads? the (?:league|majors|nfl|nba|nhl)|takes? over .* lead|moves? into first)\b", re.I)),
+    ("SERIES", re.compile(r"\b(series lead|wins? the series|sweeps?|rubber game|best-of-[357])\b", re.I)),
+    ("RESULT", re.compile(r"\b(buzzer beater|overtime|extra innings?|no-hitter|perfect game|hat trick|cycle|shootout)\b", re.I)),
     ("SCHEDULE", re.compile(r"\b(postponed|rescheduled|doubleheader|venue change|time change|weather delay|rain delay|suspended game)\b", re.I)),
     ("RETIREMENT", re.compile(r"\b(retir|final season|calls it a career)\b", re.I)),
     ("DRAFT", re.compile(r"\b(draft lottery|declares? for the draft|first overall pick|no\. 1 pick)\b", re.I)),
@@ -78,9 +87,10 @@ _CATEGORY_PATTERNS = [
     ("AWARD", re.compile(r"\b(mvp|cy young|heisman|rookie of the year|hart trophy|vezina|ballon d'or|player of the week)\b", re.I)),
 ]
 _IMPORTANCE = {"BREAKING":100,"CHAMPIONSHIP":98,"RECORD":95,"CLINCH":94,"ELIMINATION":93,"UPSET":92,
-               "INJURY":90,"TRANSACTION":88,"RESULT":86,"RECORD_WATCH":84,"PLAYOFF":82,"MILESTONE":80,
-               "TOURNAMENT":78,"RANKING":76,"STREAK":74,"COACHING":72,"SUSPENSION":72,"RETURN":68,
-               "RETIREMENT":68,"DRAFT":64,"RECRUITING":62,"SCHEDULE":58,"AWARD":52}
+               "INJURY":90,"TRANSACTION":88,"WALK_OFF":88,"COMEBACK":87,"RESULT":86,"RECORD_WATCH":84,
+               "PLAYOFF":82,"MILESTONE":80,"LEAGUE_LEADER":79,"TOURNAMENT":78,"BRACKET":78,"SERIES":77,
+               "RANKING":76,"STREAK":74,"HOT":73,"SLUMP":72,"COACHING":72,"SUSPENSION":72,"SHUTOUT":71,
+               "RETURN":68,"DEBUT":68,"RETIREMENT":68,"DRAFT":64,"RECRUITING":62,"SCHEDULE":58,"AWARD":52}
 
 
 def _clean(v): return str(v or "").strip()
@@ -341,11 +351,11 @@ def _sports_ticker_openai_editorialize(server,raw,*,manual=False):
     if not rules:return []
     max_candidates=_OPENAI_MAX_CANDIDATES_MANUAL if manual else _OPENAI_MAX_CANDIDATES_AUTO
     candidates=rules[:max_candidates]
-    categories=["BREAKING","CHAMPIONSHIP","CLINCH","ELIMINATION","UPSET","RECORD_WATCH","RECORD","MILESTONE","STREAK","PLAYOFF","RANKING","TRANSACTION","INJURY","RETURN","COACHING","SUSPENSION","TOURNAMENT","RESULT","SCHEDULE","RETIREMENT","DRAFT","RECRUITING","AWARD","UPDATE"]
+    categories=["BREAKING","CHAMPIONSHIP","CLINCH","ELIMINATION","UPSET","RECORD_WATCH","RECORD","MILESTONE","STREAK","PLAYOFF","RANKING","TRANSACTION","INJURY","RETURN","COACHING","SUSPENSION","TOURNAMENT","BRACKET","WALK_OFF","COMEBACK","SHUTOUT","DEBUT","HOT","SLUMP","LEAGUE_LEADER","SERIES","RESULT","SCHEDULE","RETIREMENT","DRAFT","RECRUITING","AWARD","UPDATE"]
     schema={"type":"object","properties":{"items":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string"},"keep":{"type":"boolean"},"importance":{"type":"integer"},"category":{"type":"string","enum":categories},"headline":{"type":"string"}},"required":["id","keep","importance","category","headline"],"additionalProperties":False}}},"required":["items"],"additionalProperties":False}
     prompt_prefix=("You are the Sports Big Board Sports Ticker editor. Use ONLY supplied source records and never add facts. "
-                   "Keep consequential sports information: breaking developments, injuries, transactions, records and record watches, milestones, playoff movement, rankings, streaks, tournament advancement, major results, clinches/eliminations, coaching changes and schedule changes. "
-                   "Suppress opinion, predictions, generic rankings/listicles, fantasy/betting filler and duplicates. Rewrite kept headlines as concise factual ticker headlines. Return exactly the structured schema.")
+                   "Keep a deliberately abundant feed of consequential factual sports information: breaking developments, injuries, transactions, records and record watches, milestones, playoff/wild-card movement, rankings, streaks, hot/slump runs, tournament/bracket advancement, major results, walk-offs, comebacks, shutouts, debuts, series movement, league leaders, clinches/eliminations, coaching changes and schedule changes. "
+                   "Prefer retaining a useful factual update over making the ticker sparse. Suppress opinion, predictions, generic rankings/listicles, fantasy/betting filler and true duplicates only. Rewrite kept headlines as concise energetic factual ticker headlines. Return exactly the structured schema.")
     decisions={};lock=getattr(server,"EDITORIAL_REFRESH_LOCK",None);acquired=False
     if lock is not None:
         try:acquired=lock.acquire(timeout=45 if manual else .25)

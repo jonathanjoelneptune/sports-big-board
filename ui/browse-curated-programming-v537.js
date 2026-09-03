@@ -1,13 +1,13 @@
-/* Sports Big Board v5.3.7 — Focus Integration + Full Team Theme
+/* Sports Big Board v5.3.8 — Focus Integration + Full Team Theme
    User-facing content discovery over the existing score/calendar + historical
    catalog. No second playback owner: curated results become normal PROGRAM items
    and therefore inherit PlaybackController, Hot Standby, Up Next and score-card
    interrupt/resume behavior. */
 (() => {
   'use strict';
-  if(window.SBB_CURATED_BROWSE?.version==='5.3.7') return;
+  if(window.SBB_CURATED_BROWSE?.version==='5.3.8') return;
 
-  const VERSION='5.3.7';
+  const VERSION='5.3.8';
   const FAVORITES_KEY='sbb.curation.favorites.v1';
   const ENTITY_CATALOG_KEY='sbb.browse.entity-catalog.v535';
   const ENTITY_CATALOG_TTL_MS=6*60*60*1000;
@@ -30,7 +30,7 @@
     scoreDateCache:new Map(),scoreDateInflight:new Map(),scoreObserver:null,controlLeague:'',
     entityAuditRows:[],contextInsightToken:0,contextInsightTimer:null,normalTickerSnapshot:null,
     teamFocusData:null,teamFocusKey:'',teamFocusInflight:null,teamThemeEnabled:loadTeamTheme(),
-    entityMetaCache:new Map(),
+    entityMetaCache:new Map(),specialContext:null,cfbObserver:null,
   };
 
 
@@ -39,20 +39,28 @@
   function validHex(value){const raw=clean(value).replace(/^#/,'');return /^[0-9a-f]{6}$/i.test(raw)?`#${raw}`:'';}
   function hexRgb(value){const h=validHex(value);if(!h)return null;return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
   function luminance(value){const rgb=hexRgb(value);if(!rgb)return 0;const s=rgb.map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4;});return .2126*s[0]+.7152*s[1]+.0722*s[2];}
-  function clearTeamTheme(){const root=document.documentElement;delete root.dataset.sbbTeamTheme;delete root.dataset.sbbTeamThemeLight;for(const key of ['--sbb-team-primary','--sbb-team-secondary','--sbb-team-accent','--sbb-team-bg','--sbb-team-surface','--sbb-team-text','--sbb-team-muted','--sbb-team-line','--sbb-team-button','--sbb-team-button-text','--sbb-team-selected','--sbb-team-selected-text'])root.style.removeProperty(key);}
+  function clearTeamTheme(){const root=document.documentElement;delete root.dataset.sbbTeamTheme;delete root.dataset.sbbTeamThemeLight;for(const key of ['--sbb-team-primary','--sbb-team-secondary','--sbb-team-accent','--sbb-team-bg','--sbb-team-surface','--sbb-team-surface-raised','--sbb-team-black-replacement','--sbb-team-gradient-start','--sbb-team-gradient-end','--sbb-team-text','--sbb-team-muted','--sbb-team-line','--sbb-team-button','--sbb-team-button-text','--sbb-team-selected','--sbb-team-selected-text'])root.style.removeProperty(key);}
   function themeRoles(entity,palette){
+    const server=state.teamFocusData?.team?.theme;if(server&&server.bg&&server.surface&&server.text){
+      return {
+        primary:validHex(server.primary)||validHex(palette?.primary)||'#14314a',secondary:validHex(server.secondary)||validHex(palette?.secondary)||'#63b7ff',accent:validHex(server.accent)||validHex(palette?.accent)||'#63b7ff',
+        bg:validHex(server.bg),surface:validHex(server.surface),surfaceRaised:validHex(server.surfaceRaised)||validHex(server.surface),blackReplacement:validHex(server.blackReplacement)||validHex(server.surface),
+        gradientStart:validHex(server.gradientStart)||validHex(server.surface),gradientEnd:validHex(server.gradientEnd)||validHex(server.surface),
+        text:validHex(server.text),muted:validHex(server.muted)||validHex(server.text),line:validHex(server.line)||validHex(server.secondary),button:validHex(server.button)||validHex(server.secondary),buttonText:validHex(server.buttonText)||'#ffffff',selected:validHex(server.selected)||validHex(server.accent),selectedText:validHex(server.selectedText)||'#ffffff',light:!!server.light,wcag:server.wcag||{}
+      };
+    }
     const primary=validHex(palette?.primary),secondary=validHex(palette?.secondary),accent=validHex(palette?.accent)||secondary;if(!primary||!secondary)return null;
     const key=norm(entity);
-    if(key==='los angeles dodgers')return {primary:'#ffffff',secondary:'#005a9c',accent:'#ef3e42',bg:'#ffffff',surface:'#ffffff',text:'#10263b',muted:'#557087',line:'#005a9c',button:'#005a9c',buttonText:'#ef3e42',selected:'#ef3e42',selectedText:'#ffffff',light:true};
-    if(key==='san diego padres')return {primary:'#2f241d',secondary:'#ffc425',accent:'#ffffff',bg:'#2f241d',surface:'#382b22',text:'#fff8e5',muted:'#e7cf93',line:'#ffc425',button:'#ffc425',buttonText:'#2f241d',selected:'#ffffff',selectedText:'#2f241d',light:false};
+    if(key==='los angeles dodgers')return {primary:'#ffffff',secondary:'#005a9c',accent:'#ef3e42',bg:'#ffffff',surface:'#f7fafc',surfaceRaised:'#ffffff',blackReplacement:'#e8f0f6',gradientStart:'#ffffff',gradientEnd:'#edf5fb',text:'#10263b',muted:'#496578',line:'#005a9c',button:'#005a9c',buttonText:'#ffffff',selected:'#ef3e42',selectedText:'#ffffff',light:true,wcag:{fallback:true}};
+    if(key==='san diego padres')return {primary:'#2f241d',secondary:'#ffc425',accent:'#ffffff',bg:'#1f1814',surface:'#2f241d',surfaceRaised:'#3a2d24',blackReplacement:'#1b1512',gradientStart:'#392b22',gradientEnd:'#2a251d',text:'#fff8e5',muted:'#ead79f',line:'#ffc425',button:'#ffc425',buttonText:'#201812',selected:'#ffffff',selectedText:'#201812',light:false,wcag:{fallback:true}};
     const light=luminance(primary)>.64;
-    return {primary,secondary,accent,bg:primary,surface:light?'#ffffff':primary,text:light?'#111820':'#ffffff',muted:light?'#52606a':'#d7e0e6',line:secondary,button:secondary,buttonText:accent,selected:accent,selectedText:luminance(accent)>.55?'#10161b':'#ffffff',light};
+    return {primary,secondary,accent,bg:light?'#f5f8fa':'#071018',surface:light?'#ffffff':'#0b1620',surfaceRaised:light?'#ffffff':'#111f2a',blackReplacement:light?'#e9eff3':'#060d13',gradientStart:light?'#ffffff':'#10202c',gradientEnd:light?'#edf3f7':'#0a151e',text:light?'#111820':'#ffffff',muted:light?'#52606a':'#d7e0e6',line:secondary,button:secondary,buttonText:luminance(secondary)>.55?'#10161b':'#ffffff',selected:accent,selectedText:luminance(accent)>.55?'#10161b':'#ffffff',light,wcag:{fallback:true}};
   }
   function applyTeamTheme(){
     if(!state.teamThemeEnabled||state.mode==='daily'||state.entityType==='player'||!state.entity){clearTeamTheme();return;}
     const roles=themeRoles(state.entity,state.teamFocusData?.team?.palette||{});if(!roles){clearTeamTheme();return;}
     const root=document.documentElement;root.dataset.sbbTeamTheme='on';root.dataset.sbbTeamThemeLight=roles.light?'1':'0';
-    const vars={'--sbb-team-primary':roles.primary,'--sbb-team-secondary':roles.secondary,'--sbb-team-accent':roles.accent,'--sbb-team-bg':roles.bg,'--sbb-team-surface':roles.surface,'--sbb-team-text':roles.text,'--sbb-team-muted':roles.muted,'--sbb-team-line':roles.line,'--sbb-team-button':roles.button,'--sbb-team-button-text':roles.buttonText,'--sbb-team-selected':roles.selected,'--sbb-team-selected-text':roles.selectedText};
+    const vars={'--sbb-team-primary':roles.primary,'--sbb-team-secondary':roles.secondary,'--sbb-team-accent':roles.accent,'--sbb-team-bg':roles.bg,'--sbb-team-surface':roles.surface,'--sbb-team-surface-raised':roles.surfaceRaised||roles.surface,'--sbb-team-black-replacement':roles.blackReplacement||roles.surface,'--sbb-team-gradient-start':roles.gradientStart||roles.surface,'--sbb-team-gradient-end':roles.gradientEnd||roles.surface,'--sbb-team-text':roles.text,'--sbb-team-muted':roles.muted,'--sbb-team-line':roles.line,'--sbb-team-button':roles.button,'--sbb-team-button-text':roles.buttonText,'--sbb-team-selected':roles.selected,'--sbb-team-selected-text':roles.selectedText};
     for(const [key,value] of Object.entries(vars))root.style.setProperty(key,value);
   }
   function syncTeamThemeToggle(){const toggle=$('teamThemeToggle');if(toggle)toggle.checked=!!state.teamThemeEnabled;const hint=$('teamThemeHint');if(hint)hint.textContent=state.teamThemeEnabled?'Apply the active team palette to the entire Big Board.':'Use the normal Sports Big Board color system.';}
@@ -91,16 +99,17 @@
   }
 
   function leagueLabel(league){
-    const map={'USOPEN-2026':'US OPEN','WC2026':'WORLD CUP','LLWS2026':'LLWS','NCAAF':'NCAAF','CFB':'CFB'};
+    const map={'USOPEN-2026':'US OPEN','WC2026':'WORLD CUP','WORLD-CUP-2026':'WORLD CUP','FIFA-WORLD-CUP-2026':'WORLD CUP','LLWS2026':'LLWS','NCAAF':'NCAAF','CFB':'NCAAF'};
     return map[league]||league||'SPORTS';
   }
   function isTennis(league){return /USOPEN|TENNIS|ATP|WTA/i.test(league);}
-  function isCollegeFootball(league){return /NCAAF|CFB/i.test(league);}
+  function isCollegeFootball(league){return /^NCAAF$/i.test(league);}
   function entityTypeFor(league){return isTennis(league)?'player':'team';}
   function selectedLeague(){
-    try{const v=clean(scoreRibbonLeagueFilter).toUpperCase();if(v)return v;}catch(_){}
+    if(state.specialContext?.league)return state.specialContext.league;
+    try{const v=clean(scoreRibbonLeagueFilter).toUpperCase();if(v)return v==='CFB'?'NCAAF':v;}catch(_){}
     const active=document.querySelector('#scoreFilters button.active[data-score-filter],#scoreFilters button[aria-pressed="true"][data-score-filter]');
-    return clean(active?.dataset?.scoreFilter||'ALL').toUpperCase()||'ALL';
+    const v=clean(active?.dataset?.scoreFilter||'ALL').toUpperCase()||'ALL';return v==='CFB'?'NCAAF':v;
   }
   function selectedDate(){try{return clean(scoreBrowseDate);}catch(_){return clean($('scoreDatePicker')?.value);}}
   function apiUrl(path){try{return window.SBB_API?.url?.(path)||path;}catch(_){return path;}}
@@ -228,7 +237,7 @@
     let subnav=$('sbbBrowseSubnav');
     if(!subnav){
       subnav=document.createElement('span');subnav.id='sbbBrowseSubnav';subnav.className='sbb-browse-subnav hidden';subnav.setAttribute('aria-label','Contextual browse controls');
-      subnav.innerHTML='<button id="sbbBrowseBtn" type="button" class="sbb-browse-btn" aria-haspopup="dialog" aria-expanded="false"><span>TEAM BROWSE</span><b aria-hidden="true">⌄</b></button>';
+      subnav.innerHTML='<button id="sbbBrowseBtn" type="button" class="sbb-browse-btn" aria-haspopup="dialog" aria-expanded="false"><span>TEAM BROWSE</span><b aria-hidden="true">⌄</b></button><button id="sbbSpecialExitBtn" type="button" class="sbb-special-exit-btn hidden">EXIT EVENT</button>';
       filters.appendChild(subnav);
     }
     const btn=$('sbbBrowseBtn');
@@ -309,7 +318,7 @@
     return {record,standing};
   }
   function resultInsightGames(){
-    const out=[];for(const game of state.games.slice(0,10)){const score=scoreDisplay(game);if(!score?.result)continue;out.push({result:score.result,score:score.text,date:game.date,label:describeGame(game)});}return out;
+    const out=[];for(const game of state.games.slice(0,10)){const score=scoreDisplay(game);if(!score?.result)continue;const teams=splitGame(game.game);const label=teams.length>=2?`${shortEntityName(teams[0])} vs ${shortEntityName(teams[1])}`:describeGame(game);out.push({result:score.result,score:score.text,date:game.date,label});}return out;
   }
   function streakFromResults(results){
     if(!results.length)return '';const first=results[0].result;if(!/^[WLT]$/.test(first))return '';let n=0;for(const row of results){if(row.result!==first)break;n++;}return `${first}${n}`;
@@ -356,7 +365,7 @@
     if(state.entityType!=='player'&&record)pieces.push(contextInsight('RECORD',record,'record'));
     if(state.entityType!=='player'&&standing)pieces.push(contextInsight('STANDING',standing,'standing'));
     if(state.entityType!=='player'&&streak)pieces.push(contextInsight('STREAK',streak,'streak'));
-    results.slice(0,5).forEach(row=>pieces.push(contextInsight('RESULT',`${compactDate(row.date)} · ${row.result} ${row.score}`,'recent')));
+    results.slice(0,7).forEach(row=>pieces.push(contextInsight('RESULT',`${compactDate(row.date)} · ${row.label} · ${row.result} ${row.score}`,'recent')));
     upcoming.forEach(row=>pieces.push(contextInsight('NEXT',`${compactDate(auditDate(row))} · ${compactMatchup(row)}`,'next')));
     rankings.forEach(row=>pieces.push(contextInsight(clean(row.label)==='PREDICTIVE'?'POWER RANK':(clean(row.label)||'RANK'),clean(row.text),'ranking')));
     news.slice(0,8).forEach(text=>pieces.push(contextInsight('NEWS',text,'news')));
@@ -366,7 +375,7 @@
   function scheduleEntityTickerRefresh(){clearTimeout(state.contextInsightTimer);state.contextInsightTimer=setTimeout(refreshEntityTickerInsights,80);}
 
   function activeLeagueButton(){
-    const filters=$('scoreFilters');if(!filters)return null;
+    const filters=$('scoreFilters');if(!filters)return null;if(state.specialContext&&$('sbbActiveSpecialChip'))return $('sbbActiveSpecialChip');
     return [...filters.querySelectorAll('button[data-score-filter]')].find(x=>clean(x.dataset.scoreFilter).toUpperCase()===state.league)||null;
   }
   function placeBrowseControls(){
@@ -409,9 +418,33 @@
       positionPopover();primeEntityCatalog({render:true});setTimeout(()=>$('sbbBrowseSearch')?.focus(),0);
     }
   }
-  function hideLegacyCfb(){document.querySelectorAll('#scoreFilters [data-score-filter="CFB"],[data-special-competition="CFB"]').forEach(el=>{el.hidden=true;el.setAttribute('aria-hidden','true');el.style.display='none';});}
+  function hideLegacyCfb(){
+    document.querySelectorAll('#scoreFilters [data-score-filter="CFB"],[data-special-competition="CFB"]').forEach(el=>{el.remove();});
+    try{if(clean(scoreRibbonLeagueFilter).toUpperCase()==='CFB')scoreRibbonLeagueFilter='NCAAF';}catch(_){}
+  }
+  function installLegacyCfbGuard(){
+    hideLegacyCfb();if(state.cfbObserver)return;const filters=$('scoreFilters');if(!filters)return;
+    state.cfbObserver=new MutationObserver(()=>hideLegacyCfb());state.cfbObserver.observe(filters,{childList:true,subtree:true,attributes:true,attributeFilter:['data-score-filter','data-special-competition']});
+  }
+  function isCoreLeague(league){return ['MLB','NFL','NBA','NHL','EPL','MLS','NCAAF'].includes(clean(league).toUpperCase());}
+  function specialEventLabel(button,league){return clean(button?.textContent).replace(/[▾▼]/g,'').trim()||leagueLabel(league);}
+  function syncSpecialContextUi(){
+    let chip=$('sbbActiveSpecialChip');const mlb=document.querySelector('#scoreFilters [data-score-filter="MLB"]');
+    if(state.specialContext){
+      if(!chip){chip=document.createElement('button');chip.id='sbbActiveSpecialChip';chip.type='button';chip.className='sbb-active-special-chip active';mlb?.insertAdjacentElement('beforebegin',chip);}
+      chip.dataset.scoreFilter=state.specialContext.league;chip.textContent=state.specialContext.label;chip.hidden=false;chip.classList.add('active');
+    }else if(chip){chip.remove();}
+    $('sbbSpecialExitBtn')?.classList.toggle('hidden',!state.specialContext);
+  }
+  function enterSpecialContext(league,label){
+    league=clean(league).toUpperCase();if(!league||isCoreLeague(league)||league==='CFB')return false;
+    state.specialContext={league,label:clean(label)||leagueLabel(league)};state.league=league;state.entityType=entityTypeFor(league);syncSpecialContextUi();syncLeagueUi();
+    setTimeout(()=>activateHistorical({all:true}),0);
+    window.dispatchEvent(new CustomEvent('sbb:special-context',{detail:{active:true,league,label:state.specialContext.label}}));return true;
+  }
+  function clearSpecialContext(){if(!state.specialContext)return;const prior=state.specialContext;state.specialContext=null;syncSpecialContextUi();window.dispatchEvent(new CustomEvent('sbb:special-context',{detail:{active:false,league:prior.league}}));}
   function syncLeagueUi(){
-    hideLegacyCfb();const nextLeague=selectedLeague(),previousLeague=state.league;
+    hideLegacyCfb();syncSpecialContextUi();const nextLeague=selectedLeague(),previousLeague=state.league;
     if(previousLeague&&previousLeague!=='ALL'&&nextLeague!==previousLeague&&state.mode!=='daily'){
       state.mode='daily';state.entity='';state.facet='';state.games=[];state.entityAuditRows=[];state.selected.clear();state.error='';
       document.body.classList.remove('sbb-curation-active');setEntityTickerActive(false);$('sbbCurationRibbon')?.classList.add('hidden');
@@ -446,17 +479,17 @@
     }
     return [...seen.values()].sort((a,b)=>a.localeCompare(b));
   }
-  async function fetchFullEntityCatalog(league){
+  async function fetchFullEntityCatalog(league,{forceMetadata=false}={}){
     const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return [];
-    // v5.3.7 prefers the backend's persisted participant index. It is built from
+    // v5.3.8 prefers the backend's persisted participant index. It is built from
     // all catalog events that own verified/playable media and is warmed in the
     // background, so opening Team/Player Browse does not scan the audit catalog.
     try{
-      const params=new URLSearchParams({league:selected});const response=await fetch(apiUrl(`/api/browse/participants?${params.toString()}`),{cache:'no-store'});let data={};try{data=await response.json();}catch(_){data={};}
+      const params=new URLSearchParams({league:selected});if(forceMetadata)params.set('refreshMetadata','1');const response=await fetch(apiUrl(`/api/browse/participants?${params.toString()}`),{cache:'no-store'});let data={};try{data=await response.json();}catch(_){data={};}
       const entities=Array.isArray(data?.entities)?data.entities:[];const names=Array.isArray(data?.participants)?data.participants.map(clean).filter(Boolean):entities.map(x=>clean(x?.name)).filter(Boolean);
       if(response.ok&&data?.ok&&names.length){rememberEntityMetadata(selected,entities.length?entities:names.map(name=>({name})));return [...new Set(names)].sort((a,b)=>a.localeCompare(b));}
     }catch(_){}
-    // Compatibility fallback for a backend that has not completed the v5.3.7
+    // Compatibility fallback for a backend that has not completed the v5.3.8
     // participant-index warmup yet.
     let offset=0,total=Infinity,rows=[];
     while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS){
@@ -467,17 +500,20 @@
     }
     return verifiedEntityNames(rows);
   }
+  function entityMetadataCoverage(league){
+    const map=state.entityMetaCache.get(clean(league).toUpperCase());if(!map?.size)return 0;let rich=0;for(const row of map.values())if(clean(row?.logo))rich++;return rich/map.size;
+  }
   async function primeEntityCatalog({render=true,forceRefresh=false}={}){
     const league=state.league;if(!league||league==='ALL')return [];
     const cached=state.entityCatalogCache.get(league)||[];
     if(cached.length&&render&&state.open&&state.league===league)renderSuggestions(cached,$('sbbBrowseSearch')?.value||'');
-    const needsRefresh=forceRefresh||!cached.length||!entityCatalogFresh(league);
+    const needsRefresh=forceRefresh||!cached.length||!entityCatalogFresh(league)||entityMetadataCoverage(league)<0.60;
     if(!needsRefresh)return cached;
     if(state.entityCatalogInflight.has(league)){
       const names=await state.entityCatalogInflight.get(league);if(render&&state.open&&state.league===league)renderSuggestions(names,$('sbbBrowseSearch')?.value||'');return names;
     }
     if(render&&state.open&&!cached.length){const host=$('sbbBrowseSuggestions');if(host)host.insertAdjacentHTML('afterbegin',`<div class="sbb-browse-cache-status">Building complete ${state.entityType==='player'?'player':'team'} library once; future opens are instant.</div>`);}
-    const promise=fetchFullEntityCatalog(league).then(names=>{if(names.length){const meta=[...(state.entityMetaCache.get(league)?.values?.()||[])];persistEntityCatalog(league,names,meta);}return names.length?names:cached;}).finally(()=>state.entityCatalogInflight.delete(league));
+    const promise=fetchFullEntityCatalog(league,{forceMetadata:isCoreLeague(league)&&entityMetadataCoverage(league)<0.60}).then(names=>{if(names.length){const meta=[...(state.entityMetaCache.get(league)?.values?.()||[])];persistEntityCatalog(league,names,meta);}return names.length?names:cached;}).finally(()=>state.entityCatalogInflight.delete(league));
     state.entityCatalogInflight.set(league,promise);
     try{const names=await promise;if(render&&state.open&&state.league===league)renderSuggestions(names,$('sbbBrowseSearch')?.value||'');return names;}catch(err){
       const fallback=cached.length?cached:currentEntities(league);if(render&&state.open&&state.league===league)renderSuggestions(fallback,$('sbbBrowseSearch')?.value||'');return fallback;
@@ -494,7 +530,7 @@
     for(const name of source){const key=norm(name);if(!key||seen.has(key)||(q&&!key.includes(q)))continue;seen.add(key);merged.push(clean(name));}
     merged.sort((a,b)=>(Number(isFavorite(state.league,b))-Number(isFavorite(state.league,a)))||a.localeCompare(b));
     if(!merged.length){host.innerHTML=`<div class="sbb-browse-empty">${query?'No matching '+(state.entityType==='player'?'players':'teams')+' with verified highlights found.':'No '+(state.entityType==='player'?'players':'teams')+' with verified highlights are available yet.'}</div>`;return;}
-    host.innerHTML=merged.map(name=>{const meta=entityMetaFor(name),logo=clean(meta.logo);return `<div class="sbb-browse-suggestion"><button class="sbb-browse-entity" type="button" data-browse-entity="${esc(name)}">${logo?`<span class="sbb-browse-entity-logo"><img src="${esc(logo)}" alt="" loading="lazy"></span>`:`<span class="sbb-browse-entity-logo fallback">${esc((meta.abbreviation||name).slice(0,3).toUpperCase())}</span>`}<span class="sbb-browse-entity-name">${esc(name)}</span><small>ALL DATES</small></button><button class="sbb-browse-star ${isFavorite(state.league,name)?'active':''}" type="button" data-browse-star="${esc(name)}" aria-label="${isFavorite(state.league,name)?'Remove':'Add'} ${esc(name)} favorite">${isFavorite(state.league,name)?'★':'☆'}</button></div>`}).join('');
+    host.innerHTML=merged.map(name=>{const meta=entityMetaFor(name),logo=clean(meta.logo),abbr=clean(meta.abbreviation)||shortEntityName(name);return `<div class="sbb-browse-suggestion"><button class="sbb-browse-entity" type="button" data-browse-entity="${esc(name)}">${logo?`<span class="sbb-browse-entity-logo"><img src="${esc(logo)}" alt="${esc(name)} logo" loading="lazy"></span>`:`<span class="sbb-browse-entity-logo fallback">◇</span>`}<span class="sbb-browse-entity-abbr">${esc(abbr.slice(0,5).toUpperCase())}</span><span class="sbb-browse-entity-name">${esc(name)}</span><small>ALL DATES</small></button><button class="sbb-browse-star ${isFavorite(state.league,name)?'active':''}" type="button" data-browse-star="${esc(name)}" aria-label="${isFavorite(state.league,name)?'Remove':'Add'} ${esc(name)} favorite">${isFavorite(state.league,name)?'★':'☆'}</button></div>`}).join('');
   }
   async function searchSuggestions(value){
     const query=clean(value);state.lastQuery=query;const names=await primeEntityCatalog({render:false});if(query!==state.lastQuery)return;renderSuggestions(names,query);
@@ -588,7 +624,12 @@
     try{
       const rows=await fetchAuditRows(state.league,state.entity,MAX_AUDIT_ROWS);const filtered=state.entity?rows.filter(row=>gameHasEntity(row?.game,state.entity)):rows;
       state.entityAuditRows=state.entity?filtered.slice():[];
-      const built=filtered.map(gameFromAuditRow).filter(Boolean);
+      const today=new Date(),todayLocal=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+      // Team/Player highlight history is a backward-looking rail: today is the hard
+      // cutoff. Future schedule rows remain in entityAuditRows solely for NEXT ticker
+      // context and never appear as future cards in the highlight timeline.
+      const timelineRows=state.entity?filtered.filter(row=>!auditDate(row)||auditDate(row)<=todayLocal):filtered;
+      const built=timelineRows.map(gameFromAuditRow).filter(Boolean);
       state.games=(state.entity?built:built.filter(game=>game.items?.length)).sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.eventId).localeCompare(String(a.eventId)));
     }catch(err){if(err?.name==='AbortError')return;state.error=`Could not load ${leagueLabel(state.league)} highlights: ${err?.message||err}`;}
     finally{state.loading=false;renderCuration();}
@@ -601,7 +642,7 @@
   }
   function activateRanked(){captureScoreRibbonHeight();state.mode='facet';state.entity='';state.facet=isTennis(state.league)?'SEEDED TODAY':'RANKED TODAY';state.error='';state.loading=false;state.selected.clear();state.entityAuditRows=[];state.games=rankedResidentGames();setOpen(false);renderCuration();}
   function returnToDay(){state.mode='daily';state.entity='';state.facet='';state.games=[];state.entityAuditRows=[];state.selected.clear();state.error='';state.teamFocusData=null;state.teamFocusKey='';document.body.classList.remove('sbb-curation-active');setEntityTickerActive(false);clearTeamTheme();const ribbon=$('sbbCurationRibbon');if(ribbon){ribbon.hidden=true;ribbon.classList.add('hidden');}syncLeagueUi();captureScoreRibbonHeight();window.dispatchEvent(new CustomEvent('sbb:browse-layout',{detail:{active:false}}));}
-  function returnToAll(){setOpen(false);returnToDay();setTimeout(()=>{const all=document.querySelector('#scoreFilters [data-score-filter="ALL"]');if(all&&typeof all.click==='function')all.click();else{try{scoreRibbonLeagueFilter='ALL';renderScoreRibbon?.();}catch(_){}}},0);}
+  function returnToAll(){setOpen(false);clearSpecialContext();returnToDay();setTimeout(()=>{const all=document.querySelector('#scoreFilters [data-score-filter="ALL"]');if(all&&typeof all.click==='function')all.click();else{try{scoreRibbonLeagueFilter='ALL';renderScoreRibbon?.();}catch(_){}}},0);}
 
   function queueItemsForGames(games){const out=[];const seen=new Set();for(const game of games||[])for(const item of game.items||[]){const key=clean(item.id||item.youtubeId||item.mediaUrl);if(!key||seen.has(key))continue;seen.add(key);out.push(item);}return out;}
   function programKey(item){return clean(item?.id||item?.youtubeId||item?.mediaUrl);}
@@ -673,7 +714,7 @@
     try{if(typeof renderQueue==='function')renderQueue();}catch(_){}
     try{if(typeof setFeedNote==='function')setFeedNote(`Curated programming • ${label} • ${state.queueItems.length} video${state.queueItems.length===1?'':'s'}`);}catch(_){}
     if(typeof tuneProgramIndexV5==='function'){
-      tuneProgramIndexV5(bounded,{userInitiated:true,reason:`v5.3.7 curated programming: ${label}`});
+      tuneProgramIndexV5(bounded,{userInitiated:true,reason:`v5.3.8 curated programming: ${label}`});
       const selected=state.queueItems[bounded];setTimeout(()=>syncCuratedGameCenterContext(selected),0);setTimeout(()=>syncCuratedGameCenterContext(selected),180);return true;
     }
     return false;
@@ -714,6 +755,7 @@
     $('sbbBrowseAllHighlights')?.addEventListener('click',()=>activateHistorical({all:true}));
     $('sbbBrowseRanked')?.addEventListener('click',activateRanked);
     $('sbbFocusExit')?.addEventListener('click',returnToAll);
+    $('sbbSpecialExitBtn')?.addEventListener('click',returnToAll);
     $('sbbFocusPlayAll')?.addEventListener('click',playAll);
     $('teamThemeToggle')?.addEventListener('change',event=>saveTeamTheme(!!event.target.checked));
     $('sbbBrowseSearch')?.addEventListener('input',event=>{clearTimeout(state.searchTimer);const value=event.target.value;state.searchTimer=setTimeout(()=>searchSuggestions(value),180);});
@@ -729,7 +771,9 @@
     $('sbbCurationCards')?.addEventListener('wheel',event=>{const host=event.currentTarget;if(!host||host.scrollWidth<=host.clientWidth+2)return;const delta=Math.abs(event.deltaY)>=Math.abs(event.deltaX)?event.deltaY:event.deltaX;if(!delta)return;event.preventDefault();host.scrollLeft+=delta;},{passive:false});
     document.addEventListener('click',event=>{
       if(state.open&&!event.target.closest('#sbbBrowsePopover')&&!event.target.closest('#sbbBrowseBtn'))setOpen(false);
-      const filter=event.target.closest('#scoreFilters [data-score-filter],#sbbSpecialEventsMenu [data-special-competition]');if(filter)setTimeout(()=>{const before=state.league;syncLeagueUi();if(state.league!==before&&state.mode!=='daily')returnToDay();},0);
+      const special=event.target.closest('#sbbSpecialEventsMenu [data-special-competition]');
+      if(special){const league=clean(special.dataset.specialCompetition).toUpperCase();if(league==='CFB'){event.preventDefault();hideLegacyCfb();return;}setTimeout(()=>enterSpecialContext(league,specialEventLabel(special,league)),0);return;}
+      const filter=event.target.closest('#scoreFilters [data-score-filter]');if(filter)setTimeout(()=>{const requested=clean(filter.dataset.scoreFilter).toUpperCase();if(requested!=='CFB'&&(!state.specialContext||requested!==state.specialContext.league))clearSpecialContext();const before=state.league;syncLeagueUi();if(state.league!==before&&state.mode!=='daily')returnToDay();},0);
     },true);
     window.addEventListener('sbb:themechange',()=>renderCuration());
     window.addEventListener('resize',()=>{if(state.open)positionPopover();if(state.mode==='daily')captureScoreRibbonHeight();},{passive:true});
@@ -738,13 +782,14 @@
     document.addEventListener('webkitfullscreenchange',()=>{ensurePopoverHost();if(state.open)setTimeout(positionPopover,50);});
   }
 
-  function init(){loadEntityCatalogStore();if(!ensureUi())return;hideLegacyCfb();captureScoreRibbonHeight();syncLeagueUi();bind();patchRenderQueue();setTimeout(()=>primeEntityCatalog(),0);setTimeout(patchRenderQueue,350);setTimeout(()=>{captureScoreRibbonHeight();hideLegacyCfb();},500);setTimeout(hideLegacyCfb,1800);}
+  function init(){loadEntityCatalogStore();if(!ensureUi())return;installLegacyCfbGuard();captureScoreRibbonHeight();syncLeagueUi();bind();patchRenderQueue();setTimeout(()=>primeEntityCatalog(),0);setTimeout(patchRenderQueue,350);setTimeout(()=>{captureScoreRibbonHeight();hideLegacyCfb();},500);setTimeout(hideLegacyCfb,1800);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 
   window.SBB_CURATED_BROWSE=Object.freeze({
     version:VERSION,open:()=>setOpen(true),close:()=>setOpen(false),returnToDay,returnToAll,
     browseAll:()=>activateHistorical({all:true}),browseEntity:entity=>activateHistorical({entity}),
-    rankedToday:activateRanked,playAll,
+    rankedToday:activateRanked,playAll,enterSpecialContext,
+    context:()=>({league:state.league,specialContext:state.specialContext?{...state.specialContext}:null,mode:state.mode,entity:state.entity,games:state.games.slice(0,30).map(g=>({date:g.date,game:g.game,tier:g.tier,mediaAvailable:!!g.items?.length}))}),
     snapshot:()=>({version:VERSION,league:state.league,mode:state.mode,entity:state.entity,facet:state.facet,games:state.games.length,selected:state.selected.size,queueActive:state.queueActive,queueItems:state.queueItems.length,favorites:favoritesFor(state.league).slice(),loading:state.loading,error:state.error,noGameCenter:document.body.classList.contains('sbb-curated-no-game-center')})
   });
 })();

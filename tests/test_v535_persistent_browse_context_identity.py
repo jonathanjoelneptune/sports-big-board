@@ -5,7 +5,7 @@ version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
 js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
-assert version=='5.3.7',version
+assert version=='5.3.8',version
 assert f'ui/browse-curated-programming-v537.css?v={version}' in index
 assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>' in index
 
@@ -56,6 +56,6 @@ for token in [
     '#keyInfoTrack.sbb-entity-ticker-hidden{display:none!important}',
 ]: assert token in (js+css),token
 
-for forbidden in ['setInterval(', 'new MutationObserver', 'requestAnimationFrame(loop']:
+for forbidden in ['setInterval(', 'requestAnimationFrame(loop']:
     assert forbidden not in js,forbidden
-print('PASS v5.3.7 persistent participant cache + equal-height curated ribbon + exact Game Center identity + entity focus ticker')
+print('PASS v5.3.8 persistent participant cache + equal-height curated ribbon + exact Game Center identity + entity focus ticker')

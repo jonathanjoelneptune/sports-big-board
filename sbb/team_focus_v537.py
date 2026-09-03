@@ -1,4 +1,4 @@
-"""Sports Big Board v5.3.7 — participant metadata + Team Focus enrichment.
+"""Sports Big Board v5.3.8 — participant metadata + Team Focus enrichment.
 
 Two cache-only browser endpoints are installed:
   /api/browse/participants?league=MLB
@@ -25,10 +25,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
-VERSION = "5.3.7-team-focus-1"
+VERSION = "5.3.8-team-focus-2"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
-_PARTICIPANT_PATH = _STATE_DIR / "browse-participants-v537.json"
-_FOCUS_PATH = _STATE_DIR / "team-focus-v537.json"
+_PARTICIPANT_PATH = _STATE_DIR / "browse-participants-v538.json"
+_FOCUS_PATH = _STATE_DIR / "team-focus-v538.json"
+_THEME_PATH = _STATE_DIR / "team-theme-v538.json"
 _PARTICIPANT_TTL = 30 * 60
 _FOCUS_TTL = 15 * 60
 _LOCK = threading.RLock()
@@ -36,6 +37,7 @@ _INSTALLED = False
 _SERVER = None
 _PARTICIPANTS = {"savedAt": 0.0, "leagues": {}}
 _FOCUS_CACHE = {}
+_THEME_CACHE = {}
 
 ESPN_COMPETITIONS = {
     "MLB": ("baseball", "mlb"),
@@ -45,6 +47,10 @@ ESPN_COMPETITIONS = {
     "NCAAF": ("football", "college-football"),
     "EPL": ("soccer", "eng.1"),
     "MLS": ("soccer", "usa.1"),
+    "WC2026": ("soccer", "fifa.world"),
+    "WORLD-CUP-2026": ("soccer", "fifa.world"),
+    "FIFA-WORLD-CUP-2026": ("soccer", "fifa.world"),
+    "LLWS2026": ("baseball", "little-league-world-series"),
 }
 
 TEAMRANKINGS_SPORT = {
@@ -91,11 +97,6 @@ TEAMRANKINGS_STATS = {
         ("PTS/G", "stat/points-per-game"),
         ("OPP PTS/G", "stat/opponent-points-per-game"),
     ],
-    "CFB": [
-        ("POWER RANK", "ranking/predictive-by-other/"),
-        ("PTS/G", "stat/points-per-game"),
-        ("OPP PTS/G", "stat/opponent-points-per-game"),
-    ],
 }
 
 PALETTE_OVERRIDES = {
@@ -113,6 +114,101 @@ def _clean(value):
 
 def _norm(value):
     return re.sub(r"[^a-z0-9]+", " ", _clean(value).lower()).strip()
+
+
+def _hex(value, fallback="#000000"):
+    raw = _clean(value).lstrip("#")
+    return f"#{raw.lower()}" if re.fullmatch(r"[0-9a-fA-F]{6}", raw) else fallback
+
+
+def _rgb(value):
+    h = _hex(value)
+    return tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
+
+
+def _relative_luminance(value):
+    channels = []
+    for component in _rgb(value):
+        c = component / 255.0
+        channels.append(c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
+
+
+def _contrast(a, b):
+    la, lb = _relative_luminance(a), _relative_luminance(b)
+    hi, lo = max(la, lb), min(la, lb)
+    return round((hi + 0.05) / (lo + 0.05), 2)
+
+
+def _mix(a, b, amount):
+    amount = max(0.0, min(1.0, float(amount)))
+    ra, rb = _rgb(a), _rgb(b)
+    out = tuple(round(x * (1.0 - amount) + y * amount) for x, y in zip(ra, rb))
+    return "#%02x%02x%02x" % out
+
+
+def _best_text(background, target=4.5):
+    candidates = ["#ffffff", "#0b1116"]
+    scored = sorted((( _contrast(background, text), text) for text in candidates), reverse=True)
+    ratio, text = scored[0]
+    return text, ratio, ratio >= target
+
+
+def _accessible_muted(background, foreground):
+    # Start muted, but walk back toward full foreground until AA normal-text contrast
+    # is preserved. This prevents team colors from creating illegible secondary copy.
+    for amount in (0.48, 0.38, 0.28, 0.18, 0.08, 0.0):
+        candidate = _mix(foreground, background, amount)
+        if _contrast(background, candidate) >= 4.5:
+            return candidate
+    return foreground
+
+
+def _build_accessible_theme(entity, palette):
+    primary = _hex(palette.get("primary"), "#14314a")
+    secondary = _hex(palette.get("secondary"), "#63b7ff")
+    accent = _hex(palette.get("accent"), secondary)
+    light_primary = _relative_luminance(primary) > 0.62
+    if _norm(entity) == "los angeles dodgers":
+        background, surface, raised = "#ffffff", "#f7fafc", "#ffffff"
+        dark_replacement = "#e8f0f6"
+    else:
+        background = _mix(primary, "#05090d", 0.76 if light_primary else 0.48)
+        surface = _mix(primary, "#08121a", 0.70 if light_primary else 0.57)
+        raised = _mix(surface, "#ffffff", 0.07)
+        dark_replacement = _mix(surface, "#000000", 0.16)
+    text, text_ratio, text_ok = _best_text(surface)
+    muted = _accessible_muted(surface, text)
+    button = secondary
+    button_text, button_ratio, button_ok = _best_text(button)
+    selected = accent
+    selected_text, selected_ratio, selected_ok = _best_text(selected)
+    line = secondary if _contrast(surface, secondary) >= 3.0 else _mix(secondary, text, 0.30)
+    gradient_start = _mix(surface, primary, 0.18)
+    gradient_end = _mix(surface, secondary, 0.10)
+    return {
+        "primary": primary, "secondary": secondary, "accent": accent,
+        "bg": background, "surface": surface, "surfaceRaised": raised,
+        "blackReplacement": dark_replacement, "text": text, "muted": muted,
+        "line": line, "button": button, "buttonText": button_text,
+        "selected": selected, "selectedText": selected_text,
+        "gradientStart": gradient_start, "gradientEnd": gradient_end,
+        "light": bool(light_primary and _norm(entity) == "los angeles dodgers"),
+        "wcag": {
+            "normalTextTarget": 4.5, "uiTarget": 3.0,
+            "surfaceText": text_ratio, "buttonText": button_ratio, "selectedText": selected_ratio,
+            "surfaceTextPass": text_ok, "buttonTextPass": button_ok, "selectedTextPass": selected_ok,
+        },
+    }
+
+
+def _remember_theme(league, entity, theme):
+    if not theme:
+        return
+    key = f"{_clean(league).upper()}:{_norm(entity)}"
+    with _LOCK:
+        _THEME_CACHE[key] = {"league": _clean(league).upper(), "entity": _clean(entity), "theme": theme, "savedAt": time.time()}
+        _atomic_json(_THEME_PATH, _THEME_CACHE)
 
 
 def _load_json(path, fallback):
@@ -256,7 +352,7 @@ def _refresh_participants(server, force=False):
 
 
 def _http_text(url, timeout=6.0):
-    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.7 (+team-focus-cache)", "Accept": "text/html,application/json;q=0.9,*/*;q=0.8"})
+    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.8 (+team-focus-cache)", "Accept": "text/html,application/json;q=0.9,*/*;q=0.8"})
     with urlopen(req, timeout=timeout) as resp:
         return resp.read().decode("utf-8", "replace")
 
@@ -384,11 +480,13 @@ def _espn_team(league, entity):
     palette = {"primary": primary or "63b7ff", "secondary": secondary or "0b1620", "accent": secondary or primary or "63b7ff"}
     override = PALETTE_OVERRIDES.get(_norm(entity))
     if override: palette.update(override)
+    theme = _build_accessible_theme(entity, palette)
+    _remember_theme(league, entity, theme)
     record = best.get("recordSummary") or ""
     if not record and isinstance(best.get("record"), dict): record = best.get("record",{}).get("summary") or best.get("record",{}).get("displayValue") or ""
     standing = best.get("standingSummary") or ""
     if not standing and isinstance(best.get("standing"), dict): standing = best.get("standing",{}).get("summary") or best.get("standing",{}).get("displayValue") or ""
-    return {"name": _clean(best.get("displayName") or entity), "abbreviation": _clean(best.get("abbreviation")), "logo": logo, "palette": palette, "record": _clean(record), "standing": _clean(standing)}
+    return {"name": _clean(best.get("displayName") or entity), "abbreviation": _clean(best.get("abbreviation")), "logo": logo, "palette": palette, "theme": theme, "record": _clean(record), "standing": _clean(standing)}
 
 
 def _focus_payload(league, entity):
@@ -422,7 +520,7 @@ def _worker():
 
 
 def _install_into_server():
-    global _SERVER, _PARTICIPANTS, _FOCUS_CACHE
+    global _SERVER, _PARTICIPANTS, _FOCUS_CACHE, _THEME_CACHE
     deadline = time.time() + 120
     server = None
     while time.time() < deadline:
@@ -434,12 +532,16 @@ def _install_into_server():
     _SERVER = server
     loaded = _load_json(_PARTICIPANT_PATH, {})
     if not (isinstance(loaded, dict) and isinstance(loaded.get("leagues"), dict)):
-        # Preserve the already-built v5.3.7 name index across the upgrade so the
-        # first Browse open after deploy remains instant while metadata warms.
+        # Preserve the v5.3.7 inventory immediately, then refresh metadata/logos in
+        # the background into the v5.3.8 cache.
+        loaded = _load_json(_STATE_DIR / "browse-participants-v537.json", {})
+    if not (isinstance(loaded, dict) and isinstance(loaded.get("leagues"), dict)):
         loaded = _load_json(_STATE_DIR / "browse-participants-v536.json", {})
     if isinstance(loaded, dict) and isinstance(loaded.get("leagues"), dict): _PARTICIPANTS = loaded
     focus = _load_json(_FOCUS_PATH, {})
     if isinstance(focus, dict): _FOCUS_CACHE = focus
+    themes = _load_json(_THEME_PATH, {})
+    if isinstance(themes, dict): _THEME_CACHE = themes
     Handler = server.Handler
     if not getattr(Handler, "__sbbTeamFocusV537", False):
         old_get = Handler.do_GET
@@ -447,7 +549,8 @@ def _install_into_server():
             parsed = urlparse(self.path)
             if parsed.path == "/api/browse/participants":
                 qs = parse_qs(parsed.query); league = _clean((qs.get("league") or [""])[0]).upper()
-                payload = _refresh_participants(server, force=False)
+                refresh_metadata = _clean((qs.get("refreshMetadata") or [""])[0]).lower() in {"1","true","yes"}
+                payload = _refresh_participants(server, force=refresh_metadata)
                 names = list((payload.get("leagues") or {}).get(league) or [])
                 entities = list((payload.get("entities") or {}).get(league) or [])
                 return server.send_json(self, {"ok": True, "version": VERSION, "league": league, "savedAt": payload.get("savedAt",0), "participants": names, "entities": entities, "count": len(names), "source": "PERSISTED_VERIFIED_MEDIA_INDEX"}, 200, {"Cache-Control":"private, max-age=60"})

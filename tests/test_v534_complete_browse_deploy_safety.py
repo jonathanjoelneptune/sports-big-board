@@ -7,7 +7,7 @@ index=(ROOT/'index.html').read_text()
 js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 deploy=(ROOT/'cloud'/'gcp'/'DEPLOY-FROM-GITHUB.sh').read_text()
 
-assert version=='5.3.7', version
+assert version=='5.3.8', version
 assert f'ui/browse-curated-programming-v537.css?v={version}' in index
 assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>' in index
 
@@ -15,7 +15,7 @@ assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></scrip
 for token in [
     'const MAX_ENTITY_AUDIT_ROWS=10000;',
     'entityCatalogInflight:new Map()',
-    'async function fetchFullEntityCatalog(league)',
+    'async function fetchFullEntityCatalog(league,',
     "bestMediaForAuditRow(row).items.length",
     "while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS)",
     'persistEntityCatalog(league,names,entities=[]',
@@ -49,4 +49,4 @@ for token in [
 ]:
     assert token in deploy, token
 
-print('PASS v5.3.7 complete competition Browse inventory + disk-safe audit-only deployment')
+print('PASS v5.3.8 complete competition Browse inventory + disk-safe audit-only deployment')

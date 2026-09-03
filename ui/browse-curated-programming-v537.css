@@ -1,4 +1,4 @@
-/* Sports Big Board v5.3.7 — Persistent Browse + Context Ribbon + Event Identity
+/* Sports Big Board v5.3.8 — Persistent Browse + Context Ribbon + Event Identity
    Contextual team/player browse control, anchored browse popover, date-headed
    highlight timeline, explicit queue affordance, scores, and media-tier color. */
 
@@ -174,7 +174,7 @@ html[data-sbb-theme="light"] .sbb-curation-date-pill{background:#f4f7f9!importan
 @media(prefers-reduced-motion:reduce){.sbb-curation-loading span,#sbbBrowseSubnav{animation:none!important}}
 
 
-/* v5.3.7: a curated competition with no Game Center implementation must never
+/* v5.3.8: a curated competition with no Game Center implementation must never
    reveal the previously selected game's stale panel beneath the neutral state. */
 body.sbb-curated-no-game-center #gameCenterContent{display:none!important}
 body.sbb-curated-no-game-center #gameCenterEmpty{display:flex!important;flex:1 1 auto!important}
@@ -192,7 +192,7 @@ body.sbb-curated-no-game-center #nextUpDock{margin-top:auto!important}
 #sbbCurationPlayLeft{min-width:56px}
 
 /* ======================================================================
-   v5.3.7 — Team Focus enrichment + full-height curated rail
+   v5.3.8 — Team Focus enrichment + full-height curated rail
    ====================================================================== */
 
 /* The curated rail is exactly the scoreboard rail's captured height. There is
@@ -335,7 +335,7 @@ html[data-sbb-team-theme="on"] #sbbFocusExit{border-color:color-mix(in srgb,var(
 @media(prefers-reduced-motion:reduce){#sbbEntityTickerTrack.is-overflowing .sbb-entity-info-conveyor{animation:none!important}}
 
 /* ======================================================================
-   v5.3.7 — Focus integration, participant marks, full team skin
+   v5.3.8 — Focus integration, participant marks, full team skin
    ====================================================================== */
 
 /* CFB is retired. NCAAF is the only college-football ribbon namespace. */
@@ -374,7 +374,7 @@ html[data-sbb-team-theme="on"] #sbbFocusExit{border-color:color-mix(in srgb,var(
 .sbb-entity-identity-copy{align-self:center!important;justify-content:center!important}
 .sbb-entity-identity-copy>span{font-size:9.6px!important;line-height:1.05!important}
 
-/* NEXT is one compact game per item now, so it does not need the huge v5.3.7
+/* NEXT is one compact game per item now, so it does not need the huge v5.3.8
    reservation. Many independent RESULT / NEXT / RANK / NEWS cells make the lane
    long enough to behave as an actual continuously moving team ticker. */
 .sbb-entity-info-item.next{min-width:145px!important;max-width:220px!important}
@@ -508,3 +508,151 @@ html[data-sbb-team-theme="on"][data-sbb-team-theme-light="1"] :is(
   .gc-overview,.gc-team-stats,.gc-players,.gc-plays,.game-center-section,.game-center-body,
   .game-center-tabs,.gc-team-tabs,.gc-team-panel,.gc-stat-table,.gc-stat-row
 ){background:#fff!important;color:var(--sbb-team-text)!important}
+
+/* ======================================================================
+   v5.3.8 — Theme hardening, accessible contrast, event-context controls
+   ====================================================================== */
+
+/* Browse rows carry a mark, compact short code, full name, and scope label. */
+.sbb-browse-entity{
+  grid-template-columns:30px 42px minmax(0,1fr) auto!important;
+  gap:8px!important;
+}
+.sbb-browse-entity-abbr{
+  min-width:36px;max-width:42px;height:22px;display:inline-flex;align-items:center;justify-content:center;
+  padding:0 5px;border-radius:7px;border:1px solid rgba(125,157,181,.20);
+  background:rgba(125,157,181,.07);color:#9fb6c6!important;
+  font:900 7px/1 system-ui,sans-serif!important;letter-spacing:.07em!important;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.sbb-browse-entity-logo.fallback{font-size:12px;color:#7293a9}
+
+/* A selected special event becomes a first-class temporary league chip immediately
+   before MLB. EXIT EVENT is deliberately brighter than passive browse controls. */
+#sbbActiveSpecialChip,.sbb-active-special-chip{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  height:30px;padding:0 11px;border-radius:9px;border:1px solid rgba(255,203,73,.78)!important;
+  background:linear-gradient(180deg,#ffd85f 0%,#f0af16 100%)!important;color:#241904!important;
+  box-shadow:0 0 0 1px rgba(255,213,98,.22),0 4px 14px rgba(0,0,0,.20)!important;
+  font:900 7.5px/1 system-ui,sans-serif;letter-spacing:.075em;
+}
+#sbbSpecialExitBtn{
+  height:30px!important;padding:0 10px!important;border-radius:0 9px 9px 0!important;
+  border:1px solid rgba(255,112,112,.62)!important;background:linear-gradient(180deg,#7d2027,#54151b)!important;
+  color:#fff4f4!important;font-weight:900!important;box-shadow:0 0 14px rgba(230,73,84,.17)!important;
+}
+
+/* PLAY ALL and EXIT are primary focus actions, not quiet utility controls. */
+#sbbFocusPlayAll{
+  background:linear-gradient(180deg,#45e28d 0%,#15934f 100%)!important;
+  border-color:#75ffb3!important;color:#052514!important;
+  box-shadow:0 0 0 1px rgba(117,255,179,.18),0 0 16px rgba(69,226,141,.22)!important;
+  font-weight:950!important;
+}
+#sbbFocusExit{
+  background:linear-gradient(180deg,#ff6c77 0%,#c52f3b 100%)!important;
+  border-color:#ff9ca4!important;color:#fff!important;
+  box-shadow:0 0 0 1px rgba(255,156,164,.16),0 0 16px rgba(255,80,92,.18)!important;
+  font-weight:950!important;
+}
+#sbbFocusPlayAll:hover,#sbbFocusExit:hover{filter:brightness(1.09) saturate(1.05)}
+
+/* Team skin uses the backend-derived semantic palette. It intentionally avoids pure
+   black for application-owned surfaces and adds restrained broadcast-style depth. */
+html[data-sbb-team-theme="on"] :is(
+  .top-nav-header,.top-nav,.top-bar,.score-filter-shell,.score-filters,.score-filters-row,
+  .key-info-ribbon,.player-topbar,.player-status,.transport,.info-drawer-head,.gc-section-tabs
+){
+  background:linear-gradient(180deg,var(--sbb-team-gradient-start),var(--sbb-team-gradient-end))!important;
+  color:var(--sbb-team-text)!important;
+  border-color:var(--sbb-team-line)!important;
+}
+html[data-sbb-team-theme="on"] :is(
+  #infoDrawer,.info-drawer,.drawer-pane,.game-center-pane,.game-center-content,.settings-pane,
+  .sbb-browse-popover,.sbb-curation-ribbon,.queue-list,.up-next-programming
+){
+  background:var(--sbb-team-bg)!important;color:var(--sbb-team-text)!important;
+}
+html[data-sbb-team-theme="on"] :is(
+  .game-center-hero,.game-center-scoreboard,.gc-section,.gc-card,.gc-table-wrap,.settings-card,
+  .queue-item,.next-up-dock,.sbb-curation-card,.sbb-browse-suggestion,.sbb-browse-search-wrap,
+  .sbb-entity-focus-controls,.league-view-card,.league-view-table-wrap
+){
+  background:var(--sbb-team-surface-raised)!important;color:var(--sbb-team-text)!important;
+  border-color:color-mix(in srgb,var(--sbb-team-line) 66%,transparent)!important;
+}
+html[data-sbb-team-theme="on"] :is(
+  #sbbBrowseSearch,.sbb-curation-thumb,.sbb-curation-card.no-media,.game-center-empty,
+  .video-loading-overlay,.player-stage,.player-well,.video-stage-shell,.video-shell
+){
+  background-color:var(--sbb-team-black-replacement)!important;
+}
+html[data-sbb-team-theme="on"] :is(
+  .sbb-browse-entity-name,.sbb-browse-popover-head strong,.sbb-curation-card-copy strong,
+  .sbb-entity-info-item span,.sbb-entity-identity-copy>span,.gc-team-name,.gc-team-score,
+  .gc-table td,.gc-table th,.settings-card strong,.settings-card span,.queue-item strong,
+  .league-view-card,.league-view-card strong,.league-view-table,.league-view-table td,.league-view-table th
+){color:var(--sbb-team-text)!important}
+html[data-sbb-team-theme="on"] :is(
+  .sbb-browse-entity small,.sbb-curation-context small,.sbb-browse-search-wrap>span,
+  .settings-card small,.queue-item small,.league-view-muted,.league-view-updated
+){color:var(--sbb-team-muted)!important}
+html[data-sbb-team-theme="on"] .sbb-browse-entity-abbr{
+  background:color-mix(in srgb,var(--sbb-team-secondary) 14%,var(--sbb-team-surface-raised))!important;
+  border-color:color-mix(in srgb,var(--sbb-team-line) 55%,transparent)!important;
+  color:var(--sbb-team-text)!important;
+}
+
+/* Strong, WCAG-derived button/text roles come from the backend theme row. */
+html[data-sbb-team-theme="on"] :is(
+  #scoreFilters button,.sbb-browse-btn,.transport-btn,.soundtrack-btn,.info-drawer-tab,.gc-section-tab,
+  .gc-team-button,#shuffleBtn,.settings-save-btn,.top-date-select-btn,.return-today-btn,.score-day-arrow,
+  #drawerCollapseToggle,.utility-btn.drawer-launch-btn
+){
+  background:linear-gradient(180deg,color-mix(in srgb,var(--sbb-team-button) 92%,#fff 8%),var(--sbb-team-button))!important;
+  color:var(--sbb-team-button-text)!important;border-color:color-mix(in srgb,var(--sbb-team-accent) 72%,var(--sbb-team-line))!important;
+  text-shadow:none!important;
+}
+html[data-sbb-team-theme="on"] :is(
+  #scoreFilters button.active,#scoreFilters button[aria-pressed="true"],.info-drawer-tab.active,.gc-section-tab.active,
+  .gc-team-button.active,[aria-selected="true"].info-drawer-tab,[aria-selected="true"].gc-section-tab,
+  #settingsDrawerBtn.active,#gameCenterDrawerBtn.active,#upNextDrawerBtn.active
+){
+  background:linear-gradient(180deg,color-mix(in srgb,var(--sbb-team-selected) 88%,#fff 12%),var(--sbb-team-selected))!important;
+  color:var(--sbb-team-selected-text)!important;border-color:var(--sbb-team-selected)!important;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--sbb-team-selected) 28%,transparent),0 3px 10px rgba(0,0,0,.12)!important;
+}
+
+/* Fine shading separates adjacent sections without sacrificing contrast. */
+html[data-sbb-team-theme="on"] :is(.gc-section,.settings-card,.league-view-card,.sbb-curation-card){
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--sbb-team-text) 7%,transparent),0 3px 12px rgba(0,0,0,.08)!important;
+}
+html[data-sbb-team-theme="on"] :is(.key-info-ribbon,.sbb-curation-ribbon){
+  box-shadow:inset 0 -1px 0 color-mix(in srgb,var(--sbb-team-line) 45%,transparent)!important;
+}
+
+@media(max-width:760px){
+  .sbb-browse-entity{grid-template-columns:26px 38px minmax(0,1fr) auto!important}
+  .sbb-browse-entity-abbr{min-width:32px;max-width:38px}
+}
+
+/* Replace remaining first-party generic black/charcoal wells. Embedded video pixels
+   remain provider-owned; only the host/gutters underneath them are recolored. */
+html[data-sbb-team-theme="on"] body :is(
+  .player-layer,.youtube-player-host,.native-player,.player-footer,.player-status,.utility-controls,
+  .soundtrack-controls,.sbb-special-menu,.sbb-date-popover,.queue-panel,.side-rail,.left-rail,.right-rail,
+  .game-center-shell,.game-center-body,.gc-overview,.gc-team-stats,.gc-players,.gc-plays,
+  .gc-team-panel,.gc-stat-table,.gc-stat-row,.history-recovery-controls,.history-search-console
+){
+  background-color:var(--sbb-team-black-replacement)!important;
+  color:var(--sbb-team-text)!important;
+  border-color:color-mix(in srgb,var(--sbb-team-line) 52%,transparent)!important;
+}
+html[data-sbb-team-theme="on"] #sbbSpecialEventsMenu button{
+  background:var(--sbb-team-surface-raised)!important;color:var(--sbb-team-text)!important;
+  border-color:color-mix(in srgb,var(--sbb-team-line) 46%,transparent)!important;
+}
+html[data-sbb-team-theme="on"] #sbbSpecialEventsMenu button:hover{
+  background:color-mix(in srgb,var(--sbb-team-secondary) 18%,var(--sbb-team-surface-raised))!important;
+  border-color:var(--sbb-team-accent)!important;
+}

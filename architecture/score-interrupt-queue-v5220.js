@@ -1,12 +1,12 @@
-/* Sports Big Board v5.3.7 — score-ribbon interrupt queue preservation.
+/* Sports Big Board v5.3.8 — score-ribbon interrupt queue preservation.
    A score-card click is an interrupt, not a PROGRAM replacement from the user's
    perspective. Capture the exact queue that was running before takeover, expose it
    to Up Next while the selected recap plays, and restore that same queue/item after
    the selected game's recap/reel completes. */
 (() => {
   'use strict';
-  if(window.SBB_SCORE_INTERRUPT_QUEUE?.version==='5.3.7')return;
-  const VERSION='5.3.7';
+  if(window.SBB_SCORE_INTERRUPT_QUEUE?.version==='5.3.8')return;
+  const VERSION='5.3.8';
   const state={snapshot:null,captures:0,resumes:0,projected:0,lastReason:'',lastError:''};
 
   const clean=v=>String(v??'').trim();

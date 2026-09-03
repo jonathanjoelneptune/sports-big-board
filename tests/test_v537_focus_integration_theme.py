@@ -10,7 +10,7 @@ interrupt=(ROOT/'architecture'/'score-interrupt-queue-v5220.js').read_text()
 backend=(ROOT/'sbb'/'team_focus_v537.py').read_text()
 init=(ROOT/'sbb'/'__init__.py').read_text()
 
-assert version=='5.3.7', version
+assert version=='5.3.8', version
 assert f'ui/browse-curated-programming-v537.css?v={version}' in index
 assert f'ui/browse-curated-programming-v537.js?v={version}' in index
 
@@ -52,7 +52,7 @@ for token in [
     assert token in interrupt, token
 
 for token in [
-    'browse-participants-v537.json',
+    'browse-participants-v538.json',
     '"entities": entities',
     'def _event_participant_rows',
     'def _espn_directory',
@@ -64,4 +64,4 @@ for token in [
 assert 'from .team_focus_v537 import install as _install_team_focus_v537' in init
 assert '_install_team_focus_v537()' in init
 
-print('PASS v5.3.7 focus integration, day-owned score queue, participant marks, CFB retirement, and full team theme')
+print('PASS v5.3.8 focus integration, day-owned score queue, participant marks, CFB retirement, and full team theme')

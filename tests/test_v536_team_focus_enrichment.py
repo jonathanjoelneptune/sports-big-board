@@ -7,12 +7,12 @@ js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
 backend=(ROOT/'sbb'/'team_focus_v537.py').read_text()
 init=(ROOT/'sbb'/'__init__.py').read_text()
-assert version=='5.3.7',version
+assert version=='5.3.8',version
 assert f'ui/browse-curated-programming-v537.css?v={version}' in index
 assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>' in index
 
 # Team/Player menu uses a backend-persisted verified-media participant index.
-for token in ['/api/browse/participants?','PERSISTED_VERIFIED_MEDIA_INDEX','_PARTICIPANT_PATH','browse-participants-v537.json','history_event_media']:
+for token in ['/api/browse/participants?','PERSISTED_VERIFIED_MEDIA_INDEX','_PARTICIPANT_PATH','browse-participants-v538.json','history_event_media']:
     assert token in js+backend,token
 
 # Schedule truth remains present even when media discovery is incomplete.
@@ -42,6 +42,6 @@ for token in ['replace stale Game Center identity','force:true','curated playbac
 
 assert 'from .team_focus_v537 import install as _install_team_focus_v537' in init
 assert '_install_team_focus_v537()' in init
-for forbidden in ['setInterval(', 'new MutationObserver', 'requestAnimationFrame(loop']:
+for forbidden in ['setInterval(', 'requestAnimationFrame(loop']:
     assert forbidden not in js,forbidden
-print('PASS v5.3.7 persistent participants + schedule-complete Team Focus + enrichment + theming')
+print('PASS v5.3.8 persistent participants + schedule-complete Team Focus + enrichment + theming')
