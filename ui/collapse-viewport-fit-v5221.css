@@ -1,0 +1,85 @@
+/* Sports Big Board v5.3.0 — Clean Collapse + Viewport Fit
+   Final desktop presentation correction for the collapsible information drawer.
+   The collapsed drawer consumes zero layout width; only a centered seam handle
+   remains. The expanded player is height-fit to the visible browser viewport so
+   opening the video does not manufacture a document scrollbar. */
+
+:root{
+  --sbb-drawer-handle-width:32px;
+  --sbb-drawer-handle-height:58px;
+  --sbb-collapsed-stage-height:auto;
+}
+
+@media (min-width:1100px) and (pointer:fine){
+  /* No ghost rail: collapsed means zero grid allocation for the drawer. */
+  body.sbb-game-center-side.sbb-drawer-collapsed .stage-card{
+    grid-template-columns:minmax(0,1fr) 0!important;
+  }
+  body.sbb-game-center-side.sbb-drawer-collapsed #infoDrawer{
+    width:0!important;
+    min-width:0!important;
+    max-width:0!important;
+    border:0!important;
+    background:transparent!important;
+    overflow:visible!important;
+    pointer-events:none!important;
+  }
+  body.sbb-game-center-side.sbb-drawer-collapsed #infoDrawer::after{
+    display:none!important;
+  }
+
+  /* One intentional seam tab, vertically centered instead of floating at top. */
+  body.sbb-game-center-side #drawerCollapseToggle{
+    top:50%!important;
+    left:-15px!important;
+    transform:translateY(-50%)!important;
+    width:var(--sbb-drawer-handle-width)!important;
+    min-width:var(--sbb-drawer-handle-width)!important;
+    height:var(--sbb-drawer-handle-height)!important;
+    min-height:var(--sbb-drawer-handle-height)!important;
+    padding:0!important;
+    border-radius:12px 0 0 12px!important;
+    border:1px solid rgba(115,169,207,.34)!important;
+    border-right-color:rgba(115,169,207,.12)!important;
+    background:linear-gradient(180deg,rgba(19,45,63,.98),rgba(9,24,35,.99))!important;
+    color:#dcecf7!important;
+    box-shadow:-5px 0 18px rgba(0,0,0,.24),inset 1px 0 rgba(255,255,255,.035)!important;
+    opacity:.92!important;
+    pointer-events:auto!important;
+    cursor:pointer!important;
+  }
+  body.sbb-game-center-side #drawerCollapseToggle:hover,
+  body.sbb-game-center-side #drawerCollapseToggle:focus-visible{
+    opacity:1!important;
+    color:#fff!important;
+    border-color:rgba(99,183,255,.58)!important;
+    background:linear-gradient(180deg,rgba(25,61,85,.99),rgba(12,34,49,.99))!important;
+  }
+  body.sbb-game-center-side.sbb-drawer-collapsed #drawerCollapseToggle{
+    left:calc(-1 * var(--sbb-drawer-handle-width))!important;
+    border-radius:12px 0 0 12px!important;
+  }
+  body.sbb-game-center-side #infoDrawer .info-drawer-head{
+    padding-left:10px!important;
+  }
+
+  /* The expanded player is constrained by the viewport, not by 16:9 width.
+     YouTube/native playback remains contained by the existing player layer. */
+  body.sbb-game-center-side.sbb-drawer-collapsed .stage-card>.stage{
+    height:var(--sbb-collapsed-stage-height)!important;
+    max-height:var(--sbb-collapsed-stage-height)!important;
+    min-height:320px!important;
+    aspect-ratio:auto!important;
+  }
+  body.sbb-game-center-side.sbb-drawer-collapsed .stage-card{
+    margin-bottom:0!important;
+  }
+}
+
+@media (max-width:1099px){
+  #drawerCollapseToggle{display:none!important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  #drawerCollapseToggle{transition:none!important}
+}
