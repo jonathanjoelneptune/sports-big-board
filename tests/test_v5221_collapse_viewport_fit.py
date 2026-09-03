@@ -8,7 +8,7 @@ index=(ROOT/'index.html').read_text()
 css=(ROOT/'ui'/'collapse-viewport-fit-v5221.css').read_text()
 js=(ROOT/'ui'/'collapse-viewport-fit-v5221.js').read_text()
 
-assert version=='5.3.3', version
+assert version=='5.3.4', version
 assert f'ui/collapse-viewport-fit-v5221.css?v={version}' in index
 assert f'<script src="ui/collapse-viewport-fit-v5221.js?v={version}"></script>' in index
 
@@ -23,7 +23,7 @@ for token in [
     assert token in css, token
 
 for token in [
-    "const VERSION='5.3.3'",
+    "const VERSION='5.3.4'",
     'stage.getBoundingClientRect().top',
     'viewportHeight()-top-bottomGap',
     "body.style.setProperty('--sbb-collapsed-stage-height'",
@@ -36,4 +36,4 @@ for token in [
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version, f'{asset}: {found} != {version}'
 
-print('PASS v5.3.3 zero-width drawer collapse + centered handle + viewport-fit player')
+print('PASS v5.3.4 zero-width drawer collapse + centered handle + viewport-fit player')

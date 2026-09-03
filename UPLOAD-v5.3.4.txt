@@ -1,0 +1,36 @@
+Sports Big Board v5.3.4 — Complete Browse Inventory + Deploy Safety
+
+MANUAL GITHUB UPLOAD
+1. Open the sports-big-board repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, cloud/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when GitHub prompts.
+4. Commit every changed file together so frontend/backend/database-audit release identity stays atomic.
+5. Let Deploy Sports Big Board complete before hard-refreshing the site.
+
+PRIMARY USER-VISIBLE CHANGES
+- Team Browse / Player Browse no longer derives its picker from only the selected day's games.
+- The picker builds a complete competition-wide participant inventory from every historical audit page with verified/playable highlight media.
+- EPL therefore exposes every club represented by a verified EPL highlight, even when that club is not playing on the selected date.
+- Tennis does the same for every player represented by verified tournament highlights.
+- Browse search uses that same complete cached competition inventory, so searching and scrolling the list have identical coverage.
+- The old first-60 result cap is removed; every qualifying team/player remains reachable by scrolling.
+- Switching to another league while a curated team/player playlist is active automatically exits the stale prior-league curated ribbon before showing the new league.
+
+DEPLOYMENT / DATABASE SAFETY
+- Recovers from the v5.3.3 "sqlite3.OperationalError: database or disk is full" deployment failure.
+- Before upload, deployment removes stale history-pre-relation-repair database snapshots and prunes old backend releases using the already-established SSH identity.
+- Deployment fails safely before touching the live catalog if less than 256 MiB remains after safe cleanup.
+- Structurally healthy v4 catalogs now run the preflight in --check-only mode, so relationship audit flags do NOT create another full duplicate rollback database.
+- Full reconstruction still runs when the structural preflight actually says the catalog needs rebuilding.
+- The extracted backend release enforces the AUDIT_ONLY_DATABASE_AUTHORITY contract directly so startup cannot dispatch through another wrapper that restores/writes event links.
+
+FUNCTIONAL BOUNDARIES
+- Verified historical media remains the Browse authority.
+- No second media database or queue model.
+- No continuous Browse polling or MutationObserver.
+- Existing curated queue, PREV/NEXT, Hot Standby, score interrupt/resume, Game Center and Coming Up ownership remain unchanged.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.3.4 Complete Browse Inventory + Deploy Safety preflight complete

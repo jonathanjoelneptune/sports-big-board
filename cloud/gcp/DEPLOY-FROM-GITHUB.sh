@@ -124,6 +124,37 @@ if [[ "$DIRECT_READY" != *"SBB_DIRECT_SSH_READY"* ]]; then
 fi
 echo "[ssh] DIRECT SSH READY. No further gcloud SSH propagation will occur."
 
+# v5.3.4: reclaim deployment-only storage BEFORE uploading/extracting another
+# release. history-pre-relation-repair snapshots are not structural recovery
+# sources; the database-authority startup contract is audit-only, so retaining
+# them between releases only duplicates the live catalog and can exhaust disk.
+echo "[storage] Reclaiming stale deployment-only storage before upload..."
+timeout --signal=TERM --kill-after=10s 120s \
+  ssh "${SSH_OPTS[@]}" "${SSH_USER}@${VM_IP}" 'sudo bash -s' <<'PRECLEAN'
+set -euo pipefail
+APP_BASE="/opt/sports-big-board"
+STATE_DIR="/var/lib/sports-big-board"
+CURRENT_REAL="$(readlink -f "$APP_BASE/current" 2>/dev/null || true)"
+mkdir -p "$STATE_DIR/backups" "$APP_BASE/releases"
+find "$STATE_DIR/backups" -maxdepth 1 -type f -name 'history-pre-relation-repair-v*.sqlite3' -print -delete 2>/dev/null || true
+rm -f /tmp/sbb-release-*.tgz 2>/dev/null || true
+mapfile -t OLD_RELEASES < <(find "$APP_BASE/releases" -mindepth 1 -maxdepth 1 -type d -printf '%T@ %p\n' 2>/dev/null | sort -nr | cut -d' ' -f2-)
+kept=0
+for release in "${OLD_RELEASES[@]}"; do
+  [[ "$release" == "$CURRENT_REAL" ]] && continue
+  kept=$((kept+1))
+  (( kept <= 3 )) && continue
+  rm -rf "$release"
+done
+echo "[storage] Filesystem after cleanup:"
+df -h "$APP_BASE" "$STATE_DIR" || true
+AVAILABLE_KB="$(df -Pk "$STATE_DIR" | awk 'NR==2 {print $4}')"
+if [[ -n "$AVAILABLE_KB" && "$AVAILABLE_KB" -lt 262144 ]]; then
+  echo "[storage] ERROR: less than 256 MiB free after safe cleanup; refusing to touch the catalog."
+  exit 1
+fi
+PRECLEAN
+
 echo "[upload] Uploading release archive over the established key..."
 set +e
 timeout --signal=TERM --kill-after=10s "${SSH_UPLOAD_TIMEOUT_SECONDS}s" \
@@ -152,6 +183,7 @@ PREVIOUS="$(readlink -f "$CURRENT_LINK" 2>/dev/null || true)"
 STATE_DIR="/var/lib/sports-big-board"
 HISTORY_DB="$STATE_DIR/cache/history.sqlite3"
 MIGRATION_JSON="/tmp/sbb-history-v4-migration.json"
+MIGRATION_CHECK_JSON="/tmp/sbb-history-v4-check.json"
 MIGRATION_STDERR="/tmp/sbb-history-v4-migration.stderr.log"
 MIGRATION_BACKUP=""
 MIGRATION_REPORT=""
@@ -176,23 +208,60 @@ rm -rf "$RELEASE_DIR"; mkdir -p "$RELEASE_DIR"
 tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
 chown -R root:root "$RELEASE_DIR"
 
+# v5.3.4 invariant: AUDIT_ONLY_DATABASE_AUTHORITY must not dynamically dispatch
+# through another wrapper that can restore/write locked links. Patch older source
+# generations in the extracted release before Python starts. This is idempotent
+# and fails closed if neither the old nor corrected contract is present.
+python3 - "$RELEASE_DIR/sbb/database_authority.py" <<'PY'
+from pathlib import Path
+import sys
+path=Path(sys.argv[1]); text=path.read_text(encoding='utf-8')
+old='"event": self.repair_event_associations(force=False), "collection": self.repair_collection_associations(force=False)'
+new='"event": _event_audit(self), "collection": _collection_audit(self)'
+if old in text:
+    path.write_text(text.replace(old,new,1),encoding='utf-8')
+elif new not in text:
+    raise SystemExit('database-authority audit-only contract not found')
+PY
 
 # v4 catalog preflight is structural. Stop the old backend so SQLite is
-# quiescent. Structurally healthy normalized catalogs are preserved and may get
-# only a rollback snapshot for in-place relationship repair. Legacy/structurally
-# invalid catalogs alone are reconstructed into a second database.
+# quiescent. v5.3.4 first runs CHECK-ONLY. A structurally healthy normalized
+# catalog must not be duplicated merely because relationship audit flags exist.
+# Normal reconstruction runs only when the structural snapshot actually requires it.
 systemctl stop sports-big-board >/dev/null 2>&1 || true
 ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 if [[ -f "$HISTORY_DB" ]]; then
-  # Run reconstruction in an explicit if-condition so an expected non-zero
-  # audit result does NOT trigger the global ERR rollback trap before we can
-  # print and preserve its reconciliation report.
   if runuser -u sportsbigboard -- env SBB_STATE_DIR="$STATE_DIR" \
-      /usr/bin/python3 "$RELEASE_DIR/tools/ensure_history_v4.py" --state-dir "$STATE_DIR" \
-      > "$MIGRATION_JSON" 2> >(tee "$MIGRATION_STDERR" >&2); then
-    MIGRATION_RC=0
+      /usr/bin/python3 "$RELEASE_DIR/tools/ensure_history_v4.py" --state-dir "$STATE_DIR" --check-only \
+      > "$MIGRATION_CHECK_JSON" 2> >(tee "$MIGRATION_STDERR" >&2); then
+    CHECK_RC=0
   else
-    MIGRATION_RC=$?
+    CHECK_RC=$?
+  fi
+  echo "[deploy] v4 structural check-only exit code: $CHECK_RC"
+  cat "$MIGRATION_CHECK_JSON" 2>/dev/null || true
+  NEEDS_REBUILD="$(python3 - <<'PY' 2>/dev/null || echo 1
+import json
+try:
+    d=json.load(open('/tmp/sbb-history-v4-check.json'))
+    print(1 if (d.get('before') or {}).get('needsRebuild') else 0)
+except Exception:
+    print(1)
+PY
+)"
+  if [[ "$CHECK_RC" == "0" && "$NEEDS_REBUILD" == "0" ]]; then
+    cp -f "$MIGRATION_CHECK_JSON" "$MIGRATION_JSON"
+    MIGRATION_RC=0
+    echo "[deploy] Structurally healthy normalized catalog preserved in place; relationship startup is audit-only and no rollback database copy is created."
+  else
+    echo "[deploy] Structural reconstruction/recovery required; running full v4 preflight."
+    if runuser -u sportsbigboard -- env SBB_STATE_DIR="$STATE_DIR" \
+        /usr/bin/python3 "$RELEASE_DIR/tools/ensure_history_v4.py" --state-dir "$STATE_DIR" \
+        > "$MIGRATION_JSON" 2> >(tee "$MIGRATION_STDERR" >&2); then
+      MIGRATION_RC=0
+    else
+      MIGRATION_RC=$?
+    fi
   fi
   echo "[deploy] v4 catalog preflight exit code: $MIGRATION_RC"
   if [[ -s "$MIGRATION_JSON" ]]; then
@@ -221,10 +290,8 @@ else
   echo '[deploy] No historical catalog exists yet; v4 will initialize a fresh normalized catalog.'
 fi
 systemctl restart sports-big-board
-# Normal startup is fast, but a structurally healthy catalog may still need a
-# bounded in-place relationship repair before server.py opens port 8080.  As the
-# catalog grows, that repair can legitimately exceed the old ~48 second window.
-# Give it up to three minutes while still failing closed if the service dies.
+# Normal startup should now be read-only with respect to relationship audit.
+# Keep the existing bounded health window for cold caches and worker startup.
 healthy=0
 LOCAL_HEALTH_ATTEMPTS=90
 for ((attempt=1; attempt<=LOCAL_HEALTH_ATTEMPTS; attempt++)); do
@@ -234,7 +301,7 @@ for ((attempt=1; attempt<=LOCAL_HEALTH_ATTEMPTS; attempt++)); do
     break
   fi
   if (( attempt % 15 == 0 )); then
-    echo "[deploy] Backend still starting (${attempt}/${LOCAL_HEALTH_ATTEMPTS}); waiting for bounded catalog repair/startup..."
+    echo "[deploy] Backend still starting (${attempt}/${LOCAL_HEALTH_ATTEMPTS}); waiting for bounded startup..."
     journalctl -u sports-big-board --no-pager -n 12 || true
   fi
   sleep 2
@@ -272,7 +339,7 @@ if [[ -n "$PUBLIC_HOST" ]]; then
   fi
 fi
 trap - ERR
-rm -f "$ARCHIVE" "$MIGRATION_JSON" "$MIGRATION_STDERR"
+rm -f "$ARCHIVE" "$MIGRATION_JSON" "$MIGRATION_CHECK_JSON" "$MIGRATION_STDERR"
 echo "[deploy] Backend v${VERSION}-${SHA} is healthy."
 cat /tmp/sbb-health.json
 CURRENT_REAL="$(readlink -f "$CURRENT_LINK")"
@@ -280,7 +347,7 @@ mapfile -t RELEASES < <(find "$APP_BASE/releases" -mindepth 1 -maxdepth 1 -type 
 count=0
 for release in "${RELEASES[@]}"; do
   count=$((count+1))
-  if (( count <= 6 )); then continue; fi
+  if (( count <= 4 )); then continue; fi
   [[ "$release" == "$CURRENT_REAL" ]] && continue
   rm -rf "$release"
 done

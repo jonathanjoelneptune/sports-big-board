@@ -222,12 +222,12 @@ except ValueError:
     errors.append('index is missing Broadcast Design System load surface')
 
 
-# v5.3.3 Premium Masthead + Sports Ticker + Score Ribbon. This remains a
+# v5.3.4 Premium Masthead + Sports Ticker + Score Ribbon. This remains a
 # presentation-only late override. It must not replace native scrolling or add
 # animation/blur work that competes with the v5.2.10 motion budget.
 premium=text(Path('ui')/'premium-masthead-v5214.css')
 if f'ui/premium-masthead-v5214.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.3.3 premium masthead stylesheet')
+    errors.append('index is missing synchronized v5.3.4 premium masthead stylesheet')
 for required in [
     '.top-nav-header{', '.score-filters{', '.key-info-ribbon{',
     '.sbb-sports-ticker-conveyor .key-info-item{', '.score-ribbon{',
@@ -249,13 +249,13 @@ except ValueError:
     errors.append('index is missing premium masthead load surface')
 
 
-# v5.3.3 Premium Now Watching Experience. This is a presentation-only late
+# v5.3.4 Premium Now Watching Experience. This is a presentation-only late
 # override over the already-certified viewing/player/Game Center DOM. It may
 # visually join the player and embedded information surface, but may not add a
 # second playback owner, scroll controller, or continuously animated effect.
 now_watching=text(Path('ui')/'premium-now-watching-v5215.css')
 if f'ui/premium-now-watching-v5215.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.3.3 Premium Now Watching stylesheet')
+    errors.append('index is missing synchronized v5.3.4 Premium Now Watching stylesheet')
 for required in [
     '.now-playing-copy::before{', '.transport-play.primary{',
     'body.sbb-info-open.diagnostics-off .layout{', '.gc-hero{',
@@ -278,15 +278,15 @@ except ValueError:
     errors.append('index is missing Premium Now Watching load surface')
 
 
-# v5.3.3 Editorial Slugs + Integrated Up Next. The visual queue prefers the
+# v5.3.4 Editorial Slugs + Integrated Up Next. The visual queue prefers the
 # canonical visibleQueueEntries() API; rendered queue rows remain startup fallback.
 # NEXT delegates to the established tune owner rather than creating PROGRAM state.
 upnext_css=text(Path('ui')/'editorial-slugs-up-next-v5216.css')
 upnext_js=text(Path('ui')/'up-next-experience-v5217.js')
 if f'ui/editorial-slugs-up-next-v5216.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.3.3 editorial/up-next stylesheet')
+    errors.append('index is missing synchronized v5.3.4 editorial/up-next stylesheet')
 if f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.3.3 integrated Up Next module')
+    errors.append('index is missing synchronized v5.3.4 integrated Up Next module')
 for required in [
     '.key-info-item .key-info-type{', 'border-radius:2px!important',
     'box-shadow:inset 3px 0 0 var(--sbb-slug-accent)!important',
@@ -294,19 +294,19 @@ for required in [
     '#nextBtn::after{'
 ]:
     if required not in upnext_css:
-        errors.append(f'v5.3.3 visual contract missing: {required}')
+        errors.append(f'v5.3.4 visual contract missing: {required}')
 for required in [
     'SBB_UP_NEXT_EXPERIENCE', 'sourceRows()', 'canonicalProgramEntries(wanted=3)',
     'visibleQueueEntries(wanted)', 'renderDock()', 'patchRenderQueue()',
     'repairNextButton()', 'canonicalNextRow()', 'row.click()', 'nextVisibleQueueIndex()',
-    "reason:'manual next control v5.3.3 fallback'"
+    "reason:'manual next control v5.3.4 fallback'"
     , "const curated=String(item?.queueTitle||'').trim();if(curated)return curated;"
 ]:
     if required not in upnext_js:
-        errors.append(f'v5.3.3 Up Next behavior contract missing: {required}')
+        errors.append(f'v5.3.4 Up Next behavior contract missing: {required}')
 for forbidden in ['setInterval(', 'requestAnimationFrame(loop', 'new MutationObserver']:
     if forbidden in upnext_js:
-        errors.append(f'v5.3.3 Up Next module adds continuous observation/work: {forbidden}')
+        errors.append(f'v5.3.4 Up Next module adds continuous observation/work: {forbidden}')
 try:
     watching_pos2=index.index(f'ui/premium-now-watching-v5215.css?v={version}')
     upnext_css_pos=index.index(f'ui/editorial-slugs-up-next-v5216.css?v={version}')
@@ -314,21 +314,21 @@ try:
     ticker_pos2=index.index(f'<script src="architecture/key-info-current-v520.js?v={version}"></script>')
     upnext_js_pos=index.index(f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>')
     if not (watching_pos2 < upnext_css_pos < index.index('</head>')):
-        errors.append('v5.3.3 visual stylesheet load order is unsafe')
+        errors.append('v5.3.4 visual stylesheet load order is unsafe')
     if not (app_pos2 < ticker_pos2 < upnext_js_pos):
-        errors.append('v5.3.3 Up Next module must load after app and ticker ownership')
+        errors.append('v5.3.4 Up Next module must load after app and ticker ownership')
 except ValueError:
-    errors.append('index is missing v5.3.3 Up Next release surfaces')
+    errors.append('index is missing v5.3.4 Up Next release surfaces')
 
 
-# v5.3.3 Drawer Polish + Harmonized Controls. These are late presentation and
+# v5.3.4 Drawer Polish + Harmonized Controls. These are late presentation and
 # drawer-integration layers; they must be synchronized and load after Up Next.
 polish_css=text(Path('ui')/'harmonized-controls-drawer-v5217.css')
 polish_js=text(Path('ui')/'harmonized-controls-drawer-v5217.js')
 if f'ui/harmonized-controls-drawer-v5217.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.3.3 harmonized-controls stylesheet')
+    errors.append('index is missing synchronized v5.3.4 harmonized-controls stylesheet')
 if f'<script src="ui/harmonized-controls-drawer-v5217.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.3.3 drawer-polish module')
+    errors.append('index is missing synchronized v5.3.4 drawer-polish module')
 for required in [
     '.player-footer .utility-controls{display:none!important}',
     '#drawerCollapseToggle{', 'body.sbb-drawer-collapsed #infoDrawer{',
@@ -337,35 +337,35 @@ for required in [
     '#nextBtn::after{content:none!important;display:none!important}'
 ]:
     if required not in polish_css:
-        errors.append(f'v5.3.3 harmonized-controls visual contract missing: {required}')
+        errors.append(f'v5.3.4 harmonized-controls visual contract missing: {required}')
 for required in [
     'SBB_DRAWER_POLISH', 'setTransportLabels()', 'ensureDrawerToggle()',
     "STORAGE_KEY='sbb.drawer.collapsed.v1'",
     "document.body.classList.toggle('sbb-drawer-collapsed'"
 ]:
     if required not in polish_js:
-        errors.append(f'v5.3.3 drawer-polish behavior contract missing: {required}')
+        errors.append(f'v5.3.4 drawer-polish behavior contract missing: {required}')
 try:
     upnext_js_pos2=index.index(f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>')
     polish_js_pos=index.index(f'<script src="ui/harmonized-controls-drawer-v5217.js?v={version}"></script>')
     old_css_pos=index.index(f'ui/editorial-slugs-up-next-v5216.css?v={version}')
     polish_css_pos=index.index(f'ui/harmonized-controls-drawer-v5217.css?v={version}')
     if not (old_css_pos < polish_css_pos < index.index('</head>')):
-        errors.append('v5.3.3 harmonized-controls stylesheet load order is unsafe')
+        errors.append('v5.3.4 harmonized-controls stylesheet load order is unsafe')
     if not (upnext_js_pos2 < polish_js_pos):
-        errors.append('v5.3.3 drawer polish must load after integrated Up Next')
+        errors.append('v5.3.4 drawer polish must load after integrated Up Next')
 except ValueError:
-    errors.append('index is missing v5.3.3 drawer-polish release surfaces')
+    errors.append('index is missing v5.3.4 drawer-polish release surfaces')
 
 
-# v5.3.3 Game Center Workspace Reflow. The final late layer owns the actual
+# v5.3.4 Game Center Workspace Reflow. The final late layer owns the actual
 # desktop grid collapse, line-score placement and fixed Coming Up shelf.
 workspace_css=text(Path('ui')/'viewing-workspace-v5218.css')
 workspace_js=text(Path('ui')/'viewing-workspace-v5218.js')
 if f'ui/viewing-workspace-v5218.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.3.3 viewing-workspace stylesheet')
+    errors.append('index is missing synchronized v5.3.4 viewing-workspace stylesheet')
 if f'<script src="ui/viewing-workspace-v5218.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.3.3 viewing-workspace module')
+    errors.append('index is missing synchronized v5.3.4 viewing-workspace module')
 for required in [
     'body.sbb-game-center-side.sbb-drawer-collapsed .stage-card{',
     'grid-template-columns:minmax(0,1fr) var(--sbb-drawer-collapsed-width)!important',
@@ -378,7 +378,7 @@ for required in [
     '#prevBtn::before,#prevBtn::after,#nextBtn::before,#nextBtn::after{content:none!important;display:none!important}'
 ]:
     if required not in workspace_css:
-        errors.append(f'v5.3.3 viewing-workspace visual contract missing: {required}')
+        errors.append(f'v5.3.4 viewing-workspace visual contract missing: {required}')
 for required in [
     'SBB_VIEWING_WORKSPACE', 'setTransportLabels()', 'ensureDrawerToggle()',
     "STORAGE_KEY='sbb.drawer.collapsed.v2'", 'notifyLayout()',
@@ -387,29 +387,29 @@ for required in [
     "window.dispatchEvent(new Event('resize'))"
 ]:
     if required not in workspace_js:
-        errors.append(f'v5.3.3 viewing-workspace behavior contract missing: {required}')
+        errors.append(f'v5.3.4 viewing-workspace behavior contract missing: {required}')
 try:
     old_polish_css=index.index(f'ui/harmonized-controls-drawer-v5217.css?v={version}')
     workspace_css_pos=index.index(f'ui/viewing-workspace-v5218.css?v={version}')
     old_polish_js=index.index(f'<script src="ui/harmonized-controls-drawer-v5217.js?v={version}"></script>')
     workspace_js_pos=index.index(f'<script src="ui/viewing-workspace-v5218.js?v={version}"></script>')
     if not (old_polish_css < workspace_css_pos < index.index('</head>')):
-        errors.append('v5.3.3 viewing-workspace stylesheet must load after v5.2.17 polish')
+        errors.append('v5.3.4 viewing-workspace stylesheet must load after v5.2.17 polish')
     if not (old_polish_js < workspace_js_pos):
-        errors.append('v5.3.3 viewing-workspace module must load after v5.2.17 polish')
+        errors.append('v5.3.4 viewing-workspace module must load after v5.2.17 polish')
 except ValueError:
-    errors.append('index is missing v5.3.3 viewing-workspace release surfaces')
+    errors.append('index is missing v5.3.4 viewing-workspace release surfaces')
 
 
-# v5.3.3 Game Center Readability + Full Content Scroll. The provider renderer
+# v5.3.4 Game Center Readability + Full Content Scroll. The provider renderer
 # already emits all player/team rows. This late layer may only change layout,
 # labels, selected-state accessibility and canonical queue presentation.
 gc_read_css=text(Path('ui')/'game-center-readability-v5219.css')
 gc_read_js=text(Path('ui')/'game-center-readability-v5219.js')
 if f'ui/game-center-readability-v5219.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.3.3 Game Center readability stylesheet')
+    errors.append('index is missing synchronized v5.3.4 Game Center readability stylesheet')
 if f'<script src="ui/game-center-readability-v5219.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.3.3 Game Center readability module')
+    errors.append('index is missing synchronized v5.3.4 Game Center readability module')
 for required in [
     '#gameCenterPane #gameCenterContent>[data-gc-pane]:not(.hidden){',
     'overflow-y:auto!important', 'scrollbar-gutter:stable!important',
@@ -418,71 +418,71 @@ for required in [
     '#gameCenterPane .gc-player-team-tab{', '#gameCenterPane .gc-player-table th,'
 ]:
     if required not in gc_read_css:
-        errors.append(f'v5.3.3 Game Center readability visual contract missing: {required}')
+        errors.append(f'v5.3.4 Game Center readability visual contract missing: {required}')
 for required in [
     'SBB_GAME_CENTER_READABILITY', 'STAT_ABBR', 'polishSectionTabs()',
     'polishPlayerTeams()', 'abbreviatePlayerHeaders()', "btn.textContent='KEY PLAYS'",
     "btn.setAttribute('aria-selected',active?'true':'false')"
 ]:
     if required not in gc_read_js:
-        errors.append(f'v5.3.3 Game Center readability behavior contract missing: {required}')
+        errors.append(f'v5.3.4 Game Center readability behavior contract missing: {required}')
 for forbidden in ['setInterval(', 'requestAnimationFrame(loop']:
     if forbidden in gc_read_js:
-        errors.append(f'v5.3.3 Game Center readability adds continuous work: {forbidden}')
+        errors.append(f'v5.3.4 Game Center readability adds continuous work: {forbidden}')
 try:
     workspace_css_pos2=index.index(f'ui/viewing-workspace-v5218.css?v={version}')
     read_css_pos=index.index(f'ui/game-center-readability-v5219.css?v={version}')
     workspace_js_pos2=index.index(f'<script src="ui/viewing-workspace-v5218.js?v={version}"></script>')
     read_js_pos=index.index(f'<script src="ui/game-center-readability-v5219.js?v={version}"></script>')
     if not (workspace_css_pos2 < read_css_pos < index.index('</head>')):
-        errors.append('v5.3.3 Game Center readability stylesheet must load after workspace reflow')
+        errors.append('v5.3.4 Game Center readability stylesheet must load after workspace reflow')
     if not (workspace_js_pos2 < read_js_pos):
-        errors.append('v5.3.3 Game Center readability module must load after workspace reflow')
+        errors.append('v5.3.4 Game Center readability module must load after workspace reflow')
 except ValueError:
-    errors.append('index is missing v5.3.3 Game Center readability release surfaces')
+    errors.append('index is missing v5.3.4 Game Center readability release surfaces')
 
-# v5.3.3 explicit Game Center scroll owner + score-interrupt queue projection.
+# v5.3.4 explicit Game Center scroll owner + score-interrupt queue projection.
 # The selected score recap is a temporary playback interrupt; the pre-existing
 # programming queue must remain visible and resume after the selected game ends.
 gc_scroll_css=text(Path('ui')/'game-center-scroll-v5220.css')
 gc_scroll_js=text(Path('ui')/'game-center-scroll-v5220.js')
 interrupt_js=text(Path('architecture')/'score-interrupt-queue-v5220.js')
 if f'ui/game-center-scroll-v5220.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.3.3 Game Center scroll stylesheet')
+    errors.append('index is missing synchronized v5.3.4 Game Center scroll stylesheet')
 if f'<script src="architecture/score-interrupt-queue-v5220.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.3.3 score-interrupt queue module')
+    errors.append('index is missing synchronized v5.3.4 score-interrupt queue module')
 if f'<script src="ui/game-center-scroll-v5220.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.3.3 Game Center scroll module')
+    errors.append('index is missing synchronized v5.3.4 Game Center scroll module')
 for required in [
     '#gcContentScroller{', 'overflow-y:scroll!important', 'scrollbar-gutter:stable!important',
     '#gcContentScroller>[data-gc-pane]:not(.hidden){', 'overflow:visible!important',
     '#gameCenterPane>.next-up-dock{'
 ]:
     if required not in gc_scroll_css:
-        errors.append(f'v5.3.3 Game Center hard-scroll visual contract missing: {required}')
+        errors.append(f'v5.3.4 Game Center hard-scroll visual contract missing: {required}')
 for required in [
     'SBB_GAME_CENTER_SCROLL', 'ensureScroller()', "content.querySelectorAll(':scope > [data-gc-pane]')",
     'scroller.appendChild(pane)', 'scroller.scrollTop=0'
 ]:
     if required not in gc_scroll_js:
-        errors.append(f'v5.3.3 Game Center hard-scroll behavior contract missing: {required}')
+        errors.append(f'v5.3.4 Game Center hard-scroll behavior contract missing: {required}')
 for required in [
     'SBB_SCORE_INTERRUPT_QUEUE', "event.target?.closest?.('.score-card')", 'program:[...PROGRAM]',
     'resumeItemId', 'resumeGameKey', 'PROGRAM=[...snap.program]',
     'resumeDateProgramAfterSelection=wrapped', 'automatic resume after score-ribbon interrupt'
 ]:
     if required not in interrupt_js:
-        errors.append(f'v5.3.3 score-interrupt queue contract missing: {required}')
+        errors.append(f'v5.3.4 score-interrupt queue contract missing: {required}')
 for required in [
     "state.source='score-interrupt-projection'", 'window.SBB_SCORE_INTERRUPT_QUEUE?.entries?.(wanted)',
     'entry?.interruptResume&&window.SBB_SCORE_INTERRUPT_QUEUE?.play?.(entry)',
     'renderInterruptQueueList()', 'RESUMES AFTER SELECTED HIGHLIGHT'
 ]:
     if required not in upnext_js:
-        errors.append(f'v5.3.3 Up Next interrupt projection contract missing: {required}')
+        errors.append(f'v5.3.4 Up Next interrupt projection contract missing: {required}')
 for forbidden in ['setInterval(', 'requestAnimationFrame(loop', 'new MutationObserver']:
     if forbidden in interrupt_js or forbidden in gc_scroll_js:
-        errors.append(f'v5.3.3 scroll/interrupt module adds continuous work: {forbidden}')
+        errors.append(f'v5.3.4 scroll/interrupt module adds continuous work: {forbidden}')
 try:
     app_pos3=index.index(f'<script src="app.js?v={version}"></script>')
     interrupt_pos=index.index(f'<script src="architecture/score-interrupt-queue-v5220.js?v={version}"></script>')
@@ -492,53 +492,53 @@ try:
     read_js_pos2=index.index(f'<script src="ui/game-center-readability-v5219.js?v={version}"></script>')
     scroll_js_pos=index.index(f'<script src="ui/game-center-scroll-v5220.js?v={version}"></script>')
     if not (app_pos3 < interrupt_pos < upnext_pos3):
-        errors.append('v5.3.3 score-interrupt queue must load after app and before Up Next')
+        errors.append('v5.3.4 score-interrupt queue must load after app and before Up Next')
     if not (read_css_pos2 < scroll_css_pos < index.index('</head>')):
-        errors.append('v5.3.3 hard-scroll stylesheet must load after Game Center readability')
+        errors.append('v5.3.4 hard-scroll stylesheet must load after Game Center readability')
     if not (read_js_pos2 < scroll_js_pos):
-        errors.append('v5.3.3 hard-scroll module must load after Game Center readability')
+        errors.append('v5.3.4 hard-scroll module must load after Game Center readability')
 except ValueError:
-    errors.append('index is missing v5.3.3 scroll/interrupt release surfaces')
+    errors.append('index is missing v5.3.4 scroll/interrupt release surfaces')
 
 
-# v5.3.3 Clean Collapse + Viewport Fit. Collapsing the information drawer must
+# v5.3.4 Clean Collapse + Viewport Fit. Collapsing the information drawer must
 # return its entire desktop grid allocation to the player; the only remaining UI
 # is a centered seam handle. The expanded stage is measured against the visible
 # viewport so width growth cannot create a new document scrollbar.
 collapse_css=text(Path('ui')/'collapse-viewport-fit-v5221.css')
 collapse_js=text(Path('ui')/'collapse-viewport-fit-v5221.js')
 if f'ui/collapse-viewport-fit-v5221.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.3.3 collapse/viewport stylesheet')
+    errors.append('index is missing synchronized v5.3.4 collapse/viewport stylesheet')
 if f'<script src="ui/collapse-viewport-fit-v5221.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.3.3 collapse/viewport module')
+    errors.append('index is missing synchronized v5.3.4 collapse/viewport module')
 for required in ['grid-template-columns:minmax(0,1fr) 0!important','max-width:0!important','top:50%!important','--sbb-collapsed-stage-height','aspect-ratio:auto!important']:
     if required not in collapse_css:
-        errors.append(f'v5.3.3 clean-collapse visual contract missing: {required}')
+        errors.append(f'v5.3.4 clean-collapse visual contract missing: {required}')
 for required in [f"const VERSION='{version}'",'stage.getBoundingClientRect().top','viewportHeight()-top-bottomGap',"body.style.setProperty('--sbb-collapsed-stage-height'",'SBB_COLLAPSE_VIEWPORT_FIT']:
     if required not in collapse_js:
-        errors.append(f'v5.3.3 viewport-fit behavior contract missing: {required}')
+        errors.append(f'v5.3.4 viewport-fit behavior contract missing: {required}')
 try:
     scroll_css_pos=index.index(f'ui/game-center-scroll-v5220.css?v={version}')
     collapse_css_pos=index.index(f'ui/collapse-viewport-fit-v5221.css?v={version}')
     scroll_js_pos=index.index(f'<script src="ui/game-center-scroll-v5220.js?v={version}"></script>')
     collapse_js_pos=index.index(f'<script src="ui/collapse-viewport-fit-v5221.js?v={version}"></script>')
     if not (scroll_css_pos < collapse_css_pos < index.index('</head>')):
-        errors.append('v5.3.3 collapse stylesheet must load after Game Center hard-scroll layer')
+        errors.append('v5.3.4 collapse stylesheet must load after Game Center hard-scroll layer')
     if not (scroll_js_pos < collapse_js_pos):
-        errors.append('v5.3.3 collapse module must load after Game Center hard-scroll module')
+        errors.append('v5.3.4 collapse module must load after Game Center hard-scroll module')
 except ValueError:
-    errors.append('index is missing v5.3.3 collapse/viewport release surfaces')
+    errors.append('index is missing v5.3.4 collapse/viewport release surfaces')
 
 
-# v5.3.3 Browse + Curated Programming. This is a user-facing discovery layer over
+# v5.3.4 Browse + Curated Programming. This is a user-facing discovery layer over
 # the existing historical audit catalog and canonical playback PROGRAM. It may
 # curate/filter media, but may not create a second playback owner or polling loop.
-browse_css=text(Path('ui')/'browse-curated-programming-v533.css')
-browse_js=text(Path('ui')/'browse-curated-programming-v533.js')
-if f'ui/browse-curated-programming-v533.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.3.3 Browse stylesheet')
-if f'<script src="ui/browse-curated-programming-v533.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.3.3 Browse module')
+browse_css=text(Path('ui')/'browse-curated-programming-v534.css')
+browse_js=text(Path('ui')/'browse-curated-programming-v534.js')
+if f'ui/browse-curated-programming-v534.css?v={version}' not in index:
+    errors.append('index is missing synchronized v5.3.4 Browse stylesheet')
+if f'<script src="ui/browse-curated-programming-v534.js?v={version}"></script>' not in index:
+    errors.append('index is missing synchronized v5.3.4 Browse module')
 for required in [
     '#sbbBrowseBtn{', '#scoreFilters button[data-score-filter]:has(+ #sbbBrowseSubnav:not(.hidden)){', '.sbb-browse-popover{', '.sbb-curation-ribbon{',
     'body.sbb-curation-active .score-ribbon{display:none!important}',
@@ -549,9 +549,9 @@ for required in [
     'body.sbb-curated-no-game-center #gameCenterContent{display:none!important}', ':fullscreen .sbb-browse-popover'
 ]:
     if required not in browse_css:
-        errors.append(f'v5.3.3 Browse visual contract missing: {required}')
+        errors.append(f'v5.3.4 Browse visual contract missing: {required}')
 for required in [
-    "const VERSION='5.3.3'", 'SBB_CURATED_BROWSE',
+    "const VERSION='5.3.4'", 'SBB_CURATED_BROWSE',
     "FAVORITES_KEY='sbb.curation.favorites.v1'", '/api/history/audit?',
     'MAX_AUDIT_ROWS=1000', "'RANKED TODAY'", "'SEEDED TODAY'",
     'fetchAuditRows(state.league,state.entity,MAX_AUDIT_ROWS)',
@@ -569,46 +569,46 @@ for required in [
     'syncCuratedGameCenterContext(state.queueItems[bounded])'
 ]:
     if required not in browse_js:
-        errors.append(f'v5.3.3 Browse behavior contract missing: {required}')
+        errors.append(f'v5.3.4 Browse behavior contract missing: {required}')
 for forbidden in ['new MutationObserver', 'setInterval(', 'requestAnimationFrame(loop', 'data-curation-select', '+ QUEUE', '‹ DAY', 'id="sbbBrowseExit"']:
     if forbidden in browse_js:
-        errors.append(f'v5.3.3 Browse module contains forbidden work/legacy queue affordance: {forbidden}')
+        errors.append(f'v5.3.4 Browse module contains forbidden work/legacy queue affordance: {forbidden}')
 try:
     collapse_css_pos2=index.index(f'ui/collapse-viewport-fit-v5221.css?v={version}')
-    browse_css_pos=index.index(f'ui/browse-curated-programming-v533.css?v={version}')
+    browse_css_pos=index.index(f'ui/browse-curated-programming-v534.css?v={version}')
     collapse_js_pos2=index.index(f'<script src="ui/collapse-viewport-fit-v5221.js?v={version}"></script>')
-    browse_js_pos=index.index(f'<script src="ui/browse-curated-programming-v533.js?v={version}"></script>')
+    browse_js_pos=index.index(f'<script src="ui/browse-curated-programming-v534.js?v={version}"></script>')
     if not (collapse_css_pos2 < browse_css_pos < index.index('</head>')):
-        errors.append('v5.3.3 Browse stylesheet must load after the v5.2 viewing polish stack')
+        errors.append('v5.3.4 Browse stylesheet must load after the v5.2 viewing polish stack')
     if not (collapse_js_pos2 < browse_js_pos):
-        errors.append('v5.3.3 Browse module must load after score/game-center/viewing ownership modules')
+        errors.append('v5.3.4 Browse module must load after score/game-center/viewing ownership modules')
 except ValueError:
-    errors.append('index is missing v5.3.3 Browse release surfaces')
+    errors.append('index is missing v5.3.4 Browse release surfaces')
 
-# v5.3.3 viewport-fit applies to the player whether Game Center is open or closed.
+# v5.3.4 viewport-fit applies to the player whether Game Center is open or closed.
 workspace_fit_css=text(Path('ui')/'workspace-viewport-fit-v531.css')
 workspace_fit_js=text(Path('ui')/'workspace-viewport-fit-v531.js')
 if f'ui/workspace-viewport-fit-v531.css?v={version}' not in index:
-    errors.append('index is missing synchronized v5.3.3 workspace viewport-fit stylesheet')
+    errors.append('index is missing synchronized v5.3.4 workspace viewport-fit stylesheet')
 if f'<script src="ui/workspace-viewport-fit-v531.js?v={version}"></script>' not in index:
-    errors.append('index is missing synchronized v5.3.3 workspace viewport-fit module')
+    errors.append('index is missing synchronized v5.3.4 workspace viewport-fit module')
 for required in ['--sbb-workspace-stage-height','body.sbb-game-center-side .stage-card>.stage{','aspect-ratio:auto!important']:
     if required not in workspace_fit_css:
-        errors.append(f'v5.3.3 workspace viewport-fit visual contract missing: {required}')
+        errors.append(f'v5.3.4 workspace viewport-fit visual contract missing: {required}')
 for required in [f"const VERSION='{version}'","body.classList.contains('sbb-game-center-side')",'viewportHeight()-top-bottomGap',"sbb:browse-layout",'SBB_WORKSPACE_VIEWPORT_FIT']:
     if required not in workspace_fit_js:
-        errors.append(f'v5.3.3 workspace viewport-fit behavior contract missing: {required}')
+        errors.append(f'v5.3.4 workspace viewport-fit behavior contract missing: {required}')
 try:
-    browse_css_pos2=index.index(f'ui/browse-curated-programming-v533.css?v={version}')
+    browse_css_pos2=index.index(f'ui/browse-curated-programming-v534.css?v={version}')
     fit_css_pos=index.index(f'ui/workspace-viewport-fit-v531.css?v={version}')
-    browse_js_pos2=index.index(f'<script src="ui/browse-curated-programming-v533.js?v={version}"></script>')
+    browse_js_pos2=index.index(f'<script src="ui/browse-curated-programming-v534.js?v={version}"></script>')
     fit_js_pos=index.index(f'<script src="ui/workspace-viewport-fit-v531.js?v={version}"></script>')
     if not (browse_css_pos2 < fit_css_pos < index.index('</head>')):
         errors.append('workspace viewport-fit stylesheet must load after Browse styling')
     if not (browse_js_pos2 < fit_js_pos):
         errors.append('workspace viewport-fit module must load after Browse module')
 except ValueError:
-    errors.append('index is missing v5.3.3 Browse/viewport-fit release surfaces')
+    errors.append('index is missing v5.3.4 Browse/viewport-fit release surfaces')
 
 if errors:
     print('RELEASE INTEGRITY CHECK FAILED')
