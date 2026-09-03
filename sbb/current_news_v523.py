@@ -23,15 +23,15 @@ from urllib.parse import urlparse
 
 from . import current_news_v522 as source_v522
 
-VERSION = "5.3.8-sports-ticker-5"
+VERSION = "5.3.8-sports-ticker-4"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _STATE_PATH = _STATE_DIR / "sports-ticker.json"
 _MIGRATION_PATHS = (_STATE_DIR / "sports-ticker-v524.json", _STATE_DIR / "key-info-intelligence-v523.json")
 _REFRESH_SECONDS = 20 * 60
 _MAX_ROWS = 180
 _OPENAI_BATCH_SIZE = 20
-_OPENAI_MAX_CANDIDATES_AUTO = 40
-_OPENAI_MAX_CANDIDATES_MANUAL = 60
+_OPENAI_MAX_CANDIDATES_AUTO = 20
+_OPENAI_MAX_CANDIDATES_MANUAL = 40
 _OPENAI_BATCH_PACE_SECONDS = 2.5
 _OPENAI_MAX_ATTEMPTS = 3
 _OPENAI_LIMIT_CODES = {"credit_balance_exhausted","organization_usage_limit_exceeded","organization_spend_limit_exceeded","project_spend_limit_exceeded"}
