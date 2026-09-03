@@ -1,0 +1,24 @@
+Sports Big Board v5.3.12 — Special Event Playback + Standings
+
+USER-VISIBLE FIXES
+- Special Event playback is isolated from the prior normal-day/general queue. A failed World Cup source can no longer visually fall back to an old MLB video.
+- Special Event historical games retain multiple verified same-game media sources. Only the preferred source appears in the queue; alternate verified sources are used as bounded same-game recovery.
+- If every source for a selected Special Event highlight is unavailable, the board stays in the Special Event context and shows the exact event fallback instead of resurrecting prior MLB programming.
+- Switching between Special Event matches aggressively synchronizes/clears Game Center identity. If that competition does not expose the standard Game Center provider, the Game Center pane now shows the selected event matchup as a local fallback rather than stale MLB content.
+- League View is standings-first for core leagues. League Pulse, Series Context, and Today/Recent blocks no longer consume the bottom of MLB/NFL/NBA/NHL/EPL/MLS/NCAAF League View.
+- MLB and NFL League View now guarantees familiar division tables even when ESPN returns only conference/league summary standings.
+- MLB: AL East/Central/West + AL Wild Card in the left column; NL East/Central/West + NL Wild Card in the right column.
+- NFL: AFC East/North/South/West + AFC Wild Card; NFC East/North/South/West + NFC Wild Card.
+- Division leaders are excluded from Wild Card tables. The third Wild Card position receives the cutoff rule.
+- Special Events retain group/bracket/round/event-match information because that is their equivalent of standings/playoff structure.
+
+PLAYBACK OWNERSHIP
+- Curated queue remains canonical while Special Event browsing is active.
+- Playback failure wrapper runs only for active curated programming and yields to Score Interrupt Queue when a normal score-card interrupt owns playback.
+- Stale external-fallback/loading presentation is cleared before each curated tune.
+
+RELEASE FILES
+- VERSION / architecture/VERSION = 5.3.12
+- All cache-busted JS/CSS references synchronized to 5.3.12.
+- Sports Ticker rate-limit contract remains unchanged: 20 automatic candidates, 40 manual candidates, 20-record OpenAI batches.
+- Added tests/test_v5312_special_event_playback_standings.py.

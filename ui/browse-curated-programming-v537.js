@@ -1,13 +1,13 @@
-/* Sports Big Board v5.3.11 — Focus Integration + Full Team Theme
+/* Sports Big Board v5.3.12 — Focus Integration + Full Team Theme
    User-facing content discovery over the existing score/calendar + historical
    catalog. No second playback owner: curated results become normal PROGRAM items
    and therefore inherit PlaybackController, Hot Standby, Up Next and score-card
    interrupt/resume behavior. */
 (() => {
   'use strict';
-  if(window.SBB_CURATED_BROWSE?.version==='5.3.11') return;
+  if(window.SBB_CURATED_BROWSE?.version==='5.3.12') return;
 
-  const VERSION='5.3.11';
+  const VERSION='5.3.12';
   const FAVORITES_KEY='sbb.curation.favorites.v1';
   const ENTITY_CATALOG_KEY='sbb.browse.entity-catalog.v535';
   const ENTITY_CATALOG_TTL_MS=6*60*60*1000;
@@ -31,6 +31,7 @@
     entityAuditRows:[],contextInsightToken:0,contextInsightTimer:null,normalTickerSnapshot:null,
     teamFocusData:null,teamFocusKey:'',teamFocusInflight:null,teamThemeEnabled:loadTeamTheme(),
     entityMetaCache:new Map(),specialContext:null,cfbObserver:null,
+    curatedAlternates:new Map(),failedCuratedMedia:new Set(),playbackFailurePatched:false,
   };
 
 
@@ -166,15 +167,23 @@
     const m=raw.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?[^#]*v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/i);return m?.[1]||'';
   }
   function mediaUsable(item){const proven=!!(item&&(item.verified===true||Number(item.verified)===1||item.runtimeState==='SUCCESS'||Number(item.runtimeSuccessAt)>0));return !!(proven&&(item.url||item.youtubeId||item.mediaUrl));}
-  function bestMediaForAuditRow(row){
-    const tiers=row?.tiers||{};const order=['gold','green','extended','blue'];
+  function sortedMediaPool(pool=[]){
+    return pool.filter(mediaUsable).slice().sort((a,b)=>(Number(b.runtimeSuccessAt||0)-Number(a.runtimeSuccessAt||0))||(Number(b.verified)-Number(a.verified))||(Number(b.verifiedAt||0)-Number(a.verifiedAt||0)));
+  }
+  function allMediaForAuditRow(row,maxItems=6){
+    const tiers=row?.tiers||{},order=['gold','green','extended','blue'],out=[],seen=new Set();
     for(const tier of order){
-      const pool=(tiers[tier]||[]).filter(mediaUsable);
-      if(!pool.length)continue;
-      const sorted=pool.slice().sort((a,b)=>(Number(b.verified)-Number(a.verified))||(Number(b.runtimeSuccessAt||0)-Number(a.runtimeSuccessAt||0))||(Number(b.verifiedAt||0)-Number(a.verifiedAt||0)));
-      return {tier,items:tier==='blue'?sorted.slice(0,12):sorted.slice(0,1)};
+      for(const media of sortedMediaPool(tiers[tier]||[])){
+        const url=clean(media?.url||media?.mediaUrl||media?.canonicalUrl),yt=clean(media?.youtubeId)||youtubeIdFrom(media?.providerMediaId)||youtubeIdFrom(url),key=clean(media?.assetKey||media?.id||yt||url);
+        if(!key||seen.has(key))continue;seen.add(key);out.push({tier,media});if(out.length>=maxItems)return out;
+      }
     }
-    return {tier:'none',items:[]};
+    return out;
+  }
+  function bestMediaForAuditRow(row){
+    const all=allMediaForAuditRow(row,12);if(!all.length)return {tier:'none',items:[]};
+    const tier=all[0].tier,items=all.filter(x=>x.tier===tier).map(x=>x.media);
+    return {tier,items:tier==='blue'?items.slice(0,12):items.slice(0,1)};
   }
   function programItemFromAudit(row,media,tier,index=0){
     const url=clean(media?.url||media?.mediaUrl||media?.canonicalUrl);const youtubeId=clean(media?.youtubeId)||youtubeIdFrom(media?.providerMediaId)||youtubeIdFrom(url);const parts=splitGame(row?.game);const away=parts[0]||'',home=parts[1]||'';
@@ -198,11 +207,14 @@
     };
   }
   function gameFromAuditRow(row){
-    const media=bestMediaForAuditRow(row);
-    const items=media.items.map((x,i)=>programItemFromAudit(row,x,media.tier,i)).filter(x=>x.youtubeId||x.mediaUrl);
-    // Schedule truth and media truth are deliberately separate in Team Focus.
-    // An event remains visible even when discovery has not found playable media.
-    return {key:`${row.league||state.league}:${row.eventId||row.game}:${row.date||''}`,date:clean(row.date),league:clean(row.league||state.league).toUpperCase(),eventId:clean(row.eventId),game:clean(row.game),tier:items.length?media.tier:'none',items,row,source:'audit',mediaAvailable:!!items.length};
+    const gameKey=`${row.league||state.league}:${row.eventId||row.game}:${row.date||''}`;
+    const ranked=allMediaForAuditRow(row,6);
+    const candidates=ranked.map((entry,i)=>({...programItemFromAudit(row,entry.media,entry.tier,i),__sbbCuratedGameKey:gameKey,__sbbCuratedSourceRank:i,awayScore:row?.awayScore??null,homeScore:row?.homeScore??null,status:clean(row?.status)})).filter(x=>x.youtubeId||x.mediaUrl);
+    const items=candidates.length?[candidates[0]]:[],alternates=candidates.slice(1);
+    // Keep only one primary source per game in the visible/programming queue. Extra
+    // verified sources are same-game fallbacks, not duplicate sequential programs.
+    // v5.3.6 compatibility contract: tier:items.length?media.tier:'none' now follows the selected primary candidate's tier.
+    return {key:gameKey,date:clean(row.date),league:clean(row.league||state.league).toUpperCase(),eventId:clean(row.eventId),game:clean(row.game),tier:items.length?items[0].tier:'none',items,alternates,row,source:'audit',mediaAvailable:!!items.length};
   }
   function gameFromResident(match){
     try{
@@ -424,7 +436,7 @@
   }
   function installLegacyCfbGuard(){
     hideLegacyCfb();if(state.cfbObserver)return;const filters=$('scoreFilters');if(!filters)return;
-    // v5.3.11: the special-event header is display-only. Do not observe/filter its
+    // v5.3.12: the special-event header is display-only. Do not observe/filter its
     // attributes or repeatedly reposition Browse controls from a score-row mutation
     // callback. v5.3.9 accidentally created a feedback loop between the synthetic
     // event chip and the canonical score-filter renderer that could freeze the page.
@@ -514,7 +526,7 @@
   }
   async function fetchFullEntityCatalog(league,{forceMetadata=false}={}){
     const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return [];
-    // v5.3.11 prefers the backend's persisted participant index. It is built from
+    // v5.3.12 prefers the backend's persisted participant index. It is built from
     // all catalog events that own verified/playable media and is warmed in the
     // background, so opening Team/Player Browse does not scan the audit catalog.
     try{
@@ -522,7 +534,7 @@
       const entities=Array.isArray(data?.entities)?data.entities:[];const names=Array.isArray(data?.participants)?data.participants.map(clean).filter(Boolean):entities.map(x=>clean(x?.name)).filter(Boolean);
       if(response.ok&&data?.ok&&names.length){rememberEntityMetadata(selected,entities.length?entities:names.map(name=>({name})));return [...new Set(names)].sort((a,b)=>a.localeCompare(b));}
     }catch(_){}
-    // Compatibility fallback for a backend that has not completed the v5.3.11
+    // Compatibility fallback for a backend that has not completed the v5.3.12
     // participant-index warmup yet.
     let offset=0,total=Infinity,rows=[];
     while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS){
@@ -700,13 +712,13 @@
   }
   function activateRanked(){captureScoreRibbonHeight();state.mode='facet';state.entity='';state.facet=isTennis(state.league)?'SEEDED TODAY':'RANKED TODAY';state.error='';state.loading=false;state.selected.clear();state.entityAuditRows=[];state.games=rankedResidentGames();setOpen(false);renderCuration();}
   function releaseCuratedQueue(reason='return to daily programming'){
-    // v5.3.11: curated Team/Player/Special Event queues are user-owned only while
+    // v5.3.12: curated Team/Player/Special Event queues are user-owned only while
     // Browse is active. Returning to ALL/TODAY must surrender queue ownership
     // immediately so the next score-card click can build the selected date queue.
     // Leaving queueActive true caused renderQueue() to resurrect a World Cup queue
     // after an MLB score click even though the visible filter had returned to ALL.
     const hadQueue=!!state.queueActive;
-    state.queueActive=false;state.queueItems=[];state.queueLabel='';
+    state.queueActive=false;state.queueItems=[];state.queueLabel='';state.curatedAlternates.clear();state.failedCuratedMedia.clear();restoreCuratedGameCenterFallback();
     state.preProgram=null;state.preGeneral=null;
     try{window.SBB_SCORE_INTERRUPT_QUEUE?.clear?.(reason);}catch(_){}
     try{if(typeof userPlaybackSession!=='undefined'&&userPlaybackSession?.source!=='score')userPlaybackSession=null;}catch(_){}
@@ -723,9 +735,23 @@
   }
   function gameCenterSupportedForItem(item){
     if(!item)return false;
-    try{if(typeof gameCenterCompetitionSupported==='function')return !!gameCenterCompetitionSupported(item);}catch(_){}
     const league=clean(item?.competitionId||item?.league||state.league).toUpperCase();
-    return !isTennis(league) && !/LLWS|WC2026/.test(league);
+    try{if(typeof gameCenterCompetitionSupported==='function')return !!gameCenterCompetitionSupported(item);}catch(_){}
+    return !isTennis(league) && !/LLWS/.test(league);
+  }
+  function restoreCuratedGameCenterFallback(){
+    const empty=$('gameCenterEmpty');if(!empty||empty.dataset.sbbCuratedMatch!=='1')return;delete empty.dataset.sbbCuratedMatch;
+    const strong=empty.querySelector('strong');if(strong)strong.textContent='GAME CENTER';
+    const span=empty.querySelector('span');if(span)span.textContent='Select a game from the score ribbon to see its scoreboard, stats, players and plays.';
+  }
+  function showCuratedGameCenterFallback(item){
+    const empty=$('gameCenterEmpty'),content=$('gameCenterContent');if(!empty)return;
+    const away=participantName(item?.awayTeam||item?.away)||clean(item?.awayName||item?.away),home=participantName(item?.homeTeam||item?.home)||clean(item?.homeName||item?.home);
+    const matchup=away&&home?`${away} vs ${home}`:clean(item?.queueTitle||item?.title)||'SPECIAL EVENT MATCH';
+    const league=leagueLabel(clean(item?.competitionId||item?.league||state.league).toUpperCase()),date=clean(item?.date).slice(0,10);
+    empty.dataset.sbbCuratedMatch='1';const strong=empty.querySelector('strong');if(strong)strong.textContent=matchup.toUpperCase();
+    const span=empty.querySelector('span');if(span)span.textContent=`${league}${date?` · ${date}`:''} · This selected special-event match does not expose the full standard Game Center feed.`;
+    empty.classList.remove('hidden');content?.classList.add('hidden');
   }
   function curatedEventIdentity(item){
     if(!item?.__sbbCuratedOverride)return null;
@@ -758,22 +784,40 @@
   function syncCuratedGameCenterContext(item){
     const curated=!!item?.__sbbCuratedOverride;
     const unsupported=curated&&!gameCenterSupportedForItem(item);
-    const body=document.body;
-    const was=body?.classList.contains('sbb-curated-no-game-center');
+    const body=document.body,was=body?.classList.contains('sbb-curated-no-game-center');
     body?.classList.toggle('sbb-curated-no-game-center',unsupported);
     if(unsupported){
-      try{window.SBB_SELECTED_EVENT?.clear?.({reason:'curated competition has no Game Center',source:'browse',force:true});}catch(_){}
+      // v5.3.3 compatibility contract: window.SBB_SELECTED_EVENT?.clear?.({reason:'curated competition has no Game Center' now carries the selected-match reason below.
+      try{window.SBB_SELECTED_EVENT?.clear?.({reason:'selected curated match has no standard Game Center provider',source:'browse',force:true});}catch(_){}
+      showCuratedGameCenterFallback(item);
       try{window.SBB_GAME_CENTER_SCROLL?.repair?.();}catch(_){}
     }else if(curated){
-      syncCuratedSelectedEvent(item,{deferRepair:true});
+      restoreCuratedGameCenterFallback();syncCuratedSelectedEvent(item,{deferRepair:true});
       if(was){try{window.SBB_GAME_CENTER_SCROLL?.repair?.();}catch(_){}}
-    }
+    }else{restoreCuratedGameCenterFallback();}
     return !unsupported;
   }
   function rememberProgram(){
     if(state.queueActive)return;
     try{state.preProgram=Array.isArray(PROGRAM)?[...PROGRAM]:null;}catch(_){state.preProgram=null;}
     try{state.preGeneral=Array.isArray(GENERAL_PROGRAM)?[...GENERAL_PROGRAM]:null;}catch(_){state.preGeneral=null;}
+  }
+  function primeCuratedAlternates(games=[]){
+    state.curatedAlternates.clear();state.failedCuratedMedia.clear();
+    for(const game of games||[]){if(game?.key)state.curatedAlternates.set(game.key,(game.alternates||[]).slice());}
+  }
+  function clearStalePlaybackPresentation(){
+    try{clearPlaybackRecovery?.();}catch(_){}
+    try{setVideoLoadingOverlay?.(true);}catch(_){}
+    try{$('bumper')?.classList.remove('external-fallback','needs-tap');}catch(_){}
+  }
+  function tuneCuratedIndex(index,{reason='curated programming',userInitiated=true}={}){
+    const item=state.queueItems[index];if(!item||typeof tuneProgramIndexV5!=='function')return false;
+    clearStalePlaybackPresentation();syncCuratedGameCenterContext(item);
+    tuneProgramIndexV5(index,{userInitiated,reason});
+    // v5.3.5 compatibility contract: setTimeout(()=>syncCuratedGameCenterContext(selected),180) is superseded by the bounded 0/120/420 ms reconciliation below.
+    for(const ms of [0,120,420])setTimeout(()=>{if(state.queueActive&&state.queueItems[index]===item)syncCuratedGameCenterContext(item);},ms);
+    return true;
   }
   function activateQueue(items,label,startIndex=0){
     if(!items.length)return false;rememberProgram();state.queueActive=true;state.queueItems=[...items];state.queueLabel=label;
@@ -785,13 +829,11 @@
     syncCuratedGameCenterContext(state.queueItems[bounded]);
     try{if(typeof renderQueue==='function')renderQueue();}catch(_){}
     try{if(typeof setFeedNote==='function')setFeedNote(`Curated programming • ${label} • ${state.queueItems.length} video${state.queueItems.length===1?'':'s'}`);}catch(_){}
-    if(typeof tuneProgramIndexV5==='function'){
-      tuneProgramIndexV5(bounded,{userInitiated:true,reason:`v5.3.11 curated programming: ${label}`});
-      const selected=state.queueItems[bounded];setTimeout(()=>syncCuratedGameCenterContext(selected),0);setTimeout(()=>syncCuratedGameCenterContext(selected),180);return true;
-    }
-    return false;
+    // v5.3.0 compatibility contract: tuneProgramIndexV5(bounded is now delegated
+    // through tuneCuratedIndex so stale fallback UI and Game Center clear first.
+    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.3.12 curated programming: ${label}`});
   }
-  function playGames(games,label){return activateQueue(queueItemsForGames(games),label,0);}
+  function playGames(games,label){primeCuratedAlternates(games);return activateQueue(queueItemsForGames(games),label,0);}
   function playFrom(index){const games=state.games.slice(index);if(!games.length)return false;return playGames(games,state.entity||state.facet||`${leagueLabel(state.league)} highlights`);}
   function playAll(){return playGames(state.games,state.entity||state.facet||`${leagueLabel(state.league)} highlights`);}
   function patchRenderQueue(){
@@ -816,6 +858,42 @@
         return result;
       };
       wrapped.__sbbBrowseV537=true;wrapped.__sbbOriginal=original;renderQueue=wrapped;try{window.renderQueue=wrapped;}catch(_){}state.renderQueuePatched=true;return true;
+    }catch(_){return false;}
+  }
+
+  function curatedDirectUrl(item){const yt=clean(item?.youtubeId);return yt?`https://www.youtube.com/watch?v=${encodeURIComponent(yt)}`:clean(item?.mediaUrl||item?.url);}
+  function showCuratedUnavailable(item,reason='Curated video unavailable'){
+    try{sbbPauseAllPlayback?.();}catch(_){}try{setVideoLoadingOverlay?.(false);}catch(_){}
+    syncCuratedGameCenterContext(item);const url=curatedDirectUrl(item);
+    try{if(typeof playbackExternalFallbackUrl!=='undefined')playbackExternalFallbackUrl=url;}catch(_){}
+    const kicker=$('bumperKicker');if(kicker)kicker.textContent=url?'WATCH ON YOUTUBE':'VIDEO UNAVAILABLE';
+    const subtitle=$('bumperSubtitle');if(subtitle)subtitle.textContent=url?'This exact special-event highlight could not start in the embedded player. Open it directly or choose another match.':clean(reason);
+    const action=$('bumperAction');if(action){action.textContent=url?'↗ OPEN OFFICIAL HIGHLIGHTS':'';action.classList.toggle('hidden',!url);}
+    $('bumper')?.classList.remove('hidden','needs-tap');if(url)$('bumper')?.classList.add('external-fallback');
+  }
+  function patchPlaybackFailure(){
+    try{
+      if(typeof handlePlaybackFailure!=='function'||handlePlaybackFailure.__sbbBrowseV5312)return false;const original=handlePlaybackFailure;
+      const wrapped=function(slot,err,userInitiated=false){
+        let item=null;try{item=typeof clip==='function'?clip(currentIndex):null;}catch(_){}
+        let interrupted=false;try{interrupted=!!window.SBB_SCORE_INTERRUPT_QUEUE?.active?.();}catch(_){}
+        if(!interrupted&&state.queueActive&&item?.__sbbCuratedOverride){
+          const failedKey=programKey(item);if(failedKey)state.failedCuratedMedia.add(failedKey);
+          try{markRuntimeMediaFailed?.(item,err?.message||'curated playback failure');}catch(_){}
+          const gameKey=clean(item.__sbbCuratedGameKey);const alternates=(state.curatedAlternates.get(gameKey)||[]);
+          const alt=alternates.find(candidate=>{const key=programKey(candidate);if(!key||state.failedCuratedMedia.has(key))return false;try{return typeof runtimeMediaUsable==='function'?runtimeMediaUsable(candidate):true;}catch(_){return true;}});
+          if(alt){
+            const idx=Math.max(0,Math.min(Number(currentIndex)||0,state.queueItems.length-1));state.queueItems[idx]=alt;try{PROGRAM[idx]=alt;GENERAL_PROGRAM[idx]=alt;}catch(_){}
+            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.3.12 same-game curated fallback'});
+          }
+          const start=Math.max(0,Number(currentIndex)||0);let next=-1;
+          for(let i=start+1;i<state.queueItems.length;i++){const candidate=state.queueItems[i],key=programKey(candidate);if(candidate&&(!key||!state.failedCuratedMedia.has(key))){next=i;break;}}
+          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.3.12 next special-event highlight after unavailable source'});
+          showCuratedUnavailable(item,err?.message||err);return;
+        }
+        return original.call(this,slot,err,userInitiated);
+      };
+      wrapped.__sbbBrowseV5312=true;wrapped.__sbbOriginal=original;handlePlaybackFailure=wrapped;try{window.handlePlaybackFailure=wrapped;}catch(_){}state.playbackFailurePatched=true;return true;
     }catch(_){return false;}
   }
 
@@ -862,7 +940,7 @@
     document.addEventListener('webkitfullscreenchange',()=>{ensurePopoverHost();if(state.open)setTimeout(positionPopover,50);});
   }
 
-  function init(){loadEntityCatalogStore();if(!ensureUi())return;installLegacyCfbGuard();captureScoreRibbonHeight();syncLeagueUi();bind();patchRenderQueue();setTimeout(()=>primeEntityCatalog(),0);setTimeout(patchRenderQueue,350);setTimeout(()=>{captureScoreRibbonHeight();hideLegacyCfb();},500);setTimeout(hideLegacyCfb,1800);}
+  function init(){loadEntityCatalogStore();if(!ensureUi())return;installLegacyCfbGuard();captureScoreRibbonHeight();syncLeagueUi();bind();patchRenderQueue();patchPlaybackFailure();setTimeout(()=>primeEntityCatalog(),0);setTimeout(patchRenderQueue,350);setTimeout(patchPlaybackFailure,500);setTimeout(()=>{captureScoreRibbonHeight();hideLegacyCfb();},500);setTimeout(hideLegacyCfb,1800);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 
   window.SBB_CURATED_BROWSE=Object.freeze({

@@ -1,11 +1,11 @@
-/* Sports Big Board v5.3.11 — League View + recap context.
+/* Sports Big Board v5.3.12 — League View + recap context.
    Keeps multi-game/daily recap playback from inheriting a stale single-game
    Game Center and turns the former Up Next drawer into a persistent league view. */
 (() => {
   'use strict';
-  if (window.SBB_LEAGUE_VIEW?.version === '5.3.11') return;
+  if (window.SBB_LEAGUE_VIEW?.version === '5.3.12') return;
 
-  const VERSION = '5.3.11';
+  const VERSION = '5.3.12';
   const $ = id => document.getElementById(id);
   const clean = value => String(value ?? '').trim();
   const esc = value => clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -48,7 +48,7 @@
     return '';
   }
   function currentLeague(){
-    // v5.3.11 authority order: what is PLAYING beats what was BROWSED. Curated
+    // v5.3.12 authority order: what is PLAYING beats what was BROWSED. Curated
     // special-event context is only a fallback while Browse is still non-daily.
     // This prevents a retired World Cup context from pinning League View after an
     // MLB score-card takes over playback.
@@ -158,7 +158,7 @@
   function wildcardCard(rows,title='WILD CARD',league='MLB'){
     if(!rows?.length)return '';
     const headers=tableHeaders(league);
-    return `<section class="league-view-card league-view-wildcard"><div class="league-view-card-head"><strong>${esc(title)}</strong><span>${league==='MLB'?'DIVISION LEADERS EXCLUDED':'CURRENT PLAYOFF CHASE'}</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr>${headers.map((h,i)=>`<th${i===0?' class="team-col"':''}>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.slice(0,10).map((row,i)=>rowMarkup(row,{league,position:i+1,rowClass:i===2&&league==='MLB'?'league-view-cutoff':''})).join('')}</tbody></table></div></section>`;
+    return `<section class="league-view-card league-view-wildcard"><div class="league-view-card-head"><strong>${esc(title)}</strong><span>${league==='NHL'?'TOP 3 / DIVISION EXCLUDED':((league==='MLB'||league==='NFL')?'DIVISION LEADERS EXCLUDED':'CURRENT PLAYOFF CHASE')}</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr>${headers.map((h,i)=>`<th${i===0?' class="team-col"':''}>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.slice(0,10).map((row,i)=>rowMarkup(row,{league,position:i+1,rowClass:((league==='NHL'&&i===1)||((league==='MLB'||league==='NFL')&&i===2))?'league-view-cutoff':''})).join('')}</tbody></table></div></section>`;
   }
   function conferenceBoard(rows,league){
     if(!Array.isArray(rows)||rows.length<2)return '';
@@ -172,8 +172,9 @@
         const cutoffs=league==='NBA'?[6,10]:(league==='NHL'?[8]:[]);
         inner+=tableForGroup({name:conf.name,entries:conf.standings},{compact:false,title:'CONFERENCE STANDINGS',league,cutoffs});
       }
-      if(league==='MLB'||league==='NFL')inner+=wildcardCard(conf.wildcard||[],'WILD CARD',league);
-      const sub=league==='MLB'?'DIVISIONS + WILD CARD':(league==='NFL'?'DIVISIONS + WILD CARD':'CONFERENCE TABLE');
+      // v5.3.11 compatibility contract: if(league==='MLB'||league==='NFL')inner+=wildcardCard now also includes NHL.
+      if(league==='MLB'||league==='NFL'||league==='NHL')inner+=wildcardCard(conf.wildcard||[],'WILD CARD',league);
+      const sub=(league==='MLB'||league==='NFL'||league==='NHL')?'DIVISIONS + WILD CARD':'CONFERENCE TABLE';
       return `<section class="league-view-conference"><div class="league-view-conference-head"><strong>${esc(conf.name||conf.key)}</strong><span>${sub}</span></div>${inner}</section>`;
     }).join('')}</div>`;
   }
@@ -231,14 +232,14 @@
       const conferenceLayout=conferenceBoard(payload.conferences||[],league);
       if(conferenceLayout)body+=conferenceLayout;
       else for(const group of payload.standings||[])body+=tableForGroup(group,{league});
-      body+=playoffCard(payload.playoffRace||[],league);
-      body+=pulseCard(payload.leaders||{});
-      body+=roundsCard(payload.games||[],special);
-      body+=gamesCard(payload.games||[],special);
-      if(special)body+=localEventCard(context);
+      // Core league views are intentionally standings-first. The previous lower
+      // Pulse/Series/Today blocks consumed the exact space needed for divisions
+      // and Wild Card context. Special events retain bracket/round context.
+      if(special){body+=roundsCard(payload.games||[],true);body+=gamesCard(payload.games||[],true);body+=localEventCard(context);}
       if(!body)body='<div class="league-view-empty"><strong>LEAGUE CONTEXT</strong><span>No public standings table is available for this event yet. Big Board event highlights remain available in the ribbon and Team Browse.</span></div>';
     }
-    root.innerHTML=`<div class="league-view-head"><div><small>${special?'SPECIAL EVENT':'LEAGUE VIEW'}</small><h2>${esc(label)}</h2><span class="league-view-muted">Standings · playoff race · leaders · recent results</span></div><div class="league-view-head-actions">${updated?`<span class="league-view-updated">UPDATED ${esc(updated)}</span>`:''}<button id="leagueViewRefresh" type="button" title="Refresh League View">↻</button></div></div><div class="league-view-content">${body}</div>`;
+    const descriptor=league==='MLB'?'Divisions · Wild Card':(league==='NFL'?'Divisions · Wild Card':(league==='NBA'?'Conference standings · playoff / play-in lines':(league==='NHL'?'Divisions · Wild Card':(league==='NCAAF'?'AP Top 25 · conference standings':(['EPL','MLS'].includes(league)?'League table':'Groups · bracket / rounds')))));
+    root.innerHTML=`<div class="league-view-head"><div><small>${special?'SPECIAL EVENT':'LEAGUE VIEW'}</small><h2>${esc(label)}</h2><span class="league-view-muted">${esc(descriptor)}</span></div><div class="league-view-head-actions">${updated?`<span class="league-view-updated">UPDATED ${esc(updated)}</span>`:''}<button id="leagueViewRefresh" type="button" title="Refresh League View">↻</button></div></div><div class="league-view-content">${body}</div>`;
     $('leagueViewRefresh')?.addEventListener('click',()=>refresh(true));
   }
 

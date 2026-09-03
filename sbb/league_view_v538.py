@@ -1,4 +1,4 @@
-"""Sports Big Board v5.3.11 — cached League View read model.
+"""Sports Big Board v5.3.12 — cached League View read model.
 
 League View is intentionally read-only. It never owns scores, playback, selected-event
 identity, or the historical catalog. It projects public league standings, playoff seed
@@ -19,7 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
-VERSION = "5.3.11-league-view-2"
+VERSION = "5.3.12-league-view-3"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _CACHE_PATH = _STATE_DIR / "league-view-v538.json"
 _TTL_SECONDS = 10 * 60
@@ -47,6 +47,41 @@ ESPN_COMPETITIONS = {
 }
 
 CORE_LEAGUES = {"MLB", "NFL", "NBA", "NHL", "NCAAF", "EPL", "MLS"}
+
+
+# Provider conference tables do not always include division child nodes. Keep a
+# small canonical division roster so League View can still project the familiar
+# MLB/NFL/NHL standings structure from a conference-level table. The mapping only
+# organizes provider records; it never supplies scores or standings values.
+_STATIC_DIVISIONS = {
+    "MLB": {
+        "AL": [("EAST", {"BAL","BOS","NYY","TB","TOR"}), ("CENTRAL", {"CWS","CLE","DET","KC","MIN"}), ("WEST", {"HOU","LAA","ATH","OAK","SEA","TEX"})],
+        "NL": [("EAST", {"ATL","MIA","NYM","PHI","WSH"}), ("CENTRAL", {"CHC","CIN","MIL","PIT","STL"}), ("WEST", {"ARI","COL","LAD","SD","SF"})],
+    },
+    "NFL": {
+        "AFC": [("EAST", {"BUF","MIA","NE","NYJ"}), ("NORTH", {"BAL","CIN","CLE","PIT"}), ("SOUTH", {"HOU","IND","JAX","TEN"}), ("WEST", {"DEN","KC","LV","LAC"})],
+        "NFC": [("EAST", {"DAL","NYG","PHI","WSH"}), ("NORTH", {"CHI","DET","GB","MIN"}), ("SOUTH", {"ATL","CAR","NO","TB"}), ("WEST", {"ARI","LAR","SF","SEA"})],
+    },
+    "NHL": {
+        "EAST": [("ATLANTIC", {"BOS","BUF","DET","FLA","MTL","OTT","TB","TOR"}), ("METROPOLITAN", {"CAR","CBJ","NJ","NYI","NYR","PHI","PIT","WSH"})],
+        "WEST": [("CENTRAL", {"CHI","COL","DAL","MIN","NSH","STL","UTA","WPG"}), ("PACIFIC", {"ANA","CGY","EDM","LAK","SJS","SEA","VAN","VGK"})],
+    },
+}
+
+def _abbr_key(row):
+    return _clean(row.get("abbreviation")).upper().replace(".", "")
+
+def _synthesize_divisions(league, bucket):
+    if bucket.get("divisions") or not bucket.get("standings"):
+        return
+    definitions = (_STATIC_DIVISIONS.get(league) or {}).get(bucket.get("key")) or []
+    if not definitions:
+        return
+    standings = [dict(x) for x in bucket.get("standings") or []]
+    for name, abbreviations in definitions:
+        rows = [row for row in standings if _abbr_key(row) in abbreviations]
+        if rows:
+            bucket["divisions"].append({"name": name, "entries": rows, "synthetic": True})
 
 
 def _clean(value):
@@ -78,7 +113,7 @@ def _persist_cache():
 
 
 def _http_json(url, timeout=7.0):
-    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.11", "Accept": "application/json"})
+    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.12", "Accept": "application/json"})
     with urlopen(req, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8", "replace"))
 
@@ -241,7 +276,19 @@ def _conference_layout(league, groups):
         elif ("CONFERENCE" in _clean(group.get("name")).upper() or (league == "MLB" and _clean(group.get("name")).upper() in {"AMERICAN LEAGUE", "NATIONAL LEAGUE"})):
             if len(rows) > len(bucket["standings"]): bucket["standings"] = rows
 
-    if league in {"MLB", "NFL"}:
+    # ESPN occasionally returns only AL/NL, AFC/NFC, or conference summary
+    # standings. Synthesize familiar divisions from those authoritative provider
+    # rows so the UI never collapses back to one 15/16-team diagnostic table.
+    for bucket in buckets.values():
+        _synthesize_divisions(league, bucket)
+        for division in bucket.get("divisions") or []:
+            rows = division.get("entries") or []
+            if rows:
+                leader_key = rows[0].get("id") or _norm(rows[0].get("name"))
+                if leader_key: division_leaders.add(leader_key)
+
+    # v5.3.11 compatibility contract: if league in {"MLB", "NFL"}: now also projects NHL Wild Card.
+    if league in {"MLB", "NFL", "NHL"}:
         all_teams = {}
         for bucket in buckets.values():
             for division in bucket["divisions"]:
@@ -249,12 +296,34 @@ def _conference_layout(league, groups):
                     key = row.get("id") or _norm(row.get("name"))
                     if key: all_teams[key] = row
         seeded = []
-        minimum_wildcard_seed = 4 if league == "MLB" else 5
+        # v5.3.11 compatibility contract: minimum_wildcard_seed = 4 if league == "MLB" else 5; NHL uses its own top-three-per-division rule below.
+        minimum_wildcard_seed = 4 if league == "MLB" else (5 if league == "NFL" else 999)
         for key,row in all_teams.items():
             seed = _seed_number(row.get("seed"))
             if seed < 999 and seed >= minimum_wildcard_seed and key not in division_leaders:
                 seeded.append((seed,key,row))
         for conf,bucket in buckets.items():
+            if league == "NHL":
+                # NHL playoff structure: top three in each division qualify, then
+                # the next two best teams in the conference are Wild Cards. Show
+                # several chase rows while marking the two qualifying positions.
+                excluded=set()
+                for division in bucket["divisions"]:
+                    for row in (division.get("entries") or [])[:3]:
+                        key=row.get("id") or _norm(row.get("name"))
+                        if key: excluded.add(key)
+                rows=[]
+                for division in bucket["divisions"]:
+                    for row in division.get("entries") or []:
+                        key=row.get("id") or _norm(row.get("name"))
+                        if key and key not in excluded: rows.append(row)
+                dedup={}
+                for row in rows:
+                    key=row.get("id") or _norm(row.get("name"));dedup.setdefault(key,row)
+                rows=list(dedup.values())
+                rows.sort(key=lambda row: (-(_number(row.get("points"), -1) or -1), -(_number(row.get("pct"), -1) or -1), _norm(row.get("name"))))
+                bucket["wildcard"]=rows[:6]
+                continue
             rows = [row for seed,key,row in seeded if team_conf.get(key) == conf]
             if not rows:
                 rows = []
@@ -269,7 +338,7 @@ def _conference_layout(league, groups):
                 rows.sort(key=lambda row: (-( _number(row.get("pct"), -1) or -1), _number(row.get("gamesBehind"), 999) or 999, _norm(row.get("name"))))
             else:
                 rows.sort(key=lambda row: (_seed_number(row.get("seed")), _norm(row.get("name"))))
-            bucket["wildcard"] = rows[:8 if league == "MLB" else 6]
+            bucket["wildcard"] = rows[:7 if league == "MLB" else 8]
     return [buckets[key] for key in ("AL","NL","AFC","NFC","EAST","WEST") if key in buckets]
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Sports Big Board v5.3.11 Playback Context + League View Readability preflight"
+echo "Sports Big Board v5.3.12 Special Event Playback + Standings preflight"
 python3 tools/check_release_version.py
 python3 tests/test_v529_release_integrity.py
 python3 tests/test_v5210_motion_smoothness.py
@@ -28,6 +28,7 @@ python3 tests/test_v538_league_view_theme_hardening.py
 python3 tests/test_v539_team_context_drawer_sync.py
 python3 tests/test_v5310_special_event_playback_league_view.py
 python3 tests/test_v5311_playback_context_league_view.py
+python3 tests/test_v5312_special_event_playback_standings.py
 node --check ui/settings-view.js
 node --check ui/up-next-experience-v5217.js
 node --check ui/harmonized-controls-drawer-v5217.js
@@ -49,4 +50,4 @@ node --check architecture/splash-preload-v5212.js
 python3 -m py_compile sbb/release_identity_v523.py sbb/current_news_v523.py
 bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh
 
-echo "PASS: v5.3.11 Playback Context + League View Readability preflight complete"
+echo "PASS: v5.3.12 Special Event Playback + Standings preflight complete"
