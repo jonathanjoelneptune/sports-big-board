@@ -4,15 +4,15 @@ import re
 ROOT=Path(__file__).resolve().parents[1]
 version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
-css=(ROOT/'ui'/'browse-curated-programming-v535.css').read_text()
-js=(ROOT/'ui'/'browse-curated-programming-v535.js').read_text()
+css=(ROOT/'ui'/'browse-curated-programming-v536.css').read_text()
+js=(ROOT/'ui'/'browse-curated-programming-v536.js').read_text()
 fit_css=(ROOT/'ui'/'workspace-viewport-fit-v531.css').read_text()
 fit_js=(ROOT/'ui'/'workspace-viewport-fit-v531.js').read_text()
-assert version=='5.3.5',version
+assert version=='5.3.6',version
 for surface in [
-    f'ui/browse-curated-programming-v535.css?v={version}',
+    f'ui/browse-curated-programming-v536.css?v={version}',
     f'ui/workspace-viewport-fit-v531.css?v={version}',
-    f'<script src="ui/browse-curated-programming-v535.js?v={version}"></script>',
+    f'<script src="ui/browse-curated-programming-v536.js?v={version}"></script>',
     f'<script src="ui/workspace-viewport-fit-v531.js?v={version}"></script>',
 ]: assert surface in index,surface
 for token in [
@@ -22,7 +22,7 @@ for token in [
     '.sbb-browse-popover.hidden,.sbb-browse-popover[hidden]{display:none!important}',
 ]: assert token in css,token
 for token in [
-    "const VERSION='5.3.5'",'placeBrowseControls()','positionPopover()','primeEntityCatalog()',
+    "const VERSION='5.3.6'",'placeBrowseControls()','positionPopover()','primeEntityCatalog()',
     "subnav.innerHTML='<button id=\"sbbBrowseBtn\"", "browseWord=state.entityType==='player'?'PLAYER BROWSE':'TEAM BROWSE'",
     "fetch(apiUrl(`/api/history/scores?${p.toString()}`)", 'IntersectionObserver',
     "state.games.slice(index)", 'entityMatchupLabel(', 'const queueTitle=entityMatchupLabel(away,home)', 'sbb-curation-date-pill',
@@ -30,10 +30,10 @@ for token in [
 ]: assert token in js,token
 for token in ['--sbb-workspace-stage-height','body.sbb-game-center-side .stage-card>.stage{','aspect-ratio:auto!important']:
     assert token in fit_css,token
-for token in ["const VERSION='5.3.5'","body.classList.contains('sbb-game-center-side')",'viewportHeight()-top-bottomGap',"sbb:browse-layout",'SBB_WORKSPACE_VIEWPORT_FIT']:
+for token in ["const VERSION='5.3.6'","body.classList.contains('sbb-game-center-side')",'viewportHeight()-top-bottomGap',"sbb:browse-layout",'SBB_WORKSPACE_VIEWPORT_FIT']:
     assert token in fit_js,token
 for forbidden in ['new MutationObserver','setInterval(','requestAnimationFrame(loop']:
     assert forbidden not in js,forbidden
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version,f'{asset}: {found} != {version}'
-print('PASS v5.3.5 contextual subnav Browse, date-headed scored timeline, automatic chronological queue, and open/closed viewport fit')
+print('PASS v5.3.6 contextual subnav Browse, date-headed scored timeline, automatic chronological queue, and open/closed viewport fit')

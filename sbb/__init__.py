@@ -26,15 +26,9 @@ _install_competition_builder_v4613()
 _install_competition_builder_v4614()
 _install_competition_builder_v4615()
 _install_special_event_media_v4616()
-# v5.1.22: install the backend tennis presentation projection before Day State
-# starts its worker. The browser receives already-renderable names/flags/rounds.
 _install_tennis_ribbon_projection()
-# v5.2.1: one backend ribbon authority boundary reconciles canonical catalog date
-# ownership and durable media before any Day State/RibbonSnapshot response.
 _install_ribbon_authority_v521()
 _install_day_state()
-# v5.2.0: persist already-built Day State into a request-cheap RibbonSnapshot.
-# This never builds/provider-fetches on the ribbon request thread.
 from .ribbon_snapshot_v520 import install as _install_ribbon_snapshot_v520
 _install_ribbon_snapshot_v520()
 _install_game_center_multisport()
@@ -44,14 +38,12 @@ _install_history_readiness_repair()
 
 from .ncaaf_namespace_reset import install as _install_ncaaf_namespace_reset
 from .ncaaf_ranked import install as _install_ncaaf_ranked
-
 _install_ncaaf_namespace_reset()
 _install_runtime_path_repair_v5110()
 _install_database_authority()
 _install_backend_inspector_api()
 _install_ncaaf_ranked()
 
-# v5.1.19: durable media authority + one canonical tennis adapter. Keep NCAAF Game Center unchanged.
 from .media_runtime_repair_v5116 import install as _install_media_runtime_repair_v5116
 from .media_authority_v5117 import install as _install_media_authority_v5117
 from .tennis_game_center import install as _install_tennis_game_center
@@ -59,22 +51,12 @@ _install_media_runtime_repair_v5116()
 _install_media_authority_v5117()
 _install_tennis_game_center()
 
-# v5.1.22: durable event-fingerprint Game Center lookup + deterministic tennis routing.
-# This installs after the canonical tennis adapter so generic /api/events/... requests
-# cannot fall through to fixed-league provider validation.
 from .game_center_identity_v5122 import install as _install_game_center_identity_v5122
 _install_game_center_identity_v5122()
 
-# DayStateEngine remains the sole date authority. Tennis ribbon presentation is a
-# backend read-model projection, not a browser-side score authority.
-
-# v5.2.2: cache-only current-news read model for the Key Info lane.
 from .current_news_v522 import install as _install_current_news_v522
 _install_current_news_v522()
 
-# v5.2.3: correctness/inspection/editorial work is explicitly outside the interactive
-# request lane. These modules only consume already-canonical repositories on requests;
-# provider/OpenAI/database materialization work runs in daemon integrity workers.
 from .release_identity_v523 import install as _install_release_identity_v523
 from .integrity_lane_v523 import install as _install_integrity_lane_v523
 from .backend_snapshot_v523 import install as _install_backend_snapshot_v523
@@ -83,3 +65,9 @@ _install_release_identity_v523()
 _install_integrity_lane_v523()
 _install_backend_snapshot_v523()
 _install_current_news_v523()
+
+# v5.3.6: persistent participant inventory + cached Team Focus enrichment.
+# This installs after the normalized catalog and ticker read models so it remains
+# a cache/read-only browser service and never becomes a score/playback authority.
+from .team_focus_v536 import install as _install_team_focus_v536
+_install_team_focus_v536()

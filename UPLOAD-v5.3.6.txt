@@ -1,0 +1,28 @@
+Sports Big Board v5.3.6 — Team Focus Enrichment + Theming
+
+MANUAL GITHUB UPLOAD
+1. Upload the CONTENTS of this folder to the repository root.
+2. Preserve architecture/, cloud/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when prompted.
+4. Commit every file in one commit so frontend/backend release identity remains atomic.
+5. Let Deploy Sports Big Board complete before hard-refreshing the board.
+
+PRIMARY CHANGES
+- Backend-persisted Team/Player Browse participant index. The Browse menu no longer needs a browser-side full audit scan on normal opens.
+- Team Focus timeline is schedule-complete: catalog games remain visible even when no verified highlight exists and display NO MEDIA YET.
+- Curated cards use the entire normal score-ribbon height; the old MLB > Team / Newest first metadata strip is removed.
+- PLAY ALL and EXIT move to the right side of the Team/Player Focus Sports Ticker row.
+- Team Focus shows Next 3 rather than Next 5 and can continuously crawl when context exceeds the available width.
+- Team/Player identity includes the team logo when available.
+- Cached backend Team Focus enrichment endpoint combines ESPN team metadata with published TeamRankings ranking/stat tables for supported leagues.
+- Settings includes Team themed coloring. When enabled, the active Team Browse palette drives primary/secondary/accent UI colors.
+- Curated Game Center identity clears a mismatched prior SelectedEvent before selecting the exact historical event.
+
+BACKEND ENDPOINTS
+- GET /api/browse/participants?league=MLB
+- GET /api/team-focus?league=MLB&entity=San%20Diego%20Padres
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.3.6 Team Focus Enrichment + Theming preflight complete

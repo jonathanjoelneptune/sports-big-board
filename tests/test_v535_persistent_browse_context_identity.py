@@ -3,11 +3,11 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
-js=(ROOT/'ui'/'browse-curated-programming-v535.js').read_text()
-css=(ROOT/'ui'/'browse-curated-programming-v535.css').read_text()
-assert version=='5.3.5',version
-assert f'ui/browse-curated-programming-v535.css?v={version}' in index
-assert f'<script src="ui/browse-curated-programming-v535.js?v={version}"></script>' in index
+js=(ROOT/'ui'/'browse-curated-programming-v536.js').read_text()
+css=(ROOT/'ui'/'browse-curated-programming-v536.css').read_text()
+assert version=='5.3.6',version
+assert f'ui/browse-curated-programming-v536.css?v={version}' in index
+assert f'<script src="ui/browse-curated-programming-v536.js?v={version}"></script>' in index
 
 # Complete participant inventory survives reloads and refreshes in the background.
 for token in [
@@ -20,17 +20,18 @@ for token in [
     'Building complete ${state.entityType===\'player\'?\'player\':\'team\'} library once; future opens are instant.',
 ]: assert token in js,token
 
-# Curated mode occupies the exact measured score-ribbon slot and exposes actions at both ends.
+# Curated mode occupies the exact measured score-ribbon slot; its full height belongs to cards while actions live in Team Focus.
 for token in [
     'function captureScoreRibbonHeight()',
     "style.setProperty('--sbb-score-ribbon-height'",
     'height:var(--sbb-score-ribbon-height,104px)',
     'max-height:var(--sbb-score-ribbon-height,104px)',
-    'sbb-curation-actions-left',
-    'id="sbbCurationPlayLeft"',
-    'id="sbbCurationBackLeft"',
-    "$('sbbCurationPlayLeft')?.addEventListener('click',playAll)",
-    "$('sbbCurationBackLeft')?.addEventListener('click',returnToDay)",
+    '.sbb-curation-toolbar{display:none!important}',
+    "controls.id=\'sbbEntityFocusControls\'",
+    'id="sbbFocusPlayAll"',
+    'id="sbbFocusExit"',
+    "$('sbbFocusPlayAll')?.addEventListener('click',playAll)",
+    "$('sbbFocusExit')?.addEventListener('click',returnToDay)",
 ]: assert token in (js+css),token
 
 # Historical playback owns the exact historical Game Center identity, not today's same-team game.
@@ -50,11 +51,11 @@ for token in [
     "contextInsight('STREAK'",
     "contextInsight('STANDING'",
     "contextInsight('RECENT'",
-    "contextInsight('NEXT 5'",
+    "contextInsight('NEXT 3'",
     'contextNews()',
     '#keyInfoTrack.sbb-entity-ticker-hidden{display:none!important}',
 ]: assert token in (js+css),token
 
 for forbidden in ['setInterval(', 'new MutationObserver', 'requestAnimationFrame(loop']:
     assert forbidden not in js,forbidden
-print('PASS v5.3.5 persistent participant cache + equal-height curated ribbon + exact Game Center identity + entity focus ticker')
+print('PASS v5.3.6 persistent participant cache + equal-height curated ribbon + exact Game Center identity + entity focus ticker')

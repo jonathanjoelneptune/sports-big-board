@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <meta name="sbb-release-version" content="5.3.5" />
+  <meta name="sbb-release-version" content="5.3.6" />
   <script id="sbbReleaseBoot">
     (()=>{
       const meta=document.querySelector('meta[name="sbb-release-version"]');
@@ -18,7 +18,7 @@
       window.addEventListener('pageshow',syncTabTitle);
     })();
   </script>
-  <title>Sports Big Board — v5.3.5</title>
+  <title>Sports Big Board — v5.3.6</title>
   <script id="sbbThemeBoot">
     (()=>{try{localStorage.setItem('sbb.theme','dark');}catch(_){}document.documentElement.dataset.sbbTheme='dark';})();
   </script>
@@ -26,8 +26,8 @@
   <link rel="preconnect" href="https://www.googlevideo.com">
   <link rel="preconnect" href="https://i.ytimg.com">
   <link rel="preload" href="https://www.youtube.com/iframe_api" as="script" fetchpriority="high">
-  <link rel="stylesheet" href="styles.css?v=5.3.5" />
-  <link rel="stylesheet" href="ui/playback-terminal.css?v=5.3.5">
+  <link rel="stylesheet" href="styles.css?v=5.3.6" />
+  <link rel="stylesheet" href="ui/playback-terminal.css?v=5.3.6">
   <style id="sbbCfbLeagueOverride">
     /* NCAAF is a permanent league chip. Legacy v5.1.10 navigation code may still
        add the special-event suppression class; this higher-specificity rule keeps
@@ -132,17 +132,17 @@
     .sbb-launch-play.sbb-launch-media-ready{box-shadow:0 0 0 1px rgba(91,205,136,.28),0 12px 34px rgba(0,0,0,.28)}
   </style>
 
-  <link rel="stylesheet" href="ui/broadcast-design-v5213.css?v=5.3.5">
-  <link rel="stylesheet" href="ui/premium-masthead-v5214.css?v=5.3.5">
-  <link rel="stylesheet" href="ui/premium-now-watching-v5215.css?v=5.3.5">
-  <link rel="stylesheet" href="ui/editorial-slugs-up-next-v5216.css?v=5.3.5">
-  <link rel="stylesheet" href="ui/harmonized-controls-drawer-v5217.css?v=5.3.5">
-  <link rel="stylesheet" href="ui/viewing-workspace-v5218.css?v=5.3.5">
-  <link rel="stylesheet" href="ui/game-center-readability-v5219.css?v=5.3.5">
-  <link rel="stylesheet" href="ui/game-center-scroll-v5220.css?v=5.3.5">
-  <link rel="stylesheet" href="ui/collapse-viewport-fit-v5221.css?v=5.3.5">
-  <link rel="stylesheet" href="ui/browse-curated-programming-v535.css?v=5.3.5">
-  <link rel="stylesheet" href="ui/workspace-viewport-fit-v531.css?v=5.3.5">
+  <link rel="stylesheet" href="ui/broadcast-design-v5213.css?v=5.3.6">
+  <link rel="stylesheet" href="ui/premium-masthead-v5214.css?v=5.3.6">
+  <link rel="stylesheet" href="ui/premium-now-watching-v5215.css?v=5.3.6">
+  <link rel="stylesheet" href="ui/editorial-slugs-up-next-v5216.css?v=5.3.6">
+  <link rel="stylesheet" href="ui/harmonized-controls-drawer-v5217.css?v=5.3.6">
+  <link rel="stylesheet" href="ui/viewing-workspace-v5218.css?v=5.3.6">
+  <link rel="stylesheet" href="ui/game-center-readability-v5219.css?v=5.3.6">
+  <link rel="stylesheet" href="ui/game-center-scroll-v5220.css?v=5.3.6">
+  <link rel="stylesheet" href="ui/collapse-viewport-fit-v5221.css?v=5.3.6">
+  <link rel="stylesheet" href="ui/browse-curated-programming-v536.css?v=5.3.6">
+  <link rel="stylesheet" href="ui/workspace-viewport-fit-v531.css?v=5.3.6">
 </head>
 <body>
   <div id="launchScreen" class="sbb-launch-screen" role="dialog" aria-modal="true" aria-labelledby="launchTitle">
@@ -287,7 +287,7 @@
         <button class="nav">🏆 <span>Standings</span></button>
         <button id="leftRailSettingsBtn" class="nav">⚙ <span>Settings</span></button>
         <div class="proof-card">
-          <strong>v5.3.5</strong>
+          <strong>v5.3.6</strong>
           <span>PREMIUM VIEWING • ATOMIC RELEASE</span>
           <small id="apiRailStatus">Checking API…</small>
           <small id="editorRailStatus">Editor: checking…</small>
@@ -434,7 +434,7 @@
             <div id="queueList" class="queue-list"></div>
             <button id="debugToggle" class="debug-toggle" type="button">PLAYER DEBUG ▸</button>
             <div id="playbackDebug" class="playback-debug is-collapsed">
-              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v5.3.5</span></div>
+              <div class="debug-head"><strong>PLAYER DEBUG</strong><span>v5.3.6</span></div>
               <div><span>PROVIDER</span><b id="diagProvider">—</b></div>
               <div><span>SLOT</span><b id="diagSlot">—</b></div>
               <div><span>STATE</span><b id="diagState">idle</b></div>
@@ -480,7 +480,7 @@
             </div>
             <div class="settings-card" id="releaseStatusCard">
               <div class="settings-card-title">RELEASE STATUS</div>
-              <div class="api-connection-row"><span><b>Frontend</b><small>Canonical browser release</small></span><strong id="settingsFrontendVersion">5.3.5</strong></div>
+              <div class="api-connection-row"><span><b>Frontend</b><small>Canonical browser release</small></span><strong id="settingsFrontendVersion">5.3.6</strong></div>
               <div class="api-connection-row"><span><b>Backend</b><small>Cloud API / database runtime</small></span><strong id="settingsBackendVersion">Checking…</strong></div>
               <div class="api-connection-row"><span><b>Deployment</b><small>Frontend + backend must match</small></span><strong id="settingsReleaseMatch">CHECKING…</strong></div>
               <div id="settingsReleaseMessage" class="settings-message">Verifying atomic release identity…</div>
@@ -715,22 +715,22 @@
     ui/game-center-view.js?v=4.2.2
     app.js?v=4.2.2
   -->
-  <script src="config.js?v=5.3.5"></script>
-  <script src="api-runtime.js?v=5.3.5"></script>
-  <script src="architecture/native-transport.js?v=5.3.5"></script>
-  <script src="architecture/main-thread-guard-v5.js?v=5.3.5"></script>
-<script src="architecture/score-media-plan-v5.js?v=5.3.5"></script>
-  <script src="architecture/request-broker.js?v=5.3.5"></script>
-  <script src="architecture/efficiency-certification.js?v=5.3.5"></script>
-  <script src="architecture/comprehensive-site-certification.js?v=5.3.5"></script>
+  <script src="config.js?v=5.3.6"></script>
+  <script src="api-runtime.js?v=5.3.6"></script>
+  <script src="architecture/native-transport.js?v=5.3.6"></script>
+  <script src="architecture/main-thread-guard-v5.js?v=5.3.6"></script>
+<script src="architecture/score-media-plan-v5.js?v=5.3.6"></script>
+  <script src="architecture/request-broker.js?v=5.3.6"></script>
+  <script src="architecture/efficiency-certification.js?v=5.3.6"></script>
+  <script src="architecture/comprehensive-site-certification.js?v=5.3.6"></script>
   <script>
-  // v5.3.5 bootstrap is deliberately independent of app.js and YouTube.
+  // v5.3.6 bootstrap is deliberately independent of app.js and YouTube.
   // It proves the browser can reach the local API and captures startup errors.
   window.__SBB_BOOT_STARTED_AT = Date.now();
-  try { fetch('/api/client-log?event=BOOT_START&v=5.3.5', {cache:'no-store'}).catch(()=>{}); } catch(e) {}
+  try { fetch('/api/client-log?event=BOOT_START&v=5.3.6', {cache:'no-store'}).catch(()=>{}); } catch(e) {}
   window.__SBB_BOOT_STATUS_PROMISE__ = fetch('/api/status', {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('status HTTP '+r.status); return r.json(); })
-    .then(function(data){ try{fetch('/api/client-log?event=BOOT_STATUS_OK&v=5.3.5',{cache:'no-store'}).catch(()=>{});}catch(e){} return data; })
+    .then(function(data){ try{fetch('/api/client-log?event=BOOT_STATUS_OK&v=5.3.6',{cache:'no-store'}).catch(()=>{});}catch(e){} return data; })
     .catch(function(err){ try{fetch('/api/client-log?event=BOOT_STATUS_ERROR&detail='+encodeURIComponent(String(err)),{cache:'no-store'}).catch(()=>{});}catch(e){} throw err; });
   window.addEventListener('error', function(ev){
     try { fetch('/api/client-log?event=JS_ERROR&detail='+encodeURIComponent((ev.message||'error')+' @ '+(ev.filename||'')+':'+(ev.lineno||0)), {cache:'no-store'}).catch(()=>{}); } catch(e) {}
@@ -739,28 +739,28 @@
     try { fetch('/api/client-log?event=PROMISE_ERROR&detail='+encodeURIComponent(String(ev.reason?.stack||ev.reason||'unknown')), {cache:'no-store'}).catch(()=>{});} catch(e) {}
   });
 </script>
-<script src="core-model.js?v=5.3.5"></script>
+<script src="core-model.js?v=5.3.6"></script>
 <script id="sbbLegacyCoreReleaseProjection">
 (() => {
   const release=String(window.SBB_RELEASE_VERSION||'').trim();
   if(release&&window.SBB_CORE)window.SBB_CORE=Object.freeze({...window.SBB_CORE,version:release,componentVersion:String(window.SBB_CORE.version||'')});
 })();
 </script>
-<script src="architecture/score-date-store.js?v=5.3.5"></script>
-<script src="architecture/event-identity.js?v=5.3.5"></script>
-<script src="architecture/app-store-v5.js?v=5.3.5"></script>
-<script src="architecture/media-scope.js?v=5.3.5"></script>
-<script src="architecture/media-classifier.js?v=5.3.5"></script>
-<script src="architecture/playback-transports.js?v=5.3.5"></script>
-<script src="architecture/playback-readiness.js?v=5.3.5"></script>
-<script src="architecture/provider-health.js?v=5.3.5"></script>
-<script src="architecture/sport-media-policy.js?v=5.3.5"></script>
-<script src="architecture/curated-media-overrides.js?v=5.3.5"></script>
-<script src="architecture/media-manifest.js?v=5.3.5"></script>
-<script src="architecture/media-resolver.js?v=5.3.5"></script>
-<script src="architecture/game-center-policy.js?v=5.3.5"></script>
-<script src="architecture/selected-event-store.js?v=5.3.5"></script>
-<script src="architecture/game-center-contract.js?v=5.3.5"></script>
+<script src="architecture/score-date-store.js?v=5.3.6"></script>
+<script src="architecture/event-identity.js?v=5.3.6"></script>
+<script src="architecture/app-store-v5.js?v=5.3.6"></script>
+<script src="architecture/media-scope.js?v=5.3.6"></script>
+<script src="architecture/media-classifier.js?v=5.3.6"></script>
+<script src="architecture/playback-transports.js?v=5.3.6"></script>
+<script src="architecture/playback-readiness.js?v=5.3.6"></script>
+<script src="architecture/provider-health.js?v=5.3.6"></script>
+<script src="architecture/sport-media-policy.js?v=5.3.6"></script>
+<script src="architecture/curated-media-overrides.js?v=5.3.6"></script>
+<script src="architecture/media-manifest.js?v=5.3.6"></script>
+<script src="architecture/media-resolver.js?v=5.3.6"></script>
+<script src="architecture/game-center-policy.js?v=5.3.6"></script>
+<script src="architecture/selected-event-store.js?v=5.3.6"></script>
+<script src="architecture/game-center-contract.js?v=5.3.6"></script>
 <script id="sbbGameCenterStabilityV4725">
 (() => {
   'use strict';
@@ -811,57 +811,57 @@
   window.SBB_GAME_CENTER=Object.freeze({...base,version:'1.9-stability',get,__sbbStabilityV4725:true,stabilitySnapshot:()=>({inflight:inflight.size,cooldowns:cooldown.size,maxRequestMs:MAX_MS})});
 })();
 </script>
-<script src="architecture/media-work-priorities.js?v=5.3.5"></script>
-<script src="architecture/editorial-packages.js?v=5.3.5"></script>
-<script src="architecture/playback-session.js?v=5.3.5"></script>
-<script src="architecture/playback-orchestrator-v5.js?v=5.3.5"></script>
-<script src="architecture/dev-mode.js?v=5.3.5"></script>
-<script src="architecture/playback-terminal.js?v=5.3.5"></script>
-<script src="architecture/milestone-console.js?v=5.3.5"></script>
-<script src="architecture/foundation-certification.js?v=5.3.5"></script>
-<script src="architecture/site-soundtrack.js?v=5.3.5"></script>
+<script src="architecture/media-work-priorities.js?v=5.3.6"></script>
+<script src="architecture/editorial-packages.js?v=5.3.6"></script>
+<script src="architecture/playback-session.js?v=5.3.6"></script>
+<script src="architecture/playback-orchestrator-v5.js?v=5.3.6"></script>
+<script src="architecture/dev-mode.js?v=5.3.6"></script>
+<script src="architecture/playback-terminal.js?v=5.3.6"></script>
+<script src="architecture/milestone-console.js?v=5.3.6"></script>
+<script src="architecture/foundation-certification.js?v=5.3.6"></script>
+<script src="architecture/site-soundtrack.js?v=5.3.6"></script>
 <script>window.SBB_SITE_SOUNDTRACK_MUTED=true;</script>
-<script src="architecture/site-soundtrack-muted.js?v=5.3.5"></script>
-<script src="architecture/poisoned-media-containment.js?v=5.3.5"></script>
-<script src="ui/player-visibility.js?v=5.3.5"></script>
-<script src="architecture/scroll-motion-smoothness-v5210.js?v=5.3.5"></script>
-<script src="ui/info-drawer.js?v=5.3.5"></script>
-<script src="ui/settings-view.js?v=5.3.5"></script>
-<script src="ui/history-audit.js?v=5.3.5"></script>
-<script src="ui/history-audit-v468.js?v=5.3.5"></script>
-<script src="architecture/game-center-linescore.js?v=5.3.5"></script>
-<script src="ui/game-center-view.js?v=5.3.5"></script>
-<script src="architecture/game-center-multisport-view.js?v=5.3.5"></script>
-<script src="app.js?v=5.3.5"></script>
-<script src="architecture/score-interrupt-queue-v5220.js?v=5.3.5"></script>
-<script src="architecture/splash-preload-v5212.js?v=5.3.5"></script>
-<script src="architecture/key-info-current-v520.js?v=5.3.5"></script>
-<script src="ui/up-next-experience-v5217.js?v=5.3.5"></script>
-<script src="ui/harmonized-controls-drawer-v5217.js?v=5.3.5"></script>
-<script src="ui/viewing-workspace-v5218.js?v=5.3.5"></script>
-<script src="ui/game-center-readability-v5219.js?v=5.3.5"></script>
-<script src="ui/game-center-scroll-v5220.js?v=5.3.5"></script>
-<script src="ui/collapse-viewport-fit-v5221.js?v=5.3.5"></script>
-<script src="ui/browse-curated-programming-v535.js?v=5.3.5"></script>
-<script src="ui/workspace-viewport-fit-v531.js?v=5.3.5"></script>
-<script src="architecture/ribbon-fast-scroll-v5122.js?v=5.3.5"></script>
-<script src="architecture/playback-progress-watchdog.js?v=5.3.5"></script>
-<script src="architecture/score-ribbon-identity-guard.js?v=5.3.5"></script>
-<script src="architecture/recap-identity-guard.js?v=5.3.5"></script>
-<script src="architecture/nfl-recap-reconciliation.js?v=5.3.5"></script>
-<script src="architecture/historical-media-v4610.js?v=5.3.5"></script>
-<script src="architecture/future-date-navigation.js?v=5.3.5"></script>
-<script src="architecture/day-state.js?v=5.3.5"></script>
-<script src="architecture/competition-registry-projection.js?v=5.3.5"></script>
-<script src="architecture/active-special-events-v5117.js?v=5.3.5"></script>
-<script src="architecture/tennis-presentation.js?v=5.3.5"></script>
-<script src="architecture/navigation-ui.js?v=5.3.5"></script>
-<script src="architecture/score-card-availability-index.js?v=5.3.5"></script>
-<script src="architecture/card-build-cache.js?v=5.3.5"></script>
-<script src="architecture/render-pipeline.js?v=5.3.5"></script>
-<script src="architecture/date-transition-coordinator.js?v=5.3.5"></script>
-<script src="architecture/virtual-ribbon-v520.js?v=5.3.5"></script>
-<script src="architecture/operator-module-loader.js?v=5.3.5"></script>
+<script src="architecture/site-soundtrack-muted.js?v=5.3.6"></script>
+<script src="architecture/poisoned-media-containment.js?v=5.3.6"></script>
+<script src="ui/player-visibility.js?v=5.3.6"></script>
+<script src="architecture/scroll-motion-smoothness-v5210.js?v=5.3.6"></script>
+<script src="ui/info-drawer.js?v=5.3.6"></script>
+<script src="ui/settings-view.js?v=5.3.6"></script>
+<script src="ui/history-audit.js?v=5.3.6"></script>
+<script src="ui/history-audit-v468.js?v=5.3.6"></script>
+<script src="architecture/game-center-linescore.js?v=5.3.6"></script>
+<script src="ui/game-center-view.js?v=5.3.6"></script>
+<script src="architecture/game-center-multisport-view.js?v=5.3.6"></script>
+<script src="app.js?v=5.3.6"></script>
+<script src="architecture/score-interrupt-queue-v5220.js?v=5.3.6"></script>
+<script src="architecture/splash-preload-v5212.js?v=5.3.6"></script>
+<script src="architecture/key-info-current-v520.js?v=5.3.6"></script>
+<script src="ui/up-next-experience-v5217.js?v=5.3.6"></script>
+<script src="ui/harmonized-controls-drawer-v5217.js?v=5.3.6"></script>
+<script src="ui/viewing-workspace-v5218.js?v=5.3.6"></script>
+<script src="ui/game-center-readability-v5219.js?v=5.3.6"></script>
+<script src="ui/game-center-scroll-v5220.js?v=5.3.6"></script>
+<script src="ui/collapse-viewport-fit-v5221.js?v=5.3.6"></script>
+<script src="ui/browse-curated-programming-v536.js?v=5.3.6"></script>
+<script src="ui/workspace-viewport-fit-v531.js?v=5.3.6"></script>
+<script src="architecture/ribbon-fast-scroll-v5122.js?v=5.3.6"></script>
+<script src="architecture/playback-progress-watchdog.js?v=5.3.6"></script>
+<script src="architecture/score-ribbon-identity-guard.js?v=5.3.6"></script>
+<script src="architecture/recap-identity-guard.js?v=5.3.6"></script>
+<script src="architecture/nfl-recap-reconciliation.js?v=5.3.6"></script>
+<script src="architecture/historical-media-v4610.js?v=5.3.6"></script>
+<script src="architecture/future-date-navigation.js?v=5.3.6"></script>
+<script src="architecture/day-state.js?v=5.3.6"></script>
+<script src="architecture/competition-registry-projection.js?v=5.3.6"></script>
+<script src="architecture/active-special-events-v5117.js?v=5.3.6"></script>
+<script src="architecture/tennis-presentation.js?v=5.3.6"></script>
+<script src="architecture/navigation-ui.js?v=5.3.6"></script>
+<script src="architecture/score-card-availability-index.js?v=5.3.6"></script>
+<script src="architecture/card-build-cache.js?v=5.3.6"></script>
+<script src="architecture/render-pipeline.js?v=5.3.6"></script>
+<script src="architecture/date-transition-coordinator.js?v=5.3.6"></script>
+<script src="architecture/virtual-ribbon-v520.js?v=5.3.6"></script>
+<script src="architecture/operator-module-loader.js?v=5.3.6"></script>
 <script id="sbbCfbAuthorityFirewall">
 (() => {
   'use strict';

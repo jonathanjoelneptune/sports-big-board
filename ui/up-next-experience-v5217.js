@@ -1,12 +1,12 @@
-/* Sports Big Board v5.3.5 — Integrated Up Next + NEXT transport repair.
+/* Sports Big Board v5.3.6 — Integrated Up Next + NEXT transport repair.
    The visual shelf now reads the canonical visibleQueueEntries() result instead
    of trusting queue DOM ordering/current-row classes. It does not create a second
    PROGRAM, selection model, playback owner, or date owner. */
 (() => {
   'use strict';
-  if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.3.5') return;
+  if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.3.6') return;
 
-  const VERSION='5.3.5';
+  const VERSION='5.3.6';
   const state={renders:0,dockClicks:0,nextClicks:0,nextFallbacks:0,interruptRenders:0,lastError:'',source:'none'};
   const $=id=>document.getElementById(id);
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -99,7 +99,7 @@
       if(!Number.isFinite(idx)||idx<0)return false;
       if(typeof jumpTo==='function'){jumpTo(idx);return true;}
       if(typeof tuneProgramIndexV5==='function'){
-        tuneProgramIndexV5(idx,{userInitiated:true,reason:'Coming Up card selection v5.3.5'});
+        tuneProgramIndexV5(idx,{userInitiated:true,reason:'Coming Up card selection v5.3.6'});
         return true;
       }
     }catch(err){state.lastError=String(err?.message||err);}
@@ -202,7 +202,7 @@
       const target=nextVisibleQueueIndex();
       if(target<0)return false;
       if(typeof showBumper==='function')showBumper(target,400,'UP NEXT');
-      tuneProgramIndexV5(target,{userInitiated:true,reason:'manual next control v5.3.5 fallback'});
+      tuneProgramIndexV5(target,{userInitiated:true,reason:'manual next control v5.3.6 fallback'});
       state.nextFallbacks++;
       return true;
     }catch(err){state.lastError=String(err?.message||err);return false;}
@@ -223,7 +223,7 @@
         if(!fallbackNext()&&typeof showAllCaughtUp==='function')showAllCaughtUp();
       }catch(err){
         state.lastError=String(err?.message||err);
-        if(!fallbackNext())console.error('[SBB v5.3.5] NEXT control failed',err);
+        if(!fallbackNext())console.error('[SBB v5.3.6] NEXT control failed',err);
       }
     };
     return true;
