@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import re
+
 ROOT=Path(__file__).resolve().parents[1]
 version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
 js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
-assert version=='5.3.12',version
+
+# This is a compatibility regression, not a release pin. Any forward semantic
+# release must preserve the v5.3.5 Browse/context contracts below.
+assert re.fullmatch(r'\d+\.\d+\.\d+', version), version
 assert f'ui/browse-curated-programming-v537.css?v={version}' in index
 assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>' in index
 
@@ -58,4 +63,4 @@ for token in [
 
 for forbidden in ['setInterval(', 'requestAnimationFrame(loop']:
     assert forbidden not in js,forbidden
-print('PASS v5.3.12 persistent participant cache + equal-height curated ribbon + exact Game Center identity + entity focus ticker')
+print(f'PASS v{version} persistent participant cache + equal-height curated ribbon + exact Game Center identity + entity focus ticker')
