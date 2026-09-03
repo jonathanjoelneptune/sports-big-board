@@ -8,7 +8,7 @@ league=(ROOT/'ui'/'league-view-v538.js').read_text()
 league_css=(ROOT/'ui'/'league-view-v538.css').read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
 
-assert version=='5.3.15',version
+assert version=='5.3.16',version
 
 # Special Events are a hard playback ownership boundary. The current curated
 # index is committed before transport tuning, stale score ownership is cleared,
@@ -21,7 +21,7 @@ for token in [
     "document.body.dataset.sbbCuratedPlaybackOwner",
     'function enforceCuratedOwnership(',
     'function startCuratedOwnershipGuard(',
-    "v5.3.15 ownership repair",
+    "v5.3.16 ownership repair",
     "currentIndex=index;standbyIndex=index",
     "clearLegacyScoreOwnership('special-event tune')",
     "if(specialOwns&&(!item?.__sbbCuratedOverride||programKey(item)!==state.curatedExpectedKey))item=expectedCuratedItem();",
@@ -49,4 +49,4 @@ for token in [
     assert token in league or token in league_css,token
 
 assert 'tests/test_v5313_special_event_ownership_symmetry.py' in verify
-print('PASS v5.3.15 hard Special Event playback ownership + symmetric paired standings')
+print('PASS v5.3.16 hard Special Event playback ownership + symmetric paired standings')

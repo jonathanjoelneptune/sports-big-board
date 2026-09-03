@@ -10,7 +10,7 @@ league=(ROOT/'ui'/'league-view-v538.js').read_text()
 league_css=(ROOT/'ui'/'league-view-v538.css').read_text()
 pause=(ROOT/'architecture'/'playback-early-pause-recovery-v538.js').read_text()
 
-assert version=='5.3.15',version
+assert version=='5.3.16',version
 
 # Team selection tunes the newest playable historical game automatically.
 for token in [
@@ -99,4 +99,4 @@ for token in [
 ]:
     assert token in index, token
 
-print('PASS v5.3.15 team auto-tune + exclusive drawer + playback-owned League View + persistent event context + manual-pause latch + compact team ticker')
+print('PASS v5.3.16 team auto-tune + exclusive drawer + playback-owned League View + persistent event context + manual-pause latch + compact team ticker')

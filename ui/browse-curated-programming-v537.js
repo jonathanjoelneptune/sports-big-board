@@ -1,19 +1,19 @@
-/* Sports Big Board v5.3.15 — Focus Integration + Full Team Theme
+/* Sports Big Board v5.3.16 — Focus Integration + Full Team Theme
    User-facing content discovery over the existing score/calendar + historical
    catalog. No second playback owner: curated results become normal PROGRAM items
    and therefore inherit PlaybackController, Hot Standby, Up Next and score-card
    interrupt/resume behavior. */
 (() => {
   'use strict';
-  if(window.SBB_CURATED_BROWSE?.version==='5.3.15') return;
+  if(window.SBB_CURATED_BROWSE?.version==='5.3.16') return;
 
-  const VERSION='5.3.15';
+  const VERSION='5.3.16';
   const FAVORITES_KEY='sbb.curation.favorites.v1';
   const ENTITY_CATALOG_KEY='sbb.browse.entity-catalog.v535';
   const ENTITY_CATALOG_TTL_MS=6*60*60*1000;
   const ENTITY_CONTEXT_REFRESH_MS=10*60*1000;
   const TEAM_THEME_KEY='sbb.team-theme.enabled.v1';
-  // v5.3.15: browser-proven embed health persists independently from release
+  // v5.3.16: browser-proven embed health persists independently from release
   // cache versions. Server metadata can prove that a video exists, but only the
   // browser can prove that its owner allows this page to embed it.
   const CURATED_MEDIA_HEALTH_KEY='sbb.curated-media-health.v1';
@@ -489,7 +489,7 @@
   }
   function installLegacyCfbGuard(){
     hideLegacyCfb();if(state.cfbObserver)return;const filters=$('scoreFilters');if(!filters)return;
-    // v5.3.15: the special-event header is display-only. Do not observe/filter its
+    // v5.3.16: the special-event header is display-only. Do not observe/filter its
     // attributes or repeatedly reposition Browse controls from a score-row mutation
     // callback. v5.3.9 accidentally created a feedback loop between the synthetic
     // event chip and the canonical score-filter renderer that could freeze the page.
@@ -589,7 +589,7 @@
   }
   async function fetchFullEntityCatalog(league,{forceMetadata=false}={}){
     const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return [];
-    // v5.3.15 prefers the backend's persisted participant index. It is built from
+    // v5.3.16 prefers the backend's persisted participant index. It is built from
     // all catalog events that own verified/playable media and is warmed in the
     // background, so opening Team/Player Browse does not scan the audit catalog.
     try{
@@ -597,7 +597,7 @@
       const entities=Array.isArray(data?.entities)?data.entities:[];const names=Array.isArray(data?.participants)?data.participants.map(clean).filter(Boolean):entities.map(x=>clean(x?.name)).filter(Boolean);
       if(response.ok&&data?.ok&&names.length){rememberEntityMetadata(selected,entities.length?entities:names.map(name=>({name})));return [...new Set(names)].sort((a,b)=>a.localeCompare(b));}
     }catch(_){}
-    // Compatibility fallback for a backend that has not completed the v5.3.15
+    // Compatibility fallback for a backend that has not completed the v5.3.16
     // participant-index warmup yet.
     let offset=0,total=Infinity,rows=[];
     while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS){
@@ -783,7 +783,7 @@
   }
   function releaseCuratedQueue(reason='return to daily programming'){
     stopCuratedOwnershipGuard();
-    // v5.3.15: curated Team/Player/Special Event queues are user-owned only while
+    // v5.3.16: curated Team/Player/Special Event queues are user-owned only while
     // Browse is active. Returning to ALL/TODAY must surrender queue ownership
     // immediately so the next score-card click can build the selected date queue.
     // Leaving queueActive true caused renderQueue() to resurrect a World Cup queue
@@ -877,11 +877,11 @@
   }
   function syncCuratedGameCenterContext(item){
     const curated=!!item?.__sbbCuratedOverride;
-    // v5.3.15: Special Event navigation is the side-panel authority, even if an
+    // v5.3.16: Special Event navigation is the side-panel authority, even if an
     // obsolete MLB callback passes a non-curated item into this function. This is
     // deliberately stronger than tying authority to `curated` alone.
-    // Compatibility marker for pre-v5.3.15 static gates: const specialOwned=curated&&!!state.specialContext
-    // Compatibility marker for pre-v5.3.15 static gates: window.SBB_SELECTED_EVENT?.clear?.({reason:'selected curated match has no standard Game Center provider'
+    // Compatibility marker for pre-v5.3.16 static gates: const specialOwned=curated&&!!state.specialContext
+    // Compatibility marker for pre-v5.3.16 static gates: window.SBB_SELECTED_EVENT?.clear?.({reason:'selected curated match has no standard Game Center provider'
     // Compatibility marker for early Browse gate: window.SBB_SELECTED_EVENT?.clear?.({reason:'curated competition has no Game Center'
     const specialOwned=!!state.specialContext;
     const authoritative=specialOwned?(curated?item:(expectedCuratedItem()||item)):item;
@@ -955,7 +955,7 @@
         const idx=Math.max(0,Math.min(Number(state.curatedExpectedIndex)||0,state.queueItems.length-1));
         try{currentIndex=idx;standbyIndex=idx;}catch(_){}
         clearStalePlaybackPresentation();
-        if(typeof tuneProgramIndexV5==='function')tuneProgramIndexV5(idx,{userInitiated:false,reason:`v5.3.15 ownership repair: ${reason}`});
+        if(typeof tuneProgramIndexV5==='function')tuneProgramIndexV5(idx,{userInitiated:false,reason:`v5.3.16 ownership repair: ${reason}`});
       }
       syncCuratedGameCenterContext(item);
       return true;
@@ -1020,7 +1020,7 @@
     try{if(typeof setFeedNote==='function')setFeedNote(`Curated programming • ${label} • ${state.queueItems.length} video${state.queueItems.length===1?'':'s'}`);}catch(_){}
     // v5.3.0 compatibility contract: tuneProgramIndexV5(bounded is now delegated
     // through tuneCuratedIndex so stale fallback UI and Game Center clear first.
-    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.3.15 curated programming: ${label}`});
+    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.3.16 curated programming: ${label}`});
   }
   function playGames(games,label){primeCuratedAlternates(games);return activateQueue(queueItemsForGames(games),label,0);}
   function playFrom(index){const games=state.games.slice(index);if(!games.length)return false;return playGames(games,state.entity||state.facet||`${leagueLabel(state.league)} highlights`);}
@@ -1082,11 +1082,11 @@
           const alt=alternates.find(candidate=>{const key=programKey(candidate);if(!key||state.failedCuratedMedia.has(key))return false;try{return typeof runtimeMediaUsable==='function'?runtimeMediaUsable(candidate):true;}catch(_){return true;}});
           if(alt){
             const idx=Math.max(0,Math.min(Number(currentIndex)||0,state.queueItems.length-1));state.queueItems[idx]=alt;try{PROGRAM[idx]=alt;GENERAL_PROGRAM[idx]=alt;}catch(_){}
-            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.3.15 same-game curated fallback'});
+            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.3.16 same-game curated fallback'});
           }
           const start=Math.max(0,Number(currentIndex)||0);let next=-1;
           for(let i=start+1;i<state.queueItems.length;i++){const candidate=state.queueItems[i],key=programKey(candidate);if(candidate&&(!key||!state.failedCuratedMedia.has(key))){next=i;break;}}
-          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.3.15 next special-event highlight after unavailable source'});
+          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.3.16 next special-event highlight after unavailable source'});
           showCuratedUnavailable(item,err?.message||err);return;
         }
         return original.call(this,slot,err,userInitiated);

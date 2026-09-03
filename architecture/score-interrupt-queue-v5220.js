@@ -1,13 +1,13 @@
-/* Sports Big Board v5.3.15 — score-ribbon interrupt queue preservation.
-   A score-card click is an interrupt, not a PROGRAM replacement from the user's
-   perspective. Capture the exact queue that was running before takeover, expose it
-   to Up Next while the selected recap plays, and restore that same queue/item after
-   the selected game's recap/reel completes. */
+/* Sports Big Board v5.3.16 — score-ribbon league-day queue + interrupt preservation.
+   A score-card click starts the clicked game immediately, then PROGRAM expands to
+   every playback-ready game from that same league and date. NEXT/PREV therefore
+   remain useful after a score selection instead of operating on a one-game queue.
+   Explicit Team/Player Focus queues are still preserved as true interrupts. */
 (() => {
   'use strict';
-  if(window.SBB_SCORE_INTERRUPT_QUEUE?.version==='5.3.15')return;
-  const VERSION='5.3.15';
-  const state={snapshot:null,captures:0,resumes:0,projected:0,lastReason:'',lastError:''};
+  if(window.SBB_SCORE_INTERRUPT_QUEUE?.version==='5.3.16')return;
+  const VERSION='5.3.16';
+  const state={snapshot:null,captures:0,resumes:0,projected:0,leagueDayBuilds:0,lastLeagueDay:'',lastLeagueDayCount:0,lastReason:'',lastError:''};
 
   const clean=v=>String(v??'').trim();
   const itemId=item=>clean(item?.id||item?.youtubeId||item?.videoId||item?.mediaUrl);
@@ -16,6 +16,69 @@
   }
   function sameGame(a,b){
     try{return typeof sameGameProgramItem==='function'?!!sameGameProgramItem(a,b):gameKey(a)&&gameKey(a)===gameKey(b);}catch(_){return gameKey(a)&&gameKey(a)===gameKey(b);}
+  }
+
+  function matchLeague(match){
+    return clean(match?.__sbbLeague||match?.competitionId||match?.league).toUpperCase();
+  }
+
+  function withLeagueFilter(league,callback){
+    if(!league||typeof callback!=='function')return [];
+    let previous='ALL';
+    try{
+      previous=typeof scoreRibbonLeagueFilter!=='undefined'?scoreRibbonLeagueFilter:'ALL';
+      scoreRibbonLeagueFilter=league;
+      return callback()||[];
+    }catch(err){state.lastError=String(err?.message||err);return [];}
+    finally{try{scoreRibbonLeagueFilter=previous;}catch(_){}}
+  }
+
+  function expandScoreSelectionToLeagueDay(){
+    try{
+      const session=(typeof userPlaybackSession!=='undefined')?userPlaybackSession:null;
+      if(session?.source!=='score'||!Array.isArray(PROGRAM)||!PROGRAM.length)return false;
+      const date=clean(session.playbackDate||session.match?.date||session.match?.gameDate).slice(0,10);
+      const league=matchLeague(session.match)||matchLeague(PROGRAM[0]);
+      if(!date||!league||typeof programForScoreDate!=='function')return false;
+
+      // app.js intentionally commits the clicked game's exact media first so the
+      // click is never delayed. This post-commit hook keeps those exact selected
+      // clip(s) at the front, then appends the rest of the clicked league/date.
+      const selectedCount=Math.max(1,Math.min(Number(session.selectionCount)||1,PROGRAM.length));
+      const selected=PROGRAM.slice(0,selectedCount).filter(Boolean);
+      const queue=withLeagueFilter(league,()=>{
+        if(typeof dateProgramWithSelectionFirst==='function')return dateProgramWithSelectionFirst(date,selected);
+        const base=programForScoreDate(date);
+        const remainder=(base||[]).filter(item=>!selected.some(sel=>itemId(item)===itemId(sel)||sameGame(item,sel)));
+        return [...selected,...remainder];
+      });
+      if(!queue.length)return false;
+
+      // Dedupe exact media assets while preserving multiple clips that intentionally
+      // form one blue highlight reel. same-game items are therefore not collapsed.
+      const seen=new Set(),deduped=[];
+      for(const item of queue){
+        if(!item)continue;
+        const key=itemId(item)||`${gameKey(item)}:${deduped.length}`;
+        if(key&&seen.has(key))continue;
+        if(key)seen.add(key);
+        deduped.push(item);
+      }
+      if(!deduped.length)return false;
+      PROGRAM=[...deduped];
+      currentIndex=0;
+      standbyIndex=0;
+      session.leagueDayQueue=true;
+      session.queueLeague=league;
+      session.queueDate=date;
+      session.queueLength=PROGRAM.length;
+      state.leagueDayBuilds++;
+      state.lastLeagueDay=`${league}:${date}`;
+      state.lastLeagueDayCount=PROGRAM.length;
+      state.lastReason=`score selection expanded to ${league} ${date}`;
+      try{if(typeof renderQueue==='function')renderQueue();}catch(_){}
+      return true;
+    }catch(err){state.lastError=String(err?.message||err);return false;}
   }
 
   function currentProgramSnapshot(){
@@ -42,8 +105,8 @@
   function capture(reason='score-card click'){
     try{
       // Normal score-ribbon playback is date-owned. Do not preserve whatever
-      // general/today queue happened to be running before the click; app.js will
-      // build the selected date's queue. Only an explicit curated Team/Player
+      // general/today queue happened to be running before the click; this module
+      // expands the committed selection into the clicked league/date queue. Only an explicit curated Team/Player
       // Focus program is an interruptible user-owned queue.
       if(!shouldPreserveCurrentQueue()){state.snapshot=null;state.lastReason='date-owned score selection';return null;}
       // A second score click during the same interrupt must still return to the
@@ -125,6 +188,22 @@
     state.snapshot=null;state.lastReason=reason;
   }
 
+  function patchScoreSessionQueue(){
+    try{
+      if(typeof beginScorePlaybackSession!=='function'||beginScorePlaybackSession.__sbbLeagueDayV5316)return false;
+      const original=beginScorePlaybackSession;
+      const wrapped=function(...args){
+        const result=original.apply(this,args);
+        expandScoreSelectionToLeagueDay();
+        return result;
+      };
+      wrapped.__sbbLeagueDayV5316=true;wrapped.__sbbOriginal=original;
+      beginScorePlaybackSession=wrapped;
+      try{window.beginScorePlaybackSession=wrapped;}catch(_){}
+      return true;
+    }catch(err){state.lastError=String(err?.message||err);return false;}
+  }
+
   function patchResume(){
     try{
       if(typeof resumeDateProgramAfterSelection!=='function'||resumeDateProgramAfterSelection.__sbbInterruptV5220)return false;
@@ -159,11 +238,14 @@
   }
 
   function init(){
+    patchScoreSessionQueue();
     patchResume();
     bindScoreCapture();
-    setTimeout(patchResume,300);
+    // app.js normally exists before this module. The bounded retry also covers a
+    // deferred/local script load without adding a polling loop.
+    setTimeout(()=>{patchScoreSessionQueue();patchResume();},300);
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  window.SBB_SCORE_INTERRUPT_QUEUE=Object.freeze({version:VERSION,active,entries,play,capture,clear,restoreQueue,snapshot:()=>({version:VERSION,active:active(),captures:state.captures,resumes:state.resumes,projected:state.projected,lastReason:state.lastReason,lastError:state.lastError,queued:state.snapshot?.program?.length||0,resumeIndex:state.snapshot?resumeIndex((typeof userPlaybackSession!=='undefined'?userPlaybackSession:null),state.snapshot):-1})});
+  window.SBB_SCORE_INTERRUPT_QUEUE=Object.freeze({version:VERSION,active,entries,play,capture,clear,restoreQueue,expandLeagueDay:expandScoreSelectionToLeagueDay,snapshot:()=>({version:VERSION,active:active(),captures:state.captures,resumes:state.resumes,projected:state.projected,leagueDayBuilds:state.leagueDayBuilds,lastLeagueDay:state.lastLeagueDay,lastLeagueDayCount:state.lastLeagueDayCount,lastReason:state.lastReason,lastError:state.lastError,queued:state.snapshot?.program?.length||0,resumeIndex:state.snapshot?resumeIndex((typeof userPlaybackSession!=='undefined'?userPlaybackSession:null),state.snapshot):-1})});
 })();

@@ -1,0 +1,41 @@
+Sports Big Board v5.3.16 manual GitHub upload
+Score Ribbon League-Day Queue
+
+1. Extract this ZIP.
+2. Open the sports-big-board repository root on GitHub.
+3. Upload the CONTENTS of the extracted folder, preserving every included path.
+4. Replace existing files when GitHub prompts.
+5. Commit the upload as one v5.3.16 release.
+6. Let Deploy Sports Big Board run and confirm VERIFY.sh passes.
+7. Hard-refresh the deployed page after GitHub Pages completes.
+
+PRIMARY ACCEPTANCE CHECKS
+A. Score-ribbon league/day queue
+   - Select a normal league such as NFL, MLB, NBA, NHL, EPL, MLS, or NCAAF on a date with multiple games that have playable video.
+   - Click any game on the score ribbon.
+   - Expected: the clicked game starts immediately and remains the first queue item.
+   - Expected: Coming Up / the playback PROGRAM also contains the other playback-ready games from THAT SAME LEAGUE and THAT SAME DATE.
+   - Press NEXT. Expected: playback advances to another game instead of doing nothing.
+   - Game Center must follow the newly active game after NEXT/PREV leaves the clicked game's recap/reel.
+
+B. ALL-filter authority
+   - Set the score filter to ALL and click an NFL game.
+   - Expected: the playback queue contains that date's NFL games only; MLB/NBA/etc. do not enter the queue merely because ALL was selected.
+   - Repeat with an MLB game. Expected: the queue is rebuilt as MLB for that date.
+
+C. Blue highlight reels
+   - Click a game whose selected package is a multi-clip blue reel.
+   - Expected: its same-game clips remain contiguous and play as one game-program before the queue advances to the next league/day game.
+   - Exact duplicate media assets are removed, but legitimate same-game reel clips are not collapsed.
+
+D. Historical dates
+   - Browse to a prior date, select a game, then use NEXT.
+   - Expected: the queue stays locked to the selected historical date and league; it must not fall through to today's general programming.
+
+E. Curated Team/Player Focus interrupt
+   - If a Team/Player Focus queue is active and a score-card game interrupts it, automatic completion may still return to the explicitly curated queue per the existing interrupt contract.
+   - Normal score-ribbon use remains league/day-owned.
+
+This release retains the previous Wild Card GB, compact EPL/MLS form layout, green TODAY/ALL subset controls, Special Event media-health audit, and authoritative FIFA Match Center fixes.
+
+Do not upload the outer folder itself into the repository. Upload its contents so VERSION, index.html, ui/, architecture/, sbb/, tests/, tools/, and the other included paths land at their existing repository locations.
