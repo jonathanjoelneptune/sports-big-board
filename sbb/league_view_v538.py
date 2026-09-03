@@ -1,4 +1,4 @@
-"""Sports Big Board v5.3.10 — cached League View read model.
+"""Sports Big Board v5.3.11 — cached League View read model.
 
 League View is intentionally read-only. It never owns scores, playback, selected-event
 identity, or the historical catalog. It projects public league standings, playoff seed
@@ -19,7 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
-VERSION = "5.3.10-league-view-2"
+VERSION = "5.3.11-league-view-2"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _CACHE_PATH = _STATE_DIR / "league-view-v538.json"
 _TTL_SECONDS = 10 * 60
@@ -78,7 +78,7 @@ def _persist_cache():
 
 
 def _http_json(url, timeout=7.0):
-    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.10", "Accept": "application/json"})
+    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.11", "Accept": "application/json"})
     with urlopen(req, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8", "replace"))
 
@@ -133,10 +133,12 @@ def _standing_entry(entry):
         "pct": pct,
         "points": points,
         "gamesBehind": games_behind,
+        "gamesPlayed": _stat_value(stats, ["gamesplayed", "games played", "gp", "mp"]),
+        "conferenceRecord": _stat_value(stats, ["conference", "conference record", "confrecord", "conf"]),
         "seed": seed,
         "rank": rank,
         "streak": _stat_value(stats, ["streak"]),
-        "differential": _stat_value(stats, ["pointdifferential", "run differential", "goaldifferential", "differential"]),
+        "differential": _stat_value(stats, ["pointdifferential", "run differential", "goaldifferential", "goal differential", "differential", "diff"]),
     }
 
 
@@ -239,7 +241,7 @@ def _conference_layout(league, groups):
         elif ("CONFERENCE" in _clean(group.get("name")).upper() or (league == "MLB" and _clean(group.get("name")).upper() in {"AMERICAN LEAGUE", "NATIONAL LEAGUE"})):
             if len(rows) > len(bucket["standings"]): bucket["standings"] = rows
 
-    if league == "MLB":
+    if league in {"MLB", "NFL"}:
         all_teams = {}
         for bucket in buckets.values():
             for division in bucket["divisions"]:
@@ -247,9 +249,10 @@ def _conference_layout(league, groups):
                     key = row.get("id") or _norm(row.get("name"))
                     if key: all_teams[key] = row
         seeded = []
+        minimum_wildcard_seed = 4 if league == "MLB" else 5
         for key,row in all_teams.items():
             seed = _seed_number(row.get("seed"))
-            if seed < 999 and seed >= 4 and key not in division_leaders:
+            if seed < 999 and seed >= minimum_wildcard_seed and key not in division_leaders:
                 seeded.append((seed,key,row))
         for conf,bucket in buckets.items():
             rows = [row for seed,key,row in seeded if team_conf.get(key) == conf]
@@ -266,7 +269,7 @@ def _conference_layout(league, groups):
                 rows.sort(key=lambda row: (-( _number(row.get("pct"), -1) or -1), _number(row.get("gamesBehind"), 999) or 999, _norm(row.get("name"))))
             else:
                 rows.sort(key=lambda row: (_seed_number(row.get("seed")), _norm(row.get("name"))))
-            bucket["wildcard"] = rows[:8]
+            bucket["wildcard"] = rows[:8 if league == "MLB" else 6]
     return [buckets[key] for key in ("AL","NL","AFC","NFC","EAST","WEST") if key in buckets]
 
 

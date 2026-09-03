@@ -1,0 +1,28 @@
+Sports Big Board v5.3.11 — Playback Context + League View Readability
+
+MANUAL GITHUB UPLOAD
+1. Open the sports-big-board repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, cloud/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when prompted.
+4. Commit every file together so frontend/backend version identity and cache-busted assets remain atomic.
+5. Let Deploy Sports Big Board finish before hard-refreshing the site.
+
+PRIMARY CHANGES
+- Returning from Team/Player/Special Event Browse to ALL or RETURN TO TODAY now immediately releases curated queue ownership. A prior World Cup queue can no longer reassert itself after a normal score-card click.
+- Core-league/ALL filter clicks release curated programming during capture, before the canonical score renderer runs.
+- League View now treats the active PROGRAM item and visible playback title as higher authority than stale SelectedEvent or Browse context.
+- Special-event context is only a League View fallback while Browse is still non-daily.
+- League View performs bounded delayed context reconciliation plus a low-cost 1.2-second authority check that only fetches when the actual playback league changes.
+- MLB playback therefore replaces a prior World Cup League View as soon as the MLB selection becomes authoritative.
+- Standings typography and row height are increased substantially; team names, positions and logos are easier to read.
+- MLB remains AL/NL side-by-side with East/Central/West and Wild Card under each league. Division leaders remain excluded from Wild Card tables.
+- NFL now uses AFC/NFC side-by-side with divisions and a conference-specific Wild Card chase excluding division leaders.
+- NBA/NHL use East/West conference tables with playoff/play-in cutoff dividers.
+- EPL/MLS use a familiar position-first table with MP, W-D-L and points.
+- NCAAF retains conference/ranking context with a larger standings presentation.
+- Existing League Pulse, recent games, series/bracket and special-event context remain available below standings.
+
+VERIFY
+Run: bash VERIFY.sh
+Expected final line:
+PASS: v5.3.11 Playback Context + League View Readability preflight complete

@@ -1,17 +1,17 @@
-/* Sports Big Board v5.3.10 — League View + recap context.
+/* Sports Big Board v5.3.11 — League View + recap context.
    Keeps multi-game/daily recap playback from inheriting a stale single-game
    Game Center and turns the former Up Next drawer into a persistent league view. */
 (() => {
   'use strict';
-  if (window.SBB_LEAGUE_VIEW?.version === '5.3.10') return;
+  if (window.SBB_LEAGUE_VIEW?.version === '5.3.11') return;
 
-  const VERSION = '5.3.10';
+  const VERSION = '5.3.11';
   const $ = id => document.getElementById(id);
   const clean = value => String(value ?? '').trim();
   const esc = value => clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const upper = value => clean(value).toUpperCase();
   const core = new Set(['MLB','NFL','NBA','NHL','NCAAF','EPL','MLS']);
-  const state = {league:'',loading:false,payload:null,error:'',request:0,aggregate:false,lastAggregateKey:'',observer:null};
+  const state = {league:'',loading:false,payload:null,error:'',request:0,aggregate:false,lastAggregateKey:'',observer:null,contextPoll:null};
 
   function apiUrl(path){ try{return window.SBB_API?.url?.(path) || path;}catch(_){return path;} }
   function normalizeLeague(value){
@@ -24,26 +24,53 @@
     try{ if(typeof PROGRAM!=='undefined'&&Array.isArray(PROGRAM)){const i=Number(typeof currentIndex!=='undefined'?currentIndex:0);return PROGRAM[i]||null;} }catch(_){}
     return null;
   }
+  function leagueFromItem(item){
+    if(!item)return '';
+    const candidates=[
+      item.competitionId,item.league,item.sportLeague,item.competition,item.__sbbLeague,item.scoreLeague,item.sourceLeague,
+      item.event?.competitionId,item.event?.league,item.match?.competitionId,item.match?.league,item.game?.competitionId,item.game?.league
+    ];
+    for(const value of candidates){const league=normalizeLeague(value);if(league&&league!=='ALL')return league;}
+    return '';
+  }
+  function leagueFromTitle(title=currentTitle()){
+    const text=upper(title);
+    if(/\bMLB\b|MAJOR LEAGUE BASEBALL/.test(text))return 'MLB';
+    if(/\bNFL\b/.test(text))return 'NFL';
+    if(/\bNBA\b/.test(text))return 'NBA';
+    if(/\bNHL\b/.test(text))return 'NHL';
+    if(/\bNCAAF\b|COLLEGE FOOTBALL|NCAA FOOTBALL/.test(text))return 'NCAAF';
+    if(/PREMIER LEAGUE|\bEPL\b/.test(text))return 'EPL';
+    if(/\bMLS\b|MAJOR LEAGUE SOCCER/.test(text))return 'MLS';
+    if(/WORLD CUP|FIFA WC/.test(text))return 'WC2026';
+    if(/US OPEN/.test(text))return 'USOPEN-2026';
+    if(/LITTLE LEAGUE|\bLLWS\b/.test(text))return 'LLWS2026';
+    return '';
+  }
   function currentLeague(){
+    // v5.3.11 authority order: what is PLAYING beats what was BROWSED. Curated
+    // special-event context is only a fallback while Browse is still non-daily.
+    // This prevents a retired World Cup context from pinning League View after an
+    // MLB score-card takes over playback.
+    const item=activeProgram();
+    const fromItem=leagueFromItem(item);if(fromItem)return fromItem;
+    const fromTitle=leagueFromTitle();if(fromTitle)return fromTitle;
     const aggregate=isAggregate();
-    // League View follows what is actually on screen, not the browse menu that
-    // happened to build the surrounding queue. A score-ribbon interrupt owns a
-    // SelectedEvent; a daily/league recap intentionally does not.
     if(!aggregate){
       try{
         const selected=window.SBB_SELECTED_EVENT?.get?.();
         const fromSelected=normalizeLeague(selected?.competitionId||selected?.league||selected?.sportLeague||selected?.competition);
-        if(fromSelected)return fromSelected;
+        if(fromSelected&&fromSelected!=='ALL')return fromSelected;
       }catch(_){}
     }
-    const item=activeProgram();
-    const fromItem=normalizeLeague(item?.competitionId||item?.league||item?.sportLeague||item?.competition);
-    if(fromItem)return fromItem;
-    const context=curatedContext(); if(context?.specialContext?.league)return normalizeLeague(context.specialContext.league);
-    if(context?.league && context.league!=='ALL')return normalizeLeague(context.league);
+    const context=curatedContext();
+    if(context?.mode&&context.mode!=='daily'){
+      if(context?.specialContext?.league)return normalizeLeague(context.specialContext.league);
+      if(context?.league&&context.league!=='ALL')return normalizeLeague(context.league);
+    }
     try{const raw=normalizeLeague(scoreRibbonLeagueFilter);if(raw&&raw!=='ALL')return raw;}catch(_){}
     const active=document.querySelector('#scoreFilters [data-score-filter].active,#scoreFilters [data-score-filter][aria-pressed="true"]');
-    return normalizeLeague(active?.dataset?.scoreFilter)||'MLB';
+    return normalizeLeague(active?.dataset?.scoreFilter)||state.league||'MLB';
   }
   function leagueLabel(league,payload){
     if(clean(payload?.label))return clean(payload.label);
@@ -101,28 +128,53 @@
     if(row.wins!==''||row.losses!=='')return [row.wins,row.losses,row.ties].filter(x=>clean(x)!=='').join('-');
     return clean(row.points)||'—';
   }
-  function rowMarkup(row){
-    return `<tr><td><span class="league-view-team">${row.logo?`<img src="${esc(row.logo)}" alt="" loading="lazy">`:''}<b>${esc(row.abbreviation||row.name)}</b><small>${esc(row.name)}</small></span></td><td>${esc(rowRecord(row))}</td><td>${esc(row.gamesBehind||row.points||row.pct||'—')}</td><td>${esc(row.streak||'—')}</td></tr>`;
+  function soccerRecord(row){
+    const parts=[row.wins,row.ties,row.losses].map(clean);
+    return parts.some(Boolean)?parts.map(x=>x||'0').join('-'):rowRecord(row);
   }
-  function tableForGroup(group,{compact=false,title=''}={}){
-    const rows=(group?.entries||[]).slice(0,20); if(!rows.length)return '';
-    return `<section class="league-view-card league-view-standings-card${compact?' compact':''}"><div class="league-view-card-head"><strong>${esc(title||group.name||'STANDINGS')}</strong><span>${rows.length} TEAMS</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr><th>TEAM</th><th>REC</th><th>GB / PTS</th><th>STRK</th></tr></thead><tbody>${rows.map(rowMarkup).join('')}</tbody></table></div></section>`;
+  function rowSecondary(row,league){
+    if(['EPL','MLS'].includes(league))return clean(row.gamesPlayed||row.played||'—');
+    if(league==='NHL')return clean(row.points||row.pct||row.gamesBehind||'—');
+    return clean(row.gamesBehind||row.pct||row.points||'—');
   }
-  function wildcardCard(rows,title='WILD CARD'){
+  function tableHeaders(league){
+    if(['EPL','MLS'].includes(league))return ['CLUB','MP','W-D-L','PTS'];
+    if(league==='NHL')return ['TEAM','REC','PTS','STRK'];
+    if(league==='NCAAF')return ['TEAM','REC','CONF','STRK'];
+    return ['TEAM','REC','GB / PCT','STRK'];
+  }
+  function rowMarkup(row,{league='',position=0,rowClass=''}={}){
+    const soccer=['EPL','MLS'].includes(league);
+    const secondary=soccer?clean(row.gamesPlayed||row.played||'—'):rowSecondary(row,league);
+    const third=soccer?soccerRecord(row):(league==='NCAAF'?clean(row.conferenceRecord||row.gamesBehind||row.pct||'—'):secondary);
+    const fourth=soccer?clean(row.points||'—'):clean(row.streak||'—');
+    return `<tr class="${esc(rowClass)}"><td><span class="league-view-team"><i>${position||''}</i>${row.logo?`<img src="${esc(row.logo)}" alt="" loading="lazy">`:''}<b>${esc(row.name||row.abbreviation)}</b></span></td><td>${esc(soccer?secondary:rowRecord(row))}</td><td>${esc(third)}</td><td>${esc(fourth)}</td></tr>`;
+  }
+  function tableForGroup(group,{compact=false,title='',league='',cutoffs=[]}={}){
+    const rows=(group?.entries||[]).slice(0,25); if(!rows.length)return '';
+    const headers=tableHeaders(league);
+    return `<section class="league-view-card league-view-standings-card${compact?' compact':''}"><div class="league-view-card-head"><strong>${esc(title||group.name||'STANDINGS')}</strong><span>${rows.length} TEAMS</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr>${headers.map((h,i)=>`<th${i===0?' class="team-col"':''}>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map((row,i)=>rowMarkup(row,{league,position:i+1,rowClass:cutoffs.includes(i+1)?'league-view-cutoff':''})).join('')}</tbody></table></div></section>`;
+  }
+  function wildcardCard(rows,title='WILD CARD',league='MLB'){
     if(!rows?.length)return '';
-    return `<section class="league-view-card league-view-wildcard"><div class="league-view-card-head"><strong>${esc(title)}</strong><span>NON-DIVISION LEADERS</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr><th>TEAM</th><th>REC</th><th>GB / PTS</th><th>STRK</th></tr></thead><tbody>${rows.slice(0,8).map(rowMarkup).join('')}</tbody></table></div></section>`;
+    const headers=tableHeaders(league);
+    return `<section class="league-view-card league-view-wildcard"><div class="league-view-card-head"><strong>${esc(title)}</strong><span>${league==='MLB'?'DIVISION LEADERS EXCLUDED':'CURRENT PLAYOFF CHASE'}</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr>${headers.map((h,i)=>`<th${i===0?' class="team-col"':''}>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.slice(0,10).map((row,i)=>rowMarkup(row,{league,position:i+1,rowClass:i===2&&league==='MLB'?'league-view-cutoff':''})).join('')}</tbody></table></div></section>`;
   }
   function conferenceBoard(rows,league){
     if(!Array.isArray(rows)||rows.length<2)return '';
     const wanted=league==='MLB'?['AL','NL']:(league==='NFL'?['AFC','NFC']:['EAST','WEST']);
     const ordered=wanted.map(key=>rows.find(x=>upper(x?.key)===key)).filter(Boolean);
     if(ordered.length<2)return '';
-    return `<div class="league-view-conference-grid">${ordered.map(conf=>{
+    return `<div class="league-view-conference-grid league-view-${league.toLowerCase()}">${ordered.map(conf=>{
       let inner='';
-      if(Array.isArray(conf.divisions)&&conf.divisions.length){for(const division of conf.divisions)inner+=tableForGroup(division,{compact:true,title:division.name});}
-      else if(Array.isArray(conf.standings)&&conf.standings.length)inner+=tableForGroup({name:conf.name,entries:conf.standings},{compact:true,title:'CONFERENCE STANDINGS'});
-      if(league==='MLB')inner+=wildcardCard(conf.wildcard||[],'WILD CARD');
-      return `<section class="league-view-conference"><div class="league-view-conference-head"><strong>${esc(conf.name||conf.key)}</strong><span>${league==='MLB'?'DIVISIONS + WILD CARD':'CONFERENCE'}</span></div>${inner}</section>`;
+      if(Array.isArray(conf.divisions)&&conf.divisions.length){for(const division of conf.divisions)inner+=tableForGroup(division,{compact:true,title:division.name,league});}
+      else if(Array.isArray(conf.standings)&&conf.standings.length){
+        const cutoffs=league==='NBA'?[6,10]:(league==='NHL'?[8]:[]);
+        inner+=tableForGroup({name:conf.name,entries:conf.standings},{compact:false,title:'CONFERENCE STANDINGS',league,cutoffs});
+      }
+      if(league==='MLB'||league==='NFL')inner+=wildcardCard(conf.wildcard||[],'WILD CARD',league);
+      const sub=league==='MLB'?'DIVISIONS + WILD CARD':(league==='NFL'?'DIVISIONS + WILD CARD':'CONFERENCE TABLE');
+      return `<section class="league-view-conference"><div class="league-view-conference-head"><strong>${esc(conf.name||conf.key)}</strong><span>${sub}</span></div>${inner}</section>`;
     }).join('')}</div>`;
   }
   function playoffCard(rows,league){
@@ -178,7 +230,7 @@
       if(payload.rankings?.length)body+=rankingsCard(payload.rankings);
       const conferenceLayout=conferenceBoard(payload.conferences||[],league);
       if(conferenceLayout)body+=conferenceLayout;
-      else for(const group of payload.standings||[])body+=tableForGroup(group);
+      else for(const group of payload.standings||[])body+=tableForGroup(group,{league});
       body+=playoffCard(payload.playoffRace||[],league);
       body+=pulseCard(payload.leaders||{});
       body+=roundsCard(payload.games||[],special);
@@ -207,18 +259,27 @@
     if(forceRefresh||league!==state.league||!state.payload){refresh(false);}else if(key!==state.lastAggregateKey)render();
     state.lastAggregateKey=key;
   }
+  function scheduleContextSync({forceRefresh=false}={}){
+    // Playback/title/SelectedEvent update on different microtasks. Probe the
+    // settled state a few times so a just-ended World Cup context cannot win the
+    // first race and remain cached while an MLB item is already playing.
+    for(const ms of [0,120,420,900])setTimeout(()=>syncContext({forceRefresh:forceRefresh&&ms===0}),ms);
+  }
   function bind(){
     $('upNextTabBtn')?.addEventListener('click',()=>{const league=currentLeague();if(league!==state.league||!state.payload)refresh(false);else render();});
     $('upNextDrawerBtn')?.addEventListener('click',()=>setTimeout(()=>{const league=currentLeague();if(league!==state.league||!state.payload)refresh(false);else render();},0));
-    $('scoreFilters')?.addEventListener('click',event=>{if(event.target.closest('[data-score-filter]'))setTimeout(()=>syncContext({forceRefresh:true}),50);});
-    window.addEventListener('sbb:special-context',()=>setTimeout(()=>syncContext({forceRefresh:true}),30));
-    window.addEventListener('sbb:curated-event-identity',()=>setTimeout(()=>syncContext(),30));
-    window.addEventListener('sbb:score-click-selection',()=>setTimeout(()=>syncContext({forceRefresh:true}),30));
+    $('scoreFilters')?.addEventListener('click',event=>{if(event.target.closest('[data-score-filter]'))scheduleContextSync({forceRefresh:true});});
+    window.addEventListener('sbb:special-context',()=>scheduleContextSync({forceRefresh:true}));
+    window.addEventListener('sbb:curated-queue-release',()=>scheduleContextSync({forceRefresh:true}));
+    window.addEventListener('sbb:curated-event-identity',()=>scheduleContextSync());
+    window.addEventListener('sbb:score-click-selection',()=>scheduleContextSync({forceRefresh:true}));
     window.addEventListener('sbb:league-view-refresh',()=>refresh(true));
-    try{window.SBB_SELECTED_EVENT?.subscribe?.(()=>setTimeout(()=>syncContext({forceRefresh:true}),0));}catch(_){}
-    const title=$('currentTitle');if(title){state.observer=new MutationObserver(()=>setTimeout(()=>syncContext(),0));state.observer.observe(title,{childList:true,subtree:true,characterData:true});}
-    setTimeout(()=>syncContext({forceRefresh:true}),0);
-    setTimeout(()=>syncContext(),1200);
+    try{window.SBB_SELECTED_EVENT?.subscribe?.(()=>scheduleContextSync({forceRefresh:true}));}catch(_){}
+    const title=$('currentTitle');if(title){state.observer=new MutationObserver(()=>scheduleContextSync());state.observer.observe(title,{childList:true,subtree:true,characterData:true});}
+    // Low-cost authority reconciliation while the page is alive. It performs no
+    // fetch unless the actual playback league changes.
+    state.contextPoll=setInterval(()=>{const league=currentLeague();if(league&&league!==state.league)refresh(false);},1200);
+    scheduleContextSync({forceRefresh:true});
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();

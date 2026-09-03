@@ -7,7 +7,7 @@ js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
 backend=(ROOT/'sbb'/'team_focus_v537.py').read_text()
 init=(ROOT/'sbb'/'__init__.py').read_text()
-assert version=='5.3.10',version
+assert version=='5.3.11',version
 assert f'ui/browse-curated-programming-v537.css?v={version}' in index
 assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>' in index
 
@@ -44,4 +44,4 @@ assert 'from .team_focus_v537 import install as _install_team_focus_v537' in ini
 assert '_install_team_focus_v537()' in init
 for forbidden in ['setInterval(', 'requestAnimationFrame(loop']:
     assert forbidden not in js,forbidden
-print('PASS v5.3.10 persistent participants + schedule-complete Team Focus + enrichment + theming')
+print('PASS v5.3.11 persistent participants + schedule-complete Team Focus + enrichment + theming')

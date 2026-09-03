@@ -1,4 +1,4 @@
-/* Sports Big Board v5.3.10 — League View */
+/* Sports Big Board v5.3.11 — League View */
 #upNextPane{min-height:0;overflow:hidden!important}
 .league-view-root{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);background:#07121a;color:#eaf2f7}
 .league-view-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 13px 10px;border-bottom:1px solid rgba(126,157,180,.18);background:linear-gradient(180deg,#0d1c28,#09151e)}
@@ -38,7 +38,7 @@ html[data-sbb-team-theme="on"] .league-view-rounds span{color:var(--sbb-team-tex
 
 
 /* ======================================================================
-   v5.3.10 — drawer exclusivity + high-contrast league marks
+   v5.3.11 — drawer exclusivity + high-contrast league marks
    ====================================================================== */
 
 /* Earlier desktop Game Center layout rules intentionally use display:grid!important.
@@ -66,7 +66,7 @@ body.sbb-game-center-side #infoDrawer .drawer-pane.hidden{
 }
 
 /* ======================================================================
-   v5.3.10 — denser conference/division League View
+   v5.3.11 — denser conference/division League View
    ====================================================================== */
 .league-view-content{padding:6px!important;gap:6px!important}
 .league-view-head{padding:9px 10px 8px!important}
@@ -130,4 +130,72 @@ html[data-sbb-team-theme="on"] .league-view-pulse-group{background:var(--sbb-tea
 @media(max-width:560px){
   .league-view-conference-grid{grid-template-columns:1fr}
   .league-view-pulse-grid{grid-template-columns:1fr}
+}
+
+/* ======================================================================
+   v5.3.11 — readable broadcast standings layout
+   Inspired by the information hierarchy of MLB/ESPN standings pages while
+   keeping the Big Board drawer intentionally lower-density than a stats site.
+   ====================================================================== */
+.league-view-head{padding:11px 12px 10px!important}
+.league-view-head h2{font-size:18px!important;line-height:1!important}
+.league-view-head small{font-size:7.2px!important}
+.league-view-muted,.league-view-updated{font-size:7px!important}
+.league-view-content{padding:8px!important;gap:8px!important}
+.league-view-conference-grid{gap:8px!important}
+.league-view-conference{gap:6px!important;border-radius:10px!important}
+.league-view-conference-head{min-height:36px!important;padding:0 9px!important}
+.league-view-conference-head strong{font-size:9px!important;letter-spacing:.075em!important}
+.league-view-conference-head span{font-size:6.1px!important}
+.league-view-conference>.league-view-card{margin:0 6px 6px!important}
+.league-view-card-head{height:28px!important;padding:0 8px!important}
+.league-view-card-head strong{font-size:7.6px!important}
+.league-view-card-head span{font-size:5.8px!important}
+.league-view-table{font-size:8.1px!important}
+.league-view-table th{height:23px!important;padding:0 5px!important;font-size:6px!important}
+.league-view-table td{height:32px!important;padding:3px 5px!important;font-size:8px!important}
+.league-view-table th.team-col{width:60%!important}
+.league-view-team{grid-template-columns:12px 22px minmax(0,1fr)!important;gap:5px!important}
+.league-view-team i{color:#68879a;font:850 6.2px/1 system-ui,sans-serif;text-align:right;font-style:normal}
+.league-view-team img{width:22px!important;height:22px!important;border-radius:5px!important;padding:2px!important}
+.league-view-team b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:8px!important;line-height:1.08!important}
+.league-view-team small{display:none!important}
+
+/* Division tables remain compact enough for AL/NL and AFC/NFC side-by-side,
+   but no longer shrink into diagnostic-sized type. */
+.league-view-standings-card.compact .league-view-card-head{height:27px!important}
+.league-view-standings-card.compact .league-view-card-head strong{font-size:7.4px!important}
+.league-view-standings-card.compact .league-view-table{font-size:7.7px!important}
+.league-view-standings-card.compact .league-view-table th{height:22px!important;font-size:5.8px!important}
+.league-view-standings-card.compact .league-view-table td{height:30px!important;font-size:7.7px!important}
+.league-view-standings-card.compact .league-view-table th:first-child{width:60%!important}
+.league-view-standings-card.compact .league-view-team{grid-template-columns:11px 20px minmax(0,1fr)!important;gap:4px!important}
+.league-view-standings-card.compact .league-view-team img{width:20px!important;height:20px!important}
+.league-view-standings-card.compact .league-view-team b{font-size:7.6px!important}
+
+.league-view-wildcard .league-view-card-head{height:29px!important}
+.league-view-wildcard .league-view-card-head strong{font-size:7.7px!important}
+.league-view-wildcard .league-view-card-head span{font-size:5.3px!important}
+.league-view-wildcard .league-view-table th:first-child{width:60%!important}
+.league-view-wildcard .league-view-team{grid-template-columns:11px 20px minmax(0,1fr)!important;gap:4px!important}
+.league-view-wildcard .league-view-team img{width:20px!important;height:20px!important}
+.league-view-wildcard .league-view-team b{font-size:7.6px!important}
+.league-view-table tr.league-view-cutoff td{border-top:2px solid rgba(240,203,97,.72)!important}
+
+.league-view-ranking-list>div{min-height:34px!important;padding:4px 7px!important}
+.league-view-ranking-list span{font-size:7.6px!important}
+.league-view-race-grid>div{min-height:34px!important}
+.league-view-race-grid span{font-size:7.7px!important}
+.league-view-games>div,.league-view-rounds>div{padding:7px 8px!important}
+.league-view-games strong{font-size:7.8px!important}
+.league-view-games span,.league-view-rounds span{font-size:7px!important}
+
+/* Soccer tables benefit from the familiar position-first full table treatment. */
+.league-view-epl .league-view-table th.team-col,
+.league-view-mls .league-view-table th.team-col{width:56%!important}
+
+@media(max-width:470px){
+  .league-view-conference-grid{grid-template-columns:1fr!important}
+  .league-view-table{font-size:8.6px!important}
+  .league-view-team b{font-size:8.4px!important}
 }

@@ -10,7 +10,7 @@ league=(ROOT/'ui'/'league-view-v538.js').read_text()
 league_css=(ROOT/'ui'/'league-view-v538.css').read_text()
 pause=(ROOT/'architecture'/'playback-early-pause-recovery-v538.js').read_text()
 
-assert version=='5.3.10',version
+assert version=='5.3.11',version
 
 # Team selection tunes the newest playable historical game automatically.
 for token in [
@@ -38,11 +38,11 @@ assert '#infoDrawer .drawer-pane.hidden' in league_css
 assert 'body.sbb-game-center-side #infoDrawer .drawer-pane.hidden' in league_css
 assert 'display:none!important' in league_css
 
-# League View follows actual playback/SelectedEvent before the browse context.
+# League View follows actual playback before SelectedEvent and browse context.
 selected_pos=league.index('const selected=window.SBB_SELECTED_EVENT?.get?.()')
 program_pos=league.index('const item=activeProgram()')
 context_pos=league.index('const context=curatedContext()')
-assert selected_pos < program_pos < context_pos
+assert program_pos < selected_pos < context_pos
 assert "window.addEventListener('sbb:score-click-selection'" in league
 assert 'window.SBB_SELECTED_EVENT?.subscribe?.' in league
 
@@ -99,4 +99,4 @@ for token in [
 ]:
     assert token in index, token
 
-print('PASS v5.3.10 team auto-tune + exclusive drawer + playback-owned League View + persistent event context + manual-pause latch + compact team ticker')
+print('PASS v5.3.11 team auto-tune + exclusive drawer + playback-owned League View + persistent event context + manual-pause latch + compact team ticker')

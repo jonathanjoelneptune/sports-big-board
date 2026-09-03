@@ -9,7 +9,7 @@ css=(ROOT/'ui'/'harmonized-controls-drawer-v5217.css').read_text()
 js=(ROOT/'ui'/'harmonized-controls-drawer-v5217.js').read_text()
 upnext=(ROOT/'ui'/'up-next-experience-v5217.js').read_text()
 
-assert version=='5.3.10', version
+assert version=='5.3.11', version
 assert f'ui/harmonized-controls-drawer-v5217.css?v={version}' in index
 assert f'<script src="ui/harmonized-controls-drawer-v5217.js?v={version}"></script>' in index
 assert f'<script src="ui/up-next-experience-v5217.js?v={version}"></script>' in index
@@ -36,14 +36,14 @@ for token in [
     assert token in js, token
 
 for token in [
-    "if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.3.10') return;",
+    "if(window.SBB_UP_NEXT_EXPERIENCE?.version==='5.3.11') return;",
     "const pane=$('gameCenterPane');",
     'if(dock.parentElement!==pane) pane.appendChild(dock);',
-    "reason:'manual next control v5.3.10 fallback'",
+    "reason:'manual next control v5.3.11 fallback'",
 ]:
     assert token in upnext, token
 
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version, f'{asset}: {found} != {version}'
 
-print('PASS v5.3.10 drawer polish, harmonized controls, bottom-docked Coming Up, and collapsible drawer')
+print('PASS v5.3.11 drawer polish, harmonized controls, bottom-docked Coming Up, and collapsible drawer')

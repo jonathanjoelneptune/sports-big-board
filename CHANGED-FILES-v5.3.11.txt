@@ -1,0 +1,34 @@
+Sports Big Board v5.3.11 — Changed / Release Files
+
+CORE USER-FACING CHANGES
+- ui/browse-curated-programming-v537.js
+  * releaseCuratedQueue() boundary for ALL/TODAY/core-league navigation
+  * RETURN TO TODAY clears special-event and curated queue ownership
+  * prevents stale World Cup programming from overwriting normal date-owned queues
+- ui/league-view-v538.js
+  * playback-first league authority
+  * title-based league inference fallback
+  * stale special-context suppression in daily mode
+  * delayed + periodic context reconciliation
+  * sport-specific standings columns and NFL wildcard presentation
+- ui/league-view-v538.css
+  * larger readable standings typography
+  * larger logos/team rows/conference headings
+  * playoff cutoff separators and improved two-column readability
+- sbb/league_view_v538.py
+  * games-played / conference-record projections
+  * NFL conference wildcard generation
+  * MLB/NFL division-winner exclusion from wildcard rows
+- tests/test_v5311_playback_context_league_view.py
+  * blocking v5.3.11 regression
+- tests/test_v539_team_context_drawer_sync.py
+  * retained contract updated for playback-first League View authority
+- tools/check_release_version.py
+  * static v5.3.11 release-integrity gates
+- VERIFY.sh
+  * runs v5.3.11 regression
+
+ATOMIC VERSION / CACHE HANDSHAKE
+The package also carries the v5.3.11 versions of the release files inherited from
+v5.3.10 so GitHub receives one synchronized frontend/backend deployment. Upload the
+entire package rather than selecting only the files listed above.
