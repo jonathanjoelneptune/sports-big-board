@@ -1,0 +1,30 @@
+Sports Big Board v5.3.13 manual GitHub upload
+Special Event Ownership + Symmetric Standings
+
+1. Extract this ZIP.
+2. Open the sports-big-board repository root on GitHub.
+3. Upload the CONTENTS of the extracted v5.3.13 folder, preserving all included folders/paths.
+4. Replace existing files when GitHub prompts.
+5. Commit the entire upload as one v5.3.13 release.
+6. Let Deploy Sports Big Board run and confirm VERIFY.sh passes.
+7. Hard-refresh the deployed page after Pages completes.
+
+PRIMARY ACCEPTANCE CHECKS
+A. World Cup stale-MLB regression
+   - Start from ALL/TODAY and play an MLB highlight so Game Center contains MLB data.
+   - Enter SPECIAL EVENTS > FIFA WC.
+   - Select multiple World Cup matches, including one whose YouTube embed is unavailable.
+   - Expected: the old MLB video/fallback card never reappears; Game Center follows the selected World Cup match/fallback context; the queue remains World Cup-only.
+   - If a source fails, recovery stays same-match first, then advances only within the World Cup queue, then offers the exact World Cup external fallback.
+
+B. League View symmetry
+   - Open MLB League View and compare AL/NL East, Central, West, and Wild Card headings.
+   - Expected: corresponding headings begin at identical vertical positions.
+   - Repeat on NFL/NHL where paired divisions have unequal team counts.
+   - A shorter paired division should contain blank bottom spacing equal to one normal team row, not a fake team.
+
+C. Exit boundary
+   - Click EXIT EVENT or RETURN TO TODAY.
+   - Expected: curated ownership is released and normal daily score-card playback/queue behavior resumes.
+
+Do not upload the outer folder itself into the repository. Upload its contents so VERSION, index.html, ui/, architecture/, sbb/, tests/, tools/, and cloud/ land at their existing repository paths.

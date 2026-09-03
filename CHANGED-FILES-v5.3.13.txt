@@ -1,0 +1,26 @@
+Sports Big Board v5.3.13 — Special Event Ownership + Symmetric Standings
+
+USER-VISIBLE FIXES
+- Special Event playback is now a hard ownership boundary. While FIFA WC / LLWS / US Open curated playback is active, stale MLB score-session or score-interrupt state cannot retake PROGRAM, Game Center, or failure recovery ownership.
+- A curated selection commits its PROGRAM/currentIndex identity before the transport is tuned. If a World Cup embed fails synchronously, failure handling now sees the selected soccer match rather than the previously playing MLB item.
+- Entering/tuning Special Event playback pauses the old transport and fully hides the previous external-fallback bumper before the new source starts. This prevents an old SEA/BOS "Open Official Highlights" card from remaining visible under a World Cup selection.
+- The curated ownership guard performs bounded reconciliation during the first three seconds and then a lightweight 900 ms timeout chain while Special Event playback remains active. It only repairs state when the active PROGRAM item/Game Center identity no longer matches the selected curated match.
+- Stale Score Interrupt Queue/user playback ownership is cleared when a Special Event queue starts, when a curated item tunes, and if stale ownership reappears during curated failure/re-render handling.
+- Special Event fallback remains same-match first, then next curated match, then exact-match external fallback. It may not fall through to an old normal-day MLB queue.
+
+LEAGUE VIEW SYMMETRY
+- Paired league/conference columns now reserve the same number of row slots for corresponding sections.
+- If one side has a four-team division and the corresponding side has five teams, the shorter table gets one invisible placeholder row at the bottom.
+- East/Central/West/Wild Card (and AFC/NFC, East/West equivalents) therefore begin at the same vertical position on both sides.
+- Placeholder rows occupy normal team-row height without showing fake teams or fake standings data.
+- Wild Card tables are padded to the same paired height as well, preserving bottom-to-bottom symmetry.
+
+REGRESSION COVERAGE
+- Added tests/test_v5313_special_event_ownership_symmetry.py.
+- Retained v5.3.0 through v5.3.12 Browse/Team/Special Event/League View contracts remain blocking.
+- JavaScript syntax checks remain blocking for Browse, League View, playback watchdogs, and other changed runtime modules.
+
+RELEASE FILES
+- VERSION / architecture/VERSION = 5.3.13.
+- All cache-busted JS/CSS references synchronized to v5.3.13.
+- Sports Ticker OpenAI limiter remains unchanged: 20 automatic candidates, 40 manual candidates, 20-record batches, 2.5-second pacing.

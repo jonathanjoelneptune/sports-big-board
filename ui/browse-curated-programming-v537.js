@@ -1,13 +1,13 @@
-/* Sports Big Board v5.3.12 — Focus Integration + Full Team Theme
+/* Sports Big Board v5.3.13 — Focus Integration + Full Team Theme
    User-facing content discovery over the existing score/calendar + historical
    catalog. No second playback owner: curated results become normal PROGRAM items
    and therefore inherit PlaybackController, Hot Standby, Up Next and score-card
    interrupt/resume behavior. */
 (() => {
   'use strict';
-  if(window.SBB_CURATED_BROWSE?.version==='5.3.12') return;
+  if(window.SBB_CURATED_BROWSE?.version==='5.3.13') return;
 
-  const VERSION='5.3.12';
+  const VERSION='5.3.13';
   const FAVORITES_KEY='sbb.curation.favorites.v1';
   const ENTITY_CATALOG_KEY='sbb.browse.entity-catalog.v535';
   const ENTITY_CATALOG_TTL_MS=6*60*60*1000;
@@ -32,6 +32,7 @@
     teamFocusData:null,teamFocusKey:'',teamFocusInflight:null,teamThemeEnabled:loadTeamTheme(),
     entityMetaCache:new Map(),specialContext:null,cfbObserver:null,
     curatedAlternates:new Map(),failedCuratedMedia:new Set(),playbackFailurePatched:false,
+    curatedOwnershipEpoch:0,curatedGuardTimer:null,curatedExpectedIndex:0,curatedExpectedKey:'',curatedGuardBusy:false,
   };
 
 
@@ -436,7 +437,7 @@
   }
   function installLegacyCfbGuard(){
     hideLegacyCfb();if(state.cfbObserver)return;const filters=$('scoreFilters');if(!filters)return;
-    // v5.3.12: the special-event header is display-only. Do not observe/filter its
+    // v5.3.13: the special-event header is display-only. Do not observe/filter its
     // attributes or repeatedly reposition Browse controls from a score-row mutation
     // callback. v5.3.9 accidentally created a feedback loop between the synthetic
     // event chip and the canonical score-filter renderer that could freeze the page.
@@ -526,7 +527,7 @@
   }
   async function fetchFullEntityCatalog(league,{forceMetadata=false}={}){
     const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return [];
-    // v5.3.12 prefers the backend's persisted participant index. It is built from
+    // v5.3.13 prefers the backend's persisted participant index. It is built from
     // all catalog events that own verified/playable media and is warmed in the
     // background, so opening Team/Player Browse does not scan the audit catalog.
     try{
@@ -534,7 +535,7 @@
       const entities=Array.isArray(data?.entities)?data.entities:[];const names=Array.isArray(data?.participants)?data.participants.map(clean).filter(Boolean):entities.map(x=>clean(x?.name)).filter(Boolean);
       if(response.ok&&data?.ok&&names.length){rememberEntityMetadata(selected,entities.length?entities:names.map(name=>({name})));return [...new Set(names)].sort((a,b)=>a.localeCompare(b));}
     }catch(_){}
-    // Compatibility fallback for a backend that has not completed the v5.3.12
+    // Compatibility fallback for a backend that has not completed the v5.3.13
     // participant-index warmup yet.
     let offset=0,total=Infinity,rows=[];
     while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS){
@@ -711,8 +712,15 @@
     }).map(gameFromResident).filter(Boolean).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
   }
   function activateRanked(){captureScoreRibbonHeight();state.mode='facet';state.entity='';state.facet=isTennis(state.league)?'SEEDED TODAY':'RANKED TODAY';state.error='';state.loading=false;state.selected.clear();state.entityAuditRows=[];state.games=rankedResidentGames();setOpen(false);renderCuration();}
+  function stopCuratedOwnershipGuard(){
+    state.curatedOwnershipEpoch++;
+    if(state.curatedGuardTimer){clearTimeout(state.curatedGuardTimer);state.curatedGuardTimer=null;}
+    state.curatedExpectedIndex=0;state.curatedExpectedKey='';state.curatedGuardBusy=false;
+    try{delete document.body.dataset.sbbCuratedPlaybackOwner;}catch(_){}
+  }
   function releaseCuratedQueue(reason='return to daily programming'){
-    // v5.3.12: curated Team/Player/Special Event queues are user-owned only while
+    stopCuratedOwnershipGuard();
+    // v5.3.13: curated Team/Player/Special Event queues are user-owned only while
     // Browse is active. Returning to ALL/TODAY must surrender queue ownership
     // immediately so the next score-card click can build the selected date queue.
     // Leaving queueActive true caused renderQueue() to resurrect a World Cup queue
@@ -806,23 +814,88 @@
     state.curatedAlternates.clear();state.failedCuratedMedia.clear();
     for(const game of games||[]){if(game?.key)state.curatedAlternates.set(game.key,(game.alternates||[]).slice());}
   }
+  function specialEventOwnsPlayback(){return !!(state.specialContext&&state.queueActive&&state.queueItems.length);}
+  function clearLegacyScoreOwnership(reason='special-event playback ownership'){
+    try{window.SBB_SCORE_INTERRUPT_QUEUE?.clear?.(reason);}catch(_){}
+    try{if(typeof cancelUserPlaybackSession==='function')cancelUserPlaybackSession();}catch(_){}
+    try{if(typeof userPlaybackSession!=='undefined')userPlaybackSession=null;}catch(_){}
+  }
   function clearStalePlaybackPresentation(){
+    // A new curated selection must never reveal the previous game's external
+    // fallback card while its own transport is starting. v5.3.12 only removed
+    // bumper classes, which left the old MLB fallback visibly mounted.
+    try{sbbPauseAllPlayback?.();}catch(_){}
     try{clearPlaybackRecovery?.();}catch(_){}
     try{setVideoLoadingOverlay?.(true);}catch(_){}
-    try{$('bumper')?.classList.remove('external-fallback','needs-tap');}catch(_){}
+    try{
+      const bumper=$('bumper');bumper?.classList.add('hidden');bumper?.classList.remove('external-fallback','needs-tap');
+      const action=$('bumperAction');if(action){action.classList.add('hidden');action.textContent='';}
+      if(typeof playbackExternalFallbackUrl!=='undefined')playbackExternalFallbackUrl='';
+    }catch(_){}
+  }
+  function expectedCuratedItem(){
+    const idx=Math.max(0,Math.min(Number(state.curatedExpectedIndex)||0,Math.max(0,state.queueItems.length-1)));
+    return state.queueItems[idx]||state.queueItems[0]||null;
+  }
+  function enforceCuratedOwnership(reason='curated ownership guard'){
+    if(!specialEventOwnsPlayback()||state.curatedGuardBusy)return false;
+    const item=expectedCuratedItem();if(!item)return false;state.curatedGuardBusy=true;
+    try{
+      document.body.dataset.sbbCuratedPlaybackOwner=clean(state.specialContext?.league||item?.competitionId||item?.league||'SPECIAL');
+      // A stale score interrupt or score playback session is never allowed to
+      // outrank an explicitly active Special Event queue.
+      clearLegacyScoreOwnership(reason);
+      if(!queueMatchesActive()){PROGRAM=[...state.queueItems];try{GENERAL_PROGRAM=[...state.queueItems];}catch(_){}}
+      let active=null;try{active=typeof clip==='function'?clip(currentIndex):null;}catch(_){}
+      const expectedKey=programKey(item),activeKey=programKey(active);
+      if(!active?.__sbbCuratedOverride||activeKey!==expectedKey){
+        const idx=Math.max(0,Math.min(Number(state.curatedExpectedIndex)||0,state.queueItems.length-1));
+        try{currentIndex=idx;standbyIndex=idx;}catch(_){}
+        clearStalePlaybackPresentation();
+        if(typeof tuneProgramIndexV5==='function')tuneProgramIndexV5(idx,{userInitiated:false,reason:`v5.3.13 ownership repair: ${reason}`});
+      }
+      syncCuratedGameCenterContext(item);
+      return true;
+    }finally{state.curatedGuardBusy=false;}
+  }
+  function startCuratedOwnershipGuard(index,item){
+    stopCuratedOwnershipGuard();
+    state.curatedExpectedIndex=Math.max(0,Number(index)||0);state.curatedExpectedKey=programKey(item);
+    const epoch=++state.curatedOwnershipEpoch;
+    document.body.dataset.sbbCuratedPlaybackOwner=clean(state.specialContext?.league||item?.competitionId||item?.league||'CURATED');
+    for(const ms of [0,100,300,750,1500,3000])setTimeout(()=>{if(epoch===state.curatedOwnershipEpoch)enforceCuratedOwnership(`bounded ${ms}ms reconciliation`);},ms);
+    const steadyGuard=()=>{
+      if(epoch!==state.curatedOwnershipEpoch)return;
+      if(!specialEventOwnsPlayback()){stopCuratedOwnershipGuard();return;}
+      enforceCuratedOwnership('special-event steady-state');
+      state.curatedGuardTimer=setTimeout(steadyGuard,900);
+    };
+    state.curatedGuardTimer=setTimeout(steadyGuard,900);
   }
   function tuneCuratedIndex(index,{reason='curated programming',userInitiated=true}={}){
     const item=state.queueItems[index];if(!item||typeof tuneProgramIndexV5!=='function')return false;
-    clearStalePlaybackPresentation();syncCuratedGameCenterContext(item);
+    clearStalePlaybackPresentation();
+    // Commit the curated PROGRAM index BEFORE tuning. If the transport fails
+    // synchronously, handlePlaybackFailure must see the selected World Cup/LLWS/
+    // US Open item, never the previously playing MLB clip.
+    try{PROGRAM=[...state.queueItems];GENERAL_PROGRAM=[...state.queueItems];currentIndex=index;standbyIndex=index;}catch(_){}
+    if(specialEventOwnsPlayback())clearLegacyScoreOwnership('special-event tune');
+    syncCuratedGameCenterContext(item);
+    startCuratedOwnershipGuard(index,item);
     tuneProgramIndexV5(index,{userInitiated,reason});
-    // v5.3.5 compatibility contract: setTimeout(()=>syncCuratedGameCenterContext(selected),180) is superseded by the bounded 0/120/420 ms reconciliation below.
-    for(const ms of [0,120,420])setTimeout(()=>{if(state.queueActive&&state.queueItems[index]===item)syncCuratedGameCenterContext(item);},ms);
+    // v5.3.5 compatibility contract: setTimeout(()=>syncCuratedGameCenterContext(selected),180) is superseded by the bounded reconciliation below.
+    // Reassert selected-event/Game Center authority long enough to outlive any
+    // stale async MLB response that was already in flight when the event changed.
+    for(const ms of [0,120,420,900,1600,3000])setTimeout(()=>{if(state.queueActive&&state.queueItems[index]===item)syncCuratedGameCenterContext(item);},ms);
     return true;
   }
   function activateQueue(items,label,startIndex=0){
     if(!items.length)return false;rememberProgram();state.queueActive=true;state.queueItems=[...items];state.queueLabel=label;
-    try{window.SBB_SCORE_INTERRUPT_QUEUE?.clear?.('curated programming queue start');}catch(_){}
-    try{if(typeof userPlaybackSession!=='undefined')userPlaybackSession=null;}catch(_){}
+    clearLegacyScoreOwnership('curated programming queue start');
+    // Stop/hide the prior transport before changing queue identity. This prevents a
+    // non-embeddable World Cup selection from leaving an audible/visible MLB asset
+    // under the Special Event shell while fallback resolution runs.
+    clearStalePlaybackPresentation();
     try{PROGRAM=[...state.queueItems];}catch(err){console.warn('[SBB Browse] PROGRAM assignment failed',err);return false;}
     try{GENERAL_PROGRAM=[...state.queueItems];}catch(_){}
     const bounded=Math.max(0,Math.min(Number(startIndex)||0,state.queueItems.length-1));
@@ -831,7 +904,7 @@
     try{if(typeof setFeedNote==='function')setFeedNote(`Curated programming • ${label} • ${state.queueItems.length} video${state.queueItems.length===1?'':'s'}`);}catch(_){}
     // v5.3.0 compatibility contract: tuneProgramIndexV5(bounded is now delegated
     // through tuneCuratedIndex so stale fallback UI and Game Center clear first.
-    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.3.12 curated programming: ${label}`});
+    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.3.13 curated programming: ${label}`});
   }
   function playGames(games,label){primeCuratedAlternates(games);return activateQueue(queueItemsForGames(games),label,0);}
   function playFrom(index){const games=state.games.slice(index);if(!games.length)return false;return playGames(games,state.entity||state.facet||`${leagueLabel(state.league)} highlights`);}
@@ -845,10 +918,13 @@
         // presentation layer renders it. Score interrupts remain authoritative.
         try{
           const interrupted=window.SBB_SCORE_INTERRUPT_QUEUE?.active?.();
-          if(state.queueActive&&!interrupted&&!queueMatchesActive()){
+          const specialOwns=specialEventOwnsPlayback();
+          if(state.queueActive&&(!interrupted||specialOwns)&&!queueMatchesActive()){
+            if(specialOwns)clearLegacyScoreOwnership('renderQueue curated ownership repair');
             let current='';try{current=programKey(clip(currentIndex));}catch(_){}
             PROGRAM=[...state.queueItems];try{GENERAL_PROGRAM=[...state.queueItems];}catch(_){}
             if(current){const idx=PROGRAM.findIndex(x=>programKey(x)===current);if(idx>=0)currentIndex=idx;}
+            if(specialOwns&&(!PROGRAM[currentIndex]?.__sbbCuratedOverride)){currentIndex=Math.max(0,Math.min(state.curatedExpectedIndex,state.queueItems.length-1));standbyIndex=currentIndex;}
           }
         }catch(_){}
         let result;
@@ -873,27 +949,32 @@
   }
   function patchPlaybackFailure(){
     try{
-      if(typeof handlePlaybackFailure!=='function'||handlePlaybackFailure.__sbbBrowseV5312)return false;const original=handlePlaybackFailure;
+      if(typeof handlePlaybackFailure!=='function'||handlePlaybackFailure.__sbbBrowseV5313)return false;const original=handlePlaybackFailure;
       const wrapped=function(slot,err,userInitiated=false){
         let item=null;try{item=typeof clip==='function'?clip(currentIndex):null;}catch(_){}
         let interrupted=false;try{interrupted=!!window.SBB_SCORE_INTERRUPT_QUEUE?.active?.();}catch(_){}
-        if(!interrupted&&state.queueActive&&item?.__sbbCuratedOverride){
+        const specialOwns=specialEventOwnsPlayback();
+        // When a Special Event is active, a stale score-interrupt flag from the
+        // previously viewed MLB game is not a legitimate playback owner.
+        if(specialOwns&&(!item?.__sbbCuratedOverride||programKey(item)!==state.curatedExpectedKey))item=expectedCuratedItem();
+        if(state.queueActive&&item?.__sbbCuratedOverride&&(!interrupted||specialOwns)){
+          if(specialOwns)clearLegacyScoreOwnership('curated playback failure');
           const failedKey=programKey(item);if(failedKey)state.failedCuratedMedia.add(failedKey);
           try{markRuntimeMediaFailed?.(item,err?.message||'curated playback failure');}catch(_){}
           const gameKey=clean(item.__sbbCuratedGameKey);const alternates=(state.curatedAlternates.get(gameKey)||[]);
           const alt=alternates.find(candidate=>{const key=programKey(candidate);if(!key||state.failedCuratedMedia.has(key))return false;try{return typeof runtimeMediaUsable==='function'?runtimeMediaUsable(candidate):true;}catch(_){return true;}});
           if(alt){
             const idx=Math.max(0,Math.min(Number(currentIndex)||0,state.queueItems.length-1));state.queueItems[idx]=alt;try{PROGRAM[idx]=alt;GENERAL_PROGRAM[idx]=alt;}catch(_){}
-            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.3.12 same-game curated fallback'});
+            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.3.13 same-game curated fallback'});
           }
           const start=Math.max(0,Number(currentIndex)||0);let next=-1;
           for(let i=start+1;i<state.queueItems.length;i++){const candidate=state.queueItems[i],key=programKey(candidate);if(candidate&&(!key||!state.failedCuratedMedia.has(key))){next=i;break;}}
-          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.3.12 next special-event highlight after unavailable source'});
+          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.3.13 next special-event highlight after unavailable source'});
           showCuratedUnavailable(item,err?.message||err);return;
         }
         return original.call(this,slot,err,userInitiated);
       };
-      wrapped.__sbbBrowseV5312=true;wrapped.__sbbOriginal=original;handlePlaybackFailure=wrapped;try{window.handlePlaybackFailure=wrapped;}catch(_){}state.playbackFailurePatched=true;return true;
+      wrapped.__sbbBrowseV5313=true;wrapped.__sbbOriginal=original;handlePlaybackFailure=wrapped;try{window.handlePlaybackFailure=wrapped;}catch(_){}state.playbackFailurePatched=true;return true;
     }catch(_){return false;}
   }
 
