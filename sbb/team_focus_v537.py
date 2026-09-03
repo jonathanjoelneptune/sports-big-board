@@ -1,4 +1,4 @@
-"""Sports Big Board v5.3.14 — participant metadata + Team Focus enrichment.
+"""Sports Big Board v5.3.15 — participant metadata + Team Focus enrichment.
 
 Two cache-only browser endpoints are installed:
   /api/browse/participants?league=MLB
@@ -25,7 +25,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
-VERSION = "5.3.14-team-focus-3"
+VERSION = "5.3.15-team-focus-3"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _PARTICIPANT_PATH = _STATE_DIR / "browse-participants-v538.json"
 _FOCUS_PATH = _STATE_DIR / "team-focus-v538.json"
@@ -392,7 +392,7 @@ def _refresh_participants(server, force=False):
 
 
 def _http_text(url, timeout=6.0):
-    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.14 (+team-focus-cache)", "Accept": "text/html,application/json;q=0.9,*/*;q=0.8"})
+    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.15 (+team-focus-cache)", "Accept": "text/html,application/json;q=0.9,*/*;q=0.8"})
     with urlopen(req, timeout=timeout) as resp:
         return resp.read().decode("utf-8", "replace")
 
@@ -573,7 +573,7 @@ def _install_into_server():
     loaded = _load_json(_PARTICIPANT_PATH, {})
     if not (isinstance(loaded, dict) and isinstance(loaded.get("leagues"), dict)):
         # Preserve the v5.3.7 inventory immediately, then refresh metadata/logos in
-        # the background into the v5.3.14 cache.
+        # the background into the v5.3.15 cache.
         loaded = _load_json(_STATE_DIR / "browse-participants-v537.json", {})
     if not (isinstance(loaded, dict) and isinstance(loaded.get("leagues"), dict)):
         loaded = _load_json(_STATE_DIR / "browse-participants-v536.json", {})

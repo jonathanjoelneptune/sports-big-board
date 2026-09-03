@@ -1,11 +1,11 @@
-/* Sports Big Board v5.3.14 — League View + recap context.
+/* Sports Big Board v5.3.15 — League View + recap context.
    Keeps multi-game/daily recap playback from inheriting a stale single-game
    Game Center and turns the former Up Next drawer into a persistent league view. */
 (() => {
   'use strict';
-  if (window.SBB_LEAGUE_VIEW?.version === '5.3.14') return;
+  if (window.SBB_LEAGUE_VIEW?.version === '5.3.15') return;
 
-  const VERSION = '5.3.14';
+  const VERSION = '5.3.15';
   const $ = id => document.getElementById(id);
   const clean = value => String(value ?? '').trim();
   const esc = value => clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -51,7 +51,7 @@
     // Explicit league navigation is authoritative until the viewer selects a clip.
     // This lets MLB/NHL/EPL immediately update League View before playback changes.
     if(state.navLeague){const nav=normalizeLeague(state.navLeague);if(nav&&nav!=='ALL')return nav;}
-    // v5.3.14 authority order: what is PLAYING beats what was BROWSED. Curated
+    // v5.3.15 authority order: what is PLAYING beats what was BROWSED. Curated
     // special-event context is only a fallback while Browse is still non-daily.
     // This prevents a retired World Cup context from pinning League View after an
     // MLB score-card takes over playback.
@@ -141,9 +141,11 @@
     return clean(row.gamesBehind||row.pct||row.points||'—');
   }
   function tableHeaders(league){
+    const wildcard=!!arguments[1]?.wildcard;
     if(['EPL','MLS'].includes(league))return ['CLUB','MP','W-D-L','PTS','FORM'];
     if(league==='NHL')return ['TEAM','REC','PTS','STRK'];
     if(league==='NCAAF')return ['TEAM','REC','CONF','STRK'];
+    if(wildcard&&(league==='MLB'||league==='NFL'))return ['TEAM','REC','WC GB','STRK'];
     return ['TEAM','REC','GB / PCT','STRK'];
   }
   function formMarkup(form=[]){
@@ -151,9 +153,9 @@
     return `<span class="league-view-form" aria-label="Last five">${values.map(value=>{const v=upper(value);const cls=v==='W'?'win':(v==='L'?'loss':(v==='D'||v==='T'?'draw':'empty'));const label=v==='W'?'W':(v==='L'?'L':(v==='D'||v==='T'?'–':''));return `<i class="${cls}" title="${v||'No match'}">${label}</i>`;}).join('')}</span>`;
   }
   function nhlRecord(row){const raw=rowRecord(row);const m=raw.match(/\d+\s*-\s*\d+\s*-\s*\d+/);return m?m[0].replace(/\s+/g,''):raw;}
-  function rowMarkup(row,{league='',position=0,rowClass=''}={}){
+  function rowMarkup(row,{league='',position=0,rowClass='',wildcard=false}={}){
     const soccer=['EPL','MLS'].includes(league);
-    const secondary=soccer?clean(row.gamesPlayed||row.played||'—'):rowSecondary(row,league);
+    const secondary=soccer?clean(row.gamesPlayed||row.played||'—'):(wildcard&&['MLB','NFL'].includes(league)?clean(row.wildcardGamesBehind||'—'):rowSecondary(row,league));
     const third=soccer?soccerRecord(row):(league==='NCAAF'?clean(row.conferenceRecord||row.gamesBehind||row.pct||'—'):secondary);
     const fourth=soccer?clean(row.points||'—'):clean(row.streak||'—');
     const record=league==='NHL'?nhlRecord(row):rowRecord(row);
@@ -172,15 +174,15 @@
   }
   function wildcardCard(rows,title='WILD CARD',league='MLB',padTo=0){
     if(!rows?.length)return '';
-    const headers=tableHeaders(league),visible=rows.slice(0,10),blankCount=Math.max(0,(Number(padTo)||0)-visible.length);
-    return `<section class="league-view-card league-view-wildcard"><div class="league-view-card-head"><strong>${esc(title)}</strong><span>${league==='NHL'?'TOP 3 / DIVISION EXCLUDED':((league==='MLB'||league==='NFL')?'DIVISION LEADERS EXCLUDED':'CURRENT PLAYOFF CHASE')}</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr>${headers.map((h,i)=>`<th${i===0?' class="team-col"':''}>${esc(h)}</th>`).join('')}</tr></thead><tbody>${visible.map((row,i)=>rowMarkup(row,{league,position:i+1,rowClass:((league==='NHL'&&i===1)||((league==='MLB'||league==='NFL')&&i===2))?'league-view-cutoff':''})).join('')}${placeholderRows(blankCount,headers.length)}</tbody></table></div></section>`;
+    const headers=tableHeaders(league,{wildcard:true}),visible=rows.slice(0,10),blankCount=Math.max(0,(Number(padTo)||0)-visible.length);
+    return `<section class="league-view-card league-view-wildcard"><div class="league-view-card-head"><strong>${esc(title)}</strong><span>${league==='NHL'?'TOP 3 / DIVISION EXCLUDED':((league==='MLB'||league==='NFL')?'RELATIVE TO FINAL WILD CARD SPOT':'CURRENT PLAYOFF CHASE')}</span></div><div class="league-view-table-wrap"><table class="league-view-table"><thead><tr>${headers.map((h,i)=>`<th${i===0?' class="team-col"':''}>${esc(h)}</th>`).join('')}</tr></thead><tbody>${visible.map((row,i)=>rowMarkup(row,{league,position:i+1,wildcard:true,rowClass:((league==='NHL'&&i===1)||((league==='MLB'||league==='NFL')&&i===2))?'league-view-cutoff':''})).join('')}${placeholderRows(blankCount,headers.length)}</tbody></table></div></section>`;
   }
   function conferenceBoard(rows,league){
     if(!Array.isArray(rows)||rows.length<2)return '';
     const wanted=league==='MLB'?['AL','NL']:(league==='NFL'?['AFC','NFC']:['EAST','WEST']);
     const ordered=wanted.map(key=>rows.find(x=>upper(x?.key)===key)).filter(Boolean);
     if(ordered.length<2)return '';
-    // v5.3.14: paired conference/division columns share the same row slots.
+    // v5.3.15: paired conference/division columns share the same row slots.
     // A four-team division opposite a five-team division gets one invisible
     // placeholder row, so the next division heading starts at exactly the same
     // vertical position on both sides.

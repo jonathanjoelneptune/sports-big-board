@@ -1,0 +1,39 @@
+Sports Big Board v5.3.15 manual GitHub upload
+Wild Card + Media Audit + Match Center
+
+1. Extract this ZIP.
+2. Open the sports-big-board repository root on GitHub.
+3. Upload the CONTENTS of the extracted folder, preserving every included path.
+4. Replace existing files when GitHub prompts.
+5. Commit the upload as one v5.3.15 release.
+6. Let Deploy Sports Big Board run and confirm VERIFY.sh passes.
+7. Hard-refresh the deployed page after GitHub Pages completes.
+
+PRIMARY ACCEPTANCE CHECKS
+A. FIFA / Special Event Match Center authority
+   - Start with a normal MLB Game Center visible.
+   - Enter SPECIAL EVENTS > FIFA WC and select Argentina vs Spain, then another World Cup match.
+   - Expected: GAME CENTER becomes MATCH CENTER and the right panel always shows the selected World Cup matchup.
+   - Standard MLB Game Center content is hidden for the entire Special Event context, even if an old MLB callback arrives late.
+   - League View and Settings still replace Match Center when their tabs are selected.
+
+B. Browser-proven Special Event media audit
+   - If the first source for a World Cup match is blocked from embedding, the same-match fallback still takes over.
+   - The blocked source is persisted as failed for 90 days in browser media-health storage.
+   - The source that actually plays is persisted as successful.
+   - On the next selection/reload, browser-proven successful media outranks a higher-tier source known to fail.
+   - Catalog rows already marked FAILED/BLOCKED/UNPLAYABLE or embedAllowed=false are skipped immediately.
+
+C. Wild Card standings
+   - MLB and NFL Wild Card tables show WC GB relative to the final current Wild Card spot, not relative to a division leader.
+   - The cutoff team shows an em dash. Teams currently above the cutoff show +N; teams below show N games back.
+   - Division leaders remain excluded.
+
+D. EPL / MLS form layout
+   - Team/club column is tighter and the five form circles sit directly beside the standings stats rather than against the far edge.
+   - W is green, draw is gray with a dash, L is red, and empty early-season slots stay hollow.
+
+E. League subset controls
+   - TODAY and ALL use a green treatment so they read as subordinate scope choices under the active league.
+
+Do not upload the outer folder itself into the repository. Upload its contents so VERSION, index.html, ui/, architecture/, sbb/, tests/, tools/, and the other included paths land at their existing repository locations.

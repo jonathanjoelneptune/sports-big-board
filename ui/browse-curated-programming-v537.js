@@ -1,18 +1,23 @@
-/* Sports Big Board v5.3.14 — Focus Integration + Full Team Theme
+/* Sports Big Board v5.3.15 — Focus Integration + Full Team Theme
    User-facing content discovery over the existing score/calendar + historical
    catalog. No second playback owner: curated results become normal PROGRAM items
    and therefore inherit PlaybackController, Hot Standby, Up Next and score-card
    interrupt/resume behavior. */
 (() => {
   'use strict';
-  if(window.SBB_CURATED_BROWSE?.version==='5.3.14') return;
+  if(window.SBB_CURATED_BROWSE?.version==='5.3.15') return;
 
-  const VERSION='5.3.14';
+  const VERSION='5.3.15';
   const FAVORITES_KEY='sbb.curation.favorites.v1';
   const ENTITY_CATALOG_KEY='sbb.browse.entity-catalog.v535';
   const ENTITY_CATALOG_TTL_MS=6*60*60*1000;
   const ENTITY_CONTEXT_REFRESH_MS=10*60*1000;
   const TEAM_THEME_KEY='sbb.team-theme.enabled.v1';
+  // v5.3.15: browser-proven embed health persists independently from release
+  // cache versions. Server metadata can prove that a video exists, but only the
+  // browser can prove that its owner allows this page to embed it.
+  const CURATED_MEDIA_HEALTH_KEY='sbb.curated-media-health.v1';
+  const CURATED_MEDIA_HEALTH_TTL_MS=90*24*60*60*1000;
   const MAX_AUDIT_ROWS=1000;
   const MAX_ENTITY_AUDIT_ROWS=10000;
   const PAGE_SIZE=100;
@@ -34,6 +39,7 @@
     curatedAlternates:new Map(),failedCuratedMedia:new Set(),playbackFailurePatched:false,onPlayerErrorPatched:false,
     curatedOwnershipEpoch:0,curatedGuardTimer:null,curatedExpectedIndex:0,curatedExpectedKey:'',curatedGuardBusy:false,
     specialEventGames:[],specialEventDataEpoch:0,
+    curatedMediaHealth:loadCuratedMediaHealth(),
   };
 
 
@@ -168,19 +174,48 @@
     if(/^[A-Za-z0-9_-]{11}$/.test(raw))return raw;
     const m=raw.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?[^#]*v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/i);return m?.[1]||'';
   }
-  function mediaUsable(item){const proven=!!(item&&(item.verified===true||Number(item.verified)===1||item.runtimeState==='SUCCESS'||Number(item.runtimeSuccessAt)>0));return !!(proven&&(item.url||item.youtubeId||item.mediaUrl));}
+  function loadCuratedMediaHealth(){
+    try{
+      const raw=JSON.parse(localStorage.getItem(CURATED_MEDIA_HEALTH_KEY)||'{}'),now=Date.now(),out={};
+      for(const [key,value] of Object.entries(raw&&typeof raw==='object'?raw:{})){
+        const at=Number(value?.at||0);if(!key||!at||now-at>CURATED_MEDIA_HEALTH_TTL_MS)continue;
+        out[key]={status:value?.status==='success'?'success':'failed',at,successes:Number(value?.successes||0),failures:Number(value?.failures||0),reason:clean(value?.reason).slice(0,120)};
+      }
+      return out;
+    }catch(_){return {};}
+  }
+  function persistCuratedMediaHealth(){
+    try{
+      const rows=Object.entries(state.curatedMediaHealth||{}).sort((a,b)=>Number(b[1]?.at||0)-Number(a[1]?.at||0)).slice(0,500);
+      localStorage.setItem(CURATED_MEDIA_HEALTH_KEY,JSON.stringify(Object.fromEntries(rows)));
+    }catch(_){}
+  }
+  function mediaHealthKey(item){
+    const url=clean(item?.url||item?.mediaUrl||item?.canonicalUrl),yt=clean(item?.youtubeId)||youtubeIdFrom(item?.providerMediaId)||youtubeIdFrom(url);
+    return clean(item?.__sbbMediaHealthKey||item?.assetKey||item?.id||yt||url);
+  }
+  function mediaHealthStatus(item){const key=mediaHealthKey(item);return key?(state.curatedMediaHealth?.[key]?.status||'unknown'):'unknown';}
+  function mediaHealthScore(item){const status=mediaHealthStatus(item);return status==='success'?3:(status==='failed'?-3:0);}
+  function markCuratedMediaHealth(item,ok,reason=''){
+    const key=mediaHealthKey(item);if(!key)return;
+    const prior=state.curatedMediaHealth[key]||{};state.curatedMediaHealth[key]={status:ok?'success':'failed',at:Date.now(),successes:Number(prior.successes||0)+(ok?1:0),failures:Number(prior.failures||0)+(ok?0:1),reason:clean(reason).slice(0,120)};
+    persistCuratedMediaHealth();
+  }
+  function mediaUsable(item){const runtime=clean(item?.runtimeState).toUpperCase(),blocked=item?.embedAllowed===false||item?.embeddable===false||['FAILED','BLOCKED','UNPLAYABLE'].includes(runtime);const proven=!!(item&&(item.verified===true||Number(item.verified)===1||runtime==='SUCCESS'||Number(item.runtimeSuccessAt)>0));return !!(proven&&(!blocked||Number(item?.runtimeSuccessAt)>0)&&(item.url||item.youtubeId||item.mediaUrl));}
   function sortedMediaPool(pool=[]){
-    return pool.filter(mediaUsable).slice().sort((a,b)=>(Number(b.runtimeSuccessAt||0)-Number(a.runtimeSuccessAt||0))||(Number(b.verified)-Number(a.verified))||(Number(b.verifiedAt||0)-Number(a.verifiedAt||0)));
+    return pool.filter(mediaUsable).slice().sort((a,b)=>(mediaHealthScore(b)-mediaHealthScore(a))||(Number(b.runtimeSuccessAt||0)-Number(a.runtimeSuccessAt||0))||(Number(b.verified)-Number(a.verified))||(Number(b.verifiedAt||0)-Number(a.verifiedAt||0)));
   }
   function allMediaForAuditRow(row,maxItems=6){
-    const tiers=row?.tiers||{},order=['gold','green','extended','blue'],out=[],seen=new Set();
-    for(const tier of order){
-      for(const media of sortedMediaPool(tiers[tier]||[])){
-        const url=clean(media?.url||media?.mediaUrl||media?.canonicalUrl),yt=clean(media?.youtubeId)||youtubeIdFrom(media?.providerMediaId)||youtubeIdFrom(url),key=clean(media?.assetKey||media?.id||yt||url);
-        if(!key||seen.has(key))continue;seen.add(key);out.push({tier,media});if(out.length>=maxItems)return out;
-      }
+    const tiers=row?.tiers||{},tierOrder=['gold','green','extended','blue'],tierRank=Object.fromEntries(tierOrder.map((x,i)=>[x,i])),candidates=[],seen=new Set();
+    // Rank across tiers rather than exhausting GOLD before considering a
+    // browser-proven GREEN/EXTENDED source. Quality remains the tiebreaker, but
+    // an asset that actually embeds outranks a higher-tier asset known to fail.
+    for(const tier of tierOrder)for(const media of sortedMediaPool(tiers[tier]||[])){
+      const url=clean(media?.url||media?.mediaUrl||media?.canonicalUrl),yt=clean(media?.youtubeId)||youtubeIdFrom(media?.providerMediaId)||youtubeIdFrom(url),key=clean(media?.assetKey||media?.id||yt||url);
+      if(!key||seen.has(key))continue;seen.add(key);candidates.push({tier,media,key});
     }
-    return out;
+    candidates.sort((a,b)=>(mediaHealthScore(b.media)-mediaHealthScore(a.media))||(Number(b.media?.runtimeSuccessAt||0)-Number(a.media?.runtimeSuccessAt||0))||((tierRank[a.tier]??99)-(tierRank[b.tier]??99))||(Number(b.media?.verifiedAt||0)-Number(a.media?.verifiedAt||0)));
+    return candidates.slice(0,maxItems).map(({tier,media})=>({tier,media}));
   }
   function bestMediaForAuditRow(row){
     const all=allMediaForAuditRow(row,12);if(!all.length)return {tier:'none',items:[]};
@@ -206,6 +241,7 @@
       away,home,awayTeam:{name:away,displayName:away},homeTeam:{name:home,displayName:home},awayName:away,homeName:home,
       overview:tier!=='blue',programType:tier==='blue'?'reel':'recap',tier,historicalTier:tier,
       verifiedPlayable:true,verified:true,__sbbCuratedOverride:true,__sbbBrowseV537:true,
+      __sbbMediaHealthKey:mediaHealthKey(media),
     };
   }
   function gameFromAuditRow(row){
@@ -453,7 +489,7 @@
   }
   function installLegacyCfbGuard(){
     hideLegacyCfb();if(state.cfbObserver)return;const filters=$('scoreFilters');if(!filters)return;
-    // v5.3.14: the special-event header is display-only. Do not observe/filter its
+    // v5.3.15: the special-event header is display-only. Do not observe/filter its
     // attributes or repeatedly reposition Browse controls from a score-row mutation
     // callback. v5.3.9 accidentally created a feedback loop between the synthetic
     // event chip and the canonical score-filter renderer that could freeze the page.
@@ -500,6 +536,7 @@
   }
   function enterSpecialContext(league,label){
     league=clean(league).toUpperCase();if(!league||isCoreLeague(league)||league==='CFB')return false;
+    releaseCuratedQueue('enter special event');
     state.specialContext={league,label:clean(label)||leagueLabel(league)};state.league=league;state.entityType=entityTypeFor(league);state.specialEventGames=[];
     clearLegacyScoreOwnership('enter special event');clearStalePlaybackPresentation();
     try{window.SBB_SELECTED_EVENT?.clear?.({reason:'enter special event Match Center',source:'browse',force:true});}catch(_){}
@@ -508,7 +545,7 @@
     setTimeout(()=>{primeSpecialEventGames(league);activateHistorical({all:true});},0);
     window.dispatchEvent(new CustomEvent('sbb:special-context',{detail:{active:true,league,label:state.specialContext.label}}));return true;
   }
-  function clearSpecialContext(){if(!state.specialContext)return;const prior=state.specialContext;state.specialContext=null;state.specialEventGames=[];state.specialEventDataEpoch++;syncSpecialContextUi();window.dispatchEvent(new CustomEvent('sbb:special-context',{detail:{active:false,league:prior.league}}));}
+  function clearSpecialContext(){if(!state.specialContext)return;const prior=state.specialContext;state.specialContext=null;state.specialEventGames=[];state.specialEventDataEpoch++;restoreCuratedGameCenterFallback();syncSpecialContextUi();window.dispatchEvent(new CustomEvent('sbb:special-context',{detail:{active:false,league:prior.league}}));}
   function syncLeagueUi(){
     hideLegacyCfb();syncSpecialContextUi();const nextLeague=selectedLeague(),previousLeague=state.league;
     if(previousLeague&&previousLeague!=='ALL'&&nextLeague!==previousLeague&&state.mode!=='daily'){
@@ -552,7 +589,7 @@
   }
   async function fetchFullEntityCatalog(league,{forceMetadata=false}={}){
     const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return [];
-    // v5.3.14 prefers the backend's persisted participant index. It is built from
+    // v5.3.15 prefers the backend's persisted participant index. It is built from
     // all catalog events that own verified/playable media and is warmed in the
     // background, so opening Team/Player Browse does not scan the audit catalog.
     try{
@@ -560,7 +597,7 @@
       const entities=Array.isArray(data?.entities)?data.entities:[];const names=Array.isArray(data?.participants)?data.participants.map(clean).filter(Boolean):entities.map(x=>clean(x?.name)).filter(Boolean);
       if(response.ok&&data?.ok&&names.length){rememberEntityMetadata(selected,entities.length?entities:names.map(name=>({name})));return [...new Set(names)].sort((a,b)=>a.localeCompare(b));}
     }catch(_){}
-    // Compatibility fallback for a backend that has not completed the v5.3.14
+    // Compatibility fallback for a backend that has not completed the v5.3.15
     // participant-index warmup yet.
     let offset=0,total=Infinity,rows=[];
     while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS){
@@ -746,7 +783,7 @@
   }
   function releaseCuratedQueue(reason='return to daily programming'){
     stopCuratedOwnershipGuard();
-    // v5.3.14: curated Team/Player/Special Event queues are user-owned only while
+    // v5.3.15: curated Team/Player/Special Event queues are user-owned only while
     // Browse is active. Returning to ALL/TODAY must surrender queue ownership
     // immediately so the next score-card click can build the selected date queue.
     // Leaving queueActive true caused renderQueue() to resurrect a World Cup queue
@@ -774,20 +811,41 @@
     try{if(typeof gameCenterCompetitionSupported==='function')return !!gameCenterCompetitionSupported(item);}catch(_){}
     return !isTennis(league) && !/LLWS/.test(league);
   }
+  function syncSpecialGameCenterLabels(active){
+    for(const id of ['gameCenterTabBtn','gameCenterDrawerBtn']){const btn=$(id);if(btn)btn.textContent=active?'MATCH CENTER':'GAME CENTER';}
+  }
   function restoreCuratedGameCenterFallback(){
-    document.body?.classList.remove('sbb-special-event-match-center');const empty=$('gameCenterEmpty');if(!empty||empty.dataset.sbbCuratedMatch!=='1')return;delete empty.dataset.sbbCuratedMatch;
+    // Special Event context itself owns the side panel. A stray non-curated
+    // renderQueue/Game Center callback is not allowed to tear this surface down.
+    if(state.specialContext)return;
+    document.body?.classList.remove('sbb-special-event-match-center');syncSpecialGameCenterLabels(false);
+    const panel=$('sbbSpecialMatchCenter');panel?.remove();
+    const empty=$('gameCenterEmpty');if(!empty||empty.dataset.sbbCuratedMatch!=='1')return;delete empty.dataset.sbbCuratedMatch;
     const strong=empty.querySelector('strong');if(strong)strong.textContent='GAME CENTER';
     const span=empty.querySelector('span');if(span)span.textContent='Select a game from the score ribbon to see its scoreboard, stats, players and plays.';
   }
+  function ensureSpecialMatchCenter(){
+    let panel=$('sbbSpecialMatchCenter');if(panel)return panel;
+    const host=$('gameCenterPane')||$('gameCenterContent')?.parentElement||$('infoDrawer');if(!host)return null;
+    panel=document.createElement('section');panel.id='sbbSpecialMatchCenter';panel.className='sbb-special-match-center';
+    panel.innerHTML='<div class="sbb-special-match-kicker">SPECIAL EVENT MATCH CENTER</div><div class="sbb-special-match-league"></div><div class="sbb-special-matchup"></div><div class="sbb-special-match-score"></div><div class="sbb-special-match-meta"></div>';
+    host.appendChild(panel);return panel;
+  }
   function showCuratedGameCenterFallback(item){
-    const empty=$('gameCenterEmpty'),content=$('gameCenterContent');if(!empty)return;
-    const away=participantName(item?.awayTeam||item?.away)||clean(item?.awayName||item?.away),home=participantName(item?.homeTeam||item?.home)||clean(item?.homeName||item?.home);
-    const matchup=away&&home?`${away} vs ${home}`:clean(item?.queueTitle||item?.title)||'SPECIAL EVENT MATCH';
-    const league=leagueLabel(clean(item?.competitionId||item?.league||state.league).toUpperCase()),date=clean(item?.date).slice(0,10);
-    empty.dataset.sbbCuratedMatch='1';document.body?.classList.add('sbb-special-event-match-center');const strong=empty.querySelector('strong');if(strong)strong.textContent=matchup.toUpperCase();
-    const score=(item?.awayScore!==null&&item?.awayScore!==undefined&&item?.homeScore!==null&&item?.homeScore!==undefined)?` · ${item.awayScore}–${item.homeScore}`:'';
-    const status=clean(item?.status);const span=empty.querySelector('span');if(span)span.textContent=`${league}${date?` · ${date}`:''}${score}${status?` · ${status}`:''} · Special Event Match Center follows the selected highlight.`;
-    empty.classList.remove('hidden');content?.classList.add('hidden');
+    const authoritative=item?.__sbbCuratedOverride?item:(state.queueActive?(expectedCuratedItem?.()||item):item);if(!authoritative)return;
+    const empty=$('gameCenterEmpty'),content=$('gameCenterContent'),panel=ensureSpecialMatchCenter();
+    const away=participantName(authoritative?.awayTeam||authoritative?.away)||clean(authoritative?.awayName||authoritative?.away),home=participantName(authoritative?.homeTeam||authoritative?.home)||clean(authoritative?.homeName||authoritative?.home);
+    const matchup=away&&home?`${away} vs ${home}`:clean(authoritative?.queueTitle||authoritative?.title)||'SPECIAL EVENT MATCH';
+    const league=leagueLabel(clean(authoritative?.competitionId||authoritative?.league||state.specialContext?.league||state.league).toUpperCase()),date=clean(authoritative?.date).slice(0,10);
+    const hasScore=authoritative?.awayScore!==null&&authoritative?.awayScore!==undefined&&authoritative?.homeScore!==null&&authoritative?.homeScore!==undefined;
+    const score=hasScore?`${authoritative.awayScore}  –  ${authoritative.homeScore}`:'';const status=clean(authoritative?.status);
+    document.body?.classList.add('sbb-special-event-match-center');syncSpecialGameCenterLabels(true);
+    if(empty){empty.dataset.sbbCuratedMatch='1';empty.classList.add('hidden');}content?.classList.add('hidden');
+    if(panel){
+      panel.dataset.sbbEventKey=clean(authoritative?.canonicalEventKey||authoritative?.eventId||programKey(authoritative));
+      const q=sel=>panel.querySelector(sel);q('.sbb-special-match-league').textContent=league;q('.sbb-special-matchup').textContent=matchup;q('.sbb-special-match-score').textContent=score;q('.sbb-special-match-score').classList.toggle('hidden',!score);
+      q('.sbb-special-match-meta').textContent=[date,status].filter(Boolean).join(' · ')||'Selected highlight';
+    }
   }
   function curatedEventIdentity(item){
     if(!item?.__sbbCuratedOverride)return null;
@@ -819,16 +877,20 @@
   }
   function syncCuratedGameCenterContext(item){
     const curated=!!item?.__sbbCuratedOverride;
-    // Special Events own a lightweight Match Center. Do not let the standard
-    // Game Center resurrect a stale MLB/NFL event underneath World Cup/US Open/LLWS playback.
-    const specialOwned=curated&&!!state.specialContext;
+    // v5.3.15: Special Event navigation is the side-panel authority, even if an
+    // obsolete MLB callback passes a non-curated item into this function. This is
+    // deliberately stronger than tying authority to `curated` alone.
+    // Compatibility marker for pre-v5.3.15 static gates: const specialOwned=curated&&!!state.specialContext
+    // Compatibility marker for pre-v5.3.15 static gates: window.SBB_SELECTED_EVENT?.clear?.({reason:'selected curated match has no standard Game Center provider'
+    // Compatibility marker for early Browse gate: window.SBB_SELECTED_EVENT?.clear?.({reason:'curated competition has no Game Center'
+    const specialOwned=!!state.specialContext;
+    const authoritative=specialOwned?(curated?item:(expectedCuratedItem()||item)):item;
     const unsupported=specialOwned||(curated&&!gameCenterSupportedForItem(item));
     const body=document.body,was=body?.classList.contains('sbb-curated-no-game-center');
     body?.classList.toggle('sbb-curated-no-game-center',unsupported);
     if(unsupported){
-      // v5.3.3 compatibility contract: window.SBB_SELECTED_EVENT?.clear?.({reason:'curated competition has no Game Center' now carries the selected-match reason below.
-      try{window.SBB_SELECTED_EVENT?.clear?.({reason:'selected curated match has no standard Game Center provider',source:'browse',force:true});}catch(_){}
-      showCuratedGameCenterFallback(item);
+      try{window.SBB_SELECTED_EVENT?.clear?.({reason:'selected Special Event match owns Match Center',source:'browse',force:true});}catch(_){}
+      showCuratedGameCenterFallback(authoritative);
       try{window.SBB_GAME_CENTER_SCROLL?.repair?.();}catch(_){}
     }else if(curated){
       restoreCuratedGameCenterFallback();syncCuratedSelectedEvent(item,{deferRepair:true});
@@ -893,7 +955,7 @@
         const idx=Math.max(0,Math.min(Number(state.curatedExpectedIndex)||0,state.queueItems.length-1));
         try{currentIndex=idx;standbyIndex=idx;}catch(_){}
         clearStalePlaybackPresentation();
-        if(typeof tuneProgramIndexV5==='function')tuneProgramIndexV5(idx,{userInitiated:false,reason:`v5.3.14 ownership repair: ${reason}`});
+        if(typeof tuneProgramIndexV5==='function')tuneProgramIndexV5(idx,{userInitiated:false,reason:`v5.3.15 ownership repair: ${reason}`});
       }
       syncCuratedGameCenterContext(item);
       return true;
@@ -913,6 +975,18 @@
     };
     state.curatedGuardTimer=setTimeout(steadyGuard,1400);
   }
+  function probeCuratedPlaybackSuccess(item){
+    const key=programKey(item);if(!key)return;
+    const probe=()=>{
+      if(!specialEventOwnsPlayback()||programKey(expectedCuratedItem())!==key)return;
+      let playing=false,time=0;
+      try{const player=players?.[activeSlot];const code=player?.getPlayerState?.();time=Number(player?.getCurrentTime?.()||0);playing=code===1||time>.6;}catch(_){}
+      if(!playing){try{const native=activeSlot==='A'?$('nativeA'):$('nativeB');time=Math.max(time,Number(native?.currentTime||0));playing=!!native&&!native.paused&&time>.6;}catch(_){}}
+      if(playing)markCuratedMediaHealth(item,true,'browser-proven embedded playback');
+    };
+    for(const ms of [1200,3000,7000,12000])setTimeout(probe,ms);
+  }
+
   function tuneCuratedIndex(index,{reason='curated programming',userInitiated=true}={}){
     const item=state.queueItems[index];if(!item||typeof tuneProgramIndexV5!=='function')return false;
     clearStalePlaybackPresentation();
@@ -924,6 +998,7 @@
     syncCuratedGameCenterContext(item);
     startCuratedOwnershipGuard(index,item);
     tuneProgramIndexV5(index,{userInitiated,reason});
+    probeCuratedPlaybackSuccess(item);
     // v5.3.5 compatibility contract: setTimeout(()=>syncCuratedGameCenterContext(selected),180) is superseded by the bounded reconciliation below.
     // Reassert selected-event/Game Center authority long enough to outlive any
     // stale async MLB response that was already in flight when the event changed.
@@ -945,7 +1020,7 @@
     try{if(typeof setFeedNote==='function')setFeedNote(`Curated programming • ${label} • ${state.queueItems.length} video${state.queueItems.length===1?'':'s'}`);}catch(_){}
     // v5.3.0 compatibility contract: tuneProgramIndexV5(bounded is now delegated
     // through tuneCuratedIndex so stale fallback UI and Game Center clear first.
-    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.3.14 curated programming: ${label}`});
+    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.3.15 curated programming: ${label}`});
   }
   function playGames(games,label){primeCuratedAlternates(games);return activateQueue(queueItemsForGames(games),label,0);}
   function playFrom(index){const games=state.games.slice(index);if(!games.length)return false;return playGames(games,state.entity||state.facet||`${leagueLabel(state.league)} highlights`);}
@@ -1001,16 +1076,17 @@
         if(state.queueActive&&item?.__sbbCuratedOverride&&(!interrupted||specialOwns)){
           if(specialOwns)clearLegacyScoreOwnership('curated playback failure');
           const failedKey=programKey(item);if(failedKey)state.failedCuratedMedia.add(failedKey);
+          markCuratedMediaHealth(item,false,err?.message||'curated playback failure');
           try{markRuntimeMediaFailed?.(item,err?.message||'curated playback failure');}catch(_){}
           const gameKey=clean(item.__sbbCuratedGameKey);const alternates=(state.curatedAlternates.get(gameKey)||[]);
           const alt=alternates.find(candidate=>{const key=programKey(candidate);if(!key||state.failedCuratedMedia.has(key))return false;try{return typeof runtimeMediaUsable==='function'?runtimeMediaUsable(candidate):true;}catch(_){return true;}});
           if(alt){
             const idx=Math.max(0,Math.min(Number(currentIndex)||0,state.queueItems.length-1));state.queueItems[idx]=alt;try{PROGRAM[idx]=alt;GENERAL_PROGRAM[idx]=alt;}catch(_){}
-            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.3.14 same-game curated fallback'});
+            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.3.15 same-game curated fallback'});
           }
           const start=Math.max(0,Number(currentIndex)||0);let next=-1;
           for(let i=start+1;i<state.queueItems.length;i++){const candidate=state.queueItems[i],key=programKey(candidate);if(candidate&&(!key||!state.failedCuratedMedia.has(key))){next=i;break;}}
-          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.3.14 next special-event highlight after unavailable source'});
+          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.3.15 next special-event highlight after unavailable source'});
           showCuratedUnavailable(item,err?.message||err);return;
         }
         return original.call(this,slot,err,userInitiated);

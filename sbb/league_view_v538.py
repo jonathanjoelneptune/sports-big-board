@@ -1,4 +1,4 @@
-"""Sports Big Board v5.3.14 — cached League View read model.
+"""Sports Big Board v5.3.15 — cached League View read model.
 
 League View is intentionally read-only. It never owns scores, playback, selected-event
 identity, or the historical catalog. It projects public league standings, playoff seed
@@ -19,7 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
-VERSION = "5.3.14-league-view-4"
+VERSION = "5.3.15-league-view-4"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _CACHE_PATH = _STATE_DIR / "league-view-v538.json"
 _TTL_SECONDS = 10 * 60
@@ -113,7 +113,7 @@ def _persist_cache():
 
 
 def _http_json(url, timeout=7.0):
-    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.14", "Accept": "application/json"})
+    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.15", "Accept": "application/json"})
     with urlopen(req, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8", "replace"))
 
@@ -247,6 +247,48 @@ def _division_name(league, group):
     return ""
 
 
+def _format_relative(value):
+    if value is None:
+        return "—"
+    if abs(value) < 0.05:
+        return "—"
+    amount = round(abs(float(value)) * 2) / 2
+    text = str(int(amount)) if float(amount).is_integer() else f"{amount:.1f}"
+    return f"+{text}" if value < 0 else text
+
+
+def _wildcard_relative(rows, qualifying_slots=3):
+    """Project GB against the last current Wild Card position, not division lead.
+
+    ESPN's `gamesBehind` is normally relative to a division/conference leader.
+    Subtracting the cutoff team's leader-relative GB converts every row to the
+    Wild Card cut line. When GB is absent, use the standard W/L/T games-back
+    equation. Negative values mean the club is that many games *above* the cut
+    and are displayed with a plus sign; the cutoff itself is an em dash.
+    """
+    rows=[dict(row) for row in (rows or [])]
+    if not rows:
+        return rows
+    cut_index=min(max(0,int(qualifying_slots)-1),len(rows)-1)
+    cutoff=rows[cut_index]
+    cutoff_gb=_number(cutoff.get("gamesBehind"),None)
+    cw=_number(cutoff.get("wins"),None);cl=_number(cutoff.get("losses"),None);ct=_number(cutoff.get("ties"),0) or 0
+    for row in rows:
+        delta=None;gb=_number(row.get("gamesBehind"),None)
+        if gb is not None and cutoff_gb is not None:
+            delta=gb-cutoff_gb
+        else:
+            w=_number(row.get("wins"),None);l=_number(row.get("losses"),None);t=_number(row.get("ties"),0) or 0
+            if None not in (w,l,cw,cl):
+                # Same formula as conventional games behind, with each tie worth
+                # half a win for leagues that publish ties.
+                delta=((cw+ct/2)-(w+t/2)+(l-cl))/2
+        row["wildcardGamesBehind"]=_format_relative(delta)
+        row["wildcardDelta"]=delta
+        row["wildcardCutoff"]=(row is rows[cut_index])
+    return rows
+
+
 def _conference_layout(league, groups):
     if league not in {"MLB", "NFL", "NBA", "NHL"}:
         return []
@@ -323,7 +365,7 @@ def _conference_layout(league, groups):
                     key=row.get("id") or _norm(row.get("name"));dedup.setdefault(key,row)
                 rows=list(dedup.values())
                 rows.sort(key=lambda row: (-(_number(row.get("points"), -1) or -1), -(_number(row.get("pct"), -1) or -1), _norm(row.get("name"))))
-                bucket["wildcard"]=rows[:6]
+                bucket["wildcard"]=_wildcard_relative(rows[:6], 2)
                 continue
             rows = [row for seed,key,row in seeded if team_conf.get(key) == conf]
             if not rows:
@@ -339,7 +381,9 @@ def _conference_layout(league, groups):
                 rows.sort(key=lambda row: (-( _number(row.get("pct"), -1) or -1), _number(row.get("gamesBehind"), 999) or 999, _norm(row.get("name"))))
             else:
                 rows.sort(key=lambda row: (_seed_number(row.get("seed")), _norm(row.get("name"))))
-            bucket["wildcard"] = rows[:7 if league == "MLB" else 8]
+            # Compatibility marker: bucket["wildcard"] = rows[:7 if league == "MLB" else 8]
+            visible = rows[:7 if league == "MLB" else 8]
+            bucket["wildcard"] = _wildcard_relative(visible, 3)
     return [buckets[key] for key in ("AL","NL","AFC","NFC","EAST","WEST") if key in buckets]
 
 
