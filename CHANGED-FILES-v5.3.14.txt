@@ -1,0 +1,41 @@
+Sports Big Board v5.3.14 — League Navigation + Special Event Stability
+
+SPECIAL EVENT PLAYBACK / GAME CENTER
+- Entering FIFA WC / US Open / LLWS now immediately clears the previous standard SelectedEvent and old playback presentation before the event library loads.
+- Special Events always use a lightweight event Match Center rather than the standard single-game Game Center provider. This prevents a retired MLB Game Center from resurfacing underneath World Cup or tennis playback.
+- World Cup/US Open Match Center follows the selected curated item and can show matchup, date, score, and status when available.
+- The curated ownership guard now removes any untagged external-fallback bumper while a Special Event owns playback. App-level stale MLB/YouTube fallbacks therefore cannot remain visible over the selected event.
+- YouTube errors during Special Event startup receive a 12-second proof window. A late error from the retired player cannot paint an MLB fallback while the selected FIFA clip is still starting. If the selected event really never starts, recovery goes through the existing same-match alternate -> next event -> exact event fallback path.
+- A background Special Event audit load persists the full event match set independently of Team/Player filtering, so League View does not collapse when the viewer starts browsing a specific participant.
+
+LEAGUE VIEW
+- Removed the 1.2-second League View polling loop. League View now updates from navigation/playback/context events and keeps the last good standings visible during a refresh instead of repeatedly replacing them with a loading spinner.
+- Clicking a league immediately updates League View before a clip is selected. Selecting a clip releases that navigation override and returns authority to the actual playback item.
+- World Cup League View can build group standings from locally owned event results when group metadata exists, and always builds a knockout-round view from the complete event library.
+- US Open League View builds a round/bracket view from the event library and media-title round metadata instead of depending on a conventional standings endpoint.
+- EPL and MLS tables add a five-slot recent-form strip: green W, gray dash for draw, red L, with empty circles when fewer than five results are available.
+- EPL/MLS recent form is populated server-side from completed ESPN scoreboard results over the recent season window and cached with League View.
+- NHL East/West remains symmetric but receives tighter internal margins, cleaned W-L-OT records, and more room for team names.
+- Existing paired-division symmetry and invisible row padding remain in place for MLB/NFL/NHL and paired conference layouts.
+
+LEAGUE NAVIGATION
+- Core league context now exposes TODAY, ALL, and TEAM BROWSE inline next to the selected league.
+- TODAY returns to the current-day score ribbon while keeping the selected league context.
+- ALL switches directly to the league-wide historical highlight rail.
+- TEAM BROWSE retains the existing team/player library.
+- League View updates from league selection, Today, All Highlights, Team Browse, and Special Event selection even before playback begins.
+
+NFL PROVIDER STRATEGY
+- No unlicensed NFL.com framing/rehosting was added. NFL.com is retained as the recommended official external fallback source while on-site playback should continue preferring verified direct/server media when available.
+- The next provider-layer improvement should add an explicitly permitted direct or modular NFL source rather than trying to bypass owner embed restrictions.
+
+REGRESSION COVERAGE
+- Added tests/test_v5314_league_navigation_event_brackets.py.
+- Updated v5.3.11-v5.3.13 compatibility contracts for the event-driven League View architecture.
+- Updated tools/check_release_version.py so the release gate verifies event-driven League View, Special Event fallback ownership, tournament views, soccer form, and the new navigation controls.
+- Retained v5.3.0 through v5.3.13 Browse/Team/Special Event/League View regressions all pass in the focused release suite.
+
+RELEASE FILES
+- VERSION / architecture/VERSION = 5.3.14.
+- All cache-busted JS/CSS references are synchronized to v5.3.14.
+- Sports Ticker OpenAI limiter remains 20 automatic candidates, 40 manual candidates, 20-record batches, and 2.5-second pacing.

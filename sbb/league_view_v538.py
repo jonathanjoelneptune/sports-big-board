@@ -1,4 +1,4 @@
-"""Sports Big Board v5.3.13 — cached League View read model.
+"""Sports Big Board v5.3.14 — cached League View read model.
 
 League View is intentionally read-only. It never owns scores, playback, selected-event
 identity, or the historical catalog. It projects public league standings, playoff seed
@@ -19,7 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
-VERSION = "5.3.13-league-view-3"
+VERSION = "5.3.14-league-view-4"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _CACHE_PATH = _STATE_DIR / "league-view-v538.json"
 _TTL_SECONDS = 10 * 60
@@ -113,7 +113,7 @@ def _persist_cache():
 
 
 def _http_json(url, timeout=7.0):
-    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.13", "Accept": "application/json"})
+    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.14", "Accept": "application/json"})
     with urlopen(req, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8", "replace"))
 
@@ -174,6 +174,7 @@ def _standing_entry(entry):
         "rank": rank,
         "streak": _stat_value(stats, ["streak"]),
         "differential": _stat_value(stats, ["pointdifferential", "run differential", "goaldifferential", "goal differential", "differential", "diff"]),
+        "form": [],
     }
 
 
@@ -443,6 +444,52 @@ def _parse_scoreboard(payload):
     return out[:20]
 
 
+def _recent_form(payload):
+    """Return team-id/abbreviation -> last five W/D/L from completed scoreboard events."""
+    rows = {}
+    events = [x for x in (payload or {}).get("events") or [] if isinstance(x, dict)]
+    events.sort(key=lambda x: _clean(x.get("date")))
+    for event in events:
+        comp = (event.get("competitions") or [{}])[0]
+        if not isinstance(comp, dict):
+            continue
+        status = event.get("status") if isinstance(event.get("status"), dict) else {}
+        stype = status.get("type") if isinstance(status.get("type"), dict) else {}
+        if _clean(stype.get("state")).lower() not in {"post", "final"} and not bool(stype.get("completed")):
+            continue
+        competitors = [x for x in comp.get("competitors") or [] if isinstance(x, dict)]
+        if len(competitors) < 2:
+            continue
+        scored=[]
+        for c in competitors:
+            team=c.get("team") if isinstance(c.get("team"),dict) else {}
+            raw=c.get("score")
+            if isinstance(raw,dict): raw=raw.get("value") if raw.get("value") is not None else raw.get("displayValue")
+            try: score=float(raw)
+            except Exception: score=None
+            scored.append((c,team,score))
+        if len(scored)<2 or any(x[2] is None for x in scored[:2]):
+            continue
+        a,b=scored[0],scored[1]
+        for cur,other in ((a,b),(b,a)):
+            team=cur[1]; key=_clean(team.get("id") or team.get("uid") or team.get("abbreviation")).upper()
+            abbr=_clean(team.get("abbreviation")).upper()
+            if not key and not abbr: continue
+            result="D" if cur[2]==other[2] else ("W" if cur[2]>other[2] else "L")
+            for k in {key,abbr} - {""}:
+                rows.setdefault(k,[]).append(result);rows[k]=rows[k][-5:]
+    return rows
+
+
+def _apply_recent_form(groups, form):
+    if not form: return groups
+    for group in groups or []:
+        for row in group.get("entries") or []:
+            keys=[_clean(row.get("id")).upper(),_clean(row.get("abbreviation")).upper()]
+            values=next((form.get(k) for k in keys if k and form.get(k)),None)
+            if values: row["form"]=values[-5:]
+    return groups
+
 def _fetch_rankings(sport, competition):
     url = f"https://site.api.espn.com/apis/site/v2/sports/{sport}/{competition}/rankings"
     try:
@@ -475,11 +522,18 @@ def _fetch_source(league):
     sport, competition, _ = spec
     standings_url = f"https://site.api.espn.com/apis/v2/sports/{sport}/{competition}/standings?region=us&lang=en&contentorigin=espn&type=0&level=2"
     scoreboard_url = f"https://site.api.espn.com/apis/site/v2/sports/{sport}/{competition}/scoreboard?limit=100"
+    if league in {"WC2026", "WORLD-CUP-2026", "FIFA-WORLD-CUP-2026"}:
+        scoreboard_url += "&dates=20260611-20260719"
     errors = []
-    with ThreadPoolExecutor(max_workers=3, thread_name_prefix="sbb-league-view") as pool:
+    form_url = ""
+    if league in {"EPL", "MLS"}:
+        now=time.time();start_day=time.strftime("%Y%m%d",time.gmtime(now-75*86400));end_day=time.strftime("%Y%m%d",time.gmtime(now+86400))
+        form_url=f"https://site.api.espn.com/apis/site/v2/sports/{sport}/{competition}/scoreboard?limit=1000&dates={start_day}-{end_day}"
+    with ThreadPoolExecutor(max_workers=4, thread_name_prefix="sbb-league-view") as pool:
         f_standings = pool.submit(_http_json, standings_url)
         f_scoreboard = pool.submit(_http_json, scoreboard_url)
         f_rankings = pool.submit(_fetch_rankings, sport, competition) if league == "NCAAF" else None
+        f_form = pool.submit(_http_json, form_url) if form_url else None
         try:
             standings_payload = f_standings.result()
             standings = _parse_standings(standings_payload)
@@ -497,6 +551,11 @@ def _fetch_source(league):
         except Exception as exc:
             rankings = []
             errors.append(f"rankings: {type(exc).__name__}")
+        if f_form:
+            try:
+                _apply_recent_form(standings, _recent_form(f_form.result()))
+            except Exception as exc:
+                errors.append(f"form: {type(exc).__name__}")
     return {"standings": standings, "games": games, "rankings": rankings, "sourceErrors": errors}
 
 

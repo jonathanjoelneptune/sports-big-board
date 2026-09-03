@@ -1,17 +1,17 @@
-/* Sports Big Board v5.3.13 — League View + recap context.
+/* Sports Big Board v5.3.14 — League View + recap context.
    Keeps multi-game/daily recap playback from inheriting a stale single-game
    Game Center and turns the former Up Next drawer into a persistent league view. */
 (() => {
   'use strict';
-  if (window.SBB_LEAGUE_VIEW?.version === '5.3.13') return;
+  if (window.SBB_LEAGUE_VIEW?.version === '5.3.14') return;
 
-  const VERSION = '5.3.13';
+  const VERSION = '5.3.14';
   const $ = id => document.getElementById(id);
   const clean = value => String(value ?? '').trim();
   const esc = value => clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const upper = value => clean(value).toUpperCase();
   const core = new Set(['MLB','NFL','NBA','NHL','NCAAF','EPL','MLS']);
-  const state = {league:'',loading:false,payload:null,error:'',request:0,aggregate:false,lastAggregateKey:'',observer:null,contextPoll:null};
+  const state = {league:'',loading:false,refreshing:false,payload:null,error:'',request:0,aggregate:false,lastAggregateKey:'',observer:null,navLeague:'',lastFetchedAt:0,syncTimer:null};
 
   function apiUrl(path){ try{return window.SBB_API?.url?.(path) || path;}catch(_){return path;} }
   function normalizeLeague(value){
@@ -48,7 +48,10 @@
     return '';
   }
   function currentLeague(){
-    // v5.3.13 authority order: what is PLAYING beats what was BROWSED. Curated
+    // Explicit league navigation is authoritative until the viewer selects a clip.
+    // This lets MLB/NHL/EPL immediately update League View before playback changes.
+    if(state.navLeague){const nav=normalizeLeague(state.navLeague);if(nav&&nav!=='ALL')return nav;}
+    // v5.3.14 authority order: what is PLAYING beats what was BROWSED. Curated
     // special-event context is only a fallback while Browse is still non-daily.
     // This prevents a retired World Cup context from pinning League View after an
     // MLB score-card takes over playback.
@@ -138,17 +141,26 @@
     return clean(row.gamesBehind||row.pct||row.points||'—');
   }
   function tableHeaders(league){
-    if(['EPL','MLS'].includes(league))return ['CLUB','MP','W-D-L','PTS'];
+    if(['EPL','MLS'].includes(league))return ['CLUB','MP','W-D-L','PTS','FORM'];
     if(league==='NHL')return ['TEAM','REC','PTS','STRK'];
     if(league==='NCAAF')return ['TEAM','REC','CONF','STRK'];
     return ['TEAM','REC','GB / PCT','STRK'];
   }
+  function formMarkup(form=[]){
+    const values=Array.isArray(form)?form.slice(-5):[];while(values.length<5)values.unshift('');
+    return `<span class="league-view-form" aria-label="Last five">${values.map(value=>{const v=upper(value);const cls=v==='W'?'win':(v==='L'?'loss':(v==='D'||v==='T'?'draw':'empty'));const label=v==='W'?'W':(v==='L'?'L':(v==='D'||v==='T'?'–':''));return `<i class="${cls}" title="${v||'No match'}">${label}</i>`;}).join('')}</span>`;
+  }
+  function nhlRecord(row){const raw=rowRecord(row);const m=raw.match(/\d+\s*-\s*\d+\s*-\s*\d+/);return m?m[0].replace(/\s+/g,''):raw;}
   function rowMarkup(row,{league='',position=0,rowClass=''}={}){
     const soccer=['EPL','MLS'].includes(league);
     const secondary=soccer?clean(row.gamesPlayed||row.played||'—'):rowSecondary(row,league);
     const third=soccer?soccerRecord(row):(league==='NCAAF'?clean(row.conferenceRecord||row.gamesBehind||row.pct||'—'):secondary);
     const fourth=soccer?clean(row.points||'—'):clean(row.streak||'—');
-    return `<tr class="${esc(rowClass)}"><td><span class="league-view-team"><i>${position||''}</i>${row.logo?`<img src="${esc(row.logo)}" alt="" loading="lazy">`:''}<b>${esc(row.name||row.abbreviation)}</b></span></td><td>${esc(soccer?secondary:rowRecord(row))}</td><td>${esc(third)}</td><td>${esc(fourth)}</td></tr>`;
+    const record=league==='NHL'?nhlRecord(row):rowRecord(row);
+    const cells=[`<td><span class="league-view-team"><i>${position||''}</i>${row.logo?`<img src="${esc(row.logo)}" alt="" loading="lazy">`:''}<b>${esc(row.name||row.abbreviation)}</b></span></td>`,
+      `<td>${esc(soccer?secondary:record)}</td>`,`<td>${esc(third)}</td>`,`<td>${esc(fourth)}</td>`];
+    if(soccer)cells.push(`<td class="league-view-form-cell">${formMarkup(row.form||[])}</td>`);
+    return `<tr class="${esc(rowClass)}">${cells.join('')}</tr>`;
   }
   function placeholderRows(count,columns=4){
     return Array.from({length:Math.max(0,Number(count)||0)},()=>`<tr class="league-view-placeholder-row" aria-hidden="true">${Array.from({length:columns},()=>'<td>&nbsp;</td>').join('')}</tr>`).join('');
@@ -168,7 +180,7 @@
     const wanted=league==='MLB'?['AL','NL']:(league==='NFL'?['AFC','NFC']:['EAST','WEST']);
     const ordered=wanted.map(key=>rows.find(x=>upper(x?.key)===key)).filter(Boolean);
     if(ordered.length<2)return '';
-    // v5.3.13: paired conference/division columns share the same row slots.
+    // v5.3.14: paired conference/division columns share the same row slots.
     // A four-team division opposite a five-team division gets one invisible
     // placeholder row, so the next division heading starts at exactly the same
     // vertical position on both sides.
@@ -230,13 +242,57 @@
     return `<section class="league-view-card league-view-event-local"><div class="league-view-card-head"><strong>BIG BOARD EVENT VIEW</strong><span>LOCAL</span></div><div class="league-view-games">${games.slice(0,18).map(game=>`<div><strong>${esc(game.game||game.title||'Match')}</strong><span>${esc(game.result||game.status||'')}</span><small>${esc(clean(game.date).slice(0,10))}</small></div>`).join('')}</div></section>`;
   }
 
+  function splitEventMatch(value){return clean(value).split(/\s+(?:@|at|vs\.?|v)\s+/i).map(clean).filter(Boolean).slice(0,2);}
+  function eventRound(game,league){
+    const direct=clean(game?.round||game?.group);if(direct)return direct.toUpperCase();
+    const title=clean(game?.sourceTitle);const hit=title.match(/(ROUND\s+(?:OF\s+)?\d+|ROUND\s+\d+|QUARTER[- ]?FINALS?|SEMI[- ]?FINALS?|FINALS?|THIRD PLACE|GROUP\s+[A-L])/i);if(hit)return hit[1].toUpperCase().replace('QUARTERFINAL','QUARTERFINAL').replace('SEMIFINAL','SEMIFINAL');
+    const d=clean(game?.date).slice(0,10);
+    if(league==='WC2026'&&d){
+      if(d<='2026-06-27')return 'GROUP STAGE';if(d<='2026-07-03')return 'ROUND OF 32';if(d<='2026-07-07')return 'ROUND OF 16';if(d<='2026-07-11')return 'QUARTERFINALS';if(d<='2026-07-15')return 'SEMIFINALS';if(d==='2026-07-18')return 'THIRD PLACE';if(d>='2026-07-19')return 'FINAL';
+    }
+    return '';
+  }
+  function eventGames(context,payload){
+    const local=Array.isArray(context?.eventGames)?context.eventGames:[];const fallback=Array.isArray(context?.games)?context.games:[];
+    const server=Array.isArray(payload?.games)?payload.games.map(g=>({date:g.date,game:g.name,status:g.status,round:g.round,awayScore:g.away?.score,homeScore:g.home?.score})):[];
+    const rows=[...local,...fallback,...server],seen=new Set(),out=[];
+    for(const game of rows){const key=`${clean(game.date).slice(0,10)}|${upper(game.game||game.name)}`;if(!clean(game.game||game.name)||seen.has(key))continue;seen.add(key);out.push(game);}return out;
+  }
+  function groupStandings(games,league){
+    const groups=new Map();
+    for(const game of games){let group=clean(game.group);if(!group){const r=eventRound(game,league);if(/^GROUP\s+[A-L]$/i.test(r))group=r;}if(!/^GROUP\s+[A-L]$/i.test(group))continue;
+      const teams=splitEventMatch(game.game||game.name);if(teams.length<2)continue;const a=Number(game.awayScore),h=Number(game.homeScore);if(!Number.isFinite(a)||!Number.isFinite(h))continue;
+      if(!groups.has(group))groups.set(group,new Map());const table=groups.get(group);
+      const row=name=>{const key=upper(name);if(!table.has(key))table.set(key,{name,P:0,W:0,D:0,L:0,GF:0,GA:0,Pts:0});return table.get(key);};const ar=row(teams[0]),hr=row(teams[1]);
+      ar.P++;hr.P++;ar.GF+=a;ar.GA+=h;hr.GF+=h;hr.GA+=a;if(a>h){ar.W++;ar.Pts+=3;hr.L++;}else if(h>a){hr.W++;hr.Pts+=3;ar.L++;}else{ar.D++;hr.D++;ar.Pts++;hr.Pts++;}
+    }
+    return [...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([name,map])=>({name,entries:[...map.values()].sort((a,b)=>b.Pts-a.Pts||((b.GF-b.GA)-(a.GF-a.GA))||b.GF-a.GF||a.name.localeCompare(b.name))}));
+  }
+  function worldCupGroupCard(group){
+    return `<section class="league-view-card league-view-event-group"><div class="league-view-card-head"><strong>${esc(group.name)}</strong><span>PTS · GD</span></div><table class="league-view-table league-view-group-table"><thead><tr><th class="team-col">TEAM</th><th>P</th><th>W-D-L</th><th>GD</th><th>PTS</th></tr></thead><tbody>${group.entries.map((row,i)=>`<tr><td><span class="league-view-team"><i>${i+1}</i><b>${esc(row.name)}</b></span></td><td>${row.P}</td><td>${row.W}-${row.D}-${row.L}</td><td>${row.GF-row.GA>=0?'+':''}${row.GF-row.GA}</td><td><b>${row.Pts}</b></td></tr>`).join('')}</tbody></table></section>`;
+  }
+  function bracketBoard(games,league){
+    const buckets=new Map();for(const game of games){const round=eventRound(game,league);if(!round||/^GROUP(?: STAGE|\s+[A-L])/.test(round))continue;if(!buckets.has(round))buckets.set(round,[]);buckets.get(round).push(game);}
+    if(!buckets.size)return '';
+    const order=['ROUND OF 128','ROUND 1','ROUND OF 64','ROUND 2','ROUND OF 32','ROUND 3','ROUND OF 16','ROUND 4','QUARTERFINALS','SEMIFINALS','THIRD PLACE','FINAL'];
+    const groups=[...buckets.entries()].sort((a,b)=>{const ai=order.indexOf(a[0]),bi=order.indexOf(b[0]);return (ai<0?99:ai)-(bi<0?99:bi)||a[0].localeCompare(b[0]);});
+    return `<section class="league-view-card league-view-bracket"><div class="league-view-card-head"><strong>BRACKET / ROUNDS</strong><span>${groups.length} STAGES</span></div><div class="league-view-bracket-grid">${groups.map(([round,rows])=>`<div class="league-view-round-column"><strong>${esc(round)}</strong>${rows.slice(0,32).map(game=>{const teams=splitEventMatch(game.game||game.name);const score=(game.awayScore!==null&&game.awayScore!==undefined&&game.homeScore!==null&&game.homeScore!==undefined)?`${game.awayScore}–${game.homeScore}`:'';return `<span><b>${esc(teams.length===2?`${teams[0]} vs ${teams[1]}`:(game.game||game.name))}</b><small>${esc(score||game.status||clean(game.date).slice(5,10))}</small></span>`;}).join('')}</div>`).join('')}</div></section>`;
+  }
+  function specialEventBoard(league,context,payload){
+    const games=eventGames(context,payload);if(!games.length)return '';
+    let html='';if(league==='WC2026'){const groups=groupStandings(games,league);if(groups.length)html+=`<div class="league-view-event-group-grid">${groups.map(worldCupGroupCard).join('')}</div>`;}
+    html+=bracketBoard(games,league);
+    if(!html)html+=gamesCard(games,true);
+    return html;
+  }
+
   function render(){
     const root=$('leagueViewRoot');if(!root)return;
     const league=state.league||currentLeague();const payload=state.payload||{};const label=leagueLabel(league,payload);const special=payload.specialEvent===true||!core.has(league);
     const context=curatedContext();
     const updated=payload.savedAt?new Date(Number(payload.savedAt)*1000).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):'';
     let body='';
-    if(state.loading)body='<div class="league-view-loading"><span></span>Loading standings and league context…</div>';
+    if(state.loading&&!state.payload)body='<div class="league-view-loading"><span></span>Loading standings and league context…</div>';
     else if(state.error&&!payload.standings?.length&&!context?.games?.length)body=`<div class="league-view-empty"><strong>LEAGUE VIEW TEMPORARILY UNAVAILABLE</strong><span>${esc(state.error)}</span></div>`;
     else{
       if(payload.rankings?.length)body+=rankingsCard(payload.rankings);
@@ -246,54 +302,53 @@
       // Core league views are intentionally standings-first. The previous lower
       // Pulse/Series/Today blocks consumed the exact space needed for divisions
       // and Wild Card context. Special events retain bracket/round context.
-      if(special){body+=roundsCard(payload.games||[],true);body+=gamesCard(payload.games||[],true);body+=localEventCard(context);}
+      if(special){body+=specialEventBoard(league,context,payload);if(!body)body+=localEventCard(context);}
       if(!body)body='<div class="league-view-empty"><strong>LEAGUE CONTEXT</strong><span>No public standings table is available for this event yet. Big Board event highlights remain available in the ribbon and Team Browse.</span></div>';
     }
     const descriptor=league==='MLB'?'Divisions · Wild Card':(league==='NFL'?'Divisions · Wild Card':(league==='NBA'?'Conference standings · playoff / play-in lines':(league==='NHL'?'Divisions · Wild Card':(league==='NCAAF'?'AP Top 25 · conference standings':(['EPL','MLS'].includes(league)?'League table':'Groups · bracket / rounds')))));
-    root.innerHTML=`<div class="league-view-head"><div><small>${special?'SPECIAL EVENT':'LEAGUE VIEW'}</small><h2>${esc(label)}</h2><span class="league-view-muted">${esc(descriptor)}</span></div><div class="league-view-head-actions">${updated?`<span class="league-view-updated">UPDATED ${esc(updated)}</span>`:''}<button id="leagueViewRefresh" type="button" title="Refresh League View">↻</button></div></div><div class="league-view-content">${body}</div>`;
+    root.innerHTML=`<div class="league-view-head"><div><small>${special?'SPECIAL EVENT':'LEAGUE VIEW'}</small><h2>${esc(label)}</h2><span class="league-view-muted">${esc(descriptor)}</span></div><div class="league-view-head-actions">${state.refreshing?'<span class="league-view-updated">REFRESHING…</span>':(updated?`<span class="league-view-updated">UPDATED ${esc(updated)}</span>`:'')}<button id="leagueViewRefresh" type="button" title="Refresh League View">↻</button></div></div><div class="league-view-content">${body}</div>`;
     $('leagueViewRefresh')?.addEventListener('click',()=>refresh(true));
   }
 
   async function refresh(force=false){
-    const league=currentLeague();const token=++state.request;state.league=league;state.loading=true;state.error='';render();
+    const league=currentLeague();
+    if(!force&&state.loading&&league===state.league)return;
+    const token=++state.request;const same=league===state.league&&!!state.payload;state.league=league;state.error='';state.loading=!same;state.refreshing=same;render();
     try{
       const response=await fetch(apiUrl(`/api/league-view?league=${encodeURIComponent(league)}${force?'&force=1':''}`),{cache:force?'no-store':'default'});
       const payload=await response.json().catch(()=>({}));if(token!==state.request)return;
       if(!response.ok||payload?.ok===false)throw new Error(payload?.error||`HTTP ${response.status}`);
-      state.payload=payload;
-    }catch(err){if(token!==state.request)return;state.error=clean(err?.message||err);state.payload={league,standings:[],playoffRace:[],rankings:[],games:[],specialEvent:!core.has(league)};}
-    finally{if(token===state.request){state.loading=false;render();}}
+      state.payload=payload;state.lastFetchedAt=Date.now();
+    }catch(err){if(token!==state.request)return;state.error=clean(err?.message||err);if(!state.payload||state.league!==league)state.payload={league,standings:[],playoffRace:[],rankings:[],games:[],specialEvent:!core.has(league)};}
+    finally{if(token===state.request){state.loading=false;state.refreshing=false;render();}}
   }
 
   function syncContext({forceRefresh=false}={}){
     const league=currentLeague();const aggregate=isAggregate();state.aggregate=aggregate;recapGameCenter(aggregate);
     const key=`${league}|${aggregate?'recap':'game'}|${currentTitle()}`;
-    if(forceRefresh||league!==state.league||!state.payload){refresh(false);}else if(key!==state.lastAggregateKey)render();
+    if(league!==state.league||!state.payload){refresh(false);}else if(forceRefresh&&Date.now()-state.lastFetchedAt>5*60*1000){refresh(false);}else if(key!==state.lastAggregateKey)render();
     state.lastAggregateKey=key;
   }
   function scheduleContextSync({forceRefresh=false}={}){
-    // Playback/title/SelectedEvent update on different microtasks. Probe the
-    // settled state a few times so a just-ended World Cup context cannot win the
-    // first race and remain cached while an MLB item is already playing.
-    for(const ms of [0,120,420,900])setTimeout(()=>syncContext({forceRefresh:forceRefresh&&ms===0}),ms);
+    clearTimeout(state.syncTimer);state.syncTimer=setTimeout(()=>syncContext({forceRefresh}),90);
   }
+
   function bind(){
     $('upNextTabBtn')?.addEventListener('click',()=>{const league=currentLeague();if(league!==state.league||!state.payload)refresh(false);else render();});
     $('upNextDrawerBtn')?.addEventListener('click',()=>setTimeout(()=>{const league=currentLeague();if(league!==state.league||!state.payload)refresh(false);else render();},0));
-    $('scoreFilters')?.addEventListener('click',event=>{if(event.target.closest('[data-score-filter]'))scheduleContextSync({forceRefresh:true});});
-    window.addEventListener('sbb:special-context',()=>scheduleContextSync({forceRefresh:true}));
-    window.addEventListener('sbb:curated-queue-release',()=>scheduleContextSync({forceRefresh:true}));
-    window.addEventListener('sbb:curated-event-identity',()=>scheduleContextSync());
-    window.addEventListener('sbb:score-click-selection',()=>scheduleContextSync({forceRefresh:true}));
+    $('scoreFilters')?.addEventListener('click',event=>{const filter=event.target.closest('[data-score-filter]');if(!filter)return;const requested=normalizeLeague(filter.dataset.scoreFilter);state.navLeague=requested&&requested!=='ALL'?requested:'';scheduleContextSync();});
+    window.addEventListener('sbb:league-context',event=>{const requested=normalizeLeague(event?.detail?.league);state.navLeague=requested&&requested!=='ALL'?requested:'';scheduleContextSync();});
+    window.addEventListener('sbb:special-context',event=>{const requested=normalizeLeague(event?.detail?.league);state.navLeague=event?.detail?.active&&requested?requested:'';scheduleContextSync();});
+    window.addEventListener('sbb:special-event-data',()=>{if(!state.loading)render();});
+    window.addEventListener('sbb:curated-queue-release',()=>{state.navLeague='';scheduleContextSync();});
+    window.addEventListener('sbb:curated-event-identity',()=>{state.navLeague='';scheduleContextSync();});
+    window.addEventListener('sbb:score-click-selection',()=>{state.navLeague='';scheduleContextSync();});
     window.addEventListener('sbb:league-view-refresh',()=>refresh(true));
-    try{window.SBB_SELECTED_EVENT?.subscribe?.(()=>scheduleContextSync({forceRefresh:true}));}catch(_){}
-    const title=$('currentTitle');if(title){state.observer=new MutationObserver(()=>scheduleContextSync());state.observer.observe(title,{childList:true,subtree:true,characterData:true});}
-    // Low-cost authority reconciliation while the page is alive. It performs no
-    // fetch unless the actual playback league changes.
-    state.contextPoll=setInterval(()=>{const league=currentLeague();if(league&&league!==state.league)refresh(false);},1200);
+    try{window.SBB_SELECTED_EVENT?.subscribe?.(()=>scheduleContextSync());}catch(_){}
+    const title=$('currentTitle');if(title){state.observer=new MutationObserver(()=>{if(!state.navLeague)scheduleContextSync();});state.observer.observe(title,{childList:true,subtree:true,characterData:true});}
     scheduleContextSync({forceRefresh:true});
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_LEAGUE_VIEW=Object.freeze({version:VERSION,refresh,isAggregate,snapshot:()=>({league:state.league,aggregate:state.aggregate,loading:state.loading,error:state.error,payload:state.payload})});
+  window.SBB_LEAGUE_VIEW=Object.freeze({version:VERSION,refresh,isAggregate,snapshot:()=>({league:state.league,navLeague:state.navLeague,aggregate:state.aggregate,loading:state.loading,refreshing:state.refreshing,error:state.error,payload:state.payload})});
 })();

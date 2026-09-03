@@ -1,0 +1,48 @@
+Sports Big Board v5.3.14 manual GitHub upload
+League Navigation + Special Event Stability
+
+1. Extract this ZIP.
+2. Open the sports-big-board repository root on GitHub.
+3. Upload the CONTENTS of the extracted folder, preserving every included path.
+4. Replace existing files when GitHub prompts.
+5. Commit the upload as one v5.3.14 release.
+6. Let Deploy Sports Big Board run and confirm VERIFY.sh passes.
+7. Hard-refresh the deployed page after GitHub Pages completes.
+
+PRIMARY ACCEPTANCE CHECKS
+A. World Cup stale-MLB regression
+   - Start from ALL/TODAY with an MLB video/Game Center active.
+   - Enter SPECIAL EVENTS > FIFA WC.
+   - Expected immediately: the old MLB Game Center disappears and the event Match Center owns the right drawer.
+   - Select Argentina vs Spain, England vs Argentina, and multiple other event videos.
+   - Expected: no SEA/BOS or other retired MLB external-fallback card can appear while the FIFA selection is starting.
+   - If the FIFA video takes several seconds to start, the event shell stays visible and the World Cup queue remains intact.
+   - If the selected source really fails, recovery stays same-match first, then next World Cup match, then the selected-match external fallback.
+
+B. World Cup / US Open League View
+   - Enter FIFA WC and open League View before selecting a team.
+   - Expected: tournament group information when source group metadata exists plus a populated knockout-round view from the full event library.
+   - Enter US OPEN and open League View.
+   - Expected: Round 1/2/etc., quarterfinal, semifinal, and final groupings based on the complete event library rather than a blank standings panel.
+
+C. League navigation
+   - Click MLB, NFL, NBA, NHL, EPL, MLS, or NCAAF.
+   - Expected: TODAY | ALL | TEAM BROWSE appears inline and League View switches immediately to that league even before a video is selected.
+   - TODAY returns to today's league-filtered score ribbon.
+   - ALL opens the full historical highlight rail for that league.
+   - Selecting a video makes the playing video's league authoritative again.
+
+D. Soccer form
+   - Open EPL and MLS League View.
+   - Expected: each team has five form slots; W is green, draw is a gray dash, L is red, and unplayed slots remain hollow.
+   - Standings remain compact and readable.
+
+E. NHL width / symmetry
+   - Open NHL League View.
+   - Expected: Eastern and Western headings remain aligned, shorter paired sections retain blank row spacing, and W-L-OT records no longer wrap with duplicate PTS text.
+
+F. Refresh stability
+   - Leave League View open while scores/SelectedEvent/title state changes.
+   - Expected: correct standings remain visible. No repeated one-second loading spinner/fetch loop.
+
+Do not upload the outer folder itself into the repository. Upload its contents so VERSION, index.html, ui/, architecture/, sbb/, tests/, tools/, and other included paths land at their existing repository locations.

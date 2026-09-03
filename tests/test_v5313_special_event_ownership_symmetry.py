@@ -8,7 +8,7 @@ league=(ROOT/'ui'/'league-view-v538.js').read_text()
 league_css=(ROOT/'ui'/'league-view-v538.css').read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
 
-assert version=='5.3.13',version
+assert version=='5.3.14',version
 
 # Special Events are a hard playback ownership boundary. The current curated
 # index is committed before transport tuning, stale score ownership is cleared,
@@ -21,7 +21,7 @@ for token in [
     "document.body.dataset.sbbCuratedPlaybackOwner",
     'function enforceCuratedOwnership(',
     'function startCuratedOwnershipGuard(',
-    "v5.3.13 ownership repair",
+    "v5.3.14 ownership repair",
     "currentIndex=index;standbyIndex=index",
     "clearLegacyScoreOwnership('special-event tune')",
     "if(specialOwns&&(!item?.__sbbCuratedOverride||programKey(item)!==state.curatedExpectedKey))item=expectedCuratedItem();",
@@ -32,7 +32,7 @@ for token in [
 
 # The Special Event guard must outlive stale async Game Center responses rather
 # than relying only on a single short delayed repair.
-for ms in ['0,120,420,900,1600,3000','state.curatedGuardTimer=setTimeout(steadyGuard,900)']:
+for ms in ['0,120,420,900,1600,3000','state.curatedGuardTimer=setTimeout(steadyGuard,1400)']:
     assert ms in browse,ms
 
 # Paired standings columns reserve equal row slots. Shorter divisions receive
@@ -49,4 +49,4 @@ for token in [
     assert token in league or token in league_css,token
 
 assert 'tests/test_v5313_special_event_ownership_symmetry.py' in verify
-print('PASS v5.3.13 hard Special Event playback ownership + symmetric paired standings')
+print('PASS v5.3.14 hard Special Event playback ownership + symmetric paired standings')

@@ -9,7 +9,7 @@ league_css=(ROOT/'ui'/'league-view-v538.css').read_text()
 backend=(ROOT/'sbb'/'league_view_v538.py').read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
 
-assert version=='5.3.13',version
+assert version=='5.3.14',version
 
 # Returning from curated/special-event browsing must surrender queue ownership
 # before ALL/TODAY or a normal score click can render another queue.
@@ -23,18 +23,21 @@ for token in [
     assert token in browse,token
 assert "releaseCuratedQueue('browse returned to daily programming')" in browse
 
-# League View authority is playback-first and special context is fallback-only.
+# Explicit league navigation can update League View before a clip is chosen; once
+# a score/video selection occurs, playback becomes authoritative again.
+nav_pos=league.index('if(state.navLeague)')
 item_pos=league.index('const item=activeProgram();')
 context_pos=league.index('const context=curatedContext();',item_pos)
-assert item_pos<context_pos
+assert nav_pos<item_pos<context_pos
 for token in [
     'function leagueFromItem(item)',
     'function leagueFromTitle(title=currentTitle())',
     "if(/\\bMLB\\b|MAJOR LEAGUE BASEBALL/.test(text))return 'MLB'",
     "if(context?.mode&&context.mode!=='daily')",
     "window.addEventListener('sbb:curated-queue-release'",
-    'for(const ms of [0,120,420,900])',
-    'state.contextPoll=setInterval',
+    "window.addEventListener('sbb:league-context'",
+    "state.navLeague=''",
+    'clearTimeout(state.syncTimer)',
 ]:
     assert token in league,token
 
@@ -42,8 +45,8 @@ for token in [
 # diagnostic rows. MLB/NFL expose conference columns with wildcard context.
 for token in [
     'function tableHeaders(league)',
-    "if(['EPL','MLS'].includes(league))return ['CLUB','MP','W-D-L','PTS']",
-    "if(league==='MLB'||league==='NFL')inner+=wildcardCard",
+    "if(['EPL','MLS'].includes(league))return ['CLUB','MP','W-D-L','PTS','FORM']",
+    "if(league==='MLB'||league==='NFL'||league==='NHL')inner+=wildcardCard",
     'league-view-cutoff',
     'league-view-conference-grid league-view-',
 ]:
@@ -62,11 +65,11 @@ for token in [
 for token in [
     '"gamesPlayed": _stat_value',
     '"conferenceRecord": _stat_value',
-    'if league in {"MLB", "NFL"}:',
-    'minimum_wildcard_seed = 4 if league == "MLB" else 5',
+    'if league in {"MLB", "NFL", "NHL"}:',
+    'minimum_wildcard_seed = 4 if league == "MLB" else (5 if league == "NFL" else 999)',
     'key not in division_leaders',
 ]:
     assert token in backend,token
 
 assert 'tests/test_v5311_playback_context_league_view.py' in verify
-print('PASS v5.3.13 playback-context reset + playback-authoritative League View + readable standings')
+print('PASS v5.3.14 playback-context reset + playback-authoritative League View + readable standings')

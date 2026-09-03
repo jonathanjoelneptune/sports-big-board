@@ -1,13 +1,13 @@
-/* Sports Big Board v5.3.13 — Focus Integration + Full Team Theme
+/* Sports Big Board v5.3.14 — Focus Integration + Full Team Theme
    User-facing content discovery over the existing score/calendar + historical
    catalog. No second playback owner: curated results become normal PROGRAM items
    and therefore inherit PlaybackController, Hot Standby, Up Next and score-card
    interrupt/resume behavior. */
 (() => {
   'use strict';
-  if(window.SBB_CURATED_BROWSE?.version==='5.3.13') return;
+  if(window.SBB_CURATED_BROWSE?.version==='5.3.14') return;
 
-  const VERSION='5.3.13';
+  const VERSION='5.3.14';
   const FAVORITES_KEY='sbb.curation.favorites.v1';
   const ENTITY_CATALOG_KEY='sbb.browse.entity-catalog.v535';
   const ENTITY_CATALOG_TTL_MS=6*60*60*1000;
@@ -31,8 +31,9 @@
     entityAuditRows:[],contextInsightToken:0,contextInsightTimer:null,normalTickerSnapshot:null,
     teamFocusData:null,teamFocusKey:'',teamFocusInflight:null,teamThemeEnabled:loadTeamTheme(),
     entityMetaCache:new Map(),specialContext:null,cfbObserver:null,
-    curatedAlternates:new Map(),failedCuratedMedia:new Set(),playbackFailurePatched:false,
+    curatedAlternates:new Map(),failedCuratedMedia:new Set(),playbackFailurePatched:false,onPlayerErrorPatched:false,
     curatedOwnershipEpoch:0,curatedGuardTimer:null,curatedExpectedIndex:0,curatedExpectedKey:'',curatedGuardBusy:false,
+    specialEventGames:[],specialEventDataEpoch:0,
   };
 
 
@@ -245,12 +246,27 @@
     return out.slice(0,maxRows);
   }
 
+  async function primeSpecialEventGames(league){
+    league=clean(league).toUpperCase();const epoch=++state.specialEventDataEpoch;let offset=0,total=Infinity,rows=[];
+    try{
+      while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS){
+        const params=new URLSearchParams({league,limit:String(PAGE_SIZE),offset:String(offset)});
+        const r=await fetch(apiUrl(`/api/history/audit?${params.toString()}`),{cache:'no-store'});const data=await r.json().catch(()=>({}));if(!r.ok||!data.ok)break;
+        const page=Array.isArray(data.rows)?data.rows:[];rows.push(...page);total=Number(data.total??rows.length);if(!page.length||page.length<PAGE_SIZE)break;offset+=page.length;
+      }
+      if(epoch!==state.specialEventDataEpoch||state.specialContext?.league!==league)return [];
+      state.specialEventGames=rows.map(gameFromAuditRow).filter(Boolean).sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.eventId).localeCompare(String(b.eventId)));
+      try{window.dispatchEvent(new CustomEvent('sbb:special-event-data',{detail:{league,count:state.specialEventGames.length,background:true}}));}catch(_){}
+      return state.specialEventGames;
+    }catch(_){return [];}
+  }
+
   function ensureUi(){
     const filters=$('scoreFilters');if(!filters)return false;
     let subnav=$('sbbBrowseSubnav');
     if(!subnav){
       subnav=document.createElement('span');subnav.id='sbbBrowseSubnav';subnav.className='sbb-browse-subnav hidden';subnav.setAttribute('aria-label','Contextual browse controls');
-      subnav.innerHTML='<button id="sbbBrowseBtn" type="button" class="sbb-browse-btn" aria-haspopup="dialog" aria-expanded="false"><span>TEAM BROWSE</span><b aria-hidden="true">⌄</b></button><button id="sbbSpecialExitBtn" type="button" class="sbb-special-exit-btn hidden">EXIT EVENT</button>';
+      subnav.innerHTML='<button id="sbbLeagueTodayBtn" type="button" class="sbb-league-context-btn">TODAY</button><button id="sbbLeagueAllBtn" type="button" class="sbb-league-context-btn">ALL</button><button id="sbbBrowseBtn" type="button" class="sbb-browse-btn" aria-haspopup="dialog" aria-expanded="false"><span>TEAM BROWSE</span><b aria-hidden="true">⌄</b></button><button id="sbbSpecialExitBtn" type="button" class="sbb-special-exit-btn hidden">EXIT EVENT</button>';
       filters.appendChild(subnav);
     }
     const btn=$('sbbBrowseBtn');
@@ -437,7 +453,7 @@
   }
   function installLegacyCfbGuard(){
     hideLegacyCfb();if(state.cfbObserver)return;const filters=$('scoreFilters');if(!filters)return;
-    // v5.3.13: the special-event header is display-only. Do not observe/filter its
+    // v5.3.14: the special-event header is display-only. Do not observe/filter its
     // attributes or repeatedly reposition Browse controls from a score-row mutation
     // callback. v5.3.9 accidentally created a feedback loop between the synthetic
     // event chip and the canonical score-filter renderer that could freeze the page.
@@ -484,11 +500,15 @@
   }
   function enterSpecialContext(league,label){
     league=clean(league).toUpperCase();if(!league||isCoreLeague(league)||league==='CFB')return false;
-    state.specialContext={league,label:clean(label)||leagueLabel(league)};state.league=league;state.entityType=entityTypeFor(league);syncSpecialContextUi();syncLeagueUi();
-    setTimeout(()=>activateHistorical({all:true}),0);
+    state.specialContext={league,label:clean(label)||leagueLabel(league)};state.league=league;state.entityType=entityTypeFor(league);state.specialEventGames=[];
+    clearLegacyScoreOwnership('enter special event');clearStalePlaybackPresentation();
+    try{window.SBB_SELECTED_EVENT?.clear?.({reason:'enter special event Match Center',source:'browse',force:true});}catch(_){}
+    showCuratedGameCenterFallback({competitionId:league,title:`${state.specialContext.label} Match Center`,status:'Choose a match from the event ribbon'});
+    syncSpecialContextUi();syncLeagueUi();
+    setTimeout(()=>{primeSpecialEventGames(league);activateHistorical({all:true});},0);
     window.dispatchEvent(new CustomEvent('sbb:special-context',{detail:{active:true,league,label:state.specialContext.label}}));return true;
   }
-  function clearSpecialContext(){if(!state.specialContext)return;const prior=state.specialContext;state.specialContext=null;syncSpecialContextUi();window.dispatchEvent(new CustomEvent('sbb:special-context',{detail:{active:false,league:prior.league}}));}
+  function clearSpecialContext(){if(!state.specialContext)return;const prior=state.specialContext;state.specialContext=null;state.specialEventGames=[];state.specialEventDataEpoch++;syncSpecialContextUi();window.dispatchEvent(new CustomEvent('sbb:special-context',{detail:{active:false,league:prior.league}}));}
   function syncLeagueUi(){
     hideLegacyCfb();syncSpecialContextUi();const nextLeague=selectedLeague(),previousLeague=state.league;
     if(previousLeague&&previousLeague!=='ALL'&&nextLeague!==previousLeague&&state.mode!=='daily'){
@@ -508,6 +528,11 @@
     if($('sbbBrowseSearch'))$('sbbBrowseSearch').placeholder=state.entityType==='player'?'Search players':'Search teams';
     if($('sbbBrowseToday'))$('sbbBrowseToday').textContent=`TODAY'S ${label}`;
     if($('sbbBrowseAllHighlights'))$('sbbBrowseAllHighlights').textContent=`ALL ${label} HIGHLIGHTS`;
+    const todayBtn=$('sbbLeagueTodayBtn'),allBtn=$('sbbLeagueAllBtn');
+    const special=!!state.specialContext;
+    if(todayBtn){todayBtn.classList.toggle('hidden',special);todayBtn.textContent='TODAY';todayBtn.title=`Show today's ${label} score ribbon`;}
+    if(allBtn){allBtn.classList.toggle('hidden',special);allBtn.textContent='ALL';allBtn.title=`Show all ${label} highlights`;}
+    try{window.dispatchEvent(new CustomEvent('sbb:league-context',{detail:{league:state.league,mode:state.mode,entity:state.entity,special}}));}catch(_){}
     const ranked=$('sbbBrowseRanked');if(ranked){const show=isCollegeFootball(state.league)||isTennis(state.league);ranked.classList.toggle('hidden',!show);ranked.textContent=isTennis(state.league)?'SEEDED TODAY':'RANKED TODAY';}
     if($('sbbCurationKicker'))$('sbbCurationKicker').textContent=browseWord;
     renderFavorites();if(state.open)positionPopover();
@@ -527,7 +552,7 @@
   }
   async function fetchFullEntityCatalog(league,{forceMetadata=false}={}){
     const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return [];
-    // v5.3.13 prefers the backend's persisted participant index. It is built from
+    // v5.3.14 prefers the backend's persisted participant index. It is built from
     // all catalog events that own verified/playable media and is warmed in the
     // background, so opening Team/Player Browse does not scan the audit catalog.
     try{
@@ -535,7 +560,7 @@
       const entities=Array.isArray(data?.entities)?data.entities:[];const names=Array.isArray(data?.participants)?data.participants.map(clean).filter(Boolean):entities.map(x=>clean(x?.name)).filter(Boolean);
       if(response.ok&&data?.ok&&names.length){rememberEntityMetadata(selected,entities.length?entities:names.map(name=>({name})));return [...new Set(names)].sort((a,b)=>a.localeCompare(b));}
     }catch(_){}
-    // Compatibility fallback for a backend that has not completed the v5.3.13
+    // Compatibility fallback for a backend that has not completed the v5.3.14
     // participant-index warmup yet.
     let offset=0,total=Infinity,rows=[];
     while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS){
@@ -691,6 +716,7 @@
       // context and never appear as future cards in the highlight timeline.
       const timelineRows=state.entity?filtered.filter(row=>!auditDate(row)||auditDate(row)<=todayLocal):filtered;
       const built=timelineRows.map(gameFromAuditRow).filter(Boolean);
+      if(state.specialContext&&all&&!state.entity){state.specialEventGames=built.slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.eventId).localeCompare(String(b.eventId)));try{window.dispatchEvent(new CustomEvent('sbb:special-event-data',{detail:{league:state.league,count:state.specialEventGames.length}}));}catch(_){}}
       state.games=(state.entity?built:built.filter(game=>game.items?.length)).sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.eventId).localeCompare(String(a.eventId)));
     }catch(err){if(err?.name==='AbortError')return;state.error=`Could not load ${leagueLabel(state.league)} highlights: ${err?.message||err}`;}
     finally{
@@ -720,13 +746,14 @@
   }
   function releaseCuratedQueue(reason='return to daily programming'){
     stopCuratedOwnershipGuard();
-    // v5.3.13: curated Team/Player/Special Event queues are user-owned only while
+    // v5.3.14: curated Team/Player/Special Event queues are user-owned only while
     // Browse is active. Returning to ALL/TODAY must surrender queue ownership
     // immediately so the next score-card click can build the selected date queue.
     // Leaving queueActive true caused renderQueue() to resurrect a World Cup queue
     // after an MLB score click even though the visible filter had returned to ALL.
     const hadQueue=!!state.queueActive;
     state.queueActive=false;state.queueItems=[];state.queueLabel='';state.curatedAlternates.clear();state.failedCuratedMedia.clear();restoreCuratedGameCenterFallback();
+    try{const bumper=$('bumper');if(bumper)delete bumper.dataset.sbbCuratedFallbackKey;}catch(_){}
     state.preProgram=null;state.preGeneral=null;
     try{window.SBB_SCORE_INTERRUPT_QUEUE?.clear?.(reason);}catch(_){}
     try{if(typeof userPlaybackSession!=='undefined'&&userPlaybackSession?.source!=='score')userPlaybackSession=null;}catch(_){}
@@ -748,7 +775,7 @@
     return !isTennis(league) && !/LLWS/.test(league);
   }
   function restoreCuratedGameCenterFallback(){
-    const empty=$('gameCenterEmpty');if(!empty||empty.dataset.sbbCuratedMatch!=='1')return;delete empty.dataset.sbbCuratedMatch;
+    document.body?.classList.remove('sbb-special-event-match-center');const empty=$('gameCenterEmpty');if(!empty||empty.dataset.sbbCuratedMatch!=='1')return;delete empty.dataset.sbbCuratedMatch;
     const strong=empty.querySelector('strong');if(strong)strong.textContent='GAME CENTER';
     const span=empty.querySelector('span');if(span)span.textContent='Select a game from the score ribbon to see its scoreboard, stats, players and plays.';
   }
@@ -757,8 +784,9 @@
     const away=participantName(item?.awayTeam||item?.away)||clean(item?.awayName||item?.away),home=participantName(item?.homeTeam||item?.home)||clean(item?.homeName||item?.home);
     const matchup=away&&home?`${away} vs ${home}`:clean(item?.queueTitle||item?.title)||'SPECIAL EVENT MATCH';
     const league=leagueLabel(clean(item?.competitionId||item?.league||state.league).toUpperCase()),date=clean(item?.date).slice(0,10);
-    empty.dataset.sbbCuratedMatch='1';const strong=empty.querySelector('strong');if(strong)strong.textContent=matchup.toUpperCase();
-    const span=empty.querySelector('span');if(span)span.textContent=`${league}${date?` · ${date}`:''} · This selected special-event match does not expose the full standard Game Center feed.`;
+    empty.dataset.sbbCuratedMatch='1';document.body?.classList.add('sbb-special-event-match-center');const strong=empty.querySelector('strong');if(strong)strong.textContent=matchup.toUpperCase();
+    const score=(item?.awayScore!==null&&item?.awayScore!==undefined&&item?.homeScore!==null&&item?.homeScore!==undefined)?` · ${item.awayScore}–${item.homeScore}`:'';
+    const status=clean(item?.status);const span=empty.querySelector('span');if(span)span.textContent=`${league}${date?` · ${date}`:''}${score}${status?` · ${status}`:''} · Special Event Match Center follows the selected highlight.`;
     empty.classList.remove('hidden');content?.classList.add('hidden');
   }
   function curatedEventIdentity(item){
@@ -791,7 +819,10 @@
   }
   function syncCuratedGameCenterContext(item){
     const curated=!!item?.__sbbCuratedOverride;
-    const unsupported=curated&&!gameCenterSupportedForItem(item);
+    // Special Events own a lightweight Match Center. Do not let the standard
+    // Game Center resurrect a stale MLB/NFL event underneath World Cup/US Open/LLWS playback.
+    const specialOwned=curated&&!!state.specialContext;
+    const unsupported=specialOwned||(curated&&!gameCenterSupportedForItem(item));
     const body=document.body,was=body?.classList.contains('sbb-curated-no-game-center');
     body?.classList.toggle('sbb-curated-no-game-center',unsupported);
     if(unsupported){
@@ -828,7 +859,7 @@
     try{clearPlaybackRecovery?.();}catch(_){}
     try{setVideoLoadingOverlay?.(true);}catch(_){}
     try{
-      const bumper=$('bumper');bumper?.classList.add('hidden');bumper?.classList.remove('external-fallback','needs-tap');
+      const bumper=$('bumper');bumper?.classList.add('hidden');bumper?.classList.remove('external-fallback','needs-tap');if(bumper)delete bumper.dataset.sbbCuratedFallbackKey;
       const action=$('bumperAction');if(action){action.classList.add('hidden');action.textContent='';}
       if(typeof playbackExternalFallbackUrl!=='undefined')playbackExternalFallbackUrl='';
     }catch(_){}
@@ -836,6 +867,15 @@
   function expectedCuratedItem(){
     const idx=Math.max(0,Math.min(Number(state.curatedExpectedIndex)||0,Math.max(0,state.queueItems.length-1)));
     return state.queueItems[idx]||state.queueItems[0]||null;
+  }
+  function clearForeignFallbackPresentation(item){
+    if(!specialEventOwnsPlayback())return false;
+    const bumper=$('bumper');if(!bumper||bumper.classList.contains('hidden'))return false;
+    const expected=programKey(item),tag=clean(bumper.dataset.sbbCuratedFallbackKey);
+    // App-level score/YouTube failures do not tag the bumper. During an active
+    // Special Event, any untagged external fallback belongs to a retired context.
+    if(bumper.classList.contains('external-fallback')&&tag!==expected){clearStalePlaybackPresentation();return true;}
+    return false;
   }
   function enforceCuratedOwnership(reason='curated ownership guard'){
     if(!specialEventOwnsPlayback()||state.curatedGuardBusy)return false;
@@ -845,6 +885,7 @@
       // A stale score interrupt or score playback session is never allowed to
       // outrank an explicitly active Special Event queue.
       clearLegacyScoreOwnership(reason);
+      clearForeignFallbackPresentation(item);
       if(!queueMatchesActive()){PROGRAM=[...state.queueItems];try{GENERAL_PROGRAM=[...state.queueItems];}catch(_){}}
       let active=null;try{active=typeof clip==='function'?clip(currentIndex):null;}catch(_){}
       const expectedKey=programKey(item),activeKey=programKey(active);
@@ -852,7 +893,7 @@
         const idx=Math.max(0,Math.min(Number(state.curatedExpectedIndex)||0,state.queueItems.length-1));
         try{currentIndex=idx;standbyIndex=idx;}catch(_){}
         clearStalePlaybackPresentation();
-        if(typeof tuneProgramIndexV5==='function')tuneProgramIndexV5(idx,{userInitiated:false,reason:`v5.3.13 ownership repair: ${reason}`});
+        if(typeof tuneProgramIndexV5==='function')tuneProgramIndexV5(idx,{userInitiated:false,reason:`v5.3.14 ownership repair: ${reason}`});
       }
       syncCuratedGameCenterContext(item);
       return true;
@@ -868,9 +909,9 @@
       if(epoch!==state.curatedOwnershipEpoch)return;
       if(!specialEventOwnsPlayback()){stopCuratedOwnershipGuard();return;}
       enforceCuratedOwnership('special-event steady-state');
-      state.curatedGuardTimer=setTimeout(steadyGuard,900);
+      state.curatedGuardTimer=setTimeout(steadyGuard,1400);
     };
-    state.curatedGuardTimer=setTimeout(steadyGuard,900);
+    state.curatedGuardTimer=setTimeout(steadyGuard,1400);
   }
   function tuneCuratedIndex(index,{reason='curated programming',userInitiated=true}={}){
     const item=state.queueItems[index];if(!item||typeof tuneProgramIndexV5!=='function')return false;
@@ -904,7 +945,7 @@
     try{if(typeof setFeedNote==='function')setFeedNote(`Curated programming • ${label} • ${state.queueItems.length} video${state.queueItems.length===1?'':'s'}`);}catch(_){}
     // v5.3.0 compatibility contract: tuneProgramIndexV5(bounded is now delegated
     // through tuneCuratedIndex so stale fallback UI and Game Center clear first.
-    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.3.13 curated programming: ${label}`});
+    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.3.14 curated programming: ${label}`});
   }
   function playGames(games,label){primeCuratedAlternates(games);return activateQueue(queueItemsForGames(games),label,0);}
   function playFrom(index){const games=state.games.slice(index);if(!games.length)return false;return playGames(games,state.entity||state.facet||`${leagueLabel(state.league)} highlights`);}
@@ -945,7 +986,7 @@
     const kicker=$('bumperKicker');if(kicker)kicker.textContent=url?'WATCH ON YOUTUBE':'VIDEO UNAVAILABLE';
     const subtitle=$('bumperSubtitle');if(subtitle)subtitle.textContent=url?'This exact special-event highlight could not start in the embedded player. Open it directly or choose another match.':clean(reason);
     const action=$('bumperAction');if(action){action.textContent=url?'↗ OPEN OFFICIAL HIGHLIGHTS':'';action.classList.toggle('hidden',!url);}
-    $('bumper')?.classList.remove('hidden','needs-tap');if(url)$('bumper')?.classList.add('external-fallback');
+    const bumper=$('bumper');bumper?.classList.remove('hidden','needs-tap');if(url)bumper?.classList.add('external-fallback');if(bumper)bumper.dataset.sbbCuratedFallbackKey=programKey(item);
   }
   function patchPlaybackFailure(){
     try{
@@ -965,11 +1006,11 @@
           const alt=alternates.find(candidate=>{const key=programKey(candidate);if(!key||state.failedCuratedMedia.has(key))return false;try{return typeof runtimeMediaUsable==='function'?runtimeMediaUsable(candidate):true;}catch(_){return true;}});
           if(alt){
             const idx=Math.max(0,Math.min(Number(currentIndex)||0,state.queueItems.length-1));state.queueItems[idx]=alt;try{PROGRAM[idx]=alt;GENERAL_PROGRAM[idx]=alt;}catch(_){}
-            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.3.13 same-game curated fallback'});
+            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.3.14 same-game curated fallback'});
           }
           const start=Math.max(0,Number(currentIndex)||0);let next=-1;
           for(let i=start+1;i<state.queueItems.length;i++){const candidate=state.queueItems[i],key=programKey(candidate);if(candidate&&(!key||!state.failedCuratedMedia.has(key))){next=i;break;}}
-          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.3.13 next special-event highlight after unavailable source'});
+          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.3.14 next special-event highlight after unavailable source'});
           showCuratedUnavailable(item,err?.message||err);return;
         }
         return original.call(this,slot,err,userInitiated);
@@ -978,11 +1019,40 @@
     }catch(_){return false;}
   }
 
+  function patchYouTubePlayerError(){
+    try{
+      if(typeof onPlayerError!=='function'||onPlayerError.__sbbBrowseV5314)return false;const original=onPlayerError;
+      const wrapped=function(slot,code){
+        if(!specialEventOwnsPlayback())return original.call(this,slot,code);
+        const item=expectedCuratedItem();if(!item)return original.call(this,slot,code);
+        // YouTube can deliver a late error from the retired MLB slot while the
+        // newly-selected FIFA clip is still negotiating. Never let that stale
+        // callback paint the old game's external-fallback card. Give the current
+        // curated transport a short proof window; if it truly does not start,
+        // hand the failure to the curated same-game/next-match controller.
+        clearForeignFallbackPresentation(item);
+        const expectedKey=programKey(item),start=Date.now();
+        const sample=()=>{
+          if(!specialEventOwnsPlayback()||programKey(expectedCuratedItem())!==expectedKey)return;
+          let player=null;try{player=players?.[slot]||null;}catch(_){}
+          let stateCode=null,time=0;try{stateCode=player?.getPlayerState?.();time=Number(player?.getCurrentTime?.()||0);}catch(_){}
+          if(stateCode===1||time>.35)return;
+          if(Date.now()-start<12000){setTimeout(sample,1200);return;}
+          try{handlePlaybackFailure(slot,new Error(`YouTube player error ${code}`),false);}catch(_){showCuratedUnavailable(item,`YouTube player error ${code}`);}
+        };
+        setTimeout(sample,900);
+      };
+      wrapped.__sbbBrowseV5314=true;wrapped.__sbbOriginal=original;onPlayerError=wrapped;try{window.onPlayerError=wrapped;}catch(_){}state.onPlayerErrorPatched=true;return true;
+    }catch(_){return false;}
+  }
+
   function bind(){
     $('sbbBrowseBtn')?.addEventListener('click',()=>setOpen(!state.open));
     $('sbbBrowseClose')?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();setOpen(false);});
     $('sbbBrowsePopover')?.addEventListener('click',event=>{if(event.target.closest('#sbbBrowseClose')){event.preventDefault();event.stopPropagation();setOpen(false);}});
     $('sbbBrowseToday')?.addEventListener('click',()=>{setOpen(false);returnToDay();});
+    $('sbbLeagueTodayBtn')?.addEventListener('click',()=>{const league=state.league;setOpen(false);returnToDay();try{$('returnTodayBtn')?.click();}catch(_){}try{window.dispatchEvent(new CustomEvent('sbb:league-context',{detail:{league,mode:'today',special:false}}));}catch(_){}});
+    $('sbbLeagueAllBtn')?.addEventListener('click',()=>{setOpen(false);activateHistorical({all:true});try{window.dispatchEvent(new CustomEvent('sbb:league-context',{detail:{league:state.league,mode:'all-highlights',special:false}}));}catch(_){}});
     $('returnTodayBtn')?.addEventListener('click',()=>{clearSpecialContext();returnToDay();},{capture:true});
     $('sbbBrowseAllHighlights')?.addEventListener('click',()=>activateHistorical({all:true}));
     $('sbbBrowseRanked')?.addEventListener('click',activateRanked);
@@ -1011,6 +1081,7 @@
         // queue. Release it during capture, before the canonical score renderer
         // can call renderQueue(), so stale event programming cannot win a race.
         if(requested==='ALL'||isCoreLeague(requested))releaseCuratedQueue(`score filter changed to ${requested||'ALL'}`);
+        if(isCoreLeague(requested)){try{window.dispatchEvent(new CustomEvent('sbb:league-context',{detail:{league:requested,mode:'score-ribbon',special:false}}));}catch(_){}}
         setTimeout(()=>{if(requested!=='CFB'&&(!state.specialContext||requested!==state.specialContext.league))clearSpecialContext();const before=state.league;syncLeagueUi();if(state.league!==before&&state.mode!=='daily')returnToDay();},0);
       }
     },true);
@@ -1021,14 +1092,14 @@
     document.addEventListener('webkitfullscreenchange',()=>{ensurePopoverHost();if(state.open)setTimeout(positionPopover,50);});
   }
 
-  function init(){loadEntityCatalogStore();if(!ensureUi())return;installLegacyCfbGuard();captureScoreRibbonHeight();syncLeagueUi();bind();patchRenderQueue();patchPlaybackFailure();setTimeout(()=>primeEntityCatalog(),0);setTimeout(patchRenderQueue,350);setTimeout(patchPlaybackFailure,500);setTimeout(()=>{captureScoreRibbonHeight();hideLegacyCfb();},500);setTimeout(hideLegacyCfb,1800);}
+  function init(){loadEntityCatalogStore();if(!ensureUi())return;installLegacyCfbGuard();captureScoreRibbonHeight();syncLeagueUi();bind();patchRenderQueue();patchPlaybackFailure();patchYouTubePlayerError();setTimeout(()=>primeEntityCatalog(),0);setTimeout(patchRenderQueue,350);setTimeout(patchPlaybackFailure,500);setTimeout(patchYouTubePlayerError,650);setTimeout(()=>{captureScoreRibbonHeight();hideLegacyCfb();},500);setTimeout(hideLegacyCfb,1800);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 
   window.SBB_CURATED_BROWSE=Object.freeze({
     version:VERSION,open:()=>setOpen(true),close:()=>setOpen(false),returnToDay,returnToAll,releaseCuratedQueue,
     browseAll:()=>activateHistorical({all:true}),browseEntity:entity=>activateHistorical({entity}),
     rankedToday:activateRanked,playAll,enterSpecialContext,
-    context:()=>({league:state.league,specialContext:state.specialContext?{...state.specialContext}:null,mode:state.mode,entity:state.entity,games:state.games.slice(0,30).map(g=>({date:g.date,game:g.game,tier:g.tier,mediaAvailable:!!g.items?.length}))}),
+    context:()=>({league:state.league,specialContext:state.specialContext?{...state.specialContext}:null,mode:state.mode,entity:state.entity,games:state.games.slice(0,30).map(g=>({date:g.date,game:g.game,tier:g.tier,mediaAvailable:!!g.items?.length})),eventGames:(state.specialEventGames.length?state.specialEventGames:state.games).slice(0,220).map(g=>{const score=gameScore(g)||{};const row=g.row||{};const source=g.items?.[0]||{};return {date:g.date,game:g.game,tier:g.tier,mediaAvailable:!!g.items?.length,awayScore:score.away??row.awayScore??null,homeScore:score.home??row.homeScore??null,status:clean(row.status||row.state||source.status),group:clean(row.group||row.pool||row.groupName||row.bracketGroup),round:clean(row.round||row.stage||row.phase||row.bracket||source.round),sourceTitle:clean(source.sourceTitle||source.mediaTitle||source.title)};} )}),
     snapshot:()=>({version:VERSION,league:state.league,mode:state.mode,entity:state.entity,facet:state.facet,games:state.games.length,selected:state.selected.size,queueActive:state.queueActive,queueItems:state.queueItems.length,favorites:favoritesFor(state.league).slice(),loading:state.loading,error:state.error,noGameCenter:document.body.classList.contains('sbb-curated-no-game-center')})
   });
 })();
