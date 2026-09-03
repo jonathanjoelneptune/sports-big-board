@@ -1,0 +1,32 @@
+Sports Big Board v5.3.7 — Focus Integration + Full Team Theme
+
+MANUAL GITHUB UPLOAD
+1. Open the sports-big-board repository root on GitHub.
+2. Upload the CONTENTS of this folder, preserving architecture/, sbb/, tests/, tools/, and ui/ paths.
+3. Replace existing files when prompted.
+4. Commit everything together. Frontend VERSION, backend VERSION, cache-busted UI assets, Team Focus backend, score-interrupt behavior, and release verification are one atomic release.
+5. Let Deploy Sports Big Board finish before hard-refreshing the site.
+
+PRIMARY CHANGES
+- EXIT from Team/Player Focus returns to ALL events and restores the normal all-sports score ribbon.
+- Normal score-ribbon clicks are date-owned: selecting an Aug 30 game builds/resumes the Aug 30 queue instead of preserving today's general queue. Curated Team/Player Focus queues still use interrupt/resume.
+- Mouse-wheel movement over the Team/Player Focus game rail scrolls that rail horizontally, matching the standard score ribbon interaction.
+- Browse participant rows now support logos/flags: pro team crests, NCAAF school marks, World Cup flags, and tennis country flags when present in catalog/provider metadata.
+- Legacy CFB controls are hidden/retired; NCAAF is the only college-football namespace exposed in the ribbon.
+- Curated card photography is restored with stronger YouTube/provider thumbnail fallback; no-media games retain a team-logo treatment.
+- Team Focus information is expanded into many independent ticker entries: record, standing, streak, individual recent results, individual next-three games, power/stat rankings, and multiple relevant news items. Overflow scrolls continuously.
+- NEXT entries use compact labels such as SEP 4 · SD vs NYY so all three upcoming games fit naturally in the moving ticker.
+- PREDICTIVE is renamed POWER RANK. MLB TeamRankings enrichment is expanded with additional offensive/defensive rate statistics.
+- Team Focus identity uses a larger centered crest.
+- Team themed coloring now owns the entire application shell, top ribbons, Game Center, Settings, queue surfaces, cards, buttons, dividers, and selected states rather than only isolated accents.
+- Dodgers contract: white shell/background, blue structural accents/buttons, red borders/text accents, selected state red with white text.
+- Padres contract: brown-dominant shell with gold structure and strong team-specific control styling.
+- Persistent Browse participant backend now stores participant metadata in addition to names, while migrating the existing v5.3.6 name cache so first-open performance remains fast after upgrade.
+
+VERIFY
+GitHub Actions remains the full-repository deployment gate.
+Focused local checks in this handoff include:
+- tests/test_v530_browse_curated_programming.py through test_v537_focus_integration_theme.py
+- node --check ui/browse-curated-programming-v537.js
+- node --check architecture/score-interrupt-queue-v5220.js
+- python3 -m py_compile sbb/team_focus_v537.py sbb/__init__.py

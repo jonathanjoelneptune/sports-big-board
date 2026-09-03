@@ -1,12 +1,12 @@
-/* Sports Big Board v5.3.6 — score-ribbon interrupt queue preservation.
+/* Sports Big Board v5.3.7 — score-ribbon interrupt queue preservation.
    A score-card click is an interrupt, not a PROGRAM replacement from the user's
    perspective. Capture the exact queue that was running before takeover, expose it
    to Up Next while the selected recap plays, and restore that same queue/item after
    the selected game's recap/reel completes. */
 (() => {
   'use strict';
-  if(window.SBB_SCORE_INTERRUPT_QUEUE?.version==='5.3.6')return;
-  const VERSION='5.3.6';
+  if(window.SBB_SCORE_INTERRUPT_QUEUE?.version==='5.3.7')return;
+  const VERSION='5.3.7';
   const state={snapshot:null,captures:0,resumes:0,projected:0,lastReason:'',lastError:''};
 
   const clean=v=>String(v??'').trim();
@@ -34,8 +34,18 @@
     }catch(err){state.lastError=String(err?.message||err);return null;}
   }
 
+  function shouldPreserveCurrentQueue(){
+    try{const snap=window.SBB_CURATED_BROWSE?.snapshot?.();return !!(snap&&snap.mode!=='daily'&&snap.queueActive);}
+    catch(_){return false;}
+  }
+
   function capture(reason='score-card click'){
     try{
+      // Normal score-ribbon playback is date-owned. Do not preserve whatever
+      // general/today queue happened to be running before the click; app.js will
+      // build the selected date's queue. Only an explicit curated Team/Player
+      // Focus program is an interruptible user-owned queue.
+      if(!shouldPreserveCurrentQueue()){state.snapshot=null;state.lastReason='date-owned score selection';return null;}
       // A second score click during the same interrupt must still return to the
       // queue that existed before the FIRST interruption.
       if(typeof userPlaybackSession!=='undefined'&&userPlaybackSession?.source==='score'&&state.snapshot)return state.snapshot;

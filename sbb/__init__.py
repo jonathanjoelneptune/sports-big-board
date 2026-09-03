@@ -66,8 +66,8 @@ _install_integrity_lane_v523()
 _install_backend_snapshot_v523()
 _install_current_news_v523()
 
-# v5.3.6: persistent participant inventory + cached Team Focus enrichment.
+# v5.3.7: persistent participant metadata + cached Team Focus enrichment.
 # This installs after the normalized catalog and ticker read models so it remains
 # a cache/read-only browser service and never becomes a score/playback authority.
-from .team_focus_v536 import install as _install_team_focus_v536
-_install_team_focus_v536()
+from .team_focus_v537 import install as _install_team_focus_v537
+_install_team_focus_v537()

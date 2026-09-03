@@ -4,11 +4,11 @@ import re
 ROOT=Path(__file__).resolve().parents[1]
 version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
-css=(ROOT/'ui'/'browse-curated-programming-v536.css').read_text()
-js=(ROOT/'ui'/'browse-curated-programming-v536.js').read_text()
-assert version=='5.3.6',version
-assert f'ui/browse-curated-programming-v536.css?v={version}' in index
-assert f'<script src="ui/browse-curated-programming-v536.js?v={version}"></script>' in index
+css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
+js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
+assert version=='5.3.7',version
+assert f'ui/browse-curated-programming-v537.css?v={version}' in index
+assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>' in index
 
 # Browse is visually and structurally attached to the selected league.
 for token in [
@@ -65,4 +65,4 @@ for forbidden in ['setInterval(', 'requestAnimationFrame(loop', 'data-curation-s
     assert forbidden not in js,forbidden
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version,f'{asset}: {found} != {version}'
-print('PASS v5.3.6 fullscreen-safe attached Browse, explicit EXIT, larger cards, and curated Game Center context sync')
+print('PASS v5.3.7 fullscreen-safe attached Browse, explicit EXIT, larger cards, and curated Game Center context sync')

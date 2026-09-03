@@ -4,11 +4,11 @@ import re
 ROOT=Path(__file__).resolve().parents[1]
 version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
-css=(ROOT/'ui'/'browse-curated-programming-v536.css').read_text()
-js=(ROOT/'ui'/'browse-curated-programming-v536.js').read_text()
+css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
+js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 upnext=(ROOT/'ui'/'up-next-experience-v5217.js').read_text()
-assert version=='5.3.6',version
-for surface in [f'ui/browse-curated-programming-v536.css?v={version}',f'<script src="ui/browse-curated-programming-v536.js?v={version}"></script>']:
+assert version=='5.3.7',version
+for surface in [f'ui/browse-curated-programming-v537.css?v={version}',f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>']:
     assert surface in index,surface
 # Team/Player Browse is a visual child of the active league, not a free-floating nav item.
 for token in ['#sbbBrowseSubnav{','#scoreFilters button[data-score-filter]:has(+ #sbbBrowseSubnav:not(.hidden)){','sbb-browse-subnav-enter','@keyframes sbb-browse-subnav-in']:
@@ -39,4 +39,4 @@ assert 'title:queueTitle,queueTitle,sourceTitle,mediaTitle:sourceTitle' in js
 # Static asset generation remains atomic.
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version,f'{asset}: {found} != {version}'
-print('PASS v5.3.6 league-attached Browse submenu, reliable close, automatic chronological queue, and explicit matchup queue titles')
+print('PASS v5.3.7 league-attached Browse submenu, reliable close, automatic chronological queue, and explicit matchup queue titles')

@@ -1,9 +1,9 @@
-/* Sports Big Board v5.3.6 — Harmonized controls + collapsible drawer */
+/* Sports Big Board v5.3.7 — Harmonized controls + collapsible drawer */
 (() => {
   'use strict';
-  if(window.SBB_DRAWER_POLISH?.version==='5.3.6') return;
+  if(window.SBB_DRAWER_POLISH?.version==='5.3.7') return;
 
-  const VERSION='5.3.6';
+  const VERSION='5.3.7';
   const STORAGE_KEY='sbb.drawer.collapsed.v1';
   const $=id=>document.getElementById(id);
 

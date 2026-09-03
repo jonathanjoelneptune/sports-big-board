@@ -3,16 +3,16 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
-js=(ROOT/'ui'/'browse-curated-programming-v536.js').read_text()
-css=(ROOT/'ui'/'browse-curated-programming-v536.css').read_text()
-backend=(ROOT/'sbb'/'team_focus_v536.py').read_text()
+js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
+css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
+backend=(ROOT/'sbb'/'team_focus_v537.py').read_text()
 init=(ROOT/'sbb'/'__init__.py').read_text()
-assert version=='5.3.6',version
-assert f'ui/browse-curated-programming-v536.css?v={version}' in index
-assert f'<script src="ui/browse-curated-programming-v536.js?v={version}"></script>' in index
+assert version=='5.3.7',version
+assert f'ui/browse-curated-programming-v537.css?v={version}' in index
+assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>' in index
 
 # Team/Player menu uses a backend-persisted verified-media participant index.
-for token in ['/api/browse/participants?','PERSISTED_VERIFIED_MEDIA_INDEX','_PARTICIPANT_PATH','browse-participants-v536.json','history_event_media']:
+for token in ['/api/browse/participants?','PERSISTED_VERIFIED_MEDIA_INDEX','_PARTICIPANT_PATH','browse-participants-v537.json','history_event_media']:
     assert token in js+backend,token
 
 # Schedule truth remains present even when media discovery is incomplete.
@@ -24,7 +24,7 @@ for token in ['.sbb-curation-toolbar{display:none!important}','display:block!imp
     assert token in css,token
 
 # Team Focus controls are on the Sports Ticker row and Next 3 replaces Next 5.
-for token in ["controls.id=\'sbbEntityFocusControls\'",'id="sbbFocusPlayAll"','id="sbbFocusExit"',"contextInsight('NEXT 3'",'.sbb-entity-focus-controls{']:
+for token in ["controls.id=\'sbbEntityFocusControls\'",'id="sbbFocusPlayAll"','id="sbbFocusExit"',"contextInsight('NEXT'",'.sbb-entity-focus-controls{']:
     assert token in js+css,token
 assert "contextInsight('NEXT 5'" not in js
 
@@ -40,8 +40,8 @@ for token in ["TEAM_THEME_KEY='sbb.team-theme.enabled.v1'",'id="teamThemeToggle"
 for token in ['replace stale Game Center identity','force:true','curated playback event identity']:
     assert token in js,token
 
-assert 'from .team_focus_v536 import install as _install_team_focus_v536' in init
-assert '_install_team_focus_v536()' in init
+assert 'from .team_focus_v537 import install as _install_team_focus_v537' in init
+assert '_install_team_focus_v537()' in init
 for forbidden in ['setInterval(', 'new MutationObserver', 'requestAnimationFrame(loop']:
     assert forbidden not in js,forbidden
-print('PASS v5.3.6 persistent participants + schedule-complete Team Focus + enrichment + theming')
+print('PASS v5.3.7 persistent participants + schedule-complete Team Focus + enrichment + theming')

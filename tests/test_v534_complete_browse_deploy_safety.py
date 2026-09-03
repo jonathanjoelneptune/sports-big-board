@@ -4,12 +4,12 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
-js=(ROOT/'ui'/'browse-curated-programming-v536.js').read_text()
+js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 deploy=(ROOT/'cloud'/'gcp'/'DEPLOY-FROM-GITHUB.sh').read_text()
 
-assert version=='5.3.6', version
-assert f'ui/browse-curated-programming-v536.css?v={version}' in index
-assert f'<script src="ui/browse-curated-programming-v536.js?v={version}"></script>' in index
+assert version=='5.3.7', version
+assert f'ui/browse-curated-programming-v537.css?v={version}' in index
+assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>' in index
 
 # Browse inventory is competition-wide and independent from the selected date.
 for token in [
@@ -18,7 +18,7 @@ for token in [
     'async function fetchFullEntityCatalog(league)',
     "bestMediaForAuditRow(row).items.length",
     "while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS)",
-    'persistEntityCatalog(league,names)',
+    'persistEntityCatalog(league,names,entities=[]',
     "Building complete ${state.entityType==='player'?'player':'team'} library once; future opens are instant.",
     'host.innerHTML=merged.map(name=>',
     "reason:'league-change'",
@@ -49,4 +49,4 @@ for token in [
 ]:
     assert token in deploy, token
 
-print('PASS v5.3.6 complete competition Browse inventory + disk-safe audit-only deployment')
+print('PASS v5.3.7 complete competition Browse inventory + disk-safe audit-only deployment')

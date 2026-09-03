@@ -3,18 +3,18 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 version=(ROOT/'VERSION').read_text().strip()
 index=(ROOT/'index.html').read_text()
-js=(ROOT/'ui'/'browse-curated-programming-v536.js').read_text()
-css=(ROOT/'ui'/'browse-curated-programming-v536.css').read_text()
-assert version=='5.3.6',version
-assert f'ui/browse-curated-programming-v536.css?v={version}' in index
-assert f'<script src="ui/browse-curated-programming-v536.js?v={version}"></script>' in index
+js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
+css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
+assert version=='5.3.7',version
+assert f'ui/browse-curated-programming-v537.css?v={version}' in index
+assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>' in index
 
 # Complete participant inventory survives reloads and refreshes in the background.
 for token in [
     "ENTITY_CATALOG_KEY='sbb.browse.entity-catalog.v535'",
     'ENTITY_CATALOG_TTL_MS=6*60*60*1000',
     'function loadEntityCatalogStore()',
-    'function persistEntityCatalog(league,names)',
+    'function persistEntityCatalog(league,names,entities=[]',
     'localStorage.setItem(ENTITY_CATALOG_KEY',
     'entityCatalogFresh(state.league)',
     'Building complete ${state.entityType===\'player\'?\'player\':\'team\'} library once; future opens are instant.',
@@ -31,7 +31,7 @@ for token in [
     'id="sbbFocusPlayAll"',
     'id="sbbFocusExit"',
     "$('sbbFocusPlayAll')?.addEventListener('click',playAll)",
-    "$('sbbFocusExit')?.addEventListener('click',returnToDay)",
+    "$('sbbFocusExit')?.addEventListener('click',returnToAll)",
 ]: assert token in (js+css),token
 
 # Historical playback owns the exact historical Game Center identity, not today's same-team game.
@@ -50,12 +50,12 @@ for token in [
     'function refreshEntityTickerInsights()',
     "contextInsight('STREAK'",
     "contextInsight('STANDING'",
-    "contextInsight('RECENT'",
-    "contextInsight('NEXT 3'",
+    "contextInsight('RESULT'",
+    "contextInsight('NEXT'",
     'contextNews()',
     '#keyInfoTrack.sbb-entity-ticker-hidden{display:none!important}',
 ]: assert token in (js+css),token
 
 for forbidden in ['setInterval(', 'new MutationObserver', 'requestAnimationFrame(loop']:
     assert forbidden not in js,forbidden
-print('PASS v5.3.6 persistent participant cache + equal-height curated ribbon + exact Game Center identity + entity focus ticker')
+print('PASS v5.3.7 persistent participant cache + equal-height curated ribbon + exact Game Center identity + entity focus ticker')
