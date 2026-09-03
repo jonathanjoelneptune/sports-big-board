@@ -9,7 +9,7 @@ league_css=(ROOT/'ui'/'league-view-v538.css').read_text()
 backend=(ROOT/'sbb'/'league_view_v538.py').read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
 
-assert version=='5.3.12',version
+assert version=='5.3.13',version
 
 # Returning from curated/special-event browsing must surrender queue ownership
 # before ALL/TODAY or a normal score click can render another queue.
@@ -69,4 +69,4 @@ for token in [
     assert token in backend,token
 
 assert 'tests/test_v5311_playback_context_league_view.py' in verify
-print('PASS v5.3.12 playback-context reset + playback-authoritative League View + readable standings')
+print('PASS v5.3.13 playback-context reset + playback-authoritative League View + readable standings')
