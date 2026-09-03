@@ -10,7 +10,7 @@ interrupt=(ROOT/'architecture'/'score-interrupt-queue-v5220.js').read_text()
 backend=(ROOT/'sbb'/'team_focus_v537.py').read_text()
 init=(ROOT/'sbb'/'__init__.py').read_text()
 
-assert version=='5.3.19', version
+assert version=='5.3.20', version
 assert f'ui/browse-curated-programming-v537.css?v={version}' in index
 assert f'ui/browse-curated-programming-v537.js?v={version}' in index
 
@@ -64,4 +64,4 @@ for token in [
 assert 'from .team_focus_v537 import install as _install_team_focus_v537' in init
 assert '_install_team_focus_v537()' in init
 
-print('PASS v5.3.19 focus integration, day-owned score queue, participant marks, CFB retirement, and full team theme')
+print('PASS v5.3.20 focus integration, day-owned score queue, participant marks, CFB retirement, and full team theme')

@@ -10,7 +10,7 @@ league_css=(ROOT/'ui'/'league-view-v538.css').read_text()
 backend_path=ROOT/'sbb'/'league_view_v538.py'
 backend=backend_path.read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
-assert version=='5.3.19',version
+assert version=='5.3.20',version
 
 # Special Event stale YouTube/MLB callbacks cannot paint an old external card.
 for token in [
@@ -54,4 +54,4 @@ for i,result in enumerate([(2,0),(1,1),(0,1),(3,1),(0,2),(4,2)]):
 form=mod._recent_form(payload)
 assert form['AAA']==['D','L','W','L','W'],form['AAA']
 assert 'tests/test_v5314_league_navigation_event_brackets.py' in verify
-print('PASS v5.3.19 league navigation + Special Event bracket/Match Center + stable refresh + soccer form + NHL width')
+print('PASS v5.3.20 league navigation + Special Event bracket/Match Center + stable refresh + soccer form + NHL width')

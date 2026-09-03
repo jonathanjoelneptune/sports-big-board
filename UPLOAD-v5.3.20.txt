@@ -1,0 +1,19 @@
+Sports Big Board v5.3.20 — Startup Unfreeze + Launch Progress
+
+MANUAL GITHUB UPLOAD
+1. Extract this ZIP.
+2. Upload the CONTENTS of the extracted folder to the sports-big-board repository root.
+3. Preserve all folder paths and replace existing files when prompted.
+4. Commit all files together as one v5.3.20 release.
+5. Let Deploy Sports Big Board run VERIFY.sh before Pages deployment.
+
+PRIMARY FIXES
+- Removes the prior Game Center DOM score-repair observer that could fight the persistent Game Center renderer and hard-freeze the main thread.
+- Moves final-score correction to the SBB_GAME_CENTER data boundary so every renderer receives the same corrected score without DOM feedback loops.
+- Removes the transition-loading MutationObserver and replaces it with Playback Session events, a CSS ownership state, and only bounded one-shot overlay suppression.
+- Prevents transition-bumper proof logic from starting during pre-launch Hot Standby/cue preparation.
+- Replaces the visible splash text about loading the first clip with a determinate-style loading progress bar and percentage driven by real preload states.
+- Retains the red launch button as the sole user gesture for audible playback.
+
+IMPORTANT
+This package supersedes the prior deployed release. Upload the full overlay rather than only the two repaired JavaScript files so release identity, cache busting, tests, and deployment checks stay synchronized.

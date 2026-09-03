@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static invariants for v5.2.12 splash-screen first-program preload."""
+"""Static invariants for splash-screen first-program preload + v5.3.20 progress UI."""
 from pathlib import Path
 import re
 
@@ -11,7 +11,10 @@ module=(ROOT/'architecture'/'splash-preload-v5212.js').read_text(encoding='utf-8
 checks={
     'module version': f"const VERSION='{VERSION}'" in module,
     'YouTube SDK network preload': '<link rel="preload" href="https://www.youtube.com/iframe_api" as="script" fetchpriority="high">' in index,
-    'visible splash warm status': 'id="launchWarmStatus"' in index and 'Loading scores and first video' in index,
+    'splash progress bar': 'id="launchWarmProgress"' in index and 'role="progressbar"' in index and 'id="launchWarmProgressFill"' in index,
+    'splash progress percentage': 'id="launchWarmProgressPct"' in index and 'PROGRESS_FLOOR' in module and 'aria-valuenow' in module,
+    'accessible hidden warm status retained': 'id="launchWarmStatus"' in index and '>Loading…</div>' in index,
+    'old visible loading sentence retired': 'Loading scores and first video' not in index,
     'module loaded after app': index.index(f'app.js?v={VERSION}') < index.index(f'architecture/splash-preload-v5212.js?v={VERSION}'),
     'module loaded before post-app ticker': index.index(f'architecture/splash-preload-v5212.js?v={VERSION}') < index.index(f'architecture/key-info-current-v520.js?v={VERSION}'),
     'existing data bootstrap reinforced': "typeof safeStartLiveData==='function'" in module,
@@ -34,4 +37,4 @@ if failed:
     print(f'FAIL v{VERSION} splash preload invariants')
     for name in failed: print(' -',name)
     raise SystemExit(1)
-print(f'PASS v{VERSION} splash loads data + cues/preloads exact first video without bypassing launch gesture')
+print(f'PASS v{VERSION} splash progress + safe exact-first-video preload without bypassing launch gesture')

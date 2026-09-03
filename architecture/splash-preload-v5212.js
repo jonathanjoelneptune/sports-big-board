@@ -1,4 +1,4 @@
-/* Sports Big Board v5.3.19 — splash-screen first-program preloader.
+/* Sports Big Board v5.3.20 — splash-screen first-program preloader.
 
    The splash is a visual/loading cover, not an initialization gate. Live sports
    data already starts on DOMContentLoaded; this layer additionally prepares the
@@ -17,7 +17,7 @@
   'use strict';
   if(window.SBB_SPLASH_PRELOAD?.installed)return;
 
-  const VERSION='5.3.19';
+  const VERSION='5.3.20';
   const POLL_MS=120;
   const DEADLINE_MS=30000;
   const startedAt=performance.now();
@@ -30,7 +30,8 @@
   let readyAt=0;
   let attempts=0;
   let stopped=false;
-  let lastMessage='Loading sports data…';
+  let lastMessage='Loading…';
+  let progressValue=6;
 
   const state={
     installed:true,version:VERSION,status:'WAITING_FOR_PROGRAM',transport:'',mediaKey:'',
@@ -40,14 +41,34 @@
 
   function launchScreen(){return document.getElementById('launchScreen');}
   function launchStatus(){return document.getElementById('launchWarmStatus');}
+  function launchProgress(){return document.getElementById('launchWarmProgress');}
+  function launchProgressFill(){return document.getElementById('launchWarmProgressFill');}
+  function launchProgressPct(){return document.getElementById('launchWarmProgressPct');}
   function launchButton(){return document.getElementById('launchPlayBtn');}
   function experienceStarted(){
     try{return !!window.SBB_START?.started || (typeof sportsBigBoardStarted!=='undefined' && !!sportsBigBoardStarted);}
     catch(_){return !!window.SBB_START?.started;}
   }
+  const PROGRESS_FLOOR=Object.freeze({
+    WAITING_FOR_PROGRAM:10,WAITING_FOR_MEDIA:22,WAITING_FOR_PLAYER:34,
+    WAITING_FOR_ASSIGNMENT:44,WARMING:52,CUEING:68,BUFFERING:72,
+    READY:100,TIMEOUT:100
+  });
+  function updateProgress(code){
+    let target=Number(PROGRESS_FLOOR[code]??progressValue);
+    if(code==='BUFFERING')target=Math.min(96,Math.max(target,72+Math.floor(attempts/5)));
+    if(code==='CUEING')target=Math.min(90,Math.max(target,68+Math.floor(attempts/8)));
+    if(code==='READY'||code==='TIMEOUT')progressValue=100;
+    else progressValue=Math.max(progressValue,Math.min(96,target));
+    const bar=launchProgress(),fill=launchProgressFill(),pct=launchProgressPct();
+    if(bar){bar.setAttribute('aria-valuenow',String(Math.round(progressValue)));bar.dataset.state=code;}
+    if(fill)fill.style.width=`${Math.round(progressValue)}%`;
+    if(pct)pct.textContent=`${Math.round(progressValue)}%`;
+  }
   function status(message,code='WARMING'){
     lastMessage=String(message||'');state.lastMessage=lastMessage;state.status=code;
     const el=launchStatus();if(el){el.textContent=lastMessage;el.dataset.state=code;}
+    updateProgress(code);
     const btn=launchButton();if(btn)btn.classList.toggle('sbb-launch-media-ready',code==='READY');
     document.documentElement.dataset.sbbSplashPreload=code.toLowerCase();
   }
@@ -216,6 +237,7 @@
     if(!key){status('Building first program…','WAITING_FOR_MEDIA');return;}
     if(key!==lastKey){
       lastKey=key;standbyRequestedFor='';cueIssuedFor='';nativeLoadIssuedFor='';readyAt=0;lastTransport='';
+      progressValue=Math.max(18,Math.min(progressValue,56));
       state.mediaKey=key;state.preparedAt=0;state.transport='';state.error='';
       status('Preparing first video…','WARMING');
     }

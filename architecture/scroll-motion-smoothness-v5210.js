@@ -7,8 +7,8 @@
    and a measurable motion certification surface. */
 (() => {
   'use strict';
-  if(window.SBB_SCROLL_MOTION?.version==='5.3.19')return;
-  const VERSION='5.3.19';
+  if(window.SBB_SCROLL_MOTION?.version==='5.3.20')return;
+  const VERSION='5.3.20';
   const $=id=>document.getElementById(id);
   const state={scrolling:false,lastInputAt:0,scrollEvents:0,scoreScrollEvents:0,deferred:0,flushed:0,offscreenSuspended:0,lastReport:null,refreshHz:null};
   let idleTimer=0,flushTimer=0,io=null,certRunning=false;

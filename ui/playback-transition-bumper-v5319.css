@@ -1,3 +1,5 @@
-/* v5.3.19 — editorial bumper owns first-frame transitions. */
-#bumper:not(.hidden){z-index:55!important}
-body.sbb-experience-started #videoLoadingOverlay{z-index:42}
+/* v5.3.20: the editorial bumper owns startup/transition loading presentation.
+   CSS suppression replaces the v5.3.20 MutationObserver and cannot create a
+   main-thread feedback loop. */
+html[data-sbb-transition-bumper="1"] #videoLoadingOverlay,
+html[data-sbb-transition-bumper="1"] .video-loading-overlay{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
