@@ -23,7 +23,7 @@ from urllib.parse import urlparse
 
 from . import current_news_v522 as source_v522
 
-VERSION = "5.3.18-sports-ticker-4"
+VERSION = "5.3.19-sports-ticker-4"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _STATE_PATH = _STATE_DIR / "sports-ticker.json"
 _MIGRATION_PATHS = (_STATE_DIR / "sports-ticker-v524.json", _STATE_DIR / "key-info-intelligence-v523.json")

@@ -9,7 +9,7 @@ css=(ROOT/'ui'/'game-center-readability-v5219.css').read_text()
 js=(ROOT/'ui'/'game-center-readability-v5219.js').read_text()
 upnext=(ROOT/'ui'/'up-next-experience-v5217.js').read_text()
 
-assert version=='5.3.18', version
+assert version=='5.3.19', version
 assert f'ui/game-center-readability-v5219.css?v={version}' in index
 assert f'<script src="ui/game-center-readability-v5219.js?v={version}"></script>' in index
 assert index.index(f'ui/viewing-workspace-v5218.css?v={version}') < index.index(f'ui/game-center-readability-v5219.css?v={version}') < index.index('</head>')
@@ -63,4 +63,4 @@ for forbidden in ['slice(0,3)', 'tbody tr:nth-child(n+4)', 'display:none!importa
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version, f'{asset}: {found} != {version}'
 
-print('PASS v5.3.18 Game Center full-content scroll + readable stats + canonical Coming Up queue')
+print('PASS v5.3.19 Game Center full-content scroll + readable stats + canonical Coming Up queue')

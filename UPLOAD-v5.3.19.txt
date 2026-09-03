@@ -1,0 +1,54 @@
+Sports Big Board v5.3.19 manual GitHub upload
+Game Center Score Authority + Transition Bumpers
+
+1. Extract this ZIP.
+2. Open the sports-big-board repository root on GitHub.
+3. Upload the CONTENTS of the extracted folder, preserving every included path.
+4. Replace existing files when GitHub prompts.
+5. Commit the upload as one v5.3.19 release.
+6. Let Deploy Sports Big Board run and confirm VERIFY.sh passes.
+7. Hard-refresh the deployed page after GitHub Pages completes.
+
+PRIMARY ACCEPTANCE CHECKS
+
+A. Game Center score authority
+   - Play several completed MLB/EPL/MLS games from a score ribbon, Team Browse, and an automatic queue.
+   - Expected: the Game Center teams continue changing with the active game.
+   - Expected: the header uses the known final score from SelectedEvent/score-ribbon identity instead of a stale provider 0-0 summary.
+   - EPL/MLS period rows may still come from the richer provider payload, but the T column is reconciled to the known event score.
+   - Final games should say Final rather than reverting to a stale live-half status.
+
+B. Transition bumpers
+   - Change between games and advance from highlight 1 to highlight 2 of a multi-clip game.
+   - Expected: the editorial COMING UP NEXT / NEXT HIGHLIGHT bumper stays over the player while the next transport is starting.
+   - The raw gray Buffering video screen should not be exposed during normal clip changes.
+   - Once actual first-frame playback is proved, the bumper is removed.
+   - If a transition cannot prove playback within 10 seconds, the existing same-game/fallback recovery path is invoked instead of leaving the bumper stuck indefinitely.
+
+C. Exit League vs Exit Event
+   - MLB, NFL, NBA, NHL, EPL, MLS and NCAAF: red exit actions say EXIT LEAGUE / Exit League.
+   - FIFA WC, US Open, LLWS and other Special Events: red exit actions say EXIT EVENT / Exit Event.
+
+D. Smaller league scope controls
+   - TODAY, ALL and TEAM BROWSE remain the green subordinate controls.
+   - Expected: they are a little smaller than v5.3.18 with more horizontal breathing room between pills.
+
+E. EPL / MLS standings density
+   - Open League View for EPL and MLS.
+   - Expected: the Club column is substantially narrower and the five recent-form circles sit much closer to MP / W-D-L / Pts.
+
+F. Retained v5.3.18 behavior
+   - PLAY ALL remains completed + verified-media only.
+   - Known browser-proven Green/Purple media remains preferred and bounded by the fast-start watchdog.
+   - Same-league/day score-ribbon queues and responsive historical queue construction remain intact.
+   - Special Event Match Center ownership remains intact.
+
+VALIDATION
+   - v5.3.19 focused regression covers score repair, bumper ownership, exit language and soccer table density.
+   - Changed JavaScript passes node --check.
+   - VERIFY.sh and deployment shell scripts pass shell syntax checks.
+   - The full repository VERIFY.sh remains the final deployment gate.
+
+Do not upload the outer folder itself. Upload its contents so VERSION, index.html,
+ui/, architecture/, sbb/, tests/, tools/, and the other included paths land at their
+existing repository locations.

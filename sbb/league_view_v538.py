@@ -1,4 +1,4 @@
-"""Sports Big Board v5.3.18 — cached League View read model.
+"""Sports Big Board v5.3.19 — cached League View read model.
 
 League View is intentionally read-only. It never owns scores, playback, selected-event
 identity, or the historical catalog. It projects public league standings, playoff seed
@@ -19,7 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
-VERSION = "5.3.18-league-view-4"
+VERSION = "5.3.19-league-view-4"
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _CACHE_PATH = _STATE_DIR / "league-view-v538.json"
 _TTL_SECONDS = 10 * 60
@@ -113,7 +113,7 @@ def _persist_cache():
 
 
 def _http_json(url, timeout=7.0):
-    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.18", "Accept": "application/json"})
+    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.3.19", "Accept": "application/json"})
     with urlopen(req, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8", "replace"))
 

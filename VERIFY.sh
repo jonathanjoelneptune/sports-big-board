@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Sports Big Board v5.3.18 Verified Play All + Fast Start preflight"
+echo "Sports Big Board v5.3.19 Game Center Score + Transition Bumpers preflight"
 python3 tools/check_release_version.py
 python3 tests/test_v529_release_integrity.py
 python3 tests/test_v5210_motion_smoothness.py
@@ -35,6 +35,7 @@ python3 tests/test_v5315_wildcard_media_match_center.py
 python3 tests/test_v5316_score_ribbon_league_day_queue.py
 python3 tests/test_v5317_queue_performance_match_center.py
 python3 tests/test_v5318_verified_play_all_fast_start.py
+python3 tests/test_v5319_game_center_score_transition_bumper.py
 node --check ui/settings-view.js
 node --check ui/up-next-experience-v5217.js
 node --check ui/harmonized-controls-drawer-v5217.js
@@ -49,6 +50,8 @@ node --check architecture/playback-early-pause-recovery-v538.js
 python3 -m py_compile sbb/team_focus_v537.py sbb/league_view_v538.py sbb/__init__.py
 node --check ui/workspace-viewport-fit-v531.js
 node --check ui/sport-match-center-v5317.js
+node --check ui/game-center-score-authority-v5319.js
+node --check architecture/playback-transition-bumper-v5319.js
 node --check architecture/score-interrupt-queue-v5220.js
 node --check ui/player-visibility.js
 node --check architecture/key-info-current-v520.js
@@ -57,4 +60,4 @@ node --check architecture/splash-preload-v5212.js
 python3 -m py_compile sbb/release_identity_v523.py sbb/current_news_v523.py
 bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh
 
-echo "PASS: v5.3.18 Verified Play All + Fast Start preflight complete"
+echo "PASS: v5.3.19 Game Center Score + Transition Bumpers preflight complete"
