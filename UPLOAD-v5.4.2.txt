@@ -1,0 +1,25 @@
+Sports Big Board v5.4.2 — Controller Radials + Live Input
+
+MANUAL GITHUB UPLOAD
+1. Extract this ZIP.
+2. Upload the CONTENTS of the extracted folder into the repository root.
+3. Preserve every included directory path and replace existing files when prompted.
+4. Commit all files together as the v5.4.2 release.
+5. Let Deploy Sports Big Board run VERIFY.sh before deployment.
+
+PRIMARY CONTROLLER TEST
+- Load the page and click Start normally.
+- Observe the controller indicator immediately to the right of BACKEND.
+- If the browser sees the controller, it should change WAIT -> READY.
+- Press a D-pad/button/stick: it should change to LIVE and controller focus should activate.
+- Hold RT, select a league with the right stick, and release RT.
+- Hold LT, select a date/scope item, and release LT.
+- Click R3 to enter POINTER mode; left stick moves the cursor, A clicks, right stick scrolls, B/R3 returns to focus mode.
+- Move/click the mouse or use the keyboard and confirm controller focus releases immediately.
+
+DIAGNOSTICS
+Browser console:
+  SBB_CONTROLLER_MODE.snapshot()
+  SBB_CONTROLLER_READINESS.audit()
+
+If Windows sees the controller but the header remains 🎮 WAIT, the browser is not exposing that device through the Gamepad API. If it shows 🎮 READY, the browser sees it. If it changes to 🎮 LIVE, Sports Big Board is receiving meaningful controller input.

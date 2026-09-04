@@ -8,7 +8,7 @@ browse=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
 
-assert version=='5.4.1', version
+assert version=='5.4.2', version
 assert f'ui/browse-curated-programming-v537.css?v={version}' in index
 assert f'ui/browse-curated-programming-v537.js?v={version}' in index
 assert 'tests/test_v5318_verified_play_all_fast_start.py' in verify
@@ -58,8 +58,8 @@ for token in [
     'const timeoutMs=browserProven?5500:7500',
     'if(!state.queueActive||programKey(expectedCuratedItem())!==key)return;',
     'function advancePlayAllAfterSlowStart(item,index)',
-    'v5.4.1 Play All fast same-game fallback',
-    'v5.4.1 Play All skipped slow verified source',
+    'v5.4.2 Play All fast same-game fallback',
+    'v5.4.2 Play All skipped slow verified source',
     'clearPlayAllStartWatchdog();state.playAllMode=false',
 ]:
     assert token in browse, token
@@ -75,4 +75,4 @@ for token in [
 ]:
     assert token in css, token
 
-print('PASS v5.4.1 compact league subnav + completed verified Play All + bounded fast-start fallback')
+print('PASS v5.4.2 compact league subnav + completed verified Play All + bounded fast-start fallback')

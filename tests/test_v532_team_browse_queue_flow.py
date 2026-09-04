@@ -7,7 +7,7 @@ index=(ROOT/'index.html').read_text()
 css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
 js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 upnext=(ROOT/'ui'/'up-next-experience-v5217.js').read_text()
-assert version=='5.4.1',version
+assert version=='5.4.2',version
 for surface in [f'ui/browse-curated-programming-v537.css?v={version}',f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>']:
     assert surface in index,surface
 # Team/Player Browse is a visual child of the active league, not a free-floating nav item.
@@ -39,4 +39,4 @@ assert 'title:queueTitle,queueTitle,sourceTitle,mediaTitle:sourceTitle' in js
 # Static asset generation remains atomic.
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version,f'{asset}: {found} != {version}'
-print('PASS v5.4.1 league-attached Browse submenu, reliable close, automatic chronological queue, and explicit matchup queue titles')
+print('PASS v5.4.2 league-attached Browse submenu, reliable close, automatic chronological queue, and explicit matchup queue titles')

@@ -1,4 +1,4 @@
-/* Sports Big Board v5.4.1 — Controller Readiness / Interaction Architecture.
+/* Sports Big Board v5.4.2 — Controller Readiness / Interaction Architecture.
    This release deliberately does NOT poll the Gamepad API or bind controller
    buttons. It prepares one semantic interaction graph that mouse, keyboard and the
    v5.4.x controller layer can all share. Every actionable control is registered,
@@ -7,8 +7,8 @@
    create an attribute-observer feedback loop. */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_READINESS?.version==='5.4.1')return;
-  const VERSION='5.4.1';
+  if(window.SBB_CONTROLLER_READINESS?.version==='5.4.2')return;
+  const VERSION='5.4.2';
   const FALLBACK_REGION='global-utility';
   const POINTER_MOVE_THRESHOLD=10;
   const REGION_MEMORY_KEY='sports-big-board.controller-focus-memory.v1';
@@ -357,7 +357,7 @@
       fallbackSamples:fallback.slice(0,10).map(el=>el.id||clean(el.textContent).slice(0,60)||el.tagName)
     };
     diagnostics.lastAudit=result;document.documentElement.dataset.sbbControllerAudit=result.ok?'pass':'warn';
-    if(log){if(result.ok)console.info('[SBB v5.4.1] controller readiness audit PASS',result);else console.warn('[SBB v5.4.1] controller readiness audit WARN',result);}
+    if(log){if(result.ok)console.info('[SBB v5.4.2] controller readiness audit PASS',result);else console.warn('[SBB v5.4.2] controller readiness audit WARN',result);}
     try{window.dispatchEvent(new CustomEvent('sbb:controller-readiness-audit',{detail:result}));}catch(_){ }
     return result;
   }

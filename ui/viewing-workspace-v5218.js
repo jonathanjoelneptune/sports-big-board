@@ -1,13 +1,13 @@
-/* Sports Big Board v5.4.1 — Game Center Workspace Reflow
+/* Sports Big Board v5.4.2 — Game Center Workspace Reflow
    - drawer collapse changes the actual desktop stage grid
    - PREV/NEXT use clean centered text labels
    - line score / win probability live only inside Overview
    - Coming Up remains canonical queue UI; no new playback/program ownership */
 (() => {
   'use strict';
-  if(window.SBB_VIEWING_WORKSPACE?.version==='5.4.1') return;
+  if(window.SBB_VIEWING_WORKSPACE?.version==='5.4.2') return;
 
-  const VERSION='5.4.1';
+  const VERSION='5.4.2';
   const STORAGE_KEY='sbb.drawer.collapsed.v2';
   const $=id=>document.getElementById(id);
   let overviewObserver=null;
