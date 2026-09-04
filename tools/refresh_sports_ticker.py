@@ -32,14 +32,16 @@ REJECTED_SOURCE_HOSTS = {"wikipedia.org","en.wikipedia.org"}
 
 STORY_SCHEMA = {
     "type":"object","additionalProperties":False,
-    "required":["type","priority","headline","text","entities","occurredAt","status","sourceUrls"],
+    "required":["type","priority","headline","text","entities","occurredAt","timePrecision","freshnessBasis","status","sourceUrls"],
     "properties":{
         "type":{"type":"string","enum":ALLOWED_TYPES},
         "priority":{"type":"integer","minimum":1,"maximum":100},
         "headline":{"type":"string","minLength":4,"maxLength":120},
         "text":{"type":"string","minLength":10,"maxLength":360},
         "entities":{"type":"array","maxItems":8,"items":{"type":"string","minLength":1,"maxLength":80}},
-        "occurredAt":{"type":"string","minLength":20,"maxLength":40},
+        "occurredAt":{"type":"string","minLength":10,"maxLength":40},
+        "timePrecision":{"type":"string","enum":["exact","hour","date"]},
+        "freshnessBasis":{"type":"string","minLength":8,"maxLength":240},
         "status":{"type":"string","enum":ALLOWED_STATUS},
         "sourceUrls":{"type":"array","minItems":1,"maxItems":3,"items":{"type":"string","minLength":8,"maxLength":500}},
     },
@@ -119,6 +121,45 @@ Use the most semantically accurate type.
 - criminal/civil proceedings -> LEGAL
 - roster move without signing/trade -> ROSTER
 
+EDITORIAL MIX
+Before filling the list with routine game results, actively search for:
+- playoff / standings movement
+- injuries and returns
+- transactions and contracts
+- records, record chases and milestones
+- streaks and slumps
+- rankings and awards
+- suspensions, discipline, legal or coaching developments
+- consequential roster / depth-chart changes
+
+Ordinary RESULT items should usually fill the bottom of the list after
+higher-information developments are considered.
+- Return no more than 5 ordinary RESULT items in one league.
+- Return no more than 2 combined NEXT/SCHEDULE items in one league.
+- UPSET is not treated as an ordinary RESULT when the upset itself is major.
+- Do not include a weak preview merely to reach a target count.
+
+NEXT / SCHEDULE GATE
+A future game/event alone is not fresh news. For NEXT or SCHEDULE,
+freshnessBasis must identify the NEW development from the last 24 hours that
+makes the item ticker-worthy. If there is no such development, omit it.
+
+TIMESTAMP PRECISION
+- timePrecision="exact": a real timestamp is known; occurredAt is ISO 8601.
+- timePrecision="hour": only the hour is known; occurredAt uses the top of that
+  known hour, with no invented minutes/seconds.
+- timePrecision="date": only the calendar date is known; occurredAt is
+  YYYY-MM-DD. Never manufacture 00:00:00Z for a date-only source.
+- If only a date is known and it is the same UTC calendar date as the 24-hour
+  cutoff, freshness cannot be proven. Omit it.
+- freshnessBasis briefly states what became new within the 24-hour window.
+
+CONSISTENCY
+Verify wording agrees with stated facts.
+- Never say shutout / shut out / blanked if the opponent scored.
+- Never call a result a one-point win unless the score margin is one.
+- Do not claim a sweep, record, ranking, or streak unless sources support it.
+
 QUALITY CONTROL
 Before finalizing ask:
 "Am I missing any story substantially more important than the lowest-ranked
@@ -142,7 +183,12 @@ Coverage:
 - preseason: include results, depth-chart changes, injuries, signings, cuts,
   suspensions, and major 24-hour league developments
 - offseason: do not pad; 4-7 strong items may be correct
-- never use stale items to hit a quota
+- before ordinary results, explicitly look for standings/playoff movement,
+  records, milestones, injuries, transactions, rankings, streaks, discipline,
+  coaching, roster and depth-chart news
+- ordinary RESULT cap: 5
+- combined NEXT/SCHEDULE cap: 2
+- never use stale or weak items to hit a quota
 
 Return only the structured result for {league}.
 """
@@ -177,6 +223,39 @@ def parse_iso(value):
     dt=datetime.fromisoformat(text)
     if dt.tzinfo is None: raise ValueError("timestamp has no timezone")
     return dt.astimezone(timezone.utc)
+
+def normalize_occurrence(value,precision,generated_at):
+    raw=clean_text(value)
+    precision=clean_text(precision).lower()
+
+    if precision == "date":
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}",raw):
+            raise ValueError("date precision requires occurredAt=YYYY-MM-DD")
+        day=datetime.strptime(raw,"%Y-%m-%d").date()
+        cutoff=generated_at-timedelta(hours=FRESHNESS_HOURS)
+        if day <= cutoff.date():
+            raise TickerError(
+                f"date-only occurrence {raw} cannot prove it is inside the 24h window"
+            )
+        if day > generated_at.date():
+            raise TickerError(f"date-only occurrence {raw} is in the future")
+        return raw,None
+
+    if precision not in {"exact","hour"}:
+        raise ValueError(f"unsupported timePrecision {precision!r}")
+
+    dt=parse_iso(raw)
+    if precision == "hour" and (dt.minute != 0 or dt.second != 0):
+        raise ValueError("hour precision must use minute=00 and second=00")
+
+    age=round((generated_at-dt).total_seconds()/3600.0,2)
+    return iso_z(dt),age
+
+def age_label(item):
+    age=item.get("ageHours")
+    if age is None:
+        return f"date-only {item['occurredAt']}"
+    return f"{float(age):.2f}h"
 
 def hostname(url):
     try: host=(urllib.parse.urlparse(url).hostname or "").lower()
@@ -219,7 +298,7 @@ def call_openai(api_key, model, system_prompt, user_prompt, schema_name, schema,
     }
     body=json.dumps(payload).encode("utf-8")
     headers={"Authorization":f"Bearer {api_key}","Content-Type":"application/json",
-             "User-Agent":"sports-big-board-ticker-sidecar/phase-a2"}
+             "User-Agent":"sports-big-board-ticker-sidecar/phase-a2.3"}
     last=None
     for attempt in range(1,4):
         req=urllib.request.Request(API_URL,data=body,headers=headers,method="POST")
@@ -251,29 +330,79 @@ def normalize_story(story,rank,id_prefix,generated_at):
         url=clean_text(raw)
         if url and url not in seen:
             urls.append(url); seen.add(url)
-    occurred=parse_iso(clean_text(story["occurredAt"]))
-    age=round((generated_at-occurred).total_seconds()/3600.0,2)
+
+    precision=clean_text(story["timePrecision"]).lower()
+    occurred_at,age=normalize_occurrence(
+        story["occurredAt"],precision,generated_at
+    )
+
     item={
-        "rank":rank,"type":clean_text(story["type"]).upper(),
-        "priority":int(story["priority"]),"headline":clean_text(story["headline"]),
+        "rank":rank,
+        "type":clean_text(story["type"]).upper(),
+        "priority":int(story["priority"]),
+        "headline":clean_text(story["headline"]),
         "text":clean_text(story["text"]),
         "entities":[clean_text(v) for v in story.get("entities",[]) if clean_text(v)],
-        "occurredAt":iso_z(occurred),"ageHours":age,
-        "status":clean_text(story["status"]).lower(),"sourceUrls":urls,
+        "occurredAt":occurred_at,
+        "timePrecision":precision,
+        "freshnessBasis":clean_text(story["freshnessBasis"]),
+        "ageHours":age,
+        "status":clean_text(story["status"]).lower(),
+        "sourceUrls":urls,
     }
     item["id"]=f"{id_prefix}-{story_fingerprint(item)}"
     return item
+
+def score_pairs(text):
+    return [
+        (int(a),int(b))
+        for a,b in re.findall(
+            r"(?<!\d)(\d{1,3})\s*[-–—]\s*(\d{1,3})(?!\d)",
+            text,
+        )
+    ]
+
+def validate_consistency(item,context):
+    combined=(item["headline"]+" "+item["text"]).lower()
+    pairs=score_pairs(combined)
+
+    if any(word in combined for word in ("shutout","shut out","shuts out","blanked")):
+        for a,b in pairs:
+            if a > 0 and b > 0:
+                raise TickerError(
+                    f"{context}: shutout/blanked wording conflicts with score {a}-{b}"
+                )
+
+    if any(
+        phrase in combined
+        for phrase in (
+            "one-point win","one point win",
+            "one-point victory","one point victory",
+        )
+    ):
+        for a,b in pairs:
+            if abs(a-b) != 1:
+                raise TickerError(
+                    f"{context}: one-point wording conflicts with score {a}-{b}"
+                )
 
 def validate_story(item,context,generated_at):
     if item["type"] not in ALLOWED_TYPES: raise TickerError(f"{context}: unsupported type")
     if not 1<=item["priority"]<=100: raise TickerError(f"{context}: priority out of range")
     if not item["headline"] or len(item["headline"])>120: raise TickerError(f"{context}: invalid headline")
     if len(item["text"])<10 or len(item["text"])>360: raise TickerError(f"{context}: invalid text")
+    if len(item["freshnessBasis"])<8 or len(item["freshnessBasis"])>240:
+        raise TickerError(f"{context}: invalid freshnessBasis")
     if item["status"] not in ALLOWED_STATUS: raise TickerError(f"{context}: invalid status")
-    occurred=parse_iso(item["occurredAt"])
-    age=(generated_at-occurred).total_seconds()/3600.0
-    if age < -0.5: raise TickerError(f"{context}: occurredAt is in future")
-    if age > FRESHNESS_HOURS: raise TickerError(f"{context}: stale age={age:.2f}h")
+
+    if item["timePrecision"] in {"exact","hour"}:
+        occurred=parse_iso(item["occurredAt"])
+        age=(generated_at-occurred).total_seconds()/3600.0
+        if age < -0.5: raise TickerError(f"{context}: occurredAt is in future")
+        if age > FRESHNESS_HOURS: raise TickerError(f"{context}: stale age={age:.2f}h")
+    elif item["timePrecision"] != "date":
+        raise TickerError(f"{context}: invalid timePrecision")
+
     if not item["sourceUrls"]: raise TickerError(f"{context}: missing source")
     hosts=[]
     for url in item["sourceUrls"]:
@@ -285,6 +414,66 @@ def validate_story(item,context,generated_at):
         unique=set(hosts)
         if len(unique)<2 and not any(is_preferred_host(h) for h in unique):
             raise TickerError(f"{context}: priority >=90 source gate failed")
+
+    validate_consistency(item,context)
+
+def curate_items(items,context):
+    ordered=sorted(
+        items,
+        key=lambda item:(
+            -int(item.get("priority",0)),
+            float(item["ageHours"]) if item.get("ageHours") is not None else 999.0,
+            int(item.get("rank",999)),
+        ),
+    )
+
+    selected=[]
+    result_count=0
+    preview_count=0
+    other_count=0
+    capped=0
+
+    for item in ordered:
+        kind=item["type"]
+
+        if kind == "RESULT":
+            if result_count >= 5:
+                capped += 1
+                print(
+                    f"{context}: editorial cap dropping RESULT {item['headline']!r}",
+                    file=sys.stderr,
+                )
+                continue
+            result_count += 1
+
+        if kind in {"NEXT","SCHEDULE"}:
+            if preview_count >= 2:
+                capped += 1
+                print(
+                    f"{context}: editorial cap dropping {kind} {item['headline']!r}",
+                    file=sys.stderr,
+                )
+                continue
+            preview_count += 1
+
+        if kind == "OTHER":
+            if other_count >= 1:
+                capped += 1
+                print(
+                    f"{context}: editorial cap dropping OTHER {item['headline']!r}",
+                    file=sys.stderr,
+                )
+                continue
+            other_count += 1
+
+        selected.append(item)
+        if len(selected) == 10:
+            break
+
+    for rank,item in enumerate(selected,1):
+        item["rank"]=rank
+
+    return selected,capped
 
 def normalize_league(raw,expected,generated_at):
     if not isinstance(raw,dict): raise TickerError(f"{expected}: invalid output")
@@ -316,12 +505,14 @@ def normalize_league(raw,expected,generated_at):
         details=" | ".join(dropped[:5]) if dropped else "no usable items"
         raise TickerError(f"{expected}: no fresh valid ticker items remain after filtering ({details})")
 
-    # Re-rank only the fresh, valid survivors.
-    for rank,item in enumerate(out,1):
-        item["rank"]=rank
+    out,editorial_dropped=curate_items(out,expected)
 
-    if dropped:
-        print(f"{expected}: kept {len(out)} of {len(stories)} items; dropped {len(dropped)}",file=sys.stderr)
+    if dropped or editorial_dropped:
+        print(
+            f"{expected}: kept {len(out)} of {len(stories)} items; "
+            f"validationDropped={len(dropped)} editorialDropped={editorial_dropped}",
+            file=sys.stderr,
+        )
 
     if season in {"active","postseason"} and len(out)<6:
         print(
@@ -334,6 +525,7 @@ def normalize_league(raw,expected,generated_at):
         "seasonState":season,
         "items":out,
         "droppedItemCount":len(dropped),
+        "editorialDroppedCount":editorial_dropped,
     }
 
 def normalize_special(raw,generated_at):
@@ -373,19 +565,56 @@ def normalize_special(raw,generated_at):
             print(f"{name}: dropping event because no fresh valid items remain",file=sys.stderr)
             continue
 
-        for rank,item in enumerate(items,1):
-            item["rank"]=rank
+        items,editorial_dropped=curate_items(items,name)
 
         out.append({
             "name":name,
             "sport":sport,
             "items":items,
             "droppedItemCount":dropped,
+            "editorialDroppedCount":editorial_dropped,
         })
     return out
 
+def semantic_story(item):
+    return {
+        "id":item.get("id"),
+        "type":item.get("type"),
+        "priority":item.get("priority"),
+        "headline":item.get("headline"),
+        "text":item.get("text"),
+        "entities":item.get("entities",[]),
+        "occurredAt":item.get("occurredAt"),
+        "timePrecision":item.get("timePrecision"),
+        "freshnessBasis":item.get("freshnessBasis"),
+        "status":item.get("status"),
+        "sourceUrls":item.get("sourceUrls",[]),
+    }
+
 def semantic_payload(dataset):
-    return {k:dataset.get(k) for k in ["schemaVersion","freshnessHours","model","researchMode","a2Revision","leagues","specialEvents"]}
+    return {
+        "schemaVersion":dataset.get("schemaVersion"),
+        "freshnessHours":dataset.get("freshnessHours"),
+        "model":dataset.get("model"),
+        "researchMode":dataset.get("researchMode"),
+        "a2Revision":dataset.get("a2Revision"),
+        "leagues":[
+            {
+                "league":group.get("league"),
+                "seasonState":group.get("seasonState"),
+                "items":[semantic_story(item) for item in group.get("items",[])],
+            }
+            for group in dataset.get("leagues",[])
+        ],
+        "specialEvents":[
+            {
+                "name":event.get("name"),
+                "sport":event.get("sport"),
+                "items":[semantic_story(item) for item in event.get("items",[])],
+            }
+            for event in dataset.get("specialEvents",[])
+        ],
+    }
 
 def load_previous(path):
     if not path.exists(): return None
@@ -396,30 +625,57 @@ def load_previous(path):
 
 def render_text(dataset):
     lines=[
-        "SPORTS BIG BOARD — SPORTS TICKER PHASE A2",
+        "SPORTS BIG BOARD — SPORTS TICKER PHASE A2.3",
         f"Updated: {dataset['generatedAt']}",
         f"Freshness window: last {dataset['freshnessHours']} hours",
         f"Model: {dataset['model']}","",
     ]
+
     for group in dataset["leagues"]:
-        lines += ["="*72,f"{group['league']}  [{group['seasonState'].upper()}]","="*72,""]
+        lines += [
+            "="*72,
+            f"{group['league']}  [{group['seasonState'].upper()}]",
+            "="*72,
+            "",
+        ]
         for item in group["items"]:
-            lines.append(f"{item['rank']:>2}. [{item['type']}] {item['headline']} (priority {item['priority']}, age {item['ageHours']:.2f}h)")
+            lines.append(
+                f"{item['rank']:>2}. [{item['type']}] {item['headline']} "
+                f"(priority {item['priority']}, age {age_label(item)})"
+            )
             lines.append(f"    {item['text']}")
-            lines.append(f"    Occurred: {item['occurredAt']} | Status: {item['status']}")
-            if item["entities"]: lines.append("    Entities: "+", ".join(item["entities"]))
-            for url in item["sourceUrls"]: lines.append(f"    Source: {url}")
+            lines.append(
+                f"    Occurred: {item['occurredAt']} | "
+                f"Precision: {item['timePrecision']} | "
+                f"Status: {item['status']}"
+            )
+            lines.append(f"    Freshness basis: {item['freshnessBasis']}")
+            if item["entities"]:
+                lines.append("    Entities: "+", ".join(item["entities"]))
+            for url in item["sourceUrls"]:
+                lines.append(f"    Source: {url}")
             lines.append("")
+
     if dataset["specialEvents"]:
         lines += ["#"*72,"SPECIAL EVENTS","#"*72,""]
         for event in dataset["specialEvents"]:
             lines += [f"{event['name']} ({event['sport']})","-"*72,""]
             for item in event["items"]:
-                lines.append(f"{item['rank']:>2}. [{item['type']}] {item['headline']} (priority {item['priority']}, age {item['ageHours']:.2f}h)")
+                lines.append(
+                    f"{item['rank']:>2}. [{item['type']}] {item['headline']} "
+                    f"(priority {item['priority']}, age {age_label(item)})"
+                )
                 lines.append(f"    {item['text']}")
-                lines.append(f"    Occurred: {item['occurredAt']} | Status: {item['status']}")
-                for url in item["sourceUrls"]: lines.append(f"    Source: {url}")
+                lines.append(
+                    f"    Occurred: {item['occurredAt']} | "
+                    f"Precision: {item['timePrecision']} | "
+                    f"Status: {item['status']}"
+                )
+                lines.append(f"    Freshness basis: {item['freshnessBasis']}")
+                for url in item["sourceUrls"]:
+                    lines.append(f"    Source: {url}")
                 lines.append("")
+
     return "\n".join(lines).rstrip()+"\n"
 
 def atomic_write(path,content):
@@ -438,7 +694,7 @@ def main():
     if not api_key: raise TickerError("OPENAI_API_KEY is required")
 
     generated=utc_now(); cutoff=generated-timedelta(hours=FRESHNESS_HOURS)
-    print(f"Refreshing Sports Ticker A2 with {args.model}; window={iso_z(cutoff)} to {iso_z(generated)}")
+    print(f"Refreshing Sports Ticker A2.3 with {args.model}; window={iso_z(cutoff)} to {iso_z(generated)}")
 
     leagues=[]
     for league in BASE_LEAGUES:
@@ -457,12 +713,12 @@ def main():
     specials=normalize_special(raw_special,generated)
 
     dataset={
-        "schemaVersion":2,
+        "schemaVersion":3,
         "generatedAt":iso_z(generated),
         "freshnessHours":FRESHNESS_HOURS,
         "model":args.model,
         "researchMode":"per-league-plus-special-events",
-        "a2Revision":"A2.1-filter-invalid-items",
+        "a2Revision":"A2.3-editorial-ranking-precision",
         "leagues":leagues,
         "specialEvents":specials,
     }
