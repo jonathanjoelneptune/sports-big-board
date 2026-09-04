@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""v5.4.6 controller navigation, fullscreen, commands, and playback-follow regression."""
+"""v5.4.7 controller navigation, fullscreen, commands, and playback-follow regression."""
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
-assert VERSION=='5.4.6',VERSION
+assert VERSION=='5.4.7',VERSION
 index=(ROOT/'index.html').read_text()
 core=(ROOT/'architecture'/'controller-mode-v542.js').read_text()
 nav=(ROOT/'architecture'/'controller-readiness-v540.js').read_text()
@@ -12,7 +12,7 @@ cs=(ROOT/'windows-controller-bridge'/'SportsBigBoardControllerBridge.cs').read_t
 fs=(ROOT/'ui'/'fullscreen-controller-v545.js').read_text()
 follow=(ROOT/'ui'/'score-ribbon-playback-follow-v545.js').read_text()
 follow_css=(ROOT/'ui'/'score-ribbon-playback-follow-v545.css').read_text()
-map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.4.6.md').read_text()
+map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.4.7.md').read_text()
 
 # Release wiring.
 for asset in [
@@ -63,4 +63,4 @@ assert 'NOW WATCHING' in follow_css
 for token in ['X — Play / Pause','LT + RT — Special Commands radial','MUTE / UNMUTE','D-pad Up from the Score Ribbon']:
     assert token in map_txt,token
 
-print('PASS v5.4.6 D-pad league navigation + X play/pause + special commands + fullscreen + playback-follow')
+print('PASS v5.4.7 D-pad league navigation + X play/pause + special commands + fullscreen + playback-follow')
