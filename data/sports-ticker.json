@@ -1,10 +1,10 @@
 {
-  "schemaVersion": 2,
-  "generatedAt": "2026-09-04T18:40:15Z",
+  "schemaVersion": 3,
+  "generatedAt": "2026-09-04T19:20:16Z",
   "freshnessHours": 24.0,
   "model": "gpt-5.6-luna",
   "researchMode": "per-league-plus-special-events",
-  "a2Revision": "A2.1-filter-invalid-items",
+  "a2Revision": "A2.3-editorial-ranking-precision",
   "leagues": [
     {
       "league": "MLB",
@@ -12,167 +12,159 @@
       "items": [
         {
           "rank": 1,
+          "type": "STREAK",
+          "priority": 91,
+          "headline": "Rays’ losing streak at Globe Life Field reaches 10 games",
+          "text": "Tampa Bay fell 6-0 to Texas, extending its losing streak at Globe Life Field to 10 games while remaining in a tight AL playoff race.",
+          "entities": [
+            "Tampa Bay Rays",
+            "Texas Rangers"
+          ],
+          "occurredAt": "2026-09-04T02:00:00Z",
+          "timePrecision": "hour",
+          "freshnessBasis": "Texas defeated Tampa Bay 6-0 on September 3, extending the Rays’ venue losing streak to 10 games.",
+          "ageHours": 17.34,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.mlb.com/rays/news"
+          ],
+          "id": "mlb-8b053537f8dac9e0"
+        },
+        {
+          "rank": 2,
+          "type": "RETURN",
+          "priority": 89,
+          "headline": "Adley Rutschman homers twice in memorable return to Baltimore",
+          "text": "Rutschman celebrated his return to Camden Yards with two home runs as Boston defeated Baltimore, 6-5.",
+          "entities": [
+            "Adley Rutschman",
+            "Boston Red Sox",
+            "Baltimore Orioles"
+          ],
+          "occurredAt": "2026-09-04T02:00:00Z",
+          "timePrecision": "hour",
+          "freshnessBasis": "Rutschman returned to Baltimore’s Camden Yards and hit two home runs in Boston’s September 3 win.",
+          "ageHours": 17.34,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.mlb.com/news"
+          ],
+          "id": "mlb-e50d766d789b1085"
+        },
+        {
+          "rank": 3,
+          "type": "PLAYOFF",
+          "priority": 87,
+          "headline": "Cubs trim Brewers with 2-1 win in NL Central matchup",
+          "text": "Chicago defeated Milwaukee, 2-1, behind Kevin Gausman’s nine strikeouts and Pete Crow-Armstrong’s 39th home run. Milwaukee remains atop the NL Central, but the loss denied the Brewers another divisional win.",
+          "entities": [
+            "Chicago Cubs",
+            "Milwaukee Brewers",
+            "Kevin Gausman",
+            "Pete Crow-Armstrong"
+          ],
+          "occurredAt": "2026-09-04T03:00:00Z",
+          "timePrecision": "hour",
+          "freshnessBasis": "Chicago beat Milwaukee 2-1 on September 3 in a game with direct NL Central and postseason implications.",
+          "ageHours": 16.34,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.mlb.com/cubs/news",
+            "https://www.mlb.com/scores/2026-09-03"
+          ],
+          "id": "mlb-3173d5ff02ad49f1"
+        },
+        {
+          "rank": 4,
+          "type": "STREAK",
+          "priority": 84,
+          "headline": "Pirates win fifth series in six tries",
+          "text": "Pittsburgh defeated San Francisco, 5-2, for its fifth series victory in the club’s last six series, continuing a late-season surge.",
+          "entities": [
+            "Pittsburgh Pirates",
+            "San Francisco Giants"
+          ],
+          "occurredAt": "2026-09-03T23:00:00Z",
+          "timePrecision": "hour",
+          "freshnessBasis": "Pittsburgh beat San Francisco 5-2 on September 3 and MLB reported the Pirates’ fifth series win in their last six.",
+          "ageHours": 20.34,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.mlb.com/news",
+            "https://www.mlb.com/scores/2026-09-03"
+          ],
+          "id": "mlb-cbafab4fd70d0f80"
+        },
+        {
+          "rank": 5,
           "type": "RESULT",
-          "priority": 95,
-          "headline": "Dodgers rally past Cardinals on Teoscar Hernández walk-off double",
-          "text": "Teoscar Hernández hit a game-ending two-run double in the ninth inning, lifting Los Angeles to a 3-2 win over St. Louis.",
+          "priority": 80,
+          "headline": "Dodgers walk off Cardinals, 3-2",
+          "text": "Teoscar Hernández delivered a walk-off hit as Los Angeles defeated St. Louis, 3-2, keeping the Dodgers in the crowded NL postseason race.",
           "entities": [
             "Los Angeles Dodgers",
             "St. Louis Cardinals",
             "Teoscar Hernández"
           ],
           "occurredAt": "2026-09-04T05:00:00Z",
-          "ageHours": 13.67,
+          "timePrecision": "hour",
+          "freshnessBasis": "Los Angeles defeated St. Louis 3-2 on a walk-off September 3.",
+          "ageHours": 14.34,
           "status": "active",
           "sourceUrls": [
-            "https://www.mlb.com/scores/2026-09-03",
-            "https://wtaq.com/2026/09/04/mlb-roundup-dodgers-sink-cards-on-teoscar-hernandezs-walk-off-double/"
+            "https://www.mlb.com/video/topic/daily-recaps",
+            "https://www.mlb.com/scores/2026-09-03"
           ],
-          "id": "mlb-836f1b5a2292d230"
-        },
-        {
-          "rank": 2,
-          "type": "RESULT",
-          "priority": 92,
-          "headline": "Red Sox defeat Orioles as Adley Rutschman homers twice in Baltimore return",
-          "text": "Adley Rutschman hit two home runs against his former team, but Boston won 6-5 after Nick Sogard’s go-ahead two-run homer in the eighth.",
-          "entities": [
-            "Boston Red Sox",
-            "Baltimore Orioles",
-            "Adley Rutschman",
-            "Nick Sogard"
-          ],
-          "occurredAt": "2026-09-04T03:30:00Z",
-          "ageHours": 15.17,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlb.com/scores/2026-09-03",
-            "https://wtaq.com/2026/09/04/mlb-roundup-dodgers-sink-cards-on-teoscar-hernandezs-walk-off-double/"
-          ],
-          "id": "mlb-c1092fb4793a3708"
-        },
-        {
-          "rank": 3,
-          "type": "RESULT",
-          "priority": 88,
-          "headline": "Cubs edge Brewers 2-1 in matchup of playoff contenders",
-          "text": "Chicago defeated Milwaukee 2-1, handing the Brewers another loss while tightening a consequential National League race.",
-          "entities": [
-            "Chicago Cubs",
-            "Milwaukee Brewers"
-          ],
-          "occurredAt": "2026-09-04T02:45:00Z",
-          "ageHours": 15.92,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlb.com/scores/2026-09-03",
-            "https://www.mlb.com/schedule/2026-09-03"
-          ],
-          "id": "mlb-93fafa0f56083d5b"
-        },
-        {
-          "rank": 4,
-          "type": "RESULT",
-          "priority": 86,
-          "headline": "Rangers shut out Rays 6-0",
-          "text": "Texas blanked Tampa Bay 6-0, with the Rangers’ victory ending a competitive series against one of the American League’s stronger teams.",
-          "entities": [
-            "Texas Rangers",
-            "Tampa Bay Rays"
-          ],
-          "occurredAt": "2026-09-04T03:15:00Z",
-          "ageHours": 15.42,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlb.com/scores/2026-09-03",
-            "https://www.mlb.com/schedule/2026-09-03"
-          ],
-          "id": "mlb-2472053411eba0e2"
-        },
-        {
-          "rank": 5,
-          "type": "RESULT",
-          "priority": 84,
-          "headline": "Athletics beat Mariners 7-4 behind two home runs from Henry Bolte",
-          "text": "Henry Bolte hit two two-run homers as Oakland defeated Seattle, while Zack Gelof and Donovan Walton also went deep.",
-          "entities": [
-            "Athletics",
-            "Seattle Mariners",
-            "Henry Bolte",
-            "Zack Gelof",
-            "Donovan Walton"
-          ],
-          "occurredAt": "2026-09-04T05:30:00Z",
-          "ageHours": 13.17,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlb.com/scores/2026-09-03",
-            "https://wtaq.com/2026/09/04/mlb-roundup-dodgers-sink-cards-on-teoscar-hernandezs-walk-off-double/"
-          ],
-          "id": "mlb-48182266f65378c6"
+          "id": "mlb-6d050c126b645e74"
         },
         {
           "rank": 6,
           "type": "RESULT",
-          "priority": 82,
-          "headline": "Royals salvage series finale against Marlins",
-          "text": "Kansas City defeated Miami 7-3 as Carter Jensen hit a go-ahead two-run homer and finished a single shy of the cycle.",
+          "priority": 78,
+          "headline": "Astros beat White Sox, 6-2, in AL Central race",
+          "text": "Houston defeated Chicago, 6-2, behind a four-run third inning and a home run from José Altuve. The White Sox remain atop the AL Central despite the loss.",
           "entities": [
-            "Kansas City Royals",
-            "Miami Marlins",
-            "Carter Jensen"
+            "Houston Astros",
+            "Chicago White Sox",
+            "José Altuve"
           ],
-          "occurredAt": "2026-09-04T02:30:00Z",
-          "ageHours": 16.17,
+          "occurredAt": "2026-09-03T20:00:00Z",
+          "timePrecision": "hour",
+          "freshnessBasis": "Houston defeated Chicago 6-2 on September 3 as both clubs continued competing in the AL postseason picture.",
+          "ageHours": 23.34,
           "status": "active",
           "sourceUrls": [
-            "https://www.mlb.com/scores/2026-09-03",
-            "https://wtaq.com/2026/09/04/mlb-roundup-dodgers-sink-cards-on-teoscar-hernandezs-walk-off-double/"
+            "https://www.mlb.com/video/topic/daily-recaps",
+            "https://www.mlb.com/scores/2026-09-03"
           ],
-          "id": "mlb-f969862c7746853a"
+          "id": "mlb-807a30c3b356cea8"
         },
         {
           "rank": 7,
           "type": "RESULT",
-          "priority": 80,
-          "headline": "Blue Jays rout Guardians as Vladimir Guerrero Jr. drives in five",
-          "text": "Vladimir Guerrero Jr. went 3-for-4 with a homer and five RBIs in Toronto’s 6-3 win over Cleveland.",
+          "priority": 75,
+          "headline": "Blue Jays defeat Guardians, 6-3",
+          "text": "Toronto beat Cleveland, 6-3, behind a strong offensive performance from Nathan Lukes and Brett Bateman.",
           "entities": [
             "Toronto Blue Jays",
             "Cleveland Guardians",
-            "Vladimir Guerrero Jr."
+            "Nathan Lukes",
+            "Brett Bateman"
           ],
-          "occurredAt": "2026-09-04T02:00:00Z",
-          "ageHours": 16.67,
+          "occurredAt": "2026-09-03T22:00:00Z",
+          "timePrecision": "hour",
+          "freshnessBasis": "Toronto defeated Cleveland 6-3 on September 3.",
+          "ageHours": 21.34,
           "status": "active",
           "sourceUrls": [
-            "https://www.mlb.com/scores/2026-09-03",
-            "https://www.mlb.com/schedule/2026-09-03"
+            "https://www.mlb.com/video/topic/daily-recaps",
+            "https://www.mlb.com/scores/2026-09-03"
           ],
-          "id": "mlb-62df2ede56c3b5d5"
-        },
-        {
-          "rank": 8,
-          "type": "RESULT",
-          "priority": 78,
-          "headline": "Astros shut out White Sox 6-2 behind seven strong innings from Hayden Wesneski",
-          "text": "Hayden Wesneski allowed one hit over seven innings, and Houston beat Chicago 6-2 to strengthen its position in the American League race.",
-          "entities": [
-            "Houston Astros",
-            "Chicago White Sox",
-            "Hayden Wesneski"
-          ],
-          "occurredAt": "2026-09-04T01:30:00Z",
-          "ageHours": 17.17,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlb.com/scores/2026-09-03",
-            "https://www.mlb.com/schedule/2026-09-03"
-          ],
-          "id": "mlb-d0901cc9b96c2458"
+          "id": "mlb-6596c7e3799af6be"
         }
       ],
-      "droppedItemCount": 0
+      "droppedItemCount": 0,
+      "editorialDroppedCount": 0
     },
     {
       "league": "NFL",
@@ -180,100 +172,28 @@
       "items": [
         {
           "rank": 1,
-          "type": "CONTRACT",
-          "priority": 94,
-          "headline": "Cardinals agree to three-year, $75M extension with WR Michael Wilson",
-          "text": "Arizona agreed to a three-year extension with Michael Wilson worth $75 million, including $47 million guaranteed and a maximum value of $78 million. The deal keeps the receiver under contract through the 2029 season.",
-          "entities": [
-            "Arizona Cardinals",
-            "Michael Wilson"
-          ],
-          "occurredAt": "2026-09-03T19:00:00Z",
-          "ageHours": 23.67,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.nfl.com/news/cardinals-michael-wilson-three-year-extension"
-          ],
-          "id": "nfl-728b845944d1becb"
-        },
-        {
-          "rank": 2,
-          "type": "DEPTH_CHART",
-          "priority": 91,
-          "headline": "Colts name Anthony Richardson backup QB behind Daniel Jones",
-          "text": "Indianapolis selected Anthony Richardson as Daniel Jones' backup quarterback to open the 2026 season, choosing him over Riley Leonard.",
-          "entities": [
-            "Indianapolis Colts",
-            "Daniel Jones",
-            "Anthony Richardson",
-            "Riley Leonard"
-          ],
-          "occurredAt": "2026-09-03T18:45:00Z",
-          "ageHours": 23.92,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-3"
-          ],
-          "id": "nfl-4ceaba2abefa8f0d"
-        },
-        {
-          "rank": 3,
-          "type": "INJURY",
-          "priority": 89,
-          "headline": "Ravens WR Zay Flowers returns to practice; Nnamdi Madubuike progresses",
-          "text": "Zay Flowers returned to practice Thursday for the first time since August 20 after dealing with a quad injury. Defensive tackle Nnamdi Madubuike also began participating in team drills and is considered day to day with a neck injury.",
-          "entities": [
-            "Baltimore Ravens",
-            "Zay Flowers",
-            "Nnamdi Madubuike"
-          ],
-          "occurredAt": "2026-09-03T18:45:00Z",
-          "ageHours": 23.92,
-          "status": "watch",
-          "sourceUrls": [
-            "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-3"
-          ],
-          "id": "nfl-4e1a4cd52522b4ca"
-        },
-        {
-          "rank": 4,
-          "type": "SCHEDULE",
-          "priority": 82,
-          "headline": "49ers arrive in Melbourne ahead of season opener against Rams",
-          "text": "San Francisco arrived in Melbourne after a 15-hour charter flight and will spend the week acclimating ahead of the September 11 regular-season game against the Los Angeles Rams at the Melbourne Cricket Ground.",
+          "type": "NEXT",
+          "priority": 78,
+          "headline": "49ers arrive in Melbourne ahead of historic Week 1 matchup with Rams",
+          "text": "San Francisco’s traveling party landed in Melbourne after a 15-hour charter flight and will spend the week acclimating before facing the Los Angeles Rams in the NFL’s Australia opener.",
           "entities": [
             "San Francisco 49ers",
             "Los Angeles Rams",
             "Melbourne Cricket Ground"
           ],
-          "occurredAt": "2026-09-04T08:43:00Z",
-          "ageHours": 9.95,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "NFL.com reported the 49ers’ arrival in Melbourne on September 4, beginning their week-long preparation for the September 11 season opener.",
+          "ageHours": null,
           "status": "next",
           "sourceUrls": [
             "https://www.nfl.com/news/niners-arrive-melbourne-historic-nfl-game-rams"
           ],
-          "id": "nfl-522ef1e9aaa2f62c"
-        },
-        {
-          "rank": 5,
-          "type": "ROSTER",
-          "priority": 78,
-          "headline": "Jets work out former Titans QB Will Levis",
-          "text": "New York held a tryout for quarterback Will Levis, who started 21 games for Tennessee from 2023 through 2024, as the Jets continued adding competition and depth at quarterback.",
-          "entities": [
-            "New York Jets",
-            "Will Levis"
-          ],
-          "occurredAt": "2026-09-03T18:45:00Z",
-          "ageHours": 23.92,
-          "status": "watch",
-          "sourceUrls": [
-            "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-3"
-          ],
-          "id": "nfl-d1bc7e7e6af695d7"
+          "id": "nfl-f61b79b0fdb20277"
         }
       ],
-      "droppedItemCount": 1
+      "droppedItemCount": 0,
+      "editorialDroppedCount": 0
     },
     {
       "league": "NBA",
@@ -281,61 +201,69 @@
       "items": [
         {
           "rank": 1,
-          "type": "SIGNING",
+          "type": "RETURN",
           "priority": 88,
-          "headline": "Ben Simmons agrees to one-year, $3.5 million deal with Kings",
-          "text": "Three-time All-Star Ben Simmons agreed to return to the NBA with Sacramento after sitting out the 2025-26 season.",
+          "headline": "Ben Simmons agrees to one-year deal with Kings, returning to NBA",
+          "text": "Ben Simmons agreed to a one-year, $3.5 million contract with Sacramento after sitting out the entire 2025-26 season. The former No. 1 pick is expected to provide veteran depth behind rookie point guard Darius Acuff Jr.",
           "entities": [
             "Ben Simmons",
-            "Sacramento Kings"
+            "Sacramento Kings",
+            "Darius Acuff Jr."
           ],
-          "occurredAt": "2026-09-04T13:44:00Z",
-          "ageHours": 4.94,
+          "occurredAt": "2026-09-04T14:25:00Z",
+          "timePrecision": "exact",
+          "freshnessBasis": "Simmons’ agreement with Sacramento was reported on September 4.",
+          "ageHours": 4.92,
           "status": "active",
           "sourceUrls": [
             "https://www.nba.com/news/ben-simmons-1-year-deal-sacramento-kings",
             "https://www.nbcsports.com/nba/news/ben-simmons-returning-to-nba-joining-kings-on-one-year-minimum-deal"
           ],
-          "id": "nba-f0a5e4b0e58b6e28"
+          "id": "nba-ddec061d67082aaa"
         },
         {
           "rank": 2,
-          "type": "CONTRACT",
-          "priority": 86,
-          "headline": "Rockets lock up Amen Thompson with five-year, $208 million extension",
-          "text": "Houston signed fourth-year wing Amen Thompson to a five-year, $208 million rookie-scale extension, securing a key piece of its young core through the 2031-32 season.",
+          "type": "SIGNING",
+          "priority": 84,
+          "headline": "Amen Thompson signs five-year, $208M extension with Rockets",
+          "text": "Houston signed Amen Thompson to a five-year, $208 million rookie-scale extension, securing a key piece of its young core through the 2030-31 season.",
           "entities": [
             "Amen Thompson",
             "Houston Rockets"
           ],
           "occurredAt": "2026-09-03T19:58:00Z",
-          "ageHours": 22.7,
+          "timePrecision": "exact",
+          "freshnessBasis": "The Rockets made the extension official on September 3.",
+          "ageHours": 23.37,
           "status": "active",
           "sourceUrls": [
             "https://www.nba.com/news/amen-thompson-5-year-extension-rockets"
           ],
-          "id": "nba-97fe4fac14e35226"
+          "id": "nba-28a334b75a996522"
         },
         {
           "rank": 3,
           "type": "SIGNING",
           "priority": 78,
-          "headline": "Timberwolves sign Jonathan Kuminga",
-          "text": "Minnesota announced the signing of forward Jonathan Kuminga, who spent the 2025-26 season with Atlanta and Golden State.",
+          "headline": "Timberwolves officially sign Jonathan Kuminga",
+          "text": "Minnesota announced the signing of forward Jonathan Kuminga. Terms were not disclosed; Kuminga joins the Timberwolves after splitting the 2025-26 season between Atlanta and Golden State.",
           "entities": [
             "Jonathan Kuminga",
             "Minnesota Timberwolves"
           ],
           "occurredAt": "2026-09-04T14:54:00Z",
-          "ageHours": 3.77,
+          "timePrecision": "exact",
+          "freshnessBasis": "Minnesota announced Kuminga’s signing on September 4.",
+          "ageHours": 4.44,
           "status": "active",
           "sourceUrls": [
             "https://www.nba.com/timberwolves/news/timberwolves-sign-jonathan-kuminga"
           ],
-          "id": "nba-226ec0129d689658"
+          "id": "nba-669c5bfe722f89e8"
         }
       ],
-      "droppedItemCount": 1
+      "droppedItemCount": 1,
+      "editorialDroppedCount": 0
     },
     {
       "league": "NHL",
@@ -344,23 +272,26 @@
         {
           "rank": 1,
           "type": "ROSTER",
-          "priority": 61,
+          "priority": 35,
           "headline": "Stars sign Jack Williams as emergency goalie replacement",
-          "text": "Dallas added Jack Williams as an emergency goalie replacement, according to the NHL transaction log.",
+          "text": "Dallas signed Jack Williams as an emergency goalie replacement, according to the league transaction log.",
           "entities": [
             "Dallas Stars",
             "Jack Williams"
           ],
-          "occurredAt": "2026-09-04T00:00:00Z",
-          "ageHours": 18.67,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "The transaction was listed for Friday, September 4, 2026, within the 24-hour window.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
             "https://www.cbssports.com/nhl/transactions/"
           ],
-          "id": "nhl-9f756952febdfb43"
+          "id": "nhl-2e85b6e5829f5ca8"
         }
       ],
-      "droppedItemCount": 3
+      "droppedItemCount": 0,
+      "editorialDroppedCount": 0
     },
     {
       "league": "EPL",
@@ -368,96 +299,76 @@
       "items": [
         {
           "rank": 1,
-          "type": "ROSTER",
-          "priority": 88,
-          "headline": "Aston Villa omit new signing Harwood-Bellis from Champions League squad",
-          "text": "Aston Villa manager Unai Emery confirmed that deadline-day signing Taylor Harwood-Bellis was left out of the club’s 23-man Champions League squad, prompting what Emery described as a difficult conversation with the defender. Villa also omitted 17-year-old Brian Madjo.",
+          "type": "SIGNING",
+          "priority": 82,
+          "headline": "Liverpool agree January move for Saint-Etienne forward Djylian N'Guessan",
+          "text": "Liverpool have agreed a deal to sign 18-year-old French forward Djylian N'Guessan from Saint-Etienne. He will remain in France on loan with Stade Brestois before joining Liverpool permanently in January.",
           "entities": [
-            "Aston Villa",
-            "Taylor Harwood-Bellis",
-            "Unai Emery",
-            "Brian Madjo"
+            "Liverpool",
+            "Djylian N'Guessan",
+            "Saint-Etienne",
+            "Stade Brestois"
           ],
-          "occurredAt": "2026-09-04T14:58:00Z",
-          "ageHours": 3.7,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "Liverpool officially announced the agreement on September 4, 2026.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
-            "https://www.theguardian.com/football/2026/sep/04/premier-league-news-manchester-united-everton-aston-villa-manchester-city-tottenham"
+            "https://www.liverpoolfc.com/news/liverpool-agree-deal-sign-djylian-nguessan?amp=1"
           ],
-          "id": "epl-270c1d0db95df982"
+          "id": "epl-a275d081f78e3e98"
         },
         {
           "rank": 2,
-          "type": "DEPTH_CHART",
-          "priority": 84,
-          "headline": "Liverpool make Barcola available for Ipswich trip",
-          "text": "Liverpool confirmed Bradley Barcola is available for Friday’s Premier League match at Ipswich. The team’s predicted lineup also highlights potential selection decisions around the club’s new-look attack under manager Andoni Iraola.",
+          "type": "ROSTER",
+          "priority": 72,
+          "headline": "Barcola cleared to be available for Liverpool debut at Ipswich",
+          "text": "Liverpool manager Andoni Iraola said new signing Bradley Barcola will be available for the trip to Ipswich, subject to completing Thursday training. A start is considered unlikely because he lacks preseason match minutes.",
           "entities": [
             "Liverpool",
             "Bradley Barcola",
             "Ipswich Town",
             "Andoni Iraola"
           ],
-          "occurredAt": "2026-09-04T13:00:00Z",
-          "ageHours": 5.67,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "Liverpool's manager provided a new availability update ahead of Friday's Premier League match.",
+          "ageHours": null,
           "status": "next",
           "sourceUrls": [
-            "https://www.theguardian.com/football/2026/sep/04/all",
             "https://www.premierleague.com/en/news/4706313/predicted-line-ups-for-premier-league-teams-in-matchweek-3"
           ],
-          "id": "epl-d5c2f15aa2f54bb5"
+          "id": "epl-5e8dd94e18ca0482"
         },
         {
           "rank": 3,
           "type": "INJURY",
-          "priority": 80,
-          "headline": "Weekend team news lists major Premier League absences",
-          "text": "Friday’s team-news update listed significant absences ahead of Matchweek 3, including Tottenham’s Dejan Kulusevski and Wilson Odobert, Manchester United’s Manuel Ugarte and Matthijs de Ligt, Arsenal’s William Saliba and Chelsea goalkeeper Dean Henderson.",
+          "priority": 68,
+          "headline": "Newcastle remain without four injured players for Bournemouth visit",
+          "text": "Newcastle are expected to be without Dan Burn, Joelinton, Tino Livramento and William Osula against Bournemouth. Manager Matthias Jaissle also declined to comment on reports that Osula could face a long-term absence.",
           "entities": [
-            "Tottenham Hotspur",
-            "Manchester United",
-            "Arsenal",
-            "Chelsea",
-            "Dejan Kulusevski",
-            "Manuel Ugarte",
-            "William Saliba",
-            "Dean Henderson"
+            "Newcastle United",
+            "Dan Burn",
+            "Joelinton",
+            "Tino Livramento",
+            "William Osula",
+            "Matthias Jaissle",
+            "Bournemouth"
           ],
-          "occurredAt": "2026-09-04T17:38:00Z",
-          "ageHours": 1.04,
-          "status": "watch",
-          "sourceUrls": [
-            "https://www.theguardian.com/football/2026/sep/04/premier-league-team-news-predicted-lineups-for-the-weekend-action"
-          ],
-          "id": "epl-9ff8ad8a122709ec"
-        },
-        {
-          "rank": 4,
-          "type": "NEXT",
-          "priority": 78,
-          "headline": "Matchweek 3 begins with Ipswich hosting Liverpool",
-          "text": "The third Premier League matchweek begins Friday with Ipswich Town hosting Liverpool. The weekend’s headline fixture is Arsenal against Chelsea on Sunday, while Manchester City host Coventry City and Manchester United visit Everton.",
-          "entities": [
-            "Ipswich Town",
-            "Liverpool",
-            "Arsenal",
-            "Chelsea",
-            "Manchester City",
-            "Coventry City",
-            "Everton",
-            "Manchester United"
-          ],
-          "occurredAt": "2026-09-04T13:00:00Z",
-          "ageHours": 5.67,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "Newcastle's manager and team-news reporting provided updated injury and availability information on September 4.",
+          "ageHours": null,
           "status": "next",
           "sourceUrls": [
-            "https://www.premierleague.com/en/news/4706310/ten-key-questions-for-matchweek-3s-fixtures",
             "https://www.premierleague.com/en/news/4706313/predicted-line-ups-for-premier-league-teams-in-matchweek-3"
           ],
-          "id": "epl-b8a042dee3a2a1a9"
+          "id": "epl-27b8e9608c7e6fa5"
         }
       ],
-      "droppedItemCount": 1
+      "droppedItemCount": 0,
+      "editorialDroppedCount": 0
     },
     {
       "league": "MLS",
@@ -467,23 +378,158 @@
           "rank": 1,
           "type": "SIGNING",
           "priority": 95,
-          "headline": "Colorado sign Morgan Whittaker for reported club-record $10.7M",
-          "text": "The Colorado Rapids acquired winger Morgan Whittaker from Middlesbrough on a Designated Player deal through 2029-30, with a reported fee of $10.7 million—the club’s record transfer.",
+          "headline": "Colorado Rapids land Morgan Whittaker in club-record deal",
+          "text": "Colorado acquired the 25-year-old winger from Middlesbrough for a reported club-record $10.7 million fee. Whittaker signed through the 2029-30 MLS season with an option for 2030-31 and will occupy a Designated Player slot.",
           "entities": [
             "Colorado Rapids",
             "Morgan Whittaker",
             "Middlesbrough FC"
           ],
-          "occurredAt": "2026-09-04T00:00:00Z",
-          "ageHours": 18.67,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "Colorado announced the signing on Friday, September 4.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
             "https://www.mlssoccer.com/news/colorado-rapids-acquire-morgan-whittaker-club-record-deal-middlesbrough"
           ],
-          "id": "mls-383c27d99b405dfb"
+          "id": "mls-d839019b9e863bc2"
+        },
+        {
+          "rank": 2,
+          "type": "INJURY",
+          "priority": 82,
+          "headline": "NYCFC face major availability issues ahead of Nashville match",
+          "text": "New York City FC listed Drew Baiera, Arnau Farnós, Talles Magno, Maxi Moralez, Keaton Parks, Kai Trewin and Hannes Wolf out with leg injuries. Nashville listed Warren Madrigal out with a lower-body injury.",
+          "entities": [
+            "New York City FC",
+            "Nashville SC",
+            "Maxi Moralez",
+            "Talles Magno",
+            "Keaton Parks",
+            "Hannes Wolf"
+          ],
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "MLS published the Matchday 24 player status report on Friday, September 4.",
+          "ageHours": null,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.mlssoccer.com/news/mls-player-status-report-matchday-24-friday-september-4-saturday-september-5"
+          ],
+          "id": "mls-4fa69cbfa484e661"
+        },
+        {
+          "rank": 3,
+          "type": "DISCIPLINE",
+          "priority": 78,
+          "headline": "Three players suspended for Matchday 24",
+          "text": "Colorado's Hamzat Ojediran and Real Salt Lake's Morgan Guilavogui are suspended for yellow-card accumulation. San Diego FC's Jeppe Tverskov is suspended after receiving a second caution and red card.",
+          "entities": [
+            "Hamzat Ojediran",
+            "Morgan Guilavogui",
+            "Jeppe Tverskov",
+            "Colorado Rapids",
+            "Real Salt Lake",
+            "San Diego FC"
+          ],
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "The MLS disciplinary summary was current as of September 3 and carried into the Matchday 24 slate.",
+          "ageHours": null,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.mlssoccer.com/news/mls-disciplinary-summary"
+          ],
+          "id": "mls-d39b3e56f85ca843"
+        },
+        {
+          "rank": 4,
+          "type": "NEXT",
+          "priority": 72,
+          "headline": "NYCFC host Nashville with both clubs entering Matchday 24",
+          "text": "New York City FC are scheduled to host Nashville SC at Yankee Stadium on Friday, September 4. The matchup became ticker-worthy after MLS released the same-day player status report detailing extensive NYCFC absences and Nashville's Warren Madrigal injury.",
+          "entities": [
+            "New York City FC",
+            "Nashville SC",
+            "Yankee Stadium"
+          ],
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "The September 4 player status report materially changed the availability picture for the scheduled match.",
+          "ageHours": null,
+          "status": "next",
+          "sourceUrls": [
+            "https://www.mlssoccer.com/news/mls-player-status-report-matchday-24-friday-september-4-saturday-september-5"
+          ],
+          "id": "mls-5ef4f1c2611a63d5"
+        },
+        {
+          "rank": 5,
+          "type": "ROSTER",
+          "priority": 68,
+          "headline": "Toronto add Bulgarian midfielder Alejandro Piedrahita on loan",
+          "text": "Toronto FC added midfielder Alejandro Piedrahita on loan from CSKA Sofia, according to the league's updated transfer tracker.",
+          "entities": [
+            "Toronto FC",
+            "Alejandro Piedrahita",
+            "CSKA Sofia"
+          ],
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "The MLS transfer tracker was updated through September 4 with the loan move.",
+          "ageHours": null,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.mlssoccer.com/news/2025-mls-transfer-tracker-watch-news-latest-transactions"
+          ],
+          "id": "mls-fffce09247b8a560"
+        },
+        {
+          "rank": 6,
+          "type": "ROSTER",
+          "priority": 60,
+          "headline": "Real Salt Lake loan Victor Olatunji to SK Beveren",
+          "text": "Real Salt Lake moved forward Victor Olatunji to Belgian club SK Beveren on loan, according to the updated MLS transfer tracker.",
+          "entities": [
+            "Real Salt Lake",
+            "Victor Olatunji",
+            "SK Beveren"
+          ],
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "The transaction appeared in MLS's transfer tracker updated through September 4.",
+          "ageHours": null,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.mlssoccer.com/news/2025-mls-transfer-tracker-watch-news-latest-transactions"
+          ],
+          "id": "mls-a2a2c1d88706a3c5"
+        },
+        {
+          "rank": 7,
+          "type": "ROSTER",
+          "priority": 58,
+          "headline": "Toronto transfer Deandre Kerr to AVS Futebol SAD",
+          "text": "Toronto FC transferred forward Deandre Kerr to Portugal's AVS Futebol SAD, according to MLS's updated transaction tracker.",
+          "entities": [
+            "Toronto FC",
+            "Deandre Kerr",
+            "AVS Futebol SAD"
+          ],
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "The transaction appeared in MLS's transfer tracker updated through September 4.",
+          "ageHours": null,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.mlssoccer.com/news/2025-mls-transfer-tracker-watch-news-latest-transactions"
+          ],
+          "id": "mls-779222e1b6133db8"
         }
       ],
-      "droppedItemCount": 9
+      "droppedItemCount": 0,
+      "editorialDroppedCount": 0
     },
     {
       "league": "NCAAF",
@@ -491,280 +537,377 @@
       "items": [
         {
           "rank": 1,
-          "type": "UPSET",
-          "priority": 95,
-          "headline": "UMass stuns Rutgers 37-21 in Big Ten road upset",
-          "text": "Massachusetts erased a 14-point halftime deficit and defeated Rutgers 37-21, one of the biggest results of Thursday’s slate.",
+          "type": "LEGAL",
+          "priority": 98,
+          "headline": "Federal court hears SEC effort to block former pros from LSU roster",
+          "text": "A federal court in Alabama heard the SEC’s attempt to prevent LSU from using former professional players, escalating the eligibility dispute after a Louisiana judge issued an injunction favoring the athletes.",
           "entities": [
-            "Massachusetts Minutemen",
-            "Rutgers Scarlet Knights"
+            "LSU Tigers",
+            "SEC",
+            "NCAA",
+            "Lane Kiffin"
           ],
-          "occurredAt": "2026-09-04T02:15:00Z",
-          "ageHours": 16.42,
+          "occurredAt": "2026-09-04T06:01:09Z",
+          "timePrecision": "exact",
+          "freshnessBasis": "AP newly reported the federal hearing on September 4, 2026, within the 24-hour window.",
+          "ageHours": 13.32,
           "status": "active",
           "sourceUrls": [
-            "https://www.ncaa.com/scoreboard/football/fbs",
-            "https://www.cbssports.com/college-football/schedule/"
+            "https://apnews.com/article/f67ac7909f6620f4d286fdf34740081d"
           ],
-          "id": "ncaaf-b50bb54837cded94"
+          "id": "ncaaf-6cbb4cb6fa08e7f6"
         },
         {
           "rank": 2,
           "type": "UPSET",
-          "priority": 92,
-          "headline": "Colorado edges Georgia Tech 14-13",
-          "text": "Colorado held on for a one-point road victory over Georgia Tech in a low-scoring Thursday night matchup.",
+          "priority": 91,
+          "headline": "Colorado rallies past Georgia Tech 14-13 on late TD and blocked field goal",
+          "text": "Colorado overcame a 13-7 deficit with 42 seconds remaining, then blocked Georgia Tech’s potential winning field goal as time expired in the season opener.",
           "entities": [
             "Colorado Buffaloes",
-            "Georgia Tech Yellow Jackets"
+            "Georgia Tech Yellow Jackets",
+            "Julian Lewis"
           ],
-          "occurredAt": "2026-09-04T03:30:00Z",
-          "ageHours": 15.17,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "The season-opening result was newly reported on September 4, 2026.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
-            "https://www.ncaa.com/scoreboard/football/fbs",
-            "https://www.cbssports.com/college-football/schedule/"
+            "https://sports.yahoo.com/college-football/live/college-football-week-1-scores-results-colorado-topples-georgia-tech-after-blocking-fg-as-time-expires-222700858.html",
+            "https://www.washingtonpost.com/sports/colleges/football/"
           ],
-          "id": "ncaaf-9f1c0805bede9027"
+          "id": "ncaaf-db8344ddd3e85a35"
         },
         {
           "rank": 3,
-          "type": "RESULT",
+          "type": "RECORD",
           "priority": 88,
-          "headline": "UCF overwhelms Bethune-Cookman 73-6",
-          "text": "UCF dominated from the opening quarter, scoring 73 points in a decisive victory over Bethune-Cookman.",
+          "headline": "Minnesota’s Javon Tracy sets program record with two punt-return touchdowns",
+          "text": "Javon Tracy returned two punts for touchdowns in Minnesota’s 59-7 season-opening win over Eastern Illinois, establishing a single-game school record.",
           "entities": [
-            "UCF Knights",
-            "Bethune-Cookman Wildcats"
+            "Minnesota Golden Gophers",
+            "Javon Tracy",
+            "Eastern Illinois Panthers"
           ],
-          "occurredAt": "2026-09-04T02:45:00Z",
-          "ageHours": 15.92,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "AP newly reported the record-setting performance on September 4, 2026.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
-            "https://www.ncaa.com/scoreboard/football/fbs",
-            "https://www.cbssports.com/college-football/schedule/"
+            "https://www.washingtonpost.com/sports/colleges/football/"
           ],
-          "id": "ncaaf-d1cd65553b35162b"
+          "id": "ncaaf-8880230b37e1abf4"
         },
         {
           "rank": 4,
-          "type": "RESULT",
-          "priority": 86,
-          "headline": "No. 21 Utah rolls past Idaho 66-14",
-          "text": "Utah produced one of Thursday’s largest FBS wins, defeating Idaho by 52 points.",
+          "type": "STREAK",
+          "priority": 84,
+          "headline": "UMass ends 16-game losing streak with 37-21 win over Rutgers",
+          "text": "UMass snapped a 16-game losing streak as Pop Watson III threw three touchdown passes in the season opener for both teams.",
           "entities": [
-            "Utah Utes",
-            "Idaho Vandals"
+            "UMass Minutemen",
+            "Rutgers Scarlet Knights",
+            "Pop Watson III"
           ],
-          "occurredAt": "2026-09-04T04:15:00Z",
-          "ageHours": 14.42,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "AP newly reported the streak-ending result on September 4, 2026.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
-            "https://www.ncaa.com/scoreboard/football/fbs",
-            "https://www.cbssports.com/college-football/schedule/"
+            "https://www.washingtonpost.com/sports/colleges/football/"
           ],
-          "id": "ncaaf-d14bba7da757507f"
+          "id": "ncaaf-d22e112343782f14"
         },
         {
           "rank": 5,
           "type": "RESULT",
-          "priority": 84,
-          "headline": "Illinois defeats UAB 42-23",
-          "text": "Illinois pulled away from UAB for a 19-point victory in a Thursday night nonconference game.",
+          "priority": 80,
+          "headline": "No. 21 Utah routs Idaho 66-14 in Morgan Scalley’s regular-season debut",
+          "text": "Utah opened the season with a 52-point victory behind three touchdown passes from Devon Dampier and three touchdowns from Wayshawn Parker.",
           "entities": [
-            "Illinois Fighting Illini",
-            "UAB Blazers"
+            "Utah Utes",
+            "Idaho Vandals",
+            "Morgan Scalley",
+            "Devon Dampier",
+            "Wayshawn Parker"
           ],
-          "occurredAt": "2026-09-04T03:45:00Z",
-          "ageHours": 14.92,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "AP newly reported the completed season opener on September 4, 2026.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
-            "https://www.ncaa.com/scoreboard/football/fbs",
-            "https://www.cbssports.com/college-football/schedule/"
+            "https://www.washingtonpost.com/sports/colleges/football/"
           ],
-          "id": "ncaaf-94fa9f9f514c188a"
+          "id": "ncaaf-101cd1e33eda720f"
         },
         {
           "rank": 6,
           "type": "RESULT",
-          "priority": 82,
-          "headline": "Wake Forest beats Akron 38-16",
-          "text": "Wake Forest controlled the matchup and defeated Akron by 22 points.",
+          "priority": 78,
+          "headline": "No. 25 Missouri defeats Arkansas-Pine Bluff 54-14 in opener",
+          "text": "Austin Simmons threw four touchdown passes in his Missouri debut as the Tigers opened the season with a 40-point win.",
           "entities": [
-            "Wake Forest Demon Deacons",
-            "Akron Zips"
+            "Missouri Tigers",
+            "Arkansas-Pine Bluff Golden Lions",
+            "Austin Simmons"
           ],
-          "occurredAt": "2026-09-04T01:30:00Z",
-          "ageHours": 17.17,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "AP newly reported the completed season opener on September 4, 2026.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
-            "https://www.ncaa.com/scoreboard/football/fbs",
-            "https://www.cbssports.com/college-football/schedule/"
+            "https://www.washingtonpost.com/sports/colleges/football/"
           ],
-          "id": "ncaaf-2933499c5fc595cf"
+          "id": "ncaaf-820ad72c544f61bf"
         },
         {
           "rank": 7,
           "type": "RESULT",
-          "priority": 80,
-          "headline": "Missouri defeats Arkansas-Pine Bluff 54-14",
-          "text": "No. 25 Missouri handled Arkansas-Pine Bluff in a 40-point victory.",
+          "priority": 76,
+          "headline": "Illinois beats UAB 42-23 behind Katin Houser’s four total touchdowns",
+          "text": "Katin Houser threw three touchdown passes and ran for another as Illinois defeated UAB in the season opener.",
           "entities": [
-            "Missouri Tigers",
-            "Arkansas-Pine Bluff Golden Lions"
+            "Illinois Fighting Illini",
+            "UAB Blazers",
+            "Katin Houser"
           ],
-          "occurredAt": "2026-09-04T03:00:00Z",
-          "ageHours": 15.67,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "AP newly reported the completed season opener on September 4, 2026.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
-            "https://www.ncaa.com/scoreboard/football/fbs",
-            "https://www.cbssports.com/college-football/schedule/"
+            "https://www.washingtonpost.com/sports/colleges/football/"
           ],
-          "id": "ncaaf-d758d26f87e5fd0a"
+          "id": "ncaaf-d89c544e45774059"
         },
         {
           "rank": 8,
           "type": "RESULT",
-          "priority": 78,
-          "headline": "Kennesaw State blanks West Georgia 47-0",
-          "text": "Kennesaw State recorded a shutout victory over West Georgia, taking control early and never allowing a score.",
+          "priority": 73,
+          "headline": "Kennesaw State shuts out West Georgia 47-0 in season opener",
+          "text": "Rickie Collins accounted for three touchdowns and Latrelle Murrell scored twice as Kennesaw State opened the season with a dominant shutout.",
           "entities": [
             "Kennesaw State Owls",
-            "West Georgia Wolves"
+            "West Georgia Wolves",
+            "Rickie Collins",
+            "Latrelle Murrell"
           ],
-          "occurredAt": "2026-09-04T01:45:00Z",
-          "ageHours": 16.92,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "AP newly reported the completed season opener on September 4, 2026.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
-            "https://www.ncaa.com/scoreboard/football/fbs",
-            "https://www.cbssports.com/college-football/schedule/"
+            "https://www.washingtonpost.com/sports/colleges/football/"
           ],
-          "id": "ncaaf-4709c03b606be0f2"
+          "id": "ncaaf-7a5286b2d78fca1d"
+        },
+        {
+          "rank": 9,
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Delaware opens season with 42-7 win over Merrimack",
+          "text": "Nick Minicucci passed for 330 yards and two touchdowns and added a rushing score in Delaware’s emphatic season-opening victory.",
+          "entities": [
+            "Delaware Fightin’ Blue Hens",
+            "Merrimack Warriors",
+            "Nick Minicucci"
+          ],
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "AP newly reported the completed season opener on September 4, 2026.",
+          "ageHours": null,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.washingtonpost.com/sports/colleges/football/"
+          ],
+          "id": "ncaaf-e0642fa549201072"
         }
       ],
-      "droppedItemCount": 0
+      "droppedItemCount": 0,
+      "editorialDroppedCount": 0
     }
   ],
   "specialEvents": [
     {
-      "name": "FIBA Women’s Basketball World Cup 2026",
+      "name": "2026 US Open",
+      "sport": "Tennis",
+      "items": [
+        {
+          "rank": 1,
+          "type": "RESULT",
+          "priority": 94,
+          "headline": "Zverev survives another five-set marathon to reach US Open third round",
+          "text": "Top seed Alexander Zverev defeated Quentin Halys 6-4, 4-6, 7-6(3), 6-7(3), 6-3 in a four-hour, 33-minute second-round match.",
+          "entities": [
+            "Alexander Zverev",
+            "Quentin Halys",
+            "US Open"
+          ],
+          "occurredAt": "2026-09-04T06:08:00Z",
+          "timePrecision": "exact",
+          "freshnessBasis": "The official US Open reported the result early Friday, September 4, after Thursday night's match.",
+          "ageHours": 13.2,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.usopen.org/amp/en_US/news/articles/2026-09-04/alexander_zverev_wins_another_2026_us_open_five-set_marathon.html"
+          ],
+          "id": "special-2026-us-open-224a39e7f957e187"
+        }
+      ],
+      "droppedItemCount": 3,
+      "editorialDroppedCount": 0
+    },
+    {
+      "name": "2026 FIBA Women's Basketball World Cup",
       "sport": "Basketball",
       "items": [
         {
           "rank": 1,
           "type": "RESULT",
-          "priority": 88,
-          "headline": "Australia defeats Puerto Rico 70-54",
-          "text": "Australia opened its World Cup campaign with a 70-54 victory over Puerto Rico in Berlin.",
+          "priority": 84,
+          "headline": "Australia beats Puerto Rico 70-54 in opening-day action",
+          "text": "Australia controlled its World Cup opener against Puerto Rico, winning 70-54 in Berlin.",
           "entities": [
             "Australia",
             "Puerto Rico",
-            "FIBA Women’s Basketball World Cup"
+            "Women's Basketball World Cup"
           ],
-          "occurredAt": "2026-09-04T11:00:00Z",
-          "ageHours": 7.67,
+          "occurredAt": "2026-09-04",
+          "timePrecision": "date",
+          "freshnessBasis": "FIBA reported the completed opening-day game on September 4.",
+          "ageHours": null,
           "status": "active",
           "sourceUrls": [
             "https://www.fiba.basketball/en/events/fiba-womens-basketball-world-cup-2026/news/2026-wwc-game-center-sep-4"
           ],
-          "id": "special-fiba-women-s-basketball-world-cup-2026-1312becb856079d2"
+          "id": "special-2026-fiba-women-s-basketball-world-cup-2744f0ebe375ee7b"
         }
       ],
-      "droppedItemCount": 2
+      "droppedItemCount": 2,
+      "editorialDroppedCount": 0
     },
     {
-      "name": "US Open 2026",
-      "sport": "Tennis",
-      "items": [
-        {
-          "rank": 1,
-          "type": "UPSET",
-          "priority": 92,
-          "headline": "Khachanov knocks out No. 3 seed Auger-Aliassime",
-          "text": "Karen Khachanov eliminated third-seeded Felix Auger-Aliassime in the second round, winning 6-7(5), 6-3, 6-2, 6-2.",
-          "entities": [
-            "Karen Khachanov",
-            "Felix Auger-Aliassime",
-            "US Open"
-          ],
-          "occurredAt": "2026-09-03T23:00:00Z",
-          "ageHours": 19.67,
-          "status": "active",
-          "sourceUrls": [
-            "https://as.com/tenis/us_open/auger-aliassime-eliminado-f202609-n/",
-            "https://www.usopen.org/en_US/index.html"
-          ],
-          "id": "special-us-open-2026-5b03084b810f62cc"
-        },
-        {
-          "rank": 2,
-          "type": "RESULT",
-          "priority": 84,
-          "headline": "Second-round action clears way for third-round schedule",
-          "text": "The tournament completed its second-round slate and moved into men’s and women’s singles third-round play on Friday, September 4.",
-          "entities": [
-            "US Open",
-            "ATP",
-            "WTA"
-          ],
-          "occurredAt": "2026-09-03T23:59:00Z",
-          "ageHours": 18.69,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.usopen.org/en_US/about/eventschedule.html",
-            "https://www.usopen.org/en_US/index.html"
-          ],
-          "id": "special-us-open-2026-20b34fd71f52a44d"
-        }
-      ],
-      "droppedItemCount": 0
-    },
-    {
-      "name": "Formula 1 Italian Grand Prix 2026",
+      "name": "2026 Formula 1 Italian Grand Prix",
       "sport": "Formula 1",
       "items": [
         {
           "rank": 1,
           "type": "RESULT",
-          "priority": 95,
-          "headline": "Leclerc leads Ferrari one-two in Monza FP1",
-          "text": "Charles Leclerc topped first practice at Monza, with Ferrari teammate Lewis Hamilton second as the Italian Grand Prix weekend began.",
+          "priority": 94,
+          "headline": "Russell tops FP2 as Leclerc splits Mercedes at Monza",
+          "text": "George Russell led second practice in 1:22.559, 0.120 seconds ahead of Charles Leclerc, with Kimi Antonelli third and Lando Norris fourth.",
           "entities": [
+            "George Russell",
             "Charles Leclerc",
-            "Lewis Hamilton",
-            "Ferrari",
+            "Kimi Antonelli",
+            "Lando Norris",
             "Italian Grand Prix"
           ],
-          "occurredAt": "2026-09-04T09:46:00Z",
-          "ageHours": 8.9,
+          "occurredAt": "2026-09-04T15:19:00Z",
+          "timePrecision": "exact",
+          "freshnessBasis": "Formula 1 published the FP2 results at 15:19 UTC on Friday, September 4.",
+          "ageHours": 4.02,
           "status": "active",
           "sourceUrls": [
-            "https://www.fia.com/news/f1-leclerc-leads-ferrari-one-two-opening-practice-monza",
-            "https://www.formula1.com/en/latest/article/fp1-leclerc-leads-hamilton-and-russell-during-first-practice-at-the-italian-grand-prix.7DUTqVtZlb4zvqNfBsyl1t"
+            "https://www.formula1.com/en/latest/article/fp2-russell-beats-leclerc-and-antonelli-to-the-fastest-time-in-free-practice-2-ahead-of-italian-grand-prix.4mVLF757oe0NuWE9Caw1wO"
           ],
-          "id": "special-formula-1-italian-grand-prix-2026-eca4762c299ac240"
+          "id": "special-2026-formula-1-italian-grand-prix-d800ec4dd50ce435"
         },
         {
           "rank": 2,
-          "type": "INJURY",
-          "priority": 82,
-          "headline": "Herta’s FP1 session ends early with suspected hydraulic issue",
-          "text": "Cadillac rookie Colton Herta’s latest practice outing ended early at Monza after a suspected hydraulic problem.",
+          "type": "RESULT",
+          "priority": 89,
+          "headline": "Leclerc leads Ferrari 1-2 in FP1",
+          "text": "Charles Leclerc set the pace in first practice ahead of Ferrari teammate Lewis Hamilton, with George Russell third.",
           "entities": [
-            "Colton Herta",
-            "Cadillac",
+            "Charles Leclerc",
+            "Lewis Hamilton",
+            "George Russell",
             "Italian Grand Prix"
           ],
-          "occurredAt": "2026-09-04T09:46:00Z",
-          "ageHours": 8.9,
+          "occurredAt": "2026-09-04T11:46:00Z",
+          "timePrecision": "exact",
+          "freshnessBasis": "Formula 1 published the FP1 report at 11:46 UTC on Friday, September 4.",
+          "ageHours": 7.57,
           "status": "active",
           "sourceUrls": [
-            "https://www.formula1.com/en/latest/article/fp1-leclerc-leads-hamilton-and-russell-during-first-practice-at-the-italian-grand-prix.7DUTqVtZlb4zvqNfBsyl1t"
+            "https://www.formula1.com/en/latest/article/fp1-leclerc-leads-hamilton-and-george-russell-during-first-practice-at-the-italian-grand-prix.7DUTqVtZlb4zvqNfBsyl1t"
           ],
-          "id": "special-formula-1-italian-grand-prix-2026-e92f9e8b1ce39471"
+          "id": "special-2026-formula-1-italian-grand-prix-7c7bfff5396f399d"
+        },
+        {
+          "rank": 3,
+          "type": "DISCIPLINE",
+          "priority": 87,
+          "headline": "Albon hit with 20-place penalty and will start from the back",
+          "text": "Alexander Albon received a cumulative 20-place grid penalty for power-unit changes, meaning he will start at the back of the Italian Grand Prix grid.",
+          "entities": [
+            "Alexander Albon",
+            "Williams",
+            "Italian Grand Prix"
+          ],
+          "occurredAt": "2026-09-04T16:14:00Z",
+          "timePrecision": "exact",
+          "freshnessBasis": "Formula 1 announced the penalty Friday afternoon during the Monza race weekend.",
+          "ageHours": 3.1,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.formula1.com/en/latest/article/albon-joins-antonelli-with-heavy-grid-drop-for-italian-grand-prix.1qBmyUa5kxPfClqd8ib3ZQ"
+          ],
+          "id": "special-2026-formula-1-italian-grand-prix-6e19c1f4d5a5310b"
+        },
+        {
+          "rank": 4,
+          "type": "DISCIPLINE",
+          "priority": 86,
+          "headline": "Antonelli faces a notional 30-place grid drop at home race",
+          "text": "Kimi Antonelli's engine-related penalties will force him to start from the back unless further penalties alter the order; he is set to share the back row with Albon.",
+          "entities": [
+            "Kimi Antonelli",
+            "Mercedes",
+            "Italian Grand Prix"
+          ],
+          "occurredAt": "2026-09-04T17:01:00Z",
+          "timePrecision": "exact",
+          "freshnessBasis": "Formula 1 reiterated the penalty situation in Friday's post-practice coverage.",
+          "ageHours": 2.32,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.formula1.com/en/latest/article/antonelli-assesses-weird-first-day-on-track-in-monza-as-he-predicts-tight-fight-for-pole-position.2DIinRLa87GdVd1c5mmjir"
+          ],
+          "id": "special-2026-formula-1-italian-grand-prix-b1636adb799babac"
+        },
+        {
+          "rank": 5,
+          "type": "SLUMP",
+          "priority": 82,
+          "headline": "Norris says McLaren is not in pole-position fight after practice",
+          "text": "Lando Norris finished fourth in FP2 but said McLaren was not currently in the fight for pole after trailing Russell by 0.384 seconds.",
+          "entities": [
+            "Lando Norris",
+            "McLaren",
+            "Italian Grand Prix"
+          ],
+          "occurredAt": "2026-09-04T17:14:00Z",
+          "timePrecision": "exact",
+          "freshnessBasis": "Norris's assessment was published after Friday's two practice sessions at Monza.",
+          "ageHours": 2.1,
+          "status": "active",
+          "sourceUrls": [
+            "https://www.formula1.com/en/latest/article/norris-claims-mclaren-not-in-the-fight-for-pole-at-all-after-monza-practice-struggles.43QIU1uA9ebkG5fJUoMXCN"
+          ],
+          "id": "special-2026-formula-1-italian-grand-prix-954179b7807beff8"
         }
       ],
-      "droppedItemCount": 1
+      "droppedItemCount": 0,
+      "editorialDroppedCount": 0
     }
   ]
 }
