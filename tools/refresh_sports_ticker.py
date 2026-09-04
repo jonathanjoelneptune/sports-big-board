@@ -296,13 +296,45 @@ def normalize_league(raw,expected,generated_at):
     stories=raw.get("items")
     if not isinstance(stories,list) or not 1<=len(stories)<=10:
         raise TickerError(f"{expected}: expected 1-10 items")
-    out=[]; ids=set()
-    for rank,story in enumerate(stories,1):
-        item=normalize_story(story,rank,expected.lower(),generated_at)
-        validate_story(item,f"{expected} #{rank}",generated_at)
-        if item["id"] in ids: raise TickerError(f"{expected}: duplicate item")
-        ids.add(item["id"]); out.append(item)
-    return {"league":expected,"seasonState":season,"items":out}
+
+    out=[]; ids=set(); dropped=[]
+    for original_rank,story in enumerate(stories,1):
+        try:
+            item=normalize_story(story,original_rank,expected.lower(),generated_at)
+            validate_story(item,f"{expected} #{original_rank}",generated_at)
+            if item["id"] in ids:
+                raise TickerError(f"{expected} #{original_rank}: duplicate item")
+        except (TickerError, ValueError, KeyError, TypeError) as exc:
+            dropped.append(f"#{original_rank}: {exc}")
+            print(f"{expected}: dropping item #{original_rank}: {exc}",file=sys.stderr)
+            continue
+
+        ids.add(item["id"])
+        out.append(item)
+
+    if not out:
+        details=" | ".join(dropped[:5]) if dropped else "no usable items"
+        raise TickerError(f"{expected}: no fresh valid ticker items remain after filtering ({details})")
+
+    # Re-rank only the fresh, valid survivors.
+    for rank,item in enumerate(out,1):
+        item["rank"]=rank
+
+    if dropped:
+        print(f"{expected}: kept {len(out)} of {len(stories)} items; dropped {len(dropped)}",file=sys.stderr)
+
+    if season in {"active","postseason"} and len(out)<6:
+        print(
+            f"WARNING: {expected} is {season} but only {len(out)} fresh valid items survived",
+            file=sys.stderr,
+        )
+
+    return {
+        "league":expected,
+        "seasonState":season,
+        "items":out,
+        "droppedItemCount":len(dropped),
+    }
 
 def normalize_special(raw,generated_at):
     events=raw.get("specialEvents",[])
@@ -310,23 +342,50 @@ def normalize_special(raw,generated_at):
     out=[]; names=set()
     for idx,event in enumerate(events,1):
         name=clean_text(event.get("name","")); sport=clean_text(event.get("sport",""))
-        if len(name)<2 or len(sport)<2: raise TickerError(f"Special Event #{idx}: invalid")
-        if name.lower() in names: raise TickerError(f"duplicate special event {name}")
+        if len(name)<2 or len(sport)<2:
+            print(f"Special Event #{idx}: dropping malformed event",file=sys.stderr)
+            continue
+        if name.lower() in names:
+            print(f"Special Events: dropping duplicate event {name}",file=sys.stderr)
+            continue
         names.add(name.lower())
+
         stories=event.get("items")
-        if not isinstance(stories,list) or not 1<=len(stories)<=10: raise TickerError(f"{name}: invalid items")
+        if not isinstance(stories,list) or not 1<=len(stories)<=10:
+            print(f"{name}: dropping event with invalid item collection",file=sys.stderr)
+            continue
+
         prefix=re.sub(r"[^a-z0-9]+","-",name.lower()).strip("-")[:40] or "event"
-        items=[]; ids=set()
-        for rank,story in enumerate(stories,1):
-            item=normalize_story(story,rank,f"special-{prefix}",generated_at)
-            validate_story(item,f"{name} #{rank}",generated_at)
-            if item["id"] in ids: raise TickerError(f"{name}: duplicate")
+        items=[]; ids=set(); dropped=0
+        for original_rank,story in enumerate(stories,1):
+            try:
+                item=normalize_story(story,original_rank,f"special-{prefix}",generated_at)
+                validate_story(item,f"{name} #{original_rank}",generated_at)
+                if item["id"] in ids:
+                    raise TickerError(f"{name} #{original_rank}: duplicate item")
+            except (TickerError, ValueError, KeyError, TypeError) as exc:
+                dropped += 1
+                print(f"{name}: dropping item #{original_rank}: {exc}",file=sys.stderr)
+                continue
             ids.add(item["id"]); items.append(item)
-        out.append({"name":name,"sport":sport,"items":items})
+
+        if not items:
+            print(f"{name}: dropping event because no fresh valid items remain",file=sys.stderr)
+            continue
+
+        for rank,item in enumerate(items,1):
+            item["rank"]=rank
+
+        out.append({
+            "name":name,
+            "sport":sport,
+            "items":items,
+            "droppedItemCount":dropped,
+        })
     return out
 
 def semantic_payload(dataset):
-    return {k:dataset.get(k) for k in ["schemaVersion","freshnessHours","model","researchMode","leagues","specialEvents"]}
+    return {k:dataset.get(k) for k in ["schemaVersion","freshnessHours","model","researchMode","a2Revision","leagues","specialEvents"]}
 
 def load_previous(path):
     if not path.exists(): return None
@@ -403,6 +462,7 @@ def main():
         "freshnessHours":FRESHNESS_HOURS,
         "model":args.model,
         "researchMode":"per-league-plus-special-events",
+        "a2Revision":"A2.1-filter-invalid-items",
         "leagues":leagues,
         "specialEvents":specials,
     }
