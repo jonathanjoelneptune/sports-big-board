@@ -1,0 +1,27 @@
+Sports Big Board v5.4.0 — Controller Readiness / Interaction Architecture
+
+BASELINE
+- Apply this package over the deployed v5.3.20 repository.
+
+MANUAL GITHUB UPLOAD
+1. Extract this ZIP.
+2. Open the extracted Sports-Big-Board-v5.4.0-Controller-Readiness folder.
+3. Upload the CONTENTS of that folder to the repository root.
+4. Preserve all architecture/, ui/, tests/, tools/, sbb/, and cloud/ subdirectories.
+5. Replace existing files when GitHub prompts.
+6. Commit the entire upload together as one v5.4.0 release.
+7. Let Deploy Sports Big Board run VERIFY.sh.
+
+NEW CONTROLLER-READINESS SURFACES
+- architecture/controller-readiness-v540.js
+- ui/controller-readiness-v540.css
+- tests/test_v540_controller_readiness.py
+- CONTROLLER-REGION-MAP-v5.4.0.md
+
+IMPORTANT
+- v5.4.0 does NOT activate Gamepad input yet.
+- Mouse/keyboard behavior remains the live interaction path.
+- The new layer registers every actionable control with a semantic focus ID and region.
+- New dynamic controls are registered with a child-list-only observer.
+- SBB_CONTROLLER_READINESS.audit() reports semantic coverage in the browser console.
+- Any future control that falls back to global-utility remains reachable but causes the controller audit to WARN until it is mapped explicitly.

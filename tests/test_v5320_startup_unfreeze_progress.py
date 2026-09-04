@@ -4,7 +4,7 @@ import re
 
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
-assert VERSION=='5.3.20',VERSION
+assert VERSION=='5.4.0',VERSION
 index=(ROOT/'index.html').read_text()
 score=(ROOT/'ui'/'game-center-score-authority-v5319.js').read_text()
 bumper=(ROOT/'architecture'/'playback-transition-bumper-v5319.js').read_text()

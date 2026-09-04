@@ -1,13 +1,13 @@
-/* Sports Big Board v5.3.20 — transition bumper authority, startup-safe.
-   v5.3.20 used a MutationObserver on the legacy loading overlay while other
+/* Sports Big Board v5.4.0 — transition bumper authority, startup-safe.
+   v5.4.0 used a MutationObserver on the legacy loading overlay while other
    playback code was also changing that same class. On some browsers those two
-   writers could create a hot mutation loop immediately after launch. v5.3.20
+   writers could create a hot mutation loop immediately after launch. v5.4.0
    removes DOM observation entirely. Playback Session events own the transition,
    and a CSS state flag hides the raw loading surface while the bumper is active. */
 (() => {
   'use strict';
   if(window.SBB_TRANSITION_BUMPER_V5319?.installed)return;
-  const VERSION='5.3.20';
+  const VERSION='5.4.0';
   let activeSelectionId=0,proofTimer=null,lastShownAt=0,lastRecoveredSelection=0;
   let overlayTimers=[];
   const clean=v=>String(v??'').trim();
@@ -85,7 +85,7 @@
         return;
       }
     }catch(_){ }
-    try{if(typeof manualQueueAdvance==='function')manualQueueAdvance(1,{reason:'v5.3.20 transition timeout'});}catch(_){ }
+    try{if(typeof manualQueueAdvance==='function')manualQueueAdvance(1,{reason:'v5.4.0 transition timeout'});}catch(_){ }
   }
   function beginProofLoop(id){
     if(proofTimer)clearTimeout(proofTimer);
