@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="sbb-release-version" content="5.5.0">
+  <title>Sports Big Board Media Audit — v5.5.0</title>
+  <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preconnect" href="https://www.youtube-nocookie.com">
+  <link rel="stylesheet" href="ui/media-audit-v550.css?v=5.5.0">
+  <script src="config.js?v=5.5.0"></script>
+  <script src="api-runtime.js?v=5.5.0"></script>
+</head>
+<body>
+  <header class="audit-header">
+    <div>
+      <div class="eyebrow">SPORTS BIG BOARD</div>
+      <h1>MEDIA HEALTH AUDIT</h1>
+      <p>Browser-certify every assigned game media asset by proving embedded playback actually starts.</p>
+    </div>
+    <div class="header-actions">
+      <span class="release">v5.5.0</span>
+      <a href="index.html">OPEN BIG BOARD</a>
+      <a href="backend.html">BACKEND</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="summary-grid" aria-label="Media audit summary">
+      <article><small>CATALOG GAMES</small><strong id="metricGames">—</strong><span id="metricGamesSub">Loading inventory</span></article>
+      <article><small>GAMES AUDITED</small><strong id="metricAudited">0</strong><span id="metricAuditedSub">0%</span></article>
+      <article class="healthy"><small>HEALTHY</small><strong id="metricHealthy">0</strong><span>All assigned assets pass</span></article>
+      <article class="degraded"><small>DEGRADED</small><strong id="metricDegraded">0</strong><span>Playable with dead media</span></article>
+      <article class="bad"><small>UNPLAYABLE</small><strong id="metricUnplayable">0</strong><span>Media exists, none plays</span></article>
+      <article class="missing"><small>NO MEDIA</small><strong id="metricNoMedia">0</strong><span>No assigned game media</span></article>
+      <article><small>ASSETS TESTED</small><strong id="metricAssets">0</strong><span id="metricAssetsSub">0 passed • 0 failed</span></article>
+      <article><small>RUN STATUS</small><strong id="metricRun">IDLE</strong><span id="metricRunSub">Ready</span></article>
+    </section>
+
+    <section class="controls-panel">
+      <div class="control-row primary-actions">
+        <button id="auditEverything" class="primary">AUDIT EVERYTHING</button>
+        <button id="auditFailed">RETEST FAILED</button>
+        <button id="auditStale">AUDIT STALE</button>
+        <button id="auditPause" disabled>PAUSE</button>
+        <button id="auditResume" disabled>RESUME</button>
+        <button id="auditStop" disabled>STOP</button>
+        <button id="exportManifest">REHYDRATION JSON</button>
+        <button id="exportCsv">FAILURES CSV</button>
+      </div>
+      <div class="control-row filters">
+        <label>League<select id="filterLeague"><option value="">ALL LEAGUES</option></select></label>
+        <label>Health<select id="filterHealth"><option value="">ALL HEALTH</option><option>HEALTHY</option><option>DEGRADED</option><option>UNPLAYABLE</option><option>NO_MEDIA</option><option>UNTESTED</option><option>STALE</option></select></label>
+        <label>Tier<select id="filterTier"><option value="">ALL TIERS</option><option value="green">GREEN</option><option value="extended">PURPLE</option><option value="gold">GOLD</option><option value="blue">BLUE</option></select></label>
+        <label>Search<input id="filterSearch" type="search" placeholder="Team, event, title…"></label>
+        <label>Rows<select id="pageSize"><option>50</option><option selected>100</option><option>250</option></select></label>
+        <button id="refreshInventory">REFRESH INVENTORY</button>
+      </div>
+      <div class="run-progress">
+        <div class="progress-track"><div id="progressFill"></div></div>
+        <div><strong id="progressLabel">Idle</strong><span id="progressDetail">No audit running.</span></div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="catalog-panel">
+        <div class="panel-head">
+          <div><small>CANONICAL GAME INVENTORY</small><strong id="tableCount">0 games</strong></div>
+          <div class="legend"><span class="dot green"></span>playable <span class="dot red"></span>failed <span class="dot gray"></span>untested</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th></th><th>Date</th><th>League</th><th>Game</th><th>Green</th><th>Purple</th><th>Gold</th><th>Blue</th><th>Overall</th><th>Last audit</th></tr></thead>
+            <tbody id="gameRows"><tr><td colspan="10" class="empty">Loading catalog…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pager"><button id="pagePrev">PREV</button><span id="pageLabel">—</span><button id="pageNext">NEXT</button></div>
+      </div>
+
+      <aside class="probe-panel">
+        <div class="panel-head"><div><small>CURRENT PLAYBACK PROBE</small><strong id="probeGame">Waiting</strong></div><span id="probeState" class="state idle">IDLE</span></div>
+        <div id="probeViewport" class="probe-viewport">
+          <div id="youtubeProbe"></div>
+          <video id="directProbe" muted playsinline preload="metadata"></video>
+          <div id="probePlaceholder">The audit reuses this single player surface for every asset.</div>
+        </div>
+        <dl class="probe-meta">
+          <div><dt>Asset</dt><dd id="probeAsset">—</dd></div>
+          <div><dt>Tier</dt><dd id="probeTier">—</dd></div>
+          <div><dt>Provider</dt><dd id="probeProvider">—</dd></div>
+          <div><dt>Startup</dt><dd id="probeStartup">—</dd></div>
+          <div><dt>Result</dt><dd id="probeResult">—</dd></div>
+        </dl>
+        <div class="probe-log" id="probeLog" aria-live="polite"></div>
+      </aside>
+    </section>
+  </main>
+
+  <template id="assetTemplate">
+    <tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid"></div></td></tr>
+  </template>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="ui/media-audit-v550.js?v=5.5.0"></script>
+</body>
+</html>

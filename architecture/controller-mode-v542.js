@@ -1,11 +1,11 @@
-/* Sports Big Board v5.4.9 — Controller Radials + Native Windows Bridge + Pointer Fallback.
+/* Sports Big Board v5.5.0 — Controller Radials + Native Windows Bridge + Pointer Fallback.
    Builds on the v5.4.0 semantic navigation graph and v5.4.1 automatic takeover.
    Adds robust browser-level gamepad diagnostics, a live header indicator, RT
    League radial, LT Date/Scope radial, and R3 analog pointer fallback. */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_MODE?.version==='5.4.9')return;
-  const VERSION='5.4.9';
+  if(window.SBB_CONTROLLER_MODE?.version==='5.5.0')return;
+  const VERSION='5.5.0';
   const PREF_KEY='sports-big-board.controller-mode.v1';
   const DEADZONE=.20;
   const NEUTRAL_DEADZONE=.28;

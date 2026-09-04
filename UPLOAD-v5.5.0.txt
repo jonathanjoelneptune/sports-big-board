@@ -1,0 +1,21 @@
+Sports Big Board v5.5.0 — Media Health Audit
+
+Upload this package into the repository root, preserving paths.
+
+New operator surface:
+  /media-audit.html
+
+Capabilities:
+- paged canonical inventory across all historical leagues/events
+- per-event inspection of every assigned GAME media asset
+- one reusable browser playback probe for YouTube and direct video
+- requires actual PLAYING state + currentTime advancement before PASS
+- retries transient failures once before persisting FAILED
+- persists PLAYED/FAILED through the existing /api/history/media/runtime authority
+- restartable audit run cursor in browser localStorage
+- HEALTHY / DEGRADED / UNPLAYABLE / NO MEDIA / UNTESTED / STALE game health
+- Gold / Green / Purple / Blue per-game health counts
+- failure CSV and targeted rehydration JSON exports
+- no automatic rehydration in v5.5.0; audit first, replace second
+
+No Windows Controller Bridge update is required for v5.5.0.

@@ -1,9 +1,9 @@
-/* Sports Big Board v5.4.9 — Game Center score authority, observer-free.
-   v5.4.9 repaired stale provider 0-0 soccer summaries by watching Game Center DOM.
+/* Sports Big Board v5.5.0 — Game Center score authority, observer-free.
+   v5.5.0 repaired stale provider 0-0 soccer summaries by watching Game Center DOM.
    The persistent Game Center renderer also watches that DOM, so the two observers
    could repeatedly rewrite the same score and monopolize the main thread at boot.
 
-   v5.4.9 moves score authority to the DATA boundary instead. SBB_GAME_CENTER get()
+   v5.5.0 moves score authority to the DATA boundary instead. SBB_GAME_CENTER get()
    and peek() return a shallow corrected payload using SelectedEvent / score-ribbon
    final-score truth. Every Game Center renderer therefore receives one consistent
    score and no DOM observer is needed. Bounded one-shot DOM reassertions remain only
@@ -11,7 +11,7 @@
 (() => {
   'use strict';
   if (window.SBB_GAME_CENTER_SCORE_AUTHORITY?.installed) return;
-  const VERSION='5.4.9';
+  const VERSION='5.5.0';
   const $=id=>document.getElementById(id);
   const clean=v=>String(v??'').trim();
   const num=v=>{
