@@ -1,0 +1,38 @@
+Sports Big Board v5.5.0 R11 — Startup Lock Repair
+
+ROOT CAUSE
+The R11 cloud deployment reached the media-audit service restart, but the service
+constructor instantiated HistoryRepository. HistoryRepository performs catalog
+schema/meta writes during construction. The main Sports Big Board backend was
+simultaneously using the same persistent SQLite catalog, so service startup hit:
+
+sqlite3.OperationalError: database is locked
+
+GitHub correctly failed the cloud health check and rolled the backend release back.
+
+FIX
+- Remove the unused HistoryRepository instance from AuditStore startup.
+- Keep the HistoryRepository class import only for its static asset-key helper.
+- Add a read-first audit schema check.
+- If the existing R9+ audit tables are already present, service startup performs
+  no SQLite schema write at all.
+- On a genuinely fresh install, audit-owned table creation retries temporary
+  SQLite writer contention for up to 120 seconds.
+- Preserve all R11 reset/worker-cancellation, production parity, deterministic
+  ordering, diagnostics, and canonicalization behavior.
+
+UPLOAD
+1. At repository root, upload/replace:
+   media_audit_service.py
+2. Inside the existing GitHub /tests folder, upload/replace:
+   test_v550_media_health_audit.py
+3. Let the normal Deploy Sports Big Board workflow run.
+
+No VERSION bump, Pages file, controller bridge, installer, or workflow change is required.
+
+VALIDATION
+- Python syntax checks pass.
+- Focused v5.5.0 Media Health Audit regression passes.
+- Startup concurrency simulation passes with another WAL connection actively
+  holding SQLite's writer slot; established audit-schema initialization remains
+  read-only and returns immediately.

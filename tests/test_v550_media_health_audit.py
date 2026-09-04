@@ -125,4 +125,17 @@ assert 'current = self.store.active_run()' not in service[service.index('def _di
 assert "if(!confirm('RESET AUDIT will stop the current server worker" in js
 assert "if(!recertify)return command('/reset'" not in js
 
-print('PASS v5.5.0 R11 canonical Media Health Audit + hard reset/run replacement + parity + lock recovery + diagnostics')
+# R11 startup-lock repair: the audit service must not initialize the main HistoryRepository
+# during service startup, and existing audit schemas must use a read-first/no-write path.
+for token in [
+    'AUDIT_SCHEMA_TABLES',
+    'def _schema_ready(self):',
+    'def _ensure_schema(self):',
+    "SELECT name FROM sqlite_master WHERE type='table'",
+    'SQLite busy during audit schema startup; retrying',
+]:
+    assert token in service,token
+assert 'self.repo = HistoryRepository' not in service
+assert 'HistoryRepository(self.db_path)' not in service
+
+print('PASS v5.5.0 R11 canonical Media Health Audit + hard reset/run replacement + startup-lock-safe schema + parity + diagnostics')

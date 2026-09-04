@@ -189,11 +189,22 @@ def _tier(item: dict) -> str:
 
 
 class AuditStore:
+    AUDIT_SCHEMA_TABLES = {
+        "history_media_audit_run",
+        "history_media_audit_queue",
+        "history_media_audit_asset_result",
+        "history_media_canonical_package",
+    }
+
     def __init__(self, db_path: Path):
         self.db_path = str(db_path)
         self.lock = threading.RLock()
-        self.repo = HistoryRepository(self.db_path)
-        self._init_schema()
+        # Do not instantiate HistoryRepository here. Its constructor performs
+        # catalog schema/meta writes, which are owned by the main Big Board
+        # backend and can collide with that process during audit-service restart.
+        # The audit service only needs HistoryRepository.asset_key_for(), which
+        # is a static helper and does not require a repository instance.
+        self._ensure_schema()
 
     def connect(self, timeout=None):
         wait_ms = DB_BUSY_TIMEOUT_MS if timeout is None else max(1000, int(float(timeout) * 1000))
@@ -202,6 +213,36 @@ class AuditStore:
         conn.execute("PRAGMA foreign_keys=ON")
         conn.execute(f"PRAGMA busy_timeout={wait_ms}")
         return conn
+
+    def _schema_ready(self):
+        # Read-first startup: an established R9+ catalog already has these tables,
+        # so a normal deploy/restart performs no SQLite write at service startup.
+        with closing(self.connect(timeout=5)) as conn:
+            placeholders=",".join("?" for _ in self.AUDIT_SCHEMA_TABLES)
+            rows=conn.execute(
+                f"SELECT name FROM sqlite_master WHERE type='table' AND name IN ({placeholders})",
+                tuple(sorted(self.AUDIT_SCHEMA_TABLES)),
+            ).fetchall()
+        return {str(r[0]) for r in rows} == self.AUDIT_SCHEMA_TABLES
+
+    def _ensure_schema(self):
+        # Fresh installs still need the audit tables. Retry only that audit-owned
+        # schema creation when the main backend temporarily owns SQLite's writer.
+        deadline=time.time()+120.0
+        while True:
+            try:
+                if self._schema_ready():
+                    return
+                self._init_schema()
+                return
+            except sqlite3.OperationalError as exc:
+                if not _is_db_locked(exc) or time.time() >= deadline:
+                    raise
+                print(
+                    f"[media-audit] SQLite busy during audit schema startup; retrying in {DB_LOCK_RETRY_SECONDS:g}s: {exc}",
+                    flush=True,
+                )
+                time.sleep(DB_LOCK_RETRY_SECONDS)
 
     def _init_schema(self):
         with self.lock, closing(self.connect()) as conn:
