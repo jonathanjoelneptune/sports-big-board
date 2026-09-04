@@ -1,4 +1,4 @@
-# Sports Big Board Windows Controller Bridge — v5.4.6
+# Sports Big Board Windows Controller Bridge — v5.4.7
 
 This local helper is for Windows controllers that work in **joy.cpl** but are not exposed by Chrome's Gamepad API. The Turtle Beach Stealth Ultra in 2.4 GHz wireless mode is the initial target.
 
@@ -47,9 +47,9 @@ The bridge tries **XInput first**. This is the expected path for Xbox-compatible
 
 Right-click the tray icon and choose **Copy bridge status** for diagnostics.
 
-## v5.4.6 fullscreen command whitelist
+## v5.4.7 fullscreen command whitelist
 
-The bridge remains loopback-only and origin-restricted. v5.4.6 adds exactly two browser-to-bridge commands so controller input can invoke browser/video fullscreen even though Chromium does not count Gamepad/WebSocket polling as trusted user activation:
+The bridge remains loopback-only and origin-restricted. v5.4.7 adds exactly two browser-to-bridge commands so controller input can invoke browser/video fullscreen even though Chromium does not count Gamepad/WebSocket polling as trusted user activation:
 
 - `app-fullscreen` — sends F11 to the active browser window.
 - `video-fullscreen` — sends F, matching Sports Big Board's existing video-fullscreen keyboard shortcut.
@@ -57,7 +57,7 @@ The bridge remains loopback-only and origin-restricted. v5.4.6 adds exactly two 
 No arbitrary key injection command is exposed. Unknown commands are ignored. The bridge still has no outbound internet connection and sends no output, rumble, firmware, or authentication data to the controller.
 
 
-## v5.4.6 fullscreen shortcuts
+## v5.4.7 fullscreen shortcuts
 
 Controller-originated browser fullscreen requests do not count as a trusted browser click. To make the LT+RT Special Commands wheel useful, the bridge accepts only two whitelisted local commands from Sports Big Board:
 

@@ -1,14 +1,14 @@
-/* Sports Big Board v5.4.6 — Native Windows Controller Bridge transport.
+/* Sports Big Board v5.4.7 — Native Windows Controller Bridge transport.
    Browser Gamepad remains the preferred zero-install transport. When Chrome does
    not expose a Windows controller (notably the Turtle Beach Stealth Ultra 2.4GHz
    receiver), this module consumes normalized state from the loopback-only Sports
    Big Board Controller Bridge at ws://127.0.0.1:5410. No controller data leaves
-   the local machine. v5.4.6 also permits a tiny whitelisted command channel for
+   the local machine. v5.4.7 also permits a tiny whitelisted command channel for
    controller-only fullscreen shortcuts (F11 app fullscreen and F video fullscreen). */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_NATIVE_BRIDGE?.version==='5.4.6')return;
-  const VERSION='5.4.6';
+  if(window.SBB_CONTROLLER_NATIVE_BRIDGE?.version==='5.4.7')return;
+  const VERSION='5.4.7';
   const PROTOCOL=1;
   const ENDPOINTS=['ws://127.0.0.1:5410/sbb-controller','ws://localhost:5410/sbb-controller'];
   const RECONNECT_MIN=700;
@@ -20,7 +20,7 @@
   let socket=null,endpointIndex=0,reconnectTimer=0,reconnectDelay=RECONNECT_MIN;
   let transportConnected=false,controllerConnected=false,live=false;
   let controllerId='',controllerSource='',bridgeVersion='',lastMessageAt=0,lastInputAt=0;
-  let sequence=0,lastError='',attempts=0,opens=0,closes=0,messages=0,commands=0,permissionProbeAt=0,permissionProbeResult='';
+  let sequence=0,lastError='',attempts=0,opens=0,closes=0,messages=0,commands=0,lastCommand='',lastCommandOk=null,lastCommandAt=0,permissionProbeAt=0,permissionProbeResult='';
   let buttons=Array(BUTTON_COUNT).fill(0),axes=Array(AXIS_COUNT).fill(0),lastFingerprint='';
   let synthetic=null;
   const listeners=new Set();
@@ -54,7 +54,7 @@
   function snapshot(){return {
     version:VERSION,protocol:PROTOCOL,supported:supported(),transportConnected,controllerConnected,live,
     controllerId,controllerSource,bridgeVersion,endpoint:socket?.url||ENDPOINTS[endpointIndex]||'',
-    lastMessageAt,lastInputAt,sequence,lastError,attempts,opens,closes,messages,commands,permissionProbeAt,permissionProbeResult,state:stateLabel()
+    lastMessageAt,lastInputAt,sequence,lastError,attempts,opens,closes,messages,commands,lastCommand,lastCommandOk,lastCommandAt,permissionProbeAt,permissionProbeResult,state:stateLabel()
   };}
   function notify(reason='state'){
     buildSynthetic();const detail={...snapshot(),reason};
@@ -84,6 +84,12 @@
     lastMessageAt=Date.now();messages++;
     if(payload.type==='hello'){
       bridgeVersion=clean(payload.bridgeVersion||payload.version);lastError='';notify('hello');return;
+    }
+    if(payload.type==='command-result'){
+      if(payload.bridgeVersion)bridgeVersion=clean(payload.bridgeVersion);
+      lastCommand=clean(payload.command);lastCommandOk=payload.ok===true;lastCommandAt=Date.now();
+      if(!lastCommandOk)lastError=`Windows rejected ${lastCommand||'controller command'}`;
+      notify('command-result');return;
     }
     if(payload.type!=='state'&&payload.type!=='status')return;
     if(payload.bridgeVersion)bridgeVersion=clean(payload.bridgeVersion);
@@ -138,7 +144,7 @@
     command=clean(command).toLowerCase();
     const allowed=new Set(['app-fullscreen','video-fullscreen']);
     if(!allowed.has(command)||!socket||socket.readyState!==WebSocket.OPEN)return false;
-    try{socket.send(JSON.stringify({type:'command',protocol:PROTOCOL,command}));commands++;notify('command-'+command);return true;}
+    try{socket.send(JSON.stringify({type:'command',protocol:PROTOCOL,command}));commands++;lastCommand=command;lastCommandOk=null;lastCommandAt=Date.now();notify('command-'+command);return true;}
     catch(err){lastError=`Bridge command failed: ${clean(err?.message||err)}`;notify('command-error');return false;}
   }
   function subscribe(fn){if(typeof fn!=='function')return()=>{};listeners.add(fn);return()=>listeners.delete(fn);}

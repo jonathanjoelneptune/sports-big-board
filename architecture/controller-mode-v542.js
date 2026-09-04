@@ -1,11 +1,11 @@
-/* Sports Big Board v5.4.6 — Controller Radials + Native Windows Bridge + Pointer Fallback.
+/* Sports Big Board v5.4.7 — Controller Radials + Native Windows Bridge + Pointer Fallback.
    Builds on the v5.4.0 semantic navigation graph and v5.4.1 automatic takeover.
    Adds robust browser-level gamepad diagnostics, a live header indicator, RT
    League radial, LT Date/Scope radial, and R3 analog pointer fallback. */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_MODE?.version==='5.4.6')return;
-  const VERSION='5.4.6';
+  if(window.SBB_CONTROLLER_MODE?.version==='5.4.7')return;
+  const VERSION='5.4.7';
   const PREF_KEY='sports-big-board.controller-mode.v1';
   const DEADZONE=.20;
   const NEUTRAL_DEADZONE=.28;
@@ -346,9 +346,39 @@
     activateLeague(league);
     return later(()=>clickVisible('#sbbLeagueAllBtn')||browseApi()?.browseAll?.());
   }
-  function openBrowseForLeague(league){
-    activateLeague(league);
-    return later(()=>{if(browseApi()?.open)browseApi().open();else clickVisible('#sbbBrowseBtn');});
+  const ENTITY_RADIAL_PAGE_SIZE=6;
+  function shortEntityLabel(name){
+    const v=clean(name);return v.length<=20?v:`${v.slice(0,18).trim()}…`;
+  }
+  async function openEntityBrowseRadial(league,{label='',parent='league-scope',special=false,page=0,names=null}={}){
+    league=clean(league).toUpperCase();if(!league)return false;
+    if(!special)activateLeague(league);
+    let entities=Array.isArray(names)?names.slice():null;
+    if(!entities){
+      showHelp({message:`LOADING ${browseLabel(league)}`,duration:1400});
+      try{entities=await browseApi()?.controllerEntities?.(league);}catch(_){entities=[];}
+    }
+    entities=[...new Set((entities||[]).map(clean).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+    if(!entities.length){showHelp({message:`NO ${browseLabel(league)} ENTRIES AVAILABLE`,duration:1800});return false;}
+    return openRadial('entity-browse',{league,label:clean(label)||league,parent,special:!!special,page:Math.max(0,Number(page)||0),names:entities});
+  }
+  function openBrowseForLeague(league,context={}){
+    return openEntityBrowseRadial(league,{label:context.label||league,parent:context.parent||'league-scope',special:!!context.special});
+  }
+  function chooseBrowseEntity(league,name){
+    try{const result=browseApi()?.browseEntity?.(name);return result!==false;}catch(_){return false;}
+  }
+  function entityBrowseOptions(context={}){
+    const league=clean(context.league).toUpperCase(),names=Array.isArray(context.names)?context.names:[],page=Math.max(0,Number(context.page)||0);
+    const totalPages=Math.max(1,Math.ceil(names.length/ENTITY_RADIAL_PAGE_SIZE)),safePage=Math.min(page,totalPages-1),start=safePage*ENTITY_RADIAL_PAGE_SIZE;
+    const slice=names.slice(start,start+ENTITY_RADIAL_PAGE_SIZE);
+    const options=slice.map(name=>({value:`ENTITY:${name}`,label:shortEntityLabel(name),action:()=>chooseBrowseEntity(league,name)}));
+    if(totalPages>1&&safePage>0)options.push({value:'PREV_PAGE',label:'◀ PREV',action:()=>queueRadial('entity-browse',{...context,page:safePage-1,names},28)});
+    if(totalPages>1&&safePage<totalPages-1)options.push({value:'NEXT_PAGE',label:'NEXT ▶',action:()=>queueRadial('entity-browse',{...context,page:safePage+1,names},28)});
+    options.push({value:'BACK_SCOPE',label:'BACK',action:()=>{
+      const type=context.special?'special-scope':'league-scope';return queueRadial(type,{league,label:context.label||league,parent:context.special?'special-league':'league'},28);
+    }});
+    return options;
   }
   function queueRadial(type,context={},delay=36){return later(()=>openRadial(type,context),delay);}
 
@@ -372,7 +402,7 @@
     return [
       {value:'TODAY',label:'TODAY',action:()=>openTodayForLeague(league)},
       {value:'ALL',label:'ALL',action:()=>openAllForLeague(league)},
-      {value:'BROWSE',label:browseLabel(league),action:()=>openBrowseForLeague(league)}
+      {value:'BROWSE',label:browseLabel(league),action:()=>openBrowseForLeague(league,{label:context.label||league,parent:'league-scope'})}
     ];
   }
   function specialEventNodes(){
@@ -410,7 +440,7 @@
     const league=clean(context.league||browseContext()?.specialContext?.league).toUpperCase();
     return [
       {value:'ALL',label:'ALL',action:()=>{try{return browseApi()?.browseAll?.()!==false;}catch(_){return true;}}},
-      {value:'BROWSE',label:browseLabel(league),action:()=>{try{browseApi()?.open?.();return true;}catch(_){return clickVisible('#sbbBrowseBtn');}}}
+      {value:'BROWSE',label:browseLabel(league),action:()=>openBrowseForLeague(league,{label:context.label||league,parent:'special-scope',special:true})}
     ];
   }
   function dateScopeOptions(){const league=contextualLeague();return [
@@ -420,7 +450,7 @@
     {value:'NEXT',label:'NEXT DAY',action:()=>clickVisible('[data-score-date-step="1"]')},
     {value:'DATE',label:'SELECT DATE',action:()=>clickVisible('#topDateSelectBtn,#scoreDayIndicator')},
     {value:'ALL',label:'ALL',action:()=>clickVisible('#sbbLeagueAllBtn')||clickVisible('#scoreFilters [data-score-filter="ALL"]')},
-    {value:'BROWSE',label:browseLabel(league),action:()=>{try{browseApi()?.open?.();return true;}catch(_){return clickVisible('#sbbBrowseBtn');}}},
+    {value:'BROWSE',label:browseLabel(league),action:()=>openBrowseForLeague(league,{label:league,parent:'league-scope',special:!!browseContext()?.specialContext?.league})},
     {value:'RETURN',label:'RETURN TODAY',action:()=>clickVisible('#returnTodayBtn')||chooseAbsoluteDate(isoLocal(0))}
   ];}
   function fullscreenCommand(kind){
@@ -455,13 +485,14 @@
     if(type==='league')return 'LEAGUES';if(type==='date')return 'DATE / SCOPE';if(type==='commands')return 'SPECIAL COMMANDS';
     if(type==='league-scope')return clean(context.label||context.league||'LEAGUE');
     if(type==='special-league')return 'SPECIAL EVENTS';if(type==='special-scope')return clean(context.label||context.league||'SPECIAL EVENT');
+    if(type==='entity-browse')return `${clean(context.label||context.league||'LEAGUE')} ${browseLabel(context.league)}`;
     return 'CONTROLLER';
   }
   function renderRadial(){
     const el=ensureRadial();if(!radial)return;
     const items=radial.options||[],host=el.querySelector('.sbb-controller-radial-items'),center=el.querySelector('.sbb-controller-radial-center strong'),hint=el.querySelector('.sbb-controller-radial-center span');
     if(center)center.textContent=radialTitle(radial.type,radial.context);
-    if(hint)hint.textContent=['league','date','commands'].includes(radial.type)?'MOVE RIGHT STICK • RELEASE TRIGGER':'MOVE RIGHT STICK • A SELECT • B CLOSE';
+    if(hint)hint.textContent=['league','date','commands'].includes(radial.type)?'MOVE RIGHT STICK • RELEASE TRIGGER':(radial.type==='entity-browse'?`PAGE ${Math.min((radial.context?.page||0)+1,Math.max(1,Math.ceil((radial.context?.names?.length||1)/ENTITY_RADIAL_PAGE_SIZE)))} • A SELECT`:'MOVE RIGHT STICK • A SELECT • B CLOSE');
     const radius=178;host.innerHTML=items.map((item,i)=>{
       const angle=(-Math.PI/2)+(Math.PI*2*i/items.length),x=Math.cos(angle)*radius,y=Math.sin(angle)*radius;
       const selected=i===radialSelection?' selected':'',current=item.value===radial.current?' current':'';
@@ -481,6 +512,7 @@
     else if(type==='league-scope')options=leagueScopeOptions(context);
     else if(type==='special-league')options=Array.isArray(context.options)?context.options:specialEventOptions();
     else if(type==='special-scope')options=specialScopeOptions(context);
+    else if(type==='entity-browse')options=entityBrowseOptions(context);
     radial={type,options,current:type==='league'?currentLeague():'',context:{...context}};
     const el=ensureRadial();el.classList.remove('hidden');el.setAttribute('aria-hidden','false');document.documentElement.dataset.sbbControllerRadial=type;renderRadial();
     return true;

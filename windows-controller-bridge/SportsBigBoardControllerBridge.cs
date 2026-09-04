@@ -104,7 +104,7 @@ namespace SportsBigBoard
     {
         public const int Port = 5410;
         public const int ProtocolVersion = 1;
-        public const string BridgeVersion = "5.4.6";
+        public const string BridgeVersion = "5.4.7";
         private TcpListener listener;
         private Thread listenerThread;
         private volatile bool running;
@@ -254,7 +254,7 @@ namespace SportsBigBoard
                     if (stream.DataAvailable)
                     {
                         string commandFrame = TryReadClientTextFrame(stream);
-                        if (!string.IsNullOrEmpty(commandFrame)) HandleCommand(commandFrame);
+                        if (!string.IsNullOrEmpty(commandFrame)) HandleCommand(commandFrame, stream);
                     }
                     Thread.Sleep(16);
                 }
@@ -310,16 +310,16 @@ namespace SportsBigBoard
             return false;
         }
 
-        private void HandleCommand(string json)
+        private void HandleCommand(string json, NetworkStream stream)
         {
             if (string.IsNullOrEmpty(json) || json.IndexOf("\"type\":\"command\"", StringComparison.OrdinalIgnoreCase) < 0) return;
             string command = "";
             if (json.IndexOf("\"command\":\"app-fullscreen\"", StringComparison.OrdinalIgnoreCase) >= 0) command = "app-fullscreen";
             else if (json.IndexOf("\"command\":\"video-fullscreen\"", StringComparison.OrdinalIgnoreCase) >= 0) command = "video-fullscreen";
             if (command.Length == 0) return;
-            if (command == "app-fullscreen") KeyboardCommand.Tap(0x7A); // F11
-            else if (command == "video-fullscreen") KeyboardCommand.Tap(0x46); // F
-            lock (statusLock) { commandCount++; lastCommand = command; }
+            bool ok = command == "app-fullscreen" ? KeyboardCommand.Tap(0x7A) : KeyboardCommand.Tap(0x46); // F11 / F
+            lock (statusLock) { commandCount++; lastCommand = command + (ok ? " • sent" : " • FAILED"); }
+            try { SendText(stream, "{\"type\":\"command-result\",\"protocol\":1,\"bridgeVersion\":\"" + BridgeVersion + "\",\"command\":\"" + command + "\",\"ok\":" + (ok ? "true" : "false") + "}"); } catch { }
         }
 
         private static string TryReadClientTextFrame(NetworkStream stream)
@@ -417,17 +417,50 @@ namespace SportsBigBoard
 
     internal static class KeyboardCommand
     {
+        private const uint INPUT_KEYBOARD = 1;
         private const uint KEYEVENTF_KEYUP = 0x0002;
+        [StructLayout(LayoutKind.Sequential)]
+        private struct INPUT
+        {
+            public uint type;
+            public INPUTUNION U;
+        }
+        [StructLayout(LayoutKind.Explicit)]
+        private struct INPUTUNION
+        {
+            [FieldOffset(0)] public KEYBDINPUT ki;
+        }
+        [StructLayout(LayoutKind.Sequential)]
+        private struct KEYBDINPUT
+        {
+            public ushort wVk;
+            public ushort wScan;
+            public uint dwFlags;
+            public uint time;
+            public UIntPtr dwExtraInfo;
+        }
+        [DllImport("user32.dll", SetLastError = true)] private static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
         [DllImport("user32.dll")] private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
-        public static void Tap(byte key)
+        public static bool Tap(byte key)
         {
             try
             {
-                keybd_event(key, 0, 0, UIntPtr.Zero);
-                Thread.Sleep(18);
-                keybd_event(key, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
+                INPUT down = new INPUT(); down.type = INPUT_KEYBOARD; down.U.ki.wVk = key;
+                INPUT up = new INPUT(); up.type = INPUT_KEYBOARD; up.U.ki.wVk = key; up.U.ki.dwFlags = KEYEVENTF_KEYUP;
+                INPUT[] inputs = new INPUT[] { down, up };
+                uint sent = SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(INPUT)));
+                if (sent == (uint)inputs.Length) return true;
             }
             catch { }
+            // Compatibility fallback for unusual Windows input stacks.
+            try
+            {
+                keybd_event(key, 0, 0, UIntPtr.Zero);
+                Thread.Sleep(24);
+                keybd_event(key, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
+                return true;
+            }
+            catch { return false; }
         }
     }
 
@@ -442,7 +475,7 @@ namespace SportsBigBoard
         public string ToJson(long sequence)
         {
             StringBuilder sb = new StringBuilder(512);
-            sb.Append("{\"type\":\"state\",\"protocol\":1,\"bridgeVersion\":\"5.4.6\",\"sequence\":");
+            sb.Append("{\"type\":\"state\",\"protocol\":1,\"bridgeVersion\":\"5.4.7\",\"sequence\":");
             sb.Append(sequence.ToString(CultureInfo.InvariantCulture));
             sb.Append(",\"connected\":").Append(Connected ? "true" : "false");
             sb.Append(",\"id\":\"").Append(JsonEscape(Id)).Append("\"");

@@ -1,4 +1,4 @@
-/* Sports Big Board v5.4.6 — Persistent Browse + Context Ribbon + Event Identity
+/* Sports Big Board v5.4.7 — Persistent Browse + Context Ribbon + Event Identity
    Contextual team/player browse control, anchored browse popover, date-headed
    highlight timeline, explicit queue affordance, scores, and media-tier color. */
 
@@ -174,7 +174,7 @@ html[data-sbb-theme="light"] .sbb-curation-date-pill{background:#f4f7f9!importan
 @media(prefers-reduced-motion:reduce){.sbb-curation-loading span,#sbbBrowseSubnav{animation:none!important}}
 
 
-/* v5.4.6: a curated competition with no Game Center implementation must never
+/* v5.4.7: a curated competition with no Game Center implementation must never
    reveal the previously selected game's stale panel beneath the neutral state. */
 body.sbb-curated-no-game-center #gameCenterContent{display:none!important}
 body.sbb-curated-no-game-center #gameCenterEmpty{display:flex!important;flex:1 1 auto!important}
@@ -192,7 +192,7 @@ body.sbb-curated-no-game-center #nextUpDock{margin-top:auto!important}
 #sbbCurationPlayLeft{min-width:56px}
 
 /* ======================================================================
-   v5.4.6 — Team Focus enrichment + full-height curated rail
+   v5.4.7 — Team Focus enrichment + full-height curated rail
    ====================================================================== */
 
 /* The curated rail is exactly the scoreboard rail's captured height. There is
@@ -335,7 +335,7 @@ html[data-sbb-team-theme="on"] #sbbFocusExit{border-color:color-mix(in srgb,var(
 @media(prefers-reduced-motion:reduce){#sbbEntityTickerTrack.is-overflowing .sbb-entity-info-conveyor{animation:none!important}}
 
 /* ======================================================================
-   v5.4.6 — Focus integration, participant marks, full team skin
+   v5.4.7 — Focus integration, participant marks, full team skin
    ====================================================================== */
 
 /* CFB is retired. NCAAF is the only college-football ribbon namespace. */
@@ -374,7 +374,7 @@ html[data-sbb-team-theme="on"] #sbbFocusExit{border-color:color-mix(in srgb,var(
 .sbb-entity-identity-copy{align-self:center!important;justify-content:center!important}
 .sbb-entity-identity-copy>span{font-size:9.6px!important;line-height:1.05!important}
 
-/* NEXT is one compact game per item now, so it does not need the huge v5.4.6
+/* NEXT is one compact game per item now, so it does not need the huge v5.4.7
    reservation. Many independent RESULT / NEXT / RANK / NEWS cells make the lane
    long enough to behave as an actual continuously moving team ticker. */
 .sbb-entity-info-item.next{min-width:145px!important;max-width:220px!important}
@@ -510,7 +510,7 @@ html[data-sbb-team-theme="on"][data-sbb-team-theme-light="1"] :is(
 ){background:#fff!important;color:var(--sbb-team-text)!important}
 
 /* ======================================================================
-   v5.4.6 — Theme hardening, accessible contrast, event-context controls
+   v5.4.7 — Theme hardening, accessible contrast, event-context controls
    ====================================================================== */
 
 /* Browse rows carry a mark, compact short code, full name, and scope label. */
@@ -659,7 +659,7 @@ html[data-sbb-team-theme="on"] #sbbSpecialEventsMenu button:hover{
 
 
 /* ======================================================================
-   v5.4.6 — context polish: compact ticker, white logo tiles, action language
+   v5.4.7 — context polish: compact ticker, white logo tiles, action language
    ====================================================================== */
 
 /* Team Browse no longer repeats the team abbreviation after the crest. Every
@@ -780,7 +780,7 @@ html[data-sbb-team-theme="on"] #sbbSpecialEventsMenu button:hover{
 }
 
 /* ======================================================================
-   v5.4.6 — special-event stability + tennis flags
+   v5.4.7 — special-event stability + tennis flags
    ====================================================================== */
 /* The active event name is a presentation header, not another canonical score
    filter. Keeping it inert prevents the score renderer from treating it as a
@@ -801,7 +801,7 @@ html[data-sbb-team-theme="on"] #sbbSpecialEventsMenu button:hover{
 }
 
 /* ======================================================================
-   v5.4.6 — league context shortcuts + Special Event Match Center
+   v5.4.7 — league context shortcuts + Special Event Match Center
    ====================================================================== */
 #sbbLeagueTodayBtn,#sbbLeagueAllBtn{
   height:30px;display:inline-flex;align-items:center;justify-content:center;
@@ -835,7 +835,7 @@ body.sbb-special-event-match-center #sbbSpecialMatchCenter{
 html[data-sbb-team-theme="on"] body.sbb-special-event-match-center #sbbSpecialMatchCenter{background:linear-gradient(180deg,var(--sbb-team-gradient-start),var(--sbb-team-bg))!important;color:var(--sbb-team-text)!important}
 
 /* ======================================================================
-   v5.4.6 — normal-league scope controls are one subordinate green group.
+   v5.4.7 — normal-league scope controls are one subordinate green group.
    TODAY / ALL / TEAM BROWSE visually slide out from beneath the selected league
    without looking like peer league buttons. Special Event navigation is unchanged.
    ====================================================================== */
@@ -859,7 +859,7 @@ html[data-sbb-team-theme="on"] body.sbb-special-event-match-center #sbbSpecialMa
 #sbbBrowseSubnav:has(#sbbLeagueTodayBtn:not(.hidden)) #sbbBrowseBtn b{color:#b7ffd2!important}
 
 /* ======================================================================
-   v5.4.6 — compact normal-league scope controls.
+   v5.4.7 — compact normal-league scope controls.
    The three green controls remain visibly subordinate to the selected league,
    but are smaller pills with real horizontal breathing room between them.
    ====================================================================== */
@@ -895,7 +895,7 @@ html[data-sbb-team-theme="on"] body.sbb-special-event-match-center #sbbSpecialMa
 }
 
 /* ======================================================================
-   v5.4.6 — tighter subordinate league controls.
+   v5.4.7 — tighter subordinate league controls.
    TODAY / ALL / TEAM BROWSE are deliberately smaller than a league chip and
    breathe horizontally so they read as one secondary control family.
    ====================================================================== */

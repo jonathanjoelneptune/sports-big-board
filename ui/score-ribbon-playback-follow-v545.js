@@ -1,11 +1,11 @@
-/* Sports Big Board v5.4.6 — playback-following score/All ribbon.
+/* Sports Big Board v5.4.7 — playback-following score/All ribbon.
    The currently playing game is highlighted in the visible score/All ribbon and
    the horizontal ribbon follows program advancement so the active game settles
    around the third visible card. Work is event-driven; no continuous polling. */
 (() => {
   'use strict';
-  if(window.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW?.version==='5.4.6')return;
-  const VERSION='5.4.6';
+  if(window.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW?.version==='5.4.7')return;
+  const VERSION='5.4.7';
   const STOP=new Set(('a an and are as at away by final for from full game games highlight highlights in is league live match of official on recap result season sports the to today vs versus with yesterday').split(' '));
   let scheduled=false,lastSignature='',lastCard=null,lastScrollAt=0,observer=null,titleObserver=null;
   const clean=v=>String(v??'').trim();

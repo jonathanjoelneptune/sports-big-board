@@ -1,0 +1,13 @@
+Sports Big Board v5.4.7 manual GitHub upload
+
+1. Extract this ZIP.
+2. Upload contents into the repository root preserving paths.
+3. Because GitHub web folder upload can be awkward, a separate non-tests ZIP and flat tests ZIP are also provided.
+4. Replace the local Windows Controller Bridge with the v5.4.7 bridge package and run START-CONTROLLER-BRIDGE.cmd once. The source hash/version change forces recompilation.
+5. Run the normal GitHub VERIFY/deploy workflow.
+
+Key changes:
+- Team/Player Browse stays inside controller radials for every league and Special Event.
+- Participant lists are paginated six per radial page.
+- App fullscreen uses Windows SendInput first and returns command-result acknowledgement to the browser.
+- Y/Triangle remains Show/Hide Game Center.

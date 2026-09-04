@@ -1,15 +1,15 @@
-/* Sports Big Board v5.4.6 — application/video fullscreen authority.
+/* Sports Big Board v5.4.7 — application/video fullscreen authority.
    The logo-adjacent fullscreen control owns Sports Big Board app fullscreen; the
    player utility control owns video fullscreen. Controller-originated fullscreen
    can use the loopback Windows bridge because browser Fullscreen API calls normally
    require a trusted DOM user activation that Gamepad/WebSocket polling cannot create. */
 (() => {
   'use strict';
-  if(window.SBB_FULLSCREEN_CONTROL?.version==='5.4.6')return;
-  const VERSION='5.4.6';
+  if(window.SBB_FULLSCREEN_CONTROL?.version==='5.4.7')return;
+  const VERSION='5.4.7';
   const APP_BUTTON='bigBoardFullscreenBtn';
   const VIDEO_BUTTON='fullscreenBtn';
-  let toastTimer=0;
+  let toastTimer=0,bridgeUnsub=null;
 
   const $=id=>document.getElementById(id);
   const visible=el=>{
@@ -48,6 +48,15 @@
   function nativeCommand(command){
     try{return !!bridge()?.sendCommand?.(command);}catch(_){return false;}
   }
+  function bindBridgeResults(){
+    if(bridgeUnsub)return;
+    try{bridgeUnsub=bridge()?.subscribe?.(detail=>{
+      if(detail?.reason!=='command-result')return;const snap=bridge()?.snapshot?.()||{};
+      if(snap.lastCommandOk===false)showToast(`Windows could not send ${snap.lastCommand||'fullscreen command'}`,'warn');
+      else if(snap.lastCommand==='app-fullscreen')showToast('App fullscreen command delivered');
+      else if(snap.lastCommand==='video-fullscreen')showToast('Video fullscreen command delivered');
+    })||null;}catch(_){}
+  }
   function appTarget(){return document.documentElement;}
   function activePlayerLayer(){return document.querySelector('#layerA.active,#layerB.active,.player-layer.active')||$('stage');}
   function videoTarget(){
@@ -69,7 +78,7 @@
     }
     // Gamepad and loopback-controller actions are not transient browser activations.
     // The native bridge therefore sends the browser's trusted F11 key on the local PC.
-    if(nativeCommand('app-fullscreen')){showToast('App fullscreen');return true;}
+    bindBridgeResults();if(nativeCommand('app-fullscreen')){showToast('Sending app fullscreen…');return true;}
     if(await requestFullscreen(appTarget(),{navigationUI:true})){sync();return true;}
     showToast('Fullscreen needs a direct browser click','warn');return false;
   }
@@ -80,14 +89,14 @@
       if(await requestFullscreen(videoTarget())){sync();return true;}
     }
     // Existing Sports Big Board keyboard contract uses F for active-video fullscreen.
-    if(nativeCommand('video-fullscreen')){showToast('Video fullscreen');return true;}
+    bindBridgeResults();if(nativeCommand('video-fullscreen')){showToast('Sending video fullscreen…');return true;}
     if(await requestFullscreen(videoTarget())){sync();return true;}
     showToast('Video fullscreen needs a direct browser click','warn');return false;
   }
   async function exitFullscreen({controller=false}={}){
     if(fullscreenElement()){const ok=await exitDomFullscreen();sync();return ok;}
     // If app fullscreen was entered through browser F11, toggle F11 again locally.
-    if(controller&&nativeCommand('app-fullscreen')){showToast('Exit fullscreen');return true;}
+    if(controller){bindBridgeResults();if(nativeCommand('app-fullscreen')){showToast('Sending exit fullscreen…');return true;}}
     return false;
   }
   function sync(){
@@ -112,7 +121,7 @@
     button.dataset.sbbFullscreenBound='1';button.addEventListener('click',onClick,true);
   }
   function bind(){
-    bindButton(APP_BUTTON);bindButton(VIDEO_BUTTON);
+    bindButton(APP_BUTTON);bindButton(VIDEO_BUTTON);bindBridgeResults();
     document.addEventListener('fullscreenchange',sync);document.addEventListener('webkitfullscreenchange',sync);
     window.addEventListener('pageshow',()=>{bindButton(APP_BUTTON);bindButton(VIDEO_BUTTON);sync();});
     sync();

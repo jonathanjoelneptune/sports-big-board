@@ -1,0 +1,7 @@
+Sports Big Board v5.4.7 Windows Controller Bridge
+
+Replace the existing windows-controller-bridge folder contents with the v5.4.7 package, then run START-CONTROLLER-BRIDGE.cmd once.
+
+v5.4.7 changes the bridge source hash and BridgeVersion, so the launcher recompiles automatically. Application fullscreen now uses Windows SendInput for F11 with keybd_event retained only as fallback. Video fullscreen uses the same path for F. The bridge also reports command-result acknowledgements back to the browser.
+
+The command channel remains loopback-only and whitelisted to app-fullscreen and video-fullscreen.
