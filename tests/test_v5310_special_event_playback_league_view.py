@@ -13,7 +13,7 @@ early=(ROOT/'architecture'/'playback-early-pause-recovery-v538.js').read_text()
 guard=(ROOT/'architecture'/'playback-progress-watchdog-v5310.js').read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
 
-assert version=='5.4.9',version
+assert version=='5.5.0',version
 
 # Special-event header is presentation-only. It must never feed the canonical
 # score-filter renderer, and repair is bounded to a missing-node child mutation.
@@ -87,4 +87,4 @@ for token in [
 
 assert 'tests/test_v5310_special_event_playback_league_view.py' in verify
 assert 'node --check architecture/playback-progress-watchdog-v5310.js' in verify
-print('PASS v5.4.9 special-event stability + playback continuity + conference League View + tennis flags')
+print('PASS v5.5.0 special-event stability + playback continuity + conference League View + tennis flags')
