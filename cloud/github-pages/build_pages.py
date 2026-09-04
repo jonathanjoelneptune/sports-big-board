@@ -11,10 +11,15 @@ if not api or parsed.scheme!='https' or not parsed.netloc:
     raise SystemExit('SBB_API_BASE_URL must be a public https:// URL')
 if out.exists(): shutil.rmtree(out)
 out.mkdir(parents=True)
-for name in ('index.html','backend.html','styles.css','app.js','core-model.js','api-runtime.js'):
+
+# Root-level static pages and runtime files published to GitHub Pages.
+# v5.5.0 R5: Media Health Audit must be included in the Pages artifact.
+for name in ('index.html','backend.html','media-audit.html','styles.css','app.js','core-model.js','api-runtime.js'):
     shutil.copy2(root/name,out/name)
+
 for directory in ('architecture','ui'):
     shutil.copytree(root/directory,out/directory)
+
 # Soundtrack metadata ships with Pages, but the ~400 MB MP3 library never does.
 # Audio remains in private Cloud Storage and is reached through the backend signed/proxy boundary.
 (out/'assets'/'soundtrack').mkdir(parents=True,exist_ok=True)
@@ -28,3 +33,4 @@ config=f"window.SBB_CONFIG = Object.freeze({{apiBase:{json.dumps(api)},soundtrac
 print(f'Built GitHub Pages frontend -> {out}')
 print(f'API base -> {api}')
 print('Backend Inspector -> backend.html')
+print('Media Health Audit -> media-audit.html')
