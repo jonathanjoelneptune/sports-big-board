@@ -4,7 +4,7 @@ import re
 
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
-assert VERSION=='5.4.8',VERSION
+assert VERSION=='5.4.9',VERSION
 index=(ROOT/'index.html').read_text()
 browse=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 browse_css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()

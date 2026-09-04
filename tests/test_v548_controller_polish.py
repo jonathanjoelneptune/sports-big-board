@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""v5.4.8 controller polish: transport toggle, view/drawer mapping, browse parity, dense logos, fullscreen exit."""
+"""v5.4.9 controller polish: transport toggle, view/drawer mapping, browse parity, dense logos, fullscreen exit."""
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
-assert VERSION=='5.4.8',VERSION
+assert VERSION=='5.4.9',VERSION
 index=(ROOT/'index.html').read_text()
 core=(ROOT/'architecture'/'controller-mode-v542.js').read_text()
 browse=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
@@ -11,7 +11,7 @@ fs=(ROOT/'ui'/'fullscreen-controller-v545.js').read_text()
 css=(ROOT/'ui'/'controller-mode-v542.css').read_text()
 fs_css=(ROOT/'ui'/'fullscreen-controller-v545.css').read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
-map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.4.8.md').read_text()
+map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.4.9.md').read_text()
 
 for asset in ['architecture/controller-mode-v542.js','ui/fullscreen-controller-v545.js','ui/controller-mode-v542.css','ui/fullscreen-controller-v545.css']:
     assert f'{asset}?v={VERSION}' in index,asset
@@ -63,4 +63,4 @@ assert 'videoFullscreen' in fs
 assert 'tests/test_v548_controller_polish.py' in verify
 for token in ['X / Square — Play / Pause','Y / Triangle — toggle Game Center ↔ League View','L3 / Left Stick Click','16','logo','EXIT VIDEO FULLSCREEN']:
     assert token in map_txt,token
-print('PASS v5.4.8 X play/pause + Y view toggle + L3 drawer + dense logo browse + team parity + fullscreen exit')
+print('PASS v5.4.9 X play/pause + Y view toggle + L3 drawer + dense logo browse + team parity + fullscreen exit')
