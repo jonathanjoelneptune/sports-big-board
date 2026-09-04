@@ -1,10 +1,11 @@
 {
-  "schemaVersion": 3,
-  "generatedAt": "2026-09-04T19:20:16Z",
+  "schemaVersion": 4,
+  "pipelineVersion": "A3.2-editor-reliability",
+  "generatedAt": "2026-09-04T20:22:23Z",
   "freshnessHours": 24.0,
-  "model": "gpt-5.6-luna",
-  "researchMode": "per-league-plus-special-events",
-  "a2Revision": "A2.3-editorial-ranking-precision",
+  "discoveryMode": "Highlightly + ESPN JSON news + official league pages; no OpenAI web search",
+  "model": "gpt-4o-mini",
+  "sourceCandidateHash": "7e467ebd64aeb67bf196bdda2fd136b28b4d4b193e6a16ddd0b4f5fe1187ad9a",
   "leagues": [
     {
       "league": "MLB",
@@ -12,286 +13,172 @@
       "items": [
         {
           "rank": 1,
-          "type": "STREAK",
-          "priority": 91,
-          "headline": "Rays’ losing streak at Globe Life Field reaches 10 games",
-          "text": "Tampa Bay fell 6-0 to Texas, extending its losing streak at Globe Life Field to 10 games while remaining in a tight AL playoff race.",
-          "entities": [
-            "Tampa Bay Rays",
-            "Texas Rangers"
+          "candidateIds": [
+            "cand-db17b8730d41e226"
           ],
-          "occurredAt": "2026-09-04T02:00:00Z",
-          "timePrecision": "hour",
-          "freshnessBasis": "Texas defeated Tampa Bay 6-0 on September 3, extending the Rays’ venue losing streak to 10 games.",
-          "ageHours": 17.34,
+          "type": "OTHER",
+          "priority": 2,
+          "headline": "Will Shohei Ohtani pitch in October?",
+          "text": "Ohtani hasn't been healthy enough to pitch in two months. Is his value as a pitcher in the postseason worth risking his bat?",
+          "entities": [
+            "Shohei Ohtani",
+            "Los Angeles Dodgers"
+          ],
+          "occurredAt": "2026-09-04T15:54:22Z",
+          "timePrecision": "exact",
+          "ageHours": 4.47,
+          "freshnessBasis": "hours ago",
           "status": "active",
           "sourceUrls": [
-            "https://www.mlb.com/rays/news"
+            "https://www.espn.com/mlb/story/_/id/49815603/mlb-2026-shohei-ohtani-los-angeles-dodgers-pitching-hitting-value-postseason-playoffs-injury"
           ],
-          "id": "mlb-8b053537f8dac9e0"
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49815603/mlb-2026-shohei-ohtani-los-angeles-dodgers-pitching-hitting-value-postseason-playoffs-injury"
+            }
+          ],
+          "id": "a3-fc38d5ee9090ba35"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-a80bb77276418853"
+          ],
           "type": "RETURN",
-          "priority": 89,
-          "headline": "Adley Rutschman homers twice in memorable return to Baltimore",
-          "text": "Rutschman celebrated his return to Camden Yards with two home runs as Boston defeated Baltimore, 6-5.",
+          "priority": 1,
+          "headline": "White Sox activate catcher Kyle Teel from 10-day injured list",
+          "text": "Kyle Teel, out since July with a high ankle sprain, is back with the White Sox after being activated from the injured list.",
           "entities": [
-            "Adley Rutschman",
-            "Boston Red Sox",
-            "Baltimore Orioles"
+            "Kyle Teel",
+            "Chicago White Sox"
           ],
-          "occurredAt": "2026-09-04T02:00:00Z",
-          "timePrecision": "hour",
-          "freshnessBasis": "Rutschman returned to Baltimore’s Camden Yards and hit two home runs in Boston’s September 3 win.",
-          "ageHours": 17.34,
+          "occurredAt": "2026-09-04T17:12:03Z",
+          "timePrecision": "exact",
+          "ageHours": 3.17,
+          "freshnessBasis": "hours ago",
           "status": "active",
           "sourceUrls": [
-            "https://www.mlb.com/news"
+            "https://www.espn.com/mlb/story/_/id/49826375/white-sox-activate-catcher-kyle-teel-10-day-injured-list"
           ],
-          "id": "mlb-e50d766d789b1085"
-        },
-        {
-          "rank": 3,
-          "type": "PLAYOFF",
-          "priority": 87,
-          "headline": "Cubs trim Brewers with 2-1 win in NL Central matchup",
-          "text": "Chicago defeated Milwaukee, 2-1, behind Kevin Gausman’s nine strikeouts and Pete Crow-Armstrong’s 39th home run. Milwaukee remains atop the NL Central, but the loss denied the Brewers another divisional win.",
-          "entities": [
-            "Chicago Cubs",
-            "Milwaukee Brewers",
-            "Kevin Gausman",
-            "Pete Crow-Armstrong"
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49826375/white-sox-activate-catcher-kyle-teel-10-day-injured-list"
+            }
           ],
-          "occurredAt": "2026-09-04T03:00:00Z",
-          "timePrecision": "hour",
-          "freshnessBasis": "Chicago beat Milwaukee 2-1 on September 3 in a game with direct NL Central and postseason implications.",
-          "ageHours": 16.34,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlb.com/cubs/news",
-            "https://www.mlb.com/scores/2026-09-03"
-          ],
-          "id": "mlb-3173d5ff02ad49f1"
-        },
-        {
-          "rank": 4,
-          "type": "STREAK",
-          "priority": 84,
-          "headline": "Pirates win fifth series in six tries",
-          "text": "Pittsburgh defeated San Francisco, 5-2, for its fifth series victory in the club’s last six series, continuing a late-season surge.",
-          "entities": [
-            "Pittsburgh Pirates",
-            "San Francisco Giants"
-          ],
-          "occurredAt": "2026-09-03T23:00:00Z",
-          "timePrecision": "hour",
-          "freshnessBasis": "Pittsburgh beat San Francisco 5-2 on September 3 and MLB reported the Pirates’ fifth series win in their last six.",
-          "ageHours": 20.34,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlb.com/news",
-            "https://www.mlb.com/scores/2026-09-03"
-          ],
-          "id": "mlb-cbafab4fd70d0f80"
-        },
-        {
-          "rank": 5,
-          "type": "RESULT",
-          "priority": 80,
-          "headline": "Dodgers walk off Cardinals, 3-2",
-          "text": "Teoscar Hernández delivered a walk-off hit as Los Angeles defeated St. Louis, 3-2, keeping the Dodgers in the crowded NL postseason race.",
-          "entities": [
-            "Los Angeles Dodgers",
-            "St. Louis Cardinals",
-            "Teoscar Hernández"
-          ],
-          "occurredAt": "2026-09-04T05:00:00Z",
-          "timePrecision": "hour",
-          "freshnessBasis": "Los Angeles defeated St. Louis 3-2 on a walk-off September 3.",
-          "ageHours": 14.34,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlb.com/video/topic/daily-recaps",
-            "https://www.mlb.com/scores/2026-09-03"
-          ],
-          "id": "mlb-6d050c126b645e74"
-        },
-        {
-          "rank": 6,
-          "type": "RESULT",
-          "priority": 78,
-          "headline": "Astros beat White Sox, 6-2, in AL Central race",
-          "text": "Houston defeated Chicago, 6-2, behind a four-run third inning and a home run from José Altuve. The White Sox remain atop the AL Central despite the loss.",
-          "entities": [
-            "Houston Astros",
-            "Chicago White Sox",
-            "José Altuve"
-          ],
-          "occurredAt": "2026-09-03T20:00:00Z",
-          "timePrecision": "hour",
-          "freshnessBasis": "Houston defeated Chicago 6-2 on September 3 as both clubs continued competing in the AL postseason picture.",
-          "ageHours": 23.34,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlb.com/video/topic/daily-recaps",
-            "https://www.mlb.com/scores/2026-09-03"
-          ],
-          "id": "mlb-807a30c3b356cea8"
-        },
-        {
-          "rank": 7,
-          "type": "RESULT",
-          "priority": 75,
-          "headline": "Blue Jays defeat Guardians, 6-3",
-          "text": "Toronto beat Cleveland, 6-3, behind a strong offensive performance from Nathan Lukes and Brett Bateman.",
-          "entities": [
-            "Toronto Blue Jays",
-            "Cleveland Guardians",
-            "Nathan Lukes",
-            "Brett Bateman"
-          ],
-          "occurredAt": "2026-09-03T22:00:00Z",
-          "timePrecision": "hour",
-          "freshnessBasis": "Toronto defeated Cleveland 6-3 on September 3.",
-          "ageHours": 21.34,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlb.com/video/topic/daily-recaps",
-            "https://www.mlb.com/scores/2026-09-03"
-          ],
-          "id": "mlb-6596c7e3799af6be"
+          "id": "a3-604b27f813644a78"
         }
-      ],
-      "droppedItemCount": 0,
-      "editorialDroppedCount": 0
+      ]
     },
     {
       "league": "NFL",
-      "seasonState": "preseason",
+      "seasonState": "active",
       "items": [
         {
           "rank": 1,
-          "type": "NEXT",
-          "priority": 78,
-          "headline": "49ers arrive in Melbourne ahead of historic Week 1 matchup with Rams",
-          "text": "San Francisco’s traveling party landed in Melbourne after a 15-hour charter flight and will spend the week acclimating before facing the Los Angeles Rams in the NFL’s Australia opener.",
+          "candidateIds": [
+            "cand-68ee469fe728f7e0"
+          ],
+          "type": "COACHING",
+          "priority": 2,
+          "headline": "Rams plan to bring entire team to season opener, including Donald",
+          "text": "The Rams plan to bring all of their players to Melbourne, Australia, for their season opener against the 49ers, head coach Sean McVay said Friday.",
           "entities": [
-            "San Francisco 49ers",
             "Los Angeles Rams",
-            "Melbourne Cricket Ground"
+            "Aaron Donald"
           ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "NFL.com reported the 49ers’ arrival in Melbourne on September 4, beginning their week-long preparation for the September 11 season opener.",
-          "ageHours": null,
-          "status": "next",
-          "sourceUrls": [
-            "https://www.nfl.com/news/niners-arrive-melbourne-historic-nfl-game-rams"
-          ],
-          "id": "nfl-f61b79b0fdb20277"
-        }
-      ],
-      "droppedItemCount": 0,
-      "editorialDroppedCount": 0
-    },
-    {
-      "league": "NBA",
-      "seasonState": "offseason",
-      "items": [
-        {
-          "rank": 1,
-          "type": "RETURN",
-          "priority": 88,
-          "headline": "Ben Simmons agrees to one-year deal with Kings, returning to NBA",
-          "text": "Ben Simmons agreed to a one-year, $3.5 million contract with Sacramento after sitting out the entire 2025-26 season. The former No. 1 pick is expected to provide veteran depth behind rookie point guard Darius Acuff Jr.",
-          "entities": [
-            "Ben Simmons",
-            "Sacramento Kings",
-            "Darius Acuff Jr."
-          ],
-          "occurredAt": "2026-09-04T14:25:00Z",
+          "occurredAt": "2026-09-04T19:08:46Z",
           "timePrecision": "exact",
-          "freshnessBasis": "Simmons’ agreement with Sacramento was reported on September 4.",
-          "ageHours": 4.92,
+          "ageHours": 1.23,
+          "freshnessBasis": "hours ago",
           "status": "active",
           "sourceUrls": [
-            "https://www.nba.com/news/ben-simmons-1-year-deal-sacramento-kings",
-            "https://www.nbcsports.com/nba/news/ben-simmons-returning-to-nba-joining-kings-on-one-year-minimum-deal"
+            "https://www.espn.com/nfl/story/_/id/49826940/rams-plan-bring-entire-team-season-opener-including-donald"
           ],
-          "id": "nba-ddec061d67082aaa"
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49826940/rams-plan-bring-entire-team-season-opener-including-donald"
+            }
+          ],
+          "id": "a3-323a67059b1be822"
         },
         {
           "rank": 2,
-          "type": "SIGNING",
-          "priority": 84,
-          "headline": "Amen Thompson signs five-year, $208M extension with Rockets",
-          "text": "Houston signed Amen Thompson to a five-year, $208 million rookie-scale extension, securing a key piece of its young core through the 2030-31 season.",
-          "entities": [
-            "Amen Thompson",
-            "Houston Rockets"
+          "candidateIds": [
+            "cand-aa51f33d6ad3d506"
           ],
-          "occurredAt": "2026-09-03T19:58:00Z",
+          "type": "LEGAL",
+          "priority": 1,
+          "headline": "Josh Jacobs' court appearance moved up to Sept. 10",
+          "text": "Packers running back Josh Jacobs' initial court appearance on misdemeanor charges has been moved up more than two months to Sept. 10.",
+          "entities": [
+            "Josh Jacobs",
+            "Green Bay Packers"
+          ],
+          "occurredAt": "2026-09-04T19:33:34Z",
           "timePrecision": "exact",
-          "freshnessBasis": "The Rockets made the extension official on September 3.",
-          "ageHours": 23.37,
+          "ageHours": 0.81,
+          "freshnessBasis": "hours ago",
           "status": "active",
           "sourceUrls": [
-            "https://www.nba.com/news/amen-thompson-5-year-extension-rockets"
+            "https://www.espn.com/nfl/story/_/id/49827202/josh-jacobs-court-appearance-moved-sept-10"
           ],
-          "id": "nba-28a334b75a996522"
-        },
-        {
-          "rank": 3,
-          "type": "SIGNING",
-          "priority": 78,
-          "headline": "Timberwolves officially sign Jonathan Kuminga",
-          "text": "Minnesota announced the signing of forward Jonathan Kuminga. Terms were not disclosed; Kuminga joins the Timberwolves after splitting the 2025-26 season between Atlanta and Golden State.",
-          "entities": [
-            "Jonathan Kuminga",
-            "Minnesota Timberwolves"
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49827202/josh-jacobs-court-appearance-moved-sept-10"
+            }
           ],
-          "occurredAt": "2026-09-04T14:54:00Z",
-          "timePrecision": "exact",
-          "freshnessBasis": "Minnesota announced Kuminga’s signing on September 4.",
-          "ageHours": 4.44,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.nba.com/timberwolves/news/timberwolves-sign-jonathan-kuminga"
-          ],
-          "id": "nba-669c5bfe722f89e8"
+          "id": "a3-f065a1e8939539df"
         }
-      ],
-      "droppedItemCount": 1,
-      "editorialDroppedCount": 0
+      ]
     },
     {
-      "league": "NHL",
-      "seasonState": "offseason",
+      "league": "NBA",
+      "seasonState": "active",
       "items": [
         {
           "rank": 1,
-          "type": "ROSTER",
-          "priority": 35,
-          "headline": "Stars sign Jack Williams as emergency goalie replacement",
-          "text": "Dallas signed Jack Williams as an emergency goalie replacement, according to the league transaction log.",
-          "entities": [
-            "Dallas Stars",
-            "Jack Williams"
+          "candidateIds": [
+            "cand-8fdbe1ac1835628a"
           ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "The transaction was listed for Friday, September 4, 2026, within the 24-hour window.",
-          "ageHours": null,
+          "type": "SIGNING",
+          "priority": 1,
+          "headline": "Ben Simmons returning to NBA on 1-year, $3.5M deal with Kings",
+          "text": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
+          "entities": [
+            "Ben Simmons",
+            "Sacramento Kings"
+          ],
+          "occurredAt": "2026-09-04T14:56:49Z",
+          "timePrecision": "exact",
+          "ageHours": 5.43,
+          "freshnessBasis": "hours ago",
           "status": "active",
           "sourceUrls": [
-            "https://www.cbssports.com/nhl/transactions/"
+            "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
           ],
-          "id": "nhl-2e85b6e5829f5ca8"
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
+            }
+          ],
+          "id": "a3-2b68bf9436540ffa"
         }
-      ],
-      "droppedItemCount": 0,
-      "editorialDroppedCount": 0
+      ]
+    },
+    {
+      "league": "NHL",
+      "seasonState": "active",
+      "items": []
     },
     {
       "league": "EPL",
@@ -299,76 +186,35 @@
       "items": [
         {
           "rank": 1,
-          "type": "SIGNING",
-          "priority": 82,
-          "headline": "Liverpool agree January move for Saint-Etienne forward Djylian N'Guessan",
-          "text": "Liverpool have agreed a deal to sign 18-year-old French forward Djylian N'Guessan from Saint-Etienne. He will remain in France on loan with Stade Brestois before joining Liverpool permanently in January.",
-          "entities": [
-            "Liverpool",
-            "Djylian N'Guessan",
-            "Saint-Etienne",
-            "Stade Brestois"
+          "candidateIds": [
+            "cand-0c4c9c99ea4c8994"
           ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "Liverpool officially announced the agreement on September 4, 2026.",
-          "ageHours": null,
+          "type": "COACHING",
+          "priority": 1,
+          "headline": "Roberto De Zerbi stands by Mykhailo Mudryk Ballon d'Or potential prediction",
+          "text": "Tottenham head coach Roberto De Zerbi has stood by his prediction of Mykhailo Mudryk being a player that can win the Ballon d'Or if he realizes his potential.",
+          "entities": [
+            "Mykhailo Mudryk",
+            "Tottenham Hotspur"
+          ],
+          "occurredAt": "2026-09-04T15:12:41Z",
+          "timePrecision": "exact",
+          "ageHours": 5.16,
+          "freshnessBasis": "hours ago",
           "status": "active",
           "sourceUrls": [
-            "https://www.liverpoolfc.com/news/liverpool-agree-deal-sign-djylian-nguessan?amp=1"
+            "https://www.espn.com/soccer/story/_/id/49824792/roberto-de-zerbi-stands-mykhailo-mudryk-ballon-dor-potential-prediction"
           ],
-          "id": "epl-a275d081f78e3e98"
-        },
-        {
-          "rank": 2,
-          "type": "ROSTER",
-          "priority": 72,
-          "headline": "Barcola cleared to be available for Liverpool debut at Ipswich",
-          "text": "Liverpool manager Andoni Iraola said new signing Bradley Barcola will be available for the trip to Ipswich, subject to completing Thursday training. A start is considered unlikely because he lacks preseason match minutes.",
-          "entities": [
-            "Liverpool",
-            "Bradley Barcola",
-            "Ipswich Town",
-            "Andoni Iraola"
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49824792/roberto-de-zerbi-stands-mykhailo-mudryk-ballon-dor-potential-prediction"
+            }
           ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "Liverpool's manager provided a new availability update ahead of Friday's Premier League match.",
-          "ageHours": null,
-          "status": "next",
-          "sourceUrls": [
-            "https://www.premierleague.com/en/news/4706313/predicted-line-ups-for-premier-league-teams-in-matchweek-3"
-          ],
-          "id": "epl-5e8dd94e18ca0482"
-        },
-        {
-          "rank": 3,
-          "type": "INJURY",
-          "priority": 68,
-          "headline": "Newcastle remain without four injured players for Bournemouth visit",
-          "text": "Newcastle are expected to be without Dan Burn, Joelinton, Tino Livramento and William Osula against Bournemouth. Manager Matthias Jaissle also declined to comment on reports that Osula could face a long-term absence.",
-          "entities": [
-            "Newcastle United",
-            "Dan Burn",
-            "Joelinton",
-            "Tino Livramento",
-            "William Osula",
-            "Matthias Jaissle",
-            "Bournemouth"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "Newcastle's manager and team-news reporting provided updated injury and availability information on September 4.",
-          "ageHours": null,
-          "status": "next",
-          "sourceUrls": [
-            "https://www.premierleague.com/en/news/4706313/predicted-line-ups-for-premier-league-teams-in-matchweek-3"
-          ],
-          "id": "epl-27b8e9608c7e6fa5"
+          "id": "a3-84e8a66cd99ee2cf"
         }
-      ],
-      "droppedItemCount": 0,
-      "editorialDroppedCount": 0
+      ]
     },
     {
       "league": "MLS",
@@ -376,160 +222,36 @@
       "items": [
         {
           "rank": 1,
-          "type": "SIGNING",
-          "priority": 95,
-          "headline": "Colorado Rapids land Morgan Whittaker in club-record deal",
-          "text": "Colorado acquired the 25-year-old winger from Middlesbrough for a reported club-record $10.7 million fee. Whittaker signed through the 2029-30 MLS season with an option for 2030-31 and will occupy a Designated Player slot.",
-          "entities": [
-            "Colorado Rapids",
-            "Morgan Whittaker",
-            "Middlesbrough FC"
+          "candidateIds": [
+            "cand-24173b1793bce533"
           ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "Colorado announced the signing on Friday, September 4.",
-          "ageHours": null,
+          "type": "COACHING",
+          "priority": 1,
+          "headline": "Tata Martino warns Atlanta vs. Miami: No way to neutralize Messi",
+          "text": "Atlanta United FC head coach Gerardo \"Tata\" Martino warned his players about Lionel Messi's capabilities ahead of Saturday's clash against Inter Miami CF.",
+          "entities": [
+            "Atlanta United FC",
+            "Inter Miami CF",
+            "Lionel Messi"
+          ],
+          "occurredAt": "2026-09-04T14:38:38Z",
+          "timePrecision": "exact",
+          "ageHours": 5.73,
+          "freshnessBasis": "hours ago",
           "status": "active",
           "sourceUrls": [
-            "https://www.mlssoccer.com/news/colorado-rapids-acquire-morgan-whittaker-club-record-deal-middlesbrough"
+            "https://www.espn.com/soccer/story/_/id/49825369/tata-martino-warns-atlanta-vs-miami-no-way-neutralize-messi"
           ],
-          "id": "mls-d839019b9e863bc2"
-        },
-        {
-          "rank": 2,
-          "type": "INJURY",
-          "priority": 82,
-          "headline": "NYCFC face major availability issues ahead of Nashville match",
-          "text": "New York City FC listed Drew Baiera, Arnau Farnós, Talles Magno, Maxi Moralez, Keaton Parks, Kai Trewin and Hannes Wolf out with leg injuries. Nashville listed Warren Madrigal out with a lower-body injury.",
-          "entities": [
-            "New York City FC",
-            "Nashville SC",
-            "Maxi Moralez",
-            "Talles Magno",
-            "Keaton Parks",
-            "Hannes Wolf"
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/49825369/tata-martino-warns-atlanta-vs-miami-no-way-neutralize-messi"
+            }
           ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "MLS published the Matchday 24 player status report on Friday, September 4.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlssoccer.com/news/mls-player-status-report-matchday-24-friday-september-4-saturday-september-5"
-          ],
-          "id": "mls-4fa69cbfa484e661"
-        },
-        {
-          "rank": 3,
-          "type": "DISCIPLINE",
-          "priority": 78,
-          "headline": "Three players suspended for Matchday 24",
-          "text": "Colorado's Hamzat Ojediran and Real Salt Lake's Morgan Guilavogui are suspended for yellow-card accumulation. San Diego FC's Jeppe Tverskov is suspended after receiving a second caution and red card.",
-          "entities": [
-            "Hamzat Ojediran",
-            "Morgan Guilavogui",
-            "Jeppe Tverskov",
-            "Colorado Rapids",
-            "Real Salt Lake",
-            "San Diego FC"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "The MLS disciplinary summary was current as of September 3 and carried into the Matchday 24 slate.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlssoccer.com/news/mls-disciplinary-summary"
-          ],
-          "id": "mls-d39b3e56f85ca843"
-        },
-        {
-          "rank": 4,
-          "type": "NEXT",
-          "priority": 72,
-          "headline": "NYCFC host Nashville with both clubs entering Matchday 24",
-          "text": "New York City FC are scheduled to host Nashville SC at Yankee Stadium on Friday, September 4. The matchup became ticker-worthy after MLS released the same-day player status report detailing extensive NYCFC absences and Nashville's Warren Madrigal injury.",
-          "entities": [
-            "New York City FC",
-            "Nashville SC",
-            "Yankee Stadium"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "The September 4 player status report materially changed the availability picture for the scheduled match.",
-          "ageHours": null,
-          "status": "next",
-          "sourceUrls": [
-            "https://www.mlssoccer.com/news/mls-player-status-report-matchday-24-friday-september-4-saturday-september-5"
-          ],
-          "id": "mls-5ef4f1c2611a63d5"
-        },
-        {
-          "rank": 5,
-          "type": "ROSTER",
-          "priority": 68,
-          "headline": "Toronto add Bulgarian midfielder Alejandro Piedrahita on loan",
-          "text": "Toronto FC added midfielder Alejandro Piedrahita on loan from CSKA Sofia, according to the league's updated transfer tracker.",
-          "entities": [
-            "Toronto FC",
-            "Alejandro Piedrahita",
-            "CSKA Sofia"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "The MLS transfer tracker was updated through September 4 with the loan move.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlssoccer.com/news/2025-mls-transfer-tracker-watch-news-latest-transactions"
-          ],
-          "id": "mls-fffce09247b8a560"
-        },
-        {
-          "rank": 6,
-          "type": "ROSTER",
-          "priority": 60,
-          "headline": "Real Salt Lake loan Victor Olatunji to SK Beveren",
-          "text": "Real Salt Lake moved forward Victor Olatunji to Belgian club SK Beveren on loan, according to the updated MLS transfer tracker.",
-          "entities": [
-            "Real Salt Lake",
-            "Victor Olatunji",
-            "SK Beveren"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "The transaction appeared in MLS's transfer tracker updated through September 4.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlssoccer.com/news/2025-mls-transfer-tracker-watch-news-latest-transactions"
-          ],
-          "id": "mls-a2a2c1d88706a3c5"
-        },
-        {
-          "rank": 7,
-          "type": "ROSTER",
-          "priority": 58,
-          "headline": "Toronto transfer Deandre Kerr to AVS Futebol SAD",
-          "text": "Toronto FC transferred forward Deandre Kerr to Portugal's AVS Futebol SAD, according to MLS's updated transaction tracker.",
-          "entities": [
-            "Toronto FC",
-            "Deandre Kerr",
-            "AVS Futebol SAD"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "The transaction appeared in MLS's transfer tracker updated through September 4.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.mlssoccer.com/news/2025-mls-transfer-tracker-watch-news-latest-transactions"
-          ],
-          "id": "mls-779222e1b6133db8"
+          "id": "a3-ad2af56cf94bcbec"
         }
-      ],
-      "droppedItemCount": 0,
-      "editorialDroppedCount": 0
+      ]
     },
     {
       "league": "NCAAF",
@@ -537,377 +259,72 @@
       "items": [
         {
           "rank": 1,
-          "type": "LEGAL",
-          "priority": 98,
-          "headline": "Federal court hears SEC effort to block former pros from LSU roster",
-          "text": "A federal court in Alabama heard the SEC’s attempt to prevent LSU from using former professional players, escalating the eligibility dispute after a Louisiana judge issued an injunction favoring the athletes.",
-          "entities": [
-            "LSU Tigers",
-            "SEC",
-            "NCAA",
-            "Lane Kiffin"
+          "candidateIds": [
+            "cand-3a724db9a3d8cdce"
           ],
-          "occurredAt": "2026-09-04T06:01:09Z",
+          "type": "DEPTH_CHART",
+          "priority": 1,
+          "headline": "Sources: Stanford without 3 OL starters against No. 7 Miami",
+          "text": "Stanford will be without five key players in Friday's ACC opener against No. 7 Miami, sources told ESPN's Pete Thamel.",
+          "entities": [
+            "Stanford Cardinal",
+            "No. 7 Miami"
+          ],
+          "occurredAt": "2026-09-04T18:20:59Z",
           "timePrecision": "exact",
-          "freshnessBasis": "AP newly reported the federal hearing on September 4, 2026, within the 24-hour window.",
-          "ageHours": 13.32,
+          "ageHours": 2.02,
+          "freshnessBasis": "hours ago",
           "status": "active",
           "sourceUrls": [
-            "https://apnews.com/article/f67ac7909f6620f4d286fdf34740081d"
+            "https://www.espn.com/college-football/story/_/id/49826388/sources-stanford-3-ol-starters-no-7-miami"
           ],
-          "id": "ncaaf-6cbb4cb6fa08e7f6"
-        },
-        {
-          "rank": 2,
-          "type": "UPSET",
-          "priority": 91,
-          "headline": "Colorado rallies past Georgia Tech 14-13 on late TD and blocked field goal",
-          "text": "Colorado overcame a 13-7 deficit with 42 seconds remaining, then blocked Georgia Tech’s potential winning field goal as time expired in the season opener.",
-          "entities": [
-            "Colorado Buffaloes",
-            "Georgia Tech Yellow Jackets",
-            "Julian Lewis"
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49826388/sources-stanford-3-ol-starters-no-7-miami"
+            }
           ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "The season-opening result was newly reported on September 4, 2026.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://sports.yahoo.com/college-football/live/college-football-week-1-scores-results-colorado-topples-georgia-tech-after-blocking-fg-as-time-expires-222700858.html",
-            "https://www.washingtonpost.com/sports/colleges/football/"
-          ],
-          "id": "ncaaf-db8344ddd3e85a35"
-        },
-        {
-          "rank": 3,
-          "type": "RECORD",
-          "priority": 88,
-          "headline": "Minnesota’s Javon Tracy sets program record with two punt-return touchdowns",
-          "text": "Javon Tracy returned two punts for touchdowns in Minnesota’s 59-7 season-opening win over Eastern Illinois, establishing a single-game school record.",
-          "entities": [
-            "Minnesota Golden Gophers",
-            "Javon Tracy",
-            "Eastern Illinois Panthers"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "AP newly reported the record-setting performance on September 4, 2026.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.washingtonpost.com/sports/colleges/football/"
-          ],
-          "id": "ncaaf-8880230b37e1abf4"
-        },
-        {
-          "rank": 4,
-          "type": "STREAK",
-          "priority": 84,
-          "headline": "UMass ends 16-game losing streak with 37-21 win over Rutgers",
-          "text": "UMass snapped a 16-game losing streak as Pop Watson III threw three touchdown passes in the season opener for both teams.",
-          "entities": [
-            "UMass Minutemen",
-            "Rutgers Scarlet Knights",
-            "Pop Watson III"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "AP newly reported the streak-ending result on September 4, 2026.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.washingtonpost.com/sports/colleges/football/"
-          ],
-          "id": "ncaaf-d22e112343782f14"
-        },
-        {
-          "rank": 5,
-          "type": "RESULT",
-          "priority": 80,
-          "headline": "No. 21 Utah routs Idaho 66-14 in Morgan Scalley’s regular-season debut",
-          "text": "Utah opened the season with a 52-point victory behind three touchdown passes from Devon Dampier and three touchdowns from Wayshawn Parker.",
-          "entities": [
-            "Utah Utes",
-            "Idaho Vandals",
-            "Morgan Scalley",
-            "Devon Dampier",
-            "Wayshawn Parker"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "AP newly reported the completed season opener on September 4, 2026.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.washingtonpost.com/sports/colleges/football/"
-          ],
-          "id": "ncaaf-101cd1e33eda720f"
-        },
-        {
-          "rank": 6,
-          "type": "RESULT",
-          "priority": 78,
-          "headline": "No. 25 Missouri defeats Arkansas-Pine Bluff 54-14 in opener",
-          "text": "Austin Simmons threw four touchdown passes in his Missouri debut as the Tigers opened the season with a 40-point win.",
-          "entities": [
-            "Missouri Tigers",
-            "Arkansas-Pine Bluff Golden Lions",
-            "Austin Simmons"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "AP newly reported the completed season opener on September 4, 2026.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.washingtonpost.com/sports/colleges/football/"
-          ],
-          "id": "ncaaf-820ad72c544f61bf"
-        },
-        {
-          "rank": 7,
-          "type": "RESULT",
-          "priority": 76,
-          "headline": "Illinois beats UAB 42-23 behind Katin Houser’s four total touchdowns",
-          "text": "Katin Houser threw three touchdown passes and ran for another as Illinois defeated UAB in the season opener.",
-          "entities": [
-            "Illinois Fighting Illini",
-            "UAB Blazers",
-            "Katin Houser"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "AP newly reported the completed season opener on September 4, 2026.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.washingtonpost.com/sports/colleges/football/"
-          ],
-          "id": "ncaaf-d89c544e45774059"
-        },
-        {
-          "rank": 8,
-          "type": "RESULT",
-          "priority": 73,
-          "headline": "Kennesaw State shuts out West Georgia 47-0 in season opener",
-          "text": "Rickie Collins accounted for three touchdowns and Latrelle Murrell scored twice as Kennesaw State opened the season with a dominant shutout.",
-          "entities": [
-            "Kennesaw State Owls",
-            "West Georgia Wolves",
-            "Rickie Collins",
-            "Latrelle Murrell"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "AP newly reported the completed season opener on September 4, 2026.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.washingtonpost.com/sports/colleges/football/"
-          ],
-          "id": "ncaaf-7a5286b2d78fca1d"
-        },
-        {
-          "rank": 9,
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Delaware opens season with 42-7 win over Merrimack",
-          "text": "Nick Minicucci passed for 330 yards and two touchdowns and added a rushing score in Delaware’s emphatic season-opening victory.",
-          "entities": [
-            "Delaware Fightin’ Blue Hens",
-            "Merrimack Warriors",
-            "Nick Minicucci"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "AP newly reported the completed season opener on September 4, 2026.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.washingtonpost.com/sports/colleges/football/"
-          ],
-          "id": "ncaaf-e0642fa549201072"
+          "id": "a3-cab4d716d33a738b"
         }
-      ],
-      "droppedItemCount": 0,
-      "editorialDroppedCount": 0
+      ]
     }
   ],
   "specialEvents": [
     {
-      "name": "2026 US Open",
+      "name": "US Open",
       "sport": "Tennis",
       "items": [
         {
           "rank": 1,
-          "type": "RESULT",
-          "priority": 94,
-          "headline": "Zverev survives another five-set marathon to reach US Open third round",
-          "text": "Top seed Alexander Zverev defeated Quentin Halys 6-4, 4-6, 7-6(3), 6-7(3), 6-3 in a four-hour, 33-minute second-round match.",
-          "entities": [
-            "Alexander Zverev",
-            "Quentin Halys",
-            "US Open"
+          "candidateIds": [
+            "cand-eb4fa48d234f0bf3"
           ],
-          "occurredAt": "2026-09-04T06:08:00Z",
+          "type": "OTHER",
+          "priority": 2,
+          "headline": "Alex Eala maintains smooth progress at US Open",
+          "text": "Alexandra Eala powered past Oleksandra Oliynykova in their second-round match at the US Open, defeating her 6-1, 6-4.",
+          "entities": [
+            "Alexandra Eala"
+          ],
+          "occurredAt": "2026-09-04T03:58:38Z",
           "timePrecision": "exact",
-          "freshnessBasis": "The official US Open reported the result early Friday, September 4, after Thursday night's match.",
-          "ageHours": 13.2,
+          "ageHours": 16.4,
+          "freshnessBasis": "hours ago",
           "status": "active",
           "sourceUrls": [
-            "https://www.usopen.org/amp/en_US/news/articles/2026-09-04/alexander_zverev_wins_another_2026_us_open_five-set_marathon.html"
+            "https://www.espn.com/tennis/story/_/id/49819163/us-open-alex-eala-oleksandra-oliynykova-round-two"
           ],
-          "id": "special-2026-us-open-224a39e7f957e187"
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-wta",
+              "url": "https://www.espn.com/tennis/story/_/id/49819163/us-open-alex-eala-oleksandra-oliynykova-round-two"
+            }
+          ],
+          "id": "a3-special-432c2de1b7d02dd4"
         }
-      ],
-      "droppedItemCount": 3,
-      "editorialDroppedCount": 0
-    },
-    {
-      "name": "2026 FIBA Women's Basketball World Cup",
-      "sport": "Basketball",
-      "items": [
-        {
-          "rank": 1,
-          "type": "RESULT",
-          "priority": 84,
-          "headline": "Australia beats Puerto Rico 70-54 in opening-day action",
-          "text": "Australia controlled its World Cup opener against Puerto Rico, winning 70-54 in Berlin.",
-          "entities": [
-            "Australia",
-            "Puerto Rico",
-            "Women's Basketball World Cup"
-          ],
-          "occurredAt": "2026-09-04",
-          "timePrecision": "date",
-          "freshnessBasis": "FIBA reported the completed opening-day game on September 4.",
-          "ageHours": null,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.fiba.basketball/en/events/fiba-womens-basketball-world-cup-2026/news/2026-wwc-game-center-sep-4"
-          ],
-          "id": "special-2026-fiba-women-s-basketball-world-cup-2744f0ebe375ee7b"
-        }
-      ],
-      "droppedItemCount": 2,
-      "editorialDroppedCount": 0
-    },
-    {
-      "name": "2026 Formula 1 Italian Grand Prix",
-      "sport": "Formula 1",
-      "items": [
-        {
-          "rank": 1,
-          "type": "RESULT",
-          "priority": 94,
-          "headline": "Russell tops FP2 as Leclerc splits Mercedes at Monza",
-          "text": "George Russell led second practice in 1:22.559, 0.120 seconds ahead of Charles Leclerc, with Kimi Antonelli third and Lando Norris fourth.",
-          "entities": [
-            "George Russell",
-            "Charles Leclerc",
-            "Kimi Antonelli",
-            "Lando Norris",
-            "Italian Grand Prix"
-          ],
-          "occurredAt": "2026-09-04T15:19:00Z",
-          "timePrecision": "exact",
-          "freshnessBasis": "Formula 1 published the FP2 results at 15:19 UTC on Friday, September 4.",
-          "ageHours": 4.02,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.formula1.com/en/latest/article/fp2-russell-beats-leclerc-and-antonelli-to-the-fastest-time-in-free-practice-2-ahead-of-italian-grand-prix.4mVLF757oe0NuWE9Caw1wO"
-          ],
-          "id": "special-2026-formula-1-italian-grand-prix-d800ec4dd50ce435"
-        },
-        {
-          "rank": 2,
-          "type": "RESULT",
-          "priority": 89,
-          "headline": "Leclerc leads Ferrari 1-2 in FP1",
-          "text": "Charles Leclerc set the pace in first practice ahead of Ferrari teammate Lewis Hamilton, with George Russell third.",
-          "entities": [
-            "Charles Leclerc",
-            "Lewis Hamilton",
-            "George Russell",
-            "Italian Grand Prix"
-          ],
-          "occurredAt": "2026-09-04T11:46:00Z",
-          "timePrecision": "exact",
-          "freshnessBasis": "Formula 1 published the FP1 report at 11:46 UTC on Friday, September 4.",
-          "ageHours": 7.57,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.formula1.com/en/latest/article/fp1-leclerc-leads-hamilton-and-george-russell-during-first-practice-at-the-italian-grand-prix.7DUTqVtZlb4zvqNfBsyl1t"
-          ],
-          "id": "special-2026-formula-1-italian-grand-prix-7c7bfff5396f399d"
-        },
-        {
-          "rank": 3,
-          "type": "DISCIPLINE",
-          "priority": 87,
-          "headline": "Albon hit with 20-place penalty and will start from the back",
-          "text": "Alexander Albon received a cumulative 20-place grid penalty for power-unit changes, meaning he will start at the back of the Italian Grand Prix grid.",
-          "entities": [
-            "Alexander Albon",
-            "Williams",
-            "Italian Grand Prix"
-          ],
-          "occurredAt": "2026-09-04T16:14:00Z",
-          "timePrecision": "exact",
-          "freshnessBasis": "Formula 1 announced the penalty Friday afternoon during the Monza race weekend.",
-          "ageHours": 3.1,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.formula1.com/en/latest/article/albon-joins-antonelli-with-heavy-grid-drop-for-italian-grand-prix.1qBmyUa5kxPfClqd8ib3ZQ"
-          ],
-          "id": "special-2026-formula-1-italian-grand-prix-6e19c1f4d5a5310b"
-        },
-        {
-          "rank": 4,
-          "type": "DISCIPLINE",
-          "priority": 86,
-          "headline": "Antonelli faces a notional 30-place grid drop at home race",
-          "text": "Kimi Antonelli's engine-related penalties will force him to start from the back unless further penalties alter the order; he is set to share the back row with Albon.",
-          "entities": [
-            "Kimi Antonelli",
-            "Mercedes",
-            "Italian Grand Prix"
-          ],
-          "occurredAt": "2026-09-04T17:01:00Z",
-          "timePrecision": "exact",
-          "freshnessBasis": "Formula 1 reiterated the penalty situation in Friday's post-practice coverage.",
-          "ageHours": 2.32,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.formula1.com/en/latest/article/antonelli-assesses-weird-first-day-on-track-in-monza-as-he-predicts-tight-fight-for-pole-position.2DIinRLa87GdVd1c5mmjir"
-          ],
-          "id": "special-2026-formula-1-italian-grand-prix-b1636adb799babac"
-        },
-        {
-          "rank": 5,
-          "type": "SLUMP",
-          "priority": 82,
-          "headline": "Norris says McLaren is not in pole-position fight after practice",
-          "text": "Lando Norris finished fourth in FP2 but said McLaren was not currently in the fight for pole after trailing Russell by 0.384 seconds.",
-          "entities": [
-            "Lando Norris",
-            "McLaren",
-            "Italian Grand Prix"
-          ],
-          "occurredAt": "2026-09-04T17:14:00Z",
-          "timePrecision": "exact",
-          "freshnessBasis": "Norris's assessment was published after Friday's two practice sessions at Monza.",
-          "ageHours": 2.1,
-          "status": "active",
-          "sourceUrls": [
-            "https://www.formula1.com/en/latest/article/norris-claims-mclaren-not-in-the-fight-for-pole-at-all-after-monza-practice-struggles.43QIU1uA9ebkG5fJUoMXCN"
-          ],
-          "id": "special-2026-formula-1-italian-grand-prix-954179b7807beff8"
-        }
-      ],
-      "droppedItemCount": 0,
-      "editorialDroppedCount": 0
+      ]
     }
   ]
 }

@@ -1,311 +1,113 @@
-SPORTS BIG BOARD — SPORTS TICKER PHASE A2.3
-Updated: 2026-09-04T19:20:16Z
+SPORTS BIG BOARD — SPORTS TICKER A3
+Updated: 2026-09-04T20:22:23Z
 Freshness window: last 24.0 hours
-Model: gpt-5.6-luna
+Discovery: Highlightly + ESPN JSON news + official league pages; no OpenAI web search
+Editor model: gpt-4o-mini
+Candidate hash: 7e467ebd64aeb67bf196bdda2fd136b28b4d4b193e6a16ddd0b4f5fe1187ad9a
 
-========================================================================
+============================================================================
 MLB  [ACTIVE]
-========================================================================
+============================================================================
 
- 1. [STREAK] Rays’ losing streak at Globe Life Field reaches 10 games (priority 91, age 17.34h)
-    Tampa Bay fell 6-0 to Texas, extending its losing streak at Globe Life Field to 10 games while remaining in a tight AL playoff race.
-    Occurred: 2026-09-04T02:00:00Z | Precision: hour | Status: active
-    Freshness basis: Texas defeated Tampa Bay 6-0 on September 3, extending the Rays’ venue losing streak to 10 games.
-    Entities: Tampa Bay Rays, Texas Rangers
-    Source: https://www.mlb.com/rays/news
+ 1. [OTHER] Will Shohei Ohtani pitch in October? (priority 2, age 4.47h)
+    Ohtani hasn't been healthy enough to pitch in two months. Is his value as a pitcher in the postseason worth risking his bat?
+    Occurred: 2026-09-04T15:54:22Z | Precision: exact | Status: active
+    Freshness basis: hours ago
+    Entities: Shohei Ohtani, Los Angeles Dodgers
+    Candidate IDs: cand-db17b8730d41e226
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49815603/mlb-2026-shohei-ohtani-los-angeles-dodgers-pitching-hitting-value-postseason-playoffs-injury
 
- 2. [RETURN] Adley Rutschman homers twice in memorable return to Baltimore (priority 89, age 17.34h)
-    Rutschman celebrated his return to Camden Yards with two home runs as Boston defeated Baltimore, 6-5.
-    Occurred: 2026-09-04T02:00:00Z | Precision: hour | Status: active
-    Freshness basis: Rutschman returned to Baltimore’s Camden Yards and hit two home runs in Boston’s September 3 win.
-    Entities: Adley Rutschman, Boston Red Sox, Baltimore Orioles
-    Source: https://www.mlb.com/news
+ 2. [RETURN] White Sox activate catcher Kyle Teel from 10-day injured list (priority 1, age 3.17h)
+    Kyle Teel, out since July with a high ankle sprain, is back with the White Sox after being activated from the injured list.
+    Occurred: 2026-09-04T17:12:03Z | Precision: exact | Status: active
+    Freshness basis: hours ago
+    Entities: Kyle Teel, Chicago White Sox
+    Candidate IDs: cand-a80bb77276418853
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49826375/white-sox-activate-catcher-kyle-teel-10-day-injured-list
 
- 3. [PLAYOFF] Cubs trim Brewers with 2-1 win in NL Central matchup (priority 87, age 16.34h)
-    Chicago defeated Milwaukee, 2-1, behind Kevin Gausman’s nine strikeouts and Pete Crow-Armstrong’s 39th home run. Milwaukee remains atop the NL Central, but the loss denied the Brewers another divisional win.
-    Occurred: 2026-09-04T03:00:00Z | Precision: hour | Status: active
-    Freshness basis: Chicago beat Milwaukee 2-1 on September 3 in a game with direct NL Central and postseason implications.
-    Entities: Chicago Cubs, Milwaukee Brewers, Kevin Gausman, Pete Crow-Armstrong
-    Source: https://www.mlb.com/cubs/news
-    Source: https://www.mlb.com/scores/2026-09-03
+============================================================================
+NFL  [ACTIVE]
+============================================================================
 
- 4. [STREAK] Pirates win fifth series in six tries (priority 84, age 20.34h)
-    Pittsburgh defeated San Francisco, 5-2, for its fifth series victory in the club’s last six series, continuing a late-season surge.
-    Occurred: 2026-09-03T23:00:00Z | Precision: hour | Status: active
-    Freshness basis: Pittsburgh beat San Francisco 5-2 on September 3 and MLB reported the Pirates’ fifth series win in their last six.
-    Entities: Pittsburgh Pirates, San Francisco Giants
-    Source: https://www.mlb.com/news
-    Source: https://www.mlb.com/scores/2026-09-03
+ 1. [COACHING] Rams plan to bring entire team to season opener, including Donald (priority 2, age 1.23h)
+    The Rams plan to bring all of their players to Melbourne, Australia, for their season opener against the 49ers, head coach Sean McVay said Friday.
+    Occurred: 2026-09-04T19:08:46Z | Precision: exact | Status: active
+    Freshness basis: hours ago
+    Entities: Los Angeles Rams, Aaron Donald
+    Candidate IDs: cand-68ee469fe728f7e0
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49826940/rams-plan-bring-entire-team-season-opener-including-donald
 
- 5. [RESULT] Dodgers walk off Cardinals, 3-2 (priority 80, age 14.34h)
-    Teoscar Hernández delivered a walk-off hit as Los Angeles defeated St. Louis, 3-2, keeping the Dodgers in the crowded NL postseason race.
-    Occurred: 2026-09-04T05:00:00Z | Precision: hour | Status: active
-    Freshness basis: Los Angeles defeated St. Louis 3-2 on a walk-off September 3.
-    Entities: Los Angeles Dodgers, St. Louis Cardinals, Teoscar Hernández
-    Source: https://www.mlb.com/video/topic/daily-recaps
-    Source: https://www.mlb.com/scores/2026-09-03
+ 2. [LEGAL] Josh Jacobs' court appearance moved up to Sept. 10 (priority 1, age 0.81h)
+    Packers running back Josh Jacobs' initial court appearance on misdemeanor charges has been moved up more than two months to Sept. 10.
+    Occurred: 2026-09-04T19:33:34Z | Precision: exact | Status: active
+    Freshness basis: hours ago
+    Entities: Josh Jacobs, Green Bay Packers
+    Candidate IDs: cand-aa51f33d6ad3d506
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49827202/josh-jacobs-court-appearance-moved-sept-10
 
- 6. [RESULT] Astros beat White Sox, 6-2, in AL Central race (priority 78, age 23.34h)
-    Houston defeated Chicago, 6-2, behind a four-run third inning and a home run from José Altuve. The White Sox remain atop the AL Central despite the loss.
-    Occurred: 2026-09-03T20:00:00Z | Precision: hour | Status: active
-    Freshness basis: Houston defeated Chicago 6-2 on September 3 as both clubs continued competing in the AL postseason picture.
-    Entities: Houston Astros, Chicago White Sox, José Altuve
-    Source: https://www.mlb.com/video/topic/daily-recaps
-    Source: https://www.mlb.com/scores/2026-09-03
+============================================================================
+NBA  [ACTIVE]
+============================================================================
 
- 7. [RESULT] Blue Jays defeat Guardians, 6-3 (priority 75, age 21.34h)
-    Toronto beat Cleveland, 6-3, behind a strong offensive performance from Nathan Lukes and Brett Bateman.
-    Occurred: 2026-09-03T22:00:00Z | Precision: hour | Status: active
-    Freshness basis: Toronto defeated Cleveland 6-3 on September 3.
-    Entities: Toronto Blue Jays, Cleveland Guardians, Nathan Lukes, Brett Bateman
-    Source: https://www.mlb.com/video/topic/daily-recaps
-    Source: https://www.mlb.com/scores/2026-09-03
+ 1. [SIGNING] Ben Simmons returning to NBA on 1-year, $3.5M deal with Kings (priority 1, age 5.43h)
+    Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.
+    Occurred: 2026-09-04T14:56:49Z | Precision: exact | Status: active
+    Freshness basis: hours ago
+    Entities: Ben Simmons, Sacramento Kings
+    Candidate IDs: cand-8fdbe1ac1835628a
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings
 
-========================================================================
-NFL  [PRESEASON]
-========================================================================
+============================================================================
+NHL  [ACTIVE]
+============================================================================
 
- 1. [NEXT] 49ers arrive in Melbourne ahead of historic Week 1 matchup with Rams (priority 78, age date-only 2026-09-04)
-    San Francisco’s traveling party landed in Melbourne after a 15-hour charter flight and will spend the week acclimating before facing the Los Angeles Rams in the NFL’s Australia opener.
-    Occurred: 2026-09-04 | Precision: date | Status: next
-    Freshness basis: NFL.com reported the 49ers’ arrival in Melbourne on September 4, beginning their week-long preparation for the September 11 season opener.
-    Entities: San Francisco 49ers, Los Angeles Rams, Melbourne Cricket Ground
-    Source: https://www.nfl.com/news/niners-arrive-melbourne-historic-nfl-game-rams
+    No selected ticker items in this run.
 
-========================================================================
-NBA  [OFFSEASON]
-========================================================================
-
- 1. [RETURN] Ben Simmons agrees to one-year deal with Kings, returning to NBA (priority 88, age 4.92h)
-    Ben Simmons agreed to a one-year, $3.5 million contract with Sacramento after sitting out the entire 2025-26 season. The former No. 1 pick is expected to provide veteran depth behind rookie point guard Darius Acuff Jr.
-    Occurred: 2026-09-04T14:25:00Z | Precision: exact | Status: active
-    Freshness basis: Simmons’ agreement with Sacramento was reported on September 4.
-    Entities: Ben Simmons, Sacramento Kings, Darius Acuff Jr.
-    Source: https://www.nba.com/news/ben-simmons-1-year-deal-sacramento-kings
-    Source: https://www.nbcsports.com/nba/news/ben-simmons-returning-to-nba-joining-kings-on-one-year-minimum-deal
-
- 2. [SIGNING] Amen Thompson signs five-year, $208M extension with Rockets (priority 84, age 23.37h)
-    Houston signed Amen Thompson to a five-year, $208 million rookie-scale extension, securing a key piece of its young core through the 2030-31 season.
-    Occurred: 2026-09-03T19:58:00Z | Precision: exact | Status: active
-    Freshness basis: The Rockets made the extension official on September 3.
-    Entities: Amen Thompson, Houston Rockets
-    Source: https://www.nba.com/news/amen-thompson-5-year-extension-rockets
-
- 3. [SIGNING] Timberwolves officially sign Jonathan Kuminga (priority 78, age 4.44h)
-    Minnesota announced the signing of forward Jonathan Kuminga. Terms were not disclosed; Kuminga joins the Timberwolves after splitting the 2025-26 season between Atlanta and Golden State.
-    Occurred: 2026-09-04T14:54:00Z | Precision: exact | Status: active
-    Freshness basis: Minnesota announced Kuminga’s signing on September 4.
-    Entities: Jonathan Kuminga, Minnesota Timberwolves
-    Source: https://www.nba.com/timberwolves/news/timberwolves-sign-jonathan-kuminga
-
-========================================================================
-NHL  [OFFSEASON]
-========================================================================
-
- 1. [ROSTER] Stars sign Jack Williams as emergency goalie replacement (priority 35, age date-only 2026-09-04)
-    Dallas signed Jack Williams as an emergency goalie replacement, according to the league transaction log.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: The transaction was listed for Friday, September 4, 2026, within the 24-hour window.
-    Entities: Dallas Stars, Jack Williams
-    Source: https://www.cbssports.com/nhl/transactions/
-
-========================================================================
+============================================================================
 EPL  [ACTIVE]
-========================================================================
+============================================================================
 
- 1. [SIGNING] Liverpool agree January move for Saint-Etienne forward Djylian N'Guessan (priority 82, age date-only 2026-09-04)
-    Liverpool have agreed a deal to sign 18-year-old French forward Djylian N'Guessan from Saint-Etienne. He will remain in France on loan with Stade Brestois before joining Liverpool permanently in January.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: Liverpool officially announced the agreement on September 4, 2026.
-    Entities: Liverpool, Djylian N'Guessan, Saint-Etienne, Stade Brestois
-    Source: https://www.liverpoolfc.com/news/liverpool-agree-deal-sign-djylian-nguessan?amp=1
+ 1. [COACHING] Roberto De Zerbi stands by Mykhailo Mudryk Ballon d'Or potential prediction (priority 1, age 5.16h)
+    Tottenham head coach Roberto De Zerbi has stood by his prediction of Mykhailo Mudryk being a player that can win the Ballon d'Or if he realizes his potential.
+    Occurred: 2026-09-04T15:12:41Z | Precision: exact | Status: active
+    Freshness basis: hours ago
+    Entities: Mykhailo Mudryk, Tottenham Hotspur
+    Candidate IDs: cand-0c4c9c99ea4c8994
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49824792/roberto-de-zerbi-stands-mykhailo-mudryk-ballon-dor-potential-prediction
 
- 2. [ROSTER] Barcola cleared to be available for Liverpool debut at Ipswich (priority 72, age date-only 2026-09-04)
-    Liverpool manager Andoni Iraola said new signing Bradley Barcola will be available for the trip to Ipswich, subject to completing Thursday training. A start is considered unlikely because he lacks preseason match minutes.
-    Occurred: 2026-09-04 | Precision: date | Status: next
-    Freshness basis: Liverpool's manager provided a new availability update ahead of Friday's Premier League match.
-    Entities: Liverpool, Bradley Barcola, Ipswich Town, Andoni Iraola
-    Source: https://www.premierleague.com/en/news/4706313/predicted-line-ups-for-premier-league-teams-in-matchweek-3
-
- 3. [INJURY] Newcastle remain without four injured players for Bournemouth visit (priority 68, age date-only 2026-09-04)
-    Newcastle are expected to be without Dan Burn, Joelinton, Tino Livramento and William Osula against Bournemouth. Manager Matthias Jaissle also declined to comment on reports that Osula could face a long-term absence.
-    Occurred: 2026-09-04 | Precision: date | Status: next
-    Freshness basis: Newcastle's manager and team-news reporting provided updated injury and availability information on September 4.
-    Entities: Newcastle United, Dan Burn, Joelinton, Tino Livramento, William Osula, Matthias Jaissle, Bournemouth
-    Source: https://www.premierleague.com/en/news/4706313/predicted-line-ups-for-premier-league-teams-in-matchweek-3
-
-========================================================================
+============================================================================
 MLS  [ACTIVE]
-========================================================================
+============================================================================
 
- 1. [SIGNING] Colorado Rapids land Morgan Whittaker in club-record deal (priority 95, age date-only 2026-09-04)
-    Colorado acquired the 25-year-old winger from Middlesbrough for a reported club-record $10.7 million fee. Whittaker signed through the 2029-30 MLS season with an option for 2030-31 and will occupy a Designated Player slot.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: Colorado announced the signing on Friday, September 4.
-    Entities: Colorado Rapids, Morgan Whittaker, Middlesbrough FC
-    Source: https://www.mlssoccer.com/news/colorado-rapids-acquire-morgan-whittaker-club-record-deal-middlesbrough
+ 1. [COACHING] Tata Martino warns Atlanta vs. Miami: No way to neutralize Messi (priority 1, age 5.73h)
+    Atlanta United FC head coach Gerardo "Tata" Martino warned his players about Lionel Messi's capabilities ahead of Saturday's clash against Inter Miami CF.
+    Occurred: 2026-09-04T14:38:38Z | Precision: exact | Status: active
+    Freshness basis: hours ago
+    Entities: Atlanta United FC, Inter Miami CF, Lionel Messi
+    Candidate IDs: cand-24173b1793bce533
+    Source [ESPN/espn-mls]: https://www.espn.com/soccer/story/_/id/49825369/tata-martino-warns-atlanta-vs-miami-no-way-neutralize-messi
 
- 2. [INJURY] NYCFC face major availability issues ahead of Nashville match (priority 82, age date-only 2026-09-04)
-    New York City FC listed Drew Baiera, Arnau Farnós, Talles Magno, Maxi Moralez, Keaton Parks, Kai Trewin and Hannes Wolf out with leg injuries. Nashville listed Warren Madrigal out with a lower-body injury.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: MLS published the Matchday 24 player status report on Friday, September 4.
-    Entities: New York City FC, Nashville SC, Maxi Moralez, Talles Magno, Keaton Parks, Hannes Wolf
-    Source: https://www.mlssoccer.com/news/mls-player-status-report-matchday-24-friday-september-4-saturday-september-5
-
- 3. [DISCIPLINE] Three players suspended for Matchday 24 (priority 78, age date-only 2026-09-04)
-    Colorado's Hamzat Ojediran and Real Salt Lake's Morgan Guilavogui are suspended for yellow-card accumulation. San Diego FC's Jeppe Tverskov is suspended after receiving a second caution and red card.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: The MLS disciplinary summary was current as of September 3 and carried into the Matchday 24 slate.
-    Entities: Hamzat Ojediran, Morgan Guilavogui, Jeppe Tverskov, Colorado Rapids, Real Salt Lake, San Diego FC
-    Source: https://www.mlssoccer.com/news/mls-disciplinary-summary
-
- 4. [NEXT] NYCFC host Nashville with both clubs entering Matchday 24 (priority 72, age date-only 2026-09-04)
-    New York City FC are scheduled to host Nashville SC at Yankee Stadium on Friday, September 4. The matchup became ticker-worthy after MLS released the same-day player status report detailing extensive NYCFC absences and Nashville's Warren Madrigal injury.
-    Occurred: 2026-09-04 | Precision: date | Status: next
-    Freshness basis: The September 4 player status report materially changed the availability picture for the scheduled match.
-    Entities: New York City FC, Nashville SC, Yankee Stadium
-    Source: https://www.mlssoccer.com/news/mls-player-status-report-matchday-24-friday-september-4-saturday-september-5
-
- 5. [ROSTER] Toronto add Bulgarian midfielder Alejandro Piedrahita on loan (priority 68, age date-only 2026-09-04)
-    Toronto FC added midfielder Alejandro Piedrahita on loan from CSKA Sofia, according to the league's updated transfer tracker.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: The MLS transfer tracker was updated through September 4 with the loan move.
-    Entities: Toronto FC, Alejandro Piedrahita, CSKA Sofia
-    Source: https://www.mlssoccer.com/news/2025-mls-transfer-tracker-watch-news-latest-transactions
-
- 6. [ROSTER] Real Salt Lake loan Victor Olatunji to SK Beveren (priority 60, age date-only 2026-09-04)
-    Real Salt Lake moved forward Victor Olatunji to Belgian club SK Beveren on loan, according to the updated MLS transfer tracker.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: The transaction appeared in MLS's transfer tracker updated through September 4.
-    Entities: Real Salt Lake, Victor Olatunji, SK Beveren
-    Source: https://www.mlssoccer.com/news/2025-mls-transfer-tracker-watch-news-latest-transactions
-
- 7. [ROSTER] Toronto transfer Deandre Kerr to AVS Futebol SAD (priority 58, age date-only 2026-09-04)
-    Toronto FC transferred forward Deandre Kerr to Portugal's AVS Futebol SAD, according to MLS's updated transaction tracker.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: The transaction appeared in MLS's transfer tracker updated through September 4.
-    Entities: Toronto FC, Deandre Kerr, AVS Futebol SAD
-    Source: https://www.mlssoccer.com/news/2025-mls-transfer-tracker-watch-news-latest-transactions
-
-========================================================================
+============================================================================
 NCAAF  [ACTIVE]
-========================================================================
+============================================================================
 
- 1. [LEGAL] Federal court hears SEC effort to block former pros from LSU roster (priority 98, age 13.32h)
-    A federal court in Alabama heard the SEC’s attempt to prevent LSU from using former professional players, escalating the eligibility dispute after a Louisiana judge issued an injunction favoring the athletes.
-    Occurred: 2026-09-04T06:01:09Z | Precision: exact | Status: active
-    Freshness basis: AP newly reported the federal hearing on September 4, 2026, within the 24-hour window.
-    Entities: LSU Tigers, SEC, NCAA, Lane Kiffin
-    Source: https://apnews.com/article/f67ac7909f6620f4d286fdf34740081d
+ 1. [DEPTH_CHART] Sources: Stanford without 3 OL starters against No. 7 Miami (priority 1, age 2.02h)
+    Stanford will be without five key players in Friday's ACC opener against No. 7 Miami, sources told ESPN's Pete Thamel.
+    Occurred: 2026-09-04T18:20:59Z | Precision: exact | Status: active
+    Freshness basis: hours ago
+    Entities: Stanford Cardinal, No. 7 Miami
+    Candidate IDs: cand-3a724db9a3d8cdce
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49826388/sources-stanford-3-ol-starters-no-7-miami
 
- 2. [UPSET] Colorado rallies past Georgia Tech 14-13 on late TD and blocked field goal (priority 91, age date-only 2026-09-04)
-    Colorado overcame a 13-7 deficit with 42 seconds remaining, then blocked Georgia Tech’s potential winning field goal as time expired in the season opener.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: The season-opening result was newly reported on September 4, 2026.
-    Entities: Colorado Buffaloes, Georgia Tech Yellow Jackets, Julian Lewis
-    Source: https://sports.yahoo.com/college-football/live/college-football-week-1-scores-results-colorado-topples-georgia-tech-after-blocking-fg-as-time-expires-222700858.html
-    Source: https://www.washingtonpost.com/sports/colleges/football/
-
- 3. [RECORD] Minnesota’s Javon Tracy sets program record with two punt-return touchdowns (priority 88, age date-only 2026-09-04)
-    Javon Tracy returned two punts for touchdowns in Minnesota’s 59-7 season-opening win over Eastern Illinois, establishing a single-game school record.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: AP newly reported the record-setting performance on September 4, 2026.
-    Entities: Minnesota Golden Gophers, Javon Tracy, Eastern Illinois Panthers
-    Source: https://www.washingtonpost.com/sports/colleges/football/
-
- 4. [STREAK] UMass ends 16-game losing streak with 37-21 win over Rutgers (priority 84, age date-only 2026-09-04)
-    UMass snapped a 16-game losing streak as Pop Watson III threw three touchdown passes in the season opener for both teams.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: AP newly reported the streak-ending result on September 4, 2026.
-    Entities: UMass Minutemen, Rutgers Scarlet Knights, Pop Watson III
-    Source: https://www.washingtonpost.com/sports/colleges/football/
-
- 5. [RESULT] No. 21 Utah routs Idaho 66-14 in Morgan Scalley’s regular-season debut (priority 80, age date-only 2026-09-04)
-    Utah opened the season with a 52-point victory behind three touchdown passes from Devon Dampier and three touchdowns from Wayshawn Parker.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: AP newly reported the completed season opener on September 4, 2026.
-    Entities: Utah Utes, Idaho Vandals, Morgan Scalley, Devon Dampier, Wayshawn Parker
-    Source: https://www.washingtonpost.com/sports/colleges/football/
-
- 6. [RESULT] No. 25 Missouri defeats Arkansas-Pine Bluff 54-14 in opener (priority 78, age date-only 2026-09-04)
-    Austin Simmons threw four touchdown passes in his Missouri debut as the Tigers opened the season with a 40-point win.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: AP newly reported the completed season opener on September 4, 2026.
-    Entities: Missouri Tigers, Arkansas-Pine Bluff Golden Lions, Austin Simmons
-    Source: https://www.washingtonpost.com/sports/colleges/football/
-
- 7. [RESULT] Illinois beats UAB 42-23 behind Katin Houser’s four total touchdowns (priority 76, age date-only 2026-09-04)
-    Katin Houser threw three touchdown passes and ran for another as Illinois defeated UAB in the season opener.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: AP newly reported the completed season opener on September 4, 2026.
-    Entities: Illinois Fighting Illini, UAB Blazers, Katin Houser
-    Source: https://www.washingtonpost.com/sports/colleges/football/
-
- 8. [RESULT] Kennesaw State shuts out West Georgia 47-0 in season opener (priority 73, age date-only 2026-09-04)
-    Rickie Collins accounted for three touchdowns and Latrelle Murrell scored twice as Kennesaw State opened the season with a dominant shutout.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: AP newly reported the completed season opener on September 4, 2026.
-    Entities: Kennesaw State Owls, West Georgia Wolves, Rickie Collins, Latrelle Murrell
-    Source: https://www.washingtonpost.com/sports/colleges/football/
-
- 9. [RESULT] Delaware opens season with 42-7 win over Merrimack (priority 70, age date-only 2026-09-04)
-    Nick Minicucci passed for 330 yards and two touchdowns and added a rushing score in Delaware’s emphatic season-opening victory.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: AP newly reported the completed season opener on September 4, 2026.
-    Entities: Delaware Fightin’ Blue Hens, Merrimack Warriors, Nick Minicucci
-    Source: https://www.washingtonpost.com/sports/colleges/football/
-
-########################################################################
+############################################################################
 SPECIAL EVENTS
-########################################################################
+############################################################################
 
-2026 US Open (Tennis)
-------------------------------------------------------------------------
+US Open (Tennis)
+----------------------------------------------------------------------------
 
- 1. [RESULT] Zverev survives another five-set marathon to reach US Open third round (priority 94, age 13.20h)
-    Top seed Alexander Zverev defeated Quentin Halys 6-4, 4-6, 7-6(3), 6-7(3), 6-3 in a four-hour, 33-minute second-round match.
-    Occurred: 2026-09-04T06:08:00Z | Precision: exact | Status: active
-    Freshness basis: The official US Open reported the result early Friday, September 4, after Thursday night's match.
-    Source: https://www.usopen.org/amp/en_US/news/articles/2026-09-04/alexander_zverev_wins_another_2026_us_open_five-set_marathon.html
-
-2026 FIBA Women's Basketball World Cup (Basketball)
-------------------------------------------------------------------------
-
- 1. [RESULT] Australia beats Puerto Rico 70-54 in opening-day action (priority 84, age date-only 2026-09-04)
-    Australia controlled its World Cup opener against Puerto Rico, winning 70-54 in Berlin.
-    Occurred: 2026-09-04 | Precision: date | Status: active
-    Freshness basis: FIBA reported the completed opening-day game on September 4.
-    Source: https://www.fiba.basketball/en/events/fiba-womens-basketball-world-cup-2026/news/2026-wwc-game-center-sep-4
-
-2026 Formula 1 Italian Grand Prix (Formula 1)
-------------------------------------------------------------------------
-
- 1. [RESULT] Russell tops FP2 as Leclerc splits Mercedes at Monza (priority 94, age 4.02h)
-    George Russell led second practice in 1:22.559, 0.120 seconds ahead of Charles Leclerc, with Kimi Antonelli third and Lando Norris fourth.
-    Occurred: 2026-09-04T15:19:00Z | Precision: exact | Status: active
-    Freshness basis: Formula 1 published the FP2 results at 15:19 UTC on Friday, September 4.
-    Source: https://www.formula1.com/en/latest/article/fp2-russell-beats-leclerc-and-antonelli-to-the-fastest-time-in-free-practice-2-ahead-of-italian-grand-prix.4mVLF757oe0NuWE9Caw1wO
-
- 2. [RESULT] Leclerc leads Ferrari 1-2 in FP1 (priority 89, age 7.57h)
-    Charles Leclerc set the pace in first practice ahead of Ferrari teammate Lewis Hamilton, with George Russell third.
-    Occurred: 2026-09-04T11:46:00Z | Precision: exact | Status: active
-    Freshness basis: Formula 1 published the FP1 report at 11:46 UTC on Friday, September 4.
-    Source: https://www.formula1.com/en/latest/article/fp1-leclerc-leads-hamilton-and-george-russell-during-first-practice-at-the-italian-grand-prix.7DUTqVtZlb4zvqNfBsyl1t
-
- 3. [DISCIPLINE] Albon hit with 20-place penalty and will start from the back (priority 87, age 3.10h)
-    Alexander Albon received a cumulative 20-place grid penalty for power-unit changes, meaning he will start at the back of the Italian Grand Prix grid.
-    Occurred: 2026-09-04T16:14:00Z | Precision: exact | Status: active
-    Freshness basis: Formula 1 announced the penalty Friday afternoon during the Monza race weekend.
-    Source: https://www.formula1.com/en/latest/article/albon-joins-antonelli-with-heavy-grid-drop-for-italian-grand-prix.1qBmyUa5kxPfClqd8ib3ZQ
-
- 4. [DISCIPLINE] Antonelli faces a notional 30-place grid drop at home race (priority 86, age 2.32h)
-    Kimi Antonelli's engine-related penalties will force him to start from the back unless further penalties alter the order; he is set to share the back row with Albon.
-    Occurred: 2026-09-04T17:01:00Z | Precision: exact | Status: active
-    Freshness basis: Formula 1 reiterated the penalty situation in Friday's post-practice coverage.
-    Source: https://www.formula1.com/en/latest/article/antonelli-assesses-weird-first-day-on-track-in-monza-as-he-predicts-tight-fight-for-pole-position.2DIinRLa87GdVd1c5mmjir
-
- 5. [SLUMP] Norris says McLaren is not in pole-position fight after practice (priority 82, age 2.10h)
-    Lando Norris finished fourth in FP2 but said McLaren was not currently in the fight for pole after trailing Russell by 0.384 seconds.
-    Occurred: 2026-09-04T17:14:00Z | Precision: exact | Status: active
-    Freshness basis: Norris's assessment was published after Friday's two practice sessions at Monza.
-    Source: https://www.formula1.com/en/latest/article/norris-claims-mclaren-not-in-the-fight-for-pole-at-all-after-monza-practice-struggles.43QIU1uA9ebkG5fJUoMXCN
+ 1. [OTHER] Alex Eala maintains smooth progress at US Open (priority 2, age 16.40h)
+    Alexandra Eala powered past Oleksandra Oliynykova in their second-round match at the US Open, defeating her 6-1, 6-4.
+    Freshness basis: hours ago
+    Candidate IDs: cand-eb4fa48d234f0bf3
+    Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49819163/us-open-alex-eala-oleksandra-oliynykova-round-two
