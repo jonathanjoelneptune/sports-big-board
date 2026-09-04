@@ -1,92 +1,16 @@
-name: Sports Ticker Scheduler v2
+name: Sports Ticker Scheduler v2 (Legacy - Disabled)
 
 on:
-  schedule:
-    # Exactly every 20 minutes. New workflow identity intentionally forces
-    # GitHub to register a fresh schedule rather than reusing the stale v1
-    # workflow registration.
-    - cron: '13,33,53 * * * *'
   workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: sports-ticker-sidecar-refresh
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  refresh:
-    name: Refresh cached Sports Ticker data
+  legacy-disabled:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Require OpenAI API key
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Legacy scheduler disabled
         run: |
-          test -n "$OPENAI_API_KEY" || {
-            echo "::error title=Missing OPENAI_API_KEY::Add OPENAI_API_KEY under Settings > Secrets and variables > Actions."
-            exit 1
-          }
-
-      - name: Refresh Sports Ticker cache
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          SPORTS_TICKER_MODEL: ${{ vars.SPORTS_TICKER_MODEL || 'gpt-5.6-luna' }}
-        run: python3 tools/refresh_sports_ticker.py
-
-      - name: Commit only Sports Ticker cache files
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          if git diff --quiet -- data/sports-ticker.json data/sports-ticker.txt; then
-            echo "No meaningful Sports Ticker changes. Nothing to commit."
-            exit 0
-          fi
-
-          git config user.name "sports-ticker-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # Hard safety boundary: never stage any application/controller file.
-          git add -- data/sports-ticker.json data/sports-ticker.txt
-
-          CHANGED="$(git diff --cached --name-only)"
-          echo "$CHANGED"
-
-          while IFS= read -r path; do
-            [[ -z "$path" ]] && continue
-            case "$path" in
-              data/sports-ticker.json|data/sports-ticker.txt) ;;
-              *)
-                echo "::error title=Sports Ticker safety boundary::Unexpected staged path: $path"
-                exit 1
-                ;;
-            esac
-          done <<< "$CHANGED"
-
-          git commit -m "Sports Ticker: automated refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
-
-          # Coexist safely with controller/application commits landing on main.
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git rebase origin/main
-
-            if git push origin HEAD:main; then
-              echo "Sports Ticker cache pushed successfully."
-              exit 0
-            fi
-
-            echo "Push race on attempt $attempt; retrying."
-            sleep $((attempt * 3))
-          done
-
-          echo "::error title=Sports Ticker push failed::Could not fast-forward main after three attempts."
-          exit 1
+          echo "The GitHub-native Sports Ticker cron is intentionally disabled."
+          echo "Cloudflare Cron now dispatches .github/workflows/sports-ticker-refresh.yml every 20 minutes."
