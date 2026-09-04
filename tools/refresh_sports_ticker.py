@@ -1,643 +1,1604 @@
 #!/usr/bin/env python3
-"""Sports Big Board Sports Ticker Phase A2 sidecar generator."""
+"""Sports Big Board A3 Sports Ticker pipeline.
+
+Discovery:
+  - direct ESPN RSS feeds
+  - direct official league news pages (best-effort JSON-LD/article extraction)
+  - Highlightly structured match data
+
+Editorial:
+  - one GPT-5 nano Responses API call
+  - NO OpenAI web_search tool
+
+Outputs:
+  - data/sports-ticker.json
+  - data/sports-ticker.txt
+  - data/sports-ticker-run-log.json
+
+The run log is always written, including on failures. Secrets are never logged.
+"""
 
 from __future__ import annotations
-import argparse, hashlib, json, os, re, sys, tempfile, time
-import urllib.error, urllib.parse, urllib.request
+
+import argparse
+import difflib
+import email.utils
+import hashlib
+import html
+import json
+import os
+import re
+import sys
+import tempfile
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 
-API_URL = "https://api.openai.com/v1/responses"
-DEFAULT_MODEL = "gpt-5.6-luna"
+OPENAI_API_URL = "https://api.openai.com/v1/responses"
+DEFAULT_MODEL = "gpt-5-nano"
 FRESHNESS_HOURS = 24.0
-BASE_LEAGUES = ["MLB","NFL","NBA","NHL","EPL","MLS","NCAAF"]
+MAX_MODEL_CANDIDATES = 140
+SOURCE_TIMEOUT = 25
+OPENAI_TIMEOUT = 180
+
+BASE_LEAGUES = ["MLB", "NFL", "NBA", "NHL", "EPL", "MLS", "NCAAF"]
 
 ALLOWED_TYPES = [
-    "BREAKING","RESULT","UPSET","TRADE","SIGNING","INJURY","RETURN","RECORD",
-    "RECORD_CHASE","MILESTONE","STREAK","SLUMP","RANKING","PLAYOFF","STANDINGS",
-    "AWARD","STAT_LEADER","CONTRACT","SUSPENSION","DISCIPLINE","LEGAL",
-    "COACHING","ROSTER","DEPTH_CHART","LEAGUE_NEWS","SCHEDULE","NEXT","OTHER",
+    "BREAKING", "RESULT", "UPSET", "TRADE", "SIGNING", "INJURY", "RETURN",
+    "RECORD", "RECORD_CHASE", "MILESTONE", "STREAK", "SLUMP", "RANKING",
+    "PLAYOFF", "STANDINGS", "AWARD", "STAT_LEADER", "CONTRACT", "SUSPENSION",
+    "DISCIPLINE", "LEGAL", "COACHING", "ROSTER", "DEPTH_CHART", "LEAGUE_NEWS",
+    "SCHEDULE", "NEXT", "OTHER",
 ]
-ALLOWED_STATUS = ["active","watch","next"]
 
-PREFERRED_SOURCE_HOSTS = {
-    "mlb.com","nfl.com","nba.com","nhl.com","premierleague.com","mlssoccer.com",
-    "ncaa.com","espn.com","apnews.com","reuters.com","cbssports.com",
-    "sports.yahoo.com","nbcsports.com","foxsports.com","theathletic.com","si.com",
-    "usopen.org","atptour.com","wtatennis.com","pgatour.com","formula1.com",
-    "ufc.com","olympics.com","fifa.com",
-}
-REJECTED_SOURCE_HOSTS = {"wikipedia.org","en.wikipedia.org"}
+ALLOWED_STATUS = ["active", "watch", "next"]
 
-STORY_SCHEMA = {
-    "type":"object","additionalProperties":False,
-    "required":["type","priority","headline","text","entities","occurredAt","timePrecision","freshnessBasis","status","sourceUrls"],
-    "properties":{
-        "type":{"type":"string","enum":ALLOWED_TYPES},
-        "priority":{"type":"integer","minimum":1,"maximum":100},
-        "headline":{"type":"string","minLength":4,"maxLength":120},
-        "text":{"type":"string","minLength":10,"maxLength":360},
-        "entities":{"type":"array","maxItems":8,"items":{"type":"string","minLength":1,"maxLength":80}},
-        "occurredAt":{"type":"string","minLength":10,"maxLength":40},
-        "timePrecision":{"type":"string","enum":["exact","hour","date"]},
-        "freshnessBasis":{"type":"string","minLength":8,"maxLength":240},
-        "status":{"type":"string","enum":ALLOWED_STATUS},
-        "sourceUrls":{"type":"array","minItems":1,"maxItems":3,"items":{"type":"string","minLength":8,"maxLength":500}},
+ESPN_FEEDS = [
+    {"id": "espn-top", "leagueHint": "SPECIAL", "sportHint": "sports",
+     "url": "https://www.espn.com/espn/rss/news"},
+    {"id": "espn-mlb", "leagueHint": "MLB", "sportHint": "baseball",
+     "url": "https://www.espn.com/espn/rss/mlb/news"},
+    {"id": "espn-nfl", "leagueHint": "NFL", "sportHint": "football",
+     "url": "https://www.espn.com/espn/rss/nfl/news"},
+    {"id": "espn-nba", "leagueHint": "NBA", "sportHint": "basketball",
+     "url": "https://www.espn.com/espn/rss/nba/news"},
+    {"id": "espn-nhl", "leagueHint": "NHL", "sportHint": "hockey",
+     "url": "https://www.espn.com/espn/rss/nhl/news"},
+    {"id": "espn-ncaaf", "leagueHint": "NCAAF", "sportHint": "college football",
+     "url": "https://www.espn.com/espn/rss/ncf/news"},
+    {"id": "espn-soccer", "leagueHint": "SOCCER", "sportHint": "soccer",
+     "url": "https://www.espn.com/espn/rss/soccer/news"},
+    {"id": "espn-motorsports", "leagueHint": "SPECIAL", "sportHint": "motorsports",
+     "url": "https://www.espn.com/espn/rss/rpm/news"},
+    # These feeds are useful when ESPN exposes them. If unavailable, the failure
+    # is logged and the rest of the pipeline continues.
+    {"id": "espn-tennis", "leagueHint": "SPECIAL", "sportHint": "tennis",
+     "url": "https://www.espn.com/espn/rss/tennis/news"},
+    {"id": "espn-golf", "leagueHint": "SPECIAL", "sportHint": "golf",
+     "url": "https://www.espn.com/espn/rss/golf/news"},
+]
+
+OFFICIAL_PAGES = [
+    {"id": "official-mlb", "leagueHint": "MLB", "sportHint": "baseball",
+     "url": "https://www.mlb.com/news"},
+    {"id": "official-nfl", "leagueHint": "NFL", "sportHint": "football",
+     "url": "https://www.nfl.com/news/"},
+    {"id": "official-nba", "leagueHint": "NBA", "sportHint": "basketball",
+     "url": "https://www.nba.com/news"},
+    {"id": "official-nhl", "leagueHint": "NHL", "sportHint": "hockey",
+     "url": "https://www.nhl.com/news/"},
+    {"id": "official-ncaa", "leagueHint": "NCAAF", "sportHint": "college football",
+     "url": "https://www.ncaa.com/news/football/fbs"},
+    {"id": "official-epl", "leagueHint": "EPL", "sportHint": "soccer",
+     "url": "https://www.premierleague.com/en/news"},
+    {"id": "official-mls", "leagueHint": "MLS", "sportHint": "soccer",
+     "url": "https://www.mlssoccer.com/news/"},
+]
+
+HIGHLIGHTLY_LEAGUES = [
+    {
+        "id": "highlightly-mlb", "league": "MLB", "sportHint": "baseball",
+        "legacyBase": "https://baseball.highlightly.net",
+        "allSportsPath": "/baseball/matches",
+        "legacyPath": "/matches", "leagueName": "MLB",
+    },
+    {
+        "id": "highlightly-nfl", "league": "NFL", "sportHint": "football",
+        "legacyBase": "https://american-football.highlightly.net",
+        "allSportsPath": "/american-football/matches",
+        "legacyPath": "/matches", "leagueName": "NFL",
+    },
+    {
+        "id": "highlightly-ncaaf", "league": "NCAAF", "sportHint": "college football",
+        "legacyBase": "https://american-football.highlightly.net",
+        "allSportsPath": "/american-football/matches",
+        "legacyPath": "/matches", "leagueName": "NCAA",
+    },
+    {
+        "id": "highlightly-nba", "league": "NBA", "sportHint": "basketball",
+        "legacyBase": "https://nba.highlightly.net",
+        "allSportsPath": "/nba/matches",
+        "legacyPath": "/matches", "leagueName": "NBA",
+    },
+    {
+        "id": "highlightly-nhl", "league": "NHL", "sportHint": "hockey",
+        "legacyBase": "https://nhl.highlightly.net",
+        "allSportsPath": "/nhl/matches",
+        "legacyPath": "/matches", "leagueName": "NHL",
+    },
+    {
+        "id": "highlightly-epl", "league": "EPL", "sportHint": "soccer",
+        "legacyBase": "https://soccer.highlightly.net",
+        "allSportsPath": "/football/matches",
+        "legacyPath": "/matches", "leagueName": "Premier League",
+    },
+    {
+        "id": "highlightly-mls", "league": "MLS", "sportHint": "soccer",
+        "legacyBase": "https://soccer.highlightly.net",
+        "allSportsPath": "/football/matches",
+        "legacyPath": "/matches", "leagueName": "Major League Soccer",
+    },
+]
+
+MODEL_ITEM_SCHEMA = {
+    "type": "object",
+    "additionalProperties": False,
+    "required": [
+        "candidateIds", "type", "priority", "headline", "text",
+        "entities", "freshnessBasis", "status",
+    ],
+    "properties": {
+        "candidateIds": {
+            "type": "array", "minItems": 1, "maxItems": 4,
+            "items": {"type": "string", "minLength": 4, "maxLength": 80},
+        },
+        "type": {"type": "string", "enum": ALLOWED_TYPES},
+        "priority": {"type": "integer", "minimum": 1, "maximum": 100},
+        "headline": {"type": "string", "minLength": 4, "maxLength": 120},
+        "text": {"type": "string", "minLength": 10, "maxLength": 360},
+        "entities": {
+            "type": "array", "maxItems": 8,
+            "items": {"type": "string", "minLength": 1, "maxLength": 80},
+        },
+        "freshnessBasis": {"type": "string", "minLength": 8, "maxLength": 240},
+        "status": {"type": "string", "enum": ALLOWED_STATUS},
     },
 }
 
-LEAGUE_SCHEMA: dict[str, Any] = {
-    "type":"object","additionalProperties":False,
-    "required":["league","seasonState","items"],
-    "properties":{
-        "league":{"type":"string","enum":BASE_LEAGUES},
-        "seasonState":{"type":"string","enum":["active","offseason","preseason","postseason"]},
-        "items":{"type":"array","minItems":1,"maxItems":10,"items":{"$ref":"#/$defs/story"}},
-    },
-    "$defs":{"story":STORY_SCHEMA},
-}
-
-SPECIAL_SCHEMA: dict[str, Any] = {
-    "type":"object","additionalProperties":False,
-    "required":["specialEvents"],
-    "properties":{
-        "specialEvents":{"type":"array","maxItems":6,"items":{
-            "type":"object","additionalProperties":False,
-            "required":["name","sport","items"],
-            "properties":{
-                "name":{"type":"string","minLength":2,"maxLength":100},
-                "sport":{"type":"string","minLength":2,"maxLength":50},
-                "items":{"type":"array","minItems":1,"maxItems":10,"items":{"$ref":"#/$defs/story"}},
+MODEL_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "required": ["leagues", "specialEvents"],
+    "properties": {
+        "leagues": {
+            "type": "array", "minItems": 7, "maxItems": 7,
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["league", "seasonState", "items"],
+                "properties": {
+                    "league": {"type": "string", "enum": BASE_LEAGUES},
+                    "seasonState": {
+                        "type": "string",
+                        "enum": ["active", "offseason", "preseason", "postseason"],
+                    },
+                    "items": {
+                        "type": "array", "minItems": 0, "maxItems": 10,
+                        "items": {"$ref": "#/$defs/item"},
+                    },
+                },
             },
-        }},
+        },
+        "specialEvents": {
+            "type": "array", "maxItems": 6,
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["name", "sport", "items"],
+                "properties": {
+                    "name": {"type": "string", "minLength": 2, "maxLength": 100},
+                    "sport": {"type": "string", "minLength": 2, "maxLength": 50},
+                    "items": {
+                        "type": "array", "minItems": 1, "maxItems": 10,
+                        "items": {"$ref": "#/$defs/item"},
+                    },
+                },
+            },
+        },
     },
-    "$defs":{"story":STORY_SCHEMA},
+    "$defs": {"item": MODEL_ITEM_SCHEMA},
 }
 
-BASE_SYSTEM_PROMPT = """You are the editorial intelligence layer for Sports Big Board.
+EDITOR_INSTRUCTIONS = """You are the final editor for Sports Big Board Sports Ticker.
 
-The Sports Ticker is a rolling "what happened in the last 24 hours?" catch-up feed.
-It is NOT a general news archive and NOT a list of the newest articles.
+You are NOT a researcher. You have NO browsing task. Use ONLY the candidate packet
+provided by Python. Never add a fact that is not supported by one or more cited
+candidateIds.
 
-HARD FRESHNESS RULE
-- Every item MUST describe a development that happened, was announced, was newly
-  reported, or materially changed within the previous 24 hours.
-- Do not include older evergreen context merely because it is still important.
-- For NEXT/SCHEDULE, the event may be future, but the reason it is ticker-worthy
-  must itself have become relevant or materially changed within the last 24 hours.
-- occurredAt must be the best ISO 8601 timestamp for the development itself.
-- If you cannot establish that it is within the last 24 hours, omit it.
+Goal: create a concise rolling "what happened in the last 24 hours?" ticker.
 
-EDITORIAL OBJECTIVE
-Return the most important developments a knowledgeable sports fan would want to
-know right now. Rank by consequence and usefulness, not article recency.
+Selection priorities:
+1. BREAKING / major league news
+2. playoff and standings consequences
+3. major injuries / returns
+4. trades / signings / contracts
+5. records / milestones / record chases
+6. rankings / awards / streaks / slumps
+7. discipline / legal / coaching / meaningful roster/depth-chart changes
+8. major upsets
+9. ordinary results
+10. weak previews only when a genuinely new development makes them newsworthy
 
-Prioritize:
-BREAKING, RESULT, UPSET, TRADE, SIGNING, INJURY, RETURN, RECORD, RECORD_CHASE,
-MILESTONE, STREAK, SLUMP, RANKING, PLAYOFF, STANDINGS, AWARD, STAT_LEADER,
-CONTRACT, SUSPENSION, DISCIPLINE, LEGAL, COACHING, ROSTER, DEPTH_CHART,
-LEAGUE_NEWS, SCHEDULE, NEXT.
+Editorial mix rules:
+- Maximum 5 ordinary RESULT items per base league.
+- Maximum 2 combined NEXT/SCHEDULE items per base league.
+- Do not pad an offseason league.
+- A major UPSET is not an ordinary RESULT.
+- Special Events should cover important active events outside the seven base leagues.
 
-SOURCE QUALITY
-Prefer:
-1. official league / competition / team / event sites
-2. AP or Reuters
-3. ESPN, CBS Sports, NBC Sports, Fox Sports, The Athletic, Yahoo Sports,
-   Sports Illustrated and similarly established sports newsrooms
-4. credible local beat reporting when stronger sources are unavailable
+Grounding:
+- Every final item must reference candidateIds from the supplied packet.
+- Do not invent URLs, scores, dates, injuries, rankings, records, quotes, or transactions.
+- If multiple candidates describe the same event, merge them into one item and cite all
+  useful candidateIds.
+- If a candidate is ambiguous, omit it rather than guessing.
 
-Avoid Wikipedia for current news, aggregators, scraped mirrors, SEO pages,
-unrecognized republishers, and invented URLs.
+Consistency:
+- Do not say shutout/shut out/blanked if the opponent scored.
+- Do not call something a one-point win unless the score margin is one.
+- Do not call a routine result an upset without evidence in the candidate packet.
 
-For priority >= 90, prefer two independent sources when practical unless one
-source is the official announcement.
-
-CLASSIFICATION
-Use the most semantically accurate type.
-- player/team recognition -> RANKING or AWARD, not CONTRACT
-- starter/backup changes -> DEPTH_CHART
-- exempt list/punishment -> DISCIPLINE or SUSPENSION
-- criminal/civil proceedings -> LEGAL
-- roster move without signing/trade -> ROSTER
-
-EDITORIAL MIX
-Before filling the list with routine game results, actively search for:
-- playoff / standings movement
-- injuries and returns
-- transactions and contracts
-- records, record chases and milestones
-- streaks and slumps
-- rankings and awards
-- suspensions, discipline, legal or coaching developments
-- consequential roster / depth-chart changes
-
-Ordinary RESULT items should usually fill the bottom of the list after
-higher-information developments are considered.
-- Return no more than 5 ordinary RESULT items in one league.
-- Return no more than 2 combined NEXT/SCHEDULE items in one league.
-- UPSET is not treated as an ordinary RESULT when the upset itself is major.
-- Do not include a weak preview merely to reach a target count.
-
-NEXT / SCHEDULE GATE
-A future game/event alone is not fresh news. For NEXT or SCHEDULE,
-freshnessBasis must identify the NEW development from the last 24 hours that
-makes the item ticker-worthy. If there is no such development, omit it.
-
-TIMESTAMP PRECISION
-- timePrecision="exact": a real timestamp is known; occurredAt is ISO 8601.
-- timePrecision="hour": only the hour is known; occurredAt uses the top of that
-  known hour, with no invented minutes/seconds.
-- timePrecision="date": only the calendar date is known; occurredAt is
-  YYYY-MM-DD. Never manufacture 00:00:00Z for a date-only source.
-- If only a date is known and it is the same UTC calendar date as the 24-hour
-  cutoff, freshness cannot be proven. Omit it.
-- freshnessBasis briefly states what became new within the 24-hour window.
-
-CONSISTENCY
-Verify wording agrees with stated facts.
-- Never say shutout / shut out / blanked if the opponent scored.
-- Never call a result a one-point win unless the score margin is one.
-- Do not claim a sweep, record, ranking, or streak unless sources support it.
-
-QUALITY CONTROL
-Before finalizing ask:
-"Am I missing any story substantially more important than the lowest-ranked
-story currently in my list?"
-If yes, replace the weaker item.
-
-Do not duplicate the same development. Keep headlines factual and compact.
+Write factual, compact, non-clickbait ticker copy.
 """
 
-LEAGUE_USER_TEMPLATE = """Research ONLY {league} for the current Sports Big Board ticker.
+class TickerError(RuntimeError):
+    pass
 
-Current UTC time: {now}
-Freshness cutoff: {cutoff}
 
-Determine seasonState: active, offseason, preseason, or postseason.
+def utc_now() -> datetime:
+    return datetime.now(timezone.utc).replace(microsecond=0)
 
-Target up to 10 verified, high-value developments from ONLY the last 24 hours.
 
-Coverage:
-- active/postseason: search deeply enough to find 8-10 strong items when that many exist
-- preseason: include results, depth-chart changes, injuries, signings, cuts,
-  suspensions, and major 24-hour league developments
-- offseason: do not pad; 4-7 strong items may be correct
-- before ordinary results, explicitly look for standings/playoff movement,
-  records, milestones, injuries, transactions, rankings, streaks, discipline,
-  coaching, roster and depth-chart news
-- ordinary RESULT cap: 5
-- combined NEXT/SCHEDULE cap: 2
-- never use stale or weak items to hit a quota
+def iso_z(dt: datetime) -> str:
+    return dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
-Return only the structured result for {league}.
-"""
 
-SPECIAL_USER_PROMPT = """Discover currently active major Special Events OUTSIDE
-MLB, NFL, NBA, NHL, EPL, MLS, NCAAF.
-
-Current UTC time: {now}
-Freshness cutoff: {cutoff}
-
-Examples: Grand Slam tennis, World Cups, Olympics, golf majors, major racing
-weekends, major combat-sports cards, and comparable events.
-
-Only include an event if it has meaningful developments in the last 24 hours.
-Return up to 6 events, each with up to 10 strong items.
-
-Do not duplicate routine base-league coverage into Special Events unless the
-event has distinct standalone editorial value.
-
-Return only the structured Special Events result.
-"""
-
-class TickerError(RuntimeError): pass
-
-def utc_now(): return datetime.now(timezone.utc).replace(microsecond=0)
-def iso_z(dt): return dt.astimezone(timezone.utc).isoformat().replace("+00:00","Z")
-def clean_text(v): return re.sub(r"\s+"," ",str(v or "")).strip()
-
-def parse_iso(value):
-    text=value.strip()
-    if text.endswith("Z"): text=text[:-1] + "+00:00"
-    dt=datetime.fromisoformat(text)
-    if dt.tzinfo is None: raise ValueError("timestamp has no timezone")
+def parse_datetime(value: str) -> datetime:
+    text = (value or "").strip()
+    if not text:
+        raise ValueError("empty datetime")
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
+        return datetime.strptime(text, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    dt = datetime.fromisoformat(text)
+    if dt.tzinfo is None:
+        raise ValueError("timestamp has no timezone")
     return dt.astimezone(timezone.utc)
 
-def normalize_occurrence(value,precision,generated_at):
-    raw=clean_text(value)
-    precision=clean_text(precision).lower()
 
-    if precision == "date":
-        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}",raw):
-            raise ValueError("date precision requires occurredAt=YYYY-MM-DD")
-        day=datetime.strptime(raw,"%Y-%m-%d").date()
-        cutoff=generated_at-timedelta(hours=FRESHNESS_HOURS)
+def parse_rss_datetime(value: str) -> datetime:
+    dt = email.utils.parsedate_to_datetime(value)
+    if dt is None:
+        raise ValueError(f"invalid RSS date {value!r}")
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
+
+
+def clean_text(value: Any) -> str:
+    return re.sub(r"\s+", " ", html.unescape(str(value or ""))).strip()
+
+
+def strip_tags(value: str) -> str:
+    return clean_text(re.sub(r"<[^>]+>", " ", value or ""))
+
+
+def sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def semantic_hash(value: Any) -> str:
+    encoded = json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+def safe_headers(headers: Any) -> dict[str, str]:
+    wanted = [
+        "content-type", "etag", "last-modified",
+        "x-ratelimit-requests-limit", "x-ratelimit-requests-remaining",
+        "x-ratelimit-limit", "x-ratelimit-remaining",
+    ]
+    out: dict[str, str] = {}
+    for name in wanted:
+        val = headers.get(name)
+        if val is not None:
+            out[name] = str(val)
+    return out
+
+
+def redacted_request_headers(provider: str) -> dict[str, str]:
+    headers = {"User-Agent": "SportsBigBoardTickerA3/1.0"}
+    if provider == "Highlightly":
+        headers["x-rapidapi-key"] = "[REDACTED]"
+    if provider == "OpenAI":
+        headers["Authorization"] = "Bearer [REDACTED]"
+    return headers
+
+
+def append_failure(log: dict[str, Any], stage: str, message: str, **extra: Any) -> None:
+    entry = {"at": iso_z(utc_now()), "stage": stage, "message": clean_text(message)}
+    entry.update(extra)
+    log["failures"].append(entry)
+
+
+def make_source_log(
+    *,
+    source_id: str,
+    provider: str,
+    kind: str,
+    league_hint: str,
+    url: str,
+) -> dict[str, Any]:
+    return {
+        "sourceId": source_id,
+        "provider": provider,
+        "kind": kind,
+        "leagueHint": league_hint,
+        "url": url,
+        "requestHeaders": redacted_request_headers(provider),
+        "startedAt": iso_z(utc_now()),
+        "finishedAt": None,
+        "elapsedMs": None,
+        "httpStatus": None,
+        "responseHeaders": {},
+        "contentType": None,
+        "bytes": 0,
+        "responseSha256": None,
+        "rawPreview": None,
+        "receivedItems": [],
+        "acceptedCandidateIds": [],
+        "rejectedItems": [],
+        "error": None,
+    }
+
+
+def fetch_bytes(url: str, headers: dict[str, str] | None = None, timeout: int = SOURCE_TIMEOUT):
+    request_headers = {
+        "User-Agent": "SportsBigBoardTickerA3/1.0 (+https://github.com/jonathanjoelneptune/sports-big-board)",
+        "Accept": "*/*",
+    }
+    if headers:
+        request_headers.update(headers)
+    req = urllib.request.Request(url, headers=request_headers, method="GET")
+    with urllib.request.urlopen(req, timeout=timeout) as response:
+        body = response.read()
+        return response.status, response.headers, body
+
+
+def finalize_source_log(entry: dict[str, Any], started: float, status: int | None, headers: Any, body: bytes | None):
+    entry["finishedAt"] = iso_z(utc_now())
+    entry["elapsedMs"] = int((time.monotonic() - started) * 1000)
+    entry["httpStatus"] = status
+    if headers is not None:
+        entry["responseHeaders"] = safe_headers(headers)
+        entry["contentType"] = headers.get("content-type")
+    if body is not None:
+        entry["bytes"] = len(body)
+        entry["responseSha256"] = sha256_bytes(body)
+        entry["rawPreview"] = body[:800].decode("utf-8", errors="replace")
+
+
+def infer_league_hint(default_hint: str, url: str, title: str) -> str:
+    u = (url or "").lower()
+    t = (title or "").lower()
+
+    path_hints = [
+        ("/mlb/", "MLB"), ("/baseball/", "MLB"),
+        ("/nfl/", "NFL"),
+        ("/nba/", "NBA"),
+        ("/nhl/", "NHL"),
+        ("/college-football/", "NCAAF"), ("/ncf/", "NCAAF"),
+    ]
+    for token, league in path_hints:
+        if token in u:
+            return league
+
+    if "major league soccer" in t or re.search(r"\bmls\b", t):
+        return "MLS"
+    if "premier league" in t:
+        return "EPL"
+    return default_hint
+
+
+def keyword_type_hint(title: str, summary: str) -> str:
+    text = (title + " " + summary).lower()
+    checks = [
+        ("INJURY", ["injury", "injured", "out for", "placed on injured", "concussion"]),
+        ("RETURN", ["returns to practice", "activated from", "returns from injury"]),
+        ("TRADE", [" traded ", "trade for", "acquire", "acquired"]),
+        ("SIGNING", ["signs ", "signed ", "agrees to a deal", "one-year deal"]),
+        ("CONTRACT", ["extension", "contract"]),
+        ("SUSPENSION", ["suspended", "suspension"]),
+        ("DISCIPLINE", ["fine", "discipline", "exempt list"]),
+        ("LEGAL", ["arrest", "lawsuit", "charged with", "court"]),
+        ("COACHING", ["fired", "hired as coach", "head coach"]),
+        ("DEPTH_CHART", ["starter", "backup quarterback", "depth chart", "qb1", "qb2"]),
+        ("RANKING", ["ranked", "ranking", "top 25"]),
+        ("RECORD", ["record", "all-time"]),
+        ("MILESTONE", ["milestone", "1,000", "100th", "500th"]),
+        ("STREAK", ["winning streak", "win streak", "losing streak"]),
+        ("PLAYOFF", ["playoff", "postseason", "wild card"]),
+        ("STANDINGS", ["standings", "division lead", "games back"]),
+    ]
+    for kind, words in checks:
+        if any(word in text for word in words):
+            return kind
+    return "OTHER"
+
+
+def occurrence_from_date(
+    value: str,
+    generated_at: datetime,
+    cutoff: datetime,
+) -> tuple[str, str, float | None]:
+    raw = clean_text(value)
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw):
+        day = datetime.strptime(raw, "%Y-%m-%d").date()
         if day <= cutoff.date():
-            raise TickerError(
-                f"date-only occurrence {raw} cannot prove it is inside the 24h window"
-            )
+            raise TickerError(f"date-only {raw} cannot prove freshness")
         if day > generated_at.date():
-            raise TickerError(f"date-only occurrence {raw} is in the future")
-        return raw,None
+            raise TickerError(f"date-only {raw} is in future")
+        return raw, "date", None
 
-    if precision not in {"exact","hour"}:
-        raise ValueError(f"unsupported timePrecision {precision!r}")
+    dt = parse_datetime(raw)
+    age = (generated_at - dt).total_seconds() / 3600.0
+    if age < -0.5:
+        raise TickerError(f"future timestamp {raw}")
+    if age > FRESHNESS_HOURS:
+        raise TickerError(f"stale age={age:.2f}h")
+    return iso_z(dt), "exact", round(age, 2)
 
-    dt=parse_iso(raw)
-    if precision == "hour" and (dt.minute != 0 or dt.second != 0):
-        raise ValueError("hour precision must use minute=00 and second=00")
 
-    age=round((generated_at-dt).total_seconds()/3600.0,2)
-    return iso_z(dt),age
+def make_candidate(
+    *,
+    source_id: str,
+    provider: str,
+    league_hint: str,
+    sport_hint: str,
+    title: str,
+    summary: str,
+    source_url: str,
+    occurrence: str,
+    generated_at: datetime,
+    cutoff: datetime,
+    type_hint: str | None = None,
+    quality: int = 80,
+    raw_ref: str | None = None,
+    metadata: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    occurred_at, precision, age = occurrence_from_date(occurrence, generated_at, cutoff)
+    title = clean_text(title)
+    summary = clean_text(summary)
+    if not title:
+        raise TickerError("candidate has empty title")
+    if len(title) > 180:
+        title = title[:177] + "..."
+    if len(summary) > 600:
+        summary = summary[:597] + "..."
 
-def age_label(item):
-    age=item.get("ageHours")
+    fingerprint = hashlib.sha1(
+        f"{league_hint}|{title.lower()}|{source_url}".encode("utf-8")
+    ).hexdigest()[:16]
+
+    return {
+        "candidateId": f"cand-{fingerprint}",
+        "leagueHint": infer_league_hint(league_hint, source_url, title),
+        "sportHint": sport_hint,
+        "typeHint": type_hint or keyword_type_hint(title, summary),
+        "title": title,
+        "summary": summary,
+        "occurredAt": occurred_at,
+        "timePrecision": precision,
+        "ageHours": age,
+        "quality": quality,
+        "sourceRecords": [{
+            "sourceId": source_id,
+            "provider": provider,
+            "url": source_url,
+            "rawRef": raw_ref,
+        }],
+        "metadata": metadata or {},
+    }
+
+
+def parse_rss_source(
+    source: dict[str, str],
+    generated_at: datetime,
+    cutoff: datetime,
+    run_log: dict[str, Any],
+) -> list[dict[str, Any]]:
+    entry = make_source_log(
+        source_id=source["id"], provider="ESPN", kind="rss",
+        league_hint=source["leagueHint"], url=source["url"],
+    )
+    run_log["sourceFetches"].append(entry)
+    started = time.monotonic()
+    candidates: list[dict[str, Any]] = []
+
+    try:
+        status, headers, body = fetch_bytes(
+            source["url"],
+            headers={"Accept": "application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.5"},
+        )
+        finalize_source_log(entry, started, status, headers, body)
+
+        root = ET.fromstring(body)
+        items = root.findall(".//item")
+        for idx, item in enumerate(items):
+            title = clean_text(item.findtext("title"))
+            link = clean_text(item.findtext("link"))
+            description = strip_tags(item.findtext("description") or "")
+            guid = clean_text(item.findtext("guid"))
+            pub_date = clean_text(item.findtext("pubDate"))
+            raw_item = {
+                "index": idx,
+                "title": title,
+                "link": link,
+                "description": description,
+                "guid": guid,
+                "pubDate": pub_date,
+            }
+            entry["receivedItems"].append(raw_item)
+
+            try:
+                published = parse_rss_datetime(pub_date)
+                if published < cutoff:
+                    raise TickerError(
+                        f"stale RSS item age={(generated_at-published).total_seconds()/3600:.2f}h"
+                    )
+                candidate = make_candidate(
+                    source_id=source["id"],
+                    provider="ESPN",
+                    league_hint=source["leagueHint"],
+                    sport_hint=source["sportHint"],
+                    title=title,
+                    summary=description,
+                    source_url=link or guid or source["url"],
+                    occurrence=iso_z(published),
+                    generated_at=generated_at,
+                    cutoff=cutoff,
+                    quality=90,
+                    raw_ref=f"{source['id']}#{idx}",
+                )
+                candidates.append(candidate)
+                entry["acceptedCandidateIds"].append(candidate["candidateId"])
+            except Exception as exc:
+                entry["rejectedItems"].append({
+                    "index": idx, "title": title, "reason": clean_text(exc),
+                })
+    except Exception as exc:
+        if entry["finishedAt"] is None:
+            finalize_source_log(entry, started, None, None, None)
+        entry["error"] = clean_text(exc)
+        append_failure(run_log, f"source:{source['id']}", str(exc), provider="ESPN")
+    return candidates
+
+
+class NewsPageParser(HTMLParser):
+    def __init__(self, base_url: str):
+        super().__init__(convert_charrefs=True)
+        self.base_url = base_url
+        self.article_depth = 0
+        self.current_article: dict[str, Any] | None = None
+        self.current_anchor_href: str | None = None
+        self.current_anchor_text: list[str] = []
+        self.current_heading_text: list[str] | None = None
+        self.current_time: str | None = None
+        self.articles: list[dict[str, Any]] = []
+        self.ld_json_buffers: list[str] = []
+        self._in_ld_json = False
+        self._ld_buf: list[str] = []
+
+    def handle_starttag(self, tag, attrs):
+        attrs_d = dict(attrs)
+        if tag == "article":
+            self.article_depth += 1
+            if self.article_depth == 1:
+                self.current_article = {"title": "", "url": "", "publishedAt": ""}
+        if tag == "a":
+            self.current_anchor_href = attrs_d.get("href")
+            self.current_anchor_text = []
+        if tag in {"h1", "h2", "h3"}:
+            self.current_heading_text = []
+        if tag == "time":
+            self.current_time = attrs_d.get("datetime") or attrs_d.get("content")
+            if self.current_article is not None and self.current_time:
+                self.current_article["publishedAt"] = self.current_time
+        if tag == "script" and attrs_d.get("type", "").lower() == "application/ld+json":
+            self._in_ld_json = True
+            self._ld_buf = []
+
+    def handle_data(self, data):
+        if self.current_anchor_href is not None:
+            self.current_anchor_text.append(data)
+        if self.current_heading_text is not None:
+            self.current_heading_text.append(data)
+        if self._in_ld_json:
+            self._ld_buf.append(data)
+
+    def handle_endtag(self, tag):
+        if tag == "a" and self.current_anchor_href is not None:
+            text = clean_text(" ".join(self.current_anchor_text))
+            href = urllib.parse.urljoin(self.base_url, self.current_anchor_href)
+            if self.current_article is not None and len(text) >= 20:
+                if not self.current_article.get("title"):
+                    self.current_article["title"] = text
+                    self.current_article["url"] = href
+            self.current_anchor_href = None
+            self.current_anchor_text = []
+        if tag in {"h1", "h2", "h3"} and self.current_heading_text is not None:
+            text = clean_text(" ".join(self.current_heading_text))
+            if self.current_article is not None and len(text) >= 20:
+                self.current_article["title"] = text
+            self.current_heading_text = None
+        if tag == "article":
+            if self.article_depth == 1 and self.current_article is not None:
+                if self.current_article.get("title") and self.current_article.get("url"):
+                    self.articles.append(self.current_article)
+                self.current_article = None
+            self.article_depth = max(0, self.article_depth - 1)
+        if tag == "script" and self._in_ld_json:
+            self.ld_json_buffers.append("".join(self._ld_buf))
+            self._in_ld_json = False
+            self._ld_buf = []
+
+
+def iter_json_objects(value: Any):
+    if isinstance(value, dict):
+        yield value
+        for v in value.values():
+            yield from iter_json_objects(v)
+    elif isinstance(value, list):
+        for v in value:
+            yield from iter_json_objects(v)
+
+
+def parse_official_source(
+    source: dict[str, str],
+    generated_at: datetime,
+    cutoff: datetime,
+    run_log: dict[str, Any],
+) -> list[dict[str, Any]]:
+    entry = make_source_log(
+        source_id=source["id"], provider="OfficialLeague", kind="html-news-page",
+        league_hint=source["leagueHint"], url=source["url"],
+    )
+    run_log["sourceFetches"].append(entry)
+    started = time.monotonic()
+    candidates: list[dict[str, Any]] = []
+
+    try:
+        status, headers, body = fetch_bytes(
+            source["url"],
+            headers={"Accept": "text/html,application/xhtml+xml"},
+        )
+        finalize_source_log(entry, started, status, headers, body)
+        text = body.decode("utf-8", errors="replace")
+        parser = NewsPageParser(source["url"])
+        parser.feed(text)
+
+        extracted: list[dict[str, Any]] = []
+        for blob in parser.ld_json_buffers:
+            try:
+                data = json.loads(blob)
+            except Exception:
+                continue
+            for obj in iter_json_objects(data):
+                obj_type = obj.get("@type")
+                types = obj_type if isinstance(obj_type, list) else [obj_type]
+                if not any(t in {"NewsArticle", "Article", "SportsEvent"} for t in types):
+                    continue
+                headline = clean_text(obj.get("headline") or obj.get("name"))
+                published = clean_text(
+                    obj.get("datePublished") or obj.get("dateModified") or obj.get("startDate")
+                )
+                url = obj.get("url")
+                if isinstance(url, dict):
+                    url = url.get("@id")
+                url = clean_text(url)
+                desc = clean_text(obj.get("description"))
+                if headline and published and url:
+                    extracted.append({
+                        "title": headline,
+                        "url": urllib.parse.urljoin(source["url"], url),
+                        "publishedAt": published,
+                        "description": desc,
+                        "extraction": "json-ld",
+                    })
+
+        extracted.extend(
+            {**a, "description": "", "extraction": "article-tag"}
+            for a in parser.articles
+            if a.get("publishedAt")
+        )
+
+        # Keep the log useful but bounded.
+        seen_keys: set[str] = set()
+        unique_extracted = []
+        for item in extracted:
+            key = (item.get("url") or "") + "|" + (item.get("title") or "")
+            if key in seen_keys:
+                continue
+            seen_keys.add(key)
+            unique_extracted.append(item)
+        entry["receivedItems"] = unique_extracted[:100]
+
+        for idx, raw_item in enumerate(unique_extracted[:100]):
+            try:
+                candidate = make_candidate(
+                    source_id=source["id"],
+                    provider="OfficialLeague",
+                    league_hint=source["leagueHint"],
+                    sport_hint=source["sportHint"],
+                    title=raw_item["title"],
+                    summary=raw_item.get("description", ""),
+                    source_url=raw_item["url"],
+                    occurrence=raw_item["publishedAt"],
+                    generated_at=generated_at,
+                    cutoff=cutoff,
+                    quality=100,
+                    raw_ref=f"{source['id']}#{idx}",
+                )
+                candidates.append(candidate)
+                entry["acceptedCandidateIds"].append(candidate["candidateId"])
+            except Exception as exc:
+                entry["rejectedItems"].append({
+                    "index": idx,
+                    "title": raw_item.get("title"),
+                    "reason": clean_text(exc),
+                })
+    except Exception as exc:
+        if entry["finishedAt"] is None:
+            finalize_source_log(entry, started, None, None, None)
+        entry["error"] = clean_text(exc)
+        append_failure(run_log, f"source:{source['id']}", str(exc), provider="OfficialLeague")
+    return candidates
+
+
+def unwrap_highlightly(value: Any) -> list[dict[str, Any]]:
+    if isinstance(value, list):
+        return [x for x in value if isinstance(x, dict)]
+    if isinstance(value, dict):
+        for key in ("data", "matches", "results"):
+            items = value.get(key)
+            if isinstance(items, list):
+                return [x for x in items if isinstance(x, dict)]
+    return []
+
+
+def score_scalar(value: Any) -> int | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return int(value)
+    if isinstance(value, str) and re.fullmatch(r"\d+", value.strip()):
+        return int(value.strip())
+    if isinstance(value, list):
+        nums = [score_scalar(v) for v in value]
+        nums = [n for n in nums if n is not None]
+        if not nums:
+            return None
+        return sum(nums) if len(nums) > 1 else nums[0]
+    if isinstance(value, dict):
+        for key in ("total", "current", "score", "value", "displayValue"):
+            if key in value:
+                n = score_scalar(value[key])
+                if n is not None:
+                    return n
+    return None
+
+
+def team_name(match: dict[str, Any], side: str) -> str:
+    obj = match.get(f"{side}Team")
+    if isinstance(obj, dict):
+        return clean_text(obj.get("displayName") or obj.get("name") or obj.get("abbreviation"))
+    return clean_text(match.get(f"{side}TeamDisplayName") or match.get(f"{side}TeamName"))
+
+
+def match_score(match: dict[str, Any]) -> tuple[int | None, int | None]:
+    state = match.get("state")
+    if not isinstance(state, dict):
+        state = {}
+    score = state.get("score")
+    if not isinstance(score, dict):
+        score = match.get("score") if isinstance(match.get("score"), dict) else {}
+    home = score_scalar(score.get("homeTeam"))
+    away = score_scalar(score.get("awayTeam"))
+    if home is None:
+        home = score_scalar(match.get("homeScore"))
+    if away is None:
+        away = score_scalar(match.get("awayScore"))
+    return home, away
+
+
+def match_finished(match: dict[str, Any]) -> bool:
+    state = match.get("state")
+    desc = ""
+    if isinstance(state, dict):
+        desc = clean_text(state.get("description") or state.get("status") or state.get("name"))
+    desc = (desc + " " + clean_text(match.get("status"))).lower()
+    return any(word in desc for word in ("finished", "final", "ended", "complete", "completed"))
+
+
+def build_highlightly_urls(cfg: dict[str, str], date_text: str) -> list[str]:
+    params = urllib.parse.urlencode({
+        "date": date_text,
+        "timezone": "America/New_York",
+        "leagueName": cfg["leagueName"],
+        "limit": 100,
+    })
+    legacy = f"{cfg['legacyBase']}{cfg['legacyPath']}?{params}"
+    allsports = f"https://sports.highlightly.net{cfg['allSportsPath']}?{params}"
+    return [legacy, allsports]
+
+
+def parse_highlightly_league(
+    cfg: dict[str, str],
+    generated_at: datetime,
+    cutoff: datetime,
+    run_log: dict[str, Any],
+    api_key: str,
+) -> list[dict[str, Any]]:
+    candidates: list[dict[str, Any]] = []
+    if not api_key:
+        entry = make_source_log(
+            source_id=cfg["id"], provider="Highlightly", kind="matches",
+            league_hint=cfg["league"], url="[disabled: missing HIGHLIGHTLY_API_KEY]",
+        )
+        entry["finishedAt"] = iso_z(utc_now())
+        entry["error"] = "HIGHLIGHTLY_API_KEY not configured"
+        run_log["sourceFetches"].append(entry)
+        return candidates
+
+    eastern_now = generated_at.astimezone(
+        __import__("zoneinfo").ZoneInfo("America/New_York")
+    )
+    dates = [eastern_now.date(), (eastern_now - timedelta(days=1)).date()]
+
+    for day in dates:
+        source_id = f"{cfg['id']}-{day.isoformat()}"
+        attempted_urls = build_highlightly_urls(cfg, day.isoformat())
+        success = False
+
+        for attempt_index, url in enumerate(attempted_urls):
+            entry = make_source_log(
+                source_id=f"{source_id}-{'legacy' if attempt_index == 0 else 'all-sports'}",
+                provider="Highlightly", kind="matches",
+                league_hint=cfg["league"], url=url,
+            )
+            run_log["sourceFetches"].append(entry)
+            started = time.monotonic()
+            try:
+                status, headers, body = fetch_bytes(
+                    url,
+                    headers={
+                        "Accept": "application/json",
+                        "x-rapidapi-key": api_key,
+                    },
+                )
+                finalize_source_log(entry, started, status, headers, body)
+                payload = json.loads(body.decode("utf-8"))
+                matches = unwrap_highlightly(payload)
+                entry["receivedItems"] = matches[:100]
+
+                for idx, match in enumerate(matches[:100]):
+                    try:
+                        if not match_finished(match):
+                            entry["rejectedItems"].append({
+                                "index": idx,
+                                "matchId": match.get("id"),
+                                "reason": "match not final",
+                            })
+                            continue
+                        scheduled = clean_text(match.get("date"))
+                        home = team_name(match, "home")
+                        away = team_name(match, "away")
+                        home_score, away_score = match_score(match)
+                        if not scheduled or not home or not away:
+                            raise TickerError("missing date/team data")
+                        if home_score is None or away_score is None:
+                            raise TickerError("final match missing usable score")
+
+                        if home_score > away_score:
+                            winner, loser = home, away
+                        elif away_score > home_score:
+                            winner, loser = away, home
+                        else:
+                            winner, loser = home, away
+
+                        title = (
+                            f"{winner} defeats {loser} {max(home_score, away_score)}-"
+                            f"{min(home_score, away_score)}"
+                            if home_score != away_score
+                            else f"{home} and {away} finish {home_score}-{away_score}"
+                        )
+                        summary = (
+                            f"Highlightly final: {away} {away_score}, "
+                            f"{home} {home_score}."
+                        )
+
+                        candidate = make_candidate(
+                            source_id=entry["sourceId"],
+                            provider="Highlightly",
+                            league_hint=cfg["league"],
+                            sport_hint=cfg["sportHint"],
+                            title=title,
+                            summary=summary,
+                            source_url="https://highlightly.net",
+                            occurrence=scheduled,
+                            generated_at=generated_at,
+                            cutoff=cutoff,
+                            type_hint="RESULT",
+                            quality=100,
+                            raw_ref=f"{entry['sourceId']}#{idx}",
+                            metadata={
+                                "matchId": match.get("id"),
+                                "homeTeam": home,
+                                "awayTeam": away,
+                                "homeScore": home_score,
+                                "awayScore": away_score,
+                                "scheduledAt": scheduled,
+                                "state": match.get("state"),
+                            },
+                        )
+                        candidates.append(candidate)
+                        entry["acceptedCandidateIds"].append(candidate["candidateId"])
+                    except Exception as exc:
+                        entry["rejectedItems"].append({
+                            "index": idx,
+                            "matchId": match.get("id"),
+                            "reason": clean_text(exc),
+                        })
+                success = True
+                break
+            except urllib.error.HTTPError as exc:
+                body = exc.read()
+                finalize_source_log(entry, started, exc.code, exc.headers, body)
+                entry["error"] = f"HTTP {exc.code}: {body[:500].decode('utf-8', errors='replace')}"
+                # Auth/product mismatch is exactly why we have a second base URL fallback.
+                if attempt_index == len(attempted_urls) - 1:
+                    append_failure(
+                        run_log, f"source:{source_id}", entry["error"],
+                        provider="Highlightly", league=cfg["league"],
+                    )
+            except Exception as exc:
+                if entry["finishedAt"] is None:
+                    finalize_source_log(entry, started, None, None, None)
+                entry["error"] = clean_text(exc)
+                if attempt_index == len(attempted_urls) - 1:
+                    append_failure(
+                        run_log, f"source:{source_id}", str(exc),
+                        provider="Highlightly", league=cfg["league"],
+                    )
+        if not success:
+            continue
+    return candidates
+
+
+STOPWORDS = {
+    "the", "a", "an", "to", "of", "and", "in", "on", "for", "with", "at",
+    "from", "as", "after", "before", "over", "vs", "v", "news", "latest",
+}
+
+
+def title_tokens(title: str) -> set[str]:
+    return {
+        tok for tok in re.findall(r"[a-z0-9]+", title.lower())
+        if tok not in STOPWORDS and len(tok) > 1
+    }
+
+
+def title_similarity(a: str, b: str) -> float:
+    ta, tb = title_tokens(a), title_tokens(b)
+    if not ta or not tb:
+        return 0.0
+    jaccard = len(ta & tb) / max(1, len(ta | tb))
+    seq = difflib.SequenceMatcher(None, a.lower(), b.lower()).ratio()
+    return max(jaccard, seq * 0.85)
+
+
+def merge_candidate(dst: dict[str, Any], src: dict[str, Any]) -> None:
+    seen = {(r["sourceId"], r["url"]) for r in dst["sourceRecords"]}
+    for record in src["sourceRecords"]:
+        key = (record["sourceId"], record["url"])
+        if key not in seen:
+            dst["sourceRecords"].append(record)
+            seen.add(key)
+    if src["quality"] > dst["quality"]:
+        dst["quality"] = src["quality"]
+        dst["summary"] = src["summary"] or dst["summary"]
+        dst["title"] = src["title"] or dst["title"]
+    # Prefer the newest independently reported development timestamp.
+    try:
+        dst_dt = parse_datetime(dst["occurredAt"])
+        src_dt = parse_datetime(src["occurredAt"])
+        if src_dt > dst_dt:
+            dst["occurredAt"] = src["occurredAt"]
+            dst["timePrecision"] = src["timePrecision"]
+            dst["ageHours"] = src["ageHours"]
+    except Exception:
+        pass
+    if dst.get("typeHint") == "OTHER" and src.get("typeHint") != "OTHER":
+        dst["typeHint"] = src["typeHint"]
+
+
+def dedupe_candidates(
+    raw_candidates: list[dict[str, Any]],
+    run_log: dict[str, Any],
+) -> list[dict[str, Any]]:
+    ordered = sorted(
+        raw_candidates,
+        key=lambda c: (
+            -int(c.get("quality", 0)),
+            float(c["ageHours"]) if c.get("ageHours") is not None else 999.0,
+        ),
+    )
+    kept: list[dict[str, Any]] = []
+    actions = []
+
+    for candidate in ordered:
+        merged_into = None
+        candidate_urls = {r["url"] for r in candidate["sourceRecords"]}
+        for existing in kept:
+            existing_urls = {r["url"] for r in existing["sourceRecords"]}
+            same_url = bool(candidate_urls & existing_urls)
+            same_bucket = (
+                candidate["leagueHint"] == existing["leagueHint"]
+                or "SPECIAL" in {candidate["leagueHint"], existing["leagueHint"]}
+                or "SOCCER" in {candidate["leagueHint"], existing["leagueHint"]}
+            )
+            if not same_bucket:
+                continue
+            sim = title_similarity(candidate["title"], existing["title"])
+            if same_url or sim >= 0.72:
+                merge_candidate(existing, candidate)
+                merged_into = existing["candidateId"]
+                actions.append({
+                    "action": "merge",
+                    "candidateId": candidate["candidateId"],
+                    "into": existing["candidateId"],
+                    "similarity": round(sim, 3),
+                    "sameUrl": same_url,
+                })
+                break
+        if merged_into is None:
+            kept.append(candidate)
+            actions.append({"action": "keep", "candidateId": candidate["candidateId"]})
+
+    run_log["pipeline"]["dedupeActions"] = actions
+    return kept
+
+
+def candidate_sort_key(c: dict[str, Any]):
+    type_weight = {
+        "BREAKING": 0, "INJURY": 1, "TRADE": 1, "SIGNING": 1, "CONTRACT": 1,
+        "PLAYOFF": 1, "STANDINGS": 1, "RECORD": 1, "MILESTONE": 2,
+        "DEPTH_CHART": 2, "SUSPENSION": 2, "DISCIPLINE": 2, "LEGAL": 2,
+        "COACHING": 2, "RESULT": 5, "OTHER": 6,
+    }.get(c.get("typeHint"), 4)
+    age = float(c["ageHours"]) if c.get("ageHours") is not None else 23.9
+    return (type_weight, -int(c.get("quality", 0)), age)
+
+
+def trim_candidates(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    # Preserve breadth by taking up to 25 per explicit base league and then fill
+    # remaining slots from special/soccer/general candidates.
+    buckets: dict[str, list[dict[str, Any]]] = {}
+    for c in candidates:
+        buckets.setdefault(c["leagueHint"], []).append(c)
+    for values in buckets.values():
+        values.sort(key=candidate_sort_key)
+
+    selected: list[dict[str, Any]] = []
+    selected_ids: set[str] = set()
+
+    for league in BASE_LEAGUES:
+        for c in buckets.get(league, [])[:25]:
+            if c["candidateId"] not in selected_ids:
+                selected.append(c)
+                selected_ids.add(c["candidateId"])
+
+    leftovers = [
+        c for c in candidates
+        if c["candidateId"] not in selected_ids
+    ]
+    leftovers.sort(key=candidate_sort_key)
+
+    for c in leftovers:
+        if len(selected) >= MAX_MODEL_CANDIDATES:
+            break
+        selected.append(c)
+        selected_ids.add(c["candidateId"])
+
+    selected.sort(key=candidate_sort_key)
+    return selected[:MAX_MODEL_CANDIDATES]
+
+
+def model_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "candidateId": candidate["candidateId"],
+        "leagueHint": candidate["leagueHint"],
+        "sportHint": candidate["sportHint"],
+        "typeHint": candidate["typeHint"],
+        "title": candidate["title"],
+        "summary": candidate["summary"],
+        "occurredAt": candidate["occurredAt"],
+        "timePrecision": candidate["timePrecision"],
+        "ageHours": candidate["ageHours"],
+        "quality": candidate["quality"],
+        "sources": [
+            {
+                "sourceId": r["sourceId"],
+                "provider": r["provider"],
+                "url": r["url"],
+            }
+            for r in candidate["sourceRecords"]
+        ],
+        "metadata": candidate.get("metadata", {}),
+    }
+
+
+def candidate_hash(candidates: list[dict[str, Any]]) -> str:
+    semantic = []
+    for c in candidates:
+        semantic.append({
+            "candidateId": c["candidateId"],
+            "leagueHint": c["leagueHint"],
+            "typeHint": c["typeHint"],
+            "title": c["title"],
+            "summary": c["summary"],
+            "occurredAt": c["occurredAt"],
+            "sources": sorted(
+                (r["sourceId"], r["url"]) for r in c["sourceRecords"]
+            ),
+            "metadata": c.get("metadata", {}),
+        })
+    return semantic_hash(semantic)
+
+
+def load_previous(path: Path) -> dict[str, Any] | None:
+    if not path.exists():
+        return None
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+        return value if isinstance(value, dict) else None
+    except Exception:
+        return None
+
+
+def extract_output_text(response: dict[str, Any]) -> str:
+    chunks = []
+    refusals = []
+    for item in response.get("output", []):
+        if not isinstance(item, dict) or item.get("type") != "message":
+            continue
+        for content in item.get("content", []):
+            if not isinstance(content, dict):
+                continue
+            if content.get("type") == "output_text" and isinstance(content.get("text"), str):
+                chunks.append(content["text"])
+            elif content.get("type") == "refusal":
+                refusals.append(str(content.get("refusal", "")))
+    if refusals:
+        raise TickerError("Model refusal: " + " | ".join(refusals))
+    text = "\n".join(chunks).strip()
+    if not text:
+        raise TickerError("OpenAI response contained no output text")
+    return text
+
+
+def parse_openai_error(details: str) -> tuple[str | None, str | None]:
+    try:
+        payload = json.loads(details)
+        err = payload.get("error") if isinstance(payload, dict) else None
+        if isinstance(err, dict):
+            return clean_text(err.get("code")), clean_text(err.get("type"))
+    except Exception:
+        pass
+    return None, None
+
+
+def call_openai(
+    api_key: str,
+    model: str,
+    candidates: list[dict[str, Any]],
+    run_log: dict[str, Any],
+) -> dict[str, Any]:
+    packet = {
+        "generatedAt": run_log["generatedAt"],
+        "freshnessCutoff": run_log["freshnessCutoff"],
+        "baseLeagues": BASE_LEAGUES,
+        "candidates": [model_candidate(c) for c in candidates],
+    }
+
+    payload = {
+        "model": model,
+        "store": False,
+        "instructions": EDITOR_INSTRUCTIONS,
+        "input": (
+            "Select and wordsmith the Sports Ticker using only this candidate packet:\n"
+            + json.dumps(packet, ensure_ascii=False, separators=(",", ":"))
+        ),
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "sports_ticker_a3",
+                "strict": True,
+                "schema": MODEL_SCHEMA,
+            }
+        },
+        "max_output_tokens": 9000,
+        "prompt_cache_key": "sports-big-board-a3-editor-v1",
+    }
+
+    run_log["openai"]["called"] = True
+    run_log["openai"]["requestPayload"] = payload
+    run_log["openai"]["candidateCount"] = len(candidates)
+    run_log["openai"]["startedAt"] = iso_z(utc_now())
+
+    body = json.dumps(payload).encode("utf-8")
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "User-Agent": "sports-big-board-ticker-a3/1.0",
+    }
+
+    last_error: Exception | None = None
+    for attempt in range(1, 3):
+        req = urllib.request.Request(OPENAI_API_URL, data=body, headers=headers, method="POST")
+        try:
+            with urllib.request.urlopen(req, timeout=OPENAI_TIMEOUT) as response:
+                raw = response.read().decode("utf-8")
+                result = json.loads(raw)
+                output_text = extract_output_text(result)
+                model_output = json.loads(output_text)
+
+                run_log["openai"]["finishedAt"] = iso_z(utc_now())
+                run_log["openai"]["httpStatus"] = response.status
+                run_log["openai"]["responseId"] = result.get("id")
+                run_log["openai"]["usage"] = result.get("usage")
+                run_log["openai"]["rawOutput"] = output_text
+                run_log["openai"]["responseMeta"] = {
+                    "model": result.get("model"),
+                    "status": result.get("status"),
+                    "serviceTier": result.get("service_tier"),
+                }
+                return model_output
+        except urllib.error.HTTPError as exc:
+            details = exc.read().decode("utf-8", errors="replace")
+            code, err_type = parse_openai_error(details)
+            message = f"OpenAI HTTP {exc.code}: {details[:2000]}"
+            run_log["openai"]["httpStatus"] = exc.code
+            run_log["openai"]["error"] = {
+                "message": message,
+                "code": code,
+                "type": err_type,
+                "attempt": attempt,
+            }
+            last_error = TickerError(message)
+
+            # Insufficient quota will never recover from a retry.
+            if code in {"credit_balance_exhausted", "insufficient_quota"} or err_type == "insufficient_quota":
+                raise last_error
+
+            if exc.code not in {408, 409, 429, 500, 502, 503, 504} or attempt == 2:
+                raise last_error
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+            run_log["openai"]["error"] = {
+                "message": clean_text(exc),
+                "attempt": attempt,
+            }
+            last_error = exc
+            if attempt == 2:
+                raise TickerError(f"OpenAI request failed: {exc}") from exc
+
+        time.sleep(4 * attempt)
+
+    raise TickerError(f"OpenAI request failed: {last_error}")
+
+
+def score_pairs(text: str) -> list[tuple[int, int]]:
+    return [
+        (int(a), int(b))
+        for a, b in re.findall(r"(?<!\d)(\d{1,3})\s*[-–—]\s*(\d{1,3})(?!\d)", text)
+    ]
+
+
+def validate_copy_consistency(item: dict[str, Any], context: str) -> None:
+    text = (item["headline"] + " " + item["text"]).lower()
+    pairs = score_pairs(text)
+    if any(term in text for term in ("shutout", "shut out", "blanked")):
+        for a, b in pairs:
+            if a > 0 and b > 0:
+                raise TickerError(f"{context}: shutout wording conflicts with {a}-{b}")
+    if any(term in text for term in ("one-point win", "one point win", "one-point victory", "one point victory")):
+        for a, b in pairs:
+            if abs(a - b) != 1:
+                raise TickerError(f"{context}: one-point wording conflicts with {a}-{b}")
+
+
+def union_sources(candidate_ids: list[str], by_id: dict[str, dict[str, Any]]) -> list[dict[str, str]]:
+    out = []
+    seen = set()
+    for cid in candidate_ids:
+        for record in by_id[cid]["sourceRecords"]:
+            key = (record["provider"], record["sourceId"], record["url"])
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append({
+                "provider": record["provider"],
+                "sourceId": record["sourceId"],
+                "url": record["url"],
+            })
+    return out
+
+
+def best_occurrence(candidate_ids: list[str], by_id: dict[str, dict[str, Any]]):
+    candidates = [by_id[cid] for cid in candidate_ids]
+    exact = []
+    date_only = []
+    for c in candidates:
+        if c["timePrecision"] == "date":
+            date_only.append(c)
+        else:
+            try:
+                exact.append((parse_datetime(c["occurredAt"]), c))
+            except Exception:
+                pass
+    if exact:
+        _, c = max(exact, key=lambda pair: pair[0])
+        return c["occurredAt"], c["timePrecision"], c["ageHours"]
+    c = max(date_only, key=lambda x: x["occurredAt"])
+    return c["occurredAt"], "date", None
+
+
+def curate_final_items(items: list[dict[str, Any]], context: str, run_log: dict[str, Any]):
+    ordered = sorted(items, key=lambda x: (-int(x["priority"]), float(x["ageHours"]) if x["ageHours"] is not None else 23.9))
+    selected = []
+    result_count = 0
+    preview_count = 0
+    other_count = 0
+    for item in ordered:
+        kind = item["type"]
+        if kind == "RESULT" and result_count >= 5:
+            run_log["pipeline"]["finalDrops"].append({
+                "context": context, "headline": item["headline"], "reason": "RESULT cap 5",
+            })
+            continue
+        if kind == "RESULT":
+            result_count += 1
+        if kind in {"NEXT", "SCHEDULE"} and preview_count >= 2:
+            run_log["pipeline"]["finalDrops"].append({
+                "context": context, "headline": item["headline"], "reason": "NEXT/SCHEDULE cap 2",
+            })
+            continue
+        if kind in {"NEXT", "SCHEDULE"}:
+            preview_count += 1
+        if kind == "OTHER" and other_count >= 1:
+            run_log["pipeline"]["finalDrops"].append({
+                "context": context, "headline": item["headline"], "reason": "OTHER cap 1",
+            })
+            continue
+        if kind == "OTHER":
+            other_count += 1
+        selected.append(item)
+        if len(selected) == 10:
+            break
+    for rank, item in enumerate(selected, 1):
+        item["rank"] = rank
+    return selected
+
+
+def normalize_model_output(
+    model_output: dict[str, Any],
+    candidates: list[dict[str, Any]],
+    generated_at: datetime,
+    run_log: dict[str, Any],
+) -> dict[str, Any]:
+    by_id = {c["candidateId"]: c for c in candidates}
+    seen_leagues = set()
+    leagues = []
+
+    raw_leagues = model_output.get("leagues")
+    if not isinstance(raw_leagues, list):
+        raise TickerError("model output missing leagues array")
+
+    for group in raw_leagues:
+        league = clean_text(group.get("league")).upper()
+        if league not in BASE_LEAGUES or league in seen_leagues:
+            raise TickerError(f"invalid/duplicate league group {league!r}")
+        seen_leagues.add(league)
+        season_state = clean_text(group.get("seasonState")).lower()
+        if season_state not in {"active", "offseason", "preseason", "postseason"}:
+            raise TickerError(f"{league}: invalid seasonState")
+
+        final_items = []
+        for idx, raw_item in enumerate(group.get("items", []), 1):
+            try:
+                candidate_ids = [clean_text(cid) for cid in raw_item["candidateIds"]]
+                if not candidate_ids or any(cid not in by_id for cid in candidate_ids):
+                    raise TickerError("unknown candidateId")
+                item_type = clean_text(raw_item["type"]).upper()
+                if item_type not in ALLOWED_TYPES:
+                    raise TickerError("invalid type")
+                occurred_at, precision, age = best_occurrence(candidate_ids, by_id)
+                sources = union_sources(candidate_ids, by_id)
+                item = {
+                    "rank": idx,
+                    "candidateIds": candidate_ids,
+                    "type": item_type,
+                    "priority": int(raw_item["priority"]),
+                    "headline": clean_text(raw_item["headline"]),
+                    "text": clean_text(raw_item["text"]),
+                    "entities": [clean_text(x) for x in raw_item.get("entities", []) if clean_text(x)],
+                    "occurredAt": occurred_at,
+                    "timePrecision": precision,
+                    "ageHours": age,
+                    "freshnessBasis": clean_text(raw_item["freshnessBasis"]),
+                    "status": clean_text(raw_item["status"]).lower(),
+                    "sourceUrls": [s["url"] for s in sources],
+                    "sources": sources,
+                }
+                item["id"] = "a3-" + hashlib.sha1(
+                    ("|".join(candidate_ids) + "|" + item["headline"]).encode("utf-8")
+                ).hexdigest()[:16]
+                if not 1 <= item["priority"] <= 100:
+                    raise TickerError("priority out of range")
+                if item["status"] not in ALLOWED_STATUS:
+                    raise TickerError("invalid status")
+                validate_copy_consistency(item, f"{league} #{idx}")
+                final_items.append(item)
+            except Exception as exc:
+                run_log["pipeline"]["finalDrops"].append({
+                    "context": league,
+                    "index": idx,
+                    "headline": clean_text(raw_item.get("headline")),
+                    "reason": clean_text(exc),
+                })
+
+        final_items = curate_final_items(final_items, league, run_log)
+        leagues.append({
+            "league": league,
+            "seasonState": season_state,
+            "items": final_items,
+        })
+
+    missing = [league for league in BASE_LEAGUES if league not in seen_leagues]
+    if missing:
+        raise TickerError("model omitted league groups: " + ", ".join(missing))
+
+    # Return in canonical league order regardless of model ordering.
+    order = {league: i for i, league in enumerate(BASE_LEAGUES)}
+    leagues.sort(key=lambda g: order[g["league"]])
+
+    special_events = []
+    for event_index, event in enumerate(model_output.get("specialEvents", []), 1):
+        name = clean_text(event.get("name"))
+        sport = clean_text(event.get("sport"))
+        if not name or not sport:
+            continue
+        items = []
+        for idx, raw_item in enumerate(event.get("items", []), 1):
+            try:
+                candidate_ids = [clean_text(cid) for cid in raw_item["candidateIds"]]
+                if not candidate_ids or any(cid not in by_id for cid in candidate_ids):
+                    raise TickerError("unknown candidateId")
+                occurred_at, precision, age = best_occurrence(candidate_ids, by_id)
+                sources = union_sources(candidate_ids, by_id)
+                item = {
+                    "rank": idx,
+                    "candidateIds": candidate_ids,
+                    "type": clean_text(raw_item["type"]).upper(),
+                    "priority": int(raw_item["priority"]),
+                    "headline": clean_text(raw_item["headline"]),
+                    "text": clean_text(raw_item["text"]),
+                    "entities": [clean_text(x) for x in raw_item.get("entities", []) if clean_text(x)],
+                    "occurredAt": occurred_at,
+                    "timePrecision": precision,
+                    "ageHours": age,
+                    "freshnessBasis": clean_text(raw_item["freshnessBasis"]),
+                    "status": clean_text(raw_item["status"]).lower(),
+                    "sourceUrls": [s["url"] for s in sources],
+                    "sources": sources,
+                }
+                item["id"] = "a3-special-" + hashlib.sha1(
+                    ("|".join(candidate_ids) + "|" + item["headline"]).encode("utf-8")
+                ).hexdigest()[:16]
+                if item["type"] not in ALLOWED_TYPES:
+                    raise TickerError("invalid type")
+                validate_copy_consistency(item, f"{name} #{idx}")
+                items.append(item)
+            except Exception as exc:
+                run_log["pipeline"]["finalDrops"].append({
+                    "context": name,
+                    "index": idx,
+                    "headline": clean_text(raw_item.get("headline")),
+                    "reason": clean_text(exc),
+                })
+        items = curate_final_items(items, name, run_log)
+        if items:
+            special_events.append({"name": name, "sport": sport, "items": items})
+
+    return {"leagues": leagues, "specialEvents": special_events}
+
+
+def semantic_ticker(dataset: dict[str, Any]) -> dict[str, Any]:
+    def sem_item(i):
+        return {
+            "candidateIds": i.get("candidateIds", []),
+            "type": i.get("type"),
+            "priority": i.get("priority"),
+            "headline": i.get("headline"),
+            "text": i.get("text"),
+            "entities": i.get("entities", []),
+            "occurredAt": i.get("occurredAt"),
+            "timePrecision": i.get("timePrecision"),
+            "freshnessBasis": i.get("freshnessBasis"),
+            "status": i.get("status"),
+            "sourceUrls": i.get("sourceUrls", []),
+        }
+    return {
+        "schemaVersion": dataset.get("schemaVersion"),
+        "pipelineVersion": dataset.get("pipelineVersion"),
+        "sourceCandidateHash": dataset.get("sourceCandidateHash"),
+        "leagues": [
+            {
+                "league": g.get("league"),
+                "seasonState": g.get("seasonState"),
+                "items": [sem_item(i) for i in g.get("items", [])],
+            }
+            for g in dataset.get("leagues", [])
+        ],
+        "specialEvents": [
+            {
+                "name": e.get("name"),
+                "sport": e.get("sport"),
+                "items": [sem_item(i) for i in e.get("items", [])],
+            }
+            for e in dataset.get("specialEvents", [])
+        ],
+    }
+
+
+def age_label(item: dict[str, Any]) -> str:
+    age = item.get("ageHours")
     if age is None:
         return f"date-only {item['occurredAt']}"
     return f"{float(age):.2f}h"
 
-def hostname(url):
-    try: host=(urllib.parse.urlparse(url).hostname or "").lower()
-    except Exception: return ""
-    return host[4:] if host.startswith("www.") else host
 
-def is_rejected_host(host):
-    return any(host==bad or host.endswith("."+bad) for bad in REJECTED_SOURCE_HOSTS)
-
-def is_preferred_host(host):
-    return any(host==good or host.endswith("."+good) for good in PREFERRED_SOURCE_HOSTS)
-
-def valid_url(value):
-    p=urllib.parse.urlparse(value)
-    return p.scheme in {"http","https"} and bool(p.netloc)
-
-def extract_output_text(response):
-    chunks=[]; refusals=[]
-    for item in response.get("output",[]):
-        if not isinstance(item,dict) or item.get("type")!="message": continue
-        for content in item.get("content",[]):
-            if not isinstance(content,dict): continue
-            if content.get("type")=="output_text" and isinstance(content.get("text"),str):
-                chunks.append(content["text"])
-            elif content.get("type")=="refusal" and isinstance(content.get("refusal"),str):
-                refusals.append(content["refusal"])
-    if refusals: raise TickerError("Model refused ticker request: "+" | ".join(refusals))
-    text="\n".join(chunks).strip()
-    if not text: raise TickerError("OpenAI response contained no output text")
-    return text
-
-def call_openai(api_key, model, system_prompt, user_prompt, schema_name, schema, timeout=240):
-    payload={
-        "model":model,
-        "reasoning":{"effort":"low"},
-        "tools":[{"type":"web_search"}],
-        "input":[{"role":"system","content":system_prompt},{"role":"user","content":user_prompt}],
-        "text":{"format":{"type":"json_schema","name":schema_name,"strict":True,"schema":schema}},
-        "max_output_tokens":12000,
-    }
-    body=json.dumps(payload).encode("utf-8")
-    headers={"Authorization":f"Bearer {api_key}","Content-Type":"application/json",
-             "User-Agent":"sports-big-board-ticker-sidecar/phase-a2.3"}
-    last=None
-    for attempt in range(1,4):
-        req=urllib.request.Request(API_URL,data=body,headers=headers,method="POST")
-        try:
-            with urllib.request.urlopen(req,timeout=timeout) as r:
-                result=json.loads(r.read().decode("utf-8"))
-                return json.loads(extract_output_text(result))
-        except urllib.error.HTTPError as exc:
-            details=exc.read().decode("utf-8",errors="replace")
-            last=TickerError(f"OpenAI HTTP {exc.code}: {details[:2000]}")
-            if exc.code not in {408,409,429,500,502,503,504} or attempt==3: raise last
-        except (urllib.error.URLError,TimeoutError,json.JSONDecodeError) as exc:
-            last=exc
-            if attempt==3: raise TickerError(f"OpenAI request failed: {exc}") from exc
-        delay=attempt*6
-        print(f"OpenAI attempt {attempt} failed; retrying in {delay}s",file=sys.stderr)
-        time.sleep(delay)
-    raise TickerError(f"OpenAI request failed: {last}")
-
-def story_fingerprint(item):
-    core="|".join([item["type"].lower(),
-                   re.sub(r"[^a-z0-9]+","-",item["headline"].lower()).strip("-"),
-                   item["occurredAt"][:13]])
-    return hashlib.sha1(core.encode()).hexdigest()[:16]
-
-def normalize_story(story,rank,id_prefix,generated_at):
-    urls=[]; seen=set()
-    for raw in story.get("sourceUrls",[]):
-        url=clean_text(raw)
-        if url and url not in seen:
-            urls.append(url); seen.add(url)
-
-    precision=clean_text(story["timePrecision"]).lower()
-    occurred_at,age=normalize_occurrence(
-        story["occurredAt"],precision,generated_at
-    )
-
-    item={
-        "rank":rank,
-        "type":clean_text(story["type"]).upper(),
-        "priority":int(story["priority"]),
-        "headline":clean_text(story["headline"]),
-        "text":clean_text(story["text"]),
-        "entities":[clean_text(v) for v in story.get("entities",[]) if clean_text(v)],
-        "occurredAt":occurred_at,
-        "timePrecision":precision,
-        "freshnessBasis":clean_text(story["freshnessBasis"]),
-        "ageHours":age,
-        "status":clean_text(story["status"]).lower(),
-        "sourceUrls":urls,
-    }
-    item["id"]=f"{id_prefix}-{story_fingerprint(item)}"
-    return item
-
-def score_pairs(text):
-    return [
-        (int(a),int(b))
-        for a,b in re.findall(
-            r"(?<!\d)(\d{1,3})\s*[-–—]\s*(\d{1,3})(?!\d)",
-            text,
-        )
-    ]
-
-def validate_consistency(item,context):
-    combined=(item["headline"]+" "+item["text"]).lower()
-    pairs=score_pairs(combined)
-
-    if any(word in combined for word in ("shutout","shut out","shuts out","blanked")):
-        for a,b in pairs:
-            if a > 0 and b > 0:
-                raise TickerError(
-                    f"{context}: shutout/blanked wording conflicts with score {a}-{b}"
-                )
-
-    if any(
-        phrase in combined
-        for phrase in (
-            "one-point win","one point win",
-            "one-point victory","one point victory",
-        )
-    ):
-        for a,b in pairs:
-            if abs(a-b) != 1:
-                raise TickerError(
-                    f"{context}: one-point wording conflicts with score {a}-{b}"
-                )
-
-def validate_story(item,context,generated_at):
-    if item["type"] not in ALLOWED_TYPES: raise TickerError(f"{context}: unsupported type")
-    if not 1<=item["priority"]<=100: raise TickerError(f"{context}: priority out of range")
-    if not item["headline"] or len(item["headline"])>120: raise TickerError(f"{context}: invalid headline")
-    if len(item["text"])<10 or len(item["text"])>360: raise TickerError(f"{context}: invalid text")
-    if len(item["freshnessBasis"])<8 or len(item["freshnessBasis"])>240:
-        raise TickerError(f"{context}: invalid freshnessBasis")
-    if item["status"] not in ALLOWED_STATUS: raise TickerError(f"{context}: invalid status")
-
-    if item["timePrecision"] in {"exact","hour"}:
-        occurred=parse_iso(item["occurredAt"])
-        age=(generated_at-occurred).total_seconds()/3600.0
-        if age < -0.5: raise TickerError(f"{context}: occurredAt is in future")
-        if age > FRESHNESS_HOURS: raise TickerError(f"{context}: stale age={age:.2f}h")
-    elif item["timePrecision"] != "date":
-        raise TickerError(f"{context}: invalid timePrecision")
-
-    if not item["sourceUrls"]: raise TickerError(f"{context}: missing source")
-    hosts=[]
-    for url in item["sourceUrls"]:
-        if not valid_url(url): raise TickerError(f"{context}: invalid source URL")
-        host=hostname(url)
-        if is_rejected_host(host): raise TickerError(f"{context}: rejected source {host}")
-        hosts.append(host)
-    if item["priority"]>=90:
-        unique=set(hosts)
-        if len(unique)<2 and not any(is_preferred_host(h) for h in unique):
-            raise TickerError(f"{context}: priority >=90 source gate failed")
-
-    validate_consistency(item,context)
-
-def curate_items(items,context):
-    ordered=sorted(
-        items,
-        key=lambda item:(
-            -int(item.get("priority",0)),
-            float(item["ageHours"]) if item.get("ageHours") is not None else 999.0,
-            int(item.get("rank",999)),
-        ),
-    )
-
-    selected=[]
-    result_count=0
-    preview_count=0
-    other_count=0
-    capped=0
-
-    for item in ordered:
-        kind=item["type"]
-
-        if kind == "RESULT":
-            if result_count >= 5:
-                capped += 1
-                print(
-                    f"{context}: editorial cap dropping RESULT {item['headline']!r}",
-                    file=sys.stderr,
-                )
-                continue
-            result_count += 1
-
-        if kind in {"NEXT","SCHEDULE"}:
-            if preview_count >= 2:
-                capped += 1
-                print(
-                    f"{context}: editorial cap dropping {kind} {item['headline']!r}",
-                    file=sys.stderr,
-                )
-                continue
-            preview_count += 1
-
-        if kind == "OTHER":
-            if other_count >= 1:
-                capped += 1
-                print(
-                    f"{context}: editorial cap dropping OTHER {item['headline']!r}",
-                    file=sys.stderr,
-                )
-                continue
-            other_count += 1
-
-        selected.append(item)
-        if len(selected) == 10:
-            break
-
-    for rank,item in enumerate(selected,1):
-        item["rank"]=rank
-
-    return selected,capped
-
-def normalize_league(raw,expected,generated_at):
-    if not isinstance(raw,dict): raise TickerError(f"{expected}: invalid output")
-    league=clean_text(raw.get("league","")).upper()
-    if league!=expected: raise TickerError(f"{expected}: returned {league}")
-    season=clean_text(raw.get("seasonState","")).lower()
-    if season not in {"active","offseason","preseason","postseason"}:
-        raise TickerError(f"{expected}: invalid seasonState")
-    stories=raw.get("items")
-    if not isinstance(stories,list) or not 1<=len(stories)<=10:
-        raise TickerError(f"{expected}: expected 1-10 items")
-
-    out=[]; ids=set(); dropped=[]
-    for original_rank,story in enumerate(stories,1):
-        try:
-            item=normalize_story(story,original_rank,expected.lower(),generated_at)
-            validate_story(item,f"{expected} #{original_rank}",generated_at)
-            if item["id"] in ids:
-                raise TickerError(f"{expected} #{original_rank}: duplicate item")
-        except (TickerError, ValueError, KeyError, TypeError) as exc:
-            dropped.append(f"#{original_rank}: {exc}")
-            print(f"{expected}: dropping item #{original_rank}: {exc}",file=sys.stderr)
-            continue
-
-        ids.add(item["id"])
-        out.append(item)
-
-    if not out:
-        details=" | ".join(dropped[:5]) if dropped else "no usable items"
-        raise TickerError(f"{expected}: no fresh valid ticker items remain after filtering ({details})")
-
-    out,editorial_dropped=curate_items(out,expected)
-
-    if dropped or editorial_dropped:
-        print(
-            f"{expected}: kept {len(out)} of {len(stories)} items; "
-            f"validationDropped={len(dropped)} editorialDropped={editorial_dropped}",
-            file=sys.stderr,
-        )
-
-    if season in {"active","postseason"} and len(out)<6:
-        print(
-            f"WARNING: {expected} is {season} but only {len(out)} fresh valid items survived",
-            file=sys.stderr,
-        )
-
-    return {
-        "league":expected,
-        "seasonState":season,
-        "items":out,
-        "droppedItemCount":len(dropped),
-        "editorialDroppedCount":editorial_dropped,
-    }
-
-def normalize_special(raw,generated_at):
-    events=raw.get("specialEvents",[])
-    if not isinstance(events,list) or len(events)>6: raise TickerError("invalid specialEvents")
-    out=[]; names=set()
-    for idx,event in enumerate(events,1):
-        name=clean_text(event.get("name","")); sport=clean_text(event.get("sport",""))
-        if len(name)<2 or len(sport)<2:
-            print(f"Special Event #{idx}: dropping malformed event",file=sys.stderr)
-            continue
-        if name.lower() in names:
-            print(f"Special Events: dropping duplicate event {name}",file=sys.stderr)
-            continue
-        names.add(name.lower())
-
-        stories=event.get("items")
-        if not isinstance(stories,list) or not 1<=len(stories)<=10:
-            print(f"{name}: dropping event with invalid item collection",file=sys.stderr)
-            continue
-
-        prefix=re.sub(r"[^a-z0-9]+","-",name.lower()).strip("-")[:40] or "event"
-        items=[]; ids=set(); dropped=0
-        for original_rank,story in enumerate(stories,1):
-            try:
-                item=normalize_story(story,original_rank,f"special-{prefix}",generated_at)
-                validate_story(item,f"{name} #{original_rank}",generated_at)
-                if item["id"] in ids:
-                    raise TickerError(f"{name} #{original_rank}: duplicate item")
-            except (TickerError, ValueError, KeyError, TypeError) as exc:
-                dropped += 1
-                print(f"{name}: dropping item #{original_rank}: {exc}",file=sys.stderr)
-                continue
-            ids.add(item["id"]); items.append(item)
-
-        if not items:
-            print(f"{name}: dropping event because no fresh valid items remain",file=sys.stderr)
-            continue
-
-        items,editorial_dropped=curate_items(items,name)
-
-        out.append({
-            "name":name,
-            "sport":sport,
-            "items":items,
-            "droppedItemCount":dropped,
-            "editorialDroppedCount":editorial_dropped,
-        })
-    return out
-
-def semantic_story(item):
-    return {
-        "id":item.get("id"),
-        "type":item.get("type"),
-        "priority":item.get("priority"),
-        "headline":item.get("headline"),
-        "text":item.get("text"),
-        "entities":item.get("entities",[]),
-        "occurredAt":item.get("occurredAt"),
-        "timePrecision":item.get("timePrecision"),
-        "freshnessBasis":item.get("freshnessBasis"),
-        "status":item.get("status"),
-        "sourceUrls":item.get("sourceUrls",[]),
-    }
-
-def semantic_payload(dataset):
-    return {
-        "schemaVersion":dataset.get("schemaVersion"),
-        "freshnessHours":dataset.get("freshnessHours"),
-        "model":dataset.get("model"),
-        "researchMode":dataset.get("researchMode"),
-        "a2Revision":dataset.get("a2Revision"),
-        "leagues":[
-            {
-                "league":group.get("league"),
-                "seasonState":group.get("seasonState"),
-                "items":[semantic_story(item) for item in group.get("items",[])],
-            }
-            for group in dataset.get("leagues",[])
-        ],
-        "specialEvents":[
-            {
-                "name":event.get("name"),
-                "sport":event.get("sport"),
-                "items":[semantic_story(item) for item in event.get("items",[])],
-            }
-            for event in dataset.get("specialEvents",[])
-        ],
-    }
-
-def load_previous(path):
-    if not path.exists(): return None
-    try:
-        v=json.loads(path.read_text(encoding="utf-8"))
-        return v if isinstance(v,dict) else None
-    except Exception: return None
-
-def render_text(dataset):
-    lines=[
-        "SPORTS BIG BOARD — SPORTS TICKER PHASE A2.3",
+def render_text(dataset: dict[str, Any]) -> str:
+    lines = [
+        "SPORTS BIG BOARD — SPORTS TICKER A3",
         f"Updated: {dataset['generatedAt']}",
         f"Freshness window: last {dataset['freshnessHours']} hours",
-        f"Model: {dataset['model']}","",
+        f"Discovery: {dataset['discoveryMode']}",
+        f"Editor model: {dataset['model']}",
+        f"Candidate hash: {dataset['sourceCandidateHash']}",
+        "",
     ]
-
     for group in dataset["leagues"]:
-        lines += [
-            "="*72,
-            f"{group['league']}  [{group['seasonState'].upper()}]",
-            "="*72,
-            "",
-        ]
+        lines += ["=" * 76, f"{group['league']}  [{group['seasonState'].upper()}]", "=" * 76, ""]
+        if not group["items"]:
+            lines += ["    No selected ticker items in this run.", ""]
         for item in group["items"]:
             lines.append(
                 f"{item['rank']:>2}. [{item['type']}] {item['headline']} "
@@ -646,101 +1607,268 @@ def render_text(dataset):
             lines.append(f"    {item['text']}")
             lines.append(
                 f"    Occurred: {item['occurredAt']} | "
-                f"Precision: {item['timePrecision']} | "
-                f"Status: {item['status']}"
+                f"Precision: {item['timePrecision']} | Status: {item['status']}"
             )
             lines.append(f"    Freshness basis: {item['freshnessBasis']}")
             if item["entities"]:
-                lines.append("    Entities: "+", ".join(item["entities"]))
-            for url in item["sourceUrls"]:
-                lines.append(f"    Source: {url}")
+                lines.append("    Entities: " + ", ".join(item["entities"]))
+            lines.append("    Candidate IDs: " + ", ".join(item["candidateIds"]))
+            for source in item["sources"]:
+                lines.append(
+                    f"    Source [{source['provider']}/{source['sourceId']}]: {source['url']}"
+                )
             lines.append("")
-
     if dataset["specialEvents"]:
-        lines += ["#"*72,"SPECIAL EVENTS","#"*72,""]
+        lines += ["#" * 76, "SPECIAL EVENTS", "#" * 76, ""]
         for event in dataset["specialEvents"]:
-            lines += [f"{event['name']} ({event['sport']})","-"*72,""]
+            lines += [f"{event['name']} ({event['sport']})", "-" * 76, ""]
             for item in event["items"]:
                 lines.append(
                     f"{item['rank']:>2}. [{item['type']}] {item['headline']} "
                     f"(priority {item['priority']}, age {age_label(item)})"
                 )
                 lines.append(f"    {item['text']}")
-                lines.append(
-                    f"    Occurred: {item['occurredAt']} | "
-                    f"Precision: {item['timePrecision']} | "
-                    f"Status: {item['status']}"
-                )
                 lines.append(f"    Freshness basis: {item['freshnessBasis']}")
-                for url in item["sourceUrls"]:
-                    lines.append(f"    Source: {url}")
+                lines.append("    Candidate IDs: " + ", ".join(item["candidateIds"]))
+                for source in item["sources"]:
+                    lines.append(
+                        f"    Source [{source['provider']}/{source['sourceId']}]: {source['url']}"
+                    )
                 lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
 
-    return "\n".join(lines).rstrip()+"\n"
 
-def atomic_write(path,content):
-    path.parent.mkdir(parents=True,exist_ok=True)
-    with tempfile.NamedTemporaryFile("w",encoding="utf-8",dir=path.parent,delete=False,newline="\n") as h:
-        h.write(content); tmp=h.name
-    os.replace(tmp,path)
+def atomic_write(path: Path, content: str):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", dir=path.parent, delete=False, newline="\n"
+    ) as handle:
+        handle.write(content)
+        temp_name = handle.name
+    os.replace(temp_name, path)
 
-def main():
-    p=argparse.ArgumentParser()
-    p.add_argument("--data-dir",default="data")
-    p.add_argument("--model",default=os.environ.get("SPORTS_TICKER_MODEL",DEFAULT_MODEL))
-    p.add_argument("--force-write",action="store_true")
-    args=p.parse_args()
-    api_key=os.environ.get("OPENAI_API_KEY","").strip()
-    if not api_key: raise TickerError("OPENAI_API_KEY is required")
 
-    generated=utc_now(); cutoff=generated-timedelta(hours=FRESHNESS_HOURS)
-    print(f"Refreshing Sports Ticker A2.3 with {args.model}; window={iso_z(cutoff)} to {iso_z(generated)}")
+def write_run_log(path: Path, run_log: dict[str, Any]):
+    run_log["finishedAt"] = iso_z(utc_now())
+    atomic_write(path, json.dumps(run_log, indent=2, ensure_ascii=False) + "\n")
 
-    leagues=[]
-    for league in BASE_LEAGUES:
-        print(f"Researching {league}...")
-        raw=call_openai(api_key,args.model,BASE_SYSTEM_PROMPT,
-            LEAGUE_USER_TEMPLATE.format(league=league,now=iso_z(generated),cutoff=iso_z(cutoff)),
-            f"sports_ticker_{league.lower()}",LEAGUE_SCHEMA)
-        group=normalize_league(raw,league,generated)
-        print(f"{league}: {len(group['items'])} items, seasonState={group['seasonState']}")
-        leagues.append(group)
 
-    print("Researching Special Events...")
-    raw_special=call_openai(api_key,args.model,BASE_SYSTEM_PROMPT,
-        SPECIAL_USER_PROMPT.format(now=iso_z(generated),cutoff=iso_z(cutoff)),
-        "sports_ticker_special_events",SPECIAL_SCHEMA)
-    specials=normalize_special(raw_special,generated)
-
-    dataset={
-        "schemaVersion":3,
-        "generatedAt":iso_z(generated),
-        "freshnessHours":FRESHNESS_HOURS,
-        "model":args.model,
-        "researchMode":"per-league-plus-special-events",
-        "a2Revision":"A2.3-editorial-ranking-precision",
-        "leagues":leagues,
-        "specialEvents":specials,
+def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dict[str, Any]:
+    return {
+        "schemaVersion": 1,
+        "pipelineVersion": "A3.0-direct-sources",
+        "runId": f"a3-{generated_at.strftime('%Y%m%dT%H%M%SZ')}",
+        "status": "running",
+        "startedAt": iso_z(generated_at),
+        "finishedAt": None,
+        "generatedAt": iso_z(generated_at),
+        "freshnessCutoff": iso_z(cutoff),
+        "configuration": {
+            "freshnessHours": FRESHNESS_HOURS,
+            "model": model,
+            "openAIWebSearchEnabled": False,
+            "maxModelCandidates": MAX_MODEL_CANDIDATES,
+            "espnFeedCount": len(ESPN_FEEDS),
+            "officialPageCount": len(OFFICIAL_PAGES),
+            "highlightlyLeagueCount": len(HIGHLIGHTLY_LEAGUES),
+            "highlightlyConfigured": bool(os.environ.get("HIGHLIGHTLY_API_KEY", "").strip()),
+            "gitSha": os.environ.get("GITHUB_SHA"),
+            "githubRunId": os.environ.get("GITHUB_RUN_ID"),
+        },
+        "sourceFetches": [],
+        "pipeline": {
+            "rawCandidateCount": 0,
+            "dedupedCandidateCount": 0,
+            "modelCandidateCount": 0,
+            "candidateHash": None,
+            "previousCandidateHash": None,
+            "candidateSetChanged": None,
+            "dedupeActions": [],
+            "normalizedCandidates": [],
+            "modelCandidates": [],
+            "finalDrops": [],
+        },
+        "openai": {
+            "called": False,
+            "skipReason": None,
+            "candidateCount": 0,
+            "startedAt": None,
+            "finishedAt": None,
+            "requestPayload": None,
+            "httpStatus": None,
+            "responseId": None,
+            "responseMeta": None,
+            "usage": None,
+            "rawOutput": None,
+            "error": None,
+        },
+        "output": {
+            "tickerChanged": False,
+            "tickerPreserved": False,
+            "writtenFiles": [],
+            "leagueItemCounts": {},
+            "specialEventCount": 0,
+            "semanticHash": None,
+        },
+        "failures": [],
     }
 
-    data_dir=Path(args.data_dir)
-    json_path=data_dir/"sports-ticker.json"
-    txt_path=data_dir/"sports-ticker.txt"
-    previous=load_previous(json_path)
 
-    if not args.force_write and previous is not None and semantic_payload(previous)==semantic_payload(dataset):
-        print("No meaningful Sports Ticker changes; cache left untouched.")
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data-dir", default="data")
+    parser.add_argument(
+        "--model",
+        default=os.environ.get("SPORTS_TICKER_EDITOR_MODEL", DEFAULT_MODEL),
+    )
+    parser.add_argument("--force-model", action="store_true")
+    args = parser.parse_args()
+
+    generated_at = utc_now()
+    cutoff = generated_at - timedelta(hours=FRESHNESS_HOURS)
+    data_dir = Path(args.data_dir)
+    ticker_json = data_dir / "sports-ticker.json"
+    ticker_txt = data_dir / "sports-ticker.txt"
+    run_log_path = data_dir / "sports-ticker-run-log.json"
+
+    run_log = initial_run_log(generated_at, cutoff, args.model)
+    previous = load_previous(ticker_json)
+    previous_candidate_hash = (
+        previous.get("sourceCandidateHash")
+        if isinstance(previous, dict)
+        else None
+    )
+    run_log["pipeline"]["previousCandidateHash"] = previous_candidate_hash
+
+    try:
+        print(
+            f"A3 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
+            f"editor={args.model}; OpenAI web_search=OFF"
+        )
+
+        raw_candidates: list[dict[str, Any]] = []
+
+        for source in ESPN_FEEDS:
+            print(f"Fetching {source['id']}...")
+            raw_candidates.extend(parse_rss_source(source, generated_at, cutoff, run_log))
+
+        for source in OFFICIAL_PAGES:
+            print(f"Fetching {source['id']}...")
+            raw_candidates.extend(parse_official_source(source, generated_at, cutoff, run_log))
+
+        highlightly_key = os.environ.get("HIGHLIGHTLY_API_KEY", "").strip()
+        for cfg in HIGHLIGHTLY_LEAGUES:
+            print(f"Fetching {cfg['id']}...")
+            raw_candidates.extend(
+                parse_highlightly_league(
+                    cfg, generated_at, cutoff, run_log, highlightly_key
+                )
+            )
+
+        run_log["pipeline"]["rawCandidateCount"] = len(raw_candidates)
+
+        deduped = dedupe_candidates(raw_candidates, run_log)
+        run_log["pipeline"]["dedupedCandidateCount"] = len(deduped)
+
+        model_candidates = trim_candidates(deduped)
+        run_log["pipeline"]["modelCandidateCount"] = len(model_candidates)
+        run_log["pipeline"]["normalizedCandidates"] = deduped
+        run_log["pipeline"]["modelCandidates"] = [model_candidate(c) for c in model_candidates]
+
+        c_hash = candidate_hash(model_candidates)
+        run_log["pipeline"]["candidateHash"] = c_hash
+        changed = c_hash != previous_candidate_hash
+        run_log["pipeline"]["candidateSetChanged"] = changed
+
+        successful_espn = sum(
+            1 for s in run_log["sourceFetches"]
+            if s["provider"] == "ESPN" and s["httpStatus"] == 200 and not s["error"]
+        )
+        if successful_espn < 4 and len(model_candidates) < 10:
+            raise TickerError(
+                f"source-health gate failed: only {successful_espn} ESPN feeds succeeded "
+                f"and only {len(model_candidates)} candidates survived"
+            )
+        if not model_candidates:
+            raise TickerError("no fresh candidates survived direct-source collection")
+
+        if not changed and not args.force_model and previous is not None:
+            run_log["status"] = "success-no-change"
+            run_log["openai"]["skipReason"] = "candidate set unchanged"
+            run_log["output"]["tickerPreserved"] = True
+            run_log["output"]["tickerChanged"] = False
+            print("Candidate set unchanged; skipping OpenAI and preserving ticker.")
+            return 0
+
+        api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+        if not api_key:
+            raise TickerError("OPENAI_API_KEY is required when candidate set changes")
+
+        model_output = call_openai(
+            api_key, args.model, model_candidates, run_log
+        )
+
+        normalized = normalize_model_output(
+            model_output, model_candidates, generated_at, run_log
+        )
+
+        dataset = {
+            "schemaVersion": 4,
+            "pipelineVersion": "A3.0-direct-sources",
+            "generatedAt": iso_z(generated_at),
+            "freshnessHours": FRESHNESS_HOURS,
+            "discoveryMode": "Highlightly + ESPN RSS + official league pages; no OpenAI web search",
+            "model": args.model,
+            "sourceCandidateHash": c_hash,
+            "leagues": normalized["leagues"],
+            "specialEvents": normalized["specialEvents"],
+        }
+
+        json_output = json.dumps(dataset, indent=2, ensure_ascii=False) + "\n"
+        text_output = render_text(dataset)
+
+        previous_sem = semantic_ticker(previous) if previous else None
+        current_sem = semantic_ticker(dataset)
+        ticker_changed = previous_sem != current_sem
+
+        if ticker_changed:
+            atomic_write(ticker_json, json_output)
+            atomic_write(ticker_txt, text_output)
+            run_log["output"]["writtenFiles"].extend([
+                str(ticker_json), str(ticker_txt)
+            ])
+        else:
+            run_log["output"]["tickerPreserved"] = True
+
+        run_log["status"] = (
+            "success-with-source-failures"
+            if run_log["failures"]
+            else "success"
+        )
+        run_log["output"]["tickerChanged"] = ticker_changed
+        run_log["output"]["semanticHash"] = semantic_hash(current_sem)
+        run_log["output"]["leagueItemCounts"] = {
+            g["league"]: len(g["items"]) for g in dataset["leagues"]
+        }
+        run_log["output"]["specialEventCount"] = len(dataset["specialEvents"])
+
+        print(
+            "A3 complete: "
+            f"{len(model_candidates)} model candidates, "
+            f"tickerChanged={ticker_changed}, "
+            f"sourceFailures={len(run_log['failures'])}"
+        )
         return 0
 
-    atomic_write(json_path,json.dumps(dataset,indent=2,ensure_ascii=False)+"\n")
-    atomic_write(txt_path,render_text(dataset))
-    league_count=sum(len(g["items"]) for g in leagues)
-    special_count=sum(len(g["items"]) for g in specials)
-    print(f"Wrote {json_path} and {txt_path}: {league_count} league items + {special_count} Special Event items.")
-    return 0
+    except Exception as exc:
+        run_log["status"] = "failed"
+        run_log["output"]["tickerPreserved"] = True
+        append_failure(run_log, "pipeline", str(exc))
+        print(f"SPORTS TICKER A3 ERROR: {exc}", file=sys.stderr)
+        return 2
+    finally:
+        write_run_log(run_log_path, run_log)
 
-if __name__=="__main__":
-    try: raise SystemExit(main())
-    except TickerError as exc:
-        print(f"SPORTS TICKER ERROR: {exc}",file=sys.stderr)
-        raise SystemExit(2)
+
+if __name__ == "__main__":
+    raise SystemExit(main())
