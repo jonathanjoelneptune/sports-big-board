@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static invariants for Sports Big Board v5.4.4 controller radials/live input."""
+"""Static invariants for Sports Big Board v5.4.5 controller radials/live input."""
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -14,7 +14,7 @@ region_map=(ROOT/f'CONTROLLER-REGION-MAP-v{VERSION}.md').read_text(encoding='utf
 assert f'ui/controller-mode-v542.css?v={VERSION}' in index
 assert f'architecture/controller-mode-v542.js?v={VERSION}' in index
 assert f"const VERSION='{VERSION}'" in module
-assert "mode:'RADIALS_POINTER_AUTOMATIC_GAMEPAD'" in module
+assert "mode:'RADIALS_POINTER_COMMANDS_AUTOMATIC_GAMEPAD'" in module
 
 # Header diagnostics distinguishes browser visibility from actual live input.
 for token in ['id="controllerLiveIndicator"','controller-live-indicator','🎮 WAIT']:

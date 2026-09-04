@@ -3,7 +3,7 @@ from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 version=(ROOT/'VERSION').read_text().strip()
-assert version=='5.4.4',version
+assert version=='5.4.5',version
 browse=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 browse_css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
 league=(ROOT/'ui'/'league-view-v538.js').read_text()
@@ -74,4 +74,4 @@ rows=[
 out=mod._wildcard_relative(rows,3)
 assert [r['wildcardGamesBehind'] for r in out]==['+3','+1','—','2'],out
 assert 'tests/test_v5315_wildcard_media_match_center.py' in verify
-print('PASS v5.4.4 Wild Card cut-line math + persisted embed health + authoritative Special Event Match Center + compact soccer form')
+print('PASS v5.4.5 Wild Card cut-line math + persisted embed health + authoritative Special Event Match Center + compact soccer form')
