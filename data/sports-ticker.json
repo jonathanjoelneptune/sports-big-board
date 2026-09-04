@@ -1,11 +1,11 @@
 {
   "schemaVersion": 8,
   "pipelineVersion": "A3.6-decisive-moment-enrichment",
-  "generatedAt": "2026-09-04T23:00:51Z",
+  "generatedAt": "2026-09-04T23:30:52Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive match-detail/highlight enrichment + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-4o-mini",
-  "sourceCandidateHash": "c38bcff8dc847c4d76358038aa97e94fe3f57034e24b9dde26d39fd2e79af0a5",
+  "sourceCandidateHash": "d255c2479fc606f4ffc9e3fd928b2113ebd726abe5c13a461dec402dad271abb",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-04T20:47:53Z",
           "timePrecision": "exact",
-          "ageHours": 2.22,
+          "ageHours": 2.72,
           "freshnessBasis": "The Pirates activated rookie shortstop Konnor Griffin off the 60-day injured list on Friday.",
           "status": "active",
           "sourceUrls": [
@@ -41,50 +41,21 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-a80bb77276418853"
-          ],
-          "type": "RETURN",
-          "priority": 84,
-          "headline": "White Sox activate catcher Kyle Teel from 10-day injured list",
-          "text": "Kyle Teel, out since July with a high ankle sprain, is back with the White Sox after being activated from the injured list.",
-          "entities": [],
-          "occurredAt": "2026-09-04T17:12:03Z",
-          "timePrecision": "exact",
-          "ageHours": 5.81,
-          "freshnessBasis": "Kyle Teel activated from the 10-day injured list by the White Sox on Friday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49826375/white-sox-activate-catcher-kyle-teel-10-day-injured-list"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49826375/white-sox-activate-catcher-kyle-teel-10-day-injured-list"
-            }
-          ],
-          "id": "a3-604b27f813644a78"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-1c45fc0c715aefe8"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Cleveland Guardians beat Detroit Tigers 7-6",
-          "text": "Brayan Rocchio hit a walk-off homer in the ninth inning after connecting on a tying grand slam in the fourth, rallying the Guardians to a 7-6 win.",
-          "entities": [
-            "Cleveland Guardians",
-            "Detroit Tigers"
-          ],
+          "text": "Highlightly final: Detroit Tigers 6, Cleveland Guardians 7.",
+          "entities": [],
           "occurredAt": "2026-09-04T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.85,
-          "freshnessBasis": "Brayan Rocchio's walk-off homer gives Guardians a 7-6 comeback win over Tigers.",
+          "ageHours": 5.35,
+          "freshnessBasis": "Highlightly final: Detroit Tigers 6, Cleveland Guardians 7.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816801",
             "http://www.espn.com/mlb/recap?gameId=401877193"
           ],
           "sources": [
@@ -96,28 +67,30 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816801"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401877193"
             }
           ],
           "id": "a3-272ca18c893cd6d9"
         },
         {
-          "rank": 4,
+          "rank": 3,
           "candidateIds": [
             "cand-1f017c227c653af4"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Los Angeles Dodgers beat St. Louis Cardinals 3-2",
-          "text": "The Dodgers edged the Cardinals by a single run, finishing 3-2 in a closely contested game.",
-          "entities": [
-            "Los Angeles Dodgers",
-            "St. Louis Cardinals"
-          ],
+          "text": "Highlightly final: St. Louis Cardinals 2, Los Angeles Dodgers 3.",
+          "entities": [],
           "occurredAt": "2026-09-04T02:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.85,
-          "freshnessBasis": "The Dodgers defeated the Cardinals 3-2.",
+          "ageHours": 21.35,
+          "freshnessBasis": "Highlightly final: St. Louis Cardinals 2, Los Angeles Dodgers 3.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -132,6 +105,33 @@
           "id": "a3-28609adbc437eac9"
         },
         {
+          "rank": 4,
+          "candidateIds": [
+            "cand-581ef6bab4209f73"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Texas Rangers beat Tampa Bay Rays 6-0",
+          "text": "Highlightly final: Tampa Bay Rays 0, Texas Rangers 6.",
+          "entities": [],
+          "occurredAt": "2026-09-04T00:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.43,
+          "freshnessBasis": "Highlightly final: Tampa Bay Rays 0, Texas Rangers 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-03",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-5508fe47832f522b"
+        },
+        {
           "rank": 5,
           "candidateIds": [
             "cand-57a2021a41733ae8"
@@ -139,15 +139,12 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Kansas City Royals beat Miami Marlins 7-3",
-          "text": "The Royals secured a victory over the Marlins, finishing the game 7-3.",
-          "entities": [
-            "Kansas City Royals",
-            "Miami Marlins"
-          ],
+          "text": "Highlightly final: Miami Marlins 3, Kansas City Royals 7.",
+          "entities": [],
           "occurredAt": "2026-09-03T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.35,
-          "freshnessBasis": "The Royals triumphed over the Marlins 7-3.",
+          "ageHours": 23.85,
+          "freshnessBasis": "Highlightly final: Miami Marlins 3, Kansas City Royals 7.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -166,37 +163,7 @@
     {
       "league": "NFL",
       "seasonState": "preseason",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-aa51f33d6ad3d506"
-          ],
-          "type": "LEGAL",
-          "priority": 90,
-          "headline": "Josh Jacobs' court appearance moved up to Sept. 10",
-          "text": "Josh Jacobs' initial court appearance on misdemeanor charges has been moved up to Sept. 10 from a later date.",
-          "entities": [
-            "Josh Jacobs"
-          ],
-          "occurredAt": "2026-09-04T19:33:34Z",
-          "timePrecision": "exact",
-          "ageHours": 3.45,
-          "freshnessBasis": "Josh Jacobs' initial court appearance has been rescheduled to September 10.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49827202/josh-jacobs-court-appearance-moved-sept-10"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49827202/josh-jacobs-court-appearance-moved-sept-10"
-            }
-          ],
-          "id": "a3-f065a1e8939539df"
-        }
-      ]
+      "items": []
     },
     {
       "league": "NBA",
@@ -210,15 +177,12 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Ben Simmons returning to NBA on 1-year, $3.5M deal with Kings",
-          "text": "Ben Simmons is back in the NBA after agreeing to a one-year, $3.5 million deal with the Kings.",
-          "entities": [
-            "Ben Simmons",
-            "Sacramento Kings"
-          ],
+          "text": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
+          "entities": [],
           "occurredAt": "2026-09-04T14:56:49Z",
           "timePrecision": "exact",
-          "ageHours": 8.07,
-          "freshnessBasis": "Ben Simmons has signed a one-year deal with the Kings.",
+          "ageHours": 8.57,
+          "freshnessBasis": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
@@ -251,15 +215,12 @@
           "type": "CONTRACT",
           "priority": 88,
           "headline": "Richarlison declined new contract months before Tottenham squad omission - Roberto De Zerbi",
-          "text": "Richarlison declined a contract extension at Tottenham months before being omitted from the squad, as stated by Roberto De Zerbi.",
-          "entities": [
-            "Richarlison",
-            "Tottenham Hotspur"
-          ],
+          "text": "Roberto De Zerbi has revealed that Richarlison declined to sign an extension to his Tottenham contract, leading to his omission from the squad.",
+          "entities": [],
           "occurredAt": "2026-09-04T21:31:25Z",
           "timePrecision": "exact",
-          "ageHours": 1.49,
-          "freshnessBasis": "Richarlison declined a contract extension from Tottenham, leading to his squad omission.",
+          "ageHours": 1.99,
+          "freshnessBasis": "Roberto De Zerbi has revealed that Richarlison declined to sign an extension to his Tottenham contract.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49826046/richarlison-was-offered-new-contract-months-tottenham-squad-omission-roberto-de-zerbi"
@@ -281,15 +242,12 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Liverpool beat Ipswich 2-0",
-          "text": "With this win, Liverpool secured their first Premier League victory of the season.",
-          "entities": [
-            "Liverpool",
-            "Ipswich"
-          ],
+          "text": "Highlightly final: Liverpool 2, Ipswich 0.",
+          "entities": [],
           "occurredAt": "2026-09-04T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.01,
-          "freshnessBasis": "Liverpool defeated Ipswich Town 2-0 for their first league win of the season.",
+          "ageHours": 4.51,
+          "freshnessBasis": "Highlightly final: Liverpool 2, Ipswich 0.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -328,15 +286,12 @@
           "type": "RESULT",
           "priority": 70,
           "headline": "Utah Utes beat Idaho Vandals 66-14",
-          "text": "The Utes dominated the Vandals, finishing with a score of 66-14.",
-          "entities": [
-            "Utah Utes",
-            "Idaho Vandals"
-          ],
+          "text": "Highlightly final: Idaho Vandals 14, Utah Utes 66.",
+          "entities": [],
           "occurredAt": "2026-09-04T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.01,
-          "freshnessBasis": "Utah Utes triumph over Idaho Vandals with a decisive 66-14 victory.",
+          "ageHours": 22.51,
+          "freshnessBasis": "Highlightly final: Idaho Vandals 14, Utah Utes 66.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -358,15 +313,12 @@
           "type": "RESULT",
           "priority": 70,
           "headline": "Missouri Tigers beat Arkansas-Pine Bluff Golden Lions 54-14",
-          "text": "The Tigers secured a solid victory against the Golden Lions, winning 54-14.",
-          "entities": [
-            "Missouri Tigers",
-            "Arkansas-Pine Bluff Golden Lions"
-          ],
+          "text": "Highlightly final: Arkansas-Pine Bluff Golden Lions 14, Missouri Tigers 54.",
+          "entities": [],
           "occurredAt": "2026-09-04T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.01,
-          "freshnessBasis": "Missouri defeated Arkansas-Pine Bluff 54-14.",
+          "ageHours": 23.51,
+          "freshnessBasis": "Highlightly final: Arkansas-Pine Bluff Golden Lions 14, Missouri Tigers 54.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -387,16 +339,13 @@
           ],
           "type": "RESULT",
           "priority": 65,
-          "headline": "Illinois Fighting Illini beat UAB Blazers 42-23",
-          "text": "The Fighting Illini prevailed against the Blazers, finishing the game 42-23.",
-          "entities": [
-            "Illinois Fighting Illini",
-            "UAB Blazers"
-          ],
+          "headline": "Minnesota Golden Gophers beat Eastern Illinois Panthers 59-7",
+          "text": "Highlightly final: Eastern Illinois Panthers 7, Minnesota Golden Gophers 59.",
+          "entities": [],
           "occurredAt": "2026-09-04T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.01,
-          "freshnessBasis": "Illinois defeated UAB by a score of 42-23.",
+          "ageHours": 22.51,
+          "freshnessBasis": "Highlightly final: Eastern Illinois Panthers 7, Minnesota Golden Gophers 59.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -408,7 +357,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-16769f3d4ffaf02c"
+          "id": "a3-c5b6c6c52d8da60e"
         },
         {
           "rank": 4,
@@ -418,15 +367,12 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Colorado Buffaloes beat Georgia Tech Yellow Jackets 14-13",
-          "text": "The Buffaloes narrowly edged out the Yellow Jackets, winning 14-13.",
-          "entities": [
-            "Colorado Buffaloes",
-            "Georgia Tech Yellow Jackets"
-          ],
+          "text": "Highlightly final: Colorado Buffaloes 14, Georgia Tech Yellow Jackets 13.",
+          "entities": [],
           "occurredAt": "2026-09-04T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.01,
-          "freshnessBasis": "Colorado narrowly defeated Georgia Tech 14-13.",
+          "ageHours": 23.51,
+          "freshnessBasis": "Highlightly final: Colorado Buffaloes 14, Georgia Tech Yellow Jackets 13.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -445,7 +391,7 @@
   ],
   "specialEvents": [
     {
-      "name": "US Open Tennis",
+      "name": "US Open Results",
       "sport": "tennis",
       "items": [
         {
@@ -456,15 +402,12 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Carlos Alcaraz, Tommy Paul advance to round of 16 at US Open",
-          "text": "Carlos Alcaraz and Tommy Paul both advanced in the US Open after strong performances in their matches.",
-          "entities": [
-            "Carlos Alcaraz",
-            "Tommy Paul"
-          ],
-          "occurredAt": "2026-09-04T22:45:41Z",
+          "text": "Two-time US Open champion Carlos Alcaraz returned to the round of 16 by beating Wu Yibing 6-3, 6-4, 6-1, and will next face American Tommy Paul.",
+          "entities": [],
+          "occurredAt": "2026-09-04T23:22:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
-          "freshnessBasis": "Alcaraz and Paul advance to the round of 16 at the US Open.",
+          "ageHours": 0.15,
+          "freshnessBasis": "Two-time US Open champion Carlos Alcaraz returned to the round of 16 by beating Wu Yibing 6-3, 6-4, 6-1 on Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49828709/carlos-alcaraz-tommy-paul-win-set-4th-round-clash-2026-us-open"
@@ -486,15 +429,12 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Aryna Sabalenka, Jessica Pegula tested but advance at US Open",
-          "text": "Sabalenka and Pegula overcame challenges to win their matches and move forward in the tournament.",
-          "entities": [
-            "Aryna Sabalenka",
-            "Jessica Pegula"
-          ],
+          "text": "World No. 1 Aryna Sabalenka and 3-seed Jessica Pegula won their respective third-round matches on Friday to advance at the US Open.",
+          "entities": [],
           "occurredAt": "2026-09-04T22:32:56Z",
           "timePrecision": "exact",
-          "ageHours": 0.47,
-          "freshnessBasis": "Sabalenka and Pegula advance after third-round victories at the US Open.",
+          "ageHours": 0.97,
+          "freshnessBasis": "World No. 1 Aryna Sabalenka and 3-seed Jessica Pegula won their respective third-round matches on Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
@@ -507,6 +447,33 @@
             }
           ],
           "id": "a3-special-1edebee205f3a3f9"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-1d66a9764b5195d5"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Zverev sweats out another five-set scare to advance at US Open",
+          "text": "Alexander Zverev needed five sets and more than 4 1/2 hours to beat Quentin Halys, becoming the first top-seeded man to play back-to-back five-set matches to start a major in the Open era.",
+          "entities": [],
+          "occurredAt": "2026-09-04T16:37:46Z",
+          "timePrecision": "exact",
+          "ageHours": 6.88,
+          "freshnessBasis": "Alexander Zverev needed five sets and more than 4 1/2 hours to beat Quentin Halys in their second-round match.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/tennis/story/_/id/49822322/zverev-sweats-another-five-set-scare-advance-us-open"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-atp",
+              "url": "https://www.espn.com/tennis/story/_/id/49822322/zverev-sweats-another-five-set-scare-advance-us-open"
+            }
+          ],
+          "id": "a3-special-0875eb2a6c489fb5"
         }
       ]
     }
