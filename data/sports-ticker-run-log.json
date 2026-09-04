@@ -1,13 +1,2530 @@
 {
   "schemaVersion": 1,
   "pipelineVersion": "A3.0-direct-sources",
-  "status": "not-run-yet",
-  "note": "This file is replaced on every A3 run with complete last-run source, Python pipeline, OpenAI request/response, output, and failure diagnostics. Secrets are redacted.",
-  "sourceFetches": [],
-  "pipeline": {},
-  "openai": {
-    "called": false
+  "runId": "a3-20260904T195743Z",
+  "status": "failed",
+  "startedAt": "2026-09-04T19:57:43Z",
+  "finishedAt": "2026-09-04T19:57:51Z",
+  "generatedAt": "2026-09-04T19:57:43Z",
+  "freshnessCutoff": "2026-09-03T19:57:43Z",
+  "configuration": {
+    "freshnessHours": 24.0,
+    "model": "gpt-5-nano",
+    "openAIWebSearchEnabled": false,
+    "maxModelCandidates": 140,
+    "espnFeedCount": 10,
+    "officialPageCount": 7,
+    "highlightlyLeagueCount": 7,
+    "highlightlyConfigured": true,
+    "gitSha": "da1d539f56d0b71387268e2c7f30d295ec66c48b",
+    "githubRunId": "33913802888"
   },
-  "output": {},
-  "failures": []
+  "sourceFetches": [
+    {
+      "sourceId": "espn-top",
+      "provider": "ESPN",
+      "kind": "rss",
+      "leagueHint": "SPECIAL",
+      "url": "https://www.espn.com/espn/rss/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 39,
+      "httpStatus": 202,
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawPreview": "",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "sourceId": "espn-mlb",
+      "provider": "ESPN",
+      "kind": "rss",
+      "leagueHint": "MLB",
+      "url": "https://www.espn.com/espn/rss/mlb/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 19,
+      "httpStatus": 202,
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawPreview": "",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "sourceId": "espn-nfl",
+      "provider": "ESPN",
+      "kind": "rss",
+      "leagueHint": "NFL",
+      "url": "https://www.espn.com/espn/rss/nfl/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 13,
+      "httpStatus": 202,
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawPreview": "",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "sourceId": "espn-nba",
+      "provider": "ESPN",
+      "kind": "rss",
+      "leagueHint": "NBA",
+      "url": "https://www.espn.com/espn/rss/nba/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 21,
+      "httpStatus": 202,
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawPreview": "",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "sourceId": "espn-nhl",
+      "provider": "ESPN",
+      "kind": "rss",
+      "leagueHint": "NHL",
+      "url": "https://www.espn.com/espn/rss/nhl/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 13,
+      "httpStatus": 202,
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawPreview": "",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "sourceId": "espn-ncaaf",
+      "provider": "ESPN",
+      "kind": "rss",
+      "leagueHint": "NCAAF",
+      "url": "https://www.espn.com/espn/rss/ncf/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 13,
+      "httpStatus": 202,
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawPreview": "",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "sourceId": "espn-soccer",
+      "provider": "ESPN",
+      "kind": "rss",
+      "leagueHint": "SOCCER",
+      "url": "https://www.espn.com/espn/rss/soccer/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 12,
+      "httpStatus": 202,
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawPreview": "",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "sourceId": "espn-motorsports",
+      "provider": "ESPN",
+      "kind": "rss",
+      "leagueHint": "SPECIAL",
+      "url": "https://www.espn.com/espn/rss/rpm/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 11,
+      "httpStatus": 202,
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawPreview": "",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "sourceId": "espn-tennis",
+      "provider": "ESPN",
+      "kind": "rss",
+      "leagueHint": "SPECIAL",
+      "url": "https://www.espn.com/espn/rss/tennis/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 13,
+      "httpStatus": 202,
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawPreview": "",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "sourceId": "espn-golf",
+      "provider": "ESPN",
+      "kind": "rss",
+      "leagueHint": "SPECIAL",
+      "url": "https://www.espn.com/espn/rss/golf/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 14,
+      "httpStatus": 202,
+      "responseHeaders": {
+        "content-type": "text/html; charset=UTF-8"
+      },
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 0,
+      "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rawPreview": "",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "sourceId": "official-mlb",
+      "provider": "OfficialLeague",
+      "kind": "html-news-page",
+      "leagueHint": "MLB",
+      "url": "https://www.mlb.com/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 217,
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      },
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 914255,
+      "responseSha256": "f393de0afedcc47b373ab9ef28c534961b91a5c774d009668f6d6b8b39dfb338",
+      "rawPreview": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <title>MLB News: Scores, Standings, Stats, Trades, Rumors</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\">\n    <meta name=\"description\" content=\"The official news source of Major League Baseball including scores, standings, stats, trade rumors, injuries, game recaps, press releases and more.\">\n    <meta property=\"og:description\" content=\"The official news source of Major League Baseball including scores, standings, stats, trade rumors, injuries, game recaps, press releases and more.\">\n    <meta property=\"og:title\" content=\"MLB News: Scores, Standings, Stats, Trades, Rumors\">\n    <meta property",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": null
+    },
+    {
+      "sourceId": "official-nfl",
+      "provider": "OfficialLeague",
+      "kind": "html-news-page",
+      "leagueHint": "NFL",
+      "url": "https://www.nfl.com/news/",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 262,
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "text/html; charset=utf-8"
+      },
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 1574898,
+      "responseSha256": "de98da27af6d539e8a3a1698559a129b2dc6b1b94c2b6ece09d94965c3d741cd",
+      "rawPreview": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/42ed4b7f310fd6b5.css\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/css/773e26ea004fceb4.css\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/css/2c8615cd1853512d.css\" data-precedence=\"next\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack-2b6442f29cd7822c.js\"/><script src=\"/_next/static/chunks/3a1e67e9-4ddc388d422ccdfe.js\" async=\"\"></script><script src=\"/_next/static/chunks/e3c40c1d-6821e2b795c4056d.js\" async=\"\"></script><script src=\"/_next/static/chunks/87c73c54-ea950a7f144b1ad3.js\" async=\"\"></script><script src=\"/_next/static/chunks/417",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": null
+    },
+    {
+      "sourceId": "official-nba",
+      "provider": "OfficialLeague",
+      "kind": "html-news-page",
+      "leagueHint": "NBA",
+      "url": "https://www.nba.com/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:43Z",
+      "elapsedMs": 199,
+      "httpStatus": null,
+      "responseHeaders": {},
+      "contentType": null,
+      "bytes": 0,
+      "responseSha256": null,
+      "rawPreview": null,
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "sourceId": "official-nhl",
+      "provider": "OfficialLeague",
+      "kind": "html-news-page",
+      "leagueHint": "NHL",
+      "url": "https://www.nhl.com/news/",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:43Z",
+      "finishedAt": "2026-09-04T19:57:44Z",
+      "elapsedMs": 259,
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "text/html"
+      },
+      "contentType": "text/html",
+      "bytes": 315100,
+      "responseSha256": "dc9048a52a5831504cc80dbe8f26fef7b3253db382bb7796b2bd2be59be4a773",
+      "rawPreview": "\n\n<!DOCTYPE html>\n<html class=\"-league-site\" lang=\"en\" dir=\"ltr\">\n<head>\n<meta charset=\"utf-8\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n\n\n<title>News | NHL.com</title>\n<meta name=\"description\" content=\"The latest news, features and coverage from the hockey experts at NHL.com\" />\n<meta property=\"og:type\" content=\"website\" />\n<meta property=\"og:title\" content=\"News | NHL.com\" />\n<meta property=\"og:description\" content=\"The latest news, features and coverage from the hockey experts at NHL.com\" />\n  <meta property=\"og:url\" content=\"https://www.nhl.com/news/\" />\n<meta property=\"og:image\" content=\"https://media.d3.nhle.com/image/private/t_ratio16_9-size50/v1697743790/prd/assets/nhl/logos/nhl_2568x1144.png\" />\n<meta property=\"og:image:width\" content=\"1280\" />\n<",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": null
+    },
+    {
+      "sourceId": "official-ncaa",
+      "provider": "OfficialLeague",
+      "kind": "html-news-page",
+      "leagueHint": "NCAAF",
+      "url": "https://www.ncaa.com/news/football/fbs",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:44Z",
+      "finishedAt": "2026-09-04T19:57:45Z",
+      "elapsedMs": 931,
+      "httpStatus": null,
+      "responseHeaders": {},
+      "contentType": null,
+      "bytes": 0,
+      "responseSha256": null,
+      "rawPreview": null,
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "sourceId": "official-epl",
+      "provider": "OfficialLeague",
+      "kind": "html-news-page",
+      "leagueHint": "EPL",
+      "url": "https://www.premierleague.com/en/news",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:45Z",
+      "finishedAt": "2026-09-04T19:57:45Z",
+      "elapsedMs": 478,
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "text/html;charset=utf-8"
+      },
+      "contentType": "text/html;charset=utf-8",
+      "bytes": 95676,
+      "responseSha256": "12b235b0572bf3f718651411bb1a170e943e8f0095147ae8ec12ad3bf8b40fa9",
+      "rawPreview": "<!doctype html>\n<html lang=\"en\" dir=\"ltr\">\n\n    <link rel=\"alternate\" hreflang=\"x-default\" href=\"https://www.premierleague.com/en/news\" />\n        <link rel=\"alternate\" hreflang=\"en\" href=\"https://www.premierleague.com/en/news\" />\n        <link rel=\"alternate\" hreflang=\"es\" href=\"https://www.premierleague.com/es/news\" />\n        <link rel=\"alternate\" hreflang=\"ar\" href=\"https://www.premierleague.com/ar/news\" />\n\n\n<head>\n\t<meta charset=\"UTF-8\">\n\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n\t<meta data-analytics=\"screen_page_category\" content=\"news\"/>\n<meta name=\"twitter:title\" content=\"Latest Premier League Football Team News & Features\"/>\n<meta name=\"description\" content=\"Read all the latest Premier Le",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": null
+    },
+    {
+      "sourceId": "official-mls",
+      "provider": "OfficialLeague",
+      "kind": "html-news-page",
+      "leagueHint": "MLS",
+      "url": "https://www.mlssoccer.com/news/",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0"
+      },
+      "startedAt": "2026-09-04T19:57:45Z",
+      "finishedAt": "2026-09-04T19:57:46Z",
+      "elapsedMs": 399,
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "text/html"
+      },
+      "contentType": "text/html",
+      "bytes": 317707,
+      "responseSha256": "6401bf066065b44cdc58b6058cf98674501ae9f8f3939cf2e29836ae9e45d6d0",
+      "rawPreview": "\n\n\n\n\n<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"utf-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <link rel=\"shortcut icon\" href=\"https://images.mlssoccer.com/image/upload/assets/crest/MLS-Crest-FullColor.png\"\n        asp-append-version=\"true\" />\n  <link rel=\"apple-touch-icon\" href=\"https://images.mlssoccer.com/image/upload/assets/logos/apple-touch-icon.png\" />\n  <link rel=\"manifest\" href=\"/manifest.json\" asp-append-version=\"true\" />\n  <link rel=\"preload\" href=\"/assets/fonts/MLSTifo/MLSTifo--regular.woff2\" as=\"font\" type=\"font/woff2\" crossorigin />\n  <link rel=\"preload\" href=\"/assets/fonts/MLSTifo/MLSTifo--light.woff2\" as=\"font\" type=\"font/woff2\" crossorigin />\n  <link rel=\"preload\" href=\"/assets/fonts/MLSTifo/MLSTifo--medium.woff2\" as=\"f",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": null
+    },
+    {
+      "sourceId": "highlightly-mlb-2026-09-04-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "MLB",
+      "url": "https://baseball.highlightly.net/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=MLB&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:46Z",
+      "finishedAt": "2026-09-04T19:57:46Z",
+      "elapsedMs": 244,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "100",
+        "x-ratelimit-requests-remaining": "99"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-mlb-2026-09-04-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "MLB",
+      "url": "https://sports.highlightly.net/baseball/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=MLB&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:46Z",
+      "finishedAt": "2026-09-04T19:57:46Z",
+      "elapsedMs": 286,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7163"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-mlb-2026-09-03-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "MLB",
+      "url": "https://baseball.highlightly.net/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=MLB&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:46Z",
+      "finishedAt": "2026-09-04T19:57:46Z",
+      "elapsedMs": 227,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "100",
+        "x-ratelimit-requests-remaining": "98"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-mlb-2026-09-03-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "MLB",
+      "url": "https://sports.highlightly.net/baseball/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=MLB&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:46Z",
+      "finishedAt": "2026-09-04T19:57:47Z",
+      "elapsedMs": 194,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7162"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nfl-2026-09-04-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NFL",
+      "url": "https://american-football.highlightly.net/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=NFL&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:47Z",
+      "finishedAt": "2026-09-04T19:57:47Z",
+      "elapsedMs": 302,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "100",
+        "x-ratelimit-requests-remaining": "33"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nfl-2026-09-04-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NFL",
+      "url": "https://sports.highlightly.net/american-football/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=NFL&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:47Z",
+      "finishedAt": "2026-09-04T19:57:47Z",
+      "elapsedMs": 151,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7161"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nfl-2026-09-03-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NFL",
+      "url": "https://american-football.highlightly.net/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=NFL&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:47Z",
+      "finishedAt": "2026-09-04T19:57:47Z",
+      "elapsedMs": 168,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "100",
+        "x-ratelimit-requests-remaining": "32"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nfl-2026-09-03-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NFL",
+      "url": "https://sports.highlightly.net/american-football/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=NFL&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:47Z",
+      "finishedAt": "2026-09-04T19:57:47Z",
+      "elapsedMs": 206,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7160"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-ncaaf-2026-09-04-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NCAAF",
+      "url": "https://american-football.highlightly.net/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=NCAA&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:47Z",
+      "finishedAt": "2026-09-04T19:57:48Z",
+      "elapsedMs": 173,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "100",
+        "x-ratelimit-requests-remaining": "31"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-ncaaf-2026-09-04-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NCAAF",
+      "url": "https://sports.highlightly.net/american-football/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=NCAA&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:48Z",
+      "finishedAt": "2026-09-04T19:57:48Z",
+      "elapsedMs": 173,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7159"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-ncaaf-2026-09-03-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NCAAF",
+      "url": "https://american-football.highlightly.net/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=NCAA&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:48Z",
+      "finishedAt": "2026-09-04T19:57:48Z",
+      "elapsedMs": 151,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "100",
+        "x-ratelimit-requests-remaining": "30"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-ncaaf-2026-09-03-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NCAAF",
+      "url": "https://sports.highlightly.net/american-football/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=NCAA&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:48Z",
+      "finishedAt": "2026-09-04T19:57:48Z",
+      "elapsedMs": 205,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7158"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nba-2026-09-04-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NBA",
+      "url": "https://nba.highlightly.net/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=NBA&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:48Z",
+      "finishedAt": "2026-09-04T19:57:48Z",
+      "elapsedMs": 259,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "100",
+        "x-ratelimit-requests-remaining": "34"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nba-2026-09-04-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NBA",
+      "url": "https://sports.highlightly.net/nba/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=NBA&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:48Z",
+      "finishedAt": "2026-09-04T19:57:49Z",
+      "elapsedMs": 152,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7157"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nba-2026-09-03-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NBA",
+      "url": "https://nba.highlightly.net/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=NBA&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:49Z",
+      "finishedAt": "2026-09-04T19:57:49Z",
+      "elapsedMs": 250,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "100",
+        "x-ratelimit-requests-remaining": "33"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nba-2026-09-03-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NBA",
+      "url": "https://sports.highlightly.net/nba/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=NBA&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:49Z",
+      "finishedAt": "2026-09-04T19:57:49Z",
+      "elapsedMs": 181,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7156"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nhl-2026-09-04-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NHL",
+      "url": "https://nhl.highlightly.net/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=NHL&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:49Z",
+      "finishedAt": "2026-09-04T19:57:49Z",
+      "elapsedMs": 261,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "100",
+        "x-ratelimit-requests-remaining": "33"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nhl-2026-09-04-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NHL",
+      "url": "https://sports.highlightly.net/nhl/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=NHL&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:49Z",
+      "finishedAt": "2026-09-04T19:57:49Z",
+      "elapsedMs": 149,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7155"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nhl-2026-09-03-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NHL",
+      "url": "https://nhl.highlightly.net/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=NHL&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:49Z",
+      "finishedAt": "2026-09-04T19:57:50Z",
+      "elapsedMs": 231,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "100",
+        "x-ratelimit-requests-remaining": "32"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-nhl-2026-09-03-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "NHL",
+      "url": "https://sports.highlightly.net/nhl/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=NHL&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:50Z",
+      "finishedAt": "2026-09-04T19:57:50Z",
+      "elapsedMs": 170,
+      "httpStatus": 400,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"43-WjFTQCWec9pfDgt0b+xlZsVRg18\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7154"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 67,
+      "responseSha256": "0850903829d08fe1d08eb4e16c7b6a37e91db969da92f27dc64432a321b18cb6",
+      "rawPreview": "{\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}"
+    },
+    {
+      "sourceId": "highlightly-epl-2026-09-04-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "EPL",
+      "url": "https://soccer.highlightly.net/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=Premier+League&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:50Z",
+      "finishedAt": "2026-09-04T19:57:50Z",
+      "elapsedMs": 347,
+      "httpStatus": 429,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"3a-Mjej/OZ3W6GKcpcARq9JRvElI0Y\""
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 58,
+      "responseSha256": "90c77ac69371f42a312ae5aea2c6f918c70709f588d20b00424c7f0826a5e4b6",
+      "rawPreview": "{\"message\":\"You have breached your daily request limits.\"}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 429: {\"message\":\"You have breached your daily request limits.\"}"
+    },
+    {
+      "sourceId": "highlightly-epl-2026-09-04-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "EPL",
+      "url": "https://sports.highlightly.net/football/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=Premier+League&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:50Z",
+      "finishedAt": "2026-09-04T19:57:50Z",
+      "elapsedMs": 226,
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"3154-3+jqBKJz0oApZ+JVYmxTLOilU5c\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7153"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 12628,
+      "responseSha256": "727c4bc24e0cf32f3386d0e7dcb6249fa4f3086f1b717d233e569cf548880a56",
+      "rawPreview": "{\"data\":[{\"id\":1325342227,\"round\":\"Regular Season - 3\",\"date\":\"2026-09-04T19:00:00.000Z\",\"country\":{\"code\":\"GB-ENG\",\"name\":\"England\",\"logo\":\"https://highlightly.net/soccer/images/countries/GB-ENG.svg\"},\"state\":{\"clock\":45,\"score\":{\"current\":\"0 - 2\",\"penalties\":null},\"description\":\"Half time\"},\"awayTeam\":{\"id\":34824,\"logo\":\"https://highlightly.net/soccer/images/teams/34824.png\",\"name\":\"Liverpool\"},\"homeTeam\":{\"id\":49291,\"logo\":\"https://highlightly.net/soccer/images/teams/49291.png\",\"name\":\"Ipswich\"},\"league\":{\"id\":33973,\"logo\":\"https://highlightly.net/soccer/images/leagues/33973.png\",\"name\":\"Premier League\",\"season\":2026}},{\"id\":1341118916,\"round\":\"Regular Season - 7\",\"date\":\"2026-09-04T18:45:00.000Z\",\"country\":{\"code\":\"WLS\",\"name\":\"Wales\",\"logo\":\"https://highlightly.net/soccer/images/count",
+      "receivedItems": [
+        {
+          "id": 1325342227,
+          "round": "Regular Season - 3",
+          "date": "2026-09-04T19:00:00.000Z",
+          "country": {
+            "code": "GB-ENG",
+            "name": "England",
+            "logo": "https://highlightly.net/soccer/images/countries/GB-ENG.svg"
+          },
+          "state": {
+            "clock": 45,
+            "score": {
+              "current": "0 - 2",
+              "penalties": null
+            },
+            "description": "Half time"
+          },
+          "awayTeam": {
+            "id": 34824,
+            "logo": "https://highlightly.net/soccer/images/teams/34824.png",
+            "name": "Liverpool"
+          },
+          "homeTeam": {
+            "id": 49291,
+            "logo": "https://highlightly.net/soccer/images/teams/49291.png",
+            "name": "Ipswich"
+          },
+          "league": {
+            "id": 33973,
+            "logo": "https://highlightly.net/soccer/images/leagues/33973.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1341118916,
+          "round": "Regular Season - 7",
+          "date": "2026-09-04T18:45:00.000Z",
+          "country": {
+            "code": "WLS",
+            "name": "Wales",
+            "logo": "https://highlightly.net/soccer/images/countries/WLS.svg"
+          },
+          "state": {
+            "clock": 52,
+            "score": {
+              "current": "0 - 2",
+              "penalties": null
+            },
+            "description": "Second half"
+          },
+          "awayTeam": {
+            "id": 4178343,
+            "logo": "https://highlightly.net/soccer/images/teams/4178343.png",
+            "name": "Airbus UK"
+          },
+          "homeTeam": {
+            "id": 1873835,
+            "logo": "https://highlightly.net/soccer/images/teams/1873835.png",
+            "name": "Briton Ferry"
+          },
+          "league": {
+            "id": 94394,
+            "logo": "https://highlightly.net/soccer/images/leagues/94394.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1341122320,
+          "round": "Regular Season - 7",
+          "date": "2026-09-04T18:45:00.000Z",
+          "country": {
+            "code": "WLS",
+            "name": "Wales",
+            "logo": "https://highlightly.net/soccer/images/countries/WLS.svg"
+          },
+          "state": {
+            "clock": 56,
+            "score": {
+              "current": "0 - 0",
+              "penalties": null
+            },
+            "description": "Second half"
+          },
+          "awayTeam": {
+            "id": 5514413,
+            "logo": null,
+            "name": "Trefelin"
+          },
+          "homeTeam": {
+            "id": 5497393,
+            "logo": null,
+            "name": "Holywell"
+          },
+          "league": {
+            "id": 94394,
+            "logo": "https://highlightly.net/soccer/images/leagues/94394.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1341123171,
+          "round": "Regular Season - 7",
+          "date": "2026-09-04T18:45:00.000Z",
+          "country": {
+            "code": "WLS",
+            "name": "Wales",
+            "logo": "https://highlightly.net/soccer/images/countries/WLS.svg"
+          },
+          "state": {
+            "clock": 47,
+            "score": {
+              "current": "1 - 0",
+              "penalties": null
+            },
+            "description": "Second half"
+          },
+          "awayTeam": {
+            "id": 1862772,
+            "logo": "https://highlightly.net/soccer/images/teams/1862772.png",
+            "name": "Ammanford AFC"
+          },
+          "homeTeam": {
+            "id": 308846,
+            "logo": "https://highlightly.net/soccer/images/teams/308846.png",
+            "name": "Llandudno"
+          },
+          "league": {
+            "id": 94394,
+            "logo": "https://highlightly.net/soccer/images/leagues/94394.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1341121469,
+          "round": "Regular Season - 7",
+          "date": "2026-09-04T18:45:00.000Z",
+          "country": {
+            "code": "WLS",
+            "name": "Wales",
+            "logo": "https://highlightly.net/soccer/images/countries/WLS.svg"
+          },
+          "state": {
+            "clock": 53,
+            "score": {
+              "current": "0 - 1",
+              "penalties": null
+            },
+            "description": "Second half"
+          },
+          "awayTeam": {
+            "id": 1867878,
+            "logo": "https://highlightly.net/soccer/images/teams/1867878.png",
+            "name": "Haverfordwest County AFC"
+          },
+          "homeTeam": {
+            "id": 304591,
+            "logo": "https://highlightly.net/soccer/images/teams/304591.png",
+            "name": "GAP Connah S Quay FC"
+          },
+          "league": {
+            "id": 94394,
+            "logo": "https://highlightly.net/soccer/images/leagues/94394.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1341120618,
+          "round": "Regular Season - 7",
+          "date": "2026-09-04T18:45:00.000Z",
+          "country": {
+            "code": "WLS",
+            "name": "Wales",
+            "logo": "https://highlightly.net/soccer/images/countries/WLS.svg"
+          },
+          "state": {
+            "clock": 51,
+            "score": {
+              "current": "2 - 0",
+              "penalties": null
+            },
+            "description": "Second half"
+          },
+          "awayTeam": {
+            "id": 1874686,
+            "logo": "https://highlightly.net/soccer/images/teams/1874686.png",
+            "name": "Cambrian & Clydach"
+          },
+          "homeTeam": {
+            "id": 301187,
+            "logo": "https://highlightly.net/soccer/images/teams/301187.png",
+            "name": "Cardiff Met"
+          },
+          "league": {
+            "id": 94394,
+            "logo": "https://highlightly.net/soccer/images/leagues/94394.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1341119767,
+          "round": "Regular Season - 7",
+          "date": "2026-09-04T18:45:00.000Z",
+          "country": {
+            "code": "WLS",
+            "name": "Wales",
+            "logo": "https://highlightly.net/soccer/images/countries/WLS.svg"
+          },
+          "state": {
+            "clock": 54,
+            "score": {
+              "current": "2 - 0",
+              "penalties": null
+            },
+            "description": "Second half"
+          },
+          "awayTeam": {
+            "id": 4778298,
+            "logo": null,
+            "name": "Flint Town United"
+          },
+          "homeTeam": {
+            "id": 303740,
+            "logo": "https://highlightly.net/soccer/images/teams/303740.png",
+            "name": "Caernarfon Town"
+          },
+          "league": {
+            "id": 94394,
+            "logo": "https://highlightly.net/soccer/images/leagues/94394.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1389036173,
+          "round": "Regular Season - 3",
+          "date": "2026-09-04T17:50:00.000Z",
+          "country": {
+            "code": "KW",
+            "name": "Kuwait",
+            "logo": "https://highlightly.net/soccer/images/countries/KW.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "3 - 3",
+              "penalties": null
+            },
+            "description": "Second half"
+          },
+          "awayTeam": {
+            "id": 3015877,
+            "logo": "https://highlightly.net/soccer/images/teams/3015877.png",
+            "name": "Al Sulaibikhat"
+          },
+          "homeTeam": {
+            "id": 3006516,
+            "logo": "https://highlightly.net/soccer/images/teams/3006516.png",
+            "name": "Al Arabi"
+          },
+          "league": {
+            "id": 281614,
+            "logo": "https://highlightly.net/soccer/images/leagues/281614.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1390580738,
+          "round": "Regular Season - 2",
+          "date": "2026-09-04T17:00:00.000Z",
+          "country": {
+            "code": "BW",
+            "name": "Botswana",
+            "logo": "https://highlightly.net/soccer/images/countries/BW.svg"
+          },
+          "state": {
+            "clock": null,
+            "score": {
+              "current": null,
+              "penalties": null
+            },
+            "description": "Not started"
+          },
+          "awayTeam": {
+            "id": 24080680,
+            "logo": null,
+            "name": "Tonota"
+          },
+          "homeTeam": {
+            "id": 4612353,
+            "logo": "https://highlightly.net/soccer/images/teams/4612353.png",
+            "name": "Centre Chiefs"
+          },
+          "league": {
+            "id": 351396,
+            "logo": "https://highlightly.net/soccer/images/leagues/351396.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1391595981,
+          "round": "Regular Season - 2",
+          "date": "2026-09-04T17:00:00.000Z",
+          "country": {
+            "code": "UG",
+            "name": "Uganda",
+            "logo": "https://highlightly.net/soccer/images/countries/UG.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "0 - 1",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 10601691,
+            "logo": null,
+            "name": "SC Villa"
+          },
+          "homeTeam": {
+            "id": 10603393,
+            "logo": "https://highlightly.net/soccer/images/teams/10603393.png",
+            "name": "URA"
+          },
+          "league": {
+            "id": 498619,
+            "logo": "https://highlightly.net/soccer/images/leagues/498619.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1298603807,
+          "round": "Regular Season - 21",
+          "date": "2026-09-04T17:00:00.000Z",
+          "country": {
+            "code": "BY",
+            "name": "Belarus",
+            "logo": "https://highlightly.net/soccer/images/countries/BY.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "3 - 0",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 325866,
+            "logo": "https://highlightly.net/soccer/images/teams/325866.png",
+            "name": "FC Vitebsk"
+          },
+          "homeTeam": {
+            "id": 639885,
+            "logo": "https://highlightly.net/soccer/images/teams/639885.png",
+            "name": "Slavia Mozyr"
+          },
+          "league": {
+            "id": 99500,
+            "logo": "https://highlightly.net/soccer/images/leagues/99500.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1345872602,
+          "round": "Regular Season - 6",
+          "date": "2026-09-04T16:00:00.000Z",
+          "country": {
+            "code": "AM",
+            "name": "Armenia",
+            "logo": "https://highlightly.net/soccer/images/countries/AM.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "3 - 2",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 586272,
+            "logo": null,
+            "name": "Gandzasar"
+          },
+          "homeTeam": {
+            "id": 3135868,
+            "logo": "https://highlightly.net/soccer/images/teams/3135868.png",
+            "name": "Artsakh"
+          },
+          "league": {
+            "id": 291826,
+            "logo": "https://highlightly.net/soccer/images/leagues/291826.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1381271649,
+          "round": "Regular Season - 2",
+          "date": "2026-09-04T16:00:00.000Z",
+          "country": {
+            "code": "BH",
+            "name": "Bahrain",
+            "logo": "https://highlightly.net/soccer/images/countries/BH.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "1 - 0",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 4671072,
+            "logo": "https://highlightly.net/soccer/images/teams/4671072.png",
+            "name": "Muharraq"
+          },
+          "homeTeam": {
+            "id": 8709918,
+            "logo": "https://highlightly.net/soccer/images/teams/8709918.png",
+            "name": "Al Ittifaq Maqaba"
+          },
+          "league": {
+            "id": 355651,
+            "logo": "https://highlightly.net/soccer/images/leagues/355651.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1381272500,
+          "round": "Regular Season - 2",
+          "date": "2026-09-04T16:00:00.000Z",
+          "country": {
+            "code": "BH",
+            "name": "Bahrain",
+            "logo": "https://highlightly.net/soccer/images/countries/BH.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "3 - 1",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 17349270,
+            "logo": null,
+            "name": "A'Ali"
+          },
+          "homeTeam": {
+            "id": 15034550,
+            "logo": null,
+            "name": "Al Khalidiya"
+          },
+          "league": {
+            "id": 355651,
+            "logo": "https://highlightly.net/soccer/images/leagues/355651.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1380871679,
+          "round": "Regular Season - 3",
+          "date": "2026-09-04T15:35:00.000Z",
+          "country": {
+            "code": "KW",
+            "name": "Kuwait",
+            "logo": "https://highlightly.net/soccer/images/countries/KW.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "3 - 0",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 3009920,
+            "logo": "https://highlightly.net/soccer/images/teams/3009920.png",
+            "name": "Al Nasar"
+          },
+          "homeTeam": {
+            "id": 3010771,
+            "logo": "https://highlightly.net/soccer/images/teams/3010771.png",
+            "name": "Al-Qadsia SC"
+          },
+          "league": {
+            "id": 281614,
+            "logo": "https://highlightly.net/soccer/images/leagues/281614.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1332216605,
+          "round": "Regular Season - 5",
+          "date": "2026-09-04T15:00:00.000Z",
+          "country": {
+            "code": "UA",
+            "name": "Ukraine",
+            "logo": "https://highlightly.net/soccer/images/countries/UA.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "5 - 1",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 18682787,
+            "logo": null,
+            "name": "Kudrivka"
+          },
+          "homeTeam": {
+            "id": 5528880,
+            "logo": "https://highlightly.net/soccer/images/teams/5528880.png",
+            "name": "Polessya"
+          },
+          "league": {
+            "id": 284167,
+            "logo": "https://highlightly.net/soccer/images/leagues/284167.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1394061328,
+          "round": "Regular Season - 22",
+          "date": "2026-09-04T14:00:00.000Z",
+          "country": {
+            "code": "KG",
+            "name": "Kyrgyzstan",
+            "logo": "https://highlightly.net/soccer/images/countries/KG.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "1 - 1",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 15940865,
+            "logo": "https://highlightly.net/soccer/images/teams/15940865.png",
+            "name": "Talant"
+          },
+          "homeTeam": {
+            "id": 23445834,
+            "logo": null,
+            "name": "Toktogul"
+          },
+          "league": {
+            "id": 485003,
+            "logo": "https://highlightly.net/soccer/images/leagues/485003.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1391598534,
+          "round": "Regular Season - 2",
+          "date": "2026-09-04T13:00:00.000Z",
+          "country": {
+            "code": "UG",
+            "name": "Uganda",
+            "logo": "https://highlightly.net/soccer/images/countries/UG.svg"
+          },
+          "state": {
+            "clock": null,
+            "score": {
+              "current": null,
+              "penalties": null
+            },
+            "description": "Postponed"
+          },
+          "awayTeam": {
+            "id": 10599989,
+            "logo": "https://highlightly.net/soccer/images/teams/10599989.png",
+            "name": "Mbarara City"
+          },
+          "homeTeam": {
+            "id": 13244046,
+            "logo": null,
+            "name": "Kitara"
+          },
+          "league": {
+            "id": 498619,
+            "logo": "https://highlightly.net/soccer/images/leagues/498619.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1391597683,
+          "round": "Regular Season - 2",
+          "date": "2026-09-04T13:00:00.000Z",
+          "country": {
+            "code": "UG",
+            "name": "Uganda",
+            "logo": "https://highlightly.net/soccer/images/countries/UG.svg"
+          },
+          "state": {
+            "clock": null,
+            "score": {
+              "current": null,
+              "penalties": null
+            },
+            "description": "Postponed"
+          },
+          "awayTeam": {
+            "id": 6905798,
+            "logo": "https://highlightly.net/soccer/images/teams/6905798.png",
+            "name": "Vipers"
+          },
+          "homeTeam": {
+            "id": 24101104,
+            "logo": null,
+            "name": "Kigezi Homeboyz"
+          },
+          "league": {
+            "id": 498619,
+            "logo": "https://highlightly.net/soccer/images/leagues/498619.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1345874304,
+          "round": "Regular Season - 6",
+          "date": "2026-09-04T12:00:00.000Z",
+          "country": {
+            "code": "AM",
+            "name": "Armenia",
+            "logo": "https://highlightly.net/soccer/images/countries/AM.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "0 - 0",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 604143,
+            "logo": "https://highlightly.net/soccer/images/teams/604143.png",
+            "name": "Pyunik Yerevan"
+          },
+          "homeTeam": {
+            "id": 17094821,
+            "logo": "https://highlightly.net/soccer/images/teams/17094821.png",
+            "name": "Syunik"
+          },
+          "league": {
+            "id": 291826,
+            "logo": "https://highlightly.net/soccer/images/leagues/291826.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1332211499,
+          "round": "Regular Season - 5",
+          "date": "2026-09-04T10:00:00.000Z",
+          "country": {
+            "code": "UA",
+            "name": "Ukraine",
+            "logo": "https://highlightly.net/soccer/images/countries/UA.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "0 - 0",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 14605646,
+            "logo": null,
+            "name": "Livyi Bereh"
+          },
+          "homeTeam": {
+            "id": 3077149,
+            "logo": "https://highlightly.net/soccer/images/teams/3077149.png",
+            "name": "Chornomorets"
+          },
+          "league": {
+            "id": 284167,
+            "logo": "https://highlightly.net/soccer/images/leagues/284167.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        }
+      ],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [
+        {
+          "index": 0,
+          "matchId": 1325342227,
+          "reason": "match not final"
+        },
+        {
+          "index": 1,
+          "matchId": 1341118916,
+          "reason": "match not final"
+        },
+        {
+          "index": 2,
+          "matchId": 1341122320,
+          "reason": "match not final"
+        },
+        {
+          "index": 3,
+          "matchId": 1341123171,
+          "reason": "match not final"
+        },
+        {
+          "index": 4,
+          "matchId": 1341121469,
+          "reason": "match not final"
+        },
+        {
+          "index": 5,
+          "matchId": 1341120618,
+          "reason": "match not final"
+        },
+        {
+          "index": 6,
+          "matchId": 1341119767,
+          "reason": "match not final"
+        },
+        {
+          "index": 7,
+          "matchId": 1389036173,
+          "reason": "match not final"
+        },
+        {
+          "index": 8,
+          "matchId": 1390580738,
+          "reason": "match not final"
+        },
+        {
+          "index": 9,
+          "matchId": 1391595981,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 10,
+          "matchId": 1298603807,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 11,
+          "matchId": 1345872602,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 12,
+          "matchId": 1381271649,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 13,
+          "matchId": 1381272500,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 14,
+          "matchId": 1380871679,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 15,
+          "matchId": 1332216605,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 16,
+          "matchId": 1394061328,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 17,
+          "matchId": 1391598534,
+          "reason": "match not final"
+        },
+        {
+          "index": 18,
+          "matchId": 1391597683,
+          "reason": "match not final"
+        },
+        {
+          "index": 19,
+          "matchId": 1345874304,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 20,
+          "matchId": 1332211499,
+          "reason": "final match missing usable score"
+        }
+      ],
+      "error": null
+    },
+    {
+      "sourceId": "highlightly-epl-2026-09-03-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "EPL",
+      "url": "https://soccer.highlightly.net/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=Premier+League&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:50Z",
+      "finishedAt": "2026-09-04T19:57:51Z",
+      "elapsedMs": 204,
+      "httpStatus": 429,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"3a-Mjej/OZ3W6GKcpcARq9JRvElI0Y\""
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 58,
+      "responseSha256": "90c77ac69371f42a312ae5aea2c6f918c70709f588d20b00424c7f0826a5e4b6",
+      "rawPreview": "{\"message\":\"You have breached your daily request limits.\"}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 429: {\"message\":\"You have breached your daily request limits.\"}"
+    },
+    {
+      "sourceId": "highlightly-epl-2026-09-03-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "EPL",
+      "url": "https://sports.highlightly.net/football/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=Premier+League&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:51Z",
+      "finishedAt": "2026-09-04T19:57:51Z",
+      "elapsedMs": 168,
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"e78-y2KWVu1KVkvgXWFJwzHnueo1loI\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7152"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 3704,
+      "responseSha256": "83afd783f9c882b32424be5d762a856598bdd578dc82794f3fea5f7189608a54",
+      "rawPreview": "{\"data\":[{\"id\":1391596832,\"round\":\"Regular Season - 2\",\"date\":\"2026-09-03T17:00:00.000Z\",\"country\":{\"code\":\"UG\",\"name\":\"Uganda\",\"logo\":\"https://highlightly.net/soccer/images/countries/UG.svg\"},\"state\":{\"clock\":90,\"score\":{\"current\":\"2 - 0\",\"penalties\":null},\"description\":\"Finished\"},\"awayTeam\":{\"id\":5465906,\"logo\":\"https://highlightly.net/soccer/images/teams/5465906.png\",\"name\":\"KCCA\"},\"homeTeam\":{\"id\":10597436,\"logo\":\"https://highlightly.net/soccer/images/teams/10597436.png\",\"name\":\"Express\"},\"league\":{\"id\":498619,\"logo\":\"https://highlightly.net/soccer/images/leagues/498619.png\",\"name\":\"Premier League\",\"season\":2026}},{\"id\":1372003408,\"round\":\"Regular Season - 3\",\"date\":\"2026-09-03T17:00:00.000Z\",\"country\":{\"code\":\"EG\",\"name\":\"Egypt\",\"logo\":\"https://highlightly.net/soccer/images/countries",
+      "receivedItems": [
+        {
+          "id": 1391596832,
+          "round": "Regular Season - 2",
+          "date": "2026-09-03T17:00:00.000Z",
+          "country": {
+            "code": "UG",
+            "name": "Uganda",
+            "logo": "https://highlightly.net/soccer/images/countries/UG.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "2 - 0",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 5465906,
+            "logo": "https://highlightly.net/soccer/images/teams/5465906.png",
+            "name": "KCCA"
+          },
+          "homeTeam": {
+            "id": 10597436,
+            "logo": "https://highlightly.net/soccer/images/teams/10597436.png",
+            "name": "Express"
+          },
+          "league": {
+            "id": 498619,
+            "logo": "https://highlightly.net/soccer/images/leagues/498619.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1372003408,
+          "round": "Regular Season - 3",
+          "date": "2026-09-03T17:00:00.000Z",
+          "country": {
+            "code": "EG",
+            "name": "Egypt",
+            "logo": "https://highlightly.net/soccer/images/countries/EG.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "1 - 0",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 889228,
+            "logo": "https://highlightly.net/soccer/images/teams/889228.png",
+            "name": "Smouha SC"
+          },
+          "homeTeam": {
+            "id": 1342811,
+            "logo": "https://highlightly.net/soccer/images/teams/1342811.png",
+            "name": "Al Ahly"
+          },
+          "league": {
+            "id": 199067,
+            "logo": "https://highlightly.net/soccer/images/leagues/199067.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1345870049,
+          "round": "Regular Season - 6",
+          "date": "2026-09-03T16:00:00.000Z",
+          "country": {
+            "code": "AM",
+            "name": "Armenia",
+            "logo": "https://highlightly.net/soccer/images/countries/AM.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "4 - 0",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 5350170,
+            "logo": null,
+            "name": "Van"
+          },
+          "homeTeam": {
+            "id": 496066,
+            "logo": "https://highlightly.net/soccer/images/teams/496066.png",
+            "name": "Alashkert"
+          },
+          "league": {
+            "id": 291826,
+            "logo": "https://highlightly.net/soccer/images/leagues/291826.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1298562959,
+          "round": "Regular Season - 15",
+          "date": "2026-09-03T14:00:00.000Z",
+          "country": {
+            "code": "BY",
+            "name": "Belarus",
+            "logo": "https://highlightly.net/soccer/images/countries/BY.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "2 - 0",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 330972,
+            "logo": "https://highlightly.net/soccer/images/teams/330972.png",
+            "name": "Bate Borisov"
+          },
+          "homeTeam": {
+            "id": 333525,
+            "logo": "https://highlightly.net/soccer/images/teams/333525.png",
+            "name": "FC Isloch Minsk R."
+          },
+          "league": {
+            "id": 99500,
+            "logo": "https://highlightly.net/soccer/images/leagues/99500.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1394060477,
+          "round": "Regular Season - 22",
+          "date": "2026-09-03T14:00:00.000Z",
+          "country": {
+            "code": "KG",
+            "name": "Kyrgyzstan",
+            "logo": "https://highlightly.net/soccer/images/countries/KG.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "0 - 5",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 21928501,
+            "logo": null,
+            "name": "Ozgon"
+          },
+          "homeTeam": {
+            "id": 10411918,
+            "logo": "https://highlightly.net/soccer/images/teams/10411918.png",
+            "name": "Abdish-Ata"
+          },
+          "league": {
+            "id": 485003,
+            "logo": "https://highlightly.net/soccer/images/leagues/485003.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        },
+        {
+          "id": 1391595130,
+          "round": "Regular Season - 2",
+          "date": "2026-09-03T13:00:00.000Z",
+          "country": {
+            "code": "UG",
+            "name": "Uganda",
+            "logo": "https://highlightly.net/soccer/images/countries/UG.svg"
+          },
+          "state": {
+            "clock": 90,
+            "score": {
+              "current": "1 - 4",
+              "penalties": null
+            },
+            "description": "Finished"
+          },
+          "awayTeam": {
+            "id": 10594883,
+            "logo": "https://highlightly.net/soccer/images/teams/10594883.png",
+            "name": "BUL"
+          },
+          "homeTeam": {
+            "id": 24100253,
+            "logo": null,
+            "name": "Kataka"
+          },
+          "league": {
+            "id": 498619,
+            "logo": "https://highlightly.net/soccer/images/leagues/498619.png",
+            "name": "Premier League",
+            "season": 2026
+          }
+        }
+      ],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [
+        {
+          "index": 0,
+          "matchId": 1391596832,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 1,
+          "matchId": 1372003408,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 2,
+          "matchId": 1345870049,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 3,
+          "matchId": 1298562959,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 4,
+          "matchId": 1394060477,
+          "reason": "final match missing usable score"
+        },
+        {
+          "index": 5,
+          "matchId": 1391595130,
+          "reason": "final match missing usable score"
+        }
+      ],
+      "error": null
+    },
+    {
+      "sourceId": "highlightly-mls-2026-09-04-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "MLS",
+      "url": "https://soccer.highlightly.net/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=Major+League+Soccer&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:51Z",
+      "finishedAt": "2026-09-04T19:57:51Z",
+      "elapsedMs": 196,
+      "httpStatus": 429,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"3a-Mjej/OZ3W6GKcpcARq9JRvElI0Y\""
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 58,
+      "responseSha256": "90c77ac69371f42a312ae5aea2c6f918c70709f588d20b00424c7f0826a5e4b6",
+      "rawPreview": "{\"message\":\"You have breached your daily request limits.\"}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 429: {\"message\":\"You have breached your daily request limits.\"}"
+    },
+    {
+      "sourceId": "highlightly-mls-2026-09-04-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "MLS",
+      "url": "https://sports.highlightly.net/football/matches?date=2026-09-04&timezone=America%2FNew_York&leagueName=Major+League+Soccer&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:51Z",
+      "finishedAt": "2026-09-04T19:57:51Z",
+      "elapsedMs": 204,
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"305-CeJHPeQZZnShr0wIaMzBtAs5tlY\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7151"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 773,
+      "responseSha256": "ac5ed29163428765bd9c87bcae89bf4b1615496a42fc86973acd49c10c7b3357",
+      "rawPreview": "{\"data\":[{\"id\":1268361820,\"round\":\"Regular Season - 23\",\"date\":\"2026-09-04T23:30:00.000Z\",\"country\":{\"code\":\"US\",\"name\":\"USA\",\"logo\":\"https://highlightly.net/soccer/images/countries/US.svg\"},\"state\":{\"clock\":null,\"score\":{\"current\":null,\"penalties\":null},\"description\":\"Not started\"},\"awayTeam\":{\"id\":8144003,\"logo\":\"https://highlightly.net/soccer/images/teams/8144003.png\",\"name\":\"Nashville SC\"},\"homeTeam\":{\"id\":1365788,\"logo\":\"https://highlightly.net/soccer/images/teams/1365788.png\",\"name\":\"New York City FC\"},\"league\":{\"id\":216087,\"logo\":\"https://highlightly.net/soccer/images/leagues/216087.png\",\"name\":\"Major League Soccer\",\"season\":2026}}],\"plan\":{\"tier\":\"PRO\",\"message\":\"All data available with current plan.\"},\"pagination\":{\"totalCount\":1,\"offset\":0,\"limit\":100}}",
+      "receivedItems": [
+        {
+          "id": 1268361820,
+          "round": "Regular Season - 23",
+          "date": "2026-09-04T23:30:00.000Z",
+          "country": {
+            "code": "US",
+            "name": "USA",
+            "logo": "https://highlightly.net/soccer/images/countries/US.svg"
+          },
+          "state": {
+            "clock": null,
+            "score": {
+              "current": null,
+              "penalties": null
+            },
+            "description": "Not started"
+          },
+          "awayTeam": {
+            "id": 8144003,
+            "logo": "https://highlightly.net/soccer/images/teams/8144003.png",
+            "name": "Nashville SC"
+          },
+          "homeTeam": {
+            "id": 1365788,
+            "logo": "https://highlightly.net/soccer/images/teams/1365788.png",
+            "name": "New York City FC"
+          },
+          "league": {
+            "id": 216087,
+            "logo": "https://highlightly.net/soccer/images/leagues/216087.png",
+            "name": "Major League Soccer",
+            "season": 2026
+          }
+        }
+      ],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [
+        {
+          "index": 0,
+          "matchId": 1268361820,
+          "reason": "match not final"
+        }
+      ],
+      "error": null
+    },
+    {
+      "sourceId": "highlightly-mls-2026-09-03-legacy",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "MLS",
+      "url": "https://soccer.highlightly.net/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=Major+League+Soccer&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:51Z",
+      "finishedAt": "2026-09-04T19:57:51Z",
+      "elapsedMs": 152,
+      "httpStatus": 429,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"3a-Mjej/OZ3W6GKcpcARq9JRvElI0Y\""
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 58,
+      "responseSha256": "90c77ac69371f42a312ae5aea2c6f918c70709f588d20b00424c7f0826a5e4b6",
+      "rawPreview": "{\"message\":\"You have breached your daily request limits.\"}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": "HTTP 429: {\"message\":\"You have breached your daily request limits.\"}"
+    },
+    {
+      "sourceId": "highlightly-mls-2026-09-03-all-sports",
+      "provider": "Highlightly",
+      "kind": "matches",
+      "leagueHint": "MLS",
+      "url": "https://sports.highlightly.net/football/matches?date=2026-09-03&timezone=America%2FNew_York&leagueName=Major+League+Soccer&limit=100",
+      "requestHeaders": {
+        "User-Agent": "SportsBigBoardTickerA3/1.0",
+        "x-rapidapi-key": "[REDACTED]"
+      },
+      "startedAt": "2026-09-04T19:57:51Z",
+      "finishedAt": "2026-09-04T19:57:51Z",
+      "elapsedMs": 198,
+      "httpStatus": 200,
+      "responseHeaders": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "W/\"88-xDhMGiZRIrow8g6DHalPcdSmDLk\"",
+        "x-ratelimit-requests-limit": "7500",
+        "x-ratelimit-requests-remaining": "7150"
+      },
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 136,
+      "responseSha256": "b3fbde8fd13dad74ab9fbbf8a8ef5a3ad41e9b5ed570213c9ea899a878938f5b",
+      "rawPreview": "{\"data\":[],\"plan\":{\"tier\":\"PRO\",\"message\":\"All data available with current plan.\"},\"pagination\":{\"totalCount\":0,\"offset\":0,\"limit\":100}}",
+      "receivedItems": [],
+      "acceptedCandidateIds": [],
+      "rejectedItems": [],
+      "error": null
+    }
+  ],
+  "pipeline": {
+    "rawCandidateCount": 0,
+    "dedupedCandidateCount": 0,
+    "modelCandidateCount": 0,
+    "candidateHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "previousCandidateHash": null,
+    "candidateSetChanged": true,
+    "dedupeActions": [],
+    "normalizedCandidates": [],
+    "modelCandidates": [],
+    "finalDrops": []
+  },
+  "openai": {
+    "called": false,
+    "skipReason": null,
+    "candidateCount": 0,
+    "startedAt": null,
+    "finishedAt": null,
+    "requestPayload": null,
+    "httpStatus": null,
+    "responseId": null,
+    "responseMeta": null,
+    "usage": null,
+    "rawOutput": null,
+    "error": null
+  },
+  "output": {
+    "tickerChanged": false,
+    "tickerPreserved": true,
+    "writtenFiles": [],
+    "leagueItemCounts": {},
+    "specialEventCount": 0,
+    "semanticHash": null
+  },
+  "failures": [
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:espn-top",
+      "message": "no element found: line 1, column 0",
+      "provider": "ESPN"
+    },
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:espn-mlb",
+      "message": "no element found: line 1, column 0",
+      "provider": "ESPN"
+    },
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:espn-nfl",
+      "message": "no element found: line 1, column 0",
+      "provider": "ESPN"
+    },
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:espn-nba",
+      "message": "no element found: line 1, column 0",
+      "provider": "ESPN"
+    },
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:espn-nhl",
+      "message": "no element found: line 1, column 0",
+      "provider": "ESPN"
+    },
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:espn-ncaaf",
+      "message": "no element found: line 1, column 0",
+      "provider": "ESPN"
+    },
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:espn-soccer",
+      "message": "no element found: line 1, column 0",
+      "provider": "ESPN"
+    },
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:espn-motorsports",
+      "message": "no element found: line 1, column 0",
+      "provider": "ESPN"
+    },
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:espn-tennis",
+      "message": "no element found: line 1, column 0",
+      "provider": "ESPN"
+    },
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:espn-golf",
+      "message": "no element found: line 1, column 0",
+      "provider": "ESPN"
+    },
+    {
+      "at": "2026-09-04T19:57:43Z",
+      "stage": "source:official-nba",
+      "message": "HTTP Error 403: Forbidden",
+      "provider": "OfficialLeague"
+    },
+    {
+      "at": "2026-09-04T19:57:45Z",
+      "stage": "source:official-ncaa",
+      "message": "HTTP Error 404: Not Found",
+      "provider": "OfficialLeague"
+    },
+    {
+      "at": "2026-09-04T19:57:46Z",
+      "stage": "source:highlightly-mlb-2026-09-04",
+      "message": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "provider": "Highlightly",
+      "league": "MLB"
+    },
+    {
+      "at": "2026-09-04T19:57:47Z",
+      "stage": "source:highlightly-mlb-2026-09-03",
+      "message": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "provider": "Highlightly",
+      "league": "MLB"
+    },
+    {
+      "at": "2026-09-04T19:57:47Z",
+      "stage": "source:highlightly-nfl-2026-09-04",
+      "message": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "provider": "Highlightly",
+      "league": "NFL"
+    },
+    {
+      "at": "2026-09-04T19:57:47Z",
+      "stage": "source:highlightly-nfl-2026-09-03",
+      "message": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "provider": "Highlightly",
+      "league": "NFL"
+    },
+    {
+      "at": "2026-09-04T19:57:48Z",
+      "stage": "source:highlightly-ncaaf-2026-09-04",
+      "message": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "provider": "Highlightly",
+      "league": "NCAAF"
+    },
+    {
+      "at": "2026-09-04T19:57:48Z",
+      "stage": "source:highlightly-ncaaf-2026-09-03",
+      "message": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "provider": "Highlightly",
+      "league": "NCAAF"
+    },
+    {
+      "at": "2026-09-04T19:57:49Z",
+      "stage": "source:highlightly-nba-2026-09-04",
+      "message": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "provider": "Highlightly",
+      "league": "NBA"
+    },
+    {
+      "at": "2026-09-04T19:57:49Z",
+      "stage": "source:highlightly-nba-2026-09-03",
+      "message": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "provider": "Highlightly",
+      "league": "NBA"
+    },
+    {
+      "at": "2026-09-04T19:57:49Z",
+      "stage": "source:highlightly-nhl-2026-09-04",
+      "message": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "provider": "Highlightly",
+      "league": "NHL"
+    },
+    {
+      "at": "2026-09-04T19:57:50Z",
+      "stage": "source:highlightly-nhl-2026-09-03",
+      "message": "HTTP 400: {\"message\":\"property leagueName should not exist\",\"statusCode\":400}",
+      "provider": "Highlightly",
+      "league": "NHL"
+    },
+    {
+      "at": "2026-09-04T19:57:51Z",
+      "stage": "pipeline",
+      "message": "source-health gate failed: only 0 ESPN feeds succeeded and only 0 candidates survived"
+    }
+  ]
 }
