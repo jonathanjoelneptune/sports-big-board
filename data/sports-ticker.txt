@@ -1,269 +1,451 @@
 SPORTS BIG BOARD — SPORTS TICKER SIDECAR
-Updated: 2026-09-04T17:01:11Z
+Updated: 2026-09-04T17:21:20Z
 Model: gpt-5.6-luna
 
 ========================================================================
 MLB
 ========================================================================
 
- 1. [STANDINGS] Rays lead AL with 83-57 record (priority 88)
-    Tampa Bay owns the American League’s best record entering Friday, September 4, six games ahead of the next division leader.
-    Event date: 2026-09-04 | Status: active
-    Entities: Tampa Bay Rays, American League
-    Source: https://www.mlb.com/standings/wild-card?lctg=4001555605
-
- 2. [STANDINGS] Dodgers remain atop NL (priority 84)
-    Los Angeles leads the National League at 48-27, with Atlanta one game back and Milwaukee 1.5 games behind.
-    Event date: 2026-09-04 | Status: active
-    Entities: Los Angeles Dodgers, Atlanta Braves, Milwaukee Brewers
-    Source: https://www.mlb.com/standings/mlb?date=2026-06-18
-
- 3. [STREAK] Yankees bring an 8-2 run into Friday (priority 72)
-    New York is 8-2 over its last 10 games and holds the top American League wild-card position at 80-60.
-    Event date: 2026-09-04 | Status: active
-    Entities: New York Yankees
-    Source: https://www.mlb.com/standings/wild-card?lctg=4001555605
-
- 4. [RETURN] Rutschman homers twice in Baltimore return (priority 70)
-    Adley Rutschman went deep twice in his return to Baltimore on Thursday.
+ 1. [STANDINGS] Brewers lead MLB at 87-54 (priority 95)
+    Milwaukee owns baseball’s best record through September 3, sitting 3.5 games ahead of Atlanta and Los Angeles in the overall standings.
     Event date: 2026-09-03 | Status: active
-    Entities: Adley Rutschman, Baltimore Orioles
-    Source: https://www.mlb.com/video/real-fast-thursday-s-best-in-60-seconds-x4990
+    Entities: Milwaukee Brewers, Atlanta Braves, Los Angeles Dodgers
+    Source: https://www.mlb.com/standings/mlb?advancedSplits=true
 
- 5. [MILESTONE] Walker Jenkins hits first MLB homer (priority 65)
-    The Twins’ top prospect connected for his first major-league home run in his fourth game.
-    Event date: 2026-09-01 | Status: active
-    Entities: Walker Jenkins, Minnesota Twins
-    Source: https://www.mlb.com/news/walker-jenkins-hits-first-major-league-home-run?t=mlb-pipeline-coverage
+ 2. [STREAK] Braves surge into September (priority 84)
+    Atlanta has won eight of its last 10 games and remains tied with the Dodgers for the National League’s second-best record.
+    Event date: 2026-09-03 | Status: active
+    Entities: Atlanta Braves
+    Source: https://www.mlb.com/standings/mlb?advancedSplits=true
+
+ 3. [SLUMP] Dodgers trending unevenly (priority 80)
+    Los Angeles is 4-6 over its last 10 games despite an 83-57 record and a plus-147 run differential.
+    Event date: 2026-09-03 | Status: active
+    Entities: Los Angeles Dodgers
+    Source: https://www.mlb.com/standings/mlb?advancedSplits=true
+
+ 4. [STANDINGS] Yankees hold AL East edge (priority 82)
+    New York is 80-60 and leads Tampa Bay by 3.5 games in the American League East race.
+    Event date: 2026-09-03 | Status: active
+    Entities: New York Yankees, Tampa Bay Rays
+    Source: https://www.mlb.com/standings/mlb?advancedSplits=true
+
+ 5. [PLAYOFF] Wild-card race tightens (priority 86)
+    The Yankees sit 10 games above the wild-card cutoff, while several American League contenders remain within striking distance during the final month.
+    Event date: 2026-09-03 | Status: active
+    Entities: New York Yankees, Tampa Bay Rays
+    Source: https://www.mlb.com/standings/mlb?advancedSplits=true
+
+ 6. [NEXT] Braves visit Phillies (priority 76)
+    Atlanta begins a divisional series at Philadelphia on September 4 with the Braves still chasing Milwaukee for the NL’s top seed.
+    Event date: 2026-09-04 | Status: next
+    Entities: Atlanta Braves, Philadelphia Phillies
+    Source: https://www.mlb.com/standings/mlb?advancedSplits=true
+
+ 7. [NEXT] Dodgers host Nationals (priority 74)
+    Los Angeles opens a home series against Washington on September 4 while trying to improve on a 4-6 stretch.
+    Event date: 2026-09-04 | Status: next
+    Entities: Los Angeles Dodgers, Washington Nationals
+    Source: https://www.mlb.com/standings/mlb?advancedSplits=true
+
+ 8. [NEXT] Yankees head to San Diego (priority 73)
+    New York starts a road series against the Padres on September 4 with its AL East lead at 6.5 games over third-place Toronto.
+    Event date: 2026-09-04 | Status: next
+    Entities: New York Yankees, San Diego Padres
+    Source: https://www.mlb.com/standings/mlb?advancedSplits=true
+
+ 9. [NEXT] Brewers travel to Cincinnati (priority 72)
+    MLB’s best team begins a September 4 series at Cincinnati with an 87-54 record and a plus-171 run differential.
+    Event date: 2026-09-04 | Status: next
+    Entities: Milwaukee Brewers, Cincinnati Reds
+    Source: https://www.mlb.com/standings/mlb?advancedSplits=true
+
+10. [OTHER] Ohtani rests after four-strikeout game (priority 70)
+    Shohei Ohtani was out of the Dodgers’ lineup the day after going 0-for-4 with four strikeouts.
+    Event date: 2026-09-03 | Status: active
+    Entities: Shohei Ohtani, Los Angeles Dodgers
+    Source: https://www.mlb.com/news
 
 ========================================================================
 NFL
 ========================================================================
 
- 1. [SCHEDULE] NFL season opens September 9 (priority 91)
-    Defending champion Seattle hosts New England in a rare Wednesday kickoff and Super Bowl rematch.
-    Event date: 2026-09-09 | Status: next
-    Entities: Seattle Seahawks, New England Patriots
-    Source: https://www.nfl.com/news/2026-nfl-schedule-release-complete-slate-of-week-1-games
-
- 2. [SCHEDULE] 49ers-Rams open NFL play in Australia (priority 82)
-    San Francisco and Los Angeles meet in Melbourne on Thursday, September 10, the league’s first international game of the season.
-    Event date: 2026-09-10 | Status: next
-    Entities: San Francisco 49ers, Los Angeles Rams
-    Source: https://www.nfl.com/nfl-schedule-release/
-
- 3. [SCHEDULE] Week 1 includes Broncos at Chiefs (priority 78)
-    Denver visits Kansas City on Monday night to close the opening week slate.
-    Event date: 2026-09-14 | Status: next
-    Entities: Denver Broncos, Kansas City Chiefs
-    Source: https://www.nfl.com/schedules/2026/by-week/reg-1
-
- 4. [SCHEDULE] Cowboys-Giants headline Sunday night (priority 74)
-    Dallas travels to New York for the first Sunday night game of the 2026 regular season.
-    Event date: 2026-09-13 | Status: next
-    Entities: Dallas Cowboys, New York Giants
-    Source: https://www.nfl.com/schedules/2026/by-week/reg-1
-
- 5. [SCHEDULE] Final preseason-camp day arrives (priority 68)
-    September 6 is the final day of preseason training camp for all clubs under the 2026 league calendar.
+ 1. [SCHEDULE] NFL season approaches (priority 92)
+    The 2026 regular season is set to begin after roster reductions and final personnel decisions ahead of opening week.
     Event date: 2026-09-06 | Status: next
     Entities: NFL
     Source: https://www.nfl.com/news/2026-27-national-football-league-important-dates
+
+ 2. [SCHEDULE] 53-man roster deadline passed (priority 84)
+    Clubs have completed the key roster-reduction phase, with injured and reserve-list designations among the major follow-up decisions.
+    Event date: 2026-09-06 | Status: active
+    Entities: NFL
+    Source: https://www.nfl.com/news/2026-27-national-football-league-important-dates
+
+ 3. [INJURY] Stafford cleared without limitations (priority 78)
+    Matthew Stafford reportedly has no limitations ahead of the Rams’ season opener after dealing with elbow tendonitis during training camp.
+    Event date: 2026-09-04 | Status: active
+    Entities: Matthew Stafford, Los Angeles Rams
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-sunday-sept-4
+
+ 4. [RETURN] Poyer trending toward opener (priority 76)
+    Jordan Poyer returned to practice without a non-contact jersey and said he is ready to play after an elbow injury.
+    Event date: 2026-09-04 | Status: watch
+    Entities: Jordan Poyer, Buffalo Bills
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-sunday-sept-4
+
+ 5. [CONTRACT] Surtain signs major extension (priority 82)
+    Patrick Surtain II agreed to a four-year, $96 million extension with Denver, one of the NFL’s largest recent cornerback contracts.
+    Event date: 2026-09-04 | Status: active
+    Entities: Patrick Surtain II, Denver Broncos
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-4
+
+ 6. [INJURY] Brown ruled out for opener (priority 74)
+    Marquise Brown is out for Kansas City’s opening-week game because of a shoulder injury.
+    Event date: 2026-09-04 | Status: active
+    Entities: Marquise Brown, Kansas City Chiefs
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-4
+
+ 7. [CONTRACT] Chase returns to practice (priority 73)
+    Ja’Marr Chase participated on a limited basis after missing much of training camp amid a contract dispute.
+    Event date: 2026-09-04 | Status: watch
+    Entities: Ja'Marr Chase, Cincinnati Bengals
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-4
+
+ 8. [RETURN] Hamlin set for start (priority 75)
+    Damar Hamlin is expected to start Buffalo’s opener, marking his first start since his 2023 cardiac arrest.
+    Event date: 2026-09-04 | Status: next
+    Entities: Damar Hamlin, Buffalo Bills
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-4
+
+ 9. [INJURY] Bowers limited in practice (priority 70)
+    Las Vegas tight end Brock Bowers was limited with a foot issue ahead of the regular season.
+    Event date: 2026-09-04 | Status: watch
+    Entities: Brock Bowers, Las Vegas Raiders
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-4
+
+10. [CONTRACT] Cosmi receives extension (priority 71)
+    Washington agreed to a four-year contract extension with guard Samuel Cosmi.
+    Event date: 2026-09-04 | Status: active
+    Entities: Samuel Cosmi, Washington Commanders
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-sept-4
 
 ========================================================================
 NBA
 ========================================================================
 
- 1. [CONTRACT] Amen Thompson gets $208M extension (priority 88)
-    Houston and the fourth-year wing agreed to a five-year, $208 million rookie extension.
+ 1. [CONTRACT] Thompson gets $208 million extension (priority 91)
+    Houston agreed to a five-year, $208 million rookie extension with fourth-year wing Amen Thompson.
     Event date: 2026-09-03 | Status: active
     Entities: Amen Thompson, Houston Rockets
     Source: https://www.nba.com/news
 
- 2. [SUSPENSION] NBA penalizes Clippers and Kawhi Leonard (priority 96)
-    The league found salary-cap circumvention violations involving the Clippers and Leonard after an independent investigation.
-    Event date: 2026-09-02 | Status: active
-    Entities: Kawhi Leonard, Los Angeles Clippers, NBA
-    Source: https://cdn-uat.nba.com/news/nba-investigation-findings-la-clippers
-
- 3. [TRADE] Josh Green traded to Utah (priority 76)
-    Minnesota sent Josh Green to the Jazz in a three-player deal involving cash considerations.
-    Event date: 2026-09-02 | Status: active
-    Entities: Josh Green, Minnesota Timberwolves, Utah Jazz
+ 2. [OTHER] NBA announces Clippers findings (priority 90)
+    The league found a pattern of misconduct and multiple significant rules violations in its investigation of the Clippers organization.
+    Event date: 2026-09-04 | Status: active
+    Entities: Los Angeles Clippers, NBA
     Source: https://www.nba.com/news
 
- 4. [AWARD] Knicks enter title defense as reigning champions (priority 74)
-    New York’s 2026 championship shapes the Eastern Conference outlook heading into training camp.
-    Event date: 2026-06-22 | Status: active
-    Entities: New York Knicks, Eastern Conference
+ 3. [TRADE] Jazz acquire Josh Green (priority 78)
+    Utah acquired Josh Green from Minnesota in a three-player transaction involving John Konchar and Cody Williams.
+    Event date: 2026-09-02 | Status: active
+    Entities: Josh Green, Utah Jazz, Minnesota Timberwolves
+    Source: https://www.nba.com/news/2026-offseason-trade-tracker
+
+ 4. [TRADE] Cleveland lands Peyton Watson (priority 76)
+    The Cavaliers acquired Peyton Watson and Cam Whitmore in a five-team deal that also moved Max Strus and Dennis Schroder.
+    Event date: 2026-08-20 | Status: active
+    Entities: Peyton Watson, Cleveland Cavaliers
+    Source: https://www.nba.com/news/2026-offseason-trade-tracker
+
+ 5. [SIGNING] Shamet returns to Knicks (priority 75)
+    Landry Shamet agreed to return to New York on a four-year contract after helping the Knicks win the 2026 championship.
+    Event date: 2026-08-27 | Status: active
+    Entities: Landry Shamet, New York Knicks
     Source: https://www.nba.com/news
 
- 5. [MILESTONE] Raptors set Kyle Lowry jersey retirement (priority 65)
-    Toronto will retire Lowry’s No. 7 jersey during a January 10 ceremony.
+ 6. [AWARD] Knicks enter as defending champions (priority 82)
+    New York’s title-winning roster is the central storyline in the Atlantic Division as the 2026-27 season approaches.
+    Event date: 2026-08-27 | Status: active
+    Entities: New York Knicks
+    Source: https://www.nba.com/news
+
+ 7. [SCHEDULE] NBA TV schedule tips October 24 (priority 73)
+    NBA TV will televise 60 regular-season games in 2026-27, beginning October 24.
+    Event date: 2026-10-24 | Status: next
+    Entities: NBA
+    Source: https://www.nba.com/news
+
+ 8. [MILESTONE] Raptors to retire Lowry’s No. 7 (priority 72)
+    Toronto will retire Kyle Lowry’s jersey during a January 10 ceremony as part of a three-game celebration.
     Event date: 2027-01-10 | Status: next
     Entities: Kyle Lowry, Toronto Raptors
+    Source: https://www.nba.com/news
+
+ 9. [OTHER] FIBA qualifiers feature NBA talent (priority 69)
+    Rui Hachimura, VJ Edgecombe and other NBA players are participating in 2027 FIBA World Cup qualifying action.
+    Event date: 2026-09-04 | Status: active
+    Entities: Rui Hachimura, VJ Edgecombe
+    Source: https://www.nba.com/news
+
+10. [OTHER] Comeback candidates draw focus (priority 68)
+    NBA.com is tracking players expected to return after missing time during the 2025-26 season, making health a major preseason storyline.
+    Event date: 2026-08-24 | Status: watch
+    Entities: NBA
     Source: https://www.nba.com/news
 
 ========================================================================
 NHL
 ========================================================================
 
- 1. [COACHING] Blues name Robert Thomas captain (priority 79)
-    St. Louis appointed Robert Thomas captain, replacing Brayden Schenn.
+ 1. [TRADE] Devils acquire Evangelista (priority 94)
+    New Jersey acquired forward Luke Evangelista from Nashville for a first-round pick and a second-round pick in the 2028 draft.
+    Event date: 2026-09-01 | Status: active
+    Entities: Luke Evangelista, New Jersey Devils, Nashville Predators
+    Source: https://www.nhl.com/news/2026-27-nhl-trades
+
+ 2. [TRADE] Hellebuyck requests trade (priority 96)
+    Three-time Vezina Trophy winner Connor Hellebuyck publicly requested a trade from Winnipeg with training camp approaching.
+    Event date: 2026-08-27 | Status: watch
+    Entities: Connor Hellebuyck, Winnipeg Jets
+    Source: https://www.nhl.com/news/connor-hellebuyck-winnipeg-jets-trade-request
+
+ 3. [CONTRACT] Makar signs record extension (priority 93)
+    Colorado signed Cale Makar to an eight-year, $163.2 million contract, described by the Avalanche as necessary to retain its franchise defenseman.
+    Event date: 2026-08-31 | Status: active
+    Entities: Cale Makar, Colorado Avalanche
+    Source: https://www.nhl.com/news/
+
+ 4. [COACHING] Thomas named Blues captain (priority 79)
+    Robert Thomas replaces Brayden Schenn as St. Louis captain ahead of the 2026-27 season.
     Event date: 2026-09-02 | Status: active
     Entities: Robert Thomas, St. Louis Blues
-    Source: https://www.nhl.com/news/
+    Source: https://www.nhl.com/news/topic/offseason/
 
- 2. [TRADE] Devils acquire Evangelista (priority 76)
-    New Jersey acquired Luke Evangelista from Nashville for two draft picks.
-    Event date: 2026-09-02 | Status: active
-    Entities: Luke Evangelista, New Jersey Devils, Nashville Predators
-    Source: https://www.nhl.com/news/
-
- 3. [SIGNING] Tolvanen signs with Rangers (priority 69)
+ 5. [SIGNING] Tolvanen signs with Rangers (priority 74)
     Eeli Tolvanen signed a one-year, $1.5 million contract with New York.
     Event date: 2026-09-02 | Status: active
     Entities: Eeli Tolvanen, New York Rangers
-    Source: https://www.nhl.com/news/
+    Source: https://www.nhl.com/news/topic/offseason/
 
- 4. [RETURN] Seguin skating after knee surgery (priority 72)
-    Dallas center Tyler Seguin has returned to the ice and could be ready for training camp.
+ 6. [RETURN] Seguin nearing camp return (priority 76)
+    Tyler Seguin has returned to the ice after knee surgery and could be ready for Dallas training camp.
     Event date: 2026-09-01 | Status: watch
     Entities: Tyler Seguin, Dallas Stars
+    Source: https://www.nhl.com/news/topic/offseason/
+
+ 7. [RETURN] Varlamov ready for camp (priority 72)
+    Semyon Varlamov is healthy and prepared to report to Islanders training camp.
+    Event date: 2026-09-02 | Status: active
+    Entities: Semyon Varlamov, New York Islanders
+    Source: https://www.nhl.com/news/topic/offseason/
+
+ 8. [INJURY] Oilers face camp absences (priority 77)
+    Frederik Andersen, Matt Savoie, Mattias Janmark and Alec Regula are expected to miss Edmonton’s training camp because of injuries or recovery from procedures.
+    Event date: 2026-08-26 | Status: watch
+    Entities: Frederik Andersen, Matt Savoie, Edmonton Oilers
+    Source: https://www.nhl.com/news/frederik-andersen-mattias-janmark-expected-to-miss-training-camp-for-edmonton-oilers
+
+ 9. [CONTRACT] Hughes extension remains unresolved (priority 71)
+    Minnesota general manager Bill Guerin said he is confident the Wild will re-sign Quinn Hughes.
+    Event date: 2026-08-31 | Status: watch
+    Entities: Quinn Hughes, Minnesota Wild
     Source: https://www.nhl.com/news/
 
- 5. [SCHEDULE] NHL on Prime slate begins September 30 (priority 67)
-    The league’s 27-game Wednesday night package opens with Islanders-Maple Leafs.
-    Event date: 2026-09-30 | Status: next
-    Entities: New York Islanders, Toronto Maple Leafs, Prime Video
+10. [SCHEDULE] NHL on Prime slate announced (priority 70)
+    Prime Video announced a 27-game Wednesday night package in Canada, beginning with Islanders-Maple Leafs on September 30.
+    Event date: 2026-09-03 | Status: next
+    Entities: NHL, Amazon Prime Video
     Source: https://www.nhl.com/news/
 
 ========================================================================
 EPL
 ========================================================================
 
- 1. [NEXT] Liverpool visit Ipswich on Friday (priority 82)
-    The third matchweek begins with Ipswich hosting Liverpool at 20:00 BST.
+ 1. [SCHEDULE] Arsenal open as champions (priority 91)
+    Arsenal began the 2026-27 Premier League campaign at home against newly promoted Coventry City on August 21.
+    Event date: 2026-08-21 | Status: active
+    Entities: Arsenal, Coventry City
+    Source: https://www.premierleague.com/en/news/4675508/premier-league-fixture-schedulereleased-for-season-202627
+
+ 2. [SCHEDULE] Liverpool visit Ipswich (priority 84)
+    Liverpool’s next listed league fixture is away to Ipswich Town on September 4.
     Event date: 2026-09-04 | Status: next
-    Entities: Ipswich Town, Liverpool
-    Source: https://www.premierleague.com/en/news/4675097
+    Entities: Liverpool, Ipswich Town
+    Source: https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-202627-premier-league-season/
 
- 2. [STREAK] Chelsea seek a perfect start (priority 78)
-    Chelsea enter Matchweek 3 with two wins under new manager Xabi Alonso and renewed title expectations.
-    Event date: 2026-09-04 | Status: active
-    Entities: Chelsea, Xabi Alonso
-    Source: https://www.premierleague.com/en/news/4706310
+ 3. [SCHEDULE] Newcastle host Bournemouth (priority 83)
+    Newcastle United face AFC Bournemouth on September 5 in the next scheduled league round.
+    Event date: 2026-09-05 | Status: next
+    Entities: Newcastle United, AFC Bournemouth
+    Source: https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-202627-premier-league-season/
 
- 3. [NEXT] Arsenal-Chelsea set for Sunday (priority 76)
-    The London rivals meet in a prominent Matchweek 3 fixture on September 6.
+ 4. [SCHEDULE] Arsenal-Chelsea derby set (priority 82)
+    Arsenal host Chelsea on September 6 in one of the first major London fixtures of the new season.
     Event date: 2026-09-06 | Status: next
     Entities: Arsenal, Chelsea
-    Source: https://www.premierleague.com/en/news/4675097
+    Source: https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-202627-premier-league-season/
 
- 4. [SCHEDULE] Three fixtures rescheduled (priority 70)
-    Leeds-Crystal Palace, Liverpool-Brighton and Aston Villa-Fulham were moved because of UEFA competition commitments.
+ 5. [SCHEDULE] Manchester derby scheduled (priority 80)
+    Manchester United host Manchester City on September 13 in the first listed derby of the campaign.
+    Event date: 2026-09-13 | Status: next
+    Entities: Manchester United, Manchester City
+    Source: https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-202627-premier-league-season/
+
+ 6. [SCHEDULE] First Merseyside derby in November (priority 79)
+    Liverpool host Everton on November 28 in a key fixture from the first half of the schedule.
+    Event date: 2026-11-28 | Status: next
+    Entities: Liverpool, Everton
+    Source: https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-202627-premier-league-season/
+
+ 7. [SCHEDULE] Arsenal-Man City set for November (priority 78)
+    Arsenal visit Manchester City on November 28 in a major title-contender matchup.
+    Event date: 2026-11-28 | Status: next
+    Entities: Arsenal, Manchester City
+    Source: https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-202627-premier-league-season/
+
+ 8. [OTHER] Transfer window closed September 1 (priority 76)
+    The Premier League summer transfer window closed at 23:00 BST on September 1, after most clubs had played two league matches.
     Event date: 2026-09-01 | Status: active
-    Entities: Leeds United, Crystal Palace, Liverpool, Brighton & Hove Albion, Aston Villa, Fulham
-    Source: https://www.premierleague.com/en/news/4705445/further-fixture-amendments-announced-in-september-and-october-2026
+    Entities: Premier League
+    Source: https://www.premierleague.com/en/news/4671514/summer-2026-key-football-dates-for-your-calendar/
 
- 5. [SCHEDULE] 2026-27 season runs through May 30 (priority 68)
-    The campaign began August 21 and is scheduled to conclude with a simultaneous final match round on May 30, 2027.
+ 9. [SCHEDULE] Champions League phase begins (priority 73)
+    The 2026-27 UEFA Champions League league phase is scheduled to begin September 8, involving Arsenal, Manchester City, Manchester United, Aston Villa and Liverpool.
+    Event date: 2026-09-08 | Status: next
+    Entities: Arsenal, Manchester City, Manchester United, Aston Villa, Liverpool
+    Source: https://www.premierleague.com/en/news/4671514/summer-2026-key-football-dates-for-your-calendar/
+
+10. [SCHEDULE] Season ends May 30 (priority 72)
+    The Premier League’s final match round is scheduled for May 30, 2027, with all matches kicking off simultaneously.
     Event date: 2027-05-30 | Status: next
     Entities: Premier League
-    Source: https://www.premierleague.com/en/news/4468487
+    Source: https://www.premierleague.com/en/news/4674573/
 
 ========================================================================
 MLS
 ========================================================================
 
- 1. [MILESTONE] MLS reaches 25,000 regular-season goals (priority 82)
-    Hany Mukhtar scored the league’s 25,000th regular-season goal for Nashville against Columbus.
+ 1. [STAT_LEADER] Messi leads with 28 goal contributions (priority 93)
+    Lionel Messi has 18 goals and 10 assists, leading MLS in goal contributions while pursuing a third straight MVP award.
+    Event date: 2026-09-04 | Status: active
+    Entities: Lionel Messi, Inter Miami CF
+    Source: https://www.mlssoccer.com/news/lionel-messi-leads-inter-miami-into-atlanta-united-duel
+
+ 2. [STREAK] Atlanta climbs back into race (priority 82)
+    Atlanta United has won three of its last four and moved within four points of ninth-place Orlando City in the Eastern Conference.
+    Event date: 2026-09-04 | Status: active
+    Entities: Atlanta United, Orlando City
+    Source: https://www.mlssoccer.com/news/lionel-messi-leads-inter-miami-into-atlanta-united-duel
+
+ 3. [MILESTONE] Mukhtar scores 25,000th MLS goal (priority 86)
+    Hany Mukhtar scored the 25,000th regular-season goal in MLS history during Nashville’s 1-0 win at Columbus.
     Event date: 2026-03-15 | Status: active
-    Entities: Hany Mukhtar, Nashville SC, Columbus Crew
+    Entities: Hany Mukhtar, Nashville SC
     Source: https://www.mlssoccer.com/news/matchday-4-every-result-key-moments-full-highlights-mls-2026
 
- 2. [STREAK] San Diego drops first points (priority 77)
-    San Diego drew 3-3 with Dallas after opening the season with a perfect run.
+ 4. [RESULT] Vancouver routs Minnesota 6-0 (priority 84)
+    Vancouver built a four-goal halftime lead and defeated Minnesota 6-0, with Brian White scoring twice.
     Event date: 2026-03-15 | Status: active
-    Entities: San Diego FC, FC Dallas
+    Entities: Vancouver Whitecaps FC, Minnesota United FC
     Source: https://www.mlssoccer.com/news/matchday-4-every-result-key-moments-full-highlights-mls-2026
 
- 3. [RECORD] Houston scores late winner (priority 75)
-    Mateusz Bogusz’s 105th-minute goal against Portland became the second-latest goal in MLS regular-season history.
+ 5. [RESULT] Revolution crush Cincinnati (priority 83)
+    New England matched its largest MLS margin of victory with a 6-1 win over FC Cincinnati.
     Event date: 2026-03-15 | Status: active
-    Entities: Mateusz Bogusz, Houston Dynamo FC, Portland Timbers
+    Entities: New England Revolution, FC Cincinnati
     Source: https://www.mlssoccer.com/news/matchday-4-every-result-key-moments-full-highlights-mls-2026
 
- 4. [STREAK] Vancouver routs Minnesota 6-0 (priority 73)
-    Brian White scored twice as Vancouver produced one of the season’s largest wins and boosted several USMNT hopefuls.
+ 6. [RESULT] Musa scores second MLS hat trick (priority 81)
+    FC Dallas striker Petar Musa scored three goals in a 3-3 draw with San Diego FC and moved into the Golden Boot lead with five goals.
     Event date: 2026-03-15 | Status: active
-    Entities: Vancouver Whitecaps FC, Minnesota United FC, Brian White
+    Entities: Petar Musa, FC Dallas, San Diego FC
     Source: https://www.mlssoccer.com/news/matchday-4-every-result-key-moments-full-highlights-mls-2026
 
- 5. [RETURN] James Rodríguez debuts for Minnesota (priority 66)
-    Rodríguez made his long-awaited Minnesota debut as a substitute against Vancouver.
+ 7. [STREAK] Seattle wins three straight (priority 79)
+    Seattle defeated San Jose 1-0 for its third consecutive victory across all competitions.
     Event date: 2026-03-15 | Status: active
-    Entities: James Rodríguez, Minnesota United FC
+    Entities: Seattle Sounders FC, San Jose Earthquakes
     Source: https://www.mlssoccer.com/news/matchday-4-every-result-key-moments-full-highlights-mls-2026
+
+ 8. [INJURY] NYCFC lists seven unavailable (priority 72)
+    New York City FC’s September 4 status report listed Drew Baiera, Arnau Farnós, Talles Magno, Maxi Moralez, Keaton Parks, Kai Trewin and Hannes Wolf out.
+    Event date: 2026-09-04 | Status: active
+    Entities: New York City FC
+    Source: https://www.mlssoccer.com/news/mls-player-status-report-matchday-24-friday-september-4-saturday-september-5
+
+ 9. [INJURY] Nashville without Madrigal (priority 70)
+    Warren Madrigal is listed out with a lower-body injury for Nashville’s September 4 match.
+    Event date: 2026-09-04 | Status: active
+    Entities: Warren Madrigal, Nashville SC
+    Source: https://www.mlssoccer.com/news/mls-player-status-report-matchday-24-friday-september-4-saturday-september-5
+
+10. [SCHEDULE] Messi and Miami face Atlanta (priority 77)
+    Inter Miami hosts Atlanta United in a high-value Eastern Conference matchup with Messi leading the league in goal contributions.
+    Event date: 2026-09-04 | Status: next
+    Entities: Lionel Messi, Inter Miami CF, Atlanta United
+    Source: https://www.mlssoccer.com/news/lionel-messi-leads-inter-miami-into-atlanta-united-duel
 
 ========================================================================
 NCAAF
 ========================================================================
 
- 1. [UPSET] Colorado stuns Georgia Tech (priority 86)
-    Colorado defeated Georgia Tech 14-13 in one of Thursday’s most consequential early-season results.
+ 1. [RESULT] Colorado falls to Georgia Tech (priority 90)
+    Georgia Tech defeated Colorado 13-14 on September 3 in one of the opening week’s notable results.
     Event date: 2026-09-03 | Status: active
-    Entities: Colorado Buffaloes, Georgia Tech Yellow Jackets
+    Entities: Colorado, Georgia Tech
     Source: https://www.ncaa.com/scoreboard/football/fbs
 
- 2. [UPSET] UMass defeats Rutgers (priority 80)
-    UMass opened the season with a 37-21 win over Rutgers.
+ 2. [RESULT] Missouri beats Arkansas-Pine Bluff (priority 82)
+    Missouri defeated Arkansas-Pine Bluff 54-14 in Thursday action.
     Event date: 2026-09-03 | Status: active
-    Entities: UMass Minutemen, Rutgers Scarlet Knights
+    Entities: Missouri, Arkansas-Pine Bluff
     Source: https://www.ncaa.com/scoreboard/football/fbs
 
- 3. [RESULT] Illinois beats UAB 42-23 (priority 74)
-    Illinois handled UAB by 19 points in Thursday’s FBS action.
+ 3. [RESULT] Minnesota rolls past Eastern Illinois (priority 80)
+    Minnesota won 59-7 over Eastern Illinois in its opening-week matchup.
     Event date: 2026-09-03 | Status: active
-    Entities: Illinois Fighting Illini, UAB Blazers
+    Entities: Minnesota, Eastern Illinois
     Source: https://www.ncaa.com/scoreboard/football/fbs
 
- 4. [RESULT] Minnesota rolls past Eastern Illinois (priority 71)
-    Minnesota won 59-7 in a dominant opening-week performance.
+ 4. [RESULT] Illinois beats UAB (priority 79)
+    Illinois defeated UAB 42-23 in Thursday’s FBS slate.
     Event date: 2026-09-03 | Status: active
-    Entities: Minnesota Golden Gophers, Eastern Illinois Panthers
+    Entities: Illinois, UAB
     Source: https://www.ncaa.com/scoreboard/football/fbs
 
- 5. [NEXT] Wisconsin-Notre Dame tops Saturday (priority 83)
-    No. 17 Notre Dame hosts Wisconsin in one of the weekend’s marquee games.
+ 5. [RESULT] Utah dominates Idaho (priority 78)
+    Utah opened the week with a 66-14 victory over Idaho.
+    Event date: 2026-09-03 | Status: active
+    Entities: Utah, Idaho
+    Source: https://www.ncaa.com/scoreboard/football/fbs
+
+ 6. [RESULT] Rutgers upset by UMass (priority 76)
+    UMass defeated Rutgers 37-21 in Thursday’s opening-week action.
+    Event date: 2026-09-03 | Status: active
+    Entities: UMass, Rutgers
+    Source: https://www.ncaa.com/scoreboard/football/fbs
+
+ 7. [UPSET] NDSU wins FBS debut (priority 88)
+    North Dakota State defeated Jacksonville State 33-7 in its first game as an FBS program.
+    Event date: 2026-08-29 | Status: active
+    Entities: North Dakota State, Jacksonville State
+    Source: https://www.ncaa.com/live-updates/football/fbs/college-football-week-0-recaps-highlights-scores-and-more
+
+ 8. [RESULT] USC opens with win (priority 83)
+    No. 14 USC defeated San Jose State 42-26 in the first Week 0 game involving a ranked team.
+    Event date: 2026-08-29 | Status: active
+    Entities: USC, San Jose State
+    Source: https://www.ncaa.com/live-updates/football/fbs/college-football-week-0-recaps-highlights-scores-and-more
+
+ 9. [NEXT] LSU hosts Clemson (priority 92)
+    No. 11 LSU faces Clemson on September 5 in one of Week 1’s premier ranked matchups.
     Event date: 2026-09-05 | Status: next
-    Entities: Wisconsin Badgers, Notre Dame Fighting Irish
+    Entities: LSU, Clemson
     Source: https://www.ncaa.com/scoreboard/football/fbs
 
- 6. [NEXT] Clemson visits LSU (priority 81)
-    Clemson and LSU meet Saturday night in a major early-season test for both programs.
+10. [NEXT] Oregon hosts Boise State (priority 94)
+    No. 2 Oregon meets Boise State on September 5 in a major early-season test for the Ducks.
     Event date: 2026-09-05 | Status: next
-    Entities: Clemson Tigers, LSU Tigers
-    Source: https://www.ncaa.com/news/football/article/2026-06-01/college-football-schedule-when-does-2026-college-football-season-start
-
-########################################################################
-SPECIAL EVENTS
-########################################################################
-
-2026 US Open (Tennis)
-------------------------------------------------------------------------
-
- 1. [UPSET] Khachanov eliminates Auger-Aliassime (priority 89)
-    Karen Khachanov upset third seed Felix Auger-Aliassime in four sets on Thursday.
-    Event date: 2026-09-03 | Status: active
-    Source: https://www.usopen.org/amp/en_US/news/articles/2026-09-03/who_won_on_thursday_at_the_2026_us_open_results_and_highlights.html
-
- 2. [UPSET] Van de Zandschulp knocks out De Minaur (priority 84)
-    Botic van de Zandschulp eliminated sixth seed Alex de Minaur at the US Open.
-    Event date: 2026-09-03 | Status: active
-    Source: https://www.usopen.org/amp/en_US/news/articles/2026-09-03/who_won_on_thursday_at_the_2026_us_open_results_and_highlights.html
-
- 3. [RESULT] Osaka and Fritz advance (priority 76)
-    Naomi Osaka and Taylor Fritz were among Thursday’s winners, while Coco Gauff, Iga Swiatek and Alexander Zverev also advanced.
-    Event date: 2026-09-03 | Status: active
-    Source: https://www.usopen.org/amp/en_US/news/articles/2026-09-03/who_won_on_thursday_at_the_2026_us_open_results_and_highlights.html
+    Entities: Oregon, Boise State
+    Source: https://www.ncaa.com/scoreboard/football/fbs
