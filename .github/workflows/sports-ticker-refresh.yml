@@ -14,7 +14,7 @@ jobs:
   refresh:
     name: Refresh cached Sports Ticker data
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 35
 
     steps:
       - name: Checkout repository
@@ -66,17 +66,15 @@ jobs:
             esac
           done <<< "$CHANGED"
 
-          git commit -m "Sports Ticker: automated refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git commit -m "Sports Ticker: A2 refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
 
           for attempt in 1 2 3; do
             git fetch origin main
             git rebase origin/main
-
             if git push origin HEAD:main; then
               echo "Sports Ticker cache pushed successfully."
               exit 0
             fi
-
             echo "Push race on attempt $attempt; retrying."
             sleep $((attempt * 3))
           done
