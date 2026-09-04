@@ -225,7 +225,14 @@ You are NOT a researcher. You have NO browsing task. Use ONLY the candidate pack
 provided by Python. Never add a fact that is not supported by one or more cited
 candidateIds.
 
-Goal: create a concise rolling "what happened in the last 24 hours?" ticker.
+Goal: create a concise rolling "what actually happened or materially changed in
+the last 24 hours?" ticker. This is NOT an article feed.
+
+HARD NEWS TEST
+For every selected item, you must be able to answer:
+"What happened or changed?"
+Do NOT select an item merely because ESPN published analysis, opinion, a feature,
+a prediction, a preview, a quote, a question article, or a discussion topic.
 
 Selection priorities:
 1. BREAKING / major league news
@@ -234,10 +241,37 @@ Selection priorities:
 4. trades / signings / contracts
 5. records / milestones / record chases
 6. rankings / awards / streaks / slumps
-7. discipline / legal / coaching / meaningful roster/depth-chart changes
+7. discipline / legal / actual coaching personnel changes / meaningful roster/depth-chart changes
 8. major upsets
-9. ordinary results
-10. weak previews only when a genuinely new development makes them newsworthy
+9. meaningful results
+10. weak previews only when a genuinely NEW development makes them ticker-worthy
+
+PRIORITY SCALE — ALWAYS USE THE FULL 1-100 SCALE
+Priority is importance, NOT rank number.
+- 95-100: extraordinary / sport-dominating breaking development
+- 88-94: major national story, major playoff/championship consequence, blockbuster transaction
+- 80-87: highly important injury, signing, record, upset, legal/discipline or standings development
+- 70-79: strong league-wide story, meaningful result, notable return/milestone/ranking change
+- 60-69: useful normal ticker item, relevant result or secondary transaction
+- 50-59: lower-priority but still worthwhile update
+- below 50: usually omit unless the league has exceptionally little legitimate news
+Never use 1, 2, 3... as ranking positions. rank is assigned later by Python.
+
+TYPE RULES
+- COACHING means a coaching personnel/status change: hired, fired, resigned,
+  extended, promoted, demoted, or role changed. A coach giving a quote is NOT COACHING.
+- RESULT means a completed game/match result.
+- UPSET means the supplied candidates establish that the winner was meaningfully unexpected/ranked lower.
+- RETURN means a player actually returned/was activated after absence.
+- DEPTH_CHART means a starter/backup/role change, not merely unavailable players.
+- OTHER should be rare.
+
+SEASON STATE
+"active" means regular-season competition is underway.
+"postseason" means playoffs/tournament postseason are underway.
+"preseason" means preseason/exhibition competition is underway.
+"offseason" means none of the above.
+Do not call an offseason league "active" merely because news exists.
 
 Editorial mix rules:
 - Maximum 5 ordinary RESULT items per base league.
@@ -249,9 +283,18 @@ Editorial mix rules:
 Grounding:
 - Every final item must reference candidateIds from the supplied packet.
 - Do not invent URLs, scores, dates, injuries, rankings, records, quotes, or transactions.
-- If multiple candidates describe the same event, merge them into one item and cite all
-  useful candidateIds.
+- If multiple candidates describe the same event, merge them into one item and cite all useful candidateIds.
 - If a candidate is ambiguous, omit it rather than guessing.
+
+FRESHNESS BASIS
+freshnessBasis must be a concrete factual clause describing the new development.
+GOOD: "Chicago activated Kyle Teel from the injured list Friday."
+GOOD: "Sacramento agreed to a one-year deal with Ben Simmons Friday."
+BAD: "hours ago"
+BAD: "today"
+BAD: "recently"
+BAD: "new report"
+Never return a vague time phrase by itself.
 
 Consistency:
 - Do not say shutout/shut out/blanked if the opponent scored.
@@ -413,17 +456,48 @@ def infer_league_hint(default_hint: str, url: str, title: str) -> str:
 
 
 def keyword_type_hint(title: str, summary: str) -> str:
-    text = (title + " " + summary).lower()
+    text = (" " + title + " " + summary + " ").lower()
+
+    # Strong result language. This is intentionally evaluated before OTHER so
+    # tennis/golf/event articles such as "X defeated Y 6-1, 6-4" arrive at the
+    # editor already marked RESULT.
+    result_patterns = [
+        r"\bdefeat(?:s|ed)?\b",
+        r"\bbeat(?:s|en)?\b",
+        r"\bedges?\b",
+        r"\btops?\b",
+        r"\brouts?\b",
+        r"\bshuts?\s+out\b",
+        r"\bblank(?:s|ed)?\b",
+        r"\bpowered past\b",
+        r"\badvances? past\b",
+        r"\bwins? over\b",
+        r"\bwon\b",
+    ]
+    has_score = bool(
+        re.search(r"(?<!\d)\d{1,3}\s*[-–—]\s*\d{1,3}(?!\d)", text)
+        or re.search(r"\b\d{1,2}-\d{1,2},\s*\d{1,2}-\d{1,2}\b", text)
+    )
+    if has_score and any(re.search(pattern, text) for pattern in result_patterns):
+        return "RESULT"
+
     checks = [
         ("INJURY", ["injury", "injured", "out for", "placed on injured", "concussion"]),
-        ("RETURN", ["returns to practice", "activated from", "returns from injury"]),
+        ("RETURN", ["returns to practice", "activated from", "returns from injury", "activated off"]),
         ("TRADE", [" traded ", "trade for", "acquire", "acquired"]),
-        ("SIGNING", ["signs ", "signed ", "agrees to a deal", "one-year deal"]),
+        ("SIGNING", ["signs ", "signed ", "agrees to a deal", "one-year deal", "two-year deal"]),
         ("CONTRACT", ["extension", "contract"]),
         ("SUSPENSION", ["suspended", "suspension"]),
         ("DISCIPLINE", ["fine", "discipline", "exempt list"]),
-        ("LEGAL", ["arrest", "lawsuit", "charged with", "court"]),
-        ("COACHING", ["fired", "hired as coach", "head coach"]),
+        ("LEGAL", ["arrest", "lawsuit", "charged with", "court appearance", "court date"]),
+        # COACHING is reserved for an actual personnel/status change, not a quote
+        # from someone whose title happens to be "head coach."
+        ("COACHING", [
+            "fired coach", "fires coach", "coach fired",
+            "hired as coach", "named head coach", "names head coach",
+            "coach resigns", "coach resigned", "coach steps down",
+            "coach dismissed", "coaching change",
+        ]),
         ("DEPTH_CHART", ["starter", "backup quarterback", "depth chart", "qb1", "qb2"]),
         ("RANKING", ["ranked", "ranking", "top 25"]),
         ("RECORD", ["record", "all-time"]),
@@ -436,6 +510,63 @@ def keyword_type_hint(title: str, summary: str) -> str:
         if any(word in text for word in words):
             return kind
     return "OTHER"
+
+
+def low_signal_editorial_story(title: str, summary: str, type_hint: str) -> tuple[bool, str | None]:
+    """Identify analysis/preview/opinion pieces that are not ticker developments.
+
+    Strong factual types (injury, signing, legal, etc.) are never rejected just
+    because a headline is phrased as a question.
+    """
+    if type_hint != "OTHER":
+        return False, None
+
+    headline = clean_text(title).lower()
+    body = clean_text(summary).lower()
+    combined = headline + " " + body
+
+    feature_phrases = [
+        "questions to answer",
+        "questions facing",
+        "things to know",
+        "what to know",
+        "what we learned",
+        "takeaways",
+        "roundtable",
+        "expert picks",
+        "predictions",
+        "prediction",
+        "preview",
+        "power rankings",
+        "stock watch",
+        "mailbag",
+        "winners and losers",
+        "grades:",
+        "grading ",
+        "why ",
+    ]
+    if any(phrase in combined for phrase in feature_phrases):
+        return True, "analysis/feature/preview rather than a new development"
+
+    # Opinion/quote pieces should not become COACHING or BREAKING simply because
+    # a coach/player is quoted.
+    quote_phrases = [
+        "stands by",
+        "believes ",
+        "warns ",
+        "says there is no way",
+        "predicts ",
+        "prediction that",
+    ]
+    if any(phrase in combined for phrase in quote_phrases):
+        return True, "opinion/quote item without a material new development"
+
+    # A pure question headline is generally analysis. Strong factual types were
+    # already exempted above.
+    if "?" in headline:
+        return True, "question/analysis headline without a strong factual type"
+
+    return False, None
 
 
 def occurrence_from_date(
@@ -592,6 +723,14 @@ def parse_espn_source(
                 if not published:
                     raise TickerError("missing published timestamp")
 
+                description = clean_text(article.get("description"))
+                type_hint = keyword_type_hint(headline, description)
+                low_signal, low_signal_reason = low_signal_editorial_story(
+                    headline, description, type_hint
+                )
+                if low_signal:
+                    raise TickerError(low_signal_reason or "low-signal editorial item")
+
                 source_url = article_web_url(article, source["url"])
                 candidate = make_candidate(
                     source_id=source["id"],
@@ -599,11 +738,12 @@ def parse_espn_source(
                     league_hint=source["leagueHint"],
                     sport_hint=source["sportHint"],
                     title=headline,
-                    summary=clean_text(article.get("description")),
+                    summary=description,
                     source_url=source_url,
                     occurrence=published,
                     generated_at=generated_at,
                     cutoff=cutoff,
+                    type_hint=type_hint,
                     quality=90,
                     raw_ref=f"{source['id']}#{idx}",
                     metadata={
@@ -846,13 +986,34 @@ def score_scalar(value: Any) -> int | None:
             return None
         return sum(nums) if len(nums) > 1 else nums[0]
     if isinstance(value, dict):
-        for key in ("total", "current", "score", "value", "displayValue"):
+        # Baseball exposes per-inning runs rather than a side-level total.
+        innings = value.get("innings")
+        if isinstance(innings, list):
+            nums = [score_scalar(v) for v in innings]
+            nums = [n for n in nums if n is not None]
+            if nums:
+                return sum(nums)
+
+        for key in ("total", "current", "score", "value", "displayValue", "points", "runs"):
             if key in value:
                 n = score_scalar(value[key])
                 if n is not None:
                     return n
     return None
 
+
+def parse_highlightly_current_score(value: Any) -> tuple[int | None, int | None]:
+    """Parse Highlightly's state.score.current.
+
+    Highlightly returns current as HOME - AWAY across the observed baseball,
+    NCAA football, basketball, hockey and soccer payloads.
+    """
+    if not isinstance(value, str):
+        return None, None
+    match = re.fullmatch(r"\s*(\d{1,3})\s*[-–—]\s*(\d{1,3})\s*", value)
+    if not match:
+        return None, None
+    return int(match.group(1)), int(match.group(2))
 
 def team_name(match: dict[str, Any], side: str) -> str:
     obj = match.get(f"{side}Team")
@@ -865,17 +1026,32 @@ def match_score(match: dict[str, Any]) -> tuple[int | None, int | None]:
     state = match.get("state")
     if not isinstance(state, dict):
         state = {}
+
     score = state.get("score")
     if not isinstance(score, dict):
         score = match.get("score") if isinstance(match.get("score"), dict) else {}
+
+    # Primary Highlightly shape:
+    #   score.current = "HOME - AWAY"
+    home, away = parse_highlightly_current_score(score.get("current"))
+    if home is not None and away is not None:
+        return home, away
+
+    # Baseball and some legacy payloads expose side objects.
+    home = score_scalar(score.get("home"))
+    away = score_scalar(score.get("away"))
+    if home is not None and away is not None:
+        return home, away
+
+    # Backward-compatible variants.
     home = score_scalar(score.get("homeTeam"))
     away = score_scalar(score.get("awayTeam"))
-    if home is None:
-        home = score_scalar(match.get("homeScore"))
-    if away is None:
-        away = score_scalar(match.get("awayScore"))
-    return home, away
+    if home is not None and away is not None:
+        return home, away
 
+    home = score_scalar(match.get("homeScore"))
+    away = score_scalar(match.get("awayScore"))
+    return home, away
 
 def match_finished(match: dict[str, Any]) -> bool:
     state = match.get("state")
@@ -1059,6 +1235,12 @@ def parse_highlightly_sport(
                             "homeScore": home_score,
                             "awayScore": away_score,
                             "scheduledAt": scheduled,
+                            "scoreParser": "A3.3-current-home-away",
+                            "rawScore": (
+                                match.get("state", {}).get("score")
+                                if isinstance(match.get("state"), dict)
+                                else None
+                            ),
                             "state": match.get("state"),
                         },
                     )
@@ -1393,7 +1575,7 @@ def call_openai(
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
-        "User-Agent": "sports-big-board-ticker-a3.2/1.0",
+        "User-Agent": "sports-big-board-ticker-a3.3/1.0",
     }
 
     last_error: Exception | None = None
@@ -1626,6 +1808,101 @@ def curate_final_items(items: list[dict[str, Any]], context: str, run_log: dict[
     return selected
 
 
+PRIORITY_DEFAULTS = {
+    "BREAKING": 96,
+    "PLAYOFF": 90,
+    "STANDINGS": 84,
+    "TRADE": 86,
+    "INJURY": 82,
+    "RECORD": 84,
+    "RECORD_CHASE": 80,
+    "UPSET": 80,
+    "SIGNING": 78,
+    "CONTRACT": 76,
+    "SUSPENSION": 80,
+    "DISCIPLINE": 78,
+    "LEGAL": 76,
+    "RETURN": 72,
+    "MILESTONE": 76,
+    "RANKING": 74,
+    "AWARD": 74,
+    "STREAK": 70,
+    "SLUMP": 68,
+    "COACHING": 76,
+    "ROSTER": 68,
+    "DEPTH_CHART": 70,
+    "LEAGUE_NEWS": 76,
+    "STAT_LEADER": 68,
+    "RESULT": 64,
+    "NEXT": 52,
+    "SCHEDULE": 50,
+    "OTHER": 52,
+}
+
+
+def normalize_editor_priority(
+    raw_priority: Any,
+    item_type: str,
+    context: str,
+    run_log: dict[str, Any],
+) -> int:
+    try:
+        priority = int(raw_priority)
+    except Exception:
+        priority = 0
+
+    # A3.2 showed the editor using 1/2 as list ranks. Interpret <=10 as this
+    # known failure mode and replace it with a calibrated type-based priority.
+    if priority <= 10:
+        repaired = PRIORITY_DEFAULTS.get(item_type, 55)
+        run_log["pipeline"]["editorRepairs"].append({
+            "context": context,
+            "field": "priority",
+            "original": priority,
+            "repaired": repaired,
+            "reason": "editor appeared to use priority as ordinal rank",
+        })
+        return repaired
+
+    return max(1, min(100, priority))
+
+
+VAGUE_FRESHNESS = {
+    "hours ago", "an hour ago", "today", "recently", "new report",
+    "just now", "minutes ago", "this morning", "this afternoon",
+    "this evening", "overnight",
+}
+
+
+def repair_freshness_basis(
+    raw_basis: Any,
+    candidate_ids: list[str],
+    by_id: dict[str, dict[str, Any]],
+    context: str,
+    run_log: dict[str, Any],
+) -> str:
+    basis = clean_text(raw_basis)
+    normalized = basis.lower().strip(" .")
+
+    vague = (
+        normalized in VAGUE_FRESHNESS
+        or len(normalized.split()) < 4
+        or not re.search(r"[a-zA-Z]", normalized)
+    )
+    if not vague:
+        return basis
+
+    primary = by_id[candidate_ids[0]]
+    repaired = f"Fresh development: {primary['title']}."
+    run_log["pipeline"]["editorRepairs"].append({
+        "context": context,
+        "field": "freshnessBasis",
+        "original": basis,
+        "repaired": repaired,
+        "reason": "vague/non-factual freshness basis",
+    })
+    return repaired
+
 def normalize_model_output(
     model_output: dict[str, Any],
     candidates: list[dict[str, Any]],
@@ -1664,14 +1941,19 @@ def normalize_model_output(
                     "rank": idx,
                     "candidateIds": candidate_ids,
                     "type": item_type,
-                    "priority": int(raw_item["priority"]),
+                    "priority": normalize_editor_priority(
+                        raw_item["priority"], item_type, f"{league} #{idx}", run_log
+                    ),
                     "headline": clean_text(raw_item["headline"]),
                     "text": clean_text(raw_item["text"]),
                     "entities": [clean_text(x) for x in raw_item.get("entities", []) if clean_text(x)],
                     "occurredAt": occurred_at,
                     "timePrecision": precision,
                     "ageHours": age,
-                    "freshnessBasis": clean_text(raw_item["freshnessBasis"]),
+                    "freshnessBasis": repair_freshness_basis(
+                        raw_item["freshnessBasis"], candidate_ids, by_id,
+                        f"{league} #{idx}", run_log
+                    ),
                     "status": clean_text(raw_item["status"]).lower(),
                     "sourceUrls": [s["url"] for s in sources],
                     "sources": sources,
@@ -1722,18 +2004,24 @@ def normalize_model_output(
                     raise TickerError("unknown candidateId")
                 occurred_at, precision, age = best_occurrence(candidate_ids, by_id)
                 sources = union_sources(candidate_ids, by_id)
+                item_type = clean_text(raw_item["type"]).upper()
                 item = {
                     "rank": idx,
                     "candidateIds": candidate_ids,
-                    "type": clean_text(raw_item["type"]).upper(),
-                    "priority": int(raw_item["priority"]),
+                    "type": item_type,
+                    "priority": normalize_editor_priority(
+                        raw_item["priority"], item_type, f"{name} #{idx}", run_log
+                    ),
                     "headline": clean_text(raw_item["headline"]),
                     "text": clean_text(raw_item["text"]),
                     "entities": [clean_text(x) for x in raw_item.get("entities", []) if clean_text(x)],
                     "occurredAt": occurred_at,
                     "timePrecision": precision,
                     "ageHours": age,
-                    "freshnessBasis": clean_text(raw_item["freshnessBasis"]),
+                    "freshnessBasis": repair_freshness_basis(
+                        raw_item["freshnessBasis"], candidate_ids, by_id,
+                        f"{name} #{idx}", run_log
+                    ),
                     "status": clean_text(raw_item["status"]).lower(),
                     "sourceUrls": [s["url"] for s in sources],
                     "sources": sources,
@@ -1875,7 +2163,7 @@ def write_run_log(path: Path, run_log: dict[str, Any]):
 def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dict[str, Any]:
     return {
         "schemaVersion": 1,
-        "pipelineVersion": "A3.2-editor-reliability",
+        "pipelineVersion": "A3.3-results-editorial-hardening",
         "runId": f"a3-{generated_at.strftime('%Y%m%dT%H%M%SZ')}",
         "status": "running",
         "startedAt": iso_z(generated_at),
@@ -1909,6 +2197,7 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
             "normalizedCandidates": [],
             "modelCandidates": [],
             "finalDrops": [],
+            "editorRepairs": [],
         },
         "openai": {
             "called": False,
@@ -1968,7 +2257,7 @@ def main() -> int:
 
     try:
         print(
-            f"A3.2 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
+            f"A3.3 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
             f"editor={args.model}; OpenAI web_search=OFF"
         )
 
@@ -2063,8 +2352,8 @@ def main() -> int:
         )
 
         dataset = {
-            "schemaVersion": 4,
-            "pipelineVersion": "A3.2-editor-reliability",
+            "schemaVersion": 5,
+            "pipelineVersion": "A3.3-results-editorial-hardening",
             "generatedAt": iso_z(generated_at),
             "freshnessHours": FRESHNESS_HOURS,
             "discoveryMode": "Highlightly + ESPN JSON news + official league pages; no OpenAI web search",
