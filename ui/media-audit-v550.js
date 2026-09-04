@@ -10,11 +10,31 @@
   const ADVANCE_SECONDS=.75;
   const PREFERRED_TIERS=Object.freeze(['green','extended']);
   const BLUE_FALLBACK_TARGET=3;
-  const AUDIT_POLICY='R6_PREFERRED_PACKAGE';
+  const AUDIT_POLICY='R7_FINAL_ONLY_RESET_START_DATE';
   const $=id=>document.getElementById(id);
   const api=path=>window.SBB_API?.url?window.SBB_API.url(path):path;
   const clean=v=>String(v??'').trim();
   function localToday(){const d=new Date(),y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`;}
+  function finalInfo(row,event){
+    row=row||{};event=event||{};
+    const status=event.status||{};
+    const type=status.type||{};
+    const finalAt=Number(row.finalAt||row.final_at||row['Final At']||event.finalAt||event.final_at||0);
+    const completed=Boolean(
+      row.completed===true||row.isFinal===true||row.final===true||
+      event.completed===true||event.isFinal===true||event.final===true||
+      status.completed===true||type.completed===true
+    );
+    const statusText=[
+      row.status,row.gameStatus,row.eventStatus,row.state,row.statusText,row['Status'],
+      event.state,event.statusText,event.gameStatus,
+      typeof status==='string'?status:'',
+      status.name,status.state,status.description,status.detail,status.shortDetail,
+      type.name,type.state,type.description,type.detail,type.shortDetail
+    ].map(clean).filter(Boolean).join(' ').toUpperCase();
+    const statusFinal=/(^|[^A-Z])(FINAL|FULL TIME|FT|COMPLETED|ENDED|CLOSED|POST)([^A-Z]|$)/.test(statusText);
+    return {isFinal:Boolean(finalAt>0||completed||statusFinal),finalAt,statusText};
+  }
   const upper=v=>clean(v).toUpperCase();
   const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[ch]||ch));
   const state={games:[],byKey:new Map(),assets:new Map(),results:loadResults(),run:loadRun(),page:0,pageSize:100,expanded:new Set(),loading:false,yt:null,ytReady:false,ytResolver:null,stopRequested:false,pauseRequested:false};
@@ -33,7 +53,8 @@
     const home=clean(row.home||row.homeName||event.home?.displayName||event.home?.name||event.homeTeam?.displayName||event.homeTeam?.name);
     const name=clean(row.game||row.gameLabel||row.matchup||row['Game']||((away||home)?`${away||'Away'} @ ${home||'Home'}`:''))||`${league} ${eventId}`;
     const tiers=row.tiers||{};
-    return {date,league,eventId,name,tiers,bestTier:clean(row.bestTier||row['Best Tier']),auditStatus:clean(row.auditStatus||row['Audit Status']),raw:row};
+    const fin=finalInfo(row,event);
+    return {date,league,eventId,name,tiers,bestTier:clean(row.bestTier||row['Best Tier']),auditStatus:clean(row.auditStatus||row['Audit Status']),isFinal:fin.isFinal,finalAt:fin.finalAt,finalStatus:fin.statusText,raw:row};
   }
   function tier(asset){const t=clean(asset?.recapTier||asset?.tier||'blue').toLowerCase();return t==='purple'?'extended':t;}
   function tierName(t){return t==='extended'?'PURPLE':upper(t||'BLUE');}
@@ -54,12 +75,29 @@
       const rows=[];let offset=0,total=Infinity;
       while(offset<total){
         const r=await fetch(api(`/api/history/audit?limit=500&offset=${offset}`),{cache:force?'reload':'no-store'});const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);
-        const today=localToday();const batch=(data.rows||[]).map(normalizeGame).filter(g=>g.date&&g.league&&g.eventId&&g.date<=today);rows.push(...batch);total=Number(data.total??rows.length);if(!batch.length)break;offset+=Number((data.rows||[]).length||batch.length);
-        setProgress(`Loading inventory… ${rows.length.toLocaleString()} / ${Number(total).toLocaleString()}`,'Reading the canonical history catalog.');
+        const sourceRows=data.rows||[],today=localToday();
+        const batch=sourceRows.map(normalizeGame).filter(g=>g.date&&g.league&&g.eventId&&g.date<=today);
+        rows.push(...batch);total=Number(data.total??rows.length);
+        if(!sourceRows.length)break;
+        offset+=sourceRows.length;
+        setProgress(`Loading inventory… ${rows.length.toLocaleString()} visible / ${Number(total).toLocaleString()} catalog rows`,'Reading the canonical history catalog.');
       }
-      state.games=rows;state.byKey=new Map(rows.map(g=>[gameKey(g),g]));populateLeagues();state.page=0;render();setProgress('Inventory ready',`${rows.length.toLocaleString()} canonical games loaded through ${localToday()}. Future/lookahead games are excluded.`);
+      state.games=rows;state.byKey=new Map(rows.map(g=>[gameKey(g),g]));populateLeagues();syncAuditStartDate();state.page=0;render();
+      const finalCount=rows.filter(g=>g.isFinal).length,waiting=rows.length-finalCount;
+      setProgress('Inventory ready',`${rows.length.toLocaleString()} games loaded through ${localToday()} • ${finalCount.toLocaleString()} FINAL eligible • ${waiting.toLocaleString()} waiting final.`);
     }catch(err){$('gameRows').innerHTML=`<tr><td colspan="10" class="empty">Inventory load failed: ${esc(err.message||err)}</td></tr>`;log(`Inventory failure: ${err.message||err}`,'bad');}
     finally{state.loading=false;}
+  }
+  function latestFinalDate(){return state.games.filter(g=>g.isFinal).map(g=>g.date).filter(Boolean).sort().at(-1)||'';}
+  function earliestFinalDate(){return state.games.filter(g=>g.isFinal).map(g=>g.date).filter(Boolean).sort()[0]||'';}
+  function syncAuditStartDate(){
+    const el=$('auditStartDate');if(!el)return;
+    el.max=localToday();const min=earliestFinalDate();if(min)el.min=min;
+    if(!clean(el.value)||el.value>localToday())el.value=latestFinalDate()||localToday();
+  }
+  function selectedAuditStartDate(){
+    const v=clean($('auditStartDate')?.value),latest=latestFinalDate()||localToday();
+    return v&&v<=localToday()?v:latest;
   }
   function populateLeagues(){const select=$('filterLeague'),current=select.value,leagues=[...new Set(state.games.map(x=>x.league).filter(Boolean))].sort();select.innerHTML='<option value="">ALL LEAGUES</option>'+leagues.map(x=>`<option>${esc(x)}</option>`).join('');select.value=current;}
 
@@ -71,6 +109,7 @@
   function freshPass(a){return resultState(a)==='pass';}
   function anyPreferredPass(assets){return (assets||[]).some(a=>PREFERRED_TIERS.includes(tier(a))&&freshPass(a));}
   function gameHealth(g){
+    if(!g?.isFinal)return {state:'WAITING_FINAL',assets:null,last:0,packageMode:'NOT_FINAL'};
     const plan=state.assets.get(gameKey(g));if(!plan)return {state:'UNTESTED',assets:null,last:0};const assets=planAssets(plan);if(!assets.length)return {state:'NO_MEDIA',assets,last:0};
     let last=0;for(const a of assets){const r=resultFor(a);last=Math.max(last,Number(r?.testedAt||0));}
     const preferred=assets.filter(a=>PREFERRED_TIERS.includes(tier(a)));
@@ -100,7 +139,7 @@
   function assetRowHtml(g){const plan=state.assets.get(gameKey(g));if(!plan)return `<tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid"><div class="asset-card"><strong>LOADING MEDIA…</strong></div></div></td></tr>`;const allAssets=planAssets(plan);if(!allAssets.length)return `<tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid"><div class="asset-card"><strong>NO ASSIGNED GAME MEDIA</strong></div></div></td></tr>`;const assets=anyPreferredPass(allAssets)?allAssets.filter(a=>tier(a)!=='blue'):allAssets;return `<tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid">${assets.map(a=>{const s=resultState(a),r=resultFor(a);return `<div class="asset-card"><span class="tier-chip ${s==='pass'?'pass':s==='fail'?'fail':'none'}">${tierName(tier(a))}</span><div><strong>${esc(a.title||'Untitled media')}</strong><small>${esc(assetKey(a))} • ${esc(assetUrl(a)||youtubeId(a)||'')}</small></div><div><strong>${esc(upper(a.provider||'MEDIA'))}</strong><small>${esc(clean(a.durationSeconds||a.duration)?`${Math.round(Number(a.durationSeconds||a.duration))} sec`:'')}</small></div><div class="asset-state ${s==='pass'?'pass':s==='fail'?'fail':'unknown'}">${s==='pass'?'PLAYED':s==='fail'?'FAILED':s==='stale'?'STALE':'UNTESTED'}<small>${esc(r?.reason||a.runtimeFailureReason||'')}</small></div></div>`;}).join('')}</div></td></tr>`;}
   function bindRows(){document.querySelectorAll('tr[data-game] .expand').forEach(btn=>btn.onclick=async()=>{const tr=btn.closest('tr'),g=state.byKey.get(tr.dataset.game);if(!g)return;const key=gameKey(g);if(state.expanded.has(key)){state.expanded.delete(key);render();return;}state.expanded.add(key);render();try{await fetchPlan(g);render();}catch(err){log(`${g.league} ${g.name}: ${err.message||err}`,'bad');}});}
 
-  function renderMetrics(){let audited=0,healthy=0,degraded=0,unplayable=0,noMedia=0;for(const g of state.games){const s=gameHealth(g).state;if(!['UNTESTED','STALE'].includes(s))audited++;if(s==='HEALTHY')healthy++;else if(s==='DEGRADED')degraded++;else if(s==='UNPLAYABLE')unplayable++;else if(s==='NO_MEDIA')noMedia++;}const results=Object.values(state.results),passed=results.filter(x=>x.state==='PLAYED').length,failed=results.filter(x=>x.state==='FAILED').length;$('metricGames').textContent=state.games.length.toLocaleString();$('metricGamesSub').textContent=`Canonical catalog through ${localToday()}`;$('metricAudited').textContent=audited.toLocaleString();$('metricAuditedSub').textContent=state.games.length?`${((audited/state.games.length)*100).toFixed(1)}%`: '0%';$('metricHealthy').textContent=healthy.toLocaleString();$('metricDegraded').textContent=degraded.toLocaleString();$('metricUnplayable').textContent=unplayable.toLocaleString();$('metricNoMedia').textContent=noMedia.toLocaleString();$('metricAssets').textContent=results.length.toLocaleString();$('metricAssetsSub').textContent=`${passed.toLocaleString()} passed • ${failed.toLocaleString()} failed`;const run=state.run;$('metricRun').textContent=run?.status||'IDLE';$('metricRunSub').textContent=run?`Run ${run.id} • ${Number(run.index||0).toLocaleString()} games processed`:'Ready';}
+  function renderMetrics(){let audited=0,healthy=0,degraded=0,unplayable=0,noMedia=0;const eligible=state.games.filter(g=>g.isFinal),waiting=state.games.length-eligible.length;for(const g of eligible){const s=gameHealth(g).state;if(!['UNTESTED','STALE'].includes(s))audited++;if(s==='HEALTHY')healthy++;else if(s==='DEGRADED')degraded++;else if(s==='UNPLAYABLE')unplayable++;else if(s==='NO_MEDIA')noMedia++;}const results=Object.values(state.results),passed=results.filter(x=>x.state==='PLAYED').length,failed=results.filter(x=>x.state==='FAILED').length;$('metricGames').textContent=state.games.length.toLocaleString();$('metricGamesSub').textContent=`${eligible.length.toLocaleString()} FINAL eligible • ${waiting.toLocaleString()} waiting final`;$('metricAudited').textContent=audited.toLocaleString();$('metricAuditedSub').textContent=eligible.length?`${((audited/eligible.length)*100).toFixed(1)}% of final games`: '0%';$('metricHealthy').textContent=healthy.toLocaleString();$('metricDegraded').textContent=degraded.toLocaleString();$('metricUnplayable').textContent=unplayable.toLocaleString();$('metricNoMedia').textContent=noMedia.toLocaleString();$('metricAssets').textContent=results.length.toLocaleString();$('metricAssetsSub').textContent=`${passed.toLocaleString()} passed • ${failed.toLocaleString()} failed`;const run=state.run;$('metricRun').textContent=run?.status||'IDLE';$('metricRunSub').textContent=run?`Run ${run.id} • ${Number(run.index||0).toLocaleString()} games processed`:'Ready';}
 
   function ensureYouTube(){
     if(state.ytReady&&state.yt)return Promise.resolve(state.yt);return new Promise((resolve,reject)=>{const start=Date.now();const wait=()=>{if(state.ytReady&&state.yt)return resolve(state.yt);if(window.YT?.Player){createYouTube(resolve);return;}if(Date.now()-start>10000)return reject(new Error('YOUTUBE_API_TIMEOUT'));setTimeout(wait,120);};wait();});
@@ -136,6 +175,7 @@
     }catch(err){log(`Targeted rediscovery failed ${g.league} ${g.name}: ${err.message||err}`,'warn');return null;}
   }
   async function auditGame(g){
+    if(!g?.isFinal){log(`SKIP NOT FINAL ${g?.league||''} ${g?.name||''}`,'warn');return;}
     let plan;try{plan=await fetchPlan(g,true);}catch(err){log(`Plan load failed ${g.league} ${g.name}: ${err.message||err}`,'bad');return;}
     let assets=planAssets(plan);
     let selectedGreen=await testTierUntilPass(g,assets,'green');
@@ -157,33 +197,43 @@
 
   async function runAudit(mode='all'){
     if(!state.games.length)await loadInventory();state.stopRequested=false;state.pauseRequested=false;
-    const id=`${Date.now().toString(36)}-${Math.random().toString(36).slice(2,6)}`;const today=localToday();let queue=state.games.filter(g=>g.date<=today);if(mode==='failed')queue=queue.filter(g=>['UNPLAYABLE','DEGRADED'].includes(gameHealth(g).state));if(mode==='stale')queue=queue.filter(g=>['STALE','UNTESTED'].includes(gameHealth(g).state));
-    state.run={id,status:'RUNNING',mode,policy:AUDIT_POLICY,index:0,total:queue.length,startedAt:Date.now(),queue:queue.map(gameKey)};saveRun();setRunButtons();
+    const id=`${Date.now().toString(36)}-${Math.random().toString(36).slice(2,6)}`,startDate=selectedAuditStartDate();
+    let queue=state.games.filter(g=>g.isFinal&&g.date<=startDate);
+    if(mode==='failed')queue=queue.filter(g=>['UNPLAYABLE','DEGRADED'].includes(gameHealth(g).state));if(mode==='stale')queue=queue.filter(g=>['STALE','UNTESTED'].includes(gameHealth(g).state));
+    state.run={id,status:'RUNNING',mode,policy:AUDIT_POLICY,startDate,index:0,total:queue.length,startedAt:Date.now(),queue:queue.map(gameKey)};saveRun();setRunButtons();
+    if(!queue.length){state.run.status='COMPLETE';state.run.completedAt=Date.now();saveRun();setRunButtons();setProgress('No eligible games',`No FINAL games found on or before ${startDate}.`,100);render();return;}
     for(let i=0;i<queue.length;i++){
       if(state.stopRequested)break;while(state.pauseRequested&&!state.stopRequested){state.run.status='PAUSED';saveRun();setRunButtons();await sleep(300);}if(state.stopRequested)break;state.run.status='RUNNING';state.run.index=i;saveRun();setRunButtons();const g=queue[i];setProgress(`Game ${i+1} / ${queue.length}`,`${g.league} • ${g.date} • ${g.name}`,(i/Math.max(1,queue.length))*100);await auditGame(g);render();
     }
-    state.run.status=state.stopRequested?'STOPPED':'COMPLETE';state.run.completedAt=Date.now();saveRun();setRunButtons();setProgress(state.stopRequested?'Audit stopped':'Audit complete',`${Math.min(queue.length,Number(state.run.index||0)+1)} games processed through ${today}.`,state.stopRequested?undefined:100);render();
+    state.run.status=state.stopRequested?'STOPPED':'COMPLETE';state.run.completedAt=Date.now();saveRun();setRunButtons();setProgress(state.stopRequested?'Audit stopped':'Audit complete',`${Math.min(queue.length,Number(state.run.index||0)+1)} FINAL games processed starting from ${startDate}.`,state.stopRequested?undefined:100);render();
   }
-  async function resumeRun(){const run=state.run;if(!run||!Array.isArray(run.queue))return;state.stopRequested=false;state.pauseRequested=false;const queue=run.queue.map(k=>state.byKey.get(k)).filter(g=>g&&g.date<=localToday()),start=Math.max(0,Number(run.index||0));run.status='RUNNING';saveRun();setRunButtons();for(let i=start;i<queue.length;i++){if(state.stopRequested)break;while(state.pauseRequested&&!state.stopRequested){run.status='PAUSED';saveRun();setRunButtons();await sleep(300);}run.status='RUNNING';run.index=i;saveRun();await auditGame(queue[i]);render();}run.status=state.stopRequested?'STOPPED':'COMPLETE';run.completedAt=Date.now();saveRun();setRunButtons();render();}
-  function setRunButtons(){const active=['RUNNING','PAUSED'].includes(state.run?.status);$('auditEverything').disabled=active;$('auditFailed').disabled=active;$('auditStale').disabled=active;$('auditPause').disabled=!active||state.pauseRequested;$('auditResume').disabled=!active||!state.pauseRequested;$('auditStop').disabled=!active;$('metricRun').textContent=state.run?.status||'IDLE';}
+  async function resumeRun(){const run=state.run;if(!run||!Array.isArray(run.queue))return;state.stopRequested=false;state.pauseRequested=false;const startDate=clean(run.startDate)||selectedAuditStartDate(),queue=run.queue.map(k=>state.byKey.get(k)).filter(g=>g&&g.isFinal&&g.date<=startDate),start=Math.max(0,Number(run.index||0));run.status='RUNNING';saveRun();setRunButtons();for(let i=start;i<queue.length;i++){if(state.stopRequested)break;while(state.pauseRequested&&!state.stopRequested){run.status='PAUSED';saveRun();setRunButtons();await sleep(300);}run.status='RUNNING';run.index=i;saveRun();await auditGame(queue[i]);render();}run.status=state.stopRequested?'STOPPED':'COMPLETE';run.completedAt=Date.now();saveRun();setRunButtons();render();}
+  function setRunButtons(){const active=['RUNNING','PAUSED'].includes(state.run?.status);$('auditEverything').disabled=active;$('auditFailed').disabled=active;$('auditStale').disabled=active;$('auditPause').disabled=!active||state.pauseRequested;$('auditResume').disabled=!active||!state.pauseRequested;$('auditStop').disabled=!active;if($('auditStartDate'))$('auditStartDate').disabled=active;$('metricRun').textContent=state.run?.status||'IDLE';}
 
   function setProbe(g,a,status,result){$('probeGame').textContent=g?`${g.league} • ${g.name}`:'Waiting';$('probeAsset').textContent=a?`${a.title||assetKey(a)}\n${assetKey(a)}`:'—';$('probeTier').textContent=a?tierName(tier(a)):'—';$('probeProvider').textContent=a?upper(a.provider|| (youtubeId(a)?'YOUTUBE':'DIRECT')):'—';$('probeStartup').textContent=result?.startupMs!=null?`${result.startupMs} ms`:'—';$('probeResult').textContent=result?.reason||status||'—';const el=$('probeState');el.textContent=status;el.className=`state ${status==='PLAYED'?'pass':status==='FAILED'?'fail':status==='TESTING'?'testing':'idle'}`;}
   function setProgress(label,detail,pct){$('progressLabel').textContent=label;$('progressDetail').textContent=detail||'';if(pct!=null)$('progressFill').style.width=`${Math.max(0,Math.min(100,pct))}%`;}
   function log(text,cls=''){const el=$('probeLog'),d=document.createElement('div');d.textContent=`${new Date().toLocaleTimeString()}  ${text}`;if(cls)d.className=cls;el.prepend(d);while(el.children.length>150)el.lastElementChild.remove();}
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-  function rehydrationGames(){return state.games.map(g=>({g,h:gameHealth(g)})).filter(x=>['UNPLAYABLE','NO_MEDIA','DEGRADED'].includes(x.h.state));}
+  function rehydrationGames(){return state.games.filter(g=>g.isFinal).map(g=>({g,h:gameHealth(g)})).filter(x=>['UNPLAYABLE','NO_MEDIA','DEGRADED'].includes(x.h.state));}
   async function ensurePlansForFailures(){for(const {g} of rehydrationGames()){if(!state.assets.has(gameKey(g)))try{await fetchPlan(g);}catch(_){}}}
   async function exportManifest(){await ensurePlansForFailures();const games=rehydrationGames().map(({g,h})=>{const assets=h.assets||[];const failed=assets.filter(a=>resultState(a)==='fail').map(a=>({assetKey:assetKey(a),tier:tier(a),title:a.title||'',url:assetUrl(a)||youtubeId(a),reason:resultFor(a)?.reason||a.runtimeFailureReason||'FAILED'}));const present=new Set(assets.filter(a=>resultState(a)!=='fail').map(a=>tier(a)));return {date:g.date,league:g.league,eventId:g.eventId,game:g.name,status:h.state,failedAssets:failed,missingPreferredTiers:['green','extended'].filter(t=>!present.has(t))};});download(`sports-big-board-media-rehydration-${new Date().toISOString().slice(0,10)}.json`,JSON.stringify({version:VERSION,auditPolicy:AUDIT_POLICY,generatedAt:new Date().toISOString(),games},null,2),'application/json');}
   async function exportCsv(){await ensurePlansForFailures();const rows=[['Date','League','Event ID','Game','Game Health','Tier','Asset Key','Title','URL','Failure Reason']];for(const {g,h} of rehydrationGames()){for(const a of h.assets||[]){if(resultState(a)!=='fail')continue;rows.push([g.date,g.league,g.eventId,g.name,h.state,tierName(tier(a)),assetKey(a),a.title||'',assetUrl(a)||youtubeId(a),resultFor(a)?.reason||a.runtimeFailureReason||'FAILED']);}if(!h.assets?.length)rows.push([g.date,g.league,g.eventId,g.name,h.state,'','','','','NO_ASSIGNED_MEDIA']);}download(`sports-big-board-media-failures-${new Date().toISOString().slice(0,10)}.csv`,rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv');}
   function csvCell(v){const s=String(v??'');return /[",\n]/.test(s)?`"${s.replaceAll('"','""')}"`:s;}
   function download(name,body,type){const blob=new Blob([body],{type}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),500);}
+  function resetAudit(){
+    const ok=window.confirm('Reset Media Audit progress and browser-side audit results?\n\nThis clears the saved queue, position, and local audit results, then reloads the page. Persisted backend PLAYED/FAILED media evidence is preserved.');
+    if(!ok)return;
+    state.stopRequested=true;state.pauseRequested=false;
+    try{localStorage.removeItem(STORE);localStorage.removeItem(RUN_STORE);}catch(_){}
+    location.reload();
+  }
 
   function bind(){
-    $('auditEverything').onclick=()=>runAudit('all');$('auditFailed').onclick=()=>runAudit('failed');$('auditStale').onclick=()=>runAudit('stale');$('auditPause').onclick=()=>{state.pauseRequested=true;state.run.status='PAUSED';saveRun();setRunButtons();};$('auditResume').onclick=()=>{if(state.run?.status==='PAUSED'&&state.pauseRequested){state.pauseRequested=false;state.run.status='RUNNING';saveRun();setRunButtons();}else resumeRun();};$('auditStop').onclick=()=>{state.stopRequested=true;state.pauseRequested=false;};$('exportManifest').onclick=exportManifest;$('exportCsv').onclick=exportCsv;$('refreshInventory').onclick=()=>loadInventory(true);
+    $('auditEverything').onclick=()=>runAudit('all');$('auditFailed').onclick=()=>runAudit('failed');$('auditStale').onclick=()=>runAudit('stale');$('auditPause').onclick=()=>{state.pauseRequested=true;state.run.status='PAUSED';saveRun();setRunButtons();};$('auditResume').onclick=()=>{if(state.run?.status==='PAUSED'&&state.pauseRequested){state.pauseRequested=false;state.run.status='RUNNING';saveRun();setRunButtons();}else resumeRun();};$('auditStop').onclick=()=>{state.stopRequested=true;state.pauseRequested=false;};$('auditReset').onclick=resetAudit;$('exportManifest').onclick=exportManifest;$('exportCsv').onclick=exportCsv;$('refreshInventory').onclick=()=>loadInventory(true);
     for(const id of ['filterLeague','filterHealth','filterTier','pageSize'])$(id).onchange=()=>{state.page=0;render();};$('filterSearch').oninput=()=>{state.page=0;render();};$('pagePrev').onclick=()=>{state.page--;render();};$('pageNext').onclick=()=>{state.page++;render();};setRunButtons();
     if(state.run&&['RUNNING','PAUSED'].includes(state.run.status)){state.run.status='PAUSED';state.pauseRequested=true;saveRun();setRunButtons();setProgress('Previous audit paused',`Run ${state.run.id} can be resumed.`);}
   }
   bind();loadInventory();
-  window.SBB_MEDIA_AUDIT=Object.freeze({version:VERSION,loadInventory,runAudit,resumeRun,snapshot:()=>({games:state.games.length,results:Object.keys(state.results).length,run:state.run,policy:AUDIT_POLICY,today:localToday()})});
+  window.SBB_MEDIA_AUDIT=Object.freeze({version:VERSION,loadInventory,runAudit,resumeRun,snapshot:()=>({games:state.games.length,finalGames:state.games.filter(g=>g.isFinal).length,results:Object.keys(state.results).length,run:state.run,policy:AUDIT_POLICY,today:localToday(),startDate:selectedAuditStartDate()})});
 })();

@@ -39,18 +39,20 @@
 
     <section class="controls-panel">
       <div class="control-row primary-actions">
+        <label class="audit-start-date">START AUDIT FROM<input id="auditStartDate" type="date" aria-label="Newest date to include in audit"></label>
         <button id="auditEverything" class="primary">AUDIT EVERYTHING</button>
         <button id="auditFailed">RETEST FAILED</button>
         <button id="auditStale">AUDIT STALE</button>
         <button id="auditPause" disabled>PAUSE</button>
         <button id="auditResume" disabled>RESUME</button>
         <button id="auditStop" disabled>STOP</button>
+        <button id="auditReset" class="danger">RESET AUDIT</button>
         <button id="exportManifest">REHYDRATION JSON</button>
         <button id="exportCsv">FAILURES CSV</button>
       </div>
       <div class="control-row filters">
         <label>League<select id="filterLeague"><option value="">ALL LEAGUES</option></select></label>
-        <label>Health<select id="filterHealth"><option value="">ALL HEALTH</option><option>HEALTHY</option><option>DEGRADED</option><option>UNPLAYABLE</option><option>NO_MEDIA</option><option>UNTESTED</option><option>STALE</option></select></label>
+        <label>Health<select id="filterHealth"><option value="">ALL HEALTH</option><option>HEALTHY</option><option>DEGRADED</option><option>UNPLAYABLE</option><option>NO_MEDIA</option><option>UNTESTED</option><option>STALE</option><option value="WAITING_FINAL">WAITING FINAL</option></select></label>
         <label>Tier<select id="filterTier"><option value="">ALL TIERS</option><option value="green">GREEN</option><option value="extended">PURPLE</option><option value="gold">GOLD</option><option value="blue">BLUE</option></select></label>
         <label>Search<input id="filterSearch" type="search" placeholder="Team, event, title…"></label>
         <label>Rows<select id="pageSize"><option>50</option><option selected>100</option><option>250</option></select></label>
