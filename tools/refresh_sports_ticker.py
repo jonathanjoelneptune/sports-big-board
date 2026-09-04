@@ -7,7 +7,7 @@ Discovery:
   - Highlightly structured match data
 
 Editorial:
-  - one GPT-5 nano Responses API call
+  - one GPT-4o Mini Responses API call by default
   - NO OpenAI web_search tool
 
 Outputs:
@@ -39,7 +39,7 @@ from pathlib import Path
 from typing import Any
 
 OPENAI_API_URL = "https://api.openai.com/v1/responses"
-DEFAULT_MODEL = "gpt-5-nano"
+DEFAULT_MODEL = "gpt-4o-mini"
 FRESHNESS_HOURS = 24.0
 MAX_MODEL_CANDIDATES = 140
 SOURCE_TIMEOUT = 25
@@ -1330,6 +1330,24 @@ def parse_openai_error(details: str) -> tuple[str | None, str | None]:
     return None, None
 
 
+def output_shape_summary(response: dict[str, Any]) -> list[dict[str, Any]]:
+    summary=[]
+    for item in response.get("output", []):
+        if not isinstance(item, dict):
+            summary.append({"type": type(item).__name__})
+            continue
+        content_types=[]
+        for content in item.get("content", []) if isinstance(item.get("content"), list) else []:
+            if isinstance(content, dict):
+                content_types.append(content.get("type"))
+        summary.append({
+            "type": item.get("type"),
+            "status": item.get("status"),
+            "contentTypes": content_types,
+        })
+    return summary
+
+
 def call_openai(
     api_key: str,
     model: str,
@@ -1359,74 +1377,160 @@ def call_openai(
                 "schema": MODEL_SCHEMA,
             }
         },
-        "max_output_tokens": 9000,
-        "prompt_cache_key": "sports-big-board-a3-editor-v1",
+        # GPT-4o Mini supports 16,384 max output tokens. 12k leaves substantial
+        # room for the seven league groups while bounding worst-case cost.
+        "max_output_tokens": 12000,
+        "prompt_cache_key": "sports-big-board-a3-editor-v2",
     }
 
     run_log["openai"]["called"] = True
     run_log["openai"]["requestPayload"] = payload
     run_log["openai"]["candidateCount"] = len(candidates)
     run_log["openai"]["startedAt"] = iso_z(utc_now())
+    run_log["openai"]["selectedModel"] = model
 
     body = json.dumps(payload).encode("utf-8")
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
-        "User-Agent": "sports-big-board-ticker-a3/1.0",
+        "User-Agent": "sports-big-board-ticker-a3.2/1.0",
     }
 
     last_error: Exception | None = None
-    for attempt in range(1, 3):
-        req = urllib.request.Request(OPENAI_API_URL, data=body, headers=headers, method="POST")
+
+    # Two attempts maximum. This is primarily for transient transport/service
+    # failures; a normal successful run is exactly one model call.
+    for attempt_number in range(1, 3):
+        attempt_log = {
+            "attempt": attempt_number,
+            "model": model,
+            "startedAt": iso_z(utc_now()),
+            "finishedAt": None,
+            "httpStatus": None,
+            "responseId": None,
+            "responseStatus": None,
+            "incompleteDetails": None,
+            "usage": None,
+            "outputShape": None,
+            "rawResponseEnvelope": None,
+            "rawOutputText": None,
+            "error": None,
+        }
+        run_log["openai"]["attempts"].append(attempt_log)
+
+        req = urllib.request.Request(
+            OPENAI_API_URL, data=body, headers=headers, method="POST"
+        )
+
         try:
             with urllib.request.urlopen(req, timeout=OPENAI_TIMEOUT) as response:
                 raw = response.read().decode("utf-8")
                 result = json.loads(raw)
-                output_text = extract_output_text(result)
-                model_output = json.loads(output_text)
 
-                run_log["openai"]["finishedAt"] = iso_z(utc_now())
+                # CRITICAL A3.2 CHANGE:
+                # Record the entire non-secret API response BEFORE attempting to
+                # extract output_text. If parsing fails, the run log still shows
+                # exactly what OpenAI returned.
+                attempt_log["finishedAt"] = iso_z(utc_now())
+                attempt_log["httpStatus"] = response.status
+                attempt_log["responseId"] = result.get("id")
+                attempt_log["responseStatus"] = result.get("status")
+                attempt_log["incompleteDetails"] = result.get("incomplete_details")
+                attempt_log["usage"] = result.get("usage")
+                attempt_log["outputShape"] = output_shape_summary(result)
+                attempt_log["rawResponseEnvelope"] = result
+
                 run_log["openai"]["httpStatus"] = response.status
                 run_log["openai"]["responseId"] = result.get("id")
-                run_log["openai"]["usage"] = result.get("usage")
-                run_log["openai"]["rawOutput"] = output_text
                 run_log["openai"]["responseMeta"] = {
                     "model": result.get("model"),
                     "status": result.get("status"),
                     "serviceTier": result.get("service_tier"),
+                    "incompleteDetails": result.get("incomplete_details"),
+                    "outputShape": attempt_log["outputShape"],
                 }
+                run_log["openai"]["usage"] = result.get("usage")
+                run_log["openai"]["rawResponseEnvelope"] = result
+
+                if result.get("status") == "incomplete":
+                    details = result.get("incomplete_details")
+                    raise TickerError(
+                        f"OpenAI response incomplete: {json.dumps(details, ensure_ascii=False)}"
+                    )
+
+                output_text = extract_output_text(result)
+                attempt_log["rawOutputText"] = output_text
+                run_log["openai"]["rawOutput"] = output_text
+
+                model_output = json.loads(output_text)
+
+                run_log["openai"]["finishedAt"] = iso_z(utc_now())
+                run_log["openai"]["successfulAttempt"] = attempt_number
+                run_log["openai"]["error"] = None
                 return model_output
+
         except urllib.error.HTTPError as exc:
             details = exc.read().decode("utf-8", errors="replace")
             code, err_type = parse_openai_error(details)
-            message = f"OpenAI HTTP {exc.code}: {details[:2000]}"
+            message = f"OpenAI HTTP {exc.code}: {details[:4000]}"
+
+            attempt_log["finishedAt"] = iso_z(utc_now())
+            attempt_log["httpStatus"] = exc.code
+            attempt_log["error"] = {
+                "message": message,
+                "code": code,
+                "type": err_type,
+            }
             run_log["openai"]["httpStatus"] = exc.code
             run_log["openai"]["error"] = {
                 "message": message,
                 "code": code,
                 "type": err_type,
-                "attempt": attempt,
+                "attempt": attempt_number,
             }
             last_error = TickerError(message)
 
-            # Insufficient quota will never recover from a retry.
-            if code in {"credit_balance_exhausted", "insufficient_quota"} or err_type == "insufficient_quota":
+            # These errors cannot recover by waiting.
+            if (
+                code in {"credit_balance_exhausted", "insufficient_quota"}
+                or err_type == "insufficient_quota"
+            ):
                 raise last_error
 
-            if exc.code not in {408, 409, 429, 500, 502, 503, 504} or attempt == 2:
+            if (
+                exc.code not in {408, 409, 429, 500, 502, 503, 504}
+                or attempt_number == 2
+            ):
                 raise last_error
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+
+        except (
+            urllib.error.URLError,
+            TimeoutError,
+            json.JSONDecodeError,
+            TickerError,
+        ) as exc:
+            attempt_log["finishedAt"] = (
+                attempt_log["finishedAt"] or iso_z(utc_now())
+            )
+            attempt_log["error"] = {
+                "message": clean_text(exc),
+                "exceptionType": type(exc).__name__,
+            }
             run_log["openai"]["error"] = {
                 "message": clean_text(exc),
-                "attempt": attempt,
+                "attempt": attempt_number,
+                "exceptionType": type(exc).__name__,
             }
             last_error = exc
-            if attempt == 2:
-                raise TickerError(f"OpenAI request failed: {exc}") from exc
 
-        time.sleep(4 * attempt)
+            # Retry once for no-output/incomplete/transport/JSON issues. At
+            # current GPT-4o Mini prices, this rare recovery is still pennies.
+            if attempt_number == 2:
+                raise TickerError(f"OpenAI editor failed: {exc}") from exc
 
-    raise TickerError(f"OpenAI request failed: {last_error}")
+        time.sleep(3 * attempt_number)
+
+    raise TickerError(f"OpenAI editor failed: {last_error}")
 
 
 def score_pairs(text: str) -> list[tuple[int, int]]:
@@ -1771,7 +1875,7 @@ def write_run_log(path: Path, run_log: dict[str, Any]):
 def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dict[str, Any]:
     return {
         "schemaVersion": 1,
-        "pipelineVersion": "A3.1-direct-json-sources",
+        "pipelineVersion": "A3.2-editor-reliability",
         "runId": f"a3-{generated_at.strftime('%Y%m%dT%H%M%SZ')}",
         "status": "running",
         "startedAt": iso_z(generated_at),
@@ -1782,6 +1886,7 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
             "freshnessHours": FRESHNESS_HOURS,
             "model": model,
             "openAIWebSearchEnabled": False,
+            "editorTransport": "Responses API structured output; raw envelope logged before parsing",
             "espnTransport": "site.api.espn.com JSON news endpoints",
             "highlightlyTransport": "sports.highlightly.net by sport/date, local league filtering",
             "maxModelCandidates": MAX_MODEL_CANDIDATES,
@@ -1809,13 +1914,17 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
             "called": False,
             "skipReason": None,
             "candidateCount": 0,
+            "selectedModel": model,
             "startedAt": None,
             "finishedAt": None,
             "requestPayload": None,
+            "attempts": [],
+            "successfulAttempt": None,
             "httpStatus": None,
             "responseId": None,
             "responseMeta": None,
             "usage": None,
+            "rawResponseEnvelope": None,
             "rawOutput": None,
             "error": None,
         },
@@ -1859,7 +1968,7 @@ def main() -> int:
 
     try:
         print(
-            f"A3.1 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
+            f"A3.2 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
             f"editor={args.model}; OpenAI web_search=OFF"
         )
 
@@ -1955,7 +2064,7 @@ def main() -> int:
 
         dataset = {
             "schemaVersion": 4,
-            "pipelineVersion": "A3.1-direct-json-sources",
+            "pipelineVersion": "A3.2-editor-reliability",
             "generatedAt": iso_z(generated_at),
             "freshnessHours": FRESHNESS_HOURS,
             "discoveryMode": "Highlightly + ESPN JSON news + official league pages; no OpenAI web search",
