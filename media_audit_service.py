@@ -33,7 +33,7 @@ from sbb.event_matcher import team_name as catalog_team_name
 
 APP_ROOT = Path(__file__).resolve().parent
 APP_VERSION = (APP_ROOT / "VERSION").read_text(encoding="utf-8").strip()
-AUDIT_GENERATION = "R10"
+AUDIT_GENERATION = "R11"
 STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 DB_PATH = STATE_DIR / "cache" / "history.sqlite3"
 HOST = os.environ.get("SBB_MEDIA_AUDIT_HOST", "127.0.0.1")
@@ -52,6 +52,8 @@ DISCOVERY_SETTLE_SECONDS = max(0.5, float(os.environ.get("SBB_MEDIA_AUDIT_DISCOV
 DB_BUSY_TIMEOUT_MS = max(1000, min(60000, int(os.environ.get("SBB_MEDIA_AUDIT_DB_BUSY_TIMEOUT_MS", "10000"))))
 DB_LOCK_RETRY_SECONDS = max(1.0, float(os.environ.get("SBB_MEDIA_AUDIT_DB_LOCK_RETRY_SECONDS", "3")))
 WORKER_EXCEPTION_RETRIES = max(1, min(10, int(os.environ.get("SBB_MEDIA_AUDIT_EXCEPTION_RETRIES", "3"))))
+CONTROL_WORKER_JOIN_SECONDS = max(0.5, min(10.0, float(os.environ.get("SBB_MEDIA_AUDIT_CONTROL_JOIN_SECONDS", "2"))))
+DISCOVERY_HTTP_TIMEOUT_SECONDS = max(5, min(60, int(os.environ.get("SBB_MEDIA_AUDIT_DISCOVERY_HTTP_TIMEOUT_SECONDS", "20"))))
 AUDIT_TIMEZONE = os.environ.get("SBB_MEDIA_AUDIT_TIMEZONE", "America/Los_Angeles").strip() or "America/Los_Angeles"
 try:
     AUDIT_TZ = ZoneInfo(AUDIT_TIMEZONE)
@@ -969,6 +971,12 @@ class CanonicalAuditWorker(threading.Thread):
                 probeMaxAttempts=SOFT_RETRIES, waitingReason=""
             )
             result = self.probe.probe(asset)
+            # A reset/start/stop may happen while Chromium is probing. Never let an
+            # obsolete worker persist a result into a replacement run.
+            current_after_probe = self.store.run_snapshot(run_id)
+            if self.stop_event.is_set() or not current_after_probe or current_after_probe.get("state") == "STOPPED":
+                self._trace("INFO", "Probe result discarded because audit run was replaced/stopped", event=event_key, asset=asset.get("assetKey"))
+                return {"ok": False, "hard": False, "reason": "RUN_REPLACED"}
             reason = str(result.get("reason") or "")
             self._diag(lastProbeResult=reason or ("PLAYING_TIME_ADVANCED" if result.get("ok") else "UNKNOWN"))
             if reason in INFRA_FAILURES:
@@ -1139,18 +1147,24 @@ class CanonicalAuditWorker(threading.Thread):
         )
         self._trace("INFO", f"Targeted discovery pass {pass_number}/{DISCOVERY_PASSES}", event=item["canonical_event_key"])
         while not self.stop_event.is_set():
-            self._db_op("read run state before targeted discovery")
-            current = self.store.active_run()
+            self._db_op("read exact run state before targeted discovery")
+            current = self.store.run_snapshot(int(run["id"]))
             self._db_recovered()
-            if not current or current["state"] in {"STOPPED"}:
-                return {"ok": False, "reason": "RUN_STOPPED"}
+            if self.stop_event.is_set() or not current or current["state"] in {"STOPPED"}:
+                return {"ok": False, "reason": "RUN_REPLACED"}
             if current["state"] == "PAUSED":
                 self._diag(phase="PAUSED", waitingReason="Operator paused canonical audit")
                 time.sleep(1)
                 continue
             try:
-                with urlopen(req, timeout=120) as resp:
+                with urlopen(req, timeout=DISCOVERY_HTTP_TIMEOUT_SECONDS) as resp:
                     payload = json.loads(resp.read().decode("utf-8"))
+                # The request may have been in flight when RESET/START/STOP retired
+                # this worker. Verify the exact run still exists before accepting it.
+                current_after_request = self.store.run_snapshot(int(run["id"]))
+                if self.stop_event.is_set() or not current_after_request or current_after_request.get("state") == "STOPPED":
+                    self._trace("INFO", "Discovery response discarded because audit run was replaced/stopped", event=item["canonical_event_key"], passNumber=pass_number)
+                    return {"ok": False, "reason": "RUN_REPLACED"}
                 result = {"ok": bool(payload.get("ok")), "payload": payload, "reason": str(payload.get("error") or "")}
                 self._diag(discoveryResult="OK" if result["ok"] else (result["reason"] or "EMPTY"))
                 return result
@@ -1230,6 +1244,8 @@ class CanonicalAuditWorker(threading.Thread):
                 self._diag(phase=phase)
                 discovery = self._discover_preferred(run, item, pass_number)
                 discovery_reason = discovery.get("reason") or ""
+                if discovery_reason in {"RUN_STOPPED", "RUN_REPLACED", "WORKER_STOPPED"}:
+                    return {"health": "SKIPPED", "note": discovery_reason}
                 if not discovery.get("ok") and discovery_reason in {"BAD_HISTORY_EVENT", "HISTORY_EVENT_NOT_FOUND"}:
                     break
                 if DISCOVERY_SETTLE_SECONDS:
@@ -1319,9 +1335,37 @@ class CanonicalAuditWorker(threading.Thread):
 
 STORE = AuditStore(DB_PATH)
 RECOVERY = STORE.recover_exception_failures()
-PROBE = BrowserProbe()
-WORKER = CanonicalAuditWorker(STORE, PROBE)
-WORKER.start()
+WORKER_CONTROL_LOCK = threading.RLock()
+PROBE = None
+WORKER = None
+
+def _spawn_worker(reason="service start"):
+    global PROBE, WORKER
+    PROBE = BrowserProbe()
+    WORKER = CanonicalAuditWorker(STORE, PROBE)
+    WORKER.start()
+    WORKER._trace("INFO", f"Canonical audit worker spawned: {reason}")
+    return WORKER
+
+def _retire_worker(reason="operator control"):
+    global WORKER, PROBE
+    old = WORKER
+    if old is None:
+        return {"hadWorker": False, "joined": True}
+    try:
+        old._trace("WARN", f"Canonical audit worker retired: {reason}")
+    except Exception:
+        pass
+    old.stop()
+    deadline = time.time() + CONTROL_WORKER_JOIN_SECONDS
+    while old.is_alive() and time.time() < deadline:
+        time.sleep(0.05)
+    joined = not old.is_alive()
+    # It is safe to detach an old daemon thread that is still blocked in network I/O:
+    # stop_event + exact-run checks prevent any stale result from being persisted.
+    return {"hadWorker": True, "joined": joined}
+
+_spawn_worker("service start")
 if RECOVERY.get("requeued"):
     WORKER._trace("WARN", f"Recovered {RECOVERY['requeued']} prior worker/infrastructure failures for deterministic retry", runId=RECOVERY.get("runId"))
 
@@ -1414,21 +1458,35 @@ class Handler(BaseHTTPRequestHandler):
         try:
             body = _body(self)
             if parsed.path == "/start":
-                return _json(self, {"ok": True, "run": STORE.start_run(body.get("mode") or "ALL", body.get("startDate") or "")})
+                # START replaces any previous worker/run atomically. A stale in-flight
+                # discovery request from the old run can never coexist as authority.
+                with WORKER_CONTROL_LOCK:
+                    existing = STORE.active_run()
+                    if existing and existing.get("state") in {"RUNNING", "PAUSED"}:
+                        STORE.set_run_state("STOPPED")
+                    retired = _retire_worker("new audit run requested")
+                    run = STORE.start_run(body.get("mode") or "ALL", body.get("startDate") or "")
+                    _spawn_worker("new audit run")
+                return _json(self, {"ok": True, "run": run, "workerReset": retired})
             if parsed.path == "/pause":
                 return _json(self, {"ok": True, "run": STORE.set_run_state("PAUSED")})
             if parsed.path == "/resume":
                 return _json(self, {"ok": True, "run": STORE.set_run_state("RUNNING")})
             if parsed.path == "/stop":
-                return _json(self, {"ok": True, "run": STORE.set_run_state("STOPPED")})
+                with WORKER_CONTROL_LOCK:
+                    run = STORE.set_run_state("STOPPED")
+                    retired = _retire_worker("audit stopped")
+                    _spawn_worker("idle after stop")
+                return _json(self, {"ok": True, "run": run, "workerReset": retired})
             if parsed.path == "/reset":
-                existing=STORE.active_run()
-                if existing and existing.get("state") in {"RUNNING","PAUSED"}:
-                    STORE.set_run_state("STOPPED")
-                    deadline=time.time()+40
-                    while time.time()<deadline and WORKER.current and int(WORKER.current.get("runId") or 0)==int(existing.get("id") or 0):
-                        time.sleep(0.25)
-                return _json(self, STORE.reset_run(recertify=bool(body.get("recertify"))))
+                with WORKER_CONTROL_LOCK:
+                    existing = STORE.active_run()
+                    if existing and existing.get("state") in {"RUNNING", "PAUSED"}:
+                        STORE.set_run_state("STOPPED")
+                    retired = _retire_worker("audit reset")
+                    result = STORE.reset_run(recertify=bool(body.get("recertify")))
+                    _spawn_worker("idle after reset")
+                return _json(self, {**result, "workerReset": retired, "run": None})
             return _json(self, {"ok": False, "error": "NOT_FOUND"}, 404)
         except Exception as exc:
             traceback.print_exc(); return _json(self, {"ok": False, "error": "MEDIA_AUDIT_API_ERROR", "message": f"{type(exc).__name__}: {exc}"}, 500)

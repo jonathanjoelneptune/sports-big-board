@@ -17,7 +17,7 @@ for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STA
 assert 'youtubeProbe' not in html
 assert 'directProbe' not in html
 assert 'youtube.com/iframe_api' not in html
-assert 'ui/media-audit-v550.js?v=5.5.0-r10' in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r11' in html
 assert 'href="media-audit.html"' in index
 
 # Browser is a console only. All control and inventory authority routes to the backend service.
@@ -28,7 +28,7 @@ for forbidden in ['localStorage','YT.Player','directProbe','youtubeProbe','/api/
 
 # Canonical server-owned audit contract.
 for token in [
-    'AUDIT_GENERATION = "R10"',
+    'AUDIT_GENERATION = "R11"',
     'history_media_audit_run',
     'history_media_audit_queue',
     'history_media_audit_asset_result',
@@ -80,7 +80,7 @@ assert "'media-audit.html'" in pages
 assert "'media-audit-probe.html'" in pages
 assert 'Canonical Media Probe -> media-audit-probe.html' in pages
 
-# R10: production playback parity, DB-lock recovery, and server diagnostics.
+# R10/R11: production playback parity, DB-lock recovery, diagnostics, and hard run replacement.
 for token in [
     'WAITING_DATABASE_LOCK',
     '_is_db_locked',
@@ -103,7 +103,26 @@ for token in [
     'diagProgressAge','diagTrace','SERVER TRACE','DATABASE + PRODUCTION PARITY'
 ]:
     assert token in html or token in js,token
-assert "const GENERATION='R10'" in js
+assert "const GENERATION='R11'" in js
 assert 'localStorage' not in js
 
-print('PASS v5.5.0 R10 canonical backend Media Health Audit + production-plan parity + SQLite lock recovery + diagnostic console')
+# R11: reset/start/stop retire the worker itself and stale run work cannot persist.
+for token in [
+    'WORKER_CONTROL_LOCK',
+    '_retire_worker',
+    '_spawn_worker',
+    'RUN_REPLACED',
+    'current_after_probe',
+    'current_after_request',
+    'DISCOVERY_HTTP_TIMEOUT_SECONDS',
+    'Canonical audit worker retired',
+    'new audit run requested',
+    'idle after reset',
+]:
+    assert token in service,token
+assert 'current = self.store.run_snapshot(int(run["id"]))' in service
+assert 'current = self.store.active_run()' not in service[service.index('def _discover_preferred'):service.index('def audit_event')]
+assert "if(!confirm('RESET AUDIT will stop the current server worker" in js
+assert "if(!recertify)return command('/reset'" not in js
+
+print('PASS v5.5.0 R11 canonical Media Health Audit + hard reset/run replacement + parity + lock recovery + diagnostics')

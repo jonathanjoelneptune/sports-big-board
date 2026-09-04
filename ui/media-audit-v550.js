@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const VERSION='5.5.0';
-const GENERATION='R10';
+const GENERATION='R11';
 const $=id=>document.getElementById(id);
 const API=((window.SBB_CONFIG&&window.SBB_CONFIG.apiBase)||location.origin).replace(/\/$/,'')+'/api/media-audit';
 const state={offset:0,limit:100,total:0,rows:[],expanded:new Set(),status:null,busy:false,pollTimer:null,lastInventoryAt:0};
@@ -93,7 +93,7 @@ async function refreshInventory(){
 function populateLeagues(){const sel=$('filterLeague'),current=sel.value;const leagues=[...new Set(state.rows.map(r=>r.league).filter(Boolean))].sort();for(const lg of leagues)if(![...sel.options].some(o=>o.value===lg)){const o=document.createElement('option');o.value=lg;o.textContent=lg;sel.appendChild(o)}sel.value=current;}
 async function refreshStatus(){try{const d=await fetchJson(API+'/status');state.status=d;renderSummary(d);if(!state.busy&&(Date.now()-state.lastInventoryAt>12000||!state.rows.length))await refreshInventory();}catch(e){setText('metricRun','OFFLINE');setText('metricRunSub',e.message);$('probeState').textContent='OFFLINE';$('probeState').className='state fail';}}
 async function command(path,body,label){if(state.busy)return;state.busy=true;try{const d=await post(path,body);log(label,'ok');if(d.run)renderSummary({...state.status,run:d.run});await refreshStatus();}catch(e){log(`${label}: ${e.message}`,'bad');alert(e.message);}finally{state.busy=false;}}
-async function resetAudit(){const recertify=confirm('OK = reset the run only and keep existing canonical certifications.\n\nCancel, then use FULL RECERTIFY if you want to clear canonical package decisions too.');if(!recertify)return command('/reset',{recertify:false},'Audit run reset');}
+async function resetAudit(){if(!confirm('RESET AUDIT will stop the current server worker, clear the audit queue/progress, and keep existing canonical certifications.\n\nContinue?'))return;state.offset=0;await command('/reset',{recertify:false},'Audit run reset');}
 async function fullRecertify(){if(!confirm('FULL RECERTIFY will clear canonical package decisions and restore audit-managed links to ASSIGNED. Source media/history is preserved. Continue?'))return;await command('/reset',{recertify:true},'Canonical certifications reset');}
 async function download(path,name){try{const r=await fetch(API+path,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const b=await r.blob(),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);}catch(e){alert(e.message)}}
 function bind(){
