@@ -1,271 +1,451 @@
 SPORTS BIG BOARD — SPORTS TICKER SIDECAR
-Updated: 2026-09-04T15:41:01Z
+Updated: 2026-09-04T16:01:23Z
 Model: gpt-5.6-luna
 
 ========================================================================
 MLB
 ========================================================================
 
- 1. [RECORD] Acuña reaches 200 HR, 200 SB fastest ever (priority 96)
-    Ronald Acuña Jr. became the fastest player in MLB history to reach 200 home runs and 200 stolen bases after a three-run homer against Washington.
-    Event date: 2026-09-02 | Status: active
-    Entities: Ronald Acuña Jr., Atlanta Braves
-    Source: https://www.mlb.com/news/acuna-jr-fastest-in-mlb-history-to-reach-200-homers-200-steals
+ 1. [SCHEDULE] Friday slate features 15 games (priority 82)
+    The Sept. 4 schedule includes Tigers-Guardians, Braves-Phillies, Red Sox-Orioles, Giants-Mets and Diamondbacks-Astros among the day’s notable matchups.
+    Event date: 2026-09-04 | Status: active
+    Entities: MLB, Detroit Tigers, Cleveland Guardians, Atlanta Braves, Philadelphia Phillies, Boston Red Sox, Baltimore Orioles, San Francisco Giants‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​
+    Source: https://www.mlb.com/schedule
 
- 2. [PLAYOFF] Arizona moves into third NL Wild Card (priority 90)
-    James McCann’s eighth-inning homer lifted Arizona past Philadelphia, moving the Diamondbacks into the National League’s third Wild Card position.
-    Event date: 2026-09-02 | Status: active
-    Entities: Arizona Diamondbacks, Philadelphia Phillies, James McCann
-    Source: https://www.mlb.com/news/james-mccann-homer-d-backs-phillies-sept-2-2026
-
- 3. [RETURN] Pirates expect top prospect Griffin back Friday (priority 84)
-    Konnor Griffin is expected to be activated from the 60-day injured list and make his first major-league appearance since July 5.
+ 2. [SCHEDULE] Braves visit Phillies in NL East matchup (priority 78)
+    Atlanta and Philadelphia meet in one of Friday’s most consequential divisional games.
     Event date: 2026-09-04 | Status: next
-    Entities: Konnor Griffin, Pittsburgh Pirates
-    Source: https://www.mlb.com/news/konnor-griffin-expected-to-return-from-injury
+    Entities: Atlanta Braves, Philadelphia Phillies
+    Source: https://www.mlb.com/schedule
 
- 4. [AWARD] August monthly awards announced (priority 78)
-    MLB announced its American and National League monthly award winners as the postseason races enter their final month.
-    Event date: 2026-09-03 | Status: active
-    Entities: MLB, 2026 MLB season
-    Source: https://www.mlb.com/news/mlb-monthly-award-winners-for-august-2026
-
- 5. [INJURY] Cubs’ Ben Brown ruled out for 2026 (priority 76)
-    After a rehab setback, Ben Brown will not return this season and is shifting his focus to 2027.
-    Event date: 2026-09-03 | Status: active
-    Entities: Ben Brown, Chicago Cubs
-    Source: https://www.mlb.com/news/ben-brown-cubs-injury-update
-
- 6. [STREAK] Pirates win fifth series in six tries (priority 73)
-    Pittsburgh defeated San Francisco 5-2 for its fifth series victory in six attempts, keeping its late-season playoff push alive.
-    Event date: 2026-09-03 | Status: active
-    Entities: Pittsburgh Pirates, San Francisco Giants
-    Source: https://www.mlb.com/news/pirates-keep-rolling-in-home-stretch
-
- 7. [STAT_LEADER] Royals’ young core drives late-season surge (priority 70)
-    Carter Jensen, Jac Caglianone and Noah Cameron are leading Kansas City’s recent offensive and pitching surge after Caglianone and Cameron earned August American League honors.
-    Event date: 2026-09-03 | Status: active
-    Entities: Kansas City Royals, Carter Jensen, Jac Caglianone, Noah Cameron
-    Source: https://www.mlb.com/news/jensen-caglianone-lead-royals-offense
-
- 8. [SCHEDULE] Yankees-Padres headline Friday slate (priority 67)
-    New York visits San Diego in one of Friday’s key games, while Atlanta-Philadelphia and Arizona-Houston also carry postseason implications.
+ 3. [SCHEDULE] Giants face Mets at Citi Field (priority 76)
+    San Francisco visits New York in a featured National League matchup.
     Event date: 2026-09-04 | Status: next
-    Entities: New York Yankees, San Diego Padres, Atlanta Braves, Philadelphia Phillies, Arizona Diamondbacks, Houston Astros
-    Source: https://www.mlb.com/schedule/2026-09-04
+    Entities: San Francisco Giants, New York Mets
+    Source: https://www.mlb.com/schedule
+
+ 4. [SCHEDULE] Diamondbacks travel to Houston (priority 74)
+    Arizona and Houston meet in an interleague series opener on Friday night.
+    Event date: 2026-09-04 | Status: next
+    Entities: Arizona Diamondbacks, Houston Astros
+    Source: https://www.mlb.com/schedule
+
+ 5. [SCHEDULE] Red Sox and Orioles renew rivalry (priority 72)
+    Boston visits Baltimore in another featured American League matchup.
+    Event date: 2026-09-04 | Status: next
+    Entities: Boston Red Sox, Baltimore Orioles
+    Source: https://www.mlb.com/schedule
+
+ 6. [SCHEDULE] Tigers play split Friday doubleheader (priority 70)
+    Detroit and Cleveland are scheduled for two games on Sept. 4.
+    Event date: 2026-09-04 | Status: next
+    Entities: Detroit Tigers, Cleveland Guardians
+    Source: https://www.mlb.com/schedule
+
+ 7. [SCHEDULE] Brewers visit Reds (priority 68)
+    Milwaukee and Cincinnati meet in an NL Central matchup.
+    Event date: 2026-09-04 | Status: next
+    Entities: Milwaukee Brewers, Cincinnati Reds
+    Source: https://www.mlb.com/schedule
+
+ 8. [SCHEDULE] Cubs visit Marlins (priority 66)
+    Chicago and Miami are set for a Friday night interleague game.
+    Event date: 2026-09-04 | Status: next
+    Entities: Chicago Cubs, Miami Marlins
+    Source: https://www.mlb.com/schedule
+
+ 9. [SCHEDULE] Rays face Rangers in Texas (priority 64)
+    Tampa Bay visits Texas in an American League matchup.
+    Event date: 2026-09-04 | Status: next
+    Entities: Tampa Bay Rays, Texas Rangers
+    Source: https://www.mlb.com/schedule
+
+10. [OTHER] MLB enters September playoff push (priority 60)
+    The league’s news cycle is focused on the final postseason race and late-season award contention.
+    Event date: 2026-09-03 | Status: active
+    Entities: MLB
+    Source: https://www.mlb.com/news
 
 ========================================================================
 NFL
 ========================================================================
 
- 1. [CONTRACT] Cardinals extend Michael Wilson (priority 88)
+ 1. [SIGNING] Cardinals extend Michael Wilson (priority 88)
     Arizona agreed to a three-year, $75 million extension with wide receiver Michael Wilson.
     Event date: 2026-09-03 | Status: active
-    Entities: Michael Wilson, Arizona Cardinals
-    Source: https://www.nfl.com/news/nfl-news-roundup-september-3-2026
+    Entities: Arizona Cardinals, Michael Wilson
+    Source: https://www.nfl.com/news/
 
- 2. [RANKING] Myles Garrett tops NFL Top 100 (priority 86)
-    Players voted Rams pass rusher Myles Garrett No. 1 in the 2026 NFL Top 100 after a historic season and his trade from Cleveland to Los Angeles.
+ 2. [COACHING] Raiders name Cousins Week 1 starter (priority 86)
+    Las Vegas will open the 2026 season with Kirk Cousins at quarterback; first-round pick Fernando Mendoza is the backup.
+    Event date: 2026-09-02 | Status: active
+    Entities: Las Vegas Raiders, Kirk Cousins, Fernando Mendoza
+    Source: https://www.nfl.com/news/series/around-the-nfl-news
+
+ 3. [RETURN] Aaron Donald returns with Rams (priority 84)
+    The Rams’ roster now features the return of retired defensive star Aaron Donald alongside Myles Garrett.
+    Event date: 2026-09-01 | Status: active
+    Entities: Los Angeles Rams, Aaron Donald, Myles Garrett
+    Source: https://www.nfl.com/news/series/around-the-nfl-news
+
+ 4. [RANKING] Myles Garrett tops NFL Top 100 (priority 82)
+    Players voted Garrett No. 1 in the 2026 NFL Top 100 after a historic season and his move to Los Angeles.
     Event date: 2026-09-03 | Status: active
     Entities: Myles Garrett, Los Angeles Rams
-    Source: https://www.nfl.com/news/top-100-players-of-2026-nos-10-1-myles-garrett-crowned
+    Source: https://www.nfl.com/news/series/around-the-nfl-news
 
- 3. [COACHING] Cowboys defense enters new era (priority 76)
-    Quinnen Williams said Dallas’ defense is dramatically different under defensive coordinator Christian Parker entering the 2026 season.
-    Event date: 2026-09-03 | Status: active
-    Entities: Quinnen Williams, Dallas Cowboys, Christian Parker
-    Source: https://www.nfl.com/news/quinnen-williams-cowboys-defense-night-and-day-different-under-new-dc
+ 5. [INJURY] Bosa returns to 49ers practice (priority 78)
+    Nick Bosa is back at practice and traveling with San Francisco for its international opener against the Rams.
+    Event date: 2026-09-02 | Status: active
+    Entities: Nick Bosa, San Francisco 49ers
+    Source: https://www.nfl.com/news/series/around-the-nfl-news
 
- 4. [COACHING] Colts name Richardson’s backup (priority 70)
-    Indianapolis designated Daniel Jones as the backup quarterback behind Anthony Richardson.
-    Event date: 2026-09-03 | Status: active
-    Entities: Anthony Richardson, Daniel Jones, Indianapolis Colts
-    Source: https://www.nfl.com/news/nfl-news-roundup-colts-name-anthony-richardson-backup-qb-behind-daniel-jones
+ 6. [RETURN] Kittle travels for Australia opener (priority 74)
+    George Kittle is traveling with the 49ers for their matchup against the Rams in Melbourne.
+    Event date: 2026-09-02 | Status: next
+    Entities: George Kittle, San Francisco 49ers
+    Source: https://www.nfl.com/news/series/around-the-nfl-news
 
- 5. [NEXT] NFL season opener nears (priority 68)
-    The 2026 regular season is approaching, with teams finalizing depth charts and managing late preseason injuries before Week 1.
-    Event date: 2026-09-04 | Status: watch
-    Entities: NFL, 2026 NFL season
-    Source: https://www.nfl.com/news/
+ 7. [RETURN] Odell Beckham makes Giants roster (priority 72)
+    Beckham completed his return to New York by making the Giants’ initial 53-man roster.
+    Event date: 2026-08-31 | Status: active
+    Entities: Odell Beckham Jr., New York Giants
+    Source: https://www.nfl.com/news/series/around-the-nfl-news
+
+ 8. [TRADE] Cowboys waive Joe Milton (priority 70)
+    Dallas waived quarterback Joe Milton III and is set to use Sam Howell as Dak Prescott’s backup.
+    Event date: 2026-08-31 | Status: active
+    Entities: Dallas Cowboys, Joe Milton III, Sam Howell, Dak Prescott
+    Source: https://www.nfl.com/news/series/around-the-nfl-news
+
+ 9. [SCHEDULE] 49ers-Rams open international schedule (priority 92)
+    San Francisco and Los Angeles meet in Melbourne on Sept. 10, the NFL’s first international game of the 2026 season.
+    Event date: 2026-09-10 | Status: next
+    Entities: San Francisco 49ers, Los Angeles Rams
+    Source: https://www.nfl.com/news/2026-27-national-football-league-important-dates
+
+10. [SCHEDULE] Ravens-Cowboys head to Rio (priority 80)
+    Baltimore and Dallas are scheduled to play at Maracanã Stadium on Sept. 27.
+    Event date: 2026-09-27 | Status: next
+    Entities: Baltimore Ravens, Dallas Cowboys
+    Source: https://www.nfl.com/news/2026-27-national-football-league-important-dates
 
 ========================================================================
 NBA
 ========================================================================
 
- 1. [CONTRACT] Rockets extend Reed Sheppard (priority 91)
-    Houston agreed to a five-year, $208 million rookie extension with guard Reed Sheppard.
+ 1. [CONTRACT] Amen Thompson gets $208M extension (priority 88)
+    Houston and fourth-year wing Amen Thompson agreed to a five-year, $208 million rookie extension.
     Event date: 2026-09-03 | Status: active
-    Entities: Reed Sheppard, Houston Rockets
+    Entities: Houston Rockets, Amen Thompson
     Source: https://www.nba.com/news
 
- 2. [TRADE] Timberwolves send Josh Green to Utah (priority 82)
-    Minnesota traded Josh Green to the Jazz in a three-player deal involving cash considerations as teams complete final roster maneuvers before training camp.
+ 2. [TRADE] Timberwolves trade Josh Green (priority 80)
+    Minnesota sent Josh Green to Utah in a three-player deal involving cash considerations.
     Event date: 2026-09-02 | Status: active
-    Entities: Josh Green, Minnesota Timberwolves, Utah Jazz
-    Source: https://www.nba.com/news/timberwolves-trade-josh-green-jazz
+    Entities: Minnesota Timberwolves, Utah Jazz, Josh Green
+    Source: https://www.nba.com/news
 
- 3. [SUSPENSION] NBA announces Clippers investigation findings (priority 88)
-    The league found a pattern of misconduct and multiple significant rules violations by the Clippers organization.
+ 3. [OTHER] NBA announces Clippers investigation findings (priority 84)
+    The league reported a pattern of misconduct and multiple significant rules violations by the Clippers organization.
     Event date: 2026-09-03 | Status: active
-    Entities: Los Angeles Clippers, NBA
-    Source: https://www.nba.com/news/nba-announces-findings-on-clippers-investigation
+    Entities: NBA, Los Angeles Clippers
+    Source: https://www.nba.com/news
 
- 4. [MILESTONE] Raptors to retire Lowry’s No. 7 (priority 79)
-    Toronto will retire Kyle Lowry’s No. 7 jersey on January 10, 2027, honoring the franchise’s all-time leading point guard.
-    Event date: 2026-09-03 | Status: next
-    Entities: Kyle Lowry, Toronto Raptors
-    Source: https://www.nba.com/news/raptors-to-retire-kyle-lowry-no-7
+ 4. [SCHEDULE] 2026-27 season approaches (priority 76)
+    NBA coverage has shifted toward training-camp preparation, roster construction and the coming regular season.
+    Event date: 2026-09-04 | Status: watch
+    Entities: NBA
+    Source: https://www.nba.com/news
 
- 5. [SCHEDULE] Training camps open September 30 (priority 64)
-    NBA training camps are scheduled to open September 30 ahead of the 2026-27 regular season.
-    Event date: 2026-09-30 | Status: next
-    Entities: NBA, 2026-27 NBA season
-    Source: https://cdn.nba.com/teams/uploads/sites/1610612766/2026/04/2025-26_CHA_MediaGuide_NEW.pdf
+ 5. [OTHER] CBA and scheduling remain league focus (priority 70)
+    NBA executives are discussing second-apron rules, competitive balance and scheduling under the current collective bargaining agreement.
+    Event date: 2026-09-03 | Status: active
+    Entities: NBA
+    Source: https://www.nba.com/news
+
+ 6. [OTHER] NBA players feature in FIBA qualifiers (priority 66)
+    Rui Hachimura, VJ Edgecombe and other NBA players are competing in 2027 FIBA World Cup qualifying action.
+    Event date: 2026-09-04 | Status: active
+    Entities: Rui Hachimura, VJ Edgecombe, FIBA
+    Source: https://www.nba.com/news
+
+ 7. [SCHEDULE] NBA TV sets 60-game slate (priority 64)
+    NBA TV will televise 60 regular-season games during the 2026-27 campaign.
+    Event date: 2026-08-13 | Status: active
+    Entities: NBA TV, NBA
+    Source: https://www.nba.com/news
+
+ 8. [OTHER] Raptors plan Lowry jersey retirement (priority 62)
+    Toronto will retire Kyle Lowry’s No. 7 jersey during a ceremony scheduled for Jan. 10.
+    Event date: 2026-08-27 | Status: next
+    Entities: Toronto Raptors, Kyle Lowry
+    Source: https://www.nba.com/news
+
+ 9. [OTHER] Comeback candidates enter spotlight (priority 60)
+    NBA coverage is highlighting players expected to return after missing time during the 2025-26 season.
+    Event date: 2026-08-24 | Status: watch
+    Entities: NBA
+    Source: https://www.nba.com/news
+
+10. [OTHER] Fantasy rankings preview new season (priority 58)
+    League coverage includes early top-150 fantasy rankings for the 2026-27 season.
+    Event date: 2026-08-28 | Status: watch
+    Entities: NBA
+    Source: https://www.nba.com/news
 
 ========================================================================
 NHL
 ========================================================================
 
- 1. [CONTRACT] Makar signs record contract (priority 92)
-    Colorado’s Cale Makar signed a record-setting contract, with general manager Joe Sakic calling the deal necessary to keep the franchise cornerstone in Colorado.
-    Event date: 2026-08-31 | Status: active
-    Entities: Cale Makar, Colorado Avalanche
-    Source: https://www.nhl.com/news/sakic-makar-record-contract-necessity-for-colorado
+ 1. [CONTRACT] Makar signs record defenseman deal (priority 96)
+    Colorado signed Cale Makar to an eight-year, $163.2 million contract, raising the NHL salary bar for defensemen.
+    Event date: 2026-08-28 | Status: active
+    Entities: Colorado Avalanche, Cale Makar
+    Source: https://www.nhl.com/news/
 
- 2. [TRADE] Devils acquire Evangelista (priority 80)
-    New Jersey acquired Luke Evangelista from Nashville for two draft picks.
-    Event date: 2026-09-02 | Status: active
-    Entities: Luke Evangelista, New Jersey Devils, Nashville Predators
-    Source: https://www.nhl.com/news/evangelista-traded-to-devils-by-predators-for-2-draft-picks
+ 2. [TRADE] Devils acquire Luke Evangelista (priority 86)
+    New Jersey acquired Evangelista from Nashville for a first-round pick and a second-round pick in the 2028 NHL Draft.
+    Event date: 2026-09-01 | Status: active
+    Entities: New Jersey Devils, Nashville Predators, Luke Evangelista
+    Source: https://www.nhl.com/news/2026-27-nhl-trades
 
- 3. [CONTRACT] Tolvanen signs with Rangers (priority 75)
+ 3. [SIGNING] Kane returns to Chicago (priority 78)
+    Patrick Kane signed a two-year, $16 million contract to return to the Blackhawks.
+    Event date: 2026-07-25 | Status: active
+    Entities: Chicago Blackhawks, Patrick Kane
+    Source: https://www.nhl.com/news/topic/free-agency/
+
+ 4. [SIGNING] Tolvanen signs with Rangers (priority 70)
     Eeli Tolvanen signed a one-year, $1.5 million contract with New York.
     Event date: 2026-09-02 | Status: active
-    Entities: Eeli Tolvanen, New York Rangers
-    Source: https://www.nhl.com/news/tolvanen-signs-1-year-1-5-million-contract-with-rangers
+    Entities: New York Rangers, Eeli Tolvanen
+    Source: https://www.nhl.com/news/topic/free-agency/
 
- 4. [RETURN] Seguin skating after knee surgery (priority 72)
-    Dallas forward Tyler Seguin has returned to the ice after knee surgery and could be ready for training camp.
-    Event date: 2026-09-01 | Status: watch
-    Entities: Tyler Seguin, Dallas Stars
-    Source: https://www.nhl.com/news/seguin-on-ice-with-stars-after-knee-surgery
-
- 5. [COACHING] Blues name Thomas captain (priority 70)
-    St. Louis named Robert Thomas captain, replacing Brayden Schenn.
+ 5. [CONTRACT] Thomas named Blues captain (priority 68)
+    Robert Thomas succeeds Brayden Schenn as captain of St. Louis.
     Event date: 2026-09-02 | Status: active
-    Entities: Robert Thomas, St. Louis Blues, Brayden Schenn
-    Source: https://www.nhl.com/news/thomas-named-blues-captain-replaces-schenn
+    Entities: St. Louis Blues, Robert Thomas, Brayden Schenn
+    Source: https://www.nhl.com/news/
 
- 6. [SIGNING] Kane returns to Chicago (priority 69)
-    Patrick Kane returned to the Blackhawks on a two-year, $16 million contract.
-    Event date: 2026-07-25 | Status: active
-    Entities: Patrick Kane, Chicago Blackhawks
-    Source: https://www.nhl.com/news/kane-returns-to-blackhawks-signs-2-year-16-million-contract
+ 6. [INJURY] Seguin skates after knee surgery (priority 66)
+    Dallas forward Tyler Seguin has returned to the ice and could be ready for training camp.
+    Event date: 2026-09-01 | Status: watch
+    Entities: Dallas Stars, Tyler Seguin
+    Source: https://www.nhl.com/news/
 
- 7. [SCHEDULE] NHL Prime schedule opens Sept. 30 (priority 66)
-    The NHL’s Prime Video Wednesday schedule begins with Islanders-Maple Leafs on September 30.
-    Event date: 2026-09-30 | Status: next
-    Entities: New York Islanders, Toronto Maple Leafs, NHL
-    Source: https://www.nhl.com/news/prime-wednesday-night-hockey-schedule-announced
+ 7. [RETURN] Varlamov ready for Islanders camp (priority 64)
+    Semyon Varlamov is healthy and prepared for New York’s training camp.
+    Event date: 2026-09-02 | Status: active
+    Entities: New York Islanders, Semyon Varlamov
+    Source: https://www.nhl.com/news/
+
+ 8. [OTHER] Tarasenko leads remaining free agents (priority 62)
+    Vladimir Tarasenko headlines the NHL’s list of unsigned free agents.
+    Event date: 2026-09-02 | Status: watch
+    Entities: Vladimir Tarasenko, NHL
+    Source: https://www.nhl.com/news/topic/free-agency/
+
+ 9. [SCHEDULE] 84-game season begins Sept. 29 (priority 90)
+    The 2026-27 NHL season opens with an expanded 84-game schedule and a nationally televised tripleheader.
+    Event date: 2026-09-29 | Status: next
+    Entities: NHL
+    Source: https://www.nhl.com/news/nhl-stats-pack-2026-27-regular-season-schedule
+
+10. [SCHEDULE] Hurricanes raise Cup banner against Panthers (priority 82)
+    Stanley Cup champion Carolina opens the season at home against Florida on Sept. 29.
+    Event date: 2026-09-29 | Status: next
+    Entities: Carolina Hurricanes, Florida Panthers
+    Source: https://www.nhl.com/news/nhl-releases-2026-27-regular-season-schedule
 
 ========================================================================
 EPL
 ========================================================================
 
- 1. [SCHEDULE] Ipswich-Liverpool set for Friday (priority 78)
-    Ipswich hosts Liverpool on Friday, September 4, in the next scheduled Premier League broadcast match.
+ 1. [SCHEDULE] Ipswich host Liverpool Friday (priority 84)
+    Ipswich Town and Liverpool meet on Sept. 4 in a rescheduled Premier League fixture.
     Event date: 2026-09-04 | Status: next
     Entities: Ipswich Town, Liverpool
-    Source: https://www.premierleague.com/en/news/4678381/fixture-amendments-for-matches-in-august-and-september
+    Source: https://www.premierleague.com/en/news/4678381/fixture-amendments-for-august-and-september/
 
- 2. [SCHEDULE] Three Premier League fixtures moved (priority 75)
-    Leeds-Crystal Palace, Liverpool-Brighton and Aston Villa-Fulham were rescheduled because of clubs’ UEFA competition commitments.
-    Event date: 2026-09-01 | Status: active
-    Entities: Leeds United, Crystal Palace, Liverpool, Brighton & Hove Albion, Aston Villa, Fulham
+ 2. [SCHEDULE] Arsenal-Chelsea set for Sunday (priority 82)
+    Arsenal host Chelsea on Sept. 6 in one of the weekend’s headline fixtures.
+    Event date: 2026-09-06 | Status: next
+    Entities: Arsenal, Chelsea
+    Source: https://www.premierleague.com/en/news/4678381/fixture-amendments-for-august-and-september/
+
+ 3. [SCHEDULE] Newcastle face Bournemouth Saturday (priority 80)
+    Newcastle United host Bournemouth on Sept. 5.
+    Event date: 2026-09-05 | Status: next
+    Entities: Newcastle United, AFC Bournemouth
+    Source: https://www.premierleague.com/en/news/4678381/fixture-amendments-for-august-and-september/
+
+ 4. [SCHEDULE] Everton welcome Manchester United (priority 78)
+    Everton host Manchester United on Sept. 6.
+    Event date: 2026-09-06 | Status: next
+    Entities: Everton, Manchester United
+    Source: https://www.premierleague.com/en/news/4678381/fixture-amendments-for-august-and-september/
+
+ 5. [SCHEDULE] Manchester derby set for Sept. 13 (priority 76)
+    Manchester United and Manchester City are scheduled to meet at Old Trafford on Sept. 13.
+    Event date: 2026-09-13 | Status: next
+    Entities: Manchester United, Manchester City
+    Source: https://www.premierleague.com/en/news/4678381/fixture-amendments-for-august-and-september/
+
+ 6. [SCHEDULE] Leeds-Palace fixture moved (priority 74)
+    Leeds United versus Crystal Palace has been rescheduled for Sept. 20 because of Palace’s Europa League participation.
+    Event date: 2026-09-20 | Status: next
+    Entities: Leeds United, Crystal Palace
     Source: https://www.premierleague.com/en/news/4705445/further-fixture-amendments-announced-in-september-and-october-2026
 
- 3. [OTHER] Premier League launches suicide-prevention initiative (priority 62)
-    All 20 clubs are supporting the league’s Together Against Suicide initiative from September 4-14, offering matchday environments and signposting to support organizations.
-    Event date: 2026-09-04 | Status: active
-    Entities: Premier League, Together Against Suicide
+ 7. [RANKING] August award shortlists announced (priority 72)
+    The league released nominees for Player, Manager, Goal and Save of the Month awards.
+    Event date: 2026-09-03 | Status: watch
+    Entities: Premier League
+    Source: https://www.premierleague.com/en/news/4705489/vote-for-august-2026-premier-league-award-winners
+
+ 8. [OTHER] New officiating emphasis begins (priority 68)
+    The 2026-27 season includes stronger measures against time-wasting, more efficient VAR use and a new one-minute off-field protocol for nominated players.
+    Event date: 2026-08-23 | Status: active
+    Entities: Premier League, VAR
+    Source: https://www.premierleague.com/en/news/4688755/whats-new-in-202627-laws-of-the-game
+
+ 9. [OTHER] Suicide-prevention initiative expands (priority 64)
+    All 20 clubs are providing tailored matchday support as part of the league’s Together Against Suicide initiative.
+    Event date: 2026-09-03 | Status: active
+    Entities: Premier League
     Source: https://www.premierleague.com/en/news/4706110/premier-league-clubs-providing-support-for-fans-as-part-of-together-against-suicide
+
+10. [OTHER] Coventry, Ipswich and Hull promoted (priority 62)
+    The three promoted clubs were formally welcomed into the 2026-27 Premier League after the league table reset.
+    Event date: 2026-06-05 | Status: active
+    Entities: Coventry City, Ipswich Town, Hull City
+    Source: https://www.premierleague.com/en/news/4673099/the-202627-premier-league-season-officially-starts
 
 ========================================================================
 MLS
 ========================================================================
 
- 1. [NEXT] Messi leads Miami against Atlanta (priority 82)
-    Inter Miami hosts Atlanta United in a key match as Atlanta attempts to continue its playoff push after winning three of its last four.
-    Event date: 2026-09-04 | Status: next
-    Entities: Lionel Messi, Inter Miami CF, Atlanta United
-    Source: https://www.mlssoccer.com/news/lionel-messi-leads-inter-miami-into-atlanta-united-duel
+ 1. [SCHEDULE] MLS regular season opens this weekend (priority 86)
+    The 2026 MLS campaign begins with LAFC hosting defending MLS Cup champion Inter Miami at the Los Angeles Memorial Coliseum.
+    Event date: 2026-02-21 | Status: active
+    Entities: Los Angeles FC, Inter Miami CF
+    Source: https://www.mlssoccer.com/news/the-pitch-mls-is-back-2026
 
- 2. [STANDINGS] Atlanta closes on playoff line (priority 79)
-    Atlanta United has climbed back into the Eastern Conference playoff picture and sits four points behind ninth-place Orlando City.
-    Event date: 2026-09-04 | Status: active
-    Entities: Atlanta United, Orlando City
-    Source: https://www.mlssoccer.com/news/lionel-messi-leads-inter-miami-into-atlanta-united-duel
+ 2. [SCHEDULE] Leagues Cup runs through Sept. 6 (priority 82)
+    The 2026 Leagues Cup features 36 clubs—18 from MLS and 18 from Liga MX—with the competition scheduled from Aug. 4 through Sept. 6.
+    Event date: 2026-09-06 | Status: active
+    Entities: Leagues Cup, MLS, Liga MX
+    Source: https://images.mlssoccer.com/image/upload/v1777668287/assets/min/media/2026_MNUFC_MediaGuide_avbiup.pdf
 
- 3. [INJURY] Moralez among NYCFC absences (priority 74)
-    New York City FC listed Maxi Moralez, Talles Magno, Keaton Parks and four others out for Friday’s match against Nashville.
-    Event date: 2026-09-04 | Status: active
-    Entities: Maxi Moralez, Talles Magno, Keaton Parks, New York City FC, Nashville SC
-    Source: https://www.mlssoccer.com/news/mls-player-status-report-matchday-24-friday-september-4-saturday-september-5
+ 3. [SIGNING] LAFC add Cristian Espinoza (priority 78)
+    LAFC signed Cristian Espinoza, one of the league’s most productive creators of the past five years.
+    Event date: 2026-02-19 | Status: active
+    Entities: Los Angeles FC, Cristian Espinoza
+    Source: https://www.mlssoccer.com/news/the-pitch-mls-is-back-2026
 
- 4. [INJURY] Nashville lists Madrigal out (priority 66)
-    Nashville forward Warren Madrigal is out with a lower-body injury for the Friday matchup.
-    Event date: 2026-09-04 | Status: active
-    Entities: Warren Madrigal, Nashville SC
-    Source: https://www.mlssoccer.com/news/mls-player-status-report-matchday-24-friday-september-4-saturday-september-5
+ 4. [SIGNING] Miami add Germán Berterame (priority 74)
+    Inter Miami entered the season with new star signing Germán Berterame in its attack.
+    Event date: 2026-02-19 | Status: active
+    Entities: Inter Miami CF, Germán Berterame
+    Source: https://www.mlssoccer.com/news/the-pitch-mls-is-back-2026
 
- 5. [RECORD] MLS opening weekend set attendance record (priority 70)
-    The 2026 opening weekend drew 387,271 fans, the highest attendance for an opening weekend in league history.
-    Event date: 2026-03-01 | Status: active
-    Entities: MLS, 2026 MLS season
-    Source: https://www.mlssoccer.com/news/the-pitch-record-crowds-and-rising-stars-signal-mls-is-back
+ 5. [SIGNING] LAFC add Stephen Eustáquio (priority 72)
+    Stephen Eustáquio joined LAFC ahead of the club’s opening-weekend showcase against Miami.
+    Event date: 2026-02-19 | Status: active
+    Entities: Los Angeles FC, Stephen Eustáquio
+    Source: https://www.mlssoccer.com/news/the-pitch-mls-is-back-2026
+
+ 6. [COACHING] Nine clubs change coaches (priority 70)
+    Nearly one-third of MLS clubs began 2026 with new head coaches, including Atlanta’s returning Tata Martino.
+    Event date: 2026-02-19 | Status: active
+    Entities: MLS, Atlanta United, Tata Martino
+    Source: https://www.mlssoccer.com/news/the-pitch-mls-is-back-2026
+
+ 7. [COACHING] Michael Bradley takes Red Bulls job (priority 66)
+    Bradley moved from MLS NEXT Pro into the New York Red Bulls’ first-team coaching role.
+    Event date: 2026-02-19 | Status: active
+    Entities: New York Red Bulls, Michael Bradley
+    Source: https://www.mlssoccer.com/news/the-pitch-mls-is-back-2026
+
+ 8. [COACHING] Rydström takes over Columbus (priority 64)
+    Henrik Rydström began his MLS tenure as Columbus Crew head coach.
+    Event date: 2026-02-19 | Status: active
+    Entities: Columbus Crew, Henrik Rydström
+    Source: https://www.mlssoccer.com/news/the-pitch-mls-is-back-2026
+
+ 9. [COACHING] Wells starts with Colorado (priority 62)
+    Matt Wells took charge of the Colorado Rapids for the 2026 campaign.
+    Event date: 2026-02-19 | Status: active
+    Entities: Colorado Rapids, Matt Wells
+    Source: https://www.mlssoccer.com/news/the-pitch-mls-is-back-2026
+
+10. [SCHEDULE] Red Bulls host Chicago Sept. 5 (priority 60)
+    New York Red Bulls are scheduled to host Chicago Fire on Sept. 5.
+    Event date: 2026-09-05 | Status: next
+    Entities: New York Red Bulls, Chicago Fire
+    Source: https://images.mlssoccer.com/image/private/fl_attachment/mls-tor/mcov7halj57recov1jrd.pdf
 
 ========================================================================
 NCAAF
 ========================================================================
 
- 1. [RANKING] Ohio State and Oregon open 1-2 (priority 84)
-    The preseason AP Top 25 placed Ohio State first and Oregon second, with the Big Ten pursuing an unprecedented fourth consecutive College Football Playoff championship.
-    Event date: 2026-08-17 | Status: active
-    Entities: Ohio State Buckeyes, Oregon Ducks, Big Ten
-    Source: https://apnews.com/article/bd5dd1c058fab6047510f09e18b035f1
+ 1. [SCHEDULE] Miami visits Stanford Friday (priority 90)
+    Miami and Stanford headline Friday night’s college football schedule.
+    Event date: 2026-09-04 | Status: next
+    Entities: Miami Hurricanes, Stanford Cardinal
+    Source: https://www.espn.com/college-football/schedule/
 
- 2. [RESULT] USC beats San Jose State 42-26 (priority 78)
-    No. 14 USC opened the season with a 42-26 victory over San Jose State on August 29.
-    Event date: 2026-08-29 | Status: active
-    Entities: USC Trojans, San Jose State Spartans
-    Source: https://www.cbssports.com/college-football/schedule/TOP25/
+ 2. [SCHEDULE] LIU visits Kansas (priority 82)
+    Long Island University travels to Kansas on Sept. 4.
+    Event date: 2026-09-04 | Status: next
+    Entities: Long Island University, Kansas Jayhawks
+    Source: https://www.espn.com/college-football/schedule/
 
- 3. [NEXT] Missouri hosts Arkansas-Pine Bluff (priority 76)
-    No. 25 Missouri is scheduled to host Arkansas-Pine Bluff on Thursday night in Week 1.
-    Event date: 2026-09-03 | Status: active
-    Entities: Missouri Tigers, Arkansas-Pine Bluff Golden Lions
-    Source: https://www.cbssports.com/college-football/schedule/TOP25/
+ 3. [SCHEDULE] San José State visits Eastern Michigan (priority 78)
+    The Spartans and Eagles meet Friday in a nonconference matchup.
+    Event date: 2026-09-04 | Status: next
+    Entities: San José State Spartans, Eastern Michigan Eagles
+    Source: https://www.espn.com/college-football/schedule/
 
- 4. [NEXT] Utah hosts Idaho in ranked matchup slate (priority 74)
-    No. 21 Utah is scheduled to host Idaho as the opening full week of the 2026 college football season begins.
-    Event date: 2026-09-03 | Status: active
-    Entities: Utah Utes, Idaho Vandals
-    Source: https://www.cbssports.com/college-football/schedule/TOP25/
+ 4. [SCHEDULE] Clemson visits LSU Saturday (priority 88)
+    Clemson and LSU meet in one of Week 1’s premier games.
+    Event date: 2026-09-05 | Status: next
+    Entities: Clemson Tigers, LSU Tigers
+    Source: https://www.ncaa.com/news/football/article/2026-04-27/college-football-schedule-when-does-2026-college-football-season-start
 
- 5. [OTHER] Louisiana ruling clears path for LSU additions (priority 73)
-    A Louisiana judge ruled against the NCAA, clearing a path for former NFL players to join LSU’s roster.
-    Event date: 2026-09-03 | Status: active
-    Entities: LSU Tigers, NCAA
-    Source: https://apnews.com/article/ff59236793bdefab677ceb728599aa84
+ 5. [SCHEDULE] Boise State visits Oregon (priority 86)
+    Boise State travels to Oregon for a major early-season test.
+    Event date: 2026-09-05 | Status: next
+    Entities: Boise State Broncos, Oregon Ducks
+    Source: https://www.ncaa.com/news/football/article/2026-04-27/college-football-schedule-when-does-2026-college-football-season-start
 
-########################################################################
-SPECIAL EVENTS
-########################################################################
+ 6. [SCHEDULE] Baylor faces Auburn in Atlanta (priority 84)
+    Baylor and Auburn meet at Mercedes-Benz Stadium on Saturday.
+    Event date: 2026-09-05 | Status: next
+    Entities: Baylor Bears, Auburn Tigers
+    Source: https://www.ncaa.com/news/football/article/2026-04-27/college-football-schedule-when-does-2026-college-football-season-start
 
-2026 Leagues Cup (Soccer)
-------------------------------------------------------------------------
+ 7. [SCHEDULE] Notre Dame meets Wisconsin at Lambeau (priority 80)
+    Notre Dame and Wisconsin are scheduled to play at Lambeau Field on Sunday.
+    Event date: 2026-09-06 | Status: next
+    Entities: Notre Dame Fighting Irish, Wisconsin Badgers
+    Source: https://www.ncaa.com/news/football/article/2026-04-27/college-football-schedule-when-does-2026-college-football-season-start
 
- 1. [PLAYOFF] Leagues Cup knockout phase reaches final weekend (priority 80)
-    The 2026 Leagues Cup features 36 clubs and runs through September 6, with the competition entering its decisive closing stretch.
-    Event date: 2026-09-04 | Status: active
-    Source: https://images.mlssoccer.com/image/upload/v1777668287/assets/min/media/2026_MNUFC_MediaGuide_avbiup.pdf
+ 8. [SCHEDULE] Washington hosts Washington State (priority 78)
+    The in-state rivalry is part of Saturday’s Week 1 schedule.
+    Event date: 2026-09-05 | Status: next
+    Entities: Washington Huskies, Washington State Cougars
+    Source: https://www.ncaa.com/news/football/article/2026-04-27/college-football-season-start
+
+ 9. [SCHEDULE] Texas hosts Texas State (priority 76)
+    Texas opens its home schedule against Texas State on Saturday.
+    Event date: 2026-09-05 | Status: next
+    Entities: Texas Longhorns, Texas State Bobcats
+    Source: https://www.ncaa.com/news/football/article/2026-04-27/college-football-schedule-when-does-2026-college-football-season-start
+
+10. [SCHEDULE] Ohio State hosts Ball State (priority 74)
+    Ohio State faces Ball State in a Saturday nonconference game.
+    Event date: 2026-09-05 | Status: next
+    Entities: Ohio State Buckeyes, Ball State Cardinals
+    Source: https://www.ncaa.com/news/football/article/2026-04-27/college-football-schedule-when-does-2026-college-football-season-start
