@@ -1,6 +1,11 @@
-name: Sports Ticker Sidecar Refresh (Manual)
+name: Sports Ticker Scheduler v2
 
 on:
+  schedule:
+    # Exactly every 20 minutes. New workflow identity intentionally forces
+    # GitHub to register a fresh schedule rather than reusing the stale v1
+    # workflow registration.
+    - cron: '13,33,53 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -50,6 +55,7 @@ jobs:
           git config user.name "sports-ticker-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+          # Hard safety boundary: never stage any application/controller file.
           git add -- data/sports-ticker.json data/sports-ticker.txt
 
           CHANGED="$(git diff --cached --name-only)"
@@ -68,6 +74,7 @@ jobs:
 
           git commit -m "Sports Ticker: automated refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
 
+          # Coexist safely with controller/application commits landing on main.
           for attempt in 1 2 3; do
             git fetch origin main
             git rebase origin/main
