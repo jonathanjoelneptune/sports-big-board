@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const VERSION='5.5.0';
-const GENERATION='R11';
+const GENERATION='R11-PARALLEL';
 const $=id=>document.getElementById(id);
 const API=((window.SBB_CONFIG&&window.SBB_CONFIG.apiBase)||location.origin).replace(/\/$/,'')+'/api/media-audit';
 const state={offset:0,limit:100,total:0,rows:[],expanded:new Set(),status:null,busy:false,pollTimer:null,lastInventoryAt:0};
@@ -23,12 +23,12 @@ function renderSummary(status){
   setText('metricHealthy',fmtNum(h.HEALTHY));setText('metricDegraded',fmtNum(h.DEGRADED));setText('metricUnplayable',fmtNum(h.UNPLAYABLE));setText('metricNoMedia',fmtNum(h.NO_MEDIA));
   setText('metricAssets',fmtNum((s.playedAssets||0)+(s.failedAssets||0)));setText('metricAssetsSub',`${fmtNum(s.playedAssets)} played • ${fmtNum(s.failedAssets)} failed`);
   setText('metricRun',run?String(run.state||'IDLE'):'IDLE');
-  setText('metricRunSub',run?`Run #${run.id} • ${run.processed_games||0}/${run.total_games||0}`:(worker.alive?'Worker online':'Worker offline'));
+  setText('metricRunSub',run?`Run #${run.id} • ${run.processed_games||0}/${run.total_games||0} • ${status.workerCount||1} lanes`:(worker.alive?`${status.workerCount||1} worker lane${(status.workerCount||1)===1?'':'s'} online`:'Worker offline'));
   const pct=run?Number(run.progressPct||0):0;$('progressFill').style.width=Math.max(0,Math.min(100,pct))+'%';
   setText('progressLabel',run?`${String(run.state)} • ${pct.toFixed(1)}%`:'Idle');
   setText('progressDetail',run?(run.current_event_key?`#${run.current_ordinal} • ${run.current_event_key} • ${run.current_phase||''}`:`${run.processed_games||0}/${run.total_games||0} games`):'No canonical audit run active.');
   buttonState(run);
-  setText('probeGame',worker.current&&worker.current.game||'Waiting');setText('probeState',worker.alive?'SERVER WORKER':'OFFLINE');
+  setText('probeGame',worker.current&&worker.current.game||'Waiting');setText('probeState',worker.alive?`${status.workerCount||1} SERVER WORKERS`:'OFFLINE');
   $('probeState').className='state '+(worker.alive?'pass':'fail');
   renderDiagnostics(status);
   if(status.newestEligibleDate&&!$('auditStartDate').value)$('auditStartDate').value=status.newestEligibleDate;
@@ -66,6 +66,11 @@ function renderDiagnostics(status){
   setText('diagBrowser',status.browser||'Chromium not started yet');
   setText('diagOrigin',status.probeUrl||'—');
   setText('diagRecovered',recovery.requeued?`${recovery.requeued} prior exception failure${recovery.requeued===1?'':'s'} requeued`:'None');
+  const lanes=$('diagWorkers');
+  if(lanes){
+    const workers=Array.isArray(status.workers)?status.workers:[];
+    lanes.innerHTML=workers.map(w=>{const wd=w.diagnostics||{},wc=w.current||{},phase=wd.phase||wc.phase||'IDLE',game=wc.game||wd.game||'Waiting',ord=wc.ordinal||wd.ordinal||'';return `<div class="worker-lane ${w.alive?'live':'dead'}"><strong>LANE ${esc(w.lane||wd.workerLane||'?')}</strong><span>${ord?`#${esc(ord)} • `:''}${esc(game)}</span><small>${esc(phase)}${wd.waitingReason?` • ${esc(wd.waitingReason)}`:''}</small></div>`}).join('')||'<div class="worker-lane idle">No server workers reported.</div>';
+  }
   const trace=$('diagTrace');
   if(trace){
     const rows=(d.trace||[]).slice().reverse();

@@ -1,0 +1,34 @@
+Sports Big Board v5.5.0 R11 — Parallel Audit + Bounded Rehydration Repair
+
+CURRENT STALL ROOT CAUSE
+Queue #81 (Philadelphia Phillies @ Arizona Diamondbacks) had 8 DB media, 8 production media, and 8 playable Blue clips, but no Green/Purple. Targeted discovery pass 1 timed out. The old _discover_preferred loop retried that same pass forever, so the deterministic queue could never reach pass 2/3 or Blue fallback.
+
+FIX 1 — BOUNDED REHYDRATION
+- A TimeoutError/URLError consumes one discovery pass and returns to the outer DISCOVERY_PASSES loop.
+- Generic non-priority HTTP failures are also bounded per pass.
+- Playback Priority (423) may still wait because it is an intentional operator/resource gate.
+- After the bounded Green/Purple search passes, existing Blue media is tested as fallback and the audit moves on.
+
+FIX 2 — THREE PARALLEL AUDIT LANES
+- SBB_MEDIA_AUDIT_WORKERS defaults to 3 and is capped at 4.
+- Each lane owns a lazy headless-Chrome BrowserProbe. Chrome is not started until that lane actually needs to probe media.
+- Lanes claim adjacent PENDING ordinals in deterministic order (#81, #82, #83...).
+- Expensive playback/network probing runs concurrently.
+- Canonical package commits remain strictly ordinal through WAITING_COMMIT_ORDER, so #82 cannot become canonical before #81.
+- Only one targeted discovery request runs at a time (DISCOVERY_CONCURRENCY defaults to 1), preventing discovery stampedes and excess SQLite contention.
+- SQLite lock recovery returns an affected item to the deterministic PENDING queue; it is not treated as a media failure.
+
+DIAGNOSTICS
+The Media Audit page now includes PARALLEL WORKER LANES showing each lane's queue number, game, phase, and wait reason. The main diagnostic block continues to follow the earliest active ordinal.
+
+UPLOAD
+1. Upload the four non-test files at repository root preserving paths:
+   media_audit_service.py
+   media-audit.html
+   ui/media-audit-v550.js
+   ui/media-audit-v550.css
+2. In the existing GitHub /tests folder, replace test_v550_media_health_audit.py from the tests ZIP.
+3. Let the normal deployment finish. No VERSION, controller bridge, installer, or workflow change is required.
+
+AFTER DEPLOY
+Do not reset the audit unless you want a fresh queue. The service restart will recover the current ACTIVE queue row. Hard-refresh Media Audit once to load the worker-lane diagnostics. Queue #81 should finish its bounded discovery attempts, fall back to its playable Blue package if no preferred recap is found, and allow the queue to progress.

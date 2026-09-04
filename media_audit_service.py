@@ -54,6 +54,9 @@ DB_LOCK_RETRY_SECONDS = max(1.0, float(os.environ.get("SBB_MEDIA_AUDIT_DB_LOCK_R
 WORKER_EXCEPTION_RETRIES = max(1, min(10, int(os.environ.get("SBB_MEDIA_AUDIT_EXCEPTION_RETRIES", "3"))))
 CONTROL_WORKER_JOIN_SECONDS = max(0.5, min(10.0, float(os.environ.get("SBB_MEDIA_AUDIT_CONTROL_JOIN_SECONDS", "2"))))
 DISCOVERY_HTTP_TIMEOUT_SECONDS = max(5, min(60, int(os.environ.get("SBB_MEDIA_AUDIT_DISCOVERY_HTTP_TIMEOUT_SECONDS", "20"))))
+AUDIT_WORKER_COUNT = max(1, min(4, int(os.environ.get("SBB_MEDIA_AUDIT_WORKERS", "3"))))
+DISCOVERY_CONCURRENCY = max(1, min(2, int(os.environ.get("SBB_MEDIA_AUDIT_DISCOVERY_CONCURRENCY", "1"))))
+DISCOVERY_SEMAPHORE = threading.Semaphore(DISCOVERY_CONCURRENCY)
 AUDIT_TIMEZONE = os.environ.get("SBB_MEDIA_AUDIT_TIMEZONE", "America/Los_Angeles").strip() or "America/Los_Angeles"
 try:
     AUDIT_TZ = ZoneInfo(AUDIT_TIMEZONE)
@@ -482,28 +485,70 @@ class AuditStore:
         data["progressPct"] = round(100.0 * int(data.get("processed_games") or 0) / max(1, int(data.get("total_games") or 0)), 2)
         return data
 
-    def next_queue_item(self, run_id: int):
+    def _sync_run_frontier_conn(self, conn, run_id: int, now=None):
+        now = _now() if now is None else now
+        frontier = conn.execute(
+            "SELECT ordinal,canonical_event_key,phase FROM history_media_audit_queue WHERE run_id=? AND state NOT IN ('DONE','FAILED','SKIPPED') ORDER BY ordinal ASC LIMIT 1",
+            (run_id,),
+        ).fetchone()
+        if frontier:
+            conn.execute(
+                "UPDATE history_media_audit_run SET current_ordinal=?,current_event_key=?,current_phase=?,updated_at=? WHERE id=?",
+                (frontier["ordinal"], frontier["canonical_event_key"], frontier["phase"] or "PENDING", now, run_id),
+            )
+        else:
+            conn.execute(
+                "UPDATE history_media_audit_run SET current_ordinal=0,current_event_key='',current_phase='QUEUE_EMPTY',updated_at=? WHERE id=?",
+                (now, run_id),
+            )
+
+    def next_queue_item(self, run_id: int, worker_lane: int = 1):
         with self.lock, closing(self.connect()) as conn:
-            # Never jump ahead of a lower ordinal non-terminal item.
+            # Parallel workers claim adjacent PENDING ordinals in deterministic order.
+            # They may probe concurrently, but canonical commit order is enforced later.
             row = conn.execute(
-                "SELECT * FROM history_media_audit_queue WHERE run_id=? AND state NOT IN ('DONE','FAILED','SKIPPED') ORDER BY ordinal ASC LIMIT 1",
+                "SELECT * FROM history_media_audit_queue WHERE run_id=? AND state='PENDING' ORDER BY ordinal ASC LIMIT 1",
                 (run_id,),
             ).fetchone()
             if not row:
                 return None
             now = _now()
-            if row["state"] == "PENDING":
-                conn.execute("UPDATE history_media_audit_queue SET state='ACTIVE',started_at=?,phase='STARTING' WHERE run_id=? AND ordinal=?", (now, run_id, row["ordinal"]))
-                conn.execute("UPDATE history_media_audit_run SET current_ordinal=?,current_event_key=?,current_phase='STARTING',updated_at=? WHERE id=?", (row["ordinal"], row["canonical_event_key"], now, run_id))
-                conn.commit()
-                row = conn.execute("SELECT * FROM history_media_audit_queue WHERE run_id=? AND ordinal=?", (run_id, row["ordinal"])).fetchone()
-            return dict(row)
+            note = f"Claimed by audit lane {int(worker_lane)}"
+            conn.execute(
+                "UPDATE history_media_audit_queue SET state='ACTIVE',started_at=?,phase='STARTING',note=? WHERE run_id=? AND ordinal=? AND state='PENDING'",
+                (now, note, run_id, row["ordinal"]),
+            )
+            if conn.total_changes <= 0:
+                conn.rollback()
+                return None
+            self._sync_run_frontier_conn(conn, run_id, now)
+            conn.commit()
+            row = conn.execute("SELECT * FROM history_media_audit_queue WHERE run_id=? AND ordinal=?", (run_id, row["ordinal"])).fetchone()
+            return dict(row) if row else None
+
+    def requeue_item(self, run_id: int, ordinal: int, phase="RETRY_PENDING", note=""):
+        now = _now()
+        with self.lock, closing(self.connect()) as conn:
+            conn.execute(
+                "UPDATE history_media_audit_queue SET state='PENDING',phase=?,note=? WHERE run_id=? AND ordinal=? AND state='ACTIVE'",
+                (phase, str(note or "")[:1000], run_id, ordinal),
+            )
+            self._sync_run_frontier_conn(conn, run_id, now)
+            conn.commit()
+
+    def commit_turn_ready(self, run_id: int, ordinal: int):
+        with closing(self.connect()) as conn:
+            row = conn.execute(
+                "SELECT COUNT(*) n FROM history_media_audit_queue WHERE run_id=? AND ordinal<? AND state NOT IN ('DONE','FAILED','SKIPPED')",
+                (run_id, ordinal),
+            ).fetchone()
+        return int(row["n"] or 0) == 0
 
     def queue_phase(self, run_id, ordinal, phase, note=""):
         now = _now()
         with self.lock, closing(self.connect()) as conn:
             conn.execute("UPDATE history_media_audit_queue SET phase=?,note=? WHERE run_id=? AND ordinal=?", (phase, str(note or "")[:1000], run_id, ordinal))
-            conn.execute("UPDATE history_media_audit_run SET current_phase=?,updated_at=? WHERE id=?", (phase, now, run_id))
+            self._sync_run_frontier_conn(conn, run_id, now)
             conn.commit()
 
     def finish_queue_item(self, run_id, ordinal, health, note="", failed=False):
@@ -513,6 +558,7 @@ class AuditStore:
             conn.execute("UPDATE history_media_audit_queue SET state=?,phase='COMPLETE',health=?,note=?,completed_at=? WHERE run_id=? AND ordinal=?", (state, health, str(note or "")[:1000], now, run_id, ordinal))
             processed = int(conn.execute("SELECT COUNT(*) FROM history_media_audit_queue WHERE run_id=? AND state IN ('DONE','FAILED','SKIPPED')", (run_id,)).fetchone()[0] or 0)
             conn.execute("UPDATE history_media_audit_run SET processed_games=?,updated_at=?,last_error=? WHERE id=?", (processed, now, str(note or "")[:1000] if failed else "", run_id))
+            self._sync_run_frontier_conn(conn, run_id, now)
             conn.commit()
 
     def complete_run_if_done(self, run_id):
@@ -765,8 +811,9 @@ class BrowserProbe:
 class CanonicalAuditWorker(threading.Thread):
     daemon = True
 
-    def __init__(self, store: AuditStore, probe: BrowserProbe):
-        super().__init__(name="canonical-media-audit")
+    def __init__(self, store: AuditStore, probe: BrowserProbe, worker_lane: int = 1):
+        self.worker_lane = int(worker_lane)
+        super().__init__(name=f"canonical-media-audit-{self.worker_lane}")
         self.store, self.probe = store, probe
         self.stop_event = threading.Event()
         self.current = {}
@@ -801,6 +848,8 @@ class CanonicalAuditWorker(threading.Thread):
             "productionPlayableCount": 0,
             "productionPlanState": "",
             "lastOperation": "",
+            "workerLane": self.worker_lane,
+            "workerCount": AUDIT_WORKER_COUNT,
         }
         self.trace = deque(maxlen=120)
 
@@ -863,7 +912,7 @@ class CanonicalAuditWorker(threading.Thread):
                     continue
 
                 self._db_op("claim next deterministic queue ordinal")
-                item = self.store.next_queue_item(int(run["id"]))
+                item = self.store.next_queue_item(int(run["id"]), self.worker_lane)
                 self._db_recovered()
                 if not item:
                     self._db_op("complete run if queue empty")
@@ -883,7 +932,7 @@ class CanonicalAuditWorker(threading.Thread):
                     candidateTier="", candidateIndex=0, candidateCount=0, assetKey="", assetTitle="", assetProvider="",
                     probeAttempt=0, lastProbeResult="", discoveryPass=0, discoveryResult="",
                 )
-                self._trace("INFO", f"Queue #{item['ordinal']} started: {item['game']}", league=item["league"], event=item["canonical_event_key"])
+                self._trace("INFO", f"Lane {self.worker_lane} • Queue #{item['ordinal']} started: {item['game']}", league=item["league"], event=item["canonical_event_key"], lane=self.worker_lane)
 
                 try:
                     result = self.audit_event(run, item)
@@ -912,11 +961,17 @@ class CanonicalAuditWorker(threading.Thread):
                         lastProbeResult=msg,
                     )
                     self._trace(
-                        "WARN", f"SQLite busy on queue #{item['ordinal']}; same ordinal will retry",
-                        operation=snap.get("dbOperation") or "", retry=retries, event=item["canonical_event_key"]
+                        "WARN", f"SQLite busy on queue #{item['ordinal']}; ordinal returned to deterministic pending queue",
+                        operation=snap.get("dbOperation") or "", retry=retries, event=item["canonical_event_key"], lane=self.worker_lane
                     )
-                    # Do not mark media or queue item failed. Deterministic next_queue_item
-                    # will return this same ACTIVE/PENDING lowest ordinal after the lock clears.
+                    while not self.stop_event.is_set():
+                        try:
+                            self.store.requeue_item(run["id"], item["ordinal"], "WAITING_DATABASE_LOCK", msg)
+                            break
+                        except sqlite3.OperationalError as requeue_exc:
+                            if not _is_db_locked(requeue_exc):
+                                raise
+                            time.sleep(DB_LOCK_RETRY_SECONDS)
                     time.sleep(DB_LOCK_RETRY_SECONDS)
                     continue
                 except Exception as exc:
@@ -941,6 +996,10 @@ class CanonicalAuditWorker(threading.Thread):
                                 run["id"], item["ordinal"], "RETRY_WORKER_EXCEPTION",
                                 f"{msg} • retry {attempt}/{WORKER_EXCEPTION_RETRIES}"
                             )
+                            self.store.requeue_item(
+                                run["id"], item["ordinal"], "RETRY_WORKER_EXCEPTION",
+                                f"{msg} • retry {attempt}/{WORKER_EXCEPTION_RETRIES}"
+                            )
                             self._db_recovered()
                         except sqlite3.OperationalError as db_exc:
                             if _is_db_locked(db_exc):
@@ -949,6 +1008,17 @@ class CanonicalAuditWorker(threading.Thread):
                                     dbLockRetries=int(self.snapshot().get("dbLockRetries") or 0)+1,
                                     lastDbLockAt=_now(), waitingReason=f"{type(db_exc).__name__}: {db_exc}"
                                 )
+                                while not self.stop_event.is_set():
+                                    try:
+                                        self.store.requeue_item(
+                                            run["id"], item["ordinal"], "RETRY_WORKER_EXCEPTION",
+                                            f"{msg} • retry {attempt}/{WORKER_EXCEPTION_RETRIES}"
+                                        )
+                                        break
+                                    except sqlite3.OperationalError as requeue_exc:
+                                        if not _is_db_locked(requeue_exc):
+                                            raise
+                                        time.sleep(DB_LOCK_RETRY_SECONDS)
                             else:
                                 raise
                         time.sleep(min(10.0, 1.5 * attempt))
@@ -1198,8 +1268,12 @@ class CanonicalAuditWorker(threading.Thread):
                 time.sleep(1)
                 continue
             try:
-                with urlopen(req, timeout=DISCOVERY_HTTP_TIMEOUT_SECONDS) as resp:
-                    payload = json.loads(resp.read().decode("utf-8"))
+                # Rehydration is intentionally serialized even when media probes run
+                # in parallel. This prevents a worker pool from stampeding the main
+                # discovery backend or amplifying SQLite writer contention.
+                with DISCOVERY_SEMAPHORE:
+                    with urlopen(req, timeout=DISCOVERY_HTTP_TIMEOUT_SECONDS) as resp:
+                        payload = json.loads(resp.read().decode("utf-8"))
                 # The request may have been in flight when RESET/START/STOP retired
                 # this worker. Verify the exact run still exists before accepting it.
                 current_after_request = self.store.run_snapshot(int(run["id"]))
@@ -1229,10 +1303,27 @@ class CanonicalAuditWorker(threading.Thread):
                 self._diag(discoveryResult=reason)
                 if exc.code in {400, 404}:
                     return {"ok": False, "reason": reason}
-                time.sleep(DISCOVERY_RETRY_SECONDS)
+                # R11 bounded rehydration repair: one non-priority HTTP failure
+                # consumes this discovery pass. The outer DISCOVERY_PASSES loop
+                # owns retry count so a single game can never hold the entire
+                # deterministic audit queue forever.
+                self._diag(waitingReason="Discovery HTTP failure; continuing bounded rehydration")
+                self._trace(
+                    "WARN", f"Targeted discovery pass {pass_number}/{DISCOVERY_PASSES} HTTP failure; advancing bounded retry",
+                    event=item["canonical_event_key"], reason=reason
+                )
+                return {"ok": False, "reason": reason}
             except (URLError, TimeoutError) as exc:
-                self._diag(discoveryResult=f"{type(exc).__name__}", waitingReason="Discovery transport retry")
-                time.sleep(DISCOVERY_RETRY_SECONDS)
+                reason = f"DISCOVERY_TRANSPORT_{type(exc).__name__.upper()}"
+                self._diag(
+                    discoveryResult=f"{type(exc).__name__}",
+                    waitingReason="Discovery transport timed out; continuing bounded rehydration"
+                )
+                self._trace(
+                    "WARN", f"Targeted discovery pass {pass_number}/{DISCOVERY_PASSES} transport failure; advancing bounded retry",
+                    event=item["canonical_event_key"], reason=reason
+                )
+                return {"ok": False, "reason": reason}
         return {"ok": False, "reason": "WORKER_STOPPED"}
 
     def audit_event(self, run, item):
@@ -1357,6 +1448,23 @@ class CanonicalAuditWorker(threading.Thread):
         if not current_run or current_run.get("state") == "STOPPED":
             return {"health": "SKIPPED", "note": "RUN_STOPPED_BEFORE_CANONICALIZE"}
 
+        # Multiple lanes may probe adjacent games concurrently, but canonical package
+        # writes remain strictly ordinal. This preserves the audit's deterministic
+        # website-wide sequence while still overlapping expensive browser/network work.
+        while not self.stop_event.is_set() and not self.store.commit_turn_ready(run_id, int(item["ordinal"])):
+            current_run = self.store.run_snapshot(run_id)
+            if not current_run or current_run.get("state") == "STOPPED":
+                return {"health": "SKIPPED", "note": "RUN_STOPPED_BEFORE_CANONICALIZE"}
+            self._diag(phase="WAITING_COMMIT_ORDER", waitingReason="Earlier queue ordinal is still being certified")
+            try:
+                self.store.queue_phase(run_id, item["ordinal"], "WAITING_COMMIT_ORDER", "Earlier queue ordinal is still being certified")
+            except sqlite3.OperationalError:
+                pass
+            time.sleep(0.5)
+        if self.stop_event.is_set():
+            return {"health": "SKIPPED", "note": "WORKER_STOPPED_BEFORE_CANONICALIZE"}
+        self._diag(waitingReason="")
+
         self._db_op("canonicalize shared event-media package")
         self.store.queue_phase(run_id, item["ordinal"], "CANONICALIZE")
         self._db_recovered()
@@ -1377,38 +1485,58 @@ class CanonicalAuditWorker(threading.Thread):
 STORE = AuditStore(DB_PATH)
 RECOVERY = STORE.recover_exception_failures()
 WORKER_CONTROL_LOCK = threading.RLock()
-PROBE = None
-WORKER = None
+PROBES = []
+WORKERS = []
 
-def _spawn_worker(reason="service start"):
-    global PROBE, WORKER
-    PROBE = BrowserProbe()
-    WORKER = CanonicalAuditWorker(STORE, PROBE)
-    WORKER.start()
-    WORKER._trace("INFO", f"Canonical audit worker spawned: {reason}")
-    return WORKER
+def _spawn_workers(reason="service start"):
+    global PROBES, WORKERS
+    PROBES = []
+    WORKERS = []
+    for lane in range(1, AUDIT_WORKER_COUNT + 1):
+        probe = BrowserProbe()
+        worker = CanonicalAuditWorker(STORE, probe, worker_lane=lane)
+        PROBES.append(probe)
+        WORKERS.append(worker)
+        worker.start()
+        worker._trace("INFO", f"Canonical audit lane {lane}/{AUDIT_WORKER_COUNT} spawned: {reason}")
+    return WORKERS
 
-def _retire_worker(reason="operator control"):
-    global WORKER, PROBE
-    old = WORKER
-    if old is None:
-        return {"hadWorker": False, "joined": True}
-    try:
-        old._trace("WARN", f"Canonical audit worker retired: {reason}")
-    except Exception:
-        pass
-    old.stop()
+
+def _retire_workers(reason="operator control"):
+    global WORKERS, PROBES
+    old = list(WORKERS)
+    if not old:
+        return {"hadWorkers": False, "joined": True, "workers": 0}
+    for worker in old:
+        try:
+            worker._trace("WARN", f"Canonical audit worker retired: {reason}")
+        except Exception:
+            pass
+        worker.stop()
     deadline = time.time() + CONTROL_WORKER_JOIN_SECONDS
-    while old.is_alive() and time.time() < deadline:
+    while any(w.is_alive() for w in old) and time.time() < deadline:
         time.sleep(0.05)
-    joined = not old.is_alive()
-    # It is safe to detach an old daemon thread that is still blocked in network I/O:
-    # stop_event + exact-run checks prevent any stale result from being persisted.
-    return {"hadWorker": True, "joined": joined}
+    joined = all(not w.is_alive() for w in old)
+    return {"hadWorkers": True, "joined": joined, "workers": len(old)}
 
-_spawn_worker("service start")
-if RECOVERY.get("requeued"):
-    WORKER._trace("WARN", f"Recovered {RECOVERY['requeued']} prior worker/infrastructure failures for deterministic retry", runId=RECOVERY.get("runId"))
+
+def _worker_status_payload():
+    rows = []
+    for worker in WORKERS:
+        rows.append({
+            "lane": worker.worker_lane,
+            "alive": worker.is_alive(),
+            "current": dict(worker.current or {}),
+            "lastError": worker.last_error,
+            "diagnostics": worker.snapshot(),
+        })
+    active = [r for r in rows if r.get("current") and r["current"].get("ordinal")]
+    primary = min(active, key=lambda r: int(r["current"].get("ordinal") or 10**9)) if active else (rows[0] if rows else {"alive": False, "current": {}, "lastError": "", "diagnostics": {}})
+    return primary, rows
+
+_spawn_workers("service start")
+if RECOVERY.get("requeued") and WORKERS:
+    WORKERS[0]._trace("WARN", f"Recovered {RECOVERY['requeued']} prior worker/infrastructure failures for deterministic retry", runId=RECOVERY.get("runId"))
 
 
 def _json(handler, payload, status=200):
@@ -1461,16 +1589,16 @@ class Handler(BaseHTTPRequestHandler):
                     if not _is_db_locked(exc):
                         raise
                     storage_error = f"{type(exc).__name__}: {exc}"
+                primary_worker, worker_rows = _worker_status_payload()
+                browser_names = [getattr(p, "browser", "") for p in PROBES if getattr(p, "browser", "")]
+                browser_errors = [getattr(p, "last_error", "") for p in PROBES if getattr(p, "last_error", "")]
+                primary_worker = {**primary_worker, "recoveredExceptionFailures": RECOVERY}
                 return _json(self, {
                     "ok": True, "version": APP_VERSION, "generation": AUDIT_GENERATION,
                     "canonical": True, "browserOwned": False, "probeUrl": PROBE_URL,
-                    "timezone": AUDIT_TIMEZONE, "browser": PROBE.browser,
-                    "browserError": PROBE.last_error, "storageReadError": storage_error,
-                    "worker": {
-                        "alive": WORKER.is_alive(), "current": WORKER.current,
-                        "lastError": WORKER.last_error, "diagnostics": WORKER.snapshot(),
-                        "recoveredExceptionFailures": RECOVERY
-                    },
+                    "timezone": AUDIT_TIMEZONE, "browser": browser_names[0] if browser_names else "",
+                    "browserError": browser_errors[0] if browser_errors else "", "storageReadError": storage_error,
+                    "workerCount": AUDIT_WORKER_COUNT, "workers": worker_rows, "worker": primary_worker,
                     "run": run_snapshot, "summary": summary, "newestEligibleDate": newest
                 })
             if parsed.path == "/inventory":
@@ -1505,9 +1633,9 @@ class Handler(BaseHTTPRequestHandler):
                     existing = STORE.active_run()
                     if existing and existing.get("state") in {"RUNNING", "PAUSED"}:
                         STORE.set_run_state("STOPPED")
-                    retired = _retire_worker("new audit run requested")
+                    retired = _retire_workers("new audit run requested")
                     run = STORE.start_run(body.get("mode") or "ALL", body.get("startDate") or "")
-                    _spawn_worker("new audit run")
+                    _spawn_workers("new audit run")
                 return _json(self, {"ok": True, "run": run, "workerReset": retired})
             if parsed.path == "/pause":
                 return _json(self, {"ok": True, "run": STORE.set_run_state("PAUSED")})
@@ -1516,17 +1644,17 @@ class Handler(BaseHTTPRequestHandler):
             if parsed.path == "/stop":
                 with WORKER_CONTROL_LOCK:
                     run = STORE.set_run_state("STOPPED")
-                    retired = _retire_worker("audit stopped")
-                    _spawn_worker("idle after stop")
+                    retired = _retire_workers("audit stopped")
+                    _spawn_workers("idle after stop")
                 return _json(self, {"ok": True, "run": run, "workerReset": retired})
             if parsed.path == "/reset":
                 with WORKER_CONTROL_LOCK:
                     existing = STORE.active_run()
                     if existing and existing.get("state") in {"RUNNING", "PAUSED"}:
                         STORE.set_run_state("STOPPED")
-                    retired = _retire_worker("audit reset")
+                    retired = _retire_workers("audit reset")
                     result = STORE.reset_run(recertify=bool(body.get("recertify")))
-                    _spawn_worker("idle after reset")
+                    _spawn_workers("idle after reset")
                 return _json(self, {**result, "workerReset": retired, "run": None})
             return _json(self, {"ok": False, "error": "NOT_FOUND"}, 404)
         except Exception as exc:
@@ -1539,10 +1667,10 @@ def main():
     print(f"Probe origin: {PROBE_URL}", flush=True)
     stop = threading.Event()
     def shutdown(_sig, _frame):
-        stop.set(); WORKER.stop(); threading.Thread(target=server.shutdown, daemon=True).start()
+        stop.set(); _retire_workers("service shutdown"); threading.Thread(target=server.shutdown, daemon=True).start()
     signal.signal(signal.SIGTERM, shutdown); signal.signal(signal.SIGINT, shutdown)
     try: server.serve_forever(poll_interval=0.5)
-    finally: WORKER.stop(); server.server_close()
+    finally: _retire_workers("service close"); server.server_close()
 
 
 if __name__ == "__main__":

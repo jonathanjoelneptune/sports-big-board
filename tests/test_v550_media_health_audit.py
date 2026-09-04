@@ -17,7 +17,7 @@ for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STA
 assert 'youtubeProbe' not in html
 assert 'directProbe' not in html
 assert 'youtube.com/iframe_api' not in html
-assert 'ui/media-audit-v550.js?v=5.5.0-r11' in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r11p' in html
 assert 'href="media-audit.html"' in index
 
 # Browser is a console only. All control and inventory authority routes to the backend service.
@@ -42,8 +42,6 @@ for token in [
     'TARGETED_REHYDRATION',
     '/api/history/event/discover',
     'WAITING_DISCOVERY_PRIORITY',
-    'Never jump ahead of a lower ordinal non-terminal item.',
-    'ORDER BY ordinal ASC LIMIT 1',
     'events.sort',
     'scheduledKey',
     'queueOrdinal',
@@ -93,7 +91,6 @@ for token in [
     'productionPlayableCount',
     'DISCOVERY_PASSES',
     'Only rehydrate when no preferred recap candidate survives canonical playback',
-    'same ordinal will retry',
     'recoveredExceptionFailures',
 ]:
     assert token in service,token
@@ -103,7 +100,7 @@ for token in [
     'diagProgressAge','diagTrace','SERVER TRACE','DATABASE + PRODUCTION PARITY'
 ]:
     assert token in html or token in js,token
-assert "const GENERATION='R11'" in js
+assert "const GENERATION='R11-PARALLEL'" in js
 assert 'localStorage' not in js
 
 # R11: reset/start/stop retire the worker itself and stale run work cannot persist.
@@ -138,4 +135,35 @@ for token in [
 assert 'self.repo = HistoryRepository' not in service
 assert 'HistoryRepository(self.db_path)' not in service
 
-print('PASS v5.5.0 R11 canonical Media Health Audit + hard reset/run replacement + startup-lock-safe schema + parity + diagnostics')
+
+# R11 bounded-rehydration repair: non-priority discovery failures must return to
+# the outer pass loop instead of sleeping forever inside pass 1.
+disc=service[service.index('def _discover_preferred'):service.index('def audit_event')]
+for token in [
+    'Discovery transport timed out; continuing bounded rehydration',
+    'advancing bounded retry',
+    'DISCOVERY_TRANSPORT_',
+]:
+    assert token in disc,token
+assert 'except (URLError, TimeoutError) as exc:' in disc
+# Priority mode is intentionally allowed to wait on the same ordinal, but generic
+# transport/HTTP failures are bounded by DISCOVERY_PASSES.
+transport_block=disc[disc.index('except (URLError, TimeoutError) as exc:'):]
+assert 'time.sleep(DISCOVERY_RETRY_SECONDS)' not in transport_block
+
+
+# R11 parallel audit lanes + bounded discovery timeout repair.
+for token in [
+    'AUDIT_WORKER_COUNT', 'SBB_MEDIA_AUDIT_WORKERS', 'DISCOVERY_CONCURRENCY',
+    'DISCOVERY_SEMAPHORE', 'worker_lane', 'commit_turn_ready', 'WAITING_COMMIT_ORDER',
+    'Parallel workers claim adjacent PENDING ordinals in deterministic order.',
+    '_spawn_workers', '_retire_workers', '_worker_status_payload', '"workers": worker_rows',
+]:
+    assert token in service,token
+assert "state='PENDING' ORDER BY ordinal ASC LIMIT 1" in service
+assert 'Earlier queue ordinal is still being certified' in service
+assert 'Targeted discovery pass {pass_number}/{DISCOVERY_PASSES} transport failure; advancing bounded retry' in service
+for token in ['PARALLEL WORKER LANES','diagWorkers']:
+    assert token in html or token in js,token
+
+print('PASS v5.5.0 R11 canonical Media Health Audit + 3-lane parallel probing + ordered canonical commits + bounded rehydration + reset/startup-lock/parity diagnostics')
