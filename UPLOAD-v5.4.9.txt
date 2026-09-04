@@ -1,0 +1,24 @@
+Sports Big Board v5.4.9 — Cached Team Select + League Logos + Radial History Parity
+
+Manual GitHub upload
+1. Extract the non-tests ZIP and upload its contents into the repository root preserving paths.
+2. Extract the tests ZIP, open the existing GitHub /tests folder, and upload the flat .py files there.
+3. Wait for the workflow triggered after both uploads. An intermediate mixed-version failure is expected if the two uploads commit separately.
+4. Keep the working v5.4.7 Windows Controller Bridge R1. No local bridge replacement or restart is required for v5.4.9.
+
+Key changes
+- TEAM SELECT / PLAYER SELECT is the top (12 o'clock) option in each league/event second radial.
+- RT league selection is logo-first for MLB, NFL, NBA, NHL, EPL, MLS and NCAAF.
+- Controller team selection waits for the canonical score-filter league context before opening history.
+- If a targeted team audit returns no rows, controller selection performs one bounded league-wide recovery scan and filters the same historical catalog locally.
+- Team/player history still uses the canonical Browse timeline and automatically starts the newest playable game, preserving the normal chronological playlist behavior.
+- Participant metadata is now complete-league and persistent: backend directories seed all known teams with abbreviations/logos rather than only teams encountered in playable history.
+- Browser participant catalogs use stale-while-refresh: 12-hour freshness, up to 90 days immediately usable, with background refresh.
+- Core and special-event participant catalogs are prewarmed after startup.
+- A cold/empty participant directory keeps a visible loading/retry radial instead of silently closing.
+
+Local validation before packaging
+- 38 available Python regressions passed.
+- 3 presentation regressions could not execute in the isolated overlay because these unchanged full-repository files are intentionally not duplicated here: ui/broadcast-design-v5213.css, ui/premium-masthead-v5214.css, ui/premium-now-watching-v5215.css.
+- Key v5.4.9 JavaScript, Python, and VERIFY.sh syntax checks passed.
+- GitHub VERIFY.sh remains the final complete gate after upload because the deployed repository already contains the three unchanged presentation stylesheets.

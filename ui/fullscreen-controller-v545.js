@@ -1,12 +1,12 @@
-/* Sports Big Board v5.4.8 — application/video fullscreen authority.
+/* Sports Big Board v5.4.9 — application/video fullscreen authority.
    The logo-adjacent fullscreen control owns Sports Big Board app fullscreen; the
    player utility control owns video fullscreen. Controller-originated fullscreen
    can use the loopback Windows bridge because browser Fullscreen API calls normally
    require a trusted DOM user activation that Gamepad/WebSocket polling cannot create. */
 (() => {
   'use strict';
-  if(window.SBB_FULLSCREEN_CONTROL?.version==='5.4.8')return;
-  const VERSION='5.4.8';
+  if(window.SBB_FULLSCREEN_CONTROL?.version==='5.4.9')return;
+  const VERSION='5.4.9';
   const APP_BUTTON='bigBoardFullscreenBtn';
   const VIDEO_BUTTON='fullscreenBtn';
   let toastTimer=0,bridgeUnsub=null;

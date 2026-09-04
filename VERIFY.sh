@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Sports Big Board v5.4.8 Controller Polish + Browse Parity + Fullscreen Exit preflight"
+echo "Sports Big Board v5.4.9 Cached Team Select + League Logos + Radial History Parity preflight"
 python3 tools/check_release_version.py
 python3 tests/test_v529_release_integrity.py
 python3 tests/test_v5210_motion_smoothness.py
@@ -46,6 +46,7 @@ python3 tests/test_v545_controller_navigation_fullscreen_playback_follow.py
 python3 tests/test_v546_hierarchical_radials_drawer_fullscreen.py
 python3 tests/test_v547_controller_native_browse_sendinput.py
 python3 tests/test_v548_controller_polish.py
+python3 tests/test_v549_cached_team_select.py
 node --check ui/settings-view.js
 node --check ui/up-next-experience-v5217.js
 node --check ui/harmonized-controls-drawer-v5217.js
@@ -76,4 +77,4 @@ node --check ui/score-ribbon-playback-follow-v545.js
 python3 -m py_compile sbb/release_identity_v523.py sbb/current_news_v523.py
 bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh
 
-echo "PASS: v5.4.8 Controller Polish + Browse Parity + Fullscreen Exit preflight complete"
+echo "PASS: v5.4.9 Cached Team Select + League Logos + Radial History Parity preflight complete"

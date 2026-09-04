@@ -1,11 +1,11 @@
-/* Sports Big Board v5.4.8 — Controller Radials + Native Windows Bridge + Pointer Fallback.
+/* Sports Big Board v5.4.9 — Controller Radials + Native Windows Bridge + Pointer Fallback.
    Builds on the v5.4.0 semantic navigation graph and v5.4.1 automatic takeover.
    Adds robust browser-level gamepad diagnostics, a live header indicator, RT
    League radial, LT Date/Scope radial, and R3 analog pointer fallback. */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_MODE?.version==='5.4.8')return;
-  const VERSION='5.4.8';
+  if(window.SBB_CONTROLLER_MODE?.version==='5.4.9')return;
+  const VERSION='5.4.9';
   const PREF_KEY='sports-big-board.controller-mode.v1';
   const DEADZONE=.20;
   const NEUTRAL_DEADZONE=.28;
@@ -349,6 +349,16 @@
   function contextualLeague(){return clean(browseContext()?.specialContext?.league||browseContext()?.league||currentLeague()).toUpperCase()||'ALL';}
   function playerBrowseLeague(league){return /USOPEN|TENNIS|ATP|WTA/i.test(clean(league));}
   function browseLabel(league){return playerBrowseLeague(league)?'PLAYER BROWSE':'TEAM BROWSE';}
+  function radialBrowseLabel(league){return playerBrowseLeague(league)?'PLAYER SELECT':'TEAM SELECT';}
+  const LEAGUE_RADIAL_LOGOS=Object.freeze({
+    MLB:'https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png',
+    NFL:'https://a.espncdn.com/i/teamlogos/leagues/500/nfl.png',
+    NBA:'https://a.espncdn.com/i/teamlogos/leagues/500/nba.png',
+    NHL:'https://a.espncdn.com/i/teamlogos/leagues/500/nhl.png',
+    EPL:'https://a.espncdn.com/i/leaguelogos/soccer/500/23.png',
+    MLS:'https://a.espncdn.com/i/leaguelogos/soccer/500/19.png',
+    NCAAF:'https://a.espncdn.com/redesign/assets/img/icons/ESPN-icon-football-college.png'
+  });
   function activateLeague(league){
     league=clean(league).toUpperCase();if(!league)return false;
     return clickVisible(`#scoreFilters [data-score-filter="${league}"]`);
@@ -375,12 +385,18 @@
     if(!special)activateLeague(league);
     let rows=Array.isArray(entries)?entries.slice():null;
     if(!rows){
-      showHelp({message:`LOADING ${browseLabel(league)}`,duration:1400});
+      // Never collapse to nothing on a cold cache. Keep an explicit controller
+      // loading surface visible until the persistent participant catalog arrives.
+      openRadial('entity-loading',{league,label:clean(label)||league,parent,special:!!special});
+      showHelp({message:`LOADING ${radialBrowseLabel(league)}`,duration:1400});
       try{rows=await browseApi()?.controllerEntityEntries?.(league);}catch(_){rows=[];}
       if(!rows?.length){try{rows=(await browseApi()?.controllerEntities?.(league))?.map(name=>({name}));}catch(_){rows=[];}}
     }
     const seen=new Set();rows=(rows||[]).map(raw=>typeof raw==='string'?{name:raw}:(raw||{})).filter(row=>{const key=clean(row.name).toLowerCase();if(!key||seen.has(key))return false;seen.add(key);return true;}).sort((a,b)=>clean(a.name).localeCompare(clean(b.name)));
-    if(!rows.length){showHelp({message:`NO ${browseLabel(league)} ENTRIES AVAILABLE`,duration:1800});return false;}
+    if(!rows.length){
+      showHelp({message:`${radialBrowseLabel(league)} CACHE STILL WARMING`,duration:1800});
+      return openRadial('entity-loading',{league,label:clean(label)||league,parent,special:!!special,error:true});
+    }
     return openRadial('entity-browse',{league,label:clean(label)||league,parent,special:!!special,page:Math.max(0,Number(page)||0),entries:rows});
   }
   function openBrowseForLeague(league,context={}){
@@ -412,7 +428,7 @@
     const defs=[
       ['ALL','ALL'],['MLB','MLB'],['NFL','NFL'],['NBA','NBA'],['NHL','NHL'],['EPL','EPL'],['MLS','MLS'],['NCAAF','NCAAF'],['SPECIAL','SPECIAL EVENTS']
     ];
-    return defs.map(([value,label])=>({value,label,action:()=>{
+    return defs.map(([value,label])=>({value,label,leagueLogo:!!LEAGUE_RADIAL_LOGOS[value],logo:LEAGUE_RADIAL_LOGOS[value]||'',action:()=>{
       if(value==='SPECIAL')return openSpecialEventRadial();
       if(value==='ALL')return activateLeague('ALL');
       const ok=activateLeague(value);queueRadial('league-scope',{league:value,label,parent:'league'});return ok;
@@ -425,10 +441,11 @@
   }
   function leagueScopeOptions(context={}){
     const league=clean(context.league||contextualLeague()).toUpperCase();
+    // First item renders at 12 o'clock, so Team/Player Select is always the top wedge.
     return [
+      {value:'BROWSE',label:radialBrowseLabel(league),action:()=>openBrowseForLeague(league,{label:context.label||league,parent:'league-scope'})},
       {value:'TODAY',label:'TODAY',action:()=>openTodayForLeague(league)},
-      {value:'ALL',label:'ALL',action:()=>openAllForLeague(league)},
-      {value:'BROWSE',label:browseLabel(league),action:()=>openBrowseForLeague(league,{label:context.label||league,parent:'league-scope'})}
+      {value:'ALL',label:'ALL',action:()=>openAllForLeague(league)}
     ];
   }
   function specialEventNodes(){
@@ -465,8 +482,8 @@
   function specialScopeOptions(context={}){
     const league=clean(context.league||browseContext()?.specialContext?.league).toUpperCase();
     return [
-      {value:'ALL',label:'ALL',action:()=>{try{return browseApi()?.browseAll?.()!==false;}catch(_){return true;}}},
-      {value:'BROWSE',label:browseLabel(league),action:()=>openBrowseForLeague(league,{label:context.label||league,parent:'special-scope',special:true})}
+      {value:'BROWSE',label:radialBrowseLabel(league),action:()=>openBrowseForLeague(league,{label:context.label||league,parent:'special-scope',special:true})},
+      {value:'ALL',label:'ALL',action:()=>{try{return browseApi()?.browseAll?.()!==false;}catch(_){return true;}}}
     ];
   }
   function dateScopeOptions(){const league=contextualLeague();return [
@@ -524,7 +541,8 @@
     if(type==='league')return 'LEAGUES';if(type==='date')return 'DATE / SCOPE';if(type==='commands')return 'SPECIAL COMMANDS';
     if(type==='league-scope')return clean(context.label||context.league||'LEAGUE');
     if(type==='special-league')return 'SPECIAL EVENTS';if(type==='special-scope')return clean(context.label||context.league||'SPECIAL EVENT');
-    if(type==='entity-browse')return `${clean(context.label||context.league||'LEAGUE')} ${browseLabel(context.league)}`;
+    if(type==='entity-browse')return `${clean(context.label||context.league||'LEAGUE')} ${radialBrowseLabel(context.league)}`;
+    if(type==='entity-loading')return `${clean(context.label||context.league||'LEAGUE')} ${radialBrowseLabel(context.league)}`;
     return 'CONTROLLER';
   }
   function renderRadial(){
@@ -532,15 +550,15 @@
     const items=radial.options||[],host=el.querySelector('.sbb-controller-radial-items'),center=el.querySelector('.sbb-controller-radial-center strong'),hint=el.querySelector('.sbb-controller-radial-center span');
     const entityMode=radial.type==='entity-browse',selected=radialSelection>=0?items[radialSelection]:null;
     const count=radial.context?.entries?.length||0,totalPages=Math.max(1,Math.ceil(Math.max(1,count)/ENTITY_RADIAL_PAGE_SIZE));
-    if(center)center.textContent=entityMode&&selected?.entity?selected.label:radialTitle(radial.type,radial.context);
+    if(center)center.textContent=entityMode&&selected?.entity?selected.label:(radial.type==='league'&&selected?selected.label:radialTitle(radial.type,radial.context));
     if(hint)hint.textContent=['league','date','commands'].includes(radial.type)?'MOVE RIGHT STICK • RELEASE TRIGGER':(entityMode?`${browseLabel(radial.context?.league)} • PAGE ${Math.min((radial.context?.page||0)+1,totalPages)}/${totalPages} • A SELECT`:'MOVE RIGHT STICK • A SELECT • B CLOSE');
     const radius=entityMode?232:178;host.innerHTML=items.map((item,i)=>{
       const angle=(-Math.PI/2)+(Math.PI*2*i/items.length),x=Math.cos(angle)*radius,y=Math.sin(angle)*radius;
-      const selectedClass=i===radialSelection?' selected':'',current=item.value===radial.current?' current':'',entityClass=item.entity?' entity':'';
+      const selectedClass=i===radialSelection?' selected':'',current=item.value===radial.current?' current':'',entityClass=item.entity?' entity':'',leagueLogoClass=item.leagueLogo?' league-logo':'';
       const inside=item.entity
         ?`<span class="sbb-controller-entity-mark">${item.logo?`<img src="${esc(item.logo)}" alt="">`:`<b>${esc(item.mark||'•')}</b>`}</span>`
-        :`<span>${esc(item.label)}</span>`;
-      return `<div class="sbb-controller-radial-item${selectedClass}${current}${entityClass}" data-radial-index="${i}" title="${esc(item.label)}" style="--rx:${x.toFixed(1)}px;--ry:${y.toFixed(1)}px">${inside}</div>`;
+        :(item.leagueLogo&&item.logo?`<span class="sbb-controller-league-mark"><img src="${esc(item.logo)}" alt="${esc(item.label)}"></span>`:`<span>${esc(item.label)}</span>`);
+      return `<div class="sbb-controller-radial-item${selectedClass}${current}${entityClass}${leagueLogoClass}" data-radial-index="${i}" title="${esc(item.label)}" style="--rx:${x.toFixed(1)}px;--ry:${y.toFixed(1)}px">${inside}</div>`;
     }).join('');
   }
   function remountRadialForFullscreen(){if(!radialEl?.isConnected)return;mountRadial();if(radial&&!radialEl.classList.contains('hidden'))renderRadial();}
@@ -559,6 +577,10 @@
     else if(type==='special-league')options=Array.isArray(context.options)?context.options:specialEventOptions();
     else if(type==='special-scope')options=specialScopeOptions(context);
     else if(type==='entity-browse')options=entityBrowseOptions(context);
+    else if(type==='entity-loading')options=[
+      {value:'RETRY',label:context.error?'RETRY':'LOADING…',action:()=>openEntityBrowseRadial(context.league,{label:context.label,parent:context.parent,special:!!context.special})},
+      {value:'BACK',label:'BACK',action:()=>queueRadial(context.special?'special-scope':'league-scope',{league:context.league,label:context.label,parent:context.special?'special-league':'league'},28)}
+    ];
     radial={type,options,current:type==='league'?currentLeague():'',context:{...context}};
     const el=ensureRadial();el.classList.remove('hidden');el.setAttribute('aria-hidden','false');document.documentElement.dataset.sbbControllerRadial=type;renderRadial();
     return true;

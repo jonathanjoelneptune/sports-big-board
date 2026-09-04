@@ -1,4 +1,4 @@
-"""Sports Big Board v5.4.8 — participant metadata + Team Focus enrichment.
+"""Sports Big Board v5.4.9 — participant metadata + Team Focus enrichment.
 
 Two cache-only browser endpoints are installed:
   /api/browse/participants?league=MLB
@@ -25,12 +25,13 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
-VERSION = "5.4.8-team-focus-3"
+VERSION = "5.4.9-team-focus-4"
+# Compatibility marker: v5.4.8 called this PERSISTED_VERIFIED_MEDIA_INDEX; v5.4.9 supersedes it with the complete league directory.
 _STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 _PARTICIPANT_PATH = _STATE_DIR / "browse-participants-v538.json"
 _FOCUS_PATH = _STATE_DIR / "team-focus-v538.json"
 _THEME_PATH = _STATE_DIR / "team-theme-v538.json"
-_PARTICIPANT_TTL = 30 * 60
+_PARTICIPANT_TTL = 6 * 60 * 60
 _FOCUS_TTL = 15 * 60
 _LOCK = threading.RLock()
 _INSTALLED = False
@@ -359,11 +360,29 @@ def _build_participants(server):
                 for field in ("abbreviation","logo","country"):
                     if not existing.get(field) and meta.get(field): existing[field]=meta[field]
                 bucket[key]=existing
-        # One ESPN directory request per supported league fills missing club/school
-        # logos and abbreviations without making Browse wait on per-team network calls.
+        # v5.4.9: cache complete league directories, not only participants that
+        # already appear in verified-media history. This makes controller Team
+        # Select deterministic before the first history scan and preserves logos/
+        # abbreviations across backend restarts. ESPN aliases sharing one upstream
+        # competition are fetched once, then copied into each Sports Big Board id.
+        directory_cache={}
+        for league,spec in ESPN_COMPETITIONS.items():
+            if spec not in directory_cache:
+                try: directory_cache[spec]=_espn_directory(league)
+                except Exception: directory_cache[spec]={}
+            directory=directory_cache.get(spec) or {}
+            bucket=leagues.setdefault(league,{})
+            for key,remote in directory.items():
+                if key != _norm(remote.get("name")): continue  # skip alias index entries
+                existing=bucket.get(key) or {"name":remote.get("name") or "","abbreviation":"","logo":"","country":""}
+                if not existing.get("name"): existing["name"]=_clean(remote.get("name"))
+                for field in ("abbreviation","logo","country"):
+                    if not existing.get(field) and remote.get(field): existing[field]=remote[field]
+                if existing.get("name"): bucket[key]=existing
+        # Historical rows can still carry richer/current provider artwork. Merge
+        # that data over any missing fields in the complete directory.
         for league,bucket in leagues.items():
-            try: directory=_espn_directory(league)
-            except Exception: directory={}
+            directory=directory_cache.get(ESPN_COMPETITIONS.get(league)) or {}
             for key,meta in bucket.items():
                 remote=directory.get(key) or {}
                 for field in ("abbreviation","logo","country"):
@@ -392,7 +411,7 @@ def _refresh_participants(server, force=False):
 
 
 def _http_text(url, timeout=6.0):
-    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.4.8 (+team-focus-cache)", "Accept": "text/html,application/json;q=0.9,*/*;q=0.8"})
+    req = Request(url, headers={"User-Agent": "SportsBigBoard/5.4.9 (+team-focus-cache)", "Accept": "text/html,application/json;q=0.9,*/*;q=0.8"})
     with urlopen(req, timeout=timeout) as resp:
         return resp.read().decode("utf-8", "replace")
 
@@ -573,7 +592,7 @@ def _install_into_server():
     loaded = _load_json(_PARTICIPANT_PATH, {})
     if not (isinstance(loaded, dict) and isinstance(loaded.get("leagues"), dict)):
         # Preserve the v5.3.7 inventory immediately, then refresh metadata/logos in
-        # the background into the v5.4.8 cache.
+        # the background into the v5.4.9 cache.
         loaded = _load_json(_STATE_DIR / "browse-participants-v537.json", {})
     if not (isinstance(loaded, dict) and isinstance(loaded.get("leagues"), dict)):
         loaded = _load_json(_STATE_DIR / "browse-participants-v536.json", {})
@@ -593,7 +612,7 @@ def _install_into_server():
                 payload = _refresh_participants(server, force=refresh_metadata)
                 names = list((payload.get("leagues") or {}).get(league) or [])
                 entities = list((payload.get("entities") or {}).get(league) or [])
-                return server.send_json(self, {"ok": True, "version": VERSION, "league": league, "savedAt": payload.get("savedAt",0), "participants": names, "entities": entities, "count": len(names), "source": "PERSISTED_VERIFIED_MEDIA_INDEX"}, 200, {"Cache-Control":"private, max-age=60"})
+                return server.send_json(self, {"ok": True, "version": VERSION, "league": league, "savedAt": payload.get("savedAt",0), "participants": names, "entities": entities, "count": len(names), "source": "PERSISTED_FULL_LEAGUE_DIRECTORY", "complete": bool(names)}, 200, {"Cache-Control":"private, max-age=3600"})
             if parsed.path == "/api/team-focus":
                 qs = parse_qs(parsed.query); league = _clean((qs.get("league") or [""])[0]).upper(); entity = _clean((qs.get("entity") or [""])[0])
                 if not league or not entity: return server.send_json(self,{"ok":False,"error":"league and entity are required"},400)

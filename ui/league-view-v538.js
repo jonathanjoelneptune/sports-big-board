@@ -1,11 +1,11 @@
-/* Sports Big Board v5.4.8 — League View + recap context.
+/* Sports Big Board v5.4.9 — League View + recap context.
    Keeps multi-game/daily recap playback from inheriting a stale single-game
    Game Center and turns the former Up Next drawer into a persistent league view. */
 (() => {
   'use strict';
-  if (window.SBB_LEAGUE_VIEW?.version === '5.4.8') return;
+  if (window.SBB_LEAGUE_VIEW?.version === '5.4.9') return;
 
-  const VERSION = '5.4.8';
+  const VERSION = '5.4.9';
   const $ = id => document.getElementById(id);
   const clean = value => String(value ?? '').trim();
   const esc = value => clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -51,7 +51,7 @@
     // Explicit league navigation is authoritative until the viewer selects a clip.
     // This lets MLB/NHL/EPL immediately update League View before playback changes.
     if(state.navLeague){const nav=normalizeLeague(state.navLeague);if(nav&&nav!=='ALL')return nav;}
-    // v5.4.8 authority order: what is PLAYING beats what was BROWSED. Curated
+    // v5.4.9 authority order: what is PLAYING beats what was BROWSED. Curated
     // special-event context is only a fallback while Browse is still non-daily.
     // This prevents a retired World Cup context from pinning League View after an
     // MLB score-card takes over playback.
@@ -182,7 +182,7 @@
     const wanted=league==='MLB'?['AL','NL']:(league==='NFL'?['AFC','NFC']:['EAST','WEST']);
     const ordered=wanted.map(key=>rows.find(x=>upper(x?.key)===key)).filter(Boolean);
     if(ordered.length<2)return '';
-    // v5.4.8: paired conference/division columns share the same row slots.
+    // v5.4.9: paired conference/division columns share the same row slots.
     // A four-team division opposite a five-team division gets one invisible
     // placeholder row, so the next division heading starts at exactly the same
     // vertical position on both sides.

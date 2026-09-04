@@ -1,10 +1,10 @@
-/* Sports Big Board v5.4.8 — Game Center readability post-processing.
+/* Sports Big Board v5.4.9 — Game Center readability post-processing.
    The provider renderer remains authoritative. This layer only enhances labels,
    accessibility state and standard stat abbreviations after a Game Center render. */
 (() => {
   'use strict';
-  if(window.SBB_GAME_CENTER_READABILITY?.version==='5.4.8')return;
-  const VERSION='5.4.8';
+  if(window.SBB_GAME_CENTER_READABILITY?.version==='5.4.9')return;
+  const VERSION='5.4.9';
   const $=id=>document.getElementById(id);
   let queued=false,observer=null;
 
