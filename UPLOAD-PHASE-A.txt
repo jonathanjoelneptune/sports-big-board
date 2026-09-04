@@ -1,0 +1,37 @@
+SPORTS BIG BOARD — PHASE A SPORTS TICKER SIDECAR
+Manual GitHub upload package
+
+CURRENT INTENT
+- Side-load only.
+- Do not replace or edit existing Sports Big Board/controller files.
+- Do not change VERSION.
+- Website integration is intentionally deferred to Phase B.
+
+UPLOAD THESE NEW PATHS
+.github/workflows/sports-ticker-refresh.yml
+tools/refresh_sports_ticker.py
+data/sports-ticker.json
+data/sports-ticker.txt
+SPORTS-TICKER-SIDECAR.md
+
+AFTER UPLOAD
+1. Commit all five files together.
+2. In GitHub open:
+   Settings > Secrets and variables > Actions
+3. Add repository secret:
+   OPENAI_API_KEY
+4. Open:
+   Actions > Sports Ticker Sidecar Refresh
+5. Click:
+   Run workflow
+6. Confirm the run succeeds.
+7. Confirm these two files are automatically replaced:
+   data/sports-ticker.json
+   data/sports-ticker.txt
+8. After that, scheduled runs occur at :07, :27 and :47 each hour.
+
+IMPORTANT
+The initial manual upload to main may cause the existing Sports Big Board deploy
+workflow to run once because it is a normal push to main. The automated ticker
+commits are made by the workflow using GITHUB_TOKEN and are intentionally
+isolated to the two data files.
