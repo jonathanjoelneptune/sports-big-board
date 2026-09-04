@@ -104,13 +104,15 @@ namespace SportsBigBoard
     {
         public const int Port = 5410;
         public const int ProtocolVersion = 1;
-        public const string BridgeVersion = "5.4.4";
+        public const string BridgeVersion = "5.4.5";
         private TcpListener listener;
         private Thread listenerThread;
         private volatile bool running;
         private int clientCount;
+        private int commandCount;
         private string lastController = "No controller";
         private string lastSource = "";
+        private string lastCommand = "none";
         private readonly object statusLock = new object();
 
         public string ShortStatus
@@ -135,7 +137,9 @@ namespace SportsBigBoard
                            "Loopback: ws://127.0.0.1:" + Port + "/sbb-controller" + Environment.NewLine +
                            "Controller: " + lastController + Environment.NewLine +
                            "Source: " + (lastSource.Length == 0 ? "none" : lastSource) + Environment.NewLine +
-                           "Browser clients: " + clientCount.ToString(CultureInfo.InvariantCulture);
+                           "Browser clients: " + clientCount.ToString(CultureInfo.InvariantCulture) + Environment.NewLine +
+                           "Fullscreen commands: " + commandCount.ToString(CultureInfo.InvariantCulture) + Environment.NewLine +
+                           "Last command: " + lastCommand;
                 }
             }
         }
@@ -170,7 +174,7 @@ namespace SportsBigBoard
                     TcpClient client;
                     try { client = listener.AcceptTcpClient(); }
                     catch { if (!running) break; else continue; }
-                    Thread t = new Thread(delegate { HandleClient(client); });
+                    Thread t = new Thread(new ThreadStart(delegate { HandleClient(client); }));
                     t.IsBackground = true;
                     t.Name = "SBB Controller Browser Client";
                     t.Start();
@@ -243,6 +247,15 @@ namespace SportsBigBoard
                         previous = stateKey;
                         lastSend = DateTime.UtcNow;
                     }
+                    // Browser-to-bridge traffic is intentionally tiny and whitelisted.
+                    // It exists only so controller input can invoke fullscreen actions
+                    // that Chromium refuses from Gamepad/WebSocket callbacks because
+                    // those callbacks are not trusted transient user activations.
+                    if (stream.DataAvailable)
+                    {
+                        string commandFrame = TryReadClientTextFrame(stream);
+                        if (!string.IsNullOrEmpty(commandFrame)) HandleCommand(commandFrame);
+                    }
                     Thread.Sleep(16);
                 }
             }
@@ -295,6 +308,54 @@ namespace SportsBigBoard
             if (host == "jonathanjoelneptune.github.io" && uri.Scheme == "https") return true;
             if ((host == "127.0.0.1" || host == "localhost" || host == "::1") && (uri.Scheme == "http" || uri.Scheme == "https")) return true;
             return false;
+        }
+
+        private void HandleCommand(string json)
+        {
+            if (string.IsNullOrEmpty(json) || json.IndexOf("\"type\":\"command\"", StringComparison.OrdinalIgnoreCase) < 0) return;
+            string command = "";
+            if (json.IndexOf("\"command\":\"app-fullscreen\"", StringComparison.OrdinalIgnoreCase) >= 0) command = "app-fullscreen";
+            else if (json.IndexOf("\"command\":\"video-fullscreen\"", StringComparison.OrdinalIgnoreCase) >= 0) command = "video-fullscreen";
+            if (command.Length == 0) return;
+            if (command == "app-fullscreen") KeyboardCommand.Tap(0x7A); // F11
+            else if (command == "video-fullscreen") KeyboardCommand.Tap(0x46); // F
+            lock (statusLock) { commandCount++; lastCommand = command; }
+        }
+
+        private static string TryReadClientTextFrame(NetworkStream stream)
+        {
+            try
+            {
+                int first = stream.ReadByte(); if (first < 0) return null;
+                int second = stream.ReadByte(); if (second < 0) return null;
+                int opcode = first & 0x0F;
+                bool masked = (second & 0x80) != 0;
+                ulong length = (ulong)(second & 0x7F);
+                if (length == 126)
+                {
+                    int a = stream.ReadByte(), b = stream.ReadByte(); if (a < 0 || b < 0) return null;
+                    length = (ulong)((a << 8) | b);
+                }
+                else if (length == 127) return null; // Commands are always tiny.
+                if (!masked || length > 2048) return null;
+                byte[] mask = ReadExact(stream, 4); if (mask == null) return null;
+                byte[] payload = ReadExact(stream, (int)length); if (payload == null) return null;
+                for (int i = 0; i < payload.Length; i++) payload[i] = (byte)(payload[i] ^ mask[i % 4]);
+                if (opcode == 0x8) return null;
+                if (opcode != 0x1) return null;
+                return Encoding.UTF8.GetString(payload);
+            }
+            catch { return null; }
+        }
+
+        private static byte[] ReadExact(NetworkStream stream, int count)
+        {
+            byte[] data = new byte[count]; int offset = 0;
+            while (offset < count)
+            {
+                int n = stream.Read(data, offset, count - offset); if (n <= 0) return null; offset += n;
+            }
+            return data;
         }
 
         private static void WriteHttp(NetworkStream stream, string status, string contentType, string body, string origin)
@@ -354,6 +415,22 @@ namespace SportsBigBoard
         }
     }
 
+    internal static class KeyboardCommand
+    {
+        private const uint KEYEVENTF_KEYUP = 0x0002;
+        [DllImport("user32.dll")] private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+        public static void Tap(byte key)
+        {
+            try
+            {
+                keybd_event(key, 0, 0, UIntPtr.Zero);
+                Thread.Sleep(18);
+                keybd_event(key, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
+            }
+            catch { }
+        }
+    }
+
     internal sealed class ControllerSnapshot
     {
         public bool Connected;
@@ -365,7 +442,7 @@ namespace SportsBigBoard
         public string ToJson(long sequence)
         {
             StringBuilder sb = new StringBuilder(512);
-            sb.Append("{\"type\":\"state\",\"protocol\":1,\"bridgeVersion\":\"5.4.4\",\"sequence\":");
+            sb.Append("{\"type\":\"state\",\"protocol\":1,\"bridgeVersion\":\"5.4.5\",\"sequence\":");
             sb.Append(sequence.ToString(CultureInfo.InvariantCulture));
             sb.Append(",\"connected\":").Append(Connected ? "true" : "false");
             sb.Append(",\"id\":\"").Append(JsonEscape(Id)).Append("\"");
