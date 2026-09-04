@@ -1,11 +1,313 @@
 SPORTS BIG BOARD — SPORTS TICKER SIDECAR
+Updated: 2026-09-04T05:26:56Z
+Model: gpt-5.6-luna
 
-Status: Awaiting first automated refresh.
+========================================================================
+MLB
+========================================================================
 
-Phase A is installed, but the Sports Big Board website does not consume this
-file yet.
+ 1. [PLAYOFF] Blue Jays close on AL Wild Card (priority 96)
+    Toronto moved within a half-game of the final American League Wild Card spot with a 6-3 win over Cleveland and secured the season tiebreaker against the Guardians.
+    Event date: 2026-09-03 | Status: active
+    Entities: Toronto Blue Jays, Cleveland Guardians
+    Source: https://www.mlb.com/news/blue-jays-secure-tiebreaker-with-guardians-in-tight-al-wild-card-chase
 
-Required before the first successful run:
-  GitHub repository secret: OPENAI_API_KEY
+ 2. [INJURY] Ohtani sits after four-strikeout game (priority 91)
+    Shohei Ohtani was held out of the Dodgers' lineup Thursday after going 0-for-4 with four strikeouts Wednesday. He is considered day to day.
+    Event date: 2026-09-03 | Status: active
+    Entities: Shohei Ohtani, Los Angeles Dodgers
+    Source: https://www.mlb.com/news/ohtani-not-in-lineup-day-after-going-0-for-4-with-4-strikeouts
 
-The scheduled workflow runs at :07, :27 and :47 of every hour.
+ 3. [RETURN] Rutschman returns with two homers (priority 88)
+    Adley Rutschman celebrated his return to Baltimore by hitting two home runs for Boston against the Orioles.
+    Event date: 2026-09-03 | Status: active
+    Entities: Adley Rutschman, Boston Red Sox, Baltimore Orioles
+    Source: https://www.mlb.com/news/adley-rutschman-homers-in-return-to-baltimore
+
+ 4. [RECORD_CHASE] PCA takes over hitter rankings (priority 86)
+    Pete Crow-Armstrong displaced Yordan Alvarez atop MLB.com's latest hitter power rankings after surging into the National League MVP conversation.
+    Event date: 2026-09-02 | Status: active
+    Entities: Pete Crow-Armstrong, Yordan Alvarez, Chicago Cubs
+    Source: https://www.mlb.com/news/yordan-s-hitter-power-rankings-reign-has-ended-who-took-him-down
+
+ 5. [INJURY] Ben Brown ruled out for 2026 (priority 84)
+    The Cubs' pitching prospect will miss the rest of the season after a rehab setback and is now targeting a 2027 return.
+    Event date: 2026-09-03 | Status: active
+    Entities: Ben Brown, Chicago Cubs
+    Source: https://www.mlb.com/news/ben-brown-to-miss-rest-of-season-after-rehab-setback
+
+ 6. [STREAK] Pirates win fifth series in six (priority 82)
+    Pittsburgh defeated San Francisco 5-2 for its fifth series victory in six tries, keeping its late-season surge alive.
+    Event date: 2026-09-03 | Status: active
+    Entities: Pittsburgh Pirates, San Francisco Giants
+    Source: https://www.mlb.com/news/pirates-keep-rolling-in-home-stretch-with-pivotal-reinforcement-on-the-horizon
+
+ 7. [AWARD] August monthly awards announced (priority 78)
+    MLB announced its American and National League Player, Pitcher, Rookie and Reliever of the Month winners as the postseason races intensify.
+    Event date: 2026-09-03 | Status: active
+    Entities: MLB
+    Source: https://www.mlb.com/news/2026-mlb-monthly-award-winners-for-august
+
+ 8. [STAT_LEADER] Caglianone earns AL Player of Month (priority 77)
+    Kansas City rookie Jac Caglianone was named American League Player of the Month for August, with teammate Noah Cameron taking the pitching honor.
+    Event date: 2026-09-03 | Status: active
+    Entities: Jac Caglianone, Noah Cameron, Kansas City Royals
+    Source: https://www.mlb.com/news/these-are-the-mlb-monthly-award-winners-for-august
+
+ 9. [RETURN] Griffin nearing Friday activation (priority 76)
+    Pirates prospect Konnor Griffin is expected to return from the 60-day injured list Friday after recovering from a torn sagittal band in his left ring finger.
+    Event date: 2026-09-04 | Status: next
+    Entities: Konnor Griffin, Pittsburgh Pirates
+    Source: https://www.mlb.com/news/konnor-griffin-expected-to-return-from-60-day-il
+
+10. [RESULT] Cubs edge Brewers behind Gausman (priority 75)
+    Kevin Gausman delivered a vintage start and Pete Crow-Armstrong hit his 39th home run as Chicago beat Milwaukee in a key divisional matchup.
+    Event date: 2026-09-03 | Status: active
+    Entities: Kevin Gausman, Pete Crow-Armstrong, Chicago Cubs, Milwaukee Brewers
+    Source: https://www.mlb.com/news/gausman-s-gem-backed-by-pca-s-39th-hr-as-cubs-edge-brewers
+
+========================================================================
+NFL
+========================================================================
+
+ 1. [INJURY] Collins' Week 1 status unsettled (priority 94)
+    Cowboys right tackle La'el Collins remains sidelined with a neck stinger, leaving Ty Nsekhe and Terence Steele as potential starters against Tampa Bay.
+    Event date: 2026-09-03 | Status: watch
+    Entities: La'el Collins, Dallas Cowboys
+    Source: https://www.nfl.com/news/nfl-roundup-latest-league-news-from-friday-sept-3
+
+ 2. [RETURN] Flowers returns to practice (priority 88)
+    Ravens wide receiver Zay Flowers returned to practice Thursday after missing two weeks with an undisclosed injury.
+    Event date: 2026-09-03 | Status: active
+    Entities: Zay Flowers, Baltimore Ravens
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-3
+
+ 3. [COACHING] Richardson named Colts' QB2 (priority 85)
+    Anthony Richardson won Indianapolis' backup-quarterback job behind Daniel Jones after a preseason competition with Riley Leonard.
+    Event date: 2026-09-03 | Status: active
+    Entities: Anthony Richardson, Daniel Jones, Indianapolis Colts
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-3
+
+ 4. [INJURY] Okuayinonu questionable for Week 1 (priority 83)
+    49ers defensive end Sam Okuayinonu did not travel with the team to Australia because of a foot injury and is questionable for the opener.
+    Event date: 2026-09-03 | Status: watch
+    Entities: Sam Okuayinonu, San Francisco 49ers
+    Source: https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-sept-3
+
+ 5. [CONTRACT] Myles Garrett tops NFL Top 100 (priority 82)
+    Players voted Rams pass rusher Myles Garrett No. 1 in the 2026 NFL Top 100 after a historic season and trade from Cleveland.
+    Event date: 2026-09-03 | Status: active
+    Entities: Myles Garrett, Los Angeles Rams
+    Source: https://www.nfl.com/news/top-100-players-of-2026-nos-10-1-myles-garrett-crowned-after-historic-season-trade-to-rams
+
+ 6. [TRADE] Patriots move Boutte (priority 80)
+    New England traded wide receiver Kayshon Boutte during final roster construction.
+    Event date: 2026-08-30 | Status: active
+    Entities: Kayshon Boutte, New England Patriots
+    Source: https://www.nfl.com/news/2026-nfl-53-man-roster-deadline-cut-candidates-trade-targets
+
+ 7. [SIGNING] Raiders add Peyton Barber (priority 77)
+    Las Vegas signed running back Peyton Barber off Washington's practice squad to its active roster.
+    Event date: 2026-09-03 | Status: active
+    Entities: Peyton Barber, Las Vegas Raiders
+    Source: https://www.nfl.com/news/nfl-roundup-latest-league-news-from-friday-sept-3
+
+ 8. [INJURY] Jacobs lands on exempt list (priority 76)
+    Josh Jacobs was placed on the Commissioner's Exempt List, elevating MarShawn Lloyd's role in Green Bay's backfield.
+    Event date: 2026-09-03 | Status: active
+    Entities: Josh Jacobs, MarShawn Lloyd, Green Bay Packers
+    Source: https://www.nfl.com/news/packers-rb-marshawn-lloyd-i-m-ready-to-play-as-much-as-they-want-me-to
+
+ 9. [SCHEDULE] Season opener approaches (priority 73)
+    The 2026 regular season opens next week, with final roster and injury decisions shaping Week 1 depth charts.
+    Event date: 2026-09-04 | Status: next
+    Entities: NFL
+    Source: https://www.nfl.com/news/nfl-2026-schedule-release
+
+10. [SUSPENSION] Final roster churn continues (priority 70)
+    Teams are filling practice squads and placing players on injured reserve after the Aug. 30 deadline reduced rosters to 53.
+    Event date: 2026-09-03 | Status: active
+    Entities: NFL
+    Source: https://www.nfl.com/news/nfl-roster-cuts-tracker-team-by-team-player-moves-ahead-of-2026-season
+
+========================================================================
+NBA
+========================================================================
+
+ 1. [SUSPENSION] NBA finds Clippers violations (priority 100)
+    The league found a pattern of misconduct and multiple significant rules violations by the Clippers organization following its investigation.
+    Event date: 2026-09-02 | Status: active
+    Entities: Los Angeles Clippers, NBA
+    Source: https://www.nba.com/news/nba-announces-findings-on-clippers-investigation
+
+ 2. [TRADE] Timberwolves send Josh Green to Jazz (priority 86)
+    Minnesota traded Josh Green to Utah for cash considerations in a final roster maneuver before training camp.
+    Event date: 2026-09-02 | Status: active
+    Entities: Josh Green, Minnesota Timberwolves, Utah Jazz
+    Source: https://www.nba.com/news/timberwolves-trade-josh-green-to-jazz
+
+ 3. [MILESTONE] Raptors to retire Lowry's No. 7 (priority 80)
+    Toronto will retire Kyle Lowry's No. 7 jersey during a three-game celebration culminating Jan. 30.
+    Event date: 2026-09-02 | Status: next
+    Entities: Kyle Lowry, Toronto Raptors
+    Source: https://www.nba.com/news/raptors-to-retire-lowrys-no-7-jersey
+
+ 4. [SCHEDULE] Training camps open Sept. 30 (priority 72)
+    NBA training camps are scheduled to open Sept. 30 ahead of the 2026-27 season.
+    Event date: 2026-09-30 | Status: next
+    Entities: NBA
+    Source: https://cdn.nba.com/teams/uploads/sites/1610612766/2026/04/2025-26_CHA_MediaGuide_NEW.pdf
+
+ 5. [OTHER] FIBA qualifiers feature NBA talent (priority 68)
+    NBA players including Rui Hachimura and VJ Edgecombe are competing in the 2027 FIBA World Cup qualifiers.
+    Event date: 2026-09-02 | Status: active
+    Entities: Rui Hachimura, VJ Edgecombe, FIBA
+    Source: https://www.nba.com/news/nba-players-at-2027-fiba-world-cup-qualifiers
+
+========================================================================
+NHL
+========================================================================
+
+ 1. [CONTRACT] Makar signs record extension (priority 98)
+    Cale Makar signed an eight-year, $163.2 million extension with Colorado worth $20.4 million annually, the NHL's highest annual salary.
+    Event date: 2026-08-31 | Status: active
+    Entities: Cale Makar, Colorado Avalanche
+    Source: https://www.nhl.com/news/makar-signs-record-8-year-163-2-million-contract-with-avalanche
+
+ 2. [TRADE] Devils acquire Evangelista (priority 91)
+    New Jersey acquired forward Luke Evangelista from Nashville for a first-round pick and a second-round pick in the 2028 draft.
+    Event date: 2026-09-01 | Status: active
+    Entities: Luke Evangelista, New Jersey Devils, Nashville Predators
+    Source: https://www.nhl.com/news/evangelista-traded-to-devils-by-predators
+
+ 3. [TRADE] Hellebuyck makes trade request public (priority 87)
+    Winnipeg goaltender Connor Hellebuyck publicly confirmed that he has requested a trade from the Jets.
+    Event date: 2026-08-27 | Status: watch
+    Entities: Connor Hellebuyck, Winnipeg Jets
+    Source: https://www.nhl.com/news/hellebuyck-makes-trade-request-from-jets-public
+
+ 4. [RETURN] Seguin back on ice (priority 82)
+    Tyler Seguin returned to the ice with Dallas after knee surgery and could be ready for training camp.
+    Event date: 2026-09-01 | Status: active
+    Entities: Tyler Seguin, Dallas Stars
+    Source: https://www.nhl.com/news/seguin-takes-to-ice-with-stars-after-knee-surgery
+
+ 5. [MILESTONE] Ducks to retire Getzlaf's No. 15 (priority 78)
+    Anaheim will retire Ryan Getzlaf's No. 15 on Jan. 30.
+    Event date: 2027-01-30 | Status: next
+    Entities: Ryan Getzlaf, Anaheim Ducks
+    Source: https://www.nhl.com/news/getzlaf-to-have-no-15-retired-by-ducks-on-jan-30
+
+ 6. [SCHEDULE] NHL season starts Sept. 29 (priority 76)
+    The 2026-27 season opens with an expanded 84-game schedule and a nationally televised tripleheader.
+    Event date: 2026-09-29 | Status: next
+    Entities: NHL
+    Source: https://www.nhl.com/news/nhl-releases-2026-27-regular-season-schedule
+
+ 7. [COACHING] Wild confident on Hughes deal (priority 73)
+    Minnesota general manager Bill Guerin said he is confident the Wild will re-sign defenseman Luke Hughes before he reaches unrestricted free agency.
+    Event date: 2026-08-31 | Status: watch
+    Entities: Luke Hughes, Minnesota Wild
+    Source: https://www.nhl.com/news/guerin-confident-wild-will-re-sign-hughes
+
+ 8. [RETURN] Hedman returns refreshed (priority 70)
+    Victor Hedman said he is mentally and physically healthy after taking personal leave from Tampa Bay.
+    Event date: 2026-08-26 | Status: active
+    Entities: Victor Hedman, Tampa Bay Lightning
+    Source: https://www.nhl.com/news/hedman-healthy-mentally-physically-after-taking-personal-leave-from-lightning
+
+========================================================================
+EPL
+========================================================================
+
+ 1. [SCHEDULE] Three Premier League fixtures moved (priority 86)
+    Leeds-Crystal Palace, Liverpool-Brighton and Aston Villa-Fulham were rescheduled because of clubs' UEFA competition commitments.
+    Event date: 2026-09-01 | Status: active
+    Entities: Leeds United, Crystal Palace, Liverpool, Brighton, Aston Villa, Fulham
+    Source: https://www.premierleague.com/en/news/4705445/further-fixture-amendments-announced-in-september-and-october-2026
+
+ 2. [SCHEDULE] Manchester derby set for Sept. 13 (priority 80)
+    Manchester United will host Manchester City on Sunday, Sept. 13, in one of the first major fixtures of the 2026-27 season.
+    Event date: 2026-09-13 | Status: next
+    Entities: Manchester United, Manchester City
+    Source: https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-202627-premier-league-season/
+
+ 3. [SCHEDULE] New season fixture slate confirmed (priority 74)
+    The complete 2026-27 Premier League fixture list includes 380 matches, with the campaign underway after the summer break.
+    Event date: 2026-09-04 | Status: active
+    Entities: Premier League
+    Source: https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-202627-premier-league-season/
+
+========================================================================
+MLS
+========================================================================
+
+ 1. [PLAYOFF] Leagues Cup finalists decided (priority 92)
+    The 2026 Leagues Cup semifinals were scheduled for Sept. 1-2, with the final and third-place match set for Sept. 6.
+    Event date: 2026-09-02 | Status: active
+    Entities: MLS, LIGA MX, Leagues Cup
+    Source: https://www.mlssoccer.com/news/leagues-cup-2026-schedule-stage-set-for-mls-vs-liga-mx-showdowns
+
+ 2. [PLAYOFF] Eight clubs reached knockout stage (priority 88)
+    Austin, Chicago, Columbus and Real Salt Lake advanced from MLS into the Leagues Cup quarterfinals alongside four LIGA MX clubs.
+    Event date: 2026-08-13 | Status: active
+    Entities: Austin FC, Chicago Fire FC, Columbus Crew, Real Salt Lake
+    Source: https://www.mlssoccer.com/news/austin-chicago-columbus-rsl-march-into-leagues-cup-quarterfinals
+
+ 3. [MILESTONE] Leagues Cup offers Champions Cup berths (priority 84)
+    The top three finishers in the 36-team tournament qualify for the 2027 Concacaf Champions Cup, with the champion entering in the Round of 16.
+    Event date: 2026-09-06 | Status: watch
+    Entities: MLS, LIGA MX, Concacaf Champions Cup
+    Source: https://www.mlssoccer.com/news/leagues-cup-2026-schedule-stage-set-for-mls-vs-liga-mx-showdowns
+
+ 4. [PLAYOFF] MLS Cup playoff format set (priority 80)
+    The 2026 playoffs will include single-game Wild Card matches between the No. 8 and No. 9 seeds in each conference.
+    Event date: 2026-09-03 | Status: active
+    Entities: MLS
+    Source: https://www.mlssoccer.com/news/audi-2026-mls-cup-playoffs-key-dates-schedule-information
+
+========================================================================
+NCAAF
+========================================================================
+
+ 1. [OTHER] Louisiana ruling clears LSU ex-pros (priority 96)
+    A Louisiana judge issued a preliminary injunction against the NCAA, clearing a path for former NFL players to join LSU's roster while the eligibility case proceeds.
+    Event date: 2026-09-02 | Status: active
+    Entities: LSU Tigers, NCAA, Lane Kiffin
+    Source: https://apnews.com/article/ff59236793bdefab677ceb728599aa84
+
+ 2. [RANKING] Ohio State opens No. 1 (priority 87)
+    Ohio State leads the 2026 preseason AP Top 25, with Oregon No. 2 and Indiana No. 3 as the Big Ten seeks a fourth straight national championship.
+    Event date: 2026-08-17 | Status: active
+    Entities: Ohio State Buckeyes, Oregon Ducks, Indiana Hoosiers
+    Source: https://apnews.com/article/bd5dd1c058fab6047510f09e18b035f1
+
+ 3. [RANKING] SEC places nine teams in poll (priority 82)
+    The SEC leads all conferences with nine teams in the preseason AP Top 25, including five in the top 10.
+    Event date: 2026-08-17 | Status: active
+    Entities: SEC
+    Source: https://apnews.com/article/bd5dd1c058fab6047510f09e18b035f1
+
+ 4. [SCHEDULE] SEC season starts Sept. 5 (priority 80)
+    The Southeastern Conference begins its 2026 football season Saturday, Sept. 5.
+    Event date: 2026-09-05 | Status: next
+    Entities: SEC
+    Source: https://en.wikipedia.org/wiki/2026_Southeastern_Conference_football_season
+
+ 5. [SCHEDULE] Week 1 scoreboard goes live (priority 73)
+    The 2026 FBS season is underway, with Week 1 scores and ranked-game results being tracked across the national schedule.
+    Event date: 2026-09-03 | Status: active
+    Entities: NCAA Football
+    Source: https://apnews.news.racing.cbssports.com/college-football/scoreboard/top25/2026/regular/1/
+
+########################################################################
+SPECIAL EVENTS
+########################################################################
+
+Leagues Cup 2026 (Soccer)
+------------------------------------------------------------------------
+
+ 1. [PLAYOFF] Leagues Cup final set for Sept. 6 (priority 90)
+    The 36-club MLS-LIGA MX tournament concludes with its final and third-place match on Sept. 6.
+    Event date: 2026-09-06 | Status: next
+    Source: https://www.mlssoccer.com/news/leagues-cup-2026-schedule-stage-set-for-mls-vs-liga-mx-showdowns
