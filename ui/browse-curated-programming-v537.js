@@ -1,19 +1,19 @@
-/* Sports Big Board v5.4.7 — Game Center Score + Transition Bumpers
+/* Sports Big Board v5.4.8 — Game Center Score + Transition Bumpers
    User-facing content discovery over the existing score/calendar + historical
    catalog. No second playback owner: curated results become normal PROGRAM items
    and therefore inherit PlaybackController, Hot Standby, Up Next and score-card
    interrupt/resume behavior. */
 (() => {
   'use strict';
-  if(window.SBB_CURATED_BROWSE?.version==='5.4.7') return;
+  if(window.SBB_CURATED_BROWSE?.version==='5.4.8') return;
 
-  const VERSION='5.4.7';
+  const VERSION='5.4.8';
   const FAVORITES_KEY='sbb.curation.favorites.v1';
   const ENTITY_CATALOG_KEY='sbb.browse.entity-catalog.v535';
   const ENTITY_CATALOG_TTL_MS=6*60*60*1000;
   const ENTITY_CONTEXT_REFRESH_MS=10*60*1000;
   const TEAM_THEME_KEY='sbb.team-theme.enabled.v1';
-  // v5.4.7: browser-proven embed health persists independently from release
+  // v5.4.8: browser-proven embed health persists independently from release
   // cache versions. Server metadata can prove that a video exists, but only the
   // browser can prove that its owner allows this page to embed it.
   const CURATED_MEDIA_HEALTH_KEY='sbb.curated-media-health.v1';
@@ -40,7 +40,7 @@
     curatedOwnershipEpoch:0,curatedGuardTimer:null,curatedExpectedIndex:0,curatedExpectedKey:'',curatedGuardBusy:false,
     specialEventGames:[],specialEventDataEpoch:0,
     curatedMediaHealth:loadCuratedMediaHealth(),
-    // v5.4.7: Play All is a deliberately conservative unattended queue. A
+    // v5.4.8: Play All is a deliberately conservative unattended queue. A
     // user can still click any individual card, but Play All only accepts
     // completed games with a verified exact media source and gives each source
     // a bounded startup window before trying a same-game alternate/next game.
@@ -502,7 +502,7 @@
   }
   function installLegacyCfbGuard(){
     hideLegacyCfb();if(state.cfbObserver)return;const filters=$('scoreFilters');if(!filters)return;
-    // v5.4.7: the special-event header is display-only. Do not observe/filter its
+    // v5.4.8: the special-event header is display-only. Do not observe/filter its
     // attributes or repeatedly reposition Browse controls from a score-row mutation
     // callback. v5.3.9 accidentally created a feedback loop between the synthetic
     // event chip and the canonical score-filter renderer that could freeze the page.
@@ -547,7 +547,7 @@
     }else if(chip){chip.remove();}
     $('sbbSpecialExitBtn')?.classList.toggle('hidden',!state.specialContext);
   }
-  function enterSpecialContext(league,label){
+  function enterSpecialContext(league,label,{initialAll=true}={}){
     league=clean(league).toUpperCase();if(!league||isCoreLeague(league)||league==='CFB')return false;
     releaseCuratedQueue('enter special event');
     state.specialContext={league,label:clean(label)||leagueLabel(league)};state.league=league;state.entityType=entityTypeFor(league);state.specialEventGames=[];
@@ -555,7 +555,7 @@
     try{window.SBB_SELECTED_EVENT?.clear?.({reason:'enter special event Match Center',source:'browse',force:true});}catch(_){}
     showCuratedGameCenterFallback({competitionId:league,title:`${state.specialContext.label} Match Center`,status:'Choose a match from the event ribbon'});
     syncSpecialContextUi();syncLeagueUi();
-    setTimeout(()=>{primeSpecialEventGames(league);activateHistorical({all:true});},0);
+    setTimeout(()=>{primeSpecialEventGames(league);if(initialAll)activateHistorical({all:true});},0);
     window.dispatchEvent(new CustomEvent('sbb:special-context',{detail:{active:true,league,label:state.specialContext.label}}));return true;
   }
   function clearSpecialContext(){if(!state.specialContext)return;const prior=state.specialContext;state.specialContext=null;state.specialEventGames=[];state.specialEventDataEpoch++;restoreCuratedGameCenterFallback();syncSpecialContextUi();window.dispatchEvent(new CustomEvent('sbb:special-context',{detail:{active:false,league:prior.league}}));}
@@ -604,7 +604,7 @@
   }
   async function fetchFullEntityCatalog(league,{forceMetadata=false}={}){
     const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return [];
-    // v5.4.7 prefers the backend's persisted participant index. It is built from
+    // v5.4.8 prefers the backend's persisted participant index. It is built from
     // all catalog events that own verified/playable media and is warmed in the
     // background, so opening Team/Player Browse does not scan the audit catalog.
     try{
@@ -612,7 +612,7 @@
       const entities=Array.isArray(data?.entities)?data.entities:[];const names=Array.isArray(data?.participants)?data.participants.map(clean).filter(Boolean):entities.map(x=>clean(x?.name)).filter(Boolean);
       if(response.ok&&data?.ok&&names.length){rememberEntityMetadata(selected,entities.length?entities:names.map(name=>({name})));return [...new Set(names)].sort((a,b)=>a.localeCompare(b));}
     }catch(_){}
-    // Compatibility fallback for a backend that has not completed the v5.4.7
+    // Compatibility fallback for a backend that has not completed the v5.4.8
     // participant-index warmup yet.
     let offset=0,total=Infinity,rows=[];
     while(offset<total&&rows.length<MAX_ENTITY_AUDIT_ROWS){
@@ -645,6 +645,35 @@
       const fallback=(selected===state.league)?entitiesFromRows(state.specialEventGames.length?state.specialEventGames:state.games):[];
       return [...new Set((fallback.length?fallback:currentEntities(selected)).map(clean).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
     }
+  }
+
+  async function controllerEntityEntriesForLeague(league){
+    const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return [];
+    const names=await controllerEntitiesForLeague(selected);const seen=new Set(),entries=[];
+    for(const name of names){
+      const display=clean(name),key=norm(display);if(!display||!key||seen.has(key))continue;seen.add(key);
+      const meta=entityMetaFor(display,selected)||{};
+      entries.push({name:display,abbreviation:clean(meta.abbreviation||meta.abbr),logo:clean(meta.logo||meta.flag||meta.image),country:clean(meta.country||meta.countryCode),kind:clean(meta.kind)});
+    }
+    return entries.sort((a,b)=>a.name.localeCompare(b.name));
+  }
+  function controllerSelectEntityContext(league,{special=false,label=''}={}){
+    const selected=clean(league).toUpperCase();if(!selected||selected==='ALL')return false;
+    if(special||!isCoreLeague(selected)){
+      if(state.specialContext?.league!==selected)enterSpecialContext(selected,clean(label)||leagueLabel(selected),{initialAll:false});
+      else{state.league=selected;state.entityType=entityTypeFor(selected);syncSpecialContextUi();syncLeagueUi();}
+      return true;
+    }
+    if(state.specialContext)clearSpecialContext();
+    state.league=selected;state.entityType=entityTypeFor(selected);syncLeagueUi();return true;
+  }
+  function controllerBrowseEntity(league,entity,{special=false,label=''}={}){
+    const selected=clean(league).toUpperCase(),name=clean(entity);if(!selected||!name)return false;
+    controllerSelectEntityContext(selected,{special,label});
+    // This is deliberately the exact same selection authority used by the top
+    // Team / Player Browse buttons. The controller only locks the league context
+    // first so the entity cannot be queried against a stale prior league.
+    return activateHistorical({entity:name});
   }
 
   async function primeEntityCatalog({render=true,forceRefresh=false}={}){
@@ -819,7 +848,7 @@
   }
   function releaseCuratedQueue(reason='return to daily programming'){
     stopCuratedOwnershipGuard();clearPlayAllStartWatchdog();state.playAllMode=false;
-    // v5.4.7: curated Team/Player/Special Event queues are user-owned only while
+    // v5.4.8: curated Team/Player/Special Event queues are user-owned only while
     // Browse is active. Returning to ALL/TODAY must surrender queue ownership
     // immediately so the next score-card click can build the selected date queue.
     // Leaving queueActive true caused renderQueue() to resurrect a World Cup queue
@@ -890,8 +919,8 @@
     const failedKey=programKey(item);if(failedKey)state.failedCuratedMedia.add(failedKey);
     const gameKey=clean(item?.__sbbCuratedGameKey),alternates=state.curatedAlternates.get(gameKey)||[];
     const alt=alternates.find(x=>{const key=programKey(x);return key&&!state.failedCuratedMedia.has(key)&&playAllVerified(x);});
-    if(alt){state.queueItems[index]=alt;try{PROGRAM[index]=alt;GENERAL_PROGRAM[index]=alt;}catch(_){}return tuneCuratedIndex(index,{userInitiated:false,reason:'v5.4.7 Play All fast same-game fallback'});}
-    for(let next=index+1;next<state.queueItems.length;next++){const candidate=state.queueItems[next],key=programKey(candidate);if(candidate&&(!key||!state.failedCuratedMedia.has(key)))return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.4.7 Play All skipped slow verified source'});}
+    if(alt){state.queueItems[index]=alt;try{PROGRAM[index]=alt;GENERAL_PROGRAM[index]=alt;}catch(_){}return tuneCuratedIndex(index,{userInitiated:false,reason:'v5.4.8 Play All fast same-game fallback'});}
+    for(let next=index+1;next<state.queueItems.length;next++){const candidate=state.queueItems[next],key=programKey(candidate);if(candidate&&(!key||!state.failedCuratedMedia.has(key)))return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.4.8 Play All skipped slow verified source'});}
     showCuratedUnavailable(item,'Verified Play All media did not start within the bounded startup window.');return false;
   }
   function armPlayAllStartWatchdog(item,index){
@@ -976,11 +1005,11 @@
   }
   function syncCuratedGameCenterContext(item){
     const curated=!!item?.__sbbCuratedOverride;
-    // v5.4.7: Special Event navigation is the side-panel authority, even if an
+    // v5.4.8: Special Event navigation is the side-panel authority, even if an
     // obsolete MLB callback passes a non-curated item into this function. This is
     // deliberately stronger than tying authority to `curated` alone.
-    // Compatibility marker for pre-v5.4.7 static gates: const specialOwned=curated&&!!state.specialContext
-    // Compatibility marker for pre-v5.4.7 static gates: window.SBB_SELECTED_EVENT?.clear?.({reason:'selected curated match has no standard Game Center provider'
+    // Compatibility marker for pre-v5.4.8 static gates: const specialOwned=curated&&!!state.specialContext
+    // Compatibility marker for pre-v5.4.8 static gates: window.SBB_SELECTED_EVENT?.clear?.({reason:'selected curated match has no standard Game Center provider'
     // Compatibility marker for early Browse gate: window.SBB_SELECTED_EVENT?.clear?.({reason:'curated competition has no Game Center'
     const specialOwned=!!state.specialContext;
     const authoritative=specialOwned?(curated?item:(expectedCuratedItem()||item)):item;
@@ -1054,7 +1083,7 @@
         const idx=Math.max(0,Math.min(Number(state.curatedExpectedIndex)||0,state.queueItems.length-1));
         try{currentIndex=idx;standbyIndex=idx;}catch(_){}
         clearStalePlaybackPresentation();
-        if(typeof tuneProgramIndexV5==='function')tuneProgramIndexV5(idx,{userInitiated:false,reason:`v5.4.7 ownership repair: ${reason}`});
+        if(typeof tuneProgramIndexV5==='function')tuneProgramIndexV5(idx,{userInitiated:false,reason:`v5.4.8 ownership repair: ${reason}`});
       }
       syncCuratedGameCenterContext(item);
       return true;
@@ -1123,7 +1152,7 @@
     try{if(typeof setFeedNote==='function')setFeedNote(`Curated programming • ${label} • ${state.queueItems.length} video${state.queueItems.length===1?'':'s'}`);}catch(_){}
     // v5.3.0 compatibility contract: tuneProgramIndexV5(bounded is now delegated
     // through tuneCuratedIndex so stale fallback UI and Game Center clear first.
-    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.4.7 curated programming: ${label}`});
+    return tuneCuratedIndex(bounded,{userInitiated:true,reason:`v5.4.8 curated programming: ${label}`});
   }
   function playGames(games,label,{safePlayAll=false}={}){
     if(safePlayAll){
@@ -1192,11 +1221,11 @@
           const alt=alternates.find(candidate=>{const key=programKey(candidate);if(!key||state.failedCuratedMedia.has(key))return false;try{return typeof runtimeMediaUsable==='function'?runtimeMediaUsable(candidate):true;}catch(_){return true;}});
           if(alt){
             const idx=Math.max(0,Math.min(Number(currentIndex)||0,state.queueItems.length-1));state.queueItems[idx]=alt;try{PROGRAM[idx]=alt;GENERAL_PROGRAM[idx]=alt;}catch(_){}
-            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.4.7 same-game curated fallback'});
+            return tuneCuratedIndex(idx,{userInitiated:false,reason:'v5.4.8 same-game curated fallback'});
           }
           const start=Math.max(0,Number(currentIndex)||0);let next=-1;
           for(let i=start+1;i<state.queueItems.length;i++){const candidate=state.queueItems[i],key=programKey(candidate);if(candidate&&(!key||!state.failedCuratedMedia.has(key))){next=i;break;}}
-          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.4.7 next special-event highlight after unavailable source'});
+          if(next>=0)return tuneCuratedIndex(next,{userInitiated:false,reason:'v5.4.8 next special-event highlight after unavailable source'});
           showCuratedUnavailable(item,err?.message||err);return;
         }
         return original.call(this,slot,err,userInitiated);
@@ -1284,7 +1313,8 @@
   window.SBB_CURATED_BROWSE=Object.freeze({
     version:VERSION,open:()=>setOpen(true),close:()=>setOpen(false),returnToDay,returnToAll,releaseCuratedQueue,
     browseAll:()=>activateHistorical({all:true}),browseEntity:entity=>activateHistorical({entity}),
-    controllerEntities:league=>controllerEntitiesForLeague(league),
+    controllerEntities:league=>controllerEntitiesForLeague(league),controllerEntityEntries:league=>controllerEntityEntriesForLeague(league),
+    controllerBrowseEntity:(league,entity,options={})=>controllerBrowseEntity(league,entity,options),
     rankedToday:activateRanked,playAll,enterSpecialContext,
     context:()=>({league:state.league,specialContext:state.specialContext?{...state.specialContext}:null,mode:state.mode,entity:state.entity,games:state.games.slice(0,30).map(g=>({date:g.date,game:g.game,tier:g.tier,mediaAvailable:!!g.items?.length})),eventGames:(state.specialEventGames.length?state.specialEventGames:state.games).slice(0,220).map(g=>{const score=gameScore(g)||{};const row=g.row||{};const source=g.items?.[0]||{};return {date:g.date,game:g.game,tier:g.tier,mediaAvailable:!!g.items?.length,awayScore:score.away??row.awayScore??null,homeScore:score.home??row.homeScore??null,status:clean(row.status||row.state||source.status),group:clean(row.group||row.pool||row.groupName||row.bracketGroup),round:clean(row.round||row.stage||row.phase||row.bracket||source.round),sourceTitle:clean(source.sourceTitle||source.mediaTitle||source.title)};} )}),
     snapshot:()=>({version:VERSION,league:state.league,mode:state.mode,entity:state.entity,facet:state.facet,games:state.games.length,selected:state.selected.size,queueActive:state.queueActive,queueItems:state.queueItems.length,favorites:favoritesFor(state.league).slice(),loading:state.loading,error:state.error,noGameCenter:document.body.classList.contains('sbb-curated-no-game-center')})

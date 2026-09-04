@@ -1,12 +1,12 @@
-/* Sports Big Board v5.4.7 — WebHID controller bridge.
+/* Sports Big Board v5.4.8 — WebHID controller bridge.
    Gamepad API remains primary. This read-only bridge exists for controllers and
    proprietary wireless receivers that Windows/vendor software can see but the
    browser Gamepad API does not expose. A one-time user gesture is required by
    WebHID to grant device access. No output/feature reports are sent. */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_HID_BRIDGE?.version==='5.4.7')return;
-  const VERSION='5.4.7';
+  if(window.SBB_CONTROLLER_HID_BRIDGE?.version==='5.4.8')return;
+  const VERSION='5.4.8';
   const TURTLE_BEACH_VENDOR_ID=0x10f5;
   const STEALTH_ULTRA_WIRELESS_PID=0x7070;
   const STEALTH_ULTRA_WIRED_PID=0x7073;

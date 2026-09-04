@@ -1,0 +1,21 @@
+Sports Big Board v5.4.8 — Controller Polish + Browse Parity + Fullscreen Exit
+
+Manual GitHub upload
+1. Extract the non-tests ZIP and upload its contents into the repository root preserving paths.
+2. Extract the tests ZIP, open the existing GitHub /tests folder, and upload the flat .py files there.
+3. Wait for the workflow triggered after both uploads; an intermediate mixed-version failure is expected if the two uploads commit separately.
+4. The working v5.4.7 Windows Controller Bridge R1 remains compatible. No local bridge replacement or restart is required for v5.4.8.
+
+Key changes
+- X / Square invokes canonical Play/Pause even when player controls are visually hidden.
+- Y / Triangle toggles Game Center ↔ League View.
+- L3 / Left Stick Click opens/closes the information drawer.
+- Team/Player radial browse is logo-first and fits up to 16 participants per page.
+- Controller team selection locks the selected league/event then uses the exact same historical team-selection authority as top Team Browse.
+- Video fullscreen owns the full stage-card, keeps the radial visible, and exposes EXIT VIDEO FULLSCREEN.
+
+Local validation before packaging
+- 37 available Python regressions passed.
+- 3 presentation regressions could not execute in the isolated overlay because these unchanged full-repository files are intentionally not duplicated here: ui/broadcast-design-v5213.css, ui/premium-masthead-v5214.css, ui/premium-now-watching-v5215.css.
+- 26 available JavaScript/Python/shell syntax-check groups passed.
+- GitHub VERIFY.sh remains the final complete gate after upload because the deployed repository already contains the three unchanged presentation stylesheets.

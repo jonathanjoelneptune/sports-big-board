@@ -1,4 +1,4 @@
-/* Sports Big Board v5.4.7 — Controller Radials + Live Input presentation. */
+/* Sports Big Board v5.4.8 — Controller Radials + Live Input presentation. */
 html[data-sbb-controller-active="1"]{--sbb-controller-active:1}
 html[data-sbb-controller-active="1"] [data-sbb-controller-focus="1"]{
   outline-width:3px!important;outline-offset:3px!important;
@@ -25,3 +25,15 @@ html[data-sbb-theme="light"] .controller-live-indicator[data-state="live"]{backg
 @media(max-width:980px){.controller-live-indicator{min-width:38px;padding:0 6px;font-size:0}.controller-live-indicator::first-letter{font-size:13px}}
 @media(max-width:760px){.sbb-controller-help-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sbb-controller-help{bottom:10px}.sbb-controller-radial-wheel{width:min(460px,92vw);height:min(460px,92vw)}.sbb-controller-radial-item{min-width:88px;max-width:108px;padding:8px 9px}.sbb-controller-radial-item span{font-size:8px}}
 @media(prefers-reduced-motion:reduce){.sbb-controller-help,.sbb-controller-radial-item{transition:none!important}}
+
+/* v5.4.8 dense controller-native Team / Player Browse. */
+.sbb-controller-radial[data-radial-type="entity-browse"] .sbb-controller-radial-wheel{width:min(650px,94vw);height:min(650px,94vw)}
+.sbb-controller-radial[data-radial-type="entity-browse"] .sbb-controller-radial-wheel:before{width:430px;height:430px}
+.sbb-controller-radial[data-radial-type="entity-browse"] .sbb-controller-radial-item.entity{min-width:0;width:58px;height:58px;padding:4px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:rgba(8,16,23,.94)}
+.sbb-controller-radial[data-radial-type="entity-browse"] .sbb-controller-radial-item.entity.selected{transform:translate(calc(-50% + var(--rx)),calc(-50% + var(--ry))) scale(1.20)}
+.sbb-controller-entity-mark{width:46px;height:46px;display:grid;place-items:center;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.06)}
+.sbb-controller-entity-mark img{display:block;max-width:42px;max-height:42px;width:auto;height:auto;object-fit:contain}
+.sbb-controller-entity-mark b{font:950 10px/1 system-ui,sans-serif;letter-spacing:.02em;color:#eef5fa}
+.sbb-controller-radial[data-radial-type="entity-browse"] .sbb-controller-radial-item:not(.entity){min-width:72px;max-width:82px;padding:7px 8px}
+.sbb-controller-radial[data-radial-type="entity-browse"] .sbb-controller-radial-item:not(.entity) span{font-size:7.5px}
+@media(max-width:760px){.sbb-controller-radial[data-radial-type="entity-browse"] .sbb-controller-radial-wheel{width:min(560px,96vw);height:min(560px,96vw)}.sbb-controller-radial[data-radial-type="entity-browse"] .sbb-controller-radial-item.entity{width:48px;height:48px}.sbb-controller-entity-mark{width:38px;height:38px}.sbb-controller-entity-mark img{max-width:35px;max-height:35px}}

@@ -1,11 +1,11 @@
-/* Sports Big Board v5.4.7 — Controller Radials + Native Windows Bridge + Pointer Fallback.
+/* Sports Big Board v5.4.8 — Controller Radials + Native Windows Bridge + Pointer Fallback.
    Builds on the v5.4.0 semantic navigation graph and v5.4.1 automatic takeover.
    Adds robust browser-level gamepad diagnostics, a live header indicator, RT
    League radial, LT Date/Scope radial, and R3 analog pointer fallback. */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_MODE?.version==='5.4.7')return;
-  const VERSION='5.4.7';
+  if(window.SBB_CONTROLLER_MODE?.version==='5.4.8')return;
+  const VERSION='5.4.8';
   const PREF_KEY='sports-big-board.controller-mode.v1';
   const DEADZONE=.20;
   const NEUTRAL_DEADZONE=.28;
@@ -32,6 +32,7 @@
   let indicatorEl=null,lastIndicatorState='';
 
   const clean=v=>String(v??'').trim();
+  const esc=v=>clean(v).replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[ch]));
   const nav=()=>window.SBB_SEMANTIC_NAVIGATION||null;
   const regions=()=>window.SBB_INTERACTION_REGIONS||null;
   const ownerApi=()=>window.SBB_INPUT_OWNERSHIP||null;
@@ -115,7 +116,7 @@
   }
   function renderHelp(message=''){
     const el=ensureHelp();const g=glyphs();
-    el.innerHTML=`<div class="sbb-controller-help-head"><span class="sbb-controller-icon">🎮</span><strong>${message||'CONTROLLER MODE'}</strong><small>${clean(activeId)||'Gamepad'}</small></div><div class="sbb-controller-help-grid"><span><b>D-PAD / LS</b> Navigate</span><span><b>${g.a}</b> Select</span><span><b>${g.b}</b> Back</span><span><b>${g.x}</b> Play / Pause</span><span><b>${g.y}</b> Show / Hide Game Center</span><span><b>${g.lb} / ${g.rb}</b> Prev / Next</span><span><b>${g.rt}</b> Leagues</span><span><b>${g.lt}</b> Date / Scope</span><span><b>${g.lt}+${g.rt}</b> Commands</span><span><b>${g.r3}</b> Pointer</span><span><b>RS</b> Scroll</span><span><b>${g.menu}</b> Help</span></div>`;
+    el.innerHTML=`<div class="sbb-controller-help-head"><span class="sbb-controller-icon">🎮</span><strong>${message||'CONTROLLER MODE'}</strong><small>${clean(activeId)||'Gamepad'}</small></div><div class="sbb-controller-help-grid"><span><b>D-PAD / LS</b> Navigate</span><span><b>${g.a}</b> Select</span><span><b>${g.b}</b> Back</span><span><b>${g.x}</b> Play / Pause</span><span><b>${g.y}</b> Game Center / League View</span><span><b>${g.lb} / ${g.rb}</b> Prev / Next</span><span><b>${g.rt}</b> Leagues</span><span><b>${g.lt}</b> Date / Scope</span><span><b>${g.lt}+${g.rt}</b> Commands</span><span><b>L3</b> Open / Close Drawer</span><span><b>${g.r3}</b> Pointer</span><span><b>RS</b> Scroll</span><span><b>${g.menu}</b> Help</span></div>`;
     return el;
   }
   function showHelp({message='',persist=false,duration=HELP_AUTO_MS}={}){
@@ -265,7 +266,21 @@
     const el=items.find(visible);if(!el)return false;try{el.click();return true;}catch(_){return false;}
   }
   function playPause(){
-    if(clickVisible('#playBtn'))return true;
+    // The canonical transport button may be visually hidden while the stage is
+    // fullscreen or controls have auto-hidden. Controller playback must not depend
+    // on layout visibility; invoke the same button authority directly.
+    const btn=document.getElementById('playBtn');
+    if(btn){try{btn.click();return true;}catch(_){}}
+    // Last-resort direct transport fallback for a future layout that removes the
+    // visible button without removing the established active-slot transports.
+    try{
+      const slot=(typeof activeSlot!=='undefined'&&activeSlot)?activeSlot:'A';
+      const media=(typeof slotMedia!=='undefined'&&slotMedia)?slotMedia[slot]:'';
+      if(media==='native'){
+        const v=document.getElementById(`native${slot}`);if(v){if(!v.paused&&!v.ended)v.pause();else v.play?.();return true;}
+      }
+      const p=(typeof players!=='undefined'&&players)?players[slot]:null;if(p){const st=Number(p.getPlayerState?.());if(st===1||st===3)p.pauseVideo?.();else p.playVideo?.();return true;}
+    }catch(_){}
     showHelp({message:'PLAYBACK CONTROL IS NOT AVAILABLE HERE',duration:1600});return false;
   }
   function toggleActiveMute(){
@@ -313,19 +328,20 @@
     };
     return clickVisible(selectors[tab]||selectors['game-center']);
   }
-  function toggleGameCenterDrawer(){
-    const drawer=document.getElementById('infoDrawer');
-    const closed=!drawer||drawer.classList.contains('is-closed')||drawer.getAttribute('aria-hidden')==='true';
-    const collapsed=drawerIsCollapsed(),active=drawerActiveTab();
-    // Y is the guaranteed recovery path: any hidden/collapsed/other-tab state
-    // expands the workspace and lands on Game Center.
-    if(closed||collapsed||active!=='game-center')return openDrawerTab('game-center');
-    // Desktop Game Center is an embedded workspace; hide means collapse to the
-    // seam handle. Mobile/overlay layouts may use the normal close contract.
+  function drawerIsClosed(){const drawer=document.getElementById('infoDrawer');return !drawer||drawer.classList.contains('is-closed')||drawer.getAttribute('aria-hidden')==='true';}
+  function toggleInfoDrawerVisibility(){
+    const active=drawerActiveTab()||'game-center';
+    if(drawerIsClosed()||drawerIsCollapsed())return openDrawerTab(active);
     const embedded=document.body?.classList?.contains('sbb-game-center-side')||window.innerWidth>=1100;
     if(embedded)return setDrawerCollapsed(true);
     try{window.SBB_INFO_DRAWER?.close?.({manual:true});return true;}catch(_){}
     return clickVisible('#infoDrawerClose')||setDrawerCollapsed(true);
+  }
+  function toggleGameCenterLeagueView(){
+    // Y / Triangle owns view switching only. L3 independently controls whether the
+    // information drawer itself is visible.
+    const active=drawerActiveTab();
+    return openDrawerTab(active==='game-center'?'up-next':'game-center');
   }
   function transport(delta){return clickVisible(delta<0?'#prevBtn':'#nextBtn');}
   const browseApi=()=>window.SBB_CURATED_BROWSE||null;
@@ -346,35 +362,45 @@
     activateLeague(league);
     return later(()=>clickVisible('#sbbLeagueAllBtn')||browseApi()?.browseAll?.());
   }
-  const ENTITY_RADIAL_PAGE_SIZE=6;
+  const ENTITY_RADIAL_PAGE_SIZE=16;
   function shortEntityLabel(name){
-    const v=clean(name);return v.length<=20?v:`${v.slice(0,18).trim()}…`;
+    const v=clean(name);return v.length<=24?v:`${v.slice(0,22).trim()}…`;
   }
-  async function openEntityBrowseRadial(league,{label='',parent='league-scope',special=false,page=0,names=null}={}){
+  function entityFallbackMark(entry={}){
+    const abbr=clean(entry.abbreviation);if(abbr)return abbr.toUpperCase().slice(0,4);
+    const words=clean(entry.name).split(/\s+/).filter(Boolean);return words.map(x=>x[0]).join('').slice(0,4).toUpperCase()||'•';
+  }
+  async function openEntityBrowseRadial(league,{label='',parent='league-scope',special=false,page=0,entries=null}={}){
     league=clean(league).toUpperCase();if(!league)return false;
     if(!special)activateLeague(league);
-    let entities=Array.isArray(names)?names.slice():null;
-    if(!entities){
+    let rows=Array.isArray(entries)?entries.slice():null;
+    if(!rows){
       showHelp({message:`LOADING ${browseLabel(league)}`,duration:1400});
-      try{entities=await browseApi()?.controllerEntities?.(league);}catch(_){entities=[];}
+      try{rows=await browseApi()?.controllerEntityEntries?.(league);}catch(_){rows=[];}
+      if(!rows?.length){try{rows=(await browseApi()?.controllerEntities?.(league))?.map(name=>({name}));}catch(_){rows=[];}}
     }
-    entities=[...new Set((entities||[]).map(clean).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
-    if(!entities.length){showHelp({message:`NO ${browseLabel(league)} ENTRIES AVAILABLE`,duration:1800});return false;}
-    return openRadial('entity-browse',{league,label:clean(label)||league,parent,special:!!special,page:Math.max(0,Number(page)||0),names:entities});
+    const seen=new Set();rows=(rows||[]).map(raw=>typeof raw==='string'?{name:raw}:(raw||{})).filter(row=>{const key=clean(row.name).toLowerCase();if(!key||seen.has(key))return false;seen.add(key);return true;}).sort((a,b)=>clean(a.name).localeCompare(clean(b.name)));
+    if(!rows.length){showHelp({message:`NO ${browseLabel(league)} ENTRIES AVAILABLE`,duration:1800});return false;}
+    return openRadial('entity-browse',{league,label:clean(label)||league,parent,special:!!special,page:Math.max(0,Number(page)||0),entries:rows});
   }
   function openBrowseForLeague(league,context={}){
     return openEntityBrowseRadial(league,{label:context.label||league,parent:context.parent||'league-scope',special:!!context.special});
   }
-  function chooseBrowseEntity(league,name){
-    try{const result=browseApi()?.browseEntity?.(name);return result!==false;}catch(_){return false;}
+  function chooseBrowseEntity(league,entry,context={}){
+    const name=clean(entry?.name||entry);if(!name)return false;
+    try{
+      const api=browseApi();
+      if(api?.controllerBrowseEntity)return api.controllerBrowseEntity(league,name,{special:!!context.special,label:context.label||league})!==false;
+      return api?.browseEntity?.(name)!==false;
+    }catch(_){return false;}
   }
   function entityBrowseOptions(context={}){
-    const league=clean(context.league).toUpperCase(),names=Array.isArray(context.names)?context.names:[],page=Math.max(0,Number(context.page)||0);
-    const totalPages=Math.max(1,Math.ceil(names.length/ENTITY_RADIAL_PAGE_SIZE)),safePage=Math.min(page,totalPages-1),start=safePage*ENTITY_RADIAL_PAGE_SIZE;
-    const slice=names.slice(start,start+ENTITY_RADIAL_PAGE_SIZE);
-    const options=slice.map(name=>({value:`ENTITY:${name}`,label:shortEntityLabel(name),action:()=>chooseBrowseEntity(league,name)}));
-    if(totalPages>1&&safePage>0)options.push({value:'PREV_PAGE',label:'◀ PREV',action:()=>queueRadial('entity-browse',{...context,page:safePage-1,names},28)});
-    if(totalPages>1&&safePage<totalPages-1)options.push({value:'NEXT_PAGE',label:'NEXT ▶',action:()=>queueRadial('entity-browse',{...context,page:safePage+1,names},28)});
+    const league=clean(context.league).toUpperCase(),entries=Array.isArray(context.entries)?context.entries:[],page=Math.max(0,Number(context.page)||0);
+    const totalPages=Math.max(1,Math.ceil(entries.length/ENTITY_RADIAL_PAGE_SIZE)),safePage=Math.min(page,totalPages-1),start=safePage*ENTITY_RADIAL_PAGE_SIZE;
+    const slice=entries.slice(start,start+ENTITY_RADIAL_PAGE_SIZE);
+    const options=slice.map(entry=>({value:`ENTITY:${clean(entry.name)}`,label:shortEntityLabel(entry.name),entity:true,logo:clean(entry.logo),mark:entityFallbackMark(entry),country:clean(entry.country),action:()=>chooseBrowseEntity(league,entry,context)}));
+    if(totalPages>1&&safePage>0)options.push({value:'PREV_PAGE',label:'◀ PREV',action:()=>queueRadial('entity-browse',{...context,page:safePage-1,entries},28)});
+    if(totalPages>1&&safePage<totalPages-1)options.push({value:'NEXT_PAGE',label:'NEXT ▶',action:()=>queueRadial('entity-browse',{...context,page:safePage+1,entries},28)});
     options.push({value:'BACK_SCOPE',label:'BACK',action:()=>{
       const type=context.special?'special-scope':'league-scope';return queueRadial(type,{league,label:context.label||league,parent:context.special?'special-league':'league'},28);
     }});
@@ -464,22 +490,35 @@
     try{if(window.SBB_CONTROLLER_NATIVE_BRIDGE?.sendCommand?.(command))return true;}catch(_){}
     showHelp({message:'CONTROLLER BRIDGE REQUIRED FOR FULLSCREEN',duration:1900});return false;
   }
-  function commandOptions(){return [
-    {value:'APPFS',label:'APP FULLSCREEN',action:()=>fullscreenCommand('app')},
-    {value:'VIDEOFS',label:'VIDEO FULLSCREEN',action:()=>fullscreenCommand('video')},
-    {value:'EXITFS',label:'EXIT FULLSCREEN',action:()=>fullscreenCommand('exit')},
-    {value:'PLAY',label:'PLAY / PAUSE',action:()=>playPause()},
-    {value:'MUTE',label:'MUTE / UNMUTE',action:()=>toggleActiveMute()},
-    {value:'GAMECENTER',label:'GAME CENTER',action:()=>toggleGameCenterDrawer()},
-    {value:'LEAGUEVIEW',label:'LEAGUE VIEW',action:()=>openDrawerTab('up-next')},
-    {value:'SETTINGS',label:'SETTINGS',action:()=>openDrawerTab('settings')}
-  ];}
+  function commandOptions(){
+    let fs={};try{fs=window.SBB_FULLSCREEN_CONTROL?.snapshot?.()||{};}catch(_){}
+    return [
+      {value:'APPFS',label:fs.appFullscreen?'EXIT APP FULLSCREEN':'APP FULLSCREEN',action:()=>fullscreenCommand('app')},
+      {value:'VIDEOFS',label:fs.videoFullscreen?'EXIT VIDEO FULLSCREEN':'VIDEO FULLSCREEN',action:()=>fullscreenCommand('video')},
+      {value:'EXITFS',label:'EXIT FULLSCREEN',action:()=>fullscreenCommand('exit')},
+      {value:'PLAY',label:'PLAY / PAUSE',action:()=>playPause()},
+      {value:'MUTE',label:'MUTE / UNMUTE',action:()=>toggleActiveMute()},
+      {value:'GAMECENTER',label:'GAME CENTER',action:()=>openDrawerTab('game-center')},
+      {value:'LEAGUEVIEW',label:'LEAGUE VIEW',action:()=>openDrawerTab('up-next')},
+      {value:'SETTINGS',label:'SETTINGS',action:()=>openDrawerTab('settings')}
+    ];
+  }
 
+  function fullscreenElement(){return document.fullscreenElement||document.webkitFullscreenElement||null;}
+  function radialHost(){
+    const fs=fullscreenElement();
+    // A video fullscreen stage is the only fullscreen element whose descendants
+    // remain visible. Mount the controller wheel inside it so LT+RT can always
+    // expose EXIT VIDEO FULLSCREEN instead of stranding the viewer.
+    if(fs&&(fs.matches?.('.stage-card,#stage')||fs.closest?.('.stage-card')))return fs;
+    return document.body;
+  }
+  function mountRadial(){const host=radialHost();if(radialEl?.isConnected&&host&&radialEl.parentNode!==host)host.appendChild(radialEl);}
   function ensureRadial(){
-    if(radialEl?.isConnected)return radialEl;
+    if(radialEl?.isConnected){mountRadial();return radialEl;}
     radialEl=document.createElement('div');radialEl.id='sbbControllerRadial';radialEl.className='sbb-controller-radial hidden';radialEl.setAttribute('aria-hidden','true');
     radialEl.innerHTML='<div class="sbb-controller-radial-dim"></div><div class="sbb-controller-radial-wheel"><div class="sbb-controller-radial-center"><strong></strong><span>MOVE RIGHT STICK • RELEASE TRIGGER</span></div><div class="sbb-controller-radial-items"></div></div>';
-    document.body.appendChild(radialEl);return radialEl;
+    (radialHost()||document.body).appendChild(radialEl);return radialEl;
   }
   function radialTitle(type,context={}){
     if(type==='league')return 'LEAGUES';if(type==='date')return 'DATE / SCOPE';if(type==='commands')return 'SPECIAL COMMANDS';
@@ -489,16 +528,23 @@
     return 'CONTROLLER';
   }
   function renderRadial(){
-    const el=ensureRadial();if(!radial)return;
+    const el=ensureRadial();if(!radial)return;el.dataset.radialType=radial.type;
     const items=radial.options||[],host=el.querySelector('.sbb-controller-radial-items'),center=el.querySelector('.sbb-controller-radial-center strong'),hint=el.querySelector('.sbb-controller-radial-center span');
-    if(center)center.textContent=radialTitle(radial.type,radial.context);
-    if(hint)hint.textContent=['league','date','commands'].includes(radial.type)?'MOVE RIGHT STICK • RELEASE TRIGGER':(radial.type==='entity-browse'?`PAGE ${Math.min((radial.context?.page||0)+1,Math.max(1,Math.ceil((radial.context?.names?.length||1)/ENTITY_RADIAL_PAGE_SIZE)))} • A SELECT`:'MOVE RIGHT STICK • A SELECT • B CLOSE');
-    const radius=178;host.innerHTML=items.map((item,i)=>{
+    const entityMode=radial.type==='entity-browse',selected=radialSelection>=0?items[radialSelection]:null;
+    const count=radial.context?.entries?.length||0,totalPages=Math.max(1,Math.ceil(Math.max(1,count)/ENTITY_RADIAL_PAGE_SIZE));
+    if(center)center.textContent=entityMode&&selected?.entity?selected.label:radialTitle(radial.type,radial.context);
+    if(hint)hint.textContent=['league','date','commands'].includes(radial.type)?'MOVE RIGHT STICK • RELEASE TRIGGER':(entityMode?`${browseLabel(radial.context?.league)} • PAGE ${Math.min((radial.context?.page||0)+1,totalPages)}/${totalPages} • A SELECT`:'MOVE RIGHT STICK • A SELECT • B CLOSE');
+    const radius=entityMode?232:178;host.innerHTML=items.map((item,i)=>{
       const angle=(-Math.PI/2)+(Math.PI*2*i/items.length),x=Math.cos(angle)*radius,y=Math.sin(angle)*radius;
-      const selected=i===radialSelection?' selected':'',current=item.value===radial.current?' current':'';
-      return `<div class="sbb-controller-radial-item${selected}${current}" data-radial-index="${i}" style="--rx:${x.toFixed(1)}px;--ry:${y.toFixed(1)}px"><span>${item.label}</span></div>`;
+      const selectedClass=i===radialSelection?' selected':'',current=item.value===radial.current?' current':'',entityClass=item.entity?' entity':'';
+      const inside=item.entity
+        ?`<span class="sbb-controller-entity-mark">${item.logo?`<img src="${esc(item.logo)}" alt="">`:`<b>${esc(item.mark||'•')}</b>`}</span>`
+        :`<span>${esc(item.label)}</span>`;
+      return `<div class="sbb-controller-radial-item${selectedClass}${current}${entityClass}" data-radial-index="${i}" title="${esc(item.label)}" style="--rx:${x.toFixed(1)}px;--ry:${y.toFixed(1)}px">${inside}</div>`;
     }).join('');
   }
+  function remountRadialForFullscreen(){if(!radialEl?.isConnected)return;mountRadial();if(radial&&!radialEl.classList.contains('hidden'))renderRadial();}
+  document.addEventListener('fullscreenchange',remountRadialForFullscreen);document.addEventListener('webkitfullscreenchange',remountRadialForFullscreen);
   function currentLeague(){return clean(document.querySelector('#scoreFilters [data-score-filter].active')?.dataset?.scoreFilter).toUpperCase()||'ALL';}
   function openRadial(type,context={}){
     if(!claimController(`open ${type} radial`))return false;
@@ -521,7 +567,7 @@
     if(!radial)return false;
     const selected=radialSelection>=0?radial.options?.[radialSelection]:null;const type=radial.type;
     radial=null;radialSelection=-1;delete document.documentElement.dataset.sbbControllerRadial;
-    const el=ensureRadial();el.classList.add('hidden');el.setAttribute('aria-hidden','true');
+    const el=ensureRadial();el.classList.add('hidden');el.setAttribute('aria-hidden','true');delete el.dataset.radialType;
     if(pointerMode)setPointerVisual(true);
     if(commit&&selected){try{selected.action?.();lastAction=`${type} radial: ${selected.value}`;lastActionAt=Date.now();}catch(_){} }
     return true;
@@ -593,6 +639,7 @@
   function handleButton(index){
     if(!claimController(`controller button ${index}`))return;
     if(radial){if(index===BUTTON.B){closeRadial(false);return;}if(index===BUTTON.A){closeRadial(true);return;}if(index===BUTTON.MENU){toggleHelp();return;}return;}
+    if(index===BUTTON.LS){toggleInfoDrawerVisibility();return;}
     if(index===BUTTON.RS){setPointerMode(!pointerMode);return;}
     if(pointerMode){
       if(index===BUTTON.A){pointerClick();return;}
@@ -605,7 +652,7 @@
     if(index===BUTTON.A){nav()?.activate?.();return;}
     if(index===BUTTON.B){nav()?.back?.();return;}
     if(index===BUTTON.X){playPause();return;}
-    if(index===BUTTON.Y){toggleGameCenterDrawer();return;}
+    if(index===BUTTON.Y){toggleGameCenterLeagueView();return;}
     if(index===BUTTON.LB){transport(-1);return;}
     if(index===BUTTON.RB){transport(1);return;}
     if(index===BUTTON.MENU){toggleHelp();return;}

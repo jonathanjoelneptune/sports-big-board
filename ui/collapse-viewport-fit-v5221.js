@@ -1,9 +1,9 @@
-/* Sports Big Board v5.4.7 — Clean Collapse + Viewport Fit */
+/* Sports Big Board v5.4.8 — Clean Collapse + Viewport Fit */
 (() => {
   'use strict';
-  if(window.SBB_COLLAPSE_VIEWPORT_FIT?.version==='5.4.7') return;
+  if(window.SBB_COLLAPSE_VIEWPORT_FIT?.version==='5.4.8') return;
 
-  const VERSION='5.4.7';
+  const VERSION='5.4.8';
   const $=id=>document.getElementById(id);
   let queued=false;
 

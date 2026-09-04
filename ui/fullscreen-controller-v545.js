@@ -1,12 +1,12 @@
-/* Sports Big Board v5.4.7 — application/video fullscreen authority.
+/* Sports Big Board v5.4.8 — application/video fullscreen authority.
    The logo-adjacent fullscreen control owns Sports Big Board app fullscreen; the
    player utility control owns video fullscreen. Controller-originated fullscreen
    can use the loopback Windows bridge because browser Fullscreen API calls normally
    require a trusted DOM user activation that Gamepad/WebSocket polling cannot create. */
 (() => {
   'use strict';
-  if(window.SBB_FULLSCREEN_CONTROL?.version==='5.4.7')return;
-  const VERSION='5.4.7';
+  if(window.SBB_FULLSCREEN_CONTROL?.version==='5.4.8')return;
+  const VERSION='5.4.8';
   const APP_BUTTON='bigBoardFullscreenBtn';
   const VIDEO_BUTTON='fullscreenBtn';
   let toastTimer=0,bridgeUnsub=null;
@@ -60,13 +60,10 @@
   function appTarget(){return document.documentElement;}
   function activePlayerLayer(){return document.querySelector('#layerA.active,#layerB.active,.player-layer.active')||$('stage');}
   function videoTarget(){
-    const layer=activePlayerLayer();
-    if(layer){
-      const native=[...layer.querySelectorAll('video')].find(visible);if(native)return native;
-      const frame=[...layer.querySelectorAll('iframe')].find(visible);if(frame)return frame;
-      const host=[...layer.querySelectorAll('.youtube-player-host')].find(visible);if(host?.querySelector('iframe'))return host.querySelector('iframe');
-    }
-    return $('stage');
+    // Fullscreen the complete stage card rather than the transport iframe/video.
+    // That keeps Big Board overlays and the controller radial eligible to render
+    // inside the fullscreen subtree, so the viewer can always exit again.
+    return document.querySelector('.stage-card')||$('stage')||activePlayerLayer();
   }
   function userActivation(){try{return !!navigator.userActivation?.isActive;}catch(_){return false;}}
 
@@ -100,9 +97,9 @@
     return false;
   }
   function sync(){
-    const fs=fullscreenElement(),app=appTarget(),stage=$('stage');
+    const fs=fullscreenElement(),app=appTarget(),stage=$('stage'),video=videoTarget();
     const appFull=!!fs&&(fs===app||fs===document.documentElement);
-    const videoFull=!!fs&&!!stage&&(fs===stage||stage.contains(fs));
+    const videoFull=!!fs&&!!video&&(fs===video||video.contains?.(fs)||(stage&&(fs===stage||stage.contains?.(fs))));
     document.documentElement.dataset.sbbAppFullscreen=appFull?'1':'0';
     document.documentElement.dataset.sbbVideoFullscreen=videoFull?'1':'0';
     const ab=$(APP_BUTTON);if(ab){ab.setAttribute('aria-pressed',appFull?'true':'false');ab.title=appFull?'Exit Sports Big Board fullscreen':'Fullscreen Sports Big Board';}
@@ -127,5 +124,10 @@
     sync();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_FULLSCREEN_CONTROL=Object.freeze({version:VERSION,toggleApp,toggleVideo,exitFullscreen,videoTarget,appTarget,snapshot:()=>({fullscreen:!!fullscreenElement(),element:fullscreenElement()?.id||fullscreenElement()?.tagName||'',bridge:!!bridge()?.transportConnected})});
+  window.SBB_FULLSCREEN_CONTROL=Object.freeze({version:VERSION,toggleApp,toggleVideo,exitFullscreen,videoTarget,appTarget,snapshot:()=>{
+    const fs=fullscreenElement(),stage=$('stage'),video=videoTarget();
+    const appFullscreen=!!fs&&(fs===appTarget()||fs===document.documentElement);
+    const videoFullscreen=!!fs&&!!video&&(fs===video||video.contains?.(fs)||(stage&&(fs===stage||stage.contains?.(fs))));
+    return {fullscreen:!!fs,appFullscreen,videoFullscreen,element:fs?.id||fs?.tagName||'',bridge:!!bridge()?.transportConnected};
+  }});
 })();

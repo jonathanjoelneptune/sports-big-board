@@ -1,67 +1,24 @@
-# Sports Big Board Windows Controller Bridge — v5.4.7
+# Sports Big Board v5.4.7 Windows Controller Bridge R1
 
-This local helper is for Windows controllers that work in **joy.cpl** but are not exposed by Chrome's Gamepad API. The Turtle Beach Stealth Ultra in 2.4 GHz wireless mode is the initial target.
+R1 fixes bridge self-update on Windows. The original launcher could attempt to compile directly over the cached `SportsBigBoardControllerBridge.exe` while the previous bridge process was still running, which produced compiler error CS0016 (file in use).
 
-## Start it
+## Install / update
 
-1. Keep the controller connected normally in Windows.
+1. Extract this ZIP to its own folder. Do not run the launcher from an older v5.4.4/v5.4.6 bridge folder.
 2. Double-click `START-CONTROLLER-BRIDGE.cmd`.
-3. Windows builds the tiny helper locally on first launch using the .NET Framework compiler already included with Windows. No administrator rights are required.
-4. A Sports Big Board Controller Bridge icon appears in the Windows notification area.
-5. Open Sports Big Board. If Chrome asks for **Local Network / loopback access**, choose **Allow**. This permission only lets the page talk to the helper on your own PC.
-6. The controller indicator should progress from `NO BRIDGE` to `BR READY` and then `BR LIVE` when you press a controller input.
+3. If an older Sports Big Board Controller Bridge is running, R1 automatically stops it before rebuilding.
+4. The bridge is compiled to a temporary EXE first, then safely replaces the cached EXE and starts it.
+5. Return to Sports Big Board. The controller indicator should progress to `BR READY` / `BR LIVE` when the local bridge owns input.
 
-If the helper is running but the page still says `NO BRIDGE`, click the controller indicator or **RECONNECT BRIDGE** in Settings once. Big Board will run a loopback permission/health probe and reconnect.
+The bridge remains loopback-only and the keyboard-command whitelist remains limited to app fullscreen (F11) and video fullscreen (F).
 
-The compiled helper is cached at:
+## If Windows still reports the EXE is locked
 
-`%LOCALAPPDATA%\SportsBigBoard\ControllerBridge\SportsBigBoardControllerBridge.exe`
+Open Task Manager and end `SportsBigBoardControllerBridge.exe`, then run `START-CONTROLLER-BRIDGE.cmd` again. You can also run this from Command Prompt:
 
-Run `INSTALL-STARTUP.cmd` if you want the helper to launch automatically when you sign in to Windows. `REMOVE-STARTUP.cmd` removes that shortcut.
+`taskkill /F /IM SportsBigBoardControllerBridge.exe`
 
-## Transport and privacy
-
-The helper:
-
-- listens only on `127.0.0.1:5410`;
-- accepts the Sports Big Board GitHub Pages origin and localhost development origins;
-- reads controller input only;
-- never sends rumble, firmware, authentication, HID output, or other commands to the controller;
-- sends only normalized buttons, triggers, D-pad and stick positions to the browser on the same PC;
-- accepts only two local browser-to-bridge shortcut commands: `app-fullscreen` (F11) and `video-fullscreen` (F);
-- does not make outbound internet connections.
-- makes no outbound internet connections.
-
-The site still prefers Chrome's standard Gamepad API whenever Chrome exposes a controller. The local bridge is the second transport; WebHID remains the diagnostic/fallback third transport.
-
-## Windows input paths
-
-The bridge tries **XInput first**. This is the expected path for Xbox-compatible controllers such as the Stealth Ultra. If XInput is unavailable for a device, it falls back to the classic Windows multimedia joystick API (`joyGetPosEx`), which is close to the input path demonstrated by `joy.cpl`.
-
-## Troubleshooting
-
-- `NO BRIDGE`: run `START-CONTROLLER-BRIDGE.cmd`.
-- `BRIDGE`: helper is running but Windows controller input is not currently found.
-- `BR READY`: helper and controller are both detected.
-- `BR LIVE`: Sports Big Board is receiving active controller input.
-
-Right-click the tray icon and choose **Copy bridge status** for diagnostics.
-
-## v5.4.7 fullscreen command whitelist
-
-The bridge remains loopback-only and origin-restricted. v5.4.7 adds exactly two browser-to-bridge commands so controller input can invoke browser/video fullscreen even though Chromium does not count Gamepad/WebSocket polling as trusted user activation:
-
-- `app-fullscreen` — sends F11 to the active browser window.
-- `video-fullscreen` — sends F, matching Sports Big Board's existing video-fullscreen keyboard shortcut.
-
-No arbitrary key injection command is exposed. Unknown commands are ignored. The bridge still has no outbound internet connection and sends no output, rumble, firmware, or authentication data to the controller.
-
-
-## v5.4.7 fullscreen shortcuts
-
-Controller-originated browser fullscreen requests do not count as a trusted browser click. To make the LT+RT Special Commands wheel useful, the bridge accepts only two whitelisted local commands from Sports Big Board:
-
-- `app-fullscreen` -> taps F11 in the active Windows browser
-- `video-fullscreen` -> taps F, using Big Board's existing video-fullscreen shortcut
-
-No arbitrary key command is accepted, and these commands never send data or commands to the controller itself.
+## Optional startup integration
+- `INSTALL-STARTUP.cmd` installs the controller bridge launcher for user login startup.
+- `REMOVE-STARTUP.cmd` removes that startup integration.
+- Local bridge endpoint: `ws://127.0.0.1:5410/sbb-controller`.
