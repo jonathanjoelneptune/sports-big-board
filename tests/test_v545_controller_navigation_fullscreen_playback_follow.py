@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""v5.4.5 controller navigation, fullscreen, commands, and playback-follow regression."""
+"""v5.4.6 controller navigation, fullscreen, commands, and playback-follow regression."""
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
-assert VERSION=='5.4.5',VERSION
+assert VERSION=='5.4.6',VERSION
 index=(ROOT/'index.html').read_text()
 core=(ROOT/'architecture'/'controller-mode-v542.js').read_text()
 nav=(ROOT/'architecture'/'controller-readiness-v540.js').read_text()
@@ -12,7 +12,7 @@ cs=(ROOT/'windows-controller-bridge'/'SportsBigBoardControllerBridge.cs').read_t
 fs=(ROOT/'ui'/'fullscreen-controller-v545.js').read_text()
 follow=(ROOT/'ui'/'score-ribbon-playback-follow-v545.js').read_text()
 follow_css=(ROOT/'ui'/'score-ribbon-playback-follow-v545.css').read_text()
-map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.4.5.md').read_text()
+map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.4.6.md').read_text()
 
 # Release wiring.
 for asset in [
@@ -45,7 +45,7 @@ assert "v.muted=!v.muted" in core and 'p.isMuted' in core and 'p.unMute' in core
 
 # Fullscreen app button and controller fullscreen commands.
 assert 'bigBoardFullscreenBtn' in fs and 'fullscreenBtn' in fs
-assert 'requestFullscreen(appTarget())' in fs
+assert 'requestFullscreen(appTarget(),{navigationUI:true})' in fs
 assert "nativeCommand('app-fullscreen')" in fs and "nativeCommand('video-fullscreen')" in fs
 assert "new Set(['app-fullscreen','video-fullscreen'])" in bridge
 assert 'KeyboardCommand.Tap(0x7A)' in cs and 'KeyboardCommand.Tap(0x46)' in cs
@@ -63,4 +63,4 @@ assert 'NOW WATCHING' in follow_css
 for token in ['X — Play / Pause','LT + RT — Special Commands radial','MUTE / UNMUTE','D-pad Up from the Score Ribbon']:
     assert token in map_txt,token
 
-print('PASS v5.4.5 D-pad league navigation + X play/pause + special commands + fullscreen + playback-follow')
+print('PASS v5.4.6 D-pad league navigation + X play/pause + special commands + fullscreen + playback-follow')

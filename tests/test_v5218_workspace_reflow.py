@@ -8,7 +8,7 @@ index=(ROOT/'index.html').read_text()
 css=(ROOT/'ui'/'viewing-workspace-v5218.css').read_text()
 js=(ROOT/'ui'/'viewing-workspace-v5218.js').read_text()
 
-assert version=='5.4.5', version
+assert version=='5.4.6', version
 assert f'ui/viewing-workspace-v5218.css?v={version}' in index
 assert f'<script src="ui/viewing-workspace-v5218.js?v={version}"></script>' in index
 assert index.index(f'ui/harmonized-controls-drawer-v5217.css?v={version}') < index.index(f'ui/viewing-workspace-v5218.css?v={version}') < index.index('</head>')
@@ -63,4 +63,4 @@ assert 'SBB_VIEW_PREFS?.refresh?.()' in js
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version, f'{asset}: {found} != {version}'
 
-print('PASS v5.4.5 Game Center workspace reflow + real drawer collapse + Overview-only line score')
+print('PASS v5.4.6 Game Center workspace reflow + real drawer collapse + Overview-only line score')
