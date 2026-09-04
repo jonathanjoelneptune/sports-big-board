@@ -42,6 +42,8 @@ OPENAI_API_URL = "https://api.openai.com/v1/responses"
 DEFAULT_MODEL = "gpt-4o-mini"
 FRESHNESS_HOURS = 24.0
 MAX_MODEL_CANDIDATES = 140
+MAX_DECISIVE_ENRICHMENTS = 16
+MAX_HIGHLIGHTS_PER_ENRICHMENT = 20
 SOURCE_TIMEOUT = 25
 OPENAI_TIMEOUT = 180
 
@@ -354,8 +356,16 @@ TYPE RULES
 - DEPTH_CHART means a starter/backup/role change, not merely unavailable players.
 - OTHER should be rare.
 - For structured RESULT candidates, use metadata such as homeTeam, awayTeam,
-  scores, ranks, FBS context, and fusedContext. Do not invent context that is not
-  present in the candidate.
+  scores, ranks, FBS context, fusedContext, and resultEnrichment. Do not invent
+  context that is not present in the candidate.
+- If metadata.resultEnrichment.decisiveMoment exists, the headline and detail
+  MUST lead with that decisive moment rather than merely restating the final score.
+- Treat metadata.resultEnrichment.headlineSeed and summarySeed as grounded
+  editorial seeds. You may tighten their wording, but do not remove the decisive
+  fact they contain.
+- Never say walk-off, blocked kick, last-second, buzzer-beater, overtime,
+  game-winner, or comeback unless those facts are present in resultEnrichment
+  or another grounded candidate source.
 
 Editorial mix rules:
 - Maximum 5 ordinary RESULT items per base league.
@@ -2095,6 +2105,1100 @@ def dedupe_candidates(
     return kept
 
 
+
+def highlightly_cfg_for_candidate(candidate: dict[str, Any]) -> dict[str, Any] | None:
+    league = clean_text(candidate.get("leagueHint")).upper()
+    sport_hint = clean_text(candidate.get("sportHint")).lower()
+
+    for cfg in HIGHLIGHTLY_SPORTS:
+        if sport_hint and sport_hint == clean_text(cfg.get("sportHint")).lower():
+            return cfg
+        if league and league in cfg.get("leagueMatchers", {}):
+            return cfg
+    return None
+
+
+def unwrap_highlightly_detail(payload: Any) -> dict[str, Any] | None:
+    if isinstance(payload, list):
+        return next((x for x in payload if isinstance(x, dict)), None)
+    if isinstance(payload, dict):
+        data = payload.get("data")
+        if isinstance(data, dict):
+            return data
+        if isinstance(data, list):
+            return next((x for x in data if isinstance(x, dict)), None)
+        return payload
+    return None
+
+
+def result_score_margin(candidate: dict[str, Any]) -> int | None:
+    meta = candidate.get("metadata")
+    if not isinstance(meta, dict):
+        return None
+    try:
+        return abs(int(meta.get("homeScore")) - int(meta.get("awayScore")))
+    except Exception:
+        return None
+
+
+def result_enrichment_threshold(candidate: dict[str, Any]) -> int:
+    league = clean_text(candidate.get("leagueHint")).upper()
+    if league == "MLB":
+        return 2
+    if league in {"NFL", "NCAAF"}:
+        return 8
+    if league == "NBA":
+        return 6
+    if league in {"NHL", "EPL", "MLS"}:
+        return 1
+    return 3
+
+
+def fused_context_text(candidate: dict[str, Any]) -> str:
+    meta = candidate.get("metadata")
+    if not isinstance(meta, dict):
+        return ""
+    fused = meta.get("fusedContext")
+    if not isinstance(fused, list):
+        return ""
+    parts = []
+    for item in fused:
+        if not isinstance(item, dict):
+            continue
+        parts.append(clean_text(item.get("title")))
+        parts.append(clean_text(item.get("summary")))
+    return " ".join(p for p in parts if p)
+
+
+def result_enrichment_selection_score(candidate: dict[str, Any]) -> tuple[int, int, float]:
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    margin = result_score_margin(candidate)
+    threshold = result_enrichment_threshold(candidate)
+    type_hint = clean_text(candidate.get("typeHint")).upper()
+
+    score = 0
+    if type_hint == "UPSET":
+        score += 100
+    if meta.get("rankedTeamInvolved"):
+        score += 70
+    if margin is not None and margin <= threshold:
+        score += 60 + max(0, threshold - margin)
+    context = fused_context_text(candidate).lower()
+    if any(term in context for term in (
+        "walk-off", "walkoff", "game-winning", "last-second", "last second",
+        "blocked field goal", "blocked kick", "overtime", "extra innings",
+        "buzzer-beater", "buzzer beater", "time expired",
+    )):
+        score += 80
+
+    age = float(candidate.get("ageHours") or 0.0)
+    return score, int(candidate.get("quality", 0)), -age
+
+
+def should_enrich_result(candidate: dict[str, Any]) -> tuple[bool, str]:
+    if structured_match_id(candidate) is None:
+        return False, "no structured matchId"
+    if clean_text(candidate.get("typeHint")).upper() not in {"RESULT", "UPSET"}:
+        return False, "not RESULT/UPSET"
+
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    margin = result_score_margin(candidate)
+    threshold = result_enrichment_threshold(candidate)
+
+    reasons = []
+    if clean_text(candidate.get("typeHint")).upper() == "UPSET":
+        reasons.append("upset candidate")
+    if meta.get("rankedTeamInvolved"):
+        reasons.append("ranked team involved")
+    if margin is not None and margin <= threshold:
+        reasons.append(f"close result margin={margin}")
+    context = fused_context_text(candidate).lower()
+    if any(term in context for term in (
+        "walk-off", "walkoff", "game-winning", "last-second", "last second",
+        "blocked field goal", "blocked kick", "overtime", "extra innings",
+        "buzzer-beater", "buzzer beater", "time expired",
+    )):
+        reasons.append("fused context signals decisive finish")
+
+    if not reasons:
+        return False, f"routine result margin={margin}"
+    return True, "; ".join(reasons)
+
+
+def highlightly_detail_url(cfg: dict[str, Any], match_id: str) -> str:
+    return f"https://sports.highlightly.net{cfg['path']}/{match_id}"
+
+
+def highlightly_highlights_url(cfg: dict[str, Any], match_id: str) -> str:
+    highlight_path = cfg["path"].replace("/matches", "/highlights")
+    params = urllib.parse.urlencode({
+        "matchId": match_id,
+        "limit": MAX_HIGHLIGHTS_PER_ENRICHMENT,
+        "timezone": "America/New_York",
+    })
+    return f"https://sports.highlightly.net{highlight_path}?{params}"
+
+
+def _clock_seconds(value: Any) -> int | None:
+    if isinstance(value, (int, float)):
+        return int(value)
+    text = clean_text(value)
+    match = re.fullmatch(r"(\d{1,2}):(\d{2})", text)
+    if match:
+        return int(match.group(1)) * 60 + int(match.group(2))
+    if re.fullmatch(r"\d+", text):
+        return int(text)
+    return None
+
+
+def _period_number(value: Any) -> int | None:
+    if isinstance(value, (int, float)):
+        return int(value)
+    text = clean_text(value).lower()
+    match = re.search(r"(\d+)", text)
+    if match:
+        return int(match.group(1))
+    words = {
+        "first": 1, "1st": 1,
+        "second": 2, "2nd": 2,
+        "third": 3, "3rd": 3,
+        "fourth": 4, "4th": 4,
+        "fifth": 5, "5th": 5,
+    }
+    for word, num in words.items():
+        if word in text:
+            return num
+    return None
+
+
+def _baseball_inning(period: Any) -> tuple[str | None, int | None]:
+    text = clean_text(period).lower()
+    half = "bottom" if "bottom" in text else ("top" if "top" in text else None)
+    match = re.search(r"(\d+)", text)
+    return half, int(match.group(1)) if match else None
+
+
+def _score_from_play(play: dict[str, Any]) -> tuple[int | None, int | None]:
+    score = play.get("score")
+    if not isinstance(score, dict):
+        return None, None
+    home = score_scalar(score.get("home"))
+    away = score_scalar(score.get("away"))
+    return home, away
+
+
+def _named_player_from_baseball_play(play: dict[str, Any]) -> str | None:
+    for key in ("batter", "player", "hitter"):
+        obj = play.get(key)
+        if isinstance(obj, dict):
+            name = clean_text(
+                obj.get("fullName") or obj.get("displayName") or obj.get("name")
+            )
+            if name:
+                return name
+    return None
+
+
+def _candidate_result_names(candidate: dict[str, Any]) -> tuple[str, str, str, int, int]:
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    home = clean_text(meta.get("homeTeam"))
+    away = clean_text(meta.get("awayTeam"))
+    home_score = int(meta.get("homeScore"))
+    away_score = int(meta.get("awayScore"))
+    if home_score >= away_score:
+        winner, loser = home, away
+        winner_score, loser_score = home_score, away_score
+    else:
+        winner, loser = away, home
+        winner_score, loser_score = away_score, home_score
+    return winner, loser, home, winner_score, loser_score
+
+
+def _base_result_flags(candidate: dict[str, Any]) -> list[str]:
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    league = clean_text(candidate.get("leagueHint")).upper()
+    margin = result_score_margin(candidate)
+    home_score = int(meta.get("homeScore", 0))
+    away_score = int(meta.get("awayScore", 0))
+    flags = []
+
+    if margin is not None:
+        if league == "MLB" and margin == 1:
+            flags.append("ONE_RUN_GAME")
+        elif league in {"NFL", "NCAAF"} and margin <= 8:
+            flags.append("ONE_SCORE_GAME")
+        elif league == "NBA" and margin <= 3:
+            flags.append("ONE_POSSESSION_GAME")
+        elif league in {"NHL", "EPL", "MLS"} and margin == 1:
+            flags.append("ONE_GOAL_GAME")
+
+    loser_score = min(home_score, away_score)
+    if loser_score == 0:
+        flags.append("SHUTOUT")
+
+    blowout = (
+        (league == "MLB" and margin is not None and margin >= 6)
+        or (league in {"NFL", "NCAAF"} and margin is not None and margin >= 21)
+        or (league == "NBA" and margin is not None and margin >= 20)
+        or (league in {"NHL", "EPL", "MLS"} and margin is not None and margin >= 3)
+    )
+    if blowout:
+        flags.append("BLOWOUT")
+    if meta.get("rankedTeamInvolved"):
+        flags.append("RANKED_TEAM_INVOLVED")
+    if clean_text(candidate.get("typeHint")).upper() == "UPSET":
+        flags.append("UPSET")
+
+    return flags
+
+
+def _derive_baseball_decisive(
+    candidate: dict[str, Any],
+    detail: dict[str, Any],
+) -> dict[str, Any]:
+    plays = detail.get("plays")
+    if not isinstance(plays, list):
+        return {}
+
+    structured_plays = [p for p in plays if isinstance(p, dict)]
+    if not structured_plays:
+        return {}
+
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    home = clean_text(meta.get("homeTeam"))
+    away = clean_text(meta.get("awayTeam"))
+    final_home = int(meta.get("homeScore"))
+    final_away = int(meta.get("awayScore"))
+
+    last_score = None
+    scoring_plays = []
+    for idx, play in enumerate(structured_plays):
+        current = _score_from_play(play)
+        if current != (None, None):
+            if last_score is not None and current != last_score:
+                scoring_plays.append((idx, play, last_score, current))
+            last_score = current
+
+    if not scoring_plays:
+        return {}
+
+    idx, play, before, after = scoring_plays[-1]
+    half, inning = _baseball_inning(play.get("period"))
+    description = clean_text(play.get("description"))
+    player = _named_player_from_baseball_play(play)
+
+    flags = []
+    decisive = None
+    headline_seed = None
+    summary_seed = None
+    priority_floor = None
+
+    # A walk-off is deterministic from score progression:
+    # home team wins, final go-ahead run scores in bottom 9th or later, and the
+    # home team was not already leading before that scoring play.
+    if (
+        final_home > final_away
+        and half == "bottom"
+        and inning is not None
+        and inning >= 9
+        and after == (final_home, final_away)
+        and before[0] <= before[1]
+        and after[0] > after[1]
+    ):
+        flags.extend(["WALK_OFF", "GAME_WINNER"])
+        if inning > 9:
+            flags.append("EXTRA_INNINGS")
+        if player:
+            decisive = (
+                f"{player} delivered the walk-off in the bottom of the "
+                f"{inning}{'th' if inning not in {1,2,3} else {1:'st',2:'nd',3:'rd'}[inning]} inning."
+            )
+            headline_seed = (
+                f"{player} delivers walk-off as {home} beat {away} "
+                f"{final_home}-{final_away}"
+            )
+        else:
+            decisive = (
+                f"{home} scored the game-winning run in the bottom of the "
+                f"{inning}th inning."
+            )
+            headline_seed = f"{home} walk off {away} {final_home}-{final_away}"
+        summary_seed = description or decisive
+        priority_floor = 76
+
+    return {
+        "flags": flags,
+        "decisiveMoment": decisive,
+        "decisivePlayer": player,
+        "headlineSeed": headline_seed,
+        "summarySeed": summary_seed,
+        "priorityFloor": priority_floor,
+        "contextLines": [description] if description else [],
+    } if flags else {}
+
+
+def _derive_american_football_decisive(
+    candidate: dict[str, Any],
+    detail: dict[str, Any],
+) -> dict[str, Any]:
+    events = detail.get("events")
+    if not isinstance(events, list):
+        return {}
+
+    plays = []
+    for event_index, event in enumerate(events):
+        if not isinstance(event, dict):
+            continue
+        result = clean_text(event.get("result"))
+        description = clean_text(event.get("description"))
+        event_end = event.get("end") if isinstance(event.get("end"), dict) else {}
+        details = event.get("playDetails")
+        if isinstance(details, list):
+            for play_index, play in enumerate(details):
+                if not isinstance(play, dict):
+                    continue
+                text = clean_text(play.get("text"))
+                period = _period_number(play.get("period") or event_end.get("period"))
+                clock = clean_text(play.get("clock") or event_end.get("clock"))
+                combined = " | ".join(x for x in (text, result, description) if x)
+                plays.append({
+                    "eventIndex": event_index,
+                    "playIndex": play_index,
+                    "text": text,
+                    "combined": combined,
+                    "period": period,
+                    "clock": clock,
+                    "clockSeconds": _clock_seconds(clock),
+                })
+        else:
+            combined = " | ".join(x for x in (result, description) if x)
+            if combined:
+                plays.append({
+                    "eventIndex": event_index,
+                    "playIndex": 0,
+                    "text": combined,
+                    "combined": combined,
+                    "period": _period_number(event_end.get("period")),
+                    "clock": clean_text(event_end.get("clock")),
+                    "clockSeconds": _clock_seconds(event_end.get("clock")),
+                })
+
+    if not plays:
+        return {}
+
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    home = clean_text(meta.get("homeTeam"))
+    away = clean_text(meta.get("awayTeam"))
+    home_score = int(meta.get("homeScore"))
+    away_score = int(meta.get("awayScore"))
+    winner = home if home_score > away_score else away
+    loser = away if home_score > away_score else home
+    winner_score = max(home_score, away_score)
+    loser_score = min(home_score, away_score)
+    margin = abs(home_score - away_score)
+
+    # Prefer the latest relevant play because deciding football moments usually
+    # appear at the end of the final drive.
+    candidates = []
+    for position, play in enumerate(plays):
+        low = play["combined"].lower()
+        period = play.get("period") or 0
+        clock_seconds = play.get("clockSeconds")
+        late = period >= 4 and clock_seconds is not None and clock_seconds <= 120
+        last_seconds = (
+            "time expired" in low
+            or "as time expired" in low
+            or (period >= 4 and clock_seconds is not None and clock_seconds <= 15)
+        )
+
+        score = 0
+        flags = []
+        if "block" in low and ("field goal" in low or "kick" in low):
+            score += 100
+            flags.append("BLOCKED_KICK")
+        if ("no good" in low or "missed" in low) and "field goal" in low:
+            score += 80
+            flags.append("MISSED_KICK")
+        if "touchdown" in low:
+            score += 45
+        if "field goal" in low and any(term in low for term in ("good", "made", "is good")):
+            score += 40
+        if late:
+            score += 35
+            flags.append("LATE_GAME")
+        if last_seconds:
+            score += 50
+            flags.append("LAST_SECOND")
+        if position >= max(0, len(plays) - 4):
+            score += 20
+        if margin <= 3:
+            score += 15
+
+        if score:
+            candidates.append((score, position, play, flags))
+
+    if not candidates:
+        return {}
+
+    score, position, play, flags = max(candidates, key=lambda x: (x[0], x[1]))
+    low = play["combined"].lower()
+    decisive = None
+    headline_seed = None
+    summary_seed = None
+    priority_floor = None
+
+    if "BLOCKED_KICK" in flags and margin <= 3:
+        flags.append("GAME_SAVING_PLAY")
+        if position >= len(plays) - 2:
+            flags.append("GAME_WINNER")
+        last_second = "LAST_SECOND" in flags
+        descriptor = "last-second " if last_second else "late "
+        decisive = (
+            f"{winner} blocked a {descriptor}field-goal attempt to preserve "
+            f"a {winner_score}-{loser_score} win over {loser}."
+        )
+        headline_seed = (
+            f"Blocked {descriptor}field goal seals {winner}'s "
+            f"{winner_score}-{loser_score} win over {loser}"
+        )
+        summary_seed = play["text"] or decisive
+        priority_floor = 78 if last_second else 74
+
+    elif "MISSED_KICK" in flags and margin <= 3 and position >= len(plays) - 2:
+        flags.extend(["GAME_SAVING_PLAY", "GAME_WINNER"])
+        last_second = "LAST_SECOND" in flags
+        descriptor = "last-second " if last_second else "late "
+        decisive = (
+            f"{loser} missed a {descriptor}field-goal attempt as {winner} "
+            f"held on {winner_score}-{loser_score}."
+        )
+        headline_seed = (
+            f"{winner} survives {descriptor}missed field goal to beat "
+            f"{loser} {winner_score}-{loser_score}"
+        )
+        summary_seed = play["text"] or decisive
+        priority_floor = 76 if last_second else 72
+
+    elif position >= len(plays) - 3 and margin <= 8 and (
+        "touchdown" in low or "field goal" in low
+    ):
+        flags.append("GAME_WINNER")
+        if play.get("period", 0) >= 4:
+            flags.append("LATE_GAME")
+        if "LAST_SECOND" in flags:
+            priority_floor = 76
+        else:
+            priority_floor = 70
+        decisive = play["text"] or play["combined"]
+        headline_seed = (
+            f"Late score lifts {winner} past {loser} "
+            f"{winner_score}-{loser_score}"
+        )
+        summary_seed = decisive
+
+    return {
+        "flags": sorted(set(flags)),
+        "decisiveMoment": decisive,
+        "decisivePlayer": None,
+        "headlineSeed": headline_seed,
+        "summarySeed": summary_seed,
+        "priorityFloor": priority_floor,
+        "contextLines": [play["combined"]] if play.get("combined") else [],
+    } if decisive else {}
+
+
+def _derive_soccer_decisive(
+    candidate: dict[str, Any],
+    detail: dict[str, Any],
+) -> dict[str, Any]:
+    events = detail.get("events")
+    if not isinstance(events, list):
+        return {}
+
+    goals = []
+    for event in events:
+        if not isinstance(event, dict):
+            continue
+        type_text = clean_text(event.get("type")).lower()
+        if "goal" not in type_text or "own" in type_text and "goal" not in type_text:
+            continue
+        minute_raw = event.get("minute") or event.get("time") or event.get("elapsed")
+        minute = None
+        if isinstance(minute_raw, (int, float)):
+            minute = int(minute_raw)
+        else:
+            match = re.search(r"(\d+)", clean_text(minute_raw))
+            if match:
+                minute = int(match.group(1))
+        player_obj = event.get("player")
+        player = None
+        if isinstance(player_obj, dict):
+            player = clean_text(
+                player_obj.get("name") or player_obj.get("displayName")
+                or player_obj.get("fullName")
+            )
+        desc = clean_text(event.get("description") or event.get("text"))
+        goals.append((minute or 0, player, desc))
+
+    if not goals:
+        return {}
+
+    minute, player, desc = max(goals, key=lambda x: x[0])
+    if minute < 85 or result_score_margin(candidate) != 1:
+        return {}
+
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    home = clean_text(meta.get("homeTeam"))
+    away = clean_text(meta.get("awayTeam"))
+    home_score = int(meta.get("homeScore"))
+    away_score = int(meta.get("awayScore"))
+    winner = home if home_score > away_score else away
+    loser = away if home_score > away_score else home
+    flags = ["LATE_GOAL", "GAME_WINNER"]
+    if minute >= 90:
+        flags.append("LAST_SECOND")
+    decisive = (
+        f"{player + ' scored' if player else 'A late goal came'} in the "
+        f"{minute}th minute to decide {winner}'s {home_score if winner == home else away_score}-"
+        f"{away_score if winner == home else home_score} win over {loser}."
+    )
+    return {
+        "flags": flags,
+        "decisiveMoment": decisive,
+        "decisivePlayer": player,
+        "headlineSeed": (
+            f"{player + ' scores late as ' if player else 'Late goal lifts '}"
+            f"{winner} beat {loser} "
+            f"{home_score if winner == home else away_score}-"
+            f"{away_score if winner == home else home_score}"
+        ),
+        "summarySeed": desc or decisive,
+        "priorityFloor": 72 if minute < 90 else 76,
+        "contextLines": [desc] if desc else [],
+    }
+
+
+def _derive_highlight_context(
+    candidate: dict[str, Any],
+    highlights: list[dict[str, Any]],
+) -> dict[str, Any]:
+    if not highlights:
+        return {}
+
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    home = clean_text(meta.get("homeTeam"))
+    away = clean_text(meta.get("awayTeam"))
+    home_score = int(meta.get("homeScore"))
+    away_score = int(meta.get("awayScore"))
+    winner = home if home_score > away_score else away
+    loser = away if home_score > away_score else home
+    winner_score = max(home_score, away_score)
+    loser_score = min(home_score, away_score)
+
+    category_weights = {
+        "walk-off": 100,
+        "buzzer-beater-game-winner": 100,
+        "overtime-shootout-goal": 90,
+        "defensive-play": 70,
+        "field-goal": 65,
+        "special-teams-play": 60,
+        "big-play": 50,
+        "match-highlights": 10,
+    }
+
+    scored = []
+    for h in highlights:
+        if not isinstance(h, dict):
+            continue
+        category = clean_text(h.get("category")).lower()
+        title = clean_text(h.get("title"))
+        description = clean_text(h.get("description"))
+        combined = f"{title} {description}".lower()
+        score = category_weights.get(category, 0)
+        if "walk-off" in combined or "walkoff" in combined:
+            score += 110
+        if "blocked" in combined and ("field goal" in combined or "kick" in combined):
+            score += 110
+        if "buzzer" in combined and ("winner" in combined or "beater" in combined):
+            score += 100
+        if "game-winning" in combined or "game winner" in combined:
+            score += 80
+        if "overtime" in combined or "extra innings" in combined:
+            score += 65
+        if "last-second" in combined or "last second" in combined or "time expired" in combined:
+            score += 70
+        if score:
+            scored.append((score, h, category, title, description))
+
+    if not scored:
+        return {}
+
+    score, h, category, title, description = max(scored, key=lambda x: x[0])
+    combined = f"{title} {description}".lower()
+    flags = []
+    decisive = None
+    headline_seed = None
+    summary_seed = description or title
+    priority_floor = None
+
+    if category == "walk-off" or "walk-off" in combined or "walkoff" in combined:
+        flags.extend(["WALK_OFF", "GAME_WINNER"])
+        priority_floor = 76
+        decisive = description or title
+        # Extract a leading person-name phrase only when the highlight itself
+        # names the actor. The editor still receives the original title/desc.
+        person_match = re.match(
+            r"([A-Z][A-Za-zÀ-ÖØ-öø-ÿ'.-]+(?:\s+[A-Z][A-Za-zÀ-ÖØ-öø-ÿ'.-]+){1,3})",
+            title,
+        )
+        player = person_match.group(1) if person_match else None
+        headline_seed = (
+            f"{player} delivers walk-off as {winner} beat {loser} "
+            f"{winner_score}-{loser_score}"
+            if player else
+            f"{winner} walk off {loser} {winner_score}-{loser_score}"
+        )
+        return {
+            "flags": flags,
+            "decisiveMoment": decisive,
+            "decisivePlayer": player,
+            "headlineSeed": headline_seed,
+            "summarySeed": summary_seed,
+            "priorityFloor": priority_floor,
+            "contextLines": [x for x in (title, description) if x],
+            "highlightId": h.get("id"),
+            "highlightCategory": category,
+        }
+
+    if (
+        category == "buzzer-beater-game-winner"
+        or ("buzzer" in combined and ("winner" in combined or "beater" in combined))
+    ):
+        flags.extend(["BUZZER_BEATER", "GAME_WINNER", "LAST_SECOND"])
+        priority_floor = 78
+        decisive = description or title
+        headline_seed = (
+            f"Buzzer-beater lifts {winner} past {loser} "
+            f"{winner_score}-{loser_score}"
+        )
+
+    elif (
+        ("blocked" in combined and ("field goal" in combined or "kick" in combined))
+        or (
+            category in {"defensive-play", "field-goal", "special-teams-play"}
+            and "blocked" in combined
+        )
+    ):
+        flags.extend(["BLOCKED_KICK", "GAME_SAVING_PLAY"])
+        if "last-second" in combined or "last second" in combined or "time expired" in combined:
+            flags.append("LAST_SECOND")
+        priority_floor = 78 if "LAST_SECOND" in flags else 74
+        decisive = description or title
+        descriptor = "last-second " if "LAST_SECOND" in flags else "late "
+        headline_seed = (
+            f"Blocked {descriptor}field goal seals {winner}'s "
+            f"{winner_score}-{loser_score} win over {loser}"
+        )
+
+    elif category == "overtime-shootout-goal" or "overtime" in combined:
+        flags.extend(["OVERTIME", "GAME_WINNER"])
+        priority_floor = 72
+        decisive = description or title
+        headline_seed = (
+            f"Overtime winner lifts {winner} past {loser} "
+            f"{winner_score}-{loser_score}"
+        )
+
+    elif "game-winning" in combined or "game winner" in combined:
+        flags.append("GAME_WINNER")
+        if "last-second" in combined or "last second" in combined:
+            flags.append("LAST_SECOND")
+        priority_floor = 76 if "LAST_SECOND" in flags else 70
+        decisive = description or title
+        headline_seed = (
+            f"Late winner lifts {winner} past {loser} "
+            f"{winner_score}-{loser_score}"
+        )
+
+    if not decisive:
+        return {}
+
+    return {
+        "flags": flags,
+        "decisiveMoment": decisive,
+        "decisivePlayer": None,
+        "headlineSeed": headline_seed,
+        "summarySeed": summary_seed,
+        "priorityFloor": priority_floor,
+        "contextLines": [x for x in (title, description) if x],
+        "highlightId": h.get("id"),
+        "highlightCategory": category,
+    }
+
+
+def _merge_enrichment_parts(
+    base_flags: list[str],
+    detail_part: dict[str, Any],
+    highlight_part: dict[str, Any],
+) -> dict[str, Any]:
+    # Prefer a strong detailed-play derivation. Highlight metadata fills gaps.
+    primary = detail_part if detail_part.get("decisiveMoment") else highlight_part
+    secondary = highlight_part if primary is detail_part else detail_part
+
+    flags = list(base_flags)
+    flags.extend(primary.get("flags", []))
+    flags.extend(secondary.get("flags", []))
+
+    result = {
+        "flags": sorted(set(flags)),
+        "decisiveMoment": primary.get("decisiveMoment") or secondary.get("decisiveMoment"),
+        "decisivePlayer": primary.get("decisivePlayer") or secondary.get("decisivePlayer"),
+        "headlineSeed": primary.get("headlineSeed") or secondary.get("headlineSeed"),
+        "summarySeed": primary.get("summarySeed") or secondary.get("summarySeed"),
+        "priorityFloor": max(
+            [
+                x for x in (
+                    primary.get("priorityFloor"),
+                    secondary.get("priorityFloor"),
+                )
+                if isinstance(x, int)
+            ] or [None],
+            key=lambda x: -1 if x is None else x,
+        ),
+        "contextLines": list(dict.fromkeys(
+            [
+                clean_text(x)
+                for x in (
+                    list(primary.get("contextLines", []))
+                    + list(secondary.get("contextLines", []))
+                )
+                if clean_text(x)
+            ]
+        ))[:8],
+    }
+    if primary.get("highlightId") or secondary.get("highlightId"):
+        result["highlightId"] = primary.get("highlightId") or secondary.get("highlightId")
+        result["highlightCategory"] = (
+            primary.get("highlightCategory") or secondary.get("highlightCategory")
+        )
+    return result
+
+
+def derive_decisive_context(
+    candidate: dict[str, Any],
+    detail: dict[str, Any] | None,
+    highlights: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    detail = detail or {}
+    highlights = highlights or []
+    league = clean_text(candidate.get("leagueHint")).upper()
+    base_flags = _base_result_flags(candidate)
+
+    if league == "MLB":
+        detail_part = _derive_baseball_decisive(candidate, detail)
+    elif league in {"NFL", "NCAAF"}:
+        detail_part = _derive_american_football_decisive(candidate, detail)
+    elif league in {"EPL", "MLS"}:
+        detail_part = _derive_soccer_decisive(candidate, detail)
+    else:
+        detail_part = {}
+
+    highlight_part = _derive_highlight_context(candidate, highlights)
+    merged = _merge_enrichment_parts(base_flags, detail_part, highlight_part)
+
+    # Close/ranked games still get factual flags even when no named decisive
+    # play is available. These flags help prioritization without inventing copy.
+    if "UPSET" in base_flags:
+        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 82)
+    elif "RANKED_TEAM_INVOLVED" in base_flags:
+        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 70)
+    elif any(flag in base_flags for flag in (
+        "ONE_RUN_GAME", "ONE_SCORE_GAME", "ONE_POSSESSION_GAME", "ONE_GOAL_GAME"
+    )):
+        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 62)
+
+    return merged
+
+
+def _fetch_enrichment_json(
+    *,
+    candidate: dict[str, Any],
+    run_log: dict[str, Any],
+    api_key: str,
+    source_id: str,
+    kind: str,
+    url: str,
+) -> Any:
+    entry = make_source_log(
+        source_id=source_id,
+        provider="Highlightly",
+        kind=kind,
+        league_hint=clean_text(candidate.get("leagueHint")).upper(),
+        url=url,
+    )
+    run_log["sourceFetches"].append(entry)
+    started = time.monotonic()
+
+    try:
+        status, headers, body = fetch_bytes(
+            url,
+            headers={
+                "Accept": "application/json",
+                "x-rapidapi-key": api_key,
+            },
+        )
+        finalize_source_log(entry, started, status, headers, body)
+        payload = json.loads(body.decode("utf-8"))
+        if kind == "match-detail":
+            detail = unwrap_highlightly_detail(payload)
+            entry["receivedItems"] = [detail] if isinstance(detail, dict) else []
+            return detail
+        highlights = unwrap_highlightly(payload)
+        entry["receivedItems"] = highlights[:MAX_HIGHLIGHTS_PER_ENRICHMENT]
+        return highlights
+    except urllib.error.HTTPError as exc:
+        body = exc.read()
+        finalize_source_log(entry, started, exc.code, exc.headers, body)
+        entry["error"] = (
+            f"HTTP {exc.code}: "
+            f"{body[:1500].decode('utf-8', errors='replace')}"
+        )
+        return None
+    except Exception as exc:
+        if entry["finishedAt"] is None:
+            finalize_source_log(entry, started, None, None, None)
+        entry["error"] = clean_text(exc)
+        return None
+
+
+def enrich_decisive_moments(
+    candidates: list[dict[str, Any]],
+    run_log: dict[str, Any],
+    api_key: str,
+) -> list[dict[str, Any]]:
+    summary = run_log["pipeline"]["decisiveMomentEnrichment"]
+
+    if not api_key:
+        summary["skipReason"] = "HIGHLIGHTLY_API_KEY not configured"
+        return candidates
+
+    eligible = []
+    for candidate in candidates:
+        should, reason = should_enrich_result(candidate)
+        if should:
+            eligible.append((candidate, reason))
+        elif structured_match_id(candidate) and clean_text(candidate.get("typeHint")).upper() in {"RESULT", "UPSET"}:
+            summary["skipped"].append({
+                "candidateId": candidate["candidateId"],
+                "matchId": structured_match_id(candidate),
+                "league": candidate.get("leagueHint"),
+                "reason": reason,
+            })
+
+    eligible.sort(
+        key=lambda pair: result_enrichment_selection_score(pair[0]),
+        reverse=True,
+    )
+    selected = eligible[:MAX_DECISIVE_ENRICHMENTS]
+    summary["selectedCandidateIds"] = [c["candidateId"] for c, _ in selected]
+    summary["eligibleCount"] = len(eligible)
+
+    for candidate, reason in selected:
+        summary["attempted"] += 1
+        cfg = highlightly_cfg_for_candidate(candidate)
+        match_id = structured_match_id(candidate)
+        item_log = {
+            "candidateId": candidate["candidateId"],
+            "league": candidate.get("leagueHint"),
+            "matchId": match_id,
+            "selectionReason": reason,
+            "detailFetched": False,
+            "highlightsFetched": False,
+            "flags": [],
+            "decisiveMoment": None,
+            "headlineSeed": None,
+            "priorityFloor": None,
+            "error": None,
+        }
+
+        if not cfg or not match_id:
+            item_log["error"] = "missing Highlightly sport config or matchId"
+            summary["failures"].append(item_log)
+            continue
+
+        detail_url = highlightly_detail_url(cfg, match_id)
+        detail = _fetch_enrichment_json(
+            candidate=candidate,
+            run_log=run_log,
+            api_key=api_key,
+            source_id=f"{cfg['id']}-detail-{match_id}",
+            kind="match-detail",
+            url=detail_url,
+        )
+        item_log["detailFetched"] = isinstance(detail, dict)
+
+        detail_context = derive_decisive_context(candidate, detail, [])
+        strong_detail = bool(detail_context.get("decisiveMoment"))
+
+        highlights = []
+        # Highlight lookup is the fallback/confirmation layer. Avoid a second
+        # request when detailed play-by-play already gave a decisive moment,
+        # except for MLB where walk-off highlight categories can identify the
+        # named player more cleanly.
+        if not strong_detail or clean_text(candidate.get("leagueHint")).upper() == "MLB":
+            highlight_url = highlightly_highlights_url(cfg, match_id)
+            highlight_payload = _fetch_enrichment_json(
+                candidate=candidate,
+                run_log=run_log,
+                api_key=api_key,
+                source_id=f"{cfg['id']}-highlights-{match_id}",
+                kind="match-highlights",
+                url=highlight_url,
+            )
+            if isinstance(highlight_payload, list):
+                highlights = highlight_payload
+                item_log["highlightsFetched"] = True
+
+        enrichment = derive_decisive_context(candidate, detail, highlights)
+        enrichment.update({
+            "attempted": True,
+            "matchId": match_id,
+            "selectionReason": reason,
+            "detailFetched": item_log["detailFetched"],
+            "highlightsFetched": item_log["highlightsFetched"],
+        })
+
+        candidate_meta = candidate.setdefault("metadata", {})
+        candidate_meta["resultEnrichment"] = enrichment
+
+        item_log["flags"] = enrichment.get("flags", [])
+        item_log["decisiveMoment"] = enrichment.get("decisiveMoment")
+        item_log["headlineSeed"] = enrichment.get("headlineSeed")
+        item_log["priorityFloor"] = enrichment.get("priorityFloor")
+
+        if enrichment.get("decisiveMoment"):
+            summary["enriched"] += 1
+        else:
+            summary["noDecisiveMoment"] += 1
+        summary["items"].append(item_log)
+
+    return candidates
+
+
+def result_enrichment_for_candidates(
+    candidate_ids: list[str],
+    by_id: dict[str, dict[str, Any]],
+) -> dict[str, Any] | None:
+    best = None
+    for cid in candidate_ids:
+        candidate = by_id.get(cid)
+        if not candidate:
+            continue
+        meta = candidate.get("metadata")
+        if not isinstance(meta, dict):
+            continue
+        enrichment = meta.get("resultEnrichment")
+        if not isinstance(enrichment, dict):
+            continue
+        if best is None:
+            best = enrichment
+            continue
+        if int(enrichment.get("priorityFloor") or 0) > int(best.get("priorityFloor") or 0):
+            best = enrichment
+    return best
+
+
+def apply_result_enrichment_priority(
+    priority: int,
+    candidate_ids: list[str],
+    by_id: dict[str, dict[str, Any]],
+    item_type: str,
+    context: str,
+    run_log: dict[str, Any],
+) -> int:
+    if item_type not in {"RESULT", "UPSET"}:
+        return priority
+    enrichment = result_enrichment_for_candidates(candidate_ids, by_id)
+    if not enrichment:
+        return priority
+    floor = enrichment.get("priorityFloor")
+    if not isinstance(floor, int) or floor <= priority:
+        return priority
+    repaired = min(95, floor)
+    run_log["pipeline"]["editorRepairs"].append({
+        "context": context,
+        "field": "priority",
+        "original": priority,
+        "repaired": repaired,
+        "reason": (
+            "grounded decisive-moment priority floor: "
+            + ", ".join(enrichment.get("flags", []))
+        ),
+    })
+    return repaired
+
+
+def repair_result_story_punch(
+    item: dict[str, Any],
+    candidate_ids: list[str],
+    by_id: dict[str, dict[str, Any]],
+    context: str,
+    run_log: dict[str, Any],
+) -> None:
+    if item.get("type") not in {"RESULT", "UPSET"}:
+        return
+    enrichment = result_enrichment_for_candidates(candidate_ids, by_id)
+    if not enrichment or not enrichment.get("decisiveMoment"):
+        return
+
+    flags = set(enrichment.get("flags", []))
+    headline = clean_text(item.get("headline")).lower()
+    required_signal = True
+
+    if "WALK_OFF" in flags:
+        required_signal = "walk" in headline
+    elif "BLOCKED_KICK" in flags:
+        required_signal = "block" in headline and (
+            "field goal" in headline or "kick" in headline
+        )
+    elif "BUZZER_BEATER" in flags:
+        required_signal = "buzzer" in headline
+    elif "OVERTIME" in flags:
+        required_signal = "overtime" in headline or re.search(r"\bot\b", headline) is not None
+    elif "LAST_SECOND" in flags and "GAME_WINNER" in flags:
+        required_signal = (
+            "last-second" in headline or "last second" in headline
+            or "late" in headline or "winner" in headline
+        )
+
+    if required_signal:
+        return
+
+    seed = clean_text(enrichment.get("headlineSeed"))
+    summary_seed = clean_text(enrichment.get("summarySeed"))
+    decisive = clean_text(enrichment.get("decisiveMoment"))
+
+    if seed:
+        original = item["headline"]
+        item["headline"] = seed[:120]
+        if summary_seed:
+            item["text"] = summary_seed[:360]
+        elif decisive:
+            item["text"] = decisive[:360]
+        if decisive:
+            item["freshnessBasis"] = decisive[:240]
+        run_log["pipeline"]["editorRepairs"].append({
+            "context": context,
+            "field": "headline/text",
+            "original": original,
+            "repaired": item["headline"],
+            "reason": (
+                "editor omitted grounded decisive moment: "
+                + ", ".join(sorted(flags))
+            ),
+        })
+
+
 def candidate_sort_key(c: dict[str, Any]):
     type_weight = {
         "BREAKING": 0, "INJURY": 1, "TRADE": 1, "SIGNING": 1, "CONTRACT": 1,
@@ -2274,7 +3378,7 @@ def call_openai(
         # GPT-4o Mini supports 16,384 max output tokens. 12k leaves substantial
         # room for the seven league groups while bounding worst-case cost.
         "max_output_tokens": 12000,
-        "prompt_cache_key": "sports-big-board-a3-editor-v4",
+        "prompt_cache_key": "sports-big-board-a3-editor-v5",
     }
 
     run_log["openai"]["called"] = True
@@ -2761,8 +3865,11 @@ def normalize_model_output(
                     "rank": idx,
                     "candidateIds": candidate_ids,
                     "type": item_type,
-                    "priority": normalize_editor_priority(
-                        raw_item["priority"], item_type, f"{league} #{idx}", run_log
+                    "priority": apply_result_enrichment_priority(
+                        normalize_editor_priority(
+                            raw_item["priority"], item_type, f"{league} #{idx}", run_log
+                        ),
+                        candidate_ids, by_id, item_type, f"{league} #{idx}", run_log
                     ),
                     "headline": clean_text(raw_item["headline"]),
                     "text": clean_text(raw_item["text"]),
@@ -2788,6 +3895,9 @@ def normalize_model_output(
 
                 if item["status"] not in ALLOWED_STATUS:
                     raise TickerError("invalid status")
+                repair_result_story_punch(
+                    item, candidate_ids, by_id, f"{league} #{idx}", run_log
+                )
                 validate_copy_consistency(item, f"{league} #{idx}")
                 final_items.append(item)
 
@@ -2830,8 +3940,11 @@ def normalize_model_output(
                     "rank": idx,
                     "candidateIds": candidate_ids,
                     "type": item_type,
-                    "priority": normalize_editor_priority(
-                        raw_item["priority"], item_type, f"{name} #{idx}", run_log
+                    "priority": apply_result_enrichment_priority(
+                        normalize_editor_priority(
+                            raw_item["priority"], item_type, f"{name} #{idx}", run_log
+                        ),
+                        candidate_ids, by_id, item_type, f"{name} #{idx}", run_log
                     ),
                     "headline": clean_text(raw_item["headline"]),
                     "text": clean_text(raw_item["text"]),
@@ -2857,6 +3970,9 @@ def normalize_model_output(
 
                 if item["status"] not in ALLOWED_STATUS:
                     raise TickerError("invalid status")
+                repair_result_story_punch(
+                    item, candidate_ids, by_id, f"{name} #{idx}", run_log
+                )
                 validate_copy_consistency(item, f"{name} #{idx}")
                 items.append(item)
 
@@ -2990,7 +4106,7 @@ def write_run_log(path: Path, run_log: dict[str, Any]):
 def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dict[str, Any]:
     return {
         "schemaVersion": 1,
-        "pipelineVersion": "A3.5-result-preservation-event-fusion",
+        "pipelineVersion": "A3.6-decisive-moment-enrichment",
         "runId": f"a3-{generated_at.strftime('%Y%m%dT%H%M%SZ')}",
         "status": "running",
         "startedAt": iso_z(generated_at),
@@ -3009,6 +4125,11 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
             "officialPageCount": len(OFFICIAL_PAGES),
             "highlightlySportCount": len(HIGHLIGHTLY_SPORTS),
             "highlightlyConfigured": bool(os.environ.get("HIGHLIGHTLY_API_KEY", "").strip()),
+            "maxDecisiveEnrichments": MAX_DECISIVE_ENRICHMENTS,
+            "decisiveEnrichmentStrategy": (
+                "selective Highlightly match detail + matchId-filtered highlights; "
+                "no OpenAI web search"
+            ),
             "gitSha": os.environ.get("GITHUB_SHA"),
             "githubRunId": os.environ.get("GITHUB_RUN_ID"),
         },
@@ -3027,6 +4148,17 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
             "editorRepairs": [],
             "seasonStates": {},
             "ncaafFbsContext": {},
+            "decisiveMomentEnrichment": {
+                "selectedCandidateIds": [],
+                "eligibleCount": 0,
+                "attempted": 0,
+                "enriched": 0,
+                "noDecisiveMoment": 0,
+                "skipped": [],
+                "failures": [],
+                "items": [],
+                "skipReason": None,
+            },
         },
         "openai": {
             "called": False,
@@ -3086,7 +4218,7 @@ def main() -> int:
 
     try:
         print(
-            f"A3.5 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
+            f"A3.6 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
             f"editor={args.model}; OpenAI web_search=OFF"
         )
 
@@ -3120,6 +4252,11 @@ def main() -> int:
         deduped = dedupe_candidates(raw_candidates, run_log)
         run_log["pipeline"]["dedupedCandidateCount"] = len(deduped)
 
+        print("Enriching decisive moments for close/important results...")
+        deduped = enrich_decisive_moments(
+            deduped, run_log, highlightly_key
+        )
+
         model_candidates = trim_candidates(deduped)
         run_log["pipeline"]["modelCandidateCount"] = len(model_candidates)
         run_log["pipeline"]["normalizedCandidates"] = deduped
@@ -3140,6 +4277,7 @@ def main() -> int:
         successful_highlightly = sum(
             1 for s in run_log["sourceFetches"]
             if s["provider"] == "Highlightly"
+            and s.get("kind") == "matches"
             and s["httpStatus"] == 200
             and not s["error"]
         )
@@ -3186,11 +4324,11 @@ def main() -> int:
         )
 
         dataset = {
-            "schemaVersion": 7,
-            "pipelineVersion": "A3.5-result-preservation-event-fusion",
+            "schemaVersion": 8,
+            "pipelineVersion": "A3.6-decisive-moment-enrichment",
             "generatedAt": iso_z(generated_at),
             "freshnessHours": FRESHNESS_HOURS,
-            "discoveryMode": "Highlightly + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
+            "discoveryMode": "Highlightly + decisive match-detail/highlight enrichment + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
             "model": args.model,
             "sourceCandidateHash": c_hash,
             "leagues": normalized["leagues"],
