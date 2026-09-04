@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""v5.4.7 hierarchical controller radials, Game Center recovery, and fullscreen repair."""
+"""v5.4.8 hierarchical controller radials, Game Center recovery, and fullscreen repair."""
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
-assert VERSION=='5.4.7', VERSION
+assert VERSION=='5.4.8', VERSION
 index=(ROOT/'index.html').read_text(encoding='utf-8')
 core=(ROOT/'architecture'/'controller-mode-v542.js').read_text(encoding='utf-8')
 fs=(ROOT/'ui'/'fullscreen-controller-v545.js').read_text(encoding='utf-8')
-map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.4.7.md').read_text(encoding='utf-8')
+map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.4.8.md').read_text(encoding='utf-8')
 verify=(ROOT/'VERIFY.sh').read_text(encoding='utf-8')
 
 # Atomic frontend cache generation still advances together.
@@ -17,16 +17,18 @@ for asset in ['architecture/controller-mode-v542.js','ui/fullscreen-controller-v
 assert f"const VERSION='{VERSION}'" in core
 assert f"const VERSION='{VERSION}'" in fs
 
-# Y / Triangle is a stable Game Center show/hide/recovery control, never a view cycle.
-assert '<b>${g.y}</b> Show / Hide Game Center' in core
-assert 'function toggleGameCenterDrawer()' in core
-assert 'if(index===BUTTON.Y){toggleGameCenterDrawer();return;}' in core
+# v5.4.8 remaps drawer/view ownership without regressing the hierarchical radial foundation.
+assert '<b>${g.y}</b> Game Center / League View' in core
+assert '<b>L3</b> Open / Close Drawer' in core
+assert 'function toggleGameCenterLeagueView()' in core
+assert 'if(index===BUTTON.Y){toggleGameCenterLeagueView();return;}' in core
+assert 'function toggleInfoDrawerVisibility()' in core
+assert 'if(index===BUTTON.LS){toggleInfoDrawerVisibility();return;}' in core
 assert 'cycleDrawer()' not in core
 for token in [
     "window.SBB_VIEWING_WORKSPACE?.setCollapsed",
     "window.SBB_INFO_DRAWER?.open?.(tab)",
-    "active!=='game-center'",
-    "return openDrawerTab('game-center')",
+    "active==='game-center'?'up-next':'game-center'",
     "return setDrawerCollapsed(true)",
 ]:
     assert token in core, token
@@ -65,7 +67,7 @@ assert "function fullscreenCommand(kind)" in core
 assert "window.SBB_CONTROLLER_NATIVE_BRIDGE?.sendCommand?.(command)" in core
 
 for token in [
-    'Y / Triangle — Show / Hide Game Center drawer',
+    'Y / Triangle — toggle Game Center ↔ League View',
     'Hierarchical RT league radial',
     'SPECIAL EVENTS',
     'PLAYER BROWSE',
@@ -74,4 +76,4 @@ for token in [
     assert token in map_txt, token
 assert 'tests/test_v546_hierarchical_radials_drawer_fullscreen.py' in verify
 
-print('PASS v5.4.7 hierarchical league/Special Event browse radials + Game Center Y toggle + fullscreen repair')
+print('PASS v5.4.8 hierarchical league/Special Event browse radials + Y view toggle + L3 drawer + fullscreen repair')

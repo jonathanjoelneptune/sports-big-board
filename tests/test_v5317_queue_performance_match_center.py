@@ -11,7 +11,7 @@ match_js=(ROOT/'ui'/'sport-match-center-v5317.js').read_text()
 match_css=(ROOT/'ui'/'sport-match-center-v5317.css').read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
 
-assert version=='5.4.7', version
+assert version=='5.4.8', version
 assert f'ui/sport-match-center-v5317.css?v={version}' in index
 assert f'ui/sport-match-center-v5317.js?v={version}' in index
 assert 'tests/test_v5317_queue_performance_match_center.py' in verify
@@ -44,7 +44,7 @@ for token in ['rgba(31,122,78,.99)','rgba(115,232,166,.58)','#8af0b5']:
 
 # Provider failures become useful Match Center context, never an unavailable card.
 for token in [
-    "if(window.SBB_SPORT_MATCH_CENTER?.version==='5.4.7')return;",
+    "if(window.SBB_SPORT_MATCH_CENTER?.version==='5.4.8')return;",
     'SPORT MATCH CENTER',
     'MATCH CENTER',
     'function errorReason()',
@@ -64,4 +64,4 @@ assert '#sbbSportMatchCenter' in match_css
 # There must be no app-wide observer: the only observer is scoped to Game Center.
 assert "state.observer.observe(pane" in match_js
 
-print('PASS v5.4.7 non-blocking league/day queue + green league subnav + resilient sport Match Center')
+print('PASS v5.4.8 non-blocking league/day queue + green league subnav + resilient sport Match Center')

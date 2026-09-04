@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static invariants for Sports Big Board v5.4.7 controller radials/live input."""
+"""Static invariants for Sports Big Board v5.4.8 controller radials/live input."""
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -59,7 +59,7 @@ assert 'requestAnimationFrame(poll)' in module
 # Updated help and documentation surface the new controls.
 for token in ['Leagues','Date / Scope','Pointer']:
     assert token in module, token
-for token in ['RT — League radial','LT — Date / scope radial','R3 — Pointer fallback','Header live-input indicator']:
+for token in ['RT — League radial','LT — Date / scope radial','R3 / Right Stick Click — Pointer fallback','Header live-input indicator']:
     assert token in region_map, token
 
 print(f'PASS v{VERSION} controller live indicator + robust input + RT/LT radials + R3 pointer fallback')

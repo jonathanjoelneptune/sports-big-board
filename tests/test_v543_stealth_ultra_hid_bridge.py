@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""v5.4.7 controller fallback: WebHID bridge + Turtle Beach wireless diagnostics."""
+"""v5.4.8 controller fallback: WebHID bridge + Turtle Beach wireless diagnostics."""
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()

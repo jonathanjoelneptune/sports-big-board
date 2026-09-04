@@ -21,7 +21,7 @@ for token in [
     "ownerApi()?.claim?.('controller'", 'waitingForNeutral', 'controllerNeutral', 'controllerEverActive',
     "preference!=='disabled'", "localStorage.setItem(PREF_KEY,preference)", "document.visibilityState==='hidden'",
     'A:0','B:1','X:2','Y:3','LB:4','RB:5','MENU:9','UP:12','DOWN:13','LEFT:14','RIGHT:15',
-    'function processDirection(gamepad,now)', 'nav()?.activate?.()', 'nav()?.back?.()', 'playPause()', 'toggleGameCenterDrawer()',
+    'function processDirection(gamepad,now)', 'nav()?.activate?.()', 'nav()?.back?.()', 'playPause()', 'toggleGameCenterLeagueView()', 'toggleInfoDrawerVisibility()',
     'transport(-1)', 'transport(1)', 'function processRightStick(gamepad,dt)', 'requestAnimationFrame(poll)', 'scheduleDiscovery()'
 ]:
     assert token in module, token

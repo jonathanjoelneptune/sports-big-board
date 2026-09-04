@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static invariants for splash-screen first-program preload + v5.4.7 progress UI."""
+"""Static invariants for splash-screen first-program preload + v5.4.8 progress UI."""
 from pathlib import Path
 import re
 
