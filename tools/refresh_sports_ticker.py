@@ -2,7 +2,7 @@
 """Sports Big Board A3 Sports Ticker pipeline.
 
 Discovery:
-  - direct ESPN RSS feeds
+  - direct ESPN JSON news endpoints
   - direct official league news pages (best-effort JSON-LD/article extraction)
   - Highlightly structured match data
 
@@ -22,7 +22,6 @@ from __future__ import annotations
 
 import argparse
 import difflib
-import email.utils
 import hashlib
 import html
 import json
@@ -34,7 +33,6 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -59,29 +57,35 @@ ALLOWED_TYPES = [
 
 ALLOWED_STATUS = ["active", "watch", "next"]
 
-ESPN_FEEDS = [
-    {"id": "espn-top", "leagueHint": "SPECIAL", "sportHint": "sports",
-     "url": "https://www.espn.com/espn/rss/news"},
+ESPN_SOURCES = [
     {"id": "espn-mlb", "leagueHint": "MLB", "sportHint": "baseball",
-     "url": "https://www.espn.com/espn/rss/mlb/news"},
+     "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news"},
     {"id": "espn-nfl", "leagueHint": "NFL", "sportHint": "football",
-     "url": "https://www.espn.com/espn/rss/nfl/news"},
+     "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"},
     {"id": "espn-nba", "leagueHint": "NBA", "sportHint": "basketball",
-     "url": "https://www.espn.com/espn/rss/nba/news"},
+     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"},
     {"id": "espn-nhl", "leagueHint": "NHL", "sportHint": "hockey",
-     "url": "https://www.espn.com/espn/rss/nhl/news"},
+     "url": "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/news"},
     {"id": "espn-ncaaf", "leagueHint": "NCAAF", "sportHint": "college football",
-     "url": "https://www.espn.com/espn/rss/ncf/news"},
-    {"id": "espn-soccer", "leagueHint": "SOCCER", "sportHint": "soccer",
-     "url": "https://www.espn.com/espn/rss/soccer/news"},
-    {"id": "espn-motorsports", "leagueHint": "SPECIAL", "sportHint": "motorsports",
-     "url": "https://www.espn.com/espn/rss/rpm/news"},
-    # These feeds are useful when ESPN exposes them. If unavailable, the failure
-    # is logged and the rest of the pipeline continues.
-    {"id": "espn-tennis", "leagueHint": "SPECIAL", "sportHint": "tennis",
-     "url": "https://www.espn.com/espn/rss/tennis/news"},
-    {"id": "espn-golf", "leagueHint": "SPECIAL", "sportHint": "golf",
-     "url": "https://www.espn.com/espn/rss/golf/news"},
+     "url": "https://site.api.espn.com/apis/site/v2/sports/football/college-football/news"},
+    {"id": "espn-epl", "leagueHint": "EPL", "sportHint": "soccer",
+     "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/news"},
+    {"id": "espn-mls", "leagueHint": "MLS", "sportHint": "soccer",
+     "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/news"},
+
+    # Special-event discovery / context.
+    {"id": "espn-f1", "leagueHint": "SPECIAL", "sportHint": "Formula 1",
+     "url": "https://site.api.espn.com/apis/site/v2/sports/racing/f1/news"},
+    {"id": "espn-pga", "leagueHint": "SPECIAL", "sportHint": "golf",
+     "url": "https://site.api.espn.com/apis/site/v2/sports/golf/pga/news"},
+    {"id": "espn-lpga", "leagueHint": "SPECIAL", "sportHint": "golf",
+     "url": "https://site.api.espn.com/apis/site/v2/sports/golf/lpga/news"},
+    {"id": "espn-atp", "leagueHint": "SPECIAL", "sportHint": "tennis",
+     "url": "https://site.api.espn.com/apis/site/v2/sports/tennis/atp/news"},
+    {"id": "espn-wta", "leagueHint": "SPECIAL", "sportHint": "tennis",
+     "url": "https://site.api.espn.com/apis/site/v2/sports/tennis/wta/news"},
+    {"id": "espn-ufc", "leagueHint": "SPECIAL", "sportHint": "MMA",
+     "url": "https://site.api.espn.com/apis/site/v2/sports/mma/ufc/news"},
 ]
 
 OFFICIAL_PAGES = [
@@ -90,59 +94,59 @@ OFFICIAL_PAGES = [
     {"id": "official-nfl", "leagueHint": "NFL", "sportHint": "football",
      "url": "https://www.nfl.com/news/"},
     {"id": "official-nba", "leagueHint": "NBA", "sportHint": "basketball",
-     "url": "https://www.nba.com/news"},
+     "url": "https://www.nba.com/news/category/news"},
     {"id": "official-nhl", "leagueHint": "NHL", "sportHint": "hockey",
      "url": "https://www.nhl.com/news/"},
     {"id": "official-ncaa", "leagueHint": "NCAAF", "sportHint": "college football",
-     "url": "https://www.ncaa.com/news/football/fbs"},
+     "url": "https://www.ncaa.com/sports/football/fbs"},
     {"id": "official-epl", "leagueHint": "EPL", "sportHint": "soccer",
      "url": "https://www.premierleague.com/en/news"},
     {"id": "official-mls", "leagueHint": "MLS", "sportHint": "soccer",
      "url": "https://www.mlssoccer.com/news/"},
 ]
 
-HIGHLIGHTLY_LEAGUES = [
+HIGHLIGHTLY_SPORTS = [
     {
-        "id": "highlightly-mlb", "league": "MLB", "sportHint": "baseball",
-        "legacyBase": "https://baseball.highlightly.net",
-        "allSportsPath": "/baseball/matches",
-        "legacyPath": "/matches", "leagueName": "MLB",
+        "id": "highlightly-baseball",
+        "sportHint": "baseball",
+        "path": "/baseball/matches",
+        "leagueMatchers": {
+            "MLB": ["mlb", "major league baseball"],
+        },
     },
     {
-        "id": "highlightly-nfl", "league": "NFL", "sportHint": "football",
-        "legacyBase": "https://american-football.highlightly.net",
-        "allSportsPath": "/american-football/matches",
-        "legacyPath": "/matches", "leagueName": "NFL",
+        "id": "highlightly-american-football",
+        "sportHint": "american football",
+        "path": "/american-football/matches",
+        "leagueMatchers": {
+            "NFL": ["nfl", "national football league"],
+            "NCAAF": ["ncaa", "college football", "ncaaf"],
+        },
     },
     {
-        "id": "highlightly-ncaaf", "league": "NCAAF", "sportHint": "college football",
-        "legacyBase": "https://american-football.highlightly.net",
-        "allSportsPath": "/american-football/matches",
-        "legacyPath": "/matches", "leagueName": "NCAA",
+        "id": "highlightly-basketball",
+        "sportHint": "basketball",
+        "path": "/basketball/matches",
+        "leagueMatchers": {
+            "NBA": ["nba", "national basketball association"],
+        },
     },
     {
-        "id": "highlightly-nba", "league": "NBA", "sportHint": "basketball",
-        "legacyBase": "https://nba.highlightly.net",
-        "allSportsPath": "/nba/matches",
-        "legacyPath": "/matches", "leagueName": "NBA",
+        "id": "highlightly-hockey",
+        "sportHint": "hockey",
+        "path": "/hockey/matches",
+        "leagueMatchers": {
+            "NHL": ["nhl", "national hockey league"],
+        },
     },
     {
-        "id": "highlightly-nhl", "league": "NHL", "sportHint": "hockey",
-        "legacyBase": "https://nhl.highlightly.net",
-        "allSportsPath": "/nhl/matches",
-        "legacyPath": "/matches", "leagueName": "NHL",
-    },
-    {
-        "id": "highlightly-epl", "league": "EPL", "sportHint": "soccer",
-        "legacyBase": "https://soccer.highlightly.net",
-        "allSportsPath": "/football/matches",
-        "legacyPath": "/matches", "leagueName": "Premier League",
-    },
-    {
-        "id": "highlightly-mls", "league": "MLS", "sportHint": "soccer",
-        "legacyBase": "https://soccer.highlightly.net",
-        "allSportsPath": "/football/matches",
-        "legacyPath": "/matches", "leagueName": "Major League Soccer",
+        "id": "highlightly-football",
+        "sportHint": "soccer",
+        "path": "/football/matches",
+        "leagueMatchers": {
+            "EPL": ["premier league", "english premier league"],
+            "MLS": ["major league soccer", "mls"],
+        },
     },
 ]
 
@@ -280,15 +284,6 @@ def parse_datetime(value: str) -> datetime:
     dt = datetime.fromisoformat(text)
     if dt.tzinfo is None:
         raise ValueError("timestamp has no timezone")
-    return dt.astimezone(timezone.utc)
-
-
-def parse_rss_datetime(value: str) -> datetime:
-    dt = email.utils.parsedate_to_datetime(value)
-    if dt is None:
-        raise ValueError(f"invalid RSS date {value!r}")
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=timezone.utc)
     return dt.astimezone(timezone.utc)
 
 
@@ -518,14 +513,47 @@ def make_candidate(
     }
 
 
-def parse_rss_source(
+def article_is_fantasy(article: dict[str, Any]) -> bool:
+    headline = clean_text(article.get("headline")).lower()
+    description = clean_text(article.get("description")).lower()
+    web_url = ""
+    links = article.get("links")
+    if isinstance(links, dict):
+        web = links.get("web")
+        if isinstance(web, dict):
+            web_url = clean_text(web.get("href")).lower()
+
+    category_text = []
+    for category in article.get("categories", []) if isinstance(article.get("categories"), list) else []:
+        if isinstance(category, dict):
+            category_text.append(clean_text(category.get("description")).lower())
+
+    combined = " ".join([headline, description, web_url] + category_text)
+    return "fantasy" in combined
+
+
+def article_web_url(article: dict[str, Any], fallback: str) -> str:
+    links = article.get("links")
+    if isinstance(links, dict):
+        web = links.get("web")
+        if isinstance(web, dict) and clean_text(web.get("href")):
+            return clean_text(web.get("href"))
+        mobile = links.get("mobile")
+        if isinstance(mobile, dict) and clean_text(mobile.get("href")):
+            return clean_text(mobile.get("href"))
+        if isinstance(mobile, str) and clean_text(mobile):
+            return clean_text(mobile)
+    return fallback
+
+
+def parse_espn_source(
     source: dict[str, str],
     generated_at: datetime,
     cutoff: datetime,
     run_log: dict[str, Any],
 ) -> list[dict[str, Any]]:
     entry = make_source_log(
-        source_id=source["id"], provider="ESPN", kind="rss",
+        source_id=source["id"], provider="ESPN", kind="json-news-api",
         league_hint=source["leagueHint"], url=source["url"],
     )
     run_log["sourceFetches"].append(entry)
@@ -535,59 +563,80 @@ def parse_rss_source(
     try:
         status, headers, body = fetch_bytes(
             source["url"],
-            headers={"Accept": "application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.5"},
+            headers={"Accept": "application/json"},
         )
         finalize_source_log(entry, started, status, headers, body)
 
-        root = ET.fromstring(body)
-        items = root.findall(".//item")
-        for idx, item in enumerate(items):
-            title = clean_text(item.findtext("title"))
-            link = clean_text(item.findtext("link"))
-            description = strip_tags(item.findtext("description") or "")
-            guid = clean_text(item.findtext("guid"))
-            pub_date = clean_text(item.findtext("pubDate"))
-            raw_item = {
-                "index": idx,
-                "title": title,
-                "link": link,
-                "description": description,
-                "guid": guid,
-                "pubDate": pub_date,
-            }
-            entry["receivedItems"].append(raw_item)
+        payload = json.loads(body.decode("utf-8"))
+        articles = payload.get("articles", [])
+        if not isinstance(articles, list):
+            raise TickerError("ESPN JSON response missing articles[]")
 
+        entry["receivedItems"] = articles[:100]
+
+        for idx, article in enumerate(articles[:100]):
+            if not isinstance(article, dict):
+                entry["rejectedItems"].append({
+                    "index": idx, "reason": "article is not an object",
+                })
+                continue
+
+            headline = clean_text(article.get("headline"))
             try:
-                published = parse_rss_datetime(pub_date)
-                if published < cutoff:
-                    raise TickerError(
-                        f"stale RSS item age={(generated_at-published).total_seconds()/3600:.2f}h"
-                    )
+                if clean_text(article.get("type")).lower() == "media":
+                    raise TickerError("media/video item excluded")
+                if article_is_fantasy(article):
+                    raise TickerError("fantasy item excluded")
+
+                published = clean_text(article.get("published") or article.get("lastModified"))
+                if not published:
+                    raise TickerError("missing published timestamp")
+
+                source_url = article_web_url(article, source["url"])
                 candidate = make_candidate(
                     source_id=source["id"],
                     provider="ESPN",
                     league_hint=source["leagueHint"],
                     sport_hint=source["sportHint"],
-                    title=title,
-                    summary=description,
-                    source_url=link or guid or source["url"],
-                    occurrence=iso_z(published),
+                    title=headline,
+                    summary=clean_text(article.get("description")),
+                    source_url=source_url,
+                    occurrence=published,
                     generated_at=generated_at,
                     cutoff=cutoff,
                     quality=90,
                     raw_ref=f"{source['id']}#{idx}",
+                    metadata={
+                        "espnArticleId": article.get("id"),
+                        "espnType": article.get("type"),
+                        "byline": article.get("byline"),
+                        "categories": [
+                            clean_text(c.get("description"))
+                            for c in article.get("categories", [])
+                            if isinstance(c, dict) and clean_text(c.get("description"))
+                        ][:20],
+                    },
                 )
                 candidates.append(candidate)
                 entry["acceptedCandidateIds"].append(candidate["candidateId"])
             except Exception as exc:
                 entry["rejectedItems"].append({
-                    "index": idx, "title": title, "reason": clean_text(exc),
+                    "index": idx,
+                    "title": headline,
+                    "reason": clean_text(exc),
                 })
+
+        if not candidates:
+            entry["note"] = (
+                "ESPN endpoint fetched successfully but no fresh non-fantasy "
+                "news candidates survived the 24-hour gate."
+            )
     except Exception as exc:
         if entry["finishedAt"] is None:
             finalize_source_log(entry, started, None, None, None)
         entry["error"] = clean_text(exc)
         append_failure(run_log, f"source:{source['id']}", str(exc), provider="ESPN")
+
     return candidates
 
 
@@ -837,30 +886,63 @@ def match_finished(match: dict[str, Any]) -> bool:
     return any(word in desc for word in ("finished", "final", "ended", "complete", "completed"))
 
 
-def build_highlightly_urls(cfg: dict[str, str], date_text: str) -> list[str]:
+def match_league_text(match: dict[str, Any]) -> str:
+    values = []
+
+    league = match.get("league")
+    if isinstance(league, dict):
+        for key in ("name", "displayName", "abbreviation", "slug"):
+            if clean_text(league.get(key)):
+                values.append(clean_text(league.get(key)))
+    elif league is not None:
+        values.append(clean_text(league))
+
+    for key in ("leagueName", "competitionName", "tournamentName"):
+        if clean_text(match.get(key)):
+            values.append(clean_text(match.get(key)))
+
+    return " | ".join(values).lower()
+
+
+def classify_highlightly_league(
+    match: dict[str, Any],
+    league_matchers: dict[str, list[str]],
+) -> str | None:
+    league_text = match_league_text(match)
+    if not league_text:
+        return None
+
+    for league, needles in league_matchers.items():
+        if any(needle.lower() in league_text for needle in needles):
+            return league
+    return None
+
+
+def build_highlightly_url(cfg: dict[str, Any], date_text: str) -> str:
+    # Date is itself a primary filter in Highlightly's documented matches API.
+    # Fetch by sport/date, then classify the returned league locally. This avoids
+    # league-filter differences between MLB/NFL/NBA/NHL/football products.
     params = urllib.parse.urlencode({
         "date": date_text,
         "timezone": "America/New_York",
-        "leagueName": cfg["leagueName"],
         "limit": 100,
     })
-    legacy = f"{cfg['legacyBase']}{cfg['legacyPath']}?{params}"
-    allsports = f"https://sports.highlightly.net{cfg['allSportsPath']}?{params}"
-    return [legacy, allsports]
+    return f"https://sports.highlightly.net{cfg['path']}?{params}"
 
 
-def parse_highlightly_league(
-    cfg: dict[str, str],
+def parse_highlightly_sport(
+    cfg: dict[str, Any],
     generated_at: datetime,
     cutoff: datetime,
     run_log: dict[str, Any],
     api_key: str,
 ) -> list[dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
+
     if not api_key:
         entry = make_source_log(
             source_id=cfg["id"], provider="Highlightly", kind="matches",
-            league_hint=cfg["league"], url="[disabled: missing HIGHLIGHTLY_API_KEY]",
+            league_hint="MULTI", url="[disabled: missing HIGHLIGHTLY_API_KEY]",
         )
         entry["finishedAt"] = iso_z(utc_now())
         entry["error"] = "HIGHLIGHTLY_API_KEY not configured"
@@ -874,121 +956,154 @@ def parse_highlightly_league(
 
     for day in dates:
         source_id = f"{cfg['id']}-{day.isoformat()}"
-        attempted_urls = build_highlightly_urls(cfg, day.isoformat())
-        success = False
+        url = build_highlightly_url(cfg, day.isoformat())
+        entry = make_source_log(
+            source_id=source_id,
+            provider="Highlightly",
+            kind="matches",
+            league_hint="MULTI",
+            url=url,
+        )
+        run_log["sourceFetches"].append(entry)
+        started = time.monotonic()
 
-        for attempt_index, url in enumerate(attempted_urls):
-            entry = make_source_log(
-                source_id=f"{source_id}-{'legacy' if attempt_index == 0 else 'all-sports'}",
-                provider="Highlightly", kind="matches",
-                league_hint=cfg["league"], url=url,
+        try:
+            status, headers, body = fetch_bytes(
+                url,
+                headers={
+                    "Accept": "application/json",
+                    "x-rapidapi-key": api_key,
+                },
             )
-            run_log["sourceFetches"].append(entry)
-            started = time.monotonic()
-            try:
-                status, headers, body = fetch_bytes(
-                    url,
-                    headers={
-                        "Accept": "application/json",
-                        "x-rapidapi-key": api_key,
-                    },
-                )
-                finalize_source_log(entry, started, status, headers, body)
-                payload = json.loads(body.decode("utf-8"))
-                matches = unwrap_highlightly(payload)
-                entry["receivedItems"] = matches[:100]
+            finalize_source_log(entry, started, status, headers, body)
+            payload = json.loads(body.decode("utf-8"))
+            matches = unwrap_highlightly(payload)
+            entry["receivedItems"] = matches[:100]
 
-                for idx, match in enumerate(matches[:100]):
-                    try:
-                        if not match_finished(match):
-                            entry["rejectedItems"].append({
-                                "index": idx,
-                                "matchId": match.get("id"),
-                                "reason": "match not final",
-                            })
-                            continue
-                        scheduled = clean_text(match.get("date"))
-                        home = team_name(match, "home")
-                        away = team_name(match, "away")
-                        home_score, away_score = match_score(match)
-                        if not scheduled or not home or not away:
-                            raise TickerError("missing date/team data")
-                        if home_score is None or away_score is None:
-                            raise TickerError("final match missing usable score")
-
-                        if home_score > away_score:
-                            winner, loser = home, away
-                        elif away_score > home_score:
-                            winner, loser = away, home
-                        else:
-                            winner, loser = home, away
-
-                        title = (
-                            f"{winner} defeats {loser} {max(home_score, away_score)}-"
-                            f"{min(home_score, away_score)}"
-                            if home_score != away_score
-                            else f"{home} and {away} finish {home_score}-{away_score}"
-                        )
-                        summary = (
-                            f"Highlightly final: {away} {away_score}, "
-                            f"{home} {home_score}."
-                        )
-
-                        candidate = make_candidate(
-                            source_id=entry["sourceId"],
-                            provider="Highlightly",
-                            league_hint=cfg["league"],
-                            sport_hint=cfg["sportHint"],
-                            title=title,
-                            summary=summary,
-                            source_url="https://highlightly.net",
-                            occurrence=scheduled,
-                            generated_at=generated_at,
-                            cutoff=cutoff,
-                            type_hint="RESULT",
-                            quality=100,
-                            raw_ref=f"{entry['sourceId']}#{idx}",
-                            metadata={
-                                "matchId": match.get("id"),
-                                "homeTeam": home,
-                                "awayTeam": away,
-                                "homeScore": home_score,
-                                "awayScore": away_score,
-                                "scheduledAt": scheduled,
-                                "state": match.get("state"),
-                            },
-                        )
-                        candidates.append(candidate)
-                        entry["acceptedCandidateIds"].append(candidate["candidateId"])
-                    except Exception as exc:
+            for idx, match in enumerate(matches[:100]):
+                try:
+                    target_league = classify_highlightly_league(
+                        match, cfg["leagueMatchers"]
+                    )
+                    if not target_league:
                         entry["rejectedItems"].append({
                             "index": idx,
                             "matchId": match.get("id"),
-                            "reason": clean_text(exc),
+                            "reason": (
+                                "league not one of tracked base leagues; "
+                                f"leagueText={match_league_text(match)!r}"
+                            ),
                         })
-                success = True
-                break
-            except urllib.error.HTTPError as exc:
-                body = exc.read()
-                finalize_source_log(entry, started, exc.code, exc.headers, body)
-                entry["error"] = f"HTTP {exc.code}: {body[:500].decode('utf-8', errors='replace')}"
-                # Auth/product mismatch is exactly why we have a second base URL fallback.
-                if attempt_index == len(attempted_urls) - 1:
-                    append_failure(
-                        run_log, f"source:{source_id}", entry["error"],
-                        provider="Highlightly", league=cfg["league"],
+                        continue
+
+                    if not match_finished(match):
+                        entry["rejectedItems"].append({
+                            "index": idx,
+                            "matchId": match.get("id"),
+                            "reason": "match not final",
+                        })
+                        continue
+
+                    scheduled = clean_text(
+                        match.get("date")
+                        or match.get("startDate")
+                        or match.get("startTime")
                     )
-            except Exception as exc:
-                if entry["finishedAt"] is None:
-                    finalize_source_log(entry, started, None, None, None)
-                entry["error"] = clean_text(exc)
-                if attempt_index == len(attempted_urls) - 1:
-                    append_failure(
-                        run_log, f"source:{source_id}", str(exc),
-                        provider="Highlightly", league=cfg["league"],
+                    home = team_name(match, "home")
+                    away = team_name(match, "away")
+                    home_score, away_score = match_score(match)
+
+                    if not scheduled or not home or not away:
+                        raise TickerError("missing date/team data")
+                    if home_score is None or away_score is None:
+                        raise TickerError("final match missing usable score")
+
+                    if home_score > away_score:
+                        winner, loser = home, away
+                    elif away_score > home_score:
+                        winner, loser = away, home
+                    else:
+                        winner, loser = home, away
+
+                    if home_score != away_score:
+                        winner_score = home_score if winner == home else away_score
+                        loser_score = away_score if winner == home else home_score
+                        title = f"{winner} defeats {loser} {winner_score}-{loser_score}"
+                    else:
+                        title = f"{home} and {away} finish {home_score}-{away_score}"
+
+                    summary = (
+                        f"Highlightly final: {away} {away_score}, "
+                        f"{home} {home_score}."
                     )
-        if not success:
-            continue
+
+                    candidate = make_candidate(
+                        source_id=entry["sourceId"],
+                        provider="Highlightly",
+                        league_hint=target_league,
+                        sport_hint=cfg["sportHint"],
+                        title=title,
+                        summary=summary,
+                        source_url="https://highlightly.net",
+                        occurrence=scheduled,
+                        generated_at=generated_at,
+                        cutoff=cutoff,
+                        type_hint="RESULT",
+                        quality=100,
+                        raw_ref=f"{entry['sourceId']}#{idx}",
+                        metadata={
+                            "matchId": match.get("id"),
+                            "leagueText": match_league_text(match),
+                            "homeTeam": home,
+                            "awayTeam": away,
+                            "homeScore": home_score,
+                            "awayScore": away_score,
+                            "scheduledAt": scheduled,
+                            "state": match.get("state"),
+                        },
+                    )
+                    candidates.append(candidate)
+                    entry["acceptedCandidateIds"].append(candidate["candidateId"])
+
+                except Exception as exc:
+                    entry["rejectedItems"].append({
+                        "index": idx,
+                        "matchId": match.get("id"),
+                        "reason": clean_text(exc),
+                    })
+
+            if not entry["acceptedCandidateIds"]:
+                entry["note"] = (
+                    "Highlightly request succeeded but produced no FINAL matches "
+                    "for tracked leagues inside the 24-hour window."
+                )
+
+        except urllib.error.HTTPError as exc:
+            body = exc.read()
+            finalize_source_log(entry, started, exc.code, exc.headers, body)
+            entry["error"] = (
+                f"HTTP {exc.code}: "
+                f"{body[:1000].decode('utf-8', errors='replace')}"
+            )
+            append_failure(
+                run_log,
+                f"source:{source_id}",
+                entry["error"],
+                provider="Highlightly",
+                sport=cfg["sportHint"],
+            )
+        except Exception as exc:
+            if entry["finishedAt"] is None:
+                finalize_source_log(entry, started, None, None, None)
+            entry["error"] = clean_text(exc)
+            append_failure(
+                run_log,
+                f"source:{source_id}",
+                str(exc),
+                provider="Highlightly",
+                sport=cfg["sportHint"],
+            )
+
     return candidates
 
 
@@ -1656,7 +1771,7 @@ def write_run_log(path: Path, run_log: dict[str, Any]):
 def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dict[str, Any]:
     return {
         "schemaVersion": 1,
-        "pipelineVersion": "A3.0-direct-sources",
+        "pipelineVersion": "A3.1-direct-json-sources",
         "runId": f"a3-{generated_at.strftime('%Y%m%dT%H%M%SZ')}",
         "status": "running",
         "startedAt": iso_z(generated_at),
@@ -1667,10 +1782,12 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
             "freshnessHours": FRESHNESS_HOURS,
             "model": model,
             "openAIWebSearchEnabled": False,
+            "espnTransport": "site.api.espn.com JSON news endpoints",
+            "highlightlyTransport": "sports.highlightly.net by sport/date, local league filtering",
             "maxModelCandidates": MAX_MODEL_CANDIDATES,
-            "espnFeedCount": len(ESPN_FEEDS),
+            "espnSourceCount": len(ESPN_SOURCES),
             "officialPageCount": len(OFFICIAL_PAGES),
-            "highlightlyLeagueCount": len(HIGHLIGHTLY_LEAGUES),
+            "highlightlySportCount": len(HIGHLIGHTLY_SPORTS),
             "highlightlyConfigured": bool(os.environ.get("HIGHLIGHTLY_API_KEY", "").strip()),
             "gitSha": os.environ.get("GITHUB_SHA"),
             "githubRunId": os.environ.get("GITHUB_RUN_ID"),
@@ -1742,25 +1859,27 @@ def main() -> int:
 
     try:
         print(
-            f"A3 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
+            f"A3.1 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
             f"editor={args.model}; OpenAI web_search=OFF"
         )
 
         raw_candidates: list[dict[str, Any]] = []
 
-        for source in ESPN_FEEDS:
+        for source in ESPN_SOURCES:
             print(f"Fetching {source['id']}...")
-            raw_candidates.extend(parse_rss_source(source, generated_at, cutoff, run_log))
+            raw_candidates.extend(
+                parse_espn_source(source, generated_at, cutoff, run_log)
+            )
 
         for source in OFFICIAL_PAGES:
             print(f"Fetching {source['id']}...")
             raw_candidates.extend(parse_official_source(source, generated_at, cutoff, run_log))
 
         highlightly_key = os.environ.get("HIGHLIGHTLY_API_KEY", "").strip()
-        for cfg in HIGHLIGHTLY_LEAGUES:
+        for cfg in HIGHLIGHTLY_SPORTS:
             print(f"Fetching {cfg['id']}...")
             raw_candidates.extend(
-                parse_highlightly_league(
+                parse_highlightly_sport(
                     cfg, generated_at, cutoff, run_log, highlightly_key
                 )
             )
@@ -1782,12 +1901,34 @@ def main() -> int:
 
         successful_espn = sum(
             1 for s in run_log["sourceFetches"]
-            if s["provider"] == "ESPN" and s["httpStatus"] == 200 and not s["error"]
+            if s["provider"] == "ESPN"
+            and s["httpStatus"] == 200
+            and not s["error"]
         )
-        if successful_espn < 4 and len(model_candidates) < 10:
+        successful_highlightly = sum(
+            1 for s in run_log["sourceFetches"]
+            if s["provider"] == "Highlightly"
+            and s["httpStatus"] == 200
+            and not s["error"]
+        )
+        run_log["pipeline"]["sourceHealth"] = {
+            "successfulEspnJsonSources": successful_espn,
+            "successfulHighlightlyRequests": successful_highlightly,
+            "totalModelCandidates": len(model_candidates),
+        }
+
+        # We can tolerate official-page scraping failures. But do not call the
+        # editor on an obviously broken discovery run.
+        if successful_espn < 4 and successful_highlightly < 2:
             raise TickerError(
-                f"source-health gate failed: only {successful_espn} ESPN feeds succeeded "
-                f"and only {len(model_candidates)} candidates survived"
+                "source-health gate failed: "
+                f"ESPN JSON successes={successful_espn}, "
+                f"Highlightly successes={successful_highlightly}"
+            )
+        if len(model_candidates) < 5:
+            raise TickerError(
+                f"source-health gate failed: only {len(model_candidates)} "
+                "fresh candidates survived"
             )
         if not model_candidates:
             raise TickerError("no fresh candidates survived direct-source collection")
@@ -1814,10 +1955,10 @@ def main() -> int:
 
         dataset = {
             "schemaVersion": 4,
-            "pipelineVersion": "A3.0-direct-sources",
+            "pipelineVersion": "A3.1-direct-json-sources",
             "generatedAt": iso_z(generated_at),
             "freshnessHours": FRESHNESS_HOURS,
-            "discoveryMode": "Highlightly + ESPN RSS + official league pages; no OpenAI web search",
+            "discoveryMode": "Highlightly + ESPN JSON news + official league pages; no OpenAI web search",
             "model": args.model,
             "sourceCandidateHash": c_hash,
             "leagues": normalized["leagues"],
