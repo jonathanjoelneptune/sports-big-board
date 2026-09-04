@@ -47,6 +47,91 @@ OPENAI_TIMEOUT = 180
 
 BASE_LEAGUES = ["MLB", "NFL", "NBA", "NHL", "EPL", "MLS", "NCAAF"]
 
+
+# 2026 FBS fallback universe. Primary FBS eligibility/rank context is fetched
+# from ESPN's FBS scoreboard (group 80) for the current and previous dates.
+# This static set prevents a transient scoreboard-context failure from allowing
+# lower-division NCAA results into the ticker.
+FBS_TEAMS_2026 = [
+    # SEC
+    "Alabama Crimson Tide", "Arkansas Razorbacks", "Auburn Tigers",
+    "Florida Gators", "Georgia Bulldogs", "Kentucky Wildcats", "LSU Tigers",
+    "Mississippi State Bulldogs", "Missouri Tigers", "Oklahoma Sooners",
+    "Ole Miss Rebels", "South Carolina Gamecocks", "Tennessee Volunteers",
+    "Texas A&M Aggies", "Texas Longhorns", "Vanderbilt Commodores",
+    # Big Ten
+    "Illinois Fighting Illini", "Indiana Hoosiers", "Iowa Hawkeyes",
+    "Maryland Terrapins", "Michigan State Spartans", "Michigan Wolverines",
+    "Minnesota Golden Gophers", "Nebraska Cornhuskers", "Northwestern Wildcats",
+    "Ohio State Buckeyes", "Oregon Ducks", "Penn State Nittany Lions",
+    "Purdue Boilermakers", "Rutgers Scarlet Knights", "UCLA Bruins",
+    "USC Trojans", "Washington Huskies", "Wisconsin Badgers",
+    # Big 12
+    "Arizona State Sun Devils", "Arizona Wildcats", "Baylor Bears", "BYU Cougars",
+    "Cincinnati Bearcats", "Colorado Buffaloes", "Houston Cougars",
+    "Iowa State Cyclones", "Kansas Jayhawks", "Kansas State Wildcats",
+    "Oklahoma State Cowboys", "TCU Horned Frogs", "Texas Tech Red Raiders",
+    "UCF Knights", "Utah Utes", "West Virginia Mountaineers",
+    # ACC
+    "Boston College Eagles", "California Golden Bears", "Clemson Tigers",
+    "Duke Blue Devils", "Florida State Seminoles", "Georgia Tech Yellow Jackets",
+    "Louisville Cardinals", "Miami Hurricanes", "NC State Wolfpack",
+    "North Carolina Tar Heels", "Pittsburgh Panthers", "SMU Mustangs",
+    "Stanford Cardinal", "Syracuse Orange", "Virginia Cavaliers",
+    "Virginia Tech Hokies", "Wake Forest Demon Deacons",
+    # American
+    "Army Black Knights", "Charlotte 49ers", "East Carolina Pirates", "FAU Owls",
+    "Memphis Tigers", "Navy Midshipmen", "North Texas Mean Green", "Rice Owls",
+    "South Florida Bulls", "Temple Owls", "Tulane Green Wave",
+    "Tulsa Golden Hurricane", "UAB Blazers", "UTSA Roadrunners",
+    # Mountain West
+    "Air Force Falcons", "Hawaii Rainbow Warriors", "Nevada Wolf Pack",
+    "New Mexico Lobos", "North Dakota State Bison", "Northern Illinois Huskies",
+    "San Jose State Spartans", "UNLV Rebels", "UTEP Miners", "Wyoming Cowboys",
+    # Sun Belt
+    "Appalachian State Mountaineers", "Arkansas State Red Wolves",
+    "Coastal Carolina Chanticleers", "Georgia Southern Eagles",
+    "Georgia State Panthers", "James Madison Dukes", "Louisiana Ragin Cajuns",
+    "Louisiana Tech Bulldogs", "Louisiana-Monroe Warhawks",
+    "Marshall Thundering Herd", "Old Dominion Monarchs",
+    "South Alabama Jaguars", "Southern Miss Golden Eagles", "Troy Trojans",
+    # Conference USA
+    "Delaware Fightin Blue Hens", "FIU Panthers", "Jacksonville State Gamecocks",
+    "Kennesaw State Owls", "Liberty Flames", "Middle Tennessee Blue Raiders",
+    "Missouri State Bears", "New Mexico State Aggies", "Sam Houston Bearkats",
+    "Western Kentucky Hilltoppers",
+    # MAC
+    "Akron Zips", "Ball State Cardinals", "Bowling Green Falcons", "Buffalo Bulls",
+    "Central Michigan Chippewas", "Eastern Michigan Eagles",
+    "Kent State Golden Flashes", "Miami (OH) RedHawks", "Ohio Bobcats",
+    "Sacramento State Hornets", "Toledo Rockets", "UMass Minutemen",
+    "Western Michigan Broncos",
+    # Pac-12
+    "Boise State Broncos", "Colorado State Rams", "Fresno State Bulldogs",
+    "Oregon State Beavers", "San Diego State Aztecs", "Texas State Bobcats",
+    "Utah State Aggies", "Washington State Cougars",
+    # Independents
+    "Notre Dame Fighting Irish", "UConn Huskies",
+]
+
+FBS_TEAM_ALIASES = {
+    "connecticut huskies": "UConn Huskies",
+    "florida atlantic owls": "FAU Owls",
+    "massachusetts minutemen": "UMass Minutemen",
+    "miami ohio redhawks": "Miami (OH) RedHawks",
+    "miami of ohio redhawks": "Miami (OH) RedHawks",
+    "louisiana ragin cajuns": "Louisiana Ragin Cajuns",
+    "ul monroe warhawks": "Louisiana-Monroe Warhawks",
+    "louisiana monroe warhawks": "Louisiana-Monroe Warhawks",
+    "sam houston state bearkats": "Sam Houston Bearkats",
+    "delaware blue hens": "Delaware Fightin Blue Hens",
+}
+
+ESPN_FBS_SCOREBOARD_URL = (
+    "https://site.api.espn.com/apis/site/v2/sports/football/"
+    "college-football/scoreboard"
+)
+
 ALLOWED_TYPES = [
     "BREAKING", "RESULT", "UPSET", "TRADE", "SIGNING", "INJURY", "RETURN",
     "RECORD", "RECORD_CHASE", "MILESTONE", "STREAK", "SLUMP", "RANKING",
@@ -211,12 +296,8 @@ MODEL_SCHEMA: dict[str, Any] = {
         "leagueGroup": {
             "type": "object",
             "additionalProperties": False,
-            "required": ["seasonState", "items"],
+            "required": ["items"],
             "properties": {
-                "seasonState": {
-                    "type": "string",
-                    "enum": ["active", "offseason", "preseason", "postseason"],
-                },
                 "items": {
                     "type": "array", "minItems": 0, "maxItems": 10,
                     "items": {"$ref": "#/$defs/item"},
@@ -258,9 +339,9 @@ Priority is importance, NOT rank number.
 - 95-100: extraordinary / sport-dominating breaking development
 - 88-94: major national story, major playoff/championship consequence, blockbuster transaction
 - 80-87: highly important injury, signing, record, upset, legal/discipline or standings development
-- 70-79: strong league-wide story, meaningful result, notable return/milestone/ranking change
-- 60-69: useful normal ticker item, relevant result or secondary transaction
-- 50-59: lower-priority but still worthwhile update
+- 70-79: strong league-wide story, notable return/milestone/ranking change
+- 60-69: useful normal ticker item
+- 50-65: ordinary completed result unless supplied metadata proves major context
 - below 50: usually omit unless the league has exceptionally little legitimate news
 Never use 1, 2, 3... as ranking positions. rank is assigned later by Python.
 
@@ -268,35 +349,33 @@ TYPE RULES
 - COACHING means a coaching personnel/status change: hired, fired, resigned,
   extended, promoted, demoted, or role changed. A coach giving a quote is NOT COACHING.
 - RESULT means a completed game/match result.
-- UPSET means the supplied candidates establish that the winner was meaningfully unexpected/ranked lower.
+- UPSET means the supplied candidate establishes a genuinely surprising result.
 - RETURN means a player actually returned/was activated after absence.
 - DEPTH_CHART means a starter/backup/role change, not merely unavailable players.
 - OTHER should be rare.
-
-SEASON STATE
-"active" means regular-season competition is underway.
-"postseason" means playoffs/tournament postseason are underway.
-"preseason" means preseason/exhibition competition is underway.
-"offseason" means none of the above.
-Do not call an offseason league "active" merely because news exists.
+- For structured RESULT candidates, use metadata such as homeTeam, awayTeam,
+  scores, ranks, FBS context, and fusedContext. Do not invent context that is not
+  present in the candidate.
 
 Editorial mix rules:
 - Maximum 5 ordinary RESULT items per base league.
 - Maximum 2 combined NEXT/SCHEDULE items per base league.
-- Do not pad an offseason league.
+- Do not pad a league.
 - A major UPSET is not an ordinary RESULT.
 - Special Events should cover important active events outside the seven base leagues.
 
 Grounding:
 - Every final item must reference candidateIds from the supplied packet.
 - Do not invent URLs, scores, dates, injuries, rankings, records, quotes, or transactions.
-- If multiple candidates describe the same event, merge them into one item and cite all useful candidateIds.
+- If Python has already fused multiple sources into one candidate, treat that
+  candidate's fusedContext metadata as grounded support for that same candidateId.
 - If a candidate is ambiguous, omit it rather than guessing.
 
 FRESHNESS BASIS
 freshnessBasis must be a concrete factual clause describing the new development.
 GOOD: "Chicago activated Kyle Teel from the injured list Friday."
 GOOD: "Sacramento agreed to a one-year deal with Ben Simmons Friday."
+GOOD: "Liverpool beat Ipswich 2-0 for its first league win of the season."
 BAD: "hours ago"
 BAD: "today"
 BAD: "recently"
@@ -311,8 +390,8 @@ Consistency:
 OUTPUT SHAPE
 The "leagues" field is an object with EXACTLY these seven required keys:
 MLB, NFL, NBA, NHL, EPL, MLS, NCAAF.
-Do not rename, duplicate, omit, or reorder them as array entries. Each key has
-seasonState and items.
+Each key contains only "items". Python owns season-state determination.
+Do not rename, duplicate, or omit league keys.
 
 Write factual, compact, non-clickbait ticker copy.
 """
@@ -491,6 +570,20 @@ def keyword_type_hint(title: str, summary: str) -> str:
     if has_score and any(re.search(pattern, text) for pattern in result_patterns):
         return "RESULT"
 
+    headline_only = title.lower()
+    scoreless_result_patterns = [
+        r"\bwin(?:s)? at (?:the )?us open\b",
+        r"\bwon (?:his|her|their) [^.!?]{0,60}\bmatch(?:es)?\b",
+        r"\badvance(?:s|d)? at (?:the )?us open\b",
+        r"\bto advance at (?:the )?us open\b",
+    ]
+    result_noise = ("complains", "bothered by", "smell of", "controversy")
+    if (
+        any(re.search(pattern, headline_only) for pattern in scoreless_result_patterns)
+        and not any(noise in headline_only for noise in result_noise)
+    ):
+        return "RESULT"
+
     # Return/activation must be checked before generic injury-list wording.
     if any(word in text for word in [
         "activated off", "activated from", "returns to practice",
@@ -590,6 +683,9 @@ def low_signal_editorial_story(title: str, summary: str, type_hint: str) -> tupl
         " review:",
         " review ",
         "live updates",
+        "offseason recap",
+        "season preview",
+        "season previews",
         "latest free agency and trade updates",
         "buzz:",
         "separating fact from fiction",
@@ -617,6 +713,263 @@ def low_signal_editorial_story(title: str, summary: str, type_hint: str) -> tupl
         return True, "question/analysis headline without a strong factual event"
 
     return False, None
+
+
+
+def _normalize_team_label(value: str) -> str:
+    value = clean_text(value).lower().replace("&", " and ")
+    value = re.sub(r"['’]", "", value)
+    value = re.sub(r"\([^)]*\)", " ", value)
+    value = re.sub(r"[^a-z0-9]+", " ", value)
+    return re.sub(r"\s+", " ", value).strip()
+
+
+def _team_token_set(value: str) -> set[str]:
+    return {
+        token for token in _normalize_team_label(value).split()
+        if token not in {"the", "of", "university", "college"}
+    }
+
+
+def team_match_score(a: str, b: str) -> float:
+    na, nb = _normalize_team_label(a), _normalize_team_label(b)
+    if not na or not nb:
+        return 0.0
+    if na == nb:
+        return 1.0
+    alias_a = FBS_TEAM_ALIASES.get(na)
+    alias_b = FBS_TEAM_ALIASES.get(nb)
+    if alias_a and _normalize_team_label(alias_a) == nb:
+        return 1.0
+    if alias_b and _normalize_team_label(alias_b) == na:
+        return 1.0
+    ta, tb = _team_token_set(a), _team_token_set(b)
+    if not ta or not tb:
+        return 0.0
+    jaccard = len(ta & tb) / max(1, len(ta | tb))
+    containment = len(ta & tb) / max(1, min(len(ta), len(tb)))
+    seq = difflib.SequenceMatcher(None, na, nb).ratio()
+    return max(jaccard, containment * 0.92, seq * 0.82)
+
+
+def build_fbs_alias_index(team_names: list[str]) -> list[tuple[str, str]]:
+    values: dict[str, str] = {}
+    for name in team_names:
+        normalized = _normalize_team_label(name)
+        if normalized:
+            values[normalized] = name
+    for alias, canonical in FBS_TEAM_ALIASES.items():
+        values[_normalize_team_label(alias)] = canonical
+    return list(values.items())
+
+
+def match_fbs_team(team_name: str, fbs_context: dict[str, Any]) -> str | None:
+    best_name = None
+    best_score = 0.0
+    for _, canonical in fbs_context.get("aliasIndex", []):
+        score = team_match_score(team_name, canonical)
+        if score > best_score:
+            best_score = score
+            best_name = canonical
+    return best_name if best_score >= 0.74 else None
+
+
+def fetch_espn_fbs_context(
+    generated_at: datetime,
+    run_log: dict[str, Any],
+) -> dict[str, Any]:
+    """Build current FBS eligibility/rank context.
+
+    ESPN group=80 scoreboard data is primary. A baked-in 2026 FBS universe is
+    always present as fallback, so this enrichment cannot break ticker refreshes.
+    """
+    eastern_now = generated_at.astimezone(
+        __import__("zoneinfo").ZoneInfo("America/New_York")
+    )
+    dates = [eastern_now.date(), (eastern_now - timedelta(days=1)).date()]
+
+    team_names = set(FBS_TEAMS_2026)
+    rank_by_name: dict[str, int] = {}
+    successful = 0
+    event_count = 0
+
+    for day in dates:
+        date_token = day.strftime("%Y%m%d")
+        url = ESPN_FBS_SCOREBOARD_URL + "?" + urllib.parse.urlencode({
+            "dates": date_token,
+            "groups": 80,
+            "limit": 100,
+        })
+        source_id = f"espn-ncaaf-fbs-scoreboard-{day.isoformat()}"
+        entry = make_source_log(
+            source_id=source_id,
+            provider="ESPN",
+            kind="scoreboard-context",
+            league_hint="NCAAF",
+            url=url,
+        )
+        run_log["sourceFetches"].append(entry)
+        started = time.monotonic()
+        try:
+            status, headers, body = fetch_bytes(url, headers={"Accept": "application/json"})
+            finalize_source_log(entry, started, status, headers, body)
+            payload = json.loads(body.decode("utf-8"))
+            events = payload.get("events", []) if isinstance(payload, dict) else []
+            if not isinstance(events, list):
+                events = []
+            entry["receivedItems"] = events[:100]
+            successful += 1
+            event_count += len(events)
+
+            for event in events:
+                if not isinstance(event, dict):
+                    continue
+                comps = event.get("competitions")
+                if not isinstance(comps, list) or not comps:
+                    continue
+                competitors = comps[0].get("competitors") if isinstance(comps[0], dict) else []
+                if not isinstance(competitors, list):
+                    continue
+                for competitor in competitors:
+                    if not isinstance(competitor, dict):
+                        continue
+                    team = competitor.get("team")
+                    if not isinstance(team, dict):
+                        continue
+                    name = clean_text(
+                        team.get("displayName")
+                        or team.get("shortDisplayName")
+                        or team.get("name")
+                    )
+                    if name:
+                        team_names.add(name)
+                        rank = competitor.get("curatedRank")
+                        if isinstance(rank, dict):
+                            try:
+                                current = int(rank.get("current"))
+                                if 1 <= current <= 25:
+                                    rank_by_name[name] = current
+                            except Exception:
+                                pass
+
+            entry["note"] = (
+                f"FBS context accepted; events={len(events)}; "
+                f"teamUniverse={len(team_names)}"
+            )
+        except Exception as exc:
+            # Optional enrichment. Keep the error in the source log, but do not
+            # mark the overall run failed because the static 2026 FBS fallback
+            # is intentionally sufficient.
+            if entry["finishedAt"] is None:
+                finalize_source_log(entry, started, None, None, None)
+            entry["error"] = clean_text(exc)
+            entry["note"] = "Using static 2026 FBS fallback for this date."
+
+    context = {
+        "mode": "espn-scoreboard+static-fallback" if successful else "static-fallback",
+        "successfulScoreboardRequests": successful,
+        "scoreboardEventCount": event_count,
+        "teamCount": len(team_names),
+        "teamNames": sorted(team_names),
+        "rankByName": rank_by_name,
+    }
+    context["aliasIndex"] = build_fbs_alias_index(context["teamNames"])
+
+    run_log["pipeline"]["ncaafFbsContext"] = {
+        "mode": context["mode"],
+        "successfulScoreboardRequests": successful,
+        "scoreboardEventCount": event_count,
+        "teamCount": len(team_names),
+        "rankedTeams": dict(sorted(rank_by_name.items(), key=lambda kv: kv[1])),
+    }
+    return context
+
+
+def fbs_rank_for(team_name: str, fbs_context: dict[str, Any]) -> int | None:
+    matched = match_fbs_team(team_name, fbs_context)
+    if not matched:
+        return None
+    rank_map = fbs_context.get("rankByName", {})
+    if matched in rank_map:
+        return rank_map[matched]
+    # Scoreboard display names can differ slightly from fallback names.
+    for name, rank in rank_map.items():
+        if team_match_score(team_name, name) >= 0.74:
+            return rank
+    return None
+
+
+def _first_monday_of_september(year: int, tzinfo: Any) -> datetime:
+    # Build the date directly in the target timezone. Constructing at 00:00 UTC
+    # and then converting to Eastern can move the calendar date backward.
+    day = datetime(year, 9, 1, tzinfo=tzinfo)
+    return day + timedelta(days=(7 - day.weekday()) % 7)
+
+
+def deterministic_season_state(league: str, generated_at: datetime) -> str:
+    """Calendar-owned season state; OpenAI never decides this field."""
+    dt = generated_at.astimezone(
+        __import__("zoneinfo").ZoneInfo("America/New_York")
+    )
+    y, m, d = dt.year, dt.month, dt.day
+    md = (m, d)
+
+    if league == "MLB":
+        if (2, 15) <= md <= (3, 25):
+            return "preseason"
+        if (3, 26) <= md <= (10, 4):
+            return "active"
+        if (10, 5) <= md <= (11, 10):
+            return "postseason"
+        return "offseason"
+
+    if league == "NFL":
+        labor_day = _first_monday_of_september(y, dt.tzinfo)
+        kickoff = labor_day + timedelta(days=3)  # Thursday after Labor Day
+        if m == 8 or (m == 9 and dt.date() < kickoff.date()):
+            return "preseason"
+        if (m == 9 and dt.date() >= kickoff.date()) or m in {10, 11, 12} or (m == 1 and d <= 10):
+            return "active"
+        if (m == 1 and d >= 11) or (m == 2 and d <= 20):
+            return "postseason"
+        return "offseason"
+
+    if league == "NBA":
+        if (10, 1) <= md <= (10, 19):
+            return "preseason"
+        if md >= (10, 20) or md <= (4, 15):
+            return "active"
+        if (4, 16) <= md <= (6, 25):
+            return "postseason"
+        return "offseason"
+
+    if league == "NHL":
+        if (9, 15) <= md <= (10, 6):
+            return "preseason"
+        if md >= (10, 7) or md <= (4, 20):
+            return "active"
+        if (4, 21) <= md <= (6, 30):
+            return "postseason"
+        return "offseason"
+
+    if league == "EPL":
+        return "active" if m in {8, 9, 10, 11, 12, 1, 2, 3, 4, 5} else "offseason"
+
+    if league == "MLS":
+        if (2, 15) <= md <= (10, 20):
+            return "active"
+        if (10, 21) <= md <= (12, 10):
+            return "postseason"
+        return "offseason"
+
+    if league == "NCAAF":
+        if md >= (8, 20) and md <= (12, 7):
+            return "active"
+        if md >= (12, 8) or md <= (1, 20):
+            return "postseason"
+        return "offseason"
+
+    return "offseason"
 
 
 def occurrence_from_date(
@@ -1186,6 +1539,7 @@ def parse_highlightly_sport(
     cutoff: datetime,
     run_log: dict[str, Any],
     api_key: str,
+    fbs_context: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
 
@@ -1275,12 +1629,68 @@ def parse_highlightly_sport(
                     else:
                         winner, loser = home, away
 
+                    type_hint = "RESULT"
+                    quality = 100
+                    result_context: dict[str, Any] = {}
+
+                    if target_league == "NCAAF":
+                        fbs_context = fbs_context or {
+                            "teamNames": FBS_TEAMS_2026,
+                            "rankByName": {},
+                            "aliasIndex": build_fbs_alias_index(FBS_TEAMS_2026),
+                            "mode": "static-fallback",
+                        }
+                        home_fbs = match_fbs_team(home, fbs_context)
+                        away_fbs = match_fbs_team(away, fbs_context)
+                        home_rank = fbs_rank_for(home, fbs_context)
+                        away_rank = fbs_rank_for(away, fbs_context)
+
+                        if not home_fbs and not away_fbs:
+                            raise TickerError("NCAAF result excluded: no FBS team involved")
+
+                        fbs_winner = (
+                            home_fbs if winner == home else away_fbs
+                        )
+                        fbs_loser = (
+                            away_fbs if winner == home else home_fbs
+                        )
+
+                        # FBS-v-lower-division wins are routine and noisy. Keep
+                        # them only if a top-25 FBS team is involved. But if the
+                        # lower-division team beats an FBS team, preserve it as
+                        # a major upset candidate.
+                        exactly_one_fbs = bool(home_fbs) ^ bool(away_fbs)
+                        fbs_team_lost = exactly_one_fbs and not fbs_winner
+                        ranked_involved = bool(home_rank or away_rank)
+
+                        if exactly_one_fbs and fbs_team_lost:
+                            type_hint = "UPSET"
+                            quality = 110
+                        elif exactly_one_fbs and not ranked_involved:
+                            raise TickerError(
+                                "routine FBS-v-non-FBS win excluded from ticker candidates"
+                            )
+                        elif ranked_involved:
+                            quality = 105
+                        else:
+                            quality = 96
+
+                        result_context = {
+                            "fbsContextMode": fbs_context.get("mode"),
+                            "homeFbs": home_fbs,
+                            "awayFbs": away_fbs,
+                            "homeRank": home_rank,
+                            "awayRank": away_rank,
+                            "rankedTeamInvolved": ranked_involved,
+                            "fbsVsFbs": bool(home_fbs and away_fbs),
+                        }
+
                     if home_score != away_score:
                         winner_score = home_score if winner == home else away_score
                         loser_score = away_score if winner == home else home_score
-                        title = f"{winner} defeats {loser} {winner_score}-{loser_score}"
+                        title = f"{winner} beat {loser} {winner_score}-{loser_score}"
                     else:
-                        title = f"{home} and {away} finish {home_score}-{away_score}"
+                        title = f"{home} and {away} finished tied {home_score}-{away_score}"
 
                     summary = (
                         f"Highlightly final: {away} {away_score}, "
@@ -1298,11 +1708,12 @@ def parse_highlightly_sport(
                         occurrence=scheduled,
                         generated_at=generated_at,
                         cutoff=cutoff,
-                        type_hint="RESULT",
-                        quality=100,
+                        type_hint=type_hint,
+                        quality=quality,
                         raw_ref=f"{entry['sourceId']}#{idx}",
                         metadata={
                             "matchId": match.get("id"),
+                            "eventKey": f"highlightly:{cfg['sportHint']}:{match.get('id')}",
                             "leagueText": match_league_text(match),
                             "homeTeam": home,
                             "awayTeam": away,
@@ -1316,6 +1727,7 @@ def parse_highlightly_sport(
                                 else None
                             ),
                             "state": match.get("state"),
+                            **result_context,
                         },
                     )
                     candidates.append(candidate)
@@ -1385,29 +1797,193 @@ def title_similarity(a: str, b: str) -> float:
     return max(jaccard, seq * 0.85)
 
 
-def merge_candidate(dst: dict[str, Any], src: dict[str, Any]) -> None:
+def candidate_provider_set(candidate: dict[str, Any]) -> set[str]:
+    return {
+        clean_text(record.get("provider"))
+        for record in candidate.get("sourceRecords", [])
+        if clean_text(record.get("provider"))
+    }
+
+
+def candidate_text_blob(candidate: dict[str, Any]) -> str:
+    metadata = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    values = [
+        candidate.get("title", ""),
+        candidate.get("summary", ""),
+    ]
+    categories = metadata.get("categories")
+    if isinstance(categories, list):
+        values.extend(clean_text(x) for x in categories)
+    return _normalize_team_label(" ".join(clean_text(v) for v in values if clean_text(v)))
+
+
+def team_mention_aliases(team: str) -> list[str]:
+    normalized = _normalize_team_label(team)
+    if not normalized:
+        return []
+    tokens = normalized.split()
+    aliases = {normalized}
+    if len(tokens) >= 2:
+        aliases.add(" ".join(tokens[-2:]))
+        aliases.add(tokens[-1])
+        # School/location portion often appears without mascot.
+        aliases.add(tokens[0])
+        if len(tokens) >= 3:
+            aliases.add(" ".join(tokens[:2]))
+    aliases = {
+        alias for alias in aliases
+        if len(alias) >= 4
+        and alias not in {"state", "united", "city", "college", "university", "team"}
+    }
+    return sorted(aliases, key=len, reverse=True)
+
+
+def candidate_mentions_team(candidate: dict[str, Any], team: str) -> bool:
+    blob = " " + candidate_text_blob(candidate) + " "
+    for alias in team_mention_aliases(team):
+        if f" {alias} " in blob:
+            return True
+    return False
+
+
+def structured_match_pair(candidate: dict[str, Any]) -> tuple[str, str] | None:
+    metadata = candidate.get("metadata")
+    if not isinstance(metadata, dict):
+        return None
+    home = clean_text(metadata.get("homeTeam"))
+    away = clean_text(metadata.get("awayTeam"))
+    if home and away:
+        return home, away
+    return None
+
+
+def structured_match_id(candidate: dict[str, Any]) -> str | None:
+    metadata = candidate.get("metadata")
+    if not isinstance(metadata, dict):
+        return None
+    match_id = metadata.get("matchId")
+    return clean_text(match_id) if match_id is not None else None
+
+
+def generic_source_url(url: str) -> bool:
+    parsed = urllib.parse.urlparse(clean_text(url))
+    host = parsed.netloc.lower()
+    path = parsed.path.rstrip("/").lower()
+    if host in {"highlightly.net", "www.highlightly.net"}:
+        return True
+    if path in {
+        "", "/news", "/en/news", "/news/category/news",
+        "/sports/football/fbs",
+    }:
+        return True
+    return False
+
+
+def cross_source_match_reason(
+    candidate: dict[str, Any],
+    existing: dict[str, Any],
+) -> str | None:
+    if candidate.get("leagueHint") != existing.get("leagueHint"):
+        return None
+    if candidate.get("typeHint") not in {"RESULT", "UPSET"}:
+        return None
+    if existing.get("typeHint") not in {"RESULT", "UPSET"}:
+        return None
+
+    cand_id = structured_match_id(candidate)
+    exist_id = structured_match_id(existing)
+
+    # Same structured match ID is definitive.
+    if cand_id and exist_id:
+        return "same structured matchId" if cand_id == exist_id else None
+
+    # If one side is a structured game and the other is an article/recap,
+    # require the article to mention BOTH teams and be reasonably close in time.
+    structured = candidate if structured_match_pair(candidate) else existing
+    article = existing if structured is candidate else candidate
+    pair = structured_match_pair(structured)
+    if not pair:
+        return None
+
+    if not all(candidate_mentions_team(article, team) for team in pair):
+        return None
+
+    try:
+        a = parse_datetime(candidate["occurredAt"])
+        b = parse_datetime(existing["occurredAt"])
+        if abs((a - b).total_seconds()) > 18 * 3600:
+            return None
+    except Exception:
+        pass
+
+    return "same game by team pair across structured/article sources"
+
+
+def merge_candidate(
+    dst: dict[str, Any],
+    src: dict[str, Any],
+    *,
+    preserve_event_time: bool = False,
+    merge_reason: str | None = None,
+) -> None:
     seen = {(r["sourceId"], r["url"]) for r in dst["sourceRecords"]}
     for record in src["sourceRecords"]:
         key = (record["sourceId"], record["url"])
         if key not in seen:
             dst["sourceRecords"].append(record)
             seen.add(key)
-    if src["quality"] > dst["quality"]:
+
+    dst_meta = dst.setdefault("metadata", {})
+    if not isinstance(dst_meta, dict):
+        dst_meta = {}
+        dst["metadata"] = dst_meta
+
+    merged_ids = dst_meta.setdefault("mergedCandidateIds", [])
+    if src.get("candidateId") and src["candidateId"] not in merged_ids:
+        merged_ids.append(src["candidateId"])
+
+    if merge_reason and merge_reason.startswith("same game"):
+        fused = dst_meta.setdefault("fusedContext", [])
+        fused.append({
+            "candidateId": src.get("candidateId"),
+            "providers": sorted(candidate_provider_set(src)),
+            "title": src.get("title"),
+            "summary": src.get("summary"),
+            "occurredAt": src.get("occurredAt"),
+            "sources": [
+                {
+                    "sourceId": r.get("sourceId"),
+                    "provider": r.get("provider"),
+                    "url": r.get("url"),
+                }
+                for r in src.get("sourceRecords", [])
+            ],
+        })
+
+    # Structured score candidates should keep their actual event time and score
+    # while still inheriting contextual source records / metadata.
+    if src["quality"] > dst["quality"] and not structured_match_pair(dst):
         dst["quality"] = src["quality"]
         dst["summary"] = src["summary"] or dst["summary"]
         dst["title"] = src["title"] or dst["title"]
-    # Prefer the newest independently reported development timestamp.
-    try:
-        dst_dt = parse_datetime(dst["occurredAt"])
-        src_dt = parse_datetime(src["occurredAt"])
-        if src_dt > dst_dt:
-            dst["occurredAt"] = src["occurredAt"]
-            dst["timePrecision"] = src["timePrecision"]
-            dst["ageHours"] = src["ageHours"]
-    except Exception:
-        pass
+    else:
+        dst["quality"] = max(int(dst.get("quality", 0)), int(src.get("quality", 0)))
+
+    if not preserve_event_time:
+        try:
+            dst_dt = parse_datetime(dst["occurredAt"])
+            src_dt = parse_datetime(src["occurredAt"])
+            if src_dt > dst_dt:
+                dst["occurredAt"] = src["occurredAt"]
+                dst["timePrecision"] = src["timePrecision"]
+                dst["ageHours"] = src["ageHours"]
+        except Exception:
+            pass
+
     if dst.get("typeHint") == "OTHER" and src.get("typeHint") != "OTHER":
         dst["typeHint"] = src["typeHint"]
+    if src.get("typeHint") == "UPSET":
+        dst["typeHint"] = "UPSET"
 
 
 def dedupe_candidates(
@@ -1427,9 +2003,8 @@ def dedupe_candidates(
     for candidate in ordered:
         merged_into = None
         candidate_urls = {r["url"] for r in candidate["sourceRecords"]}
+
         for existing in kept:
-            existing_urls = {r["url"] for r in existing["sourceRecords"]}
-            same_url = bool(candidate_urls & existing_urls)
             same_bucket = (
                 candidate["leagueHint"] == existing["leagueHint"]
                 or "SPECIAL" in {candidate["leagueHint"], existing["leagueHint"]}
@@ -1437,21 +2012,84 @@ def dedupe_candidates(
             )
             if not same_bucket:
                 continue
+
+            cand_match_id = structured_match_id(candidate)
+            exist_match_id = structured_match_id(existing)
+
+            # A3.5 critical rule: two structured matches with different match IDs
+            # are distinct games. The generic Highlightly homepage URL must never
+            # collapse them.
+            if cand_match_id and exist_match_id and cand_match_id != exist_match_id:
+                continue
+
+            event_reason = cross_source_match_reason(candidate, existing)
             sim = title_similarity(candidate["title"], existing["title"])
-            if same_url or sim >= 0.72:
-                merge_candidate(existing, candidate)
-                merged_into = existing["candidateId"]
+
+            existing_urls = {r["url"] for r in existing["sourceRecords"]}
+            intersecting = candidate_urls & existing_urls
+            safe_same_url = any(
+                not generic_source_url(url) for url in intersecting
+            )
+
+            merge_reason = None
+            preserve_event_time = False
+
+            if event_reason:
+                merge_reason = event_reason
+                preserve_event_time = bool(
+                    structured_match_pair(candidate) or structured_match_pair(existing)
+                )
+            elif safe_same_url:
+                merge_reason = "same specific source URL"
+            elif sim >= 0.72:
+                # Never use title similarity to merge two distinct structured
+                # matches. That was already guarded above by matchId.
+                merge_reason = "high title similarity"
+
+            if merge_reason:
+                # Prefer the structured match candidate as the destination so
+                # scores/event time survive cross-source fusion.
+                if structured_match_pair(candidate) and not structured_match_pair(existing):
+                    candidate_copy = candidate
+                    merge_candidate(
+                        candidate_copy,
+                        existing,
+                        preserve_event_time=True,
+                        merge_reason=merge_reason,
+                    )
+                    kept[kept.index(existing)] = candidate_copy
+                    merged_into = candidate_copy["candidateId"]
+                    into_id = candidate_copy["candidateId"]
+                    merged_id = existing["candidateId"]
+                else:
+                    merge_candidate(
+                        existing,
+                        candidate,
+                        preserve_event_time=preserve_event_time,
+                        merge_reason=merge_reason,
+                    )
+                    merged_into = existing["candidateId"]
+                    into_id = existing["candidateId"]
+                    merged_id = candidate["candidateId"]
+
                 actions.append({
                     "action": "merge",
-                    "candidateId": candidate["candidateId"],
-                    "into": existing["candidateId"],
+                    "candidateId": merged_id,
+                    "into": into_id,
                     "similarity": round(sim, 3),
-                    "sameUrl": same_url,
+                    "sameUrl": bool(intersecting),
+                    "safeSameUrl": safe_same_url,
+                    "reason": merge_reason,
                 })
                 break
+
         if merged_into is None:
             kept.append(candidate)
-            actions.append({"action": "keep", "candidateId": candidate["candidateId"]})
+            actions.append({
+                "action": "keep",
+                "candidateId": candidate["candidateId"],
+                "matchId": structured_match_id(candidate),
+            })
 
     run_log["pipeline"]["dedupeActions"] = actions
     return kept
@@ -1636,7 +2274,7 @@ def call_openai(
         # GPT-4o Mini supports 16,384 max output tokens. 12k leaves substantial
         # room for the seven league groups while bounding worst-case cost.
         "max_output_tokens": 12000,
-        "prompt_cache_key": "sports-big-board-a3-editor-v3",
+        "prompt_cache_key": "sports-big-board-a3-editor-v4",
     }
 
     run_log["openai"]["called"] = True
@@ -1907,7 +2545,7 @@ PRIORITY_DEFAULTS = {
     "DEPTH_CHART": 70,
     "LEAGUE_NEWS": 76,
     "STAT_LEADER": 68,
-    "RESULT": 64,
+    "RESULT": 58,
     "NEXT": 52,
     "SCHEDULE": 50,
     "OTHER": 52,
@@ -1936,11 +2574,11 @@ PRIORITY_BANDS = {
     "COACHING": (65, 90),
     "ROSTER": (55, 80),
     "DEPTH_CHART": (55, 80),
-    "LEAGUE_NEWS": (62, 90),
+    "LEAGUE_NEWS": (58, 82),
     "STAT_LEADER": (55, 82),
     # Routine results cannot be 100. If it is truly seismic, classify UPSET,
     # PLAYOFF, RECORD, etc.
-    "RESULT": (50, 74),
+    "RESULT": (50, 65),
     "NEXT": (45, 62),
     "SCHEDULE": (45, 60),
     "OTHER": (45, 65),
@@ -2053,7 +2691,7 @@ def normalize_model_output(
                 continue
             if league not in league_map:
                 league_map[league] = {
-                    "seasonState": raw_group.get("seasonState", "offseason"),
+                    "seasonState": raw_group.get("seasonState"),
                     "items": list(raw_group.get("items", []))
                     if isinstance(raw_group.get("items"), list) else [],
                 }
@@ -2065,7 +2703,7 @@ def normalize_model_output(
 
         for league in BASE_LEAGUES:
             if league not in league_map:
-                league_map[league] = {"seasonState": "offseason", "items": []}
+                league_map[league] = {"items": []}
                 repairs.append(f"synthesized missing legacy league group {league}")
 
         if repairs:
@@ -2081,16 +2719,17 @@ def normalize_model_output(
 
     for league in BASE_LEAGUES:
         group = league_map[league]
-        season_state = clean_text(group.get("seasonState")).lower()
-        if season_state not in {"active", "offseason", "preseason", "postseason"}:
+        season_state = deterministic_season_state(league, generated_at)
+        run_log["pipeline"]["seasonStates"][league] = season_state
+        legacy_state = clean_text(group.get("seasonState")).lower()
+        if legacy_state and legacy_state != season_state:
             run_log["pipeline"]["editorRepairs"].append({
                 "context": league,
                 "field": "seasonState",
-                "original": season_state,
-                "repaired": "offseason",
-                "reason": "invalid seasonState",
+                "original": legacy_state,
+                "repaired": season_state,
+                "reason": "seasonState is owned deterministically by Python in A3.5",
             })
-            season_state = "offseason"
 
         raw_items = group.get("items", [])
         if not isinstance(raw_items, list):
@@ -2351,7 +2990,7 @@ def write_run_log(path: Path, run_log: dict[str, Any]):
 def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dict[str, Any]:
     return {
         "schemaVersion": 1,
-        "pipelineVersion": "A3.4-fixed-league-schema",
+        "pipelineVersion": "A3.5-result-preservation-event-fusion",
         "runId": f"a3-{generated_at.strftime('%Y%m%dT%H%M%SZ')}",
         "status": "running",
         "startedAt": iso_z(generated_at),
@@ -2386,6 +3025,8 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
             "modelCandidates": [],
             "finalDrops": [],
             "editorRepairs": [],
+            "seasonStates": {},
+            "ncaafFbsContext": {},
         },
         "openai": {
             "called": False,
@@ -2445,7 +3086,7 @@ def main() -> int:
 
     try:
         print(
-            f"A3.4 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
+            f"A3.5 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
             f"editor={args.model}; OpenAI web_search=OFF"
         )
 
@@ -2461,12 +3102,16 @@ def main() -> int:
             print(f"Fetching {source['id']}...")
             raw_candidates.extend(parse_official_source(source, generated_at, cutoff, run_log))
 
+        print("Fetching ESPN FBS scoreboard context...")
+        fbs_context = fetch_espn_fbs_context(generated_at, run_log)
+
         highlightly_key = os.environ.get("HIGHLIGHTLY_API_KEY", "").strip()
         for cfg in HIGHLIGHTLY_SPORTS:
             print(f"Fetching {cfg['id']}...")
             raw_candidates.extend(
                 parse_highlightly_sport(
-                    cfg, generated_at, cutoff, run_log, highlightly_key
+                    cfg, generated_at, cutoff, run_log, highlightly_key,
+                    fbs_context=fbs_context,
                 )
             )
 
@@ -2488,6 +3133,7 @@ def main() -> int:
         successful_espn = sum(
             1 for s in run_log["sourceFetches"]
             if s["provider"] == "ESPN"
+            and s.get("kind") == "json-news-api"
             and s["httpStatus"] == 200
             and not s["error"]
         )
@@ -2540,11 +3186,11 @@ def main() -> int:
         )
 
         dataset = {
-            "schemaVersion": 6,
-            "pipelineVersion": "A3.4-fixed-league-schema",
+            "schemaVersion": 7,
+            "pipelineVersion": "A3.5-result-preservation-event-fusion",
             "generatedAt": iso_z(generated_at),
             "freshnessHours": FRESHNESS_HOURS,
-            "discoveryMode": "Highlightly + ESPN JSON news + official league pages; no OpenAI web search",
+            "discoveryMode": "Highlightly + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
             "model": args.model,
             "sourceCandidateHash": c_hash,
             "leagues": normalized["leagues"],
