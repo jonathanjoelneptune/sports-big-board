@@ -1,6 +1,6 @@
-# Sports Big Board v5.4.4 Controller Region + Transport Map
+# Sports Big Board v5.4.5 Controller Region + Transport Map
 
-v5.4.4 preserves the complete semantic focus architecture introduced in v5.4.0 and the controller UX added in v5.4.1-v5.4.3. The change in this release is the controller **transport stack**: controllers that Windows can read but Chrome will not expose can now feed the exact same semantic navigation engine through a loopback-only Windows helper.
+v5.4.5 preserves the complete semantic focus architecture introduced in v5.4.0 and the controller UX added in v5.4.1-v5.4.3. The change in this release is the controller **transport stack**: controllers that Windows can read but Chrome will not expose can now feed the exact same semantic navigation engine through a loopback-only Windows helper.
 
 ## Controller input priority
 

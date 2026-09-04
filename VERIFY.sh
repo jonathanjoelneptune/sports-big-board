@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Sports Big Board v5.4.4 Native Controller Bridge preflight"
+echo "Sports Big Board v5.4.5 Controller Navigation + Fullscreen + Playback Follow preflight"
 python3 tools/check_release_version.py
 python3 tests/test_v529_release_integrity.py
 python3 tests/test_v5210_motion_smoothness.py
@@ -42,6 +42,7 @@ python3 tests/test_v541_core_controller_mode.py
 python3 tests/test_v542_controller_radials_live_input.py
 python3 tests/test_v543_stealth_ultra_hid_bridge.py
 python3 tests/test_v544_native_controller_bridge.py
+python3 tests/test_v545_controller_navigation_fullscreen_playback_follow.py
 node --check ui/settings-view.js
 node --check ui/up-next-experience-v5217.js
 node --check ui/harmonized-controls-drawer-v5217.js
@@ -67,7 +68,9 @@ node --check architecture/controller-readiness-v540.js
 node --check architecture/controller-mode-v542.js
 node --check architecture/controller-native-bridge-v544.js
 node --check architecture/controller-hid-bridge-v543.js
+node --check ui/fullscreen-controller-v545.js
+node --check ui/score-ribbon-playback-follow-v545.js
 python3 -m py_compile sbb/release_identity_v523.py sbb/current_news_v523.py
 bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh
 
-echo "PASS: v5.4.4 Native Controller Bridge preflight complete"
+echo "PASS: v5.4.5 Controller Navigation + Fullscreen + Playback Follow preflight complete"

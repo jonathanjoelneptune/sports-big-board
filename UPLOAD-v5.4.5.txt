@@ -1,0 +1,17 @@
+Sports Big Board v5.4.5 — Controller Navigation + Fullscreen + Playback Follow
+
+Release focus:
+- D-pad Up from the score ribbon goes directly to League Navigation; Left/Right deterministically traverses visible league/scope controls.
+- X / Square is Play / Pause.
+- RT keeps the League radial; LT keeps Date / Scope.
+- Holding LT + RT opens Special Commands: App Fullscreen, Video Fullscreen, Exit Fullscreen, Play/Pause, Mute/Unmute, Game Center, League View, Settings.
+- The logo-adjacent fullscreen button now owns whole-app fullscreen; the player fullscreen control owns video fullscreen.
+- Controller fullscreen uses the local Windows bridge only when browser user-activation rules prevent direct Fullscreen API use.
+- In ALL / score-ribbon programming, the currently playing game receives a NOW WATCHING highlight and the ribbon scrolls to keep it approximately third from the left.
+- Windows bridge compile hotfix from v5.4.4 R1 is retained.
+
+Manual GitHub upload package. Upload the CONTENTS of this folder to the repository root and preserve all paths.
+
+Windows bridge note: because fullscreen shortcut support changes SportsBigBoardControllerBridge.cs, run START-CONTROLLER-BRIDGE.cmd after installing this release. Its source hash changes, so the helper recompiles automatically.
+
+Release VERSION: 5.4.5

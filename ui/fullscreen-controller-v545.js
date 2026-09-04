@@ -1,0 +1,106 @@
+/* Sports Big Board v5.4.5 — application/video fullscreen authority.
+   The logo-adjacent fullscreen control owns Sports Big Board app fullscreen; the
+   player utility control owns video fullscreen. Controller-originated fullscreen
+   can use the loopback Windows bridge because browser Fullscreen API calls normally
+   require a trusted DOM user activation that Gamepad/WebSocket polling cannot create. */
+(() => {
+  'use strict';
+  if(window.SBB_FULLSCREEN_CONTROL?.version==='5.4.5')return;
+  const VERSION='5.4.5';
+  const APP_BUTTON='bigBoardFullscreenBtn';
+  const VIDEO_BUTTON='fullscreenBtn';
+  let toastTimer=0;
+
+  const $=id=>document.getElementById(id);
+  const visible=el=>{
+    if(!el||!el.isConnected||el.hidden||el.classList?.contains('hidden'))return false;
+    const r=el.getBoundingClientRect?.();return !!r&&r.width>0&&r.height>0;
+  };
+  const fullscreenElement=()=>document.fullscreenElement||document.webkitFullscreenElement||null;
+  const bridge=()=>window.SBB_CONTROLLER_NATIVE_BRIDGE||null;
+
+  function showToast(text,state='info'){
+    let el=$('sbbFullscreenToast');
+    if(!el){el=document.createElement('div');el.id='sbbFullscreenToast';el.className='sbb-fullscreen-toast';el.setAttribute('role','status');el.setAttribute('aria-live','polite');document.body.appendChild(el);}
+    el.dataset.state=state;el.textContent=String(text||'');el.classList.add('show');
+    if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200);
+  }
+  async function requestFullscreen(el){
+    if(!el)return false;
+    const fn=el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen;
+    if(typeof fn!=='function')return false;
+    try{await fn.call(el);return true;}catch(_){return false;}
+  }
+  async function exitDomFullscreen(){
+    const fn=document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen;
+    if(typeof fn!=='function'||!fullscreenElement())return false;
+    try{await fn.call(document);return true;}catch(_){return false;}
+  }
+  function nativeCommand(command){
+    try{return !!bridge()?.sendCommand?.(command);}catch(_){return false;}
+  }
+  function appTarget(){return $('app-shell')||document.documentElement;}
+  function activePlayerLayer(){return document.querySelector('#layerA.active,#layerB.active,.player-layer.active')||$('stage');}
+  function videoTarget(){
+    const layer=activePlayerLayer();
+    if(layer){
+      const native=[...layer.querySelectorAll('video')].find(visible);if(native)return native;
+      const frame=[...layer.querySelectorAll('iframe')].find(visible);if(frame)return frame;
+      const host=[...layer.querySelectorAll('.youtube-player-host')].find(visible);if(host?.querySelector('iframe'))return host.querySelector('iframe');
+    }
+    return $('stage');
+  }
+  function userActivation(){try{return !!navigator.userActivation?.isActive;}catch(_){return false;}}
+
+  async function toggleApp({controller=false}={}){
+    if(fullscreenElement()){await exitDomFullscreen();sync();return true;}
+    // Trusted mouse/keyboard clicks should always use the standards-based DOM API.
+    if(!controller||userActivation()){
+      if(await requestFullscreen(appTarget())){sync();return true;}
+    }
+    // Gamepad and loopback-controller actions are not transient browser activations.
+    // The native bridge therefore sends the browser's trusted F11 key on the local PC.
+    if(nativeCommand('app-fullscreen')){showToast('App fullscreen');return true;}
+    if(await requestFullscreen(appTarget())){sync();return true;}
+    showToast('Fullscreen needs a direct browser click','warn');return false;
+  }
+  async function toggleVideo({controller=false}={}){
+    const current=fullscreenElement();
+    if(current){await exitDomFullscreen();sync();return true;}
+    if(!controller||userActivation()){
+      if(await requestFullscreen(videoTarget())){sync();return true;}
+    }
+    // Existing Sports Big Board keyboard contract uses F for active-video fullscreen.
+    if(nativeCommand('video-fullscreen')){showToast('Video fullscreen');return true;}
+    if(await requestFullscreen(videoTarget())){sync();return true;}
+    showToast('Video fullscreen needs a direct browser click','warn');return false;
+  }
+  async function exitFullscreen({controller=false}={}){
+    if(fullscreenElement()){const ok=await exitDomFullscreen();sync();return ok;}
+    // If app fullscreen was entered through browser F11, toggle F11 again locally.
+    if(controller&&nativeCommand('app-fullscreen')){showToast('Exit fullscreen');return true;}
+    return false;
+  }
+  function sync(){
+    const fs=fullscreenElement(),app=appTarget(),stage=$('stage');
+    const appFull=!!fs&&(fs===app||app?.contains?.(fs)===false&&false);
+    const videoFull=!!fs&&!!stage&&(fs===stage||stage.contains(fs));
+    document.documentElement.dataset.sbbAppFullscreen=appFull?'1':'0';
+    document.documentElement.dataset.sbbVideoFullscreen=videoFull?'1':'0';
+    const ab=$(APP_BUTTON);if(ab){ab.setAttribute('aria-pressed',appFull?'true':'false');ab.title=appFull?'Exit Sports Big Board fullscreen':'Fullscreen Sports Big Board';}
+    const vb=$(VIDEO_BUTTON);if(vb){vb.setAttribute('aria-pressed',videoFull?'true':'false');vb.title=videoFull?'Exit video fullscreen':'Fullscreen video';}
+  }
+  function onClick(event){
+    const button=event.target?.closest?.(`#${APP_BUTTON},#${VIDEO_BUTTON}`);if(!button)return;
+    event.preventDefault();event.stopImmediatePropagation();
+    if(button.id===APP_BUTTON)toggleApp({controller:!event.isTrusted});
+    else toggleVideo({controller:!event.isTrusted});
+  }
+  function bind(){
+    document.addEventListener('click',onClick,true);
+    document.addEventListener('fullscreenchange',sync);document.addEventListener('webkitfullscreenchange',sync);
+    sync();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
+  window.SBB_FULLSCREEN_CONTROL=Object.freeze({version:VERSION,toggleApp,toggleVideo,exitFullscreen,videoTarget,appTarget,snapshot:()=>({fullscreen:!!fullscreenElement(),element:fullscreenElement()?.id||fullscreenElement()?.tagName||'',bridge:!!bridge()?.transportConnected})});
+})();

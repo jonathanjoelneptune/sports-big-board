@@ -1,4 +1,4 @@
-/* Sports Big Board v5.4.4 — Controller Readiness / Interaction Architecture.
+/* Sports Big Board v5.4.5 — Controller Readiness / Interaction Architecture.
    This release deliberately does NOT poll the Gamepad API or bind controller
    buttons. It prepares one semantic interaction graph that mouse, keyboard and the
    v5.4.x controller layer can all share. Every actionable control is registered,
@@ -7,8 +7,8 @@
    create an attribute-observer feedback loop. */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_READINESS?.version==='5.4.4')return;
-  const VERSION='5.4.4';
+  if(window.SBB_CONTROLLER_READINESS?.version==='5.4.5')return;
+  const VERSION='5.4.5';
   const FALLBACK_REGION='global-utility';
   const POINTER_MOVE_THRESHOLD=10;
   const REGION_MEMORY_KEY='sports-big-board.controller-focus-memory.v1';
@@ -292,15 +292,49 @@
     const active=document.activeElement;if(active?.dataset?.sbbFocusable==='1'&&visibleFocusable(active))return active;
     const modal=activeModalRoot();return (modal?focusables(null,{root:modal})[0]:null)||preferredEntry('league-nav')||focusables()[0]||null;
   }
+  function graphNeighborEntry(region,direction){
+    // Controller navigation is semantic-region first. A visually nearby control in
+    // another region must never steal a D-pad transition that has an explicit graph
+    // route. Follow empty/non-interactive intermediate regions (for example Sports
+    // Ticker with no links) until we reach the next usable controller target.
+    let next=REGION_GRAPH[region]?.[direction]||'';
+    const seen=new Set([region]);
+    for(let hops=0;next&&hops<8;hops++){
+      if(seen.has(next))break;seen.add(next);
+      const entry=preferredEntry(next);if(entry)return entry;
+      next=REGION_GRAPH[next]?.[direction]||'';
+    }
+    return null;
+  }
+  function orderedLeagueNeighbor(from,direction,scope=document){
+    if(direction!=='left'&&direction!=='right')return null;
+    const items=focusables('league-nav',{root:scope}).filter(visibleFocusable);
+    if(items.length<2)return null;
+    // League/scope controls are a TV-style horizontal lane. DOM order is more
+    // deterministic than geometry while TODAY/ALL/TEAM BROWSE animate in/out.
+    const idx=items.indexOf(from);if(idx<0)return null;
+    const next=idx+(direction==='right'?1:-1);
+    return next>=0&&next<items.length?items[next]:null;
+  }
   function move(direction,{from=currentFocus(),focus=true}={}){
     if(!['up','down','left','right'].includes(direction))return null;
     if(!from)return null;
     const modal=activeModalRoot();
     const region=from.dataset.sbbRegion||resolveRegion(from);
     const scope=modal||document;
-    let candidate=bestDirectional(from,focusables(region,{root:scope}),direction);
+    let candidate=null;
+    // From a game card, D-pad Up is the intuitive path to the league row. Skip
+    // the ticker on the upward path; the ticker remains reachable by pressing
+    // Down from League Navigation, then Down again for the score ribbon.
+    if(!modal&&region==='score-ribbon'&&direction==='up')candidate=preferredEntry('league-nav');
+    // Once on the league row, Left/Right walks the actual league/scope buttons in
+    // deterministic DOM order so animated subnavigation cannot steal focus.
+    if(!candidate&&region==='league-nav')candidate=orderedLeagueNeighbor(from,direction,scope);
+    // Otherwise move naturally inside the current semantic region. When the edge
+    // is reached, honor the explicit region graph before raw page geometry.
+    if(!candidate)candidate=bestDirectional(from,focusables(region,{root:scope}),direction);
+    if(!candidate&&!modal)candidate=graphNeighborEntry(region,direction);
     if(!candidate)candidate=bestDirectional(from,focusables(null,{root:scope}),direction);
-    if(!candidate&&!modal){const neighbor=REGION_GRAPH[region]?.[direction];if(neighbor)candidate=preferredEntry(neighbor);}
     if(candidate&&focus)focusElement(candidate,{owner:'controller'});
     return candidate||null;
   }
@@ -357,7 +391,7 @@
       fallbackSamples:fallback.slice(0,10).map(el=>el.id||clean(el.textContent).slice(0,60)||el.tagName)
     };
     diagnostics.lastAudit=result;document.documentElement.dataset.sbbControllerAudit=result.ok?'pass':'warn';
-    if(log){if(result.ok)console.info('[SBB v5.4.4] controller readiness audit PASS',result);else console.warn('[SBB v5.4.4] controller readiness audit WARN',result);}
+    if(log){if(result.ok)console.info('[SBB v5.4.5] controller readiness audit PASS',result);else console.warn('[SBB v5.4.5] controller readiness audit WARN',result);}
     try{window.dispatchEvent(new CustomEvent('sbb:controller-readiness-audit',{detail:result}));}catch(_){ }
     return result;
   }

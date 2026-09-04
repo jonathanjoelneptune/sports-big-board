@@ -1,11 +1,11 @@
-/* Sports Big Board v5.4.4 — Controller Radials + Native Windows Bridge + Pointer Fallback.
+/* Sports Big Board v5.4.5 — Controller Radials + Native Windows Bridge + Pointer Fallback.
    Builds on the v5.4.0 semantic navigation graph and v5.4.1 automatic takeover.
    Adds robust browser-level gamepad diagnostics, a live header indicator, RT
    League radial, LT Date/Scope radial, and R3 analog pointer fallback. */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_MODE?.version==='5.4.4')return;
-  const VERSION='5.4.4';
+  if(window.SBB_CONTROLLER_MODE?.version==='5.4.5')return;
+  const VERSION='5.4.5';
   const PREF_KEY='sports-big-board.controller-mode.v1';
   const DEADZONE=.20;
   const NEUTRAL_DEADZONE=.28;
@@ -26,7 +26,7 @@
   let previousButtons=[],directionState={value:'',startedAt:0,lastFireAt:0};
   let waitingForNeutral=false,controllerEverActive=false,helpTimer=0,helpPinned=false,helpEl=null;
   let lastAction='',lastActionAt=0,frames=0,meaningfulInputs=0,rawInputs=0,lastRawInputAt=0,rawSignalActive=false;
-  let radial=null,radialEl=null,radialSelection=-1,radialOpenedAt=0,triggerWas={lt:false,rt:false};
+  let radial=null,radialEl=null,radialSelection=-1,radialOpenedAt=0,triggerWas={lt:false,rt:false,both:false},commandChordActive=false;
   let pointerMode=false,pointerEl=null,pointerX=0,pointerY=0,pointerInitialized=false;
   let triggerAxes={left:null,right:null};
   let indicatorEl=null,lastIndicatorState='';
@@ -115,7 +115,7 @@
   }
   function renderHelp(message=''){
     const el=ensureHelp();const g=glyphs();
-    el.innerHTML=`<div class="sbb-controller-help-head"><span class="sbb-controller-icon">🎮</span><strong>${message||'CONTROLLER MODE'}</strong><small>${clean(activeId)||'Gamepad'}</small></div><div class="sbb-controller-help-grid"><span><b>D-PAD / LS</b> Navigate</span><span><b>${g.a}</b> Select</span><span><b>${g.b}</b> Back</span><span><b>${g.x}</b> Play All</span><span><b>${g.y}</b> Cycle View</span><span><b>${g.lb} / ${g.rb}</b> Prev / Next</span><span><b>${g.rt}</b> Leagues</span><span><b>${g.lt}</b> Date / Scope</span><span><b>${g.r3}</b> Pointer</span><span><b>RS</b> Scroll</span><span><b>${g.menu}</b> Help</span></div>`;
+    el.innerHTML=`<div class="sbb-controller-help-head"><span class="sbb-controller-icon">🎮</span><strong>${message||'CONTROLLER MODE'}</strong><small>${clean(activeId)||'Gamepad'}</small></div><div class="sbb-controller-help-grid"><span><b>D-PAD / LS</b> Navigate</span><span><b>${g.a}</b> Select</span><span><b>${g.b}</b> Back</span><span><b>${g.x}</b> Play / Pause</span><span><b>${g.y}</b> Cycle View</span><span><b>${g.lb} / ${g.rb}</b> Prev / Next</span><span><b>${g.rt}</b> Leagues</span><span><b>${g.lt}</b> Date / Scope</span><span><b>${g.lt}+${g.rt}</b> Commands</span><span><b>${g.r3}</b> Pointer</span><span><b>RS</b> Scroll</span><span><b>${g.menu}</b> Help</span></div>`;
     return el;
   }
   function showHelp({message='',persist=false,duration=HELP_AUTO_MS}={}){
@@ -199,7 +199,7 @@
     const changed=connected!==next||activeIndex!==nextIndex||activeId!==nextId||activeMapping!==nextMapping;
     connected=next;activeIndex=nextIndex;activeId=nextId;activeMapping=nextMapping;
     document.documentElement.dataset.sbbControllerConnected=next?'1':'0';
-    if(changed){previousButtons=[];directionState={value:'',startedAt:0,lastFireAt:0};triggerWas={lt:false,rt:false};triggerAxes={left:null,right:null};if(next)calibrateTriggerAxes(gamepad);renderHelp();updateStatus();}
+    if(changed){previousButtons=[];directionState={value:'',startedAt:0,lastFireAt:0};triggerWas={lt:false,rt:false,both:false};triggerAxes={left:null,right:null};if(next)calibrateTriggerAxes(gamepad);renderHelp();updateStatus();}
     if(!next)stopPoll();
   }
   function disconnectActive(reason='controller disconnected'){
@@ -264,9 +264,32 @@
     let items=[];try{items=[...document.querySelectorAll(selector)];}catch(_){return false;}
     const el=items.find(visible);if(!el)return false;try{el.click();return true;}catch(_){return false;}
   }
-  function playAll(){
-    if(clickVisible('#sbbFocusPlayAll,[data-sbb-action="play-all"]'))return true;
-    showHelp({message:'PLAY ALL IS NOT AVAILABLE HERE',duration:1800});return false;
+  function playPause(){
+    if(clickVisible('#playBtn'))return true;
+    showHelp({message:'PLAYBACK CONTROL IS NOT AVAILABLE HERE',duration:1600});return false;
+  }
+  function toggleActiveMute(){
+    // Muting is intentionally scoped to the active video transport. Sports Big
+    // Board soundtrack controls remain independent. This works for both YouTube
+    // and direct-video playback without manufacturing a second audio state model.
+    try{
+      const slot=(typeof activeSlot!=='undefined'&&activeSlot)?activeSlot:'A';
+      const media=(typeof slotMedia!=='undefined'&&slotMedia)?slotMedia[slot]:'';
+      if(media==='native'){
+        const v=document.getElementById(`native${slot}`);
+        if(v){v.muted=!v.muted;try{window.SBB_PLAYBACK_SESSION?.setAudible?.('video',slot,!v.muted);}catch(_){}showHelp({message:v.muted?'VIDEO MUTED':'VIDEO SOUND ON',duration:1200});return true;}
+      }
+      if(typeof players!=='undefined'&&players?.[slot]){
+        const p=players[slot];let muted=false;try{muted=typeof p.isMuted==='function'?!!p.isMuted():false;}catch(_){muted=false;}
+        try{if(muted)p.unMute?.();else p.mute?.();}catch(_){return false;}
+        try{window.SBB_PLAYBACK_SESSION?.setAudible?.('video',slot,muted);}catch(_){}
+        showHelp({message:muted?'VIDEO SOUND ON':'VIDEO MUTED',duration:1200});return true;
+      }
+    }catch(_){}
+    // If playback globals are not visible for a future transport, prefer an
+    // explicit semantic mute action if one has been registered by that transport.
+    if(clickVisible('[data-sbb-action="mute-video"],[data-sbb-action="mute"]'))return true;
+    showHelp({message:'MUTE IS NOT AVAILABLE FOR THIS SOURCE',duration:1600});return false;
   }
   function cycleDrawer(){
     const drawer=document.getElementById('infoDrawer');
@@ -303,6 +326,16 @@
     {value:'BROWSE',label:'TEAM BROWSE',action:()=>clickVisible('#sbbBrowseBtn')},
     {value:'RETURN',label:'RETURN TODAY',action:()=>clickVisible('#returnTodayBtn')||chooseAbsoluteDate(isoLocal(0))}
   ];}
+  function commandOptions(){return [
+    {value:'APPFS',label:'APP FULLSCREEN',action:()=>window.SBB_FULLSCREEN_CONTROL?.toggleApp?.({controller:true})},
+    {value:'VIDEOFS',label:'VIDEO FULLSCREEN',action:()=>window.SBB_FULLSCREEN_CONTROL?.toggleVideo?.({controller:true})},
+    {value:'EXITFS',label:'EXIT FULLSCREEN',action:()=>window.SBB_FULLSCREEN_CONTROL?.exitFullscreen?.({controller:true})},
+    {value:'PLAY',label:'PLAY / PAUSE',action:()=>playPause()},
+    {value:'MUTE',label:'MUTE / UNMUTE',action:()=>toggleActiveMute()},
+    {value:'GAMECENTER',label:'GAME CENTER',action:()=>clickVisible('#gameCenterDrawerBtn,#gameCenterTabBtn')},
+    {value:'LEAGUEVIEW',label:'LEAGUE VIEW',action:()=>clickVisible('#upNextDrawerBtn,#upNextTabBtn')},
+    {value:'SETTINGS',label:'SETTINGS',action:()=>clickVisible('#settingsDrawerBtn,#settingsTabBtn')}
+  ];}
 
   function ensureRadial(){
     if(radialEl?.isConnected)return radialEl;
@@ -313,7 +346,7 @@
   function renderRadial(){
     const el=ensureRadial();if(!radial)return;
     const items=radial.options||[],host=el.querySelector('.sbb-controller-radial-items'),center=el.querySelector('.sbb-controller-radial-center strong');
-    if(center)center.textContent=radial.type==='league'?'LEAGUES':'DATE / SCOPE';
+    if(center)center.textContent=radial.type==='league'?'LEAGUES':(radial.type==='date'?'DATE / SCOPE':'SPECIAL COMMANDS');
     const radius=178;host.innerHTML=items.map((item,i)=>{
       const angle=(-Math.PI/2)+(Math.PI*2*i/items.length),x=Math.cos(angle)*radius,y=Math.sin(angle)*radius;
       const selected=i===radialSelection?' selected':'',current=item.value===radial.current?' current':'';
@@ -325,7 +358,8 @@
     if(!claimController(`open ${type} radial`))return false;
     if(radial?.type===type)return true;
     setPointerVisual(false);radialSelection=-1;radialOpenedAt=Date.now();
-    radial={type,options:type==='league'?leagueOptions():dateScopeOptions(),current:type==='league'?currentLeague():''};
+    const options=type==='league'?leagueOptions():(type==='date'?dateScopeOptions():commandOptions());
+    radial={type,options,current:type==='league'?currentLeague():''};
     const el=ensureRadial();el.classList.remove('hidden');el.setAttribute('aria-hidden','false');document.documentElement.dataset.sbbControllerRadial=type;renderRadial();
     return true;
   }
@@ -350,12 +384,20 @@
     if(best!==radialSelection){radialSelection=best;lastRawInputAt=Date.now();renderRadial();updateIndicator();}
   }
   function processTriggers(gamepad){
-    const lt=triggerValue(gamepad,'left')>=TRIGGER_THRESHOLD,rt=triggerValue(gamepad,'right')>=TRIGGER_THRESHOLD;
-    if(rt&&!triggerWas.rt)openRadial('league');
-    if(lt&&!triggerWas.lt&&!rt)openRadial('date');
-    if(triggerWas.rt&&!rt&&radial?.type==='league')closeRadial(true);
-    if(triggerWas.lt&&!lt&&radial?.type==='date')closeRadial(true);
-    triggerWas={lt,rt};
+    const lt=triggerValue(gamepad,'left')>=TRIGGER_THRESHOLD,rt=triggerValue(gamepad,'right')>=TRIGGER_THRESHOLD,both=lt&&rt;
+    // LT+RT is a chord. If one trigger opened its normal wheel a fraction of a
+    // second earlier, promote that wheel to Special Commands without committing it.
+    if(both&&!triggerWas.both){if(radial)closeRadial(false);commandChordActive=true;openRadial('commands');}
+    else if(!both&&radial?.type!=='commands'){
+      if(rt&&!triggerWas.rt)openRadial('league');
+      if(lt&&!triggerWas.lt&&!rt)openRadial('date');
+      if(triggerWas.rt&&!rt&&radial?.type==='league')closeRadial(true);
+      if(triggerWas.lt&&!lt&&radial?.type==='date')closeRadial(true);
+    }
+    // Keep the command wheel open while either trigger is still held; commit only
+    // after the chord is fully released so staggered trigger release is harmless.
+    if(radial?.type==='commands'&&commandChordActive&&!lt&&!rt){closeRadial(true);commandChordActive=false;}
+    triggerWas={lt,rt,both};
   }
 
   function ensurePointer(){
@@ -408,7 +450,7 @@
     ensureControllerFocus();
     if(index===BUTTON.A){nav()?.activate?.();return;}
     if(index===BUTTON.B){nav()?.back?.();return;}
-    if(index===BUTTON.X){playAll();return;}
+    if(index===BUTTON.X){playPause();return;}
     if(index===BUTTON.Y){cycleDrawer();return;}
     if(index===BUTTON.LB){transport(-1);return;}
     if(index===BUTTON.RB){transport(1);return;}
@@ -475,7 +517,7 @@
     const pad=firstGamepad();if(!pad){disconnectActive();return;}if(!connected||pad.index!==activeIndex)setConnected(pad);
     frames++;const dt=lastFrame?Math.min(50,Math.max(1,ts-lastFrame)):16.7;lastFrame=ts;
     if(waitingForNeutral){
-      if(controllerNeutral(pad)){waitingForNeutral=false;rawSignalActive=false;previousButtons=[];directionState={value:'',startedAt:0,lastFireAt:0};triggerWas={lt:false,rt:false};}
+      if(controllerNeutral(pad)){waitingForNeutral=false;rawSignalActive=false;previousButtons=[];directionState={value:'',startedAt:0,lastFireAt:0};triggerWas={lt:false,rt:false,both:false};commandChordActive=false;}
       pollRaf=requestAnimationFrame(poll);return;
     }
     processRawActivity(pad);processTriggers(pad);processButtons(pad);
@@ -511,11 +553,12 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 
   window.SBB_CONTROLLER_MODE=Object.freeze({
-    version:VERSION,installed:true,mode:'RADIALS_POINTER_AUTOMATIC_GAMEPAD',
+    version:VERSION,installed:true,mode:'RADIALS_POINTER_COMMANDS_AUTOMATIC_GAMEPAD',
     get preference(){return preference;},get connected(){return connected;},get active(){return ownerApi()?.current?.()==='controller';},get pointerMode(){return pointerMode;},
     setPreference:value=>{preference=value==='disabled'?'disabled':'automatic';savePreference();bindSettings();updateStatus();return preference;},
     showHelp:()=>showHelp({persist:true}),hideHelp:()=>{helpPinned=false;hideHelp(true);},
-    openLeagueRadial:()=>openRadial('league'),openDateRadial:()=>openRadial('date'),closeRadial,
+    openLeagueRadial:()=>openRadial('league'),openDateRadial:()=>openRadial('date'),openCommandRadial:()=>openRadial('commands'),closeRadial,
+    playPause,toggleActiveMute,
     setPointerMode,
     snapshot:()=>({version:VERSION,preference,apiAvailable:gamepadApiAvailable(),nativeBridgeApiAvailable:nativeBridgeApiAvailable(),nativeBridge:nativeBridge()?.snapshot?.()||null,hidApiAvailable:hidApiAvailable(),hid:hidBridge()?.snapshot?.()||null,connected,activeIndex,activeId,activeMapping,inputOwner:ownerApi()?.current?.()||'',waitingForNeutral,helpPinned,frames,meaningfulInputs,rawInputs,lastRawInputAt,lastAction,lastActionAt,controllerEverActive,pointerMode,radial:radial?.type||'',indicator:lastIndicatorState})
   });

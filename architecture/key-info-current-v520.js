@@ -8,9 +8,9 @@
 */
 (() => {
   'use strict';
-  if(window.SBB_KEY_INFO_CURRENT?.version==='5.4.4')return;
+  if(window.SBB_KEY_INFO_CURRENT?.version==='5.4.5')return;
 
-  const VERSION='5.4.4';
+  const VERSION='5.4.5';
   const REFRESH_MS=20*60*1000;
   const CACHE_KEY='sbb.sports-ticker.v1';
   const LEGACY_CACHE_KEYS=['sbb.sports-ticker.v524','sbb.current-news.v522'];

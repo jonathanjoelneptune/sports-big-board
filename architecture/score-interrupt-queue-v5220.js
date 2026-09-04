@@ -1,12 +1,12 @@
-/* Sports Big Board v5.4.4 — non-blocking score-ribbon league-day queue + interrupt preservation.
+/* Sports Big Board v5.4.5 — non-blocking score-ribbon league-day queue + interrupt preservation.
    A score-card click starts the clicked game immediately. The rest of that league/day
    is then assembled incrementally across browser tasks so a dense historical NBA/MLB
    date cannot monopolize the main thread while video continues playing. NEXT/PREV
    remain useful, and explicit Team/Player Focus queues remain true interrupts. */
 (() => {
   'use strict';
-  if(window.SBB_SCORE_INTERRUPT_QUEUE?.version==='5.4.4')return;
-  const VERSION='5.4.4';
+  if(window.SBB_SCORE_INTERRUPT_QUEUE?.version==='5.4.5')return;
+  const VERSION='5.4.5';
   const state={snapshot:null,captures:0,resumes:0,projected:0,leagueDayBuilds:0,lastLeagueDay:'',lastLeagueDayCount:0,lastReason:'',lastError:'',buildEpoch:0,buildActive:false,buildProcessed:0,buildTotal:0,buildMaxMatchMs:0,buildLastMatchMs:0,buildStartedAt:0,buildCompletedAt:0};
 
   const clean=v=>String(v??'').trim();
@@ -128,7 +128,7 @@
           const match=build.rows[build.index++],t0=performance.now();
           const items=mediaForMatch(match);
           const elapsed=performance.now()-t0;state.buildLastMatchMs=Math.round(elapsed*10)/10;state.buildMaxMatchMs=Math.max(state.buildMaxMatchMs,state.buildLastMatchMs);
-          if(elapsed>32)console.warn('[SBB v5.4.4] slow score-date match projection yielded after one match',{league,date,ms:Math.round(elapsed),match:clean(match?.name||match?.title||match?.eventId||match?.id)});
+          if(elapsed>32)console.warn('[SBB v5.4.5] slow score-date match projection yielded after one match',{league,date,ms:Math.round(elapsed),match:clean(match?.name||match?.title||match?.eventId||match?.id)});
           for(const item of items){
             const itemGame=gameKey(item);if(itemGame&&build.selectedGameKeys.has(itemGame))continue;
             const mediaKey=itemId(item);if(mediaKey&&build.seenMedia.has(mediaKey))continue;
