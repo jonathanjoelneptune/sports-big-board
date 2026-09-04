@@ -1,0 +1,41 @@
+Sports Big Board v5.4.1 — Core Controller Mode
+
+BASELINE
+- Apply this package over the deployed v5.4.0 Controller Readiness repository.
+
+MANUAL GITHUB UPLOAD
+1. Extract this ZIP.
+2. Open the extracted Sports-Big-Board-v5.4.1-Core-Controller-Mode folder.
+3. Upload the CONTENTS of that folder to the repository root.
+4. Preserve all architecture/, ui/, tests/, tools/, sbb/, and cloud/ subdirectories.
+5. Replace existing files when GitHub prompts.
+6. Commit the entire upload together as one v5.4.1 release.
+7. Let Deploy Sports Big Board run VERIFY.sh.
+
+NEW CORE CONTROLLER SURFACES
+- architecture/controller-mode-v541.js
+- ui/controller-mode-v541.css
+- tests/test_v541_core_controller_mode.py
+- CONTROLLER-REGION-MAP-v5.4.1.md
+
+CONTROLLER BEHAVIOR
+- Controller Mode is Automatic by default. No site button is required to enter it.
+- First meaningful gamepad input claims controller ownership.
+- Mouse click/wheel/meaningful movement or keyboard input immediately returns ownership.
+- A / primary face button: Select / activate.
+- B / secondary face button: canonical Back.
+- D-pad / left stick: semantic geometry navigation.
+- X / west face button: Play All when available.
+- Y / north face button: Game Center -> League View -> Settings.
+- LB / RB: Previous / Next highlight.
+- Right stick: scroll the focused scrollable region.
+- Menu / Start: toggle controller help.
+- LT / RT and stick-clicks remain reserved for v5.4.2 radial/pointer UX.
+
+SAFETY / PERFORMANCE
+- The readiness module remains the only semantic region graph.
+- Core Controller Mode adds no MutationObserver and no setInterval loop.
+- Gamepad discovery sleeps while disconnected; requestAnimationFrame polling runs only while a controller is connected and the page is visible.
+- A neutral-input latch prevents a held controller control from stealing ownership back immediately after mouse/keyboard takeover.
+- Analog navigation deadzone is 0.22.
+- Settings includes Controller Mode: Automatic / Disabled and live connection status.

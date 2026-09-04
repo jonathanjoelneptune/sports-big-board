@@ -5,7 +5,7 @@ version=(root/'VERSION').read_text().strip()
 index=(root/'index.html').read_text()
 css=(root/'ui'/'premium-now-watching-v5215.css').read_text()
 
-assert version=='5.4.0', version
+assert version=='5.4.1', version
 assert f'ui/premium-now-watching-v5215.css?v={version}' in index
 assert index.index(f'ui/premium-masthead-v5214.css?v={version}') < index.index(f'ui/premium-now-watching-v5215.css?v={version}') < index.index('</head>')
 
@@ -35,4 +35,4 @@ assert '<script' not in css.lower()
 for anchor in ['id="currentTitle"','id="playBtn"','id="stage"','id="gameCenterContent"','id="gcSections"','id="infoDrawer"']:
     assert anchor in index, anchor
 
-print('PASS v5.4.0 premium Now Watching presentation invariants')
+print('PASS v5.4.1 premium Now Watching presentation invariants')

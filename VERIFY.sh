@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Sports Big Board v5.4.0 Controller Readiness / Interaction Architecture preflight"
+echo "Sports Big Board v5.4.1 Core Controller Mode preflight"
 python3 tools/check_release_version.py
 python3 tests/test_v529_release_integrity.py
 python3 tests/test_v5210_motion_smoothness.py
@@ -38,6 +38,7 @@ python3 tests/test_v5318_verified_play_all_fast_start.py
 python3 tests/test_v5319_game_center_score_transition_bumper.py
 python3 tests/test_v5320_startup_unfreeze_progress.py
 python3 tests/test_v540_controller_readiness.py
+python3 tests/test_v541_core_controller_mode.py
 node --check ui/settings-view.js
 node --check ui/up-next-experience-v5217.js
 node --check ui/harmonized-controls-drawer-v5217.js
@@ -60,7 +61,8 @@ node --check architecture/key-info-current-v520.js
 node --check architecture/scroll-motion-smoothness-v5210.js
 node --check architecture/splash-preload-v5212.js
 node --check architecture/controller-readiness-v540.js
+node --check architecture/controller-mode-v541.js
 python3 -m py_compile sbb/release_identity_v523.py sbb/current_news_v523.py
 bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh
 
-echo "PASS: v5.4.0 Controller Readiness / Interaction Architecture preflight complete"
+echo "PASS: v5.4.1 Core Controller Mode preflight complete"

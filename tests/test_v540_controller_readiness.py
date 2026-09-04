@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static controller-readiness invariants for Sports Big Board v5.4.0."""
+"""Static controller-readiness invariants for Sports Big Board v5.4.1."""
 from pathlib import Path
 import re
 
@@ -8,17 +8,18 @@ VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 index=(ROOT/'index.html').read_text(encoding='utf-8')
 module=(ROOT/'architecture'/'controller-readiness-v540.js').read_text(encoding='utf-8')
 css=(ROOT/'ui'/'controller-readiness-v540.css').read_text(encoding='utf-8')
-region_map=(ROOT/'CONTROLLER-REGION-MAP-v5.4.0.md').read_text(encoding='utf-8')
+region_map=(ROOT/'CONTROLLER-REGION-MAP-v5.4.1.md').read_text(encoding='utf-8')
 
-assert VERSION=='5.4.0',VERSION
+parts=tuple(int(x) for x in VERSION.split('.'))
+assert parts >= (5,4,0),VERSION
 assert f'ui/controller-readiness-v540.css?v={VERSION}' in index
 assert f'architecture/controller-readiness-v540.js?v={VERSION}' in index
 assert index.index(f'architecture/operator-module-loader.js?v={VERSION}') < index.index(f'architecture/controller-readiness-v540.js?v={VERSION}')
 assert f"const VERSION='{VERSION}'" in module
 assert "mode:'READINESS_ONLY_NO_GAMEPAD_BINDINGS'" in module
 
-# v5.4.0 is preparation only. Gamepad polling/input bindings belong to the next
-# controller release so this foundation cannot change playback/navigation behavior.
+# The readiness module remains a pure semantic foundation even after controller
+# bindings ship in a separate module. It must never poll/bind the Gamepad API itself.
 for forbidden in ['navigator.getGamepads','gamepadconnected','gamepaddisconnected','requestAnimationFrame(gamepad','setInterval(pollGamepad']:
     assert forbidden not in module, forbidden
 
