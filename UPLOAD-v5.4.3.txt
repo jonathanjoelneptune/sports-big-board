@@ -1,0 +1,19 @@
+Sports Big Board v5.4.3 — Stealth Ultra HID Bridge
+
+Manual GitHub upload:
+1. Extract the ZIP.
+2. Upload the CONTENTS of the extracted folder into the repository root.
+3. Preserve all paths and replace existing files.
+4. Commit the entire upload together.
+5. Let Deploy Sports Big Board / VERIFY.sh complete before testing.
+
+First Stealth Ultra wireless test:
+1. Load Sports Big Board over HTTPS in Chrome/Edge.
+2. If the header shows 🎮 HID PAIR, click it once.
+3. In the browser device picker choose the Turtle Beach / Stealth Ultra receiver.
+4. The indicator should become HID READY, then HID LIVE when input reports arrive.
+5. Future visits use navigator.hid.getDevices() to reconnect the previously granted device without another prompt.
+
+If it remains HID READY while buttons are pressed, open the browser console and run:
+  SBB_CONTROLLER_HID_BRIDGE.snapshot()
+The snapshot records product IDs, report count, last report ID/bytes, parser and collection metadata without sending any data to the controller.

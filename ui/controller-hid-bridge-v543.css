@@ -1,0 +1,8 @@
+/* Sports Big Board v5.4.3 — WebHID controller bridge presentation. */
+.controller-live-indicator{cursor:default}
+.controller-live-indicator[data-state="hid-pair"]{cursor:pointer;color:#ffe59b;border-color:rgba(233,193,75,.72);background:rgba(98,72,13,.78);box-shadow:0 0 0 1px rgba(233,193,75,.10)}
+.controller-live-indicator[data-state="hid-ready"]{color:#a9dcff;border-color:rgba(72,158,222,.60);background:rgba(21,55,78,.78)}
+.controller-live-indicator[data-state="hid-live"]{color:#baffd2;border-color:rgba(91,205,136,.85);background:rgba(20,91,57,.84);box-shadow:0 0 0 1px rgba(91,205,136,.18),0 0 20px rgba(91,205,136,.16)}
+.controller-hid-actions{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}.controller-hid-pair-btn{min-height:30px;padding:0 10px;border:1px solid rgba(233,193,75,.55);border-radius:7px;background:rgba(91,67,15,.68);color:#fff1b6;font:900 9px/1 system-ui,sans-serif;letter-spacing:.06em;cursor:pointer}.controller-hid-pair-btn:hover{border-color:#e9c14b;background:rgba(112,82,16,.84)}.controller-hid-status{font:700 9px/1.3 system-ui,sans-serif;color:var(--muted,#8f9aa6)}
+html[data-sbb-theme="light"] .controller-live-indicator[data-state="hid-pair"]{background:#fff4ce;color:#735406;border-color:#d6aa2c}
+html[data-sbb-theme="light"] .controller-hid-pair-btn{background:#fff4ce;color:#644a08;border-color:#d6aa2c}

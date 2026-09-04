@@ -12,7 +12,7 @@ backend=(ROOT/'sbb'/'league_view_v538.py').read_text()
 focus=(ROOT/'sbb'/'team_focus_v537.py').read_text()
 news=(ROOT/'sbb'/'current_news_v523.py').read_text()
 init=(ROOT/'sbb'/'__init__.py').read_text()
-assert version=='5.4.2',version
+assert version=='5.4.3',version
 for token in ['>LEAGUE VIEW</button>','id="leagueViewRoot"',f'ui/league-view-v538.css?v={version}',f'ui/league-view-v538.js?v={version}',f'playback-early-pause-recovery-v538.js?v={version}']:
     assert token in index,token
 for token in ['aggregateReason(','sbb-daily-recap-context','/api/league-view?league=','league-view-conference-grid','AP TOP 25','BIG BOARD EVENT VIEW','BRACKET / ROUNDS']:
@@ -34,4 +34,4 @@ for token in ['WALK_OFF','COMEBACK','SHUTOUT','DEBUT','LEAGUE_LEADER','SERIES','
     assert token in news,token
 assert 'from .league_view_v538 import install as _install_league_view_v538' in init
 assert '_install_league_view_v538()' in init
-print('PASS v5.4.2 League View + recap identity + team history cutoff + accessible theming + special-event context + early-pause recovery')
+print('PASS v5.4.3 League View + recap identity + team history cutoff + accessible theming + special-event context + early-pause recovery')

@@ -124,7 +124,7 @@ if [[ "$DIRECT_READY" != *"SBB_DIRECT_SSH_READY"* ]]; then
 fi
 echo "[ssh] DIRECT SSH READY. No further gcloud SSH propagation will occur."
 
-# v5.4.2: reclaim deployment-only storage BEFORE uploading/extracting another
+# v5.4.3: reclaim deployment-only storage BEFORE uploading/extracting another
 # release. history-pre-relation-repair snapshots are not structural recovery
 # sources; the database-authority startup contract is audit-only, so retaining
 # them between releases only duplicates the live catalog and can exhaust disk.
@@ -208,7 +208,7 @@ rm -rf "$RELEASE_DIR"; mkdir -p "$RELEASE_DIR"
 tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
 chown -R root:root "$RELEASE_DIR"
 
-# v5.4.2 invariant: AUDIT_ONLY_DATABASE_AUTHORITY must not dynamically dispatch
+# v5.4.3 invariant: AUDIT_ONLY_DATABASE_AUTHORITY must not dynamically dispatch
 # through another wrapper that can restore/write locked links. Patch older source
 # generations in the extracted release before Python starts. This is idempotent
 # and fails closed if neither the old nor corrected contract is present.
@@ -225,7 +225,7 @@ elif new not in text:
 PY
 
 # v4 catalog preflight is structural. Stop the old backend so SQLite is
-# quiescent. v5.4.2 first runs CHECK-ONLY. A structurally healthy normalized
+# quiescent. v5.4.3 first runs CHECK-ONLY. A structurally healthy normalized
 # catalog must not be duplicated merely because relationship audit flags exist.
 # Normal reconstruction runs only when the structural snapshot actually requires it.
 systemctl stop sports-big-board >/dev/null 2>&1 || true

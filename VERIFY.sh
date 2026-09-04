@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Sports Big Board v5.4.2 Controller Radials + Live Input preflight"
+echo "Sports Big Board v5.4.3 Stealth Ultra HID Bridge preflight"
 python3 tools/check_release_version.py
 python3 tests/test_v529_release_integrity.py
 python3 tests/test_v5210_motion_smoothness.py
@@ -40,6 +40,7 @@ python3 tests/test_v5320_startup_unfreeze_progress.py
 python3 tests/test_v540_controller_readiness.py
 python3 tests/test_v541_core_controller_mode.py
 python3 tests/test_v542_controller_radials_live_input.py
+python3 tests/test_v543_stealth_ultra_hid_bridge.py
 node --check ui/settings-view.js
 node --check ui/up-next-experience-v5217.js
 node --check ui/harmonized-controls-drawer-v5217.js
@@ -63,7 +64,8 @@ node --check architecture/scroll-motion-smoothness-v5210.js
 node --check architecture/splash-preload-v5212.js
 node --check architecture/controller-readiness-v540.js
 node --check architecture/controller-mode-v542.js
+node --check architecture/controller-hid-bridge-v543.js
 python3 -m py_compile sbb/release_identity_v523.py sbb/current_news_v523.py
 bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh
 
-echo "PASS: v5.4.2 Controller Radials + Live Input preflight complete"
+echo "PASS: v5.4.3 Stealth Ultra HID Bridge preflight complete"

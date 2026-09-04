@@ -1,12 +1,12 @@
-/* Sports Big Board v5.4.2 — user-pause-safe early pause recovery.
+/* Sports Big Board v5.4.3 — user-pause-safe early pause recovery.
    Manual pause is authoritative for the current selection. Automatic recovery now
    requires positive provider evidence that the active transport unexpectedly
    entered PAUSED during startup; stale UI text alone can never restart/reload a
    video. */
 (() => {
   'use strict';
-  if(window.SBB_EARLY_PAUSE_RECOVERY?.version==='5.4.2')return;
-  const VERSION='5.4.2';
+  if(window.SBB_EARLY_PAUSE_RECOVERY?.version==='5.4.3')return;
+  const VERSION='5.4.3';
   const $=id=>document.getElementById(id);
   const clean=v=>String(v??'').trim();
   const state={generation:0,key:'',selectedAt:0,manualPause:false,manualPauseKey:'',providerControlInteractionAt:0,providerControlInteractionKey:'',softKicks:0,reloads:0,lastAction:'',lastReason:'',timers:[],events:[]};
@@ -31,7 +31,7 @@
   function boundedSameItemRecovery(){
     if(userPaused()||providerControlPauseLikely())return false;const sample=providerState();
     if(!sample.paused)return false; // Never reload a transport that is already playing/buffering.
-    let acted=false;try{if(typeof tuneProgramIndexV5==='function'&&typeof currentIndex!=='undefined'){tuneProgramIndexV5(currentIndex,{userInitiated:false,reason:'v5.4.2 confirmed unexpected startup pause'});acted=true;}}catch(_){}
+    let acted=false;try{if(typeof tuneProgramIndexV5==='function'&&typeof currentIndex!=='undefined'){tuneProgramIndexV5(currentIndex,{userInitiated:false,reason:'v5.4.3 confirmed unexpected startup pause'});acted=true;}}catch(_){}
     if(acted){state.reloads++;log('BOUNDED_RECOVERY','same item after confirmed paused state');}return acted;
   }
   function clearTimers(){for(const timer of state.timers)clearTimeout(timer);state.timers=[];}

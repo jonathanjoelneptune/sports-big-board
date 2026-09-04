@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static controller-readiness invariants for Sports Big Board v5.4.2."""
+"""Static controller-readiness invariants for Sports Big Board v5.4.3."""
 from pathlib import Path
 import re
 
@@ -8,7 +8,7 @@ VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 index=(ROOT/'index.html').read_text(encoding='utf-8')
 module=(ROOT/'architecture'/'controller-readiness-v540.js').read_text(encoding='utf-8')
 css=(ROOT/'ui'/'controller-readiness-v540.css').read_text(encoding='utf-8')
-region_map=(ROOT/'CONTROLLER-REGION-MAP-v5.4.2.md').read_text(encoding='utf-8')
+region_map=(ROOT/'CONTROLLER-REGION-MAP-v5.4.3.md').read_text(encoding='utf-8')
 
 parts=tuple(int(x) for x in VERSION.split('.'))
 assert parts >= (5,4,0),VERSION
