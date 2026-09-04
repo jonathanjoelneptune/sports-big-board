@@ -11,6 +11,7 @@ import csv
 import io
 import json
 import os
+import queue
 import re
 import signal
 import sqlite3
@@ -57,6 +58,7 @@ DISCOVERY_HTTP_TIMEOUT_SECONDS = max(5, min(60, int(os.environ.get("SBB_MEDIA_AU
 AUDIT_WORKER_COUNT = max(1, min(4, int(os.environ.get("SBB_MEDIA_AUDIT_WORKERS", "3"))))
 DISCOVERY_CONCURRENCY = max(1, min(2, int(os.environ.get("SBB_MEDIA_AUDIT_DISCOVERY_CONCURRENCY", "1"))))
 DISCOVERY_SEMAPHORE = threading.Semaphore(DISCOVERY_CONCURRENCY)
+DB_WRITE_QUEUE_MAX = max(32, min(4096, int(os.environ.get("SBB_MEDIA_AUDIT_DB_WRITE_QUEUE_MAX", "512"))))
 AUDIT_TIMEZONE = os.environ.get("SBB_MEDIA_AUDIT_TIMEZONE", "America/Los_Angeles").strip() or "America/Los_Angeles"
 try:
     AUDIT_TZ = ZoneInfo(AUDIT_TIMEZONE)
@@ -331,6 +333,11 @@ class AuditStore:
         with closing(self.connect()) as conn:
             row = conn.execute("SELECT * FROM history_media_audit_run ORDER BY id DESC LIMIT 1").fetchone()
         return dict(row) if row else None
+
+    def exact_run_state(self, run_id: int):
+        with closing(self.connect()) as conn:
+            row = conn.execute("SELECT state FROM history_media_audit_run WHERE id=?", (int(run_id),)).fetchone()
+        return str(row["state"] or "") if row else ""
 
     def start_run(self, mode="ALL", start_date=""):
         mode = str(mode or "ALL").upper()
@@ -808,13 +815,141 @@ class BrowserProbe:
                 return {"ok": False, "hard": False, "reason": "BROWSER_WORKER_ERROR", "message": self.last_error}
 
 
+class AuditRunReplaced(RuntimeError):
+    """Raised when a queued DB write belongs to a stopped/replaced audit run."""
+
+
+class SerializedAuditDbWriter(threading.Thread):
+    """One SQLite writer for all audit lanes.
+
+    Browser lanes may probe concurrently, but every audit-owned SQLite mutation is
+    funneled through this queue. A transient SQLite writer lock therefore delays the
+    commit without discarding the already-completed browser result or replaying media.
+    """
+    daemon = True
+
+    def __init__(self, store: AuditStore):
+        super().__init__(name="canonical-media-audit-db-writer")
+        self.store = store
+        self.jobs = queue.Queue(maxsize=DB_WRITE_QUEUE_MAX)
+        self.stop_event = threading.Event()
+        self.lock = threading.RLock()
+        self.active = {}
+        self.last_error = ""
+        self.last_commit_at = 0.0
+        self.lock_retries = 0
+        self.completed_writes = 0
+
+    def stop(self):
+        self.stop_event.set()
+
+    def snapshot(self):
+        with self.lock:
+            active = dict(self.active or {})
+            return {
+                "alive": self.is_alive(),
+                "state": "LOCKED" if active.get("locked") else ("WRITING" if active else "IDLE"),
+                "queueDepth": self.jobs.qsize(),
+                "activeOperation": active.get("operation", ""),
+                "activeRunId": int(active.get("runId") or 0),
+                "activeOrdinal": int(active.get("ordinal") or 0),
+                "activeEvent": active.get("eventKey", ""),
+                "activeLane": int(active.get("lane") or 0),
+                "lockRetries": int(self.lock_retries),
+                "lastError": self.last_error,
+                "lastCommitAt": self.last_commit_at,
+                "completedWrites": int(self.completed_writes),
+            }
+
+    def submit(self, operation, method_name, *args, run_id=0, ordinal=0, event_key="", lane=0, **kwargs):
+        if self.stop_event.is_set():
+            raise AuditRunReplaced("DB_WRITER_STOPPED")
+        job = {
+            "operation": str(operation or method_name),
+            "method": str(method_name),
+            "args": args,
+            "kwargs": kwargs,
+            "runId": int(run_id or 0),
+            "ordinal": int(ordinal or 0),
+            "eventKey": str(event_key or ""),
+            "lane": int(lane or 0),
+            "done": threading.Event(),
+            "result": None,
+            "error": None,
+            "queuedAt": _now(),
+        }
+        self.jobs.put(job)
+        while not job["done"].wait(0.25):
+            if self.stop_event.is_set():
+                raise AuditRunReplaced("DB_WRITER_STOPPED")
+        if job["error"] is not None:
+            raise job["error"]
+        return job["result"]
+
+    def _run_is_current(self, run_id):
+        if not run_id:
+            return True
+        state = self.store.exact_run_state(int(run_id))
+        return bool(state and state != "STOPPED")
+
+    def run(self):
+        while not self.stop_event.is_set() or not self.jobs.empty():
+            try:
+                job = self.jobs.get(timeout=0.25)
+            except queue.Empty:
+                continue
+            with self.lock:
+                self.active = {
+                    "operation": job["operation"], "runId": job["runId"],
+                    "ordinal": job["ordinal"], "eventKey": job["eventKey"],
+                    "lane": job["lane"], "locked": False,
+                }
+            try:
+                while not self.stop_event.is_set():
+                    try:
+                        if job["runId"] and not self._run_is_current(job["runId"]):
+                            raise AuditRunReplaced(
+                                f"Run {job['runId']} was replaced before DB commit: {job['operation']}"
+                            )
+                        method = getattr(self.store, job["method"])
+                        job["result"] = method(*job["args"], **job["kwargs"])
+                        with self.lock:
+                            self.last_error = ""
+                            self.last_commit_at = _now()
+                            self.completed_writes += 1
+                            self.active["locked"] = False
+                        break
+                    except sqlite3.OperationalError as exc:
+                        if not _is_db_locked(exc):
+                            raise
+                        with self.lock:
+                            self.lock_retries += 1
+                            self.last_error = f"{type(exc).__name__}: {exc}"
+                            self.active["locked"] = True
+                        # Preserve this exact queued result and retry the database write.
+                        # Do not return control to the browser lane, so media is never
+                        # replayed merely because SQLite's single writer is occupied.
+                        time.sleep(DB_LOCK_RETRY_SECONDS)
+                else:
+                    raise AuditRunReplaced("DB_WRITER_STOPPED")
+            except Exception as exc:
+                job["error"] = exc
+                with self.lock:
+                    self.last_error = f"{type(exc).__name__}: {exc}"
+            finally:
+                with self.lock:
+                    self.active = {}
+                job["done"].set()
+                self.jobs.task_done()
+
+
 class CanonicalAuditWorker(threading.Thread):
     daemon = True
 
-    def __init__(self, store: AuditStore, probe: BrowserProbe, worker_lane: int = 1):
+    def __init__(self, store: AuditStore, probe: BrowserProbe, db_writer: SerializedAuditDbWriter, worker_lane: int = 1):
         self.worker_lane = int(worker_lane)
         super().__init__(name=f"canonical-media-audit-{self.worker_lane}")
-        self.store, self.probe = store, probe
+        self.store, self.probe, self.db_writer = store, probe, db_writer
         self.stop_event = threading.Event()
         self.current = {}
         self.last_error = ""
@@ -850,6 +985,8 @@ class CanonicalAuditWorker(threading.Thread):
             "lastOperation": "",
             "workerLane": self.worker_lane,
             "workerCount": AUDIT_WORKER_COUNT,
+            "pendingDbWrite": "",
+            "pendingDbWriteState": "",
         }
         self.trace = deque(maxlen=120)
 
@@ -896,6 +1033,33 @@ class CanonicalAuditWorker(threading.Thread):
         else:
             self._diag(dbState="READY")
 
+    def _write(self, operation, method_name, *args, run_id=0, ordinal=0, event_key="", pending_phase="", pending_note="", **kwargs):
+        previous_phase = self.snapshot().get("phase") or "RUNNING"
+        self._db_op(operation)
+        if pending_phase:
+            self._diag(
+                phase=pending_phase, dbState="QUEUED", pendingDbWrite=operation,
+                pendingDbWriteState="QUEUED", waitingReason=pending_note or f"Waiting for serialized DB writer: {operation}"
+            )
+        try:
+            value = self.db_writer.submit(
+                operation, method_name, *args, run_id=run_id, ordinal=ordinal,
+                event_key=event_key, lane=self.worker_lane, **kwargs
+            )
+            self._diag(
+                dbState="READY", pendingDbWrite="", pendingDbWriteState="SAVED",
+                waitingReason="", progress=True
+            )
+            if pending_phase:
+                self._diag(phase=previous_phase)
+            return value
+        except AuditRunReplaced:
+            self._diag(
+                dbState="READY", pendingDbWrite="", pendingDbWriteState="DISCARDED",
+                waitingReason="Audit run was stopped/replaced before queued DB commit"
+            )
+            raise
+
     def run(self):
         while not self.stop_event.is_set():
             try:
@@ -912,11 +1076,17 @@ class CanonicalAuditWorker(threading.Thread):
                     continue
 
                 self._db_op("claim next deterministic queue ordinal")
-                item = self.store.next_queue_item(int(run["id"]), self.worker_lane)
+                item = self._write(
+                    "claim next deterministic queue ordinal", "next_queue_item",
+                    int(run["id"]), self.worker_lane, run_id=int(run["id"])
+                )
                 self._db_recovered()
                 if not item:
                     self._db_op("complete run if queue empty")
-                    self.store.complete_run_if_done(int(run["id"]))
+                    self._write(
+                        "complete run if queue empty", "complete_run_if_done", int(run["id"]),
+                        run_id=int(run["id"])
+                    )
                     self._diag(state="RUNNING", phase="QUEUE_EMPTY", progress=True)
                     time.sleep(1.0)
                     continue
@@ -940,9 +1110,13 @@ class CanonicalAuditWorker(threading.Thread):
                     self._db_recovered()
                     if current_run and current_run.get("state") != "STOPPED":
                         self._db_op("finish queue item")
-                        self.store.finish_queue_item(
+                        self._write(
+                            "finish queue item", "finish_queue_item",
                             run["id"], item["ordinal"], result.get("health", "FAILED"),
-                            result.get("note", ""), failed=bool(result.get("failed"))
+                            result.get("note", ""), failed=bool(result.get("failed")),
+                            run_id=int(run["id"]), ordinal=int(item["ordinal"]),
+                            event_key=item["canonical_event_key"], pending_phase="WAITING_DB_COMMIT",
+                            pending_note="Audit result complete; waiting for serialized DB commit"
                         )
                         self._db_recovered()
                     self.exception_retries.pop(item["canonical_event_key"], None)
@@ -961,18 +1135,22 @@ class CanonicalAuditWorker(threading.Thread):
                         lastProbeResult=msg,
                     )
                     self._trace(
-                        "WARN", f"SQLite busy on queue #{item['ordinal']}; ordinal returned to deterministic pending queue",
+                        "WARN", f"SQLite busy outside serialized audit writer on queue #{item['ordinal']}; ordinal returned to pending queue",
                         operation=snap.get("dbOperation") or "", retry=retries, event=item["canonical_event_key"], lane=self.worker_lane
                     )
-                    while not self.stop_event.is_set():
-                        try:
-                            self.store.requeue_item(run["id"], item["ordinal"], "WAITING_DATABASE_LOCK", msg)
-                            break
-                        except sqlite3.OperationalError as requeue_exc:
-                            if not _is_db_locked(requeue_exc):
-                                raise
-                            time.sleep(DB_LOCK_RETRY_SECONDS)
+                    try:
+                        self._write(
+                            "requeue after non-writer SQLite read contention", "requeue_item",
+                            run["id"], item["ordinal"], "WAITING_DATABASE_LOCK", msg,
+                            run_id=int(run["id"]), ordinal=int(item["ordinal"]),
+                            event_key=item["canonical_event_key"]
+                        )
+                    except AuditRunReplaced:
+                        pass
                     time.sleep(DB_LOCK_RETRY_SECONDS)
+                    continue
+                except AuditRunReplaced:
+                    self._trace("INFO", f"Queue #{item['ordinal']} work discarded because run was stopped/replaced", lane=self.worker_lane)
                     continue
                 except Exception as exc:
                     msg = f"{type(exc).__name__}: {exc}"
@@ -991,14 +1169,19 @@ class CanonicalAuditWorker(threading.Thread):
                             error=msg, retry=attempt, maxRetries=WORKER_EXCEPTION_RETRIES
                         )
                         try:
-                            self._db_op("persist worker exception retry phase")
-                            self.store.queue_phase(
+                            self._write(
+                                "persist worker exception retry phase", "queue_phase",
                                 run["id"], item["ordinal"], "RETRY_WORKER_EXCEPTION",
-                                f"{msg} • retry {attempt}/{WORKER_EXCEPTION_RETRIES}"
+                                f"{msg} • retry {attempt}/{WORKER_EXCEPTION_RETRIES}",
+                                run_id=int(run["id"]), ordinal=int(item["ordinal"]),
+                                event_key=item["canonical_event_key"]
                             )
-                            self.store.requeue_item(
+                            self._write(
+                                "requeue worker exception", "requeue_item",
                                 run["id"], item["ordinal"], "RETRY_WORKER_EXCEPTION",
-                                f"{msg} • retry {attempt}/{WORKER_EXCEPTION_RETRIES}"
+                                f"{msg} • retry {attempt}/{WORKER_EXCEPTION_RETRIES}",
+                                run_id=int(run["id"]), ordinal=int(item["ordinal"]),
+                                event_key=item["canonical_event_key"]
                             )
                             self._db_recovered()
                         except sqlite3.OperationalError as db_exc:
@@ -1008,17 +1191,16 @@ class CanonicalAuditWorker(threading.Thread):
                                     dbLockRetries=int(self.snapshot().get("dbLockRetries") or 0)+1,
                                     lastDbLockAt=_now(), waitingReason=f"{type(db_exc).__name__}: {db_exc}"
                                 )
-                                while not self.stop_event.is_set():
-                                    try:
-                                        self.store.requeue_item(
-                                            run["id"], item["ordinal"], "RETRY_WORKER_EXCEPTION",
-                                            f"{msg} • retry {attempt}/{WORKER_EXCEPTION_RETRIES}"
-                                        )
-                                        break
-                                    except sqlite3.OperationalError as requeue_exc:
-                                        if not _is_db_locked(requeue_exc):
-                                            raise
-                                        time.sleep(DB_LOCK_RETRY_SECONDS)
+                                try:
+                                    self._write(
+                                        "requeue worker exception after read contention", "requeue_item",
+                                        run["id"], item["ordinal"], "RETRY_WORKER_EXCEPTION",
+                                        f"{msg} • retry {attempt}/{WORKER_EXCEPTION_RETRIES}",
+                                        run_id=int(run["id"]), ordinal=int(item["ordinal"]),
+                                        event_key=item["canonical_event_key"]
+                                    )
+                                except AuditRunReplaced:
+                                    pass
                             else:
                                 raise
                         time.sleep(min(10.0, 1.5 * attempt))
@@ -1027,17 +1209,28 @@ class CanonicalAuditWorker(threading.Thread):
                     current_run = self.store.run_snapshot(int(run["id"]))
                     if current_run and current_run.get("state") != "STOPPED":
                         self._db_op("terminal worker exception after bounded retries")
-                        self.store.finish_queue_item(
+                        self._write(
+                            "terminal worker exception", "finish_queue_item",
                             run["id"], item["ordinal"], "FAILED",
-                            f"{msg} • exhausted {WORKER_EXCEPTION_RETRIES} retries", failed=True
+                            f"{msg} • exhausted {WORKER_EXCEPTION_RETRIES} retries", failed=True,
+                            run_id=int(run["id"]), ordinal=int(item["ordinal"]),
+                            event_key=item["canonical_event_key"], pending_phase="WAITING_DB_COMMIT",
+                            pending_note="Worker exception exhausted; waiting to save terminal audit state"
                         )
                     self._trace("ERROR", f"Queue #{item['ordinal']} terminal worker exception", error=msg)
                 finally:
                     self.current = {}
 
                 self._db_op("complete run if done")
-                self.store.complete_run_if_done(int(run["id"]))
+                self._write(
+                    "complete run if done", "complete_run_if_done", int(run["id"]),
+                    run_id=int(run["id"])
+                )
                 self._db_recovered()
+            except AuditRunReplaced:
+                self._diag(state="IDLE", phase="RUN_REPLACED", waitingReason="Audit run was stopped/replaced")
+                time.sleep(0.25)
+                continue
             except sqlite3.OperationalError as exc:
                 if _is_db_locked(exc):
                     msg = f"{type(exc).__name__}: {exc}"
@@ -1095,9 +1288,11 @@ class CanonicalAuditWorker(threading.Thread):
                 self._trace("WARN", "Playback probe infrastructure unavailable; media not failed", reason=reason, asset=asset.get("assetKey"))
                 try:
                     self._db_op("persist probe infrastructure wait phase")
-                    self.store.queue_phase(
-                        run_id, int(current.get("current_ordinal") or 0),
-                        "WAITING_PROBE_INFRASTRUCTURE", reason
+                    self._write(
+                        "persist probe infrastructure wait phase", "queue_phase",
+                        run_id, int(self.current.get("ordinal") or current.get("current_ordinal") or 0),
+                        "WAITING_PROBE_INFRASTRUCTURE", reason,
+                        run_id=run_id, ordinal=int(self.current.get("ordinal") or 0), event_key=event_key
                     )
                     self._db_recovered()
                 except sqlite3.OperationalError:
@@ -1107,7 +1302,13 @@ class CanonicalAuditWorker(threading.Thread):
 
             media_attempt += 1
             self._db_op("persist canonical browser probe result")
-            self.store.record_probe(run_id, event_key, asset, media_attempt, result, self.probe.browser)
+            self._write(
+                "persist canonical browser probe result", "record_probe",
+                run_id, event_key, asset, media_attempt, result, self.probe.browser,
+                run_id=run_id, ordinal=int(self.current.get("ordinal") or 0), event_key=event_key,
+                pending_phase="PROBE_COMPLETE_WAITING_DB",
+                pending_note=f"{str(tier or asset.get('tier') or '').upper()} probe complete ({reason or 'result'}); waiting for serialized DB writer"
+            )
             self._db_recovered()
             self._trace(
                 "INFO" if result.get("ok") else "WARN",
@@ -1293,7 +1494,11 @@ class CanonicalAuditWorker(threading.Thread):
                     self._diag(phase="WAITING_DISCOVERY_PRIORITY", waitingReason=note, discoveryResult="PRIORITY_BLOCKED")
                     try:
                         self._db_op("persist discovery priority wait")
-                        self.store.queue_phase(run["id"], item["ordinal"], "WAITING_DISCOVERY_PRIORITY", note)
+                        self._write(
+                            "persist discovery priority wait", "queue_phase",
+                            run["id"], item["ordinal"], "WAITING_DISCOVERY_PRIORITY", note,
+                            run_id=int(run["id"]), ordinal=int(item["ordinal"]), event_key=item["canonical_event_key"]
+                        )
                         self._db_recovered()
                     except sqlite3.OperationalError:
                         pass
@@ -1330,7 +1535,7 @@ class CanonicalAuditWorker(threading.Thread):
         run_id = int(run["id"])
         event_key = item["canonical_event_key"]
         self._db_op("set LOAD_MEDIA phase")
-        self.store.queue_phase(run_id, item["ordinal"], "LOAD_MEDIA")
+        self._write("set LOAD_MEDIA phase", "queue_phase", run_id, item["ordinal"], "LOAD_MEDIA", run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key)
         self._db_recovered()
         self._diag(phase="LOAD_MEDIA", progress=True)
 
@@ -1346,7 +1551,7 @@ class CanonicalAuditWorker(threading.Thread):
         # Supplemental Gold is bounded to one canonical candidate.
         if buckets["gold"]:
             self._db_op("set TEST_GOLD phase")
-            self.store.queue_phase(run_id, item["ordinal"], "TEST_GOLD")
+            self._write("set TEST_GOLD phase", "queue_phase", run_id, item["ordinal"], "TEST_GOLD", run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key)
             self._db_recovered()
             self._diag(phase="TEST_GOLD")
             selected["gold"] = self._select_one(run_id, event_key, buckets["gold"], tier="GOLD", tested=tested)
@@ -1356,7 +1561,7 @@ class CanonicalAuditWorker(threading.Thread):
             if buckets[tier]:
                 phase = "TEST_PURPLE" if tier == "extended" else "TEST_GREEN"
                 self._db_op(f"set {phase} phase")
-                self.store.queue_phase(run_id, item["ordinal"], phase)
+                self._write(f"set {phase} phase", "queue_phase", run_id, item["ordinal"], phase, run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key)
                 self._db_recovered()
                 self._diag(phase=phase)
                 selected[tier] = self._select_one(
@@ -1371,7 +1576,7 @@ class CanonicalAuditWorker(threading.Thread):
             for pass_number in range(1, DISCOVERY_PASSES + 1):
                 phase = "TARGETED_REHYDRATION"
                 self._db_op("set TARGETED_REHYDRATION phase")
-                self.store.queue_phase(run_id, item["ordinal"], phase)
+                self._write(f"set {phase} phase", "queue_phase", run_id, item["ordinal"], phase, run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key)
                 self._db_recovered()
                 self._diag(phase=phase)
                 discovery = self._discover_preferred(run, item, pass_number)
@@ -1394,7 +1599,7 @@ class CanonicalAuditWorker(threading.Thread):
                     if fresh:
                         phase = "RETEST_PURPLE" if tier == "extended" else "RETEST_GREEN"
                         self._db_op(f"set {phase} phase")
-                        self.store.queue_phase(run_id, item["ordinal"], phase)
+                        self._write(f"set {phase} phase", "queue_phase", run_id, item["ordinal"], phase, run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key)
                         self._db_recovered()
                         self._diag(phase=phase)
                         selected[tier] = self._select_one(
@@ -1407,7 +1612,7 @@ class CanonicalAuditWorker(threading.Thread):
         preferred = bool(selected["green"] or selected["extended"])
         if not preferred:
             self._db_op("set BLUE_FALLBACK phase")
-            self.store.queue_phase(run_id, item["ordinal"], "BLUE_FALLBACK")
+            self._write("set BLUE_FALLBACK phase", "queue_phase", run_id, item["ordinal"], "BLUE_FALLBACK", run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key)
             self._db_recovered()
             self._diag(phase="BLUE_FALLBACK")
             blue_candidates = [a for a in buckets.get("blue", []) if a.get("assetKey") not in tested]
@@ -1451,26 +1656,33 @@ class CanonicalAuditWorker(threading.Thread):
         # Multiple lanes may probe adjacent games concurrently, but canonical package
         # writes remain strictly ordinal. This preserves the audit's deterministic
         # website-wide sequence while still overlapping expensive browser/network work.
+        commit_wait_announced = False
         while not self.stop_event.is_set() and not self.store.commit_turn_ready(run_id, int(item["ordinal"])):
             current_run = self.store.run_snapshot(run_id)
             if not current_run or current_run.get("state") == "STOPPED":
                 return {"health": "SKIPPED", "note": "RUN_STOPPED_BEFORE_CANONICALIZE"}
             self._diag(phase="WAITING_COMMIT_ORDER", waitingReason="Earlier queue ordinal is still being certified")
-            try:
-                self.store.queue_phase(run_id, item["ordinal"], "WAITING_COMMIT_ORDER", "Earlier queue ordinal is still being certified")
-            except sqlite3.OperationalError:
-                pass
+            if not commit_wait_announced:
+                try:
+                    self._write("set WAITING_COMMIT_ORDER phase", "queue_phase", run_id, item["ordinal"], "WAITING_COMMIT_ORDER", "Earlier queue ordinal is still being certified", run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key)
+                    commit_wait_announced = True
+                except AuditRunReplaced:
+                    return {"health": "SKIPPED", "note": "RUN_REPLACED_BEFORE_CANONICALIZE"}
             time.sleep(0.5)
         if self.stop_event.is_set():
             return {"health": "SKIPPED", "note": "WORKER_STOPPED_BEFORE_CANONICALIZE"}
         self._diag(waitingReason="")
 
         self._db_op("canonicalize shared event-media package")
-        self.store.queue_phase(run_id, item["ordinal"], "CANONICALIZE")
+        self._write("set CANONICALIZE phase", "queue_phase", run_id, item["ordinal"], "CANONICALIZE", run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key)
         self._db_recovered()
         self._diag(phase="CANONICALIZE")
-        package = self.store.canonicalize(
-            run_id, item, selected, health, rehydration_state, rehydration_reason
+        package = self._write(
+            "canonicalize shared event-media package", "canonicalize",
+            run_id, item, selected, health, rehydration_state, rehydration_reason,
+            run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key,
+            pending_phase="CANONICAL_PACKAGE_WAITING_DB",
+            pending_note="Canonical package is ready; waiting for serialized DB writer"
         )
         self._db_recovered()
         note = (
@@ -1484,6 +1696,8 @@ class CanonicalAuditWorker(threading.Thread):
 
 STORE = AuditStore(DB_PATH)
 RECOVERY = STORE.recover_exception_failures()
+DB_WRITER = SerializedAuditDbWriter(STORE)
+DB_WRITER.start()
 WORKER_CONTROL_LOCK = threading.RLock()
 PROBES = []
 WORKERS = []
@@ -1494,7 +1708,7 @@ def _spawn_workers(reason="service start"):
     WORKERS = []
     for lane in range(1, AUDIT_WORKER_COUNT + 1):
         probe = BrowserProbe()
-        worker = CanonicalAuditWorker(STORE, probe, worker_lane=lane)
+        worker = CanonicalAuditWorker(STORE, probe, DB_WRITER, worker_lane=lane)
         PROBES.append(probe)
         WORKERS.append(worker)
         worker.start()
@@ -1599,6 +1813,7 @@ class Handler(BaseHTTPRequestHandler):
                     "timezone": AUDIT_TIMEZONE, "browser": browser_names[0] if browser_names else "",
                     "browserError": browser_errors[0] if browser_errors else "", "storageReadError": storage_error,
                     "workerCount": AUDIT_WORKER_COUNT, "workers": worker_rows, "worker": primary_worker,
+                    "dbWriter": DB_WRITER.snapshot(),
                     "run": run_snapshot, "summary": summary, "newestEligibleDate": newest
                 })
             if parsed.path == "/inventory":
@@ -1667,10 +1882,10 @@ def main():
     print(f"Probe origin: {PROBE_URL}", flush=True)
     stop = threading.Event()
     def shutdown(_sig, _frame):
-        stop.set(); _retire_workers("service shutdown"); threading.Thread(target=server.shutdown, daemon=True).start()
+        stop.set(); _retire_workers("service shutdown"); DB_WRITER.stop(); threading.Thread(target=server.shutdown, daemon=True).start()
     signal.signal(signal.SIGTERM, shutdown); signal.signal(signal.SIGINT, shutdown)
     try: server.serve_forever(poll_interval=0.5)
-    finally: _retire_workers("service close"); server.server_close()
+    finally: _retire_workers("service close"); DB_WRITER.stop(); server.server_close()
 
 
 if __name__ == "__main__":

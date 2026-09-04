@@ -17,7 +17,7 @@ for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STA
 assert 'youtubeProbe' not in html
 assert 'directProbe' not in html
 assert 'youtube.com/iframe_api' not in html
-assert 'ui/media-audit-v550.js?v=5.5.0-r11p' in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r11w' in html
 assert 'href="media-audit.html"' in index
 
 # Browser is a console only. All control and inventory authority routes to the backend service.
@@ -100,7 +100,7 @@ for token in [
     'diagProgressAge','diagTrace','SERVER TRACE','DATABASE + PRODUCTION PARITY'
 ]:
     assert token in html or token in js,token
-assert "const GENERATION='R11-PARALLEL'" in js
+assert "const GENERATION='R11-DBWRITER'" in js
 assert 'localStorage' not in js
 
 # R11: reset/start/stop retire the worker itself and stale run work cannot persist.
@@ -166,4 +166,34 @@ assert 'Targeted discovery pass {pass_number}/{DISCOVERY_PASSES} transport failu
 for token in ['PARALLEL WORKER LANES','diagWorkers']:
     assert token in html or token in js,token
 
-print('PASS v5.5.0 R11 canonical Media Health Audit + 3-lane parallel probing + ordered canonical commits + bounded rehydration + reset/startup-lock/parity diagnostics')
+
+
+# R11 serialized audit DB writer: browser results are retained while SQLite is busy.
+for token in [
+    'class SerializedAuditDbWriter',
+    'canonical-media-audit-db-writer',
+    'self.jobs = queue.Queue',
+    'Preserve this exact queued result and retry the database write.',
+    'PROBE_COMPLETE_WAITING_DB',
+    'CANONICAL_PACKAGE_WAITING_DB',
+    'pendingDbWrite',
+    'DB_WRITE_QUEUE_MAX',
+    'DB_WRITER = SerializedAuditDbWriter(STORE)',
+    '"dbWriter": DB_WRITER.snapshot()',
+]:
+    assert token in service,token
+probe_block=service[service.index('def _probe_candidate'):service.index('def _select_one')]
+assert 'self.store.record_probe' not in probe_block
+assert '"record_probe"' in probe_block
+assert 'waiting for serialized DB writer' in probe_block
+worker_block=service[service.index('class CanonicalAuditWorker'):service.index('STORE = AuditStore')]
+for forbidden in [
+    'self.store.record_probe(', 'self.store.queue_phase(', 'self.store.canonicalize(',
+    'self.store.finish_queue_item(', 'self.store.requeue_item(', 'self.store.next_queue_item(',
+    'self.store.complete_run_if_done(',
+]:
+    assert forbidden not in worker_block,forbidden
+for token in ['DB WRITER','SAVE QUEUED','status.dbWriter']:
+    assert token in js,token
+
+print('PASS v5.5.0 R11 canonical Media Health Audit + 3 parallel probes + serialized DB writer + ordered commits + bounded rehydration + reset/startup-lock/parity diagnostics')

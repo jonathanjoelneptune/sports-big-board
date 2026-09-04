@@ -1,0 +1,59 @@
+Sports Big Board v5.5.0 R11 — Serialized Audit DB Writer
+
+PURPOSE
+Keep the 3 parallel headless-Chrome audit lanes, but remove SQLite write contention
+between those lanes. Browser playback evidence must never be discarded or replayed
+merely because SQLite's single writer is temporarily busy.
+
+ARCHITECTURE
+Lane 1 ─┐
+Lane 2 ─┼─> in-memory audit commit queue -> SINGLE DB WRITER -> SQLite/canonical package
+Lane 3 ─┘
+
+Targeted discovery remains serialized separately.
+
+BEHAVIOR
+- Three browser lanes continue probing adjacent queue ordinals concurrently.
+- Every audit-owned SQLite mutation made by a worker is routed through one
+  SerializedAuditDbWriter thread.
+- A completed browser result is held in memory while the DB writer retries
+  sqlite3.OperationalError: database is locked.
+- SQLite lock retry does NOT return the game to PENDING and does NOT replay media.
+- Probe PASS/FAIL, queue phase, canonicalization, queue completion, and worker
+  exception bookkeeping all use the serialized writer.
+- Canonical package commits remain ordinal.
+- RESET/STOP/START invalidate queued writes from obsolete run IDs.
+- The status API exposes dbWriter state, queue depth, active operation, active
+  ordinal/lane, lock retries, saved commit count, and last error.
+- Media Audit shows a DB WRITER card above the three browser lanes.
+- Lanes show PROBE_COMPLETE_WAITING_DB / SAVE QUEUED when a completed result is
+  waiting to be persisted rather than misleadingly looking like another probe.
+- Existing bounded rehydration, startup-lock repair, production parity, and
+  deterministic queue behavior are preserved.
+
+VALIDATION
+- Python syntax: PASS
+- JavaScript syntax: PASS
+- Focused v5.5.0 Media Health Audit regression: PASS
+- Synthetic SQLite-lock test: one completed probe survived two DB locks and was
+  saved on the third write attempt with zero media replay.
+- Synthetic 3-lane test: three concurrent results serialized through one writer;
+  commit attempts were A,A,A,B,C where A experienced two DB locks, with no extra
+  probe invocation.
+
+UPLOAD
+1. Upload the 3 non-test files at repository root preserving paths:
+   media_audit_service.py
+   media-audit.html
+   ui/media-audit-v550.js
+2. Open the existing GitHub /tests directory and replace:
+   test_v550_media_health_audit.py
+3. Let the normal deployment complete.
+
+AFTER DEPLOY
+- Do NOT reset the current audit.
+- Hard-refresh media-audit.html once.
+- The service restart may retry any currently ACTIVE unsaved games once because
+  their in-memory evidence cannot survive deployment. After the new service is
+  running, temporary SQLite locks will no longer cause browser replay.
+- Confirm the diagnostics show one DB WRITER plus Lane 1 / Lane 2 / Lane 3.

@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const VERSION='5.5.0';
-const GENERATION='R11-PARALLEL';
+const GENERATION='R11-DBWRITER';
 const $=id=>document.getElementById(id);
 const API=((window.SBB_CONFIG&&window.SBB_CONFIG.apiBase)||location.origin).replace(/\/$/,'')+'/api/media-audit';
 const state={offset:0,limit:100,total:0,rows:[],expanded:new Set(),status:null,busy:false,pollTimer:null,lastInventoryAt:0};
@@ -36,9 +36,9 @@ function renderSummary(status){
 
 function fmtAge(seconds){const s=Math.max(0,Number(seconds||0));if(s<60)return `${s.toFixed(1)}s`;const m=Math.floor(s/60),r=Math.round(s%60);return `${m}m ${r}s`;}
 function renderDiagnostics(status){
-  const worker=status.worker||{},d=worker.diagnostics||{},cur=worker.current||{},recovery=worker.recoveredExceptionFailures||{};
+  const worker=status.worker||{},d=worker.diagnostics||{},cur=worker.current||{},recovery=worker.recoveredExceptionFailures||{},dbw=status.dbWriter||{};
   const storageError=String(status.storageReadError||'');
-  const dbLocked=String(d.dbState||'').toUpperCase()==='LOCKED'||!!storageError;
+  const dbLocked=String(dbw.state||'').toUpperCase()==='LOCKED'||String(d.dbState||'').toUpperCase()==='LOCKED'||!!storageError;
   setText('diagRun',d.runId?`#${d.runId}`:(status.run?`#${status.run.id}`:'—'));
   setText('diagOrdinal',d.ordinal?`#${d.ordinal}`:(cur.ordinal?`#${cur.ordinal}`:'—'));
   setText('diagEvent',d.eventKey||cur.event||'—');
@@ -47,8 +47,8 @@ function renderDiagnostics(status){
   setText('diagProgressAge',fmtAge(d.idleSinceProgressSeconds));
   setText('diagDbState',dbLocked?'LOCKED / RETRYING':'READY');
   $('diagDbState').className='diag-value '+(dbLocked?'bad':'ok');
-  setText('diagDbOp',d.dbOperation||'—');
-  setText('diagDbRetries',fmtNum(d.dbLockRetries||0));
+  setText('diagDbOp',dbw.activeOperation||d.pendingDbWrite||d.dbOperation||'—');
+  setText('diagDbRetries',fmtNum(dbw.lockRetries||d.dbLockRetries||0));
   setText('diagParity',`${fmtNum(d.dbAssetCount||0)} DB • ${fmtNum(d.productionMediaCount||0)} production media • ${fmtNum(d.productionPlayableCount||0)} playable`);
   setText('diagProductionState',d.productionPlanState||'—');
   const counts=d.candidateCounts||{};
@@ -60,16 +60,19 @@ function renderDiagnostics(status){
   setText('diagProbe',d.probeAttempt?`${d.probeAttempt}/${d.probeMaxAttempts||2}`:'—');
   setText('diagProbeResult',d.lastProbeResult||worker.lastError||status.browserError||'—');
   setText('diagDiscovery',d.discoveryPass?`${d.discoveryPass}/${d.discoveryMaxPasses||0} • ${d.discoveryResult||'working'}`:'—');
-  const waiting=d.waitingReason||storageError||'No wait condition';
+  const waiting=d.waitingReason||storageError||(dbw.state==='LOCKED'?`Serialized DB writer is retrying ${dbw.activeOperation||'audit commit'}`:'No wait condition');
   setText('diagWaiting',waiting);
-  $('diagWaiting').className='diagnostic-wait '+((d.waitingReason||storageError)?'active':'');
+  $('diagWaiting').className='diagnostic-wait '+((d.waitingReason||storageError||dbw.state==='LOCKED')?'active':'');
   setText('diagBrowser',status.browser||'Chromium not started yet');
   setText('diagOrigin',status.probeUrl||'—');
   setText('diagRecovered',recovery.requeued?`${recovery.requeued} prior exception failure${recovery.requeued===1?'':'s'} requeued`:'None');
   const lanes=$('diagWorkers');
   if(lanes){
     const workers=Array.isArray(status.workers)?status.workers:[];
-    lanes.innerHTML=workers.map(w=>{const wd=w.diagnostics||{},wc=w.current||{},phase=wd.phase||wc.phase||'IDLE',game=wc.game||wd.game||'Waiting',ord=wc.ordinal||wd.ordinal||'';return `<div class="worker-lane ${w.alive?'live':'dead'}"><strong>LANE ${esc(w.lane||wd.workerLane||'?')}</strong><span>${ord?`#${esc(ord)} • `:''}${esc(game)}</span><small>${esc(phase)}${wd.waitingReason?` • ${esc(wd.waitingReason)}`:''}</small></div>`}).join('')||'<div class="worker-lane idle">No server workers reported.</div>';
+    const writerState=String(dbw.state||'IDLE');
+    const writerCard=`<div class="worker-lane ${dbw.alive?'live':'dead'}"><strong>DB WRITER</strong><span>${esc(writerState)} • queue ${esc(dbw.queueDepth||0)}</span><small>${dbw.activeOperation?`${esc(dbw.activeOperation)}${dbw.activeOrdinal?` • #${esc(dbw.activeOrdinal)}`:''}`:`${esc(dbw.completedWrites||0)} commits saved`}</small></div>`;
+    const workerCards=workers.map(w=>{const wd=w.diagnostics||{},wc=w.current||{},phase=wd.phase||wc.phase||'IDLE',game=wc.game||wd.game||'Waiting',ord=wc.ordinal||wd.ordinal||'',pending=wd.pendingDbWrite||'';const detail=pending?`${phase} • SAVE QUEUED: ${pending}`:(wd.waitingReason?`${phase} • ${wd.waitingReason}`:phase);return `<div class="worker-lane ${w.alive?'live':'dead'}"><strong>LANE ${esc(w.lane||wd.workerLane||'?')}</strong><span>${ord?`#${esc(ord)} • `:''}${esc(game)}</span><small>${esc(detail)}</small></div>`}).join('');
+    lanes.innerHTML=writerCard+(workerCards||'<div class="worker-lane idle">No server workers reported.</div>');
   }
   const trace=$('diagTrace');
   if(trace){
