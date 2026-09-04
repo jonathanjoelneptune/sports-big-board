@@ -12,23 +12,23 @@ installer=(root/'cloud/vm/INSTALL-MEDIA-AUDIT.sh').read_text()
 deploy=(root/'cloud/gcp/DEPLOY-FROM-GITHUB.sh').read_text()
 pages=(root/'cloud/github-pages/build_pages.py').read_text()
 
-for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STALE','RESET AUDIT','FULL RECERTIFY','START AUDIT FROM','REHYDRATION JSON','FAILURES CSV','CANONICAL SERVER WORKER']:
+for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STALE','RESET AUDIT','FULL RECERTIFY','START AUDIT FROM','REHYDRATION JSON','FAILURES CSV','CANONICAL AUDIT DIAGNOSTICS']:
     assert token in html,token
 assert 'youtubeProbe' not in html
 assert 'directProbe' not in html
 assert 'youtube.com/iframe_api' not in html
-assert 'ui/media-audit-v550.js?v=5.5.0-r9' in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r10' in html
 assert 'href="media-audit.html"' in index
 
 # Browser is a console only. All control and inventory authority routes to the backend service.
-for token in ['/api/media-audit','/start','/pause','/resume','/stop','/reset','/inventory','/event?event=','/rehydration.json','/failures.csv','Canonical audit results are stored in SQLite']:
+for token in ['/api/media-audit','/start','/pause','/resume','/stop','/reset','/inventory','/event?event=','/rehydration.json','/failures.csv']:
     assert token in js,token
 for forbidden in ['localStorage','YT.Player','directProbe','youtubeProbe','/api/history/media/runtime']:
     assert forbidden not in js,forbidden
 
 # Canonical server-owned audit contract.
 for token in [
-    'AUDIT_GENERATION = "R9"',
+    'AUDIT_GENERATION = "R10"',
     'history_media_audit_run',
     'history_media_audit_queue',
     'history_media_audit_asset_result',
@@ -49,7 +49,7 @@ for token in [
     'queueOrdinal',
     'WAITING_PROBE_INFRASTRUCTURE',
     'event_date DESC',
-    'if not selected["green"] or not selected["extended"]',
+    'if not selected["green"] and not selected["extended"]',
     'if not preferred:',
     'len(selected["blue"]) >= BLUE_FALLBACK_TARGET',
     'association_state=\'ASSIGNED\'',
@@ -80,4 +80,30 @@ assert "'media-audit.html'" in pages
 assert "'media-audit-probe.html'" in pages
 assert 'Canonical Media Probe -> media-audit-probe.html' in pages
 
-print('PASS v5.5.0 R9 canonical backend-owned Media Health Audit + deterministic all-competition queue + canonical playback package')
+# R10: production playback parity, DB-lock recovery, and server diagnostics.
+for token in [
+    'WAITING_DATABASE_LOCK',
+    '_is_db_locked',
+    'recover_exception_failures',
+    'RECOVERED_EXCEPTION_RETRY',
+    'WORKER_EXCEPTION_RETRIES',
+    'DB_LOCK_RETRY_SECONDS',
+    '/api/history/event/media?',
+    '_load_assets_with_production_parity',
+    'productionPlayableCount',
+    'DISCOVERY_PASSES',
+    'Only rehydrate when no preferred recap candidate survives canonical playback',
+    'same ordinal will retry',
+    'recoveredExceptionFailures',
+]:
+    assert token in service,token
+for token in [
+    'diagDbState','diagDbOp','diagDbRetries','diagParity','diagCandidates',
+    'diagCandidate','diagAsset','diagProbe','diagDiscovery','diagWaiting',
+    'diagProgressAge','diagTrace','SERVER TRACE','DATABASE + PRODUCTION PARITY'
+]:
+    assert token in html or token in js,token
+assert "const GENERATION='R10'" in js
+assert 'localStorage' not in js
+
+print('PASS v5.5.0 R10 canonical backend Media Health Audit + production-plan parity + SQLite lock recovery + diagnostic console')

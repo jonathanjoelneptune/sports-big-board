@@ -80,16 +80,58 @@
         <div class="pager"><button id="pagePrev">PREV</button><span id="pageLabel">—</span><button id="pageNext">NEXT</button></div>
       </div>
 
-      <aside class="probe-panel">
-        <div class="panel-head"><div><small>CANONICAL SERVER WORKER</small><strong id="probeGame">Waiting</strong></div><span id="probeState" class="state idle">IDLE</span></div>
-        <div id="probeViewport" class="probe-viewport"><div id="probePlaceholder">Playback certification runs on the Sports Big Board backend, not in this browser.</div></div>
-        <dl class="probe-meta">
-          <div><dt>Asset</dt><dd id="probeAsset">—</dd></div>
-          <div><dt>Authority</dt><dd id="probeTier">—</dd></div>
-          <div><dt>Browser</dt><dd id="probeProvider">—</dd></div>
-          <div><dt>Probe origin</dt><dd id="probeStartup">—</dd></div>
-          <div><dt>Result</dt><dd id="probeResult">—</dd></div>
-        </dl>
+      <aside class="probe-panel diagnostics-panel">
+        <div class="panel-head"><div><small>CANONICAL AUDIT DIAGNOSTICS</small><strong id="probeGame">Waiting</strong></div><span id="probeState" class="state idle">IDLE</span></div>
+        <div id="probeViewport" class="probe-viewport diagnostic-hero">
+          <div id="probePlaceholder">This page is a console only. Canonical playback certification runs on the backend.</div>
+        </div>
+
+        <div id="diagWaiting" class="diagnostic-wait">No wait condition</div>
+
+        <section class="diag-section">
+          <h3>CURRENT OPERATION</h3>
+          <dl class="diag-grid">
+            <div><dt>Run</dt><dd id="diagRun">—</dd></div>
+            <div><dt>Queue</dt><dd id="diagOrdinal">—</dd></div>
+            <div class="wide"><dt>Event</dt><dd id="diagEvent">—</dd></div>
+            <div><dt>Phase</dt><dd id="diagPhase">—</dd></div>
+            <div><dt>In phase</dt><dd id="diagPhaseAge">—</dd></div>
+            <div><dt>Last progress</dt><dd id="diagProgressAge">—</dd></div>
+          </dl>
+        </section>
+
+        <section class="diag-section">
+          <h3>DATABASE + PRODUCTION PARITY</h3>
+          <dl class="diag-grid">
+            <div><dt>DB state</dt><dd id="diagDbState" class="diag-value">—</dd></div>
+            <div><dt>Lock retries</dt><dd id="diagDbRetries">0</dd></div>
+            <div class="wide"><dt>DB operation</dt><dd id="diagDbOp">—</dd></div>
+            <div class="wide"><dt>Media parity</dt><dd id="diagParity">—</dd></div>
+            <div class="wide"><dt>Production plan</dt><dd id="diagProductionState">—</dd></div>
+            <div class="wide"><dt>Recovered</dt><dd id="diagRecovered">—</dd></div>
+          </dl>
+        </section>
+
+        <section class="diag-section">
+          <h3>MEDIA PROBE</h3>
+          <dl class="diag-grid">
+            <div class="wide"><dt>Candidates</dt><dd id="diagCandidates">—</dd></div>
+            <div><dt>Candidate</dt><dd id="diagCandidate">—</dd></div>
+            <div><dt>Probe attempt</dt><dd id="diagProbe">—</dd></div>
+            <div class="wide"><dt>Asset</dt><dd id="diagAsset">—</dd></div>
+            <div class="wide"><dt>Asset key</dt><dd id="diagAssetKey">—</dd></div>
+            <div><dt>Provider</dt><dd id="diagProvider">—</dd></div>
+            <div class="wide"><dt>Probe result</dt><dd id="diagProbeResult">—</dd></div>
+            <div class="wide"><dt>Discovery</dt><dd id="diagDiscovery">—</dd></div>
+            <div class="wide"><dt>Browser</dt><dd id="diagBrowser">—</dd></div>
+            <div class="wide"><dt>Probe origin</dt><dd id="diagOrigin">—</dd></div>
+          </dl>
+        </section>
+
+        <section class="diag-section trace-section">
+          <h3>SERVER TRACE</h3>
+          <div id="diagTrace" class="diag-trace"><div class="empty-trace">No server trace yet.</div></div>
+        </section>
         <div class="probe-log" id="probeLog" aria-live="polite"></div>
       </aside>
     </section>
@@ -99,6 +141,6 @@
     <tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid"></div></td></tr>
   </template>
 
-  <script src="ui/media-audit-v550.js?v=5.5.0-r9"></script>
+  <script src="ui/media-audit-v550.js?v=5.5.0-r10"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const VERSION='5.5.0';
-const GENERATION='R9';
+const GENERATION='R10';
 const $=id=>document.getElementById(id);
 const API=((window.SBB_CONFIG&&window.SBB_CONFIG.apiBase)||location.origin).replace(/\/$/,'')+'/api/media-audit';
 const state={offset:0,limit:100,total:0,rows:[],expanded:new Set(),status:null,busy:false,pollTimer:null,lastInventoryAt:0};
@@ -30,8 +30,47 @@ function renderSummary(status){
   buttonState(run);
   setText('probeGame',worker.current&&worker.current.game||'Waiting');setText('probeState',worker.alive?'SERVER WORKER':'OFFLINE');
   $('probeState').className='state '+(worker.alive?'pass':'fail');
-  setText('probeAsset',worker.current&&worker.current.event||'—');setText('probeTier','Server-owned');setText('probeProvider',status.browser||'Chromium not started yet');setText('probeStartup',status.probeUrl||'—');setText('probeResult',worker.lastError||status.browserError||'Canonical audit results are stored in SQLite');
+  renderDiagnostics(status);
   if(status.newestEligibleDate&&!$('auditStartDate').value)$('auditStartDate').value=status.newestEligibleDate;
+}
+
+function fmtAge(seconds){const s=Math.max(0,Number(seconds||0));if(s<60)return `${s.toFixed(1)}s`;const m=Math.floor(s/60),r=Math.round(s%60);return `${m}m ${r}s`;}
+function renderDiagnostics(status){
+  const worker=status.worker||{},d=worker.diagnostics||{},cur=worker.current||{},recovery=worker.recoveredExceptionFailures||{};
+  const storageError=String(status.storageReadError||'');
+  const dbLocked=String(d.dbState||'').toUpperCase()==='LOCKED'||!!storageError;
+  setText('diagRun',d.runId?`#${d.runId}`:(status.run?`#${status.run.id}`:'—'));
+  setText('diagOrdinal',d.ordinal?`#${d.ordinal}`:(cur.ordinal?`#${cur.ordinal}`:'—'));
+  setText('diagEvent',d.eventKey||cur.event||'—');
+  setText('diagPhase',d.phase||cur.phase||'IDLE');
+  setText('diagPhaseAge',fmtAge(d.phaseAgeSeconds));
+  setText('diagProgressAge',fmtAge(d.idleSinceProgressSeconds));
+  setText('diagDbState',dbLocked?'LOCKED / RETRYING':'READY');
+  $('diagDbState').className='diag-value '+(dbLocked?'bad':'ok');
+  setText('diagDbOp',d.dbOperation||'—');
+  setText('diagDbRetries',fmtNum(d.dbLockRetries||0));
+  setText('diagParity',`${fmtNum(d.dbAssetCount||0)} DB • ${fmtNum(d.productionMediaCount||0)} production media • ${fmtNum(d.productionPlayableCount||0)} playable`);
+  setText('diagProductionState',d.productionPlanState||'—');
+  const counts=d.candidateCounts||{};
+  setText('diagCandidates',`G ${counts.green||0} • P ${counts.extended||0} • Gold ${counts.gold||0} • B ${counts.blue||0}`);
+  setText('diagCandidate',d.candidateTier?`${d.candidateTier} ${d.candidateIndex||0}/${d.candidateCount||0}`:'—');
+  setText('diagAsset',d.assetTitle||d.assetKey||'—');
+  setText('diagAssetKey',d.assetKey||'—');
+  setText('diagProvider',d.assetProvider||'—');
+  setText('diagProbe',d.probeAttempt?`${d.probeAttempt}/${d.probeMaxAttempts||2}`:'—');
+  setText('diagProbeResult',d.lastProbeResult||worker.lastError||status.browserError||'—');
+  setText('diagDiscovery',d.discoveryPass?`${d.discoveryPass}/${d.discoveryMaxPasses||0} • ${d.discoveryResult||'working'}`:'—');
+  const waiting=d.waitingReason||storageError||'No wait condition';
+  setText('diagWaiting',waiting);
+  $('diagWaiting').className='diagnostic-wait '+((d.waitingReason||storageError)?'active':'');
+  setText('diagBrowser',status.browser||'Chromium not started yet');
+  setText('diagOrigin',status.probeUrl||'—');
+  setText('diagRecovered',recovery.requeued?`${recovery.requeued} prior exception failure${recovery.requeued===1?'':'s'} requeued`:'None');
+  const trace=$('diagTrace');
+  if(trace){
+    const rows=(d.trace||[]).slice().reverse();
+    trace.innerHTML=rows.map(r=>`<div class="${esc(String(r.level||'').toLowerCase())}"><time>${esc(fmtDateTime(r.at))}</time><span>${esc(r.message||'')}</span>${r.details?`<small>${esc(JSON.stringify(r.details))}</small>`:''}</div>`).join('')||'<div class="empty-trace">No server trace yet.</div>';
+  }
 }
 
 function tierChip(has,label){return `<span class="tier-chip ${has?'pass':'none'}">${has?'1/1':'—'}</span>`;}

@@ -18,11 +18,12 @@ import threading
 import time
 import traceback
 from contextlib import closing
+from collections import deque
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.error import HTTPError, URLError
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlparse, urlencode
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
@@ -32,7 +33,7 @@ from sbb.event_matcher import team_name as catalog_team_name
 
 APP_ROOT = Path(__file__).resolve().parent
 APP_VERSION = (APP_ROOT / "VERSION").read_text(encoding="utf-8").strip()
-AUDIT_GENERATION = "R9"
+AUDIT_GENERATION = "R10"
 STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 DB_PATH = STATE_DIR / "cache" / "history.sqlite3"
 HOST = os.environ.get("SBB_MEDIA_AUDIT_HOST", "127.0.0.1")
@@ -46,6 +47,11 @@ FRESH_SECONDS = int(os.environ.get("SBB_MEDIA_AUDIT_FRESH_SECONDS", str(30 * 864
 SOFT_RETRIES = max(1, int(os.environ.get("SBB_MEDIA_AUDIT_SOFT_RETRIES", "2")))
 BLUE_FALLBACK_TARGET = max(1, min(5, int(os.environ.get("SBB_MEDIA_AUDIT_BLUE_FALLBACK", "3"))))
 DISCOVERY_RETRY_SECONDS = max(5, int(os.environ.get("SBB_MEDIA_AUDIT_DISCOVERY_RETRY_SECONDS", "20")))
+DISCOVERY_PASSES = max(1, min(5, int(os.environ.get("SBB_MEDIA_AUDIT_DISCOVERY_PASSES", "3"))))
+DISCOVERY_SETTLE_SECONDS = max(0.5, float(os.environ.get("SBB_MEDIA_AUDIT_DISCOVERY_SETTLE_SECONDS", "3")))
+DB_BUSY_TIMEOUT_MS = max(1000, min(60000, int(os.environ.get("SBB_MEDIA_AUDIT_DB_BUSY_TIMEOUT_MS", "10000"))))
+DB_LOCK_RETRY_SECONDS = max(1.0, float(os.environ.get("SBB_MEDIA_AUDIT_DB_LOCK_RETRY_SECONDS", "3")))
+WORKER_EXCEPTION_RETRIES = max(1, min(10, int(os.environ.get("SBB_MEDIA_AUDIT_EXCEPTION_RETRIES", "3"))))
 AUDIT_TIMEZONE = os.environ.get("SBB_MEDIA_AUDIT_TIMEZONE", "America/Los_Angeles").strip() or "America/Los_Angeles"
 try:
     AUDIT_TZ = ZoneInfo(AUDIT_TIMEZONE)
@@ -84,6 +90,13 @@ def _jloads(value, default=None):
 
 def _jdumps(value):
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), default=str)
+
+
+def _is_db_locked(exc) -> bool:
+    if not isinstance(exc, sqlite3.OperationalError):
+        return False
+    msg = str(exc or "").lower()
+    return "database is locked" in msg or "database table is locked" in msg or "database is busy" in msg or "sqlite_busy" in msg
 
 
 def _event_final(event_date: str, final_at: float, event: dict) -> bool:
@@ -180,11 +193,12 @@ class AuditStore:
         self.repo = HistoryRepository(self.db_path)
         self._init_schema()
 
-    def connect(self, timeout=30):
-        conn = sqlite3.connect(self.db_path, timeout=timeout)
+    def connect(self, timeout=None):
+        wait_ms = DB_BUSY_TIMEOUT_MS if timeout is None else max(1000, int(float(timeout) * 1000))
+        conn = sqlite3.connect(self.db_path, timeout=wait_ms / 1000.0)
         conn.row_factory = sqlite3.Row
         conn.execute("PRAGMA foreign_keys=ON")
-        conn.execute("PRAGMA busy_timeout=30000")
+        conn.execute(f"PRAGMA busy_timeout={wait_ms}")
         return conn
 
     def _init_schema(self):
@@ -331,6 +345,83 @@ class AuditStore:
                 )
             conn.commit()
         return {"ok": True, "recertify": bool(recertify)}
+
+    def recover_exception_failures(self):
+        """Requeue R9/R10 worker exceptions without erasing real media outcomes.
+
+        Normal audit outcomes are written as DONE with HEALTHY/DEGRADED/UNPLAYABLE/
+        NO_MEDIA. A queue row in FAILED with no canonical package is therefore an
+        infrastructure/worker exception and is safe to retry in deterministic order.
+        """
+        now = _now()
+        with self.lock, closing(self.connect()) as conn:
+            run = conn.execute(
+                "SELECT * FROM history_media_audit_run ORDER BY id DESC LIMIT 1"
+            ).fetchone()
+            if not run or str(run["state"] or "") not in {"RUNNING", "PAUSED"}:
+                return {"runId": int(run["id"]) if run else 0, "requeued": 0}
+            run_id = int(run["id"])
+            candidates = conn.execute(
+                """SELECT q.ordinal,q.canonical_event_key
+                   FROM history_media_audit_queue q
+                   LEFT JOIN history_media_canonical_package p
+                     ON p.canonical_event_key=q.canonical_event_key
+                   WHERE q.run_id=? AND q.state='FAILED'
+                     AND q.health IN ('FAILED','UNTESTED')
+                     AND p.canonical_event_key IS NULL
+                   ORDER BY q.ordinal""",
+                (run_id,),
+            ).fetchall()
+            packaged = conn.execute(
+                """SELECT q.ordinal,p.health
+                   FROM history_media_audit_queue q
+                   JOIN history_media_canonical_package p
+                     ON p.canonical_event_key=q.canonical_event_key
+                   WHERE q.run_id=? AND q.state='FAILED'
+                     AND q.health IN ('FAILED','UNTESTED')
+                   ORDER BY q.ordinal""",
+                (run_id,),
+            ).fetchall()
+            for row in candidates:
+                conn.execute(
+                    """UPDATE history_media_audit_queue
+                       SET state='PENDING',phase='RECOVERED_EXCEPTION_RETRY',
+                           health='UNTESTED',
+                           note='Recovered infrastructure/worker exception for canonical retry',
+                           started_at=0,completed_at=0
+                       WHERE run_id=? AND ordinal=?""",
+                    (run_id, row["ordinal"]),
+                )
+            for row in packaged:
+                conn.execute(
+                    """UPDATE history_media_audit_queue
+                       SET state='DONE',phase='COMPLETE',health=?,
+                           note='Recovered post-canonicalization worker exception from persisted canonical package',
+                           completed_at=CASE WHEN completed_at>0 THEN completed_at ELSE ? END
+                       WHERE run_id=? AND ordinal=?""",
+                    (row["health"], now, run_id, row["ordinal"]),
+                )
+            # Any ACTIVE row belongs to the old process instance. Make it resumable too.
+            conn.execute(
+                """UPDATE history_media_audit_queue
+                   SET state='PENDING',phase='SERVICE_RESTART_RETRY',
+                       note='Audit service restarted; deterministic retry'
+                   WHERE run_id=? AND state='ACTIVE'""",
+                (run_id,),
+            )
+            processed = int(conn.execute(
+                "SELECT COUNT(*) FROM history_media_audit_queue WHERE run_id=? AND state IN ('DONE','FAILED','SKIPPED')",
+                (run_id,),
+            ).fetchone()[0] or 0)
+            conn.execute(
+                """UPDATE history_media_audit_run
+                   SET processed_games=?,current_ordinal=0,current_event_key='',
+                       current_phase='RECOVERING_QUEUE',updated_at=?,last_error=''
+                   WHERE id=?""",
+                (processed, now, run_id),
+            )
+            conn.commit()
+        return {"runId": run_id, "requeued": len(candidates), "recoveredPackages": len(packaged)}
 
     def run_snapshot(self, run_id=None):
         with closing(self.connect()) as conn:
@@ -637,151 +728,548 @@ class CanonicalAuditWorker(threading.Thread):
         self.stop_event = threading.Event()
         self.current = {}
         self.last_error = ""
+        self.exception_retries = {}
+        self.diag_lock = threading.RLock()
+        self.diagnostics = {
+            "state": "IDLE",
+            "phase": "IDLE",
+            "phaseStartedAt": _now(),
+            "lastProgressAt": _now(),
+            "waitingReason": "",
+            "dbState": "READY",
+            "dbOperation": "",
+            "dbLockRetries": 0,
+            "lastDbLockAt": 0,
+            "lastDbRecoveryAt": 0,
+            "candidateTier": "",
+            "candidateIndex": 0,
+            "candidateCount": 0,
+            "assetKey": "",
+            "assetTitle": "",
+            "assetProvider": "",
+            "probeAttempt": 0,
+            "probeMaxAttempts": SOFT_RETRIES,
+            "lastProbeResult": "",
+            "discoveryPass": 0,
+            "discoveryMaxPasses": DISCOVERY_PASSES,
+            "discoveryResult": "",
+            "dbAssetCount": 0,
+            "productionMediaCount": 0,
+            "productionPlayableCount": 0,
+            "productionPlanState": "",
+            "lastOperation": "",
+        }
+        self.trace = deque(maxlen=120)
 
     def stop(self):
         self.stop_event.set()
         self.probe.close()
 
+    def _trace(self, level, message, **details):
+        row = {"at": _now(), "level": str(level or "INFO").upper(), "message": str(message or "")[:1000]}
+        if details:
+            row["details"] = details
+        with self.diag_lock:
+            self.trace.append(row)
+
+    def _diag(self, phase=None, progress=False, **patch):
+        now = _now()
+        with self.diag_lock:
+            if phase is not None and str(phase) != str(self.diagnostics.get("phase") or ""):
+                self.diagnostics["phase"] = str(phase)
+                self.diagnostics["phaseStartedAt"] = now
+            if progress:
+                self.diagnostics["lastProgressAt"] = now
+            for key, value in patch.items():
+                self.diagnostics[key] = value
+
+    def snapshot(self):
+        with self.diag_lock:
+            data = dict(self.diagnostics)
+            data["trace"] = list(self.trace)[-80:]
+        data["phaseAgeSeconds"] = max(0, round(_now() - float(data.get("phaseStartedAt") or _now()), 1))
+        data["idleSinceProgressSeconds"] = max(0, round(_now() - float(data.get("lastProgressAt") or _now()), 1))
+        return data
+
+    def _db_op(self, operation):
+        self._diag(dbOperation=operation, lastOperation=operation)
+
+    def _db_recovered(self):
+        snap = self.snapshot()
+        if snap.get("dbState") == "LOCKED":
+            if _is_db_locked(sqlite3.OperationalError(self.last_error)):
+                self.last_error = ""
+            self._diag(dbState="READY", waitingReason="", lastDbRecoveryAt=_now(), progress=True)
+            self._trace("INFO", "SQLite write lock recovered; retrying same queue ordinal")
+        else:
+            self._diag(dbState="READY")
+
     def run(self):
         while not self.stop_event.is_set():
             try:
+                self._db_op("read active run")
                 run = self.store.active_run()
+                self._db_recovered()
                 if not run or run["state"] not in {"RUNNING", "PAUSED"}:
-                    time.sleep(1.0); continue
+                    self._diag(state="IDLE" if not run else str(run["state"]), phase="IDLE" if not run else str(run["state"]), waitingReason="")
+                    time.sleep(1.0)
+                    continue
                 if run["state"] == "PAUSED":
-                    time.sleep(1.0); continue
+                    self._diag(state="PAUSED", phase="PAUSED", waitingReason="Operator paused canonical audit")
+                    time.sleep(1.0)
+                    continue
+
+                self._db_op("claim next deterministic queue ordinal")
                 item = self.store.next_queue_item(int(run["id"]))
+                self._db_recovered()
                 if not item:
-                    self.store.complete_run_if_done(int(run["id"])); time.sleep(1.0); continue
-                self.current = {"runId": run["id"], "ordinal": item["ordinal"], "event": item["canonical_event_key"], "game": item["game"], "phase": item["phase"]}
+                    self._db_op("complete run if queue empty")
+                    self.store.complete_run_if_done(int(run["id"]))
+                    self._diag(state="RUNNING", phase="QUEUE_EMPTY", progress=True)
+                    time.sleep(1.0)
+                    continue
+
+                self.current = {
+                    "runId": run["id"], "ordinal": item["ordinal"], "event": item["canonical_event_key"],
+                    "game": item["game"], "phase": item["phase"], "league": item["league"], "eventId": item["event_id"],
+                }
+                self._diag(
+                    state="RUNNING", phase=str(item.get("phase") or "STARTING"), progress=True,
+                    waitingReason="", ordinal=int(item["ordinal"]), runId=int(run["id"]),
+                    eventKey=item["canonical_event_key"], game=item["game"], league=item["league"],
+                    candidateTier="", candidateIndex=0, candidateCount=0, assetKey="", assetTitle="", assetProvider="",
+                    probeAttempt=0, lastProbeResult="", discoveryPass=0, discoveryResult="",
+                )
+                self._trace("INFO", f"Queue #{item['ordinal']} started: {item['game']}", league=item["league"], event=item["canonical_event_key"])
+
                 try:
                     result = self.audit_event(run, item)
-                    current_run=self.store.run_snapshot(int(run["id"]))
+                    current_run = self.store.run_snapshot(int(run["id"]))
+                    self._db_recovered()
                     if current_run and current_run.get("state") != "STOPPED":
-                        self.store.finish_queue_item(run["id"], item["ordinal"], result.get("health", "FAILED"), result.get("note", ""), failed=bool(result.get("failed")))
+                        self._db_op("finish queue item")
+                        self.store.finish_queue_item(
+                            run["id"], item["ordinal"], result.get("health", "FAILED"),
+                            result.get("note", ""), failed=bool(result.get("failed"))
+                        )
+                        self._db_recovered()
+                    self.exception_retries.pop(item["canonical_event_key"], None)
+                    self._diag(progress=True, lastResult=result.get("note", ""), waitingReason="")
+                    self._trace("INFO", f"Queue #{item['ordinal']} complete: {result.get('health','UNKNOWN')}", note=result.get("note", ""))
+                except sqlite3.OperationalError as exc:
+                    if not _is_db_locked(exc):
+                        raise
+                    msg = f"{type(exc).__name__}: {exc}"
+                    self.last_error = msg
+                    snap = self.snapshot()
+                    retries = int(snap.get("dbLockRetries") or 0) + 1
+                    self._diag(
+                        state="RUNNING", phase="WAITING_DATABASE_LOCK", dbState="LOCKED",
+                        dbLockRetries=retries, lastDbLockAt=_now(), waitingReason=msg,
+                        lastProbeResult=msg,
+                    )
+                    self._trace(
+                        "WARN", f"SQLite busy on queue #{item['ordinal']}; same ordinal will retry",
+                        operation=snap.get("dbOperation") or "", retry=retries, event=item["canonical_event_key"]
+                    )
+                    # Do not mark media or queue item failed. Deterministic next_queue_item
+                    # will return this same ACTIVE/PENDING lowest ordinal after the lock clears.
+                    time.sleep(DB_LOCK_RETRY_SECONDS)
+                    continue
                 except Exception as exc:
                     msg = f"{type(exc).__name__}: {exc}"
                     self.last_error = msg
+                    key = item["canonical_event_key"]
+                    attempt = int(self.exception_retries.get(key) or 0) + 1
+                    self.exception_retries[key] = attempt
                     traceback.print_exc()
-                    current_run=self.store.run_snapshot(int(run["id"]))
+                    if attempt <= WORKER_EXCEPTION_RETRIES:
+                        self._diag(
+                            state="RUNNING", phase="RETRY_WORKER_EXCEPTION", waitingReason=msg,
+                            exceptionRetry=attempt, exceptionRetryMax=WORKER_EXCEPTION_RETRIES,
+                        )
+                        self._trace(
+                            "WARN", f"Worker exception on queue #{item['ordinal']}; retrying same ordinal",
+                            error=msg, retry=attempt, maxRetries=WORKER_EXCEPTION_RETRIES
+                        )
+                        try:
+                            self._db_op("persist worker exception retry phase")
+                            self.store.queue_phase(
+                                run["id"], item["ordinal"], "RETRY_WORKER_EXCEPTION",
+                                f"{msg} • retry {attempt}/{WORKER_EXCEPTION_RETRIES}"
+                            )
+                            self._db_recovered()
+                        except sqlite3.OperationalError as db_exc:
+                            if _is_db_locked(db_exc):
+                                self._diag(
+                                    phase="WAITING_DATABASE_LOCK", dbState="LOCKED",
+                                    dbLockRetries=int(self.snapshot().get("dbLockRetries") or 0)+1,
+                                    lastDbLockAt=_now(), waitingReason=f"{type(db_exc).__name__}: {db_exc}"
+                                )
+                            else:
+                                raise
+                        time.sleep(min(10.0, 1.5 * attempt))
+                        continue
+
+                    current_run = self.store.run_snapshot(int(run["id"]))
                     if current_run and current_run.get("state") != "STOPPED":
-                        self.store.finish_queue_item(run["id"], item["ordinal"], "FAILED", msg, failed=True)
+                        self._db_op("terminal worker exception after bounded retries")
+                        self.store.finish_queue_item(
+                            run["id"], item["ordinal"], "FAILED",
+                            f"{msg} • exhausted {WORKER_EXCEPTION_RETRIES} retries", failed=True
+                        )
+                    self._trace("ERROR", f"Queue #{item['ordinal']} terminal worker exception", error=msg)
                 finally:
-                    self.current={}
+                    self.current = {}
+
+                self._db_op("complete run if done")
                 self.store.complete_run_if_done(int(run["id"]))
+                self._db_recovered()
+            except sqlite3.OperationalError as exc:
+                if _is_db_locked(exc):
+                    msg = f"{type(exc).__name__}: {exc}"
+                    self.last_error = msg
+                    retries = int(self.snapshot().get("dbLockRetries") or 0) + 1
+                    self._diag(
+                        state="RUNNING", phase="WAITING_DATABASE_LOCK", dbState="LOCKED",
+                        dbLockRetries=retries, lastDbLockAt=_now(), waitingReason=msg
+                    )
+                    self._trace("WARN", "SQLite busy outside event transaction; worker will retry", retry=retries)
+                    time.sleep(DB_LOCK_RETRY_SECONDS)
+                    continue
+                self.last_error = f"{type(exc).__name__}: {exc}"
+                traceback.print_exc()
+                time.sleep(3)
             except Exception as exc:
                 self.last_error = f"{type(exc).__name__}: {exc}"
-                traceback.print_exc(); time.sleep(3)
+                self._diag(state="ERROR", phase="WORKER_LOOP_ERROR", waitingReason=self.last_error)
+                self._trace("ERROR", "Worker loop error", error=self.last_error)
+                traceback.print_exc()
+                time.sleep(3)
 
-    def _probe_candidate(self, run_id, event_key, asset):
-        last = None; media_attempt=0
+    def _probe_candidate(self, run_id, event_key, asset, *, tier="", index=0, count=0):
+        last = None
+        media_attempt = 0
         while not self.stop_event.is_set():
-            current=self.store.run_snapshot(run_id)
-            if not current or current.get("state")=="STOPPED":
-                return {"ok":False,"hard":False,"reason":"RUN_STOPPED"}
-            if current.get("state")=="PAUSED":
-                time.sleep(1); continue
-            result = self.probe.probe(asset); reason=str(result.get("reason") or "")
+            self._db_op("read run state before media probe")
+            current = self.store.run_snapshot(run_id)
+            self._db_recovered()
+            if not current or current.get("state") == "STOPPED":
+                return {"ok": False, "hard": False, "reason": "RUN_STOPPED"}
+            if current.get("state") == "PAUSED":
+                self._diag(phase="PAUSED", waitingReason="Operator paused canonical audit")
+                time.sleep(1)
+                continue
+
+            self._diag(
+                candidateTier=str(tier or asset.get("tier") or "").upper(),
+                candidateIndex=int(index or 0), candidateCount=int(count or 0),
+                assetKey=asset.get("assetKey") or "", assetTitle=asset.get("title") or "",
+                assetProvider=asset.get("provider") or "", probeAttempt=media_attempt + 1,
+                probeMaxAttempts=SOFT_RETRIES, waitingReason=""
+            )
+            result = self.probe.probe(asset)
+            reason = str(result.get("reason") or "")
+            self._diag(lastProbeResult=reason or ("PLAYING_TIME_ADVANCED" if result.get("ok") else "UNKNOWN"))
             if reason in INFRA_FAILURES:
-                self.store.queue_phase(run_id,int(current.get("current_ordinal") or 0),"WAITING_PROBE_INFRASTRUCTURE",reason)
-                time.sleep(DISCOVERY_RETRY_SECONDS); continue
+                self._diag(phase="WAITING_PROBE_INFRASTRUCTURE", waitingReason=reason)
+                self._trace("WARN", "Playback probe infrastructure unavailable; media not failed", reason=reason, asset=asset.get("assetKey"))
+                try:
+                    self._db_op("persist probe infrastructure wait phase")
+                    self.store.queue_phase(
+                        run_id, int(current.get("current_ordinal") or 0),
+                        "WAITING_PROBE_INFRASTRUCTURE", reason
+                    )
+                    self._db_recovered()
+                except sqlite3.OperationalError:
+                    pass
+                time.sleep(DISCOVERY_RETRY_SECONDS)
+                continue
+
             media_attempt += 1
+            self._db_op("persist canonical browser probe result")
             self.store.record_probe(run_id, event_key, asset, media_attempt, result, self.probe.browser)
+            self._db_recovered()
+            self._trace(
+                "INFO" if result.get("ok") else "WARN",
+                f"{str(tier or asset.get('tier') or '').upper()} probe {'PASS' if result.get('ok') else 'FAIL'}",
+                asset=asset.get("assetKey"), provider=asset.get("provider"), reason=reason, attempt=media_attempt
+            )
             last = result
-            if result.get("ok") or result.get("hard") or media_attempt>=SOFT_RETRIES:
+            if result.get("ok") or result.get("hard") or media_attempt >= SOFT_RETRIES:
                 break
             time.sleep(1.0)
         return last or {"ok": False, "reason": "NO_RESULT"}
 
-    def _select_one(self, run_id, event_key, candidates):
+    def _select_one(self, run_id, event_key, candidates, *, tier="", tested=None):
         candidates = list(candidates)
+        tested = tested if tested is not None else set()
+
         def runtime_rank(a):
-            state=str(a.get("runtimeState") or "").upper()
-            if state=="PLAYED": return 0
-            if state=="FAILED": return 2
+            state = str(a.get("runtimeState") or "").upper()
+            if state == "PLAYED":
+                return 0
+            if state == "FAILED":
+                return 2
             return 1
+
         candidates.sort(key=lambda a: (
             runtime_rank(a),
             0 if str(a.get("validationState") or "").upper() == "VERIFIED" else 1,
             -float(a.get("durationSeconds") or 0), str(a.get("assetKey")),
         ))
-        for asset in candidates:
-            result = self._probe_candidate(run_id, event_key, asset)
+        available = [a for a in candidates if a.get("assetKey") not in tested]
+        for idx, asset in enumerate(available, 1):
+            tested.add(asset.get("assetKey"))
+            result = self._probe_candidate(
+                run_id, event_key, asset, tier=tier or asset.get("tier") or "",
+                index=idx, count=len(available)
+            )
             if result.get("ok"):
                 return asset
         return None
 
-    def _discover_preferred(self, run, item):
+    @staticmethod
+    def _plan_candidate(item):
+        if not isinstance(item, dict):
+            return None
+        key = str(item.get("assetKey") or HistoryRepository.asset_key_for(item) or "")
+        if not key:
+            return None
+        url = _asset_url(item, str(item.get("canonicalUrl") or ""))
+        return {
+            "assetKey": key,
+            "provider": str(item.get("provider") or item.get("source") or ""),
+            "providerMediaId": str(item.get("providerMediaId") or item.get("videoId") or item.get("youtubeId") or ""),
+            "title": str(item.get("title") or item.get("name") or key),
+            "durationSeconds": (lambda v: (float(v) if str(v or "").replace(".", "", 1).isdigit() else 0.0))(item.get("durationSeconds") or item.get("duration") or 0),
+            "validationState": str(item.get("validationState") or ""),
+            "runtimeState": str(item.get("runtimeCatalogState") or item.get("runtimeState") or ""),
+            "runtimeSuccessAt": float(item.get("runtimeSuccessAt") or 0),
+            "runtimeFailureAt": float(item.get("runtimeFailureAt") or 0),
+            "runtimeFailureReason": str(item.get("runtimeFailureReason") or ""),
+            "associationState": "ASSIGNED",
+            "associationMethod": str(item.get("associationMethod") or "PRODUCTION_PLAYBACK_PLAN"),
+            "url": url,
+            "youtubeId": _youtube_id(item, url),
+            "tier": _tier(item),
+            "item": item,
+        }
+
+    def _production_plan(self, item):
+        query = urlencode({
+            "date": item["event_date"], "league": str(item["league"] or "").upper(),
+            "eventId": item["event_id"],
+        })
+        req = Request(
+            MAIN_API + "/api/history/event/media?" + query,
+            headers={"User-Agent": f"SportsBigBoard-CanonicalAudit/{APP_VERSION}-{AUDIT_GENERATION}"}
+        )
+        try:
+            with urlopen(req, timeout=30) as resp:
+                payload = json.loads(resp.read().decode("utf-8"))
+            plan = payload.get("plan") if isinstance(payload, dict) else {}
+            return {"ok": bool(payload.get("ok", True)), "plan": plan or {}, "reason": ""}
+        except HTTPError as exc:
+            try:
+                payload = json.loads(exc.read().decode("utf-8"))
+            except Exception:
+                payload = {}
+            # Special Events can still be served directly from normalized SQLite
+            # even when the legacy history endpoint rejects their league identifier.
+            return {"ok": False, "plan": {}, "reason": str(payload.get("error") or f"HTTP_{exc.code}")}
+        except Exception as exc:
+            return {"ok": False, "plan": {}, "reason": f"{type(exc).__name__}: {exc}"}
+
+    def _load_assets_with_production_parity(self, item):
+        self._db_op("read normalized event media")
+        direct = self.store.event_assets(item["canonical_event_key"])
+        self._db_recovered()
+        self._diag(dbAssetCount=len(direct))
+
+        self._diag(lastOperation="load production playback plan")
+        prod = self._production_plan(item)
+        plan = prod.get("plan") or {}
+        media = plan.get("media") or []
+        playable = plan.get("playable") or []
+        self._diag(
+            productionMediaCount=len(media), productionPlayableCount=len(playable),
+            productionPlanState="OK" if prod.get("ok") else (prod.get("reason") or "UNAVAILABLE")
+        )
+
+        merged = {str(a.get("assetKey") or ""): dict(a) for a in direct if a.get("assetKey")}
+        for raw in media:
+            candidate = self._plan_candidate(raw)
+            if not candidate:
+                continue
+            key = candidate["assetKey"]
+            if key in merged:
+                # Production plan carries browser-facing transport fields. Keep the
+                # normalized DB relationship metadata while filling any missing transport.
+                for field in ("url", "youtubeId", "title", "tier", "provider", "validationState", "runtimeState"):
+                    if not merged[key].get(field) and candidate.get(field):
+                        merged[key][field] = candidate[field]
+            else:
+                merged[key] = candidate
+
+        self._trace(
+            "INFO", "Production-plan parity loaded",
+            event=item["canonical_event_key"], dbAssets=len(direct),
+            productionMedia=len(media), productionPlayable=len(playable),
+            productionState=self.snapshot().get("productionPlanState")
+        )
+        return list(merged.values()), prod
+
+    def _discover_preferred(self, run, item, pass_number=1):
         league = str(item["league"] or "").upper()
-        # Legacy discovery endpoint currently supports built-in history leagues only.
-        body = _jdumps({"date": item["event_date"], "league": league, "eventId": item["event_id"], "force": True}).encode("utf-8")
-        req = Request(MAIN_API + "/api/history/event/discover", data=body, method="POST", headers={"Content-Type": "application/json", "User-Agent": f"SportsBigBoard-CanonicalAudit/{APP_VERSION}-{AUDIT_GENERATION}"})
+        body = _jdumps({
+            "date": item["event_date"], "league": league,
+            "eventId": item["event_id"], "force": True
+        }).encode("utf-8")
+        req = Request(
+            MAIN_API + "/api/history/event/discover", data=body, method="POST",
+            headers={
+                "Content-Type": "application/json",
+                "User-Agent": f"SportsBigBoard-CanonicalAudit/{APP_VERSION}-{AUDIT_GENERATION}"
+            }
+        )
+        self._diag(
+            discoveryPass=pass_number, discoveryMaxPasses=DISCOVERY_PASSES,
+            discoveryResult="REQUESTING", waitingReason=""
+        )
+        self._trace("INFO", f"Targeted discovery pass {pass_number}/{DISCOVERY_PASSES}", event=item["canonical_event_key"])
         while not self.stop_event.is_set():
+            self._db_op("read run state before targeted discovery")
             current = self.store.active_run()
+            self._db_recovered()
             if not current or current["state"] in {"STOPPED"}:
                 return {"ok": False, "reason": "RUN_STOPPED"}
             if current["state"] == "PAUSED":
-                time.sleep(1); continue
+                self._diag(phase="PAUSED", waitingReason="Operator paused canonical audit")
+                time.sleep(1)
+                continue
             try:
                 with urlopen(req, timeout=120) as resp:
                     payload = json.loads(resp.read().decode("utf-8"))
-                return {"ok": bool(payload.get("ok")), "payload": payload, "reason": str(payload.get("error") or "")}
+                result = {"ok": bool(payload.get("ok")), "payload": payload, "reason": str(payload.get("error") or "")}
+                self._diag(discoveryResult="OK" if result["ok"] else (result["reason"] or "EMPTY"))
+                return result
             except HTTPError as exc:
-                try: payload = json.loads(exc.read().decode("utf-8"))
-                except Exception: payload = {}
+                try:
+                    payload = json.loads(exc.read().decode("utf-8"))
+                except Exception:
+                    payload = {}
                 if exc.code == 423 or payload.get("error") == "SEARCH_PAUSED_BY_PRIORITY":
-                    self.store.queue_phase(run["id"], item["ordinal"], "WAITING_DISCOVERY_PRIORITY", "Playback Priority is active; deterministic queue is waiting on this same event.")
-                    time.sleep(DISCOVERY_RETRY_SECONDS); continue
+                    note = "Playback Priority is active; deterministic queue is waiting on this same event."
+                    self._diag(phase="WAITING_DISCOVERY_PRIORITY", waitingReason=note, discoveryResult="PRIORITY_BLOCKED")
+                    try:
+                        self._db_op("persist discovery priority wait")
+                        self.store.queue_phase(run["id"], item["ordinal"], "WAITING_DISCOVERY_PRIORITY", note)
+                        self._db_recovered()
+                    except sqlite3.OperationalError:
+                        pass
+                    time.sleep(DISCOVERY_RETRY_SECONDS)
+                    continue
+                reason = str(payload.get("error") or f"HTTP_{exc.code}")
+                self._diag(discoveryResult=reason)
                 if exc.code in {400, 404}:
-                    return {"ok": False, "reason": str(payload.get("error") or f"HTTP_{exc.code}")}
+                    return {"ok": False, "reason": reason}
                 time.sleep(DISCOVERY_RETRY_SECONDS)
-            except (URLError, TimeoutError):
+            except (URLError, TimeoutError) as exc:
+                self._diag(discoveryResult=f"{type(exc).__name__}", waitingReason="Discovery transport retry")
                 time.sleep(DISCOVERY_RETRY_SECONDS)
         return {"ok": False, "reason": "WORKER_STOPPED"}
 
     def audit_event(self, run, item):
-        run_id = int(run["id"]); event_key = item["canonical_event_key"]
+        run_id = int(run["id"])
+        event_key = item["canonical_event_key"]
+        self._db_op("set LOAD_MEDIA phase")
         self.store.queue_phase(run_id, item["ordinal"], "LOAD_MEDIA")
-        assets = self.store.event_assets(event_key)
+        self._db_recovered()
+        self._diag(phase="LOAD_MEDIA", progress=True)
+
+        assets, production = self._load_assets_with_production_parity(item)
         buckets = {tier: [a for a in assets if a["tier"] == tier] for tier in ("gold", "green", "extended", "blue")}
+        self._diag(
+            candidateCounts={k: len(v) for k, v in buckets.items()},
+            lastOperation="classify production + normalized candidates"
+        )
         selected = {"gold": None, "green": None, "extended": None, "blue": []}
+        tested = set()
 
         # Supplemental Gold is bounded to one canonical candidate.
         if buckets["gold"]:
+            self._db_op("set TEST_GOLD phase")
             self.store.queue_phase(run_id, item["ordinal"], "TEST_GOLD")
-            selected["gold"] = self._select_one(run_id, event_key, buckets["gold"])
+            self._db_recovered()
+            self._diag(phase="TEST_GOLD")
+            selected["gold"] = self._select_one(run_id, event_key, buckets["gold"], tier="GOLD", tested=tested)
 
+        # Verify both preferred tiers when candidates already exist.
         for tier in ("green", "extended"):
             if buckets[tier]:
-                self.store.queue_phase(run_id, item["ordinal"], "TEST_" + ("PURPLE" if tier == "extended" else tier.upper()))
-                selected[tier] = self._select_one(run_id, event_key, buckets[tier])
+                phase = "TEST_PURPLE" if tier == "extended" else "TEST_GREEN"
+                self._db_op(f"set {phase} phase")
+                self.store.queue_phase(run_id, item["ordinal"], phase)
+                self._db_recovered()
+                self._diag(phase=phase)
+                selected[tier] = self._select_one(
+                    run_id, event_key, buckets[tier],
+                    tier="PURPLE" if tier == "extended" else "GREEN", tested=tested
+                )
 
-        # If either preferred tier is absent/failed, rehydrate this exact event before Blue.
-        if not selected["green"] or not selected["extended"]:
-            self.store.queue_phase(run_id, item["ordinal"], "TARGETED_REHYDRATION")
-            discovery = self._discover_preferred(run, item)
-            if discovery.get("ok"):
-                assets = self.store.event_assets(event_key)
+        # R10 policy: one healthy Green OR Purple is enough preferred recap coverage.
+        # Only rehydrate when no preferred recap candidate survives canonical playback.
+        discovery_reason = ""
+        if not selected["green"] and not selected["extended"]:
+            for pass_number in range(1, DISCOVERY_PASSES + 1):
+                phase = "TARGETED_REHYDRATION"
+                self._db_op("set TARGETED_REHYDRATION phase")
+                self.store.queue_phase(run_id, item["ordinal"], phase)
+                self._db_recovered()
+                self._diag(phase=phase)
+                discovery = self._discover_preferred(run, item, pass_number)
+                discovery_reason = discovery.get("reason") or ""
+                if not discovery.get("ok") and discovery_reason in {"BAD_HISTORY_EVENT", "HISTORY_EVENT_NOT_FOUND"}:
+                    break
+                if DISCOVERY_SETTLE_SECONDS:
+                    self._diag(phase="DISCOVERY_SETTLE", waitingReason=f"Waiting {DISCOVERY_SETTLE_SECONDS:g}s for production catalog commit")
+                    time.sleep(DISCOVERY_SETTLE_SECONDS)
+
+                assets, production = self._load_assets_with_production_parity(item)
                 new_buckets = {tier: [a for a in assets if a["tier"] == tier] for tier in ("green", "extended", "blue", "gold")}
+                buckets = new_buckets
                 for tier in ("green", "extended"):
                     if selected[tier]:
                         continue
-                    already = {a["assetKey"] for a in buckets.get(tier, [])}
-                    fresh = [a for a in new_buckets[tier] if a["assetKey"] not in already] or new_buckets[tier]
+                    fresh = [a for a in new_buckets[tier] if a.get("assetKey") not in tested]
                     if fresh:
-                        self.store.queue_phase(run_id, item["ordinal"], "RETEST_" + ("PURPLE" if tier == "extended" else tier.upper()))
-                        selected[tier] = self._select_one(run_id, event_key, fresh)
-                buckets = new_buckets
-            else:
-                discovery_reason = discovery.get("reason") or "DISCOVERY_UNAVAILABLE"
-        else:
-            discovery_reason = ""
+                        phase = "RETEST_PURPLE" if tier == "extended" else "RETEST_GREEN"
+                        self._db_op(f"set {phase} phase")
+                        self.store.queue_phase(run_id, item["ordinal"], phase)
+                        self._db_recovered()
+                        self._diag(phase=phase)
+                        selected[tier] = self._select_one(
+                            run_id, event_key, fresh,
+                            tier="PURPLE" if tier == "extended" else "GREEN", tested=tested
+                        )
+                if selected["green"] or selected["extended"]:
+                    break
 
         preferred = bool(selected["green"] or selected["extended"])
         if not preferred:
+            self._db_op("set BLUE_FALLBACK phase")
             self.store.queue_phase(run_id, item["ordinal"], "BLUE_FALLBACK")
-            for asset in sorted(buckets.get("blue", []), key=lambda a: (-float(a.get("durationSeconds") or 0), str(a.get("assetKey")))):
-                result = self._probe_candidate(run_id, event_key, asset)
+            self._db_recovered()
+            self._diag(phase="BLUE_FALLBACK")
+            blue_candidates = [a for a in buckets.get("blue", []) if a.get("assetKey") not in tested]
+            blue_candidates.sort(key=lambda a: (-float(a.get("durationSeconds") or 0), str(a.get("assetKey"))))
+            for idx, asset in enumerate(blue_candidates, 1):
+                tested.add(asset.get("assetKey"))
+                result = self._probe_candidate(
+                    run_id, event_key, asset, tier="BLUE",
+                    index=idx, count=len(blue_candidates)
+                )
                 if result.get("ok"):
                     selected["blue"].append(asset)
                     if len(selected["blue"]) >= BLUE_FALLBACK_TARGET:
@@ -789,8 +1277,9 @@ class CanonicalAuditWorker(threading.Thread):
 
         if preferred:
             health = "HEALTHY"
-            rehydration_state = "" if selected["green"] and selected["extended"] else "PREFERRED_PARTIAL"
-            rehydration_reason = "" if not rehydration_state else "One preferred tier remains unavailable after targeted discovery"
+            # Missing the second preferred tier is informational, not a repair blocker.
+            rehydration_state = ""
+            rehydration_reason = ""
         elif selected["blue"] or selected["gold"]:
             health = "DEGRADED"
             rehydration_state = "PREFERRED_MEDIA_REQUIRED"
@@ -803,21 +1292,38 @@ class CanonicalAuditWorker(threading.Thread):
             health = "NO_MEDIA"
             rehydration_state = "PREFERRED_MEDIA_REQUIRED"
             rehydration_reason = "No assigned GAME media exists"
-        if not preferred and 'discovery_reason' in locals() and discovery_reason:
+        if not preferred and discovery_reason:
             rehydration_reason = f"{rehydration_reason}; discovery={discovery_reason}".strip("; ")
 
-        current_run=self.store.run_snapshot(run_id)
-        if not current_run or current_run.get("state")=="STOPPED":
-            return {"health":"SKIPPED","note":"RUN_STOPPED_BEFORE_CANONICALIZE"}
+        current_run = self.store.run_snapshot(run_id)
+        self._db_recovered()
+        if not current_run or current_run.get("state") == "STOPPED":
+            return {"health": "SKIPPED", "note": "RUN_STOPPED_BEFORE_CANONICALIZE"}
+
+        self._db_op("canonicalize shared event-media package")
         self.store.queue_phase(run_id, item["ordinal"], "CANONICALIZE")
-        package = self.store.canonicalize(run_id, item, selected, health, rehydration_state, rehydration_reason)
-        return {"health": health, "note": f"canonical package: green={bool(selected['green'])} purple={bool(selected['extended'])} gold={bool(selected['gold'])} blue={len(selected['blue'])} • {rehydration_state or 'COMPLETE'}", "package": package}
+        self._db_recovered()
+        self._diag(phase="CANONICALIZE")
+        package = self.store.canonicalize(
+            run_id, item, selected, health, rehydration_state, rehydration_reason
+        )
+        self._db_recovered()
+        note = (
+            f"canonical package: green={bool(selected['green'])} "
+            f"purple={bool(selected['extended'])} gold={bool(selected['gold'])} "
+            f"blue={len(selected['blue'])} • productionMedia={self.snapshot().get('productionMediaCount',0)} "
+            f"productionPlayable={self.snapshot().get('productionPlayableCount',0)}"
+        )
+        return {"health": health, "note": note, "package": package}
 
 
 STORE = AuditStore(DB_PATH)
+RECOVERY = STORE.recover_exception_failures()
 PROBE = BrowserProbe()
 WORKER = CanonicalAuditWorker(STORE, PROBE)
 WORKER.start()
+if RECOVERY.get("requeued"):
+    WORKER._trace("WARN", f"Recovered {RECOVERY['requeued']} prior worker/infrastructure failures for deterministic retry", runId=RECOVERY.get("runId"))
 
 
 def _json(handler, payload, status=200):
@@ -858,7 +1364,30 @@ class Handler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path); qs = parse_qs(parsed.query)
         try:
             if parsed.path == "/status":
-                return _json(self, {"ok": True, "version": APP_VERSION, "generation": AUDIT_GENERATION, "canonical": True, "browserOwned": False, "probeUrl": PROBE_URL, "timezone": AUDIT_TIMEZONE, "browser": PROBE.browser, "browserError": PROBE.last_error, "worker": {"alive": WORKER.is_alive(), "current": WORKER.current, "lastError": WORKER.last_error}, "run": STORE.run_snapshot(), "summary": STORE.summary(), "newestEligibleDate": STORE.newest_eligible_date()})
+                storage_error = ""
+                run_snapshot = None
+                summary = {}
+                newest = ""
+                try:
+                    run_snapshot = STORE.run_snapshot()
+                    summary = STORE.summary()
+                    newest = STORE.newest_eligible_date()
+                except sqlite3.OperationalError as exc:
+                    if not _is_db_locked(exc):
+                        raise
+                    storage_error = f"{type(exc).__name__}: {exc}"
+                return _json(self, {
+                    "ok": True, "version": APP_VERSION, "generation": AUDIT_GENERATION,
+                    "canonical": True, "browserOwned": False, "probeUrl": PROBE_URL,
+                    "timezone": AUDIT_TIMEZONE, "browser": PROBE.browser,
+                    "browserError": PROBE.last_error, "storageReadError": storage_error,
+                    "worker": {
+                        "alive": WORKER.is_alive(), "current": WORKER.current,
+                        "lastError": WORKER.last_error, "diagnostics": WORKER.snapshot(),
+                        "recoveredExceptionFailures": RECOVERY
+                    },
+                    "run": run_snapshot, "summary": summary, "newestEligibleDate": newest
+                })
             if parsed.path == "/inventory":
                 return _json(self, {"ok": True, **STORE.inventory(limit=(qs.get("limit") or [100])[-1], offset=(qs.get("offset") or [0])[-1], league=(qs.get("league") or [""])[-1], health=(qs.get("health") or [""])[-1], search=(qs.get("search") or [""])[-1])})
             if parsed.path == "/event":

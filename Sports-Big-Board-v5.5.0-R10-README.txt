@@ -1,0 +1,55 @@
+Sports Big Board v5.5.0 R10 — Canonical Audit Parity + DB Lock Recovery + Diagnostics
+
+This is an audit-only refinement. The site VERSION remains 5.5.0.
+
+ROOT CAUSES ADDRESSED
+1. Queue rows that suffered a worker/infrastructure exception were being marked
+   terminal FAILED, even though that is not evidence that the game's media failed.
+2. The separate canonical audit process can contend with the main Sports Big Board
+   backend for SQLite's single writer. R9 converted a SQLite 'database is locked'
+   exception into a terminal queue failure.
+3. The audit needed an explicit parity check against the same production historical
+   media plan used by a normal Sports Big Board game click.
+4. The audit console did not expose enough state to distinguish probing, discovery,
+   SQLite contention, or a genuine media failure.
+
+R10 BEHAVIOR
+- SQLite BUSY/LOCKED is WAITING_DATABASE_LOCK, never a media failure.
+- The same lowest queue ordinal retries after the writer lock clears.
+- Prior R9 queue rows that FAILED from a worker exception and have no canonical
+  package are automatically requeued when the R10 audit service starts.
+- If a canonical package was successfully persisted before queue bookkeeping failed,
+  R10 restores the queue item from that package instead of retesting it.
+- Interrupted ACTIVE work is returned to PENDING on service restart.
+- Before discovery/no-media decisions, the audit loads /api/history/event/media,
+  the same production media-plan contract used by the normal Big Board historical
+  click path, and merges that plan with normalized catalog candidates.
+- Targeted discovery is retried in bounded passes and production parity is rechecked
+  after each pass.
+- One healthy Green OR Purple is sufficient preferred recap coverage. Existing
+  Green and Purple candidates are both verified when present; a missing second
+  preferred tier no longer forces needless rediscovery.
+- Blue remains a bounded fallback only when no healthy Green/Purple exists.
+- New diagnostics expose queue ordinal, phase/age, DB state/operation/lock retries,
+  normalized-vs-production media counts, candidate tier/index, exact asset/provider,
+  probe attempt/result, discovery pass/result, waiting reason, browser/probe origin,
+  and a server-side trace log.
+- The status endpoint remains useful during SQLite contention by returning worker
+  diagnostics even if a catalog summary read temporarily encounters the lock.
+
+UPLOAD
+A. Upload the 4 non-test files at repository root preserving paths.
+B. Go to the existing /tests folder and replace test_v550_media_health_audit.py
+   with the single file in the tests ZIP.
+C. Let the normal GitHub deployment finish. Existing R9 infrastructure installer
+   will restart the canonical audit service automatically; no controller bridge or
+   cloud setup change is required.
+
+AFTER DEPLOY
+- Do NOT reset the current audit.
+- Hard-refresh media-audit.html once to load the R10 diagnostics UI.
+- R10 automatically repairs/requeues R9 exception-failed work. Because the queue is
+  deterministic, the visible ordinal may move backward to the earliest recovered
+  failure before continuing forward. That is intentional.
+- Boston @ Baltimore should be revisited automatically if its R9 failure had no
+  canonical package.
