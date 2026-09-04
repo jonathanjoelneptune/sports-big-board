@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Sports Big Board Canonical Media Probe</title>
+  <style>html,body{margin:0;background:#000;color:#fff;font:12px monospace}#host{width:640px;height:360px}video,iframe{width:100%;height:100%;background:#000}</style>
+</head>
+<body>
+<div id="host"></div>
+<script>
+(()=>{
+  'use strict';
+  const host=document.getElementById('host');
+  let ytReady=null;
+  function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+  function clean(){host.innerHTML='';}
+  function youtubeApi(){
+    if(window.YT&&window.YT.Player)return Promise.resolve();
+    if(ytReady)return ytReady;
+    ytReady=new Promise((resolve,reject)=>{
+      const prior=window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady=()=>{try{if(typeof prior==='function')prior();}catch(_){} resolve();};
+      const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.async=true;s.onerror=()=>reject(new Error('YOUTUBE_API_LOAD_ERROR'));document.head.appendChild(s);
+      setTimeout(()=>reject(new Error('YOUTUBE_API_LOAD_TIMEOUT')),10000);
+    });
+    return ytReady;
+  }
+  function ytReason(code){
+    const n=Number(code);
+    if(n===100)return ['YOUTUBE_UNAVAILABLE',true];
+    if(n===101||n===150)return ['YOUTUBE_EMBED_DISABLED',true];
+    if(n===2)return ['YOUTUBE_INVALID_PARAMETER',true];
+    if(n===5)return ['YOUTUBE_HTML5_ERROR',false];
+    return ['YOUTUBE_ERROR_'+String(code||'UNKNOWN'),false];
+  }
+  async function probeYoutube(input){
+    const started=performance.now(); clean();
+    try{await youtubeApi();}catch(e){return {ok:false,hard:false,reason:String(e.message||e),startupMs:performance.now()-started,currentTimeDelta:0};}
+    return await new Promise(resolve=>{
+      let settled=false,player=null,playingAt=0,t0=0;
+      const finish=v=>{if(settled)return;settled=true;try{player&&player.destroy();}catch(_){}clean();resolve(v);};
+      const timeout=setTimeout(()=>finish({ok:false,hard:false,reason:'YOUTUBE_START_TIMEOUT',startupMs:performance.now()-started,currentTimeDelta:0}),15000);
+      try{
+        player=new YT.Player(host,{height:'360',width:'640',videoId:String(input.youtubeId||''),host:'https://www.youtube-nocookie.com',playerVars:{autoplay:1,controls:0,mute:1,playsinline:1,origin:location.origin,rel:0},events:{
+          onReady:ev=>{try{ev.target.mute();ev.target.playVideo();}catch(e){clearTimeout(timeout);finish({ok:false,hard:false,reason:'YOUTUBE_PLAY_CALL_FAILED',message:String(e),startupMs:performance.now()-started,currentTimeDelta:0});}},
+          onStateChange:async ev=>{if(ev.data!==YT.PlayerState.PLAYING||playingAt)return;playingAt=performance.now();try{t0=Number(ev.target.getCurrentTime()||0);}catch(_){t0=0;}await sleep(1400);let t1=0;try{t1=Number(ev.target.getCurrentTime()||0);}catch(_){}const delta=Math.max(0,t1-t0);clearTimeout(timeout);if(delta>=0.65)finish({ok:true,hard:false,reason:'PLAYING_TIME_ADVANCED',startupMs:playingAt-started,currentTimeDelta:delta});else finish({ok:false,hard:false,reason:'YOUTUBE_TIME_NOT_ADVANCING',startupMs:playingAt-started,currentTimeDelta:delta});},
+          onError:ev=>{const [reason,hard]=ytReason(ev.data);clearTimeout(timeout);finish({ok:false,hard,reason,startupMs:performance.now()-started,currentTimeDelta:0,errorCode:Number(ev.data||0)});}
+        }});
+      }catch(e){clearTimeout(timeout);finish({ok:false,hard:false,reason:'YOUTUBE_PLAYER_CREATE_ERROR',message:String(e&&e.message||e),startupMs:performance.now()-started,currentTimeDelta:0});}
+    });
+  }
+  async function probeDirect(input){
+    const started=performance.now();clean();
+    const video=document.createElement('video');video.muted=true;video.autoplay=true;video.playsInline=true;video.preload='auto';video.controls=false;host.appendChild(video);
+    return await new Promise(resolve=>{
+      let settled=false,playingAt=0,t0=0;
+      const finish=v=>{if(settled)return;settled=true;try{video.pause();video.removeAttribute('src');video.load();}catch(_){}clean();resolve(v);};
+      const timeout=setTimeout(()=>finish({ok:false,hard:false,reason:'DIRECT_START_TIMEOUT',startupMs:performance.now()-started,currentTimeDelta:0}),15000);
+      video.addEventListener('error',()=>{const code=Number(video.error&&video.error.code||0);clearTimeout(timeout);finish({ok:false,hard:code===4,reason:'DIRECT_MEDIA_ERROR_'+code,startupMs:performance.now()-started,currentTimeDelta:0,errorCode:code});},{once:true});
+      video.addEventListener('playing',async()=>{if(playingAt)return;playingAt=performance.now();t0=Number(video.currentTime||0);await sleep(1400);const t1=Number(video.currentTime||0),delta=Math.max(0,t1-t0);clearTimeout(timeout);if(delta>=0.65)finish({ok:true,hard:false,reason:'PLAYING_TIME_ADVANCED',startupMs:playingAt-started,currentTimeDelta:delta});else finish({ok:false,hard:false,reason:'DIRECT_TIME_NOT_ADVANCING',startupMs:playingAt-started,currentTimeDelta:delta});},{once:true});
+      try{video.src=String(input.url||'');const p=video.play();if(p&&p.catch)p.catch(()=>{});}catch(e){clearTimeout(timeout);finish({ok:false,hard:false,reason:'DIRECT_PLAY_CALL_FAILED',message:String(e&&e.message||e),startupMs:performance.now()-started,currentTimeDelta:0});}
+    });
+  }
+  async function probe(input){
+    input=input||{};
+    if(input.kind==='youtube')return probeYoutube(input);
+    if(input.kind==='direct')return probeDirect(input);
+    return {ok:false,hard:true,reason:'UNKNOWN_MEDIA_KIND',startupMs:0,currentTimeDelta:0};
+  }
+  window.SBB_MEDIA_PROBE=Object.freeze({probe,version:'5.5.0-r9',canonical:true});
+  document.documentElement.dataset.probeReady='true';
+})();
+</script>
+</body>
+</html>

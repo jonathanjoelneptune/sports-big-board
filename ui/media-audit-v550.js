@@ -1,281 +1,72 @@
-/* Sports Big Board v5.5.0 — exhaustive browser media health certification. */
-(() => {
-  'use strict';
-  const VERSION='5.5.0';
-  const STORE='sbb.media-audit.v550';
-  const RUN_STORE='sbb.media-audit.run.v550';
-  const FRESH_MS=30*24*60*60*1000;
-  const STALE_MS=90*24*60*60*1000;
-  const START_TIMEOUT=12000;
-  const ADVANCE_SECONDS=.75;
-  const PREFERRED_TIERS=Object.freeze(['green','extended']);
-  const BLUE_FALLBACK_TARGET=3;
-  const AUDIT_POLICY='R8_FINAL_SIGNAL_RECOVERY';
-  const $=id=>document.getElementById(id);
-  const api=path=>window.SBB_API?.url?window.SBB_API.url(path):path;
-  const clean=v=>String(v??'').trim();
-  function localToday(){const d=new Date(),y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`;}
-  function finalInfo(row,event){
-    row=row||{};event=event||{};
-    const status=event.status||{};
-    const type=status.type||{};
-    const date=clean(row.date||row.eventDate||row['Date']||event.date||event.gameDate).slice(0,10);
-    const finalAt=Number(row.finalAt||row.final_at||row['Final At']||event.finalAt||event.final_at||0);
-    const completed=Boolean(
-      row.completed===true||row.isFinal===true||row.final===true||
-      event.completed===true||event.isFinal===true||event.final===true||
-      status.completed===true||type.completed===true
-    );
-    const statusText=[
-      row.status,row.gameStatus,row.eventStatus,row.state,row.statusText,row['Status'],
-      event.state,event.statusText,event.gameStatus,
-      typeof status==='string'?status:'',
-      status.name,status.state,status.description,status.detail,status.shortDetail,
-      type.name,type.state,type.description,type.detail,type.shortDetail
-    ].map(clean).filter(Boolean).join(' ').toUpperCase();
-    const statusFinal=/(^|[^A-Z])(FINAL|FULL TIME|FT|COMPLETED|ENDED|CLOSED|POST)([^A-Z]|$)/.test(statusText);
-    const statusNonFinal=/(^|[^A-Z])(SCHEDULED|PRE|PREVIEW|IN PROGRESS|LIVE|HALFTIME|DELAYED|POSTPONED|CANCELED|CANCELLED|SUSPENDED)([^A-Z]|$)/.test(statusText);
-    const labelText=[
-      row.game,row.gameLabel,row.matchup,row.away,row.home,row.awayName,row.homeName,
-      event.away?.displayName,event.away?.name,event.home?.displayName,event.home?.name,
-      event.awayTeam?.displayName,event.awayTeam?.name,event.homeTeam?.displayName,event.homeTeam?.name
-    ].map(clean).filter(Boolean).join(' ').toUpperCase();
-    const historicalFallback=Boolean(date&&date<localToday()&&!statusNonFinal&&!/\bTBD\b/.test(labelText));
-    return {isFinal:Boolean(finalAt>0||completed||statusFinal||historicalFallback),finalAt,statusText,historicalFallback};
-  }
-  const upper=v=>clean(v).toUpperCase();
-  const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[ch]||ch));
-  const state={games:[],byKey:new Map(),assets:new Map(),results:loadResults(),run:loadRun(),page:0,pageSize:100,expanded:new Set(),loading:false,yt:null,ytReady:false,ytResolver:null,stopRequested:false,pauseRequested:false};
+(()=>{
+'use strict';
+const VERSION='5.5.0';
+const GENERATION='R9';
+const $=id=>document.getElementById(id);
+const API=((window.SBB_CONFIG&&window.SBB_CONFIG.apiBase)||location.origin).replace(/\/$/,'')+'/api/media-audit';
+const state={offset:0,limit:100,total:0,rows:[],expanded:new Set(),status:null,busy:false,pollTimer:null,lastInventoryAt:0};
 
-  function loadResults(){try{return JSON.parse(localStorage.getItem(STORE)||'{}')||{};}catch(_){return {};}}
-  function saveResults(){try{localStorage.setItem(STORE,JSON.stringify(state.results));}catch(_){} }
-  function loadRun(){try{return JSON.parse(localStorage.getItem(RUN_STORE)||'null');}catch(_){return null;}}
-  function saveRun(){try{localStorage.setItem(RUN_STORE,JSON.stringify(state.run));}catch(_){} }
-  function gameKey(g){return `${g.league}:${g.eventId}`;}
-  function normalizeGame(row){
-    const event=row.event||row.game||{};
-    const date=clean(row.date||row.eventDate||row['Date']||event.date||event.gameDate).slice(0,10);
-    const league=upper(row.league||row['League']||event.league||event.__sbbLeague);
-    const eventId=clean(row.eventId||row['Event ID']||row.id||event.eventId||event.id||event.matchId||event.gamePk);
-    const away=clean(row.away||row.awayName||event.away?.displayName||event.away?.name||event.awayTeam?.displayName||event.awayTeam?.name);
-    const home=clean(row.home||row.homeName||event.home?.displayName||event.home?.name||event.homeTeam?.displayName||event.homeTeam?.name);
-    const name=clean(row.game||row.gameLabel||row.matchup||row['Game']||((away||home)?`${away||'Away'} @ ${home||'Home'}`:''))||`${league} ${eventId}`;
-    const tiers=row.tiers||{};
-    const fin=finalInfo(row,event);
-    return {date,league,eventId,name,tiers,bestTier:clean(row.bestTier||row['Best Tier']),auditStatus:clean(row.auditStatus||row['Audit Status']),isFinal:fin.isFinal,finalAt:fin.finalAt,finalStatus:fin.statusText,raw:row};
-  }
-  function tier(asset){const t=clean(asset?.recapTier||asset?.tier||'blue').toLowerCase();return t==='purple'?'extended':t;}
-  function tierName(t){return t==='extended'?'PURPLE':upper(t||'BLUE');}
-  function assetKey(a){return clean(a?.assetKey||a?.key||a?.providerMediaId||a?.youtubeId||a?.mediaUrl||a?.url);}
-  function assetUrl(a){return clean(a?.mediaUrl||a?.canonicalUrl||a?.url||a?.embedUrl);}
-  function youtubeId(a){
-    const direct=clean(a?.youtubeId||a?.videoId||(upper(a?.provider)==='YOUTUBE'?a?.providerMediaId:''));if(direct)return direct;
-    const u=assetUrl(a);let m=u.match(/[?&]v=([A-Za-z0-9_-]{6,})/);if(m)return m[1];m=u.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/embed\/)([A-Za-z0-9_-]{6,})/i);return m?.[1]||'';
-  }
-  function resultFor(a){return state.results[assetKey(a)]||null;}
-  function resultAge(r){return r?.testedAt?Date.now()-Number(r.testedAt):Infinity;}
-  function resultState(a){const r=resultFor(a);if(r?.state==='PLAYED')return resultAge(r)<=FRESH_MS?'pass':resultAge(r)<=STALE_MS?'stale':'stale';if(r?.state==='FAILED')return 'fail';const runtime=upper(a?.runtimeCatalogState||a?.runtimeState);if(runtime==='FAILED'||runtime==='FAILED-RUNTIME')return 'fail';if(runtime==='PLAYED'||a?.verifiedPlayable===true)return 'stale';return 'unknown';}
-  function planAssets(plan){return (plan?.media||[]).filter(a=>a&&assetKey(a)&&(['GAME',''].includes(upper(a.mediaScope||'GAME'))));}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmtDateTime(ts){if(!ts)return '—';try{return new Date(Number(ts)*1000).toLocaleString();}catch(_){return '—';}}
+function fmtNum(v){return new Intl.NumberFormat().format(Number(v||0));}
+function healthClass(v){return String(v||'UNTESTED').toUpperCase();}
+async function fetchJson(url,opts={}){const r=await fetch(url,{cache:'no-store',...opts,headers:{'Content-Type':'application/json',...(opts.headers||{})}});let d={};try{d=await r.json();}catch(_){}if(!r.ok||d.ok===false)throw new Error(d.message||d.error||`HTTP ${r.status}`);return d;}
+async function post(path,body={}){return fetchJson(API+path,{method:'POST',body:JSON.stringify(body)});}
+function log(msg,cls=''){const el=$('probeLog');if(!el)return;const div=document.createElement('div');if(cls)div.className=cls;div.textContent=`${new Date().toLocaleTimeString()}  ${msg}`;el.prepend(div);while(el.children.length>100)el.lastChild.remove();}
+function setText(id,v){const el=$(id);if(el)el.textContent=v;}
+function buttonState(run){const s=String(run&&run.state||'IDLE');$('auditPause').disabled=s!=='RUNNING';$('auditResume').disabled=s!=='PAUSED';$('auditStop').disabled=!['RUNNING','PAUSED'].includes(s);}
 
-  async function loadInventory(force=false){
-    if(state.loading)return;state.loading=true;$('gameRows').innerHTML='<tr><td colspan="10" class="empty">Loading canonical game inventory…</td></tr>';
-    try{
-      const rows=[];let offset=0,total=Infinity;
-      while(offset<total){
-        const r=await fetch(api(`/api/history/audit?limit=500&offset=${offset}`),{cache:force?'reload':'no-store'});const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);
-        const sourceRows=data.rows||[],today=localToday();
-        const batch=sourceRows.map(normalizeGame).filter(g=>g.date&&g.league&&g.eventId&&g.date<=today);
-        rows.push(...batch);total=Number(data.total??rows.length);
-        if(!sourceRows.length)break;
-        offset+=sourceRows.length;
-        setProgress(`Loading inventory… ${rows.length.toLocaleString()} visible / ${Number(total).toLocaleString()} catalog rows`,'Reading the canonical history catalog.');
-      }
-      await hydrateTodayFinals(rows);
-      state.games=rows;state.byKey=new Map(rows.map(g=>[gameKey(g),g]));populateLeagues();syncAuditStartDate();state.page=0;render();
-      const finalCount=rows.filter(g=>g.isFinal).length,waiting=rows.length-finalCount;
-      setProgress('Inventory ready',`${rows.length.toLocaleString()} games loaded through ${localToday()} • ${finalCount.toLocaleString()} FINAL eligible • ${waiting.toLocaleString()} waiting final.`);
-    }catch(err){$('gameRows').innerHTML=`<tr><td colspan="10" class="empty">Inventory load failed: ${esc(err.message||err)}</td></tr>`;log(`Inventory failure: ${err.message||err}`,'bad');}
-    finally{state.loading=false;}
-  }
-  function latestFinalDate(){return state.games.filter(g=>g.isFinal).map(g=>g.date).filter(Boolean).sort().at(-1)||'';}
-  function earliestFinalDate(){return state.games.filter(g=>g.isFinal).map(g=>g.date).filter(Boolean).sort()[0]||'';}
-  function syncAuditStartDate(){
-    const el=$('auditStartDate');if(!el)return;
-    el.max=localToday();const min=earliestFinalDate();if(min)el.min=min;
-    if(!clean(el.value)||el.value>localToday())el.value=latestFinalDate()||localToday();
-  }
-  function selectedAuditStartDate(){
-    const v=clean($('auditStartDate')?.value),latest=latestFinalDate()||localToday();
-    return v&&v<=localToday()?v:latest;
-  }
-  function populateLeagues(){const select=$('filterLeague'),current=select.value,leagues=[...new Set(state.games.map(x=>x.league).filter(Boolean))].sort();select.innerHTML='<option value="">ALL LEAGUES</option>'+leagues.map(x=>`<option>${esc(x)}</option>`).join('');select.value=current;}
+function renderSummary(status){
+  const s=status.summary||{},h=s.health||{},run=status.run||null,worker=status.worker||{};
+  setText('metricGames',fmtNum(s.games));setText('metricGamesSub',`${fmtNum(s.certifiedGames)} canonically certified`);
+  setText('metricAudited',fmtNum(s.certifiedGames));setText('metricAuditedSub',`${fmtNum(s.staleGames)} stale >30d`);
+  setText('metricHealthy',fmtNum(h.HEALTHY));setText('metricDegraded',fmtNum(h.DEGRADED));setText('metricUnplayable',fmtNum(h.UNPLAYABLE));setText('metricNoMedia',fmtNum(h.NO_MEDIA));
+  setText('metricAssets',fmtNum((s.playedAssets||0)+(s.failedAssets||0)));setText('metricAssetsSub',`${fmtNum(s.playedAssets)} played • ${fmtNum(s.failedAssets)} failed`);
+  setText('metricRun',run?String(run.state||'IDLE'):'IDLE');
+  setText('metricRunSub',run?`Run #${run.id} • ${run.processed_games||0}/${run.total_games||0}`:(worker.alive?'Worker online':'Worker offline'));
+  const pct=run?Number(run.progressPct||0):0;$('progressFill').style.width=Math.max(0,Math.min(100,pct))+'%';
+  setText('progressLabel',run?`${String(run.state)} • ${pct.toFixed(1)}%`:'Idle');
+  setText('progressDetail',run?(run.current_event_key?`#${run.current_ordinal} • ${run.current_event_key} • ${run.current_phase||''}`:`${run.processed_games||0}/${run.total_games||0} games`):'No canonical audit run active.');
+  buttonState(run);
+  setText('probeGame',worker.current&&worker.current.game||'Waiting');setText('probeState',worker.alive?'SERVER WORKER':'OFFLINE');
+  $('probeState').className='state '+(worker.alive?'pass':'fail');
+  setText('probeAsset',worker.current&&worker.current.event||'—');setText('probeTier','Server-owned');setText('probeProvider',status.browser||'Chromium not started yet');setText('probeStartup',status.probeUrl||'—');setText('probeResult',worker.lastError||status.browserError||'Canonical audit results are stored in SQLite');
+  if(status.newestEligibleDate&&!$('auditStartDate').value)$('auditStartDate').value=status.newestEligibleDate;
+}
 
-  function scoreEventId(row){
-    row=row||{};
-    for(const key of ['scoreEventId','matchId','espnEventId','gamePk','canonicalEventId','eventId','id']){
-      const value=row[key];if(value!==undefined&&value!==null&&String(value).trim())return String(value).trim();
-    }
-    return '';
-  }
-  async function hydrateTodayFinals(rows){
-    const today=localToday(),todays=(rows||[]).filter(g=>g.date===today);
-    if(!todays.length)return;
-    try{
-      const r=await fetch(api(`/api/history/day?date=${encodeURIComponent(today)}`),{cache:'no-store'});
-      const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);
-      const byKey=new Map();
-      const groups=data.scoreRowsByLeague||{};
-      for(const [league,items] of Object.entries(groups)){
-        for(const item of (items||[])){
-          const id=scoreEventId(item);if(!id)continue;
-          const fin=finalInfo(item,item);
-          byKey.set(`${upper(league)}:${id}`,fin);
-        }
-      }
-      let promoted=0;
-      for(const g of todays){
-        const fin=byKey.get(gameKey(g));if(!fin?.isFinal)continue;
-        g.isFinal=true;g.finalAt=fin.finalAt||g.finalAt||Date.now()/1000;g.finalStatus=fin.statusText||'FINAL';promoted++;
-      }
-      log(`Today's FINAL check: ${promoted} of ${todays.length} current-day games eligible.`,'ok');
-    }catch(err){
-      log(`Today's FINAL check unavailable; current-day games remain WAITING FINAL: ${err.message||err}`,'warn');
-    }
-  }
+function tierChip(has,label){return `<span class="tier-chip ${has?'pass':'none'}">${has?'1/1':'—'}</span>`;}
+function healthBadge(h){return `<span class="health ${esc(healthClass(h))}">${esc(String(h||'UNTESTED').replaceAll('_',' '))}</span>`;}
+function renderRows(){
+  const body=$('gameRows');if(!state.rows.length){body.innerHTML='<tr><td colspan="10" class="empty">No games match these filters.</td></tr>';return;}
+  const html=[];
+  for(const row of state.rows){const expanded=state.expanded.has(row.canonicalEventKey);html.push(`<tr class="game-row" data-event="${esc(row.canonicalEventKey)}"><td><button class="expand" data-expand="${esc(row.canonicalEventKey)}">${expanded?'−':'+'}</button></td><td>${esc(row.date)}</td><td><span class="league">${esc(row.league)}</span></td><td><span class="game-name">${esc(row.game)}</span><span class="muted">${row.queueOrdinal?`QUEUE #${esc(row.queueOrdinal)} • ${esc(row.queueState||'')} ${esc(row.queuePhase||'')}`:esc(row.eventId)}</span></td><td>${tierChip(row.green,'Green')}</td><td>${tierChip(row.purple,'Purple')}</td><td>${tierChip(row.gold,'Gold')}</td><td><span class="tier-chip ${row.blueCount?'pass':'none'}">${row.blueCount?esc(row.blueCount):'—'}</span></td><td>${healthBadge(row.health)}</td><td>${row.certifiedAt?esc(fmtDateTime(row.certifiedAt)):'—'}</td></tr>`);if(expanded)html.push(`<tr class="asset-row" id="detail-${cssSafe(row.canonicalEventKey)}"><td></td><td colspan="9"><div class="asset-grid"><div class="empty">Loading canonical package…</div></div></td></tr>`)}body.innerHTML=html.join('');
+  body.querySelectorAll('[data-expand]').forEach(btn=>btn.addEventListener('click',()=>toggleDetail(btn.dataset.expand)));
+  for(const key of state.expanded)loadDetail(key).catch(e=>log(`Detail ${key}: ${e.message}`,'bad'));
+}
+function cssSafe(v){return String(v).replace(/[^A-Za-z0-9_-]/g,'_');}
+async function toggleDetail(key){if(state.expanded.has(key))state.expanded.delete(key);else state.expanded.add(key);renderRows();}
+async function loadDetail(key){const holder=document.querySelector(`#detail-${cssSafe(key)} .asset-grid`);if(!holder)return;const d=await fetchJson(API+'/event?event='+encodeURIComponent(key));const pkg=d.package||{};const canonical=new Set([pkg.gold_asset_key,pkg.green_asset_key,pkg.purple_asset_key,...safeJsonArray(pkg.blue_asset_keys_json)].filter(Boolean));const cards=(d.assets||[]).map(a=>{const c=canonical.has(a.assetKey);const rs=String(a.runtimeState||'UNKNOWN').toUpperCase();const klass=rs==='PLAYED'?'pass':rs==='FAILED'?'fail':'unknown';return `<div class="asset-card"><div><strong>${esc(String(a.tier||'').toUpperCase())}</strong><small>${c?'CANONICAL':'NON-CANONICAL'}</small></div><div><strong>${esc(a.title||a.assetKey)}</strong><small>${esc(a.url||'')}</small></div><div><strong>${esc(a.provider||'—')}</strong><small>${esc(a.associationState||'')}</small></div><div class="asset-state ${klass}">${esc(rs)}<small>${esc(a.runtimeFailureReason||a.associationMethod||'')}</small></div></div>`}).join('');holder.innerHTML=cards||'<div class="empty">No GAME media associated with this event.</div>';}
+function safeJsonArray(v){if(Array.isArray(v))return v;try{const a=JSON.parse(v||'[]');return Array.isArray(a)?a:[]}catch(_){return[]}}
 
-  async function fetchPlan(g,force=false){
-    const key=gameKey(g);if(state.assets.has(key)&&!force)return state.assets.get(key);
-    const qs=new URLSearchParams({date:g.date,league:g.league,eventId:g.eventId});const r=await fetch(api(`/api/history/event/media?${qs}`),{cache:'no-store'});const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);const plan=data.plan||{};state.assets.set(key,plan);return plan;
-  }
-
-  function freshPass(a){return resultState(a)==='pass';}
-  function anyPreferredPass(assets){return (assets||[]).some(a=>PREFERRED_TIERS.includes(tier(a))&&freshPass(a));}
-  function gameHealth(g){
-    if(!g?.isFinal)return {state:'WAITING_FINAL',assets:null,last:0,packageMode:'NOT_FINAL'};
-    const plan=state.assets.get(gameKey(g));if(!plan)return {state:'UNTESTED',assets:null,last:0};const assets=planAssets(plan);if(!assets.length)return {state:'NO_MEDIA',assets,last:0};
-    let last=0;for(const a of assets){const r=resultFor(a);last=Math.max(last,Number(r?.testedAt||0));}
-    const preferred=assets.filter(a=>PREFERRED_TIERS.includes(tier(a)));
-    if(anyPreferredPass(assets))return {state:'HEALTHY',assets,last,packageMode:'PREFERRED'};
-    const preferredUnknown=preferred.some(a=>['unknown','stale'].includes(resultState(a)));
-    if(preferredUnknown)return {state:preferred.some(a=>resultState(a)==='stale')?'STALE':'UNTESTED',assets,last,packageMode:'PREFERRED_PENDING'};
-    const blue=assets.filter(a=>tier(a)==='blue'),bluePass=blue.filter(freshPass).length,blueUnknown=blue.some(a=>['unknown','stale'].includes(resultState(a)));
-    if(bluePass)return {state:'DEGRADED',assets,last,packageMode:'BLUE_FALLBACK'};
-    if(blueUnknown)return {state:blue.some(a=>resultState(a)==='stale')?'STALE':'UNTESTED',assets,last,packageMode:'BLUE_PENDING'};
-    return {state:'UNPLAYABLE',assets,last,packageMode:'NONE'};
-  }
-  function tierCell(g,t){const h=gameHealth(g),assets=h.assets;if(!assets)return '<span class="tier-chip none">—</span>';const items=assets.filter(a=>tier(a)===t);if(!items.length)return '<span class="tier-chip none">—</span>';if(t==='blue'&&anyPreferredPass(assets))return '<span class="tier-chip none">SKIP</span>';let p=0,f=0,u=0;for(const a of items){const st=resultState(a);if(st==='pass'||st==='stale')p++;else if(st==='fail')f++;else u++;}const cls=f&&p?'mixed':f&&!p&&!u?'fail':p&&!f&&!u?'pass':'none';return `<span class="tier-chip ${cls}">${p}/${items.length}</span>`;}
-  function filteredGames(){
-    const lg=upper($('filterLeague').value),health=upper($('filterHealth').value),tierFilter=clean($('filterTier').value),q=clean($('filterSearch').value).toLowerCase();
-    return state.games.filter(g=>{
-      if(lg&&g.league!==lg)return false;const h=gameHealth(g);if(health&&h.state!==health)return false;if(q&&!`${g.date} ${g.league} ${g.name} ${g.eventId}`.toLowerCase().includes(q))return false;
-      if(tierFilter){const assets=h.assets;if(!assets||!assets.some(a=>tier(a)===tierFilter))return false;}return true;
-    });
-  }
-  function render(){
-    state.pageSize=Number($('pageSize').value||100);const rows=filteredGames(),pages=Math.max(1,Math.ceil(rows.length/state.pageSize));state.page=Math.max(0,Math.min(state.page,pages-1));const start=state.page*state.pageSize,shown=rows.slice(start,start+state.pageSize);$('tableCount').textContent=`${rows.length.toLocaleString()} games`;
-    const body=$('gameRows');if(!shown.length)body.innerHTML='<tr><td colspan="10" class="empty">No games match these filters.</td></tr>';else body.innerHTML=shown.map(g=>rowHtml(g)).join('');
-    $('pageLabel').textContent=`${rows.length?start+1:0}–${Math.min(rows.length,start+state.pageSize)} of ${rows.length.toLocaleString()}`;$('pagePrev').disabled=state.page<=0;$('pageNext').disabled=state.page>=pages-1;
-    bindRows();renderMetrics();
-  }
-  function rowHtml(g){const h=gameHealth(g),key=gameKey(g),open=state.expanded.has(key);return `<tr data-game="${esc(key)}"><td><button class="expand" aria-label="${open?'Collapse':'Expand'} assets">${open?'−':'+'}</button></td><td>${esc(g.date)}</td><td><span class="league">${esc(g.league)}</span></td><td><span class="game-name">${esc(g.name)}</span><span class="muted">${esc(g.eventId)}</span></td><td>${tierCell(g,'green')}</td><td>${tierCell(g,'extended')}</td><td>${tierCell(g,'gold')}</td><td>${tierCell(g,'blue')}</td><td><span class="health ${h.state}">${h.state.replace('_',' ')}</span></td><td>${h.last?new Date(h.last).toLocaleDateString():'—'}</td></tr>${open?assetRowHtml(g):''}`;}
-  function assetRowHtml(g){const plan=state.assets.get(gameKey(g));if(!plan)return `<tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid"><div class="asset-card"><strong>LOADING MEDIA…</strong></div></div></td></tr>`;const allAssets=planAssets(plan);if(!allAssets.length)return `<tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid"><div class="asset-card"><strong>NO ASSIGNED GAME MEDIA</strong></div></div></td></tr>`;const assets=anyPreferredPass(allAssets)?allAssets.filter(a=>tier(a)!=='blue'):allAssets;return `<tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid">${assets.map(a=>{const s=resultState(a),r=resultFor(a);return `<div class="asset-card"><span class="tier-chip ${s==='pass'?'pass':s==='fail'?'fail':'none'}">${tierName(tier(a))}</span><div><strong>${esc(a.title||'Untitled media')}</strong><small>${esc(assetKey(a))} • ${esc(assetUrl(a)||youtubeId(a)||'')}</small></div><div><strong>${esc(upper(a.provider||'MEDIA'))}</strong><small>${esc(clean(a.durationSeconds||a.duration)?`${Math.round(Number(a.durationSeconds||a.duration))} sec`:'')}</small></div><div class="asset-state ${s==='pass'?'pass':s==='fail'?'fail':'unknown'}">${s==='pass'?'PLAYED':s==='fail'?'FAILED':s==='stale'?'STALE':'UNTESTED'}<small>${esc(r?.reason||a.runtimeFailureReason||'')}</small></div></div>`;}).join('')}</div></td></tr>`;}
-  function bindRows(){document.querySelectorAll('tr[data-game] .expand').forEach(btn=>btn.onclick=async()=>{const tr=btn.closest('tr'),g=state.byKey.get(tr.dataset.game);if(!g)return;const key=gameKey(g);if(state.expanded.has(key)){state.expanded.delete(key);render();return;}state.expanded.add(key);render();try{await fetchPlan(g);render();}catch(err){log(`${g.league} ${g.name}: ${err.message||err}`,'bad');}});}
-
-  function renderMetrics(){let audited=0,healthy=0,degraded=0,unplayable=0,noMedia=0;const eligible=state.games.filter(g=>g.isFinal),waiting=state.games.length-eligible.length;for(const g of eligible){const s=gameHealth(g).state;if(!['UNTESTED','STALE'].includes(s))audited++;if(s==='HEALTHY')healthy++;else if(s==='DEGRADED')degraded++;else if(s==='UNPLAYABLE')unplayable++;else if(s==='NO_MEDIA')noMedia++;}const results=Object.values(state.results),passed=results.filter(x=>x.state==='PLAYED').length,failed=results.filter(x=>x.state==='FAILED').length;$('metricGames').textContent=state.games.length.toLocaleString();$('metricGamesSub').textContent=`${eligible.length.toLocaleString()} FINAL eligible • ${waiting.toLocaleString()} waiting final`;$('metricAudited').textContent=audited.toLocaleString();$('metricAuditedSub').textContent=eligible.length?`${((audited/eligible.length)*100).toFixed(1)}% of final games`: '0%';$('metricHealthy').textContent=healthy.toLocaleString();$('metricDegraded').textContent=degraded.toLocaleString();$('metricUnplayable').textContent=unplayable.toLocaleString();$('metricNoMedia').textContent=noMedia.toLocaleString();$('metricAssets').textContent=results.length.toLocaleString();$('metricAssetsSub').textContent=`${passed.toLocaleString()} passed • ${failed.toLocaleString()} failed`;const run=state.run;$('metricRun').textContent=run?.status||'IDLE';$('metricRunSub').textContent=run?`Run ${run.id} • ${Number(run.index||0).toLocaleString()} games processed`:'Ready';}
-
-  function ensureYouTube(){
-    if(state.ytReady&&state.yt)return Promise.resolve(state.yt);return new Promise((resolve,reject)=>{const start=Date.now();const wait=()=>{if(state.ytReady&&state.yt)return resolve(state.yt);if(window.YT?.Player){createYouTube(resolve);return;}if(Date.now()-start>10000)return reject(new Error('YOUTUBE_API_TIMEOUT'));setTimeout(wait,120);};wait();});
-  }
-  function createYouTube(resolve){if(state.yt)return resolve(state.yt);state.yt=new YT.Player('youtubeProbe',{width:'100%',height:'100%',playerVars:{autoplay:0,controls:0,rel:0,playsinline:1,origin:location.origin},events:{onReady:e=>{state.ytReady=true;try{e.target.mute();}catch(_){}resolve(e.target);},onError:e=>{if(state.ytResolver)state.ytResolver({ok:false,reason:`YOUTUBE_ERROR_${e.data}`,hard:[2,100,101,150,153].includes(Number(e.data)),code:Number(e.data)});}}});}
-  window.onYouTubeIframeAPIReady=()=>{if(!state.yt)createYouTube(()=>{});};
-  function showProbe(kind){$('probePlaceholder').style.display='none';$('directProbe').style.display=kind==='direct'?'block':'none';const yt=$('youtubeProbe');if(yt)yt.style.display=kind==='youtube'?'block':'none';}
-  async function probeYouTube(id){const player=await ensureYouTube();showProbe('youtube');const started=performance.now();return new Promise(resolve=>{let done=false;const finish=r=>{if(done)return;done=true;state.ytResolver=null;clearInterval(timer);clearTimeout(timeout);try{player.stopVideo();}catch(_){}resolve({...r,startupMs:Math.round(performance.now()-started)});};state.ytResolver=finish;try{player.mute();player.loadVideoById({videoId:id,startSeconds:0});}catch(err){finish({ok:false,reason:`YOUTUBE_LOAD_EXCEPTION:${err.message||err}`,hard:false});return;}const timer=setInterval(()=>{try{const ps=player.getPlayerState(),t=Number(player.getCurrentTime()||0);if(ps===1&&t>=ADVANCE_SECONDS)finish({ok:true,reason:'PLAYING_TIME_ADVANCED'});}catch(_){}},160);const timeout=setTimeout(()=>finish({ok:false,reason:'YOUTUBE_START_TIMEOUT',hard:false}),START_TIMEOUT);});}
-  async function probeDirect(url){showProbe('direct');const v=$('directProbe');const started=performance.now();return new Promise(resolve=>{let done=false;const finish=r=>{if(done)return;done=true;cleanup();try{v.pause();v.removeAttribute('src');v.load();}catch(_){}resolve({...r,startupMs:Math.round(performance.now()-started)});};const poll=()=>{if(Number(v.currentTime||0)>=ADVANCE_SECONDS&&!v.paused)finish({ok:true,reason:'PLAYING_TIME_ADVANCED'});};const onError=()=>finish({ok:false,reason:`DIRECT_MEDIA_ERROR_${v.error?.code||'UNKNOWN'}`,hard:true});const cleanup=()=>{clearInterval(timer);clearTimeout(timeout);v.removeEventListener('error',onError);};v.addEventListener('error',onError);v.muted=true;v.src=url;try{const p=v.play();if(p?.catch)p.catch(()=>{});}catch(_){}const timer=setInterval(poll,150);const timeout=setTimeout(()=>finish({ok:false,reason:'DIRECT_START_TIMEOUT',hard:false}),START_TIMEOUT);});}
-  async function probeAsset(g,a){
-    const id=youtubeId(a),url=assetUrl(a);setProbe(g,a,'TESTING');let first;const obviousNonVideo=!!(url&&!id&&/\.(?:jpe?g|png|gif|webp|svg)(?:[?#]|$)/i.test(url));if(obviousNonVideo)first={ok:false,reason:'NON_VIDEO_MEDIA_URL',hard:true,startupMs:0};else if(id)first=await probeYouTube(id);else if(url)first=await probeDirect(url);else first={ok:false,reason:'NO_PLAYBACK_URL',hard:true,startupMs:0};
-    if(!first.ok&&!first.hard){log(`Soft failure ${assetKey(a)}: ${first.reason}; retrying once`,'warn');await sleep(900);const retry=id?await probeYouTube(id):url?await probeDirect(url):first;if(retry.ok)first=retry;else first={...retry,reason:`REPEATED_${retry.reason}`,hard:true};}
-    const result={state:first.ok?'PLAYED':'FAILED',reason:first.reason,hard:!!first.hard,startupMs:first.startupMs,testedAt:Date.now(),runId:state.run?.id||'',date:g.date,league:g.league,eventId:g.eventId,tier:tier(a),title:clean(a.title),url:url||id};state.results[assetKey(a)]=result;saveResults();await persistRuntime(g,a,result);setProbe(g,a,result.state,result);log(`${first.ok?'PASS':'FAIL'} ${g.league} ${g.name} • ${tierName(tier(a))} • ${assetKey(a)} • ${first.reason}`,first.ok?'ok':'bad');return result;
-  }
-  async function persistRuntime(g,a,result){try{await fetch(api('/api/history/media/runtime'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:g.date,league:g.league,eventId:g.eventId,assetKey:assetKey(a),state:result.state,reason:`MEDIA_AUDIT_V550:${result.reason}`}),cache:'no-store'});}catch(err){log(`Runtime persistence warning: ${err.message||err}`,'warn');}}
-
-  function rankedTierCandidates(assets,target){return (assets||[]).filter(a=>tier(a)===target).sort((a,b)=>Number(b.durationSeconds||b.duration||0)-Number(a.durationSeconds||a.duration||0));}
-  async function testTierUntilPass(g,assets,target){
-    const candidates=rankedTierCandidates(assets,target);
-    for(const a of candidates){
-      if(state.stopRequested)return null;while(state.pauseRequested&&!state.stopRequested)await sleep(300);
-      if(freshPass(a))return a;
-      const r=await probeAsset(g,a);if(r.state==='PLAYED')return a;
-    }
-    return null;
-  }
-  async function rediscoverPreferred(g){
-    log(`Preferred recap missing/failed for ${g.league} ${g.name}; forcing targeted rediscovery before Blue fallback.`,'warn');
-    try{
-      const r=await fetch(api('/api/history/event/discover'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:g.date,league:g.league,eventId:g.eventId,force:true}),cache:'no-store'});
-      const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);
-      const plan=data.plan||await fetchPlan(g,true);state.assets.set(gameKey(g),plan);return plan;
-    }catch(err){log(`Targeted rediscovery failed ${g.league} ${g.name}: ${err.message||err}`,'warn');return null;}
-  }
-  async function auditGame(g){
-    if(!g?.isFinal){log(`SKIP NOT FINAL ${g?.league||''} ${g?.name||''}`,'warn');return;}
-    let plan;try{plan=await fetchPlan(g,true);}catch(err){log(`Plan load failed ${g.league} ${g.name}: ${err.message||err}`,'bad');return;}
-    let assets=planAssets(plan);
-    let selectedGreen=await testTierUntilPass(g,assets,'green');
-    let selectedPurple=await testTierUntilPass(g,assets,'extended');
-    let preferred=selectedGreen||selectedPurple;
-    if(!preferred){
-      const refreshed=await rediscoverPreferred(g);
-      if(refreshed){assets=planAssets(refreshed);selectedGreen=await testTierUntilPass(g,assets,'green');selectedPurple=await testTierUntilPass(g,assets,'extended');preferred=selectedGreen||selectedPurple;}
-    }
-    if(preferred){
-      log(`PREFERRED PACKAGE ${g.league} ${g.name} • ${selectedGreen?'GREEN ✓':'GREEN —'} • ${selectedPurple?'PURPLE ✓':'PURPLE —'} • Blue skipped`,'ok');
-      return;
-    }
-    const blues=rankedTierCandidates(assets,'blue');let bluePasses=0;
-    for(const a of blues){if(state.stopRequested)break;while(state.pauseRequested&&!state.stopRequested)await sleep(300);if(freshPass(a)){bluePasses++;}else{const r=await probeAsset(g,a);if(r.state==='PLAYED')bluePasses++;}if(bluePasses>=BLUE_FALLBACK_TARGET)break;}
-    if(bluePasses)log(`BLUE FALLBACK ${g.league} ${g.name} • ${bluePasses}/${BLUE_FALLBACK_TARGET} playable clips certified`,'warn');
-    else log(`UNPLAYABLE ${g.league} ${g.name} • targeted Green/Purple rediscovery and Blue fallback both failed`,'bad');
-  }
-
-  async function runAudit(mode='all'){
-    if(!state.games.length)await loadInventory();state.stopRequested=false;state.pauseRequested=false;
-    const id=`${Date.now().toString(36)}-${Math.random().toString(36).slice(2,6)}`,startDate=selectedAuditStartDate();
-    let queue=state.games.filter(g=>g.isFinal&&g.date<=startDate);
-    if(mode==='failed')queue=queue.filter(g=>['UNPLAYABLE','DEGRADED'].includes(gameHealth(g).state));if(mode==='stale')queue=queue.filter(g=>['STALE','UNTESTED'].includes(gameHealth(g).state));
-    state.run={id,status:'RUNNING',mode,policy:AUDIT_POLICY,startDate,index:0,total:queue.length,startedAt:Date.now(),queue:queue.map(gameKey)};saveRun();setRunButtons();
-    if(!queue.length){state.run.status='COMPLETE';state.run.completedAt=Date.now();saveRun();setRunButtons();setProgress('No eligible games',`No FINAL games found on or before ${startDate}.`,100);render();return;}
-    for(let i=0;i<queue.length;i++){
-      if(state.stopRequested)break;while(state.pauseRequested&&!state.stopRequested){state.run.status='PAUSED';saveRun();setRunButtons();await sleep(300);}if(state.stopRequested)break;state.run.status='RUNNING';state.run.index=i;saveRun();setRunButtons();const g=queue[i];setProgress(`Game ${i+1} / ${queue.length}`,`${g.league} • ${g.date} • ${g.name}`,(i/Math.max(1,queue.length))*100);await auditGame(g);render();
-    }
-    state.run.status=state.stopRequested?'STOPPED':'COMPLETE';state.run.completedAt=Date.now();saveRun();setRunButtons();setProgress(state.stopRequested?'Audit stopped':'Audit complete',`${Math.min(queue.length,Number(state.run.index||0)+1)} FINAL games processed starting from ${startDate}.`,state.stopRequested?undefined:100);render();
-  }
-  async function resumeRun(){const run=state.run;if(!run||!Array.isArray(run.queue))return;state.stopRequested=false;state.pauseRequested=false;const startDate=clean(run.startDate)||selectedAuditStartDate(),queue=run.queue.map(k=>state.byKey.get(k)).filter(g=>g&&g.isFinal&&g.date<=startDate),start=Math.max(0,Number(run.index||0));run.status='RUNNING';saveRun();setRunButtons();for(let i=start;i<queue.length;i++){if(state.stopRequested)break;while(state.pauseRequested&&!state.stopRequested){run.status='PAUSED';saveRun();setRunButtons();await sleep(300);}run.status='RUNNING';run.index=i;saveRun();await auditGame(queue[i]);render();}run.status=state.stopRequested?'STOPPED':'COMPLETE';run.completedAt=Date.now();saveRun();setRunButtons();render();}
-  function setRunButtons(){const active=['RUNNING','PAUSED'].includes(state.run?.status);$('auditEverything').disabled=active;$('auditFailed').disabled=active;$('auditStale').disabled=active;$('auditPause').disabled=!active||state.pauseRequested;$('auditResume').disabled=!active||!state.pauseRequested;$('auditStop').disabled=!active;if($('auditStartDate'))$('auditStartDate').disabled=active;$('metricRun').textContent=state.run?.status||'IDLE';}
-
-  function setProbe(g,a,status,result){$('probeGame').textContent=g?`${g.league} • ${g.name}`:'Waiting';$('probeAsset').textContent=a?`${a.title||assetKey(a)}\n${assetKey(a)}`:'—';$('probeTier').textContent=a?tierName(tier(a)):'—';$('probeProvider').textContent=a?upper(a.provider|| (youtubeId(a)?'YOUTUBE':'DIRECT')):'—';$('probeStartup').textContent=result?.startupMs!=null?`${result.startupMs} ms`:'—';$('probeResult').textContent=result?.reason||status||'—';const el=$('probeState');el.textContent=status;el.className=`state ${status==='PLAYED'?'pass':status==='FAILED'?'fail':status==='TESTING'?'testing':'idle'}`;}
-  function setProgress(label,detail,pct){$('progressLabel').textContent=label;$('progressDetail').textContent=detail||'';if(pct!=null)$('progressFill').style.width=`${Math.max(0,Math.min(100,pct))}%`;}
-  function log(text,cls=''){const el=$('probeLog'),d=document.createElement('div');d.textContent=`${new Date().toLocaleTimeString()}  ${text}`;if(cls)d.className=cls;el.prepend(d);while(el.children.length>150)el.lastElementChild.remove();}
-  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-
-  function rehydrationGames(){return state.games.filter(g=>g.isFinal).map(g=>({g,h:gameHealth(g)})).filter(x=>['UNPLAYABLE','NO_MEDIA','DEGRADED'].includes(x.h.state));}
-  async function ensurePlansForFailures(){for(const {g} of rehydrationGames()){if(!state.assets.has(gameKey(g)))try{await fetchPlan(g);}catch(_){}}}
-  async function exportManifest(){await ensurePlansForFailures();const games=rehydrationGames().map(({g,h})=>{const assets=h.assets||[];const failed=assets.filter(a=>resultState(a)==='fail').map(a=>({assetKey:assetKey(a),tier:tier(a),title:a.title||'',url:assetUrl(a)||youtubeId(a),reason:resultFor(a)?.reason||a.runtimeFailureReason||'FAILED'}));const present=new Set(assets.filter(a=>resultState(a)!=='fail').map(a=>tier(a)));return {date:g.date,league:g.league,eventId:g.eventId,game:g.name,status:h.state,failedAssets:failed,missingPreferredTiers:['green','extended'].filter(t=>!present.has(t))};});download(`sports-big-board-media-rehydration-${new Date().toISOString().slice(0,10)}.json`,JSON.stringify({version:VERSION,auditPolicy:AUDIT_POLICY,generatedAt:new Date().toISOString(),games},null,2),'application/json');}
-  async function exportCsv(){await ensurePlansForFailures();const rows=[['Date','League','Event ID','Game','Game Health','Tier','Asset Key','Title','URL','Failure Reason']];for(const {g,h} of rehydrationGames()){for(const a of h.assets||[]){if(resultState(a)!=='fail')continue;rows.push([g.date,g.league,g.eventId,g.name,h.state,tierName(tier(a)),assetKey(a),a.title||'',assetUrl(a)||youtubeId(a),resultFor(a)?.reason||a.runtimeFailureReason||'FAILED']);}if(!h.assets?.length)rows.push([g.date,g.league,g.eventId,g.name,h.state,'','','','','NO_ASSIGNED_MEDIA']);}download(`sports-big-board-media-failures-${new Date().toISOString().slice(0,10)}.csv`,rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv');}
-  function csvCell(v){const s=String(v??'');return /[",\n]/.test(s)?`"${s.replaceAll('"','""')}"`:s;}
-  function download(name,body,type){const blob=new Blob([body],{type}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),500);}
-  function resetAudit(){
-    const ok=window.confirm('Reset Media Audit progress and browser-side audit results?\n\nThis clears the saved queue, position, and local audit results, then reloads the page. Persisted backend PLAYED/FAILED media evidence is preserved.');
-    if(!ok)return;
-    state.stopRequested=true;state.pauseRequested=false;
-    try{localStorage.removeItem(STORE);localStorage.removeItem(RUN_STORE);}catch(_){}
-    location.reload();
-  }
-
-  function bind(){
-    $('auditEverything').onclick=()=>runAudit('all');$('auditFailed').onclick=()=>runAudit('failed');$('auditStale').onclick=()=>runAudit('stale');$('auditPause').onclick=()=>{state.pauseRequested=true;state.run.status='PAUSED';saveRun();setRunButtons();};$('auditResume').onclick=()=>{if(state.run?.status==='PAUSED'&&state.pauseRequested){state.pauseRequested=false;state.run.status='RUNNING';saveRun();setRunButtons();}else resumeRun();};$('auditStop').onclick=()=>{state.stopRequested=true;state.pauseRequested=false;};$('auditReset').onclick=resetAudit;$('exportManifest').onclick=exportManifest;$('exportCsv').onclick=exportCsv;$('refreshInventory').onclick=()=>loadInventory(true);
-    for(const id of ['filterLeague','filterHealth','filterTier','pageSize'])$(id).onchange=()=>{state.page=0;render();};$('filterSearch').oninput=()=>{state.page=0;render();};$('pagePrev').onclick=()=>{state.page--;render();};$('pageNext').onclick=()=>{state.page++;render();};setRunButtons();
-    if(state.run&&['RUNNING','PAUSED'].includes(state.run.status)){state.run.status='PAUSED';state.pauseRequested=true;saveRun();setRunButtons();setProgress('Previous audit paused',`Run ${state.run.id} can be resumed.`);}
-  }
-  bind();loadInventory();
-  window.SBB_MEDIA_AUDIT=Object.freeze({version:VERSION,loadInventory,runAudit,resumeRun,snapshot:()=>({games:state.games.length,finalGames:state.games.filter(g=>g.isFinal).length,results:Object.keys(state.results).length,run:state.run,policy:AUDIT_POLICY,today:localToday(),startDate:selectedAuditStartDate()})});
+async function refreshInventory(){
+  state.lastInventoryAt=Date.now();
+  const q=new URLSearchParams({limit:String(state.limit),offset:String(state.offset)});const lg=$('filterLeague').value,h=$('filterHealth').value,s=$('filterSearch').value.trim();if(lg)q.set('league',lg);if(h)q.set('health',h);if(s)q.set('search',s);const d=await fetchJson(API+'/inventory?'+q);state.rows=d.rows||[];state.total=Number(d.total||0);setText('tableCount',`${fmtNum(state.total)} games`);const first=state.total?state.offset+1:0,last=Math.min(state.total,state.offset+state.limit);setText('pageLabel',`${first}–${last} of ${state.total}`);$('pagePrev').disabled=state.offset<=0;$('pageNext').disabled=state.offset+state.limit>=state.total;populateLeagues();renderRows();}
+function populateLeagues(){const sel=$('filterLeague'),current=sel.value;const leagues=[...new Set(state.rows.map(r=>r.league).filter(Boolean))].sort();for(const lg of leagues)if(![...sel.options].some(o=>o.value===lg)){const o=document.createElement('option');o.value=lg;o.textContent=lg;sel.appendChild(o)}sel.value=current;}
+async function refreshStatus(){try{const d=await fetchJson(API+'/status');state.status=d;renderSummary(d);if(!state.busy&&(Date.now()-state.lastInventoryAt>12000||!state.rows.length))await refreshInventory();}catch(e){setText('metricRun','OFFLINE');setText('metricRunSub',e.message);$('probeState').textContent='OFFLINE';$('probeState').className='state fail';}}
+async function command(path,body,label){if(state.busy)return;state.busy=true;try{const d=await post(path,body);log(label,'ok');if(d.run)renderSummary({...state.status,run:d.run});await refreshStatus();}catch(e){log(`${label}: ${e.message}`,'bad');alert(e.message);}finally{state.busy=false;}}
+async function resetAudit(){const recertify=confirm('OK = reset the run only and keep existing canonical certifications.\n\nCancel, then use FULL RECERTIFY if you want to clear canonical package decisions too.');if(!recertify)return command('/reset',{recertify:false},'Audit run reset');}
+async function fullRecertify(){if(!confirm('FULL RECERTIFY will clear canonical package decisions and restore audit-managed links to ASSIGNED. Source media/history is preserved. Continue?'))return;await command('/reset',{recertify:true},'Canonical certifications reset');}
+async function download(path,name){try{const r=await fetch(API+path,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const b=await r.blob(),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);}catch(e){alert(e.message)}}
+function bind(){
+  $('auditEverything').onclick=()=>command('/start',{mode:'ALL',startDate:$('auditStartDate').value},'Canonical audit started');
+  $('auditFailed').onclick=()=>command('/start',{mode:'FAILED',startDate:$('auditStartDate').value},'Failed-game retest started');
+  $('auditStale').onclick=()=>command('/start',{mode:'STALE',startDate:$('auditStartDate').value},'Stale-game audit started');
+  $('auditPause').onclick=()=>command('/pause',{},'Audit paused');$('auditResume').onclick=()=>command('/resume',{},'Audit resumed');$('auditStop').onclick=()=>command('/stop',{},'Audit stopped');$('auditReset').onclick=resetAudit;
+  const full=document.getElementById('auditFullReset');if(full)full.onclick=fullRecertify;
+  $('refreshInventory').onclick=()=>{state.offset=0;refreshStatus()};$('exportManifest').onclick=()=>download('/rehydration.json','sports-big-board-media-rehydration.json');$('exportCsv').onclick=()=>download('/failures.csv','sports-big-board-media-audit-failures.csv');
+  $('pagePrev').onclick=()=>{state.offset=Math.max(0,state.offset-state.limit);refreshInventory()};$('pageNext').onclick=()=>{state.offset+=state.limit;refreshInventory()};$('pageSize').onchange=()=>{state.limit=Number($('pageSize').value||100);state.offset=0;refreshInventory()};
+  for(const id of ['filterLeague','filterHealth'])$(id).onchange=()=>{state.offset=0;refreshInventory()};let timer;$('filterSearch').oninput=()=>{clearTimeout(timer);timer=setTimeout(()=>{state.offset=0;refreshInventory()},250)};
+}
+async function init(){bind();state.limit=Number($('pageSize').value||100);setText('probePlaceholder','This page no longer plays audit media. Playback certification runs in controlled headless Chrome on the Sports Big Board backend.');await refreshStatus();state.pollTimer=setInterval(refreshStatus,3000);}
+window.addEventListener('beforeunload',()=>{if(state.pollTimer)clearInterval(state.pollTimer)});init().catch(e=>{console.error(e);log(e.message,'bad')});
 })();

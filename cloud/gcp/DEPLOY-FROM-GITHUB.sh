@@ -189,6 +189,7 @@ MIGRATION_BACKUP=""
 MIGRATION_REPORT=""
 rollback(){
   echo "[deploy] New backend failed health checks. Rolling back application and catalog..."
+  systemctl stop sports-big-board-media-audit >/dev/null 2>&1 || true
   systemctl stop sports-big-board >/dev/null 2>&1 || true
   if [[ -n "$MIGRATION_BACKUP" && -f "$MIGRATION_BACKUP" ]]; then
     cp -f "$MIGRATION_BACKUP" "$HISTORY_DB"
@@ -199,6 +200,20 @@ rollback(){
   if [[ -n "$PREVIOUS" && -d "$PREVIOUS" ]]; then
     ln -sfn "$PREVIOUS" "$CURRENT_LINK"
     systemctl restart sports-big-board || true
+    if [[ -f "$PREVIOUS/media_audit_service.py" ]]; then
+      systemctl restart sports-big-board-media-audit || true
+    else
+      systemctl stop sports-big-board-media-audit >/dev/null 2>&1 || true
+      python3 - <<'PY_CADDY_ROLLBACK' || true
+from pathlib import Path
+p=Path('/etc/caddy/Caddyfile')
+if p.exists():
+    s=p.read_text(encoding='utf-8')
+    marker='    handle_path /api/media-audit/* {\n        reverse_proxy 127.0.0.1:8091\n    }\n'
+    if marker in s: p.write_text(s.replace(marker,'',1),encoding='utf-8')
+PY_CADDY_ROLLBACK
+      caddy validate --config /etc/caddy/Caddyfile >/dev/null 2>&1 && systemctl restart caddy || true
+    fi
   fi
   rm -rf "$RELEASE_DIR"
   rm -f "$ARCHIVE"
@@ -318,6 +333,13 @@ if [[ "$LOCAL_VERSION" != "$VERSION" ]]; then
   false
 fi
 
+# v5.5.0 R9 canonical Media Health Audit is a separate backend-owned service.
+# It shares the normalized SQLite catalog and feeds canonical ASSIGNED/QUARANTINED
+# relationships directly back into the normal Sports Big Board playback engine.
+echo "[deploy] Installing canonical Media Health Audit service..."
+bash "$RELEASE_DIR/cloud/vm/INSTALL-MEDIA-AUDIT.sh"
+
+
 # Validate the public Caddy/TLS route from the VM too. A failure here rolls the
 # symlink back before GitHub Pages can publish a frontend that points at a bad API.
 PUBLIC_HOST="$(awk '/^[A-Za-z0-9.-]+[[:space:]]*\{/{print $1; exit}' /etc/caddy/Caddyfile 2>/dev/null || true)"
@@ -337,6 +359,19 @@ if [[ -n "$PUBLIC_HOST" ]]; then
     echo "[deploy] Public backend version mismatch: expected v${VERSION}, got v${PUBLIC_VERSION:-UNKNOWN}."
     false
   fi
+  if ! curl -fsS --max-time 10 "https://${PUBLIC_HOST}/api/media-audit/status" > /tmp/sbb-media-audit-public.json; then
+    echo "[deploy] Public canonical Media Audit API health check failed."
+    journalctl -u sports-big-board-media-audit -u caddy --no-pager -n 80 || true
+    false
+  fi
+  python3 - <<'PY_AUDIT'
+import json
+x=json.load(open('/tmp/sbb-media-audit-public.json'))
+assert x.get('ok') is True,x
+assert x.get('canonical') is True,x
+assert x.get('browserOwned') is False,x
+print('PASS canonical Media Audit API is public and server-owned')
+PY_AUDIT
 fi
 trap - ERR
 rm -f "$ARCHIVE" "$MIGRATION_JSON" "$MIGRATION_CHECK_JSON" "$MIGRATION_STDERR"

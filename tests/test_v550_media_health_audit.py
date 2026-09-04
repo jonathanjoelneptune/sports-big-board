@@ -6,58 +6,78 @@ html=(root/'media-audit.html').read_text()
 js=(root/'ui/media-audit-v550.js').read_text()
 css=(root/'ui/media-audit-v550.css').read_text()
 index=(root/'index.html').read_text()
-pages_builder=(root/'cloud/github-pages/build_pages.py').read_text()
+service=(root/'media_audit_service.py').read_text()
+probe=(root/'media-audit-probe.html').read_text()
+installer=(root/'cloud/vm/INSTALL-MEDIA-AUDIT.sh').read_text()
+deploy=(root/'cloud/gcp/DEPLOY-FROM-GITHUB.sh').read_text()
+pages=(root/'cloud/github-pages/build_pages.py').read_text()
 
-for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STALE','RESET AUDIT','START AUDIT FROM','auditStartDate','auditReset','REHYDRATION JSON','FAILURES CSV','youtubeProbe','directProbe']:
+for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STALE','RESET AUDIT','FULL RECERTIFY','START AUDIT FROM','REHYDRATION JSON','FAILURES CSV','CANONICAL SERVER WORKER']:
     assert token in html,token
-for token in ['/api/history/audit','/api/history/event/media','/api/history/media/runtime','PLAYING_TIME_ADVANCED','REPEATED_','NO_MEDIA','UNPLAYABLE','DEGRADED','FRESH_MS','STALE_MS','localStorage','runAudit','resumeRun','sports-big-board-media-rehydration']:
-    assert token in js,token
-
+assert 'youtubeProbe' not in html
+assert 'directProbe' not in html
+assert 'youtube.com/iframe_api' not in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r9' in html
 assert 'href="media-audit.html"' in index
-assert "const VERSION='5.5.0'" in js
-assert 'ui/media-audit-v550.css?v=5.5.0' in html
 
-# R7 audit policy: preferred-package logic remains, but queue eligibility is now
-# final-state authoritative with a selectable newest audit date and one-click reset.
-for token in [
-    "const PREFERRED_TIERS=Object.freeze(['green','extended'])",
-    'const BLUE_FALLBACK_TARGET=3',
-    "const AUDIT_POLICY='R8_FINAL_SIGNAL_RECOVERY'",
-    'function finalInfo(row,event)',
-    'const historicalFallback=Boolean(date&&date<localToday()',
-    'function hydrateTodayFinals(rows)',
-    '/api/history/day?date=${encodeURIComponent(today)}',
-    "current-day games remain WAITING FINAL",
-    'type.completed===true',
-    'finalAt>0||completed||statusFinal||historicalFallback',
-    "return {state:'WAITING_FINAL'",
-    'function latestFinalDate()',
-    'function selectedAuditStartDate()',
-    'g.isFinal&&g.date<=startDate',
-    'filter(g=>g&&g.isFinal&&g.date<=startDate)',
-    'No FINAL games found on or before',
-    'function resetAudit()',
-    "localStorage.removeItem(STORE);localStorage.removeItem(RUN_STORE)",
-    "'/api/history/event/discover'",
-    'forcing targeted rediscovery before Blue fallback',
-    "PREFERRED PACKAGE",
-    "Blue skipped",
-    'NON_VIDEO_MEDIA_URL',
-    "if(t==='blue'&&anyPreferredPass(assets))",
-    'bluePasses>=BLUE_FALLBACK_TARGET',
-    'state.games.filter(g=>g.isFinal).map',
-]:
+# Browser is a console only. All control and inventory authority routes to the backend service.
+for token in ['/api/media-audit','/start','/pause','/resume','/stop','/reset','/inventory','/event?event=','/rehydration.json','/failures.csv','Canonical audit results are stored in SQLite']:
     assert token in js,token
-assert "if(anyPreferredPass(assets))return {state:'HEALTHY'" in js
-assert '<option value="WAITING_FINAL">WAITING FINAL</option>' in html
-assert 'class="danger">RESET AUDIT</button>' in html
-assert 'type="date"' in html
+for forbidden in ['localStorage','YT.Player','directProbe','youtubeProbe','/api/history/media/runtime']:
+    assert forbidden not in js,forbidden
 
-# Deployment contract: creating the page in the repository is not enough.
-# GitHub Pages must copy it into .pages-dist or the operator link will 404.
-assert "'media-audit.html'" in pages_builder, 'media-audit.html missing from GitHub Pages artifact builder'
-assert "Media Health Audit -> media-audit.html" in pages_builder
+# Canonical server-owned audit contract.
+for token in [
+    'AUDIT_GENERATION = "R9"',
+    'history_media_audit_run',
+    'history_media_audit_queue',
+    'history_media_audit_asset_result',
+    'history_media_canonical_package',
+    'CANONICAL_BROWSER',
+    'CANONICAL_MEDIA_AUDIT',
+    'MEDIA_AUDIT_FAILED',
+    'MEDIA_AUDIT_SUPERSEDED',
+    'MEDIA_AUDIT_BLUE_SUPPRESSED',
+    'BLUE_FALLBACK_TARGET',
+    'TARGETED_REHYDRATION',
+    '/api/history/event/discover',
+    'WAITING_DISCOVERY_PRIORITY',
+    'Never jump ahead of a lower ordinal non-terminal item.',
+    'ORDER BY ordinal ASC LIMIT 1',
+    'events.sort',
+    'scheduledKey',
+    'queueOrdinal',
+    'WAITING_PROBE_INFRASTRUCTURE',
+    'event_date DESC',
+    'if not selected["green"] or not selected["extended"]',
+    'if not preferred:',
+    'len(selected["blue"]) >= BLUE_FALLBACK_TARGET',
+    'association_state=\'ASSIGNED\'',
+    'state = QUARANTINED',
+    'browserOwned',
+]:
+    assert token in service,token
 
-assert 'ui/media-audit-v550.js?v=5.5.0-r8' in html
+# Special Events/tennis cannot be starved by the old HISTORY_LEAGUES API gate: queue comes from the normalized catalog directly.
+assert 'SELECT canonical_event_key,league,event_id,event_date,event_json,final_at FROM history_catalog_event' in service
+assert 'HISTORY_LEAGUES' not in service
 
-print('PASS v5.5.0 Media Audit R8 historical-final fallback + live today FINAL cross-check + reset/start-date + preferred-package policy')
+# Controlled production-origin browser probe proves real playback advancement.
+for token in ['window.SBB_MEDIA_PROBE','PLAYING_TIME_ADVANCED','YOUTUBE_EMBED_DISABLED','YOUTUBE_UNAVAILABLE','DIRECT_MEDIA_ERROR_','currentTimeDelta','youtube-nocookie.com','location.origin']:
+    assert token in probe,token
+
+# VM deployment owns Chrome/Selenium and a persistent systemd worker.
+assert 'QUEUE #' in js
+assert 'SBB_MEDIA_AUDIT_TIMEZONE' in service
+
+for token in ['google-chrome-stable','selenium==4.27.1','sports-big-board-media-audit.service','127.0.0.1:8091','handle_path /api/media-audit/*','media_audit_service.py','Canonical audit service is healthy']:
+    assert token.lower() in installer.lower(),token
+for token in ['INSTALL-MEDIA-AUDIT.sh','sports-big-board-media-audit','/api/media-audit/status','canonical Media Audit API is public and server-owned']:
+    assert token in deploy,token
+
+# GitHub Pages publishes the operator console and the exact-origin probe page.
+assert "'media-audit.html'" in pages
+assert "'media-audit-probe.html'" in pages
+assert 'Canonical Media Probe -> media-audit-probe.html' in pages
+
+print('PASS v5.5.0 R9 canonical backend-owned Media Health Audit + deterministic all-competition queue + canonical playback package')
