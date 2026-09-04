@@ -22,10 +22,14 @@ assert 'ui/media-audit-v550.css?v=5.5.0' in html
 for token in [
     "const PREFERRED_TIERS=Object.freeze(['green','extended'])",
     'const BLUE_FALLBACK_TARGET=3',
-    "const AUDIT_POLICY='R7_FINAL_ONLY_RESET_START_DATE'",
+    "const AUDIT_POLICY='R8_FINAL_SIGNAL_RECOVERY'",
     'function finalInfo(row,event)',
+    'const historicalFallback=Boolean(date&&date<localToday()',
+    'function hydrateTodayFinals(rows)',
+    '/api/history/day?date=${encodeURIComponent(today)}',
+    "current-day games remain WAITING FINAL",
     'type.completed===true',
-    'finalAt>0||completed||statusFinal',
+    'finalAt>0||completed||statusFinal||historicalFallback',
     "return {state:'WAITING_FINAL'",
     'function latestFinalDate()',
     'function selectedAuditStartDate()',
@@ -54,4 +58,6 @@ assert 'type="date"' in html
 assert "'media-audit.html'" in pages_builder, 'media-audit.html missing from GitHub Pages artifact builder'
 assert "Media Health Audit -> media-audit.html" in pages_builder
 
-print('PASS v5.5.0 Media Audit R7 final-only queue + start date + reset + preferred-package policy + Pages publication')
+assert 'ui/media-audit-v550.js?v=5.5.0-r8' in html
+
+print('PASS v5.5.0 Media Audit R8 historical-final fallback + live today FINAL cross-check + reset/start-date + preferred-package policy')

@@ -10,7 +10,7 @@
   const ADVANCE_SECONDS=.75;
   const PREFERRED_TIERS=Object.freeze(['green','extended']);
   const BLUE_FALLBACK_TARGET=3;
-  const AUDIT_POLICY='R7_FINAL_ONLY_RESET_START_DATE';
+  const AUDIT_POLICY='R8_FINAL_SIGNAL_RECOVERY';
   const $=id=>document.getElementById(id);
   const api=path=>window.SBB_API?.url?window.SBB_API.url(path):path;
   const clean=v=>String(v??'').trim();
@@ -19,6 +19,7 @@
     row=row||{};event=event||{};
     const status=event.status||{};
     const type=status.type||{};
+    const date=clean(row.date||row.eventDate||row['Date']||event.date||event.gameDate).slice(0,10);
     const finalAt=Number(row.finalAt||row.final_at||row['Final At']||event.finalAt||event.final_at||0);
     const completed=Boolean(
       row.completed===true||row.isFinal===true||row.final===true||
@@ -33,7 +34,14 @@
       type.name,type.state,type.description,type.detail,type.shortDetail
     ].map(clean).filter(Boolean).join(' ').toUpperCase();
     const statusFinal=/(^|[^A-Z])(FINAL|FULL TIME|FT|COMPLETED|ENDED|CLOSED|POST)([^A-Z]|$)/.test(statusText);
-    return {isFinal:Boolean(finalAt>0||completed||statusFinal),finalAt,statusText};
+    const statusNonFinal=/(^|[^A-Z])(SCHEDULED|PRE|PREVIEW|IN PROGRESS|LIVE|HALFTIME|DELAYED|POSTPONED|CANCELED|CANCELLED|SUSPENDED)([^A-Z]|$)/.test(statusText);
+    const labelText=[
+      row.game,row.gameLabel,row.matchup,row.away,row.home,row.awayName,row.homeName,
+      event.away?.displayName,event.away?.name,event.home?.displayName,event.home?.name,
+      event.awayTeam?.displayName,event.awayTeam?.name,event.homeTeam?.displayName,event.homeTeam?.name
+    ].map(clean).filter(Boolean).join(' ').toUpperCase();
+    const historicalFallback=Boolean(date&&date<localToday()&&!statusNonFinal&&!/\bTBD\b/.test(labelText));
+    return {isFinal:Boolean(finalAt>0||completed||statusFinal||historicalFallback),finalAt,statusText,historicalFallback};
   }
   const upper=v=>clean(v).toUpperCase();
   const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[ch]||ch));
@@ -82,6 +90,7 @@
         offset+=sourceRows.length;
         setProgress(`Loading inventory… ${rows.length.toLocaleString()} visible / ${Number(total).toLocaleString()} catalog rows`,'Reading the canonical history catalog.');
       }
+      await hydrateTodayFinals(rows);
       state.games=rows;state.byKey=new Map(rows.map(g=>[gameKey(g),g]));populateLeagues();syncAuditStartDate();state.page=0;render();
       const finalCount=rows.filter(g=>g.isFinal).length,waiting=rows.length-finalCount;
       setProgress('Inventory ready',`${rows.length.toLocaleString()} games loaded through ${localToday()} • ${finalCount.toLocaleString()} FINAL eligible • ${waiting.toLocaleString()} waiting final.`);
@@ -100,6 +109,39 @@
     return v&&v<=localToday()?v:latest;
   }
   function populateLeagues(){const select=$('filterLeague'),current=select.value,leagues=[...new Set(state.games.map(x=>x.league).filter(Boolean))].sort();select.innerHTML='<option value="">ALL LEAGUES</option>'+leagues.map(x=>`<option>${esc(x)}</option>`).join('');select.value=current;}
+
+  function scoreEventId(row){
+    row=row||{};
+    for(const key of ['scoreEventId','matchId','espnEventId','gamePk','canonicalEventId','eventId','id']){
+      const value=row[key];if(value!==undefined&&value!==null&&String(value).trim())return String(value).trim();
+    }
+    return '';
+  }
+  async function hydrateTodayFinals(rows){
+    const today=localToday(),todays=(rows||[]).filter(g=>g.date===today);
+    if(!todays.length)return;
+    try{
+      const r=await fetch(api(`/api/history/day?date=${encodeURIComponent(today)}`),{cache:'no-store'});
+      const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||data.error||`HTTP ${r.status}`);
+      const byKey=new Map();
+      const groups=data.scoreRowsByLeague||{};
+      for(const [league,items] of Object.entries(groups)){
+        for(const item of (items||[])){
+          const id=scoreEventId(item);if(!id)continue;
+          const fin=finalInfo(item,item);
+          byKey.set(`${upper(league)}:${id}`,fin);
+        }
+      }
+      let promoted=0;
+      for(const g of todays){
+        const fin=byKey.get(gameKey(g));if(!fin?.isFinal)continue;
+        g.isFinal=true;g.finalAt=fin.finalAt||g.finalAt||Date.now()/1000;g.finalStatus=fin.statusText||'FINAL';promoted++;
+      }
+      log(`Today's FINAL check: ${promoted} of ${todays.length} current-day games eligible.`,'ok');
+    }catch(err){
+      log(`Today's FINAL check unavailable; current-day games remain WAITING FINAL: ${err.message||err}`,'warn');
+    }
+  }
 
   async function fetchPlan(g,force=false){
     const key=gameKey(g);if(state.assets.has(key)&&!force)return state.assets.get(key);
