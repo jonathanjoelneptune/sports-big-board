@@ -1,12 +1,12 @@
-/* Sports Big Board v5.4.3 — resilient sport Match Center fallback.
+/* Sports Big Board v5.4.4 — resilient sport Match Center fallback.
    Provider-rich Game Center remains preferred. When a competition has no detailed
    provider or a provider request fails, keep the selected sporting event useful:
    show participants, score/status and event context instead of GAME CENTER UNAVAILABLE.
    Special Events retain their stronger curated Match Center ownership. */
 (() => {
   'use strict';
-  if(window.SBB_SPORT_MATCH_CENTER?.version==='5.4.3')return;
-  const VERSION='5.4.3';
+  if(window.SBB_SPORT_MATCH_CENTER?.version==='5.4.4')return;
+  const VERSION='5.4.4';
   const $=id=>document.getElementById(id);
   const clean=v=>String(v??'').trim();
   const esc=v=>clean(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

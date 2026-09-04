@@ -1,6 +1,6 @@
-# Sports Big Board v5.4.2 Controller Region + Binding Map
+# Sports Big Board v5.4.3 Controller Region + Binding Map
 
-v5.4.2 keeps the v5.4.0 semantic interaction graph as the single controller navigation authority, preserves v5.4.1 automatic last-input-wins behavior, and adds live browser input diagnostics, radial navigation, and an analog pointer fallback.
+v5.4.3 keeps the v5.4.0 semantic interaction graph as the single controller navigation authority, preserves v5.4.1 automatic last-input-wins behavior, and adds live browser input diagnostics, radial navigation, and an analog pointer fallback.
 
 ## Coverage rule
 
@@ -73,7 +73,7 @@ The tooltip shows the controller ID, browser mapping (`standard` or non-standard
 
 ## Robust browser/controller handling
 
-v5.4.2 retains low-frequency disconnected discovery and rAF polling only while a browser-visible controller exists. It also adds:
+v5.4.3 retains low-frequency disconnected discovery and rAF polling only while a browser-visible controller exists. It also adds:
 
 - browser refocus and post-pointer discovery retries for browsers that gate controller enumeration until the page is focused;
 - Turtle Beach / Xbox-family identification;

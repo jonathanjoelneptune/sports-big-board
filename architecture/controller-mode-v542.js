@@ -1,11 +1,11 @@
-/* Sports Big Board v5.4.3 — Controller Radials + Live Input + Pointer Fallback.
+/* Sports Big Board v5.4.4 — Controller Radials + Native Windows Bridge + Pointer Fallback.
    Builds on the v5.4.0 semantic navigation graph and v5.4.1 automatic takeover.
    Adds robust browser-level gamepad diagnostics, a live header indicator, RT
    League radial, LT Date/Scope radial, and R3 analog pointer fallback. */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_MODE?.version==='5.4.3')return;
-  const VERSION='5.4.3';
+  if(window.SBB_CONTROLLER_MODE?.version==='5.4.4')return;
+  const VERSION='5.4.4';
   const PREF_KEY='sports-big-board.controller-mode.v1';
   const DEADZONE=.20;
   const NEUTRAL_DEADZONE=.28;
@@ -37,6 +37,9 @@
   const ownerApi=()=>window.SBB_INPUT_OWNERSHIP||null;
   const enabled=()=>preference!=='disabled';
   const gamepadApiAvailable=()=>typeof navigator.getGamepads==='function';
+  const nativeBridge=()=>window.SBB_CONTROLLER_NATIVE_BRIDGE||null;
+  const nativeBridgeApiAvailable=()=>!!nativeBridge()?.supported?.();
+  const nativeBridgeGamepad=()=>{try{return nativeBridge()?.gamepad?.()||null;}catch(_){return null;}};
   const hidBridge=()=>window.SBB_CONTROLLER_HID_BRIDGE||null;
   const hidApiAvailable=()=>!!hidBridge()?.supported?.();
   const hidGamepad=()=>{try{return hidBridge()?.gamepad?.()||null;}catch(_){return null;}};
@@ -52,8 +55,13 @@
   function buttonPressed(gamepad,index){return buttonValue(gamepad,index)>=BUTTON_THRESHOLD;}
   function axis(gamepad,index){const n=Number(gamepad?.axes?.[index]||0);return Number.isFinite(n)?n:0;}
   function gamepads(){
-    let native=[];try{native=gamepadApiAvailable()?[...(navigator.getGamepads()||[])].filter(Boolean):[];}catch(_){native=[];}
-    const hid=hidGamepad();if(hid)native.push(hid);return native;
+    let browser=[];try{browser=gamepadApiAvailable()?[...(navigator.getGamepads()||[])].filter(Boolean):[];}catch(_){browser=[];}
+    // Transport priority is deliberate: native browser Gamepad first, then the
+    // loopback Windows bridge, then WebHID. Never expose duplicate representations
+    // of the same physical controller to semantic navigation.
+    if(browser.length)return browser;
+    const bridged=nativeBridgeGamepad();if(bridged)return [bridged];
+    const hid=hidGamepad();return hid?[hid]:[];
   }
   function firstGamepad(){const pads=gamepads();if(activeIndex!=null){const exact=pads.find(p=>p.index===activeIndex);if(exact)return exact;}return pads[0]||null;}
   function controllerFamily(id=''){
@@ -130,38 +138,45 @@
   }
   function indicatorState(){
     if(!enabled())return {state:'disabled',label:'🎮 OFF'};
-    const hid=hidBridge();
-    if(!gamepadApiAvailable()&&!hidApiAvailable())return {state:'unsupported',label:'🎮 NO API'};
+    const native=nativeBridge(),ns=native?.snapshot?.()||null,hid=hidBridge();
+    if(!gamepadApiAvailable()&&!nativeBridgeApiAvailable()&&!hidApiAvailable())return {state:'unsupported',label:'🎮 NO API'};
     if(!connected){
-      if(hidApiAvailable()&&!hid?.authorized)return {state:'hid-pair',label:'🎮 HID PAIR'};
-      return {state:'waiting',label:'🎮 WAIT'};
+      if(ns?.transportConnected)return {state:'bridge-wait',label:'🎮 BRIDGE'};
+      return {state:'no-bridge',label:'🎮 NO BRIDGE'};
     }
-    const hidOwned=activeIndex===-543;
-    if(ownerApi()?.current?.()==='controller'||(lastRawInputAt&&Date.now()-lastRawInputAt<2600))return {state:pointerMode?'pointer':(hidOwned?'hid-live':'live'),label:pointerMode?'🎮 POINTER':(hidOwned?'🎮 HID LIVE':'🎮 LIVE')};
-    return hidOwned?{state:'hid-ready',label:'🎮 HID READY'}:{state:'ready',label:'🎮 READY'};
+    const bridgeOwned=activeIndex===-544,hidOwned=activeIndex===-543;
+    if(ownerApi()?.current?.()==='controller'||(lastRawInputAt&&Date.now()-lastRawInputAt<2600)){
+      if(pointerMode)return {state:'pointer',label:'🎮 POINTER'};
+      if(bridgeOwned)return {state:'bridge-live',label:'🎮 BR LIVE'};
+      if(hidOwned)return {state:'hid-live',label:'🎮 HID LIVE'};
+      return {state:'live',label:'🎮 LIVE'};
+    }
+    if(bridgeOwned)return {state:'bridge-ready',label:'🎮 BR READY'};
+    if(hidOwned)return {state:'hid-ready',label:'🎮 HID READY'};
+    return {state:'ready',label:'🎮 READY'};
   }
   function updateIndicator(){
     const el=ensureIndicator();if(!el)return;
     const info=indicatorState();el.dataset.state=info.state;el.textContent=info.label;
-    const hs=hidBridge()?.snapshot?.();
-    el.title=[`Controller: ${clean(activeId)||'not detected'}`,`Browser Gamepad API: ${gamepadApiAvailable()?'available':'unavailable'}`,`WebHID: ${hidApiAvailable()?'available':'unavailable'}`,hs?`HID: ${hs.state}`:'HID: bridge not loaded',`Mapping: ${activeMapping||'—'}`,`Input owner: ${ownerApi()?.current?.()||'—'}`,lastRawInputAt?`Last input: ${new Date(lastRawInputAt).toLocaleTimeString()}`:'No controller input received yet'].join('\n');
-    el.setAttribute('aria-label',info.state==='hid-pair'?'Pair wireless controller':info.label.replace('🎮','Controller').trim());
-    el.disabled=info.state==='disabled';
-    lastIndicatorState=info.state;
+    const ns=nativeBridge()?.snapshot?.(),hs=hidBridge()?.snapshot?.();
+    el.title=[`Controller: ${clean(activeId)||'not detected'}`,`Browser Gamepad API: ${gamepadApiAvailable()?'available':'unavailable'}`,ns?`Windows bridge: ${ns.state}`:'Windows bridge: client not loaded',`WebHID: ${hidApiAvailable()?'available':'unavailable'}`,hs?`HID: ${hs.state}`:'HID: bridge not loaded',`Mapping: ${activeMapping||'—'}`,`Input owner: ${ownerApi()?.current?.()||'—'}`,lastRawInputAt?`Last input: ${new Date(lastRawInputAt).toLocaleTimeString()}`:'No controller input received yet'].join('\n');
+    el.setAttribute('aria-label',info.state==='no-bridge'?'Windows controller bridge is not connected':info.label.replace('🎮','Controller').trim());
+    el.disabled=info.state==='disabled';lastIndicatorState=info.state;
   }
   function updateStatus(){
     const select=document.getElementById('controllerModeSelect');if(select&&select.value!==preference)select.value=preference;
+    const ns=nativeBridge()?.snapshot?.();
     const status=document.getElementById('controllerStatusValue');
     if(status){
       if(!enabled())status.textContent='Disabled';
-      else if(!gamepadApiAvailable()&&!hidApiAvailable())status.textContent='Browser controller APIs unavailable';
-      else if(!connected&&hidApiAvailable()&&!hidBridge()?.authorized)status.textContent='Wireless controller can be paired through WebHID';
-      else if(!connected)status.textContent='Waiting for browser controller input';
+      else if(!connected&&ns?.transportConnected)status.textContent='Windows bridge connected • waiting for controller';
+      else if(!connected)status.textContent='No browser controller detected • Windows bridge offline';
       else if(ownerApi()?.current?.()==='controller')status.textContent=`Live • ${clean(activeId)||'Gamepad'}`;
       else status.textContent=`Ready • ${clean(activeId)||'Gamepad'}`;
     }
     const hint=document.getElementById('controllerStatusHint');
-    if(hint)hint.textContent=enabled()?'Gamepad is automatic. If the wireless receiver is hidden from Gamepad API, click HID PAIR once to grant browser access; future visits reconnect automatically. Mouse or keyboard still takes control back.':'Controller input is ignored until Automatic is selected.';
+    if(hint)hint.textContent=enabled()?'Input priority: browser Gamepad → local Windows bridge → WebHID. The Stealth Ultra 2.4 GHz receiver can use the Windows bridge when Chrome does not expose it directly. Mouse or keyboard still takes control back automatically.':'Controller input is ignored until Automatic is selected.';
+    const nativeStat=document.getElementById('controllerNativeBridgeStatus');if(nativeStat)nativeStat.textContent=ns?.state||'Windows bridge client initializing…';
     const hidStat=document.getElementById('controllerHidStatus');if(hidStat)hidStat.textContent=hidBridge()?.snapshot?.().state||'WebHID bridge initializing…';
     updateIndicator();
   }
@@ -486,8 +501,9 @@
     bindSettings();ensureHelp();hideHelp(true);ensureIndicator();updateStatus();
     try{ownerApi()?.subscribe?.(onOwnerChange);}catch(_){ }
     window.addEventListener('gamepadconnected',onConnected);window.addEventListener('gamepaddisconnected',onDisconnected);
+    document.addEventListener('sbb:controller-native-bridge-change',()=>{updateStatus();discoverNow();});
     document.addEventListener('sbb:controller-hid-change',()=>{updateStatus();discoverNow();});
-    const indicator=ensureIndicator();if(indicator&&!indicator.dataset.sbbPairBound){indicator.dataset.sbbPairBound='1';indicator.addEventListener('click',()=>{const info=indicatorState();if(info.state==='hid-pair'||(!connected&&hidApiAvailable()))hidBridge()?.pair?.();else showHelp({message:info.label.replace('🎮','').trim(),duration:1800});});}
+    const indicator=ensureIndicator();if(indicator&&!indicator.dataset.sbbPairBound){indicator.dataset.sbbPairBound='1';indicator.addEventListener('click',()=>{const info=indicatorState();if(info.state==='no-bridge'){nativeBridge()?.reconnect?.();showHelp({message:'START WINDOWS BRIDGE',duration:2200});}else if(info.state==='hid-pair')hidBridge()?.pair?.();else showHelp({message:info.label.replace('🎮','').trim(),duration:1800});});}
     document.addEventListener('visibilitychange',onVisibility);window.addEventListener('focus',onWindowFocus);
     document.addEventListener('pointerdown',onPointerWake,{passive:true});
     discoverNow();
@@ -501,6 +517,6 @@
     showHelp:()=>showHelp({persist:true}),hideHelp:()=>{helpPinned=false;hideHelp(true);},
     openLeagueRadial:()=>openRadial('league'),openDateRadial:()=>openRadial('date'),closeRadial,
     setPointerMode,
-    snapshot:()=>({version:VERSION,preference,apiAvailable:gamepadApiAvailable(),hidApiAvailable:hidApiAvailable(),hid:hidBridge()?.snapshot?.()||null,connected,activeIndex,activeId,activeMapping,inputOwner:ownerApi()?.current?.()||'',waitingForNeutral,helpPinned,frames,meaningfulInputs,rawInputs,lastRawInputAt,lastAction,lastActionAt,controllerEverActive,pointerMode,radial:radial?.type||'',indicator:lastIndicatorState})
+    snapshot:()=>({version:VERSION,preference,apiAvailable:gamepadApiAvailable(),nativeBridgeApiAvailable:nativeBridgeApiAvailable(),nativeBridge:nativeBridge()?.snapshot?.()||null,hidApiAvailable:hidApiAvailable(),hid:hidBridge()?.snapshot?.()||null,connected,activeIndex,activeId,activeMapping,inputOwner:ownerApi()?.current?.()||'',waitingForNeutral,helpPinned,frames,meaningfulInputs,rawInputs,lastRawInputAt,lastAction,lastActionAt,controllerEverActive,pointerMode,radial:radial?.type||'',indicator:lastIndicatorState})
   });
 })();

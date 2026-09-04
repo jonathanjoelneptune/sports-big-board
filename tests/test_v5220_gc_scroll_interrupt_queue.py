@@ -10,7 +10,7 @@ gcjs=(ROOT/'ui'/'game-center-scroll-v5220.js').read_text()
 interrupt=(ROOT/'architecture'/'score-interrupt-queue-v5220.js').read_text()
 upnext=(ROOT/'ui'/'up-next-experience-v5217.js').read_text()
 
-assert version=='5.4.3', version
+assert version=='5.4.4', version
 assert f'ui/game-center-scroll-v5220.css?v={version}' in index
 assert f'<script src="architecture/score-interrupt-queue-v5220.js?v={version}"></script>' in index
 assert f'<script src="ui/game-center-scroll-v5220.js?v={version}"></script>' in index
@@ -73,4 +73,4 @@ assert read_js < scroll_js
 for asset,found in re.findall(r'(?:src|href)="([^"?]+\.(?:js|css))\?v=([^"]+)"',index):
     assert found==version, f'{asset}: {found} != {version}'
 
-print('PASS v5.4.3 explicit Game Center scrollbar + preserved score-interrupt programming queue')
+print('PASS v5.4.4 explicit Game Center scrollbar + preserved score-interrupt programming queue')

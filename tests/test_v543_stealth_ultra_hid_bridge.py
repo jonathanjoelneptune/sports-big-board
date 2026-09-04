@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""v5.4.3 controller fallback: WebHID bridge + Turtle Beach wireless diagnostics."""
+"""v5.4.4 controller fallback: WebHID bridge + Turtle Beach wireless diagnostics."""
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
@@ -36,10 +36,10 @@ for forbidden in ('sendReport(', 'sendFeatureReport(', 'receiveFeatureReport(', 
 # Existing controller engine consumes the synthetic HID gamepad without duplicating
 # D-pad/radial/pointer behavior in the HID layer.
 assert 'SBB_CONTROLLER_HID_BRIDGE' in core
-assert 'const hid=hidGamepad();if(hid)native.push(hid)' in core
-assert "state:'hid-pair'" in core and "state:'hid-ready'" in core and "'hid-live'" in core
+assert 'const hid=hidGamepad();return hid?[hid]:[];' in core
+assert "state:'hid-ready'" in core and "'hid-live'" in core
 assert "document.addEventListener('sbb:controller-hid-change'" in core
-assert "hidBridge()?.pair?.()" in core
+assert 'controllerHidPairBtn' in index
 assert 'hidApiAvailable' in core
 assert '[data-state="hid-pair"]' in css and '[data-state="hid-live"]' in css
 print(f'PASS v{VERSION} Turtle Beach/WebHID fallback + diagnostic controller bridge')

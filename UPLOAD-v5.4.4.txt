@@ -1,0 +1,26 @@
+Sports Big Board v5.4.4 — Native Controller Bridge
+
+Manual GitHub upload package. Upload the CONTENTS of this folder to the repository root and preserve all paths.
+
+Release focus:
+- keeps browser Gamepad API as the first-choice controller transport;
+- adds a loopback-only Windows native controller bridge as the second transport;
+- retains WebHID as the third diagnostic/fallback transport;
+- supports Turtle Beach Stealth Ultra 2.4 GHz wireless input through Windows XInput/joyGetPosEx when Chrome does not expose the controller;
+- adds NO BRIDGE / BRIDGE / BR READY / BR LIVE header diagnostics;
+- preserves D-pad focus, A/B/X/Y, LB/RB, RT/LT radial wheels, right-stick scrolling and R3 pointer fallback;
+- includes a Windows helper under windows-controller-bridge/.
+
+After GitHub deployment, on the Windows PC used to view Big Board:
+1. Open windows-controller-bridge.
+2. Double-click START-CONTROLLER-BRIDGE.cmd.
+3. Reload Sports Big Board.
+4. Allow Chrome Local Network/loopback access if prompted.
+5. If the header remains NO BRIDGE, click the controller indicator or Settings -> RECONNECT BRIDGE once.
+6. Expected indicator: BR READY, then BR LIVE after controller input.
+
+Optional: INSTALL-STARTUP.cmd adds the helper to the current user's Windows Startup folder.
+No administrator rights are required. The helper listens only on 127.0.0.1:5410 and makes no outbound internet connections.
+
+Release VERSION: 5.4.4
+Changed/new repository files versus v5.4.3 overlay: 89

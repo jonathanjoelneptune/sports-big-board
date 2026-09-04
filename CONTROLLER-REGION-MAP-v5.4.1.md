@@ -1,6 +1,6 @@
-# Sports Big Board v5.4.1 Controller Readiness Region Map
+# Sports Big Board v5.4.3 Controller Readiness Region Map
 
-v5.4.1 is an interaction-architecture release. It does **not** bind the Gamepad API yet. It establishes the semantic focus graph that v5.4.1+ Controller Mode will consume.
+v5.4.3 is an interaction-architecture release. It does **not** bind the Gamepad API yet. It establishes the semantic focus graph that v5.4.3+ Controller Mode will consume.
 
 ## Coverage rule
 
@@ -85,7 +85,7 @@ The future Controller-B action will use the already-defined `back()` order:
 - `keyboard`
 - `controller`
 
-v5.4.1 only detects pointer and keyboard. It intentionally does **not** call `navigator.getGamepads`, listen for `gamepadconnected`, or poll a controller. v5.4.1 can claim `controller` ownership immediately when meaningful gamepad input is detected.
+v5.4.3 only detects pointer and keyboard. It intentionally does **not** call `navigator.getGamepads`, listen for `gamepadconnected`, or poll a controller. v5.4.3 can claim `controller` ownership immediately when meaningful gamepad input is detected.
 
 Pointer ownership requires a click, wheel action, or at least 10 pixels of meaningful movement, which prevents tiny sensor movement from stealing ownership. Keyboard ownership ignores modifier-only keys.
 
@@ -110,7 +110,7 @@ A clean result has:
 
 The full region/control counts are included in the returned `regions` object.
 
-## v5.4.1 Core Controller Bindings
+## v5.4.3 Core Controller Bindings
 
 Controller Mode is automatic. A connected standard-mapped controller does not change input ownership until the user makes a meaningful controller input. Mouse click/wheel/meaningful movement or a keyboard key immediately returns ownership to that device. Controller focus memory is preserved between ownership changes.
 
@@ -125,7 +125,7 @@ Controller Mode is automatic. A connected standard-mapped controller does not ch
 | RB | Next highlight |
 | Right stick | Scroll the focused scrollable region without moving semantic focus |
 | Menu / Start | Toggle the compact controller help legend |
-| LT / RT | Reserved for v5.4.2 radial menus; no action in v5.4.1 |
+| LT / RT | Reserved for v5.4.3 radial menus; no action in v5.4.3 |
 | Stick clicks | Reserved for later pointer/fallback UX |
 
 Controller input uses a 0.22 analog deadzone, edge-triggered face/shoulder buttons, and bounded D-pad/left-stick repeat. A neutral-input latch prevents a held controller input or stick drift from immediately stealing ownership back after mouse/keyboard takeover.

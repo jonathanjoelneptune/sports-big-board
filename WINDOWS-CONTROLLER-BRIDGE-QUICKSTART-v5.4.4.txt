@@ -1,0 +1,18 @@
+Sports Big Board v5.4.4 — Windows Controller Bridge Quick Start
+
+For the Turtle Beach Stealth Ultra in 2.4 GHz wireless mode:
+
+1. Leave the controller connected exactly as it is now. If joy.cpl sees the buttons/sticks, Windows is ready.
+2. Open the windows-controller-bridge folder.
+3. Double-click START-CONTROLLER-BRIDGE.cmd.
+4. The first launch compiles a small local helper using Windows' built-in .NET Framework compiler, then places a tray icon in the notification area. No administrator rights are required.
+5. Reload Sports Big Board.
+6. If Chrome asks for Local Network / loopback access, choose Allow.
+7. Header status should become:
+      🎮 NO BRIDGE -> 🎮 BR READY -> 🎮 BR LIVE
+   BR LIVE appears after you press a controller button/stick/D-pad input.
+8. If it remains NO BRIDGE while the tray helper is running, click the controller indicator once or use Settings -> Controller -> RECONNECT BRIDGE.
+
+Optional: run INSTALL-STARTUP.cmd once to have the bridge launch automatically when you sign into Windows.
+
+The helper binds only to 127.0.0.1:5410, reads controller state only, and does not make outbound internet connections.

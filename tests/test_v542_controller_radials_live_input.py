@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static invariants for Sports Big Board v5.4.3 controller radials/live input."""
+"""Static invariants for Sports Big Board v5.4.4 controller radials/live input."""
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
