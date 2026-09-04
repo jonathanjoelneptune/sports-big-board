@@ -181,22 +181,12 @@ MODEL_SCHEMA: dict[str, Any] = {
     "required": ["leagues", "specialEvents"],
     "properties": {
         "leagues": {
-            "type": "array", "minItems": 7, "maxItems": 7,
-            "items": {
-                "type": "object",
-                "additionalProperties": False,
-                "required": ["league", "seasonState", "items"],
-                "properties": {
-                    "league": {"type": "string", "enum": BASE_LEAGUES},
-                    "seasonState": {
-                        "type": "string",
-                        "enum": ["active", "offseason", "preseason", "postseason"],
-                    },
-                    "items": {
-                        "type": "array", "minItems": 0, "maxItems": 10,
-                        "items": {"$ref": "#/$defs/item"},
-                    },
-                },
+            "type": "object",
+            "additionalProperties": False,
+            "required": BASE_LEAGUES,
+            "properties": {
+                league: {"$ref": "#/$defs/leagueGroup"}
+                for league in BASE_LEAGUES
             },
         },
         "specialEvents": {
@@ -216,7 +206,24 @@ MODEL_SCHEMA: dict[str, Any] = {
             },
         },
     },
-    "$defs": {"item": MODEL_ITEM_SCHEMA},
+    "$defs": {
+        "item": MODEL_ITEM_SCHEMA,
+        "leagueGroup": {
+            "type": "object",
+            "additionalProperties": False,
+            "required": ["seasonState", "items"],
+            "properties": {
+                "seasonState": {
+                    "type": "string",
+                    "enum": ["active", "offseason", "preseason", "postseason"],
+                },
+                "items": {
+                    "type": "array", "minItems": 0, "maxItems": 10,
+                    "items": {"$ref": "#/$defs/item"},
+                },
+            },
+        },
+    },
 }
 
 EDITOR_INSTRUCTIONS = """You are the final editor for Sports Big Board Sports Ticker.
@@ -300,6 +307,12 @@ Consistency:
 - Do not say shutout/shut out/blanked if the opponent scored.
 - Do not call something a one-point win unless the score margin is one.
 - Do not call a routine result an upset without evidence in the candidate packet.
+
+OUTPUT SHAPE
+The "leagues" field is an object with EXACTLY these seven required keys:
+MLB, NFL, NBA, NHL, EPL, MLS, NCAAF.
+Do not rename, duplicate, omit, or reorder them as array entries. Each key has
+seasonState and items.
 
 Write factual, compact, non-clickbait ticker copy.
 """
@@ -458,9 +471,6 @@ def infer_league_hint(default_hint: str, url: str, title: str) -> str:
 def keyword_type_hint(title: str, summary: str) -> str:
     text = (" " + title + " " + summary + " ").lower()
 
-    # Strong result language. This is intentionally evaluated before OTHER so
-    # tennis/golf/event articles such as "X defeated Y 6-1, 6-4" arrive at the
-    # editor already marked RESULT.
     result_patterns = [
         r"\bdefeat(?:s|ed)?\b",
         r"\bbeat(?:s|en)?\b",
@@ -481,30 +491,67 @@ def keyword_type_hint(title: str, summary: str) -> str:
     if has_score and any(re.search(pattern, text) for pattern in result_patterns):
         return "RESULT"
 
+    # Return/activation must be checked before generic injury-list wording.
+    if any(word in text for word in [
+        "activated off", "activated from", "returns to practice",
+        "returns from injury", "back from injury", "returns to the lineup",
+    ]):
+        return "RETURN"
+
+    if any(word in text for word in [
+        "injury", "injured", "out for", "placed on injured", "concussion",
+    ]):
+        return "INJURY"
+
+    if any(word in text for word in [" traded ", "trade for", "acquire", "acquired"]):
+        return "TRADE"
+
+    if (
+        any(word in text for word in [
+            "signs ", "signed ", "agrees to a deal", "agreed to a deal",
+            "one-year deal", "two-year deal", "three-year deal",
+            "deal with ", "reaching a one-year", "reaching one-year",
+        ])
+        or re.search(r"\b\d+-year,\s*\$?[\d.]+[mk]?\s+deal\b", text)
+    ):
+        return "SIGNING"
+
+    if any(word in text for word in ["extension", "contract"]):
+        return "CONTRACT"
+    if any(word in text for word in ["suspended", "suspension"]):
+        return "SUSPENSION"
+    if any(word in text for word in ["fine", "discipline", "exempt list"]):
+        return "DISCIPLINE"
+    if any(word in text for word in ["arrest", "lawsuit", "charged with", "court appearance", "court date"]):
+        return "LEGAL"
+
+    if any(word in text for word in [
+        "fired coach", "fires coach", "coach fired",
+        "hired as coach", "named head coach", "names head coach",
+        "coach resigns", "coach resigned", "coach steps down",
+        "coach dismissed", "coaching change",
+    ]):
+        return "COACHING"
+
+    if any(word in text for word in [
+        "will be without", "without three", "without 3", "without five",
+        "without 5", "inactive for", "ruled unavailable",
+    ]):
+        return "ROSTER"
+
+    if any(word in text for word in [
+        "starter", "backup quarterback", "depth chart", "qb1", "qb2",
+    ]):
+        return "DEPTH_CHART"
+
     checks = [
-        ("INJURY", ["injury", "injured", "out for", "placed on injured", "concussion"]),
-        ("RETURN", ["returns to practice", "activated from", "returns from injury", "activated off"]),
-        ("TRADE", [" traded ", "trade for", "acquire", "acquired"]),
-        ("SIGNING", ["signs ", "signed ", "agrees to a deal", "one-year deal", "two-year deal"]),
-        ("CONTRACT", ["extension", "contract"]),
-        ("SUSPENSION", ["suspended", "suspension"]),
-        ("DISCIPLINE", ["fine", "discipline", "exempt list"]),
-        ("LEGAL", ["arrest", "lawsuit", "charged with", "court appearance", "court date"]),
-        # COACHING is reserved for an actual personnel/status change, not a quote
-        # from someone whose title happens to be "head coach."
-        ("COACHING", [
-            "fired coach", "fires coach", "coach fired",
-            "hired as coach", "named head coach", "names head coach",
-            "coach resigns", "coach resigned", "coach steps down",
-            "coach dismissed", "coaching change",
-        ]),
-        ("DEPTH_CHART", ["starter", "backup quarterback", "depth chart", "qb1", "qb2"]),
         ("RANKING", ["ranked", "ranking", "top 25"]),
         ("RECORD", ["record", "all-time"]),
         ("MILESTONE", ["milestone", "1,000", "100th", "500th"]),
         ("STREAK", ["winning streak", "win streak", "losing streak"]),
         ("PLAYOFF", ["playoff", "postseason", "wild card"]),
         ("STANDINGS", ["standings", "division lead", "games back"]),
+        ("LEAGUE_NEWS", ["league announced", "sets spring training schedule", "rule change", "cba"]),
     ]
     for kind, words in checks:
         if any(word in text for word in words):
@@ -513,19 +560,16 @@ def keyword_type_hint(title: str, summary: str) -> str:
 
 
 def low_signal_editorial_story(title: str, summary: str, type_hint: str) -> tuple[bool, str | None]:
-    """Identify analysis/preview/opinion pieces that are not ticker developments.
-
-    Strong factual types (injury, signing, legal, etc.) are never rejected just
-    because a headline is phrased as a question.
-    """
-    if type_hint != "OTHER":
-        return False, None
-
+    """Reject article-format noise that is not itself a new ticker development."""
     headline = clean_text(title).lower()
     body = clean_text(summary).lower()
     combined = headline + " " + body
 
-    feature_phrases = [
+    # These are article formats, not discrete news events, even when the text
+    # happens to contain words like "record", "playoff", or "trade."
+    always_reject = [
+        "what makes ",
+        "career, background",
         "questions to answer",
         "questions facing",
         "things to know",
@@ -535,36 +579,42 @@ def low_signal_editorial_story(title: str, summary: str, type_hint: str) -> tupl
         "roundtable",
         "expert picks",
         "predictions",
-        "prediction",
-        "preview",
+        "prediction:",
+        "preview:",
         "power rankings",
         "stock watch",
         "mailbag",
         "winners and losers",
         "grades:",
         "grading ",
-        "why ",
+        " review:",
+        " review ",
+        "live updates",
+        "latest free agency and trade updates",
+        "buzz:",
+        "separating fact from fiction",
     ]
-    if any(phrase in combined for phrase in feature_phrases):
-        return True, "analysis/feature/preview rather than a new development"
+    if any(phrase in combined for phrase in always_reject):
+        return True, "analysis/feature/live-blog/roundup rather than one new development"
 
-    # Opinion/quote pieces should not become COACHING or BREAKING simply because
-    # a coach/player is quoted.
+    # Opinion/quote-only pieces.
     quote_phrases = [
         "stands by",
         "believes ",
         "warns ",
         "says there is no way",
-        "predicts ",
-        "prediction that",
+        "takes aim at",
+        "need to take this l",
     ]
     if any(phrase in combined for phrase in quote_phrases):
-        return True, "opinion/quote item without a material new development"
+        # A genuine legal/transaction/injury/etc. headline can still survive.
+        if type_hint in {"OTHER", "COACHING", "RECORD", "RANKING"}:
+            return True, "opinion/quote item without a material new development"
 
-    # A pure question headline is generally analysis. Strong factual types were
-    # already exempted above.
-    if "?" in headline:
-        return True, "question/analysis headline without a strong factual type"
+    # Pure question headlines are generally analysis unless Python already found
+    # a strong factual transaction/injury/legal/return/result type.
+    if "?" in headline and type_hint in {"OTHER", "RECORD", "RANKING", "COACHING"}:
+        return True, "question/analysis headline without a strong factual event"
 
     return False, None
 
@@ -1080,19 +1130,43 @@ def match_league_text(match: dict[str, Any]) -> str:
     return " | ".join(values).lower()
 
 
+def match_country_text(match: dict[str, Any]) -> str:
+    country = match.get("country")
+    if isinstance(country, dict):
+        return clean_text(country.get("name") or country.get("code")).lower()
+    return clean_text(country).lower()
+
+
 def classify_highlightly_league(
     match: dict[str, Any],
     league_matchers: dict[str, list[str]],
 ) -> str | None:
     league_text = match_league_text(match)
+    country_text = match_country_text(match)
     if not league_text:
         return None
 
     for league, needles in league_matchers.items():
-        if any(needle.lower() in league_text for needle in needles):
-            return league
-    return None
+        if not any(needle.lower() in league_text for needle in needles):
+            continue
 
+        # "Premier League" exists in multiple countries. EPL means England only.
+        if league == "EPL":
+            if country_text not in {"england", "gb-eng", "eng"}:
+                continue
+
+        # MLS should be the North American Major League Soccer competition.
+        if league == "MLS":
+            if "major league soccer" not in league_text and league_text.strip() != "mls":
+                continue
+            if country_text and country_text not in {
+                "usa", "united states", "united states of america",
+                "canada", "us", "ca",
+            }:
+                continue
+
+        return league
+    return None
 
 def build_highlightly_url(cfg: dict[str, Any], date_text: str) -> str:
     # Date is itself a primary filter in Highlightly's documented matches API.
@@ -1562,7 +1636,7 @@ def call_openai(
         # GPT-4o Mini supports 16,384 max output tokens. 12k leaves substantial
         # room for the seven league groups while bounding worst-case cost.
         "max_output_tokens": 12000,
-        "prompt_cache_key": "sports-big-board-a3-editor-v2",
+        "prompt_cache_key": "sports-big-board-a3-editor-v3",
     }
 
     run_log["openai"]["called"] = True
@@ -1575,7 +1649,7 @@ def call_openai(
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
-        "User-Agent": "sports-big-board-ticker-a3.3/1.0",
+        "User-Agent": "sports-big-board-ticker-a3.4/1.0",
     }
 
     last_error: Exception | None = None
@@ -1816,13 +1890,13 @@ PRIORITY_DEFAULTS = {
     "INJURY": 82,
     "RECORD": 84,
     "RECORD_CHASE": 80,
-    "UPSET": 80,
+    "UPSET": 82,
     "SIGNING": 78,
     "CONTRACT": 76,
     "SUSPENSION": 80,
     "DISCIPLINE": 78,
     "LEGAL": 76,
-    "RETURN": 72,
+    "RETURN": 74,
     "MILESTONE": 76,
     "RANKING": 74,
     "AWARD": 74,
@@ -1839,6 +1913,39 @@ PRIORITY_DEFAULTS = {
     "OTHER": 52,
 }
 
+PRIORITY_BANDS = {
+    "BREAKING": (90, 100),
+    "PLAYOFF": (80, 96),
+    "STANDINGS": (70, 92),
+    "TRADE": (72, 96),
+    "INJURY": (65, 92),
+    "RECORD": (70, 94),
+    "RECORD_CHASE": (68, 90),
+    "UPSET": (70, 94),
+    "SIGNING": (65, 90),
+    "CONTRACT": (62, 88),
+    "SUSPENSION": (68, 92),
+    "DISCIPLINE": (65, 90),
+    "LEGAL": (62, 90),
+    "RETURN": (60, 84),
+    "MILESTONE": (62, 88),
+    "RANKING": (60, 88),
+    "AWARD": (60, 88),
+    "STREAK": (58, 84),
+    "SLUMP": (55, 80),
+    "COACHING": (65, 90),
+    "ROSTER": (55, 80),
+    "DEPTH_CHART": (55, 80),
+    "LEAGUE_NEWS": (62, 90),
+    "STAT_LEADER": (55, 82),
+    # Routine results cannot be 100. If it is truly seismic, classify UPSET,
+    # PLAYOFF, RECORD, etc.
+    "RESULT": (50, 74),
+    "NEXT": (45, 62),
+    "SCHEDULE": (45, 60),
+    "OTHER": (45, 65),
+}
+
 
 def normalize_editor_priority(
     raw_priority: Any,
@@ -1851,8 +1958,6 @@ def normalize_editor_priority(
     except Exception:
         priority = 0
 
-    # A3.2 showed the editor using 1/2 as list ranks. Interpret <=10 as this
-    # known failure mode and replace it with a calibrated type-based priority.
     if priority <= 10:
         repaired = PRIORITY_DEFAULTS.get(item_type, 55)
         run_log["pipeline"]["editorRepairs"].append({
@@ -1864,7 +1969,17 @@ def normalize_editor_priority(
         })
         return repaired
 
-    return max(1, min(100, priority))
+    low, high = PRIORITY_BANDS.get(item_type, (1, 100))
+    repaired = max(low, min(high, priority))
+    if repaired != priority:
+        run_log["pipeline"]["editorRepairs"].append({
+            "context": context,
+            "field": "priority",
+            "original": priority,
+            "repaired": repaired,
+            "reason": f"priority clamped to calibrated {item_type} band {low}-{high}",
+        })
+    return repaired
 
 
 VAGUE_FRESHNESS = {
@@ -1910,33 +2025,99 @@ def normalize_model_output(
     run_log: dict[str, Any],
 ) -> dict[str, Any]:
     by_id = {c["candidateId"]: c for c in candidates}
-    seen_leagues = set()
     leagues = []
 
     raw_leagues = model_output.get("leagues")
-    if not isinstance(raw_leagues, list):
-        raise TickerError("model output missing leagues array")
+    league_map: dict[str, dict[str, Any]] = {}
 
-    for group in raw_leagues:
-        league = clean_text(group.get("league")).upper()
-        if league not in BASE_LEAGUES or league in seen_leagues:
-            raise TickerError(f"invalid/duplicate league group {league!r}")
-        seen_leagues.add(league)
+    if isinstance(raw_leagues, dict):
+        # A3.4 canonical shape: fixed required keys.
+        unknown = [key for key in raw_leagues.keys() if key not in BASE_LEAGUES]
+        if unknown:
+            raise TickerError("model returned unknown league keys: " + ", ".join(unknown))
+        for league in BASE_LEAGUES:
+            group = raw_leagues.get(league)
+            if not isinstance(group, dict):
+                raise TickerError(f"model omitted/invalid fixed league key {league}")
+            league_map[league] = group
+
+    elif isinstance(raw_leagues, list):
+        # Defensive legacy repair. Merge duplicate groups and synthesize missing
+        # groups rather than failing a whole ticker.
+        repairs = []
+        for raw_group in raw_leagues:
+            if not isinstance(raw_group, dict):
+                continue
+            league = clean_text(raw_group.get("league")).upper()
+            if league not in BASE_LEAGUES:
+                continue
+            if league not in league_map:
+                league_map[league] = {
+                    "seasonState": raw_group.get("seasonState", "offseason"),
+                    "items": list(raw_group.get("items", []))
+                    if isinstance(raw_group.get("items"), list) else [],
+                }
+            else:
+                extra = raw_group.get("items", [])
+                if isinstance(extra, list):
+                    league_map[league]["items"].extend(extra)
+                repairs.append(f"merged duplicate legacy league group {league}")
+
+        for league in BASE_LEAGUES:
+            if league not in league_map:
+                league_map[league] = {"seasonState": "offseason", "items": []}
+                repairs.append(f"synthesized missing legacy league group {league}")
+
+        if repairs:
+            run_log["pipeline"]["editorRepairs"].append({
+                "context": "league-groups",
+                "field": "leagues",
+                "original": "legacy array",
+                "repaired": repairs,
+                "reason": "defensive repair of duplicate/missing league groups",
+            })
+    else:
+        raise TickerError("model output missing leagues object")
+
+    for league in BASE_LEAGUES:
+        group = league_map[league]
         season_state = clean_text(group.get("seasonState")).lower()
         if season_state not in {"active", "offseason", "preseason", "postseason"}:
-            raise TickerError(f"{league}: invalid seasonState")
+            run_log["pipeline"]["editorRepairs"].append({
+                "context": league,
+                "field": "seasonState",
+                "original": season_state,
+                "repaired": "offseason",
+                "reason": "invalid seasonState",
+            })
+            season_state = "offseason"
+
+        raw_items = group.get("items", [])
+        if not isinstance(raw_items, list):
+            raw_items = []
 
         final_items = []
-        for idx, raw_item in enumerate(group.get("items", []), 1):
+        for idx, raw_item in enumerate(raw_items, 1):
             try:
                 candidate_ids = [clean_text(cid) for cid in raw_item["candidateIds"]]
                 if not candidate_ids or any(cid not in by_id for cid in candidate_ids):
                     raise TickerError("unknown candidateId")
+
+                # A base-league item must be grounded in at least one candidate
+                # mapped to the same league. This prevents cross-league leakage.
+                candidate_leagues = {by_id[cid].get("leagueHint") for cid in candidate_ids}
+                if league not in candidate_leagues:
+                    raise TickerError(
+                        f"candidate league mismatch: expected {league}, got {sorted(candidate_leagues)}"
+                    )
+
                 item_type = clean_text(raw_item["type"]).upper()
                 if item_type not in ALLOWED_TYPES:
                     raise TickerError("invalid type")
+
                 occurred_at, precision, age = best_occurrence(candidate_ids, by_id)
                 sources = union_sources(candidate_ids, by_id)
+
                 item = {
                     "rank": idx,
                     "candidateIds": candidate_ids,
@@ -1946,7 +2127,11 @@ def normalize_model_output(
                     ),
                     "headline": clean_text(raw_item["headline"]),
                     "text": clean_text(raw_item["text"]),
-                    "entities": [clean_text(x) for x in raw_item.get("entities", []) if clean_text(x)],
+                    "entities": [
+                        clean_text(x)
+                        for x in raw_item.get("entities", [])
+                        if clean_text(x)
+                    ],
                     "occurredAt": occurred_at,
                     "timePrecision": precision,
                     "ageHours": age,
@@ -1961,12 +2146,12 @@ def normalize_model_output(
                 item["id"] = "a3-" + hashlib.sha1(
                     ("|".join(candidate_ids) + "|" + item["headline"]).encode("utf-8")
                 ).hexdigest()[:16]
-                if not 1 <= item["priority"] <= 100:
-                    raise TickerError("priority out of range")
+
                 if item["status"] not in ALLOWED_STATUS:
                     raise TickerError("invalid status")
                 validate_copy_consistency(item, f"{league} #{idx}")
                 final_items.append(item)
+
             except Exception as exc:
                 run_log["pipeline"]["finalDrops"].append({
                     "context": league,
@@ -1982,29 +2167,26 @@ def normalize_model_output(
             "items": final_items,
         })
 
-    missing = [league for league in BASE_LEAGUES if league not in seen_leagues]
-    if missing:
-        raise TickerError("model omitted league groups: " + ", ".join(missing))
-
-    # Return in canonical league order regardless of model ordering.
-    order = {league: i for i, league in enumerate(BASE_LEAGUES)}
-    leagues.sort(key=lambda g: order[g["league"]])
-
     special_events = []
     for event_index, event in enumerate(model_output.get("specialEvents", []), 1):
         name = clean_text(event.get("name"))
         sport = clean_text(event.get("sport"))
         if not name or not sport:
             continue
+
         items = []
         for idx, raw_item in enumerate(event.get("items", []), 1):
             try:
                 candidate_ids = [clean_text(cid) for cid in raw_item["candidateIds"]]
                 if not candidate_ids or any(cid not in by_id for cid in candidate_ids):
                     raise TickerError("unknown candidateId")
+
                 occurred_at, precision, age = best_occurrence(candidate_ids, by_id)
                 sources = union_sources(candidate_ids, by_id)
                 item_type = clean_text(raw_item["type"]).upper()
+                if item_type not in ALLOWED_TYPES:
+                    raise TickerError("invalid type")
+
                 item = {
                     "rank": idx,
                     "candidateIds": candidate_ids,
@@ -2014,7 +2196,11 @@ def normalize_model_output(
                     ),
                     "headline": clean_text(raw_item["headline"]),
                     "text": clean_text(raw_item["text"]),
-                    "entities": [clean_text(x) for x in raw_item.get("entities", []) if clean_text(x)],
+                    "entities": [
+                        clean_text(x)
+                        for x in raw_item.get("entities", [])
+                        if clean_text(x)
+                    ],
                     "occurredAt": occurred_at,
                     "timePrecision": precision,
                     "ageHours": age,
@@ -2029,10 +2215,12 @@ def normalize_model_output(
                 item["id"] = "a3-special-" + hashlib.sha1(
                     ("|".join(candidate_ids) + "|" + item["headline"]).encode("utf-8")
                 ).hexdigest()[:16]
-                if item["type"] not in ALLOWED_TYPES:
-                    raise TickerError("invalid type")
+
+                if item["status"] not in ALLOWED_STATUS:
+                    raise TickerError("invalid status")
                 validate_copy_consistency(item, f"{name} #{idx}")
                 items.append(item)
+
             except Exception as exc:
                 run_log["pipeline"]["finalDrops"].append({
                     "context": name,
@@ -2040,12 +2228,12 @@ def normalize_model_output(
                     "headline": clean_text(raw_item.get("headline")),
                     "reason": clean_text(exc),
                 })
+
         items = curate_final_items(items, name, run_log)
         if items:
             special_events.append({"name": name, "sport": sport, "items": items})
 
     return {"leagues": leagues, "specialEvents": special_events}
-
 
 def semantic_ticker(dataset: dict[str, Any]) -> dict[str, Any]:
     def sem_item(i):
@@ -2163,7 +2351,7 @@ def write_run_log(path: Path, run_log: dict[str, Any]):
 def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dict[str, Any]:
     return {
         "schemaVersion": 1,
-        "pipelineVersion": "A3.3-results-editorial-hardening",
+        "pipelineVersion": "A3.4-fixed-league-schema",
         "runId": f"a3-{generated_at.strftime('%Y%m%dT%H%M%SZ')}",
         "status": "running",
         "startedAt": iso_z(generated_at),
@@ -2257,7 +2445,7 @@ def main() -> int:
 
     try:
         print(
-            f"A3.3 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
+            f"A3.4 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
             f"editor={args.model}; OpenAI web_search=OFF"
         )
 
@@ -2352,8 +2540,8 @@ def main() -> int:
         )
 
         dataset = {
-            "schemaVersion": 5,
-            "pipelineVersion": "A3.3-results-editorial-hardening",
+            "schemaVersion": 6,
+            "pipelineVersion": "A3.4-fixed-league-schema",
             "generatedAt": iso_z(generated_at),
             "freshnessHours": FRESHNESS_HOURS,
             "discoveryMode": "Highlightly + ESPN JSON news + official league pages; no OpenAI web search",
