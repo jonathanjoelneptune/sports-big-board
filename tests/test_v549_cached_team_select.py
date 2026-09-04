@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""v5.4.9 cached team select, league-logo radial, and controller history parity."""
+"""v5.5.0 cached team select, league-logo radial, and controller history parity."""
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
-assert VERSION=='5.4.9',VERSION
+assert VERSION=='5.5.0',VERSION
 core=(ROOT/'architecture'/'controller-mode-v542.js').read_text()
 browse=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 css=(ROOT/'ui'/'controller-mode-v542.css').read_text()
@@ -52,4 +52,4 @@ assert 'max-age=3600' in backend
 for asset in ['architecture/controller-mode-v542.js','ui/controller-mode-v542.css','ui/browse-curated-programming-v537.js']:
     assert f'{asset}?v={VERSION}' in index,asset
 assert 'tests/test_v549_cached_team_select.py' in verify
-print('PASS v5.4.9 cached Team Select + league logos + controller history parity')
+print('PASS v5.5.0 cached Team Select + league logos + controller history parity')

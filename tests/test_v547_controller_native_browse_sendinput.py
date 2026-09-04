@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""v5.4.9 controller-native Team/Player Browse and SendInput fullscreen bridge."""
+"""v5.5.0 controller-native Team/Player Browse and SendInput fullscreen bridge."""
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
-assert VERSION=='5.4.9',VERSION
+assert VERSION=='5.5.0',VERSION
 core=(ROOT/'architecture'/'controller-mode-v542.js').read_text()
 browse=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 bridge=(ROOT/'architecture'/'controller-native-bridge-v544.js').read_text()
 fs=(ROOT/'ui'/'fullscreen-controller-v545.js').read_text()
 cs=(ROOT/'windows-controller-bridge'/'SportsBigBoardControllerBridge.cs').read_text()
 verify=(ROOT/'VERIFY.sh').read_text()
-map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.4.9.md').read_text()
+map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.5.0.md').read_text()
 
 # Team/player selection itself remains inside radial UI and is paginated.
 assert 'const ENTITY_RADIAL_PAGE_SIZE=16' in core
@@ -50,4 +50,4 @@ assert "showToast('Sending app fullscreen…')" in fs
 assert 'tests/test_v547_controller_native_browse_sendinput.py' in verify
 for token in ['Controller-native Team / Player Browse','SendInput','command-result']:
     assert token in map_txt,token
-print('PASS v5.4.9 controller-native team/player browse + SendInput fullscreen bridge acknowledgement')
+print('PASS v5.5.0 controller-native team/player browse + SendInput fullscreen bridge acknowledgement')

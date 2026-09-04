@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""v5.4.9 native Windows controller bridge + transport priority regression."""
+"""v5.5.0 native Windows controller bridge + transport priority regression."""
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
-assert VERSION=='5.4.9', VERSION
+assert VERSION=='5.5.0', VERSION
 index=(ROOT/'index.html').read_text()
 core=(ROOT/'architecture'/'controller-mode-v542.js').read_text()
 bridge=(ROOT/'architecture'/'controller-native-bridge-v544.js').read_text()

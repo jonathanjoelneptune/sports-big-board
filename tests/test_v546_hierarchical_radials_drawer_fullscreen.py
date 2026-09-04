@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""v5.4.9 hierarchical controller radials, Game Center recovery, and fullscreen repair."""
+"""v5.5.0 hierarchical controller radials, Game Center recovery, and fullscreen repair."""
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text(encoding='utf-8').strip()
-assert VERSION=='5.4.9', VERSION
+assert VERSION=='5.5.0', VERSION
 index=(ROOT/'index.html').read_text(encoding='utf-8')
 core=(ROOT/'architecture'/'controller-mode-v542.js').read_text(encoding='utf-8')
 fs=(ROOT/'ui'/'fullscreen-controller-v545.js').read_text(encoding='utf-8')
-map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.4.9.md').read_text(encoding='utf-8')
+map_txt=(ROOT/'CONTROLLER-REGION-MAP-v5.5.0.md').read_text(encoding='utf-8')
 verify=(ROOT/'VERIFY.sh').read_text(encoding='utf-8')
 
 # Atomic frontend cache generation still advances together.
@@ -17,7 +17,7 @@ for asset in ['architecture/controller-mode-v542.js','ui/fullscreen-controller-v
 assert f"const VERSION='{VERSION}'" in core
 assert f"const VERSION='{VERSION}'" in fs
 
-# v5.4.9 remaps drawer/view ownership without regressing the hierarchical radial foundation.
+# v5.5.0 remaps drawer/view ownership without regressing the hierarchical radial foundation.
 assert '<b>${g.y}</b> Game Center / League View' in core
 assert '<b>L3</b> Open / Close Drawer' in core
 assert 'function toggleGameCenterLeagueView()' in core
@@ -76,4 +76,4 @@ for token in [
     assert token in map_txt, token
 assert 'tests/test_v546_hierarchical_radials_drawer_fullscreen.py' in verify
 
-print('PASS v5.4.9 hierarchical league/Special Event browse radials + Y view toggle + L3 drawer + fullscreen repair')
+print('PASS v5.5.0 hierarchical league/Special Event browse radials + Y view toggle + L3 drawer + fullscreen repair')
