@@ -1,11 +1,11 @@
-/* Sports Big Board v5.4.5 — Controller Radials + Native Windows Bridge + Pointer Fallback.
+/* Sports Big Board v5.4.6 — Controller Radials + Native Windows Bridge + Pointer Fallback.
    Builds on the v5.4.0 semantic navigation graph and v5.4.1 automatic takeover.
    Adds robust browser-level gamepad diagnostics, a live header indicator, RT
    League radial, LT Date/Scope radial, and R3 analog pointer fallback. */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_MODE?.version==='5.4.5')return;
-  const VERSION='5.4.5';
+  if(window.SBB_CONTROLLER_MODE?.version==='5.4.6')return;
+  const VERSION='5.4.6';
   const PREF_KEY='sports-big-board.controller-mode.v1';
   const DEADZONE=.20;
   const NEUTRAL_DEADZONE=.28;
@@ -115,7 +115,7 @@
   }
   function renderHelp(message=''){
     const el=ensureHelp();const g=glyphs();
-    el.innerHTML=`<div class="sbb-controller-help-head"><span class="sbb-controller-icon">🎮</span><strong>${message||'CONTROLLER MODE'}</strong><small>${clean(activeId)||'Gamepad'}</small></div><div class="sbb-controller-help-grid"><span><b>D-PAD / LS</b> Navigate</span><span><b>${g.a}</b> Select</span><span><b>${g.b}</b> Back</span><span><b>${g.x}</b> Play / Pause</span><span><b>${g.y}</b> Cycle View</span><span><b>${g.lb} / ${g.rb}</b> Prev / Next</span><span><b>${g.rt}</b> Leagues</span><span><b>${g.lt}</b> Date / Scope</span><span><b>${g.lt}+${g.rt}</b> Commands</span><span><b>${g.r3}</b> Pointer</span><span><b>RS</b> Scroll</span><span><b>${g.menu}</b> Help</span></div>`;
+    el.innerHTML=`<div class="sbb-controller-help-head"><span class="sbb-controller-icon">🎮</span><strong>${message||'CONTROLLER MODE'}</strong><small>${clean(activeId)||'Gamepad'}</small></div><div class="sbb-controller-help-grid"><span><b>D-PAD / LS</b> Navigate</span><span><b>${g.a}</b> Select</span><span><b>${g.b}</b> Back</span><span><b>${g.x}</b> Play / Pause</span><span><b>${g.y}</b> Show / Hide Game Center</span><span><b>${g.lb} / ${g.rb}</b> Prev / Next</span><span><b>${g.rt}</b> Leagues</span><span><b>${g.lt}</b> Date / Scope</span><span><b>${g.lt}+${g.rt}</b> Commands</span><span><b>${g.r3}</b> Pointer</span><span><b>RS</b> Scroll</span><span><b>${g.menu}</b> Help</span></div>`;
     return el;
   }
   function showHelp({message='',persist=false,duration=HELP_AUTO_MS}={}){
@@ -291,24 +291,75 @@
     if(clickVisible('[data-sbb-action="mute-video"],[data-sbb-action="mute"]'))return true;
     showHelp({message:'MUTE IS NOT AVAILABLE FOR THIS SOURCE',duration:1600});return false;
   }
-  function cycleDrawer(){
+  function drawerIsCollapsed(){return document.body?.classList?.contains('sbb-drawer-collapsed')||false;}
+  function setDrawerCollapsed(collapsed){
+    try{if(window.SBB_VIEWING_WORKSPACE?.setCollapsed){window.SBB_VIEWING_WORKSPACE.setCollapsed(!!collapsed);return true;}}catch(_){}
+    try{if(window.SBB_DRAWER_POLISH?.setCollapsed){window.SBB_DRAWER_POLISH.setCollapsed(!!collapsed);return true;}}catch(_){}
+    const btn=document.getElementById('drawerCollapseToggle');
+    if(btn&&drawerIsCollapsed()!==!!collapsed){try{btn.click();return true;}catch(_){}}
+    document.body?.classList?.toggle('sbb-drawer-collapsed',!!collapsed);return true;
+  }
+  function drawerActiveTab(){
+    try{return clean(window.SBB_INFO_DRAWER?.activeTab)||'';}catch(_){}
+    return clean(document.querySelector('.info-drawer-tab.active,[data-drawer-tab][aria-selected="true"]')?.dataset?.drawerTab)||'game-center';
+  }
+  function openDrawerTab(tab='game-center'){
+    setDrawerCollapsed(false);
+    try{window.SBB_INFO_DRAWER?.resetAutomaticSuppression?.();window.SBB_INFO_DRAWER?.open?.(tab);return true;}catch(_){}
+    const selectors={
+      'game-center':'#gameCenterDrawerBtn,#gameCenterTabBtn',
+      'up-next':'#upNextDrawerBtn,#upNextTabBtn',
+      'settings':'#settingsDrawerBtn,#settingsTabBtn'
+    };
+    return clickVisible(selectors[tab]||selectors['game-center']);
+  }
+  function toggleGameCenterDrawer(){
     const drawer=document.getElementById('infoDrawer');
     const closed=!drawer||drawer.classList.contains('is-closed')||drawer.getAttribute('aria-hidden')==='true';
-    if(closed)return clickVisible('#gameCenterDrawerBtn,#gameCenterTabBtn');
-    const order=['game-center','up-next','settings'];
-    const active=document.querySelector('.info-drawer-tab.active,[data-drawer-tab][aria-selected="true"]')?.dataset?.drawerTab||'game-center';
-    const next=order[(Math.max(0,order.indexOf(active))+1)%order.length];
-    return clickVisible(`[data-drawer-tab="${next}"]`);
+    const collapsed=drawerIsCollapsed(),active=drawerActiveTab();
+    // Y is the guaranteed recovery path: any hidden/collapsed/other-tab state
+    // expands the workspace and lands on Game Center.
+    if(closed||collapsed||active!=='game-center')return openDrawerTab('game-center');
+    // Desktop Game Center is an embedded workspace; hide means collapse to the
+    // seam handle. Mobile/overlay layouts may use the normal close contract.
+    const embedded=document.body?.classList?.contains('sbb-game-center-side')||window.innerWidth>=1100;
+    if(embedded)return setDrawerCollapsed(true);
+    try{window.SBB_INFO_DRAWER?.close?.({manual:true});return true;}catch(_){}
+    return clickVisible('#infoDrawerClose')||setDrawerCollapsed(true);
   }
   function transport(delta){return clickVisible(delta<0?'#prevBtn':'#nextBtn');}
+  const browseApi=()=>window.SBB_CURATED_BROWSE||null;
+  function browseContext(){try{return browseApi()?.context?.()||null;}catch(_){return null;}}
+  function contextualLeague(){return clean(browseContext()?.specialContext?.league||browseContext()?.league||currentLeague()).toUpperCase()||'ALL';}
+  function playerBrowseLeague(league){return /USOPEN|TENNIS|ATP|WTA/i.test(clean(league));}
+  function browseLabel(league){return playerBrowseLeague(league)?'PLAYER BROWSE':'TEAM BROWSE';}
+  function activateLeague(league){
+    league=clean(league).toUpperCase();if(!league)return false;
+    return clickVisible(`#scoreFilters [data-score-filter="${league}"]`);
+  }
+  function later(fn,delay=32){setTimeout(()=>{try{fn?.();}catch(_){}},Math.max(0,delay));return true;}
+  function openTodayForLeague(league){
+    activateLeague(league);
+    return later(()=>clickVisible('#sbbLeagueTodayBtn,#returnTodayBtn')||chooseAbsoluteDate(isoLocal(0)));
+  }
+  function openAllForLeague(league){
+    activateLeague(league);
+    return later(()=>clickVisible('#sbbLeagueAllBtn')||browseApi()?.browseAll?.());
+  }
+  function openBrowseForLeague(league){
+    activateLeague(league);
+    return later(()=>{if(browseApi()?.open)browseApi().open();else clickVisible('#sbbBrowseBtn');});
+  }
+  function queueRadial(type,context={},delay=36){return later(()=>openRadial(type,context),delay);}
 
   function leagueOptions(){
     const defs=[
       ['ALL','ALL'],['MLB','MLB'],['NFL','NFL'],['NBA','NBA'],['NHL','NHL'],['EPL','EPL'],['MLS','MLS'],['NCAAF','NCAAF'],['SPECIAL','SPECIAL EVENTS']
     ];
     return defs.map(([value,label])=>({value,label,action:()=>{
-      if(value==='SPECIAL')return clickVisible('#sbbSpecialEventsBtn');
-      return clickVisible(`#scoreFilters [data-score-filter="${value}"]`);
+      if(value==='SPECIAL')return openSpecialEventRadial();
+      if(value==='ALL')return activateLeague('ALL');
+      const ok=activateLeague(value);queueRadial('league-scope',{league:value,label,parent:'league'});return ok;
     }}));
   }
   function isoLocal(offset=0){const d=new Date();d.setDate(d.getDate()+offset);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
@@ -316,25 +367,82 @@
     const picker=document.getElementById('scoreDatePicker');if(!picker)return false;
     picker.value=value;dispatchValueChange(picker);return true;
   }
-  function dateScopeOptions(){return [
+  function leagueScopeOptions(context={}){
+    const league=clean(context.league||contextualLeague()).toUpperCase();
+    return [
+      {value:'TODAY',label:'TODAY',action:()=>openTodayForLeague(league)},
+      {value:'ALL',label:'ALL',action:()=>openAllForLeague(league)},
+      {value:'BROWSE',label:browseLabel(league),action:()=>openBrowseForLeague(league)}
+    ];
+  }
+  function specialEventNodes(){
+    return [...document.querySelectorAll('#sbbSpecialEventsMenu [data-special-competition]')].filter(el=>{
+      const league=clean(el.dataset?.specialCompetition).toUpperCase();
+      return league&&league!=='NCAAF'&&league!=='CFB'&&!el.hidden&&!el.disabled;
+    });
+  }
+  function hideSpecialEventsMenu(){
+    const menu=document.getElementById('sbbSpecialEventsMenu'),btn=document.getElementById('sbbSpecialEventsBtn');
+    menu?.classList?.add('hidden');btn?.setAttribute?.('aria-expanded','false');
+  }
+  function specialEventOptions(){
+    return specialEventNodes().map(el=>{
+      const league=clean(el.dataset?.specialCompetition).toUpperCase();
+      const label=clean(el.dataset?.specialLabel||el.textContent)||league;
+      return {value:league,label,action:()=>{
+        hideSpecialEventsMenu();
+        let entered=false;try{entered=!!browseApi()?.enterSpecialContext?.(league,label);}catch(_){}
+        if(!entered){try{el.click();entered=true;}catch(_){}}
+        queueRadial('special-scope',{league,label,parent:'special-league'},72);return entered;
+      }};
+    });
+  }
+  function openSpecialEventRadial(){
+    const ready=()=>{const options=specialEventOptions();if(!options.length)return false;hideSpecialEventsMenu();return openRadial('special-league',{options,parent:'league'});};
+    if(ready())return true;
+    // The normal Special Events control owns event discovery/population. Open it
+    // briefly if needed, harvest the same buttons, then keep controller UI radial.
+    try{document.getElementById('sbbSpecialEventsBtn')?.click();}catch(_){}
+    let tries=0;const poll=()=>{if(ready())return;if(++tries<12)setTimeout(poll,40);else{hideSpecialEventsMenu();showHelp({message:'NO SPECIAL EVENTS AVAILABLE',duration:1600});}};
+    setTimeout(poll,0);return true;
+  }
+  function specialScopeOptions(context={}){
+    const league=clean(context.league||browseContext()?.specialContext?.league).toUpperCase();
+    return [
+      {value:'ALL',label:'ALL',action:()=>{try{return browseApi()?.browseAll?.()!==false;}catch(_){return true;}}},
+      {value:'BROWSE',label:browseLabel(league),action:()=>{try{browseApi()?.open?.();return true;}catch(_){return clickVisible('#sbbBrowseBtn');}}}
+    ];
+  }
+  function dateScopeOptions(){const league=contextualLeague();return [
     {value:'TODAY',label:'TODAY',action:()=>clickVisible('#sbbLeagueTodayBtn,#returnTodayBtn')||chooseAbsoluteDate(isoLocal(0))},
     {value:'YESTERDAY',label:'YESTERDAY',action:()=>chooseAbsoluteDate(isoLocal(-1))},
     {value:'PREV',label:'PREV DAY',action:()=>clickVisible('[data-score-date-step="-1"]')},
     {value:'NEXT',label:'NEXT DAY',action:()=>clickVisible('[data-score-date-step="1"]')},
     {value:'DATE',label:'SELECT DATE',action:()=>clickVisible('#topDateSelectBtn,#scoreDayIndicator')},
     {value:'ALL',label:'ALL',action:()=>clickVisible('#sbbLeagueAllBtn')||clickVisible('#scoreFilters [data-score-filter="ALL"]')},
-    {value:'BROWSE',label:'TEAM BROWSE',action:()=>clickVisible('#sbbBrowseBtn')},
+    {value:'BROWSE',label:browseLabel(league),action:()=>{try{browseApi()?.open?.();return true;}catch(_){return clickVisible('#sbbBrowseBtn');}}},
     {value:'RETURN',label:'RETURN TODAY',action:()=>clickVisible('#returnTodayBtn')||chooseAbsoluteDate(isoLocal(0))}
   ];}
+  function fullscreenCommand(kind){
+    const api=window.SBB_FULLSCREEN_CONTROL;
+    try{
+      if(kind==='app'&&api?.toggleApp){api.toggleApp({controller:true});return true;}
+      if(kind==='video'&&api?.toggleVideo){api.toggleVideo({controller:true});return true;}
+      if(kind==='exit'&&api?.exitFullscreen){api.exitFullscreen({controller:true});return true;}
+    }catch(_){}
+    const command=kind==='video'?'video-fullscreen':'app-fullscreen';
+    try{if(window.SBB_CONTROLLER_NATIVE_BRIDGE?.sendCommand?.(command))return true;}catch(_){}
+    showHelp({message:'CONTROLLER BRIDGE REQUIRED FOR FULLSCREEN',duration:1900});return false;
+  }
   function commandOptions(){return [
-    {value:'APPFS',label:'APP FULLSCREEN',action:()=>window.SBB_FULLSCREEN_CONTROL?.toggleApp?.({controller:true})},
-    {value:'VIDEOFS',label:'VIDEO FULLSCREEN',action:()=>window.SBB_FULLSCREEN_CONTROL?.toggleVideo?.({controller:true})},
-    {value:'EXITFS',label:'EXIT FULLSCREEN',action:()=>window.SBB_FULLSCREEN_CONTROL?.exitFullscreen?.({controller:true})},
+    {value:'APPFS',label:'APP FULLSCREEN',action:()=>fullscreenCommand('app')},
+    {value:'VIDEOFS',label:'VIDEO FULLSCREEN',action:()=>fullscreenCommand('video')},
+    {value:'EXITFS',label:'EXIT FULLSCREEN',action:()=>fullscreenCommand('exit')},
     {value:'PLAY',label:'PLAY / PAUSE',action:()=>playPause()},
     {value:'MUTE',label:'MUTE / UNMUTE',action:()=>toggleActiveMute()},
-    {value:'GAMECENTER',label:'GAME CENTER',action:()=>clickVisible('#gameCenterDrawerBtn,#gameCenterTabBtn')},
-    {value:'LEAGUEVIEW',label:'LEAGUE VIEW',action:()=>clickVisible('#upNextDrawerBtn,#upNextTabBtn')},
-    {value:'SETTINGS',label:'SETTINGS',action:()=>clickVisible('#settingsDrawerBtn,#settingsTabBtn')}
+    {value:'GAMECENTER',label:'GAME CENTER',action:()=>toggleGameCenterDrawer()},
+    {value:'LEAGUEVIEW',label:'LEAGUE VIEW',action:()=>openDrawerTab('up-next')},
+    {value:'SETTINGS',label:'SETTINGS',action:()=>openDrawerTab('settings')}
   ];}
 
   function ensureRadial(){
@@ -343,10 +451,17 @@
     radialEl.innerHTML='<div class="sbb-controller-radial-dim"></div><div class="sbb-controller-radial-wheel"><div class="sbb-controller-radial-center"><strong></strong><span>MOVE RIGHT STICK • RELEASE TRIGGER</span></div><div class="sbb-controller-radial-items"></div></div>';
     document.body.appendChild(radialEl);return radialEl;
   }
+  function radialTitle(type,context={}){
+    if(type==='league')return 'LEAGUES';if(type==='date')return 'DATE / SCOPE';if(type==='commands')return 'SPECIAL COMMANDS';
+    if(type==='league-scope')return clean(context.label||context.league||'LEAGUE');
+    if(type==='special-league')return 'SPECIAL EVENTS';if(type==='special-scope')return clean(context.label||context.league||'SPECIAL EVENT');
+    return 'CONTROLLER';
+  }
   function renderRadial(){
     const el=ensureRadial();if(!radial)return;
-    const items=radial.options||[],host=el.querySelector('.sbb-controller-radial-items'),center=el.querySelector('.sbb-controller-radial-center strong');
-    if(center)center.textContent=radial.type==='league'?'LEAGUES':(radial.type==='date'?'DATE / SCOPE':'SPECIAL COMMANDS');
+    const items=radial.options||[],host=el.querySelector('.sbb-controller-radial-items'),center=el.querySelector('.sbb-controller-radial-center strong'),hint=el.querySelector('.sbb-controller-radial-center span');
+    if(center)center.textContent=radialTitle(radial.type,radial.context);
+    if(hint)hint.textContent=['league','date','commands'].includes(radial.type)?'MOVE RIGHT STICK • RELEASE TRIGGER':'MOVE RIGHT STICK • A SELECT • B CLOSE';
     const radius=178;host.innerHTML=items.map((item,i)=>{
       const angle=(-Math.PI/2)+(Math.PI*2*i/items.length),x=Math.cos(angle)*radius,y=Math.sin(angle)*radius;
       const selected=i===radialSelection?' selected':'',current=item.value===radial.current?' current':'';
@@ -354,12 +469,19 @@
     }).join('');
   }
   function currentLeague(){return clean(document.querySelector('#scoreFilters [data-score-filter].active')?.dataset?.scoreFilter).toUpperCase()||'ALL';}
-  function openRadial(type){
+  function openRadial(type,context={}){
     if(!claimController(`open ${type} radial`))return false;
-    if(radial?.type===type)return true;
+    if(radial?.type===type&&JSON.stringify(radial?.context||{})===JSON.stringify(context||{}))return true;
+    if(radial)closeRadial(false);
     setPointerVisual(false);radialSelection=-1;radialOpenedAt=Date.now();
-    const options=type==='league'?leagueOptions():(type==='date'?dateScopeOptions():commandOptions());
-    radial={type,options,current:type==='league'?currentLeague():''};
+    let options=[];
+    if(type==='league')options=leagueOptions();
+    else if(type==='date')options=dateScopeOptions();
+    else if(type==='commands')options=commandOptions();
+    else if(type==='league-scope')options=leagueScopeOptions(context);
+    else if(type==='special-league')options=Array.isArray(context.options)?context.options:specialEventOptions();
+    else if(type==='special-scope')options=specialScopeOptions(context);
+    radial={type,options,current:type==='league'?currentLeague():'',context:{...context}};
     const el=ensureRadial();el.classList.remove('hidden');el.setAttribute('aria-hidden','false');document.documentElement.dataset.sbbControllerRadial=type;renderRadial();
     return true;
   }
@@ -451,7 +573,7 @@
     if(index===BUTTON.A){nav()?.activate?.();return;}
     if(index===BUTTON.B){nav()?.back?.();return;}
     if(index===BUTTON.X){playPause();return;}
-    if(index===BUTTON.Y){cycleDrawer();return;}
+    if(index===BUTTON.Y){toggleGameCenterDrawer();return;}
     if(index===BUTTON.LB){transport(-1);return;}
     if(index===BUTTON.RB){transport(1);return;}
     if(index===BUTTON.MENU){toggleHelp();return;}

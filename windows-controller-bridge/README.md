@@ -1,4 +1,4 @@
-# Sports Big Board Windows Controller Bridge — v5.4.4
+# Sports Big Board Windows Controller Bridge — v5.4.6
 
 This local helper is for Windows controllers that work in **joy.cpl** but are not exposed by Chrome's Gamepad API. The Turtle Beach Stealth Ultra in 2.4 GHz wireless mode is the initial target.
 
@@ -26,8 +26,10 @@ The helper:
 - listens only on `127.0.0.1:5410`;
 - accepts the Sports Big Board GitHub Pages origin and localhost development origins;
 - reads controller input only;
-- does not send controller commands, rumble, firmware commands, credentials, or other PC data;
+- never sends rumble, firmware, authentication, HID output, or other commands to the controller;
 - sends only normalized buttons, triggers, D-pad and stick positions to the browser on the same PC;
+- accepts only two local browser-to-bridge shortcut commands: `app-fullscreen` (F11) and `video-fullscreen` (F);
+- does not make outbound internet connections.
 - makes no outbound internet connections.
 
 The site still prefers Chrome's standard Gamepad API whenever Chrome exposes a controller. The local bridge is the second transport; WebHID remains the diagnostic/fallback third transport.
@@ -44,3 +46,22 @@ The bridge tries **XInput first**. This is the expected path for Xbox-compatible
 - `BR LIVE`: Sports Big Board is receiving active controller input.
 
 Right-click the tray icon and choose **Copy bridge status** for diagnostics.
+
+## v5.4.6 fullscreen command whitelist
+
+The bridge remains loopback-only and origin-restricted. v5.4.6 adds exactly two browser-to-bridge commands so controller input can invoke browser/video fullscreen even though Chromium does not count Gamepad/WebSocket polling as trusted user activation:
+
+- `app-fullscreen` — sends F11 to the active browser window.
+- `video-fullscreen` — sends F, matching Sports Big Board's existing video-fullscreen keyboard shortcut.
+
+No arbitrary key injection command is exposed. Unknown commands are ignored. The bridge still has no outbound internet connection and sends no output, rumble, firmware, or authentication data to the controller.
+
+
+## v5.4.6 fullscreen shortcuts
+
+Controller-originated browser fullscreen requests do not count as a trusted browser click. To make the LT+RT Special Commands wheel useful, the bridge accepts only two whitelisted local commands from Sports Big Board:
+
+- `app-fullscreen` -> taps F11 in the active Windows browser
+- `video-fullscreen` -> taps F, using Big Board's existing video-fullscreen shortcut
+
+No arbitrary key command is accepted, and these commands never send data or commands to the controller itself.

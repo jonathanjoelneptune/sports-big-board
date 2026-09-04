@@ -104,7 +104,7 @@ namespace SportsBigBoard
     {
         public const int Port = 5410;
         public const int ProtocolVersion = 1;
-        public const string BridgeVersion = "5.4.5";
+        public const string BridgeVersion = "5.4.6";
         private TcpListener listener;
         private Thread listenerThread;
         private volatile bool running;
@@ -442,7 +442,7 @@ namespace SportsBigBoard
         public string ToJson(long sequence)
         {
             StringBuilder sb = new StringBuilder(512);
-            sb.Append("{\"type\":\"state\",\"protocol\":1,\"bridgeVersion\":\"5.4.5\",\"sequence\":");
+            sb.Append("{\"type\":\"state\",\"protocol\":1,\"bridgeVersion\":\"5.4.6\",\"sequence\":");
             sb.Append(sequence.ToString(CultureInfo.InvariantCulture));
             sb.Append(",\"connected\":").Append(Connected ? "true" : "false");
             sb.Append(",\"id\":\"").Append(JsonEscape(Id)).Append("\"");

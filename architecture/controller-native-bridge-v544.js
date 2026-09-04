@@ -1,14 +1,14 @@
-/* Sports Big Board v5.4.5 — Native Windows Controller Bridge transport.
+/* Sports Big Board v5.4.6 — Native Windows Controller Bridge transport.
    Browser Gamepad remains the preferred zero-install transport. When Chrome does
    not expose a Windows controller (notably the Turtle Beach Stealth Ultra 2.4GHz
    receiver), this module consumes normalized state from the loopback-only Sports
    Big Board Controller Bridge at ws://127.0.0.1:5410. No controller data leaves
-   the local machine. v5.4.5 also permits a tiny whitelisted command channel for
+   the local machine. v5.4.6 also permits a tiny whitelisted command channel for
    controller-only fullscreen shortcuts (F11 app fullscreen and F video fullscreen). */
 (() => {
   'use strict';
-  if(window.SBB_CONTROLLER_NATIVE_BRIDGE?.version==='5.4.5')return;
-  const VERSION='5.4.5';
+  if(window.SBB_CONTROLLER_NATIVE_BRIDGE?.version==='5.4.6')return;
+  const VERSION='5.4.6';
   const PROTOCOL=1;
   const ENDPOINTS=['ws://127.0.0.1:5410/sbb-controller','ws://localhost:5410/sbb-controller'];
   const RECONNECT_MIN=700;

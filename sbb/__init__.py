@@ -66,12 +66,12 @@ _install_integrity_lane_v523()
 _install_backend_snapshot_v523()
 _install_current_news_v523()
 
-# v5.4.5: persistent participant metadata + cached Team Focus enrichment.
+# v5.4.6: persistent participant metadata + cached Team Focus enrichment.
 # This installs after the normalized catalog and ticker read models so it remains
 # a cache/read-only browser service and never becomes a score/playback authority.
 from .team_focus_v537 import install as _install_team_focus_v537
 _install_team_focus_v537()
 
-# v5.4.5: cached standings/playoff/event context for the LEAGUE VIEW drawer.
+# v5.4.6: cached standings/playoff/event context for the LEAGUE VIEW drawer.
 from .league_view_v538 import install as _install_league_view_v538
 _install_league_view_v538()

@@ -1,0 +1,26 @@
+Sports Big Board v5.4.6 — Windows Controller Bridge Quick Start
+
+For the Turtle Beach Stealth Ultra in 2.4 GHz wireless mode:
+
+1. Leave the controller connected normally. If joy.cpl sees buttons/sticks, Windows is ready.
+2. Open the windows-controller-bridge folder.
+3. Double-click START-CONTROLLER-BRIDGE.cmd.
+4. The launcher hashes the C# source. If v5.4.6 changed it, the bridge recompiles automatically using Windows' built-in .NET Framework compiler. No administrator rights are required.
+5. Reload Sports Big Board.
+6. If Chrome asks for Local Network / loopback access, choose Allow.
+7. Header status should become:
+      🎮 NO BRIDGE -> 🎮 BR READY -> 🎮 BR LIVE
+8. If it remains NO BRIDGE while the tray helper is running, click the controller indicator once or use Settings -> Controller -> RECONNECT BRIDGE.
+
+v5.4.6 adds a two-command local fullscreen whitelist used by the controller Special Commands radial:
+- app-fullscreen -> F11
+- video-fullscreen -> F
+
+The helper still binds only to 127.0.0.1:5410, makes no outbound internet connections, and never sends rumble/firmware/authentication/output commands to the controller.
+
+Optional: run INSTALL-STARTUP.cmd once to launch the bridge automatically at Windows sign-in.
+
+
+v5.4.6 fullscreen note
+-----------------------
+This release advances the bridge source identity so START-CONTROLLER-BRIDGE.cmd recompiles the local helper. Run it once after replacing the bridge folder. APP FULLSCREEN uses F11 and VIDEO FULLSCREEN uses F; no arbitrary keyboard command surface is exposed.

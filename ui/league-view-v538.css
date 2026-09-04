@@ -1,4 +1,4 @@
-/* Sports Big Board v5.4.5 — League View */
+/* Sports Big Board v5.4.6 — League View */
 #upNextPane{min-height:0;overflow:hidden!important}
 .league-view-root{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);background:#07121a;color:#eaf2f7}
 .league-view-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 13px 10px;border-bottom:1px solid rgba(126,157,180,.18);background:linear-gradient(180deg,#0d1c28,#09151e)}
@@ -38,7 +38,7 @@ html[data-sbb-team-theme="on"] .league-view-rounds span{color:var(--sbb-team-tex
 
 
 /* ======================================================================
-   v5.4.5 — drawer exclusivity + high-contrast league marks
+   v5.4.6 — drawer exclusivity + high-contrast league marks
    ====================================================================== */
 
 /* Earlier desktop Game Center layout rules intentionally use display:grid!important.
@@ -66,7 +66,7 @@ body.sbb-game-center-side #infoDrawer .drawer-pane.hidden{
 }
 
 /* ======================================================================
-   v5.4.5 — denser conference/division League View
+   v5.4.6 — denser conference/division League View
    ====================================================================== */
 .league-view-content{padding:6px!important;gap:6px!important}
 .league-view-head{padding:9px 10px 8px!important}
@@ -133,7 +133,7 @@ html[data-sbb-team-theme="on"] .league-view-pulse-group{background:var(--sbb-tea
 }
 
 /* ======================================================================
-   v5.4.5 — readable broadcast standings layout
+   v5.4.6 — readable broadcast standings layout
    Inspired by the information hierarchy of MLB/ESPN standings pages while
    keeping the Big Board drawer intentionally lower-density than a stats site.
    ====================================================================== */
@@ -201,7 +201,7 @@ html[data-sbb-team-theme="on"] .league-view-pulse-group{background:var(--sbb-tea
 }
 
 /* ======================================================================
-   v5.4.5 — standings-first hierarchy
+   v5.4.6 — standings-first hierarchy
    Division and Wild Card tables own the available drawer space. Secondary
    pulse/recent blocks are no longer rendered for core leagues.
    ====================================================================== */
@@ -224,7 +224,7 @@ html[data-sbb-theme="light"] .league-view-wildcard .league-view-card-head strong
 html[data-sbb-team-theme="on"] .league-view-standings-card.compact .league-view-card-head,
 html[data-sbb-team-theme="on"] .league-view-wildcard .league-view-card-head{background:linear-gradient(180deg,var(--sbb-team-gradient-start),var(--sbb-team-gradient-end))!important}
 
-/* v5.4.5 — paired conference symmetry.
+/* v5.4.6 — paired conference symmetry.
    Placeholder rows intentionally occupy the exact height of a missing team row
    without drawing fake standings data, keeping corresponding division and Wild
    Card headings horizontally aligned. */
@@ -239,7 +239,7 @@ html[data-sbb-team-theme="on"] .league-view-wildcard .league-view-card-head{back
 .league-view-placeholder-row td *{visibility:hidden!important}
 
 /* ======================================================================
-   v5.4.5 — stable event context + sport-specific finishing pass
+   v5.4.6 — stable event context + sport-specific finishing pass
    ====================================================================== */
 /* League refreshes keep the last good table on-screen. A background refresh is
    communicated in the header instead of replacing useful standings with a spinner. */
@@ -304,7 +304,7 @@ html[data-sbb-team-theme="on"] .league-view-round-column>span b{color:var(--sbb-
 }
 
 /* ======================================================================
-   v5.4.5 — soccer table density.
+   v5.4.6 — soccer table density.
    Club identity no longer reserves nearly forty percent of the drawer. The five
    form circles sit immediately after the core standings columns in EPL and MLS.
    ====================================================================== */

@@ -1,0 +1,28 @@
+Sports Big Board v5.4.6 manual GitHub upload
+
+Baseline
+- Built from live main after commit c129ed95b62bfd60ae35630b74fd50b47ab03047 (v5.4.5).
+
+Recommended GitHub web upload
+1. Extract the main ZIP.
+2. Upload files into the repository root while preserving their paths.
+3. Because GitHub/Windows folder dragging can be inconsistent, a separate Tests Upload ZIP is provided. Open the repository /tests folder, extract that ZIP locally, select all .py files, and drag the files themselves into GitHub.
+4. Do not upload __pycache__ or .pyc files. None are included here.
+5. Commit the complete v5.4.6 overlay and let Verify release run.
+6. Replace the local Windows controller bridge folder with the separate v5.4.6 bridge ZIP and run START-CONTROLLER-BRIDGE.cmd once. The source identity changed, so it will recompile automatically.
+
+Expected controller behavior
+- Y / Triangle: Game Center show/hide; hidden/collapsed drawer always recoverable.
+- RT -> MLB/NFL/NBA/NHL/EPL/MLS/NCAAF -> TODAY / ALL / TEAM BROWSE.
+- RT -> SPECIAL EVENTS -> event -> ALL / TEAM BROWSE or PLAYER BROWSE.
+- LT Date / Scope keeps contextual TEAM/PLAYER BROWSE access.
+- LT+RT Special Commands APP FULLSCREEN and VIDEO FULLSCREEN use the local bridge for controller-originated requests.
+- Top-left fullscreen button uses browser Fullscreen API directly.
+
+Local overlay validation
+- 35 available legacy/current Python regressions passed.
+- 3 unchanged presentation regressions cannot execute in the overlay alone because their legacy CSS files intentionally remain in the full repository.
+- v5.4.6 hierarchical controller/fullscreen regression passed.
+- All JavaScript files in the overlay passed node --check.
+- All Python files in the overlay parsed successfully.
+- Windows bridge retained F11/F command whitelist and the ThreadStart compile hotfix.

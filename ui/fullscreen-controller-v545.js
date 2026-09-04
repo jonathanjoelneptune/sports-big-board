@@ -1,12 +1,12 @@
-/* Sports Big Board v5.4.5 — application/video fullscreen authority.
+/* Sports Big Board v5.4.6 — application/video fullscreen authority.
    The logo-adjacent fullscreen control owns Sports Big Board app fullscreen; the
    player utility control owns video fullscreen. Controller-originated fullscreen
    can use the loopback Windows bridge because browser Fullscreen API calls normally
    require a trusted DOM user activation that Gamepad/WebSocket polling cannot create. */
 (() => {
   'use strict';
-  if(window.SBB_FULLSCREEN_CONTROL?.version==='5.4.5')return;
-  const VERSION='5.4.5';
+  if(window.SBB_FULLSCREEN_CONTROL?.version==='5.4.6')return;
+  const VERSION='5.4.6';
   const APP_BUTTON='bigBoardFullscreenBtn';
   const VIDEO_BUTTON='fullscreenBtn';
   let toastTimer=0;
@@ -25,11 +25,20 @@
     el.dataset.state=state;el.textContent=String(text||'');el.classList.add('show');
     if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200);
   }
-  async function requestFullscreen(el){
+  async function requestFullscreen(el,{navigationUI=false}={}){
     if(!el)return false;
     const fn=el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen;
     if(typeof fn!=='function')return false;
-    try{await fn.call(el);return true;}catch(_){return false;}
+    try{
+      // Chromium is happiest when application fullscreen targets the document root.
+      // Try navigationUI first, then retry without options for Safari/older engines.
+      const result=navigationUI&&el.requestFullscreen?fn.call(el,{navigationUI:'hide'}):fn.call(el);
+      if(result&&typeof result.then==='function')await result;
+      return true;
+    }catch(first){
+      if(navigationUI){try{const retry=fn.call(el);if(retry&&typeof retry.then==='function')await retry;return true;}catch(_){}}
+      return false;
+    }
   }
   async function exitDomFullscreen(){
     const fn=document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen;
@@ -39,7 +48,7 @@
   function nativeCommand(command){
     try{return !!bridge()?.sendCommand?.(command);}catch(_){return false;}
   }
-  function appTarget(){return $('app-shell')||document.documentElement;}
+  function appTarget(){return document.documentElement;}
   function activePlayerLayer(){return document.querySelector('#layerA.active,#layerB.active,.player-layer.active')||$('stage');}
   function videoTarget(){
     const layer=activePlayerLayer();
@@ -56,12 +65,12 @@
     if(fullscreenElement()){await exitDomFullscreen();sync();return true;}
     // Trusted mouse/keyboard clicks should always use the standards-based DOM API.
     if(!controller||userActivation()){
-      if(await requestFullscreen(appTarget())){sync();return true;}
+      if(await requestFullscreen(appTarget(),{navigationUI:true})){sync();return true;}
     }
     // Gamepad and loopback-controller actions are not transient browser activations.
     // The native bridge therefore sends the browser's trusted F11 key on the local PC.
     if(nativeCommand('app-fullscreen')){showToast('App fullscreen');return true;}
-    if(await requestFullscreen(appTarget())){sync();return true;}
+    if(await requestFullscreen(appTarget(),{navigationUI:true})){sync();return true;}
     showToast('Fullscreen needs a direct browser click','warn');return false;
   }
   async function toggleVideo({controller=false}={}){
@@ -83,7 +92,7 @@
   }
   function sync(){
     const fs=fullscreenElement(),app=appTarget(),stage=$('stage');
-    const appFull=!!fs&&(fs===app||app?.contains?.(fs)===false&&false);
+    const appFull=!!fs&&(fs===app||fs===document.documentElement);
     const videoFull=!!fs&&!!stage&&(fs===stage||stage.contains(fs));
     document.documentElement.dataset.sbbAppFullscreen=appFull?'1':'0';
     document.documentElement.dataset.sbbVideoFullscreen=videoFull?'1':'0';
@@ -91,14 +100,21 @@
     const vb=$(VIDEO_BUTTON);if(vb){vb.setAttribute('aria-pressed',videoFull?'true':'false');vb.title=videoFull?'Exit video fullscreen':'Fullscreen video';}
   }
   function onClick(event){
-    const button=event.target?.closest?.(`#${APP_BUTTON},#${VIDEO_BUTTON}`);if(!button)return;
+    const button=event.currentTarget||event.target?.closest?.(`#${APP_BUTTON},#${VIDEO_BUTTON}`);if(!button)return;
     event.preventDefault();event.stopImmediatePropagation();
-    if(button.id===APP_BUTTON)toggleApp({controller:!event.isTrusted});
-    else toggleVideo({controller:!event.isTrusted});
+    // A physical mouse/keyboard click stays inside this trusted event turn.
+    // Controller actions enter through the exported API and use the local bridge.
+    if(button.id===APP_BUTTON)toggleApp({controller:false});
+    else toggleVideo({controller:false});
+  }
+  function bindButton(id){
+    const button=$(id);if(!button||button.dataset.sbbFullscreenBound==='1')return;
+    button.dataset.sbbFullscreenBound='1';button.addEventListener('click',onClick,true);
   }
   function bind(){
-    document.addEventListener('click',onClick,true);
+    bindButton(APP_BUTTON);bindButton(VIDEO_BUTTON);
     document.addEventListener('fullscreenchange',sync);document.addEventListener('webkitfullscreenchange',sync);
+    window.addEventListener('pageshow',()=>{bindButton(APP_BUTTON);bindButton(VIDEO_BUTTON);sync();});
     sync();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
