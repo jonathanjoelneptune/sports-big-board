@@ -1,11 +1,11 @@
 {
-  "schemaVersion": 7,
-  "pipelineVersion": "A3.5-result-preservation-event-fusion",
-  "generatedAt": "2026-09-04T21:30:53Z",
+  "schemaVersion": 8,
+  "pipelineVersion": "A3.6-decisive-moment-enrichment",
+  "generatedAt": "2026-09-04T22:00:58Z",
   "freshnessHours": 24.0,
-  "discoveryMode": "Highlightly + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
+  "discoveryMode": "Highlightly + decisive match-detail/highlight enrichment + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-4o-mini",
-  "sourceCandidateHash": "024524b61c90c41c1b1c8fa9dc114bc66758cad40176e01b8ec0c1a71cdc17c2",
+  "sourceCandidateHash": "cf1e613370e7009ee96f6913758e792e49cf756a3b224f611880e1e7a7c1908d",
   "leagues": [
     {
       "league": "MLB",
@@ -23,8 +23,8 @@
           "entities": [],
           "occurredAt": "2026-09-04T20:47:53Z",
           "timePrecision": "exact",
-          "ageHours": 0.72,
-          "freshnessBasis": "The Pirates activated rookie shortstop Konnor Griffin off the 60-day injured list.",
+          "ageHours": 1.22,
+          "freshnessBasis": "The Pirates activated rookie shortstop Konnor Griffin off the 60-day injured list Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49827876/pirates-konnor-griffin-finger-activated-60-day-il"
@@ -50,8 +50,8 @@
           "entities": [],
           "occurredAt": "2026-09-04T17:12:03Z",
           "timePrecision": "exact",
-          "ageHours": 4.31,
-          "freshnessBasis": "Kyle Teel, out since July with a high ankle sprain, is back with the White Sox after being activated.",
+          "ageHours": 4.82,
+          "freshnessBasis": "Kyle Teel, out since July with a high ankle sprain, is back with the White Sox after being activated from the injured list.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49826375/white-sox-activate-catcher-kyle-teel-10-day-injured-list"
@@ -68,44 +68,17 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-c81aef133d489250"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 82,
-          "headline": "MLB, in midst of CBA uncertainty, sets spring training schedule",
-          "text": "Baseball's spring training schedule will start Feb. 19 -- if there is labor peace.",
-          "entities": [],
-          "occurredAt": "2026-09-04T18:16:36Z",
-          "timePrecision": "exact",
-          "ageHours": 3.24,
-          "freshnessBasis": "Baseball's spring training schedule will start Feb. 19 -- if there is labor peace.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49826806/mlb-midst-cba-uncertainty-sets-spring-training-schedule"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49826806/mlb-midst-cba-uncertainty-sets-spring-training-schedule"
-            }
-          ],
-          "id": "a3-d45c572b9ac3e1e2"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-57a2021a41733ae8"
+            "cand-1c45fc0c715aefe8"
           ],
           "type": "RESULT",
           "priority": 65,
-          "headline": "Kansas City Royals beat Miami Marlins 7-3",
-          "text": "Highlightly final: Miami Marlins 3, Kansas City Royals 7.",
+          "headline": "Cleveland Guardians beat Detroit Tigers 7-6",
+          "text": "Highlightly final: Detroit Tigers 6, Cleveland Guardians 7.",
           "entities": [],
-          "occurredAt": "2026-09-03T23:40:00Z",
+          "occurredAt": "2026-09-04T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.85,
-          "freshnessBasis": "Kansas City Royals beat Miami Marlins 7-3.",
+          "ageHours": 3.85,
+          "freshnessBasis": "The Guardians narrowly defeated the Tigers with a score of 7-6.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -113,26 +86,26 @@
           "sources": [
             {
               "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-03",
+              "sourceId": "highlightly-baseball-2026-09-04",
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-f1fbe71f750de42e"
+          "id": "a3-272ca18c893cd6d9"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
-            "cand-a11d60279eeea1e2"
+            "cand-1f017c227c653af4"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Los Angeles Dodgers beat St. Louis Cardinals 3-2",
           "text": "Highlightly final: St. Louis Cardinals 2, Los Angeles Dodgers 3.",
           "entities": [],
-          "occurredAt": "2026-09-03T23:15:00Z",
+          "occurredAt": "2026-09-04T02:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.26,
-          "freshnessBasis": "Los Angeles Dodgers beat St. Louis Cardinals 3-2.",
+          "ageHours": 19.85,
+          "freshnessBasis": "The Dodgers edged the Cardinals with a final score of 3-2.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -144,7 +117,34 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-52e6c9a30f3c5feb"
+          "id": "a3-28609adbc437eac9"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-57a2a86edc7203a5"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Oakland Athletics beat Seattle Mariners 7-4",
+          "text": "Highlightly final: Oakland Athletics 7, Seattle Mariners 4.",
+          "entities": [],
+          "occurredAt": "2026-09-04T01:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 20.35,
+          "freshnessBasis": "The Athletics defeated the Mariners with a final score of 7-4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-03",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-6ec21ef6b3bba0eb"
         }
       ]
     },
@@ -164,8 +164,8 @@
           "entities": [],
           "occurredAt": "2026-09-04T19:33:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.96,
-          "freshnessBasis": "Packers running back Josh Jacobs' initial court appearance on misdemeanor charges has been moved up to Sept. 10.",
+          "ageHours": 2.46,
+          "freshnessBasis": "Josh Jacobs' initial court appearance on misdemeanor charges has been moved up more than two months to Sept. 10.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49827202/josh-jacobs-court-appearance-moved-sept-10"
@@ -178,6 +178,33 @@
             }
           ],
           "id": "a3-f065a1e8939539df"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-68ee469fe728f7e0"
+          ],
+          "type": "OTHER",
+          "priority": 65,
+          "headline": "Rams plan to bring entire team to season opener, including Donald",
+          "text": "The Rams \"plan\" to bring all of their players to Melbourne, Australia, for their season opener against the 49ers, head coach Sean McVay said Friday.",
+          "entities": [],
+          "occurredAt": "2026-09-04T19:08:46Z",
+          "timePrecision": "exact",
+          "ageHours": 2.87,
+          "freshnessBasis": "The Rams plan to bring all players to Melbourne for their season opener against the 49ers.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49826940/rams-plan-bring-entire-team-season-opener-including-donald"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49826940/rams-plan-bring-entire-team-season-opener-including-donald"
+            }
+          ],
+          "id": "a3-323a67059b1be822"
         }
       ]
     },
@@ -193,12 +220,12 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Ben Simmons returning to NBA on 1-year, $3.5M deal with Kings",
-          "text": "Ben Simmons is back in the NBA after reaching one-year, $3.5 million deal with the Kings, his agents told Andscape and ESPN.",
+          "text": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings, his agents told ESPN.",
           "entities": [],
           "occurredAt": "2026-09-04T14:56:49Z",
           "timePrecision": "exact",
-          "ageHours": 6.57,
-          "freshnessBasis": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
+          "ageHours": 7.07,
+          "freshnessBasis": "Ben Simmons is back in the NBA after agreeing to a one-year, $3.5 million deal with the Kings.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
@@ -226,35 +253,29 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-0894a44e354d1349"
+            "cand-5137fc7c0211d840"
           ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Liverpool beat Ipswich 2-0",
-          "text": "Highlightly final: Liverpool 2, Ipswich 0.",
+          "type": "CONTRACT",
+          "priority": 88,
+          "headline": "Richarlison declined new contract months before Tottenham squad omission - Roberto De Zerbi",
+          "text": "Roberto De Zerbi has revealed that he was happy for Richarlison to sign an extension to his Tottenham contract, but the now exiled player declined.",
           "entities": [],
-          "occurredAt": "2026-09-04T19:00:00Z",
+          "occurredAt": "2026-09-04T21:31:25Z",
           "timePrecision": "exact",
-          "ageHours": 2.51,
-          "freshnessBasis": "Liverpool beat Ipswich 2-0 for its first league win of the season.",
+          "ageHours": 0.49,
+          "freshnessBasis": "Roberto De Zerbi revealed that Richarlison declined a contract extension months before his omission from the Tottenham squad.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/soccer/story/_/id/49817110/premier-league-live-updates-ipswich-town-host-liverpool-friday-night-clash"
+            "https://www.espn.com/soccer/story/_/id/49826046/richarlison-was-offered-new-contract-months-tottenham-squad-omission-roberto-de-zerbi"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-04",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49817110/premier-league-live-updates-ipswich-town-host-liverpool-friday-night-clash"
+              "url": "https://www.espn.com/soccer/story/_/id/49826046/richarlison-was-offered-new-contract-months-tottenham-squad-omission-roberto-de-zerbi"
             }
           ],
-          "id": "a3-bda7d2eb2a0c0ba4"
+          "id": "a3-13c54b2531a22ffe"
         }
       ]
     },
@@ -270,6 +291,60 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-9f1957b1ce574cd1"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Utah Utes beat Idaho Vandals 66-14",
+          "text": "Highlightly final: Idaho Vandals 14, Utah Utes 66.",
+          "entities": [],
+          "occurredAt": "2026-09-04T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.02,
+          "freshnessBasis": "The Utes dominated the Vandals with a score of 66-14.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-03",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-0315ef9bbbecd33c"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-67187ca22d5dfe2d"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Illinois Fighting Illini beat UAB Blazers 42-23",
+          "text": "Highlightly final: UAB Blazers 23, Illinois Fighting Illini 42.",
+          "entities": [],
+          "occurredAt": "2026-09-04T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.02,
+          "freshnessBasis": "The Fighting Illini defeated the Blazers with a score of 42-23.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-03",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-16769f3d4ffaf02c"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-00b74eb257175d81"
           ],
           "type": "RESULT",
@@ -279,8 +354,8 @@
           "entities": [],
           "occurredAt": "2026-09-04T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.51,
-          "freshnessBasis": "Colorado Buffaloes beat Georgia Tech Yellow Jackets 14-13.",
+          "ageHours": 22.02,
+          "freshnessBasis": "The Buffaloes secured a narrow victory over the Yellow Jackets with a score of 14-13.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -293,98 +368,44 @@
             }
           ],
           "id": "a3-39d9e3f38a787c63"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-2c5bb3251896107f"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Minnesota Golden Gophers beat Eastern Illinois Panthers 59-7",
-          "text": "Highlightly final: Eastern Illinois Panthers 7, Minnesota Golden Gophers 59.",
-          "entities": [],
-          "occurredAt": "2026-09-04T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 21.51,
-          "freshnessBasis": "Minnesota Golden Gophers beat Eastern Illinois Panthers 59-7.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-03",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-c9d84b1ccec753ab"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-358e8b01fbe03344"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "UCF Knights beat Bethune-Cookman Wildcats 73-6",
-          "text": "Highlightly final: Bethune-Cookman Wildcats 6, UCF Knights 73.",
-          "entities": [],
-          "occurredAt": "2026-09-03T23:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 22.51,
-          "freshnessBasis": "UCF Knights beat Bethune-Cookman Wildcats 73-6.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-03",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-6ddfd99786051f88"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-b36920d8e2c5ae2f"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Massachusetts Minutemen beat Rutgers Scarlet Knights 37-21",
-          "text": "Highlightly final: Massachusetts Minutemen 37, Rutgers Scarlet Knights 21.",
-          "entities": [],
-          "occurredAt": "2026-09-03T22:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.51,
-          "freshnessBasis": "Massachusetts Minutemen beat Rutgers Scarlet Knights 37-21.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-03",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-26ac93c77c13995d"
         }
       ]
     }
   ],
   "specialEvents": [
     {
-      "name": "US Open Results",
+      "name": "US Open Updates",
       "sport": "tennis",
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-2aeea0ba725ca22d"
+          ],
+          "type": "OTHER",
+          "priority": 65,
+          "headline": "Sabalenka, Pegula win at US Open; Williams sisters doubles on tap",
+          "text": "World No. 1 Aryna Sabalenka and 3-seed Jessica Pegula won their respective third-round matches on Friday to advance at the US Open.",
+          "entities": [],
+          "occurredAt": "2026-09-04T21:44:11Z",
+          "timePrecision": "exact",
+          "ageHours": 0.28,
+          "freshnessBasis": "Sabalenka and Pegula won their respective third-round matches at the US Open on Friday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-wta",
+              "url": "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
+            }
+          ],
+          "id": "a3-special-c0836ac1d5dee551"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-1d66a9764b5195d5"
           ],
@@ -395,8 +416,8 @@
           "entities": [],
           "occurredAt": "2026-09-04T16:37:46Z",
           "timePrecision": "exact",
-          "ageHours": 4.89,
-          "freshnessBasis": "Alexander Zverev needed five sets and more than 4 1/2 hours to beat Quentin Halys in their second-round match at the US Open.",
+          "ageHours": 5.39,
+          "freshnessBasis": "Zverev advanced after a grueling five-set match against Halys at the US Open.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49822322/zverev-sweats-another-five-set-scare-advance-us-open"
