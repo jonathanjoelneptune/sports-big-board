@@ -1,11 +1,11 @@
 {
   "schemaVersion": 9,
   "pipelineVersion": "A3.8-result-story-promotion",
-  "generatedAt": "2026-09-05T04:00:52Z",
+  "generatedAt": "2026-09-05T04:30:53Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-4o-mini",
-  "sourceCandidateHash": "1d04970f89c662cb827eeff504a9f07b88bd3c2e103bf1663fd4c4774a9881f4",
+  "sourceCandidateHash": "d19423e6fb84eb4104379965393b9ec75cd90660bfb166c85fbd2697a9028c14",
   "leagues": [
     {
       "league": "MLB",
@@ -14,20 +14,110 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-cb553154f98dde80"
+          ],
+          "type": "STREAK",
+          "priority": 84,
+          "headline": "Aranda and Palacios homer as Rays overcome first Rangers grand slam of season in 7-6 win",
+          "text": "Jonathan Aranda and Richie Palacios homered, and the Tampa Bay Rays ended a 10-game road losing streak against the Rangers.",
+          "entities": [
+            "Tampa Bay Rays",
+            "Texas Rangers"
+          ],
+          "occurredAt": "2026-09-05T03:36:29Z",
+          "timePrecision": "exact",
+          "ageHours": 0.91,
+          "freshnessBasis": "Jonathan Aranda and Richie Palacios homered, and the Tampa Bay Rays overcame the first grand slam of the season by Texas in a 7-6 victory.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401816806"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816806"
+            }
+          ],
+          "id": "a3-0ecfdb4c7000b47a"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-14cb06adf88bd87d"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 80,
+          "headline": "Jameson Taillon exits start with right elbow discomfort",
+          "text": "Blue Jays starter Jameson Taillon left Friday night's game against Kansas City after two innings due to right elbow discomfort.",
+          "entities": [
+            "Toronto Blue Jays",
+            "Jameson Taillon"
+          ],
+          "occurredAt": "2026-09-05T03:51:01Z",
+          "timePrecision": "exact",
+          "ageHours": 0.66,
+          "freshnessBasis": "Blue Jays starter Jameson Taillon left Friday night's game against Kansas City after two innings due to right elbow discomfort.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49831366/jameson-taillon-exits-start-right-elbow-discomfort"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49831366/jameson-taillon-exits-start-right-elbow-discomfort"
+            }
+          ],
+          "id": "a3-c2d878fe00b6aac8"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-05e8473b30263bae"
+          ],
+          "type": "RESULT",
+          "priority": 80,
+          "headline": "Luis Campusano delivers walk-off as San Diego Padres beat New York Yankees 3-2",
+          "text": "Campusano homered to left (394 feet), Harris scored.",
+          "entities": [
+            "San Diego Padres",
+            "New York Yankees"
+          ],
+          "occurredAt": "2026-09-05T01:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.85,
+          "freshnessBasis": "Luis Campusano delivered the walk-off in the bottom of the 10th inning.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-c868fa770d48aa98"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-c6c53f763c5cf744"
           ],
           "type": "RESULT",
           "priority": 80,
           "headline": "Travis Bazzana delivers walk-off as Cleveland Guardians beat Detroit Tigers 4-3",
-          "text": "Bazzana singled to center, Rocchio scored in the bottom of the 10th for the Guardians' victory.",
+          "text": "Bazzana singled to center, Rocchio scored.",
           "entities": [
             "Cleveland Guardians",
             "Detroit Tigers"
           ],
           "occurredAt": "2026-09-04T23:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.26,
-          "freshnessBasis": "Bazzana delivered the walk-off in the bottom of the 10th inning.",
+          "ageHours": 4.76,
+          "freshnessBasis": "Travis Bazzana delivered the walk-off in the bottom of the 10th inning.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -42,22 +132,22 @@
           "id": "a3-486a736b7c9fc075"
         },
         {
-          "rank": 2,
+          "rank": 5,
           "candidateIds": [
             "cand-1c45fc0c715aefe8"
           ],
           "type": "RESULT",
           "priority": 78,
           "headline": "Brayan Rocchio delivers walk-off as Cleveland Guardians beat Detroit Tigers 7-6",
-          "text": "Rocchio homered to left center to secure the win in the bottom of the 9th.",
+          "text": "Rocchio homered to left center (405 feet).",
           "entities": [
             "Cleveland Guardians",
             "Detroit Tigers"
           ],
           "occurredAt": "2026-09-04T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.85,
-          "freshnessBasis": "Rocchio homered to left center (405 feet).",
+          "ageHours": 10.35,
+          "freshnessBasis": "Brayan Rocchio delivered the walk-off in the bottom of the 9th inning.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -69,67 +159,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-687494b54f306eea"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-7bb94db1364f5ef4"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "St. Louis Cardinals beat Colorado Rockies 7-6",
-          "text": "A close battle saw the Cardinals take the win over the Rockies.",
-          "entities": [
-            "St. Louis Cardinals",
-            "Colorado Rockies"
-          ],
-          "occurredAt": "2026-09-05T00:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.35,
-          "freshnessBasis": "Final score was 7-6.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-2c9a298f83d67fe0"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-57870ac84854b71a"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Tampa Bay Rays beat Texas Rangers 7-6",
-          "text": "The Rays ended a 10-game road losing streak against Texas after Aranda and Palacios homered.",
-          "entities": [
-            "Tampa Bay Rays",
-            "Texas Rangers"
-          ],
-          "occurredAt": "2026-09-05T00:05:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.93,
-          "freshnessBasis": "Rays overcame the first grand slam of the season by Texas in a 7-6 victory.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-53868d4311e3c634"
+          "id": "a3-272ca18c893cd6d9"
         }
       ]
     },
@@ -150,15 +180,15 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Ben Simmons returning to NBA on 1-year, $3.5M deal with Kings",
-          "text": "Simmons is back in the NBA after agreeing to a one-year contract.",
+          "text": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
           "entities": [
             "Ben Simmons",
             "Sacramento Kings"
           ],
           "occurredAt": "2026-09-04T14:56:49Z",
           "timePrecision": "exact",
-          "ageHours": 13.07,
-          "freshnessBasis": "Simmons reached a one-year, $3.5 million deal with the Kings.",
+          "ageHours": 13.57,
+          "freshnessBasis": "Ben Simmons is back in the NBA after reaching one-year, $3.5 million deal with the Kings.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
@@ -186,15 +216,15 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Canucks' Zeev Buium signs 8-year contract extension",
-          "text": "The Canucks secured defenseman Buium to a long-term deal.",
+          "text": "The Canucks signed defenseman Zeev Buium to an eight-year contract extension worth $9.38 million a season.",
           "entities": [
             "Vancouver Canucks",
             "Zeev Buium"
           ],
           "occurredAt": "2026-09-04T23:53:16Z",
           "timePrecision": "exact",
-          "ageHours": 4.13,
-          "freshnessBasis": "Buium signed an eight-year contract extension worth $9.38 million per season.",
+          "ageHours": 4.63,
+          "freshnessBasis": "The Canucks signed defenseman Zeev Buium to an eight-year contract extension Friday worth $9.38 million a season.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
@@ -222,15 +252,15 @@
           "type": "RESULT",
           "priority": 72,
           "headline": "Isak's brace vs. Ipswich gives Liverpool first win of the season",
-          "text": "Isak scored both goals to guide Liverpool to its first league win of the season.",
+          "text": "Enjoy all that happened from Portman Road as Liverpool defeated Ipswich Town 2-0 for their first win of the Premier League season.",
           "entities": [
             "Liverpool",
-            "Ipswich"
+            "Ipswich Town"
           ],
           "occurredAt": "2026-09-04T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.01,
-          "freshnessBasis": "Liverpool defeated Ipswich Town 2-0.",
+          "ageHours": 9.51,
+          "freshnessBasis": "Liverpool defeated Ipswich Town 2-0 for their first win of the Premier League season.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -249,6 +279,36 @@
             }
           ],
           "id": "a3-bda7d2eb2a0c0ba4"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-be8fd006e25fdb6f"
+          ],
+          "type": "OTHER",
+          "priority": 65,
+          "headline": "Alexander Isak kickstarts Liverpool career after 'difficult' start",
+          "text": "Alexander Isak said his difficult start to his Liverpool career is now behind him after he scored a brace against Ipswich.",
+          "entities": [
+            "Liverpool",
+            "Alexander Isak"
+          ],
+          "occurredAt": "2026-09-04T23:33:39Z",
+          "timePrecision": "exact",
+          "ageHours": 4.95,
+          "freshnessBasis": "Alexander Isak said his difficult start to his Liverpool career is now behind him after he scored a brace inside nine minutes to inspire his side to a 2-0 win.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49828925/liverpool-alexander-isak-produce-numbers-andoni-iraola"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49828925/liverpool-alexander-isak-produce-numbers-andoni-iraola"
+            }
+          ],
+          "id": "a3-73b20448a8b8ffc8"
         }
       ]
     },
@@ -264,15 +324,15 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "New York City FC and Nashville SC finished tied 0-0",
-          "text": "A defensive match ended with both teams sharing points.",
+          "text": "Nashville SC goalkeeper Brian Schwake dueled New York City FC's Matt Freese to a scoreless draw at Yankee Stadium on Friday night.",
           "entities": [
-            "New York City FC",
-            "Nashville SC"
+            "Nashville SC",
+            "New York City FC"
           ],
           "occurredAt": "2026-09-04T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.51,
-          "freshnessBasis": "Final score was 0-0.",
+          "ageHours": 5.01,
+          "freshnessBasis": "Nashville SC goalkeeper Brian Schwake dueled New York City FC's Matt Freese to a scoreless draw.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -295,20 +355,56 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-8e087c5ce446ac1e"
+          ],
+          "type": "RESULT",
+          "priority": 71,
+          "headline": "Mensah throws 5 TD passes, Toney sets record in No. 7 Miami's 45-6 win over Stanford",
+          "text": "Darian Mensah threw five touchdown passes in his Miami debut, while Malachi Toney set a school record with 234 yards receiving.",
+          "entities": [
+            "Miami Hurricanes",
+            "Stanford Cardinal"
+          ],
+          "occurredAt": "2026-09-05T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.51,
+          "freshnessBasis": "Darian Mensah threw five touchdown passes in his Miami debut, Malachi Toney set a school-record with 234 yards receiving.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/ncf/recap?gameId=401858206"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858206"
+            }
+          ],
+          "id": "a3-382e4ef0380fc953"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-850b18fae53421dc"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Kansas Jayhawks beat Long Island University Sharks 51-6",
-          "text": "The Jayhawks rolled over LIU after a slow start in their opener.",
+          "text": "The Jayhawks rolled after a sluggish start to a 51-6 victory over Long Island University in their season opener on Friday.",
           "entities": [
             "Kansas Jayhawks",
             "Long Island University Sharks"
           ],
           "occurredAt": "2026-09-05T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.01,
-          "freshnessBasis": "Kansas achieved a commanding 51-6 victory.",
+          "ageHours": 4.51,
+          "freshnessBasis": "Isaiah Marshall threw for 246 yards and two touchdowns, and the Jayhawks rolled after a sluggish start to a 51-6 victory.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -323,22 +419,22 @@
           "id": "a3-34ba8ec475d15be0"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-f25cf2f882733250"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Michigan State Spartans beat Toledo Rockets 30-20",
-          "text": "The Spartans secured a solid win against the Rockets.",
+          "text": "The Spartans showcased a powerful performance in a 30-20 victory over Toledo.",
           "entities": [
             "Michigan State Spartans",
             "Toledo Rockets"
           ],
           "occurredAt": "2026-09-05T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.01,
-          "freshnessBasis": "Final score was 30-20.",
+          "ageHours": 4.51,
+          "freshnessBasis": "The Spartans showcased a powerful performance in a 30-20 victory over Toledo.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -351,13 +447,73 @@
             }
           ],
           "id": "a3-5673795ae4cc0d16"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-24d06948a3dbb681"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Purdue Boilermakers beat Indiana State Sycamores 44-19",
+          "text": "The Boilermakers dominated with a strong showing against Indiana State.",
+          "entities": [
+            "Purdue Boilermakers",
+            "Indiana State Sycamores"
+          ],
+          "occurredAt": "2026-09-04T23:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 5.51,
+          "freshnessBasis": "The Boilermakers dominated with a strong showing against Indiana State.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-8f1320deae5eea9c"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-d8593273388e5ac2"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Georgia State Panthers beat North Carolina A&T Aggies 59-10",
+          "text": "Georgia State's offense thrived in a 59-10 victory over the Aggies.",
+          "entities": [
+            "Georgia State Panthers",
+            "North Carolina A&T Aggies"
+          ],
+          "occurredAt": "2026-09-04T22:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 6.01,
+          "freshnessBasis": "Georgia State's offense thrived in a 59-10 victory over the Aggies.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-43b417492af29cce"
         }
       ]
     }
   ],
   "specialEvents": [
     {
-      "name": "US Open Tennis Results",
+      "name": "US Open",
       "sport": "tennis",
       "items": [
         {
@@ -365,10 +521,10 @@
           "candidateIds": [
             "cand-8e8d2fd3c02dca6d"
           ],
-          "type": "OTHER",
+          "type": "RESULT",
           "priority": 65,
           "headline": "Carlos Alcaraz, Tommy Paul, Frances Tiafoe advance at US Open",
-          "text": "Alcaraz returned to the round of 16 with a straight-set win.",
+          "text": "Two-time US Open champion Carlos Alcaraz returned to the round of 16 by beating Wu Yibing.",
           "entities": [
             "Carlos Alcaraz",
             "Tommy Paul",
@@ -376,8 +532,8 @@
           ],
           "occurredAt": "2026-09-05T03:29:02Z",
           "timePrecision": "exact",
-          "ageHours": 0.53,
-          "freshnessBasis": "Alcaraz beat Wu Yibing 6-3, 6-4, 6-1.",
+          "ageHours": 1.03,
+          "freshnessBasis": "Carlos Alcaraz returned to the round of 16 by beating Wu Yibing 6-3, 6-4, 6-1 on Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49828709/carlos-alcaraz-tommy-paul-win-set-4th-round-clash-2026-us-open"
