@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A3.10-final-relevance-event-fusion",
-  "generatedAt": "2026-09-05T16:00:54Z",
+  "generatedAt": "2026-09-05T16:30:52Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "6f123e6c3054bad6c6283b931ca220d449dc5b5d78ebb4c7860c26474093d735",
+  "sourceCandidateHash": "1bcbc07a0e13ffb42b8d5a6264e799356c006c9443d28fd6a520685410feb037",
   "leagues": [
     {
       "league": "MLB",
@@ -18,8 +18,8 @@
           ],
           "type": "RESULT",
           "priority": 80,
-          "headline": "Luis Campusano delivers 10th-inning walk-off for Padres over Yankees",
-          "text": "Campusano homered in the bottom of the 10th, lifting San Diego to a 3-2 win over New York.",
+          "headline": "Luis Campusano’s walk-off homer lifts Padres over Yankees in 10th",
+          "text": "Campusano homered to left in the bottom of the 10th, giving San Diego a 3-2 win over New York.",
           "entities": [
             "San Diego Padres",
             "New York Yankees",
@@ -27,8 +27,8 @@
           ],
           "occurredAt": "2026-09-05T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 14.35,
-          "freshnessBasis": "Luis Campusano delivered a walk-off home run in the bottom of the 10th inning Friday.",
+          "ageHours": 14.85,
+          "freshnessBasis": "Luis Campusano delivered a walk-off home run in the bottom of the 10th inning for San Diego on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -40,7 +40,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-ee1e5d222096bb4e"
+          "id": "a3-70c4d67d782e877a"
         },
         {
           "rank": 2,
@@ -49,8 +49,8 @@
           ],
           "type": "RESULT",
           "priority": 80,
-          "headline": "Travis Bazzana delivers walk-off as Cleveland Guardians beat Detroit Tigers 4-3",
-          "text": "Bazzana singled to center, Rocchio scored.",
+          "headline": "Travis Bazzana’s 10th-inning single gives Guardians 4-3 walk-off win",
+          "text": "Bazzana singled to center in the bottom of the 10th, scoring Rocchio as Cleveland edged Detroit 4-3.",
           "entities": [
             "Cleveland Guardians",
             "Detroit Tigers",
@@ -58,8 +58,8 @@
           ],
           "occurredAt": "2026-09-04T23:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.27,
-          "freshnessBasis": "Travis Bazzana delivered the walk-off in the bottom of the 10th inning.",
+          "ageHours": 16.76,
+          "freshnessBasis": "Travis Bazzana delivered a walk-off single in the bottom of the 10th inning for Cleveland.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -71,7 +71,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-4814b7329ff4a4dc"
+          "id": "a3-8e639451c262cb95"
         },
         {
           "rank": 3,
@@ -81,7 +81,7 @@
           "type": "RESULT",
           "priority": 78,
           "headline": "Brayan Rocchio’s walk-off homer gives Guardians 7-6 win over Tigers",
-          "text": "Rocchio homered to left-center in the bottom of the ninth, completing Cleveland’s win over Detroit.",
+          "text": "Rocchio homered to left-center in the bottom of the ninth, lifting Cleveland over Detroit 7-6.",
           "entities": [
             "Cleveland Guardians",
             "Detroit Tigers",
@@ -89,8 +89,8 @@
           ],
           "occurredAt": "2026-09-04T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.85,
-          "freshnessBasis": "Brayan Rocchio delivered a walk-off home run in the bottom of the ninth inning Friday.",
+          "ageHours": 22.35,
+          "freshnessBasis": "Brayan Rocchio delivered a walk-off home run in the bottom of the ninth inning for Cleveland.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -125,18 +125,18 @@
           "candidateIds": [
             "cand-54e2aa57c01b2c51"
           ],
-          "type": "SIGNING",
-          "priority": 82,
+          "type": "CONTRACT",
+          "priority": 85,
           "headline": "Canucks sign Zeev Buium to eight-year extension",
-          "text": "Vancouver signed defenseman Zeev Buium to an eight-year contract extension worth $9.38 million per season.",
+          "text": "Vancouver signed defenseman Zeev Buium to an eight-year extension worth $9.38 million per season.",
           "entities": [
             "Vancouver Canucks",
             "Zeev Buium"
           ],
           "occurredAt": "2026-09-04T23:53:16Z",
           "timePrecision": "exact",
-          "ageHours": 16.13,
-          "freshnessBasis": "The Canucks signed defenseman Zeev Buium to an eight-year contract extension Friday.",
+          "ageHours": 16.63,
+          "freshnessBasis": "Vancouver signed Zeev Buium to an eight-year contract extension Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
@@ -159,34 +159,95 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-0bda5e34dc5242e8"
+            "cand-892ecd7b9a5002cd"
           ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Newcastle rally from 2-0 down to draw Bournemouth",
-          "text": "Substitute Jacob Ramsey scored late as Newcastle salvaged a 2-2 draw and preserved manager Matthias Jaissle’s unbeaten start.",
+          "type": "RECORD",
+          "priority": 72,
+          "headline": "Club-record signing Luka Vušković rescues Brighton in 1-1 draw",
+          "text": "Vušković headed his first goal in English football to earn Brighton a point against Leeds.",
           "entities": [
-            "Newcastle United",
-            "AFC Bournemouth",
-            "Jacob Ramsey",
-            "Matthias Jaissle"
+            "Brighton & Hove Albion",
+            "Leeds United",
+            "Luka Vušković"
           ],
-          "occurredAt": "2026-09-05T14:25:54Z",
+          "occurredAt": "2026-09-05T16:09:41Z",
           "timePrecision": "exact",
-          "ageHours": 1.58,
-          "freshnessBasis": "Jacob Ramsey scored a late equalizer as Newcastle came from 2-0 down to draw Bournemouth 2-2.",
+          "ageHours": 0.35,
+          "freshnessBasis": "Brighton club-record signing Luka Vušković scored his first English goal to secure a 1-1 draw with Leeds.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/soccer/report/_/gameId/401879286"
+            "http://www.espn.com/soccer/report/_/gameId/401879290"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "http://www.espn.com/soccer/report/_/gameId/401879286"
+              "url": "http://www.espn.com/soccer/report/_/gameId/401879290"
             }
           ],
-          "id": "a3-4411601aedaffbed"
+          "id": "a3-a6115507f9440c02"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-4963692a2bbff99a"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Ben Chilwell’s late winner completes Crystal Palace’s 3-2 comeback",
+          "text": "Chilwell scored the late winner on his return to Crystal Palace as the club beat Fulham 3-2.",
+          "entities": [
+            "Crystal Palace",
+            "Fulham",
+            "Ben Chilwell"
+          ],
+          "occurredAt": "2026-09-05T16:20:21Z",
+          "timePrecision": "exact",
+          "ageHours": 0.18,
+          "freshnessBasis": "Ben Chilwell scored a late winner on his return to Crystal Palace in a 3-2 comeback win over Fulham.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/soccer/report/_/gameId/401879289"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "http://www.espn.com/soccer/report/_/gameId/401879289"
+            }
+          ],
+          "id": "a3-3d5bd006fa9c7344"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-833ce5346b364fd8"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Haaland header keeps Manchester City perfect after 1-0 win",
+          "text": "Erling Haaland’s first-half header gave Manchester City a 1-0 victory over Coventry and a third win in three matches.",
+          "entities": [
+            "Manchester City",
+            "Coventry City",
+            "Erling Haaland"
+          ],
+          "occurredAt": "2026-09-05T16:12:48Z",
+          "timePrecision": "exact",
+          "ageHours": 0.3,
+          "freshnessBasis": "Erling Haaland scored the only goal in Manchester City’s 1-0 win over Coventry, its third victory in three matches.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/soccer/report/_/gameId/401879287"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "http://www.espn.com/soccer/report/_/gameId/401879287"
+            }
+          ],
+          "id": "a3-7f3884319dbc20d2"
         }
       ]
     },
@@ -202,50 +263,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-8e087c5ce446ac1e"
-          ],
-          "type": "RESULT",
-          "priority": 66,
-          "headline": "No. 7 Miami routs Stanford 45-6",
-          "text": "Miami defeated Stanford 45-6 in a blowout involving the No. 7 Hurricanes.",
-          "entities": [
-            "Miami Hurricanes",
-            "Stanford Cardinal"
-          ],
-          "occurredAt": "2026-09-05T01:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 15.02,
-          "freshnessBasis": "No. 7 Miami beat Stanford 45-6 Friday night.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-a717882c5ec1b035"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-ca9c7d78f6bff55c"
           ],
           "type": "RESULT",
           "priority": 66,
           "headline": "No. 14 USC shuts out Fresno State 39-0",
-          "text": "USC defeated Fresno State 39-0 in a shutout involving the No. 14 Trojans.",
+          "text": "USC, ranked No. 14, held Fresno State scoreless in a 39-0 FBS win.",
           "entities": [
             "USC Trojans",
             "Fresno State Bulldogs"
           ],
           "occurredAt": "2026-09-05T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.02,
-          "freshnessBasis": "No. 14 USC shut out Fresno State 39-0 Friday night.",
+          "ageHours": 15.51,
+          "freshnessBasis": "No. 14 USC defeated Fresno State 39-0 in a shutout on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -260,6 +291,36 @@
           "id": "a3-124b32bf4ea75d59"
         },
         {
+          "rank": 2,
+          "candidateIds": [
+            "cand-8e087c5ce446ac1e"
+          ],
+          "type": "RESULT",
+          "priority": 66,
+          "headline": "No. 7 Miami rolls past Stanford 45-6",
+          "text": "Miami, ranked No. 7, defeated Stanford 45-6 in an FBS matchup.",
+          "entities": [
+            "Miami Hurricanes",
+            "Stanford Cardinal"
+          ],
+          "occurredAt": "2026-09-05T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 15.51,
+          "freshnessBasis": "No. 7 Miami defeated Stanford 45-6 on Sept. 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-ecc5c2cbc7b1f5b9"
+        },
+        {
           "rank": 3,
           "candidateIds": [
             "cand-6fc97cff2b2d2b58"
@@ -267,15 +328,15 @@
           "type": "RESULT",
           "priority": 66,
           "headline": "No. 10 Oklahoma shuts out UTEP 51-0",
-          "text": "Oklahoma dominated UTEP 51-0 in a shutout involving the No. 10 Sooners.",
+          "text": "Oklahoma, ranked No. 10, blanked UTEP 51-0 in a dominant FBS victory.",
           "entities": [
             "Oklahoma Sooners",
             "UTEP Miners"
           ],
           "occurredAt": "2026-09-05T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.02,
-          "freshnessBasis": "No. 10 Oklahoma shut out UTEP 51-0 Friday night.",
+          "ageHours": 16.51,
+          "freshnessBasis": "No. 10 Oklahoma defeated UTEP 51-0 in a shutout on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -302,19 +363,20 @@
           "candidateIds": [
             "cand-2a7f5b2ae7df32f6"
           ],
-          "type": "MILESTONE",
-          "priority": 82,
+          "type": "UPSET",
+          "priority": 77,
           "headline": "Pierre Gasly takes first career pole for Italian Grand Prix",
-          "text": "Alpine’s Gasly secured the first pole position of his Formula 1 career for Sunday’s race, with Ferrari off the pace.",
+          "text": "Alpine’s Gasly secured the first pole position of his career, with Ferrari off the pace for Sunday’s race.",
           "entities": [
             "Pierre Gasly",
             "Alpine",
+            "Ferrari",
             "Italian Grand Prix"
           ],
           "occurredAt": "2026-09-05T15:57:33Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
-          "freshnessBasis": "Pierre Gasly took the first pole position of his career for Sunday’s Italian Grand Prix Saturday.",
+          "ageHours": 0.56,
+          "freshnessBasis": "Pierre Gasly took the first pole position of his career for Sunday’s Italian Grand Prix.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49813189/alpine-pierre-gasly-takes-thrilling-first-career-pole-italian-grand-prix-ferrari-pace-formula-1-monza"
@@ -340,15 +402,15 @@
             "cand-e7a22fe8614761e7"
           ],
           "type": "LEGAL",
-          "priority": 76,
+          "priority": 72,
           "headline": "Tiger Woods plans to change not-guilty plea in DUI case",
-          "text": "Court documents show Woods plans to change his not-guilty plea in a DUI case stemming from a rollover crash in Florida.",
+          "text": "Court documents say Woods plans to change his not-guilty plea stemming from a rollover crash in Florida.",
           "entities": [
             "Tiger Woods"
           ],
           "occurredAt": "2026-09-05T11:22:06Z",
           "timePrecision": "exact",
-          "ageHours": 4.65,
+          "ageHours": 5.15,
           "freshnessBasis": "Court documents show Tiger Woods plans to change his not-guilty plea in a Florida DUI case.",
           "status": "active",
           "sourceUrls": [
@@ -376,8 +438,8 @@
           ],
           "type": "RESULT",
           "priority": 65,
-          "headline": "Serena and Venus Williams lose in US Open doubles return",
-          "text": "The Williams sisters were eliminated from women’s doubles after losing to Hao-Ching Chan and Maya Joint in a third-set tiebreaker.",
+          "headline": "Serena and Venus Williams exit US Open doubles in third-set tiebreak",
+          "text": "The Williams sisters lost to Hao-Ching Chan and Maya Joint in a third-set tiebreaker.",
           "entities": [
             "Serena Williams",
             "Venus Williams",
@@ -387,8 +449,8 @@
           ],
           "occurredAt": "2026-09-05T12:12:54Z",
           "timePrecision": "exact",
-          "ageHours": 3.8,
-          "freshnessBasis": "Serena and Venus Williams lost their US Open women’s doubles match in a third-set tiebreaker Saturday.",
+          "ageHours": 4.3,
+          "freshnessBasis": "Serena and Venus Williams lost their US Open women’s doubles match in a third-set tiebreaker.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49830732/serena-venus-williams-lose-third-set-tiebreak-us-open-doubles-return"
@@ -400,7 +462,7 @@
               "url": "https://www.espn.com/tennis/story/_/id/49830732/serena-venus-williams-lose-third-set-tiebreak-us-open-doubles-return"
             }
           ],
-          "id": "a3-special-871260a666e6900b"
+          "id": "a3-special-87b56ef870ff8cc8"
         },
         {
           "rank": 2,
@@ -418,8 +480,8 @@
           ],
           "occurredAt": "2026-09-05T03:29:28Z",
           "timePrecision": "exact",
-          "ageHours": 12.52,
-          "freshnessBasis": "Aryna Sabalenka and Jessica Pegula won their respective US Open third-round matches Friday.",
+          "ageHours": 13.02,
+          "freshnessBasis": "Aryna Sabalenka and Jessica Pegula won their respective third-round matches to reach the US Open fourth round.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
