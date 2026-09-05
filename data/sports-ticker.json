@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A3.10-final-relevance-event-fusion",
-  "generatedAt": "2026-09-05T12:00:53Z",
+  "generatedAt": "2026-09-05T12:30:51Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "dc11d6399e2067495d979bbaf636641fc5e41fafc46e5809ddc10b064e55dc11",
+  "sourceCandidateHash": "6931c9ebd646777aacb37939a323f1b72eb42d577ccbb2de346f5a330b418027",
   "leagues": [
     {
       "league": "MLB",
@@ -27,8 +27,8 @@
           ],
           "occurredAt": "2026-09-05T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 10.35,
-          "freshnessBasis": "Luis Campusano hit a two-run, 10th-inning walk-off homer for San Diego.",
+          "ageHours": 10.85,
+          "freshnessBasis": "Luis Campusano hit a two-run walk-off homer in the 10th inning Friday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -64,7 +64,7 @@
           ],
           "occurredAt": "2026-09-04T23:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 12.26,
+          "ageHours": 12.76,
           "freshnessBasis": "Travis Bazzana delivered the walk-off in the bottom of the 10th inning.",
           "status": "active",
           "sourceUrls": [
@@ -77,7 +77,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-d782a9f749131250"
+          "id": "a3-89d020f42c85bf3d"
         },
         {
           "rank": 3,
@@ -86,13 +86,17 @@
           ],
           "type": "RESULT",
           "priority": 78,
-          "headline": "Brayan Rocchio delivers walk-off as Cleveland Guardians beat Detroit Tigers 7-6",
-          "text": "Rocchio homered to left center (405 feet).",
-          "entities": [],
+          "headline": "Brayan Rocchio's walk-off homer gives Guardians 7-6 win",
+          "text": "Rocchio hit a 405-foot homer in the bottom of the ninth to send Cleveland past Detroit.",
+          "entities": [
+            "Cleveland Guardians",
+            "Detroit Tigers",
+            "Brayan Rocchio"
+          ],
           "occurredAt": "2026-09-04T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.85,
-          "freshnessBasis": "Brayan Rocchio delivered the walk-off in the bottom of the 9th inning.",
+          "ageHours": 18.35,
+          "freshnessBasis": "Brayan Rocchio hit a walk-off home run in the ninth inning Friday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -104,7 +108,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-promoted-687494b54f306eea"
+          "id": "a3-7d00db966831ce80"
         }
       ]
     },
@@ -123,17 +127,17 @@
             "cand-8fdbe1ac1835628a"
           ],
           "type": "SIGNING",
-          "priority": 80,
+          "priority": 82,
           "headline": "Ben Simmons returns to NBA on one-year, $3.5 million Kings deal",
-          "text": "Simmons agreed to a one-year, $3.5 million contract with Sacramento, returning to the NBA.",
+          "text": "Simmons agreed to a one-year contract with Sacramento, returning to the NBA.",
           "entities": [
-            "Sacramento Kings",
-            "Ben Simmons"
+            "Ben Simmons",
+            "Sacramento Kings"
           ],
           "occurredAt": "2026-09-04T14:56:49Z",
           "timePrecision": "exact",
-          "ageHours": 21.07,
-          "freshnessBasis": "Ben Simmons agreed to a one-year, $3.5 million deal with Sacramento.",
+          "ageHours": 21.57,
+          "freshnessBasis": "Ben Simmons agreed to a one-year, $3.5 million contract with Sacramento Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
@@ -159,17 +163,17 @@
             "cand-54e2aa57c01b2c51"
           ],
           "type": "CONTRACT",
-          "priority": 82,
+          "priority": 83,
           "headline": "Canucks sign Zeev Buium to eight-year extension",
-          "text": "Vancouver signed defenseman Zeev Buium to an eight-year extension worth $9.38 million per season.",
+          "text": "Vancouver extended defenseman Zeev Buium for eight years at $9.38 million per season.",
           "entities": [
             "Vancouver Canucks",
             "Zeev Buium"
           ],
           "occurredAt": "2026-09-04T23:53:16Z",
           "timePrecision": "exact",
-          "ageHours": 12.13,
-          "freshnessBasis": "Vancouver signed Zeev Buium to an eight-year contract extension worth $9.38 million annually.",
+          "ageHours": 12.63,
+          "freshnessBasis": "Vancouver signed Zeev Buium to an eight-year extension worth $9.38 million per season Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
@@ -197,7 +201,7 @@
           "type": "LEAGUE_NEWS",
           "priority": 76,
           "headline": "Liverpool sporting director Richard Hughes steps down",
-          "text": "Liverpool confirmed Hughes' departure; sources say he is expected to take a similar role at Saudi Pro League club Al Hilal.",
+          "text": "Liverpool confirmed Hughes' departure; he is expected to take a similar role with Saudi Pro League club Al Hilal.",
           "entities": [
             "Liverpool",
             "Richard Hughes",
@@ -205,8 +209,8 @@
           ],
           "occurredAt": "2026-09-05T11:25:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.6,
-          "freshnessBasis": "Liverpool confirmed that sporting director Richard Hughes has departed the club.",
+          "ageHours": 1.1,
+          "freshnessBasis": "Liverpool confirmed Richard Hughes' departure as sporting director Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49833840/liverpool-richard-hughes-sporting-director-transfer-window-premier-league-saudi-pro-league-al-hilal"
@@ -219,36 +223,6 @@
             }
           ],
           "id": "a3-b8d699b09bc0b2ff"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-0894a44e354d1349"
-          ],
-          "type": "RESULT",
-          "priority": 63,
-          "headline": "Liverpool beat Ipswich 2-0",
-          "text": "Liverpool defeated Ipswich 2-0 in the Premier League.",
-          "entities": [
-            "Liverpool",
-            "Ipswich"
-          ],
-          "occurredAt": "2026-09-04T19:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 17.01,
-          "freshnessBasis": "Liverpool beat Ipswich 2-0 in a completed Premier League match.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-bda7d2eb2a0c0ba4"
         }
       ]
     },
@@ -268,8 +242,8 @@
           ],
           "type": "RECORD",
           "priority": 84,
-          "headline": "Malachi Toney sets Miami receiving record in 45-6 win over Stanford",
-          "text": "Toney caught 12 passes for a school-record 234 yards and three touchdowns as No. 7 Miami routed Stanford.",
+          "headline": "Malachi Toney sets Miami receiving record in 45-6 rout of Stanford",
+          "text": "Toney caught 12 passes for a school-record 234 yards and three touchdowns as No. 7 Miami overwhelmed Stanford.",
           "entities": [
             "Miami Hurricanes",
             "Stanford Cardinal",
@@ -277,8 +251,8 @@
           ],
           "occurredAt": "2026-09-05T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 11.01,
-          "freshnessBasis": "Malachi Toney set a Miami school record with 234 receiving yards in the Hurricanes' 45-6 win.",
+          "ageHours": 11.51,
+          "freshnessBasis": "Malachi Toney set a Miami school record with 234 receiving yards in Friday's 45-6 win.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -296,57 +270,25 @@
               "url": "https://www.espn.com/college-football/story/_/id/49832250/toney-mensah-shatter-miami-records-blowout-stanford"
             }
           ],
-          "id": "a3-50c9cceb93c87f14"
+          "id": "a3-d1ea73189686d774"
         },
         {
           "rank": 2,
-          "candidateIds": [
-            "cand-51cbd506e43d96dc"
-          ],
-          "type": "ROSTER",
-          "priority": 73,
-          "headline": "LSU leaves Dae'Quan Wright and Zxavian Harris off opener roster",
-          "text": "Wright and Harris were not added to LSU's roster for its season opener against Clemson, according to sources.",
-          "entities": [
-            "LSU Tigers",
-            "Dae'Quan Wright",
-            "Zxavian Harris",
-            "Clemson Tigers"
-          ],
-          "occurredAt": "2026-09-05T11:41:03Z",
-          "timePrecision": "exact",
-          "ageHours": 0.33,
-          "freshnessBasis": "LSU left Dae'Quan Wright and Zxavian Harris off its roster for the season opener.",
-          "status": "watch",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49831993/lsu-leaves-wright-harris-roster-season-opener"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49831993/lsu-leaves-wright-harris-roster-season-opener"
-            }
-          ],
-          "id": "a3-041b5d1d3e2298c6"
-        },
-        {
-          "rank": 3,
           "candidateIds": [
             "cand-ca9c7d78f6bff55c"
           ],
           "type": "RESULT",
           "priority": 66,
           "headline": "No. 14 USC shuts out Fresno State 39-0",
-          "text": "USC blanked Fresno State 39-0 in a dominant win by the No. 14 Trojans.",
+          "text": "USC recorded a shutout in its win over Fresno State.",
           "entities": [
             "USC Trojans",
             "Fresno State Bulldogs"
           ],
           "occurredAt": "2026-09-05T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 11.01,
-          "freshnessBasis": "No. 14 USC shut out Fresno State 39-0.",
+          "ageHours": 11.51,
+          "freshnessBasis": "No. 14 USC beat Fresno State 39-0 Friday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -361,22 +303,22 @@
           "id": "a3-124b32bf4ea75d59"
         },
         {
-          "rank": 4,
+          "rank": 3,
           "candidateIds": [
             "cand-6fc97cff2b2d2b58"
           ],
           "type": "RESULT",
           "priority": 66,
           "headline": "No. 10 Oklahoma shuts out UTEP 51-0",
-          "text": "Oklahoma, ranked No. 10, defeated UTEP 51-0.",
+          "text": "Oklahoma's ranked team recorded a shutout against UTEP.",
           "entities": [
             "Oklahoma Sooners",
             "UTEP Miners"
           ],
           "occurredAt": "2026-09-05T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 12.01,
-          "freshnessBasis": "No. 10 Oklahoma shut out UTEP 51-0.",
+          "ageHours": 12.51,
+          "freshnessBasis": "No. 10 Oklahoma beat UTEP 51-0 Friday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -403,18 +345,19 @@
           "candidateIds": [
             "cand-a1018c903b1bd4c3"
           ],
-          "type": "DISCIPLINE",
+          "type": "LEAGUE_NEWS",
           "priority": 80,
-          "headline": "Pierre Gasly loses Monaco podium after appeal reinstates penalties",
-          "text": "McLaren and Red Bull won an appeal that reinstated Gasly's penalties, awarding the podium to Isack Hadjar instead.",
+          "headline": "Pierre Gasly stripped of Monaco GP podium after appeal",
+          "text": "McLaren and Red Bull won an appeal that reinstated Gasly's penalties, handing the podium to Isack Hadjar for a second time.",
           "entities": [
             "Pierre Gasly",
             "Isack Hadjar",
-            "Alpine"
+            "Alpine",
+            "Monaco Grand Prix"
           ],
           "occurredAt": "2026-09-04T13:23:54Z",
           "timePrecision": "exact",
-          "ageHours": 22.62,
+          "ageHours": 23.12,
           "freshnessBasis": "An appeal reinstated Pierre Gasly's Monaco Grand Prix penalties 89 days after the race.",
           "status": "active",
           "sourceUrls": [
@@ -427,12 +370,12 @@
               "url": "https://www.espn.com/f1/story/_/id/49813150/alpine-pierre-gasly-stripped-monaco-gp-podium-mclaren-red-bull-win-appeal"
             }
           ],
-          "id": "a3-special-1beac6b518ecf7ee"
+          "id": "a3-special-a06850cde8182b31"
         }
       ]
     },
     {
-      "name": "DUI case involving Tiger Woods",
+      "name": "Tiger Woods DUI case",
       "sport": "golf",
       "items": [
         {
@@ -443,14 +386,14 @@
           "type": "LEGAL",
           "priority": 75,
           "headline": "Tiger Woods plans to change not-guilty plea in DUI case",
-          "text": "Court documents say Woods plans to change his not-guilty plea in the case stemming from a rollover crash in Florida.",
+          "text": "Court documents say Woods plans to change his plea in the case stemming from a rollover crash in Florida.",
           "entities": [
             "Tiger Woods"
           ],
           "occurredAt": "2026-09-05T11:22:06Z",
           "timePrecision": "exact",
-          "ageHours": 0.65,
-          "freshnessBasis": "Court documents show Tiger Woods plans to change his not-guilty plea in the Florida DUI case.",
+          "ageHours": 1.15,
+          "freshnessBasis": "Court documents said Tiger Woods plans to change his not-guilty plea in a Florida DUI case Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/golf/story/_/id/49798045/court-documents-show-tiger-woods-plans-change-not-guilty-plea-dui-case"
@@ -478,17 +421,18 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Serena and Venus Williams lose US Open doubles return",
-          "text": "The Williams sisters lost to Hao-Ching Chan and Maya Joint in a third-set tiebreaker and were eliminated from women's doubles.",
+          "text": "The Williams sisters lost to Hao-Ching Chan and Maya Joint in a third-set tiebreaker and exited the women's doubles draw.",
           "entities": [
             "Serena Williams",
             "Venus Williams",
             "Hao-Ching Chan",
-            "Maya Joint"
+            "Maya Joint",
+            "US Open"
           ],
-          "occurredAt": "2026-09-05T11:18:21Z",
+          "occurredAt": "2026-09-05T12:12:54Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
-          "freshnessBasis": "Serena and Venus Williams lost their US Open women's doubles match in a third-set tiebreaker.",
+          "ageHours": 0.3,
+          "freshnessBasis": "Serena and Venus Williams lost their US Open women's doubles match in a third-set tiebreaker Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49830732/serena-venus-williams-lose-third-set-tiebreak-us-open-doubles-return"
@@ -501,36 +445,6 @@
             }
           ],
           "id": "a3-special-0564e98aae7775ea"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-8960f636462ffc3c"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Sabalenka and Pegula advance to US Open fourth round",
-          "text": "World No. 1 Aryna Sabalenka and No. 3 seed Jessica Pegula won their third-round matches.",
-          "entities": [
-            "Aryna Sabalenka",
-            "Jessica Pegula"
-          ],
-          "occurredAt": "2026-09-05T03:29:28Z",
-          "timePrecision": "exact",
-          "ageHours": 8.52,
-          "freshnessBasis": "Aryna Sabalenka and Jessica Pegula won their third-round matches to reach the US Open fourth round.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-wta",
-              "url": "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
-            }
-          ],
-          "id": "a3-special-41854e2ad3915721"
         }
       ]
     }
