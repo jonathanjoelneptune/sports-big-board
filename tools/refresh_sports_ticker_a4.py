@@ -6,6 +6,7 @@ decisive-moment enrichment, and final grounding validation in
 ``refresh_sports_ticker.py``.  This sidecar only changes editorial selection:
 
 - target 32 headlines, with a preferred 30-35 total across ALL leagues/events;
+- conditionally run one refill editorial pass when the first editor returns fewer than 30;
 - preserve strong A3 relevance gates while allowing a few more legitimate result
   stories when the global feed would otherwise be too thin;
 - enforce one global diversity budget instead of treating every league as an
@@ -26,7 +27,7 @@ import textwrap
 from pathlib import Path
 from typing import Any
 
-PIPELINE_VERSION = "A4.1-expanded-global-feed"
+PIPELINE_VERSION = "A4.2-editor-refill"
 DISPLAY_TITLE = "SPORTS BIG BOARD — SPORTS TICKER A4"
 GLOBAL_HEADLINE_MIN = 30
 GLOBAL_HEADLINE_TARGET = 32
@@ -103,6 +104,31 @@ updates should lose to strong on-field/transaction/injury stories.
 """
 
 
+A4_REFILL_ADDENDUM = r"""
+A4.2 CONDITIONAL REFILL PASS — CRITICAL
+This is a SECOND editorial pass. Every candidate in this packet was omitted from the
+first pass. Do not repeat or reconsider first-pass stories; they are not in this packet.
+
+The continuous ribbon is still under its 30-headline preferred floor. Build ADDITIONAL
+headlines from the best remaining candidates.
+
+- Return AT LEAST {minimum_additional} additional headlines if that many candidates
+  pass the hard-news test.
+- Ideally return up to {desired_additional} additional headlines so Python has enough
+  inventory to survive final relevance/diversity checks and land near 30-35.
+- In this refill pass, a completed, grounded result from an ACTIVE league is useful
+  ticker inventory even when it is not extraordinary. Prefer ranked-team NCAAF
+  results, one-run/extra-inning MLB results, notable soccer results, and other clear
+  completed outcomes over analysis or previews.
+- A4.2 overrides the older five-ordinary-result editorial cap when the global ribbon
+  is underfilled. Up to eight useful RESULT items from one active league are allowed.
+- Still reject analysis, fantasy advice, opinion, weak rumors, generic previews,
+  duplicate stories, and ambiguous/unverified claims.
+- Keep headline copy at 45-64 characters when possible; 72 characters remains the
+  absolute maximum.
+"""
+
+
 def _load_core():
     core_path = Path(__file__).with_name("refresh_sports_ticker.py")
     spec = importlib.util.spec_from_file_location("sports_ticker_a3_core", core_path)
@@ -156,6 +182,80 @@ def _compact_headline(value: Any) -> str:
     return textwrap.shorten(
         headline, width=HEADLINE_MAX_CHARS, placeholder="…"
     )
+
+
+def _model_headlines_by_candidate(model_output: dict[str, Any]) -> dict[str, str]:
+    """Map each selected candidate id to the editor's compact pre-repair headline."""
+    mapping: dict[str, str] = {}
+
+    def take(items: Any) -> None:
+        if not isinstance(items, list):
+            return
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            headline = " ".join(str(item.get("headline") or "").split()).strip()
+            if not headline:
+                continue
+            for cid in item.get("candidateIds", []):
+                if isinstance(cid, str) and cid and cid not in mapping:
+                    mapping[cid] = headline
+
+    leagues = model_output.get("leagues", {})
+    if isinstance(leagues, dict):
+        for group in leagues.values():
+            if isinstance(group, dict):
+                take(group.get("items"))
+    elif isinstance(leagues, list):
+        for group in leagues:
+            if isinstance(group, dict):
+                take(group.get("items"))
+
+    events = model_output.get("specialEvents", [])
+    if isinstance(events, list):
+        for event in events:
+            if isinstance(event, dict):
+                take(event.get("items"))
+    return mapping
+
+
+def _restore_compact_model_headlines(
+    normalized: dict[str, Any],
+    model_output: dict[str, Any],
+    run_log: dict[str, Any] | None = None,
+) -> None:
+    """Prefer a compact editor headline if A3's punch repair expanded it too far."""
+    mapping = _model_headlines_by_candidate(model_output)
+    restores = None
+    if run_log is not None:
+        restores = run_log.setdefault("pipeline", {}).setdefault("headlineRestores", [])
+
+    rows = _flatten(normalized)
+    for row in rows:
+        item = row["item"]
+        current = " ".join(str(item.get("headline") or "").split()).strip()
+        if len(current) <= HEADLINE_MAX_CHARS:
+            continue
+
+        compact = ""
+        for cid in item.get("candidateIds", []):
+            candidate_headline = mapping.get(cid, "")
+            if candidate_headline and len(candidate_headline) <= HEADLINE_MAX_CHARS:
+                compact = candidate_headline
+                break
+        if not compact:
+            continue
+
+        item["headline"] = compact
+        if restores is not None:
+            restores.append({
+                "context": row.get("context"),
+                "expanded": current,
+                "restored": compact,
+                "expandedChars": len(current),
+                "restoredChars": len(compact),
+                "reason": "A3 post-editor punch repair exceeded ribbon hard max",
+            })
 
 
 def _repair_headline_lengths(
@@ -456,11 +556,224 @@ def _headline_count(dataset: dict[str, Any]) -> int:
     )
 
 
+def _model_output_count(model_output: dict[str, Any]) -> int:
+    total = 0
+    leagues = model_output.get("leagues", {})
+    if isinstance(leagues, dict):
+        for group in leagues.values():
+            if isinstance(group, dict) and isinstance(group.get("items"), list):
+                total += len(group["items"])
+    elif isinstance(leagues, list):
+        for group in leagues:
+            if isinstance(group, dict) and isinstance(group.get("items"), list):
+                total += len(group["items"])
+    for event in model_output.get("specialEvents", []) if isinstance(model_output.get("specialEvents"), list) else []:
+        if isinstance(event, dict) and isinstance(event.get("items"), list):
+            total += len(event["items"])
+    return total
+
+
+def _selected_candidate_ids(model_output: dict[str, Any]) -> set[str]:
+    selected: set[str] = set()
+
+    def take(items: Any) -> None:
+        if not isinstance(items, list):
+            return
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            for cid in item.get("candidateIds", []):
+                if isinstance(cid, str) and cid:
+                    selected.add(cid)
+
+    leagues = model_output.get("leagues", {})
+    if isinstance(leagues, dict):
+        for group in leagues.values():
+            if isinstance(group, dict):
+                take(group.get("items"))
+    elif isinstance(leagues, list):
+        for group in leagues:
+            if isinstance(group, dict):
+                take(group.get("items"))
+
+    events = model_output.get("specialEvents", [])
+    if isinstance(events, list):
+        for event in events:
+            if isinstance(event, dict):
+                take(event.get("items"))
+    return selected
+
+
+def _merge_model_outputs(primary: dict[str, Any], refill: dict[str, Any]) -> dict[str, Any]:
+    """Merge a refill response into the first editor response without duplicates."""
+    merged = json.loads(json.dumps(primary))
+    merged_leagues = merged.setdefault("leagues", {})
+    refill_leagues = refill.get("leagues", {}) if isinstance(refill, dict) else {}
+
+    if isinstance(merged_leagues, dict) and isinstance(refill_leagues, dict):
+        for league, refill_group in refill_leagues.items():
+            if not isinstance(refill_group, dict):
+                continue
+            dst_group = merged_leagues.setdefault(league, {"items": []})
+            if not isinstance(dst_group, dict):
+                continue
+            dst_items = dst_group.setdefault("items", [])
+            if not isinstance(dst_items, list):
+                dst_items = []
+                dst_group["items"] = dst_items
+            existing_ids = {
+                cid
+                for item in dst_items if isinstance(item, dict)
+                for cid in item.get("candidateIds", [])
+                if isinstance(cid, str)
+            }
+            for item in refill_group.get("items", []):
+                if not isinstance(item, dict):
+                    continue
+                ids = {
+                    cid for cid in item.get("candidateIds", [])
+                    if isinstance(cid, str)
+                }
+                if ids and ids & existing_ids:
+                    continue
+                dst_items.append(item)
+                existing_ids.update(ids)
+
+    merged_events = merged.setdefault("specialEvents", [])
+    if not isinstance(merged_events, list):
+        merged_events = []
+        merged["specialEvents"] = merged_events
+
+    event_index: dict[tuple[str, str], dict[str, Any]] = {}
+    for event in merged_events:
+        if isinstance(event, dict):
+            key = (
+                str(event.get("name") or "").strip().lower(),
+                str(event.get("sport") or "").strip().lower(),
+            )
+            event_index[key] = event
+
+    refill_events = refill.get("specialEvents", []) if isinstance(refill, dict) else []
+    if isinstance(refill_events, list):
+        for event in refill_events:
+            if not isinstance(event, dict):
+                continue
+            key = (
+                str(event.get("name") or "").strip().lower(),
+                str(event.get("sport") or "").strip().lower(),
+            )
+            dst = event_index.get(key)
+            if dst is None:
+                merged_events.append(event)
+                event_index[key] = event
+                continue
+            dst_items = dst.setdefault("items", [])
+            if not isinstance(dst_items, list):
+                dst_items = []
+                dst["items"] = dst_items
+            existing_ids = {
+                cid
+                for item in dst_items if isinstance(item, dict)
+                for cid in item.get("candidateIds", [])
+                if isinstance(cid, str)
+            }
+            for item in event.get("items", []):
+                if not isinstance(item, dict):
+                    continue
+                ids = {
+                    cid for cid in item.get("candidateIds", [])
+                    if isinstance(cid, str)
+                }
+                if ids and ids & existing_ids:
+                    continue
+                dst_items.append(item)
+                existing_ids.update(ids)
+    return merged
+
+
+def _make_refilling_editor(core, original_call_openai):
+    """Wrap the existing single editor call with one bounded underfill refill pass."""
+    def call_openai_a42(api_key, model, candidates, run_log):
+        primary = original_call_openai(api_key, model, candidates, run_log)
+        primary_count = _model_output_count(primary)
+        refill_log = run_log.setdefault("pipeline", {}).setdefault(
+            "editorRefill",
+            {
+                "called": False,
+                "primaryCount": primary_count,
+                "remainingCandidateCount": 0,
+                "minimumAdditional": 0,
+                "desiredAdditional": 0,
+                "refillRawCount": 0,
+                "mergedRawCount": primary_count,
+                "skipReason": None,
+            },
+        )
+        refill_log["primaryCount"] = primary_count
+
+        if primary_count >= GLOBAL_HEADLINE_MIN:
+            refill_log["skipReason"] = "primary editor already met 30-headline preferred floor"
+            return primary
+
+        used_ids = _selected_candidate_ids(primary)
+        remaining = [
+            candidate for candidate in candidates
+            if candidate.get("candidateId") not in used_ids
+        ]
+        refill_log["remainingCandidateCount"] = len(remaining)
+        if not remaining:
+            refill_log["skipReason"] = "no unused model candidates remain"
+            return primary
+
+        minimum_additional = min(
+            max(0, GLOBAL_HEADLINE_MIN - primary_count),
+            len(remaining),
+        )
+        desired_additional = min(
+            max(0, GLOBAL_HEADLINE_MAX - primary_count),
+            len(remaining),
+        )
+        if minimum_additional <= 0:
+            refill_log["skipReason"] = "no additional headlines required"
+            return primary
+
+        refill_log.update({
+            "called": True,
+            "minimumAdditional": minimum_additional,
+            "desiredAdditional": desired_additional,
+            "skipReason": None,
+        })
+
+        previous_instructions = core.EDITOR_INSTRUCTIONS
+        refill_instructions = A4_REFILL_ADDENDUM.format(
+            minimum_additional=minimum_additional,
+            desired_additional=desired_additional,
+        )
+        core.EDITOR_INSTRUCTIONS = previous_instructions + "\n\n" + refill_instructions
+        try:
+            refill = original_call_openai(
+                api_key,
+                model,
+                remaining,
+                run_log,
+            )
+        finally:
+            core.EDITOR_INSTRUCTIONS = previous_instructions
+
+        refill_count = _model_output_count(refill)
+        merged = _merge_model_outputs(primary, refill)
+        refill_log["refillRawCount"] = refill_count
+        refill_log["mergedRawCount"] = _model_output_count(merged)
+        return merged
+
+    return call_openai_a42
+
+
 def _configure_core(core) -> None:
     # Broaden A3's per-league ordinary-result filler allowance just enough for
     # the GLOBAL feed to reach useful density. The A3 hard relevance checks stay.
-    core.MAX_GENERIC_RESULT_FILLERS = 5
-    core.RESULT_RELEVANCE_TARGET = 8
+    core.MAX_GENERIC_RESULT_FILLERS = 8
+    core.RESULT_RELEVANCE_TARGET = 10
 
     # Extend taxonomy in-place so the strict JSON schema and runtime validator
     # both see the same values.
@@ -487,10 +800,61 @@ def _configure_core(core) -> None:
     core.EDITOR_INSTRUCTIONS = core.EDITOR_INSTRUCTIONS + A4_EDITOR_ADDENDUM
 
     original_initial_run_log = core.initial_run_log
+    original_call_openai = core.call_openai
+    original_curate_final_items = core.curate_final_items
     original_normalize = core.normalize_model_output
     original_semantic = core.semantic_ticker
     original_render = core.render_text
     original_atomic_write = core.atomic_write
+
+    def curate_final_items_a42(items, context, run_log):
+        """A4.2 permits deeper result coverage only because the budget is global."""
+        ordered = sorted(
+            items,
+            key=lambda x: (
+                -int(x["priority"]),
+                float(x["ageHours"]) if x.get("ageHours") is not None else 23.9,
+            ),
+        )
+        selected = []
+        result_count = 0
+        preview_count = 0
+        other_count = 0
+        for item in ordered:
+            kind = item["type"]
+            if kind == "RESULT" and result_count >= GLOBAL_BASE_CONTEXT_CAP:
+                run_log["pipeline"]["finalDrops"].append({
+                    "context": context,
+                    "headline": item["headline"],
+                    "reason": f"A4.2 RESULT cap {GLOBAL_BASE_CONTEXT_CAP}",
+                })
+                continue
+            if kind == "RESULT":
+                result_count += 1
+            if kind in {"NEXT", "SCHEDULE"} and preview_count >= 2:
+                run_log["pipeline"]["finalDrops"].append({
+                    "context": context,
+                    "headline": item["headline"],
+                    "reason": "NEXT/SCHEDULE cap 2",
+                })
+                continue
+            if kind in {"NEXT", "SCHEDULE"}:
+                preview_count += 1
+            if kind == "OTHER" and other_count >= 1:
+                run_log["pipeline"]["finalDrops"].append({
+                    "context": context,
+                    "headline": item["headline"],
+                    "reason": "OTHER cap 1",
+                })
+                continue
+            if kind == "OTHER":
+                other_count += 1
+            selected.append(item)
+            if len(selected) == 10:
+                break
+        for rank, item in enumerate(selected, 1):
+            item["rank"] = rank
+        return selected
 
     def initial_run_log_a4(generated_at, cutoff, model):
         log = original_initial_run_log(generated_at, cutoff, model)
@@ -501,8 +865,8 @@ def _configure_core(core) -> None:
             f"editor target {GLOBAL_HEADLINE_TARGET}-{GLOBAL_HEADLINE_MAX}; global, not per league"
         )
         log["configuration"]["resultRelevanceGate"] = (
-            "A3 strong-story gate retained; up to five ordinary result fillers per league "
-            "only when useful to support the expanded global A4 feed budget"
+            "A3 strong-story gate retained; up to eight ordinary result fillers per active league "
+            "only when needed to support the global 30-35 ribbon budget"
         )
         log["configuration"]["legalStoryPolicy"] = (
             f"off-field/legal stories must clear priority {LEGAL_PRIORITY_FLOOR} after normalization"
@@ -511,6 +875,17 @@ def _configure_core(core) -> None:
             f"target <= {HEADLINE_TARGET_CHARS} chars; hard max {HEADLINE_MAX_CHARS} chars"
         )
         log["pipeline"]["headlineRepairs"] = []
+        log["pipeline"]["headlineRestores"] = []
+        log["pipeline"]["editorRefill"] = {
+            "called": False,
+            "primaryCount": 0,
+            "remainingCandidateCount": 0,
+            "minimumAdditional": 0,
+            "desiredAdditional": 0,
+            "refillRawCount": 0,
+            "mergedRawCount": 0,
+            "skipReason": None,
+        }
         log["pipeline"]["globalHeadlineBudget"] = {
             "min": GLOBAL_HEADLINE_MIN,
             "target": GLOBAL_HEADLINE_TARGET,
@@ -526,6 +901,7 @@ def _configure_core(core) -> None:
 
     def normalize_a4(model_output, candidates, generated_at, run_log):
         normalized = original_normalize(model_output, candidates, generated_at, run_log)
+        _restore_compact_model_headlines(normalized, model_output, run_log)
         return apply_global_headline_budget(normalized, run_log)
 
     def semantic_a4(dataset):
@@ -562,7 +938,7 @@ def _configure_core(core) -> None:
                 payload["pipelineVersion"] = PIPELINE_VERSION
                 payload["discoveryMode"] = (
                     str(payload.get("discoveryMode") or "")
-                    + "; A4 global 30-35 headline budget + compact-headline diversity selection"
+                    + "; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection"
                 ).strip("; ")
                 payload["headlineCount"] = _headline_count(payload)
                 payload["headlineTargetChars"] = HEADLINE_TARGET_CHARS
@@ -575,6 +951,8 @@ def _configure_core(core) -> None:
         original_atomic_write(path, content)
 
     core.initial_run_log = initial_run_log_a4
+    core.call_openai = _make_refilling_editor(core, original_call_openai)
+    core.curate_final_items = curate_final_items_a42
     core.normalize_model_output = normalize_a4
     core.semantic_ticker = semantic_a4
     core.render_text = render_a4

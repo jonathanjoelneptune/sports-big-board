@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A4 global 30-35 headline budget + compact headline regression coverage."""
+"""A4.2 global 30-35 budget, compact headlines, and refill regression coverage."""
 from __future__ import annotations
 
 import importlib.util
@@ -161,6 +161,120 @@ def test_common_sports_phrasing_compacts_without_ellipsis_when_possible():
     assert not compact.endswith("…")
 
 
+def test_restore_compact_model_headline_after_a3_expansion():
+    ds = empty_dataset()
+    mlb = next(g for g in ds["leagues"] if g["league"] == "MLB")
+    mlb["items"] = [
+        item(
+            1,
+            priority=80,
+            headline=(
+                "Travis Bazzana delivers walk-off as Cleveland Guardians "
+                "beat Detroit Tigers 4-3"
+            ),
+        )
+    ]
+    model_output = model_output_with_items(1, 1)
+    model_output["leagues"]["MLB"]["items"][0]["headline"] = (
+        "Bazzana's 10th-inning single lifts Guardians 4-3"
+    )
+    run_log = {"pipeline": {}}
+    mod._restore_compact_model_headlines(ds, model_output, run_log)
+    restored = mlb["items"][0]["headline"]
+    assert restored == "Bazzana's 10th-inning single lifts Guardians 4-3"
+    assert len(restored) <= mod.HEADLINE_MAX_CHARS
+    assert run_log["pipeline"]["headlineRestores"]
+
+
+
+def model_output_with_items(start, count):
+    leagues = {
+        league: {"items": []}
+        for league in ["MLB", "NFL", "NBA", "NHL", "EPL", "MLS", "NCAAF"]
+    }
+    for n in range(start, start + count):
+        leagues["MLB"]["items"].append({
+            "candidateIds": [f"cand-{n:03d}"],
+            "type": "RESULT",
+            "priority": 64,
+            "headline": f"Compact result headline {n}",
+            "text": f"Grounded result detail {n}.",
+            "entities": [],
+            "freshnessBasis": f"Result {n} happened Saturday.",
+            "status": "active",
+        })
+    return {"leagues": leagues, "specialEvents": []}
+
+
+def test_conditional_refill_uses_unused_candidates_and_reaches_inventory():
+    class FakeCore:
+        EDITOR_INSTRUCTIONS = "BASE EDITOR"
+
+    calls = []
+    primary = model_output_with_items(1, 19)
+    refill = model_output_with_items(20, 16)
+
+    def fake_call(api_key, model, candidates, run_log):
+        calls.append([c["candidateId"] for c in candidates])
+        return primary if len(calls) == 1 else refill
+
+    candidates = [
+        {"candidateId": f"cand-{n:03d}"}
+        for n in range(1, 43)
+    ]
+    run_log = {"pipeline": {}}
+    wrapped = mod._make_refilling_editor(FakeCore, fake_call)
+    merged = wrapped("key", "model", candidates, run_log)
+
+    assert len(calls) == 2
+    assert len(calls[0]) == 42
+    assert len(calls[1]) == 23
+    assert not set(calls[1]) & mod._selected_candidate_ids(primary)
+    assert mod._model_output_count(merged) == 35
+    refill_log = run_log["pipeline"]["editorRefill"]
+    assert refill_log["called"] is True
+    assert refill_log["primaryCount"] == 19
+    assert refill_log["minimumAdditional"] == 11
+    assert refill_log["desiredAdditional"] == 16
+    assert refill_log["refillRawCount"] == 16
+    assert refill_log["mergedRawCount"] == 35
+    assert FakeCore.EDITOR_INSTRUCTIONS == "BASE EDITOR"
+
+
+def test_refill_is_skipped_once_primary_meets_floor():
+    class FakeCore:
+        EDITOR_INSTRUCTIONS = "BASE EDITOR"
+
+    calls = []
+    primary = model_output_with_items(1, 30)
+
+    def fake_call(api_key, model, candidates, run_log):
+        calls.append(len(candidates))
+        return primary
+
+    candidates = [{"candidateId": f"cand-{n:03d}"} for n in range(1, 43)]
+    run_log = {"pipeline": {}}
+    wrapped = mod._make_refilling_editor(FakeCore, fake_call)
+    merged = wrapped("key", "model", candidates, run_log)
+
+    assert len(calls) == 1
+    assert mod._model_output_count(merged) == 30
+    refill_log = run_log["pipeline"]["editorRefill"]
+    assert refill_log["called"] is False
+    assert "already met" in refill_log["skipReason"]
+
+
+def test_merge_deduplicates_candidate_ids_across_refill():
+    primary = model_output_with_items(1, 3)
+    refill = model_output_with_items(3, 3)
+    merged = mod._merge_model_outputs(primary, refill)
+    ids = mod._selected_candidate_ids(merged)
+    assert ids == {
+        "cand-001", "cand-002", "cand-003", "cand-004", "cand-005"
+    }
+    assert mod._model_output_count(merged) == 5
+
+
 def test_budget_constants_match_scrolling_ribbon_contract():
     assert (mod.GLOBAL_HEADLINE_MIN, mod.GLOBAL_HEADLINE_TARGET, mod.GLOBAL_HEADLINE_MAX) == (30, 32, 35)
     assert mod.HEADLINE_TARGET_CHARS == 64
@@ -176,5 +290,9 @@ if __name__ == "__main__":
     test_feed_rank_is_unique_and_global()
     test_headline_compaction_hard_caps_at_72_chars()
     test_common_sports_phrasing_compacts_without_ellipsis_when_possible()
+    test_restore_compact_model_headline_after_a3_expansion()
+    test_conditional_refill_uses_unused_candidates_and_reaches_inventory()
+    test_refill_is_skipped_once_primary_meets_floor()
+    test_merge_deduplicates_candidate_ids_across_refill()
     test_budget_constants_match_scrolling_ribbon_contract()
-    print("PASS: A4 expanded global Sports Ticker budget + compact headlines")
+    print("PASS: A4.2 expanded global Sports Ticker + conditional editor refill")

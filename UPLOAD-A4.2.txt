@@ -1,0 +1,38 @@
+SPORTS BIG BOARD — SPORTS TICKER A4.2 EDITOR REFILL
+
+Baseline reviewed:
+  main @ 0d2dce2e7253c1d954c88d3ae7b575c280e2cb3b
+  Sports Ticker A4 refresh 2026-09-05 18:31 UTC
+
+UPLOAD THESE TWO FILES, preserving repository paths:
+
+  tools/refresh_sports_ticker_a4.py
+  tests/test_a4_global_headline_budget.py
+
+No workflow file changes are required. The existing Sports Ticker workflow already
+runs tools/refresh_sports_ticker_a4.py.
+
+WHAT A4.2 CHANGES
+- Keeps the 30 minimum / 32 target / 35 maximum GLOBAL ribbon budget.
+- First editorial pass remains selective and unchanged in spirit.
+- If the first editor returns fewer than 30 headlines, one bounded refill pass runs.
+- Refill sees ONLY candidates not used by the first pass, preventing duplicates.
+- Refill is asked to provide enough additional legitimate stories to reach 30-35.
+- Active-league ordinary RESULT allowance rises to 8 when needed for global density.
+- Analysis, fantasy content, generic previews, weak rumors and ambiguous items remain excluded.
+- Headline target stays <=64 chars; hard max stays 72 chars.
+- If A3 post-processing expands a compact model headline past 72 chars, A4.2 restores
+  the model's compact version instead of ellipsizing it when possible.
+- Pipeline identity changes to A4.2-editor-refill, forcing one fresh editorial run.
+
+WHY
+The 2026-09-05 18:31 UTC run discovered 42 model candidates, but the first editor
+returned only 19 items. The global budget then had only 19 inputs and retained 18,
+so changing the global cap alone could not reach 30-35. A4.2 fixes that exact stage.
+
+VALIDATION
+  python3 -m py_compile tools/refresh_sports_ticker_a4.py
+  python3 tests/test_a4_global_headline_budget.py
+
+Expected test output:
+  PASS: A4.2 expanded global Sports Ticker + conditional editor refill

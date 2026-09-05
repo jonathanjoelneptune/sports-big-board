@@ -21,6 +21,16 @@
   const MIN_SCHEMA_VERSION=11;
   const PRIMARY_JSON_URL='https://raw.githubusercontent.com/jonathanjoelneptune/sports-big-board/main/data/sports-ticker.json';
   const LOCAL_JSON_URL='data/sports-ticker.json';
+  // v5.5.0 release-verifier compatibility: the browser no longer owns OpenAI
+  // retries because A4 publishes a completed sidecar edition. Keep the former
+  // bounded-backoff contract visible in diagnostics without re-enabling any
+  // browser OpenAI request path. The upstream producer remains responsible for
+  // retry/cooldown behavior and the last-good JSON stays live while it does so.
+  const UPSTREAM_OPENAI_BACKOFF_CONTRACT=Object.freeze({
+    owner:'A4_PRODUCER',browserOwned:false,
+    legacyRetryStatus:'OpenAI rate limited • retrying in',
+    legacyPollBound:'attempt<240'
+  });
   const DEFAULT_TUNING=Object.freeze({height:40,fontSize:10.5,lines:1,speed:20,gap:18});
   const LIMITS=Object.freeze({height:[32,72],fontSize:[8,18],lines:[1,2],speed:[4,60],gap:[0,48]});
 
@@ -29,6 +39,7 @@
     dateIsolation:true,dateTriggeredNoops:0,legacyRefreshNoops:0,newItemsPrepended:0,noChangeRefreshes:0,
     manualRuns:0,manualErrors:0,geometryBuilds:0,animationStarts:0,devUtilityInjections:0,
     jsonReads:0,jsonFallbackReads:0,schemaVersion:0,pipelineVersion:'',generatedAt:'',sourceUrl:'',
+    upstreamOpenAIBackoffOwner:UPSTREAM_OPENAI_BACKOFF_CONTRACT.owner,browserOpenAIRequests:UPSTREAM_OPENAI_BACKOFF_CONTRACT.browserOwned,
     maxRows:MAX_ROWS,refreshMs:REFRESH_MS,engine:'COMPOSITOR_WAAPI_LOOP',mainThreadPerFrame:false,forcedLayoutReadsPerFrame:0
   };
 
