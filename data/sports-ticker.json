@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A3.10-final-relevance-event-fusion",
-  "generatedAt": "2026-09-05T15:00:56Z",
+  "generatedAt": "2026-09-05T15:30:53Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "a25c2ac53797bb4113d25b0603e856493455b1475b35d8b74f3f6574f16a2607",
+  "sourceCandidateHash": "55d2217b9676b2bb86f5cf183ee70fe21b2c47660e5a55e878073edc06958a6d",
   "leagues": [
     {
       "league": "MLB",
@@ -18,8 +18,8 @@
           ],
           "type": "RESULT",
           "priority": 80,
-          "headline": "Luis Campusano’s walk-off lifts Padres past Yankees, 3-2",
-          "text": "Campusano homered in the bottom of the 10th to give San Diego a 3-2 win over New York.",
+          "headline": "Luis Campusano delivers walk-off as San Diego Padres beat New York Yankees 3-2",
+          "text": "Campusano homered to left (394 feet), Harris scored.",
           "entities": [
             "San Diego Padres",
             "New York Yankees",
@@ -27,8 +27,8 @@
           ],
           "occurredAt": "2026-09-05T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.35,
-          "freshnessBasis": "Luis Campusano delivered a walk-off home run in the bottom of the 10th inning for San Diego on Sept. 5.",
+          "ageHours": 13.85,
+          "freshnessBasis": "Luis Campusano delivered the walk-off in the bottom of the 10th inning.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -40,7 +40,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-7afad04c0beb1d79"
+          "id": "a3-3ccfd25a48b69ce3"
         },
         {
           "rank": 2,
@@ -49,8 +49,8 @@
           ],
           "type": "RESULT",
           "priority": 80,
-          "headline": "Travis Bazzana’s walk-off gives Guardians 4-3 win over Tigers",
-          "text": "Bazzana singled home the winning run in the bottom of the 10th as Cleveland beat Detroit 4-3.",
+          "headline": "Travis Bazzana delivers walk-off as Cleveland Guardians beat Detroit Tigers 4-3",
+          "text": "Bazzana singled to center, Rocchio scored.",
           "entities": [
             "Cleveland Guardians",
             "Detroit Tigers",
@@ -58,8 +58,8 @@
           ],
           "occurredAt": "2026-09-04T23:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.27,
-          "freshnessBasis": "Travis Bazzana delivered a walk-off single in the bottom of the 10th inning for Cleveland.",
+          "ageHours": 15.76,
+          "freshnessBasis": "Travis Bazzana delivered the walk-off in the bottom of the 10th inning.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -71,7 +71,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-9695935453652d54"
+          "id": "a3-56a5ccf048f0bb10"
         },
         {
           "rank": 3,
@@ -80,8 +80,8 @@
           ],
           "type": "RESULT",
           "priority": 78,
-          "headline": "Brayan Rocchio’s walk-off homer gives Guardians 7-6 win",
-          "text": "Rocchio hit a 405-foot homer in the bottom of the ninth to send Cleveland past Detroit 7-6.",
+          "headline": "Brayan Rocchio’s walk-off homer beats Tigers in Cleveland’s 7-6 win",
+          "text": "Rocchio hit a 405-foot homer to left-center in the bottom of the ninth, giving Cleveland a 7-6 victory over Detroit.",
           "entities": [
             "Cleveland Guardians",
             "Detroit Tigers",
@@ -89,8 +89,8 @@
           ],
           "occurredAt": "2026-09-04T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.85,
-          "freshnessBasis": "Brayan Rocchio delivered a walk-off home run in the bottom of the ninth inning for Cleveland.",
+          "ageHours": 21.35,
+          "freshnessBasis": "Brayan Rocchio delivered a walk-off homer in the bottom of the ninth inning for Cleveland on Friday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -102,7 +102,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-ccf53a73d3849689"
+          "id": "a3-3b2b3026c18366c5"
         }
       ]
     },
@@ -126,7 +126,7 @@
             "cand-54e2aa57c01b2c51"
           ],
           "type": "SIGNING",
-          "priority": 84,
+          "priority": 82,
           "headline": "Canucks sign Zeev Buium to eight-year extension",
           "text": "Vancouver signed defenseman Zeev Buium to an eight-year extension worth $9.38 million per season.",
           "entities": [
@@ -135,7 +135,7 @@
           ],
           "occurredAt": "2026-09-04T23:53:16Z",
           "timePrecision": "exact",
-          "ageHours": 15.13,
+          "ageHours": 15.63,
           "freshnessBasis": "Vancouver signed Zeev Buium to an eight-year, $9.38 million-per-season contract extension Friday.",
           "status": "active",
           "sourceUrls": [
@@ -159,52 +159,22 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-6165bc274d9b4cac"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 74,
-          "headline": "Liverpool sporting director Richard Hughes steps down",
-          "text": "Liverpool confirmed Hughes’ departure from his sporting director role; ESPN reported he is expected to join Al Hilal in a similar position.",
-          "entities": [
-            "Liverpool",
-            "Richard Hughes",
-            "Al Hilal"
-          ],
-          "occurredAt": "2026-09-05T11:25:07Z",
-          "timePrecision": "exact",
-          "ageHours": 3.6,
-          "freshnessBasis": "Liverpool confirmed Richard Hughes’ departure as sporting director on Sept. 5.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49833840/liverpool-richard-hughes-sporting-director-transfer-window-premier-league-saudi-pro-league-al-hilal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49833840/liverpool-richard-hughes-sporting-director-transfer-window-premier-league-saudi-pro-league-al-hilal"
-            }
-          ],
-          "id": "a3-b8d699b09bc0b2ff"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-0bda5e34dc5242e8"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Newcastle rally from 2-0 down to draw Bournemouth 2-2",
-          "text": "Substitute Jacob Ramsey scored late to earn Newcastle a 2-2 draw after Bournemouth built a two-goal lead.",
+          "text": "Substitute Jacob Ramsey scored late as Newcastle came back from two goals down to preserve its unbeaten start under Matthias Jaissle.",
           "entities": [
             "Newcastle United",
-            "AFC Bournemouth",
-            "Jacob Ramsey"
+            "Bournemouth",
+            "Jacob Ramsey",
+            "Matthias Jaissle"
           ],
           "occurredAt": "2026-09-05T14:25:54Z",
           "timePrecision": "exact",
-          "ageHours": 0.58,
-          "freshnessBasis": "Jacob Ramsey scored late as Newcastle came from 2-0 down to draw Bournemouth 2-2 on Sept. 5.",
+          "ageHours": 1.08,
+          "freshnessBasis": "Jacob Ramsey scored late for Newcastle in a 2-2 draw after Bournemouth had taken a 2-0 lead Saturday.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/soccer/report/_/gameId/401879286"
@@ -232,59 +202,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-e615b32ae9ed0cbc",
-            "cand-6fc97cff2b2d2b58"
-          ],
-          "type": "RESULT",
-          "priority": 66,
-          "headline": "No. 10 Oklahoma opens season with 51-0 shutout of UTEP",
-          "text": "John Mateer threw three touchdown passes and Isaiah Sategna returned a punt 88 yards for a score in Oklahoma’s 51-0 win.",
-          "entities": [
-            "Oklahoma Sooners",
-            "UTEP Miners",
-            "John Mateer",
-            "Isaiah Sategna"
-          ],
-          "occurredAt": "2026-09-05T14:45:38Z",
-          "timePrecision": "exact",
-          "ageHours": 0.26,
-          "freshnessBasis": "Oklahoma defeated UTEP 51-0 in both teams’ season opener, with John Mateer throwing three touchdown passes.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856664",
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856664"
-            },
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-b0782e68dd0c5503"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-ca9c7d78f6bff55c"
           ],
           "type": "RESULT",
           "priority": 66,
           "headline": "No. 14 USC shuts out Fresno State 39-0",
-          "text": "USC defeated Fresno State 39-0 in a matchup featuring the No. 14 Trojans.",
+          "text": "USC dominated Fresno State 39-0, giving the No. 14 Trojans a shutout in the season opener for both teams.",
           "entities": [
             "USC Trojans",
             "Fresno State Bulldogs"
           ],
           "occurredAt": "2026-09-05T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 14.02,
-          "freshnessBasis": "No. 14 USC defeated Fresno State 39-0 on Sept. 5.",
+          "ageHours": 14.51,
+          "freshnessBasis": "No. 14 USC shut out Fresno State 39-0 in both teams’ season opener Friday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -297,14 +228,111 @@
             }
           ],
           "id": "a3-124b32bf4ea75d59"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-8e087c5ce446ac1e"
+          ],
+          "type": "RESULT",
+          "priority": 66,
+          "headline": "No. 7 Miami rolls past Stanford 45-6",
+          "text": "Miami scored a 45-6 win over Stanford, with the No. 7 Hurricanes leading a ranked-team result in the opening week.",
+          "entities": [
+            "Miami Hurricanes",
+            "Stanford Cardinal"
+          ],
+          "occurredAt": "2026-09-05T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 14.51,
+          "freshnessBasis": "No. 7 Miami defeated Stanford 45-6 Friday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-ecc5c2cbc7b1f5b9"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-6fc97cff2b2d2b58"
+          ],
+          "type": "RESULT",
+          "priority": 66,
+          "headline": "No. 10 Oklahoma opens season with 51-0 shutout of UTEP",
+          "text": "Oklahoma overwhelmed UTEP 51-0 in the season opener, with the No. 10 Sooners recording a shutout.",
+          "entities": [
+            "Oklahoma Sooners",
+            "UTEP Miners"
+          ],
+          "occurredAt": "2026-09-05T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 15.51,
+          "freshnessBasis": "No. 10 Oklahoma shut out UTEP 51-0 in both teams’ season opener Friday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-9cde704792b470b0"
         }
       ]
     }
   ],
   "specialEvents": [
     {
-      "name": "Tiger Woods DUI case",
-      "sport": "golf",
+      "name": "Italian Grand Prix",
+      "sport": "Formula 1",
+      "items": [
+        {
+          "rank": 1,
+          "candidateIds": [
+            "cand-f8cebae51b8ffd1f"
+          ],
+          "type": "RANKING",
+          "priority": 76,
+          "headline": "Pierre Gasly takes pole for Italian Grand Prix",
+          "text": "Alpine’s Gasly secured pole position in qualifying for Sunday’s race at Monza, while Ferrari was off the pace.",
+          "entities": [
+            "Pierre Gasly",
+            "Alpine",
+            "Italian Grand Prix"
+          ],
+          "occurredAt": "2026-09-05T15:25:04Z",
+          "timePrecision": "exact",
+          "ageHours": 0.1,
+          "freshnessBasis": "Pierre Gasly took pole position in qualifying for Sunday’s Italian Grand Prix at Monza Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/f1/story/_/id/49813189/alpines-pierre-gasly-takes-thrilling-pole-monza-italian-grand-prix-formula-1-monza"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/f1/story/_/id/49813189/alpines-pierre-gasly-takes-thrilling-pole-monza-italian-grand-prix-formula-1-monza"
+            }
+          ],
+          "id": "a3-special-c4ffcd2f64a3a1d1"
+        }
+      ]
+    },
+    {
+      "name": "PGA Tour",
+      "sport": "Golf",
       "items": [
         {
           "rank": 1,
@@ -312,16 +340,16 @@
             "cand-e7a22fe8614761e7"
           ],
           "type": "LEGAL",
-          "priority": 77,
+          "priority": 74,
           "headline": "Tiger Woods plans to change not-guilty plea in DUI case",
-          "text": "Court documents say Woods plans to change his not-guilty plea in the DUI case stemming from a rollover crash in Florida.",
+          "text": "Court documents show Woods plans to change his not-guilty plea in the DUI case stemming from a rollover crash in Florida.",
           "entities": [
             "Tiger Woods"
           ],
           "occurredAt": "2026-09-05T11:22:06Z",
           "timePrecision": "exact",
-          "ageHours": 3.65,
-          "freshnessBasis": "Court documents filed Sept. 5 said Tiger Woods plans to change his not-guilty plea in the DUI case.",
+          "ageHours": 4.15,
+          "freshnessBasis": "Court documents filed Friday show Tiger Woods plans to change his not-guilty plea in a Florida DUI case.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/golf/story/_/id/49798045/court-documents-show-tiger-woods-plans-change-not-guilty-plea-dui-case"
@@ -339,7 +367,7 @@
     },
     {
       "name": "US Open",
-      "sport": "tennis",
+      "sport": "Tennis",
       "items": [
         {
           "rank": 1,
@@ -358,8 +386,8 @@
           ],
           "occurredAt": "2026-09-05T12:12:54Z",
           "timePrecision": "exact",
-          "ageHours": 2.8,
-          "freshnessBasis": "Serena and Venus Williams lost their US Open women’s doubles match in a third-set tiebreaker on Sept. 5.",
+          "ageHours": 3.3,
+          "freshnessBasis": "Serena and Venus Williams lost their US Open women’s doubles match in a third-set tiebreaker Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49830732/serena-venus-williams-lose-third-set-tiebreak-us-open-doubles-return"
@@ -372,75 +400,6 @@
             }
           ],
           "id": "a3-special-79ffbdca24296d0d"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-8960f636462ffc3c"
-          ],
-          "type": "NEXT",
-          "priority": 62,
-          "headline": "Sabalenka and Pegula advance to US Open fourth round",
-          "text": "World No. 1 Aryna Sabalenka and No. 3 seed Jessica Pegula won their third-round matches Friday.",
-          "entities": [
-            "Aryna Sabalenka",
-            "Jessica Pegula",
-            "US Open"
-          ],
-          "occurredAt": "2026-09-05T03:29:28Z",
-          "timePrecision": "exact",
-          "ageHours": 11.52,
-          "freshnessBasis": "Aryna Sabalenka and Jessica Pegula won their US Open third-round matches Friday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-wta",
-              "url": "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
-            }
-          ],
-          "id": "a3-special-41854e2ad3915721"
-        }
-      ]
-    },
-    {
-      "name": "Italian Grand Prix",
-      "sport": "Formula 1",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-4869a9a5605fd518"
-          ],
-          "type": "OTHER",
-          "priority": 65,
-          "headline": "Hamilton and Verstappen clash in Italian Grand Prix practice",
-          "text": "Lewis Hamilton and Max Verstappen clashed in practice at Monza while George Russell set the pace.",
-          "entities": [
-            "Lewis Hamilton",
-            "Max Verstappen",
-            "George Russell",
-            "Italian Grand Prix"
-          ],
-          "occurredAt": "2026-09-05T12:18:27Z",
-          "timePrecision": "exact",
-          "ageHours": 2.71,
-          "freshnessBasis": "Lewis Hamilton and Max Verstappen clashed during practice for the Italian Grand Prix on Sept. 5.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/f1/story/_/id/49813188/lewis-hamilton-max-verstappen-clash-monza-george-russell-sets-pace-italian-grand-prix-formula-1-monza"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-f1",
-              "url": "https://www.espn.com/f1/story/_/id/49813188/lewis-hamilton-max-verstappen-clash-monza-george-russell-sets-pace-italian-grand-prix-formula-1-monza"
-            }
-          ],
-          "id": "a3-special-5b40948d5c4383d3"
         }
       ]
     }
