@@ -1,0 +1,67 @@
+Sports Big Board v5.5.0 R11 — Playable Protection + Deployment Readiness Repair
+
+This is the superseding R11 upload. Use this package instead of either of the
+previous Playable Evidence Protection or Deployment Readiness repair packages.
+
+WHY THE WORKFLOW FAILED
+The GitHub commit itself was valid. The cloud deployment timed out waiting for
+127.0.0.1:8080 while the new backend process remained alive and continued its
+database-authority startup audit. The local readiness guard allowed only about
+three minutes.
+
+The deployment script also stopped the main backend but left the existing
+sports-big-board-media-audit service running. Because both services share
+/var/lib/sports-big-board/cache/history.sqlite3, audit workers could continue
+using SQLite during the supposedly quiescent catalog preflight/cold restart.
+
+DEPLOYMENT REPAIR
+- Stop sports-big-board-media-audit before stopping the main backend.
+- Run catalog preflight with the shared SQLite catalog actually quiescent.
+- Start/health-check the main backend first.
+- Reinstall/restart Media Audit only after the main backend is healthy.
+- Increase the bounded local health window from ~3 minutes to ~6 minutes
+  (180 attempts, configurable through SBB_LOCAL_HEALTH_ATTEMPTS).
+
+PLAYABLE-EVIDENCE PROTECTION INCLUDED
+- Recent successful PLAYED evidence survives transient headless probe failures.
+- Transient timeout/non-advancing results remain audit evidence but do not
+  overwrite a recent successful runtime state as FAILED.
+- Hard failures can still revoke/quarantine media.
+- Previously false-quarantined, recently PLAYED assets are restored to ASSIGNED.
+- False UNPLAYABLE/DEGRADED/NO_MEDIA packages affected by that condition are
+  removed/requeued for clean canonical certification.
+- Three parallel Chrome lanes + one serialized SQLite writer remain included.
+- Bounded preferred-media rehydration remains included.
+
+CURRENT-REPO CHECK
+At packaging time the live repository still exposed the serialized-writer R11
+service without PLAYABLE_EVIDENCE_FRESH_SECONDS. Therefore this bundle includes
+the three playable-protection source files again so the upload is self-contained.
+
+UPLOAD
+A. At the repository ROOT upload the contents of the Non-Tests ZIP, preserving paths:
+   media_audit_service.py
+   media-audit.html
+   ui/media-audit-v550.js
+   cloud/gcp/DEPLOY-FROM-GITHUB.sh
+
+B. Then browse to the existing GitHub /tests folder and upload the one flat file
+   from the Tests ZIP:
+   test_v550_media_health_audit.py
+
+No VERSION bump, controller bridge, CSS change, or server.py replacement is needed.
+
+AFTER DEPLOY
+- Do not reset the audit.
+- Hard-refresh Media Audit once.
+- The Media Audit service starts only after the main backend passes health.
+- Startup recovery will restore/requeue transiently false-quarantined recent
+  PLAYED media when evidence exists.
+
+VALIDATION
+- media_audit_service.py Python syntax: PASS
+- media-audit-v550.js JavaScript syntax: PASS
+- DEPLOY-FROM-GITHUB.sh shell syntax: PASS
+- Focused R11 Media Health Audit regression: PASS
+- Original deployment script matched live GitHub blob
+  05ed1f9099a708d5f8baa5cc5918b1b0be11b496 before modification.

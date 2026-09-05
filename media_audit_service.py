@@ -59,6 +59,20 @@ AUDIT_WORKER_COUNT = max(1, min(4, int(os.environ.get("SBB_MEDIA_AUDIT_WORKERS",
 DISCOVERY_CONCURRENCY = max(1, min(2, int(os.environ.get("SBB_MEDIA_AUDIT_DISCOVERY_CONCURRENCY", "1"))))
 DISCOVERY_SEMAPHORE = threading.Semaphore(DISCOVERY_CONCURRENCY)
 DB_WRITE_QUEUE_MAX = max(32, min(4096, int(os.environ.get("SBB_MEDIA_AUDIT_DB_WRITE_QUEUE_MAX", "512"))))
+# Recent successful playback is durable evidence. Transient headless/browser
+# failures remain audit evidence but cannot revoke/quarantine a recently PLAYED
+# asset. Hard failures still revoke immediately.
+PLAYABLE_EVIDENCE_FRESH_SECONDS = max(
+    3600,
+    int(os.environ.get("SBB_MEDIA_AUDIT_PLAYABLE_EVIDENCE_FRESH_SECONDS", str(FRESH_SECONDS)))
+)
+TRANSIENT_MEDIA_FAILURE_REASONS = {
+    "YOUTUBE_START_TIMEOUT", "YOUTUBE_TIME_NOT_ADVANCING", "YOUTUBE_PLAY_CALL_FAILED",
+    "YOUTUBE_PLAYER_CREATE_ERROR", "DIRECT_START_TIMEOUT", "DIRECT_TIME_NOT_ADVANCING",
+    "DIRECT_PLAY_CALL_FAILED", "BROWSER_WORKER_ERROR", "PROBE_PAGE_NOT_READY",
+    "PROBE_EXCEPTION", "YOUTUBE_API_LOAD_ERROR", "YOUTUBE_API_LOAD_TIMEOUT",
+    "INVALID_PROBE_RESULT", "EMPTY_PROBE_RESULT", "TimeoutError", "URLError",
+}
 AUDIT_TIMEZONE = os.environ.get("SBB_MEDIA_AUDIT_TIMEZONE", "America/Los_Angeles").strip() or "America/Los_Angeles"
 try:
     AUDIT_TZ = ZoneInfo(AUDIT_TIMEZONE)
@@ -75,6 +89,7 @@ MANAGED_METHODS = {
     "MEDIA_AUDIT_SUPERSEDED",
     "MEDIA_AUDIT_BLUE_SUPPRESSED",
     "MEDIA_AUDIT_NON_CANONICAL",
+    "MEDIA_AUDIT_RETAINED_PLAYABLE",
 }
 IMAGE_RE = re.compile(r"\.(?:jpe?g|png|webp|gif|svg)(?:$|[?#])", re.I)
 YOUTUBE_RE = re.compile(r"(?:youtu\.be/|youtube(?:-nocookie)?\.com/(?:watch\?v=|embed/|shorts/))([A-Za-z0-9_-]{6,20})", re.I)
@@ -104,6 +119,29 @@ def _is_db_locked(exc) -> bool:
         return False
     msg = str(exc or "").lower()
     return "database is locked" in msg or "database table is locked" in msg or "database is busy" in msg or "sqlite_busy" in msg
+
+
+def _transient_media_failure_reason(reason: str) -> bool:
+    reason = str(reason or "")
+    if reason in TRANSIENT_MEDIA_FAILURE_REASONS:
+        return True
+    return (
+        reason.startswith("TimeoutError")
+        or reason.startswith("URLError")
+        or reason.startswith("REMOTE_")
+        or reason.startswith("NETWORK_")
+    )
+
+
+def _recent_playable(asset: dict, now=None) -> bool:
+    now = _now() if now is None else float(now)
+    state = str((asset or {}).get("runtimeState") or "").upper()
+    success_at = float((asset or {}).get("runtimeSuccessAt") or 0)
+    return bool(
+        state == "PLAYED"
+        and success_at > 0
+        and success_at >= now - PLAYABLE_EVIDENCE_FRESH_SECONDS
+    )
 
 
 def _event_final(event_date: str, final_at: float, event: dict) -> bool:
@@ -399,6 +437,92 @@ class AuditStore:
             conn.commit()
         return {"ok": True, "recertify": bool(recertify)}
 
+    def recover_transient_playable_quarantines(self):
+        """Restore recent PLAYED assets falsely quarantined by transient audit failures."""
+        now=_now()
+        cutoff=now-PLAYABLE_EVIDENCE_FRESH_SECONDS
+        restored=[]
+        requeued=[]
+        with self.lock, closing(self.connect()) as conn:
+            rows=conn.execute(
+                """SELECT s.asset_key,s.asset_json,s.runtime_success_at,s.runtime_failure_at,
+                          s.runtime_failure_reason,em.canonical_event_key
+                   FROM history_source_media s
+                   JOIN history_event_media em ON em.asset_key=s.asset_key
+                   WHERE s.runtime_state='FAILED'
+                     AND s.runtime_success_at>=?
+                     AND s.runtime_success_at>0
+                     AND em.association_method='MEDIA_AUDIT_FAILED'""",
+                (cutoff,),
+            ).fetchall()
+            affected=set()
+            for row in rows:
+                reason=str(row["runtime_failure_reason"] or "")
+                if not _transient_media_failure_reason(reason):
+                    continue
+                item=_jloads(row["asset_json"],{})
+                item["runtimeState"]="playing-confirmed"
+                item["verifiedPlayable"]=True
+                item["runtimeFailureReason"]=reason
+                item["lastAuditTransientFailureReason"]=reason
+                item["lastAuditTransientFailureAt"]=float(row["runtime_failure_at"] or now)
+                conn.execute(
+                    "UPDATE history_source_media SET asset_json=?,runtime_state='PLAYED',updated_at=? WHERE asset_key=?",
+                    (_jdumps(item),now,row["asset_key"]),
+                )
+                conn.execute(
+                    """UPDATE history_event_media
+                       SET association_state='ASSIGNED',
+                           association_method='MEDIA_AUDIT_RETAINED_PLAYABLE',
+                           association_evidence=?,
+                           updated_at=?
+                       WHERE canonical_event_key=? AND asset_key=?""",
+                    (
+                        f"Recent PLAYED evidence retained after transient audit failure: {reason}",
+                        now,row["canonical_event_key"],row["asset_key"],
+                    ),
+                )
+                restored.append(str(row["asset_key"]))
+                affected.add(str(row["canonical_event_key"]))
+
+            run=conn.execute("SELECT id,state FROM history_media_audit_run ORDER BY id DESC LIMIT 1").fetchone()
+            if run and str(run["state"] or "") in {"RUNNING","PAUSED"} and affected:
+                run_id=int(run["id"])
+                for event_key in sorted(affected):
+                    q=conn.execute(
+                        "SELECT ordinal,state,health FROM history_media_audit_queue WHERE run_id=? AND canonical_event_key=?",
+                        (run_id,event_key),
+                    ).fetchone()
+                    if not q or str(q["state"] or "") not in {"DONE","FAILED","SKIPPED"}:
+                        continue
+                    conn.execute(
+                        """UPDATE history_media_audit_queue
+                           SET state='PENDING',phase='RECOVERED_PLAYABLE_EVIDENCE',
+                               health='UNTESTED',
+                               note='Recent PLAYED evidence restored after transient audit failure',
+                               started_at=0,completed_at=0
+                           WHERE run_id=? AND ordinal=?""",
+                        (run_id,q["ordinal"]),
+                    )
+                    conn.execute(
+                        "DELETE FROM history_media_canonical_package WHERE canonical_event_key=? AND health IN ('UNPLAYABLE','NO_MEDIA','DEGRADED')",
+                        (event_key,),
+                    )
+                    requeued.append(int(q["ordinal"]))
+                processed=int(conn.execute(
+                    "SELECT COUNT(*) FROM history_media_audit_queue WHERE run_id=? AND state IN ('DONE','FAILED','SKIPPED')",
+                    (run_id,),
+                ).fetchone()[0] or 0)
+                conn.execute(
+                    "UPDATE history_media_audit_run SET processed_games=?,updated_at=?,current_phase='RECOVERED_PLAYABLE_EVIDENCE' WHERE id=?",
+                    (processed,now,run_id),
+                )
+                if requeued:
+                    self._sync_run_frontier_conn(conn,run_id,now)
+            conn.commit()
+        return {"restoredAssets":len(restored),"requeuedOrdinals":requeued}
+
+
     def recover_exception_failures(self):
         """Requeue R9/R10 worker exceptions without erasing real media outcomes.
 
@@ -606,33 +730,99 @@ class AuditStore:
 
     def record_probe(self, run_id, event_key, asset, attempt, result, browser=""):
         now = _now()
-        state = "PLAYED" if result.get("ok") else "FAILED"
+        probe_state = "PLAYED" if result.get("ok") else "FAILED"
         reason = str(result.get("reason") or ("PLAYING_TIME_ADVANCED" if result.get("ok") else "UNKNOWN"))[:500]
+        hard_failure = bool(result.get("hard"))
         with self.lock:
-            # Canonical worker owns the result directly. Source identity is global, while
-            # event identity lives in history_event_media; do not depend on provider JSON
-            # redundantly carrying date/league/eventId.
+            # Keep raw probe evidence distinct from effective runtime health. A
+            # transient audit flake cannot erase recent successful front-end/browser
+            # playback evidence for the same asset.
             with closing(self.connect()) as conn:
-                src=conn.execute("SELECT asset_json FROM history_source_media WHERE asset_key=?",(asset["assetKey"],)).fetchone()
+                src=conn.execute(
+                    "SELECT asset_json,runtime_state,runtime_success_at,runtime_failure_at,runtime_failure_reason "
+                    "FROM history_source_media WHERE asset_key=?",
+                    (asset["assetKey"],),
+                ).fetchone()
                 item=_jloads(src["asset_json"],{}) if src else {}
-                if result.get("ok"):
-                    item["runtimeState"]="playing-confirmed"; item["verifiedPlayable"]=True; item.pop("runtimeFailureReason",None)
-                else:
-                    item["runtimeState"]="failed"; item["verifiedPlayable"]=False; item["runtimeFailureReason"]=reason
-                conn.execute(
-                    "UPDATE history_source_media SET asset_json=?,validation_state=CASE WHEN ? THEN 'VERIFIED' ELSE validation_state END,verified_at=CASE WHEN ? THEN ? ELSE verified_at END,runtime_state=?,runtime_success_at=CASE WHEN ? THEN ? ELSE runtime_success_at END,runtime_failure_at=CASE WHEN ? THEN runtime_failure_at ELSE ? END,runtime_failure_reason=CASE WHEN ? THEN '' ELSE ? END,updated_at=? WHERE asset_key=?",
-                    (_jdumps(item),1 if result.get("ok") else 0,1 if result.get("ok") else 0,now,state, 1 if result.get("ok") else 0, now, 1 if result.get("ok") else 0, now, 1 if result.get("ok") else 0, reason, now, asset["assetKey"]),
+                prior_success_at=float(src["runtime_success_at"] or 0) if src else 0.0
+                prior_runtime=str(src["runtime_state"] or "").upper() if src else ""
+                recent_success=bool(
+                    prior_runtime=="PLAYED"
+                    and prior_success_at>0
+                    and prior_success_at>=now-PLAYABLE_EVIDENCE_FRESH_SECONDS
                 )
+                retained_prior_success=bool(
+                    not result.get("ok")
+                    and not hard_failure
+                    and _transient_media_failure_reason(reason)
+                    and recent_success
+                )
+                effective_state="PLAYED" if (result.get("ok") or retained_prior_success) else "FAILED"
+
+                if result.get("ok"):
+                    item["runtimeState"]="playing-confirmed"
+                    item["verifiedPlayable"]=True
+                    item.pop("runtimeFailureReason",None)
+                    item.pop("lastAuditTransientFailureReason",None)
+                    item.pop("lastAuditTransientFailureAt",None)
+                elif retained_prior_success:
+                    item["runtimeState"]="playing-confirmed"
+                    item["verifiedPlayable"]=True
+                    item["runtimeFailureReason"]=reason
+                    item["lastAuditTransientFailureReason"]=reason
+                    item["lastAuditTransientFailureAt"]=now
+                else:
+                    item["runtimeState"]="failed"
+                    item["verifiedPlayable"]=False
+                    item["runtimeFailureReason"]=reason
+
+                conn.execute(
+                    """UPDATE history_source_media
+                       SET asset_json=?,
+                           validation_state=CASE WHEN ? THEN 'VERIFIED' ELSE validation_state END,
+                           verified_at=CASE WHEN ? THEN ? ELSE verified_at END,
+                           runtime_state=?,
+                           runtime_success_at=CASE WHEN ? THEN ? ELSE runtime_success_at END,
+                           runtime_failure_at=CASE WHEN ? THEN runtime_failure_at ELSE ? END,
+                           runtime_failure_reason=CASE WHEN ? THEN '' ELSE ? END,
+                           updated_at=?
+                       WHERE asset_key=?""",
+                    (
+                        _jdumps(item),
+                        1 if result.get("ok") else 0,
+                        1 if result.get("ok") else 0,now,
+                        effective_state,
+                        1 if result.get("ok") else 0,now,
+                        1 if result.get("ok") else 0,now,
+                        1 if result.get("ok") else 0,reason,
+                        now,asset["assetKey"],
+                    ),
+                )
+                details={
+                    "auditRunId":run_id,"generation":AUDIT_GENERATION,"browser":browser,
+                    "probeOrigin":PROBE_URL,"startupMs":result.get("startupMs"),
+                    "currentTimeDelta":result.get("currentTimeDelta"),"hard":hard_failure,
+                    "effectiveRuntimeState":effective_state,
+                    "retainedPriorSuccess":retained_prior_success,
+                    "priorRuntimeState":prior_runtime,
+                    "priorRuntimeSuccessAt":prior_success_at,
+                }
                 conn.execute(
                     "INSERT INTO history_media_verification(asset_key,verification_type,state,reason,details_json,verified_at,verification_version) VALUES(?,?,?,?,?,?,?)",
-                    (asset["assetKey"], "CANONICAL_BROWSER", state, reason, _jdumps({"auditRunId": run_id, "generation": AUDIT_GENERATION, "browser": browser, "probeOrigin": PROBE_URL, "startupMs": result.get("startupMs"), "currentTimeDelta": result.get("currentTimeDelta")}), now, VERIFICATION_VERSION),
+                    (asset["assetKey"],"CANONICAL_BROWSER",probe_state,reason,_jdumps(details),now,VERIFICATION_VERSION),
                 )
                 conn.execute(
                     "INSERT INTO history_media_audit_asset_result(run_id,canonical_event_key,asset_key,tier,attempt,state,reason,startup_ms,current_time_delta,browser,probe_origin,tested_at,details_json) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                    (run_id, event_key, asset["assetKey"], asset["tier"], attempt, state, reason, float(result.get("startupMs") or 0), float(result.get("currentTimeDelta") or 0), browser, PROBE_URL, now, _jdumps(result)),
+                    (
+                        run_id,event_key,asset["assetKey"],asset["tier"],attempt,probe_state,reason,
+                        float(result.get("startupMs") or 0),float(result.get("currentTimeDelta") or 0),
+                        browser,PROBE_URL,now,
+                        _jdumps({**result,"effectiveRuntimeState":effective_state,"retainedPriorSuccess":retained_prior_success}),
+                    ),
                 )
                 conn.commit()
-        return state
+        return effective_state
+
 
     def canonicalize(self, run_id, queue_item, selections, health, rehydration_state="", rehydration_reason=""):
         event_key = queue_item["canonical_event_key"]
@@ -1322,32 +1512,55 @@ class CanonicalAuditWorker(threading.Thread):
         return last or {"ok": False, "reason": "NO_RESULT"}
 
     def _select_one(self, run_id, event_key, candidates, *, tier="", tested=None):
-        candidates = list(candidates)
-        tested = tested if tested is not None else set()
+        candidates=list(candidates)
+        tested=tested if tested is not None else set()
 
         def runtime_rank(a):
-            state = str(a.get("runtimeState") or "").upper()
-            if state == "PLAYED":
+            state=str(a.get("runtimeState") or "").upper()
+            if state=="PLAYED":
                 return 0
-            if state == "FAILED":
+            if state=="FAILED":
                 return 2
             return 1
 
-        candidates.sort(key=lambda a: (
+        candidates.sort(key=lambda a:(
             runtime_rank(a),
-            0 if str(a.get("validationState") or "").upper() == "VERIFIED" else 1,
-            -float(a.get("durationSeconds") or 0), str(a.get("assetKey")),
+            0 if str(a.get("validationState") or "").upper()=="VERIFIED" else 1,
+            -float(a.get("durationSeconds") or 0),str(a.get("assetKey")),
         ))
-        available = [a for a in candidates if a.get("assetKey") not in tested]
-        for idx, asset in enumerate(available, 1):
+        available=[a for a in candidates if a.get("assetKey") not in tested]
+        retained=None
+        for idx,asset in enumerate(available,1):
+            was_recent_playable=_recent_playable(asset)
             tested.add(asset.get("assetKey"))
-            result = self._probe_candidate(
-                run_id, event_key, asset, tier=tier or asset.get("tier") or "",
-                index=idx, count=len(available)
+            result=self._probe_candidate(
+                run_id,event_key,asset,tier=tier or asset.get("tier") or "",
+                index=idx,count=len(available)
             )
             if result.get("ok"):
                 return asset
+            if (
+                was_recent_playable
+                and not result.get("hard")
+                and _transient_media_failure_reason(result.get("reason"))
+                and retained is None
+            ):
+                retained=dict(asset)
+                retained["_selectionEvidence"]="RECENT_PLAYBACK_RETAINED"
+                retained["_currentProbeWarning"]=str(result.get("reason") or "")
+        if retained:
+            self._diag(
+                lastProbeResult=f"RETAINED_PLAYABLE_AFTER_TRANSIENT_{retained.get('_currentProbeWarning') or 'FAILURE'}",
+                waitingReason=""
+            )
+            self._trace(
+                "WARN",
+                f"{str(tier or retained.get('tier') or '').upper()} retained from recent PLAYED evidence after transient audit failure",
+                asset=retained.get("assetKey"),reason=retained.get("_currentProbeWarning")
+            )
+            return retained
         return None
+
 
     @staticmethod
     def _plan_candidate(item):
@@ -1625,8 +1838,17 @@ class CanonicalAuditWorker(threading.Thread):
                 )
                 if result.get("ok"):
                     selected["blue"].append(asset)
-                    if len(selected["blue"]) >= BLUE_FALLBACK_TARGET:
-                        break
+                elif _recent_playable(asset) and not result.get("hard") and _transient_media_failure_reason(result.get("reason")):
+                    retained_blue=dict(asset)
+                    retained_blue["_selectionEvidence"]="RECENT_PLAYBACK_RETAINED"
+                    retained_blue["_currentProbeWarning"]=str(result.get("reason") or "")
+                    selected["blue"].append(retained_blue)
+                    self._trace(
+                        "WARN","BLUE retained from recent PLAYED evidence after transient audit failure",
+                        asset=asset.get("assetKey"),reason=result.get("reason")
+                    )
+                if len(selected["blue"]) >= BLUE_FALLBACK_TARGET:
+                    break
 
         if preferred:
             health = "HEALTHY"
@@ -1695,6 +1917,7 @@ class CanonicalAuditWorker(threading.Thread):
 
 
 STORE = AuditStore(DB_PATH)
+PLAYABLE_RECOVERY = STORE.recover_transient_playable_quarantines()
 RECOVERY = STORE.recover_exception_failures()
 DB_WRITER = SerializedAuditDbWriter(STORE)
 DB_WRITER.start()
@@ -1806,7 +2029,7 @@ class Handler(BaseHTTPRequestHandler):
                 primary_worker, worker_rows = _worker_status_payload()
                 browser_names = [getattr(p, "browser", "") for p in PROBES if getattr(p, "browser", "")]
                 browser_errors = [getattr(p, "last_error", "") for p in PROBES if getattr(p, "last_error", "")]
-                primary_worker = {**primary_worker, "recoveredExceptionFailures": RECOVERY}
+                primary_worker = {**primary_worker, "recoveredExceptionFailures": RECOVERY, "recoveredPlayableEvidence": PLAYABLE_RECOVERY}
                 return _json(self, {
                     "ok": True, "version": APP_VERSION, "generation": AUDIT_GENERATION,
                     "canonical": True, "browserOwned": False, "probeUrl": PROBE_URL,

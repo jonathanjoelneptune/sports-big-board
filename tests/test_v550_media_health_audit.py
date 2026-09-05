@@ -17,7 +17,7 @@ for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STA
 assert 'youtubeProbe' not in html
 assert 'directProbe' not in html
 assert 'youtube.com/iframe_api' not in html
-assert 'ui/media-audit-v550.js?v=5.5.0-r11w' in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r11p' in html
 assert 'href="media-audit.html"' in index
 
 # Browser is a console only. All control and inventory authority routes to the backend service.
@@ -100,7 +100,7 @@ for token in [
     'diagProgressAge','diagTrace','SERVER TRACE','DATABASE + PRODUCTION PARITY'
 ]:
     assert token in html or token in js,token
-assert "const GENERATION='R11-DBWRITER'" in js
+assert "const GENERATION='R11-PLAYABLE-PROTECTION'" in js
 assert 'localStorage' not in js
 
 # R11: reset/start/stop retire the worker itself and stale run work cannot persist.
@@ -196,4 +196,41 @@ for forbidden in [
 for token in ['DB WRITER','SAVE QUEUED','status.dbWriter']:
     assert token in js,token
 
-print('PASS v5.5.0 R11 canonical Media Health Audit + 3 parallel probes + serialized DB writer + ordered commits + bounded rehydration + reset/startup-lock/parity diagnostics')
+
+# R11 playable-evidence protection: transient headless failures cannot revoke a
+# recent real-browser PLAYED success or falsely quarantine its event association.
+for token in [
+    'PLAYABLE_EVIDENCE_FRESH_SECONDS',
+    'TRANSIENT_MEDIA_FAILURE_REASONS',
+    'def _transient_media_failure_reason',
+    'def _recent_playable',
+    'retainedPriorSuccess',
+    'effectiveRuntimeState',
+    'RECENT_PLAYBACK_RETAINED',
+    'recover_transient_playable_quarantines',
+    'MEDIA_AUDIT_RETAINED_PLAYABLE',
+    'RECOVERED_PLAYABLE_EVIDENCE',
+    '"recoveredPlayableEvidence": PLAYABLE_RECOVERY',
+]:
+    assert token in service,token
+record_block=service[service.index('def record_probe'):service.index('def canonicalize')]
+assert 'effective_state="PLAYED" if (result.get("ok") or retained_prior_success) else "FAILED"' in record_block
+assert 'and not hard_failure' in record_block
+select_block=service[service.index('def _select_one'):service.index('@staticmethod',service.index('def _select_one'))]
+assert 'RECENT_PLAYBACK_RETAINED' in select_block
+assert '_transient_media_failure_reason(result.get("reason"))' in select_block
+for token in ['recent-playable asset','false-unplayable game','playableRecovery']:
+    assert token in js,token
+
+
+# R11 deployment quiescence/readiness contract: the canonical audit service shares
+# SQLite with the main backend and must not remain active through catalog preflight.
+deploy=(root/'cloud/gcp/DEPLOY-FROM-GITHUB.sh').read_text()
+stop_audit='systemctl stop sports-big-board-media-audit >/dev/null 2>&1 || true'
+stop_backend='systemctl stop sports-big-board >/dev/null 2>&1 || true'
+assert stop_audit in deploy, 'deployment must stop canonical audit before backend/catalog restart'
+assert deploy.index(stop_audit) < deploy.index(stop_backend, deploy.index(stop_audit)), 'audit service must stop before main backend'
+assert 'LOCAL_HEALTH_ATTEMPTS="${SBB_LOCAL_HEALTH_ATTEMPTS:-180}"' in deploy, 'cold-start health window must be bounded and configurable at 180 attempts'
+assert deploy.index('systemctl restart sports-big-board') < deploy.index('Installing canonical Media Health Audit service'), 'main backend must be healthy before audit service restart'
+
+print('PASS v5.5.0 R11 canonical Media Health Audit + playable-evidence protection + 3 parallel probes + serialized DB writer + ordered commits + bounded rehydration + reset/startup-lock/parity diagnostics')

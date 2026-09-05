@@ -243,6 +243,10 @@ PY
 # quiescent. v5.5.0 first runs CHECK-ONLY. A structurally healthy normalized
 # catalog must not be duplicated merely because relationship audit flags exist.
 # Normal reconstruction runs only when the structural snapshot actually requires it.
+# R11 canonical Media Audit shares the same persistent SQLite catalog. Stop it
+# before the main backend/preflight so deployment owns the catalog exclusively.
+# The audit service is reinstalled/restarted only after the new backend is healthy.
+systemctl stop sports-big-board-media-audit >/dev/null 2>&1 || true
 systemctl stop sports-big-board >/dev/null 2>&1 || true
 ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 if [[ -f "$HISTORY_DB" ]]; then
@@ -306,9 +310,11 @@ else
 fi
 systemctl restart sports-big-board
 # Normal startup should now be read-only with respect to relationship audit.
-# Keep the existing bounded health window for cold caches and worker startup.
+# Cold database-authority audits on the growing normalized catalog can exceed
+# three minutes even when the process is healthy. The audit worker is stopped
+# above to remove SQLite contention; retain a bounded six-minute readiness guard.
 healthy=0
-LOCAL_HEALTH_ATTEMPTS=90
+LOCAL_HEALTH_ATTEMPTS="${SBB_LOCAL_HEALTH_ATTEMPTS:-180}"
 for ((attempt=1; attempt<=LOCAL_HEALTH_ATTEMPTS; attempt++)); do
   if curl -fsS --max-time 5 http://127.0.0.1:8080/api/status > /tmp/sbb-health.json; then healthy=1; break; fi
   if ! systemctl is-active --quiet sports-big-board; then

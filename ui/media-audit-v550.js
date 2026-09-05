@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const VERSION='5.5.0';
-const GENERATION='R11-DBWRITER';
+const GENERATION='R11-PLAYABLE-PROTECTION';
 const $=id=>document.getElementById(id);
 const API=((window.SBB_CONFIG&&window.SBB_CONFIG.apiBase)||location.origin).replace(/\/$/,'')+'/api/media-audit';
 const state={offset:0,limit:100,total:0,rows:[],expanded:new Set(),status:null,busy:false,pollTimer:null,lastInventoryAt:0};
@@ -36,7 +36,7 @@ function renderSummary(status){
 
 function fmtAge(seconds){const s=Math.max(0,Number(seconds||0));if(s<60)return `${s.toFixed(1)}s`;const m=Math.floor(s/60),r=Math.round(s%60);return `${m}m ${r}s`;}
 function renderDiagnostics(status){
-  const worker=status.worker||{},d=worker.diagnostics||{},cur=worker.current||{},recovery=worker.recoveredExceptionFailures||{},dbw=status.dbWriter||{};
+  const worker=status.worker||{},d=worker.diagnostics||{},cur=worker.current||{},recovery=worker.recoveredExceptionFailures||{},playableRecovery=worker.recoveredPlayableEvidence||{},dbw=status.dbWriter||{};
   const storageError=String(status.storageReadError||'');
   const dbLocked=String(dbw.state||'').toUpperCase()==='LOCKED'||String(d.dbState||'').toUpperCase()==='LOCKED'||!!storageError;
   setText('diagRun',d.runId?`#${d.runId}`:(status.run?`#${status.run.id}`:'—'));
@@ -65,7 +65,11 @@ function renderDiagnostics(status){
   $('diagWaiting').className='diagnostic-wait '+((d.waitingReason||storageError||dbw.state==='LOCKED')?'active':'');
   setText('diagBrowser',status.browser||'Chromium not started yet');
   setText('diagOrigin',status.probeUrl||'—');
-  setText('diagRecovered',recovery.requeued?`${recovery.requeued} prior exception failure${recovery.requeued===1?'':'s'} requeued`:'None');
+  const recoveredParts=[];
+  if(recovery.requeued)recoveredParts.push(`${recovery.requeued} prior exception failure${recovery.requeued===1?'':'s'} requeued`);
+  if(playableRecovery.restoredAssets)recoveredParts.push(`${playableRecovery.restoredAssets} recent-playable asset${playableRecovery.restoredAssets===1?'':'s'} restored`);
+  if(Array.isArray(playableRecovery.requeuedOrdinals)&&playableRecovery.requeuedOrdinals.length)recoveredParts.push(`${playableRecovery.requeuedOrdinals.length} false-unplayable game${playableRecovery.requeuedOrdinals.length===1?'':'s'} requeued`);
+  setText('diagRecovered',recoveredParts.join(' • ')||'None');
   const lanes=$('diagWorkers');
   if(lanes){
     const workers=Array.isArray(status.workers)?status.workers:[];
