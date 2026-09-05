@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.2-editor-refill",
-  "generatedAt": "2026-09-05T19:00:53Z",
+  "generatedAt": "2026-09-05T19:30:53Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "0896f3bab7c2140eb5ecf30a230cc77245aba3adc49202fc7aebd4ef1194f605",
+  "sourceCandidateHash": "a0ee40e3d756d9637475b4ec28a64b423d7f4124e6ef76303f39f31564e043ef",
   "leagues": [
     {
       "league": "MLB",
@@ -18,8 +18,8 @@
           ],
           "type": "RESULT",
           "priority": 80,
-          "headline": "Campusano's walk-off lifts Padres past Yankees, 3-2",
-          "text": "Luis Campusano homered in the bottom of the 10th to give San Diego the win.",
+          "headline": "Campusano walk-off lifts Padres past Yankees 3-2",
+          "text": "Luis Campusano homered in the bottom of the 10th to give San Diego a 3-2 win over New York.",
           "entities": [
             "San Diego Padres",
             "New York Yankees",
@@ -27,8 +27,8 @@
           ],
           "occurredAt": "2026-09-05T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.35,
-          "freshnessBasis": "Luis Campusano delivered a walk-off homer in the bottom of the 10th for San Diego on Friday.",
+          "ageHours": 17.85,
+          "freshnessBasis": "Luis Campusano delivered a walk-off home run in the 10th inning for San Diego Friday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -40,8 +40,8 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-8c323a60ff22d3cc",
-          "feedRank": 5
+          "id": "a3-e899013e1215dd7b",
+          "feedRank": 6
         },
         {
           "rank": 2,
@@ -50,8 +50,8 @@
           ],
           "type": "RESULT",
           "priority": 80,
-          "headline": "Bazzana's 10th-inning walk-off lifts Guardians, 4-3",
-          "text": "Travis Bazzana's single scored the winning run as Cleveland beat Detroit.",
+          "headline": "Bazzana's 10th-inning hit sends Guardians past Tigers",
+          "text": "Bazzana singled to center, Rocchio scored.",
           "entities": [
             "Cleveland Guardians",
             "Detroit Tigers",
@@ -59,8 +59,8 @@
           ],
           "occurredAt": "2026-09-04T23:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.26,
-          "freshnessBasis": "Travis Bazzana delivered a walk-off single in the bottom of the 10th for Cleveland on Friday.",
+          "ageHours": 19.76,
+          "freshnessBasis": "Travis Bazzana delivered the walk-off in the bottom of the 10th inning.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -72,58 +72,88 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-7a6a9b2737d499a8",
-          "feedRank": 6
+          "id": "a3-1980d32fb9ab3e85",
+          "feedRank": 7
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-fe70dfc1729eea16"
+            "cand-c1efedbff8477a61"
           ],
-          "type": "DISCIPLINE",
+          "type": "RESULT",
           "priority": 65,
-          "headline": "Cardinals manager Marmol ejected after hat dispute",
-          "text": "St. Louis manager Oliver Marmol was ejected during Friday's win after rookie reliever Hancel Rincon was told to straighten his hat.",
+          "headline": "Red Sox edge Orioles 1-0 in one-run shutout",
+          "text": "Boston defeated Baltimore 1-0 in a one-run game.",
           "entities": [
-            "St. Louis Cardinals",
-            "Oliver Marmol",
-            "Hancel Rincon"
+            "Boston Red Sox",
+            "Baltimore Orioles"
           ],
-          "occurredAt": "2026-09-05T18:35:30Z",
+          "occurredAt": "2026-09-04T23:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.42,
-          "freshnessBasis": "Oliver Marmol was ejected during St. Louis's Friday win after a hat dispute involving Hancel Rincon.",
+          "ageHours": 20.43,
+          "freshnessBasis": "Boston beat Baltimore 1-0 Friday for a one-run shutout win.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49837289/cardinals-manager-ejected-rhp-told-straighten-hat"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49837289/cardinals-manager-ejected-rhp-told-straighten-hat"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-7d39528402c8f291",
-          "feedRank": 12
+          "id": "a3-c5498d637272e031",
+          "feedRank": 18
         },
         {
           "rank": 4,
+          "candidateIds": [
+            "cand-4e65d98f6eb10cd5"
+          ],
+          "type": "RESULT",
+          "priority": 64,
+          "headline": "Pirates blank Angels 1-0",
+          "text": "Pittsburgh beat Los Angeles 1-0 in a one-run shutout.",
+          "entities": [
+            "Pittsburgh Pirates",
+            "Los Angeles Angels"
+          ],
+          "occurredAt": "2026-09-04T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 20.85,
+          "freshnessBasis": "Pittsburgh defeated the Los Angeles Angels 1-0 Friday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-a97128db0068a6d4",
+          "feedRank": 20
+        },
+        {
+          "rank": 5,
           "candidateIds": [
             "cand-a27bd360052f6adc"
           ],
           "type": "RESULT",
           "priority": 63,
-          "headline": "Athletics edge Mariners 7-6 in one-run finish",
-          "text": "Oakland defeated Seattle 7-6 in a one-run game Friday.",
+          "headline": "Athletics hold off Mariners 7-6",
+          "text": "Oakland edged Seattle 7-6 in a one-run game.",
           "entities": [
             "Oakland Athletics",
             "Seattle Mariners"
           ],
           "occurredAt": "2026-09-05T02:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.85,
-          "freshnessBasis": "Oakland defeated Seattle 7-6 Friday.",
+          "ageHours": 17.35,
+          "freshnessBasis": "Oakland beat Seattle 7-6 Friday in a one-run game.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -135,25 +165,25 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-65b01bcf15f8d907",
-          "feedRank": 18
+          "id": "a3-f125e687691f9ef1",
+          "feedRank": 22
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-7bb94db1364f5ef4"
           ],
           "type": "RESULT",
           "priority": 63,
-          "headline": "Cardinals hold off Rockies 7-6 in one-run game",
-          "text": "St. Louis defeated Colorado 7-6 Friday.",
+          "headline": "Cardinals edge Rockies 7-6 in one-run finish",
+          "text": "St. Louis defeated Colorado 7-6 in a one-run game.",
           "entities": [
             "St. Louis Cardinals",
             "Colorado Rockies"
           ],
           "occurredAt": "2026-09-05T00:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.35,
+          "ageHours": 18.85,
           "freshnessBasis": "St. Louis defeated Colorado 7-6 Friday.",
           "status": "active",
           "sourceUrls": [
@@ -166,25 +196,25 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-8c2cd56c1811297c",
-          "feedRank": 19
+          "id": "a3-8fbadf4340aa06ad",
+          "feedRank": 23
         },
         {
-          "rank": 6,
+          "rank": 7,
           "candidateIds": [
             "cand-57870ac84854b71a"
           ],
           "type": "RESULT",
           "priority": 63,
-          "headline": "Rays edge Rangers 7-6 in one-run game",
-          "text": "Tampa Bay defeated Texas 7-6 Friday.",
+          "headline": "Rays hold off Rangers 7-6 in one-run game",
+          "text": "Tampa Bay defeated Texas 7-6 in a one-run game.",
           "entities": [
             "Tampa Bay Rays",
             "Texas Rangers"
           ],
           "occurredAt": "2026-09-05T00:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.93,
+          "ageHours": 19.43,
           "freshnessBasis": "Tampa Bay defeated Texas 7-6 Friday.",
           "status": "active",
           "sourceUrls": [
@@ -197,87 +227,25 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-071b21578960741b",
-          "feedRank": 20
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-c1efedbff8477a61"
-          ],
-          "type": "RESULT",
-          "priority": 63,
-          "headline": "Red Sox beat Orioles 1-0 in one-run shutout",
-          "text": "Boston defeated Baltimore 1-0 Friday, shutting out the Orioles.",
-          "entities": [
-            "Boston Red Sox",
-            "Baltimore Orioles"
-          ],
-          "occurredAt": "2026-09-04T23:05:00Z",
-          "timePrecision": "exact",
-          "ageHours": 19.93,
-          "freshnessBasis": "Boston defeated Baltimore 1-0 in a shutout Friday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-71cead0ed5a5ee7f",
-          "feedRank": 21
+          "id": "a3-554b6cd11d0e53eb",
+          "feedRank": 24
         },
         {
           "rank": 8,
-          "candidateIds": [
-            "cand-4e65d98f6eb10cd5"
-          ],
-          "type": "RESULT",
-          "priority": 63,
-          "headline": "Pirates shut out Angels 1-0 in one-run win",
-          "text": "Pittsburgh defeated Los Angeles 1-0 Friday and held the Angels scoreless.",
-          "entities": [
-            "Pittsburgh Pirates",
-            "Los Angeles Angels"
-          ],
-          "occurredAt": "2026-09-04T22:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 20.35,
-          "freshnessBasis": "Pittsburgh defeated Los Angeles 1-0 in a shutout Friday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-5c6376de35ec1c6c",
-          "feedRank": 22
-        },
-        {
-          "rank": 9,
           "candidateIds": [
             "cand-9f0607f6ce5b27b0"
           ],
           "type": "RESULT",
           "priority": 60,
-          "headline": "Dodgers defeat Nationals 5-3 at home",
-          "text": "Los Angeles defeated Washington 5-3 Friday.",
+          "headline": "Dodgers defeat Nationals 5-3 in Los Angeles",
+          "text": "Los Angeles beat Washington 5-3.",
           "entities": [
             "Los Angeles Dodgers",
             "Washington Nationals"
           ],
           "occurredAt": "2026-09-05T02:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.85,
+          "ageHours": 17.35,
           "freshnessBasis": "Los Angeles defeated Washington 5-3 Friday.",
           "status": "active",
           "sourceUrls": [
@@ -290,8 +258,8 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-bc8fcdd9981c0e3f",
-          "feedRank": 25
+          "id": "a3-2ece9e650c23bf0b",
+          "feedRank": 28
         }
       ]
     },
@@ -316,7 +284,7 @@
           ],
           "type": "SIGNING",
           "priority": 86,
-          "headline": "Canucks give Zeev Buium eight-year, $75M extension",
+          "headline": "Canucks lock up Buium on eight-year extension",
           "text": "Vancouver signed defenseman Zeev Buium to an eight-year extension worth $9.38 million per season.",
           "entities": [
             "Vancouver Canucks",
@@ -324,8 +292,8 @@
           ],
           "occurredAt": "2026-09-05T16:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.35,
-          "freshnessBasis": "Vancouver signed Zeev Buium to an eight-year extension worth $9.38 million annually Friday.",
+          "ageHours": 2.85,
+          "freshnessBasis": "Vancouver signed Zeev Buium to an eight-year, $9.38 million-per-season extension Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
@@ -337,7 +305,7 @@
               "url": "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
             }
           ],
-          "id": "a3-d4be795dacb8cbc0",
+          "id": "a3-6398ba9d39a21ed6",
           "feedRank": 1
         }
       ]
@@ -349,20 +317,51 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-99a94e67d49873ad"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Haaland scores again as Man City earn a win",
+          "text": "Erling Haaland scored again as Manchester City won Saturday in a busy European soccer slate.",
+          "entities": [
+            "Erling Haaland",
+            "Manchester City"
+          ],
+          "occurredAt": "2026-09-05T19:09:14Z",
+          "timePrecision": "exact",
+          "ageHours": 0.36,
+          "freshnessBasis": "Erling Haaland scored as Manchester City won Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49817484/premier-league-live-updates-newcastle-host-bournemouth-man-city-coventry-city-inter-napoli"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49817484/premier-league-live-updates-newcastle-host-bournemouth-man-city-coventry-city-inter-napoli"
+            }
+          ],
+          "id": "a3-64d517425de97c69",
+          "feedRank": 12
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-a1efd7563ae0d047"
           ],
           "type": "RESULT",
           "priority": 65,
-          "headline": "Hull's unbeaten Premier League start survives Villa draw",
-          "text": "Hull held Aston Villa to 0-0 to remain unbeaten after returning to the Premier League.",
+          "headline": "Hull's unbeaten return continues with Villa draw",
+          "text": "Hull City remained unbeaten in its return to the Premier League after a 0-0 draw with Aston Villa.",
           "entities": [
             "Hull City",
             "Aston Villa"
           ],
           "occurredAt": "2026-09-05T18:37:23Z",
           "timePrecision": "exact",
-          "ageHours": 0.39,
-          "freshnessBasis": "Hull remained unbeaten after a 0-0 draw with Aston Villa on Saturday.",
+          "ageHours": 0.89,
+          "freshnessBasis": "Hull City extended its unbeaten Premier League start with a 0-0 draw against Aston Villa Saturday.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/soccer/report/_/gameId/401878781"
@@ -374,39 +373,7 @@
               "url": "http://www.espn.com/soccer/report/_/gameId/401878781"
             }
           ],
-          "id": "a3-ffa7bf437b0c83a0",
-          "feedRank": 11
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-38bf715571b8ab58"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Vuskovic's first Brighton goal rescues 1-1 draw",
-          "text": "Luka Vuskovic scored his first goal in English football to earn Brighton a draw against Leeds.",
-          "entities": [
-            "Brighton & Hove Albion",
-            "Leeds United",
-            "Luka Vuskovic"
-          ],
-          "occurredAt": "2026-09-05T18:14:41Z",
-          "timePrecision": "exact",
-          "ageHours": 0.77,
-          "freshnessBasis": "Luka Vuskovic scored his first English goal to rescue Brighton's 1-1 draw with Leeds on Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49837674/fabian-hurzeler-luka-vuskovic-top-player-brighton-first-goal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49837674/fabian-hurzeler-luka-vuskovic-top-player-brighton-first-goal"
-            }
-          ],
-          "id": "a3-57c84ce9b3460fca",
+          "id": "a3-288efb8211ad9038",
           "feedRank": 13
         }
       ]
@@ -414,7 +381,41 @@
     {
       "league": "MLS",
       "seasonState": "active",
-      "items": []
+      "items": [
+        {
+          "rank": 1,
+          "candidateIds": [
+            "cand-5fbcd61ebb04f71a"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Goalkeepers duel as NYCFC and Nashville draw 0-0",
+          "text": "Nashville rookie Brian Schwake and New York City FC's Matt Freese combined for a scoreless draw at Yankee Stadium.",
+          "entities": [
+            "New York City FC",
+            "Nashville SC",
+            "Brian Schwake",
+            "Matt Freese"
+          ],
+          "occurredAt": "2026-09-05T04:58:21Z",
+          "timePrecision": "exact",
+          "ageHours": 14.54,
+          "freshnessBasis": "New York City FC and Nashville finished 0-0 Friday.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/soccer/report/_/gameId/761770"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "http://www.espn.com/soccer/report/_/gameId/761770"
+            }
+          ],
+          "id": "a3-4544141953bbcfbe",
+          "feedRank": 17
+        }
+      ]
     },
     {
       "league": "NCAAF",
@@ -426,17 +427,17 @@
             "cand-f819376325303a41"
           ],
           "type": "RECORD",
-          "priority": 74,
+          "priority": 78,
           "headline": "West Virginia retires Pat White's No. 5 jersey",
-          "text": "West Virginia retired the No. 5 jersey of its record-setting quarterback Pat White on Saturday.",
+          "text": "West Virginia retired the record-setting quarterback's No. 5 jersey, two decades after his standout career with the Mountaineers.",
           "entities": [
             "West Virginia Mountaineers",
             "Pat White"
           ],
           "occurredAt": "2026-09-05T18:18:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.7,
-          "freshnessBasis": "West Virginia retired Pat White's No. 5 jersey Saturday, honoring his record-setting career.",
+          "ageHours": 1.2,
+          "freshnessBasis": "West Virginia retired Pat White's No. 5 jersey Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49836949/west-virginia-retires-record-setting-qb-pat-white-no-5-jersey"
@@ -457,17 +458,17 @@
             "cand-16282782c7ea8100"
           ],
           "type": "AWARD",
-          "priority": 70,
-          "headline": "Ohio State adds Jim Tressel to its ring of honor",
-          "text": "Former Ohio State coach Jim Tressel, who led the Buckeyes to the 2002 national championship, was enshrined Saturday.",
+          "priority": 72,
+          "headline": "Ohio State enshrines Jim Tressel in ring of honor",
+          "text": "The former Ohio State coach, who led the Buckeyes to the 2002 national championship, was added to the school's ring of honor.",
           "entities": [
             "Ohio State Buckeyes",
             "Jim Tressel"
           ],
           "occurredAt": "2026-09-05T18:34:45Z",
           "timePrecision": "exact",
-          "ageHours": 0.44,
-          "freshnessBasis": "Ohio State enshrined former coach Jim Tressel in its ring of honor Saturday.",
+          "ageHours": 0.94,
+          "freshnessBasis": "Ohio State enshrined Jim Tressel in its ring of honor Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49837509/former-ohio-state-coach-jim-tressel-enshrined-ring-honor"
@@ -479,26 +480,57 @@
               "url": "https://www.espn.com/college-football/story/_/id/49837509/former-ohio-state-coach-jim-tressel-enshrined-ring-honor"
             }
           ],
-          "id": "a3-f33fc58e959dcd9a",
-          "feedRank": 9
+          "id": "a3-863fe6156be9759f",
+          "feedRank": 8
         },
         {
           "rank": 3,
+          "candidateIds": [
+            "cand-e30ba7dfefd70d60"
+          ],
+          "type": "RESULT",
+          "priority": 66,
+          "headline": "No. 6 Indiana rolls past North Texas 52-16",
+          "text": "Indiana, ranked sixth, beat North Texas 52-16.",
+          "entities": [
+            "Indiana Hoosiers",
+            "North Texas Mean Green"
+          ],
+          "occurredAt": "2026-09-05T16:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.51,
+          "freshnessBasis": "No. 6 Indiana defeated North Texas 52-16 Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-05",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-52b6c7987d2f5c2c",
+          "feedRank": 11
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-ca9c7d78f6bff55c"
           ],
           "type": "RESULT",
           "priority": 66,
-          "headline": "No. 14 USC shuts out Fresno State, 39-0",
-          "text": "USC defeated Fresno State 39-0 in a shutout by the No. 14 Trojans.",
+          "headline": "No. 14 USC shuts out Fresno State 39-0",
+          "text": "USC, ranked 14th, beat Fresno State 39-0.",
           "entities": [
             "USC Trojans",
             "Fresno State Bulldogs"
           ],
           "occurredAt": "2026-09-05T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.01,
-          "freshnessBasis": "No. 14 USC beat Fresno State 39-0 on Friday.",
+          "ageHours": 18.51,
+          "freshnessBasis": "No. 14 USC defeated Fresno State 39-0 Friday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -510,26 +542,26 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-e98fec7706c578b0",
+          "id": "a3-124b32bf4ea75d59",
           "feedRank": 14
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-8e087c5ce446ac1e"
           ],
           "type": "RESULT",
           "priority": 66,
-          "headline": "No. 7 Miami rolls past Stanford, 45-6",
-          "text": "Miami defeated Stanford 45-6 in a blowout involving the No. 7 Hurricanes.",
+          "headline": "No. 7 Miami overwhelms Stanford 45-6",
+          "text": "Miami, ranked seventh, beat Stanford 45-6.",
           "entities": [
             "Miami Hurricanes",
             "Stanford Cardinal"
           ],
           "occurredAt": "2026-09-05T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.01,
-          "freshnessBasis": "No. 7 Miami beat Stanford 45-6 on Friday.",
+          "ageHours": 18.51,
+          "freshnessBasis": "No. 7 Miami defeated Stanford 45-6 Friday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -541,26 +573,26 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-2672db4ecdef7c32",
+          "id": "a3-8d1aa7202f88196d",
           "feedRank": 15
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-6fc97cff2b2d2b58"
           ],
           "type": "RESULT",
           "priority": 66,
-          "headline": "No. 10 Oklahoma shuts out UTEP, 51-0",
-          "text": "Oklahoma defeated UTEP 51-0 in a shutout by the No. 10 Sooners.",
+          "headline": "No. 10 Oklahoma shuts out UTEP 51-0",
+          "text": "Oklahoma, ranked 10th, defeated UTEP 51-0.",
           "entities": [
             "Oklahoma Sooners",
             "UTEP Miners"
           ],
           "occurredAt": "2026-09-05T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.01,
-          "freshnessBasis": "No. 10 Oklahoma beat UTEP 51-0 on Friday.",
+          "ageHours": 19.51,
+          "freshnessBasis": "No. 10 Oklahoma defeated UTEP 51-0 Friday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -572,39 +604,8 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-a8d4af4a934d8493",
+          "id": "a3-70dcac5b46455a11",
           "feedRank": 16
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-d8593273388e5ac2"
-          ],
-          "type": "RESULT",
-          "priority": 63,
-          "headline": "San Jose State rallies past Eastern Michigan 27-21",
-          "text": "San Jose State defeated Eastern Michigan 27-21 Friday in a one-score game.",
-          "entities": [
-            "San Jose State Spartans",
-            "Eastern Michigan Eagles"
-          ],
-          "occurredAt": "2026-09-04T22:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 20.51,
-          "freshnessBasis": "San Jose State defeated Eastern Michigan 27-21 Friday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-88800b12c61a27cc",
-          "feedRank": 23
         },
         {
           "rank": 7,
@@ -612,16 +613,16 @@
             "cand-f25cf2f882733250"
           ],
           "type": "RESULT",
-          "priority": 60,
+          "priority": 64,
           "headline": "Michigan State defeats Toledo 30-20",
-          "text": "Michigan State defeated Toledo 30-20 Friday.",
+          "text": "Michigan State beat Toledo 30-20.",
           "entities": [
             "Michigan State Spartans",
             "Toledo Rockets"
           ],
           "occurredAt": "2026-09-05T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.01,
+          "ageHours": 19.51,
           "freshnessBasis": "Michigan State defeated Toledo 30-20 Friday.",
           "status": "active",
           "sourceUrls": [
@@ -635,7 +636,38 @@
             }
           ],
           "id": "a3-52429f73d5980a3d",
-          "feedRank": 26
+          "feedRank": 19
+        },
+        {
+          "rank": 8,
+          "candidateIds": [
+            "cand-d8593273388e5ac2"
+          ],
+          "type": "RESULT",
+          "priority": 63,
+          "headline": "San José State holds off Eastern Michigan 27-21",
+          "text": "San José State beat Eastern Michigan 27-21 in a one-score game.",
+          "entities": [
+            "San José State Spartans",
+            "Eastern Michigan Eagles"
+          ],
+          "occurredAt": "2026-09-04T22:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.01,
+          "freshnessBasis": "San José State defeated Eastern Michigan 27-21 Friday in a one-score game.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-c2324230813994e6",
+          "feedRank": 25
         }
       ]
     }
@@ -653,7 +685,7 @@
           "type": "QUALIFYING",
           "priority": 82,
           "headline": "Gasly takes first career pole for Italian GP",
-          "text": "Alpine's Pierre Gasly qualified first for Sunday's Italian Grand Prix, with Ferrari off the pace.",
+          "text": "Alpine's Pierre Gasly claimed the first pole position of his career for Sunday's Italian Grand Prix.",
           "entities": [
             "Pierre Gasly",
             "Alpine",
@@ -661,8 +693,8 @@
           ],
           "occurredAt": "2026-09-05T17:45:12Z",
           "timePrecision": "exact",
-          "ageHours": 1.26,
-          "freshnessBasis": "Pierre Gasly took the first pole position of his career for Sunday's Italian Grand Prix.",
+          "ageHours": 1.76,
+          "freshnessBasis": "Pierre Gasly secured the first pole of his Formula 1 career for the Italian Grand Prix Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49813189/alpine-pierre-gasly-takes-thrilling-first-career-pole-italian-grand-prix-ferrari-pace-formula-1-monza"
@@ -683,9 +715,9 @@
             "cand-63c8ef5ef81514d6"
           ],
           "type": "QUALIFYING",
-          "priority": 75,
-          "headline": "Gasly beats Russell to Italian GP pole",
-          "text": "Pierre Gasly took pole position for the Italian Grand Prix, ahead of George Russell.",
+          "priority": 78,
+          "headline": "Pierre Gasly beats Russell to Italian GP pole",
+          "text": "Pierre Gasly beat George Russell to pole position at the Italian Grand Prix after also beating him in online chess.",
           "entities": [
             "Pierre Gasly",
             "George Russell",
@@ -693,7 +725,7 @@
           ],
           "occurredAt": "2026-09-05T17:44:36Z",
           "timePrecision": "exact",
-          "ageHours": 1.27,
+          "ageHours": 1.77,
           "freshnessBasis": "Pierre Gasly took pole position for the Italian Grand Prix Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -706,8 +738,8 @@
               "url": "https://www.espn.com/f1/story/_/id/49813192/pierre-gasly-checkmates-george-russell-chess-stunning-italian-grand-prix-pole-monza-formula-1"
             }
           ],
-          "id": "a3-special-5292f61ad4a42bb8",
-          "feedRank": 7
+          "id": "a3-special-d895a625c117d1db",
+          "feedRank": 5
         },
         {
           "rank": 3,
@@ -716,8 +748,8 @@
           ],
           "type": "DISCIPLINE",
           "priority": 72,
-          "headline": "Piastri gets three-place grid penalty at Italian GP",
-          "text": "Oscar Piastri was penalized for impeding Liam Lawson during Q2 and drops to sixth on the grid.",
+          "headline": "Piastri drops three places on Italian GP grid",
+          "text": "Oscar Piastri was penalized for impeding Liam Lawson in Q2 and will start sixth at Monza.",
           "entities": [
             "Oscar Piastri",
             "Liam Lawson",
@@ -725,8 +757,8 @@
           ],
           "occurredAt": "2026-09-05T16:59:11Z",
           "timePrecision": "exact",
-          "ageHours": 2.03,
-          "freshnessBasis": "Oscar Piastri received a three-place grid penalty after impeding Liam Lawson in Italian GP qualifying.",
+          "ageHours": 2.53,
+          "freshnessBasis": "Oscar Piastri received a three-place grid penalty after impeding Liam Lawson in qualifying Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49813193/oscar-piastri-hit-three-place-grid-penalty-impeding-qualifying-italian-grand-prix-monza"
@@ -738,7 +770,39 @@
               "url": "https://www.espn.com/f1/story/_/id/49813193/oscar-piastri-hit-three-place-grid-penalty-impeding-qualifying-italian-grand-prix-monza"
             }
           ],
-          "id": "a3-special-d5f22a8ea421c31b",
+          "id": "a3-special-c2bb0b0b00b7bf81",
+          "feedRank": 9
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-0dab93e4ebca9c8a"
+          ],
+          "type": "EVENT_UPDATE",
+          "priority": 68,
+          "headline": "Hamilton says title hopes are growing dimmer",
+          "text": "Lewis Hamilton delivered the message after qualifying for the Italian Grand Prix, saying there is light at the end of the tunnel but it is getting dimmer.",
+          "entities": [
+            "Lewis Hamilton",
+            "Ferrari",
+            "Italian Grand Prix"
+          ],
+          "occurredAt": "2026-09-05T17:57:41Z",
+          "timePrecision": "exact",
+          "ageHours": 1.55,
+          "freshnessBasis": "Lewis Hamilton said his title hopes were dimming after Italian GP qualifying.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/f1/story/_/id/49813191/lewis-hamilton-title-fight-theres-light-end-tunnel-getting-dimmer-italian-grand-prix-formula-1-monza"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/f1/story/_/id/49813191/lewis-hamilton-title-fight-theres-light-end-tunnel-getting-dimmer-italian-grand-prix-formula-1-monza"
+            }
+          ],
+          "id": "a3-special-394a60f8cceebe8a",
           "feedRank": 10
         }
       ]
@@ -750,22 +814,22 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-dd536f443e364eb1"
+            "cand-3f7710e1fa54a730"
           ],
-          "type": "ADVANCEMENT",
+          "type": "UPSET",
           "priority": 76,
-          "headline": "Qinwen, Potapova advance after US Open upsets",
-          "text": "Zheng Qinwen rallied past Madison Keys, while Anastasia Potapova ousted Amanda Anisimova to reach the round of 16.",
+          "headline": "Zheng rallies past Keys as Potapova upsets Anisimova",
+          "text": "Zheng Qinwen rallied past Madison Keys, while Anastasia Potapova defeated Amanda Anisimova at the US Open.",
           "entities": [
             "Zheng Qinwen",
             "Madison Keys",
             "Anastasia Potapova",
             "Amanda Anisimova"
           ],
-          "occurredAt": "2026-09-05T18:40:12Z",
+          "occurredAt": "2026-09-05T18:46:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.34,
-          "freshnessBasis": "Zheng Qinwen and Anastasia Potapova advanced to the US Open round of 16 with Saturday upsets.",
+          "ageHours": 0.74,
+          "freshnessBasis": "Zheng Qinwen beat Madison Keys and Anastasia Potapova upset Amanda Anisimova Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49837907/qinwen-potapova-spring-upsets-advance-us-open-round-16"
@@ -777,7 +841,7 @@
               "url": "https://www.espn.com/tennis/story/_/id/49837907/qinwen-potapova-spring-upsets-advance-us-open-round-16"
             }
           ],
-          "id": "a3-special-3d46105c7c0c7b4b",
+          "id": "a3-special-cab504f2bd218a13",
           "feedRank": 4
         },
         {
@@ -787,8 +851,8 @@
           ],
           "type": "RESULT",
           "priority": 65,
-          "headline": "Serena and Venus Williams lose US Open return",
-          "text": "The Williams sisters lost a third-set tiebreak to Hao-Ching Chan and Maya Joint in the US Open women's doubles.",
+          "headline": "Serena and Venus fall in US Open doubles return",
+          "text": "Serena and Venus Williams lost to Hao-Ching Chan and Maya Joint in a third-set tiebreaker and exited the women's doubles draw.",
           "entities": [
             "Serena Williams",
             "Venus Williams",
@@ -797,7 +861,7 @@
           ],
           "occurredAt": "2026-09-05T12:12:54Z",
           "timePrecision": "exact",
-          "ageHours": 6.8,
+          "ageHours": 7.3,
           "freshnessBasis": "Serena and Venus Williams lost their US Open women's doubles match in a third-set tiebreak Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -810,8 +874,8 @@
               "url": "https://www.espn.com/tennis/story/_/id/49830732/serena-venus-williams-lose-third-set-tiebreak-us-open-doubles-return"
             }
           ],
-          "id": "a3-special-6834ccb07d1820a7",
-          "feedRank": 17
+          "id": "a3-special-650a46341992794b",
+          "feedRank": 21
         },
         {
           "rank": 3,
@@ -821,7 +885,7 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Serena and Venus Williams lose US Open opener",
-          "text": "Serena and Venus Williams were defeated in their first-round US Open doubles match.",
+          "text": "Serena and Venus Williams lost their first-round US Open doubles match.",
           "entities": [
             "Serena Williams",
             "Venus Williams",
@@ -829,7 +893,7 @@
           ],
           "occurredAt": "2026-09-05T02:31:09Z",
           "timePrecision": "exact",
-          "ageHours": 16.5,
+          "ageHours": 17.0,
           "freshnessBasis": "Serena and Venus Williams lost their first-round US Open doubles match.",
           "status": "active",
           "sourceUrls": [
@@ -843,66 +907,24 @@
             }
           ],
           "id": "a3-special-2cb4b2a10332243f",
-          "feedRank": 24
-        }
-      ]
-    },
-    {
-      "name": "Tiger Woods DUI Case",
-      "sport": "golf",
-      "items": [
+          "feedRank": 26
+        },
         {
-          "rank": 1,
-          "candidateIds": [
-            "cand-e7a22fe8614761e7"
-          ],
-          "type": "LEGAL",
-          "priority": 75,
-          "headline": "Tiger Woods plans to change plea in DUI case",
-          "text": "Court documents say Tiger Woods plans to change his not guilty plea in the Florida DUI case.",
-          "entities": [
-            "Tiger Woods"
-          ],
-          "occurredAt": "2026-09-05T11:22:06Z",
-          "timePrecision": "exact",
-          "ageHours": 7.65,
-          "freshnessBasis": "Court documents say Tiger Woods plans to change his not guilty plea in a Florida DUI case.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/golf/story/_/id/49798045/court-documents-show-tiger-woods-plans-change-not-guilty-plea-dui-case"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-pga",
-              "url": "https://www.espn.com/golf/story/_/id/49798045/court-documents-show-tiger-woods-plans-change-not-guilty-plea-dui-case"
-            }
-          ],
-          "id": "a3-special-b2f485ff3813fd88",
-          "feedRank": 8
-        }
-      ]
-    },
-    {
-      "name": "Tennis",
-      "sport": "Tennis",
-      "items": [
-        {
-          "rank": 1,
+          "rank": 4,
           "candidateIds": [
             "cand-71f26f4827c34449"
           ],
-          "type": "OTHER",
-          "priority": 65,
-          "headline": "Alcaraz plans more breaks during tennis season",
-          "text": "Carlos Alcaraz said he plans to take more breaks during the season after feeling better than expected following a four-month absence.",
+          "type": "LEAGUE_NEWS",
+          "priority": 62,
+          "headline": "Alcaraz plans more breaks after injury absence",
+          "text": "Carlos Alcaraz said he plans to take more breaks during the tennis season after returning from a four-month absence.",
           "entities": [
             "Carlos Alcaraz"
           ],
           "occurredAt": "2026-09-05T15:00:22Z",
           "timePrecision": "exact",
-          "ageHours": 4.01,
-          "freshnessBasis": "Carlos Alcaraz said he plans to take more breaks after a four-month absence.",
+          "ageHours": 4.51,
+          "freshnessBasis": "Carlos Alcaraz announced plans for more season breaks after a four-month absence.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49829911/feeling-good-return-injury-carlos-alcaraz-plans-take-more-long-breaks-tennis"
@@ -914,13 +936,13 @@
               "url": "https://www.espn.com/tennis/story/_/id/49829911/feeling-good-return-injury-carlos-alcaraz-plans-take-more-long-breaks-tennis"
             }
           ],
-          "id": "a3-special-9a6affede2a0e340",
+          "id": "a3-special-adc4cf10b6105976",
           "feedRank": 27
         }
       ]
     }
   ],
-  "headlineCount": 27,
+  "headlineCount": 28,
   "headlineTargetChars": 64,
   "headlineMaxChars": 72
 }
