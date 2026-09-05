@@ -5,7 +5,7 @@ A4 intentionally leaves discovery, source parsing, FBS identity, same-game fusio
 decisive-moment enrichment, and final grounding validation in
 ``refresh_sports_ticker.py``.  This sidecar only changes editorial selection:
 
-- target 18 headlines, with a preferred 15-20 total across ALL leagues/events;
+- target 32 headlines, with a preferred 30-35 total across ALL leagues/events;
 - preserve strong A3 relevance gates while allowing a few more legitimate result
   stories when the global feed would otherwise be too thin;
 - enforce one global diversity budget instead of treating every league as an
@@ -22,17 +22,20 @@ import importlib.util
 import json
 import os
 import sys
+import textwrap
 from pathlib import Path
 from typing import Any
 
-PIPELINE_VERSION = "A4.0-global-headline-budget"
+PIPELINE_VERSION = "A4.1-expanded-global-feed"
 DISPLAY_TITLE = "SPORTS BIG BOARD — SPORTS TICKER A4"
-GLOBAL_HEADLINE_MIN = 15
-GLOBAL_HEADLINE_TARGET = 18
-GLOBAL_HEADLINE_MAX = 20
-GLOBAL_BASE_CONTEXT_CAP = 5
-GLOBAL_SPECIAL_EVENT_CAP = 3
-GLOBAL_SPECIAL_TOTAL_CAP = 5
+GLOBAL_HEADLINE_MIN = 30
+GLOBAL_HEADLINE_TARGET = 32
+GLOBAL_HEADLINE_MAX = 35
+GLOBAL_BASE_CONTEXT_CAP = 8
+GLOBAL_SPECIAL_EVENT_CAP = 4
+GLOBAL_SPECIAL_TOTAL_CAP = 8
+HEADLINE_TARGET_CHARS = 64
+HEADLINE_MAX_CHARS = 72
 LEGAL_PRIORITY_FLOOR = 75
 PRACTICE_PRIORITY_FLOOR = 62
 
@@ -44,11 +47,11 @@ A4 GLOBAL FEED BUDGET — CRITICAL
 The finished Sports Ticker is ONE continuously scrolling feed across every base
 league and every Special Event. The headline budget is GLOBAL, never per league.
 
-- Preferred final total: 15-20 headlines across EVERYTHING combined.
-- Editorial target before Python's final safety/diversity pass: 18-20 headlines.
-- 20 is a hard ceiling for the final feed, not a target for each section.
+- Preferred final total: 30-35 headlines across EVERYTHING combined.
+- Editorial target before Python's final safety/diversity pass: 32-35 headlines.
+- 35 is a hard ceiling for the final feed, not a target for each section.
 - Never pad with analysis, generic previews, weak rumors, or meaningless scores
-  just to reach 15. If fewer than 15 genuinely useful stories exist, return fewer.
+  just to reach 30. If fewer than 30 genuinely useful stories exist, return fewer.
 - Conversely, do not stop at 2-3 items per league when several legitimate fresh
   stories exist and the combined feed is still below target.
 - Think like a national sports-news desk building one ribbon, not seven separate
@@ -60,10 +63,20 @@ GLOBAL MIX
 - Active/postseason leagues with a legitimate fresh development should usually be
   represented, but there is no hard quota for any league.
 - Avoid allowing one league or one story type to dominate simply because it has
-  many similar results. Four or five strong items from one league can be fine; a
-  wall of routine scores is not.
-- Special Events compete directly with base-league stories for the same 15-20
+  many similar results. Six to eight strong items from one active league can be fine
+  when the overall news day supports it; a wall of routine scores is not.
+- Special Events compete directly with base-league stories for the same 30-35
   global slots.
+
+HEADLINE LENGTH — CRITICAL FOR THE ON-SCREEN RIBBON
+- Headlines are display copy, not article titles. Aim for 45-64 characters.
+- HARD maximum: 72 characters, including spaces and punctuation.
+- Keep the key actor + development/result; move secondary context into the text field.
+- Prefer compact sports wording: "Italian GP" over "Italian Grand Prix" when needed,
+  "extension" over "contract extension", and avoid filler such as "in a matchup that".
+- A reader should normally see the whole headline in one line, or at most two short lines.
+- Do not sacrifice the score, ranking, record, or decisive fact when it is the reason
+  the story is ticker-worthy.
 
 RESULTS
 - Keep the existing hard-news test. A result still needs a reason to exist.
@@ -106,6 +119,67 @@ def _age(item: dict[str, Any]) -> float:
         return float(value) if value is not None else 24.0
     except Exception:
         return 24.0
+
+
+def _compact_headline(value: Any) -> str:
+    """Keep ribbon headlines to two short lines at most.
+
+    The model is schema-constrained to 72 characters, but A3 post-processing can
+    strengthen a result headline after model validation. This deterministic guard
+    catches those repaired headlines without changing the grounded story itself.
+    """
+    headline = " ".join(str(value or "").split()).strip()
+    if len(headline) <= HEADLINE_TARGET_CHARS:
+        return headline
+
+    replacements = [
+        ("Italian Grand Prix", "Italian GP"),
+        ("United States Grand Prix", "U.S. GP"),
+        ("contract extension", "extension"),
+        ("three-place grid penalty", "3-place grid penalty"),
+        ("first career pole position", "first career pole"),
+        ("first career pole", "first pole"),
+        ("defeated", "beat"),
+        ("victory over", "win over"),
+    ]
+    for old, new in replacements:
+        headline = headline.replace(old, new)
+        if len(headline) <= HEADLINE_TARGET_CHARS:
+            return headline
+
+    # Headlines between target and hard max are acceptable as two-line copy.
+    if len(headline) <= HEADLINE_MAX_CHARS:
+        return headline
+
+    # Final safety net: shorten at a word boundary and mark the omission. The
+    # complete supporting detail remains in item["text"].
+    return textwrap.shorten(
+        headline, width=HEADLINE_MAX_CHARS, placeholder="…"
+    )
+
+
+def _repair_headline_lengths(
+    rows: list[dict[str, Any]],
+    run_log: dict[str, Any] | None = None,
+) -> None:
+    repairs = None
+    if run_log is not None:
+        repairs = run_log.setdefault("pipeline", {}).setdefault("headlineRepairs", [])
+    for row in rows:
+        item = row["item"]
+        original = str(item.get("headline") or "")
+        repaired = _compact_headline(original)
+        if repaired != original:
+            item["headline"] = repaired
+            if repairs is not None:
+                repairs.append({
+                    "context": row.get("context"),
+                    "original": original,
+                    "repaired": repaired,
+                    "originalChars": len(original),
+                    "repairedChars": len(repaired),
+                    "maxChars": HEADLINE_MAX_CHARS,
+                })
 
 
 def _editorial_score(row: dict[str, Any]) -> float:
@@ -223,14 +297,15 @@ def apply_global_headline_budget(
     normalized: dict[str, Any],
     run_log: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Apply one deterministic 15-20 headline budget across all sections.
+    """Apply one deterministic 30-35 headline budget across all sections.
 
-    The editor is asked for 18-20 legitimate stories. This pass then removes
+    The editor is asked for 32-35 legitimate stories. This pass then removes
     low-significance legal/practice items, preserves diversity, caps the final
-    feed at 20, and only relaxes context caps when that is necessary to approach
-    the 15-headline preferred floor. It never manufactures filler copy.
+    feed at 35, and only relaxes context caps when that is necessary to approach
+    the 30-headline preferred floor. It never manufactures filler copy.
     """
     rows = _flatten(normalized)
+    _repair_headline_lengths(rows, run_log)
     budget_log = None
     if run_log is not None:
         budget_log = run_log.setdefault("pipeline", {}).setdefault(
@@ -277,8 +352,8 @@ def apply_global_headline_budget(
     selected = _select_with_caps(eligible_rows, min(GLOBAL_HEADLINE_TARGET, GLOBAL_HEADLINE_MAX))
     selected_ids = {id(r["item"]) for r in selected}
 
-    # Always allow truly major remaining stories to compete for the two slots
-    # above the 18-headline target, while still respecting the hard 20 ceiling.
+    # Always allow truly major remaining stories to compete for the extra slots
+    # above the 32-headline target, while still respecting the hard 35 ceiling.
     for row in eligible_rows:
         if len(selected) >= GLOBAL_HEADLINE_MAX:
             break
@@ -288,7 +363,7 @@ def apply_global_headline_budget(
             selected.append(row)
             selected_ids.add(id(row["item"]))
 
-    # If diversity caps leave us short of the preferred 15, relax the caps but
+    # If diversity caps leave us short of the preferred 30, relax the caps but
     # only with stories the model already selected and A3 already validated.
     if len(selected) < GLOBAL_HEADLINE_MIN:
         selected_special = sum(1 for row in selected if row["kind"] == "special")
@@ -315,7 +390,7 @@ def apply_global_headline_budget(
             selected.append(row)
             selected_ids.add(id(row["item"]))
 
-    # If the first pass somehow exceeded 20 due to future edits, enforce the hard cap.
+    # If the first pass somehow exceeded 35 due to future edits, enforce the hard cap.
     selected = sorted(
         selected,
         key=lambda r: (
@@ -369,7 +444,7 @@ def apply_global_headline_budget(
                 budget_log["dropped"].append({
                     "context": row["context"],
                     "headline": row["item"].get("headline"),
-                    "reason": "outside A4 global 20-headline/diversity budget",
+                    "reason": "outside A4 global 35-headline/diversity budget",
                 })
 
     return normalized
@@ -384,14 +459,18 @@ def _headline_count(dataset: dict[str, Any]) -> int:
 def _configure_core(core) -> None:
     # Broaden A3's per-league ordinary-result filler allowance just enough for
     # the GLOBAL feed to reach useful density. The A3 hard relevance checks stay.
-    core.MAX_GENERIC_RESULT_FILLERS = 3
-    core.RESULT_RELEVANCE_TARGET = 5
+    core.MAX_GENERIC_RESULT_FILLERS = 5
+    core.RESULT_RELEVANCE_TARGET = 8
 
     # Extend taxonomy in-place so the strict JSON schema and runtime validator
     # both see the same values.
     for item_type in A4_TYPES:
         if item_type not in core.ALLOWED_TYPES:
             core.ALLOWED_TYPES.append(item_type)
+
+    # Ribbon copy must stay compact even before the deterministic post-pass.
+    core.MODEL_ITEM_SCHEMA["properties"]["headline"]["maxLength"] = HEADLINE_MAX_CHARS
+    core.MODEL_SCHEMA["$defs"]["item"]["properties"]["headline"]["maxLength"] = HEADLINE_MAX_CHARS
     core.PRIORITY_DEFAULTS.update({
         "ADVANCEMENT": 72,
         "PRACTICE": 62,
@@ -422,12 +501,16 @@ def _configure_core(core) -> None:
             f"editor target {GLOBAL_HEADLINE_TARGET}-{GLOBAL_HEADLINE_MAX}; global, not per league"
         )
         log["configuration"]["resultRelevanceGate"] = (
-            "A3 strong-story gate retained; up to three ordinary result fillers per league "
-            "only to support the global A4 feed budget"
+            "A3 strong-story gate retained; up to five ordinary result fillers per league "
+            "only when useful to support the expanded global A4 feed budget"
         )
         log["configuration"]["legalStoryPolicy"] = (
             f"off-field/legal stories must clear priority {LEGAL_PRIORITY_FLOOR} after normalization"
         )
+        log["configuration"]["headlineLength"] = (
+            f"target <= {HEADLINE_TARGET_CHARS} chars; hard max {HEADLINE_MAX_CHARS} chars"
+        )
+        log["pipeline"]["headlineRepairs"] = []
         log["pipeline"]["globalHeadlineBudget"] = {
             "min": GLOBAL_HEADLINE_MIN,
             "target": GLOBAL_HEADLINE_TARGET,
@@ -461,9 +544,14 @@ def _configure_core(core) -> None:
         )
         count = _headline_count(dataset)
         marker = f"Global headline budget: {count}/{GLOBAL_HEADLINE_MIN}-{GLOBAL_HEADLINE_MAX} total\n"
+        headline_marker = (
+            f"Headline length: target <= {HEADLINE_TARGET_CHARS} chars; "
+            f"hard max {HEADLINE_MAX_CHARS}\n"
+        )
         lines = rendered.splitlines(keepends=True)
         insert_at = 2 if len(lines) >= 2 else len(lines)
         lines.insert(insert_at, marker)
+        lines.insert(insert_at + 1, headline_marker)
         return "".join(lines)
 
     def atomic_write_a4(path: Path, content: str):
@@ -474,9 +562,11 @@ def _configure_core(core) -> None:
                 payload["pipelineVersion"] = PIPELINE_VERSION
                 payload["discoveryMode"] = (
                     str(payload.get("discoveryMode") or "")
-                    + "; A4 global 15-20 headline budget + diversity selection"
+                    + "; A4 global 30-35 headline budget + compact-headline diversity selection"
                 ).strip("; ")
                 payload["headlineCount"] = _headline_count(payload)
+                payload["headlineTargetChars"] = HEADLINE_TARGET_CHARS
+                payload["headlineMaxChars"] = HEADLINE_MAX_CHARS
                 content = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
             except Exception:
                 pass
@@ -505,6 +595,12 @@ def _migrate_existing_output(data_dir: Path) -> None:
             count = _headline_count(payload)
             if payload.get("headlineCount") != count:
                 payload["headlineCount"] = count
+                changed = True
+            if payload.get("headlineTargetChars") != HEADLINE_TARGET_CHARS:
+                payload["headlineTargetChars"] = HEADLINE_TARGET_CHARS
+                changed = True
+            if payload.get("headlineMaxChars") != HEADLINE_MAX_CHARS:
+                payload["headlineMaxChars"] = HEADLINE_MAX_CHARS
                 changed = True
             if changed:
                 json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -540,7 +636,7 @@ def main() -> int:
         except Exception:
             migrating = True
 
-    # On the first A4 execution, force one editorial pass so the new global
+    # On the first execution of this A4 revision, force one editorial pass so the new global
     # budget is applied immediately even if the candidate hash has not changed.
     added_force = False
     if migrating and "--force-model" not in sys.argv:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A4 global 15-20 headline budget regression coverage."""
+"""A4 global 30-35 headline budget + compact headline regression coverage."""
 from __future__ import annotations
 
 import importlib.util
@@ -13,13 +13,13 @@ assert spec and spec.loader
 spec.loader.exec_module(mod)
 
 
-def item(n, kind="RESULT", priority=65, age=2.0):
+def item(n, kind="RESULT", priority=65, age=2.0, headline=None):
     return {
         "rank": n,
         "candidateIds": [f"cand-{n:03d}"],
         "type": kind,
         "priority": priority,
-        "headline": f"Headline {n}",
+        "headline": headline or f"Headline {n}",
         "text": f"Useful grounded detail for headline {n}.",
         "entities": [],
         "occurredAt": "2026-09-05T12:00:00Z",
@@ -56,11 +56,11 @@ def total(dataset):
     )
 
 
-def test_budget_is_global_and_hard_caps_at_20():
+def test_budget_is_global_and_targets_32_with_hard_cap_35():
     ds = empty_dataset()
     n = 1
     for group in ds["leagues"]:
-        for _ in range(6):
+        for _ in range(8):
             group["items"].append(item(n, priority=80 - (n % 9)))
             n += 1
     out = mod.apply_global_headline_budget(ds)
@@ -72,15 +72,15 @@ def test_budget_is_global_and_hard_caps_at_20():
     )
 
 
-def test_budget_relaxes_context_caps_to_reach_15_when_only_one_league_has_supply():
+def test_budget_relaxes_context_caps_to_reach_30_when_only_one_league_has_supply():
     ds = empty_dataset()
     mlb = next(g for g in ds["leagues"] if g["league"] == "MLB")
-    mlb["items"] = [item(i, priority=70 - (i % 5)) for i in range(1, 18)]
+    mlb["items"] = [item(i, priority=70 - (i % 5)) for i in range(1, 35)]
     out = mod.apply_global_headline_budget(ds)
     assert total(out) == mod.GLOBAL_HEADLINE_MIN, total(out)
 
 
-def test_budget_never_pads_when_fewer_than_15_legitimate_items_exist():
+def test_budget_never_pads_when_fewer_than_30_legitimate_items_exist():
     ds = empty_dataset()
     mlb = next(g for g in ds["leagues"] if g["league"] == "MLB")
     mlb["items"] = [item(i, priority=70) for i in range(1, 9)]
@@ -104,7 +104,7 @@ def test_low_significance_legal_story_is_removed():
 def test_special_events_share_same_global_budget():
     ds = empty_dataset()
     mlb = next(g for g in ds["leagues"] if g["league"] == "MLB")
-    mlb["items"] = [item(i, priority=68) for i in range(1, 11)]
+    mlb["items"] = [item(i, priority=68) for i in range(1, 21)]
     ds["specialEvents"] = [
         {
             "name": "US Open (tennis)",
@@ -139,11 +139,42 @@ def test_feed_rank_is_unique_and_global():
     assert sorted(ranks) == list(range(1, len(ranks) + 1)), ranks
 
 
+def test_headline_compaction_hard_caps_at_72_chars():
+    ds = empty_dataset()
+    mlb = next(g for g in ds["leagues"] if g["league"] == "MLB")
+    long_headline = (
+        "A very long sports headline that contains far too much secondary context "
+        "for a continuously scrolling television-style sports ticker ribbon"
+    )
+    mlb["items"] = [item(1, priority=80, headline=long_headline)]
+    out = mod.apply_global_headline_budget(ds)
+    headline = out["leagues"][0]["items"][0]["headline"]
+    assert len(headline) <= mod.HEADLINE_MAX_CHARS, (len(headline), headline)
+    assert headline.endswith("…")
+
+
+def test_common_sports_phrasing_compacts_without_ellipsis_when_possible():
+    headline = "Pierre Gasly takes first career pole position at Italian Grand Prix"
+    compact = mod._compact_headline(headline)
+    assert len(compact) <= mod.HEADLINE_MAX_CHARS
+    assert "Italian GP" in compact
+    assert not compact.endswith("…")
+
+
+def test_budget_constants_match_scrolling_ribbon_contract():
+    assert (mod.GLOBAL_HEADLINE_MIN, mod.GLOBAL_HEADLINE_TARGET, mod.GLOBAL_HEADLINE_MAX) == (30, 32, 35)
+    assert mod.HEADLINE_TARGET_CHARS == 64
+    assert mod.HEADLINE_MAX_CHARS == 72
+
+
 if __name__ == "__main__":
-    test_budget_is_global_and_hard_caps_at_20()
-    test_budget_relaxes_context_caps_to_reach_15_when_only_one_league_has_supply()
-    test_budget_never_pads_when_fewer_than_15_legitimate_items_exist()
+    test_budget_is_global_and_targets_32_with_hard_cap_35()
+    test_budget_relaxes_context_caps_to_reach_30_when_only_one_league_has_supply()
+    test_budget_never_pads_when_fewer_than_30_legitimate_items_exist()
     test_low_significance_legal_story_is_removed()
     test_special_events_share_same_global_budget()
     test_feed_rank_is_unique_and_global()
-    print("PASS: A4 global Sports Ticker headline budget")
+    test_headline_compaction_hard_caps_at_72_chars()
+    test_common_sports_phrasing_compacts_without_ellipsis_when_possible()
+    test_budget_constants_match_scrolling_ribbon_contract()
+    print("PASS: A4 expanded global Sports Ticker budget + compact headlines")

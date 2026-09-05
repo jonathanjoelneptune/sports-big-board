@@ -498,7 +498,7 @@ class AuditStore:
         cutoff=now-PLAYABLE_EVIDENCE_FRESH_SECONDS
         restored=[]
         requeued=[]
-        with self.lock, closing(self.connect()) as conn:
+        with self.lock, closing(self.connect(timeout=2)) as conn:
             rows=conn.execute(
                 """SELECT s.asset_key,s.asset_json,s.runtime_success_at,s.runtime_failure_at,
                           s.runtime_failure_reason,em.canonical_event_key
@@ -586,7 +586,7 @@ class AuditStore:
         infrastructure/worker exception and is safe to retry in deterministic order.
         """
         now = _now()
-        with self.lock, closing(self.connect()) as conn:
+        with self.lock, closing(self.connect(timeout=2)) as conn:
             run = conn.execute(
                 "SELECT * FROM history_media_audit_run ORDER BY id DESC LIMIT 1"
             ).fetchone()
@@ -1110,7 +1110,7 @@ class AuditStore:
         now = _now(); cutoff = now - PLAYABLE_EVIDENCE_FRESH_SECONDS
         restored = 0; reset_nonhard = 0; preserved_recent = 0
         affected = set(); requeued = []; removed_false_packages = 0
-        with self.lock, closing(self.connect()) as conn:
+        with self.lock, closing(self.connect(timeout=2)) as conn:
             rows = conn.execute(
                 """SELECT em.canonical_event_key,em.asset_key,em.association_method,
                           s.runtime_state,s.runtime_success_at,s.runtime_failure_reason
@@ -2319,9 +2319,13 @@ class AuditStatusCache(threading.Thread):
 
 
 STORE = AuditStore(DB_PATH)
-PLAYABLE_RECOVERY = STORE.recover_transient_playable_quarantines()
-ALTERNATE_RECOVERY = STORE.recover_healthy_audit_alternatives()
-RECOVERY = STORE.recover_exception_failures()
+# Startup recovery is maintenance, never a service-readiness prerequisite.  The
+# audit API must be able to answer heartbeat/status even when the shared SQLite
+# writer is temporarily owned by the main Sports Big Board backend.
+PLAYABLE_RECOVERY = {"state":"PENDING","restoredAssets":0,"requeuedOrdinals":[]}
+ALTERNATE_RECOVERY = {"state":"PENDING","restoredAssets":0,"requeuedOrdinals":[]}
+RECOVERY = {"state":"PENDING","runId":0,"requeued":0,"recoveredPackages":0}
+STARTUP_RECOVERY = {"state":"PENDING","stage":"","attempt":0,"lastError":"","updatedAt":_now()}
 STATUS_CACHE = AuditStatusCache(STORE)
 STATUS_CACHE.start()
 DB_WRITER = SerializedAuditDbWriter(STORE)
@@ -2329,6 +2333,7 @@ DB_WRITER.start()
 WORKER_CONTROL_LOCK = threading.RLock()
 PROBES = []
 WORKERS = []
+STARTUP_RECOVERY_THREAD = None
 
 def _spawn_workers(reason="service start"):
     global PROBES, WORKERS
@@ -2376,9 +2381,87 @@ def _worker_status_payload():
     primary = min(active, key=lambda r: int(r["current"].get("ordinal") or 10**9)) if active else (rows[0] if rows else {"alive": False, "current": {}, "lastError": "", "diagnostics": {}})
     return primary, rows
 
+def _run_startup_recovery():
+    global PLAYABLE_RECOVERY, ALTERNATE_RECOVERY, RECOVERY, STARTUP_RECOVERY
+    retry_seconds = max(1.0, float(os.environ.get("SBB_MEDIA_AUDIT_STARTUP_RECOVERY_RETRY_SECONDS", "3")))
+    max_wait_seconds = max(30.0, float(os.environ.get("SBB_MEDIA_AUDIT_STARTUP_RECOVERY_MAX_WAIT_SECONDS", "300")))
+    stages = [
+        ("PLAYABLE_EVIDENCE", "PLAYABLE_RECOVERY", STORE.recover_transient_playable_quarantines),
+        ("HEALTHY_ALTERNATIVES", "ALTERNATE_RECOVERY", STORE.recover_healthy_audit_alternatives),
+        ("QUEUE_EXCEPTIONS", "RECOVERY", STORE.recover_exception_failures),
+    ]
+    for stage, target, fn in stages:
+        started = _now(); attempt = 0
+        while True:
+            attempt += 1
+            STARTUP_RECOVERY = {
+                "state":"RUNNING", "stage":stage, "attempt":attempt,
+                "lastError":"", "updatedAt":_now(),
+            }
+            try:
+                result = dict(fn() or {})
+                result["state"] = "DONE"
+                result["attempts"] = attempt
+                if target == "PLAYABLE_RECOVERY":
+                    PLAYABLE_RECOVERY = result
+                elif target == "ALTERNATE_RECOVERY":
+                    ALTERNATE_RECOVERY = result
+                else:
+                    RECOVERY = result
+                break
+            except Exception as exc:
+                if _is_db_locked(exc):
+                    STARTUP_RECOVERY = {
+                        "state":"WAITING_DATABASE_LOCK", "stage":stage, "attempt":attempt,
+                        "lastError":f"{type(exc).__name__}: {exc}", "updatedAt":_now(),
+                    }
+                    # Startup recovery is deliberately fail-soft.  Heartbeat, status,
+                    # and workers remain alive while this maintenance pass waits.
+                    if _now() - started >= max_wait_seconds:
+                        STARTUP_RECOVERY["state"] = "WAITING_DATABASE_LOCK_LONG"
+                    # Never give up on queue-restart recovery: old ACTIVE ordinals
+                    # must eventually be returned to PENDING, but this retry runs
+                    # entirely off the heartbeat/service-readiness path.
+                    time.sleep(retry_seconds)
+                    continue
+                traceback.print_exc()
+                failed = {
+                    "state":"ERROR", "attempts":attempt,
+                    "error":f"{type(exc).__name__}: {exc}",
+                }
+                if target == "PLAYABLE_RECOVERY":
+                    PLAYABLE_RECOVERY = failed
+                elif target == "ALTERNATE_RECOVERY":
+                    ALTERNATE_RECOVERY = failed
+                else:
+                    RECOVERY = failed
+                break
+    STARTUP_RECOVERY = {"state":"DONE","stage":"COMPLETE","attempt":0,"lastError":"","updatedAt":_now()}
+    try:
+        STATUS_CACHE.request_refresh()
+    except Exception:
+        pass
+    if RECOVERY.get("requeued") and WORKERS:
+        WORKERS[0]._trace(
+            "WARN",
+            f"Recovered {RECOVERY['requeued']} prior worker/infrastructure failures for deterministic retry",
+            runId=RECOVERY.get("runId"),
+        )
+
+
+def _start_startup_recovery():
+    global STARTUP_RECOVERY_THREAD
+    STARTUP_RECOVERY_THREAD = threading.Thread(
+        target=_run_startup_recovery,
+        name="media-audit-startup-recovery",
+        daemon=True,
+    )
+    STARTUP_RECOVERY_THREAD.start()
+    return STARTUP_RECOVERY_THREAD
+
+
 _spawn_workers("service start")
-if RECOVERY.get("requeued") and WORKERS:
-    WORKERS[0]._trace("WARN", f"Recovered {RECOVERY['requeued']} prior worker/infrastructure failures for deterministic retry", runId=RECOVERY.get("runId"))
+_start_startup_recovery()
 
 
 def _json(handler, payload, status=200):
@@ -2440,6 +2523,7 @@ class Handler(BaseHTTPRequestHandler):
                     "statusCacheAgeSeconds": cached.get("ageSeconds", 0),
                     "workerCount": AUDIT_WORKER_COUNT, "workers": worker_rows, "worker": primary_worker,
                     "dbWriter": DB_WRITER.snapshot(),
+                    "startupRecovery": dict(STARTUP_RECOVERY),
                     "run": cached.get("run"), "summary": cached.get("summary") or {},
                     "newestEligibleDate": cached.get("newestEligibleDate", "")
                 })
