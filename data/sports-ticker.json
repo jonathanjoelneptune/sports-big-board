@@ -1,11 +1,11 @@
 {
   "schemaVersion": 8,
   "pipelineVersion": "A3.6-decisive-moment-enrichment",
-  "generatedAt": "2026-09-05T00:30:54Z",
+  "generatedAt": "2026-09-05T01:00:52Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive match-detail/highlight enrichment + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-4o-mini",
-  "sourceCandidateHash": "feddfbf38a4690fd8c583b0227d5f7aa71cebf390d6cbd45ec598229d22c4ea5",
+  "sourceCandidateHash": "70221c3b7e470ddf7a913de517cf5f2280514dab5c65869f297ccc17fdd44147",
   "leagues": [
     {
       "league": "MLB",
@@ -22,13 +22,12 @@
           "text": "The Pirates activated rookie shortstop Konnor Griffin off the 60-day injured list on Friday.",
           "entities": [
             "Pittsburgh Pirates",
-            "Konnor Griffin",
-            "injured list"
+            "Konnor Griffin"
           ],
           "occurredAt": "2026-09-04T20:47:53Z",
           "timePrecision": "exact",
-          "ageHours": 3.72,
-          "freshnessBasis": "The Pirates activated rookie shortstop Konnor Griffin off the 60-day injured list.",
+          "ageHours": 4.22,
+          "freshnessBasis": "The Pirates activated Konnor Griffin from the injured list Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49827876/pirates-konnor-griffin-finger-activated-60-day-il"
@@ -45,92 +44,21 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-1c45fc0c715aefe8"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Cleveland Guardians beat Detroit Tigers 7-6",
-          "text": "Brayan Rocchio hit a walk-off homer in the ninth inning after connecting on a tying grand slam in the fourth, rallying the Cleveland Guardians to a 7-6 comeback victory over the Detroit Tigers.",
-          "entities": [
-            "Cleveland Guardians",
-            "Detroit Tigers"
-          ],
-          "occurredAt": "2026-09-04T18:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 6.35,
-          "freshnessBasis": "Brayan Rocchio hit a walk-off homer in the ninth inning after a tying grand slam in the fourth.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816801",
-            "http://www.espn.com/mlb/recap?gameId=401877193"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-04",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816801"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401877193"
-            }
-          ],
-          "id": "a3-272ca18c893cd6d9"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-1f017c227c653af4"
           ],
           "type": "RESULT",
           "priority": 65,
-          "headline": "Los Angeles Dodgers beat St. Louis Cardinals 3-2",
-          "text": "The Los Angeles Dodgers secured a narrow 3-2 victory against the St. Louis Cardinals.",
+          "headline": "Cleveland Guardians beat Detroit Tigers 7-6",
+          "text": "Brayan Rocchio hit a walk-off homer in the ninth inning after connecting on a tying grand slam in the fourth, rallying the Cleveland Guardians to a 7-6 comeback victory over the Detroit Tigers in the first game of a split doubleheader on Friday.",
           "entities": [
-            "Los Angeles Dodgers",
-            "St. Louis Cardinals"
+            "Cleveland Guardians",
+            "Detroit Tigers",
+            "Brayan Rocchio"
           ],
           "occurredAt": "2026-09-04T02:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.35,
-          "freshnessBasis": "The Los Angeles Dodgers secured a narrow 3-2 victory against the St. Louis Cardinals.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-03",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-28609adbc437eac9"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-57a2a86edc7203a5"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Oakland Athletics beat Seattle Mariners 7-4",
-          "text": "The Oakland Athletics defeated the Seattle Mariners 7-4.",
-          "entities": [
-            "Oakland Athletics",
-            "Seattle Mariners"
-          ],
-          "occurredAt": "2026-09-04T01:40:00Z",
-          "timePrecision": "exact",
           "ageHours": 22.85,
-          "freshnessBasis": "The Oakland Athletics defeated the Seattle Mariners 7-4.",
+          "freshnessBasis": "Cleveland won Friday's game 7-6 against Detroit.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -142,7 +70,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-6ec21ef6b3bba0eb"
+          "id": "a3-7841324380c8617a"
         }
       ]
     },
@@ -163,15 +91,15 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Ben Simmons returning to NBA on 1-year, $3.5M deal with Kings",
-          "text": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
+          "text": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings, according to his agents.",
           "entities": [
-            "Kings",
+            "Sacramento Kings",
             "Ben Simmons"
           ],
           "occurredAt": "2026-09-04T14:56:49Z",
           "timePrecision": "exact",
-          "ageHours": 9.57,
-          "freshnessBasis": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
+          "ageHours": 10.07,
+          "freshnessBasis": "Ben Simmons agreed to a one-year deal with the Kings.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
@@ -206,8 +134,8 @@
           ],
           "occurredAt": "2026-09-04T23:53:16Z",
           "timePrecision": "exact",
-          "ageHours": 0.63,
-          "freshnessBasis": "The Canucks signed defenseman Zeev Buium to an eight-year contract extension.",
+          "ageHours": 1.13,
+          "freshnessBasis": "Vancouver extended Zeev Buium's contract Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
@@ -230,20 +158,50 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-5137fc7c0211d840"
+          ],
+          "type": "CONTRACT",
+          "priority": 88,
+          "headline": "Richarlison declined new contract months before Tottenham squad omission",
+          "text": "Roberto De Zerbi revealed that Richarlison declined to sign an extension to his Tottenham contract prior to his omission from the squad.",
+          "entities": [
+            "Tottenham Hotspur",
+            "Richarlison"
+          ],
+          "occurredAt": "2026-09-04T21:31:25Z",
+          "timePrecision": "exact",
+          "ageHours": 3.49,
+          "freshnessBasis": "Richarlison turned down a new contract at Tottenham.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49826046/richarlison-was-offered-new-contract-months-tottenham-squad-omission-roberto-de-zerbi"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49826046/richarlison-was-offered-new-contract-months-tottenham-squad-omission-roberto-de-zerbi"
+            }
+          ],
+          "id": "a3-36a95a433935da3d"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-0894a44e354d1349"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Liverpool beat Ipswich 2-0",
-          "text": "Liverpool secured a 2-0 victory against Ipswich Town for their first win of the Premier League season.",
+          "text": "Liverpool secured its first league win of the season with a 2-0 victory over Ipswich.",
           "entities": [
             "Liverpool",
             "Ipswich"
           ],
           "occurredAt": "2026-09-04T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.51,
-          "freshnessBasis": "Liverpool secured a 2-0 victory against Ipswich Town.",
+          "ageHours": 6.01,
+          "freshnessBasis": "Liverpool won their first league match of the season 2-0.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -273,74 +231,13 @@
     {
       "league": "NCAAF",
       "seasonState": "active",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-9f1957b1ce574cd1"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Utah Utes beat Idaho Vandals 66-14",
-          "text": "The Utah Utes dominated the Idaho Vandals with a decisive 66-14 victory.",
-          "entities": [
-            "Utah Utes",
-            "Idaho Vandals"
-          ],
-          "occurredAt": "2026-09-04T01:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "The Utah Utes won decisively against the Idaho Vandals.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-03",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-0315ef9bbbecd33c"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-67187ca22d5dfe2d"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Illinois Fighting Illini beat UAB Blazers 42-23",
-          "text": "The Illinois Fighting Illini triumphed over the UAB Blazers with a score of 42-23.",
-          "entities": [
-            "Illinois Fighting Illini",
-            "UAB Blazers"
-          ],
-          "occurredAt": "2026-09-04T01:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "The Illinois Fighting Illini triumphed over the UAB Blazers.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-03",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-16769f3d4ffaf02c"
-        }
-      ]
+      "items": []
     }
   ],
   "specialEvents": [
     {
       "name": "US Open",
-      "sport": "tennis",
+      "sport": "Tennis",
       "items": [
         {
           "rank": 1,
@@ -350,15 +247,15 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Carlos Alcaraz, Tommy Paul advance to round of 16 at US Open",
-          "text": "Two-time US Open champion Carlos Alcaraz returned to the round of 16 by beating Wu Yibing, while Tommy Paul also advanced.",
+          "text": "Two-time US Open champion Carlos Alcaraz returned to the round of 16 by beating Wu Yibing 6-3, 6-4, 6-1 and will next face Tommy Paul, who defeated No. 15 Alexander Bublik in five sets.",
           "entities": [
             "Carlos Alcaraz",
             "Tommy Paul"
           ],
-          "occurredAt": "2026-09-04T23:22:00Z",
+          "occurredAt": "2026-09-05T00:57:56Z",
           "timePrecision": "exact",
-          "ageHours": 1.15,
-          "freshnessBasis": "Carlos Alcaraz and Tommy Paul advanced to the round of 16.",
+          "ageHours": 0.05,
+          "freshnessBasis": "Carlos Alcaraz advanced to the round of 16 at the US Open.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49828709/carlos-alcaraz-tommy-paul-win-set-4th-round-clash-2026-us-open"
@@ -375,32 +272,32 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-1d66a9764b5195d5"
+            "cand-8960f636462ffc3c"
           ],
-          "type": "RESULT",
+          "type": "OTHER",
           "priority": 65,
-          "headline": "Zverev sweats out another five-set scare to advance at US Open",
-          "text": "Alexander Zverev needed five sets to defeat Quentin Halys, marking his second consecutive five-set match at the US Open.",
+          "headline": "Aryna Sabalenka, Jessica Pegula advance to US Open 4th round",
+          "text": "World No. 1 Aryna Sabalenka and No. 3 seed Jessica Pegula won their respective third-round matches to advance at the US Open.",
           "entities": [
-            "Alexander Zverev",
-            "Quentin Halys"
+            "Aryna Sabalenka",
+            "Jessica Pegula"
           ],
-          "occurredAt": "2026-09-04T16:37:46Z",
+          "occurredAt": "2026-09-05T00:47:10Z",
           "timePrecision": "exact",
-          "ageHours": 7.89,
-          "freshnessBasis": "Alexander Zverev needed five sets to defeat Quentin Halys.",
+          "ageHours": 0.23,
+          "freshnessBasis": "Both Sabalenka and Pegula advanced to the fourth round of the US Open.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49822322/zverev-sweats-another-five-set-scare-advance-us-open"
+            "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
           ],
           "sources": [
             {
               "provider": "ESPN",
-              "sourceId": "espn-atp",
-              "url": "https://www.espn.com/tennis/story/_/id/49822322/zverev-sweats-another-five-set-scare-advance-us-open"
+              "sourceId": "espn-wta",
+              "url": "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
             }
           ],
-          "id": "a3-special-0875eb2a6c489fb5"
+          "id": "a3-special-4b32b4ec017138eb"
         }
       ]
     }
