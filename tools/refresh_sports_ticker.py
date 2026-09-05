@@ -2180,9 +2180,9 @@ def result_enrichment_selection_score(candidate: dict[str, Any]) -> tuple[int, i
     if type_hint == "UPSET":
         score += 100
     if meta.get("rankedTeamInvolved"):
-        score += 70
+        score += 30
     if margin is not None and margin <= threshold:
-        score += 60 + max(0, threshold - margin)
+        score += 80 + max(0, threshold - margin)
     context = fused_context_text(candidate).lower()
     if any(term in context for term in (
         "walk-off", "walkoff", "game-winning", "last-second", "last second",
@@ -2352,137 +2352,330 @@ def _base_result_flags(candidate: dict[str, Any]) -> list[str]:
     return flags
 
 
+def _ordinal_number(value: int) -> str:
+    if 10 <= value % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(value % 10, "th")
+    return f"{value}{suffix}"
+
+
+def _baseball_walkoff_inning_from_lines(candidate: dict[str, Any]) -> int | None:
+    """Detect a walk-off directly from MLB inning lines.
+
+    Highlightly's detailed MLB play array can contain more than one representation
+    of the game (plate-appearance states followed by pitch-level events).  Inning
+    lines are therefore the cheapest and most deterministic walk-off signal.
+    """
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    try:
+        final_home = int(meta.get("homeScore"))
+        final_away = int(meta.get("awayScore"))
+    except Exception:
+        return None
+    if final_home <= final_away:
+        return None
+
+    raw = meta.get("rawScore")
+    if not isinstance(raw, dict):
+        return None
+    home = raw.get("home")
+    away = raw.get("away")
+    if not isinstance(home, dict) or not isinstance(away, dict):
+        return None
+    home_innings = home.get("innings")
+    away_innings = away.get("innings")
+    if not isinstance(home_innings, list) or not isinstance(away_innings, list):
+        return None
+
+    running_home = 0
+    running_away = 0
+    count = max(len(home_innings), len(away_innings))
+    for idx in range(count):
+        try:
+            away_runs = int(away_innings[idx] or 0) if idx < len(away_innings) else 0
+            home_runs = int(home_innings[idx] or 0) if idx < len(home_innings) else 0
+        except Exception:
+            return None
+        running_away += away_runs
+        home_before_bottom = running_home
+        running_home += home_runs
+        inning = idx + 1
+        if (
+            inning >= 9
+            and home_runs > 0
+            and home_before_bottom <= running_away
+            and running_home > running_away
+            and running_home == final_home
+            and running_away == final_away
+        ):
+            return inning
+    return None
+
+
+def _baseball_play_order(period: Any) -> int | None:
+    half, inning = _baseball_inning(period)
+    if inning is None:
+        return None
+    return inning * 2 + (1 if half == "bottom" else 0)
+
+
+def _baseball_segments(plays: list[dict[str, Any]]) -> list[list[dict[str, Any]]]:
+    """Split duplicated Highlightly MLB representations into monotonic streams."""
+    segments: list[list[dict[str, Any]]] = []
+    current: list[dict[str, Any]] = []
+    last_order = None
+    last_total = None
+    for idx, play in enumerate(plays):
+        order = _baseball_play_order(play.get("period"))
+        score = _score_from_play(play)
+        total = None if score == (None, None) else int(score[0]) + int(score[1])
+        reset = False
+        if current and order is not None and last_order is not None and order < last_order:
+            reset = True
+        if current and total is not None and last_total is not None and total < last_total:
+            reset = True
+        if reset:
+            segments.append(current)
+            current = []
+            last_order = None
+            last_total = None
+        clone = dict(play)
+        clone["_a37Index"] = idx
+        current.append(clone)
+        if order is not None:
+            last_order = order
+        if total is not None:
+            last_total = total
+    if current:
+        segments.append(current)
+    return segments
+
+
+def _baseball_scoring_description(
+    plays: list[dict[str, Any]],
+    inning: int,
+    final_score: tuple[int, int],
+) -> tuple[str | None, str | None]:
+    """Find the actual bottom-inning scoring result, not a reset-state artifact."""
+    ranked = []
+    for idx, play in enumerate(plays):
+        half, play_inning = _baseball_inning(play.get("period"))
+        if half != "bottom" or play_inning != inning:
+            continue
+        desc = clean_text(play.get("description"))
+        if not desc:
+            continue
+        low = desc.lower()
+        player = _named_player_from_baseball_play(play)
+        ptype = clean_text(play.get("type")).lower()
+        score = _score_from_play(play)
+        evidence = 0
+        if " scored" in low or "homered" in low or "walk-off" in low or "walkoff" in low:
+            evidence += 80
+        if ptype in {
+            "play result", "end batter/pitcher", "single", "double", "triple",
+            "home run", "sacrifice fly", "sac fly", "fielder's choice",
+        }:
+            evidence += 25
+        if score == final_score:
+            evidence += 20
+        if player:
+            evidence += 10
+        if evidence:
+            ranked.append((evidence, idx, desc, player))
+    if not ranked:
+        return None, None
+    _, _, desc, player = max(ranked, key=lambda item: (item[0], item[1]))
+    return desc, player
+
+
+def _baseball_walkoff_from_segment(
+    candidate: dict[str, Any],
+    segments: list[list[dict[str, Any]]],
+) -> tuple[int | None, str | None, str | None]:
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    final_home = int(meta.get("homeScore"))
+    final_away = int(meta.get("awayScore"))
+    if final_home <= final_away:
+        return None, None, None
+
+    for segment in segments:
+        last_score = None
+        transitions = []
+        for idx, play in enumerate(segment):
+            current = _score_from_play(play)
+            if current == (None, None):
+                continue
+            if last_score is not None and current != last_score:
+                transitions.append((idx, play, last_score, current))
+            last_score = current
+        for idx, play, before, after in reversed(transitions):
+            half, inning = _baseball_inning(play.get("period"))
+            if (
+                half == "bottom"
+                and inning is not None
+                and inning >= 9
+                and after == (final_home, final_away)
+                and before[0] <= before[1]
+                and after[0] > after[1]
+            ):
+                desc = clean_text(play.get("description")) or None
+                return inning, desc, _named_player_from_baseball_play(play)
+    return None, None, None
+
+
 def _derive_baseball_decisive(
     candidate: dict[str, Any],
     detail: dict[str, Any],
 ) -> dict[str, Any]:
-    plays = detail.get("plays")
-    if not isinstance(plays, list):
-        return {}
-
-    structured_plays = [p for p in plays if isinstance(p, dict)]
-    if not structured_plays:
-        return {}
-
     meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
     home = clean_text(meta.get("homeTeam"))
     away = clean_text(meta.get("awayTeam"))
     final_home = int(meta.get("homeScore"))
     final_away = int(meta.get("awayScore"))
-
-    last_score = None
-    scoring_plays = []
-    for idx, play in enumerate(structured_plays):
-        current = _score_from_play(play)
-        if current != (None, None):
-            if last_score is not None and current != last_score:
-                scoring_plays.append((idx, play, last_score, current))
-            last_score = current
-
-    if not scoring_plays:
+    if final_home <= final_away:
         return {}
 
-    idx, play, before, after = scoring_plays[-1]
-    half, inning = _baseball_inning(play.get("period"))
-    description = clean_text(play.get("description"))
-    player = _named_player_from_baseball_play(play)
+    raw_plays = detail.get("plays")
+    structured_plays = [p for p in raw_plays if isinstance(p, dict)] if isinstance(raw_plays, list) else []
+    segments = _baseball_segments(structured_plays) if structured_plays else []
 
-    flags = []
-    decisive = None
-    headline_seed = None
-    summary_seed = None
-    priority_floor = None
+    inning = _baseball_walkoff_inning_from_lines(candidate)
+    description = None
+    player = None
+    detection = None
+    if inning is not None:
+        detection = "inning-lines"
+        if structured_plays:
+            description, player = _baseball_scoring_description(
+                structured_plays, inning, (final_home, final_away)
+            )
+    else:
+        inning, description, player = _baseball_walkoff_from_segment(candidate, segments)
+        if inning is not None:
+            detection = "segmented-play-stream"
 
-    # A walk-off is deterministic from score progression:
-    # home team wins, final go-ahead run scores in bottom 9th or later, and the
-    # home team was not already leading before that scoring play.
-    if (
-        final_home > final_away
-        and half == "bottom"
-        and inning is not None
-        and inning >= 9
-        and after == (final_home, final_away)
-        and before[0] <= before[1]
-        and after[0] > after[1]
-    ):
-        flags.extend(["WALK_OFF", "GAME_WINNER"])
-        if inning > 9:
-            flags.append("EXTRA_INNINGS")
-        if player:
-            decisive = (
-                f"{player} delivered the walk-off in the bottom of the "
-                f"{inning}{'th' if inning not in {1,2,3} else {1:'st',2:'nd',3:'rd'}[inning]} inning."
-            )
-            headline_seed = (
-                f"{player} delivers walk-off as {home} beat {away} "
-                f"{final_home}-{final_away}"
-            )
-        else:
-            decisive = (
-                f"{home} scored the game-winning run in the bottom of the "
-                f"{inning}th inning."
-            )
-            headline_seed = f"{home} walk off {away} {final_home}-{final_away}"
-        summary_seed = description or decisive
-        priority_floor = 76
+    if inning is None:
+        return {}
+
+    flags = ["WALK_OFF", "GAME_WINNER"]
+    if inning > 9:
+        flags.append("EXTRA_INNINGS")
+    ordinal = _ordinal_number(inning)
+    if player:
+        decisive = f"{player} delivered the walk-off in the bottom of the {ordinal} inning."
+        headline_seed = (
+            f"{player} delivers walk-off as {home} beat {away} "
+            f"{final_home}-{final_away}"
+        )
+    else:
+        decisive = f"{home} scored the game-winning run in the bottom of the {ordinal} inning."
+        headline_seed = f"{home} walk off {away} {final_home}-{final_away}"
 
     return {
         "flags": flags,
         "decisiveMoment": decisive,
         "decisivePlayer": player,
         "headlineSeed": headline_seed,
-        "summarySeed": summary_seed,
-        "priorityFloor": priority_floor,
-        "contextLines": [description] if description else [],
-    } if flags else {}
+        "summarySeed": description or decisive,
+        "priorityFloor": 78 if inning == 9 else 80,
+        "contextLines": [x for x in (description, f"walk-off detected from {detection}") if x],
+        "parserMode": detection,
+    }
+
+def _clock_from_football_text(text: str) -> str:
+    match = re.search(r"\((\d{1,2}:\d{2})\)", text or "")
+    return match.group(1) if match else ""
 
 
-def _derive_american_football_decisive(
-    candidate: dict[str, Any],
-    detail: dict[str, Any],
-) -> dict[str, Any]:
+def _normalize_football_events(detail: dict[str, Any]) -> list[dict[str, Any]]:
+    """Normalize both Highlightly event.plays strings and playDetails objects."""
     events = detail.get("events")
     if not isinstance(events, list):
-        return {}
-
-    plays = []
+        return []
+    normalized = []
     for event_index, event in enumerate(events):
         if not isinstance(event, dict):
             continue
         result = clean_text(event.get("result"))
         description = clean_text(event.get("description"))
         event_end = event.get("end") if isinstance(event.get("end"), dict) else {}
+        event_start = event.get("start") if isinstance(event.get("start"), dict) else {}
+        event_period = _period_number(event_end.get("period") or event_start.get("period"))
+        event_clock = clean_text(event_end.get("clock") or event_start.get("clock"))
+
+        seen_text = set()
         details = event.get("playDetails")
         if isinstance(details, list):
             for play_index, play in enumerate(details):
                 if not isinstance(play, dict):
                     continue
                 text = clean_text(play.get("text"))
-                period = _period_number(play.get("period") or event_end.get("period"))
-                clock = clean_text(play.get("clock") or event_end.get("clock"))
+                if text:
+                    seen_text.add(text)
+                period = _period_number(play.get("period")) or event_period
+                clock = clean_text(play.get("clock")) or _clock_from_football_text(text) or event_clock
                 combined = " | ".join(x for x in (text, result, description) if x)
-                plays.append({
+                if combined:
+                    normalized.append({
+                        "eventIndex": event_index,
+                        "playIndex": play_index,
+                        "text": text or combined,
+                        "combined": combined,
+                        "period": period,
+                        "clock": clock,
+                        "clockSeconds": _clock_seconds(clock),
+                        "sourceShape": "playDetails",
+                    })
+
+        # The live payload can put the decisive play only in event.plays even
+        # when playDetails is also present. A3.6 skipped this representation.
+        simple_plays = event.get("plays")
+        if isinstance(simple_plays, list):
+            for simple_index, raw in enumerate(simple_plays):
+                text = clean_text(raw.get("text") if isinstance(raw, dict) else raw)
+                if not text or text in seen_text:
+                    continue
+                period = event_period
+                if isinstance(raw, dict):
+                    period = _period_number(raw.get("period")) or event_period
+                    clock = clean_text(raw.get("clock")) or _clock_from_football_text(text) or event_clock
+                else:
+                    clock = _clock_from_football_text(text) or event_clock
+                combined = " | ".join(x for x in (text, result, description) if x)
+                normalized.append({
                     "eventIndex": event_index,
-                    "playIndex": play_index,
+                    "playIndex": 1000 + simple_index,
                     "text": text,
                     "combined": combined,
                     "period": period,
                     "clock": clock,
                     "clockSeconds": _clock_seconds(clock),
+                    "sourceShape": "plays",
                 })
-        else:
+
+        if not isinstance(details, list) and not isinstance(simple_plays, list):
             combined = " | ".join(x for x in (result, description) if x)
             if combined:
-                plays.append({
+                normalized.append({
                     "eventIndex": event_index,
                     "playIndex": 0,
                     "text": combined,
                     "combined": combined,
-                    "period": _period_number(event_end.get("period")),
-                    "clock": clean_text(event_end.get("clock")),
-                    "clockSeconds": _clock_seconds(event_end.get("clock")),
+                    "period": event_period,
+                    "clock": event_clock,
+                    "clockSeconds": _clock_seconds(event_clock),
+                    "sourceShape": "event",
                 })
+    return normalized
 
+
+def _derive_american_football_decisive(
+    candidate: dict[str, Any],
+    detail: dict[str, Any],
+) -> dict[str, Any]:
+    plays = _normalize_football_events(detail)
     if not plays:
         return {}
 
@@ -2497,50 +2690,56 @@ def _derive_american_football_decisive(
     loser_score = min(home_score, away_score)
     margin = abs(home_score - away_score)
 
-    # Prefer the latest relevant play because deciding football moments usually
-    # appear at the end of the final drive.
+    event_ids = sorted({int(p.get("eventIndex", 0)) for p in plays})
+    final_event_ids = set(event_ids[-3:])
     candidates = []
     for position, play in enumerate(plays):
         low = play["combined"].lower()
         period = play.get("period") or 0
         clock_seconds = play.get("clockSeconds")
+        final_drive_window = int(play.get("eventIndex", 0)) in final_event_ids
         late = period >= 4 and clock_seconds is not None and clock_seconds <= 120
         last_seconds = (
             "time expired" in low
             or "as time expired" in low
+            or "final play" in low
             or (period >= 4 and clock_seconds is not None and clock_seconds <= 15)
         )
 
         score = 0
         flags = []
         if "block" in low and ("field goal" in low or "kick" in low):
-            score += 100
+            score += 140
             flags.append("BLOCKED_KICK")
-        if ("no good" in low or "missed" in low) and "field goal" in low:
-            score += 80
+        if ("no good" in low or "missed" in low) and ("field goal" in low or "kick" in low):
+            score += 105
             flags.append("MISSED_KICK")
         if "touchdown" in low:
-            score += 45
-        if "field goal" in low and any(term in low for term in ("good", "made", "is good")):
-            score += 40
+            score += 60
+        if "field goal" in low and any(term in low for term in (" good", "made", "is good")):
+            score += 50
         if late:
-            score += 35
+            score += 40
             flags.append("LATE_GAME")
         if last_seconds:
-            score += 50
+            score += 70
             flags.append("LAST_SECOND")
-        if position >= max(0, len(plays) - 4):
-            score += 20
+        if final_drive_window:
+            score += 35
+        elif period < 4:
+            score -= 45
         if margin <= 3:
-            score += 15
+            score += 20
+        elif margin <= 8:
+            score += 10
 
-        if score:
-            candidates.append((score, position, play, flags))
+        if score > 0 and (final_drive_window or period >= 4):
+            candidates.append((score, int(play.get("eventIndex", 0)), position, play, flags))
 
     if not candidates:
         return {}
 
-    score, position, play, flags = max(candidates, key=lambda x: (x[0], x[1]))
+    _, event_index, position, play, flags = max(candidates, key=lambda x: (x[0], x[1], x[2]))
     low = play["combined"].lower()
     decisive = None
     headline_seed = None
@@ -2548,10 +2747,10 @@ def _derive_american_football_decisive(
     priority_floor = None
 
     if "BLOCKED_KICK" in flags and margin <= 3:
-        flags.append("GAME_SAVING_PLAY")
-        if position >= len(plays) - 2:
-            flags.append("GAME_WINNER")
-        last_second = "LAST_SECOND" in flags
+        flags.extend(["GAME_SAVING_PLAY", "GAME_WINNER"])
+        last_second = "LAST_SECOND" in flags or event_index == max(event_ids)
+        if last_second and "LAST_SECOND" not in flags:
+            flags.append("LAST_SECOND")
         descriptor = "last-second " if last_second else "late "
         decisive = (
             f"{winner} blocked a {descriptor}field-goal attempt to preserve "
@@ -2562,11 +2761,13 @@ def _derive_american_football_decisive(
             f"{winner_score}-{loser_score} win over {loser}"
         )
         summary_seed = play["text"] or decisive
-        priority_floor = 78 if last_second else 74
+        priority_floor = 82 if last_second else 78
 
-    elif "MISSED_KICK" in flags and margin <= 3 and position >= len(plays) - 2:
+    elif "MISSED_KICK" in flags and margin <= 3 and event_index in final_event_ids:
         flags.extend(["GAME_SAVING_PLAY", "GAME_WINNER"])
-        last_second = "LAST_SECOND" in flags
+        last_second = "LAST_SECOND" in flags or event_index == max(event_ids)
+        if last_second and "LAST_SECOND" not in flags:
+            flags.append("LAST_SECOND")
         descriptor = "last-second " if last_second else "late "
         decisive = (
             f"{loser} missed a {descriptor}field-goal attempt as {winner} "
@@ -2577,18 +2778,13 @@ def _derive_american_football_decisive(
             f"{loser} {winner_score}-{loser_score}"
         )
         summary_seed = play["text"] or decisive
-        priority_floor = 76 if last_second else 72
+        priority_floor = 80 if last_second else 76
 
-    elif position >= len(plays) - 3 and margin <= 8 and (
+    elif event_index in final_event_ids and margin <= 8 and (
         "touchdown" in low or "field goal" in low
-    ):
+    ) and ("LATE_GAME" in flags or "LAST_SECOND" in flags):
         flags.append("GAME_WINNER")
-        if play.get("period", 0) >= 4:
-            flags.append("LATE_GAME")
-        if "LAST_SECOND" in flags:
-            priority_floor = 76
-        else:
-            priority_floor = 70
+        priority_floor = 78 if "LAST_SECOND" in flags else 74
         decisive = play["text"] or play["combined"]
         headline_seed = (
             f"Late score lifts {winner} past {loser} "
@@ -2604,8 +2800,8 @@ def _derive_american_football_decisive(
         "summarySeed": summary_seed,
         "priorityFloor": priority_floor,
         "contextLines": [play["combined"]] if play.get("combined") else [],
+        "parserMode": play.get("sourceShape"),
     } if decisive else {}
-
 
 def _derive_soccer_decisive(
     candidate: dict[str, Any],
@@ -2910,14 +3106,177 @@ def derive_decisive_context(
     # play is available. These flags help prioritization without inventing copy.
     if "UPSET" in base_flags:
         merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 82)
-    elif "RANKED_TEAM_INVOLVED" in base_flags:
-        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 70)
-    elif any(flag in base_flags for flag in (
+    if any(flag in base_flags for flag in (
         "ONE_RUN_GAME", "ONE_SCORE_GAME", "ONE_POSSESSION_GAME", "ONE_GOAL_GAME"
     )):
-        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 62)
+        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 72)
+    if "RANKED_TEAM_INVOLVED" in base_flags:
+        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 68)
 
     return merged
+
+
+def _candidate_game_date(candidate: dict[str, Any]) -> str | None:
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    for value in (meta.get("scheduledAt"), candidate.get("occurredAt")):
+        text = clean_text(value)
+        if not text:
+            continue
+        try:
+            return parse_iso(text).strftime("%Y%m%d")
+        except Exception:
+            match = re.search(r"(\d{4})-(\d{2})-(\d{2})", text)
+            if match:
+                return "".join(match.groups())
+    return None
+
+
+def _espn_football_path(candidate: dict[str, Any]) -> str | None:
+    league = clean_text(candidate.get("leagueHint")).upper()
+    if league == "NCAAF":
+        return "football/college-football"
+    if league == "NFL":
+        return "football/nfl"
+    return None
+
+
+def _fetch_espn_enrichment_json(
+    *, candidate: dict[str, Any], run_log: dict[str, Any], source_id: str,
+    kind: str, url: str,
+) -> Any:
+    entry = make_source_log(
+        source_id=source_id, provider="ESPN", kind=kind,
+        league_hint=clean_text(candidate.get("leagueHint")).upper(), url=url,
+    )
+    run_log["sourceFetches"].append(entry)
+    started = time.monotonic()
+    try:
+        status, headers, body = fetch_bytes(url, headers={"Accept": "application/json"})
+        finalize_source_log(entry, started, status, headers, body)
+        payload = json.loads(body.decode("utf-8"))
+        if isinstance(payload, dict):
+            items = payload.get("events") or payload.get("plays") or []
+            entry["receivedItems"] = items[:20] if isinstance(items, list) else []
+        return payload
+    except urllib.error.HTTPError as exc:
+        body = exc.read()
+        finalize_source_log(entry, started, exc.code, exc.headers, body)
+        entry["error"] = f"HTTP {exc.code}: {body[:1200].decode('utf-8', errors='replace')}"
+    except Exception as exc:
+        if entry["finishedAt"] is None:
+            finalize_source_log(entry, started, None, None, None)
+        entry["error"] = clean_text(exc)
+    return None
+
+
+def _espn_competitor_name(comp: dict[str, Any]) -> str:
+    team = comp.get("team") if isinstance(comp.get("team"), dict) else {}
+    return clean_text(team.get("displayName") or team.get("shortDisplayName") or team.get("name"))
+
+
+def _match_espn_event(candidate: dict[str, Any], scoreboard: dict[str, Any]) -> dict[str, Any] | None:
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    wanted_home = clean_text(meta.get("homeTeam"))
+    wanted_away = clean_text(meta.get("awayTeam"))
+    best = None
+    best_score = 0.0
+    for event in scoreboard.get("events", []) if isinstance(scoreboard, dict) else []:
+        if not isinstance(event, dict):
+            continue
+        comps = event.get("competitions")
+        if not isinstance(comps, list) or not comps or not isinstance(comps[0], dict):
+            continue
+        competitors = comps[0].get("competitors")
+        if not isinstance(competitors, list):
+            continue
+        home = next((x for x in competitors if isinstance(x, dict) and x.get("homeAway") == "home"), None)
+        away = next((x for x in competitors if isinstance(x, dict) and x.get("homeAway") == "away"), None)
+        if not home or not away:
+            continue
+        score = (team_match_score(wanted_home, _espn_competitor_name(home)) +
+                 team_match_score(wanted_away, _espn_competitor_name(away))) / 2.0
+        if score > best_score:
+            best_score = score
+            best = event
+    return best if best_score >= 0.72 else None
+
+
+def _espn_summary_to_detail(summary: dict[str, Any]) -> dict[str, Any]:
+    events = []
+    drives_obj = summary.get("drives") if isinstance(summary, dict) else None
+    drives = []
+    if isinstance(drives_obj, dict):
+        prev = drives_obj.get("previous")
+        if isinstance(prev, list):
+            drives.extend(prev)
+        current = drives_obj.get("current")
+        if isinstance(current, dict):
+            drives.append(current)
+    elif isinstance(drives_obj, list):
+        drives.extend(drives_obj)
+
+    if not drives and isinstance(summary.get("plays"), list):
+        drives = [{"plays": summary.get("plays"), "displayResult": ""}]
+
+    for drive in drives:
+        if not isinstance(drive, dict):
+            continue
+        details = []
+        for play in drive.get("plays", []) if isinstance(drive.get("plays"), list) else []:
+            if not isinstance(play, dict):
+                continue
+            period_obj = play.get("period") if isinstance(play.get("period"), dict) else {}
+            clock_obj = play.get("clock") if isinstance(play.get("clock"), dict) else {}
+            details.append({
+                "text": clean_text(play.get("text") or play.get("shortText")),
+                "period": period_obj.get("number") or play.get("period"),
+                "clock": clock_obj.get("displayValue") or play.get("clock"),
+            })
+        end_obj = drive.get("end") if isinstance(drive.get("end"), dict) else {}
+        period_obj = end_obj.get("period") if isinstance(end_obj.get("period"), dict) else {}
+        clock_obj = end_obj.get("clock") if isinstance(end_obj.get("clock"), dict) else {}
+        events.append({
+            "result": clean_text(drive.get("displayResult") or drive.get("result")),
+            "description": clean_text(drive.get("description") or drive.get("shortDisplayName")),
+            "end": {
+                "period": period_obj.get("number") or end_obj.get("period"),
+                "clock": clock_obj.get("displayValue") or end_obj.get("clock"),
+            },
+            "playDetails": details,
+            "plays": [d["text"] for d in details if d.get("text")],
+        })
+    return {"events": events}
+
+
+def _fetch_espn_football_fallback(
+    candidate: dict[str, Any], run_log: dict[str, Any],
+) -> tuple[dict[str, Any] | None, str | None, str | None]:
+    path = _espn_football_path(candidate)
+    date_key = _candidate_game_date(candidate)
+    if not path or not date_key:
+        return None, None, None
+    scoreboard_url = (
+        f"https://site.api.espn.com/apis/site/v2/sports/{path}/scoreboard"
+        f"?dates={date_key}&limit=100"
+    )
+    scoreboard = _fetch_espn_enrichment_json(
+        candidate=candidate, run_log=run_log,
+        source_id=f"espn-{clean_text(candidate.get('leagueHint')).lower()}-scoreboard-{date_key}",
+        kind="decisive-scoreboard", url=scoreboard_url,
+    )
+    event = _match_espn_event(candidate, scoreboard) if isinstance(scoreboard, dict) else None
+    event_id = clean_text(event.get("id")) if isinstance(event, dict) else ""
+    if not event_id:
+        return None, None, None
+    summary_url = f"https://site.api.espn.com/apis/site/v2/sports/{path}/summary?event={event_id}"
+    summary = _fetch_espn_enrichment_json(
+        candidate=candidate, run_log=run_log,
+        source_id=f"espn-{clean_text(candidate.get('leagueHint')).lower()}-summary-{event_id}",
+        kind="decisive-summary", url=summary_url,
+    )
+    if not isinstance(summary, dict):
+        return None, event_id, summary_url
+    return _espn_summary_to_detail(summary), event_id, summary_url
 
 
 def _fetch_enrichment_json(
@@ -3014,6 +3373,9 @@ def enrich_decisive_moments(
             "selectionReason": reason,
             "detailFetched": False,
             "highlightsFetched": False,
+            "espnFallbackAttempted": False,
+            "espnEventId": None,
+            "espnSummaryFetched": False,
             "flags": [],
             "decisiveMoment": None,
             "headlineSeed": None,
@@ -3060,6 +3422,40 @@ def enrich_decisive_moments(
                 item_log["highlightsFetched"] = True
 
         enrichment = derive_decisive_context(candidate, detail, highlights)
+
+        # For close NFL/NCAAF games, ESPN play-by-play is a bounded public-data
+        # fallback when Highlightly detail/highlight metadata does not expose the
+        # decisive play. No OpenAI web search is used.
+        league = clean_text(candidate.get("leagueHint")).upper()
+        margin = result_score_margin(candidate)
+        if (
+            not enrichment.get("decisiveMoment")
+            and league in {"NFL", "NCAAF"}
+            and margin is not None and margin <= 8
+        ):
+            item_log["espnFallbackAttempted"] = True
+            espn_detail, espn_event_id, espn_summary_url = _fetch_espn_football_fallback(
+                candidate, run_log
+            )
+            item_log["espnEventId"] = espn_event_id
+            item_log["espnSummaryFetched"] = isinstance(espn_detail, dict)
+            if isinstance(espn_detail, dict):
+                espn_part = _derive_american_football_decisive(candidate, espn_detail)
+                enrichment = _merge_enrichment_parts([], enrichment, espn_part)
+                if espn_part.get("decisiveMoment") and espn_summary_url:
+                    sources = candidate.setdefault("sources", [])
+                    if not any(
+                        isinstance(src, dict) and src.get("url") == espn_summary_url
+                        for src in sources
+                    ):
+                        sources.append({
+                            "sourceId": f"espn-{league.lower()}-summary-{espn_event_id}",
+                            "provider": "ESPN",
+                            "url": espn_summary_url,
+                        })
+                    enrichment["espnEventId"] = espn_event_id
+                    enrichment["espnSummaryUrl"] = espn_summary_url
+
         enrichment.update({
             "attempted": True,
             "matchId": match_id,
@@ -4106,7 +4502,7 @@ def write_run_log(path: Path, run_log: dict[str, Any]):
 def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dict[str, Any]:
     return {
         "schemaVersion": 1,
-        "pipelineVersion": "A3.6-decisive-moment-enrichment",
+        "pipelineVersion": "A3.7-real-payload-decisive-parser",
         "runId": f"a3-{generated_at.strftime('%Y%m%dT%H%M%SZ')}",
         "status": "running",
         "startedAt": iso_z(generated_at),
@@ -4127,8 +4523,8 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
             "highlightlyConfigured": bool(os.environ.get("HIGHLIGHTLY_API_KEY", "").strip()),
             "maxDecisiveEnrichments": MAX_DECISIVE_ENRICHMENTS,
             "decisiveEnrichmentStrategy": (
-                "selective Highlightly match detail + matchId-filtered highlights; "
-                "no OpenAI web search"
+                "selective Highlightly match detail + matchId-filtered highlights + "
+                "bounded ESPN football scoreboard/summary fallback; no OpenAI web search"
             ),
             "gitSha": os.environ.get("GITHUB_SHA"),
             "githubRunId": os.environ.get("GITHUB_RUN_ID"),
@@ -4218,7 +4614,7 @@ def main() -> int:
 
     try:
         print(
-            f"A3.6 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
+            f"A3.7 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
             f"editor={args.model}; OpenAI web_search=OFF"
         )
 
@@ -4325,10 +4721,10 @@ def main() -> int:
 
         dataset = {
             "schemaVersion": 8,
-            "pipelineVersion": "A3.6-decisive-moment-enrichment",
+            "pipelineVersion": "A3.7-real-payload-decisive-parser",
             "generatedAt": iso_z(generated_at),
             "freshnessHours": FRESHNESS_HOURS,
-            "discoveryMode": "Highlightly + decisive match-detail/highlight enrichment + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
+            "discoveryMode": "Highlightly + real-payload decisive parsing + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
             "model": args.model,
             "sourceCandidateHash": c_hash,
             "leagues": normalized["leagues"],
