@@ -3,6 +3,12 @@ name: Deploy Sports Big Board
 on:
   push:
     branches: [main]
+    # Sports Ticker refreshes are data-only sidecar updates. They must not
+    # restart the cloud backend or canonical Media Audit worker.
+    paths-ignore:
+      - 'data/sports-ticker.json'
+      - 'data/sports-ticker.txt'
+      - 'data/sports-ticker-run-log.json'
   workflow_dispatch:
     inputs:
       emergency_bypass:
