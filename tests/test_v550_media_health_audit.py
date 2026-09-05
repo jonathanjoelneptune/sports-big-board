@@ -317,3 +317,18 @@ assert 'gcloud compute instances stop "$VM_NAME"' not in deploy, 'do not stop VM
 assert 'gcloud compute instances start "$VM_NAME"' not in deploy, 'do not stop/start VM during SSH recovery'
 
 print('PASS v5.5.0 R12/R13 Media Audit hardening + resilient GCE SSH bootstrap recovery')
+
+# R14 deployment isolation: data-only Sports Ticker refresh commits must not
+# restart the cloud backend or canonical Media Audit service.
+workflow=(root/'.github/workflows/deploy-pages.yml').read_text()
+for token in [
+    "paths-ignore:",
+    "'data/sports-ticker.json'",
+    "'data/sports-ticker.txt'",
+    "'data/sports-ticker-run-log.json'",
+]:
+    assert token in workflow, token
+push_block=workflow[workflow.index('  push:'):workflow.index('  workflow_dispatch:')]
+assert 'paths-ignore:' in push_block
+for path in ['data/sports-ticker.json','data/sports-ticker.txt','data/sports-ticker-run-log.json']:
+    assert path in push_block,path

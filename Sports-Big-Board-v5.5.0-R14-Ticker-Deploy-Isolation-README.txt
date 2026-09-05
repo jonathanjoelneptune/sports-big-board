@@ -1,0 +1,38 @@
+Sports Big Board v5.5.0 R14 — Sports Ticker Deploy Isolation
+
+ROOT CAUSE
+The Sports Ticker sidecar writes only:
+- data/sports-ticker.json
+- data/sports-ticker.txt
+- data/sports-ticker-run-log.json
+
+But Deploy Sports Big Board currently triggers on every push to main. Therefore every
+Sports Ticker refresh commit can launch the full backend deployment, which stops/restarts
+sports-big-board and sports-big-board-media-audit. This produces heartbeat outages and
+interrupts the canonical audit even though the ticker change is data-only.
+
+FIX
+Add paths-ignore to the push trigger in .github/workflows/deploy-pages.yml for those exact
+three Sports Ticker sidecar files. GitHub paths-ignore semantics still run the production
+deploy if a commit changes any non-ignored file alongside them.
+
+This does NOT disable:
+- manual workflow_dispatch production deploys
+- deploys for backend/frontend/source/test/workflow changes
+- Sports Ticker refresh workflow itself
+
+It only prevents data-only Sports Ticker commits from restarting the whole production stack.
+
+UPLOAD
+1. After the currently running Deploy Sports Big Board workflow completes or fails, upload
+   the Non-Tests ZIP at repository root preserving path:
+     .github/workflows/deploy-pages.yml
+2. Then replace test_v550_media_health_audit.py in the existing /tests folder using the Tests ZIP.
+
+IMPORTANT
+Do not commit this while a production deploy is actively recovering the VM unless you intend
+to cancel that run, because deploy-pages.yml uses cancel-in-progress: true.
+
+EXPECTED RESULT
+Future Sports Ticker refresh commits that touch only the three data files will not launch
+Deploy Sports Big Board and therefore will not stop/restart the canonical Media Audit worker.
