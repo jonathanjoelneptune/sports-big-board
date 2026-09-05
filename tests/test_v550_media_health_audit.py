@@ -292,4 +292,28 @@ assert deploy.index(stop_audit) < deploy.index(stop_backend, deploy.index(stop_a
 assert 'LOCAL_HEALTH_ATTEMPTS="${SBB_LOCAL_HEALTH_ATTEMPTS:-180}"' in deploy, 'cold-start health window must be bounded and configurable at 180 attempts'
 assert deploy.index('systemctl restart sports-big-board') < deploy.index('Installing canonical Media Health Audit service'), 'main backend must be healthy before audit service restart'
 
-print('PASS v5.5.0 R12 Media Audit failure hardening + non-destructive negative evidence + deferred infra + fallback preservation + split operator health')
+# R13 SSH bootstrap recovery: normal metadata SSH is bounded, diagnostics are
+# emitted before recovery, and a single last-resort Compute Engine reset can
+# recover sshd/google-guest-agent without changing instance IP/disks/metadata.
+for token in [
+    'SSH_READY_ATTEMPTS="${SBB_SSH_READY_ATTEMPTS:-2}"',
+    'SSH_READY_TIMEOUT_SECONDS="${SBB_SSH_READY_TIMEOUT_SECONDS:-60}"',
+    'SSH_RECOVERY_ATTEMPTS="${SBB_SSH_RECOVERY_ATTEMPTS:-3}"',
+    'SSH_RECOVERY_TIMEOUT_SECONDS="${SBB_SSH_RECOVERY_TIMEOUT_SECONDS:-60}"',
+    'SSH_AUTO_RESET_ON_FAILURE="${SBB_SSH_AUTO_RESET_ON_FAILURE:-1}"',
+    'ssh_bootstrap_phase()',
+    'ssh_diagnostics()',
+    "--ssh-flag='-F none'",
+    '--troubleshoot --quiet',
+    'get-serial-port-output',
+    'gcloud compute instances reset "$VM_NAME"',
+    'ONE last-resort Compute Engine reset',
+    'post-reset',
+]:
+    assert token in deploy,token
+assert deploy.index('ssh_diagnostics') < deploy.index('gcloud compute instances reset "$VM_NAME"'), 'diagnostics must precede destructive recovery'
+assert deploy.count('gcloud compute instances reset "$VM_NAME"') == 1, 'bootstrap may perform at most one VM reset'
+assert 'gcloud compute instances stop "$VM_NAME"' not in deploy, 'do not stop VM and risk releasing an ephemeral external IP'
+assert 'gcloud compute instances start "$VM_NAME"' not in deploy, 'do not stop/start VM during SSH recovery'
+
+print('PASS v5.5.0 R12/R13 Media Audit hardening + resilient GCE SSH bootstrap recovery')

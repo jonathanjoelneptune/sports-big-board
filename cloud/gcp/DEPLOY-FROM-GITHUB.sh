@@ -18,19 +18,22 @@ tar --exclude='.git' --exclude='.pages-dist' --exclude='gha-creds-*.json' \
 REMOTE_ARCHIVE="/tmp/sbb-release-${SHORT_SHA}.tgz"
 echo "Deploying Sports Big Board v${VERSION} (${SHORT_SHA}) to ${VM_NAME} in ${ZONE}..."
 
-# GitHub-hosted runners need a temporary SSH key installed on the VM. GCE
-# metadata/guest-agent propagation can be slow, so use gcloud exactly once as
-# the bootstrap authority: it installs the explicit key and proves the guest
-# accepts it. After that successful probe, all transfer and remote execution
-# uses normal OpenSSH with the SAME key. This prevents gcloud compute scp/ssh
-# from starting a second metadata propagation cycle mid-deploy.
+# GitHub-hosted runners need a temporary SSH key installed on the VM. Keep
+# this bootstrap bounded and diagnosable. Most runs should connect in the normal
+# phase. If instance metadata accepts the key but the guest environment never
+# activates it, collect GCE diagnostics and perform ONE last-resort VM reset to
+# restart sshd/google-guest-agent before retrying. Compute Engine reset preserves
+# instance metadata, attached disks, machine type, and external IP addresses.
 SSH_KEY_EXPIRE_AFTER="${SBB_SSH_KEY_EXPIRE_AFTER:-60m}"
-SSH_READY_ATTEMPTS="${SBB_SSH_READY_ATTEMPTS:-4}"
-SSH_READY_TIMEOUT_SECONDS="${SBB_SSH_READY_TIMEOUT_SECONDS:-120}"
-SSH_READY_SLEEP_SECONDS="${SBB_SSH_READY_SLEEP_SECONDS:-15}"
+SSH_READY_ATTEMPTS="${SBB_SSH_READY_ATTEMPTS:-2}"
+SSH_READY_TIMEOUT_SECONDS="${SBB_SSH_READY_TIMEOUT_SECONDS:-60}"
+SSH_RECOVERY_ATTEMPTS="${SBB_SSH_RECOVERY_ATTEMPTS:-3}"
+SSH_RECOVERY_TIMEOUT_SECONDS="${SBB_SSH_RECOVERY_TIMEOUT_SECONDS:-60}"
+SSH_READY_SLEEP_SECONDS="${SBB_SSH_READY_SLEEP_SECONDS:-10}"
 SSH_CONNECT_TIMEOUT_SECONDS="${SBB_SSH_CONNECT_TIMEOUT_SECONDS:-20}"
 SSH_UPLOAD_TIMEOUT_SECONDS="${SBB_SSH_UPLOAD_TIMEOUT_SECONDS:-180}"
 SSH_REMOTE_TIMEOUT_SECONDS="${SBB_SSH_REMOTE_TIMEOUT_SECONDS:-3600}"
+SSH_AUTO_RESET_ON_FAILURE="${SBB_SSH_AUTO_RESET_ON_FAILURE:-1}"
 SSH_KEY_PATH="$TMP/google_compute_engine"
 KNOWN_HOSTS="$TMP/known_hosts"
 SSH_READY=0
@@ -41,43 +44,94 @@ mkdir -p "$(dirname "$SSH_KEY_PATH")"
 touch "$KNOWN_HOSTS"
 chmod 600 "$KNOWN_HOSTS"
 
-echo "[ssh] Preparing ONE runner SSH identity (temporary key lifetime: ${SSH_KEY_EXPIRE_AFTER})."
-for ((attempt=1; attempt<=SSH_READY_ATTEMPTS; attempt++)); do
-  echo "[ssh] Bootstrap readiness attempt ${attempt}/${SSH_READY_ATTEMPTS} (timeout ${SSH_READY_TIMEOUT_SECONDS}s)..."
+resolve_vm_ip() {
+  gcloud compute instances describe "$VM_NAME" \
+    --zone "$ZONE" --project "$PROJECT_ID" \
+    --format='get(networkInterfaces[0].accessConfigs[0].natIP)' | tr -d '[:space:]'
+}
+
+ssh_bootstrap_phase() {
+  local phase="$1" attempts="$2" timeout_seconds="$3"
+  local attempt output rc user
+  for ((attempt=1; attempt<=attempts; attempt++)); do
+    echo "[ssh] ${phase} readiness attempt ${attempt}/${attempts} (timeout ${timeout_seconds}s)..."
+    set +e
+    output="$(timeout --signal=TERM --kill-after=10s "${timeout_seconds}s" \
+      gcloud compute ssh "$VM_NAME" \
+        --zone "$ZONE" --project "$PROJECT_ID" --quiet \
+        --ssh-key-file="$SSH_KEY_PATH" \
+        --ssh-key-expire-after="$SSH_KEY_EXPIRE_AFTER" \
+        --ssh-flag='-F none' \
+        --ssh-flag='-o ConnectTimeout=10' \
+        --command='printf "SBB_SSH_READY:%s\\n" "$(id -un)"' 2>&1)"
+    rc=$?
+    set -e
+    printf '%s\n' "$output"
+    user="$(printf '%s\n' "$output" | sed -n 's/.*SBB_SSH_READY:\([A-Za-z0-9._-][A-Za-z0-9._-]*\).*/\1/p' | tail -n 1)"
+    if [[ "$rc" == "0" && -n "$user" ]]; then
+      SSH_USER="$user"
+      SSH_READY=1
+      echo "[ssh] SSH READY as remote user ${SSH_USER} (${phase})."
+      return 0
+    fi
+    SSH_USER=""
+    if [[ "$rc" == "124" || "$rc" == "137" ]]; then
+      echo "[ssh] ${phase} attempt timed out while waiting for the GCE guest to accept the runner key."
+    else
+      echo "[ssh] ${phase} attempt failed with exit code ${rc}."
+    fi
+    if (( attempt < attempts )); then
+      echo "[ssh] Waiting ${SSH_READY_SLEEP_SECONDS}s before retry..."
+      sleep "$SSH_READY_SLEEP_SECONDS"
+    fi
+  done
+  return 1
+}
+
+ssh_diagnostics() {
+  echo "[ssh] Bootstrap diagnostics:"
+  gcloud compute instances describe "$VM_NAME" --zone "$ZONE" --project "$PROJECT_ID" \
+    --format='yaml(name,status,machineType,networkInterfaces[0].accessConfigs[0].natIP,metadata.items.key)' || true
+  VM_IP="$(resolve_vm_ip || true)"
+  if [[ -n "$VM_IP" ]]; then
+    if timeout 8s bash -c "</dev/tcp/${VM_IP}/22" >/dev/null 2>&1; then
+      echo "[ssh] TCP/22 is reachable at ${VM_IP}; failure is key/authentication or guest-agent processing."
+    else
+      echo "[ssh] TCP/22 is not reachable at ${VM_IP}; firewall, sshd, boot, or guest health may be involved."
+    fi
+  fi
+  echo "[ssh] Running bounded Google Cloud SSH troubleshooter (best effort)..."
   set +e
-  SSH_OUTPUT="$(timeout --signal=TERM --kill-after=10s "${SSH_READY_TIMEOUT_SECONDS}s" \
-    gcloud compute ssh "$VM_NAME" \
-      --zone "$ZONE" --project "$PROJECT_ID" --quiet \
-      --ssh-key-file="$SSH_KEY_PATH" \
-      --ssh-key-expire-after="$SSH_KEY_EXPIRE_AFTER" \
-      --command='printf "SBB_SSH_READY:%s\\n" "$(id -un)"' 2>&1)"
-  SSH_RC=$?
+  timeout --signal=TERM --kill-after=10s 60s \
+    gcloud compute ssh "$VM_NAME" --zone "$ZONE" --project "$PROJECT_ID" \
+      --troubleshoot --quiet --ssh-flag='-F none' 2>&1 || true
+  echo "[ssh] Recent serial console signals (best effort):"
+  gcloud compute instances get-serial-port-output "$VM_NAME" --zone "$ZONE" --project "$PROJECT_ID" \
+    --port=1 2>/dev/null | tail -n 160 || true
   set -e
-  printf '%s\n' "$SSH_OUTPUT"
-  SSH_USER="$(printf '%s\n' "$SSH_OUTPUT" | sed -n 's/.*SBB_SSH_READY:\([A-Za-z0-9._-][A-Za-z0-9._-]*\).*/\1/p' | tail -n 1)"
-  if [[ "$SSH_RC" == "0" && -n "$SSH_USER" ]]; then
-    SSH_READY=1
-    echo "[ssh] SSH READY as remote user ${SSH_USER}."
-    break
-  fi
-  SSH_USER=""
-  if [[ "$SSH_RC" == "124" || "$SSH_RC" == "137" ]]; then
-    echo "[ssh] Bootstrap timed out while waiting for the GCE guest to accept the runner key."
+}
+
+echo "[ssh] Preparing ONE runner SSH identity (temporary key lifetime: ${SSH_KEY_EXPIRE_AFTER})."
+if ! ssh_bootstrap_phase "normal" "$SSH_READY_ATTEMPTS" "$SSH_READY_TIMEOUT_SECONDS"; then
+  ssh_diagnostics
+  if [[ "$SSH_AUTO_RESET_ON_FAILURE" == "1" ]]; then
+    echo "[ssh] Normal SSH bootstrap failed. Performing ONE last-resort Compute Engine reset to recover sshd/guest-agent."
+    echo "[ssh] No release archive has been uploaded and deployment has not touched the historical catalog."
+    gcloud compute instances reset "$VM_NAME" --zone "$ZONE" --project "$PROJECT_ID" --quiet
+    echo "[ssh] VM reset requested. Waiting for guest boot before retrying SSH..."
+    sleep 20
+    : > "$KNOWN_HOSTS"
+    if ! ssh_bootstrap_phase "post-reset" "$SSH_RECOVERY_ATTEMPTS" "$SSH_RECOVERY_TIMEOUT_SECONDS"; then
+      ssh_diagnostics
+    fi
   else
-    echo "[ssh] Bootstrap failed with exit code ${SSH_RC}."
+    echo "[ssh] Automatic VM reset is disabled (SBB_SSH_AUTO_RESET_ON_FAILURE=${SSH_AUTO_RESET_ON_FAILURE})."
   fi
-  if (( attempt < SSH_READY_ATTEMPTS )); then
-    echo "[ssh] Waiting ${SSH_READY_SLEEP_SECONDS}s before retry..."
-    sleep "$SSH_READY_SLEEP_SECONDS"
-  fi
-done
+fi
 
 if [[ "$SSH_READY" != "1" ]]; then
-  echo "[ssh] ERROR: VM never accepted the GitHub runner SSH key after bounded retries."
-  echo "[ssh] No release archive was uploaded and the historical database was not touched."
-  echo "[ssh] Instance summary follows for diagnosis:"
-  gcloud compute instances describe "$VM_NAME" --zone "$ZONE" --project "$PROJECT_ID" \
-    --format='yaml(name,status,networkInterfaces[0].accessConfigs[0].natIP,metadata.items.key)' || true
+  echo "[ssh] ERROR: VM never accepted the GitHub runner SSH key after normal + recovery bootstrap."
+  echo "[ssh] No release archive was uploaded and the historical database was not touched by this deployment."
   exit 1
 fi
 

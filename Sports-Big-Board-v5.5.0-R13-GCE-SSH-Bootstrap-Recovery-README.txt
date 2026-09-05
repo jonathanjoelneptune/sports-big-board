@@ -1,0 +1,70 @@
+Sports Big Board v5.5.0 R13 — GCE SSH Bootstrap Recovery
+
+WHY THE R12 DEPLOY FAILED
+The GitHub repository commit succeeded and contains R12-FAILURE-HARDENING, but the
+cloud backend job never reached the VM. Compute Engine accepted the temporary SSH
+key into instance metadata on all four attempts, while the VM guest never activated
+that key for SSH. No release archive was uploaded and the deployment did not touch
+the historical database.
+
+R13 changes only cloud deployment bootstrap behavior. R12 audit logic remains as
+already committed in GitHub.
+
+NORMAL BOOTSTRAP
+- Reduce the blind metadata/key wait from 4 x 120 seconds to 2 x 60 seconds.
+- Reuse one runner SSH key.
+- Ignore runner ~/.ssh/config with "-F none" as recommended for SSH troubleshooting.
+- Use a 10-second SSH connection timeout inside each bounded attempt.
+
+DIAGNOSTICS BEFORE RECOVERY
+If normal bootstrap fails, the workflow prints:
+- VM status / machine type / NAT IP / metadata keys;
+- whether public TCP/22 is reachable;
+- bounded `gcloud compute ssh --troubleshoot` output;
+- the most recent serial-console output.
+
+LAST-RESORT RECOVERY
+If normal bootstrap still fails:
+- perform exactly ONE `gcloud compute instances reset`;
+- wait for guest boot;
+- retry SSH for 3 x 60 seconds using the same runner key;
+- if SSH still fails, print diagnostics again and stop.
+
+Why reset instead of stop/start:
+- Compute Engine reset preserves instance properties, attached disks, metadata,
+  and ephemeral/static IP addresses.
+- stop/start can release an ephemeral external IP.
+- reset is intentionally used only after bounded normal SSH + diagnostics fail.
+
+The reset is abrupt. It is a last-resort recovery for a VM whose guest environment
+is already refusing administrative SSH. Sports Big Board persistent state/catalog
+lives on persistent disk and systemd services restart on boot.
+
+UPLOAD
+1. At repository root upload the one file from the Non-Tests ZIP, preserving path:
+     cloud/gcp/DEPLOY-FROM-GITHUB.sh
+2. Open the existing GitHub /tests folder and replace:
+     test_v550_media_health_audit.py
+   with the flat file from the Tests ZIP.
+
+Do NOT re-upload R12 media_audit_service.py/media-audit.html/JS/CSS. They are already
+present in the GitHub repository and the next successful cloud deployment will ship them.
+
+EXPECTED NEXT DEPLOY
+Best case:
+  normal SSH succeeds within the first 1–2 minutes and no reset occurs.
+
+If the guest agent is still wedged:
+  normal attempts fail -> diagnostics -> one VM reset -> post-reset SSH succeeds ->
+  R12 release uploads/deploys normally.
+
+If reset permission or guest recovery itself fails, the job will now fail with
+specific GCE/serial/troubleshooter evidence instead of spending nine minutes saying
+only that the key did not propagate.
+
+VALIDATION
+- DEPLOY-FROM-GITHUB.sh bash syntax: PASS
+- R12/R13 focused Media Audit regression: PASS
+- Static guard: at most one Compute Engine reset in bootstrap path
+- Static guard: diagnostics precede reset
+- Static guard: no stop/start recovery that could release an ephemeral IP
