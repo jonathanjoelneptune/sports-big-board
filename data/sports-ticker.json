@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
-  "pipelineVersion": "A3.10-final-relevance-event-fusion",
-  "generatedAt": "2026-09-05T18:00:52Z",
+  "pipelineVersion": "A4.0-global-headline-budget",
+  "generatedAt": "2026-09-05T18:21:09Z",
   "freshnessHours": 24.0,
-  "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
+  "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 15-20 headline budget + diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "0d980eecc3e3dc637d62d87f1361391c895a2116ea18c96ebb3b033b6023068f",
+  "sourceCandidateHash": "1d34f58a4c6e72918e2e4c8042930d6e3f2ad6d9c1b48df21b8a4b9829b3e39c",
   "leagues": [
     {
       "league": "MLB",
@@ -19,7 +19,7 @@
           "type": "RESULT",
           "priority": 80,
           "headline": "Luis Campusano delivers walk-off as Padres beat Yankees 3-2",
-          "text": "Campusano homered in the bottom of the 10th to give San Diego a 3-2 win over New York.",
+          "text": "Campusano homered in the bottom of the 10th to give San Diego the win.",
           "entities": [
             "San Diego Padres",
             "New York Yankees",
@@ -27,8 +27,8 @@
           ],
           "occurredAt": "2026-09-05T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.35,
-          "freshnessBasis": "Luis Campusano delivered a walk-off home run in the bottom of the 10th inning Friday.",
+          "ageHours": 16.69,
+          "freshnessBasis": "Luis Campusano hit a walk-off home run in the bottom of the 10th inning for San Diego on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -40,7 +40,8 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-3f440860aa8ac3c0"
+          "id": "a3-3f440860aa8ac3c0",
+          "feedRank": 5
         },
         {
           "rank": 2,
@@ -49,8 +50,8 @@
           ],
           "type": "RESULT",
           "priority": 80,
-          "headline": "Travis Bazzana delivers walk-off as Cleveland Guardians beat Detroit Tigers 4-3",
-          "text": "Bazzana singled to center, Rocchio scored.",
+          "headline": "Travis Bazzana’s walk-off lifts Guardians over Tigers 4-3",
+          "text": "Bazzana’s 10th-inning single scored the winning run for Cleveland.",
           "entities": [
             "Cleveland Guardians",
             "Detroit Tigers",
@@ -58,8 +59,8 @@
           ],
           "occurredAt": "2026-09-04T23:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.26,
-          "freshnessBasis": "Travis Bazzana delivered the walk-off in the bottom of the 10th inning.",
+          "ageHours": 18.6,
+          "freshnessBasis": "Travis Bazzana delivered a walk-off single in the bottom of the 10th for Cleveland on Sept. 4.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -71,38 +72,8 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-e8f090083ada47f1"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-1c45fc0c715aefe8"
-          ],
-          "type": "RESULT",
-          "priority": 78,
-          "headline": "Brayan Rocchio’s walk-off homer gives Guardians 7-6 win",
-          "text": "Rocchio homered to left-center in the bottom of the ninth to give Cleveland a 7-6 win over Detroit.",
-          "entities": [
-            "Cleveland Guardians",
-            "Detroit Tigers",
-            "Brayan Rocchio"
-          ],
-          "occurredAt": "2026-09-04T18:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.85,
-          "freshnessBasis": "Brayan Rocchio delivered a walk-off home run in the bottom of the ninth inning Friday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-ccf53a73d3849689"
+          "id": "a3-f70892cd2817d1f7",
+          "feedRank": 6
         }
       ]
     },
@@ -125,18 +96,18 @@
           "candidateIds": [
             "cand-54e2aa57c01b2c51"
           ],
-          "type": "CONTRACT",
-          "priority": 84,
-          "headline": "Canucks sign Zeev Buium to eight-year extension",
-          "text": "Vancouver signed defenseman Zeev Buium to an eight-year extension worth $9.38 million per season.",
+          "type": "SIGNING",
+          "priority": 86,
+          "headline": "Canucks give Zeev Buium eight-year extension",
+          "text": "Vancouver signed the defenseman to an eight-year deal worth $9.38 million per season.",
           "entities": [
             "Vancouver Canucks",
             "Zeev Buium"
           ],
           "occurredAt": "2026-09-05T16:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.35,
-          "freshnessBasis": "Vancouver signed Zeev Buium to an eight-year, $9.38 million-per-season extension Saturday.",
+          "ageHours": 1.69,
+          "freshnessBasis": "Vancouver signed Zeev Buium to an eight-year, $9.38 million-per-season contract extension on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
@@ -148,14 +119,79 @@
               "url": "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
             }
           ],
-          "id": "a3-8c4840655db06811"
+          "id": "a3-a2f27752ea9d3aa0",
+          "feedRank": 1
         }
       ]
     },
     {
       "league": "EPL",
       "seasonState": "active",
-      "items": []
+      "items": [
+        {
+          "rank": 1,
+          "candidateIds": [
+            "cand-38bf715571b8ab58"
+          ],
+          "type": "MILESTONE",
+          "priority": 72,
+          "headline": "Luka Vušković’s first Brighton goal rescues 1-1 draw with Leeds",
+          "text": "The teenage defender’s first goal in English football earned Brighton a draw, according to manager Fabian Hurzeler.",
+          "entities": [
+            "Brighton & Hove Albion",
+            "Leeds United",
+            "Luka Vušković"
+          ],
+          "occurredAt": "2026-09-05T18:14:41Z",
+          "timePrecision": "exact",
+          "ageHours": 0.11,
+          "freshnessBasis": "Luka Vušković scored his first goal in English football to rescue Brighton’s 1-1 draw with Leeds.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49837674/fabian-hurzeler-luka-vuskovic-top-player-brighton-first-goal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49837674/fabian-hurzeler-luka-vuskovic-top-player-brighton-first-goal"
+            }
+          ],
+          "id": "a3-a4cbfac7529161d4",
+          "feedRank": 4
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-0894a44e354d1349"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Liverpool beat Ipswich 2-0",
+          "text": "Liverpool secured a 2-0 Premier League victory over Ipswich.",
+          "entities": [
+            "Liverpool",
+            "Ipswich"
+          ],
+          "occurredAt": "2026-09-04T19:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.35,
+          "freshnessBasis": "Liverpool beat Ipswich 2-0 in a completed Premier League match on Sept. 4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-bda7d2eb2a0c0ba4",
+          "feedRank": 12
+        }
+      ]
     },
     {
       "league": "MLS",
@@ -174,15 +210,15 @@
           "type": "RECORD",
           "priority": 76,
           "headline": "West Virginia retires Pat White’s No. 5 jersey",
-          "text": "West Virginia retired the record-setting quarterback’s No. 5 jersey Saturday, two decades after his career with the Mountaineers.",
+          "text": "The school honored the record-setting quarterback by retiring his number two decades after his career ended.",
           "entities": [
             "West Virginia Mountaineers",
             "Pat White"
           ],
-          "occurredAt": "2026-09-05T17:44:33Z",
+          "occurredAt": "2026-09-05T18:18:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.27,
-          "freshnessBasis": "West Virginia retired Pat White’s No. 5 jersey Saturday.",
+          "ageHours": 0.04,
+          "freshnessBasis": "West Virginia retired Pat White’s No. 5 jersey on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49836949/west-virginia-retires-record-setting-qb-pat-white-no-5-jersey"
@@ -194,25 +230,57 @@
               "url": "https://www.espn.com/college-football/story/_/id/49836949/west-virginia-retires-record-setting-qb-pat-white-no-5-jersey"
             }
           ],
-          "id": "a3-f604ee6096112ab2"
+          "id": "a3-f604ee6096112ab2",
+          "feedRank": 2
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-16282782c7ea8100"
+          ],
+          "type": "AWARD",
+          "priority": 70,
+          "headline": "Jim Tressel enters Ohio State ring of honor",
+          "text": "The former Buckeyes coach, who led Ohio State to the 2002 national title, was enshrined Saturday.",
+          "entities": [
+            "Ohio State Buckeyes",
+            "Jim Tressel"
+          ],
+          "occurredAt": "2026-09-05T18:14:40Z",
+          "timePrecision": "exact",
+          "ageHours": 0.11,
+          "freshnessBasis": "Ohio State enshrined former coach Jim Tressel in its ring of honor on Sept. 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49837509/former-ohio-state-coach-jim-tressel-enshrined-ring-honor"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49837509/former-ohio-state-coach-jim-tressel-enshrined-ring-honor"
+            }
+          ],
+          "id": "a3-5cb7164cc87591fe",
+          "feedRank": 8
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-ca9c7d78f6bff55c"
           ],
           "type": "RESULT",
           "priority": 66,
           "headline": "No. 14 USC shuts out Fresno State 39-0",
-          "text": "USC, ranked No. 14, beat Fresno State 39-0 in a shutout.",
+          "text": "USC posted a 39-0 shutout against Fresno State.",
           "entities": [
             "USC Trojans",
             "Fresno State Bulldogs"
           ],
           "occurredAt": "2026-09-05T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.01,
-          "freshnessBasis": "No. 14 USC beat Fresno State 39-0 in a shutout Friday.",
+          "ageHours": 17.35,
+          "freshnessBasis": "No. 14 USC beat Fresno State 39-0 in a completed game on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -224,25 +292,26 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-124b32bf4ea75d59"
+          "id": "a3-124b32bf4ea75d59",
+          "feedRank": 9
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-8e087c5ce446ac1e"
           ],
           "type": "RESULT",
           "priority": 66,
           "headline": "No. 7 Miami rolls past Stanford 45-6",
-          "text": "Miami, ranked No. 7, defeated Stanford 45-6.",
+          "text": "Miami defeated Stanford 45-6 in a blowout involving a ranked team.",
           "entities": [
             "Miami Hurricanes",
             "Stanford Cardinal"
           ],
           "occurredAt": "2026-09-05T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.01,
-          "freshnessBasis": "No. 7 Miami beat Stanford 45-6 Friday.",
+          "ageHours": 17.35,
+          "freshnessBasis": "No. 7 Miami beat Stanford 45-6 in a completed game on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -254,25 +323,26 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-ecc5c2cbc7b1f5b9"
+          "id": "a3-ecc5c2cbc7b1f5b9",
+          "feedRank": 10
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-6fc97cff2b2d2b58"
           ],
           "type": "RESULT",
           "priority": 66,
           "headline": "No. 10 Oklahoma shuts out UTEP 51-0",
-          "text": "Oklahoma, ranked No. 10, rolled past UTEP 51-0 in a shutout.",
+          "text": "Oklahoma defeated UTEP 51-0 in a dominant performance.",
           "entities": [
             "Oklahoma Sooners",
             "UTEP Miners"
           ],
           "occurredAt": "2026-09-05T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.01,
-          "freshnessBasis": "No. 10 Oklahoma beat UTEP 51-0 in a shutout Friday.",
+          "ageHours": 18.35,
+          "freshnessBasis": "No. 10 Oklahoma beat UTEP 51-0 in a completed game on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -284,7 +354,8 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-70dcac5b46455a11"
+          "id": "a3-70dcac5b46455a11",
+          "feedRank": 11
         }
       ]
     }
@@ -299,10 +370,10 @@
           "candidateIds": [
             "cand-2a7f5b2ae7df32f6"
           ],
-          "type": "RANKING",
-          "priority": 80,
-          "headline": "Pierre Gasly takes first career pole for Italian Grand Prix",
-          "text": "Alpine’s Gasly secured the pole position for Sunday’s Italian Grand Prix, with Ferrari off the pace.",
+          "type": "QUALIFYING",
+          "priority": 83,
+          "headline": "Pierre Gasly takes first career pole at Italian Grand Prix",
+          "text": "The Alpine driver captured pole position, with Ferrari off the pace.",
           "entities": [
             "Pierre Gasly",
             "Alpine",
@@ -310,8 +381,8 @@
           ],
           "occurredAt": "2026-09-05T17:45:12Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
-          "freshnessBasis": "Pierre Gasly took the first pole position of his career for the Italian Grand Prix Saturday.",
+          "ageHours": 0.6,
+          "freshnessBasis": "Pierre Gasly won his first career pole in qualifying for the Italian Grand Prix on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49813189/alpine-pierre-gasly-takes-thrilling-first-career-pole-italian-grand-prix-ferrari-pace-formula-1-monza"
@@ -323,7 +394,8 @@
               "url": "https://www.espn.com/f1/story/_/id/49813189/alpine-pierre-gasly-takes-thrilling-first-career-pole-italian-grand-prix-ferrari-pace-formula-1-monza"
             }
           ],
-          "id": "a3-special-9120e1aa94912a9e"
+          "id": "a3-special-20c106eb258b0689",
+          "feedRank": 3
         },
         {
           "rank": 2,
@@ -331,19 +403,19 @@
             "cand-3a56a1721741015e"
           ],
           "type": "DISCIPLINE",
-          "priority": 73,
-          "headline": "Oscar Piastri drops three places on Italian GP grid",
-          "text": "Piastri was penalized for impeding Liam Lawson during Q2 and will start sixth at Monza.",
+          "priority": 76,
+          "headline": "Oscar Piastri receives three-place Italian GP grid penalty",
+          "text": "Piastri was penalized for impeding Liam Lawson during Q2 and will start sixth.",
           "entities": [
             "Oscar Piastri",
-            "McLaren",
             "Liam Lawson",
+            "McLaren",
             "Italian Grand Prix"
           ],
           "occurredAt": "2026-09-05T16:59:11Z",
           "timePrecision": "exact",
-          "ageHours": 1.03,
-          "freshnessBasis": "Oscar Piastri received a three-place grid penalty after impeding Liam Lawson in qualifying Saturday.",
+          "ageHours": 1.37,
+          "freshnessBasis": "Oscar Piastri received a three-place grid penalty after impeding Liam Lawson in Italian Grand Prix qualifying on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49813193/oscar-piastri-hit-three-place-grid-penalty-impeding-qualifying-italian-grand-prix-monza"
@@ -355,42 +427,8 @@
               "url": "https://www.espn.com/f1/story/_/id/49813193/oscar-piastri-hit-three-place-grid-penalty-impeding-qualifying-italian-grand-prix-monza"
             }
           ],
-          "id": "a3-special-a1927db8f4902552"
-        }
-      ]
-    },
-    {
-      "name": "Tiger Woods DUI case",
-      "sport": "golf",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-e7a22fe8614761e7"
-          ],
-          "type": "LEGAL",
-          "priority": 78,
-          "headline": "Tiger Woods plans to change plea in DUI case",
-          "text": "Court documents show Woods plans to change his not-guilty plea in a DUI case stemming from a rollover crash in Florida.",
-          "entities": [
-            "Tiger Woods"
-          ],
-          "occurredAt": "2026-09-05T11:22:06Z",
-          "timePrecision": "exact",
-          "ageHours": 6.65,
-          "freshnessBasis": "Court documents showed Saturday that Tiger Woods plans to change his not-guilty plea in a Florida DUI case.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/golf/story/_/id/49798045/court-documents-show-tiger-woods-plans-change-not-guilty-plea-dui-case"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-pga",
-              "url": "https://www.espn.com/golf/story/_/id/49798045/court-documents-show-tiger-woods-plans-change-not-guilty-plea-dui-case"
-            }
-          ],
-          "id": "a3-special-b2f485ff3813fd88"
+          "id": "a3-special-ce6edf373201d412",
+          "feedRank": 7
         }
       ]
     },
@@ -405,8 +443,8 @@
           ],
           "type": "RESULT",
           "priority": 65,
-          "headline": "Serena and Venus Williams fall in US Open doubles return",
-          "text": "The Williams sisters lost to Hao-Ching Chan and Maya Joint in a third-set tiebreaker and exited the US Open women’s doubles tournament.",
+          "headline": "Serena and Venus Williams exit US Open doubles",
+          "text": "The sisters lost to Hao-Ching Chan and Maya Joint in a third-set tiebreaker during their return to the tournament.",
           "entities": [
             "Serena Williams",
             "Venus Williams",
@@ -415,8 +453,8 @@
           ],
           "occurredAt": "2026-09-05T12:12:54Z",
           "timePrecision": "exact",
-          "ageHours": 5.8,
-          "freshnessBasis": "Serena and Venus Williams lost in a third-set tiebreaker during their US Open doubles return Saturday.",
+          "ageHours": 6.14,
+          "freshnessBasis": "Serena and Venus Williams lost their US Open doubles match in a third-set tiebreaker on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49830732/serena-venus-williams-lose-third-set-tiebreak-us-open-doubles-return"
@@ -428,9 +466,11 @@
               "url": "https://www.espn.com/tennis/story/_/id/49830732/serena-venus-williams-lose-third-set-tiebreak-us-open-doubles-return"
             }
           ],
-          "id": "a3-special-65069aaadac35028"
+          "id": "a3-special-4fc65d843800f2f4",
+          "feedRank": 13
         }
       ]
     }
-  ]
+  ],
+  "headlineCount": 13
 }
