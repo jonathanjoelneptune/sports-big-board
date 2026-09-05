@@ -41,13 +41,14 @@ jobs:
             echo "HIGHLIGHTLY_API_KEY configured."
           fi
 
-      - name: Verify Sports Ticker A4 global budget
+      - name: Verify Sports Ticker A4.3 quality + coverage
         shell: bash
         run: |
           set -euo pipefail
           python3 tests/test_a4_global_headline_budget.py
+          python3 tests/test_a43_quality_coverage.py
 
-      - name: Refresh Sports Ticker A4
+      - name: Refresh Sports Ticker A4.3
         id: ticker
         shell: bash
         env:
@@ -56,7 +57,7 @@ jobs:
           SPORTS_TICKER_EDITOR_MODEL: ${{ vars.SPORTS_TICKER_EDITOR_MODEL || 'gpt-4o-mini' }}
         run: |
           set +e
-          python3 tools/refresh_sports_ticker_a4.py
+          python3 tools/refresh_sports_ticker_a43.py
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit 0
@@ -118,5 +119,5 @@ jobs:
         if: steps.ticker.outputs.exit_code != '0'
         shell: bash
         run: |
-          echo "::error title=Sports Ticker A4 failed::See data/sports-ticker-run-log.json for the complete source/pipeline/OpenAI diagnostic record."
+          echo "::error title=Sports Ticker A4.3 failed::See data/sports-ticker-run-log.json for the complete source/pipeline/OpenAI diagnostic record."
           exit 1
