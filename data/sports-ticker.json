@@ -1,11 +1,11 @@
 {
   "schemaVersion": 8,
   "pipelineVersion": "A3.6-decisive-moment-enrichment",
-  "generatedAt": "2026-09-05T01:30:53Z",
+  "generatedAt": "2026-09-05T02:00:53Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive match-detail/highlight enrichment + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-4o-mini",
-  "sourceCandidateHash": "4ce70750e66649d7e392a2ac87e160c780ce31642e3cb1bb820876853b170569",
+  "sourceCandidateHash": "255831175579ffe8afb097368cb7e1f04d0265530afa0208754e215d98bdf93e",
   "leagues": [
     {
       "league": "MLB",
@@ -14,20 +14,104 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-1100620dc564255f"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "New York Mets beat San Francisco Giants 10-6",
+          "text": "Highlightly final: San Francisco Giants 6, New York Mets 10.",
+          "entities": [],
+          "occurredAt": "2026-09-04T23:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.85,
+          "freshnessBasis": "New York Mets secured a 10-6 victory over the San Francisco Giants.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-c0ec6f6b7d7c445c"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-c1efedbff8477a61"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Boston Red Sox beat Baltimore Orioles 1-0",
+          "text": "Highlightly final: Boston Red Sox 1, Baltimore Orioles 0.",
+          "entities": [],
+          "occurredAt": "2026-09-04T23:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.93,
+          "freshnessBasis": "Boston Red Sox edged the Baltimore Orioles 1-0.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-48f369a03d67ba16"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-4e65d98f6eb10cd5"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Pittsburgh Pirates beat Los Angeles Angels 1-0",
+          "text": "Highlightly final: Los Angeles Angels 0, Pittsburgh Pirates 1.",
+          "entities": [],
+          "occurredAt": "2026-09-04T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Pittsburgh Pirates triumphed over the Los Angeles Angels 1-0.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816797"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816797"
+            }
+          ],
+          "id": "a3-6a0fd09e2b0c94a6"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-e06d9419fb150a17"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Atlanta Braves beat Philadelphia Phillies 5-2",
-          "text": "The Braves extended their lead in the NL East to five games with a 5-2 victory over the Phillies, highlighted by Chris Sale's strong pitching performance.",
-          "entities": [
-            "Atlanta Braves",
-            "Philadelphia Phillies"
-          ],
+          "text": "Highlightly final: Atlanta Braves 5, Philadelphia Phillies 2.",
+          "entities": [],
           "occurredAt": "2026-09-04T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.85,
-          "freshnessBasis": "Atlanta’s Chris Sale outdueled Cristopher Sánchez to secure the win.",
+          "ageHours": 3.35,
+          "freshnessBasis": "Atlanta Braves defeated the Philadelphia Phillies 5-2.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -48,106 +132,31 @@
           "id": "a3-cfbf11c5fb5ad67f"
         },
         {
-          "rank": 2,
+          "rank": 5,
           "candidateIds": [
             "cand-1c45fc0c715aefe8"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Cleveland Guardians beat Detroit Tigers 7-6",
-          "text": "Brayan Rocchio hit a walk-off homer after a tying grand slam, leading the Guardians to a thrilling comeback victory against the Tigers.",
-          "entities": [
-            "Cleveland Guardians",
-            "Detroit Tigers"
-          ],
+          "text": "Highlightly final: Detroit Tigers 6, Cleveland Guardians 7.",
+          "entities": [],
           "occurredAt": "2026-09-04T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.35,
-          "freshnessBasis": "Rocchio became the sixth player in MLB history to hit a grand slam and a walk-off home run in the same game.",
+          "ageHours": 7.85,
+          "freshnessBasis": "Cleveland Guardians narrowly defeated the Detroit Tigers 7-6.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816801",
-            "http://www.espn.com/mlb/recap?gameId=401877193"
+            "https://highlightly.net"
           ],
           "sources": [
             {
               "provider": "Highlightly",
               "sourceId": "highlightly-baseball-2026-09-04",
               "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816801"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401877193"
             }
           ],
           "id": "a3-272ca18c893cd6d9"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-1f017c227c653af4"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Los Angeles Dodgers beat St. Louis Cardinals 3-2",
-          "text": "The Dodgers edged the Cardinals in a close game, securing the win with key late-game performances.",
-          "entities": [
-            "Los Angeles Dodgers",
-            "St. Louis Cardinals"
-          ],
-          "occurredAt": "2026-09-04T02:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.35,
-          "freshnessBasis": "The Dodgers narrowly clinched the win with a final score of 3-2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-03",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-28609adbc437eac9"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-57a2a86edc7203a5"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Oakland Athletics beat Seattle Mariners 7-4",
-          "text": "The Athletics secured a solid victory over the Mariners with a final score of 7-4, showcasing a strong offensive performance.",
-          "entities": [
-            "Oakland Athletics",
-            "Seattle Mariners"
-          ],
-          "occurredAt": "2026-09-04T01:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.85,
-          "freshnessBasis": "The A's tallied seven runs against the Mariners' four.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-03",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-6ec21ef6b3bba0eb"
         }
       ]
     },
@@ -168,15 +177,12 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Ben Simmons returning to NBA on 1-year, $3.5M deal with Kings",
-          "text": "Ben Simmons has signed a one-year deal with the Kings as he makes his return to the NBA.",
-          "entities": [
-            "Ben Simmons",
-            "Sacramento Kings"
-          ],
+          "text": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
+          "entities": [],
           "occurredAt": "2026-09-04T14:56:49Z",
           "timePrecision": "exact",
-          "ageHours": 10.57,
-          "freshnessBasis": "Simmons agreed to a one-year, $3.5 million contract to rejoin the league.",
+          "ageHours": 11.07,
+          "freshnessBasis": "Ben Simmons signed a one-year deal worth $3.5M with the Sacramento Kings.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
@@ -204,15 +210,12 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Canucks' Zeev Buium signs 8-year contract extension",
-          "text": "The Vancouver Canucks secured defenseman Zeev Buium with an eight-year contract extension valued at $9.38 million per season.",
-          "entities": [
-            "Vancouver Canucks",
-            "Zeev Buium"
-          ],
+          "text": "The Canucks signed defenseman Zeev Buium to an eight-year contract extension worth $9.38 million a season.",
+          "entities": [],
           "occurredAt": "2026-09-04T23:53:16Z",
           "timePrecision": "exact",
-          "ageHours": 1.63,
-          "freshnessBasis": "Buium signed the extension, ensuring his future with the team.",
+          "ageHours": 2.13,
+          "freshnessBasis": "Zeev Buium signed an 8-year contract extension with the Canucks.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
@@ -235,50 +238,17 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-5137fc7c0211d840"
-          ],
-          "type": "CONTRACT",
-          "priority": 88,
-          "headline": "Richarlison declined new contract months before Tottenham squad omission",
-          "text": "Richarlison turned down a contract extension that would have kept him at Tottenham, as revealed by manager Roberto De Zerbi.",
-          "entities": [
-            "Richarlison",
-            "Tottenham Hotspur"
-          ],
-          "occurredAt": "2026-09-04T21:31:25Z",
-          "timePrecision": "exact",
-          "ageHours": 3.99,
-          "freshnessBasis": "Richarlison opted not to sign the extension offered earlier this year.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49826046/richarlison-was-offered-new-contract-months-tottenham-squad-omission-roberto-de-zerbi"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49826046/richarlison-was-offered-new-contract-months-tottenham-squad-omission-roberto-de-zerbi"
-            }
-          ],
-          "id": "a3-36a95a433935da3d"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-0894a44e354d1349"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Liverpool beat Ipswich 2-0",
-          "text": "Liverpool achieved their first league win of the season with a 2-0 victory at Ipswich, led by a brace from Alexander Isak.",
-          "entities": [
-            "Liverpool",
-            "Ipswich"
-          ],
+          "text": "Highlightly final: Liverpool 2, Ipswich 0.",
+          "entities": [],
           "occurredAt": "2026-09-04T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.51,
-          "freshnessBasis": "Isak scored both goals in a dominant performance to secure the win.",
+          "ageHours": 7.01,
+          "freshnessBasis": "Liverpool defeated Ipswich Town 2-0 for their first Premier League win of the season.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -312,15 +282,12 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "New York City FC and Nashville SC finished tied 0-0",
-          "text": "A defensive battle concluded with both teams unable to find the net, resulting in a scoreless draw between NYCFC and Nashville SC.",
-          "entities": [
-            "New York City FC",
-            "Nashville SC"
-          ],
+          "text": "Highlightly final: Nashville SC 0, New York City FC 0.",
+          "entities": [],
           "occurredAt": "2026-09-04T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.01,
-          "freshnessBasis": "The match ended in a 0-0 stalemate with no goals scored.",
+          "ageHours": 2.51,
+          "freshnessBasis": "New York City FC and Nashville SC ended in a scoreless draw.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -344,7 +311,7 @@
   ],
   "specialEvents": [
     {
-      "name": "US Open Results",
+      "name": "US Open Round of 16",
       "sport": "tennis",
       "items": [
         {
@@ -352,19 +319,15 @@
           "candidateIds": [
             "cand-8e8d2fd3c02dca6d"
           ],
-          "type": "RESULT",
+          "type": "OTHER",
           "priority": 65,
           "headline": "Carlos Alcaraz, Tommy Paul, Frances Tiafoe advance at US Open",
-          "text": "Carlos Alcaraz defeated Wu Yibing, while Tommy Paul triumphed over Alexander Bublik, both advancing to the round of 16.",
-          "entities": [
-            "Carlos Alcaraz",
-            "Tommy Paul",
-            "Frances Tiafoe"
-          ],
+          "text": "Two-time US Open champion Carlos Alcaraz returned to the round of 16 by beating Wu Yibing 6-3, 6-4, 6-1 and will next face American Tommy Paul, who defeated No. 15 Alexander Bublik in five sets.",
+          "entities": [],
           "occurredAt": "2026-09-05T01:26:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
-          "freshnessBasis": "Alcaraz won in straight sets.",
+          "ageHours": 0.57,
+          "freshnessBasis": "Carlos Alcaraz advanced to the round of 16 at the US Open after defeating Wu Yibing.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49828709/carlos-alcaraz-tommy-paul-win-set-4th-round-clash-2026-us-open"
@@ -377,36 +340,6 @@
             }
           ],
           "id": "a3-special-3dd295ec07cc55f4"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-8960f636462ffc3c"
-          ],
-          "type": "OTHER",
-          "priority": 65,
-          "headline": "Aryna Sabalenka, Jessica Pegula advance to US Open 4th round",
-          "text": "World No. 1 Aryna Sabalenka and No. 3 seed Jessica Pegula both won their third-round matches, progressing further in the tournament.",
-          "entities": [
-            "Aryna Sabalenka",
-            "Jessica Pegula"
-          ],
-          "occurredAt": "2026-09-05T00:47:10Z",
-          "timePrecision": "exact",
-          "ageHours": 0.73,
-          "freshnessBasis": "Both players secured wins to advance in the US Open.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-wta",
-              "url": "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
-            }
-          ],
-          "id": "a3-special-4b32b4ec017138eb"
         }
       ]
     }
