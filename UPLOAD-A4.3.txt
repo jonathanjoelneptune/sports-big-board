@@ -1,0 +1,29 @@
+SPORTS BIG BOARD — SPORTS TICKER A4.3 QUALITY + COVERAGE
+
+Base checked: latest live main around Sports Ticker A4 refresh 2026-09-05 19:02 UTC.
+
+Upload these files preserving repository paths:
+
+1. tools/refresh_sports_ticker_a43.py
+2. tests/test_a43_quality_coverage.py
+3. .github/workflows/sports-ticker-refresh.yml
+
+Do NOT remove tools/refresh_sports_ticker_a4.py. A4.3 intentionally loads the
+existing A4.2 overlay at runtime and adds only the new quality/coverage layer.
+
+A4.3 changes:
+- 30-35 total global headline budget retained (32 target).
+- Conditional refill now aims for 34-35 raw items so final normalization/dedupe
+  can still finish near 30-35.
+- Refill receives first-pass context counts and headlines and prioritizes missing
+  or underrepresented leagues before abundant routine results.
+- Semantic cross-candidate duplicate suppression (same underlying story).
+- Distinct structured/base-league games remain separate, including doubleheaders.
+- Story-driven draws can survive when recap copy grounds a real hook.
+- Weak generic Special Event buckets such as Tennis (Tennis) + OTHER are removed.
+- Live-card headline target <=80 chars; hard max 96 chars.
+- Coverage-first global selection: soft 7 / hard 9 items from one base context,
+  with up to 10 Special Event items globally and 4 from one named event.
+
+The existing workflow is updated to run both the A4.2 regression and the new A4.3
+quality regression, then execute tools/refresh_sports_ticker_a43.py.
