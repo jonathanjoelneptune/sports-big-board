@@ -1,76 +1,84 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-05T19:30:53Z
-Global headline budget: 28/30-35 total
-Headline length: target <= 64 chars; hard max 72
+Updated: 2026-09-05T19:48:48Z
+Global headline budget: 24/30-35 total
+Headline length: target <= 80 chars; hard max 96
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: a0ee40e3d756d9637475b4ec28a64b423d7f4124e6ef76303f39f31564e043ef
+Candidate hash: 9b133137f5fb602280d2070fdcb153c4c30bbd5a2345265ebaffa15b65d8514d
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [RESULT] Campusano walk-off lifts Padres past Yankees 3-2 (priority 80, age 17.85h)
-    Luis Campusano homered in the bottom of the 10th to give San Diego a 3-2 win over New York.
+ 1. [INJURY] Yankees place Trent Grisham on IL with hamstring strain (priority 82, age 0.05h)
+    New York placed center fielder Trent Grisham on the 10-day injured list with a right hamstring strain.
+    Occurred: 2026-09-05T19:46:04Z | Precision: exact | Status: active
+    Freshness basis: The Yankees placed Trent Grisham on the 10-day injured list with a right hamstring strain.
+    Entities: New York Yankees, Trent Grisham
+    Candidate IDs: cand-7763407492e52514
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49838761/yankees-place-trent-grisham-il-hamstring-strain
+
+ 2. [RESULT] Luis Campusano delivers walk-off as San Diego Padres beat New York Yankees 3-2 (priority 80, age 18.15h)
+    Campusano homered to left (394 feet), Harris scored.
     Occurred: 2026-09-05T01:40:00Z | Precision: exact | Status: active
-    Freshness basis: Luis Campusano delivered a walk-off home run in the 10th inning for San Diego Friday.
+    Freshness basis: Luis Campusano delivered the walk-off in the bottom of the 10th inning.
     Entities: San Diego Padres, New York Yankees, Luis Campusano
     Candidate IDs: cand-05e8473b30263bae
     Source [Highlightly/highlightly-baseball-2026-09-04]: https://highlightly.net
 
- 2. [RESULT] Bazzana's 10th-inning hit sends Guardians past Tigers (priority 80, age 19.76h)
-    Bazzana singled to center, Rocchio scored.
+ 3. [RESULT] Bazzana's 10th-inning single gives Guardians walk-off win (priority 80, age 20.06h)
+    Travis Bazzana singled home the winning run in the 10th as Cleveland beat Detroit 4-3.
     Occurred: 2026-09-04T23:45:00Z | Precision: exact | Status: active
-    Freshness basis: Travis Bazzana delivered the walk-off in the bottom of the 10th inning.
+    Freshness basis: Travis Bazzana delivered a walk-off single in the bottom of the 10th inning.
     Entities: Cleveland Guardians, Detroit Tigers, Travis Bazzana
     Candidate IDs: cand-c6c53f763c5cf744
     Source [Highlightly/highlightly-baseball-2026-09-04]: https://highlightly.net
 
- 3. [RESULT] Red Sox edge Orioles 1-0 in one-run shutout (priority 65, age 20.43h)
-    Boston defeated Baltimore 1-0 in a one-run game.
+ 4. [RESULT] Red Sox edge Orioles 1-0 in one-run shutout (priority 64, age 20.73h)
+    Boston scored once and held Baltimore scoreless for a 1-0 victory.
     Occurred: 2026-09-04T23:05:00Z | Precision: exact | Status: active
-    Freshness basis: Boston beat Baltimore 1-0 Friday for a one-run shutout win.
+    Freshness basis: Boston beat Baltimore 1-0 while holding the Orioles scoreless.
     Entities: Boston Red Sox, Baltimore Orioles
     Candidate IDs: cand-c1efedbff8477a61
     Source [Highlightly/highlightly-baseball-2026-09-04]: https://highlightly.net
 
- 4. [RESULT] Pirates blank Angels 1-0 (priority 64, age 20.85h)
-    Pittsburgh beat Los Angeles 1-0 in a one-run shutout.
-    Occurred: 2026-09-04T22:40:00Z | Precision: exact | Status: active
-    Freshness basis: Pittsburgh defeated the Los Angeles Angels 1-0 Friday.
-    Entities: Pittsburgh Pirates, Los Angeles Angels
-    Candidate IDs: cand-4e65d98f6eb10cd5
-    Source [Highlightly/highlightly-baseball-2026-09-04]: https://highlightly.net
-
- 5. [RESULT] Athletics hold off Mariners 7-6 (priority 63, age 17.35h)
-    Oakland edged Seattle 7-6 in a one-run game.
+ 5. [RESULT] Athletics hold off Mariners 7-6 in one-run finish (priority 63, age 17.65h)
+    Oakland beat Seattle 7-6 in a one-run game.
     Occurred: 2026-09-05T02:10:00Z | Precision: exact | Status: active
-    Freshness basis: Oakland beat Seattle 7-6 Friday in a one-run game.
+    Freshness basis: Oakland beat Seattle 7-6 in a one-run game.
     Entities: Oakland Athletics, Seattle Mariners
     Candidate IDs: cand-a27bd360052f6adc
     Source [Highlightly/highlightly-baseball-2026-09-04]: https://highlightly.net
 
- 6. [RESULT] Cardinals edge Rockies 7-6 in one-run finish (priority 63, age 18.85h)
-    St. Louis defeated Colorado 7-6 in a one-run game.
+ 6. [RESULT] Cardinals edge Rockies 7-6 in one-run finish (priority 63, age 19.15h)
+    St. Louis scored seven runs on nine hits to beat Colorado by one run.
     Occurred: 2026-09-05T00:40:00Z | Precision: exact | Status: active
-    Freshness basis: St. Louis defeated Colorado 7-6 Friday.
+    Freshness basis: St. Louis beat Colorado 7-6 in a one-run game.
     Entities: St. Louis Cardinals, Colorado Rockies
     Candidate IDs: cand-7bb94db1364f5ef4
     Source [Highlightly/highlightly-baseball-2026-09-04]: https://highlightly.net
 
- 7. [RESULT] Rays hold off Rangers 7-6 in one-run game (priority 63, age 19.43h)
-    Tampa Bay defeated Texas 7-6 in a one-run game.
+ 7. [RESULT] Rays hold off Rangers 7-6 in one-run game (priority 63, age 19.73h)
+    Tampa Bay finished with 12 hits and held off Texas for a one-run victory.
     Occurred: 2026-09-05T00:05:00Z | Precision: exact | Status: active
-    Freshness basis: Tampa Bay defeated Texas 7-6 Friday.
+    Freshness basis: Tampa Bay beat Texas 7-6 in a one-run game.
     Entities: Tampa Bay Rays, Texas Rangers
     Candidate IDs: cand-57870ac84854b71a
     Source [Highlightly/highlightly-baseball-2026-09-04]: https://highlightly.net
 
- 8. [RESULT] Dodgers defeat Nationals 5-3 in Los Angeles (priority 60, age 17.35h)
-    Los Angeles beat Washington 5-3.
+ 8. [RESULT] Pirates win one-run shutout over Angels, 1-0 (priority 63, age 21.15h)
+    Pittsburgh scored the game's only run in a 1-0 victory over Los Angeles.
+    Occurred: 2026-09-04T22:40:00Z | Precision: exact | Status: active
+    Freshness basis: Pittsburgh beat Los Angeles 1-0 in a one-run shutout.
+    Entities: Pittsburgh Pirates, Los Angeles Angels
+    Candidate IDs: cand-4e65d98f6eb10cd5
+    Source [Highlightly/highlightly-baseball-2026-09-04]: https://highlightly.net
+
+ 9. [RESULT] Dodgers beat Nationals 5-3 in close Friday finish (priority 61, age 17.65h)
+    Los Angeles used five hits to defeat Washington 5-3.
     Occurred: 2026-09-05T02:10:00Z | Precision: exact | Status: active
-    Freshness basis: Los Angeles defeated Washington 5-3 Friday.
+    Freshness basis: Los Angeles beat Washington 5-3.
     Entities: Los Angeles Dodgers, Washington Nationals
     Candidate IDs: cand-9f0607f6ce5b27b0
     Source [Highlightly/highlightly-baseball-2026-09-04]: https://highlightly.net
@@ -91,30 +99,24 @@ NBA  [OFFSEASON]
 NHL  [OFFSEASON]
 ============================================================================
 
- 1. [SIGNING] Canucks lock up Buium on eight-year extension (priority 86, age 2.85h)
-    Vancouver signed defenseman Zeev Buium to an eight-year extension worth $9.38 million per season.
-    Occurred: 2026-09-05T16:40:00Z | Precision: exact | Status: active
-    Freshness basis: Vancouver signed Zeev Buium to an eight-year, $9.38 million-per-season extension Saturday.
-    Entities: Vancouver Canucks, Zeev Buium
-    Candidate IDs: cand-54e2aa57c01b2c51
-    Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension
+    No selected ticker items in this run.
 
 ============================================================================
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [RESULT] Haaland scores again as Man City earn a win (priority 65, age 0.36h)
-    Erling Haaland scored again as Manchester City won Saturday in a busy European soccer slate.
+ 1. [RESULT] Haaland scores winner as Manchester City beat Coventry (priority 65, age 0.66h)
+    Erling Haaland scored again as Manchester City won during a busy European soccer slate.
     Occurred: 2026-09-05T19:09:14Z | Precision: exact | Status: active
-    Freshness basis: Erling Haaland scored as Manchester City won Saturday.
-    Entities: Erling Haaland, Manchester City
+    Freshness basis: Erling Haaland scored the winner in Manchester City’s victory over Coventry City.
+    Entities: Manchester City, Erling Haaland, Coventry City
     Candidate IDs: cand-99a94e67d49873ad
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49817484/premier-league-live-updates-newcastle-host-bournemouth-man-city-coventry-city-inter-napoli
 
- 2. [RESULT] Hull's unbeaten return continues with Villa draw (priority 65, age 0.89h)
-    Hull City remained unbeaten in its return to the Premier League after a 0-0 draw with Aston Villa.
+ 2. [RESULT] Hull stay unbeaten after holding Aston Villa to 0-0 draw (priority 65, age 1.19h)
+    Hull's unbeaten Premier League start continued with a scoreless draw against Aston Villa.
     Occurred: 2026-09-05T18:37:23Z | Precision: exact | Status: active
-    Freshness basis: Hull City extended its unbeaten Premier League start with a 0-0 draw against Aston Villa Saturday.
+    Freshness basis: Hull extended its unbeaten Premier League start by drawing Aston Villa 0-0.
     Entities: Hull City, Aston Villa
     Candidate IDs: cand-a1efd7563ae0d047
     Source [ESPN/espn-epl]: http://www.espn.com/soccer/report/_/gameId/401878781
@@ -123,11 +125,11 @@ EPL  [ACTIVE]
 MLS  [ACTIVE]
 ============================================================================
 
- 1. [RESULT] Goalkeepers duel as NYCFC and Nashville draw 0-0 (priority 65, age 14.54h)
-    Nashville rookie Brian Schwake and New York City FC's Matt Freese combined for a scoreless draw at Yankee Stadium.
+ 1. [RESULT] Goalkeeper duel ends with Nashville, NYCFC in 0-0 draw (priority 65, age 14.84h)
+    Nashville rookie Brian Schwake and NYCFC's Matt Freese each kept a clean sheet in the scoreless draw.
     Occurred: 2026-09-05T04:58:21Z | Precision: exact | Status: active
-    Freshness basis: New York City FC and Nashville finished 0-0 Friday.
-    Entities: New York City FC, Nashville SC, Brian Schwake, Matt Freese
+    Freshness basis: Nashville rookie Brian Schwake and NYCFC's Matt Freese played to a 0-0 draw.
+    Entities: Nashville SC, New York City FC, Brian Schwake, Matt Freese
     Candidate IDs: cand-5fbcd61ebb04f71a
     Source [ESPN/espn-mls]: http://www.espn.com/soccer/report/_/gameId/761770
 
@@ -135,68 +137,52 @@ MLS  [ACTIVE]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] West Virginia retires Pat White's No. 5 jersey (priority 78, age 1.20h)
-    West Virginia retired the record-setting quarterback's No. 5 jersey, two decades after his standout career with the Mountaineers.
-    Occurred: 2026-09-05T18:18:37Z | Precision: exact | Status: active
-    Freshness basis: West Virginia retired Pat White's No. 5 jersey Saturday.
-    Entities: West Virginia Mountaineers, Pat White
-    Candidate IDs: cand-f819376325303a41
-    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49836949/west-virginia-retires-record-setting-qb-pat-white-no-5-jersey
-
- 2. [AWARD] Ohio State enshrines Jim Tressel in ring of honor (priority 72, age 0.94h)
-    The former Ohio State coach, who led the Buckeyes to the 2002 national championship, was added to the school's ring of honor.
-    Occurred: 2026-09-05T18:34:45Z | Precision: exact | Status: active
-    Freshness basis: Ohio State enshrined Jim Tressel in its ring of honor Saturday.
-    Entities: Ohio State Buckeyes, Jim Tressel
-    Candidate IDs: cand-16282782c7ea8100
-    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49837509/former-ohio-state-coach-jim-tressel-enshrined-ring-honor
-
- 3. [RESULT] No. 6 Indiana rolls past North Texas 52-16 (priority 66, age 3.51h)
-    Indiana, ranked sixth, beat North Texas 52-16.
+ 1. [RESULT] No. 6 Indiana rolls past North Texas, 52-16 (priority 66, age 3.81h)
+    Indiana defeated North Texas 52-16 in a game featuring the No. 6 Hoosiers.
     Occurred: 2026-09-05T16:00:00Z | Precision: exact | Status: active
-    Freshness basis: No. 6 Indiana defeated North Texas 52-16 Saturday.
+    Freshness basis: No. 6 Indiana beat North Texas 52-16.
     Entities: Indiana Hoosiers, North Texas Mean Green
     Candidate IDs: cand-e30ba7dfefd70d60
     Source [Highlightly/highlightly-american-football-2026-09-05]: https://highlightly.net
 
- 4. [RESULT] No. 14 USC shuts out Fresno State 39-0 (priority 66, age 18.51h)
-    USC, ranked 14th, beat Fresno State 39-0.
+ 2. [RESULT] No. 14 USC shuts out Fresno State, 39-0 (priority 66, age 18.81h)
+    USC defeated Fresno State 39-0 in a shutout victory for the No. 14 Trojans.
     Occurred: 2026-09-05T01:00:00Z | Precision: exact | Status: active
-    Freshness basis: No. 14 USC defeated Fresno State 39-0 Friday.
+    Freshness basis: No. 14 USC beat Fresno State 39-0 and held the Bulldogs scoreless.
     Entities: USC Trojans, Fresno State Bulldogs
     Candidate IDs: cand-ca9c7d78f6bff55c
     Source [Highlightly/highlightly-american-football-2026-09-04]: https://highlightly.net
 
- 5. [RESULT] No. 7 Miami overwhelms Stanford 45-6 (priority 66, age 18.51h)
-    Miami, ranked seventh, beat Stanford 45-6.
+ 3. [RESULT] No. 7 Miami overwhelms Stanford, 45-6 (priority 66, age 18.81h)
+    Miami defeated Stanford 45-6 in a dominant performance by the No. 7 Hurricanes.
     Occurred: 2026-09-05T01:00:00Z | Precision: exact | Status: active
-    Freshness basis: No. 7 Miami defeated Stanford 45-6 Friday.
+    Freshness basis: No. 7 Miami beat Stanford 45-6.
     Entities: Miami Hurricanes, Stanford Cardinal
     Candidate IDs: cand-8e087c5ce446ac1e
     Source [Highlightly/highlightly-american-football-2026-09-04]: https://highlightly.net
 
- 6. [RESULT] No. 10 Oklahoma shuts out UTEP 51-0 (priority 66, age 19.51h)
-    Oklahoma, ranked 10th, defeated UTEP 51-0.
+ 4. [RESULT] No. 10 Oklahoma blanks UTEP, 51-0 (priority 66, age 19.81h)
+    Oklahoma defeated UTEP 51-0 in a shutout for the No. 10 Sooners.
     Occurred: 2026-09-05T00:00:00Z | Precision: exact | Status: active
-    Freshness basis: No. 10 Oklahoma defeated UTEP 51-0 Friday.
+    Freshness basis: No. 10 Oklahoma beat UTEP 51-0 and held the Miners scoreless.
     Entities: Oklahoma Sooners, UTEP Miners
     Candidate IDs: cand-6fc97cff2b2d2b58
     Source [Highlightly/highlightly-american-football-2026-09-04]: https://highlightly.net
 
- 7. [RESULT] Michigan State defeats Toledo 30-20 (priority 64, age 19.51h)
-    Michigan State beat Toledo 30-20.
-    Occurred: 2026-09-05T00:00:00Z | Precision: exact | Status: active
-    Freshness basis: Michigan State defeated Toledo 30-20 Friday.
-    Entities: Michigan State Spartans, Toledo Rockets
-    Candidate IDs: cand-f25cf2f882733250
-    Source [Highlightly/highlightly-american-football-2026-09-04]: https://highlightly.net
-
- 8. [RESULT] San José State holds off Eastern Michigan 27-21 (priority 63, age 21.01h)
-    San José State beat Eastern Michigan 27-21 in a one-score game.
+ 5. [RESULT] San José State holds off Eastern Michigan 27-21 (priority 64, age 21.31h)
+    San José State won a six-point FBS matchup after Eastern Michigan led 14-7 in the third period.
     Occurred: 2026-09-04T22:30:00Z | Precision: exact | Status: active
-    Freshness basis: San José State defeated Eastern Michigan 27-21 Friday in a one-score game.
+    Freshness basis: San José State beat Eastern Michigan 27-21 in a six-point FBS game.
     Entities: San José State Spartans, Eastern Michigan Eagles
     Candidate IDs: cand-d8593273388e5ac2
+    Source [Highlightly/highlightly-american-football-2026-09-04]: https://highlightly.net
+
+ 6. [RESULT] Michigan State beats Toledo 30-20 in FBS matchup (priority 61, age 19.81h)
+    Michigan State led 10-0 after the opening period and defeated Toledo by 10 points.
+    Occurred: 2026-09-05T00:00:00Z | Precision: exact | Status: active
+    Freshness basis: Michigan State beat Toledo 30-20 in an FBS matchup.
+    Entities: Michigan State Spartans, Toledo Rockets
+    Candidate IDs: cand-f25cf2f882733250
     Source [Highlightly/highlightly-american-football-2026-09-04]: https://highlightly.net
 
 ############################################################################
@@ -206,53 +192,44 @@ SPECIAL EVENTS
 Italian Grand Prix (Formula 1)
 ----------------------------------------------------------------------------
 
- 1. [QUALIFYING] Gasly takes first career pole for Italian GP (priority 82, age 1.76h)
-    Alpine's Pierre Gasly claimed the first pole position of his career for Sunday's Italian Grand Prix.
-    Freshness basis: Pierre Gasly secured the first pole of his Formula 1 career for the Italian Grand Prix Saturday.
-    Candidate IDs: cand-2a7f5b2ae7df32f6
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49813189/alpine-pierre-gasly-takes-thrilling-first-career-pole-italian-grand-prix-ferrari-pace-formula-1-monza
-
- 2. [QUALIFYING] Pierre Gasly beats Russell to Italian GP pole (priority 78, age 1.77h)
-    Pierre Gasly beat George Russell to pole position at the Italian Grand Prix after also beating him in online chess.
-    Freshness basis: Pierre Gasly took pole position for the Italian Grand Prix Saturday.
+ 1. [QUALIFYING] Pierre Gasly takes first career pole at Italian Grand Prix (priority 82, age 2.07h)
+    Gasly beat George Russell in qualifying to take pole position at Monza.
+    Freshness basis: Pierre Gasly beat George Russell to pole position in Italian Grand Prix qualifying.
     Candidate IDs: cand-63c8ef5ef81514d6
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49813192/pierre-gasly-checkmates-george-russell-chess-stunning-italian-grand-prix-pole-monza-formula-1
 
- 3. [DISCIPLINE] Piastri drops three places on Italian GP grid (priority 72, age 2.53h)
-    Oscar Piastri was penalized for impeding Liam Lawson in Q2 and will start sixth at Monza.
-    Freshness basis: Oscar Piastri received a three-place grid penalty after impeding Liam Lawson in qualifying Saturday.
+ 2. [DISCIPLINE] Piastri drops three places on Italian GP grid (priority 72, age 2.83h)
+    Oscar Piastri was penalized for impeding Liam Lawson during Q2 and will start sixth at Monza.
+    Freshness basis: Oscar Piastri received a three-place grid penalty after impeding Liam Lawson in qualifying.
     Candidate IDs: cand-3a56a1721741015e
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49813193/oscar-piastri-hit-three-place-grid-penalty-impeding-qualifying-italian-grand-prix-monza
 
- 4. [EVENT_UPDATE] Hamilton says title hopes are growing dimmer (priority 68, age 1.55h)
-    Lewis Hamilton delivered the message after qualifying for the Italian Grand Prix, saying there is light at the end of the tunnel but it is getting dimmer.
-    Freshness basis: Lewis Hamilton said his title hopes were dimming after Italian GP qualifying.
-    Candidate IDs: cand-0dab93e4ebca9c8a
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49813191/lewis-hamilton-title-fight-theres-light-end-tunnel-getting-dimmer-italian-grand-prix-formula-1-monza
-
-US Open (tennis)
+US Open (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [UPSET] Zheng rallies past Keys as Potapova upsets Anisimova (priority 76, age 0.74h)
-    Zheng Qinwen rallied past Madison Keys, while Anastasia Potapova defeated Amanda Anisimova at the US Open.
-    Freshness basis: Zheng Qinwen beat Madison Keys and Anastasia Potapova upset Amanda Anisimova Saturday.
+ 1. [UPSET] Zheng rallies past Keys as Potapova upsets Anisimova (priority 76, age 1.04h)
+    Zheng Qinwen rallied past Madison Keys, while Anastasia Potapova ousted Amanda Anisimova to advance at the US Open.
+    Freshness basis: Zheng Qinwen beat Madison Keys and Anastasia Potapova upset Amanda Anisimova at the US Open.
     Candidate IDs: cand-3f7710e1fa54a730
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49837907/qinwen-potapova-spring-upsets-advance-us-open-round-16
 
- 2. [RESULT] Serena and Venus fall in US Open doubles return (priority 65, age 7.30h)
-    Serena and Venus Williams lost to Hao-Ching Chan and Maya Joint in a third-set tiebreaker and exited the women's doubles draw.
-    Freshness basis: Serena and Venus Williams lost their US Open women's doubles match in a third-set tiebreak Saturday.
+ 2. [RESULT] Serena and Venus Williams lose in US Open doubles return (priority 65, age 7.60h)
+    The Williams sisters lost to Hao-Ching Chan and Maya Joint in a third-set tiebreaker.
+    Freshness basis: Serena and Venus Williams lost their US Open doubles return in a third-set tiebreaker.
     Candidate IDs: cand-453aecc6989455a4
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49830732/serena-venus-williams-lose-third-set-tiebreak-us-open-doubles-return
 
- 3. [RESULT] Serena and Venus Williams lose US Open opener (priority 65, age 17.00h)
-    Serena and Venus Williams lost their first-round US Open doubles match.
+ 3. [RESULT] Serena and Venus Williams lose US Open doubles opener (priority 65, age 17.29h)
+    Serena and Venus Williams were defeated in their first-round US Open doubles match.
     Freshness basis: Serena and Venus Williams lost their first-round US Open doubles match.
     Candidate IDs: cand-c35c3ef568822ff3
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49817155/serena-venus-williams-doubles-live-updates-highlights-results-us-open-2026
 
- 4. [LEAGUE_NEWS] Alcaraz plans more breaks after injury absence (priority 62, age 4.51h)
-    Carlos Alcaraz said he plans to take more breaks during the tennis season after returning from a four-month absence.
-    Freshness basis: Carlos Alcaraz announced plans for more season breaks after a four-month absence.
-    Candidate IDs: cand-71f26f4827c34449
-    Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49829911/feeling-good-return-injury-carlos-alcaraz-plans-take-more-long-breaks-tennis
+Tiger Woods DUI case (Golf)
+----------------------------------------------------------------------------
+
+ 1. [LEGAL] Tiger Woods plans to change plea in DUI case (priority 65, age 8.45h)
+    Court documents say Woods plans to change his not-guilty plea in the case stemming from a rollover crash in Florida.
+    Freshness basis: Court documents show Tiger Woods plans to change his not-guilty plea in a Florida DUI case.
+    Candidate IDs: cand-e7a22fe8614761e7
+    Source [ESPN/espn-pga]: https://www.espn.com/golf/story/_/id/49798045/court-documents-show-tiger-woods-plans-change-not-guilty-plea-dui-case
