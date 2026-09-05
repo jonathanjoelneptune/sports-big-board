@@ -1,0 +1,132 @@
+Sports Big Board v5.5.0 R12 — Media Audit Failure Hardening
+
+This is an audit-only generation. The website semantic VERSION remains 5.5.0.
+R12 supersedes the prior R11 Media Audit service/UI files.
+
+GOAL
+Make positive playback evidence authoritative while making negative certification
+deliberately conservative. Audit infrastructure failures and transient browser
+behavior must never be mistaken for proof that website media is dead.
+
+IMPLEMENTED 1–10
+
+1. CHROME STARTUP IS INSIDE THE INFRASTRUCTURE BOUNDARY
+   BrowserProbe.probe() now catches webdriver.Chrome/_ensure startup failures as
+   audit infrastructure evidence instead of allowing them to escape as generic
+   worker exceptions.
+
+2. CHROMEDRIVER LOCALHOST READ TIMEOUTS ARE INFRA_ERROR
+   ReadTimeoutError / localhost ChromeDriver timeouts map to
+   CHROMEDRIVER_READ_TIMEOUT. Selenium session, connection, WebDriver, and timeout
+   failures have explicit infrastructure classifications.
+
+3. INFRA_ERROR NEVER PENALIZES MEDIA
+   Infrastructure results are persisted as raw audit evidence but never change a
+   source asset to runtime_state=FAILED and never quarantine/canonicalize the media.
+
+4. BOUNDED INFRA RETRIES + DEFERRED_INFRA
+   A lane gets a bounded number of fresh infrastructure attempts. If Chrome/audit
+   infrastructure still cannot certify the event, the queue item becomes:
+       state=DEFERRED
+       phase=DEFERRED_INFRA
+       health=INCONCLUSIVE
+   DEFERRED is terminal for ordered-commit purposes, so later games continue.
+
+5. INDEPENDENT SOFT-NEGATIVE RETRIES
+   A soft media failure such as YOUTUBE_START_TIMEOUT no longer immediately retries
+   in the same Chrome session. Chrome is destroyed/recreated and the retry occurs
+   after a small jittered delay.
+
+6. INCONCLUSIVE IS A FIRST-CLASS RESULT
+   Repeated soft failures are INCONCLUSIVE, not UNPLAYABLE. UNPLAYABLE is reachable
+   only when available media produced definitive hard playback failures.
+   Inconclusive/deferred events are included in recertification/rehydration exports.
+
+7. VALIDITY IS SEPARATE FROM PACKAGE PREFERENCE
+   Healthy nonselected Green/Purple/Gold/Blue assets remain ASSIGNED as:
+       MEDIA_AUDIT_FALLBACK_AVAILABLE
+       MEDIA_AUDIT_ALTERNATE_AVAILABLE
+   Only definitive hard-failed media is QUARANTINED/MEDIA_AUDIT_FAILED.
+   The canonical package still identifies the preferred default asset(s), but no
+   longer destroys healthy recovery options.
+
+8. STATUS AND INVENTORY FAILURE DOMAINS ARE SEPARATE
+   /status heartbeat and /inventory refresh have independent UI error handling.
+   An inventory timeout leaves the last table visible and reports STALE inventory;
+   it cannot label the canonical service OFFLINE.
+   OFFLINE requires three consecutive lightweight heartbeat failures.
+
+9. LIGHTWEIGHT STATUS + SQL PAGINATION
+   /status is served from a small background AuditStatusCache and performs no
+   synchronous SQLite inventory work per browser poll.
+   Inventory league/health/search filtering, count, LIMIT, and OFFSET execute in
+   SQLite rather than loading the entire catalog/packages/queue into Python memory.
+   Hidden tabs suppress unnecessary polling.
+
+10. SPECIAL EVENT ENDPOINT COMPATIBILITY
+    BAD_HISTORY_EVENT/HISTORY_EVENT_NOT_FOUND from the legacy production endpoint
+    for competitions such as USOPEN-2026 is translated to
+    ENDPOINT_UNSUPPORTED_SPECIAL_EVENT. The normalized catalog remains authoritative;
+    this compatibility condition is not treated as media-health failure.
+
+AUTOMATIC FALSE-FAILURE REPAIR
+At service startup R12 also repairs R11-era audit damage:
+- non-hard audit quarantines are restored to ASSIGNED;
+- recent real PLAYED evidence is preserved rather than reset;
+- stale soft/infra runtime FAILED states are cleared when not hard evidence;
+- an affected false UNPLAYABLE/NO_MEDIA canonical package is removed;
+- a terminal affected game in the active run is requeued as
+  RECOVERED_NONHARD_FAILURE for clean certification.
+
+OPERATOR DIAGNOSTICS
+The audit page now separately shows:
+- server heartbeat / worker availability;
+- status-cache freshness;
+- inventory CURRENT vs STALE;
+- INCONCLUSIVE count;
+- DB writer and lane state;
+- Special Event endpoint compatibility rather than BAD_HISTORY_EVENT as a red
+  media-health signal.
+
+UPLOAD
+A. At the GitHub repository ROOT, upload the contents of:
+   Sports-Big-Board-v5.5.0-R12-Audit-Failure-Hardening-Non-Tests.zip
+
+   It contains exactly:
+     media_audit_service.py
+     media-audit.html
+     ui/media-audit-v550.js
+     ui/media-audit-v550.css
+
+B. Browse to the existing GitHub /tests folder and upload the one flat file from:
+   Sports-Big-Board-v5.5.0-R12-Audit-Failure-Hardening-Tests.zip
+
+   It contains:
+     test_v550_media_health_audit.py
+
+AFTER DEPLOYMENT
+- Do NOT reset the current audit.
+- Hard-refresh media-audit.html once. HTML cache-busts both R12 JS and CSS.
+- Service startup automatically repairs/requeues old false-negative evidence where
+  the database supports that conclusion.
+- Existing true hard failures remain quarantined.
+- Existing positive PLAYED evidence is preserved.
+- DEFERRED_INFRA and INCONCLUSIVE can be picked up by RETEST FAILED / later
+  recertification instead of blocking the full deterministic sweep.
+
+VALIDATION
+PASS — Python syntax for media_audit_service.py and regression test.
+PASS — JavaScript syntax for ui/media-audit-v550.js.
+PASS — focused v5.5.0 R12 Media Audit regression.
+PASS — behavioral smoke: deterministic DEFERRED_INFRA releases later ordinal.
+PASS — BrowserProbe startup ReadTimeoutError -> CHROMEDRIVER_READ_TIMEOUT / infra.
+PASS — soft failure preserves nonfailed runtime; hard embed-disabled failure revokes.
+PASS — healthy nonselected Green and Blue remain ASSIGNED fallbacks.
+PASS — SQL inventory pagination, league, health, and search filtering.
+PASS — synthetic false-negative recovery preserves recent PLAYED evidence, restores
+       association, deletes false UNPLAYABLE package, and requeues the game.
+
+A reconstructed full VERIFY.sh was intentionally NOT reported as a pass because the
+available v5.5.0 manual package is an update overlay and omits unchanged repository
+files required by VERIFY.sh. The R12 changed-file regression and behavior tests above
+were run against the actual current audit source baseline.

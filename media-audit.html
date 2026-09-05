@@ -7,7 +7,7 @@
   <title>Sports Big Board Media Audit — v5.5.0</title>
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://www.youtube-nocookie.com">
-  <link rel="stylesheet" href="ui/media-audit-v550.css?v=5.5.0">
+  <link rel="stylesheet" href="ui/media-audit-v550.css?v=5.5.0-r12h">
   <script src="config.js?v=5.5.0"></script>
   <script src="api-runtime.js?v=5.5.0"></script>
 </head>
@@ -31,7 +31,8 @@
       <article><small>GAMES AUDITED</small><strong id="metricAudited">0</strong><span id="metricAuditedSub">0%</span></article>
       <article class="healthy"><small>HEALTHY</small><strong id="metricHealthy">0</strong><span>Canonical preferred package playable</span></article>
       <article class="degraded"><small>DEGRADED</small><strong id="metricDegraded">0</strong><span>Playable fallback / preferred gap</span></article>
-      <article class="bad"><small>UNPLAYABLE</small><strong id="metricUnplayable">0</strong><span>Media exists, none plays</span></article>
+      <article class="degraded"><small>INCONCLUSIVE</small><strong id="metricInconclusive">0</strong><span>Soft/infra evidence cannot prove failure</span></article>
+      <article class="bad"><small>UNPLAYABLE</small><strong id="metricUnplayable">0</strong><span>Definitive hard failures only</span></article>
       <article class="missing"><small>NO MEDIA</small><strong id="metricNoMedia">0</strong><span>No canonical game media</span></article>
       <article><small>ASSETS TESTED</small><strong id="metricAssets">0</strong><span id="metricAssetsSub">0 passed • 0 failed</span></article>
       <article><small>RUN STATUS</small><strong id="metricRun">IDLE</strong><span id="metricRunSub">Ready</span></article>
@@ -53,7 +54,7 @@
       </div>
       <div class="control-row filters">
         <label>League<select id="filterLeague"><option value="">ALL LEAGUES</option></select></label>
-        <label>Health<select id="filterHealth"><option value="">ALL HEALTH</option><option>HEALTHY</option><option>DEGRADED</option><option>UNPLAYABLE</option><option>NO_MEDIA</option><option>UNTESTED</option><option value="WAITING_FINAL">WAITING FINAL</option></select></label>
+        <label>Health<select id="filterHealth"><option value="">ALL HEALTH</option><option>HEALTHY</option><option>DEGRADED</option><option>INCONCLUSIVE</option><option>UNPLAYABLE</option><option>NO_MEDIA</option><option>UNTESTED</option><option value="WAITING_FINAL">WAITING FINAL</option></select></label>
         
         <label>Search<input id="filterSearch" type="search" placeholder="Team, event, title…"></label>
         <label>Rows<select id="pageSize"><option>50</option><option selected>100</option><option>250</option></select></label>
@@ -87,6 +88,15 @@
         </div>
 
         <div id="diagWaiting" class="diagnostic-wait">No wait condition</div>
+
+        <section class="diag-section">
+          <h3>OPERATOR CHANNEL HEALTH</h3>
+          <dl class="diag-grid">
+            <div><dt>Service heartbeat</dt><dd id="diagHeartbeat" class="diag-value">CONNECTING</dd></div>
+            <div><dt>Status cache</dt><dd id="diagStatusCacheAge">—</dd></div>
+            <div class="wide"><dt>Inventory</dt><dd id="diagInventoryState">Loading inventory…</dd></div>
+          </dl>
+        </section>
 
         <section class="diag-section">
           <h3>CURRENT OPERATION</h3>
@@ -146,6 +156,6 @@
     <tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid"></div></td></tr>
   </template>
 
-  <script src="ui/media-audit-v550.js?v=5.5.0-r11p"></script>
+  <script src="ui/media-audit-v550.js?v=5.5.0-r12h"></script>
 </body>
 </html>

@@ -17,7 +17,8 @@ for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STA
 assert 'youtubeProbe' not in html
 assert 'directProbe' not in html
 assert 'youtube.com/iframe_api' not in html
-assert 'ui/media-audit-v550.js?v=5.5.0-r11p' in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r12h' in html
+assert 'ui/media-audit-v550.css?v=5.5.0-r12h' in html
 assert 'href="media-audit.html"' in index
 
 # Browser is a console only. All control and inventory authority routes to the backend service.
@@ -28,7 +29,7 @@ for forbidden in ['localStorage','YT.Player','directProbe','youtubeProbe','/api/
 
 # Canonical server-owned audit contract.
 for token in [
-    'AUDIT_GENERATION = "R11"',
+    'AUDIT_GENERATION = "R12-FAILURE-HARDENING"',
     'history_media_audit_run',
     'history_media_audit_queue',
     'history_media_audit_asset_result',
@@ -45,13 +46,11 @@ for token in [
     'events.sort',
     'scheduledKey',
     'queueOrdinal',
-    'WAITING_PROBE_INFRASTRUCTURE',
     'event_date DESC',
     'if not selected["green"] and not selected["extended"]',
     'if not preferred:',
     'len(selected["blue"]) >= BLUE_FALLBACK_TARGET',
     'association_state=\'ASSIGNED\'',
-    'state = QUARANTINED',
     'browserOwned',
 ]:
     assert token in service,token
@@ -100,7 +99,7 @@ for token in [
     'diagProgressAge','diagTrace','SERVER TRACE','DATABASE + PRODUCTION PARITY'
 ]:
     assert token in html or token in js,token
-assert "const GENERATION='R11-PLAYABLE-PROTECTION'" in js
+assert "const GENERATION='R12-FAILURE-HARDENING'" in js
 assert 'localStorage' not in js
 
 # R11: reset/start/stop retire the worker itself and stale run work cannot persist.
@@ -214,13 +213,73 @@ for token in [
 ]:
     assert token in service,token
 record_block=service[service.index('def record_probe'):service.index('def canonicalize')]
-assert 'effective_state="PLAYED" if (result.get("ok") or retained_prior_success) else "FAILED"' in record_block
-assert 'and not hard_failure' in record_block
+for token in ['probe_state = "PLAYED"', '"HARD_FAILED"', '"INFRA_ERROR"', '"INCONCLUSIVE"', 'Only definitive hard evidence can', 'effective_state = prior_runtime']:
+    assert token in record_block,token
+assert 'elif hard_failure:' in record_block
+assert 'runtime_failure_at=CASE WHEN ? THEN ? ELSE runtime_failure_at END' in record_block
 select_block=service[service.index('def _select_one'):service.index('@staticmethod',service.index('def _select_one'))]
 assert 'RECENT_PLAYBACK_RETAINED' in select_block
 assert '_transient_media_failure_reason(result.get("reason"))' in select_block
 for token in ['recent-playable asset','false-unplayable game','playableRecovery']:
     assert token in js,token
+
+
+# R12 failure-hardening: audit infrastructure/soft negatives are non-destructive.
+for token in [
+    'CHROMEDRIVER_READ_TIMEOUT', 'SELENIUM_TIMEOUT', 'INFRA_RETRIES',
+    'def _infra_result_from_exception', 'def _infra_failure_reason',
+    'DEFERRED_INFRA', 'def defer_queue_item', '"DEFERRED"',
+    'SOFT_RETRY_FRESH_BROWSER', 'recreating Chrome before independent retry',
+    '"INCONCLUSIVE"', 'Independent soft-negative probes remain inconclusive',
+    'MEDIA_AUDIT_FALLBACK_AVAILABLE', 'MEDIA_AUDIT_ALTERNATE_AVAILABLE',
+    'recover_healthy_audit_alternatives', 'preferenceSeparatedFromValidity',
+    'class AuditStatusCache', 'memory-only', 'statusCacheAgeSeconds',
+    'SQL-filtered/paginated operator inventory', 'LIMIT ? OFFSET ?',
+    'ENDPOINT_UNSUPPORTED_SPECIAL_EVENT', 'DISCOVERY_ENDPOINT_UNSUPPORTED_SPECIAL_EVENT',
+]:
+    assert token in service,token
+
+# Chrome creation itself must be protected; _ensure cannot sit outside the try.
+probe_class=service[service.index('class BrowserProbe'):service.index('class AuditRunReplaced')]
+probe_fn=probe_class[probe_class.index('def probe'): ]
+assert probe_fn.index('try:') < probe_fn.index('driver = self._ensure()')
+assert '_infra_result_from_exception(exc)' in probe_fn
+
+# Infrastructure evidence is persisted but cannot become global media failure.
+assert 'infra_failure = bool(result.get("infra")) or _infra_failure_reason(reason)' in record_block
+assert 'elif hard_failure:' in record_block
+assert 'effective_state = prior_runtime' in record_block
+
+# Only hard-failed alternatives may be quarantined; nonpreferred healthy media remain ASSIGNED.
+canon=service[service.index('def canonicalize'):service.index('def inventory')]
+assert 'hard_failed = meta["runtime"] == "FAILED" and _hard_media_failure_reason' in canon
+assert 'state = ASSIGNED' in canon
+assert 'MEDIA_AUDIT_FALLBACK_AVAILABLE' in canon
+assert 'MEDIA_AUDIT_ALTERNATE_AVAILABLE' in canon
+
+# Deferred infrastructure is terminal for queue ordering so later ordinals can commit.
+assert "state NOT IN ('DONE','FAILED','SKIPPED','DEFERRED')" in service
+assert "state IN ('DONE','FAILED','SKIPPED','DEFERRED')" in service
+
+# Operator status and inventory failure domains are split.
+for token in ['metricInconclusive','diagHeartbeat','diagInventoryState','diagStatusCacheAge','INCONCLUSIVE']:
+    assert token in html or token in js,token
+for token in ['statusFailures','inventoryError','Inventory refresh delayed','Heartbeat failed','STATUS DELAYED','document.hidden']:
+    assert token in js,token
+status_fn=js[js.index('async function refreshStatus'):js.index('async function command')]
+assert 'await refreshInventory()' not in status_fn
+assert 'refreshInventory();' in status_fn
+
+# Special-event legacy endpoint rejection is compatibility telemetry, not media failure.
+assert 'SPECIAL EVENT ENDPOINT UNSUPPORTED • normalized catalog authoritative' in js
+
+assert '.health.INCONCLUSIVE' in css
+assert 'repeat(9,minmax(115px,1fr))' in css
+
+# R12 recovery repairs old false-negative packages and exposes inconclusive/deferred work.
+for token in ['preservedRecentPlayable','removedFalsePackages','RECOVERED_NONHARD_FAILURE','RECERTIFICATION_REQUIRED']:
+    assert token in service or token in js,token
+assert "q.health='INCONCLUSIVE' OR q.state='DEFERRED'" in service
 
 
 # R11 deployment quiescence/readiness contract: the canonical audit service shares
@@ -233,4 +292,4 @@ assert deploy.index(stop_audit) < deploy.index(stop_backend, deploy.index(stop_a
 assert 'LOCAL_HEALTH_ATTEMPTS="${SBB_LOCAL_HEALTH_ATTEMPTS:-180}"' in deploy, 'cold-start health window must be bounded and configurable at 180 attempts'
 assert deploy.index('systemctl restart sports-big-board') < deploy.index('Installing canonical Media Health Audit service'), 'main backend must be healthy before audit service restart'
 
-print('PASS v5.5.0 R11 canonical Media Health Audit + playable-evidence protection + 3 parallel probes + serialized DB writer + ordered commits + bounded rehydration + reset/startup-lock/parity diagnostics')
+print('PASS v5.5.0 R12 Media Audit failure hardening + non-destructive negative evidence + deferred infra + fallback preservation + split operator health')
