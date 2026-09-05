@@ -1,11 +1,11 @@
 {
   "schemaVersion": 8,
   "pipelineVersion": "A3.6-decisive-moment-enrichment",
-  "generatedAt": "2026-09-05T00:00:52Z",
+  "generatedAt": "2026-09-05T00:30:54Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive match-detail/highlight enrichment + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-4o-mini",
-  "sourceCandidateHash": "d55589e1ef2f99f6198707a78237b932030957b9e29ca6df5f4e393aa360dfc8",
+  "sourceCandidateHash": "feddfbf38a4690fd8c583b0227d5f7aa71cebf390d6cbd45ec598229d22c4ea5",
   "leagues": [
     {
       "league": "MLB",
@@ -17,14 +17,18 @@
             "cand-6d473945622c7f4d"
           ],
           "type": "RETURN",
-          "priority": 80,
+          "priority": 84,
           "headline": "Pirates' Konnor Griffin (finger) activated off 60-day IL",
-          "text": "The Pirates welcomed back rookie shortstop Konnor Griffin after recovering from a finger injury.",
-          "entities": [],
+          "text": "The Pirates activated rookie shortstop Konnor Griffin off the 60-day injured list on Friday.",
+          "entities": [
+            "Pittsburgh Pirates",
+            "Konnor Griffin",
+            "injured list"
+          ],
           "occurredAt": "2026-09-04T20:47:53Z",
           "timePrecision": "exact",
-          "ageHours": 3.22,
-          "freshnessBasis": "Pittsburgh activated Griffin from the injured list.",
+          "ageHours": 3.72,
+          "freshnessBasis": "The Pirates activated rookie shortstop Konnor Griffin off the 60-day injured list.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49827876/pirates-konnor-griffin-finger-activated-60-day-il"
@@ -46,12 +50,15 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Cleveland Guardians beat Detroit Tigers 7-6",
-          "text": "Brayan Rocchio hit a walk-off homer in the ninth inning after connecting on a tying grand slam in the fourth, leading the Guardians to a narrow victory over the Tigers.",
-          "entities": [],
+          "text": "Brayan Rocchio hit a walk-off homer in the ninth inning after connecting on a tying grand slam in the fourth, rallying the Cleveland Guardians to a 7-6 comeback victory over the Detroit Tigers.",
+          "entities": [
+            "Cleveland Guardians",
+            "Detroit Tigers"
+          ],
           "occurredAt": "2026-09-04T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.85,
-          "freshnessBasis": "Cleveland triumphed over Detroit in their first game of a split doubleheader.",
+          "ageHours": 6.35,
+          "freshnessBasis": "Brayan Rocchio hit a walk-off homer in the ninth inning after a tying grand slam in the fourth.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -85,12 +92,15 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Los Angeles Dodgers beat St. Louis Cardinals 3-2",
-          "text": "The Dodgers secured a close win over the Cardinals, marking a competitive showdown.",
-          "entities": [],
+          "text": "The Los Angeles Dodgers secured a narrow 3-2 victory against the St. Louis Cardinals.",
+          "entities": [
+            "Los Angeles Dodgers",
+            "St. Louis Cardinals"
+          ],
           "occurredAt": "2026-09-04T02:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.85,
-          "freshnessBasis": "Los Angeles edged past St. Louis in a tightly contested matchup.",
+          "ageHours": 22.35,
+          "freshnessBasis": "The Los Angeles Dodgers secured a narrow 3-2 victory against the St. Louis Cardinals.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -112,12 +122,15 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Oakland Athletics beat Seattle Mariners 7-4",
-          "text": "The Athletics scored a decisive win against the Mariners, with a steady offensive performance throughout the game.",
-          "entities": [],
+          "text": "The Oakland Athletics defeated the Seattle Mariners 7-4.",
+          "entities": [
+            "Oakland Athletics",
+            "Seattle Mariners"
+          ],
           "occurredAt": "2026-09-04T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.35,
-          "freshnessBasis": "Oakland bested Seattle in a solid victory.",
+          "ageHours": 22.85,
+          "freshnessBasis": "The Oakland Athletics defeated the Seattle Mariners 7-4.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -130,33 +143,6 @@
             }
           ],
           "id": "a3-6ec21ef6b3bba0eb"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-581ef6bab4209f73"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Texas Rangers beat Tampa Bay Rays 6-0",
-          "text": "The Rangers dominated their game against the Rays with a strong defensive and offensive display, securing a shutout win.",
-          "entities": [],
-          "occurredAt": "2026-09-04T00:05:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.93,
-          "freshnessBasis": "Texas shut out Tampa Bay in a commanding performance.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-03",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-5508fe47832f522b"
         }
       ]
     },
@@ -175,14 +161,17 @@
             "cand-8fdbe1ac1835628a"
           ],
           "type": "SIGNING",
-          "priority": 88,
+          "priority": 90,
           "headline": "Ben Simmons returning to NBA on 1-year, $3.5M deal with Kings",
-          "text": "Simmons makes a comeback to the NBA by signing a one-year contract with Sacramento.",
-          "entities": [],
+          "text": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
+          "entities": [
+            "Kings",
+            "Ben Simmons"
+          ],
           "occurredAt": "2026-09-04T14:56:49Z",
           "timePrecision": "exact",
-          "ageHours": 9.07,
-          "freshnessBasis": "Ben Simmons agreed to a deal with the Kings to return to the league.",
+          "ageHours": 9.57,
+          "freshnessBasis": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
@@ -208,14 +197,17 @@
             "cand-54e2aa57c01b2c51"
           ],
           "type": "SIGNING",
-          "priority": 88,
+          "priority": 90,
           "headline": "Canucks' Zeev Buium signs 8-year contract extension",
-          "text": "Vancouver secured Buium's services for the long term, enhancing their defensive lineup.",
-          "entities": [],
+          "text": "The Canucks signed defenseman Zeev Buium to an eight-year contract extension worth $9.38 million a season.",
+          "entities": [
+            "Vancouver Canucks",
+            "Zeev Buium"
+          ],
           "occurredAt": "2026-09-04T23:53:16Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
-          "freshnessBasis": "The Canucks signed Buium to an eight-year extension.",
+          "ageHours": 0.63,
+          "freshnessBasis": "The Canucks signed defenseman Zeev Buium to an eight-year contract extension.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
@@ -243,12 +235,15 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Liverpool beat Ipswich 2-0",
-          "text": "Liverpool secured their first league win of the season with a solid performance against Ipswich.",
-          "entities": [],
+          "text": "Liverpool secured a 2-0 victory against Ipswich Town for their first win of the Premier League season.",
+          "entities": [
+            "Liverpool",
+            "Ipswich"
+          ],
           "occurredAt": "2026-09-04T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.01,
-          "freshnessBasis": "Liverpool claimed victory in their latest Premier League match.",
+          "ageHours": 5.51,
+          "freshnessBasis": "Liverpool secured a 2-0 victory against Ipswich Town.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -287,12 +282,15 @@
           "type": "RESULT",
           "priority": 70,
           "headline": "Utah Utes beat Idaho Vandals 66-14",
-          "text": "Utah showcased a dominant performance to overpower Idaho in a significant win.",
-          "entities": [],
+          "text": "The Utah Utes dominated the Idaho Vandals with a decisive 66-14 victory.",
+          "entities": [
+            "Utah Utes",
+            "Idaho Vandals"
+          ],
           "occurredAt": "2026-09-04T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.01,
-          "freshnessBasis": "Utah triumphed decisively over Idaho in their latest matchup.",
+          "ageHours": 23.52,
+          "freshnessBasis": "The Utah Utes won decisively against the Idaho Vandals.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -305,14 +303,44 @@
             }
           ],
           "id": "a3-0315ef9bbbecd33c"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-67187ca22d5dfe2d"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Illinois Fighting Illini beat UAB Blazers 42-23",
+          "text": "The Illinois Fighting Illini triumphed over the UAB Blazers with a score of 42-23.",
+          "entities": [
+            "Illinois Fighting Illini",
+            "UAB Blazers"
+          ],
+          "occurredAt": "2026-09-04T01:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.52,
+          "freshnessBasis": "The Illinois Fighting Illini triumphed over the UAB Blazers.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-03",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-16769f3d4ffaf02c"
         }
       ]
     }
   ],
   "specialEvents": [
     {
-      "name": "US Open Update",
-      "sport": "Tennis",
+      "name": "US Open",
+      "sport": "tennis",
       "items": [
         {
           "rank": 1,
@@ -322,12 +350,15 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Carlos Alcaraz, Tommy Paul advance to round of 16 at US Open",
-          "text": "Alcaraz defeated Wu Yibing while Paul overcame Alexander Bublik in their matches.",
-          "entities": [],
+          "text": "Two-time US Open champion Carlos Alcaraz returned to the round of 16 by beating Wu Yibing, while Tommy Paul also advanced.",
+          "entities": [
+            "Carlos Alcaraz",
+            "Tommy Paul"
+          ],
           "occurredAt": "2026-09-04T23:22:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.65,
-          "freshnessBasis": "Both players secured their spots in the round of 16.",
+          "ageHours": 1.15,
+          "freshnessBasis": "Carlos Alcaraz and Tommy Paul advanced to the round of 16.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49828709/carlos-alcaraz-tommy-paul-win-set-4th-round-clash-2026-us-open"
@@ -349,12 +380,15 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "Zverev sweats out another five-set scare to advance at US Open",
-          "text": "Zverev fought through a challenging match to secure his advancement.",
-          "entities": [],
+          "text": "Alexander Zverev needed five sets to defeat Quentin Halys, marking his second consecutive five-set match at the US Open.",
+          "entities": [
+            "Alexander Zverev",
+            "Quentin Halys"
+          ],
           "occurredAt": "2026-09-04T16:37:46Z",
           "timePrecision": "exact",
-          "ageHours": 7.38,
-          "freshnessBasis": "Zverev won his second consecutive five-set match at the tournament.",
+          "ageHours": 7.89,
+          "freshnessBasis": "Alexander Zverev needed five sets to defeat Quentin Halys.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49822322/zverev-sweats-another-five-set-scare-advance-us-open"
