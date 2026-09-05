@@ -342,7 +342,9 @@ Priority is importance, NOT rank number.
 - 88-94: major national story, major playoff/championship consequence, blockbuster transaction
 - 80-87: highly important injury, signing, record, upset, legal/discipline or standings development
 - 70-79: strong league-wide story, notable return/milestone/ranking change
-- 60-69: useful normal ticker item
+- 70-79: strong grounded result story: standout performance, late winner, milestone,
+  meaningful first/clinching win, or similarly useful game context
+- 60-69: useful normal ticker item; a close score alone belongs here, not in the 70s
 - 50-65: ordinary completed result unless supplied metadata proves major context
 - below 50: usually omit unless the league has exceptionally little legitimate news
 Never use 1, 2, 3... as ranking positions. rank is assigned later by Python.
@@ -363,6 +365,15 @@ TYPE RULES
 - Treat metadata.resultEnrichment.headlineSeed and summarySeed as grounded
   editorial seeds. You may tighten their wording, but do not remove the decisive
   fact they contain.
+- metadata.storyPromotion is Python's strongest grounded result-story context.
+  If storyPromotion exists, prefer its headlineSeed/summarySeed over a generic
+  "Team A beat Team B" score headline. The headline should teach the reader WHY
+  the result mattered or HOW it happened.
+- When choosing among ordinary RESULT candidates, prefer higher storyPromotion.storyScore.
+  A decisive-moment promotion or standout performance should beat a generic close
+  score with no known story.
+- Never use raw evidence boilerplate such as "Highlightly final:" as user-facing
+  ticker copy when storyPromotion or fusedContext provides richer grounded prose.
 - Never say walk-off, blocked kick, last-second, buzzer-beater, overtime,
   game-winner, or comeback unless those facts are present in resultEnrichment
   or another grounded candidate source.
@@ -586,6 +597,8 @@ def keyword_type_hint(title: str, summary: str) -> str:
         r"\bwon (?:his|her|their) [^.!?]{0,60}\bmatch(?:es)?\b",
         r"\badvance(?:s|d)? at (?:the )?us open\b",
         r"\bto advance at (?:the )?us open\b",
+        r"\blose(?:s|st)?\b[^.!?]{0,100}\bus open\b",
+        r"\beliminated\b[^.!?]{0,100}\bus open\b",
     ]
     result_noise = ("complains", "bothered by", "smell of", "controversy")
     if (
@@ -3109,9 +3122,9 @@ def derive_decisive_context(
     if any(flag in base_flags for flag in (
         "ONE_RUN_GAME", "ONE_SCORE_GAME", "ONE_POSSESSION_GAME", "ONE_GOAL_GAME"
     )):
-        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 72)
+        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 63)
     if "RANKED_TEAM_INVOLVED" in base_flags:
-        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 68)
+        merged["priorityFloor"] = max(int(merged.get("priorityFloor") or 0), 66)
 
     return merged
 
@@ -3481,6 +3494,296 @@ def enrich_decisive_moments(
     return candidates
 
 
+
+def _score_story_context(candidate: dict[str, Any], title: str, summary: str) -> dict[str, Any]:
+    """Score grounded recap context for user-facing ticker value.
+
+    A3.8 deliberately treats closeness and story value as separate signals. A
+    generic 1-0 result is not automatically more important than a multi-homer,
+    multi-goal, milestone, or other clearly stated performance.
+    """
+    title = clean_text(title)
+    summary = clean_text(summary)
+    combined = f"{title} {summary}".lower()
+    signals: list[str] = []
+    floor = 0
+
+    signal_rules = [
+        (r"\b(?:walk[- ]?off|game[- ]winning|game winner|last[- ]second|time expired|buzzer[- ]beater)\b", "DECISIVE_CONTEXT", 78),
+        (r"\b(?:hat trick|three goals|3 goals)\b", "HAT_TRICK", 76),
+        (r"\b(?:two|2|three|3|four|4)\s+(?:home runs|homers)\b|\bhomers twice\b|\bhit two home runs\b", "MULTI_HOMER", 74),
+        (r"\b(?:brace|scored twice|two goals|2 goals)\b", "MULTI_GOAL", 72),
+        (r"\b(?:career-high|season-high|career high|season high)\b", "HIGH_WATER_MARK", 72),
+        (r"\b(?:drove in|drives in)\s+(?:four|4|five|5|six|6)\s+runs?\b|\b(?:four|4|five|5|six|6)\s+rbi\b", "RUN_PRODUCTION", 72),
+        (r"\b(?:complete game|no-hitter|perfect game)\b", "PITCHING_FEAT", 78),
+        (r"\b(?:(?:\d+\s+)?(?:scoreless|strong|sharp)\s+innings|struck out \d+|\d+ strikeouts)\b", "PITCHING_PERFORMANCE", 69),
+        (r"\b(?:first (?:league|conference|season) win|first win of the season|clinches?|clinch(?:ed|ing)?|record|milestone)\b", "MILESTONE_CONTEXT", 71),
+        (r"\b(?:(?:two|2)-run|(?:three|3)-run|grand slam)\s+(?:homer|home run)\b", "IMPACT_HOMER", 69),
+        (r"\b(?:stole|steals)\s+(?:his|her|their)?\s*\d+(?:st|nd|rd|th)\b", "MILESTONE_STAT", 68),
+    ]
+    for pattern, label, priority_floor in signal_rules:
+        if re.search(pattern, combined, re.I):
+            signals.append(label)
+            floor = max(floor, priority_floor)
+
+    # A genuinely different recap headline is itself useful context even when it
+    # does not match one of the high-signal lexical rules above.
+    generic_title = clean_text(candidate.get("title"))
+    similarity = title_similarity(title, generic_title) if title and generic_title else 1.0
+    if title and len(title) >= 20 and similarity < 0.68:
+        signals.append("SPECIFIC_RECAP_CONTEXT")
+        floor = max(floor, 67)
+
+    # Avoid promoting copy that is just another restatement of the final score.
+    if not signals:
+        return {}
+
+    score = floor
+    if len(signals) >= 2:
+        score = min(86, score + 2)
+
+    return {
+        "signals": sorted(set(signals)),
+        "storyScore": score,
+        "priorityFloor": floor,
+        "headlineSeed": _clean_story_headline_seed(title),
+        "summarySeed": summary or title,
+    }
+
+
+def _clean_story_headline_seed(value: Any) -> str:
+    seed = clean_text(value)
+    seed = re.sub(r"^(?:premier league|mlb|nfl|nba|nhl|college football|ncaaf)\s+recap:\s*", "", seed, flags=re.I)
+    seed = re.sub(r"^recap:\s*", "", seed, flags=re.I)
+    return seed
+
+
+def build_result_story_promotion(candidate: dict[str, Any]) -> dict[str, Any] | None:
+    if clean_text(candidate.get("typeHint")).upper() not in {"RESULT", "UPSET"}:
+        return None
+
+    meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    enrichment = meta.get("resultEnrichment") if isinstance(meta.get("resultEnrichment"), dict) else {}
+    decisive = clean_text(enrichment.get("decisiveMoment"))
+    if decisive:
+        return {
+            "kind": "decisive-moment",
+            "storyScore": max(90, int(enrichment.get("priorityFloor") or 0)),
+            "priorityFloor": int(enrichment.get("priorityFloor") or 0),
+            "signals": list(enrichment.get("flags") or []),
+            "headlineSeed": clean_text(enrichment.get("headlineSeed")) or clean_text(candidate.get("title")),
+            "summarySeed": clean_text(enrichment.get("summarySeed")) or decisive,
+            "freshnessSeed": decisive,
+            "sourceCandidateId": candidate.get("candidateId"),
+        }
+
+    fused = meta.get("fusedContext")
+    if not isinstance(fused, list):
+        return None
+
+    best: dict[str, Any] | None = None
+    for context in fused:
+        if not isinstance(context, dict):
+            continue
+        title = clean_text(context.get("title"))
+        summary = clean_text(context.get("summary"))
+        scored = _score_story_context(candidate, title, summary)
+        if not scored:
+            continue
+        scored.update({
+            "kind": "fused-recap-context",
+            "freshnessSeed": summary or title,
+            "sourceCandidateId": context.get("candidateId"),
+            "providers": list(context.get("providers") or []),
+        })
+        if best is None or int(scored.get("storyScore") or 0) > int(best.get("storyScore") or 0):
+            best = scored
+    return best
+
+
+def promote_result_story_context(
+    candidates: list[dict[str, Any]],
+    run_log: dict[str, Any],
+) -> list[dict[str, Any]]:
+    log = run_log["pipeline"]["resultStoryPromotion"]
+    for candidate in candidates:
+        promotion = build_result_story_promotion(candidate)
+        if not promotion:
+            continue
+        meta = candidate.setdefault("metadata", {})
+        meta["storyPromotion"] = promotion
+        log["promoted"] += 1
+        log["items"].append({
+            "candidateId": candidate.get("candidateId"),
+            "league": candidate.get("leagueHint"),
+            "kind": promotion.get("kind"),
+            "signals": promotion.get("signals", []),
+            "storyScore": promotion.get("storyScore"),
+            "priorityFloor": promotion.get("priorityFloor"),
+            "headlineSeed": promotion.get("headlineSeed"),
+        })
+    return candidates
+
+
+def result_story_promotion_for_candidates(
+    candidate_ids: list[str],
+    by_id: dict[str, dict[str, Any]],
+) -> dict[str, Any] | None:
+    best = None
+    for cid in candidate_ids:
+        candidate = by_id.get(cid)
+        if not candidate:
+            continue
+        meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+        promotion = meta.get("storyPromotion")
+        if not isinstance(promotion, dict):
+            continue
+        if best is None or int(promotion.get("storyScore") or 0) > int(best.get("storyScore") or 0):
+            best = promotion
+    return best
+
+
+def _result_copy_is_generic(
+    item: dict[str, Any],
+    candidate_ids: list[str],
+    by_id: dict[str, dict[str, Any]],
+) -> bool:
+    headline = clean_text(item.get("headline"))
+    if not headline:
+        return True
+    for cid in candidate_ids:
+        candidate = by_id.get(cid)
+        if not candidate or not structured_match_pair(candidate):
+            continue
+        generic = clean_text(candidate.get("title"))
+        if generic and title_similarity(headline, generic) >= 0.78:
+            return True
+    return False
+
+
+def _raw_result_evidence_text(value: Any) -> bool:
+    text = clean_text(value).lower()
+    return (
+        text.startswith("highlightly final:")
+        or text.startswith("final:")
+        or text == "highlightly final"
+    )
+
+
+def _natural_result_summary_for_candidates(
+    candidate_ids: list[str],
+    by_id: dict[str, dict[str, Any]],
+) -> str:
+    for cid in candidate_ids:
+        candidate = by_id.get(cid)
+        if not candidate:
+            continue
+        meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+        home = clean_text(meta.get("homeTeam"))
+        away = clean_text(meta.get("awayTeam"))
+        try:
+            home_score = int(meta.get("homeScore"))
+            away_score = int(meta.get("awayScore"))
+        except Exception:
+            continue
+        if not home or not away:
+            continue
+        if home_score == away_score:
+            return f"{home} and {away} finished tied {home_score}-{away_score}."
+        if home_score > away_score:
+            return f"{home} beat {away} {home_score}-{away_score}."
+        return f"{away} beat {home} {away_score}-{home_score}."
+    return ""
+
+
+def _make_promoted_result_item(
+    candidate: dict[str, Any],
+    promotion: dict[str, Any],
+    by_id: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    candidate_id = candidate["candidateId"]
+    item_type = "UPSET" if clean_text(candidate.get("typeHint")).upper() == "UPSET" else "RESULT"
+    sources = union_sources([candidate_id], by_id)
+    headline = clean_text(promotion.get("headlineSeed")) or clean_text(candidate.get("title"))
+    text_value = clean_text(promotion.get("summarySeed")) or clean_text(candidate.get("summary"))
+    freshness = clean_text(promotion.get("freshnessSeed")) or text_value or headline
+    priority = max(65, int(promotion.get("priorityFloor") or 0))
+    item = {
+        "rank": 999,
+        "candidateIds": [candidate_id],
+        "type": item_type,
+        "priority": min(95, priority),
+        "headline": headline[:120],
+        "text": text_value[:360],
+        "entities": [],
+        "occurredAt": candidate.get("occurredAt"),
+        "timePrecision": candidate.get("timePrecision"),
+        "ageHours": candidate.get("ageHours"),
+        "freshnessBasis": freshness[:240],
+        "status": "active",
+        "sourceUrls": [s["url"] for s in sources],
+        "sources": sources,
+    }
+    item["id"] = "a3-promoted-" + hashlib.sha1(
+        (candidate_id + "|" + item["headline"]).encode("utf-8")
+    ).hexdigest()[:16]
+    return item
+
+
+def ensure_promoted_result_coverage(
+    final_items: list[dict[str, Any]],
+    league: str,
+    candidates: list[dict[str, Any]],
+    by_id: dict[str, dict[str, Any]],
+    run_log: dict[str, Any],
+    *,
+    max_auto_add: int = 3,
+    min_story_score: int = 72,
+) -> list[dict[str, Any]]:
+    """Backstop the cheap editor when it omits a clearly stronger result story.
+
+    Only grounded storyPromotion candidates at/above the threshold are eligible,
+    and at most three are injected per league before normal final curation/caps.
+    """
+    represented = {
+        cid
+        for item in final_items
+        for cid in item.get("candidateIds", [])
+    }
+    eligible = []
+    for candidate in candidates:
+        if clean_text(candidate.get("leagueHint")).upper() != league:
+            continue
+        if clean_text(candidate.get("typeHint")).upper() not in {"RESULT", "UPSET"}:
+            continue
+        promotion = result_story_promotion_for_candidates([candidate["candidateId"]], by_id)
+        if not isinstance(promotion, dict):
+            continue
+        score = int(promotion.get("storyScore") or 0)
+        if score < min_story_score or candidate["candidateId"] in represented:
+            continue
+        eligible.append((score, int(promotion.get("priorityFloor") or 0), candidate, promotion))
+
+    eligible.sort(key=lambda row: (-row[0], -row[1], float(row[2].get("ageHours") or 99.0)))
+    additions = 0
+    for score, floor, candidate, promotion in eligible:
+        if additions >= max_auto_add:
+            break
+        item = _make_promoted_result_item(candidate, promotion, by_id)
+        final_items.append(item)
+        represented.add(candidate["candidateId"])
+        additions += 1
+        run_log["pipeline"]["resultStoryPromotion"]["autoAdded"].append({
+            "league": league,
+            "candidateId": candidate["candidateId"],
+            "storyScore": score,
+            "priorityFloor": floor,
+            "headline": item["headline"],
+            "reason": "strong grounded result story omitted by editor",
+        })
+    return final_items
+
+
 def result_enrichment_for_candidates(
     candidate_ids: list[str],
     by_id: dict[str, dict[str, Any]],
@@ -3515,10 +3818,19 @@ def apply_result_enrichment_priority(
     if item_type not in {"RESULT", "UPSET"}:
         return priority
     enrichment = result_enrichment_for_candidates(candidate_ids, by_id)
-    if not enrichment:
+    promotion = result_story_promotion_for_candidates(candidate_ids, by_id)
+    floors = []
+    reasons = []
+    if isinstance(enrichment, dict) and isinstance(enrichment.get("priorityFloor"), int):
+        floors.append(int(enrichment["priorityFloor"]))
+        reasons.extend(enrichment.get("flags", []))
+    if isinstance(promotion, dict) and isinstance(promotion.get("priorityFloor"), int):
+        floors.append(int(promotion["priorityFloor"]))
+        reasons.extend(promotion.get("signals", []))
+    if not floors:
         return priority
-    floor = enrichment.get("priorityFloor")
-    if not isinstance(floor, int) or floor <= priority:
+    floor = max(floors)
+    if floor <= priority:
         return priority
     repaired = min(95, floor)
     run_log["pipeline"]["editorRepairs"].append({
@@ -3526,10 +3838,7 @@ def apply_result_enrichment_priority(
         "field": "priority",
         "original": priority,
         "repaired": repaired,
-        "reason": (
-            "grounded decisive-moment priority floor: "
-            + ", ".join(enrichment.get("flags", []))
-        ),
+        "reason": "grounded result-story priority floor: " + ", ".join(sorted(set(reasons))),
     })
     return repaired
 
@@ -3543,56 +3852,103 @@ def repair_result_story_punch(
 ) -> None:
     if item.get("type") not in {"RESULT", "UPSET"}:
         return
+
     enrichment = result_enrichment_for_candidates(candidate_ids, by_id)
-    if not enrichment or not enrichment.get("decisiveMoment"):
-        return
+    promotion = result_story_promotion_for_candidates(candidate_ids, by_id)
 
-    flags = set(enrichment.get("flags", []))
-    headline = clean_text(item.get("headline")).lower()
-    required_signal = True
+    # Decisive moments remain the strongest mandatory story signal.
+    if isinstance(enrichment, dict) and enrichment.get("decisiveMoment"):
+        flags = set(enrichment.get("flags", []))
+        headline = clean_text(item.get("headline")).lower()
+        required_signal = True
+        if "WALK_OFF" in flags:
+            required_signal = "walk" in headline
+        elif "BLOCKED_KICK" in flags:
+            required_signal = "block" in headline and (
+                "field goal" in headline or "kick" in headline
+            )
+        elif "BUZZER_BEATER" in flags:
+            required_signal = "buzzer" in headline
+        elif "OVERTIME" in flags:
+            required_signal = "overtime" in headline or re.search(r"\\bot\\b", headline) is not None
+        elif "LAST_SECOND" in flags and "GAME_WINNER" in flags:
+            required_signal = (
+                "last-second" in headline or "last second" in headline
+                or "late" in headline or "winner" in headline
+            )
+        if not required_signal:
+            seed = clean_text(enrichment.get("headlineSeed"))
+            summary_seed = clean_text(enrichment.get("summarySeed"))
+            decisive = clean_text(enrichment.get("decisiveMoment"))
+            if seed:
+                original = item["headline"]
+                item["headline"] = seed[:120]
+                item["text"] = (summary_seed or decisive or item["text"])[:360]
+                if decisive:
+                    item["freshnessBasis"] = decisive[:240]
+                run_log["pipeline"]["editorRepairs"].append({
+                    "context": context,
+                    "field": "headline/text",
+                    "original": original,
+                    "repaired": item["headline"],
+                    "reason": "editor omitted grounded decisive moment: " + ", ".join(sorted(flags)),
+                })
 
-    if "WALK_OFF" in flags:
-        required_signal = "walk" in headline
-    elif "BLOCKED_KICK" in flags:
-        required_signal = "block" in headline and (
-            "field goal" in headline or "kick" in headline
-        )
-    elif "BUZZER_BEATER" in flags:
-        required_signal = "buzzer" in headline
-    elif "OVERTIME" in flags:
-        required_signal = "overtime" in headline or re.search(r"\bot\b", headline) is not None
-    elif "LAST_SECOND" in flags and "GAME_WINNER" in flags:
-        required_signal = (
-            "last-second" in headline or "last second" in headline
-            or "late" in headline or "winner" in headline
-        )
+    # A3.8: when no decisive play exists but ESPN/another fused recap gives a
+    # clearly stronger grounded game story, do not publish the bare score line.
+    promotion = result_story_promotion_for_candidates(candidate_ids, by_id)
+    raw_text = _raw_result_evidence_text(item.get("text"))
 
-    if required_signal:
-        return
+    if isinstance(promotion, dict):
+        generic_headline = _result_copy_is_generic(item, candidate_ids, by_id)
+        story_score = int(promotion.get("storyScore") or 0)
+        seed = clean_text(promotion.get("headlineSeed"))
+        summary_seed = clean_text(promotion.get("summarySeed"))
+        freshness_seed = clean_text(promotion.get("freshnessSeed"))
 
-    seed = clean_text(enrichment.get("headlineSeed"))
-    summary_seed = clean_text(enrichment.get("summarySeed"))
-    decisive = clean_text(enrichment.get("decisiveMoment"))
+        if generic_headline and story_score >= 67 and seed:
+            original = item["headline"]
+            item["headline"] = seed[:120]
+            run_log["pipeline"]["editorRepairs"].append({
+                "context": context,
+                "field": "headline",
+                "original": original,
+                "repaired": item["headline"],
+                "reason": "promoted stronger grounded result story: " + ", ".join(promotion.get("signals", [])),
+            })
 
-    if seed:
-        original = item["headline"]
-        item["headline"] = seed[:120]
-        if summary_seed:
+        if raw_text and summary_seed:
+            original = item["text"]
             item["text"] = summary_seed[:360]
-        elif decisive:
-            item["text"] = decisive[:360]
-        if decisive:
-            item["freshnessBasis"] = decisive[:240]
-        run_log["pipeline"]["editorRepairs"].append({
-            "context": context,
-            "field": "headline/text",
-            "original": original,
-            "repaired": item["headline"],
-            "reason": (
-                "editor omitted grounded decisive moment: "
-                + ", ".join(sorted(flags))
-            ),
-        })
+            raw_text = False
+            run_log["pipeline"]["editorRepairs"].append({
+                "context": context,
+                "field": "text",
+                "original": original,
+                "repaired": item["text"],
+                "reason": "replaced raw result evidence with grounded fused story context",
+            })
+
+        # Only replace a vague/generic freshness line. Preserve a richer model-written
+        # freshness basis when it already contains the promoted fact.
+        if freshness_seed:
+            current = clean_text(item.get("freshnessBasis"))
+            if not current or current.lower().startswith(("game completed", "the match ended", "the game ended")):
+                item["freshnessBasis"] = freshness_seed[:240]
+
+    # Even without richer context, never publish transport/evidence boilerplate.
+    if raw_text:
+        natural = _natural_result_summary_for_candidates(candidate_ids, by_id)
+        if natural:
+            original = item["text"]
+            item["text"] = natural[:360]
+            run_log["pipeline"]["editorRepairs"].append({
+                "context": context,
+                "field": "text",
+                "original": original,
+                "repaired": item["text"],
+                "reason": "raw Highlightly evidence is not user-facing ticker prose",
+            })
 
 
 def candidate_sort_key(c: dict[str, Any]):
@@ -3603,7 +3959,10 @@ def candidate_sort_key(c: dict[str, Any]):
         "COACHING": 2, "RESULT": 5, "OTHER": 6,
     }.get(c.get("typeHint"), 4)
     age = float(c["ageHours"]) if c.get("ageHours") is not None else 23.9
-    return (type_weight, -int(c.get("quality", 0)), age)
+    meta = c.get("metadata") if isinstance(c.get("metadata"), dict) else {}
+    promotion = meta.get("storyPromotion") if isinstance(meta.get("storyPromotion"), dict) else {}
+    story_score = int(promotion.get("storyScore") or 0)
+    return (type_weight, -story_score, -int(c.get("quality", 0)), age)
 
 
 def trim_candidates(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -3774,7 +4133,7 @@ def call_openai(
         # GPT-4o Mini supports 16,384 max output tokens. 12k leaves substantial
         # room for the seven league groups while bounding worst-case cost.
         "max_output_tokens": 12000,
-        "prompt_cache_key": "sports-big-board-a3-editor-v5",
+        "prompt_cache_key": "sports-big-board-a3-editor-v6",
     }
 
     run_log["openai"]["called"] = True
@@ -4305,6 +4664,9 @@ def normalize_model_output(
                     "reason": clean_text(exc),
                 })
 
+        final_items = ensure_promoted_result_coverage(
+            final_items, league, candidates, by_id, run_log
+        )
         final_items = curate_final_items(final_items, league, run_log)
         leagues.append({
             "league": league,
@@ -4490,6 +4852,8 @@ def atomic_write(path: Path, content: str):
         "w", encoding="utf-8", dir=path.parent, delete=False, newline="\n"
     ) as handle:
         handle.write(content)
+        handle.flush()
+        os.fsync(handle.fileno())
         temp_name = handle.name
     os.replace(temp_name, path)
 
@@ -4502,7 +4866,7 @@ def write_run_log(path: Path, run_log: dict[str, Any]):
 def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dict[str, Any]:
     return {
         "schemaVersion": 1,
-        "pipelineVersion": "A3.7-real-payload-decisive-parser",
+        "pipelineVersion": "A3.8-result-story-promotion",
         "runId": f"a3-{generated_at.strftime('%Y%m%dT%H%M%SZ')}",
         "status": "running",
         "startedAt": iso_z(generated_at),
@@ -4525,6 +4889,10 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
             "decisiveEnrichmentStrategy": (
                 "selective Highlightly match detail + matchId-filtered highlights + "
                 "bounded ESPN football scoreboard/summary fallback; no OpenAI web search"
+            ),
+            "resultStoryPromotion": (
+                "decisive moment first; otherwise strongest grounded fused recap context; "
+                "raw Highlightly-final boilerplate is evidence-only"
             ),
             "gitSha": os.environ.get("GITHUB_SHA"),
             "githubRunId": os.environ.get("GITHUB_RUN_ID"),
@@ -4554,6 +4922,11 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
                 "failures": [],
                 "items": [],
                 "skipReason": None,
+            },
+            "resultStoryPromotion": {
+                "promoted": 0,
+                "items": [],
+                "autoAdded": [],
             },
         },
         "openai": {
@@ -4614,7 +4987,7 @@ def main() -> int:
 
     try:
         print(
-            f"A3.7 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
+            f"A3.8 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
             f"editor={args.model}; OpenAI web_search=OFF"
         )
 
@@ -4652,6 +5025,9 @@ def main() -> int:
         deduped = enrich_decisive_moments(
             deduped, run_log, highlightly_key
         )
+
+        print("Promoting strongest grounded result stories...")
+        deduped = promote_result_story_context(deduped, run_log)
 
         model_candidates = trim_candidates(deduped)
         run_log["pipeline"]["modelCandidateCount"] = len(model_candidates)
@@ -4720,11 +5096,11 @@ def main() -> int:
         )
 
         dataset = {
-            "schemaVersion": 8,
-            "pipelineVersion": "A3.7-real-payload-decisive-parser",
+            "schemaVersion": 9,
+            "pipelineVersion": "A3.8-result-story-promotion",
             "generatedAt": iso_z(generated_at),
             "freshnessHours": FRESHNESS_HOURS,
-            "discoveryMode": "Highlightly + real-payload decisive parsing + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
+            "discoveryMode": "Highlightly + decisive parsing + result-story promotion + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
             "model": args.model,
             "sourceCandidateHash": c_hash,
             "leagues": normalized["leagues"],

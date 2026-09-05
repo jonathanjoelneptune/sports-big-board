@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A3.7 real-payload decisive moment regression coverage."""
+"""A3.7 decisive-parser regressions retained under the A3.8 priority policy."""
 from __future__ import annotations
 
 import importlib.util
@@ -196,18 +196,20 @@ def test_espn_summary_normalizes_drives_for_same_parser():
     assert "time expired" in result["summarySeed"].lower(), result
 
 
-def test_close_result_priority_outranks_routine_ranked_blowout():
+def test_close_score_alone_stays_below_story_driven_70s():
     close = football_candidate(ranked=False)
     close_enrichment = mod.derive_decisive_context(close, {}, [])
-    assert close_enrichment["priorityFloor"] == 72, close_enrichment
+    assert close_enrichment["priorityFloor"] == 63, close_enrichment
 
     blowout = football_candidate(ranked=True, margin=27)
-    # Correct the score pair to a true ranked blowout.
+    # Ranked involvement alone gets only a small floor; it does not become a
+    # top-tier result without a real story/decisive context.
     blowout["metadata"]["homeScore"] = 14
     blowout["metadata"]["awayScore"] = 41
     ranked_enrichment = mod.derive_decisive_context(blowout, {}, [])
-    assert ranked_enrichment["priorityFloor"] == 68, ranked_enrichment
-    assert close_enrichment["priorityFloor"] > ranked_enrichment["priorityFloor"]
+    assert ranked_enrichment["priorityFloor"] == 66, ranked_enrichment
+    assert close_enrichment["priorityFloor"] < 70
+    assert ranked_enrichment["priorityFloor"] < 70
 
 
 if __name__ == "__main__":
@@ -215,5 +217,5 @@ if __name__ == "__main__":
     test_mlb_segmented_stream_ignores_second_representation_reset()
     test_football_reads_event_plays_even_when_playdetails_exist()
     test_espn_summary_normalizes_drives_for_same_parser()
-    test_close_result_priority_outranks_routine_ranked_blowout()
-    print("PASS: A3.7 real-payload decisive parser regressions")
+    test_close_score_alone_stays_below_story_driven_70s()
+    print("PASS: A3.7 parser regressions under A3.8 priority policy")
