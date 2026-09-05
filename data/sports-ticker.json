@@ -1,11 +1,11 @@
 {
   "schemaVersion": 8,
-  "pipelineVersion": "A3.6-decisive-moment-enrichment",
-  "generatedAt": "2026-09-05T02:00:53Z",
+  "pipelineVersion": "A3.7-real-payload-decisive-parser",
+  "generatedAt": "2026-09-05T02:30:52Z",
   "freshnessHours": 24.0,
-  "discoveryMode": "Highlightly + decisive match-detail/highlight enrichment + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
+  "discoveryMode": "Highlightly + real-payload decisive parsing + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-4o-mini",
-  "sourceCandidateHash": "255831175579ffe8afb097368cb7e1f04d0265530afa0208754e215d98bdf93e",
+  "sourceCandidateHash": "b7aacc1eee19d4a89727db708fb98a37a4d3cb73129b718f48b16d650c2d39f3",
   "leagues": [
     {
       "league": "MLB",
@@ -14,44 +14,17 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-1100620dc564255f"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "New York Mets beat San Francisco Giants 10-6",
-          "text": "Highlightly final: San Francisco Giants 6, New York Mets 10.",
-          "entities": [],
-          "occurredAt": "2026-09-04T23:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 2.85,
-          "freshnessBasis": "New York Mets secured a 10-6 victory over the San Francisco Giants.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-04",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-c0ec6f6b7d7c445c"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-c1efedbff8477a61"
           ],
           "type": "RESULT",
-          "priority": 65,
+          "priority": 72,
           "headline": "Boston Red Sox beat Baltimore Orioles 1-0",
-          "text": "Highlightly final: Boston Red Sox 1, Baltimore Orioles 0.",
+          "text": "Red Sox secured a shutout victory over the Orioles with a 1-0 final score.",
           "entities": [],
           "occurredAt": "2026-09-04T23:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.93,
-          "freshnessBasis": "Boston Red Sox edged the Baltimore Orioles 1-0.",
+          "ageHours": 3.43,
+          "freshnessBasis": "Game completed on September 4, 2026.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -66,85 +39,19 @@
           "id": "a3-48f369a03d67ba16"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
             "cand-4e65d98f6eb10cd5"
           ],
           "type": "RESULT",
-          "priority": 65,
+          "priority": 72,
           "headline": "Pittsburgh Pirates beat Los Angeles Angels 1-0",
-          "text": "Highlightly final: Los Angeles Angels 0, Pittsburgh Pirates 1.",
+          "text": "The Pirates edged past the Angels with a shutout win, finishing 1-0.",
           "entities": [],
           "occurredAt": "2026-09-04T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.35,
-          "freshnessBasis": "Pittsburgh Pirates triumphed over the Los Angeles Angels 1-0.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816797"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-04",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816797"
-            }
-          ],
-          "id": "a3-6a0fd09e2b0c94a6"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-e06d9419fb150a17"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Atlanta Braves beat Philadelphia Phillies 5-2",
-          "text": "Highlightly final: Atlanta Braves 5, Philadelphia Phillies 2.",
-          "entities": [],
-          "occurredAt": "2026-09-04T22:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.35,
-          "freshnessBasis": "Atlanta Braves defeated the Philadelphia Phillies 5-2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816798"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-04",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816798"
-            }
-          ],
-          "id": "a3-cfbf11c5fb5ad67f"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-1c45fc0c715aefe8"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Cleveland Guardians beat Detroit Tigers 7-6",
-          "text": "Highlightly final: Detroit Tigers 6, Cleveland Guardians 7.",
-          "entities": [],
-          "occurredAt": "2026-09-04T18:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 7.85,
-          "freshnessBasis": "Cleveland Guardians narrowly defeated the Detroit Tigers 7-6.",
+          "ageHours": 3.85,
+          "freshnessBasis": "Game completed on September 4, 2026.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -156,7 +63,106 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-272ca18c893cd6d9"
+          "id": "a3-6a0fd09e2b0c94a6"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-45cfafebc19973f6"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Chicago White Sox beat Minnesota Twins 4-1",
+          "text": "Colson Montgomery hit a two-run homer as the White Sox knocked off the Twins 4-1.",
+          "entities": [],
+          "occurredAt": "2026-09-04T23:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.85,
+          "freshnessBasis": "Game completed on September 4, 2026.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816805"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816805"
+            }
+          ],
+          "id": "a3-0fbeacc89158abbc"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-1100620dc564255f"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "New York Mets beat San Francisco Giants 10-6",
+          "text": "Francisco Alvarez hit two homers leading the Mets to a 10-6 win over the Giants.",
+          "entities": [],
+          "occurredAt": "2026-09-04T23:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Game completed on September 4, 2026.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816803"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816803"
+            }
+          ],
+          "id": "a3-c0ec6f6b7d7c445c"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-7d9141d6d71f6c8d"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Chicago Cubs beat Miami Marlins 6-1",
+          "text": "Shota Imanaga allowed one run in six innings as the Cubs won 6-1 against the Marlins.",
+          "entities": [],
+          "occurredAt": "2026-09-04T23:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Game completed on September 4, 2026.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816800"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816800"
+            }
+          ],
+          "id": "a3-edb67b260871a3d4"
         }
       ]
     },
@@ -177,12 +183,12 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Ben Simmons returning to NBA on 1-year, $3.5M deal with Kings",
-          "text": "Ben Simmons is back in the NBA after reaching a one-year, $3.5 million deal with the Kings.",
+          "text": "Ben Simmons has signed a one-year, $3.5 million contract with the Sacramento Kings.",
           "entities": [],
           "occurredAt": "2026-09-04T14:56:49Z",
           "timePrecision": "exact",
-          "ageHours": 11.07,
-          "freshnessBasis": "Ben Simmons signed a one-year deal worth $3.5M with the Sacramento Kings.",
+          "ageHours": 11.57,
+          "freshnessBasis": "Contract signed on September 4, 2026.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
@@ -210,12 +216,12 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Canucks' Zeev Buium signs 8-year contract extension",
-          "text": "The Canucks signed defenseman Zeev Buium to an eight-year contract extension worth $9.38 million a season.",
+          "text": "Zeev Buium signs an eight-year contract extension with the Vancouver Canucks worth $9.38 million a season.",
           "entities": [],
           "occurredAt": "2026-09-04T23:53:16Z",
           "timePrecision": "exact",
-          "ageHours": 2.13,
-          "freshnessBasis": "Zeev Buium signed an 8-year contract extension with the Canucks.",
+          "ageHours": 2.63,
+          "freshnessBasis": "Contract signed on September 4, 2026.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
@@ -238,17 +244,44 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-be8fd006e25fdb6f"
+          ],
+          "type": "OTHER",
+          "priority": 65,
+          "headline": "Alexander Isak kickstarts Liverpool career after 'difficult' start",
+          "text": "Isak scored twice in a 2-0 win against Ipswich, marking a strong return to form.",
+          "entities": [],
+          "occurredAt": "2026-09-04T23:33:39Z",
+          "timePrecision": "exact",
+          "ageHours": 2.95,
+          "freshnessBasis": "Match on September 4, 2026.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49828925/liverpool-alexander-isak-produce-numbers-andoni-iraola"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49828925/liverpool-alexander-isak-produce-numbers-andoni-iraola"
+            }
+          ],
+          "id": "a3-73b20448a8b8ffc8"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-0894a44e354d1349"
           ],
           "type": "RESULT",
           "priority": 65,
           "headline": "Liverpool beat Ipswich 2-0",
-          "text": "Highlightly final: Liverpool 2, Ipswich 0.",
+          "text": "Liverpool earned its first Premier League win of the season with a 2-0 triumph over Ipswich.",
           "entities": [],
           "occurredAt": "2026-09-04T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.01,
-          "freshnessBasis": "Liverpool defeated Ipswich Town 2-0 for their first Premier League win of the season.",
+          "ageHours": 7.51,
+          "freshnessBasis": "Game completed on September 4, 2026.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -282,12 +315,12 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "New York City FC and Nashville SC finished tied 0-0",
-          "text": "Highlightly final: Nashville SC 0, New York City FC 0.",
+          "text": "The match ended in a scoreless draw between NYCFC and Nashville.",
           "entities": [],
           "occurredAt": "2026-09-04T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.51,
-          "freshnessBasis": "New York City FC and Nashville SC ended in a scoreless draw.",
+          "ageHours": 3.01,
+          "freshnessBasis": "Game completed on September 4, 2026.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -306,13 +339,95 @@
     {
       "league": "NCAAF",
       "seasonState": "active",
-      "items": []
+      "items": [
+        {
+          "rank": 1,
+          "candidateIds": [
+            "cand-d8593273388e5ac2"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Georgia State Panthers beat North Carolina A&T Aggies 59-10",
+          "text": "The Panthers delivered a dominating performance to win 59-10.",
+          "entities": [],
+          "occurredAt": "2026-09-04T22:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.01,
+          "freshnessBasis": "Game completed on September 4, 2026.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-43b417492af29cce"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-24d06948a3dbb681"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Purdue Boilermakers beat Indiana State Sycamores 44-19",
+          "text": "Purdue triumphed over Indiana State with a final score of 44-19.",
+          "entities": [],
+          "occurredAt": "2026-09-04T23:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.51,
+          "freshnessBasis": "Game completed on September 4, 2026.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-8f1320deae5eea9c"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-d51669dd48ca9bbf"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "San José State Spartans beat Eastern Michigan Eagles 27-21",
+          "text": "The Spartans narrowly defeated the Eagles with a score of 27-21.",
+          "entities": [],
+          "occurredAt": "2026-09-04T23:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.51,
+          "freshnessBasis": "Game completed on September 4, 2026.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-3c7520fef4687a6a"
+        }
+      ]
     }
   ],
   "specialEvents": [
     {
-      "name": "US Open Round of 16",
-      "sport": "tennis",
+      "name": "US Open Tennis Highlights",
+      "sport": "Tennis",
       "items": [
         {
           "rank": 1,
@@ -322,12 +437,12 @@
           "type": "OTHER",
           "priority": 65,
           "headline": "Carlos Alcaraz, Tommy Paul, Frances Tiafoe advance at US Open",
-          "text": "Two-time US Open champion Carlos Alcaraz returned to the round of 16 by beating Wu Yibing 6-3, 6-4, 6-1 and will next face American Tommy Paul, who defeated No. 15 Alexander Bublik in five sets.",
+          "text": "Alcaraz beat Wu Yibing to advance to the round of 16, and will face Tommy Paul next.",
           "entities": [],
           "occurredAt": "2026-09-05T01:26:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.57,
-          "freshnessBasis": "Carlos Alcaraz advanced to the round of 16 at the US Open after defeating Wu Yibing.",
+          "ageHours": 1.07,
+          "freshnessBasis": "Match results from September 4, 2026.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49828709/carlos-alcaraz-tommy-paul-win-set-4th-round-clash-2026-us-open"
