@@ -1,0 +1,17 @@
+Sports Big Board — Sports Ticker A4.4 Context + Depth
+
+Upload these files to the same repository paths:
+
+1. tools/refresh_sports_ticker_a44.py
+2. tests/test_a44_context_depth.py
+3. .github/workflows/sports-ticker-refresh.yml
+
+Do NOT delete the existing A4.2/A4.3 files. A4.4 is a thin overlay and loads them at runtime.
+
+A4.4 changes:
+- ESPN news feeds explicitly request up to 50 articles so fresh stories are less likely to roll out of discovery early.
+- Editor refill raw inventory target increases to 40-42 before final 30-35 curation.
+- Sparse semantic duplicate handling catches multiple articles about the same tournament result while protecting genuinely different rounds/opponents.
+- Selected RESULT detail text prefers grounded decisive/player context instead of repeating the score.
+- Selected MLB one/two-run games and shutouts can use bounded ESPN scoreboard + game-summary enrichment to surface the go-ahead play and the pitchers responsible for a shutout when available.
+- Headline contract remains target <=80 chars / hard max 96 chars.
