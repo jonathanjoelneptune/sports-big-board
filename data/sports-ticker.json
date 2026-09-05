@@ -1,11 +1,11 @@
 {
   "schemaVersion": 9,
   "pipelineVersion": "A3.8-result-story-promotion",
-  "generatedAt": "2026-09-05T03:30:52Z",
+  "generatedAt": "2026-09-05T04:00:52Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
   "model": "gpt-4o-mini",
-  "sourceCandidateHash": "2add16c616531d4c1cbe1c6e3c86d4bd43deb90273a349c5c8fc8ce2813c0df3",
+  "sourceCandidateHash": "1d04970f89c662cb827eeff504a9f07b88bd3c2e103bf1663fd4c4774a9881f4",
   "leagues": [
     {
       "league": "MLB",
@@ -19,12 +19,15 @@
           "type": "RESULT",
           "priority": 80,
           "headline": "Travis Bazzana delivers walk-off as Cleveland Guardians beat Detroit Tigers 4-3",
-          "text": "Bazzana singled to center, Rocchio scored.",
-          "entities": [],
+          "text": "Bazzana singled to center, Rocchio scored in the bottom of the 10th for the Guardians' victory.",
+          "entities": [
+            "Cleveland Guardians",
+            "Detroit Tigers"
+          ],
           "occurredAt": "2026-09-04T23:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.76,
-          "freshnessBasis": "Travis Bazzana delivered the walk-off in the bottom of the 10th inning.",
+          "ageHours": 4.26,
+          "freshnessBasis": "Bazzana delivered the walk-off in the bottom of the 10th inning.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -36,7 +39,7 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-8d1883b87600563c"
+          "id": "a3-486a736b7c9fc075"
         },
         {
           "rank": 2,
@@ -46,12 +49,15 @@
           "type": "RESULT",
           "priority": 78,
           "headline": "Brayan Rocchio delivers walk-off as Cleveland Guardians beat Detroit Tigers 7-6",
-          "text": "Rocchio homered to left center (405 feet).",
-          "entities": [],
+          "text": "Rocchio homered to left center to secure the win in the bottom of the 9th.",
+          "entities": [
+            "Cleveland Guardians",
+            "Detroit Tigers"
+          ],
           "occurredAt": "2026-09-04T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.35,
-          "freshnessBasis": "Brayan Rocchio delivered the walk-off in the bottom of the 9th inning.",
+          "ageHours": 9.85,
+          "freshnessBasis": "Rocchio homered to left center (405 feet).",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -63,7 +69,67 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-promoted-687494b54f306eea"
+          "id": "a3-687494b54f306eea"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-7bb94db1364f5ef4"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "St. Louis Cardinals beat Colorado Rockies 7-6",
+          "text": "A close battle saw the Cardinals take the win over the Rockies.",
+          "entities": [
+            "St. Louis Cardinals",
+            "Colorado Rockies"
+          ],
+          "occurredAt": "2026-09-05T00:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Final score was 7-6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-2c9a298f83d67fe0"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-57870ac84854b71a"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Tampa Bay Rays beat Texas Rangers 7-6",
+          "text": "The Rays ended a 10-game road losing streak against Texas after Aranda and Palacios homered.",
+          "entities": [
+            "Tampa Bay Rays",
+            "Texas Rangers"
+          ],
+          "occurredAt": "2026-09-05T00:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.93,
+          "freshnessBasis": "Rays overcame the first grand slam of the season by Texas in a 7-6 victory.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-53868d4311e3c634"
         }
       ]
     },
@@ -84,12 +150,15 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Ben Simmons returning to NBA on 1-year, $3.5M deal with Kings",
-          "text": "Simmons is back in the NBA after agreeing to a deal with the Kings.",
-          "entities": [],
+          "text": "Simmons is back in the NBA after agreeing to a one-year contract.",
+          "entities": [
+            "Ben Simmons",
+            "Sacramento Kings"
+          ],
           "occurredAt": "2026-09-04T14:56:49Z",
           "timePrecision": "exact",
-          "ageHours": 12.57,
-          "freshnessBasis": "Simmons' agents confirmed the deal to ESPN.",
+          "ageHours": 13.07,
+          "freshnessBasis": "Simmons reached a one-year, $3.5 million deal with the Kings.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
@@ -117,12 +186,15 @@
           "type": "SIGNING",
           "priority": 90,
           "headline": "Canucks' Zeev Buium signs 8-year contract extension",
-          "text": "The Canucks signed defenseman Zeev Buium to an eight-year contract extension Friday worth $9.38 million a season.",
-          "entities": [],
+          "text": "The Canucks secured defenseman Buium to a long-term deal.",
+          "entities": [
+            "Vancouver Canucks",
+            "Zeev Buium"
+          ],
           "occurredAt": "2026-09-04T23:53:16Z",
           "timePrecision": "exact",
-          "ageHours": 3.63,
-          "freshnessBasis": "Buium's new deal was announced by the Canucks.",
+          "ageHours": 4.13,
+          "freshnessBasis": "Buium signed an eight-year contract extension worth $9.38 million per season.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49829326/canucks-zeev-buium-signs-8-year-contract-extension"
@@ -150,12 +222,15 @@
           "type": "RESULT",
           "priority": 72,
           "headline": "Isak's brace vs. Ipswich gives Liverpool first win of the season",
-          "text": "Liverpool secured their first league win of the season against Ipswich.",
-          "entities": [],
+          "text": "Isak scored both goals to guide Liverpool to its first league win of the season.",
+          "entities": [
+            "Liverpool",
+            "Ipswich"
+          ],
           "occurredAt": "2026-09-04T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.51,
-          "freshnessBasis": "Isak's brace helped Liverpool achieve the victory.",
+          "ageHours": 9.01,
+          "freshnessBasis": "Liverpool defeated Ipswich Town 2-0.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -189,12 +264,15 @@
           "type": "RESULT",
           "priority": 65,
           "headline": "New York City FC and Nashville SC finished tied 0-0",
-          "text": "New York City FC and Nashville SC finished tied 0-0.",
-          "entities": [],
+          "text": "A defensive match ended with both teams sharing points.",
+          "entities": [
+            "New York City FC",
+            "Nashville SC"
+          ],
           "occurredAt": "2026-09-04T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.01,
-          "freshnessBasis": "The match ended in a scoreless draw.",
+          "ageHours": 4.51,
+          "freshnessBasis": "Final score was 0-0.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -217,50 +295,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-d8593273388e5ac2"
+            "cand-850b18fae53421dc"
           ],
           "type": "RESULT",
-          "priority": 67,
-          "headline": "Georgia State Panthers beat North Carolina A&T Aggies 59-10",
-          "text": "— Luke Weaver threw three touchdown passes, two to Cooper Hoch, and San Jose State rallied in the fourth quarter to defeat Eastern Michigan 27-21 on Friday night.",
-          "entities": [],
-          "occurredAt": "2026-09-04T22:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 5.01,
-          "freshnessBasis": "Georgia State dominated North Carolina A&T in their season opener.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/ncf/recap?gameId=401864495"
+          "priority": 65,
+          "headline": "Kansas Jayhawks beat Long Island University Sharks 51-6",
+          "text": "The Jayhawks rolled over LIU after a slow start in their opener.",
+          "entities": [
+            "Kansas Jayhawks",
+            "Long Island University Sharks"
           ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-04",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401864495"
-            }
-          ],
-          "id": "a3-43b417492af29cce"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-6fc97cff2b2d2b58"
-          ],
-          "type": "RESULT",
-          "priority": 66,
-          "headline": "Oklahoma Sooners beat UTEP Miners 51-0",
-          "text": "Oklahoma Sooners beat UTEP Miners 51-0.",
-          "entities": [],
           "occurredAt": "2026-09-05T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.51,
-          "freshnessBasis": "Oklahoma secured a dominant victory over UTEP in their season opener.",
+          "ageHours": 4.01,
+          "freshnessBasis": "Kansas achieved a commanding 51-6 victory.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -272,69 +320,76 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-20b02a0c1a3705b1"
+          "id": "a3-34ba8ec475d15be0"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-f25cf2f882733250"
+          ],
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "Michigan State Spartans beat Toledo Rockets 30-20",
+          "text": "The Spartans secured a solid win against the Rockets.",
+          "entities": [
+            "Michigan State Spartans",
+            "Toledo Rockets"
+          ],
+          "occurredAt": "2026-09-05T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.01,
+          "freshnessBasis": "Final score was 30-20.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-04",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-5673795ae4cc0d16"
         }
       ]
     }
   ],
   "specialEvents": [
     {
-      "name": "US Open Tennis",
-      "sport": "Tennis",
+      "name": "US Open Tennis Results",
+      "sport": "tennis",
       "items": [
         {
           "rank": 1,
           "candidateIds": [
-            "cand-8960f636462ffc3c"
+            "cand-8e8d2fd3c02dca6d"
           ],
-          "type": "RESULT",
+          "type": "OTHER",
           "priority": 65,
           "headline": "Carlos Alcaraz, Tommy Paul, Frances Tiafoe advance at US Open",
-          "text": "Two-time US Open champion Carlos Alcaraz returned to the round of 16 with a win.",
-          "entities": [],
-          "occurredAt": "2026-09-05T03:29:28Z",
+          "text": "Alcaraz returned to the round of 16 with a straight-set win.",
+          "entities": [
+            "Carlos Alcaraz",
+            "Tommy Paul",
+            "Frances Tiafoe"
+          ],
+          "occurredAt": "2026-09-05T03:29:02Z",
           "timePrecision": "exact",
-          "ageHours": 0.02,
-          "freshnessBasis": "Alcaraz beat Wu Yibing to move on.",
+          "ageHours": 0.53,
+          "freshnessBasis": "Alcaraz beat Wu Yibing 6-3, 6-4, 6-1.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
+            "https://www.espn.com/tennis/story/_/id/49828709/carlos-alcaraz-tommy-paul-win-set-4th-round-clash-2026-us-open"
           ],
           "sources": [
             {
               "provider": "ESPN",
-              "sourceId": "espn-wta",
-              "url": "https://www.espn.com/tennis/story/_/id/49827720/sabalenka-pegula-win-us-open-williams-sisters-doubles-tap"
+              "sourceId": "espn-atp",
+              "url": "https://www.espn.com/tennis/story/_/id/49828709/carlos-alcaraz-tommy-paul-win-set-4th-round-clash-2026-us-open"
             }
           ],
-          "id": "a3-special-c598e92301b5926a"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-453aecc6989455a4"
-          ],
-          "type": "RESULT",
-          "priority": 65,
-          "headline": "Serena, Venus Williams lose 3rd-set tiebreak in US Open return",
-          "text": "The Williams sisters are out of the US Open women's doubles after a close match.",
-          "entities": [],
-          "occurredAt": "2026-09-05T03:28:09Z",
-          "timePrecision": "exact",
-          "ageHours": 0.05,
-          "freshnessBasis": "Serena and Venus lost to Hao-Ching Chan and Maya Joint.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49830732/serena-venus-williams-lose-third-set-tiebreak-us-open-doubles-return"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-wta",
-              "url": "https://www.espn.com/tennis/story/_/id/49830732/serena-venus-williams-lose-third-set-tiebreak-us-open-doubles-return"
-            }
-          ],
-          "id": "a3-special-a3074be468eac128"
+          "id": "a3-special-3dd295ec07cc55f4"
         }
       ]
     }
