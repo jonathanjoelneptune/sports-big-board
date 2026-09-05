@@ -366,7 +366,22 @@ assert "old_state=='WAITING_RETRY'" in sync_block
 repair_discovery=service[service.index('def _repair_by_discovery'):service.index('@staticmethod',service.index('def _repair_by_discovery'))]
 assert repair_discovery.count('_discover_once(job,1)')==1
 assert 'range(1,REPAIR_DISCOVERY_PASSES+1)' not in repair_discovery
-assert repair_discovery.index('LOCAL_CATALOG') < repair_discovery.index('REGISTERED_PROVIDERS') < repair_discovery.index('_youtube_index_candidates') < repair_discovery.index('_youtube_fallback_candidates')
+
+# The local-catalog stage is implemented in its dedicated helper, while the
+# remaining stages are orchestrated inline. Verify both the stage identity and
+# the actual call order without assuming LOCAL_CATALOG must be a literal inside
+# _repair_by_discovery itself.
+local_catalog_helper=service[service.index('def _deep_catalog_candidates'):service.index('def _refresh_youtube_index_if_needed')]
+assert "_record_stage(job,'LOCAL_CATALOG'" in local_catalog_helper
+assert "_record_stage(job,'REGISTERED_PROVIDERS'" in repair_discovery
+assert (
+    repair_discovery.index('_deep_catalog_candidates')
+    < repair_discovery.index('_discover_once(job,1)')
+    < repair_discovery.index("_record_stage(job,'REGISTERED_PROVIDERS'")
+    < repair_discovery.index('_youtube_index_candidates')
+    < repair_discovery.index('_youtube_fallback_candidates')
+)
+
 for token in ['repairStage','repairStageResult','repairSourceStats','source stages','YT indexed','search quota blocks']:
     assert token in html or token in js,token
 assert '5.5.0-r17' in html
@@ -377,4 +392,3 @@ assert 'R17 multi-source discovery strategy upgrade' in seed_block
 assert 'strategyRequeued' in seed_block
 
 print('PASS v5.5.0 R17 multi-source repair discovery + cooldowns + official YouTube index + canonical write-back')
-
