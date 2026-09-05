@@ -1,0 +1,189 @@
+Sports Big Board v5.5.0 R17 — Multi-Source Repair Discovery
+
+WHY R17
+R16 successfully separated certification from repair, but production evidence showed:
+- 283 repair jobs queued
+- 128 repair jobs attempted
+- 127 exhausted
+- 0 new candidates
+- 0 certified replacements
+- 0 canonical promotions
+
+The orchestration worked. Discovery did not.
+
+R17 preserves the R16 audit/repair separation and canonical write-back contract while
+replacing repeated discovery calls with a materially different source ladder.
+
+R17 DISCOVERY LADDER
+
+STAGE 0 — LOCAL_CATALOG
+Deep-search the normalized Sports Big Board source-media catalog for forgotten,
+unassigned, superseded, or previously discovered GAME media matching both participants
+and the event publication-date window.
+
+A candidate must meet strict participant/date evidence before it is attached to the
+target event as:
+  UNVERIFIED / MEDIA_REPAIR_DISCOVERED
+
+STAGE 1 — REGISTERED_PROVIDERS
+Run the existing Sports Big Board event discovery authority ONCE, rather than repeating
+the same endpoint three times. This retains the current official/provider adapters,
+including the league-specific/ESPN/Highlightly/official lanes already registered in
+Sports Big Board.
+
+The stage records:
+  result count
+  genuinely new assets
+  known/duplicate assets
+  rejected assets
+
+STAGE 2 — OFFICIAL_YOUTUBE_INDEX
+Build and periodically refresh a persistent local index of uploads from empirically
+trusted YouTube channels already producing ASSIGNED or PLAYED Sports Big Board GAME
+media.
+
+Channel trust is derived from the canonical catalog:
+- >= 2 PLAYED GAME assets, or
+- >= 5 ASSIGNED GAME assets
+
+Index refresh uses:
+  channels.list
+  playlistItems.list
+
+Candidate validation uses:
+  videos.list
+
+It does NOT use search.list.
+
+This is intentionally compatible with the existing YouTubeGateway operation isolation:
+a search.list quota exhaustion cannot disable channels.list, playlistItems.list, or
+videos.list.
+
+The default index refresh:
+- up to 40 trusted channels
+- up to 2 recent upload pages per channel
+- every 6 hours
+
+Each repair event matches the local index by:
+- both participant identities
+- strict event publication-date window
+- highlights/recap semantics
+- public/embeddable videos.list status
+
+Any match still enters as UNVERIFIED and must pass controlled Chrome playback before
+promotion.
+
+STAGE 3 — GENERIC_YOUTUBE_SEARCH
+search.list is now a scarce last-resort resource rather than the main broad-search path.
+
+Priority policy:
+- NO_MEDIA / UNPLAYABLE may use it immediately.
+- DEGRADED does not use generic search until a later repair attempt.
+- if search.list is quota/cooldown blocked, the repair job sleeps until at least the
+  gateway-provided retry/reset time instead of repeatedly re-running the same ladder.
+
+COOLDOWN / LOOP REPAIR
+R16's synchronization could reopen WAITING_RETRY work whenever the audit remained
+DEGRADED/UNPLAYABLE/NO_MEDIA. R17 preserves a future cooldown when health/target have
+not worsened.
+
+Retry policy:
+- event age <= 2 days: 6 hours
+- event age 3–7 days: 24 hours
+- event age > 7 days: 7 days
+- YouTube quota blocked: never before the gateway-provided reset/cooldown
+
+Because R17 is a materially new strategy, existing R16 WAITING_RETRY jobs receive ONE
+immediate R17 retry. Once an R17 job records strategy=R17_MULTI_SOURCE_LADDER, normal
+cooldown preservation applies.
+
+DEPLOY/RESTART REPAIR
+Repair jobs left SEARCHING or CERTIFYING by service restart are returned to PENDING.
+This is safe because no repair link becomes canonical until its PLAYED promotion was
+successfully committed.
+
+PERSISTENT OBSERVABILITY
+New tables:
+  history_media_repair_source_attempt
+  history_media_repair_youtube_index
+
+Per-source telemetry records:
+  stage
+  provider
+  query
+  results
+  new candidates
+  known/duplicates
+  rejected
+  quota blocked
+  retry time
+  details
+
+The Media Audit operator panel now shows:
+  Discovery stage
+  Stage yield
+  Source telemetry
+  YouTube indexed count
+  YouTube search quota blocks
+
+CANONICAL WRITE-BACK IS UNCHANGED
+Discovery never self-promotes.
+
+Every repaired asset still follows:
+  DISCOVERED
+  -> UNVERIFIED / MEDIA_REPAIR_DISCOVERED
+  -> controlled Chrome PLAYING_TIME_ADVANCED
+  -> ASSIGNED / MEDIA_REPAIR_CERTIFIED
+  -> history_media_canonical_package updated
+  -> audit health updated
+  -> normal Sports Big Board playback uses the repaired link everywhere
+
+UPLOAD
+A. At the GitHub repository ROOT upload the contents of:
+   Sports-Big-Board-v5.5.0-R17-Multi-Source-Repair-Discovery-Non-Tests.zip
+
+It contains exactly:
+  media_audit_service.py
+  media-audit.html
+  ui/media-audit-v550.js
+
+B. Browse into the existing GitHub /tests folder and replace:
+  test_v550_media_health_audit.py
+using:
+  Sports-Big-Board-v5.5.0-R17-Multi-Source-Repair-Discovery-Tests.zip
+
+No VERSION bump, CSS replacement, deployment workflow, controller bridge, server.py,
+installer, or Sports Ticker file change is required.
+
+AFTER DEPLOYMENT
+- Do NOT reset Run #5.
+- Hard-refresh media-audit.html once.
+- Existing R16-exhausted repair jobs should be given one immediate pass through R17.
+- The first official YouTube index refresh may take longer than an ordinary single
+  repair job because it is building a reusable source index for many queued games.
+- Watch Source telemetry. Unlike R16, it should now distinguish:
+    results
+    new
+    known
+    rejected
+  for each materially different source stage.
+
+VALIDATION
+PASS — media_audit_service.py Python syntax
+PASS — media-audit-v550.js JavaScript syntax
+PASS — R17 staged-discovery changed-file regression
+PASS — persistent R17 schema creation
+PASS — future WAITING_RETRY cooldown survives audit synchronization
+PASS — exact participant/date candidate matcher accepts Red Sox/Yankees and rejects
+       Red Sox/Orioles for the same target event
+PASS — synthetic official YouTube upload-index test:
+       trusted channel -> playlistItems.list -> exact event match -> videos.list ->
+       new yt:* candidate -> UNVERIFIED / MEDIA_REPAIR_DISCOVERED
+       with zero search.list dependency
+PASS — audit discovery remains disabled; Repair Engine remains the only discovery owner
+PASS — repaired candidate canonical promotion contract remains unchanged
+
+A complete repository VERIFY.sh run is not claimed from this handoff environment because
+the manual R16/R17 artifact overlay does not contain every unchanged repository file.
+The supplied /tests regression is intended to execute against the complete live GitHub
+repository during normal CI.

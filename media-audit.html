@@ -7,7 +7,7 @@
   <title>Sports Big Board Media Audit — v5.5.0</title>
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://www.youtube-nocookie.com">
-  <link rel="stylesheet" href="ui/media-audit-v550.css?v=5.5.0-r16">
+  <link rel="stylesheet" href="ui/media-audit-v550.css?v=5.5.0-r17">
   <script src="config.js?v=5.5.0"></script>
   <script src="api-runtime.js?v=5.5.0"></script>
 </head>
@@ -154,8 +154,11 @@
             <div><dt>Health / target</dt><dd id="repairTarget">—</dd></div>
             <div><dt>Phase</dt><dd id="repairPhase">—</dd></div>
             <div><dt>Attempt</dt><dd id="repairAttempt">—</dd></div>
+            <div><dt>Discovery stage</dt><dd id="repairStage">—</dd></div>
+            <div class="wide"><dt>Stage yield</dt><dd id="repairStageResult">—</dd></div>
             <div><dt>Candidate</dt><dd id="repairCandidate">—</dd></div>
             <div class="wide"><dt>Provider / result</dt><dd id="repairResult">—</dd></div>
+            <div class="wide"><dt>Source telemetry</dt><dd id="repairSourceStats">—</dd></div>
             <div class="wide"><dt>Repair totals</dt><dd id="repairTotals">—</dd></div>
           </dl>
           <div id="repairTrace" class="diag-trace repair-trace"><div class="empty-trace">No repair activity yet.</div></div>
@@ -174,6 +177,6 @@
     <tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid"></div></td></tr>
   </template>
 
-  <script src="ui/media-audit-v550.js?v=5.5.0-r16"></script>
+  <script src="ui/media-audit-v550.js?v=5.5.0-r17"></script>
 </body>
 </html>
