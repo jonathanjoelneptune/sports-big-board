@@ -7,7 +7,7 @@ Discovery:
   - Highlightly structured match data
 
 Editorial:
-  - one GPT-4o Mini Responses API call by default
+  - one configured OpenAI Responses API editorial call
   - NO OpenAI web_search tool
 
 Outputs:
@@ -44,6 +44,8 @@ FRESHNESS_HOURS = 24.0
 MAX_MODEL_CANDIDATES = 140
 MAX_DECISIVE_ENRICHMENTS = 16
 MAX_HIGHLIGHTS_PER_ENRICHMENT = 20
+MAX_GENERIC_RESULT_FILLERS = 2
+RESULT_RELEVANCE_TARGET = 3
 SOURCE_TIMEOUT = 25
 OPENAI_TIMEOUT = 180
 
@@ -379,11 +381,20 @@ TYPE RULES
   or another grounded candidate source.
 
 Editorial mix rules:
+- A RESULT should have a reason to exist: decisive finish, standout performance,
+  upset, ranked consequence, playoff/standings consequence, milestone, comeback,
+  or another grounded story hook. Prefer omission over padding.
+- A generic draw or routine score with no story hook is low value and should
+  normally be omitted.
 - Maximum 5 ordinary RESULT items per base league.
 - Maximum 2 combined NEXT/SCHEDULE items per base league.
 - Do not pad a league.
 - A major UPSET is not an ordinary RESULT.
 - Special Events should cover important active events outside the seven base leagues.
+- A Special Event name must be grounded in the selected candidate itself. Never place
+  a Monaco Grand Prix story under the Italian Grand Prix merely because the Italian
+  Grand Prix is the currently active F1 weekend. If the candidate names a specific
+  tournament/race/event, use that event name.
 
 Grounding:
 - Every final item must reference candidateIds from the supplied packet.
@@ -776,6 +787,7 @@ def team_match_score(a: str, b: str) -> float:
 
 
 def build_fbs_alias_index(team_names: list[str]) -> list[tuple[str, str]]:
+    """Return normalized alias -> canonical FBS identity pairs."""
     values: dict[str, str] = {}
     for name in team_names:
         normalized = _normalize_team_label(name)
@@ -786,25 +798,70 @@ def build_fbs_alias_index(team_names: list[str]) -> list[tuple[str, str]]:
     return list(values.items())
 
 
+def _strict_fbs_alias_score(team_name: str, alias: str, canonical: str) -> float:
+    """Conservative FBS name similarity used only after exact/known aliases.
+
+    A3.8 used the ESPN group=80 scoreboard to expand membership, which caused
+    FCS opponents in FBS-v-FCS games to become accidental FBS identities. A3.9
+    makes the explicit 2026 FBS roster authoritative and uses fuzzy matching
+    only to resolve spelling/display variants of those known members.
+    """
+    team_norm = _normalize_team_label(team_name)
+    alias_norm = _normalize_team_label(alias)
+    canonical_norm = _normalize_team_label(canonical)
+    if not team_norm or not alias_norm:
+        return 0.0
+    if team_norm == alias_norm:
+        return 1.0
+
+    score = max(
+        team_match_score(team_name, alias),
+        team_match_score(team_name, canonical),
+    )
+    team_tokens = _team_token_set(team_name)
+    canonical_tokens = _team_token_set(canonical)
+    if not team_tokens or not canonical_tokens:
+        return 0.0
+
+    # Mascot agreement is a strong guard against location-name collisions such
+    # as Indiana State vs Indiana or North Carolina A&T vs North Carolina.
+    team_last = _normalize_team_label(team_name).split()[-1]
+    canonical_last = canonical_norm.split()[-1]
+    same_mascot = team_last == canonical_last
+
+    if same_mascot and score >= 0.80:
+        return score
+    if score >= 0.94:
+        return score
+    return 0.0
+
+
 def match_fbs_team(team_name: str, fbs_context: dict[str, Any]) -> str | None:
+    team_norm = _normalize_team_label(team_name)
+    if not team_norm:
+        return None
+
     best_name = None
     best_score = 0.0
-    for _, canonical in fbs_context.get("aliasIndex", []):
-        score = team_match_score(team_name, canonical)
+    for alias, canonical in fbs_context.get("aliasIndex", []):
+        if team_norm == alias:
+            return canonical
+        score = _strict_fbs_alias_score(team_name, alias, canonical)
         if score > best_score:
             best_score = score
             best_name = canonical
-    return best_name if best_score >= 0.74 else None
+    return best_name if best_score >= 0.80 else None
 
 
 def fetch_espn_fbs_context(
     generated_at: datetime,
     run_log: dict[str, Any],
 ) -> dict[str, Any]:
-    """Build current FBS eligibility/rank context.
+    """Build FBS eligibility/rank context without allowing FCS contamination.
 
-    ESPN group=80 scoreboard data is primary. A baked-in 2026 FBS universe is
-    always present as fallback, so this enrichment cannot break ticker refreshes.
+    The explicit 2026 138-team FBS roster is authoritative for membership.
+    ESPN group=80 scoreboards validate current ESPN team IDs and top-25 ranks,
+    but opponents that do not resolve to that roster remain non-FBS.
     """
     eastern_now = generated_at.astimezone(
         __import__("zoneinfo").ZoneInfo("America/New_York")
@@ -812,7 +869,16 @@ def fetch_espn_fbs_context(
     dates = [eastern_now.date(), (eastern_now - timedelta(days=1)).date()]
 
     team_names = set(FBS_TEAMS_2026)
+    authoritative_alias_index = build_fbs_alias_index(sorted(team_names))
+    identity_context = {
+        "teamNames": sorted(team_names),
+        "aliasIndex": authoritative_alias_index,
+        "rankByName": {},
+    }
     rank_by_name: dict[str, int] = {}
+    espn_team_id_by_canonical: dict[str, str] = {}
+    validated_fbs: set[str] = set()
+    non_fbs_opponents: set[str] = set()
     successful = 0
     event_count = 0
 
@@ -864,45 +930,66 @@ def fetch_espn_fbs_context(
                         or team.get("shortDisplayName")
                         or team.get("name")
                     )
-                    if name:
-                        team_names.add(name)
-                        rank = competitor.get("curatedRank")
-                        if isinstance(rank, dict):
-                            try:
-                                current = int(rank.get("current"))
-                                if 1 <= current <= 25:
-                                    rank_by_name[name] = current
-                            except Exception:
-                                pass
+                    if not name:
+                        continue
+
+                    canonical = match_fbs_team(name, identity_context)
+                    if not canonical:
+                        non_fbs_opponents.add(name)
+                        continue
+
+                    validated_fbs.add(canonical)
+                    team_id = clean_text(team.get("id") or team.get("uid"))
+                    if team_id:
+                        espn_team_id_by_canonical[canonical] = team_id
+
+                    rank = competitor.get("curatedRank")
+                    if isinstance(rank, dict):
+                        try:
+                            current = int(rank.get("current"))
+                            if 1 <= current <= 25:
+                                rank_by_name[canonical] = current
+                        except Exception:
+                            pass
 
             entry["note"] = (
-                f"FBS context accepted; events={len(events)}; "
-                f"teamUniverse={len(team_names)}"
+                f"FBS identity validation accepted; events={len(events)}; "
+                f"authoritativeRoster={len(team_names)}; "
+                f"validatedFbs={len(validated_fbs)}; "
+                f"nonFbsOpponents={len(non_fbs_opponents)}"
             )
         except Exception as exc:
-            # Optional enrichment. Keep the error in the source log, but do not
-            # mark the overall run failed because the static 2026 FBS fallback
-            # is intentionally sufficient.
             if entry["finishedAt"] is None:
                 finalize_source_log(entry, started, None, None, None)
             entry["error"] = clean_text(exc)
-            entry["note"] = "Using static 2026 FBS fallback for this date."
+            entry["note"] = "Using authoritative static 2026 FBS roster for this date."
 
     context = {
-        "mode": "espn-scoreboard+static-fallback" if successful else "static-fallback",
+        "mode": (
+            "authoritative-2026-roster+espn-id-rank-validation"
+            if successful else "authoritative-2026-roster"
+        ),
         "successfulScoreboardRequests": successful,
         "scoreboardEventCount": event_count,
         "teamCount": len(team_names),
         "teamNames": sorted(team_names),
         "rankByName": rank_by_name,
+        "espnTeamIdByCanonical": dict(sorted(espn_team_id_by_canonical.items())),
+        "validatedFbsTeams": sorted(validated_fbs),
+        "scoreboardNonFbsOpponents": sorted(non_fbs_opponents),
+        "aliasIndex": authoritative_alias_index,
     }
-    context["aliasIndex"] = build_fbs_alias_index(context["teamNames"])
 
     run_log["pipeline"]["ncaafFbsContext"] = {
         "mode": context["mode"],
+        "authoritativeRosterSize": len(team_names),
         "successfulScoreboardRequests": successful,
         "scoreboardEventCount": event_count,
-        "teamCount": len(team_names),
+        "validatedFbsTeamCount": len(validated_fbs),
+        "validatedFbsTeams": sorted(validated_fbs),
+        "espnTeamIdByCanonical": context["espnTeamIdByCanonical"],
+        "nonFbsOpponentCount": len(non_fbs_opponents),
+        "scoreboardNonFbsOpponents": sorted(non_fbs_opponents)[:100],
         "rankedTeams": dict(sorted(rank_by_name.items(), key=lambda kv: kv[1])),
     }
     return context
@@ -1700,12 +1787,21 @@ def parse_highlightly_sport(
 
                         result_context = {
                             "fbsContextMode": fbs_context.get("mode"),
+                            "fbsIdentityPolicy": "authoritative-2026-roster",
                             "homeFbs": home_fbs,
                             "awayFbs": away_fbs,
                             "homeRank": home_rank,
                             "awayRank": away_rank,
                             "rankedTeamInvolved": ranked_involved,
                             "fbsVsFbs": bool(home_fbs and away_fbs),
+                            "homeEspnTeamId": (
+                                fbs_context.get("espnTeamIdByCanonical", {}).get(home_fbs)
+                                if home_fbs else None
+                            ),
+                            "awayEspnTeamId": (
+                                fbs_context.get("espnTeamIdByCanonical", {}).get(away_fbs)
+                                if away_fbs else None
+                            ),
                         }
 
                     if home_score != away_score:
@@ -1902,15 +1998,107 @@ def generic_source_url(url: str) -> bool:
     return False
 
 
+
+GAME_EVENT_FUSABLE_TYPES = {
+    "RESULT", "UPSET", "RECORD", "RECORD_CHASE", "MILESTONE", "STREAK",
+    "PLAYOFF", "STANDINGS", "RANKING", "STAT_LEADER", "AWARD",
+}
+
+TYPE_HINT_PRECEDENCE = {
+    "OTHER": 0,
+    "RESULT": 10,
+    "NEXT": 12,
+    "SCHEDULE": 12,
+    "ROSTER": 20,
+    "DEPTH_CHART": 20,
+    "RETURN": 25,
+    "INJURY": 25,
+    "SIGNING": 30,
+    "CONTRACT": 30,
+    "TRADE": 35,
+    "STREAK": 38,
+    "RANKING": 40,
+    "STAT_LEADER": 42,
+    "MILESTONE": 45,
+    "RECORD_CHASE": 48,
+    "RECORD": 50,
+    "STANDINGS": 52,
+    "PLAYOFF": 55,
+    "UPSET": 58,
+    "BREAKING": 60,
+}
+
+
+def candidate_raw_text(candidate: dict[str, Any]) -> str:
+    metadata = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+    parts = [
+        clean_text(candidate.get("title")),
+        clean_text(candidate.get("summary")),
+    ]
+    categories = metadata.get("categories")
+    if isinstance(categories, list):
+        parts.extend(clean_text(x) for x in categories if clean_text(x))
+    for record in candidate.get("sourceRecords", []):
+        if isinstance(record, dict):
+            parts.append(clean_text(record.get("url")))
+    fused = metadata.get("fusedContext")
+    if isinstance(fused, list):
+        for item in fused:
+            if isinstance(item, dict):
+                parts.append(clean_text(item.get("title")))
+                parts.append(clean_text(item.get("summary")))
+    return " ".join(x for x in parts if x)
+
+
+def candidate_has_game_result_evidence(
+    article: dict[str, Any],
+    structured: dict[str, Any],
+) -> bool:
+    """Require score/result evidence before fusing non-RESULT news into a game.
+
+    This deliberately refuses to merge an injury/legal/transaction story merely
+    because it mentions both teams.
+    """
+    article_type = clean_text(article.get("typeHint")).upper()
+    if article_type not in GAME_EVENT_FUSABLE_TYPES:
+        return False
+
+    raw = candidate_raw_text(article).lower()
+    meta = structured.get("metadata") if isinstance(structured.get("metadata"), dict) else {}
+    try:
+        home_score = int(meta.get("homeScore"))
+        away_score = int(meta.get("awayScore"))
+    except Exception:
+        home_score = away_score = None
+
+    if home_score is not None and away_score is not None:
+        score_patterns = [
+            rf"(?<!\d){home_score}\s*[-–—]\s*{away_score}(?!\d)",
+            rf"(?<!\d){away_score}\s*[-–—]\s*{home_score}(?!\d)",
+        ]
+        if any(re.search(pattern, raw) for pattern in score_patterns):
+            return True
+
+    result_terms = (
+        " win ", " wins ", " won ", " beat ", " beats ", " defeated ",
+        " defeats ", " rout ", " routs ", " shut out ", " shuts out ",
+        " victory ", " loss ", " upset ",
+    )
+    padded = f" {raw} "
+    return any(term in padded for term in result_terms)
+
+
+def stronger_type_hint(a: str, b: str) -> str:
+    aa = clean_text(a).upper() or "OTHER"
+    bb = clean_text(b).upper() or "OTHER"
+    return bb if TYPE_HINT_PRECEDENCE.get(bb, 0) > TYPE_HINT_PRECEDENCE.get(aa, 0) else aa
+
+
 def cross_source_match_reason(
     candidate: dict[str, Any],
     existing: dict[str, Any],
 ) -> str | None:
     if candidate.get("leagueHint") != existing.get("leagueHint"):
-        return None
-    if candidate.get("typeHint") not in {"RESULT", "UPSET"}:
-        return None
-    if existing.get("typeHint") not in {"RESULT", "UPSET"}:
         return None
 
     cand_id = structured_match_id(candidate)
@@ -1920,16 +2108,28 @@ def cross_source_match_reason(
     if cand_id and exist_id:
         return "same structured matchId" if cand_id == exist_id else None
 
-    # If one side is a structured game and the other is an article/recap,
-    # require the article to mention BOTH teams and be reasonably close in time.
-    structured = candidate if structured_match_pair(candidate) else existing
-    article = existing if structured is candidate else candidate
+    # We only cross-fuse when exactly one side supplies structured match identity.
+    candidate_structured = bool(structured_match_pair(candidate))
+    existing_structured = bool(structured_match_pair(existing))
+    if candidate_structured == existing_structured:
+        return None
+
+    structured = candidate if candidate_structured else existing
+    article = existing if candidate_structured else candidate
     pair = structured_match_pair(structured)
     if not pair:
         return None
 
+    # Both teams must be explicitly represented in the article/recap.
     if not all(candidate_mentions_team(article, team) for team in pair):
         return None
+
+    # RESULT/UPSET recaps are intrinsically game-result candidates. Other news
+    # types (RECORD, MILESTONE, PLAYOFF, etc.) need score/result evidence.
+    article_type = clean_text(article.get("typeHint")).upper()
+    if article_type not in {"RESULT", "UPSET"}:
+        if not candidate_has_game_result_evidence(article, structured):
+            return None
 
     try:
         a = parse_datetime(candidate["occurredAt"])
@@ -1939,7 +2139,11 @@ def cross_source_match_reason(
     except Exception:
         pass
 
-    return "same game by team pair across structured/article sources"
+    if article_type in {"RESULT", "UPSET"}:
+        return "same game by team pair across structured/article sources"
+    return f"same game news fusion: {article_type}"
+
+
 
 
 def merge_candidate(
@@ -2003,10 +2207,12 @@ def merge_candidate(
         except Exception:
             pass
 
-    if dst.get("typeHint") == "OTHER" and src.get("typeHint") != "OTHER":
-        dst["typeHint"] = src["typeHint"]
-    if src.get("typeHint") == "UPSET":
-        dst["typeHint"] = "UPSET"
+    # Preserve the strongest grounded editorial type when a game result fuses
+    # with a record/milestone/playoff/news development about that same game.
+    dst["typeHint"] = stronger_type_hint(
+        clean_text(dst.get("typeHint")),
+        clean_text(src.get("typeHint")),
+    )
 
 
 def dedupe_candidates(
@@ -2095,7 +2301,7 @@ def dedupe_candidates(
                     into_id = existing["candidateId"]
                     merged_id = candidate["candidateId"]
 
-                actions.append({
+                action = {
                     "action": "merge",
                     "candidateId": merged_id,
                     "into": into_id,
@@ -2103,7 +2309,15 @@ def dedupe_candidates(
                     "sameUrl": bool(intersecting),
                     "safeSameUrl": safe_same_url,
                     "reason": merge_reason,
-                })
+                }
+                actions.append(action)
+                if merge_reason.startswith("same game news fusion:"):
+                    run_log["pipeline"]["gameEventFusion"]["merged"].append({
+                        "candidateId": merged_id,
+                        "into": into_id,
+                        "reason": merge_reason,
+                        "league": candidate.get("leagueHint"),
+                    })
                 break
 
         if merged_into is None:
@@ -3498,7 +3712,7 @@ def enrich_decisive_moments(
 def _score_story_context(candidate: dict[str, Any], title: str, summary: str) -> dict[str, Any]:
     """Score grounded recap context for user-facing ticker value.
 
-    A3.8 deliberately treats closeness and story value as separate signals. A
+    A3.9 deliberately treats closeness and story value as separate signals. A
     generic 1-0 result is not automatically more important than a multi-homer,
     multi-goal, milestone, or other clearly stated performance.
     """
@@ -3894,7 +4108,7 @@ def repair_result_story_punch(
                     "reason": "editor omitted grounded decisive moment: " + ", ".join(sorted(flags)),
                 })
 
-    # A3.8: when no decisive play exists but ESPN/another fused recap gives a
+    # A3.9: when no decisive play exists but ESPN/another fused recap gives a
     # clearly stronger grounded game story, do not publish the bare score line.
     promotion = result_story_promotion_for_candidates(candidate_ids, by_id)
     raw_text = _raw_result_evidence_text(item.get("text"))
@@ -4342,6 +4556,229 @@ def best_occurrence(candidate_ids: list[str], by_id: dict[str, dict[str, Any]]):
     return c["occurredAt"], "date", None
 
 
+def _result_item_candidates(
+    item: dict[str, Any],
+    by_id: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
+    return [
+        by_id[cid]
+        for cid in item.get("candidateIds", [])
+        if cid in by_id
+    ]
+
+
+def _result_item_is_draw(
+    item: dict[str, Any],
+    by_id: dict[str, dict[str, Any]],
+) -> bool:
+    for candidate in _result_item_candidates(item, by_id):
+        meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+        if "homeScore" not in meta or "awayScore" not in meta:
+            continue
+        try:
+            if int(meta.get("homeScore")) == int(meta.get("awayScore")):
+                return True
+        except Exception:
+            pass
+    return False
+
+
+def _result_item_has_verified_ncaaf_identity(
+    item: dict[str, Any],
+    by_id: dict[str, dict[str, Any]],
+) -> bool:
+    """Require a structured FBS identity for ordinary NCAAF results.
+
+    Standalone ESPN recaps can still represent a major result when a strong
+    promotion exists, but a routine recap cannot reintroduce the FCS games that
+    the Highlightly identity gate intentionally removed.
+    """
+    for candidate in _result_item_candidates(item, by_id):
+        meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+        if not structured_match_pair(candidate):
+            continue
+        home_fbs = clean_text(meta.get("homeFbs"))
+        away_fbs = clean_text(meta.get("awayFbs"))
+        if home_fbs or away_fbs:
+            return True
+    return False
+
+
+def _result_item_relevance(
+    item: dict[str, Any],
+    league: str,
+    by_id: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    candidate_ids = [cid for cid in item.get("candidateIds", []) if cid in by_id]
+    reasons: list[str] = []
+    strong = False
+
+    if clean_text(item.get("type")).upper() == "UPSET":
+        strong = True
+        reasons.append("UPSET")
+
+    enrichment = result_enrichment_for_candidates(candidate_ids, by_id)
+    if isinstance(enrichment, dict):
+        if clean_text(enrichment.get("decisiveMoment")):
+            strong = True
+            reasons.append("DECISIVE_MOMENT")
+        flags = set(enrichment.get("flags") or [])
+        decisive_flags = {
+            "WALK_OFF", "GAME_WINNER", "LAST_SECOND", "BLOCKED_KICK",
+            "BUZZER_BEATER", "OVERTIME", "LATE_GOAL", "UPSET",
+        }
+        matched = sorted(flags & decisive_flags)
+        if matched:
+            strong = True
+            reasons.extend(matched)
+
+    promotion = result_story_promotion_for_candidates(candidate_ids, by_id)
+    if isinstance(promotion, dict):
+        story_score = int(promotion.get("storyScore") or 0)
+        if story_score >= 67:
+            strong = True
+            reasons.append(f"STORY_SCORE_{story_score}")
+            reasons.extend(promotion.get("signals") or [])
+
+    ranked = False
+    for candidate in _result_item_candidates(item, by_id):
+        meta = candidate.get("metadata") if isinstance(candidate.get("metadata"), dict) else {}
+        if meta.get("rankedTeamInvolved"):
+            ranked = True
+            break
+    if ranked:
+        strong = True
+        reasons.append("RANKED_TEAM_INVOLVED")
+
+    is_draw = _result_item_is_draw(item, by_id)
+    verified_ncaaf = (
+        _result_item_has_verified_ncaaf_identity(item, by_id)
+        if league == "NCAAF" else True
+    )
+
+    absolute_drop = False
+    drop_reason = None
+    if is_draw and not strong:
+        absolute_drop = True
+        drop_reason = "generic draw/tie without a grounded story hook"
+    elif league == "NCAAF" and not verified_ncaaf and not strong:
+        absolute_drop = True
+        drop_reason = "ordinary NCAAF result lacks verified FBS identity"
+
+    return {
+        "strong": strong,
+        "reasons": sorted(set(reasons)),
+        "isDraw": is_draw,
+        "verifiedNcaafIdentity": verified_ncaaf,
+        "absoluteDrop": absolute_drop,
+        "dropReason": drop_reason,
+    }
+
+
+def apply_final_result_relevance_gate(
+    items: list[dict[str, Any]],
+    league: str,
+    by_id: dict[str, dict[str, Any]],
+    run_log: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Prefer meaningful result stories and use ordinary scores only as filler.
+
+    A3.9 quality rule: a result needs a reason to exist. Decisive finishes,
+    standout recap context, upsets, and ranked consequences are strong. Generic
+    draws are omitted. Ordinary wins may fill at most two slots and only when
+    the league does not already have roughly three stronger current stories.
+    """
+    gate = run_log["pipeline"]["relevanceGate"]
+    non_results = [item for item in items if item.get("type") not in {"RESULT", "UPSET"}]
+    results = [item for item in items if item.get("type") in {"RESULT", "UPSET"}]
+
+    strong_results: list[dict[str, Any]] = []
+    generic_results: list[tuple[dict[str, Any], dict[str, Any]]] = []
+
+    for item in results:
+        relevance = _result_item_relevance(item, league, by_id)
+        if relevance["absoluteDrop"]:
+            gate["dropped"].append({
+                "league": league,
+                "headline": item.get("headline"),
+                "candidateIds": item.get("candidateIds", []),
+                "reason": relevance["dropReason"],
+            })
+            run_log["pipeline"]["finalDrops"].append({
+                "context": league,
+                "headline": item.get("headline"),
+                "reason": "A3.9 relevance gate: " + clean_text(relevance["dropReason"]),
+            })
+            continue
+        if relevance["strong"]:
+            strong_results.append(item)
+            gate["keptStrong"].append({
+                "league": league,
+                "headline": item.get("headline"),
+                "candidateIds": item.get("candidateIds", []),
+                "reasons": relevance["reasons"],
+            })
+        else:
+            generic_results.append((item, relevance))
+
+    meaningful_count = len(non_results) + len(strong_results)
+    filler_slots = min(
+        MAX_GENERIC_RESULT_FILLERS,
+        max(0, RESULT_RELEVANCE_TARGET - meaningful_count),
+    )
+    generic_results.sort(
+        key=lambda row: (
+            -int(row[0].get("priority") or 0),
+            float(row[0].get("ageHours") or 99.0),
+        )
+    )
+
+    kept_generic = []
+    for item, relevance in generic_results:
+        # Unverified NCAAF routine recaps are never used as fillers.
+        if league == "NCAAF" and not relevance["verifiedNcaafIdentity"]:
+            gate["dropped"].append({
+                "league": league,
+                "headline": item.get("headline"),
+                "candidateIds": item.get("candidateIds", []),
+                "reason": "routine NCAAF filler lacks structured FBS identity",
+            })
+            run_log["pipeline"]["finalDrops"].append({
+                "context": league,
+                "headline": item.get("headline"),
+                "reason": "A3.9 relevance gate: routine NCAAF filler lacks structured FBS identity",
+            })
+            continue
+        if len(kept_generic) < filler_slots:
+            kept_generic.append(item)
+            gate["keptFillers"].append({
+                "league": league,
+                "headline": item.get("headline"),
+                "candidateIds": item.get("candidateIds", []),
+                "reason": (
+                    f"ordinary result used as filler; meaningfulStories={meaningful_count}; "
+                    f"fillerSlots={filler_slots}"
+                ),
+            })
+        else:
+            gate["dropped"].append({
+                "league": league,
+                "headline": item.get("headline"),
+                "candidateIds": item.get("candidateIds", []),
+                "reason": (
+                    f"ordinary result suppressed; meaningfulStories={meaningful_count}; "
+                    f"fillerSlots={filler_slots}"
+                ),
+            })
+            run_log["pipeline"]["finalDrops"].append({
+                "context": league,
+                "headline": item.get("headline"),
+                "reason": "A3.9 relevance gate: ordinary result suppressed by stronger stories",
+            })
+
+    return non_results + strong_results + kept_generic
+
+
 def curate_final_items(items: list[dict[str, Any]], context: str, run_log: dict[str, Any]):
     ordered = sorted(items, key=lambda x: (-int(x["priority"]), float(x["ageHours"]) if x["ageHours"] is not None else 23.9))
     selected = []
@@ -4515,6 +4952,173 @@ def repair_freshness_basis(
     })
     return repaired
 
+
+F1_EVENT_LOCATIONS = {
+    "australia": "Australian Grand Prix",
+    "australian": "Australian Grand Prix",
+    "china": "Chinese Grand Prix",
+    "chinese": "Chinese Grand Prix",
+    "japan": "Japanese Grand Prix",
+    "japanese": "Japanese Grand Prix",
+    "bahrain": "Bahrain Grand Prix",
+    "saudi arabia": "Saudi Arabian Grand Prix",
+    "saudi": "Saudi Arabian Grand Prix",
+    "miami": "Miami Grand Prix",
+    "canada": "Canadian Grand Prix",
+    "canadian": "Canadian Grand Prix",
+    "monaco": "Monaco Grand Prix",
+    "spain": "Spanish Grand Prix",
+    "spanish": "Spanish Grand Prix",
+    "austria": "Austrian Grand Prix",
+    "austrian": "Austrian Grand Prix",
+    "britain": "British Grand Prix",
+    "british": "British Grand Prix",
+    "belgium": "Belgian Grand Prix",
+    "belgian": "Belgian Grand Prix",
+    "hungary": "Hungarian Grand Prix",
+    "hungarian": "Hungarian Grand Prix",
+    "netherlands": "Dutch Grand Prix",
+    "dutch": "Dutch Grand Prix",
+    "italy": "Italian Grand Prix",
+    "italian": "Italian Grand Prix",
+    "azerbaijan": "Azerbaijan Grand Prix",
+    "singapore": "Singapore Grand Prix",
+    "united states": "United States Grand Prix",
+    "mexico": "Mexico City Grand Prix",
+    "mexican": "Mexico City Grand Prix",
+    "brazil": "São Paulo Grand Prix",
+    "sao paulo": "São Paulo Grand Prix",
+    "las vegas": "Las Vegas Grand Prix",
+    "qatar": "Qatar Grand Prix",
+    "abu dhabi": "Abu Dhabi Grand Prix",
+}
+
+TENNIS_EVENT_PATTERNS = [
+    (r"\b(?:u\.?s\.?|us)\s+open\b", "US Open"),
+    (r"\bwimbledon\b", "Wimbledon"),
+    (r"\bfrench\s+open\b|\broland\s+garros\b", "French Open"),
+    (r"\baustralian\s+open\b", "Australian Open"),
+]
+
+GOLF_EVENT_PATTERNS = [
+    (r"\bmasters(?:\s+tournament)?\b", "Masters Tournament"),
+    (r"\bu\.?s\.?\s+open\b", "U.S. Open"),
+    (r"\bthe\s+open(?:\s+championship)?\b|\bbritish\s+open\b", "The Open Championship"),
+    (r"\bpga\s+championship\b", "PGA Championship"),
+    (r"\bryder\s+cup\b", "Ryder Cup"),
+    (r"\btour\s+championship\b", "Tour Championship"),
+]
+
+
+def special_candidate_text(
+    candidate_ids: list[str],
+    by_id: dict[str, dict[str, Any]],
+) -> str:
+    return " ".join(
+        candidate_raw_text(by_id[cid])
+        for cid in candidate_ids
+        if cid in by_id
+    )
+
+
+def infer_special_event_name(
+    candidate_ids: list[str],
+    by_id: dict[str, dict[str, Any]],
+    sport: str,
+) -> str | None:
+    text = special_candidate_text(candidate_ids, by_id)
+    low = text.lower()
+    sport_low = clean_text(sport).lower()
+
+    if "formula" in sport_low or "f1" in sport_low or any(
+        clean_text(by_id[cid].get("sportHint")).lower() == "formula 1"
+        for cid in candidate_ids if cid in by_id
+    ):
+        # Prefer an explicit "<location> Grand Prix/GP" mention.
+        for location, canonical in sorted(F1_EVENT_LOCATIONS.items(), key=lambda kv: -len(kv[0])):
+            loc = re.escape(location)
+            if re.search(rf"\b{loc}\b(?:\s+(?:grand\s+prix|gp))?", low):
+                # Avoid treating generic source text like "Italian" as enough
+                # unless the candidate actually has F1/GP context.
+                if (
+                    "grand prix" in low or re.search(r"\bgp\b", low)
+                    or "formula 1" in low or "/f1/" in low
+                ):
+                    return canonical + " (Formula 1)"
+
+    patterns = TENNIS_EVENT_PATTERNS if "tennis" in sport_low else (
+        GOLF_EVENT_PATTERNS if "golf" in sport_low else []
+    )
+    for pattern, canonical in patterns:
+        if re.search(pattern, low, flags=re.I):
+            return canonical
+
+    if "mma" in sport_low or "ufc" in sport_low:
+        match = re.search(r"\bufc\s+(\d{2,4})\b", text, flags=re.I)
+        if match:
+            return f"UFC {match.group(1)}"
+
+    return None
+
+
+def special_event_family(name: str) -> str:
+    low = clean_text(name).lower()
+    low = re.sub(r"\([^)]*\)", " ", low)
+    low = re.sub(r"\b(round of \d+|quarterfinals?|semifinals?|finals?|day \d+)\b", " ", low)
+    low = re.sub(r"\s+", " ", low).strip()
+
+    for location, canonical in F1_EVENT_LOCATIONS.items():
+        if location in low or canonical.lower() in low:
+            return canonical.lower()
+    for patterns in (TENNIS_EVENT_PATTERNS, GOLF_EVENT_PATTERNS):
+        for pattern, canonical in patterns:
+            if re.search(pattern, low, flags=re.I):
+                return canonical.lower()
+    match = re.search(r"\bufc\s+(\d{2,4})\b", low)
+    if match:
+        return f"ufc {match.group(1)}"
+    return low
+
+
+def validate_special_event_target(
+    model_event_name: str,
+    sport: str,
+    candidate_ids: list[str],
+    by_id: dict[str, dict[str, Any]],
+    run_log: dict[str, Any],
+) -> str:
+    inferred = infer_special_event_name(candidate_ids, by_id, sport)
+    model_family = special_event_family(model_event_name)
+
+    if not inferred:
+        run_log["pipeline"]["specialEventValidation"]["unverified"].append({
+            "modelEvent": model_event_name,
+            "sport": sport,
+            "candidateIds": candidate_ids,
+            "reason": "candidate does not expose a specific recognized event name",
+        })
+        return model_event_name
+
+    inferred_family = special_event_family(inferred)
+    if model_family == inferred_family:
+        run_log["pipeline"]["specialEventValidation"]["verified"].append({
+            "modelEvent": model_event_name,
+            "inferredEvent": inferred,
+            "sport": sport,
+            "candidateIds": candidate_ids,
+        })
+        return model_event_name
+
+    run_log["pipeline"]["specialEventValidation"]["rehomed"].append({
+        "from": model_event_name,
+        "to": inferred,
+        "sport": sport,
+        "candidateIds": candidate_ids,
+        "reason": "candidate explicitly grounds a different named event",
+    })
+    return inferred
+
+
 def normalize_model_output(
     model_output: dict[str, Any],
     candidates: list[dict[str, Any]],
@@ -4667,6 +5271,9 @@ def normalize_model_output(
         final_items = ensure_promoted_result_coverage(
             final_items, league, candidates, by_id, run_log
         )
+        final_items = apply_final_result_relevance_gate(
+            final_items, league, by_id, run_log
+        )
         final_items = curate_final_items(final_items, league, run_log)
         leagues.append({
             "league": league,
@@ -4674,19 +5281,24 @@ def normalize_model_output(
             "items": final_items,
         })
 
-    special_events = []
+    # Validate Special Event membership item-by-item. A model group can be split
+    # when its candidates explicitly name different events.
+    special_buckets: dict[tuple[str, str], dict[str, Any]] = {}
     for event_index, event in enumerate(model_output.get("specialEvents", []), 1):
-        name = clean_text(event.get("name"))
+        model_name = clean_text(event.get("name"))
         sport = clean_text(event.get("sport"))
-        if not name or not sport:
+        if not model_name or not sport:
             continue
 
-        items = []
         for idx, raw_item in enumerate(event.get("items", []), 1):
             try:
                 candidate_ids = [clean_text(cid) for cid in raw_item["candidateIds"]]
                 if not candidate_ids or any(cid not in by_id for cid in candidate_ids):
                     raise TickerError("unknown candidateId")
+
+                target_name = validate_special_event_target(
+                    model_name, sport, candidate_ids, by_id, run_log
+                )
 
                 occurred_at, precision, age = best_occurrence(candidate_ids, by_id)
                 sources = union_sources(candidate_ids, by_id)
@@ -4700,9 +5312,9 @@ def normalize_model_output(
                     "type": item_type,
                     "priority": apply_result_enrichment_priority(
                         normalize_editor_priority(
-                            raw_item["priority"], item_type, f"{name} #{idx}", run_log
+                            raw_item["priority"], item_type, f"{target_name} #{idx}", run_log
                         ),
-                        candidate_ids, by_id, item_type, f"{name} #{idx}", run_log
+                        candidate_ids, by_id, item_type, f"{target_name} #{idx}", run_log
                     ),
                     "headline": clean_text(raw_item["headline"]),
                     "text": clean_text(raw_item["text"]),
@@ -4716,7 +5328,7 @@ def normalize_model_output(
                     "ageHours": age,
                     "freshnessBasis": repair_freshness_basis(
                         raw_item["freshnessBasis"], candidate_ids, by_id,
-                        f"{name} #{idx}", run_log
+                        f"{target_name} #{idx}", run_log
                     ),
                     "status": clean_text(raw_item["status"]).lower(),
                     "sourceUrls": [s["url"] for s in sources],
@@ -4729,22 +5341,41 @@ def normalize_model_output(
                 if item["status"] not in ALLOWED_STATUS:
                     raise TickerError("invalid status")
                 repair_result_story_punch(
-                    item, candidate_ids, by_id, f"{name} #{idx}", run_log
+                    item, candidate_ids, by_id, f"{target_name} #{idx}", run_log
                 )
-                validate_copy_consistency(item, f"{name} #{idx}")
-                items.append(item)
+                validate_copy_consistency(item, f"{target_name} #{idx}")
+
+                bucket_key = (special_event_family(target_name), sport.lower())
+                bucket = special_buckets.setdefault(
+                    bucket_key,
+                    {"name": target_name, "sport": sport, "items": []},
+                )
+                bucket["items"].append(item)
 
             except Exception as exc:
                 run_log["pipeline"]["finalDrops"].append({
-                    "context": name,
+                    "context": model_name,
                     "index": idx,
                     "headline": clean_text(raw_item.get("headline")),
                     "reason": clean_text(exc),
                 })
 
-        items = curate_final_items(items, name, run_log)
+    special_events = []
+    for bucket in special_buckets.values():
+        items = curate_final_items(bucket["items"], bucket["name"], run_log)
         if items:
-            special_events.append({"name": name, "sport": sport, "items": items})
+            special_events.append({
+                "name": bucket["name"],
+                "sport": bucket["sport"],
+                "items": items,
+            })
+    special_events.sort(
+        key=lambda event: max(
+            (int(item.get("priority") or 0) for item in event["items"]),
+            default=0,
+        ),
+        reverse=True,
+    )
 
     return {"leagues": leagues, "specialEvents": special_events}
 
@@ -4866,7 +5497,7 @@ def write_run_log(path: Path, run_log: dict[str, Any]):
 def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dict[str, Any]:
     return {
         "schemaVersion": 1,
-        "pipelineVersion": "A3.8-result-story-promotion",
+        "pipelineVersion": "A3.10-final-relevance-event-fusion",
         "runId": f"a3-{generated_at.strftime('%Y%m%dT%H%M%SZ')}",
         "status": "running",
         "startedAt": iso_z(generated_at),
@@ -4893,6 +5524,21 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
             "resultStoryPromotion": (
                 "decisive moment first; otherwise strongest grounded fused recap context; "
                 "raw Highlightly-final boilerplate is evidence-only"
+            ),
+            "resultRelevanceGate": (
+                "strong story first; generic draws suppressed; max two ordinary result fillers "
+                "only when fewer than three stronger league stories exist"
+            ),
+            "fbsIdentityPolicy": (
+                "authoritative 138-team 2026 FBS roster; ESPN scoreboard validates IDs/ranks "
+                "but cannot expand membership"
+            ),
+            "sameGameNewsFusion": (
+                "structured result + both-team article + result evidence; "
+                "RECORD/MILESTONE/PLAYOFF/etc. can fuse into the same game candidate"
+            ),
+            "specialEventValidation": (
+                "candidate-grounded event membership with deterministic re-homing of mismatches"
             ),
             "gitSha": os.environ.get("GITHUB_SHA"),
             "githubRunId": os.environ.get("GITHUB_RUN_ID"),
@@ -4927,6 +5573,19 @@ def initial_run_log(generated_at: datetime, cutoff: datetime, model: str) -> dic
                 "promoted": 0,
                 "items": [],
                 "autoAdded": [],
+            },
+            "relevanceGate": {
+                "keptStrong": [],
+                "keptFillers": [],
+                "dropped": [],
+            },
+            "specialEventValidation": {
+                "verified": [],
+                "rehomed": [],
+                "unverified": [],
+            },
+            "gameEventFusion": {
+                "merged": [],
             },
         },
         "openai": {
@@ -4987,7 +5646,7 @@ def main() -> int:
 
     try:
         print(
-            f"A3.8 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
+            f"A3.9 direct-source refresh: {iso_z(cutoff)} to {iso_z(generated_at)}; "
             f"editor={args.model}; OpenAI web_search=OFF"
         )
 
@@ -5096,11 +5755,11 @@ def main() -> int:
         )
 
         dataset = {
-            "schemaVersion": 9,
-            "pipelineVersion": "A3.8-result-story-promotion",
+            "schemaVersion": 11,
+            "pipelineVersion": "A3.10-final-relevance-event-fusion",
             "generatedAt": iso_z(generated_at),
             "freshnessHours": FRESHNESS_HOURS,
-            "discoveryMode": "Highlightly + decisive parsing + result-story promotion + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
+            "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search",
             "model": args.model,
             "sourceCandidateHash": c_hash,
             "leagues": normalized["leagues"],
