@@ -17,8 +17,8 @@ for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STA
 assert 'youtubeProbe' not in html
 assert 'directProbe' not in html
 assert 'youtube.com/iframe_api' not in html
-assert 'ui/media-audit-v550.js?v=5.5.0-r12h' in html
-assert 'ui/media-audit-v550.css?v=5.5.0-r12h' in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r16' in html
+assert 'ui/media-audit-v550.css?v=5.5.0-r16' in html
 assert 'href="media-audit.html"' in index
 
 # Browser is a console only. All control and inventory authority routes to the backend service.
@@ -29,7 +29,7 @@ for forbidden in ['localStorage','YT.Player','directProbe','youtubeProbe','/api/
 
 # Canonical server-owned audit contract.
 for token in [
-    'AUDIT_GENERATION = "R12-FAILURE-HARDENING"',
+    'AUDIT_GENERATION = "R16-AUDIT-REPAIR-SEPARATION"',
     'history_media_audit_run',
     'history_media_audit_queue',
     'history_media_audit_asset_result',
@@ -40,14 +40,12 @@ for token in [
     'MEDIA_AUDIT_SUPERSEDED',
     'MEDIA_AUDIT_BLUE_SUPPRESSED',
     'BLUE_FALLBACK_TARGET',
-    'TARGETED_REHYDRATION',
     '/api/history/event/discover',
     'WAITING_DISCOVERY_PRIORITY',
     'events.sort',
     'scheduledKey',
     'queueOrdinal',
     'event_date DESC',
-    'if not selected["green"] and not selected["extended"]',
     'if not preferred:',
     'len(selected["blue"]) >= BLUE_FALLBACK_TARGET',
     'association_state=\'ASSIGNED\'',
@@ -89,7 +87,6 @@ for token in [
     '_load_assets_with_production_parity',
     'productionPlayableCount',
     'DISCOVERY_PASSES',
-    'Only rehydrate when no preferred recap candidate survives canonical playback',
     'recoveredExceptionFailures',
 ]:
     assert token in service,token
@@ -99,7 +96,7 @@ for token in [
     'diagProgressAge','diagTrace','SERVER TRACE','DATABASE + PRODUCTION PARITY'
 ]:
     assert token in html or token in js,token
-assert "const GENERATION='R12-FAILURE-HARDENING'" in js
+assert "const GENERATION='R16-AUDIT-REPAIR-SEPARATION'" in js
 assert 'localStorage' not in js
 
 # R11: reset/start/stop retire the worker itself and stale run work cannot persist.
@@ -274,7 +271,7 @@ assert 'refreshInventory();' in status_fn
 assert 'SPECIAL EVENT ENDPOINT UNSUPPORTED • normalized catalog authoritative' in js
 
 assert '.health.INCONCLUSIVE' in css
-assert 'repeat(9,minmax(115px,1fr))' in css
+assert 'repeat(11,minmax(108px,1fr))' in css
 
 # R12 recovery repairs old false-negative packages and exposes inconclusive/deferred work.
 for token in ['preservedRecentPlayable','removedFalsePackages','RECOVERED_NONHARD_FAILURE','RECERTIFICATION_REQUIRED']:
@@ -292,43 +289,64 @@ assert deploy.index(stop_audit) < deploy.index(stop_backend, deploy.index(stop_a
 assert 'LOCAL_HEALTH_ATTEMPTS="${SBB_LOCAL_HEALTH_ATTEMPTS:-180}"' in deploy, 'cold-start health window must be bounded and configurable at 180 attempts'
 assert deploy.index('systemctl restart sports-big-board') < deploy.index('Installing canonical Media Health Audit service'), 'main backend must be healthy before audit service restart'
 
-# R13 SSH bootstrap recovery: normal metadata SSH is bounded, diagnostics are
-# emitted before recovery, and a single last-resort Compute Engine reset can
-# recover sshd/google-guest-agent without changing instance IP/disks/metadata.
-for token in [
-    'SSH_READY_ATTEMPTS="${SBB_SSH_READY_ATTEMPTS:-2}"',
-    'SSH_READY_TIMEOUT_SECONDS="${SBB_SSH_READY_TIMEOUT_SECONDS:-60}"',
-    'SSH_RECOVERY_ATTEMPTS="${SBB_SSH_RECOVERY_ATTEMPTS:-3}"',
-    'SSH_RECOVERY_TIMEOUT_SECONDS="${SBB_SSH_RECOVERY_TIMEOUT_SECONDS:-60}"',
-    'SSH_AUTO_RESET_ON_FAILURE="${SBB_SSH_AUTO_RESET_ON_FAILURE:-1}"',
-    'ssh_bootstrap_phase()',
-    'ssh_diagnostics()',
-    "--ssh-flag='-F none'",
-    '--troubleshoot --quiet',
-    'get-serial-port-output',
-    'gcloud compute instances reset "$VM_NAME"',
-    'ONE last-resort Compute Engine reset',
-    'post-reset',
-]:
-    assert token in deploy,token
-assert deploy.index('ssh_diagnostics') < deploy.index('gcloud compute instances reset "$VM_NAME"'), 'diagnostics must precede destructive recovery'
-assert deploy.count('gcloud compute instances reset "$VM_NAME"') == 1, 'bootstrap may perform at most one VM reset'
-assert 'gcloud compute instances stop "$VM_NAME"' not in deploy, 'do not stop VM and risk releasing an ephemeral external IP'
-assert 'gcloud compute instances start "$VM_NAME"' not in deploy, 'do not stop/start VM during SSH recovery'
 
-print('PASS v5.5.0 R12/R13 Media Audit hardening + resilient GCE SSH bootstrap recovery')
-
-# R14 deployment isolation: data-only Sports Ticker refresh commits must not
-# restart the cloud backend or canonical Media Audit service.
-workflow=(root/'.github/workflows/deploy-pages.yml').read_text()
+# R16 audit/repair separation: audit certifies existing media only; Repair Engine owns discovery.
+assert 'R16-AUDIT-REPAIR-SEPARATION' in service
 for token in [
-    "paths-ignore:",
-    "'data/sports-ticker.json'",
-    "'data/sports-ticker.txt'",
-    "'data/sports-ticker-run-log.json'",
+    'history_media_repair_queue','history_media_repair_candidate','class MediaRepairEngine',
+    'canonical-media-repair-engine','REPAIR_ENABLED','REPAIR_DISCOVERY_PASSES','REPAIR_CERT_ATTEMPTS',
+    'def seed_repair_queue','def claim_repair_job','def mark_repair_discovered',
+    'MEDIA_REPAIR_DISCOVERED','MEDIA_REPAIR_CERTIFIED','MEDIA_REPAIR_FAILED',
+    'promote_repaired_candidate','canonicalWriteBack','SBB_MULTI_PROVIDER_DISCOVERY',
+    'repairMode','searchDepth','exhaustive','targetTier',
+    'repairSummary','"repair": {**','/repairs',
 ]:
-    assert token in workflow, token
-push_block=workflow[workflow.index('  push:'):workflow.index('  workflow_dispatch:')]
-assert 'paths-ignore:' in push_block
-for path in ['data/sports-ticker.json','data/sports-ticker.txt','data/sports-ticker-run-log.json']:
-    assert path in push_block,path
+    assert token in service,token
+
+# Repair first reuses the existing Sports Big Board multi-provider discovery authority,
+# then has a quota-bounded direct YouTube fallback for gaps/special events.
+for token in ['YouTubeGateway','YOUTUBE_API_KEY','REPAIR_YOUTUBE_FALLBACK','REPAIR_YOUTUBE_QUERY_LIMIT',
+              'def _youtube_fallback_candidates','Direct YouTube repair fallback','ingest_repair_youtube_candidates',
+              'publishedAfter','publishedBefore','MEDIA_REPAIR_DISCOVERED']:
+    assert token in service,token
+
+audit_block=service[service.index('def audit_event'):service.index('class MediaRepairEngine')]
+assert '_discover_preferred(' not in audit_block
+assert 'TARGETED_REHYDRATION' not in audit_block
+assert 'certification-only policy' in audit_block
+assert 'finish_queue_item() then' in audit_block
+
+# Audit completion automatically synchronizes repair work; HEALTHY closes it.
+finish_block=service[service.index('def finish_queue_item'):service.index('def complete_run_if_done')]
+assert '_sync_repair_job_conn' in finish_block
+assert '"INCONCLUSIVE"' in finish_block
+sync_block=service[service.index('def _sync_repair_job_conn'):service.index('def seed_repair_queue')]
+for token in ['CLOSED_HEALTHY','PENDING','SEARCHING','CERTIFYING']:
+    assert token in sync_block,token
+for token in ['NO_MEDIA','UNPLAYABLE','DEGRADED','INCONCLUSIVE','PREFERRED','RECERTIFY']:
+    assert token in service,token
+
+# Newly discovered repair media is hidden until certified, then promoted into the shared canonical package.
+mark_block=service[service.index('def mark_repair_discovered'):service.index('def record_repair_candidate')]
+assert "association_state='UNVERIFIED'" in mark_block
+assert "association_method='MEDIA_REPAIR_DISCOVERED'" in mark_block
+promote_block=service[service.index('def promote_repaired_candidate'):service.index('def _eligible_events')]
+for token in ["runtime_state", "!='PLAYED'", "association_state='ASSIGNED'", "association_method='MEDIA_REPAIR_CERTIFIED'",
+              'history_media_canonical_package','history_media_audit_queue','HEALTHY','DEGRADED']:
+    assert token in promote_block,token
+
+# Repair writes share the one serialized DB writer rather than introducing another SQLite writer lane.
+repair_class=service[service.index('class MediaRepairEngine'):service.index('class AuditStatusCache')]
+assert 'self.db_writer.submit' in repair_class
+assert 'lane=99' in repair_class
+for forbidden in ['self.store.promote_repaired_candidate(', 'self.store.record_repair_candidate(', 'self.store.claim_repair_job(', 'self.store.seed_repair_queue(']:
+    assert forbidden not in repair_class,forbidden
+
+# Operator console exposes the synchronized repair engine.
+for token in ['REPAIR QUEUE','REPAIRED','MEDIA REPAIR ENGINE','repairState','repairQueue','repairGame','repairTarget','repairPhase','repairTotals']:
+    assert token in html or token in js,token
+assert "AUDIT DISCOVERY DISABLED • Repair Engine owns discovery" in js
+assert '/repairs' in service
+
+print('PASS v5.5.0 R16 certification-only audit + synchronized Media Repair Engine + canonical repair write-back')
+

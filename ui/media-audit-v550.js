@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const VERSION='5.5.0';
-const GENERATION='R12-FAILURE-HARDENING';
+const GENERATION='R16-AUDIT-REPAIR-SEPARATION';
 const $=id=>document.getElementById(id);
 const API=((window.SBB_CONFIG&&window.SBB_CONFIG.apiBase)||location.origin).replace(/\/$/,'')+'/api/media-audit';
 const state={offset:0,limit:100,total:0,rows:[],expanded:new Set(),status:null,busy:false,pollTimer:null,lastInventoryAt:0,lastInventoryOkAt:0,inventoryError:'',inventoryBusy:false,statusBusy:false,statusFailures:0,lastStatusOkAt:0,lastStatusAttemptAt:0};
@@ -21,6 +21,7 @@ function renderSummary(status){
   setText('metricGames',fmtNum(s.games));setText('metricGamesSub',`${fmtNum(s.certifiedGames)} canonically certified`);
   setText('metricAudited',fmtNum(s.certifiedGames));setText('metricAuditedSub',`${fmtNum(s.staleGames)} stale >30d`);
   setText('metricHealthy',fmtNum(h.HEALTHY));setText('metricDegraded',fmtNum(h.DEGRADED));setText('metricInconclusive',fmtNum(s.inconclusiveGames||h.INCONCLUSIVE));setText('metricUnplayable',fmtNum(h.UNPLAYABLE));setText('metricNoMedia',fmtNum(h.NO_MEDIA));
+  const repair=status.repair||{};setText('metricRepairQueue',fmtNum(repair.queue||0));setText('metricRepaired',fmtNum(repair.repaired||0));
   setText('metricAssets',fmtNum((s.playedAssets||0)+(s.failedAssets||0)));setText('metricAssetsSub',`${fmtNum(s.playedAssets)} played • ${fmtNum(s.failedAssets)} failed`);
   setText('metricRun',run?String(run.state||'IDLE'):'IDLE');
   setText('metricRunSub',run?`Run #${run.id} • ${run.processed_games||0}/${run.total_games||0} • ${status.workerCount||1} lanes`:(worker.alive?`${status.workerCount||1} worker lane${(status.workerCount||1)===1?'':'s'} online`:'Worker offline'));
@@ -67,7 +68,7 @@ function renderDiagnostics(status){
   setText('diagProvider',d.assetProvider||'—');
   setText('diagProbe',d.probeAttempt?`${d.probeAttempt}/${d.probeMaxAttempts||2}`:'—');
   setText('diagProbeResult',d.lastProbeResult||worker.lastError||status.browserError||'—');
-  setText('diagDiscovery',d.discoveryPass?`${d.discoveryPass}/${d.discoveryMaxPasses||0} • ${d.discoveryResult||'working'}`:'—');
+  setText('diagDiscovery',d.discoveryPass?`${d.discoveryPass}/${d.discoveryMaxPasses||0} • ${d.discoveryResult||'working'}`:'AUDIT DISCOVERY DISABLED • Repair Engine owns discovery');
   const waiting=d.waitingReason||storageError||(dbw.state==='LOCKED'?`Serialized DB writer is retrying ${dbw.activeOperation||'audit commit'}`:'No wait condition');
   setText('diagWaiting',waiting);
   $('diagWaiting').className='diagnostic-wait '+((d.waitingReason||storageError||dbw.state==='LOCKED')?'active':'');
@@ -91,6 +92,19 @@ function renderDiagnostics(status){
     const workerCards=workers.map(w=>{const wd=w.diagnostics||{},wc=w.current||{},phase=wd.phase||wc.phase||'IDLE',game=wc.game||wd.game||'Waiting',ord=wc.ordinal||wd.ordinal||'',pending=wd.pendingDbWrite||'';const detail=pending?`${phase} • SAVE QUEUED: ${pending}`:(wd.waitingReason?`${phase} • ${wd.waitingReason}`:phase);return `<div class="worker-lane ${w.alive?'live':'dead'}"><strong>LANE ${esc(w.lane||wd.workerLane||'?')}</strong><span>${ord?`#${esc(ord)} • `:''}${esc(game)}</span><small>${esc(detail)}</small></div>`}).join('');
     lanes.innerHTML=writerCard+(workerCards||'<div class="worker-lane idle">No server workers reported.</div>');
   }
+  const repair=status.repair||{},rw=repair.worker||{},rc=rw.current||{},rs=rw.stats||{};
+  setText('repairState',rw.enabled===false?'DISABLED':(rw.alive?(rc.state||'ONLINE'):'OFFLINE'));
+  const repairState=$('repairState');if(repairState)repairState.className='diag-value '+(rw.alive?'ok':'bad');
+  setText('repairQueue',fmtNum(repair.queue||0));
+  setText('repairGame',rc.game||rc.eventKey||'—');
+  setText('repairTarget',rc.health?`${rc.health} → ${rc.target||'ANY'}`:'—');
+  setText('repairPhase',rc.phase||'IDLE');
+  setText('repairAttempt',rc.attempt?String(rc.attempt):'—');
+  setText('repairCandidate',rc.assetKey?`${rc.tier||''} • ${rc.assetKey}`:'—');
+  setText('repairResult',`${rc.provider||'—'} • ${rc.lastResult||rw.lastError||'—'}`);
+  setText('repairTotals',`${fmtNum(rs.jobsAttempted||0)} jobs • ${fmtNum(rs.newCandidates||0)} new candidates • ${fmtNum(rs.candidatesCertified||0)} certified • ${fmtNum(rs.gamesRepaired||0)} promotions • ${fmtNum(rs.discoveryExhausted||0)} exhausted`);
+  const repairTrace=$('repairTrace');if(repairTrace){const rr=(rw.trace||[]).slice().reverse();repairTrace.innerHTML=rr.map(r=>`<div class="${esc(String(r.level||'').toLowerCase())}"><time>${esc(fmtDateTime(r.at))}</time><span>${esc(r.message||'')}</span>${r.details?`<small>${esc(JSON.stringify(r.details))}</small>`:''}</div>`).join('')||'<div class="empty-trace">No repair activity yet.</div>';}
+
   const trace=$('diagTrace');
   if(trace){
     const rows=(d.trace||[]).slice().reverse();

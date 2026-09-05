@@ -19,9 +19,10 @@ import sqlite3
 import threading
 import time
 import traceback
+import unicodedata
 from contextlib import closing
 from collections import deque
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.error import HTTPError, URLError
@@ -30,12 +31,14 @@ from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
 from sbb.history_repository import HistoryRepository
+from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
+from sbb.secrets import get_secret
 from sbb.catalog_contract import VERIFICATION_VERSION
 from sbb.event_matcher import team_name as catalog_team_name
 
 APP_ROOT = Path(__file__).resolve().parent
 APP_VERSION = (APP_ROOT / "VERSION").read_text(encoding="utf-8").strip()
-AUDIT_GENERATION = "R12-FAILURE-HARDENING"
+AUDIT_GENERATION = "R16-AUDIT-REPAIR-SEPARATION"
 STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 DB_PATH = STATE_DIR / "cache" / "history.sqlite3"
 HOST = os.environ.get("SBB_MEDIA_AUDIT_HOST", "127.0.0.1")
@@ -62,6 +65,21 @@ DISCOVERY_SEMAPHORE = threading.Semaphore(DISCOVERY_CONCURRENCY)
 DB_WRITE_QUEUE_MAX = max(32, min(4096, int(os.environ.get("SBB_MEDIA_AUDIT_DB_WRITE_QUEUE_MAX", "512"))))
 INFRA_RETRIES = max(1, min(4, int(os.environ.get("SBB_MEDIA_AUDIT_INFRA_RETRIES", "2"))))
 STATUS_CACHE_REFRESH_SECONDS = max(2.0, min(30.0, float(os.environ.get("SBB_MEDIA_AUDIT_STATUS_CACHE_SECONDS", "5"))))
+# R16: certification and repair are separate engines. Audit workers never perform
+# discovery; a single persistent Repair Engine consumes non-healthy audit results,
+# uses the existing Sports Big Board multi-provider discovery authority, certifies
+# newly found candidates, and promotes only verified media into the shared catalog.
+REPAIR_ENABLED = str(os.environ.get("SBB_MEDIA_REPAIR_ENABLED", "1")).lower() in {"1","true","yes","on"}
+REPAIR_DISCOVERY_PASSES = max(1, min(6, int(os.environ.get("SBB_MEDIA_REPAIR_DISCOVERY_PASSES", "3"))))
+REPAIR_CERT_ATTEMPTS = max(1, min(3, int(os.environ.get("SBB_MEDIA_REPAIR_CERT_ATTEMPTS", "2"))))
+REPAIR_CANDIDATE_LIMIT = max(1, min(20, int(os.environ.get("SBB_MEDIA_REPAIR_CANDIDATE_LIMIT", "8"))))
+REPAIR_RECENT_RETRY_SECONDS = max(300, int(os.environ.get("SBB_MEDIA_REPAIR_RECENT_RETRY_SECONDS", str(6 * 3600))))
+REPAIR_HISTORICAL_RETRY_SECONDS = max(1800, int(os.environ.get("SBB_MEDIA_REPAIR_HISTORICAL_RETRY_SECONDS", str(24 * 3600))))
+REPAIR_SEED_SECONDS = max(60.0, float(os.environ.get("SBB_MEDIA_REPAIR_SEED_SECONDS", "1800")))
+REPAIR_YOUTUBE_FALLBACK = str(os.environ.get("SBB_MEDIA_REPAIR_YOUTUBE_FALLBACK", "1")).lower() in {"1","true","yes","on"}
+REPAIR_YOUTUBE_QUERY_LIMIT = max(1, min(3, int(os.environ.get("SBB_MEDIA_REPAIR_YOUTUBE_QUERY_LIMIT", "2"))))
+REPAIR_YOUTUBE_RESULTS = max(3, min(12, int(os.environ.get("SBB_MEDIA_REPAIR_YOUTUBE_RESULTS", "8"))))
+REPAIR_DISCOVERY_SETTLE_SECONDS = max(0.5, float(os.environ.get("SBB_MEDIA_REPAIR_DISCOVERY_SETTLE_SECONDS", str(DISCOVERY_SETTLE_SECONDS))))
 PRODUCTION_ENDPOINT_CORE_LEAGUES = {"MLB", "NFL", "NBA", "NHL", "EPL", "MLS", "NCAAF"}
 # Recent successful playback is durable evidence. Transient headless/browser
 # failures remain audit evidence but cannot revoke/quarantine a recently PLAYED
@@ -104,6 +122,9 @@ MANAGED_METHODS = {
     "MEDIA_AUDIT_RETAINED_PLAYABLE",
     "MEDIA_AUDIT_FALLBACK_AVAILABLE",
     "MEDIA_AUDIT_ALTERNATE_AVAILABLE",
+    "MEDIA_REPAIR_DISCOVERED",
+    "MEDIA_REPAIR_CERTIFIED",
+    "MEDIA_REPAIR_FAILED",
 }
 IMAGE_RE = re.compile(r"\.(?:jpe?g|png|webp|gif|svg)(?:$|[?#])", re.I)
 YOUTUBE_RE = re.compile(r"(?:youtu\.be/|youtube(?:-nocookie)?\.com/(?:watch\?v=|embed/|shorts/))([A-Za-z0-9_-]{6,20})", re.I)
@@ -126,6 +147,17 @@ def _jloads(value, default=None):
 
 def _jdumps(value):
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), default=str)
+
+
+def _search_norm(value):
+    raw=unicodedata.normalize('NFKD',str(value or '')).encode('ascii','ignore').decode('ascii').lower()
+    return re.sub(r'[^a-z0-9]+',' ',raw).strip()
+
+
+def _iso8601_duration_seconds(value):
+    m=re.fullmatch(r'P(?:(?P<d>\d+)D)?T?(?:(?P<h>\d+)H)?(?:(?P<m>\d+)M)?(?:(?P<s>\d+)S)?',str(value or ''))
+    if not m: return 0
+    return int(m.group('d') or 0)*86400+int(m.group('h') or 0)*3600+int(m.group('m') or 0)*60+int(m.group('s') or 0)
 
 
 def _is_db_locked(exc) -> bool:
@@ -378,6 +410,395 @@ class AuditStore:
             );
             """)
             conn.commit()
+
+    # ---------------------------------------------------------------------
+    # R16 persistent Media Repair Engine
+    # ---------------------------------------------------------------------
+    def _repair_schema_ready_conn(self, conn):
+        rows = conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('history_media_repair_queue','history_media_repair_candidate')"
+        ).fetchall()
+        return {str(r[0]) for r in rows} == {"history_media_repair_queue", "history_media_repair_candidate"}
+
+    def repair_schema_ready(self):
+        try:
+            with closing(self.connect(timeout=2)) as conn:
+                return self._repair_schema_ready_conn(conn)
+        except Exception:
+            return False
+
+    def ensure_repair_schema(self):
+        """Create repair-owned tables lazily; never make service heartbeat depend on this migration."""
+        if self.repair_schema_ready():
+            return True
+        with self.lock, closing(self.connect(timeout=2)) as conn:
+            conn.executescript("""
+            CREATE TABLE IF NOT EXISTS history_media_repair_queue (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              canonical_event_key TEXT NOT NULL UNIQUE,
+              source_audit_run_id INTEGER NOT NULL DEFAULT 0,
+              source_ordinal INTEGER NOT NULL DEFAULT 0,
+              league TEXT NOT NULL DEFAULT '', event_id TEXT NOT NULL DEFAULT '',
+              event_date TEXT NOT NULL DEFAULT '', game TEXT NOT NULL DEFAULT '',
+              health TEXT NOT NULL DEFAULT 'INCONCLUSIVE', target TEXT NOT NULL DEFAULT 'RECERTIFY',
+              priority INTEGER NOT NULL DEFAULT 0, state TEXT NOT NULL DEFAULT 'PENDING',
+              reason TEXT NOT NULL DEFAULT '', attempt_count INTEGER NOT NULL DEFAULT 0,
+              recertify_attempts INTEGER NOT NULL DEFAULT 0, discovery_attempts INTEGER NOT NULL DEFAULT 0,
+              next_retry_at REAL NOT NULL DEFAULT 0, created_at REAL NOT NULL DEFAULT 0,
+              updated_at REAL NOT NULL DEFAULT 0, completed_at REAL NOT NULL DEFAULT 0,
+              before_asset_count INTEGER NOT NULL DEFAULT 0, discovered_asset_count INTEGER NOT NULL DEFAULT 0,
+              new_asset_keys_json TEXT NOT NULL DEFAULT '[]', repaired_asset_key TEXT NOT NULL DEFAULT '',
+              repaired_tier TEXT NOT NULL DEFAULT '', last_provider TEXT NOT NULL DEFAULT '',
+              last_error TEXT NOT NULL DEFAULT '', details_json TEXT NOT NULL DEFAULT '{}'
+            );
+            CREATE INDEX IF NOT EXISTS idx_media_repair_state
+              ON history_media_repair_queue(state,priority DESC,next_retry_at,updated_at);
+            CREATE TABLE IF NOT EXISTS history_media_repair_candidate (
+              id INTEGER PRIMARY KEY AUTOINCREMENT, repair_id INTEGER NOT NULL,
+              canonical_event_key TEXT NOT NULL, asset_key TEXT NOT NULL, tier TEXT NOT NULL DEFAULT 'blue',
+              provider TEXT NOT NULL DEFAULT '', state TEXT NOT NULL DEFAULT 'DISCOVERED',
+              reason TEXT NOT NULL DEFAULT '', discovered_at REAL NOT NULL DEFAULT 0,
+              certified_at REAL NOT NULL DEFAULT 0, details_json TEXT NOT NULL DEFAULT '{}',
+              UNIQUE(repair_id,asset_key)
+            );
+            CREATE INDEX IF NOT EXISTS idx_media_repair_candidate_event
+              ON history_media_repair_candidate(canonical_event_key,state,discovered_at);
+            """)
+            conn.commit()
+        return True
+
+    @staticmethod
+    def _repair_priority(health):
+        return {"NO_MEDIA":100, "UNPLAYABLE":90, "DEGRADED":70, "INCONCLUSIVE":40}.get(str(health or '').upper(), 0)
+
+    @staticmethod
+    def _repair_target(health):
+        return {"DEGRADED":"PREFERRED", "UNPLAYABLE":"ANY", "NO_MEDIA":"ANY", "INCONCLUSIVE":"RECERTIFY"}.get(str(health or '').upper(), "")
+
+    def _sync_repair_job_conn(self, conn, run_id, ordinal, health, note, now=None):
+        """Keep one repair job per canonical event synchronized to the latest audit result."""
+        if not self._repair_schema_ready_conn(conn):
+            return False
+        now = _now() if now is None else now
+        row = conn.execute(
+            "SELECT canonical_event_key,league,event_id,event_date,game FROM history_media_audit_queue WHERE run_id=? AND ordinal=?",
+            (run_id, ordinal),
+        ).fetchone()
+        if not row:
+            return False
+        health = str(health or 'INCONCLUSIVE').upper()
+        key = str(row['canonical_event_key'])
+        if health == 'HEALTHY':
+            conn.execute(
+                "UPDATE history_media_repair_queue SET health='HEALTHY',state='CLOSED_HEALTHY',reason=?,updated_at=?,completed_at=?,next_retry_at=0,last_error='' WHERE canonical_event_key=?",
+                (str(note or 'Audit confirmed healthy canonical package')[:1000], now, now, key),
+            )
+            return True
+        priority = self._repair_priority(health)
+        target = self._repair_target(health)
+        if not priority:
+            return False
+        conn.execute(
+            """INSERT INTO history_media_repair_queue(
+                   canonical_event_key,source_audit_run_id,source_ordinal,league,event_id,event_date,game,
+                   health,target,priority,state,reason,next_retry_at,created_at,updated_at)
+               VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+               ON CONFLICT(canonical_event_key) DO UPDATE SET
+                 source_audit_run_id=excluded.source_audit_run_id,source_ordinal=excluded.source_ordinal,
+                 league=excluded.league,event_id=excluded.event_id,event_date=excluded.event_date,game=excluded.game,
+                 health=excluded.health,target=excluded.target,priority=excluded.priority,
+                 state=CASE WHEN history_media_repair_queue.state IN ('SEARCHING','CERTIFYING') THEN history_media_repair_queue.state ELSE 'PENDING' END,
+                 reason=excluded.reason,next_retry_at=CASE WHEN history_media_repair_queue.state IN ('SEARCHING','CERTIFYING') THEN history_media_repair_queue.next_retry_at ELSE 0 END,
+                 completed_at=0,updated_at=excluded.updated_at,last_error=''""",
+            (key, int(run_id or 0), int(ordinal or 0), str(row['league'] or ''), str(row['event_id'] or ''),
+             str(row['event_date'] or ''), str(row['game'] or ''), health, target, priority, 'PENDING',
+             str(note or health)[:1000], 0, now, now),
+        )
+        return True
+
+    def seed_repair_queue(self):
+        """Backfill/synchronize repair work from the latest deterministic audit run."""
+        if not self.ensure_repair_schema():
+            return {"seeded":0}
+        now = _now(); seeded = 0
+        with self.lock, closing(self.connect(timeout=2)) as conn:
+            latest = conn.execute("SELECT id FROM history_media_audit_run ORDER BY id DESC LIMIT 1").fetchone()
+            if not latest:
+                return {"seeded":0}
+            rows = conn.execute(
+                """SELECT ordinal,health,note FROM history_media_audit_queue q
+                   WHERE run_id=? AND state IN ('DONE','FAILED','SKIPPED','DEFERRED')
+                     AND (health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA','INCONCLUSIVE')
+                          OR EXISTS (SELECT 1 FROM history_media_repair_queue r WHERE r.canonical_event_key=q.canonical_event_key AND r.state NOT IN ('CLOSED_HEALTHY','REPAIRED')))
+                   ORDER BY ordinal""",
+                (int(latest['id']),),
+            ).fetchall()
+            for row in rows:
+                if self._sync_repair_job_conn(conn, int(latest['id']), int(row['ordinal']), str(row['health'] or ''), str(row['note'] or ''), now):
+                    seeded += 1
+            conn.commit()
+        return {"seeded":seeded,"runId":int(latest['id'])}
+
+    def repair_summary(self):
+        if not self.repair_schema_ready():
+            return {"schemaReady":False,"queue":0,"repaired":0,"states":{},"health":{}}
+        with closing(self.connect(timeout=2)) as conn:
+            states = {str(r['state']):int(r['n']) for r in conn.execute("SELECT state,COUNT(*) n FROM history_media_repair_queue GROUP BY state").fetchall()}
+            health = {str(r['health']):int(r['n']) for r in conn.execute("SELECT health,COUNT(*) n FROM history_media_repair_queue GROUP BY health").fetchall()}
+            queue_count = int(conn.execute("SELECT COUNT(*) FROM history_media_repair_queue WHERE state IN ('PENDING','WAITING_RETRY','SEARCHING','CERTIFYING')").fetchone()[0] or 0)
+            repaired = int(conn.execute("SELECT COUNT(*) FROM history_media_repair_queue WHERE repaired_asset_key<>''").fetchone()[0] or 0)
+        return {"schemaReady":True,"queue":queue_count,"repaired":repaired,"states":states,"health":health}
+
+    def repair_queue(self, limit=100, offset=0, state=''):
+        if not self.repair_schema_ready():
+            return {"rows":[],"total":0,"limit":int(limit or 100),"offset":int(offset or 0),"schemaReady":False}
+        limit=max(1,min(500,int(limit or 100))); offset=max(0,int(offset or 0)); state=str(state or '').upper()
+        where=""; params=[]
+        if state:
+            where=" WHERE state=?"; params=[state]
+        with closing(self.connect(timeout=2)) as conn:
+            total=int(conn.execute("SELECT COUNT(*) FROM history_media_repair_queue"+where,tuple(params)).fetchone()[0] or 0)
+            rows=[dict(r) for r in conn.execute(
+                "SELECT * FROM history_media_repair_queue"+where+" ORDER BY CASE state WHEN 'SEARCHING' THEN 0 WHEN 'CERTIFYING' THEN 1 WHEN 'PENDING' THEN 2 WHEN 'WAITING_RETRY' THEN 3 ELSE 4 END, priority DESC, next_retry_at, updated_at LIMIT ? OFFSET ?",
+                tuple(params+[limit,offset]),
+            ).fetchall()]
+        return {"rows":rows,"total":total,"limit":limit,"offset":offset,"schemaReady":True}
+
+    def claim_repair_job(self):
+        if not self.ensure_repair_schema():
+            return None
+        now=_now()
+        with self.lock, closing(self.connect(timeout=2)) as conn:
+            row=conn.execute(
+                """SELECT * FROM history_media_repair_queue
+                   WHERE state IN ('PENDING','WAITING_RETRY') AND next_retry_at<=?
+                   ORDER BY priority DESC, CASE health WHEN 'NO_MEDIA' THEN 0 WHEN 'UNPLAYABLE' THEN 1 WHEN 'DEGRADED' THEN 2 ELSE 3 END,
+                            event_date DESC, updated_at ASC LIMIT 1""",
+                (now,),
+            ).fetchone()
+            if not row:
+                return None
+            conn.execute(
+                "UPDATE history_media_repair_queue SET state='SEARCHING',attempt_count=attempt_count+1,updated_at=?,last_error='' WHERE id=? AND state IN ('PENDING','WAITING_RETRY')",
+                (now,int(row['id'])),
+            )
+            if conn.total_changes<=0:
+                conn.rollback(); return None
+            conn.commit()
+            row=conn.execute("SELECT * FROM history_media_repair_queue WHERE id=?",(int(row['id']),)).fetchone()
+            return dict(row) if row else None
+
+    def update_repair_job(self, repair_id, *, state=None, health=None, target=None, priority=None, reason=None,
+                          next_retry_at=None, last_error=None, discovery_increment=0,
+                          recertify_increment=0, before_asset_count=None, discovered_asset_count=None,
+                          new_asset_keys=None, last_provider=None, details=None, completed=False):
+        if not self.repair_schema_ready():
+            return None
+        now=_now(); fields=["updated_at=?"]; params=[now]
+        mapping={"state":state,"health":health,"target":target,"priority":priority,"reason":reason,"next_retry_at":next_retry_at,
+                 "last_error":last_error,"before_asset_count":before_asset_count,"discovered_asset_count":discovered_asset_count,
+                 "last_provider":last_provider}
+        for col,val in mapping.items():
+            if val is not None:
+                fields.append(f"{col}=?"); params.append(val)
+        if discovery_increment:
+            fields.append("discovery_attempts=discovery_attempts+?"); params.append(int(discovery_increment))
+        if recertify_increment:
+            fields.append("recertify_attempts=recertify_attempts+?"); params.append(int(recertify_increment))
+        if new_asset_keys is not None:
+            fields.append("new_asset_keys_json=?"); params.append(_jdumps(list(new_asset_keys)))
+        if details is not None:
+            fields.append("details_json=?"); params.append(_jdumps(details))
+        if completed:
+            fields.append("completed_at=?"); params.append(now)
+        params.append(int(repair_id))
+        with self.lock, closing(self.connect(timeout=2)) as conn:
+            conn.execute("UPDATE history_media_repair_queue SET "+",".join(fields)+" WHERE id=?",tuple(params))
+            conn.commit()
+            row=conn.execute("SELECT * FROM history_media_repair_queue WHERE id=?",(int(repair_id),)).fetchone()
+        return dict(row) if row else None
+
+    def repair_event_context(self, event_key):
+        with closing(self.connect(timeout=2)) as conn:
+            row=conn.execute("SELECT canonical_event_key,league,event_id,event_date,event_json,final_at FROM history_catalog_event WHERE canonical_event_key=?",(event_key,)).fetchone()
+        if not row:
+            return None
+        event=_jloads(row['event_json'],{})
+        return {"canonical_event_key":row['canonical_event_key'],"league":row['league'],"event_id":row['event_id'],"event_date":row['event_date'],
+                "event":event,"game":f"{_team_name(event,'away')} @ {_team_name(event,'home')}".strip(' @') or str(row['event_id'])}
+
+    def repair_event_assets(self, event_key):
+        """Return every known GAME association, including repair UNVERIFIED and quarantined history."""
+        with closing(self.connect(timeout=2)) as conn:
+            rows=conn.execute(
+                """SELECT em.association_state,em.association_method,em.association_evidence,em.association_confidence,
+                          s.asset_key,s.provider,s.provider_media_id,s.canonical_url,s.title,s.duration_seconds,s.validation_state,
+                          s.runtime_state,s.runtime_success_at,s.runtime_failure_at,s.runtime_failure_reason,s.asset_json,s.verified_at,s.updated_at
+                   FROM history_event_media em JOIN history_source_media s ON s.asset_key=em.asset_key
+                   WHERE em.canonical_event_key=? AND s.scope='GAME'
+                   ORDER BY s.verified_at DESC,s.updated_at DESC""",(event_key,)).fetchall()
+        out=[]
+        for row in rows:
+            item=_jloads(row['asset_json'],{}); url=_asset_url(item,row['canonical_url'])
+            out.append({"assetKey":row['asset_key'],"provider":row['provider'],"providerMediaId":row['provider_media_id'],
+                        "title":row['title'],"durationSeconds":float(row['duration_seconds'] or 0),"validationState":row['validation_state'],
+                        "runtimeState":row['runtime_state'],"runtimeSuccessAt":float(row['runtime_success_at'] or 0),
+                        "runtimeFailureAt":float(row['runtime_failure_at'] or 0),"runtimeFailureReason":row['runtime_failure_reason'] or '',
+                        "associationState":row['association_state'],"associationMethod":row['association_method'] or '',
+                        "associationConfidence":float(row['association_confidence'] or 0),"url":url,"youtubeId":_youtube_id(item,url),
+                        "tier":_tier(item),"item":item})
+        return out
+
+    def mark_repair_discovered(self, repair_id, event_key, assets):
+        """Newly discovered repair links are hidden from normal playback until certification passes."""
+        now=_now(); keys=[]
+        with self.lock, closing(self.connect(timeout=2)) as conn:
+            for asset in assets:
+                key=str(asset.get('assetKey') or '')
+                if not key: continue
+                keys.append(key)
+                conn.execute(
+                    "UPDATE history_event_media SET association_state='UNVERIFIED',association_method='MEDIA_REPAIR_DISCOVERED',association_evidence=?,updated_at=? WHERE canonical_event_key=? AND asset_key=?",
+                    (f"Repair job {int(repair_id)} discovered candidate; awaiting canonical playback certification",now,event_key,key),
+                )
+                conn.execute(
+                    """INSERT INTO history_media_repair_candidate(repair_id,canonical_event_key,asset_key,tier,provider,state,reason,discovered_at,details_json)
+                       VALUES(?,?,?,?,?,'DISCOVERED','',?,?)
+                       ON CONFLICT(repair_id,asset_key) DO UPDATE SET tier=excluded.tier,provider=excluded.provider,state='DISCOVERED',reason='',details_json=excluded.details_json""",
+                    (int(repair_id),event_key,key,str(asset.get('tier') or 'blue'),str(asset.get('provider') or ''),now,
+                     _jdumps({"title":asset.get('title') or '',"url":asset.get('url') or '',"source":"SBB_MULTI_PROVIDER_DISCOVERY"})),
+                )
+            conn.commit()
+        return keys
+
+    def ingest_repair_youtube_candidates(self, repair_id, event_key, candidates):
+        """Persist high-confidence direct YouTube repair discoveries as UNVERIFIED GAME media."""
+        now=_now(); keys=[]
+        with self.lock, closing(self.connect(timeout=2)) as conn:
+            for cand in list(candidates or []):
+                video_id=str(cand.get('youtubeId') or '')
+                if not re.fullmatch(r'[A-Za-z0-9_-]{6,20}',video_id): continue
+                key=f"yt:{video_id}"; keys.append(key)
+                tier=str(cand.get('tier') or 'blue')
+                url=f"https://www.youtube.com/watch?v={video_id}"
+                item={"assetKey":key,"provider":"YOUTUBE","providerMediaId":video_id,"youtubeId":video_id,
+                      "url":url,"externalUrl":url,"mediaUrl":url,"title":cand.get('title') or '',
+                      "durationSeconds":float(cand.get('durationSeconds') or 0),"recapTier":tier,
+                      "scope":"GAME","intent":"HIGHLIGHTS","repairDiscovery":True,
+                      "repairJobId":int(repair_id),"channelId":cand.get('channelId') or '',"channelName":cand.get('channelName') or ''}
+                conn.execute(
+                    """INSERT INTO history_source_media(asset_key,provider,provider_media_id,canonical_url,title,duration_seconds,published_at,channel_id,channel_name,
+                           scope,intent,catalog_state,validation_state,runtime_state,asset_json,first_seen_at,last_seen_at,updated_at)
+                       VALUES(?,?,?,?,?,?,?,?,?,'GAME','HIGHLIGHTS','UNASSIGNED','CANDIDATE','UNKNOWN',?,?,?,?)
+                       ON CONFLICT(asset_key) DO UPDATE SET provider=excluded.provider,provider_media_id=excluded.provider_media_id,
+                         canonical_url=excluded.canonical_url,title=excluded.title,duration_seconds=excluded.duration_seconds,
+                         published_at=excluded.published_at,channel_id=excluded.channel_id,channel_name=excluded.channel_name,
+                         asset_json=excluded.asset_json,last_seen_at=excluded.last_seen_at,updated_at=excluded.updated_at""",
+                    (key,'YOUTUBE',video_id,url,str(cand.get('title') or ''),float(cand.get('durationSeconds') or 0),str(cand.get('publishedAt') or ''),
+                     str(cand.get('channelId') or ''),str(cand.get('channelName') or ''),_jdumps(item),now,now,now),
+                )
+                conn.execute(
+                    """INSERT INTO history_event_media(canonical_event_key,asset_key,association_state,association_confidence,association_method,association_evidence,matcher_version,first_associated_at,updated_at)
+                       VALUES(?,?,'UNVERIFIED',?,'MEDIA_REPAIR_DISCOVERED',?,?,?,?)
+                       ON CONFLICT(canonical_event_key,asset_key) DO UPDATE SET association_state='UNVERIFIED',association_confidence=MAX(history_event_media.association_confidence,excluded.association_confidence),
+                         association_method='MEDIA_REPAIR_DISCOVERED',association_evidence=excluded.association_evidence,updated_at=excluded.updated_at""",
+                    (event_key,key,float(cand.get('confidence') or .9),
+                     f"Direct YouTube repair fallback matched both participants within event date window; repair job {int(repair_id)}",
+                     0,now,now),
+                )
+                conn.execute(
+                    """INSERT INTO history_media_repair_candidate(repair_id,canonical_event_key,asset_key,tier,provider,state,reason,discovered_at,details_json)
+                       VALUES(?,?,?,?,?,'DISCOVERED','DIRECT_YOUTUBE_FALLBACK',?,?)
+                       ON CONFLICT(repair_id,asset_key) DO UPDATE SET tier=excluded.tier,provider=excluded.provider,state='DISCOVERED',reason=excluded.reason,details_json=excluded.details_json""",
+                    (int(repair_id),event_key,key,tier,'YOUTUBE',now,_jdumps(cand)),
+                )
+            conn.commit()
+        return keys
+
+    def record_repair_candidate(self, repair_id, event_key, asset, result):
+        now=_now(); reason=str(result.get('reason') or ('PLAYING_TIME_ADVANCED' if result.get('ok') else 'UNKNOWN'))[:500]
+        state='PLAYED' if result.get('ok') else ('HARD_FAILED' if result.get('hard') or _hard_media_failure_reason(reason) else ('INFRA_ERROR' if result.get('infra') or _infra_failure_reason(reason) else 'INCONCLUSIVE'))
+        with self.lock, closing(self.connect(timeout=2)) as conn:
+            conn.execute(
+                """INSERT INTO history_media_repair_candidate(repair_id,canonical_event_key,asset_key,tier,provider,state,reason,discovered_at,certified_at,details_json)
+                   VALUES(?,?,?,?,?,?,?,?,?,?)
+                   ON CONFLICT(repair_id,asset_key) DO UPDATE SET state=excluded.state,reason=excluded.reason,certified_at=excluded.certified_at,details_json=excluded.details_json""",
+                (int(repair_id),event_key,str(asset.get('assetKey') or ''),str(asset.get('tier') or 'blue'),str(asset.get('provider') or ''),state,reason,now,now,
+                 _jdumps({"result":result,"title":asset.get('title') or '',"url":asset.get('url') or ''})),
+            )
+            if state=='HARD_FAILED':
+                conn.execute(
+                    "UPDATE history_event_media SET association_state='QUARANTINED',association_method='MEDIA_REPAIR_FAILED',association_evidence=?,updated_at=? WHERE canonical_event_key=? AND asset_key=?",
+                    (f"Repair certification definitive hard failure: {reason}",now,event_key,str(asset.get('assetKey') or '')),
+                )
+            conn.commit()
+        return state
+
+    def promote_repaired_candidate(self, repair_id, event_key, asset, source_run_id=0, reason=''):
+        """Promote a certified repair into the shared event-media database and canonical package."""
+        now=_now(); key=str(asset.get('assetKey') or ''); tier=str(asset.get('tier') or 'blue').lower()
+        if not key:
+            raise ValueError('repair promotion requires assetKey')
+        with self.lock, closing(self.connect(timeout=2)) as conn:
+            src=conn.execute("SELECT runtime_state,runtime_failure_reason FROM history_source_media WHERE asset_key=?",(key,)).fetchone()
+            if not src or str(src['runtime_state'] or '').upper()!='PLAYED':
+                raise RuntimeError('repair candidate cannot become canonical before PLAYED certification')
+            pkg=conn.execute("SELECT * FROM history_media_canonical_package WHERE canonical_event_key=?",(event_key,)).fetchone()
+            data=dict(pkg) if pkg else {}
+            # Do not preserve definitively dead canonical pointers.
+            def usable(existing_key):
+                if not existing_key: return ''
+                row=conn.execute("SELECT runtime_state,runtime_failure_reason FROM history_source_media WHERE asset_key=?",(existing_key,)).fetchone()
+                if row and str(row['runtime_state'] or '').upper()=='FAILED' and _hard_media_failure_reason(str(row['runtime_failure_reason'] or '')):
+                    return ''
+                return str(existing_key)
+            gold=usable(data.get('gold_asset_key') or '')
+            green=usable(data.get('green_asset_key') or '')
+            purple=usable(data.get('purple_asset_key') or '')
+            blue=[usable(x) for x in _jloads(data.get('blue_asset_keys_json') or '[]',[]) if usable(x)]
+            if tier=='gold': gold=key
+            elif tier=='green': green=key
+            elif tier=='extended': purple=key
+            else:
+                if key not in blue: blue.insert(0,key)
+                blue=blue[:BLUE_FALLBACK_TARGET]
+            preferred=bool(green or purple)
+            health='HEALTHY' if preferred else ('DEGRADED' if (blue or gold) else 'INCONCLUSIVE')
+            repair_state='' if health=='HEALTHY' else 'PREFERRED_MEDIA_REQUIRED'
+            repair_reason='' if health=='HEALTHY' else 'Repair restored playable fallback; preferred Green/Purple still required'
+            conn.execute(
+                "UPDATE history_event_media SET association_state='ASSIGNED',association_method='MEDIA_REPAIR_CERTIFIED',association_evidence=?,updated_at=? WHERE canonical_event_key=? AND asset_key=?",
+                (f"Repair job {int(repair_id)} certified PLAYING_TIME_ADVANCED and promoted to canonical game media",now,event_key,key),
+            )
+            conn.execute(
+                """INSERT INTO history_media_canonical_package(canonical_event_key,audit_run_id,health,gold_asset_key,green_asset_key,purple_asset_key,blue_asset_keys_json,preferred_complete,preferred_playable,rehydration_state,rehydration_reason,certified_at,worker_generation,details_json)
+                   VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                   ON CONFLICT(canonical_event_key) DO UPDATE SET audit_run_id=excluded.audit_run_id,health=excluded.health,
+                     gold_asset_key=excluded.gold_asset_key,green_asset_key=excluded.green_asset_key,purple_asset_key=excluded.purple_asset_key,
+                     blue_asset_keys_json=excluded.blue_asset_keys_json,preferred_complete=excluded.preferred_complete,preferred_playable=excluded.preferred_playable,
+                     rehydration_state=excluded.rehydration_state,rehydration_reason=excluded.rehydration_reason,certified_at=excluded.certified_at,
+                     worker_generation=excluded.worker_generation,details_json=excluded.details_json""",
+                (event_key,int(source_run_id or data.get('audit_run_id') or 0),health,gold,green,purple,_jdumps(blue),1 if green and purple else 0,1 if preferred else 0,
+                 repair_state,repair_reason,now,AUDIT_GENERATION,
+                 _jdumps({"repairJobId":int(repair_id),"repairedAssetKey":key,"repairedTier":tier,"repairReason":str(reason or ''),
+                          "canonicalWriteBack":True,"selections":{"gold":gold,"green":green,"purple":purple,"blue":blue}})),
+            )
+            latest=conn.execute("SELECT id FROM history_media_audit_run ORDER BY id DESC LIMIT 1").fetchone()
+            if latest:
+                conn.execute(
+                    "UPDATE history_media_audit_queue SET health=?,note=?,phase='COMPLETE' WHERE run_id=? AND canonical_event_key=? AND state IN ('DONE','DEFERRED','FAILED','SKIPPED')",
+                    (health,f"Media Repair job {int(repair_id)} promoted certified {tier}: {key}",int(latest['id']),event_key),
+                )
+            retry_at=0 if health=='HEALTHY' else now + REPAIR_HISTORICAL_RETRY_SECONDS
+            conn.execute(
+                """UPDATE history_media_repair_queue SET health=?,target=?,priority=?,state=?,reason=?,repaired_asset_key=?,repaired_tier=?,
+                       next_retry_at=?,updated_at=?,completed_at=?,last_error='' WHERE id=?""",
+                (health,self._repair_target(health),self._repair_priority(health),
+                 'REPAIRED' if health=='HEALTHY' else 'WAITING_RETRY',
+                 f"Certified repair promoted to shared canonical database: {tier} {key}",key,tier,retry_at,now,now if health=='HEALTHY' else 0,int(repair_id)),
+            )
+            conn.commit()
+        return {"health":health,"assetKey":key,"tier":tier,"green":green,"purple":purple,"blue":blue,"canonical":True}
 
     def _eligible_events(self, start_date: str):
         start_date = str(start_date or _today())[:10]
@@ -744,6 +1165,7 @@ class AuditStore:
             conn.execute("UPDATE history_media_audit_queue SET state=?,phase='COMPLETE',health=?,note=?,completed_at=? WHERE run_id=? AND ordinal=?", (state, health, str(note or "")[:1000], now, run_id, ordinal))
             processed = int(conn.execute("SELECT COUNT(*) FROM history_media_audit_queue WHERE run_id=? AND state IN ('DONE','FAILED','SKIPPED','DEFERRED')", (run_id,)).fetchone()[0] or 0)
             conn.execute("UPDATE history_media_audit_run SET processed_games=?,updated_at=?,last_error=? WHERE id=?", (processed, now, str(note or "")[:1000] if failed else "", run_id))
+            self._sync_repair_job_conn(conn, run_id, ordinal, health, note, now)
             self._sync_run_frontier_conn(conn, run_id, now)
             conn.commit()
 
@@ -763,6 +1185,7 @@ class AuditStore:
                 "UPDATE history_media_audit_run SET processed_games=?,updated_at=?,last_error='' WHERE id=?",
                 (processed, now, run_id),
             )
+            self._sync_repair_job_conn(conn, run_id, ordinal, "INCONCLUSIVE", note, now)
             self._sync_run_frontier_conn(conn, run_id, now)
             conn.commit()
 
@@ -2115,45 +2538,11 @@ class CanonicalAuditWorker(threading.Thread):
                     tier="PURPLE" if tier == "extended" else "GREEN", tested=tested
                 )
 
-        # R10 policy: one healthy Green OR Purple is enough preferred recap coverage.
-        # Only rehydrate when no preferred recap candidate survives canonical playback.
+        # R16 certification-only policy: the canonical audit never performs discovery.
+        # If no preferred recap survives, it verifies bounded existing Blue fallback
+        # and immediately publishes the observed health. finish_queue_item() then
+        # synchronizes DEGRADED/UNPLAYABLE/NO_MEDIA/INCONCLUSIVE into Repair Engine.
         discovery_reason = ""
-        if not selected["green"] and not selected["extended"]:
-            for pass_number in range(1, DISCOVERY_PASSES + 1):
-                phase = "TARGETED_REHYDRATION"
-                self._db_op("set TARGETED_REHYDRATION phase")
-                self._write(f"set {phase} phase", "queue_phase", run_id, item["ordinal"], phase, run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key)
-                self._db_recovered()
-                self._diag(phase=phase)
-                discovery = self._discover_preferred(run, item, pass_number)
-                discovery_reason = discovery.get("reason") or ""
-                if discovery_reason in {"RUN_STOPPED", "RUN_REPLACED", "WORKER_STOPPED"}:
-                    return {"health": "SKIPPED", "note": discovery_reason}
-                if not discovery.get("ok") and discovery_reason in {"BAD_HISTORY_EVENT", "HISTORY_EVENT_NOT_FOUND", "DISCOVERY_ENDPOINT_UNSUPPORTED_SPECIAL_EVENT"}:
-                    break
-                if DISCOVERY_SETTLE_SECONDS:
-                    self._diag(phase="DISCOVERY_SETTLE", waitingReason=f"Waiting {DISCOVERY_SETTLE_SECONDS:g}s for production catalog commit")
-                    time.sleep(DISCOVERY_SETTLE_SECONDS)
-
-                assets, production = self._load_assets_with_production_parity(item)
-                new_buckets = {tier: [a for a in assets if a["tier"] == tier] for tier in ("green", "extended", "blue", "gold")}
-                buckets = new_buckets
-                for tier in ("green", "extended"):
-                    if selected[tier]:
-                        continue
-                    fresh = [a for a in new_buckets[tier] if a.get("assetKey") not in tested]
-                    if fresh:
-                        phase = "RETEST_PURPLE" if tier == "extended" else "RETEST_GREEN"
-                        self._db_op(f"set {phase} phase")
-                        self._write(f"set {phase} phase", "queue_phase", run_id, item["ordinal"], phase, run_id=run_id, ordinal=int(item["ordinal"]), event_key=event_key)
-                        self._db_recovered()
-                        self._diag(phase=phase)
-                        selected[tier] = self._select_one(
-                            run_id, event_key, fresh,
-                            tier="PURPLE" if tier == "extended" else "GREEN", tested=tested
-                        )
-                if selected["green"] or selected["extended"]:
-                    break
 
         preferred = bool(selected["green"] or selected["extended"])
         if not preferred:
@@ -2215,7 +2604,7 @@ class CanonicalAuditWorker(threading.Thread):
         else:
             health = "NO_MEDIA"
             rehydration_state = "PREFERRED_MEDIA_REQUIRED"
-            rehydration_reason = "No assigned GAME media exists after successful discovery checks"
+            rehydration_reason = "No assigned GAME media exists in the current canonical catalog"
         if not preferred and discovery_reason:
             rehydration_reason = f"{rehydration_reason}; discovery={discovery_reason}".strip("; ")
 
@@ -2265,6 +2654,333 @@ class CanonicalAuditWorker(threading.Thread):
         return {"health": health, "note": note, "package": package}
 
 
+class MediaRepairEngine(threading.Thread):
+    """Persistent exception-set repair worker, separate from the fast canonical audit."""
+    daemon = True
+
+    def __init__(self, store, db_writer):
+        super().__init__(name="canonical-media-repair-engine")
+        self.store=store
+        self.db_writer=db_writer
+        self.stop_event=threading.Event()
+        self.probe=BrowserProbe()
+        self.lock=threading.RLock()
+        self.current={}
+        self.last_error=''
+        self.trace=deque(maxlen=100)
+        self.last_seed_at=0.0
+        self.stats={"jobsAttempted":0,"newCandidates":0,"candidatesCertified":0,"gamesRepaired":0,"discoveryExhausted":0,"youtubeFallbackSearches":0}
+        self.youtube=YouTubeGateway(user_agent=f"SportsBigBoard-MediaRepair/{APP_VERSION}-{AUDIT_GENERATION}",state_file=STATE_DIR/"cache"/"media-repair-youtube-state.json")
+
+    def stop(self):
+        self.stop_event.set(); self.probe.close()
+
+    def _trace(self, level, message, **details):
+        row={"at":_now(),"level":str(level or 'INFO').upper(),"message":str(message or '')[:1000]}
+        if details: row['details']=details
+        with self.lock: self.trace.append(row)
+
+    def snapshot(self):
+        with self.lock:
+            cur=dict(self.current); stats=dict(self.stats); trace=list(self.trace)[-50:]
+        return {"alive":self.is_alive(),"enabled":REPAIR_ENABLED,"current":cur,"lastError":self.last_error,"stats":stats,"trace":trace}
+
+    def _set(self, **patch):
+        with self.lock:
+            self.current.update(patch)
+            self.current['updatedAt']=_now()
+
+    def _write(self, operation, method_name, *args, event_key='', **kwargs):
+        self._set(dbOperation=operation)
+        return self.db_writer.submit(operation, method_name, *args, run_id=0, ordinal=0, event_key=event_key, lane=99, **kwargs)
+
+    @staticmethod
+    def _candidate_score(asset, target='ANY'):
+        tier=str(asset.get('tier') or 'blue')
+        provider=str(asset.get('provider') or '').upper()
+        score={"green":100,"extended":95,"gold":70,"blue":40}.get(tier,20)
+        if target=='PREFERRED' and tier not in {'green','extended'}: score-=100
+        if any(x in provider for x in ('MLB','NFL','NBA','NHL','MLS','US OPEN','USOPEN','ATP','WTA','TEAM','CLUB')): score+=20
+        if 'YOUTUBE' in provider: score+=15
+        if 'ESPN' in provider: score+=12
+        score+=min(15,int(float(asset.get('associationConfidence') or 0)*15))
+        score+=min(10,int(float(asset.get('durationSeconds') or 0)/90))
+        return score
+
+    def _probe(self, job, asset, phase='CERTIFYING'):
+        repair_id=int(job['id']); event_key=str(job['canonical_event_key']); source_run=int(job.get('source_audit_run_id') or 0)
+        last=None
+        for attempt in range(1,REPAIR_CERT_ATTEMPTS+1):
+            if self.stop_event.is_set(): return {"ok":False,"infra":True,"reason":"REPAIR_STOPPED"}
+            self._set(phase=phase,assetKey=asset.get('assetKey') or '',assetTitle=asset.get('title') or '',provider=asset.get('provider') or '',tier=str(asset.get('tier') or '').upper(),certAttempt=attempt,certMax=REPAIR_CERT_ATTEMPTS)
+            if attempt>1:
+                self.probe.close(); time.sleep(random.uniform(1.0,2.5))
+            try:
+                result=self.probe.probe(asset)
+            except Exception as exc:
+                result=_infra_result_from_exception(exc)
+            last=result
+            try:
+                # Keep source runtime evidence unified with normal audit certification.
+                self._write('repair persist playback evidence','record_probe',source_run,event_key,asset,attempt,result,getattr(self.probe,'browser',''),event_key=event_key)
+                self._write('repair persist candidate certification','record_repair_candidate',repair_id,event_key,asset,result,event_key=event_key)
+            except sqlite3.OperationalError as exc:
+                if _is_db_locked(exc):
+                    self._set(phase='WAITING_DATABASE_LOCK',lastResult=f'{type(exc).__name__}: {exc}')
+                    time.sleep(DB_LOCK_RETRY_SECONDS)
+                    continue
+                raise
+            reason=str(result.get('reason') or '')
+            self._set(lastResult=reason or ('PLAYING_TIME_ADVANCED' if result.get('ok') else 'UNKNOWN'))
+            if result.get('ok'):
+                self.stats['candidatesCertified']+=1
+                self._trace('INFO','Repair candidate certified',event=event_key,asset=asset.get('assetKey'),tier=asset.get('tier'),provider=asset.get('provider'))
+                return result
+            if result.get('hard') or _hard_media_failure_reason(reason):
+                self._trace('WARN','Repair candidate hard-failed',event=event_key,asset=asset.get('assetKey'),reason=reason)
+                return result
+            # Soft/infra retries use a fresh browser session.
+        return last or {"ok":False,"infra":True,"reason":"EMPTY_REPAIR_PROBE_RESULT"}
+
+    def _promote(self, job, asset, reason=''):
+        result=self._write('promote certified repair into canonical database','promote_repaired_candidate',int(job['id']),str(job['canonical_event_key']),asset,int(job.get('source_audit_run_id') or 0),reason,event_key=str(job['canonical_event_key']))
+        self.stats['gamesRepaired']+=1
+        self._set(phase='REPAIRED',lastResult=f"{result['health']} • {result['tier']} • {result['assetKey']}")
+        self._trace('INFO','Repair promoted into shared canonical database',event=job['canonical_event_key'],**result)
+        try: STATUS_CACHE.request_refresh()
+        except Exception: pass
+        return result
+
+    def _recertify_existing(self, job):
+        assets=self.store.repair_event_assets(job['canonical_event_key'])
+        candidates=[]
+        for a in assets:
+            state=str(a.get('associationState') or '').upper()
+            failure=str(a.get('runtimeFailureReason') or '')
+            if state=='QUARANTINED' and _hard_media_failure_reason(failure): continue
+            if str(a.get('runtimeState') or '').upper()=='FAILED' and _hard_media_failure_reason(failure): continue
+            candidates.append(a)
+        candidates.sort(key=lambda a:(-self._candidate_score(a,'ANY'),str(a.get('assetKey'))))
+        self._write('repair recertification phase','update_repair_job',int(job['id']),state='CERTIFYING',recertify_increment=1,details={"mode":"RECERTIFY_EXISTING","candidateCount":len(candidates)},event_key=str(job['canonical_event_key']))
+        self._set(phase='RECERTIFY_EXISTING',candidateCount=len(candidates))
+        for asset in candidates[:REPAIR_CANDIDATE_LIMIT]:
+            result=self._probe(job,asset,phase='RECERTIFY_EXISTING')
+            if result.get('ok'):
+                return self._promote(job,asset,'Independent Repair Engine recertification of existing media')
+        refreshed=self.store.repair_queue(limit=1,state='SEARCHING')
+        # Inconclusive is not immediately destructive. After a bounded independent
+        # recertification cycle, graduate it to discovery on a delayed retry.
+        next_at=_now()+REPAIR_RECENT_RETRY_SECONDS
+        self._write('repair schedule discovery after recertification','update_repair_job',int(job['id']),state='WAITING_RETRY',target='ANY',reason='Independent recertification found no certifiable existing media; queued for discovery',next_retry_at=next_at,event_key=str(job['canonical_event_key']))
+        self._set(phase='WAITING_RETRY',lastResult='RECERTIFICATION_EXHAUSTED')
+        return None
+
+    def _discover_once(self, job, pass_number):
+        context=self.store.repair_event_context(job['canonical_event_key'])
+        if not context: return {"ok":False,"reason":"EVENT_NOT_FOUND"}
+        body=_jdumps({"date":context['event_date'],"league":context['league'],"eventId":context['event_id'],"force":True,
+                      "repairMode":True,"searchDepth":"exhaustive","targetTier":job.get('target') or 'ANY'}).encode('utf-8')
+        req=Request(MAIN_API+'/api/history/event/discover',data=body,method='POST',headers={"Content-Type":"application/json","User-Agent":f"SportsBigBoard-MediaRepair/{APP_VERSION}-{AUDIT_GENERATION}"})
+        self._set(phase='DISCOVERY',discoveryPass=pass_number,discoveryMax=REPAIR_DISCOVERY_PASSES,lastResult='REQUESTING')
+        self._trace('INFO',f"Repair discovery pass {pass_number}/{REPAIR_DISCOVERY_PASSES}",event=job['canonical_event_key'],target=job.get('target'))
+        try:
+            with DISCOVERY_SEMAPHORE:
+                with urlopen(req,timeout=DISCOVERY_HTTP_TIMEOUT_SECONDS) as resp:
+                    payload=json.loads(resp.read().decode('utf-8'))
+            return {"ok":bool(payload.get('ok',True)),"payload":payload,"reason":str(payload.get('error') or '')}
+        except HTTPError as exc:
+            try: payload=json.loads(exc.read().decode('utf-8'))
+            except Exception: payload={}
+            return {"ok":False,"reason":str(payload.get('error') or f'HTTP_{exc.code}')}
+        except Exception as exc:
+            return {"ok":False,"reason":f"DISCOVERY_TRANSPORT_{type(exc).__name__.upper()}","infra":True,"message":str(exc)}
+
+    def _youtube_queries(self, context):
+        away=_team_name(context.get('event') or {},'away'); home=_team_name(context.get('event') or {},'home'); date=str(context.get('event_date') or '')
+        if not away or not home or 'TBD' in (away+' '+home).upper(): return []
+        year=date[:4]
+        return [
+            f"{away} vs {home} {date} highlights",
+            f"{away} {home} full game highlights {year}",
+            f"{away} vs {home} recap {year}",
+        ][:REPAIR_YOUTUBE_QUERY_LIMIT]
+
+    def _youtube_fallback_candidates(self, job):
+        if not REPAIR_YOUTUBE_FALLBACK: return []
+        key=get_secret('YOUTUBE_API_KEY',APP_ROOT)
+        if not key:
+            self._trace('WARN','Direct YouTube repair fallback unavailable: YOUTUBE_API_KEY missing',event=job['canonical_event_key'])
+            return []
+        context=self.store.repair_event_context(job['canonical_event_key'])
+        if not context: return []
+        queries=self._youtube_queries(context)
+        if not queries: return []
+        event_date=datetime.fromisoformat(str(context['event_date'])[:10]).replace(tzinfo=timezone.utc)
+        published_after=(event_date-timedelta(days=3)).isoformat().replace('+00:00','Z')
+        published_before=(event_date+timedelta(days=10)).isoformat().replace('+00:00','Z')
+        away=_search_norm(_team_name(context.get('event') or {},'away')); home=_search_norm(_team_name(context.get('event') or {},'home'))
+        away_token=(away.split()[-1] if away else ''); home_token=(home.split()[-1] if home else '')
+        found={}
+        for query in queries:
+            if self.stop_event.is_set(): break
+            params=urlencode({'part':'snippet','type':'video','maxResults':REPAIR_YOUTUBE_RESULTS,'order':'relevance','q':query,
+                              'publishedAfter':published_after,'publishedBefore':published_before,'key':key})
+            try:
+                self.stats['youtubeFallbackSearches']+=1
+                payload=self.youtube.fetch_json('https://www.googleapis.com/youtube/v3/search?'+params,timeout=12)
+            except YouTubeRateLimited as exc:
+                self._trace('WARN','YouTube repair fallback rate/quota limited',event=job['canonical_event_key'],operation=exc.operation,retryAt=exc.retry_at)
+                break
+            except Exception as exc:
+                self._trace('WARN','YouTube repair fallback search failed',event=job['canonical_event_key'],error=f'{type(exc).__name__}: {exc}')
+                continue
+            for row in payload.get('items') or []:
+                vid=str(((row.get('id') or {}).get('videoId')) or '')
+                sn=row.get('snippet') or {}; text=_search_norm((sn.get('title') or '')+' '+(sn.get('description') or ''))
+                if not vid or not away_token or not home_token or away_token not in text or home_token not in text: continue
+                found[vid]={'youtubeId':vid,'title':sn.get('title') or '', 'description':sn.get('description') or '',
+                            'publishedAt':sn.get('publishedAt') or '', 'channelId':sn.get('channelId') or '', 'channelName':sn.get('channelTitle') or '',
+                            'query':query}
+        if not found: return []
+        ids=list(found)[:50]
+        try:
+            params=urlencode({'part':'snippet,contentDetails,status','id':','.join(ids),'key':key})
+            meta=self.youtube.fetch_json('https://www.googleapis.com/youtube/v3/videos?'+params,timeout=12)
+        except Exception as exc:
+            self._trace('WARN','YouTube repair fallback metadata failed',event=job['canonical_event_key'],error=f'{type(exc).__name__}: {exc}')
+            return []
+        out=[]
+        for row in meta.get('items') or []:
+            vid=str(row.get('id') or ''); base=found.get(vid)
+            if not base: continue
+            status=row.get('status') or {}
+            if status.get('privacyStatus') not in (None,'public') or status.get('embeddable') is False: continue
+            sn=row.get('snippet') or {}; duration=_iso8601_duration_seconds((row.get('contentDetails') or {}).get('duration'))
+            title=str(sn.get('title') or base.get('title') or ''); low=_search_norm(title)
+            if 'full game highlights' in low or 'extended highlights' in low or duration>=300: tier='extended'
+            elif ('highlight' in low or 'recap' in low) and duration>=60: tier='green'
+            else: tier='blue'
+            confidence=.94 if ('highlight' in low or 'recap' in low) else .88
+            out.append({**base,'title':title,'publishedAt':sn.get('publishedAt') or base.get('publishedAt') or '',
+                        'channelId':sn.get('channelId') or base.get('channelId') or '', 'channelName':sn.get('channelTitle') or base.get('channelName') or '',
+                        'durationSeconds':duration,'tier':tier,'provider':'YOUTUBE','confidence':confidence})
+        out.sort(key=lambda a:(-self._candidate_score(a,str(job.get('target') or 'ANY').upper()),str(a.get('youtubeId'))))
+        self._trace('INFO','Direct YouTube repair fallback produced candidates',event=job['canonical_event_key'],count=len(out),queries=len(queries))
+        return out[:REPAIR_CANDIDATE_LIMIT]
+
+    def _repair_by_discovery(self, job):
+        event_key=str(job['canonical_event_key']); target=str(job.get('target') or 'ANY').upper()
+        before=self.store.repair_event_assets(event_key); known={a['assetKey'] for a in before}
+        self._write('repair search phase','update_repair_job',int(job['id']),state='SEARCHING',before_asset_count=len(before),details={"source":"SBB_MULTI_PROVIDER_DISCOVERY","knownAssets":len(before),"target":target},event_key=event_key)
+        fallback_promoted=None; total_new=[]; providers=set()
+        for pass_number in range(1,REPAIR_DISCOVERY_PASSES+1):
+            if self.stop_event.is_set(): return None
+            result=self._discover_once(job,pass_number)
+            self._write('repair record discovery pass','update_repair_job',int(job['id']),discovery_increment=1,last_error='' if result.get('ok') else result.get('reason',''),event_key=event_key)
+            if REPAIR_DISCOVERY_SETTLE_SECONDS: time.sleep(REPAIR_DISCOVERY_SETTLE_SECONDS)
+            after=self.store.repair_event_assets(event_key)
+            new=[a for a in after if a.get('assetKey') not in known]
+            # Previous repair-discovered UNVERIFIED candidates remain eligible on later attempts.
+            prior_unverified=[a for a in after if str(a.get('associationMethod') or '')=='MEDIA_REPAIR_DISCOVERED' and a.get('assetKey') not in {x.get('assetKey') for x in new}]
+            if new:
+                self._write('isolate newly discovered repair candidates','mark_repair_discovered',int(job['id']),event_key,new,event_key=event_key)
+                total_new.extend([a['assetKey'] for a in new]); self.stats['newCandidates']+=len(new)
+                for a in new: providers.add(str(a.get('provider') or ''))
+            candidates=new+prior_unverified
+            candidates.sort(key=lambda a:(-self._candidate_score(a,target),str(a.get('assetKey'))))
+            self._write('repair update discovered candidates','update_repair_job',int(job['id']),discovered_asset_count=len(total_new),new_asset_keys=total_new,last_provider=', '.join(sorted(x for x in providers if x))[:500],event_key=event_key)
+            for asset in candidates[:REPAIR_CANDIDATE_LIMIT]:
+                if target=='PREFERRED' and str(asset.get('tier') or '') not in {'green','extended'}:
+                    continue
+                probe=self._probe(job,asset,phase='CERTIFY_REPAIR_CANDIDATE')
+                if not probe.get('ok'): continue
+                promoted=self._promote(job,asset,f"Repair discovery pass {pass_number}; SBB multi-provider discovery")
+                if promoted.get('health')=='HEALTHY': return promoted
+                fallback_promoted=promoted
+                # A Blue-only rescue is immediately canonical but keep looking in this
+                # attempt for a preferred Green/Purple upgrade.
+                target='PREFERRED'
+            known.update(a.get('assetKey') for a in after if a.get('assetKey'))
+            if result.get('reason') in {'BAD_HISTORY_EVENT','HISTORY_EVENT_NOT_FOUND','DISCOVERY_ENDPOINT_UNSUPPORTED_SPECIAL_EVENT'}:
+                break
+        # If the registered multi-provider discovery authority did not produce a
+        # certifiable replacement, use a quota-bounded direct YouTube search. This
+        # is especially valuable for Special Events/NCAAF identities that may not
+        # be implemented by the legacy history discovery endpoint.
+        yt_candidates=self._youtube_fallback_candidates(job)
+        if yt_candidates:
+            self._write('ingest direct YouTube repair candidates','ingest_repair_youtube_candidates',int(job['id']),event_key,yt_candidates,event_key=event_key)
+            self.stats['newCandidates']+=len(yt_candidates)
+            total_new.extend([f"yt:{x.get('youtubeId')}" for x in yt_candidates if x.get('youtubeId')])
+            for asset in self.store.repair_event_assets(event_key):
+                if asset.get('assetKey') not in set(total_new): continue
+                if target=='PREFERRED' and str(asset.get('tier') or '') not in {'green','extended'}: continue
+                probe=self._probe(job,asset,phase='CERTIFY_YOUTUBE_REPAIR')
+                if not probe.get('ok'): continue
+                promoted=self._promote(job,asset,'Direct YouTube repair fallback; exact participants/date window')
+                if promoted.get('health')=='HEALTHY': return promoted
+                fallback_promoted=promoted
+                target='PREFERRED'
+        if fallback_promoted:
+            retry=self._retry_at(job)
+            self._write('repair schedule preferred upgrade','update_repair_job',int(job['id']),state='WAITING_RETRY',health='DEGRADED',target='PREFERRED',priority=self.store._repair_priority('DEGRADED'),reason='Playable fallback repaired; preferred recap search remains queued',next_retry_at=retry,event_key=event_key)
+            return fallback_promoted
+        self.stats['discoveryExhausted']+=1
+        retry=self._retry_at(job)
+        self._write('repair schedule retry after discovery exhausted','update_repair_job',int(job['id']),state='WAITING_RETRY',reason='Repair discovery exhausted without a newly certified candidate',next_retry_at=retry,last_error='DISCOVERY_EXHAUSTED',event_key=event_key)
+        self._set(phase='WAITING_RETRY',lastResult='DISCOVERY_EXHAUSTED',nextRetryAt=retry)
+        return None
+
+    @staticmethod
+    def _retry_at(job):
+        try:
+            age=(datetime.now(AUDIT_TZ).date()-datetime.fromisoformat(str(job.get('event_date') or '')[:10]).date()).days
+        except Exception: age=999
+        return _now()+(REPAIR_RECENT_RETRY_SECONDS if age<=2 else REPAIR_HISTORICAL_RETRY_SECONDS)
+
+    def run(self):
+        if not REPAIR_ENABLED:
+            self._set(state='DISABLED',phase='DISABLED'); return
+        while not self.stop_event.is_set():
+            try:
+                if not self.store.repair_schema_ready():
+                    self._set(state='STARTING',phase='ENSURE_REPAIR_SCHEMA')
+                    self.store.ensure_repair_schema()
+                if _now()-self.last_seed_at>=REPAIR_SEED_SECONDS:
+                    seeded=self._write('synchronize repair queue from audit','seed_repair_queue'); self.last_seed_at=_now()
+                    self._trace('INFO','Repair queue synchronized with latest audit',**seeded)
+                    try: STATUS_CACHE.request_refresh()
+                    except Exception: pass
+                job=self._write('claim next repair job','claim_repair_job')
+                if not job:
+                    self._set(state='IDLE',phase='IDLE',jobId=0,eventKey='',game='',health='',target='',lastResult='')
+                    time.sleep(2.0); continue
+                self.stats['jobsAttempted']+=1
+                self.current={"state":"RUNNING","phase":"STARTING","jobId":int(job['id']),"eventKey":job['canonical_event_key'],"game":job['game'],"health":job['health'],"target":job['target'],"attempt":int(job['attempt_count'] or 0),"updatedAt":_now()}
+                self._trace('INFO',f"Repair job #{job['id']} started: {job['game']}",health=job['health'],target=job['target'])
+                if str(job.get('target') or '').upper()=='RECERTIFY':
+                    self._recertify_existing(job)
+                else:
+                    self._repair_by_discovery(job)
+                try: STATUS_CACHE.request_refresh()
+                except Exception: pass
+            except sqlite3.OperationalError as exc:
+                if _is_db_locked(exc):
+                    self.last_error=f"{type(exc).__name__}: {exc}"; self._set(state='WAITING_DATABASE_LOCK',phase='WAITING_DATABASE_LOCK',lastResult=self.last_error)
+                    time.sleep(DB_LOCK_RETRY_SECONDS); continue
+                self.last_error=f"{type(exc).__name__}: {exc}"; traceback.print_exc(); time.sleep(3)
+            except Exception as exc:
+                self.last_error=f"{type(exc).__name__}: {exc}"; self._set(state='ERROR',phase='ERROR',lastResult=self.last_error)
+                self._trace('ERROR','Repair engine exception',error=self.last_error); traceback.print_exc()
+                # Do not strand an actively claimed job forever.
+                try:
+                    job_id=int(self.current.get('jobId') or 0)
+                    if job_id:
+                        self._write('repair recover engine exception','update_repair_job',job_id,state='WAITING_RETRY',last_error=self.last_error,next_retry_at=_now()+300,event_key=str(self.current.get('eventKey') or ''))
+                except Exception: pass
+                time.sleep(3)
+
+
 class AuditStatusCache(threading.Thread):
     """Small background DB snapshot so /status itself performs zero SQLite reads."""
     daemon = True
@@ -2275,7 +2991,7 @@ class AuditStatusCache(threading.Thread):
         self.lock = threading.RLock()
         self.stop_event = threading.Event()
         self.wake_event = threading.Event()
-        self.data = {"run": None, "summary": {}, "newestEligibleDate": "", "storageReadError": "", "updatedAt": 0.0, "lastAttemptAt": 0.0}
+        self.data = {"run": None, "summary": {}, "newestEligibleDate": "", "repairSummary": {}, "storageReadError": "", "updatedAt": 0.0, "lastAttemptAt": 0.0}
 
     def request_refresh(self):
         self.wake_event.set()
@@ -2292,6 +3008,7 @@ class AuditStatusCache(threading.Thread):
                 "run": self.store.run_snapshot(),
                 "summary": self.store.summary(),
                 "newestEligibleDate": self.store.newest_eligible_date(),
+                "repairSummary": self.store.repair_summary(),
                 "storageReadError": "",
                 "updatedAt": _now(),
                 "lastAttemptAt": _now(),
@@ -2334,6 +3051,7 @@ WORKER_CONTROL_LOCK = threading.RLock()
 PROBES = []
 WORKERS = []
 STARTUP_RECOVERY_THREAD = None
+REPAIR_ENGINE = None
 
 def _spawn_workers(reason="service start"):
     global PROBES, WORKERS
@@ -2462,6 +3180,8 @@ def _start_startup_recovery():
 
 _spawn_workers("service start")
 _start_startup_recovery()
+REPAIR_ENGINE = MediaRepairEngine(STORE, DB_WRITER)
+REPAIR_ENGINE.start()
 
 
 def _json(handler, payload, status=200):
@@ -2524,6 +3244,7 @@ class Handler(BaseHTTPRequestHandler):
                     "workerCount": AUDIT_WORKER_COUNT, "workers": worker_rows, "worker": primary_worker,
                     "dbWriter": DB_WRITER.snapshot(),
                     "startupRecovery": dict(STARTUP_RECOVERY),
+                    "repair": {**(cached.get("repairSummary") or {}), "worker": REPAIR_ENGINE.snapshot() if REPAIR_ENGINE else {}},
                     "run": cached.get("run"), "summary": cached.get("summary") or {},
                     "newestEligibleDate": cached.get("newestEligibleDate", "")
                 })
@@ -2532,6 +3253,8 @@ class Handler(BaseHTTPRequestHandler):
             if parsed.path == "/event":
                 event_key = str((qs.get("event") or [""])[-1])
                 return _json(self, {"ok": True, **STORE.event_detail(event_key)})
+            if parsed.path == "/repairs":
+                return _json(self, {"ok": True, **STORE.repair_queue(limit=(qs.get("limit") or [100])[-1], offset=(qs.get("offset") or [0])[-1], state=(qs.get("state") or [""])[-1])})
             if parsed.path == "/rehydration.json":
                 return _json(self, STORE.rehydration_manifest())
             if parsed.path == "/failures.csv":
@@ -2596,10 +3319,15 @@ def main():
     print(f"Probe origin: {PROBE_URL}", flush=True)
     stop = threading.Event()
     def shutdown(_sig, _frame):
-        stop.set(); _retire_workers("service shutdown"); DB_WRITER.stop(); STATUS_CACHE.stop(); threading.Thread(target=server.shutdown, daemon=True).start()
+        stop.set(); _retire_workers("service shutdown");
+        if REPAIR_ENGINE: REPAIR_ENGINE.stop()
+        DB_WRITER.stop(); STATUS_CACHE.stop(); threading.Thread(target=server.shutdown, daemon=True).start()
     signal.signal(signal.SIGTERM, shutdown); signal.signal(signal.SIGINT, shutdown)
     try: server.serve_forever(poll_interval=0.5)
-    finally: _retire_workers("service close"); DB_WRITER.stop(); STATUS_CACHE.stop(); server.server_close()
+    finally:
+        _retire_workers("service close")
+        if REPAIR_ENGINE: REPAIR_ENGINE.stop()
+        DB_WRITER.stop(); STATUS_CACHE.stop(); server.server_close()
 
 
 if __name__ == "__main__":

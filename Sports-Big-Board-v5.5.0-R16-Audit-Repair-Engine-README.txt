@@ -1,0 +1,170 @@
+Sports Big Board v5.5.0 R16 — Certification-Only Audit + Persistent Media Repair Engine
+
+PURPOSE
+Split media verification from media discovery/rehydration.
+
+The canonical audit now answers one question:
+    Does the media Sports Big Board already has actually play?
+
+It never performs targeted discovery. Nonhealthy audit outcomes automatically
+synchronize into a persistent Media Repair Engine that runs independently in the
+same backend service.
+
+ARCHITECTURE
+
+CANONICAL AUDIT — 3 browser lanes
+    Existing Green/Purple/Gold/Blue only
+        |
+        + HEALTHY       -> repair job closed
+        + DEGRADED      -> Repair target=PREFERRED
+        + UNPLAYABLE    -> Repair target=ANY
+        + NO_MEDIA      -> Repair target=ANY
+        + INCONCLUSIVE  -> Repair target=RECERTIFY
+
+MEDIA REPAIR ENGINE — 1 logical repair worker
+    |
+    + independent recertification for INCONCLUSIVE
+    + Sports Big Board multi-provider forced discovery
+    + quota-bounded direct YouTube fallback when normal discovery produces nothing
+    + newly found candidates isolated as UNVERIFIED
+    + controlled Chrome certification
+    + successful candidate promoted into shared canonical event-media database
+
+CANONICAL WRITE-BACK
+A repair is not complete when a URL is discovered.
+
+New candidate:
+    MEDIA_REPAIR_DISCOVERED
+    association_state=UNVERIFIED
+
+After PLAYING_TIME_ADVANCED:
+    association_state=ASSIGNED
+    association_method=MEDIA_REPAIR_CERTIFIED
+
+Promotion also rewrites:
+    history_media_canonical_package
+    latest history_media_audit_queue health
+    repair queue state
+
+Therefore the repaired media becomes the normal Sports Big Board game media for
+every browser/computer and for future Play All queues. There is no repair-only
+frontend path.
+
+REPAIR RESULTS
+Green/Purple certified:
+    game becomes HEALTHY
+    repair job becomes REPAIRED
+
+Blue-only recovery of NO_MEDIA/UNPLAYABLE:
+    game becomes DEGRADED immediately
+    Blue becomes canonical playable fallback
+    same event remains WAITING_RETRY at lower priority for a Green/Purple upgrade
+
+Hard-failed repair candidate:
+    QUARANTINED / MEDIA_REPAIR_FAILED
+
+Soft/infra failure:
+    candidate remains noncanonical; no destructive media downgrade
+
+AUTOMATIC SYNCHRONIZATION
+Every audit completion synchronizes the event repair job in the same serialized
+SQLite writer transaction.
+
+A 30-minute reconciliation pass is a safety net. It only scans nonhealthy events
+and still-open repair jobs, rather than rewriting the entire audit catalog.
+
+REPAIR PRIORITY
+1. NO_MEDIA     priority 100
+2. UNPLAYABLE   priority 90
+3. DEGRADED     priority 70
+4. INCONCLUSIVE priority 40
+
+INCONCLUSIVE is recertified independently before discovery is attempted.
+
+DISCOVERY SOURCES
+Stage 1 reuses the normal Sports Big Board discovery authority. The current provider
+registry includes, where applicable:
+- MLB Stats official video
+- ESPN
+- NFL official YouTube, public video, team video, club and feed sources
+- NHL official
+- Premier League official and trusted broadcaster sources
+- MLS official and club sites
+- Highlightly
+- YouTube
+
+Stage 2 is a bounded direct YouTube fallback:
+- server-side YOUTUBE_API_KEY only
+- maximum 2 exact event queries by default
+- search bounded to event date -3 / +10 days
+- both participant identity tokens must match
+- public/embeddable videos only
+- metadata/duration used to classify Green/Purple/Blue
+- still UNVERIFIED until Chrome proves playback
+
+SQLITE / PROCESS SAFETY
+Repair is a separate logical engine, not another systemd process.
+All repair mutations use the existing SerializedAuditDbWriter (lane 99), so there
+is still one audit-owned SQLite writer.
+Repair Chrome is lazy and used only while a repair candidate needs certification.
+
+NEW PERSISTENT TABLES
+history_media_repair_queue
+history_media_repair_candidate
+
+These tables are created lazily in the background. Service heartbeat does not
+depend on the migration succeeding immediately.
+
+OPERATOR PAGE
+Adds:
+- REPAIR QUEUE metric
+- REPAIRED metric
+- MEDIA REPAIR ENGINE diagnostic panel
+- current repair game/health/target/phase
+- current candidate/provider/result
+- repair totals and repair trace
+
+The audit diagnostics now explicitly report:
+    AUDIT DISCOVERY DISABLED • Repair Engine owns discovery
+
+UPLOAD
+A. At the GitHub repository ROOT upload the contents of the Non-Tests ZIP,
+   preserving paths:
+     media_audit_service.py
+     media-audit.html
+     ui/media-audit-v550.js
+     ui/media-audit-v550.css
+
+B. Open the existing GitHub /tests folder and replace:
+     test_v550_media_health_audit.py
+   using the flat Tests ZIP.
+
+No VERSION bump, deployment workflow, controller bridge, server.py, installer, or
+Sports Ticker file change is required.
+
+AFTER DEPLOYMENT
+- Do NOT Reset Audit.
+- Hard-refresh media-audit.html once.
+- Run #5 should resume from persisted queue state.
+- Previously completed DEGRADED/UNPLAYABLE/NO_MEDIA/INCONCLUSIVE events are seeded
+  into the Repair Engine automatically.
+- Future audit findings enter Repair immediately as each game completes.
+- Existing inline TARGETED_REHYDRATION disappears from the canonical audit lanes.
+
+VALIDATION
+PASS — media_audit_service.py Python syntax
+PASS — media-audit-v550.js JavaScript syntax
+PASS — focused v5.5.0 R16 regression
+PASS — certification-only audit assertion: audit_event contains no discovery call
+PASS — synchronized repair queue assertions
+PASS — one serialized DB writer assertion for repair mutations
+PASS — UNVERIFIED-before-certification assertion
+PASS — behavioral canonical write-back simulation:
+       NO_MEDIA -> new Green discovered -> UNVERIFIED -> PLAYING_TIME_ADVANCED ->
+       ASSIGNED/MEDIA_REPAIR_CERTIFIED -> canonical HEALTHY -> audit row HEALTHY ->
+       repair job REPAIRED
+
+A reconstructed full VERIFY.sh was not reported as passing because the historical
+manual v5.5.0 overlay available in this chat intentionally omits unchanged repository
+files such as server.py and several legacy UI modules. The changed-file R16 regression,
+syntax checks, and behavioral DB write-back test all pass.

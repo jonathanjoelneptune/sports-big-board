@@ -7,7 +7,7 @@
   <title>Sports Big Board Media Audit — v5.5.0</title>
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://www.youtube-nocookie.com">
-  <link rel="stylesheet" href="ui/media-audit-v550.css?v=5.5.0-r12h">
+  <link rel="stylesheet" href="ui/media-audit-v550.css?v=5.5.0-r16">
   <script src="config.js?v=5.5.0"></script>
   <script src="api-runtime.js?v=5.5.0"></script>
 </head>
@@ -16,7 +16,7 @@
     <div>
       <div class="eyebrow">SPORTS BIG BOARD</div>
       <h1>MEDIA HEALTH AUDIT</h1>
-      <p>Canonical server-owned audit. A controlled headless Chromium worker proves public playback and feeds certified packages directly back into Sports Big Board.</p>
+      <p>Canonical server-owned certification plus automatic Media Repair. Audit workers prove existing playback; the Repair Engine discovers replacements, recertifies them, and writes successful links back into the canonical Sports Big Board database.</p>
     </div>
     <div class="header-actions">
       <span class="release">v5.5.0</span>
@@ -34,6 +34,8 @@
       <article class="degraded"><small>INCONCLUSIVE</small><strong id="metricInconclusive">0</strong><span>Soft/infra evidence cannot prove failure</span></article>
       <article class="bad"><small>UNPLAYABLE</small><strong id="metricUnplayable">0</strong><span>Definitive hard failures only</span></article>
       <article class="missing"><small>NO MEDIA</small><strong id="metricNoMedia">0</strong><span>No canonical game media</span></article>
+      <article class="repair"><small>REPAIR QUEUE</small><strong id="metricRepairQueue">0</strong><span>Automatically synchronized exceptions</span></article>
+      <article class="repair"><small>REPAIRED</small><strong id="metricRepaired">0</strong><span>Certified replacements promoted canonical</span></article>
       <article><small>ASSETS TESTED</small><strong id="metricAssets">0</strong><span id="metricAssetsSub">0 passed • 0 failed</span></article>
       <article><small>RUN STATUS</small><strong id="metricRun">IDLE</strong><span id="metricRunSub">Ready</span></article>
     </section>
@@ -143,6 +145,22 @@
           <div id="diagWorkers" class="worker-lanes"><div class="worker-lane idle">Waiting for server worker pool…</div></div>
         </section>
 
+        <section class="diag-section repair-section">
+          <h3>MEDIA REPAIR ENGINE</h3>
+          <dl class="diag-grid">
+            <div><dt>Engine</dt><dd id="repairState" class="diag-value">STARTING</dd></div>
+            <div><dt>Queue</dt><dd id="repairQueue">0</dd></div>
+            <div class="wide"><dt>Current game</dt><dd id="repairGame">—</dd></div>
+            <div><dt>Health / target</dt><dd id="repairTarget">—</dd></div>
+            <div><dt>Phase</dt><dd id="repairPhase">—</dd></div>
+            <div><dt>Attempt</dt><dd id="repairAttempt">—</dd></div>
+            <div><dt>Candidate</dt><dd id="repairCandidate">—</dd></div>
+            <div class="wide"><dt>Provider / result</dt><dd id="repairResult">—</dd></div>
+            <div class="wide"><dt>Repair totals</dt><dd id="repairTotals">—</dd></div>
+          </dl>
+          <div id="repairTrace" class="diag-trace repair-trace"><div class="empty-trace">No repair activity yet.</div></div>
+        </section>
+
         <section class="diag-section trace-section">
           <h3>SERVER TRACE</h3>
           <div id="diagTrace" class="diag-trace"><div class="empty-trace">No server trace yet.</div></div>
@@ -156,6 +174,6 @@
     <tr class="asset-row"><td></td><td colspan="9"><div class="asset-grid"></div></td></tr>
   </template>
 
-  <script src="ui/media-audit-v550.js?v=5.5.0-r12h"></script>
+  <script src="ui/media-audit-v550.js?v=5.5.0-r16"></script>
 </body>
 </html>
