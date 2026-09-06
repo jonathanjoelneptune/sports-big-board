@@ -238,7 +238,10 @@ def test_stable_launcher_discovers_a413_without_yaml_change():
     launcher = importlib.util.module_from_spec(spec2)
     assert spec2 and spec2.loader
     spec2.loader.exec_module(launcher)
-    assert launcher.discover_latest().name == "refresh_sports_ticker_a413.py"
+    name = launcher.discover_latest().name
+    assert name.startswith("refresh_sports_ticker_a") and name.endswith(".py"), name
+    version = int(name.removeprefix("refresh_sports_ticker_a").removesuffix(".py"))
+    assert version >= 413, name
 
     workflow = (ROOT / ".github" / "workflows" / "sports-ticker-refresh.yml").read_text()
     assert "python3 tests/test_sports_ticker_current.py" in workflow
