@@ -1,0 +1,58 @@
+diff --git a/server.py b/server.py
+--- a/server.py
++++ b/server.py
+@@
+-        urls=[]
+-        for k,v in obj.items():
+-            if isinstance(v,str) and v.startswith('http'):
+-                if re.search(r'\.(?:mp4|m3u8)(?:\?|$)',v,re.I): urls.append(v)
+-        media=urls[0] if urls else ''
++        # R18: resolve ESPN's nested links.source transport. Search objects that
++        # do not expose an actual direct video are not repair candidates.
++        if not _espn_video_allowed_us(obj): continue
++        media=_espn_video_media_url(obj)
++        if not media: continue
+@@
+-        sig=(title,media or href)
++        sig=(title,media,href)
++        stable_id=hashlib.sha1(('\n'.join(str(x or '') for x in sig)).encode('utf-8')).hexdigest()[:16]
+@@
+-        if not media and not href: continue
+-        out.append({'id':f'espn-video-{abs(hash(sig))%10**12}','eventId':f'espn-video-{abs(hash(sig))%10**12}',
++        out.append({'id':f'espn-video-{stable_id}','eventId':f'espn-video-{stable_id}',
+
+diff --git a/media_audit_service.py b/media_audit_service.py
+--- a/media_audit_service.py
++++ b/media_audit_service.py
+@@
+-AUDIT_GENERATION = "R17-MULTI-SOURCE-REPAIR-DISCOVERY"
++AUDIT_GENERATION = "R18-MEDIA-REPAIR-TRANSPORT"
+@@
+-    for key in ("mediaUrl", "externalUrl", "url", "videoUrl", "href"):
++    for key in ("mediaUrl", "videoUrl", "videoURL", "streamUrl", "playbackUrl", "url", "href", "externalUrl"):
+@@
+-            # R17 is a materially new discovery strategy. Give R16-exhausted jobs one
+-            # immediate pass through the new ladder, then normal cooldown preservation
+-            # prevents them from looping again.
++            # R18 changes the provider transport that reaches certification. Give
++            # R17-exhausted actionable jobs one immediate corrected-ladder pass.
+@@
+-                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R17 multi-source discovery strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R17_MULTI_SOURCE_LADDER%'",
++                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R18 playable-transport strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R18_MEDIA_REPAIR_TRANSPORT%'",
+@@
+-                    details={"strategy":"R17_MULTI_SOURCE_LADDER","knownAssets":len(before),"target":target},event_key=event_key)
++                    details={"strategy":"R18_MEDIA_REPAIR_TRANSPORT","knownAssets":len(before),"target":target},event_key=event_key)
+
+diff --git a/sbb/history_repository.py b/sbb/history_repository.py
+--- a/sbb/history_repository.py
++++ b/sbb/history_repository.py
+@@
+-        return str(item.get("mediaUrl") or item.get("externalUrl") or "")
++        return str(item.get("mediaUrl") or item.get("videoUrl") or item.get("videoURL") or item.get("streamUrl") or item.get("playbackUrl") or item.get("externalUrl") or "")
+
+diff --git a/tests/test_r18_media_repair_transport.py b/tests/test_r18_media_repair_transport.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_r18_media_repair_transport.py
+@@
++See the included tests/test_r18_media_repair_transport.py in this bundle.
