@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const VERSION='5.5.0';
-const GENERATION='R17-MULTI-SOURCE-REPAIR-DISCOVERY';
+const GENERATION='R18-MEDIA-REPAIR-TRANSPORT';
 const $=id=>document.getElementById(id);
 const API=((window.SBB_CONFIG&&window.SBB_CONFIG.apiBase)||location.origin).replace(/\/$/,'')+'/api/media-audit';
 const state={offset:0,limit:100,total:0,rows:[],expanded:new Set(),status:null,busy:false,pollTimer:null,lastInventoryAt:0,lastInventoryOkAt:0,inventoryError:'',inventoryBusy:false,statusBusy:false,statusFailures:0,lastStatusOkAt:0,lastStatusAttemptAt:0};

@@ -17,8 +17,8 @@ for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STA
 assert 'youtubeProbe' not in html
 assert 'directProbe' not in html
 assert 'youtube.com/iframe_api' not in html
-assert 'ui/media-audit-v550.js?v=5.5.0-r17' in html
-assert 'ui/media-audit-v550.css?v=5.5.0-r17' in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r18' in html
+assert 'ui/media-audit-v550.css?v=5.5.0-r18' in html
 assert 'href="media-audit.html"' in index
 
 # Browser is a console only. All control and inventory authority routes to the backend service.
@@ -29,7 +29,7 @@ for forbidden in ['localStorage','YT.Player','directProbe','youtubeProbe','/api/
 
 # Canonical server-owned audit contract.
 for token in [
-    'AUDIT_GENERATION = "R17-MULTI-SOURCE-REPAIR-DISCOVERY"',
+    'AUDIT_GENERATION = "R18-MEDIA-REPAIR-TRANSPORT"',
     'history_media_audit_run',
     'history_media_audit_queue',
     'history_media_audit_asset_result',
@@ -96,7 +96,7 @@ for token in [
     'diagProgressAge','diagTrace','SERVER TRACE','DATABASE + PRODUCTION PARITY'
 ]:
     assert token in html or token in js,token
-assert "const GENERATION='R17-MULTI-SOURCE-REPAIR-DISCOVERY'" in js
+assert "const GENERATION='R18-MEDIA-REPAIR-TRANSPORT'" in js
 assert 'localStorage' not in js
 
 # R11: reset/start/stop retire the worker itself and stale run work cannot persist.
@@ -290,8 +290,8 @@ assert 'LOCAL_HEALTH_ATTEMPTS="${SBB_LOCAL_HEALTH_ATTEMPTS:-180}"' in deploy, 'c
 assert deploy.index('systemctl restart sports-big-board') < deploy.index('Installing canonical Media Health Audit service'), 'main backend must be healthy before audit service restart'
 
 
-# R17 multi-source repair: audit certifies existing media only; Repair Engine owns staged discovery.
-assert 'R17-MULTI-SOURCE-REPAIR-DISCOVERY' in service
+# R18 media-repair transport: retain staged Repair Engine discovery while correcting transport selection.
+assert 'R18-MEDIA-REPAIR-TRANSPORT' in service
 for token in [
     'history_media_repair_queue','history_media_repair_candidate','class MediaRepairEngine',
     'canonical-media-repair-engine','REPAIR_ENABLED','REPAIR_DISCOVERY_PASSES','REPAIR_CERT_ATTEMPTS',
@@ -348,10 +348,10 @@ for token in ['REPAIR QUEUE','REPAIRED','MEDIA REPAIR ENGINE','repairState','rep
 assert "AUDIT DISCOVERY DISABLED • Repair Engine owns discovery" in js
 assert '/repairs' in service
 
-# R17 discovery effectiveness: every repair stage is materially different, cheap official
+# R18 retains staged discovery effectiveness: every repair stage is materially different, cheap official
 # YouTube indexing is independent of search.list quota, and exhausted work preserves cooldowns.
 for token in [
-    'R17_MULTI_SOURCE_LADDER','history_media_repair_source_attempt','history_media_repair_youtube_index',
+    'R18_MEDIA_REPAIR_TRANSPORT','history_media_repair_source_attempt','history_media_repair_youtube_index',
     'def repair_catalog_search','def associate_existing_repair_candidates','def trusted_youtube_channels',
     'def _deep_catalog_candidates','def _refresh_youtube_index_if_needed','def _youtube_index_candidates',
     'LOCAL_CATALOG','REGISTERED_PROVIDERS','OFFICIAL_YOUTUBE_INDEX','GENERIC_YOUTUBE_SEARCH',
@@ -384,11 +384,11 @@ assert (
 
 for token in ['repairStage','repairStageResult','repairSourceStats','source stages','YT indexed','search quota blocks']:
     assert token in html or token in js,token
-assert '5.5.0-r17' in html
+assert '5.5.0-r18' in html
 
 seed_block=service[service.index('def seed_repair_queue'):service.index('def repair_summary')]
 assert "state IN ('SEARCHING','CERTIFYING')" in seed_block
-assert 'R17 multi-source discovery strategy upgrade' in seed_block
+assert 'R18 playable-transport strategy upgrade' in seed_block
 assert 'strategyRequeued' in seed_block
 
-print('PASS v5.5.0 R17 multi-source repair discovery + cooldowns + official YouTube index + canonical write-back')
+print('PASS v5.5.0 R18 media-repair transport + staged discovery + cooldowns + canonical write-back')
