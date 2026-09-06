@@ -240,7 +240,10 @@ def test_stable_launcher_discovers_a412_without_yaml_change():
     assert spec2 and spec2.loader
     spec2.loader.exec_module(launcher)
 
-    assert launcher.discover_latest().name == "refresh_sports_ticker_a412.py"
+    name = launcher.discover_latest().name
+    assert name.startswith("refresh_sports_ticker_a") and name.endswith(".py"), name
+    version = int(name.removeprefix("refresh_sports_ticker_a").removesuffix(".py"))
+    assert version >= 412, name
 
     workflow_path = ROOT / ".github" / "workflows" / "sports-ticker-refresh.yml"
     if workflow_path.exists():

@@ -1,0 +1,46 @@
+SPORTS BIG BOARD v6.0.0 — CANONICAL SLATE SHADOW
+=================================================
+
+STARTING POINT
+- Apply to the current Sports Big Board checkout while root VERSION is 5.5.0.
+- The package is an overlay. It does NOT replace your existing sbb/__init__.py or VERIFY.sh.
+
+APPLY
+1. Copy/extract this package into the repository root, preserving folders.
+2. From the repository root run:
+
+   bash APPLY-V6.sh
+
+3. Review the resulting changes if desired:
+
+   git status --short
+   git diff --stat
+
+4. Commit/push through your normal GitHub deployment path.
+
+WHAT v6.0 DOES
+- Leaves current Day State / ribbon / Game Center / media path authoritative.
+- Creates ~/.sports-big-board/canonical-shadow-v6.sqlite3.
+- Maintains D-7 through D+7 canonical shadow manifests.
+- Directly queries ESPN schedules for MLB/NFL/NBA/NHL/EPL/MLS/NCAAF.
+- Records independent shadow schedule/score observations and provider mappings.
+- Preserves legacy Day State events as a safety union but does not count them as shadow discoveries.
+- Shows shadow-only and production-only discrepancies.
+- Never deletes an event because a source stopped returning it.
+- Never lets DIRECT/legacy evidence alone produce CERTIFIED.
+
+MONITOR
+- Open: /canonical-shadow.html
+- Health: /api/canonical/health
+- Day slate: /api/canonical/slate?date=YYYY-MM-DD
+- Comparison: /api/canonical/compare?date=YYYY-MM-DD
+
+CUTOVER STATUS
+- productionAuthority = false
+- No v6.0 code path feeds production event existence.
+- Production-only events are cutover blockers.
+- AUTHORITATIVE + INDEPENDENT certification adapters are the next v6.x implementation step.
+
+ROLLBACK / DISABLE
+- Set SBB_CANONICAL_SHADOW_ENABLED=0 and restart backend.
+- Because v6.0 is shadow-only, disabling it does not change production Day State behavior.
