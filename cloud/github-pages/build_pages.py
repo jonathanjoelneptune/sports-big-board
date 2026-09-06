@@ -13,8 +13,8 @@ if out.exists(): shutil.rmtree(out)
 out.mkdir(parents=True)
 
 # Root-level static pages and runtime files published to GitHub Pages.
-# v5.5.0 R5: Media Health Audit must be included in the Pages artifact.
-for name in ('index.html','backend.html','media-audit.html','media-audit-probe.html','styles.css','app.js','core-model.js','api-runtime.js'):
+# v6.0.0: Canonical Slate Shadow console is published beside the existing audit pages.
+for name in ('index.html','backend.html','media-audit.html','media-audit-probe.html','canonical-shadow.html','styles.css','app.js','core-model.js','api-runtime.js'):
     shutil.copy2(root/name,out/name)
 
 for directory in ('architecture','ui'):
@@ -35,3 +35,4 @@ print(f'API base -> {api}')
 print('Backend Inspector -> backend.html')
 print('Media Health Audit -> media-audit.html')
 print('Canonical Media Probe -> media-audit-probe.html')
+print('Canonical Slate Shadow -> canonical-shadow.html')

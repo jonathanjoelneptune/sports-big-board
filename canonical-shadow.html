@@ -17,14 +17,15 @@
 <div class="panel"><div class="toolbar"><b>Selected Day</b><span id="dateButtons"></span></div><table><thead><tr><th>League</th><th>Universe</th><th>Included union</th><th>Shadow found</th><th>Production</th><th>Match</th><th>Shadow-only</th><th>Production-only</th><th>Slate State</th><th>Version</th><th>Baseline</th></tr></thead><tbody id="leagueRows"></tbody></table></div>
 <div class="panel"><div class="toolbar"><b>Events & Discrepancies</b><span class="spacer"></span><span id="selectedLabel" class="sub"></span></div><div id="events" class="events"></div></div>
 </main>
+<script src="config.js"></script>
 <script>
 (()=>{'use strict';
 const leagues=['MLB','NFL','NBA','NHL','EPL','MLS','NCAAF'];
-const $=id=>document.getElementById(id);let selected='';let health=null;let cache={};
+const $=id=>document.getElementById(id);let selected='';let health=null;let cache={};const API=String(window.SBB_CONFIG?.apiBase||'').replace(/\/$/,'');
 const etDay=(d=new Date())=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
 const shift=(day,n)=>{const d=new Date(day+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-async function json(url){const r=await fetch(url,{cache:'no-store'});const x=await r.json().catch(()=>({}));if(!r.ok||x.ok===false)throw new Error(x.error||r.statusText||'request failed');return x}
+async function json(url){const r=await fetch(API+url,{cache:'no-store'});const x=await r.json().catch(()=>({}));if(!r.ok||x.ok===false)throw new Error(x.error||r.statusText||'request failed');return x}
 async function loadDay(day){const [s,c]=await Promise.all([json('/api/canonical/slate?date='+encodeURIComponent(day)),json('/api/canonical/compare?date='+encodeURIComponent(day))]);cache[day]={slates:s.slates||[],comparisons:c.comparisons||[]};return cache[day]}
 function comparisonMap(rows){return Object.fromEntries((rows||[]).map(x=>[x.competition_id,x]))}
 function slateMap(rows){return Object.fromEntries((rows||[]).map(x=>[x.competition_id,x]))}

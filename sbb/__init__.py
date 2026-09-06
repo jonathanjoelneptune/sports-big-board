@@ -66,12 +66,18 @@ _install_integrity_lane_v523()
 _install_backend_snapshot_v523()
 _install_current_news_v523()
 
-# v5.5.0: persistent participant metadata + cached Team Focus enrichment.
+# v6.0.0: persistent participant metadata + cached Team Focus enrichment.
 # This installs after the normalized catalog and ticker read models so it remains
 # a cache/read-only browser service and never becomes a score/playback authority.
 from .team_focus_v537 import install as _install_team_focus_v537
 _install_team_focus_v537()
 
-# v5.5.0: cached standings/playoff/event context for the LEAGUE VIEW drawer.
+# v6.0.0: cached standings/playoff/event context for the LEAGUE VIEW drawer.
 from .league_view_v538 import install as _install_league_view_v538
 _install_league_view_v538()
+
+# v6.0.0: canonical event/slate shadow architecture.
+# Deliberately installed last: it observes the fully-wired production read models
+# and persists to a separate SQLite database without becoming ribbon authority.
+from .canonical_shadow_v600 import install as _install_canonical_shadow_v600
+_install_canonical_shadow_v600()

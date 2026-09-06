@@ -34,6 +34,14 @@ def active_files(root: Path):
             continue
         seen.add(path)
         yield path
+    # Keep the release-integrity checker synchronized with the active generation.
+    # tools/ itself is intentionally not scanned so this helper does not rewrite
+    # its own OLD/NEW constants.
+    checker = root / "tools" / "check_release_version.py"
+    if checker.is_file() and checker not in seen:
+        seen.add(checker)
+        yield checker
+
     for dirname in ACTIVE_DIRS:
         base = root / dirname
         if not base.is_dir():

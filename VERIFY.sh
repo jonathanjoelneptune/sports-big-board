@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Sports Big Board v5.5.0 Media Health Audit preflight"
+echo "Sports Big Board v6.0.0 Canonical Slate Shadow preflight"
 python3 tools/check_release_version.py
+python3 tests/test_v600_canonical_shadow.py
 python3 tests/test_v529_release_integrity.py
 python3 tests/test_v5210_motion_smoothness.py
 python3 tests/test_v5211_openai_rate_limit.py
@@ -59,7 +60,7 @@ node --check ui/browse-curated-programming-v537.js
 node --check ui/league-view-v538.js
 node --check architecture/playback-progress-watchdog-v5310.js
 node --check architecture/playback-early-pause-recovery-v538.js
-python3 -m py_compile sbb/team_focus_v537.py sbb/league_view_v538.py sbb/__init__.py
+python3 -m py_compile sbb/team_focus_v537.py sbb/league_view_v538.py sbb/__init__.py sbb/canonical_shadow_v600.py
 node --check ui/workspace-viewport-fit-v531.js
 node --check ui/sport-match-center-v5317.js
 node --check ui/game-center-score-authority-v5319.js
@@ -78,4 +79,4 @@ node --check ui/score-ribbon-playback-follow-v545.js
 python3 -m py_compile sbb/release_identity_v523.py sbb/current_news_v523.py
 bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh
 
-echo "PASS: v5.5.0 Media Health Audit preflight complete"
+echo "PASS: v6.0.0 Canonical Slate Shadow preflight complete"
