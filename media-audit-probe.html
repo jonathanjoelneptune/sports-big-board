@@ -13,9 +13,18 @@
 (()=>{
   'use strict';
   const host=document.getElementById('host');
+  const PROBE_VERSION='5.5.0-r20';
+  const ADVANCE_MIN_SECONDS=0.45;
+  const POLL_MS=300;
+  const DIRECT_START_TIMEOUT_MS=12000;
+  const DIRECT_ADVANCE_WINDOW_MS=6500;
+  const YOUTUBE_START_TIMEOUT_MS=18000;
+  const YOUTUBE_ADVANCE_WINDOW_MS=8000;
   let ytReady=null;
   function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
   function clean(){host.innerHTML='';}
+  function bufferedEnd(video){try{return video.buffered&&video.buffered.length?Number(video.buffered.end(video.buffered.length-1)||0):0}catch(_){return 0}}
+  function directDiag(video){return {readyState:Number(video.readyState||0),networkState:Number(video.networkState||0),duration:Number.isFinite(Number(video.duration))?Number(video.duration):0,currentTime:Number(video.currentTime||0),bufferedEnd:bufferedEnd(video),paused:!!video.paused,ended:!!video.ended,videoWidth:Number(video.videoWidth||0),videoHeight:Number(video.videoHeight||0)};}
   function youtubeApi(){
     if(window.YT&&window.YT.Player)return Promise.resolve();
     if(ytReady)return ytReady;
@@ -23,7 +32,7 @@
       const prior=window.onYouTubeIframeAPIReady;
       window.onYouTubeIframeAPIReady=()=>{try{if(typeof prior==='function')prior();}catch(_){} resolve();};
       const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.async=true;s.onerror=()=>reject(new Error('YOUTUBE_API_LOAD_ERROR'));document.head.appendChild(s);
-      setTimeout(()=>reject(new Error('YOUTUBE_API_LOAD_TIMEOUT')),10000);
+      setTimeout(()=>reject(new Error('YOUTUBE_API_LOAD_TIMEOUT')),12000);
     });
     return ytReady;
   }
@@ -37,40 +46,68 @@
   }
   async function probeYoutube(input){
     const started=performance.now(); clean();
-    try{await youtubeApi();}catch(e){return {ok:false,hard:false,reason:String(e.message||e),startupMs:performance.now()-started,currentTimeDelta:0};}
+    try{await youtubeApi();}catch(e){return {ok:false,hard:false,reason:String(e.message||e),startupMs:performance.now()-started,currentTimeDelta:0,probeVersion:PROBE_VERSION};}
     return await new Promise(resolve=>{
-      let settled=false,player=null,playingAt=0,t0=0;
-      const finish=v=>{if(settled)return;settled=true;try{player&&player.destroy();}catch(_){}clean();resolve(v);};
-      const timeout=setTimeout(()=>finish({ok:false,hard:false,reason:'YOUTUBE_START_TIMEOUT',startupMs:performance.now()-started,currentTimeDelta:0}),15000);
+      let settled=false,player=null,playingAt=0,minTime=null,maxTime=0,lastState=-999,lastLoaded=0,lastPlayKick=0,poller=null,startTimeout=null,advanceTimeout=null;
+      const snapshot=()=>{let t=0,state=lastState,loaded=lastLoaded;try{t=Number(player&&player.getCurrentTime&&player.getCurrentTime()||0)}catch(_){}try{state=Number(player&&player.getPlayerState&&player.getPlayerState())}catch(_){}try{loaded=Number(player&&player.getVideoLoadedFraction&&player.getVideoLoadedFraction()||0)}catch(_){}lastState=state;lastLoaded=loaded;return {t,state,loaded};};
+      const finish=v=>{if(settled)return;settled=true;if(poller)clearInterval(poller);if(startTimeout)clearTimeout(startTimeout);if(advanceTimeout)clearTimeout(advanceTimeout);try{player&&player.destroy();}catch(_){}clean();resolve({...v,probeVersion:PROBE_VERSION});};
+      const beginAdvanceWindow=()=>{if(playingAt)return;playingAt=performance.now();if(startTimeout)clearTimeout(startTimeout);advanceTimeout=setTimeout(()=>{const x=snapshot(),delta=Math.max(0,maxTime-(minTime==null?maxTime:minTime));finish({ok:false,hard:false,reason:'YOUTUBE_TIME_NOT_ADVANCING',startupMs:playingAt-started,currentTimeDelta:delta,playerState:x.state,loadedFraction:x.loaded,currentTime:x.t});},YOUTUBE_ADVANCE_WINDOW_MS);};
+      startTimeout=setTimeout(()=>{const x=snapshot(),delta=Math.max(0,maxTime-(minTime==null?maxTime:minTime));finish({ok:false,hard:false,reason:'YOUTUBE_START_TIMEOUT',startupMs:performance.now()-started,currentTimeDelta:delta,playerState:x.state,loadedFraction:x.loaded,currentTime:x.t});},YOUTUBE_START_TIMEOUT_MS);
       try{
         player=new YT.Player(host,{height:'360',width:'640',videoId:String(input.youtubeId||''),host:'https://www.youtube-nocookie.com',playerVars:{autoplay:1,controls:0,mute:1,playsinline:1,origin:location.origin,rel:0},events:{
-          onReady:ev=>{try{ev.target.mute();ev.target.playVideo();}catch(e){clearTimeout(timeout);finish({ok:false,hard:false,reason:'YOUTUBE_PLAY_CALL_FAILED',message:String(e),startupMs:performance.now()-started,currentTimeDelta:0});}},
-          onStateChange:async ev=>{if(ev.data!==YT.PlayerState.PLAYING||playingAt)return;playingAt=performance.now();try{t0=Number(ev.target.getCurrentTime()||0);}catch(_){t0=0;}await sleep(1400);let t1=0;try{t1=Number(ev.target.getCurrentTime()||0);}catch(_){}const delta=Math.max(0,t1-t0);clearTimeout(timeout);if(delta>=0.65)finish({ok:true,hard:false,reason:'PLAYING_TIME_ADVANCED',startupMs:playingAt-started,currentTimeDelta:delta});else finish({ok:false,hard:false,reason:'YOUTUBE_TIME_NOT_ADVANCING',startupMs:playingAt-started,currentTimeDelta:delta});},
-          onError:ev=>{const [reason,hard]=ytReason(ev.data);clearTimeout(timeout);finish({ok:false,hard,reason,startupMs:performance.now()-started,currentTimeDelta:0,errorCode:Number(ev.data||0)});}
+          onReady:ev=>{try{ev.target.mute();ev.target.playVideo();lastPlayKick=performance.now();}catch(e){finish({ok:false,hard:false,reason:'YOUTUBE_PLAY_CALL_FAILED',message:String(e),startupMs:performance.now()-started,currentTimeDelta:0});}},
+          onStateChange:ev=>{lastState=Number(ev.data);if(ev.data===YT.PlayerState.PLAYING)beginAdvanceWindow();},
+          onError:ev=>{const [reason,hard]=ytReason(ev.data);finish({ok:false,hard,reason,startupMs:performance.now()-started,currentTimeDelta:0,errorCode:Number(ev.data||0),playerState:lastState,loadedFraction:lastLoaded});}
         }});
-      }catch(e){clearTimeout(timeout);finish({ok:false,hard:false,reason:'YOUTUBE_PLAYER_CREATE_ERROR',message:String(e&&e.message||e),startupMs:performance.now()-started,currentTimeDelta:0});}
+        // Do not rely on a single state-change callback. Poll actual player time and
+        // periodically re-issue muted play while the embed is unstarted/buffering.
+        poller=setInterval(()=>{
+          if(settled||!player)return;
+          const x=snapshot();
+          if(minTime==null)minTime=x.t;
+          minTime=Math.min(minTime,x.t);maxTime=Math.max(maxTime,x.t);
+          const delta=Math.max(0,maxTime-minTime);
+          if(delta>0.05)beginAdvanceWindow();
+          if(delta>=ADVANCE_MIN_SECONDS){finish({ok:true,hard:false,reason:'PLAYING_TIME_ADVANCED',startupMs:(playingAt||performance.now())-started,currentTimeDelta:delta,playerState:x.state,loadedFraction:x.loaded,currentTime:x.t});return;}
+          if((x.state!==1||x.loaded<0.01)&&performance.now()-lastPlayKick>1800){try{player.mute();player.playVideo();lastPlayKick=performance.now();}catch(_){}}
+        },POLL_MS);
+      }catch(e){finish({ok:false,hard:false,reason:'YOUTUBE_PLAYER_CREATE_ERROR',message:String(e&&e.message||e),startupMs:performance.now()-started,currentTimeDelta:0});}
     });
   }
   async function probeDirect(input){
     const started=performance.now();clean();
-    const video=document.createElement('video');video.muted=true;video.autoplay=true;video.playsInline=true;video.preload='auto';video.controls=false;host.appendChild(video);
+    const video=document.createElement('video');video.defaultMuted=true;video.muted=true;video.volume=0;video.autoplay=true;video.playsInline=true;video.preload='auto';video.controls=false;video.setAttribute('muted','');video.setAttribute('playsinline','');host.appendChild(video);
     return await new Promise(resolve=>{
-      let settled=false,playingAt=0,t0=0;
-      const finish=v=>{if(settled)return;settled=true;try{video.pause();video.removeAttribute('src');video.load();}catch(_){}clean();resolve(v);};
-      const timeout=setTimeout(()=>finish({ok:false,hard:false,reason:'DIRECT_START_TIMEOUT',startupMs:performance.now()-started,currentTimeDelta:0}),15000);
-      video.addEventListener('error',()=>{const code=Number(video.error&&video.error.code||0);clearTimeout(timeout);finish({ok:false,hard:code===4,reason:'DIRECT_MEDIA_ERROR_'+code,startupMs:performance.now()-started,currentTimeDelta:0,errorCode:code});},{once:true});
-      video.addEventListener('playing',async()=>{if(playingAt)return;playingAt=performance.now();t0=Number(video.currentTime||0);await sleep(1400);const t1=Number(video.currentTime||0),delta=Math.max(0,t1-t0);clearTimeout(timeout);if(delta>=0.65)finish({ok:true,hard:false,reason:'PLAYING_TIME_ADVANCED',startupMs:playingAt-started,currentTimeDelta:delta});else finish({ok:false,hard:false,reason:'DIRECT_TIME_NOT_ADVANCING',startupMs:playingAt-started,currentTimeDelta:delta});},{once:true});
-      try{video.src=String(input.url||'');const p=video.play();if(p&&p.catch)p.catch(()=>{});}catch(e){clearTimeout(timeout);finish({ok:false,hard:false,reason:'DIRECT_PLAY_CALL_FAILED',message:String(e&&e.message||e),startupMs:performance.now()-started,currentTimeDelta:0});}
+      let settled=false,playingAt=0,minTime=null,maxTime=0,poller=null,startTimeout=null,advanceTimeout=null,lastPlayError='';
+      const finish=v=>{if(settled)return;settled=true;if(poller)clearInterval(poller);if(startTimeout)clearTimeout(startTimeout);if(advanceTimeout)clearTimeout(advanceTimeout);const diag=directDiag(video);try{video.pause();video.removeAttribute('src');video.load();}catch(_){}clean();resolve({...v,...diag,probeVersion:PROBE_VERSION});};
+      const kick=()=>{try{const p=video.play();if(p&&p.catch)p.catch(e=>{lastPlayError=String(e&&e.message||e);});}catch(e){lastPlayError=String(e&&e.message||e);}};
+      const beginAdvanceWindow=()=>{if(playingAt)return;playingAt=performance.now();if(startTimeout)clearTimeout(startTimeout);advanceTimeout=setTimeout(()=>{const delta=Math.max(0,maxTime-(minTime==null?maxTime:minTime));finish({ok:false,hard:false,reason:'DIRECT_TIME_NOT_ADVANCING',message:lastPlayError,startupMs:playingAt-started,currentTimeDelta:delta});},DIRECT_ADVANCE_WINDOW_MS);};
+      startTimeout=setTimeout(()=>{const delta=Math.max(0,maxTime-(minTime==null?maxTime:minTime));finish({ok:false,hard:false,reason:'DIRECT_START_TIMEOUT',message:lastPlayError,startupMs:performance.now()-started,currentTimeDelta:delta});},DIRECT_START_TIMEOUT_MS);
+      video.addEventListener('error',()=>{const code=Number(video.error&&video.error.code||0);finish({ok:false,hard:code===4,reason:'DIRECT_MEDIA_ERROR_'+code,startupMs:performance.now()-started,currentTimeDelta:0,errorCode:code});},{once:true});
+      video.addEventListener('playing',beginAdvanceWindow,{once:false});
+      video.addEventListener('loadedmetadata',kick);video.addEventListener('canplay',kick);video.addEventListener('waiting',kick);video.addEventListener('stalled',kick);
+      poller=setInterval(()=>{
+        if(settled)return;
+        const t=Number(video.currentTime||0);
+        if(minTime==null)minTime=t;
+        minTime=Math.min(minTime,t);maxTime=Math.max(maxTime,t);
+        const delta=Math.max(0,maxTime-minTime);
+        if(delta>0.05)beginAdvanceWindow();
+        if(delta>=ADVANCE_MIN_SECONDS){finish({ok:true,hard:false,reason:'PLAYING_TIME_ADVANCED',startupMs:(playingAt||performance.now())-started,currentTimeDelta:delta});return;}
+        if(video.paused&&video.readyState>=2)kick();
+      },POLL_MS);
+      try{video.src=String(input.url||'');video.load();kick();}catch(e){finish({ok:false,hard:false,reason:'DIRECT_PLAY_CALL_FAILED',message:String(e&&e.message||e),startupMs:performance.now()-started,currentTimeDelta:0});}
     });
   }
   async function probe(input){
     input=input||{};
     if(input.kind==='youtube')return probeYoutube(input);
     if(input.kind==='direct')return probeDirect(input);
-    return {ok:false,hard:true,reason:'UNKNOWN_MEDIA_KIND',startupMs:0,currentTimeDelta:0};
+    return {ok:false,hard:true,reason:'UNKNOWN_MEDIA_KIND',startupMs:0,currentTimeDelta:0,probeVersion:PROBE_VERSION};
   }
-  window.SBB_MEDIA_PROBE=Object.freeze({probe,version:'5.5.0-r9',canonical:true});
+  window.SBB_MEDIA_PROBE=Object.freeze({probe,version:PROBE_VERSION,canonical:true});
   document.documentElement.dataset.probeReady='true';
+  document.documentElement.dataset.probeVersion=PROBE_VERSION;
 })();
 </script>
 </body>

@@ -38,7 +38,7 @@ from sbb.event_matcher import team_name as catalog_team_name
 
 APP_ROOT = Path(__file__).resolve().parent
 APP_VERSION = (APP_ROOT / "VERSION").read_text(encoding="utf-8").strip()
-AUDIT_GENERATION = "R19-KNOWN-CANDIDATE-RECERTIFICATION"
+AUDIT_GENERATION = "R20-PLAYBACK-EVIDENCE-CORROBORATION"
 STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 DB_PATH = STATE_DIR / "cache" / "history.sqlite3"
 HOST = os.environ.get("SBB_MEDIA_AUDIT_HOST", "127.0.0.1")
@@ -65,7 +65,7 @@ DISCOVERY_SEMAPHORE = threading.Semaphore(DISCOVERY_CONCURRENCY)
 DB_WRITE_QUEUE_MAX = max(32, min(4096, int(os.environ.get("SBB_MEDIA_AUDIT_DB_WRITE_QUEUE_MAX", "512"))))
 INFRA_RETRIES = max(1, min(4, int(os.environ.get("SBB_MEDIA_AUDIT_INFRA_RETRIES", "2"))))
 STATUS_CACHE_REFRESH_SECONDS = max(2.0, min(30.0, float(os.environ.get("SBB_MEDIA_AUDIT_STATUS_CACHE_SECONDS", "5"))))
-# R19: certification and repair remain separate engines. The Repair Engine now
+# R20: certification and repair remain separate engines. The Repair Engine now
 # escalates through materially different sources instead of repeating one discovery
 # endpoint. Expensive YouTube search.list is last-resort only; official/trusted
 # channel uploads are indexed with channels.list + playlistItems.list, whose gateway
@@ -579,12 +579,12 @@ class AuditStore:
                 "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,reason=CASE WHEN reason='' THEN 'Recovered interrupted Repair Engine job' ELSE reason END WHERE state IN ('SEARCHING','CERTIFYING')",
                 (now,),
             ); recovered_active=int(cur.rowcount or 0)
-            # R19 changes candidate eligibility, not just discovery. Give every
-            # R18-exhausted actionable job one immediate pass that can recertify
-            # already-known media before spending discovery quota. Once processed,
-            # details_json carries the R19 marker so service restarts preserve cooldowns.
+            # R20 changes playback certification authority as well as the probe itself. Give every
+            # R19-exhausted actionable job one immediate pass through the stabilized
+            # probe and recent-PLAYED corroboration path. Once processed, details_json
+            # carries the R20 marker so service restarts preserve cooldowns.
             cur=conn.execute(
-                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R19 known-candidate recertification strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R19_KNOWN_CANDIDATE_RECERTIFICATION%'",
+                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R20 playback-evidence corroboration strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R20_PLAYBACK_EVIDENCE_CORROBORATION%'",
                 (now,),
             ); strategy_requeued=int(cur.rowcount or 0)
             latest = conn.execute("SELECT id FROM history_media_audit_run ORDER BY id DESC LIMIT 1").fetchone()
@@ -768,7 +768,7 @@ class AuditStore:
                         "url":url,"youtubeId":_youtube_id(item,url),"tier":_tier(item),"item":item})
         return out
 
-    def associate_existing_repair_candidates(self, repair_id, event_key, assets, source='R19_LOCAL_CATALOG'):
+    def associate_existing_repair_candidates(self, repair_id, event_key, assets, source='R20_LOCAL_CATALOG'):
         """Attach already-known source assets as UNVERIFIED candidates for this exact event."""
         now=_now(); keys=[]
         with self.lock, closing(self.connect(timeout=2)) as conn:
@@ -961,9 +961,10 @@ class AuditStore:
             health='HEALTHY' if preferred else ('DEGRADED' if (blue or gold) else 'INCONCLUSIVE')
             repair_state='' if health=='HEALTHY' else 'PREFERRED_MEDIA_REQUIRED'
             repair_reason='' if health=='HEALTHY' else 'Repair restored playable fallback; preferred Green/Purple still required'
+            evidence=str(reason or 'PLAYING_TIME_ADVANCED')
             conn.execute(
                 "UPDATE history_event_media SET association_state='ASSIGNED',association_method='MEDIA_REPAIR_CERTIFIED',association_evidence=?,updated_at=? WHERE canonical_event_key=? AND asset_key=?",
-                (f"Repair job {int(repair_id)} certified PLAYING_TIME_ADVANCED and promoted to canonical game media",now,event_key,key),
+                (f"Repair job {int(repair_id)} promoted playable canonical game media; evidence: {evidence}",now,event_key,key),
             )
             conn.execute(
                 """INSERT INTO history_media_canonical_package(canonical_event_key,audit_run_id,health,gold_asset_key,green_asset_key,purple_asset_key,blue_asset_keys_json,preferred_complete,preferred_playable,rehydration_state,rehydration_reason,certified_at,worker_generation,details_json)
@@ -1853,12 +1854,13 @@ class BrowserProbe:
             for arg in (
                 "--headless=new", "--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu",
                 "--mute-audio", "--autoplay-policy=no-user-gesture-required", "--window-size=1280,720",
-                "--disable-background-networking", "--disable-component-update", "--disable-default-apps",
+                "--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows",
+                "--disable-renderer-backgrounding", "--disable-component-update", "--disable-default-apps",
             ):
                 options.add_argument(arg)
             driver = webdriver.Chrome(options=options)
             driver.set_page_load_timeout(30)
-            driver.set_script_timeout(30)
+            driver.set_script_timeout(40)
             caps = driver.capabilities or {}
             self.browser = f"Chrome {caps.get('browserVersion','?')} / chromedriver {((caps.get('chrome') or {}).get('chromedriverVersion') or '?').split(' ')[0]}"
             self.driver = driver
@@ -2865,7 +2867,7 @@ class MediaRepairEngine(threading.Thread):
         self.trace=deque(maxlen=100)
         self.last_seed_at=0.0
         self.last_youtube_index_refresh_at=0.0
-        self.stats={"jobsAttempted":0,"newCandidates":0,"candidatesCertified":0,"gamesRepaired":0,"discoveryExhausted":0,
+        self.stats={"jobsAttempted":0,"newCandidates":0,"candidatesCertified":0,"candidatesCorroborated":0,"gamesRepaired":0,"discoveryExhausted":0,
                     "sourceAttempts":0,"sourceResults":0,"sourceNew":0,"sourceDuplicates":0,"sourceRejected":0,"sourceEligibleKnown":0,
                     "knownCandidatesEligible":0,"knownTransportRefreshes":0,
                     "localCatalogCandidates":0,"registeredProviderNew":0,"youtubeIndexCandidates":0,
@@ -2952,6 +2954,12 @@ class MediaRepairEngine(threading.Thread):
 
     def _probe(self, job, asset, phase='CERTIFYING'):
         repair_id=int(job['id']); event_key=str(job['canonical_event_key']); source_run=int(job.get('source_audit_run_id') or 0)
+        # Match the canonical audit's evidence policy: a recent independent PLAYED
+        # success is durable positive evidence. A later transient headless timeout
+        # may be recorded, but it cannot erase that success or prevent repair from
+        # using the asset. Hard failures still override immediately.
+        was_recent_playable=_recent_playable(asset)
+        prior_success_at=float(asset.get('runtimeSuccessAt') or 0)
         last=None
         for attempt in range(1,REPAIR_CERT_ATTEMPTS+1):
             if self.stop_event.is_set(): return {"ok":False,"infra":True,"reason":"REPAIR_STOPPED"}
@@ -2964,7 +2972,8 @@ class MediaRepairEngine(threading.Thread):
                 result=_infra_result_from_exception(exc)
             last=result
             try:
-                # Keep source runtime evidence unified with normal audit certification.
+                # Keep raw browser evidence unified with normal audit certification.
+                # record_probe itself preserves recent PLAYED state across soft/infra negatives.
                 self._write('repair persist playback evidence','record_probe',source_run,event_key,asset,attempt,result,getattr(self.probe,'browser',''),event_key=event_key)
                 self._write('repair persist candidate certification','record_repair_candidate',repair_id,event_key,asset,result,event_key=event_key)
             except sqlite3.OperationalError as exc:
@@ -2977,13 +2986,50 @@ class MediaRepairEngine(threading.Thread):
             self._set(lastResult=reason or ('PLAYING_TIME_ADVANCED' if result.get('ok') else 'UNKNOWN'))
             if result.get('ok'):
                 self.stats['candidatesCertified']+=1
-                self._trace('INFO','Repair candidate certified',event=event_key,asset=asset.get('assetKey'),tier=asset.get('tier'),provider=asset.get('provider'))
+                self._trace('INFO','Repair candidate certified by fresh playback advancement',event=event_key,asset=asset.get('assetKey'),tier=asset.get('tier'),provider=asset.get('provider'))
                 return result
             if result.get('hard') or _hard_media_failure_reason(reason):
                 self._trace('WARN','Repair candidate hard-failed',event=event_key,asset=asset.get('assetKey'),reason=reason)
                 return result
             # Soft/infra retries use a fresh browser session.
-        return last or {"ok":False,"infra":True,"reason":"EMPTY_REPAIR_PROBE_RESULT"}
+
+        # R20 evidence symmetry: if this asset had fresh PLAYED evidence before the
+        # repair attempt and every new observation was only transient, certify the
+        # repair candidate from the retained positive evidence. Do NOT call record_probe
+        # with this synthetic success; that would incorrectly claim a fresh playback.
+        # The raw soft observations remain stored, while runtime_state stays PLAYED.
+        last=last or {"ok":False,"infra":True,"reason":"EMPTY_REPAIR_PROBE_RESULT"}
+        last_reason=str(last.get('reason') or '')
+        if (
+            was_recent_playable
+            and not last.get('hard')
+            and not _hard_media_failure_reason(last_reason)
+            and (_transient_media_failure_reason(last_reason) or last.get('infra') or _infra_failure_reason(last_reason))
+        ):
+            retained={
+                "ok":True,"hard":False,"infra":False,
+                "reason":"RECENT_PLAYBACK_RETAINED_REPAIR",
+                "corroborated":True,"corroboration":"RECENT_PLAYED_EVIDENCE",
+                "currentProbeReason":last_reason,
+                "priorRuntimeSuccessAt":prior_success_at,
+                "startupMs":float(last.get('startupMs') or 0),
+                "currentTimeDelta":float(last.get('currentTimeDelta') or 0),
+            }
+            self._write('repair persist retained-playable certification','record_repair_candidate',repair_id,event_key,asset,retained,event_key=event_key)
+            self.stats['candidatesCertified']+=1; self.stats['candidatesCorroborated']+=1
+            self._set(lastResult=f"RECENT_PLAYBACK_RETAINED_REPAIR • current={last_reason or 'TRANSIENT'}")
+            self._trace('WARN','Repair candidate certified from retained recent PLAYED evidence after transient probe',
+                        event=event_key,asset=asset.get('assetKey'),tier=asset.get('tier'),provider=asset.get('provider'),
+                        currentProbeReason=last_reason,priorRuntimeSuccessAt=prior_success_at)
+            return retained
+        return last
+
+    @staticmethod
+    def _promotion_evidence(base_reason, result):
+        base=str(base_reason or 'Repair Engine playback certification')
+        if result and result.get('corroborated'):
+            return f"{base}; retained recent PLAYED evidence after transient {result.get('currentProbeReason') or 'probe failure'}"
+        return base
 
     def _promote(self, job, asset, reason=''):
         result=self._write('promote certified repair into canonical database','promote_repaired_candidate',int(job['id']),str(job['canonical_event_key']),asset,int(job.get('source_audit_run_id') or 0),reason,event_key=str(job['canonical_event_key']))
@@ -3088,7 +3134,7 @@ class MediaRepairEngine(threading.Thread):
             asset=dict(asset); asset['repairConfidence']=conf; accepted.append(asset)
         accepted.sort(key=lambda a:(-float(a.get('repairConfidence') or 0),-self._candidate_score(a,str(job.get('target') or 'ANY').upper()),str(a.get('assetKey'))))
         if accepted:
-            self._write('associate deep-catalog repair candidates','associate_existing_repair_candidates',int(job['id']),str(job['canonical_event_key']),accepted[:REPAIR_CANDIDATE_LIMIT],source='R19_LOCAL_CATALOG',event_key=str(job['canonical_event_key']))
+            self._write('associate deep-catalog repair candidates','associate_existing_repair_candidates',int(job['id']),str(job['canonical_event_key']),accepted[:REPAIR_CANDIDATE_LIMIT],source='R20_LOCAL_CATALOG',event_key=str(job['canonical_event_key']))
             self.stats['localCatalogCandidates']+=len(accepted[:REPAIR_CANDIDATE_LIMIT]); self.stats['newCandidates']+=len(accepted[:REPAIR_CANDIDATE_LIMIT])
         self._record_stage(job,'LOCAL_CATALOG',provider='CATALOG',results=len(rows),new=len(accepted),duplicates=duplicates,rejected=rejected)
         return accepted[:REPAIR_CANDIDATE_LIMIT]
@@ -3197,7 +3243,7 @@ class MediaRepairEngine(threading.Thread):
             if key: tested.add(key)
             result=self._probe(job,asset,phase=phase)
             if not result.get('ok'): continue
-            promoted=self._promote(job,asset,reason)
+            promoted=self._promote(job,asset,self._promotion_evidence(reason,result))
             if promoted.get('health')=='HEALTHY': return promoted
             fallback=promoted; target='PREFERRED'
         return fallback
@@ -3217,7 +3263,7 @@ class MediaRepairEngine(threading.Thread):
         for asset in candidates[:REPAIR_CANDIDATE_LIMIT]:
             result=self._probe(job,asset,phase='RECERTIFY_EXISTING')
             if result.get('ok'):
-                return self._promote(job,asset,'Independent Repair Engine recertification of existing media')
+                return self._promote(job,asset,self._promotion_evidence('Independent Repair Engine recertification of existing media',result))
         refreshed=self.store.repair_queue(limit=1,state='SEARCHING')
         # Inconclusive is not immediately destructive. After a bounded independent
         # recertification cycle, graduate it to discovery on a delayed retry.
@@ -3339,7 +3385,7 @@ class MediaRepairEngine(threading.Thread):
         before=self.store.repair_event_assets(event_key); known={str(a.get('assetKey') or '') for a in before if a.get('assetKey')}
         tested=set(); transport_before={str(a.get('assetKey') or ''):self._repair_transport_signature(a) for a in before if a.get('assetKey')}
         self._write('repair staged search phase','update_repair_job',int(job['id']),state='SEARCHING',before_asset_count=len(before),
-                    details={"strategy":"R19_KNOWN_CANDIDATE_RECERTIFICATION","knownAssets":len(before),"target":target},event_key=event_key)
+                    details={"strategy":"R20_PLAYBACK_EVIDENCE_CORROBORATION","knownAssets":len(before),"target":target},event_key=event_key)
         fallback=None; total_new=[]
 
         # R19 Stage -1: known is not duplicate. Recertify the best already-associated
@@ -3351,7 +3397,7 @@ class MediaRepairEngine(threading.Thread):
                            rejected=int(known_meta.get('hardRejected') or 0)+int(known_meta.get('transportMissing') or 0),
                            eligible_known=len(known_candidates),details=known_meta)
         if known_candidates:
-            promoted=self._certify_candidates(job,known_candidates,target,'R19 known-candidate recertification',tested=tested,phase='RECERTIFY_KNOWN_CANDIDATE')
+            promoted=self._certify_candidates(job,known_candidates,target,'R20 known-candidate recertification',tested=tested,phase='RECERTIFY_KNOWN_CANDIDATE')
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 
@@ -3360,7 +3406,7 @@ class MediaRepairEngine(threading.Thread):
         if local:
             total_new.extend(str(a.get('assetKey')) for a in local if a.get('assetKey')); known.update(total_new)
             local_keys={str(a.get('assetKey')) for a in local if a.get('assetKey')}
-            promoted=self._certify_candidates(job,[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in local_keys],target,'R19 deep local catalog recovery',tested=tested)
+            promoted=self._certify_candidates(job,[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in local_keys],target,'R20 deep local catalog recovery',tested=tested)
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 
@@ -3380,7 +3426,7 @@ class MediaRepairEngine(threading.Thread):
                            details={"ok":bool(result.get('ok')),"reason":result.get('reason') or '',"payloadSummary":{k:v for k,v in (result.get('payload') or {}).items() if k in {'provider','providers','discovered','added','candidateCount'}}})
         if provider_new:
             candidates=self.store.repair_event_assets(event_key)
-            promoted=self._certify_candidates(job,[a for a in candidates if a.get('assetKey') in {x.get('assetKey') for x in provider_new}],target,'R19 registered provider discovery',tested=tested)
+            promoted=self._certify_candidates(job,[a for a in candidates if a.get('assetKey') in {x.get('assetKey') for x in provider_new}],target,'R20 registered provider discovery',tested=tested)
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 
@@ -3404,7 +3450,7 @@ class MediaRepairEngine(threading.Thread):
             self._record_stage(job,'REFRESHED_KNOWN_CANDIDATES',provider='EVENT_CATALOG',results=len(after),new=0,duplicates=provider_known,
                                rejected=int(refresh_meta.get('hardRejected') or 0)+int(refresh_meta.get('transportMissing') or 0),
                                eligible_known=len(refreshed_known),details={**refresh_meta,'transportChanged':len(refreshed_keys)})
-            promoted=self._certify_candidates(job,refreshed_known,target,'R19 refreshed known-candidate recertification',tested=tested,phase='RECERTIFY_REFRESHED_KNOWN')
+            promoted=self._certify_candidates(job,refreshed_known,target,'R20 refreshed known-candidate recertification',tested=tested,phase='RECERTIFY_REFRESHED_KNOWN')
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
         transport_before={str(a.get('assetKey') or ''):self._repair_transport_signature(a) for a in after if a.get('assetKey')}
@@ -3417,7 +3463,7 @@ class MediaRepairEngine(threading.Thread):
             candidate_keys={'yt:'+str(x.get('youtubeId')) for x in indexed if x.get('youtubeId')}
             total_new.extend(sorted(candidate_keys)); known.update(candidate_keys)
             candidates=[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in candidate_keys]
-            promoted=self._certify_candidates(job,candidates,target,'R19 official/trusted YouTube playlist index',tested=tested)
+            promoted=self._certify_candidates(job,candidates,target,'R20 official/trusted YouTube playlist index',tested=tested)
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 
@@ -3430,7 +3476,7 @@ class MediaRepairEngine(threading.Thread):
             self.stats['newCandidates']+=len(yt_candidates)
             keys={'yt:'+str(x.get('youtubeId')) for x in yt_candidates if x.get('youtubeId')}; total_new.extend(sorted(keys))
             candidates=[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in keys]
-            promoted=self._certify_candidates(job,candidates,target,'R19 generic YouTube last-resort search',tested=tested)
+            promoted=self._certify_candidates(job,candidates,target,'R20 generic YouTube last-resort search',tested=tested)
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 

@@ -17,8 +17,8 @@ for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STA
 assert 'youtubeProbe' not in html
 assert 'directProbe' not in html
 assert 'youtube.com/iframe_api' not in html
-assert 'ui/media-audit-v550.js?v=5.5.0-r19' in html
-assert 'ui/media-audit-v550.css?v=5.5.0-r19' in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r20' in html
+assert 'ui/media-audit-v550.css?v=5.5.0-r20' in html
 assert 'href="media-audit.html"' in index
 
 # Browser is a console only. All control and inventory authority routes to the backend service.
@@ -29,7 +29,7 @@ for forbidden in ['localStorage','YT.Player','directProbe','youtubeProbe','/api/
 
 # Canonical server-owned audit contract.
 for token in [
-    'AUDIT_GENERATION = "R19-KNOWN-CANDIDATE-RECERTIFICATION"',
+    'AUDIT_GENERATION = "R20-PLAYBACK-EVIDENCE-CORROBORATION"',
     'history_media_audit_run',
     'history_media_audit_queue',
     'history_media_audit_asset_result',
@@ -96,7 +96,7 @@ for token in [
     'diagProgressAge','diagTrace','SERVER TRACE','DATABASE + PRODUCTION PARITY'
 ]:
     assert token in html or token in js,token
-assert "const GENERATION='R19-KNOWN-CANDIDATE-RECERTIFICATION'" in js
+assert "const GENERATION='R20-PLAYBACK-EVIDENCE-CORROBORATION'" in js
 assert 'localStorage' not in js
 
 # R11: reset/start/stop retire the worker itself and stale run work cannot persist.
@@ -290,8 +290,8 @@ assert 'LOCAL_HEALTH_ATTEMPTS="${SBB_LOCAL_HEALTH_ATTEMPTS:-180}"' in deploy, 'c
 assert deploy.index('systemctl restart sports-big-board') < deploy.index('Installing canonical Media Health Audit service'), 'main backend must be healthy before audit service restart'
 
 
-# R19 known-candidate recovery: retain R18 transport hardening while recertifying viable known media before discovery.
-assert 'R19-KNOWN-CANDIDATE-RECERTIFICATION' in service
+# R20 playback-evidence corroboration: retain R18 transport hardening while recertifying viable known media before discovery.
+assert 'R20-PLAYBACK-EVIDENCE-CORROBORATION' in service
 for token in [
     'history_media_repair_queue','history_media_repair_candidate','class MediaRepairEngine',
     'canonical-media-repair-engine','REPAIR_ENABLED','REPAIR_DISCOVERY_PASSES','REPAIR_CERT_ATTEMPTS',
@@ -348,10 +348,10 @@ for token in ['REPAIR QUEUE','REPAIRED','MEDIA REPAIR ENGINE','repairState','rep
 assert "AUDIT DISCOVERY DISABLED • Repair Engine owns discovery" in js
 assert '/repairs' in service
 
-# R19 retains staged discovery effectiveness and adds bounded known-candidate recertification before discovery; cheap official
+# R20 retains staged discovery + known-candidate recovery and adds evidence-symmetric playback certification; cheap official
 # YouTube indexing is independent of search.list quota, and exhausted work preserves cooldowns.
 for token in [
-    'R19_KNOWN_CANDIDATE_RECERTIFICATION','history_media_repair_source_attempt','history_media_repair_youtube_index',
+    'R20_PLAYBACK_EVIDENCE_CORROBORATION','history_media_repair_source_attempt','history_media_repair_youtube_index',
     'def repair_catalog_search','def associate_existing_repair_candidates','def trusted_youtube_channels',
     'def _deep_catalog_candidates','def _refresh_youtube_index_if_needed','def _youtube_index_candidates',
     'LOCAL_CATALOG','REGISTERED_PROVIDERS','OFFICIAL_YOUTUBE_INDEX','GENERIC_YOUTUBE_SEARCH',
@@ -384,10 +384,10 @@ assert (
 
 for token in ['repairStage','repairStageResult','repairSourceStats','source stages','YT indexed','search quota blocks']:
     assert token in html or token in js,token
-assert '5.5.0-r19' in html
+assert '5.5.0-r20' in html
 
 
-# R19: known media must be eligible for bounded repair recertification instead of
+# R19/R20: known media must remain eligible for bounded repair recertification instead of
 # being discarded merely because its assetKey already exists on the event.
 for token in [
     'REPAIR_KNOWN_CANDIDATE_LIMIT','def _repair_transport_signature','def _eligible_known_candidates',
@@ -405,7 +405,21 @@ assert "sourceEligibleKnown" in js
 
 seed_block=service[service.index('def seed_repair_queue'):service.index('def repair_summary')]
 assert "state IN ('SEARCHING','CERTIFYING')" in seed_block
-assert 'R19 known-candidate recertification strategy upgrade' in seed_block
+assert 'R20 playback-evidence corroboration strategy upgrade' in seed_block
 assert 'strategyRequeued' in seed_block
 
-print('PASS v5.5.0 R19 known-candidate recertification + R18 transport + staged discovery + canonical write-back')
+# R20: stabilize browser progress observation and let Repair use the same recent-PLAYED
+# retention rule already trusted by the canonical audit, without converting a soft
+# observation into fake fresh browser evidence.
+probe_text=probe
+for token in ['PROBE_VERSION=\'5.5.0-r20\'','ADVANCE_MIN_SECONDS','DIRECT_ADVANCE_WINDOW_MS','YOUTUBE_START_TIMEOUT_MS','getVideoLoadedFraction','DIRECT_TIME_NOT_ADVANCING','YOUTUBE_TIME_NOT_ADVANCING']:
+    assert token in probe_text,token
+for token in ['--disable-background-timer-throttling','--disable-backgrounding-occluded-windows','--disable-renderer-backgrounding']:
+    assert token in service,token
+repair_probe=service[service.index("def _probe(self, job, asset, phase='CERTIFYING')"):service.index("def _promote(self, job, asset, reason='')",service.index("def _probe(self, job, asset, phase='CERTIFYING')"))]
+for token in ['was_recent_playable=_recent_playable(asset)','RECENT_PLAYBACK_RETAINED_REPAIR','currentProbeReason','candidatesCorroborated','record_repair_candidate']:
+    assert token in repair_probe or token in service,token
+assert "record_probe',source_run,event_key,asset,attempt,retained" not in repair_probe
+assert 'retained-evidence' in js
+
+print('PASS v5.5.0 R20 playback evidence corroboration + probe stabilization + R19 known-candidate recovery + R18 transport')

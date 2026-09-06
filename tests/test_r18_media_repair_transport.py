@@ -1,4 +1,4 @@
-"""R18 transport invariants retained under R19 known-candidate recovery.
+"""R18 transport invariants retained under R20 playback-evidence corroboration.
 
 These tests are intentionally source-level/lightweight so they can run in the
 existing repository verification environment without live ESPN or YouTube calls.
@@ -37,9 +37,9 @@ class R18MediaRepairTransportTests(unittest.TestCase):
         self.assertLess(block.index('"videoUrl"'), block.index('"externalUrl"'))
         self.assertIn('"playbackUrl"', block)
 
-    def test_r19_requeues_r18_exhausted_actionable_jobs_once(self):
-        self.assertIn('R19-KNOWN-CANDIDATE-RECERTIFICATION', AUDIT)
-        self.assertIn("R19_KNOWN_CANDIDATE_RECERTIFICATION", AUDIT)
+    def test_r20_requeues_prior_exhausted_actionable_jobs_once(self):
+        self.assertIn('R20-PLAYBACK-EVIDENCE-CORROBORATION', AUDIT)
+        self.assertIn("R20_PLAYBACK_EVIDENCE_CORROBORATION", AUDIT)
         self.assertIn("state='PENDING'", AUDIT)
         self.assertIn("state='WAITING_RETRY'", AUDIT)
 

@@ -1,4 +1,4 @@
-"""R19 known-candidate repair regression guards."""
+"""R19 known-candidate invariants retained under R20 playback evidence corroboration."""
 from pathlib import Path
 import unittest
 
@@ -25,9 +25,9 @@ class R19KnownCandidateRecoveryTests(unittest.TestCase):
         self.assertIn('tested.discard(key)',self.block)
         self.assertIn('knownTransportRefreshes',self.block)
 
-    def test_r19_requeues_prior_waiting_jobs_once(self):
-        self.assertIn('R19_KNOWN_CANDIDATE_RECERTIFICATION',AUDIT)
-        self.assertIn('R19 known-candidate recertification strategy upgrade: immediate one-time retry',AUDIT)
+    def test_r20_requeues_prior_waiting_jobs_once(self):
+        self.assertIn('R20_PLAYBACK_EVIDENCE_CORROBORATION',AUDIT)
+        self.assertIn('R20 playback-evidence corroboration strategy upgrade: immediate one-time retry',AUDIT)
 
     def test_operator_telemetry_exposes_eligible_known(self):
         self.assertIn('sourceEligibleKnown',UI)
