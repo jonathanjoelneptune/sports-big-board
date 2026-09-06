@@ -31,7 +31,7 @@ permissions:
   id-token: write
 
 concurrency:
-  # Normal pushes serialize on one production lane.  A manually dispatched
+  # Normal pushes serialize on one production lane. A manually dispatched
   # emergency run can opt into a unique lane so a stale GitHub concurrency
   # reservation cannot hold the recovery deploy in QUEUED forever.
   group: ${{ github.event_name == 'workflow_dispatch' && inputs.emergency_bypass && format('sports-big-board-emergency-{0}', github.run_id) || 'sports-big-board-production' }}
@@ -45,6 +45,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+      - name: Materialize v6.0 release checkout
+        run: python3 tools/apply_v600_release.py
       - name: Run Sports Big Board verification
         run: bash VERIFY.sh
 
@@ -56,6 +58,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+      - name: Materialize v6.0 release checkout
+        run: python3 tools/apply_v600_release.py
 
       - name: Require cloud deployment configuration
         env:
@@ -117,6 +121,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+      - name: Materialize v6.0 release checkout
+        run: python3 tools/apply_v600_release.py
       - name: Build static frontend
         env:
           SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
