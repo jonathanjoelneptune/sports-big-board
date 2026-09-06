@@ -82,6 +82,21 @@ def patch_verify(root: Path, dry=False):
     return True
 
 
+def patch_legacy_v610_test(root: Path, dry=False):
+    """Advance the v6.1 release-surface test to the active v6.1.1 materializer."""
+    path = root / "tests" / "test_v610_canonical_certification.py"
+    if not path.is_file():
+        return False
+    text = path.read_text(encoding="utf-8")
+    old = "assert w.count('python3 tools/apply_v610_release.py') >= 4"
+    new = "assert w.count('python3 tools/apply_v611_release.py') >= 4"
+    if old not in text:
+        return False
+    if not dry:
+        path.write_text(text.replace(old, new, 1), encoding="utf-8")
+    return True
+
+
 def patch_frontend(root: Path, dry=False):
     path = root / "index.html"
     text = path.read_text(encoding="utf-8")
@@ -165,6 +180,8 @@ def main(argv=None):
         patch_changes.append(root / "sbb" / "__init__.py")
     if patch_verify(root, args.dry_run):
         patch_changes.append(root / "VERIFY.sh")
+    if patch_legacy_v610_test(root, args.dry_run):
+        patch_changes.append(root / "tests" / "test_v610_canonical_certification.py")
     if patch_frontend(root, args.dry_run):
         patch_changes.append(root / "index.html")
 
