@@ -122,13 +122,17 @@ def test_clean_result_copy_is_left_unchanged():
     assert fixed["freshnessBasis"] == text
 
 
-def test_stable_launcher_auto_discovers_a49_without_yaml_change():
+def test_stable_launcher_auto_discovers_a49_or_newer_without_yaml_change():
     launcher_path = ROOT / "tools" / "refresh_sports_ticker_current.py"
     spec2 = importlib.util.spec_from_file_location("ticker_current_launcher_a49", launcher_path)
     launcher = importlib.util.module_from_spec(spec2)
     assert spec2 and spec2.loader
     spec2.loader.exec_module(launcher)
-    assert launcher.discover_latest().name == "refresh_sports_ticker_a49.py"
+
+    name = launcher.discover_latest().name
+    assert name.startswith("refresh_sports_ticker_a") and name.endswith(".py"), name
+    version = int(name.removeprefix("refresh_sports_ticker_a").removesuffix(".py"))
+    assert version >= 49, name
 
     workflow = (ROOT / ".github" / "workflows" / "sports-ticker-refresh.yml").read_text()
     assert "python3 tests/test_sports_ticker_current.py" in workflow
@@ -151,6 +155,6 @@ if __name__ == "__main__":
     test_fused_summary_is_unpacked_and_raw_metadata_choice_removed()
     test_raw_citadel_text_and_freshness_are_replaced_with_grounded_summary()
     test_clean_result_copy_is_left_unchanged()
-    test_stable_launcher_auto_discovers_a49_without_yaml_change()
+    test_stable_launcher_auto_discovers_a49_or_newer_without_yaml_change()
     test_stable_test_runner_discovers_a49_regression()
     print("PASS: A4.9 grounded copy integrity + stable no-YAML entrypoints")
