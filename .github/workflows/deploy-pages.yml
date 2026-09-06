@@ -42,8 +42,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1.1 release checkout
-        run: python3 tools/apply_v611_release.py
+      - name: Materialize v6.1.2 release checkout
+        run: python3 tools/apply_v612_release.py
       - name: Run Sports Big Board verification
         run: bash VERIFY.sh
 
@@ -55,8 +55,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1.1 release checkout
-        run: python3 tools/apply_v611_release.py
+      - name: Materialize v6.1.2 release checkout
+        run: python3 tools/apply_v612_release.py
 
       - name: Require cloud deployment configuration
         env:
@@ -118,8 +118,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1.1 release checkout
-        run: python3 tools/apply_v611_release.py
+      - name: Materialize v6.1.2 release checkout
+        run: python3 tools/apply_v612_release.py
       - name: Build static frontend
         env:
           SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
@@ -156,8 +156,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1.1 release checkout
-        run: python3 tools/apply_v611_release.py
+      - name: Materialize v6.1.2 release checkout
+        run: python3 tools/apply_v612_release.py
       - name: Verify public milestone release
         env:
           PAGE_URL: ${{ needs.pages-deploy.outputs.page_url }}
@@ -219,12 +219,19 @@ jobs:
             /tmp/sbb-canonical-cert.json \
             10
 
+          fetch_backend_json \
+            "canonical-validation" \
+            "$SBB_API_BASE_URL/api/canonical/validation/health" \
+            /tmp/sbb-canonical-validation.json \
+            10
+
           python3 - <<'PY'
           import json
           expected=open('VERSION').read().strip()
           status=json.load(open('/tmp/sbb-status.json'))
           milestone=json.load(open('/tmp/sbb-milestone.json'))
           cert=json.load(open('/tmp/sbb-canonical-cert.json'))
+          validation=json.load(open('/tmp/sbb-canonical-validation.json'))
           assert status.get('version')==expected,(status.get('version'),expected)
           assert milestone.get('version')==expected,(milestone.get('version'),expected)
           assert milestone.get('versionMatch') is True,milestone.get('extra',{}).get('release')
@@ -232,5 +239,9 @@ jobs:
           assert cert.get('productionAuthority') is False,cert
           assert cert.get('hardening',{}).get('productionContradictionGate') is True,cert.get('hardening')
           assert str(cert.get('version','')).startswith(expected),cert.get('version')
-          print(f'PASS deployed frontend/backend/canonical-hardening handshake: {expected}')
+          assert validation.get('ok') is True,validation
+          assert validation.get('productionAuthority') is False,validation
+          assert validation.get('hooks',{}).get('copyValidationConsole') is True,validation.get('hooks')
+          assert str(validation.get('version','')).startswith(expected),validation.get('version')
+          print(f'PASS deployed frontend/backend/canonical-validation handshake: {expected}')
           PY
