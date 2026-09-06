@@ -17,8 +17,8 @@ for token in ['MEDIA HEALTH AUDIT','AUDIT EVERYTHING','RETEST FAILED','AUDIT STA
 assert 'youtubeProbe' not in html
 assert 'directProbe' not in html
 assert 'youtube.com/iframe_api' not in html
-assert 'ui/media-audit-v550.js?v=5.5.0-r18' in html
-assert 'ui/media-audit-v550.css?v=5.5.0-r18' in html
+assert 'ui/media-audit-v550.js?v=5.5.0-r19' in html
+assert 'ui/media-audit-v550.css?v=5.5.0-r19' in html
 assert 'href="media-audit.html"' in index
 
 # Browser is a console only. All control and inventory authority routes to the backend service.
@@ -29,7 +29,7 @@ for forbidden in ['localStorage','YT.Player','directProbe','youtubeProbe','/api/
 
 # Canonical server-owned audit contract.
 for token in [
-    'AUDIT_GENERATION = "R18-MEDIA-REPAIR-TRANSPORT"',
+    'AUDIT_GENERATION = "R19-KNOWN-CANDIDATE-RECERTIFICATION"',
     'history_media_audit_run',
     'history_media_audit_queue',
     'history_media_audit_asset_result',
@@ -96,7 +96,7 @@ for token in [
     'diagProgressAge','diagTrace','SERVER TRACE','DATABASE + PRODUCTION PARITY'
 ]:
     assert token in html or token in js,token
-assert "const GENERATION='R18-MEDIA-REPAIR-TRANSPORT'" in js
+assert "const GENERATION='R19-KNOWN-CANDIDATE-RECERTIFICATION'" in js
 assert 'localStorage' not in js
 
 # R11: reset/start/stop retire the worker itself and stale run work cannot persist.
@@ -290,8 +290,8 @@ assert 'LOCAL_HEALTH_ATTEMPTS="${SBB_LOCAL_HEALTH_ATTEMPTS:-180}"' in deploy, 'c
 assert deploy.index('systemctl restart sports-big-board') < deploy.index('Installing canonical Media Health Audit service'), 'main backend must be healthy before audit service restart'
 
 
-# R18 media-repair transport: retain staged Repair Engine discovery while correcting transport selection.
-assert 'R18-MEDIA-REPAIR-TRANSPORT' in service
+# R19 known-candidate recovery: retain R18 transport hardening while recertifying viable known media before discovery.
+assert 'R19-KNOWN-CANDIDATE-RECERTIFICATION' in service
 for token in [
     'history_media_repair_queue','history_media_repair_candidate','class MediaRepairEngine',
     'canonical-media-repair-engine','REPAIR_ENABLED','REPAIR_DISCOVERY_PASSES','REPAIR_CERT_ATTEMPTS',
@@ -348,10 +348,10 @@ for token in ['REPAIR QUEUE','REPAIRED','MEDIA REPAIR ENGINE','repairState','rep
 assert "AUDIT DISCOVERY DISABLED • Repair Engine owns discovery" in js
 assert '/repairs' in service
 
-# R18 retains staged discovery effectiveness: every repair stage is materially different, cheap official
+# R19 retains staged discovery effectiveness and adds bounded known-candidate recertification before discovery; cheap official
 # YouTube indexing is independent of search.list quota, and exhausted work preserves cooldowns.
 for token in [
-    'R18_MEDIA_REPAIR_TRANSPORT','history_media_repair_source_attempt','history_media_repair_youtube_index',
+    'R19_KNOWN_CANDIDATE_RECERTIFICATION','history_media_repair_source_attempt','history_media_repair_youtube_index',
     'def repair_catalog_search','def associate_existing_repair_candidates','def trusted_youtube_channels',
     'def _deep_catalog_candidates','def _refresh_youtube_index_if_needed','def _youtube_index_candidates',
     'LOCAL_CATALOG','REGISTERED_PROVIDERS','OFFICIAL_YOUTUBE_INDEX','GENERIC_YOUTUBE_SEARCH',
@@ -384,11 +384,28 @@ assert (
 
 for token in ['repairStage','repairStageResult','repairSourceStats','source stages','YT indexed','search quota blocks']:
     assert token in html or token in js,token
-assert '5.5.0-r18' in html
+assert '5.5.0-r19' in html
+
+
+# R19: known media must be eligible for bounded repair recertification instead of
+# being discarded merely because its assetKey already exists on the event.
+for token in [
+    'REPAIR_KNOWN_CANDIDATE_LIMIT','def _repair_transport_signature','def _eligible_known_candidates',
+    'KNOWN_CANDIDATES','REFRESHED_KNOWN_CANDIDATES','RECERTIFY_KNOWN_CANDIDATE','RECERTIFY_REFRESHED_KNOWN',
+    'sourceEligibleKnown','knownCandidatesEligible','knownTransportRefreshes',
+    'known is not duplicate','tested.discard(key)','transportChanged',
+]:
+    assert token in service,token
+repair_discovery=service[service.index('def _repair_by_discovery'):service.index('@staticmethod',service.index('def _repair_by_discovery'))]
+assert repair_discovery.index("_eligible_known_candidates(before,target,tested)") < repair_discovery.index('_deep_catalog_candidates')
+assert "tested=tested,phase='RECERTIFY_KNOWN_CANDIDATE'" in repair_discovery
+assert "new_sig!=old_sig and key in tested" in repair_discovery
+assert "tested.discard(key)" in repair_discovery
+assert "sourceEligibleKnown" in js
 
 seed_block=service[service.index('def seed_repair_queue'):service.index('def repair_summary')]
 assert "state IN ('SEARCHING','CERTIFYING')" in seed_block
-assert 'R18 playable-transport strategy upgrade' in seed_block
+assert 'R19 known-candidate recertification strategy upgrade' in seed_block
 assert 'strategyRequeued' in seed_block
 
-print('PASS v5.5.0 R18 media-repair transport + staged discovery + cooldowns + canonical write-back')
+print('PASS v5.5.0 R19 known-candidate recertification + R18 transport + staged discovery + canonical write-back')

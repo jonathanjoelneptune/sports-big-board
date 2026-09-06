@@ -38,7 +38,7 @@ from sbb.event_matcher import team_name as catalog_team_name
 
 APP_ROOT = Path(__file__).resolve().parent
 APP_VERSION = (APP_ROOT / "VERSION").read_text(encoding="utf-8").strip()
-AUDIT_GENERATION = "R18-MEDIA-REPAIR-TRANSPORT"
+AUDIT_GENERATION = "R19-KNOWN-CANDIDATE-RECERTIFICATION"
 STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 DB_PATH = STATE_DIR / "cache" / "history.sqlite3"
 HOST = os.environ.get("SBB_MEDIA_AUDIT_HOST", "127.0.0.1")
@@ -65,7 +65,7 @@ DISCOVERY_SEMAPHORE = threading.Semaphore(DISCOVERY_CONCURRENCY)
 DB_WRITE_QUEUE_MAX = max(32, min(4096, int(os.environ.get("SBB_MEDIA_AUDIT_DB_WRITE_QUEUE_MAX", "512"))))
 INFRA_RETRIES = max(1, min(4, int(os.environ.get("SBB_MEDIA_AUDIT_INFRA_RETRIES", "2"))))
 STATUS_CACHE_REFRESH_SECONDS = max(2.0, min(30.0, float(os.environ.get("SBB_MEDIA_AUDIT_STATUS_CACHE_SECONDS", "5"))))
-# R17: certification and repair remain separate engines. The Repair Engine now
+# R19: certification and repair remain separate engines. The Repair Engine now
 # escalates through materially different sources instead of repeating one discovery
 # endpoint. Expensive YouTube search.list is last-resort only; official/trusted
 # channel uploads are indexed with channels.list + playlistItems.list, whose gateway
@@ -74,6 +74,7 @@ REPAIR_ENABLED = str(os.environ.get("SBB_MEDIA_REPAIR_ENABLED", "1")).lower() in
 REPAIR_DISCOVERY_PASSES = max(1, min(2, int(os.environ.get("SBB_MEDIA_REPAIR_DISCOVERY_PASSES", "1"))))
 REPAIR_CERT_ATTEMPTS = max(1, min(3, int(os.environ.get("SBB_MEDIA_REPAIR_CERT_ATTEMPTS", "2"))))
 REPAIR_CANDIDATE_LIMIT = max(1, min(30, int(os.environ.get("SBB_MEDIA_REPAIR_CANDIDATE_LIMIT", "10"))))
+REPAIR_KNOWN_CANDIDATE_LIMIT = max(1, min(10, int(os.environ.get("SBB_MEDIA_REPAIR_KNOWN_CANDIDATE_LIMIT", "3"))))
 REPAIR_RECENT_RETRY_SECONDS = max(300, int(os.environ.get("SBB_MEDIA_REPAIR_RECENT_RETRY_SECONDS", str(6 * 3600))))
 REPAIR_MIDAGE_RETRY_SECONDS = max(1800, int(os.environ.get("SBB_MEDIA_REPAIR_MIDAGE_RETRY_SECONDS", str(24 * 3600))))
 REPAIR_HISTORICAL_RETRY_SECONDS = max(3600, int(os.environ.get("SBB_MEDIA_REPAIR_HISTORICAL_RETRY_SECONDS", str(7 * 24 * 3600))))
@@ -578,12 +579,12 @@ class AuditStore:
                 "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,reason=CASE WHEN reason='' THEN 'Recovered interrupted Repair Engine job' ELSE reason END WHERE state IN ('SEARCHING','CERTIFYING')",
                 (now,),
             ); recovered_active=int(cur.rowcount or 0)
-            # R18 changes the provider transport that reaches certification. Give
-            # every R17-exhausted actionable job one immediate pass through the
-            # corrected ladder. Once processed, details_json carries the R18 marker,
-            # so normal cooldown preservation prevents service-restart loops.
+            # R19 changes candidate eligibility, not just discovery. Give every
+            # R18-exhausted actionable job one immediate pass that can recertify
+            # already-known media before spending discovery quota. Once processed,
+            # details_json carries the R19 marker so service restarts preserve cooldowns.
             cur=conn.execute(
-                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R18 playable-transport strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R18_MEDIA_REPAIR_TRANSPORT%'",
+                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R19 known-candidate recertification strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R19_KNOWN_CANDIDATE_RECERTIFICATION%'",
                 (now,),
             ); strategy_requeued=int(cur.rowcount or 0)
             latest = conn.execute("SELECT id FROM history_media_audit_run ORDER BY id DESC LIMIT 1").fetchone()
@@ -763,11 +764,11 @@ class AuditStore:
                         "channelId":row['channel_id'] or '',"channelName":row['channel_name'] or '',"validationState":row['validation_state'],
                         "runtimeState":row['runtime_state'],"runtimeSuccessAt":float(row['runtime_success_at'] or 0),
                         "runtimeFailureAt":float(row['runtime_failure_at'] or 0),"runtimeFailureReason":row['runtime_failure_reason'] or '',
-                        "associationState":"UNASSIGNED","associationMethod":"R17_LOCAL_CATALOG_SEARCH", "associationConfidence":0.0,
+                        "associationState":"UNASSIGNED","associationMethod":"R19_LOCAL_CATALOG_SEARCH", "associationConfidence":0.0,
                         "url":url,"youtubeId":_youtube_id(item,url),"tier":_tier(item),"item":item})
         return out
 
-    def associate_existing_repair_candidates(self, repair_id, event_key, assets, source='R17_LOCAL_CATALOG'):
+    def associate_existing_repair_candidates(self, repair_id, event_key, assets, source='R19_LOCAL_CATALOG'):
         """Attach already-known source assets as UNVERIFIED candidates for this exact event."""
         now=_now(); keys=[]
         with self.lock, closing(self.connect(timeout=2)) as conn:
@@ -2865,7 +2866,8 @@ class MediaRepairEngine(threading.Thread):
         self.last_seed_at=0.0
         self.last_youtube_index_refresh_at=0.0
         self.stats={"jobsAttempted":0,"newCandidates":0,"candidatesCertified":0,"gamesRepaired":0,"discoveryExhausted":0,
-                    "sourceAttempts":0,"sourceResults":0,"sourceNew":0,"sourceDuplicates":0,"sourceRejected":0,
+                    "sourceAttempts":0,"sourceResults":0,"sourceNew":0,"sourceDuplicates":0,"sourceRejected":0,"sourceEligibleKnown":0,
+                    "knownCandidatesEligible":0,"knownTransportRefreshes":0,
                     "localCatalogCandidates":0,"registeredProviderNew":0,"youtubeIndexCandidates":0,
                     "youtubeIndexedVideos":0,"youtubeFallbackSearches":0,"youtubeSearchQuotaBlocks":0,"cooldownPreserved":0}
         self.youtube=YouTubeGateway(user_agent=f"SportsBigBoard-MediaRepair/{APP_VERSION}-{AUDIT_GENERATION}",state_file=STATE_DIR/"cache"/"media-repair-youtube-state.json")
@@ -2904,6 +2906,49 @@ class MediaRepairEngine(threading.Thread):
         score+=min(15,int(float(asset.get('associationConfidence') or 0)*15))
         score+=min(10,int(float(asset.get('durationSeconds') or 0)/90))
         return score
+
+    @staticmethod
+    def _repair_transport_signature(asset):
+        """Identity of the browser-facing transport for refresh-aware recertification."""
+        asset=asset or {}
+        return (
+            str(asset.get('url') or ''),
+            str(asset.get('youtubeId') or ''),
+            str(asset.get('provider') or ''),
+            str(asset.get('tier') or ''),
+        )
+
+    def _eligible_known_candidates(self, assets, target='ANY', tested=None):
+        """Return known event media worth independently recertifying for this repair target.
+
+        Known is not synonymous with duplicate: a soft-failed, inconclusive,
+        superseded, or previously discovered asset can still be the correct repair.
+        Definitive hard failures remain excluded.
+        """
+        target=str(target or 'ANY').upper(); tested=tested if tested is not None else set()
+        eligible=[]; hard_rejected=0; target_skipped=0; transport_missing=0; already_tested=0
+        for asset in list(assets or []):
+            key=str(asset.get('assetKey') or '')
+            if not key: continue
+            if key in tested:
+                already_tested+=1; continue
+            tier=str(asset.get('tier') or 'blue').lower()
+            if target=='PREFERRED' and tier not in {'green','extended'}:
+                target_skipped+=1; continue
+            failure=str(asset.get('runtimeFailureReason') or '')
+            assoc=str(asset.get('associationState') or '').upper()
+            runtime=str(asset.get('runtimeState') or '').upper()
+            if (assoc=='QUARANTINED' or runtime=='FAILED') and _hard_media_failure_reason(failure):
+                hard_rejected+=1; continue
+            if not str(asset.get('url') or '') and not str(asset.get('youtubeId') or ''):
+                transport_missing+=1; continue
+            eligible.append(asset)
+        eligible.sort(key=lambda a:(-self._candidate_score(a,target),str(a.get('assetKey') or '')))
+        return eligible[:REPAIR_KNOWN_CANDIDATE_LIMIT], {
+            'hardRejected':hard_rejected,'targetSkipped':target_skipped,
+            'transportMissing':transport_missing,'alreadyTested':already_tested,
+            'eligibleKnown':len(eligible),
+        }
 
     def _probe(self, job, asset, phase='CERTIFYING'):
         repair_id=int(job['id']); event_key=str(job['canonical_event_key']); source_run=int(job.get('source_audit_run_id') or 0)
@@ -3010,15 +3055,20 @@ class MediaRepairEngine(threading.Thread):
                 if strict_date: score-=.04
         return max(0.0,min(.99,score))
 
-    def _record_stage(self, job, stage, *, provider='', query='', results=0, new=0, duplicates=0, rejected=0,
+    def _record_stage(self, job, stage, *, provider='', query='', results=0, new=0, duplicates=0, rejected=0, eligible_known=0,
                       quota_blocked=False, retry_at=0, details=None):
         self.stats['sourceAttempts']+=1
         self.stats['sourceResults']+=int(results or 0); self.stats['sourceNew']+=int(new or 0)
         self.stats['sourceDuplicates']+=int(duplicates or 0); self.stats['sourceRejected']+=int(rejected or 0)
+        self.stats['sourceEligibleKnown']+=int(eligible_known or 0)
+        stage_details=dict(details or {})
+        if eligible_known: stage_details['eligibleKnown']=int(eligible_known)
         self._write('record repair source attempt','record_repair_source_attempt',int(job['id']),str(job['canonical_event_key']),stage,
                     provider=provider,query=query,result_count=results,new_count=new,duplicate_count=duplicates,rejected_count=rejected,
-                    quota_blocked=quota_blocked,retry_at=retry_at,details=details or {},event_key=str(job['canonical_event_key']))
-        stage_line=f"{stage}: {results} results • {new} new • {duplicates} known • {rejected} rejected"
+                    quota_blocked=quota_blocked,retry_at=retry_at,details=stage_details,event_key=str(job['canonical_event_key']))
+        stage_line=f"{stage}: {results} results • {new} new • {duplicates} known"
+        if eligible_known: stage_line+=f" • {eligible_known} eligible known"
+        stage_line+=f" • {rejected} rejected"
         self._set(stage=stage,stageResult=stage_line,stageRetryAt=float(retry_at or 0))
         self._trace('WARN' if quota_blocked else 'INFO',stage_line,event=job['canonical_event_key'],provider=provider,quotaBlocked=bool(quota_blocked),retryAt=retry_at)
 
@@ -3038,7 +3088,7 @@ class MediaRepairEngine(threading.Thread):
             asset=dict(asset); asset['repairConfidence']=conf; accepted.append(asset)
         accepted.sort(key=lambda a:(-float(a.get('repairConfidence') or 0),-self._candidate_score(a,str(job.get('target') or 'ANY').upper()),str(a.get('assetKey'))))
         if accepted:
-            self._write('associate deep-catalog repair candidates','associate_existing_repair_candidates',int(job['id']),str(job['canonical_event_key']),accepted[:REPAIR_CANDIDATE_LIMIT],source='R17_LOCAL_CATALOG',event_key=str(job['canonical_event_key']))
+            self._write('associate deep-catalog repair candidates','associate_existing_repair_candidates',int(job['id']),str(job['canonical_event_key']),accepted[:REPAIR_CANDIDATE_LIMIT],source='R19_LOCAL_CATALOG',event_key=str(job['canonical_event_key']))
             self.stats['localCatalogCandidates']+=len(accepted[:REPAIR_CANDIDATE_LIMIT]); self.stats['newCandidates']+=len(accepted[:REPAIR_CANDIDATE_LIMIT])
         self._record_stage(job,'LOCAL_CATALOG',provider='CATALOG',results=len(rows),new=len(accepted),duplicates=duplicates,rejected=rejected)
         return accepted[:REPAIR_CANDIDATE_LIMIT]
@@ -3138,11 +3188,14 @@ class MediaRepairEngine(threading.Thread):
             self.stats['youtubeIndexCandidates']+=len(out[:REPAIR_CANDIDATE_LIMIT]); self.stats['newCandidates']+=len(out[:REPAIR_CANDIDATE_LIMIT])
         return out[:REPAIR_CANDIDATE_LIMIT]
 
-    def _certify_candidates(self, job, candidates, target, reason):
-        fallback=None
+    def _certify_candidates(self, job, candidates, target, reason, *, tested=None, phase='CERTIFY_REPAIR_CANDIDATE'):
+        fallback=None; tested=tested if tested is not None else set()
         for asset in list(candidates or [])[:REPAIR_CANDIDATE_LIMIT]:
+            key=str(asset.get('assetKey') or '')
+            if key and key in tested: continue
             if target=='PREFERRED' and str(asset.get('tier') or '') not in {'green','extended'}: continue
-            result=self._probe(job,asset,phase='CERTIFY_REPAIR_CANDIDATE')
+            if key: tested.add(key)
+            result=self._probe(job,asset,phase=phase)
             if not result.get('ok'): continue
             promoted=self._promote(job,asset,reason)
             if promoted.get('health')=='HEALTHY': return promoted
@@ -3284,16 +3337,30 @@ class MediaRepairEngine(threading.Thread):
     def _repair_by_discovery(self, job):
         event_key=str(job['canonical_event_key']); target=str(job.get('target') or 'ANY').upper()
         before=self.store.repair_event_assets(event_key); known={str(a.get('assetKey') or '') for a in before if a.get('assetKey')}
+        tested=set(); transport_before={str(a.get('assetKey') or ''):self._repair_transport_signature(a) for a in before if a.get('assetKey')}
         self._write('repair staged search phase','update_repair_job',int(job['id']),state='SEARCHING',before_asset_count=len(before),
-                    details={"strategy":"R18_MEDIA_REPAIR_TRANSPORT","knownAssets":len(before),"target":target},event_key=event_key)
+                    details={"strategy":"R19_KNOWN_CANDIDATE_RECERTIFICATION","knownAssets":len(before),"target":target},event_key=event_key)
         fallback=None; total_new=[]
+
+        # R19 Stage -1: known is not duplicate. Recertify the best already-associated
+        # media first, especially Green/Purple for DEGRADED -> PREFERRED. This is
+        # bounded and excludes only definitive hard failures or unusable transport.
+        known_candidates,known_meta=self._eligible_known_candidates(before,target,tested)
+        self.stats['knownCandidatesEligible']+=len(known_candidates)
+        self._record_stage(job,'KNOWN_CANDIDATES',provider='EVENT_CATALOG',results=len(before),new=0,duplicates=len(before),
+                           rejected=int(known_meta.get('hardRejected') or 0)+int(known_meta.get('transportMissing') or 0),
+                           eligible_known=len(known_candidates),details=known_meta)
+        if known_candidates:
+            promoted=self._certify_candidates(job,known_candidates,target,'R19 known-candidate recertification',tested=tested,phase='RECERTIFY_KNOWN_CANDIDATE')
+            if promoted and promoted.get('health')=='HEALTHY': return promoted
+            if promoted: fallback=promoted; target='PREFERRED'
 
         # Stage 0: forgotten/unassigned/superseded media already in our own catalog.
         local=self._deep_catalog_candidates(job,known)
         if local:
             total_new.extend(str(a.get('assetKey')) for a in local if a.get('assetKey')); known.update(total_new)
             local_keys={str(a.get('assetKey')) for a in local if a.get('assetKey')}
-            promoted=self._certify_candidates(job,[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in local_keys],target,'R18 deep local catalog recovery')
+            promoted=self._certify_candidates(job,[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in local_keys],target,'R19 deep local catalog recovery',tested=tested)
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 
@@ -3313,9 +3380,34 @@ class MediaRepairEngine(threading.Thread):
                            details={"ok":bool(result.get('ok')),"reason":result.get('reason') or '',"payloadSummary":{k:v for k,v in (result.get('payload') or {}).items() if k in {'provider','providers','discovered','added','candidateCount'}}})
         if provider_new:
             candidates=self.store.repair_event_assets(event_key)
-            promoted=self._certify_candidates(job,[a for a in candidates if a.get('assetKey') in {x.get('assetKey') for x in provider_new}],target,'R18 registered provider discovery')
+            promoted=self._certify_candidates(job,[a for a in candidates if a.get('assetKey') in {x.get('assetKey') for x in provider_new}],target,'R19 registered provider discovery',tested=tested)
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
+
+        # A provider refresh can improve the transport of an already-known asset
+        # without changing its assetKey. Allow one fresh recertification when that
+        # browser-facing transport changed, and also use remaining eligible known
+        # candidates that were outside the initial bounded top set.
+        refreshed_keys=set()
+        for asset in after:
+            key=str(asset.get('assetKey') or '')
+            if not key or key not in known: continue
+            old_sig=transport_before.get(key)
+            new_sig=self._repair_transport_signature(asset)
+            if old_sig is not None and new_sig!=old_sig and key in tested:
+                tested.discard(key); refreshed_keys.add(key)
+        if refreshed_keys:
+            self.stats['knownTransportRefreshes']+=len(refreshed_keys)
+        refreshed_known,refresh_meta=self._eligible_known_candidates(after,target,tested)
+        if refreshed_known:
+            self.stats['knownCandidatesEligible']+=len(refreshed_known)
+            self._record_stage(job,'REFRESHED_KNOWN_CANDIDATES',provider='EVENT_CATALOG',results=len(after),new=0,duplicates=provider_known,
+                               rejected=int(refresh_meta.get('hardRejected') or 0)+int(refresh_meta.get('transportMissing') or 0),
+                               eligible_known=len(refreshed_known),details={**refresh_meta,'transportChanged':len(refreshed_keys)})
+            promoted=self._certify_candidates(job,refreshed_known,target,'R19 refreshed known-candidate recertification',tested=tested,phase='RECERTIFY_REFRESHED_KNOWN')
+            if promoted and promoted.get('health')=='HEALTHY': return promoted
+            if promoted: fallback=promoted; target='PREFERRED'
+        transport_before={str(a.get('assetKey') or ''):self._repair_transport_signature(a) for a in after if a.get('assetKey')}
         known.update(str(a.get('assetKey')) for a in after if a.get('assetKey'))
 
         # Stage 2: official/trusted YouTube uploads index. Uses playlistItems.list,
@@ -3325,7 +3417,7 @@ class MediaRepairEngine(threading.Thread):
             candidate_keys={'yt:'+str(x.get('youtubeId')) for x in indexed if x.get('youtubeId')}
             total_new.extend(sorted(candidate_keys)); known.update(candidate_keys)
             candidates=[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in candidate_keys]
-            promoted=self._certify_candidates(job,candidates,target,'R18 official/trusted YouTube playlist index')
+            promoted=self._certify_candidates(job,candidates,target,'R19 official/trusted YouTube playlist index',tested=tested)
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 
@@ -3338,7 +3430,7 @@ class MediaRepairEngine(threading.Thread):
             self.stats['newCandidates']+=len(yt_candidates)
             keys={'yt:'+str(x.get('youtubeId')) for x in yt_candidates if x.get('youtubeId')}; total_new.extend(sorted(keys))
             candidates=[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in keys]
-            promoted=self._certify_candidates(job,candidates,target,'R18 generic YouTube last-resort search')
+            promoted=self._certify_candidates(job,candidates,target,'R19 generic YouTube last-resort search',tested=tested)
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 
@@ -3354,7 +3446,7 @@ class MediaRepairEngine(threading.Thread):
         quota_retry=float(yt.get('retryAt') or 0) if yt.get('quotaBlocked') else 0
         retry=max(self._retry_at(job),quota_retry)
         self.stats['discoveryExhausted']+=1
-        reason='Repair ladder exhausted; YouTube search quota/cooldown active' if quota_retry else 'R18 media-repair transport ladder exhausted without a newly certified candidate'
+        reason='Repair ladder exhausted; YouTube search quota/cooldown active' if quota_retry else 'R19 known-candidate recovery + media-repair transport ladder exhausted without a certified candidate'
         self._write('repair schedule retry after staged discovery','update_repair_job',int(job['id']),state='WAITING_RETRY',reason=reason,
                     next_retry_at=retry,last_error='DISCOVERY_EXHAUSTED',new_asset_keys=total_new,event_key=event_key)
         self._set(phase='WAITING_RETRY',lastResult='DISCOVERY_EXHAUSTED',nextRetryAt=retry)

@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const VERSION='5.5.0';
-const GENERATION='R18-MEDIA-REPAIR-TRANSPORT';
+const GENERATION='R19-KNOWN-CANDIDATE-RECERTIFICATION';
 const $=id=>document.getElementById(id);
 const API=((window.SBB_CONFIG&&window.SBB_CONFIG.apiBase)||location.origin).replace(/\/$/,'')+'/api/media-audit';
 const state={offset:0,limit:100,total:0,rows:[],expanded:new Set(),status:null,busy:false,pollTimer:null,lastInventoryAt:0,lastInventoryOkAt:0,inventoryError:'',inventoryBusy:false,statusBusy:false,statusFailures:0,lastStatusOkAt:0,lastStatusAttemptAt:0};
@@ -104,7 +104,7 @@ function renderDiagnostics(status){
   setText('repairStageResult',rc.stageResult||'—');
   setText('repairCandidate',rc.assetKey?`${rc.tier||''} • ${rc.assetKey}`:'—');
   setText('repairResult',`${rc.provider||'—'} • ${rc.lastResult||rw.lastError||'—'}`);
-  setText('repairSourceStats',`${fmtNum(rs.sourceAttempts||0)} source stages • ${fmtNum(rs.sourceResults||0)} results • ${fmtNum(rs.sourceNew||0)} new • ${fmtNum(rs.sourceDuplicates||0)} known • ${fmtNum(rs.sourceRejected||0)} rejected • ${fmtNum(rs.youtubeIndexedVideos||0)} YT indexed • ${fmtNum(rs.youtubeSearchQuotaBlocks||0)} search quota blocks`);
+  setText('repairSourceStats',`${fmtNum(rs.sourceAttempts||0)} source stages • ${fmtNum(rs.sourceResults||0)} results • ${fmtNum(rs.sourceNew||0)} new • ${fmtNum(rs.sourceDuplicates||0)} known • ${fmtNum(rs.sourceEligibleKnown||0)} eligible known • ${fmtNum(rs.sourceRejected||0)} rejected • ${fmtNum(rs.knownTransportRefreshes||0)} transport refreshes • ${fmtNum(rs.youtubeIndexedVideos||0)} YT indexed • ${fmtNum(rs.youtubeSearchQuotaBlocks||0)} search quota blocks`);
   setText('repairTotals',`${fmtNum(rs.jobsAttempted||0)} jobs • ${fmtNum(rs.newCandidates||0)} new candidates • ${fmtNum(rs.candidatesCertified||0)} certified • ${fmtNum(rs.gamesRepaired||0)} promotions • ${fmtNum(rs.discoveryExhausted||0)} exhausted`);
   const repairTrace=$('repairTrace');if(repairTrace){const rr=(rw.trace||[]).slice().reverse();repairTrace.innerHTML=rr.map(r=>`<div class="${esc(String(r.level||'').toLowerCase())}"><time>${esc(fmtDateTime(r.at))}</time><span>${esc(r.message||'')}</span>${r.details?`<small>${esc(JSON.stringify(r.details))}</small>`:''}</div>`).join('')||'<div class="empty-trace">No repair activity yet.</div>';}
 
