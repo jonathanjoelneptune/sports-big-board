@@ -125,6 +125,25 @@ def main(argv=None):
         if not args.dry_run:
             path.write_text(text.replace(OLD, NEW), encoding="utf-8")
 
+    # Some release-integrity tests reference versioned documentation by filename.
+    # The release sweep rewrites those references from v5.5.0 to v6.0.0, so materialize
+    # the matching v6 document as part of the same atomic checkout transformation.
+    doc_changes = []
+    controller_map_old = root / f"CONTROLLER-REGION-MAP-v{OLD}.md"
+    controller_map_new = root / f"CONTROLLER-REGION-MAP-v{NEW}.md"
+    if controller_map_old.is_file():
+        source = controller_map_old.read_text(encoding="utf-8")
+        rendered = source.replace(OLD, NEW)
+        if (not controller_map_new.is_file()) or controller_map_new.read_text(encoding="utf-8") != rendered:
+            doc_changes.append(controller_map_new)
+            if not args.dry_run:
+                controller_map_new.write_text(rendered, encoding="utf-8")
+    elif not controller_map_new.is_file():
+        raise SystemExit(
+            f"ERROR: missing controller region map source: {controller_map_old.name}; "
+            f"cannot materialize {controller_map_new.name}"
+        )
+
     # These two files are the release authorities and are set explicitly even if the
     # overlay already installed 6.0.0 before this script runs.
     authority_changes = []
@@ -140,7 +159,7 @@ def main(argv=None):
         patch_changes.append(init_path)
     if verify_changed:
         patch_changes.append(verify_path)
-    changed = list(dict.fromkeys(changes + authority_changes + patch_changes))
+    changed = list(dict.fromkeys(changes + doc_changes + authority_changes + patch_changes))
     print(f"Sports Big Board release sync: {OLD} -> {NEW}")
     print(f"Files {'that would change' if args.dry_run else 'changed'}: {len(changed)}")
     for path in changed:
