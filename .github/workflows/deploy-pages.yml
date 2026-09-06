@@ -31,9 +31,6 @@ permissions:
   id-token: write
 
 concurrency:
-  # Normal pushes serialize on one production lane. A manually dispatched
-  # emergency run can opt into a unique lane so a stale GitHub concurrency
-  # reservation cannot hold the recovery deploy in QUEUED forever.
   group: ${{ github.event_name == 'workflow_dispatch' && inputs.emergency_bypass && format('sports-big-board-emergency-{0}', github.run_id) || 'sports-big-board-production' }}
   cancel-in-progress: true
 
@@ -45,8 +42,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1 release checkout
-        run: python3 tools/apply_v610_release.py
+      - name: Materialize v6.1.1 release checkout
+        run: python3 tools/apply_v611_release.py
       - name: Run Sports Big Board verification
         run: bash VERIFY.sh
 
@@ -58,8 +55,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1 release checkout
-        run: python3 tools/apply_v610_release.py
+      - name: Materialize v6.1.1 release checkout
+        run: python3 tools/apply_v611_release.py
 
       - name: Require cloud deployment configuration
         env:
@@ -121,8 +118,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1 release checkout
-        run: python3 tools/apply_v610_release.py
+      - name: Materialize v6.1.1 release checkout
+        run: python3 tools/apply_v611_release.py
       - name: Build static frontend
         env:
           SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
@@ -159,8 +156,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1 release checkout
-        run: python3 tools/apply_v610_release.py
+      - name: Materialize v6.1.1 release checkout
+        run: python3 tools/apply_v611_release.py
       - name: Verify public milestone release
         env:
           PAGE_URL: ${{ needs.pages-deploy.outputs.page_url }}
@@ -216,13 +213,24 @@ jobs:
             /tmp/sbb-milestone.json \
             10
 
+          fetch_backend_json \
+            "canonical-certification" \
+            "$SBB_API_BASE_URL/api/canonical/certification/health" \
+            /tmp/sbb-canonical-cert.json \
+            10
+
           python3 - <<'PY'
           import json
           expected=open('VERSION').read().strip()
           status=json.load(open('/tmp/sbb-status.json'))
           milestone=json.load(open('/tmp/sbb-milestone.json'))
+          cert=json.load(open('/tmp/sbb-canonical-cert.json'))
           assert status.get('version')==expected,(status.get('version'),expected)
           assert milestone.get('version')==expected,(milestone.get('version'),expected)
           assert milestone.get('versionMatch') is True,milestone.get('extra',{}).get('release')
-          print(f'PASS deployed frontend/backend milestone handshake: {expected}')
+          assert cert.get('ok') is True,cert
+          assert cert.get('productionAuthority') is False,cert
+          assert cert.get('hardening',{}).get('productionContradictionGate') is True,cert.get('hardening')
+          assert str(cert.get('version','')).startswith(expected),cert.get('version')
+          print(f'PASS deployed frontend/backend/canonical-hardening handshake: {expected}')
           PY
