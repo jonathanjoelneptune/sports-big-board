@@ -45,8 +45,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.0 release checkout
-        run: python3 tools/apply_v600_release.py
+      - name: Materialize v6.1 release checkout
+        run: python3 tools/apply_v610_release.py
       - name: Run Sports Big Board verification
         run: bash VERIFY.sh
 
@@ -58,8 +58,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.0 release checkout
-        run: python3 tools/apply_v600_release.py
+      - name: Materialize v6.1 release checkout
+        run: python3 tools/apply_v610_release.py
 
       - name: Require cloud deployment configuration
         env:
@@ -121,8 +121,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.0 release checkout
-        run: python3 tools/apply_v600_release.py
+      - name: Materialize v6.1 release checkout
+        run: python3 tools/apply_v610_release.py
       - name: Build static frontend
         env:
           SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
@@ -159,6 +159,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+      - name: Materialize v6.1 release checkout
+        run: python3 tools/apply_v610_release.py
       - name: Verify public milestone release
         env:
           PAGE_URL: ${{ needs.pages-deploy.outputs.page_url }}
