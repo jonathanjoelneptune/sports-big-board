@@ -30,29 +30,24 @@ jobs:
         run: |
           set -euo pipefail
           if [[ -z "${OPENAI_API_KEY:-}" ]]; then
-            echo "::warning title=OPENAI_API_KEY missing::A4 can collect sources, but cannot rebuild the ticker when candidates change."
+            echo "::warning title=OPENAI_API_KEY missing::Sports Ticker can collect sources, but cannot rebuild the ticker when candidates change."
           else
             echo "OPENAI_API_KEY configured."
           fi
 
           if [[ -z "${HIGHLIGHTLY_API_KEY:-}" ]]; then
-            echo "::warning title=HIGHLIGHTLY_API_KEY missing::A4 will run with ESPN + official league sources only."
+            echo "::warning title=HIGHLIGHTLY_API_KEY missing::Sports Ticker will run with ESPN + official league sources only."
           else
             echo "HIGHLIGHTLY_API_KEY configured."
           fi
 
-      - name: Verify Sports Ticker A4.7 event affinity + game isolation
+      - name: Verify Sports Ticker current regression chain
         shell: bash
         run: |
           set -euo pipefail
-          python3 tests/test_a4_global_headline_budget.py
-          python3 tests/test_a43_quality_coverage.py
-          python3 tests/test_a44_context_depth.py
-          python3 tests/test_a45_copy_polish.py
-          python3 tests/test_a46_progression_identity.py
-          python3 tests/test_a47_event_identity.py
+          python3 tests/test_sports_ticker_current.py
 
-      - name: Refresh Sports Ticker A4.7
+      - name: Refresh Sports Ticker current
         id: ticker
         shell: bash
         env:
@@ -61,7 +56,7 @@ jobs:
           SPORTS_TICKER_EDITOR_MODEL: ${{ vars.SPORTS_TICKER_EDITOR_MODEL || 'gpt-4o-mini' }}
         run: |
           set +e
-          python3 tools/refresh_sports_ticker_a47.py
+          python3 tools/refresh_sports_ticker_current.py
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit 0
@@ -101,14 +96,14 @@ jobs:
             esac
           done <<< "$CHANGED"
 
-          git commit -m "Sports Ticker: A4 refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git commit -m "Sports Ticker: refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
 
           for attempt in 1 2 3; do
             git fetch origin main
             git rebase origin/main
 
             if git push origin HEAD:main; then
-              echo "Sports Ticker A4 files pushed successfully."
+              echo "Sports Ticker files pushed successfully."
               exit 0
             fi
 
@@ -119,9 +114,9 @@ jobs:
           echo "::error title=Sports Ticker push failed::Could not fast-forward main after three attempts."
           exit 1
 
-      - name: Fail workflow if A4 pipeline failed
+      - name: Fail workflow if Sports Ticker pipeline failed
         if: steps.ticker.outputs.exit_code != '0'
         shell: bash
         run: |
-          echo "::error title=Sports Ticker A4.7 failed::See data/sports-ticker-run-log.json for the complete source/pipeline/OpenAI diagnostic record."
+          echo "::error title=Sports Ticker current pipeline failed::See data/sports-ticker-run-log.json for the complete source/pipeline/OpenAI diagnostic record."
           exit 1
