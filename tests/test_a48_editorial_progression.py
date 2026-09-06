@@ -172,13 +172,16 @@ def test_reindex_closes_section_and_feed_rank_gaps():
     assert feed == [1, 2, 3, 4], feed
 
 
-def test_stable_launcher_auto_discovers_a48():
+def test_stable_launcher_auto_discovers_a48_or_newer():
     launcher_path = ROOT / "tools" / "refresh_sports_ticker_current.py"
     spec2 = importlib.util.spec_from_file_location("ticker_current_launcher", launcher_path)
     launcher = importlib.util.module_from_spec(spec2)
     assert spec2 and spec2.loader
     spec2.loader.exec_module(launcher)
-    assert launcher.discover_latest().name == "refresh_sports_ticker_a48.py"
+    name = launcher.discover_latest().name
+    assert name.startswith("refresh_sports_ticker_a") and name.endswith(".py"), name
+    version = int(name.removeprefix("refresh_sports_ticker_a").removesuffix(".py"))
+    assert version >= 48, name
 
 
 def test_a48_identity_gate_runs_before_global_budget_with_current_candidates():
@@ -286,7 +289,7 @@ if __name__ == "__main__":
     test_newer_standings_state_supersedes_old_same_race_state()
     test_different_standings_races_are_not_collapsed()
     test_reindex_closes_section_and_feed_rank_gaps()
-    test_stable_launcher_auto_discovers_a48()
+    test_stable_launcher_auto_discovers_a48_or_newer()
     test_a48_identity_gate_runs_before_global_budget_with_current_candidates()
     test_workflow_is_now_version_agnostic()
     print("PASS: A4.8 pre-budget identity + editorial progression + stable launcher")
