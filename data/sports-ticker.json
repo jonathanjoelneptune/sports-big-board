@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-06T18:00:41Z",
+  "generatedAt": "2026-09-06T18:30:45Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "9944aa9ecdaeda499cb3ddac6b07945774fa00f767378c89c717f3774a752230",
+  "sourceCandidateHash": "6de2fc3058271b10f688681adcf659a46e12dd54987ac4eaf50352dd66a7b169",
   "leagues": [
     {
       "league": "MLB",
@@ -14,12 +14,46 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-61a7845eaebab3e1"
+          ],
+          "type": "STANDINGS",
+          "priority": 84,
+          "headline": "Philadelphia moved within four games of Atlanta with a 4-2 win as Kyle Schwarber hit his MLB-leading 41st homer and Zack Wheeler struck out nine.",
+          "text": "Philadelphia moved within four games of Atlanta with a 4-2 win as Kyle Schwarber hit his MLB-leading 41st homer and Zack Wheeler struck out nine.",
+          "entities": [
+            "Philadelphia Phillies",
+            "Atlanta Braves",
+            "Kyle Schwarber",
+            "Zack Wheeler"
+          ],
+          "occurredAt": "2026-09-06T00:38:30Z",
+          "timePrecision": "exact",
+          "ageHours": 17.87,
+          "freshnessBasis": "Philadelphia beat Atlanta 4-2 and moved within four games of the Braves in the NL East.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401816813"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816813"
+            }
+          ],
+          "id": "a3-b5c7e55fcfb84a0f",
+          "feedRank": 6,
+          "compactHeadline": "Phillies close within four games of Braves in NL East"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-d932bb8cd4710368"
           ],
           "type": "STANDINGS",
-          "priority": 82,
-          "headline": "Toronto beat Kansas City 4-3 as Kazuma Okamoto collected four hits and the Blue Jays pulled even with Cleveland for the final AL wild-card spot.",
-          "text": "Toronto beat Kansas City 4-3 as Kazuma Okamoto collected four hits and the Blue Jays pulled even with Cleveland for the final AL wild-card spot.",
+          "priority": 79,
+          "headline": "Toronto beat Kansas City 4-3 as Kazuma Okamoto collected four hits and delivered the seventh-inning tiebreaking single, pulling the Blue Jays even with Cleveland.",
+          "text": "Toronto beat Kansas City 4-3 as Kazuma Okamoto collected four hits and delivered the seventh-inning tiebreaking single, pulling the Blue Jays even with Cleveland.",
           "entities": [
             "Toronto Blue Jays",
             "Kansas City Royals",
@@ -28,8 +62,8 @@
           ],
           "occurredAt": "2026-09-05T23:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.84,
-          "freshnessBasis": "Toronto beat Kansas City 4-3 and moved into a tie for the final AL wild-card spot.",
+          "ageHours": 19.35,
+          "freshnessBasis": "Toronto beat Kansas City 4-3 and moved into a tie with Cleveland for the final AL wild-card spot.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -47,28 +81,27 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816822"
             }
           ],
-          "id": "a3-89cc6859921915c6",
-          "feedRank": 6,
-          "compactHeadline": "Blue Jays pull even for final AL wild card"
+          "id": "a3-58e56320c7961fab",
+          "feedRank": 7,
+          "compactHeadline": "Blue Jays pull even for final AL wild-card spot"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-425750b7830a6d78"
           ],
           "type": "ROSTER",
-          "priority": 75,
-          "headline": "The Mets will recall right-hander Jonah Tong to start Monday against Miami and keep him in the rotation for the rest of the season.",
-          "text": "The Mets will recall right-hander Jonah Tong to start Monday against Miami and keep him in the rotation for the rest of the season.",
+          "priority": 73,
+          "headline": "The Mets recalled right-hander Jonah Tong to start Monday against Miami and remain in New York's rotation for the rest of the season.",
+          "text": "The Mets recalled right-hander Jonah Tong to start Monday against Miami and remain in New York's rotation for the rest of the season.",
           "entities": [
             "New York Mets",
-            "Jonah Tong",
-            "Miami Marlins"
+            "Jonah Tong"
           ],
           "occurredAt": "2026-09-06T17:47:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.22,
-          "freshnessBasis": "The Mets announced Jonah Tong's recall and planned Monday start Sunday.",
+          "ageHours": 0.72,
+          "freshnessBasis": "The Mets announced Jonah Tong's recall and planned Monday start on Sept. 6.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49850361/mets-recall-rhp-jonah-tong-start-monday-vs-marlins"
@@ -80,19 +113,19 @@
               "url": "https://www.espn.com/mlb/story/_/id/49850361/mets-recall-rhp-jonah-tong-start-monday-vs-marlins"
             }
           ],
-          "id": "a3-b825b03de503017b",
-          "feedRank": 19,
-          "compactHeadline": "Mets call up Jonah Tong for Monday start"
+          "id": "a3-8db1cd01b1b1dc25",
+          "feedRank": 21,
+          "compactHeadline": "Mets recall Jonah Tong for Monday start and rotation spot"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-080be8299b6f8aae"
           ],
           "type": "RESULT",
           "priority": 74,
-          "headline": "Cincinnati beat Milwaukee 5-3 after Matt McLain broke a seventh-inning tie with a home run.",
-          "text": "Cincinnati beat Milwaukee 5-3 after Matt McLain broke a seventh-inning tie with a home run.",
+          "headline": "Matt McLain broke a seventh-inning tie with a homer as Cincinnati beat Milwaukee 5-3.",
+          "text": "Matt McLain broke a seventh-inning tie with a homer as Cincinnati beat Milwaukee 5-3.",
           "entities": [
             "Cincinnati Reds",
             "Milwaukee Brewers",
@@ -100,8 +133,8 @@
           ],
           "occurredAt": "2026-09-05T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.34,
-          "freshnessBasis": "Cincinnati beat Milwaukee 5-3 after Matt McLain broke a seventh-inning tie with a home run.",
+          "ageHours": 19.85,
+          "freshnessBasis": "Matt McLain broke a seventh-inning tie with a homer as Cincinnati beat Milwaukee 5-3.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -125,12 +158,12 @@
               "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816817"
             }
           ],
-          "id": "a3-fd13aabbb49777a9",
+          "id": "a3-d912a04bb4486c71",
           "feedRank": 24,
-          "compactHeadline": "McLain's homer lifts Reds past Brewers"
+          "compactHeadline": "McLain’s homer snaps tie as Reds beat Brewers 5-3"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-b3753acff55cbec9"
           ],
@@ -146,8 +179,8 @@
           ],
           "occurredAt": "2026-09-05T22:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.84,
-          "freshnessBasis": "Detroit beat Cleveland 6-0 behind Riley Greene's two homers and four RBIs.",
+          "ageHours": 20.35,
+          "freshnessBasis": "Riley Greene hit two homers and drove in four runs as Detroit beat Cleveland 6-0.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -165,19 +198,58 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816816"
             }
           ],
-          "id": "a3-d914b813cf1229e8",
+          "id": "a3-3164d4081144074f",
           "feedRank": 25,
-          "compactHeadline": "Greene powers Tigers with two homers, four RBIs"
+          "compactHeadline": "Riley Greene’s four-hit, two-homer game powers Tigers"
         },
         {
-          "rank": 5,
+          "rank": 6,
+          "candidateIds": [
+            "cand-63b7fc5ddba06b2e"
+          ],
+          "type": "STAT_LEADER",
+          "priority": 73,
+          "headline": "Sonny Gray allowed three hits over seven innings for his majors-leading 17th win as Boston beat Baltimore 5-0.",
+          "text": "Sonny Gray allowed three hits over seven innings for his majors-leading 17th win as Boston beat Baltimore 5-0.",
+          "entities": [
+            "Boston Red Sox",
+            "Baltimore Orioles",
+            "Sonny Gray"
+          ],
+          "occurredAt": "2026-09-05T23:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 19.43,
+          "freshnessBasis": "Sonny Gray pitched seven three-hit innings and earned his majors-leading 17th win in Boston’s 5-0 victory.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816814"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-05",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816814"
+            }
+          ],
+          "id": "a3-e0fdf1728149a26a",
+          "feedRank": 26,
+          "compactHeadline": "Sonny Gray earns majors-leading 17th win for Red Sox"
+        },
+        {
+          "rank": 7,
           "candidateIds": [
             "cand-024104fd088c6991"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Jeffrey Springs pitched seven scoreless innings and Max Muncy homered for a second straight day in Oakland's 6-2 win over Seattle.",
-          "text": "Jeffrey Springs pitched seven scoreless innings and Max Muncy homered for a second straight day in Oakland's 6-2 win over Seattle.",
+          "headline": "Jeffrey Springs pitched seven scoreless innings and Max Muncy homered for a second straight day as Oakland beat Seattle 6-2.",
+          "text": "Jeffrey Springs pitched seven scoreless innings and Max Muncy homered for a second straight day as Oakland beat Seattle 6-2.",
           "entities": [
             "Athletics",
             "Seattle Mariners",
@@ -186,8 +258,8 @@
           ],
           "occurredAt": "2026-09-06T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.34,
-          "freshnessBasis": "Oakland beat Seattle 6-2 behind Jeffrey Springs' seven scoreless innings.",
+          "ageHours": 16.85,
+          "freshnessBasis": "Jeffrey Springs pitched seven scoreless innings as Oakland beat Seattle 6-2.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -205,93 +277,9 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816824"
             }
           ],
-          "id": "a3-e000c6fa217732e3",
-          "feedRank": 28,
-          "compactHeadline": "Springs throws seven scoreless as A's beat Mariners"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-25601a32f76b4117"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Cole Carrigg sparked Colorado's six-run fifth with a leadoff single as the Rockies beat St. Louis 10-7.",
-          "text": "Cole Carrigg sparked Colorado's six-run fifth with a leadoff single as the Rockies beat St. Louis 10-7.",
-          "entities": [
-            "Colorado Rockies",
-            "St. Louis Cardinals",
-            "Cole Carrigg"
-          ],
-          "occurredAt": "2026-09-06T00:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 17.84,
-          "freshnessBasis": "Colorado scored six runs in the fifth inning to beat St. Louis 10-7 Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816823"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-05",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816823"
-            }
-          ],
-          "id": "a3-b46444cdd1cc97e2",
-          "feedRank": 29,
-          "compactHeadline": "Rockies use six-run fifth to beat Cardinals 10-7"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-d3597e4e8b421050"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Ryan Jeffers hit a go-ahead three-run homer in Minnesota's 6-4 win Saturday.",
-          "text": "Ryan Jeffers hit a go-ahead three-run homer in Minnesota's 6-4 win Saturday.",
-          "entities": [
-            "Minnesota Twins",
-            "Chicago White Sox",
-            "Ryan Jeffers"
-          ],
-          "occurredAt": "2026-09-05T23:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 18.84,
-          "freshnessBasis": "Ryan Jeffers hit a go-ahead three-run homer in Minnesota's 6-4 win Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816820",
-            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816820"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-05",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816820"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "a44-espn-mlb-summary-401816820",
-              "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816820"
-            }
-          ],
-          "id": "a3-d794e0a60e50819b",
+          "id": "a3-572c454774826a14",
           "feedRank": 30,
-          "compactHeadline": "Jeffers' three-run homer carries Twins past White Sox"
+          "compactHeadline": "Springs throws seven scoreless as A’s beat Mariners"
         }
       ]
     },
@@ -305,17 +293,17 @@
             "cand-4488e5a7de41ba69"
           ],
           "type": "SIGNING",
-          "priority": 76,
-          "headline": "Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota for his 15th NFL season.",
-          "text": "Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota for his 15th NFL season.",
+          "priority": 75,
+          "headline": "Vikings safety Harrison Smith agreed to a one-year, $12.25 million deal to return for his 15th NFL season.",
+          "text": "Vikings safety Harrison Smith agreed to a one-year, $12.25 million deal to return for his 15th NFL season.",
           "entities": [
-            "Harrison Smith",
-            "Minnesota Vikings"
+            "Minnesota Vikings",
+            "Harrison Smith"
           ],
           "occurredAt": "2026-09-06T16:51:02Z",
           "timePrecision": "exact",
-          "ageHours": 1.16,
-          "freshnessBasis": "Harrison Smith agreed to a one-year, $12.25 million deal to return to the Vikings for a 15th season.",
+          "ageHours": 1.66,
+          "freshnessBasis": "Harrison Smith agreed to a one-year, $12.25 million deal with Minnesota for his 15th season.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49841519/vikings-safety-smith-agrees-deal-back-15th-season"
@@ -328,7 +316,7 @@
             }
           ],
           "id": "a3-16d91604a5728ea5",
-          "feedRank": 15,
+          "feedRank": 17,
           "compactHeadline": "Harrison Smith returns to Vikings for 15th season"
         },
         {
@@ -337,17 +325,17 @@
             "cand-2ba57fef3e7ff13d"
           ],
           "type": "CONTRACT",
-          "priority": 78,
+          "priority": 76,
           "headline": "NFL commissioner Roger Goodell finalized a four-year extension that will keep him in the role through the 2030 season.",
           "text": "NFL commissioner Roger Goodell finalized a four-year extension that will keep him in the role through the 2030 season.",
           "entities": [
-            "Roger Goodell",
-            "NFL"
+            "NFL",
+            "Roger Goodell"
           ],
-          "occurredAt": "2026-09-06T17:53:45Z",
+          "occurredAt": "2026-09-06T18:26:51Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
-          "freshnessBasis": "Roger Goodell finalized a four-year NFL commissioner extension running through the 2030 season.",
+          "ageHours": 0.07,
+          "freshnessBasis": "Roger Goodell finalized a four-year extension running through the 2030 season.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49850050/nfl-commissioner-roger-goodell-finalizes-four-year-extension"
@@ -359,9 +347,9 @@
               "url": "https://www.espn.com/nfl/story/_/id/49850050/nfl-commissioner-roger-goodell-finalizes-four-year-extension"
             }
           ],
-          "id": "a3-6e8fa936f81a9131",
-          "feedRank": 21,
-          "compactHeadline": "Goodell agrees to extension through 2030 season"
+          "id": "a3-2d244099ebf7baf2",
+          "feedRank": 23,
+          "compactHeadline": "Goodell agrees to four-year extension through 2030"
         }
       ]
     },
@@ -385,17 +373,17 @@
             "cand-7ea8bcd0e112ae43"
           ],
           "type": "MILESTONE",
-          "priority": 85,
-          "headline": "Erling Haaland scored the 300th goal of his club career as Manchester City beat Coventry 1-0 to extend its perfect Premier League start.",
-          "text": "Erling Haaland scored the 300th goal of his club career as Manchester City beat Coventry 1-0 to extend its perfect Premier League start.",
+          "priority": 88,
+          "headline": "Erling Haaland scored the 300th goal of his club career as Manchester City beat Coventry 1-0 to maintain its 100% Premier League start.",
+          "text": "Erling Haaland scored the 300th goal of his club career as Manchester City beat Coventry 1-0 to maintain its 100% Premier League start.",
           "entities": [
-            "Erling Haaland",
             "Manchester City",
-            "Coventry City"
+            "Coventry City",
+            "Erling Haaland"
           ],
           "occurredAt": "2026-09-05T21:58:59Z",
           "timePrecision": "exact",
-          "ageHours": 20.03,
+          "ageHours": 20.53,
           "freshnessBasis": "Erling Haaland scored his 300th club goal in Manchester City's 1-0 win over Coventry.",
           "status": "active",
           "sourceUrls": [
@@ -408,141 +396,94 @@
               "url": "https://www.espn.com/soccer/story/_/id/49839417/erling-haaland-cristiano-ronaldo-kylian-mbappe-300-club-goals"
             }
           ],
-          "id": "a3-0341bda669af9a59",
-          "feedRank": 5,
-          "compactHeadline": "Haaland reaches 300 club goals in City win"
+          "id": "a3-95d1e06956fe3560",
+          "feedRank": 2,
+          "compactHeadline": "Haaland reaches 300 club goals in City’s perfect start"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-33e958cb5fe119e4",
-            "cand-fa030b23d2b0b85e"
+            "cand-33e958cb5fe119e4"
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Arsenal came from behind to beat Chelsea 2-1 in a statement London derby, maintaining its perfect Premier League start behind goals from Martin Ødegaard and Kai Havertz.",
-          "text": "Arsenal came from behind to beat Chelsea 2-1 in a statement London derby, maintaining its perfect Premier League start behind goals from Martin Ødegaard and Kai Havertz.",
+          "headline": "Arsenal came from behind to record a statement 2-1 win in a vintage London derby against Chelsea at the Emirates on Sunday.",
+          "text": "Arsenal came from behind to record a statement 2-1 win in a vintage London derby against Chelsea at the Emirates on Sunday.",
           "entities": [
             "Arsenal",
             "Chelsea",
             "Martin Ødegaard",
             "Kai Havertz"
           ],
-          "occurredAt": "2026-09-06T17:57:53Z",
+          "occurredAt": "2026-09-06T18:12:22Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
-          "freshnessBasis": "Arsenal came from behind to beat Chelsea 2-1 in Sunday's London derby and maintained its perfect start.",
+          "ageHours": 0.31,
+          "freshnessBasis": "Arsenal came from behind to beat Chelsea 2-1 in the London derby on Sept. 6.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49850276/martin-odegaard-kai-havertz-arsenal-statement-london-derby-chelsea-report-reaction",
-            "http://www.espn.com/soccer/report/_/gameId/401879292"
+            "https://www.espn.com/soccer/story/_/id/49850276/martin-odegaard-kai-havertz-arsenal-statement-london-derby-chelsea-report-reaction"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
               "url": "https://www.espn.com/soccer/story/_/id/49850276/martin-odegaard-kai-havertz-arsenal-statement-london-derby-chelsea-report-reaction"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "http://www.espn.com/soccer/report/_/gameId/401879292"
             }
           ],
-          "id": "a3-27b892325189001d",
-          "feedRank": 7,
-          "compactHeadline": "Arsenal rally past Chelsea in 2-1 London derby"
+          "id": "a3-ce9cb07f706773db",
+          "feedRank": 8,
+          "compactHeadline": "Arsenal rally past Chelsea 2-1 in statement London derby"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-51670b59060108df",
-            "cand-7774ca1dbb6b6a0e"
+            "cand-51670b59060108df"
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Ainsley Maitland-Niles scored in the 96th minute to give Everton a 2-2 draw with Manchester United and deny United a second win.",
-          "text": "Ainsley Maitland-Niles scored in the 96th minute to give Everton a 2-2 draw with Manchester United and deny United a second win.",
+          "headline": "Ainsley Maitland-Niles scored in the 96th minute to give Everton a 2-2 draw and deny Manchester United a second league win.",
+          "text": "Ainsley Maitland-Niles scored in the 96th minute to give Everton a 2-2 draw and deny Manchester United a second league win.",
           "entities": [
             "Everton",
             "Manchester United",
             "Ainsley Maitland-Niles"
           ],
-          "occurredAt": "2026-09-06T17:14:14Z",
+          "occurredAt": "2026-09-06T17:06:02Z",
           "timePrecision": "exact",
-          "ageHours": 0.77,
-          "freshnessBasis": "Ainsley Maitland-Niles equalized in the 96th minute of Everton's 2-2 draw with Manchester United Sunday.",
+          "ageHours": 1.41,
+          "freshnessBasis": "Ainsley Maitland-Niles equalized in the 96th minute for Everton in a 2-2 draw with Manchester United.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49849520/man-united-everton-premier-league-bryan-mbeumo-benjamin-sesko-ainsley-maitland-niles-tyrique-george",
-            "https://www.espn.com/soccer/story/_/id/49849966/man-united-draw-everton-feels-defeat"
+            "https://www.espn.com/soccer/story/_/id/49849520/man-united-everton-premier-league-bryan-mbeumo-benjamin-sesko-ainsley-maitland-niles-tyrique-george"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
               "url": "https://www.espn.com/soccer/story/_/id/49849520/man-united-everton-premier-league-bryan-mbeumo-benjamin-sesko-ainsley-maitland-niles-tyrique-george"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49849966/man-united-draw-everton-feels-defeat"
             }
           ],
-          "id": "a3-84598321583cb9c9",
-          "feedRank": 8,
-          "compactHeadline": "Maitland-Niles' 96th-minute goal denies Man United"
+          "id": "a3-039609c99548d3e7",
+          "feedRank": 9,
+          "compactHeadline": "Everton equalizer denies Manchester United at 96 minutes"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-38bf715571b8ab58"
-          ],
-          "type": "MILESTONE",
-          "priority": 73,
-          "headline": "Luka Vuskovic scored his first goal in English football to rescue Brighton's 1-1 draw against Leeds.",
-          "text": "Luka Vuskovic scored his first goal in English football to rescue Brighton's 1-1 draw against Leeds.",
-          "entities": [
-            "Luka Vuskovic",
-            "Brighton & Hove Albion",
-            "Leeds United"
-          ],
-          "occurredAt": "2026-09-05T18:14:41Z",
-          "timePrecision": "exact",
-          "ageHours": 23.77,
-          "freshnessBasis": "Luka Vuskovic scored his first English goal in Brighton's 1-1 draw with Leeds.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49837674/fabian-hurzeler-luka-vuskovic-top-player-brighton-first-goal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49837674/fabian-hurzeler-luka-vuskovic-top-player-brighton-first-goal"
-            }
-          ],
-          "id": "a3-cf92c4bb95ec73e1",
-          "feedRank": 17,
-          "compactHeadline": "Vuskovic scores first English goal for Brighton"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-a1efd7563ae0d047"
           ],
           "type": "STREAK",
-          "priority": 75,
-          "headline": "Hull extended its unbeaten start after holding Aston Villa to a 0-0 draw in a result that continued the club's strong return to the Premier League.",
-          "text": "Hull extended its unbeaten start after holding Aston Villa to a 0-0 draw in a result that continued the club's strong return to the Premier League.",
+          "priority": 73,
+          "headline": "Hull extended its unbeaten start after holding Aston Villa to a 0-0 draw, continuing its strong return to the Premier League.",
+          "text": "Hull extended its unbeaten start after holding Aston Villa to a 0-0 draw, continuing its strong return to the Premier League.",
           "entities": [
             "Hull City",
             "Aston Villa"
           ],
           "occurredAt": "2026-09-05T18:37:23Z",
           "timePrecision": "exact",
-          "ageHours": 23.39,
-          "freshnessBasis": "Hull remained unbeaten in the Premier League after a 0-0 draw with Aston Villa.",
+          "ageHours": 23.89,
+          "freshnessBasis": "Hull remained unbeaten after a 0-0 draw with Aston Villa on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/soccer/report/_/gameId/401878781"
@@ -554,9 +495,9 @@
               "url": "http://www.espn.com/soccer/report/_/gameId/401878781"
             }
           ],
-          "id": "a3-3d457ffb8ddfcf43",
-          "feedRank": 23,
-          "compactHeadline": "Hull preserve unbeaten Premier League start"
+          "id": "a3-2bb863d04c911cce",
+          "feedRank": 28,
+          "compactHeadline": "Hull’s unbeaten Premier League start survives Villa draw"
         }
       ]
     },
@@ -570,18 +511,17 @@
             "cand-a00b7d475c063bdf"
           ],
           "type": "RECORD",
-          "priority": 85,
-          "headline": "Philadelphia Union teenager Cavan Sullivan scored in his third straight MLS game and broke the league record set by Freddy Adu.",
-          "text": "Philadelphia Union teenager Cavan Sullivan scored in his third straight MLS game and broke the league record set by Freddy Adu.",
+          "priority": 88,
+          "headline": "Philadelphia Union teenager Cavan Sullivan scored in his third straight MLS game and broke a record previously held by Freddy Adu.",
+          "text": "Philadelphia Union teenager Cavan Sullivan scored in his third straight MLS game and broke a record previously held by Freddy Adu.",
           "entities": [
-            "Cavan Sullivan",
             "Philadelphia Union",
-            "Freddy Adu",
-            "MLS"
+            "Cavan Sullivan",
+            "Freddy Adu"
           ],
           "occurredAt": "2026-09-06T03:44:14Z",
           "timePrecision": "exact",
-          "ageHours": 14.27,
+          "ageHours": 14.78,
           "freshnessBasis": "Cavan Sullivan scored in his third straight MLS game and broke Freddy Adu's MLS record.",
           "status": "active",
           "sourceUrls": [
@@ -594,9 +534,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/49842819/cavan-sullivan-freddy-adu-mls-record-philadelphia-union"
             }
           ],
-          "id": "a3-f4734ccaa86aee46",
-          "feedRank": 3,
-          "compactHeadline": "Sullivan breaks Adu's MLS record at age 16"
+          "id": "a3-af8c3029e7c750eb",
+          "feedRank": 1,
+          "compactHeadline": "Cavan Sullivan breaks Freddy Adu’s MLS record at 16"
         },
         {
           "rank": 2,
@@ -604,17 +544,17 @@
             "cand-a196e8a509c02dfc"
           ],
           "type": "RESULT",
-          "priority": 76,
-          "headline": "Portland beat Minnesota United 5-4 after a late goal in the 90th minute decided the high-scoring MLS match.",
-          "text": "Portland beat Minnesota United 5-4 after a late goal in the 90th minute decided the high-scoring MLS match.",
+          "priority": 82,
+          "headline": "Portland beat Minnesota 5-4 after a goal in the 90th minute decided the nine-goal thriller.",
+          "text": "Portland beat Minnesota 5-4 after a goal in the 90th minute decided the nine-goal thriller.",
           "entities": [
             "Portland Timbers",
             "Minnesota United"
           ],
           "occurredAt": "2026-09-06T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.51,
-          "freshnessBasis": "A 90th-minute goal gave Portland a 5-4 win over Minnesota United.",
+          "ageHours": 16.01,
+          "freshnessBasis": "A 90th-minute goal decided Portland's 5-4 win over Minnesota.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -627,7 +567,7 @@
             }
           ],
           "id": "a3-f1331c8e40129b60",
-          "feedRank": 20,
+          "feedRank": 11,
           "compactHeadline": "Late goal lifts Portland past Minnesota 5-4"
         },
         {
@@ -637,8 +577,8 @@
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Breel Embolo scored a late penalty on his MLS debut to earn Atlanta United a 2-2 draw at Inter Miami.",
-          "text": "Breel Embolo scored a late penalty on his MLS debut to earn Atlanta United a 2-2 draw at Inter Miami.",
+          "headline": "Breel Embolo scored a late penalty on his MLS debut to give Atlanta United a 2-2 draw against Inter Miami.",
+          "text": "Breel Embolo scored a late penalty on his MLS debut to give Atlanta United a 2-2 draw against Inter Miami.",
           "entities": [
             "Atlanta United FC",
             "Inter Miami",
@@ -646,8 +586,8 @@
           ],
           "occurredAt": "2026-09-06T06:18:08Z",
           "timePrecision": "exact",
-          "ageHours": 11.71,
-          "freshnessBasis": "Breel Embolo scored a late penalty on his MLS debut in Atlanta's 2-2 draw at Inter Miami Saturday.",
+          "ageHours": 12.21,
+          "freshnessBasis": "Breel Embolo scored a late penalty on his MLS debut to earn Atlanta a 2-2 draw at Miami.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49843737/inter-miami-atlanta-united-breel-embolo-casemiro-lionel-messi"
@@ -659,9 +599,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/49843737/inter-miami-atlanta-united-breel-embolo-casemiro-lionel-messi"
             }
           ],
-          "id": "a3-69897d6af8594ac0",
-          "feedRank": 26,
-          "compactHeadline": "Embolo scores on debut to rescue Atlanta draw"
+          "id": "a3-3fd59f708e5e7082",
+          "feedRank": 27,
+          "compactHeadline": "Embolo scores on debut to earn Atlanta draw at Miami"
         },
         {
           "rank": 4,
@@ -669,17 +609,17 @@
             "cand-7134f0b38469fcf7"
           ],
           "type": "RESULT",
-          "priority": 64,
-          "headline": "FC Dallas beat Sporting Kansas City 4-3 Saturday in a seven-goal MLS result.",
-          "text": "FC Dallas beat Sporting Kansas City 4-3 Saturday in a seven-goal MLS result.",
+          "priority": 65,
+          "headline": "FC Dallas beat Sporting Kansas City 4-3 in a seven-goal MLS match.",
+          "text": "FC Dallas beat Sporting Kansas City 4-3 in a seven-goal MLS match.",
           "entities": [
             "FC Dallas",
             "Sporting Kansas City"
           ],
           "occurredAt": "2026-09-06T00:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.51,
-          "freshnessBasis": "FC Dallas defeated Sporting Kansas City 4-3 Saturday.",
+          "ageHours": 18.01,
+          "freshnessBasis": "FC Dallas beat Sporting Kansas City 4-3 in a completed MLS match.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -691,9 +631,41 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-95d29fca70eb3048",
+          "id": "a3-cf92169f2a575083",
+          "feedRank": 31,
+          "compactHeadline": "FC Dallas edge Sporting KC 4-3 in seven-goal thriller"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-9473cbabdf5584ed"
+          ],
+          "type": "RESULT",
+          "priority": 64,
+          "headline": "St. Louis City SC beat Vancouver Whitecaps 3-1 in Vancouver.",
+          "text": "St. Louis City SC beat Vancouver Whitecaps 3-1 in Vancouver.",
+          "entities": [
+            "St. Louis City SC",
+            "Vancouver Whitecaps"
+          ],
+          "occurredAt": "2026-09-06T02:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 16.01,
+          "freshnessBasis": "St. Louis City SC beat Vancouver Whitecaps 3-1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-05",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-117fb1f110cd1600",
           "feedRank": 32,
-          "compactHeadline": "FC Dallas edges Sporting KC 4-3"
+          "compactHeadline": "St. Louis City beats Vancouver 3-1 on the road"
         }
       ]
     },
@@ -707,7 +679,7 @@
             "cand-2faacc0d7ad15c16"
           ],
           "type": "UPSET",
-          "priority": 88,
+          "priority": 86,
           "headline": "Gavin Garcia ran for 137 yards and 3 TDs as The Citadel Bulldogs beat Charlotte 49ers 43-41.",
           "text": "Gavin Garcia ran for 137 yards and 3 TDs as The Citadel Bulldogs beat Charlotte 49ers 43-41.",
           "entities": [
@@ -716,7 +688,7 @@
           ],
           "occurredAt": "2026-09-05T19:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.51,
+          "ageHours": 23.01,
           "freshnessBasis": "Gavin Garcia ran for 137 yards and 3 TDs as The Citadel Bulldogs beat Charlotte 49ers 43-41.",
           "status": "active",
           "sourceUrls": [
@@ -735,8 +707,8 @@
               "url": "https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401862694"
             }
           ],
-          "id": "a3-dcb48700e0bedc50",
-          "feedRank": 1,
+          "id": "a3-7a8f5d3ea8596b1e",
+          "feedRank": 3,
           "compactHeadline": "Late score lifts The Citadel Bulldogs past Charlotte 49ers 43-41"
         },
         {
@@ -745,7 +717,7 @@
             "cand-17adad8a6e437641"
           ],
           "type": "UPSET",
-          "priority": 86,
+          "priority": 84,
           "headline": "Jordan Cooke threw for 152 yards and 1 TD as Idaho State Bengals beat Utah State Aggies 29-17.",
           "text": "Jordan Cooke threw for 152 yards and 1 TD as Idaho State Bengals beat Utah State Aggies 29-17.",
           "entities": [
@@ -754,8 +726,8 @@
           ],
           "occurredAt": "2026-09-05T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.01,
-          "freshnessBasis": "Idaho State beat Utah State 29-17 Saturday in a result marked as an upset.",
+          "ageHours": 19.51,
+          "freshnessBasis": "Idaho State beat Utah State 29-17 in the Sept. 5 matchup.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -773,9 +745,9 @@
               "url": "https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401860880"
             }
           ],
-          "id": "a3-70473580ba3cb254",
-          "feedRank": 2,
-          "compactHeadline": "Idaho State stuns Utah State 29-17"
+          "id": "a3-9acf86873febd5f1",
+          "feedRank": 4,
+          "compactHeadline": "Idaho State upsets Utah State 29-17"
         },
         {
           "rank": 3,
@@ -783,17 +755,17 @@
             "cand-0195d492129c5a52"
           ],
           "type": "RESULT",
-          "priority": 82,
-          "headline": "No. 16 Michigan beat Western Michigan 13-12 after a late touchdown in the season opener.",
-          "text": "No. 16 Michigan beat Western Michigan 13-12 after a late touchdown in the season opener.",
+          "priority": 78,
+          "headline": "No. 16 Michigan beat Western Michigan 13-12 after a late touchdown, surviving a one-point season-opening finish.",
+          "text": "No. 16 Michigan beat Western Michigan 13-12 after a late touchdown, surviving a one-point season-opening finish.",
           "entities": [
             "Michigan Wolverines",
             "Western Michigan Broncos"
           ],
           "occurredAt": "2026-09-05T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.51,
-          "freshnessBasis": "No. 16 Michigan beat Western Michigan 13-12 after a late touchdown in the season opener.",
+          "ageHours": 19.01,
+          "freshnessBasis": "No. 16 Michigan beat Western Michigan 13-12 after a late touchdown on Sept. 5.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -805,9 +777,9 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-c5ff2fde6f9fe817",
-          "feedRank": 9,
-          "compactHeadline": "Late touchdown sends Michigan past Western Michigan"
+          "id": "a3-42eb90e7b0327404",
+          "feedRank": 18,
+          "compactHeadline": "Late touchdown saves No. 16 Michigan against Western Michigan"
         },
         {
           "rank": 4,
@@ -815,16 +787,16 @@
             "cand-7af32a9269bda8ee"
           ],
           "type": "RESULT",
-          "priority": 82,
-          "headline": "Auburn beat Baylor 17-16 after a late touchdown capped a 14-play, 70-yard drive in the one-point finish.",
-          "text": "Auburn beat Baylor 17-16 after a late touchdown capped a 14-play, 70-yard drive in the one-point finish.",
+          "priority": 78,
+          "headline": "Auburn beat Baylor 17-16 after a late touchdown capped a 14-play, 70-yard scoring drive.",
+          "text": "Auburn beat Baylor 17-16 after a late touchdown capped a 14-play, 70-yard scoring drive.",
           "entities": [
             "Auburn Tigers",
             "Baylor Bears"
           ],
           "occurredAt": "2026-09-05T19:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.51,
+          "ageHours": 23.01,
           "freshnessBasis": "Auburn beat Baylor 17-16 after a late touchdown capped a 14-play, 70-yard drive.",
           "status": "active",
           "sourceUrls": [
@@ -837,17 +809,84 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-00ed36afe1b060f9",
-          "feedRank": 13,
-          "compactHeadline": "Late score lifts Auburn past Baylor 17-16"
+          "id": "a3-1f3e44c778a38a75",
+          "feedRank": 19,
+          "compactHeadline": "Late touchdown lifts Auburn past Baylor 17-16"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-f76b6417207b9a0f"
+            "cand-8d9f90c8a7a3dc85"
+          ],
+          "type": "STREAK",
+          "priority": 75,
+          "headline": "UNLV beat Hawaii 21-6 for its fourth straight Island Showdown win as Jai’den Thomas ran for 143 yards and a touchdown.",
+          "text": "UNLV beat Hawaii 21-6 for its fourth straight Island Showdown win as Jai’den Thomas ran for 143 yards and a touchdown.",
+          "entities": [
+            "UNLV Rebels",
+            "Hawai'i Rainbow Warriors",
+            "Jai'den Thomas",
+            "Jackson Arnold"
+          ],
+          "occurredAt": "2026-09-06T05:47:35Z",
+          "timePrecision": "exact",
+          "ageHours": 12.72,
+          "freshnessBasis": "UNLV beat Hawaii 21-6 to win its fourth straight Island Showdown.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401864497"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401864497"
+            }
+          ],
+          "id": "a3-9a7197d8d7451b6a",
+          "feedRank": 20,
+          "compactHeadline": "UNLV wins fourth straight Island Showdown over Hawaii"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-c35dc4fe94073128"
           ],
           "type": "COACHING",
-          "priority": 75,
+          "priority": 74,
+          "headline": "Sacramento State beat Mississippi Valley State 52-0 for Alonzo Carter’s first victory as the Hornets’ head coach.",
+          "text": "Sacramento State beat Mississippi Valley State 52-0 for Alonzo Carter’s first victory as the Hornets’ head coach.",
+          "entities": [
+            "Sacramento State Hornets",
+            "Mississippi Valley State Delta Devils",
+            "Alonzo Carter"
+          ],
+          "occurredAt": "2026-09-06T05:47:29Z",
+          "timePrecision": "exact",
+          "ageHours": 12.72,
+          "freshnessBasis": "Sacramento State beat Mississippi Valley State 52-0 for Alonzo Carter’s first win as head coach.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/recap?gameId=401866411"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401866411"
+            }
+          ],
+          "id": "a3-f0af0bd2596d8eba",
+          "feedRank": 22,
+          "compactHeadline": "Sacramento State coach Alonzo Carter earns first win"
+        },
+        {
+          "rank": 7,
+          "candidateIds": [
+            "cand-f76b6417207b9a0f"
+          ],
+          "type": "RESULT",
+          "priority": 72,
           "headline": "Wayne Knight ran for two touchdowns in the fourth quarter following interceptions by Ta'Shawn James and UCLA opened the Bob Chesney era with a 45-24 victory over California on Saturday night.",
           "text": "Wayne Knight ran for two touchdowns in the fourth quarter following interceptions by Ta'Shawn James and UCLA opened the Bob Chesney era with a 45-24 victory over California on Saturday night.",
           "entities": [
@@ -858,8 +897,8 @@
           ],
           "occurredAt": "2026-09-06T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.51,
-          "freshnessBasis": "UCLA opened Bob Chesney's tenure with a 45-24 win over California after scoring the final 21 points.",
+          "ageHours": 16.01,
+          "freshnessBasis": "UCLA scored the final 21 points to beat California 45-24 in Bob Chesney's debut.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -883,88 +922,9 @@
               "url": "http://www.espn.com/ncf/recap?gameId=401858210"
             }
           ],
-          "id": "a3-f6cfc2acfec23678",
-          "feedRank": 22,
-          "compactHeadline": "Chesney era opens with UCLA win over Cal"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-be48272e6d4ae27d"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Carter Jones and Dominic Kelley powered Nevada to a 49-14 season-opening win Saturday.",
-          "text": "Carter Jones and Dominic Kelley powered Nevada to a 49-14 season-opening win Saturday.",
-          "entities": [
-            "Nevada Wolf Pack",
-            "Western Kentucky Hilltoppers",
-            "Carter Jones",
-            "Dominic Kelley"
-          ],
-          "occurredAt": "2026-09-06T02:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 15.51,
-          "freshnessBasis": "Carter Jones and Dominic Kelley powered Nevada to a 49-14 season-opening win Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/ncf/recap?gameId=401864432"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-05",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401864432"
-            }
-          ],
-          "id": "a3-d98b4ceb12750dec",
-          "feedRank": 27,
-          "compactHeadline": "Nevada cruises past Western Kentucky 49-14"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-e3d3961785c3ee34"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Marcel Reed threw for 233 yards and two touchdowns in just over three quarters as No. 8 Texas A&M beat Missouri State 50-0.",
-          "text": "Marcel Reed threw for 233 yards and two touchdowns in just over three quarters as No. 8 Texas A&M beat Missouri State 50-0.",
-          "entities": [
-            "Texas A&M Aggies",
-            "Missouri State Bears",
-            "Marcel Reed"
-          ],
-          "occurredAt": "2026-09-05T23:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 19.01,
-          "freshnessBasis": "No. 8 Texas A&M beat Missouri State 50-0 behind Marcel Reed's 233 yards and two touchdown passes.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/ncf/recap?gameId=401856668"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-05",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856668"
-            }
-          ],
-          "id": "a3-a493cdb42ccdeb5a",
-          "feedRank": 31,
-          "compactHeadline": "Marcel Reed sparks Texas A&M's 50-0 rout"
+          "id": "a3-08466f5a20ad9f90",
+          "feedRank": 29,
+          "compactHeadline": "UCLA opens Chesney era with 45-24 win over Cal"
         }
       ]
     }
@@ -980,18 +940,18 @@
             "cand-7d57be47373be270"
           ],
           "type": "INJURY",
-          "priority": 88,
-          "headline": "Valentina Shevchenko suffered an injury and vacated the UFC 332 women's flyweight title, leaving Natalia Silva and Wang Cong to fight for the belt.",
-          "text": "Valentina Shevchenko suffered an injury and vacated the UFC 332 women's flyweight title, leaving Natalia Silva and Wang Cong to fight for the belt.",
+          "priority": 87,
+          "headline": "Valentina Shevchenko vacated the UFC 332 women's flyweight title after an injury, leaving Natalia Silva and Wang Cong to fight for the belt.",
+          "text": "Valentina Shevchenko vacated the UFC 332 women's flyweight title after an injury, leaving Natalia Silva and Wang Cong to fight for the belt.",
           "entities": [
+            "UFC 332",
             "Valentina Shevchenko",
             "Natalia Silva",
-            "Wang Cong",
-            "UFC 332"
+            "Wang Cong"
           ],
           "occurredAt": "2026-09-05T21:32:58Z",
           "timePrecision": "exact",
-          "ageHours": 20.46,
+          "ageHours": 20.96,
           "freshnessBasis": "Valentina Shevchenko vacated the UFC 332 flyweight title after suffering an injury.",
           "status": "active",
           "sourceUrls": [
@@ -1004,9 +964,9 @@
               "url": "https://www.espn.com/mma/story/_/id/49839558/shevchenko-injured-vacates-silva-wang-vie-belt-ufc-332"
             }
           ],
-          "id": "a3-special-62f279fa09001749",
-          "feedRank": 4,
-          "compactHeadline": "Shevchenko injury vacates UFC 332 flyweight belt"
+          "id": "a3-special-4579e4778bef6421",
+          "feedRank": 5,
+          "compactHeadline": "Shevchenko injury vacates UFC 332 flyweight title"
         }
       ]
     },
@@ -1020,18 +980,18 @@
             "cand-6c6ce9aeabd61cb5"
           ],
           "type": "RESULT",
-          "priority": 84,
-          "headline": "No. 24 Francisco Cerundolo erased a two-set deficit to beat No. 9 Taylor Fritz 3-6, 4-6, 6-3, 6-4, 6-4 at the US Open.",
-          "text": "No. 24 Francisco Cerundolo erased a two-set deficit to beat No. 9 Taylor Fritz 3-6, 4-6, 6-3, 6-4, 6-4 at the US Open.",
+          "priority": 85,
+          "headline": "No. 24 seed Francisco Cerundolo rallied from two sets down to beat No. 9 Taylor Fritz 3-6, 4-6, 6-3, 6-4, 6-4 at the US Open.",
+          "text": "No. 24 seed Francisco Cerundolo rallied from two sets down to beat No. 9 Taylor Fritz 3-6, 4-6, 6-3, 6-4, 6-4 at the US Open.",
           "entities": [
+            "US Open",
             "Francisco Cerundolo",
-            "Taylor Fritz",
-            "US Open"
+            "Taylor Fritz"
           ],
           "occurredAt": "2026-09-06T07:02:05Z",
           "timePrecision": "exact",
-          "ageHours": 10.98,
-          "freshnessBasis": "Francisco Cerundolo beat Taylor Fritz in five sets at the US Open after trailing by two sets.",
+          "ageHours": 11.48,
+          "freshnessBasis": "Francisco Cerundolo overcame a two-set deficit to beat No. 9 seed Taylor Fritz at the US Open.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49839555/taylor-fritz-blows-2-set-lead-falls-francisco-cerundolo-us-open"
@@ -1043,63 +1003,29 @@
               "url": "https://www.espn.com/tennis/story/_/id/49839555/taylor-fritz-blows-2-set-lead-falls-francisco-cerundolo-us-open"
             }
           ],
-          "id": "a3-special-2e167da7fe8d313b",
+          "id": "a3-special-b060261db29857be",
           "feedRank": 10,
-          "compactHeadline": "Cerundolo rallies from two sets down to stun Fritz"
+          "compactHeadline": "Cerundolo rallies from two sets down to oust Fritz"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-b94db03e9f28b3ce"
+            "cand-91cba5564fb10294"
           ],
           "type": "ADVANCEMENT",
           "priority": 78,
-          "headline": "Iva Jovic defeated Alex Eala after more than three hours at the US Open and advanced to a quarterfinal matchup with Coco Gauff.",
-          "text": "Iva Jovic defeated Alex Eala after more than three hours at the US Open and advanced to a quarterfinal matchup with Coco Gauff.",
+          "headline": "Zheng Qinwen won the final seven games against Madison Keys, while Naomi Osaka rallied from 4-2 down in the third set to advance at the US Open.",
+          "text": "Zheng Qinwen won the final seven games against Madison Keys, while Naomi Osaka rallied from 4-2 down in the third set to advance at the US Open.",
           "entities": [
-            "Iva Jovic",
-            "Alex Eala",
-            "Coco Gauff",
-            "US Open"
-          ],
-          "occurredAt": "2026-09-06T04:02:53Z",
-          "timePrecision": "exact",
-          "ageHours": 13.96,
-          "freshnessBasis": "Iva Jovic defeated Alex Eala and advanced to face Coco Gauff in the US Open quarterfinals.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49840314/gauff-advances-straight-sets-yet-drop-set-us-open"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-wta",
-              "url": "https://www.espn.com/tennis/story/_/id/49840314/gauff-advances-straight-sets-yet-drop-set-us-open"
-            }
-          ],
-          "id": "a3-special-cd497ff2fbf3b108",
-          "feedRank": 12,
-          "compactHeadline": "Iva Jovic ends Eala run, sets up Gauff clash"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-91cba5564fb10294"
-          ],
-          "type": "RESULT",
-          "priority": 82,
-          "headline": "Zheng Qinwen won the final seven games to rally past Madison Keys, while Naomi Osaka also came back in the third set to advance at the US Open.",
-          "text": "Zheng Qinwen won the final seven games to rally past Madison Keys, while Naomi Osaka also came back in the third set to advance at the US Open.",
-          "entities": [
+            "US Open",
             "Zheng Qinwen",
             "Madison Keys",
-            "Naomi Osaka",
-            "US Open"
+            "Naomi Osaka"
           ],
           "occurredAt": "2026-09-06T03:22:04Z",
           "timePrecision": "exact",
-          "ageHours": 14.64,
-          "freshnessBasis": "Zheng Qinwen rallied past Madison Keys and Naomi Osaka advanced after a third-set comeback at the US Open.",
+          "ageHours": 15.14,
+          "freshnessBasis": "Zheng Qinwen and Naomi Osaka completed comeback wins to advance at the US Open.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49837907/zheng-rallies-keys-osaka-rallies-third-set-us-open"
@@ -1111,43 +1037,43 @@
               "url": "https://www.espn.com/tennis/story/_/id/49837907/zheng-rallies-keys-osaka-rallies-third-set-us-open"
             }
           ],
-          "id": "a3-special-0c414b93b4294f09",
-          "feedRank": 16,
-          "compactHeadline": "Zheng rallies past Keys as Osaka advances"
+          "id": "a3-special-f6230de39b3c5919",
+          "feedRank": 12,
+          "compactHeadline": "Zheng and Osaka survive US Open comebacks"
         },
         {
-          "rank": 4,
+          "rank": 3,
           "candidateIds": [
-            "cand-8e8d2fd3c02dca6d"
+            "cand-b94db03e9f28b3ce"
           ],
           "type": "ADVANCEMENT",
-          "priority": 75,
-          "headline": "Carlos Alcaraz, Tommy Paul, Frances Tiafoe advance at US Open.",
-          "text": "Carlos Alcaraz, Tommy Paul, Frances Tiafoe advance at US Open.",
+          "priority": 76,
+          "headline": "Iva Jovic beat Alex Eala after more than three hours at the US Open and advanced to a quarterfinal matchup with Coco Gauff.",
+          "text": "Iva Jovic beat Alex Eala after more than three hours at the US Open and advanced to a quarterfinal matchup with Coco Gauff.",
           "entities": [
-            "Carlos Alcaraz",
-            "Wu Yibing",
-            "Tommy Paul",
+            "Iva Jovic",
+            "Alex Eala",
+            "Coco Gauff",
             "US Open"
           ],
-          "occurredAt": "2026-09-05T18:28:02Z",
+          "occurredAt": "2026-09-06T04:02:53Z",
           "timePrecision": "exact",
-          "ageHours": 23.54,
-          "freshnessBasis": "Carlos Alcaraz advanced to the US Open round of 16 after beating Wu Yibing in straight sets.",
+          "ageHours": 14.46,
+          "freshnessBasis": "Iva Jovic beat Alex Eala and advanced to a US Open quarterfinal matchup with Coco Gauff.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49828709/carlos-alcaraz-tommy-paul-win-set-4th-round-clash-2026-us-open"
+            "https://www.espn.com/tennis/story/_/id/49840314/gauff-advances-straight-sets-yet-drop-set-us-open"
           ],
           "sources": [
             {
               "provider": "ESPN",
-              "sourceId": "espn-atp",
-              "url": "https://www.espn.com/tennis/story/_/id/49828709/carlos-alcaraz-tommy-paul-win-set-4th-round-clash-2026-us-open"
+              "sourceId": "espn-wta",
+              "url": "https://www.espn.com/tennis/story/_/id/49840314/gauff-advances-straight-sets-yet-drop-set-us-open"
             }
           ],
-          "id": "a3-special-f4ab6b73ccbddae2",
-          "feedRank": 18,
-          "compactHeadline": "Alcaraz reaches US Open round of 16"
+          "id": "a3-special-df536173485c994d",
+          "feedRank": 16,
+          "compactHeadline": "Jovic ends Eala’s US Open run, sets up Gauff clash"
         }
       ]
     },
@@ -1158,56 +1084,22 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-3db311d20064d96f"
-          ],
-          "type": "EVENT_UPDATE",
-          "priority": 81,
-          "headline": "Charles Leclerc crashed out of the Italian Grand Prix three laps after a first-lap battle with Ferrari teammate Lewis Hamilton.",
-          "text": "Charles Leclerc crashed out of the Italian Grand Prix three laps after a first-lap battle with Ferrari teammate Lewis Hamilton.",
-          "entities": [
-            "Charles Leclerc",
-            "Lewis Hamilton",
-            "Ferrari",
-            "Italian Grand Prix"
-          ],
-          "occurredAt": "2026-09-06T14:04:23Z",
-          "timePrecision": "exact",
-          "ageHours": 3.94,
-          "freshnessBasis": "Charles Leclerc crashed out of the Italian Grand Prix three laps into Sunday's race.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/f1/story/_/id/49813283/charles-leclerc-suffers-huge-crash-italian-grand-prix-major-blow-ferrari-home-race-italian-grand-prix-formula-1-monza"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-f1",
-              "url": "https://www.espn.com/f1/story/_/id/49813283/charles-leclerc-suffers-huge-crash-italian-grand-prix-major-blow-ferrari-home-race-italian-grand-prix-formula-1-monza"
-            }
-          ],
-          "id": "a3-special-27f37e439811fc81",
-          "feedRank": 11,
-          "compactHeadline": "Leclerc crashes out early in Ferrari's home GP"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-ed498d7036058fd9"
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Kimi Antonelli came from 19th on the grid to win his home Italian Grand Prix, passing George Russell with three laps remaining.",
-          "text": "Kimi Antonelli came from 19th on the grid to win his home Italian Grand Prix, passing George Russell with three laps remaining.",
+          "headline": "Kimi Antonelli came from 19th on the grid to win his home Italian Grand Prix, passing teammate George Russell with three laps remaining.",
+          "text": "Kimi Antonelli came from 19th on the grid to win his home Italian Grand Prix, passing teammate George Russell with three laps remaining.",
           "entities": [
+            "Italian Grand Prix",
             "Kimi Antonelli",
             "George Russell",
-            "Italian Grand Prix",
             "Mercedes"
           ],
           "occurredAt": "2026-09-06T16:41:55Z",
           "timePrecision": "exact",
-          "ageHours": 1.31,
-          "freshnessBasis": "Kimi Antonelli won the Italian Grand Prix after starting 19th Sunday.",
+          "ageHours": 1.81,
+          "freshnessBasis": "Kimi Antonelli won the Italian Grand Prix after starting 19th and passing George Russell with three laps remaining.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49813281/kimi-antonelli-comes-19th-grid-win-home-italian-grand-prix-italian-grand-prix-formula-1-monza"
@@ -1219,9 +1111,76 @@
               "url": "https://www.espn.com/f1/story/_/id/49813281/kimi-antonelli-comes-19th-grid-win-home-italian-grand-prix-italian-grand-prix-formula-1-monza"
             }
           ],
-          "id": "a3-special-287d2b26d4bba7df",
+          "id": "a3-special-4d2977fc2d98e690",
+          "feedRank": 13,
+          "compactHeadline": "Antonelli wins Italian GP from 19th in championship shock"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-a0f684fc256e03b5"
+          ],
+          "type": "RESULT",
+          "priority": 82,
+          "headline": "Kimi Antonelli won his home Italian Grand Prix from 19th on the grid, becoming the first Italian winner at Monza since 1966.",
+          "text": "Kimi Antonelli won his home Italian Grand Prix from 19th on the grid, becoming the first Italian winner at Monza since 1966.",
+          "entities": [
+            "Kimi Antonelli",
+            "Italian Grand Prix",
+            "Monza"
+          ],
+          "occurredAt": "2026-09-06T16:27:37Z",
+          "timePrecision": "exact",
+          "ageHours": 2.05,
+          "freshnessBasis": "Kimi Antonelli won the Italian Grand Prix from 19th on the grid and became the first Italian winner at Monza since 1966.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/f1/story/_/id/49814103/italian-grand-prix-2026-live-monza-f1-latest-updates-commentary-result-charles-leclerc-lewis-hamilton-george-russell-kimi-antonelli-max-verstappen-lando-norris"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/f1/story/_/id/49814103/italian-grand-prix-2026-live-monza-f1-latest-updates-commentary-result-charles-leclerc-lewis-hamilton-george-russell-kimi-antonelli-max-verstappen-lando-norris"
+            }
+          ],
+          "id": "a3-special-cfb4533ce672491f",
           "feedRank": 14,
-          "compactHeadline": "Antonelli wins Italian GP after starting 19th"
+          "compactHeadline": "Antonelli wins Italian GP from 19th in historic Monza drive"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-3db311d20064d96f"
+          ],
+          "type": "EVENT_UPDATE",
+          "priority": 80,
+          "headline": "Charles Leclerc crashed out three laps into the Italian Grand Prix after contact involving Ferrari teammate Lewis Hamilton, damaging Ferrari's home race.",
+          "text": "Charles Leclerc crashed out three laps into the Italian Grand Prix after contact involving Ferrari teammate Lewis Hamilton, damaging Ferrari's home race.",
+          "entities": [
+            "Italian Grand Prix",
+            "Charles Leclerc",
+            "Lewis Hamilton",
+            "Ferrari"
+          ],
+          "occurredAt": "2026-09-06T14:04:23Z",
+          "timePrecision": "exact",
+          "ageHours": 4.44,
+          "freshnessBasis": "Charles Leclerc crashed out three laps into the Italian Grand Prix at Monza.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/f1/story/_/id/49813283/charles-leclerc-suffers-huge-crash-italian-grand-prix-major-blow-ferrari-home-race-italian-grand-prix-formula-1-monza"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/f1/story/_/id/49813283/charles-leclerc-suffers-huge-crash-italian-grand-prix-major-blow-ferrari-home-race-italian-grand-prix-formula-1-monza"
+            }
+          ],
+          "id": "a3-special-d45d8ee8c63fe48d",
+          "feedRank": 15,
+          "compactHeadline": "Leclerc crashes out early in Ferrari’s Italian GP"
         }
       ]
     }
