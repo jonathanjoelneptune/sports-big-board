@@ -2510,11 +2510,13 @@ def _espn_search_video_results(league, away='', home='', max_items=8):
         low=title.lower(); both=(not away or away.lower().split()[-1] in low) and (not home or home.lower().split()[-1] in low)
         if away and home and not both: continue
         if not re.search(r'highlight|recap|home run|touchdown|goal|save|dunk|walk-off|game',low): continue
-        urls=[]
-        for k,v in obj.items():
-            if isinstance(v,str) and v.startswith('http'):
-                if re.search(r'\.(?:mp4|m3u8)(?:\?|$)',v,re.I): urls.append(v)
-        media=urls[0] if urls else ''
+        # R18: ESPN search payloads commonly keep the playable rendition under
+        # links.source rather than as a top-level .mp4/.m3u8 field. Reuse the
+        # event-video resolver so repair discovery only emits a candidate when
+        # ESPN exposes an actual direct video transport.
+        if not _espn_video_allowed_us(obj): continue
+        media=_espn_video_media_url(obj)
+        if not media: continue
         href=''
         links=obj.get('links')
         if isinstance(links,dict):
@@ -2524,13 +2526,13 @@ def _espn_search_video_results(league, away='', home='', max_items=8):
                     if isinstance(v,str) and 'espn.com' in v: href=v; break
                 if href: break
         href=href or str(obj.get('href') or obj.get('url') or '')
-        sig=(title,media or href)
+        sig=(title,media,href)
+        stable_id=hashlib.sha1(('\n'.join(str(x or '') for x in sig)).encode('utf-8')).hexdigest()[:16]
         if sig in seen: continue
         seen.add(sig)
         dur=duration_seconds(obj.get('duration') or obj.get('durationSeconds')) or 0
         overview=bool(re.search(r'game highlights|full game highlights|game recap|game summary',low)) or bool(dur and 120<=dur<=420 and re.search(r'\bwin|victory|beats?\b',low))
-        if not media and not href: continue
-        out.append({'id':f'espn-video-{abs(hash(sig))%10**12}','eventId':f'espn-video-{abs(hash(sig))%10**12}','league':league,'title':title,'description':str(obj.get('description') or obj.get('summary') or ''),'duration':dur,'durationSeconds':dur,'thumbnail':str(obj.get('image') or obj.get('thumbnail') or ''),'source':'ESPN','sourceLabel':'ESPN','sourceType':'espn-video','provider':'ESPN','verifiedPlayable':bool(media),'mediaUrl':media,'externalUrl':href,'articleUrl':href,'overview':overview,'programType':'recap' if overview else 'reel','importance':92 if overview else 75,'publishedAt':obj.get('published') or obj.get('publishedAt') or obj.get('date')})
+        out.append({'id':f'espn-video-{stable_id}','eventId':f'espn-video-{stable_id}','league':league,'title':title,'description':str(obj.get('description') or obj.get('summary') or ''),'duration':dur,'durationSeconds':dur,'thumbnail':str(obj.get('image') or obj.get('thumbnail') or ''),'source':'ESPN','sourceLabel':'ESPN','sourceType':'espn-video','provider':'ESPN','verifiedPlayable':bool(media),'mediaUrl':media,'externalUrl':href,'articleUrl':href,'overview':overview,'programType':'recap' if overview else 'reel','importance':92 if overview else 75,'publishedAt':obj.get('published') or obj.get('publishedAt') or obj.get('date')})
         if len(out)>=max_items: break
     return out
 

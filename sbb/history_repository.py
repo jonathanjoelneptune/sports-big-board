@@ -354,7 +354,7 @@ class HistoryRepository:
     def _canonical_url(item):
         item=item or {}
         if item.get("youtubeId"): return f"https://www.youtube.com/watch?v={item.get('youtubeId')}"
-        return str(item.get("mediaUrl") or item.get("externalUrl") or "")
+        return str(item.get("mediaUrl") or item.get("videoUrl") or item.get("videoURL") or item.get("streamUrl") or item.get("playbackUrl") or item.get("externalUrl") or "")
 
     def _upsert_source_media_conn(self, conn, raw, *, league="", date="", away="", home="", catalog_state=None, quarantine_reason=""):
         if not isinstance(raw,dict): return ""

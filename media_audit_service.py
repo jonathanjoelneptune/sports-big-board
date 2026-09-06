@@ -38,7 +38,7 @@ from sbb.event_matcher import team_name as catalog_team_name
 
 APP_ROOT = Path(__file__).resolve().parent
 APP_VERSION = (APP_ROOT / "VERSION").read_text(encoding="utf-8").strip()
-AUDIT_GENERATION = "R17-MULTI-SOURCE-REPAIR-DISCOVERY"
+AUDIT_GENERATION = "R18-MEDIA-REPAIR-TRANSPORT"
 STATE_DIR = Path(os.environ.get("SBB_STATE_DIR") or (Path.home() / ".sports-big-board")).expanduser()
 DB_PATH = STATE_DIR / "cache" / "history.sqlite3"
 HOST = os.environ.get("SBB_MEDIA_AUDIT_HOST", "127.0.0.1")
@@ -294,7 +294,7 @@ def _team_name(event: dict, side: str) -> str:
 
 
 def _asset_url(item: dict, canonical_url: str = "") -> str:
-    for key in ("mediaUrl", "externalUrl", "url", "videoUrl", "href"):
+    for key in ("mediaUrl", "videoUrl", "videoURL", "streamUrl", "playbackUrl", "url", "href", "externalUrl"):
         value = item.get(key)
         if value:
             return str(value)
@@ -578,11 +578,12 @@ class AuditStore:
                 "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,reason=CASE WHEN reason='' THEN 'Recovered interrupted Repair Engine job' ELSE reason END WHERE state IN ('SEARCHING','CERTIFYING')",
                 (now,),
             ); recovered_active=int(cur.rowcount or 0)
-            # R17 is a materially new discovery strategy. Give R16-exhausted jobs one
-            # immediate pass through the new ladder, then normal cooldown preservation
-            # prevents them from looping again.
+            # R18 changes the provider transport that reaches certification. Give
+            # every R17-exhausted actionable job one immediate pass through the
+            # corrected ladder. Once processed, details_json carries the R18 marker,
+            # so normal cooldown preservation prevents service-restart loops.
             cur=conn.execute(
-                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R17 multi-source discovery strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R17_MULTI_SOURCE_LADDER%'",
+                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R18 playable-transport strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R18_MEDIA_REPAIR_TRANSPORT%'",
                 (now,),
             ); strategy_requeued=int(cur.rowcount or 0)
             latest = conn.execute("SELECT id FROM history_media_audit_run ORDER BY id DESC LIMIT 1").fetchone()
@@ -3284,7 +3285,7 @@ class MediaRepairEngine(threading.Thread):
         event_key=str(job['canonical_event_key']); target=str(job.get('target') or 'ANY').upper()
         before=self.store.repair_event_assets(event_key); known={str(a.get('assetKey') or '') for a in before if a.get('assetKey')}
         self._write('repair staged search phase','update_repair_job',int(job['id']),state='SEARCHING',before_asset_count=len(before),
-                    details={"strategy":"R17_MULTI_SOURCE_LADDER","knownAssets":len(before),"target":target},event_key=event_key)
+                    details={"strategy":"R18_MEDIA_REPAIR_TRANSPORT","knownAssets":len(before),"target":target},event_key=event_key)
         fallback=None; total_new=[]
 
         # Stage 0: forgotten/unassigned/superseded media already in our own catalog.
@@ -3292,7 +3293,7 @@ class MediaRepairEngine(threading.Thread):
         if local:
             total_new.extend(str(a.get('assetKey')) for a in local if a.get('assetKey')); known.update(total_new)
             local_keys={str(a.get('assetKey')) for a in local if a.get('assetKey')}
-            promoted=self._certify_candidates(job,[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in local_keys],target,'R17 deep local catalog recovery')
+            promoted=self._certify_candidates(job,[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in local_keys],target,'R18 deep local catalog recovery')
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 
@@ -3312,7 +3313,7 @@ class MediaRepairEngine(threading.Thread):
                            details={"ok":bool(result.get('ok')),"reason":result.get('reason') or '',"payloadSummary":{k:v for k,v in (result.get('payload') or {}).items() if k in {'provider','providers','discovered','added','candidateCount'}}})
         if provider_new:
             candidates=self.store.repair_event_assets(event_key)
-            promoted=self._certify_candidates(job,[a for a in candidates if a.get('assetKey') in {x.get('assetKey') for x in provider_new}],target,'R17 registered provider discovery')
+            promoted=self._certify_candidates(job,[a for a in candidates if a.get('assetKey') in {x.get('assetKey') for x in provider_new}],target,'R18 registered provider discovery')
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
         known.update(str(a.get('assetKey')) for a in after if a.get('assetKey'))
@@ -3324,7 +3325,7 @@ class MediaRepairEngine(threading.Thread):
             candidate_keys={'yt:'+str(x.get('youtubeId')) for x in indexed if x.get('youtubeId')}
             total_new.extend(sorted(candidate_keys)); known.update(candidate_keys)
             candidates=[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in candidate_keys]
-            promoted=self._certify_candidates(job,candidates,target,'R17 official/trusted YouTube playlist index')
+            promoted=self._certify_candidates(job,candidates,target,'R18 official/trusted YouTube playlist index')
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 
@@ -3337,7 +3338,7 @@ class MediaRepairEngine(threading.Thread):
             self.stats['newCandidates']+=len(yt_candidates)
             keys={'yt:'+str(x.get('youtubeId')) for x in yt_candidates if x.get('youtubeId')}; total_new.extend(sorted(keys))
             candidates=[a for a in self.store.repair_event_assets(event_key) if a.get('assetKey') in keys]
-            promoted=self._certify_candidates(job,candidates,target,'R17 generic YouTube last-resort search')
+            promoted=self._certify_candidates(job,candidates,target,'R18 generic YouTube last-resort search')
             if promoted and promoted.get('health')=='HEALTHY': return promoted
             if promoted: fallback=promoted; target='PREFERRED'
 
@@ -3353,7 +3354,7 @@ class MediaRepairEngine(threading.Thread):
         quota_retry=float(yt.get('retryAt') or 0) if yt.get('quotaBlocked') else 0
         retry=max(self._retry_at(job),quota_retry)
         self.stats['discoveryExhausted']+=1
-        reason='Repair ladder exhausted; YouTube search quota/cooldown active' if quota_retry else 'R17 multi-source repair ladder exhausted without a newly certified candidate'
+        reason='Repair ladder exhausted; YouTube search quota/cooldown active' if quota_retry else 'R18 media-repair transport ladder exhausted without a newly certified candidate'
         self._write('repair schedule retry after staged discovery','update_repair_job',int(job['id']),state='WAITING_RETRY',reason=reason,
                     next_retry_at=retry,last_error='DISCOVERY_EXHAUSTED',new_asset_keys=total_new,event_key=event_key)
         self._set(phase='WAITING_RETRY',lastResult='DISCOVERY_EXHAUSTED',nextRetryAt=retry)
