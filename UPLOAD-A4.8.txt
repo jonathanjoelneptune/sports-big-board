@@ -1,0 +1,22 @@
+Sports Big Board — Sports Ticker A4.8
+
+Upload these files preserving repository paths:
+
+  tools/refresh_sports_ticker_a48.py
+  tools/refresh_sports_ticker_current.py
+  tests/test_a48_editorial_progression.py
+  tests/test_sports_ticker_current.py
+  .github/workflows/sports-ticker-refresh.yml
+
+This is the FINAL intended version-specific workflow YAML update.
+The workflow now calls stable entrypoints:
+
+  python3 tests/test_sports_ticker_current.py
+  python3 tools/refresh_sports_ticker_current.py
+
+The stable launcher automatically selects the highest refresh_sports_ticker_aNN.py
+implementation, and the stable test runner automatically runs test_a4*.py regression
+files. Starting with A4.9, ordinary ticker revisions should not require editing the
+workflow YAML.
+
+Keep A4.2 through A4.7 files in the repository because A4.8 layers on them.
