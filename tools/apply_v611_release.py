@@ -162,8 +162,26 @@ def main(argv=None):
     if not version.is_file():
         raise SystemExit("ERROR: Sports Big Board VERSION file not found")
     current = version.read_text(encoding="utf-8").strip()
+
+    # Forward-compatibility for web uploads: if a newer semantic release has
+    # already landed while an older workflow still invokes this filename,
+    # delegate to the materializer named by VERSION instead of failing solely
+    # because the version number advanced.
+    try:
+        current_tuple = tuple(int(x) for x in current.split("."))
+        this_tuple = tuple(int(x) for x in NEW.split("."))
+    except Exception:
+        current_tuple = this_tuple = ()
+    if current_tuple and this_tuple and current_tuple > this_tuple:
+        target = root / "tools" / f"apply_v{current.replace('.', '')}_release.py"
+        if target.is_file() and target.resolve() != Path(__file__).resolve():
+            return subprocess.call([sys.executable, str(target), *sys.argv[1:]], cwd=root)
+        raise SystemExit(
+            f"ERROR: repository VERSION is {current}, but matching materializer {target.name} is missing"
+        )
+
     if current not in set(OLD_VALUES) | {NEW}:
-        raise SystemExit(f"ERROR: expected source release 5.5.0/6.0.0/6.1.0/6.1.1, found {current!r}")
+        raise SystemExit(f"ERROR: unsupported source release {current!r}")
     required = [
         root / "sbb" / "canonical_shadow_v600.py",
         root / "sbb" / "canonical_certification_v610.py",
