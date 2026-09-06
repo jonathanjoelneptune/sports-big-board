@@ -29,7 +29,7 @@ from urllib.parse import parse_qs, urlencode
 from . import canonical_shadow_v600 as shadow
 from . import canonical_certification_v610 as v610
 
-VERSION = "6.1.1-certification-hardening-1"
+VERSION = "6.1.1-certification-hardening-2"
 ENABLED = str(os.environ.get("SBB_CANONICAL_CERT_HARDENING_ENABLED") or "1").strip().lower() not in {"0", "false", "no", "off"}
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
@@ -723,23 +723,73 @@ def _readiness_for_day(engine, day):
     return rows
 
 
-def _readiness_window(engine):
+def _compute_readiness_window(engine):
+    """Build the expensive 15-day readiness projection once per reconciliation cycle.
+
+    This function is intentionally NOT called from HTTP request handlers. The
+    readiness surface performs hundreds of small SQLite evidence lookups across the
+    D-7/D+7 horizon; doing that synchronously in /health made the endpoint block for
+    tens of seconds while the certification worker was writing the same database.
+    """
     today = datetime.now(shadow.ET).date()
     day_from = today - timedelta(days=shadow.LOOKBACK_DAYS)
     day_to = today + timedelta(days=shadow.LOOKAHEAD_DAYS)
     ready = total = blockers = 0
     by_day = {}
     cursor = day_from
+    started = _now()
     while cursor <= day_to:
         day = cursor.isoformat()
         rows = _readiness_for_day(engine, day)
         day_ready = sum(1 for x in rows.values() if x["cutoverReady"])
+        day_blockers = sum(int(x["productionOnly"]) for x in rows.values())
         ready += day_ready
         total += len(rows)
-        blockers += sum(int(x["productionOnly"]) for x in rows.values())
-        by_day[day] = {"cutoverReady": day_ready, "leagueDays": len(rows), "productionOnlyBlockers": sum(int(x["productionOnly"]) for x in rows.values())}
+        blockers += day_blockers
+        by_day[day] = {
+            "cutoverReady": day_ready,
+            "leagueDays": len(rows),
+            "productionOnlyBlockers": day_blockers,
+            "leagues": rows,
+        }
         cursor += timedelta(days=1)
-    return {"cutoverReadyLeagueDays": ready, "totalLeagueDays": total, "productionOnlyBlockers": blockers, "days": by_day}
+    return {
+        "cutoverReadyLeagueDays": ready,
+        "totalLeagueDays": total,
+        "productionOnlyBlockers": blockers,
+        "days": by_day,
+        "builtAt": _now(),
+        "buildSeconds": round(_now() - started, 3),
+        "ready": True,
+    }
+
+
+def _empty_readiness_cache():
+    return {
+        "cutoverReadyLeagueDays": 0,
+        "totalLeagueDays": 0,
+        "productionOnlyBlockers": 0,
+        "days": {},
+        "builtAt": 0.0,
+        "buildSeconds": 0.0,
+        "ready": False,
+    }
+
+
+def _rebuild_readiness_cache(engine):
+    payload = _compute_readiness_window(engine)
+    engine.__sbbV611ReadinessCache = payload
+    return payload
+
+
+def _readiness_window(engine):
+    """Return only the last background-built readiness snapshot.
+
+    Request handlers must remain O(1) and never contend with the network collectors
+    or perform a 15-day SQLite scan on behalf of a browser poll.
+    """
+    cached = getattr(engine, "__sbbV611ReadinessCache", None)
+    return cached if isinstance(cached, dict) else _empty_readiness_cache()
 
 
 def _run_horizon_v611(self):
@@ -754,14 +804,21 @@ def _run_horizon_v611(self):
         for league in shadow.SUPPORTED_LEAGUES:
             _slate, did_change = self.store.compile_slate(day, league, "CERTIFICATION_HARDENING")
             changed += int(bool(did_change))
+    # Expensive readiness aggregation belongs to the worker cycle, never /health.
+    readiness_cache = _rebuild_readiness_cache(self)
     stats["productionComparisonsRefreshed"] = refreshed
     stats["hardeningSlateChanges"] = changed
     stats["hardeningVersion"] = VERSION
+    stats["readinessCacheBuiltAt"] = readiness_cache.get("builtAt", 0.0)
+    stats["readinessCacheBuildSeconds"] = readiness_cache.get("buildSeconds", 0.0)
     self.last_stats = stats
     return stats
 
 
 def _health_v611(self):
+    # Health must be a cached diagnostics read. v6.1.1 R1 synchronously rebuilt the
+    # entire 15-day readiness window here, which could block behind the certification
+    # writer and caused both GitHub smoke checks and the browser console to hang.
     payload = self.__sbbV611OriginalHealth()
     payload["version"] = VERSION
     payload["hardening"] = {
@@ -773,15 +830,24 @@ def _health_v611(self):
         "mlsCanonicalMatchDate": True,
         "mlsBroadSeasonFallback": True,
         "mlsEspnPerDayIndependent": True,
+        "cachedReadinessHealth": True,
         "productionAuthority": False,
     }
     today = datetime.now(shadow.ET).date().isoformat()
-    readiness = _readiness_for_day(self, today)
     window = _readiness_window(self)
-    payload["readinessToday"] = readiness
-    payload["cutoverReadyLeagueDays"] = window["cutoverReadyLeagueDays"]
-    payload["totalLeagueDays"] = window["totalLeagueDays"]
-    payload["productionOnlyBlockers"] = window["productionOnlyBlockers"]
+    today_block = (window.get("days") or {}).get(today) or {}
+    payload["readinessToday"] = today_block.get("leagues") or {}
+    payload["cutoverReadyLeagueDays"] = int(window.get("cutoverReadyLeagueDays") or 0)
+    payload["totalLeagueDays"] = int(window.get("totalLeagueDays") or 0)
+    payload["productionOnlyBlockers"] = int(window.get("productionOnlyBlockers") or 0)
+    built_at = float(window.get("builtAt") or 0)
+    payload["readinessCache"] = {
+        "ready": bool(window.get("ready")),
+        "builtAt": built_at,
+        "ageSeconds": round(max(0.0, _now() - built_at), 3) if built_at else None,
+        "buildSeconds": float(window.get("buildSeconds") or 0),
+        "dayCount": len(window.get("days") or {}),
+    }
     payload["adapterFailures"] = sum(
         1 for league in (payload.get("leagues") or {}).values()
         for side in ("authoritative", "independent")
@@ -849,24 +915,32 @@ def _install_into_server():
             if parsed.path == "/api/canonical/certification/readiness":
                 qs = parse_qs(parsed.query)
                 day = shadow._day((qs.get("date") or [""])[-1]) or datetime.now(shadow.ET).date().isoformat()
-                rows = _readiness_for_day(_ENGINE, day)
+                window = _readiness_window(_ENGINE)
+                block = (window.get("days") or {}).get(day) or {}
+                rows = block.get("leagues") or {}
                 return server.send_json(self, {
                     "ok": True, "version": VERSION, "date": day, "productionAuthority": False,
-                    "cutoverReady": sum(1 for x in rows.values() if x["cutoverReady"]),
-                    "leagueCount": len(rows), "leagues": rows,
-                }, 200, {"X-SBB-Canonical-Certification": "HARDENED-SHADOW"})
+                    "cached": bool(block), "cacheBuiltAt": window.get("builtAt", 0.0),
+                    "cutoverReady": int(block.get("cutoverReady") or 0),
+                    "leagueCount": int(block.get("leagueDays") or len(rows)), "leagues": rows,
+                }, 200, {"X-SBB-Canonical-Certification": "HARDENED-SHADOW-CACHED"})
             if parsed.path == "/api/canonical/certification/readiness-window":
                 return server.send_json(self, {
                     "ok": True, "version": VERSION, "productionAuthority": False,
                     **_readiness_window(_ENGINE),
-                }, 200, {"X-SBB-Canonical-Certification": "HARDENED-SHADOW"})
+                }, 200, {"X-SBB-Canonical-Certification": "HARDENED-SHADOW-CACHED"})
             return old_get(self)
         Handler.do_GET = do_GET
         Handler.__sbbCanonicalCertificationV611 = True
 
-    # Reconcile immediately instead of waiting for the next 15-minute v6.1 cycle.
+    # Seed the cached readiness projection from the existing SQLite state before
+    # starting network reconciliation. Both tasks stay off the HTTP request thread.
     def initial_reconcile():
         time.sleep(1)
+        try:
+            _rebuild_readiness_cache(_ENGINE)
+        except Exception as exc:
+            _ENGINE.last_error = f"v6.1.1 readiness cache seed: {type(exc).__name__}: {exc}"
         try:
             _ENGINE.run_horizon()
         except Exception as exc:

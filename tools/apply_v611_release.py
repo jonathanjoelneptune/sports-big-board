@@ -67,6 +67,8 @@ def patch_verify(root: Path, dry=False):
     additions = []
     if "tests/test_v611_canonical_hardening.py" not in text:
         additions.append("python3 tests/test_v611_canonical_hardening.py")
+    if "tests/test_v611_runtime_responsiveness.py" not in text:
+        additions.append("python3 tests/test_v611_runtime_responsiveness.py")
     if "sbb/canonical_certification_v611.py" not in text:
         additions.append("python3 -m py_compile sbb/canonical_certification_v611.py")
     if not additions:
@@ -169,6 +171,7 @@ def main(argv=None):
         root / "tests" / "test_v600_canonical_shadow.py",
         root / "tests" / "test_v610_canonical_certification.py",
         root / "tests" / "test_v611_canonical_hardening.py",
+        root / "tests" / "test_v611_runtime_responsiveness.py",
         root / "canonical-shadow.html",
     ]
     missing = [str(x.relative_to(root)) for x in required if not x.is_file()]
