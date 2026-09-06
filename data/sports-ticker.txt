@@ -1,96 +1,95 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-06T19:30:43Z
-Global headline budget: 31/30-35 total
+Updated: 2026-09-06T20:00:40Z
+Global headline budget: 32/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: b7a348b7e9e842dfab8d769c2410a36e82b39d7b9eded5c62aa5f945ee2b8e1b
+Candidate hash: 9692d8ed8981ed0bfacc36ebcdcdf83e8bf2a199de5e5e0f2679682523119744
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [STANDINGS] Toronto beat Kansas City 4-3 as Kazuma Okamoto collected four hits and drove in the tiebreaking run, pulling the Blue Jays even with Cleveland for the final AL wild card. (priority 84, age 20.35h)
+ 1. [STANDINGS] Toronto beat Kansas City 4-3 as Kazuma Okamoto collected four hits and two RBIs, including the tiebreaking seventh-inning single, to pull even with Cleveland. (priority 84, age 20.84h)
     Compact headline: Blue Jays pull even for final AL wild-card spot
     Occurred: 2026-09-05T23:10:00Z | Precision: exact | Status: active
-    Freshness basis: Toronto beat Kansas City 4-3 and moved into a tie with Cleveland for the final AL wild-card spot.
+    Freshness basis: Toronto beat Kansas City 4-3 and pulled even with Cleveland for the final AL wild-card spot.
     Entities: Toronto Blue Jays, Kansas City Royals, Kazuma Okamoto, Cleveland Guardians
     Candidate IDs: cand-d932bb8cd4710368
     Source [Highlightly/highlightly-baseball-2026-09-05]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816822
 
- 2. [STANDINGS] Philadelphia beat Atlanta 4-2 behind Zack Wheeler’s nine strikeouts in six innings and Kyle Schwarber’s 41st homer, moving the Phillies within four games of the Braves. (priority 80, age 18.87h)
-    Compact headline: Phillies close NL East gap with win over Braves
-    Occurred: 2026-09-06T00:38:30Z | Precision: exact | Status: active
-    Freshness basis: Philadelphia beat Atlanta 4-2 and moved within four games of the Braves in the NL East.
-    Entities: Philadelphia Phillies, Atlanta Braves, Zack Wheeler, Kyle Schwarber
-    Candidate IDs: cand-61a7845eaebab3e1
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816813
+ 2. [INJURY] Diamondbacks shortstop Geraldo Perdomo left Sunday’s game after a line drive struck his helmet; the candidate provides no further diagnosis. (priority 76, age 0.08h)
+    Compact headline: Perdomo exits after line drive strikes helmet
+    Occurred: 2026-09-06T19:55:58Z | Precision: exact | Status: active
+    Freshness basis: Geraldo Perdomo left Arizona’s game after a line drive struck his helmet Sunday.
+    Entities: Arizona Diamondbacks, Geraldo Perdomo
+    Candidate IDs: cand-69fa949440d27d2f
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49851417/geraldo-perdomo-leaves-game-line-drive-strikes-helmet
 
- 3. [MILESTONE] Sonny Gray allowed three hits over seven innings to earn his majors-leading 17th victory in Boston’s 5-0 win over Baltimore. (priority 75, age 20.43h)
-    Compact headline: Sonny Gray earns majors-leading 17th win for Boston
+ 3. [MILESTONE] Sonny Gray pitched seven three-hit innings for his majors-leading 17th victory as Boston beat Baltimore 5-0. (priority 74, age 20.93h)
+    Compact headline: Sonny Gray earns MLB-leading 17th win for Red Sox
     Occurred: 2026-09-05T23:05:00Z | Precision: exact | Status: active
-    Freshness basis: Sonny Gray earned his majors-leading 17th victory with seven three-hit innings for Boston.
+    Freshness basis: Sonny Gray pitched seven three-hit innings and earned his majors-leading 17th win in Boston’s 5-0 victory.
     Entities: Boston Red Sox, Baltimore Orioles, Sonny Gray
     Candidate IDs: cand-63b7fc5ddba06b2e
     Source [Highlightly/highlightly-baseball-2026-09-05]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816814
 
- 4. [MILESTONE] Yusei Kikuchi pitched six scoreless innings and earned his first win of the season as the Angels beat the Pirates 6-1. (priority 74, age 20.85h)
-    Compact headline: Kikuchi throws six scoreless in first Angels win
-    Occurred: 2026-09-05T22:40:00Z | Precision: exact | Status: active
-    Freshness basis: Yusei Kikuchi earned his first win of the season with six scoreless innings in the Angels’ 6-1 victory.
-    Entities: Los Angeles Angels, Pittsburgh Pirates, Yusei Kikuchi
-    Candidate IDs: cand-c60b8d7d6c5392fe
-    Source [Highlightly/highlightly-baseball-2026-09-05]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816812
+ 4. [ROSTER] The Mets are recalling 23-year-old right-hander Jonah Tong to start Monday against Miami and remain in New York’s rotation for the rest of the year. (priority 74, age 2.22h)
+    Compact headline: Mets recall Jonah Tong for Monday start
+    Occurred: 2026-09-06T17:47:30Z | Precision: exact | Status: next
+    Freshness basis: New York recalled Jonah Tong to start Monday and remain in the rotation for the rest of the year.
+    Entities: New York Mets, Jonah Tong, Miami Marlins
+    Candidate IDs: cand-425750b7830a6d78
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49850361/mets-recall-rhp-jonah-tong-start-monday-vs-marlins
 
- 5. [RESULT] Cincinnati beat Milwaukee 5-3 after Matt McLain’s seventh-inning home run broke the tie. (priority 74, age 20.85h)
-    Compact headline: McLain’s homer lifts Reds past Brewers
-    Occurred: 2026-09-05T22:40:00Z | Precision: exact | Status: active
-    Freshness basis: Cincinnati beat Milwaukee 5-3 after Matt McLain’s seventh-inning home run broke the tie.
-    Entities: Cincinnati Reds, Milwaukee Brewers, Matt McLain
-    Candidate IDs: cand-080be8299b6f8aae
-    Source [Highlightly/highlightly-baseball-2026-09-05]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816817
-    Source [ESPN/a44-espn-mlb-summary-401816817]: https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816817
-
- 6. [RESULT] Riley Greene hit two solo homers, collected four hits and drove in four runs while Framber Valdez threw seven innings in Detroit’s 6-0 win over Cleveland. (priority 74, age 21.35h)
-    Compact headline: Riley Greene powers Tigers past Guardians
-    Occurred: 2026-09-05T22:10:00Z | Precision: exact | Status: active
-    Freshness basis: Detroit beat Cleveland 6-0 behind Riley Greene’s two homers, four hits and four RBIs.
-    Entities: Detroit Tigers, Cleveland Guardians, Riley Greene, Framber Valdez
-    Candidate IDs: cand-b3753acff55cbec9
-    Source [Highlightly/highlightly-baseball-2026-09-05]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816816
-
- 7. [RESULT] Jeffrey Springs pitched seven scoreless innings and Max Muncy homered for the second straight day in Oakland’s 6-2 win over Seattle. (priority 72, age 17.85h)
+ 5. [RESULT] Jeffrey Springs pitched seven scoreless innings and Max Muncy homered for the second straight day in Oakland’s 6-2 win over Seattle. (priority 72, age 18.34h)
     Compact headline: Springs throws seven scoreless as A’s beat Mariners
     Occurred: 2026-09-06T01:40:00Z | Precision: exact | Status: active
-    Freshness basis: Jeffrey Springs pitched seven scoreless innings and Max Muncy homered in the Athletics’ 6-2 win.
+    Freshness basis: Jeffrey Springs pitched seven scoreless innings and Oakland beat Seattle 6-2.
     Entities: Athletics, Seattle Mariners, Jeffrey Springs, Max Muncy
     Candidate IDs: cand-024104fd088c6991
     Source [Highlightly/highlightly-baseball-2026-09-05]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816824
 
+ 6. [RESULT] Ryan Jeffers hit a go-ahead three-run homer in the fifth inning as Minnesota beat Chicago 6-4. (priority 72, age 20.84h)
+    Compact headline: Jeffers’ three-run homer powers Twins past White Sox
+    Occurred: 2026-09-05T23:10:00Z | Precision: exact | Status: active
+    Freshness basis: Ryan Jeffers hit a go-ahead three-run homer in the fifth inning as Minnesota beat Chicago 6-4.
+    Entities: Minnesota Twins, Chicago White Sox, Ryan Jeffers, Taj Bradley
+    Candidate IDs: cand-d3597e4e8b421050
+    Source [Highlightly/highlightly-baseball-2026-09-05]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816820
+    Source [ESPN/a44-espn-mlb-summary-401816820]: https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816820
+
+ 7. [RESULT] Jonathan Aranda hit a three-run homer in the 10th inning to give Tampa Bay a 6-3 win over Texas. (priority 72, age 20.93h)
+    Compact headline: Aranda’s 10th-inning homer lifts Rays past Rangers
+    Occurred: 2026-09-05T23:05:00Z | Precision: exact | Status: active
+    Freshness basis: Jonathan Aranda hit a three-run homer in the 10th inning to give Tampa Bay a 6-3 win over Texas.
+    Entities: Tampa Bay Rays, Texas Rangers, Jonathan Aranda
+    Candidate IDs: cand-2ca377b6c98259a8
+    Source [Highlightly/highlightly-baseball-2026-09-05]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816821
+
 ============================================================================
 NFL  [PRESEASON]
 ============================================================================
 
- 1. [SIGNING] Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota for his 15th NFL season. (priority 75, age 2.66h)
+ 1. [SIGNING] Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota for his 15th season. (priority 75, age 3.16h)
     Compact headline: Harrison Smith returns to Vikings for 15th season
     Occurred: 2026-09-06T16:51:02Z | Precision: exact | Status: active
-    Freshness basis: Harrison Smith agreed to a one-year deal with Minnesota and will return for his 15th season.
+    Freshness basis: Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota for his 15th season.
     Entities: Harrison Smith, Minnesota Vikings
     Candidate IDs: cand-4488e5a7de41ba69
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49841519/vikings-safety-smith-agrees-deal-back-15th-season
 
- 2. [CONTRACT] NFL commissioner Roger Goodell finalized a four-year extension that will keep him in the role through the 2030 season. (priority 78, age 0.87h)
-    Compact headline: Goodell agrees to extension through 2030 season
+ 2. [CONTRACT] NFL commissioner Roger Goodell finalized a four-year extension that runs through the 2030 season. (priority 78, age 1.36h)
+    Compact headline: Goodell agrees to four-year extension through 2030
     Occurred: 2026-09-06T18:38:46Z | Precision: exact | Status: active
-    Freshness basis: Roger Goodell finalized a four-year NFL commissioner extension running through the 2030 season.
+    Freshness basis: Roger Goodell finalized a four-year extension that runs through the 2030 season.
     Entities: Roger Goodell, NFL
     Candidate IDs: cand-2ba57fef3e7ff13d
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49850050/nfl-commissioner-roger-goodell-finalizes-four-year-extension
@@ -111,62 +110,78 @@ NHL  [OFFSEASON]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [MILESTONE] Erling Haaland scored his 300th club goal in Manchester City’s 1-0 win over Coventry. (priority 84, age 21.53h)
+ 1. [MILESTONE] Erling Haaland scored his 300th club goal in Manchester City’s 1-0 win over Coventry. (priority 88, age 22.03h)
     Compact headline: Haaland reaches 300 club goals as City stay perfect
     Occurred: 2026-09-05T21:58:59Z | Precision: exact | Status: active
     Freshness basis: Erling Haaland scored his 300th club goal in Manchester City’s 1-0 win over Coventry.
-    Entities: Erling Haaland, Manchester City, Coventry
+    Entities: Erling Haaland, Manchester City, Coventry City
     Candidate IDs: cand-7ea8bcd0e112ae43
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49839417/erling-haaland-cristiano-ronaldo-kylian-mbappe-300-club-goals
 
- 2. [RESULT] Arsenal came from behind to record a statement 2-1 win in a vintage London derby against Chelsea at the Emirates on Sunday. (priority 82, age 0.39h)
-    Compact headline: Arsenal rallies past Chelsea in London derby
+ 2. [RESULT] Arsenal came from behind to beat Chelsea 2-1 at the Emirates, with Martin Ødegaard and Kai Havertz scoring in the comeback. (priority 82, age 0.89h)
+    Compact headline: Arsenal rallies past Chelsea in statement London derby
     Occurred: 2026-09-06T19:07:09Z | Precision: exact | Status: active
-    Freshness basis: Arsenal overcame Chelsea 2-1 in a London derby after coming from behind.
+    Freshness basis: Arsenal came from behind to beat Chelsea 2-1 in a London derby.
     Entities: Arsenal, Chelsea, Martin Ødegaard, Kai Havertz
     Candidate IDs: cand-33e958cb5fe119e4
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49850276/martin-odegaard-kai-havertz-arsenal-statement-london-derby-chelsea-report-reaction
 
- 3. [RESULT] Ainsley Maitland-Niles scored in the 96th minute to give Everton a 2-2 draw with Manchester United and deny United a second win of the season. (priority 72, age 2.41h)
-    Compact headline: Everton snatches point from Man United in 96th minute
+ 3. [RETURN] Tottenham’s Mykhailo Mudryk made his first appearance in almost two years, though manager Roberto De Zerbi said the winger will need time to regain form. (priority 73, age 10.81h)
+    Compact headline: Mudryk returns after nearly two-year absence
+    Occurred: 2026-09-06T09:12:19Z | Precision: exact | Status: active
+    Freshness basis: Mykhailo Mudryk made his first appearance in almost two years for Tottenham.
+    Entities: Tottenham Hotspur, Mykhailo Mudryk, Roberto De Zerbi
+    Candidate IDs: cand-0f2651cc5a22adf1
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49846491/tottenham-boss-roberto-de-zerbi-says-mykhailo-mudryk-need-find-best-form
+
+ 4. [RESULT] Ainsley Maitland-Niles scored in the 96th minute to give Everton a 2-2 draw with Manchester United and deny United a second league win. (priority 72, age 2.91h)
+    Compact headline: Maitland-Niles’ 96th-minute goal rescues Everton
     Occurred: 2026-09-06T17:06:02Z | Precision: exact | Status: active
-    Freshness basis: Everton drew Manchester United 2-2 after Ainsley Maitland-Niles equalized in the 96th minute.
+    Freshness basis: Ainsley Maitland-Niles equalized in the 96th minute as Everton drew Manchester United 2-2.
     Entities: Everton, Manchester United, Ainsley Maitland-Niles
     Candidate IDs: cand-51670b59060108df
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49849520/man-united-everton-premier-league-bryan-mbeumo-benjamin-sesko-ainsley-maitland-niles-tyrique-george
+
+ 5. [SLUMP] Tottenham’s wait for a first Premier League win continued after a third straight match without a goal, with Roberto De Zerbi citing poor decisions. (priority 72, age 23.65h)
+    Compact headline: Tottenham still searching for first league win
+    Occurred: 2026-09-05T20:21:54Z | Precision: exact | Status: active
+    Freshness basis: Tottenham went three consecutive Premier League matches without scoring while still seeking its first win.
+    Entities: Tottenham Hotspur, Roberto De Zerbi
+    Candidate IDs: cand-6fe1728d0bed4846
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49837481/roberto-de-zerbi-spurs-nottingham-forest-premier-league-transfers
 
 ============================================================================
 MLS  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] Philadelphia’s 16-year-old Cavan Sullivan scored in his third straight MLS game and broke the league record previously held by Freddy Adu. (priority 84, age 15.77h)
+ 1. [RECORD] Philadelphia’s 16-year-old Cavan Sullivan scored in his third straight MLS game and broke the league record set by Freddy Adu. (priority 86, age 16.27h)
     Compact headline: Cavan Sullivan breaks Freddy Adu’s MLS record
     Occurred: 2026-09-06T03:44:14Z | Precision: exact | Status: active
-    Freshness basis: Cavan Sullivan scored in his third consecutive MLS game and broke Freddy Adu’s league record.
+    Freshness basis: Cavan Sullivan scored in his third straight MLS game and broke Freddy Adu’s MLS record.
     Entities: Cavan Sullivan, Philadelphia Union, Freddy Adu
     Candidate IDs: cand-a00b7d475c063bdf
     Source [ESPN/espn-mls]: https://www.espn.com/soccer/story/_/id/49842819/cavan-sullivan-freddy-adu-mls-record-philadelphia-union
 
- 2. [RESULT] A 90th-minute goal gave Portland a 5-4 win over Minnesota United in a nine-goal thriller. (priority 76, age 17.01h)
-    Compact headline: Late goal lifts Portland past Minnesota 5-4
+ 2. [RESULT] A 90th-minute goal gave Portland a 5-4 win over Minnesota in a nine-goal match. (priority 82, age 17.51h)
+    Compact headline: Late goal lifts Portland over Minnesota in 5-4 thriller
     Occurred: 2026-09-06T02:30:00Z | Precision: exact | Status: active
-    Freshness basis: Portland beat Minnesota United 5-4 after a deciding goal in the 90th minute.
+    Freshness basis: A 90th-minute goal decided Portland’s 5-4 win over Minnesota.
     Entities: Portland Timbers, Minnesota United
     Candidate IDs: cand-a196e8a509c02dfc
     Source [Highlightly/highlightly-football-2026-09-05]: https://highlightly.net
 
- 3. [RESULT] Breel Embolo scored a late penalty on his MLS debut to give Atlanta United a 2-2 draw at Inter Miami. (priority 72, age 13.21h)
-    Compact headline: Embolo scores on debut to rescue Atlanta draw
+ 3. [RESULT] Breel Embolo scored a late penalty on his MLS debut to give Atlanta United a 2-2 draw at Inter Miami. (priority 72, age 13.71h)
+    Compact headline: Embolo scores on debut to earn Atlanta draw at Miami
     Occurred: 2026-09-06T06:18:08Z | Precision: exact | Status: active
-    Freshness basis: Breel Embolo scored a late penalty on his MLS debut as Atlanta drew Inter Miami 2-2.
-    Entities: Breel Embolo, Atlanta United FC, Inter Miami
+    Freshness basis: Breel Embolo scored a late penalty on his MLS debut as Atlanta drew 2-2 at Inter Miami.
+    Entities: Atlanta United FC, Inter Miami, Breel Embolo
     Candidate IDs: cand-249c03139b11bbfa
     Source [ESPN/espn-mls]: https://www.espn.com/soccer/story/_/id/49843737/inter-miami-atlanta-united-breel-embolo-casemiro-lionel-messi
 
- 4. [RESULT] FC Dallas beat Sporting Kansas City 4-3 in a one-goal MLS result. (priority 65, age 19.01h)
-    Compact headline: FC Dallas edges Sporting KC 4-3
+ 4. [RESULT] FC Dallas beat Sporting Kansas City 4-3 in a seven-goal MLS match that stayed within one score at the final whistle. (priority 65, age 19.51h)
+    Compact headline: FC Dallas edges Sporting KC in seven-goal thriller
     Occurred: 2026-09-06T00:30:00Z | Precision: exact | Status: active
-    Freshness basis: FC Dallas beat Sporting Kansas City 4-3 in a one-goal MLS game.
+    Freshness basis: FC Dallas beat Sporting Kansas City 4-3 in a seven-goal match.
     Entities: FC Dallas, Sporting Kansas City
     Candidate IDs: cand-7134f0b38469fcf7
     Source [Highlightly/highlightly-football-2026-09-05]: https://highlightly.net
@@ -175,64 +190,67 @@ MLS  [ACTIVE]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [UPSET] Jordan Cooke threw for 152 yards and 1 TD as Idaho State Bengals beat Utah State Aggies 29-17. (priority 84, age 20.51h)
+ 1. [UPSET] Jordan Cooke threw for 152 yards and 1 TD as Idaho State Bengals beat Utah State Aggies 29-17. (priority 86, age 21.01h)
     Compact headline: Idaho State stuns Utah State 29-17
     Occurred: 2026-09-05T23:00:00Z | Precision: exact | Status: active
-    Freshness basis: Idaho State beat Utah State 29-17 in an upset flagged by the supplied result data.
+    Freshness basis: Idaho State defeated Utah State 29-17 in the supplied upset result.
     Entities: Idaho State Bengals, Utah State Aggies
     Candidate IDs: cand-17adad8a6e437641
     Source [Highlightly/highlightly-american-football-2026-09-05]: https://highlightly.net
     Source [ESPN/a45-espn-ncaaf-summary-401860880]: https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401860880
 
- 2. [MILESTONE] Treynor Cleeland threw five touchdown passes to lead UC Davis past San Diego 49-17. (priority 77, age 13.27h)
-    Compact headline: UC Davis quarterback throws five TDs in 49-17 win
-    Occurred: 2026-09-06T06:14:29Z | Precision: exact | Status: active
-    Freshness basis: Treynor Cleeland threw five touchdown passes in UC Davis’ 49-17 victory over San Diego.
-    Entities: UC Davis Aggies, San Diego Toreros, Treynor Cleeland
-    Candidate IDs: cand-fba725b92f21dc87
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401868163
-
- 3. [RESULT] No. 16 Michigan beat Western Michigan 13-12 after a late touchdown drive. (priority 82, age 20.01h)
+ 2. [RESULT] A late touchdown lifted No. 16 Michigan over Western Michigan 13-12 in a one-score finish. (priority 82, age 20.51h)
     Compact headline: Late score lifts No. 16 Michigan past Western Michigan
     Occurred: 2026-09-05T23:30:00Z | Precision: exact | Status: active
-    Freshness basis: No. 16 Michigan beat Western Michigan 13-12 after a late touchdown drive.
+    Freshness basis: A late touchdown lifted No. 16 Michigan to a 13-12 win over Western Michigan.
     Entities: Michigan Wolverines, Western Michigan Broncos
     Candidate IDs: cand-0195d492129c5a52
     Source [Highlightly/highlightly-american-football-2026-09-05]: https://highlightly.net
 
- 4. [MILESTONE] Wayne Knight ran for two touchdowns in the fourth quarter following interceptions by Ta'Shawn James and UCLA opened the Bob Chesney era with a 45-24 victory over California on Saturday night. (priority 73, age 17.01h)
-    Compact headline: UCLA opens Chesney era with 45-24 win over Cal
+ 3. [COACHING] Sacramento State beat Mississippi Valley State 52-0 for Alonzo Carter’s first victory as Hornets head coach; Jackson Sharman threw four touchdowns. (priority 75, age 14.22h)
+    Compact headline: Sacramento State gives Alonzo Carter first win
+    Occurred: 2026-09-06T05:47:29Z | Precision: exact | Status: active
+    Freshness basis: Sacramento State beat Mississippi Valley State 52-0 for Alonzo Carter’s first win as head coach.
+    Entities: Sacramento State Hornets, Mississippi Valley State Delta Devils, Alonzo Carter, Jackson Sharman
+    Candidate IDs: cand-c35dc4fe94073128
+    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401866411
+
+ 4. [STREAK] UNLV beat Hawai’i 21-6 for its fourth straight Island Showdown win as Jai’den Thomas ran for 143 yards and Jackson Arnold scored twice on the ground. (priority 74, age 14.22h)
+    Compact headline: UNLV wins fourth straight Island Showdown
+    Occurred: 2026-09-06T05:47:35Z | Precision: exact | Status: active
+    Freshness basis: UNLV beat Hawai’i 21-6 for its fourth consecutive Island Showdown victory.
+    Entities: UNLV Rebels, Hawai’i Rainbow Warriors, Jai’den Thomas, Jackson Arnold
+    Candidate IDs: cand-8d9f90c8a7a3dc85
+    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401864497
+
+ 5. [RESULT] Wayne Knight ran for two touchdowns in the fourth quarter following interceptions by Ta'Shawn James and UCLA opened the Bob Chesney era with a 45-24 victory over California on Saturday night. (priority 72, age 17.51h)
+    Compact headline: UCLA opens Chesney era by rallying past Cal
     Occurred: 2026-09-06T02:30:00Z | Precision: exact | Status: active
-    Freshness basis: UCLA scored the final 21 points to beat Cal 45-24 in new coach Bob Chesney’s debut.
+    Freshness basis: UCLA scored the final 21 points and beat Cal 45-24 in Bob Chesney’s debut.
     Entities: UCLA Bruins, California Golden Bears, Bob Chesney, Wayne Knight
     Candidate IDs: cand-f76b6417207b9a0f
     Source [Highlightly/highlightly-american-football-2026-09-05]: https://highlightly.net
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49845975/ucla-drubs-former-pac-12-rival-cal-chesney-debut
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401858210
 
- 5. [MILESTONE] Jackson Sharman threw four touchdown passes, including three to Matt Coleman, as Sacramento State beat Mississippi Valley State 52-0. (priority 72, age 13.72h)
-    Compact headline: Sacramento State gives Alonzo Carter first win
-    Occurred: 2026-09-06T05:47:29Z | Precision: exact | Status: active
-    Freshness basis: Sacramento State beat Mississippi Valley State 52-0 to give first-year coach Alonzo Carter his first win.
-    Entities: Sacramento State Hornets, Mississippi Valley State Delta Devils, Alonzo Carter, Jackson Sharman, Matt Coleman
-    Candidate IDs: cand-c35dc4fe94073128
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401866411
+ 6. [RESULT] Carter Jones threw two touchdowns and Dominic Kelley scored twice in Nevada’s 49-14 win over Western Kentucky. (priority 72, age 17.51h)
+    Compact headline: Nevada cruises past Western Kentucky behind two-TD duo
+    Occurred: 2026-09-06T02:30:00Z | Precision: exact | Status: active
+    Freshness basis: Carter Jones threw two touchdowns and Dominic Kelley scored twice in Nevada’s 49-14 win over Western Kentucky.
+    Entities: Nevada Wolf Pack, Western Kentucky Hilltoppers, Carter Jones, Dominic Kelley
+    Candidate IDs: cand-be48272e6d4ae27d
+    Source [Highlightly/highlightly-american-football-2026-09-05]: https://highlightly.net
+    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401864432
 
- 6. [MILESTONE] Jaylon Hawkins returned a kickoff 100 yards for a touchdown, and San Diego State beat Portland State 53-20. (priority 72, age 14.04h)
-    Compact headline: San Diego State gets 100-yard kickoff return in rout
-    Occurred: 2026-09-06T05:28:29Z | Precision: exact | Status: active
-    Freshness basis: Jaylon Hawkins returned a kickoff 100 yards for a touchdown in San Diego State’s 53-20 win.
-    Entities: San Diego State Aztecs, Portland State Vikings, Jaylon Hawkins
-    Candidate IDs: cand-bc997cc3c0839891
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401860879
-
- 7. [MILESTONE] Jabez Woods returned a kickoff 100 yards for a touchdown and later caught a 35-yard score in Montana State’s 51-24 win. (priority 71, age 15.65h)
-    Compact headline: Montana State gets 100-yard kickoff return in 51-24 win
-    Occurred: 2026-09-06T03:51:29Z | Precision: exact | Status: active
-    Freshness basis: Jabez Woods returned a kickoff 100 yards and caught a 35-yard touchdown in Montana State’s 51-24 win.
-    Entities: Montana State Bobcats, Butler Bulldogs, Jabez Woods
-    Candidate IDs: cand-b729619099cc6a6a
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401868119
+ 7. [RESULT] Will Hammond threw for 298 yards and 1 TD as Texas Tech Red Raiders beat Abilene Christian Wildcats 33-10. (priority 72, age 21.01h)
+    Compact headline: Will Hammond leads Texas Tech in starting debut
+    Occurred: 2026-09-05T23:00:00Z | Precision: exact | Status: active
+    Freshness basis: Will Hammond started and led Texas Tech to a 33-10 season-opening win over Abilene Christian.
+    Entities: Texas Tech Red Raiders, Abilene Christian Wildcats, Will Hammond
+    Candidate IDs: cand-7d5c4ebc3768d0f6
+    Source [Highlightly/highlightly-american-football-2026-09-05]: https://highlightly.net
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49844874/will-hammond-starts-leads-texas-tech-victory-opener
+    Source [ESPN/a45-espn-ncaaf-summary-401856770]: https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401856770
 
 ############################################################################
 SPECIAL EVENTS
@@ -241,57 +259,51 @@ SPECIAL EVENTS
 UFC 332 (MMA)
 ----------------------------------------------------------------------------
 
- 1. [INJURY] Valentina Shevchenko vacated the UFC 332 women’s flyweight title after an injury, setting Natalia Silva and Wang Cong to fight for the belt. (priority 88, age 21.96h)
-    Compact headline: Shevchenko vacates UFC 332 belt after injury
-    Freshness basis: Valentina Shevchenko vacated the UFC 332 flyweight title after suffering an injury.
+ 1. [INJURY] Valentina Shevchenko suffered an injury and vacated the women’s flyweight belt, leaving Natalia Silva and Wang Cong to fight for it at UFC 332. (priority 89, age 22.46h)
+    Compact headline: Shevchenko injury vacates UFC 332 flyweight title
+    Freshness basis: Valentina Shevchenko suffered an injury and vacated the UFC 332 women’s flyweight title.
     Candidate IDs: cand-7d57be47373be270
     Source [ESPN/espn-ufc]: https://www.espn.com/mma/story/_/id/49839558/shevchenko-injured-vacates-silva-wang-vie-belt-ufc-332
 
 US Open (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [RESULT] No. 24 Francisco Cerundolo erased a two-set deficit to defeat No. 9 Taylor Fritz 3-6, 4-6, 6-3, 6-4, 6-4 at the US Open. (priority 84, age 12.48h)
-    Compact headline: Cerundolo rallies from two sets down to oust Fritz
-    Freshness basis: Francisco Cerundolo beat No. 9 seed Taylor Fritz in five sets after trailing by two sets at the US Open.
+ 1. [RESULT] No. 24 Francisco Cerundolo rallied from two sets down to defeat No. 9 Taylor Fritz 3-6, 4-6, 6-3, 6-4, 6-4 at the US Open. (priority 84, age 12.98h)
+    Compact headline: Cerundolo rallies from two sets down to stun Fritz
+    Freshness basis: Francisco Cerundolo rallied from two sets down to defeat Taylor Fritz in five sets at the US Open.
     Candidate IDs: cand-6c6ce9aeabd61cb5
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49839555/taylor-fritz-blows-2-set-lead-falls-francisco-cerundolo-us-open
 
- 2. [ADVANCEMENT] Iva Jovic ended Alex Eala’s US Open run after more than three hours and advanced to a matchup with Coco Gauff for a quarterfinal berth. (priority 78, age 15.46h)
-    Compact headline: Iva Jovic ends Eala’s US Open run, sets Gauff clash
-    Freshness basis: Iva Jovic defeated Alex Eala at the US Open and advanced to face Coco Gauff for a quarterfinal spot.
-    Candidate IDs: cand-b94db03e9f28b3ce
-    Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49840314/gauff-advances-straight-sets-yet-drop-set-us-open
-
- 3. [ADVANCEMENT] Zheng Qinwen won the final seven games to rally past Madison Keys, while Naomi Osaka also came from behind in the third set to advance at the US Open. (priority 78, age 16.14h)
-    Compact headline: Zheng rallies past Keys as Osaka also advances
-    Freshness basis: Zheng Qinwen and Naomi Osaka won their US Open matches and advanced to the next round.
-    Candidate IDs: cand-91cba5564fb10294
-    Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49837907/zheng-rallies-keys-osaka-rallies-third-set-us-open
-
- 4. [ADVANCEMENT] Top-ranked Aryna Sabalenka overcame early struggles to defeat Taylor Townsend and reach the US Open quarterfinals. (priority 74, age 0.68h)
-    Compact headline: Sabalenka reaches US Open quarterfinals
-    Freshness basis: Aryna Sabalenka defeated Taylor Townsend to advance to the US Open quarterfinals.
+ 2. [ADVANCEMENT] Top-ranked Aryna Sabalenka overcame early struggles to overpower Taylor Townsend and reach the US Open quarterfinals. (priority 76, age 1.18h)
+    Compact headline: Sabalenka powers into US Open quarterfinals
+    Freshness basis: Aryna Sabalenka defeated Taylor Townsend to reach the US Open quarterfinals.
     Candidate IDs: cand-ad0d6fba667060cb
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals
 
+ 3. [ADVANCEMENT] Iva Jovic defeated Alex Eala after more than three hours at the US Open and advanced to a quarterfinal-place match against Coco Gauff. (priority 75, age 15.96h)
+    Compact headline: Jovic ends Eala’s US Open run, sets up Gauff match
+    Freshness basis: Iva Jovic defeated Alex Eala at the US Open and advanced to face Coco Gauff.
+    Candidate IDs: cand-b94db03e9f28b3ce
+    Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49840314/gauff-advances-straight-sets-yet-drop-set-us-open
+
+ 4. [ADVANCEMENT] Zheng Qinwen won the final seven games to rally past Madison Keys, while Naomi Osaka also came back to advance at the US Open. (priority 74, age 16.64h)
+    Compact headline: Zheng rallies past Keys as Osaka also advances
+    Freshness basis: Zheng Qinwen rallied past Madison Keys and Naomi Osaka also advanced at the US Open.
+    Candidate IDs: cand-91cba5564fb10294
+    Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49837907/zheng-rallies-keys-osaka-rallies-third-set-us-open
+
 Italian Grand Prix (Formula 1)
 ----------------------------------------------------------------------------
 
- 1. [INJURY] Charles Leclerc crashed out three laps into the Italian Grand Prix after an opening-lap battle with Ferrari teammate Lewis Hamilton. (priority 78, age 5.44h)
-    Compact headline: Leclerc crashes out early at Italian Grand Prix
-    Freshness basis: Charles Leclerc crashed out three laps into the Italian Grand Prix after battling Lewis Hamilton.
+ 1. [INJURY] Charles Leclerc crashed out of the Italian Grand Prix three laps after the start, dealing Ferrari a major setback at its home race. (priority 82, age 5.94h)
+    Compact headline: Leclerc crashes out early at Ferrari’s home GP
+    Freshness basis: Charles Leclerc crashed out of the Italian Grand Prix three laps after the start.
     Candidate IDs: cand-3db311d20064d96f
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49813283/charles-leclerc-suffers-huge-crash-italian-grand-prix-major-blow-ferrari-home-race-italian-grand-prix-formula-1-monza
 
- 2. [RESULT] Kimi Antonelli charged from 19th on the grid to win the Italian Grand Prix, passing George Russell with three laps remaining and becoming the first Italian Monza winner since 1966. (priority 82, age 2.81h)
-    Compact headline: Antonelli wins Italian GP after starting 19th
-    Freshness basis: Kimi Antonelli won the Italian Grand Prix after starting 19th and passing George Russell with three laps remaining.
+ 2. [RESULT] Kimi Antonelli won the Italian Grand Prix after starting 19th, passing Mercedes teammate George Russell with three laps left and reshaping the championship fight. (priority 82, age 0.31h)
+    Compact headline: Antonelli wins Italian GP from 19th in historic drive
+    Freshness basis: Kimi Antonelli won the Italian Grand Prix from 19th on the grid after passing George Russell with three laps remaining.
     Candidate IDs: cand-ed498d7036058fd9
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49813281/kimi-antonelli-comes-19th-grid-win-home-italian-grand-prix-italian-grand-prix-formula-1-monza
-
- 3. [RESULT] Kimi Antonelli won the Italian Grand Prix from 19th on the grid, becoming the first Italian winner at Monza since 1966. (priority 82, age 3.05h)
-    Compact headline: Antonelli wins Italian GP from 19th at Monza
-    Freshness basis: Kimi Antonelli won the Italian Grand Prix from 19th on the grid and became the first Italian Monza winner since 1966.
-    Candidate IDs: cand-a0f684fc256e03b5
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49814103/italian-grand-prix-2026-live-monza-f1-latest-updates-commentary-result-charles-leclerc-lewis-hamilton-george-russell-kimi-antonelli-max-verstappen-lando-norris
