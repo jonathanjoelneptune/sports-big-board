@@ -1,0 +1,24 @@
+SPORTS BIG BOARD — SPORTS TICKER A4.7
+Event Affinity + Cross-Game Isolation
+
+Baseline checked live: main @ 14c456f49b4edf5ef296ebab26643f99efb6038a
+
+Upload these files preserving repository paths:
+  tools/refresh_sports_ticker_a47.py
+  tests/test_a47_event_identity.py
+  .github/workflows/sports-ticker-refresh.yml
+
+Keep all existing A4.2 through A4.6 sidecar files. A4.7 imports A4.6.
+
+A4.7 deliberately leaves the following unchanged:
+  - 30 minimum preferred / 32 target / 35 maximum final headlines
+  - 80-character headline target / 96-character hard maximum
+  - source depth and conditional refill sizing
+  - league/special-event coverage caps
+  - A4.6 progression dedupe, legal filter, and strict NCAAF identity
+
+New correctness gates:
+  - reject one result with multiple distinct ESPN game IDs
+  - reject rendered score conflicts with structured game score
+  - reject explicit rendered winner reversal when source/candidate proves the opposite
+  - reject named Special Event placement without event-specific affinity
