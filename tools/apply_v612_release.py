@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Atomic checkout materializer for Sports Big Board v6.1.2 diagnostics.
+"""Sports Big Board v6.1.2 checkout materializer.
 
-R1 hardening principles:
-- release verification is capability-oriented, not pinned to historical materializer names;
-- canonical navigation is materialized if absent from the repository checkout;
-- old release tests are made forward-compatible instead of being rewritten to one exact version;
-- deployment-critical release identity still comes from VERSION and architecture/VERSION.
+R2 keeps deployment verification capability-oriented:
+- historical tests are upgraded away from exact old UI/materializer tokens;
+- deploy-pages.yml does not need to change for this repair;
+- deployment-critical release identity is still synchronized and checked;
+- future semantic releases may delegate to their matching materializer.
 """
 from __future__ import annotations
 
@@ -81,27 +81,31 @@ def patch_verify(root: Path, dry: bool = False) -> bool:
 
 
 def patch_legacy_release_tests(root: Path, dry: bool = False) -> bool:
-    """Remove brittle historical release-name assertions from legacy tests.
-
-    These tests should verify the canonical controls and an atomic materialization
-    lane exist. They should not care whether the active tool is v610/v611/v612.
-    """
+    """Upgrade old release-surface tests to durable capability contracts."""
     p = root / "tests" / "test_v610_canonical_certification.py"
     if not p.is_file():
         return False
     text = p.read_text(encoding="utf-8")
     rendered = text
 
-    # Relative-link spelling is not a functional contract.
+    # Exact relative-link quoting is presentation, not behavior.
     rendered = rendered.replace(
         "assert 'href=\"canonical-shadow.html\"' in text",
         "assert 'canonical-shadow.html' in text",
     )
 
-    # Historical materializer filename is not a functional contract either.
+    # The v6.1 console expected its old adapter DOM IDs. v6.1.2 intentionally
+    # replaced that surface with the unified Validation Console. Validate the
+    # durable operator capabilities instead of historical implementation tokens.
+    rendered = rendered.replace(
+        "('Certification Adapters', 'adapterRows', 'certHealthLink', '/api/canonical/certification/health')",
+        "('Canonical Slate Validation Console', 'COPY VALIDATION CONSOLE', 'validationHealth', '/api/canonical/validation/health')",
+    )
+
+    # A legacy test must not pin deployment to one old materializer filename.
     rendered = re.sub(
         r"(?m)^(?P<indent>\s*)assert w\.count\('python3 tools/apply_v\d+_release\.py'\) >= 4\s*$",
-        r"\g<indent>assert w.count('release checkout') >= 4" + "\n" + r"\g<indent>assert 'tools/apply_v' in w and '_release.py' in w",
+        r"\g<indent>assert w.count('release checkout') >= 4\n\g<indent>assert 'tools/apply_v' in w and '_release.py' in w",
         rendered,
     )
 
@@ -113,7 +117,6 @@ def patch_legacy_release_tests(root: Path, dry: bool = False) -> bool:
 
 
 def patch_frontend(root: Path, dry: bool = False) -> bool:
-    """Ensure canonical diagnostics are reachable from the production header."""
     p = root / "index.html"
     if not p.is_file():
         return False
@@ -199,9 +202,8 @@ def main(argv=None):
         raise SystemExit("ERROR: VERSION missing")
     current = version.read_text(encoding="utf-8").strip()
 
-    # Keep the workflow entry point forward-compatible. If a future release has
-    # already advanced VERSION and its matching materializer is present, delegate
-    # instead of forcing deploy-pages.yml to change just because the version did.
+    # Keep the workflow entry point forward-compatible so deploy-pages.yml does
+    # not have to change for every semantic release.
     try:
         current_tuple = tuple(int(x) for x in current.split("."))
         this_tuple = tuple(int(x) for x in NEW.split("."))
@@ -211,9 +213,7 @@ def main(argv=None):
         target = root / "tools" / f"apply_v{current.replace('.', '')}_release.py"
         if target.is_file() and target.resolve() != Path(__file__).resolve():
             return subprocess.call([sys.executable, str(target), *sys.argv[1:]], cwd=root)
-        raise SystemExit(
-            f"ERROR: repository VERSION is {current}, but matching materializer {target.name} is missing"
-        )
+        raise SystemExit(f"ERROR: repository VERSION is {current}, but matching materializer {target.name} is missing")
 
     if current not in set(OLD_VALUES) | {NEW}:
         raise SystemExit(f"ERROR: unsupported repository release {current!r}")
@@ -231,18 +231,13 @@ def main(argv=None):
         raise SystemExit("ERROR: v6.1.2 web overlay incomplete: " + ", ".join(missing))
 
     changed = []
-    if patch_init(root, args.dry_run):
-        changed.append(root / "sbb" / "__init__.py")
-    if patch_verify(root, args.dry_run):
-        changed.append(root / "VERIFY.sh")
-    if patch_legacy_release_tests(root, args.dry_run):
-        changed.append(root / "tests" / "test_v610_canonical_certification.py")
-    if patch_frontend(root, args.dry_run):
-        changed.append(root / "index.html")
+    if patch_init(root, args.dry_run): changed.append(root / "sbb" / "__init__.py")
+    if patch_verify(root, args.dry_run): changed.append(root / "VERIFY.sh")
+    if patch_legacy_release_tests(root, args.dry_run): changed.append(root / "tests" / "test_v610_canonical_certification.py")
+    if patch_frontend(root, args.dry_run): changed.append(root / "index.html")
 
-    # Existing repository architecture still uses semantic cache-generation
-    # synchronization for active runtime files. Keep that behavior for v6.1.2,
-    # but historical tests above are patched to capability contracts first.
+    # Keep the existing active runtime/cache generation synchronization. The
+    # compatibility test is patched to durable capabilities before this sweep.
     for p in active_files(root):
         try:
             source = p.read_text(encoding="utf-8")
@@ -256,8 +251,7 @@ def main(argv=None):
             if not args.dry_run:
                 p.write_text(rendered, encoding="utf-8")
 
-    if materialize_controller_map(root, args.dry_run):
-        changed.append(root / f"CONTROLLER-REGION-MAP-v{NEW}.md")
+    if materialize_controller_map(root, args.dry_run): changed.append(root / f"CONTROLLER-REGION-MAP-v{NEW}.md")
 
     for p in (version, arch):
         if not p.is_file() or p.read_text(encoding="utf-8").strip() != NEW:
