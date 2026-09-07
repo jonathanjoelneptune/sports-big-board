@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-07T15:00:41Z",
+  "generatedAt": "2026-09-07T15:30:48Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "093d39c8dcb3be7755afad50669e1fa0de0d9060acc2fb35011ba13ce86642fa",
+  "sourceCandidateHash": "3561da49123071560a0af02857fef56e5fa09b5dad92e69d5b60db6585e68fe5",
   "leagues": [
     {
       "league": "MLB",
@@ -14,12 +14,52 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-afc35515d23176fd"
+          ],
+          "type": "PLAYOFF",
+          "priority": 83,
+          "headline": "Kansas City beat Toronto 6-1 behind home runs from Vinnie Pasquantino and Salvador Perez, moving the Blue Jays out of playoff position.",
+          "text": "Kansas City beat Toronto 6-1 behind home runs from Vinnie Pasquantino and Salvador Perez, moving the Blue Jays out of playoff position.",
+          "entities": [
+            "Kansas City Royals",
+            "Toronto Blue Jays",
+            "Vinnie Pasquantino",
+            "Salvador Perez"
+          ],
+          "occurredAt": "2026-09-06T18:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 21.35,
+          "freshnessBasis": "Kansas City beat Toronto 6-1 and knocked the Blue Jays out of playoff position on Sept. 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816837"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-06",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816837"
+            }
+          ],
+          "id": "a3-55e1c9bd2c175d6a",
+          "feedRank": 2,
+          "compactHeadline": "Royals knock Blue Jays out of playoff position"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-a25565383d9595f6"
           ],
           "type": "RECORD",
-          "priority": 86,
-          "headline": "Aroldis Chapman recorded his 400th career save as Boston completed a four-game sweep of Baltimore.",
-          "text": "Aroldis Chapman recorded his 400th career save as Boston completed a four-game sweep of Baltimore.",
+          "priority": 84,
+          "headline": "Aroldis Chapman became the ninth major league pitcher with 400 saves as Boston completed a four-game sweep of Baltimore with a 3-1 win.",
+          "text": "Aroldis Chapman became the ninth major league pitcher with 400 saves as Boston completed a four-game sweep of Baltimore with a 3-1 win.",
           "entities": [
             "Aroldis Chapman",
             "Boston Red Sox",
@@ -27,8 +67,8 @@
           ],
           "occurredAt": "2026-09-06T23:14:28Z",
           "timePrecision": "exact",
-          "ageHours": 15.77,
-          "freshnessBasis": "Aroldis Chapman recorded his 400th career save for Boston on Sunday.",
+          "ageHours": 16.27,
+          "freshnessBasis": "Aroldis Chapman recorded his 400th career save and Boston completed a four-game sweep of Baltimore Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49852520/aroldis-chapman-notches-400th-save-red-sox-sweep-orioles"
@@ -40,48 +80,9 @@
               "url": "https://www.espn.com/mlb/story/_/id/49852520/aroldis-chapman-notches-400th-save-red-sox-sweep-orioles"
             }
           ],
-          "id": "a3-b2da667fb1b50b63",
-          "feedRank": 2,
-          "compactHeadline": "Chapman becomes ninth pitcher with 400 career saves"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-4d2d047f4cc907a9"
-          ],
-          "type": "RECORD",
-          "priority": 86,
-          "headline": "Aroldis Chapman recorded his 400th career save as Boston beat Baltimore 3-1 to complete a four-game sweep.",
-          "text": "Aroldis Chapman recorded his 400th career save as Boston beat Baltimore 3-1 to complete a four-game sweep.",
-          "entities": [
-            "Aroldis Chapman",
-            "Boston Red Sox",
-            "Baltimore Orioles"
-          ],
-          "occurredAt": "2026-09-06T17:35:00Z",
-          "timePrecision": "exact",
-          "ageHours": 21.43,
-          "freshnessBasis": "Aroldis Chapman recorded his 400th career save in Boston’s 3-1 win over Baltimore Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816829"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-06",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816829"
-            }
-          ],
-          "id": "a3-cd799de9d8e77595",
+          "id": "a3-566ea309fbf9c8ad",
           "feedRank": 3,
-          "compactHeadline": "Chapman reaches 400 saves as Red Sox complete sweep"
+          "compactHeadline": "Chapman reaches 400 saves as Red Sox sweep Orioles"
         },
         {
           "rank": 3,
@@ -89,9 +90,9 @@
             "cand-2182fd2dd3e707f4"
           ],
           "type": "STANDINGS",
-          "priority": 79,
-          "headline": "Atlanta beat Philadelphia 5-4 after Ronald Acuña Jr. hit a tying three-run homer, extending the Braves’ NL East lead to five games.",
-          "text": "Atlanta beat Philadelphia 5-4 after Ronald Acuña Jr. hit a tying three-run homer, extending the Braves’ NL East lead to five games.",
+          "priority": 80,
+          "headline": "Atlanta beat Philadelphia 5-4 after Ronald Acuña Jr.’s tying three-run homer and a late rally extended the Braves’ NL East lead to five games.",
+          "text": "Atlanta beat Philadelphia 5-4 after Ronald Acuña Jr.’s tying three-run homer and a late rally extended the Braves’ NL East lead to five games.",
           "entities": [
             "Atlanta Braves",
             "Philadelphia Phillies",
@@ -99,8 +100,8 @@
           ],
           "occurredAt": "2026-09-06T17:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.84,
-          "freshnessBasis": "Atlanta beat Philadelphia 5-4 and extended its NL East lead to five games Sunday.",
+          "ageHours": 22.35,
+          "freshnessBasis": "Atlanta beat Philadelphia 5-4 and extended its NL East lead to five games on Sept. 6.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -118,50 +119,42 @@
               "url": "https://www.espn.com/mlb/story/_/id/49853865/braves-ronald-acuna-jr-does-curtain-call-amid-boos-philly"
             }
           ],
-          "id": "a3-309860bbbb20ff0e",
+          "id": "a3-3e88174de4fc2d83",
           "feedRank": 5,
-          "compactHeadline": "Braves rally past Phillies, extend NL East lead to five"
+          "compactHeadline": "Braves extend NL East lead to five games after late rally"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-137e3310ebd57ee4"
+            "cand-e3ab4c20ac57e12e"
           ],
           "type": "MILESTONE",
-          "priority": 77,
-          "headline": "Javier Sanoja and Heriberto Hernández homered in Miami’s 10-3 win over Chicago, while Pete Crow-Armstrong hit his 40th homer.",
-          "text": "Javier Sanoja and Heriberto Hernández homered in Miami’s 10-3 win over Chicago, while Pete Crow-Armstrong hit his 40th homer.",
+          "priority": 78,
+          "headline": "Pete Crow-Armstrong hit his 40th home run of the season in Chicago’s 10-3 loss to Miami, reaching the milestone in the Cubs’ defeat.",
+          "text": "Pete Crow-Armstrong hit his 40th home run of the season in Chicago’s 10-3 loss to Miami, reaching the milestone in the Cubs’ defeat.",
           "entities": [
-            "Miami Marlins",
+            "Pete Crow-Armstrong",
             "Chicago Cubs",
-            "Javier Sanoja",
-            "Heriberto Hernández",
-            "Pete Crow-Armstrong"
+            "Miami Marlins"
           ],
-          "occurredAt": "2026-09-06T17:40:00Z",
+          "occurredAt": "2026-09-07T01:24:57Z",
           "timePrecision": "exact",
-          "ageHours": 21.34,
-          "freshnessBasis": "Miami beat Chicago 10-3 as Crow-Armstrong hit his 40th home run Sunday.",
+          "ageHours": 14.1,
+          "freshnessBasis": "Pete Crow-Armstrong hit his 40th home run of the season in Chicago’s 10-3 loss to Miami Sunday.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816830"
+            "https://www.espn.com/mlb/story/_/id/49852703/pete-crow-armstrong-slugs-40th-hr-cubs-fall-marlins"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-06",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816830"
+              "url": "https://www.espn.com/mlb/story/_/id/49852703/pete-crow-armstrong-slugs-40th-hr-cubs-fall-marlins"
             }
           ],
-          "id": "a3-cbb435ec3ee4aae1",
+          "id": "a3-a0f774c1e3ad1436",
           "feedRank": 6,
-          "compactHeadline": "Marlins’ homers fuel 10-3 win; Crow-Armstrong reaches 40"
+          "compactHeadline": "Crow-Armstrong reaches 40 homers despite Cubs loss"
         },
         {
           "rank": 5,
@@ -170,8 +163,8 @@
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Daniel Schneemann singled home Angel Genao in the 10th inning, giving Cleveland a 3-2 win and its third walk-off victory of the series against Detroit.",
-          "text": "Daniel Schneemann singled home Angel Genao in the 10th inning, giving Cleveland a 3-2 win and its third walk-off victory of the series against Detroit.",
+          "headline": "Daniel Schneemann singled home Angel Genao in the 10th inning, giving Cleveland a 3-2 win and its third walk-off victory over Detroit in the series.",
+          "text": "Daniel Schneemann singled home Angel Genao in the 10th inning, giving Cleveland a 3-2 win and its third walk-off victory over Detroit in the series.",
           "entities": [
             "Daniel Schneemann",
             "Cleveland Guardians",
@@ -179,8 +172,8 @@
           ],
           "occurredAt": "2026-09-06T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.34,
-          "freshnessBasis": "Daniel Schneemann delivered a walk-off single in the bottom of the 10th inning.",
+          "ageHours": 21.85,
+          "freshnessBasis": "Daniel Schneemann delivered a walk-off single in the bottom of the 10th inning Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -198,68 +191,29 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816831"
             }
           ],
-          "id": "a3-ab9b235a714fd78c",
+          "id": "a3-fe5a1db1b930d091",
           "feedRank": 8,
-          "compactHeadline": "Schneemann delivers Guardians’ 10th-inning walk-off"
+          "compactHeadline": "Schneemann delivers 10th-inning walk-off for Guardians"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-3e7065c338a43992"
-          ],
-          "type": "RESULT",
-          "priority": 74,
-          "headline": "Jake Burger homered twice as Texas rallied from two four-run deficits to beat Tampa Bay 8-6 and split their four-game series.",
-          "text": "Jake Burger homered twice as Texas rallied from two four-run deficits to beat Tampa Bay 8-6 and split their four-game series.",
-          "entities": [
-            "Jake Burger",
-            "Texas Rangers",
-            "Tampa Bay Rays"
-          ],
-          "occurredAt": "2026-09-06T18:35:00Z",
-          "timePrecision": "exact",
-          "ageHours": 20.43,
-          "freshnessBasis": "Jake Burger hit two home runs in Texas’ 8-6 win over Tampa Bay.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816836"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-06",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816836"
-            }
-          ],
-          "id": "a3-a97539cce7f0c0a9",
-          "feedRank": 14,
-          "compactHeadline": "Burger homers twice as Rangers rally past Rays"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
             "cand-6291043227f19964"
           ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Chicago’s bullpen combined on a four-hitter, while Randal Grichuk and Kyle Teel homered in a five-run eighth inning of a 10-1 win over Minnesota.",
-          "text": "Chicago’s bullpen combined on a four-hitter, while Randal Grichuk and Kyle Teel homered in a five-run eighth inning of a 10-1 win over Minnesota.",
+          "type": "STANDINGS",
+          "priority": 73,
+          "headline": "Chicago’s bullpen combined on a four-hitter, while Randal Grichuk and Kyle Teel homered in the eighth inning of a 10-1 win over Minnesota.",
+          "text": "Chicago’s bullpen combined on a four-hitter, while Randal Grichuk and Kyle Teel homered in the eighth inning of a 10-1 win over Minnesota.",
           "entities": [
-            "Randal Grichuk",
-            "Kyle Teel",
             "Chicago White Sox",
-            "Minnesota Twins"
+            "Minnesota Twins",
+            "Randal Grichuk",
+            "Kyle Teel"
           ],
           "occurredAt": "2026-09-06T22:20:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.68,
-          "freshnessBasis": "Chicago beat Minnesota 10-1 behind a four-hit bullpen performance and maintained its AL Central lead.",
+          "ageHours": 17.18,
+          "freshnessBasis": "Chicago’s bullpen combined on a four-hitter in a 10-1 win over Minnesota that maintained its AL Central lead.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -277,34 +231,71 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816835"
             }
           ],
-          "id": "a3-121c810e7fcc6432",
-          "feedRank": 16,
-          "compactHeadline": "White Sox bullpen gem maintains AL Central lead"
+          "id": "a3-2b26d3855cac7767",
+          "feedRank": 9,
+          "compactHeadline": "White Sox bullpen gem preserves AL Central lead"
+        },
+        {
+          "rank": 7,
+          "candidateIds": [
+            "cand-b63002e6ed054e20"
+          ],
+          "type": "STREAK",
+          "priority": 76,
+          "headline": "Mookie Betts hit a three-run homer in the eighth inning to rally Los Angeles past Washington 7-5 and extend the Dodgers’ winning streak to four games.",
+          "text": "Mookie Betts hit a three-run homer in the eighth inning to rally Los Angeles past Washington 7-5 and extend the Dodgers’ winning streak to four games.",
+          "entities": [
+            "Mookie Betts",
+            "Los Angeles Dodgers",
+            "Washington Nationals"
+          ],
+          "occurredAt": "2026-09-07T02:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 13.35,
+          "freshnessBasis": "Mookie Betts hit a three-run eighth-inning homer in Los Angeles’ 7-5 win over Washington Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816841"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-06",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816841"
+            }
+          ],
+          "id": "a3-90868892facd53e7",
+          "feedRank": 13,
+          "compactHeadline": "Betts’ late homer extends Dodgers’ winning streak to four"
         },
         {
           "rank": 8,
           "candidateIds": [
-            "cand-bd34f0ad480f2cbf"
+            "cand-3e7065c338a43992"
           ],
           "type": "RESULT",
-          "priority": 72,
-          "headline": "Bryan Woo struck out nine over eight innings in Seattle’s 2-0 shutout of Oakland Sunday.",
-          "text": "Bryan Woo struck out nine over eight innings in Seattle’s 2-0 shutout of Oakland Sunday.",
+          "priority": 74,
+          "headline": "Jake Burger homered twice as Texas rallied from two four-run deficits to beat Tampa Bay 8-6 and split their four-game series.",
+          "text": "Jake Burger homered twice as Texas rallied from two four-run deficits to beat Tampa Bay 8-6 and split their four-game series.",
           "entities": [
-            "Seattle Mariners",
-            "Oakland Athletics",
-            "Bryan Woo",
-            "Cal Raleigh",
-            "J.P. Crawford"
+            "Jake Burger",
+            "Texas Rangers",
+            "Tampa Bay Rays"
           ],
-          "occurredAt": "2026-09-06T20:10:00Z",
+          "occurredAt": "2026-09-06T18:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.84,
-          "freshnessBasis": "Bryan Woo struck out nine over eight innings in Seattle’s 2-0 shutout of Oakland Sunday.",
+          "ageHours": 20.93,
+          "freshnessBasis": "Jake Burger hit two home runs in Texas’ 8-6 win over Tampa Bay Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816839"
+            "http://www.espn.com/mlb/recap?gameId=401816836"
           ],
           "sources": [
             {
@@ -315,57 +306,12 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816839"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816836"
             }
           ],
-          "id": "a3-8c5a8c86ff9f4bcd",
-          "feedRank": 17,
-          "compactHeadline": "Woo’s eight-inning gem leads Mariners’ shutout of Athletics"
-        },
-        {
-          "rank": 9,
-          "candidateIds": [
-            "cand-b9f0898fe3606965"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Nolan Arenado hit a two-run homer in Arizona’s 3-2 win over Houston Sunday.",
-          "text": "Nolan Arenado hit a two-run homer in Arizona’s 3-2 win over Houston Sunday.",
-          "entities": [
-            "Arizona Diamondbacks",
-            "Houston Astros",
-            "Nolan Arenado"
-          ],
-          "occurredAt": "2026-09-06T18:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 20.84,
-          "freshnessBasis": "Nolan Arenado hit a two-run homer in Arizona’s 3-2 win over Houston Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816834",
-            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816834"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-06",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816834"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "a44-espn-mlb-summary-401816834",
-              "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816834"
-            }
-          ],
-          "id": "a3-cc72c79693ea9786",
-          "feedRank": 19,
-          "compactHeadline": "Arenado’s two-run homer lifts Diamondbacks past Astros"
+          "id": "a3-bb3cd329cbbc20ae",
+          "feedRank": 16,
+          "compactHeadline": "Jake Burger’s two homers fuel Rangers’ rally over Rays"
         }
       ]
     },
@@ -376,20 +322,53 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-4eb7248409bfdddd"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 76,
+          "headline": "Atlanta named Tua Tagovailoa its starting quarterback for the Falcons’ Week 1 game against Pittsburgh.",
+          "text": "Atlanta named Tua Tagovailoa its starting quarterback for the Falcons’ Week 1 game against Pittsburgh.",
+          "entities": [
+            "Tua Tagovailoa",
+            "Atlanta Falcons",
+            "Pittsburgh Steelers"
+          ],
+          "occurredAt": "2026-09-07T15:29:13Z",
+          "timePrecision": "exact",
+          "ageHours": 0.03,
+          "freshnessBasis": "Atlanta named Tua Tagovailoa its Week 1 starting quarterback Monday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49858957/falcons-name-tua-tagovailoa-week-1-starting-qb-vs-steelers"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49858957/falcons-name-tua-tagovailoa-week-1-starting-qb-vs-steelers"
+            }
+          ],
+          "id": "a3-31af9591a7e1d0d4",
+          "feedRank": 15,
+          "compactHeadline": "Falcons name Tua Tagovailoa Week 1 starting quarterback"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-4488e5a7de41ba69"
           ],
           "type": "SIGNING",
-          "priority": 74,
-          "headline": "Safety Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota for his 15th NFL season.",
-          "text": "Safety Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota for his 15th NFL season.",
+          "priority": 72,
+          "headline": "Minnesota safety Harrison Smith agreed to a one-year, $12.25 million deal to return for his 15th NFL season.",
+          "text": "Minnesota safety Harrison Smith agreed to a one-year, $12.25 million deal to return for his 15th NFL season.",
           "entities": [
             "Harrison Smith",
             "Minnesota Vikings"
           ],
           "occurredAt": "2026-09-06T16:51:02Z",
           "timePrecision": "exact",
-          "ageHours": 22.16,
-          "freshnessBasis": "Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota.",
+          "ageHours": 22.66,
+          "freshnessBasis": "Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49841519/vikings-safety-smith-agrees-deal-back-15th-season"
@@ -402,91 +381,26 @@
             }
           ],
           "id": "a3-16d91604a5728ea5",
-          "feedRank": 12,
+          "feedRank": 17,
           "compactHeadline": "Harrison Smith returns to Vikings for 15th season"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-4eb7248409bfdddd"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 76,
-          "headline": "Atlanta named Tua Tagovailoa its starting quarterback for the Week 1 matchup with Pittsburgh.",
-          "text": "Atlanta named Tua Tagovailoa its starting quarterback for the Week 1 matchup with Pittsburgh.",
-          "entities": [
-            "Tua Tagovailoa",
-            "Atlanta Falcons",
-            "Pittsburgh Steelers"
-          ],
-          "occurredAt": "2026-09-07T14:35:26Z",
-          "timePrecision": "exact",
-          "ageHours": 0.42,
-          "freshnessBasis": "Atlanta named Tua Tagovailoa its starting quarterback for Week 1 against Pittsburgh.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49858957/falcons-name-tua-tagovailoa-week-1-starting-qb-vs-steelers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49858957/falcons-name-tua-tagovailoa-week-1-starting-qb-vs-steelers"
-            }
-          ],
-          "id": "a3-552197d88886dc37",
-          "feedRank": 13,
-          "compactHeadline": "Falcons name Tua Tagovailoa Week 1 starter"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-18fd250ba70e5ca9"
-          ],
-          "type": "CONTRACT",
-          "priority": 64,
-          "headline": "The Giants agreed to a two-year, $13 million extension with quarterback Jameis Winston.",
-          "text": "The Giants agreed to a two-year, $13 million extension with quarterback Jameis Winston.",
-          "entities": [
-            "New York Giants",
-            "Jameis Winston"
-          ],
-          "occurredAt": "2026-09-06T23:11:39Z",
-          "timePrecision": "exact",
-          "ageHours": 15.82,
-          "freshnessBasis": "The New York Giants agreed to a two-year, $13 million extension with Jameis Winston Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension"
-            }
-          ],
-          "id": "a3-903e0be261db4a5a",
-          "feedRank": 22,
-          "compactHeadline": "Giants extend backup quarterback Jameis Winston through 2028"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-2ba57fef3e7ff13d"
           ],
           "type": "CONTRACT",
-          "priority": 64,
-          "headline": "NFL commissioner Roger Goodell finalized a four-year extension that runs through the 2030 season.",
-          "text": "NFL commissioner Roger Goodell finalized a four-year extension that runs through the 2030 season.",
+          "priority": 73,
+          "headline": "NFL commissioner Roger Goodell finalized a four-year extension that will keep him in the role through the 2030 season.",
+          "text": "NFL commissioner Roger Goodell finalized a four-year extension that will keep him in the role through the 2030 season.",
           "entities": [
             "Roger Goodell",
             "NFL"
           ],
           "occurredAt": "2026-09-06T18:38:46Z",
           "timePrecision": "exact",
-          "ageHours": 20.37,
-          "freshnessBasis": "Roger Goodell finalized a four-year extension running through the 2030 season.",
+          "ageHours": 20.87,
+          "freshnessBasis": "Roger Goodell finalized a four-year contract extension through the 2030 season Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49850050/nfl-commissioner-roger-goodell-finalizes-four-year-extension"
@@ -499,8 +413,40 @@
             }
           ],
           "id": "a3-2d244099ebf7baf2",
-          "feedRank": 23,
+          "feedRank": 21,
           "compactHeadline": "Goodell agrees to four-year extension through 2030"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-18fd250ba70e5ca9"
+          ],
+          "type": "CONTRACT",
+          "priority": 67,
+          "headline": "The Giants agreed to a two-year, $13 million contract extension with backup quarterback Jameis Winston.",
+          "text": "The Giants agreed to a two-year, $13 million contract extension with backup quarterback Jameis Winston.",
+          "entities": [
+            "Jameis Winston",
+            "New York Giants"
+          ],
+          "occurredAt": "2026-09-06T23:11:39Z",
+          "timePrecision": "exact",
+          "ageHours": 16.32,
+          "freshnessBasis": "New York agreed to a two-year, $13 million extension with Jameis Winston Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension"
+            }
+          ],
+          "id": "a3-f613c7b254a5eab1",
+          "feedRank": 23,
+          "compactHeadline": "Giants extend quarterback Jameis Winston for two years"
         }
       ]
     },
@@ -525,8 +471,8 @@
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Arsenal came from behind to beat Chelsea 2-1 in a London derby, with Martin Ødegaard and Kai Havertz scoring the winning side’s goals.",
-          "text": "Arsenal came from behind to beat Chelsea 2-1 in a London derby, with Martin Ødegaard and Kai Havertz scoring the winning side’s goals.",
+          "headline": "Arsenal came from behind to record a statement 2-1 win in a vintage London derby against Chelsea at the Emirates on Sunday.",
+          "text": "Arsenal came from behind to record a statement 2-1 win in a vintage London derby against Chelsea at the Emirates on Sunday.",
           "entities": [
             "Arsenal",
             "Chelsea",
@@ -535,8 +481,8 @@
           ],
           "occurredAt": "2026-09-06T19:07:09Z",
           "timePrecision": "exact",
-          "ageHours": 19.89,
-          "freshnessBasis": "Arsenal came from behind to beat Chelsea 2-1 in Sunday’s London derby.",
+          "ageHours": 20.39,
+          "freshnessBasis": "Arsenal came from behind to beat Chelsea 2-1 in a London derby on Sept. 6.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49850276/martin-odegaard-kai-havertz-arsenal-statement-london-derby-chelsea-report-reaction"
@@ -555,35 +501,35 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-51670b59060108df"
+            "cand-7774ca1dbb6b6a0e"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Ainsley Maitland-Niles scored in the 96th minute as Everton held Manchester United to a 2-2 draw.",
-          "text": "Ainsley Maitland-Niles scored in the 96th minute as Everton held Manchester United to a 2-2 draw.",
+          "headline": "Everton drew Manchester United 2-2 after scoring a 96th-minute equalizer, a result United manager Michael Carrick said felt like a defeat.",
+          "text": "Everton drew Manchester United 2-2 after scoring a 96th-minute equalizer, a result United manager Michael Carrick said felt like a defeat.",
           "entities": [
             "Everton",
             "Manchester United",
-            "Ainsley Maitland-Niles"
+            "Michael Carrick"
           ],
-          "occurredAt": "2026-09-06T17:06:02Z",
+          "occurredAt": "2026-09-06T17:14:14Z",
           "timePrecision": "exact",
-          "ageHours": 21.91,
-          "freshnessBasis": "Ainsley Maitland-Niles equalized in the 96th minute of Everton’s 2-2 draw with Manchester United Sunday.",
+          "ageHours": 22.28,
+          "freshnessBasis": "Everton scored a 96th-minute equalizer to draw Manchester United 2-2 on Sept. 6.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49849520/man-united-everton-premier-league-bryan-mbeumo-benjamin-sesko-ainsley-maitland-niles-tyrique-george"
+            "https://www.espn.com/soccer/story/_/id/49849966/man-united-draw-everton-feels-defeat"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49849520/man-united-everton-premier-league-bryan-mbeumo-benjamin-sesko-ainsley-maitland-niles-tyrique-george"
+              "url": "https://www.espn.com/soccer/story/_/id/49849966/man-united-draw-everton-feels-defeat"
             }
           ],
-          "id": "a3-0cb3bfd8c8b34e05",
+          "id": "a3-5c1f43c1ae2e499b",
           "feedRank": 20,
-          "compactHeadline": "Everton snatch 96th-minute equalizer against Manchester United"
+          "compactHeadline": "Everton’s 96th-minute equalizer denies Manchester United"
         }
       ]
     },
@@ -603,8 +549,8 @@
           ],
           "type": "RECORD",
           "priority": 88,
-          "headline": "Mason Heintschel threw seven touchdown passes to tie Pittsburgh’s school record in a 59-14 win over Miami (Ohio).",
-          "text": "Mason Heintschel threw seven touchdown passes to tie Pittsburgh’s school record in a 59-14 win over Miami (Ohio).",
+          "headline": "Pittsburgh quarterback Mason Heintschel threw seven touchdown passes to tie the school record in a 59-14 win over Miami (Ohio).",
+          "text": "Pittsburgh quarterback Mason Heintschel threw seven touchdown passes to tie the school record in a 59-14 win over Miami (Ohio).",
           "entities": [
             "Mason Heintschel",
             "Pittsburgh Panthers",
@@ -612,8 +558,8 @@
           ],
           "occurredAt": "2026-09-07T05:27:35Z",
           "timePrecision": "exact",
-          "ageHours": 9.55,
-          "freshnessBasis": "Mason Heintschel threw seven touchdown passes and tied Pittsburgh’s school record in a 59-14 win.",
+          "ageHours": 10.05,
+          "freshnessBasis": "Mason Heintschel threw seven touchdown passes, tying Pittsburgh’s school record, in Saturday’s 59-14 win.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/ncf/recap?gameId=401858207"
@@ -625,9 +571,9 @@
               "url": "http://www.espn.com/ncf/recap?gameId=401858207"
             }
           ],
-          "id": "a3-5516b800d00b18fd",
+          "id": "a3-99bab653d0ee4d95",
           "feedRank": 1,
-          "compactHeadline": "Heintschel ties Pitt record with seven touchdown passes"
+          "compactHeadline": "Pitt’s Heintschel ties school mark with seven TD passes"
         },
         {
           "rank": 2,
@@ -636,8 +582,8 @@
           ],
           "type": "UPSET",
           "priority": 82,
-          "headline": "Lucas Carneiro kicked a 48-yard field goal as time expired, giving No. 9 Ole Miss a 41-38 win over No. 24 Louisville.",
-          "text": "Lucas Carneiro kicked a 48-yard field goal as time expired, giving No. 9 Ole Miss a 41-38 win over No. 24 Louisville.",
+          "headline": "Lucas Carneiro kicked a 48-yard field goal as time expired, lifting No. 9 Ole Miss to a 41-38 win over No. 24 Louisville.",
+          "text": "Lucas Carneiro kicked a 48-yard field goal as time expired, lifting No. 9 Ole Miss to a 41-38 win over No. 24 Louisville.",
           "entities": [
             "Lucas Carneiro",
             "Ole Miss Rebels",
@@ -645,8 +591,8 @@
           ],
           "occurredAt": "2026-09-06T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.51,
-          "freshnessBasis": "Lucas Carneiro made a 48-yard field goal as time expired to give Ole Miss a 41-38 win.",
+          "ageHours": 16.01,
+          "freshnessBasis": "Lucas Carneiro kicked a 48-yard field goal as time expired in Ole Miss’ 41-38 win Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -670,19 +616,91 @@
               "url": "http://www.espn.com/ncf/recap?gameId=401856661"
             }
           ],
-          "id": "a3-76640d3d3c073f7c",
+          "id": "a3-6819b0eec51a8b50",
           "feedRank": 4,
-          "compactHeadline": "Carneiro’s last-second field goal lifts No. 9 Ole Miss"
+          "compactHeadline": "No. 9 Ole Miss wins on Carneiro’s buzzer-beating field goal"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-6c48f485cb8f535c"
+            "cand-e97889632c97ecdf"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 73,
+          "headline": "Michigan coach Kyle Whittingham said Bryce Underwood will remain the Wolverines’ starting quarterback despite his struggles in the season opener.",
+          "text": "Michigan coach Kyle Whittingham said Bryce Underwood will remain the Wolverines’ starting quarterback despite his struggles in the season opener.",
+          "entities": [
+            "Bryce Underwood",
+            "Michigan Wolverines",
+            "Kyle Whittingham"
+          ],
+          "occurredAt": "2026-09-07T15:14:02Z",
+          "timePrecision": "exact",
+          "ageHours": 0.28,
+          "freshnessBasis": "Kyle Whittingham said Monday that Bryce Underwood remains Michigan’s starting quarterback.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
+            }
+          ],
+          "id": "a3-eab5323a5187f87f",
+          "feedRank": 14,
+          "compactHeadline": "Michigan keeps Bryce Underwood as its QB1"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-8c1bf1ce0d63a739"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "CJ Carr threw two touchdown passes and Aneyas Williams ran for two scores as No. 4 Notre Dame pulled away to beat Wisconsin 41-13.",
-          "text": "CJ Carr threw two touchdown passes and Aneyas Williams ran for two scores as No. 4 Notre Dame pulled away to beat Wisconsin 41-13.",
+          "headline": "Demond Williams Jr. threw for 268 yards and a touchdown as No. 17 Washington overcame offensive struggles to beat Washington State 24-10.",
+          "text": "Demond Williams Jr. threw for 268 yards and a touchdown as No. 17 Washington overcame offensive struggles to beat Washington State 24-10.",
+          "entities": [
+            "Demond Williams Jr.",
+            "Washington Huskies",
+            "Washington State Cougars"
+          ],
+          "occurredAt": "2026-09-06T20:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 19.51,
+          "freshnessBasis": "No. 17 Washington beat Washington State 24-10 in Sunday’s season-opening Apple Cup.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/ncf/recap?gameId=401858437"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-06",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858437"
+            }
+          ],
+          "id": "a3-500467c118b7a2c1",
+          "feedRank": 19,
+          "compactHeadline": "No. 17 Washington holds off Washington State in Apple Cup"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-6c48f485cb8f535c"
+          ],
+          "type": "RESULT",
+          "priority": 67,
+          "headline": "CJ Carr threw two touchdown passes and Aneyas Williams ran for two scores as No. 4 Notre Dame beat Wisconsin 41-13 at Lambeau Field.",
+          "text": "CJ Carr threw two touchdown passes and Aneyas Williams ran for two scores as No. 4 Notre Dame beat Wisconsin 41-13 at Lambeau Field.",
           "entities": [
             "CJ Carr",
             "Aneyas Williams",
@@ -691,8 +709,8 @@
           ],
           "occurredAt": "2026-09-06T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.51,
-          "freshnessBasis": "No. 4 Notre Dame beat Wisconsin 41-13 at Lambeau Field in its season opener.",
+          "ageHours": 16.01,
+          "freshnessBasis": "No. 4 Notre Dame beat Wisconsin 41-13 at Lambeau Field Sunday night.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -723,88 +741,90 @@
             }
           ],
           "id": "a3-b46dc03571753553",
-          "feedRank": 15,
+          "feedRank": 22,
           "compactHeadline": "No. 4 Notre Dame pulls away from Wisconsin at Lambeau"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-8c1bf1ce0d63a739"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Demond Williams Jr. threw for 268 yards and a touchdown as Washington overcame offensive struggles to beat Washington State 24-10 in the Apple Cup.",
-          "text": "Demond Williams Jr. threw for 268 yards and a touchdown as Washington overcame offensive struggles to beat Washington State 24-10 in the Apple Cup.",
-          "entities": [
-            "Demond Williams Jr.",
-            "Washington Huskies",
-            "Washington State Cougars"
-          ],
-          "occurredAt": "2026-09-06T20:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 19.01,
-          "freshnessBasis": "No. 17 Washington beat Washington State 24-10 in the season-opening Apple Cup.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/ncf/recap?gameId=401858437"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-06",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401858437"
-            }
-          ],
-          "id": "a3-a044e1c2677b6fa4",
-          "feedRank": 18,
-          "compactHeadline": "No. 17 Washington survives Washington State in Apple Cup"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-e97889632c97ecdf"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 63,
-          "headline": "Michigan will continue starting Bryce Underwood at quarterback despite his struggles in the season opener, coach Kyle Whittingham said.",
-          "text": "Michigan will continue starting Bryce Underwood at quarterback despite his struggles in the season opener, coach Kyle Whittingham said.",
-          "entities": [
-            "Michigan Wolverines",
-            "Bryce Underwood",
-            "Kyle Whittingham"
-          ],
-          "occurredAt": "2026-09-07T14:56:21Z",
-          "timePrecision": "exact",
-          "ageHours": 0.07,
-          "freshnessBasis": "Michigan confirmed Bryce Underwood will remain its starting quarterback Monday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
-            }
-          ],
-          "id": "a3-4d21e70d0764c52c",
-          "feedRank": 21,
-          "compactHeadline": "Michigan keeps Bryce Underwood as starting quarterback"
         }
       ]
     }
   ],
   "specialEvents": [
     {
+      "name": "Italian Grand Prix",
+      "sport": "Formula 1",
+      "items": [
+        {
+          "rank": 1,
+          "candidateIds": [
+            "cand-ed498d7036058fd9"
+          ],
+          "type": "RESULT",
+          "priority": 82,
+          "headline": "Kimi Antonelli passed teammate George Russell with three laps remaining to win the Italian Grand Prix from 19th on the grid.",
+          "text": "Kimi Antonelli passed teammate George Russell with three laps remaining to win the Italian Grand Prix from 19th on the grid.",
+          "entities": [
+            "Kimi Antonelli",
+            "George Russell",
+            "Italian Grand Prix",
+            "Mercedes"
+          ],
+          "occurredAt": "2026-09-06T19:42:18Z",
+          "timePrecision": "exact",
+          "ageHours": 19.81,
+          "freshnessBasis": "Kimi Antonelli won the Italian Grand Prix after starting 19th on the grid Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/f1/story/_/id/49813281/kimi-antonelli-comes-19th-grid-win-home-italian-grand-prix-italian-grand-prix-formula-1-monza"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/f1/story/_/id/49813281/kimi-antonelli-comes-19th-grid-win-home-italian-grand-prix-italian-grand-prix-formula-1-monza"
+            }
+          ],
+          "id": "a3-special-3abfd3e79d8dc908",
+          "feedRank": 10,
+          "compactHeadline": "Antonelli wins Italian GP from 19th in home-race shock"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-50da099bb58f32f8"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 76,
+          "headline": "Lewis Hamilton called for Ferrari ‘rules of engagement’ after a first-lap fight with Charles Leclerc cost him ground in the title race at Monza.",
+          "text": "Lewis Hamilton called for Ferrari ‘rules of engagement’ after a first-lap fight with Charles Leclerc cost him ground in the title race at Monza.",
+          "entities": [
+            "Lewis Hamilton",
+            "Charles Leclerc",
+            "Ferrari",
+            "Italian Grand Prix"
+          ],
+          "occurredAt": "2026-09-06T18:40:55Z",
+          "timePrecision": "exact",
+          "ageHours": 20.83,
+          "freshnessBasis": "Lewis Hamilton called for Ferrari rules of engagement after the team’s first-lap battle at the Italian Grand Prix.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/f1/story/_/id/49813288/lewis-hamilton-urges-ferrari-introduce-rules-engagement-loses-more-points-title-fight-formula-1-italian-grand-prix"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/f1/story/_/id/49813288/lewis-hamilton-urges-ferrari-introduce-rules-engagement-loses-more-points-title-fight-formula-1-italian-grand-prix"
+            }
+          ],
+          "id": "a3-special-5e865e58f29be7b0",
+          "feedRank": 18,
+          "compactHeadline": "Hamilton calls for Ferrari rules after messy Monza battle"
+        }
+      ]
+    },
+    {
       "name": "US Open",
-      "sport": "Tennis",
+      "sport": "tennis",
       "items": [
         {
           "rank": 1,
@@ -812,7 +832,7 @@
             "cand-ad0d6fba667060cb"
           ],
           "type": "ADVANCEMENT",
-          "priority": 75,
+          "priority": 74,
           "headline": "Top-ranked Aryna Sabalenka overcame early struggles to overpower Taylor Townsend and advance to the US Open quarterfinals.",
           "text": "Top-ranked Aryna Sabalenka overcame early struggles to overpower Taylor Townsend and advance to the US Open quarterfinals.",
           "entities": [
@@ -822,8 +842,8 @@
           ],
           "occurredAt": "2026-09-07T03:51:59Z",
           "timePrecision": "exact",
-          "ageHours": 11.14,
-          "freshnessBasis": "Aryna Sabalenka defeated Taylor Townsend to reach the US Open quarterfinals.",
+          "ageHours": 11.65,
+          "freshnessBasis": "Aryna Sabalenka defeated Taylor Townsend to reach the US Open quarterfinals Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals",
@@ -841,9 +861,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals"
             }
           ],
-          "id": "a3-special-915374d75d1fdb7d",
-          "feedRank": 9,
-          "compactHeadline": "Sabalenka powers into US Open quarterfinals"
+          "id": "a3-special-2c933173b9a46d30",
+          "feedRank": 11,
+          "compactHeadline": "Sabalenka powers past Townsend into US Open quarterfinals"
         },
         {
           "rank": 2,
@@ -851,9 +871,9 @@
             "cand-eb61d9bbb2139331"
           ],
           "type": "ADVANCEMENT",
-          "priority": 73,
-          "headline": "Iva Jovic defeated Alex Eala in a three-set third-round match to advance at the US Open.",
-          "text": "Iva Jovic defeated Alex Eala in a three-set third-round match to advance at the US Open.",
+          "priority": 74,
+          "headline": "Iva Jovic defeated Alex Eala in an exciting three-set match to advance to the next round of the US Open.",
+          "text": "Iva Jovic defeated Alex Eala in an exciting three-set match to advance to the next round of the US Open.",
           "entities": [
             "Iva Jovic",
             "Alex Eala",
@@ -861,8 +881,8 @@
           ],
           "occurredAt": "2026-09-07T00:02:12Z",
           "timePrecision": "exact",
-          "ageHours": 14.97,
-          "freshnessBasis": "Iva Jovic defeated Alex Eala in the US Open third round and advanced to the next round.",
+          "ageHours": 15.48,
+          "freshnessBasis": "Iva Jovic defeated Alex Eala in the US Open third round on Sept. 6.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49843735/us-open-alex-eala-falls-short-iva-jovic-third-round"
@@ -874,49 +894,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49843735/us-open-alex-eala-falls-short-iva-jovic-third-round"
             }
           ],
-          "id": "a3-special-c050b1cfb243d8b4",
-          "feedRank": 11,
-          "compactHeadline": "Jovic advances past Eala in US Open three-set clash"
-        }
-      ]
-    },
-    {
-      "name": "Italian Grand Prix",
-      "sport": "Formula 1",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-ed498d7036058fd9"
-          ],
-          "type": "RESULT",
-          "priority": 82,
-          "headline": "Kimi Antonelli came from 19th on the grid to win the Italian Grand Prix at Monza, passing George Russell with three laps remaining.",
-          "text": "Kimi Antonelli came from 19th on the grid to win the Italian Grand Prix at Monza, passing George Russell with three laps remaining.",
-          "entities": [
-            "Kimi Antonelli",
-            "George Russell",
-            "Italian Grand Prix",
-            "Mercedes"
-          ],
-          "occurredAt": "2026-09-06T19:42:18Z",
-          "timePrecision": "exact",
-          "ageHours": 19.31,
-          "freshnessBasis": "Kimi Antonelli won the Italian Grand Prix after starting 19th on the grid.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/f1/story/_/id/49813281/kimi-antonelli-comes-19th-grid-win-home-italian-grand-prix-italian-grand-prix-formula-1-monza"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-f1",
-              "url": "https://www.espn.com/f1/story/_/id/49813281/kimi-antonelli-comes-19th-grid-win-home-italian-grand-prix-italian-grand-prix-formula-1-monza"
-            }
-          ],
-          "id": "a3-special-d952fb710e1f3436",
-          "feedRank": 10,
-          "compactHeadline": "Antonelli wins Italian GP after charging from 19th"
+          "id": "a3-special-f4c701e2d5269323",
+          "feedRank": 12,
+          "compactHeadline": "Jovic advances past Eala in three-set US Open clash"
         }
       ]
     }
