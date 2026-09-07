@@ -1,148 +1,150 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-07T21:00:41Z
-Global headline budget: 27/30-35 total
+Updated: 2026-09-07T21:30:38Z
+Global headline budget: 25/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: cbb97cb9c38fffc80b0e9dc860b8f9c5f751d867a5d3153d045ffd5d5a2dfe2b
+Candidate hash: c880891f9d9fb88cb6b5f193118b4fbba305c17a3b5518e17752788dc933bb35
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] Jesús Luzardo struck out 12 and allowed two hits for his first career shutout, leading Philadelphia past Atlanta 1-0. (priority 78, age 3.93h)
-    Compact headline: Luzardo Fires First Career Shutout in Phillies Win
+ 1. [STANDINGS] Kansas City beat Toronto 6-1 as Vinnie Pasquantino and Salvador Perez homered, dropping the Blue Jays out of playoff position. (priority 84, age 23.84h)
+    Compact headline: Royals win as Blue Jays fall out of playoff position
+    Occurred: 2026-09-06T21:40:30Z | Precision: exact | Status: active
+    Freshness basis: Kansas City beat Toronto 6-1 on Sunday and Toronto fell out of playoff position.
+    Entities: Kansas City Royals, Toronto Blue Jays, Vinnie Pasquantino, Salvador Perez
+    Candidate IDs: cand-7b6f5250faae2d57
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816837
+
+ 2. [STANDINGS] Chicago beat Minnesota 10-1 behind a four-hitter from its bullpen and a five-run eighth inning featuring homers by Randal Grichuk and Kyle Teel. (priority 77, age 23.18h)
+    Compact headline: White Sox roll past Twins to maintain AL Central lead
+    Occurred: 2026-09-06T22:20:00Z | Precision: exact | Status: active
+    Freshness basis: Chicago beat Minnesota 10-1 on Sunday and maintained its AL Central lead.
+    Entities: Chicago White Sox, Minnesota Twins, Randal Grichuk, Kyle Teel
+    Candidate IDs: cand-6291043227f19964
+    Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816835
+
+ 3. [RETURN] The Twins reinstated All-Star right-hander Joe Ryan from the injured list and returned him to the rotation Monday against Detroit. (priority 75, age 5.00h)
+    Compact headline: Joe Ryan returns from IL to start for Minnesota
+    Occurred: 2026-09-07T16:30:31Z | Precision: exact | Status: active
+    Freshness basis: Minnesota reinstated Joe Ryan from the injured list and started him Monday against Detroit.
+    Entities: Minnesota Twins, Joe Ryan, Detroit Tigers
+    Candidate IDs: cand-4be0de4c458edcf6
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49860294/twins-joe-ryan-comes-il-start-tigers
+
+ 4. [STREAK] Mookie Betts hit a three-run homer in the eighth inning as Los Angeles rallied past Washington 7-5 for its fourth straight win. (priority 75, age 19.34h)
+    Compact headline: Betts’ three-run homer extends Dodgers’ winning streak
+    Occurred: 2026-09-07T02:10:00Z | Precision: exact | Status: active
+    Freshness basis: Mookie Betts hit a three-run eighth-inning homer in Los Angeles’ 7-5 win over Washington Monday.
+    Entities: Los Angeles Dodgers, Washington Nationals, Mookie Betts
+    Candidate IDs: cand-b63002e6ed054e20
+    Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816841
+
+ 5. [STREAK] Coby Mayo homered twice and Trevor Rogers worked into the eighth as Baltimore ended its six-game losing streak with a 6-4 win over Cleveland. (priority 73, age 3.93h)
+    Compact headline: Orioles snap six-game skid behind Mayo’s two homers
+    Occurred: 2026-09-07T17:35:00Z | Precision: exact | Status: active
+    Freshness basis: Baltimore beat Cleveland 6-4 Monday to end a six-game losing streak, with Coby Mayo hitting two home runs.
+    Entities: Baltimore Orioles, Cleveland Guardians, Coby Mayo, Trevor Rogers
+    Candidate IDs: cand-f9235f2194809ef8
+    Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816844
+
+ 6. [RESULT] Jackson Chourio drove in two runs and made the final out in Milwaukee’s 4-3 win over Chicago Monday. (priority 72, age 3.34h)
+    Compact headline: Chourio sparks Brewers’ rally and seals win over Cubs
+    Occurred: 2026-09-07T18:10:00Z | Precision: exact | Status: active
+    Freshness basis: Jackson Chourio drove in two runs and made the final out in Milwaukee’s 4-3 win over Chicago Monday.
+    Entities: Milwaukee Brewers, Chicago Cubs, Jackson Chourio
+    Candidate IDs: cand-9d91e96a5117a041
+    Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816848
+    Source [ESPN/a44-espn-mlb-summary-401816848]: https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816848
+
+ 7. [RESULT] Boston beat Los Angeles 5-2 Monday behind Adley Rutschman’s three-run homer and Brayan Bello’s five scoreless innings. (priority 72, age 3.93h)
+    Compact headline: Rutschman’s three-run homer lifts Red Sox to fifth straight
+    Occurred: 2026-09-07T17:35:00Z | Precision: exact | Status: active
+    Freshness basis: Boston beat Los Angeles 5-2 Monday behind Adley Rutschman’s three-run homer and Brayan Bello’s five scoreless innings.
+    Entities: Boston Red Sox, Los Angeles Angels, Adley Rutschman, Brayan Bello
+    Candidate IDs: cand-c03e4d1232db5dca
+    Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816842
+
+ 8. [RESULT] A.J. Ewing collected three hits and drove in three runs as New York beat Miami 9-4 on Monday. (priority 72, age 4.34h)
+    Compact headline: Rookie A.J. Ewing drives Mets past Marlins
+    Occurred: 2026-09-07T17:10:00Z | Precision: exact | Status: active
+    Freshness basis: New York beat Miami 9-4 on Monday behind rookie A.J. Ewing's three hits and three RBIs.
+    Entities: New York Mets, Miami Marlins, A.J. Ewing
+    Candidate IDs: cand-a7026417a2f0da84
+    Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816846
+
+ 9. [RESULT] Jesús Luzardo struck out 12 and allowed two hits for his first career shutout, leading Philadelphia past Atlanta 1-0. (priority 72, age 4.43h)
+    Compact headline: Luzardo’s first shutout powers Phillies past Braves
     Occurred: 2026-09-07T17:05:00Z | Precision: exact | Status: active
-    Freshness basis: Jesús Luzardo threw his first career shutout for Philadelphia against Atlanta Monday.
-    Entities: Philadelphia Phillies, Jesús Luzardo, Atlanta Braves
+    Freshness basis: Jesús Luzardo threw his first career shutout in Philadelphia’s 1-0 win over Atlanta Monday.
+    Entities: Philadelphia Phillies, Atlanta Braves, Jesús Luzardo
     Candidate IDs: cand-9c8065929ea34992
     Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49861707/jesus-luzardo-pitches-1st-career-shutout-phillies-beat-braves
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816843
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49853865/braves-ronald-acuna-jr-does-curtain-call-amid-boos-philly
 
- 2. [STANDINGS] Chicago’s bullpen combined on a four-hitter, while Randal Grichuk and Kyle Teel homered in a five-run eighth inning during a 10-1 win over Minnesota. (priority 76, age 22.68h)
-    Compact headline: White Sox Win 10-1 to Maintain AL Central Lead
-    Occurred: 2026-09-06T22:20:00Z | Precision: exact | Status: active
-    Freshness basis: Chicago beat Minnesota 10-1 Sunday and maintained its AL Central lead.
-    Entities: Chicago White Sox, Minnesota Twins, Randal Grichuk, Kyle Teel
-    Candidate IDs: cand-6291043227f19964
-    Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816835
-
- 3. [MILESTONE] Pete Crow-Armstrong hit his 40th home run of the season, but Chicago lost 10-3 to Miami on Sunday. (priority 74, age 19.60h)
-    Compact headline: Crow-Armstrong Reaches 40 Homers Despite Cubs Loss
-    Occurred: 2026-09-07T01:24:57Z | Precision: exact | Status: active
-    Freshness basis: Pete Crow-Armstrong hit his 40th home run of the season for Chicago Sunday.
-    Entities: Chicago Cubs, Pete Crow-Armstrong, Miami Marlins
-    Candidate IDs: cand-e3ab4c20ac57e12e
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49852703/pete-crow-armstrong-slugs-40th-hr-cubs-fall-marlins
-
- 4. [STANDINGS] Kansas City beat Toronto 6-1 behind home runs from Vinnie Pasquantino and Salvador Perez, knocking the Blue Jays out of playoff position. (priority 74, age 23.34h)
-    Compact headline: Royals Win 6-1 as Blue Jays Drop Out of Playoff Position
-    Occurred: 2026-09-06T21:40:30Z | Precision: exact | Status: active
-    Freshness basis: Kansas City beat Toronto 6-1 Sunday, and the Blue Jays fell out of playoff position.
-    Entities: Kansas City Royals, Toronto Blue Jays, Vinnie Pasquantino, Salvador Perez
-    Candidate IDs: cand-7b6f5250faae2d57
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816837
-
- 5. [RETURN] The Twins reinstated All-Star right-hander Joe Ryan from the injured list, and he returned to the rotation Monday against Detroit. (priority 75, age 4.50h)
-    Compact headline: Joe Ryan Returns From IL to Start for Twins
-    Occurred: 2026-09-07T16:30:31Z | Precision: exact | Status: active
-    Freshness basis: Minnesota reinstated Joe Ryan from the injured list and started him against Detroit Monday.
-    Entities: Minnesota Twins, Joe Ryan, Detroit Tigers
-    Candidate IDs: cand-4be0de4c458edcf6
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49860294/twins-joe-ryan-comes-il-start-tigers
-
- 6. [STREAK] Adley Rutschman hit a three-run homer and Brayan Bello pitched five scoreless innings as Boston beat Los Angeles 5-2 for its fifth straight win. (priority 73, age 3.43h)
-    Compact headline: Rutschman’s Three-Run Homer Powers Red Sox to Fifth Straight
-    Occurred: 2026-09-07T17:35:00Z | Precision: exact | Status: active
-    Freshness basis: Boston beat the Angels 5-2 Monday behind Rutschman’s three-run homer and Bello’s five scoreless innings.
-    Entities: Boston Red Sox, Adley Rutschman, Brayan Bello, Los Angeles Angels
-    Candidate IDs: cand-c03e4d1232db5dca
-    Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816842
-
- 7. [STREAK] Coby Mayo homered twice and Trevor Rogers worked into the eighth as Baltimore beat Cleveland 6-4, ending the Orioles’ six-game losing streak. (priority 73, age 3.43h)
-    Compact headline: Coby Mayo’s Two Homers End Orioles’ Six-Game Skid
-    Occurred: 2026-09-07T17:35:00Z | Precision: exact | Status: active
-    Freshness basis: Baltimore beat Cleveland 6-4 Monday to end a six-game losing streak.
-    Entities: Baltimore Orioles, Coby Mayo, Trevor Rogers, Cleveland Guardians
-    Candidate IDs: cand-f9235f2194809ef8
-    Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816844
-
- 8. [STREAK] Mookie Betts hit a three-run homer in the eighth inning to lift the Dodgers over Washington 7-5 and extend their winning streak to four games. (priority 74, age 18.84h)
-    Compact headline: Betts’ Three-Run Homer Extends Dodgers’ Winning Streak
-    Occurred: 2026-09-07T02:10:00Z | Precision: exact | Status: active
-    Freshness basis: Mookie Betts hit a three-run eighth-inning homer as Los Angeles beat Washington 7-5 Monday.
-    Entities: Los Angeles Dodgers, Mookie Betts, Washington Nationals
-    Candidate IDs: cand-b63002e6ed054e20
-    Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816841
-
- 9. [RESULT] New York beat Miami 9-4 with rookie A.J. Ewing recording three hits and three RBI Monday. (priority 72, age 3.84h)
-    Compact headline: Rookie A.J. Ewing’s three-hit game lifts Mets
-    Occurred: 2026-09-07T17:10:00Z | Precision: exact | Status: active
-    Freshness basis: New York beat Miami 9-4 with rookie A.J. Ewing recording three hits and three RBI Monday.
-    Entities: New York Mets, A.J. Ewing, Miami Marlins
-    Candidate IDs: cand-a7026417a2f0da84
-    Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816846
-
 ============================================================================
 NFL  [PRESEASON]
 ============================================================================
 
- 1. [INJURY] Cowboys starting left guard Tyler Smith will undergo thumb surgery and go on injured reserve, creating a significant early-season offensive-line loss. (priority 86, age 0.73h)
-    Compact headline: Cowboys Lose Tyler Smith to Thumb Surgery and IR
+ 1. [INJURY] Dallas starting left guard Tyler Smith will undergo thumb surgery and go on injured reserve, coach Brian Schottenheimer said Monday. (priority 85, age 1.23h)
+    Compact headline: Cowboys’ Tyler Smith faces thumb surgery, heads to IR
     Occurred: 2026-09-07T20:17:05Z | Precision: exact | Status: active
     Freshness basis: Dallas announced Monday that Tyler Smith will undergo thumb surgery and go on injured reserve.
     Entities: Dallas Cowboys, Tyler Smith
     Candidate IDs: cand-c21e6052c0fa05d6
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49861767/cowboys-guard-tyler-smith-thumb-surgery-headed-ir
 
- 2. [DEPTH_CHART] Atlanta named Tua Tagovailoa its starting quarterback for the Week 1 matchup against Pittsburgh. (priority 74, age 3.12h)
-    Compact headline: Falcons Name Tua Tagovailoa Their Week 1 Starting QB
-    Occurred: 2026-09-07T17:53:19Z | Precision: exact | Status: active
-    Freshness basis: Atlanta named Tua Tagovailoa its Week 1 starting quarterback Monday.
-    Entities: Atlanta Falcons, Tua Tagovailoa, Pittsburgh Steelers
-    Candidate IDs: cand-4eb7248409bfdddd
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49858957/falcons-name-tua-tagovailoa-week-1-starting-qb-vs-steelers
-
- 3. [CONTRACT] The Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston; the deal also includes an extension for Jon Runyan. (priority 74, age 4.21h)
-    Compact headline: Giants Extend Jameis Winston for Two More Seasons
-    Occurred: 2026-09-07T16:48:15Z | Precision: exact | Status: active
-    Freshness basis: New York agreed to a two-year, $13 million extension with Jameis Winston Monday.
-    Entities: New York Giants, Jameis Winston, Jon Runyan
-    Candidate IDs: cand-18fd250ba70e5ca9
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension
-
- 4. [SUSPENSION] The Rams expect Puka Nacua and Alaric Jackson to play the season opener against San Francisco despite ongoing legal situations, Sean McVay said. (priority 74, age 16.31h)
-    Compact headline: Rams expect Nacua and Jackson to avoid season-opening bans
-    Occurred: 2026-09-07T04:42:05Z | Precision: exact | Status: active
-    Freshness basis: Sean McVay said the Rams do not expect Puka Nacua or Alaric Jackson to be suspended for the season opener.
-    Entities: Los Angeles Rams, Puka Nacua, Alaric Jackson, Sean McVay, San Francisco 49ers
-    Candidate IDs: cand-4ec7a237d2d77c30
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49853118/rams-expect-puka-nacua-alaric-jackson-play-vs-49ers
-
- 5. [LEAGUE_NEWS] Matt Suhey, the fullback who helped Walter Payton and the 1985 Bears win the NFL championship, has died at 68. (priority 72, age 0.49h)
-    Compact headline: Bears Super Bowl Fullback Matt Suhey Dies at 68
+ 2. [LEAGUE_NEWS] Matt Suhey, the fullback who helped Walter Payton and the 1985 Bears win the NFL championship, has died at 68. (priority 74, age 0.99h)
+    Compact headline: Bears Super Bowl champion Matt Suhey dies at 68
     Occurred: 2026-09-07T20:31:11Z | Precision: exact | Status: active
-    Freshness basis: The Bears announced that former fullback Matt Suhey died at age 68.
+    Freshness basis: Matt Suhey died at 68, according to the report published Monday.
     Entities: Chicago Bears, Matt Suhey, Walter Payton
     Candidate IDs: cand-d542cea23a1ed460
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49860580/bears-super-bowl-champion-fullback-matt-suhey-dies-68
 
- 6. [DEPTH_CHART] Baltimore announced Jovaughn Gwyn will start at center in the season opener, beginning the post-Tyler Linderbaum era at the position. (priority 68, age 0.12h)
-    Compact headline: Ravens Name Jovaughn Gwyn Starting Center
+ 3. [DEPTH_CHART] Baltimore named Jovaughn Gwyn its starting center for the season opener, beginning the post-Tyler Linderbaum era at the position. (priority 67, age 0.62h)
+    Compact headline: Ravens name Jovaughn Gwyn starting center for opener
     Occurred: 2026-09-07T20:53:23Z | Precision: exact | Status: active
-    Freshness basis: Baltimore named Jovaughn Gwyn its starting center for the season opener Monday.
+    Freshness basis: Baltimore announced Jovaughn Gwyn as its starting center for the season opener Monday.
     Entities: Baltimore Ravens, Jovaughn Gwyn, Tyler Linderbaum
     Candidate IDs: cand-56782113379550b1
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49862331/ravens-name-gwyn-start-center-begin-post-linderbaum-era
+
+ 4. [CONTRACT] The Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston. (priority 66, age 4.71h)
+    Compact headline: Giants extend backup quarterback Jameis Winston
+    Occurred: 2026-09-07T16:48:15Z | Precision: exact | Status: active
+    Freshness basis: New York agreed to a two-year, $13 million extension with Jameis Winston Monday.
+    Entities: New York Giants, Jameis Winston
+    Candidate IDs: cand-18fd250ba70e5ca9
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension
+
+ 5. [ROSTER] New York released wide receiver Darius Slayton, the Giants’ longest-tenured player, Monday. (priority 64, age 0.24h)
+    Compact headline: Giants release longest-tenured player Darius Slayton
+    Occurred: 2026-09-07T21:16:20Z | Precision: exact | Status: active
+    Freshness basis: The Giants released wide receiver Darius Slayton Monday.
+    Entities: New York Giants, Darius Slayton
+    Candidate IDs: cand-310ff5a787888e07
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49862543/giants-release-wr-darius-slayton-team-longest-tenured-player
+
+ 6. [DEPTH_CHART] Atlanta named Tua Tagovailoa its starting quarterback for the Week 1 matchup against Pittsburgh. (priority 64, age 3.62h)
+    Compact headline: Falcons name Tua Tagovailoa Week 1 starter
+    Occurred: 2026-09-07T17:53:19Z | Precision: exact | Status: active
+    Freshness basis: Atlanta announced Monday that Tua Tagovailoa will start at quarterback in Week 1 against Pittsburgh.
+    Entities: Atlanta Falcons, Tua Tagovailoa, Pittsburgh Steelers
+    Candidate IDs: cand-4eb7248409bfdddd
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49858957/falcons-name-tua-tagovailoa-week-1-starting-qb-vs-steelers
 
 ============================================================================
 NBA  [OFFSEASON]
@@ -160,21 +162,13 @@ NHL  [OFFSEASON]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [RESULT] A 90th-minute goal decided Cardiff City U21’s 3-2 victory over Plymouth U21 in the Premier League Cup. (priority 76, age 3.01h)
-    Compact headline: Late Goal Lifts Cardiff U21 Past Plymouth 3-2
+ 1. [RESULT] A 90th-minute goal gave Cardiff City U21 a 3-2 win over Plymouth City U21 in the Premier League Cup. (priority 76, age 3.51h)
+    Compact headline: Late goal lifts Cardiff U21 past Plymouth U21
     Occurred: 2026-09-07T18:00:00Z | Precision: exact | Status: active
-    Freshness basis: Cardiff City U21 scored in the 90th minute to beat Plymouth U21 3-2 Monday.
+    Freshness basis: A 90th-minute goal decided Cardiff City U21’s 3-2 win over Plymouth U21 Monday.
     Entities: Cardiff City U21, Plymouth U21
     Candidate IDs: cand-97f0ffcbfd624f40
     Source [Highlightly/highlightly-football-2026-09-07]: https://highlightly.net
-
- 2. [RESULT] Arsenal's Ezri Konsa 'loved' battle with England teammate Morgan Rogers in Chelsea clash. (priority 72, age 5.52h)
-    Compact headline: Arsenal Beat Chelsea 2-1 in London Derby
-    Occurred: 2026-09-07T15:29:29Z | Precision: exact | Status: active
-    Freshness basis: Arsenal beat Chelsea 2-1 in the Premier League on Sunday.
-    Entities: Arsenal, Chelsea
-    Candidate IDs: cand-bc96dcf1cdeebc73
-    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49859996/ezri-konsa-arsenal-morgan-rogers-chelsea-aston-villa-england-premier-league
 
 ============================================================================
 MLS  [ACTIVE]
@@ -186,55 +180,39 @@ MLS  [ACTIVE]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] Mason Heintschel threw seven touchdown passes to tie Pittsburgh’s school record in a 59-14 win over Miami (Ohio). (priority 85, age 15.55h)
-    Compact headline: Pitt QB Ties School Record With Seven TD Passes
+ 1. [RECORD] Mason Heintschel threw seven touchdown passes to tie Pittsburgh’s school record in a 59-14 win over Miami (Ohio). (priority 85, age 16.05h)
+    Compact headline: Pitt’s Heintschel ties school record with seven TD passes
     Occurred: 2026-09-07T05:27:35Z | Precision: exact | Status: active
-    Freshness basis: Mason Heintschel threw seven touchdown passes for Pittsburgh in its 59-14 win Saturday.
-    Entities: Pittsburgh Panthers, Mason Heintschel, Miami (Ohio) RedHawks
+    Freshness basis: Mason Heintschel tied Pittsburgh’s school record with seven touchdown passes in Saturday’s 59-14 win.
+    Entities: Pittsburgh Panthers, Miami (Ohio) RedHawks, Mason Heintschel
     Candidate IDs: cand-315384bae9804d23
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401858207
 
- 2. [UPSET] Lucas Carneiro kicked a 48-yard field goal as time expired to give No. 9 Ole Miss a 41-38 win over No. 24 Louisville. (priority 82, age 21.51h)
-    Compact headline: Ole Miss Wins Ranked Thriller on Last-Second Field Goal
+ 2. [UPSET] Lucas Carneiro kicked a 48-yard field goal as time expired, giving No. 9 Ole Miss a 41-38 win over No. 24 Louisville. (priority 82, age 22.01h)
+    Compact headline: Carneiro’s last-second field goal lifts No. 9 Ole Miss
     Occurred: 2026-09-06T23:30:00Z | Precision: exact | Status: active
-    Freshness basis: Lucas Carneiro made a 48-yard field goal as time expired Sunday to lift Ole Miss over Louisville 41-38.
+    Freshness basis: Lucas Carneiro made a 48-yard field goal as time expired in Ole Miss’ 41-38 win over Louisville Sunday.
     Entities: Ole Miss Rebels, Louisville Cardinals, Lucas Carneiro
     Candidate IDs: cand-2031299af7349215
     Source [Highlightly/highlightly-american-football-2026-09-06]: https://highlightly.net
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401856661
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49855901/lucas-carneiro-48-yard-fg-leads-ole-miss-no-24-louisville
 
- 3. [ROSTER] Texas offensive lineman Cole Hutson is currently ineligible after participating in two NFL minicamps, creating a roster issue for the Longhorns. (priority 73, age 2.07h)
-    Compact headline: Texas OL Cole Hutson Currently Ineligible to Play
-    Occurred: 2026-09-07T18:56:23Z | Precision: exact | Status: active
-    Freshness basis: Texas confirmed Monday that Cole Hutson is currently ineligible after NFL minicamp participation.
-    Entities: Texas Longhorns, Cole Hutson
-    Candidate IDs: cand-debef6bad54be1f0
-    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49861254/texas-ol-cole-hutson-ineligible-stints-nfl-teams
-
- 4. [INJURY] Indiana running back Khobie Martin will miss time until midseason because of an arm injury, coach Curt Cignetti said Monday. (priority 66, age 3.70h)
-    Compact headline: Indiana RB Khobie Martin Out Until Midseason
+ 3. [INJURY] Indiana running back Khobie Martin will miss time until midseason because of an arm injury, coach Curt Cignetti said Monday. (priority 75, age 4.20h)
+    Compact headline: Indiana running back Khobie Martin out until midseason
     Occurred: 2026-09-07T17:18:51Z | Precision: exact | Status: active
     Freshness basis: Indiana said Monday that Khobie Martin will be out until midseason with an arm injury.
-    Entities: Indiana Hoosiers, Khobie Martin, Curt Cignetti
+    Entities: Indiana Hoosiers, Khobie Martin
     Candidate IDs: cand-c41b64dde178ffc5
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49860368/indiana-loses-rb-khobie-martin-midseason-due-injury
 
- 5. [DEPTH_CHART] Michigan will continue starting Bryce Underwood at quarterback despite his struggles in the season opener, coach Kyle Whittingham said Monday. (priority 72, age 5.78h)
-    Compact headline: Michigan Keeps Bryce Underwood as Its QB1
+ 4. [DEPTH_CHART] Michigan will continue starting Bryce Underwood despite his struggles in the opener, coach Kyle Whittingham said Monday. (priority 72, age 6.28h)
+    Compact headline: Michigan keeps Bryce Underwood as its starting quarterback
     Occurred: 2026-09-07T15:14:02Z | Precision: exact | Status: active
-    Freshness basis: Michigan confirmed Monday that Bryce Underwood remains its starting quarterback.
+    Freshness basis: Michigan confirmed Monday that Bryce Underwood remains its starting quarterback after the season opener.
     Entities: Michigan Wolverines, Bryce Underwood, Kyle Whittingham
     Candidate IDs: cand-e97889632c97ecdf
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now
-
- 6. [INJURY] Northwestern said starting center Jackson Carsello returned to the team facility and was walking and feeling good after a neck injury. (priority 65, age 22.86h)
-    Compact headline: Northwestern center Jackson Carsello returns to facility
-    Occurred: 2026-09-06T22:08:56Z | Precision: exact | Status: active
-    Freshness basis: Northwestern said Jackson Carsello returned to the team facility Saturday night after his neck injury.
-    Entities: Northwestern Wildcats, Jackson Carsello
-    Candidate IDs: cand-27064e547f3d9ca8
-    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49852836/northwestern-jackson-carsello-neck-feeling-good-overall
 
 ############################################################################
 SPECIAL EVENTS
@@ -243,33 +221,39 @@ SPECIAL EVENTS
 US Open (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [ADVANCEMENT] Top-ranked Aryna Sabalenka overcame early struggles and overpowered Taylor Townsend to advance to the US Open quarterfinals. (priority 75, age 17.14h)
-    Compact headline: Sabalenka Overpowers Townsend to Reach US Open Quarterfinals
-    Freshness basis: Aryna Sabalenka defeated Taylor Townsend to reach the US Open quarterfinals Sunday.
+ 1. [INJURY] Anastasia Potapova suffered an injury late in her fourth-round match before Mirra Andreeva completed a three-set victory at the US Open. (priority 73, age 0.69h)
+    Compact headline: Potapova injured late before falling to Andreeva at US Open
+    Freshness basis: Anastasia Potapova was injured late in Monday’s US Open fourth-round match before losing to Mirra Andreeva.
+    Candidate IDs: cand-5f397c2c750794d5
+    Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49862013/andreeva-helps-injured-potapova-finishing-us-open-win
+
+ 2. [ADVANCEMENT] Iva Jovic defeated Alex Eala in an exciting three-set US Open third-round match to advance to the next round. (priority 73, age 21.47h)
+    Compact headline: Iva Jovic advances at US Open after three-set win
+    Freshness basis: Iva Jovic defeated Alex Eala in the US Open third round Sunday and advanced.
+    Candidate IDs: cand-eb61d9bbb2139331
+    Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49843735/us-open-alex-eala-falls-short-iva-jovic-third-round
+
+ 3. [ADVANCEMENT] Top-ranked Aryna Sabalenka overcame early trouble to overpower Taylor Townsend and reach the US Open quarterfinals. (priority 72, age 17.64h)
+    Compact headline: Sabalenka powers into US Open quarterfinals
+    Freshness basis: Aryna Sabalenka defeated Taylor Townsend to advance to the US Open quarterfinals Monday.
     Candidate IDs: cand-ad0d6fba667060cb
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals
 
- 2. [ADVANCEMENT] Iva Jovic defeated Alex Eala in an exciting three-set clash to advance to the next round of the US Open. (priority 74, age 20.97h)
-    Compact headline: Iva Jovic advances past Alex Eala in US Open thriller
-    Freshness basis: Iva Jovic beat Alex Eala in three sets to advance at the US Open.
-    Candidate IDs: cand-eb61d9bbb2139331
-    Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49843735/us-open-alex-eala-falls-short-iva-jovic-third-round
-
-Spanish Grand Prix (Formula 1)
+Spanish GP (Formula 1)
 ----------------------------------------------------------------------------
 
- 1. [INJURY] Red Bull confirmed that Liam Lawson will continue deputizing for injured Isack Hadjar at the first Madrid Spanish Grand Prix. (priority 74, age 2.26h)
-    Compact headline: Hadjar to Miss Spanish GP as Lawson Continues for Red Bull
-    Freshness basis: Red Bull confirmed Monday that Liam Lawson will replace injured Isack Hadjar at the Spanish Grand Prix.
+ 1. [INJURY] Liam Lawson will continue deputizing for Red Bull at the first Madrid Grand Prix while injured Isack Hadjar remains sidelined. (priority 73, age 2.76h)
+    Compact headline: Hadjar to miss Spanish GP as Lawson stays with Red Bull
+    Freshness basis: Red Bull confirmed Monday that Liam Lawson will continue replacing injured Isack Hadjar at the Spanish GP.
     Candidate IDs: cand-a799e446de1a5dde
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49860811/isack-hadjar-miss-f1-spanish-gp-liam-lawson-continues-red-bull
 
-Italian Grand Prix (Formula 1)
+Italian GP (Formula 1)
 ----------------------------------------------------------------------------
 
- 1. [RESULT] Kimi Antonelli the 'AI agent': Toto Wolff's new comparison for F1 star after Italian GP win. (priority 82, age 11.94h)
-    Compact headline: Kimi Antonelli Wins Italian Grand Prix for Mercedes
-    Freshness basis: Kimi Antonelli won the Italian Grand Prix for Mercedes at Monza Sunday.
+ 1. [RESULT] Kimi Antonelli won the Italian Grand Prix for Mercedes, the 20-year-old’s breakthrough victory at Monza. (priority 82, age 12.44h)
+    Compact headline: Kimi Antonelli wins Italian GP as Mercedes rookie breaks through
+    Freshness basis: Kimi Antonelli won the Italian Grand Prix at Monza, as reported after Sunday’s race.
     Candidate IDs: cand-da0b1a27d0d12d1d
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49813303/kimi-antonelli-ai-agent-toto-wolffs-new-comparison-f1-star-italian-gp-win-italian-grand-prix-formula-1-monza
