@@ -1,129 +1,131 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-07T01:30:40Z
-Global headline budget: 29/30-35 total
+Updated: 2026-09-07T02:00:42Z
+Global headline budget: 30/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: 68a0f0f3ddbe32bbdbffcb82f0d53e7cd8cba9c02c4924afe687a4b02d3eec8e
+Candidate hash: 27d96cb03c0a383a3fbb9d1894955c0dfac3bbd34b8c568bf18750b41fe64eba
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] Aroldis Chapman became the ninth major leaguer with 400 saves as Boston completed a four-game sweep of Baltimore. (priority 88, age 2.27h)
-    Compact headline: Chapman joins 400-save club in Red Sox sweep
+ 1. [RECORD] Aroldis Chapman recorded his 400th career save as Boston completed a four-game sweep of Baltimore, making him the ninth major leaguer to reach the mark. (priority 88, age 2.77h)
+    Compact headline: Chapman becomes ninth pitcher with 400 career saves
     Occurred: 2026-09-06T23:14:28Z | Precision: exact | Status: active
-    Freshness basis: Aroldis Chapman recorded his 400th career save as Boston swept Baltimore Sunday.
+    Freshness basis: Aroldis Chapman recorded his 400th save in Boston’s four-game sweep of Baltimore Sunday.
     Entities: Aroldis Chapman, Boston Red Sox, Baltimore Orioles
     Candidate IDs: cand-a25565383d9595f6
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49852520/aroldis-chapman-notches-400th-save-red-sox-sweep-orioles
 
- 2. [BREAKING] Joe Morgan, the former Boston manager who inspired the 1988 “Morgan Magic” turnaround, died Saturday, the Red Sox announced. (priority 81, age 0.30h)
-    Compact headline: Former Red Sox manager Joe Morgan dies
-    Occurred: 2026-09-07T01:12:43Z | Precision: exact | Status: active
-    Freshness basis: The Boston Red Sox announced Joe Morgan’s death on Sept. 6.
-    Entities: Joe Morgan, Boston Red Sox
-    Candidate IDs: cand-916972f70dd463cf
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49854277/joe-morgan-inspired-morgan-magic-red-sox-dies
-
- 3. [RECORD] Aroldis Chapman earned his 400th career save as Boston beat Baltimore 3-1 to complete a four-game sweep of the Orioles. (priority 84, age 7.93h)
-    Compact headline: Chapman reaches 400 saves in Red Sox sweep
-    Occurred: 2026-09-06T17:35:00Z | Precision: exact | Status: active
-    Freshness basis: Aroldis Chapman recorded his 400th career save in Boston’s 3-1 win over Baltimore on Sept. 6.
-    Entities: Boston Red Sox, Aroldis Chapman, Baltimore Orioles
-    Candidate IDs: cand-4d2d047f4cc907a9
+ 2. [PLAYOFF] Vinnie Pasquantino and Salvador Perez homered as Kansas City beat Toronto 6-1, avoiding a sweep and knocking the Blue Jays out of playoff position. (priority 80, age 7.84h)
+    Compact headline: Royals knock Blue Jays out of playoff position
+    Occurred: 2026-09-06T18:10:00Z | Precision: exact | Status: active
+    Freshness basis: Kansas City beat Toronto 6-1 Sunday, moving the Blue Jays out of playoff position.
+    Entities: Vinnie Pasquantino, Salvador Perez, Kansas City Royals, Toronto Blue Jays
+    Candidate IDs: cand-afc35515d23176fd
     Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816829
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816837
 
- 4. [MILESTONE] Pete Crow-Armstrong hit his 40th home run of the season in Chicago’s 10-3 loss to Miami. (priority 80, age 0.10h)
+ 3. [MILESTONE] Pete Crow-Armstrong hit his 40th home run of the season in Chicago’s 10-3 loss to Miami, continuing his September surge. (priority 84, age 0.60h)
     Compact headline: Crow-Armstrong reaches 40 homers despite Cubs loss
     Occurred: 2026-09-07T01:24:57Z | Precision: exact | Status: active
-    Freshness basis: Pete Crow-Armstrong hit his 40th home run of the season during Chicago’s loss to Miami Sunday.
+    Freshness basis: Pete Crow-Armstrong hit his 40th home run of the season in Chicago’s loss to Miami Sunday.
     Entities: Pete Crow-Armstrong, Chicago Cubs, Miami Marlins
     Candidate IDs: cand-e3ab4c20ac57e12e
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49852703/pete-crow-armstrong-slugs-40th-hr-cubs-fall-marlins
 
- 5. [RESULT] Daniel Schneemann singled home Angel Genao in the 10th inning, lifting Cleveland to a 3-2 win over Detroit and a third walk-off in the series. (priority 82, age 7.84h)
-    Compact headline: Schneemann delivers Guardians’ 10th-inning walk-off
+ 4. [MILESTONE] Aroldis Chapman recorded his 400th career save, and Boston completed a four-game sweep of Baltimore with a 3-1 win. (priority 84, age 8.43h)
+    Compact headline: Chapman earns 400th save as Red Sox complete sweep
+    Occurred: 2026-09-06T17:35:00Z | Precision: exact | Status: active
+    Freshness basis: Aroldis Chapman recorded his 400th career save in Boston’s 3-1 win over Baltimore Sunday.
+    Entities: Aroldis Chapman, Boston Red Sox, Baltimore Orioles
+    Candidate IDs: cand-4d2d047f4cc907a9
+    Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816829
+
+ 5. [STANDINGS] Chicago’s bullpen combined on a four-hitter, while Randal Grichuk and Kyle Teel homered in a five-run eighth inning of the 10-1 win. (priority 77, age 3.68h)
+    Compact headline: White Sox rout Twins to maintain AL Central lead
+    Occurred: 2026-09-06T22:20:00Z | Precision: exact | Status: active
+    Freshness basis: Chicago beat Minnesota 10-1 to maintain its AL Central lead Sunday.
+    Entities: Chicago White Sox, Minnesota Twins, Randal Grichuk, Kyle Teel
+    Candidate IDs: cand-6291043227f19964
+    Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816835
+
+ 6. [STANDINGS] Ronald Acuña Jr. hit a tying three-run homer and Austin Riley added a go-ahead triple as Atlanta beat Philadelphia 5-4 to extend its NL East lead to five games. (priority 77, age 8.85h)
+    Compact headline: Braves move five games ahead after late rally past Phillies
+    Occurred: 2026-09-06T17:10:00Z | Precision: exact | Status: active
+    Freshness basis: Atlanta beat Philadelphia 5-4 Sunday, extending its NL East lead to five games.
+    Entities: Ronald Acuña Jr., Austin Riley, Atlanta Braves, Philadelphia Phillies
+    Candidate IDs: cand-2182fd2dd3e707f4
+    Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49853865/braves-ronald-acuna-jr-does-curtain-call-amid-boos-philly
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816828
+
+ 7. [RESULT] Daniel Schneemann singled home Angel Genao in the 10th inning, giving Cleveland a 3-2 walk-off win over Detroit and its third walk-off victory in the series. (priority 82, age 8.35h)
+    Compact headline: Schneemann delivers 10th-inning walk-off for Cleveland
     Occurred: 2026-09-06T17:40:00Z | Precision: exact | Status: active
-    Freshness basis: Daniel Schneemann delivered Cleveland’s walk-off single in the bottom of the 10th inning Sunday.
+    Freshness basis: Daniel Schneemann delivered a walk-off single in the bottom of the 10th inning Sunday.
     Entities: Daniel Schneemann, Cleveland Guardians, Detroit Tigers
     Candidate IDs: cand-ec460edac642b7d1
     Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816831
 
- 6. [STANDINGS] Vinnie Pasquantino and Salvador Perez homered in Kansas City’s 6-1 win, which moved Toronto out of playoff position. (priority 70, age 7.34h)
-    Compact headline: Royals knock Blue Jays out of playoff position
-    Occurred: 2026-09-06T18:10:00Z | Precision: exact | Status: active
-    Freshness basis: Kansas City beat Toronto 6-1 Sunday and knocked the Blue Jays out of playoff position.
-    Entities: Kansas City Royals, Toronto Blue Jays, Vinnie Pasquantino, Salvador Perez
-    Candidate IDs: cand-afc35515d23176fd
-    Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816837
-
- 7. [RETURN] Paul Skenes threw 5⅓ scoreless innings for his first win since July 19, leading Pittsburgh past the Los Angeles Angels 1-0. (priority 75, age 5.39h)
-    Compact headline: Skenes ends seven-start winless drought with Pirates
+ 8. [STREAK] Paul Skenes pitched 5⅓ scoreless innings for his first win since July 19, and Henry Davis homered as Pittsburgh beat the Angels 1-0. (priority 75, age 5.89h)
+    Compact headline: Skenes ends seven-start winless drought in Pirates win
     Occurred: 2026-09-06T20:07:30Z | Precision: exact | Status: active
-    Freshness basis: Paul Skenes earned his first win since July 19 in Pittsburgh’s 1-0 victory over the Angels.
-    Entities: Paul Skenes, Pittsburgh Pirates, Los Angeles Angels
+    Freshness basis: Paul Skenes earned his first win since July 19 in Pittsburgh’s 1-0 victory over the Angels Sunday.
+    Entities: Paul Skenes, Henry Davis, Pittsburgh Pirates, Los Angeles Angels
     Candidate IDs: cand-543f7efb3d5a45c9
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816827
 
- 8. [RESULT] Jake Burger homered twice and Ezequiel Duran collected three hits as Texas rallied from two four-run deficits to beat Tampa Bay 8-6. (priority 74, age 6.93h)
-    Compact headline: Burger’s two homers power Rangers past Rays
-    Occurred: 2026-09-06T18:35:00Z | Precision: exact | Status: active
-    Freshness basis: Jake Burger hit two home runs as Texas rallied past Tampa Bay 8-6 Sunday.
-    Entities: Jake Burger, Ezequiel Duran, Texas Rangers, Tampa Bay Rays
-    Candidate IDs: cand-3e7065c338a43992
+ 9. [DEPTH_CHART] Cooper Hjerpe threw four perfect relief innings in his major league debut, helping St. Louis hold off Colorado 10-8. (priority 75, age 6.84h)
+    Compact headline: Hjerpe throws four perfect innings in MLB debut
+    Occurred: 2026-09-06T19:10:00Z | Precision: exact | Status: active
+    Freshness basis: Cooper Hjerpe threw four perfect relief innings in his major league debut for St. Louis Sunday.
+    Entities: Cooper Hjerpe, St. Louis Cardinals, Colorado Rockies, Iván Herrera
+    Candidate IDs: cand-ff9a38927e2a55bb
     Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816836
-
- 9. [RESULT] Elly De La Cruz hit a two-run homer and bases-loaded double and finished with four RBI as the Cincinnati Reds beat the NL Central-leading Milwaukee Brewers 12-8 on Sunday. (priority 72, age 9.34h)
-    Compact headline: De La Cruz powers Reds past Brewers with four RBI
-    Occurred: 2026-09-06T16:10:00Z | Precision: exact | Status: active
-    Freshness basis: Elly De La Cruz hit a two-run homer and bases-loaded double in Cincinnati’s 12-8 win over Milwaukee on Sept. 6.
-    Entities: Cincinnati Reds, Elly De La Cruz, Milwaukee Brewers
-    Candidate IDs: cand-a10dda6e102bc6f7
-    Source [Highlightly/highlightly-baseball-2026-09-06]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816832
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816838
 
 ============================================================================
 NFL  [PRESEASON]
 ============================================================================
 
- 1. [SIGNING] Safety Harrison Smith is returning to Minnesota for a 15th season after agreeing to a one-year deal worth $12.25 million. (priority 75, age 8.66h)
+ 1. [SIGNING] Safety Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota for his 15th NFL season. (priority 73, age 9.16h)
     Compact headline: Harrison Smith returns to Vikings for 15th season
     Occurred: 2026-09-06T16:51:02Z | Precision: exact | Status: active
-    Freshness basis: Harrison Smith agreed to a one-year, $12.25 million deal to return to Minnesota for his 15th season.
+    Freshness basis: Harrison Smith agreed to a one-year deal with Minnesota for his 15th season Sunday.
     Entities: Harrison Smith, Minnesota Vikings
     Candidate IDs: cand-4488e5a7de41ba69
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49841519/vikings-safety-smith-agrees-deal-back-15th-season
 
- 2. [CONTRACT] The Giants agreed with backup quarterback Jameis Winston on a two-year, $13 million contract extension. (priority 76, age 2.32h)
-    Compact headline: Giants extend Jameis Winston through 2028
+ 2. [CONTRACT] The Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston. (priority 75, age 2.82h)
+    Compact headline: Giants extend quarterback Jameis Winston for two years
     Occurred: 2026-09-06T23:11:39Z | Precision: exact | Status: active
     Freshness basis: The Giants agreed to a two-year, $13 million extension with Jameis Winston Sunday.
     Entities: Jameis Winston, New York Giants
     Candidate IDs: cand-18fd250ba70e5ca9
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension
 
- 3. [CONTRACT] NFL commissioner Roger Goodell finalized a four-year contract extension that will keep him in the role through the 2030 season. (priority 74, age 6.87h)
-    Compact headline: Goodell agrees to four-year extension through 2030
+ 3. [DISCIPLINE] The Rams expect Puka Nacua and Alaric Jackson to play against San Francisco despite their ongoing legal situations. (priority 74, age 0.63h)
+    Compact headline: Rams expect Nacua and Jackson to avoid opener suspensions
+    Occurred: 2026-09-07T01:22:45Z | Precision: exact | Status: active
+    Freshness basis: Los Angeles expects Puka Nacua and Alaric Jackson to avoid suspension for the season opener against San Francisco.
+    Entities: Puka Nacua, Alaric Jackson, Los Angeles Rams, San Francisco 49ers
+    Candidate IDs: cand-4ec7a237d2d77c30
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49853118/rams-expect-puka-nacua-alaric-jackson-play-vs-49ers
+
+ 4. [CONTRACT] NFL commissioner Roger Goodell finalized a four-year extension that will keep him under contract through the 2030 season. (priority 74, age 7.37h)
+    Compact headline: Goodell finalizes four-year extension through 2030 season
     Occurred: 2026-09-06T18:38:46Z | Precision: exact | Status: active
-    Freshness basis: Roger Goodell finalized a four-year extension with the NFL through the 2030 season on Sept. 6.
+    Freshness basis: Roger Goodell finalized a four-year extension running through the 2030 season Sunday.
     Entities: Roger Goodell, NFL
     Candidate IDs: cand-2ba57fef3e7ff13d
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49850050/nfl-commissioner-roger-goodell-finalizes-four-year-extension
-
- 4. [DISCIPLINE] The Rams expect Puka Nacua and Alaric Jackson to play against San Francisco despite their ongoing legal situations, coach Sean McVay said. (priority 73, age 0.13h)
-    Compact headline: Rams expect Nacua, Jackson to avoid season-opening bans
-    Occurred: 2026-09-07T01:22:45Z | Precision: exact | Status: active
-    Freshness basis: Sean McVay said the Rams expect Puka Nacua and Alaric Jackson to avoid suspensions for the season opener on Sept. 6.
-    Entities: Los Angeles Rams, Puka Nacua, Alaric Jackson, San Francisco 49ers
-    Candidate IDs: cand-4ec7a237d2d77c30
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49853118/rams-expect-puka-nacua-alaric-jackson-play-vs-49ers
 
 ============================================================================
 NBA  [OFFSEASON]
@@ -141,18 +143,26 @@ NHL  [OFFSEASON]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [RESULT] Arsenal came from behind to record a statement 2-1 win in a vintage London derby against Chelsea at the Emirates on Sunday. (priority 82, age 6.39h)
-    Compact headline: Arsenal rally past Chelsea in statement London derby
-    Occurred: 2026-09-06T19:07:09Z | Precision: exact | Status: active
-    Freshness basis: Arsenal came from behind to beat Chelsea 2-1 in a London derby on Sept. 6.
-    Entities: Arsenal, Chelsea, Martin Ødegaard, Kai Havertz
-    Candidate IDs: cand-33e958cb5fe119e4
-    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49850276/martin-odegaard-kai-havertz-arsenal-statement-london-derby-chelsea-report-reaction
+ 1. [RESULT] Arsenal needed to come from behind to win a breathless game 2-1 against Chelsea at the Emirates Stadium as Kai Havertz scored for the third time in the Premier League against his former club. (priority 82, age 8.14h)
+    Compact headline: Arsenal rally past Chelsea to maintain perfect start
+    Occurred: 2026-09-06T17:52:16Z | Precision: exact | Status: active
+    Freshness basis: Arsenal came from behind to beat Chelsea 2-1 in Sunday’s London derby.
+    Entities: Arsenal, Chelsea, Kai Havertz
+    Candidate IDs: cand-fa030b23d2b0b85e
+    Source [ESPN/espn-epl]: http://www.espn.com/soccer/report/_/gameId/401879292
 
- 2. [RESULT] Ainsley Maitland-Niles scored in the 96th minute to give Everton a 2-2 draw with Manchester United and deny United a second win of the season. (priority 72, age 8.41h)
-    Compact headline: Maitland-Niles’ 96th-minute goal rescues Everton draw
+ 2. [RETURN] Mykhailo Mudryk made his first appearance in almost two years for Tottenham, with manager Roberto De Zerbi saying he needs time to regain form. (priority 73, age 16.81h)
+    Compact headline: Mudryk returns for Tottenham after nearly two-year absence
+    Occurred: 2026-09-06T09:12:19Z | Precision: exact | Status: active
+    Freshness basis: Mykhailo Mudryk made his first appearance in almost two years for Tottenham Sunday.
+    Entities: Mykhailo Mudryk, Tottenham Hotspur, Roberto De Zerbi
+    Candidate IDs: cand-0f2651cc5a22adf1
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49846491/tottenham-boss-roberto-de-zerbi-says-mykhailo-mudryk-need-find-best-form
+
+ 3. [RESULT] Ainsley Maitland-Niles equalized in the 96th minute as Everton denied Manchester United a second win with a 2-2 draw. (priority 72, age 8.91h)
+    Compact headline: Maitland-Niles’ 96th-minute goal earns Everton a draw
     Occurred: 2026-09-06T17:06:02Z | Precision: exact | Status: active
-    Freshness basis: Ainsley Maitland-Niles scored a 96th-minute equalizer in Everton’s 2-2 draw with Manchester United on Sept. 6.
+    Freshness basis: Ainsley Maitland-Niles scored in the 96th minute to give Everton a 2-2 draw with Manchester United.
     Entities: Everton, Manchester United, Ainsley Maitland-Niles
     Candidate IDs: cand-51670b59060108df
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49849520/man-united-everton-premier-league-bryan-mbeumo-benjamin-sesko-ainsley-maitland-niles-tyrique-george
@@ -161,67 +171,70 @@ EPL  [ACTIVE]
 MLS  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] Philadelphia’s Cavan Sullivan scored in his third straight MLS game and broke a record previously held by Freddy Adu. (priority 86, age 21.77h)
-    Compact headline: Sullivan breaks Adu’s MLS record at age 16
+ 1. [RECORD] Philadelphia’s Cavan Sullivan scored in his third straight MLS game and broke a record previously held by U.S. soccer prodigy Freddy Adu. (priority 84, age 22.27h)
+    Compact headline: Cavan Sullivan breaks Freddy Adu’s MLS record at 16
     Occurred: 2026-09-06T03:44:14Z | Precision: exact | Status: active
-    Freshness basis: Cavan Sullivan scored for a third straight MLS game and broke Freddy Adu’s record Sunday.
+    Freshness basis: Cavan Sullivan scored in his third consecutive MLS game and broke Freddy Adu’s record Sunday.
     Entities: Cavan Sullivan, Philadelphia Union, Freddy Adu
     Candidate IDs: cand-a00b7d475c063bdf
     Source [ESPN/espn-mls]: https://www.espn.com/soccer/story/_/id/49842819/cavan-sullivan-freddy-adu-mls-record-philadelphia-union
 
- 2. [RESULT] A late goal came in the 90th minute to decide Portland Timbers's 5-4 win over Minnesota United. (priority 76, age 23.01h)
-    Compact headline: Late goal lifts Portland Timbers beat Minnesota United 5-4
+ 2. [RESULT] A goal in the 90th minute gave Portland a 5-4 win over Minnesota, deciding a nine-goal match at the final whistle. (priority 76, age 23.51h)
+    Compact headline: Late goal lifts Portland past Minnesota in 5-4 thriller
     Occurred: 2026-09-06T02:30:00Z | Precision: exact | Status: active
-    Freshness basis: A late goal came in the 90th minute to decide Portland Timbers's 5-4 win over Minnesota United.
+    Freshness basis: A 90th-minute goal decided Portland’s 5-4 win over Minnesota Sunday.
+    Entities: Portland Timbers, Minnesota United
     Candidate IDs: cand-a196e8a509c02dfc
     Source [Highlightly/highlightly-football-2026-09-05]: https://highlightly.net
 
- 3. [RESULT] Breel Embolo scored a late penalty on his MLS debut to give Atlanta a 2-2 draw at Inter Miami. (priority 72, age 19.21h)
-    Compact headline: Embolo scores on debut to earn Atlanta a draw
+ 3. [RESULT] Breel Embolo scored a late penalty on his MLS debut in Atlanta’s 2-2 draw at Miami Saturday. (priority 72, age 19.71h)
+    Compact headline: Embolo scores on debut to earn Atlanta draw at Miami
     Occurred: 2026-09-06T06:18:08Z | Precision: exact | Status: active
-    Freshness basis: Breel Embolo scored a late penalty on his MLS debut to give Atlanta a 2-2 draw at Inter Miami.
+    Freshness basis: Breel Embolo scored a late penalty on his MLS debut in Atlanta’s 2-2 draw at Miami Saturday.
     Entities: Breel Embolo, Atlanta United, Inter Miami
     Candidate IDs: cand-249c03139b11bbfa
     Source [ESPN/espn-mls]: https://www.espn.com/soccer/story/_/id/49843737/inter-miami-atlanta-united-breel-embolo-casemiro-lionel-messi
+
+ 4. [RESULT] St. Louis City defeated Vancouver 3-1 on Sunday in a completed MLS match. (priority 64, age 23.51h)
+    Compact headline: St. Louis City beats Vancouver 3-1 on the road
+    Occurred: 2026-09-06T02:30:00Z | Precision: exact | Status: active
+    Freshness basis: St. Louis City beat Vancouver 3-1 in MLS action Sunday.
+    Entities: St. Louis City SC, Vancouver Whitecaps
+    Candidate IDs: cand-9473cbabdf5584ed
+    Source [Highlightly/highlightly-football-2026-09-05]: https://highlightly.net
 
 ============================================================================
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [RESULT] Demond Williams Jr. threw for 268 yards and 1 TD as Washington Huskies beat Washington State Cougars 24-10. (priority 82, age 5.51h)
-    Compact headline: No. 17 Washington wins Apple Cup over Washington State
-    Occurred: 2026-09-06T20:00:00Z | Precision: exact | Status: active
-    Freshness basis: No. 17 Washington beat Washington State 24-10 in the Apple Cup on Sept. 6.
+ 1. [RESULT] Demond Williams Jr. threw for 268 yards and 1 TD as Washington Huskies beat Washington State Cougars 24-10. (priority 82, age 0.69h)
+    Compact headline: No. 17 Washington wins Apple Cup 24-10
+    Occurred: 2026-09-07T01:19:19Z | Precision: exact | Status: active
+    Freshness basis: No. 17 Washington beat Washington State 24-10 in the Apple Cup Sunday.
     Entities: Washington Huskies, Washington State Cougars
-    Candidate IDs: cand-8c1bf1ce0d63a739
+    Candidate IDs: cand-8c1bf1ce0d63a739, cand-0cb4e9e0dc48311b
     Source [Highlightly/highlightly-american-football-2026-09-06]: https://highlightly.net
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49853967/no-17-washington-pulls-apple-cup-win-vs-washington-state
     Source [ESPN/a45-espn-ncaaf-summary-401858437]: https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401858437
 
- 2. [MILESTONE] Sacramento State gave Alonzo Carter his first win as head coach by beating Mississippi Valley State 52-0 behind four touchdown passes from Jackson Sharman. (priority 72, age 19.72h)
-    Compact headline: Sacramento State coach Alonzo Carter earns first win
-    Occurred: 2026-09-06T05:47:29Z | Precision: exact | Status: active
-    Freshness basis: Sacramento State beat Mississippi Valley State 52-0 for Alonzo Carter’s first win as head coach on Sept. 6.
-    Entities: Sacramento State Hornets, Alonzo Carter, Jackson Sharman, Mississippi Valley State Delta Devils
-    Candidate IDs: cand-c35dc4fe94073128
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401866411
-
- 3. [STREAK] UNLV beat Hawai’i 21-6 for its fourth consecutive Island Showdown win, led by Jai’den Thomas’ 143 rushing yards and a touchdown. (priority 73, age 19.72h)
-    Compact headline: UNLV wins fourth straight Island Showdown
-    Occurred: 2026-09-06T05:47:35Z | Precision: exact | Status: active
-    Freshness basis: UNLV beat Hawai’i 21-6 for its fourth straight Island Showdown win on Sept. 6.
-    Entities: UNLV Rebels, Hawai'i Rainbow Warriors, Jai'den Thomas, Jackson Arnold
-    Candidate IDs: cand-8d9f90c8a7a3dc85
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401864497
-
- 4. [RESULT] Wayne Knight ran for two touchdowns in the fourth quarter following interceptions by Ta'Shawn James and UCLA opened the Bob Chesney era with a 45-24 victory over California on Saturday night. (priority 72, age 23.01h)
-    Compact headline: UCLA opens Chesney era by rallying past Cal
+ 2. [RESULT] Wayne Knight ran for two touchdowns in the fourth quarter following interceptions by Ta'Shawn James and UCLA opened the Bob Chesney era with a 45-24 victory over California on Saturday night. (priority 72, age 23.51h)
+    Compact headline: UCLA opens Chesney era by rallying past Cal 45-24
     Occurred: 2026-09-06T02:30:00Z | Precision: exact | Status: active
-    Freshness basis: UCLA scored the final 21 points in a 45-24 win over California in Bob Chesney’s debut.
-    Entities: UCLA Bruins, California Golden Bears, Bob Chesney, Wayne Knight
+    Freshness basis: UCLA scored the final 21 points in Bob Chesney’s 45-24 debut win over Cal Saturday.
+    Entities: Bob Chesney, Wayne Knight, UCLA Bruins, California Golden Bears
     Candidate IDs: cand-f76b6417207b9a0f
     Source [Highlightly/highlightly-american-football-2026-09-05]: https://highlightly.net
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49845975/ucla-drubs-former-pac-12-rival-cal-chesney-debut
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401858210
+
+ 3. [RESULT] Jones, Kelley help Nevada cruise past Western Kentucky 49-14 in a season opener. (priority 67, age 23.51h)
+    Compact headline: Nevada opens season with 49-14 rout of Western Kentucky
+    Occurred: 2026-09-06T02:30:00Z | Precision: exact | Status: active
+    Freshness basis: Nevada beat Western Kentucky 49-14 in the season opener for both teams.
+    Entities: Nevada Wolf Pack, Western Kentucky Hilltoppers, Carter Jones, Dominic Kelley
+    Candidate IDs: cand-be48272e6d4ae27d
+    Source [Highlightly/highlightly-american-football-2026-09-05]: https://highlightly.net
+    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401864432
 
 ############################################################################
 SPECIAL EVENTS
@@ -230,48 +243,48 @@ SPECIAL EVENTS
 US Open (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [ADVANCEMENT] Top-ranked Aryna Sabalenka overcame early struggles to overpower Taylor Townsend and reach the US Open quarterfinals. (priority 78, age 0.46h)
-    Compact headline: Top-ranked Sabalenka powers into US Open quarterfinals
+ 1. [UPSET] No. 24 seed Francisco Cerundolo rallied from two sets down to defeat No. 9 Taylor Fritz 3-6, 4-6, 6-3, 6-4, 6-4 at the US Open. (priority 84, age 18.98h)
+    Compact headline: No. 24 Cerundolo rallies past No. 9 Fritz at US Open
+    Freshness basis: Francisco Cerundolo overcame a two-set deficit to defeat No. 9 seed Taylor Fritz at the US Open Saturday.
+    Candidate IDs: cand-6c6ce9aeabd61cb5
+    Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49839555/taylor-fritz-blows-2-set-lead-falls-francisco-cerundolo-us-open
+
+ 2. [ADVANCEMENT] Top-ranked Aryna Sabalenka overcame early struggles to overpower Taylor Townsend and advance to the US Open quarterfinals. (priority 75, age 0.96h)
+    Compact headline: Sabalenka powers into US Open quarterfinals
     Freshness basis: Aryna Sabalenka defeated Taylor Townsend to reach the US Open quarterfinals Sunday.
     Candidate IDs: cand-ad0d6fba667060cb
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals
 
- 2. [RESULT] No. 24 Francisco Cerundolo erased a two-set deficit to defeat No. 9 Taylor Fritz 3-6, 4-6, 6-3, 6-4, 6-4 at the US Open. (priority 84, age 18.48h)
-    Compact headline: Cerundolo rallies from two sets down to stun Fritz
-    Freshness basis: Francisco Cerundolo beat No. 9 seed Taylor Fritz in five sets after trailing by two sets at the US Open.
-    Candidate IDs: cand-6c6ce9aeabd61cb5
-    Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49839555/taylor-fritz-blows-2-set-lead-falls-francisco-cerundolo-us-open
-
- 3. [ADVANCEMENT] Iva Jovic defeated Alex Eala after more than three hours at the US Open and advanced to a next-round matchup with Coco Gauff. (priority 74, age 21.46h)
-    Compact headline: Jovic ends Eala’s US Open run, sets Gauff clash
-    Freshness basis: Iva Jovic defeated Alex Eala and advanced to face Coco Gauff at the US Open on Sept. 6.
+ 3. [ADVANCEMENT] Iva Jovic ended Alex Eala’s US Open run after more than three hours and advanced to a fourth-round match against Coco Gauff. (priority 76, age 21.96h)
+    Compact headline: Jovic ends Eala’s run to set up US Open clash with Gauff
+    Freshness basis: Iva Jovic defeated Alex Eala and advanced to face Coco Gauff at the US Open.
     Candidate IDs: cand-b94db03e9f28b3ce
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49840314/gauff-advances-straight-sets-yet-drop-set-us-open
 
- 4. [RESULT] Zheng Qinwen won the final seven games to rally past Madison Keys, while Naomi Osaka also overcame a third-set deficit to advance. (priority 72, age 22.14h)
-    Compact headline: Zheng and Osaka rally into US Open next round
-    Freshness basis: Zheng Qinwen and Naomi Osaka each rallied to advance at the US Open Sunday.
+ 4. [RESULT] Zheng Qinwen won the final seven games to beat Madison Keys, while Naomi Osaka rallied from 4-2 down in the third set to advance. (priority 72, age 22.64h)
+    Compact headline: Zheng rallies past Keys as Osaka also advances at US Open
+    Freshness basis: Zheng Qinwen rallied past Madison Keys and Naomi Osaka advanced at the US Open Sunday.
     Candidate IDs: cand-91cba5564fb10294
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49837907/zheng-rallies-keys-osaka-rallies-third-set-us-open
 
-Italian GP (Formula 1)
+Italian Grand Prix (Formula 1)
 ----------------------------------------------------------------------------
 
- 1. [EVENT_UPDATE] Charles Leclerc crashed out three laps into the Italian Grand Prix after Ferrari’s opening-lap clash, ending his home-race challenge. (priority 82, age 11.44h)
-    Compact headline: Leclerc crashes out early in Ferrari’s Italian GP nightmare
-    Freshness basis: Charles Leclerc crashed out three laps into the Italian Grand Prix at Monza Sunday.
+ 1. [RESULT] Kimi Antonelli won the Italian Grand Prix from 19th on the grid after Ferrari’s race unraveled within the opening three laps at Monza. (priority 82, age 2.61h)
+    Compact headline: Antonelli wins Italian GP from 19th after Ferrari collapse
+    Freshness basis: Kimi Antonelli won the Italian Grand Prix from 19th on the grid Sunday.
+    Candidate IDs: cand-81c23c1d34aeb5f7
+    Source [ESPN/espn-f1]: https://www.espn.com/racing/f1/story/_/id/49850758/ferrari-vintage-disasterclass-paves-way-kimi-antonelli-take-home-italian-gp-win-monza
+
+ 2. [EVENT_UPDATE] Charles Leclerc crashed out of the Italian Grand Prix after a first-lap clash with Ferrari teammate Lewis Hamilton, dealing Ferrari a major home-race setback. (priority 79, age 11.94h)
+    Compact headline: Leclerc crashes out after Ferrari clash at Monza
+    Freshness basis: Charles Leclerc crashed out three laps into the Italian Grand Prix after a clash with Lewis Hamilton Sunday.
     Candidate IDs: cand-3db311d20064d96f
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49813283/charles-leclerc-suffers-huge-crash-italian-grand-prix-major-blow-ferrari-home-race-italian-grand-prix-formula-1-monza
 
- 2. [RESULT] Kimi Antonelli charged from 19th on the grid to win the Italian Grand Prix, passing George Russell with three laps remaining and reshaping the title fight. (priority 82, age 5.81h)
-    Compact headline: Antonelli wins Italian GP from 19th in title-race shock
-    Freshness basis: Kimi Antonelli won the Italian Grand Prix after starting 19th and passing George Russell with three laps remaining on Sept. 6.
-    Candidate IDs: cand-ed498d7036058fd9
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49813281/kimi-antonelli-comes-19th-grid-win-home-italian-grand-prix-italian-grand-prix-formula-1-monza
-
- 3. [RESULT] Kimi Antonelli came from 19th on the grid to win his home Italian Grand Prix at Monza, becoming the first Italian winner there since 1966. (priority 82, age 9.05h)
-    Compact headline: Antonelli storms from 19th to win Italian GP at Monza
-    Freshness basis: Kimi Antonelli won the Italian Grand Prix at Monza after starting 19th on the grid Sunday.
-    Candidate IDs: cand-a0f684fc256e03b5
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49814103/italian-grand-prix-2026-live-monza-f1-latest-updates-commentary-result-charles-leclerc-lewis-hamilton-george-russell-kimi-antonelli-max-verstappen-lando-norris
+ 3. [EVENT_UPDATE] Lewis Hamilton urged Ferrari to establish rules of engagement after a first-lap battle with Charles Leclerc cost him points in the Italian Grand Prix. (priority 76, age 7.33h)
+    Compact headline: Hamilton calls for Ferrari rules after Monza teammate clash
+    Freshness basis: Lewis Hamilton called for Ferrari rules of engagement after the teammates’ first-lap battle at the Italian Grand Prix.
+    Candidate IDs: cand-50da099bb58f32f8
+    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49813288/lewis-hamilton-urges-ferrari-introduce-rules-engagement-loses-more-points-title-fight-formula-1-italian-grand-prix
