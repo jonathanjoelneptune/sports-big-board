@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-07T19:00:47Z",
+  "generatedAt": "2026-09-07T19:30:38Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "2e7aa4646e7a808b2766cfb9fd35da1424b3b0efc61f222be75656fd0f58246f",
+  "sourceCandidateHash": "ae2fda721d0076ae78a096c2f224bb3bc5e9aee7a85908aec3559e4b1580bfd5",
   "leagues": [
     {
       "league": "MLB",
@@ -17,9 +17,9 @@
             "cand-a25565383d9595f6"
           ],
           "type": "RECORD",
-          "priority": 88,
-          "headline": "Aroldis Chapman became the ninth major leaguer with 400 saves as Boston beat Baltimore 3-1 to complete a four-game sweep.",
-          "text": "Aroldis Chapman became the ninth major leaguer with 400 saves as Boston beat Baltimore 3-1 to complete a four-game sweep.",
+          "priority": 86,
+          "headline": "Aroldis Chapman became the ninth pitcher to reach 400 career saves as Boston completed a four-game sweep of Baltimore with a 3-1 win.",
+          "text": "Aroldis Chapman became the ninth pitcher to reach 400 career saves as Boston completed a four-game sweep of Baltimore with a 3-1 win.",
           "entities": [
             "Aroldis Chapman",
             "Boston Red Sox",
@@ -27,8 +27,8 @@
           ],
           "occurredAt": "2026-09-06T23:14:28Z",
           "timePrecision": "exact",
-          "ageHours": 19.77,
-          "freshnessBasis": "Aroldis Chapman recorded his 400th career save in Boston's 3-1 win over Baltimore Sunday.",
+          "ageHours": 20.27,
+          "freshnessBasis": "Aroldis Chapman recorded his 400th career save as Boston beat Baltimore 3-1 Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49852520/aroldis-chapman-notches-400th-save-red-sox-sweep-orioles"
@@ -41,63 +41,95 @@
             }
           ],
           "id": "a3-c2590ef7862cb350",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Chapman reaches 400 saves as Red Sox complete sweep"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-3299438087b33e21"
+            "cand-e3ab4c20ac57e12e"
           ],
           "type": "MILESTONE",
-          "priority": 76,
-          "headline": "Pete Crow-Armstrong hit his 40th home run of the season, but Miami beat Chicago 10-3 behind homers from Javier Sanoja and Heriberto Hernández.",
-          "text": "Pete Crow-Armstrong hit his 40th home run of the season, but Miami beat Chicago 10-3 behind homers from Javier Sanoja and Heriberto Hernández.",
+          "priority": 77,
+          "headline": "Pete Crow-Armstrong hit his 40th home run of the season, but Chicago lost 10-3 to Miami on Sunday.",
+          "text": "Pete Crow-Armstrong hit his 40th home run of the season, but Chicago lost 10-3 to Miami on Sunday.",
           "entities": [
             "Pete Crow-Armstrong",
             "Chicago Cubs",
-            "Miami Marlins",
-            "Javier Sanoja",
-            "Heriberto Hernández"
+            "Miami Marlins"
           ],
-          "occurredAt": "2026-09-06T20:48:30Z",
+          "occurredAt": "2026-09-07T01:24:57Z",
           "timePrecision": "exact",
-          "ageHours": 22.2,
-          "freshnessBasis": "Pete Crow-Armstrong hit his 40th home run of the season in Chicago's 10-3 loss to Miami Sunday.",
+          "ageHours": 18.09,
+          "freshnessBasis": "Pete Crow-Armstrong hit his 40th home run in Chicago's 10-3 loss to Miami Sunday.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401816830"
+            "https://www.espn.com/mlb/story/_/id/49852703/pete-crow-armstrong-slugs-40th-hr-cubs-fall-marlins"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816830"
+              "url": "https://www.espn.com/mlb/story/_/id/49852703/pete-crow-armstrong-slugs-40th-hr-cubs-fall-marlins"
             }
           ],
-          "id": "a3-15aa6853e9defb1d",
+          "id": "a3-8f20f825d667d15f",
           "feedRank": 4,
-          "compactHeadline": "Crow-Armstrong hits 40th homer in Cubs loss"
+          "compactHeadline": "Crow-Armstrong hits 40th homer despite Cubs' loss"
         },
         {
           "rank": 3,
           "candidateIds": [
+            "cand-7b6f5250faae2d57"
+          ],
+          "type": "STANDINGS",
+          "priority": 74,
+          "headline": "Kansas City beat Toronto 6-1, with home runs from Vinnie Pasquantino and Salvador Perez, to move the Blue Jays out of playoff position.",
+          "text": "Kansas City beat Toronto 6-1, with home runs from Vinnie Pasquantino and Salvador Perez, to move the Blue Jays out of playoff position.",
+          "entities": [
+            "Kansas City Royals",
+            "Toronto Blue Jays",
+            "Vinnie Pasquantino",
+            "Salvador Perez"
+          ],
+          "occurredAt": "2026-09-06T21:40:30Z",
+          "timePrecision": "exact",
+          "ageHours": 21.84,
+          "freshnessBasis": "Kansas City beat Toronto 6-1 Sunday, knocking the Blue Jays out of playoff position.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401816837"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816837"
+            }
+          ],
+          "id": "a3-3e577ce7b42f81d3",
+          "feedRank": 6,
+          "compactHeadline": "Royals knock Blue Jays out of playoff position"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-6291043227f19964"
           ],
           "type": "STANDINGS",
-          "priority": 75,
-          "headline": "Chicago beat Minnesota 10-1 as Randal Grichuk and Kyle Teel homered in a five-run eighth and the White Sox bullpen combined on a four-hitter.",
-          "text": "Chicago beat Minnesota 10-1 as Randal Grichuk and Kyle Teel homered in a five-run eighth and the White Sox bullpen combined on a four-hitter.",
+          "priority": 73,
+          "headline": "Chicago’s bullpen combined on a four-hitter, and homers by Randal Grichuk and Kyle Teel highlighted a five-run eighth in a 10-1 win over Minnesota.",
+          "text": "Chicago’s bullpen combined on a four-hitter, and homers by Randal Grichuk and Kyle Teel highlighted a five-run eighth in a 10-1 win over Minnesota.",
           "entities": [
-            "Chicago White Sox",
-            "Minnesota Twins",
             "Randal Grichuk",
-            "Kyle Teel"
+            "Kyle Teel",
+            "Chicago White Sox",
+            "Minnesota Twins"
           ],
           "occurredAt": "2026-09-06T22:20:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.68,
-          "freshnessBasis": "Chicago beat Minnesota 10-1 and maintained its AL Central lead Sunday.",
+          "ageHours": 21.18,
+          "freshnessBasis": "Chicago beat Minnesota 10-1 Sunday while maintaining its AL Central lead.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -115,53 +147,52 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816835"
             }
           ],
-          "id": "a3-2cb4b2ec45d9727b",
-          "feedRank": 6,
-          "compactHeadline": "White Sox roll past Twins, maintain AL Central lead"
+          "id": "a3-cef9616f57a15f49",
+          "feedRank": 9,
+          "compactHeadline": "White Sox bullpen keeps AL Central lead with 10-1 win"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
-            "cand-7b6f5250faae2d57"
+            "cand-4be0de4c458edcf6"
           ],
-          "type": "STANDINGS",
-          "priority": 72,
-          "headline": "Vinnie Pasquantino and Salvador Perez homered as Kansas City beat Toronto 6-1, a result that moved the Blue Jays out of playoff position.",
-          "text": "Vinnie Pasquantino and Salvador Perez homered as Kansas City beat Toronto 6-1, a result that moved the Blue Jays out of playoff position.",
+          "type": "RETURN",
+          "priority": 74,
+          "headline": "Minnesota reinstated All-Star right-hander Joe Ryan from the injured list and returned him to the rotation for Monday’s start against Detroit.",
+          "text": "Minnesota reinstated All-Star right-hander Joe Ryan from the injured list and returned him to the rotation for Monday’s start against Detroit.",
           "entities": [
-            "Vinnie Pasquantino",
-            "Salvador Perez",
-            "Kansas City Royals",
-            "Toronto Blue Jays"
+            "Joe Ryan",
+            "Minnesota Twins",
+            "Detroit Tigers"
           ],
-          "occurredAt": "2026-09-06T21:40:30Z",
+          "occurredAt": "2026-09-07T16:30:31Z",
           "timePrecision": "exact",
-          "ageHours": 21.34,
-          "freshnessBasis": "Kansas City beat Toronto 6-1 Sunday, knocking the Blue Jays out of playoff position.",
+          "ageHours": 3.0,
+          "freshnessBasis": "Minnesota reinstated Joe Ryan from the injured list and named him Monday’s starter against Detroit.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401816837"
+            "https://www.espn.com/mlb/story/_/id/49860294/twins-joe-ryan-comes-il-start-tigers"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816837"
+              "url": "https://www.espn.com/mlb/story/_/id/49860294/twins-joe-ryan-comes-il-start-tigers"
             }
           ],
-          "id": "a3-2d5b8e0f33f33cef",
-          "feedRank": 8,
-          "compactHeadline": "Royals win 6-1, knock Blue Jays from playoff position"
+          "id": "a3-bd43f3929b0cecc2",
+          "feedRank": 12,
+          "compactHeadline": "Joe Ryan returns from IL to start for Twins"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-b63002e6ed054e20"
           ],
           "type": "STREAK",
-          "priority": 76,
-          "headline": "Mookie Betts hit a three-run eighth-inning homer to lift Los Angeles over Washington 7-5 and extend the Dodgers' winning streak to four games.",
-          "text": "Mookie Betts hit a three-run eighth-inning homer to lift Los Angeles over Washington 7-5 and extend the Dodgers' winning streak to four games.",
+          "priority": 75,
+          "headline": "Mookie Betts hit a three-run homer in the eighth inning to rally Los Angeles past Washington 7-5 and extend the Dodgers’ winning streak to four games.",
+          "text": "Mookie Betts hit a three-run homer in the eighth inning to rally Los Angeles past Washington 7-5 and extend the Dodgers’ winning streak to four games.",
           "entities": [
             "Mookie Betts",
             "Los Angeles Dodgers",
@@ -169,8 +200,8 @@
           ],
           "occurredAt": "2026-09-07T02:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.85,
-          "freshnessBasis": "Mookie Betts hit a three-run homer in the eighth inning of Los Angeles' 7-5 win over Washington Sunday.",
+          "ageHours": 17.34,
+          "freshnessBasis": "Mookie Betts hit a three-run eighth-inning homer as Los Angeles beat Washington 7-5 Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -188,41 +219,9 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816841"
             }
           ],
-          "id": "a3-71b057c377779b7f",
-          "feedRank": 10,
-          "compactHeadline": "Betts' three-run homer extends Dodgers' winning streak"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-4be0de4c458edcf6"
-          ],
-          "type": "RETURN",
-          "priority": 73,
-          "headline": "Minnesota reinstated All-Star right-hander Joe Ryan from the injured list and returned him to the rotation for Monday's start against Detroit.",
-          "text": "Minnesota reinstated All-Star right-hander Joe Ryan from the injured list and returned him to the rotation for Monday's start against Detroit.",
-          "entities": [
-            "Joe Ryan",
-            "Minnesota Twins"
-          ],
-          "occurredAt": "2026-09-07T16:30:31Z",
-          "timePrecision": "exact",
-          "ageHours": 2.5,
-          "freshnessBasis": "Minnesota reinstated Joe Ryan from the injured list and scheduled him to start Monday against Detroit.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49860294/twins-joe-ryan-comes-il-start-tigers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49860294/twins-joe-ryan-comes-il-start-tigers"
-            }
-          ],
-          "id": "a3-bd43f3929b0cecc2",
-          "feedRank": 12,
-          "compactHeadline": "Joe Ryan returns from IL to start for Twins"
+          "id": "a3-9b7b25ca50e0ef12",
+          "feedRank": 13,
+          "compactHeadline": "Betts’ three-run homer extends Dodgers’ winning streak"
         },
         {
           "rank": 7,
@@ -230,17 +229,17 @@
             "cand-916972f70dd463cf"
           ],
           "type": "LEAGUE_NEWS",
-          "priority": 72,
-          "headline": "Joe Morgan, the former Boston manager remembered for sparking the 1988 team’s “Morgan Magic” turnaround, died Saturday.",
-          "text": "Joe Morgan, the former Boston manager remembered for sparking the 1988 team’s “Morgan Magic” turnaround, died Saturday.",
+          "priority": 74,
+          "headline": "Joe Morgan, the former Boston manager who inspired the 1988 'Morgan Magic' turnaround, died Saturday, the Red Sox announced.",
+          "text": "Joe Morgan, the former Boston manager who inspired the 1988 'Morgan Magic' turnaround, died Saturday, the Red Sox announced.",
           "entities": [
             "Joe Morgan",
             "Boston Red Sox"
           ],
           "occurredAt": "2026-09-07T02:21:46Z",
           "timePrecision": "exact",
-          "ageHours": 16.65,
-          "freshnessBasis": "The Boston Red Sox announced that former manager Joe Morgan died Saturday.",
+          "ageHours": 17.15,
+          "freshnessBasis": "The Red Sox announced Joe Morgan died Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49854277/joe-morgan-inspired-morgan-magic-red-sox-dies"
@@ -252,19 +251,65 @@
               "url": "https://www.espn.com/mlb/story/_/id/49854277/joe-morgan-inspired-morgan-magic-red-sox-dies"
             }
           ],
-          "id": "a3-049592868ca4da08",
-          "feedRank": 16,
-          "compactHeadline": "Former Red Sox manager Joe Morgan dies"
+          "id": "a3-4a5a4fa3cda0aa82",
+          "feedRank": 14,
+          "compactHeadline": "Former Red Sox manager Joe Morgan dies at 88"
         },
         {
           "rank": 8,
+          "candidateIds": [
+            "cand-9c8065929ea34992"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Jesús Luzardo struck out 12 and allowed two hits for his first career shutout, while Kyle Schwarber’s eighth-inning homer lifted Philadelphia past Atlanta 1-0.",
+          "text": "Jesús Luzardo struck out 12 and allowed two hits for his first career shutout, while Kyle Schwarber’s eighth-inning homer lifted Philadelphia past Atlanta 1-0.",
+          "entities": [
+            "Jesús Luzardo",
+            "Kyle Schwarber",
+            "Philadelphia Phillies",
+            "Atlanta Braves"
+          ],
+          "occurredAt": "2026-09-07T17:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.43,
+          "freshnessBasis": "Jesús Luzardo threw his first career shutout and Philadelphia beat Atlanta 1-0 Monday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816843",
+            "https://www.espn.com/mlb/story/_/id/49853865/braves-ronald-acuna-jr-does-curtain-call-amid-boos-philly"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-07",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816843"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49853865/braves-ronald-acuna-jr-does-curtain-call-amid-boos-philly"
+            }
+          ],
+          "id": "a3-ae008667e2ea444a",
+          "feedRank": 15,
+          "compactHeadline": "Luzardo throws first shutout as Phillies edge Braves"
+        },
+        {
+          "rank": 9,
           "candidateIds": [
             "cand-4070eb5c853ac565"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Fernando Tatis Jr., Jake Cronenworth and Manny Machado hit consecutive homers in San Diego's 4-3 win over New York Sunday.",
-          "text": "Fernando Tatis Jr., Jake Cronenworth and Manny Machado hit consecutive homers in San Diego's 4-3 win over New York Sunday.",
+          "headline": "San Diego hit three consecutive first-inning homers and beat New York 4-3 Sunday.",
+          "text": "San Diego hit three consecutive first-inning homers and beat New York 4-3 Sunday.",
           "entities": [
             "Fernando Tatis Jr.",
             "Jake Cronenworth",
@@ -274,8 +319,8 @@
           ],
           "occurredAt": "2026-09-06T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.85,
-          "freshnessBasis": "Fernando Tatis Jr., Jake Cronenworth and Manny Machado hit consecutive homers in San Diego's 4-3 win over New York Sunday.",
+          "ageHours": 23.34,
+          "freshnessBasis": "San Diego hit three consecutive first-inning homers and beat New York 4-3 Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -299,50 +344,9 @@
               "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816840"
             }
           ],
-          "id": "a3-1f4d27fbc878d1ad",
+          "id": "a3-bf295422bf76337a",
           "feedRank": 19,
-          "compactHeadline": "Padres' three-homer opening beats Yankees 4-3"
-        },
-        {
-          "rank": 9,
-          "candidateIds": [
-            "cand-bd34f0ad480f2cbf"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Bryan Woo struck out nine over eight innings, while Cal Raleigh and J.P. Crawford supplied back-to-back RBI singles in Seattle's 2-0 win.",
-          "text": "Bryan Woo struck out nine over eight innings, while Cal Raleigh and J.P. Crawford supplied back-to-back RBI singles in Seattle's 2-0 win.",
-          "entities": [
-            "Bryan Woo",
-            "Cal Raleigh",
-            "J.P. Crawford",
-            "Seattle Mariners",
-            "Athletics"
-          ],
-          "occurredAt": "2026-09-06T20:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 22.85,
-          "freshnessBasis": "Bryan Woo threw eight innings with nine strikeouts in Seattle's 2-0 win over Oakland Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816839"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-06",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816839"
-            }
-          ],
-          "id": "a3-5d1b04807d29aabd",
-          "feedRank": 20,
-          "compactHeadline": "Woo strikes out nine as Mariners shut out Athletics"
+          "compactHeadline": "Padres open with three homers to beat Yankees"
         }
       ]
     },
@@ -353,44 +357,12 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-18fd250ba70e5ca9"
-          ],
-          "type": "CONTRACT",
-          "priority": 75,
-          "headline": "The Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston, according to a source cited by ESPN.",
-          "text": "The Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston, according to a source cited by ESPN.",
-          "entities": [
-            "Jameis Winston",
-            "New York Giants"
-          ],
-          "occurredAt": "2026-09-07T16:48:15Z",
-          "timePrecision": "exact",
-          "ageHours": 2.21,
-          "freshnessBasis": "The New York Giants agreed to a two-year, $13 million extension with Jameis Winston Monday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension"
-            }
-          ],
-          "id": "a3-45807dfb45477cdc",
-          "feedRank": 15,
-          "compactHeadline": "Giants extend Jameis Winston for two more seasons"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-4eb7248409bfdddd"
           ],
           "type": "DEPTH_CHART",
-          "priority": 73,
-          "headline": "Atlanta named Tua Tagovailoa its starting quarterback for the Falcons' Week 1 game against the Pittsburgh Steelers.",
-          "text": "Atlanta named Tua Tagovailoa its starting quarterback for the Falcons' Week 1 game against the Pittsburgh Steelers.",
+          "priority": 74,
+          "headline": "Atlanta named Tua Tagovailoa its starting quarterback for the Week 1 game against Pittsburgh.",
+          "text": "Atlanta named Tua Tagovailoa its starting quarterback for the Week 1 game against Pittsburgh.",
           "entities": [
             "Tua Tagovailoa",
             "Atlanta Falcons",
@@ -398,8 +370,8 @@
           ],
           "occurredAt": "2026-09-07T17:53:19Z",
           "timePrecision": "exact",
-          "ageHours": 1.12,
-          "freshnessBasis": "Atlanta named Tua Tagovailoa its Week 1 starting quarterback Monday.",
+          "ageHours": 1.62,
+          "freshnessBasis": "Atlanta named Tua Tagovailoa its Week 1 starting quarterback against Pittsburgh Monday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49858957/falcons-name-tua-tagovailoa-week-1-starting-qb-vs-steelers"
@@ -411,61 +383,27 @@
               "url": "https://www.espn.com/nfl/story/_/id/49858957/falcons-name-tua-tagovailoa-week-1-starting-qb-vs-steelers"
             }
           ],
-          "id": "a3-31af9591a7e1d0d4",
-          "feedRank": 23,
-          "compactHeadline": "Falcons name Tua Tagovailoa Week 1 starting quarterback"
+          "id": "a3-552197d88886dc37",
+          "feedRank": 18,
+          "compactHeadline": "Falcons name Tua Tagovailoa Week 1 starter"
         },
         {
-          "rank": 3,
-          "candidateIds": [
-            "cand-4ec7a237d2d77c30"
-          ],
-          "type": "ROSTER",
-          "priority": 72,
-          "headline": "Los Angeles expects Puka Nacua and Alaric Jackson to play against San Francisco despite ongoing legal situations and no season-opening suspensions.",
-          "text": "Los Angeles expects Puka Nacua and Alaric Jackson to play against San Francisco despite ongoing legal situations and no season-opening suspensions.",
-          "entities": [
-            "Puka Nacua",
-            "Alaric Jackson",
-            "Los Angeles Rams",
-            "San Francisco 49ers"
-          ],
-          "occurredAt": "2026-09-07T04:42:05Z",
-          "timePrecision": "exact",
-          "ageHours": 14.31,
-          "freshnessBasis": "The Rams said Puka Nacua and Alaric Jackson are not expected to be suspended for the season opener.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49853118/rams-expect-puka-nacua-alaric-jackson-play-vs-49ers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49853118/rams-expect-puka-nacua-alaric-jackson-play-vs-49ers"
-            }
-          ],
-          "id": "a3-e32b6a566acf49c7",
-          "feedRank": 24,
-          "compactHeadline": "Rams expect Nacua and Jackson to play in opener"
-        },
-        {
-          "rank": 4,
+          "rank": 2,
           "candidateIds": [
             "cand-d542cea23a1ed460"
           ],
-          "type": "OTHER",
-          "priority": 65,
-          "headline": "Matt Suhey, the fullback who helped the 1985 Chicago Bears win the NFL championship, has died at age 68.",
-          "text": "Matt Suhey, the fullback who helped the 1985 Chicago Bears win the NFL championship, has died at age 68.",
+          "type": "LEAGUE_NEWS",
+          "priority": 72,
+          "headline": "Matt Suhey, the fullback who helped the 1985 Chicago Bears win the NFL championship, has died at 68.",
+          "text": "Matt Suhey, the fullback who helped the 1985 Chicago Bears win the NFL championship, has died at 68.",
           "entities": [
             "Matt Suhey",
             "Chicago Bears"
           ],
           "occurredAt": "2026-09-07T17:32:41Z",
           "timePrecision": "exact",
-          "ageHours": 1.47,
-          "freshnessBasis": "The Chicago Bears announced that 1985 championship fullback Matt Suhey died at age 68 Monday.",
+          "ageHours": 1.97,
+          "freshnessBasis": "The Chicago Bears announced that 1985 championship fullback Matt Suhey died at 68 Monday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49860580/bears-super-bowl-champion-fullback-matt-suhey-dies-68"
@@ -478,8 +416,41 @@
             }
           ],
           "id": "a3-ed6898350cdc9377",
-          "feedRank": 25,
+          "feedRank": 21,
           "compactHeadline": "Bears Super Bowl champion Matt Suhey dies at 68"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-18fd250ba70e5ca9"
+          ],
+          "type": "CONTRACT",
+          "priority": 68,
+          "headline": "The Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston; New York also reached an extension with Jon Runyan.",
+          "text": "The Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston; New York also reached an extension with Jon Runyan.",
+          "entities": [
+            "Jameis Winston",
+            "Jon Runyan",
+            "New York Giants"
+          ],
+          "occurredAt": "2026-09-07T16:48:15Z",
+          "timePrecision": "exact",
+          "ageHours": 2.71,
+          "freshnessBasis": "New York agreed to a two-year, $13 million extension with Jameis Winston Monday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension"
+            }
+          ],
+          "id": "a3-f48210e4c2d6013d",
+          "feedRank": 24,
+          "compactHeadline": "Giants give Jameis Winston two-year extension"
         }
       ]
     },
@@ -500,103 +471,36 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-ddf70f5eee755e74"
+            "cand-bc96dcf1cdeebc73"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Manchester United salvaged a last-gasp draw at Everton, with Benjamin Sesko urging the club to reset before its Champions League return.",
-          "text": "Manchester United salvaged a last-gasp draw at Everton, with Benjamin Sesko urging the club to reset before its Champions League return.",
-          "entities": [
-            "Manchester United",
-            "Everton",
-            "Benjamin Sesko"
-          ],
-          "occurredAt": "2026-09-07T11:57:38Z",
-          "timePrecision": "exact",
-          "ageHours": 7.05,
-          "freshnessBasis": "Manchester United drew at Everton in a last-gasp result before its Champions League return.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49858651/benjamin-šeško-urges-man-united-find-positives-painful-everton-draw"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49858651/benjamin-šeško-urges-man-united-find-positives-painful-everton-draw"
-            }
-          ],
-          "id": "a3-f158e044f1169bb8",
-          "feedRank": 14,
-          "compactHeadline": "Man United urged to regroup after Everton draw"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-30578b9d3e0f63fc"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Iliman Ndiaye on Tottenham links: 'When Manchester City comes through you don't say no'.",
-          "text": "Iliman Ndiaye on Tottenham links: 'When Manchester City comes through you don't say no'.",
-          "entities": [
-            "Iliman Ndiaye",
-            "Everton",
-            "Coventry City",
-            "Tottenham Hotspur"
-          ],
-          "occurredAt": "2026-09-06T22:03:51Z",
-          "timePrecision": "exact",
-          "ageHours": 20.95,
-          "freshnessBasis": "Iliman Ndiaye made his Everton debut in the club's 1-0 win over Coventry Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49852864/iliman-ndiaye-tottenham-links-manchester-city-comes-dont-say-no"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49852864/iliman-ndiaye-tottenham-links-manchester-city-comes-dont-say-no"
-            }
-          ],
-          "id": "a3-750b63a7c324a758",
-          "feedRank": 18,
-          "compactHeadline": "Ndiaye makes debut in Everton’s 1-0 win"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-33e958cb5fe119e4"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Arsenal came from behind to record a statement 2-1 win in a vintage London derby against Chelsea at the Emirates on Sunday.",
-          "text": "Arsenal came from behind to record a statement 2-1 win in a vintage London derby against Chelsea at the Emirates on Sunday.",
+          "headline": "Arsenal's Ezri Konsa 'loved' battle with England teammate Morgan Rogers in Chelsea clash.",
+          "text": "Arsenal's Ezri Konsa 'loved' battle with England teammate Morgan Rogers in Chelsea clash.",
           "entities": [
             "Arsenal",
             "Chelsea",
-            "Martin Ødegaard",
-            "Kai Havertz"
+            "Ezri Konsa",
+            "Morgan Rogers"
           ],
-          "occurredAt": "2026-09-06T19:07:09Z",
+          "occurredAt": "2026-09-07T15:29:29Z",
           "timePrecision": "exact",
-          "ageHours": 23.89,
-          "freshnessBasis": "Arsenal came from behind to beat Chelsea 2-1 in Sunday's London derby.",
+          "ageHours": 4.02,
+          "freshnessBasis": "Arsenal beat Chelsea 2-1 in Sunday’s Premier League match.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49850276/martin-odegaard-kai-havertz-arsenal-statement-london-derby-chelsea-report-reaction"
+            "https://www.espn.com/soccer/story/_/id/49859996/ezri-konsa-arsenal-morgan-rogers-chelsea-aston-villa-england-premier-league"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49850276/martin-odegaard-kai-havertz-arsenal-statement-london-derby-chelsea-report-reaction"
+              "url": "https://www.espn.com/soccer/story/_/id/49859996/ezri-konsa-arsenal-morgan-rogers-chelsea-aston-villa-england-premier-league"
             }
           ],
-          "id": "a3-7a9cbc3d0bae67ce",
-          "feedRank": 22,
-          "compactHeadline": "Arsenal rally past Chelsea in statement London derby"
+          "id": "a3-f0a03bea01878bdd",
+          "feedRank": 16,
+          "compactHeadline": "Arsenal beat Chelsea 2-1 in London clash"
         }
       ]
     },
@@ -615,9 +519,9 @@
             "cand-315384bae9804d23"
           ],
           "type": "RECORD",
-          "priority": 84,
-          "headline": "Mason Heintschel threw seven touchdown passes to tie Pittsburgh's school record as the Panthers beat Miami (Ohio) 59-14.",
-          "text": "Mason Heintschel threw seven touchdown passes to tie Pittsburgh's school record as the Panthers beat Miami (Ohio) 59-14.",
+          "priority": 86,
+          "headline": "Mason Heintschel threw seven touchdown passes, tying Pittsburgh’s school record, as the Panthers beat Miami (Ohio) 59-14.",
+          "text": "Mason Heintschel threw seven touchdown passes, tying Pittsburgh’s school record, as the Panthers beat Miami (Ohio) 59-14.",
           "entities": [
             "Mason Heintschel",
             "Pittsburgh Panthers",
@@ -625,8 +529,8 @@
           ],
           "occurredAt": "2026-09-07T05:27:35Z",
           "timePrecision": "exact",
-          "ageHours": 13.55,
-          "freshnessBasis": "Mason Heintschel threw seven touchdown passes, tying Pittsburgh's school record, in Saturday's 59-14 win.",
+          "ageHours": 14.05,
+          "freshnessBasis": "Mason Heintschel threw seven touchdown passes in Pittsburgh’s 59-14 win over Miami (Ohio) Saturday.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/ncf/recap?gameId=401858207"
@@ -638,9 +542,9 @@
               "url": "http://www.espn.com/ncf/recap?gameId=401858207"
             }
           ],
-          "id": "a3-29e132f50ae16975",
-          "feedRank": 2,
-          "compactHeadline": "Pitt's Heintschel ties school record with seven TD passes"
+          "id": "a3-f11a2596282c6c41",
+          "feedRank": 1,
+          "compactHeadline": "Pitt’s Heintschel ties school record with seven TDs"
         },
         {
           "rank": 2,
@@ -649,8 +553,8 @@
           ],
           "type": "UPSET",
           "priority": 82,
-          "headline": "Lucas Carneiro kicked a 48-yard field goal as time expired to give No. 9 Ole Miss a 41-38 win over No. 24 Louisville.",
-          "text": "Lucas Carneiro kicked a 48-yard field goal as time expired to give No. 9 Ole Miss a 41-38 win over No. 24 Louisville.",
+          "headline": "Lucas Carneiro hit a 48-yard field goal as time expired to give No. 9 Ole Miss a 41-38 win over No. 24 Louisville.",
+          "text": "Lucas Carneiro hit a 48-yard field goal as time expired to give No. 9 Ole Miss a 41-38 win over No. 24 Louisville.",
           "entities": [
             "Lucas Carneiro",
             "Ole Miss Rebels",
@@ -658,8 +562,8 @@
           ],
           "occurredAt": "2026-09-06T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.51,
-          "freshnessBasis": "Lucas Carneiro made a 48-yard field goal as time expired in Ole Miss' 41-38 win over Louisville Sunday.",
+          "ageHours": 20.01,
+          "freshnessBasis": "Lucas Carneiro kicked a 48-yard field goal as time expired in Ole Miss’ 41-38 win over Louisville Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -683,9 +587,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/49855901/lucas-carneiro-48-yard-fg-leads-ole-miss-no-24-louisville"
             }
           ],
-          "id": "a3-7ba27ebd2f7292a3",
+          "id": "a3-202d089f08c27151",
           "feedRank": 3,
-          "compactHeadline": "Ole Miss wins ranked thriller on final-play field goal"
+          "compactHeadline": "Carneiro’s final-second field goal lifts No. 9 Ole Miss"
         },
         {
           "rank": 3,
@@ -693,17 +597,18 @@
             "cand-c41b64dde178ffc5"
           ],
           "type": "INJURY",
-          "priority": 72,
+          "priority": 73,
           "headline": "Indiana running back Khobie Martin will miss time until midseason because of an arm injury, coach Curt Cignetti said Monday.",
           "text": "Indiana running back Khobie Martin will miss time until midseason because of an arm injury, coach Curt Cignetti said Monday.",
           "entities": [
             "Khobie Martin",
-            "Indiana Hoosiers"
+            "Indiana Hoosiers",
+            "Curt Cignetti"
           ],
           "occurredAt": "2026-09-07T17:18:51Z",
           "timePrecision": "exact",
-          "ageHours": 1.7,
-          "freshnessBasis": "Indiana said Khobie Martin will be out until midseason with an arm injury Monday.",
+          "ageHours": 2.2,
+          "freshnessBasis": "Indiana coach Curt Cignetti said Monday that Khobie Martin will be out until midseason with an arm injury.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49860368/indiana-loses-rb-khobie-martin-midseason-due-injury"
@@ -715,77 +620,45 @@
               "url": "https://www.espn.com/college-football/story/_/id/49860368/indiana-loses-rb-khobie-martin-midseason-due-injury"
             }
           ],
-          "id": "a3-6c9c2cc7f1c20113",
+          "id": "a3-0df8fe7638c31b1d",
           "feedRank": 5,
-          "compactHeadline": "Indiana RB Khobie Martin out until midseason"
+          "compactHeadline": "Indiana loses Khobie Martin until midseason"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-debef6bad54be1f0"
+            "cand-9d94145113c3523c"
           ],
-          "type": "DISCIPLINE",
+          "type": "LEAGUE_NEWS",
           "priority": 72,
-          "headline": "Texas offensive lineman Cole Hutson is currently ineligible after regaining a fifth year of eligibility following appearances at two NFL minicamps.",
-          "text": "Texas offensive lineman Cole Hutson is currently ineligible after regaining a fifth year of eligibility following appearances at two NFL minicamps.",
+          "headline": "Western Michigan's president said the Big Ten replay process that restored a second for Michigan's winning touchdown was not as good as it could be.",
+          "text": "Western Michigan's president said the Big Ten replay process that restored a second for Michigan's winning touchdown was not as good as it could be.",
           "entities": [
-            "Cole Hutson",
-            "Texas Longhorns"
+            "Western Michigan Broncos",
+            "Michigan Wolverines",
+            "Big Ten"
           ],
-          "occurredAt": "2026-09-07T18:56:23Z",
+          "occurredAt": "2026-09-07T02:16:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.07,
-          "freshnessBasis": "Texas offensive lineman Cole Hutson was ruled ineligible Monday after participating in two NFL minicamps.",
+          "ageHours": 17.23,
+          "freshnessBasis": "Western Michigan president Russ Kavalhuna criticized the Big Ten replay process after Michigan's winning touchdown.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49861254/texas-ol-cole-hutson-ineligible-stints-nfl-teams"
+            "https://www.espn.com/college-football/story/_/id/49851734/western-michigan-president-unfair-last-play"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49861254/texas-ol-cole-hutson-ineligible-stints-nfl-teams"
+              "url": "https://www.espn.com/college-football/story/_/id/49851734/western-michigan-president-unfair-last-play"
             }
           ],
-          "id": "a3-cbceade7ac170fcc",
-          "feedRank": 13,
-          "compactHeadline": "Texas lineman Cole Hutson ruled ineligible"
+          "id": "a3-164382a084a5431f",
+          "feedRank": 17,
+          "compactHeadline": "Western Michigan questions Big Ten replay process"
         },
         {
           "rank": 5,
-          "candidateIds": [
-            "cand-e97889632c97ecdf"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 70,
-          "headline": "Michigan will continue starting Bryce Underwood at quarterback despite his struggles in the season opener, coach Kyle Whittingham said Monday.",
-          "text": "Michigan will continue starting Bryce Underwood at quarterback despite his struggles in the season opener, coach Kyle Whittingham said Monday.",
-          "entities": [
-            "Bryce Underwood",
-            "Michigan Wolverines",
-            "Kyle Whittingham"
-          ],
-          "occurredAt": "2026-09-07T15:14:02Z",
-          "timePrecision": "exact",
-          "ageHours": 3.78,
-          "freshnessBasis": "Michigan confirmed Bryce Underwood will remain its starting quarterback Monday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
-            }
-          ],
-          "id": "a3-b6bc17165b283700",
-          "feedRank": 17,
-          "compactHeadline": "Michigan keeps Bryce Underwood as QB1 after opener"
-        },
-        {
-          "rank": 6,
           "candidateIds": [
             "cand-8c1bf1ce0d63a739"
           ],
@@ -800,8 +673,8 @@
           ],
           "occurredAt": "2026-09-06T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.01,
-          "freshnessBasis": "No. 17 Washington beat Washington State 24-10 in Sunday's season-opening Apple Cup.",
+          "ageHours": 23.51,
+          "freshnessBasis": "No. 17 Washington beat Washington State 24-10 in the season-opening Apple Cup Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -819,9 +692,92 @@
               "url": "http://www.espn.com/ncf/recap?gameId=401858437"
             }
           ],
-          "id": "a3-a044e1c2677b6fa4",
-          "feedRank": 21,
-          "compactHeadline": "No. 17 Washington survives Washington State in Apple Cup"
+          "id": "a3-86df4d37ace3bc98",
+          "feedRank": 20,
+          "compactHeadline": "No. 17 Washington survives Apple Cup"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-6c48f485cb8f535c"
+          ],
+          "type": "RESULT",
+          "priority": 67,
+          "headline": "CJ Carr threw for 239 yards and 2 TDs as Notre Dame Fighting Irish beat Wisconsin Badgers 41-13.",
+          "text": "CJ Carr threw for 239 yards and 2 TDs as Notre Dame Fighting Irish beat Wisconsin Badgers 41-13.",
+          "entities": [
+            "Notre Dame Fighting Irish",
+            "Wisconsin Badgers"
+          ],
+          "occurredAt": "2026-09-06T23:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 20.01,
+          "freshnessBasis": "No. 4 Notre Dame beat Wisconsin 41-13 at Lambeau Field Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/ncf/recap?gameId=401858438",
+            "https://www.espn.com/college-football/story/_/id/49855215/brauntae-johnson-jason-onye-exit-notre-dame-opener-early",
+            "https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401858438"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-06",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858438"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49855215/brauntae-johnson-jason-onye-exit-notre-dame-opener-early"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "a45-espn-ncaaf-summary-401858438",
+              "url": "https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401858438"
+            }
+          ],
+          "id": "a3-2a6c691bfb2689dc",
+          "feedRank": 22,
+          "compactHeadline": "No. 4 Notre Dame pulls away from Wisconsin 41-13"
+        },
+        {
+          "rank": 7,
+          "candidateIds": [
+            "cand-e97889632c97ecdf"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 65,
+          "headline": "Michigan will continue starting Bryce Underwood at quarterback despite his struggles in the season opener, coach Kyle Whittingham said Monday.",
+          "text": "Michigan will continue starting Bryce Underwood at quarterback despite his struggles in the season opener, coach Kyle Whittingham said Monday.",
+          "entities": [
+            "Bryce Underwood",
+            "Michigan Wolverines",
+            "Kyle Whittingham"
+          ],
+          "occurredAt": "2026-09-07T15:14:02Z",
+          "timePrecision": "exact",
+          "ageHours": 4.28,
+          "freshnessBasis": "Michigan said Monday that Bryce Underwood remains the starting quarterback after the season opener.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
+            }
+          ],
+          "id": "a3-87b43f942210cb3a",
+          "feedRank": 23,
+          "compactHeadline": "Michigan keeps Bryce Underwood as QB1"
         }
       ]
     }
@@ -834,12 +790,45 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-eb61d9bbb2139331"
+          ],
+          "type": "ADVANCEMENT",
+          "priority": 76,
+          "headline": "Iva Jovic defeated Alex Eala in a three-set US Open third-round match to advance to the next round.",
+          "text": "Iva Jovic defeated Alex Eala in a three-set US Open third-round match to advance to the next round.",
+          "entities": [
+            "Iva Jovic",
+            "Alex Eala",
+            "US Open"
+          ],
+          "occurredAt": "2026-09-07T00:02:12Z",
+          "timePrecision": "exact",
+          "ageHours": 19.47,
+          "freshnessBasis": "Iva Jovic defeated Alex Eala in three sets in the US Open third round Sunday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/tennis/story/_/id/49843735/us-open-alex-eala-falls-short-iva-jovic-third-round"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-wta",
+              "url": "https://www.espn.com/tennis/story/_/id/49843735/us-open-alex-eala-falls-short-iva-jovic-third-round"
+            }
+          ],
+          "id": "a3-special-9296cf1aa67778a8",
+          "feedRank": 7,
+          "compactHeadline": "Iva Jovic advances past Alex Eala at US Open"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-ad0d6fba667060cb"
           ],
           "type": "ADVANCEMENT",
           "priority": 74,
-          "headline": "Top-ranked Aryna Sabalenka overcame early struggles to overpower Taylor Townsend and advance to the US Open quarterfinals.",
-          "text": "Top-ranked Aryna Sabalenka overcame early struggles to overpower Taylor Townsend and advance to the US Open quarterfinals.",
+          "headline": "Top-ranked Aryna Sabalenka overcame early struggles to overpower Taylor Townsend and reach the US Open quarterfinals.",
+          "text": "Top-ranked Aryna Sabalenka overcame early struggles to overpower Taylor Townsend and reach the US Open quarterfinals.",
           "entities": [
             "Aryna Sabalenka",
             "Taylor Townsend",
@@ -847,8 +836,8 @@
           ],
           "occurredAt": "2026-09-07T03:51:59Z",
           "timePrecision": "exact",
-          "ageHours": 15.15,
-          "freshnessBasis": "Aryna Sabalenka defeated Taylor Townsend to reach the US Open quarterfinals Monday.",
+          "ageHours": 15.64,
+          "freshnessBasis": "Aryna Sabalenka defeated Taylor Townsend to reach the US Open quarterfinals Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals",
@@ -867,65 +856,66 @@
             }
           ],
           "id": "a3-special-2c933173b9a46d30",
-          "feedRank": 9,
-          "compactHeadline": "Sabalenka powers past Townsend into US Open quarterfinals"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-eb61d9bbb2139331"
-          ],
-          "type": "ADVANCEMENT",
-          "priority": 73,
-          "headline": "Iva Jovic advanced to the next round of the US Open by defeating Alex Eala in an exciting three-set third-round match.",
-          "text": "Iva Jovic advanced to the next round of the US Open by defeating Alex Eala in an exciting three-set third-round match.",
-          "entities": [
-            "Iva Jovic",
-            "Alex Eala",
-            "US Open"
-          ],
-          "occurredAt": "2026-09-07T00:02:12Z",
-          "timePrecision": "exact",
-          "ageHours": 18.98,
-          "freshnessBasis": "Iva Jovic defeated Alex Eala in three sets to advance at the US Open Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49843735/us-open-alex-eala-falls-short-iva-jovic-third-round"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-wta",
-              "url": "https://www.espn.com/tennis/story/_/id/49843735/us-open-alex-eala-falls-short-iva-jovic-third-round"
-            }
-          ],
-          "id": "a3-special-f7386fa4ed5f9c8e",
           "feedRank": 11,
-          "compactHeadline": "Jovic advances past Eala in US Open three-setter"
+          "compactHeadline": "Sabalenka powers past Townsend into US Open quarterfinals"
         }
       ]
     },
     {
-      "name": "Italian Grand Prix",
+      "name": "Italian GP",
       "sport": "Formula 1",
       "items": [
         {
           "rank": 1,
           "candidateIds": [
+            "cand-81c23c1d34aeb5f7"
+          ],
+          "type": "RESULT",
+          "priority": 82,
+          "headline": "Kimi Antonelli won the Italian Grand Prix after Ferrari's race unraveled within the first three laps at Monza.",
+          "text": "Kimi Antonelli won the Italian Grand Prix after Ferrari's race unraveled within the first three laps at Monza.",
+          "entities": [
+            "Kimi Antonelli",
+            "Ferrari",
+            "Italian Grand Prix"
+          ],
+          "occurredAt": "2026-09-06T23:23:58Z",
+          "timePrecision": "exact",
+          "ageHours": 20.11,
+          "freshnessBasis": "Kimi Antonelli won the Italian Grand Prix at Monza after Ferrari's race unraveled within three laps.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/racing/f1/story/_/id/49850758/ferrari-vintage-disasterclass-paves-way-kimi-antonelli-take-home-italian-gp-win-monza"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/racing/f1/story/_/id/49850758/ferrari-vintage-disasterclass-paves-way-kimi-antonelli-take-home-italian-gp-win-monza"
+            }
+          ],
+          "id": "a3-special-6a4f8d20881b827d",
+          "feedRank": 8,
+          "compactHeadline": "Antonelli wins Italian GP after Ferrari disaster at Monza"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-ed498d7036058fd9"
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Kimi Antonelli passed Mercedes teammate George Russell with three laps left to win the Italian Grand Prix after starting 19th.",
-          "text": "Kimi Antonelli passed Mercedes teammate George Russell with three laps left to win the Italian Grand Prix after starting 19th.",
+          "headline": "Kimi Antonelli came from 19th on the grid to pass teammate George Russell with three laps left and win the Italian Grand Prix at home.",
+          "text": "Kimi Antonelli came from 19th on the grid to pass teammate George Russell with three laps left and win the Italian Grand Prix at home.",
           "entities": [
             "Kimi Antonelli",
             "George Russell",
-            "Mercedes"
+            "Mercedes",
+            "Italian GP"
           ],
           "occurredAt": "2026-09-06T19:42:18Z",
           "timePrecision": "exact",
-          "ageHours": 23.31,
+          "ageHours": 23.81,
           "freshnessBasis": "Kimi Antonelli won the Italian Grand Prix after starting 19th and passing George Russell with three laps remaining Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -938,9 +928,9 @@
               "url": "https://www.espn.com/f1/story/_/id/49813281/kimi-antonelli-comes-19th-grid-win-home-italian-grand-prix-italian-grand-prix-formula-1-monza"
             }
           ],
-          "id": "a3-special-6d80315737098e94",
-          "feedRank": 7,
-          "compactHeadline": "Antonelli storms from 19th to win Italian Grand Prix"
+          "id": "a3-special-d952fb710e1f3436",
+          "feedRank": 10,
+          "compactHeadline": "Antonelli wins Italian GP after charging from 19th"
         }
       ]
     }
@@ -953,10 +943,10 @@
   "compactHeadlineRole": "compact-editorial-metadata",
   "browserWireCompat": {
     "version": "A4.14",
-    "changedCount": 25,
+    "changedCount": 24,
     "policy": "mirror text -> headline at JSON serialization only"
   },
-  "headlineCount": 25,
+  "headlineCount": 24,
   "headlineTargetChars": 80,
   "headlineMaxChars": 96
 }
