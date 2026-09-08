@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-08T01:00:42Z",
+  "generatedAt": "2026-09-08T01:30:40Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "f6d69f7152a0fdbdbc312d3ccdf1b86f842fa50ee9d4d185b051b78186031a06",
+  "sourceCandidateHash": "dbed637fd47fc97517f07f2bc8228c25da25a07de08fba3ded46c95ec021a3cb",
   "leagues": [
     {
       "league": "MLB",
@@ -17,9 +17,9 @@
             "cand-9c8065929ea34992"
           ],
           "type": "MILESTONE",
-          "priority": 88,
-          "headline": "Jesús Luzardo struck out 12 and allowed two hits for his first career shutout, while Kyle Schwarber homered in Philadelphia’s 1-0 win over Atlanta.",
-          "text": "Jesús Luzardo struck out 12 and allowed two hits for his first career shutout, while Kyle Schwarber homered in Philadelphia’s 1-0 win over Atlanta.",
+          "priority": 79,
+          "headline": "Jesús Luzardo struck out 12 and allowed two hits for his first career shutout as Philadelphia beat Atlanta 1-0; Kyle Schwarber hit the only homer.",
+          "text": "Jesús Luzardo struck out 12 and allowed two hits for his first career shutout as Philadelphia beat Atlanta 1-0; Kyle Schwarber hit the only homer.",
           "entities": [
             "Jesús Luzardo",
             "Philadelphia Phillies",
@@ -28,8 +28,8 @@
           ],
           "occurredAt": "2026-09-07T17:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.93,
-          "freshnessBasis": "Jesús Luzardo recorded his first career shutout in Philadelphia’s 1-0 win over Atlanta Monday.",
+          "ageHours": 8.43,
+          "freshnessBasis": "Jesús Luzardo threw his first career shutout for Philadelphia against Atlanta on Sept. 7.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -59,27 +59,61 @@
               "url": "https://www.espn.com/mlb/story/_/id/49853865/braves-ronald-acuna-jr-does-curtain-call-amid-boos-philly"
             }
           ],
-          "id": "a3-2a256c21d597751e",
-          "feedRank": 2,
-          "compactHeadline": "Luzardo fires first career shutout for Phillies"
+          "id": "a3-94f3e548eacdd1fb",
+          "feedRank": 3,
+          "compactHeadline": "Luzardo fires first career shutout in Phillies’ 1-0 win"
         },
         {
           "rank": 2,
           "candidateIds": [
+            "cand-502392b60db5dc77"
+          ],
+          "type": "STANDINGS",
+          "priority": 78,
+          "headline": "Chicago’s bullpen combined on a four-hitter, while Randal Grichuk and Kyle Teel homered during a five-run eighth inning against Minnesota.",
+          "text": "Chicago’s bullpen combined on a four-hitter, while Randal Grichuk and Kyle Teel homered during a five-run eighth inning against Minnesota.",
+          "entities": [
+            "Chicago White Sox",
+            "Minnesota Twins",
+            "Randal Grichuk",
+            "Kyle Teel"
+          ],
+          "occurredAt": "2026-09-07T01:48:29Z",
+          "timePrecision": "exact",
+          "ageHours": 23.7,
+          "freshnessBasis": "Chicago beat Minnesota 10-1 to maintain its AL Central lead.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401816835"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816835"
+            }
+          ],
+          "id": "a3-4abf51c0df0775f5",
+          "feedRank": 4,
+          "compactHeadline": "White Sox hold AL Central lead with 10-1 win"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-f42a5664ee9a8ca6"
           ],
           "type": "RETURN",
-          "priority": 76,
-          "headline": "Shohei Ohtani returned to Los Angeles’ lineup Monday after missing four games, ending his four-day absence.",
-          "text": "Shohei Ohtani returned to Los Angeles’ lineup Monday after missing four games, ending his four-day absence.",
+          "priority": 75,
+          "headline": "Shohei Ohtani returned to the Los Angeles Dodgers’ lineup Monday after missing four games.",
+          "text": "Shohei Ohtani returned to the Los Angeles Dodgers’ lineup Monday after missing four games.",
           "entities": [
             "Shohei Ohtani",
             "Los Angeles Dodgers"
           ],
           "occurredAt": "2026-09-08T00:27:44Z",
           "timePrecision": "exact",
-          "ageHours": 0.55,
-          "freshnessBasis": "Shohei Ohtani returned to the Dodgers’ lineup Monday after missing four games.",
+          "ageHours": 1.05,
+          "freshnessBasis": "Shohei Ohtani returned to the Dodgers’ lineup after a four-game absence on Sept. 7.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49863634/shohei-ohtani-returns-dodgers-lineup-missing-4-games"
@@ -92,57 +126,51 @@
             }
           ],
           "id": "a3-9ecdc99b736c5ac1",
-          "feedRank": 8,
+          "feedRank": 14,
           "compactHeadline": "Ohtani returns to Dodgers lineup after four-game absence"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-b63002e6ed054e20"
-          ],
-          "type": "STREAK",
-          "priority": 78,
-          "headline": "Mookie Betts hit a three-run eighth-inning homer to lift Los Angeles past Washington 7-5 and extend the Dodgers’ winning streak to four games.",
-          "text": "Mookie Betts hit a three-run eighth-inning homer to lift Los Angeles past Washington 7-5 and extend the Dodgers’ winning streak to four games.",
-          "entities": [
-            "Mookie Betts",
-            "Los Angeles Dodgers",
-            "Washington Nationals"
-          ],
-          "occurredAt": "2026-09-07T02:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 22.84,
-          "freshnessBasis": "Mookie Betts hit a three-run homer in the eighth inning of Los Angeles’ 7-5 win over Washington Monday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816841"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-06",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816841"
-            }
-          ],
-          "id": "a3-051b04b12aa9ff7f",
-          "feedRank": 10,
-          "compactHeadline": "Betts’ late homer extends Dodgers’ winning streak"
         },
         {
           "rank": 4,
           "candidateIds": [
+            "cand-a3e056257cdf26da"
+          ],
+          "type": "RETURN",
+          "priority": 73,
+          "headline": "Minnesota’s Joe Ryan returned from the injured list, allowing three runs—two earned—with seven strikeouts in four innings against Detroit.",
+          "text": "Minnesota’s Joe Ryan returned from the injured list, allowing three runs—two earned—with seven strikeouts in four innings against Detroit.",
+          "entities": [
+            "Minnesota Twins",
+            "Joe Ryan",
+            "Detroit Tigers"
+          ],
+          "occurredAt": "2026-09-07T23:07:10Z",
+          "timePrecision": "exact",
+          "ageHours": 2.39,
+          "freshnessBasis": "Joe Ryan returned from the injured list and pitched four innings for Minnesota against Detroit.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49860294/twins-joe-ryan-comes-il-start-tigers"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49860294/twins-joe-ryan-comes-il-start-tigers"
+            }
+          ],
+          "id": "a3-5fa36a5630c6c917",
+          "feedRank": 17,
+          "compactHeadline": "Joe Ryan returns from IL with four innings for Twins"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-c03e4d1232db5dca"
           ],
           "type": "STREAK",
-          "priority": 74,
-          "headline": "Adley Rutschman hit a three-run homer and Brayan Bello pitched five scoreless innings in his first start since early June as Boston beat Los Angeles 5-2.",
-          "text": "Adley Rutschman hit a three-run homer and Brayan Bello pitched five scoreless innings in his first start since early June as Boston beat Los Angeles 5-2.",
+          "priority": 73,
+          "headline": "Adley Rutschman hit a three-run homer and Brayan Bello pitched five scoreless innings as Boston beat Los Angeles 5-2 for its fifth straight win.",
+          "text": "Adley Rutschman hit a three-run homer and Brayan Bello pitched five scoreless innings as Boston beat Los Angeles 5-2 for its fifth straight win.",
           "entities": [
             "Adley Rutschman",
             "Brayan Bello",
@@ -151,8 +179,8 @@
           ],
           "occurredAt": "2026-09-07T17:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.43,
-          "freshnessBasis": "Adley Rutschman’s three-run homer and Brayan Bello’s five scoreless innings helped Boston win 5-2 Monday.",
+          "ageHours": 7.93,
+          "freshnessBasis": "Adley Rutschman homered and Boston won its fifth straight game against the Los Angeles Angels on Sept. 7.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -170,52 +198,58 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816842"
             }
           ],
-          "id": "a3-ec6f8e4e1268598a",
-          "feedRank": 15,
-          "compactHeadline": "Rutschman homer powers Red Sox to fifth straight win"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-a3e056257cdf26da"
-          ],
-          "type": "RETURN",
-          "priority": 73,
-          "headline": "Twins starter Joe Ryan returned from the injured list and allowed three runs over four innings in Minnesota’s loss to Detroit.",
-          "text": "Twins starter Joe Ryan returned from the injured list and allowed three runs over four innings in Minnesota’s loss to Detroit.",
-          "entities": [
-            "Joe Ryan",
-            "Minnesota Twins",
-            "Detroit Tigers"
-          ],
-          "occurredAt": "2026-09-07T23:07:10Z",
-          "timePrecision": "exact",
-          "ageHours": 1.89,
-          "freshnessBasis": "Joe Ryan returned from the injured list and made a four-inning start for Minnesota Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49860294/twins-joe-ryan-comes-il-start-tigers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49860294/twins-joe-ryan-comes-il-start-tigers"
-            }
-          ],
-          "id": "a3-5fa36a5630c6c917",
-          "feedRank": 16,
-          "compactHeadline": "Joe Ryan returns from IL with four innings for Twins"
+          "id": "a3-a604eab5ce710590",
+          "feedRank": 18,
+          "compactHeadline": "Rutschman homer helps Red Sox win fifth straight"
         },
         {
           "rank": 6,
+          "candidateIds": [
+            "cand-b63002e6ed054e20"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Mookie Betts hit a three-run homer in the eighth inning as the Los Angeles Dodgers beat Washington 7-5 for their fourth straight win.",
+          "text": "Mookie Betts hit a three-run homer in the eighth inning as the Los Angeles Dodgers beat Washington 7-5 for their fourth straight win.",
+          "entities": [
+            "Mookie Betts",
+            "Los Angeles Dodgers",
+            "Washington Nationals"
+          ],
+          "occurredAt": "2026-09-07T02:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.34,
+          "freshnessBasis": "Mookie Betts hit a three-run eighth-inning homer in the Dodgers’ 7-5 win over Washington on Sept. 7.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816841"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-06",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816841"
+            }
+          ],
+          "id": "a3-19ab29d13d2bce17",
+          "feedRank": 20,
+          "compactHeadline": "Betts’ late homer pushes Dodgers’ winning streak to four"
+        },
+        {
+          "rank": 7,
           "candidateIds": [
             "cand-76b94e159a96bf04"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Arizona scored five runs in the 10th inning to beat Kansas City 5-4 Monday.",
-          "text": "Arizona scored five runs in the 10th inning to beat Kansas City 5-4 Monday.",
+          "headline": "Arizona scored five runs in the 10th inning to beat Kansas City 5-4 on Sept. 7.",
+          "text": "Arizona scored five runs in the 10th inning to beat Kansas City 5-4 on Sept. 7.",
           "entities": [
             "Arizona Diamondbacks",
             "Kansas City Royals",
@@ -223,12 +257,13 @@
           ],
           "occurredAt": "2026-09-07T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.84,
-          "freshnessBasis": "Arizona scored five runs in the 10th inning to beat Kansas City 5-4 Monday.",
+          "ageHours": 7.34,
+          "freshnessBasis": "Arizona scored five runs in the 10th inning to beat Kansas City 5-4 on Sept. 7.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816847"
+            "http://www.espn.com/mlb/recap?gameId=401816847",
+            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816847"
           ],
           "sources": [
             {
@@ -240,30 +275,35 @@
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401816847"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "a44-espn-mlb-summary-401816847",
+              "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816847"
             }
           ],
-          "id": "a3-e8db8d2503cf8074",
-          "feedRank": 18,
-          "compactHeadline": "Diamondbacks score five in 10th to beat Royals"
+          "id": "a3-88dbafca9e36c1ac",
+          "feedRank": 21,
+          "compactHeadline": "Diamondbacks score five in 10th to edge Royals 5-4"
         },
         {
-          "rank": 7,
+          "rank": 8,
           "candidateIds": [
             "cand-9d91e96a5117a041"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Jackson Chourio sparked Milwaukee’s eighth-inning rally and made the final out in the Brewers’ 4-3 win over Chicago Monday.",
-          "text": "Jackson Chourio sparked Milwaukee’s eighth-inning rally and made the final out in the Brewers’ 4-3 win over Chicago Monday.",
+          "headline": "Milwaukee beat Chicago 4-3 after Jackson Chourio sparked a three-run eighth-inning rally.",
+          "text": "Milwaukee beat Chicago 4-3 after Jackson Chourio sparked a three-run eighth-inning rally.",
           "entities": [
-            "Jackson Chourio",
             "Milwaukee Brewers",
-            "Chicago Cubs"
+            "Chicago Cubs",
+            "Jackson Chourio"
           ],
           "occurredAt": "2026-09-07T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.84,
-          "freshnessBasis": "Jackson Chourio sparked Milwaukee’s eighth-inning rally and made the final out in the Brewers’ 4-3 win over Chicago Monday.",
+          "ageHours": 7.34,
+          "freshnessBasis": "Milwaukee beat Chicago 4-3 after Jackson Chourio sparked a three-run eighth-inning rally.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -287,29 +327,28 @@
               "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816848"
             }
           ],
-          "id": "a3-56d16840f82d3d5a",
-          "feedRank": 19,
-          "compactHeadline": "Brewers rally past Cubs behind Chourio’s two-run single"
+          "id": "a3-db6e562aeefbc290",
+          "feedRank": 22,
+          "compactHeadline": "Brewers rally past Cubs as Chourio delivers two-run hit"
         },
         {
-          "rank": 8,
+          "rank": 9,
           "candidateIds": [
             "cand-f9235f2194809ef8"
           ],
           "type": "STREAK",
           "priority": 72,
-          "headline": "Coby Mayo homered twice and Trevor Rogers pitched into the eighth as Baltimore beat Cleveland 6-4 to end a six-game losing streak.",
-          "text": "Coby Mayo homered twice and Trevor Rogers pitched into the eighth as Baltimore beat Cleveland 6-4 to end a six-game losing streak.",
+          "headline": "Coby Mayo homered twice and Baltimore ended its six-game losing streak with a 6-4 win over Cleveland.",
+          "text": "Coby Mayo homered twice and Baltimore ended its six-game losing streak with a 6-4 win over Cleveland.",
           "entities": [
             "Coby Mayo",
-            "Trevor Rogers",
             "Baltimore Orioles",
             "Cleveland Guardians"
           ],
           "occurredAt": "2026-09-07T17:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.43,
-          "freshnessBasis": "Baltimore ended its six-game losing streak with a 6-4 win over Cleveland Monday.",
+          "ageHours": 7.93,
+          "freshnessBasis": "Baltimore ended a six-game losing streak by beating Cleveland 6-4 on Sept. 7.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -327,41 +366,9 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816844"
             }
           ],
-          "id": "a3-577d6225a859b3ec",
-          "feedRank": 20,
-          "compactHeadline": "Orioles snap six-game skid with win over Guardians"
-        },
-        {
-          "rank": 9,
-          "candidateIds": [
-            "cand-916972f70dd463cf"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 72,
-          "headline": "Joe Morgan, the former Red Sox manager who inspired Boston’s 1988 “Morgan Magic” turnaround, died Saturday, the team announced.",
-          "text": "Joe Morgan, the former Red Sox manager who inspired Boston’s 1988 “Morgan Magic” turnaround, died Saturday, the team announced.",
-          "entities": [
-            "Joe Morgan",
-            "Boston Red Sox"
-          ],
-          "occurredAt": "2026-09-07T02:21:46Z",
-          "timePrecision": "exact",
-          "ageHours": 22.65,
-          "freshnessBasis": "The Red Sox announced that former manager Joe Morgan died Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49854277/joe-morgan-inspired-morgan-magic-red-sox-dies"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49854277/joe-morgan-inspired-morgan-magic-red-sox-dies"
-            }
-          ],
-          "id": "a3-049592868ca4da08",
+          "id": "a3-3b15708e000bbc8f",
           "feedRank": 23,
-          "compactHeadline": "Former Red Sox manager Joe Morgan dies"
+          "compactHeadline": "Orioles end six-game skid behind Mayo’s two homers"
         }
       ]
     },
@@ -375,17 +382,17 @@
             "cand-c21e6052c0fa05d6"
           ],
           "type": "INJURY",
-          "priority": 82,
-          "headline": "Dallas starting left guard Tyler Smith will undergo thumb surgery and head to injured reserve, coach Brian Schottenheimer said Monday.",
-          "text": "Dallas starting left guard Tyler Smith will undergo thumb surgery and head to injured reserve, coach Brian Schottenheimer said Monday.",
+          "priority": 85,
+          "headline": "Dallas starting left guard Tyler Smith will undergo thumb surgery and go on injured reserve, coach Brian Schottenheimer said Monday.",
+          "text": "Dallas starting left guard Tyler Smith will undergo thumb surgery and go on injured reserve, coach Brian Schottenheimer said Monday.",
           "entities": [
             "Tyler Smith",
             "Dallas Cowboys"
           ],
           "occurredAt": "2026-09-07T20:17:05Z",
           "timePrecision": "exact",
-          "ageHours": 4.73,
-          "freshnessBasis": "Tyler Smith was announced as headed to injured reserve for thumb surgery Monday.",
+          "ageHours": 5.23,
+          "freshnessBasis": "Dallas announced that starting left guard Tyler Smith will have thumb surgery and go on injured reserve.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49861767/cowboys-guard-tyler-smith-thumb-surgery-headed-ir"
@@ -397,9 +404,9 @@
               "url": "https://www.espn.com/nfl/story/_/id/49861767/cowboys-guard-tyler-smith-thumb-surgery-headed-ir"
             }
           ],
-          "id": "a3-d43a183b139362f3",
-          "feedRank": 3,
-          "compactHeadline": "Cowboys’ Tyler Smith to undergo thumb surgery, head to IR"
+          "id": "a3-dc87324a00e0d1a8",
+          "feedRank": 2,
+          "compactHeadline": "Cowboys’ Tyler Smith to undergo thumb surgery, land on IR"
         },
         {
           "rank": 2,
@@ -407,16 +414,16 @@
             "cand-59ed0e7ea1b48eb2"
           ],
           "type": "INJURY",
-          "priority": 72,
-          "headline": "Tennessee placed linebacker Cedric Gray in the NFL’s concussion protocol after he was involved in a UTV accident over the weekend.",
-          "text": "Tennessee placed linebacker Cedric Gray in the NFL’s concussion protocol after he was involved in a UTV accident over the weekend.",
+          "priority": 75,
+          "headline": "Tennessee placed linebacker Cedric Gray in the NFL’s concussion protocol after a UTV accident in Tennessee over the weekend.",
+          "text": "Tennessee placed linebacker Cedric Gray in the NFL’s concussion protocol after a UTV accident in Tennessee over the weekend.",
           "entities": [
             "Cedric Gray",
             "Tennessee Titans"
           ],
           "occurredAt": "2026-09-07T22:25:09Z",
           "timePrecision": "exact",
-          "ageHours": 2.59,
+          "ageHours": 3.09,
           "freshnessBasis": "Tennessee placed Cedric Gray in concussion protocol after a weekend UTV accident.",
           "status": "active",
           "sourceUrls": [
@@ -430,41 +437,42 @@
             }
           ],
           "id": "a3-d97c4560fdecf608",
-          "feedRank": 12,
+          "feedRank": 7,
           "compactHeadline": "Titans place Cedric Gray in concussion protocol"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-d542cea23a1ed460"
+            "cand-4ec7a237d2d77c30"
           ],
-          "type": "LEAGUE_NEWS",
-          "priority": 74,
-          "headline": "Matt Suhey, the fullback who helped Walter Payton and the 1985 Bears win the NFL championship, has died at 68.",
-          "text": "Matt Suhey, the fullback who helped Walter Payton and the 1985 Bears win the NFL championship, has died at 68.",
+          "type": "SUSPENSION",
+          "priority": 72,
+          "headline": "Los Angeles expects Puka Nacua and Alaric Jackson to avoid season-opening suspensions despite ongoing legal situations, coach Sean McVay said.",
+          "text": "Los Angeles expects Puka Nacua and Alaric Jackson to avoid season-opening suspensions despite ongoing legal situations, coach Sean McVay said.",
           "entities": [
-            "Matt Suhey",
-            "Chicago Bears",
-            "Walter Payton"
+            "Los Angeles Rams",
+            "Puka Nacua",
+            "Alaric Jackson",
+            "Sean McVay"
           ],
-          "occurredAt": "2026-09-07T20:31:11Z",
+          "occurredAt": "2026-09-07T04:42:05Z",
           "timePrecision": "exact",
-          "ageHours": 4.49,
-          "freshnessBasis": "The Bears announced that 1985 Super Bowl champion Matt Suhey died at 68 Monday.",
+          "ageHours": 20.81,
+          "freshnessBasis": "The Rams said Puka Nacua and Alaric Jackson are not expected to be suspended for the season opener.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49860580/bears-super-bowl-champion-fullback-matt-suhey-dies-68"
+            "https://www.espn.com/nfl/story/_/id/49853118/rams-expect-puka-nacua-alaric-jackson-play-vs-49ers"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49860580/bears-super-bowl-champion-fullback-matt-suhey-dies-68"
+              "url": "https://www.espn.com/nfl/story/_/id/49853118/rams-expect-puka-nacua-alaric-jackson-play-vs-49ers"
             }
           ],
-          "id": "a3-ed6898350cdc9377",
-          "feedRank": 22,
-          "compactHeadline": "Bears Super Bowl champion Matt Suhey dies at 68"
+          "id": "a3-f5b1de22beae22da",
+          "feedRank": 25,
+          "compactHeadline": "Rams expect Puka Nacua and Alaric Jackson to play Week 1"
         },
         {
           "rank": 4,
@@ -472,17 +480,17 @@
             "cand-310ff5a787888e07"
           ],
           "type": "ROSTER",
-          "priority": 70,
-          "headline": "The New York Giants released wide receiver Darius Slayton, their longest-tenured player, Monday.",
-          "text": "The New York Giants released wide receiver Darius Slayton, their longest-tenured player, Monday.",
+          "priority": 68,
+          "headline": "The New York Giants released wide receiver Darius Slayton, their longest-tenured player.",
+          "text": "The New York Giants released wide receiver Darius Slayton, their longest-tenured player.",
           "entities": [
             "Darius Slayton",
             "New York Giants"
           ],
           "occurredAt": "2026-09-07T22:15:44Z",
           "timePrecision": "exact",
-          "ageHours": 2.75,
-          "freshnessBasis": "The Giants released wide receiver Darius Slayton Monday.",
+          "ageHours": 3.25,
+          "freshnessBasis": "The Giants released wide receiver Darius Slayton on Sept. 7.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49862543/giants-release-wr-darius-slayton-team-longest-tenured-player"
@@ -504,9 +512,9 @@
             "cand-4eb7248409bfdddd"
           ],
           "type": "DEPTH_CHART",
-          "priority": 69,
-          "headline": "Atlanta named Tua Tagovailoa its starting quarterback for the Week 1 game against Pittsburgh.",
-          "text": "Atlanta named Tua Tagovailoa its starting quarterback for the Week 1 game against Pittsburgh.",
+          "priority": 67,
+          "headline": "Atlanta named Tua Tagovailoa its starting quarterback for the Falcons’ Week 1 game against Pittsburgh.",
+          "text": "Atlanta named Tua Tagovailoa its starting quarterback for the Falcons’ Week 1 game against Pittsburgh.",
           "entities": [
             "Tua Tagovailoa",
             "Atlanta Falcons",
@@ -514,8 +522,8 @@
           ],
           "occurredAt": "2026-09-07T17:53:19Z",
           "timePrecision": "exact",
-          "ageHours": 7.12,
-          "freshnessBasis": "Atlanta named Tua Tagovailoa its Week 1 starting quarterback Monday.",
+          "ageHours": 7.62,
+          "freshnessBasis": "Atlanta named Tua Tagovailoa its Week 1 starting quarterback on Sept. 7.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49858957/falcons-name-tua-tagovailoa-week-1-starting-qb-vs-steelers"
@@ -527,9 +535,9 @@
               "url": "https://www.espn.com/nfl/story/_/id/49858957/falcons-name-tua-tagovailoa-week-1-starting-qb-vs-steelers"
             }
           ],
-          "id": "a3-552197d88886dc37",
-          "feedRank": 28,
-          "compactHeadline": "Falcons name Tua Tagovailoa Week 1 starter"
+          "id": "a3-31af9591a7e1d0d4",
+          "feedRank": 27,
+          "compactHeadline": "Falcons name Tua Tagovailoa Week 1 starting quarterback"
         },
         {
           "rank": 6,
@@ -537,9 +545,9 @@
             "cand-56782113379550b1"
           ],
           "type": "DEPTH_CHART",
-          "priority": 66,
-          "headline": "Baltimore coach Jesse Minter named Jovaughn Gwyn the Ravens’ starting center for the season opener at Indianapolis.",
-          "text": "Baltimore coach Jesse Minter named Jovaughn Gwyn the Ravens’ starting center for the season opener at Indianapolis.",
+          "priority": 65,
+          "headline": "Baltimore announced that Jovaughn Gwyn will start at center in the season opener against Indianapolis.",
+          "text": "Baltimore announced that Jovaughn Gwyn will start at center in the season opener against Indianapolis.",
           "entities": [
             "Jovaughn Gwyn",
             "Baltimore Ravens",
@@ -547,8 +555,8 @@
           ],
           "occurredAt": "2026-09-07T21:51:03Z",
           "timePrecision": "exact",
-          "ageHours": 3.16,
-          "freshnessBasis": "Baltimore announced Jovaughn Gwyn as its starting center for the season opener Monday.",
+          "ageHours": 3.66,
+          "freshnessBasis": "Baltimore named Jovaughn Gwyn its starting center for the season opener.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49862331/ravens-name-gwyn-start-center-begin-post-linderbaum-era"
@@ -561,7 +569,7 @@
             }
           ],
           "id": "a3-540f7abe0d7d81b6",
-          "feedRank": 29,
+          "feedRank": 28,
           "compactHeadline": "Ravens name Jovaughn Gwyn starting center"
         },
         {
@@ -570,17 +578,17 @@
             "cand-18fd250ba70e5ca9"
           ],
           "type": "CONTRACT",
-          "priority": 65,
-          "headline": "The Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston.",
-          "text": "The Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston.",
+          "priority": 64,
+          "headline": "The New York Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston.",
+          "text": "The New York Giants agreed to a two-year, $13 million extension with backup quarterback Jameis Winston.",
           "entities": [
             "Jameis Winston",
             "New York Giants"
           ],
           "occurredAt": "2026-09-07T16:48:15Z",
           "timePrecision": "exact",
-          "ageHours": 8.21,
-          "freshnessBasis": "New York agreed to a two-year, $13 million extension with Jameis Winston Monday.",
+          "ageHours": 8.71,
+          "freshnessBasis": "The Giants agreed to a two-year, $13 million extension with Jameis Winston on Sept. 7.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension"
@@ -592,9 +600,42 @@
               "url": "https://www.espn.com/nfl/story/_/id/49852419/source-giants-qb-jameis-winston-reach-2-year-13m-extension"
             }
           ],
-          "id": "a3-e53058ad0666ccad",
+          "id": "a3-d0b512cfef0ed773",
+          "feedRank": 29,
+          "compactHeadline": "Giants give Jameis Winston two-year, $13M extension"
+        },
+        {
+          "rank": 8,
+          "candidateIds": [
+            "cand-d542cea23a1ed460"
+          ],
+          "type": "OTHER",
+          "priority": 65,
+          "headline": "Matt Suhey, the fullback who helped the 1985 Chicago Bears win the NFL championship alongside Walter Payton, has died at 68.",
+          "text": "Matt Suhey, the fullback who helped the 1985 Chicago Bears win the NFL championship alongside Walter Payton, has died at 68.",
+          "entities": [
+            "Matt Suhey",
+            "Chicago Bears",
+            "Walter Payton"
+          ],
+          "occurredAt": "2026-09-07T20:31:11Z",
+          "timePrecision": "exact",
+          "ageHours": 4.99,
+          "freshnessBasis": "The Chicago Bears announced the death of 1985 championship fullback Matt Suhey at age 68.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49860580/bears-super-bowl-champion-fullback-matt-suhey-dies-68"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49860580/bears-super-bowl-champion-fullback-matt-suhey-dies-68"
+            }
+          ],
+          "id": "a3-ed6898350cdc9377",
           "feedRank": 30,
-          "compactHeadline": "Giants extend backup QB Jameis Winston for two years"
+          "compactHeadline": "Bears Super Bowl champion Matt Suhey dies at 68"
         }
       ]
     },
@@ -619,16 +660,16 @@
           ],
           "type": "RESULT",
           "priority": 76,
-          "headline": "A 90th-minute goal gave Cardiff City U21 a 3-2 win over Plymouth U21 in the Premier League Cup.",
-          "text": "A 90th-minute goal gave Cardiff City U21 a 3-2 win over Plymouth U21 in the Premier League Cup.",
+          "headline": "A 90th-minute goal gave Cardiff City U21 a 3-2 win over Plymouth City U21 in the Premier League Cup.",
+          "text": "A 90th-minute goal gave Cardiff City U21 a 3-2 win over Plymouth City U21 in the Premier League Cup.",
           "entities": [
             "Cardiff City U21",
-            "Plymouth U21"
+            "Plymouth City U21"
           ],
           "occurredAt": "2026-09-07T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.01,
-          "freshnessBasis": "Cardiff City U21 scored in the 90th minute to beat Plymouth U21 3-2 Monday.",
+          "ageHours": 7.51,
+          "freshnessBasis": "Cardiff City U21 scored in the 90th minute to beat Plymouth City U21 3-2 on Sept. 7.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -640,43 +681,42 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-49ee42ec43510fb8",
-          "feedRank": 11,
-          "compactHeadline": "Late goal lifts Cardiff City U21 past Plymouth"
+          "id": "a3-f915083f3a539c46",
+          "feedRank": 12,
+          "compactHeadline": "Late goal lifts Cardiff City U21 past Plymouth 3-2"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-bc96dcf1cdeebc73"
+            "cand-ddf70f5eee755e74"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Arsenal's Ezri Konsa 'loved' battle with England teammate Morgan Rogers in Chelsea clash.",
-          "text": "Arsenal's Ezri Konsa 'loved' battle with England teammate Morgan Rogers in Chelsea clash.",
+          "headline": "Manchester United’s Benjamin Sesko called the last-gasp draw at Everton painful and urged the club to reset before its Champions League return.",
+          "text": "Manchester United’s Benjamin Sesko called the last-gasp draw at Everton painful and urged the club to reset before its Champions League return.",
           "entities": [
-            "Arsenal",
-            "Chelsea",
-            "Ezri Konsa",
-            "Morgan Rogers"
+            "Manchester United",
+            "Everton",
+            "Benjamin Sesko"
           ],
-          "occurredAt": "2026-09-07T15:29:29Z",
+          "occurredAt": "2026-09-07T11:57:38Z",
           "timePrecision": "exact",
-          "ageHours": 9.52,
-          "freshnessBasis": "Arsenal beat Chelsea 2-1 in Sunday’s Premier League match.",
+          "ageHours": 13.55,
+          "freshnessBasis": "Manchester United drew at Everton in a last-gasp result before its Champions League return.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49859996/ezri-konsa-arsenal-morgan-rogers-chelsea-aston-villa-england-premier-league"
+            "https://www.espn.com/soccer/story/_/id/49858651/benjamin-šeško-urges-man-united-find-positives-painful-everton-draw"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49859996/ezri-konsa-arsenal-morgan-rogers-chelsea-aston-villa-england-premier-league"
+              "url": "https://www.espn.com/soccer/story/_/id/49858651/benjamin-šeško-urges-man-united-find-positives-painful-everton-draw"
             }
           ],
-          "id": "a3-bd185665b42c7043",
-          "feedRank": 21,
-          "compactHeadline": "Arsenal edge Chelsea 2-1 in London showdown"
+          "id": "a3-e19edf534adc4bea",
+          "feedRank": 24,
+          "compactHeadline": "Man United urged to reset after last-gasp Everton draw"
         }
       ]
     },
@@ -695,9 +735,9 @@
             "cand-315384bae9804d23"
           ],
           "type": "RECORD",
-          "priority": 90,
-          "headline": "Pittsburgh quarterback Mason Heintschel threw seven touchdown passes, tying the school record, in a 59-14 win over Miami (Ohio).",
-          "text": "Pittsburgh quarterback Mason Heintschel threw seven touchdown passes, tying the school record, in a 59-14 win over Miami (Ohio).",
+          "priority": 85,
+          "headline": "Mason Heintschel threw seven touchdown passes, tying Pittsburgh’s school record, in a 59-14 win over Miami (Ohio).",
+          "text": "Mason Heintschel threw seven touchdown passes, tying Pittsburgh’s school record, in a 59-14 win over Miami (Ohio).",
           "entities": [
             "Mason Heintschel",
             "Pittsburgh Panthers",
@@ -705,8 +745,8 @@
           ],
           "occurredAt": "2026-09-07T05:27:35Z",
           "timePrecision": "exact",
-          "ageHours": 19.55,
-          "freshnessBasis": "Mason Heintschel threw seven touchdown passes to tie Pittsburgh’s school record in its 59-14 win Saturday.",
+          "ageHours": 20.05,
+          "freshnessBasis": "Mason Heintschel tied Pittsburgh’s school record with seven touchdown passes in the Sept. 6 win.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/ncf/recap?gameId=401858207"
@@ -725,77 +765,10 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-1e49255d4424c5ff"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 76,
-          "headline": "Washington will be without starter Quaid Carr and backup Jayden Limar for an extended period after injuries sustained in Sunday’s Apple Cup win.",
-          "text": "Washington will be without starter Quaid Carr and backup Jayden Limar for an extended period after injuries sustained in Sunday’s Apple Cup win.",
-          "entities": [
-            "Quaid Carr",
-            "Jayden Limar",
-            "Washington Huskies"
-          ],
-          "occurredAt": "2026-09-07T22:15:14Z",
-          "timePrecision": "exact",
-          "ageHours": 2.76,
-          "freshnessBasis": "Washington announced that Quaid Carr and Jayden Limar will miss extended time with injuries Monday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49862753/washington-loses-running-backs-carr-limar-extended"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49862753/washington-loses-running-backs-carr-limar-extended"
-            }
-          ],
-          "id": "a3-e5f1bc503e90a6a5",
-          "feedRank": 9,
-          "compactHeadline": "Washington loses two running backs for extended time"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-a4170de8271ef272"
-          ],
-          "type": "INJURY",
-          "priority": 70,
-          "headline": "Notre Dame defensive starters Brauntae Johnson and Jason Onye left the 41-12 season-opening win over Wisconsin with lower-left-leg injuries.",
-          "text": "Notre Dame defensive starters Brauntae Johnson and Jason Onye left the 41-12 season-opening win over Wisconsin with lower-left-leg injuries.",
-          "entities": [
-            "Notre Dame Fighting Irish",
-            "Brauntae Johnson",
-            "Jason Onye",
-            "Wisconsin Badgers"
-          ],
-          "occurredAt": "2026-09-07T04:18:07Z",
-          "timePrecision": "exact",
-          "ageHours": 20.71,
-          "freshnessBasis": "Brauntae Johnson and Jason Onye exited Notre Dame’s season-opening win with lower-left-leg injuries Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49855215/brauntae-johnson-jason-onye-exit-notre-dame-opener-early"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49855215/brauntae-johnson-jason-onye-exit-notre-dame-opener-early"
-            }
-          ],
-          "id": "a3-13c03152e7ea15ff",
-          "feedRank": 13,
-          "compactHeadline": "Notre Dame loses two defensive starters to leg injuries"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-c41b64dde178ffc5"
           ],
           "type": "INJURY",
-          "priority": 66,
+          "priority": 73,
           "headline": "Indiana running back Khobie Martin will miss time until midseason because of an arm injury, coach Curt Cignetti said Monday.",
           "text": "Indiana running back Khobie Martin will miss time until midseason because of an arm injury, coach Curt Cignetti said Monday.",
           "entities": [
@@ -804,8 +777,8 @@
           ],
           "occurredAt": "2026-09-07T17:18:51Z",
           "timePrecision": "exact",
-          "ageHours": 7.7,
-          "freshnessBasis": "Indiana announced Khobie Martin will miss time until midseason with an arm injury Monday.",
+          "ageHours": 8.2,
+          "freshnessBasis": "Indiana said Khobie Martin will be out until midseason with an arm injury.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49860368/indiana-loses-rb-khobie-martin-midseason-due-injury"
@@ -818,91 +791,60 @@
             }
           ],
           "id": "a3-6c9c2cc7f1c20113",
-          "feedRank": 17,
+          "feedRank": 6,
           "compactHeadline": "Indiana RB Khobie Martin out until midseason"
         },
         {
-          "rank": 5,
+          "rank": 3,
           "candidateIds": [
-            "cand-9d94145113c3523c"
+            "cand-a4170de8271ef272"
           ],
-          "type": "LEAGUE_NEWS",
+          "type": "INJURY",
           "priority": 72,
-          "headline": "Western Michigan’s president criticized the Big Ten replay process after a second was added to the clock before Michigan’s winning touchdown pass.",
-          "text": "Western Michigan’s president criticized the Big Ten replay process after a second was added to the clock before Michigan’s winning touchdown pass.",
+          "headline": "No. 4 Notre Dame saw safety Brauntae Johnson and defensive tackle Jason Onye leave its 41-12 win over Wisconsin with lower-left-leg injuries.",
+          "text": "No. 4 Notre Dame saw safety Brauntae Johnson and defensive tackle Jason Onye leave its 41-12 win over Wisconsin with lower-left-leg injuries.",
           "entities": [
-            "Western Michigan Broncos",
-            "Michigan Wolverines",
-            "Big Ten"
+            "Notre Dame Fighting Irish",
+            "Brauntae Johnson",
+            "Jason Onye",
+            "Wisconsin Badgers"
           ],
-          "occurredAt": "2026-09-07T02:16:46Z",
+          "occurredAt": "2026-09-07T04:18:07Z",
           "timePrecision": "exact",
-          "ageHours": 22.73,
-          "freshnessBasis": "Western Michigan president Russ Kavalhuna criticized the Big Ten replay process after Michigan’s winning touchdown Sunday.",
+          "ageHours": 21.21,
+          "freshnessBasis": "Brauntae Johnson and Jason Onye exited Notre Dame’s 41-12 win over Wisconsin with lower-left-leg injuries.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49851734/western-michigan-president-unfair-last-play"
+            "https://www.espn.com/college-football/story/_/id/49855215/brauntae-johnson-jason-onye-exit-notre-dame-opener-early"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49851734/western-michigan-president-unfair-last-play"
+              "url": "https://www.espn.com/college-football/story/_/id/49855215/brauntae-johnson-jason-onye-exit-notre-dame-opener-early"
             }
           ],
-          "id": "a3-164382a084a5431f",
-          "feedRank": 24,
-          "compactHeadline": "Western Michigan questions Big Ten replay process"
+          "id": "a3-13c03152e7ea15ff",
+          "feedRank": 11,
+          "compactHeadline": "Notre Dame loses two defensive starters to leg injuries"
         },
         {
-          "rank": 6,
+          "rank": 4,
           "candidateIds": [
-            "cand-e97889632c97ecdf"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 68,
-          "headline": "Michigan will continue starting Bryce Underwood at quarterback despite his struggles in the season opener, coach Kyle Whittingham said Monday.",
-          "text": "Michigan will continue starting Bryce Underwood at quarterback despite his struggles in the season opener, coach Kyle Whittingham said Monday.",
-          "entities": [
-            "Bryce Underwood",
-            "Michigan Wolverines"
-          ],
-          "occurredAt": "2026-09-07T15:14:02Z",
-          "timePrecision": "exact",
-          "ageHours": 9.78,
-          "freshnessBasis": "Michigan reaffirmed Bryce Underwood as its starting quarterback Monday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
-            }
-          ],
-          "id": "a3-87b43f942210cb3a",
-          "feedRank": 25,
-          "compactHeadline": "Michigan keeps Bryce Underwood as QB1"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-c9bcedc4b05086d1"
+            "cand-b93c55b8ad3fcb4e"
           ],
           "type": "EVENT_UPDATE",
-          "priority": 63,
-          "headline": "The start of the No. 19 SMU–Florida State game was delayed Monday night because of a power outage.",
-          "text": "The start of the No. 19 SMU–Florida State game was delayed Monday night because of a power outage.",
+          "priority": 73,
+          "headline": "The SMU–Florida State game began after a nearly two-hour power-outage delay and is being played with limited power at Doak Campbell Stadium.",
+          "text": "The SMU–Florida State game began after a nearly two-hour power-outage delay and is being played with limited power at Doak Campbell Stadium.",
           "entities": [
             "SMU Mustangs",
             "Florida State Seminoles"
           ],
-          "occurredAt": "2026-09-08T00:45:45Z",
+          "occurredAt": "2026-09-08T01:28:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
-          "freshnessBasis": "The SMU–Florida State game was delayed by a power outage Monday night.",
+          "ageHours": 0.03,
+          "freshnessBasis": "SMU–Florida State kicked off after a nearly two-hour power-outage delay on Sept. 8.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49863701/start-smu-florida-state-game-delayed-power-outage"
@@ -914,9 +856,75 @@
               "url": "https://www.espn.com/college-football/story/_/id/49863701/start-smu-florida-state-game-delayed-power-outage"
             }
           ],
-          "id": "a3-0d3a12d41cc4d9f3",
-          "feedRank": 27,
-          "compactHeadline": "SMU-Florida State kickoff delayed by power outage"
+          "id": "a3-eacaa9018e484750",
+          "feedRank": 13,
+          "compactHeadline": "SMU–Florida State delayed nearly two hours by outage"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-1e49255d4424c5ff"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 75,
+          "headline": "Washington will be without starter Quaid Carr and backup Jayden Limar for an extended period after injuries in the Apple Cup win.",
+          "text": "Washington will be without starter Quaid Carr and backup Jayden Limar for an extended period after injuries in the Apple Cup win.",
+          "entities": [
+            "Quaid Carr",
+            "Jayden Limar",
+            "Washington Huskies"
+          ],
+          "occurredAt": "2026-09-07T22:15:14Z",
+          "timePrecision": "exact",
+          "ageHours": 3.26,
+          "freshnessBasis": "Washington announced that Quaid Carr and Jayden Limar will miss extended time with injuries.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49862753/washington-loses-running-backs-carr-limar-extended"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49862753/washington-loses-running-backs-carr-limar-extended"
+            }
+          ],
+          "id": "a3-e5f1bc503e90a6a5",
+          "feedRank": 15,
+          "compactHeadline": "Washington loses two running backs for extended time"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-e97889632c97ecdf"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 73,
+          "headline": "Michigan will continue starting Bryce Underwood at quarterback after his difficult season-opening performance, coach Kyle Whittingham said.",
+          "text": "Michigan will continue starting Bryce Underwood at quarterback after his difficult season-opening performance, coach Kyle Whittingham said.",
+          "entities": [
+            "Michigan Wolverines",
+            "Bryce Underwood",
+            "Kyle Whittingham"
+          ],
+          "occurredAt": "2026-09-07T15:14:02Z",
+          "timePrecision": "exact",
+          "ageHours": 10.28,
+          "freshnessBasis": "Michigan reaffirmed Bryce Underwood as its starting quarterback after the season opener.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49859822/kyle-whittingham-bryce-underwood-michigan-qb1-right-now"
+            }
+          ],
+          "id": "a3-d3a997ed8bbfa3e3",
+          "feedRank": 19,
+          "compactHeadline": "Michigan keeps Bryce Underwood as QB1 despite opener struggles"
         }
       ]
     }
@@ -932,9 +940,9 @@
             "cand-5f397c2c750794d5"
           ],
           "type": "INJURY",
-          "priority": 75,
-          "headline": "Anastasia Potapova was injured late in her fourth-round match before Mirra Andreeva completed a three-set win at the US Open.",
-          "text": "Anastasia Potapova was injured late in her fourth-round match before Mirra Andreeva completed a three-set win at the US Open.",
+          "priority": 76,
+          "headline": "Anastasia Potapova suffered an injury late in her fourth-round match before Mirra Andreeva finished a three-set US Open win.",
+          "text": "Anastasia Potapova suffered an injury late in her fourth-round match before Mirra Andreeva finished a three-set US Open win.",
           "entities": [
             "Anastasia Potapova",
             "Mirra Andreeva",
@@ -942,8 +950,8 @@
           ],
           "occurredAt": "2026-09-07T20:48:58Z",
           "timePrecision": "exact",
-          "ageHours": 4.2,
-          "freshnessBasis": "Anastasia Potapova was injured late in her fourth-round US Open match and lost to Mirra Andreeva Monday.",
+          "ageHours": 4.7,
+          "freshnessBasis": "Anastasia Potapova was injured late in a fourth-round US Open match and lost to Mirra Andreeva.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49862013/andreeva-helps-injured-potapova-finishing-us-open-win"
@@ -955,9 +963,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49862013/andreeva-helps-injured-potapova-finishing-us-open-win"
             }
           ],
-          "id": "a3-special-ca88f2d99367c089",
-          "feedRank": 4,
-          "compactHeadline": "Potapova injured late, falls to Andreeva at US Open"
+          "id": "a3-special-dbbd5b717a0b915a",
+          "feedRank": 5,
+          "compactHeadline": "Potapova injured late, falls to Andreeva in US Open fourth round"
         },
         {
           "rank": 2,
@@ -965,9 +973,9 @@
             "cand-922a52f719e9e10f"
           ],
           "type": "ADVANCEMENT",
-          "priority": 75,
-          "headline": "Zheng Qinwen advanced to the US Open quarterfinals after qualifying for the tournament and completing two upsets; she next faces Elena Rybakina.",
-          "text": "Zheng Qinwen advanced to the US Open quarterfinals after qualifying for the tournament and completing two upsets; she next faces Elena Rybakina.",
+          "priority": 74,
+          "headline": "Zheng Qinwen advanced to the US Open quarterfinals after qualifying and winning two upsets.",
+          "text": "Zheng Qinwen advanced to the US Open quarterfinals after qualifying and winning two upsets.",
           "entities": [
             "Zheng Qinwen",
             "Elena Rybakina",
@@ -975,8 +983,8 @@
           ],
           "occurredAt": "2026-09-07T23:11:53Z",
           "timePrecision": "exact",
-          "ageHours": 1.81,
-          "freshnessBasis": "Zheng Qinwen reached the US Open quarterfinals after qualifying and recording two upsets.",
+          "ageHours": 2.31,
+          "freshnessBasis": "Zheng Qinwen advanced to the US Open quarterfinals after qualifying and winning two upsets.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49861288/us-open-2026-zheng-qinwen-iga-swiatek"
@@ -988,9 +996,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49861288/us-open-2026-zheng-qinwen-iga-swiatek"
             }
           ],
-          "id": "a3-special-e6c95e8de09cdc40",
-          "feedRank": 6,
-          "compactHeadline": "Zheng reaches US Open quarterfinals after two upsets"
+          "id": "a3-special-ab2425734a67295b",
+          "feedRank": 10,
+          "compactHeadline": "Zheng Qinwen reaches US Open quarterfinal after two upsets"
         },
         {
           "rank": 3,
@@ -998,9 +1006,9 @@
             "cand-ad0d6fba667060cb"
           ],
           "type": "ADVANCEMENT",
-          "priority": 74,
-          "headline": "Top-ranked Aryna Sabalenka overcame early trouble and overpowered Taylor Townsend to reach the US Open quarterfinals.",
-          "text": "Top-ranked Aryna Sabalenka overcame early trouble and overpowered Taylor Townsend to reach the US Open quarterfinals.",
+          "priority": 73,
+          "headline": "Top-ranked Aryna Sabalenka overcame early struggles to defeat Taylor Townsend and reach the US Open quarterfinals.",
+          "text": "Top-ranked Aryna Sabalenka overcame early struggles to defeat Taylor Townsend and reach the US Open quarterfinals.",
           "entities": [
             "Aryna Sabalenka",
             "Taylor Townsend",
@@ -1008,8 +1016,8 @@
           ],
           "occurredAt": "2026-09-07T03:51:59Z",
           "timePrecision": "exact",
-          "ageHours": 21.15,
-          "freshnessBasis": "Aryna Sabalenka beat Taylor Townsend to reach the US Open quarterfinals Monday.",
+          "ageHours": 21.64,
+          "freshnessBasis": "Aryna Sabalenka defeated Taylor Townsend to reach the US Open quarterfinals on Sept. 7.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals",
@@ -1027,14 +1035,14 @@
               "url": "https://www.espn.com/tennis/story/_/id/49850415/sabalenka-overpowers-townsend-reach-us-open-quarterfinals"
             }
           ],
-          "id": "a3-special-915374d75d1fdb7d",
-          "feedRank": 14,
-          "compactHeadline": "Sabalenka powers into US Open quarterfinals"
+          "id": "a3-special-2c933173b9a46d30",
+          "feedRank": 16,
+          "compactHeadline": "Sabalenka powers past Townsend into US Open quarterfinals"
         }
       ]
     },
     {
-      "name": "Spanish GP",
+      "name": "Spanish Grand Prix",
       "sport": "Formula 1",
       "items": [
         {
@@ -1043,19 +1051,19 @@
             "cand-a799e446de1a5dde"
           ],
           "type": "INJURY",
-          "priority": 75,
-          "headline": "Red Bull confirmed that injured Isack Hadjar will miss the Spanish Grand Prix, with Liam Lawson continuing as his replacement.",
-          "text": "Red Bull confirmed that injured Isack Hadjar will miss the Spanish Grand Prix, with Liam Lawson continuing as his replacement.",
+          "priority": 74,
+          "headline": "Liam Lawson will continue deputizing for Red Bull at the Spanish Grand Prix after injured driver Isack Hadjar was ruled out.",
+          "text": "Liam Lawson will continue deputizing for Red Bull at the Spanish Grand Prix after injured driver Isack Hadjar was ruled out.",
           "entities": [
             "Isack Hadjar",
             "Liam Lawson",
             "Red Bull",
-            "Spanish GP"
+            "Spanish Grand Prix"
           ],
           "occurredAt": "2026-09-07T18:44:54Z",
           "timePrecision": "exact",
-          "ageHours": 6.26,
-          "freshnessBasis": "Red Bull confirmed Monday that Isack Hadjar will miss the Spanish Grand Prix and Liam Lawson will deputize.",
+          "ageHours": 6.76,
+          "freshnessBasis": "Red Bull confirmed Liam Lawson will continue in place of injured Isack Hadjar at the Spanish Grand Prix.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49860811/isack-hadjar-miss-f1-spanish-gp-liam-lawson-continues-red-bull"
@@ -1067,14 +1075,14 @@
               "url": "https://www.espn.com/f1/story/_/id/49860811/isack-hadjar-miss-f1-spanish-gp-liam-lawson-continues-red-bull"
             }
           ],
-          "id": "a3-special-0bfa353b564339e2",
-          "feedRank": 5,
-          "compactHeadline": "Hadjar to miss Spanish GP as Lawson stays at Red Bull"
+          "id": "a3-special-e47781871e63452e",
+          "feedRank": 8,
+          "compactHeadline": "Hadjar to miss Spanish GP as Lawson stays with Red Bull"
         }
       ]
     },
     {
-      "name": "Italian GP",
+      "name": "Italian Grand Prix",
       "sport": "Formula 1",
       "items": [
         {
@@ -1084,17 +1092,18 @@
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Kimi Antonelli won the Italian Grand Prix, a breakthrough victory that Mercedes boss Toto Wolff described as part of the rookie’s rapid development.",
-          "text": "Kimi Antonelli won the Italian Grand Prix, a breakthrough victory that Mercedes boss Toto Wolff described as part of the rookie’s rapid development.",
+          "headline": "Kimi Antonelli won the Italian Grand Prix, prompting Mercedes boss Toto Wolff to describe the 20-year-old as a continuously self-improving “AI agent.”.",
+          "text": "Kimi Antonelli won the Italian Grand Prix, prompting Mercedes boss Toto Wolff to describe the 20-year-old as a continuously self-improving “AI agent.”.",
           "entities": [
             "Kimi Antonelli",
             "Mercedes",
-            "Italian GP"
+            "Italian Grand Prix",
+            "Toto Wolff"
           ],
           "occurredAt": "2026-09-07T09:04:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.95,
-          "freshnessBasis": "Kimi Antonelli won the Italian Grand Prix, as reported after the race Monday.",
+          "ageHours": 16.44,
+          "freshnessBasis": "Kimi Antonelli won the Italian Grand Prix for Mercedes.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49813303/kimi-antonelli-ai-agent-toto-wolffs-new-comparison-f1-star-italian-gp-win-italian-grand-prix-formula-1-monza"
@@ -1106,9 +1115,9 @@
               "url": "https://www.espn.com/f1/story/_/id/49813303/kimi-antonelli-ai-agent-toto-wolffs-new-comparison-f1-star-italian-gp-win-italian-grand-prix-formula-1-monza"
             }
           ],
-          "id": "a3-special-49c0d22a096b2bad",
-          "feedRank": 7,
-          "compactHeadline": "Antonelli’s Italian GP win marks breakthrough for Mercedes"
+          "id": "a3-special-2017c9382365190f",
+          "feedRank": 9,
+          "compactHeadline": "Kimi Antonelli’s Italian GP win marks stunning rookie rise"
         }
       ]
     }
