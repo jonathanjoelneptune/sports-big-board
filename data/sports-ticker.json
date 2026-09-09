@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-09T20:00:41Z",
+  "generatedAt": "2026-09-09T20:30:42Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "da6b70eeaa0e0f032929083eed03b96f3eced2ef965f87e12393fa118f860271",
+  "sourceCandidateHash": "56c3417311782d8d2626ac7cf1b70e3dc93ba3dc37f32ab281cc0d9e2869b3ca",
   "leagues": [
     {
       "league": "MLB",
@@ -17,18 +17,19 @@
             "cand-c8bc41b2034471c2"
           ],
           "type": "MILESTONE",
-          "priority": 84,
-          "headline": "The Yankees beat the Rockies 5-3 as Aaron Judge returned from the injured list, clinching the franchise's 34th consecutive winning season.",
-          "text": "The Yankees beat the Rockies 5-3 as Aaron Judge returned from the injured list, clinching the franchise's 34th consecutive winning season.",
+          "priority": 82,
+          "headline": "New York beat Colorado 5-3 to secure its 34th consecutive winning season; Cam Schlittler struck out 10, while Aaron Judge went hitless in his return.",
+          "text": "New York beat Colorado 5-3 to secure its 34th consecutive winning season; Cam Schlittler struck out 10, while Aaron Judge went hitless in his return.",
           "entities": [
             "New York Yankees",
             "Colorado Rockies",
+            "Cam Schlittler",
             "Aaron Judge"
           ],
           "occurredAt": "2026-09-08T23:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.93,
-          "freshnessBasis": "New York clinched its 34th straight winning season with a 5-3 victory over Colorado.",
+          "ageHours": 21.43,
+          "freshnessBasis": "The Yankees clinched their 34th straight winning season with a 5-3 victory over Colorado.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -52,19 +53,52 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816855"
             }
           ],
-          "id": "a3-ac033ec3321fae12",
+          "id": "a3-54659de07d9a96f8",
           "feedRank": 2,
-          "compactHeadline": "Yankees clinch 34th straight winning season"
+          "compactHeadline": "Yankees clinch 34th straight winning season in 5-3 win"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-924cb7a4037f796b"
+          ],
+          "type": "INJURY",
+          "priority": 76,
+          "headline": "Athletics prospects Leo De Vries and Jamie Arnold are out with injuries; De Vries has a shoulder issue, while Arnold was hit in the face by a line drive.",
+          "text": "Athletics prospects Leo De Vries and Jamie Arnold are out with injuries; De Vries has a shoulder issue, while Arnold was hit in the face by a line drive.",
+          "entities": [
+            "Oakland Athletics",
+            "Leo De Vries",
+            "Jamie Arnold"
+          ],
+          "occurredAt": "2026-09-09T19:47:16Z",
+          "timePrecision": "exact",
+          "ageHours": 0.72,
+          "freshnessBasis": "The Athletics announced injuries sidelining top prospects Leo De Vries and Jamie Arnold on Sept. 9.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49883289/athletics-prospects-leo-de-vries-jamie-arnold-injured-out"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49883289/athletics-prospects-leo-de-vries-jamie-arnold-injured-out"
+            }
+          ],
+          "id": "a3-7b8f442a2e080301",
+          "feedRank": 4,
+          "compactHeadline": "Athletics lose top prospects De Vries and Arnold to injuries"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-d712b994507f46ad"
           ],
           "type": "RETURN",
           "priority": 84,
-          "headline": "Corbin Burnes returned after a 15-month Tommy John recovery, and Lourdes Gurriel Jr.'s go-ahead RBI triple lifted Arizona past Kansas City 5-3 in 11 innings.",
-          "text": "Corbin Burnes returned after a 15-month Tommy John recovery, and Lourdes Gurriel Jr.'s go-ahead RBI triple lifted Arizona past Kansas City 5-3 in 11 innings.",
+          "headline": "Corbin Burnes returned after a 15-month recovery from Tommy John surgery, while Lourdes Gurriel Jr. delivered the go-ahead RBI triple in Arizona’s 5-3 win.",
+          "text": "Corbin Burnes returned after a 15-month recovery from Tommy John surgery, while Lourdes Gurriel Jr. delivered the go-ahead RBI triple in Arizona’s 5-3 win.",
           "entities": [
             "Arizona Diamondbacks",
             "Kansas City Royals",
@@ -73,8 +107,8 @@
           ],
           "occurredAt": "2026-09-08T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.34,
-          "freshnessBasis": "Corbin Burnes returned from Tommy John surgery in Arizona's 5-3, 11-inning win over Kansas City.",
+          "ageHours": 20.84,
+          "freshnessBasis": "Corbin Burnes returned from Tommy John surgery in Arizona’s 5-3, 11-inning win over Kansas City.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -104,19 +138,19 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816860"
             }
           ],
-          "id": "a3-fd07f873a402641f",
-          "feedRank": 9,
-          "compactHeadline": "Burnes returns as D-backs win in 11 innings"
+          "id": "a3-9cb1d2e93c8befe9",
+          "feedRank": 6,
+          "compactHeadline": "Burnes returns as D-backs win 5-3 in 11 over Royals"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-9d91e96a5117a041"
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Luis Lara singled home the winning run in the 10th inning after Jackson Chourio tied the score with a two-out homer in the ninth, and the Milwaukee Brewers rallied to beat the Chicago Cubs 4-3 on Tuesday night.",
-          "text": "Luis Lara singled home the winning run in the 10th inning after Jackson Chourio tied the score with a two-out homer in the ninth, and the Milwaukee Brewers rallied to beat the Chicago Cubs 4-3 on Tuesday night.",
+          "headline": "Milwaukee rallied past Chicago 4-3 after Jackson Chourio’s tying two-run homer in the ninth, then Luis Lara singled home the winning run in the 10th.",
+          "text": "Milwaukee rallied past Chicago 4-3 after Jackson Chourio’s tying two-run homer in the ninth, then Luis Lara singled home the winning run in the 10th.",
           "entities": [
             "Milwaukee Brewers",
             "Chicago Cubs",
@@ -125,8 +159,8 @@
           ],
           "occurredAt": "2026-09-08T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.34,
-          "freshnessBasis": "Luis Lara delivered the walk-off in the bottom of the 10th inning for Milwaukee's 4-3 win over Chicago.",
+          "ageHours": 20.84,
+          "freshnessBasis": "Luis Lara delivered the walk-off in the bottom of the 10th inning for Milwaukee’s 4-3 win over Chicago.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -150,19 +184,19 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816861"
             }
           ],
-          "id": "a3-b536eea5ad64aaf5",
+          "id": "a3-f0c92235496d9d31",
           "feedRank": 10,
-          "compactHeadline": "Lara delivers Brewers' walk-off win over Cubs"
+          "compactHeadline": "Luis Lara delivers walk-off as Brewers beat Cubs 4-3"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-d7a4585991dea76c"
           ],
           "type": "STREAK",
-          "priority": 77,
-          "headline": "Tarik Skubal pitched into the eighth inning and Teoscar Hernández drove in the go-ahead run as Los Angeles beat Cincinnati 3-2 for its sixth straight win.",
-          "text": "Tarik Skubal pitched into the eighth inning and Teoscar Hernández drove in the go-ahead run as Los Angeles beat Cincinnati 3-2 for its sixth straight win.",
+          "priority": 78,
+          "headline": "Los Angeles beat Cincinnati 3-2 for its sixth straight win after Tarik Skubal worked into the eighth and Teoscar Hernández singled home the go-ahead run.",
+          "text": "Los Angeles beat Cincinnati 3-2 for its sixth straight win after Tarik Skubal worked into the eighth and Teoscar Hernández singled home the go-ahead run.",
           "entities": [
             "Los Angeles Dodgers",
             "Cincinnati Reds",
@@ -171,8 +205,8 @@
           ],
           "occurredAt": "2026-09-09T05:26:29Z",
           "timePrecision": "exact",
-          "ageHours": 14.57,
-          "freshnessBasis": "Los Angeles defeated Cincinnati 3-2 for its sixth consecutive win behind Tarik Skubal's strong outing.",
+          "ageHours": 15.07,
+          "freshnessBasis": "The Dodgers extended their winning streak to six games with a 3-2 victory over Cincinnati.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/mlb/recap?gameId=401816863"
@@ -184,42 +218,9 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816863"
             }
           ],
-          "id": "a3-856211cd4da535f6",
-          "feedRank": 18,
-          "compactHeadline": "Dodgers win sixth straight behind Skubal"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-924cb7a4037f796b"
-          ],
-          "type": "INJURY",
-          "priority": 68,
-          "headline": "The Athletics lost top prospects Leo De Vries to a shoulder injury and Jamie Arnold after he was hit in the face by a line drive.",
-          "text": "The Athletics lost top prospects Leo De Vries to a shoulder injury and Jamie Arnold after he was hit in the face by a line drive.",
-          "entities": [
-            "Athletics",
-            "Leo De Vries",
-            "Jamie Arnold"
-          ],
-          "occurredAt": "2026-09-09T19:47:16Z",
-          "timePrecision": "exact",
-          "ageHours": 0.22,
-          "freshnessBasis": "The Athletics announced injuries sidelining prospects Leo De Vries and Jamie Arnold on Sept. 9.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49883289/athletics-prospects-leo-de-vries-jamie-arnold-injured-out"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49883289/athletics-prospects-leo-de-vries-jamie-arnold-injured-out"
-            }
-          ],
-          "id": "a3-ab95a08551b2e97a",
-          "feedRank": 19,
-          "compactHeadline": "Athletics lose two top prospects to injuries"
+          "id": "a3-b25d142221ebdf9d",
+          "feedRank": 17,
+          "compactHeadline": "Dodgers win sixth straight behind Skubal and late RBI"
         },
         {
           "rank": 6,
@@ -228,8 +229,8 @@
           ],
           "type": "RESULT",
           "priority": 74,
-          "headline": "Junior Caminero hit his 39th home run, one of four Tampa Bay homers, as the Rays defeated the Braves 7-1.",
-          "text": "Junior Caminero hit his 39th home run, one of four Tampa Bay homers, as the Rays defeated the Braves 7-1.",
+          "headline": "Junior Caminero hit his 39th home run, one of four Tampa Bay homers, as the Rays defeated Atlanta 7-1.",
+          "text": "Junior Caminero hit his 39th home run, one of four Tampa Bay homers, as the Rays defeated Atlanta 7-1.",
           "entities": [
             "Tampa Bay Rays",
             "Atlanta Braves",
@@ -237,8 +238,8 @@
           ],
           "occurredAt": "2026-09-08T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.76,
-          "freshnessBasis": "Junior Caminero hit his 39th home run in Tampa Bay's 7-1 win over Atlanta.",
+          "ageHours": 21.26,
+          "freshnessBasis": "Junior Caminero hit his 39th home run in Tampa Bay’s 7-1 win over Atlanta.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -256,42 +257,43 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816859"
             }
           ],
-          "id": "a3-54330b93065e49a7",
-          "feedRank": 24,
-          "compactHeadline": "Caminero hits 39th homer in Rays' win"
+          "id": "a3-db7c5cf62ae780a4",
+          "feedRank": 26,
+          "compactHeadline": "Caminero’s 39th homer leads Rays past Braves 7-1"
         },
         {
           "rank": 7,
           "candidateIds": [
-            "cand-ab647c39671568a8"
+            "cand-fa6cdaba26f5b639"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "The Cubs lost 4-3 to the Brewers in 10 innings after their bullpen surrendered another late lead, the second straight game with the same issue.",
-          "text": "The Cubs lost 4-3 to the Brewers in 10 innings after their bullpen surrendered another late lead, the second straight game with the same issue.",
+          "headline": "The Padres rallied to beat Washington 5-4 while keeping pace in the NL wild-card chase.",
+          "text": "The Padres rallied to beat Washington 5-4 while keeping pace in the NL wild-card chase.",
           "entities": [
-            "Chicago Cubs",
-            "Milwaukee Brewers",
-            "Jacob Webb"
+            "San Diego Padres",
+            "Washington Nationals",
+            "Manny Machado",
+            "Luis Campusano"
           ],
-          "occurredAt": "2026-09-09T10:43:55Z",
+          "occurredAt": "2026-09-09T05:23:29Z",
           "timePrecision": "exact",
-          "ageHours": 9.28,
-          "freshnessBasis": "Chicago lost 4-3 to Milwaukee in 10 innings after its bullpen blew a late lead for the second straight game.",
+          "ageHours": 15.12,
+          "freshnessBasis": "The Padres rallied to beat Washington 5-4 while keeping pace in the NL wild-card chase.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49876200/jacob-webb-surrenders-hr-cubs-bullpen-loses-another-late-lead"
+            "http://www.espn.com/mlb/recap?gameId=401816867"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49876200/jacob-webb-surrenders-hr-cubs-bullpen-loses-another-late-lead"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816867"
             }
           ],
-          "id": "a3-a0f6278bd77eadef",
-          "feedRank": 26,
-          "compactHeadline": "Cubs fall in 10 innings after another late bullpen collapse"
+          "id": "a3-9e85440a42242022",
+          "feedRank": 27,
+          "compactHeadline": "Padres rally past Nationals 5-4 in wild-card chase"
         }
       ]
     },
@@ -305,17 +307,17 @@
             "cand-93136f6b33370ecc"
           ],
           "type": "INJURY",
-          "priority": 86,
-          "headline": "49ers starting defensive tackle Alfred Collins suffered a torn patellar tendon in practice and will miss the 2026 season.",
-          "text": "49ers starting defensive tackle Alfred Collins suffered a torn patellar tendon in practice and will miss the 2026 season.",
+          "priority": 85,
+          "headline": "San Francisco defensive tackle Alfred Collins tore his patellar tendon in practice and will miss the 2026 season.",
+          "text": "San Francisco defensive tackle Alfred Collins tore his patellar tendon in practice and will miss the 2026 season.",
           "entities": [
             "San Francisco 49ers",
             "Alfred Collins"
           ],
           "occurredAt": "2026-09-09T10:08:37Z",
           "timePrecision": "exact",
-          "ageHours": 9.87,
-          "freshnessBasis": "San Francisco placed Alfred Collins out for the season after he suffered a torn patellar tendon in practice.",
+          "ageHours": 10.37,
+          "freshnessBasis": "Alfred Collins suffered a torn patellar tendon in practice and was ruled out for the 2026 season.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49875661/49ers-alfred-collins-knee-injured-practice-season"
@@ -327,27 +329,59 @@
               "url": "https://www.espn.com/nfl/story/_/id/49875661/49ers-alfred-collins-knee-injured-practice-season"
             }
           ],
-          "id": "a3-aa3c1527c08d9325",
+          "id": "a3-6845d8b87cad0c0e",
           "feedRank": 1,
-          "compactHeadline": "49ers lose Alfred Collins for 2026 season"
+          "compactHeadline": "49ers lose Alfred Collins to season-ending knee injury"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-a8eb16f66e1776be"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Raiders tight end Brock Bowers underwent a meniscus trim and is expected to miss at least one game, including Las Vegas’ opener.",
+          "text": "Raiders tight end Brock Bowers underwent a meniscus trim and is expected to miss at least one game, including Las Vegas’ opener.",
+          "entities": [
+            "Las Vegas Raiders",
+            "Brock Bowers"
+          ],
+          "occurredAt": "2026-09-09T20:27:06Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "Brock Bowers underwent a meniscus trim and is expected to miss the Raiders’ opener.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49884014/sources-brock-bowers-knee-miss-least-raiders-opener"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49884014/sources-brock-bowers-knee-miss-least-raiders-opener"
+            }
+          ],
+          "id": "a3-34b6e4f45bbc9379",
+          "feedRank": 7,
+          "compactHeadline": "Brock Bowers to miss at least Raiders’ season opener"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-6a2abe36086eaf69"
           ],
           "type": "CONTRACT",
           "priority": 78,
-          "headline": "Tampa Bay extended quarterback Baker Mayfield, ending contract uncertainty as the Buccaneers prepare for the 2026 season.",
-          "text": "Tampa Bay extended quarterback Baker Mayfield, ending contract uncertainty as the Buccaneers prepare for the 2026 season.",
+          "headline": "Tampa Bay extended quarterback Baker Mayfield, keeping its Super Bowl-winning starter under contract ahead of the 2026 season.",
+          "text": "Tampa Bay extended quarterback Baker Mayfield, keeping its Super Bowl-winning starter under contract ahead of the 2026 season.",
           "entities": [
             "Tampa Bay Buccaneers",
             "Baker Mayfield"
           ],
           "occurredAt": "2026-09-09T00:00:39Z",
           "timePrecision": "exact",
-          "ageHours": 20.0,
-          "freshnessBasis": "Tampa Bay extended Baker Mayfield before the 2026 season opened.",
+          "ageHours": 20.5,
+          "freshnessBasis": "Tampa Bay extended Baker Mayfield in a contract development reported Wednesday before the season opener.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49872406/key-intel-grade"
@@ -360,18 +394,18 @@
             }
           ],
           "id": "a3-e0d3d9017dd90d9d",
-          "feedRank": 23,
+          "feedRank": 25,
           "compactHeadline": "Buccaneers extend Baker Mayfield before season opener"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-87614e5dab878f44"
           ],
           "type": "DEPTH_CHART",
-          "priority": 75,
-          "headline": "The Vikings named Kyler Murray their starter and Carson Wentz the No. 2 quarterback, leaving J.J. McCarthy third for Week 1.",
-          "text": "The Vikings named Kyler Murray their starter and Carson Wentz the No. 2 quarterback, leaving J.J. McCarthy third for Week 1.",
+          "priority": 74,
+          "headline": "Minnesota named Kyler Murray its starter, Carson Wentz the backup and J.J. McCarthy the No. 3 quarterback for Week 1.",
+          "text": "Minnesota named Kyler Murray its starter, Carson Wentz the backup and J.J. McCarthy the No. 3 quarterback for Week 1.",
           "entities": [
             "Minnesota Vikings",
             "Kyler Murray",
@@ -380,8 +414,8 @@
           ],
           "occurredAt": "2026-09-09T19:50:05Z",
           "timePrecision": "exact",
-          "ageHours": 0.18,
-          "freshnessBasis": "Minnesota set its Week 1 quarterback order with J.J. McCarthy third and Carson Wentz as the backup.",
+          "ageHours": 0.68,
+          "freshnessBasis": "The Vikings set their Week 1 quarterback order with Kyler Murray starting, Carson Wentz second and J.J. McCarthy third.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49883304/vikings-say-mccarthy-no-3-qb-wentz-no-2-week-1"
@@ -393,9 +427,41 @@
               "url": "https://www.espn.com/nfl/story/_/id/49883304/vikings-say-mccarthy-no-3-qb-wentz-no-2-week-1"
             }
           ],
-          "id": "a3-4bd4d4d7fa303b97",
-          "feedRank": 25,
-          "compactHeadline": "Vikings place McCarthy third on QB depth chart"
+          "id": "a3-008f4d42dbc9c680",
+          "feedRank": 28,
+          "compactHeadline": "Vikings name Wentz No. 2 and McCarthy No. 3 at QB"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-4b2c2e90893cf889"
+          ],
+          "type": "NEXT",
+          "priority": 72,
+          "headline": "Cleveland quarterback Deshaun Watson is set to make his first regular-season start since October 2024.",
+          "text": "Cleveland quarterback Deshaun Watson is set to make his first regular-season start since October 2024.",
+          "entities": [
+            "Cleveland Browns",
+            "Deshaun Watson"
+          ],
+          "occurredAt": "2026-09-09T17:05:32Z",
+          "timePrecision": "exact",
+          "ageHours": 3.42,
+          "freshnessBasis": "Deshaun Watson is set to make his first regular-season start since October 2024 for Cleveland.",
+          "status": "next",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49881629/browns-deshaun-watson-set-first-start-2024-season"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49881629/browns-deshaun-watson-set-first-start-2024-season"
+            }
+          ],
+          "id": "a3-4f951d418ed5a51e",
+          "feedRank": 32,
+          "compactHeadline": "Watson set for first Browns start since 2024"
         }
       ]
     },
@@ -409,7 +475,7 @@
             "cand-4bd2ba3794905d30"
           ],
           "type": "TRADE",
-          "priority": 80,
+          "priority": 76,
           "headline": "New Orleans traded Jordan Hawkins, Micah Peavy and two future second-round assets to Memphis for AJ Johnson and Taj Gibson.",
           "text": "New Orleans traded Jordan Hawkins, Micah Peavy and two future second-round assets to Memphis for AJ Johnson and Taj Gibson.",
           "entities": [
@@ -422,8 +488,8 @@
           ],
           "occurredAt": "2026-09-09T10:53:04Z",
           "timePrecision": "exact",
-          "ageHours": 9.13,
-          "freshnessBasis": "New Orleans traded Jordan Hawkins and additional assets to Memphis for AJ Johnson and Taj Gibson.",
+          "ageHours": 9.63,
+          "freshnessBasis": "The Pelicans traded Jordan Hawkins and three additional assets to Memphis for AJ Johnson and Taj Gibson.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49868291/sources-pelicans-trade-jordan-hawkins-grizzlies-4-player-deal"
@@ -435,9 +501,9 @@
               "url": "https://www.espn.com/nba/story/_/id/49868291/sources-pelicans-trade-jordan-hawkins-grizzlies-4-player-deal"
             }
           ],
-          "id": "a3-ada0306f07aaabaa",
-          "feedRank": 7,
-          "compactHeadline": "Pelicans send Jordan Hawkins to Grizzlies in four-player deal"
+          "id": "a3-157327be69dbb0dc",
+          "feedRank": 11,
+          "compactHeadline": "Pelicans send Jordan Hawkins to Grizzlies in four-player trade"
         },
         {
           "rank": 2,
@@ -445,7 +511,7 @@
             "cand-f1c96a17dde7ed81"
           ],
           "type": "CONTRACT",
-          "priority": 84,
+          "priority": 83,
           "headline": "Houston guard Amen Thompson agreed to a five-year, $208 million rookie-scale extension with the Rockets.",
           "text": "Houston guard Amen Thompson agreed to a five-year, $208 million rookie-scale extension with the Rockets.",
           "entities": [
@@ -454,8 +520,8 @@
           ],
           "occurredAt": "2026-09-09T10:53:45Z",
           "timePrecision": "exact",
-          "ageHours": 9.12,
-          "freshnessBasis": "Amen Thompson agreed to a five-year, $208 million extension with Houston on Sept. 9.",
+          "ageHours": 9.62,
+          "freshnessBasis": "Amen Thompson agreed to a five-year, $208 million extension with Houston.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49814480/sources-rockets-amen-thompson-agrees-5-year-208m-extension"
@@ -467,59 +533,27 @@
               "url": "https://www.espn.com/nba/story/_/id/49814480/sources-rockets-amen-thompson-agrees-5-year-208m-extension"
             }
           ],
-          "id": "a3-8449363ccc9e6bfb",
-          "feedRank": 13,
-          "compactHeadline": "Amen Thompson agrees to five-year, $208M extension"
+          "id": "a3-03c606d5d223f5a4",
+          "feedRank": 15,
+          "compactHeadline": "Amen Thompson agrees to five-year, $208M Rockets extension"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-b9b1dd57da839dd6"
-          ],
-          "type": "MILESTONE",
-          "priority": 72,
-          "headline": "The Lakers announced a statue honoring Hall of Fame coach Phil Jackson will be unveiled outside Crypto.com Arena on April 9.",
-          "text": "The Lakers announced a statue honoring Hall of Fame coach Phil Jackson will be unveiled outside Crypto.com Arena on April 9.",
-          "entities": [
-            "Los Angeles Lakers",
-            "Phil Jackson"
-          ],
-          "occurredAt": "2026-09-08T22:15:42Z",
-          "timePrecision": "exact",
-          "ageHours": 21.75,
-          "freshnessBasis": "The Lakers announced Phil Jackson’s statue will be unveiled outside Crypto.com Arena on April 9.",
-          "status": "watch",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson"
-            }
-          ],
-          "id": "a3-669b1aa8b341a5f8",
-          "feedRank": 28,
-          "compactHeadline": "Lakers to honor Phil Jackson with arena statue"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-8fdbe1ac1835628a"
           ],
-          "type": "RETURN",
-          "priority": 76,
-          "headline": "Ben Simmons agreed to a one-year, $3.5 million deal with Sacramento, returning to the NBA with the Kings.",
-          "text": "Ben Simmons agreed to a one-year, $3.5 million deal with Sacramento, returning to the NBA with the Kings.",
+          "type": "SIGNING",
+          "priority": 77,
+          "headline": "Ben Simmons is returning to the NBA after agreeing to a one-year, $3.5 million contract with Sacramento.",
+          "text": "Ben Simmons is returning to the NBA after agreeing to a one-year, $3.5 million contract with Sacramento.",
           "entities": [
             "Sacramento Kings",
             "Ben Simmons"
           ],
           "occurredAt": "2026-09-09T10:53:26Z",
           "timePrecision": "exact",
-          "ageHours": 9.12,
-          "freshnessBasis": "Ben Simmons agreed to a one-year, $3.5 million contract with Sacramento.",
+          "ageHours": 9.62,
+          "freshnessBasis": "Ben Simmons agreed to a one-year, $3.5 million deal with Sacramento.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
@@ -531,28 +565,29 @@
               "url": "https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings"
             }
           ],
-          "id": "a3-0f1f92a31d17c2cd",
-          "feedRank": 29,
-          "compactHeadline": "Ben Simmons returns to NBA with Kings"
+          "id": "a3-4936752dd2b61014",
+          "feedRank": 16,
+          "compactHeadline": "Ben Simmons returns to NBA on one-year Kings deal"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
             "cand-ed953c4e436271e1"
           ],
           "type": "LEAGUE_NEWS",
-          "priority": 74,
-          "headline": "EuroLeague owners will vote Oct. 5 on whether to accept the NBA’s Europe proposal or continue operating as a separate league.",
-          "text": "EuroLeague owners will vote Oct. 5 on whether to accept the NBA’s Europe proposal or continue operating as a separate league.",
+          "priority": 75,
+          "headline": "EuroLeague owners will vote Oct. 5 on whether to accept the NBA’s proposal for NBA Europe or continue operating as a separate league.",
+          "text": "EuroLeague owners will vote Oct. 5 on whether to accept the NBA’s proposal for NBA Europe or continue operating as a separate league.",
           "entities": [
             "EuroLeague",
+            "NBA",
             "NBA Europe"
           ],
           "occurredAt": "2026-09-09T19:08:44Z",
           "timePrecision": "exact",
-          "ageHours": 0.87,
-          "freshnessBasis": "EuroLeague owners set an Oct. 5 vote on the league’s role in the proposed NBA Europe project.",
-          "status": "watch",
+          "ageHours": 1.37,
+          "freshnessBasis": "EuroLeague owners scheduled an Oct. 5 vote on the league’s role in the proposed NBA Europe project.",
+          "status": "next",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49882328/euroleague-oct-5-vote-role-nba-europe-project"
           ],
@@ -563,47 +598,9 @@
               "url": "https://www.espn.com/nba/story/_/id/49882328/euroleague-oct-5-vote-role-nba-europe-project"
             }
           ],
-          "id": "a3-a902cf587cd6094d",
-          "feedRank": 31,
-          "compactHeadline": "EuroLeague schedules vote on NBA Europe proposal"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-e36fabf2d672f9e3"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 73,
-          "headline": "The 76ers and Flyers unveiled renderings for a privately funded South Philadelphia arena targeted to open in 2030.",
-          "text": "The 76ers and Flyers unveiled renderings for a privately funded South Philadelphia arena targeted to open in 2030.",
-          "entities": [
-            "Philadelphia 76ers",
-            "Philadelphia Flyers"
-          ],
-          "occurredAt": "2026-09-09T10:54:09Z",
-          "timePrecision": "exact",
-          "ageHours": 9.11,
-          "freshnessBasis": "Philadelphia unveiled renderings for a new privately funded 76ers and Flyers arena targeted to open in 2030.",
-          "status": "watch",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports",
-            "https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports"
-            }
-          ],
-          "id": "a3-167cfd4a2cedbe01",
-          "feedRank": 32,
-          "compactHeadline": "76ers and Flyers unveil arena targeted for 2030 opening"
+          "id": "a3-c51878ec2a71531c",
+          "feedRank": 30,
+          "compactHeadline": "EuroLeague sets October vote on NBA Europe proposal"
         }
       ]
     },
@@ -617,9 +614,9 @@
             "cand-c7f1882b85ae20aa"
           ],
           "type": "SIGNING",
-          "priority": 78,
-          "headline": "Alex Formenton signed with Edmonton, becoming the third player acquitted in the Hockey Canada case to receive an NHL contract since the 2025 trial ended.",
-          "text": "Alex Formenton signed with Edmonton, becoming the third player acquitted in the Hockey Canada case to receive an NHL contract since the 2025 trial ended.",
+          "priority": 77,
+          "headline": "Edmonton signed Alex Formenton, making him the third player acquitted in the Hockey Canada case to receive an NHL contract since the 2025 trial ended.",
+          "text": "Edmonton signed Alex Formenton, making him the third player acquitted in the Hockey Canada case to receive an NHL contract since the 2025 trial ended.",
           "entities": [
             "Edmonton Oilers",
             "Alex Formenton",
@@ -627,8 +624,8 @@
           ],
           "occurredAt": "2026-09-09T16:09:22Z",
           "timePrecision": "exact",
-          "ageHours": 3.86,
-          "freshnessBasis": "Alex Formenton signed with the Edmonton Oilers, returning to the NHL after his acquittal in the Hockey Canada case.",
+          "ageHours": 4.36,
+          "freshnessBasis": "Alex Formenton signed with Edmonton after being acquitted in the Hockey Canada sexual assault case.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49880962/formenton-latest-acquitted-hockey-canada-player-back-nhl"
@@ -640,9 +637,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49880962/formenton-latest-acquitted-hockey-canada-player-back-nhl"
             }
           ],
-          "id": "a3-c9b9ddab10323057",
-          "feedRank": 12,
-          "compactHeadline": "Oilers sign Alex Formenton after acquittal"
+          "id": "a3-c8439a44ce1958d2",
+          "feedRank": 13,
+          "compactHeadline": "Oilers sign Alex Formenton after Hockey Canada acquittal"
         },
         {
           "rank": 2,
@@ -650,7 +647,7 @@
             "cand-580564cd30391021"
           ],
           "type": "ROSTER",
-          "priority": 76,
+          "priority": 74,
           "headline": "Anaheim placed veteran forward Chris Kreider on waivers after he expressed a desire to play closer to the East Coast.",
           "text": "Anaheim placed veteran forward Chris Kreider on waivers after he expressed a desire to play closer to the East Coast.",
           "entities": [
@@ -659,8 +656,8 @@
           ],
           "occurredAt": "2026-09-09T17:03:40Z",
           "timePrecision": "exact",
-          "ageHours": 2.95,
-          "freshnessBasis": "Anaheim placed Chris Kreider on waivers after the veteran forward requested an East Coast move.",
+          "ageHours": 3.45,
+          "freshnessBasis": "The Ducks placed Chris Kreider on waivers after he requested a move closer to the East Coast.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49881489/source-ducks-waiving-chris-kreider-east-move-deck"
@@ -672,9 +669,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49881489/source-ducks-waiving-chris-kreider-east-move-deck"
             }
           ],
-          "id": "a3-89a1fb0aeb11c8db",
-          "feedRank": 27,
-          "compactHeadline": "Ducks place Chris Kreider on waivers"
+          "id": "a3-8558fd57fec05d04",
+          "feedRank": 31,
+          "compactHeadline": "Ducks place Chris Kreider on waivers ahead of East move"
         }
       ]
     },
@@ -688,17 +685,17 @@
             "cand-ed6f35eb9c1bb8a4"
           ],
           "type": "INJURY",
-          "priority": 78,
-          "headline": "Tottenham forward Mykhailo Mudryk is expected to miss at least until October after suffering an ankle injury in training.",
-          "text": "Tottenham forward Mykhailo Mudryk is expected to miss at least until October after suffering an ankle injury in training.",
+          "priority": 77,
+          "headline": "Tottenham winger Mykhailo Mudryk will be sidelined until at least October after suffering an ankle injury in training.",
+          "text": "Tottenham winger Mykhailo Mudryk will be sidelined until at least October after suffering an ankle injury in training.",
           "entities": [
             "Tottenham Hotspur",
             "Mykhailo Mudryk"
           ],
           "occurredAt": "2026-09-09T19:36:55Z",
           "timePrecision": "exact",
-          "ageHours": 0.4,
-          "freshnessBasis": "Mykhailo Mudryk suffered an ankle injury in training and is expected to be sidelined until at least October.",
+          "ageHours": 0.9,
+          "freshnessBasis": "Mykhailo Mudryk suffered an ankle injury in training and is expected to miss time until at least October.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49883172/mykhailo-mudryk-tottenham-premier-league-spurs-injuries"
@@ -710,9 +707,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/49883172/mykhailo-mudryk-tottenham-premier-league-spurs-injuries"
             }
           ],
-          "id": "a3-6b2b0fac2319d64e",
-          "feedRank": 5,
-          "compactHeadline": "Tottenham's Mudryk out until at least October"
+          "id": "a3-2e61f958bb84758f",
+          "feedRank": 3,
+          "compactHeadline": "Tottenham’s Mudryk out until at least October with ankle injury"
         },
         {
           "rank": 2,
@@ -720,18 +717,17 @@
             "cand-62291019ca83d930"
           ],
           "type": "RETURN",
-          "priority": 75,
-          "headline": "Manchester United forward Marcus Rashford trained normally with the squad Wednesday ahead of the Champions League match against Sabah FK.",
-          "text": "Manchester United forward Marcus Rashford trained normally with the squad Wednesday ahead of the Champions League match against Sabah FK.",
+          "priority": 74,
+          "headline": "Marcus Rashford trained normally with Manchester United ahead of the club’s Champions League tie with Sabah FK.",
+          "text": "Marcus Rashford trained normally with Manchester United ahead of the club’s Champions League tie with Sabah FK.",
           "entities": [
             "Manchester United",
-            "Marcus Rashford",
-            "Sabah FK"
+            "Marcus Rashford"
           ],
           "occurredAt": "2026-09-09T16:28:33Z",
           "timePrecision": "exact",
-          "ageHours": 3.54,
-          "freshnessBasis": "Marcus Rashford returned to full training with Manchester United ahead of its Champions League tie with Sabah FK.",
+          "ageHours": 4.04,
+          "freshnessBasis": "Marcus Rashford returned to normal Manchester United training ahead of the Champions League match.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49878227/marcus-rashford-returns-training-ahead-manchester-united-champions-league-clash"
@@ -743,9 +739,45 @@
               "url": "https://www.espn.com/soccer/story/_/id/49878227/marcus-rashford-returns-training-ahead-manchester-united-champions-league-clash"
             }
           ],
-          "id": "a3-a4728d9207fc3c7b",
-          "feedRank": 20,
-          "compactHeadline": "Rashford returns to training ahead of Champions League tie"
+          "id": "a3-73feb3bb5c050583",
+          "feedRank": 21,
+          "compactHeadline": "Rashford returns to Manchester United training"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-40616ea0515c4863"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 74,
+          "headline": "The Premier League’s key-match panel said Harry Maguire’s goal against Ipswich correctly stood and Arsenal should have received a penalty against Aston Villa.",
+          "text": "The Premier League’s key-match panel said Harry Maguire’s goal against Ipswich correctly stood and Arsenal should have received a penalty against Aston Villa.",
+          "entities": [
+            "Premier League",
+            "Manchester United",
+            "Ipswich Town",
+            "Arsenal",
+            "Aston Villa",
+            "Harry Maguire"
+          ],
+          "occurredAt": "2026-09-09T11:13:37Z",
+          "timePrecision": "exact",
+          "ageHours": 9.28,
+          "freshnessBasis": "The Premier League key-match panel reviewed and issued decisions on Manchester United’s goal against Ipswich and Arsenal’s penalty appeal against Aston Villa.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49878463/premier-league-panel-harry-maguire-goal-vs-ipswich-right-stand-arsenal-deserved-penalty-vs-aston-villa"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49878463/premier-league-panel-harry-maguire-goal-vs-ipswich-right-stand-arsenal-deserved-penalty-vs-aston-villa"
+            }
+          ],
+          "id": "a3-9eab39c632c10eae",
+          "feedRank": 22,
+          "compactHeadline": "Premier League panel backs United goal, Arsenal penalty call"
         }
       ]
     },
@@ -759,16 +791,16 @@
             "cand-cd497fe20a4c325b"
           ],
           "type": "RECORD",
-          "priority": 76,
-          "headline": "MLS announced record revenue from both incoming and outgoing transfers in 2026, marking a league high on both sides of the market.",
-          "text": "MLS announced record revenue from both incoming and outgoing transfers in 2026, marking a league high on both sides of the market.",
+          "priority": 74,
+          "headline": "MLS announced that 2026 set league records for revenue from both incoming and outgoing transfers.",
+          "text": "MLS announced that 2026 set league records for revenue from both incoming and outgoing transfers.",
           "entities": [
             "MLS"
           ],
           "occurredAt": "2026-09-09T19:03:18Z",
           "timePrecision": "exact",
-          "ageHours": 0.96,
-          "freshnessBasis": "Major League Soccer announced record incoming and outgoing transfer revenue for 2026.",
+          "ageHours": 1.46,
+          "freshnessBasis": "MLS announced record incoming and outgoing transfer revenue for 2026.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49882716/mls-league-sets-record-incoming-outgoing-transfers-2026"
@@ -780,9 +812,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/49882716/mls-league-sets-record-incoming-outgoing-transfers-2026"
             }
           ],
-          "id": "a3-f87bc012d147d2d1",
-          "feedRank": 6,
-          "compactHeadline": "MLS sets transfer revenue records in 2026"
+          "id": "a3-4c68caff030cd152",
+          "feedRank": 5,
+          "compactHeadline": "MLS sets transfer-revenue records in both directions"
         }
       ]
     },
@@ -793,51 +825,116 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-f979070e3d87b458"
+            "cand-3f3325fa369da48c"
           ],
-          "type": "RESULT",
-          "priority": 84,
-          "headline": "College football Bottom 10 after Week 1: UMass turns it upside down.",
-          "text": "College football Bottom 10 after Week 1: UMass turns it upside down.",
+          "type": "ROSTER",
+          "priority": 76,
+          "headline": "LSU completed its roster at 105 players, ending its ability to add former NFL players Dae’Quan Wright and Zxavian Harris.",
+          "text": "LSU completed its roster at 105 players, ending its ability to add former NFL players Dae’Quan Wright and Zxavian Harris.",
           "entities": [
-            "UMass Minutemen",
-            "Rutgers Scarlet Knights"
+            "LSU Tigers",
+            "Dae'Quan Wright",
+            "Zxavian Harris"
           ],
-          "occurredAt": "2026-09-09T10:38:15Z",
+          "occurredAt": "2026-09-09T18:17:07Z",
           "timePrecision": "exact",
-          "ageHours": 9.37,
-          "freshnessBasis": "UMass defeated Rutgers in a shocking Week 1 result.",
+          "ageHours": 2.23,
+          "freshnessBasis": "LSU added two current student-athletes and closed its roster at 105 players Wednesday.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49871913/college-football-bottom-10-week-1-umass-turns-upside-down"
+            "https://www.espn.com/college-football/story/_/id/49875000/lsu-completes-roster-adding-nfl-players"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49871913/college-football-bottom-10-week-1-umass-turns-upside-down"
+              "url": "https://www.espn.com/college-football/story/_/id/49875000/lsu-completes-roster-adding-nfl-players"
             }
           ],
-          "id": "a3-895e397457058605",
-          "feedRank": 8,
-          "compactHeadline": "UMass shocks Rutgers in one of Week 1’s biggest upsets"
+          "id": "a3-f7d28e8331e7d4f7",
+          "feedRank": 18,
+          "compactHeadline": "LSU closes 2026 roster at 105 players"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-58c0c32e79bfdea9"
+            "cand-35b63835a71d02a3"
           ],
           "type": "LEAGUE_NEWS",
           "priority": 76,
+          "headline": "The NCAA established a standard timing protocol after the controversial decision to award Michigan an extra second in its last-second win.",
+          "text": "The NCAA established a standard timing protocol after the controversial decision to award Michigan an extra second in its last-second win.",
+          "entities": [
+            "NCAA",
+            "Michigan Wolverines",
+            "Western Michigan Broncos"
+          ],
+          "occurredAt": "2026-09-09T06:40:11Z",
+          "timePrecision": "exact",
+          "ageHours": 13.84,
+          "freshnessBasis": "The NCAA established a new timing protocol following Michigan’s controversial extra-second finish.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49874687/ncaa-issues-new-timing-protocol-wake-u-m-last-second-win"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49874687/ncaa-issues-new-timing-protocol-wake-u-m-last-second-win"
+            }
+          ],
+          "id": "a3-2442c3fdd89d2c29",
+          "feedRank": 19,
+          "compactHeadline": "NCAA establishes timing protocol after Michigan finish"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-5f2663cc7446940b"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 77,
+          "headline": "College Football Playoff leaders opened a 30-day negotiating window with ESPN to evaluate a possible expansion to 24 teams.",
+          "text": "College Football Playoff leaders opened a 30-day negotiating window with ESPN to evaluate a possible expansion to 24 teams.",
+          "entities": [
+            "College Football Playoff",
+            "ESPN"
+          ],
+          "occurredAt": "2026-09-08T22:07:52Z",
+          "timePrecision": "exact",
+          "ageHours": 22.38,
+          "freshnessBasis": "The CFP opened a 30-day negotiating window with ESPN regarding a possible 24-team playoff field.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49871893/sources-cfp-opens-espn-negotiation-window-24-teams-possible"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49871893/sources-cfp-opens-espn-negotiation-window-24-teams-possible"
+            }
+          ],
+          "id": "a3-c4c23e6ae230d370",
+          "feedRank": 20,
+          "compactHeadline": "CFP opens ESPN talks as 24-team field remains possible"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-58c0c32e79bfdea9"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 73,
           "headline": "The College Sports Commission cleared more than $227 million in NIL deals during July and August, nearly doubling its first-year total.",
           "text": "The College Sports Commission cleared more than $227 million in NIL deals during July and August, nearly doubling its first-year total.",
           "entities": [
-            "College Sports Commission",
-            "NIL"
+            "College Sports Commission"
           ],
           "occurredAt": "2026-09-09T19:03:51Z",
           "timePrecision": "exact",
-          "ageHours": 0.95,
+          "ageHours": 1.45,
           "freshnessBasis": "The College Sports Commission cleared more than $227 million in NIL deals across July and August.",
           "status": "active",
           "sourceUrls": [
@@ -851,73 +948,8 @@
             }
           ],
           "id": "a3-c3d54a50ec42d8e5",
-          "feedRank": 15,
+          "feedRank": 23,
           "compactHeadline": "College Sports Commission clears $227M in NIL deals"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-35b63835a71d02a3"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 77,
-          "headline": "The NCAA established a standard timing protocol after Michigan was awarded an extra second in its controversial win over Western Michigan.",
-          "text": "The NCAA established a standard timing protocol after Michigan was awarded an extra second in its controversial win over Western Michigan.",
-          "entities": [
-            "NCAA",
-            "Michigan Wolverines",
-            "Western Michigan Broncos"
-          ],
-          "occurredAt": "2026-09-09T06:40:11Z",
-          "timePrecision": "exact",
-          "ageHours": 13.34,
-          "freshnessBasis": "The NCAA announced a standard timing protocol after the disputed extra-second finish in Michigan's win.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49874687/ncaa-issues-new-timing-protocol-wake-u-m-last-second-win"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49874687/ncaa-issues-new-timing-protocol-wake-u-m-last-second-win"
-            }
-          ],
-          "id": "a3-2442c3fdd89d2c29",
-          "feedRank": 16,
-          "compactHeadline": "NCAA establishes timing protocol after Michigan finish"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-5f2663cc7446940b"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 78,
-          "headline": "College Football Playoff leaders opened a 30-day negotiation window with ESPN to determine whether expanding to 24 teams is viable.",
-          "text": "College Football Playoff leaders opened a 30-day negotiation window with ESPN to determine whether expanding to 24 teams is viable.",
-          "entities": [
-            "College Football Playoff",
-            "ESPN"
-          ],
-          "occurredAt": "2026-09-08T22:07:52Z",
-          "timePrecision": "exact",
-          "ageHours": 21.88,
-          "freshnessBasis": "The CFP opened a 30-day ESPN negotiation window to evaluate a possible 24-team playoff field.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49871893/sources-cfp-opens-espn-negotiation-window-24-teams-possible"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49871893/sources-cfp-opens-espn-negotiation-window-24-teams-possible"
-            }
-          ],
-          "id": "a3-91c856361f528837",
-          "feedRank": 17,
-          "compactHeadline": "CFP opens talks that could lead to 24-team field"
         },
         {
           "rank": 5,
@@ -925,9 +957,9 @@
             "cand-7cf41b86227cc436"
           ],
           "type": "LEAGUE_NEWS",
-          "priority": 74,
-          "headline": "The MAC asked that Western Michigan be declared the winner of its controversial finish against Michigan three days after the game.",
-          "text": "The MAC asked that Western Michigan be declared the winner of its controversial finish against Michigan three days after the game.",
+          "priority": 75,
+          "headline": "The Mid-American Conference asked that Western Michigan be declared the winner of its controversial game against Michigan after the disputed finish.",
+          "text": "The Mid-American Conference asked that Western Michigan be declared the winner of its controversial game against Michigan after the disputed finish.",
           "entities": [
             "Mid-American Conference",
             "Western Michigan Broncos",
@@ -935,9 +967,9 @@
           ],
           "occurredAt": "2026-09-09T00:33:49Z",
           "timePrecision": "exact",
-          "ageHours": 19.45,
-          "freshnessBasis": "The MAC appealed for Western Michigan to be declared the winner three days after its controversial finish against Michigan.",
-          "status": "watch",
+          "ageHours": 19.95,
+          "freshnessBasis": "The MAC asked for Western Michigan to be declared the winner three days after the controversial finish against Michigan.",
+          "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49873237/western-michigan-one-second-appeal-mac-ncaa-college-football-playoff-goliath"
           ],
@@ -948,42 +980,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/49873237/western-michigan-one-second-appeal-mac-ncaa-college-football-playoff-goliath"
             }
           ],
-          "id": "a3-16b1d49af9c84c49",
-          "feedRank": 22,
-          "compactHeadline": "MAC appeals for Western Michigan to be declared winner"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-3f3325fa369da48c"
-          ],
-          "type": "ROSTER",
-          "priority": 70,
-          "headline": "LSU added two current student-athletes and finalized its roster at 105 players, ending the possibility of adding two former NFL players.",
-          "text": "LSU added two current student-athletes and finalized its roster at 105 players, ending the possibility of adding two former NFL players.",
-          "entities": [
-            "LSU Tigers",
-            "Dae'Quan Wright",
-            "Zxavian Harris"
-          ],
-          "occurredAt": "2026-09-09T18:17:07Z",
-          "timePrecision": "exact",
-          "ageHours": 1.73,
-          "freshnessBasis": "LSU finalized its roster at 105 players after adding two current student-athletes.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49875000/lsu-completes-roster-adding-nfl-players"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49875000/lsu-completes-roster-adding-nfl-players"
-            }
-          ],
-          "id": "a3-271b69a5eb4cecb1",
-          "feedRank": 30,
-          "compactHeadline": "LSU closes roster at 105 players"
+          "id": "a3-a4c72985785bfc1c",
+          "feedRank": 24,
+          "compactHeadline": "MAC asks Michigan ruling be overturned after finish"
         }
       ]
     }
@@ -991,83 +990,17 @@
   "specialEvents": [
     {
       "name": "US Open",
-      "sport": "tennis",
+      "sport": "Tennis",
       "items": [
         {
           "rank": 1,
           "candidateIds": [
-            "cand-31a4b8eb329048cd"
-          ],
-          "type": "RESULT",
-          "priority": 91,
-          "headline": "Ben Shelton upset defending champion Carlos Alcaraz 6-7, 6-1, 6-3, 1-6, 7-6 to reach the US Open semifinals in a match ending at 3:33 a.m.",
-          "text": "Ben Shelton upset defending champion Carlos Alcaraz 6-7, 6-1, 6-3, 1-6, 7-6 to reach the US Open semifinals in a match ending at 3:33 a.m.",
-          "entities": [
-            "US Open",
-            "Ben Shelton",
-            "Carlos Alcaraz"
-          ],
-          "occurredAt": "2026-09-09T11:27:39Z",
-          "timePrecision": "exact",
-          "ageHours": 8.55,
-          "freshnessBasis": "Ben Shelton defeated defending champion Carlos Alcaraz in five sets to reach the US Open semifinals.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49877286/ben-shelton-stuns-carlos-alcaraz-5-set-late-night-epic-make-us-open-semifinals"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-atp",
-              "url": "https://www.espn.com/tennis/story/_/id/49877286/ben-shelton-stuns-carlos-alcaraz-5-set-late-night-epic-make-us-open-semifinals"
-            }
-          ],
-          "id": "a3-special-b2c31736f7a6d20b",
-          "feedRank": 3,
-          "compactHeadline": "Shelton stuns Alcaraz in five-set US Open thriller"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-ce45b748dab43ee2"
-          ],
-          "type": "ADVANCEMENT",
-          "priority": 84,
-          "headline": "Frances Tiafoe rallied past Alex Michelsen 5-7, 3-6, 7-5, 6-3, 7-6 to reach his third US Open semifinal.",
-          "text": "Frances Tiafoe rallied past Alex Michelsen 5-7, 3-6, 7-5, 6-3, 7-6 to reach his third US Open semifinal.",
-          "entities": [
-            "US Open",
-            "Frances Tiafoe",
-            "Alex Michelsen"
-          ],
-          "occurredAt": "2026-09-09T07:56:14Z",
-          "timePrecision": "exact",
-          "ageHours": 12.07,
-          "freshnessBasis": "Frances Tiafoe defeated Alex Michelsen in five sets to advance to his third US Open semifinal.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49873533/frances-tiafoe-rallies-alex-michelsen-5-sets-make-2026-us-open-semifinals"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-atp",
-              "url": "https://www.espn.com/tennis/story/_/id/49873533/frances-tiafoe-rallies-alex-michelsen-5-sets-make-2026-us-open-semifinals"
-            }
-          ],
-          "id": "a3-special-a085201cefbaa0ae",
-          "feedRank": 4,
-          "compactHeadline": "Tiafoe reaches third US Open semifinal"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-41cb00467b8e4841"
           ],
           "type": "ADVANCEMENT",
-          "priority": 77,
-          "headline": "No. 3 seed Jessica Pegula rallied to defeat No. 26 seed Emma Navarro 3-6, 6-4, 6-3 in an all-American quarterfinal.",
-          "text": "No. 3 seed Jessica Pegula rallied to defeat No. 26 seed Emma Navarro 3-6, 6-4, 6-3 in an all-American quarterfinal.",
+          "priority": 78,
+          "headline": "No. 3 seed Jessica Pegula rallied past No. 26 seed Emma Navarro 3-6, 6-4, 6-3 in an all-American US Open quarterfinal.",
+          "text": "No. 3 seed Jessica Pegula rallied past No. 26 seed Emma Navarro 3-6, 6-4, 6-3 in an all-American US Open quarterfinal.",
           "entities": [
             "US Open",
             "Jessica Pegula",
@@ -1075,8 +1008,8 @@
           ],
           "occurredAt": "2026-09-09T15:13:15Z",
           "timePrecision": "exact",
-          "ageHours": 4.79,
-          "freshnessBasis": "Jessica Pegula defeated Emma Navarro in the US Open quarterfinals to reach the semifinals.",
+          "ageHours": 5.29,
+          "freshnessBasis": "Jessica Pegula defeated Emma Navarro in three sets to advance to the US Open semifinals.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49875427/jessica-pegula-beats-emma-navarro-us-open-quarterfinal-play-aryna-sabalenka-semifinals"
@@ -1088,9 +1021,75 @@
               "url": "https://www.espn.com/tennis/story/_/id/49875427/jessica-pegula-beats-emma-navarro-us-open-quarterfinal-play-aryna-sabalenka-semifinals"
             }
           ],
-          "id": "a3-special-0e1a976849315fad",
-          "feedRank": 11,
-          "compactHeadline": "Pegula rallies into US Open semifinals"
+          "id": "a3-special-06f8bd8fcceb7d1c",
+          "feedRank": 8,
+          "compactHeadline": "Pegula rallies past Navarro to reach US Open semifinals"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-ce45b748dab43ee2"
+          ],
+          "type": "ADVANCEMENT",
+          "priority": 78,
+          "headline": "Frances Tiafoe beat Alex Michelsen 5-7, 3-6, 7-5, 6-3, 7-6 to reach his third US Open semifinal.",
+          "text": "Frances Tiafoe beat Alex Michelsen 5-7, 3-6, 7-5, 6-3, 7-6 to reach his third US Open semifinal.",
+          "entities": [
+            "US Open",
+            "Frances Tiafoe",
+            "Alex Michelsen"
+          ],
+          "occurredAt": "2026-09-09T07:56:14Z",
+          "timePrecision": "exact",
+          "ageHours": 12.57,
+          "freshnessBasis": "Frances Tiafoe defeated Alex Michelsen in five sets to reach his third US Open semifinal.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/tennis/story/_/id/49873533/frances-tiafoe-rallies-alex-michelsen-5-sets-make-2026-us-open-semifinals"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-atp",
+              "url": "https://www.espn.com/tennis/story/_/id/49873533/frances-tiafoe-rallies-alex-michelsen-5-sets-make-2026-us-open-semifinals"
+            }
+          ],
+          "id": "a3-special-ad7ed424dc94be24",
+          "feedRank": 9,
+          "compactHeadline": "Tiafoe rallies past Michelsen in five sets at US Open"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-31a4b8eb329048cd"
+          ],
+          "type": "RESULT",
+          "priority": 82,
+          "headline": "Ben Shelton ended Carlos Alcaraz’s title reign with a five-set victory that finished at 3:33 a.m. ET, sending Shelton to the US Open semifinals.",
+          "text": "Ben Shelton ended Carlos Alcaraz’s title reign with a five-set victory that finished at 3:33 a.m. ET, sending Shelton to the US Open semifinals.",
+          "entities": [
+            "US Open",
+            "Ben Shelton",
+            "Carlos Alcaraz"
+          ],
+          "occurredAt": "2026-09-09T11:27:39Z",
+          "timePrecision": "exact",
+          "ageHours": 9.05,
+          "freshnessBasis": "Ben Shelton defeated Carlos Alcaraz in five sets to reach the US Open semifinals.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/tennis/story/_/id/49877286/ben-shelton-stuns-carlos-alcaraz-5-set-late-night-epic-make-us-open-semifinals"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-atp",
+              "url": "https://www.espn.com/tennis/story/_/id/49877286/ben-shelton-stuns-carlos-alcaraz-5-set-late-night-epic-make-us-open-semifinals"
+            }
+          ],
+          "id": "a3-special-2db972cfe7cec7ec",
+          "feedRank": 12,
+          "compactHeadline": "Ben Shelton stuns Alcaraz in five-set US Open marathon"
         },
         {
           "rank": 4,
@@ -1108,8 +1107,8 @@
           ],
           "occurredAt": "2026-09-09T03:09:36Z",
           "timePrecision": "exact",
-          "ageHours": 16.85,
-          "freshnessBasis": "Aryna Sabalenka defeated Linda Noskova in the US Open quarterfinals and advanced to the semifinals.",
+          "ageHours": 17.35,
+          "freshnessBasis": "Aryna Sabalenka defeated Linda Noskova to advance to the US Open semifinals.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49870845/sabalenka-edges-noskova-remains-alive-us-open-three-peat"
@@ -1121,9 +1120,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49870845/sabalenka-edges-noskova-remains-alive-us-open-three-peat"
             }
           ],
-          "id": "a3-special-856a8f4490d1aad6",
+          "id": "a3-special-fa5de15324d26cc5",
           "feedRank": 14,
-          "compactHeadline": "Sabalenka survives Noskova to reach US Open semis"
+          "compactHeadline": "Sabalenka survives Noskova to reach US Open semifinals"
         }
       ]
     },
@@ -1137,9 +1136,9 @@
             "cand-75da506cce66f3c9"
           ],
           "type": "CONTRACT",
-          "priority": 78,
-          "headline": "Max Verstappen confirmed he held serious talks with McLaren and Mercedes before choosing to remain with Red Bull on an extension.",
-          "text": "Max Verstappen confirmed he held serious talks with McLaren and Mercedes before choosing to remain with Red Bull on an extension.",
+          "priority": 74,
+          "headline": "Max Verstappen said he held serious talks with McLaren and Mercedes before following his preference and agreeing to remain with Red Bull.",
+          "text": "Max Verstappen said he held serious talks with McLaren and Mercedes before following his preference and agreeing to remain with Red Bull.",
           "entities": [
             "Formula 1",
             "Max Verstappen",
@@ -1149,8 +1148,8 @@
           ],
           "occurredAt": "2026-09-09T11:13:04Z",
           "timePrecision": "exact",
-          "ageHours": 8.79,
-          "freshnessBasis": "Max Verstappen disclosed serious McLaren and Mercedes talks before agreeing to extend his Red Bull stay.",
+          "ageHours": 9.29,
+          "freshnessBasis": "Max Verstappen disclosed talks with McLaren and Mercedes before agreeing to a Red Bull extension.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49878411/max-verstappen-admits-mclaren-mercedes-talks-following-heart-red-bull-stay"
@@ -1162,9 +1161,9 @@
               "url": "https://www.espn.com/f1/story/_/id/49878411/max-verstappen-admits-mclaren-mercedes-talks-following-heart-red-bull-stay"
             }
           ],
-          "id": "a3-special-a78858e83ef3c4ba",
-          "feedRank": 21,
-          "compactHeadline": "Verstappen confirms talks with McLaren and Mercedes"
+          "id": "a3-special-8d79098da86a5060",
+          "feedRank": 29,
+          "compactHeadline": "Verstappen reveals McLaren and Mercedes talks before Red Bull stay"
         }
       ]
     }
