@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-09T02:00:46Z",
+  "generatedAt": "2026-09-09T02:30:45Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "0aafb417265c13052e3116da6dda4fd12192ef600b1e18aca182c6143ed49cb2",
+  "sourceCandidateHash": "d0e1064a22acd9de7396e347df5399e4d9977ee9018d829af7a6520538858f5e",
   "leagues": [
     {
       "league": "MLB",
@@ -14,34 +14,48 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-0654cfa23a953d72"
+            "cand-c8bc41b2034471c2",
+            "cand-48c34c7aefd8eb97"
           ],
-          "type": "INJURY",
-          "priority": 76,
-          "headline": "The Dodgers sat Shohei Ohtani one day after his return, with the club and training staff planning to build him up slowly because of nagging injuries.",
-          "text": "The Dodgers sat Shohei Ohtani one day after his return, with the club and training staff planning to build him up slowly because of nagging injuries.",
+          "type": "MILESTONE",
+          "priority": 80,
+          "headline": "Aaron Judge returned from a fractured rib and went 0-for-3 as New York beat Colorado 5-3 to secure its 34th consecutive winning season.",
+          "text": "Aaron Judge returned from a fractured rib and went 0-for-3 as New York beat Colorado 5-3 to secure its 34th consecutive winning season.",
           "entities": [
-            "Los Angeles Dodgers",
-            "Shohei Ohtani"
+            "Aaron Judge",
+            "New York Yankees",
+            "Colorado Rockies"
           ],
-          "occurredAt": "2026-09-09T01:03:03Z",
+          "occurredAt": "2026-09-09T02:12:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.96,
-          "freshnessBasis": "Los Angeles sat Shohei Ohtani Tuesday after his return from a four-day injury-related break.",
+          "ageHours": 0.3,
+          "freshnessBasis": "Aaron Judge returned from the injured list Tuesday during New York’s 5-3 win over Colorado.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49874152/los-angeles-dodgers-sit-shohei-ohtani-day-return"
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816855",
+            "https://www.espn.com/mlb/story/_/id/49873261/judge-returns-lineup-yankees-build-smartly"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-08",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49874152/los-angeles-dodgers-sit-shohei-ohtani-day-return"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816855"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49873261/judge-returns-lineup-yankees-build-smartly"
             }
           ],
-          "id": "a3-1df6c6d3c6cece82",
+          "id": "a3-cdc357c2cb1df4fc",
           "feedRank": 4,
-          "compactHeadline": "Dodgers ease Ohtani back after injury-related absence"
+          "compactHeadline": "Judge returns as Yankees clinch 34th straight winning season"
         },
         {
           "rank": 2,
@@ -49,17 +63,17 @@
             "cand-163c7093e0fb6582"
           ],
           "type": "INJURY",
-          "priority": 74,
-          "headline": "Braves starter Bryce Elder underwent right knee surgery Tuesday and is expected to miss three to four weeks.",
-          "text": "Braves starter Bryce Elder underwent right knee surgery Tuesday and is expected to miss three to four weeks.",
+          "priority": 76,
+          "headline": "Atlanta starting pitcher Bryce Elder underwent right-knee surgery Tuesday and is expected to miss three to four weeks.",
+          "text": "Atlanta starting pitcher Bryce Elder underwent right-knee surgery Tuesday and is expected to miss three to four weeks.",
           "entities": [
-            "Atlanta Braves",
-            "Bryce Elder"
+            "Bryce Elder",
+            "Atlanta Braves"
           ],
           "occurredAt": "2026-09-08T21:16:26Z",
           "timePrecision": "exact",
-          "ageHours": 4.74,
-          "freshnessBasis": "Bryce Elder had right knee surgery Tuesday and was ruled out for three to four weeks.",
+          "ageHours": 5.24,
+          "freshnessBasis": "Bryce Elder had right-knee surgery Tuesday and was ruled out for three to four weeks.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49872284/braves-righty-bryce-elder-3-4-weeks-right-knee-surgery"
@@ -71,116 +85,83 @@
               "url": "https://www.espn.com/mlb/story/_/id/49872284/braves-righty-bryce-elder-3-4-weeks-right-knee-surgery"
             }
           ],
-          "id": "a3-f842ac3024ddcd9f",
+          "id": "a3-665fe884b24d4465",
           "feedRank": 6,
-          "compactHeadline": "Braves’ Bryce Elder out 3-4 weeks after knee surgery"
+          "compactHeadline": "Braves’ Bryce Elder out three to four weeks after surgery"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-91e26e1422235645"
+            "cand-0654cfa23a953d72"
+          ],
+          "type": "ROSTER",
+          "priority": 74,
+          "headline": "The Dodgers held Shohei Ohtani out of Tuesday’s lineup after his return from a four-day injury-related break, opting to build him up slowly.",
+          "text": "The Dodgers held Shohei Ohtani out of Tuesday’s lineup after his return from a four-day injury-related break, opting to build him up slowly.",
+          "entities": [
+            "Shohei Ohtani",
+            "Los Angeles Dodgers"
+          ],
+          "occurredAt": "2026-09-09T01:03:03Z",
+          "timePrecision": "exact",
+          "ageHours": 1.46,
+          "freshnessBasis": "Los Angeles sat Shohei Ohtani Tuesday after his return from a four-day break caused by nagging injuries.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49874152/los-angeles-dodgers-sit-shohei-ohtani-day-return"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49874152/los-angeles-dodgers-sit-shohei-ohtani-day-return"
+            }
+          ],
+          "id": "a3-ba4ae64bdc60f668",
+          "feedRank": 13,
+          "compactHeadline": "Dodgers sit Ohtani after return from injury break"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-079e82d26461158c"
           ],
           "type": "RESULT",
-          "priority": 82,
-          "headline": "Jeff McNeil’s ninth-inning infield single drove home Oakland’s winning run in a 6-5 walk-off over Toronto.",
-          "text": "Jeff McNeil’s ninth-inning infield single drove home Oakland’s winning run in a 6-5 walk-off over Toronto.",
+          "priority": 74,
+          "headline": "Junior Caminero hit his 39th home run, one of Tampa Bay’s four homers, in the Rays’ 7-1 win over Atlanta.",
+          "text": "Junior Caminero hit his 39th home run, one of Tampa Bay’s four homers, in the Rays’ 7-1 win over Atlanta.",
           "entities": [
-            "Oakland Athletics",
-            "Toronto Blue Jays",
-            "Jeff McNeil"
+            "Junior Caminero",
+            "Tampa Bay Rays",
+            "Atlanta Braves"
           ],
-          "occurredAt": "2026-09-08T02:05:00Z",
+          "occurredAt": "2026-09-08T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.93,
-          "freshnessBasis": "Jeff McNeil delivered Oakland’s walk-off single in the bottom of the ninth inning Tuesday.",
+          "ageHours": 3.26,
+          "freshnessBasis": "Junior Caminero hit his 39th home run as Tampa Bay beat Atlanta 7-1 Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816851"
+            "http://www.espn.com/mlb/recap?gameId=401816859"
           ],
           "sources": [
             {
               "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-07",
+              "sourceId": "highlightly-baseball-2026-09-08",
               "url": "https://highlightly.net"
             },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816851"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816859"
             }
           ],
-          "id": "a3-75cb8106c8758847",
-          "feedRank": 7,
-          "compactHeadline": "McNeil delivers walk-off as A’s edge Blue Jays 6-5"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-48c34c7aefd8eb97"
-          ],
-          "type": "RETURN",
-          "priority": 78,
-          "headline": "Aaron Judge returned from a fractured rib Tuesday, going 0-for-3 before leaving in the sixth inning of New York’s 5-3 win.",
-          "text": "Aaron Judge returned from a fractured rib Tuesday, going 0-for-3 before leaving in the sixth inning of New York’s 5-3 win.",
-          "entities": [
-            "New York Yankees",
-            "Aaron Judge",
-            "Colorado Rockies"
-          ],
-          "occurredAt": "2026-09-09T01:59:47Z",
-          "timePrecision": "exact",
-          "ageHours": 0.02,
-          "freshnessBasis": "Aaron Judge returned from a fractured rib in New York’s Tuesday game against Colorado.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49873261/judge-returns-lineup-yankees-build-smartly"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49873261/judge-returns-lineup-yankees-build-smartly"
-            }
-          ],
-          "id": "a3-a7b423d8562f1dca",
-          "feedRank": 10,
-          "compactHeadline": "Aaron Judge returns to Yankees lineup after fractured rib"
+          "id": "a3-08623d8811235800",
+          "feedRank": 14,
+          "compactHeadline": "Caminero’s 39th homer powers Rays past Braves"
         },
         {
           "rank": 5,
-          "candidateIds": [
-            "cand-9c644e03e15fd42c"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 75,
-          "headline": "Shohei Ohtani said he is focusing on hitting moving forward, making it likely he will not pitch for Los Angeles the rest of the season.",
-          "text": "Shohei Ohtani said he is focusing on hitting moving forward, making it likely he will not pitch for Los Angeles the rest of the season.",
-          "entities": [
-            "Los Angeles Dodgers",
-            "Shohei Ohtani"
-          ],
-          "occurredAt": "2026-09-08T14:29:34Z",
-          "timePrecision": "exact",
-          "ageHours": 11.52,
-          "freshnessBasis": "Shohei Ohtani said Tuesday he is focusing on hitting and likely will not pitch again this season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49863634/shohei-ohtani-returns-dodgers-lineup-missing-4-games"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49863634/shohei-ohtani-returns-dodgers-lineup-missing-4-games"
-            }
-          ],
-          "id": "a3-1b46b00d47ba2437",
-          "feedRank": 15,
-          "compactHeadline": "Ohtani likely done pitching for Dodgers this season"
-        },
-        {
-          "rank": 6,
           "candidateIds": [
             "cand-d951988ef51ee0bf"
           ],
@@ -195,8 +176,8 @@
           ],
           "occurredAt": "2026-09-08T23:18:50Z",
           "timePrecision": "exact",
-          "ageHours": 2.7,
-          "freshnessBasis": "Pittsburgh placed Isaac Mattson on the 15-day injured list Tuesday with right hip inflammation.",
+          "ageHours": 3.2,
+          "freshnessBasis": "Pittsburgh placed Isaac Mattson on the 15-day injured list with right hip inflammation and recalled Brandon Eisert.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49873500/pirates-place-isaac-mattson-il-recall-brandon-eisert"
@@ -208,9 +189,41 @@
               "url": "https://www.espn.com/mlb/story/_/id/49873500/pirates-place-isaac-mattson-il-recall-brandon-eisert"
             }
           ],
-          "id": "a3-52c68db62fde2105",
-          "feedRank": 19,
-          "compactHeadline": "Pirates place reliever Mattson on 15-day injured list"
+          "id": "a3-79ee6d93470391a9",
+          "feedRank": 17,
+          "compactHeadline": "Pirates place reliever Isaac Mattson on 15-day injured list"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-a581339e2c1769ef"
+          ],
+          "type": "INJURY",
+          "priority": 65,
+          "headline": "Tampa Bay placed shortstop Taylor Walls on the injured list with a right hip flexor strain.",
+          "text": "Tampa Bay placed shortstop Taylor Walls on the injured list with a right hip flexor strain.",
+          "entities": [
+            "Tampa Bay Rays",
+            "Taylor Walls"
+          ],
+          "occurredAt": "2026-09-08T22:12:07Z",
+          "timePrecision": "exact",
+          "ageHours": 4.31,
+          "freshnessBasis": "Tampa Bay placed Taylor Walls on the injured list Tuesday with a right hip flexor strain.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49872866/rays-put-shortstop-walls-15-day-il-hip-flexor-strain"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49872866/rays-put-shortstop-walls-15-day-il-hip-flexor-strain"
+            }
+          ],
+          "id": "a3-14338fa0996c8849",
+          "feedRank": 18,
+          "compactHeadline": "Rays place Taylor Walls on injured list with hip strain"
         },
         {
           "rank": 7,
@@ -218,18 +231,18 @@
             "cand-eede50236d5d1c1b"
           ],
           "type": "RESULT",
-          "priority": 72,
+          "priority": 69,
           "headline": "Drew Anderson pitches to Kody Clemens to put Minnesota Twins ahead for good in the 6th.",
           "text": "Drew Anderson pitches to Kody Clemens to put Minnesota Twins ahead for good in the 6th.",
           "entities": [
+            "Kody Clemens",
             "Minnesota Twins",
-            "Detroit Tigers",
-            "Kody Clemens"
+            "Detroit Tigers"
           ],
           "occurredAt": "2026-09-08T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.35,
-          "freshnessBasis": "Minnesota beat Detroit 3-2 Tuesday as Kody Clemens hit a two-run homer in the sixth inning.",
+          "ageHours": 3.85,
+          "freshnessBasis": "Kody Clemens hit a two-run sixth-inning homer as Minnesota defeated Detroit 3-2.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -253,35 +266,34 @@
               "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816857"
             }
           ],
-          "id": "a3-964672a250345f28",
+          "id": "a3-6b9a5b25fc7de2f5",
           "feedRank": 20,
-          "compactHeadline": "Clemens homer lifts Twins past Tigers 3-2"
+          "compactHeadline": "Clemens’ two-run homer lifts Twins over Tigers"
         },
         {
           "rank": 8,
           "candidateIds": [
-            "cand-20fecf4e05e05b83"
+            "cand-3f81e2958f88c1e4"
           ],
           "type": "RESULT",
-          "priority": 72,
-          "headline": "Houston beat Philadelphia 6-5 Tuesday behind home runs from Christian Walker, Cam Smith and Daulton Varsho.",
-          "text": "Houston beat Philadelphia 6-5 Tuesday behind home runs from Christian Walker, Cam Smith and Daulton Varsho.",
+          "priority": 67,
+          "headline": "New York beat Miami 7-5 as Sean Manaea retired his first 15 batters and Francisco Lindor and Juan Soto homered.",
+          "text": "New York beat Miami 7-5 as Sean Manaea retired his first 15 batters and Francisco Lindor and Juan Soto homered.",
           "entities": [
-            "Houston Astros",
-            "Philadelphia Phillies",
-            "Christian Walker",
-            "Cam Smith",
-            "Daulton Varsho"
+            "New York Mets",
+            "Miami Marlins",
+            "Sean Manaea",
+            "Francisco Lindor",
+            "Juan Soto"
           ],
           "occurredAt": "2026-09-08T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.35,
-          "freshnessBasis": "Houston beat Philadelphia 6-5 Tuesday behind home runs from Christian Walker, Cam Smith and Daulton Varsho.",
+          "ageHours": 3.85,
+          "freshnessBasis": "The Mets beat the Marlins 7-5 Tuesday as Sean Manaea retired his first 15 batters and Lindor and Soto homered.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816856",
-            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816856"
+            "http://www.espn.com/mlb/recap?gameId=401816858"
           ],
           "sources": [
             {
@@ -292,49 +304,12 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816856"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "a44-espn-mlb-summary-401816856",
-              "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816856"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816858"
             }
           ],
-          "id": "a3-5cf5b9b9e26879b3",
-          "feedRank": 21,
-          "compactHeadline": "Astros’ three-homer attack edges Phillies 6-5"
-        },
-        {
-          "rank": 9,
-          "candidateIds": [
-            "cand-a581339e2c1769ef"
-          ],
-          "type": "INJURY",
-          "priority": 65,
-          "headline": "Tampa Bay placed shortstop Taylor Walls on the injured list Tuesday with a right hip flexor strain.",
-          "text": "Tampa Bay placed shortstop Taylor Walls on the injured list Tuesday with a right hip flexor strain.",
-          "entities": [
-            "Tampa Bay Rays",
-            "Taylor Walls"
-          ],
-          "occurredAt": "2026-09-08T22:12:07Z",
-          "timePrecision": "exact",
-          "ageHours": 3.81,
-          "freshnessBasis": "Tampa Bay placed Taylor Walls on the injured list Tuesday with a right hip flexor strain.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49872866/rays-put-shortstop-walls-15-day-il-hip-flexor-strain"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49872866/rays-put-shortstop-walls-15-day-il-hip-flexor-strain"
-            }
-          ],
-          "id": "a3-14338fa0996c8849",
+          "id": "a3-44de767b83aecbe0",
           "feedRank": 22,
-          "compactHeadline": "Rays place Taylor Walls on injured list with hip strain"
+          "compactHeadline": "Manaea, Lindor and Soto power Mets past Marlins"
         }
       ]
     },
@@ -345,52 +320,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-157653046a4f9dd6"
-          ],
-          "type": "CONTRACT",
-          "priority": 88,
-          "headline": "The Buccaneers and Baker Mayfield agreed to a three-year, $165 million extension, keeping their quarterback in Tampa Bay.",
-          "text": "The Buccaneers and Baker Mayfield agreed to a three-year, $165 million extension, keeping their quarterback in Tampa Bay.",
-          "entities": [
-            "Tampa Bay Buccaneers",
-            "Baker Mayfield"
-          ],
-          "occurredAt": "2026-09-08T23:16:26Z",
-          "timePrecision": "exact",
-          "ageHours": 2.74,
-          "freshnessBasis": "Tampa Bay and Baker Mayfield agreed to a three-year, $165 million extension Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49872379/bucs-baker-mayfield-agree-3-year-extension-sources-say"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49872379/bucs-baker-mayfield-agree-3-year-extension-sources-say"
-            }
-          ],
-          "id": "a3-d315b59f55402cb6",
-          "feedRank": 3,
-          "compactHeadline": "Bucs, Baker Mayfield agree to three-year, $165M extension"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-9b34694d985f9706"
           ],
-          "type": "CONTRACT",
+          "type": "RECORD",
           "priority": 84,
-          "headline": "Christian Gonzalez and the Patriots agreed to a four-year, $135 million extension that makes him the NFL’s highest-paid cornerback.",
-          "text": "Christian Gonzalez and the Patriots agreed to a four-year, $135 million extension that makes him the NFL’s highest-paid cornerback.",
+          "headline": "Christian Gonzalez agreed to a four-year, $135 million extension with New England, making him the highest-paid cornerback in NFL history.",
+          "text": "Christian Gonzalez agreed to a four-year, $135 million extension with New England, making him the highest-paid cornerback in NFL history.",
           "entities": [
-            "New England Patriots",
-            "Christian Gonzalez"
+            "Christian Gonzalez",
+            "New England Patriots"
           ],
           "occurredAt": "2026-09-08T16:41:09Z",
           "timePrecision": "exact",
-          "ageHours": 9.33,
-          "freshnessBasis": "Christian Gonzalez agreed to a four-year, $135 million extension with New England Tuesday.",
+          "ageHours": 9.83,
+          "freshnessBasis": "Christian Gonzalez agreed to a four-year, $135 million Patriots extension that set the NFL cornerback pay record.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49865736/sources-christian-gonzalez-patriots-reach-4-year-135m-deal"
@@ -402,9 +345,41 @@
               "url": "https://www.espn.com/nfl/story/_/id/49865736/sources-christian-gonzalez-patriots-reach-4-year-135m-deal"
             }
           ],
-          "id": "a3-3ba947a2b8c6578b",
-          "feedRank": 8,
-          "compactHeadline": "Christian Gonzalez becomes NFL’s highest-paid cornerback"
+          "id": "a3-a18748b6b3806e66",
+          "feedRank": 3,
+          "compactHeadline": "Patriots make Christian Gonzalez highest-paid cornerback"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-157653046a4f9dd6"
+          ],
+          "type": "CONTRACT",
+          "priority": 88,
+          "headline": "Tampa Bay and quarterback Baker Mayfield agreed to a three-year, $165 million extension, sources told ESPN.",
+          "text": "Tampa Bay and quarterback Baker Mayfield agreed to a three-year, $165 million extension, sources told ESPN.",
+          "entities": [
+            "Baker Mayfield",
+            "Tampa Bay Buccaneers"
+          ],
+          "occurredAt": "2026-09-08T23:16:26Z",
+          "timePrecision": "exact",
+          "ageHours": 3.24,
+          "freshnessBasis": "Baker Mayfield and Tampa Bay agreed to a three-year, $165 million extension Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49872379/bucs-baker-mayfield-agree-3-year-extension-sources-say"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49872379/bucs-baker-mayfield-agree-3-year-extension-sources-say"
+            }
+          ],
+          "id": "a3-9577c44cdbb395d1",
+          "feedRank": 5,
+          "compactHeadline": "Bucs, Baker Mayfield agree to $165M three-year extension"
         },
         {
           "rank": 3,
@@ -412,20 +387,20 @@
             "cand-cd9d1315b2cdf7ef"
           ],
           "type": "INJURY",
-          "priority": 73,
-          "headline": "Patriots running back TreVeyon Henderson will miss the opener, while Seattle could be without two of its top three safeties.",
-          "text": "Patriots running back TreVeyon Henderson will miss the opener, while Seattle could be without two of its top three safeties.",
+          "priority": 75,
+          "headline": "New England running back TreVeyon Henderson was ruled out against Seattle, while the Seahawks could also be without two of their top three safeties.",
+          "text": "New England running back TreVeyon Henderson was ruled out against Seattle, while the Seahawks could also be without two of their top three safeties.",
           "entities": [
-            "New England Patriots",
-            "Seattle Seahawks",
             "TreVeyon Henderson",
             "Ty Okada",
-            "Nick Emmanwori"
+            "Nick Emmanwori",
+            "New England Patriots",
+            "Seattle Seahawks"
           ],
           "occurredAt": "2026-09-08T21:47:05Z",
           "timePrecision": "exact",
-          "ageHours": 4.23,
-          "freshnessBasis": "TreVeyon Henderson was ruled out of New England’s season opener against Seattle Tuesday.",
+          "ageHours": 4.73,
+          "freshnessBasis": "TreVeyon Henderson was ruled out for New England’s opener against Seattle, with the Seahawks also facing safety absences.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49872328/patriots-henderson-seahawks-okada-ruled-sb-rematch"
@@ -437,59 +412,26 @@
               "url": "https://www.espn.com/nfl/story/_/id/49872328/patriots-henderson-seahawks-okada-ruled-sb-rematch"
             }
           ],
-          "id": "a3-fe87029880ad6ef1",
-          "feedRank": 12,
-          "compactHeadline": "Henderson ruled out for Patriots-Seahawks season opener"
+          "id": "a3-d2f52fab88932b20",
+          "feedRank": 11,
+          "compactHeadline": "Henderson ruled out as Seahawks face Super Bowl rematch"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-1dab7ecb23f86be6"
-          ],
-          "type": "ROSTER",
-          "priority": 77,
-          "headline": "Rams coach Sean McVay announced that Aaron Donald will not travel to Australia and will be inactive against San Francisco.",
-          "text": "Rams coach Sean McVay announced that Aaron Donald will not travel to Australia and will be inactive against San Francisco.",
-          "entities": [
-            "Los Angeles Rams",
-            "Aaron Donald",
-            "San Francisco 49ers"
-          ],
-          "occurredAt": "2026-09-08T22:14:38Z",
-          "timePrecision": "exact",
-          "ageHours": 3.77,
-          "freshnessBasis": "Los Angeles ruled Aaron Donald inactive for Thursday’s season opener against San Francisco.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49871629/rams-aaron-donald-travel-australia-week-1"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49871629/rams-aaron-donald-travel-australia-week-1"
-            }
-          ],
-          "id": "a3-8bb6222d8e0ea751",
-          "feedRank": 18,
-          "compactHeadline": "Aaron Donald ruled inactive for Rams’ season opener"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-4e0c9389a2651244"
           ],
           "type": "RETURN",
-          "priority": 76,
-          "headline": "Longtime Eagles defensive end Brandon Graham announced his retirement from the NFL for the second time.",
-          "text": "Longtime Eagles defensive end Brandon Graham announced his retirement from the NFL for the second time.",
+          "priority": 77,
+          "headline": "Longtime Philadelphia defensive end Brandon Graham announced that he is retiring from the NFL for the second time.",
+          "text": "Longtime Philadelphia defensive end Brandon Graham announced that he is retiring from the NFL for the second time.",
           "entities": [
-            "Philadelphia Eagles",
-            "Brandon Graham"
+            "Brandon Graham",
+            "Philadelphia Eagles"
           ],
           "occurredAt": "2026-09-08T21:05:58Z",
           "timePrecision": "exact",
-          "ageHours": 4.91,
+          "ageHours": 5.41,
           "freshnessBasis": "Brandon Graham announced his second retirement from the NFL Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -502,42 +444,76 @@
               "url": "https://www.espn.com/nfl/story/_/id/49870106/eagles-brandon-graham-announces-retires-nfl-2nd"
             }
           ],
-          "id": "a3-4c1108826e641294",
-          "feedRank": 23,
-          "compactHeadline": "Eagles veteran Brandon Graham announces retirement again"
+          "id": "a3-6486c73da89c32af",
+          "feedRank": 16,
+          "compactHeadline": "Eagles’ Brandon Graham announces second NFL retirement"
         },
         {
-          "rank": 6,
+          "rank": 5,
           "candidateIds": [
-            "cand-189701aab2bbc947"
+            "cand-1dab7ecb23f86be6"
           ],
-          "type": "DEPTH_CHART",
-          "priority": 64,
-          "headline": "Patrick Mahomes is expected to start Kansas City’s season opener against Denver on Monday night.",
-          "text": "Patrick Mahomes is expected to start Kansas City’s season opener against Denver on Monday night.",
+          "type": "ROSTER",
+          "priority": 75,
+          "headline": "Rams coach Sean McVay said Aaron Donald will not travel to Australia and will be inactive against the 49ers in Thursday’s opener.",
+          "text": "Rams coach Sean McVay said Aaron Donald will not travel to Australia and will be inactive against the 49ers in Thursday’s opener.",
           "entities": [
-            "Kansas City Chiefs",
-            "Patrick Mahomes",
-            "Denver Broncos"
+            "Aaron Donald",
+            "Los Angeles Rams",
+            "San Francisco 49ers"
           ],
-          "occurredAt": "2026-09-08T18:22:50Z",
+          "occurredAt": "2026-09-08T22:14:38Z",
           "timePrecision": "exact",
-          "ageHours": 7.63,
-          "freshnessBasis": "Kansas City listed Patrick Mahomes as the expected starter for its Monday night opener against Denver.",
+          "ageHours": 4.27,
+          "freshnessBasis": "Sean McVay announced Tuesday that Aaron Donald will not travel to Australia and will be inactive against San Francisco.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49870606/patrick-mahomes-expected-start-chiefs-opener-vs-broncos-mnf"
+            "https://www.espn.com/nfl/story/_/id/49871629/rams-aaron-donald-travel-australia-week-1"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49870606/patrick-mahomes-expected-start-chiefs-opener-vs-broncos-mnf"
+              "url": "https://www.espn.com/nfl/story/_/id/49871629/rams-aaron-donald-travel-australia-week-1"
             }
           ],
-          "id": "a3-ecf0fe4667ee2481",
-          "feedRank": 28,
-          "compactHeadline": "Patrick Mahomes expected to start Chiefs’ opener"
+          "id": "a3-8bb6222d8e0ea751",
+          "feedRank": 19,
+          "compactHeadline": "Aaron Donald ruled inactive for Rams’ season opener"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-65f40d104e3d228f"
+          ],
+          "type": "NEXT",
+          "priority": 72,
+          "headline": "Nick Bosa is set to face the Rams Thursday, while George Kittle also appears likely to play in San Francisco’s season opener.",
+          "text": "Nick Bosa is set to face the Rams Thursday, while George Kittle also appears likely to play in San Francisco’s season opener.",
+          "entities": [
+            "Nick Bosa",
+            "George Kittle",
+            "San Francisco 49ers",
+            "Los Angeles Rams"
+          ],
+          "occurredAt": "2026-09-08T04:10:55Z",
+          "timePrecision": "exact",
+          "ageHours": 22.33,
+          "freshnessBasis": "San Francisco indicated Tuesday that Nick Bosa is set to face the Rams and George Kittle looks ready to play.",
+          "status": "next",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49865098/49ers-nick-bosa-set-face-rams-george-kittle-looks-good"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49865098/49ers-nick-bosa-set-face-rams-george-kittle-looks-good"
+            }
+          ],
+          "id": "a3-1618fc482ae5b3a4",
+          "feedRank": 27,
+          "compactHeadline": "Bosa expected to play; Kittle trending toward 49ers opener"
         },
         {
           "rank": 7,
@@ -545,17 +521,17 @@
             "cand-9be92f0011d469e0"
           ],
           "type": "DEPTH_CHART",
-          "priority": 62,
-          "headline": "Chicago named Braxton Jones its starting left tackle for Sunday’s opener after he won the position battle during training camp.",
-          "text": "Chicago named Braxton Jones its starting left tackle for Sunday’s opener after he won the position battle during training camp.",
+          "priority": 64,
+          "headline": "Chicago named Braxton Jones its starting left tackle for Sunday’s opener after he won the position battle in training camp.",
+          "text": "Chicago named Braxton Jones its starting left tackle for Sunday’s opener after he won the position battle in training camp.",
           "entities": [
-            "Chicago Bears",
-            "Braxton Jones"
+            "Braxton Jones",
+            "Chicago Bears"
           ],
           "occurredAt": "2026-09-08T21:50:31Z",
           "timePrecision": "exact",
-          "ageHours": 4.17,
-          "freshnessBasis": "Chicago named Braxton Jones its starting left tackle for the season opener Tuesday.",
+          "ageHours": 4.67,
+          "freshnessBasis": "Braxton Jones won Chicago’s training-camp competition and was named the season-opening left tackle.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49871513/bears-braxton-jones-start-left-tackle-season-opener"
@@ -568,7 +544,7 @@
             }
           ],
           "id": "a3-90d4d23f18a049a1",
-          "feedRank": 29,
+          "feedRank": 30,
           "compactHeadline": "Bears name Braxton Jones starting left tackle"
         }
       ]
@@ -583,20 +559,21 @@
             "cand-4bd2ba3794905d30"
           ],
           "type": "TRADE",
-          "priority": 79,
+          "priority": 78,
           "headline": "New Orleans traded Jordan Hawkins, Micah Peavy and two future second-round assets to Memphis for AJ Johnson and Taj Gibson.",
           "text": "New Orleans traded Jordan Hawkins, Micah Peavy and two future second-round assets to Memphis for AJ Johnson and Taj Gibson.",
           "entities": [
-            "New Orleans Pelicans",
-            "Memphis Grizzlies",
             "Jordan Hawkins",
+            "Micah Peavy",
             "AJ Johnson",
-            "Taj Gibson"
+            "Taj Gibson",
+            "New Orleans Pelicans",
+            "Memphis Grizzlies"
           ],
           "occurredAt": "2026-09-08T17:00:14Z",
           "timePrecision": "exact",
-          "ageHours": 9.01,
-          "freshnessBasis": "New Orleans traded Jordan Hawkins and Micah Peavy to Memphis in a four-player deal Tuesday.",
+          "ageHours": 9.51,
+          "freshnessBasis": "New Orleans traded Jordan Hawkins and Micah Peavy to Memphis in a four-player deal involving two future second-round assets.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49868291/sources-pelicans-trade-jordan-hawkins-grizzlies-4-player-deal"
@@ -609,7 +586,7 @@
             }
           ],
           "id": "a3-ada0306f07aaabaa",
-          "feedRank": 5,
+          "feedRank": 8,
           "compactHeadline": "Pelicans send Jordan Hawkins to Grizzlies in four-player deal"
         },
         {
@@ -617,19 +594,19 @@
           "candidateIds": [
             "cand-b9b1dd57da839dd6"
           ],
-          "type": "LEAGUE_NEWS",
-          "priority": 65,
+          "type": "MILESTONE",
+          "priority": 68,
           "headline": "The Lakers announced that Hall of Fame coach Phil Jackson will receive a statue outside Crypto.com Arena on April 9.",
           "text": "The Lakers announced that Hall of Fame coach Phil Jackson will receive a statue outside Crypto.com Arena on April 9.",
           "entities": [
-            "Los Angeles Lakers",
-            "Phil Jackson"
+            "Phil Jackson",
+            "Los Angeles Lakers"
           ],
           "occurredAt": "2026-09-08T22:15:42Z",
           "timePrecision": "exact",
-          "ageHours": 3.75,
+          "ageHours": 4.25,
           "freshnessBasis": "The Lakers announced Tuesday that Phil Jackson’s statue will be unveiled outside Crypto.com Arena on April 9.",
-          "status": "active",
+          "status": "next",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson"
           ],
@@ -641,8 +618,46 @@
             }
           ],
           "id": "a3-669b1aa8b341a5f8",
-          "feedRank": 27,
+          "feedRank": 21,
           "compactHeadline": "Lakers to honor Phil Jackson with arena statue"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-e36fabf2d672f9e3"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 70,
+          "headline": "Philadelphia unveiled renderings for a privately funded 76ers and Flyers arena targeted to open before the 2030 WNBA season.",
+          "text": "Philadelphia unveiled renderings for a privately funded 76ers and Flyers arena targeted to open before the 2030 WNBA season.",
+          "entities": [
+            "Philadelphia 76ers",
+            "Philadelphia Flyers"
+          ],
+          "occurredAt": "2026-09-08T12:52:58Z",
+          "timePrecision": "exact",
+          "ageHours": 13.63,
+          "freshnessBasis": "Philadelphia unveiled renderings for a new 76ers and Flyers arena targeted to open in 2030.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports",
+            "https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports"
+            }
+          ],
+          "id": "a3-9ff3d5560c8e7232",
+          "feedRank": 26,
+          "compactHeadline": "76ers, Flyers unveil arena targeted to open in 2030"
         }
       ]
     },
@@ -657,15 +672,15 @@
           ],
           "type": "SIGNING",
           "priority": 78,
-          "headline": "Boston signed forward Fraser Minten to a seven-year, $50.4 million contract.",
-          "text": "Boston signed forward Fraser Minten to a seven-year, $50.4 million contract.",
+          "headline": "Boston signed forward Fraser Minten to a seven-year contract worth $50.4 million.",
+          "text": "Boston signed forward Fraser Minten to a seven-year contract worth $50.4 million.",
           "entities": [
-            "Boston Bruins",
-            "Fraser Minten"
+            "Fraser Minten",
+            "Boston Bruins"
           ],
           "occurredAt": "2026-09-08T18:12:59Z",
           "timePrecision": "exact",
-          "ageHours": 7.8,
+          "ageHours": 8.3,
           "freshnessBasis": "Boston signed Fraser Minten to a seven-year, $50.4 million contract Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -679,7 +694,7 @@
             }
           ],
           "id": "a3-a9347db9b951ab51",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Bruins sign Fraser Minten to seven-year, $50.4M deal"
         }
       ]
@@ -695,15 +710,15 @@
           ],
           "type": "AWARD",
           "priority": 74,
-          "headline": "The 2026 Ballon d’Or shortlists were released Tuesday for the men’s and women’s individual soccer awards.",
-          "text": "The 2026 Ballon d’Or shortlists were released Tuesday for the men’s and women’s individual soccer awards.",
+          "headline": "The 2026 Ballon d’Or shortlists were released for the men’s and women’s awards, with the host city also changing.",
+          "text": "The 2026 Ballon d’Or shortlists were released for the men’s and women’s awards, with the host city also changing.",
           "entities": [
             "Ballon d’Or"
           ],
           "occurredAt": "2026-09-08T19:22:51Z",
           "timePrecision": "exact",
-          "ageHours": 6.63,
-          "freshnessBasis": "The 2026 men’s and women’s Ballon d’Or shortlists were released Tuesday.",
+          "ageHours": 7.13,
+          "freshnessBasis": "The 2026 Ballon d’Or shortlists and a host-city change were announced Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49867974/2026-ballon-dor-full-mens-women-shortlists-host-city-change-vozinha-more"
@@ -715,26 +730,58 @@
               "url": "https://www.espn.com/soccer/story/_/id/49867974/2026-ballon-dor-full-mens-women-shortlists-host-city-change-vozinha-more"
             }
           ],
-          "id": "a3-9b5c03b6eec120ca",
-          "feedRank": 17,
-          "compactHeadline": "Ballon d’Or shortlists announced for 2026 awards"
+          "id": "a3-6e5f7df4e84e8320",
+          "feedRank": 15,
+          "compactHeadline": "2026 Ballon d’Or shortlists released for men’s and women’s awards"
         },
         {
           "rank": 2,
           "candidateIds": [
+            "cand-b2a2f13eba15643b"
+          ],
+          "type": "CONTRACT",
+          "priority": 66,
+          "headline": "Liverpool midfielder Alexis Mac Allister said he was “very, very sad” after the club did not offer him a new contract.",
+          "text": "Liverpool midfielder Alexis Mac Allister said he was “very, very sad” after the club did not offer him a new contract.",
+          "entities": [
+            "Alexis Mac Allister",
+            "Liverpool"
+          ],
+          "occurredAt": "2026-09-08T18:19:06Z",
+          "timePrecision": "exact",
+          "ageHours": 8.19,
+          "freshnessBasis": "Alexis Mac Allister said Tuesday that Liverpool did not offer him a new contract and that he was very, very sad.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49868479/liverpool-alexis-mac-allister-very-very-sad-not-being-offered-new-contract"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49868479/liverpool-alexis-mac-allister-very-very-sad-not-being-offered-new-contract"
+            }
+          ],
+          "id": "a3-6ec50d086bfc9b4e",
+          "feedRank": 24,
+          "compactHeadline": "Mac Allister says Liverpool did not offer him new deal"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-d725424f3d2faccf"
           ],
           "type": "LEAGUE_NEWS",
-          "priority": 64,
-          "headline": "Liverpool announced Turkish Airlines will become the club’s front-of-shirt sponsor beginning with the 2027-28 season.",
-          "text": "Liverpool announced Turkish Airlines will become the club’s front-of-shirt sponsor beginning with the 2027-28 season.",
+          "priority": 65,
+          "headline": "Liverpool confirmed Turkish Airlines will become the club’s front-of-shirt sponsor starting with the 2027-28 season.",
+          "text": "Liverpool confirmed Turkish Airlines will become the club’s front-of-shirt sponsor starting with the 2027-28 season.",
           "entities": [
             "Liverpool",
             "Turkish Airlines"
           ],
           "occurredAt": "2026-09-08T14:56:40Z",
           "timePrecision": "exact",
-          "ageHours": 11.07,
+          "ageHours": 11.57,
           "freshnessBasis": "Liverpool announced Turkish Airlines as its main shirt sponsor beginning in the 2027-28 season.",
           "status": "active",
           "sourceUrls": [
@@ -747,41 +794,74 @@
               "url": "https://www.espn.com/soccer/story/_/id/49867443/liverpool-announce-turkish-airlines-main-shirt-sponsor-2027"
             }
           ],
-          "id": "a3-013c60824d0f2041",
+          "id": "a3-f7fa60b8e1763922",
           "feedRank": 25,
-          "compactHeadline": "Liverpool names Turkish Airlines shirt sponsor from 2027"
+          "compactHeadline": "Liverpool names Turkish Airlines front-of-shirt sponsor"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
-            "cand-b2a2f13eba15643b"
+            "cand-462752d36d9182a7"
           ],
-          "type": "CONTRACT",
+          "type": "RESULT",
           "priority": 63,
-          "headline": "Liverpool midfielder Alexis Mac Allister said he was “very, very sad” after the club did not offer him a new contract.",
-          "text": "Liverpool midfielder Alexis Mac Allister said he was “very, very sad” after the club did not offer him a new contract.",
+          "headline": "Burnley U21 beat Fleetwood Town U21 2-1 in the Premier League Cup on Tuesday.",
+          "text": "Burnley U21 beat Fleetwood Town U21 2-1 in the Premier League Cup on Tuesday.",
           "entities": [
-            "Liverpool",
-            "Alexis Mac Allister"
+            "Burnley U21",
+            "Fleetwood Town U21",
+            "Premier League Cup"
           ],
-          "occurredAt": "2026-09-08T18:19:06Z",
+          "occurredAt": "2026-09-08T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.69,
-          "freshnessBasis": "Alexis Mac Allister said Tuesday that Liverpool had not offered him a new contract.",
+          "ageHours": 8.51,
+          "freshnessBasis": "Burnley U21 beat Fleetwood Town U21 2-1 in the Premier League Cup Tuesday.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49868479/liverpool-alexis-mac-allister-very-very-sad-not-being-offered-new-contract"
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-08",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-42db7dbc24cd84c4",
+          "feedRank": 28,
+          "compactHeadline": "Burnley U21 edges Fleetwood U21 in Premier League Cup"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-e54ded66734e3859"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 62,
+          "headline": "A Manchester United fan group called for a unified protest over the season-ticket dispute ahead of Sunday’s derby with Manchester City.",
+          "text": "A Manchester United fan group called for a unified protest over the season-ticket dispute ahead of Sunday’s derby with Manchester City.",
+          "entities": [
+            "Manchester United",
+            "Manchester City"
+          ],
+          "occurredAt": "2026-09-08T17:58:40Z",
+          "timePrecision": "exact",
+          "ageHours": 8.53,
+          "freshnessBasis": "A Manchester United fan group called Tuesday for a unified protest before Sunday’s derby over the season-ticket dispute.",
+          "status": "next",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49867513/manchester-united-fan-group-call-pre-derby-protest-amid-season-ticket-fiasco"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49868479/liverpool-alexis-mac-allister-very-very-sad-not-being-offered-new-contract"
+              "url": "https://www.espn.com/soccer/story/_/id/49867513/manchester-united-fan-group-call-pre-derby-protest-amid-season-ticket-fiasco"
             }
           ],
-          "id": "a3-c0092c43b355ff4e",
-          "feedRank": 26,
-          "compactHeadline": "Mac Allister says Liverpool did not offer new deal"
+          "id": "a3-35dedf9cfaddcce3",
+          "feedRank": 29,
+          "compactHeadline": "Man United fan group calls for pre-derby protest"
         }
       ]
     },
@@ -797,86 +877,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-898dc2f3b3172805"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 78,
-          "headline": "The NCAA is establishing a new timing standard after Michigan was awarded an extra second in its controversial win over Western Michigan.",
-          "text": "The NCAA is establishing a new timing standard after Michigan was awarded an extra second in its controversial win over Western Michigan.",
-          "entities": [
-            "NCAA",
-            "Michigan Wolverines",
-            "Western Michigan Broncos"
-          ],
-          "occurredAt": "2026-09-09T01:57:48Z",
-          "timePrecision": "exact",
-          "ageHours": 0.05,
-          "freshnessBasis": "The NCAA announced a new timing protocol Wednesday after Michigan’s controversial last-second win.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49874687/ncaa-issues-new-timing-protocol-wake-u-m-last-second-win"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49874687/ncaa-issues-new-timing-protocol-wake-u-m-last-second-win"
-            }
-          ],
-          "id": "a3-bab3c32d26a5d701",
-          "feedRank": 11,
-          "compactHeadline": "NCAA adopts new timing protocol after Michigan finish"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-7cf41b86227cc436"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 75,
-          "headline": "The Mid-American Conference is asking for Western Michigan to be declared the winner after its controversial finish against Michigan.",
-          "text": "The Mid-American Conference is asking for Western Michigan to be declared the winner after its controversial finish against Michigan.",
-          "entities": [
-            "Mid-American Conference",
-            "Western Michigan Broncos",
-            "Michigan Wolverines"
-          ],
-          "occurredAt": "2026-09-09T00:33:49Z",
-          "timePrecision": "exact",
-          "ageHours": 1.45,
-          "freshnessBasis": "The MAC asked Tuesday for Western Michigan to be declared the winner after Saturday’s disputed finish against Michigan.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49873237/western-michigan-one-second-appeal-mac-ncaa-college-football-playoff-goliath"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49873237/western-michigan-one-second-appeal-mac-ncaa-college-football-playoff-goliath"
-            }
-          ],
-          "id": "a3-2e17b04dec435ac5",
-          "feedRank": 13,
-          "compactHeadline": "MAC asks to declare Western Michigan winner"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-5f2663cc7446940b"
           ],
-          "type": "LEAGUE_NEWS",
-          "priority": 75,
-          "headline": "College Football Playoff leaders opened a 30-day negotiating window with ESPN to assess whether expanding to 24 teams is worthwhile.",
-          "text": "College Football Playoff leaders opened a 30-day negotiating window with ESPN to assess whether expanding to 24 teams is worthwhile.",
+          "type": "PLAYOFF",
+          "priority": 80,
+          "headline": "CFP leaders opened a 30-day negotiating window with ESPN to determine whether expanding to a 24-team field is worthwhile.",
+          "text": "CFP leaders opened a 30-day negotiating window with ESPN to determine whether expanding to a 24-team field is worthwhile.",
           "entities": [
             "College Football Playoff",
             "ESPN"
           ],
           "occurredAt": "2026-09-08T22:07:52Z",
           "timePrecision": "exact",
-          "ageHours": 3.88,
-          "freshnessBasis": "College Football Playoff leaders opened a 30-day negotiating window with ESPN Tuesday.",
+          "ageHours": 4.38,
+          "freshnessBasis": "College Football Playoff leaders opened a 30-day negotiation window with ESPN over a possible 24-team field.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49871893/sources-cfp-opens-espn-negotiation-window-24-teams-possible"
@@ -888,9 +902,42 @@
               "url": "https://www.espn.com/college-football/story/_/id/49871893/sources-cfp-opens-espn-negotiation-window-24-teams-possible"
             }
           ],
-          "id": "a3-c4c23e6ae230d370",
-          "feedRank": 14,
-          "compactHeadline": "CFP opens ESPN talks as 24-team field remains possible"
+          "id": "a3-f223d411f24c81bf",
+          "feedRank": 1,
+          "compactHeadline": "College Football Playoff opens talks on possible 24-team field"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-dd3a0fac1730c92d"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 82,
+          "headline": "The NCAA established a standard timing protocol after Michigan was awarded an extra second in its controversial win over Western Michigan.",
+          "text": "The NCAA established a standard timing protocol after Michigan was awarded an extra second in its controversial win over Western Michigan.",
+          "entities": [
+            "NCAA",
+            "Michigan Wolverines",
+            "Western Michigan Broncos"
+          ],
+          "occurredAt": "2026-09-09T02:06:14Z",
+          "timePrecision": "exact",
+          "ageHours": 0.41,
+          "freshnessBasis": "The NCAA announced a new standard timing protocol after the disputed extra second in Michigan’s win.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49874687/ncaa-issues-new-timing-protocol-wake-u-m-last-second-win"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49874687/ncaa-issues-new-timing-protocol-wake-u-m-last-second-win"
+            }
+          ],
+          "id": "a3-86eea59fd8a42d91",
+          "feedRank": 7,
+          "compactHeadline": "NCAA establishes timing protocol after Michigan controversy"
         }
       ]
     }
@@ -906,18 +953,18 @@
             "cand-ce45b748dab43ee2"
           ],
           "type": "ADVANCEMENT",
-          "priority": 86,
-          "headline": "Frances Tiafoe overcame Alex Michelsen in a five-set thriller to reach his third US Open semifinal, winning 5-7, 3-6, 7-5, 6-3, 7-6.",
-          "text": "Frances Tiafoe overcame Alex Michelsen in a five-set thriller to reach his third US Open semifinal, winning 5-7, 3-6, 7-5, 6-3, 7-6.",
+          "priority": 85,
+          "headline": "Frances Tiafoe rallied past Alex Michelsen 5-7, 3-6, 7-5, 6-3, 7-6 (10-6) to reach his third US Open semifinal.",
+          "text": "Frances Tiafoe rallied past Alex Michelsen 5-7, 3-6, 7-5, 6-3, 7-6 (10-6) to reach his third US Open semifinal.",
           "entities": [
-            "US Open",
             "Frances Tiafoe",
-            "Alex Michelsen"
+            "Alex Michelsen",
+            "US Open"
           ],
-          "occurredAt": "2026-09-09T01:58:21Z",
+          "occurredAt": "2026-09-09T00:54:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
-          "freshnessBasis": "Frances Tiafoe beat Alex Michelsen in five sets Tuesday to reach the US Open semifinals.",
+          "ageHours": 1.6,
+          "freshnessBasis": "Frances Tiafoe defeated Alex Michelsen in five sets to reach the 2026 US Open semifinals.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49873533/frances-tiafoe-rallies-alex-michelsen-5-sets-make-2026-us-open-semifinals"
@@ -929,28 +976,28 @@
               "url": "https://www.espn.com/tennis/story/_/id/49873533/frances-tiafoe-rallies-alex-michelsen-5-sets-make-2026-us-open-semifinals"
             }
           ],
-          "id": "a3-special-9ffe3d181bd316e9",
-          "feedRank": 1,
-          "compactHeadline": "Tiafoe rallies in five sets to reach US Open semifinals"
+          "id": "a3-special-ea5f5fbd4f1bbd14",
+          "feedRank": 2,
+          "compactHeadline": "Tiafoe rallies past Michelsen in five to reach US Open semis"
         },
         {
           "rank": 2,
           "candidateIds": [
             "cand-0c31faf6274bc337"
           ],
-          "type": "ADVANCEMENT",
-          "priority": 84,
-          "headline": "Aryna Sabalenka beat Linda Noskova 7-6, 3-6, 7-6 in a tense quarterfinal to remain in contention for a third straight US Open title.",
-          "text": "Aryna Sabalenka beat Linda Noskova 7-6, 3-6, 7-6 in a tense quarterfinal to remain in contention for a third straight US Open title.",
+          "type": "RESULT",
+          "priority": 82,
+          "headline": "Aryna Sabalenka defeated Linda Noskova 7-6 (1), 3-6, 7-6 (10-7) in a quarterfinal thriller to remain in contention for a third straight US Open title.",
+          "text": "Aryna Sabalenka defeated Linda Noskova 7-6 (1), 3-6, 7-6 (10-7) in a quarterfinal thriller to remain in contention for a third straight US Open title.",
           "entities": [
-            "US Open",
             "Aryna Sabalenka",
-            "Linda Noskova"
+            "Linda Noskova",
+            "US Open"
           ],
           "occurredAt": "2026-09-09T00:18:34Z",
           "timePrecision": "exact",
-          "ageHours": 1.7,
-          "freshnessBasis": "Aryna Sabalenka defeated Linda Noskova Tuesday to advance at the US Open and remain alive for a three-peat.",
+          "ageHours": 2.2,
+          "freshnessBasis": "Aryna Sabalenka defeated Linda Noskova in a three-set US Open quarterfinal Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49870845/sabalenka-edges-noskova-remains-alive-us-open-three-peat"
@@ -962,9 +1009,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49870845/sabalenka-edges-noskova-remains-alive-us-open-three-peat"
             }
           ],
-          "id": "a3-special-ddfac9a5a49904f5",
-          "feedRank": 2,
-          "compactHeadline": "Sabalenka survives Noskova to keep three-peat hopes alive"
+          "id": "a3-special-63fe7274dd41bbb9",
+          "feedRank": 9,
+          "compactHeadline": "Sabalenka survives Noskova, keeps US Open three-peat alive"
         },
         {
           "rank": 3,
@@ -972,18 +1019,18 @@
             "cand-bf2b2269f8d2d660"
           ],
           "type": "ADVANCEMENT",
-          "priority": 73,
+          "priority": 74,
           "headline": "Coco Gauff defeated Iva Jovic to reach the US Open quarterfinals for the first time since winning the tournament in 2023.",
           "text": "Coco Gauff defeated Iva Jovic to reach the US Open quarterfinals for the first time since winning the tournament in 2023.",
           "entities": [
-            "US Open",
             "Coco Gauff",
-            "Iva Jovic"
+            "Iva Jovic",
+            "US Open"
           ],
           "occurredAt": "2026-09-08T05:27:10Z",
           "timePrecision": "exact",
-          "ageHours": 20.56,
-          "freshnessBasis": "Coco Gauff beat Iva Jovic Tuesday to reach her first US Open quarterfinal since 2023.",
+          "ageHours": 21.06,
+          "freshnessBasis": "Coco Gauff defeated Iva Jovic and advanced to her first US Open quarterfinal since 2023.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49864647/gauff-beats-jovic-1st-us-open-quarters-title-23"
@@ -995,9 +1042,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49864647/gauff-beats-jovic-1st-us-open-quarters-title-23"
             }
           ],
-          "id": "a3-special-711c1e5410a5776a",
-          "feedRank": 16,
-          "compactHeadline": "Gauff reaches US Open quarterfinals for first time since 2023"
+          "id": "a3-special-7598486531d95b72",
+          "feedRank": 12,
+          "compactHeadline": "Gauff reaches US Open quarters for first time since 2023 title"
         },
         {
           "rank": 4,
@@ -1005,18 +1052,18 @@
             "cand-1a8b585e516cedbd"
           ],
           "type": "ADVANCEMENT",
-          "priority": 68,
-          "headline": "Top-seeded Alexander Zverev beat Luciano Darderi in straight sets Monday night to advance to the US Open quarterfinals.",
-          "text": "Top-seeded Alexander Zverev beat Luciano Darderi in straight sets Monday night to advance to the US Open quarterfinals.",
+          "priority": 65,
+          "headline": "Top-seeded Alexander Zverev beat Luciano Darderi in straight sets to reach the US Open quarterfinals.",
+          "text": "Top-seeded Alexander Zverev beat Luciano Darderi in straight sets to reach the US Open quarterfinals.",
           "entities": [
-            "US Open",
             "Alexander Zverev",
-            "Luciano Darderi"
+            "Luciano Darderi",
+            "US Open"
           ],
           "occurredAt": "2026-09-08T05:08:24Z",
           "timePrecision": "exact",
-          "ageHours": 20.87,
-          "freshnessBasis": "Alexander Zverev beat Luciano Darderi in straight sets Monday to reach the US Open quarterfinals.",
+          "ageHours": 21.37,
+          "freshnessBasis": "Alexander Zverev beat Luciano Darderi in straight sets Monday to advance to the US Open quarterfinals.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49865538/top-seeded-zverev-rolls-us-open-quarters-tien-ousted"
@@ -1028,9 +1075,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49865538/top-seeded-zverev-rolls-us-open-quarters-tien-ousted"
             }
           ],
-          "id": "a3-special-59465cba3745b446",
-          "feedRank": 24,
-          "compactHeadline": "Zverev reaches US Open quarterfinals in straight sets"
+          "id": "a3-special-e9fb883a12b52f08",
+          "feedRank": 23,
+          "compactHeadline": "Zverev rolls into US Open quarterfinals"
         }
       ]
     }
@@ -1043,10 +1090,10 @@
   "compactHeadlineRole": "compact-editorial-metadata",
   "browserWireCompat": {
     "version": "A4.14",
-    "changedCount": 29,
+    "changedCount": 30,
     "policy": "mirror text -> headline at JSON serialization only"
   },
-  "headlineCount": 29,
+  "headlineCount": 30,
   "headlineTargetChars": 80,
   "headlineMaxChars": 96
 }
