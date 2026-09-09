@@ -1,189 +1,196 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-09T00:00:45Z
+Updated: 2026-09-09T00:30:38Z
 Global headline budget: 29/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: f2a4ef2303de32389a78ab954891fd7da471f64d7f6c6428595df7744a163370
+Candidate hash: a336b74448e35463b14fb0838c4d9b09f2d9b7934d75d04960bcfcb42f5e4af8
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [RETURN] Aaron Judge returned to New York’s lineup Tuesday after missing time with a fractured rib, with the Yankees planning to build him up carefully. (priority 84, age 0.20h)
-    Compact headline: Aaron Judge returns to Yankees lineup after rib fracture
-    Occurred: 2026-09-08T23:48:30Z | Precision: exact | Status: active
-    Freshness basis: Aaron Judge returned to the Yankees lineup Tuesday after being out since May 31 with a fractured rib.
-    Entities: New York Yankees, Aaron Judge
-    Candidate IDs: cand-7d65aef47980e121
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49873261/judge-returns-lineup-yankees-build-smartly
-
- 2. [INJURY] Atlanta starting pitcher Bryce Elder underwent right knee surgery Tuesday and is expected to miss three to four weeks. (priority 73, age 2.74h)
-    Compact headline: Braves’ Bryce Elder out 3-4 weeks after knee surgery
+ 1. [INJURY] Atlanta starter Bryce Elder underwent right knee surgery Tuesday and is expected to miss three to four weeks. (priority 74, age 3.24h)
+    Compact headline: Bryce Elder out three to four weeks after knee surgery
     Occurred: 2026-09-08T21:16:26Z | Precision: exact | Status: active
-    Freshness basis: Bryce Elder had right knee surgery Tuesday and will be out three to four weeks.
+    Freshness basis: Bryce Elder underwent right knee surgery Tuesday and was projected to miss three to four weeks.
     Entities: Atlanta Braves, Bryce Elder
     Candidate IDs: cand-163c7093e0fb6582
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49872284/braves-righty-bryce-elder-3-4-weeks-right-knee-surgery
 
- 3. [RESULT] Jeff McNeil’s ninth-inning infield single drove home the winning run, lifting Oakland past Toronto 6-5 in a walk-off finish. (priority 82, age 21.93h)
-    Compact headline: McNeil delivers walk-off as Athletics beat Blue Jays 6-5
+ 2. [RETURN] Aaron Judge returned to New York’s lineup Tuesday after missing time with a fractured rib, with the Yankees planning to ease him back into action. (priority 80, age 0.70h)
+    Compact headline: Aaron Judge returns to Yankees lineup after rib fracture
+    Occurred: 2026-09-08T23:48:30Z | Precision: exact | Status: active
+    Freshness basis: Aaron Judge returned to the Yankees lineup Tuesday after missing time with a fractured rib.
+    Entities: New York Yankees, Aaron Judge
+    Candidate IDs: cand-7d65aef47980e121
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49873261/judge-returns-lineup-yankees-build-smartly
+
+ 3. [RESULT] Jeff McNeil’s ninth-inning infield single drove home the winning run as Oakland beat Toronto 6-5 in a walk-off finish. (priority 82, age 22.43h)
+    Compact headline: McNeil delivers walk-off as A’s beat Blue Jays 6-5
     Occurred: 2026-09-08T02:05:00Z | Precision: exact | Status: active
-    Freshness basis: Jeff McNeil delivered the walk-off in the bottom of the ninth inning Tuesday.
+    Freshness basis: Jeff McNeil delivered Oakland’s walk-off single in the bottom of the ninth inning Tuesday.
     Entities: Oakland Athletics, Toronto Blue Jays, Jeff McNeil
     Candidate IDs: cand-91e26e1422235645
     Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816851
 
- 4. [RESULT] Shay Whitcomb delivered the walk-off in the bottom of the 11th inning. (priority 82, age 23.85h)
-    Compact headline: Shay Whitcomb delivers walk-off as San Francisco Giants beat St. Louis Cardinals 5-4
-    Occurred: 2026-09-08T00:10:00Z | Precision: exact | Status: active
-    Freshness basis: Shay Whitcomb delivered the walk-off in the bottom of the 11th inning.
+ 4. [RETURN] Shohei Ohtani returned to the Dodgers' lineup Monday and said he is focusing on hitting, likely ending his pitching work for 2026. (priority 80, age 10.02h)
+    Compact headline: Ohtani returns to Dodgers lineup, likely done pitching
+    Occurred: 2026-09-08T14:29:34Z | Precision: exact | Status: active
+    Freshness basis: Shohei Ohtani returned to the Dodgers' lineup Monday and said he is focusing on hitting.
+    Entities: Shohei Ohtani, Los Angeles Dodgers
+    Candidate IDs: cand-9c644e03e15fd42c
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49863634/shohei-ohtani-returns-dodgers-lineup-missing-4-games
+
+ 5. [INJURY] The Pirates placed reliever Isaac Mattson on the 15-day injured list with right hip inflammation and recalled Brandon Eisert. (priority 65, age 1.20h)
+    Compact headline: Pirates place reliever Isaac Mattson on 15-day IL
+    Occurred: 2026-09-08T23:18:50Z | Precision: exact | Status: active
+    Freshness basis: Pittsburgh placed Isaac Mattson on the 15-day injured list Tuesday and recalled Brandon Eisert.
+    Entities: Isaac Mattson, Brandon Eisert, Pittsburgh Pirates
+    Candidate IDs: cand-d951988ef51ee0bf
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49873500/pirates-place-isaac-mattson-il-recall-brandon-eisert
+
+ 6. [INJURY] The Rays placed shortstop Taylor Walls on the injured list with a right hip flexor strain. (priority 65, age 2.31h)
+    Compact headline: Rays place Taylor Walls on injured list
+    Occurred: 2026-09-08T22:12:07Z | Precision: exact | Status: active
+    Freshness basis: Tampa Bay placed Taylor Walls on the injured list Tuesday with a right hip flexor strain.
+    Entities: Taylor Walls, Tampa Bay Rays
+    Candidate IDs: cand-a581339e2c1769ef
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49872866/rays-put-shortstop-walls-15-day-il-hip-flexor-strain
+
+ 7. [RESULT] Shay Whitcomb delivered his first career game-ending RBI with an 11th-inning single, lifting San Francisco over St. Louis 5-4. (priority 72, age 20.62h)
+    Compact headline: Whitcomb’s 11th-inning single lifts Giants past Cardinals
+    Occurred: 2026-09-08T03:53:30Z | Precision: exact | Status: active
+    Freshness basis: Shay Whitcomb delivered his first career game-ending RBI in San Francisco’s 11th-inning win Tuesday.
     Entities: San Francisco Giants, St. Louis Cardinals, Shay Whitcomb
-    Candidate IDs: cand-4485d89820b8fba1
-    Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
+    Candidate IDs: cand-93548f0943cfcbf8
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816850
 
- 5. [STREAK] Teoscar Hernández hit a three-run homer and Emmet Sheehan tied his career high with 10 strikeouts as Los Angeles beat Cincinnati 6-3. (priority 76, age 22.85h)
-    Compact headline: Dodgers win fifth straight behind Hernández and Sheehan
+ 8. [RESULT] Teoscar Hernández hit a three-run homer and Emmet Sheehan struck out 10 in Los Angeles’ Tuesday win. (priority 72, age 23.34h)
+    Compact headline: Hernández homer, Sheehan’s 10 Ks power Dodgers to fifth straight
     Occurred: 2026-09-08T01:10:00Z | Precision: exact | Status: active
-    Freshness basis: The Dodgers beat the Reds 6-3 Tuesday for their fifth straight win.
+    Freshness basis: Teoscar Hernández hit a three-run homer and Emmet Sheehan struck out 10 in Los Angeles’ Tuesday win.
     Entities: Los Angeles Dodgers, Cincinnati Reds, Teoscar Hernández, Emmet Sheehan
     Candidate IDs: cand-e10b79bb0b6f4e0f
     Source [Highlightly/highlightly-baseball-2026-09-07]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816849
 
- 6. [LEAGUE_NEWS] Shohei Ohtani said he is focusing on hitting moving forward, making it likely he will not pitch again for the Dodgers this season. (priority 74, age 9.52h)
-    Compact headline: Ohtani likely done pitching for Dodgers this season
-    Occurred: 2026-09-08T14:29:34Z | Precision: exact | Status: active
-    Freshness basis: Shohei Ohtani said Tuesday he is focusing on hitting moving forward after returning to the Dodgers lineup.
-    Entities: Los Angeles Dodgers, Shohei Ohtani
-    Candidate IDs: cand-9c644e03e15fd42c
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49863634/shohei-ohtani-returns-dodgers-lineup-missing-4-games
-
- 7. [INJURY] Pittsburgh placed reliever Isaac Mattson on the 15-day injured list with right hip inflammation and recalled Brandon Eisert. (priority 65, age 0.70h)
-    Compact headline: Pirates place Isaac Mattson on 15-day injured list
-    Occurred: 2026-09-08T23:18:50Z | Precision: exact | Status: active
-    Freshness basis: Pittsburgh placed Isaac Mattson on the 15-day injured list Tuesday with right hip inflammation.
-    Entities: Pittsburgh Pirates, Isaac Mattson, Brandon Eisert
-    Candidate IDs: cand-d951988ef51ee0bf
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49873500/pirates-place-isaac-mattson-il-recall-brandon-eisert
+ 9. [NEXT] Cubs shortstop Dansby Swanson is close to beginning a rehab assignment as he works back from an oblique injury. (priority 62, age 0.16h)
+    Compact headline: Swanson nears Cubs rehab assignment
+    Occurred: 2026-09-09T00:20:52Z | Precision: exact | Status: next
+    Freshness basis: Dansby Swanson is close to starting a rehab assignment after an oblique injury.
+    Entities: Dansby Swanson, Chicago Cubs
+    Candidate IDs: cand-a655c1ec5a06bdea
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49874045/cubs-dansby-swanson-oblique-close-starting-rehab-assignment
 
 ============================================================================
 NFL  [PRESEASON]
 ============================================================================
 
- 1. [RECORD] New England and Christian Gonzalez agreed to a four-year, $135 million extension that makes him the highest-paid cornerback in NFL history. (priority 86, age 7.33h)
-    Compact headline: Christian Gonzalez lands record four-year, $135 million deal
-    Occurred: 2026-09-08T16:41:09Z | Precision: exact | Status: active
-    Freshness basis: Christian Gonzalez agreed to a four-year, $135 million Patriots extension Tuesday.
-    Entities: New England Patriots, Christian Gonzalez
-    Candidate IDs: cand-9b34694d985f9706
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49865736/sources-christian-gonzalez-patriots-reach-4-year-135m-deal
-
- 2. [CONTRACT] Tampa Bay and quarterback Baker Mayfield agreed to a three-year, $165 million extension, securing the starter through a major new deal. (priority 88, age 0.74h)
-    Compact headline: Bucs give Baker Mayfield three-year, $165 million extension
+ 1. [CONTRACT] Tampa Bay and quarterback Baker Mayfield agreed to a three-year, $165 million extension, sources told ESPN and NFL Network. (priority 88, age 1.24h)
+    Compact headline: Bucs, Baker Mayfield agree to three-year, $165M extension
     Occurred: 2026-09-08T23:16:26Z | Precision: exact | Status: active
-    Freshness basis: The Buccaneers and Baker Mayfield agreed to a three-year, $165 million extension Tuesday.
+    Freshness basis: Tampa Bay and Baker Mayfield agreed to a three-year, $165 million extension Tuesday.
     Entities: Tampa Bay Buccaneers, Baker Mayfield
     Candidate IDs: cand-157653046a4f9dd6
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49872379/bucs-baker-mayfield-agree-3-year-extension-sources-say
 
- 3. [INJURY] Rams coach Sean McVay said Aaron Donald will not travel to Australia and will be inactive for Thursday’s season opener against San Francisco. (priority 78, age 1.77h)
-    Compact headline: Aaron Donald inactive for Rams’ opener against 49ers
+ 2. [INJURY] Rams defensive tackle Aaron Donald will not travel to Australia and will be inactive for Thursday’s opener against San Francisco. (priority 79, age 2.27h)
+    Compact headline: Aaron Donald ruled inactive for Rams’ season opener
     Occurred: 2026-09-08T22:14:38Z | Precision: exact | Status: active
-    Freshness basis: Sean McVay announced Tuesday that Aaron Donald will not travel to Australia and will be inactive Thursday.
+    Freshness basis: Sean McVay announced Tuesday that Aaron Donald would be inactive for the Rams’ Thursday opener.
     Entities: Los Angeles Rams, San Francisco 49ers, Aaron Donald
     Candidate IDs: cand-1dab7ecb23f86be6
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49871629/rams-aaron-donald-travel-australia-week-1
 
- 4. [INJURY] New England running back TreVeyon Henderson was ruled out against Seattle, while the Seahawks may also lack two of their top three safeties. (priority 75, age 2.23h)
-    Compact headline: Patriots lose Henderson for Super Bowl rematch opener
+ 3. [CONTRACT] New England and Christian Gonzalez agreed to a four-year, $135 million extension that makes him the highest-paid cornerback in NFL history. (priority 85, age 7.82h)
+    Compact headline: Christian Gonzalez becomes NFL’s highest-paid cornerback
+    Occurred: 2026-09-08T16:41:09Z | Precision: exact | Status: active
+    Freshness basis: Christian Gonzalez agreed to a four-year, $135 million extension with New England Tuesday.
+    Entities: New England Patriots, Christian Gonzalez
+    Candidate IDs: cand-9b34694d985f9706
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49865736/sources-christian-gonzalez-patriots-reach-4-year-135m-deal
+
+ 4. [INJURY] New England running back TreVeyon Henderson was ruled out against Seattle, while the Seahawks could also be without two top safeties. (priority 74, age 2.73h)
+    Compact headline: Henderson ruled out for Patriots-Seahawks opener
     Occurred: 2026-09-08T21:47:05Z | Precision: exact | Status: active
-    Freshness basis: TreVeyon Henderson was ruled out of New England’s season opener against Seattle Tuesday.
+    Freshness basis: TreVeyon Henderson was ruled out of New England’s opener against Seattle Tuesday.
     Entities: New England Patriots, Seattle Seahawks, TreVeyon Henderson, Ty Okada, Nick Emmanwori
     Candidate IDs: cand-cd9d1315b2cdf7ef
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49872328/patriots-henderson-seahawks-okada-ruled-sb-rematch
 
- 5. [CONTRACT] Tampa Bay extended quarterback Baker Mayfield after his negotiating deadline passed, ending a prominent offseason contract standoff. (priority 80, age 0.17h)
-    Compact headline: Buccaneers extend Baker Mayfield after contract standoff
-    Occurred: 2026-09-08T23:50:29Z | Precision: exact | Status: active
-    Freshness basis: Tampa Bay extended Baker Mayfield after his contract negotiating deadline passed.
-    Entities: Tampa Bay Buccaneers, Baker Mayfield
-    Candidate IDs: cand-6a2abe36086eaf69
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49872406/key-intel-grade
-
- 6. [RETURN] San Francisco expects Nick Bosa and George Kittle to play in Thursday’s season opener against the Rams. (priority 76, age 19.83h)
-    Compact headline: Nick Bosa, George Kittle expected for 49ers opener
-    Occurred: 2026-09-08T04:10:55Z | Precision: exact | Status: next
-    Freshness basis: San Francisco indicated Nick Bosa and George Kittle are expected to play Thursday against the Rams.
-    Entities: San Francisco 49ers, Nick Bosa, George Kittle, Los Angeles Rams
-    Candidate IDs: cand-65f40d104e3d228f
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49865098/49ers-nick-bosa-set-face-rams-george-kittle-looks-good
-
- 7. [OTHER] Longtime Eagles defensive end Brandon Graham announced Tuesday that he is retiring from the NFL for the second time. (priority 72, age 2.91h)
-    Compact headline: Eagles’ Brandon Graham announces second NFL retirement
+ 5. [RETURN] Longtime Eagles defensive end Brandon Graham announced Tuesday that he is retiring from the NFL for the second time. (priority 76, age 3.41h)
+    Compact headline: Eagles veteran Brandon Graham announces NFL retirement
     Occurred: 2026-09-08T21:05:58Z | Precision: exact | Status: active
-    Freshness basis: Brandon Graham announced his second NFL retirement Tuesday.
+    Freshness basis: Brandon Graham announced his retirement from the NFL Tuesday.
     Entities: Philadelphia Eagles, Brandon Graham
     Candidate IDs: cand-4e0c9389a2651244
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49870106/eagles-brandon-graham-announces-retires-nfl-2nd
 
- 8. [DEPTH_CHART] Chicago named Braxton Jones its starting left tackle for Sunday’s season opener after he won the training-camp position battle. (priority 63, age 2.17h)
-    Compact headline: Bears name Braxton Jones starting left tackle
-    Occurred: 2026-09-08T21:50:31Z | Precision: exact | Status: next
-    Freshness basis: Chicago named Braxton Jones its starting left tackle for Sunday’s opener after training camp.
-    Entities: Chicago Bears, Braxton Jones
-    Candidate IDs: cand-9be92f0011d469e0
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49871513/bears-braxton-jones-start-left-tackle-season-opener
+ 6. [RETURN] Aaron Donald says he is feeling good after rejoining the Rams following two seasons away from football. (priority 76, age 21.41h)
+    Compact headline: Aaron Donald feels good after returning to Rams
+    Occurred: 2026-09-08T03:06:17Z | Precision: exact | Status: active
+    Freshness basis: Aaron Donald rejoined the Rams last month after two seasons away and reported feeling good before the opener.
+    Entities: Aaron Donald, Los Angeles Rams
+    Candidate IDs: cand-a0eb82e0c0b6fc19
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49864788/aaron-donald-pleased-progress-rams-opener-nears
 
- 9. [NEXT] Kansas City expects Patrick Mahomes to start Monday night’s season opener against Denver. (priority 62, age 5.63h)
-    Compact headline: Patrick Mahomes expected to start Chiefs opener
+ 7. [NEXT] Patrick Mahomes is expected to start Kansas City's season opener against Denver on Monday night. (priority 72, age 6.13h)
+    Compact headline: Mahomes expected to start Chiefs' season opener
     Occurred: 2026-09-08T18:22:50Z | Precision: exact | Status: next
-    Freshness basis: Kansas City expects Patrick Mahomes to start Monday night against Denver.
-    Entities: Kansas City Chiefs, Patrick Mahomes, Denver Broncos
+    Freshness basis: Patrick Mahomes was reported as expected to start Kansas City's Monday opener against Denver.
+    Entities: Patrick Mahomes, Kansas City Chiefs, Denver Broncos
     Candidate IDs: cand-189701aab2bbc947
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49870606/patrick-mahomes-expected-start-chiefs-opener-vs-broncos-mnf
+
+ 8. [DEPTH_CHART] The Bears named Braxton Jones their starting left tackle for Sunday's opener after he won the training-camp position battle. (priority 63, age 2.67h)
+    Compact headline: Bears name Braxton Jones starting left tackle
+    Occurred: 2026-09-08T21:50:31Z | Precision: exact | Status: active
+    Freshness basis: Chicago named Braxton Jones its starting left tackle for the season opener after training camp.
+    Entities: Braxton Jones, Chicago Bears
+    Candidate IDs: cand-9be92f0011d469e0
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49871513/bears-braxton-jones-start-left-tackle-season-opener
 
 ============================================================================
 NBA  [OFFSEASON]
 ============================================================================
 
- 1. [TRADE] New Orleans traded Jordan Hawkins, Micah Peavy and two future second-round assets to Memphis for AJ Johnson and Taj Gibson. (priority 76, age 7.01h)
+ 1. [TRADE] New Orleans traded Jordan Hawkins, Micah Peavy and two future second-round assets to Memphis for AJ Johnson and Taj Gibson. (priority 79, age 7.51h)
     Compact headline: Pelicans send Jordan Hawkins to Grizzlies in four-player deal
     Occurred: 2026-09-08T17:00:14Z | Precision: exact | Status: active
-    Freshness basis: The Pelicans and Grizzlies completed a four-player trade involving Jordan Hawkins Tuesday.
+    Freshness basis: New Orleans and Memphis completed a four-player trade involving Jordan Hawkins Tuesday.
     Entities: New Orleans Pelicans, Memphis Grizzlies, Jordan Hawkins, Micah Peavy, AJ Johnson, Taj Gibson
     Candidate IDs: cand-4bd2ba3794905d30
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49868291/sources-pelicans-trade-jordan-hawkins-grizzlies-4-player-deal
 
- 2. [MILESTONE] The Lakers announced that Hall of Fame coach Phil Jackson will receive a statue outside Crypto.com Arena on April 9. (priority 70, age 1.75h)
-    Compact headline: Lakers to honor Phil Jackson with arena statue
-    Occurred: 2026-09-08T22:15:42Z | Precision: exact | Status: next
-    Freshness basis: The Lakers announced a Phil Jackson statue will be unveiled outside Crypto.com Arena on April 9.
-    Entities: Los Angeles Lakers, Phil Jackson
-    Candidate IDs: cand-b9b1dd57da839dd6
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson
-
- 3. [LEAGUE_NEWS] The 76ers unveiled renderings for a privately funded South Philadelphia arena targeted to open in 2030 for the team and the Flyers. (priority 72, age 11.13h)
-    Compact headline: 76ers unveil plans for new South Philadelphia arena
+ 2. [LEAGUE_NEWS] The 76ers and Flyers unveiled renderings for a privately funded South Philadelphia arena targeted to open in 2030. (priority 74, age 11.63h)
+    Compact headline: 76ers, Flyers unveil plans for 2030 arena
     Occurred: 2026-09-08T12:52:58Z | Precision: exact | Status: active
-    Freshness basis: Philadelphia unveiled renderings for a new privately funded arena targeted to open in 2030.
-    Entities: Philadelphia 76ers, Philadelphia Flyers
+    Freshness basis: Philadelphia's 76ers and Flyers unveiled renderings for a new arena targeted to open in 2030.
+    Entities: Philadelphia 76ers, Philadelphia Flyers, South Philadelphia
     Candidate IDs: cand-e36fabf2d672f9e3
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports
     Source [ESPN/espn-nhl]: https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports
+
+ 3. [MILESTONE] The Lakers announced that Hall of Fame coach Phil Jackson will receive a statue outside Crypto.com Arena on April 9. (priority 65, age 2.25h)
+    Compact headline: Lakers to honor Phil Jackson with arena statue
+    Occurred: 2026-09-08T22:15:42Z | Precision: exact | Status: active
+    Freshness basis: The Lakers announced Tuesday that Phil Jackson’s statue will be unveiled April 9.
+    Entities: Los Angeles Lakers, Phil Jackson
+    Candidate IDs: cand-b9b1dd57da839dd6
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson
 
 ============================================================================
 NHL  [OFFSEASON]
 ============================================================================
 
- 1. [SIGNING] Boston signed forward Fraser Minten to a seven-year contract worth $50.4 million, keeping the young forward under a long-term deal. (priority 75, age 5.80h)
-    Compact headline: Bruins sign Fraser Minten to seven-year, $50.4 million deal
+ 1. [SIGNING] Boston signed forward Fraser Minten to a seven-year, $50.4 million contract Tuesday. (priority 78, age 6.29h)
+    Compact headline: Bruins sign Fraser Minten to seven-year, $50.4M deal
     Occurred: 2026-09-08T18:12:59Z | Precision: exact | Status: active
-    Freshness basis: The Bruins signed Fraser Minten to a seven-year, $50.4 million contract Tuesday.
+    Freshness basis: The Boston Bruins signed Fraser Minten to a seven-year, $50.4 million contract Tuesday.
     Entities: Boston Bruins, Fraser Minten
     Candidate IDs: cand-e3849edc364439d0
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49870408/bruins-sign-forward-fraser-minten-7-year-504m-deal
@@ -192,21 +199,29 @@ NHL  [OFFSEASON]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [AWARD] The 2026 Ballon d’Or shortlists for the men’s and women’s awards were released, with the host city also changing. (priority 72, age 4.63h)
-    Compact headline: 2026 Ballon d’Or shortlists released for men and women
+ 1. [AWARD] The 2026 Ballon d'Or shortlists for the men's and women's awards were released, with the host city also changing. (priority 74, age 5.13h)
+    Compact headline: 2026 Ballon d'Or shortlists released
     Occurred: 2026-09-08T19:22:51Z | Precision: exact | Status: active
-    Freshness basis: The 2026 Ballon d’Or shortlists were released and the ceremony’s host city changed.
-    Entities: Ballon d’Or
+    Freshness basis: The 2026 Ballon d'Or men's and women's shortlists were released Tuesday.
+    Entities: Ballon d'Or
     Candidate IDs: cand-7d18270b10f6a523
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49867974/2026-ballon-dor-full-mens-women-shortlists-host-city-change-vozinha-more
 
- 2. [LEAGUE_NEWS] Liverpool announced Turkish Airlines will become its front-of-shirt sponsor beginning with the 2027-28 season. (priority 62, age 9.07h)
-    Compact headline: Liverpool names Turkish Airlines shirt sponsor for 2027
-    Occurred: 2026-09-08T14:56:40Z | Precision: exact | Status: next
-    Freshness basis: Liverpool announced Turkish Airlines will become its main shirt sponsor from the 2027-28 season.
+ 2. [CONTRACT] Liverpool confirmed Turkish Airlines will become the club's front-of-shirt sponsor beginning with the 2027-28 season. (priority 63, age 9.57h)
+    Compact headline: Liverpool names Turkish Airlines shirt sponsor
+    Occurred: 2026-09-08T14:56:40Z | Precision: exact | Status: active
+    Freshness basis: Liverpool confirmed Turkish Airlines will become its main shirt sponsor from the 2027-28 season.
     Entities: Liverpool, Turkish Airlines
     Candidate IDs: cand-d725424f3d2faccf
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49867443/liverpool-announce-turkish-airlines-main-shirt-sponsor-2027
+
+ 3. [CONTRACT] Liverpool midfielder Alexis Mac Allister said he was very sad after the club did not offer him a new contract. (priority 62, age 6.19h)
+    Compact headline: Mac Allister says Liverpool offered no new deal
+    Occurred: 2026-09-08T18:19:06Z | Precision: exact | Status: active
+    Freshness basis: Alexis Mac Allister said Liverpool did not offer him a new contract.
+    Entities: Alexis Mac Allister, Liverpool
+    Candidate IDs: cand-b2a2f13eba15643b
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49868479/liverpool-alexis-mac-allister-very-very-sad-not-being-offered-new-contract
 
 ============================================================================
 MLS  [ACTIVE]
@@ -218,29 +233,13 @@ MLS  [ACTIVE]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [PLAYOFF] College Football Playoff leaders opened a 30-day negotiating window with ESPN to determine whether expanding to 24 teams is worthwhile. (priority 80, age 1.88h)
-    Compact headline: College Football Playoff opens talks on possible 24-team field
+ 1. [LEAGUE_NEWS] College Football Playoff leaders opened a 30-day negotiating window with ESPN to help determine whether expanding to 24 teams is worthwhile. (priority 76, age 2.38h)
+    Compact headline: CFP opens ESPN talks as 24-team field remains possible
     Occurred: 2026-09-08T22:07:52Z | Precision: exact | Status: active
-    Freshness basis: College Football Playoff leaders opened a 30-day negotiation window with ESPN Tuesday.
+    Freshness basis: College Football Playoff leaders opened a 30-day negotiating window with ESPN Tuesday.
     Entities: College Football Playoff, ESPN
     Candidate IDs: cand-5f2663cc7446940b
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49871893/sources-cfp-opens-espn-negotiation-window-24-teams-possible
-
- 2. [NEXT] No. 1 Ohio State and No. 4 Texas will meet Saturday in a top-five matchup, with both teams entering at 1-0. (priority 62, age 3.91h)
-    Compact headline: No. 1 Ohio State visits No. 4 Texas in top-five clash
-    Occurred: 2026-09-08T20:06:05Z | Precision: exact | Status: next
-    Freshness basis: The No. 1 Ohio State-No. 4 Texas matchup was listed for Saturday with both teams 1-0.
-    Entities: Ohio State Buckeyes, Texas Longhorns
-    Candidate IDs: cand-fe4ad916060c3cdb
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/preview?gameId=401856682
-
- 3. [NEXT] No. 11 Oklahoma will visit Michigan on Saturday in a ranked matchup between teams entering Week 2 at 1-0. (priority 62, age 3.92h)
-    Compact headline: No. 11 Oklahoma set for road test at Michigan
-    Occurred: 2026-09-08T20:05:28Z | Precision: exact | Status: next
-    Freshness basis: The No. 11 Oklahoma-Michigan matchup was listed for Saturday with both teams 1-0.
-    Entities: Oklahoma Sooners, Michigan Wolverines
-    Candidate IDs: cand-f0bd4cde3e3e7ca6
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/preview?gameId=401856679
 
 ############################################################################
 SPECIAL EVENTS
@@ -249,26 +248,26 @@ SPECIAL EVENTS
 US Open (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [ADVANCEMENT] Frances Tiafoe beat Alex Michelsen 5-7, 6-3, 7-5, 6-3, 7-6 to reach his third US Open semifinal. (priority 84, age 0.12h)
-    Compact headline: Tiafoe rallies in five sets to reach US Open semifinals
-    Freshness basis: Frances Tiafoe defeated Alex Michelsen in five sets Tuesday to reach the US Open semifinals.
+ 1. [ADVANCEMENT] Frances Tiafoe overcame a two-set deficit and beat Alex Michelsen 5-7, 3-6, 7-5, 6-3, 7-6 (6) to reach the US Open semifinals. (priority 88, age 1.20h)
+    Compact headline: Tiafoe rallies from two sets down to reach US Open semis
+    Freshness basis: Frances Tiafoe beat Alex Michelsen in five sets Tuesday to reach the US Open semifinals.
     Candidate IDs: cand-ce45b748dab43ee2
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49873533/frances-tiafoe-rallies-alex-michelsen-5-sets-make-2026-us-open-semifinals
 
- 2. [RESULT] Aryna Sabalenka defeated Linda Noskova 7-6, 3-6, 7-6 in a quarterfinal thriller to remain alive in her bid for a third straight US Open title. (priority 82, age 0.32h)
-    Compact headline: Sabalenka survives Noskova, keeps three-peat hopes alive
-    Freshness basis: Aryna Sabalenka beat Linda Noskova in Tuesday’s US Open quarterfinal.
+ 2. [ADVANCEMENT] Aryna Sabalenka beat Linda Noskova 7-6 (1), 3-6, 7-6 (10-7) to reach the US Open semifinals and keep her three-peat bid alive. (priority 85, age 2.14h)
+    Compact headline: Sabalenka survives Noskova, keeps US Open three-peat alive
+    Freshness basis: Aryna Sabalenka defeated Linda Noskova in a Tuesday US Open quarterfinal to remain in contention for a third straight title.
     Candidate IDs: cand-0c31faf6274bc337
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49870845/sabalenka-edges-noskova-remains-alive-us-open-three-peat
 
- 3. [ADVANCEMENT] Coco Gauff beat Iva Jovic to reach the US Open quarterfinals for the first time since winning the tournament in 2023. (priority 75, age 18.56h)
-    Compact headline: Coco Gauff reaches US Open quarterfinals again
-    Freshness basis: Coco Gauff beat Iva Jovic Tuesday to reach the US Open quarterfinals.
+ 3. [ADVANCEMENT] Coco Gauff beat Iva Jovic to return to the US Open quarterfinals for the first time since winning the tournament in 2023. (priority 74, age 19.06h)
+    Compact headline: Coco Gauff reaches US Open quarterfinals for first time since 2023
+    Freshness basis: Coco Gauff defeated Iva Jovic Tuesday to reach the US Open quarterfinals.
     Candidate IDs: cand-bf2b2269f8d2d660
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49864647/gauff-beats-jovic-1st-us-open-quarters-title-23
 
- 4. [ADVANCEMENT] Top-seeded Alexander Zverev beat Luciano Darderi in straight sets to reach the US Open quarterfinals. (priority 73, age 18.87h)
-    Compact headline: Top-seeded Alexander Zverev advances at US Open
-    Freshness basis: Alexander Zverev beat Luciano Darderi Monday to reach the US Open quarterfinals.
+ 4. [ADVANCEMENT] Top-seeded Alexander Zverev beat Luciano Darderi in straight sets to reach the US Open quarterfinals, while Learner Tien was eliminated. (priority 74, age 19.37h)
+    Compact headline: Top seed Zverev reaches US Open quarterfinals
+    Freshness basis: Alexander Zverev defeated Luciano Darderi in straight sets Monday to advance to the US Open quarterfinals.
     Candidate IDs: cand-1a8b585e516cedbd
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49865538/top-seeded-zverev-rolls-us-open-quarters-tien-ousted

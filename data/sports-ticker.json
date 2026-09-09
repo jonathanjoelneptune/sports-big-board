@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-09T00:00:45Z",
+  "generatedAt": "2026-09-09T00:30:38Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "f2a4ef2303de32389a78ab954891fd7da471f64d7f6c6428595df7744a163370",
+  "sourceCandidateHash": "a336b74448e35463b14fb0838c4d9b09f2d9b7934d75d04960bcfcb42f5e4af8",
   "leagues": [
     {
       "league": "MLB",
@@ -14,20 +14,52 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-163c7093e0fb6582"
+          ],
+          "type": "INJURY",
+          "priority": 74,
+          "headline": "Atlanta starter Bryce Elder underwent right knee surgery Tuesday and is expected to miss three to four weeks.",
+          "text": "Atlanta starter Bryce Elder underwent right knee surgery Tuesday and is expected to miss three to four weeks.",
+          "entities": [
+            "Atlanta Braves",
+            "Bryce Elder"
+          ],
+          "occurredAt": "2026-09-08T21:16:26Z",
+          "timePrecision": "exact",
+          "ageHours": 3.24,
+          "freshnessBasis": "Bryce Elder underwent right knee surgery Tuesday and was projected to miss three to four weeks.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49872284/braves-righty-bryce-elder-3-4-weeks-right-knee-surgery"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49872284/braves-righty-bryce-elder-3-4-weeks-right-knee-surgery"
+            }
+          ],
+          "id": "a3-b439796d873c86bb",
+          "feedRank": 6,
+          "compactHeadline": "Bryce Elder out three to four weeks after knee surgery"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-7d65aef47980e121"
           ],
           "type": "RETURN",
-          "priority": 84,
-          "headline": "Aaron Judge returned to New York’s lineup Tuesday after missing time with a fractured rib, with the Yankees planning to build him up carefully.",
-          "text": "Aaron Judge returned to New York’s lineup Tuesday after missing time with a fractured rib, with the Yankees planning to build him up carefully.",
+          "priority": 80,
+          "headline": "Aaron Judge returned to New York’s lineup Tuesday after missing time with a fractured rib, with the Yankees planning to ease him back into action.",
+          "text": "Aaron Judge returned to New York’s lineup Tuesday after missing time with a fractured rib, with the Yankees planning to ease him back into action.",
           "entities": [
             "New York Yankees",
             "Aaron Judge"
           ],
           "occurredAt": "2026-09-08T23:48:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.2,
-          "freshnessBasis": "Aaron Judge returned to the Yankees lineup Tuesday after being out since May 31 with a fractured rib.",
+          "ageHours": 0.7,
+          "freshnessBasis": "Aaron Judge returned to the Yankees lineup Tuesday after missing time with a fractured rib.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49873261/judge-returns-lineup-yankees-build-smartly"
@@ -40,40 +72,8 @@
             }
           ],
           "id": "a3-062f552c11c03be0",
-          "feedRank": 4,
+          "feedRank": 8,
           "compactHeadline": "Aaron Judge returns to Yankees lineup after rib fracture"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-163c7093e0fb6582"
-          ],
-          "type": "INJURY",
-          "priority": 73,
-          "headline": "Atlanta starting pitcher Bryce Elder underwent right knee surgery Tuesday and is expected to miss three to four weeks.",
-          "text": "Atlanta starting pitcher Bryce Elder underwent right knee surgery Tuesday and is expected to miss three to four weeks.",
-          "entities": [
-            "Atlanta Braves",
-            "Bryce Elder"
-          ],
-          "occurredAt": "2026-09-08T21:16:26Z",
-          "timePrecision": "exact",
-          "ageHours": 2.74,
-          "freshnessBasis": "Bryce Elder had right knee surgery Tuesday and will be out three to four weeks.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49872284/braves-righty-bryce-elder-3-4-weeks-right-knee-surgery"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49872284/braves-righty-bryce-elder-3-4-weeks-right-knee-surgery"
-            }
-          ],
-          "id": "a3-f842ac3024ddcd9f",
-          "feedRank": 7,
-          "compactHeadline": "Braves’ Bryce Elder out 3-4 weeks after knee surgery"
         },
         {
           "rank": 3,
@@ -82,8 +82,8 @@
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Jeff McNeil’s ninth-inning infield single drove home the winning run, lifting Oakland past Toronto 6-5 in a walk-off finish.",
-          "text": "Jeff McNeil’s ninth-inning infield single drove home the winning run, lifting Oakland past Toronto 6-5 in a walk-off finish.",
+          "headline": "Jeff McNeil’s ninth-inning infield single drove home the winning run as Oakland beat Toronto 6-5 in a walk-off finish.",
+          "text": "Jeff McNeil’s ninth-inning infield single drove home the winning run as Oakland beat Toronto 6-5 in a walk-off finish.",
           "entities": [
             "Oakland Athletics",
             "Toronto Blue Jays",
@@ -91,8 +91,8 @@
           ],
           "occurredAt": "2026-09-08T02:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.93,
-          "freshnessBasis": "Jeff McNeil delivered the walk-off in the bottom of the ninth inning Tuesday.",
+          "ageHours": 22.43,
+          "freshnessBasis": "Jeff McNeil delivered Oakland’s walk-off single in the bottom of the ninth inning Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -110,58 +110,149 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816851"
             }
           ],
-          "id": "a3-14975f5035418e76",
-          "feedRank": 8,
-          "compactHeadline": "McNeil delivers walk-off as Athletics beat Blue Jays 6-5"
+          "id": "a3-33c0ca44b6a965f9",
+          "feedRank": 9,
+          "compactHeadline": "McNeil delivers walk-off as A’s beat Blue Jays 6-5"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-4485d89820b8fba1"
+            "cand-9c644e03e15fd42c"
+          ],
+          "type": "RETURN",
+          "priority": 80,
+          "headline": "Shohei Ohtani returned to the Dodgers' lineup Monday and said he is focusing on hitting, likely ending his pitching work for 2026.",
+          "text": "Shohei Ohtani returned to the Dodgers' lineup Monday and said he is focusing on hitting, likely ending his pitching work for 2026.",
+          "entities": [
+            "Shohei Ohtani",
+            "Los Angeles Dodgers"
+          ],
+          "occurredAt": "2026-09-08T14:29:34Z",
+          "timePrecision": "exact",
+          "ageHours": 10.02,
+          "freshnessBasis": "Shohei Ohtani returned to the Dodgers' lineup Monday and said he is focusing on hitting.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49863634/shohei-ohtani-returns-dodgers-lineup-missing-4-games"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49863634/shohei-ohtani-returns-dodgers-lineup-missing-4-games"
+            }
+          ],
+          "id": "a3-dcd1df479ca863ff",
+          "feedRank": 10,
+          "compactHeadline": "Ohtani returns to Dodgers lineup, likely done pitching"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-d951988ef51ee0bf"
+          ],
+          "type": "INJURY",
+          "priority": 65,
+          "headline": "The Pirates placed reliever Isaac Mattson on the 15-day injured list with right hip inflammation and recalled Brandon Eisert.",
+          "text": "The Pirates placed reliever Isaac Mattson on the 15-day injured list with right hip inflammation and recalled Brandon Eisert.",
+          "entities": [
+            "Isaac Mattson",
+            "Brandon Eisert",
+            "Pittsburgh Pirates"
+          ],
+          "occurredAt": "2026-09-08T23:18:50Z",
+          "timePrecision": "exact",
+          "ageHours": 1.2,
+          "freshnessBasis": "Pittsburgh placed Isaac Mattson on the 15-day injured list Tuesday and recalled Brandon Eisert.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49873500/pirates-place-isaac-mattson-il-recall-brandon-eisert"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49873500/pirates-place-isaac-mattson-il-recall-brandon-eisert"
+            }
+          ],
+          "id": "a3-ea60412d6b02b404",
+          "feedRank": 17,
+          "compactHeadline": "Pirates place reliever Isaac Mattson on 15-day IL"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-a581339e2c1769ef"
+          ],
+          "type": "INJURY",
+          "priority": 65,
+          "headline": "The Rays placed shortstop Taylor Walls on the injured list with a right hip flexor strain.",
+          "text": "The Rays placed shortstop Taylor Walls on the injured list with a right hip flexor strain.",
+          "entities": [
+            "Taylor Walls",
+            "Tampa Bay Rays"
+          ],
+          "occurredAt": "2026-09-08T22:12:07Z",
+          "timePrecision": "exact",
+          "ageHours": 2.31,
+          "freshnessBasis": "Tampa Bay placed Taylor Walls on the injured list Tuesday with a right hip flexor strain.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49872866/rays-put-shortstop-walls-15-day-il-hip-flexor-strain"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49872866/rays-put-shortstop-walls-15-day-il-hip-flexor-strain"
+            }
+          ],
+          "id": "a3-0ecab0136977a050",
+          "feedRank": 18,
+          "compactHeadline": "Rays place Taylor Walls on injured list"
+        },
+        {
+          "rank": 7,
+          "candidateIds": [
+            "cand-93548f0943cfcbf8"
           ],
           "type": "RESULT",
-          "priority": 82,
-          "headline": "Shay Whitcomb delivered the walk-off in the bottom of the 11th inning.",
-          "text": "Shay Whitcomb delivered the walk-off in the bottom of the 11th inning.",
+          "priority": 72,
+          "headline": "Shay Whitcomb delivered his first career game-ending RBI with an 11th-inning single, lifting San Francisco over St. Louis 5-4.",
+          "text": "Shay Whitcomb delivered his first career game-ending RBI with an 11th-inning single, lifting San Francisco over St. Louis 5-4.",
           "entities": [
             "San Francisco Giants",
             "St. Louis Cardinals",
             "Shay Whitcomb"
           ],
-          "occurredAt": "2026-09-08T00:10:00Z",
+          "occurredAt": "2026-09-08T03:53:30Z",
           "timePrecision": "exact",
-          "ageHours": 23.85,
-          "freshnessBasis": "Shay Whitcomb delivered the walk-off in the bottom of the 11th inning.",
+          "ageHours": 20.62,
+          "freshnessBasis": "Shay Whitcomb delivered his first career game-ending RBI in San Francisco’s 11th-inning win Tuesday.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
             "http://www.espn.com/mlb/recap?gameId=401816850"
           ],
           "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-07",
-              "url": "https://highlightly.net"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401816850"
             }
           ],
-          "id": "a3-f917c41e7c360bb4",
-          "feedRank": 10,
-          "compactHeadline": "Shay Whitcomb delivers walk-off as San Francisco Giants beat St. Louis Cardinals 5-4"
+          "id": "a3-bfcff2d1c46e07cb",
+          "feedRank": 20,
+          "compactHeadline": "Whitcomb’s 11th-inning single lifts Giants past Cardinals"
         },
         {
-          "rank": 5,
+          "rank": 8,
           "candidateIds": [
             "cand-e10b79bb0b6f4e0f"
           ],
-          "type": "STREAK",
-          "priority": 76,
-          "headline": "Teoscar Hernández hit a three-run homer and Emmet Sheehan tied his career high with 10 strikeouts as Los Angeles beat Cincinnati 6-3.",
-          "text": "Teoscar Hernández hit a three-run homer and Emmet Sheehan tied his career high with 10 strikeouts as Los Angeles beat Cincinnati 6-3.",
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Teoscar Hernández hit a three-run homer and Emmet Sheehan struck out 10 in Los Angeles’ Tuesday win.",
+          "text": "Teoscar Hernández hit a three-run homer and Emmet Sheehan struck out 10 in Los Angeles’ Tuesday win.",
           "entities": [
             "Los Angeles Dodgers",
             "Cincinnati Reds",
@@ -170,8 +261,8 @@
           ],
           "occurredAt": "2026-09-08T01:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.85,
-          "freshnessBasis": "The Dodgers beat the Reds 6-3 Tuesday for their fifth straight win.",
+          "ageHours": 23.34,
+          "freshnessBasis": "Teoscar Hernández hit a three-run homer and Emmet Sheehan struck out 10 in Los Angeles’ Tuesday win.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -189,74 +280,41 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816849"
             }
           ],
-          "id": "a3-0f7b7f782a1aff03",
-          "feedRank": 17,
-          "compactHeadline": "Dodgers win fifth straight behind Hernández and Sheehan"
+          "id": "a3-c399e174e2c4d835",
+          "feedRank": 22,
+          "compactHeadline": "Hernández homer, Sheehan’s 10 Ks power Dodgers to fifth straight"
         },
         {
-          "rank": 6,
+          "rank": 9,
           "candidateIds": [
-            "cand-9c644e03e15fd42c"
+            "cand-a655c1ec5a06bdea"
           ],
-          "type": "LEAGUE_NEWS",
-          "priority": 74,
-          "headline": "Shohei Ohtani said he is focusing on hitting moving forward, making it likely he will not pitch again for the Dodgers this season.",
-          "text": "Shohei Ohtani said he is focusing on hitting moving forward, making it likely he will not pitch again for the Dodgers this season.",
+          "type": "NEXT",
+          "priority": 62,
+          "headline": "Cubs shortstop Dansby Swanson is close to beginning a rehab assignment as he works back from an oblique injury.",
+          "text": "Cubs shortstop Dansby Swanson is close to beginning a rehab assignment as he works back from an oblique injury.",
           "entities": [
-            "Los Angeles Dodgers",
-            "Shohei Ohtani"
+            "Dansby Swanson",
+            "Chicago Cubs"
           ],
-          "occurredAt": "2026-09-08T14:29:34Z",
+          "occurredAt": "2026-09-09T00:20:52Z",
           "timePrecision": "exact",
-          "ageHours": 9.52,
-          "freshnessBasis": "Shohei Ohtani said Tuesday he is focusing on hitting moving forward after returning to the Dodgers lineup.",
-          "status": "active",
+          "ageHours": 0.16,
+          "freshnessBasis": "Dansby Swanson is close to starting a rehab assignment after an oblique injury.",
+          "status": "next",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49863634/shohei-ohtani-returns-dodgers-lineup-missing-4-games"
+            "https://www.espn.com/mlb/story/_/id/49874045/cubs-dansby-swanson-oblique-close-starting-rehab-assignment"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49863634/shohei-ohtani-returns-dodgers-lineup-missing-4-games"
+              "url": "https://www.espn.com/mlb/story/_/id/49874045/cubs-dansby-swanson-oblique-close-starting-rehab-assignment"
             }
           ],
-          "id": "a3-1b46b00d47ba2437",
-          "feedRank": 18,
-          "compactHeadline": "Ohtani likely done pitching for Dodgers this season"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-d951988ef51ee0bf"
-          ],
-          "type": "INJURY",
-          "priority": 65,
-          "headline": "Pittsburgh placed reliever Isaac Mattson on the 15-day injured list with right hip inflammation and recalled Brandon Eisert.",
-          "text": "Pittsburgh placed reliever Isaac Mattson on the 15-day injured list with right hip inflammation and recalled Brandon Eisert.",
-          "entities": [
-            "Pittsburgh Pirates",
-            "Isaac Mattson",
-            "Brandon Eisert"
-          ],
-          "occurredAt": "2026-09-08T23:18:50Z",
-          "timePrecision": "exact",
-          "ageHours": 0.7,
-          "freshnessBasis": "Pittsburgh placed Isaac Mattson on the 15-day injured list Tuesday with right hip inflammation.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49873500/pirates-place-isaac-mattson-il-recall-brandon-eisert"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49873500/pirates-place-isaac-mattson-il-recall-brandon-eisert"
-            }
-          ],
-          "id": "a3-9574163a974f43ae",
-          "feedRank": 19,
-          "compactHeadline": "Pirates place Isaac Mattson on 15-day injured list"
+          "id": "a3-d707b3ec4ac49397",
+          "feedRank": 28,
+          "compactHeadline": "Swanson nears Cubs rehab assignment"
         }
       ]
     },
@@ -267,52 +325,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-9b34694d985f9706"
-          ],
-          "type": "RECORD",
-          "priority": 86,
-          "headline": "New England and Christian Gonzalez agreed to a four-year, $135 million extension that makes him the highest-paid cornerback in NFL history.",
-          "text": "New England and Christian Gonzalez agreed to a four-year, $135 million extension that makes him the highest-paid cornerback in NFL history.",
-          "entities": [
-            "New England Patriots",
-            "Christian Gonzalez"
-          ],
-          "occurredAt": "2026-09-08T16:41:09Z",
-          "timePrecision": "exact",
-          "ageHours": 7.33,
-          "freshnessBasis": "Christian Gonzalez agreed to a four-year, $135 million Patriots extension Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49865736/sources-christian-gonzalez-patriots-reach-4-year-135m-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49865736/sources-christian-gonzalez-patriots-reach-4-year-135m-deal"
-            }
-          ],
-          "id": "a3-d32c18ca2b28a3cc",
-          "feedRank": 2,
-          "compactHeadline": "Christian Gonzalez lands record four-year, $135 million deal"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-157653046a4f9dd6"
           ],
           "type": "CONTRACT",
           "priority": 88,
-          "headline": "Tampa Bay and quarterback Baker Mayfield agreed to a three-year, $165 million extension, securing the starter through a major new deal.",
-          "text": "Tampa Bay and quarterback Baker Mayfield agreed to a three-year, $165 million extension, securing the starter through a major new deal.",
+          "headline": "Tampa Bay and quarterback Baker Mayfield agreed to a three-year, $165 million extension, sources told ESPN and NFL Network.",
+          "text": "Tampa Bay and quarterback Baker Mayfield agreed to a three-year, $165 million extension, sources told ESPN and NFL Network.",
           "entities": [
             "Tampa Bay Buccaneers",
             "Baker Mayfield"
           ],
           "occurredAt": "2026-09-08T23:16:26Z",
           "timePrecision": "exact",
-          "ageHours": 0.74,
-          "freshnessBasis": "The Buccaneers and Baker Mayfield agreed to a three-year, $165 million extension Tuesday.",
+          "ageHours": 1.24,
+          "freshnessBasis": "Tampa Bay and Baker Mayfield agreed to a three-year, $165 million extension Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49872379/bucs-baker-mayfield-agree-3-year-extension-sources-say"
@@ -324,19 +350,19 @@
               "url": "https://www.espn.com/nfl/story/_/id/49872379/bucs-baker-mayfield-agree-3-year-extension-sources-say"
             }
           ],
-          "id": "a3-9a8a09523a778e0a",
-          "feedRank": 5,
-          "compactHeadline": "Bucs give Baker Mayfield three-year, $165 million extension"
+          "id": "a3-d315b59f55402cb6",
+          "feedRank": 3,
+          "compactHeadline": "Bucs, Baker Mayfield agree to three-year, $165M extension"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
             "cand-1dab7ecb23f86be6"
           ],
           "type": "INJURY",
-          "priority": 78,
-          "headline": "Rams coach Sean McVay said Aaron Donald will not travel to Australia and will be inactive for Thursday’s season opener against San Francisco.",
-          "text": "Rams coach Sean McVay said Aaron Donald will not travel to Australia and will be inactive for Thursday’s season opener against San Francisco.",
+          "priority": 79,
+          "headline": "Rams defensive tackle Aaron Donald will not travel to Australia and will be inactive for Thursday’s opener against San Francisco.",
+          "text": "Rams defensive tackle Aaron Donald will not travel to Australia and will be inactive for Thursday’s opener against San Francisco.",
           "entities": [
             "Los Angeles Rams",
             "San Francisco 49ers",
@@ -344,8 +370,8 @@
           ],
           "occurredAt": "2026-09-08T22:14:38Z",
           "timePrecision": "exact",
-          "ageHours": 1.77,
-          "freshnessBasis": "Sean McVay announced Tuesday that Aaron Donald will not travel to Australia and will be inactive Thursday.",
+          "ageHours": 2.27,
+          "freshnessBasis": "Sean McVay announced Tuesday that Aaron Donald would be inactive for the Rams’ Thursday opener.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49871629/rams-aaron-donald-travel-australia-week-1"
@@ -357,9 +383,41 @@
               "url": "https://www.espn.com/nfl/story/_/id/49871629/rams-aaron-donald-travel-australia-week-1"
             }
           ],
-          "id": "a3-2835df15d19982c3",
-          "feedRank": 6,
-          "compactHeadline": "Aaron Donald inactive for Rams’ opener against 49ers"
+          "id": "a3-8bb6222d8e0ea751",
+          "feedRank": 5,
+          "compactHeadline": "Aaron Donald ruled inactive for Rams’ season opener"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-9b34694d985f9706"
+          ],
+          "type": "CONTRACT",
+          "priority": 85,
+          "headline": "New England and Christian Gonzalez agreed to a four-year, $135 million extension that makes him the highest-paid cornerback in NFL history.",
+          "text": "New England and Christian Gonzalez agreed to a four-year, $135 million extension that makes him the highest-paid cornerback in NFL history.",
+          "entities": [
+            "New England Patriots",
+            "Christian Gonzalez"
+          ],
+          "occurredAt": "2026-09-08T16:41:09Z",
+          "timePrecision": "exact",
+          "ageHours": 7.82,
+          "freshnessBasis": "Christian Gonzalez agreed to a four-year, $135 million extension with New England Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49865736/sources-christian-gonzalez-patriots-reach-4-year-135m-deal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49865736/sources-christian-gonzalez-patriots-reach-4-year-135m-deal"
+            }
+          ],
+          "id": "a3-3ba947a2b8c6578b",
+          "feedRank": 7,
+          "compactHeadline": "Christian Gonzalez becomes NFL’s highest-paid cornerback"
         },
         {
           "rank": 4,
@@ -367,9 +425,9 @@
             "cand-cd9d1315b2cdf7ef"
           ],
           "type": "INJURY",
-          "priority": 75,
-          "headline": "New England running back TreVeyon Henderson was ruled out against Seattle, while the Seahawks may also lack two of their top three safeties.",
-          "text": "New England running back TreVeyon Henderson was ruled out against Seattle, while the Seahawks may also lack two of their top three safeties.",
+          "priority": 74,
+          "headline": "New England running back TreVeyon Henderson was ruled out against Seattle, while the Seahawks could also be without two top safeties.",
+          "text": "New England running back TreVeyon Henderson was ruled out against Seattle, while the Seahawks could also be without two top safeties.",
           "entities": [
             "New England Patriots",
             "Seattle Seahawks",
@@ -379,8 +437,8 @@
           ],
           "occurredAt": "2026-09-08T21:47:05Z",
           "timePrecision": "exact",
-          "ageHours": 2.23,
-          "freshnessBasis": "TreVeyon Henderson was ruled out of New England’s season opener against Seattle Tuesday.",
+          "ageHours": 2.73,
+          "freshnessBasis": "TreVeyon Henderson was ruled out of New England’s opener against Seattle Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49872328/patriots-henderson-seahawks-okada-ruled-sb-rematch"
@@ -392,83 +450,17 @@
               "url": "https://www.espn.com/nfl/story/_/id/49872328/patriots-henderson-seahawks-okada-ruled-sb-rematch"
             }
           ],
-          "id": "a3-d6aac27b78df507a",
+          "id": "a3-27e307020ec988d8",
           "feedRank": 12,
-          "compactHeadline": "Patriots lose Henderson for Super Bowl rematch opener"
+          "compactHeadline": "Henderson ruled out for Patriots-Seahawks opener"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-6a2abe36086eaf69"
-          ],
-          "type": "CONTRACT",
-          "priority": 80,
-          "headline": "Tampa Bay extended quarterback Baker Mayfield after his negotiating deadline passed, ending a prominent offseason contract standoff.",
-          "text": "Tampa Bay extended quarterback Baker Mayfield after his negotiating deadline passed, ending a prominent offseason contract standoff.",
-          "entities": [
-            "Tampa Bay Buccaneers",
-            "Baker Mayfield"
-          ],
-          "occurredAt": "2026-09-08T23:50:29Z",
-          "timePrecision": "exact",
-          "ageHours": 0.17,
-          "freshnessBasis": "Tampa Bay extended Baker Mayfield after his contract negotiating deadline passed.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49872406/key-intel-grade"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49872406/key-intel-grade"
-            }
-          ],
-          "id": "a3-067caf8d2de042e4",
-          "feedRank": 13,
-          "compactHeadline": "Buccaneers extend Baker Mayfield after contract standoff"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-65f40d104e3d228f"
+            "cand-4e0c9389a2651244"
           ],
           "type": "RETURN",
           "priority": 76,
-          "headline": "San Francisco expects Nick Bosa and George Kittle to play in Thursday’s season opener against the Rams.",
-          "text": "San Francisco expects Nick Bosa and George Kittle to play in Thursday’s season opener against the Rams.",
-          "entities": [
-            "San Francisco 49ers",
-            "Nick Bosa",
-            "George Kittle",
-            "Los Angeles Rams"
-          ],
-          "occurredAt": "2026-09-08T04:10:55Z",
-          "timePrecision": "exact",
-          "ageHours": 19.83,
-          "freshnessBasis": "San Francisco indicated Nick Bosa and George Kittle are expected to play Thursday against the Rams.",
-          "status": "next",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49865098/49ers-nick-bosa-set-face-rams-george-kittle-looks-good"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49865098/49ers-nick-bosa-set-face-rams-george-kittle-looks-good"
-            }
-          ],
-          "id": "a3-75b4ba018c9cc4dc",
-          "feedRank": 22,
-          "compactHeadline": "Nick Bosa, George Kittle expected for 49ers opener"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-4e0c9389a2651244"
-          ],
-          "type": "OTHER",
-          "priority": 72,
           "headline": "Longtime Eagles defensive end Brandon Graham announced Tuesday that he is retiring from the NFL for the second time.",
           "text": "Longtime Eagles defensive end Brandon Graham announced Tuesday that he is retiring from the NFL for the second time.",
           "entities": [
@@ -477,8 +469,8 @@
           ],
           "occurredAt": "2026-09-08T21:05:58Z",
           "timePrecision": "exact",
-          "ageHours": 2.91,
-          "freshnessBasis": "Brandon Graham announced his second NFL retirement Tuesday.",
+          "ageHours": 3.41,
+          "freshnessBasis": "Brandon Graham announced his retirement from the NFL Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49870106/eagles-brandon-graham-announces-retires-nfl-2nd"
@@ -490,60 +482,60 @@
               "url": "https://www.espn.com/nfl/story/_/id/49870106/eagles-brandon-graham-announces-retires-nfl-2nd"
             }
           ],
-          "id": "a3-6486c73da89c32af",
-          "feedRank": 24,
-          "compactHeadline": "Eagles’ Brandon Graham announces second NFL retirement"
+          "id": "a3-202ee1a4c0fdd593",
+          "feedRank": 19,
+          "compactHeadline": "Eagles veteran Brandon Graham announces NFL retirement"
         },
         {
-          "rank": 8,
+          "rank": 6,
           "candidateIds": [
-            "cand-9be92f0011d469e0"
+            "cand-a0eb82e0c0b6fc19"
           ],
-          "type": "DEPTH_CHART",
-          "priority": 63,
-          "headline": "Chicago named Braxton Jones its starting left tackle for Sunday’s season opener after he won the training-camp position battle.",
-          "text": "Chicago named Braxton Jones its starting left tackle for Sunday’s season opener after he won the training-camp position battle.",
+          "type": "RETURN",
+          "priority": 76,
+          "headline": "Aaron Donald says he is feeling good after rejoining the Rams following two seasons away from football.",
+          "text": "Aaron Donald says he is feeling good after rejoining the Rams following two seasons away from football.",
           "entities": [
-            "Chicago Bears",
-            "Braxton Jones"
+            "Aaron Donald",
+            "Los Angeles Rams"
           ],
-          "occurredAt": "2026-09-08T21:50:31Z",
+          "occurredAt": "2026-09-08T03:06:17Z",
           "timePrecision": "exact",
-          "ageHours": 2.17,
-          "freshnessBasis": "Chicago named Braxton Jones its starting left tackle for Sunday’s opener after training camp.",
-          "status": "next",
+          "ageHours": 21.41,
+          "freshnessBasis": "Aaron Donald rejoined the Rams last month after two seasons away and reported feeling good before the opener.",
+          "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49871513/bears-braxton-jones-start-left-tackle-season-opener"
+            "https://www.espn.com/nfl/story/_/id/49864788/aaron-donald-pleased-progress-rams-opener-nears"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49871513/bears-braxton-jones-start-left-tackle-season-opener"
+              "url": "https://www.espn.com/nfl/story/_/id/49864788/aaron-donald-pleased-progress-rams-opener-nears"
             }
           ],
-          "id": "a3-90d4d23f18a049a1",
-          "feedRank": 26,
-          "compactHeadline": "Bears name Braxton Jones starting left tackle"
+          "id": "a3-31993c78857aa6d4",
+          "feedRank": 21,
+          "compactHeadline": "Aaron Donald feels good after returning to Rams"
         },
         {
-          "rank": 9,
+          "rank": 7,
           "candidateIds": [
             "cand-189701aab2bbc947"
           ],
           "type": "NEXT",
-          "priority": 62,
-          "headline": "Kansas City expects Patrick Mahomes to start Monday night’s season opener against Denver.",
-          "text": "Kansas City expects Patrick Mahomes to start Monday night’s season opener against Denver.",
+          "priority": 72,
+          "headline": "Patrick Mahomes is expected to start Kansas City's season opener against Denver on Monday night.",
+          "text": "Patrick Mahomes is expected to start Kansas City's season opener against Denver on Monday night.",
           "entities": [
-            "Kansas City Chiefs",
             "Patrick Mahomes",
+            "Kansas City Chiefs",
             "Denver Broncos"
           ],
           "occurredAt": "2026-09-08T18:22:50Z",
           "timePrecision": "exact",
-          "ageHours": 5.63,
-          "freshnessBasis": "Kansas City expects Patrick Mahomes to start Monday night against Denver.",
+          "ageHours": 6.13,
+          "freshnessBasis": "Patrick Mahomes was reported as expected to start Kansas City's Monday opener against Denver.",
           "status": "next",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49870606/patrick-mahomes-expected-start-chiefs-opener-vs-broncos-mnf"
@@ -555,9 +547,41 @@
               "url": "https://www.espn.com/nfl/story/_/id/49870606/patrick-mahomes-expected-start-chiefs-opener-vs-broncos-mnf"
             }
           ],
-          "id": "a3-d18c3a88280b83b9",
+          "id": "a3-435aa34c3b026447",
+          "feedRank": 25,
+          "compactHeadline": "Mahomes expected to start Chiefs' season opener"
+        },
+        {
+          "rank": 8,
+          "candidateIds": [
+            "cand-9be92f0011d469e0"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 63,
+          "headline": "The Bears named Braxton Jones their starting left tackle for Sunday's opener after he won the training-camp position battle.",
+          "text": "The Bears named Braxton Jones their starting left tackle for Sunday's opener after he won the training-camp position battle.",
+          "entities": [
+            "Braxton Jones",
+            "Chicago Bears"
+          ],
+          "occurredAt": "2026-09-08T21:50:31Z",
+          "timePrecision": "exact",
+          "ageHours": 2.67,
+          "freshnessBasis": "Chicago named Braxton Jones its starting left tackle for the season opener after training camp.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49871513/bears-braxton-jones-start-left-tackle-season-opener"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49871513/bears-braxton-jones-start-left-tackle-season-opener"
+            }
+          ],
+          "id": "a3-90d4d23f18a049a1",
           "feedRank": 29,
-          "compactHeadline": "Patrick Mahomes expected to start Chiefs opener"
+          "compactHeadline": "Bears name Braxton Jones starting left tackle"
         }
       ]
     },
@@ -571,7 +595,7 @@
             "cand-4bd2ba3794905d30"
           ],
           "type": "TRADE",
-          "priority": 76,
+          "priority": 79,
           "headline": "New Orleans traded Jordan Hawkins, Micah Peavy and two future second-round assets to Memphis for AJ Johnson and Taj Gibson.",
           "text": "New Orleans traded Jordan Hawkins, Micah Peavy and two future second-round assets to Memphis for AJ Johnson and Taj Gibson.",
           "entities": [
@@ -584,8 +608,8 @@
           ],
           "occurredAt": "2026-09-08T17:00:14Z",
           "timePrecision": "exact",
-          "ageHours": 7.01,
-          "freshnessBasis": "The Pelicans and Grizzlies completed a four-player trade involving Jordan Hawkins Tuesday.",
+          "ageHours": 7.51,
+          "freshnessBasis": "New Orleans and Memphis completed a four-player trade involving Jordan Hawkins Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49868291/sources-pelicans-trade-jordan-hawkins-grizzlies-4-player-deal"
@@ -598,58 +622,27 @@
             }
           ],
           "id": "a3-ada0306f07aaabaa",
-          "feedRank": 9,
+          "feedRank": 4,
           "compactHeadline": "Pelicans send Jordan Hawkins to Grizzlies in four-player deal"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-b9b1dd57da839dd6"
-          ],
-          "type": "MILESTONE",
-          "priority": 70,
-          "headline": "The Lakers announced that Hall of Fame coach Phil Jackson will receive a statue outside Crypto.com Arena on April 9.",
-          "text": "The Lakers announced that Hall of Fame coach Phil Jackson will receive a statue outside Crypto.com Arena on April 9.",
-          "entities": [
-            "Los Angeles Lakers",
-            "Phil Jackson"
-          ],
-          "occurredAt": "2026-09-08T22:15:42Z",
-          "timePrecision": "exact",
-          "ageHours": 1.75,
-          "freshnessBasis": "The Lakers announced a Phil Jackson statue will be unveiled outside Crypto.com Arena on April 9.",
-          "status": "next",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson"
-            }
-          ],
-          "id": "a3-669b1aa8b341a5f8",
-          "feedRank": 21,
-          "compactHeadline": "Lakers to honor Phil Jackson with arena statue"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-e36fabf2d672f9e3"
           ],
           "type": "LEAGUE_NEWS",
-          "priority": 72,
-          "headline": "The 76ers unveiled renderings for a privately funded South Philadelphia arena targeted to open in 2030 for the team and the Flyers.",
-          "text": "The 76ers unveiled renderings for a privately funded South Philadelphia arena targeted to open in 2030 for the team and the Flyers.",
+          "priority": 74,
+          "headline": "The 76ers and Flyers unveiled renderings for a privately funded South Philadelphia arena targeted to open in 2030.",
+          "text": "The 76ers and Flyers unveiled renderings for a privately funded South Philadelphia arena targeted to open in 2030.",
           "entities": [
             "Philadelphia 76ers",
-            "Philadelphia Flyers"
+            "Philadelphia Flyers",
+            "South Philadelphia"
           ],
           "occurredAt": "2026-09-08T12:52:58Z",
           "timePrecision": "exact",
-          "ageHours": 11.13,
-          "freshnessBasis": "Philadelphia unveiled renderings for a new privately funded arena targeted to open in 2030.",
+          "ageHours": 11.63,
+          "freshnessBasis": "Philadelphia's 76ers and Flyers unveiled renderings for a new arena targeted to open in 2030.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports",
@@ -667,9 +660,41 @@
               "url": "https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports"
             }
           ],
-          "id": "a3-e745d1e4c110d26b",
+          "id": "a3-7cf418d13c95c0a6",
           "feedRank": 23,
-          "compactHeadline": "76ers unveil plans for new South Philadelphia arena"
+          "compactHeadline": "76ers, Flyers unveil plans for 2030 arena"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-b9b1dd57da839dd6"
+          ],
+          "type": "MILESTONE",
+          "priority": 65,
+          "headline": "The Lakers announced that Hall of Fame coach Phil Jackson will receive a statue outside Crypto.com Arena on April 9.",
+          "text": "The Lakers announced that Hall of Fame coach Phil Jackson will receive a statue outside Crypto.com Arena on April 9.",
+          "entities": [
+            "Los Angeles Lakers",
+            "Phil Jackson"
+          ],
+          "occurredAt": "2026-09-08T22:15:42Z",
+          "timePrecision": "exact",
+          "ageHours": 2.25,
+          "freshnessBasis": "The Lakers announced Tuesday that Phil Jackson’s statue will be unveiled April 9.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson"
+            }
+          ],
+          "id": "a3-669b1aa8b341a5f8",
+          "feedRank": 24,
+          "compactHeadline": "Lakers to honor Phil Jackson with arena statue"
         }
       ]
     },
@@ -683,17 +708,17 @@
             "cand-e3849edc364439d0"
           ],
           "type": "SIGNING",
-          "priority": 75,
-          "headline": "Boston signed forward Fraser Minten to a seven-year contract worth $50.4 million, keeping the young forward under a long-term deal.",
-          "text": "Boston signed forward Fraser Minten to a seven-year contract worth $50.4 million, keeping the young forward under a long-term deal.",
+          "priority": 78,
+          "headline": "Boston signed forward Fraser Minten to a seven-year, $50.4 million contract Tuesday.",
+          "text": "Boston signed forward Fraser Minten to a seven-year, $50.4 million contract Tuesday.",
           "entities": [
             "Boston Bruins",
             "Fraser Minten"
           ],
           "occurredAt": "2026-09-08T18:12:59Z",
           "timePrecision": "exact",
-          "ageHours": 5.8,
-          "freshnessBasis": "The Bruins signed Fraser Minten to a seven-year, $50.4 million contract Tuesday.",
+          "ageHours": 6.29,
+          "freshnessBasis": "The Boston Bruins signed Fraser Minten to a seven-year, $50.4 million contract Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49870408/bruins-sign-forward-fraser-minten-7-year-504m-deal"
@@ -705,9 +730,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49870408/bruins-sign-forward-fraser-minten-7-year-504m-deal"
             }
           ],
-          "id": "a3-d319d2b0c4d2be41",
-          "feedRank": 15,
-          "compactHeadline": "Bruins sign Fraser Minten to seven-year, $50.4 million deal"
+          "id": "a3-a9347db9b951ab51",
+          "feedRank": 11,
+          "compactHeadline": "Bruins sign Fraser Minten to seven-year, $50.4M deal"
         }
       ]
     },
@@ -721,16 +746,16 @@
             "cand-7d18270b10f6a523"
           ],
           "type": "AWARD",
-          "priority": 72,
-          "headline": "The 2026 Ballon d’Or shortlists for the men’s and women’s awards were released, with the host city also changing.",
-          "text": "The 2026 Ballon d’Or shortlists for the men’s and women’s awards were released, with the host city also changing.",
+          "priority": 74,
+          "headline": "The 2026 Ballon d'Or shortlists for the men's and women's awards were released, with the host city also changing.",
+          "text": "The 2026 Ballon d'Or shortlists for the men's and women's awards were released, with the host city also changing.",
           "entities": [
-            "Ballon d’Or"
+            "Ballon d'Or"
           ],
           "occurredAt": "2026-09-08T19:22:51Z",
           "timePrecision": "exact",
-          "ageHours": 4.63,
-          "freshnessBasis": "The 2026 Ballon d’Or shortlists were released and the ceremony’s host city changed.",
+          "ageHours": 5.13,
+          "freshnessBasis": "The 2026 Ballon d'Or men's and women's shortlists were released Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49867974/2026-ballon-dor-full-mens-women-shortlists-host-city-change-vozinha-more"
@@ -742,28 +767,28 @@
               "url": "https://www.espn.com/soccer/story/_/id/49867974/2026-ballon-dor-full-mens-women-shortlists-host-city-change-vozinha-more"
             }
           ],
-          "id": "a3-2dba48b6d17ce6c6",
-          "feedRank": 20,
-          "compactHeadline": "2026 Ballon d’Or shortlists released for men and women"
+          "id": "a3-0560453f879b7466",
+          "feedRank": 16,
+          "compactHeadline": "2026 Ballon d'Or shortlists released"
         },
         {
           "rank": 2,
           "candidateIds": [
             "cand-d725424f3d2faccf"
           ],
-          "type": "LEAGUE_NEWS",
-          "priority": 62,
-          "headline": "Liverpool announced Turkish Airlines will become its front-of-shirt sponsor beginning with the 2027-28 season.",
-          "text": "Liverpool announced Turkish Airlines will become its front-of-shirt sponsor beginning with the 2027-28 season.",
+          "type": "CONTRACT",
+          "priority": 63,
+          "headline": "Liverpool confirmed Turkish Airlines will become the club's front-of-shirt sponsor beginning with the 2027-28 season.",
+          "text": "Liverpool confirmed Turkish Airlines will become the club's front-of-shirt sponsor beginning with the 2027-28 season.",
           "entities": [
             "Liverpool",
             "Turkish Airlines"
           ],
           "occurredAt": "2026-09-08T14:56:40Z",
           "timePrecision": "exact",
-          "ageHours": 9.07,
-          "freshnessBasis": "Liverpool announced Turkish Airlines will become its main shirt sponsor from the 2027-28 season.",
-          "status": "next",
+          "ageHours": 9.57,
+          "freshnessBasis": "Liverpool confirmed Turkish Airlines will become its main shirt sponsor from the 2027-28 season.",
+          "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49867443/liverpool-announce-turkish-airlines-main-shirt-sponsor-2027"
           ],
@@ -774,9 +799,41 @@
               "url": "https://www.espn.com/soccer/story/_/id/49867443/liverpool-announce-turkish-airlines-main-shirt-sponsor-2027"
             }
           ],
-          "id": "a3-c47fd78c7f6fd75e",
-          "feedRank": 25,
-          "compactHeadline": "Liverpool names Turkish Airlines shirt sponsor for 2027"
+          "id": "a3-4431dd1822af18f6",
+          "feedRank": 26,
+          "compactHeadline": "Liverpool names Turkish Airlines shirt sponsor"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-b2a2f13eba15643b"
+          ],
+          "type": "CONTRACT",
+          "priority": 62,
+          "headline": "Liverpool midfielder Alexis Mac Allister said he was very sad after the club did not offer him a new contract.",
+          "text": "Liverpool midfielder Alexis Mac Allister said he was very sad after the club did not offer him a new contract.",
+          "entities": [
+            "Alexis Mac Allister",
+            "Liverpool"
+          ],
+          "occurredAt": "2026-09-08T18:19:06Z",
+          "timePrecision": "exact",
+          "ageHours": 6.19,
+          "freshnessBasis": "Alexis Mac Allister said Liverpool did not offer him a new contract.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49868479/liverpool-alexis-mac-allister-very-very-sad-not-being-offered-new-contract"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49868479/liverpool-alexis-mac-allister-very-very-sad-not-being-offered-new-contract"
+            }
+          ],
+          "id": "a3-2d693cc6a4967e8a",
+          "feedRank": 27,
+          "compactHeadline": "Mac Allister says Liverpool offered no new deal"
         }
       ]
     },
@@ -794,18 +851,18 @@
           "candidateIds": [
             "cand-5f2663cc7446940b"
           ],
-          "type": "PLAYOFF",
-          "priority": 80,
-          "headline": "College Football Playoff leaders opened a 30-day negotiating window with ESPN to determine whether expanding to 24 teams is worthwhile.",
-          "text": "College Football Playoff leaders opened a 30-day negotiating window with ESPN to determine whether expanding to 24 teams is worthwhile.",
+          "type": "LEAGUE_NEWS",
+          "priority": 76,
+          "headline": "College Football Playoff leaders opened a 30-day negotiating window with ESPN to help determine whether expanding to 24 teams is worthwhile.",
+          "text": "College Football Playoff leaders opened a 30-day negotiating window with ESPN to help determine whether expanding to 24 teams is worthwhile.",
           "entities": [
             "College Football Playoff",
             "ESPN"
           ],
           "occurredAt": "2026-09-08T22:07:52Z",
           "timePrecision": "exact",
-          "ageHours": 1.88,
-          "freshnessBasis": "College Football Playoff leaders opened a 30-day negotiation window with ESPN Tuesday.",
+          "ageHours": 2.38,
+          "freshnessBasis": "College Football Playoff leaders opened a 30-day negotiating window with ESPN Tuesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49871893/sources-cfp-opens-espn-negotiation-window-24-teams-possible"
@@ -817,73 +874,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/49871893/sources-cfp-opens-espn-negotiation-window-24-teams-possible"
             }
           ],
-          "id": "a3-f223d411f24c81bf",
-          "feedRank": 1,
-          "compactHeadline": "College Football Playoff opens talks on possible 24-team field"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-fe4ad916060c3cdb"
-          ],
-          "type": "NEXT",
-          "priority": 62,
-          "headline": "No. 1 Ohio State and No. 4 Texas will meet Saturday in a top-five matchup, with both teams entering at 1-0.",
-          "text": "No. 1 Ohio State and No. 4 Texas will meet Saturday in a top-five matchup, with both teams entering at 1-0.",
-          "entities": [
-            "Ohio State Buckeyes",
-            "Texas Longhorns"
-          ],
-          "occurredAt": "2026-09-08T20:06:05Z",
-          "timePrecision": "exact",
-          "ageHours": 3.91,
-          "freshnessBasis": "The No. 1 Ohio State-No. 4 Texas matchup was listed for Saturday with both teams 1-0.",
-          "status": "next",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/preview?gameId=401856682"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/preview?gameId=401856682"
-            }
-          ],
-          "id": "a3-424fa533976d2cf8",
-          "feedRank": 27,
-          "compactHeadline": "No. 1 Ohio State visits No. 4 Texas in top-five clash"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-f0bd4cde3e3e7ca6"
-          ],
-          "type": "NEXT",
-          "priority": 62,
-          "headline": "No. 11 Oklahoma will visit Michigan on Saturday in a ranked matchup between teams entering Week 2 at 1-0.",
-          "text": "No. 11 Oklahoma will visit Michigan on Saturday in a ranked matchup between teams entering Week 2 at 1-0.",
-          "entities": [
-            "Oklahoma Sooners",
-            "Michigan Wolverines"
-          ],
-          "occurredAt": "2026-09-08T20:05:28Z",
-          "timePrecision": "exact",
-          "ageHours": 3.92,
-          "freshnessBasis": "The No. 11 Oklahoma-Michigan matchup was listed for Saturday with both teams 1-0.",
-          "status": "next",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/preview?gameId=401856679"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/preview?gameId=401856679"
-            }
-          ],
-          "id": "a3-7862c40c72b0d606",
-          "feedRank": 28,
-          "compactHeadline": "No. 11 Oklahoma set for road test at Michigan"
+          "id": "a3-c4c23e6ae230d370",
+          "feedRank": 13,
+          "compactHeadline": "CFP opens ESPN talks as 24-team field remains possible"
         }
       ]
     }
@@ -899,18 +892,18 @@
             "cand-ce45b748dab43ee2"
           ],
           "type": "ADVANCEMENT",
-          "priority": 84,
-          "headline": "Frances Tiafoe beat Alex Michelsen 5-7, 6-3, 7-5, 6-3, 7-6 to reach his third US Open semifinal.",
-          "text": "Frances Tiafoe beat Alex Michelsen 5-7, 6-3, 7-5, 6-3, 7-6 to reach his third US Open semifinal.",
+          "priority": 88,
+          "headline": "Frances Tiafoe overcame a two-set deficit and beat Alex Michelsen 5-7, 3-6, 7-5, 6-3, 7-6 (6) to reach the US Open semifinals.",
+          "text": "Frances Tiafoe overcame a two-set deficit and beat Alex Michelsen 5-7, 3-6, 7-5, 6-3, 7-6 (6) to reach the US Open semifinals.",
           "entities": [
             "US Open",
             "Frances Tiafoe",
             "Alex Michelsen"
           ],
-          "occurredAt": "2026-09-08T23:53:28Z",
+          "occurredAt": "2026-09-08T23:18:27Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
-          "freshnessBasis": "Frances Tiafoe defeated Alex Michelsen in five sets Tuesday to reach the US Open semifinals.",
+          "ageHours": 1.2,
+          "freshnessBasis": "Frances Tiafoe beat Alex Michelsen in five sets Tuesday to reach the US Open semifinals.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49873533/frances-tiafoe-rallies-alex-michelsen-5-sets-make-2026-us-open-semifinals"
@@ -922,28 +915,28 @@
               "url": "https://www.espn.com/tennis/story/_/id/49873533/frances-tiafoe-rallies-alex-michelsen-5-sets-make-2026-us-open-semifinals"
             }
           ],
-          "id": "a3-special-9ffe3d181bd316e9",
-          "feedRank": 3,
-          "compactHeadline": "Tiafoe rallies in five sets to reach US Open semifinals"
+          "id": "a3-special-d39e31a881011d54",
+          "feedRank": 1,
+          "compactHeadline": "Tiafoe rallies from two sets down to reach US Open semis"
         },
         {
           "rank": 2,
           "candidateIds": [
             "cand-0c31faf6274bc337"
           ],
-          "type": "RESULT",
-          "priority": 82,
-          "headline": "Aryna Sabalenka defeated Linda Noskova 7-6, 3-6, 7-6 in a quarterfinal thriller to remain alive in her bid for a third straight US Open title.",
-          "text": "Aryna Sabalenka defeated Linda Noskova 7-6, 3-6, 7-6 in a quarterfinal thriller to remain alive in her bid for a third straight US Open title.",
+          "type": "ADVANCEMENT",
+          "priority": 85,
+          "headline": "Aryna Sabalenka beat Linda Noskova 7-6 (1), 3-6, 7-6 (10-7) to reach the US Open semifinals and keep her three-peat bid alive.",
+          "text": "Aryna Sabalenka beat Linda Noskova 7-6 (1), 3-6, 7-6 (10-7) to reach the US Open semifinals and keep her three-peat bid alive.",
           "entities": [
             "US Open",
             "Aryna Sabalenka",
             "Linda Noskova"
           ],
-          "occurredAt": "2026-09-08T23:41:38Z",
+          "occurredAt": "2026-09-08T22:21:57Z",
           "timePrecision": "exact",
-          "ageHours": 0.32,
-          "freshnessBasis": "Aryna Sabalenka beat Linda Noskova in Tuesday’s US Open quarterfinal.",
+          "ageHours": 2.14,
+          "freshnessBasis": "Aryna Sabalenka defeated Linda Noskova in a Tuesday US Open quarterfinal to remain in contention for a third straight title.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49870845/sabalenka-edges-noskova-remains-alive-us-open-three-peat"
@@ -955,9 +948,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49870845/sabalenka-edges-noskova-remains-alive-us-open-three-peat"
             }
           ],
-          "id": "a3-special-e4b2650135228376",
-          "feedRank": 11,
-          "compactHeadline": "Sabalenka survives Noskova, keeps three-peat hopes alive"
+          "id": "a3-special-63fe7274dd41bbb9",
+          "feedRank": 2,
+          "compactHeadline": "Sabalenka survives Noskova, keeps US Open three-peat alive"
         },
         {
           "rank": 3,
@@ -965,9 +958,9 @@
             "cand-bf2b2269f8d2d660"
           ],
           "type": "ADVANCEMENT",
-          "priority": 75,
-          "headline": "Coco Gauff beat Iva Jovic to reach the US Open quarterfinals for the first time since winning the tournament in 2023.",
-          "text": "Coco Gauff beat Iva Jovic to reach the US Open quarterfinals for the first time since winning the tournament in 2023.",
+          "priority": 74,
+          "headline": "Coco Gauff beat Iva Jovic to return to the US Open quarterfinals for the first time since winning the tournament in 2023.",
+          "text": "Coco Gauff beat Iva Jovic to return to the US Open quarterfinals for the first time since winning the tournament in 2023.",
           "entities": [
             "US Open",
             "Coco Gauff",
@@ -975,8 +968,8 @@
           ],
           "occurredAt": "2026-09-08T05:27:10Z",
           "timePrecision": "exact",
-          "ageHours": 18.56,
-          "freshnessBasis": "Coco Gauff beat Iva Jovic Tuesday to reach the US Open quarterfinals.",
+          "ageHours": 19.06,
+          "freshnessBasis": "Coco Gauff defeated Iva Jovic Tuesday to reach the US Open quarterfinals.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49864647/gauff-beats-jovic-1st-us-open-quarters-title-23"
@@ -988,9 +981,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49864647/gauff-beats-jovic-1st-us-open-quarters-title-23"
             }
           ],
-          "id": "a3-special-c29b26d6754656b6",
+          "id": "a3-special-2cfc245295f21284",
           "feedRank": 14,
-          "compactHeadline": "Coco Gauff reaches US Open quarterfinals again"
+          "compactHeadline": "Coco Gauff reaches US Open quarterfinals for first time since 2023"
         },
         {
           "rank": 4,
@@ -998,18 +991,19 @@
             "cand-1a8b585e516cedbd"
           ],
           "type": "ADVANCEMENT",
-          "priority": 73,
-          "headline": "Top-seeded Alexander Zverev beat Luciano Darderi in straight sets to reach the US Open quarterfinals.",
-          "text": "Top-seeded Alexander Zverev beat Luciano Darderi in straight sets to reach the US Open quarterfinals.",
+          "priority": 74,
+          "headline": "Top-seeded Alexander Zverev beat Luciano Darderi in straight sets to reach the US Open quarterfinals, while Learner Tien was eliminated.",
+          "text": "Top-seeded Alexander Zverev beat Luciano Darderi in straight sets to reach the US Open quarterfinals, while Learner Tien was eliminated.",
           "entities": [
-            "US Open",
             "Alexander Zverev",
-            "Luciano Darderi"
+            "Luciano Darderi",
+            "Learner Tien",
+            "US Open"
           ],
           "occurredAt": "2026-09-08T05:08:24Z",
           "timePrecision": "exact",
-          "ageHours": 18.87,
-          "freshnessBasis": "Alexander Zverev beat Luciano Darderi Monday to reach the US Open quarterfinals.",
+          "ageHours": 19.37,
+          "freshnessBasis": "Alexander Zverev defeated Luciano Darderi in straight sets Monday to advance to the US Open quarterfinals.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49865538/top-seeded-zverev-rolls-us-open-quarters-tien-ousted"
@@ -1021,9 +1015,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49865538/top-seeded-zverev-rolls-us-open-quarters-tien-ousted"
             }
           ],
-          "id": "a3-special-571ab0c706f5189e",
-          "feedRank": 16,
-          "compactHeadline": "Top-seeded Alexander Zverev advances at US Open"
+          "id": "a3-special-2d7a5e2ffebe6ceb",
+          "feedRank": 15,
+          "compactHeadline": "Top seed Zverev reaches US Open quarterfinals"
         }
       ]
     }
