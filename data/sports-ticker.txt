@@ -1,41 +1,31 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-09T15:30:49Z
+Updated: 2026-09-09T16:00:45Z
 Global headline budget: 32/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: c465fca067e000ef4f040cf7065d00d3ef6ae32ef6aedb8d7101acda2b32e332
+Candidate hash: 1fc8f72af714d889b6352bf2fd4ad12cbe303523b2dfbbac807c783883dc69c8
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] The Yankees clinched their 34th consecutive winning season with a 5-3 win over Colorado; Aaron Judge went hitless in his return and Cam Schlittler struck out 10. (priority 86, age 16.43h)
+ 1. [MILESTONE] The Yankees beat the Rockies 5-3 as Aaron Judge returned from the injured list and New York secured its 34th consecutive winning season. (priority 88, age 16.93h)
     Compact headline: Yankees clinch 34th straight winning season
     Occurred: 2026-09-08T23:05:00Z | Precision: exact | Status: active
-    Freshness basis: New York clinched its 34th consecutive winning season with a 5-3 win over Colorado on Sept. 8.
-    Entities: New York Yankees, Aaron Judge, Cam Schlittler, Colorado Rockies
+    Freshness basis: New York beat Colorado 5-3 and clinched its 34th straight winning season Tuesday night.
+    Entities: New York Yankees, Colorado Rockies, Aaron Judge
     Candidate IDs: cand-c8bc41b2034471c2
     Source [Highlightly/highlightly-baseball-2026-09-08]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/preview?gameId=401816870
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816855
 
- 2. [RESULT] Luis Lara singled home the winning run in the 10th inning after Jackson Chourio tied the score with a two-out homer in the ninth, and the Milwaukee Brewers rallied to beat the Chicago Cubs 4-3 on Tuesday night. (priority 82, age 15.85h)
-    Compact headline: Luis Lara delivers Brewers’ walk-off win over Cubs
+ 2. [RETURN] Corbin Burnes returned after a 15-month recovery from Tommy John surgery, and Lourdes Gurriel Jr.’s RBI triple helped Arizona beat Kansas City, 5-3, in 11 innings. (priority 84, age 16.35h)
+    Compact headline: Burnes returns as Diamondbacks edge Royals in 11
     Occurred: 2026-09-08T23:40:00Z | Precision: exact | Status: active
-    Freshness basis: Luis Lara delivered Milwaukee’s walk-off 4-3 win over Chicago in the 10th inning Tuesday.
-    Entities: Milwaukee Brewers, Chicago Cubs, Luis Lara, Jackson Chourio
-    Candidate IDs: cand-9d91e96a5117a041
-    Source [Highlightly/highlightly-baseball-2026-09-08]: https://highlightly.net
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49876593/jackson-chourio-2-run-homer-ignites-milwaukee-brewers-win
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816861
-
- 3. [RETURN] Corbin Burnes returned after a 15-month Tommy John recovery, while Lourdes Gurriel Jr.’s go-ahead RBI triple helped Arizona beat Kansas City 5-3 in 11 innings. (priority 80, age 15.85h)
-    Compact headline: Corbin Burnes returns as D-backs edge Royals in 11
-    Occurred: 2026-09-08T23:40:00Z | Precision: exact | Status: active
-    Freshness basis: Corbin Burnes returned from Tommy John surgery in Arizona’s 5-3, 11-inning win over Kansas City.
+    Freshness basis: Corbin Burnes returned from Tommy John surgery in Arizona’s 11-inning win over Kansas City on Sept. 8.
     Entities: Arizona Diamondbacks, Kansas City Royals, Corbin Burnes, Lourdes Gurriel Jr.
     Candidate IDs: cand-d712b994507f46ad
     Source [Highlightly/highlightly-baseball-2026-09-08]: https://highlightly.net
@@ -43,87 +33,98 @@ MLB  [ACTIVE]
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/preview?gameId=401816875
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816860
 
- 4. [STREAK] Tarik Skubal worked into the eighth inning and Teoscar Hernández delivered the go-ahead single as Los Angeles beat Cincinnati 3-2 for its sixth straight win. (priority 75, age 10.07h)
-    Compact headline: Dodgers win sixth straight behind Skubal and Hernández
+ 3. [RESULT] Luis Lara singled home the winning run in the 10th inning after Jackson Chourio tied the score with a two-out homer in the ninth, and the Milwaukee Brewers rallied to beat the Chicago Cubs 4-3 on Tuesday night. (priority 82, age 16.35h)
+    Compact headline: Lara delivers walk-off as Brewers rally past Cubs
+    Occurred: 2026-09-08T23:40:00Z | Precision: exact | Status: active
+    Freshness basis: Luis Lara delivered a walk-off single in the 10th inning for Milwaukee on Sept. 8.
+    Entities: Milwaukee Brewers, Chicago Cubs, Luis Lara, Jackson Chourio
+    Candidate IDs: cand-9d91e96a5117a041
+    Source [Highlightly/highlightly-baseball-2026-09-08]: https://highlightly.net
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49876593/jackson-chourio-2-run-homer-ignites-milwaukee-brewers-win
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816861
+
+ 4. [STREAK] Tarik Skubal pitched into the eighth inning and Teoscar Hernández drove in the go-ahead run as Los Angeles beat Cincinnati 3-2 for its sixth straight win. (priority 74, age 10.57h)
+    Compact headline: Dodgers win sixth straight behind Skubal
     Occurred: 2026-09-09T05:26:29Z | Precision: exact | Status: active
-    Freshness basis: Los Angeles extended its winning streak to six games with a 3-2 victory over Cincinnati.
+    Freshness basis: Los Angeles extended its winning streak to six games by beating Cincinnati 3-2 on Sept. 8.
     Entities: Los Angeles Dodgers, Cincinnati Reds, Tarik Skubal, Teoscar Hernández
     Candidate IDs: cand-d7a4585991dea76c
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816863
 
- 5. [RESULT] Junior Caminero hit his 39th home run, one of Tampa Bay’s four homers, in a 7-1 win over Atlanta. (priority 74, age 16.26h)
-    Compact headline: Junior Caminero’s 39th homer powers Rays past Braves
+ 5. [RESULT] Junior Caminero hit his 39th home run, one of Tampa Bay’s four homers, in a 7-1 victory over Atlanta on Sept. 8. (priority 74, age 16.76h)
+    Compact headline: Caminero’s 39th homer leads Rays past Braves
     Occurred: 2026-09-08T23:15:00Z | Precision: exact | Status: active
-    Freshness basis: Junior Caminero hit his 39th homer in Tampa Bay’s 7-1 win over Atlanta Tuesday.
+    Freshness basis: Junior Caminero hit his 39th home run in Tampa Bay’s 7-1 win over Atlanta on Sept. 8.
     Entities: Tampa Bay Rays, Atlanta Braves, Junior Caminero
     Candidate IDs: cand-079e82d26461158c
     Source [Highlightly/highlightly-baseball-2026-09-08]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816859
 
- 6. [RESULT] The Cubs' bullpen lost a late lead to the Brewers for the second straight game, falling 4-3 in 10 innings. (priority 72, age 4.78h)
-    Compact headline: Brewers beat Cubs again after another late bullpen collapse
-    Occurred: 2026-09-09T10:43:55Z | Precision: exact | Status: active
-    Freshness basis: Milwaukee beat Chicago 4-3 in 10 innings after the Cubs lost another late lead on Sept. 9.
-    Entities: Milwaukee Brewers, Chicago Cubs, Jacob Webb
-    Candidate IDs: cand-ab647c39671568a8
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49876200/jacob-webb-surrenders-hr-cubs-bullpen-loses-another-late-lead
-
- 7. [RESULT] San Diego rallied from behind as Manny Machado tied the game with a two-run single and Luis Campusano drove in the go-ahead run in a 5-4 win over Washington. (priority 72, age 10.12h)
-    Compact headline: Padres rally past Nationals to stay in wild-card chase
+ 6. [RESULT] San Diego rallied from behind to beat Washington 5-4 and stay in the NL wild-card chase on Sept. 8. (priority 72, age 10.62h)
+    Compact headline: Machado, Campusano rally Padres past Nationals
     Occurred: 2026-09-09T05:23:29Z | Precision: exact | Status: active
-    Freshness basis: San Diego rallied past Washington 5-4 to keep pace in the NL wild-card chase.
+    Freshness basis: San Diego rallied from behind to beat Washington 5-4 and stay in the NL wild-card chase on Sept. 8.
     Entities: San Diego Padres, Washington Nationals, Manny Machado, Luis Campusano
     Candidate IDs: cand-fa6cdaba26f5b639
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816867
+
+ 7. [RESULT] San Francisco beat St. Louis 2-1 as Eldridge and Koss homered Tuesday night. (priority 72, age 14.26h)
+    Compact headline: Eldridge and Koss homers lift Giants past Cardinals
+    Occurred: 2026-09-09T01:45:00Z | Precision: exact | Status: active
+    Freshness basis: San Francisco beat St. Louis 2-1 as Eldridge and Koss homered Tuesday night.
+    Entities: San Francisco Giants, St. Louis Cardinals, Bryce Eldridge, Christian Koss
+    Candidate IDs: cand-e4662f47bf35e8bd
+    Source [Highlightly/highlightly-baseball-2026-09-08]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816864
 
 ============================================================================
 NFL  [PRESEASON]
 ============================================================================
 
- 1. [INJURY] San Francisco defensive tackle Alfred Collins tore his patellar tendon in practice and will miss the 2026 season. (priority 85, age 5.37h)
+ 1. [INJURY] San Francisco defensive tackle Alfred Collins suffered a torn patellar tendon in practice and will miss the 2026 season. (priority 85, age 5.87h)
     Compact headline: 49ers lose Alfred Collins to season-ending knee injury
     Occurred: 2026-09-09T10:08:37Z | Precision: exact | Status: active
-    Freshness basis: Alfred Collins suffered a torn patellar tendon in practice and was ruled out for the 2026 season.
+    Freshness basis: Alfred Collins suffered a torn patellar tendon in San Francisco’s Tuesday practice and was ruled out for the season.
     Entities: San Francisco 49ers, Alfred Collins
     Candidate IDs: cand-93136f6b33370ecc
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49875661/49ers-alfred-collins-knee-injured-practice-season
 
- 2. [CONTRACT] Baker Mayfield and Tampa Bay agreed to a three-year, $165 million extension, keeping the quarterback under contract with the Buccaneers. (priority 88, age 1.90h)
-    Compact headline: Baker Mayfield gets three-year, $165M Bucs extension
+ 2. [CONTRACT] The Tampa Bay Buccaneers agreed to a three-year, $165 million extension with quarterback Baker Mayfield. (priority 88, age 2.40h)
+    Compact headline: Bucs give Baker Mayfield a three-year, $165M extension
     Occurred: 2026-09-09T13:36:45Z | Precision: exact | Status: active
-    Freshness basis: Baker Mayfield agreed to a three-year, $165 million extension with Tampa Bay Wednesday.
+    Freshness basis: Tampa Bay agreed to a three-year, $165 million extension with Baker Mayfield on Sept. 9.
     Entities: Tampa Bay Buccaneers, Baker Mayfield
     Candidate IDs: cand-157653046a4f9dd6
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49872379/bucs-baker-mayfield-agree-3-year-extension-sources-say
 
- 3. [INJURY] Aaron Donald will not travel to Australia and will be inactive for the Rams’ season opener against San Francisco, coach Sean McVay announced. (priority 78, age 12.29h)
+ 3. [INJURY] Rams coach Sean McVay said Aaron Donald will not travel to Australia and will be inactive for Thursday’s opener against San Francisco. (priority 78, age 12.79h)
     Compact headline: Aaron Donald ruled out for Rams’ Australia opener
     Occurred: 2026-09-09T03:13:23Z | Precision: exact | Status: active
-    Freshness basis: Sean McVay announced that Aaron Donald will miss the Rams’ season opener in Australia.
+    Freshness basis: Sean McVay ruled Aaron Donald inactive for the Rams’ season opener in Australia on Sept. 9.
     Entities: Los Angeles Rams, Aaron Donald, San Francisco 49ers
     Candidate IDs: cand-1dab7ecb23f86be6
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49871629/rams-aaron-donald-travel-australia-week-1
 
- 4. [INJURY] New England running back TreVeyon Henderson was ruled out against Seattle, while the Seahawks could also be without two of their top three safeties. (priority 75, age 4.84h)
-    Compact headline: Patriots rule out Henderson for Super Bowl rematch
+ 4. [INJURY] New England ruled out running back TreVeyon Henderson for the opener against Seattle, while the Seahawks could also miss two starting safeties. (priority 74, age 5.34h)
+    Compact headline: Patriots rule out Henderson for Seahawks rematch
     Occurred: 2026-09-09T10:40:28Z | Precision: exact | Status: active
-    Freshness basis: TreVeyon Henderson was ruled out of New England’s opener against Seattle.
-    Entities: New England Patriots, Seattle Seahawks, TreVeyon Henderson, Ty Okada, Nick Emmanwori
+    Freshness basis: New England ruled TreVeyon Henderson out of the regular-season opener against Seattle on Sept. 9.
+    Entities: New England Patriots, Seattle Seahawks, TreVeyon Henderson
     Candidate IDs: cand-cd9d1315b2cdf7ef
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49872328/patriots-henderson-seahawks-okada-ruled-sb-rematch
 
- 5. [CONTRACT] The Buccaneers extended quarterback Baker Mayfield, ending a contract standoff before the start of the season. (priority 79, age 15.50h)
-    Compact headline: Baker Mayfield signs extension with Buccaneers
+ 5. [CONTRACT] Tampa Bay extended quarterback Baker Mayfield, securing the starter after he had set a negotiating deadline ahead of the season. (priority 82, age 16.00h)
+    Compact headline: Bucs extend Baker Mayfield on new deal
     Occurred: 2026-09-09T00:00:39Z | Precision: exact | Status: active
-    Freshness basis: Tampa Bay extended Baker Mayfield before the 2026 season opener.
+    Freshness basis: Tampa Bay extended Baker Mayfield in a contract announcement published Wednesday.
     Entities: Tampa Bay Buccaneers, Baker Mayfield
     Candidate IDs: cand-6a2abe36086eaf69
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49872406/key-intel-grade
 
- 6. [DISCIPLINE] Packers running back Josh Jacobs is on the commissioner exempt list, leaving MarShawn Lloyd’s role in Green Bay’s opener under focus. (priority 74, age 5.51h)
+ 6. [DISCIPLINE] Packers running back Josh Jacobs is on the commissioner exempt list, leaving MarShawn Lloyd in line for a larger Week 1 workload. (priority 76, age 6.01h)
     Compact headline: Josh Jacobs lands on commissioner exempt list
     Occurred: 2026-09-09T10:00:02Z | Precision: exact | Status: active
-    Freshness basis: Josh Jacobs was placed on the commissioner exempt list while MarShawn Lloyd returned healthy for Green Bay.
+    Freshness basis: Josh Jacobs was placed on the commissioner exempt list, changing Green Bay’s Week 1 backfield outlook.
     Entities: Green Bay Packers, Josh Jacobs, MarShawn Lloyd
     Candidate IDs: cand-577ddf8cc184901e
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49869653/nfl-green-bay-packers-marshawn-lloyd-josh-jacobs-commissioner-exempt
@@ -132,48 +133,32 @@ NFL  [PRESEASON]
 NBA  [OFFSEASON]
 ============================================================================
 
- 1. [TRADE] New Orleans traded Jordan Hawkins, Micah Peavy and two future second-round assets to Memphis for AJ Johnson and Taj Gibson. (priority 79, age 4.63h)
+ 1. [TRADE] New Orleans traded Jordan Hawkins, Micah Peavy and draft compensation to Memphis for AJ Johnson and Taj Gibson. (priority 76, age 5.13h)
     Compact headline: Pelicans send Jordan Hawkins to Grizzlies in four-player deal
     Occurred: 2026-09-09T10:53:04Z | Precision: exact | Status: active
-    Freshness basis: New Orleans traded Jordan Hawkins and other assets to Memphis for AJ Johnson and Taj Gibson.
+    Freshness basis: New Orleans traded Jordan Hawkins and other assets to Memphis in a four-player deal on Sept. 9.
     Entities: New Orleans Pelicans, Memphis Grizzlies, Jordan Hawkins, Micah Peavy, AJ Johnson, Taj Gibson
     Candidate IDs: cand-4bd2ba3794905d30
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49868291/sources-pelicans-trade-jordan-hawkins-grizzlies-4-player-deal
 
- 2. [SIGNING] Ben Simmons is returning to the NBA after agreeing to a one-year, $3.5 million contract with Sacramento. (priority 76, age 4.62h)
-    Compact headline: Ben Simmons returns to NBA on Kings’ one-year deal
-    Occurred: 2026-09-09T10:53:26Z | Precision: exact | Status: active
-    Freshness basis: Ben Simmons agreed to a one-year, $3.5 million deal with Sacramento Wednesday.
-    Entities: Sacramento Kings, Ben Simmons
-    Candidate IDs: cand-8fdbe1ac1835628a
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings
-
- 3. [CONTRACT] Houston guard Amen Thompson agreed to a five-year, $208 million rookie-scale extension with the Rockets. (priority 81, age 4.62h)
-    Compact headline: Amen Thompson agrees to five-year, $208M extension
+ 2. [CONTRACT] Houston guard Amen Thompson agreed to a five-year, $208 million rookie-scale extension with the Rockets. (priority 84, age 5.12h)
+    Compact headline: Rockets, Amen Thompson agree to five-year, $208M extension
     Occurred: 2026-09-09T10:53:45Z | Precision: exact | Status: active
-    Freshness basis: Amen Thompson agreed to a five-year, $208 million extension with Houston Wednesday.
+    Freshness basis: Amen Thompson agreed to a five-year, $208 million extension with Houston on Sept. 9.
     Entities: Houston Rockets, Amen Thompson
     Candidate IDs: cand-f1c96a17dde7ed81
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49814480/sources-rockets-amen-thompson-agrees-5-year-208m-extension
 
- 4. [MILESTONE] The Lakers announced that Hall of Fame coach Phil Jackson will receive a statue outside Crypto.com Arena on April 9. (priority 72, age 17.25h)
-    Compact headline: Lakers to honor Phil Jackson with arena statue
-    Occurred: 2026-09-08T22:15:42Z | Precision: exact | Status: active
-    Freshness basis: Los Angeles announced a statue honoring Phil Jackson will be unveiled outside Crypto.com Arena.
-    Entities: Los Angeles Lakers, Phil Jackson
-    Candidate IDs: cand-b9b1dd57da839dd6
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson
+ 3. [SIGNING] Ben Simmons is returning to the NBA after agreeing to a one-year, $3.5 million deal with Sacramento. (priority 78, age 5.12h)
+    Compact headline: Ben Simmons returns to NBA with one-year Kings deal
+    Occurred: 2026-09-09T10:53:26Z | Precision: exact | Status: active
+    Freshness basis: Ben Simmons agreed to a one-year, $3.5 million contract with Sacramento on Sept. 9.
+    Entities: Sacramento Kings, Ben Simmons
+    Candidate IDs: cand-8fdbe1ac1835628a
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49824980/sources-ben-simmons-agrees-1-year-35m-deal-kings
 
- 5. [SIGNING] Philadelphia signed Tacko Fall, Jameer Nelson Jr. and Saint Thomas to Exhibit 10 contracts. (priority 65, age 4.60h)
-    Compact headline: 76ers sign Tacko Fall to Exhibit 10 deal
-    Occurred: 2026-09-09T10:54:33Z | Precision: exact | Status: active
-    Freshness basis: Philadelphia signed Tacko Fall, Jameer Nelson Jr. and Saint Thomas to Exhibit 10 contracts on Sept. 9.
-    Entities: Philadelphia 76ers, Tacko Fall, Jameer Nelson Jr., Saint Thomas
-    Candidate IDs: cand-f50bfbe099ae338f
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49795456/76ers-sign-7-foot-6-center-tacko-fall-others-camp-deal
-
- 6. [LEAGUE_NEWS] The 76ers and Flyers unveiled plans for a new privately funded South Philadelphia arena targeted to open in 2030. (priority 68, age 4.61h)
-    Compact headline: 76ers unveil arena targeted to open in 2030
+ 4. [LEAGUE_NEWS] The 76ers and Flyers unveiled plans and renderings for a privately funded South Philadelphia arena targeted to open in 2030. (priority 75, age 5.11h)
+    Compact headline: 76ers and Flyers unveil arena targeted for 2030
     Occurred: 2026-09-09T10:54:09Z | Precision: exact | Status: active
     Freshness basis: Philadelphia unveiled renderings for a new 76ers and Flyers arena targeted to open in 2030.
     Entities: Philadelphia 76ers, Philadelphia Flyers
@@ -181,14 +166,30 @@ NBA  [OFFSEASON]
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports
     Source [ESPN/espn-nhl]: https://www.espn.com/nba/story/_/id/49867971/arena-76ers-flyers-marks-new-era-philadelphia-sports
 
+ 5. [AWARD] The Lakers announced that Hall of Fame coach Phil Jackson will receive a statue outside Crypto.com Arena on April 9. (priority 74, age 17.75h)
+    Compact headline: Lakers to honor Phil Jackson with arena statue
+    Occurred: 2026-09-08T22:15:42Z | Precision: exact | Status: active
+    Freshness basis: The Lakers announced a Phil Jackson statue for unveiling outside Crypto.com Arena on April 9.
+    Entities: Los Angeles Lakers, Phil Jackson
+    Candidate IDs: cand-b9b1dd57da839dd6
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49871193/lakers-unveil-statue-hall-fame-coach-phil-jackson
+
+ 6. [SIGNING] Philadelphia signed 7-foot-6 center Tacko Fall, Jameer Nelson Jr. and Saint Thomas to Exhibit 10 contracts. (priority 65, age 5.10h)
+    Compact headline: 76ers sign Tacko Fall to camp deal
+    Occurred: 2026-09-09T10:54:33Z | Precision: exact | Status: active
+    Freshness basis: Philadelphia signed Fall, Nelson and Thomas to Exhibit 10 contracts Wednesday.
+    Entities: Philadelphia 76ers, Tacko Fall, Jameer Nelson Jr., Saint Thomas
+    Candidate IDs: cand-f50bfbe099ae338f
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49795456/76ers-sign-7-foot-6-center-tacko-fall-others-camp-deal
+
 ============================================================================
 NHL  [OFFSEASON]
 ============================================================================
 
- 1. [SIGNING] Boston signed forward Fraser Minten to a seven-year, $50.4 million contract. (priority 76, age 21.30h)
+ 1. [SIGNING] Boston signed forward Fraser Minten to a seven-year contract worth $50.4 million. (priority 76, age 21.80h)
     Compact headline: Bruins sign Fraser Minten to seven-year, $50.4M deal
     Occurred: 2026-09-08T18:12:59Z | Precision: exact | Status: active
-    Freshness basis: Boston signed Fraser Minten to a seven-year, $50.4 million contract Tuesday.
+    Freshness basis: Boston signed Fraser Minten to a seven-year, $50.4 million contract on Sept. 8.
     Entities: Boston Bruins, Fraser Minten
     Candidate IDs: cand-e3849edc364439d0
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49870408/bruins-sign-forward-fraser-minten-7-year-504m-deal
@@ -197,37 +198,29 @@ NHL  [OFFSEASON]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [RETURN] Marcus Rashford trained normally with Manchester United ahead of its Champions League tie with Sabah FK. (priority 75, age 4.93h)
-    Compact headline: Marcus Rashford returns to Manchester United training
+ 1. [RETURN] Marcus Rashford trained normally with Manchester United ahead of its Champions League match against Sabah FK. (priority 75, age 5.43h)
+    Compact headline: Rashford returns to training ahead of Man United clash
     Occurred: 2026-09-09T10:35:14Z | Precision: exact | Status: active
-    Freshness basis: Marcus Rashford returned to normal Manchester United training ahead of the Champions League tie.
+    Freshness basis: Marcus Rashford returned to full Manchester United training ahead of the Champions League match on Sept. 9.
     Entities: Manchester United, Marcus Rashford, Sabah FK
     Candidate IDs: cand-62291019ca83d930
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49878227/marcus-rashford-returns-training-ahead-manchester-united-champions-league-clash
 
- 2. [CONTRACT] Lewis Hall has reportedly agreed a new contract with Newcastle United, a setback for Manchester United’s interest in the defender. (priority 73, age 0.54h)
-    Compact headline: Newcastle target Lewis Hall agrees new contract
-    Occurred: 2026-09-09T14:58:22Z | Precision: exact | Status: active
-    Freshness basis: Lewis Hall reportedly agreed a new Newcastle contract Wednesday.
-    Entities: Newcastle United, Manchester United, Lewis Hall
-    Candidate IDs: cand-953def43f9113728
-    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49876963/transfer-rumors-news-man-united-blow-hall-agrees-new-newcastle-deal
-
- 3. [AWARD] The 2026 Ballon d’Or shortlists for the men’s and women’s awards were released, with the host city also changing. (priority 72, age 20.13h)
-    Compact headline: 2026 Ballon d’Or shortlists released
+ 2. [AWARD] The 2026 Ballon d’Or shortlists are out, identifying the candidates for the men’s and women’s top individual soccer awards. (priority 75, age 20.63h)
+    Compact headline: 2026 Ballon d’Or shortlists announced
     Occurred: 2026-09-08T19:22:51Z | Precision: exact | Status: active
-    Freshness basis: The 2026 Ballon d’Or shortlists and host-city change were announced Tuesday.
+    Freshness basis: The 2026 Ballon d’Or shortlists were released Tuesday.
     Entities: Ballon d’Or
     Candidate IDs: cand-7d18270b10f6a523
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49867974/2026-ballon-dor-full-mens-women-shortlists-host-city-change-vozinha-more
 
- 4. [LEAGUE_NEWS] The Premier League’s key-match panel said Harry Maguire’s goal against Ipswich correctly stood and that Arsenal should have received a penalty against Aston Villa. (priority 70, age 4.29h)
-    Compact headline: Premier League panel backs Maguire goal, flags Arsenal penalty
-    Occurred: 2026-09-09T11:13:37Z | Precision: exact | Status: active
-    Freshness basis: The Premier League key-match panel ruled that Maguire’s goal should stand and Arsenal deserved a penalty.
-    Entities: Premier League, Harry Maguire, Manchester United, Arsenal, Aston Villa
-    Candidate IDs: cand-40616ea0515c4863
-    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49878463/premier-league-panel-harry-maguire-goal-vs-ipswich-right-stand-arsenal-deserved-penalty-vs-aston-villa
+ 3. [CONTRACT] Newcastle defender Lewis Hall has reportedly agreed to a new contract, a setback for Manchester United’s reported interest. (priority 66, age 1.04h)
+    Compact headline: Lewis Hall reportedly agrees new Newcastle deal
+    Occurred: 2026-09-09T14:58:22Z | Precision: exact | Status: active
+    Freshness basis: Lewis Hall reportedly agreed to a new Newcastle contract Wednesday.
+    Entities: Newcastle United, Manchester United, Lewis Hall
+    Candidate IDs: cand-953def43f9113728
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49876963/transfer-rumors-news-man-united-blow-hall-agrees-new-newcastle-deal
 
 ============================================================================
 MLS  [ACTIVE]
@@ -239,27 +232,43 @@ MLS  [ACTIVE]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [LEAGUE_NEWS] College Football Playoff leaders opened a 30-day negotiating window with ESPN as they assess whether to expand to a 24-team field. (priority 78, age 17.38h)
-    Compact headline: CFP opens negotiations on possible 24-team field
+ 1. [PLAYOFF] College Football Playoff leaders opened a 30-day negotiating window with ESPN as they assess whether to expand the field to 24 teams. (priority 80, age 17.88h)
+    Compact headline: CFP opens ESPN talks with 24-team field in view
     Occurred: 2026-09-08T22:07:52Z | Precision: exact | Status: active
-    Freshness basis: The CFP opened a 30-day ESPN negotiation window to evaluate a possible 24-team playoff.
+    Freshness basis: The College Football Playoff opened a 30-day ESPN negotiation window regarding a possible 24-team field on Sept. 8.
     Entities: College Football Playoff, ESPN
     Candidate IDs: cand-5f2663cc7446940b
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49871893/sources-cfp-opens-espn-negotiation-window-24-teams-possible
 
- 2. [LEAGUE_NEWS] The NCAA established a standard timing protocol after Michigan’s controversial win was extended by an extra second despite the broadcast clock showing zero. (priority 76, age 8.84h)
+ 2. [RESULT] College football Bottom 10 after Week 1: UMass turns it upside down. (priority 84, age 5.38h)
+    Compact headline: UMass shocks Rutgers in Week 1 upset
+    Occurred: 2026-09-09T10:38:15Z | Precision: exact | Status: active
+    Freshness basis: UMass defeated Rutgers in a result described as a shocking Week 1 win.
+    Entities: UMass Minutemen, Rutgers Scarlet Knights
+    Candidate IDs: cand-f979070e3d87b458
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49871913/college-football-bottom-10-week-1-umass-turns-upside-down
+
+ 3. [LEAGUE_NEWS] The NCAA announced a new standard timing protocol after Michigan was awarded an extra second in its controversial win over Western Michigan. (priority 78, age 9.34h)
     Compact headline: NCAA establishes timing protocol after Michigan finish
     Occurred: 2026-09-09T06:40:11Z | Precision: exact | Status: active
-    Freshness basis: The NCAA established a new timing protocol following Michigan’s controversial extra-second finish.
+    Freshness basis: The NCAA established a standard timing protocol following Michigan’s controversial last-second win on Sept. 9.
     Entities: NCAA, Michigan Wolverines, Western Michigan Broncos
     Candidate IDs: cand-35b63835a71d02a3
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49874687/ncaa-issues-new-timing-protocol-wake-u-m-last-second-win
 
- 3. [ROSTER] LSU completed its roster at 105 players, eliminating the possibility of adding former NFL players Dae’Quan Wright and Zxavian Harris. (priority 64, age 2.57h)
-    Compact headline: LSU closes roster at 105 players
+ 4. [LEAGUE_NEWS] The MAC is asking for Western Michigan to be declared the winner after the conference’s controversial finish against Michigan. (priority 74, age 15.45h)
+    Compact headline: MAC appeals controversial Western Michigan finish
+    Occurred: 2026-09-09T00:33:49Z | Precision: exact | Status: active
+    Freshness basis: The MAC filed an appeal seeking to change the result of Western Michigan’s controversial finish against Michigan.
+    Entities: Mid-American Conference, Western Michigan Broncos, Michigan Wolverines
+    Candidate IDs: cand-7cf41b86227cc436
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49873237/western-michigan-one-second-appeal-mac-ncaa-college-football-playoff-goliath
+
+ 5. [ROSTER] LSU completed its roster at 105 players, filling the final spots without adding the two former NFL players it had considered. (priority 67, age 3.07h)
+    Compact headline: LSU finalizes 105-player roster
     Occurred: 2026-09-09T12:56:35Z | Precision: exact | Status: active
-    Freshness basis: LSU completed its roster at 105 players and will not add Dae’Quan Wright or Zxavian Harris.
-    Entities: LSU Tigers, Dae’Quan Wright, Zxavian Harris
+    Freshness basis: LSU finalized its roster at 105 players without adding Wright or Harris.
+    Entities: LSU Tigers, Dae'Quan Wright, Zxavian Harris
     Candidate IDs: cand-3f3325fa369da48c
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49875000/lsu-completes-roster-adding-nfl-players
 
@@ -270,35 +279,26 @@ SPECIAL EVENTS
 US Open (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [RESULT] Ben Shelton ended Carlos Alcaraz’s title reign with a five-set US Open quarterfinal victory, winning 6-7, 6-1, 6-3, 1-6, 7-6. (priority 91, age 4.05h)
-    Compact headline: Ben Shelton stuns Carlos Alcaraz in US Open marathon
-    Freshness basis: Ben Shelton defeated defending champion Carlos Alcaraz in a five-set US Open quarterfinal Tuesday.
+ 1. [RESULT] Ben Shelton ended Carlos Alcaraz’s title reign with a 6-7, 6-1, 6-3, 1-6, 7-6 victory that finished at 3:33 a.m. ET. (priority 91, age 4.55h)
+    Compact headline: Shelton stuns Alcaraz in five-set US Open thriller
+    Freshness basis: Ben Shelton defeated defending champion Carlos Alcaraz in five sets to reach the US Open semifinals on Sept. 9.
     Candidate IDs: cand-31a4b8eb329048cd
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49877286/ben-shelton-stuns-carlos-alcaraz-5-set-late-night-epic-make-us-open-semifinals
 
- 2. [ADVANCEMENT] Frances Tiafoe rallied past Alex Michelsen in five sets, 5-7, 3-6, 7-5, 6-3, 7-6, to reach his third US Open semifinal. (priority 84, age 7.58h)
-    Compact headline: Frances Tiafoe rallies into third US Open semifinal
-    Freshness basis: Frances Tiafoe advanced to his third US Open semifinal by beating Alex Michelsen in five sets.
+ 2. [ADVANCEMENT] Frances Tiafoe rallied past Alex Michelsen 5-7, 3-6, 7-5, 6-3, 7-6 to reach his third US Open semifinal. (priority 84, age 8.08h)
+    Compact headline: Tiafoe rallies past Michelsen to reach US Open semis
+    Freshness basis: Frances Tiafoe defeated Alex Michelsen in five sets to reach the US Open semifinals on Sept. 9.
     Candidate IDs: cand-ce45b748dab43ee2
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49873533/frances-tiafoe-rallies-alex-michelsen-5-sets-make-2026-us-open-semifinals
 
- 3. [ADVANCEMENT] No. 3 seed Jessica Pegula rallied past No. 26 seed Emma Navarro 3-6, 6-4, 6-3 in an all-American quarterfinal. (priority 79, age 0.29h)
-    Compact headline: Jessica Pegula reaches US Open semifinals
-    Freshness basis: Jessica Pegula advanced to the US Open semifinals by defeating Emma Navarro in three sets.
+ 3. [ADVANCEMENT] No. 3 seed Jessica Pegula rallied to beat No. 26 seed Emma Navarro 3-6, 6-4, 6-3 in an all-American quarterfinal. (priority 79, age 1.02h)
+    Compact headline: Pegula rallies past Navarro into US Open semifinals
+    Freshness basis: Jessica Pegula defeated Emma Navarro to reach the US Open semifinals on Sept. 9.
     Candidate IDs: cand-41cb00467b8e4841
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49875427/jessica-pegula-beats-emma-navarro-us-open-quarterfinal-play-aryna-sabalenka-semifinals
 
- 4. [ADVANCEMENT] Aryna Sabalenka beat Linda Noskova 7-6, 3-6, 7-6 in a tight quarterfinal to keep her bid for a third straight US Open title alive. (priority 77, age 12.35h)
-    Compact headline: Aryna Sabalenka survives Noskova to reach US Open semis
-    Freshness basis: Aryna Sabalenka advanced to the US Open semifinals by defeating Linda Noskova in a three-set quarterfinal.
+ 4. [ADVANCEMENT] Aryna Sabalenka beat Linda Noskova 7-6, 3-6, 7-6 to reach the US Open semifinals and keep her bid for a third straight title alive. (priority 78, age 12.85h)
+    Compact headline: Sabalenka survives Noskova to keep three-peat hopes alive
+    Freshness basis: Aryna Sabalenka defeated Linda Noskova to reach the US Open semifinals on Sept. 9.
     Candidate IDs: cand-95dc4aa282bf0dd0
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49870845/sabalenka-edges-noskova-remains-alive-us-open-three-peat
-
-Formula 1 (Formula 1)
-----------------------------------------------------------------------------
-
- 1. [CONTRACT] Max Verstappen said he held serious talks with McLaren and Mercedes before choosing to extend his stay with Red Bull. (priority 78, age 4.30h)
-    Compact headline: Verstappen confirms talks with McLaren and Mercedes
-    Freshness basis: Max Verstappen disclosed serious talks with McLaren and Mercedes before agreeing to stay with Red Bull.
-    Candidate IDs: cand-75da506cce66f3c9
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49878411/max-verstappen-admits-mclaren-mercedes-talks-following-heart-red-bull-stay
