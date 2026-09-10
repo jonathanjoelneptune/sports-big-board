@@ -1,164 +1,155 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-10T18:01:33Z
+Updated: 2026-09-10T18:31:25Z
 Global headline budget: 32/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: 5e12524a0b23965930847e51690013c0379619737431bfa3dfb477bf1029695c
+Candidate hash: 1b2ce0b5e054e8f3d9b04e2ce7a16d5f9de60bf76f6c2f2541b6ac98c8a740de
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [MILESTONE] Astros second baseman Jose Altuve doubled against Philadelphia for the 2,500th hit of his major league career. (priority 85, age 5.71h)
-    Compact headline: Jose Altuve reaches 2,500 career hits
-    Occurred: 2026-09-10T12:19:05Z | Precision: exact | Status: active
-    Freshness basis: Jose Altuve doubled for his 2,500th career hit against Philadelphia Wednesday night.
-    Entities: Jose Altuve, Houston Astros
-    Candidate IDs: cand-37b918354bb331e6
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49887443/astros-jose-altuve-doubles-3rd-inning-vs-phillies-2500th-career-hit
-
- 2. [STANDINGS] Milwaukee completed a sweep of Chicago with an 8-6 win, as Christian Yelich hit a three-run homer and the Brewers extended their NL Central lead to 10 games. (priority 86, age 15.27h)
-    Compact headline: Brewers sweep Cubs, stretch NL Central lead to 10 games
-    Occurred: 2026-09-10T02:45:30Z | Precision: exact | Status: active
-    Freshness basis: Milwaukee completed its sweep of Chicago with an 8-6 victory Wednesday night.
-    Entities: Milwaukee Brewers, Chicago Cubs, Christian Yelich
-    Candidate IDs: cand-c7cc517f6f96bf97
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816876
-
- 3. [LEAGUE_NEWS] Isao Harimoto, a Hiroshima bombing survivor who still holds Japan’s career hits record, has died at age 86. (priority 82, age 2.88h)
+ 1. [RECORD] Isao Harimoto, a Hiroshima survivor who still holds Japan's career hits record, has died at 86. (priority 83, age 3.37h)
     Compact headline: Japanese baseball icon Isao Harimoto dies at 86
     Occurred: 2026-09-10T15:08:56Z | Precision: exact | Status: active
-    Freshness basis: Isao Harimoto died at 86, and Japan’s career hits record remains his.
+    Freshness basis: Isao Harimoto died at 86 while still holding Japan's career hits record.
     Entities: Isao Harimoto
     Candidate IDs: cand-238e63e4a5ad470b
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49891975/isao-harimoto-japanese-baseball-icon-hiroshima-survivor-dies
 
- 4. [INJURY] The Dodgers placed Shohei Ohtani on the 15-day injured list and will call up top prospect Josue De Paula to fill in at designated hitter. (priority 71, age 5.72h)
-    Compact headline: Shohei Ohtani lands on 15-day injured list
-    Occurred: 2026-09-10T12:18:29Z | Precision: exact | Status: active
-    Freshness basis: The Dodgers placed Shohei Ohtani on the 15-day injured list Thursday.
-    Entities: Shohei Ohtani, Los Angeles Dodgers, Josue De Paula
-    Candidate IDs: cand-4f0ebb52dd54cfd0
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49888435/ohtani-heads-il-dodgers-calling-top-prospect-de-paula-play-dh
+ 2. [MILESTONE] Jose Altuve doubled in the third inning against Philadelphia for his 2,500th career hit. (priority 84, age 6.21h)
+    Compact headline: Altuve reaches 2,500 career hits with Astros
+    Occurred: 2026-09-10T12:19:05Z | Precision: exact | Status: active
+    Freshness basis: Jose Altuve recorded his 2,500th career hit with a third-inning double against Philadelphia.
+    Entities: Jose Altuve, Houston Astros
+    Candidate IDs: cand-37b918354bb331e6
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49887443/astros-jose-altuve-doubles-3rd-inning-vs-phillies-2500th-career-hit
 
- 5. [RETURN] Anthony Volpe rejoined the Yankees after New York placed Jazz Chisholm Jr. on the 10-day injured list with a sprained thumb. (priority 76, age 0.94h)
-    Compact headline: Volpe returns as Yankees place Chisholm on IL
-    Occurred: 2026-09-10T17:05:27Z | Precision: exact | Status: active
-    Freshness basis: The Yankees announced Volpe’s return and Chisholm’s 10-day IL placement Thursday.
-    Entities: Anthony Volpe, Jazz Chisholm Jr., New York Yankees
-    Candidate IDs: cand-14e7c55cff47e6ea
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49893355/volpe-rejoins-yankees-chisholm-hits-il-sprained-thumb
+ 3. [STANDINGS] Milwaukee completed a sweep of Chicago with an 8-6 win; Christian Yelich hit a three-run homer and the Brewers stretched their NL Central lead to 10 games. (priority 82, age 15.77h)
+    Compact headline: Brewers sweep Cubs, extend NL Central lead to 10 games
+    Occurred: 2026-09-10T02:45:30Z | Precision: exact | Status: active
+    Freshness basis: Milwaukee swept Chicago with an 8-6 win and extended its NL Central lead to 10 games Wednesday.
+    Entities: Milwaukee Brewers, Chicago Cubs, Christian Yelich
+    Candidate IDs: cand-c7cc517f6f96bf97
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816876
 
- 6. [STREAK] Yoshinobu Yamamoto struck out 10 over seven innings as Los Angeles routed Cincinnati 14-1 for its season-high seventh consecutive win. (priority 77, age 15.86h)
-    Compact headline: Dodgers rout Reds for seventh straight victory
-    Occurred: 2026-09-10T02:10:00Z | Precision: exact | Status: active
-    Freshness basis: The Dodgers beat the Reds 14-1 for their seventh straight win Wednesday night.
-    Entities: Yoshinobu Yamamoto, Los Angeles Dodgers, Cincinnati Reds
-    Candidate IDs: cand-20d0779eb72797da
-    Source [Highlightly/highlightly-baseball-2026-09-09]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816878
-
- 7. [RETURN] Rookie Kade Anderson threw six sharp innings for his first major league win, and Cole Young added a two-run double in Seattle’s 3-2 victory. (priority 74, age 21.86h)
-    Compact headline: Rookie Kade Anderson earns first MLB win
+ 4. [RESULT] Jackson Merrill homered twice and drove in a career-high six runs as San Diego beat Washington 9-2. (priority 82, age 22.36h)
+    Compact headline: Merrill’s two homers, six RBIs power Padres past Nats
     Occurred: 2026-09-09T20:10:00Z | Precision: exact | Status: active
-    Freshness basis: Kade Anderson earned his first major league win in Seattle’s 3-2 victory over Texas.
-    Entities: Kade Anderson, Cole Young, Seattle Mariners, Texas Rangers
+    Freshness basis: Jackson Merrill hit two homers and drove in six runs in San Diego's 9-2 win over Washington.
+    Entities: Jackson Merrill, San Diego Padres, Washington Nationals
+    Candidate IDs: cand-934ea833ee9794ef
+    Source [Highlightly/highlightly-baseball-2026-09-09]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816882
+
+ 5. [MILESTONE] Seattle beat Texas 3-2 as rookie Kade Anderson earned his first major league victory with six sharp innings, while Cole Young hit a two-run double. (priority 75, age 22.36h)
+    Compact headline: Mariners rookie Anderson earns first MLB win
+    Occurred: 2026-09-09T20:10:00Z | Precision: exact | Status: active
+    Freshness basis: Seattle beat Texas 3-2 and Kade Anderson recorded his first major league win Wednesday.
+    Entities: Seattle Mariners, Texas Rangers, Kade Anderson, Cole Young
     Candidate IDs: cand-a8acf5d781ddd341
     Source [Highlightly/highlightly-baseball-2026-09-09]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816880
+
+ 6. [INJURY] The Yankees placed Jazz Chisholm Jr. on the 10-day injured list with a thumb sprain while Anthony Volpe returned to the team. (priority 71, age 1.43h)
+    Compact headline: Chisholm lands on IL as Volpe rejoins Yankees
+    Occurred: 2026-09-10T17:05:27Z | Precision: exact | Status: active
+    Freshness basis: New York placed Jazz Chisholm Jr. on the 10-day injured list and welcomed Anthony Volpe back Thursday.
+    Entities: New York Yankees, Jazz Chisholm Jr., Anthony Volpe
+    Candidate IDs: cand-14e7c55cff47e6ea
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49893355/volpe-rejoins-yankees-chisholm-hits-il-sprained-thumb
+
+ 7. [INJURY] The Dodgers placed Shohei Ohtani on the 15-day injured list and called up top prospect Josue De Paula to fill his DH spot. (priority 71, age 6.22h)
+    Compact headline: Ohtani lands on 15-day IL as Dodgers call up De Paula
+    Occurred: 2026-09-10T12:18:29Z | Precision: exact | Status: active
+    Freshness basis: The Dodgers placed Shohei Ohtani on the 15-day injured list and called up Josue De Paula Thursday.
+    Entities: Shohei Ohtani, Los Angeles Dodgers, Josue De Paula
+    Candidate IDs: cand-4f0ebb52dd54cfd0
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49888435/ohtani-heads-il-dodgers-calling-top-prospect-de-paula-play-dh
 
 ============================================================================
 NFL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Patriots wide receiver A.J. Brown is believed to have suffered a high ankle sprain and is scheduled for an MRI after leaving Wednesday’s loss. (priority 81, age 0.79h)
+ 1. [INJURY] Patriots receiver A.J. Brown is believed to have suffered a high ankle sprain and is scheduled for an MRI after leaving Wednesday’s loss. (priority 79, age 1.29h)
     Compact headline: A.J. Brown believed to have high ankle sprain
     Occurred: 2026-09-10T17:14:15Z | Precision: exact | Status: active
-    Freshness basis: A.J. Brown was reported to have a high ankle sprain and is set for an MRI.
+    Freshness basis: A.J. Brown was reported to have a high ankle sprain and an MRI was planned after Wednesday's game.
     Entities: A.J. Brown, New England Patriots
     Candidate IDs: cand-2bff19cc7699ee86
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49891924/sources-aj-brown-believed-high-ankle-sprain-set-mri
 
- 2. [INJURY] Seattle quarterback Sam Darnold received positive news on his hip injury but is expected to miss the Seahawks’ Week 2 game. (priority 77, age 0.08h)
-    Compact headline: Sam Darnold expected to miss Seahawks’ Week 2 game
+ 2. [INJURY] Seattle quarterback Sam Darnold is expected to miss Week 2 because of a hip injury, despite receiving encouraging news about its severity. (priority 76, age 0.58h)
+    Compact headline: Darnold expected to miss Seahawks’ Week 2 game
     Occurred: 2026-09-10T17:56:41Z | Precision: exact | Status: active
-    Freshness basis: Sam Darnold is expected to miss Seattle’s Week 2 game because of a hip injury.
+    Freshness basis: Sam Darnold was expected to miss Seattle's Week 2 game because of a hip injury.
     Entities: Sam Darnold, Seattle Seahawks
     Candidate IDs: cand-0f80cf433082de7e
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49893507/sources-seahawks-sam-darnold-expected-miss-week-2
 
- 3. [RETURN] The 49ers removed George Kittle and Nick Bosa from the injury report, clearing both stars to play against the Rams in Week 1. (priority 76, age 5.98h)
-    Compact headline: Kittle and Bosa cleared for 49ers’ opener
+ 3. [RESULT] Drake Maye after 3-INT opener: I lost patience and it cost us. (priority 82, age 12.13h)
+    Compact headline: Seahawks win Super Bowl rematch as Maye throws three picks
+    Occurred: 2026-09-10T06:23:45Z | Precision: exact | Status: active
+    Freshness basis: Seattle beat New England 13-10 in the season-opening Super Bowl rematch Thursday.
+    Entities: Seattle Seahawks, New England Patriots, Drake Maye
+    Candidate IDs: cand-d365512cd7f07732
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49888969/drake-maye-pats-loss-lost-patience-cost-us
+
+ 4. [RETURN] San Francisco cleared George Kittle and Nick Bosa to play against the Rams after both stars missed time with significant injuries. (priority 77, age 6.48h)
+    Compact headline: Kittle and Bosa cleared to return for 49ers
     Occurred: 2026-09-10T12:02:49Z | Precision: exact | Status: active
-    Freshness basis: George Kittle and Nick Bosa came off San Francisco’s injury report ahead of the Week 1 matchup.
+    Freshness basis: The 49ers removed George Kittle and Nick Bosa from the injury report ahead of their Week 1 game.
     Entities: George Kittle, Nick Bosa, San Francisco 49ers, Los Angeles Rams
     Candidate IDs: cand-fc91f339ebefee8e
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49889214/49ers-kittle-bosa-injury-report-set-play-vs-rams
 
- 4. [LEGAL] Packers running back Josh Jacobs pleaded no contest to misdemeanor battery and criminal-damage charges in Green Bay. (priority 75, age 0.24h)
-    Compact headline: Josh Jacobs pleads no contest to misdemeanor charges
+ 5. [LEGAL] Green Bay running back Josh Jacobs pleaded no contest to misdemeanor battery and criminal-damage charges in Wisconsin. (priority 75, age 0.74h)
+    Compact headline: Packers’ Josh Jacobs pleads no contest to charges
     Occurred: 2026-09-10T17:47:01Z | Precision: exact | Status: active
-    Freshness basis: Josh Jacobs pleaded no contest to misdemeanor battery and criminal-damage charges Thursday.
+    Freshness basis: Josh Jacobs entered a no-contest plea to misdemeanor battery and criminal-damage charges at a Wisconsin hearing.
     Entities: Josh Jacobs, Green Bay Packers
     Candidate IDs: cand-58b6afc8c9c0e7b0
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49893018/packers-rb-josh-jacobs-pleads-no-contest-misdemeanor-charges
-
- 5. [RESULT] Sam Darnold left the game injured, the offense was stagnant and sloppy mistakes put Seattle in a hole through three quarters. (priority 72, age 17.69h)
-    Compact headline: Seahawks intercept Drake Maye three times
-    Occurred: 2026-09-10T00:20:00Z | Precision: exact | Status: active
-    Freshness basis: Seattle beat New England 13-10 in the Super Bowl rematch Wednesday night.
-    Entities: Seattle Seahawks, New England Patriots, Drake Maye, Sam Darnold
-    Candidate IDs: cand-f93df3d65c4a1eb1
-    Source [Highlightly/highlightly-american-football-2026-09-09]: https://highlightly.net
-    Source [ESPN/espn-nfl]: http://www.espn.com/nfl/recap?gameId=401872656
 
 ============================================================================
 NBA  [OFFSEASON]
 ============================================================================
 
- 1. [COACHING] The Lakers are hiring longtime Miami Heat executive Eric Amsler as an assistant general manager. (priority 65, age 7.93h)
-    Compact headline: Lakers hiring Heat executive Eric Amsler
-    Occurred: 2026-09-10T10:05:31Z | Precision: exact | Status: active
-    Freshness basis: The Lakers agreed to hire Eric Amsler as an assistant general manager.
-    Entities: Eric Amsler, Los Angeles Lakers, Miami Heat
-    Candidate IDs: cand-533f863708643c00
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49884203/sources-lakers-hire-former-heat-exec-amsler-assistant-gm
+ 1. [LEAGUE_NEWS] EuroLeague owners will vote Oct. 5 on whether to accept the NBA's proposal for NBA Europe or continue operating as a separate league. (priority 73, age 23.38h)
+    Compact headline: EuroLeague sets Oct. 5 vote on NBA Europe proposal
+    Occurred: 2026-09-09T19:08:44Z | Precision: exact | Status: watch
+    Freshness basis: EuroLeague owners scheduled an Oct. 5 vote on the league's role in the proposed NBA Europe project.
+    Entities: EuroLeague, NBA, NBA Europe
+    Candidate IDs: cand-ed953c4e436271e1
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49882328/euroleague-oct-5-vote-role-nba-europe-project
 
 ============================================================================
 NHL  [OFFSEASON]
 ============================================================================
 
- 1. [LEAGUE_NEWS] Barry Melrose, the former NHL player, coach and longtime ESPN hockey analyst, has died, his wife told ESPN’s Steve Levy. (priority 82, age 5.30h)
-    Compact headline: Barry Melrose, former player and coach, dies
+ 1. [LEAGUE_NEWS] Barry Melrose, the former NHL player and coach who became a beloved longtime ESPN hockey analyst, has died. (priority 80, age 5.80h)
+    Compact headline: Barry Melrose, longtime player, coach and analyst, dies
     Occurred: 2026-09-10T12:43:36Z | Precision: exact | Status: active
-    Freshness basis: Barry Melrose died Thursday, according to his wife.
+    Freshness basis: Barry Melrose died after a career as an NHL player, coach and longtime ESPN analyst.
     Entities: Barry Melrose
     Candidate IDs: cand-c6c49859db22003b
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49886334/barry-melrose-former-player-coach-espn-analyst-dies
 
- 2. [ROSTER] Anaheim is placing veteran forward Chris Kreider on waivers after he expressed a desire to play closer to the East Coast. (priority 75, age 6.93h)
-    Compact headline: Ducks place Chris Kreider on waivers
+ 2. [ROSTER] Anaheim placed veteran forward Chris Kreider on waivers after he expressed a desire to play closer to the East Coast. (priority 75, age 7.43h)
+    Compact headline: Ducks place Chris Kreider on waivers before East move
     Occurred: 2026-09-10T11:05:33Z | Precision: exact | Status: active
-    Freshness basis: The Ducks placed Chris Kreider on waivers after he requested an East Coast move.
+    Freshness basis: The Ducks placed Chris Kreider on waivers after he requested an opportunity to move closer to the East Coast.
     Entities: Chris Kreider, Anaheim Ducks
     Candidate IDs: cand-580564cd30391021
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49881489/source-ducks-waiving-chris-kreider-east-move-deck
 
- 3. [CONTRACT] Minnesota Wild defenseman Quinn Hughes said he feels no pressure to rush an extension but expects contract discussions to pick up before training camp. (priority 73, age 6.98h)
-    Compact headline: Quinn Hughes expects Wild extension talks to intensify
-    Occurred: 2026-09-10T11:02:58Z | Precision: exact | Status: watch
-    Freshness basis: Hughes said Thursday that contract discussions with Minnesota are expected to increase ahead of training camp.
-    Entities: Quinn Hughes, Minnesota Wild, Bill Guerin
-    Candidate IDs: cand-886ec117d962050e
-    Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49887009/quinn-hughes-no-pressure-rush-extension-minnesota-wild-expects-conversations-gm-pick-up
-
- 4. [LEAGUE_NEWS] The NHL is in talks with a third ownership group interested in bringing an expansion team back to Atlanta. (priority 73, age 15.53h)
-    Compact headline: NHL talks with third group about Atlanta expansion
-    Occurred: 2026-09-10T02:29:44Z | Precision: exact | Status: watch
-    Freshness basis: The NHL entered talks with a third group seeking an expansion team in Atlanta.
+ 3. [LEAGUE_NEWS] The NHL is talking with a third group interested in bringing an expansion team to Atlanta, deputy commissioner Bill Daly said. (priority 73, age 16.03h)
+    Compact headline: NHL discussing third Atlanta expansion group
+    Occurred: 2026-09-10T02:29:44Z | Precision: exact | Status: active
+    Freshness basis: The NHL confirmed talks with a third group seeking an expansion team in Atlanta.
     Entities: NHL, Atlanta
     Candidate IDs: cand-6b4d9ce48ad90704
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49886471/nhl-talks-third-group-interest-adding-expansion-team-atlanta
@@ -167,27 +158,44 @@ NHL  [OFFSEASON]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Tottenham winger Mykhailo Mudryk is expected to miss at least until October after suffering an ankle injury in training. (priority 75, age 22.41h)
-    Compact headline: Tottenham’s Mykhailo Mudryk out until October
+ 1. [INJURY] Tottenham winger Mykhailo Mudryk is expected to miss at least until October after suffering an ankle injury in training. (priority 75, age 22.91h)
+    Compact headline: Tottenham’s Mudryk out until at least October
     Occurred: 2026-09-09T19:36:55Z | Precision: exact | Status: active
-    Freshness basis: Mykhailo Mudryk suffered an ankle injury in training and is expected to be sidelined until October.
+    Freshness basis: Mykhailo Mudryk suffered an ankle injury in training and is expected to be sidelined until at least October.
     Entities: Mykhailo Mudryk, Tottenham Hotspur
     Candidate IDs: cand-ed6f35eb9c1bb8a4
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49883172/mykhailo-mudryk-tottenham-premier-league-spurs-injuries
+
+ 2. [AWARD] The 2026 Ballon d'Or shortlists for the men's and women's awards were released, setting the field for soccer's top individual honors. (priority 74, age 7.74h)
+    Compact headline: 2026 Ballon d'Or shortlists released
+    Occurred: 2026-09-10T10:47:16Z | Precision: exact | Status: active
+    Freshness basis: The 2026 Ballon d'Or men's and women's shortlists were released Thursday.
+    Entities: Ballon d'Or
+    Candidate IDs: cand-7d18270b10f6a523
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49867974/2026-ballon-dor-full-mens-women-shortlists-host-city-change-vozinha-more
 
 ============================================================================
 MLS  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] MLS announced record 2026 revenue from both incoming and outgoing transfers. (priority 77, age 22.97h)
+ 1. [RECORD] MLS announced record revenue from both incoming and outgoing transfers during the 2026 season. (priority 78, age 23.47h)
     Compact headline: MLS sets transfer-revenue records in 2026
     Occurred: 2026-09-09T19:03:18Z | Precision: exact | Status: active
-    Freshness basis: MLS announced that 2026 transfer activity set incoming- and outgoing-transfer revenue records.
-    Entities: MLS
+    Freshness basis: MLS announced that 2026 transfer activity set league records for incoming and outgoing transfer revenue.
+    Entities: Major League Soccer
     Candidate IDs: cand-cd497fe20a4c325b
     Source [ESPN/espn-mls]: https://www.espn.com/soccer/story/_/id/49882716/mls-league-sets-record-incoming-outgoing-transfers-2026
 
- 2. [RESULT] A late goal came in the 90th minute to decide New England Revolution's 2-1 win over New York City FC. (priority 76, age 18.03h)
+ 2. [RECORD] Inter Miami rallied from a goal down for a 1-1 draw with Chicago Fire before 63,094 fans, a new Fire home attendance record. (priority 73, age 18.02h)
+    Compact headline: Miami draws Chicago before record Fire crowd
+    Occurred: 2026-09-10T00:30:00Z | Precision: exact | Status: active
+    Freshness basis: Inter Miami and Chicago drew 1-1 before 63,094 fans, setting a new Chicago Fire home attendance record.
+    Entities: Inter Miami, Chicago Fire, Lionel Messi, Robert Lewandowski
+    Candidate IDs: cand-f65da1fbe289af1e
+    Source [Highlightly/highlightly-football-2026-09-09]: https://highlightly.net
+    Source [ESPN/espn-mls]: https://www.espn.com/soccer/story/_/id/49887607/miami-rallies-draw-lewandowski-goal-record-fire-crowd
+
+ 3. [RESULT] A late goal came in the 90th minute to decide New England Revolution's 2-1 win over New York City FC. (priority 76, age 18.52h)
     Compact headline: Late goal lifts New England Revolution beat New York City FC 2-1
     Occurred: 2026-09-10T00:00:00Z | Precision: exact | Status: active
     Freshness basis: A late goal came in the 90th minute to decide New England Revolution's 2-1 win over New York City FC.
@@ -195,16 +203,16 @@ MLS  [ACTIVE]
     Candidate IDs: cand-6d741aa708d60ea1
     Source [Highlightly/highlightly-football-2026-09-09]: https://highlightly.net
 
- 3. [RESULT] Toronto beats MLS leaders Nashville to extend unbeaten run. (priority 76, age 18.53h)
+ 4. [RESULT] Toronto beats MLS leaders Nashville to extend unbeaten run. (priority 76, age 19.02h)
     Compact headline: Late goal lifts Toronto FC beat Nashville SC 2-1
     Occurred: 2026-09-09T23:30:00Z | Precision: exact | Status: active
     Freshness basis: A late goal came in the 90th minute to decide Toronto FC's 2-1 win over Nashville SC.
-    Entities: Emilio Aristizábal, Dániel Sallói, Toronto FC, Nashville SC
+    Entities: Toronto FC, Nashville SC, Emilio Aristizábal, Dániel Sallói
     Candidate IDs: cand-832a080aff6acbac
     Source [Highlightly/highlightly-football-2026-09-09]: https://highlightly.net
     Source [ESPN/espn-mls]: http://www.espn.com/soccer/report/_/gameId/761790
 
- 4. [RESULT] A late goal came in the 90th minute to decide Orlando City's 3-2 win over Atlanta United FC. (priority 76, age 18.53h)
+ 5. [RESULT] A late goal came in the 90th minute to decide Orlando City's 3-2 win over Atlanta United FC. (priority 76, age 19.02h)
     Compact headline: Late goal lifts Orlando City beat Atlanta United FC 3-2
     Occurred: 2026-09-09T23:30:00Z | Precision: exact | Status: active
     Freshness basis: A late goal came in the 90th minute to decide Orlando City's 3-2 win over Atlanta United FC.
@@ -212,58 +220,49 @@ MLS  [ACTIVE]
     Candidate IDs: cand-98d04f6c505069b4
     Source [Highlightly/highlightly-football-2026-09-09]: https://highlightly.net
 
- 5. [RESULT] Inter Miami rallied from a goal down for a 1-1 draw with Chicago in front of a club-record 63,094 fans at Soldier Field. (priority 72, age 17.53h)
-    Compact headline: Messi, Miami rally to draw before record Fire crowd
+ 6. [RESULT] An 87th-minute goal decided Houston's 2-1 win over Real Salt Lake. (priority 72, age 18.02h)
+    Compact headline: Late goal lifts Houston past Real Salt Lake
     Occurred: 2026-09-10T00:30:00Z | Precision: exact | Status: active
-    Freshness basis: Inter Miami drew Chicago 1-1 before a club-record Fire crowd of 63,094.
-    Entities: Lionel Messi, Inter Miami, Chicago Fire
-    Candidate IDs: cand-f65da1fbe289af1e
-    Source [Highlightly/highlightly-football-2026-09-09]: https://highlightly.net
-    Source [ESPN/espn-mls]: https://www.espn.com/soccer/story/_/id/49887607/miami-rallies-draw-lewandowski-goal-record-fire-crowd
-
- 6. [RESULT] An 87th-minute goal decided Houston’s 2-1 win over Real Salt Lake. (priority 72, age 17.53h)
-    Compact headline: Late goal lifts Houston over Real Salt Lake
-    Occurred: 2026-09-10T00:30:00Z | Precision: exact | Status: active
-    Freshness basis: An 87th-minute goal decided Houston’s 2-1 win over Real Salt Lake.
+    Freshness basis: An 87th-minute goal decided Houston's 2-1 win over Real Salt Lake.
     Entities: Houston Dynamo, Real Salt Lake
     Candidate IDs: cand-351729d97661d985
-    Source [Highlightly/highlightly-football-2026-09-09]: https://highlightly.net
-
- 7. [RESULT] Philadelphia Union overwhelmed FC Cincinnati 5-0 in a decisive MLS victory Wednesday night. (priority 72, age 18.28h)
-    Compact headline: Philadelphia routs Cincinnati 5-0
-    Occurred: 2026-09-09T23:45:00Z | Precision: exact | Status: active
-    Freshness basis: Philadelphia defeated FC Cincinnati 5-0 Wednesday night.
-    Entities: Philadelphia Union, FC Cincinnati
-    Candidate IDs: cand-a789d6a8b48738b2
     Source [Highlightly/highlightly-football-2026-09-09]: https://highlightly.net
 
 ============================================================================
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [LEAGUE_NEWS] The College Sports Commission cleared more than $227 million in NIL deals during July and August, nearly doubling its first-year total. (priority 74, age 22.96h)
+ 1. [RECORD] The College Sports Commission cleared more than $227 million in NIL deals across July and August, nearly doubling its first-year total. (priority 78, age 23.46h)
     Compact headline: College Sports Commission clears $227M in NIL deals
     Occurred: 2026-09-09T19:03:51Z | Precision: exact | Status: active
-    Freshness basis: The College Sports Commission cleared more than $227 million in NIL deals in July and August.
-    Entities: College Sports Commission, NIL
+    Freshness basis: The College Sports Commission cleared more than $227 million in NIL deals during July and August.
+    Entities: College Sports Commission
     Candidate IDs: cand-58c0c32e79bfdea9
     Source [ESPN/espn-ncaaf]: https://www.espn.com/espn/story/_/id/49882283/csc-clears-227m-nil-deals-july-august-major-increase
 
- 2. [INJURY] No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky. (priority 65, age 16.96h)
+ 2. [LEAGUE_NEWS] LSU told SEC commissioner Greg Sankey that it had complied with conference rules and that the dispute threatening its standing was moot. (priority 73, age 21.73h)
+    Compact headline: LSU tells SEC it has complied, defusing expulsion dispute
+    Occurred: 2026-09-09T20:47:21Z | Precision: exact | Status: active
+    Freshness basis: LSU informed the SEC that it had complied with conference rules and called the issue moot Wednesday.
+    Entities: LSU Tigers, SEC, Greg Sankey
+    Candidate IDs: cand-12ef42d50cb5776e
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49883607/lsu-tells-sec-tigers-complied-disrupt-meeting
+
+ 3. [INJURY] No. 12 Alabama could be without offensive guard Michael Carroll for Saturday’s game at Kentucky. (priority 65, age 17.46h)
     Compact headline: Alabama guard Michael Carroll doubtful at Kentucky
-    Occurred: 2026-09-10T01:03:46Z | Precision: exact | Status: watch
-    Freshness basis: Alabama listed Michael Carroll as doubtful for Saturday’s game at Kentucky.
+    Occurred: 2026-09-10T01:03:46Z | Precision: exact | Status: active
+    Freshness basis: Alabama listed offensive guard Michael Carroll as doubtful for Saturday's game at Kentucky.
     Entities: Michael Carroll, Alabama Crimson Tide, Kentucky Wildcats
     Candidate IDs: cand-ee9b9eaaf45d4c82
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky
 
- 3. [ROSTER] LSU finalized its roster at 105 players by adding two current student-athletes, eliminating the option to add Dae’Quan Wright or Zxavian Harris. (priority 68, age 23.74h)
-    Compact headline: LSU completes roster without adding former NFL players
-    Occurred: 2026-09-09T18:17:07Z | Precision: exact | Status: active
-    Freshness basis: LSU completed its 105-player roster Wednesday without adding the two former NFL players.
-    Entities: LSU Tigers, Dae’Quan Wright, Zxavian Harris
-    Candidate IDs: cand-3f3325fa369da48c
-    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49875000/lsu-completes-roster-adding-nfl-players
+ 4. [LEAGUE_NEWS] The Big Ten will make replay reviews available to all television broadcasts of league games beginning with Saturday's contests. (priority 64, age 7.86h)
+    Compact headline: Big Ten expands TV access to replay reviews
+    Occurred: 2026-09-10T10:40:00Z | Precision: exact | Status: next
+    Freshness basis: The Big Ten announced expanded television access to replay reviews beginning Saturday.
+    Entities: Big Ten
+    Candidate IDs: cand-b4b9561eb6774169
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49884885/big-ten-expanding-access-replay-reviews-football-tv-broadcasts
 
 ############################################################################
 SPECIAL EVENTS
@@ -272,26 +271,27 @@ SPECIAL EVENTS
 US Open (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [ADVANCEMENT] Elena Rybakina rallied past Zheng Qinwen 3-6, 6-1, 6-4 to reach the US Open semifinals and claim the No. 1 ranking. (priority 88, age 17.29h)
-    Compact headline: Elena Rybakina reaches US Open semis, takes No. 1
-    Freshness basis: Elena Rybakina reached the US Open semifinals and claimed the No. 1 ranking with a win over Zheng Qinwen.
+ 1. [ADVANCEMENT] Elena Rybakina rallied past Zheng Qinwen 3-6, 6-1, 6-4 to reach the US Open semifinals and claim the women’s No. 1 ranking. (priority 86, age 17.79h)
+    Compact headline: Rybakina reaches US Open semis and takes No. 1 ranking
+    Freshness basis: Elena Rybakina defeated Zheng Qinwen in three sets to reach the US Open semifinals and become No. 1.
     Candidate IDs: cand-e424a05467ea1759
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49882460/elena-rybakina-reaches-us-open-semis-claims-no-1-ranking
 
- 2. [ADVANCEMENT] Coco Gauff saved match points in a tiebreaker before rallying past Mirra Andreeva 2-6, 7-6 (7), 6-2 to reach the US Open semifinals. (priority 86, age 15.06h)
-    Compact headline: Coco Gauff saves match points, reaches US Open semis
-    Freshness basis: Coco Gauff reached the US Open semifinals by beating Mirra Andreeva after saving match points.
+ 2. [ADVANCEMENT] Coco Gauff saved match points in a tiebreaker, rallied past Mirra Andreeva 2-6, 7-6 (7), 6-2 and reached the US Open semifinals. (priority 84, age 15.56h)
+    Compact headline: Gauff rallies past Andreeva into US Open semifinals
+    Freshness basis: Coco Gauff defeated Mirra Andreeva in three sets and advanced to the US Open semifinals Wednesday.
     Candidate IDs: cand-d1091e072a809ec8
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49884369/coco-gauff-saves-match-points-rallies-mirra-andreeva-reach-2026-us-open-semifinals
 
- 3. [ADVANCEMENT] Alexander Zverev beat Botic van de Zandschulp to reach the US Open semifinals. (priority 74, age 12.87h)
-    Compact headline: Alexander Zverev reaches US Open semifinals
-    Freshness basis: Alexander Zverev advanced to the US Open semifinals with a win over Botic van de Zandschulp.
+ 3. [ADVANCEMENT] Alexander Zverev defeated Botic van de Zandschulp to reach the US Open semifinals. (priority 77, age 13.36h)
+    Compact headline: Zverev advances to US Open semifinals
+    Freshness basis: Alexander Zverev defeated Botic van de Zandschulp to advance to the US Open semifinals.
     Candidate IDs: cand-d182ab58b8727393
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49887449/alexander-zverev-beats-botic-van-de-zandschulp-reach-2026-us-open-semifinals
 
- 4. [ADVANCEMENT] Karen Khachanov advanced to his third Grand Slam semifinal when Alexander Blockx retired during the third set of their US Open quarterfinal. (priority 74, age 15.27h)
-    Compact headline: Khachanov reaches US Open semifinal after retirement
-    Freshness basis: Khachanov advanced at the US Open on Wednesday after Blockx retired during their quarterfinal.
-    Candidate IDs: cand-22422a7ac580b941
-    Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49885774/karen-khachanov-advances-2026-us-open-semifinals-alexander-blockx-retires
+ 4. [RECORD] ESPN recorded its largest US Open viewership through three rounds since 2022, with Serena and Venus Williams' return to doubles contributing to the surge. (priority 75, age 17.67h)
+    Compact headline: ESPN posts best US Open viewership through three rounds since 2022
+    Freshness basis: ESPN reported its highest US Open viewership through three rounds since 2022.
+    Candidate IDs: cand-7dccdfb8c0178622
+    Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49886301/helped-williams-sisters-doubles-espn-sees-largest-us-open-viewership-3-rounds-2022
+    Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49886301/helped-williams-sisters-doubles-espn-sees-largest-us-open-viewership-3-rounds-2022
