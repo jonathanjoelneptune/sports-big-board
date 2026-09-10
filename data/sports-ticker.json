@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-10T13:02:02Z",
+  "generatedAt": "2026-09-10T13:31:34Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "356c0fc12ea2d4d34bf6cca0d672e0a9524821f8d3ef126b04a4ae5eb5ecfde0",
+  "sourceCandidateHash": "3ab66a593a38e348c7a1a1ff6b39e43203c81e3e5a761f88780fd4132d92598d",
   "leagues": [
     {
       "league": "MLB",
@@ -14,53 +14,22 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-37b918354bb331e6"
-          ],
-          "type": "MILESTONE",
-          "priority": 86,
-          "headline": "Jose Altuve doubled for his 2,500th career hit, reaching the milestone in Houston’s game against Philadelphia.",
-          "text": "Jose Altuve doubled for his 2,500th career hit, reaching the milestone in Houston’s game against Philadelphia.",
-          "entities": [
-            "Jose Altuve",
-            "Houston Astros"
-          ],
-          "occurredAt": "2026-09-10T12:19:05Z",
-          "timePrecision": "exact",
-          "ageHours": 0.72,
-          "freshnessBasis": "Jose Altuve doubled for his 2,500th career hit Wednesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49887443/astros-jose-altuve-doubles-3rd-inning-vs-phillies-2500th-career-hit"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49887443/astros-jose-altuve-doubles-3rd-inning-vs-phillies-2500th-career-hit"
-            }
-          ],
-          "id": "a3-ce89fea272982432",
-          "feedRank": 1,
-          "compactHeadline": "Altuve reaches 2,500 career hits with Astros"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-c7cc517f6f96bf97"
           ],
           "type": "STANDINGS",
-          "priority": 82,
-          "headline": "Christian Yelich hit a three-run homer and Milwaukee completed a sweep of Chicago, extending its NL Central lead to 10 games.",
-          "text": "Christian Yelich hit a three-run homer and Milwaukee completed a sweep of Chicago, extending its NL Central lead to 10 games.",
+          "priority": 88,
+          "headline": "Milwaukee completed a sweep of Chicago with an 8-6 win, as Christian Yelich hit a three-run homer and the Brewers extended their NL Central lead to 10 games.",
+          "text": "Milwaukee completed a sweep of Chicago with an 8-6 win, as Christian Yelich hit a three-run homer and the Brewers extended their NL Central lead to 10 games.",
           "entities": [
-            "Christian Yelich",
             "Milwaukee Brewers",
-            "Chicago Cubs"
+            "Chicago Cubs",
+            "Christian Yelich",
+            "NL Central"
           ],
           "occurredAt": "2026-09-10T02:45:30Z",
           "timePrecision": "exact",
-          "ageHours": 10.28,
-          "freshnessBasis": "Milwaukee completed a sweep of Chicago and extended its NL Central lead to 10 games.",
+          "ageHours": 10.77,
+          "freshnessBasis": "Milwaukee swept Chicago with an 8-6 win and extended its NL Central lead to 10 games Wednesday.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/mlb/recap?gameId=401816876"
@@ -73,27 +42,175 @@
             }
           ],
           "id": "a3-35900b84173a1547",
-          "feedRank": 3,
+          "feedRank": 1,
           "compactHeadline": "Brewers sweep Cubs, stretch NL Central lead to 10 games"
         },
         {
+          "rank": 2,
+          "candidateIds": [
+            "cand-37b918354bb331e6"
+          ],
+          "type": "MILESTONE",
+          "priority": 86,
+          "headline": "Jose Altuve doubled against Philadelphia for the 2,500th hit of his career, reaching the milestone with the Houston Astros.",
+          "text": "Jose Altuve doubled against Philadelphia for the 2,500th hit of his career, reaching the milestone with the Houston Astros.",
+          "entities": [
+            "Jose Altuve",
+            "Houston Astros"
+          ],
+          "occurredAt": "2026-09-10T12:19:05Z",
+          "timePrecision": "exact",
+          "ageHours": 1.21,
+          "freshnessBasis": "Jose Altuve recorded his 2,500th career hit against Philadelphia Wednesday night.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49887443/astros-jose-altuve-doubles-3rd-inning-vs-phillies-2500th-career-hit"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49887443/astros-jose-altuve-doubles-3rd-inning-vs-phillies-2500th-career-hit"
+            }
+          ],
+          "id": "a3-ce89fea272982432",
+          "feedRank": 2,
+          "compactHeadline": "Altuve reaches 2,500 career hits with Astros"
+        },
+        {
           "rank": 3,
+          "candidateIds": [
+            "cand-9fda4158655667de"
+          ],
+          "type": "INJURY",
+          "priority": 76,
+          "headline": "The Yankees placed second baseman Jazz Chisholm Jr. on the injured list with a sprained right thumb.",
+          "text": "The Yankees placed second baseman Jazz Chisholm Jr. on the injured list with a sprained right thumb.",
+          "entities": [
+            "New York Yankees",
+            "Jazz Chisholm Jr."
+          ],
+          "occurredAt": "2026-09-10T12:19:20Z",
+          "timePrecision": "exact",
+          "ageHours": 1.2,
+          "freshnessBasis": "New York placed Jazz Chisholm Jr. on the injured list with a sprained right thumb Wednesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49884671/yankees-placing-2b-jazz-chisholm-il-sprained-thumb"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49884671/yankees-placing-2b-jazz-chisholm-il-sprained-thumb"
+            }
+          ],
+          "id": "a3-19db3277f64f4acb",
+          "feedRank": 6,
+          "compactHeadline": "Yankees place Jazz Chisholm Jr. on injured list"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-7ff184dc691d7d42"
+          ],
+          "type": "MILESTONE",
+          "priority": 78,
+          "headline": "Kyle Schwarber hit a grand slam for his majors-leading 44th homer as Philadelphia beat Houston 11-7 after overcoming two deficits.",
+          "text": "Kyle Schwarber hit a grand slam for his majors-leading 44th homer as Philadelphia beat Houston 11-7 after overcoming two deficits.",
+          "entities": [
+            "Kyle Schwarber",
+            "Philadelphia Phillies",
+            "Houston Astros"
+          ],
+          "occurredAt": "2026-09-09T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 14.86,
+          "freshnessBasis": "Kyle Schwarber hit his 44th home run, a grand slam, in Philadelphia’s 11-7 win over Houston.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816871"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-09",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816871"
+            }
+          ],
+          "id": "a3-1728f097c0c91c51",
+          "feedRank": 7,
+          "compactHeadline": "Schwarber grand slam pushes MLB-leading homer total to 44"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-4d0c7a980e9a1f17"
+          ],
+          "type": "MILESTONE",
+          "priority": 75,
+          "headline": "George Lombard Jr. became the second-youngest player in Yankees history to hit a grand slam in New York’s 6-1 win over Colorado.",
+          "text": "George Lombard Jr. became the second-youngest player in Yankees history to hit a grand slam in New York’s 6-1 win over Colorado.",
+          "entities": [
+            "George Lombard Jr.",
+            "New York Yankees",
+            "Colorado Rockies"
+          ],
+          "occurredAt": "2026-09-09T23:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 14.44,
+          "freshnessBasis": "George Lombard Jr. hit his first career grand slam in the Yankees’ 6-1 win over Colorado.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/preview?gameId=401816883",
+            "http://www.espn.com/mlb/recap?gameId=401816870"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-09",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401816883"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816870"
+            }
+          ],
+          "id": "a3-247e6012ce4e95c4",
+          "feedRank": 13,
+          "compactHeadline": "Yankees rookie Lombard hits first career grand slam"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-4f0ebb52dd54cfd0"
           ],
           "type": "INJURY",
           "priority": 71,
-          "headline": "The Dodgers placed Shohei Ohtani on the 15-day injured list and called up top prospect Josue De Paula to fill his designated-hitter role.",
-          "text": "The Dodgers placed Shohei Ohtani on the 15-day injured list and called up top prospect Josue De Paula to fill his designated-hitter role.",
+          "headline": "Shohei Ohtani went on the 15-day injured list, and the Dodgers called up top prospect Josue De Paula to temporarily replace him at designated hitter.",
+          "text": "Shohei Ohtani went on the 15-day injured list, and the Dodgers called up top prospect Josue De Paula to temporarily replace him at designated hitter.",
           "entities": [
             "Shohei Ohtani",
-            "Los Angeles Dodgers",
-            "Josue De Paula"
+            "Josue De Paula",
+            "Los Angeles Dodgers"
           ],
           "occurredAt": "2026-09-10T12:18:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.73,
-          "freshnessBasis": "The Dodgers placed Shohei Ohtani on the 15-day injured list and called up Josue De Paula.",
+          "ageHours": 1.22,
+          "freshnessBasis": "The Dodgers placed Shohei Ohtani on the 15-day injured list and called up Josue De Paula Thursday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49888435/ohtani-heads-il-dodgers-calling-top-prospect-de-paula-play-dh"
@@ -105,152 +222,33 @@
               "url": "https://www.espn.com/mlb/story/_/id/49888435/ohtani-heads-il-dodgers-calling-top-prospect-de-paula-play-dh"
             }
           ],
-          "id": "a3-0197721160fe1723",
-          "feedRank": 11,
-          "compactHeadline": "Dodgers place Shohei Ohtani on 15-day injured list"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-20d0779eb72797da"
-          ],
-          "type": "STREAK",
-          "priority": 76,
-          "headline": "Yoshinobu Yamamoto struck out 10 over seven innings as Los Angeles beat Cincinnati 14-1 for its seventh consecutive victory.",
-          "text": "Yoshinobu Yamamoto struck out 10 over seven innings as Los Angeles beat Cincinnati 14-1 for its seventh consecutive victory.",
-          "entities": [
-            "Yoshinobu Yamamoto",
-            "Los Angeles Dodgers",
-            "Cincinnati Reds"
-          ],
-          "occurredAt": "2026-09-10T02:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 10.87,
-          "freshnessBasis": "Los Angeles beat Cincinnati 14-1 for its seventh straight win behind Yoshinobu Yamamoto’s 10 strikeouts.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816878"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-09",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816878"
-            }
-          ],
-          "id": "a3-639bcc3762e7dd44",
+          "id": "a3-45751adab0ae95ee",
           "feedRank": 17,
-          "compactHeadline": "Dodgers rout Reds for seventh straight win"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-934ea833ee9794ef"
-          ],
-          "type": "RESULT",
-          "priority": 74,
-          "headline": "Jackson Merrill homered twice, drove in a career-high six runs and fell a double short of a cycle in San Diego’s 9-2 win over Washington.",
-          "text": "Jackson Merrill homered twice, drove in a career-high six runs and fell a double short of a cycle in San Diego’s 9-2 win over Washington.",
-          "entities": [
-            "Jackson Merrill",
-            "San Diego Padres",
-            "Washington Nationals"
-          ],
-          "occurredAt": "2026-09-09T20:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 16.87,
-          "freshnessBasis": "Jackson Merrill hit two homers and drove in six runs in San Diego’s 9-2 victory over Washington.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816882"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-09",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816882"
-            }
-          ],
-          "id": "a3-66d94d5919c7c8cd",
-          "feedRank": 24,
-          "compactHeadline": "Merrill homers twice, drives in six for Padres"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-f57ad8879d0ad608"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Tampa Bay beat Atlanta 7-2 in a matchup of first-place teams; Victor Mesa Jr. homered and Griffin Jax allowed two hits and one run in five innings.",
-          "text": "Tampa Bay beat Atlanta 7-2 in a matchup of first-place teams; Victor Mesa Jr. homered and Griffin Jax allowed two hits and one run in five innings.",
-          "entities": [
-            "Tampa Bay Rays",
-            "Atlanta Braves",
-            "Victor Mesa Jr.",
-            "Griffin Jax"
-          ],
-          "occurredAt": "2026-09-09T23:15:00Z",
-          "timePrecision": "exact",
-          "ageHours": 13.78,
-          "freshnessBasis": "Tampa Bay defeated Atlanta 7-2 Wednesday in a matchup of first-place teams.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816874"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-09",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816874"
-            }
-          ],
-          "id": "a3-4260c7f9d3bdbaa1",
-          "feedRank": 29,
-          "compactHeadline": "Rays beat Braves 7-2 in first-place matchup"
+          "compactHeadline": "Ohtani placed on 15-day IL as Dodgers call up De Paula"
         },
         {
           "rank": 7,
           "candidateIds": [
-            "cand-928e9134aa2000ca"
+            "cand-a8acf5d781ddd341"
           ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Los Angeles beat Boston 6-4 Wednesday to take the series.",
-          "text": "Los Angeles beat Boston 6-4 Wednesday to take the series.",
+          "type": "MILESTONE",
+          "priority": 74,
+          "headline": "Rookie Kade Anderson earned his first major-league win with six sharp innings, while Cole Young hit a two-run double in Seattle’s 3-2 victory over Texas.",
+          "text": "Rookie Kade Anderson earned his first major-league win with six sharp innings, while Cole Young hit a two-run double in Seattle’s 3-2 victory over Texas.",
           "entities": [
-            "Los Angeles Angels",
-            "Boston Red Sox",
-            "Zach Neto",
-            "Ryan Johnson"
+            "Seattle Mariners",
+            "Texas Rangers",
+            "Kade Anderson",
+            "Cole Young"
           ],
-          "occurredAt": "2026-09-09T22:45:00Z",
+          "occurredAt": "2026-09-09T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 14.28,
-          "freshnessBasis": "Los Angeles beat Boston 6-4 Wednesday to take the series.",
+          "ageHours": 17.36,
+          "freshnessBasis": "Kade Anderson earned his first major-league win as Seattle beat Texas 3-2 Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816868",
-            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816868"
+            "http://www.espn.com/mlb/recap?gameId=401816880"
           ],
           "sources": [
             {
@@ -261,17 +259,12 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816868"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "a44-espn-mlb-summary-401816868",
-              "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816868"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816880"
             }
           ],
-          "id": "a3-166ca0120205c84e",
-          "feedRank": 30,
-          "compactHeadline": "Neto homer helps Angels take series from Boston"
+          "id": "a3-dd069593d5fdbc96",
+          "feedRank": 18,
+          "compactHeadline": "Rookie Kade Anderson earns first MLB win for Mariners"
         }
       ]
     },
@@ -282,52 +275,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-77f51f9a984aaa16"
-          ],
-          "type": "INJURY",
-          "priority": 76,
-          "headline": "Seattle quarterback Sam Darnold was ruled out after suffering a hip injury on the opening drive against New England and is set for an MRI.",
-          "text": "Seattle quarterback Sam Darnold was ruled out after suffering a hip injury on the opening drive against New England and is set for an MRI.",
-          "entities": [
-            "Sam Darnold",
-            "Seattle Seahawks"
-          ],
-          "occurredAt": "2026-09-10T07:52:24Z",
-          "timePrecision": "exact",
-          "ageHours": 5.16,
-          "freshnessBasis": "Sam Darnold was ruled out of Seattle’s opener with a hip injury and is scheduled for an MRI.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49886582/seahawks-qb-darnold-injures-hip-opening-drive-vs-patriots"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49886582/seahawks-qb-darnold-injures-hip-opening-drive-vs-patriots"
-            }
-          ],
-          "id": "a3-67a7ed47c9bafb81",
-          "feedRank": 5,
-          "compactHeadline": "Seahawks lose Sam Darnold to hip injury in opener"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-a8eb16f66e1776be"
           ],
           "type": "INJURY",
-          "priority": 74,
-          "headline": "Raiders tight end Brock Bowers underwent a meniscus trim and is expected to miss at least the season opener, possibly one more game.",
-          "text": "Raiders tight end Brock Bowers underwent a meniscus trim and is expected to miss at least the season opener, possibly one more game.",
+          "priority": 78,
+          "headline": "Raiders tight end Brock Bowers underwent a meniscus trim and is expected to miss at least Las Vegas’ season opener, with a possible two-game absence.",
+          "text": "Raiders tight end Brock Bowers underwent a meniscus trim and is expected to miss at least Las Vegas’ season opener, with a possible two-game absence.",
           "entities": [
             "Brock Bowers",
             "Las Vegas Raiders"
           ],
           "occurredAt": "2026-09-10T10:37:35Z",
           "timePrecision": "exact",
-          "ageHours": 2.41,
-          "freshnessBasis": "Brock Bowers underwent a meniscus trim and is expected to miss at least Las Vegas’ opener.",
+          "ageHours": 2.9,
+          "freshnessBasis": "Brock Bowers underwent a meniscus trim Tuesday and is expected to miss at least the Raiders’ opener.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49884014/sources-brock-bowers-knee-miss-least-raiders-opener"
@@ -339,27 +300,100 @@
               "url": "https://www.espn.com/nfl/story/_/id/49884014/sources-brock-bowers-knee-miss-least-raiders-opener"
             }
           ],
-          "id": "a3-8be36c45c19abb76",
-          "feedRank": 7,
-          "compactHeadline": "Raiders’ Brock Bowers expected to miss opener"
+          "id": "a3-f686526dfbb69c7e",
+          "feedRank": 5,
+          "compactHeadline": "Bowers has knee surgery, expected to miss Raiders opener"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-ef2f732d77217587",
+            "cand-d365512cd7f07732"
+          ],
+          "type": "RESULT",
+          "priority": 82,
+          "headline": "In a Super Bowl LX rematch, the Seahawks kicked off the NFL season with a win but lost QB Sam Darnold to a hip injury.",
+          "text": "In a Super Bowl LX rematch, the Seahawks kicked off the NFL season with a win but lost QB Sam Darnold to a hip injury.",
+          "entities": [
+            "Seattle Seahawks",
+            "New England Patriots",
+            "Drake Maye",
+            "Sam Darnold"
+          ],
+          "occurredAt": "2026-09-10T06:23:45Z",
+          "timePrecision": "exact",
+          "ageHours": 7.13,
+          "freshnessBasis": "Seattle beat New England 13-10 in the season opener Wednesday as Drake Maye threw three interceptions.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49882128/2026-nfl-week-1-new-england-patriots-seattle-seahawks-drake-maye-sam-darnold",
+            "https://www.espn.com/nfl/story/_/id/49888969/drake-maye-pats-loss-lost-patience-cost-us"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49882128/2026-nfl-week-1-new-england-patriots-seattle-seahawks-drake-maye-sam-darnold"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49888969/drake-maye-pats-loss-lost-patience-cost-us"
+            }
+          ],
+          "id": "a3-bbd3f78b21864a7d",
+          "feedRank": 8,
+          "compactHeadline": "Seahawks win Super Bowl rematch as Maye throws three picks"
         },
         {
           "rank": 3,
           "candidateIds": [
+            "cand-77f51f9a984aaa16"
+          ],
+          "type": "INJURY",
+          "priority": 74,
+          "headline": "Seattle quarterback Sam Darnold was ruled out of the opener against New England after suffering a hip injury on the opening drive and is scheduled for an MRI.",
+          "text": "Seattle quarterback Sam Darnold was ruled out of the opener against New England after suffering a hip injury on the opening drive and is scheduled for an MRI.",
+          "entities": [
+            "Sam Darnold",
+            "Seattle Seahawks"
+          ],
+          "occurredAt": "2026-09-10T07:52:24Z",
+          "timePrecision": "exact",
+          "ageHours": 5.65,
+          "freshnessBasis": "Sam Darnold was ruled out after suffering a hip injury on Seattle’s opening drive against New England.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49886582/seahawks-qb-darnold-injures-hip-opening-drive-vs-patriots"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49886582/seahawks-qb-darnold-injures-hip-opening-drive-vs-patriots"
+            }
+          ],
+          "id": "a3-f00a6af979b27d0d",
+          "feedRank": 9,
+          "compactHeadline": "Seahawks QB Darnold ruled out after hip injury"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-536da1e660b79f2d"
           ],
           "type": "INJURY",
-          "priority": 73,
-          "headline": "A.J. Brown left New England’s 13-10 loss to Seattle with a right ankle injury early in the third quarter and did not return.",
-          "text": "A.J. Brown left New England’s 13-10 loss to Seattle with a right ankle injury early in the third quarter and did not return.",
+          "priority": 74,
+          "headline": "A.J. Brown left New England’s 13-10 loss to Seattle early in the third quarter with a right ankle injury and did not return.",
+          "text": "A.J. Brown left New England’s 13-10 loss to Seattle early in the third quarter with a right ankle injury and did not return.",
           "entities": [
-            "A.J. Brown",
-            "New England Patriots"
+            "New England Patriots",
+            "A.J. Brown"
           ],
           "occurredAt": "2026-09-10T05:20:23Z",
           "timePrecision": "exact",
-          "ageHours": 7.69,
-          "freshnessBasis": "A.J. Brown left New England’s season-opening loss with a right ankle injury and did not return.",
+          "ageHours": 8.19,
+          "freshnessBasis": "A.J. Brown left New England’s 13-10 loss to Seattle with a right ankle injury Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49887260/aj-brown-hurts-ankle-leaves-patriots-seahawks-nfl-opener"
@@ -371,28 +405,29 @@
               "url": "https://www.espn.com/nfl/story/_/id/49887260/aj-brown-hurts-ankle-leaves-patriots-seahawks-nfl-opener"
             }
           ],
-          "id": "a3-147c2139e1736901",
-          "feedRank": 9,
-          "compactHeadline": "A.J. Brown exits Patriots debut with ankle injury"
+          "id": "a3-b06b2841a9650e7a",
+          "feedRank": 10,
+          "compactHeadline": "A.J. Brown’s Patriots debut ends with ankle injury"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-fc91f339ebefee8e"
           ],
           "type": "RETURN",
-          "priority": 75,
-          "headline": "George Kittle and Nick Bosa came off the 49ers’ injury report and are set to play against the Rams after significant injuries.",
-          "text": "George Kittle and Nick Bosa came off the 49ers’ injury report and are set to play against the Rams after significant injuries.",
+          "priority": 76,
+          "headline": "San Francisco removed George Kittle and Nick Bosa from its injury report, clearing both stars to play against the Rams in Week 1.",
+          "text": "San Francisco removed George Kittle and Nick Bosa from its injury report, clearing both stars to play against the Rams in Week 1.",
           "entities": [
             "George Kittle",
             "Nick Bosa",
-            "San Francisco 49ers"
+            "San Francisco 49ers",
+            "Los Angeles Rams"
           ],
           "occurredAt": "2026-09-10T12:02:49Z",
           "timePrecision": "exact",
-          "ageHours": 0.99,
-          "freshnessBasis": "George Kittle and Nick Bosa came off San Francisco’s injury report and are set to play.",
+          "ageHours": 1.48,
+          "freshnessBasis": "The 49ers listed George Kittle and Nick Bosa as cleared to play against the Rams Thursday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49889214/49ers-kittle-bosa-injury-report-set-play-vs-rams"
@@ -404,28 +439,28 @@
               "url": "https://www.espn.com/nfl/story/_/id/49889214/49ers-kittle-bosa-injury-report-set-play-vs-rams"
             }
           ],
-          "id": "a3-491d3d187dcfab72",
-          "feedRank": 16,
-          "compactHeadline": "Kittle, Bosa cleared to return for 49ers’ opener"
+          "id": "a3-888ca2275b9afd6c",
+          "feedRank": 20,
+          "compactHeadline": "Kittle and Bosa cleared to return for 49ers opener"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-c62cd3b751d941ad"
           ],
           "type": "RETURN",
-          "priority": 75,
+          "priority": 74,
           "headline": "Raiders running back Ashton Jeanty returned to practice Wednesday after a two-week absence, improving optimism about his availability for Sunday’s opener.",
           "text": "Raiders running back Ashton Jeanty returned to practice Wednesday after a two-week absence, improving optimism about his availability for Sunday’s opener.",
           "entities": [
-            "Ashton Jeanty",
-            "Las Vegas Raiders"
+            "Las Vegas Raiders",
+            "Ashton Jeanty"
           ],
           "occurredAt": "2026-09-09T21:39:12Z",
           "timePrecision": "exact",
-          "ageHours": 15.38,
+          "ageHours": 15.87,
           "freshnessBasis": "Ashton Jeanty returned to Raiders practice Wednesday after missing two weeks.",
-          "status": "watch",
+          "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49884394/raiders-jeanty-returns-practice-two-week-absence"
           ],
@@ -436,28 +471,28 @@
               "url": "https://www.espn.com/nfl/story/_/id/49884394/raiders-jeanty-returns-practice-two-week-absence"
             }
           ],
-          "id": "a3-1a5633a908afc6bc",
-          "feedRank": 21,
-          "compactHeadline": "Ashton Jeanty returns to Raiders practice"
+          "id": "a3-59f535030c49fa7a",
+          "feedRank": 26,
+          "compactHeadline": "Raiders’ Ashton Jeanty returns to practice after absence"
         },
         {
-          "rank": 6,
+          "rank": 7,
           "candidateIds": [
             "cand-3cd3bb2c4002b61a"
           ],
           "type": "INJURY",
-          "priority": 67,
-          "headline": "Saints defensive end Cameron Jordan will miss Sunday’s season opener against Detroit because of a hamstring injury.",
-          "text": "Saints defensive end Cameron Jordan will miss Sunday’s season opener against Detroit because of a hamstring injury.",
+          "priority": 65,
+          "headline": "New Orleans defensive end Cameron Jordan will miss Sunday’s opener against Detroit because of a hamstring injury.",
+          "text": "New Orleans defensive end Cameron Jordan will miss Sunday’s opener against Detroit because of a hamstring injury.",
           "entities": [
-            "Cameron Jordan",
             "New Orleans Saints",
+            "Cameron Jordan",
             "Detroit Lions"
           ],
           "occurredAt": "2026-09-09T21:58:11Z",
           "timePrecision": "exact",
-          "ageHours": 15.06,
-          "freshnessBasis": "New Orleans ruled Cameron Jordan out of Sunday’s opener because of a hamstring injury.",
+          "ageHours": 15.56,
+          "freshnessBasis": "Cameron Jordan was ruled out of New Orleans’ opener against Detroit with a hamstring injury.",
           "status": "next",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49885064/saints-de-cameron-jordan-hamstring-miss-opener-vs-lions"
@@ -469,43 +504,9 @@
               "url": "https://www.espn.com/nfl/story/_/id/49885064/saints-de-cameron-jordan-hamstring-miss-opener-vs-lions"
             }
           ],
-          "id": "a3-189d1200b67086b6",
-          "feedRank": 23,
-          "compactHeadline": "Cameron Jordan ruled out for Saints opener"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-87614e5dab878f44"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 73,
-          "headline": "Minnesota named Carson Wentz its No. 2 quarterback behind Kyler Murray, with J.J. McCarthy opening the season as the No. 3.",
-          "text": "Minnesota named Carson Wentz its No. 2 quarterback behind Kyler Murray, with J.J. McCarthy opening the season as the No. 3.",
-          "entities": [
-            "Carson Wentz",
-            "J.J. McCarthy",
-            "Kyler Murray",
-            "Minnesota Vikings"
-          ],
-          "occurredAt": "2026-09-09T19:50:05Z",
-          "timePrecision": "exact",
-          "ageHours": 17.2,
-          "freshnessBasis": "Minnesota announced Carson Wentz as its backup and J.J. McCarthy as its No. 3 quarterback for Week 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49883304/vikings-say-mccarthy-no-3-qb-wentz-no-2-week-1"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49883304/vikings-say-mccarthy-no-3-qb-wentz-no-2-week-1"
-            }
-          ],
-          "id": "a3-1ff6583f63f773a5",
-          "feedRank": 25,
-          "compactHeadline": "Vikings list Wentz ahead of McCarthy at quarterback"
+          "id": "a3-4f967dafafad2a4d",
+          "feedRank": 30,
+          "compactHeadline": "Saints’ Cameron Jordan to miss opener with hamstring injury"
         }
       ]
     },
@@ -516,34 +517,35 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-ed953c4e436271e1"
+            "cand-533f863708643c00"
           ],
-          "type": "LEAGUE_NEWS",
-          "priority": 72,
-          "headline": "EuroLeague owners will vote October 5 on whether to join the proposed NBA Europe project or continue operating as a separate league.",
-          "text": "EuroLeague owners will vote October 5 on whether to join the proposed NBA Europe project or continue operating as a separate league.",
+          "type": "COACHING",
+          "priority": 68,
+          "headline": "The Los Angeles Lakers are hiring longtime Miami Heat executive Eric Amsler as an assistant general manager.",
+          "text": "The Los Angeles Lakers are hiring longtime Miami Heat executive Eric Amsler as an assistant general manager.",
           "entities": [
-            "EuroLeague",
-            "NBA Europe"
+            "Eric Amsler",
+            "Los Angeles Lakers",
+            "Miami Heat"
           ],
-          "occurredAt": "2026-09-09T19:08:44Z",
+          "occurredAt": "2026-09-10T10:05:31Z",
           "timePrecision": "exact",
-          "ageHours": 17.89,
-          "freshnessBasis": "EuroLeague owners scheduled an October 5 vote on the NBA Europe proposal.",
-          "status": "next",
+          "ageHours": 3.43,
+          "freshnessBasis": "The Lakers agreed to hire Eric Amsler from the Heat as an assistant general manager Wednesday.",
+          "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/49882328/euroleague-oct-5-vote-role-nba-europe-project"
+            "https://www.espn.com/nba/story/_/id/49884203/sources-lakers-hire-former-heat-exec-amsler-assistant-gm"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/49882328/euroleague-oct-5-vote-role-nba-europe-project"
+              "url": "https://www.espn.com/nba/story/_/id/49884203/sources-lakers-hire-former-heat-exec-amsler-assistant-gm"
             }
           ],
-          "id": "a3-b18752cd3891859a",
+          "id": "a3-536eaea48d64c649",
           "feedRank": 32,
-          "compactHeadline": "EuroLeague sets October 5 vote on NBA Europe plan"
+          "compactHeadline": "Lakers hiring Heat executive Eric Amsler as assistant GM"
         }
       ]
     },
@@ -554,51 +556,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-c7f1882b85ae20aa"
-          ],
-          "type": "SIGNING",
-          "priority": 77,
-          "headline": "Alex Formenton signed with Edmonton, becoming the third player acquitted in the Hockey Canada sexual-assault case to receive an NHL contract since the trial ended.",
-          "text": "Alex Formenton signed with Edmonton, becoming the third player acquitted in the Hockey Canada sexual-assault case to receive an NHL contract since the trial ended.",
-          "entities": [
-            "Alex Formenton",
-            "Edmonton Oilers"
-          ],
-          "occurredAt": "2026-09-09T16:09:22Z",
-          "timePrecision": "exact",
-          "ageHours": 20.88,
-          "freshnessBasis": "Alex Formenton signed with Edmonton after being acquitted in the Hockey Canada sexual-assault case.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49880962/formenton-latest-acquitted-hockey-canada-player-back-nhl"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49880962/formenton-latest-acquitted-hockey-canada-player-back-nhl"
-            }
-          ],
-          "id": "a3-b1a44a883ab5bdb9",
-          "feedRank": 14,
-          "compactHeadline": "Alex Formenton signs with Oilers after acquittal"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-c6c49859db22003b"
           ],
           "type": "LEAGUE_NEWS",
-          "priority": 80,
-          "headline": "Barry Melrose, the former NHL player, coach and longtime ESPN hockey analyst, has died, his wife told ESPN.",
-          "text": "Barry Melrose, the former NHL player, coach and longtime ESPN hockey analyst, has died, his wife told ESPN.",
+          "priority": 82,
+          "headline": "Barry Melrose, the former NHL player, coach and longtime ESPN hockey analyst, has died, his wife told ESPN’s Steve Levy.",
+          "text": "Barry Melrose, the former NHL player, coach and longtime ESPN hockey analyst, has died, his wife told ESPN’s Steve Levy.",
           "entities": [
-            "Barry Melrose"
+            "Barry Melrose",
+            "ESPN"
           ],
           "occurredAt": "2026-09-10T12:43:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.31,
-          "freshnessBasis": "Barry Melrose’s death was reported by his wife to ESPN Wednesday.",
+          "ageHours": 0.8,
+          "freshnessBasis": "Barry Melrose’s wife told ESPN that the former NHL player, coach and analyst died Thursday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49886334/barry-melrose-former-player-coach-espn-analyst-dies"
@@ -610,9 +581,41 @@
               "url": "https://www.espn.com/nhl/story/_/id/49886334/barry-melrose-former-player-coach-espn-analyst-dies"
             }
           ],
-          "id": "a3-9c98e7d2313e5820",
-          "feedRank": 15,
-          "compactHeadline": "Former NHL coach and ESPN analyst Barry Melrose dies"
+          "id": "a3-e583f3b4d1b269cf",
+          "feedRank": 19,
+          "compactHeadline": "Former NHL player and coach Barry Melrose dies"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-c7f1882b85ae20aa"
+          ],
+          "type": "SIGNING",
+          "priority": 77,
+          "headline": "Alex Formenton signed with Edmonton, becoming the third player acquitted in the Hockey Canada sexual-assault case to receive an NHL contract since the 2025 trial.",
+          "text": "Alex Formenton signed with Edmonton, becoming the third player acquitted in the Hockey Canada sexual-assault case to receive an NHL contract since the 2025 trial.",
+          "entities": [
+            "Alex Formenton",
+            "Edmonton Oilers"
+          ],
+          "occurredAt": "2026-09-09T16:09:22Z",
+          "timePrecision": "exact",
+          "ageHours": 21.37,
+          "freshnessBasis": "Alex Formenton signed with the Edmonton Oilers Wednesday after being acquitted in the Hockey Canada case.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49880962/formenton-latest-acquitted-hockey-canada-player-back-nhl"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49880962/formenton-latest-acquitted-hockey-canada-player-back-nhl"
+            }
+          ],
+          "id": "a3-d9fbb49c69e89391",
+          "feedRank": 21,
+          "compactHeadline": "Oilers sign Formenton after Hockey Canada acquittal"
         },
         {
           "rank": 3,
@@ -620,17 +623,17 @@
             "cand-580564cd30391021"
           ],
           "type": "ROSTER",
-          "priority": 73,
+          "priority": 75,
           "headline": "Anaheim placed veteran forward Chris Kreider on waivers after he expressed a desire to play closer to the East Coast.",
           "text": "Anaheim placed veteran forward Chris Kreider on waivers after he expressed a desire to play closer to the East Coast.",
           "entities": [
-            "Chris Kreider",
-            "Anaheim Ducks"
+            "Anaheim Ducks",
+            "Chris Kreider"
           ],
           "occurredAt": "2026-09-10T11:05:33Z",
           "timePrecision": "exact",
-          "ageHours": 1.94,
-          "freshnessBasis": "Anaheim placed Chris Kreider on waivers after he requested an East Coast move.",
+          "ageHours": 2.43,
+          "freshnessBasis": "Anaheim placed Chris Kreider on waivers Wednesday after he sought a move closer to the East Coast.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49881489/source-ducks-waiving-chris-kreider-east-move-deck"
@@ -642,9 +645,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49881489/source-ducks-waiving-chris-kreider-east-move-deck"
             }
           ],
-          "id": "a3-89a1fb0aeb11c8db",
+          "id": "a3-eab224729848ebc7",
           "feedRank": 31,
-          "compactHeadline": "Ducks place Chris Kreider on waivers"
+          "compactHeadline": "Ducks place Chris Kreider on waivers before East move"
         }
       ]
     },
@@ -667,8 +670,8 @@
           ],
           "occurredAt": "2026-09-09T19:36:55Z",
           "timePrecision": "exact",
-          "ageHours": 17.42,
-          "freshnessBasis": "Mykhailo Mudryk suffered an ankle injury in training and is expected to be sidelined until October.",
+          "ageHours": 17.91,
+          "freshnessBasis": "Mykhailo Mudryk suffered an ankle injury in training and is expected to be sidelined until at least October.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49883172/mykhailo-mudryk-tottenham-premier-league-spurs-injuries"
@@ -681,41 +684,8 @@
             }
           ],
           "id": "a3-a9584689a0f7a893",
-          "feedRank": 8,
+          "feedRank": 11,
           "compactHeadline": "Tottenham’s Mudryk out until at least October"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-62291019ca83d930"
-          ],
-          "type": "RETURN",
-          "priority": 73,
-          "headline": "Marcus Rashford trained normally with Manchester United on Wednesday ahead of the Champions League tie with Sabah FK.",
-          "text": "Marcus Rashford trained normally with Manchester United on Wednesday ahead of the Champions League tie with Sabah FK.",
-          "entities": [
-            "Marcus Rashford",
-            "Manchester United",
-            "Sabah FK"
-          ],
-          "occurredAt": "2026-09-09T16:28:33Z",
-          "timePrecision": "exact",
-          "ageHours": 20.56,
-          "freshnessBasis": "Marcus Rashford returned to normal Manchester United training Wednesday.",
-          "status": "watch",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49878227/marcus-rashford-returns-training-ahead-manchester-united-champions-league-clash"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49878227/marcus-rashford-returns-training-ahead-manchester-united-champions-league-clash"
-            }
-          ],
-          "id": "a3-8c778983ef9d7f76",
-          "feedRank": 28,
-          "compactHeadline": "Marcus Rashford returns to Manchester United training"
         }
       ]
     },
@@ -728,10 +698,10 @@
           "candidateIds": [
             "cand-f65da1fbe289af1e"
           ],
-          "type": "RECORD",
+          "type": "MILESTONE",
           "priority": 75,
-          "headline": "Inter Miami rallied from a goal down for a 1-1 draw with Chicago in front of 63,094 fans, setting a new Fire home-attendance record.",
-          "text": "Inter Miami rallied from a goal down for a 1-1 draw with Chicago in front of 63,094 fans, setting a new Fire home-attendance record.",
+          "headline": "Inter Miami rallied from a goal down for a 1-1 draw with Chicago Fire before a club-record crowd of 63,094 at Soldier Field.",
+          "text": "Inter Miami rallied from a goal down for a 1-1 draw with Chicago Fire before a club-record crowd of 63,094 at Soldier Field.",
           "entities": [
             "Inter Miami",
             "Chicago Fire",
@@ -740,8 +710,8 @@
           ],
           "occurredAt": "2026-09-10T00:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 12.53,
-          "freshnessBasis": "Inter Miami drew Chicago 1-1 before a record Fire crowd of 63,094.",
+          "ageHours": 13.03,
+          "freshnessBasis": "Inter Miami and Chicago drew 1-1 before 63,094 fans, surpassing Chicago’s previous home attendance record.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -759,9 +729,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/49887607/miami-rallies-draw-lewandowski-goal-record-fire-crowd"
             }
           ],
-          "id": "a3-0ed5c814ae2165d6",
-          "feedRank": 6,
-          "compactHeadline": "Miami-Chicago draw before record Fire crowd"
+          "id": "a3-f69a5e31a0e2bced",
+          "feedRank": 12,
+          "compactHeadline": "Miami-Chicago draw sets Fire attendance record"
         },
         {
           "rank": 2,
@@ -770,15 +740,15 @@
           ],
           "type": "RECORD",
           "priority": 73,
-          "headline": "MLS announced that 2026 transfer activity set league records for revenue from both incoming and outgoing transfers.",
-          "text": "MLS announced that 2026 transfer activity set league records for revenue from both incoming and outgoing transfers.",
+          "headline": "MLS announced record revenue from both incoming and outgoing transfers during the 2026 transfer cycle.",
+          "text": "MLS announced record revenue from both incoming and outgoing transfers during the 2026 transfer cycle.",
           "entities": [
             "MLS"
           ],
           "occurredAt": "2026-09-09T19:03:18Z",
           "timePrecision": "exact",
-          "ageHours": 17.98,
-          "freshnessBasis": "MLS announced record 2026 revenue from incoming and outgoing transfers.",
+          "ageHours": 18.47,
+          "freshnessBasis": "MLS announced that 2026 transfer activity set league records for incoming and outgoing transfer revenue.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49882716/mls-league-sets-record-incoming-outgoing-transfers-2026"
@@ -791,7 +761,7 @@
             }
           ],
           "id": "a3-a90890dc685b21c4",
-          "feedRank": 10,
+          "feedRank": 15,
           "compactHeadline": "MLS sets transfer-revenue records in 2026"
         },
         {
@@ -801,16 +771,16 @@
           ],
           "type": "RESULT",
           "priority": 76,
-          "headline": "New England beat New York City FC 2-1 after a 90th-minute goal decided the match.",
-          "text": "New England beat New York City FC 2-1 after a 90th-minute goal decided the match.",
+          "headline": "A late goal came in the 90th minute to decide New England Revolution's 2-1 win over New York City FC.",
+          "text": "A late goal came in the 90th minute to decide New England Revolution's 2-1 win over New York City FC.",
           "entities": [
             "New England Revolution",
             "New York City FC"
           ],
           "occurredAt": "2026-09-10T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.03,
-          "freshnessBasis": "A 90th-minute goal decided New England’s 2-1 win over New York City FC.",
+          "ageHours": 13.53,
+          "freshnessBasis": "A late goal came in the 90th minute to decide New England Revolution's 2-1 win over New York City FC.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -822,9 +792,9 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-bdccbdae42c634c5",
-          "feedRank": 18,
-          "compactHeadline": "Late goal lifts New England past NYCFC 2-1"
+          "id": "a3-4616800db4573f9c",
+          "feedRank": 22,
+          "compactHeadline": "Late goal lifts New England Revolution beat New York City FC 2-1"
         },
         {
           "rank": 4,
@@ -836,14 +806,14 @@
           "headline": "Toronto beats MLS leaders Nashville to extend unbeaten run.",
           "text": "Toronto beats MLS leaders Nashville to extend unbeaten run.",
           "entities": [
-            "Emilio Aristizábal",
             "Toronto FC",
-            "Nashville SC"
+            "Nashville SC",
+            "Emilio Aristizábal"
           ],
           "occurredAt": "2026-09-09T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.53,
-          "freshnessBasis": "Emilio Aristizábal scored in stoppage time to give Toronto a 2-1 win over Nashville.",
+          "ageHours": 14.03,
+          "freshnessBasis": "Emilio Aristizábal scored in second-half stoppage time as Toronto beat Nashville 2-1 Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -861,9 +831,9 @@
               "url": "http://www.espn.com/soccer/report/_/gameId/761790"
             }
           ],
-          "id": "a3-3035aa51f0ba3114",
-          "feedRank": 19,
-          "compactHeadline": "Toronto stuns MLS-leading Nashville with stoppage-time winner"
+          "id": "a3-5d30392da93d77ff",
+          "feedRank": 23,
+          "compactHeadline": "Toronto stuns MLS leader Nashville with stoppage-time winner"
         },
         {
           "rank": 5,
@@ -880,8 +850,8 @@
           ],
           "occurredAt": "2026-09-09T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.53,
-          "freshnessBasis": "A 90th-minute goal decided Orlando City’s 3-2 win over Atlanta United.",
+          "ageHours": 14.03,
+          "freshnessBasis": "A 90th-minute goal gave Orlando City a 3-2 win over Atlanta United Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -893,9 +863,9 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-a3a9462dd0bf6fe0",
-          "feedRank": 20,
-          "compactHeadline": "Late goal lifts Orlando past Atlanta 3-2"
+          "id": "a3-3883206039f1556d",
+          "feedRank": 24,
+          "compactHeadline": "Late goal lifts Orlando City past Atlanta United 3-2"
         },
         {
           "rank": 6,
@@ -904,16 +874,16 @@
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "A goal in the 87th minute gave Houston Dynamo a 2-1 win over Real Salt Lake.",
-          "text": "A goal in the 87th minute gave Houston Dynamo a 2-1 win over Real Salt Lake.",
+          "headline": "A goal in the 87th minute decided Houston Dynamo’s 2-1 win over Real Salt Lake.",
+          "text": "A goal in the 87th minute decided Houston Dynamo’s 2-1 win over Real Salt Lake.",
           "entities": [
             "Houston Dynamo",
             "Real Salt Lake"
           ],
           "occurredAt": "2026-09-10T00:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 12.53,
-          "freshnessBasis": "Houston scored in the 87th minute to beat Real Salt Lake 2-1.",
+          "ageHours": 13.03,
+          "freshnessBasis": "Houston scored in the 87th minute to beat Real Salt Lake 2-1 Wednesday.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -925,9 +895,9 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-d18e3f4240e77001",
-          "feedRank": 27,
-          "compactHeadline": "Late goal lifts Houston over Real Salt Lake"
+          "id": "a3-95c5637537a60225",
+          "feedRank": 29,
+          "compactHeadline": "Late goal lifts Houston past Real Salt Lake"
         }
       ]
     },
@@ -938,19 +908,51 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-b4b9561eb6774169"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 73,
+          "headline": "The Big Ten will make replay reviews available to all television broadcasts of league games beginning with Saturday’s contests.",
+          "text": "The Big Ten will make replay reviews available to all television broadcasts of league games beginning with Saturday’s contests.",
+          "entities": [
+            "Big Ten"
+          ],
+          "occurredAt": "2026-09-10T10:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.86,
+          "freshnessBasis": "The Big Ten announced expanded access to replay reviews for all league game broadcasts beginning Saturday.",
+          "status": "next",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49884885/big-ten-expanding-access-replay-reviews-football-tv-broadcasts"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49884885/big-ten-expanding-access-replay-reviews-football-tv-broadcasts"
+            }
+          ],
+          "id": "a3-6662db360ecef7fa",
+          "feedRank": 25,
+          "compactHeadline": "Big Ten expands TV access to replay reviews"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-58c0c32e79bfdea9"
           ],
           "type": "LEAGUE_NEWS",
-          "priority": 75,
-          "headline": "The College Sports Commission cleared more than $227 million in NIL deals during July and August, nearly doubling its first-year total.",
-          "text": "The College Sports Commission cleared more than $227 million in NIL deals during July and August, nearly doubling its first-year total.",
+          "priority": 73,
+          "headline": "The College Sports Commission cleared more than $227 million in NIL deals during July and August, nearly doubling its total from its first year.",
+          "text": "The College Sports Commission cleared more than $227 million in NIL deals during July and August, nearly doubling its total from its first year.",
           "entities": [
-            "College Sports Commission"
+            "College Sports Commission",
+            "NIL"
           ],
           "occurredAt": "2026-09-09T19:03:51Z",
           "timePrecision": "exact",
-          "ageHours": 17.97,
-          "freshnessBasis": "The College Sports Commission cleared more than $227 million in NIL deals in July and August.",
+          "ageHours": 18.46,
+          "freshnessBasis": "The College Sports Commission reported clearing more than $227 million in NIL deals across July and August.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/espn/story/_/id/49882283/csc-clears-227m-nil-deals-july-august-major-increase"
@@ -963,28 +965,28 @@
             }
           ],
           "id": "a3-c3d54a50ec42d8e5",
-          "feedRank": 22,
+          "feedRank": 27,
           "compactHeadline": "College Sports Commission clears $227M in NIL deals"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-ee9b9eaaf45d4c82"
           ],
           "type": "INJURY",
           "priority": 65,
-          "headline": "Alabama sophomore offensive guard Michael Carroll is doubtful for Saturday’s game at Kentucky.",
-          "text": "Alabama sophomore offensive guard Michael Carroll is doubtful for Saturday’s game at Kentucky.",
+          "headline": "No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky.",
+          "text": "No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky.",
           "entities": [
-            "Michael Carroll",
             "Alabama Crimson Tide",
+            "Michael Carroll",
             "Kentucky Wildcats"
           ],
           "occurredAt": "2026-09-10T01:03:46Z",
           "timePrecision": "exact",
-          "ageHours": 11.97,
+          "ageHours": 12.46,
           "freshnessBasis": "Alabama listed Michael Carroll as doubtful for Saturday’s game at Kentucky.",
-          "status": "active",
+          "status": "watch",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
           ],
@@ -995,9 +997,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
             }
           ],
-          "id": "a3-b5f50014de6ea371",
-          "feedRank": 26,
-          "compactHeadline": "Alabama guard Michael Carroll doubtful at Kentucky"
+          "id": "a3-968f518123e973e7",
+          "feedRank": 28,
+          "compactHeadline": "Alabama guard Michael Carroll doubtful against Kentucky"
         }
       ]
     }
@@ -1014,8 +1016,8 @@
           ],
           "type": "RANKING",
           "priority": 88,
-          "headline": "Elena Rybakina reached the US Open semifinals with a comeback over Zheng Qinwen and will rise to No. 1 in the women’s rankings.",
-          "text": "Elena Rybakina reached the US Open semifinals with a comeback over Zheng Qinwen and will rise to No. 1 in the women’s rankings.",
+          "headline": "Elena Rybakina rallied past Zheng Qinwen 3-6, 6-1, 6-4 to reach the US Open semifinals and become the women’s new No. 1.",
+          "text": "Elena Rybakina rallied past Zheng Qinwen 3-6, 6-1, 6-4 to reach the US Open semifinals and become the women’s new No. 1.",
           "entities": [
             "Elena Rybakina",
             "Zheng Qinwen",
@@ -1023,8 +1025,8 @@
           ],
           "occurredAt": "2026-09-10T00:44:14Z",
           "timePrecision": "exact",
-          "ageHours": 12.3,
-          "freshnessBasis": "Elena Rybakina beat Zheng Qinwen to reach the US Open semifinals and claim the No. 1 ranking.",
+          "ageHours": 12.79,
+          "freshnessBasis": "Elena Rybakina beat Zheng Qinwen in the US Open quarterfinals and secured the No. 1 ranking.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49882460/elena-rybakina-reaches-us-open-semis-claims-no-1-ranking"
@@ -1037,7 +1039,7 @@
             }
           ],
           "id": "a3-special-c8ea042c28ab3f59",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Rybakina reaches US Open semis and claims No. 1 ranking"
         },
         {
@@ -1046,9 +1048,9 @@
             "cand-d1091e072a809ec8"
           ],
           "type": "ADVANCEMENT",
-          "priority": 82,
-          "headline": "Coco Gauff fought off match points in a tiebreaker and rallied past Mirra Andreeva 2-6, 7-6 (7), 6-2 to reach the US Open semifinals.",
-          "text": "Coco Gauff fought off match points in a tiebreaker and rallied past Mirra Andreeva 2-6, 7-6 (7), 6-2 to reach the US Open semifinals.",
+          "priority": 85,
+          "headline": "Coco Gauff saved match points in a tiebreaker before beating Mirra Andreeva 2-6, 7-6, 6-2 to reach the US Open semifinals.",
+          "text": "Coco Gauff saved match points in a tiebreaker before beating Mirra Andreeva 2-6, 7-6, 6-2 to reach the US Open semifinals.",
           "entities": [
             "Coco Gauff",
             "Mirra Andreeva",
@@ -1056,8 +1058,8 @@
           ],
           "occurredAt": "2026-09-10T02:57:56Z",
           "timePrecision": "exact",
-          "ageHours": 10.07,
-          "freshnessBasis": "Coco Gauff rallied past Mirra Andreeva to reach the US Open semifinals.",
+          "ageHours": 10.56,
+          "freshnessBasis": "Coco Gauff beat Mirra Andreeva after saving match points to advance to the US Open semifinals.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49884369/coco-gauff-saves-match-points-rallies-mirra-andreeva-reach-2026-us-open-semifinals"
@@ -1069,42 +1071,42 @@
               "url": "https://www.espn.com/tennis/story/_/id/49884369/coco-gauff-saves-match-points-rallies-mirra-andreeva-reach-2026-us-open-semifinals"
             }
           ],
-          "id": "a3-special-7a04dee0908ea1d4",
+          "id": "a3-special-877d7d126c9004cb",
           "feedRank": 4,
-          "compactHeadline": "Gauff saves match points, advances to US Open semis"
+          "compactHeadline": "Gauff saves match points, rallies into US Open semifinals"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-22422a7ac580b941"
+            "cand-d182ab58b8727393"
           ],
           "type": "ADVANCEMENT",
-          "priority": 76,
-          "headline": "Karen Khachanov advanced to his third Grand Slam semifinal when Alexander Blockx retired during the third set of their US Open quarterfinal.",
-          "text": "Karen Khachanov advanced to his third Grand Slam semifinal when Alexander Blockx retired during the third set of their US Open quarterfinal.",
+          "priority": 77,
+          "headline": "Alexander Zverev beat Botic van de Zandschulp to reach the US Open semifinals after struggling early in the tournament.",
+          "text": "Alexander Zverev beat Botic van de Zandschulp to reach the US Open semifinals after struggling early in the tournament.",
           "entities": [
-            "Karen Khachanov",
-            "Alexander Blockx",
+            "Alexander Zverev",
+            "Botic van de Zandschulp",
             "US Open"
           ],
-          "occurredAt": "2026-09-10T02:45:24Z",
+          "occurredAt": "2026-09-10T05:09:35Z",
           "timePrecision": "exact",
-          "ageHours": 10.28,
-          "freshnessBasis": "Karen Khachanov advanced to the US Open semifinals after Alexander Blockx retired during their quarterfinal.",
+          "ageHours": 8.37,
+          "freshnessBasis": "Alexander Zverev beat Botic van de Zandschulp to advance to the US Open semifinals.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49885774/karen-khachanov-advances-2026-us-open-semifinals-alexander-blockx-retires"
+            "https://www.espn.com/tennis/story/_/id/49887449/alexander-zverev-beats-botic-van-de-zandschulp-reach-2026-us-open-semifinals"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-atp",
-              "url": "https://www.espn.com/tennis/story/_/id/49885774/karen-khachanov-advances-2026-us-open-semifinals-alexander-blockx-retires"
+              "url": "https://www.espn.com/tennis/story/_/id/49887449/alexander-zverev-beats-botic-van-de-zandschulp-reach-2026-us-open-semifinals"
             }
           ],
-          "id": "a3-special-fa37455bcaeecfd0",
-          "feedRank": 12,
-          "compactHeadline": "Khachanov reaches US Open semifinal after retirement"
+          "id": "a3-special-9e962da71c3a69fb",
+          "feedRank": 14,
+          "compactHeadline": "Zverev reaches US Open semifinals after rocky start"
         },
         {
           "rank": 4,
@@ -1112,7 +1114,7 @@
             "cand-41cb00467b8e4841"
           ],
           "type": "ADVANCEMENT",
-          "priority": 76,
+          "priority": 78,
           "headline": "No. 3 seed Jessica Pegula rallied past No. 26 seed Emma Navarro 3-6, 6-4, 6-3 in an all-American quarterfinal.",
           "text": "No. 3 seed Jessica Pegula rallied past No. 26 seed Emma Navarro 3-6, 6-4, 6-3 in an all-American quarterfinal.",
           "entities": [
@@ -1122,8 +1124,8 @@
           ],
           "occurredAt": "2026-09-09T15:13:15Z",
           "timePrecision": "exact",
-          "ageHours": 21.81,
-          "freshnessBasis": "Jessica Pegula beat Emma Navarro to reach the US Open semifinals.",
+          "ageHours": 22.31,
+          "freshnessBasis": "Jessica Pegula beat Emma Navarro in three sets to reach the US Open semifinals.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49875427/jessica-pegula-beats-emma-navarro-us-open-quarterfinal-play-aryna-sabalenka-semifinals"
@@ -1136,7 +1138,7 @@
             }
           ],
           "id": "a3-special-8959f40b7d6b021f",
-          "feedRank": 13,
+          "feedRank": 16,
           "compactHeadline": "Pegula rallies past Navarro into US Open semifinals"
         }
       ]
