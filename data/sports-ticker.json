@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-10T18:31:25Z",
+  "generatedAt": "2026-09-10T19:01:19Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "1b2ce0b5e054e8f3d9b04e2ce7a16d5f9de60bf76f6c2f2541b6ac98c8a740de",
+  "sourceCandidateHash": "f15f5e67009c77bb28f10930ad28ab7fe8a2e234bac0583180339d1fbc304e0b",
   "leagues": [
     {
       "league": "MLB",
@@ -14,33 +14,48 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-238e63e4a5ad470b"
+            "cand-0f11583bd156770b"
           ],
-          "type": "RECORD",
-          "priority": 83,
-          "headline": "Isao Harimoto, a Hiroshima survivor who still holds Japan's career hits record, has died at 86.",
-          "text": "Isao Harimoto, a Hiroshima survivor who still holds Japan's career hits record, has died at 86.",
+          "type": "PLAYOFF",
+          "priority": 82,
+          "headline": "Atlanta beat Tampa Bay 3-1 as Martín Pérez threw seven scoreless innings and Austin Riley delivered the go-ahead single in the eighth.",
+          "text": "Atlanta beat Tampa Bay 3-1 as Martín Pérez threw seven scoreless innings and Austin Riley delivered the go-ahead single in the eighth.",
           "entities": [
-            "Isao Harimoto"
+            "Atlanta Braves",
+            "Tampa Bay Rays",
+            "Martín Pérez",
+            "Austin Riley"
           ],
-          "occurredAt": "2026-09-10T15:08:56Z",
+          "occurredAt": "2026-09-10T16:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.37,
-          "freshnessBasis": "Isao Harimoto died at 86 while still holding Japan's career hits record.",
+          "ageHours": 2.77,
+          "freshnessBasis": "Atlanta beat Tampa Bay 3-1 on September 10, denying the Rays a potential playoff-clinching opportunity.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49891975/isao-harimoto-japanese-baseball-icon-hiroshima-survivor-dies"
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816885",
+            "http://www.espn.com/mlb/recap?gameId=401816874"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-10",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49891975/isao-harimoto-japanese-baseball-icon-hiroshima-survivor-dies"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816885"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816874"
             }
           ],
-          "id": "a3-dffcea3f6333752f",
+          "id": "a3-f1b4b16aa171000b",
           "feedRank": 1,
-          "compactHeadline": "Japanese baseball icon Isao Harimoto dies at 86"
+          "compactHeadline": "Braves deny Rays’ potential playoff-clinch opportunity"
         },
         {
           "rank": 2,
@@ -48,17 +63,17 @@
             "cand-37b918354bb331e6"
           ],
           "type": "MILESTONE",
-          "priority": 84,
-          "headline": "Jose Altuve doubled in the third inning against Philadelphia for his 2,500th career hit.",
-          "text": "Jose Altuve doubled in the third inning against Philadelphia for his 2,500th career hit.",
+          "priority": 82,
+          "headline": "Houston’s Jose Altuve doubled against Philadelphia for the 2,500th hit of his major league career.",
+          "text": "Houston’s Jose Altuve doubled against Philadelphia for the 2,500th hit of his major league career.",
           "entities": [
             "Jose Altuve",
             "Houston Astros"
           ],
           "occurredAt": "2026-09-10T12:19:05Z",
           "timePrecision": "exact",
-          "ageHours": 6.21,
-          "freshnessBasis": "Jose Altuve recorded his 2,500th career hit with a third-inning double against Philadelphia.",
+          "ageHours": 6.7,
+          "freshnessBasis": "Jose Altuve doubled for his 2,500th career hit against Philadelphia on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49887443/astros-jose-altuve-doubles-3rd-inning-vs-phillies-2500th-career-hit"
@@ -77,74 +92,76 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-c7cc517f6f96bf97"
+            "cand-c7cc517f6f96bf97",
+            "cand-36f77634992fa7c6"
           ],
-          "type": "STANDINGS",
-          "priority": 82,
-          "headline": "Milwaukee completed a sweep of Chicago with an 8-6 win; Christian Yelich hit a three-run homer and the Brewers stretched their NL Central lead to 10 games.",
-          "text": "Milwaukee completed a sweep of Chicago with an 8-6 win; Christian Yelich hit a three-run homer and the Brewers stretched their NL Central lead to 10 games.",
+          "type": "STREAK",
+          "priority": 84,
+          "headline": "Milwaukee completed a sweep of Chicago with an 8-6 win, powered by Christian Yelich’s three-run homer and Logan Henderson’s five innings of two-hit ball.",
+          "text": "Milwaukee completed a sweep of Chicago with an 8-6 win, powered by Christian Yelich’s three-run homer and Logan Henderson’s five innings of two-hit ball.",
           "entities": [
             "Milwaukee Brewers",
             "Chicago Cubs",
-            "Christian Yelich"
+            "Christian Yelich",
+            "Logan Henderson"
           ],
           "occurredAt": "2026-09-10T02:45:30Z",
           "timePrecision": "exact",
-          "ageHours": 15.77,
-          "freshnessBasis": "Milwaukee swept Chicago with an 8-6 win and extended its NL Central lead to 10 games Wednesday.",
+          "ageHours": 16.26,
+          "freshnessBasis": "Milwaukee swept Chicago with an 8-6 win and extended its NL Central lead to 10 games.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401816876"
+            "http://www.espn.com/mlb/recap?gameId=401816876",
+            "https://highlightly.net"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401816876"
+            },
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-09",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-9b5ef50324c34710",
-          "feedRank": 4,
+          "id": "a3-5819ddd89229391c",
+          "feedRank": 6,
           "compactHeadline": "Brewers sweep Cubs, extend NL Central lead to 10 games"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-934ea833ee9794ef"
+            "cand-4f0ebb52dd54cfd0"
           ],
-          "type": "RESULT",
-          "priority": 82,
-          "headline": "Jackson Merrill homered twice and drove in a career-high six runs as San Diego beat Washington 9-2.",
-          "text": "Jackson Merrill homered twice and drove in a career-high six runs as San Diego beat Washington 9-2.",
+          "type": "INJURY",
+          "priority": 71,
+          "headline": "The Dodgers placed Shohei Ohtani on the 15-day injured list and called up Josue De Paula from Double-A to fill his designated-hitter role.",
+          "text": "The Dodgers placed Shohei Ohtani on the 15-day injured list and called up Josue De Paula from Double-A to fill his designated-hitter role.",
           "entities": [
-            "Jackson Merrill",
-            "San Diego Padres",
-            "Washington Nationals"
+            "Shohei Ohtani",
+            "Los Angeles Dodgers",
+            "Josue De Paula"
           ],
-          "occurredAt": "2026-09-09T20:10:00Z",
+          "occurredAt": "2026-09-10T12:18:29Z",
           "timePrecision": "exact",
-          "ageHours": 22.36,
-          "freshnessBasis": "Jackson Merrill hit two homers and drove in six runs in San Diego's 9-2 win over Washington.",
+          "ageHours": 6.71,
+          "freshnessBasis": "Los Angeles placed Shohei Ohtani on the 15-day injured list and called up Josue De Paula on September 10.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816882"
+            "https://www.espn.com/mlb/story/_/id/49888435/ohtani-heads-il-dodgers-calling-top-prospect-de-paula-play-dh"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-09",
-              "url": "https://highlightly.net"
-            },
-            {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816882"
+              "url": "https://www.espn.com/mlb/story/_/id/49888435/ohtani-heads-il-dodgers-calling-top-prospect-de-paula-play-dh"
             }
           ],
-          "id": "a3-6cc36cafbcaff4b2",
-          "feedRank": 11,
-          "compactHeadline": "Merrill’s two homers, six RBIs power Padres past Nats"
+          "id": "a3-769b852fc6fede8c",
+          "feedRank": 12,
+          "compactHeadline": "Ohtani lands on IL as Dodgers call up top prospect"
         },
         {
           "rank": 5,
@@ -152,19 +169,19 @@
             "cand-a8acf5d781ddd341"
           ],
           "type": "MILESTONE",
-          "priority": 75,
-          "headline": "Seattle beat Texas 3-2 as rookie Kade Anderson earned his first major league victory with six sharp innings, while Cole Young hit a two-run double.",
-          "text": "Seattle beat Texas 3-2 as rookie Kade Anderson earned his first major league victory with six sharp innings, while Cole Young hit a two-run double.",
+          "priority": 73,
+          "headline": "Rookie Kade Anderson threw six sharp innings for his first major league victory, while Cole Young hit a two-run double in Seattle’s 3-2 win.",
+          "text": "Rookie Kade Anderson threw six sharp innings for his first major league victory, while Cole Young hit a two-run double in Seattle’s 3-2 win.",
           "entities": [
-            "Seattle Mariners",
-            "Texas Rangers",
             "Kade Anderson",
-            "Cole Young"
+            "Cole Young",
+            "Seattle Mariners",
+            "Texas Rangers"
           ],
           "occurredAt": "2026-09-09T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.36,
-          "freshnessBasis": "Seattle beat Texas 3-2 and Kade Anderson recorded his first major league win Wednesday.",
+          "ageHours": 22.86,
+          "freshnessBasis": "Kade Anderson earned his first major league win in Seattle’s 3-2 victory over Texas on September 9.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -182,28 +199,67 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816880"
             }
           ],
-          "id": "a3-d7befde5b4a6f77e",
-          "feedRank": 15,
-          "compactHeadline": "Mariners rookie Anderson earns first MLB win"
+          "id": "a3-51d3a931001903d3",
+          "feedRank": 16,
+          "compactHeadline": "Rookie Anderson earns first MLB win for Mariners"
         },
         {
           "rank": 6,
           "candidateIds": [
+            "cand-20d0779eb72797da"
+          ],
+          "type": "STREAK",
+          "priority": 77,
+          "headline": "Yoshinobu Yamamoto struck out 10 over seven innings as Los Angeles routed Cincinnati 14-1 for its season-high seventh consecutive victory.",
+          "text": "Yoshinobu Yamamoto struck out 10 over seven innings as Los Angeles routed Cincinnati 14-1 for its season-high seventh consecutive victory.",
+          "entities": [
+            "Yoshinobu Yamamoto",
+            "Los Angeles Dodgers",
+            "Cincinnati Reds"
+          ],
+          "occurredAt": "2026-09-10T02:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 16.86,
+          "freshnessBasis": "Los Angeles beat Cincinnati 14-1 on September 10 for its seventh straight win.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816878"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-09",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816878"
+            }
+          ],
+          "id": "a3-7d3bdea493dc94bd",
+          "feedRank": 18,
+          "compactHeadline": "Dodgers rout Reds 14-1 for seventh straight win"
+        },
+        {
+          "rank": 7,
+          "candidateIds": [
             "cand-14e7c55cff47e6ea"
           ],
-          "type": "INJURY",
-          "priority": 71,
-          "headline": "The Yankees placed Jazz Chisholm Jr. on the 10-day injured list with a thumb sprain while Anthony Volpe returned to the team.",
-          "text": "The Yankees placed Jazz Chisholm Jr. on the 10-day injured list with a thumb sprain while Anthony Volpe returned to the team.",
+          "type": "RETURN",
+          "priority": 72,
+          "headline": "Anthony Volpe rejoined the Yankees while New York placed Jazz Chisholm Jr. on the 10-day injured list with a thumb sprain.",
+          "text": "Anthony Volpe rejoined the Yankees while New York placed Jazz Chisholm Jr. on the 10-day injured list with a thumb sprain.",
           "entities": [
             "New York Yankees",
-            "Jazz Chisholm Jr.",
-            "Anthony Volpe"
+            "Anthony Volpe",
+            "Jazz Chisholm Jr."
           ],
           "occurredAt": "2026-09-10T17:05:27Z",
           "timePrecision": "exact",
-          "ageHours": 1.43,
-          "freshnessBasis": "New York placed Jazz Chisholm Jr. on the 10-day injured list and welcomed Anthony Volpe back Thursday.",
+          "ageHours": 1.93,
+          "freshnessBasis": "The Yankees activated Anthony Volpe and placed Jazz Chisholm Jr. on the 10-day injured list with a thumb sprain.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49893355/volpe-rejoins-yankees-chisholm-hits-il-sprained-thumb"
@@ -215,42 +271,9 @@
               "url": "https://www.espn.com/mlb/story/_/id/49893355/volpe-rejoins-yankees-chisholm-hits-il-sprained-thumb"
             }
           ],
-          "id": "a3-03e35192186fa922",
-          "feedRank": 16,
-          "compactHeadline": "Chisholm lands on IL as Volpe rejoins Yankees"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-4f0ebb52dd54cfd0"
-          ],
-          "type": "INJURY",
-          "priority": 71,
-          "headline": "The Dodgers placed Shohei Ohtani on the 15-day injured list and called up top prospect Josue De Paula to fill his DH spot.",
-          "text": "The Dodgers placed Shohei Ohtani on the 15-day injured list and called up top prospect Josue De Paula to fill his DH spot.",
-          "entities": [
-            "Shohei Ohtani",
-            "Los Angeles Dodgers",
-            "Josue De Paula"
-          ],
-          "occurredAt": "2026-09-10T12:18:29Z",
-          "timePrecision": "exact",
-          "ageHours": 6.22,
-          "freshnessBasis": "The Dodgers placed Shohei Ohtani on the 15-day injured list and called up Josue De Paula Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49888435/ohtani-heads-il-dodgers-calling-top-prospect-de-paula-play-dh"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49888435/ohtani-heads-il-dodgers-calling-top-prospect-de-paula-play-dh"
-            }
-          ],
-          "id": "a3-f15af2a9d3ef52bc",
-          "feedRank": 18,
-          "compactHeadline": "Ohtani lands on 15-day IL as Dodgers call up De Paula"
+          "id": "a3-f704daffc7f5bd47",
+          "feedRank": 24,
+          "compactHeadline": "Volpe returns as Yankees place Chisholm on injured list"
         }
       ]
     },
@@ -264,17 +287,17 @@
             "cand-2bff19cc7699ee86"
           ],
           "type": "INJURY",
-          "priority": 79,
-          "headline": "Patriots receiver A.J. Brown is believed to have suffered a high ankle sprain and is scheduled for an MRI after leaving Wednesday’s loss.",
-          "text": "Patriots receiver A.J. Brown is believed to have suffered a high ankle sprain and is scheduled for an MRI after leaving Wednesday’s loss.",
+          "priority": 78,
+          "headline": "Patriots wide receiver A.J. Brown is believed to have suffered a high ankle sprain and is scheduled for an MRI after leaving Wednesday’s loss.",
+          "text": "Patriots wide receiver A.J. Brown is believed to have suffered a high ankle sprain and is scheduled for an MRI after leaving Wednesday’s loss.",
           "entities": [
             "A.J. Brown",
             "New England Patriots"
           ],
           "occurredAt": "2026-09-10T17:14:15Z",
           "timePrecision": "exact",
-          "ageHours": 1.29,
-          "freshnessBasis": "A.J. Brown was reported to have a high ankle sprain and an MRI was planned after Wednesday's game.",
+          "ageHours": 1.78,
+          "freshnessBasis": "A.J. Brown was reported to have a suspected high ankle sprain and an upcoming MRI on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49891924/sources-aj-brown-believed-high-ankle-sprain-set-mri"
@@ -287,7 +310,7 @@
             }
           ],
           "id": "a3-9633dc59d5a988b5",
-          "feedRank": 5,
+          "feedRank": 3,
           "compactHeadline": "A.J. Brown believed to have high ankle sprain"
         },
         {
@@ -296,17 +319,17 @@
             "cand-0f80cf433082de7e"
           ],
           "type": "INJURY",
-          "priority": 76,
-          "headline": "Seattle quarterback Sam Darnold is expected to miss Week 2 because of a hip injury, despite receiving encouraging news about its severity.",
-          "text": "Seattle quarterback Sam Darnold is expected to miss Week 2 because of a hip injury, despite receiving encouraging news about its severity.",
+          "priority": 74,
+          "headline": "Seattle quarterback Sam Darnold is expected to miss Week 2 because of a hip injury, despite receiving what coach Mike Macdonald called good news.",
+          "text": "Seattle quarterback Sam Darnold is expected to miss Week 2 because of a hip injury, despite receiving what coach Mike Macdonald called good news.",
           "entities": [
             "Sam Darnold",
             "Seattle Seahawks"
           ],
-          "occurredAt": "2026-09-10T17:56:41Z",
+          "occurredAt": "2026-09-10T18:58:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.58,
-          "freshnessBasis": "Sam Darnold was expected to miss Seattle's Week 2 game because of a hip injury.",
+          "ageHours": 0.05,
+          "freshnessBasis": "Seattle expected Sam Darnold to miss Week 2 because of a hip injury on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49893507/sources-seahawks-sam-darnold-expected-miss-week-2"
@@ -318,52 +341,19 @@
               "url": "https://www.espn.com/nfl/story/_/id/49893507/sources-seahawks-sam-darnold-expected-miss-week-2"
             }
           ],
-          "id": "a3-0873e30694c361aa",
-          "feedRank": 9,
-          "compactHeadline": "Darnold expected to miss Seahawks’ Week 2 game"
+          "id": "a3-a049f38dfeb63238",
+          "feedRank": 8,
+          "compactHeadline": "Seahawks expect Darnold to miss Week 2"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-d365512cd7f07732"
-          ],
-          "type": "RESULT",
-          "priority": 82,
-          "headline": "Drake Maye after 3-INT opener: I lost patience and it cost us.",
-          "text": "Drake Maye after 3-INT opener: I lost patience and it cost us.",
-          "entities": [
-            "Seattle Seahawks",
-            "New England Patriots",
-            "Drake Maye"
-          ],
-          "occurredAt": "2026-09-10T06:23:45Z",
-          "timePrecision": "exact",
-          "ageHours": 12.13,
-          "freshnessBasis": "Seattle beat New England 13-10 in the season-opening Super Bowl rematch Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49888969/drake-maye-pats-loss-lost-patience-cost-us"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49888969/drake-maye-pats-loss-lost-patience-cost-us"
-            }
-          ],
-          "id": "a3-5db4f5bb9867476d",
-          "feedRank": 10,
-          "compactHeadline": "Seahawks win Super Bowl rematch as Maye throws three picks"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
             "cand-fc91f339ebefee8e"
           ],
           "type": "RETURN",
-          "priority": 77,
-          "headline": "San Francisco cleared George Kittle and Nick Bosa to play against the Rams after both stars missed time with significant injuries.",
-          "text": "San Francisco cleared George Kittle and Nick Bosa to play against the Rams after both stars missed time with significant injuries.",
+          "priority": 76,
+          "headline": "San Francisco removed George Kittle and Nick Bosa from the injury report, clearing both stars to play against the Rams in Week 1.",
+          "text": "San Francisco removed George Kittle and Nick Bosa from the injury report, clearing both stars to play against the Rams in Week 1.",
           "entities": [
             "George Kittle",
             "Nick Bosa",
@@ -372,8 +362,8 @@
           ],
           "occurredAt": "2026-09-10T12:02:49Z",
           "timePrecision": "exact",
-          "ageHours": 6.48,
-          "freshnessBasis": "The 49ers removed George Kittle and Nick Bosa from the injury report ahead of their Week 1 game.",
+          "ageHours": 6.97,
+          "freshnessBasis": "San Francisco cleared George Kittle and Nick Bosa to play against the Rams on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49889214/49ers-kittle-bosa-injury-report-set-play-vs-rams"
@@ -386,26 +376,26 @@
             }
           ],
           "id": "a3-4b38d316fec7ad56",
-          "feedRank": 19,
+          "feedRank": 17,
           "compactHeadline": "Kittle and Bosa cleared to return for 49ers"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
             "cand-58b6afc8c9c0e7b0"
           ],
           "type": "LEGAL",
           "priority": 75,
-          "headline": "Green Bay running back Josh Jacobs pleaded no contest to misdemeanor battery and criminal-damage charges in Wisconsin.",
-          "text": "Green Bay running back Josh Jacobs pleaded no contest to misdemeanor battery and criminal-damage charges in Wisconsin.",
+          "headline": "Green Bay running back Josh Jacobs pleaded no contest to misdemeanor battery and criminal-damage charges at a Wisconsin court hearing.",
+          "text": "Green Bay running back Josh Jacobs pleaded no contest to misdemeanor battery and criminal-damage charges at a Wisconsin court hearing.",
           "entities": [
             "Josh Jacobs",
             "Green Bay Packers"
           ],
           "occurredAt": "2026-09-10T17:47:01Z",
           "timePrecision": "exact",
-          "ageHours": 0.74,
-          "freshnessBasis": "Josh Jacobs entered a no-contest plea to misdemeanor battery and criminal-damage charges at a Wisconsin hearing.",
+          "ageHours": 1.24,
+          "freshnessBasis": "Josh Jacobs pleaded no contest to misdemeanor charges of battery and criminal damage on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49893018/packers-rb-josh-jacobs-pleads-no-contest-misdemeanor-charges"
@@ -417,9 +407,49 @@
               "url": "https://www.espn.com/nfl/story/_/id/49893018/packers-rb-josh-jacobs-pleads-no-contest-misdemeanor-charges"
             }
           ],
-          "id": "a3-0fc165a6079186d4",
-          "feedRank": 20,
-          "compactHeadline": "Packers’ Josh Jacobs pleads no contest to charges"
+          "id": "a3-646df53d02887b00",
+          "feedRank": 19,
+          "compactHeadline": "Packers’ Jacobs pleads no contest to misdemeanors"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-d365512cd7f07732",
+            "cand-f93df3d65c4a1eb1"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Drake Maye threw three interceptions and said losing patience cost New England in its 13-10 season-opening loss to Seattle.",
+          "text": "Drake Maye threw three interceptions and said losing patience cost New England in its 13-10 season-opening loss to Seattle.",
+          "entities": [
+            "New England Patriots",
+            "Seattle Seahawks",
+            "Drake Maye"
+          ],
+          "occurredAt": "2026-09-10T06:23:45Z",
+          "timePrecision": "exact",
+          "ageHours": 12.63,
+          "freshnessBasis": "Drake Maye threw three interceptions in New England’s 13-10 season-opening loss to Seattle.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49888969/drake-maye-pats-loss-lost-patience-cost-us",
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49888969/drake-maye-pats-loss-lost-patience-cost-us"
+            },
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-09",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a3-f35a15f460c48fa9",
+          "feedRank": 27,
+          "compactHeadline": "Maye’s three interceptions prove costly in Patriots’ opener"
         }
       ]
     },
@@ -433,9 +463,9 @@
             "cand-ed953c4e436271e1"
           ],
           "type": "LEAGUE_NEWS",
-          "priority": 73,
-          "headline": "EuroLeague owners will vote Oct. 5 on whether to accept the NBA's proposal for NBA Europe or continue operating as a separate league.",
-          "text": "EuroLeague owners will vote Oct. 5 on whether to accept the NBA's proposal for NBA Europe or continue operating as a separate league.",
+          "priority": 74,
+          "headline": "EuroLeague owners will vote Oct. 5 on whether to accept the NBA’s proposal and join an NBA Europe project or remain independent.",
+          "text": "EuroLeague owners will vote Oct. 5 on whether to accept the NBA’s proposal and join an NBA Europe project or remain independent.",
           "entities": [
             "EuroLeague",
             "NBA",
@@ -443,9 +473,9 @@
           ],
           "occurredAt": "2026-09-09T19:08:44Z",
           "timePrecision": "exact",
-          "ageHours": 23.38,
-          "freshnessBasis": "EuroLeague owners scheduled an Oct. 5 vote on the league's role in the proposed NBA Europe project.",
-          "status": "watch",
+          "ageHours": 23.88,
+          "freshnessBasis": "EuroLeague owners scheduled an Oct. 5 vote on the league’s role in the proposed NBA Europe project.",
+          "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49882328/euroleague-oct-5-vote-role-nba-europe-project"
           ],
@@ -457,7 +487,7 @@
             }
           ],
           "id": "a3-b5158ae28cdc9fcb",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "EuroLeague sets Oct. 5 vote on NBA Europe proposal"
         }
       ]
@@ -472,16 +502,16 @@
             "cand-c6c49859db22003b"
           ],
           "type": "LEAGUE_NEWS",
-          "priority": 80,
-          "headline": "Barry Melrose, the former NHL player and coach who became a beloved longtime ESPN hockey analyst, has died.",
-          "text": "Barry Melrose, the former NHL player and coach who became a beloved longtime ESPN hockey analyst, has died.",
+          "priority": 82,
+          "headline": "Barry Melrose, a former NHL player and coach who became a beloved longtime ESPN hockey analyst, has died, his wife told ESPN.",
+          "text": "Barry Melrose, a former NHL player and coach who became a beloved longtime ESPN hockey analyst, has died, his wife told ESPN.",
           "entities": [
             "Barry Melrose"
           ],
           "occurredAt": "2026-09-10T12:43:36Z",
           "timePrecision": "exact",
-          "ageHours": 5.8,
-          "freshnessBasis": "Barry Melrose died after a career as an NHL player, coach and longtime ESPN analyst.",
+          "ageHours": 6.3,
+          "freshnessBasis": "Barry Melrose’s death was reported by his wife on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49886334/barry-melrose-former-player-coach-espn-analyst-dies"
@@ -493,9 +523,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49886334/barry-melrose-former-player-coach-espn-analyst-dies"
             }
           ],
-          "id": "a3-89c2c96caa7bb880",
-          "feedRank": 21,
-          "compactHeadline": "Barry Melrose, longtime player, coach and analyst, dies"
+          "id": "a3-d6aeeb05233c79dd",
+          "feedRank": 15,
+          "compactHeadline": "Former player, coach and analyst Barry Melrose dies"
         },
         {
           "rank": 2,
@@ -504,16 +534,16 @@
           ],
           "type": "ROSTER",
           "priority": 75,
-          "headline": "Anaheim placed veteran forward Chris Kreider on waivers after he expressed a desire to play closer to the East Coast.",
-          "text": "Anaheim placed veteran forward Chris Kreider on waivers after he expressed a desire to play closer to the East Coast.",
+          "headline": "Anaheim waived veteran forward Chris Kreider after he expressed a desire to play closer to the East Coast.",
+          "text": "Anaheim waived veteran forward Chris Kreider after he expressed a desire to play closer to the East Coast.",
           "entities": [
             "Chris Kreider",
             "Anaheim Ducks"
           ],
-          "occurredAt": "2026-09-10T11:05:33Z",
+          "occurredAt": "2026-09-10T18:38:16Z",
           "timePrecision": "exact",
-          "ageHours": 7.43,
-          "freshnessBasis": "The Ducks placed Chris Kreider on waivers after he requested an opportunity to move closer to the East Coast.",
+          "ageHours": 0.38,
+          "freshnessBasis": "Anaheim waived Chris Kreider on September 10 amid a reported desire for an East Coast move.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49881489/source-ducks-waiving-chris-kreider-east-move-deck"
@@ -525,41 +555,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49881489/source-ducks-waiving-chris-kreider-east-move-deck"
             }
           ],
-          "id": "a3-eab224729848ebc7",
-          "feedRank": 29,
-          "compactHeadline": "Ducks place Chris Kreider on waivers before East move"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-6b4d9ce48ad90704"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 73,
-          "headline": "The NHL is talking with a third group interested in bringing an expansion team to Atlanta, deputy commissioner Bill Daly said.",
-          "text": "The NHL is talking with a third group interested in bringing an expansion team to Atlanta, deputy commissioner Bill Daly said.",
-          "entities": [
-            "NHL",
-            "Atlanta"
-          ],
-          "occurredAt": "2026-09-10T02:29:44Z",
-          "timePrecision": "exact",
-          "ageHours": 16.03,
-          "freshnessBasis": "The NHL confirmed talks with a third group seeking an expansion team in Atlanta.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49886471/nhl-talks-third-group-interest-adding-expansion-team-atlanta"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49886471/nhl-talks-third-group-interest-adding-expansion-team-atlanta"
-            }
-          ],
-          "id": "a3-b7e6ecf43015c4c7",
-          "feedRank": 30,
-          "compactHeadline": "NHL discussing third Atlanta expansion group"
+          "id": "a3-c73dd537bab892ed",
+          "feedRank": 28,
+          "compactHeadline": "Ducks waive Chris Kreider amid expected East move"
         }
       ]
     },
@@ -573,17 +571,17 @@
             "cand-ed6f35eb9c1bb8a4"
           ],
           "type": "INJURY",
-          "priority": 75,
-          "headline": "Tottenham winger Mykhailo Mudryk is expected to miss at least until October after suffering an ankle injury in training.",
-          "text": "Tottenham winger Mykhailo Mudryk is expected to miss at least until October after suffering an ankle injury in training.",
+          "priority": 76,
+          "headline": "Tottenham winger Mykhailo Mudryk is expected to miss time until at least October after suffering an ankle injury in training.",
+          "text": "Tottenham winger Mykhailo Mudryk is expected to miss time until at least October after suffering an ankle injury in training.",
           "entities": [
             "Mykhailo Mudryk",
             "Tottenham Hotspur"
           ],
           "occurredAt": "2026-09-09T19:36:55Z",
           "timePrecision": "exact",
-          "ageHours": 22.91,
-          "freshnessBasis": "Mykhailo Mudryk suffered an ankle injury in training and is expected to be sidelined until at least October.",
+          "ageHours": 23.41,
+          "freshnessBasis": "Mykhailo Mudryk was reported out until at least October with an ankle injury on September 9.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49883172/mykhailo-mudryk-tottenham-premier-league-spurs-injuries"
@@ -595,26 +593,27 @@
               "url": "https://www.espn.com/soccer/story/_/id/49883172/mykhailo-mudryk-tottenham-premier-league-spurs-injuries"
             }
           ],
-          "id": "a3-a9584689a0f7a893",
-          "feedRank": 12,
-          "compactHeadline": "Tottenham’s Mudryk out until at least October"
+          "id": "a3-8fea5f8118c513a5",
+          "feedRank": 9,
+          "compactHeadline": "Mudryk out until at least October with ankle injury"
         },
         {
           "rank": 2,
           "candidateIds": [
             "cand-7d18270b10f6a523"
           ],
-          "type": "AWARD",
-          "priority": 74,
-          "headline": "The 2026 Ballon d'Or shortlists for the men's and women's awards were released, setting the field for soccer's top individual honors.",
-          "text": "The 2026 Ballon d'Or shortlists for the men's and women's awards were released, setting the field for soccer's top individual honors.",
+          "type": "RANKING",
+          "priority": 73,
+          "headline": "The 2026 Ballon d’Or shortlists for the men’s and women’s awards were released, along with a change to the host city.",
+          "text": "The 2026 Ballon d’Or shortlists for the men’s and women’s awards were released, along with a change to the host city.",
           "entities": [
-            "Ballon d'Or"
+            "Ballon d’Or",
+            "France Football"
           ],
           "occurredAt": "2026-09-10T10:47:16Z",
           "timePrecision": "exact",
-          "ageHours": 7.74,
-          "freshnessBasis": "The 2026 Ballon d'Or men's and women's shortlists were released Thursday.",
+          "ageHours": 8.23,
+          "freshnessBasis": "The 2026 Ballon d’Or shortlists were released for the men’s and women’s awards.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49867974/2026-ballon-dor-full-mens-women-shortlists-host-city-change-vozinha-more"
@@ -626,9 +625,40 @@
               "url": "https://www.espn.com/soccer/story/_/id/49867974/2026-ballon-dor-full-mens-women-shortlists-host-city-change-vozinha-more"
             }
           ],
-          "id": "a3-0560453f879b7466",
-          "feedRank": 25,
-          "compactHeadline": "2026 Ballon d'Or shortlists released"
+          "id": "a3-38e79b07963471a3",
+          "feedRank": 11,
+          "compactHeadline": "Ballon d’Or shortlists released for 2026 awards"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-20260756c36a2871"
+          ],
+          "type": "SCHEDULE",
+          "priority": 72,
+          "headline": "The Premier League confirmed that seven matches will be played on Dec. 26, restoring its traditional Boxing Day fixture slate.",
+          "text": "The Premier League confirmed that seven matches will be played on Dec. 26, restoring its traditional Boxing Day fixture slate.",
+          "entities": [
+            "Premier League"
+          ],
+          "occurredAt": "2026-09-10T16:22:28Z",
+          "timePrecision": "exact",
+          "ageHours": 2.65,
+          "freshnessBasis": "The Premier League confirmed seven Boxing Day matches for Dec. 26.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49892988/premier-league-confirms-return-traditional-boxing-day-fixtures"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49892988/premier-league-confirms-return-traditional-boxing-day-fixtures"
+            }
+          ],
+          "id": "a3-2e6c315b03953340",
+          "feedRank": 30,
+          "compactHeadline": "Premier League restores traditional Boxing Day schedule"
         }
       ]
     },
@@ -639,43 +669,12 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-cd497fe20a4c325b"
-          ],
-          "type": "RECORD",
-          "priority": 78,
-          "headline": "MLS announced record revenue from both incoming and outgoing transfers during the 2026 season.",
-          "text": "MLS announced record revenue from both incoming and outgoing transfers during the 2026 season.",
-          "entities": [
-            "Major League Soccer"
-          ],
-          "occurredAt": "2026-09-09T19:03:18Z",
-          "timePrecision": "exact",
-          "ageHours": 23.47,
-          "freshnessBasis": "MLS announced that 2026 transfer activity set league records for incoming and outgoing transfer revenue.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49882716/mls-league-sets-record-incoming-outgoing-transfers-2026"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/49882716/mls-league-sets-record-incoming-outgoing-transfers-2026"
-            }
-          ],
-          "id": "a3-a90890dc685b21c4",
-          "feedRank": 8,
-          "compactHeadline": "MLS sets transfer-revenue records in 2026"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-f65da1fbe289af1e"
           ],
           "type": "RECORD",
-          "priority": 73,
-          "headline": "Inter Miami rallied from a goal down for a 1-1 draw with Chicago Fire before 63,094 fans, a new Fire home attendance record.",
-          "text": "Inter Miami rallied from a goal down for a 1-1 draw with Chicago Fire before 63,094 fans, a new Fire home attendance record.",
+          "priority": 76,
+          "headline": "Inter Miami rallied from a goal down to draw Chicago 1-1 before a record Fire crowd of 63,094 at Soldier Field.",
+          "text": "Inter Miami rallied from a goal down to draw Chicago 1-1 before a record Fire crowd of 63,094 at Soldier Field.",
           "entities": [
             "Inter Miami",
             "Chicago Fire",
@@ -684,8 +683,8 @@
           ],
           "occurredAt": "2026-09-10T00:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.02,
-          "freshnessBasis": "Inter Miami and Chicago drew 1-1 before 63,094 fans, setting a new Chicago Fire home attendance record.",
+          "ageHours": 18.52,
+          "freshnessBasis": "Inter Miami and Chicago drew 1-1 before a club-record Chicago crowd of 63,094 on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -703,9 +702,40 @@
               "url": "https://www.espn.com/soccer/story/_/id/49887607/miami-rallies-draw-lewandowski-goal-record-fire-crowd"
             }
           ],
-          "id": "a3-91b788a3e5c3592b",
-          "feedRank": 13,
-          "compactHeadline": "Miami draws Chicago before record Fire crowd"
+          "id": "a3-78355a73ca946785",
+          "feedRank": 7,
+          "compactHeadline": "Miami draw sets record crowd at Chicago’s Soldier Field"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-cd497fe20a4c325b"
+          ],
+          "type": "RECORD",
+          "priority": 73,
+          "headline": "Major League Soccer announced record 2026 revenue from both incoming and outgoing transfers.",
+          "text": "Major League Soccer announced record 2026 revenue from both incoming and outgoing transfers.",
+          "entities": [
+            "Major League Soccer"
+          ],
+          "occurredAt": "2026-09-09T19:03:18Z",
+          "timePrecision": "exact",
+          "ageHours": 23.97,
+          "freshnessBasis": "MLS announced record incoming and outgoing transfer revenue for 2026 on September 9.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49882716/mls-league-sets-record-incoming-outgoing-transfers-2026"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/49882716/mls-league-sets-record-incoming-outgoing-transfers-2026"
+            }
+          ],
+          "id": "a3-a90890dc685b21c4",
+          "feedRank": 10,
+          "compactHeadline": "MLS sets transfer-revenue records in 2026"
         },
         {
           "rank": 3,
@@ -722,7 +752,7 @@
           ],
           "occurredAt": "2026-09-10T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.52,
+          "ageHours": 19.02,
           "freshnessBasis": "A late goal came in the 90th minute to decide New England Revolution's 2-1 win over New York City FC.",
           "status": "active",
           "sourceUrls": [
@@ -735,8 +765,8 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-4616800db4573f9c",
-          "feedRank": 22,
+          "id": "a3-90c81136a5ba0671",
+          "feedRank": 21,
           "compactHeadline": "Late goal lifts New England Revolution beat New York City FC 2-1"
         },
         {
@@ -756,7 +786,7 @@
           ],
           "occurredAt": "2026-09-09T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.02,
+          "ageHours": 19.52,
           "freshnessBasis": "A late goal came in the 90th minute to decide Toronto FC's 2-1 win over Nashville SC.",
           "status": "active",
           "sourceUrls": [
@@ -775,8 +805,8 @@
               "url": "http://www.espn.com/soccer/report/_/gameId/761790"
             }
           ],
-          "id": "a3-e4105702b34bd248",
-          "feedRank": 23,
+          "id": "a3-a8dce447e8689fa4",
+          "feedRank": 22,
           "compactHeadline": "Late goal lifts Toronto FC beat Nashville SC 2-1"
         },
         {
@@ -794,7 +824,7 @@
           ],
           "occurredAt": "2026-09-09T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.02,
+          "ageHours": 19.52,
           "freshnessBasis": "A late goal came in the 90th minute to decide Orlando City's 3-2 win over Atlanta United FC.",
           "status": "active",
           "sourceUrls": [
@@ -807,8 +837,8 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-48089878bdc6b63a",
-          "feedRank": 24,
+          "id": "a3-2ae8b6c2ae82b2cd",
+          "feedRank": 23,
           "compactHeadline": "Late goal lifts Orlando City beat Atlanta United FC 3-2"
         },
         {
@@ -818,16 +848,16 @@
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "An 87th-minute goal decided Houston's 2-1 win over Real Salt Lake.",
-          "text": "An 87th-minute goal decided Houston's 2-1 win over Real Salt Lake.",
+          "headline": "A goal in the 87th minute decided Houston Dynamo’s 2-1 victory over Real Salt Lake.",
+          "text": "A goal in the 87th minute decided Houston Dynamo’s 2-1 victory over Real Salt Lake.",
           "entities": [
             "Houston Dynamo",
             "Real Salt Lake"
           ],
           "occurredAt": "2026-09-10T00:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.02,
-          "freshnessBasis": "An 87th-minute goal decided Houston's 2-1 win over Real Salt Lake.",
+          "ageHours": 18.52,
+          "freshnessBasis": "An 87th-minute goal decided Houston Dynamo’s 2-1 win over Real Salt Lake on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -840,7 +870,7 @@
             }
           ],
           "id": "a3-95c5637537a60225",
-          "feedRank": 28,
+          "feedRank": 29,
           "compactHeadline": "Late goal lifts Houston past Real Salt Lake"
         }
       ]
@@ -852,19 +882,85 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-ee9b9eaaf45d4c82"
+          ],
+          "type": "INJURY",
+          "priority": 72,
+          "headline": "No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky.",
+          "text": "No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky.",
+          "entities": [
+            "Alabama Crimson Tide",
+            "Kentucky Wildcats",
+            "Michael Carroll"
+          ],
+          "occurredAt": "2026-09-10T01:03:46Z",
+          "timePrecision": "exact",
+          "ageHours": 17.96,
+          "freshnessBasis": "Alabama listed Michael Carroll as doubtful for Saturday’s game at Kentucky.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
+            }
+          ],
+          "id": "a3-968f518123e973e7",
+          "feedRank": 13,
+          "compactHeadline": "Alabama guard Michael Carroll doubtful against Kentucky"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-12ef42d50cb5776e"
+          ],
+          "type": "LEAGUE_NEWS",
+          "priority": 74,
+          "headline": "LSU told the SEC that the Tigers have complied with league rules and that the dispute is moot, easing the immediate threat of a confrontation.",
+          "text": "LSU told the SEC that the Tigers have complied with league rules and that the dispute is moot, easing the immediate threat of a confrontation.",
+          "entities": [
+            "LSU Tigers",
+            "SEC",
+            "Wade Rousse"
+          ],
+          "occurredAt": "2026-09-09T20:47:21Z",
+          "timePrecision": "exact",
+          "ageHours": 22.23,
+          "freshnessBasis": "LSU informed the SEC that it had complied with league rules and considered the issue moot.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49883607/lsu-tells-sec-tigers-complied-disrupt-meeting"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49883607/lsu-tells-sec-tigers-complied-disrupt-meeting"
+            }
+          ],
+          "id": "a3-1e2ca3e7a97a11de",
+          "feedRank": 25,
+          "compactHeadline": "LSU tells SEC it has complied as dispute cools"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-58c0c32e79bfdea9"
           ],
-          "type": "RECORD",
-          "priority": 78,
-          "headline": "The College Sports Commission cleared more than $227 million in NIL deals across July and August, nearly doubling its first-year total.",
-          "text": "The College Sports Commission cleared more than $227 million in NIL deals across July and August, nearly doubling its first-year total.",
+          "type": "LEAGUE_NEWS",
+          "priority": 74,
+          "headline": "The College Sports Commission cleared more than $227 million in NIL deals during July and August, nearly doubling its first-year total.",
+          "text": "The College Sports Commission cleared more than $227 million in NIL deals during July and August, nearly doubling its first-year total.",
           "entities": [
             "College Sports Commission"
           ],
           "occurredAt": "2026-09-09T19:03:51Z",
           "timePrecision": "exact",
-          "ageHours": 23.46,
-          "freshnessBasis": "The College Sports Commission cleared more than $227 million in NIL deals during July and August.",
+          "ageHours": 23.96,
+          "freshnessBasis": "The College Sports Commission reported clearing more than $227 million in NIL deals for July and August on September 9.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/espn/story/_/id/49882283/csc-clears-227m-nil-deals-july-august-major-increase"
@@ -877,105 +973,40 @@
             }
           ],
           "id": "a3-c3d54a50ec42d8e5",
-          "feedRank": 7,
-          "compactHeadline": "College Sports Commission clears $227M in NIL deals"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-12ef42d50cb5776e"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 73,
-          "headline": "LSU told SEC commissioner Greg Sankey that it had complied with conference rules and that the dispute threatening its standing was moot.",
-          "text": "LSU told SEC commissioner Greg Sankey that it had complied with conference rules and that the dispute threatening its standing was moot.",
-          "entities": [
-            "LSU Tigers",
-            "SEC",
-            "Greg Sankey"
-          ],
-          "occurredAt": "2026-09-09T20:47:21Z",
-          "timePrecision": "exact",
-          "ageHours": 21.73,
-          "freshnessBasis": "LSU informed the SEC that it had complied with conference rules and called the issue moot Wednesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49883607/lsu-tells-sec-tigers-complied-disrupt-meeting"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49883607/lsu-tells-sec-tigers-complied-disrupt-meeting"
-            }
-          ],
-          "id": "a3-91f565fce0c7c64e",
           "feedRank": 26,
-          "compactHeadline": "LSU tells SEC it has complied, defusing expulsion dispute"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-ee9b9eaaf45d4c82"
-          ],
-          "type": "INJURY",
-          "priority": 65,
-          "headline": "No. 12 Alabama could be without offensive guard Michael Carroll for Saturday’s game at Kentucky.",
-          "text": "No. 12 Alabama could be without offensive guard Michael Carroll for Saturday’s game at Kentucky.",
-          "entities": [
-            "Michael Carroll",
-            "Alabama Crimson Tide",
-            "Kentucky Wildcats"
-          ],
-          "occurredAt": "2026-09-10T01:03:46Z",
-          "timePrecision": "exact",
-          "ageHours": 17.46,
-          "freshnessBasis": "Alabama listed offensive guard Michael Carroll as doubtful for Saturday's game at Kentucky.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
-            }
-          ],
-          "id": "a3-b5f50014de6ea371",
-          "feedRank": 27,
-          "compactHeadline": "Alabama guard Michael Carroll doubtful at Kentucky"
+          "compactHeadline": "College Sports Commission clears $227M in NIL deals"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-b4b9561eb6774169"
+            "cand-1ffead5384b1d75d"
           ],
-          "type": "LEAGUE_NEWS",
-          "priority": 64,
-          "headline": "The Big Ten will make replay reviews available to all television broadcasts of league games beginning with Saturday's contests.",
-          "text": "The Big Ten will make replay reviews available to all television broadcasts of league games beginning with Saturday's contests.",
+          "type": "DISCIPLINE",
+          "priority": 70,
+          "headline": "North Carolina self-reported a recruiting violation and will not host recruits at Saturday’s home opener against ETSU.",
+          "text": "North Carolina self-reported a recruiting violation and will not host recruits at Saturday’s home opener against ETSU.",
           "entities": [
-            "Big Ten"
+            "North Carolina Tar Heels",
+            "East Tennessee State Buccaneers"
           ],
-          "occurredAt": "2026-09-10T10:40:00Z",
+          "occurredAt": "2026-09-09T21:05:08Z",
           "timePrecision": "exact",
-          "ageHours": 7.86,
-          "freshnessBasis": "The Big Ten announced expanded television access to replay reviews beginning Saturday.",
-          "status": "next",
+          "ageHours": 21.94,
+          "freshnessBasis": "North Carolina reported a recruiting violation and barred recruits from its ETSU game on September 9.",
+          "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49884885/big-ten-expanding-access-replay-reviews-football-tv-broadcasts"
+            "https://www.espn.com/college-football/story/_/id/49884396/north-carolina-reports-violation-host-recruits-etsu-game"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49884885/big-ten-expanding-access-replay-reviews-football-tv-broadcasts"
+              "url": "https://www.espn.com/college-football/story/_/id/49884396/north-carolina-reports-violation-host-recruits-etsu-game"
             }
           ],
-          "id": "a3-6662db360ecef7fa",
-          "feedRank": 32,
-          "compactHeadline": "Big Ten expands TV access to replay reviews"
+          "id": "a3-5e185e2618c85be8",
+          "feedRank": 31,
+          "compactHeadline": "North Carolina reports recruiting violation"
         }
       ]
     }
@@ -990,8 +1021,8 @@
           "candidateIds": [
             "cand-e424a05467ea1759"
           ],
-          "type": "ADVANCEMENT",
-          "priority": 86,
+          "type": "RANKING",
+          "priority": 84,
           "headline": "Elena Rybakina rallied past Zheng Qinwen 3-6, 6-1, 6-4 to reach the US Open semifinals and claim the women’s No. 1 ranking.",
           "text": "Elena Rybakina rallied past Zheng Qinwen 3-6, 6-1, 6-4 to reach the US Open semifinals and claim the women’s No. 1 ranking.",
           "entities": [
@@ -1001,8 +1032,8 @@
           ],
           "occurredAt": "2026-09-10T00:44:14Z",
           "timePrecision": "exact",
-          "ageHours": 17.79,
-          "freshnessBasis": "Elena Rybakina defeated Zheng Qinwen in three sets to reach the US Open semifinals and become No. 1.",
+          "ageHours": 18.28,
+          "freshnessBasis": "Elena Rybakina reached the US Open semifinals and secured the No. 1 ranking with a comeback win over Zheng Qinwen on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49882460/elena-rybakina-reaches-us-open-semis-claims-no-1-ranking"
@@ -1015,7 +1046,7 @@
             }
           ],
           "id": "a3-special-38a426dbdaaf0b2e",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Rybakina reaches US Open semis and takes No. 1 ranking"
         },
         {
@@ -1024,9 +1055,9 @@
             "cand-d1091e072a809ec8"
           ],
           "type": "ADVANCEMENT",
-          "priority": 84,
-          "headline": "Coco Gauff saved match points in a tiebreaker, rallied past Mirra Andreeva 2-6, 7-6 (7), 6-2 and reached the US Open semifinals.",
-          "text": "Coco Gauff saved match points in a tiebreaker, rallied past Mirra Andreeva 2-6, 7-6 (7), 6-2 and reached the US Open semifinals.",
+          "priority": 82,
+          "headline": "Coco Gauff saved match points in a tiebreaker before beating Mirra Andreeva 2-6, 7-6 (7), 6-2 to reach the US Open semifinals.",
+          "text": "Coco Gauff saved match points in a tiebreaker before beating Mirra Andreeva 2-6, 7-6 (7), 6-2 to reach the US Open semifinals.",
           "entities": [
             "Coco Gauff",
             "Mirra Andreeva",
@@ -1034,8 +1065,8 @@
           ],
           "occurredAt": "2026-09-10T02:57:56Z",
           "timePrecision": "exact",
-          "ageHours": 15.56,
-          "freshnessBasis": "Coco Gauff defeated Mirra Andreeva in three sets and advanced to the US Open semifinals Wednesday.",
+          "ageHours": 16.06,
+          "freshnessBasis": "Coco Gauff reached the US Open semifinals by defeating Mirra Andreeva on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49884369/coco-gauff-saves-match-points-rallies-mirra-andreeva-reach-2026-us-open-semifinals"
@@ -1047,9 +1078,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49884369/coco-gauff-saves-match-points-rallies-mirra-andreeva-reach-2026-us-open-semifinals"
             }
           ],
-          "id": "a3-special-cc5c7f2396d68f83",
-          "feedRank": 6,
-          "compactHeadline": "Gauff rallies past Andreeva into US Open semifinals"
+          "id": "a3-special-c48c685fc4585cf9",
+          "feedRank": 5,
+          "compactHeadline": "Gauff saves match points, rallies into US Open semis"
         },
         {
           "rank": 3,
@@ -1057,7 +1088,7 @@
             "cand-d182ab58b8727393"
           ],
           "type": "ADVANCEMENT",
-          "priority": 77,
+          "priority": 75,
           "headline": "Alexander Zverev defeated Botic van de Zandschulp to reach the US Open semifinals.",
           "text": "Alexander Zverev defeated Botic van de Zandschulp to reach the US Open semifinals.",
           "entities": [
@@ -1067,8 +1098,8 @@
           ],
           "occurredAt": "2026-09-10T05:09:35Z",
           "timePrecision": "exact",
-          "ageHours": 13.36,
-          "freshnessBasis": "Alexander Zverev defeated Botic van de Zandschulp to advance to the US Open semifinals.",
+          "ageHours": 13.86,
+          "freshnessBasis": "Alexander Zverev reached the US Open semifinals by defeating Botic van de Zandschulp on September 10.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49887449/alexander-zverev-beats-botic-van-de-zandschulp-reach-2026-us-open-semifinals"
@@ -1087,42 +1118,35 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-7dccdfb8c0178622"
+            "cand-22422a7ac580b941"
           ],
-          "type": "RECORD",
-          "priority": 75,
-          "headline": "ESPN recorded its largest US Open viewership through three rounds since 2022, with Serena and Venus Williams' return to doubles contributing to the surge.",
-          "text": "ESPN recorded its largest US Open viewership through three rounds since 2022, with Serena and Venus Williams' return to doubles contributing to the surge.",
+          "type": "ADVANCEMENT",
+          "priority": 73,
+          "headline": "Unseeded Karen Khachanov advanced to his third Grand Slam semifinal after No. 28 Alexander Blockx retired during their US Open quarterfinal.",
+          "text": "Unseeded Karen Khachanov advanced to his third Grand Slam semifinal after No. 28 Alexander Blockx retired during their US Open quarterfinal.",
           "entities": [
-            "US Open",
-            "ESPN",
-            "Serena Williams",
-            "Venus Williams"
+            "Karen Khachanov",
+            "Alexander Blockx",
+            "US Open"
           ],
-          "occurredAt": "2026-09-10T00:51:08Z",
+          "occurredAt": "2026-09-10T02:45:24Z",
           "timePrecision": "exact",
-          "ageHours": 17.67,
-          "freshnessBasis": "ESPN reported its highest US Open viewership through three rounds since 2022.",
+          "ageHours": 16.27,
+          "freshnessBasis": "Karen Khachanov reached the US Open semifinals after Alexander Blockx retired during their quarterfinal on September 10.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/tennis/story/_/id/49886301/helped-williams-sisters-doubles-espn-sees-largest-us-open-viewership-3-rounds-2022",
-            "https://www.espn.com/tennis/story/_/id/49886301/helped-williams-sisters-doubles-espn-sees-largest-us-open-viewership-3-rounds-2022"
+            "https://www.espn.com/tennis/story/_/id/49885774/karen-khachanov-advances-2026-us-open-semifinals-alexander-blockx-retires"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-atp",
-              "url": "https://www.espn.com/tennis/story/_/id/49886301/helped-williams-sisters-doubles-espn-sees-largest-us-open-viewership-3-rounds-2022"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-wta",
-              "url": "https://www.espn.com/tennis/story/_/id/49886301/helped-williams-sisters-doubles-espn-sees-largest-us-open-viewership-3-rounds-2022"
+              "url": "https://www.espn.com/tennis/story/_/id/49885774/karen-khachanov-advances-2026-us-open-semifinals-alexander-blockx-retires"
             }
           ],
-          "id": "a3-special-4cc79d1aa5e9aade",
-          "feedRank": 17,
-          "compactHeadline": "ESPN posts best US Open viewership through three rounds since 2022"
+          "id": "a3-special-8ae7bdfdf76510e7",
+          "feedRank": 20,
+          "compactHeadline": "Khachanov reaches US Open semis after retirement"
         }
       ]
     }
