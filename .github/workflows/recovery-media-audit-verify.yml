@@ -1,0 +1,39 @@
+name: Verify Media Audit Recovery Release
+
+on:
+  push:
+    branches:
+      - recovery-media-audit-safe-mode
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sports-big-board-media-audit-recovery-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Rehearse v6.1.3 recovery materialization
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout recovery branch
+        uses: actions/checkout@v7
+
+      - name: Materialize v6.1.3 through the production entry point
+        run: python3 tools/apply_v612_release.py
+
+      - name: Run full Sports Big Board verification
+        run: bash VERIFY.sh
+
+      - name: Assert recovery runtime defaults
+        run: |
+          test "$(tr -d '[:space:]' < VERSION)" = "6.1.3"
+          grep -F 'SBB_MEDIA_AUDIT_WORKERS", "1"' media_audit_service.py
+          grep -F 'SBB_MEDIA_AUDIT_DISCOVERY_CONCURRENCY", "1"' media_audit_service.py
+          grep -F 'SBB_MEDIA_REPAIR_ENABLED", "0"' media_audit_service.py
+          ! grep -F 'SBB_MEDIA_AUDIT_WORKERS", "3"' media_audit_service.py
+          ! grep -F 'SBB_MEDIA_REPAIR_ENABLED", "1"' media_audit_service.py
+          echo 'PASS: v6.1.3 recovery release is safe to promote'
