@@ -76,7 +76,7 @@ def patch_pages(root):
 # Add the Git SHA as an independent asset cache generation.
 build_sha=(os.environ.get('GITHUB_SHA') or '').strip()[:12]
 if build_sha:
-    versioned_asset=re.compile(r"(\\?v=\\d+\\.\\d+\\.\\d+)(?=[\"'])")
+    versioned_asset=re.compile(r"(\\?v=\\d+\\.\\d+\\.\\d+)")
     for page in out.glob('*.html'):
         source=page.read_text(encoding='utf-8')
         rendered=versioned_asset.sub(lambda m:f"{m.group(1)}&b={build_sha}",source)
