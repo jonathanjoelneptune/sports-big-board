@@ -40,19 +40,17 @@ def patch_install_chain(root):
     text=path.read_text(encoding='utf-8')
     v611_call='_install_canonical_certification_v611()'
     v612_call='_install_canonical_validation_v612()'
-    if v612_call not in text:
+    v612_import='from .canonical_validation_v612 import install as _install_canonical_validation_v612'
+    if v612_call not in text or v612_import not in text:
         raise SystemExit('ERROR: canonical validation installer anchor missing after v6.1.4 materialization')
     if v611_call not in text:
         block=(
-            '\n# v6.1.5: restore the missing v6.1.1 certification-hardening dependency.\n'
+            '# v6.1.5: restore the missing v6.1.1 certification-hardening dependency.\n'
             '# Validation waits on v611.engine(), so hardening must install first.\n'
             'from .canonical_certification_v611 import install as _install_canonical_certification_v611\n'
             '_install_canonical_certification_v611()\n\n'
         )
-        anchor='# v6.1.2: unified canonical slate validation diagnostics + copy console.\n'
-        if anchor not in text:
-            raise SystemExit('ERROR: canonical validation comment anchor missing')
-        text=text.replace(anchor,block+anchor,1)
+        text=text.replace(v612_import,block+v612_import,1)
         path.write_text(text,encoding='utf-8')
     text=path.read_text(encoding='utf-8')
     if text.index(v611_call) > text.index(v612_call):
