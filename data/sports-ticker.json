@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-11T13:00:58Z",
+  "generatedAt": "2026-09-11T13:30:52Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "aab8db98ecf6e07881f0106a8fbce302c93f5b24eeb9a1dd2a6d985054628d54",
+  "sourceCandidateHash": "e927031a744190701f16c86482a6d17bcac4d87dbd1382e2600096694e7ed40f",
   "leagues": [
     {
       "league": "MLB",
@@ -18,8 +18,8 @@
           ],
           "type": "PLAYOFF",
           "priority": 80,
-          "headline": "Atlanta beat Tampa Bay 3-1 as Martín Pérez threw seven scoreless innings and Austin Riley delivered the go-ahead single, denying the Rays a chance to clinch.",
-          "text": "Atlanta beat Tampa Bay 3-1 as Martín Pérez threw seven scoreless innings and Austin Riley delivered the go-ahead single, denying the Rays a chance to clinch.",
+          "headline": "Atlanta beat Tampa Bay 3-1 as Martín Pérez threw seven scoreless innings and Austin Riley delivered the go-ahead single in the eighth.",
+          "text": "Atlanta beat Tampa Bay 3-1 as Martín Pérez threw seven scoreless innings and Austin Riley delivered the go-ahead single in the eighth.",
           "entities": [
             "Atlanta Braves",
             "Tampa Bay Rays",
@@ -28,8 +28,8 @@
           ],
           "occurredAt": "2026-09-10T16:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.77,
-          "freshnessBasis": "Atlanta beat Tampa Bay 3-1, preventing the Rays from potentially clinching a playoff berth.",
+          "ageHours": 21.26,
+          "freshnessBasis": "Atlanta's 3-1 win prevented Tampa Bay from potentially clinching a playoff berth.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -47,9 +47,9 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816885"
             }
           ],
-          "id": "a3-9d27168b06f892cc",
-          "feedRank": 2,
-          "compactHeadline": "Braves deny Rays a chance to clinch"
+          "id": "a3-04ff44ce107963c4",
+          "feedRank": 3,
+          "compactHeadline": "Braves deny Rays' possible playoff clinch in 3-1 win"
         },
         {
           "rank": 2,
@@ -57,18 +57,18 @@
             "cand-e416ec91a691dac3"
           ],
           "type": "RETURN",
-          "priority": 78,
-          "headline": "Anthony Volpe hit a grand slam and drove in a career-high five runs in his return from Triple-A, powering the Yankees past Colorado 10-3.",
-          "text": "Anthony Volpe hit a grand slam and drove in a career-high five runs in his return from Triple-A, powering the Yankees past Colorado 10-3.",
+          "priority": 84,
+          "headline": "Anthony Volpe hit a grand slam and drove in five runs in his return to the majors, powering New York past Colorado 10-3.",
+          "text": "Anthony Volpe hit a grand slam and drove in five runs in his return to the majors, powering New York past Colorado 10-3.",
           "entities": [
-            "New York Yankees",
             "Anthony Volpe",
+            "New York Yankees",
             "Colorado Rockies"
           ],
           "occurredAt": "2026-09-10T23:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.93,
-          "freshnessBasis": "Anthony Volpe returned from Triple-A and hit a grand slam with five RBIs in New York's 10-3 win over Colorado.",
+          "ageHours": 14.43,
+          "freshnessBasis": "Anthony Volpe returned to the majors and hit a grand slam with five RBIs in New York's 10-3 win over Colorado.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -86,19 +86,52 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816883"
             }
           ],
-          "id": "a3-c69743fa870844ad",
-          "feedRank": 8,
-          "compactHeadline": "Volpe hits grand slam in Yankees return"
+          "id": "a3-8e597fdedd3000b5",
+          "feedRank": 6,
+          "compactHeadline": "Volpe returns with grand slam as Yankees sweep Rockies"
         },
         {
           "rank": 3,
           "candidateIds": [
+            "cand-33b0171149dfa3f3"
+          ],
+          "type": "RETURN",
+          "priority": 81,
+          "headline": "Anthony Volpe hit a grand slam and drove in five runs in his Yankees return from Triple-A, helping New York beat Colorado.",
+          "text": "Anthony Volpe hit a grand slam and drove in five runs in his Yankees return from Triple-A, helping New York beat Colorado.",
+          "entities": [
+            "New York Yankees",
+            "Anthony Volpe",
+            "Colorado Rockies"
+          ],
+          "occurredAt": "2026-09-11T05:11:58Z",
+          "timePrecision": "exact",
+          "ageHours": 8.31,
+          "freshnessBasis": "Anthony Volpe returned from Triple-A with a grand slam and five RBIs in a Yankees win over the Rockies.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49900251/yankees-volpe-grand-slam-5-rbis-return-majors"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49900251/yankees-volpe-grand-slam-5-rbis-return-majors"
+            }
+          ],
+          "id": "a3-39f08cd626ffaf70",
+          "feedRank": 7,
+          "compactHeadline": "Volpe returns with grand slam for Yankees"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-d122b3e27af6c67f"
           ],
           "type": "STREAK",
-          "priority": 73,
-          "headline": "Pittsburgh completed a three-game sweep with a 2-0 win over Chicago as Jared Jones allowed one hit in seven innings and Oneil Cruz homered.",
-          "text": "Pittsburgh completed a three-game sweep with a 2-0 win over Chicago as Jared Jones allowed one hit in seven innings and Oneil Cruz homered.",
+          "priority": 74,
+          "headline": "Jared Jones pitched seven innings of one-hit ball and Oneil Cruz homered as Pittsburgh completed a three-game sweep with a 2-0 win.",
+          "text": "Jared Jones pitched seven innings of one-hit ball and Oneil Cruz homered as Pittsburgh completed a three-game sweep with a 2-0 win.",
           "entities": [
             "Pittsburgh Pirates",
             "Chicago White Sox",
@@ -107,8 +140,8 @@
           ],
           "occurredAt": "2026-09-10T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.35,
-          "freshnessBasis": "Pittsburgh completed a three-game sweep of Chicago with a 2-0 win behind Jared Jones and Oneil Cruz.",
+          "ageHours": 13.85,
+          "freshnessBasis": "Pittsburgh completed a three-game sweep of Chicago with a 2-0 win powered by Jared Jones and Oneil Cruz.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -133,40 +166,8 @@
             }
           ],
           "id": "a3-1221661f33e92268",
-          "feedRank": 12,
+          "feedRank": 11,
           "compactHeadline": "Pirates sweep White Sox behind Jones, Cruz"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-238e63e4a5ad470b"
-          ],
-          "type": "LEAGUE_NEWS",
-          "priority": 74,
-          "headline": "Isao Harimoto, a Hiroshima bombing survivor who still holds Japan’s baseball hits record, has died at 86.",
-          "text": "Isao Harimoto, a Hiroshima bombing survivor who still holds Japan’s baseball hits record, has died at 86.",
-          "entities": [
-            "Isao Harimoto",
-            "Japan baseball"
-          ],
-          "occurredAt": "2026-09-10T15:08:56Z",
-          "timePrecision": "exact",
-          "ageHours": 21.87,
-          "freshnessBasis": "Isao Harimoto died at 86 while still holding Japan’s baseball hits record.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49891975/isao-harimoto-japanese-baseball-icon-hiroshima-survivor-dies"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49891975/isao-harimoto-japanese-baseball-icon-hiroshima-survivor-dies"
-            }
-          ],
-          "id": "a3-dffcea3f6333752f",
-          "feedRank": 13,
-          "compactHeadline": "Japanese baseball icon Isao Harimoto dies at 86"
         },
         {
           "rank": 5,
@@ -183,8 +184,8 @@
           ],
           "occurredAt": "2026-09-10T22:42:14Z",
           "timePrecision": "exact",
-          "ageHours": 14.31,
-          "freshnessBasis": "Pittsburgh placed Braxton Ashcraft on the 15-day injured list because of right arm discomfort.",
+          "ageHours": 14.81,
+          "freshnessBasis": "The Pirates placed Braxton Ashcraft on the 15-day injured list with right arm discomfort.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49896764/pirates-braxton-ashcraft-arm-discomfort-lands-il"
@@ -196,9 +197,9 @@
               "url": "https://www.espn.com/mlb/story/_/id/49896764/pirates-braxton-ashcraft-arm-discomfort-lands-il"
             }
           ],
-          "id": "a3-76c92f7c5263341a",
+          "id": "a3-5bf911aa8da1e9aa",
           "feedRank": 17,
-          "compactHeadline": "Pirates place All-Star Ashcraft on 15-day IL"
+          "compactHeadline": "Pirates place All-Star pitcher Ashcraft on IL"
         },
         {
           "rank": 6,
@@ -207,18 +208,18 @@
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Jacob deGrom retired his first 15 batters and struck out 12 for his highest total since 2022 but Julio Rodríguez hit a go-ahead, three-run homer off Jakob Junis in a four-run seventh that lifted the Seattle Mariners over the Texas Rangers 4-3 Thursday.",
-          "text": "Jacob deGrom retired his first 15 batters and struck out 12 for his highest total since 2022 but Julio Rodríguez hit a go-ahead, three-run homer off Jakob Junis in a four-run seventh that lifted the Seattle Mariners over the Texas Rangers 4-3 Thursday.",
+          "headline": "Julio Rodríguez hit a go-ahead three-run homer in Seattle's four-run seventh after Jacob deGrom retired his first 15 batters and struck out 12.",
+          "text": "Julio Rodríguez hit a go-ahead three-run homer in Seattle's four-run seventh after Jacob deGrom retired his first 15 batters and struck out 12.",
           "entities": [
             "Seattle Mariners",
             "Texas Rangers",
-            "Jacob deGrom",
-            "Julio Rodríguez"
+            "Julio Rodríguez",
+            "Jacob deGrom"
           ],
           "occurredAt": "2026-09-10T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.85,
-          "freshnessBasis": "Seattle beat Texas 4-3 after Julio Rodríguez hit a go-ahead three-run homer in the seventh inning.",
+          "ageHours": 17.35,
+          "freshnessBasis": "Seattle beat Texas 4-3 behind Julio Rodríguez's go-ahead three-run homer and Jacob deGrom's 12 strikeouts.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -236,9 +237,9 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816887"
             }
           ],
-          "id": "a3-a64710498d688979",
+          "id": "a3-aab57eaa9fb93c12",
           "feedRank": 19,
-          "compactHeadline": "Rodríguez homer lifts Mariners past Rangers"
+          "compactHeadline": "Rodríguez homer lifts Mariners past Rangers 4-3"
         },
         {
           "rank": 7,
@@ -255,8 +256,8 @@
           ],
           "occurredAt": "2026-09-10T19:51:27Z",
           "timePrecision": "exact",
-          "ageHours": 17.16,
-          "freshnessBasis": "Atlanta placed Lane Thomas on the 15-day injured list after he suffered an intercostal injury in the batting cage.",
+          "ageHours": 17.66,
+          "freshnessBasis": "The Braves placed Lane Thomas on the 15-day injured list after he suffered an intercostal injury in the batting cage.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49895313/braves-lane-thomas-headed-il-batting-cage-injury"
@@ -268,9 +269,9 @@
               "url": "https://www.espn.com/mlb/story/_/id/49895313/braves-lane-thomas-headed-il-batting-cage-injury"
             }
           ],
-          "id": "a3-47b598bc32461433",
+          "id": "a3-2692d8d6683ed8f9",
           "feedRank": 20,
-          "compactHeadline": "Braves place Lane Thomas on 15-day IL"
+          "compactHeadline": "Braves send Lane Thomas to IL after cage injury"
         },
         {
           "rank": 8,
@@ -289,8 +290,8 @@
           ],
           "occurredAt": "2026-09-10T17:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.93,
-          "freshnessBasis": "Cam Smith hit a tiebreaking ninth-inning home run in Houston's 2-1 win over Philadelphia.",
+          "ageHours": 20.43,
+          "freshnessBasis": "Cam Smith's ninth-inning homer gave Houston a 2-1 win over Philadelphia.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -314,42 +315,40 @@
               "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816884"
             }
           ],
-          "id": "a3-d6552c2e1ebf4963",
+          "id": "a3-5d38479aa1a75721",
           "feedRank": 21,
-          "compactHeadline": "Cam Smith's ninth-inning homer lifts Astros"
+          "compactHeadline": "Cam Smith's ninth-inning homer gives Astros 2-1 win"
         },
         {
           "rank": 9,
           "candidateIds": [
-            "cand-64c0e93f2e44e475"
+            "cand-238e63e4a5ad470b"
           ],
-          "type": "DEPTH_CHART",
-          "priority": 63,
-          "headline": "Milwaukee sent Brandon Sproat to Triple-A Nashville after he allowed four runs in the ninth inning of an 8-6 win over Chicago.",
-          "text": "Milwaukee sent Brandon Sproat to Triple-A Nashville after he allowed four runs in the ninth inning of an 8-6 win over Chicago.",
+          "type": "OTHER",
+          "priority": 72,
+          "headline": "Isao Harimoto, a Hiroshima bombing survivor who still holds Japan's hits record, has died at 86.",
+          "text": "Isao Harimoto, a Hiroshima bombing survivor who still holds Japan's hits record, has died at 86.",
           "entities": [
-            "Milwaukee Brewers",
-            "Brandon Sproat",
-            "Nashville Sounds"
+            "Isao Harimoto"
           ],
-          "occurredAt": "2026-09-10T16:00:46Z",
+          "occurredAt": "2026-09-10T15:08:56Z",
           "timePrecision": "exact",
-          "ageHours": 21.0,
-          "freshnessBasis": "Milwaukee sent Brandon Sproat to Triple-A Nashville after his four-run ninth inning against the Cubs.",
+          "ageHours": 22.37,
+          "freshnessBasis": "Isao Harimoto died at 86 while still holding Japan's baseball hits record.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49892615/brewers-brandon-sproat-demoted-struggles-vs-cubs"
+            "https://www.espn.com/mlb/story/_/id/49891975/isao-harimoto-japanese-baseball-icon-hiroshima-survivor-dies"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49892615/brewers-brandon-sproat-demoted-struggles-vs-cubs"
+              "url": "https://www.espn.com/mlb/story/_/id/49891975/isao-harimoto-japanese-baseball-icon-hiroshima-survivor-dies"
             }
           ],
-          "id": "a3-637a5457f0c15008",
-          "feedRank": 28,
-          "compactHeadline": "Brewers demote Brandon Sproat after rough ninth inning"
+          "id": "a3-dffcea3f6333752f",
+          "feedRank": 26,
+          "compactHeadline": "Japanese baseball icon Isao Harimoto dies at 86"
         }
       ]
     },
@@ -363,17 +362,17 @@
             "cand-c64e7c9554f11c5c"
           ],
           "type": "INJURY",
-          "priority": 79,
-          "headline": "An MRI confirmed a high ankle sprain for New England receiver A.J. Brown, who is expected to miss at least four weeks.",
-          "text": "An MRI confirmed a high ankle sprain for New England receiver A.J. Brown, who is expected to miss at least four weeks.",
+          "priority": 80,
+          "headline": "New England Patriots receiver A.J. Brown has a high ankle sprain and is expected to miss at least four weeks.",
+          "text": "New England Patriots receiver A.J. Brown has a high ankle sprain and is expected to miss at least four weeks.",
           "entities": [
-            "New England Patriots",
-            "A.J. Brown"
+            "A.J. Brown",
+            "New England Patriots"
           ],
           "occurredAt": "2026-09-11T00:28:00Z",
           "timePrecision": "exact",
-          "ageHours": 12.55,
-          "freshnessBasis": "An MRI confirmed A.J. Brown's high ankle sprain and the Patriots receiver is expected to miss at least four weeks.",
+          "ageHours": 13.05,
+          "freshnessBasis": "An MRI confirmed A.J. Brown suffered a high ankle sprain and is expected to miss at least four weeks.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49897884/sources-patriots-aj-brown-likely-least-4-weeks"
@@ -386,57 +385,26 @@
             }
           ],
           "id": "a3-55cf44dec049ecdb",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "A.J. Brown expected to miss at least four weeks"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-91920c9ad88253c3"
-          ],
-          "type": "LEGAL",
-          "priority": 75,
-          "headline": "Former NFL running back LeShon Johnson was sentenced to five years in federal prison for operating a large-scale dogfighting ring in Oklahoma.",
-          "text": "Former NFL running back LeShon Johnson was sentenced to five years in federal prison for operating a large-scale dogfighting ring in Oklahoma.",
-          "entities": [
-            "LeShon Johnson"
-          ],
-          "occurredAt": "2026-09-10T22:05:28Z",
-          "timePrecision": "exact",
-          "ageHours": 14.93,
-          "freshnessBasis": "LeShon Johnson received a five-year federal prison sentence for operating a large-scale dogfighting ring.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49896260/ex-nfl-rb-leshon-johnson-sentenced-5-years-dog-fighting"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49896260/ex-nfl-rb-leshon-johnson-sentenced-5-years-dog-fighting"
-            }
-          ],
-          "id": "a3-bc961254d644f7ab",
-          "feedRank": 10,
-          "compactHeadline": "Former NFL running back sentenced to five years"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-44dc80e4e1116ec2"
           ],
           "type": "INJURY",
           "priority": 65,
-          "headline": "San Francisco said De'Zhaun Stribling will undergo further ankle testing after initial exams did not determine the injury’s severity.",
-          "text": "San Francisco said De'Zhaun Stribling will undergo further ankle testing after initial exams did not determine the injury’s severity.",
+          "headline": "San Francisco wide receiver De'Zhaun Stribling left the win over the Rams with an ankle injury and will undergo additional testing.",
+          "text": "San Francisco wide receiver De'Zhaun Stribling left the win over the Rams with an ankle injury and will undergo additional testing.",
           "entities": [
             "San Francisco 49ers",
             "De'Zhaun Stribling"
           ],
           "occurredAt": "2026-09-11T05:22:36Z",
           "timePrecision": "exact",
-          "ageHours": 7.64,
-          "freshnessBasis": "San Francisco announced that De'Zhaun Stribling would undergo more ankle tests after initial testing was inconclusive.",
+          "ageHours": 8.14,
+          "freshnessBasis": "De'Zhaun Stribling left the 49ers' game with an ankle injury and is scheduled for further testing.",
           "status": "watch",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49899228/49ers-dezhaun-stribling-exits-vs-rams-due-ankle-injury"
@@ -448,19 +416,19 @@
               "url": "https://www.espn.com/nfl/story/_/id/49899228/49ers-dezhaun-stribling-exits-vs-rams-due-ankle-injury"
             }
           ],
-          "id": "a3-4114d325754e9f55",
+          "id": "a3-f3e1b7d4cad8c343",
           "feedRank": 14,
-          "compactHeadline": "49ers send De'Zhaun Stribling for more ankle tests"
+          "compactHeadline": "49ers' Stribling leaves with ankle injury, needs tests"
         },
         {
-          "rank": 4,
+          "rank": 3,
           "candidateIds": [
             "cand-9e4680ea120778c0"
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "San Francisco beat the Rams 27-7 in the NFL's first regular-season game in Australia, with Brock Purdy throwing three touchdown passes.",
-          "text": "San Francisco beat the Rams 27-7 in the NFL's first regular-season game in Australia, with Brock Purdy throwing three touchdown passes.",
+          "headline": "Brock Purdy threw three touchdown passes as San Francisco beat the Rams 27-7 in the NFL's first regular-season game in Australia.",
+          "text": "Brock Purdy threw three touchdown passes as San Francisco beat the Rams 27-7 in the NFL's first regular-season game in Australia.",
           "entities": [
             "San Francisco 49ers",
             "Los Angeles Rams",
@@ -468,8 +436,8 @@
           ],
           "occurredAt": "2026-09-11T00:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 12.43,
-          "freshnessBasis": "San Francisco beat Los Angeles 27-7 in the NFL's first regular-season game in Australia.",
+          "ageHours": 12.93,
+          "freshnessBasis": "San Francisco defeated Los Angeles 27-7 in the NFL's first regular-season game in Australia.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -493,42 +461,42 @@
               "url": "http://www.espn.com/nfl/recap?gameId=401872657"
             }
           ],
-          "id": "a3-a6938fa1d4597d11",
+          "id": "a3-476b63f6e8f15c15",
           "feedRank": 15,
-          "compactHeadline": "49ers rout Rams 27-7 in first Australia game"
+          "compactHeadline": "49ers rout Rams 27-7 in NFL's first Australia game"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
-            "cand-9fd8634681ca7ded"
+            "cand-1b0a62ced06bea26"
           ],
-          "type": "CONTRACT",
-          "priority": 62,
-          "headline": "Dallas reached deals with receiver Ryan Flournoy and tight end Brevyn Spann-Ford, keeping both under team control beyond the season.",
-          "text": "Dallas reached deals with receiver Ryan Flournoy and tight end Brevyn Spann-Ford, keeping both under team control beyond the season.",
+          "type": "RESULT",
+          "priority": 65,
+          "headline": "49ers trounce Rams Down Under with 27-7 win.",
+          "text": "49ers trounce Rams Down Under with 27-7 win.",
           "entities": [
-            "Dallas Cowboys",
-            "Ryan Flournoy",
-            "Brevyn Spann-Ford"
+            "San Francisco 49ers",
+            "Los Angeles Rams",
+            "Melbourne"
           ],
-          "occurredAt": "2026-09-11T04:27:41Z",
+          "occurredAt": "2026-09-11T04:56:13Z",
           "timePrecision": "exact",
-          "ageHours": 8.55,
-          "freshnessBasis": "Dallas agreed to deals with Ryan Flournoy and Brevyn Spann-Ford Thursday.",
+          "ageHours": 8.58,
+          "freshnessBasis": "The 49ers defeated the Rams 27-7 in the NFL's first Australia game.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49897976/cowboys-secure-te-spann-ford-three-year-extension-2029"
+            "https://www.espn.com/nfl/story/_/id/49892445/2026-nfl-week-1-los-angeles-rams-san-francisco-49ers-matthew-stafford-brock-purdy-melbourne"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49897976/cowboys-secure-te-spann-ford-three-year-extension-2029"
+              "url": "https://www.espn.com/nfl/story/_/id/49892445/2026-nfl-week-1-los-angeles-rams-san-francisco-49ers-matthew-stafford-brock-purdy-melbourne"
             }
           ],
-          "id": "a3-a03adf2084345108",
+          "id": "a3-94025a4383793e61",
           "feedRank": 27,
-          "compactHeadline": "Cowboys reach deals with Flournoy and Spann-Ford"
+          "compactHeadline": "49ers open season with 27-7 rout of Rams in Australia"
         }
       ]
     },
@@ -542,18 +510,18 @@
             "cand-62af78000d2f661b"
           ],
           "type": "SUSPENSION",
-          "priority": 89,
-          "headline": "The NBA fined the Clippers $30 million, took away five first-round picks and suspended owner Steve Ballmer for a year after its Kawhi investigation.",
-          "text": "The NBA fined the Clippers $30 million, took away five first-round picks and suspended owner Steve Ballmer for a year after its Kawhi investigation.",
+          "priority": 92,
+          "headline": "The NBA fined the Clippers $30 million, took away five first-round picks and suspended owner Steve Ballmer for a year.",
+          "text": "The NBA fined the Clippers $30 million, took away five first-round picks and suspended owner Steve Ballmer for a year.",
           "entities": [
             "NBA",
             "LA Clippers",
-            "Steve Ballmer",
-            "Kawhi Leonard"
+            "Kawhi Leonard",
+            "Steve Ballmer"
           ],
           "occurredAt": "2026-09-11T01:50:03Z",
           "timePrecision": "exact",
-          "ageHours": 11.18,
+          "ageHours": 11.68,
           "freshnessBasis": "The NBA announced a $30 million fine, five forfeited first-round picks and a one-year suspension for Steve Ballmer.",
           "status": "active",
           "sourceUrls": [
@@ -566,9 +534,42 @@
               "url": "https://www.espn.com/nba/story/_/id/49806683/nba-punishes-la-clippers-kawhi-leonard-investigation-30-million-fine-steve-ballmer-suspensions-top-questions"
             }
           ],
-          "id": "a3-5bb24020ceb1f1f9",
-          "feedRank": 5,
-          "compactHeadline": "NBA hits Clippers with historic punishment"
+          "id": "a3-182ba95b6359d044",
+          "feedRank": 4,
+          "compactHeadline": "NBA hits Clippers with record punishment after Kawhi probe"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-1452fcc86cedfa81"
+          ],
+          "type": "LEGAL",
+          "priority": 84,
+          "headline": "A federal investigation has opened into whether the Clippers circumvented the NBA salary cap in dealings involving Kawhi Leonard.",
+          "text": "A federal investigation has opened into whether the Clippers circumvented the NBA salary cap in dealings involving Kawhi Leonard.",
+          "entities": [
+            "LA Clippers",
+            "Kawhi Leonard",
+            "NBA"
+          ],
+          "occurredAt": "2026-09-11T04:59:02Z",
+          "timePrecision": "exact",
+          "ageHours": 8.53,
+          "freshnessBasis": "A federal investigation was opened into alleged salary-cap circumvention involving the Clippers and Kawhi Leonard.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/49898498/report-feds-investigating-clippers-kawhi-leonard-dealings"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/49898498/report-feds-investigating-clippers-kawhi-leonard-dealings"
+            }
+          ],
+          "id": "a3-71e7a541f443b864",
+          "feedRank": 9,
+          "compactHeadline": "Federal investigation opened into Clippers' Kawhi dealings"
         }
       ]
     },
@@ -582,16 +583,16 @@
             "cand-fc1f120394344f72"
           ],
           "type": "INJURY",
-          "priority": 77,
-          "headline": "Los Angeles Kings forward Kevin Fiala underwent follow-up surgery for his broken leg and will miss the start of training camp.",
-          "text": "Los Angeles Kings forward Kevin Fiala underwent follow-up surgery for his broken leg and will miss the start of training camp.",
+          "priority": 78,
+          "headline": "Los Angeles Kings forward Kevin Fiala underwent follow-up surgery on his broken leg and will miss the start of training camp.",
+          "text": "Los Angeles Kings forward Kevin Fiala underwent follow-up surgery on his broken leg and will miss the start of training camp.",
           "entities": [
-            "Los Angeles Kings",
-            "Kevin Fiala"
+            "Kevin Fiala",
+            "Los Angeles Kings"
           ],
           "occurredAt": "2026-09-10T21:30:35Z",
           "timePrecision": "exact",
-          "ageHours": 15.51,
+          "ageHours": 16.0,
           "freshnessBasis": "Kevin Fiala underwent follow-up surgery for his broken leg and will miss the start of Kings training camp.",
           "status": "active",
           "sourceUrls": [
@@ -604,9 +605,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49896294/kings-kevin-fiala-further-surgery-miss-start-camp"
             }
           ],
-          "id": "a3-100006566dc4b611",
-          "feedRank": 6,
-          "compactHeadline": "Fiala undergoes surgery and will miss Kings camp"
+          "id": "a3-8aeaab501cd19348",
+          "feedRank": 8,
+          "compactHeadline": "Kings' Kevin Fiala undergoes surgery, misses camp start"
         },
         {
           "rank": 2,
@@ -614,16 +615,16 @@
             "cand-580564cd30391021"
           ],
           "type": "ROSTER",
-          "priority": 73,
-          "headline": "Anaheim waived veteran forward Chris Kreider, with a move closer to the East Coast expected after he expressed that preference.",
-          "text": "Anaheim waived veteran forward Chris Kreider, with a move closer to the East Coast expected after he expressed that preference.",
+          "priority": 74,
+          "headline": "Anaheim waived veteran forward Chris Kreider, with a move closer to the East Coast expected next.",
+          "text": "Anaheim waived veteran forward Chris Kreider, with a move closer to the East Coast expected next.",
           "entities": [
-            "Anaheim Ducks",
-            "Chris Kreider"
+            "Chris Kreider",
+            "Anaheim Ducks"
           ],
           "occurredAt": "2026-09-10T18:38:16Z",
           "timePrecision": "exact",
-          "ageHours": 18.38,
+          "ageHours": 18.88,
           "freshnessBasis": "Anaheim waived Chris Kreider after the veteran forward expressed a desire to play closer to the East Coast.",
           "status": "active",
           "sourceUrls": [
@@ -636,27 +637,27 @@
               "url": "https://www.espn.com/nhl/story/_/id/49881489/source-ducks-waiving-chris-kreider-east-move-deck"
             }
           ],
-          "id": "a3-3d1bde507b907ccf",
-          "feedRank": 22,
-          "compactHeadline": "Ducks waive Chris Kreider ahead of East move"
+          "id": "a3-c567399fcad0c0aa",
+          "feedRank": 24,
+          "compactHeadline": "Ducks waive Chris Kreider ahead of expected East move"
         },
         {
           "rank": 3,
           "candidateIds": [
             "cand-9a4f65cc955897ac"
           ],
-          "type": "SIGNING",
+          "type": "CONTRACT",
           "priority": 65,
           "headline": "Vegas signed forward Braeden Bowman to a six-year extension worth an average of $3.4 million annually.",
           "text": "Vegas signed forward Braeden Bowman to a six-year extension worth an average of $3.4 million annually.",
           "entities": [
-            "Vegas Golden Knights",
-            "Braeden Bowman"
+            "Braeden Bowman",
+            "Vegas Golden Knights"
           ],
           "occurredAt": "2026-09-10T22:48:09Z",
           "timePrecision": "exact",
-          "ageHours": 14.21,
-          "freshnessBasis": "Vegas signed Braeden Bowman to a six-year extension with a $3.4 million average annual value.",
+          "ageHours": 14.71,
+          "freshnessBasis": "Braeden Bowman signed a six-year contract extension with Vegas at a $3.4 million average annual value.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49897130/golden-knights-sign-forward-braeden-bowman-6-year-extension"
@@ -668,9 +669,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49897130/golden-knights-sign-forward-braeden-bowman-6-year-extension"
             }
           ],
-          "id": "a3-6e5f09eea5f6051e",
-          "feedRank": 24,
-          "compactHeadline": "Golden Knights give Braeden Bowman a six-year extension"
+          "id": "a3-d5f7b5c64d75ffb6",
+          "feedRank": 29,
+          "compactHeadline": "Golden Knights give Braeden Bowman six-year extension"
         }
       ]
     },
@@ -688,14 +689,14 @@
           "headline": "Newcastle extended Lewis Hall's contract after the defender had been identified as a Manchester United transfer target.",
           "text": "Newcastle extended Lewis Hall's contract after the defender had been identified as a Manchester United transfer target.",
           "entities": [
-            "Newcastle United",
             "Lewis Hall",
+            "Newcastle United",
             "Manchester United"
           ],
           "occurredAt": "2026-09-11T08:29:58Z",
           "timePrecision": "exact",
-          "ageHours": 4.52,
-          "freshnessBasis": "Newcastle confirmed a new contract for Manchester United transfer target Lewis Hall.",
+          "ageHours": 5.01,
+          "freshnessBasis": "Lewis Hall signed a new contract with Newcastle despite reported Manchester United interest.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49901345/man-united-transfer-target-lewis-hall-new-contract-newcastle"
@@ -707,27 +708,27 @@
               "url": "https://www.espn.com/soccer/story/_/id/49901345/man-united-transfer-target-lewis-hall-new-contract-newcastle"
             }
           ],
-          "id": "a3-3247114e4ab7eb50",
+          "id": "a3-d08ff41464b94c93",
           "feedRank": 16,
-          "compactHeadline": "Newcastle extends Man United target Lewis Hall"
+          "compactHeadline": "Newcastle extends Lewis Hall amid United interest"
         },
         {
           "rank": 2,
           "candidateIds": [
             "cand-20260756c36a2871"
           ],
-          "type": "LEAGUE_NEWS",
-          "priority": 64,
-          "headline": "The Premier League confirmed the return of traditional Boxing Day fixtures, with seven matches scheduled for Dec. 26.",
-          "text": "The Premier League confirmed the return of traditional Boxing Day fixtures, with seven matches scheduled for Dec. 26.",
+          "type": "SCHEDULE",
+          "priority": 72,
+          "headline": "The Premier League confirmed that seven matches will be played on Dec. 26, restoring its traditional Boxing Day fixture schedule.",
+          "text": "The Premier League confirmed that seven matches will be played on Dec. 26, restoring its traditional Boxing Day fixture schedule.",
           "entities": [
             "Premier League"
           ],
           "occurredAt": "2026-09-10T16:22:28Z",
           "timePrecision": "exact",
-          "ageHours": 20.64,
-          "freshnessBasis": "The Premier League confirmed seven traditional Boxing Day matches for Dec. 26.",
-          "status": "active",
+          "ageHours": 21.14,
+          "freshnessBasis": "The Premier League confirmed seven fixtures for Dec. 26, restoring its traditional Boxing Day schedule.",
+          "status": "next",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49892988/premier-league-confirms-return-traditional-boxing-day-fixtures"
           ],
@@ -738,9 +739,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/49892988/premier-league-confirms-return-traditional-boxing-day-fixtures"
             }
           ],
-          "id": "a3-b55b03c84f171b70",
+          "id": "a3-d3d9f47db9bcb1e9",
           "feedRank": 25,
-          "compactHeadline": "Premier League brings back Boxing Day fixtures"
+          "compactHeadline": "Premier League confirms return of Boxing Day fixtures"
         }
       ]
     },
@@ -759,9 +760,9 @@
             "cand-d142ce9f1f377717"
           ],
           "type": "RECORD",
-          "priority": 86,
-          "headline": "No. 7 Miami set a school record with 856 yards and tied its points mark as Darian Mensah and Luke Nickel each threw three touchdowns in a 77-7 win.",
-          "text": "No. 7 Miami set a school record with 856 yards and tied its points mark as Darian Mensah and Luke Nickel each threw three touchdowns in a 77-7 win.",
+          "priority": 88,
+          "headline": "Miami piled up a school-record 856 yards and tied its scoring record as Darian Mensah and Luke Nickel each threw three touchdowns against Florida A&M.",
+          "text": "Miami piled up a school-record 856 yards and tied its scoring record as Darian Mensah and Luke Nickel each threw three touchdowns against Florida A&M.",
           "entities": [
             "Miami Hurricanes",
             "Florida A&M Rattlers",
@@ -770,7 +771,7 @@
           ],
           "occurredAt": "2026-09-11T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.02,
+          "ageHours": 13.51,
           "freshnessBasis": "No. 7 Miami set a school record with 856 yards and tied its points mark in a 77-7 win over Florida A&M.",
           "status": "active",
           "sourceUrls": [
@@ -789,9 +790,9 @@
               "url": "http://www.espn.com/ncf/recap?gameId=401858213"
             }
           ],
-          "id": "a3-f0687de19b96cdab",
+          "id": "a3-51df10e9682da53a",
           "feedRank": 1,
-          "compactHeadline": "No. 7 Miami sets yardage record in 77-7 rout"
+          "compactHeadline": "No. 7 Miami sets yardage mark in 77-7 rout"
         },
         {
           "rank": 2,
@@ -800,8 +801,8 @@
           ],
           "type": "INJURY",
           "priority": 65,
-          "headline": "No. 12 Alabama could be without offensive guard Michael Carroll for Saturday’s game at Kentucky.",
-          "text": "No. 12 Alabama could be without offensive guard Michael Carroll for Saturday’s game at Kentucky.",
+          "headline": "No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday's game at Kentucky.",
+          "text": "No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday's game at Kentucky.",
           "entities": [
             "Alabama Crimson Tide",
             "Michael Carroll",
@@ -809,8 +810,8 @@
           ],
           "occurredAt": "2026-09-11T11:19:05Z",
           "timePrecision": "exact",
-          "ageHours": 1.7,
-          "freshnessBasis": "Alabama listed offensive guard Michael Carroll as doubtful for Saturday’s game at Kentucky.",
+          "ageHours": 2.2,
+          "freshnessBasis": "Alabama listed Michael Carroll as doubtful for its game at Kentucky.",
           "status": "watch",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
@@ -822,9 +823,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
             }
           ],
-          "id": "a3-6ea554b5e913aff4",
-          "feedRank": 11,
-          "compactHeadline": "No. 12 Alabama lists Michael Carroll as doubtful"
+          "id": "a3-2f37d8d46f0e78f6",
+          "feedRank": 12,
+          "compactHeadline": "No. 12 Alabama guard Carroll doubtful at Kentucky"
         },
         {
           "rank": 3,
@@ -832,17 +833,17 @@
             "cand-ce28232fd97f20a8"
           ],
           "type": "DISCIPLINE",
-          "priority": 67,
-          "headline": "SEC presidents and chancellors ended Thursday’s meeting without imposing sanctions on LSU.",
-          "text": "SEC presidents and chancellors ended Thursday’s meeting without imposing sanctions on LSU.",
+          "priority": 73,
+          "headline": "An SEC meeting on LSU's expulsion ended without punishment being imposed on the Tigers.",
+          "text": "An SEC meeting on LSU's expulsion ended without punishment being imposed on the Tigers.",
           "entities": [
-            "SEC",
-            "LSU Tigers"
+            "LSU Tigers",
+            "SEC"
           ],
           "occurredAt": "2026-09-11T00:33:06Z",
           "timePrecision": "exact",
-          "ageHours": 12.46,
-          "freshnessBasis": "SEC presidents and chancellors concluded their Thursday meeting without sanctioning LSU.",
+          "ageHours": 12.96,
+          "freshnessBasis": "The SEC presidents and chancellors meeting ended without sanctions being imposed on LSU.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49897284/no-sanctions-lsu-sec-meeting-expulsion"
@@ -854,9 +855,9 @@
               "url": "https://www.espn.com/college-football/story/_/id/49897284/no-sanctions-lsu-sec-meeting-expulsion"
             }
           ],
-          "id": "a3-f96b5c4f0d621ff8",
-          "feedRank": 23,
-          "compactHeadline": "SEC imposes no sanctions on LSU after meeting"
+          "id": "a3-0fb43faebe373573",
+          "feedRank": 13,
+          "compactHeadline": "SEC meeting ends without sanctions for LSU"
         }
       ]
     }
@@ -864,7 +865,7 @@
   "specialEvents": [
     {
       "name": "US Open",
-      "sport": "Tennis",
+      "sport": "tennis",
       "items": [
         {
           "rank": 1,
@@ -872,19 +873,18 @@
             "cand-9c1eb130f28f377a"
           ],
           "type": "ADVANCEMENT",
-          "priority": 87,
-          "headline": "Elena Rybakina rallied past Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final against Aryna Sabalenka and take over the No. 1 ranking next week.",
-          "text": "Elena Rybakina rallied past Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final against Aryna Sabalenka and take over the No. 1 ranking next week.",
+          "priority": 88,
+          "headline": "Elena Rybakina beat Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final and move to No. 1 in the rankings next week.",
+          "text": "Elena Rybakina beat Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final and move to No. 1 in the rankings next week.",
           "entities": [
-            "US Open",
             "Elena Rybakina",
             "Coco Gauff",
             "Aryna Sabalenka"
           ],
           "occurredAt": "2026-09-11T05:16:55Z",
           "timePrecision": "exact",
-          "ageHours": 7.73,
-          "freshnessBasis": "Elena Rybakina beat Coco Gauff in three sets to reach the US Open final and move atop the rankings next week.",
+          "ageHours": 8.23,
+          "freshnessBasis": "Elena Rybakina defeated Coco Gauff in three sets to reach the US Open final and secure next week's No. 1 ranking.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49898331/rybakina-ends-gauff-us-open-run-sets-title-clash-sabalenka"
@@ -897,7 +897,7 @@
             }
           ],
           "id": "a3-special-dfc28542d327f61b",
-          "feedRank": 3,
+          "feedRank": 2,
           "compactHeadline": "Rybakina rallies past Gauff to reach US Open final"
         }
       ]
@@ -912,18 +912,18 @@
             "cand-6590e362a314c37e"
           ],
           "type": "EVENT_UPDATE",
-          "priority": 78,
-          "headline": "A Formula 2 car burst into flames as the new Madrid circuit made its debut during Spanish Grand Prix weekend.",
-          "text": "A Formula 2 car burst into flames as the new Madrid circuit made its debut during Spanish Grand Prix weekend.",
+          "priority": 74,
+          "headline": "An F2 car caught fire during the debut of Madrid's new circuit, adding a major incident to the Spanish Grand Prix weekend.",
+          "text": "An F2 car caught fire during the debut of Madrid's new circuit, adding a major incident to the Spanish Grand Prix weekend.",
           "entities": [
             "Spanish Grand Prix",
-            "Madrid circuit",
-            "Formula 2"
+            "Formula 2",
+            "Madrid circuit"
           ],
           "occurredAt": "2026-09-11T10:46:03Z",
           "timePrecision": "exact",
-          "ageHours": 2.25,
-          "freshnessBasis": "A Formula 2 car burst into flames during the Madrid circuit’s debut at Spanish Grand Prix weekend.",
+          "ageHours": 2.75,
+          "freshnessBasis": "An F2 car burst into flames as the new Madrid circuit debuted during Spanish Grand Prix weekend.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49902064/f2-car-bursts-flames-risky-madrid-circuit-debuts-spanish-gp"
@@ -935,29 +935,63 @@
               "url": "https://www.espn.com/f1/story/_/id/49902064/f2-car-bursts-flames-risky-madrid-circuit-debuts-spanish-gp"
             }
           ],
-          "id": "a3-special-ade4e65abe1c1b65",
-          "feedRank": 7,
-          "compactHeadline": "F2 car catches fire as Madrid circuit makes Spanish GP debut"
+          "id": "a3-special-170154cf4826d72f",
+          "feedRank": 10,
+          "compactHeadline": "F2 car catches fire as Madrid circuit makes debut"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-2b85fc51e94b7c61"
+          ],
+          "type": "PRACTICE",
+          "priority": 71,
+          "headline": "George Russell led the first practice session at Madrid's new Madring circuit ahead of the Spanish Grand Prix.",
+          "text": "George Russell led the first practice session at Madrid's new Madring circuit ahead of the Spanish Grand Prix.",
+          "entities": [
+            "George Russell",
+            "Mercedes",
+            "Spanish Grand Prix",
+            "Madring"
+          ],
+          "occurredAt": "2026-09-11T13:22:39Z",
+          "timePrecision": "exact",
+          "ageHours": 0.14,
+          "freshnessBasis": "George Russell topped first practice at the new Madring circuit during Spanish Grand Prix preparations.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/f1/story/_/id/49867235/spanish-grand-prix-2026-live-madrid-updates-results-analysis-commentary"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/f1/story/_/id/49867235/spanish-grand-prix-2026-live-madrid-updates-results-analysis-commentary"
+            }
+          ],
+          "id": "a3-special-53dfbf8715584ab2",
+          "feedRank": 23,
+          "compactHeadline": "Russell leads first practice at new Spanish GP track"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-bc3a5bae4a37cd3a"
           ],
           "type": "PRACTICE",
           "priority": 65,
-          "headline": "George Russell led Kimi Antonelli in the first practice session at the new Madring street circuit hosting the Spanish Grand Prix in Madrid.",
-          "text": "George Russell led Kimi Antonelli in the first practice session at the new Madring street circuit hosting the Spanish Grand Prix in Madrid.",
+          "headline": "George Russell topped first practice ahead of Mercedes teammate Kimi Antonelli at the new Madring circuit in Madrid.",
+          "text": "George Russell topped first practice ahead of Mercedes teammate Kimi Antonelli at the new Madring circuit in Madrid.",
           "entities": [
-            "Spanish Grand Prix",
             "George Russell",
             "Kimi Antonelli",
+            "Spanish Grand Prix",
             "Madring"
           ],
-          "occurredAt": "2026-09-11T12:45:23Z",
+          "occurredAt": "2026-09-11T13:13:57Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
-          "freshnessBasis": "George Russell topped the first practice session at the new Madring circuit in Madrid.",
+          "ageHours": 0.28,
+          "freshnessBasis": "George Russell finished fastest in the first practice session at Madrid's new Madring circuit.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49867132/spanish-grand-prix-madring-formula-1-practice-george-russell"
@@ -969,56 +1003,15 @@
               "url": "https://www.espn.com/f1/story/_/id/49867132/spanish-grand-prix-madring-formula-1-practice-george-russell"
             }
           ],
-          "id": "a3-special-d6f1364441966c1c",
-          "feedRank": 26,
-          "compactHeadline": "Russell tops first practice at new Madrid F1 track"
-        }
-      ]
-    },
-    {
-      "name": "Solheim Cup",
-      "sport": "Golf",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-2ddadb1d3e0d5ee3"
-          ],
-          "type": "EVENT_UPDATE",
-          "priority": 75,
-          "headline": "The United States and Europe split the opening Solheim Cup foursomes 2-2, with Nelly Korda and Allisen Corpuz producing a record-setting partnership.",
-          "text": "The United States and Europe split the opening Solheim Cup foursomes 2-2, with Nelly Korda and Allisen Corpuz producing a record-setting partnership.",
-          "entities": [
-            "Solheim Cup",
-            "United States",
-            "Europe",
-            "Nelly Korda",
-            "Allisen Corpuz"
-          ],
-          "occurredAt": "2026-09-11T10:54:48Z",
-          "timePrecision": "exact",
-          "ageHours": 2.1,
-          "freshnessBasis": "The United States and Europe finished the opening Solheim Cup session tied 2-2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/golf/story/_/id/49902104/europe-us-tied-2-2-opening-session-solheim-cup"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-lpga",
-              "url": "https://www.espn.com/golf/story/_/id/49902104/europe-us-tied-2-2-opening-session-solheim-cup"
-            }
-          ],
-          "id": "a3-special-8856741faea32909",
-          "feedRank": 9,
-          "compactHeadline": "Solheim Cup tied 2-2 after opening session"
+          "id": "a3-special-a9d4a52781fe3bdf",
+          "feedRank": 28,
+          "compactHeadline": "Russell leads first practice at new Spanish GP track"
         }
       ]
     },
     {
       "name": "Irish Open",
-      "sport": "Golf",
+      "sport": "golf",
       "items": [
         {
           "rank": 1,
@@ -1027,8 +1020,8 @@
           ],
           "type": "EVENT_UPDATE",
           "priority": 73,
-          "headline": "Joaquín Niemann closed with four straight birdies for a 5-under 65 and a two-shot Irish Open lead, while Rory McIlroy shot 69.",
-          "text": "Joaquín Niemann closed with four straight birdies for a 5-under 65 and a two-shot Irish Open lead, while Rory McIlroy shot 69.",
+          "headline": "Joaquín Niemann opened with a 5-under 65 and a two-shot Irish Open lead after four straight closing birdies; Rory McIlroy shot 69.",
+          "text": "Joaquín Niemann opened with a 5-under 65 and a two-shot Irish Open lead after four straight closing birdies; Rory McIlroy shot 69.",
           "entities": [
             "Irish Open",
             "Joaquín Niemann",
@@ -1036,8 +1029,8 @@
           ],
           "occurredAt": "2026-09-10T21:13:09Z",
           "timePrecision": "exact",
-          "ageHours": 15.8,
-          "freshnessBasis": "Joaquín Niemann shot a 5-under 65 with four closing birdies to take a two-shot lead at the Irish Open.",
+          "ageHours": 16.3,
+          "freshnessBasis": "Joaquín Niemann shot 65 to take a two-shot lead at the Irish Open, while Rory McIlroy opened with a 69.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/golf/story/_/id/49895950/niemann-leads-mcilroy-4-back-windy-irish-open"
@@ -1049,9 +1042,50 @@
               "url": "https://www.espn.com/golf/story/_/id/49895950/niemann-leads-mcilroy-4-back-windy-irish-open"
             }
           ],
-          "id": "a3-special-c0be39a05b4b505a",
+          "id": "a3-special-f7e3152794464a6b",
           "feedRank": 18,
-          "compactHeadline": "Niemann leads Irish Open after four closing birdies"
+          "compactHeadline": "Niemann leads Irish Open as McIlroy sits four back"
+        }
+      ]
+    },
+    {
+      "name": "Solheim Cup",
+      "sport": "golf",
+      "items": [
+        {
+          "rank": 1,
+          "candidateIds": [
+            "cand-2ddadb1d3e0d5ee3"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "The United States and Europe split the opening Solheim Cup foursomes 2-2, with Nelly Korda and Allisen Corpuz producing a record-setting partnership.",
+          "text": "The United States and Europe split the opening Solheim Cup foursomes 2-2, with Nelly Korda and Allisen Corpuz producing a record-setting partnership.",
+          "entities": [
+            "Solheim Cup",
+            "Nelly Korda",
+            "Allisen Corpuz",
+            "Team USA",
+            "Team Europe"
+          ],
+          "occurredAt": "2026-09-11T10:54:48Z",
+          "timePrecision": "exact",
+          "ageHours": 2.6,
+          "freshnessBasis": "The United States and Europe finished the Solheim Cup's opening foursomes session tied 2-2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/golf/story/_/id/49902104/europe-us-tied-2-2-opening-session-solheim-cup"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-lpga",
+              "url": "https://www.espn.com/golf/story/_/id/49902104/europe-us-tied-2-2-opening-session-solheim-cup"
+            }
+          ],
+          "id": "a3-special-a5c63e9ed29397c5",
+          "feedRank": 22,
+          "compactHeadline": "Solheim Cup opens tied 2-2 after foursomes"
         }
       ]
     }
@@ -1064,10 +1098,10 @@
   "compactHeadlineRole": "compact-editorial-metadata",
   "browserWireCompat": {
     "version": "A4.14",
-    "changedCount": 28,
+    "changedCount": 29,
     "policy": "mirror text -> headline at JSON serialization only"
   },
-  "headlineCount": 28,
+  "headlineCount": 29,
   "headlineTargetChars": 80,
   "headlineMaxChars": 96
 }
