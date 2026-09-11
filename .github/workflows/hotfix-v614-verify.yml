@@ -1,0 +1,42 @@
+name: Verify v6.1.4 Canonical Validation Hotfix
+
+on:
+  push:
+    branches:
+      - hotfix-canonical-validation-v614
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sports-big-board-v614-hotfix-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Rehearse v6.1.4 production materialization
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout hotfix branch
+        uses: actions/checkout@v7
+      - name: Materialize through production entry point
+        run: python3 tools/apply_v612_release.py
+      - name: Run full Sports Big Board verification
+        run: bash VERIFY.sh
+      - name: Assert canonical runtime dependency chain and recovery defaults
+        run: |
+          test "$(tr -d '[:space:]' < VERSION)" = "6.1.4"
+          python3 tests/test_v614_canonical_validation_install_chain.py
+          grep -F 'SBB_MEDIA_AUDIT_WORKERS", "1"' media_audit_service.py
+          grep -F 'SBB_MEDIA_REPAIR_ENABLED", "0"' media_audit_service.py
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('sbb/__init__.py').read_text()
+          a=text.index('_install_canonical_certification_v610()')
+          b=text.index('_install_canonical_certification_v611()')
+          c=text.index('_install_canonical_validation_v612()')
+          assert a < b < c, (a,b,c)
+          print('PASS: canonical runtime install dependency chain is ordered')
+          PY
