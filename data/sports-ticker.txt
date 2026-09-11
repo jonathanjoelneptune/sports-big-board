@@ -1,71 +1,63 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-11T19:31:05Z
+Updated: 2026-09-11T20:00:52Z
 Global headline budget: 32/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: 031ca205ee0f7346784d783906d817ae73ab3f090a83d8cadf95dcd1504115f7
+Candidate hash: 71f40b0646e4494a649f7796495fcbbed680aded7ca77a9c5f8982f76be8b577
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] Anthony Volpe hit a grand slam and drove in a career-high five runs in his return to the majors as New York beat Colorado 10-3. (priority 86, age 20.43h)
-    Compact headline: Volpe hits grand slam in Yankees return, drives in five
+ 1. [RETURN] Anthony Volpe hit a grand slam and drove in five runs in his return from Triple-A, powering the Yankees past the Rockies. (priority 84, age 6.22h)
+    Compact headline: Volpe returns with grand slam in Yankees rout
+    Occurred: 2026-09-11T13:47:23Z | Precision: exact | Status: active
+    Freshness basis: Anthony Volpe returned from Triple-A and hit a grand slam with five RBIs for the Yankees.
+    Entities: Anthony Volpe, New York Yankees, Colorado Rockies
+    Candidate IDs: cand-33b0171149dfa3f3
+    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49900251/yankees-volpe-grand-slam-5-rbis-return-majors
+
+ 2. [RETURN] Anthony Volpe hit a grand slam and drove in five runs in his return to the majors, powering the Yankees past Colorado 10-3. (priority 84, age 20.93h)
+    Compact headline: Volpe returns with grand slam as Yankees beat Rockies 10-3
     Occurred: 2026-09-10T23:05:00Z | Precision: exact | Status: active
-    Freshness basis: Anthony Volpe returned to the majors with a grand slam and five RBIs in New York's 10-3 win over Colorado Thursday.
+    Freshness basis: Anthony Volpe returned to the majors with a grand slam and five RBIs in New York's 10-3 win over Colorado.
     Entities: New York Yankees, Anthony Volpe, Colorado Rockies
     Candidate IDs: cand-e416ec91a691dac3
     Source [Highlightly/highlightly-baseball-2026-09-10]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816883
 
- 2. [RETURN] Anthony Volpe returned to the Yankees from Triple-A and hit a grand slam while driving in a career-high five runs. (priority 78, age 5.73h)
-    Compact headline: Anthony Volpe returns with grand slam, five RBIs
-    Occurred: 2026-09-11T13:47:23Z | Precision: exact | Status: active
-    Freshness basis: Anthony Volpe returned from Triple-A and hit a grand slam with five RBIs for the Yankees.
-    Entities: Anthony Volpe, New York Yankees
-    Candidate IDs: cand-33b0171149dfa3f3
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49900251/yankees-volpe-grand-slam-5-rbis-return-majors
-
- 3. [INJURY] Pittsburgh placed All-Star right-hander Braxton Ashcraft on the 15-day injured list with right arm discomfort. (priority 65, age 20.81h)
-    Compact headline: Pirates place All-Star Braxton Ashcraft on 15-day IL
+ 3. [INJURY] Pittsburgh placed All-Star right-hander Braxton Ashcraft on the 15-day injured list with right arm discomfort. (priority 65, age 21.31h)
+    Compact headline: Pirates place All-Star pitcher Ashcraft on injured list
     Occurred: 2026-09-10T22:42:14Z | Precision: exact | Status: active
-    Freshness basis: Pittsburgh placed All-Star pitcher Braxton Ashcraft on the 15-day injured list with right arm discomfort Thursday.
-    Entities: Pittsburgh Pirates, Braxton Ashcraft
+    Freshness basis: The Pirates placed Braxton Ashcraft on the 15-day injured list with right arm discomfort.
+    Entities: Braxton Ashcraft, Pittsburgh Pirates
     Candidate IDs: cand-2032da72e590170d
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49896764/pirates-braxton-ashcraft-arm-discomfort-lands-il
 
- 4. [RESULT] Jacob deGrom retired his first 15 batters and struck out 12 for his highest total since 2022 but Julio Rodríguez hit a go-ahead, three-run homer off Jakob Junis in a four-run seventh that lifted the Seattle Mariners over the Texas Rangers 4-3 Thursday. (priority 72, age 23.35h)
-    Compact headline: Rodríguez's three-run homer lifts Mariners past Rangers
+ 4. [RESULT] Julio Rodríguez hit a go-ahead three-run homer as Seattle rallied past Texas 4-3. (priority 72, age 23.85h)
+    Compact headline: Rodríguez homer lifts Mariners past Rangers 4-3
     Occurred: 2026-09-10T20:10:00Z | Precision: exact | Status: active
-    Freshness basis: Seattle beat Texas 4-3 behind Julio Rodríguez's go-ahead three-run homer and Jacob deGrom's 12 strikeouts Thursday.
-    Entities: Seattle Mariners, Julio Rodríguez, Texas Rangers, Jacob deGrom
+    Freshness basis: Julio Rodríguez hit a go-ahead three-run homer as Seattle rallied past Texas 4-3.
+    Entities: Seattle Mariners, Texas Rangers, Julio Rodríguez, Jacob deGrom
     Candidate IDs: cand-e7074b9e08338115
     Source [Highlightly/highlightly-baseball-2026-09-10]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816887
 
- 5. [RESULT] Cam Smith hit a tiebreaking home run in the ninth inning off Jhoan Duran and Cristian Javier combined on a three-hitter to lead the Houston Astros over the Philadelphia Phillies 2-1 Thursday. (priority 72, age 23.44h)
-    Compact headline: Cam Smith's ninth-inning homer gives Astros 2-1 win
+ 5. [RESULT] Cam Smith hit a tiebreaking home run in the ninth inning off Jhoan Duran and Cristian Javier combined on a three-hitter to lead the Houston Astros over the Philadelphia Phillies 2-1 Thursday. (priority 72, age 23.94h)
+    Compact headline: Cam Smith's ninth-inning homer lifts Astros 2-1
     Occurred: 2026-09-10T20:04:31Z | Precision: exact | Status: active
-    Freshness basis: Cam Smith broke a 1-1 tie with a ninth-inning home run as Houston beat Philadelphia 2-1 Thursday.
-    Entities: Houston Astros, Cam Smith, Philadelphia Phillies, Jhoan Duran, Cristian Javier
+    Freshness basis: Cam Smith hit a tiebreaking ninth-inning homer in Houston's 2-1 win over Philadelphia.
+    Entities: Houston Astros, Philadelphia Phillies, Cam Smith, Jhoan Duran, Cristian Javier
     Candidate IDs: cand-c603c16a4986be9c
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816884
 
- 6. [INJURY] Atlanta placed Lane Thomas on the 15-day injured list with an intercostal injury suffered in the batting cage before Thursday's game. (priority 65, age 23.66h)
-    Compact headline: Braves place Lane Thomas on 15-day injured list
-    Occurred: 2026-09-10T19:51:27Z | Precision: exact | Status: active
-    Freshness basis: Atlanta placed Lane Thomas on the 15-day injured list with an intercostal injury.
-    Entities: Lane Thomas, Atlanta Braves
-    Candidate IDs: cand-710ae535e70a42ad
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49895313/braves-lane-thomas-headed-il-batting-cage-injury
-
- 7. [RETURN] Pittsburgh activated Ryan O'Hearn from the 10-day injured list before Friday's game against the Cubs. (priority 66, age 1.50h)
+ 6. [RETURN] Pittsburgh activated Ryan O'Hearn from the 10-day injured list before Friday's game against the Cubs. (priority 63, age 1.99h)
     Compact headline: Pirates activate Ryan O'Hearn from injured list
     Occurred: 2026-09-11T18:01:22Z | Precision: exact | Status: active
-    Freshness basis: Pittsburgh activated Ryan O'Hearn from the 10-day injured list before Friday's game against Chicago.
+    Freshness basis: Pittsburgh activated Ryan O'Hearn from the 10-day injured list before its Friday game against Chicago.
     Entities: Pittsburgh Pirates, Ryan O'Hearn, Chicago Cubs
     Candidate IDs: cand-774794c58f3ea13a
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49905541/pirates-activate-ryan-ohearn-playing-cubs
@@ -74,87 +66,87 @@ MLB  [ACTIVE]
 NFL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] New England is placing wide receiver A.J. Brown on injured reserve with a high ankle sprain, sidelining him for at least four games. (priority 78, age 1.82h)
-    Compact headline: A.J. Brown to miss at least four games on Patriots' IR
+ 1. [INJURY] New England placed wide receiver A.J. Brown on injured reserve with a high ankle sprain, sidelining him for at least four games. (priority 83, age 2.31h)
+    Compact headline: A.J. Brown lands on IR, will miss at least four games
     Occurred: 2026-09-11T17:42:00Z | Precision: exact | Status: active
-    Freshness basis: New England placed A.J. Brown on injured reserve with a high ankle sprain Friday.
+    Freshness basis: New England placed A.J. Brown on injured reserve with a high ankle sprain and ruled him out for at least four games.
     Entities: New England Patriots, A.J. Brown
     Candidate IDs: cand-7992d3b3ef99db99
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49905144/sources-patriots-aj-brown-go-ir-miss-least-4-games
 
- 2. [INJURY] Atlanta ruled Tua Tagovailoa out of Sunday's opener against Pittsburgh because of an oblique injury and will start Cooper Rush at quarterback. (priority 76, age 1.12h)
+ 2. [INJURY] Atlanta ruled Tua Tagovailoa out of Sunday's opener with an oblique injury and will start Cooper Rush at quarterback against Pittsburgh. (priority 78, age 0.31h)
     Compact headline: Tua Tagovailoa out; Cooper Rush to start for Falcons
-    Occurred: 2026-09-11T18:23:55Z | Precision: exact | Status: active
-    Freshness basis: Atlanta ruled Tua Tagovailoa out with an oblique injury and named Cooper Rush its starter Friday.
+    Occurred: 2026-09-11T19:42:14Z | Precision: exact | Status: active
+    Freshness basis: Atlanta ruled Tua Tagovailoa out with an oblique injury and named Cooper Rush its starting quarterback for Sunday's opener.
     Entities: Atlanta Falcons, Tua Tagovailoa, Cooper Rush, Pittsburgh Steelers
     Candidate IDs: cand-41680284f2f509d8
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49905536/tagovailoa-rush-start-qb-falcons-vs-steelers
 
- 3. [CONTRACT] San Francisco gave coach Kyle Shanahan a multiyear contract extension after he compiled an 83-67 record across his first 10 seasons. (priority 79, age 0.06h)
+ 3. [COACHING] San Francisco gave Kyle Shanahan a multiyear extension after he compiled an 83-67 record in 10 seasons as the 49ers' coach. (priority 84, age 0.43h)
     Compact headline: 49ers reward Kyle Shanahan with multiyear extension
-    Occurred: 2026-09-11T19:27:14Z | Precision: exact | Status: active
-    Freshness basis: San Francisco agreed to a multiyear extension with Kyle Shanahan on Friday.
+    Occurred: 2026-09-11T19:35:15Z | Precision: exact | Status: active
+    Freshness basis: San Francisco gave Kyle Shanahan a multiyear contract extension Friday.
     Entities: San Francisco 49ers, Kyle Shanahan
     Candidate IDs: cand-da6bdcdafef7b764
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49906025/sources-49ers-reward-kyle-shanahan-multiyear-extension
 
- 4. [RETURN] Carolina running back Jonathon Brooks will play against Chicago without limitations as he returns from multiple knee injuries. (priority 74, age 1.63h)
-    Compact headline: Jonathon Brooks cleared to return without limitations
-    Occurred: 2026-09-11T17:53:06Z | Precision: exact | Status: active
-    Freshness basis: Carolina cleared Jonathon Brooks to play without limitations against Chicago after multiple knee injuries.
-    Entities: Carolina Panthers, Jonathon Brooks, Chicago Bears
-    Candidate IDs: cand-813d1e80f5766282
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49905351/panthers-rb-jonathon-brooks-play-vs-bears-limitations
+ 4. [INJURY] Steelers cornerback Joey Porter Jr. is questionable for Sunday’s opener against Atlanta while Pittsburgh continues extension talks with him. (priority 74, age 0.07h)
+    Compact headline: Joey Porter Jr. questionable as Steelers pursue extension
+    Occurred: 2026-09-11T19:56:52Z | Precision: exact | Status: active
+    Freshness basis: Pittsburgh listed Joey Porter Jr. as questionable for the opener while contract-extension talks continue.
+    Entities: Joey Porter Jr., Pittsburgh Steelers, Atlanta Falcons
+    Candidate IDs: cand-1448b970be94e566
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49906367/steelers-joey-porter-jr-questionable-opener-vs-falcons
 
- 5. [INJURY] Baltimore ruled defensive tackle Nnamdi Madubuike out against Indianapolis, while coach Jesse Minter said his return is close. (priority 66, age 0.16h)
-    Compact headline: Ravens rule out Nnamdi Madubuike for season opener
-    Occurred: 2026-09-11T19:21:16Z | Precision: exact | Status: active
-    Freshness basis: Baltimore ruled Nnamdi Madubuike out for Sunday's opener and said his return is close.
-    Entities: Nnamdi Madubuike, Baltimore Ravens, Indianapolis Colts
+ 5. [INJURY] Baltimore ruled defensive tackle Nnamdi Madubuike out against Indianapolis, while coach Jesse Minter said his return is close. (priority 73, age 0.25h)
+    Compact headline: Ravens rule out Nnamdi Madubuike for opener
+    Occurred: 2026-09-11T19:45:44Z | Precision: exact | Status: active
+    Freshness basis: Baltimore ruled Nnamdi Madubuike out for Sunday's opener against Indianapolis and said his return is close.
+    Entities: Baltimore Ravens, Nnamdi Madubuike, Indianapolis Colts, Jesse Minter
     Candidate IDs: cand-d2b39b6878477d1d
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49906177/ravens-minter-madubuike-vs-colts-return-really-close
 
- 6. [INJURY] Tennessee ruled starting linebacker Cedric Gray out against the Jets after he entered concussion protocol following a UTV accident. (priority 65, age 1.80h)
-    Compact headline: Titans rule out Cedric Gray after UTV accident
-    Occurred: 2026-09-11T17:42:47Z | Precision: exact | Status: active
-    Freshness basis: Tennessee ruled Cedric Gray out for the opener after placing him in concussion protocol following a UTV accident.
-    Entities: Cedric Gray, Tennessee Titans, New York Jets
-    Candidate IDs: cand-8418c88163756bbb
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49905346/titans-lb-cedric-gray-ruled-vs-jets-utv-accident
-
- 7. [SIGNING] New England is expected to sign defensive tackle DaQuan Jones to a one-year deal worth up to $6 million. (priority 65, age 2.74h)
-    Compact headline: Patriots expected to add veteran DT DaQuan Jones
-    Occurred: 2026-09-11T16:46:26Z | Precision: exact | Status: watch
-    Freshness basis: The Patriots were reported to be adding DaQuan Jones on a one-year deal worth up to $6 million.
+ 6. [SIGNING] The Patriots are expected to sign defensive tackle DaQuan Jones to a one-year deal worth up to $6 million. (priority 70, age 3.24h)
+    Compact headline: Patriots expected to add veteran tackle DaQuan Jones
+    Occurred: 2026-09-11T16:46:26Z | Precision: exact | Status: active
+    Freshness basis: New England is expected to sign DaQuan Jones to a one-year, $6 million deal.
     Entities: DaQuan Jones, New England Patriots
     Candidate IDs: cand-6034d133f2ff0f7f
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49904397/sources-patriots-add-daquan-jones-1-year-6m-deal
+
+ 7. [RETURN] Carolina will play running back Jonathon Brooks without limitations against Chicago as he returns from multiple knee injuries. (priority 75, age 2.13h)
+    Compact headline: Jonathon Brooks returns without limitations for Panthers
+    Occurred: 2026-09-11T17:53:06Z | Precision: exact | Status: active
+    Freshness basis: Carolina cleared Jonathon Brooks to play without limitations as he returns from multiple knee injuries.
+    Entities: Carolina Panthers, Jonathon Brooks, Chicago Bears
+    Candidate IDs: cand-813d1e80f5766282
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49905351/panthers-rb-jonathon-brooks-play-vs-bears-limitations
 
 ============================================================================
 NBA  [OFFSEASON]
 ============================================================================
 
- 1. [INJURY] Phoenix center Mark Williams underwent surgery to repair a torn left shoulder labrum and is expected to miss several months. (priority 83, age 2.44h)
+ 1. [INJURY] Phoenix center Mark Williams underwent surgery to repair a torn left shoulder labrum and is expected to miss several months. (priority 84, age 2.93h)
     Compact headline: Suns' Mark Williams to miss months after shoulder surgery
     Occurred: 2026-09-11T17:04:50Z | Precision: exact | Status: active
-    Freshness basis: Mark Williams underwent surgery for a torn left shoulder labrum and will miss several months.
+    Freshness basis: Mark Williams underwent left shoulder surgery and is expected to miss several months.
     Entities: Phoenix Suns, Mark Williams
     Candidate IDs: cand-ccdb00401ce60f2d
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49904356/sources-suns-mark-williams-miss-shoulder-surgery
 
- 2. [SUSPENSION] The NBA fined the Clippers $30 million, took away five first-round picks and suspended owner Steve Ballmer for a year after its Kawhi investigation. (priority 91, age 17.68h)
-    Compact headline: NBA hits Clippers with $30M fine, five lost first-round picks
+ 2. [SUSPENSION] The NBA fined the Clippers $30 million, took away five first-round picks and suspended owner Steve Ballmer for a year after its Kawhi investigation. (priority 91, age 18.18h)
+    Compact headline: NBA levies historic Clippers punishment after Kawhi probe
     Occurred: 2026-09-11T01:50:03Z | Precision: exact | Status: active
-    Freshness basis: The NBA announced a $30 million fine, five forfeited first-round picks and a one-year Steve Ballmer suspension Thursday.
-    Entities: NBA, Los Angeles Clippers, Kawhi Leonard, Steve Ballmer
+    Freshness basis: The NBA announced a $30 million fine, five lost first-round picks and a one-year Steve Ballmer suspension tied to its Kawhi investigation.
+    Entities: NBA, LA Clippers, Kawhi Leonard, Steve Ballmer
     Candidate IDs: cand-62af78000d2f661b
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49806683/nba-punishes-la-clippers-kawhi-leonard-investigation-30-million-fine-steve-ballmer-suspensions-top-questions
 
- 3. [LEGAL] Federal investigators opened a probe into the Clippers over alleged salary-cap circumvention in their dealings with Kawhi Leonard. (priority 85, age 5.96h)
-    Compact headline: Federal probe reportedly targets Clippers' Kawhi dealings
+ 3. [LEGAL] A federal investigation has been opened into the Clippers over alleged salary-cap circumvention involving Kawhi Leonard. (priority 85, age 6.46h)
+    Compact headline: Federal investigation opened into Clippers and Kawhi dealings
     Occurred: 2026-09-11T13:33:28Z | Precision: exact | Status: active
-    Freshness basis: A federal investigation was opened into the Clippers' alleged salary-cap circumvention involving Kawhi Leonard.
-    Entities: Kawhi Leonard, LA Clippers
+    Freshness basis: A federal investigation was opened into alleged Clippers salary-cap circumvention involving Kawhi Leonard.
+    Entities: Kawhi Leonard, Los Angeles Clippers
     Candidate IDs: cand-1452fcc86cedfa81
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49898498/report-feds-investigating-clippers-kawhi-leonard-dealings
 
@@ -162,26 +154,26 @@ NBA  [OFFSEASON]
 NHL  [OFFSEASON]
 ============================================================================
 
- 1. [INJURY] Los Angeles forward Kevin Fiala had follow-up surgery on his broken leg and will miss the start of training camp. (priority 78, age 22.01h)
-    Compact headline: Kings' Kevin Fiala undergoes more surgery, misses camp start
+ 1. [INJURY] Los Angeles forward Kevin Fiala underwent follow-up surgery on his broken leg and will miss the start of training camp. (priority 76, age 22.50h)
+    Compact headline: Kings' Kevin Fiala has follow-up surgery, misses camp
     Occurred: 2026-09-10T21:30:35Z | Precision: exact | Status: active
     Freshness basis: Kevin Fiala underwent follow-up surgery for his broken leg and will miss the start of Los Angeles's training camp.
     Entities: Los Angeles Kings, Kevin Fiala
     Candidate IDs: cand-fc1f120394344f72
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49896294/kings-kevin-fiala-further-surgery-miss-start-camp
 
- 2. [ROSTER] Detroit captain Dylan Larkin will attend training camp despite requesting a trade, while the Red Wings plan to begin the season without a captain. (priority 75, age 3.19h)
-    Compact headline: Dylan Larkin will attend camp despite Red Wings trade request
+ 2. [ROSTER] Detroit captain Dylan Larkin will attend training camp despite requesting a trade, and the Red Wings will begin the season without a captain. (priority 73, age 3.69h)
+    Compact headline: Dylan Larkin to attend camp despite trade request
     Occurred: 2026-09-11T16:19:27Z | Precision: exact | Status: active
-    Freshness basis: Dylan Larkin confirmed he will attend Detroit's training camp despite his offseason trade request.
+    Freshness basis: Dylan Larkin will attend Detroit's training camp despite his offseason trade request, while the team will start without a captain.
     Entities: Detroit Red Wings, Dylan Larkin
     Candidate IDs: cand-455eb7205aef4cb4
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49904172/dylan-larkin-attend-red-wings-camp-trade-request
 
- 3. [SIGNING] Vegas signed forward Braeden Bowman to a six-year extension worth an average of $3.4 million annually. (priority 65, age 20.72h)
+ 3. [CONTRACT] Vegas signed forward Braeden Bowman to a six-year extension carrying a $3.4 million average annual value. (priority 68, age 21.21h)
     Compact headline: Golden Knights give Braeden Bowman six-year extension
     Occurred: 2026-09-10T22:48:09Z | Precision: exact | Status: active
-    Freshness basis: Vegas signed Braeden Bowman to a six-year, $3.4 million average annual value extension.
+    Freshness basis: The Golden Knights signed Braeden Bowman to a six-year, $3.4 million average annual value extension.
     Entities: Braeden Bowman, Vegas Golden Knights
     Candidate IDs: cand-9a4f65cc955897ac
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49897130/golden-knights-sign-forward-braeden-bowman-6-year-extension
@@ -190,21 +182,29 @@ NHL  [OFFSEASON]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Tottenham manager Roberto De Zerbi said new arrival Mykhailo Mudryk suffered an injury but backed the winger to return soon. (priority 65, age 2.73h)
-    Compact headline: Tottenham's Mykhailo Mudryk suffers injury
+ 1. [INJURY] Tottenham manager Roberto De Zerbi said new arrival Mykhailo Mudryk suffered an injury but expects the winger to return soon. (priority 65, age 3.23h)
+    Compact headline: Tottenham winger Mykhailo Mudryk sidelined by injury
     Occurred: 2026-09-11T16:47:20Z | Precision: exact | Status: active
-    Freshness basis: Roberto De Zerbi said Mykhailo Mudryk suffered an injury and should return to action soon.
+    Freshness basis: Roberto De Zerbi said Tottenham newcomer Mykhailo Mudryk suffered an injury and should return soon.
     Entities: Mykhailo Mudryk, Tottenham Hotspur, Roberto De Zerbi
     Candidate IDs: cand-0e56dbd47eb68272
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49905024/tottenham-roberto-de-zerbi-says-mykhailo-mudryk-suffered-stupid-injury
 
- 2. [CONTRACT] Arsenal agreed a pre-contract to sign 17-year-old forward Andria Bartishvili from Iberia 1999. (priority 64, age 0.92h)
-    Compact headline: Arsenal agree pre-contract for 17-year-old winger Bartishvili
+ 2. [SIGNING] Arsenal agreed a pre-contract to sign 17-year-old forward Andria Bartishvili from Iberia 1999. (priority 65, age 1.41h)
+    Compact headline: Arsenal agree pre-contract deal for 17-year-old winger
     Occurred: 2026-09-11T18:35:59Z | Precision: exact | Status: active
-    Freshness basis: Arsenal agreed a pre-contract to sign 17-year-old winger Andria Bartishvili Friday.
+    Freshness basis: Arsenal agreed a pre-contract to sign 17-year-old winger Andria Bartishvili.
     Entities: Arsenal, Andria Bartishvili, Iberia 1999
     Candidate IDs: cand-6526bc2dff05e12d
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49904487/arsenal-reach-agreement-sign-17-year-old-winger-andria-bartishvili
+
+ 3. [CONTRACT] Newcastle extended Lewis Hall’s contract after the defender had been linked with Manchester United. (priority 67, age 11.52h)
+    Compact headline: Newcastle extend contract of Man United target Lewis Hall
+    Occurred: 2026-09-11T08:29:58Z | Precision: exact | Status: active
+    Freshness basis: Newcastle confirmed a new contract for Manchester United transfer target Lewis Hall.
+    Entities: Lewis Hall, Newcastle United, Manchester United
+    Candidate IDs: cand-d4deb08e934cf5c0
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49901345/man-united-transfer-target-lewis-hall-new-contract-newcastle
 
 ============================================================================
 MLS  [ACTIVE]
@@ -216,43 +216,43 @@ MLS  [ACTIVE]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] No. 7 Miami set a school record with 856 yards and tied its points mark as quarterbacks Darian Mensah and Luke Nickel each threw three touchdowns. (priority 88, age 19.52h)
-    Compact headline: No. 7 Miami sets school yardage record in 77-7 rout
+ 1. [RECORD] No. 7 Miami set a school record with 856 yards and tied its points mark as Darian Mensah and Luke Nickel each threw three touchdowns in a 77-7 win. (priority 91, age 20.01h)
+    Compact headline: No. 7 Miami sets yardage record in 77-7 rout
     Occurred: 2026-09-11T00:00:00Z | Precision: exact | Status: active
-    Freshness basis: Miami set a school record with 856 yards in its 77-7 victory over Florida A&M Thursday.
+    Freshness basis: No. 7 Miami set a school yardage record with 856 yards and tied its points mark in a 77-7 win over Florida A&M.
     Entities: Miami Hurricanes, Florida A&M Rattlers, Darian Mensah, Luke Nickel
     Candidate IDs: cand-d142ce9f1f377717
     Source [Highlightly/highlightly-american-football-2026-09-10]: https://highlightly.net
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401858213
 
- 2. [INJURY] Baylor ruled quarterback DJ Lagway out against Prairie View A&M because of an ankle injury, with Nate Bennett making his first start. (priority 72, age 1.94h)
-    Compact headline: Baylor QB DJ Lagway ruled out; Nate Bennett to start
+ 2. [DEPTH_CHART] Baylor ruled quarterback DJ Lagway out against Prairie View A&M because of an ankle injury, giving Nate Bennett his first start. (priority 73, age 2.44h)
+    Compact headline: Baylor rules out DJ Lagway; Nate Bennett to start
     Occurred: 2026-09-11T17:34:25Z | Precision: exact | Status: active
-    Freshness basis: Baylor ruled DJ Lagway out with an ankle injury and named Nate Bennett its starter Friday.
+    Freshness basis: Baylor ruled DJ Lagway out with an ankle injury and named Nate Bennett its starter against Prairie View A&M.
     Entities: Baylor Bears, DJ Lagway, Nate Bennett, Prairie View A&M Panthers
     Candidate IDs: cand-40b24ce21c37524c
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49905329/sources-baylor-qb-dj-lagway-ruled-nate-bennett-start
 
- 3. [ROSTER] Arizona running back Ismail Mahdi and linebacker Max Harris gained eligibility through a court hearing and are set to play against No. 15 BYU. (priority 74, age 0.37h)
-    Compact headline: Arizona stars gain eligibility and are cleared for BYU
+ 3. [ROSTER] Arizona running back Ismail Mahdi and linebacker Max Harris gained eligibility through a court hearing and are set to play No. 15 BYU. (priority 72, age 0.86h)
+    Compact headline: Arizona clears Mahdi and Harris for No. 15 BYU game
     Occurred: 2026-09-11T19:09:02Z | Precision: exact | Status: active
-    Freshness basis: Arizona's Ismail Mahdi and Max Harris gained eligibility through a court hearing and were cleared to play Friday.
+    Freshness basis: Arizona's Ismail Mahdi and Max Harris gained eligibility through a court hearing and were cleared to play BYU.
     Entities: Arizona Wildcats, Ismail Mahdi, Max Harris, BYU Cougars
     Candidate IDs: cand-504cac32cea7fa52
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49905987/sources-arizona-rb-mahdi-lb-harris-set-play-vs-byu
 
- 4. [INJURY] No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday's game at Kentucky. (priority 65, age 8.20h)
-    Compact headline: No. 12 Alabama guard Michael Carroll doubtful
-    Occurred: 2026-09-11T11:19:05Z | Precision: exact | Status: watch
-    Freshness basis: Alabama listed Michael Carroll as doubtful for its game at Kentucky.
+ 4. [INJURY] No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky. (priority 65, age 8.70h)
+    Compact headline: Alabama guard Michael Carroll doubtful at Kentucky
+    Occurred: 2026-09-11T11:19:05Z | Precision: exact | Status: active
+    Freshness basis: Alabama listed offensive guard Michael Carroll as doubtful for the game at Kentucky.
     Entities: Michael Carroll, Alabama Crimson Tide, Kentucky Wildcats
     Candidate IDs: cand-ee9b9eaaf45d4c82
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky
 
- 5. [DEPTH_CHART] Oklahoma will return center Jake Maikkula to the starting lineup against Michigan, while left tackle Michael Fasusi has been ruled out. (priority 65, age 1.99h)
+ 5. [DEPTH_CHART] Oklahoma will return center Jake Maikkula to the starting lineup against Michigan, while left tackle Michael Fasusi is ruled out. (priority 71, age 2.49h)
     Compact headline: Oklahoma reshuffles offensive line before Michigan game
     Occurred: 2026-09-11T17:31:26Z | Precision: exact | Status: active
-    Freshness basis: Oklahoma ruled left tackle Michael Fasusi out and announced Jake Maikkula will start at center against Michigan.
+    Freshness basis: Oklahoma announced Jake Maikkula’s return to the starting lineup and ruled Michael Fasusi out against Michigan.
     Entities: Oklahoma Sooners, Jake Maikkula, Michael Fasusi, Michigan Wolverines
     Candidate IDs: cand-94ab02a79763bb4a
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49905441/sources-oklahoma-shuffling-o-line-ahead-michigan-game
@@ -261,44 +261,44 @@ NCAAF  [ACTIVE]
 SPECIAL EVENTS
 ############################################################################
 
-US Open (Tennis)
+US Open (tennis)
 ----------------------------------------------------------------------------
 
- 1. [ADVANCEMENT] Elena Rybakina rallied past Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final and move to No. 1 in the rankings next week. (priority 87, age 14.24h)
-    Compact headline: Rybakina reaches US Open final and takes No. 1 ranking
-    Freshness basis: Elena Rybakina defeated Coco Gauff in the US Open semifinal Thursday and secured next week's No. 1 ranking.
+ 1. [ADVANCEMENT] Elena Rybakina rallied past Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final against Aryna Sabalenka and move to No. 1 next week. (priority 86, age 14.73h)
+    Compact headline: Rybakina rallies past Gauff to reach US Open final
+    Freshness basis: Elena Rybakina beat Coco Gauff in three sets to reach the US Open final and take over the top ranking next week.
     Candidate IDs: cand-9c1eb130f28f377a
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49898331/rybakina-ends-gauff-us-open-run-sets-title-clash-sabalenka
 
-Solheim Cup (Golf)
+Solheim Cup (golf)
 ----------------------------------------------------------------------------
 
- 1. [EVENT_UPDATE] The United States and Europe split the opening Solheim Cup foursomes 2-2, with Nelly Korda and Allisen Corpuz helping the Americans earn a point. (priority 75, age 6.02h)
-    Compact headline: Solheim Cup opens level at 2-2 after foursomes
-    Freshness basis: The United States and Europe finished the opening Solheim Cup session tied 2-2 Friday.
+ 1. [EVENT_UPDATE] The United States and Europe split the opening Solheim Cup foursomes 2-2, with Nelly Korda and Allisen Corpuz delivering a record-setting partnership. (priority 76, age 6.51h)
+    Compact headline: Solheim Cup tied 2-2 after opening foursomes
+    Freshness basis: The United States and Europe were tied 2-2 after the opening Solheim Cup foursomes session.
     Candidate IDs: cand-2ddadb1d3e0d5ee3
     Source [ESPN/espn-lpga]: https://www.espn.com/golf/story/_/id/49902104/europe-us-tied-2-2-opening-session-solheim-cup
+
+ 2. [EVENT_UPDATE] Europe and the United States finished Day 1 tied 4-4 after Carlota Ciganda's late par secured a half-point for Europe. (priority 75, age 1.79h)
+    Compact headline: Solheim Cup tied 4-4 after Ciganda's late heroics
+    Freshness basis: Carlota Ciganda's late par left Europe and the United States tied 4-4 after Day 1 of the Solheim Cup.
+    Candidate IDs: cand-a0027eb7582adad7
+    Source [ESPN/espn-lpga]: https://www.espn.com/golf/story/_/id/49905523/solheim-cup-europe-us-tied-4-4-ciganda-late-heroics
+
+Irish Open (golf)
+----------------------------------------------------------------------------
+
+ 1. [EVENT_UPDATE] Joaquín Niemann fired a 5-under 65 with four straight closing birdies to take a two-shot Irish Open lead over the opening round. (priority 73, age 22.80h)
+    Compact headline: Niemann leads Irish Open after closing birdie run
+    Freshness basis: Joaquín Niemann shot a 5-under 65 with four closing birdies to take a two-shot lead at the Irish Open.
+    Candidate IDs: cand-7c469ab99b92ec81
+    Source [ESPN/espn-pga]: https://www.espn.com/golf/story/_/id/49895950/niemann-leads-mcilroy-4-back-windy-irish-open
 
 Spanish Grand Prix (Formula 1)
 ----------------------------------------------------------------------------
 
- 1. [EVENT_UPDATE] A Formula 2 car burst into flames during the Spanish Grand Prix weekend as safety concerns surrounded Madrid's new circuit. (priority 74, age 8.75h)
-    Compact headline: F2 car catches fire as Spanish GP circuit debuts
-    Freshness basis: A Formula 2 car burst into flames as the new Madrid circuit hosted its first Spanish Grand Prix weekend.
-    Candidate IDs: cand-6590e362a314c37e
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49902064/f2-car-bursts-flames-risky-madrid-circuit-debuts-spanish-gp
-
- 2. [PRACTICE] Kimi Antonelli topped second practice for the Spanish Grand Prix, while rookie Arvid Lindblad crashed at Madrid's new circuit. (priority 65, age 2.43h)
-    Compact headline: Antonelli fastest in Spanish GP practice as Lindblad crashes
-    Freshness basis: Kimi Antonelli led second practice at the Spanish Grand Prix and Arvid Lindblad crashed Friday.
+ 1. [PRACTICE] Mercedes rookie Kimi Antonelli topped second practice for the Spanish Grand Prix, with teammate George Russell fifth and Arvid Lindblad crashing. (priority 63, age 2.92h)
+    Compact headline: Antonelli leads Russell in Spanish GP second practice
+    Freshness basis: Kimi Antonelli was fastest in second practice for the Spanish Grand Prix, while Arvid Lindblad crashed.
     Candidate IDs: cand-2c605ead6a0ea3c7
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49867133/mercedes-kimi-antonelli-quickest-second-practice-george-russell-fifth-spanish-grand-prix-madring-formula-1
-
-Irish Open (Golf)
-----------------------------------------------------------------------------
-
- 1. [RESULT] Joaquín Niemann carded a 5-under 65 with four closing birdies to take a two-shot Irish Open lead, while Rory McIlroy shot 69. (priority 72, age 22.30h)
-    Compact headline: Niemann leads Irish Open as McIlroy sits four shots back
-    Freshness basis: Joaquín Niemann took a two-shot Irish Open lead with a 5-under 65 Thursday.
-    Candidate IDs: cand-7c469ab99b92ec81
-    Source [ESPN/espn-pga]: https://www.espn.com/golf/story/_/id/49895950/niemann-leads-mcilroy-4-back-windy-irish-open
