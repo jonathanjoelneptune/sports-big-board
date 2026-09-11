@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-11T21:30:45Z",
+  "generatedAt": "2026-09-11T22:00:48Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "3fbbc6eaecc6248648f11fb3f5bf36f9a3ae26eaf78404a4eca537e0f9e94a7f",
+  "sourceCandidateHash": "dcdb18b633ff5d4874e60843b71e73db669c4f9c2c587b6301cc336dae858e7a",
   "leagues": [
     {
       "league": "MLB",
@@ -17,17 +17,17 @@
             "cand-0188ae905a7d504a"
           ],
           "type": "INJURY",
-          "priority": 90,
-          "headline": "Twins outfielder Byron Buxton will undergo right hip surgery and miss the remainder of the season.",
-          "text": "Twins outfielder Byron Buxton will undergo right hip surgery and miss the remainder of the season.",
+          "priority": 88,
+          "headline": "Twins outfielder Byron Buxton will undergo right hip surgery and miss the remainder of the season after landing on the injured list Aug. 30.",
+          "text": "Twins outfielder Byron Buxton will undergo right hip surgery and miss the remainder of the season after landing on the injured list Aug. 30.",
           "entities": [
             "Byron Buxton",
             "Minnesota Twins"
           ],
           "occurredAt": "2026-09-11T21:21:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.16,
-          "freshnessBasis": "Minnesota announced Byron Buxton will have right hip surgery and miss the rest of the season.",
+          "ageHours": 0.66,
+          "freshnessBasis": "Minnesota announced Byron Buxton will have right hip surgery and miss the rest of the season Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49907101/twins-byron-buxton-hip-surgery-done-season"
@@ -46,21 +46,50 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-e416ec91a691dac3"
+            "cand-33b0171149dfa3f3"
           ],
           "type": "RETURN",
           "priority": 84,
-          "headline": "Anthony Volpe hit a grand slam and drove in a career-high five runs in his return as the Yankees beat the Rockies 10-3.",
-          "text": "Anthony Volpe hit a grand slam and drove in a career-high five runs in his return as the Yankees beat the Rockies 10-3.",
+          "headline": "Anthony Volpe hit a grand slam and drove in five runs in his return from Triple-A as the Yankees defeated the Rockies.",
+          "text": "Anthony Volpe hit a grand slam and drove in five runs in his return from Triple-A as the Yankees defeated the Rockies.",
           "entities": [
             "Anthony Volpe",
             "New York Yankees",
             "Colorado Rockies"
           ],
+          "occurredAt": "2026-09-11T13:47:23Z",
+          "timePrecision": "exact",
+          "ageHours": 8.22,
+          "freshnessBasis": "Anthony Volpe returned from Triple-A and hit a grand slam with five RBIs for New York.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49900251/yankees-volpe-grand-slam-5-rbis-return-majors"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49900251/yankees-volpe-grand-slam-5-rbis-return-majors"
+            }
+          ],
+          "id": "a3-a9f057939b226f48",
+          "feedRank": 5,
+          "compactHeadline": "Volpe returns with grand slam and five RBIs"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-e416ec91a691dac3"
+          ],
+          "type": "RESULT",
+          "priority": 82,
+          "headline": "Volpe hits grand slam in return to majors as Yankees sweep Rockies 10-3 to pull closer in AL East.",
+          "text": "Volpe hits grand slam in return to majors as Yankees sweep Rockies 10-3 to pull closer in AL East.",
+          "entities": [],
           "occurredAt": "2026-09-10T23:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.43,
-          "freshnessBasis": "Anthony Volpe returned to the majors and hit a grand slam with five RBIs in New York's 10-3 win.",
+          "ageHours": 22.93,
+          "freshnessBasis": "Anthony Volpe hit a grand slam and drove in a career-high five runs during his rousing return to the majors as the New York Yankees beat the Colorado...",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -78,41 +107,9 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816883"
             }
           ],
-          "id": "a3-af423bc0a2edd57f",
+          "id": "a3-promoted-eb9f520a05498483",
           "feedRank": 9,
-          "compactHeadline": "Volpe hits grand slam in Yankees return, drives in five"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-86ce298b4d5296e1"
-          ],
-          "type": "INJURY",
-          "priority": 66,
-          "headline": "Pirates rookie outfielder Esmerlyn Valdez left Friday’s game against the Cubs after injuring his left leg while running to first base.",
-          "text": "Pirates rookie outfielder Esmerlyn Valdez left Friday’s game against the Cubs after injuring his left leg while running to first base.",
-          "entities": [
-            "Pittsburgh Pirates",
-            "Esmerlyn Valdez"
-          ],
-          "occurredAt": "2026-09-11T20:53:01Z",
-          "timePrecision": "exact",
-          "ageHours": 0.63,
-          "freshnessBasis": "Pittsburgh rookie Esmerlyn Valdez left Friday’s game with an apparent left leg injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49906905/pirates-esmerlyn-valdez-exits-apparent-left-leg-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49906905/pirates-esmerlyn-valdez-exits-apparent-left-leg-injury"
-            }
-          ],
-          "id": "a3-7732725c039a436e",
-          "feedRank": 18,
-          "compactHeadline": "Pirates rookie Valdez exits with apparent leg injury"
+          "compactHeadline": "Anthony Volpe hits grand slam in Yankees return"
         },
         {
           "rank": 4,
@@ -131,8 +128,8 @@
           ],
           "occurredAt": "2026-09-11T21:27:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
-          "freshnessBasis": "Chicago beat Pittsburgh 12-2 to end a four-game losing streak.",
+          "ageHours": 0.55,
+          "freshnessBasis": "Chicago beat Pittsburgh 12-2 Friday to end a four-game losing streak behind Alex Bregman's three-hit game and Shota Imanaga's six innings.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/mlb/recap?gameId=401816899"
@@ -144,9 +141,9 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816899"
             }
           ],
-          "id": "a3-a85ae7f9d6a8977f",
+          "id": "a3-f0d10d3a66ae3d4a",
           "feedRank": 19,
-          "compactHeadline": "Cubs end four-game skid by pounding Pirates 12-2"
+          "compactHeadline": "Cubs end four-game skid with 12-2 rout of Pirates"
         },
         {
           "rank": 5,
@@ -155,8 +152,8 @@
           ],
           "type": "RESULT",
           "priority": 72,
-          "headline": "Julio Rodríguez hit a go-ahead three-run homer during Seattle's four-run seventh, lifting the Mariners past Texas 4-3 despite Jacob deGrom's 12 strikeouts.",
-          "text": "Julio Rodríguez hit a go-ahead three-run homer during Seattle's four-run seventh, lifting the Mariners past Texas 4-3 despite Jacob deGrom's 12 strikeouts.",
+          "headline": "Julio Rodríguez hit a go-ahead three-run homer during Seattle's four-run seventh, lifting the Mariners past Texas 4-3 after Jacob deGrom retired his first 15 batters.",
+          "text": "Julio Rodríguez hit a go-ahead three-run homer during Seattle's four-run seventh, lifting the Mariners past Texas 4-3 after Jacob deGrom retired his first 15 batters.",
           "entities": [
             "Julio Rodríguez",
             "Seattle Mariners",
@@ -165,8 +162,8 @@
           ],
           "occurredAt": "2026-09-11T00:06:29Z",
           "timePrecision": "exact",
-          "ageHours": 21.4,
-          "freshnessBasis": "Seattle beat Texas 4-3 after Julio Rodríguez's go-ahead three-run homer in the seventh inning.",
+          "ageHours": 21.91,
+          "freshnessBasis": "Julio Rodríguez hit a go-ahead three-run homer in Seattle's 4-3 win over Texas Thursday.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/mlb/recap?gameId=401816887"
@@ -179,27 +176,65 @@
             }
           ],
           "id": "a3-32a01143f3a33fe5",
-          "feedRank": 24,
+          "feedRank": 25,
           "compactHeadline": "Julio Rodríguez's three-run homer lifts Mariners past Rangers"
         },
         {
           "rank": 6,
           "candidateIds": [
+            "cand-d122b3e27af6c67f"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Pittsburgh defeated Chicago 2-0 in a completed shutout on Sept. 10.",
+          "text": "Pittsburgh defeated Chicago 2-0 in a completed shutout on Sept. 10.",
+          "entities": [
+            "Pittsburgh Pirates",
+            "Chicago White Sox"
+          ],
+          "occurredAt": "2026-09-10T23:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.35,
+          "freshnessBasis": "Pittsburgh defeated Chicago 2-0 in a completed shutout on Sept. 10.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816886"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-10",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "a44-espn-mlb-summary-401816886",
+              "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816886"
+            }
+          ],
+          "id": "a3-d4c160deedde5e96",
+          "feedRank": 26,
+          "compactHeadline": "Pirates shut out White Sox 2-0"
+        },
+        {
+          "rank": 7,
+          "candidateIds": [
             "cand-2032da72e590170d"
           ],
           "type": "INJURY",
           "priority": 65,
-          "headline": "Pittsburgh placed All-Star right-hander Braxton Ashcraft on the 15-day injured list because of right arm discomfort.",
-          "text": "Pittsburgh placed All-Star right-hander Braxton Ashcraft on the 15-day injured list because of right arm discomfort.",
+          "headline": "Pittsburgh placed All-Star right-hander Braxton Ashcraft on the 15-day injured list with right arm discomfort.",
+          "text": "Pittsburgh placed All-Star right-hander Braxton Ashcraft on the 15-day injured list with right arm discomfort.",
           "entities": [
-            "Pittsburgh Pirates",
-            "Braxton Ashcraft"
+            "Braxton Ashcraft",
+            "Pittsburgh Pirates"
           ],
           "occurredAt": "2026-09-10T22:42:14Z",
           "timePrecision": "exact",
-          "ageHours": 22.81,
+          "ageHours": 23.31,
           "freshnessBasis": "Pittsburgh placed Braxton Ashcraft on the 15-day injured list with right arm discomfort.",
-          "status": "active",
+          "status": "watch",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49896764/pirates-braxton-ashcraft-arm-discomfort-lands-il"
           ],
@@ -210,41 +245,9 @@
               "url": "https://www.espn.com/mlb/story/_/id/49896764/pirates-braxton-ashcraft-arm-discomfort-lands-il"
             }
           ],
-          "id": "a3-330020ea3ee1503e",
-          "feedRank": 25,
-          "compactHeadline": "Pirates place All-Star pitcher Ashcraft on 15-day IL"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-774794c58f3ea13a"
-          ],
-          "type": "RETURN",
-          "priority": 65,
-          "headline": "Pittsburgh activated Ryan O'Hearn from the 10-day injured list before Friday's game against the Cubs.",
-          "text": "Pittsburgh activated Ryan O'Hearn from the 10-day injured list before Friday's game against the Cubs.",
-          "entities": [
-            "Ryan O'Hearn",
-            "Pittsburgh Pirates"
-          ],
-          "occurredAt": "2026-09-11T18:01:22Z",
-          "timePrecision": "exact",
-          "ageHours": 3.49,
-          "freshnessBasis": "Pittsburgh activated Ryan O'Hearn from the 10-day injured list before facing Chicago.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49905541/pirates-activate-ryan-ohearn-playing-cubs"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49905541/pirates-activate-ryan-ohearn-playing-cubs"
-            }
-          ],
-          "id": "a3-4003cfc7e7cb7cc8",
+          "id": "a3-249d47b0c809d219",
           "feedRank": 27,
-          "compactHeadline": "Pirates activate Ryan O'Hearn from injured list"
+          "compactHeadline": "Pirates place All-Star Braxton Ashcraft on 15-day IL"
         }
       ]
     },
@@ -258,17 +261,17 @@
             "cand-7992d3b3ef99db99"
           ],
           "type": "INJURY",
-          "priority": 79,
-          "headline": "New England placed wide receiver A.J. Brown on injured reserve with a high ankle sprain, sidelining him for at least four games.",
-          "text": "New England placed wide receiver A.J. Brown on injured reserve with a high ankle sprain, sidelining him for at least four games.",
+          "priority": 82,
+          "headline": "The Patriots placed wide receiver A.J. Brown on injured reserve with a high ankle sprain, sidelining him for at least four games.",
+          "text": "The Patriots placed wide receiver A.J. Brown on injured reserve with a high ankle sprain, sidelining him for at least four games.",
           "entities": [
             "A.J. Brown",
             "New England Patriots"
           ],
           "occurredAt": "2026-09-11T17:42:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.81,
-          "freshnessBasis": "The Patriots placed A.J. Brown on injured reserve with a high ankle sprain.",
+          "ageHours": 4.31,
+          "freshnessBasis": "New England placed A.J. Brown on injured reserve with a high ankle sprain Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49905144/sources-patriots-aj-brown-go-ir-miss-least-4-games"
@@ -280,41 +283,42 @@
               "url": "https://www.espn.com/nfl/story/_/id/49905144/sources-patriots-aj-brown-go-ir-miss-least-4-games"
             }
           ],
-          "id": "a3-fc5ac4ed8dc880ab",
-          "feedRank": 5,
-          "compactHeadline": "Patriots place A.J. Brown on IR for at least four games"
+          "id": "a3-884bbc7575ecf8d4",
+          "feedRank": 2,
+          "compactHeadline": "Patriots place A.J. Brown on IR, lose him for four games"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-030b413b2f8211af"
+            "cand-d2b39b6878477d1d"
           ],
           "type": "INJURY",
-          "priority": 75,
-          "headline": "Philadelphia ruled out edge rusher Jonathan Greenard for Week 1 because of a pec injury after he missed all of training camp.",
-          "text": "Philadelphia ruled out edge rusher Jonathan Greenard for Week 1 because of a pec injury after he missed all of training camp.",
+          "priority": 73,
+          "headline": "Baltimore ruled defensive tackle Nnamdi Madubuike out against Indianapolis, while coach Jesse Minter said his return is close.",
+          "text": "Baltimore ruled defensive tackle Nnamdi Madubuike out against Indianapolis, while coach Jesse Minter said his return is close.",
           "entities": [
-            "Philadelphia Eagles",
-            "Jonathan Greenard"
+            "Nnamdi Madubuike",
+            "Baltimore Ravens",
+            "Indianapolis Colts"
           ],
-          "occurredAt": "2026-09-11T20:47:27Z",
+          "occurredAt": "2026-09-11T19:45:44Z",
           "timePrecision": "exact",
-          "ageHours": 0.72,
-          "freshnessBasis": "Philadelphia ruled Jonathan Greenard out for Week 1 because of a pec injury.",
-          "status": "active",
+          "ageHours": 2.25,
+          "freshnessBasis": "Baltimore ruled Nnamdi Madubuike out for Sunday’s opener and said he is nearing a return.",
+          "status": "watch",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49906739/eagles-lb-jonathan-greenard-week-1-due-pec-injury"
+            "https://www.espn.com/nfl/story/_/id/49906177/ravens-minter-madubuike-vs-colts-return-really-close"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49906739/eagles-lb-jonathan-greenard-week-1-due-pec-injury"
+              "url": "https://www.espn.com/nfl/story/_/id/49906177/ravens-minter-madubuike-vs-colts-return-really-close"
             }
           ],
-          "id": "a3-2d7811a4ac3ee93c",
-          "feedRank": 7,
-          "compactHeadline": "Eagles rule out Greenard for Week 1 with pec injury"
+          "id": "a3-3a0f1ae92ebae72f",
+          "feedRank": 8,
+          "compactHeadline": "Ravens rule Nnamdi Madubuike out for opener"
         },
         {
           "rank": 3,
@@ -322,17 +326,17 @@
             "cand-da6bdcdafef7b764"
           ],
           "type": "CONTRACT",
-          "priority": 82,
-          "headline": "San Francisco extended coach Kyle Shanahan on a multiyear deal after he compiled an 83-67 record across his first 10 seasons.",
-          "text": "San Francisco extended coach Kyle Shanahan on a multiyear deal after he compiled an 83-67 record across his first 10 seasons.",
+          "priority": 79,
+          "headline": "The 49ers rewarded coach Kyle Shanahan with a multiyear extension after he compiled an 83-67 record through 10 seasons in San Francisco.",
+          "text": "The 49ers rewarded coach Kyle Shanahan with a multiyear extension after he compiled an 83-67 record through 10 seasons in San Francisco.",
           "entities": [
             "Kyle Shanahan",
             "San Francisco 49ers"
           ],
           "occurredAt": "2026-09-11T19:35:15Z",
           "timePrecision": "exact",
-          "ageHours": 1.93,
-          "freshnessBasis": "The 49ers gave Kyle Shanahan a multiyear contract extension.",
+          "ageHours": 2.43,
+          "freshnessBasis": "San Francisco agreed to a multiyear extension with Kyle Shanahan Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49906025/sources-49ers-reward-kyle-shanahan-multiyear-extension"
@@ -345,7 +349,7 @@
             }
           ],
           "id": "a3-22e8aaff4b1d55d2",
-          "feedRank": 8,
+          "feedRank": 10,
           "compactHeadline": "49ers give Kyle Shanahan a multiyear extension"
         },
         {
@@ -354,17 +358,17 @@
             "cand-d011bdf8e4276f55"
           ],
           "type": "CONTRACT",
-          "priority": 80,
-          "headline": "Chicago agreed with running back D'Andre Swift on a three-year, $33.75 million extension that includes $27.5 million guaranteed.",
-          "text": "Chicago agreed with running back D'Andre Swift on a three-year, $33.75 million extension that includes $27.5 million guaranteed.",
+          "priority": 77,
+          "headline": "Chicago and running back D'Andre Swift agreed to a three-year, $33.75 million extension that includes $27.5 million guaranteed.",
+          "text": "Chicago and running back D'Andre Swift agreed to a three-year, $33.75 million extension that includes $27.5 million guaranteed.",
           "entities": [
             "D'Andre Swift",
             "Chicago Bears"
           ],
           "occurredAt": "2026-09-11T20:38:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.87,
-          "freshnessBasis": "The Bears and D'Andre Swift agreed to a three-year, $33.75 million extension with $27.5 million guaranteed.",
+          "ageHours": 1.37,
+          "freshnessBasis": "The Bears and D'Andre Swift agreed to a three-year, $33.75 million extension Friday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49906474/bears-rb-swift-agree-3-year-3375m-extension"
@@ -376,9 +380,9 @@
               "url": "https://www.espn.com/nfl/story/_/id/49906474/bears-rb-swift-agree-3-year-3375m-extension"
             }
           ],
-          "id": "a3-9c796a91b51b2c2a",
-          "feedRank": 10,
-          "compactHeadline": "Bears extend D'Andre Swift for three years, $33.75M"
+          "id": "a3-96530f44be592308",
+          "feedRank": 12,
+          "compactHeadline": "Bears extend D'Andre Swift for three years, $33.75 million"
         },
         {
           "rank": 5,
@@ -386,9 +390,9 @@
             "cand-41680284f2f509d8"
           ],
           "type": "DEPTH_CHART",
-          "priority": 78,
-          "headline": "Atlanta ruled Tua Tagovailoa out with an oblique injury and will start Cooper Rush at quarterback against Pittsburgh.",
-          "text": "Atlanta ruled Tua Tagovailoa out with an oblique injury and will start Cooper Rush at quarterback against Pittsburgh.",
+          "priority": 77,
+          "headline": "Atlanta ruled out Tua Tagovailoa with an oblique injury and will start Cooper Rush at quarterback against Pittsburgh on Sunday.",
+          "text": "Atlanta ruled out Tua Tagovailoa with an oblique injury and will start Cooper Rush at quarterback against Pittsburgh on Sunday.",
           "entities": [
             "Tua Tagovailoa",
             "Cooper Rush",
@@ -397,8 +401,8 @@
           ],
           "occurredAt": "2026-09-11T20:29:03Z",
           "timePrecision": "exact",
-          "ageHours": 1.03,
-          "freshnessBasis": "Atlanta ruled Tua Tagovailoa out and named Cooper Rush its starting quarterback for the opener.",
+          "ageHours": 1.53,
+          "freshnessBasis": "Atlanta ruled Tua Tagovailoa out and named Cooper Rush its starting quarterback for Sunday's opener.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49905536/tagovailoa-rush-start-qb-falcons-vs-steelers"
@@ -410,9 +414,9 @@
               "url": "https://www.espn.com/nfl/story/_/id/49905536/tagovailoa-rush-start-qb-falcons-vs-steelers"
             }
           ],
-          "id": "a3-b9d958ffb11240b7",
-          "feedRank": 12,
-          "compactHeadline": "Tua Tagovailoa out; Cooper Rush to start for Falcons"
+          "id": "a3-415464d052f414f1",
+          "feedRank": 13,
+          "compactHeadline": "Tua Tagovailoa ruled out; Cooper Rush to start for Falcons"
         },
         {
           "rank": 6,
@@ -420,9 +424,9 @@
             "cand-813d1e80f5766282"
           ],
           "type": "RETURN",
-          "priority": 76,
-          "headline": "Carolina running back Jonathon Brooks will play against Chicago without limitations as he returns from multiple knee injuries.",
-          "text": "Carolina running back Jonathon Brooks will play against Chicago without limitations as he returns from multiple knee injuries.",
+          "priority": 75,
+          "headline": "Panthers running back Jonathon Brooks will play against Chicago without limitations as he returns from multiple knee injuries.",
+          "text": "Panthers running back Jonathon Brooks will play against Chicago without limitations as he returns from multiple knee injuries.",
           "entities": [
             "Jonathon Brooks",
             "Carolina Panthers",
@@ -430,8 +434,8 @@
           ],
           "occurredAt": "2026-09-11T17:53:06Z",
           "timePrecision": "exact",
-          "ageHours": 3.63,
-          "freshnessBasis": "The Panthers cleared Jonathon Brooks to play without limitations after multiple knee injuries.",
+          "ageHours": 4.13,
+          "freshnessBasis": "Carolina cleared Jonathon Brooks to play without limitations as he returns from multiple knee injuries.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49905351/panthers-rb-jonathon-brooks-play-vs-bears-limitations"
@@ -443,42 +447,42 @@
               "url": "https://www.espn.com/nfl/story/_/id/49905351/panthers-rb-jonathon-brooks-play-vs-bears-limitations"
             }
           ],
-          "id": "a3-79caf4f7c52234e8",
-          "feedRank": 13,
-          "compactHeadline": "Jonathon Brooks returns for Panthers without limitations"
+          "id": "a3-0249166faea10b3d",
+          "feedRank": 15,
+          "compactHeadline": "Jonathon Brooks returns without limitations for Panthers"
         },
         {
           "rank": 7,
           "candidateIds": [
-            "cand-371194fedeb2acec"
+            "cand-82f43d6086781aaa"
           ],
           "type": "INJURY",
-          "priority": 68,
-          "headline": "Dallas ruled running back Malik Davis out against the Giants after he suffered a hip injury in practice and could miss more time.",
-          "text": "Dallas ruled running back Malik Davis out against the Giants after he suffered a hip injury in practice and could miss more time.",
+          "priority": 65,
+          "headline": "Chicago receiver Rome Odunze said he expects to play at Carolina despite being listed as questionable with a calf injury.",
+          "text": "Chicago receiver Rome Odunze said he expects to play at Carolina despite being listed as questionable with a calf injury.",
           "entities": [
-            "Malik Davis",
-            "Dallas Cowboys",
-            "New York Giants"
+            "Rome Odunze",
+            "Chicago Bears",
+            "Carolina Panthers"
           ],
-          "occurredAt": "2026-09-11T21:11:18Z",
+          "occurredAt": "2026-09-11T21:58:09Z",
           "timePrecision": "exact",
-          "ageHours": 0.32,
-          "freshnessBasis": "Malik Davis suffered a hip injury in practice and was ruled out of Dallas' season opener.",
-          "status": "active",
+          "ageHours": 0.04,
+          "freshnessBasis": "Rome Odunze said he expects to play despite Chicago listing him questionable with a calf injury.",
+          "status": "watch",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49906649/cowboys-malik-davis-hip-injured-practice-opener"
+            "https://www.espn.com/nfl/story/_/id/49907338/bears-odunze-feels-ready-panthers-questionable-tag"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49906649/cowboys-malik-davis-hip-injured-practice-opener"
+              "url": "https://www.espn.com/nfl/story/_/id/49907338/bears-odunze-feels-ready-panthers-questionable-tag"
             }
           ],
-          "id": "a3-bcc8f45b7fbc0920",
-          "feedRank": 14,
-          "compactHeadline": "Cowboys' Malik Davis out for opener with hip injury"
+          "id": "a3-96840856816a4ea0",
+          "feedRank": 18,
+          "compactHeadline": "Bears’ Rome Odunze expects to play despite calf issue"
         }
       ]
     },
@@ -493,16 +497,16 @@
           ],
           "type": "INJURY",
           "priority": 84,
-          "headline": "Phoenix center Mark Williams underwent surgery to repair a torn left shoulder labrum and is expected to miss several months.",
-          "text": "Phoenix center Mark Williams underwent surgery to repair a torn left shoulder labrum and is expected to miss several months.",
+          "headline": "Phoenix center Mark Williams had surgery to repair a torn left shoulder labrum and is expected to miss several months.",
+          "text": "Phoenix center Mark Williams had surgery to repair a torn left shoulder labrum and is expected to miss several months.",
           "entities": [
             "Mark Williams",
             "Phoenix Suns"
           ],
           "occurredAt": "2026-09-11T20:35:12Z",
           "timePrecision": "exact",
-          "ageHours": 0.93,
-          "freshnessBasis": "Mark Williams had surgery for a torn left shoulder labrum and will miss several months.",
+          "ageHours": 1.43,
+          "freshnessBasis": "Mark Williams underwent surgery for a torn left shoulder labrum and will miss several months.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49904356/sources-suns-mark-williams-miss-shoulder-surgery"
@@ -523,20 +527,19 @@
           "candidateIds": [
             "cand-62af78000d2f661b"
           ],
-          "type": "SUSPENSION",
-          "priority": 92,
-          "headline": "The NBA punished the Clippers after its Kawhi Leonard investigation with a $30 million fine, five first-round picks removed and a one-year Steve Ballmer suspension.",
-          "text": "The NBA punished the Clippers after its Kawhi Leonard investigation with a $30 million fine, five first-round picks removed and a one-year Steve Ballmer suspension.",
+          "type": "DISCIPLINE",
+          "priority": 90,
+          "headline": "The NBA fined the Clippers $30 million, took away five first-round picks and suspended owner Steve Ballmer for a year after its Kawhi investigation.",
+          "text": "The NBA fined the Clippers $30 million, took away five first-round picks and suspended owner Steve Ballmer for a year after its Kawhi investigation.",
           "entities": [
-            "LA Clippers",
+            "Los Angeles Clippers",
             "Kawhi Leonard",
-            "Steve Ballmer",
-            "NBA"
+            "Steve Ballmer"
           ],
           "occurredAt": "2026-09-11T01:50:03Z",
           "timePrecision": "exact",
-          "ageHours": 19.68,
-          "freshnessBasis": "The NBA announced a $30 million fine, five first-round picks removed and a one-year suspension for Steve Ballmer.",
+          "ageHours": 20.18,
+          "freshnessBasis": "The NBA announced a $30 million fine, five forfeited first-round picks and a one-year Steve Ballmer suspension.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49806683/nba-punishes-la-clippers-kawhi-leonard-investigation-30-million-fine-steve-ballmer-suspensions-top-questions"
@@ -548,9 +551,9 @@
               "url": "https://www.espn.com/nba/story/_/id/49806683/nba-punishes-la-clippers-kawhi-leonard-investigation-30-million-fine-steve-ballmer-suspensions-top-questions"
             }
           ],
-          "id": "a3-ee180008bd9e25b4",
+          "id": "a3-6b83cd2dbff26e22",
           "feedRank": 6,
-          "compactHeadline": "NBA hits Clippers with $30M fine, five-pick penalty"
+          "compactHeadline": "NBA hits Clippers with $30M fine and five lost picks"
         },
         {
           "rank": 3,
@@ -559,16 +562,16 @@
           ],
           "type": "LEGAL",
           "priority": 84,
-          "headline": "A federal investigation has opened into the Clippers over alleged salary-cap circumvention involving compensation for Kawhi Leonard.",
-          "text": "A federal investigation has opened into the Clippers over alleged salary-cap circumvention involving compensation for Kawhi Leonard.",
+          "headline": "A federal investigation has been opened into the Clippers over alleged salary-cap circumvention involving compensation for Kawhi Leonard.",
+          "text": "A federal investigation has been opened into the Clippers over alleged salary-cap circumvention involving compensation for Kawhi Leonard.",
           "entities": [
-            "LA Clippers",
-            "Kawhi Leonard"
+            "Kawhi Leonard",
+            "LA Clippers"
           ],
           "occurredAt": "2026-09-11T13:33:28Z",
           "timePrecision": "exact",
-          "ageHours": 7.95,
-          "freshnessBasis": "A reported federal investigation opened into the Clippers’ alleged salary-cap circumvention involving Kawhi Leonard.",
+          "ageHours": 8.46,
+          "freshnessBasis": "A federal investigation was opened into the Clippers’ alleged salary-cap circumvention involving Kawhi Leonard.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49898498/report-feds-investigating-clippers-kawhi-leonard-dealings"
@@ -580,9 +583,9 @@
               "url": "https://www.espn.com/nba/story/_/id/49898498/report-feds-investigating-clippers-kawhi-leonard-dealings"
             }
           ],
-          "id": "a3-cd443e5c77f8081d",
+          "id": "a3-806e3e9309a2192d",
           "feedRank": 11,
-          "compactHeadline": "Report: Federal investigators open Clippers inquiry"
+          "compactHeadline": "Federal investigation opened into Clippers’ Kawhi dealings"
         }
       ]
     },
@@ -596,17 +599,17 @@
             "cand-455eb7205aef4cb4"
           ],
           "type": "ROSTER",
-          "priority": 75,
-          "headline": "Detroit captain Dylan Larkin will attend training camp despite requesting a trade, and the Red Wings will begin the season without a captain.",
-          "text": "Detroit captain Dylan Larkin will attend training camp despite requesting a trade, and the Red Wings will begin the season without a captain.",
+          "priority": 74,
+          "headline": "Detroit captain Dylan Larkin will attend Red Wings training camp despite requesting a trade, while the team will begin the season without a captain.",
+          "text": "Detroit captain Dylan Larkin will attend Red Wings training camp despite requesting a trade, while the team will begin the season without a captain.",
           "entities": [
             "Dylan Larkin",
             "Detroit Red Wings"
           ],
           "occurredAt": "2026-09-11T16:19:27Z",
           "timePrecision": "exact",
-          "ageHours": 5.19,
-          "freshnessBasis": "Dylan Larkin is attending Detroit's training camp despite his offseason trade request.",
+          "ageHours": 5.69,
+          "freshnessBasis": "Detroit confirmed Dylan Larkin will attend training camp despite his offseason trade request.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49904172/dylan-larkin-attend-red-wings-camp-trade-request"
@@ -618,9 +621,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49904172/dylan-larkin-attend-red-wings-camp-trade-request"
             }
           ],
-          "id": "a3-5f9642700490f3c3",
-          "feedRank": 23,
-          "compactHeadline": "Dylan Larkin to attend Red Wings camp despite trade request"
+          "id": "a3-2a154e0c6d7ad079",
+          "feedRank": 29,
+          "compactHeadline": "Dylan Larkin will attend camp despite trade request"
         },
         {
           "rank": 2,
@@ -628,17 +631,17 @@
             "cand-9a4f65cc955897ac"
           ],
           "type": "CONTRACT",
-          "priority": 67,
-          "headline": "Vegas signed forward Braeden Bowman to a six-year extension worth an average of $3.4 million annually.",
-          "text": "Vegas signed forward Braeden Bowman to a six-year extension worth an average of $3.4 million annually.",
+          "priority": 63,
+          "headline": "Vegas signed forward Braeden Bowman to a six-year extension carrying an average annual value of $3.4 million.",
+          "text": "Vegas signed forward Braeden Bowman to a six-year extension carrying an average annual value of $3.4 million.",
           "entities": [
-            "Vegas Golden Knights",
-            "Braeden Bowman"
+            "Braeden Bowman",
+            "Vegas Golden Knights"
           ],
           "occurredAt": "2026-09-10T22:48:09Z",
           "timePrecision": "exact",
-          "ageHours": 22.71,
-          "freshnessBasis": "Vegas signed Braeden Bowman to a six-year contract extension with a $3.4 million average annual value.",
+          "ageHours": 23.21,
+          "freshnessBasis": "Vegas signed Braeden Bowman to a six-year extension worth $3.4 million annually on average.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49897130/golden-knights-sign-forward-braeden-bowman-6-year-extension"
@@ -650,9 +653,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49897130/golden-knights-sign-forward-braeden-bowman-6-year-extension"
             }
           ],
-          "id": "a3-076e6a3eac886402",
-          "feedRank": 29,
-          "compactHeadline": "Golden Knights give Bowman six-year extension"
+          "id": "a3-d5f7b5c64d75ffb6",
+          "feedRank": 32,
+          "compactHeadline": "Golden Knights give Braeden Bowman six-year extension"
         }
       ]
     },
@@ -663,35 +666,35 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-0e56dbd47eb68272"
+            "cand-64ec78ad5f7673ba"
           ],
           "type": "INJURY",
           "priority": 65,
-          "headline": "Tottenham manager Roberto De Zerbi said new winger Mykhailo Mudryk suffered an injury but backed him to return soon.",
-          "text": "Tottenham manager Roberto De Zerbi said new winger Mykhailo Mudryk suffered an injury but backed him to return soon.",
+          "headline": "Manchester United will assess Luke Shaw before deciding whether the defender is fit to face Manchester City in Sunday’s derby.",
+          "text": "Manchester United will assess Luke Shaw before deciding whether the defender is fit to face Manchester City in Sunday’s derby.",
           "entities": [
-            "Tottenham Hotspur",
-            "Mykhailo Mudryk",
-            "Roberto De Zerbi"
+            "Luke Shaw",
+            "Manchester United",
+            "Manchester City"
           ],
-          "occurredAt": "2026-09-11T16:47:20Z",
+          "occurredAt": "2026-09-11T12:36:27Z",
           "timePrecision": "exact",
-          "ageHours": 4.72,
-          "freshnessBasis": "Tottenham manager Roberto De Zerbi said Mykhailo Mudryk suffered an injury and should return soon.",
+          "ageHours": 9.41,
+          "freshnessBasis": "Manchester United said Luke Shaw will undergo a late fitness assessment before the derby.",
           "status": "watch",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49905024/tottenham-roberto-de-zerbi-says-mykhailo-mudryk-suffered-stupid-injury"
+            "https://www.espn.com/soccer/story/_/id/49903038/luke-shaw-late-fitness-test-manchester-derby-michael-carrick"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49905024/tottenham-roberto-de-zerbi-says-mykhailo-mudryk-suffered-stupid-injury"
+              "url": "https://www.espn.com/soccer/story/_/id/49903038/luke-shaw-late-fitness-test-manchester-derby-michael-carrick"
             }
           ],
-          "id": "a3-b92bd60b2f7f9f94",
-          "feedRank": 20,
-          "compactHeadline": "Tottenham’s Mudryk suffers injury after summer move"
+          "id": "a3-9315011f347fbee2",
+          "feedRank": 21,
+          "compactHeadline": "Luke Shaw faces late fitness test for Manchester derby"
         },
         {
           "rank": 2,
@@ -703,14 +706,14 @@
           "headline": "Arsenal agreed a pre-contract to sign 17-year-old forward Andria Bartishvili from Iberia 1999.",
           "text": "Arsenal agreed a pre-contract to sign 17-year-old forward Andria Bartishvili from Iberia 1999.",
           "entities": [
-            "Arsenal",
             "Andria Bartishvili",
+            "Arsenal",
             "Iberia 1999"
           ],
           "occurredAt": "2026-09-11T18:35:59Z",
           "timePrecision": "exact",
-          "ageHours": 2.91,
-          "freshnessBasis": "Arsenal agreed a pre-contract to sign 17-year-old winger Andria Bartishvili.",
+          "ageHours": 3.41,
+          "freshnessBasis": "Arsenal agreed a pre-contract to sign 17-year-old forward Andria Bartishvili.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49904487/arsenal-reach-agreement-sign-17-year-old-winger-andria-bartishvili"
@@ -722,9 +725,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/49904487/arsenal-reach-agreement-sign-17-year-old-winger-andria-bartishvili"
             }
           ],
-          "id": "a3-1b2ff2dda79b93e7",
-          "feedRank": 22,
-          "compactHeadline": "Arsenal agree pre-contract for 17-year-old winger"
+          "id": "a3-9bbec7ef8a856d84",
+          "feedRank": 24,
+          "compactHeadline": "Arsenal agree pre-contract for 17-year-old Andria Bartishvili"
         },
         {
           "rank": 3,
@@ -733,8 +736,8 @@
           ],
           "type": "CONTRACT",
           "priority": 64,
-          "headline": "Newcastle confirmed a new contract for Lewis Hall, ending Manchester United's pursuit of the defender for now.",
-          "text": "Newcastle confirmed a new contract for Lewis Hall, ending Manchester United's pursuit of the defender for now.",
+          "headline": "Newcastle confirmed a new contract for Lewis Hall, who had been a transfer target for Manchester United.",
+          "text": "Newcastle confirmed a new contract for Lewis Hall, who had been a transfer target for Manchester United.",
           "entities": [
             "Lewis Hall",
             "Newcastle United",
@@ -742,8 +745,8 @@
           ],
           "occurredAt": "2026-09-11T08:29:58Z",
           "timePrecision": "exact",
-          "ageHours": 13.01,
-          "freshnessBasis": "Newcastle confirmed Lewis Hall signed a new contract after interest from Manchester United.",
+          "ageHours": 13.51,
+          "freshnessBasis": "Newcastle confirmed that Lewis Hall signed a new contract after Manchester United interest.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49901345/man-united-transfer-target-lewis-hall-new-contract-newcastle"
@@ -756,7 +759,7 @@
             }
           ],
           "id": "a3-84dc6ec9ee9fa014",
-          "feedRank": 28,
+          "feedRank": 30,
           "compactHeadline": "Newcastle extend Lewis Hall amid Man United interest"
         }
       ]
@@ -773,47 +776,7 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-d142ce9f1f377717"
-          ],
-          "type": "RECORD",
-          "priority": 88,
-          "headline": "No. 7 Miami set a school record with 856 yards, tied its points mark and beat Florida A&M 77-7; Darian Mensah and Luke Nickel each threw three touchdowns.",
-          "text": "No. 7 Miami set a school record with 856 yards, tied its points mark and beat Florida A&M 77-7; Darian Mensah and Luke Nickel each threw three touchdowns.",
-          "entities": [
-            "Miami Hurricanes",
-            "Florida A&M Rattlers",
-            "Darian Mensah",
-            "Luke Nickel"
-          ],
-          "occurredAt": "2026-09-11T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 21.51,
-          "freshnessBasis": "Miami set a school record with 856 yards and tied its points mark in a 77-7 win over Florida A&M.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/ncf/recap?gameId=401858213"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-10",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401858213"
-            }
-          ],
-          "id": "a3-f0687de19b96cdab",
-          "feedRank": 2,
-          "compactHeadline": "No. 7 Miami sets yardage record in 77-7 rout"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-504cac32cea7fa52"
+            "cand-b95fecc1c6cdf694"
           ],
           "type": "ROSTER",
           "priority": 74,
@@ -825,10 +788,10 @@
             "Arizona Wildcats",
             "BYU Cougars"
           ],
-          "occurredAt": "2026-09-11T19:09:02Z",
+          "occurredAt": "2026-09-11T21:59:42Z",
           "timePrecision": "exact",
-          "ageHours": 2.36,
-          "freshnessBasis": "A court hearing cleared Arizona's Ismail Mahdi and Max Harris to play against No. 15 BYU.",
+          "ageHours": 0.02,
+          "freshnessBasis": "Arizona's Ismail Mahdi and Max Harris gained eligibility through a court hearing and were cleared to play BYU.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49905987/sources-arizona-rb-mahdi-lb-harris-set-play-vs-byu"
@@ -840,86 +803,19 @@
               "url": "https://www.espn.com/college-football/story/_/id/49905987/sources-arizona-rb-mahdi-lb-harris-set-play-vs-byu"
             }
           ],
-          "id": "a3-de6061616c076a5a",
+          "id": "a3-860e533bd82e9cd6",
           "feedRank": 16,
           "compactHeadline": "Arizona gains eligibility for two key players vs. BYU"
         },
         {
-          "rank": 3,
-          "candidateIds": [
-            "cand-94ab02a79763bb4a"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 74,
-          "headline": "Oklahoma will return center Jake Maikkula to the starting lineup at Michigan, while left tackle Michael Fasusi has been ruled out.",
-          "text": "Oklahoma will return center Jake Maikkula to the starting lineup at Michigan, while left tackle Michael Fasusi has been ruled out.",
-          "entities": [
-            "Oklahoma Sooners",
-            "Jake Maikkula",
-            "Michael Fasusi",
-            "Michigan Wolverines"
-          ],
-          "occurredAt": "2026-09-11T17:31:26Z",
-          "timePrecision": "exact",
-          "ageHours": 3.99,
-          "freshnessBasis": "Oklahoma reinstated Jake Maikkula as its starting center and ruled out Michael Fasusi before Michigan.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49905441/sources-oklahoma-shuffling-o-line-ahead-michigan-game"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49905441/sources-oklahoma-shuffling-o-line-ahead-michigan-game"
-            }
-          ],
-          "id": "a3-0b959c07983e7a4e",
-          "feedRank": 17,
-          "compactHeadline": "Oklahoma reshuffles offensive line before Michigan game"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-ee9b9eaaf45d4c82"
-          ],
-          "type": "INJURY",
-          "priority": 65,
-          "headline": "No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky.",
-          "text": "No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky.",
-          "entities": [
-            "Alabama Crimson Tide",
-            "Michael Carroll",
-            "Kentucky Wildcats"
-          ],
-          "occurredAt": "2026-09-11T11:19:05Z",
-          "timePrecision": "exact",
-          "ageHours": 10.19,
-          "freshnessBasis": "Alabama listed Michael Carroll as doubtful ahead of Saturday’s game at Kentucky.",
-          "status": "watch",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
-            }
-          ],
-          "id": "a3-b5f50014de6ea371",
-          "feedRank": 21,
-          "compactHeadline": "Alabama guard Michael Carroll doubtful at Kentucky"
-        },
-        {
-          "rank": 5,
+          "rank": 2,
           "candidateIds": [
             "cand-40b24ce21c37524c"
           ],
           "type": "DEPTH_CHART",
-          "priority": 67,
-          "headline": "Baylor ruled quarterback DJ Lagway out against Prairie View A&M with an ankle injury, giving Nate Bennett his first start.",
-          "text": "Baylor ruled quarterback DJ Lagway out against Prairie View A&M with an ankle injury, giving Nate Bennett his first start.",
+          "priority": 74,
+          "headline": "Baylor ruled out quarterback DJ Lagway for Saturday's game against Prairie View A&M with an ankle injury, handing Nate Bennett his first start.",
+          "text": "Baylor ruled out quarterback DJ Lagway for Saturday's game against Prairie View A&M with an ankle injury, handing Nate Bennett his first start.",
           "entities": [
             "DJ Lagway",
             "Nate Bennett",
@@ -928,8 +824,8 @@
           ],
           "occurredAt": "2026-09-11T17:34:25Z",
           "timePrecision": "exact",
-          "ageHours": 3.94,
-          "freshnessBasis": "Baylor ruled DJ Lagway out with an ankle injury and named Nate Bennett its starting quarterback.",
+          "ageHours": 4.44,
+          "freshnessBasis": "Baylor ruled DJ Lagway out with an ankle injury and named Nate Bennett its starter for Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49905329/sources-baylor-qb-dj-lagway-ruled-nate-bennett-start"
@@ -942,8 +838,75 @@
             }
           ],
           "id": "a3-fd06f1b16d6191cf",
-          "feedRank": 26,
+          "feedRank": 17,
           "compactHeadline": "Baylor rules out DJ Lagway; Nate Bennett to make first start"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-94ab02a79763bb4a"
+          ],
+          "type": "DEPTH_CHART",
+          "priority": 72,
+          "headline": "Oklahoma will return center Jake Maikkula to the starting lineup against Michigan, while left tackle Michael Fasusi has been ruled out.",
+          "text": "Oklahoma will return center Jake Maikkula to the starting lineup against Michigan, while left tackle Michael Fasusi has been ruled out.",
+          "entities": [
+            "Jake Maikkula",
+            "Michael Fasusi",
+            "Oklahoma Sooners",
+            "Michigan Wolverines"
+          ],
+          "occurredAt": "2026-09-11T17:31:26Z",
+          "timePrecision": "exact",
+          "ageHours": 4.49,
+          "freshnessBasis": "Oklahoma announced Jake Maikkula’s return to the starting lineup and ruled Michael Fasusi out.",
+          "status": "watch",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49905441/sources-oklahoma-shuffling-o-line-ahead-michigan-game"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49905441/sources-oklahoma-shuffling-o-line-ahead-michigan-game"
+            }
+          ],
+          "id": "a3-0b959c07983e7a4e",
+          "feedRank": 20,
+          "compactHeadline": "Oklahoma reshuffles offensive line before Michigan game"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-ee9b9eaaf45d4c82"
+          ],
+          "type": "INJURY",
+          "priority": 65,
+          "headline": "No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky.",
+          "text": "No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky.",
+          "entities": [
+            "Michael Carroll",
+            "Alabama Crimson Tide",
+            "Kentucky Wildcats"
+          ],
+          "occurredAt": "2026-09-11T11:19:05Z",
+          "timePrecision": "exact",
+          "ageHours": 10.7,
+          "freshnessBasis": "Alabama listed Michael Carroll as doubtful for Saturday’s game at Kentucky.",
+          "status": "watch",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky"
+            }
+          ],
+          "id": "a3-59251c0189d70bf8",
+          "feedRank": 22,
+          "compactHeadline": "No. 12 Alabama guard Michael Carroll doubtful at Kentucky"
         }
       ]
     }
@@ -958,19 +921,18 @@
           "candidateIds": [
             "cand-9c1eb130f28f377a"
           ],
-          "type": "ADVANCEMENT",
-          "priority": 88,
-          "headline": "Elena Rybakina rallied past Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final against Aryna Sabalenka and take over No. 1 next week.",
-          "text": "Elena Rybakina rallied past Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final against Aryna Sabalenka and take over No. 1 next week.",
+          "type": "RANKING",
+          "priority": 87,
+          "headline": "Elena Rybakina rallied past Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final and take the top spot in next week's rankings.",
+          "text": "Elena Rybakina rallied past Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final and take the top spot in next week's rankings.",
           "entities": [
             "Elena Rybakina",
             "Coco Gauff",
-            "Aryna Sabalenka",
-            "US Open"
+            "Aryna Sabalenka"
           ],
           "occurredAt": "2026-09-11T05:16:55Z",
           "timePrecision": "exact",
-          "ageHours": 16.23,
+          "ageHours": 16.73,
           "freshnessBasis": "Elena Rybakina beat Coco Gauff in three sets to reach the US Open final and move to No. 1 next week.",
           "status": "active",
           "sourceUrls": [
@@ -983,9 +945,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49898331/rybakina-ends-gauff-us-open-run-sets-title-clash-sabalenka"
             }
           ],
-          "id": "a3-special-dfc28542d327f61b",
+          "id": "a3-special-77e100b66f89b3df",
           "feedRank": 3,
-          "compactHeadline": "Rybakina rallies past Gauff to reach US Open final"
+          "compactHeadline": "Rybakina reaches US Open final, set to become No. 1"
         }
       ]
     },
@@ -996,22 +958,55 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-2ddadb1d3e0d5ee3"
+          ],
+          "type": "RECORD",
+          "priority": 76,
+          "headline": "The Solheim Cup is tied 2-2 after the opening foursomes, where Nelly Korda and Allisen Corpuz formed a record-setting U.S. partnership.",
+          "text": "The Solheim Cup is tied 2-2 after the opening foursomes, where Nelly Korda and Allisen Corpuz formed a record-setting U.S. partnership.",
+          "entities": [
+            "Nelly Korda",
+            "Allisen Corpuz",
+            "Team USA",
+            "Team Europe"
+          ],
+          "occurredAt": "2026-09-11T13:30:03Z",
+          "timePrecision": "exact",
+          "ageHours": 8.51,
+          "freshnessBasis": "The Solheim Cup opening foursomes ended tied 2-2 after Korda and Corpuz set a partnership record.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/golf/story/_/id/49902104/europe-us-tied-2-2-opening-session-solheim-cup"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-lpga",
+              "url": "https://www.espn.com/golf/story/_/id/49902104/europe-us-tied-2-2-opening-session-solheim-cup"
+            }
+          ],
+          "id": "a3-special-692ef9852a8b3a5c",
+          "feedRank": 7,
+          "compactHeadline": "Solheim Cup opens tied 2-2 after record-setting partnership"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-a0027eb7582adad7"
           ],
           "type": "EVENT_UPDATE",
           "priority": 76,
-          "headline": "Europe and the United States are tied 4-4 after Day 1 of the Solheim Cup, with Carlota Ciganda's unlikely par securing a half-point late.",
-          "text": "Europe and the United States are tied 4-4 after Day 1 of the Solheim Cup, with Carlota Ciganda's unlikely par securing a half-point late.",
+          "headline": "Europe and the United States finished Day 1 tied 4-4 after Carlota Ciganda's unlikely par secured a half-point for Europe late in the session.",
+          "text": "Europe and the United States finished Day 1 tied 4-4 after Carlota Ciganda's unlikely par secured a half-point for Europe late in the session.",
           "entities": [
             "Carlota Ciganda",
-            "Solheim Cup",
-            "Europe",
-            "United States"
+            "Team Europe",
+            "Team USA"
           ],
           "occurredAt": "2026-09-11T18:13:17Z",
           "timePrecision": "exact",
-          "ageHours": 3.29,
-          "freshnessBasis": "Carlota Ciganda secured a late half-point as Europe and the United States finished Day 1 tied 4-4.",
+          "ageHours": 3.79,
+          "freshnessBasis": "Carlota Ciganda's late par left Europe and the United States tied 4-4 after Day 1 of the Solheim Cup.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/golf/story/_/id/49905523/solheim-cup-europe-us-tied-4-4-ciganda-late-heroics"
@@ -1024,7 +1019,7 @@
             }
           ],
           "id": "a3-special-42437077df81eb0d",
-          "feedRank": 15,
+          "feedRank": 14,
           "compactHeadline": "Solheim Cup tied 4-4 after Ciganda's late heroics"
         }
       ]
@@ -1036,23 +1031,53 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-6590e362a314c37e"
+          ],
+          "type": "EVENT_UPDATE",
+          "priority": 73,
+          "headline": "An F2 car caught fire during the Spanish Grand Prix weekend as the new Madrid circuit made its debut.",
+          "text": "An F2 car caught fire during the Spanish Grand Prix weekend as the new Madrid circuit made its debut.",
+          "entities": [
+            "Spanish Grand Prix",
+            "Formula 2"
+          ],
+          "occurredAt": "2026-09-11T10:46:03Z",
+          "timePrecision": "exact",
+          "ageHours": 11.25,
+          "freshnessBasis": "An F2 car caught fire during the opening Spanish Grand Prix weekend at the new Madrid circuit.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/f1/story/_/id/49902064/f2-car-bursts-flames-risky-madrid-circuit-debuts-spanish-gp"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/f1/story/_/id/49902064/f2-car-bursts-flames-risky-madrid-circuit-debuts-spanish-gp"
+            }
+          ],
+          "id": "a3-special-6d1d34523eac9d86",
+          "feedRank": 23,
+          "compactHeadline": "F2 car catches fire as Spanish GP circuit debuts"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-2c605ead6a0ea3c7"
           ],
           "type": "PRACTICE",
-          "priority": 62,
-          "headline": "Mercedes rookie Kimi Antonelli topped second practice for the Spanish Grand Prix, while George Russell was fifth and Arvid Lindblad crashed.",
-          "text": "Mercedes rookie Kimi Antonelli topped second practice for the Spanish Grand Prix, while George Russell was fifth and Arvid Lindblad crashed.",
+          "priority": 73,
+          "headline": "Kimi Antonelli led second practice at the Spanish Grand Prix, while rookie Arvid Lindblad crashed at the new Madrid circuit.",
+          "text": "Kimi Antonelli led second practice at the Spanish Grand Prix, while rookie Arvid Lindblad crashed at the new Madrid circuit.",
           "entities": [
-            "Spanish Grand Prix",
             "Kimi Antonelli",
-            "George Russell",
             "Arvid Lindblad",
             "Mercedes"
           ],
           "occurredAt": "2026-09-11T17:05:28Z",
           "timePrecision": "exact",
-          "ageHours": 4.42,
-          "freshnessBasis": "Kimi Antonelli led second practice at the Spanish Grand Prix while Arvid Lindblad crashed out.",
+          "ageHours": 4.92,
+          "freshnessBasis": "Kimi Antonelli topped second practice and Arvid Lindblad crashed during the Spanish Grand Prix weekend.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/f1/story/_/id/49867133/mercedes-kimi-antonelli-quickest-second-practice-george-russell-fifth-spanish-grand-prix-madring-formula-1"
@@ -1064,9 +1089,42 @@
               "url": "https://www.espn.com/f1/story/_/id/49867133/mercedes-kimi-antonelli-quickest-second-practice-george-russell-fifth-spanish-grand-prix-madring-formula-1"
             }
           ],
-          "id": "a3-special-a13ed61cee0a2682",
-          "feedRank": 30,
-          "compactHeadline": "Antonelli quickest in Spanish GP second practice"
+          "id": "a3-special-5f255bba3bb34618",
+          "feedRank": 28,
+          "compactHeadline": "Antonelli fastest in Spanish GP practice as Lindblad crashes"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-25c62d8f5c46eb79"
+          ],
+          "type": "PRACTICE",
+          "priority": 63,
+          "headline": "Kimi Antonelli set the fastest time in second practice for the Spanish Grand Prix on Madrid’s new circuit.",
+          "text": "Kimi Antonelli set the fastest time in second practice for the Spanish Grand Prix on Madrid’s new circuit.",
+          "entities": [
+            "Kimi Antonelli",
+            "Spanish Grand Prix",
+            "Mercedes"
+          ],
+          "occurredAt": "2026-09-11T16:42:11Z",
+          "timePrecision": "exact",
+          "ageHours": 5.31,
+          "freshnessBasis": "Kimi Antonelli topped second practice at the Spanish Grand Prix in Madrid.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/f1/story/_/id/49867235/spanish-grand-prix-2026-live-madrid-updates-results-analysis-commentary"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/f1/story/_/id/49867235/spanish-grand-prix-2026-live-madrid-updates-results-analysis-commentary"
+            }
+          ],
+          "id": "a3-special-fa31b2f7b5abf026",
+          "feedRank": 31,
+          "compactHeadline": "Antonelli leads Spanish GP practice at new Madrid circuit"
         }
       ]
     }
@@ -1079,10 +1137,10 @@
   "compactHeadlineRole": "compact-editorial-metadata",
   "browserWireCompat": {
     "version": "A4.14",
-    "changedCount": 30,
+    "changedCount": 32,
     "policy": "mirror text -> headline at JSON serialization only"
   },
-  "headlineCount": 30,
+  "headlineCount": 32,
   "headlineTargetChars": 80,
   "headlineMaxChars": 96
 }
