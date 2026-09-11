@@ -32,30 +32,63 @@ permissions:
 
 concurrency:
   group: ${{ github.event_name == 'workflow_dispatch' && inputs.emergency_bypass && format('sports-big-board-emergency-{0}', github.run_id) || 'sports-big-board-production' }}
-  cancel-in-progress: true
+  # Never cancel a release that may already be changing the VM/catalog. New
+  # production pushes queue behind the active deployment instead.
+  cancel-in-progress: false
 
 jobs:
+  classify:
+    name: Classify deployment scope
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && inputs.runner_image || 'ubuntu-latest' }}
+    timeout-minutes: 10
+    outputs:
+      backend_required: ${{ steps.scope.outputs.backend_required }}
+      frontend_only: ${{ steps.scope.outputs.frontend_only }}
+    steps:
+      - name: Checkout repository history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Classify changed files
+        id: scope
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          EXTRA=()
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then EXTRA+=(--force-backend); fi
+          python3 tools/classify_deploy_scope.py \
+            --before "$BEFORE_SHA" \
+            --after "$AFTER_SHA" \
+            --github-output "$GITHUB_OUTPUT" \
+            "${EXTRA[@]}"
+
   verify:
     name: Verify release
     runs-on: ${{ github.event_name == 'workflow_dispatch' && inputs.runner_image || 'ubuntu-latest' }}
     timeout-minutes: 30
+    needs: classify
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1.2 release checkout
+      - name: Materialize release checkout
         run: python3 tools/apply_v612_release.py
       - name: Run Sports Big Board verification
         run: bash VERIFY.sh
+      - name: Verify deploy-scope classifier
+        run: python3 tests/test_deploy_scope_classifier.py
 
   backend:
     name: Deploy cloud backend
     runs-on: ${{ github.event_name == 'workflow_dispatch' && inputs.runner_image || 'ubuntu-latest' }}
     timeout-minutes: 30
-    needs: verify
+    needs: [classify, verify]
+    if: ${{ needs.classify.outputs.backend_required == 'true' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1.2 release checkout
+      - name: Materialize release checkout
         run: python3 tools/apply_v612_release.py
 
       - name: Require cloud deployment configuration
@@ -114,12 +147,25 @@ jobs:
     name: Build GitHub Pages frontend
     runs-on: ${{ github.event_name == 'workflow_dispatch' && inputs.runner_image || 'ubuntu-latest' }}
     timeout-minutes: 30
-    needs: backend
+    needs: [classify, verify, backend]
+    if: ${{ always() && needs.verify.result == 'success' && (needs.backend.result == 'success' || needs.backend.result == 'skipped') }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1.2 release checkout
+      - name: Materialize release checkout
         run: python3 tools/apply_v612_release.py
+      - name: Verify existing backend for frontend-only deploy
+        if: ${{ needs.backend.result == 'skipped' }}
+        env:
+          SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
+        run: |
+          EXPECTED_VERSION="$(tr -d '[:space:]' < VERSION)"
+          curl --fail --silent --show-error --max-time 15 "$SBB_API_BASE_URL/api/status" > /tmp/sbb-existing-status.json
+          ACTUAL_VERSION="$(python3 -c 'import json; print(json.load(open("/tmp/sbb-existing-status.json")).get("version", ""))')"
+          cat /tmp/sbb-existing-status.json
+          echo
+          echo "FRONTEND FAST PATH: backend deploy skipped. Expected existing backend $EXPECTED_VERSION; found $ACTUAL_VERSION."
+          test "$ACTUAL_VERSION" = "$EXPECTED_VERSION"
       - name: Build static frontend
         env:
           SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
@@ -156,7 +202,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Materialize v6.1.2 release checkout
+      - name: Materialize release checkout
         run: python3 tools/apply_v612_release.py
       - name: Verify public milestone release
         env:
