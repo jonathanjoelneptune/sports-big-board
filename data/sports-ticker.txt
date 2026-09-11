@@ -1,35 +1,35 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-11T17:00:52Z
+Updated: 2026-09-11T17:30:56Z
 Global headline budget: 31/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: 65489749e49beb28d4323d499e8609cf2a81d666dc7b9f9b789fbd83e2ed4cc4
+Candidate hash: 4be7bed5c4b22de3b604ed6e7efcd09b420f82769a1e07ade5f42f903035b725
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [PLAYOFF] Atlanta denied Tampa Bay a chance to clinch a playoff berth as Martín Pérez threw seven scoreless innings and Austin Riley delivered the go-ahead single. (priority 84, age 22.26h)
-    Compact headline: Braves deny Rays’ playoff-clinch chance in 3-1 win
+ 1. [PLAYOFF] Atlanta beat Tampa Bay 3-1 as Martín Pérez threw seven scoreless innings and Austin Riley delivered the go-ahead single in the eighth. (priority 84, age 22.76h)
+    Compact headline: Braves delay Rays’ playoff-clinch bid with 3-1 win
     Occurred: 2026-09-10T18:45:30Z | Precision: exact | Status: active
-    Freshness basis: Atlanta beat Tampa Bay 3-1 and prevented the Rays from potentially clinching a playoff berth.
+    Freshness basis: Atlanta beat Tampa Bay 3-1, denying the Rays a chance to clinch a playoff berth Thursday.
     Entities: Atlanta Braves, Tampa Bay Rays, Martín Pérez, Austin Riley
     Candidate IDs: cand-3613dff6a356bd09
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816885
 
- 2. [RESULT] Anthony Volpe hit a grand slam and drove in a career-high five runs in his return to the majors, powering the Yankees past Colorado 10-3. (priority 82, age 17.93h)
+ 2. [RETURN] Anthony Volpe hit a grand slam and drove in a career-high five runs in his return from Triple-A, lifting New York past Colorado 10-3. (priority 83, age 18.43h)
     Compact headline: Volpe hits grand slam in Yankees return to majors
     Occurred: 2026-09-10T23:05:00Z | Precision: exact | Status: active
-    Freshness basis: Anthony Volpe returned to the majors and hit a grand slam with five RBIs in New York’s 10-3 win over Colorado.
+    Freshness basis: Anthony Volpe returned from Triple-A and hit a grand slam with five RBIs in New York’s 10-3 win over Colorado.
     Entities: New York Yankees, Colorado Rockies, Anthony Volpe
     Candidate IDs: cand-e416ec91a691dac3
     Source [Highlightly/highlightly-baseball-2026-09-10]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816883
 
- 3. [INJURY] Pittsburgh placed All-Star right-hander Braxton Ashcraft on the 15-day injured list with right arm discomfort. (priority 66, age 18.31h)
+ 3. [INJURY] Pittsburgh placed All-Star right-hander Braxton Ashcraft on the 15-day injured list with right arm discomfort. (priority 65, age 18.81h)
     Compact headline: Pirates place All-Star starter Braxton Ashcraft on IL
     Occurred: 2026-09-10T22:42:14Z | Precision: exact | Status: active
     Freshness basis: Pittsburgh placed Braxton Ashcraft on the 15-day injured list Thursday.
@@ -37,145 +37,135 @@ MLB  [ACTIVE]
     Candidate IDs: cand-2032da72e590170d
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49896764/pirates-braxton-ashcraft-arm-discomfort-lands-il
 
- 4. [RESULT] Julio Rodríguez hit a go-ahead three-run homer in Seattle’s four-run seventh after Jacob deGrom retired his first 15 batters and struck out 12. (priority 72, age 20.85h)
-    Compact headline: Rodríguez’s homer lifts Mariners past Rangers 4-3
+ 4. [RESULT] Jacob deGrom retired his first 15 batters and struck out 12 for his highest total since 2022 but Julio Rodríguez hit a go-ahead, three-run homer off Jakob Junis in a four-run seventh that lifted the Seattle Mariners over the Texas Rangers 4-3 Thursday. (priority 72, age 21.35h)
+    Compact headline: Rodríguez’s three-run homer lifts Mariners past Rangers
     Occurred: 2026-09-10T20:10:00Z | Precision: exact | Status: active
-    Freshness basis: Seattle beat Texas 4-3 as Julio Rodríguez hit a go-ahead three-run homer and Jacob deGrom struck out 12.
+    Freshness basis: Seattle beat Texas 4-3 after Julio Rodríguez’s go-ahead three-run homer in the seventh inning.
     Entities: Seattle Mariners, Texas Rangers, Julio Rodríguez, Jacob deGrom
     Candidate IDs: cand-e7074b9e08338115
     Source [Highlightly/highlightly-baseball-2026-09-10]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816887
 
- 5. [INJURY] Atlanta placed outfielder Lane Thomas on the 15-day injured list with an intercostal injury sustained before Thursday’s game. (priority 65, age 21.16h)
+ 5. [RESULT] Cam Smith hit a tiebreaking home run in the ninth inning off Jhoan Duran and Cristian Javier combined on a three-hitter to lead the Houston Astros over the Philadelphia Phillies 2-1 Thursday. (priority 72, age 21.44h)
+    Compact headline: Cam Smith’s ninth-inning homer decides Astros-Phillies
+    Occurred: 2026-09-10T20:04:31Z | Precision: exact | Status: active
+    Freshness basis: Cam Smith hit a tiebreaking ninth-inning home run as Houston beat Philadelphia 2-1.
+    Entities: Houston Astros, Philadelphia Phillies, Cam Smith, Cristian Javier, Jhoan Duran
+    Candidate IDs: cand-c603c16a4986be9c
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816884
+
+ 6. [INJURY] Atlanta placed outfielder Lane Thomas on the 15-day injured list with an intercostal injury after he was hurt in the batting cage. (priority 65, age 21.66h)
     Compact headline: Braves send Lane Thomas to IL after batting-cage injury
     Occurred: 2026-09-10T19:51:27Z | Precision: exact | Status: active
-    Freshness basis: Atlanta placed Lane Thomas on the 15-day injured list after he suffered an intercostal injury in the batting cage Thursday.
+    Freshness basis: Atlanta placed Lane Thomas on the 15-day injured list Thursday after his batting-cage injury.
     Entities: Atlanta Braves, Lane Thomas
     Candidate IDs: cand-710ae535e70a42ad
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49895313/braves-lane-thomas-headed-il-batting-cage-injury
-
- 6. [RESULT] Cam Smith hit a tiebreaking home run in the ninth inning off Jhoan Duran and Cristian Javier combined on a three-hitter to lead the Houston Astros over the Philadelphia Phillies 2-1 Thursday. (priority 72, age 23.93h)
-    Compact headline: Cam Smith’s ninth-inning homer lifts Astros 2-1
-    Occurred: 2026-09-10T17:05:00Z | Precision: exact | Status: active
-    Freshness basis: Houston beat Philadelphia 2-1 on Cam Smith’s ninth-inning homer off Jhoan Duran.
-    Entities: Houston Astros, Philadelphia Phillies, Cam Smith, Jhoan Duran, Cristian Javier
-    Candidate IDs: cand-8e9a5525da51862e
-    Source [Highlightly/highlightly-baseball-2026-09-10]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816884
-    Source [ESPN/a44-espn-mlb-summary-401816884]: https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816884
 
 ============================================================================
 NFL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] New England is placing wide receiver A.J. Brown on injured reserve with a high ankle sprain, sidelining him for at least four games. (priority 79, age 0.06h)
-    Compact headline: Patriots place A.J. Brown on IR with high ankle sprain
-    Occurred: 2026-09-11T16:57:26Z | Precision: exact | Status: active
-    Freshness basis: New England placed A.J. Brown on injured reserve with a high ankle sprain and a minimum four-game absence.
+ 1. [INJURY] New England is placing wide receiver A.J. Brown on injured reserve with a high ankle sprain, sidelining him for at least four games. (priority 79, age 0.26h)
+    Compact headline: A.J. Brown headed to IR, will miss at least four games
+    Occurred: 2026-09-11T17:15:18Z | Precision: exact | Status: active
+    Freshness basis: New England announced A.J. Brown will go on injured reserve with a high ankle sprain and miss at least four games.
     Entities: New England Patriots, A.J. Brown
     Candidate IDs: cand-7992d3b3ef99db99
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49905144/sources-patriots-aj-brown-go-ir-miss-least-4-games
 
- 2. [DEPTH_CHART] Jacksonville says Travis Hunter will play both ways, though the Jaguars have not finalized how much he will play on offense or defense. (priority 74, age 0.10h)
-    Compact headline: Jaguars plan to use Travis Hunter on offense and defense
-    Occurred: 2026-09-11T16:55:06Z | Precision: exact | Status: watch
-    Freshness basis: Jacksonville said Friday that Travis Hunter will play both ways, with his workload still unsettled.
+ 2. [INJURY] Tennessee ruled out starting linebacker Cedric Gray for Sunday’s opener against the Jets after placing him in concussion protocol following a UTV accident. (priority 74, age 0.14h)
+    Compact headline: Titans rule out Cedric Gray after UTV accident
+    Occurred: 2026-09-11T17:22:16Z | Precision: exact | Status: active
+    Freshness basis: Tennessee ruled Cedric Gray out for Sunday’s season opener after placing him in concussion protocol Monday.
+    Entities: Tennessee Titans, Cedric Gray, New York Jets
+    Candidate IDs: cand-8418c88163756bbb
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49905346/titans-lb-cedric-gray-ruled-vs-jets-utv-accident
+
+ 3. [RETURN] Carolina running back Jonathon Brooks will play against Chicago without limitations as he returns from multiple knee injuries. (priority 74, age 0.14h)
+    Compact headline: Jonathon Brooks cleared to return without limitations
+    Occurred: 2026-09-11T17:22:39Z | Precision: exact | Status: active
+    Freshness basis: Carolina cleared Jonathon Brooks to play without limitations after multiple knee injuries.
+    Entities: Carolina Panthers, Jonathon Brooks, Chicago Bears
+    Candidate IDs: cand-838cdcc219648a88
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49905351/panthers-rb-jonathon-brooks-play-vs-bears-limitations
+
+ 4. [DEPTH_CHART] Jacksonville plans to play Travis Hunter on offense and defense, though the Jaguars’ exact two-way workload remains fluid. (priority 73, age 0.13h)
+    Compact headline: Jaguars plan to use Travis Hunter on both sides
+    Occurred: 2026-09-11T17:23:25Z | Precision: exact | Status: watch
+    Freshness basis: Jacksonville said Travis Hunter will play both ways during the 2026 season.
     Entities: Jacksonville Jaguars, Travis Hunter
     Candidate IDs: cand-2c3c88b4af0dc9ab
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49905026/jags-travis-hunter-play-ways-plan-fluid
 
- 3. [INJURY] San Francisco wide receiver De’Zhaun Stribling will undergo further testing after initial exams did not establish the severity of his ankle injury. (priority 65, age 1.98h)
-    Compact headline: 49ers send De'Zhaun Stribling for more ankle tests
-    Occurred: 2026-09-11T15:02:10Z | Precision: exact | Status: watch
-    Freshness basis: San Francisco scheduled additional testing for De’Zhaun Stribling after initial ankle evaluations were inconclusive Friday.
-    Entities: San Francisco 49ers, De'Zhaun Stribling
-    Candidate IDs: cand-c20558f4cda35ed6
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49899228/49ers-dezhaun-stribling-exits-vs-rams-due-ankle-injury
-
- 4. [SIGNING] New England is expected to sign defensive tackle DaQuan Jones to a one-year contract worth up to $6 million. (priority 65, age 0.24h)
-    Compact headline: Patriots add DaQuan Jones on one-year deal
+ 5. [SIGNING] New England is expected to sign defensive tackle DaQuan Jones to a one-year deal worth up to $6 million. (priority 65, age 0.74h)
+    Compact headline: Patriots add DaQuan Jones on reported one-year deal
     Occurred: 2026-09-11T16:46:26Z | Precision: exact | Status: active
-    Freshness basis: New England agreed to add DaQuan Jones on a one-year deal worth up to $6 million.
+    Freshness basis: New England was reported to be adding DaQuan Jones on a one-year contract worth up to $6 million.
     Entities: New England Patriots, DaQuan Jones
     Candidate IDs: cand-6034d133f2ff0f7f
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49904397/sources-patriots-add-daquan-jones-1-year-6m-deal
 
- 5. [RESULT] Brock Purdy threw three touchdown passes as San Francisco beat the Rams 27-7 in the NFL’s first regular-season game played in Australia. (priority 72, age 16.43h)
+ 6. [RESULT] Brock Purdy threw three touchdown passes as San Francisco beat the Rams 27-7 in the NFL’s first regular-season game in Australia. (priority 72, age 16.93h)
     Compact headline: 49ers rout Rams 27-7 in NFL’s first Australia game
     Occurred: 2026-09-11T00:35:00Z | Precision: exact | Status: active
-    Freshness basis: San Francisco beat Los Angeles 27-7 in the NFL’s first regular-season game in Australia.
+    Freshness basis: San Francisco beat the Rams 27-7 in the NFL’s first regular-season game played in Australia.
     Entities: San Francisco 49ers, Los Angeles Rams, Brock Purdy
     Candidate IDs: cand-9e4680ea120778c0
     Source [Highlightly/highlightly-american-football-2026-09-10]: https://highlightly.net
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49900760/shanahan-mcvay-brush-travel-plans-factor-niners-win-rams
     Source [ESPN/espn-nfl]: http://www.espn.com/nfl/recap?gameId=401872657
 
- 6. [NEXT] Arizona expects rookie running back Jeremiyah Love to play Sunday after he dealt with a high ankle sprain since mid-August. (priority 72, age 0.34h)
-    Compact headline: Cardinals expect Jeremiyah Love to play in opener
-    Occurred: 2026-09-11T16:40:37Z | Precision: exact | Status: next
-    Freshness basis: Arizona expects Jeremiyah Love to play Sunday after his high ankle sprain kept him limited since mid-August.
-    Entities: Arizona Cardinals, Jeremiyah Love
-    Candidate IDs: cand-261b99c490ffb132
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49904717/source-cardinals-rb-love-ankle-expected-play-opener
-
 ============================================================================
 NBA  [OFFSEASON]
 ============================================================================
 
- 1. [INJURY] Phoenix center Mark Williams underwent surgery to repair a torn labrum in his left shoulder and will miss an extended period. (priority 84, age 0.62h)
-    Compact headline: Suns’ Mark Williams has shoulder surgery, will miss time
-    Occurred: 2026-09-11T16:23:40Z | Precision: exact | Status: active
-    Freshness basis: Mark Williams had surgery to repair a torn left-shoulder labrum and is expected to miss an extended period.
-    Entities: Phoenix Suns, Mark Williams
-    Candidate IDs: cand-076e767542e94869
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49904356/sources-suns-mark-williams-miss-shoulder-surgery
-
- 2. [DISCIPLINE] The NBA fined the Clippers $30 million, took away five first-round picks and suspended owner Steve Ballmer for a year after its Kawhi investigation. (priority 90, age 15.18h)
-    Compact headline: NBA punishes Clippers with $30M fine, five lost picks
+ 1. [SUSPENSION] The NBA fined the Clippers $30 million, took away five first-round picks and suspended Steve Ballmer for a year after its Kawhi investigation. (priority 92, age 15.68h)
+    Compact headline: NBA hands Clippers historic punishment after investigation
     Occurred: 2026-09-11T01:50:03Z | Precision: exact | Status: active
-    Freshness basis: The NBA announced a $30 million fine, five forfeited first-round picks and a one-year Steve Ballmer suspension for the Clippers.
+    Freshness basis: The NBA announced a $30 million fine, five forfeited first-round picks and a one-year suspension for Steve Ballmer.
     Entities: NBA, LA Clippers, Steve Ballmer, Kawhi Leonard
     Candidate IDs: cand-62af78000d2f661b
     Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49806683/nba-punishes-la-clippers-kawhi-leonard-investigation-30-million-fine-steve-ballmer-suspensions-top-questions
 
- 3. [LEGAL] A federal investigation is examining whether the Clippers circumvented the NBA salary cap in their dealings with Kawhi Leonard. (priority 85, age 3.46h)
-    Compact headline: Federal probe examines Clippers’ dealings with Kawhi Leonard
-    Occurred: 2026-09-11T13:33:28Z | Precision: exact | Status: active
-    Freshness basis: A federal investigation into the Clippers’ dealings with Kawhi Leonard was reported Friday.
-    Entities: LA Clippers, Kawhi Leonard
-    Candidate IDs: cand-1452fcc86cedfa81
-    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49898498/report-feds-investigating-clippers-kawhi-leonard-dealings
+ 2. [INJURY] Phoenix center Mark Williams underwent surgery to repair a torn left shoulder labrum and is expected to miss several months. (priority 78, age 0.43h)
+    Compact headline: Suns’ Mark Williams out months after shoulder surgery
+    Occurred: 2026-09-11T17:04:50Z | Precision: exact | Status: active
+    Freshness basis: Mark Williams had surgery to repair a torn left shoulder labrum and will miss several months.
+    Entities: Phoenix Suns, Mark Williams
+    Candidate IDs: cand-ccdb00401ce60f2d
+    Source [ESPN/espn-nba]: https://www.espn.com/nba/story/_/id/49904356/sources-suns-mark-williams-miss-shoulder-surgery
 
 ============================================================================
 NHL  [OFFSEASON]
 ============================================================================
 
- 1. [INJURY] Los Angeles forward Kevin Fiala had follow-up surgery for his broken leg and will miss the start of Kings training camp. (priority 78, age 19.50h)
-    Compact headline: Kings’ Kevin Fiala undergoes follow-up leg surgery
+ 1. [INJURY] Los Angeles forward Kevin Fiala underwent follow-up surgery on his broken leg and will miss the start of training camp. (priority 77, age 20.01h)
+    Compact headline: Kings’ Kevin Fiala has more surgery, misses camp start
     Occurred: 2026-09-10T21:30:35Z | Precision: exact | Status: active
-    Freshness basis: Kevin Fiala underwent further surgery on his broken leg and will miss the start of training camp.
+    Freshness basis: Kevin Fiala underwent follow-up surgery for his broken leg and will miss the start of Kings training camp.
     Entities: Los Angeles Kings, Kevin Fiala
     Candidate IDs: cand-fc1f120394344f72
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49896294/kings-kevin-fiala-further-surgery-miss-start-camp
 
- 2. [ROSTER] Detroit captain Dylan Larkin will attend training camp despite requesting a trade, while the Red Wings say they will begin the season without a captain. (priority 73, age 0.69h)
-    Compact headline: Larkin to attend Red Wings camp despite trade request
+ 2. [ROSTER] Detroit captain Dylan Larkin will attend training camp despite requesting a trade, and the Red Wings will begin the season without a captain. (priority 72, age 1.19h)
+    Compact headline: Dylan Larkin to attend Red Wings camp despite trade request
     Occurred: 2026-09-11T16:19:27Z | Precision: exact | Status: active
     Freshness basis: Dylan Larkin is set to attend Detroit’s training camp despite his offseason trade request.
     Entities: Detroit Red Wings, Dylan Larkin
     Candidate IDs: cand-455eb7205aef4cb4
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49904172/dylan-larkin-attend-red-wings-camp-trade-request
 
- 3. [ROSTER] Anaheim waived veteran forward Chris Kreider, who has expressed a desire to play closer to the East Coast. (priority 74, age 22.38h)
-    Compact headline: Ducks waive Chris Kreider with East Coast move possible
+ 3. [ROSTER] Anaheim waived veteran forward Chris Kreider after he expressed a desire to play closer to the East Coast. (priority 73, age 22.88h)
+    Compact headline: Ducks waive veteran Chris Kreider ahead of East move
     Occurred: 2026-09-10T18:38:16Z | Precision: exact | Status: active
-    Freshness basis: Anaheim waived Chris Kreider Thursday as the veteran seeks a move closer to the East Coast.
+    Freshness basis: Anaheim waived Chris Kreider after the veteran forward requested a move closer to the East Coast.
     Entities: Anaheim Ducks, Chris Kreider
     Candidate IDs: cand-580564cd30391021
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49881489/source-ducks-waiving-chris-kreider-east-move-deck
 
- 4. [CONTRACT] Vegas signed forward Braeden Bowman to a six-year extension worth an average of $3.4 million per season. (priority 64, age 18.21h)
-    Compact headline: Golden Knights extend Braeden Bowman for six years
+ 4. [SIGNING] Vegas signed forward Braeden Bowman to a six-year extension carrying a $3.4 million average annual value. (priority 65, age 18.71h)
+    Compact headline: Golden Knights give Braeden Bowman a six-year extension
     Occurred: 2026-09-10T22:48:09Z | Precision: exact | Status: active
     Freshness basis: Vegas signed Braeden Bowman to a six-year extension Thursday.
     Entities: Vegas Golden Knights, Braeden Bowman
@@ -186,37 +176,29 @@ NHL  [OFFSEASON]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Tottenham manager Roberto De Zerbi said new arrival Mykhailo Mudryk suffered an injury but backed the winger to return soon. (priority 65, age 0.23h)
-    Compact headline: Tottenham’s Mykhailo Mudryk suffers injury after arrival
-    Occurred: 2026-09-11T16:47:20Z | Precision: exact | Status: watch
-    Freshness basis: Tottenham manager Roberto De Zerbi disclosed Mykhailo Mudryk’s injury Friday.
+ 1. [INJURY] Tottenham manager Roberto De Zerbi said new winger Mykhailo Mudryk suffered an injury but expects the signing to return soon. (priority 65, age 0.73h)
+    Compact headline: Tottenham winger Mykhailo Mudryk suffers injury
+    Occurred: 2026-09-11T16:47:20Z | Precision: exact | Status: active
+    Freshness basis: Roberto De Zerbi said Mykhailo Mudryk suffered an injury Friday and backed him to return soon.
     Entities: Tottenham Hotspur, Mykhailo Mudryk, Roberto De Zerbi
     Candidate IDs: cand-0e56dbd47eb68272
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49905024/tottenham-roberto-de-zerbi-says-mykhailo-mudryk-suffered-stupid-injury
 
- 2. [NEXT] Manchester United will assess Luke Shaw before deciding whether the defender is fit to face Manchester City in Sunday’s derby. (priority 72, age 4.41h)
-    Compact headline: Luke Shaw faces late fitness test for Manchester derby
-    Occurred: 2026-09-11T12:36:27Z | Precision: exact | Status: next
-    Freshness basis: Manchester United said Friday that Luke Shaw will undergo a late fitness assessment before the Manchester derby.
-    Entities: Manchester United, Luke Shaw, Manchester City
-    Candidate IDs: cand-64ec78ad5f7673ba
-    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49903038/luke-shaw-late-fitness-test-manchester-derby-michael-carrick
-
- 3. [CONTRACT] Arsenal agreed a pre-contract to sign 17-year-old forward Andria Bartishvili from Iberia 1999. (priority 63, age 1.29h)
-    Compact headline: Arsenal agree pre-contract deal for 17-year-old winger
-    Occurred: 2026-09-11T15:43:35Z | Precision: exact | Status: active
-    Freshness basis: Arsenal agreed a pre-contract deal to sign Andria Bartishvili Friday.
-    Entities: Arsenal, Andria Bartishvili, Iberia 1999
-    Candidate IDs: cand-6526bc2dff05e12d
-    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49904487/arsenal-reach-agreement-sign-17-year-old-winger-andria-bartishvili
-
- 4. [CONTRACT] Newcastle confirmed a new contract for defender Lewis Hall, who had been identified as a Manchester United transfer target. (priority 63, age 8.52h)
-    Compact headline: Newcastle ties down Man United target Lewis Hall
+ 2. [CONTRACT] Newcastle confirmed a new contract for defender Lewis Hall, who had been a transfer target for Manchester United. (priority 64, age 9.02h)
+    Compact headline: Newcastle extend Man United target Lewis Hall
     Occurred: 2026-09-11T08:29:58Z | Precision: exact | Status: active
-    Freshness basis: Newcastle confirmed that Lewis Hall signed a new contract with the club.
+    Freshness basis: Newcastle confirmed that Lewis Hall signed a new contract after attracting reported interest from Manchester United.
     Entities: Newcastle United, Manchester United, Lewis Hall
     Candidate IDs: cand-d4deb08e934cf5c0
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49901345/man-united-transfer-target-lewis-hall-new-contract-newcastle
+
+ 3. [CONTRACT] Arsenal reached a pre-contract agreement to sign 17-year-old forward Andria Bartishvili from Iberia 1999. (priority 62, age 1.79h)
+    Compact headline: Arsenal agree pre-contract deal for 17-year-old winger
+    Occurred: 2026-09-11T15:43:35Z | Precision: exact | Status: active
+    Freshness basis: Arsenal reached a pre-contract agreement to sign Andria Bartishvili Friday.
+    Entities: Arsenal, Andria Bartishvili, Iberia 1999
+    Candidate IDs: cand-6526bc2dff05e12d
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49904487/arsenal-reach-agreement-sign-17-year-old-winger-andria-bartishvili
 
 ============================================================================
 MLS  [ACTIVE]
@@ -228,7 +210,7 @@ MLS  [ACTIVE]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] Miami gained a school-record 856 yards and tied its single-game points mark in a 77-7 win over Florida A&M; Darian Mensah and Luke Nickel each threw three TDs. (priority 87, age 17.01h)
+ 1. [RECORD] Miami gained a school-record 856 yards and tied its points mark as quarterbacks Darian Mensah and Luke Nickel each threw three touchdowns. (priority 89, age 17.52h)
     Compact headline: No. 7 Miami sets yardage record in 77-7 rout
     Occurred: 2026-09-11T00:00:00Z | Precision: exact | Status: active
     Freshness basis: No. 7 Miami set a school record with 856 yards and tied its points mark in a 77-7 win over Florida A&M.
@@ -237,64 +219,78 @@ NCAAF  [ACTIVE]
     Source [Highlightly/highlightly-american-football-2026-09-10]: https://highlightly.net
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401858213
 
- 2. [INJURY] No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky. (priority 72, age 5.70h)
-    Compact headline: No. 12 Alabama lists Michael Carroll as doubtful
-    Occurred: 2026-09-11T11:19:05Z | Precision: exact | Status: watch
-    Freshness basis: Alabama listed Michael Carroll as doubtful for Saturday’s game at Kentucky Friday.
-    Entities: Alabama Crimson Tide, Michael Carroll, Kentucky Wildcats
-    Candidate IDs: cand-ee9b9eaaf45d4c82
-    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky
+ 2. [INJURY] Baylor quarterback DJ Lagway will miss Saturday’s game against Prairie View A&M with an ankle injury, giving Nate Bennett his first start. (priority 75, age 0.05h)
+    Compact headline: Baylor’s DJ Lagway ruled out; Nate Bennett to start
+    Occurred: 2026-09-11T17:27:54Z | Precision: exact | Status: active
+    Freshness basis: Baylor ruled DJ Lagway out for Saturday with an ankle injury and named Nate Bennett the starter.
+    Entities: Baylor Bears, DJ Lagway, Nate Bennett, Prairie View A&M Panthers
+    Candidate IDs: cand-40b24ce21c37524c
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49905329/sources-baylor-qb-dj-lagway-ruled-nate-bennett-start
 
- 3. [LEAGUE_NEWS] SEC presidents and chancellors concluded their meeting without imposing any punishment on LSU. (priority 63, age 2.35h)
+ 3. [DISCIPLINE] The SEC imposed no punishment on LSU after its presidents and chancellors met to discuss the school’s expulsion. (priority 72, age 2.85h)
     Compact headline: SEC imposes no sanctions on LSU after expulsion meeting
     Occurred: 2026-09-11T14:39:54Z | Precision: exact | Status: active
-    Freshness basis: The SEC meeting on LSU’s expulsion ended Friday without sanctions.
+    Freshness basis: SEC presidents and chancellors concluded their LSU meeting without imposing sanctions Friday.
     Entities: LSU Tigers, SEC
     Candidate IDs: cand-ce28232fd97f20a8
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49897284/no-sanctions-lsu-sec-meeting-expulsion
+
+ 4. [INJURY] No. 12 Alabama could be without sophomore offensive guard Michael Carroll for Saturday’s game at Kentucky. (priority 65, age 6.20h)
+    Compact headline: Alabama guard Michael Carroll doubtful at Kentucky
+    Occurred: 2026-09-11T11:19:05Z | Precision: exact | Status: watch
+    Freshness basis: Alabama listed Michael Carroll as doubtful for Saturday’s game at Kentucky.
+    Entities: Alabama Crimson Tide, Michael Carroll, Kentucky Wildcats
+    Candidate IDs: cand-ee9b9eaaf45d4c82
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49886511/alabama-michael-carroll-doubtful-vs-kentucky
 
 ############################################################################
 SPECIAL EVENTS
 ############################################################################
 
-US Open (tennis)
+US Open (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [RANKING] Elena Rybakina rallied past Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final against Aryna Sabalenka and move to No. 1 next week. (priority 87, age 11.73h)
-    Compact headline: Rybakina ends Gauff’s run, reaches US Open final
-    Freshness basis: Elena Rybakina defeated Coco Gauff in the US Open semifinal and will rise to No. 1 next week.
+ 1. [ADVANCEMENT] Elena Rybakina rallied past Coco Gauff 3-6, 6-4, 6-4 to reach the US Open final and move to No. 1 in next week’s rankings. (priority 87, age 12.23h)
+    Compact headline: Rybakina ends Gauff’s run, sets US Open final
+    Freshness basis: Elena Rybakina beat Coco Gauff in three sets to reach the US Open final and replace Aryna Sabalenka atop the rankings next week.
     Candidate IDs: cand-9c1eb130f28f377a
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49898331/rybakina-ends-gauff-us-open-run-sets-title-clash-sabalenka
+
+Solheim Cup (Golf)
+----------------------------------------------------------------------------
+
+ 1. [EVENT_UPDATE] The United States and Europe are tied 2-2 after the opening foursomes, with Nelly Korda and Allisen Corpuz producing a record-setting partnership. (priority 73, age 4.01h)
+    Compact headline: Solheim Cup opens level after Americans, Europe split 2-2
+    Freshness basis: The United States and Europe split the opening Solheim Cup foursomes 2-2.
+    Candidate IDs: cand-2ddadb1d3e0d5ee3
+    Source [ESPN/espn-lpga]: https://www.espn.com/golf/story/_/id/49902104/europe-us-tied-2-2-opening-session-solheim-cup
 
 Spanish Grand Prix (Formula 1)
 ----------------------------------------------------------------------------
 
- 1. [EVENT_UPDATE] A Formula 2 car caught fire during the debut of Madrid’s new circuit ahead of the Spanish Grand Prix. (priority 74, age 6.25h)
-    Compact headline: F2 car catches fire as new Spanish GP circuit debuts
-    Freshness basis: A Formula 2 car caught fire during Friday’s debut sessions at the Spanish Grand Prix venue in Madrid.
+ 1. [EVENT_UPDATE] A Formula 2 car burst into flames as Madrid’s new circuit hosted its first Spanish Grand Prix weekend amid driver concerns about the layout. (priority 67, age 6.75h)
+    Compact headline: F2 car bursts into flames at Spanish GP weekend
+    Freshness basis: A Formula 2 car burst into flames during the Spanish Grand Prix weekend Friday.
     Candidate IDs: cand-6590e362a314c37e
     Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49902064/f2-car-bursts-flames-risky-madrid-circuit-debuts-spanish-gp
 
- 2. [PRACTICE] Mercedes rookie Kimi Antonelli set the pace in second practice for the Spanish Grand Prix, while Arvid Lindblad crashed at Madrid’s new circuit. (priority 74, age 0.26h)
-    Compact headline: Antonelli leads Spanish GP practice as Lindblad crashes
-    Freshness basis: Kimi Antonelli topped second practice for the Spanish Grand Prix and Arvid Lindblad crashed at the Madrid circuit.
-    Candidate IDs: cand-fd9e5f40a37590a9
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49867133/mercedes-kimi-antonelli-sets-pace-second-practice-ferrari-spanish-grand-prix-madring-formula-1
+ 2. [PRACTICE] Kimi Antonelli set the fastest time in second practice for the Spanish Grand Prix on the new Madrid circuit. (priority 66, age 0.81h)
+    Compact headline: Kimi Antonelli tops second practice at Spanish GP
+    Freshness basis: Kimi Antonelli topped second practice at the Spanish Grand Prix on Friday.
+    Candidate IDs: cand-25c62d8f5c46eb79
+    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49867235/spanish-grand-prix-2026-live-madrid-updates-results-analysis-commentary
 
-Solheim Cup (golf)
+ 3. [PRACTICE] Mercedes rookie Kimi Antonelli was fastest in second practice for the Spanish Grand Prix, with teammate George Russell fifth on Madrid’s new circuit. (priority 64, age 0.42h)
+    Compact headline: Antonelli leads Russell in Spanish GP practice
+    Freshness basis: Kimi Antonelli topped second practice for the Spanish Grand Prix, with George Russell fifth.
+    Candidate IDs: cand-2c605ead6a0ea3c7
+    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49867133/mercedes-kimi-antonelli-quickest-second-practice-george-russell-fifth-spanish-grand-prix-madring-formula-1
+
+Irish Open (Golf)
 ----------------------------------------------------------------------------
 
- 1. [RESULT] The United States and Europe split the opening foursomes 2-2, with Nelly Korda and Allisen Corpuz helping the Americans take one of the session’s matches. (priority 72, age 3.51h)
-    Compact headline: Solheim Cup tied 2-2 after opening session
-    Freshness basis: The United States and Europe finished the opening Solheim Cup session tied 2-2.
-    Candidate IDs: cand-2ddadb1d3e0d5ee3
-    Source [ESPN/espn-lpga]: https://www.espn.com/golf/story/_/id/49902104/europe-us-tied-2-2-opening-session-solheim-cup
-
-Irish Open (golf)
-----------------------------------------------------------------------------
-
- 1. [RESULT] Joaquín Niemann opened with a 5-under 65 and a two-shot lead at the Irish Open after closing with four straight birdies; Rory McIlroy shot 69. (priority 72, age 19.80h)
-    Compact headline: Niemann leads Irish Open; McIlroy four shots back
-    Freshness basis: Joaquín Niemann shot 65 to take a two-shot Irish Open lead, with Rory McIlroy four shots back after a 69.
+ 1. [RESULT] Joaquín Niemann shot a 5-under 65 with four closing birdies to take a two-shot Irish Open lead, while Rory McIlroy opened with a 69. (priority 72, age 20.30h)
+    Compact headline: Niemann grabs Irish Open lead; McIlroy sits four back
+    Freshness basis: Joaquín Niemann opened the Irish Open with a 5-under 65 and a two-shot lead over the field.
     Candidate IDs: cand-7c469ab99b92ec81
     Source [ESPN/espn-pga]: https://www.espn.com/golf/story/_/id/49895950/niemann-leads-mcilroy-4-back-windy-irish-open
