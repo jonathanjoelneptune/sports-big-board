@@ -1,0 +1,39 @@
+name: Temporary Canonical Console Live Check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  livecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check public canonical validation endpoints
+        shell: bash
+        run: |
+          set -euxo pipefail
+          BASE='https://34-20-148-56.sslip.io'
+          for path in \
+            /api/health \
+            /api/canonical/validation/health \
+            /api/canonical/validation/snapshot \
+            /api/canonical/validation/mls; do
+            echo "=== $path ==="
+            curl -fsS --connect-timeout 10 --max-time 30 -w '\nHTTP=%{http_code} total=%{time_total}s size=%{size_download}\n' "$BASE$path" -o /tmp/out.json
+            head -c 600 /tmp/out.json; echo
+            python3 -m json.tool /tmp/out.json >/dev/null
+          done
+      - name: Check public validation page and config
+        shell: bash
+        run: |
+          set -euxo pipefail
+          PAGE='https://jonathanjoelneptune.github.io/sports-big-board/canonical-shadow.html'
+          curl -fsS --connect-timeout 10 --max-time 30 "$PAGE" -o /tmp/page.html
+          curl -fsS --connect-timeout 10 --max-time 30 'https://jonathanjoelneptune.github.io/sports-big-board/config.js' -o /tmp/config.js
+          grep -n 'CANONICAL VALIDATION DIAGNOSTICS' /tmp/page.html | head
+          grep -n 'apiBase' /tmp/config.js | head
+          grep -n "validation/snapshot" /tmp/page.html | head
+          wc -c /tmp/page.html /tmp/config.js
