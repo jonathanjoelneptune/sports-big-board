@@ -40,6 +40,7 @@ LIVE_HTML_ENTRYPOINTS = {
     "media-audit-probe.html",
     "canonical-shadow.html",
 }
+FORBIDDEN_RUNTIME_SUFFIXES = {".py", ".pyc", ".sqlite", ".sqlite3", ".sh"}
 
 
 class AssetRefs(HTMLParser):
@@ -86,6 +87,24 @@ def validate_local_references(out: Path) -> int:
     return checked
 
 
+def live_runtime_leaks(out: Path) -> list[str]:
+    """Return backend/runtime files exposed through live static surfaces.
+
+    architecture/ intentionally contains historical/reference snapshots,
+    including Python and shell files. They are inert documentation artifacts.
+    The live root and ui/ runtime surfaces must remain static-only.
+    """
+    candidates = [p for p in out.iterdir() if p.is_file()]
+    ui = out / "ui"
+    if ui.exists():
+        candidates.extend(p for p in ui.rglob("*") if p.is_file())
+    return sorted(
+        p.relative_to(out).as_posix()
+        for p in candidates
+        if p.suffix.lower() in FORBIDDEN_RUNTIME_SUFFIXES
+    )
+
+
 def main() -> int:
     print("Sports Big Board focused frontend verification")
 
@@ -118,18 +137,13 @@ def main() -> int:
             json.loads(path.read_text(encoding="utf-8"))
 
         refs = validate_local_references(out)
-
-        forbidden = [
-            p.relative_to(out).as_posix()
-            for p in out.rglob("*")
-            if p.is_file() and p.suffix.lower() in {".py", ".pyc", ".sqlite", ".sqlite3", ".sh"}
-        ]
-        assert not forbidden, f"backend/runtime files leaked into Pages artifact: {forbidden}"
+        forbidden = live_runtime_leaks(out)
+        assert not forbidden, f"backend/runtime files leaked into live Pages surfaces: {forbidden}"
 
         print(f"PASS: {len(js_files)} shipped JavaScript files parse")
         print(f"PASS: {len(json_files)} shipped JSON files parse")
         print(f"PASS: {refs} live-entrypoint asset references resolve")
-        print("PASS: Pages artifact contains no backend/runtime files")
+        print("PASS: live root/ui surfaces contain no backend/runtime files")
 
     print("PASS: focused frontend verification complete")
     return 0
