@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-12T23:01:13Z",
+  "generatedAt": "2026-09-12T23:31:10Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "47146c113b1da6c7446ae30305a37a1d367692fcf2accfadb334b30a5edcbff6",
+  "sourceCandidateHash": "31a77b97e9d439d35d4bfe6d2c93ceeae5869e6a6c2fdb6b76489db1e40f5ee2",
   "leagues": [
     {
       "league": "MLB",
@@ -17,9 +17,9 @@
             "cand-6d800df1d451ee3e"
           ],
           "type": "PLAYOFF",
-          "priority": 90,
-          "headline": "Milwaukee clinched a playoff spot with a 20-0 win over Cincinnati; Garrett Mitchell hit the Brewers’ first grand slam of the season.",
-          "text": "Milwaukee clinched a playoff spot with a 20-0 win over Cincinnati; Garrett Mitchell hit the Brewers’ first grand slam of the season.",
+          "priority": 88,
+          "headline": "Milwaukee clinched a playoff spot with a 20-0 win over Cincinnati, featuring Garrett Mitchell’s grand slam and four Brewers homers.",
+          "text": "Milwaukee clinched a playoff spot with a 20-0 win over Cincinnati, featuring Garrett Mitchell’s grand slam and four Brewers homers.",
           "entities": [
             "Milwaukee Brewers",
             "Cincinnati Reds",
@@ -27,13 +27,12 @@
           ],
           "occurredAt": "2026-09-11T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.35,
-          "freshnessBasis": "Milwaukee clinched a playoff spot with a 20-0 win over Cincinnati on Friday.",
+          "ageHours": 23.85,
+          "freshnessBasis": "Milwaukee clinched a playoff spot with a 20-0 win over Cincinnati on Sept. 11.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "https://www.espn.com/mlb/story/_/id/49909707/mlb-best-brewers-clinch-playoff-berth-20-0-rout",
-            "http://www.espn.com/mlb/recap?gameId=401816897"
+            "https://www.espn.com/mlb/story/_/id/49909707/mlb-best-brewers-clinch-playoff-berth-20-0-rout"
           ],
           "sources": [
             {
@@ -45,15 +44,10 @@
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "https://www.espn.com/mlb/story/_/id/49909707/mlb-best-brewers-clinch-playoff-berth-20-0-rout"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816897"
             }
           ],
           "id": "a3-67feb135f3b11a55",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Brewers clinch playoff berth in 20-0 rout of Reds"
         },
         {
@@ -61,19 +55,19 @@
           "candidateIds": [
             "cand-8d98f5066ea27d2a"
           ],
-          "type": "MILESTONE",
-          "priority": 78,
-          "headline": "Arizona reliever Justin Martinez struck out three Rangers on nine pitches to record the Diamondbacks’ fifth immaculate inning.",
-          "text": "Arizona reliever Justin Martinez struck out three Rangers on nine pitches to record the Diamondbacks’ fifth immaculate inning.",
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "Arizona reliever Justin Martinez struck out three Rangers hitters on nine pitches for the Diamondbacks’ fifth immaculate inning.",
+          "text": "Arizona reliever Justin Martinez struck out three Rangers hitters on nine pitches for the Diamondbacks’ fifth immaculate inning.",
           "entities": [
             "Arizona Diamondbacks",
-            "Justin Martinez",
-            "Texas Rangers"
+            "Texas Rangers",
+            "Justin Martinez"
           ],
           "occurredAt": "2026-09-12T18:45:08Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
-          "freshnessBasis": "Justin Martinez struck out three Texas batters on nine pitches for Arizona’s fifth immaculate inning.",
+          "ageHours": 4.77,
+          "freshnessBasis": "Justin Martinez struck out three Texas hitters on nine pitches for Arizona’s fifth immaculate inning.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49910367/martinez-fans-three-nine-pitches-d-backs-fifth-immaculate-inning"
@@ -85,19 +79,58 @@
               "url": "https://www.espn.com/mlb/story/_/id/49910367/martinez-fans-three-nine-pitches-d-backs-fifth-immaculate-inning"
             }
           ],
-          "id": "a3-cd78deb732987a14",
-          "feedRank": 8,
-          "compactHeadline": "Martinez records Diamondbacks’ fifth immaculate inning"
+          "id": "a3-8206d99ceb660a13",
+          "feedRank": 5,
+          "compactHeadline": "Justin Martinez throws Diamondbacks’ fifth immaculate inning"
         },
         {
           "rank": 3,
+          "candidateIds": [
+            "cand-57bc24284729c963"
+          ],
+          "type": "RESULT",
+          "priority": 82,
+          "headline": "Harry Ford delivered the walk-off in the bottom of the 10th inning for Washington’s 6-5 win.",
+          "text": "Harry Ford delivered the walk-off in the bottom of the 10th inning for Washington’s 6-5 win.",
+          "entities": [
+            "Washington Nationals",
+            "Los Angeles Angels",
+            "Harry Ford"
+          ],
+          "occurredAt": "2026-09-12T20:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.44,
+          "freshnessBasis": "Harry Ford delivered the walk-off in the bottom of the 10th inning for Washington’s 6-5 win.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816903"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-12",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "a44-espn-mlb-summary-401816903",
+              "url": "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816903"
+            }
+          ],
+          "id": "a3-62668a13f2d0362d",
+          "feedRank": 9,
+          "compactHeadline": "Harry Ford delivers walk-off for Nationals in 10th"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-df01b90900963dfb"
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Donovan Walton delivered a walk-off two-run homer in Oakland’s 6-5, 10-inning win over Seattle.",
-          "text": "Donovan Walton delivered a walk-off two-run homer in Oakland’s 6-5, 10-inning win over Seattle.",
+          "headline": "Donovan Walton delivered a walk-off two-run homer in the 10th inning of Oakland’s 6-5 win over Seattle.",
+          "text": "Donovan Walton delivered a walk-off two-run homer in the 10th inning of Oakland’s 6-5 win over Seattle.",
           "entities": [
             "Oakland Athletics",
             "Seattle Mariners",
@@ -105,8 +138,8 @@
           ],
           "occurredAt": "2026-09-12T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.35,
-          "freshnessBasis": "Donovan Walton delivered a walk-off two-run homer in Oakland’s 6-5, 10-inning win over Seattle.",
+          "ageHours": 21.85,
+          "freshnessBasis": "Donovan Walton delivered a walk-off two-run homer in the 10th inning of Oakland’s 6-5 win over Seattle.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -124,145 +157,27 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816901"
             }
           ],
-          "id": "a3-59e68da2bab27541",
-          "feedRank": 12,
-          "compactHeadline": "Walton delivers 10th-inning walk-off for Athletics"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-2c37d73a7ca2b729"
-          ],
-          "type": "RESULT",
-          "priority": 82,
-          "headline": "Drake Baldwin delivered the walk-off in the bottom of the 11th inning.",
-          "text": "Drake Baldwin delivered the walk-off in the bottom of the 11th inning.",
-          "entities": [
-            "Atlanta Braves",
-            "Philadelphia Phillies",
-            "Drake Baldwin",
-            "Ha-Seong Kim"
-          ],
-          "occurredAt": "2026-09-11T23:15:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.77,
-          "freshnessBasis": "Drake Baldwin delivered the walk-off in the bottom of the 11th inning.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816895"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-11",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816895"
-            }
-          ],
-          "id": "a3-586e7d6920341fe3",
-          "feedRank": 13,
-          "compactHeadline": "Drake Baldwin delivers walk-off as Atlanta Braves beat Philadelphia Phillies 6-5"
+          "id": "a3-01bcd1b1b59682b8",
+          "feedRank": 11,
+          "compactHeadline": "Walton’s 10th-inning homer gives Athletics walk-off win"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-bd5acfe97c7e0f08"
-          ],
-          "type": "RESULT",
-          "priority": 82,
-          "headline": "Junior Caminero delivered the walk-off in the bottom of the 9th inning.",
-          "text": "Junior Caminero delivered the walk-off in the bottom of the 9th inning.",
-          "entities": [
-            "Tampa Bay Rays",
-            "Houston Astros",
-            "Junior Caminero"
-          ],
-          "occurredAt": "2026-09-11T23:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.85,
-          "freshnessBasis": "Junior Caminero delivered Tampa Bay’s walk-off in the bottom of the ninth inning against Houston.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-11",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-b641a898526c0472",
-          "feedRank": 14,
-          "compactHeadline": "Caminero’s walk-off homer lifts Rays over Astros"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-66c8dd7c89c12ebb"
-          ],
-          "type": "STREAK",
-          "priority": 78,
-          "headline": "San Diego beat San Francisco 7-6 to extend its winning streak to five games; Robbie Ray earned his 100th career victory.",
-          "text": "San Diego beat San Francisco 7-6 to extend its winning streak to five games; Robbie Ray earned his 100th career victory.",
-          "entities": [
-            "San Diego Padres",
-            "San Francisco Giants",
-            "Robbie Ray"
-          ],
-          "occurredAt": "2026-09-12T20:05:00Z",
-          "timePrecision": "exact",
-          "ageHours": 2.94,
-          "freshnessBasis": "San Diego beat San Francisco and extended its winning streak to five games Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/preview?gameId=401816915",
-            "http://www.espn.com/mlb/recap?gameId=401816900"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/preview?gameId=401816915"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816900"
-            }
-          ],
-          "id": "a3-cdfe082beb460a86",
-          "feedRank": 19,
-          "compactHeadline": "Padres extend winning streak to five games"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
             "cand-6d1b936bf9ae41fc"
           ],
           "type": "RETURN",
-          "priority": 75,
-          "headline": "Freddie Freeman returned to Los Angeles’ lineup Saturday after missing two games with a right knee issue.",
-          "text": "Freddie Freeman returned to Los Angeles’ lineup Saturday after missing two games with a right knee issue.",
+          "priority": 74,
+          "headline": "Freddie Freeman returned to the Dodgers' lineup Saturday after missing two games with a right knee issue.",
+          "text": "Freddie Freeman returned to the Dodgers' lineup Saturday after missing two games with a right knee issue.",
           "entities": [
             "Los Angeles Dodgers",
             "Freddie Freeman"
           ],
           "occurredAt": "2026-09-12T19:42:53Z",
           "timePrecision": "exact",
-          "ageHours": 3.31,
-          "freshnessBasis": "Freddie Freeman returned to the Dodgers’ lineup Saturday after missing two games with a right knee issue.",
+          "ageHours": 3.8,
+          "freshnessBasis": "Freddie Freeman returned to the Dodgers' lineup after missing two games with a right knee issue.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/mlb/story/_/id/49917208/dodgers-freeman-lineup-missing-2-games-knee-issue"
@@ -275,8 +190,48 @@
             }
           ],
           "id": "a3-02cb41a2d4b35543",
-          "feedRank": 26,
+          "feedRank": 22,
           "compactHeadline": "Freeman returns to Dodgers lineup after knee issue"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-8afc092c0a81918e"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Ranger Suarez struck out eight over seven innings and Wilyer Abreu hit a tiebreaking two-run double in Boston’s 5-1 win over Kansas City.",
+          "text": "Ranger Suarez struck out eight over seven innings and Wilyer Abreu hit a tiebreaking two-run double in Boston’s 5-1 win over Kansas City.",
+          "entities": [
+            "Boston Red Sox",
+            "Kansas City Royals",
+            "Ranger Suarez",
+            "Wilyer Abreu"
+          ],
+          "occurredAt": "2026-09-12T20:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Ranger Suarez and Wilyer Abreu helped Boston beat Kansas City 5-1 and end a three-game losing streak.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816907"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-12",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816907"
+            }
+          ],
+          "id": "a3-70fa5ff065a4803a",
+          "feedRank": 29,
+          "compactHeadline": "Suarez, Abreu help Red Sox halt three-game skid"
         }
       ]
     },
@@ -290,16 +245,16 @@
             "cand-abc54a0ccec14969"
           ],
           "type": "INJURY",
-          "priority": 85,
-          "headline": "Dallas placed running back Malik Davis on injured reserve, and he is scheduled for hip surgery after being hurt in practice.",
-          "text": "Dallas placed running back Malik Davis on injured reserve, and he is scheduled for hip surgery after being hurt in practice.",
+          "priority": 79,
+          "headline": "Dallas placed running back Malik Davis on injured reserve, and he is scheduled for hip surgery after suffering the injury in practice.",
+          "text": "Dallas placed running back Malik Davis on injured reserve, and he is scheduled for hip surgery after suffering the injury in practice.",
           "entities": [
             "Dallas Cowboys",
             "Malik Davis"
           ],
           "occurredAt": "2026-09-12T18:25:09Z",
           "timePrecision": "exact",
-          "ageHours": 4.6,
+          "ageHours": 5.1,
           "freshnessBasis": "Dallas placed Malik Davis on injured reserve and scheduled hip surgery after his practice injury.",
           "status": "active",
           "sourceUrls": [
@@ -312,19 +267,84 @@
               "url": "https://www.espn.com/nfl/story/_/id/49906649/cowboys-malik-davis-hip-injured-practice-opener"
             }
           ],
-          "id": "a3-8a876178a9aec930",
-          "feedRank": 5,
-          "compactHeadline": "Cowboys place Malik Davis on IR ahead of hip surgery"
+          "id": "a3-d8a6e58e64f68c93",
+          "feedRank": 6,
+          "compactHeadline": "Malik Davis set for hip surgery after Cowboys injury"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-979e7c5d7332fd95"
+            "cand-ad1bf4f43ca71b88"
+          ],
+          "type": "INJURY",
+          "priority": 75,
+          "headline": "Kansas City will use undrafted rookie Kahlil Benson to help at left tackle after Josh Simmons was ruled out for Monday’s opener.",
+          "text": "Kansas City will use undrafted rookie Kahlil Benson to help at left tackle after Josh Simmons was ruled out for Monday’s opener.",
+          "entities": [
+            "Kansas City Chiefs",
+            "Josh Simmons",
+            "Kahlil Benson"
+          ],
+          "occurredAt": "2026-09-12T20:17:49Z",
+          "timePrecision": "exact",
+          "ageHours": 3.22,
+          "freshnessBasis": "Kansas City ruled Josh Simmons out for Monday’s opener and is expected to use Kahlil Benson at left tackle.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49917622/chiefs-set-use-undrafted-rookie-lt-josh-simmons-out"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49917622/chiefs-set-use-undrafted-rookie-lt-josh-simmons-out"
+            }
+          ],
+          "id": "a3-a98e96793f385438",
+          "feedRank": 8,
+          "compactHeadline": "Chiefs turn to undrafted rookie with Josh Simmons out"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-d66cd65cc4a782f2"
           ],
           "type": "CONTRACT",
           "priority": 78,
-          "headline": "Las Vegas signed tight end Michael Mayer to a three-year, $45 million extension as he steps in for injured Brock Bowers.",
-          "text": "Las Vegas signed tight end Michael Mayer to a three-year, $45 million extension as he steps in for injured Brock Bowers.",
+          "headline": "C.J. Stroud and the Texans agreed to postpone long-term extension talks until after the 2026 season.",
+          "text": "C.J. Stroud and the Texans agreed to postpone long-term extension talks until after the 2026 season.",
+          "entities": [
+            "Houston Texans",
+            "C.J. Stroud"
+          ],
+          "occurredAt": "2026-09-12T20:47:40Z",
+          "timePrecision": "exact",
+          "ageHours": 2.73,
+          "freshnessBasis": "C.J. Stroud and Houston agreed to wait until after the season to pursue a long-term extension.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49917836/sources-cj-stroud-texans-table-extension-talks"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49917836/sources-cj-stroud-texans-table-extension-talks"
+            }
+          ],
+          "id": "a3-93a707172d8afe30",
+          "feedRank": 15,
+          "compactHeadline": "Stroud, Texans table extension talks until after season"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-979e7c5d7332fd95"
+          ],
+          "type": "CONTRACT",
+          "priority": 75,
+          "headline": "Las Vegas agreed to a three-year, $45 million extension with tight end Michael Mayer, who is stepping in for injured Brock Bowers.",
+          "text": "Las Vegas agreed to a three-year, $45 million extension with tight end Michael Mayer, who is stepping in for injured Brock Bowers.",
           "entities": [
             "Las Vegas Raiders",
             "Michael Mayer",
@@ -332,8 +352,8 @@
           ],
           "occurredAt": "2026-09-12T17:42:12Z",
           "timePrecision": "exact",
-          "ageHours": 5.32,
-          "freshnessBasis": "Las Vegas gave Michael Mayer a three-year, $45 million extension before the regular season.",
+          "ageHours": 5.82,
+          "freshnessBasis": "Las Vegas agreed to a three-year, $45 million extension with Michael Mayer.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49914437/raiders-te-michael-mayer-gets-3-year-45m-extension-sources-say"
@@ -346,76 +366,8 @@
             }
           ],
           "id": "a3-780c6e614cb7eeca",
-          "feedRank": 21,
+          "feedRank": 19,
           "compactHeadline": "Raiders give Michael Mayer three-year, $45M extension"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-41680284f2f509d8"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 80,
-          "headline": "Atlanta ruled out Tua Tagovailoa with an oblique injury and will start Cooper Rush at quarterback against Pittsburgh.",
-          "text": "Atlanta ruled out Tua Tagovailoa with an oblique injury and will start Cooper Rush at quarterback against Pittsburgh.",
-          "entities": [
-            "Atlanta Falcons",
-            "Tua Tagovailoa",
-            "Cooper Rush",
-            "Pittsburgh Steelers"
-          ],
-          "occurredAt": "2026-09-11T23:07:53Z",
-          "timePrecision": "exact",
-          "ageHours": 23.89,
-          "freshnessBasis": "Atlanta ruled Tua Tagovailoa out with an oblique injury and named Cooper Rush its starter.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49905536/tagovailoa-rush-start-qb-falcons-vs-steelers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49905536/tagovailoa-rush-start-qb-falcons-vs-steelers"
-            }
-          ],
-          "id": "a3-c94ea2027f9059d7",
-          "feedRank": 22,
-          "compactHeadline": "Falcons name Cooper Rush starter with Tagovailoa out"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-ad1bf4f43ca71b88"
-          ],
-          "type": "DEPTH_CHART",
-          "priority": 77,
-          "headline": "Kansas City expects undrafted rookie Kahlil Benson to help at left tackle with Josh Simmons out for Monday’s opener against Denver.",
-          "text": "Kansas City expects undrafted rookie Kahlil Benson to help at left tackle with Josh Simmons out for Monday’s opener against Denver.",
-          "entities": [
-            "Kansas City Chiefs",
-            "Josh Simmons",
-            "Kahlil Benson",
-            "Denver Broncos"
-          ],
-          "occurredAt": "2026-09-12T20:17:49Z",
-          "timePrecision": "exact",
-          "ageHours": 2.72,
-          "freshnessBasis": "Kansas City ruled out left tackle Josh Simmons and is expected to use undrafted rookie Kahlil Benson.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49917622/chiefs-set-use-undrafted-rookie-lt-josh-simmons-out"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49917622/chiefs-set-use-undrafted-rookie-lt-josh-simmons-out"
-            }
-          ],
-          "id": "a3-ef98dff4b17fcafc",
-          "feedRank": 24,
-          "compactHeadline": "Chiefs turn to undrafted rookie with Simmons out"
         },
         {
           "rank": 5,
@@ -423,7 +375,7 @@
             "cand-11ffb29936879969"
           ],
           "type": "CONTRACT",
-          "priority": 76,
+          "priority": 74,
           "headline": "Green Bay and tight end Tucker Kraft agreed to a four-year extension worth up to $92 million.",
           "text": "Green Bay and tight end Tucker Kraft agreed to a four-year extension worth up to $92 million.",
           "entities": [
@@ -432,8 +384,8 @@
           ],
           "occurredAt": "2026-09-12T15:35:15Z",
           "timePrecision": "exact",
-          "ageHours": 7.43,
-          "freshnessBasis": "Green Bay agreed with Tucker Kraft on a four-year extension worth up to $92 million.",
+          "ageHours": 7.93,
+          "freshnessBasis": "Green Bay agreed to a four-year extension with Tucker Kraft worth up to $92 million.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49914334/sources-packers-tucker-kraft-agree-4-year-extension"
@@ -445,26 +397,58 @@
               "url": "https://www.espn.com/nfl/story/_/id/49914334/sources-packers-tucker-kraft-agree-4-year-extension"
             }
           ],
-          "id": "a3-bd55f58676177dcf",
+          "id": "a3-c375dc60eed6d867",
           "feedRank": 25,
-          "compactHeadline": "Packers, Tucker Kraft agree to four-year extension"
+          "compactHeadline": "Packers, Tucker Kraft agree to extension worth $92M"
         },
         {
           "rank": 6,
           "candidateIds": [
+            "cand-8bc332799d602b0a"
+          ],
+          "type": "CONTRACT",
+          "priority": 72,
+          "headline": "Lamar Jackson and Baltimore are not expected to complete a long-term extension before the season, with talks set aside for now.",
+          "text": "Lamar Jackson and Baltimore are not expected to complete a long-term extension before the season, with talks set aside for now.",
+          "entities": [
+            "Baltimore Ravens",
+            "Lamar Jackson"
+          ],
+          "occurredAt": "2026-09-12T23:29:59Z",
+          "timePrecision": "exact",
+          "ageHours": 0.02,
+          "freshnessBasis": "Lamar Jackson and Baltimore will not complete a long-term extension before the 2026 season begins.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49915181/sources-lamar-jackson-reluctant-talk-deal-ravens"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49915181/sources-lamar-jackson-reluctant-talk-deal-ravens"
+            }
+          ],
+          "id": "a3-1c8354480d8e6a01",
+          "feedRank": 26,
+          "compactHeadline": "Lamar Jackson, Ravens table extension talks until later"
+        },
+        {
+          "rank": 7,
+          "candidateIds": [
             "cand-d011bdf8e4276f55"
           ],
           "type": "CONTRACT",
-          "priority": 75,
-          "headline": "Chicago and running back D’Andre Swift agreed to a three-year, $33.75 million extension with $27.5 million guaranteed.",
-          "text": "Chicago and running back D’Andre Swift agreed to a three-year, $33.75 million extension with $27.5 million guaranteed.",
+          "priority": 73,
+          "headline": "Chicago agreed to a three-year, $33.75 million extension with running back D’Andre Swift, including $27.5 million guaranteed.",
+          "text": "Chicago agreed to a three-year, $33.75 million extension with running back D’Andre Swift, including $27.5 million guaranteed.",
           "entities": [
             "Chicago Bears",
             "D’Andre Swift"
           ],
           "occurredAt": "2026-09-12T15:24:15Z",
           "timePrecision": "exact",
-          "ageHours": 7.62,
+          "ageHours": 8.12,
           "freshnessBasis": "Chicago agreed to a three-year, $33.75 million extension with D’Andre Swift.",
           "status": "active",
           "sourceUrls": [
@@ -478,7 +462,7 @@
             }
           ],
           "id": "a3-fef1f58b466a7afd",
-          "feedRank": 28,
+          "feedRank": 27,
           "compactHeadline": "Bears extend D’Andre Swift for three years, $33.75M"
         }
       ]
@@ -499,17 +483,17 @@
           ],
           "type": "TRADE",
           "priority": 75,
-          "headline": "The OHL’s Brampton Steelheads received 17 draft picks from Sudbury for the rights to forward prospect Tanner Adams.",
-          "text": "The OHL’s Brampton Steelheads received 17 draft picks from Sudbury for the rights to forward prospect Tanner Adams.",
+          "headline": "The OHL's Brampton Steelheads acquired 17 draft picks from Sudbury for the rights to forward prospect Tanner Adams.",
+          "text": "The OHL's Brampton Steelheads acquired 17 draft picks from Sudbury for the rights to forward prospect Tanner Adams.",
           "entities": [
-            "Tanner Adams",
             "Brampton Steelheads",
-            "Sudbury Wolves"
+            "Sudbury Wolves",
+            "Tanner Adams"
           ],
           "occurredAt": "2026-09-12T14:52:10Z",
           "timePrecision": "exact",
-          "ageHours": 8.15,
-          "freshnessBasis": "Brampton acquired 17 draft picks from Sudbury for the rights to Tanner Adams Saturday.",
+          "ageHours": 8.65,
+          "freshnessBasis": "Brampton acquired 17 draft picks from Sudbury for the rights to Tanner Adams.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49913580/junior-hockey-team-nets-17-picks-top-prospect-tanner-adams"
@@ -521,9 +505,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49913580/junior-hockey-team-nets-17-picks-top-prospect-tanner-adams"
             }
           ],
-          "id": "a3-cc0cfd72ddb94fdb",
-          "feedRank": 17,
-          "compactHeadline": "Steelheads acquire 17 picks for prospect Tanner Adams"
+          "id": "a3-7be66a6ebd6caca5",
+          "feedRank": 14,
+          "compactHeadline": "Steelheads receive 17 picks for prospect Tanner Adams"
         },
         {
           "rank": 2,
@@ -531,9 +515,9 @@
             "cand-ef6bf0d782e6fb57"
           ],
           "type": "SIGNING",
-          "priority": 76,
-          "headline": "Montreal agreed to a one-year deal with veteran forward Chris Kreider after he mutually terminated his previous contract with Anaheim.",
-          "text": "Montreal agreed to a one-year deal with veteran forward Chris Kreider after he mutually terminated his previous contract with Anaheim.",
+          "priority": 73,
+          "headline": "Veteran forward Chris Kreider agreed to a one-year contract with Montreal after mutually terminating his previous deal with Anaheim.",
+          "text": "Veteran forward Chris Kreider agreed to a one-year contract with Montreal after mutually terminating his previous deal with Anaheim.",
           "entities": [
             "Montreal Canadiens",
             "Chris Kreider",
@@ -541,8 +525,8 @@
           ],
           "occurredAt": "2026-09-12T22:32:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.47,
-          "freshnessBasis": "Montreal agreed to a one-year contract with Chris Kreider on Saturday.",
+          "ageHours": 0.97,
+          "freshnessBasis": "Chris Kreider agreed to a one-year contract with Montreal on Sept. 12.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49919075/chris-kreider-35-lands-1-year-deal-montreal-canadiens"
@@ -554,41 +538,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49919075/chris-kreider-35-lands-1-year-deal-montreal-canadiens"
             }
           ],
-          "id": "a3-4102ecd471b3c85a",
-          "feedRank": 23,
-          "compactHeadline": "Chris Kreider signs one-year deal with Canadiens"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-db37ee8d2606f344"
-          ],
-          "type": "CONTRACT",
-          "priority": 78,
-          "headline": "Vegas signed captain Mark Stone to a two-year, $18 million extension carrying a $9 million annual value through 2028-29.",
-          "text": "Vegas signed captain Mark Stone to a two-year, $18 million extension carrying a $9 million annual value through 2028-29.",
-          "entities": [
-            "Vegas Golden Knights",
-            "Mark Stone"
-          ],
-          "occurredAt": "2026-09-12T17:19:27Z",
-          "timePrecision": "exact",
-          "ageHours": 5.7,
-          "freshnessBasis": "Vegas signed Mark Stone to a two-year, $18 million extension through the 2028-29 season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49915341/golden-knights-extend-mark-stone-2-year-18m-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49915341/golden-knights-extend-mark-stone-2-year-18m-deal"
-            }
-          ],
-          "id": "a3-6b4bbe1a60fc63f6",
-          "feedRank": 31,
-          "compactHeadline": "Golden Knights extend captain Mark Stone through 2028-29"
+          "id": "a3-b410cbf35d2cff79",
+          "feedRank": 20,
+          "compactHeadline": "Chris Kreider joins Canadiens on one-year deal"
         }
       ]
     },
@@ -599,52 +551,20 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-d35b502e0c436e28"
-          ],
-          "type": "STREAK",
-          "priority": 75,
-          "headline": "Hull extended its unbeaten Premier League start with an entertaining 2-2 draw at Chelsea.",
-          "text": "Hull extended its unbeaten Premier League start with an entertaining 2-2 draw at Chelsea.",
-          "entities": [
-            "Hull City",
-            "Chelsea"
-          ],
-          "occurredAt": "2026-09-12T17:40:01Z",
-          "timePrecision": "exact",
-          "ageHours": 5.35,
-          "freshnessBasis": "Hull extended its unbeaten Premier League start with a 2-2 draw at Chelsea.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49914765/hull-continue-unbeaten-premier-league-streak-entertaining-2-2-draw-chelsea"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49914765/hull-continue-unbeaten-premier-league-streak-entertaining-2-2-draw-chelsea"
-            }
-          ],
-          "id": "a3-4a60a18b98907c62",
-          "feedRank": 27,
-          "compactHeadline": "Hull remain unbeaten after 2-2 draw at Chelsea"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-aa2b3732e529ca1b"
           ],
           "type": "SLUMP",
-          "priority": 73,
-          "headline": "Tottenham drew Everton 0-0 to extend its winless Premier League start to four matches while still searching for its first goal.",
-          "text": "Tottenham drew Everton 0-0 to extend its winless Premier League start to four matches while still searching for its first goal.",
+          "priority": 74,
+          "headline": "Tottenham drew Everton 0-0, extending their winless start to four Premier League matches while still searching for a first goal.",
+          "text": "Tottenham drew Everton 0-0, extending their winless start to four Premier League matches while still searching for a first goal.",
           "entities": [
             "Tottenham Hotspur",
             "Everton"
           ],
           "occurredAt": "2026-09-12T18:56:30Z",
           "timePrecision": "exact",
-          "ageHours": 4.08,
-          "freshnessBasis": "Tottenham’s 0-0 draw with Everton extended its winless start to four Premier League matches.",
+          "ageHours": 4.58,
+          "freshnessBasis": "Tottenham drew 0-0 with Everton to extend its winless and scoreless start to four matches.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/soccer/report/_/gameId/401879277"
@@ -656,9 +576,41 @@
               "url": "http://www.espn.com/soccer/report/_/gameId/401879277"
             }
           ],
-          "id": "a3-a6661203dca3f5e4",
-          "feedRank": 30,
-          "compactHeadline": "Winless Tottenham still seeking first goal after draw"
+          "id": "a3-f1131a748d89ce09",
+          "feedRank": 23,
+          "compactHeadline": "Tottenham still winless and scoreless after four matches"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-d35b502e0c436e28"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Hull extended its unbeaten Premier League start with a 2-2 draw at Chelsea.",
+          "text": "Hull extended its unbeaten Premier League start with a 2-2 draw at Chelsea.",
+          "entities": [
+            "Hull City",
+            "Chelsea"
+          ],
+          "occurredAt": "2026-09-12T17:40:01Z",
+          "timePrecision": "exact",
+          "ageHours": 5.85,
+          "freshnessBasis": "Hull remained unbeaten after drawing 2-2 at Chelsea.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49914765/hull-continue-unbeaten-premier-league-streak-entertaining-2-2-draw-chelsea"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49914765/hull-continue-unbeaten-premier-league-streak-entertaining-2-2-draw-chelsea"
+            }
+          ],
+          "id": "a3-768db5d17a1798d9",
+          "feedRank": 24,
+          "compactHeadline": "Hull remain unbeaten after entertaining draw at Chelsea"
         },
         {
           "rank": 3,
@@ -677,7 +629,7 @@
           ],
           "occurredAt": "2026-09-12T21:18:56Z",
           "timePrecision": "exact",
-          "ageHours": 1.7,
+          "ageHours": 2.2,
           "freshnessBasis": "Arsenal beat Sunderland 2-0 to maintain its perfect Premier League start.",
           "status": "active",
           "sourceUrls": [
@@ -690,9 +642,9 @@
               "url": "http://www.espn.com/soccer/report/_/gameId/401878779"
             }
           ],
-          "id": "a3-862912010999d554",
-          "feedRank": 32,
-          "compactHeadline": "Arsenal stay perfect after 2-0 win at Sunderland"
+          "id": "a3-b6651bb4ea4681d9",
+          "feedRank": 28,
+          "compactHeadline": "Arsenal stay perfect with 2-0 win at Sunderland"
         }
       ]
     },
@@ -708,20 +660,52 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-cc5c4cd1d30f2694"
+          ],
+          "type": "UPSET",
+          "priority": 92,
+          "headline": "Oklahoma State upset No. 6 Oregon 39-31, ending a 21-game losing streak against FBS opponents.",
+          "text": "Oklahoma State upset No. 6 Oregon 39-31, ending a 21-game losing streak against FBS opponents.",
+          "entities": [
+            "Oklahoma State",
+            "Oregon"
+          ],
+          "occurredAt": "2026-09-12T22:44:21Z",
+          "timePrecision": "exact",
+          "ageHours": 0.78,
+          "freshnessBasis": "Oklahoma State defeated No. 6 Oregon 39-31 and ended a 21-game FBS losing streak.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49918995/oklahoma-state-stuns-no-6-oregon-39-31-thriller"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49918995/oklahoma-state-stuns-no-6-oregon-39-31-thriller"
+            }
+          ],
+          "id": "a3-210a558aa8c07685",
+          "feedRank": 1,
+          "compactHeadline": "Oklahoma State stuns No. 6 Oregon 39-31"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-078617cfc79c49f7"
           ],
           "type": "UPSET",
-          "priority": 93,
+          "priority": 91,
           "headline": "Drew Mestemaker threw for 317 yards and two touchdowns while rushing for 109 yards and a score, and Oklahoma State ended a 21-game skid against FBS opponents by pulling off the first true stunner of the 2026 season, beating No. 6 Oregon 39-31 on...",
           "text": "Drew Mestemaker threw for 317 yards and two touchdowns while rushing for 109 yards and a score, and Oklahoma State ended a 21-game skid against FBS opponents by pulling off the first true stunner of the 2026 season, beating No. 6 Oregon 39-31 on...",
           "entities": [
             "Oklahoma State Cowboys",
             "Oregon Ducks"
           ],
-          "occurredAt": "2026-09-12T22:13:35Z",
+          "occurredAt": "2026-09-12T23:10:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.79,
-          "freshnessBasis": "Oklahoma State beat No. 6 Oregon 39-31 and ended a 21-game skid against FBS opponents.",
+          "ageHours": 0.34,
+          "freshnessBasis": "Oklahoma State beat No. 6 Oregon 39-31 and ended a 21-game FBS losing streak.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/ncf/recap?gameId=401856782"
@@ -733,19 +717,19 @@
               "url": "http://www.espn.com/ncf/recap?gameId=401856782"
             }
           ],
-          "id": "a3-7552ebd47c9d3b90",
-          "feedRank": 1,
-          "compactHeadline": "Oklahoma State stuns No. 6 Oregon in 39-31 thriller"
+          "id": "a3-64ca2e91c5f97b5d",
+          "feedRank": 2,
+          "compactHeadline": "Oklahoma State stuns No. 6 Oregon 39-31"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-9d2d2f8a094249f1"
           ],
           "type": "RECORD",
-          "priority": 90,
-          "headline": "James Madison tied the NCAA record with three punt-return touchdowns in an 87-3 win over Wagner, while setting a program points record.",
-          "text": "James Madison tied the NCAA record with three punt-return touchdowns in an 87-3 win over Wagner, while setting a program points record.",
+          "priority": 87,
+          "headline": "James Madison tied the NCAA record with three punt-return touchdowns in an 87-3 win over Wagner and set a program scoring record.",
+          "text": "James Madison tied the NCAA record with three punt-return touchdowns in an 87-3 win over Wagner and set a program scoring record.",
           "entities": [
             "James Madison Dukes",
             "Wagner Seahawks",
@@ -754,8 +738,8 @@
           ],
           "occurredAt": "2026-09-12T22:30:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.51,
-          "freshnessBasis": "James Madison recorded three punt-return touchdowns in an 87-3 win over Wagner, tying the NCAA record.",
+          "ageHours": 1.01,
+          "freshnessBasis": "James Madison tied the NCAA record with three punt-return touchdowns in an 87-3 win over Wagner and set a program scoring record.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49919633/jmu-ties-ncaa-record-3-punt-return-tds-87-3-win",
@@ -773,187 +757,164 @@
               "url": "http://www.espn.com/ncf/recap?gameId=401867929"
             }
           ],
-          "id": "a3-f3a3e4981b741acc",
-          "feedRank": 3,
-          "compactHeadline": "James Madison ties NCAA punt-return TD record in 87-3 win"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-64efa43c37d92cba"
-          ],
-          "type": "RECORD",
-          "priority": 86,
-          "headline": "No. 2 Georgia beat Western Kentucky 70-20 as Gunner Stockton threw five touchdown passes, tying the school record.",
-          "text": "No. 2 Georgia beat Western Kentucky 70-20 as Gunner Stockton threw five touchdown passes, tying the school record.",
-          "entities": [
-            "Georgia Bulldogs",
-            "Western Kentucky Hilltoppers",
-            "Gunner Stockton"
-          ],
-          "occurredAt": "2026-09-12T21:29:36Z",
-          "timePrecision": "exact",
-          "ageHours": 1.53,
-          "freshnessBasis": "Gunner Stockton threw five touchdown passes in Georgia’s 70-20 win over Western Kentucky.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856673"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856673"
-            }
-          ],
-          "id": "a3-c4eb5930a985f5b1",
+          "id": "a3-f5a13cbb05c7f013",
           "feedRank": 4,
-          "compactHeadline": "Georgia’s Stockton ties school record with five TD passes"
+          "compactHeadline": "James Madison ties NCAA mark with three punt-return TDs"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-de41825f9c619ca2"
+            "cand-5858a46dfead59a2"
           ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "Beau Brungard accounted for eight touchdowns, including seven in the first half, as Youngstown State routed Duquesne 70-13.",
-          "text": "Beau Brungard accounted for eight touchdowns, including seven in the first half, as Youngstown State routed Duquesne 70-13.",
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "PENALTY UTSA False Start 5 yards from TXST03 to TXST08. NO PLAY.",
+          "text": "PENALTY UTSA False Start 5 yards from TXST03 to TXST08. NO PLAY.",
           "entities": [
-            "Beau Brungard",
-            "Youngstown State Penguins",
-            "Duquesne Dukes"
+            "UTSA",
+            "Texas State"
           ],
-          "occurredAt": "2026-09-12T22:05:30Z",
+          "occurredAt": "2026-09-12T19:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.93,
-          "freshnessBasis": "Beau Brungard accounted for eight touchdowns in Youngstown State’s 70-13 win over Duquesne Saturday.",
+          "ageHours": 4.02,
+          "freshnessBasis": "UTSA defeated Texas State 31-26 after a late scoring drive.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401867895"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401867895"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-12",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-71d300e6f351b643",
-          "feedRank": 6,
-          "compactHeadline": "Youngstown State’s Brungard accounts for eight TDs"
+          "id": "a3-1de208903c5a7cd1",
+          "feedRank": 16,
+          "compactHeadline": "Late score lifts UTSA past Texas State 31-26"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-dab866a051586ff4"
+            "cand-2d34b82c5a0094ec"
           ],
-          "type": "RECORD",
-          "priority": 78,
-          "headline": "Eli Gillman ran for 147 yards and three touchdowns as Montana beat Utah Tech 35-14; Brooks Davis added 12 catches for 151 yards.",
-          "text": "Eli Gillman ran for 147 yards and three touchdowns as Montana beat Utah Tech 35-14; Brooks Davis added 12 catches for 151 yards.",
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Kevin Jennings threw for 337 yards and a career-high five touchdowns in the first half of No. 17 SMU’s 56-10 win over UC Davis.",
+          "text": "Kevin Jennings threw for 337 yards and a career-high five touchdowns in the first half of No. 17 SMU’s 56-10 win over UC Davis.",
           "entities": [
-            "Eli Gillman",
-            "Brooks Davis",
-            "Montana Grizzlies",
-            "Utah Tech Trailblazers"
+            "SMU Mustangs",
+            "UC Davis Aggies",
+            "Kevin Jennings"
           ],
-          "occurredAt": "2026-09-12T22:44:38Z",
+          "occurredAt": "2026-09-12T20:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.28,
-          "freshnessBasis": "Montana defeated Utah Tech 35-14 after Eli Gillman scored three touchdowns Saturday.",
+          "ageHours": 3.52,
+          "freshnessBasis": "Kevin Jennings threw five touchdowns in No. 17 SMU’s 56-10 win over UC Davis.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401868112"
+            "https://highlightly.net",
+            "http://www.espn.com/ncf/recap?gameId=401858223"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-12",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401868112"
+              "url": "http://www.espn.com/ncf/recap?gameId=401858223"
             }
           ],
-          "id": "a3-feba6e3cd9c932a5",
-          "feedRank": 7,
-          "compactHeadline": "Montana’s Gillman ties record with three touchdowns"
+          "id": "a3-4855c6cf85de8092",
+          "feedRank": 30,
+          "compactHeadline": "Jennings throws five TDs as No. 17 SMU routs UC Davis"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-a5ebbf4cbb23fed9"
+            "cand-cee9a6dd8deb4e04"
           ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Appalachian State beat East Carolina 27-24 for its fourth straight win in the series, led by Malachi Singleton’s 267 passing yards and rushing touchdown.",
-          "text": "Appalachian State beat East Carolina 27-24 for its fourth straight win in the series, led by Malachi Singleton’s 267 passing yards and rushing touchdown.",
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Bear Bachmeier threw for 217 yards and three touchdowns as No. 15 BYU rallied to beat Arizona 28-17.",
+          "text": "Bear Bachmeier threw for 217 yards and three touchdowns as No. 15 BYU rallied to beat Arizona 28-17.",
           "entities": [
-            "Malachi Singleton",
-            "App State Mountaineers",
-            "East Carolina Pirates"
+            "BYU Cougars",
+            "Arizona Wildcats",
+            "Bear Bachmeier"
           ],
-          "occurredAt": "2026-09-12T20:33:30Z",
+          "occurredAt": "2026-09-12T19:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.46,
-          "freshnessBasis": "App State defeated East Carolina 27-24 for its fourth consecutive series win Saturday.",
+          "ageHours": 4.02,
+          "freshnessBasis": "Bear Bachmeier threw three touchdowns in No. 15 BYU’s 28-17 win over Arizona.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401864571"
+            "https://highlightly.net",
+            "http://www.espn.com/ncf/recap?gameId=401856810"
           ],
           "sources": [
             {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-12",
+              "url": "https://highlightly.net"
+            },
+            {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401864571"
+              "url": "http://www.espn.com/ncf/recap?gameId=401856810"
             }
           ],
-          "id": "a3-338fdf32329efe4b",
-          "feedRank": 29,
-          "compactHeadline": "App State extends series streak over East Carolina"
+          "id": "a3-1e044a660046f44c",
+          "feedRank": 31,
+          "compactHeadline": "Three-TD Bachmeier leads No. 15 BYU past Arizona"
+        },
+        {
+          "rank": 7,
+          "candidateIds": [
+            "cand-2cb0994a3c0be5d2"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Ryder Burton threw a 43-yard touchdown to EJ Reid with 9:34 left and UAB held on to beat Louisiana Monroe 26-20 on Saturday.",
+          "text": "Ryder Burton threw a 43-yard touchdown to EJ Reid with 9:34 left and UAB held on to beat Louisiana Monroe 26-20 on Saturday.",
+          "entities": [
+            "UAB Blazers",
+            "Louisiana-Monroe Warhawks",
+            "Ryder Burton",
+            "EJ Reid"
+          ],
+          "occurredAt": "2026-09-12T19:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.02,
+          "freshnessBasis": "Ryder Burton threw a 43-yard touchdown to EJ Reid with 9:34 left in UAB’s 26-20 win.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/ncf/recap?gameId=401862708"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-12",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401862708"
+            }
+          ],
+          "id": "a3-f0c54715d1aa9712",
+          "feedRank": 32,
+          "compactHeadline": "UAB rallies past Louisiana-Monroe on 43-yard TD"
         }
       ]
     }
   ],
   "specialEvents": [
-    {
-      "name": "Spanish Grand Prix",
-      "sport": "Formula 1",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-06d781a5ebbad4ed"
-          ],
-          "type": "QUALIFYING",
-          "priority": 82,
-          "headline": "Lando Norris edged championship leader Kimi Antonelli to take pole position for the Spanish Grand Prix at the new Madring.",
-          "text": "Lando Norris edged championship leader Kimi Antonelli to take pole position for the Spanish Grand Prix at the new Madring.",
-          "entities": [
-            "Lando Norris",
-            "Kimi Antonelli",
-            "McLaren",
-            "Spanish Grand Prix"
-          ],
-          "occurredAt": "2026-09-12T15:39:31Z",
-          "timePrecision": "exact",
-          "ageHours": 7.36,
-          "freshnessBasis": "Lando Norris took pole for the Spanish Grand Prix after edging Kimi Antonelli in qualifying.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/f1/story/_/id/49867167/mclarens-lando-norris-pips-kimi-antonelli-take-thrilling-pole-spanish-grand-prix-spanish-grand-prix-madring-formula-1"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-f1",
-              "url": "https://www.espn.com/f1/story/_/id/49867167/mclarens-lando-norris-pips-kimi-antonelli-take-thrilling-pole-spanish-grand-prix-spanish-grand-prix-madring-formula-1"
-            }
-          ],
-          "id": "a3-special-59eb7f0ef3e2c7c1",
-          "feedRank": 11,
-          "compactHeadline": "Norris edges Antonelli for Spanish GP pole"
-        }
-      ]
-    },
     {
       "name": "US Open",
       "sport": "Tennis",
@@ -964,17 +925,17 @@
             "cand-b7ac7bf5f3be98df"
           ],
           "type": "MILESTONE",
-          "priority": 82,
-          "headline": "Taylor Townsend and Katerina Siniakova won the US Open women’s doubles title, completing their career Grand Slam as a team.",
-          "text": "Taylor Townsend and Katerina Siniakova won the US Open women’s doubles title, completing their career Grand Slam as a team.",
+          "priority": 84,
+          "headline": "Taylor Townsend and Katerina Siniakova completed their career Grand Slam as a team by winning the US Open women’s doubles title.",
+          "text": "Taylor Townsend and Katerina Siniakova completed their career Grand Slam as a team by winning the US Open women’s doubles title.",
           "entities": [
             "Taylor Townsend",
             "Katerina Siniakova"
           ],
           "occurredAt": "2026-09-12T03:57:49Z",
           "timePrecision": "exact",
-          "ageHours": 19.06,
-          "freshnessBasis": "Taylor Townsend and Katerina Siniakova won the US Open women’s doubles title.",
+          "ageHours": 19.56,
+          "freshnessBasis": "Taylor Townsend and Katerina Siniakova won the US Open women’s doubles title and completed their career Grand Slam as a team.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49907518/taylor-townsend-katerina-siniakova-win-2026-us-open-women-doubles-title"
@@ -986,9 +947,9 @@
               "url": "https://www.espn.com/tennis/story/_/id/49907518/taylor-townsend-katerina-siniakova-win-2026-us-open-women-doubles-title"
             }
           ],
-          "id": "a3-special-9fc991bc1dac19e4",
-          "feedRank": 9,
-          "compactHeadline": "Townsend and Siniakova complete career doubles Grand Slam"
+          "id": "a3-special-5fbb674ff7589182",
+          "feedRank": 7,
+          "compactHeadline": "Townsend and Siniakova complete career Grand Slam"
         },
         {
           "rank": 2,
@@ -996,9 +957,9 @@
             "cand-e5a8799f60012771"
           ],
           "type": "ADVANCEMENT",
-          "priority": 80,
-          "headline": "Ben Shelton beat Frances Tiafoe in an all-American semifinal and will face No. 1 seed Alexander Zverev for the US Open title.",
-          "text": "Ben Shelton beat Frances Tiafoe in an all-American semifinal and will face No. 1 seed Alexander Zverev for the US Open title.",
+          "priority": 78,
+          "headline": "Ben Shelton defeated Frances Tiafoe in an all-American semifinal and advanced to his first US Open final against Alexander Zverev.",
+          "text": "Ben Shelton defeated Frances Tiafoe in an all-American semifinal and advanced to his first US Open final against Alexander Zverev.",
           "entities": [
             "Ben Shelton",
             "Frances Tiafoe",
@@ -1006,8 +967,8 @@
           ],
           "occurredAt": "2026-09-12T11:54:07Z",
           "timePrecision": "exact",
-          "ageHours": 11.12,
-          "freshnessBasis": "Ben Shelton defeated Frances Tiafoe to reach his first US Open final.",
+          "ageHours": 11.62,
+          "freshnessBasis": "Ben Shelton beat Frances Tiafoe to reach his first US Open final.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49909945/ben-shelton-beats-frances-tiafoe-all-american-semifinal-reach-2026-us-open-final"
@@ -1030,8 +991,8 @@
           ],
           "type": "RESULT",
           "priority": 82,
-          "headline": "Christian Harrison and Neal Skupski won the US Open men’s doubles final 6-4, 7-6 (6) for their second Grand Slam title of the year.",
-          "text": "Christian Harrison and Neal Skupski won the US Open men’s doubles final 6-4, 7-6 (6) for their second Grand Slam title of the year.",
+          "headline": "Christian Harrison and Neal Skupski defeated Kevin Krawietz and Tim Puetz 6-4, 7-6 (6) in the US Open men’s doubles final.",
+          "text": "Christian Harrison and Neal Skupski defeated Kevin Krawietz and Tim Puetz 6-4, 7-6 (6) in the US Open men’s doubles final.",
           "entities": [
             "Christian Harrison",
             "Neal Skupski",
@@ -1040,8 +1001,8 @@
           ],
           "occurredAt": "2026-09-12T19:38:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.39,
-          "freshnessBasis": "Christian Harrison and Neal Skupski defeated Kevin Krawietz and Tim Puetz in the US Open men’s doubles final.",
+          "ageHours": 3.89,
+          "freshnessBasis": "Christian Harrison and Neal Skupski won the US Open men’s doubles final in straight sets.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49916443/harrison-skupski-win-us-open-men-doubles-2nd-grand-slam"
@@ -1054,7 +1015,7 @@
             }
           ],
           "id": "a3-special-35bb3deb81f28faa",
-          "feedRank": 15,
+          "feedRank": 13,
           "compactHeadline": "Harrison and Skupski win US Open men’s doubles title"
         },
         {
@@ -1063,17 +1024,18 @@
             "cand-946743e4cbdfc654"
           ],
           "type": "ADVANCEMENT",
-          "priority": 77,
-          "headline": "Alexander Zverev beat Karen Khachanov 6-3, 7-6 (7), 7-6 (6) to reach the US Open final and play for his second Grand Slam title.",
-          "text": "Alexander Zverev beat Karen Khachanov 6-3, 7-6 (7), 7-6 (6) to reach the US Open final and play for his second Grand Slam title.",
+          "priority": 75,
+          "headline": "Alexander Zverev reached the US Open final by beating Karen Khachanov and will play for his second Grand Slam title.",
+          "text": "Alexander Zverev reached the US Open final by beating Karen Khachanov and will play for his second Grand Slam title.",
           "entities": [
+            "US Open",
             "Alexander Zverev",
             "Karen Khachanov"
           ],
           "occurredAt": "2026-09-12T03:24:12Z",
           "timePrecision": "exact",
-          "ageHours": 19.62,
-          "freshnessBasis": "Alexander Zverev defeated Karen Khachanov in the US Open semifinals to reach the final.",
+          "ageHours": 20.12,
+          "freshnessBasis": "Alexander Zverev defeated Karen Khachanov to reach the US Open final.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/tennis/story/_/id/49907649/alexander-zverev-beats-karen-khachanov-reach-2026-us-open-final"
@@ -1085,9 +1047,48 @@
               "url": "https://www.espn.com/tennis/story/_/id/49907649/alexander-zverev-beats-karen-khachanov-reach-2026-us-open-final"
             }
           ],
-          "id": "a3-special-20f6af688eaa1e30",
-          "feedRank": 20,
-          "compactHeadline": "Zverev reaches US Open final seeking second major"
+          "id": "a3-special-77596c872aaa0cf9",
+          "feedRank": 18,
+          "compactHeadline": "Zverev reaches US Open final for second major chance"
+        }
+      ]
+    },
+    {
+      "name": "Spanish Grand Prix",
+      "sport": "Formula 1",
+      "items": [
+        {
+          "rank": 1,
+          "candidateIds": [
+            "cand-48076c2ae4291aae"
+          ],
+          "type": "QUALIFYING",
+          "priority": 80,
+          "headline": "Lando Norris captured pole position for the Spanish Grand Prix at the new Madring, calling it one of his best-ever laps.",
+          "text": "Lando Norris captured pole position for the Spanish Grand Prix at the new Madring, calling it one of his best-ever laps.",
+          "entities": [
+            "Spanish Grand Prix",
+            "Lando Norris",
+            "McLaren"
+          ],
+          "occurredAt": "2026-09-12T16:45:24Z",
+          "timePrecision": "exact",
+          "ageHours": 6.76,
+          "freshnessBasis": "Lando Norris won pole position for the Spanish Grand Prix at the Madring.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/f1/story/_/id/49867169/lando-norris-labels-surprise-spanish-grand-prix-pole-one-best-laps-done-ever-spanish-grand-prix-madring-formula-1"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-f1",
+              "url": "https://www.espn.com/f1/story/_/id/49867169/lando-norris-labels-surprise-spanish-grand-prix-pole-one-best-laps-done-ever-spanish-grand-prix-madring-formula-1"
+            }
+          ],
+          "id": "a3-special-0496fbf01af9db62",
+          "feedRank": 12,
+          "compactHeadline": "Norris takes surprise Spanish GP pole in Madrid"
         }
       ]
     },
@@ -1101,18 +1102,19 @@
             "cand-f11460997a2de7f3"
           ],
           "type": "EVENT_UPDATE",
-          "priority": 80,
-          "headline": "Jennifer Kupcho sank two late birdie putts, including a 93-footer, to earn the Americans a point and tie Europe 8-8 after four sessions.",
-          "text": "Jennifer Kupcho sank two late birdie putts, including a 93-footer, to earn the Americans a point and tie Europe 8-8 after four sessions.",
+          "priority": 79,
+          "headline": "Jennifer Kupcho sank two late birdie putts, including one from 93 feet, to earn the Americans a point and tie the Solheim Cup 8-8.",
+          "text": "Jennifer Kupcho sank two late birdie putts, including one from 93 feet, to earn the Americans a point and tie the Solheim Cup 8-8.",
           "entities": [
             "Jennifer Kupcho",
+            "Solheim Cup",
             "United States",
             "Europe"
           ],
           "occurredAt": "2026-09-12T19:09:11Z",
           "timePrecision": "exact",
-          "ageHours": 3.87,
-          "freshnessBasis": "Jennifer Kupcho’s late birdie putts helped the United States tie Europe 8-8 after four sessions.",
+          "ageHours": 4.37,
+          "freshnessBasis": "Jennifer Kupcho’s late birdie putts helped the United States tie the Solheim Cup 8-8.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/golf/story/_/id/49916041/jennifer-kupcho-sinks-unlikely-putts-even-solheim-cup"
@@ -1124,16 +1126,16 @@
               "url": "https://www.espn.com/golf/story/_/id/49916041/jennifer-kupcho-sinks-unlikely-putts-even-solheim-cup"
             }
           ],
-          "id": "a3-special-df2bd2717e2b7705",
-          "feedRank": 16,
-          "compactHeadline": "Kupcho’s late putts pull Americans even at Solheim Cup"
+          "id": "a3-special-9f4e6287e8b3fdb1",
+          "feedRank": 17,
+          "compactHeadline": "Kupcho’s late birdie putts tie Solheim Cup at 8-8"
         },
         {
           "rank": 2,
           "candidateIds": [
             "cand-39a4b25c9a2c7c79"
           ],
-          "type": "STANDINGS",
+          "type": "EVENT_UPDATE",
           "priority": 76,
           "headline": "Europe moved ahead 7-5 at the Solheim Cup after defeating the record-setting U.S. partnership of Nelly Korda and Allisen Corpuz.",
           "text": "Europe moved ahead 7-5 at the Solheim Cup after defeating the record-setting U.S. partnership of Nelly Korda and Allisen Corpuz.",
@@ -1146,8 +1148,8 @@
           ],
           "occurredAt": "2026-09-12T12:06:13Z",
           "timePrecision": "exact",
-          "ageHours": 10.92,
-          "freshnessBasis": "Europe built a 7-5 Solheim Cup lead after beating Nelly Korda and Allisen Corpuz Saturday.",
+          "ageHours": 11.42,
+          "freshnessBasis": "Europe built a 7-5 Solheim Cup lead after beating the U.S. pairing of Nelly Korda and Allisen Corpuz.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/golf/story/_/id/49912198/europe-builds-7-5-lead-solheim-cup-korda-corpuz-falter"
@@ -1159,9 +1161,9 @@
               "url": "https://www.espn.com/golf/story/_/id/49912198/europe-builds-7-5-lead-solheim-cup-korda-corpuz-falter"
             }
           ],
-          "id": "a3-special-f1884f158165a04d",
-          "feedRank": 18,
-          "compactHeadline": "Europe builds 7-5 Solheim Cup lead"
+          "id": "a3-special-3bba7ec534a60139",
+          "feedRank": 21,
+          "compactHeadline": "Europe takes 7-5 Solheim Cup lead after Korda loss"
         }
       ]
     }

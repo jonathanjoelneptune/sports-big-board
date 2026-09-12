@@ -1,124 +1,122 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-12T23:01:13Z
+Updated: 2026-09-12T23:31:10Z
 Global headline budget: 32/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: 47146c113b1da6c7446ae30305a37a1d367692fcf2accfadb334b30a5edcbff6
+Candidate hash: 31a77b97e9d439d35d4bfe6d2c93ceeae5869e6a6c2fdb6b76489db1e40f5ee2
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [PLAYOFF] Milwaukee clinched a playoff spot with a 20-0 win over Cincinnati; Garrett Mitchell hit the Brewers’ first grand slam of the season. (priority 90, age 23.35h)
+ 1. [PLAYOFF] Milwaukee clinched a playoff spot with a 20-0 win over Cincinnati, featuring Garrett Mitchell’s grand slam and four Brewers homers. (priority 88, age 23.85h)
     Compact headline: Brewers clinch playoff berth in 20-0 rout of Reds
     Occurred: 2026-09-11T23:40:00Z | Precision: exact | Status: active
-    Freshness basis: Milwaukee clinched a playoff spot with a 20-0 win over Cincinnati on Friday.
+    Freshness basis: Milwaukee clinched a playoff spot with a 20-0 win over Cincinnati on Sept. 11.
     Entities: Milwaukee Brewers, Cincinnati Reds, Garrett Mitchell
     Candidate IDs: cand-6d800df1d451ee3e
     Source [Highlightly/highlightly-baseball-2026-09-11]: https://highlightly.net
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49909707/mlb-best-brewers-clinch-playoff-berth-20-0-rout
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816897
 
- 2. [MILESTONE] Arizona reliever Justin Martinez struck out three Rangers on nine pitches to record the Diamondbacks’ fifth immaculate inning. (priority 78, age 4.27h)
-    Compact headline: Martinez records Diamondbacks’ fifth immaculate inning
+ 2. [RECORD] Arizona reliever Justin Martinez struck out three Rangers hitters on nine pitches for the Diamondbacks’ fifth immaculate inning. (priority 82, age 4.77h)
+    Compact headline: Justin Martinez throws Diamondbacks’ fifth immaculate inning
     Occurred: 2026-09-12T18:45:08Z | Precision: exact | Status: active
-    Freshness basis: Justin Martinez struck out three Texas batters on nine pitches for Arizona’s fifth immaculate inning.
-    Entities: Arizona Diamondbacks, Justin Martinez, Texas Rangers
+    Freshness basis: Justin Martinez struck out three Texas hitters on nine pitches for Arizona’s fifth immaculate inning.
+    Entities: Arizona Diamondbacks, Texas Rangers, Justin Martinez
     Candidate IDs: cand-8d98f5066ea27d2a
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49910367/martinez-fans-three-nine-pitches-d-backs-fifth-immaculate-inning
 
- 3. [RESULT] Donovan Walton delivered a walk-off two-run homer in Oakland’s 6-5, 10-inning win over Seattle. (priority 82, age 21.35h)
-    Compact headline: Walton delivers 10th-inning walk-off for Athletics
+ 3. [RESULT] Harry Ford delivered the walk-off in the bottom of the 10th inning for Washington’s 6-5 win. (priority 82, age 3.44h)
+    Compact headline: Harry Ford delivers walk-off for Nationals in 10th
+    Occurred: 2026-09-12T20:05:00Z | Precision: exact | Status: active
+    Freshness basis: Harry Ford delivered the walk-off in the bottom of the 10th inning for Washington’s 6-5 win.
+    Entities: Washington Nationals, Los Angeles Angels, Harry Ford
+    Candidate IDs: cand-57bc24284729c963
+    Source [Highlightly/highlightly-baseball-2026-09-12]: https://highlightly.net
+    Source [ESPN/a44-espn-mlb-summary-401816903]: https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816903
+
+ 4. [RESULT] Donovan Walton delivered a walk-off two-run homer in the 10th inning of Oakland’s 6-5 win over Seattle. (priority 82, age 21.85h)
+    Compact headline: Walton’s 10th-inning homer gives Athletics walk-off win
     Occurred: 2026-09-12T01:40:00Z | Precision: exact | Status: active
-    Freshness basis: Donovan Walton delivered a walk-off two-run homer in Oakland’s 6-5, 10-inning win over Seattle.
+    Freshness basis: Donovan Walton delivered a walk-off two-run homer in the 10th inning of Oakland’s 6-5 win over Seattle.
     Entities: Oakland Athletics, Seattle Mariners, Donovan Walton
     Candidate IDs: cand-df01b90900963dfb
     Source [Highlightly/highlightly-baseball-2026-09-11]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816901
 
- 4. [RESULT] Drake Baldwin delivered the walk-off in the bottom of the 11th inning. (priority 82, age 23.77h)
-    Compact headline: Drake Baldwin delivers walk-off as Atlanta Braves beat Philadelphia Phillies 6-5
-    Occurred: 2026-09-11T23:15:00Z | Precision: exact | Status: active
-    Freshness basis: Drake Baldwin delivered the walk-off in the bottom of the 11th inning.
-    Entities: Atlanta Braves, Philadelphia Phillies, Drake Baldwin, Ha-Seong Kim
-    Candidate IDs: cand-2c37d73a7ca2b729
-    Source [Highlightly/highlightly-baseball-2026-09-11]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816895
-
- 5. [RESULT] Junior Caminero delivered the walk-off in the bottom of the 9th inning. (priority 82, age 23.85h)
-    Compact headline: Caminero’s walk-off homer lifts Rays over Astros
-    Occurred: 2026-09-11T23:10:00Z | Precision: exact | Status: active
-    Freshness basis: Junior Caminero delivered Tampa Bay’s walk-off in the bottom of the ninth inning against Houston.
-    Entities: Tampa Bay Rays, Houston Astros, Junior Caminero
-    Candidate IDs: cand-bd5acfe97c7e0f08
-    Source [Highlightly/highlightly-baseball-2026-09-11]: https://highlightly.net
-
- 6. [STREAK] San Diego beat San Francisco 7-6 to extend its winning streak to five games; Robbie Ray earned his 100th career victory. (priority 78, age 2.94h)
-    Compact headline: Padres extend winning streak to five games
-    Occurred: 2026-09-12T20:05:00Z | Precision: exact | Status: active
-    Freshness basis: San Diego beat San Francisco and extended its winning streak to five games Saturday.
-    Entities: San Diego Padres, San Francisco Giants, Robbie Ray
-    Candidate IDs: cand-66c8dd7c89c12ebb
-    Source [Highlightly/highlightly-baseball-2026-09-12]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/preview?gameId=401816915
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816900
-
- 7. [RETURN] Freddie Freeman returned to Los Angeles’ lineup Saturday after missing two games with a right knee issue. (priority 75, age 3.31h)
+ 5. [RETURN] Freddie Freeman returned to the Dodgers' lineup Saturday after missing two games with a right knee issue. (priority 74, age 3.80h)
     Compact headline: Freeman returns to Dodgers lineup after knee issue
     Occurred: 2026-09-12T19:42:53Z | Precision: exact | Status: active
-    Freshness basis: Freddie Freeman returned to the Dodgers’ lineup Saturday after missing two games with a right knee issue.
+    Freshness basis: Freddie Freeman returned to the Dodgers' lineup after missing two games with a right knee issue.
     Entities: Los Angeles Dodgers, Freddie Freeman
     Candidate IDs: cand-6d1b936bf9ae41fc
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49917208/dodgers-freeman-lineup-missing-2-games-knee-issue
+
+ 6. [RESULT] Ranger Suarez struck out eight over seven innings and Wilyer Abreu hit a tiebreaking two-run double in Boston’s 5-1 win over Kansas City. (priority 72, age 3.35h)
+    Compact headline: Suarez, Abreu help Red Sox halt three-game skid
+    Occurred: 2026-09-12T20:10:00Z | Precision: exact | Status: active
+    Freshness basis: Ranger Suarez and Wilyer Abreu helped Boston beat Kansas City 5-1 and end a three-game losing streak.
+    Entities: Boston Red Sox, Kansas City Royals, Ranger Suarez, Wilyer Abreu
+    Candidate IDs: cand-8afc092c0a81918e
+    Source [Highlightly/highlightly-baseball-2026-09-12]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816907
 
 ============================================================================
 NFL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Dallas placed running back Malik Davis on injured reserve, and he is scheduled for hip surgery after being hurt in practice. (priority 85, age 4.60h)
-    Compact headline: Cowboys place Malik Davis on IR ahead of hip surgery
+ 1. [INJURY] Dallas placed running back Malik Davis on injured reserve, and he is scheduled for hip surgery after suffering the injury in practice. (priority 79, age 5.10h)
+    Compact headline: Malik Davis set for hip surgery after Cowboys injury
     Occurred: 2026-09-12T18:25:09Z | Precision: exact | Status: active
     Freshness basis: Dallas placed Malik Davis on injured reserve and scheduled hip surgery after his practice injury.
     Entities: Dallas Cowboys, Malik Davis
     Candidate IDs: cand-abc54a0ccec14969
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49906649/cowboys-malik-davis-hip-injured-practice-opener
 
- 2. [CONTRACT] Las Vegas signed tight end Michael Mayer to a three-year, $45 million extension as he steps in for injured Brock Bowers. (priority 78, age 5.32h)
+ 2. [INJURY] Kansas City will use undrafted rookie Kahlil Benson to help at left tackle after Josh Simmons was ruled out for Monday’s opener. (priority 75, age 3.22h)
+    Compact headline: Chiefs turn to undrafted rookie with Josh Simmons out
+    Occurred: 2026-09-12T20:17:49Z | Precision: exact | Status: active
+    Freshness basis: Kansas City ruled Josh Simmons out for Monday’s opener and is expected to use Kahlil Benson at left tackle.
+    Entities: Kansas City Chiefs, Josh Simmons, Kahlil Benson
+    Candidate IDs: cand-ad1bf4f43ca71b88
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49917622/chiefs-set-use-undrafted-rookie-lt-josh-simmons-out
+
+ 3. [CONTRACT] C.J. Stroud and the Texans agreed to postpone long-term extension talks until after the 2026 season. (priority 78, age 2.73h)
+    Compact headline: Stroud, Texans table extension talks until after season
+    Occurred: 2026-09-12T20:47:40Z | Precision: exact | Status: active
+    Freshness basis: C.J. Stroud and Houston agreed to wait until after the season to pursue a long-term extension.
+    Entities: Houston Texans, C.J. Stroud
+    Candidate IDs: cand-d66cd65cc4a782f2
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49917836/sources-cj-stroud-texans-table-extension-talks
+
+ 4. [CONTRACT] Las Vegas agreed to a three-year, $45 million extension with tight end Michael Mayer, who is stepping in for injured Brock Bowers. (priority 75, age 5.82h)
     Compact headline: Raiders give Michael Mayer three-year, $45M extension
     Occurred: 2026-09-12T17:42:12Z | Precision: exact | Status: active
-    Freshness basis: Las Vegas gave Michael Mayer a three-year, $45 million extension before the regular season.
+    Freshness basis: Las Vegas agreed to a three-year, $45 million extension with Michael Mayer.
     Entities: Las Vegas Raiders, Michael Mayer, Brock Bowers
     Candidate IDs: cand-979e7c5d7332fd95
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49914437/raiders-te-michael-mayer-gets-3-year-45m-extension-sources-say
 
- 3. [DEPTH_CHART] Atlanta ruled out Tua Tagovailoa with an oblique injury and will start Cooper Rush at quarterback against Pittsburgh. (priority 80, age 23.89h)
-    Compact headline: Falcons name Cooper Rush starter with Tagovailoa out
-    Occurred: 2026-09-11T23:07:53Z | Precision: exact | Status: active
-    Freshness basis: Atlanta ruled Tua Tagovailoa out with an oblique injury and named Cooper Rush its starter.
-    Entities: Atlanta Falcons, Tua Tagovailoa, Cooper Rush, Pittsburgh Steelers
-    Candidate IDs: cand-41680284f2f509d8
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49905536/tagovailoa-rush-start-qb-falcons-vs-steelers
-
- 4. [DEPTH_CHART] Kansas City expects undrafted rookie Kahlil Benson to help at left tackle with Josh Simmons out for Monday’s opener against Denver. (priority 77, age 2.72h)
-    Compact headline: Chiefs turn to undrafted rookie with Simmons out
-    Occurred: 2026-09-12T20:17:49Z | Precision: exact | Status: active
-    Freshness basis: Kansas City ruled out left tackle Josh Simmons and is expected to use undrafted rookie Kahlil Benson.
-    Entities: Kansas City Chiefs, Josh Simmons, Kahlil Benson, Denver Broncos
-    Candidate IDs: cand-ad1bf4f43ca71b88
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49917622/chiefs-set-use-undrafted-rookie-lt-josh-simmons-out
-
- 5. [CONTRACT] Green Bay and tight end Tucker Kraft agreed to a four-year extension worth up to $92 million. (priority 76, age 7.43h)
-    Compact headline: Packers, Tucker Kraft agree to four-year extension
+ 5. [CONTRACT] Green Bay and tight end Tucker Kraft agreed to a four-year extension worth up to $92 million. (priority 74, age 7.93h)
+    Compact headline: Packers, Tucker Kraft agree to extension worth $92M
     Occurred: 2026-09-12T15:35:15Z | Precision: exact | Status: active
-    Freshness basis: Green Bay agreed with Tucker Kraft on a four-year extension worth up to $92 million.
+    Freshness basis: Green Bay agreed to a four-year extension with Tucker Kraft worth up to $92 million.
     Entities: Green Bay Packers, Tucker Kraft
     Candidate IDs: cand-11ffb29936879969
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49914334/sources-packers-tucker-kraft-agree-4-year-extension
 
- 6. [CONTRACT] Chicago and running back D’Andre Swift agreed to a three-year, $33.75 million extension with $27.5 million guaranteed. (priority 75, age 7.62h)
+ 6. [CONTRACT] Lamar Jackson and Baltimore are not expected to complete a long-term extension before the season, with talks set aside for now. (priority 72, age 0.02h)
+    Compact headline: Lamar Jackson, Ravens table extension talks until later
+    Occurred: 2026-09-12T23:29:59Z | Precision: exact | Status: active
+    Freshness basis: Lamar Jackson and Baltimore will not complete a long-term extension before the 2026 season begins.
+    Entities: Baltimore Ravens, Lamar Jackson
+    Candidate IDs: cand-8bc332799d602b0a
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49915181/sources-lamar-jackson-reluctant-talk-deal-ravens
+
+ 7. [CONTRACT] Chicago agreed to a three-year, $33.75 million extension with running back D’Andre Swift, including $27.5 million guaranteed. (priority 73, age 8.12h)
     Compact headline: Bears extend D’Andre Swift for three years, $33.75M
     Occurred: 2026-09-12T15:24:15Z | Precision: exact | Status: active
     Freshness basis: Chicago agreed to a three-year, $33.75 million extension with D’Andre Swift.
@@ -136,52 +134,44 @@ NBA  [OFFSEASON]
 NHL  [OFFSEASON]
 ============================================================================
 
- 1. [TRADE] The OHL’s Brampton Steelheads received 17 draft picks from Sudbury for the rights to forward prospect Tanner Adams. (priority 75, age 8.15h)
-    Compact headline: Steelheads acquire 17 picks for prospect Tanner Adams
+ 1. [TRADE] The OHL's Brampton Steelheads acquired 17 draft picks from Sudbury for the rights to forward prospect Tanner Adams. (priority 75, age 8.65h)
+    Compact headline: Steelheads receive 17 picks for prospect Tanner Adams
     Occurred: 2026-09-12T14:52:10Z | Precision: exact | Status: active
-    Freshness basis: Brampton acquired 17 draft picks from Sudbury for the rights to Tanner Adams Saturday.
-    Entities: Tanner Adams, Brampton Steelheads, Sudbury Wolves
+    Freshness basis: Brampton acquired 17 draft picks from Sudbury for the rights to Tanner Adams.
+    Entities: Brampton Steelheads, Sudbury Wolves, Tanner Adams
     Candidate IDs: cand-f5cacbe1ba5054a6
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49913580/junior-hockey-team-nets-17-picks-top-prospect-tanner-adams
 
- 2. [SIGNING] Montreal agreed to a one-year deal with veteran forward Chris Kreider after he mutually terminated his previous contract with Anaheim. (priority 76, age 0.47h)
-    Compact headline: Chris Kreider signs one-year deal with Canadiens
+ 2. [SIGNING] Veteran forward Chris Kreider agreed to a one-year contract with Montreal after mutually terminating his previous deal with Anaheim. (priority 73, age 0.97h)
+    Compact headline: Chris Kreider joins Canadiens on one-year deal
     Occurred: 2026-09-12T22:32:50Z | Precision: exact | Status: active
-    Freshness basis: Montreal agreed to a one-year contract with Chris Kreider on Saturday.
+    Freshness basis: Chris Kreider agreed to a one-year contract with Montreal on Sept. 12.
     Entities: Montreal Canadiens, Chris Kreider, Anaheim Ducks
     Candidate IDs: cand-ef6bf0d782e6fb57
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49919075/chris-kreider-35-lands-1-year-deal-montreal-canadiens
-
- 3. [CONTRACT] Vegas signed captain Mark Stone to a two-year, $18 million extension carrying a $9 million annual value through 2028-29. (priority 78, age 5.70h)
-    Compact headline: Golden Knights extend captain Mark Stone through 2028-29
-    Occurred: 2026-09-12T17:19:27Z | Precision: exact | Status: active
-    Freshness basis: Vegas signed Mark Stone to a two-year, $18 million extension through the 2028-29 season.
-    Entities: Vegas Golden Knights, Mark Stone
-    Candidate IDs: cand-db37ee8d2606f344
-    Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49915341/golden-knights-extend-mark-stone-2-year-18m-deal
 
 ============================================================================
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [STREAK] Hull extended its unbeaten Premier League start with an entertaining 2-2 draw at Chelsea. (priority 75, age 5.35h)
-    Compact headline: Hull remain unbeaten after 2-2 draw at Chelsea
-    Occurred: 2026-09-12T17:40:01Z | Precision: exact | Status: active
-    Freshness basis: Hull extended its unbeaten Premier League start with a 2-2 draw at Chelsea.
-    Entities: Hull City, Chelsea
-    Candidate IDs: cand-d35b502e0c436e28
-    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49914765/hull-continue-unbeaten-premier-league-streak-entertaining-2-2-draw-chelsea
-
- 2. [SLUMP] Tottenham drew Everton 0-0 to extend its winless Premier League start to four matches while still searching for its first goal. (priority 73, age 4.08h)
-    Compact headline: Winless Tottenham still seeking first goal after draw
+ 1. [SLUMP] Tottenham drew Everton 0-0, extending their winless start to four Premier League matches while still searching for a first goal. (priority 74, age 4.58h)
+    Compact headline: Tottenham still winless and scoreless after four matches
     Occurred: 2026-09-12T18:56:30Z | Precision: exact | Status: active
-    Freshness basis: Tottenham’s 0-0 draw with Everton extended its winless start to four Premier League matches.
+    Freshness basis: Tottenham drew 0-0 with Everton to extend its winless and scoreless start to four matches.
     Entities: Tottenham Hotspur, Everton
     Candidate IDs: cand-aa2b3732e529ca1b
     Source [ESPN/espn-epl]: http://www.espn.com/soccer/report/_/gameId/401879277
 
- 3. [RESULT] Bruno Guimarães scores stunner as Arsenal overcome Sunderland. (priority 72, age 1.70h)
-    Compact headline: Arsenal stay perfect after 2-0 win at Sunderland
+ 2. [STREAK] Hull extended its unbeaten Premier League start with a 2-2 draw at Chelsea. (priority 74, age 5.85h)
+    Compact headline: Hull remain unbeaten after entertaining draw at Chelsea
+    Occurred: 2026-09-12T17:40:01Z | Precision: exact | Status: active
+    Freshness basis: Hull remained unbeaten after drawing 2-2 at Chelsea.
+    Entities: Hull City, Chelsea
+    Candidate IDs: cand-d35b502e0c436e28
+    Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49914765/hull-continue-unbeaten-premier-league-streak-entertaining-2-2-draw-chelsea
+
+ 3. [RESULT] Bruno Guimarães scores stunner as Arsenal overcome Sunderland. (priority 72, age 2.20h)
+    Compact headline: Arsenal stay perfect with 2-0 win at Sunderland
     Occurred: 2026-09-12T21:18:56Z | Precision: exact | Status: active
     Freshness basis: Arsenal beat Sunderland 2-0 to maintain its perfect Premier League start.
     Entities: Arsenal, Sunderland, Bruno Guimarães, Bukayo Saka
@@ -198,106 +188,117 @@ MLS  [ACTIVE]
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [UPSET] Drew Mestemaker threw for 317 yards and two touchdowns while rushing for 109 yards and a score, and Oklahoma State ended a 21-game skid against FBS opponents by pulling off the first true stunner of the 2026 season, beating No. 6 Oregon 39-31 on... (priority 93, age 0.79h)
-    Compact headline: Oklahoma State stuns No. 6 Oregon in 39-31 thriller
-    Occurred: 2026-09-12T22:13:35Z | Precision: exact | Status: active
-    Freshness basis: Oklahoma State beat No. 6 Oregon 39-31 and ended a 21-game skid against FBS opponents.
+ 1. [UPSET] Oklahoma State upset No. 6 Oregon 39-31, ending a 21-game losing streak against FBS opponents. (priority 92, age 0.78h)
+    Compact headline: Oklahoma State stuns No. 6 Oregon 39-31
+    Occurred: 2026-09-12T22:44:21Z | Precision: exact | Status: active
+    Freshness basis: Oklahoma State defeated No. 6 Oregon 39-31 and ended a 21-game FBS losing streak.
+    Entities: Oklahoma State, Oregon
+    Candidate IDs: cand-cc5c4cd1d30f2694
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49918995/oklahoma-state-stuns-no-6-oregon-39-31-thriller
+
+ 2. [UPSET] Drew Mestemaker threw for 317 yards and two touchdowns while rushing for 109 yards and a score, and Oklahoma State ended a 21-game skid against FBS opponents by pulling off the first true stunner of the 2026 season, beating No. 6 Oregon 39-31 on... (priority 91, age 0.34h)
+    Compact headline: Oklahoma State stuns No. 6 Oregon 39-31
+    Occurred: 2026-09-12T23:10:29Z | Precision: exact | Status: active
+    Freshness basis: Oklahoma State beat No. 6 Oregon 39-31 and ended a 21-game FBS losing streak.
     Entities: Oklahoma State Cowboys, Oregon Ducks
     Candidate IDs: cand-078617cfc79c49f7
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401856782
 
- 2. [RECORD] James Madison tied the NCAA record with three punt-return touchdowns in an 87-3 win over Wagner, while setting a program points record. (priority 90, age 0.51h)
-    Compact headline: James Madison ties NCAA punt-return TD record in 87-3 win
+ 3. [RECORD] James Madison tied the NCAA record with three punt-return touchdowns in an 87-3 win over Wagner and set a program scoring record. (priority 87, age 1.01h)
+    Compact headline: James Madison ties NCAA mark with three punt-return TDs
     Occurred: 2026-09-12T22:30:37Z | Precision: exact | Status: active
-    Freshness basis: James Madison recorded three punt-return touchdowns in an 87-3 win over Wagner, tying the NCAA record.
+    Freshness basis: James Madison tied the NCAA record with three punt-return touchdowns in an 87-3 win over Wagner and set a program scoring record.
     Entities: James Madison Dukes, Wagner Seahawks, Michael Scott, Miles Halbert
     Candidate IDs: cand-9d2d2f8a094249f1
     Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49919633/jmu-ties-ncaa-record-3-punt-return-tds-87-3-win
     Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401867929
 
- 3. [RECORD] No. 2 Georgia beat Western Kentucky 70-20 as Gunner Stockton threw five touchdown passes, tying the school record. (priority 86, age 1.53h)
-    Compact headline: Georgia’s Stockton ties school record with five TD passes
-    Occurred: 2026-09-12T21:29:36Z | Precision: exact | Status: active
-    Freshness basis: Gunner Stockton threw five touchdown passes in Georgia’s 70-20 win over Western Kentucky.
-    Entities: Georgia Bulldogs, Western Kentucky Hilltoppers, Gunner Stockton
-    Candidate IDs: cand-64efa43c37d92cba
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401856673
+ 4. [RESULT] PENALTY UTSA False Start 5 yards from TXST03 to TXST08. NO PLAY. (priority 78, age 4.02h)
+    Compact headline: Late score lifts UTSA past Texas State 31-26
+    Occurred: 2026-09-12T19:30:00Z | Precision: exact | Status: active
+    Freshness basis: UTSA defeated Texas State 31-26 after a late scoring drive.
+    Entities: UTSA, Texas State
+    Candidate IDs: cand-5858a46dfead59a2
+    Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
 
- 4. [RECORD] Beau Brungard accounted for eight touchdowns, including seven in the first half, as Youngstown State routed Duquesne 70-13. (priority 82, age 0.93h)
-    Compact headline: Youngstown State’s Brungard accounts for eight TDs
-    Occurred: 2026-09-12T22:05:30Z | Precision: exact | Status: active
-    Freshness basis: Beau Brungard accounted for eight touchdowns in Youngstown State’s 70-13 win over Duquesne Saturday.
-    Entities: Beau Brungard, Youngstown State Penguins, Duquesne Dukes
-    Candidate IDs: cand-de41825f9c619ca2
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401867895
+ 5. [RESULT] Kevin Jennings threw for 337 yards and a career-high five touchdowns in the first half of No. 17 SMU’s 56-10 win over UC Davis. (priority 72, age 3.52h)
+    Compact headline: Jennings throws five TDs as No. 17 SMU routs UC Davis
+    Occurred: 2026-09-12T20:00:00Z | Precision: exact | Status: active
+    Freshness basis: Kevin Jennings threw five touchdowns in No. 17 SMU’s 56-10 win over UC Davis.
+    Entities: SMU Mustangs, UC Davis Aggies, Kevin Jennings
+    Candidate IDs: cand-2d34b82c5a0094ec
+    Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
+    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401858223
 
- 5. [RECORD] Eli Gillman ran for 147 yards and three touchdowns as Montana beat Utah Tech 35-14; Brooks Davis added 12 catches for 151 yards. (priority 78, age 0.28h)
-    Compact headline: Montana’s Gillman ties record with three touchdowns
-    Occurred: 2026-09-12T22:44:38Z | Precision: exact | Status: active
-    Freshness basis: Montana defeated Utah Tech 35-14 after Eli Gillman scored three touchdowns Saturday.
-    Entities: Eli Gillman, Brooks Davis, Montana Grizzlies, Utah Tech Trailblazers
-    Candidate IDs: cand-dab866a051586ff4
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401868112
+ 6. [RESULT] Bear Bachmeier threw for 217 yards and three touchdowns as No. 15 BYU rallied to beat Arizona 28-17. (priority 72, age 4.02h)
+    Compact headline: Three-TD Bachmeier leads No. 15 BYU past Arizona
+    Occurred: 2026-09-12T19:30:00Z | Precision: exact | Status: active
+    Freshness basis: Bear Bachmeier threw three touchdowns in No. 15 BYU’s 28-17 win over Arizona.
+    Entities: BYU Cougars, Arizona Wildcats, Bear Bachmeier
+    Candidate IDs: cand-cee9a6dd8deb4e04
+    Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
+    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401856810
 
- 6. [STREAK] Appalachian State beat East Carolina 27-24 for its fourth straight win in the series, led by Malachi Singleton’s 267 passing yards and rushing touchdown. (priority 74, age 2.46h)
-    Compact headline: App State extends series streak over East Carolina
-    Occurred: 2026-09-12T20:33:30Z | Precision: exact | Status: active
-    Freshness basis: App State defeated East Carolina 27-24 for its fourth consecutive series win Saturday.
-    Entities: Malachi Singleton, App State Mountaineers, East Carolina Pirates
-    Candidate IDs: cand-a5ebbf4cbb23fed9
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401864571
+ 7. [RESULT] Ryder Burton threw a 43-yard touchdown to EJ Reid with 9:34 left and UAB held on to beat Louisiana Monroe 26-20 on Saturday. (priority 72, age 4.02h)
+    Compact headline: UAB rallies past Louisiana-Monroe on 43-yard TD
+    Occurred: 2026-09-12T19:30:00Z | Precision: exact | Status: active
+    Freshness basis: Ryder Burton threw a 43-yard touchdown to EJ Reid with 9:34 left in UAB’s 26-20 win.
+    Entities: UAB Blazers, Louisiana-Monroe Warhawks, Ryder Burton, EJ Reid
+    Candidate IDs: cand-2cb0994a3c0be5d2
+    Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
+    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401862708
 
 ############################################################################
 SPECIAL EVENTS
 ############################################################################
 
-Spanish Grand Prix (Formula 1)
-----------------------------------------------------------------------------
-
- 1. [QUALIFYING] Lando Norris edged championship leader Kimi Antonelli to take pole position for the Spanish Grand Prix at the new Madring. (priority 82, age 7.36h)
-    Compact headline: Norris edges Antonelli for Spanish GP pole
-    Freshness basis: Lando Norris took pole for the Spanish Grand Prix after edging Kimi Antonelli in qualifying.
-    Candidate IDs: cand-06d781a5ebbad4ed
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49867167/mclarens-lando-norris-pips-kimi-antonelli-take-thrilling-pole-spanish-grand-prix-spanish-grand-prix-madring-formula-1
-
 US Open (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [MILESTONE] Taylor Townsend and Katerina Siniakova won the US Open women’s doubles title, completing their career Grand Slam as a team. (priority 82, age 19.06h)
-    Compact headline: Townsend and Siniakova complete career doubles Grand Slam
-    Freshness basis: Taylor Townsend and Katerina Siniakova won the US Open women’s doubles title.
+ 1. [MILESTONE] Taylor Townsend and Katerina Siniakova completed their career Grand Slam as a team by winning the US Open women’s doubles title. (priority 84, age 19.56h)
+    Compact headline: Townsend and Siniakova complete career Grand Slam
+    Freshness basis: Taylor Townsend and Katerina Siniakova won the US Open women’s doubles title and completed their career Grand Slam as a team.
     Candidate IDs: cand-b7ac7bf5f3be98df
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49907518/taylor-townsend-katerina-siniakova-win-2026-us-open-women-doubles-title
 
- 2. [ADVANCEMENT] Ben Shelton beat Frances Tiafoe in an all-American semifinal and will face No. 1 seed Alexander Zverev for the US Open title. (priority 80, age 11.12h)
+ 2. [ADVANCEMENT] Ben Shelton defeated Frances Tiafoe in an all-American semifinal and advanced to his first US Open final against Alexander Zverev. (priority 78, age 11.62h)
     Compact headline: Ben Shelton reaches first US Open final
-    Freshness basis: Ben Shelton defeated Frances Tiafoe to reach his first US Open final.
+    Freshness basis: Ben Shelton beat Frances Tiafoe to reach his first US Open final.
     Candidate IDs: cand-e5a8799f60012771
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49909945/ben-shelton-beats-frances-tiafoe-all-american-semifinal-reach-2026-us-open-final
 
- 3. [RESULT] Christian Harrison and Neal Skupski won the US Open men’s doubles final 6-4, 7-6 (6) for their second Grand Slam title of the year. (priority 82, age 3.39h)
+ 3. [RESULT] Christian Harrison and Neal Skupski defeated Kevin Krawietz and Tim Puetz 6-4, 7-6 (6) in the US Open men’s doubles final. (priority 82, age 3.89h)
     Compact headline: Harrison and Skupski win US Open men’s doubles title
-    Freshness basis: Christian Harrison and Neal Skupski defeated Kevin Krawietz and Tim Puetz in the US Open men’s doubles final.
+    Freshness basis: Christian Harrison and Neal Skupski won the US Open men’s doubles final in straight sets.
     Candidate IDs: cand-6bd053b3ee505e77
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49916443/harrison-skupski-win-us-open-men-doubles-2nd-grand-slam
 
- 4. [ADVANCEMENT] Alexander Zverev beat Karen Khachanov 6-3, 7-6 (7), 7-6 (6) to reach the US Open final and play for his second Grand Slam title. (priority 77, age 19.62h)
-    Compact headline: Zverev reaches US Open final seeking second major
-    Freshness basis: Alexander Zverev defeated Karen Khachanov in the US Open semifinals to reach the final.
+ 4. [ADVANCEMENT] Alexander Zverev reached the US Open final by beating Karen Khachanov and will play for his second Grand Slam title. (priority 75, age 20.12h)
+    Compact headline: Zverev reaches US Open final for second major chance
+    Freshness basis: Alexander Zverev defeated Karen Khachanov to reach the US Open final.
     Candidate IDs: cand-946743e4cbdfc654
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49907649/alexander-zverev-beats-karen-khachanov-reach-2026-us-open-final
+
+Spanish Grand Prix (Formula 1)
+----------------------------------------------------------------------------
+
+ 1. [QUALIFYING] Lando Norris captured pole position for the Spanish Grand Prix at the new Madring, calling it one of his best-ever laps. (priority 80, age 6.76h)
+    Compact headline: Norris takes surprise Spanish GP pole in Madrid
+    Freshness basis: Lando Norris won pole position for the Spanish Grand Prix at the Madring.
+    Candidate IDs: cand-48076c2ae4291aae
+    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49867169/lando-norris-labels-surprise-spanish-grand-prix-pole-one-best-laps-done-ever-spanish-grand-prix-madring-formula-1
 
 Solheim Cup (Golf)
 ----------------------------------------------------------------------------
 
- 1. [EVENT_UPDATE] Jennifer Kupcho sank two late birdie putts, including a 93-footer, to earn the Americans a point and tie Europe 8-8 after four sessions. (priority 80, age 3.87h)
-    Compact headline: Kupcho’s late putts pull Americans even at Solheim Cup
-    Freshness basis: Jennifer Kupcho’s late birdie putts helped the United States tie Europe 8-8 after four sessions.
+ 1. [EVENT_UPDATE] Jennifer Kupcho sank two late birdie putts, including one from 93 feet, to earn the Americans a point and tie the Solheim Cup 8-8. (priority 79, age 4.37h)
+    Compact headline: Kupcho’s late birdie putts tie Solheim Cup at 8-8
+    Freshness basis: Jennifer Kupcho’s late birdie putts helped the United States tie the Solheim Cup 8-8.
     Candidate IDs: cand-f11460997a2de7f3
     Source [ESPN/espn-lpga]: https://www.espn.com/golf/story/_/id/49916041/jennifer-kupcho-sinks-unlikely-putts-even-solheim-cup
 
- 2. [STANDINGS] Europe moved ahead 7-5 at the Solheim Cup after defeating the record-setting U.S. partnership of Nelly Korda and Allisen Corpuz. (priority 76, age 10.92h)
-    Compact headline: Europe builds 7-5 Solheim Cup lead
-    Freshness basis: Europe built a 7-5 Solheim Cup lead after beating Nelly Korda and Allisen Corpuz Saturday.
+ 2. [EVENT_UPDATE] Europe moved ahead 7-5 at the Solheim Cup after defeating the record-setting U.S. partnership of Nelly Korda and Allisen Corpuz. (priority 76, age 11.42h)
+    Compact headline: Europe takes 7-5 Solheim Cup lead after Korda loss
+    Freshness basis: Europe built a 7-5 Solheim Cup lead after beating the U.S. pairing of Nelly Korda and Allisen Corpuz.
     Candidate IDs: cand-39a4b25c9a2c7c79
     Source [ESPN/espn-lpga]: https://www.espn.com/golf/story/_/id/49912198/europe-builds-7-5-lead-solheim-cup-korda-corpuz-falter
