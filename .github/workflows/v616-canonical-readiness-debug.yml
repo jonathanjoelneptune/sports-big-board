@@ -95,3 +95,34 @@ jobs:
               assert not d['legacyOnly'],d
           print('PASS Eastern date rebucketing')
           PY
+      - name: Run storage plus precedence in one process
+        run: |
+          python3 - <<'PY'
+          import runpy
+          d=runpy.run_path('tests/test_v616_canonical_slate_readiness.py',run_name='v616_test')
+          d['verify_storage'](); d['verify_ncaaf_precedence']()
+          print('PASS storage + precedence')
+          PY
+      - name: Run precedence plus repair in one process
+        run: |
+          python3 - <<'PY'
+          import runpy
+          d=runpy.run_path('tests/test_v616_canonical_slate_readiness.py',run_name='v616_test')
+          d['verify_ncaaf_precedence'](); d['verify_ncaaf_repair']()
+          print('PASS precedence + repair')
+          PY
+      - name: Run repair plus date in one process
+        run: |
+          python3 - <<'PY'
+          import runpy
+          d=runpy.run_path('tests/test_v616_canonical_slate_readiness.py',run_name='v616_test')
+          d['verify_ncaaf_repair'](); d['verify_date_rebucketing']()
+          print('PASS repair + date')
+          PY
+      - name: Run test main explicitly
+        run: |
+          python3 - <<'PY'
+          import runpy
+          d=runpy.run_path('tests/test_v616_canonical_slate_readiness.py',run_name='v616_test')
+          d['main']()
+          PY
