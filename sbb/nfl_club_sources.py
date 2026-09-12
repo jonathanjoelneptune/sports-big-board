@@ -2,7 +2,7 @@
 
 The official NFL YouTube weekly recap playlists have repeatedly produced GAME
 assets that pass catalog validation but fail iframe playback in the deployed Big
-Board.  Sports Big Board already has a stronger 32-club acquisition path: each
+Board. Sports Big Board already has a stronger 32-club acquisition path: each
 matchup walks both clubs' official video sitemaps, resolves the package page, and
 validates native/direct media before promotion.
 
@@ -21,7 +21,7 @@ import time
 _LOCK = threading.Lock()
 _INSTALLED = False
 
-# Both-team matching remains owned by server._nfl_team_title_disposition.  These
+# Both-team matching remains owned by server._nfl_team_title_disposition. These
 # patterns only widen the package vocabulary *after* that matcher has accepted
 # the event identity and after its reaction/interview exclusions have run.
 _ADDITIONAL_GAME_PACKAGE_RX = re.compile(
@@ -40,7 +40,7 @@ def expanded_team_title_disposition(title, away, home, original):
     """Safely widen official-club GAME package titles.
 
     The original classifier is still the authority for event identity and the
-    hard rejection classes.  We only promote titles that already matched both
+    hard rejection classes. We only promote titles that already matched both
     teams and that are not reaction/interview content.
     """
     base = original(title, away, home)
@@ -76,7 +76,7 @@ def team_media_objective(item, original):
     except Exception:
         duration = 0
 
-    # A true full/condensed replay remains out of scope.  "Full Game Highlights"
+    # A true full/condensed replay remains out of scope. "Full Game Highlights"
     # is a highlights package, not a full-game replay, and is handled below.
     replay_text = re.sub(r"\bfull game highlights?\b", "", text)
     if re.search(r"\bcondensed game\b|\bfull[- ]game\b", replay_text):
@@ -91,7 +91,7 @@ def team_media_objective(item, original):
             return "extended"
         return original(item)
 
-    # Club CMS pages do not always publish duration metadata.  Strong package
+    # Club CMS pages do not always publish duration metadata. Strong package
     # labels provide an intentional fallback rather than discarding the asset.
     if re.search(r"\bfull game highlights?\b|\bextended highlights?\b|\bcinematic recap\b", text):
         return "extended"
@@ -107,6 +107,20 @@ def _retired_playlist_asset(item, league):
     family = str(row.get("discoverySourceFamily") or "").lower()
     source_type = str(row.get("sourceType") or "").lower()
     return family == "nfl-youtube-playlist" or source_type == "official-nfl-youtube-playlist"
+
+
+def _duration_fits_objective(row, wanted):
+    try:
+        duration = int((row or {}).get("durationSeconds") or (row or {}).get("duration") or 0)
+    except Exception:
+        duration = 0
+    if not duration:
+        return True
+    if wanted == "quick":
+        return 45 <= duration <= 390
+    if wanted == "extended":
+        return 540 <= duration <= 1800
+    return True
 
 
 def install():
@@ -157,6 +171,7 @@ def install():
             "installed": True,
             "teamQuickAccepted": 0,
             "teamExtendedAccepted": 0,
+            "teamDurationRejected": 0,
             "leaguePlaylistGameRequestsBlocked": 0,
             "legacyPlaylistCandidatesRetired": 0,
         }
@@ -181,11 +196,19 @@ def install():
             )
             wanted = str(objective or "").lower()
             floor = 140 if wanted == "quick" else 138
+            accepted = []
             for row in rows:
+                # The legacy collector has a title fallback for missing duration.
+                # Once duration is actually known, the sport policy is absolute.
+                if not _duration_fits_objective(row, wanted):
+                    state["teamDurationRejected"] += 1
+                    continue
                 row["importance"] = max(floor, int(row.get("importance") or 0))
                 row["sourcePriority"] = "PRIMARY"
                 row["sourceLabel"] = row.get("sourceLabel") or "NFL Official Team Video"
                 row["nflClubSourcePrimary"] = True
+                accepted.append(row)
+            rows = accepted[:max_items]
             if wanted == "quick":
                 state["teamQuickAccepted"] += len(rows)
             elif wanted == "extended":
