@@ -1,0 +1,47 @@
+name: Temporary Canonical Console Live Check
+
+on:
+  push:
+    branches:
+      - diag/canonical-console-livecheck
+
+permissions:
+  contents: read
+
+jobs:
+  livecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe public console and endpoints
+        shell: bash
+        run: |
+          set +e
+          mkdir -p /tmp/livecheck
+          BASE='https://34-20-148-56.sslip.io'
+          for name_path in \
+            'backend_health /api/health' \
+            'validation_health /api/canonical/validation/health' \
+            'validation_snapshot /api/canonical/validation/snapshot' \
+            'validation_mls /api/canonical/validation/mls'; do
+            set -- $name_path
+            name="$1"; path="$2"
+            curl -sS --connect-timeout 10 --max-time 45 \
+              -D "/tmp/livecheck/${name}.headers" \
+              -w 'http=%{http_code}\ntotal=%{time_total}\nsize=%{size_download}\n' \
+              "$BASE$path" \
+              -o "/tmp/livecheck/${name}.json" \
+              > "/tmp/livecheck/${name}.metrics" 2> "/tmp/livecheck/${name}.curlerr"
+            python3 -m json.tool "/tmp/livecheck/${name}.json" > "/tmp/livecheck/${name}.pretty" 2> "/tmp/livecheck/${name}.jsonerr"
+          done
+          PAGE='https://jonathanjoelneptune.github.io/sports-big-board/canonical-shadow.html'
+          curl -sS --connect-timeout 10 --max-time 45 -D /tmp/livecheck/page.headers "$PAGE" -o /tmp/livecheck/page.html 2>/tmp/livecheck/page.curlerr
+          curl -sS --connect-timeout 10 --max-time 45 'https://jonathanjoelneptune.github.io/sports-big-board/config.js' -o /tmp/livecheck/config.js 2>/tmp/livecheck/config.curlerr
+          grep -n 'CANONICAL VALIDATION DIAGNOSTICS' /tmp/livecheck/page.html > /tmp/livecheck/page-version.txt || true
+          grep -n 'apiBase' /tmp/livecheck/config.js > /tmp/livecheck/config-api.txt || true
+          grep -n 'validation/snapshot' /tmp/livecheck/page.html > /tmp/livecheck/page-snapshot-code.txt || true
+          wc -c /tmp/livecheck/page.html /tmp/livecheck/config.js > /tmp/livecheck/page-sizes.txt || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: canonical-console-livecheck
+          path: /tmp/livecheck
