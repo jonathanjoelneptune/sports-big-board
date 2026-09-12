@@ -1,4 +1,4 @@
-name: Rehearse v6.1.13 Team Directories
+name: Rehearse v6.1.14 Team Directories
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: rehearse-v6113-team-directories
+  group: rehearse-v6114-team-directories
   cancel-in-progress: true
 
 jobs:
@@ -18,11 +18,13 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Materialize v6.1.13
-        run: python3 tools/apply_v6113_release.py --skip-check
+      - name: Materialize v6.1.14
+        run: python3 tools/apply_v6114_release.py --skip-check
       - name: Full release verification
         run: bash VERIFY.sh
       - name: Team directory contracts
         run: |
           python3 tests/test_v6113_team_directory_resolution.py
           python3 tests/test_v6113_team_directory_release.py
+          python3 tests/test_v6114_team_directory_scoping.py
+          python3 tests/test_v6114_team_directory_hardening_release.py
