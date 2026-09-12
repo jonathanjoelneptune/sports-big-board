@@ -91,3 +91,9 @@ _install_canonical_certification_v610()
 # league-owned YouTube recap playlists for Green and Purple acquisition.
 from .nfl_club_sources import install as _install_nfl_club_sources
 _install_nfl_club_sources()
+
+# NFL media-audit turnover: retire persisted playlist assets without deleting
+# history, reopen replacement-source objectives via source-version v2, and let
+# the normal background official-source catch-up workers perform the migration.
+from .nfl_audit_migration import install as _install_nfl_audit_migration
+_install_nfl_audit_migration()
