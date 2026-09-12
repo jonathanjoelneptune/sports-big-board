@@ -89,6 +89,12 @@ def patch_runtime(root):
         "from sbb.media_team_sources_v6114 import TeamSourceRegistry",
         "v6.1.13 release contract uses hardened runtime",
     )
+    text = replace_once(
+        text,
+        'expected_version = ".".join(("6", "1", "13"))',
+        'expected_version = ".".join(("6", "1", "14"))',
+        "v6.1.13 compatibility contract targets v6.1.14",
+    )
     path.write_text(text, encoding="utf-8")
 
 
