@@ -7,7 +7,10 @@ service = (root / "media_audit_service.py").read_text(encoding="utf-8")
 helper = (root / "sbb" / "media_team_sources_v6113.py").read_text(encoding="utf-8")
 verify = (root / "VERIFY.sh").read_text(encoding="utf-8")
 
-assert version == "6.1.13", version
+# Split the literal so older broad release promoters cannot partially rewrite a
+# future version token. v6.1.14 explicitly retargets this tuple in its materializer.
+expected_version = ".".join(("6", "1", "13"))
+assert version == expected_version, version
 assert "from sbb.media_team_sources_v6113 import TeamSourceRegistry" in service
 assert "R23-CONTINUOUS-TEAM-DIRECTORY" in service
 assert "R23_TEAM_DIRECTORY_RESOLUTION" in service
@@ -42,7 +45,6 @@ for token in [
 ]:
     assert token in helper, token
 
-# R23 must not reuse the v6.1.12 guessed template table.
 candidate_start = helper.index("    def _candidate_web_urls(self, entity: dict)")
 candidate_end = helper.index("    def _identity_score", candidate_start)
 candidate_body = helper[candidate_start:candidate_end]
@@ -58,4 +60,4 @@ assert "python3 -m py_compile sbb/media_team_sources_v6113.py" in verify
 assert "python3 tests/test_v6113_team_directory_resolution.py" in verify
 assert "python3 tests/test_v6113_team_directory_release.py" in verify
 
-print("PASS v6.1.13 authoritative team-directory release contract")
+print("PASS authoritative team-directory release contract")
