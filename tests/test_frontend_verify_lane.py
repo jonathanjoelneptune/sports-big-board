@@ -20,7 +20,7 @@ for token in [
     'node',
     '--check',
     'validate_local_references',
-    'backend/runtime files leaked into Pages artifact',
+    'backend/runtime files leaked into live Pages surfaces',
     'focused frontend verification complete',
 ]:
     assert token in verifier, token
