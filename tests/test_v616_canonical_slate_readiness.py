@@ -2,8 +2,13 @@
 from __future__ import annotations
 
 import json
+import sys
 import tempfile
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from sbb import canonical_shadow_v600 as shadow
 from sbb import canonical_slate_readiness_v616 as readiness
