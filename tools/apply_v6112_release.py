@@ -135,6 +135,26 @@ def patch_media_audit(root):
     path.write_text(text, encoding="utf-8")
 
 
+def patch_legacy_r21_contracts(root):
+    """Keep R21 safety tests durable while R22 extends the repair source ladder."""
+    replacements = (
+        ('R21-CONTINUOUS-ROLLING-REPAIR', 'R22-CONTINUOUS-TEAM-SOURCES'),
+        ('R21_CONTINUOUS_REPAIR', 'R22_TEAM_SOURCE_REGISTRY'),
+    )
+    for rel in ("tests/test_v617_continuous_media_audit_release.py", "tests/test_v550_media_health_audit.py"):
+        path = root / rel
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        rendered = text
+        for old, new in replacements:
+            rendered = rendered.replace(old, new)
+        if rendered == text and not all(new in text for _, new in replacements):
+            raise SystemExit(f"ERROR: v6.1.12 legacy R21 contract anchors missing in {rel}")
+        if rendered != text:
+            path.write_text(rendered, encoding="utf-8")
+
+
 def patch_verify(root):
     path = root / "VERIFY.sh"
     text = path.read_text(encoding="utf-8")
@@ -198,6 +218,7 @@ def main(argv=None):
         return 0
     run_base(root)
     patch_media_audit(root)
+    patch_legacy_r21_contracts(root)
     patch_verify(root)
     promote(root)
     controller(root)
