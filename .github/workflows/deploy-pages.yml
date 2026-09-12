@@ -74,8 +74,14 @@ jobs:
         uses: actions/checkout@v7
       - name: Materialize release checkout
         run: python3 tools/apply_v612_release.py
-      - name: Run Sports Big Board verification
+      - name: Run full Sports Big Board verification
+        if: ${{ needs.classify.outputs.backend_required == 'true' }}
         run: bash VERIFY.sh
+      - name: Run focused frontend verification
+        if: ${{ needs.classify.outputs.frontend_only == 'true' }}
+        run: python3 tools/verify_frontend.py
+      - name: Verify focused frontend lane contract
+        run: python3 tests/test_frontend_verify_lane.py
       - name: Verify deploy-scope classifier
         run: python3 tests/test_deploy_scope_classifier.py
 
