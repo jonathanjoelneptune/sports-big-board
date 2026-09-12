@@ -12,7 +12,6 @@ import os
 from html.parser import HTMLParser
 from pathlib import Path
 import py_compile
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -34,6 +33,13 @@ REQUIRED_ROOT = {
     "config.js",
     ".nojekyll",
 }
+LIVE_HTML_ENTRYPOINTS = {
+    "index.html",
+    "backend.html",
+    "media-audit.html",
+    "media-audit-probe.html",
+    "canonical-shadow.html",
+}
 
 
 class AssetRefs(HTMLParser):
@@ -53,7 +59,10 @@ def run(*args: str, env: dict[str, str] | None = None) -> None:
 
 def validate_local_references(out: Path) -> int:
     checked = 0
-    for html in sorted(out.rglob("*.html")):
+    # Only root HTML files are live Pages entrypoints. Nested HTML under
+    # architecture/ is historical/reference content, not a launch surface.
+    for name in sorted(LIVE_HTML_ENTRYPOINTS):
+        html = out / name
         parser = AssetRefs()
         parser.feed(html.read_text(encoding="utf-8"))
         for _tag, raw in parser.refs:
@@ -119,7 +128,7 @@ def main() -> int:
 
         print(f"PASS: {len(js_files)} shipped JavaScript files parse")
         print(f"PASS: {len(json_files)} shipped JSON files parse")
-        print(f"PASS: {refs} local HTML asset references resolve")
+        print(f"PASS: {refs} live-entrypoint asset references resolve")
         print("PASS: Pages artifact contains no backend/runtime files")
 
     print("PASS: focused frontend verification complete")
