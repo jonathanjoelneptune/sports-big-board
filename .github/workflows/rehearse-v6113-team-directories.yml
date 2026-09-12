@@ -1,0 +1,28 @@
+name: Rehearse v6.1.13 Team Directories
+
+on:
+  push:
+    branches:
+      - media-audit/team-directory-resolution-v6113
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rehearse-v6113-team-directories
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize v6.1.13
+        run: python3 tools/apply_v6113_release.py --skip-check
+      - name: Full release verification
+        run: bash VERIFY.sh
+      - name: Team directory contracts
+        run: |
+          python3 tests/test_v6113_team_directory_resolution.py
+          python3 tests/test_v6113_team_directory_release.py
