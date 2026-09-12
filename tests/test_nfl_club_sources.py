@@ -103,6 +103,14 @@ def test_true_full_or_condensed_replay_remains_out_of_scope():
     assert MOD.team_media_objective(team_row("Patriots vs Seahawks Condensed Game"), original_objective) == ""
 
 
+def test_known_duration_must_fit_requested_lane():
+    row = team_row("Patriots vs Seahawks Full Game Highlights", 480)
+    assert MOD._duration_fits_objective(row, "extended") is False
+    assert MOD._duration_fits_objective(row, "quick") is False
+    assert MOD._duration_fits_objective(team_row("Patriots vs Seahawks Game Highlights", 240), "quick") is True
+    assert MOD._duration_fits_objective(team_row("Patriots vs Seahawks Cinematic Recap", 900), "extended") is True
+
+
 def test_non_team_sources_keep_original_objective_policy():
     row = {"title": "Generic Game Highlights", "durationSeconds": 240, "provider": "OTHER"}
     assert MOD.team_media_objective(row, original_objective) == "quick"
