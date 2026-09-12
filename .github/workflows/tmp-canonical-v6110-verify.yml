@@ -1,0 +1,47 @@
+name: Temporary Canonical v6.1.10 Verify
+
+on:
+  push:
+    branches:
+      - fix/canonical-run-integrity-v6110
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize through production dispatcher
+        run: python3 tools/apply_v612_release.py --skip-check
+      - name: Verify release and parallel-lane preservation
+        run: |
+          test "$(cat VERSION)" = "6.1.10"
+          grep -q '_install_canonical_identity_ingestion_v619()' sbb/__init__.py
+          grep -q '_install_canonical_run_integrity_v6110()' sbb/__init__.py
+          grep -q '_install_nfl_audit_migration()' sbb/__init__.py
+          test -f sbb/nfl_audit_migration.py
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('sbb/__init__.py').read_text()
+          order = [
+              '_install_canonical_certification_v611()',
+              '_install_canonical_validation_v612()',
+              '_install_canonical_slate_readiness_v618()',
+              '_install_canonical_identity_ingestion_v619()',
+              '_install_canonical_run_integrity_v6110()',
+          ]
+          positions = [text.index(x) for x in order]
+          assert positions == sorted(positions), positions
+          print('PASS: canonical install order and NFL media-audit migration preserved')
+          PY
+      - name: Focused canonical regression
+        run: python3 tests/test_v6110_canonical_run_integrity.py
+      - name: Compile canonical patch
+        run: python3 -m py_compile sbb/canonical_run_integrity_v6110.py
+      - name: Full repository verification
+        run: bash VERIFY.sh
