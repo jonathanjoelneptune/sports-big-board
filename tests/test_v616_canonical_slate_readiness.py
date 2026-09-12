@@ -23,18 +23,21 @@ def event(away, home, scheduled, *, rank=0):
     }
 
 
-def main():
-    readiness._install_connection_tuning()
-    readiness._install_ncaaf_state_precedence()
-    readiness._install_canonical_date_comparisons()
+def new_store(td):
+    return shadow.CanonicalShadowStore(Path(td) / "canonical.sqlite3")
 
+
+def verify_storage():
     with tempfile.TemporaryDirectory() as td:
-        store = shadow.CanonicalShadowStore(Path(td) / "canonical.sqlite3")
-
+        store = new_store(td)
         with store._connect() as conn:
             synchronous = int(conn.execute("PRAGMA synchronous").fetchone()[0])
         assert synchronous == 1, synchronous
 
+
+def verify_ncaaf_precedence():
+    with tempfile.TemporaryDirectory() as td:
+        store = new_store(td)
         eid = "cev_ncaaf_resolved"
         base = event("Alpha", "Beta", "2026-09-12T17:00:00Z")
         store.upsert_event(eid, "NCAAF", "2026-09-12", base, "NCAA_SD_DATA", "RESOLVED", "EXCLUDED", "NCAAF_OUTSIDE_TOP25")
@@ -43,6 +46,10 @@ def main():
         assert row["inclusion_state"] == "EXCLUDED", row
         assert row["inclusion_reason"] == "NCAAF_OUTSIDE_TOP25", row
 
+
+def verify_ncaaf_repair():
+    with tempfile.TemporaryDirectory() as td:
+        store = new_store(td)
         ranked_id = "cev_ncaaf_ranked"
         ranked = event("Gamma", "Delta", "2026-09-12T19:00:00Z", rank=12)
         store.upsert_event(ranked_id, "NCAAF", "2026-09-12", ranked, "ESPN_DIRECT", "RESOLVED", "UNKNOWN", "DIRECT_ESPN_TOP25_NOT_PROVEN")
@@ -59,8 +66,12 @@ def main():
         rows = {x["canonical_event_id"]: x for x in store.events_for_day("2026-09-12", "NCAAF")}
         assert rows[ranked_id]["inclusion_state"] == "INCLUDED", rows[ranked_id]
         assert rows[unranked_id]["inclusion_state"] == "EXCLUDED", rows[unranked_id]
-        assert repair["repaired"] >= 2, repair
+        assert repair["repaired"] == 2, repair
 
+
+def verify_date_rebucketing():
+    with tempfile.TemporaryDirectory() as td:
+        store = new_store(td)
         mls_id = "cev_mls_boundary"
         mls = {
             "competitionId": "MLS",
@@ -85,6 +96,15 @@ def main():
         assert legacy_day["matched"] == 0, json.dumps(legacy_day, indent=2)
         assert legacy_day.get("legacyDateBucketMoves"), legacy_day
 
+
+def main():
+    readiness._install_connection_tuning()
+    readiness._install_ncaaf_state_precedence()
+    readiness._install_canonical_date_comparisons()
+    verify_storage()
+    verify_ncaaf_precedence()
+    verify_ncaaf_repair()
+    verify_date_rebucketing()
     print("PASS: v6.1.6 canonical storage, NCAAF policy, and date ownership repairs")
 
 
