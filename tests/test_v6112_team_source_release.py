@@ -15,10 +15,15 @@ assert "TEAM_SOURCE_REGISTRY" in service
 assert "teamSources" in service
 assert "teamSourceCandidates" in service
 
-league_stage = service.index("REGISTERED_PROVIDERS")
-global_yt_stage = service.index("OFFICIAL_YOUTUBE_INDEX")
-team_stage = service.index("OFFICIAL_TEAM_SOURCES")
-generic_stage = service.index("GENERIC_YOUTUBE_SEARCH")
+# Assert execution order inside the repair ladder itself. Helper method definitions
+# contain the same stage tokens earlier in the file and are not execution order.
+repair_start = service.index("    def _repair_by_discovery(self, job):")
+repair_end = service.index("    @staticmethod\n    def _retry_at(job):", repair_start)
+repair = service[repair_start:repair_end]
+league_stage = repair.index("REGISTERED_PROVIDERS")
+global_yt_stage = repair.index("OFFICIAL_YOUTUBE_INDEX")
+team_stage = repair.index("OFFICIAL_TEAM_SOURCES")
+generic_stage = repair.index("GENERIC_YOUTUBE_SEARCH")
 assert league_stage < global_yt_stage < team_stage < generic_stage, (
     league_stage, global_yt_stage, team_stage, generic_stage
 )
