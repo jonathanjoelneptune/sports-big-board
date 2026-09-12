@@ -14,7 +14,7 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 8
     steps:
       - name: Query live NFL media audit
         env:
@@ -24,39 +24,33 @@ jobs:
           test -n "$SBB_API_BASE_URL" || exit 1
           probe() {
             label="$1"; url="$2"; out="$3"
-            code=$(curl --silent --show-error --connect-timeout 5 --max-time 120 -H 'Cache-Control: no-cache' -o "$out" -w '%{http_code}' "$url" || true)
+            code=$(curl --silent --show-error --connect-timeout 5 --max-time 90 -H 'Cache-Control: no-cache' -o "$out" -w '%{http_code}' "$url" || true)
             echo "PROBE $label HTTP=$code BYTES=$(wc -c < "$out" 2>/dev/null || echo 0)"
           }
-          probe audit "$SBB_API_BASE_URL/api/history/audit?league=NFL&limit=500&offset=0" /tmp/audit.json
           probe sources "$SBB_API_BASE_URL/api/history/media-sources" /tmp/sources.json
-          probe console "$SBB_API_BASE_URL/api/history/worker-console?limit=80" /tmp/console.json
+          probe audit "$SBB_API_BASE_URL/api/history/audit?league=NFL&dateFrom=2026-09-01&dateTo=2026-09-12&limit=100&offset=0" /tmp/audit.json
           python3 - <<'PY'
-          import json, os
+          import json
           def load(path):
               try:
                   with open(path) as f: return json.load(f)
               except Exception as exc:
                   print(f'LOAD_FAILED {path}: {exc}')
-                  try:
-                      print(open(path).read()[:3000])
+                  try: print(open(path).read()[:3000])
                   except Exception: pass
                   return {}
-          audit=load('/tmp/audit.json')
           sources=load('/tmp/sources.json')
-          console=load('/tmp/console.json')
-          print('=== NFL AUDIT SUMMARY ===')
-          print(json.dumps({k:audit.get(k) for k in ('ok','version','total','summary','background','greenGap') if k in audit},indent=2,sort_keys=True)[:30000])
-          rows=audit.get('rows') or []
-          print('NFL_ROWS',len(rows))
-          for row in rows[:80]:
-              slim={k:row.get(k) for k in ('date','eventId','away','home','bestTier','status','canonicalEventKey') if k in row}
-              for key in ('green','extended','media','assets','quick','purple'):
-                  if key in row: slim[key]=row.get(key)
-              print('NFL_ROW',json.dumps(slim,sort_keys=True,default=str)[:5000])
+          audit=load('/tmp/audit.json')
           print('=== NFL SOURCE REGISTRY ===')
           nfl=[r for r in (sources.get('rows') or []) if str(r.get('league') or '').upper()=='NFL']
           print(json.dumps(nfl,indent=2,sort_keys=True,default=str)[:40000])
-          print('=== WORKER CONSOLE ===')
-          keys=('version','workMode','background','greenGap','greenGapQueue','mediaObjectives','officialSourceCatchup','ruleGameCatchup','workers','activeDiscoveries')
-          print(json.dumps({k:console.get(k) for k in keys if k in console},indent=2,sort_keys=True,default=str)[:60000])
+          print('=== NFL AUDIT SUMMARY ===')
+          print(json.dumps({k:audit.get(k) for k in ('ok','version','total','summary','background','greenGap') if k in audit},indent=2,sort_keys=True,default=str)[:30000])
+          rows=audit.get('rows') or []
+          print('NFL_ROWS',len(rows))
+          for row in rows:
+              slim={k:row.get(k) for k in ('date','eventId','away','home','bestTier','status','canonicalEventKey') if k in row}
+              for key in ('green','extended','media','assets','quick','purple'):
+                  if key in row: slim[key]=row.get(key)
+              print('NFL_ROW',json.dumps(slim,sort_keys=True,default=str)[:7000])
           PY
