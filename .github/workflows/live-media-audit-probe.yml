@@ -36,7 +36,8 @@ jobs:
               'discoveryCircuit':repair.get('discoveryCircuit'),
               'workers':[{
                 'alive':w.get('alive'),'enabled':w.get('enabled'),'workerIndex':w.get('workerIndex'),'seedOwner':w.get('seedOwner'),
-                'current':w.get('current'),'stats':w.get('stats'),'lastError':w.get('lastError'),'teamSources':w.get('teamSources')
+                'current':w.get('current'),'stats':w.get('stats'),'lastError':w.get('lastError'),'teamSources':w.get('teamSources'),
+                'trace':(w.get('trace') or [])[-20:]
               } for w in (repair.get('workers') or [])]
             },
             'summary':audit.get('summary'),
