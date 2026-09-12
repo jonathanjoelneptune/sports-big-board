@@ -86,3 +86,8 @@ _install_canonical_shadow_v600()
 # Shadow-only: certification changes evidence state, never production authority.
 from .canonical_certification_v610 import install as _install_canonical_certification_v610
 _install_canonical_certification_v610()
+
+# NFL GAME media cutover: official club/native packages replace the failing
+# league-owned YouTube recap playlists for Green and Purple acquisition.
+from .nfl_club_sources import install as _install_nfl_club_sources
+_install_nfl_club_sources()
