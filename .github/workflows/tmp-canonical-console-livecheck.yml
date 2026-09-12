@@ -17,12 +17,15 @@ jobs:
         shell: bash
         run: |
           set +e
+          rm -rf /tmp/livecheck
           mkdir -p /tmp/livecheck
           BASE='https://34-20-148-56.sslip.io'
           for name_path in \
             'backend_health /api/health' \
+            'certification_health /api/canonical/certification/health' \
             'validation_health /api/canonical/validation/health' \
             'validation_snapshot /api/canonical/validation/snapshot' \
+            'validation_history /api/canonical/validation/history' \
             'validation_mls /api/canonical/validation/mls'; do
             set -- $name_path
             name="$1"; path="$2"
