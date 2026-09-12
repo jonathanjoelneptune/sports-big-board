@@ -68,10 +68,7 @@ def patch_media_audit(root):
         text = text.replace(import_anchor, import_anchor + import_line, 1)
 
     youtube_line = '        self.youtube=YouTubeGateway(user_agent=f"SportsBigBoard-MediaRepair/{APP_VERSION}-{AUDIT_GENERATION}",state_file=STATE_DIR/"cache"/"media-repair-youtube-state.json")\n'
-    registry_line = (
-        youtube_line
-        + '        self.team_sources=TeamSourceRegistry(store,STATE_DIR/"cache"/"media-team-sources.sqlite",user_agent=f"SportsBigBoard-TeamSources/{APP_VERSION}-{AUDIT_GENERATION}")\n'
-    )
+    registry_line = youtube_line + '        self.team_sources=TeamSourceRegistry(store,STATE_DIR/"cache"/"media-team-sources.sqlite",user_agent=f"SportsBigBoard-TeamSources/{APP_VERSION}-{AUDIT_GENERATION}")\n'
     text = replace_once(text, youtube_line, registry_line, "TeamSourceRegistry worker initialization")
 
     stats_old = '"youtubeIndexedVideos":0,"youtubeFallbackSearches":0,"youtubeSearchQuotaBlocks":0,"cooldownPreserved":0}'
@@ -131,7 +128,6 @@ def patch_media_audit(root):
         "R19 known-candidate recovery + media-repair transport ladder exhausted without a certified candidate",
         "R22 known/provider/team-source/media-repair ladder exhausted without a certified candidate",
     )
-
     path.write_text(text, encoding="utf-8")
 
 
@@ -141,6 +137,8 @@ def patch_legacy_r21_contracts(root):
         ('R21-CONTINUOUS-ROLLING-REPAIR', 'R22-CONTINUOUS-TEAM-SOURCES'),
         ('R21_CONTINUOUS_REPAIR', 'R22_TEAM_SOURCE_REGISTRY'),
     )
+    # These tests validate the current materialized service and its generated
+    # compatibility surface, so all runtime generation references advance to R22.
     for rel in ("tests/test_v617_continuous_media_audit_release.py", "tests/test_v550_media_health_audit.py"):
         path = root / rel
         if not path.is_file():
@@ -151,6 +149,18 @@ def patch_legacy_r21_contracts(root):
             rendered = rendered.replace(old, new)
         if rendered == text and not all(new in text for _, new in replacements):
             raise SystemExit(f"ERROR: v6.1.12 legacy R21 contract anchors missing in {rel}")
+        if rendered != text:
+            path.write_text(rendered, encoding="utf-8")
+
+    # v6.1.6 also inspects its historical apply_v616_release.py materializer,
+    # which correctly remains R21. Promote only the first runtime-token entries,
+    # leaving the historical-materializer assertion unchanged.
+    path = root / "tests" / "test_v616_continuous_media_audit.py"
+    if path.is_file():
+        text = path.read_text(encoding="utf-8")
+        rendered = text
+        rendered = replace_once(rendered, "    'R21-CONTINUOUS-ROLLING-REPAIR',", "    'R22-CONTINUOUS-TEAM-SOURCES',", "v6.1.6 runtime generation assertion")
+        rendered = replace_once(rendered, "    'R21_CONTINUOUS_REPAIR',", "    'R22_TEAM_SOURCE_REGISTRY',", "v6.1.6 runtime strategy assertion")
         if rendered != text:
             path.write_text(rendered, encoding="utf-8")
 
