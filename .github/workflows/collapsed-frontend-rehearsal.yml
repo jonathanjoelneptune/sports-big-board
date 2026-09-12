@@ -1,0 +1,70 @@
+name: Rehearse Collapsed Frontend Fast Path
+
+on:
+  push:
+    branches:
+      - ci/collapse-frontend-fast-path
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: sbb-collapsed-frontend-rehearsal
+  cancel-in-progress: true
+
+jobs:
+  rehearse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Shallow checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+      - name: Fetch prior commit exactly
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          if [[ -n "$BEFORE_SHA" && "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+            if ! git cat-file -e "${BEFORE_SHA}^{commit}" 2>/dev/null; then
+              git fetch --no-tags --depth=1 origin "$BEFORE_SHA"
+            fi
+          fi
+      - name: Exercise deploy classifier against branch push
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        run: python3 tools/classify_deploy_scope.py --before "$BEFORE_SHA" --after "$AFTER_SHA"
+      - name: Materialize release checkout
+        run: python3 tools/apply_v612_release.py
+      - name: Prove full verifier remains green
+        run: bash VERIFY.sh
+      - name: Prove focused frontend verifier
+        run: python3 tools/verify_frontend.py
+      - name: Verify collapsed lane contract
+        run: python3 tests/test_frontend_verify_lane.py
+      - name: Verify deploy classifier contract
+        run: python3 tests/test_deploy_scope_classifier.py
+      - name: Verify existing production backend
+        env:
+          SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
+        run: |
+          EXPECTED_VERSION="$(tr -d '[:space:]' < VERSION)"
+          curl --fail --silent --show-error --max-time 15 "$SBB_API_BASE_URL/api/status" > /tmp/sbb-existing-status.json
+          ACTUAL_VERSION="$(python3 -c 'import json; print(json.load(open("/tmp/sbb-existing-status.json")).get("version", ""))')"
+          echo "Expected existing backend $EXPECTED_VERSION; found $ACTUAL_VERSION"
+          test "$ACTUAL_VERSION" = "$EXPECTED_VERSION"
+      - name: Build Pages artifact on same runner
+        env:
+          SBB_API_BASE_URL: ${{ vars.SBB_API_BASE_URL }}
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+          SBB_SOUNDTRACK_BASE_URL: ${{ vars.SBB_SOUNDTRACK_BASE_URL }}
+        run: python3 cloud/github-pages/build_pages.py "$SBB_API_BASE_URL" .pages-dist
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .pages-dist
