@@ -1,0 +1,22 @@
+name: NFL Audit Migration Test
+
+on:
+  push:
+    branches:
+      - fix/nfl-audit-source-reopen
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - name: Compile changed modules
+        run: python3 -m py_compile sbb/nfl_audit_migration.py sbb/nfl_club_sources.py sbb/__init__.py
+      - name: Install pytest
+        run: python3 -m pip install -q pytest
+      - name: Run NFL source cutover tests
+        run: python3 -m pytest -q tests/test_nfl_club_sources.py tests/test_nfl_audit_migration.py
