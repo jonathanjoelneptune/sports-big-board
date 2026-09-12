@@ -1,0 +1,50 @@
+name: Verify v6.1.8 Canonical Readiness
+
+on:
+  push:
+    branches:
+      - fix/canonical-slate-readiness-v618
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sbb-v618-canonical-readiness-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Materialize current release
+        run: python3 tools/apply_v612_release.py
+      - name: Verify Media Audit preservation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          assert Path('VERSION').read_text().strip() == '6.1.8'
+          service=Path('media_audit_service.py').read_text()
+          assert 'R21-CONTINUOUS-ROLLING-REPAIR' in service
+          assert 'ROLLING_AUDIT_ENABLED' in service
+          assert 'REPAIR_WORKER_COUNT' in service
+          print('PASS: v6.1.7 Media Audit behavior preserved through v6.1.8 materialization')
+          PY
+      - name: Verify canonical readiness regression
+        run: python3 tests/test_v618_canonical_slate_readiness.py
+      - name: Verify canonical install order
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('sbb/__init__.py').read_text()
+          v611='_install_canonical_certification_v611()'
+          v612='_install_canonical_validation_v612()'
+          v618='_install_canonical_slate_readiness_v618()'
+          assert v611 in text and v612 in text and v618 in text
+          assert text.index(v611) < text.index(v612) < text.index(v618)
+          print('PASS: canonical install order hardening -> validation -> readiness')
+          PY
+      - name: Run full verification
+        run: bash VERIFY.sh
