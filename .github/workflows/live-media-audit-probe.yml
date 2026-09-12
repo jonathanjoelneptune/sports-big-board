@@ -1,0 +1,46 @@
+name: Live Media Audit Probe
+
+on:
+  push:
+    branches:
+      - media-audit/continuous-v616
+    paths:
+      - '.live-media-audit-probe-trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe production Media Audit
+        run: |
+          curl --fail --silent --show-error --max-time 20 https://34-20-148-56.sslip.io/api/status > /tmp/backend.json
+          curl --fail --silent --show-error --max-time 30 https://34-20-148-56.sslip.io/api/media-audit/status > /tmp/audit.json
+          python3 - <<'PY'
+          import json
+          backend=json.load(open('/tmp/backend.json'))
+          audit=json.load(open('/tmp/audit.json'))
+          repair=audit.get('repair') or {}
+          rolling=audit.get('rolling') or {}
+          run=audit.get('run') or {}
+          out={
+            'backend': {'ok':backend.get('ok'),'version':backend.get('version'),'rateLimited':(backend.get('rateLimit') or {}).get('limited')},
+            'audit': {'ok':audit.get('ok'),'version':audit.get('version'),'generation':audit.get('generation'),'workerCount':audit.get('workerCount')},
+            'rolling': rolling,
+            'run': {k:run.get(k) for k in ('id','mode','state','start_date','total_games','processed_games','current_ordinal','current_event_key','current_phase','progressPct')},
+            'repair': {
+              'queue':repair.get('queue'),'repaired':repair.get('repaired'),'states':repair.get('states'),'workerCount':repair.get('workerCount'),
+              'discoveryCircuit':repair.get('discoveryCircuit'),
+              'workers':[{
+                'alive':w.get('alive'),'enabled':w.get('enabled'),'workerIndex':w.get('workerIndex'),'seedOwner':w.get('seedOwner'),
+                'current':w.get('current'),'stats':w.get('stats'),'lastError':w.get('lastError')
+              } for w in (repair.get('workers') or [])]
+            },
+            'summary':audit.get('summary'),
+            'newestEligibleDate':audit.get('newestEligibleDate'),
+          }
+          print(json.dumps(out,indent=2,sort_keys=True))
+          PY
