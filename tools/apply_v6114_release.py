@@ -97,6 +97,19 @@ def patch_runtime(root):
     )
     path.write_text(text, encoding="utf-8")
 
+    # v6.1.13 promotes the legacy v6.1.12 runtime contract to the R23 module.
+    # v6.1.14 then swaps in the ownership-scoped wrapper, so keep that historical
+    # behavioral contract pointed at the actual final runtime module as well.
+    path = root / "tests" / "test_v6112_team_source_release.py"
+    text = path.read_text(encoding="utf-8")
+    text = replace_once(
+        text,
+        "from sbb.media_team_sources_v6113 import TeamSourceRegistry",
+        "from sbb.media_team_sources_v6114 import TeamSourceRegistry",
+        "v6.1.12 compatibility contract uses hardened runtime",
+    )
+    path.write_text(text, encoding="utf-8")
+
 
 def patch_verify(root):
     path = root / "VERIFY.sh"
