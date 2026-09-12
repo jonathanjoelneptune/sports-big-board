@@ -1,0 +1,39 @@
+name: Verify v6.1.9 Canonical Integration
+
+on:
+  push:
+    branches:
+      - fix/canonical-identity-ingestion-v619
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize current release
+        run: python3 tools/apply_v612_release.py --skip-check
+      - name: Verify release and canonical install order
+        run: |
+          test "$(cat VERSION)" = "6.1.9"
+          python3 - <<'PY'
+          from pathlib import Path
+          text=Path('sbb/__init__.py').read_text()
+          calls=[
+              '_install_canonical_certification_v611()',
+              '_install_canonical_validation_v612()',
+              '_install_canonical_slate_readiness_v618()',
+              '_install_canonical_identity_ingestion_v619()',
+          ]
+          positions=[text.index(x) for x in calls]
+          assert positions == sorted(positions), positions
+          print('PASS: canonical install order')
+          PY
+      - name: Preserve latest ticker UI lane
+        run: |
+          grep -q 'min-width:310px!important' ui/score-ribbon-playback-follow-v545.css
+          grep -q 'max-width:430px!important' ui/score-ribbon-playback-follow-v545.css
+          grep -q 'padding:2px 8px!important' ui/score-ribbon-playback-follow-v545.css
+      - name: Run canonical v6.1.9 regression
+        run: python3 tests/test_v619_canonical_identity_ingestion.py
+      - name: Run full repository verification
+        run: bash VERIFY.sh
