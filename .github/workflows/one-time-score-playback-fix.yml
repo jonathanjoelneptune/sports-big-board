@@ -1,0 +1,150 @@
+name: One-time score playback transaction fix
+
+on:
+  push:
+    branches:
+      - fix/score-playback-transaction-20260913
+    paths:
+      - .github/workflows/one-time-score-playback-fix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out fix branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/score-playback-transaction-20260913
+          fetch-depth: 0
+
+      - name: Patch score playback transaction handoff
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('app.js')
+          source = path.read_text(encoding='utf-8')
+
+          def replace_once(old, new, label):
+              global source
+              count = source.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected exactly one match, found {count}; refusing broad patch')
+              source = source.replace(old, new, 1)
+
+          replace_once(
+              """  const item=clip(index);\n  let transactionId=userPlaybackSession?.source==='score'?String(userPlaybackSession.transactionId||''):'';\n  const active=orchestrator.snapshot?.()||{};\n  if(!transactionId||active.transactionId!==transactionId||!window.SBB_APP_STORE?.transactionActive?.(transactionId)){""",
+              """  const item=clip(index);\n  const requestedTransactionId=String(options?.transactionId||'');\n  let transactionId=requestedTransactionId||(userPlaybackSession?.source==='score'?String(userPlaybackSession.transactionId||''):'');\n  const active=orchestrator.snapshot?.()||{};\n  const transactionIsActive=transactionId&&window.SBB_APP_STORE?.transactionActive?.(transactionId);\n  if(!transactionId||!transactionIsActive||(!requestedTransactionId&&active.transactionId!==transactionId)){""",
+              'tuneProgramIndexV5 transaction ownership'
+          )
+
+          replace_once(
+              "tuneProgramIndexV5(0,{userInitiated:true,reason:'score-card selection'});",
+              "tuneProgramIndexV5(0,{userInitiated:true,reason:'score-card selection',transactionId:v5TransactionId});",
+              'score-card initial tune'
+          )
+          replace_once(
+              "queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:`score media fallback: ${reason}`,restart:true}));",
+              "queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:`score media fallback: ${reason}`,restart:true,transactionId:session.transactionId}));",
+              'score media fallback tune'
+          )
+          replace_once(
+              "queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:'historical exact-source refresh',restart:true}));",
+              "queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:'historical exact-source refresh',restart:true,transactionId:session.transactionId}));",
+              'historical exact-source tune'
+          )
+          replace_once(
+              "tuneProgramIndexV5(currentIndex+1,{userInitiated:false,reason:'score reel continuation'});",
+              "tuneProgramIndexV5(currentIndex+1,{userInitiated:false,reason:'score reel continuation',transactionId:userPlaybackSession.transactionId});",
+              'score reel continuation'
+          )
+          replace_once(
+              "row.onclick=()=>{ if(idx!==currentIndex) tuneProgramIndexV5(idx,{userInitiated:true,reason:'score reel clip selection'}); };",
+              "row.onclick=()=>{ if(idx!==currentIndex) tuneProgramIndexV5(idx,{userInitiated:true,reason:'score reel clip selection',transactionId:userPlaybackSession.transactionId}); };",
+              'score reel queue selection'
+          )
+          replace_once(
+              "tuneProgramIndexV5(currentIndex+1,{userInitiated:true,reason:'manual score reel next'});",
+              "tuneProgramIndexV5(currentIndex+1,{userInitiated:true,reason:'manual score reel next',transactionId:userPlaybackSession.transactionId});",
+              'manual score reel next'
+          )
+          replace_once(
+              "tuneProgramIndexV5(currentIndex-1,{userInitiated:true,reason:'manual score reel previous'});",
+              "tuneProgramIndexV5(currentIndex-1,{userInitiated:true,reason:'manual score reel previous',transactionId:userPlaybackSession.transactionId});",
+              'manual score reel previous'
+          )
+
+          path.write_text(source, encoding='utf-8')
+          PY
+
+      - name: Syntax check
+        run: node --check app.js
+
+      - name: Regression test explicit score transaction routing
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const src=fs.readFileSync('app.js','utf8');
+          const start=src.indexOf('function tuneProgramIndexV5(');
+          const end=src.indexOf('function promotePreparedV5(',start);
+          if(start<0||end<0) throw new Error('Unable to isolate tuneProgramIndexV5');
+          const fnSrc=src.slice(start,end).trim();
+
+          let userPlaybackSession={source:'score',transactionId:'old-tx'};
+          let calls=[];
+          const window={
+            SBB_PLAYBACK_ORCHESTRATOR:{
+              requestTune(tx,index,options){calls.push(['requestTune',tx,index,options?.transactionId||'']);return tx;},
+              snapshot(){return {transactionId:'old-tx'};},
+              beginIntent(){calls.push(['beginIntent']);return 'generic-tx';},
+              setPlan(){calls.push(['setPlan']);},
+              selectMedia(tx){calls.push(['selectMedia',tx]);}
+            },
+            SBB_APP_STORE:{transactionActive(tx){return tx==='old-tx'||tx==='new-tx';}},
+            SBB_MEDIA_SCOPE:{isCollection(){return false;}}
+          };
+          const PlaybackController={tuneProgramIndex(){throw new Error('legacy playback path used');}};
+          const clip=()=>({id:'game-2'});
+          const playbackOwnsGameCenter=()=>false;
+          const knownMatchForMedia=()=>null;
+          const gameCenterEventForPlayback=()=>null;
+          const tuneProgramIndexV5=eval('('+fnSrc+')');
+
+          const explicitResult=tuneProgramIndexV5(0,{userInitiated:true,reason:'regression',transactionId:'new-tx'});
+          if(explicitResult!=='new-tx') throw new Error(`Explicit transaction was not honored: ${explicitResult}`);
+          if(calls.some(([name])=>name==='beginIntent')) throw new Error('Explicit active score transaction was replaced by a new intent');
+          if(!calls.some(([name,tx])=>name==='requestTune'&&tx==='new-tx')) throw new Error('requestTune did not receive the explicit new score transaction');
+
+          calls=[];
+          const implicitResult=tuneProgramIndexV5(0,{userInitiated:false,reason:'implicit regression'});
+          if(implicitResult!=='old-tx') throw new Error(`Existing implicit score transaction regressed: ${implicitResult}`);
+          if(calls.some(([name])=>name==='beginIntent')) throw new Error('Matching active implicit score transaction was unnecessarily replaced');
+
+          const required=[
+            "tuneProgramIndexV5(0,{userInitiated:true,reason:'score-card selection',transactionId:v5TransactionId});",
+            "reason:'score reel continuation',transactionId:userPlaybackSession.transactionId",
+            "reason:'manual score reel next',transactionId:userPlaybackSession.transactionId",
+            "reason:'manual score reel previous',transactionId:userPlaybackSession.transactionId",
+            "reason:'historical exact-source refresh',restart:true,transactionId:session.transactionId",
+            "reason:`score media fallback: ${reason}`,restart:true,transactionId:session.transactionId"
+          ];
+          for(const needle of required){
+            if(!src.includes(needle)) throw new Error(`Missing explicit score transaction propagation: ${needle}`);
+          }
+          console.log('score playback transaction routing regression passed');
+          NODE
+
+      - name: Commit targeted fix and remove one-time workflow
+        shell: bash
+        run: |
+          rm .github/workflows/one-time-score-playback-fix.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js .github/workflows/one-time-score-playback-fix.yml
+          git commit -m "Fix score playback transaction handoff"
+          git push origin HEAD:fix/score-playback-transaction-20260913
