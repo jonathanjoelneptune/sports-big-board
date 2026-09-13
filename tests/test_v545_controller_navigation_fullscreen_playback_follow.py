@@ -63,6 +63,7 @@ assert "return clean(active?.dataset?.scoreFilter).toUpperCase()==='ALL';" in fo
 assert 'requestAnimationFrame(run)' in follow
 assert 'setInterval(' not in follow
 assert 'NOW WATCHING' in follow_css
+assert 'focusScoreRibbonForGame(' not in follow
 
 # Startup playback owns score-ribbon date/identity. Generic media `date` is a
 # publication timestamp and cannot force a same-team game on today's slate.
@@ -100,7 +101,7 @@ const today={eventId:'TODAY-1',league:'MLB',date:'2026-09-13',awayTeam:'Pittsbur
 const yesterday={eventId:'YDAY-1',league:'MLB',date:'2026-09-12',awayTeam:'Pittsburgh Pirates',homeTeam:'Chicago Cubs',status:'FINAL'};
 // Reproduce production: recap published today, but it belongs to yesterday's game.
 const item={date:'2026-09-13',league:'MLB',title:'Pirates at Cubs highlights'};
-let focused=null;
+let focusCalls=0;
 const tasks=[];
 const body={classList:classes([])};
 const document={
@@ -122,7 +123,7 @@ const ctx={
   // Legacy behavior is intentionally wrong here. The playback-follow layer must
   // override it using score-slate evidence rather than publication date.
   launchScoreMatchForItem:()=>today,
-  focusScoreRibbonForGame:x=>{focused=x;ctx.scoreBrowseDate=x.date;return true},
+  focusScoreRibbonForGame:()=>{focusCalls++;throw new Error('playback-follow must not mutate score ribbon/date');},
   scoreEventDate:o=>o.date||o.gameDate||'',
   sameGameProgramItem:(a,b)=>{
     const text=x=>`${x?.awayTeam||''} ${x?.homeTeam||''} ${x?.title||''}`.toLowerCase();
@@ -139,21 +140,24 @@ ctx.window.addEventListener=()=>{};
 vm.createContext(ctx);vm.runInContext(source,ctx);
 
 const first=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();
-if(focused!==yesterday)throw new Error('publication date caused today game to retain playback authority');
-if(!first?.switchingDate||first.playbackDate!=='2026-09-12')throw new Error('ribbon did not switch to yesterday before scoring cards');
-if(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('today card was highlighted during date switch');
+if(focusCalls!==0)throw new Error('playback-follow mutated score ribbon/date during reconciliation');
+if(!first?.switchingDate||first.playbackDate!=='2026-09-12')throw new Error('playback-follow did not recognize that the rendered ribbon is on another date');
+if(ctx.scoreBrowseDate!=='2026-09-13')throw new Error('playback-follow changed scoreBrowseDate');
+if(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('today card was highlighted while awaiting the score pipeline date change');
 
+ctx.scoreBrowseDate='2026-09-12';
 const second=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();
+if(focusCalls!==0)throw new Error('playback-follow called focusScoreRibbonForGame after the external date change');
 if(!yesterdayCard.classList.contains('sbb-program-now-watching'))throw new Error('yesterday playback game was not highlighted');
 if(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('stale today selectedEvent stole NOW WATCHING');
-console.log(JSON.stringify({focused:focused.eventId,highlighted:yesterdayCard.dataset.eventId,playbackDate:second.playbackDate,resolvedMatch:second.resolvedMatch,browseDate:ctx.scoreBrowseDate}));
+console.log(JSON.stringify({focusCalls,highlighted:yesterdayCard.dataset.eventId,playbackDate:second.playbackDate,resolvedMatch:second.resolvedMatch,browseDate:ctx.scoreBrowseDate}));
 '''
 with tempfile.TemporaryDirectory() as td:
     script=Path(td)/'test.js'
     script.write_text(node_test)
     result=subprocess.run(['node',str(script),str(ROOT/'ui'/'score-ribbon-playback-follow-v545.js')],capture_output=True,text=True,check=True)
     payload=json.loads(result.stdout.strip().splitlines()[-1])
-    assert payload['focused']=='YDAY-1', payload
+    assert payload['focusCalls']==0, payload
     assert payload['highlighted']=='YDAY-1', payload
     assert payload['playbackDate']=='2026-09-12', payload
     assert payload['resolvedMatch'] is True, payload
