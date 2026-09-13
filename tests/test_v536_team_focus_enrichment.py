@@ -7,6 +7,8 @@ js=(ROOT/'ui'/'browse-curated-programming-v537.js').read_text()
 css=(ROOT/'ui'/'browse-curated-programming-v537.css').read_text()
 backend=(ROOT/'sbb'/'team_focus_v537.py').read_text()
 init=(ROOT/'sbb'/'__init__.py').read_text()
+startup_path=ROOT/'sbb'/'startup.py'
+startup=startup_path.read_text() if startup_path.is_file() else ''
 assert version=='5.5.0',version
 assert f'ui/browse-curated-programming-v537.css?v={version}' in index
 assert f'<script src="ui/browse-curated-programming-v537.js?v={version}"></script>' in index
@@ -40,8 +42,15 @@ for token in ["TEAM_THEME_KEY='sbb.team-theme.enabled.v1'",'id="teamThemeToggle"
 for token in ['replace stale Game Center identity','force:true','curated playback event identity']:
     assert token in js,token
 
-assert 'from .team_focus_v537 import install as _install_team_focus_v537' in init
-assert '_install_team_focus_v537()' in init
+legacy_install=(
+    'from .team_focus_v537 import install as _install_team_focus_v537' in init
+    and '_install_team_focus_v537()' in init
+)
+registered_install=(
+    'StartupRegistration("team-focus-v537", "team_focus_v537")' in startup
+    and 'StartupPhase("team-focus", ("team-focus-v537",), ("team-focus-v537",))' in startup
+)
+assert legacy_install or registered_install, 'Team Focus backend is not installed by legacy init or startup registry'
 for forbidden in ['setInterval(', 'requestAnimationFrame(loop']:
     assert forbidden not in js,forbidden
 print('PASS v5.5.0 persistent participants + schedule-complete Team Focus + enrichment + theming')
