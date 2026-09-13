@@ -97,9 +97,3 @@ _install_nfl_club_sources()
 # the normal background official-source catch-up workers perform the migration.
 from .nfl_audit_migration import install as _install_nfl_audit_migration
 _install_nfl_audit_migration()
-
-# v6.1.16 hotfix: exact NFL week proof + guarded NCAAF identity reconciliation.
-# Installs the prerequisite canonical hardening layers idempotently and remains
-# shadow-only; production Day State/ribbon authority is unchanged.
-from .canonical_reconciliation_hotfix_v6116 import install as _install_canonical_reconciliation_hotfix_v6116
-_install_canonical_reconciliation_hotfix_v6116()
