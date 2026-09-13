@@ -25,7 +25,8 @@ class StartupRegistration:
 
 
 # Order is part of the production contract. This list is a direct projection of
-# the legacy sbb/__init__.py installer order as of v6.1.16.
+# the legacy sbb/__init__.py installer order as of v6.1.16, followed by the new
+# shared route dispatcher so it becomes the outermost compatibility authority.
 STARTUP_REGISTRATIONS = (
     StartupRegistration("nfl-weekly-playlists", "nfl_weekly_playlists"),
     StartupRegistration("competition-builder", "competition_builder"),
@@ -63,6 +64,7 @@ STARTUP_REGISTRATIONS = (
     StartupRegistration("canonical-certification-v610", "canonical_certification_v610"),
     StartupRegistration("nfl-club-sources", "nfl_club_sources"),
     StartupRegistration("nfl-audit-migration", "nfl_audit_migration"),
+    StartupRegistration("shared-route-dispatcher", "route_registry"),
 )
 
 _LOCK = threading.RLock()
