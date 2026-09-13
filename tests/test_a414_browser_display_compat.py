@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -133,14 +134,17 @@ def test_writer_bridge_preserves_a413_metadata_and_fixes_wire_headline():
     assert payload["displayCopyField"] == "text"
 
 
-def test_stable_launcher_discovers_a414_without_yaml_change():
+def test_stable_launcher_keeps_a414_or_newer_without_yaml_change():
     launcher_path = ROOT / "tools" / "refresh_sports_ticker_current.py"
     spec2 = importlib.util.spec_from_file_location("ticker_current_launcher_a414", launcher_path)
     launcher = importlib.util.module_from_spec(spec2)
     assert spec2 and spec2.loader
     spec2.loader.exec_module(launcher)
 
-    assert launcher.discover_latest().name == "refresh_sports_ticker_a414.py"
+    latest_name = launcher.discover_latest().name
+    match = re.fullmatch(r"refresh_sports_ticker_a(\d+)\.py", latest_name)
+    assert match, latest_name
+    assert int(match.group(1)) >= 414, latest_name
 
     workflow = (ROOT / ".github" / "workflows" / "sports-ticker-refresh.yml").read_text()
     assert "python3 tests/test_sports_ticker_current.py" in workflow
@@ -153,5 +157,5 @@ if __name__ == "__main__":
     test_existing_v550_browser_normalization_now_displays_full_update()
     test_special_event_rows_receive_same_wire_bridge()
     test_writer_bridge_preserves_a413_metadata_and_fixes_wire_headline()
-    test_stable_launcher_discovers_a414_without_yaml_change()
-    print("PASS: A4.14 legacy-browser display compatibility + no frontend/YAML change")
+    test_stable_launcher_keeps_a414_or_newer_without_yaml_change()
+    print("PASS: A4.14 legacy-browser display compatibility + forward-compatible launcher")
