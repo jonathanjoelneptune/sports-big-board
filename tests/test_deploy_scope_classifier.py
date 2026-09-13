@@ -16,8 +16,9 @@ frontend=[
     'tests/test_sports_ticker_current.py','tests/test_a415_editor_fallback.py',
     '.github/workflows/sports-ticker-refresh.yml',
     '.github/workflows/sports-ticker-scheduler-v2.yml',
-    # The classifier and its focused regression are deployment-control files.
+    # Deployment-control files change routing/verification, not application runtime.
     'tools/classify_deploy_scope.py','tests/test_deploy_scope_classifier.py',
+    '.github/workflows/deploy-pages.yml',
 ]
 for path in frontend:
     assert mod.is_frontend_only_path(path),path
@@ -26,8 +27,7 @@ backend=[
     'VERSION','architecture/VERSION','server.py','media_audit_service.py',
     'sbb/history_repository.py','assets/soundtrack/manifest.json',
     'cloud/gcp/DEPLOY-FROM-GITHUB.sh','cloud/vm/INSTALL-MEDIA-AUDIT.sh',
-    'tools/ensure_history_v4.py','requirements.txt','.github/workflows/deploy-pages.yml',
-    'unknown/new-runtime-file.py',
+    'tools/ensure_history_v4.py','requirements.txt','unknown/new-runtime-file.py',
 ]
 for path in backend:
     assert not mod.is_frontend_only_path(path),path
@@ -36,6 +36,8 @@ needed,front,back=mod.classify(['app.js','ui/example.js'])
 assert needed is False and len(front)==2 and not back
 needed,front,back=mod.classify(['tools/refresh_sports_ticker_a415.py','tests/test_a415_editor_fallback.py'])
 assert needed is False and len(front)==2 and not back
+needed,front,back=mod.classify(['.github/workflows/deploy-pages.yml','tools/classify_deploy_scope.py'])
+assert needed is False and len(front)==2 and not back
 needed,front,back=mod.classify(['app.js','server.py'])
 assert needed is True and 'server.py' in back
-print('PASS: conservative frontend-only + Sports Ticker sidecar deployment classifier')
+print('PASS: conservative frontend-only + sidecar/control-plane deployment classifier')
