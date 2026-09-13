@@ -11,7 +11,7 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Probe production startup endpoints
+      - name: Probe production startup endpoints in parallel
         shell: bash
         run: |
           set +e
@@ -20,37 +20,29 @@ jobs:
           DATE='2026-09-13'
           YDAY='2026-09-12'
           probe() {
-            label="$1"; path="$2"; max="${3:-12}"
-            body="/tmp/${label//[^a-zA-Z0-9]/_}.body"
-            echo "=== $label ==="
-            curl -L --silent --show-error --connect-timeout 4 --max-time "$max" \
-              -H 'Cache-Control: no-cache' \
-              -o "$body" \
-              -w 'http=%{http_code} connect=%{time_connect}s start=%{time_starttransfer}s total=%{time_total}s bytes=%{size_download}\n' \
-              "$BASE$path"
-            rc=$?
-            echo "rc=$rc"
-            if [[ -s "$body" ]]; then
-              head -c 260 "$body" | tr '\n' ' '; echo
-            fi
-            echo
+            label="$1"; path="$2"; max="${3:-9}"
+            body="/tmp/${label}.body"; out="/tmp/${label}.out"
+            {
+              echo "=== $label ==="
+              curl -L --silent --show-error --connect-timeout 3 --max-time "$max" -H 'Cache-Control: no-cache' -o "$body" \
+                -w 'http=%{http_code} connect=%{time_connect}s start=%{time_starttransfer}s total=%{time_total}s bytes=%{size_download}\n' "$BASE$path"
+              echo "rc=$?"
+              if [[ -s "$body" ]]; then head -c 220 "$body" | tr '\n' ' '; echo; fi
+            } >"$out" 2>&1
           }
-          echo '=== public page ==='
-          curl -L --silent --show-error --connect-timeout 4 --max-time 10 -H 'Cache-Control: no-cache' -o /tmp/page.html \
-            -w 'http=%{http_code} connect=%{time_connect}s start=%{time_starttransfer}s total=%{time_total}s bytes=%{size_download}\n' \
-            "$PAGE?probe=${GITHUB_SHA}"
+          curl -L --silent --show-error --connect-timeout 3 --max-time 8 -H 'Cache-Control: no-cache' -o /tmp/page.html \
+            -w 'PAGE http=%{http_code} start=%{time_starttransfer}s total=%{time_total}s bytes=%{size_download}\n' "$PAGE?probe=${GITHUB_SHA}" > /tmp/page.out 2>&1 &
+          pids="$!"
+          probe status '/api/status' 8 & pids="$pids $!"
+          for lg in MLB NFL NCAAF NBA NHL MLS EPL; do probe "score_$lg" "/api/espn/scoreboard?league=$lg&date=$DATE&timezone=America%2FNew_York&utcOffsetMinutes=-240" 9 & pids="$pids $!"; done
+          probe history_ribbon "/api/history/ribbon?date=$YDAY" 9 & pids="$pids $!"
+          probe key_info '/api/editorial/key-info?leagues=MLB,NFL,NBA,NHL,EPL,MLS' 9 & pids="$pids $!"
+          probe top_plays "/api/programming/top-plays?date=$DATE" 9 & pids="$pids $!"
+          probe prewarm '/api/media/prewarm-status' 9 & pids="$pids $!"
+          probe milestone '/api/milestone/console?frontendVersion=6.1.16&limit=40' 12 & pids="$pids $!"
+          for p in $pids; do wait "$p" || true; done
+          cat /tmp/page.out
           grep -o 'app.js?v=[^"[:space:]]*' /tmp/page.html | head -1 || true
           grep -o 'ui/score-ribbon-playback-follow-v545.js?v=[^"[:space:]]*' /tmp/page.html | head -1 || true
-          echo
-
-          probe status '/api/status' 8
-          for lg in MLB NFL NCAAF NBA NHL MLS EPL; do
-            probe "score_$lg" "/api/espn/scoreboard?league=$lg&date=$DATE&timezone=America%2FNew_York&utcOffsetMinutes=-240" 12
-          done
-          probe history_ribbon "/api/history/ribbon?date=$YDAY" 12
-          probe key_info '/api/editorial/key-info?leagues=MLB,NFL,NBA,NHL,EPL,MLS' 12
-          probe top_plays "/api/programming/top-plays?date=$DATE" 12
-          probe prewarm '/api/media/prewarm-status' 12
-          probe milestone '/api/milestone/console?frontendVersion=6.1.16&limit=40' 25
-
-          echo 'PROBE_COMPLETE'
+          for f in /tmp/status.out /tmp/score_*.out /tmp/history_ribbon.out /tmp/key_info.out /tmp/top_plays.out /tmp/prewarm.out /tmp/milestone.out; do cat "$f"; echo; done
+          echo PROBE_COMPLETE
