@@ -1,0 +1,22 @@
+name: Inspect Media Audit Discovery
+
+on:
+  push:
+    branches:
+      - media-audit/discovery-copy-info-v6116
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - name: Discovery implementation context
+        run: |
+          grep -n -C 35 -E 'NO_DIRECTORY_MATCH|OFFICIAL_TEAM_SOURCES|REGISTERED_PROVIDERS|KNOWN_CANDIDATES|Persistent unresolved-team|repairJobsRequeued|TEAM_SOURCE_REGISTRY|team_resolution|team source' media_audit_service.py || true
+      - name: Existing clipboard implementation context
+        run: |
+          grep -Rni -C 25 -E 'navigator\.clipboard|writeText\(|execCommand\(.copy|copy.*diagn|copy.*info|COPY.*INFO|COPY.*DIAGN' -- *.html ui architecture sbb 2>/dev/null || true
