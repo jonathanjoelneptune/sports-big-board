@@ -1,7 +1,17 @@
-name: Sports Ticker Sidecar Refresh (Manual)
+name: Sports Ticker Sidecar Refresh
 
 on:
   workflow_dispatch:
+  # Cloudflare Cron remains the production scheduler. This push lane is not a
+  # scheduler; it gives ticker-sidecar code/test changes an immediate end-to-end
+  # verification run on main instead of waiting for the next external dispatch.
+  push:
+    branches: [main]
+    paths:
+      - 'tools/refresh_sports_ticker*.py'
+      - 'tests/test_a4*.py'
+      - 'tests/test_sports_ticker_current.py'
+      - '.github/workflows/sports-ticker-refresh.yml'
 
 permissions:
   contents: write
