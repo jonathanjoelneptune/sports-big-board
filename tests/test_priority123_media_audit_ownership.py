@@ -17,7 +17,7 @@ def test_p1_backend_startup_is_explicit_and_ordered():
     assert "_install_" not in init
 
     registrations = re.findall(r'StartupRegistration\("([^"]+)",\s*"([^"]+)"', startup)
-    assert len(registrations) >= 36
+    assert len(registrations) >= 37
     modules = [module for _key, module in registrations]
     assert modules[:4] == [
         "nfl_weekly_playlists",
@@ -27,11 +27,12 @@ def test_p1_backend_startup_is_explicit_and_ordered():
     ]
     assert "backend_inspector_routes" in modules
     assert modules.index("database_authority") < modules.index("backend_inspector_routes") < modules.index("ncaaf_ranked")
-    assert modules[-4:] == [
+    assert modules[-5:] == [
         "canonical_shadow_v600",
         "canonical_certification_v610",
         "nfl_club_sources",
         "nfl_audit_migration",
+        "route_registry",
     ]
     for token in ["startup_snapshot", "durationMs", "bootstrapped", "services"]:
         assert token in startup
@@ -46,6 +47,7 @@ def test_p1_shared_route_table_has_compatibility_fallback_and_live_migration():
         "class RouteRegistration",
         "def register_get",
         "def dispatch",
+        "def install()",
         "__sbbSharedRouteRegistry",
         "return legacy_get(self)",
         "Duplicate Sports Big Board route",
@@ -55,6 +57,7 @@ def test_p1_shared_route_table_has_compatibility_fallback_and_live_migration():
     assert 'register_get(' in inspector_routes
     assert '"/api/backend-inspector/date"' in inspector_routes
     assert "backend_inspector_routes" in startup
+    assert 'StartupRegistration("shared-route-dispatcher", "route_registry")' in startup
     # The legacy inspector implementation remains available as compatibility code,
     # but startup no longer calls its direct Handler.do_GET installer.
     assert 'StartupRegistration("backend-inspector-api", "backend_inspector_api")' not in startup
