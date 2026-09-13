@@ -1,0 +1,31 @@
+name: Verify v6.1.16 Official Schedules
+
+on:
+  push:
+    branches:
+      - canonical-official-schedule-watchdogs-v6116
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v7
+      - name: Materialize exact v6.1.16 release
+        run: python3 tools/apply_v6116_release.py --skip-check
+      - name: Run complete repository verification
+        run: bash VERIFY.sh
+      - name: Dry-build Pages artifact
+        run: |
+          rm -rf /tmp/sbb-pages-v6116
+          python3 cloud/github-pages/build_pages.py https://203-0-113-10.sslip.io /tmp/sbb-pages-v6116
+          test -f /tmp/sbb-pages-v6116/index.html
+          test -f /tmp/sbb-pages-v6116/config.js
+      - name: Verify official schedule release contract explicitly
+        run: |
+          python3 tests/test_v6116_official_schedule_watchdogs.py
+          python3 tests/test_v6116_official_schedule_release.py
