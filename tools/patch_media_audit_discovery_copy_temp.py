@@ -12,7 +12,6 @@ def replace_once(text, old, new, label):
     return text.replace(old, new, 1)
 
 
-# Media Audit operator button + dedicated copy module.
 path = ROOT / "media-audit.html"
 text = path.read_text(encoding="utf-8")
 text = replace_once(
@@ -29,8 +28,6 @@ text = replace_once(
 )
 path.write_text(text, encoding="utf-8")
 
-# Make generic fallback early exits visible in source telemetry. This is important
-# when the API key is unavailable or quota-preserving policy defers a search.
 path = ROOT / "media_audit_service.py"
 text = path.read_text(encoding="utf-8")
 text = replace_once(
@@ -62,9 +59,6 @@ text = replace_once(
 )
 path.write_text(text, encoding="utf-8")
 
-# The live release is materialized by replaying v6.1.15. Switch the resulting
-# runtime import to the v6.1.16 identity layer after that replay, and make the new
-# contracts part of the normal release gate.
 path = ROOT / "tools" / "apply_v6116_release.py"
 text = path.read_text(encoding="utf-8")
 anchor = "\ndef patch_init(root):\n"
@@ -85,21 +79,31 @@ if "def patch_media_repair_identity(" not in text:
     if anchor not in text:
         raise SystemExit("missing apply_v6116 patch_init anchor")
     text = text.replace(anchor, "\n" + helper + "def patch_init(root):\n", 1)
-
-old_run = "    run_base(root, preserved)\n    patch_init(root)\n"
-new_run = "    run_base(root, preserved)\n    patch_media_repair_identity(root)\n    patch_init(root)\n"
-text = replace_once(text, old_run, new_run, "v6116 Media Repair import switch")
-
+text = replace_once(
+    text,
+    "    run_base(root, preserved)\n    patch_init(root)\n",
+    "    run_base(root, preserved)\n    patch_media_repair_identity(root)\n    patch_init(root)\n",
+    "v6116 Media Repair import switch",
+)
 required_anchor = '        root / "tests" / "test_v6116_startup_registry_release_integrity.py",\n'
-required_new = required_anchor + '        root / "sbb" / "media_team_sources_v6116.py",\n        root / "tests" / "test_media_team_sources_v6116.py",\n        root / "tests" / "test_media_audit_copy_v6116.py",\n'
+required_new = required_anchor + (
+    '        root / "sbb" / "media_team_sources_v6116.py",\n'
+    '        root / "tests" / "test_media_team_sources_v6116.py",\n'
+    '        root / "tests" / "test_media_audit_copy_v6116.py",\n'
+    '        root / "tests" / "test_media_audit_discovery_visibility_v6116.py",\n'
+)
 text = replace_once(text, required_anchor, required_new, "v6116 required Media Audit files")
-
 verify_anchor = '        "python3 tests/test_v6116_startup_registry_release_integrity.py",\n'
-verify_new = verify_anchor + '        "python3 -m py_compile sbb/media_team_sources_v6116.py",\n        "python3 tests/test_media_team_sources_v6116.py",\n        "python3 tests/test_media_audit_copy_v6116.py",\n        "node --check ui/media-audit-copy-v6116.js",\n'
+verify_new = verify_anchor + (
+    '        "python3 -m py_compile sbb/media_team_sources_v6116.py",\n'
+    '        "python3 tests/test_media_team_sources_v6116.py",\n'
+    '        "python3 tests/test_media_audit_copy_v6116.py",\n'
+    '        "python3 tests/test_media_audit_discovery_visibility_v6116.py",\n'
+    '        "node --check ui/media-audit-copy-v6116.js",\n'
+)
 text = replace_once(text, verify_anchor, verify_new, "v6116 Media Audit release verification")
 path.write_text(text, encoding="utf-8")
 
-# Make source-tree verification protect the same contracts before materialization.
 path = ROOT / "VERIFY.sh"
 text = path.read_text(encoding="utf-8")
 marker = "python3 tools/check_release_version.py"
@@ -107,6 +111,7 @@ commands = [
     "python3 -m py_compile sbb/media_team_sources_v6116.py",
     "python3 tests/test_media_team_sources_v6116.py",
     "python3 tests/test_media_audit_copy_v6116.py",
+    "python3 tests/test_media_audit_discovery_visibility_v6116.py",
     "node --check ui/media-audit-copy-v6116.js",
 ]
 missing = [cmd for cmd in commands if cmd not in text]
