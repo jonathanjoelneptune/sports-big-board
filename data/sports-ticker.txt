@@ -1,48 +1,65 @@
 SPORTS BIG BOARD — SPORTS TICKER A4
-Updated: 2026-09-13T03:01:16Z
+Updated: 2026-09-13T03:31:11Z
 Global headline budget: 32/30-35 total
 Compact headline length: target <= 80 chars; hard max 96
 Primary display copy: item.text (standalone polished update); headline is compact metadata
 Freshness window: last 24.0 hours
 Discovery: Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search
 Editor model: gpt-5.6-luna
-Candidate hash: f31e88054a29fdb8bf21a7bbd318ae587455c53213baa311a3bfd13d72714332
+Candidate hash: 3026baeacbf02ef26bc7bdf54a95822a9969536f96e5f76450e198ae74e50e0e
 
 ============================================================================
 MLB  [ACTIVE]
 ============================================================================
 
- 1. [RECORD] Francisco Lindor hit a leadoff homer and an eighth-inning grand slam as the Mets routed the Yankees 12-2. (priority 86, age 9.44h)
-    Compact headline: Lindor grand slam powers Mets past Yankees 12-2
+ 1. [RESULT] Francisco Lindor hit a leadoff homer and added a grand slam in the eighth inning as the New York Mets chased Gerrit Cole early and pounded the crosstown Yankees 12-2 on Saturday. (priority 82, age 9.94h)
+    Compact headline: Mets rout Yankees as Lindor hits leadoff homer, grand slam
     Occurred: 2026-09-12T17:35:00Z | Precision: exact | Status: active
-    Freshness basis: The Mets beat the Yankees 12-2 on Saturday behind Francisco Lindor's leadoff homer and grand slam.
+    Freshness basis: The Mets beat the Yankees 12-2 on Sept. 12, with Francisco Lindor hitting a leadoff homer and grand slam.
     Entities: New York Mets, New York Yankees, Francisco Lindor
     Candidate IDs: cand-6b3612a39886489a
     Source [Highlightly/highlightly-baseball-2026-09-12]: https://highlightly.net
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816909
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/preview?gameId=401816909
 
- 2. [INJURY] Jesús Luzardo’s MRI showed no serious damage, but the Phillies left-hander will avoid throwing for a couple of days because of shoulder stiffness. (priority 76, age 2.54h)
-    Compact headline: Phillies’ Jesús Luzardo has no serious MRI damage
+ 2. [INJURY] Phillies pitcher Jesús Luzardo’s MRI showed no serious damage, but he will not throw for a couple of days because of left shoulder stiffness. (priority 73, age 3.04h)
+    Compact headline: Phillies say Jesús Luzardo’s MRI showed no serious damage
     Occurred: 2026-09-13T00:28:45Z | Precision: exact | Status: active
-    Freshness basis: Jesús Luzardo’s MRI found no serious damage, with the Phillies holding him out of throwing for a couple of days.
+    Freshness basis: Philadelphia said Jesús Luzardo’s MRI showed no serious damage and paused his throwing because of shoulder stiffness.
     Entities: Philadelphia Phillies, Jesús Luzardo
     Candidate IDs: cand-94193f0fc022e9e4
     Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49920542/phillies-star-pitcher-luzardo-undergoes-mri-no-serious-damage-found
 
- 3. [STANDINGS] Richie Palacios delivered a two-run single, Ian Seymour threw six strong innings and Nick Madrigal added the deciding sacrifice fly for Tampa Bay. (priority 76, age 4.85h)
-    Compact headline: Postseason-bound Rays edge Astros 3-2
-    Occurred: 2026-09-12T22:10:00Z | Precision: exact | Status: active
-    Freshness basis: The postseason-bound Rays beat the Astros 3-2 Saturday behind Palacios, Seymour and Madrigal.
-    Entities: Tampa Bay Rays, Houston Astros, Richie Palacios, Ian Seymour, Nick Madrigal
-    Candidate IDs: cand-8a6b4093541b2fa1
+ 3. [STANDINGS] Ezequiel Duran’s two-run single and Wyatt Langford’s homer fueled a six-run fifth as Texas beat Arizona 6-2 and stayed in the AL playoff race. (priority 74, age 3.35h)
+    Compact headline: Rangers erupt for six-run fifth to stay in AL playoff race
+    Occurred: 2026-09-13T00:10:00Z | Precision: exact | Status: active
+    Freshness basis: Texas beat Arizona 6-2 on Sept. 12 with six runs in the fifth inning, remaining in the AL playoff race.
+    Entities: Texas Rangers, Arizona Diamondbacks, Ezequiel Duran, Wyatt Langford
+    Candidate IDs: cand-411a234bcef55672
     Source [Highlightly/highlightly-baseball-2026-09-12]: https://highlightly.net
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816906
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816917
 
- 4. [STREAK] Jackson Merrill and Fernando Tatis Jr. homered, while Mason Miller pitched a flawless ninth, as San Diego beat San Francisco 7-6. (priority 78, age 6.94h)
-    Compact headline: Padres win fifth straight by edging Giants 7-6
+ 4. [RESULT] Donovan Walton hit a walk-off two-run homer in the 10th inning to give the Athletics a 6-5 win over Seattle. (priority 82, age 22.21h)
+    Compact headline: Athletics win on Walton’s 10th-inning walk-off homer
+    Occurred: 2026-09-12T05:18:30Z | Precision: exact | Status: active
+    Freshness basis: Donovan Walton hit a 10th-inning walk-off two-run homer for the Athletics on Sept. 12.
+    Entities: Athletics, Seattle Mariners, Donovan Walton
+    Candidate IDs: cand-472057dae7b99e32
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816901
+
+ 5. [MILESTONE] Emmanuel Rodriguez homered in his first career at-bat to spark a four-run inning in Minnesota’s 4-3 win over Cleveland. (priority 72, age 7.35h)
+    Compact headline: Twins rookie homers in first career at-bat against Guardians
+    Occurred: 2026-09-12T20:10:00Z | Precision: exact | Status: active
+    Freshness basis: Emmanuel Rodriguez homered in his first career at-bat during Minnesota’s 4-3 win over Cleveland on Sept. 12.
+    Entities: Minnesota Twins, Cleveland Guardians, Emmanuel Rodriguez
+    Candidate IDs: cand-8218c040573185a6
+    Source [Highlightly/highlightly-baseball-2026-09-12]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816913
+
+ 6. [STREAK] Jackson Merrill and Fernando Tatis Jr. homered, and Mason Miller pitched a flawless ninth as San Diego beat San Francisco 7-6. (priority 76, age 7.44h)
+    Compact headline: Padres extend win streak to five by holding off Giants
     Occurred: 2026-09-12T20:05:00Z | Precision: exact | Status: active
-    Freshness basis: San Diego beat San Francisco 7-6 Saturday to extend its winning streak to five games.
+    Freshness basis: San Diego beat San Francisco 7-6 on Sept. 12 to extend its winning streak to five games.
     Entities: San Diego Padres, San Francisco Giants, Jackson Merrill, Fernando Tatis Jr., Mason Miller
     Candidate IDs: cand-66c8dd7c89c12ebb
     Source [Highlightly/highlightly-baseball-2026-09-12]: https://highlightly.net
@@ -50,81 +67,75 @@ MLB  [ACTIVE]
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/preview?gameId=401816915
     Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816900
 
- 5. [STAT_LEADER] Garrett Mitchell went 4-for-5 with a homer and four RBIs as Milwaukee scored all 13 of its runs in the first five innings against Cincinnati. (priority 74, age 0.80h)
-    Compact headline: Garrett Mitchell goes 4-for-5 in Brewers' 13-9 win
-    Occurred: 2026-09-13T02:13:31Z | Precision: exact | Status: active
-    Freshness basis: Mitchell went 4-for-5 with a homer and four RBIs in Milwaukee's 13-9 win over Cincinnati.
-    Entities: Milwaukee Brewers, Cincinnati Reds, Garrett Mitchell
-    Candidate IDs: cand-9897254a109f1356
-    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816912
-
- 6. [RETURN] Freddie Freeman returned to Los Angeles' lineup Saturday after a right knee issue sidelined him for the previous two games. (priority 74, age 7.31h)
-    Compact headline: Freeman returns to Dodgers lineup after knee issue
-    Occurred: 2026-09-12T19:42:53Z | Precision: exact | Status: active
-    Freshness basis: The Dodgers restored Freddie Freeman to the lineup Saturday after he missed two games with a right knee issue.
-    Entities: Los Angeles Dodgers, Freddie Freeman
-    Candidate IDs: cand-6d1b936bf9ae41fc
-    Source [ESPN/espn-mlb]: https://www.espn.com/mlb/story/_/id/49917208/dodgers-freeman-lineup-missing-2-games-knee-issue
+ 7. [RESULT] Chicago defeated St. Louis 6-5 after Randal Grichuk hit a two-run ninth-inning homer Sept. 12. (priority 72, age 4.27h)
+    Compact headline: Randal Grichuk’s ninth-inning homer lifts White Sox
+    Occurred: 2026-09-12T23:15:00Z | Precision: exact | Status: active
+    Freshness basis: Chicago defeated St. Louis 6-5 after Randal Grichuk hit a two-run ninth-inning homer Sept. 12.
+    Entities: Chicago White Sox, St. Louis Cardinals, Randal Grichuk
+    Candidate IDs: cand-8067fcc7b2417eeb
+    Source [Highlightly/highlightly-baseball-2026-09-12]: https://highlightly.net
+    Source [ESPN/espn-mlb]: http://www.espn.com/mlb/recap?gameId=401816911
+    Source [ESPN/a44-espn-mlb-summary-401816911]: https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/summary?event=401816911
 
 ============================================================================
 NFL  [ACTIVE]
 ============================================================================
 
- 1. [INJURY] Cowboys running back Malik Davis is scheduled for hip surgery after a practice injury and has been placed on injured reserve. (priority 86, age 8.60h)
-    Compact headline: Cowboys' Malik Davis set for hip surgery, lands on IR
+ 1. [INJURY] Kansas City will use undrafted rookie Kahlil Benson to help protect Patrick Mahomes after left tackle Josh Simmons was ruled out for Monday’s opener. (priority 74, age 7.22h)
+    Compact headline: Chiefs turn to undrafted rookie with Josh Simmons out
+    Occurred: 2026-09-12T20:17:49Z | Precision: exact | Status: active
+    Freshness basis: Kansas City ruled out left tackle Josh Simmons and planned to use undrafted rookie Kahlil Benson for the season opener.
+    Entities: Kansas City Chiefs, Josh Simmons, Kahlil Benson, Patrick Mahomes
+    Candidate IDs: cand-ad1bf4f43ca71b88
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49917622/chiefs-set-use-undrafted-rookie-lt-josh-simmons-out
+
+ 2. [INJURY] Dallas placed running back Malik Davis on injured reserve after a hip injury in practice, with surgery scheduled for Sept. 12. (priority 73, age 9.10h)
+    Compact headline: Cowboys place Malik Davis on IR ahead of hip surgery
     Occurred: 2026-09-12T18:25:09Z | Precision: exact | Status: active
-    Freshness basis: Dallas placed Malik Davis on injured reserve and scheduled hip surgery after his Friday practice injury.
+    Freshness basis: Dallas placed Malik Davis on injured reserve and scheduled hip surgery after his practice injury.
     Entities: Dallas Cowboys, Malik Davis
     Candidate IDs: cand-abc54a0ccec14969
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49906649/cowboys-malik-davis-hip-injured-practice-opener
 
- 2. [CONTRACT] Las Vegas extended tight end Michael Mayer for three years and $45 million as he steps in for injured Brock Bowers. (priority 79, age 9.32h)
-    Compact headline: Raiders give Michael Mayer three-year, $45M extension
-    Occurred: 2026-09-12T17:42:12Z | Precision: exact | Status: active
-    Freshness basis: The Raiders gave Michael Mayer a three-year, $45 million extension while Brock Bowers is injured.
-    Entities: Las Vegas Raiders, Michael Mayer, Brock Bowers
-    Candidate IDs: cand-979e7c5d7332fd95
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49914437/raiders-te-michael-mayer-gets-3-year-45m-extension-sources-say
-
- 3. [CONTRACT] Green Bay and tight end Tucker Kraft agreed to a four-year extension worth up to $92 million. (priority 78, age 11.43h)
-    Compact headline: Packers, Tucker Kraft agree to extension worth $92M
-    Occurred: 2026-09-12T15:35:15Z | Precision: exact | Status: active
-    Freshness basis: The Packers and Tucker Kraft agreed to a four-year extension worth up to $92 million.
-    Entities: Green Bay Packers, Tucker Kraft
-    Candidate IDs: cand-11ffb29936879969
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49914334/sources-packers-tucker-kraft-agree-4-year-extension
-
- 4. [CONTRACT] Lamar Jackson and the Ravens are not expected to complete a long-term extension before the 2026 season begins. (priority 76, age 3.37h)
-    Compact headline: Lamar Jackson unlikely to get extension before season
+ 3. [CONTRACT] Lamar Jackson and the Ravens are not expected to complete a long-term extension before the 2026 season, with talks pushed aside for now. (priority 75, age 3.87h)
+    Compact headline: Lamar Jackson, Ravens table extension talks until after season
     Occurred: 2026-09-12T23:38:55Z | Precision: exact | Status: active
-    Freshness basis: Sources reported that Lamar Jackson is unlikely to have a long-term deal with Baltimore before the season starts.
+    Freshness basis: Lamar Jackson and Baltimore agreed to defer long-term extension discussions until after the 2026 season.
     Entities: Baltimore Ravens, Lamar Jackson
     Candidate IDs: cand-8bc332799d602b0a
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49915181/sources-lamar-jackson-reluctant-talk-deal-ravens
 
- 5. [CONTRACT] Chicago and running back D'Andre Swift agreed to a three-year, $33.75 million extension with $27.5 million guaranteed. (priority 77, age 11.62h)
-    Compact headline: Bears, D'Andre Swift agree to three-year extension
+ 4. [CONTRACT] Green Bay and tight end Tucker Kraft agreed to a four-year extension worth up to $92 million before the season. (priority 76, age 11.93h)
+    Compact headline: Packers agree to four-year, $92M Tucker Kraft extension
+    Occurred: 2026-09-12T15:35:15Z | Precision: exact | Status: active
+    Freshness basis: The Packers and Tucker Kraft agreed to a four-year extension worth up to $92 million on Sept. 12.
+    Entities: Green Bay Packers, Tucker Kraft
+    Candidate IDs: cand-11ffb29936879969
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49914334/sources-packers-tucker-kraft-agree-4-year-extension
+
+ 5. [CONTRACT] Chicago and running back D’Andre Swift agreed to a three-year, $33.75 million extension with $27.5 million guaranteed. (priority 75, age 12.12h)
+    Compact headline: Bears, D’Andre Swift agree to three-year extension
     Occurred: 2026-09-12T15:24:15Z | Precision: exact | Status: active
-    Freshness basis: The Bears and D'Andre Swift agreed to a three-year, $33.75 million extension with $27.5 million guaranteed.
-    Entities: Chicago Bears, D'Andre Swift
+    Freshness basis: The Bears and D’Andre Swift agreed to a three-year, $33.75 million extension on Sept. 12.
+    Entities: Chicago Bears, D’Andre Swift
     Candidate IDs: cand-d011bdf8e4276f55
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49906474/bears-rb-swift-agree-3-year-3375m-extension
 
- 6. [CONTRACT] The Texans and C.J. Stroud agreed to wait until after the season to resume work on a long-term contract extension. (priority 75, age 6.23h)
-    Compact headline: Texans and C.J. Stroud table extension talks
+ 6. [CONTRACT] Las Vegas gave tight end Michael Mayer a three-year, $45 million extension as he steps in for injured Brock Bowers. (priority 74, age 9.82h)
+    Compact headline: Raiders give Michael Mayer three-year, $45M extension
+    Occurred: 2026-09-12T17:42:12Z | Precision: exact | Status: active
+    Freshness basis: The Raiders gave Michael Mayer a three-year, $45 million extension on Sept. 12 while Brock Bowers is injured.
+    Entities: Las Vegas Raiders, Michael Mayer, Brock Bowers
+    Candidate IDs: cand-979e7c5d7332fd95
+    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49914437/raiders-te-michael-mayer-gets-3-year-45m-extension-sources-say
+
+ 7. [CONTRACT] C.J. Stroud and Houston will wait until after the season to resume work on a long-term extension that was discussed before the opener. (priority 73, age 6.73h)
+    Compact headline: C.J. Stroud, Texans agree to wait on extension talks
     Occurred: 2026-09-12T20:47:40Z | Precision: exact | Status: active
-    Freshness basis: Houston and C.J. Stroud agreed to postpone long-term extension talks until after the 2026 season.
+    Freshness basis: Houston and C.J. Stroud agreed to table extension talks until after the 2026 season.
     Entities: Houston Texans, C.J. Stroud
     Candidate IDs: cand-d66cd65cc4a782f2
     Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49917836/sources-cj-stroud-texans-table-extension-talks
-
- 7. [DEPTH_CHART] Kansas City will be without left tackle Josh Simmons in Monday's opener and is expected to use undrafted rookie Kahlil Benson instead. (priority 75, age 6.72h)
-    Compact headline: Chiefs turn to undrafted rookie with Josh Simmons out
-    Occurred: 2026-09-12T20:17:49Z | Precision: exact | Status: active
-    Freshness basis: Josh Simmons was ruled out of Kansas City's opener, prompting the Chiefs to turn to Kahlil Benson.
-    Entities: Kansas City Chiefs, Josh Simmons, Kahlil Benson, Patrick Mahomes
-    Candidate IDs: cand-ad1bf4f43ca71b88
-    Source [ESPN/espn-nfl]: https://www.espn.com/nfl/story/_/id/49917622/chiefs-set-use-undrafted-rookie-lt-josh-simmons-out
 
 ============================================================================
 NBA  [OFFSEASON]
@@ -136,10 +147,10 @@ NBA  [OFFSEASON]
 NHL  [OFFSEASON]
 ============================================================================
 
- 1. [SIGNING] Veteran forward Chris Kreider agreed to a one-year contract with Montreal after mutually terminating his previous deal with Anaheim. (priority 78, age 2.75h)
-    Compact headline: Chris Kreider signs one-year deal with Canadiens
+ 1. [SIGNING] Chris Kreider agreed to a one-year contract with Montreal after mutually terminating his previous deal with Anaheim earlier in the week. (priority 73, age 3.25h)
+    Compact headline: Chris Kreider joins Canadiens on one-year contract
     Occurred: 2026-09-13T00:16:16Z | Precision: exact | Status: active
-    Freshness basis: Chris Kreider agreed to a one-year contract with Montreal on Saturday after leaving Anaheim.
+    Freshness basis: Chris Kreider agreed to a one-year contract with Montreal on Sept. 13 after leaving Anaheim.
     Entities: Montreal Canadiens, Chris Kreider, Anaheim Ducks
     Candidate IDs: cand-ef6bf0d782e6fb57
     Source [ESPN/espn-nhl]: https://www.espn.com/nhl/story/_/id/49919075/chris-kreider-35-lands-1-year-deal-montreal-canadiens
@@ -148,34 +159,10 @@ NHL  [OFFSEASON]
 EPL  [ACTIVE]
 ============================================================================
 
- 1. [RESULT] Ipswich beat 10-man Crystal Palace 3-2 Saturday on Zian Flemming's first goal for the club. (priority 82, age 10.52h)
-    Compact headline: Ipswich wins 3-2 at 10-man Crystal Palace
-    Occurred: 2026-09-12T16:30:10Z | Precision: exact | Status: active
-    Freshness basis: Ipswich beat 10-man Crystal Palace 3-2 Saturday on Zian Flemming's first goal for the club.
-    Entities: Ipswich Town, Crystal Palace, Zian Flemming
-    Candidate IDs: cand-c33618a2dc9651c2
-    Source [ESPN/espn-epl]: http://www.espn.com/soccer/report/_/gameId/401879281
-
- 2. [STREAK] Bruno Guimarães and Bukayo Saka scored as Arsenal beat Sunderland 2-0 to maintain its perfect Premier League start. (priority 78, age 5.71h)
-    Compact headline: Arsenal stays perfect with 2-0 win at Sunderland
-    Occurred: 2026-09-12T21:18:56Z | Precision: exact | Status: active
-    Freshness basis: Arsenal beat Sunderland 2-0 Saturday to maintain its perfect start in the Premier League.
-    Entities: Arsenal, Sunderland, Bruno Guimarães, Bukayo Saka
-    Candidate IDs: cand-019a84240d91479c
-    Source [ESPN/espn-epl]: http://www.espn.com/soccer/report/_/gameId/401878779
-
- 3. [SLUMP] Tottenham drew Everton 0-0 to extend its winless start to four matches and leave the club still searching for its first league goal. (priority 76, age 8.08h)
-    Compact headline: Tottenham remains winless and scoreless after Everton draw
-    Occurred: 2026-09-12T18:56:30Z | Precision: exact | Status: active
-    Freshness basis: Tottenham drew Everton 0-0 Saturday, extending its winless start to four matches without a goal.
-    Entities: Tottenham Hotspur, Everton
-    Candidate IDs: cand-aa2b3732e529ca1b
-    Source [ESPN/espn-epl]: http://www.espn.com/soccer/report/_/gameId/401879277
-
- 4. [STREAK] Hull City extended its unbeaten Premier League start with an entertaining 2-2 draw at Chelsea. (priority 75, age 9.35h)
-    Compact headline: Hull stays unbeaten after 2-2 draw at Chelsea
+ 1. [STREAK] Hull City stayed unbeaten in the Premier League after a 2-2 draw at Chelsea, continuing an impressive opening run. (priority 74, age 9.85h)
+    Compact headline: Hull extend unbeaten Premier League start with Chelsea draw
     Occurred: 2026-09-12T17:40:01Z | Precision: exact | Status: active
-    Freshness basis: Hull City drew Chelsea 2-2 Saturday to extend its unbeaten Premier League start.
+    Freshness basis: Hull City drew Chelsea 2-2 to extend its unbeaten Premier League start Sept. 12.
     Entities: Hull City, Chelsea
     Candidate IDs: cand-d35b502e0c436e28
     Source [ESPN/espn-epl]: https://www.espn.com/soccer/story/_/id/49914765/hull-continue-unbeaten-premier-league-streak-entertaining-2-2-draw-chelsea
@@ -184,125 +171,145 @@ EPL  [ACTIVE]
 MLS  [ACTIVE]
 ============================================================================
 
- 1. [STANDINGS] Lionel Messi scored a second-half goal but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference. (priority 77, age 3.52h)
-    Compact headline: Nashville strikes late to deny Messi and Miami
+ 1. [STANDINGS] Lionel Messi scored a second-half goal but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference. (priority 73, age 4.02h)
+    Compact headline: Nashville deny Messi and Miami, maintain East lead
     Occurred: 2026-09-12T23:30:00Z | Precision: exact | Status: active
-    Freshness basis: Nashville drew Inter Miami 2-2 Saturday and maintained a nine-point lead atop the Eastern Conference.
+    Freshness basis: Nashville drew Inter Miami 2-2 on Sept. 12 and maintained a nine-point lead atop the Eastern Conference.
     Entities: Inter Miami, Nashville SC, Lionel Messi
     Candidate IDs: cand-861dabf94db8beb5
     Source [Highlightly/highlightly-football-2026-09-12]: https://highlightly.net
     Source [ESPN/espn-mls]: https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield
 
- 2. [STREAK] Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves as New York beat Columbus 1-0. (priority 78, age 3.52h)
-    Compact headline: Red Bulls end six-match winless run with late goal
+ 2. [STREAK] André Luiz and Taylor Calheira scored first-half goals and Sporting Kansas City shocked Los Angeles FC with a 3-1 victory on Saturday night that ended a seven-match winless streak. (priority 75, age 0.47h)
+    Compact headline: Sporting KC stun LAFC to end seven-match winless run
+    Occurred: 2026-09-13T03:02:59Z | Precision: exact | Status: active
+    Freshness basis: Sporting Kansas City defeated LAFC 3-1 to end a seven-match winless streak Sept. 12.
+    Entities: Sporting Kansas City, Los Angeles FC, André Luiz, Taylor Calheira
+    Candidate IDs: cand-c5ac5f8b392a5b25
+    Source [ESPN/espn-mls]: http://www.espn.com/soccer/report/_/gameId/761806
+
+ 3. [STREAK] Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves as New York beat Columbus 1-0. (priority 74, age 4.02h)
+    Compact headline: Red Bulls end six-match winless run on Donkor’s late goal
     Occurred: 2026-09-12T23:30:00Z | Precision: exact | Status: active
-    Freshness basis: New York ended a six-match winless streak by beating Columbus 1-0 on Ronald Donkor's 89th-minute goal.
+    Freshness basis: New York beat Columbus 1-0 on Sept. 12 on Ronald Donkor’s 89th-minute goal, ending a six-match winless run.
     Entities: New York Red Bulls, Columbus Crew, Ronald Donkor, Ethan Horvath
     Candidate IDs: cand-3f5bcf4f2ba8fc32
     Source [Highlightly/highlightly-football-2026-09-12]: https://highlightly.net
     Source [ESPN/espn-mls]: http://www.espn.com/soccer/report/_/gameId/761804
 
+ 4. [STREAK] Orlando beat Toronto 3-0 on Sept. 12 as Antoine Griezmann scored in his fifth consecutive match. (priority 72, age 4.02h)
+    Compact headline: Griezmann scores in fifth straight as Orlando beat Toronto
+    Occurred: 2026-09-12T23:30:00Z | Precision: exact | Status: active
+    Freshness basis: Orlando beat Toronto 3-0 on Sept. 12 as Antoine Griezmann scored in his fifth consecutive match.
+    Entities: Orlando City, Toronto FC, Antoine Griezmann, Harvey Sarajian
+    Candidate IDs: cand-f73adb8ee7668d57
+    Source [Highlightly/highlightly-football-2026-09-12]: https://highlightly.net
+    Source [ESPN/espn-mls]: http://www.espn.com/soccer/report/_/gameId/761801
+
 ============================================================================
 NCAAF  [ACTIVE]
 ============================================================================
 
- 1. [UPSET] Gage Roy threw a 16-yard touchdown pass to Alex Herrera with 1:53 left as FCS-member Illinois State beat Northern Illinois 28-24. (priority 88, age 4.02h)
-    Compact headline: FCS Illinois State stuns Northern Illinois 28-24
-    Occurred: 2026-09-12T23:00:00Z | Precision: exact | Status: active
-    Freshness basis: FCS-member Illinois State beat Northern Illinois 28-24 Saturday on Roy's late touchdown pass to Herrera.
-    Entities: Illinois State Redbirds, Northern Illinois Huskies, Gage Roy, Alex Herrera
-    Candidate IDs: cand-fe0c90c4594990e3
+ 1. [UPSET] No. 4 Texas erased a 20-point fourth-quarter deficit, then held on 24-23 after Ohio State missed a late field goal. (priority 94, age 4.02h)
+    Compact headline: No. 4 Texas erases 20-point deficit to stun No. 1 Ohio State
+    Occurred: 2026-09-12T23:30:00Z | Precision: exact | Status: active
+    Freshness basis: No. 4 Texas beat No. 1 Ohio State 24-23 on Sept. 12 after rallying from 20 points down in the fourth quarter.
+    Entities: Texas Longhorns, Ohio State Buckeyes
+    Candidate IDs: cand-237c22e907f63a74
     Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
-    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401864503
+    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49923197/no-4-texas-mounts-fourth-quarter-rally-stuns-no-1-ohio-state
+    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401856682
 
- 2. [UPSET] Florida International stunned Buffalo 33-20 as quarterback JJ Kohl threw for 367 yards and three touchdowns and added a receiving score. (priority 86, age 5.02h)
-    Compact headline: FIU stuns Buffalo 33-20 behind four-touchdown Kohl
+ 2. [UPSET] JJ Kohl threw for 367 yards and 3 TDs as Florida International Panthers beat Buffalo Bulls 33-20. (priority 84, age 5.52h)
+    Compact headline: FIU hands Buffalo a 33-20 upset
     Occurred: 2026-09-12T22:00:00Z | Precision: exact | Status: active
-    Freshness basis: Florida International defeated Buffalo 33-20 after JJ Kohl accounted for four touchdowns.
-    Entities: Florida International Panthers, Buffalo Bulls, JJ Kohl
+    Freshness basis: Florida International defeated Buffalo 33-20 in a result marked as an upset on Sept. 12.
+    Entities: Florida International Panthers, Buffalo Bulls
     Candidate IDs: cand-562dbeb0af0ff9ee
     Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
+    Source [ESPN/a45-espn-ncaaf-summary-401866414]: https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401866414
 
- 3. [INJURY] Georgia Tech cornerback Jaylen Mbakwe was taken off on a stretcher after colliding with a teammate during Saturday's game against Tennessee. (priority 80, age 0.89h)
-    Compact headline: Georgia Tech cornerback Jaylen Mbakwe stretchered off
-    Occurred: 2026-09-13T02:07:37Z | Precision: exact | Status: active
-    Freshness basis: Jaylen Mbakwe was taken off on a stretcher after a collision during Georgia Tech's game against Tennessee.
-    Entities: Georgia Tech Yellow Jackets, Jaylen Mbakwe, Tennessee Volunteers
-    Candidate IDs: cand-e21990f52048d1d5
-    Source [ESPN/espn-ncaaf]: https://www.espn.com/college-football/story/_/id/49922104/georgia-tech-cb-jaylen-mbakwe-stretchered-collision
-
- 4. [RESULT] A late 42-yard field goal lifted No. 21 Iowa over Iowa State 16-13 with 15 seconds remaining. (priority 82, age 3.52h)
-    Compact headline: Late field goal lifts No. 21 Iowa past Iowa State
-    Occurred: 2026-09-12T23:30:00Z | Precision: exact | Status: active
-    Freshness basis: No. 21 Iowa beat Iowa State 16-13 Saturday on a 42-yard field goal with 15 seconds left.
-    Entities: Iowa Hawkeyes, Iowa State Cyclones
-    Candidate IDs: cand-5d0e730fb249f65b
-    Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
-
- 5. [RESULT] Ohio preserved its 29-27 win over Jacksonville State by blocking a last-second field-goal attempt. (priority 82, age 5.02h)
-    Compact headline: Blocked kick preserves Ohio's 29-27 win in four overtimes
+ 3. [RESULT] Ohio blocked a last-second field-goal attempt to preserve a 29-27 win over Jacksonville State on Sept. 12. (priority 82, age 5.52h)
+    Compact headline: Blocked last-second kick preserves Ohio’s 29-27 victory
     Occurred: 2026-09-12T22:00:00Z | Precision: exact | Status: active
-    Freshness basis: Ohio preserved its 29-27 win over Jacksonville State by blocking a last-second field-goal attempt.
+    Freshness basis: Ohio blocked a last-second field-goal attempt to preserve a 29-27 win over Jacksonville State on Sept. 12.
     Entities: Ohio Bobcats, Jacksonville State Gamecocks
     Candidate IDs: cand-e03766a39f5131af
     Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
 
- 6. [RESULT] PENALTY UTSA False Start 5 yards from TXST03 to TXST08. NO PLAY. (priority 78, age 7.52h)
+ 4. [RESULT] A late 42-yard field goal lifted No. 21 Iowa over Iowa State 16-13 with 15 seconds remaining. (priority 78, age 4.02h)
+    Compact headline: Late field goal lifts No. 21 Iowa past Iowa State
+    Occurred: 2026-09-12T23:30:00Z | Precision: exact | Status: active
+    Freshness basis: No. 21 Iowa beat Iowa State 16-13 on Sept. 12 on a late 42-yard field goal.
+    Entities: Iowa Hawkeyes, Iowa State Cyclones
+    Candidate IDs: cand-5d0e730fb249f65b
+    Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
+
+ 5. [RESULT] PENALTY UTSA False Start 5 yards from TXST03 to TXST08. NO PLAY. (priority 78, age 8.02h)
     Compact headline: Late score lifts UTSA past Texas State 31-26
     Occurred: 2026-09-12T19:30:00Z | Precision: exact | Status: active
-    Freshness basis: UTSA used a late score to defeat Texas State 31-26.
+    Freshness basis: UTSA defeated Texas State 31-26 after a late score settled the one-score game Sept. 12.
     Entities: UTSA Roadrunners, Texas State Bobcats
     Candidate IDs: cand-5858a46dfead59a2
     Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
+
+ 6. [RESULT] Anthony Colandrea threw for a career-high four touchdowns, all in the first half, and Nebraska made fast work of Bowling Green in a 56-7 victory Saturday night. (priority 72, age 4.52h)
+    Compact headline: Nebraska routs Bowling Green behind Colandrea’s four TDs
+    Occurred: 2026-09-12T23:00:00Z | Precision: exact | Status: active
+    Freshness basis: Nebraska beat Bowling Green 56-7 on Sept. 12 as Anthony Colandrea threw four first-half touchdowns.
+    Entities: Nebraska Cornhuskers, Bowling Green Falcons, Anthony Colandrea
+    Candidate IDs: cand-8433d01e520374d7
+    Source [Highlightly/highlightly-american-football-2026-09-12]: https://highlightly.net
+    Source [ESPN/espn-ncaaf]: http://www.espn.com/ncf/recap?gameId=401858441
 
 ############################################################################
 SPECIAL EVENTS
 ############################################################################
 
-Spanish Grand Prix (Formula 1)
+US Open (Tennis)
 ----------------------------------------------------------------------------
 
- 1. [QUALIFYING] Lando Norris edged championship leader Kimi Antonelli to take pole position for the inaugural Spanish Grand Prix in Madrid. (priority 82, age 11.36h)
-    Compact headline: Lando Norris takes Spanish GP pole over Antonelli
-    Freshness basis: Lando Norris took pole for the Spanish Grand Prix by edging Kimi Antonelli in qualifying.
-    Candidate IDs: cand-06d781a5ebbad4ed
-    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49867167/mclarens-lando-norris-pips-kimi-antonelli-take-thrilling-pole-spanish-grand-prix-spanish-grand-prix-madring-formula-1
-
-US Open (tennis)
-----------------------------------------------------------------------------
-
- 1. [ADVANCEMENT] Ben Shelton beat Frances Tiafoe in an all-American semifinal and will face No. 1 seed Alexander Zverev for the US Open title. (priority 80, age 15.12h)
+ 1. [ADVANCEMENT] Ben Shelton defeated Frances Tiafoe in an all-American semifinal and advanced to his first US Open final against No. 1 seed Alexander Zverev. (priority 84, age 15.62h)
     Compact headline: Ben Shelton reaches first US Open final
-    Freshness basis: Ben Shelton defeated Frances Tiafoe to reach his first US Open final against Alexander Zverev.
+    Freshness basis: Ben Shelton defeated Frances Tiafoe to reach his first US Open final Sept. 12.
     Candidate IDs: cand-e5a8799f60012771
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49909945/ben-shelton-beats-frances-tiafoe-all-american-semifinal-reach-2026-us-open-final
 
- 2. [RESULT] Elena Rybakina completed a surprising run from questionable injury status to world No. 1 and the US Open championship. (priority 82, age 1.92h)
-    Compact headline: Elena Rybakina wins unexpected US Open title
-    Freshness basis: Elena Rybakina won the US Open title after entering the tournament with a questionable injury status.
+ 2. [RESULT] Elena Rybakina completed a surprising run from questionable injury status to the US Open title and the world No. 1 ranking. (priority 82, age 2.41h)
+    Compact headline: Rybakina completes unexpected run to US Open title
+    Freshness basis: Elena Rybakina won the US Open title on Sept. 13 and rose to world No. 1.
     Candidate IDs: cand-5abe0d1ec23b8120
     Source [ESPN/espn-wta]: https://www.espn.com/tennis/story/_/id/49919035/us-open-2026-champion-title-elena-rybakina-aryna-sabalenka
 
- 3. [RESULT] Christian Harrison and Neal Skupski won their second Grand Slam men's doubles title of the year by taking the US Open final 6-4, 7-6 (6). (priority 82, age 7.39h)
+ 3. [RESULT] Christian Harrison and Neal Skupski won the US Open men’s doubles final 6-4, 7-6 (6) for their second Grand Slam title of the year. (priority 82, age 7.89h)
     Compact headline: Harrison and Skupski win second Grand Slam of year
-    Freshness basis: Harrison and Skupski won the US Open men's doubles final 6-4, 7-6 (6).
+    Freshness basis: Christian Harrison and Neal Skupski won the US Open men’s doubles final on Sept. 12.
     Candidate IDs: cand-6bd053b3ee505e77
     Source [ESPN/espn-atp]: https://www.espn.com/tennis/story/_/id/49916443/harrison-skupski-win-us-open-men-doubles-2nd-grand-slam
 
-Solheim Cup (golf)
+Spanish Grand Prix (Formula 1)
 ----------------------------------------------------------------------------
 
- 1. [EVENT_UPDATE] Jennifer Kupcho sank two late birdie putts, including one from 93 feet, to give the Americans a point and tie the Solheim Cup 8-8. (priority 80, age 7.87h)
-    Compact headline: Kupcho's late putts pull Solheim Cup level at 8-8
-    Freshness basis: Jennifer Kupcho's two late birdie putts tied the Solheim Cup at 8-8 after four sessions.
+ 1. [QUALIFYING] Lando Norris edged championship leader Kimi Antonelli to take pole position for the inaugural Spanish Grand Prix in Madrid. (priority 80, age 11.86h)
+    Compact headline: Norris edges Antonelli for Spanish Grand Prix pole
+    Freshness basis: Lando Norris took pole for the Spanish Grand Prix on Sept. 12 by edging Kimi Antonelli.
+    Candidate IDs: cand-06d781a5ebbad4ed
+    Source [ESPN/espn-f1]: https://www.espn.com/f1/story/_/id/49867167/mclarens-lando-norris-pips-kimi-antonelli-take-thrilling-pole-spanish-grand-prix-spanish-grand-prix-madring-formula-1
+
+Solheim Cup (Golf)
+----------------------------------------------------------------------------
+
+ 1. [EVENT_UPDATE] Jennifer Kupcho sank two late birdie putts, including one from 93 feet, to give the Americans a point and tie the Solheim Cup 8-8. (priority 76, age 8.37h)
+    Compact headline: Kupcho’s unlikely putts tie Solheim Cup at 8-8
+    Freshness basis: Jennifer Kupcho’s late birdie putts tied the Solheim Cup at 8-8 after four sessions on Sept. 12.
     Candidate IDs: cand-f11460997a2de7f3
     Source [ESPN/espn-lpga]: https://www.espn.com/golf/story/_/id/49916041/jennifer-kupcho-sinks-unlikely-putts-even-solheim-cup
 
 Noche UFC (MMA)
 ----------------------------------------------------------------------------
 
- 1. [RESULT] Alexa Grasso earned a unanimous-decision win over Manon Fiorot at Noche UFC, moving closer to another title opportunity. (priority 72, age 1.00h)
-    Compact headline: Alexa Grasso beats Manon Fiorot to stay in title picture
-    Freshness basis: Alexa Grasso beat Manon Fiorot by unanimous decision at Noche UFC.
+ 1. [RESULT] Alexa Grasso earned a unanimous-decision win over Manon Fiorot at Noche UFC, strengthening her case for another title shot. (priority 72, age 1.49h)
+    Compact headline: Grasso beats Fiorot to move toward another UFC title shot
+    Freshness basis: Alexa Grasso beat Manon Fiorot by unanimous decision at Noche UFC on Sept. 13.
     Candidate IDs: cand-b0029c47b1ae00f3
     Source [ESPN/espn-ufc]: https://www.espn.com/mma/story/_/id/49921811/grasso-takes-fiorot-stay-ufc-title-picture-silva-taps-delgado
