@@ -9,28 +9,39 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Probe production canonical health
-        env:
-          BASE: https://34-20-148-56.sslip.io
+      - name: Probe production canonical snapshot
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, urllib.request, time
+          import json, urllib.request
           base='https://34-20-148-56.sslip.io'
-          for path in ['/api/status','/api/canonical/certification/health','/api/canonical/validation/health']:
-              print('\n===', path, '===')
-              try:
-                  with urllib.request.urlopen(base+path, timeout=30) as r:
-                      data=json.load(r)
-                  if path.endswith('/status'):
-                      print(json.dumps({'ok':data.get('ok'),'version':data.get('version')},sort_keys=True))
-                  elif 'certification' in path:
-                      keep={k:data.get(k) for k in ['version','productionAuthority','officialScheduleWatchdogsVersion','officialScheduleWatchdogsCheckedAt','hardening','worker'] if k in data}
-                      keep['adapters']=data.get('adapters')
-                      print(json.dumps(keep,sort_keys=True))
-                  else:
-                      keep={k:data.get(k) for k in ['version','releaseVersion','productionAuthority','summary','stateConsistencyViolations','adapters','worker'] if k in data}
-                      print(json.dumps(keep,sort_keys=True))
-              except Exception as e:
-                  print('ERROR',type(e).__name__,str(e))
+          def get(path):
+              with urllib.request.urlopen(base+path, timeout=45) as r:
+                  return json.load(r)
+          status=get('/api/status')
+          cert=get('/api/canonical/certification/health')
+          snap=get('/api/canonical/validation/snapshot')
+          print('STATUS',json.dumps({'ok':status.get('ok'),'version':status.get('version')},sort_keys=True))
+          print('CERT',json.dumps({
+              'version':cert.get('version'),
+              'productionAuthority':cert.get('productionAuthority'),
+              'officialScheduleWatchdogsVersion':cert.get('officialScheduleWatchdogsVersion'),
+              'officialScheduleWatchdogsCheckedAt':cert.get('officialScheduleWatchdogsCheckedAt'),
+              'officialScheduleWatchdogs':cert.get('officialScheduleWatchdogs'),
+              'hardening':cert.get('hardening'),
+          },sort_keys=True))
+          summary=snap.get('summary') or {}
+          print('SUMMARY',json.dumps(summary,sort_keys=True))
+          print('ADAPTERS',json.dumps(snap.get('adapters') or {},sort_keys=True))
+          print('STATE_VIOLATIONS',json.dumps(snap.get('stateConsistencyViolations') or [],sort_keys=True))
+          days=snap.get('days') or {}
+          for day in ['2026-09-09','2026-09-10','2026-09-15','2026-09-17','2026-09-19','2026-09-20']:
+              leagues=(days.get(day) or {}).get('leagues') or {}
+              picked={}
+              for league in ['EPL','NFL','MLB','NCAAF']:
+                  row=leagues.get(league)
+                  if not row: continue
+                  picked[league]={k:row.get(k) for k in ['effectiveStatus','persistedStatus','cutoverReady','effectiveReason','productionOnly','shadowOnly','sourceCounts','evidenceGaps']}
+              print('DAY',day,json.dumps(picked,sort_keys=True))
+          print('WORKER',json.dumps(snap.get('worker') or {},sort_keys=True))
           PY
