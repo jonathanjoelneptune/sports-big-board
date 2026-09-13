@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
+import sys
 import tempfile
 from pathlib import Path
+
+root = Path(__file__).resolve().parents[1]
+if str(root) not in sys.path:
+    sys.path.insert(0, str(root))
 
 from sbb.media_team_sources_v6115 import TeamSourceRegistry
 
