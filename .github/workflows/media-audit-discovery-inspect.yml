@@ -14,9 +14,15 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
-      - name: Discovery implementation context
+      - name: Discovery function locations
         run: |
-          grep -n -C 35 -E 'NO_DIRECTORY_MATCH|OFFICIAL_TEAM_SOURCES|REGISTERED_PROVIDERS|KNOWN_CANDIDATES|Persistent unresolved-team|repairJobsRequeued|TEAM_SOURCE_REGISTRY|team_resolution|team source' media_audit_service.py || true
-      - name: Existing clipboard implementation context
+          grep -n -E '^    def (_deep_catalog_candidates|_discover_once|_youtube_index_candidates|_youtube_fallback_candidates|_repair_by_discovery)|NO_DIRECTORY_MATCH|Persistent unresolved-team|TEAM_SOURCE_REGISTRY' media_audit_service.py || true
+      - name: Repair discovery implementations
         run: |
-          grep -Rni -C 25 -E 'navigator\.clipboard|writeText\(|execCommand\(.copy|copy.*diagn|copy.*info|COPY.*INFO|COPY.*DIAGN' -- *.html ui architecture sbb 2>/dev/null || true
+          for fn in _deep_catalog_candidates _discover_once _youtube_index_candidates _youtube_fallback_candidates; do
+            line=$(grep -n "^    def ${fn}" media_audit_service.py | head -1 | cut -d: -f1)
+            if [ -n "$line" ]; then start=$((line-8)); end=$((line+125)); echo "===== ${fn} lines ${start}-${end} ====="; sed -n "${start},${end}p" media_audit_service.py; fi
+          done
+      - name: Team resolution implementation
+        run: |
+          grep -n -C 70 -E 'NO_DIRECTORY_MATCH|Persistent unresolved-team|repairJobsRequeued|TEAM_SOURCE_REGISTRY|unresolved.team|team.source' media_audit_service.py || true
