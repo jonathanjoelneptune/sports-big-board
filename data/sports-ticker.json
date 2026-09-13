@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-13T15:31:57Z",
+  "generatedAt": "2026-09-13T16:02:37Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "338aa11c5cba48beb53eb63b1d45393151926fb65030458781cc3f1fae86838b",
+  "sourceCandidateHash": "9f291e4c958563fac0e918dc3709d75e1e39e4c316145da9dcfdb95b12d7de9d",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,64 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-0f98377ac4a2ff80"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Justin Verlander is progressing in his return from a hamstring injury with he and the Tigers hoping he can make one last start during a planned two-day celebration of the retiring former ace.",
+          "text": "Justin Verlander is progressing in his return from a hamstring injury with he and the Tigers hoping he can make one last start during a planned two-day celebration of the retiring former ace.",
+          "entities": [],
+          "occurredAt": "2026-09-13T15:51:53Z",
+          "timePrecision": "exact",
+          "ageHours": 0.18,
+          "freshnessBasis": "Justin Verlander is progressing in his return from a hamstring injury with he and the Tigers hoping he can make one last start during a planned two-day celebration of the retiring former ace.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49927977/tigers-justin-verlander-makes-progress-1-last-start"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49927977/tigers-justin-verlander-makes-progress-1-last-start"
+            }
+          ],
+          "id": "a415-5d6d8a18a64b0ac5",
+          "feedRank": 1,
+          "compactHeadline": "Tigers' Justin Verlander makes progress toward 1 last start"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-6966a4461c43a49c"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Phillies left-hander Tanner Banks was reinstated from the 60-day injured list before their game Sunday against the Braves in Atlanta.",
+          "text": "Phillies left-hander Tanner Banks was reinstated from the 60-day injured list before their game Sunday against the Braves in Atlanta.",
+          "entities": [],
+          "occurredAt": "2026-09-13T15:49:27Z",
+          "timePrecision": "exact",
+          "ageHours": 0.22,
+          "freshnessBasis": "Phillies left-hander Tanner Banks was reinstated from the 60-day injured list before their game Sunday against the Braves in Atlanta.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49928344/banks-returning-phillies-bullpen-2-month-il-stint"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49928344/banks-returning-phillies-bullpen-2-month-il-stint"
+            }
+          ],
+          "id": "a415-253a6a2155eda0bd",
+          "feedRank": 2,
+          "compactHeadline": "Banks returning to Phillies bullpen after 2-month IL stint"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-411a234bcef55672"
           ],
@@ -23,7 +81,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T00:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.37,
+          "ageHours": 15.88,
           "freshnessBasis": "Highlightly final: Texas Rangers 6, Arizona Diamondbacks 2.",
           "status": "active",
           "sourceUrls": [
@@ -43,11 +101,11 @@
             }
           ],
           "id": "a415-5b763af9d5e752b8",
-          "feedRank": 1,
+          "feedRank": 3,
           "compactHeadline": "Rangers use a 6-run 5th inning to beat Diamondbacks 6-2, stay in AL playoff race"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-90126709c19b3743"
           ],
@@ -58,7 +116,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.28,
+          "ageHours": 16.79,
           "freshnessBasis": "Highlightly final: Philadelphia Phillies 2, Atlanta Braves 12.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +136,11 @@
             }
           ],
           "id": "a415-997c612b541c1ccf",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Acuña homers for Braves, Mahle turns in another stellar outing in 12-2 rout of Phillies"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-8067fcc7b2417eeb"
           ],
@@ -93,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.28,
+          "ageHours": 16.79,
           "freshnessBasis": "Highlightly final: Chicago White Sox 6, St. Louis Cardinals 5.",
           "status": "active",
           "sourceUrls": [
@@ -113,11 +171,11 @@
             }
           ],
           "id": "a415-43818da5354f00db",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Grichuk hits a 9th inning HR to help White Sox beat Cardinals 6-5"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-8a6b4093541b2fa1"
           ],
@@ -128,7 +186,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T22:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.37,
+          "ageHours": 17.88,
           "freshnessBasis": "Highlightly final: Houston Astros 2, Tampa Bay Rays 3.",
           "status": "active",
           "sourceUrls": [
@@ -148,72 +206,8 @@
             }
           ],
           "id": "a415-b7e60e0326a6c3cd",
-          "feedRank": 4,
-          "compactHeadline": "Postseason-bound Rays beat the Astros 3-2"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-d84e4ce1542e9899"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
-          "text": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
-          "entities": [],
-          "occurredAt": "2026-09-13T14:35:53Z",
-          "timePrecision": "exact",
-          "ageHours": 0.93,
-          "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
-            }
-          ],
-          "id": "a415-388538a75ab29df9",
-          "feedRank": 5,
-          "compactHeadline": "MLB playoff tracker 2026: Clinching scenarios, bracket, schedule"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-8afc092c0a81918e"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Ranger Suarez struck out eight in seven innings of one-run ball, Wilyer Abreu hit a tiebreaking two-run double and the Boston Red Sox beat the Kansas City Royals 5-1 on Saturday to halt a three-game skid.",
-          "text": "Ranger Suarez struck out eight in seven innings of one-run ball, Wilyer Abreu hit a tiebreaking two-run double and the Boston Red Sox beat the Kansas City Royals 5-1 on Saturday to halt a three-game skid.",
-          "entities": [],
-          "occurredAt": "2026-09-12T20:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 19.37,
-          "freshnessBasis": "Highlightly final: Kansas City Royals 1, Boston Red Sox 5.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816907"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816907"
-            }
-          ],
-          "id": "a415-704af242f5d3555a",
           "feedRank": 6,
-          "compactHeadline": "Ranger Suarez goes 7 innings, Wilyer Abreu hits key 2-run double as Red Sox beat Royals 5-1"
+          "compactHeadline": "Postseason-bound Rays beat the Astros 3-2"
         }
       ]
     },
@@ -231,9 +225,9 @@
           "headline": "Rams star defensive end Myles Garrett will undergo knee surgery and is headed to injured reserve, sources told ESPN's Adam Schefter and NFL Network's Ian Rapoport.",
           "text": "Rams star defensive end Myles Garrett will undergo knee surgery and is headed to injured reserve, sources told ESPN's Adam Schefter and NFL Network's Ian Rapoport.",
           "entities": [],
-          "occurredAt": "2026-09-13T15:26:55Z",
+          "occurredAt": "2026-09-13T16:00:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.08,
+          "ageHours": 0.03,
           "freshnessBasis": "Rams star defensive end Myles Garrett will undergo knee surgery and is headed to injured reserve, sources told ESPN's Adam Schefter and NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -253,6 +247,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-ca18059d3ff40cc1"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, will not play against the Falcons because of a back injury, and the possibility of a trade remains in play.",
+          "text": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, will not play against the Falcons because of a back injury, and the possibility of a trade remains in play.",
+          "entities": [],
+          "occurredAt": "2026-09-13T15:41:45Z",
+          "timePrecision": "exact",
+          "ageHours": 0.35,
+          "freshnessBasis": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, will not play against the Falcons because of a back injury, and the possibility of a trade remains in play.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49920002/sources-joey-porter-jr-unlikely-play-amid-uncertain-steelers-future"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49920002/sources-joey-porter-jr-unlikely-play-amid-uncertain-steelers-future"
+            }
+          ],
+          "id": "a415-d0ce499efa86b3b5",
+          "feedRank": 8,
+          "compactHeadline": "Joey Porter Jr. out for Week 1 amid uncertain Steelers future"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-af316a9f28c78f62"
           ],
           "type": "INJURY",
@@ -262,7 +285,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:17:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
+          "ageHours": 0.76,
           "freshnessBasis": "The Raiders believe there is a realistic chance that Brock Bowers will miss only one game because of his knee injury, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -276,37 +299,8 @@
             }
           ],
           "id": "a415-406383c158e6bb6f",
-          "feedRank": 8,
-          "compactHeadline": "Sources: Raiders believe Brock Bowers could play Week 2"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-a2be000a314f2c9e"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, is unlikely to play against the Falcons because of a back injury, sources told NFL Network and ESPN, and the possibility of a trade remains in play.",
-          "text": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, is unlikely to play against the Falcons because of a back injury, sources told NFL Network and ESPN, and the possibility of a trade remains in play.",
-          "entities": [],
-          "occurredAt": "2026-09-13T14:58:52Z",
-          "timePrecision": "exact",
-          "ageHours": 0.55,
-          "freshnessBasis": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, is unlikely to play against the Falcons because of a back injury, sources told NFL Network and ESPN, and the possibility of a trade remains in play.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49920002/sources-joey-porter-jr-unlikely-play-amid-uncertain-steelers-future"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49920002/sources-joey-porter-jr-unlikely-play-amid-uncertain-steelers-future"
-            }
-          ],
-          "id": "a415-e9e4c22e24477ca1",
           "feedRank": 9,
-          "compactHeadline": "Sources: Joey Porter Jr. unlikely to play amid uncertain Steelers future"
+          "compactHeadline": "Sources: Raiders believe Brock Bowers could play Week 2"
         },
         {
           "rank": 4,
@@ -320,7 +314,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T14:46:01Z",
           "timePrecision": "exact",
-          "ageHours": 0.77,
+          "ageHours": 1.28,
           "freshnessBasis": "49ers rookie wide receiver De'Zhaun Stribling will miss at least a month because of an ankle injury, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -349,7 +343,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T13:53:39Z",
           "timePrecision": "exact",
-          "ageHours": 1.64,
+          "ageHours": 2.15,
           "freshnessBasis": "The Jaguars and Parker Washington are unlikely to agree to a contract extension before the start of the season, a source told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -378,7 +372,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:38:29Z",
           "timePrecision": "exact",
-          "ageHours": 2.89,
+          "ageHours": 3.4,
           "freshnessBasis": "Baker Mayfield just got $55 million per year in new money -- which is telling about where the QB market is headed. That's great news for 11 other passers ready for big deals.",
           "status": "active",
           "sourceUrls": [
@@ -418,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T00:16:16Z",
           "timePrecision": "exact",
-          "ageHours": 15.26,
+          "ageHours": 15.77,
           "freshnessBasis": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T17:19:27Z",
           "timePrecision": "exact",
-          "ageHours": 22.21,
+          "ageHours": 22.72,
           "freshnessBasis": "Golden Knights captain Mark Stone has signed a two-year contract extension with a $9 million annual value that goes through the 2028-29 season.",
           "status": "active",
           "sourceUrls": [
@@ -482,7 +476,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:13:56Z",
           "timePrecision": "exact",
-          "ageHours": 3.3,
+          "ageHours": 3.81,
           "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
           "status": "active",
           "sourceUrls": [
@@ -511,7 +505,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
+          "ageHours": 0.78,
           "freshnessBasis": "Brighton dealt 10-man Coventry a crushing 5-0 defeat to condemn them to a fourth straight Premier League loss.",
           "status": "active",
           "sourceUrls": [
@@ -531,16 +525,74 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-b603575800380399"
+            "cand-f891dc89c46bcd33"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Bruno Guimaraes and David Raya were instrumental as Arsenal fought off Sunderland's aggressive effort to pick up a big win in Saturday's late Premier League game.",
+          "text": "Bruno Guimaraes and David Raya were instrumental as Arsenal fought off Sunderland's aggressive effort to pick up a big win in Saturday's late Premier League game.",
+          "entities": [],
+          "occurredAt": "2026-09-13T15:55:33Z",
+          "timePrecision": "exact",
+          "ageHours": 0.12,
+          "freshnessBasis": "Bruno Guimaraes and David Raya were instrumental as Arsenal fought off Sunderland's aggressive effort to pick up a big win in Saturday's late Premier League game.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49914694/arsenal-bruno-guimaraes-david-raya-player-ratings-mikel-arteta-premier-league"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49914694/arsenal-bruno-guimaraes-david-raya-player-ratings-mikel-arteta-premier-league"
+            }
+          ],
+          "id": "a415-63c673a674b513fa",
+          "feedRank": 17,
+          "compactHeadline": "Arsenal ratings: Guimaraes 8/10, Raya 9/10 in win at Sunderland"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-01c5d2b7a12d58e7"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Manchester United supporters expressed fury with the club's owners in a pre-derby protest organised by The 1958 fan group about the \"season ticket ban fiasco.\"",
+          "text": "Manchester United supporters expressed fury with the club's owners in a pre-derby protest organised by The 1958 fan group about the \"season ticket ban fiasco.\"",
+          "entities": [],
+          "occurredAt": "2026-09-13T15:43:53Z",
+          "timePrecision": "exact",
+          "ageHours": 0.31,
+          "freshnessBasis": "Manchester United supporters expressed fury with the club's owners in a pre-derby protest organised by The 1958 fan group about the \"season ticket ban fiasco.\"",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49927940/manchester-united-fans-protest-season-ticket-ban-fiasco-derby-kick-off"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49927940/manchester-united-fans-protest-season-ticket-ban-fiasco-derby-kick-off"
+            }
+          ],
+          "id": "a415-53607218c760454d",
+          "feedRank": 18,
+          "compactHeadline": "Man United fans protest 'season ticket ban fiasco' ahead of derby kick-off"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-55c6dfe5ff71e9bc"
           ],
           "type": "NEWS",
           "priority": 64,
           "headline": "Marcus Rashford will line up for Manchester United against Manchester City for the first time since March 2024.",
           "text": "Marcus Rashford will line up for Manchester United against Manchester City for the first time since March 2024.",
           "entities": [],
-          "occurredAt": "2026-09-13T15:08:58Z",
+          "occurredAt": "2026-09-13T15:38:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.38,
+          "ageHours": 0.4,
           "freshnessBasis": "Marcus Rashford will line up for Manchester United against Manchester City for the first time since March 2024.",
           "status": "active",
           "sourceUrls": [
@@ -553,12 +605,12 @@
               "url": "https://www.espn.com/soccer/story/_/id/49927454/man-united-vs-man-city-marcus-rashford-elliot-anderson-start-manchester-derby"
             }
           ],
-          "id": "a415-2053a6a25668b9f3",
-          "feedRank": 17,
-          "compactHeadline": "Man United vs. Man City: Marcus Rashford, Elliot Anderson to start Manchester derby"
+          "id": "a415-b9902a18a3ec67e1",
+          "feedRank": 19,
+          "compactHeadline": "Man United vs. Man City: Marcus Rashford, Elliot Anderson start Manchester derby"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-019a84240d91479c"
           ],
@@ -569,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T21:18:56Z",
           "timePrecision": "exact",
-          "ageHours": 18.22,
+          "ageHours": 18.73,
           "freshnessBasis": "Bruno Guimarães and Bukayo Saka helped maintain Arsenal's perfect start in the Premier League with a 2-0 win over Sunderland.",
           "status": "active",
           "sourceUrls": [
@@ -583,66 +635,8 @@
             }
           ],
           "id": "a415-f534fc0b9f32bd10",
-          "feedRank": 18,
-          "compactHeadline": "Bruno Guimarães scores stunner as Arsenal overcome Sunderland"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-aa2b3732e529ca1b"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Tottenham Hotspur fired another blank after being frustrated by Everton in a 0-0 draw to extend their winless start to the new Premier League season to four matches.",
-          "text": "Tottenham Hotspur fired another blank after being frustrated by Everton in a 0-0 draw to extend their winless start to the new Premier League season to four matches.",
-          "entities": [],
-          "occurredAt": "2026-09-12T18:56:30Z",
-          "timePrecision": "exact",
-          "ageHours": 20.59,
-          "freshnessBasis": "Tottenham Hotspur fired another blank after being frustrated by Everton in a 0-0 draw to extend their winless start to the new Premier League season to four matches.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/soccer/report/_/gameId/401879277"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "http://www.espn.com/soccer/report/_/gameId/401879277"
-            }
-          ],
-          "id": "a415-0da0ca1d92f19870",
-          "feedRank": 19,
-          "compactHeadline": "Winless Tottenham still searching for first goal of season after draw with Everton"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-c33618a2dc9651c2"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Zian Flemming's first goal for Ipswich snatched a dramatic 3-2 victory at 10-man Crystal Palace for their second Premier League win of the season.",
-          "text": "Zian Flemming's first goal for Ipswich snatched a dramatic 3-2 victory at 10-man Crystal Palace for their second Premier League win of the season.",
-          "entities": [],
-          "occurredAt": "2026-09-12T16:30:10Z",
-          "timePrecision": "exact",
-          "ageHours": 23.03,
-          "freshnessBasis": "Zian Flemming's first goal for Ipswich snatched a dramatic 3-2 victory at 10-man Crystal Palace for their second Premier League win of the season.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/soccer/report/_/gameId/401879281"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "http://www.espn.com/soccer/report/_/gameId/401879281"
-            }
-          ],
-          "id": "a415-6f2ab42cd99b8502",
           "feedRank": 20,
-          "compactHeadline": "Ipswich's impressive start continues with win over 10-man Crystal Palace"
+          "compactHeadline": "Bruno Guimarães scores stunner as Arsenal overcome Sunderland"
         }
       ]
     },
@@ -662,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.03,
+          "ageHours": 16.54,
           "freshnessBasis": "Highlightly final: New York Red Bulls 1, Columbus Crew 0.",
           "status": "active",
           "sourceUrls": [
@@ -697,7 +691,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.03,
+          "ageHours": 16.54,
           "freshnessBasis": "Highlightly final: Toronto FC 0, Orlando City 3.",
           "status": "active",
           "sourceUrls": [
@@ -732,7 +726,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.03,
+          "ageHours": 16.54,
           "freshnessBasis": "Highlightly final: Nashville SC 2, Inter Miami 2.",
           "status": "active",
           "sourceUrls": [
@@ -767,7 +761,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.03,
+          "ageHours": 13.54,
           "freshnessBasis": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
           "status": "active",
           "sourceUrls": [
@@ -796,7 +790,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.03,
+          "ageHours": 13.54,
           "freshnessBasis": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
           "status": "active",
           "sourceUrls": [
@@ -825,7 +819,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 14.03,
+          "ageHours": 14.54,
           "freshnessBasis": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
           "status": "active",
           "sourceUrls": [
@@ -860,7 +854,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.03,
+          "ageHours": 13.54,
           "freshnessBasis": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
           "status": "active",
           "sourceUrls": [
@@ -895,7 +889,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.03,
+          "ageHours": 16.54,
           "freshnessBasis": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
           "status": "active",
           "sourceUrls": [
@@ -924,7 +918,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.03,
+          "ageHours": 16.54,
           "freshnessBasis": "Highlightly final: Ohio State Buckeyes 23, Texas Longhorns 24.",
           "status": "active",
           "sourceUrls": [
@@ -953,7 +947,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.53,
+          "ageHours": 17.04,
           "freshnessBasis": "Highlightly final: Illinois State Redbirds 28, Northern Illinois Huskies 24.",
           "status": "active",
           "sourceUrls": [
@@ -982,7 +976,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T03:59:00Z",
           "timePrecision": "exact",
-          "ageHours": 11.55,
+          "ageHours": 12.06,
           "freshnessBasis": "Highlightly final: New Mexico State Aggies 19, Hawai'i Rainbow Warriors 29.",
           "status": "active",
           "sourceUrls": [
@@ -1017,7 +1011,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T22:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.53,
+          "ageHours": 18.04,
           "freshnessBasis": "Highlightly final: Buffalo Bulls 20, Florida International Panthers 33.",
           "status": "active",
           "sourceUrls": [
@@ -1106,45 +1100,6 @@
           "id": "a3-special-73f009eef8fdcd48",
           "feedRank": 11,
           "compactHeadline": "Harrison, Skupski win second Grand Slam of 2026"
-        }
-      ]
-    },
-    {
-      "name": "Spanish Grand Prix",
-      "sport": "Formula 1",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-06d781a5ebbad4ed"
-          ],
-          "type": "QUALIFYING",
-          "priority": 82,
-          "headline": "Lando Norris edged championship leader Kimi Antonelli to take pole position for the inaugural Spanish Grand Prix at the Madring.",
-          "text": "Lando Norris edged championship leader Kimi Antonelli to take pole position for the inaugural Spanish Grand Prix at the Madring.",
-          "entities": [
-            "Lando Norris",
-            "Kimi Antonelli",
-            "Spanish Grand Prix"
-          ],
-          "occurredAt": "2026-09-12T15:39:31Z",
-          "timePrecision": "exact",
-          "ageHours": 12.87,
-          "freshnessBasis": "Lando Norris took pole for the Spanish Grand Prix Saturday by edging Kimi Antonelli.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/f1/story/_/id/49867167/mclarens-lando-norris-pips-kimi-antonelli-take-thrilling-pole-spanish-grand-prix-spanish-grand-prix-madring-formula-1"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-f1",
-              "url": "https://www.espn.com/f1/story/_/id/49867167/mclarens-lando-norris-pips-kimi-antonelli-take-thrilling-pole-spanish-grand-prix-spanish-grand-prix-madring-formula-1"
-            }
-          ],
-          "id": "a3-special-11221dd0fea53e5b",
-          "feedRank": 9,
-          "compactHeadline": "Lando Norris takes Spanish GP pole ahead of Antonelli"
         }
       ]
     },
