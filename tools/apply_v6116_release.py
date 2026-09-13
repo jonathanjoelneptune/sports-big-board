@@ -256,6 +256,10 @@ def patch_legacy_contracts(root):
             'assert "from sbb.media_team_sources_v6115 import TeamSourceRegistry" in service',
             'assert any(token in service for token in ("from sbb.media_team_sources_v6115 import TeamSourceRegistry", "from sbb.media_team_sources_v6116 import TeamSourceRegistry"))',
         )
+        rendered = rendered.replace(
+            "assert 'from sbb.media_team_sources_v6115 import TeamSourceRegistry' in service",
+            'assert any(token in service for token in ("from sbb.media_team_sources_v6115 import TeamSourceRegistry", "from sbb.media_team_sources_v6116 import TeamSourceRegistry"))',
+        )
         if path.name == "test_v6115_team_resolution_release.py":
             rendered = rendered.replace(
                 "assert version == expected_version, version",
