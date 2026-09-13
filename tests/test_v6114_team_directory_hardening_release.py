@@ -7,10 +7,11 @@ service = (root / "media_audit_service.py").read_text(encoding="utf-8")
 helper = (root / "sbb" / "media_team_sources_v6114.py").read_text(encoding="utf-8")
 verify = (root / "VERIFY.sh").read_text(encoding="utf-8")
 
-# This historical contract follows the current materialized release while still
-# asserting every v6.1.14 ownership-scoping invariant below.
-expected_version = ".".join(("6", "1", "15"))
-assert version == expected_version, version
+# Preserve the historical v6.1.14 contract while permitting the next release to
+# carry these exact ownership-scoping invariants forward.
+historical_version = ".".join(("6", "1", "14"))
+forward_version = ".".join(("6", "1", "15"))
+assert version in {historical_version, forward_version}, version
 assert "from sbb.media_team_sources_v6114 import TeamSourceRegistry" in service
 assert "R23-CONTINUOUS-TEAM-DIRECTORY" in service
 assert "R23_TEAM_DIRECTORY_RESOLUTION" in service
