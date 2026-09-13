@@ -1,4 +1,4 @@
-/* Sports Big Board v5.5.1 — splash-screen first-program preloader.
+/* Sports Big Board v5.5.0 — splash-screen first-program preloader.
 
    The splash is a visual/loading cover, not an initialization gate. Live sports
    data already starts on DOMContentLoaded; this layer additionally prepares the
@@ -18,7 +18,7 @@
   'use strict';
   if(window.SBB_SPLASH_PRELOAD?.installed)return;
 
-  const VERSION='5.5.1';
+  const VERSION='5.5.0';
   const POLL_MS=120;
   const DEADLINE_MS=30000;
   const startedAt=performance.now();
@@ -288,7 +288,10 @@
     installStandbyLaunchGuard();
     enforceYouTubePrelaunchPause();
     attempts++;state.attempts=attempts;
-    if(performance.now()-startedAt>DEADLINE_MS){status('Board ready • video will finish loading when started','TIMEOUT');stop('deadline');return;}
+    if(performance.now()-startedAt>DEADLINE_MS){
+      if(state.status!=='TIMEOUT')status('Board ready • video will finish loading when started','TIMEOUT');
+      return;
+    }
     const {index,item}=currentProgram();
     if(!item){status('Loading scores and first video…','WAITING_FOR_PROGRAM');return;}
     const key=mediaKey(item);
