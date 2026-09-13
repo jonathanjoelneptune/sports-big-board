@@ -21,7 +21,7 @@ class GameCenterRepository:
     def _connect(self):
         con=sqlite3.connect(str(self.path),timeout=10)
         con.row_factory=sqlite3.Row
-        con.execute("PRAGMA journal_mode=WAL")
+        con.execute("PRAGMA busy_timeout=10000")
         con.execute("PRAGMA synchronous=NORMAL")
         return con
 
@@ -34,8 +34,26 @@ class GameCenterRepository:
         finally:
             con.close()
 
+    @contextmanager
+    def _read_db(self):
+        # Game Center lookups are latency-sensitive and should never queue
+        # behind the process-local writer lock. WAL allows readers to proceed
+        # concurrently with writes, so keep this connection read-only and fail
+        # quickly only if SQLite itself is briefly busy.
+        con=sqlite3.connect(str(self.path),timeout=0.5)
+        con.row_factory=sqlite3.Row
+        con.execute("PRAGMA busy_timeout=500")
+        con.execute("PRAGMA query_only=ON")
+        try:
+            yield con
+        finally:
+            con.close()
+
     def _init_db(self):
         with self._lock, self._db() as con:
+            # Configure WAL once during repository initialization rather than
+            # renegotiating journal mode on every cache read.
+            con.execute("PRAGMA journal_mode=WAL")
             con.execute("""
                 CREATE TABLE IF NOT EXISTS game_centers(
                     competition TEXT NOT NULL,
@@ -86,7 +104,7 @@ class GameCenterRepository:
         return self.get(competition,event_id)
 
     def get(self,competition,event_id):
-        with self._lock, self._db() as con:
+        with self._read_db() as con:
             row=con.execute("SELECT * FROM game_centers WHERE competition=? AND event_id=?",(str(competition or '').upper(),str(event_id or ''))).fetchone()
         if not row: return None
         try: data=json.loads(row['payload_json'])
@@ -121,18 +139,18 @@ class GameCenterRepository:
     def resolve_alias(self,competition,alias_id):
         competition=str(competition or '').upper(); alias_id=str(alias_id or '')
         if not competition or not alias_id: return ''
-        with self._lock, self._db() as con:
+        with self._read_db() as con:
             row=con.execute("SELECT resolved_event_id FROM game_center_aliases WHERE competition=? AND alias_id=?",(competition,alias_id)).fetchone()
         return str(row['resolved_event_id'] if row else '')
 
     def due(self,now=None,limit=32):
         now=float(now or time.time())
-        with self._lock, self._db() as con:
+        with self._read_db() as con:
             rows=con.execute("SELECT competition,event_id,status,live,expires_at FROM game_centers WHERE expires_at<=? ORDER BY live DESC, expires_at ASC LIMIT ?",(now,int(limit))).fetchall()
         return [dict(row) for row in rows]
 
     def summary(self):
-        with self._lock, self._db() as con:
+        with self._read_db() as con:
             total=con.execute("SELECT COUNT(*) FROM game_centers").fetchone()[0]
             live=con.execute("SELECT COUNT(*) FROM game_centers WHERE live=1").fetchone()[0]
             final=con.execute("SELECT COUNT(*) FROM game_centers WHERE lower(status) LIKE '%final%' OR lower(status) LIKE '%game over%' OR lower(status) LIKE '%complete%'").fetchone()[0]
