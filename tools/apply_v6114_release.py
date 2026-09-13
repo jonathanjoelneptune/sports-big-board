@@ -111,6 +111,55 @@ def patch_runtime(root):
     path.write_text(text, encoding="utf-8")
 
 
+def patch_canonical_scoreboard(root):
+    """Keep soccer scoreboards on ESPN's supported exact-date request shape."""
+    path = root / "server.py"
+    text = path.read_text(encoding="utf-8")
+
+    old_date = """    if sport=='soccer' or league_key=='NFL':
+        start_day=(target-timedelta(days=1)).strftime('%Y%m%d')
+        end_day=(target+timedelta(days=1)).strftime('%Y%m%d')
+        date_token=f'{start_day}-{end_day}'
+    else:
+        date_token=target.strftime('%Y%m%d')
+"""
+    new_date = """    # ESPN's soccer scoreboards do not consistently accept date-range tokens
+    # across transports (the EPL path can return HTTP 400). Soccer already has
+    # exact neighboring-day probes below, so keep its primary requests exact-date.
+    # NFL retains the range window because its preseason/date-board behavior needs it.
+    if league_key=='NFL':
+        start_day=(target-timedelta(days=1)).strftime('%Y%m%d')
+        end_day=(target+timedelta(days=1)).strftime('%Y%m%d')
+        date_token=f'{start_day}-{end_day}'
+    else:
+        date_token=target.strftime('%Y%m%d')
+"""
+    text = replace_once(text, old_date, new_date, "soccer exact-date primary scoreboard transport")
+
+    old_neighbors = """    # Range semantics differ across ESPN transports. Exact neighboring date reads
+    # are cheap, keyless, and catch evening games stamped on the next UTC date.
+    if sport=='soccer' or league_key=='NFL':
+        for delta in (-1,0,1):
+            exact=(target+timedelta(days=delta)).strftime('%Y%m%d')
+            specs.append((f'{ESPN_SITE_API}/{sport}/{slug}/scoreboard?'+urlencode({'dates':exact,'limit':100}),False,f'site-exact-{delta:+d}'))
+"""
+    new_neighbors = """    # Exact neighboring-date reads catch evening games stamped on the adjacent
+    # UTC date. Soccer's target date is already covered by the primary exact-date
+    # transports, so only probe -1/+1 there; NFL keeps its existing -1/0/+1 probes.
+    if sport=='soccer':
+        exact_deltas=(-1,1)
+    elif league_key=='NFL':
+        exact_deltas=(-1,0,1)
+    else:
+        exact_deltas=()
+    for delta in exact_deltas:
+        exact=(target+timedelta(days=delta)).strftime('%Y%m%d')
+        specs.append((f'{ESPN_SITE_API}/{sport}/{slug}/scoreboard?'+urlencode({'dates':exact,'limit':100}),False,f'site-exact-{delta:+d}'))
+"""
+    text = replace_once(text, old_neighbors, new_neighbors, "soccer adjacent exact-date scoreboard probes")
+    path.write_text(text, encoding="utf-8")
+
+
 def patch_verify(root):
     path = root / "VERIFY.sh"
     text = path.read_text(encoding="utf-8")
@@ -119,6 +168,7 @@ def patch_verify(root):
         "python3 -m py_compile sbb/media_team_sources_v6114.py",
         "python3 tests/test_v6114_team_directory_scoping.py",
         "python3 tests/test_v6114_team_directory_hardening_release.py",
+        "python3 tests/test_epl_scoreboard_exact_dates.py",
     )
     if marker not in text:
         raise SystemExit("ERROR: VERIFY release checker anchor missing")
@@ -164,6 +214,7 @@ def main(argv=None):
         root / "sbb" / "media_team_sources_v6114.py",
         root / "tests" / "test_v6114_team_directory_scoping.py",
         root / "tests" / "test_v6114_team_directory_hardening_release.py",
+        root / "tests" / "test_epl_scoreboard_exact_dates.py",
         root / "media_audit_service.py",
     ]
     missing = [str(x.relative_to(root)) for x in required if not x.is_file()]
@@ -175,6 +226,7 @@ def main(argv=None):
 
     run_base(root)
     patch_runtime(root)
+    patch_canonical_scoreboard(root)
     patch_verify(root)
     promote(root)
     controller(root)
