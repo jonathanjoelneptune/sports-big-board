@@ -17,6 +17,7 @@ PRESERVE = (
     "tests/test_v6116_official_schedule_watchdogs.py",
     "tests/test_v6116_official_schedule_release.py",
     "tests/test_v6116_canonical_reconcile_hotfix.py",
+    "tests/test_v6116_startup_registry_release_integrity.py",
 )
 
 
@@ -40,6 +41,66 @@ def active_files(root):
                 continue
             if p not in seen:
                 seen.add(p); yield p
+
+
+def patch_release_integrity_startup_registry(root):
+    """Keep release-integrity strict across legacy and registered startup ownership.
+
+    Media Audit P1 moved backend installation ownership out of ``sbb/__init__.py``
+    and into ``sbb/startup.py``. Older release-integrity code correctly checked
+    that Team Focus and League View were installed, but it encoded only the
+    legacy direct-import representation. Patch that checker before any delegated
+    materializer can execute it so a valid startup registry is recognized without
+    weakening the installation requirement.
+    """
+    path = root / "tools" / "check_release_version.py"
+    text = path.read_text(encoding="utf-8")
+    if "def backend_install_present(" in text:
+        return False
+
+    init_anchor = "sbb_init=text(Path('sbb')/'__init__.py')\n"
+    helper = init_anchor + '''startup_registry_path=root/'sbb'/'startup.py'
+startup_registry=startup_registry_path.read_text(encoding='utf-8') if startup_registry_path.is_file() else ''
+
+def backend_install_present(module,key,phase_name,legacy_import,legacy_call):
+    legacy=legacy_import in sbb_init and legacy_call in sbb_init
+    registered=(
+        f'StartupRegistration("{key}", "{module}")' in startup_registry
+        and f'StartupPhase("{phase_name}", ("{key}",), ("{key}",))' in startup_registry
+    )
+    return legacy or registered
+'''
+    if init_anchor not in text:
+        raise SystemExit("ERROR: release-integrity checker startup anchor missing")
+    text = text.replace(init_anchor, helper, 1)
+
+    team_old = """if 'from .team_focus_v537 import install as _install_team_focus_v537' not in sbb_init or '_install_team_focus_v537()' not in sbb_init:
+    errors.append('sbb package does not install v5.5.0 Team Focus backend')
+"""
+    team_new = """if not backend_install_present(
+    'team_focus_v537','team-focus-v537','team-focus',
+    'from .team_focus_v537 import install as _install_team_focus_v537','_install_team_focus_v537()',
+):
+    errors.append('sbb package does not install v5.5.0 Team Focus backend')
+"""
+    if team_old not in text:
+        raise SystemExit("ERROR: Team Focus release-integrity anchor missing")
+    text = text.replace(team_old, team_new, 1)
+
+    league_old = """if 'from .league_view_v538 import install as _install_league_view_v538' not in sbb_init or '_install_league_view_v538()' not in sbb_init:
+    errors.append('sbb package does not install v5.5.0 League View backend')
+"""
+    league_new = """if not backend_install_present(
+    'league_view_v538','league-view-v538','league-view',
+    'from .league_view_v538 import install as _install_league_view_v538','_install_league_view_v538()',
+):
+    errors.append('sbb package does not install v5.5.0 League View backend')
+"""
+    if league_old not in text:
+        raise SystemExit("ERROR: League View release-integrity anchor missing")
+    text = text.replace(league_old, league_new, 1)
+    path.write_text(text, encoding="utf-8")
+    return True
 
 
 def run_base(root, preserved):
@@ -129,6 +190,7 @@ def patch_verify(root):
         "python3 tests/test_v6116_official_schedule_release.py",
         "python3 -m py_compile sbb/canonical_reconciliation_hotfix_v6116.py",
         "python3 tests/test_v6116_canonical_reconcile_hotfix.py",
+        "python3 tests/test_v6116_startup_registry_release_integrity.py",
     ]
     missing = [x for x in additions if x not in text]
     if missing:
@@ -179,6 +241,7 @@ def main(argv=None):
         root / "tests" / "test_v6116_official_schedule_watchdogs.py",
         root / "tests" / "test_v6116_official_schedule_release.py",
         root / "tests" / "test_v6116_canonical_reconcile_hotfix.py",
+        root / "tests" / "test_v6116_startup_registry_release_integrity.py",
     ]
     missing = [str(x.relative_to(root)) for x in required if not x.is_file()]
     if missing:
@@ -187,6 +250,9 @@ def main(argv=None):
         print("v6.1.16: official schedule watchdogs + exact NFL/NCAAF canonical reconciliation hotfix")
         return 0
     preserved = {rel: (root / rel).read_text(encoding="utf-8") for rel in PRESERVE}
+    # Patch the integrity representation before delegated historical materializers
+    # can execute the checker. This is required after the P1 startup-registry cutover.
+    patch_release_integrity_startup_registry(root)
     run_base(root, preserved)
     patch_init(root)
     patch_legacy_contracts(root)
@@ -195,6 +261,7 @@ def main(argv=None):
     controller(root)
     print("Sports Big Board v6.1.16 materialized")
     print("Canonical schedule: exact NFL week proof/final rows + guarded NCAAF alias/drift reconciliation")
+    print("Release integrity: legacy direct installers OR exact startup-registry ownership")
     print("Watchdogs: EPL NFL MLB NBA MLS NHL official pages; NCAAF FBSchedules secondary only")
     if args.skip_check:
         return 0
