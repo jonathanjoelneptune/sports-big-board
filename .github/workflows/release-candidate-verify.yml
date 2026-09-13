@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout candidate repository
         uses: actions/checkout@v7
+      - name: Materialize production release checkout
+        run: python3 tools/apply_v612_release.py
       - name: Run exact production release verification
         run: bash VERIFY.sh
       - name: Dry-build GitHub Pages artifact
