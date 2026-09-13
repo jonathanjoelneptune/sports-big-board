@@ -117,6 +117,18 @@ def run_base(root, preserved):
         path.write_text(content, encoding="utf-8")
 
 
+
+def patch_media_repair_identity(root):
+    path = root / "media_audit_service.py"
+    text = path.read_text(encoding="utf-8")
+    old = "from sbb.media_team_sources_v6115 import TeamSourceRegistry\n"
+    new = "from sbb.media_team_sources_v6116 import TeamSourceRegistry\n"
+    if new not in text:
+        if old not in text:
+            raise SystemExit("ERROR: v6.1.16 Media Repair team-source import anchor missing")
+        text = text.replace(old, new, 1)
+        path.write_text(text, encoding="utf-8")
+
 def patch_init(root):
     """Wire v6.1.16 on legacy startup or the P1 startup registry."""
     init_path = root / "sbb" / "__init__.py"
@@ -212,6 +224,11 @@ def patch_verify(root):
         "python3 -m py_compile sbb/canonical_reconciliation_followup_v6116.py",
         "python3 tests/test_v6116_canonical_reconcile_followup.py",
         "python3 tests/test_v6116_startup_registry_release_integrity.py",
+        "python3 -m py_compile sbb/media_team_sources_v6116.py",
+        "python3 tests/test_media_team_sources_v6116.py",
+        "python3 tests/test_media_audit_copy_v6116.py",
+        "python3 tests/test_media_audit_discovery_visibility_v6116.py",
+        "node --check ui/media-audit-copy-v6116.js",
     ]
     missing = [x for x in additions if x not in text]
     if missing:
@@ -265,6 +282,10 @@ def main(argv=None):
         root / "tests" / "test_v6116_canonical_reconcile_hotfix.py",
         root / "tests" / "test_v6116_canonical_reconcile_followup.py",
         root / "tests" / "test_v6116_startup_registry_release_integrity.py",
+        root / "sbb" / "media_team_sources_v6116.py",
+        root / "tests" / "test_media_team_sources_v6116.py",
+        root / "tests" / "test_media_audit_copy_v6116.py",
+        root / "tests" / "test_media_audit_discovery_visibility_v6116.py",
     ]
     missing = [str(x.relative_to(root)) for x in required if not x.is_file()]
     if missing:
@@ -277,6 +298,7 @@ def main(argv=None):
     # can execute the checker. This is required after the P1 startup-registry cutover.
     patch_release_integrity_startup_registry(root)
     run_base(root, preserved)
+    patch_media_repair_identity(root)
     patch_init(root)
     patch_legacy_contracts(root)
     patch_verify(root)

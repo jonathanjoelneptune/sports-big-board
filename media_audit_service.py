@@ -3312,19 +3312,27 @@ class MediaRepairEngine(threading.Thread):
         ][:REPAIR_YOUTUBE_QUERY_LIMIT]
 
     def _youtube_fallback_candidates(self, job):
-        if not REPAIR_YOUTUBE_FALLBACK: return {"candidates":[],"quotaBlocked":False,"retryAt":0}
+        if not REPAIR_YOUTUBE_FALLBACK:
+            self._record_stage(job,'GENERIC_YOUTUBE_SEARCH',provider='YOUTUBE_SEARCH',results=0,new=0,details={"reason":"FALLBACK_DISABLED"})
+            return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"FALLBACK_DISABLED"}
         key=get_secret('YOUTUBE_API_KEY',APP_ROOT)
         if not key:
             self._trace('WARN','Direct YouTube repair fallback unavailable: YOUTUBE_API_KEY missing',event=job['canonical_event_key'])
+            self._record_stage(job,'GENERIC_YOUTUBE_SEARCH',provider='YOUTUBE_SEARCH',results=0,new=0,details={"reason":"KEY_MISSING"})
             return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"KEY_MISSING"}
         # Preserve scarce search.list quota for the games that have no viable playback.
         health=str(job.get('health') or '').upper(); attempt=int(job.get('attempt_count') or 0)
         if health=='DEGRADED' and attempt<2:
+            self._record_stage(job,'GENERIC_YOUTUBE_SEARCH',provider='YOUTUBE_SEARCH',results=0,new=0,details={"reason":"DEGRADED_SEARCH_DEFERRED"})
             return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"DEGRADED_SEARCH_DEFERRED"}
         context=self.store.repair_event_context(job['canonical_event_key'])
-        if not context: return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"EVENT_NOT_FOUND"}
+        if not context:
+            self._record_stage(job,'GENERIC_YOUTUBE_SEARCH',provider='YOUTUBE_SEARCH',results=0,new=0,details={"reason":"EVENT_NOT_FOUND"})
+            return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"EVENT_NOT_FOUND"}
         queries=self._youtube_queries(context)
-        if not queries: return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"NO_QUERY"}
+        if not queries:
+            self._record_stage(job,'GENERIC_YOUTUBE_SEARCH',provider='YOUTUBE_SEARCH',results=0,new=0,details={"reason":"NO_QUERY"})
+            return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"NO_QUERY"}
         event_date=datetime.fromisoformat(str(context['event_date'])[:10]).replace(tzinfo=timezone.utc)
         published_after=(event_date-timedelta(days=3)).isoformat().replace('+00:00','Z')
         published_before=(event_date+timedelta(days=10)).isoformat().replace('+00:00','Z')
