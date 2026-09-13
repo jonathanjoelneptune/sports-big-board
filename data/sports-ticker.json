@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-13T20:01:54Z",
+  "generatedAt": "2026-09-13T20:31:42Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "d0e48af994b765cb39de3891d6e471757da1bec93e9ec19a5651dd4d6414f92d",
+  "sourceCandidateHash": "0a1bdebaa6f13d87973dd3fd389b22641b37b6ec8fa21131758a3c169a81e316",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,41 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-be58ba80bcd62767"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Richie Palacios had a two-run single in fifth, Ian Seymour threw six strong innings and Nick Madrigal had a clutch sacrifice fly to help the postseason-bound Tampa Bay Rays beat the Houston Astros 3-2 on Saturday night.",
+          "text": "Richie Palacios had a two-run single in fifth, Ian Seymour threw six strong innings and Nick Madrigal had a clutch sacrifice fly to help the postseason-bound Tampa Bay Rays beat the Houston Astros 3-2 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-09-13T17:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.86,
+          "freshnessBasis": "Highlightly final: Houston Astros 4, Tampa Bay Rays 14.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816906"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816906"
+            }
+          ],
+          "id": "a415-4cd66b721e405f8a",
+          "feedRank": 1,
+          "compactHeadline": "Postseason-bound Rays beat the Astros 3-2"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-87ce6c88df96d7b4"
           ],
@@ -23,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.87,
+          "ageHours": 4.36,
           "freshnessBasis": "Highlightly final: Colorado Rockies 1, Detroit Tigers 8.",
           "status": "active",
           "sourceUrls": [
@@ -43,11 +78,11 @@
             }
           ],
           "id": "a415-cf622d62e4aa4f6e",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Jobe strikes out career-high 8, Tigers extend Rockies' slide to 7 games with 8-1 win"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-83af04f53946042c"
           ],
@@ -56,9 +91,9 @@
           "headline": "San Francisco's Rafael Devers' season is over, and he may have surgery for a core muscle injury.",
           "text": "San Francisco's Rafael Devers' season is over, and he may have surgery for a core muscle injury.",
           "entities": [],
-          "occurredAt": "2026-09-13T19:59:32Z",
+          "occurredAt": "2026-09-13T20:25:34Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
+          "ageHours": 0.1,
           "freshnessBasis": "San Francisco's Rafael Devers' season is over, and he may have surgery for a core muscle injury.",
           "status": "active",
           "sourceUrls": [
@@ -72,11 +107,11 @@
             }
           ],
           "id": "a415-79dd4ae9579d1ecc",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Giants slugger Devers' season ends early due to core muscle injury"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-a8561f2b1bce6fa5"
           ],
@@ -87,7 +122,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:10:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.86,
+          "ageHours": 1.35,
           "freshnessBasis": "Right-hander Kyle Bradish was put on the 15-day injured list by the Orioles on Sunday because of lower abdominal discomfort, effectively ending his season.",
           "status": "active",
           "sourceUrls": [
@@ -101,11 +136,11 @@
             }
           ],
           "id": "a415-ee1e2724569901c3",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Orioles put RHP Kyle Bradish on IL with abdominal discomfort"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-6643931b15f0110b"
           ],
@@ -116,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:30:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.52,
+          "ageHours": 1.02,
           "freshnessBasis": "The Diamondbacks have designed Lourdes Gurriel Jr. for assignment, potentially ending the tenure of an outfielder who played a key role in their recent World Series run but struggled after tearing his ACL last season.",
           "status": "active",
           "sourceUrls": [
@@ -130,66 +165,37 @@
             }
           ],
           "id": "a415-e54202a64a436225",
-          "feedRank": 4,
-          "compactHeadline": "Diamondbacks designate Lourdes Gurriel Jr. for assignment"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-6966a4461c43a49c"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Phillies left-hander Tanner Banks was reinstated from the 60-day injured list before their game Sunday against the Braves in Atlanta.",
-          "text": "Phillies left-hander Tanner Banks was reinstated from the 60-day injured list before their game Sunday against the Braves in Atlanta.",
-          "entities": [],
-          "occurredAt": "2026-09-13T16:37:16Z",
-          "timePrecision": "exact",
-          "ageHours": 3.41,
-          "freshnessBasis": "Phillies left-hander Tanner Banks was reinstated from the 60-day injured list before their game Sunday against the Braves in Atlanta.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49928344/banks-returning-phillies-bullpen-2-month-il-stint"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49928344/banks-returning-phillies-bullpen-2-month-il-stint"
-            }
-          ],
-          "id": "a415-253a6a2155eda0bd",
           "feedRank": 5,
-          "compactHeadline": "Banks returning to Phillies bullpen after 2-month IL stint"
+          "compactHeadline": "Diamondbacks designate Lourdes Gurriel Jr. for assignment"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-0f98377ac4a2ff80"
+            "cand-57bc24284729c963"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Justin Verlander is progressing in his return from a hamstring injury with he and the Tigers hoping he can make one last start during a planned two-day celebration of the retiring former ace.",
-          "text": "Justin Verlander is progressing in his return from a hamstring injury with he and the Tigers hoping he can make one last start during a planned two-day celebration of the retiring former ace.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Los Angeles Angels 5, Washington Nationals 6.",
+          "text": "Highlightly final: Los Angeles Angels 5, Washington Nationals 6.",
           "entities": [],
-          "occurredAt": "2026-09-13T16:13:41Z",
+          "occurredAt": "2026-09-13T17:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.8,
-          "freshnessBasis": "Justin Verlander is progressing in his return from a hamstring injury with he and the Tigers hoping he can make one last start during a planned two-day celebration of the retiring former ace.",
+          "ageHours": 2.95,
+          "freshnessBasis": "Highlightly final: Los Angeles Angels 5, Washington Nationals 6.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49927977/tigers-justin-verlander-makes-progress-1-last-start"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49927977/tigers-justin-verlander-makes-progress-1-last-start"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-13",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-5d6d8a18a64b0ac5",
+          "id": "a415-5d774dff201c8ab9",
           "feedRank": 6,
-          "compactHeadline": "Tigers' Justin Verlander makes progress toward 1 last start"
+          "compactHeadline": "Washington Nationals beat Los Angeles Angels 6-5"
         }
       ]
     },
@@ -209,7 +215,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.03,
+          "ageHours": 3.53,
           "freshnessBasis": "Highlightly final: Cleveland Browns 10, Jacksonville Jaguars 34.",
           "status": "active",
           "sourceUrls": [
@@ -235,17 +241,93 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-cd540ed2ded0f1c9"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Derrick Henry ran for three touchdowns to move into third on the NFL's career list, Lamar Jackson threw for 324 yards and a TD and rushed for a score, and the Baltimore Ravens beat the Indianapolis Colts 41-23 on Sunday.",
+          "text": "Derrick Henry ran for three touchdowns to move into third on the NFL's career list, Lamar Jackson threw for 324 yards and a TD and rushed for a score, and the Baltimore Ravens beat the Indianapolis Colts 41-23 on Sunday.",
+          "entities": [],
+          "occurredAt": "2026-09-13T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.53,
+          "freshnessBasis": "Highlightly final: Baltimore Ravens 41, Indianapolis Colts 23.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872659",
+            "https://www.espn.com/nfl/story/_/id/49931127/jakobi-lane-zay-flowers-questionable-ravens"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872659"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49931127/jakobi-lane-zay-flowers-questionable-ravens"
+            }
+          ],
+          "id": "a415-a592386282c45303",
+          "feedRank": 8,
+          "compactHeadline": "Derrick Henry's rushes for 3 TDs and Lamar Jackson lights up the Colts in the Ravens' 41-23 win"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-636d3867bf7c3331"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Breece Hall ran for 102 yards and a touchdown, Geno Smith threw for 215 yards in his Jets return and the New York Jets defeated Tennessee 23-10 on Sunday in the season opener to spoil Titans coach Robert Saleh's debut against his former team.",
+          "text": "Breece Hall ran for 102 yards and a touchdown, Geno Smith threw for 215 yards in his Jets return and the New York Jets defeated Tennessee 23-10 on Sunday in the season opener to spoil Titans coach Robert Saleh's debut against his former team.",
+          "entities": [],
+          "occurredAt": "2026-09-13T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.53,
+          "freshnessBasis": "Highlightly final: New York Jets 23, Tennessee Titans 10.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872924"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872924"
+            }
+          ],
+          "id": "a415-ab6eacf757c0c056",
+          "feedRank": 9,
+          "compactHeadline": "Breece Hall powers Jets past Titans 23-10 in a dominant season opener against their former coach"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-5a088af2ecb5ca80"
           ],
           "type": "RECORD",
           "priority": 82,
-          "headline": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring twice Sunday.",
-          "text": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring twice Sunday.",
+          "headline": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring three times Sunday.",
+          "text": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring three times Sunday.",
           "entities": [],
-          "occurredAt": "2026-09-13T19:58:55Z",
+          "occurredAt": "2026-09-13T20:16:01Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
-          "freshnessBasis": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring twice Sunday.",
+          "ageHours": 0.26,
+          "freshnessBasis": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring three times Sunday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nfl/story/_/id/49930434/ravens-henry-passes-allen-third-all-rushing-tds"
@@ -258,11 +340,40 @@
             }
           ],
           "id": "a415-c0fdf294e2d663aa",
-          "feedRank": 8,
+          "feedRank": 10,
           "compactHeadline": "Ravens' Henry passes Allen for third all time in rushing TDs"
         },
         {
-          "rank": 3,
+          "rank": 5,
+          "candidateIds": [
+            "cand-05bfabdc2442ab50"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "T.J. Watt jumped in front of a pass from Cooper Rush and returned it 35 yards for a touchdown to break open a tight game as the Pittsburgh Steelers",
+          "text": "T.J. Watt jumped in front of a pass from Cooper Rush and returned it 35 yards for a touchdown to break open a tight game as the Pittsburgh Steelers",
+          "entities": [],
+          "occurredAt": "2026-09-13T20:28:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.05,
+          "freshnessBasis": "— T.J. Watt jumped in front of a pass from Cooper Rush and returned it 35 yards for a touchdown to break open a tight game as the Pittsburgh Steelers",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nfl/recap?gameId=401872658"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872658"
+            }
+          ],
+          "id": "a415-5ac863ffde5efdb4",
+          "feedRank": 11,
+          "compactHeadline": "T.J. Watt's late pick-6 pushes sluggish Steelers past injury-laden Falcons 20-13"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-af316a9f28c78f62"
           ],
@@ -273,7 +384,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:19:32Z",
           "timePrecision": "exact",
-          "ageHours": 3.71,
+          "ageHours": 4.2,
           "freshnessBasis": "The Raiders believe there is a realistic chance that Brock Bowers will miss only one game because of his knee injury, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -287,95 +398,8 @@
             }
           ],
           "id": "a415-406383c158e6bb6f",
-          "feedRank": 9,
-          "compactHeadline": "Sources: Raiders believe Brock Bowers could play Week 2"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-f8870c4fbfacb378"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Rams star defensive end Myles Garrett will undergo knee surgery and is headed to injured reserve, sources told ESPN's Adam Schefter and NFL Network's Ian Rapoport.",
-          "text": "Rams star defensive end Myles Garrett will undergo knee surgery and is headed to injured reserve, sources told ESPN's Adam Schefter and NFL Network's Ian Rapoport.",
-          "entities": [],
-          "occurredAt": "2026-09-13T16:09:07Z",
-          "timePrecision": "exact",
-          "ageHours": 3.88,
-          "freshnessBasis": "Rams star defensive end Myles Garrett will undergo knee surgery and is headed to injured reserve, sources told ESPN's Adam Schefter and NFL Network's Ian Rapoport.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49928065/sources-rams-myles-garrett-knee-surgery-headed-ir"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49928065/sources-rams-myles-garrett-knee-surgery-headed-ir"
-            }
-          ],
-          "id": "a415-2911282265bd6388",
-          "feedRank": 10,
-          "compactHeadline": "Sources: Rams' Myles Garrett to have knee surgery, headed to IR"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-ca18059d3ff40cc1"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, will not play against the Falcons because of a back injury, and the possibility of a trade remains in play.",
-          "text": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, will not play against the Falcons because of a back injury, and the possibility of a trade remains in play.",
-          "entities": [],
-          "occurredAt": "2026-09-13T15:41:45Z",
-          "timePrecision": "exact",
-          "ageHours": 4.34,
-          "freshnessBasis": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, will not play against the Falcons because of a back injury, and the possibility of a trade remains in play.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49920002/sources-joey-porter-jr-unlikely-play-amid-uncertain-steelers-future"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49920002/sources-joey-porter-jr-unlikely-play-amid-uncertain-steelers-future"
-            }
-          ],
-          "id": "a415-d0ce499efa86b3b5",
-          "feedRank": 11,
-          "compactHeadline": "Joey Porter Jr. out for Week 1 amid uncertain Steelers future"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-08ed4340f75a0388"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "49ers rookie wide receiver De'Zhaun Stribling will miss at least a month because of an ankle injury, sources told NFL Network.",
-          "text": "49ers rookie wide receiver De'Zhaun Stribling will miss at least a month because of an ankle injury, sources told NFL Network.",
-          "entities": [],
-          "occurredAt": "2026-09-13T14:46:01Z",
-          "timePrecision": "exact",
-          "ageHours": 5.26,
-          "freshnessBasis": "49ers rookie wide receiver De'Zhaun Stribling will miss at least a month because of an ankle injury, sources told NFL Network.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49926803/sources-49ers-rookie-dezhaun-stribling-least-1-month"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49926803/sources-49ers-rookie-dezhaun-stribling-least-1-month"
-            }
-          ],
-          "id": "a415-6c34c621ac02dd87",
           "feedRank": 12,
-          "compactHeadline": "Sources: 49ers rookie De'Zhaun Stribling out at least 1 month"
+          "compactHeadline": "Sources: Raiders believe Brock Bowers could play Week 2"
         }
       ]
     },
@@ -400,7 +424,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T00:16:16Z",
           "timePrecision": "exact",
-          "ageHours": 19.76,
+          "ageHours": 20.26,
           "freshnessBasis": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
           "status": "active",
           "sourceUrls": [
@@ -435,7 +459,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:13:56Z",
           "timePrecision": "exact",
-          "ageHours": 7.8,
+          "ageHours": 8.3,
           "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
           "status": "active",
           "sourceUrls": [
@@ -464,7 +488,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 4.76,
+          "ageHours": 5.26,
           "freshnessBasis": "Brighton dealt 10-man Coventry a crushing 5-0 defeat to condemn them to a fourth straight Premier League loss.",
           "status": "active",
           "sourceUrls": [
@@ -493,7 +517,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:45:25Z",
           "timePrecision": "exact",
-          "ageHours": 0.27,
+          "ageHours": 0.77,
           "freshnessBasis": "Manchester City manager Enzo Maresca backed referee Michael Oliver's decision to send off Phil Foden in his team's 1-0 win against Manchester United, but said that Reds captain Bruno Fernandes should also have been shown a red card.",
           "status": "active",
           "sourceUrls": [
@@ -522,7 +546,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:55:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.11,
+          "ageHours": 0.61,
           "freshnessBasis": "Lisandro Martínez branded the decision to allow Manchester City's winning goal against Manchester United as \"an injustice\" while Michael Carrick said it was an \"obvious\" error.",
           "status": "active",
           "sourceUrls": [
@@ -551,7 +575,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:51:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 0.67,
           "freshnessBasis": "Micah Richards said the Manchester derby was a \"bad day for referees\" after City claimed a 1-0 win with a controversial goal.",
           "status": "active",
           "sourceUrls": [
@@ -580,7 +604,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:15:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.77,
+          "ageHours": 1.27,
           "freshnessBasis": "Manchester City outplayed their city rivals as Manchester United failed to take advantage of Phil Foden's early red card.",
           "status": "active",
           "sourceUrls": [
@@ -615,7 +639,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.03,
           "freshnessBasis": "Highlightly final: Toronto FC 0, Orlando City 3.",
           "status": "active",
           "sourceUrls": [
@@ -650,7 +674,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.03,
           "freshnessBasis": "Highlightly final: Nashville SC 2, Inter Miami 2.",
           "status": "active",
           "sourceUrls": [
@@ -685,7 +709,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.03,
           "freshnessBasis": "Highlightly final: New York Red Bulls 1, Columbus Crew 0.",
           "status": "active",
           "sourceUrls": [
@@ -720,7 +744,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.53,
+          "ageHours": 18.03,
           "freshnessBasis": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
           "status": "active",
           "sourceUrls": [
@@ -749,7 +773,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.53,
+          "ageHours": 18.03,
           "freshnessBasis": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +802,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.53,
+          "ageHours": 19.03,
           "freshnessBasis": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
           "status": "active",
           "sourceUrls": [
@@ -813,7 +837,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.03,
           "freshnessBasis": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
           "status": "active",
           "sourceUrls": [
@@ -842,7 +866,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.03,
           "freshnessBasis": "Highlightly final: Ohio State Buckeyes 23, Texas Longhorns 24.",
           "status": "active",
           "sourceUrls": [
@@ -862,6 +886,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-b491d38b0faf1d02"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
+          "text": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
+          "entities": [],
+          "occurredAt": "2026-09-13T20:14:05Z",
+          "timePrecision": "exact",
+          "ageHours": 0.29,
+          "freshnessBasis": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49931531/clemson-qb-christopher-vizzina-week-week-elbow-injury-tait-reynolds-expected-start-vs-unc"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49931531/clemson-qb-christopher-vizzina-week-week-elbow-injury-tait-reynolds-expected-start-vs-unc"
+            }
+          ],
+          "id": "a415-ad1c0e6c8e87d519",
+          "feedRank": 28,
+          "compactHeadline": "Sources: Clemson QB Christopher Vizzina (elbow) week-to-week"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-5764785a781267f2"
           ],
           "type": "UPSET",
@@ -871,7 +924,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.53,
+          "ageHours": 18.03,
           "freshnessBasis": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
           "status": "active",
           "sourceUrls": [
@@ -885,11 +938,11 @@
             }
           ],
           "id": "a415-27ad66477d2c4c30",
-          "feedRank": 28,
+          "feedRank": 29,
           "compactHeadline": "Montana State Bobcats beat Nevada Wolf Pack 20-7"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-fe0c90c4594990e3"
           ],
@@ -900,7 +953,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.53,
           "freshnessBasis": "Highlightly final: Illinois State Redbirds 28, Northern Illinois Huskies 24.",
           "status": "active",
           "sourceUrls": [
@@ -914,11 +967,11 @@
             }
           ],
           "id": "a415-de3b23928bc28806",
-          "feedRank": 29,
+          "feedRank": 30,
           "compactHeadline": "Illinois State Redbirds beat Northern Illinois Huskies 28-24"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-562dbeb0af0ff9ee"
           ],
@@ -929,7 +982,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T22:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.53,
           "freshnessBasis": "Highlightly final: Buffalo Bulls 20, Florida International Panthers 33.",
           "status": "active",
           "sourceUrls": [
@@ -943,37 +996,8 @@
             }
           ],
           "id": "a415-e02b2db15c55f874",
-          "feedRank": 30,
-          "compactHeadline": "Florida International Panthers beat Buffalo Bulls 33-20"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-e03766a39f5131af"
-          ],
-          "type": "RESULT",
-          "priority": 82,
-          "headline": "Ohio Bobcats blocked a last-second field-goal attempt to preserve a 29-27 win over Jacksonville State Gamecocks.",
-          "text": "Ohio Bobcats blocked a last-second field-goal attempt to preserve a 29-27 win over Jacksonville State Gamecocks.",
-          "entities": [],
-          "occurredAt": "2026-09-12T22:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 22.03,
-          "freshnessBasis": "Highlightly final: Jacksonville State Gamecocks 27, Ohio Bobcats 29.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-402b855a17b09df6",
           "feedRank": 31,
-          "compactHeadline": "Blocked last-second field goal seals Ohio Bobcats's 29-27 win over Jacksonville State Gamecocks"
+          "compactHeadline": "Florida International Panthers beat Buffalo Bulls 33-20"
         }
       ]
     }
