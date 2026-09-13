@@ -1,17 +1,18 @@
-/* Sports Big Board v5.2.8 — one reliable global Dev Mode authority.
+/* Sports Big Board v5.2.9 — one reliable global Dev Mode authority.
 
    Five clicks anywhere on the visible Sports Big Board brand is the only Dev
-   unlock. The gesture is captured at document level so nested brand text/marks
-   cannot miss it. Dev state applies to both <html> and <body>, persists for the
-   browser session, and exposes every developer utility at once.
+   unlock. Dev Mode is now binary: the global dev classes/data attributes,
+   diagnostics/broadcast presentation, developer cards, playback terminal, and
+   operator controls all follow the same enabled state.
 */
 (() => {
   'use strict';
-  if(window.SBB_DEV_MODE?.version==='5.2.8')return;
+  if(window.SBB_DEV_MODE?.version==='5.2.9')return;
 
-  const VERSION='5.2.8';
+  const VERSION='5.2.9';
   const CLICK_TARGET=5;
   const CLICK_WINDOW_MS=6000;
+  // Keep the existing session key so an already-unlocked session survives this hotfix.
   const SESSION_KEY='sbb.dev.enabled.v528';
   let enabled=false;
   let brandClicks=0;
@@ -27,9 +28,9 @@
   const persistSession=next=>{try{if(next)sessionStorage.setItem(SESSION_KEY,'1');else sessionStorage.removeItem(SESSION_KEY);}catch(_){} };
 
   function installStyle(){
-    if(document.getElementById('sbbDevModeV528Style'))return;
+    if(document.getElementById('sbbDevModeV529Style'))return;
     const style=document.createElement('style');
-    style.id='sbbDevModeV528Style';
+    style.id='sbbDevModeV529Style';
     style.textContent=`
       .brand{user-select:none;-webkit-user-select:none}
       html[data-sbb-dev="1"] .brand,body[data-sbb-dev="1"] .brand{cursor:pointer}
@@ -56,6 +57,29 @@
     btn.textContent=enabled?'DEV MODE: ON':'DEV MODE: OFF';
   }
 
+  function syncDiagnostics(){
+    const body=document.body;
+    if(!body)return;
+    // Normal mode is the polished broadcast surface. Dev Mode exposes diagnostics.
+    body.classList.toggle('diagnostics-off',!enabled);
+    body.classList.toggle('broadcast-mode',!enabled);
+    // app.js still contains the legacy diagnostics preference reader. Mirror the
+    // authoritative Dev Mode state into that key so it can never restore the
+    // opposite presentation during DOMContentLoaded.
+    try{localStorage.setItem('sbb-diagnostics-visible',enabled?'1':'0');}catch(_){}
+    const brand=document.querySelector('.brand');
+    if(brand)brand.title=enabled?'Dev Mode ON • click 5× to disable':'Dev Mode OFF • click 5× to enable';
+  }
+
+  function scheduleDiagnosticsSync(){
+    syncDiagnostics();
+    // app.js has an older bubble-phase five-click diagnostics handler. Reassert
+    // the single Dev Mode truth after the current event/DOMContentLoaded dispatch
+    // so that legacy handler cannot invert diagnostics after Dev Mode toggles.
+    try{queueMicrotask(syncDiagnostics);}catch(_){Promise.resolve().then(syncDiagnostics);}
+    setTimeout(syncDiagnostics,0);
+  }
+
   function apply(next,reason='',{persist=true,announce=false}={}){
     enabled=!!next;
     for(const node of [document.documentElement,document.body]){
@@ -64,11 +88,12 @@
       node.classList.toggle('sbb-dev-mode',enabled);
       if(enabled)node.dataset.sbbDev='1';else delete node.dataset.sbbDev;
     }
+    scheduleDiagnosticsSync();
     if(persist)persistSession(enabled);
     syncLegacyControl();
     try{window.dispatchEvent(new CustomEvent('sbb:dev-mode',{detail:{enabled,reason:String(reason||''),version:VERSION}}));}catch(_){}
     try{if(enabled)window.SBB_SPORTS_TICKER?.ensureDevUtility?.();}catch(_){}
-    if(announce)showToast(enabled?'DEV MODE ON • ALL DEV UTILITIES ENABLED':'DEV MODE OFF');
+    if(announce)showToast(enabled?'DEV MODE ON • ALL DEV UTILITIES ENABLED':'DEV MODE OFF • BROADCAST VIEW');
     return enabled;
   }
 
