@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-13T19:01:44Z",
+  "generatedAt": "2026-09-13T19:32:02Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "f94afb56ddd695315b4b29a992d338f240305e9c953b3e0061feadadbdf517eb",
+  "sourceCandidateHash": "990d4d864b38053883f59251f336c9717b805a02edd162b0528cbc7f31efa446",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,70 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-87ce6c88df96d7b4"
+          ],
+          "type": "RESULT",
+          "priority": 72,
+          "headline": "Jackson Jobe struck out eight a career-high over 6 1/3 innings while pitching into the seventh inning for the first time, and the Detroit Tigers beat the Colorado Rockies 8-1 on Sunday to complete a three-game sweep that extended their winning...",
+          "text": "Jackson Jobe struck out eight a career-high over 6 1/3 innings while pitching into the seventh inning for the first time, and the Detroit Tigers beat the Colorado Rockies 8-1 on Sunday to complete a three-game sweep that extended their winning...",
+          "entities": [],
+          "occurredAt": "2026-09-13T16:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.37,
+          "freshnessBasis": "Highlightly final: Colorado Rockies 1, Detroit Tigers 8.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816920"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816920"
+            }
+          ],
+          "id": "a415-cf622d62e4aa4f6e",
+          "feedRank": 1,
+          "compactHeadline": "Jobe strikes out career-high 8, Tigers extend Rockies' slide to 7 games with 8-1 win"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-a8561f2b1bce6fa5"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Right-hander Kyle Bradish was put on the 15-day injured list by the Orioles on Sunday because of lower abdominal discomfort, effectively ending his season.",
+          "text": "Right-hander Kyle Bradish was put on the 15-day injured list by the Orioles on Sunday because of lower abdominal discomfort, effectively ending his season.",
+          "entities": [],
+          "occurredAt": "2026-09-13T19:10:30Z",
+          "timePrecision": "exact",
+          "ageHours": 0.36,
+          "freshnessBasis": "Right-hander Kyle Bradish was put on the 15-day injured list by the Orioles on Sunday because of lower abdominal discomfort, effectively ending his season.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49930560/orioles-kyle-bradish-goes-injured-list-abdominal-discomfort-effectively-ending-season"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49930560/orioles-kyle-bradish-goes-injured-list-abdominal-discomfort-effectively-ending-season"
+            }
+          ],
+          "id": "a415-ee1e2724569901c3",
+          "feedRank": 2,
+          "compactHeadline": "Orioles put RHP Kyle Bradish on IL with abdominal discomfort"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-6966a4461c43a49c"
           ],
@@ -23,7 +87,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:37:16Z",
           "timePrecision": "exact",
-          "ageHours": 2.41,
+          "ageHours": 2.91,
           "freshnessBasis": "Phillies left-hander Tanner Banks was reinstated from the 60-day injured list before their game Sunday against the Braves in Atlanta.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +101,11 @@
             }
           ],
           "id": "a415-253a6a2155eda0bd",
-          "feedRank": 1,
+          "feedRank": 3,
           "compactHeadline": "Banks returning to Phillies bullpen after 2-month IL stint"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-0f98377ac4a2ff80"
           ],
@@ -52,7 +116,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:13:41Z",
           "timePrecision": "exact",
-          "ageHours": 2.8,
+          "ageHours": 3.31,
           "freshnessBasis": "Justin Verlander is progressing in his return from a hamstring injury with he and the Tigers hoping he can make one last start during a planned two-day celebration of the retiring former ace.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +130,11 @@
             }
           ],
           "id": "a415-5d6d8a18a64b0ac5",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Tigers' Justin Verlander makes progress toward 1 last start"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-6643931b15f0110b"
           ],
@@ -81,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:08:51Z",
           "timePrecision": "exact",
-          "ageHours": 1.88,
+          "ageHours": 2.39,
           "freshnessBasis": "The Diamondbacks have designed Lourdes Gurriel Jr. for assignment, potentially ending the tenure of an outfielder who played a key role in their recent World Series run but struggled after tearing his ACL last season.",
           "status": "active",
           "sourceUrls": [
@@ -95,11 +159,11 @@
             }
           ],
           "id": "a415-e54202a64a436225",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Diamondbacks designate Lourdes Gurriel Jr. for assignment"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-411a234bcef55672"
           ],
@@ -110,7 +174,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T00:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.86,
+          "ageHours": 19.37,
           "freshnessBasis": "Highlightly final: Texas Rangers 6, Arizona Diamondbacks 2.",
           "status": "active",
           "sourceUrls": [
@@ -130,72 +194,8 @@
             }
           ],
           "id": "a415-5b763af9d5e752b8",
-          "feedRank": 4,
-          "compactHeadline": "Rangers use a 6-run 5th inning to beat Diamondbacks 6-2, stay in AL playoff race"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-87ce6c88df96d7b4"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Colorado Rockies 1, Detroit Tigers 8.",
-          "text": "Highlightly final: Colorado Rockies 1, Detroit Tigers 8.",
-          "entities": [],
-          "occurredAt": "2026-09-13T16:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 2.86,
-          "freshnessBasis": "Highlightly final: Colorado Rockies 1, Detroit Tigers 8.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-13",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-cf622d62e4aa4f6e",
-          "feedRank": 5,
-          "compactHeadline": "Detroit Tigers beat Colorado Rockies 8-1"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-90126709c19b3743"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Ronald Acuña Jr. homered to spark an eight-run fourth inning and Tyler Mahle turned in another stellar outing to lead the Atlanta Braves to their second straight victory over the Philadelphia Phillies, 12-2 on Saturday night.",
-          "text": "Ronald Acuña Jr. homered to spark an eight-run fourth inning and Tyler Mahle turned in another stellar outing to lead the Atlanta Braves to their second straight victory over the Philadelphia Phillies, 12-2 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-09-12T23:15:00Z",
-          "timePrecision": "exact",
-          "ageHours": 19.78,
-          "freshnessBasis": "Highlightly final: Philadelphia Phillies 2, Atlanta Braves 12.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816910"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816910"
-            }
-          ],
-          "id": "a415-997c612b541c1ccf",
           "feedRank": 6,
-          "compactHeadline": "Acuña homers for Braves, Mahle turns in another stellar outing in 12-2 rout of Phillies"
+          "compactHeadline": "Rangers use a 6-run 5th inning to beat Diamondbacks 6-2, stay in AL playoff race"
         }
       ]
     },
@@ -213,9 +213,9 @@
           "headline": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring twice Sunday.",
           "text": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring twice Sunday.",
           "entities": [],
-          "occurredAt": "2026-09-13T18:50:37Z",
+          "occurredAt": "2026-09-13T19:00:59Z",
           "timePrecision": "exact",
-          "ageHours": 0.19,
+          "ageHours": 0.52,
           "freshnessBasis": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring twice Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -244,7 +244,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:19:32Z",
           "timePrecision": "exact",
-          "ageHours": 2.7,
+          "ageHours": 3.21,
           "freshnessBasis": "The Raiders believe there is a realistic chance that Brock Bowers will miss only one game because of his knee injury, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -273,7 +273,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:09:07Z",
           "timePrecision": "exact",
-          "ageHours": 2.88,
+          "ageHours": 3.38,
           "freshnessBasis": "Rams star defensive end Myles Garrett will undergo knee surgery and is headed to injured reserve, sources told ESPN's Adam Schefter and NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -302,7 +302,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:41:45Z",
           "timePrecision": "exact",
-          "ageHours": 3.33,
+          "ageHours": 3.84,
           "freshnessBasis": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, will not play against the Falcons because of a back injury, and the possibility of a trade remains in play.",
           "status": "active",
           "sourceUrls": [
@@ -331,7 +331,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T14:46:01Z",
           "timePrecision": "exact",
-          "ageHours": 4.26,
+          "ageHours": 4.77,
           "freshnessBasis": "49ers rookie wide receiver De'Zhaun Stribling will miss at least a month because of an ankle injury, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -360,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T13:53:39Z",
           "timePrecision": "exact",
-          "ageHours": 5.13,
+          "ageHours": 5.64,
           "freshnessBasis": "The Jaguars and Parker Washington are unlikely to agree to a contract extension before the start of the season, a source told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -400,7 +400,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T00:16:16Z",
           "timePrecision": "exact",
-          "ageHours": 18.76,
+          "ageHours": 19.26,
           "freshnessBasis": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
           "status": "active",
           "sourceUrls": [
@@ -435,7 +435,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:13:56Z",
           "timePrecision": "exact",
-          "ageHours": 6.8,
+          "ageHours": 7.3,
           "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
           "status": "active",
           "sourceUrls": [
@@ -464,7 +464,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 3.76,
+          "ageHours": 4.27,
           "freshnessBasis": "Brighton dealt 10-man Coventry a crushing 5-0 defeat to condemn them to a fourth straight Premier League loss.",
           "status": "active",
           "sourceUrls": [
@@ -491,9 +491,9 @@
           "headline": "Manchester City manager Enzo Maresca backed referee Michael Oliver's decision to send off Phil Foden in his team's 1-0 win against Manchester United, but said that Reds captain Bruno Fernandes should also have been shown a red card.",
           "text": "Manchester City manager Enzo Maresca backed referee Michael Oliver's decision to send off Phil Foden in his team's 1-0 win against Manchester United, but said that Reds captain Bruno Fernandes should also have been shown a red card.",
           "entities": [],
-          "occurredAt": "2026-09-13T18:53:45Z",
+          "occurredAt": "2026-09-13T18:55:08Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
+          "ageHours": 0.62,
           "freshnessBasis": "Manchester City manager Enzo Maresca backed referee Michael Oliver's decision to send off Phil Foden in his team's 1-0 win against Manchester United, but said that Reds captain Bruno Fernandes should also have been shown a red card.",
           "status": "active",
           "sourceUrls": [
@@ -520,9 +520,9 @@
           "headline": "Manchester City outplayed their city rivals as Manchester United failed to take advantage of Phil Foden's early red card.",
           "text": "Manchester City outplayed their city rivals as Manchester United failed to take advantage of Phil Foden's early red card.",
           "entities": [],
-          "occurredAt": "2026-09-13T18:40:22Z",
+          "occurredAt": "2026-09-13T19:15:38Z",
           "timePrecision": "exact",
-          "ageHours": 0.36,
+          "ageHours": 0.27,
           "freshnessBasis": "Manchester City outplayed their city rivals as Manchester United failed to take advantage of Phil Foden's early red card.",
           "status": "active",
           "sourceUrls": [
@@ -542,6 +542,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-128be1d9171e0a73"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Lisandro Martínez branded the decision to allow Manchester City's winning goal against Manchester United as \"an injustice\" while Michael Carrick said it was an \"obvious\" error.",
+          "text": "Lisandro Martínez branded the decision to allow Manchester City's winning goal against Manchester United as \"an injustice\" while Michael Carrick said it was an \"obvious\" error.",
+          "entities": [],
+          "occurredAt": "2026-09-13T19:05:15Z",
+          "timePrecision": "exact",
+          "ageHours": 0.45,
+          "freshnessBasis": "Lisandro Martínez branded the decision to allow Manchester City's winning goal against Manchester United as \"an injustice\" while Michael Carrick said it was an \"obvious\" error.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49930265/lisandro-martinez-michael-carrick-manchester-united-blast-decision-allow-erling-haaland-manhester-city-winning-goal-derby"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49930265/lisandro-martinez-michael-carrick-manchester-united-blast-decision-allow-erling-haaland-manhester-city-winning-goal-derby"
+            }
+          ],
+          "id": "a415-273e047644c27aa3",
+          "feedRank": 18,
+          "compactHeadline": "Lisandro Martínez, Michael Carrick blast 'injustice' to allow Erling Haaland, Man City's winner in derby"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-e1abcf70cef1dae2"
           ],
           "type": "NEWS",
@@ -551,7 +580,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T18:19:02Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.22,
           "freshnessBasis": "Premier League recap: Haaland, Man City defeat United in derby",
           "status": "active",
           "sourceUrls": [
@@ -565,37 +594,8 @@
             }
           ],
           "id": "a415-e00c1fbde264d4cb",
-          "feedRank": 18,
-          "compactHeadline": "Premier League recap: Haaland, Man City defeat United in derby"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-e45baae28fcce424"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Erling Haaland secured Manchester City a memorable derby-day triumph as Manchester United failed to capitalise on Phil Foden's sending-off on a day of contentious decisions.",
-          "text": "Erling Haaland secured Manchester City a memorable derby-day triumph as Manchester United failed to capitalise on Phil Foden's sending-off on a day of contentious decisions.",
-          "entities": [],
-          "occurredAt": "2026-09-13T18:04:03Z",
-          "timePrecision": "exact",
-          "ageHours": 0.96,
-          "freshnessBasis": "Erling Haaland secured Manchester City a memorable derby-day triumph as Manchester United failed to capitalise on Phil Foden's sending-off on a day of contentious decisions.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/soccer/report/_/gameId/401879278"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "http://www.espn.com/soccer/report/_/gameId/401879278"
-            }
-          ],
-          "id": "a415-192b3ca320e6545b",
           "feedRank": 19,
-          "compactHeadline": "Contentious Erling Haaland goal decides Manchester derby in Man City's favor"
+          "compactHeadline": "Premier League recap: Haaland, Man City defeat United in derby"
         }
       ]
     },
@@ -606,76 +606,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-861dabf94db8beb5"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
-          "text": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
-          "entities": [],
-          "occurredAt": "2026-09-12T23:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 19.53,
-          "freshnessBasis": "Highlightly final: Nashville SC 2, Inter Miami 2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
-            }
-          ],
-          "id": "a415-648d84c8aca21134",
-          "feedRank": 20,
-          "compactHeadline": "Messi scores, but Nashville strikes late to deny Miami win"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-3f5bcf4f2ba8fc32"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves to help the New York Red Bulls end a six-match winless streak with a 1-0 victory over the Columbus Crew on Saturday night.",
-          "text": "Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves to help the New York Red Bulls end a six-match winless streak with a 1-0 victory over the Columbus Crew on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-09-12T23:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 19.53,
-          "freshnessBasis": "Highlightly final: New York Red Bulls 1, Columbus Crew 0.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/soccer/report/_/gameId/761804"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "http://www.espn.com/soccer/report/_/gameId/761804"
-            }
-          ],
-          "id": "a415-539bed25cd38d26d",
-          "feedRank": 21,
-          "compactHeadline": "Donkor goals sees Red Bulls beat Crew to end winless streak at 6"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-f73adb8ee7668d57"
           ],
           "type": "RESULT",
@@ -685,7 +615,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.53,
+          "ageHours": 20.03,
           "freshnessBasis": "Highlightly final: Toronto FC 0, Orlando City 3.",
           "status": "active",
           "sourceUrls": [
@@ -705,8 +635,78 @@
             }
           ],
           "id": "a415-f9ea915244d4fb9e",
-          "feedRank": 22,
+          "feedRank": 20,
           "compactHeadline": "Griezmann scores in 5th straight to help Orlando beat Toronto"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-861dabf94db8beb5"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
+          "text": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
+          "entities": [],
+          "occurredAt": "2026-09-12T23:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 20.03,
+          "freshnessBasis": "Highlightly final: Nashville SC 2, Inter Miami 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-12",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
+            }
+          ],
+          "id": "a415-648d84c8aca21134",
+          "feedRank": 21,
+          "compactHeadline": "Messi scores, but Nashville strikes late to deny Miami win"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-3f5bcf4f2ba8fc32"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves to help the New York Red Bulls end a six-match winless streak with a 1-0 victory over the Columbus Crew on Saturday night.",
+          "text": "Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves to help the New York Red Bulls end a six-match winless streak with a 1-0 victory over the Columbus Crew on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-09-12T23:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 20.03,
+          "freshnessBasis": "Highlightly final: New York Red Bulls 1, Columbus Crew 0.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/soccer/report/_/gameId/761804"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-12",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "http://www.espn.com/soccer/report/_/gameId/761804"
+            }
+          ],
+          "id": "a415-539bed25cd38d26d",
+          "feedRank": 22,
+          "compactHeadline": "Donkor goals sees Red Bulls beat Crew to end winless streak at 6"
         },
         {
           "rank": 4,
@@ -720,7 +720,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.53,
+          "ageHours": 17.03,
           "freshnessBasis": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
           "status": "active",
           "sourceUrls": [
@@ -749,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.53,
+          "ageHours": 17.03,
           "freshnessBasis": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.53,
+          "ageHours": 18.03,
           "freshnessBasis": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
           "status": "active",
           "sourceUrls": [
@@ -813,7 +813,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.53,
+          "ageHours": 17.03,
           "freshnessBasis": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
           "status": "active",
           "sourceUrls": [
@@ -848,7 +848,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.53,
+          "ageHours": 20.03,
           "freshnessBasis": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
           "status": "active",
           "sourceUrls": [
@@ -877,7 +877,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.53,
+          "ageHours": 20.03,
           "freshnessBasis": "Highlightly final: Ohio State Buckeyes 23, Texas Longhorns 24.",
           "status": "active",
           "sourceUrls": [
@@ -906,7 +906,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.03,
+          "ageHours": 20.53,
           "freshnessBasis": "Highlightly final: Illinois State Redbirds 28, Northern Illinois Huskies 24.",
           "status": "active",
           "sourceUrls": [
@@ -935,7 +935,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T03:59:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.05,
+          "ageHours": 15.55,
           "freshnessBasis": "Highlightly final: New Mexico State Aggies 19, Hawai'i Rainbow Warriors 29.",
           "status": "active",
           "sourceUrls": [
@@ -970,7 +970,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T22:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.53,
           "freshnessBasis": "Highlightly final: Buffalo Bulls 20, Florida International Panthers 33.",
           "status": "active",
           "sourceUrls": [
@@ -1059,44 +1059,6 @@
           "id": "a3-special-73f009eef8fdcd48",
           "feedRank": 11,
           "compactHeadline": "Harrison, Skupski win second Grand Slam of 2026"
-        }
-      ]
-    },
-    {
-      "name": "Solheim Cup",
-      "sport": "Golf",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-f11460997a2de7f3"
-          ],
-          "type": "EVENT_UPDATE",
-          "priority": 78,
-          "headline": "Jennifer Kupcho made two late birdie putts, including one from 93 feet, to earn the Americans a point and tie the Solheim Cup at 8-8.",
-          "text": "Jennifer Kupcho made two late birdie putts, including one from 93 feet, to earn the Americans a point and tie the Solheim Cup at 8-8.",
-          "entities": [
-            "Jennifer Kupcho",
-            "Solheim Cup"
-          ],
-          "occurredAt": "2026-09-12T19:09:11Z",
-          "timePrecision": "exact",
-          "ageHours": 9.37,
-          "freshnessBasis": "Jennifer Kupcho’s late birdies tied the Solheim Cup at 8-8 after four sessions Saturday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/golf/story/_/id/49916041/jennifer-kupcho-sinks-unlikely-putts-even-solheim-cup"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-lpga",
-              "url": "https://www.espn.com/golf/story/_/id/49916041/jennifer-kupcho-sinks-unlikely-putts-even-solheim-cup"
-            }
-          ],
-          "id": "a3-special-9d307df558a640ca",
-          "feedRank": 17,
-          "compactHeadline": "Kupcho’s late birdies pull Solheim Cup level at 8-8"
         }
       ]
     },
