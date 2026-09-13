@@ -46,7 +46,7 @@ STARTUP_REGISTRATIONS = (
     StartupRegistration("ncaaf-namespace-reset", "ncaaf_namespace_reset"),
     StartupRegistration("runtime-path-repair-v5110", "runtime_path_repair_v5110"),
     StartupRegistration("database-authority", "database_authority"),
-    StartupRegistration("backend-inspector-api", "backend_inspector_api"),
+    StartupRegistration("backend-inspector-api", "backend_inspector_routes"),
     StartupRegistration("ncaaf-ranked", "ncaaf_ranked"),
     StartupRegistration("media-runtime-repair-v5116", "media_runtime_repair_v5116"),
     StartupRegistration("media-authority-v5117", "media_authority_v5117"),
