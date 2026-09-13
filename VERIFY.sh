@@ -2,6 +2,11 @@
 set -euo pipefail
 
 echo "Sports Big Board v6.1.0 Canonical Slate Certification Shadow preflight"
+python3 -m py_compile sbb/media_team_sources_v6116.py
+python3 tests/test_media_team_sources_v6116.py
+python3 tests/test_media_audit_copy_v6116.py
+python3 tests/test_media_audit_discovery_visibility_v6116.py
+node --check ui/media-audit-copy-v6116.js
 python3 tools/check_release_version.py
 python3 -m py_compile sbb/canonical_reconciliation_hotfix_v6116.py
 python3 tests/test_v6116_canonical_reconcile_hotfix.py

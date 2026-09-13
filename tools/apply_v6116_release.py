@@ -15,12 +15,10 @@ PRESERVE = (
     "sbb/canonical_schedule_watchdogs_v6116.py",
     "sbb/canonical_reconciliation_hotfix_v6116.py",
     "sbb/canonical_reconciliation_followup_v6116.py",
-    "sbb/canonical_epl_fpl_state_followup_v6116.py",
     "tests/test_v6116_official_schedule_watchdogs.py",
     "tests/test_v6116_official_schedule_release.py",
     "tests/test_v6116_canonical_reconcile_hotfix.py",
     "tests/test_v6116_canonical_reconcile_followup.py",
-    "tests/test_v6116_epl_fpl_state_followup.py",
     "tests/test_v6116_startup_registry_release_integrity.py",
 )
 
@@ -119,6 +117,18 @@ def run_base(root, preserved):
         path.write_text(content, encoding="utf-8")
 
 
+
+def patch_media_repair_identity(root):
+    path = root / "media_audit_service.py"
+    text = path.read_text(encoding="utf-8")
+    old = "from sbb.media_team_sources_v6115 import TeamSourceRegistry\n"
+    new = "from sbb.media_team_sources_v6116 import TeamSourceRegistry\n"
+    if new not in text:
+        if old not in text:
+            raise SystemExit("ERROR: v6.1.16 Media Repair team-source import anchor missing")
+        text = text.replace(old, new, 1)
+        path.write_text(text, encoding="utf-8")
+
 def patch_init(root):
     """Wire v6.1.16 on legacy startup or the P1 startup registry."""
     init_path = root / "sbb" / "__init__.py"
@@ -130,11 +140,9 @@ def patch_init(root):
         reg_anchor = '    StartupRegistration("canonical-certification-v610", "canonical_certification_v610"),'
         reg_line = '    StartupRegistration("canonical-reconcile-v6116", "canonical_reconciliation_hotfix_v6116"),'
         followup_reg = '    StartupRegistration("canonical-reconcile-followup-v6116", "canonical_reconciliation_followup_v6116"),'
-        epl_reg = '    StartupRegistration("canonical-epl-fpl-state-v6116", "canonical_epl_fpl_state_followup_v6116"),'
         phase_anchor = '    StartupPhase("canonical-certification", ("canonical-certification-v610",), ("canonical-certification-v610",)),'
         phase_line = '    StartupPhase("canonical-reconcile-v6116", ("canonical-reconcile-v6116",), ("canonical-reconcile-v6116",)),'
         followup_phase = '    StartupPhase("canonical-reconcile-followup-v6116", ("canonical-reconcile-followup-v6116",), ("canonical-reconcile-followup-v6116",)),'
-        epl_phase = '    StartupPhase("canonical-epl-fpl-state-v6116", ("canonical-epl-fpl-state-v6116",), ("canonical-epl-fpl-state-v6116",)),'
         rendered = text
         if reg_line not in rendered:
             if reg_anchor not in rendered:
@@ -144,10 +152,6 @@ def patch_init(root):
             if reg_line not in rendered:
                 raise SystemExit("ERROR: startup registry canonical reconcile registration anchor missing")
             rendered = rendered.replace(reg_line, reg_line + "\n" + followup_reg, 1)
-        if epl_reg not in rendered:
-            if followup_reg not in rendered:
-                raise SystemExit("ERROR: startup registry canonical follow-up registration anchor missing")
-            rendered = rendered.replace(followup_reg, followup_reg + "\n" + epl_reg, 1)
         if phase_line not in rendered:
             if phase_anchor not in rendered:
                 raise SystemExit("ERROR: startup registry canonical phase anchor missing")
@@ -156,10 +160,6 @@ def patch_init(root):
             if phase_line not in rendered:
                 raise SystemExit("ERROR: startup registry canonical reconcile phase anchor missing")
             rendered = rendered.replace(phase_line, phase_line + "\n" + followup_phase, 1)
-        if epl_phase not in rendered:
-            if followup_phase not in rendered:
-                raise SystemExit("ERROR: startup registry canonical follow-up phase anchor missing")
-            rendered = rendered.replace(followup_phase, followup_phase + "\n" + epl_phase, 1)
         if rendered != text:
             startup_path.write_text(rendered, encoding="utf-8")
         return
@@ -185,13 +185,6 @@ def patch_init(root):
             "# Shadow/certification only; production Day State/ribbon authority is unchanged.\n"
             "from .canonical_reconciliation_followup_v6116 import install as _install_canonical_reconciliation_followup_v6116\n"
             "_install_canonical_reconciliation_followup_v6116()"
-        )
-    if "_install_canonical_epl_fpl_state_followup_v6116()" not in init_text:
-        additions.append(
-            "# v6.1.16 EPL follow-up: official FPL schedule + explicit alias/state reconciliation.\n"
-            "# Shadow/certification only; production Day State/ribbon authority is unchanged.\n"
-            "from .canonical_epl_fpl_state_followup_v6116 import install as _install_canonical_epl_fpl_state_followup_v6116\n"
-            "_install_canonical_epl_fpl_state_followup_v6116()"
         )
     if additions:
         init_path.write_text(init_text.rstrip() + "\n\n" + "\n\n".join(additions) + "\n", encoding="utf-8")
@@ -230,9 +223,12 @@ def patch_verify(root):
         "python3 tests/test_v6116_canonical_reconcile_hotfix.py",
         "python3 -m py_compile sbb/canonical_reconciliation_followup_v6116.py",
         "python3 tests/test_v6116_canonical_reconcile_followup.py",
-        "python3 -m py_compile sbb/canonical_epl_fpl_state_followup_v6116.py",
-        "python3 tests/test_v6116_epl_fpl_state_followup.py",
         "python3 tests/test_v6116_startup_registry_release_integrity.py",
+        "python3 -m py_compile sbb/media_team_sources_v6116.py",
+        "python3 tests/test_media_team_sources_v6116.py",
+        "python3 tests/test_media_audit_copy_v6116.py",
+        "python3 tests/test_media_audit_discovery_visibility_v6116.py",
+        "node --check ui/media-audit-copy-v6116.js",
     ]
     missing = [x for x in additions if x not in text]
     if missing:
@@ -281,25 +277,28 @@ def main(argv=None):
         root / "sbb" / "canonical_schedule_watchdogs_v6116.py",
         root / "sbb" / "canonical_reconciliation_hotfix_v6116.py",
         root / "sbb" / "canonical_reconciliation_followup_v6116.py",
-        root / "sbb" / "canonical_epl_fpl_state_followup_v6116.py",
         root / "tests" / "test_v6116_official_schedule_watchdogs.py",
         root / "tests" / "test_v6116_official_schedule_release.py",
         root / "tests" / "test_v6116_canonical_reconcile_hotfix.py",
         root / "tests" / "test_v6116_canonical_reconcile_followup.py",
-        root / "tests" / "test_v6116_epl_fpl_state_followup.py",
         root / "tests" / "test_v6116_startup_registry_release_integrity.py",
+        root / "sbb" / "media_team_sources_v6116.py",
+        root / "tests" / "test_media_team_sources_v6116.py",
+        root / "tests" / "test_media_audit_copy_v6116.py",
+        root / "tests" / "test_media_audit_discovery_visibility_v6116.py",
     ]
     missing = [str(x.relative_to(root)) for x in required if not x.is_file()]
     if missing:
         raise SystemExit("ERROR: incomplete v6.1.16 release: " + ", ".join(missing))
     if args.dry_run:
-        print("v6.1.16: NFL/NCAAF/MLB reconciliation + EPL explicit alias reconciliation")
+        print("v6.1.16: NFL pre/live/final continuity + NCAAF/MLB canonical reconciliation")
         return 0
     preserved = {rel: (root / rel).read_text(encoding="utf-8") for rel in PRESERVE}
     # Patch the integrity representation before delegated historical materializers
     # can execute the checker. This is required after the P1 startup-registry cutover.
     patch_release_integrity_startup_registry(root)
     run_base(root, preserved)
+    patch_media_repair_identity(root)
     patch_init(root)
     patch_legacy_contracts(root)
     patch_verify(root)
@@ -307,8 +306,7 @@ def main(argv=None):
     controller(root)
     print("Sports Big Board v6.1.16 materialized")
     print("Canonical schedule: NFL pre/live/final continuity + post-collection NCAAF reconciliation")
-    print("Canonical identity: strong MLB IDs + explicit EPL Man Utd/Man City alias reconciliation")
-    print("EPL authority: league-operated FPL full-season schedule, fail-closed with official fallback")
+    print("Canonical identity: strong MLB/ESPN IDs prevent adjacent-day series collapse and repair existing rows")
     print("Release integrity: legacy direct installers OR exact startup-registry ownership")
     print("Watchdogs: EPL NFL MLB NBA MLS NHL official pages; NCAAF FBSchedules secondary only")
     if args.skip_check:
