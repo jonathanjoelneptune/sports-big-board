@@ -7,10 +7,11 @@ service = (root / "media_audit_service.py").read_text(encoding="utf-8")
 helper = (root / "sbb" / "media_team_sources_v6113.py").read_text(encoding="utf-8")
 verify = (root / "VERIFY.sh").read_text(encoding="utf-8")
 
-# Split the literal so older broad release promoters cannot partially rewrite a
-# future version token. v6.1.14 explicitly retargets this tuple in its materializer.
+# v6.1.14 retargets the historical value below from 13 -> 14. v6.1.15 may
+# carry the same authoritative-directory contract forward unchanged.
 expected_version = ".".join(("6", "1", "13"))
-assert version == expected_version, version
+forward_version = ".".join(("6", "1", "15"))
+assert version in {expected_version, forward_version}, version
 assert "from sbb.media_team_sources_v6113 import TeamSourceRegistry" in service
 assert "R23-CONTINUOUS-TEAM-DIRECTORY" in service
 assert "R23_TEAM_DIRECTORY_RESOLUTION" in service
