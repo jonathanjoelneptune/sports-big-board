@@ -46,9 +46,6 @@ def run_base(root, preserved):
     arch.parent.mkdir(parents=True, exist_ok=True)
     arch.write_text(BASE + "\n", encoding="utf-8")
     subprocess.run([sys.executable, str(root / "tools" / "apply_v6115_release.py"), "--skip-check"], cwd=root, check=True)
-    # Older materializers intentionally promote dotted release literals across the
-    # active tree. Restore this release's own source/contracts verbatim so strings
-    # such as 6.1.16 are not accidentally rewritten while reconstructing 6.1.15.
     for rel, content in preserved.items():
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -71,14 +68,28 @@ _install_canonical_schedule_watchdogs_v6116()
 
 
 def patch_legacy_contracts(root):
-    path = root / "tests" / "test_v6115_team_resolution_release.py"
-    if path.is_file():
+    # v6.1.12-v6.1.15 contracts intentionally preserve earlier capabilities, but
+    # several encode the previous forward release with constructed strings that
+    # global promotion cannot update. Advance only those version gates; all behavior
+    # assertions remain untouched.
+    tests = root / "tests"
+    if not tests.is_dir():
+        return
+    for path in tests.glob("test_v611*_release.py"):
         text = path.read_text(encoding="utf-8")
-        old = "assert version == expected_version, version"
-        new = 'assert version in {expected_version, ".".join(("6", "1", "16"))}, version'
-        if old in text:
-            text = text.replace(old, new, 1)
-            path.write_text(text, encoding="utf-8")
+        rendered = text
+        rendered = rendered.replace(
+            'forward_version = ".".join(("6", "1", "15"))',
+            'forward_version = ".".join(("6", "1", "16"))',
+        )
+        if path.name == "test_v6115_team_resolution_release.py":
+            rendered = rendered.replace(
+                "assert version == expected_version, version",
+                'assert version in {expected_version, ".".join(("6", "1", "16"))}, version',
+                1,
+            )
+        if rendered != text:
+            path.write_text(rendered, encoding="utf-8")
 
 
 def patch_verify(root):
