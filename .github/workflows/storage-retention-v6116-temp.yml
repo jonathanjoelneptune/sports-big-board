@@ -1,0 +1,35 @@
+name: Validate Storage Retention v6.1.16
+
+on:
+  push:
+    branches:
+      - deploy/storage-backup-retention-v6116
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Apply bounded storage-retention patch
+        run: python3 tools/patch_storage_retention_temp.py
+      - name: Validate deploy and backup scripts
+        run: |
+          bash -n cloud/gcp/DEPLOY-FROM-GITHUB.sh
+          python3 -m py_compile cloud/vm/backup_state.py
+          grep -q 'prune_daily_backups history 3' cloud/gcp/DEPLOY-FROM-GITHUB.sh
+          grep -q 'prune_daily_backups game-centers 3' cloud/gcp/DEPLOY-FROM-GITHUB.sh
+          grep -q 'REQUIRED_KB=1048576' cloud/gcp/DEPLOY-FROM-GITHUB.sh
+          grep -q "for family in ('history', 'game-centers')" cloud/vm/backup_state.py
+          grep -q 'daily\[3:\]' cloud/vm/backup_state.py
+      - name: Commit product files only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cloud/gcp/DEPLOY-FROM-GITHUB.sh cloud/vm/backup_state.py
+          if ! git diff --cached --quiet; then
+            git commit -m "Deploy: bound SQLite backup retention and reclaim safe disk space"
+            git push
+          fi
