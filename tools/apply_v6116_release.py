@@ -54,6 +54,24 @@ def replace_once(text, old, new, label):
     raise SystemExit(f"ERROR: v6.1.16 patch anchor missing: {label}")
 
 
+def patch_seed_loader(root):
+    """Normalize the raw seed block so non-row continuation text is ignored."""
+    path = root / "sbb" / "media_team_seed_v6116.py"
+    text = path.read_text(encoding="utf-8")
+    old = """for _line in _DATA.splitlines():
+    if not _line.strip():
+        continue
+    _league, _team, _aliases, _url, _role = _line.split("|", 4)
+"""
+    new = """for _line in _DATA.splitlines():
+    if not _line.strip() or _line.count("|") < 4:
+        continue
+    _league, _team, _aliases, _url, _role = _line.split("|", 4)
+"""
+    text = replace_once(text, old, new, "authoritative seed row parser")
+    path.write_text(text, encoding="utf-8")
+
+
 def patch_media_audit(root):
     path = root / "media_audit_service.py"
     text = path.read_text(encoding="utf-8")
@@ -156,6 +174,7 @@ def main(argv=None):
         return 0
 
     run_base(root)
+    patch_seed_loader(root)
     patch_media_audit(root)
     patch_ui(root)
     patch_verify(root)
