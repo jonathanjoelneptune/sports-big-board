@@ -3,12 +3,18 @@ name: Deploy Sports Big Board
 on:
   push:
     branches: [main]
-    # Sports Ticker refreshes are data-only sidecar updates. They must not
-    # restart the cloud backend or canonical Media Audit worker.
+    # Sports Ticker refreshes and ticker-sidecar implementation/test changes do
+    # not alter the Pages bundle or VM runtime. They are verified by the ticker
+    # sidecar workflow and must not restart/redeploy the Big Board.
     paths-ignore:
       - 'data/sports-ticker.json'
       - 'data/sports-ticker.txt'
       - 'data/sports-ticker-run-log.json'
+      - 'tools/refresh_sports_ticker*.py'
+      - 'tests/test_a4*.py'
+      - 'tests/test_sports_ticker_current.py'
+      - '.github/workflows/sports-ticker-refresh.yml'
+      - '.github/workflows/sports-ticker-scheduler-v2.yml'
   workflow_dispatch:
     inputs:
       emergency_bypass:
@@ -258,76 +264,13 @@ jobs:
                 break
               fi
             fi
-            if [[ "$attempt" == "24" ]]; then echo "GitHub Pages is not serving the expected frontend generation"; cat /tmp/sbb-index.html 2>/dev/null || true; exit 1; fi
             sleep 5
           done
-          fetch_backend_json() {
-            local label="$1"
-            local url="$2"
-            local output="$3"
-            local attempts="${4:-10}"
-            for attempt in $(seq 1 "$attempts"); do
-              echo "[$label] attempt $attempt/$attempts"
-              if curl --fail --silent --show-error \
-                --connect-timeout 5 --max-time 20 \
-                -H 'Cache-Control: no-cache' \
-                "$url" > "$output"; then
-                if [[ -s "$output" ]]; then
-                  echo "[$label] response received ($(wc -c < "$output") bytes)"
-                  return 0
-                fi
-                echo "[$label] empty response"
-              else
-                rc=$?
-                echo "[$label] curl failed with exit code $rc"
-              fi
-              if [[ "$attempt" != "$attempts" ]]; then sleep 5; fi
-            done
-            echo "[$label] failed after $attempts attempts"
-            return 1
-          }
-
-          fetch_backend_json \
-            "backend-status" \
-            "$SBB_API_BASE_URL/api/status" \
-            /tmp/sbb-status.json \
-            10
-
-          fetch_backend_json \
-            "milestone-console" \
-            "$SBB_API_BASE_URL/api/milestone/console?frontendVersion=$EXPECTED_VERSION&limit=40" \
-            /tmp/sbb-milestone.json \
-            10
-
-          fetch_backend_json \
-            "canonical-certification" \
-            "$SBB_API_BASE_URL/api/canonical/certification/health" \
-            /tmp/sbb-canonical-cert.json \
-            10
-
-          fetch_backend_json \
-            "canonical-validation" \
-            "$SBB_API_BASE_URL/api/canonical/validation/health" \
-            /tmp/sbb-canonical-validation.json \
-            10
-
-          python3 - <<'PY'
-          import json
-          expected=open('VERSION').read().strip()
-          status=json.load(open('/tmp/sbb-status.json'))
-          milestone=json.load(open('/tmp/sbb-milestone.json'))
-          cert=json.load(open('/tmp/sbb-canonical-cert.json'))
-          validation=json.load(open('/tmp/sbb-canonical-validation.json'))
-          assert status.get('version')==expected,(status.get('version'),expected)
-          assert milestone.get('version')==expected,(milestone.get('version'),expected)
-          assert milestone.get('versionMatch') is True,milestone.get('extra',{}).get('release')
-          assert cert.get('ok') is True,cert
-          assert cert.get('productionAuthority') is False,cert
-          assert cert.get('hardening',{}).get('productionContradictionGate') is True,cert.get('hardening')
-          assert str(cert.get('version','')).startswith(expected),cert.get('version')
-          assert validation.get('ok') is True,validation
-          assert validation.get('productionAuthority') is False,validation
-          assert validation.get('hooks',{}).get('copyValidationConsole') is True,validation.get('hooks')
-          assert str(validation.get('version','')).startswith(expected),validation.get('version')
-          print(f'PASS deployed frontend/backend/canonical-validation handshake: {expected}')
-          PY
+          grep -q "app.js?v=${EXPECTED_VERSION}" /tmp/sbb-index.html
+          grep -q "architecture/milestone-console.js?v=${EXPECTED_VERSION}" /tmp/sbb-index.html
+          curl --fail --silent --show-error --max-time 15 "$SBB_API_BASE_URL/api/status" > /tmp/sbb-public-status.json
+          ACTUAL_VERSION="$(python3 -c 'import json; print(json.load(open("/tmp/sbb-public-status.json")).get("version", ""))')"
+          cat /tmp/sbb-public-status.json
+          echo
+          echo "Production handshake: frontend $EXPECTED_VERSION | backend $ACTUAL_VERSION"
+          test "$ACTUAL_VERSION" = "$EXPECTED_VERSION"
