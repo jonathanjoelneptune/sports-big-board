@@ -73,6 +73,21 @@ def restore_r25_version_tokens(root):
             path.write_text(rendered, encoding="utf-8")
 
 
+def normalize_generated_version_tokens(root):
+    """Repair impossible version artifacts created by legacy substring promotion."""
+    bad_tokens = ("6.1.155", "6.1.156", "6.1.165", "6.1.166")
+    for path in active_files(root):
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        rendered = text
+        for token in bad_tokens:
+            rendered = rendered.replace(token, NEW)
+        if rendered != text:
+            path.write_text(rendered, encoding="utf-8")
+
+
 def patch_seed_loader(root):
     """Normalize the raw seed block so non-row continuation text is ignored."""
     path = root / "sbb" / "media_team_seed_v6116.py"
@@ -199,7 +214,7 @@ def main(argv=None):
     patch_ui(root)
     patch_verify(root)
     promote(root)
-    restore_r25_version_tokens(root)
+    normalize_generated_version_tokens(root)
     controller(root)
 
     print("Sports Big Board v6.1.16 materialized")
