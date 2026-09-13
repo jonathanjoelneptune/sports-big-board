@@ -34,8 +34,27 @@ def test_p1_backend_startup_is_explicit_and_ordered():
         "nfl_audit_migration",
         "route_registry",
     ]
-    for token in ["startup_snapshot", "durationMs", "bootstrapped", "services"]:
+    for token in [
+        "class StartupPhase",
+        "STARTUP_PHASES",
+        '"legacy-initial-imports"',
+        '"shared-route-authority"',
+        'stage="IMPORT"',
+        'stage="INSTALL"',
+        "startup_snapshot",
+        "durationMs",
+        "bootstrapped",
+        "services",
+    ]:
         assert token in startup
+
+    # Preserve a subtle legacy contract: day/ribbon/tennis and the compatibility
+    # server modules are pre-imported before the first installer runs, while the
+    # actual install order remains tennis -> ribbon authority -> day state.
+    initial_phase = startup[startup.index('"legacy-initial-imports"'):startup.index('StartupPhase("ribbon-snapshot"')]
+    assert initial_phase.index('"day-state"') < initial_phase.index('"ribbon-authority-v521"') < initial_phase.index('"tennis-ribbon-projection"')
+    install_tuple = initial_phase[initial_phase.index("),\n        (") :]
+    assert install_tuple.index('"tennis-ribbon-projection"') < install_tuple.index('"ribbon-authority-v521"') < install_tuple.index('"day-state"')
 
 
 def test_p1_shared_route_table_has_compatibility_fallback_and_live_migration():
