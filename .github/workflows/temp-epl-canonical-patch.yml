@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  patch-feature-branch:
+  verify-feature-branch:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -14,20 +14,9 @@ jobs:
         with:
           ref: fix/epl-canonical-scoreboard-window
           fetch-depth: 0
-      - name: Load patch helper from main
-        run: |
-          git fetch origin main
-          git show origin/main:tools/temp_apply_epl_canonical_fix.py > /tmp/temp_apply_epl_canonical_fix.py
-      - name: Apply patch
-        run: python /tmp/temp_apply_epl_canonical_fix.py
-      - name: Compile backend
-        run: python -m py_compile server.py
-      - name: Run focused EPL/NFL regression
-        run: python -m unittest -v tests.test_epl_scoreboard_exact_dates
-      - name: Commit verified feature patch
-        run: |
-          git config user.name "canonical-slate-fix-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add server.py tests/test_epl_scoreboard_exact_dates.py
-          git commit -m "Fix EPL canonical scoreboard exact-date fallback"
-          git push origin HEAD:fix/epl-canonical-scoreboard-window
+      - name: Materialize current release
+        run: python3 tools/apply_v6114_release.py --skip-check
+      - name: Compile patched backend
+        run: python3 -m py_compile server.py
+      - name: Run EPL/NFL transport regression
+        run: python3 -m unittest -v tests.test_epl_scoreboard_exact_dates
