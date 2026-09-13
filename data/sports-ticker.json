@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-13T17:02:08Z",
+  "generatedAt": "2026-09-13T17:31:45Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "e556ee22b963c07e65ab0c5f678f1bb8fca69be81d0978fb50d66d9bcee355f6",
+  "sourceCandidateHash": "10b36b63af62ffdde9bd46d0a9029f493ffaec2d8d1e40d6e9f2eb3e07549a5d",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:37:16Z",
           "timePrecision": "exact",
-          "ageHours": 0.41,
+          "ageHours": 0.91,
           "freshnessBasis": "Phillies left-hander Tanner Banks was reinstated from the 60-day injured list before their game Sunday against the Braves in Atlanta.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:13:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.81,
+          "ageHours": 1.3,
           "freshnessBasis": "Justin Verlander is progressing in his return from a hamstring injury with he and the Tigers hoping he can make one last start during a planned two-day celebration of the retiring former ace.",
           "status": "active",
           "sourceUrls": [
@@ -72,6 +72,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-6643931b15f0110b"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "The Diamondbacks have designed Lourdes Gurriel Jr. for assignment, potentially ending the tenure of an outfielder who played a key role in their recent World Series run but struggled after tearing his ACL last season.",
+          "text": "The Diamondbacks have designed Lourdes Gurriel Jr. for assignment, potentially ending the tenure of an outfielder who played a key role in their recent World Series run but struggled after tearing his ACL last season.",
+          "entities": [],
+          "occurredAt": "2026-09-13T17:08:51Z",
+          "timePrecision": "exact",
+          "ageHours": 0.38,
+          "freshnessBasis": "The Diamondbacks have designed Lourdes Gurriel Jr. for assignment, potentially ending the tenure of an outfielder who played a key role in their recent World Series run but struggled after tearing his ACL last season.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49929190/diamondbacks-designate-lourdes-gurriel-jr-assignment"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49929190/diamondbacks-designate-lourdes-gurriel-jr-assignment"
+            }
+          ],
+          "id": "a415-e54202a64a436225",
+          "feedRank": 3,
+          "compactHeadline": "Diamondbacks designate Lourdes Gurriel Jr. for assignment"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-411a234bcef55672"
           ],
           "type": "RESULT",
@@ -81,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T00:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.87,
+          "ageHours": 17.36,
           "freshnessBasis": "Highlightly final: Texas Rangers 6, Arizona Diamondbacks 2.",
           "status": "active",
           "sourceUrls": [
@@ -101,11 +130,11 @@
             }
           ],
           "id": "a415-5b763af9d5e752b8",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Rangers use a 6-run 5th inning to beat Diamondbacks 6-2, stay in AL playoff race"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-90126709c19b3743"
           ],
@@ -116,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.79,
+          "ageHours": 18.28,
           "freshnessBasis": "Highlightly final: Philadelphia Phillies 2, Atlanta Braves 12.",
           "status": "active",
           "sourceUrls": [
@@ -136,11 +165,11 @@
             }
           ],
           "id": "a415-997c612b541c1ccf",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Acuña homers for Braves, Mahle turns in another stellar outing in 12-2 rout of Phillies"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-8067fcc7b2417eeb"
           ],
@@ -151,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.79,
+          "ageHours": 18.28,
           "freshnessBasis": "Highlightly final: Chicago White Sox 6, St. Louis Cardinals 5.",
           "status": "active",
           "sourceUrls": [
@@ -171,43 +200,8 @@
             }
           ],
           "id": "a415-43818da5354f00db",
-          "feedRank": 5,
-          "compactHeadline": "Grichuk hits a 9th inning HR to help White Sox beat Cardinals 6-5"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-8a6b4093541b2fa1"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Richie Palacios had a two-run single in fifth, Ian Seymour threw six strong innings and Nick Madrigal had a clutch sacrifice fly to help the postseason-bound Tampa Bay Rays beat the Houston Astros 3-2 on Saturday night.",
-          "text": "Richie Palacios had a two-run single in fifth, Ian Seymour threw six strong innings and Nick Madrigal had a clutch sacrifice fly to help the postseason-bound Tampa Bay Rays beat the Houston Astros 3-2 on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-09-12T22:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 18.87,
-          "freshnessBasis": "Highlightly final: Houston Astros 2, Tampa Bay Rays 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816906"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816906"
-            }
-          ],
-          "id": "a415-b7e60e0326a6c3cd",
           "feedRank": 6,
-          "compactHeadline": "Postseason-bound Rays beat the Astros 3-2"
+          "compactHeadline": "Grichuk hits a 9th inning HR to help White Sox beat Cardinals 6-5"
         }
       ]
     },
@@ -227,7 +221,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:19:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.2,
           "freshnessBasis": "The Raiders believe there is a realistic chance that Brock Bowers will miss only one game because of his knee injury, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -256,7 +250,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:09:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.88,
+          "ageHours": 1.38,
           "freshnessBasis": "Rams star defensive end Myles Garrett will undergo knee surgery and is headed to injured reserve, sources told ESPN's Adam Schefter and NFL Network's Ian Rapoport.",
           "status": "active",
           "sourceUrls": [
@@ -285,7 +279,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:41:45Z",
           "timePrecision": "exact",
-          "ageHours": 1.34,
+          "ageHours": 1.83,
           "freshnessBasis": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, will not play against the Falcons because of a back injury, and the possibility of a trade remains in play.",
           "status": "active",
           "sourceUrls": [
@@ -314,7 +308,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T14:46:01Z",
           "timePrecision": "exact",
-          "ageHours": 2.27,
+          "ageHours": 2.76,
           "freshnessBasis": "49ers rookie wide receiver De'Zhaun Stribling will miss at least a month because of an ankle injury, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -343,7 +337,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T13:53:39Z",
           "timePrecision": "exact",
-          "ageHours": 3.14,
+          "ageHours": 3.64,
           "freshnessBasis": "The Jaguars and Parker Washington are unlikely to agree to a contract extension before the start of the season, a source told NFL Network.",
           "status": "active",
           "sourceUrls": [
@@ -372,7 +366,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:38:29Z",
           "timePrecision": "exact",
-          "ageHours": 4.39,
+          "ageHours": 4.89,
           "freshnessBasis": "Baker Mayfield just got $55 million per year in new money -- which is telling about where the QB market is headed. That's great news for 11 other passers ready for big deals.",
           "status": "active",
           "sourceUrls": [
@@ -412,7 +406,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T00:16:16Z",
           "timePrecision": "exact",
-          "ageHours": 16.76,
+          "ageHours": 17.26,
           "freshnessBasis": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
           "status": "active",
           "sourceUrls": [
@@ -428,35 +422,6 @@
           "id": "a415-19fe4235e88e9b57",
           "feedRank": 13,
           "compactHeadline": "Chris Kreider, 35, lands 1-year deal with Montreal Canadiens"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-db37ee8d2606f344"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Golden Knights captain Mark Stone has signed a two-year contract extension with a $9 million annual value that goes through the 2028-29 season.",
-          "text": "Golden Knights captain Mark Stone has signed a two-year contract extension with a $9 million annual value that goes through the 2028-29 season.",
-          "entities": [],
-          "occurredAt": "2026-09-12T17:19:27Z",
-          "timePrecision": "exact",
-          "ageHours": 23.71,
-          "freshnessBasis": "Golden Knights captain Mark Stone has signed a two-year contract extension with a $9 million annual value that goes through the 2028-29 season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49915341/golden-knights-extend-mark-stone-2-year-18m-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49915341/golden-knights-extend-mark-stone-2-year-18m-deal"
-            }
-          ],
-          "id": "a415-6ff97c747dcc1b83",
-          "feedRank": 14,
-          "compactHeadline": "Golden Knights extend Mark Stone with 2-year, $18M deal"
         }
       ]
     },
@@ -476,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:13:56Z",
           "timePrecision": "exact",
-          "ageHours": 4.8,
+          "ageHours": 5.3,
           "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
           "status": "active",
           "sourceUrls": [
@@ -490,7 +455,7 @@
             }
           ],
           "id": "a415-36c0b30b722455e8",
-          "feedRank": 15,
+          "feedRank": 14,
           "compactHeadline": "Man United's Benjamin Sesko 'in perfect place' after injury recovery"
         },
         {
@@ -505,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 1.77,
+          "ageHours": 2.26,
           "freshnessBasis": "Brighton dealt 10-man Coventry a crushing 5-0 defeat to condemn them to a fourth straight Premier League loss.",
           "status": "active",
           "sourceUrls": [
@@ -519,7 +484,7 @@
             }
           ],
           "id": "a415-0521d20487893e72",
-          "feedRank": 16,
+          "feedRank": 15,
           "compactHeadline": "Lewis Dunk screamer helps Brighton pile more Premier League misery on Coventry"
         },
         {
@@ -534,7 +499,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:56:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.09,
+          "ageHours": 0.59,
           "freshnessBasis": "Manchester United supporters expressed fury with the club's owners in a pre-derby protest organised by The 1958 fan group about the \"season ticket ban fiasco.\"",
           "status": "active",
           "sourceUrls": [
@@ -548,7 +513,7 @@
             }
           ],
           "id": "a415-acdc63300e333704",
-          "feedRank": 17,
+          "feedRank": 16,
           "compactHeadline": "Man United fans protest club ownership pre-derby kick-off amid 'season ticket fiasco'"
         },
         {
@@ -563,7 +528,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:53:07Z",
           "timePrecision": "exact",
-          "ageHours": 0.15,
+          "ageHours": 0.64,
           "freshnessBasis": "Manchester City's Phil Foden was sent off after a kick on Manchester United captain Bruno Fernandes in the first half of the derby on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -577,7 +542,7 @@
             }
           ],
           "id": "a415-858d42f4b32f1c13",
-          "feedRank": 18,
+          "feedRank": 17,
           "compactHeadline": "Man City's Phil Foden sent off in derby after kick on Man United's Bruno Fernandes"
         },
         {
@@ -592,7 +557,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:55:33Z",
           "timePrecision": "exact",
-          "ageHours": 1.11,
+          "ageHours": 1.6,
           "freshnessBasis": "Bruno Guimaraes and David Raya were instrumental as Arsenal fought off Sunderland's aggressive effort to pick up a big win in Saturday's late Premier League game.",
           "status": "active",
           "sourceUrls": [
@@ -606,7 +571,7 @@
             }
           ],
           "id": "a415-63c673a674b513fa",
-          "feedRank": 19,
+          "feedRank": 18,
           "compactHeadline": "Arsenal ratings: Guimaraes 8/10, Raya 9/10 in win at Sunderland"
         },
         {
@@ -621,7 +586,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:38:41Z",
           "timePrecision": "exact",
-          "ageHours": 1.39,
+          "ageHours": 1.88,
           "freshnessBasis": "Marcus Rashford will line up for Manchester United against Manchester City for the first time since March 2024.",
           "status": "active",
           "sourceUrls": [
@@ -635,7 +600,7 @@
             }
           ],
           "id": "a415-b9902a18a3ec67e1",
-          "feedRank": 20,
+          "feedRank": 19,
           "compactHeadline": "Man United vs. Man City: Marcus Rashford, Elliot Anderson start Manchester derby"
         }
       ]
@@ -656,7 +621,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.54,
+          "ageHours": 18.03,
           "freshnessBasis": "Highlightly final: Toronto FC 0, Orlando City 3.",
           "status": "active",
           "sourceUrls": [
@@ -676,7 +641,7 @@
             }
           ],
           "id": "a415-f9ea915244d4fb9e",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Griezmann scores in 5th straight to help Orlando beat Toronto"
         },
         {
@@ -691,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.54,
+          "ageHours": 18.03,
           "freshnessBasis": "Highlightly final: Nashville SC 2, Inter Miami 2.",
           "status": "active",
           "sourceUrls": [
@@ -711,7 +676,7 @@
             }
           ],
           "id": "a415-648d84c8aca21134",
-          "feedRank": 22,
+          "feedRank": 21,
           "compactHeadline": "Messi scores, but Nashville strikes late to deny Miami win"
         },
         {
@@ -726,7 +691,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.54,
+          "ageHours": 18.03,
           "freshnessBasis": "Highlightly final: New York Red Bulls 1, Columbus Crew 0.",
           "status": "active",
           "sourceUrls": [
@@ -746,7 +711,7 @@
             }
           ],
           "id": "a415-539bed25cd38d26d",
-          "feedRank": 23,
+          "feedRank": 22,
           "compactHeadline": "Donkor goals sees Red Bulls beat Crew to end winless streak at 6"
         },
         {
@@ -761,7 +726,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 14.54,
+          "ageHours": 15.03,
           "freshnessBasis": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
           "status": "active",
           "sourceUrls": [
@@ -775,7 +740,7 @@
             }
           ],
           "id": "a415-083f86d998918358",
-          "feedRank": 24,
+          "feedRank": 23,
           "compactHeadline": "Los Angeles Galaxy and Seattle Sounders finished tied 1-1"
         },
         {
@@ -790,7 +755,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 14.54,
+          "ageHours": 15.03,
           "freshnessBasis": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
           "status": "active",
           "sourceUrls": [
@@ -804,7 +769,7 @@
             }
           ],
           "id": "a415-125ef28b29ef5c4c",
-          "feedRank": 25,
+          "feedRank": 24,
           "compactHeadline": "San Jose Earthquakes beat Houston Dynamo 1-0"
         },
         {
@@ -819,7 +784,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.54,
+          "ageHours": 16.03,
           "freshnessBasis": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
           "status": "active",
           "sourceUrls": [
@@ -833,7 +798,7 @@
             }
           ],
           "id": "a415-fd2635ff267a45c3",
-          "feedRank": 26,
+          "feedRank": 25,
           "compactHeadline": "Colorado Rapids beat Montréal Impact 1-0"
         }
       ]
@@ -854,7 +819,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 14.54,
+          "ageHours": 15.03,
           "freshnessBasis": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
           "status": "active",
           "sourceUrls": [
@@ -874,7 +839,7 @@
             }
           ],
           "id": "a415-27ad66477d2c4c30",
-          "feedRank": 27,
+          "feedRank": 26,
           "compactHeadline": "FCS champion Montana State wins 17th straight game, knocking off Nevada 20-7"
         },
         {
@@ -889,7 +854,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.54,
+          "ageHours": 18.03,
           "freshnessBasis": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
           "status": "active",
           "sourceUrls": [
@@ -903,7 +868,7 @@
             }
           ],
           "id": "a415-98e6871a64b614e4",
-          "feedRank": 28,
+          "feedRank": 27,
           "compactHeadline": "Late score lifts Iowa Hawkeyes past Iowa State Cyclones 16-13"
         },
         {
@@ -918,7 +883,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.54,
+          "ageHours": 18.03,
           "freshnessBasis": "Highlightly final: Ohio State Buckeyes 23, Texas Longhorns 24.",
           "status": "active",
           "sourceUrls": [
@@ -932,7 +897,7 @@
             }
           ],
           "id": "a415-e376971500d5af4c",
-          "feedRank": 29,
+          "feedRank": 28,
           "compactHeadline": "Texas Longhorns survives late missed field goal to beat Ohio State Buckeyes 24-23"
         },
         {
@@ -947,7 +912,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.04,
+          "ageHours": 18.53,
           "freshnessBasis": "Highlightly final: Illinois State Redbirds 28, Northern Illinois Huskies 24.",
           "status": "active",
           "sourceUrls": [
@@ -961,7 +926,7 @@
             }
           ],
           "id": "a415-de3b23928bc28806",
-          "feedRank": 30,
+          "feedRank": 29,
           "compactHeadline": "Illinois State Redbirds beat Northern Illinois Huskies 28-24"
         },
         {
@@ -976,7 +941,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T03:59:00Z",
           "timePrecision": "exact",
-          "ageHours": 13.05,
+          "ageHours": 13.55,
           "freshnessBasis": "Highlightly final: New Mexico State Aggies 19, Hawai'i Rainbow Warriors 29.",
           "status": "active",
           "sourceUrls": [
@@ -996,7 +961,7 @@
             }
           ],
           "id": "a415-9ba96e6c0e55d201",
-          "feedRank": 31,
+          "feedRank": 30,
           "compactHeadline": "Rice's 2 rushing TDs help Hawaii beat New Mexico State 29-19"
         },
         {
@@ -1011,7 +976,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T22:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.04,
+          "ageHours": 19.53,
           "freshnessBasis": "Highlightly final: Buffalo Bulls 20, Florida International Panthers 33.",
           "status": "active",
           "sourceUrls": [
@@ -1025,7 +990,7 @@
             }
           ],
           "id": "a415-e02b2db15c55f874",
-          "feedRank": 32,
+          "feedRank": 31,
           "compactHeadline": "Florida International Panthers beat Buffalo Bulls 33-20"
         }
       ]
@@ -1201,7 +1166,7 @@
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
     "freshCandidateCount": 140,
-    "publishedItemCount": 32,
+    "publishedItemCount": 31,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
