@@ -29,7 +29,8 @@ def patch_source_html():
     path.write_text(text, encoding="utf-8")
 
 
-def patch_fallback_visibility(path):
+def patch_source_fallback_visibility():
+    path = ROOT / "media_audit_service.py"
     text = path.read_text(encoding="utf-8")
     text = replace_once(
         text,
@@ -115,42 +116,6 @@ def patch_media_audit_copy(root):
         raise SystemExit("ERROR: v6.1.16 Media Audit copy script anchor missing")
     path.write_text("\\n".join(lines) + "\\n", encoding="utf-8")
 
-
-def patch_media_repair_visibility(root):
-    path = root / "media_audit_service.py"
-    text = path.read_text(encoding="utf-8")
-    if '"FALLBACK_DISABLED"' not in text:
-        old = '        if not REPAIR_YOUTUBE_FALLBACK: return {"candidates":[],"quotaBlocked":False,"retryAt":0}\\n'
-        new = '        if not REPAIR_YOUTUBE_FALLBACK:\\n            self._record_stage(job,\'GENERIC_YOUTUBE_SEARCH\',provider=\'YOUTUBE_SEARCH\',results=0,new=0,details={"reason":"FALLBACK_DISABLED"})\\n            return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"FALLBACK_DISABLED"}\\n'
-        if old not in text:
-            raise SystemExit("ERROR: v6.1.16 fallback-disabled anchor missing")
-        text = text.replace(old, new, 1)
-    if "details={\"reason\":\"KEY_MISSING\"}" not in text:
-        old = "            self._trace('WARN','Direct YouTube repair fallback unavailable: YOUTUBE_API_KEY missing',event=job['canonical_event_key'])\\n            return {\\\"candidates\\\":[],\\\"quotaBlocked\\\":False,\\\"retryAt\\\":0,\\\"reason\\\":\\\"KEY_MISSING\\\"}\\n"
-        # Simpler direct insertion protects materialized variants without replacing the return.
-        marker = "            self._trace('WARN','Direct YouTube repair fallback unavailable: YOUTUBE_API_KEY missing',event=job['canonical_event_key'])\\n"
-        if marker not in text:
-            raise SystemExit("ERROR: v6.1.16 YouTube-key anchor missing")
-        text = text.replace(marker, marker + "            self._record_stage(job,'GENERIC_YOUTUBE_SEARCH',provider='YOUTUBE_SEARCH',results=0,new=0,details={\\\"reason\\\":\\\"KEY_MISSING\\\"})\\n", 1)
-    if 'details={"reason":"DEGRADED_SEARCH_DEFERRED"}' not in text:
-        marker = "        if health=='DEGRADED' and attempt<2:\\n"
-        if marker not in text:
-            raise SystemExit("ERROR: v6.1.16 degraded fallback anchor missing")
-        text = text.replace(marker, marker + "            self._record_stage(job,'GENERIC_YOUTUBE_SEARCH',provider='YOUTUBE_SEARCH',results=0,new=0,details={\\\"reason\\\":\\\"DEGRADED_SEARCH_DEFERRED\\\"})\\n", 1)
-    if 'details={"reason":"EVENT_NOT_FOUND"}' not in text:
-        old = '        if not context: return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"EVENT_NOT_FOUND"}\\n'
-        new = '        if not context:\\n            self._record_stage(job,\'GENERIC_YOUTUBE_SEARCH\',provider=\'YOUTUBE_SEARCH\',results=0,new=0,details={"reason":"EVENT_NOT_FOUND"})\\n            return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"EVENT_NOT_FOUND"}\\n'
-        if old not in text:
-            raise SystemExit("ERROR: v6.1.16 event-not-found anchor missing")
-        text = text.replace(old, new, 1)
-    if 'details={"reason":"NO_QUERY"}' not in text:
-        old = '        if not queries: return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"NO_QUERY"}\\n'
-        new = '        if not queries:\\n            self._record_stage(job,\'GENERIC_YOUTUBE_SEARCH\',provider=\'YOUTUBE_SEARCH\',results=0,new=0,details={"reason":"NO_QUERY"})\\n            return {"candidates":[],"quotaBlocked":False,"retryAt":0,"reason":"NO_QUERY"}\\n'
-        if old not in text:
-            raise SystemExit("ERROR: v6.1.16 no-query anchor missing")
-        text = text.replace(old, new, 1)
-    path.write_text(text, encoding="utf-8")
-
 '''
     if "def patch_media_repair_identity(" not in text:
         if insert_anchor not in text:
@@ -158,7 +123,7 @@ def patch_media_repair_visibility(root):
         text = text.replace(insert_anchor, "\n" + helpers + "def patch_init(root):\n", 1)
 
     old_run = "    run_base(root, preserved)\n    patch_init(root)\n"
-    new_run = "    run_base(root, preserved)\n    patch_media_repair_visibility(root)\n    patch_media_repair_identity(root)\n    patch_media_audit_copy(root)\n    patch_init(root)\n"
+    new_run = "    run_base(root, preserved)\n    patch_media_repair_identity(root)\n    patch_media_audit_copy(root)\n    patch_init(root)\n"
     text = replace_once(text, old_run, new_run, "v6116 post-replay Media Audit patches")
 
     req_anchor = '        root / "tests" / "test_v6116_startup_registry_release_integrity.py",\n'
@@ -203,7 +168,7 @@ def patch_source_verify():
 
 
 patch_source_html()
-patch_fallback_visibility(ROOT / "media_audit_service.py")
+patch_source_fallback_visibility()
 patch_materializer()
 patch_source_verify()
 print("patched Media Audit discovery identity + copy diagnostics on current main")
