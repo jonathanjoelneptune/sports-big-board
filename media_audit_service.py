@@ -30,6 +30,7 @@ from urllib.parse import parse_qs, urlparse, urlencode
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
+from media_repair_liveness import repair_backlog_snapshot
 from sbb.history_repository import HistoryRepository
 from sbb.youtube_gateway import YouTubeGateway, YouTubeRateLimited
 from sbb.secrets import get_secret
@@ -604,15 +605,23 @@ class AuditStore:
             conn.commit()
         return {"seeded":seeded,"runId":int(latest['id']),"recoveredActive":recovered_active,"strategyRequeued":strategy_requeued}
 
+    def repair_liveness(self):
+        if not self.repair_schema_ready():
+            return {"schemaReady":False,"queue":0,"allRows":0,"states":{},"eligibleNow":0,"coolingDown":0,"running":0,
+                    "blocked":0,"nextEligibleAt":0,"nextEligibleInSeconds":0,"availabilityState":"EMPTY","waitReason":"Repair schema unavailable"}
+        with closing(self.connect(timeout=2)) as conn:
+            return {"schemaReady":True, **repair_backlog_snapshot(conn, now=_now())}
+
     def repair_summary(self):
         if not self.repair_schema_ready():
-            return {"schemaReady":False,"queue":0,"repaired":0,"states":{},"health":{}}
+            return {"schemaReady":False,"queue":0,"allRows":0,"repaired":0,"states":{},"health":{},"eligibleNow":0,
+                    "coolingDown":0,"running":0,"blocked":0,"nextEligibleAt":0,"nextEligibleInSeconds":0,
+                    "availabilityState":"EMPTY","waitReason":"Repair schema unavailable"}
         with closing(self.connect(timeout=2)) as conn:
-            states = {str(r['state']):int(r['n']) for r in conn.execute("SELECT state,COUNT(*) n FROM history_media_repair_queue GROUP BY state").fetchall()}
-            health = {str(r['health']):int(r['n']) for r in conn.execute("SELECT health,COUNT(*) n FROM history_media_repair_queue GROUP BY health").fetchall()}
-            queue_count = int(conn.execute("SELECT COUNT(*) FROM history_media_repair_queue WHERE state IN ('PENDING','WAITING_RETRY','SEARCHING','CERTIFYING')").fetchone()[0] or 0)
-            repaired = int(conn.execute("SELECT COUNT(*) FROM history_media_repair_queue WHERE repaired_asset_key<>''").fetchone()[0] or 0)
-        return {"schemaReady":True,"queue":queue_count,"repaired":repaired,"states":states,"health":health}
+            liveness=repair_backlog_snapshot(conn,now=_now())
+            health={str(r["health"]):int(r["n"]) for r in conn.execute("SELECT health,COUNT(*) n FROM history_media_repair_queue GROUP BY health").fetchall()}
+            repaired=int(conn.execute("SELECT COUNT(*) FROM history_media_repair_queue WHERE repaired_asset_key<>''").fetchone()[0] or 0)
+        return {"schemaReady":True, **liveness, "repaired":repaired, "health":health}
 
     def repair_queue(self, limit=100, offset=0, state=''):
         if not self.repair_schema_ready():
@@ -3523,7 +3532,23 @@ class MediaRepairEngine(threading.Thread):
                     except Exception: pass
                 job=self._write('claim next repair job','claim_repair_job')
                 if not job:
-                    self._set(state='IDLE',phase='IDLE',jobId=0,eventKey='',game='',health='',target='',lastResult='')
+                    liveness=self.store.repair_liveness()
+                    availability=str(liveness.get('availabilityState') or 'EMPTY').upper()
+                    if availability=='READY':
+                        state='WAITING'; phase='CLAIM_RETRY'
+                    elif availability=='COOLDOWN':
+                        state='WAITING'; phase='COOLDOWN'
+                    elif availability=='ACTIVE':
+                        state='WAITING'; phase='ACTIVE_CLAIMS'
+                    elif availability=='BLOCKED':
+                        state='WAITING'; phase='BLOCKED'
+                    else:
+                        state='IDLE'; phase='IDLE'
+                    self._set(state=state,phase=phase,jobId=0,eventKey='',game='',health='',target='',lastResult='',
+                              queue=int(liveness.get('queue') or 0),eligibleNow=int(liveness.get('eligibleNow') or 0),
+                              coolingDown=int(liveness.get('coolingDown') or 0),running=int(liveness.get('running') or 0),
+                              blocked=int(liveness.get('blocked') or 0),nextEligibleAt=float(liveness.get('nextEligibleAt') or 0),
+                              waitingReason=str(liveness.get('waitReason') or ''))
                     time.sleep(2.0); continue
                 self.stats['jobsAttempted']+=1
                 self.current={"state":"RUNNING","phase":"STARTING","jobId":int(job['id']),"eventKey":job['canonical_event_key'],"game":job['game'],"health":job['health'],"target":job['target'],"attempt":int(job['attempt_count'] or 0),"updatedAt":_now()}
