@@ -176,13 +176,22 @@ def patch_ui(root):
         text=text.replace(anchor,rows+anchor,1); html.write_text(text,encoding="utf-8")
 
     js=root/"ui"/"media-audit-v550.js"; text=js.read_text(encoding="utf-8")
-    anchor_js="  setText('repairResult',`${rc.provider||'—'} • ${rc.lastResult||rw.lastError||'—'}`);\n"
-    block=anchor_js+"""  const ts=rw.teamSources||{},tstates=ts.resolutionStates||{};
+    anchors_js=(
+        "  setText('repairResult',`${rc.provider||'—'} • ${rc.lastResult||rw.lastError||'—'}`);\n",
+        "  setText('repairResult',`${rc.provider||'—'} • ${repairResult}`);\n",
+    )
+    block="""  const ts=rw.teamSources||{},tstates=ts.resolutionStates||{};
   setText('repairTeamSources',`${fmtNum(ts.resolvedTeams||0)} resolved • ${fmtNum(ts.leagueTeamPages||0)} league pages • ${fmtNum(ts.leagueReferredOfficialSites||0)} official sites • ${fmtNum(ts.youtubeChannels||0)} YT channels • ${fmtNum(ts.indexedVideos||0)} videos indexed`);
   setText('repairTeamResolution',`${fmtNum(ts.unresolvedTeams||0)} unresolved • ${fmtNum(ts.dueUnresolvedTeams||0)} due • ${fmtNum(ts.waitingUnresolvedTeams||0)} cooling down • ${fmtNum(ts.repairJobsRequeuedByResolution||0)} repair jobs requeued`);
   setText('repairTeamStates',Object.keys(tstates).sort().map(k=>`${k.replaceAll('_',' ')} ${fmtNum(tstates[k])}`).join(' • ')||'No team identities encountered yet');
 """
-    text=replace_once(text,anchor_js,block,"Media Audit team-resolution renderer")
+    if "setText('repairTeamSources'" not in text:
+        for anchor_js in anchors_js:
+            if anchor_js in text:
+                text=text.replace(anchor_js,anchor_js+block,1)
+                break
+        else:
+            raise SystemExit("ERROR: v6.1.15 patch anchor missing: Media Audit team-resolution renderer")
     js.write_text(text,encoding="utf-8")
 
 
