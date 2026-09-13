@@ -11,6 +11,13 @@ BASE = "6.1.15"
 NEW = "6.1.16"
 TEXT_SUFFIXES = {".py", ".js", ".css", ".html", ".json", ".sh", ".yml", ".yaml"}
 ACTIVE_DIRS = ("ui", "architecture", "sbb", "tests", "cloud", ".github")
+R25_FILES = (
+    "sbb/media_team_seed_v6116.py",
+    "sbb/media_team_sources_v6116.py",
+    "sbb/media_repair_yield_v6116.py",
+    "tests/test_v6116_team_seed_directory.py",
+    "tests/test_v6116_media_repair_yield_release.py",
+)
 
 
 def active_files(root):
@@ -52,6 +59,18 @@ def replace_once(text, old, new, label):
     if new in text:
         return text
     raise SystemExit(f"ERROR: v6.1.16 patch anchor missing: {label}")
+
+
+def restore_r25_version_tokens(root):
+    """Older chained materializers must not rewrite future R25 version literals."""
+    for rel in R25_FILES:
+        path = root / rel
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        rendered = text.replace("6.1.156", NEW).replace("6.1.166", NEW)
+        if rendered != text:
+            path.write_text(rendered, encoding="utf-8")
 
 
 def patch_seed_loader(root):
@@ -174,11 +193,13 @@ def main(argv=None):
         return 0
 
     run_base(root)
+    restore_r25_version_tokens(root)
     patch_seed_loader(root)
     patch_media_audit(root)
     patch_ui(root)
     patch_verify(root)
     promote(root)
+    restore_r25_version_tokens(root)
     controller(root)
 
     print("Sports Big Board v6.1.16 materialized")
