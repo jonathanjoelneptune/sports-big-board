@@ -1,39 +1,50 @@
-"""Sports Big Board v6.1.16 EPL official-FPL + stale-state follow-up.
+"""Sports Big Board v6.1.16 EPL official-FPL + identity/state follow-up.
 
 Shadow/certification only. Production Day State remains the event authority.
 
-The 2026-09-13 validation console proved that the prior canonical repairs resolved
-NFL/NCAAF/MLB identity contradictions, but also exposed two remaining runtime
-issues:
+The EPL official FPL adapter is healthy, but live validation exposed a final
+identity-normalization gap between the league-operated FPL team names and ESPN's
+long-form team names:
 
-* Premier League PulseLive requests return HTTP 400 even while the official
-  Premier League schedule is reachable. Use the league-operated Fantasy Premier
-  League JSON schedule as the structured authoritative adapter.
-* A repaired MLB date can retain a persisted RECONCILING row whose only reason was
-  an already-cleared production-only contradiction. Recompile only that exact
-  stale contradiction class after current hardening evidence is clean.
+* ``Man Utd`` vs ``Manchester United``
+* ``Man City`` vs ``Manchester City``
 
-Both behaviors fail closed and keep production authority disabled.
+Those variants caused otherwise identical EPL fixtures to exist as separate
+canonical rows on 2026-09-06, 2026-09-13, and 2026-09-20. This layer keeps the
+normalizer deliberately narrow: explicit aliases only, exact same Eastern slate
+date, kickoff within the existing 20-minute identity tolerance, and a one-to-one
+AUTHORITATIVE-only row paired with a broader INDEPENDENT/DIRECT-or-LEGACY row.
+
+The league-operated Fantasy Premier League JSON schedule remains the structured
+authoritative adapter, the old official-web/PulseLive collector remains fallback,
+and stale persisted contradiction cleanup remains fail-closed. Production
+authority stays disabled.
 """
 from __future__ import annotations
 
 import sys
 import threading
 import time
+from collections import defaultdict
 from contextlib import closing
 
 from . import canonical_shadow_v600 as shadow
 from . import canonical_certification_v610 as v610
 from . import canonical_certification_v611 as v611
+from . import canonical_identity_ingestion_v619 as v619
 from . import canonical_schedule_watchdogs_v6116 as watchdogs
 from . import canonical_reconciliation_followup_v6116 as reconcile_followup
 
-VERSION = "6.1.16-epl-fpl-state-followup-1"
+VERSION = "6.1.16-epl-fpl-state-followup-2"
 
 EPL_SOURCE = "PREMIER_LEAGUE_OFFICIAL_SCHEDULE"
 EPL_HOST = "fantasy.premierleague.com"
 FPL_BOOTSTRAP_URL = "https://fantasy.premierleague.com/api/bootstrap-static/"
 FPL_FIXTURES_URL = "https://fantasy.premierleague.com/api/fixtures/"
+EPL_ALIAS_GROUPS = (
+    ("Man Utd", "Manchester United"),
+    ("Man City", "Manchester City"),
+)
 
 _INSTALL_LOCK = threading.Lock()
 _INSTALLED = False
@@ -42,6 +53,15 @@ _PATCHED = False
 
 def _clean(value):
     return str(value or "").strip()
+
+
+def _install_epl_aliases():
+    """Install only the provider spelling variants proven by validation evidence."""
+    bucket = v619._ALIAS_LOOKUP.setdefault("EPL", {})
+    for group in EPL_ALIAS_GROUPS:
+        canonical = shadow._norm(group[0])
+        for name in group:
+            bucket[shadow._norm(name)] = canonical
 
 
 def _fpl_team_map(payload):
@@ -176,6 +196,133 @@ def _collect_epl_official_fpl(self, day_from, day_to):
             )
 
 
+def _mapping_sets(store, canonical_event_id):
+    mapped = defaultdict(set)
+    for row in store.mappings_for_event(canonical_event_id):
+        provider = _clean(row.get("provider"))
+        provider_event_id = _clean(row.get("provider_event_id"))
+        if provider and provider_event_id:
+            mapped[provider].add(provider_event_id)
+    return mapped
+
+
+def _provider_sets_compatible(store, first_id, second_id):
+    """Do not merge rows that already disagree on a shared provider identity."""
+    first = _mapping_sets(store, first_id)
+    second = _mapping_sets(store, second_id)
+    for provider in set(first) & set(second):
+        if first[provider].isdisjoint(second[provider]):
+            return False
+    return True
+
+
+def _repair_epl_alias_duplicates(engine, tolerance_seconds=20 * 60):
+    """Merge only the one-to-one EPL aliases demonstrated by live validation."""
+    store = engine.store
+    _install_epl_aliases()
+    with store._lock, closing(store._connect(readonly=True)) as conn:
+        rows = [dict(x) for x in conn.execute(
+            """SELECT * FROM canonical_event
+               WHERE competition_id='EPL' AND active=1 AND scheduled_at<>''
+               ORDER BY slate_date,scheduled_at,first_seen_at,canonical_event_id"""
+        ).fetchall()]
+
+    grouped = defaultdict(list)
+    for row in rows:
+        pair = v619._row_pair("EPL", row)
+        ts = shadow._epoch(row.get("scheduled_at"))
+        day = _clean(row.get("slate_date"))
+        if not day or ts is None or not all(pair):
+            continue
+        grouped[(day, pair)].append(row)
+
+    merged = []
+    touched = set()
+    for (day, _pair), candidates in grouped.items():
+        candidates = sorted(
+            candidates,
+            key=lambda row: (
+                shadow._epoch(row.get("scheduled_at")) or 0.0,
+                row["canonical_event_id"],
+            ),
+        )
+        clusters = []
+        for row in candidates:
+            ts = shadow._epoch(row.get("scheduled_at")) or 0.0
+            if (
+                not clusters
+                or abs(ts - (shadow._epoch(clusters[-1][-1].get("scheduled_at")) or 0.0))
+                > tolerance_seconds
+            ):
+                clusters.append([row])
+            else:
+                clusters[-1].append(row)
+
+        for cluster in clusters:
+            # Fail closed. The demonstrated defect is exactly one official-only
+            # identity plus one ESPN/legacy identity for the same fixture.
+            if len(cluster) != 2:
+                continue
+            first, second = cluster
+            classes_first = set(store.evidence_classes(first["canonical_event_id"]))
+            classes_second = set(store.evidence_classes(second["canonical_event_id"]))
+            auth_only_first = "AUTHORITATIVE" in classes_first and "INDEPENDENT" not in classes_first
+            auth_only_second = "AUTHORITATIVE" in classes_second and "INDEPENDENT" not in classes_second
+            broad_first = "INDEPENDENT" in classes_first and bool(classes_first & {"DIRECT", "LEGACY"})
+            broad_second = "INDEPENDENT" in classes_second and bool(classes_second & {"DIRECT", "LEGACY"})
+
+            if auth_only_first and broad_second:
+                loser, survivor = first, second
+            elif auth_only_second and broad_first:
+                loser, survivor = second, first
+            else:
+                continue
+
+            if not _provider_sets_compatible(
+                store,
+                loser["canonical_event_id"],
+                survivor["canonical_event_id"],
+            ):
+                continue
+
+            if v619._merge_event(store, survivor, loser, day):
+                merged.append({
+                    "date": day,
+                    "survivor": survivor["canonical_event_id"],
+                    "merged": loser["canonical_event_id"],
+                    "away": survivor.get("away_name"),
+                    "home": survivor.get("home_name"),
+                })
+                touched.add(day)
+
+    # Refresh legacy comparison IDs after any mapping movement, then compile the
+    # touched EPL dates immediately so persisted/effective certification agrees.
+    shadow_engine = getattr(engine, "shadow", None)
+    for day in sorted(touched):
+        if shadow_engine is not None:
+            try:
+                _count, legacy_ids, _touched, snapshot_present = shadow_engine.ingest_day_state(day)
+                if snapshot_present:
+                    store.record_comparison(day, "EPL", legacy_ids.get("EPL", set()))
+            except Exception:
+                pass
+        try:
+            store.compile_slate(
+                day,
+                "EPL",
+                "EPL_EXPLICIT_ALIAS_RECONCILIATION",
+                force_version=True,
+            )
+        except Exception:
+            pass
+
+    return {
+        "merged": len(merged),
+        "pairs": merged,
+        "touched": sorted(touched),
+    }
+
+
 def _stale_known_conflict_rows(store):
     """Latest persisted rows whose only persisted blocker is old production-only data."""
     with store._lock, closing(store._connect(readonly=True)) as conn:
@@ -259,36 +406,38 @@ def _normalize_stale_known_conflicts(store):
     }
 
 
-def _install_post_run_state_normalizer():
+def _install_post_run_reconciliation():
     cls = v610.CertificationEngine
-    if getattr(cls, "__sbbV6116StaleConflictNormalizer", False):
+    if getattr(cls, "__sbbV6116EplIdentityStateReconciliation", False):
         return
     original = cls.run_horizon
 
     def run_horizon(self):
         stats = original(self)
         try:
-            repair = _normalize_stale_known_conflicts(self.store)
+            identity = _repair_epl_alias_duplicates(self)
+            state = _normalize_stale_known_conflicts(self.store)
             if isinstance(stats, dict):
-                stats["staleConflictNormalization"] = repair
+                stats["eplAliasReconciliation"] = identity
+                stats["staleConflictNormalization"] = state
                 self.last_stats = stats
         except Exception as exc:
             if isinstance(stats, dict):
                 stats.setdefault("errors", []).append(
-                    f"stale conflict normalization: {type(exc).__name__}: {exc}"
+                    f"EPL identity/state reconciliation: {type(exc).__name__}: {exc}"
                 )
             self.last_error = (
-                f"stale conflict normalization: {type(exc).__name__}: {exc}"
+                f"EPL identity/state reconciliation: {type(exc).__name__}: {exc}"
             )
         return stats
 
     cls.run_horizon = run_horizon
-    cls.__sbbV6116StaleConflictNormalizer = True
+    cls.__sbbV6116EplIdentityStateReconciliation = True
 
 
 def _patch_health():
     cls = v610.CertificationEngine
-    if getattr(cls, "__sbbV6116EplFplStateHealth", False):
+    if getattr(cls, "__sbbV6116EplFplStateHealthV2", False):
         return
     original = cls.health
 
@@ -299,6 +448,8 @@ def _patch_health():
             {
                 "eplOfficialFplApiAuthoritative": True,
                 "eplOfficialFplApiHost": EPL_HOST,
+                "eplExplicitTeamAliasNormalization": True,
+                "eplPostCollectionAliasReconciliation": True,
                 "staleKnownConflictStateNormalization": True,
                 "productionAuthority": False,
             }
@@ -306,7 +457,7 @@ def _patch_health():
         return payload
 
     cls.health = health
-    cls.__sbbV6116EplFplStateHealth = True
+    cls.__sbbV6116EplFplStateHealthV2 = True
 
 
 def _runtime_install():
@@ -315,10 +466,7 @@ def _runtime_install():
     engine = None
     while time.time() < deadline:
         engine = watchdogs.engine()
-        if (
-            engine is not None
-            and getattr(reconcile_followup, "_PATCHED", False)
-        ):
+        if engine is not None and getattr(reconcile_followup, "_PATCHED", False):
             break
         time.sleep(0.1)
     if engine is None:
@@ -331,13 +479,15 @@ def _runtime_install():
         "host": EPL_HOST,
     }
     watchdogs.TRUSTED_SLATE_DATE_SOURCES.add(EPL_SOURCE)
+    _install_epl_aliases()
 
     cls = v610.CertificationEngine
     cls._collect_epl = _collect_epl_official_fpl
-    _install_post_run_state_normalizer()
+    _install_post_run_reconciliation()
     _patch_health()
     _PATCHED = True
 
+    initial_identity_repair = _repair_epl_alias_duplicates(engine)
     initial_state_repair = _normalize_stale_known_conflicts(engine.store)
     try:
         server = sys.modules.get("__main__")
@@ -347,6 +497,9 @@ def _runtime_install():
                     "eplFplStateFollowupVersion": VERSION,
                     "eplAuthoritativeSource": EPL_SOURCE,
                     "eplAuthoritativeHost": EPL_HOST,
+                    "eplExplicitTeamAliasNormalization": True,
+                    "eplPostCollectionAliasReconciliation": True,
+                    "initialEplIdentityRepair": initial_identity_repair,
                     "staleKnownConflictStateNormalization": True,
                     "initialStaleStateRepair": initial_state_repair,
                     "productionAuthority": False,
@@ -355,13 +508,13 @@ def _runtime_install():
     except Exception:
         pass
 
-    # Refresh immediately so all 15 EPL date decisions and any stale persisted
-    # contradiction row are visible without waiting for the next cadence.
+    # Refresh immediately so the alias resolver applies to new FPL observations
+    # and all 15 EPL date decisions become visible without waiting for cadence.
     try:
         engine.run_horizon()
     except Exception as exc:
         engine.last_error = (
-            f"v6.1.16 EPL/FPL state follow-up: {type(exc).__name__}: {exc}"
+            f"v6.1.16 EPL/FPL identity-state follow-up: {type(exc).__name__}: {exc}"
         )
 
 

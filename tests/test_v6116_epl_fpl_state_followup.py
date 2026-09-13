@@ -11,6 +11,7 @@ if str(ROOT) not in sys.path:
 
 from sbb import canonical_shadow_v600 as shadow
 from sbb import canonical_certification_v611 as v611
+from sbb import canonical_identity_ingestion_v619 as v619
 from sbb import canonical_epl_fpl_state_followup_v6116 as followup
 
 
@@ -34,11 +35,13 @@ class CaptureWriter:
 
 
 class FakeEngine:
-    def __init__(self, bootstrap, fixtures):
+    def __init__(self, bootstrap=None, fixtures=None, store=None):
         self.writer = CaptureWriter()
         self.bootstrap = bootstrap
         self.fixtures = fixtures
         self.health = []
+        self.store = store
+        self.shadow = None
 
     def _http(self, url, headers=None, as_text=False, cache_seconds=0):
         if url == followup.FPL_BOOTSTRAP_URL:
@@ -52,6 +55,33 @@ class FakeEngine:
 
     def _failed_range(self, *args, **kwargs):
         raise AssertionError(("unexpected failed range", args, kwargs))
+
+
+def epl_event(day, away, home, scheduled, event_id):
+    return {
+        "competitionId": "EPL",
+        "__sbbDate": day,
+        "eventId": event_id,
+        "scheduledAt": scheduled,
+        "status": "SCHEDULED",
+        "away": team(away),
+        "home": team(home),
+    }
+
+
+def add_epl_evidence(store, canonical_id, event, source, source_class, day):
+    store.upsert_event(
+        canonical_id,
+        "EPL",
+        day,
+        event,
+        source,
+        "RESOLVED",
+        "INCLUDED",
+        "ALL_LEAGUE_EVENTS",
+    )
+    store.upsert_mappings(canonical_id, shadow._provider_ids(event, source))
+    store.record_schedule(canonical_id, source, source_class, day, event)
 
 
 def verify_fpl_official_collector():
@@ -148,6 +178,89 @@ def verify_incomplete_fpl_schedule_fails_closed():
         raise AssertionError("partial/empty FPL response must fail closed")
 
 
+def verify_explicit_epl_aliases_only():
+    followup._install_epl_aliases()
+    assert v619._canonical_team_key("EPL", "Man Utd") == v619._canonical_team_key("EPL", "Manchester United")
+    assert v619._canonical_team_key("EPL", "Man City") == v619._canonical_team_key("EPL", "Manchester City")
+    # Do not turn this into a fuzzy/global abbreviation rule.
+    assert v619._canonical_team_key("EPL", "Manchester Utd") != v619._canonical_team_key("EPL", "Manchester United")
+
+
+def verify_live_console_epl_alias_reconciliation():
+    v611._install_certification_gate()
+    followup._install_epl_aliases()
+    with tempfile.TemporaryDirectory() as td:
+        store = shadow.CanonicalShadowStore(Path(td) / "canonical.sqlite3")
+        fake = FakeEngine(store=store)
+
+        cases = {
+            "2026-09-06": [
+                (
+                    epl_event("2026-09-06", "Man Utd", "Everton", "2026-09-06T13:00:00Z", "30"),
+                    epl_event("2026-09-06", "Manchester United", "Everton", "2026-09-06T13:00:00Z", "espn-30"),
+                ),
+            ],
+            "2026-09-13": [
+                (
+                    epl_event("2026-09-13", "Man City", "Man Utd", "2026-09-13T15:30:00Z", "39"),
+                    epl_event("2026-09-13", "Manchester City", "Manchester United", "2026-09-13T15:30:00Z", "espn-39"),
+                ),
+            ],
+            "2026-09-20": [
+                (
+                    epl_event("2026-09-20", "Sunderland", "Man City", "2026-09-20T13:00:00Z", "45"),
+                    epl_event("2026-09-20", "Sunderland", "Manchester City", "2026-09-20T13:00:00Z", "espn-45"),
+                ),
+                (
+                    epl_event("2026-09-20", "Man Utd", "Fulham", "2026-09-20T15:30:00Z", "46"),
+                    epl_event("2026-09-20", "Manchester United", "Fulham", "2026-09-20T15:30:00Z", "espn-46"),
+                ),
+            ],
+        }
+
+        expected_live = {}
+        serial = 0
+        for day, pairs in cases.items():
+            expected_live[day] = len(pairs)
+            for official, independent in pairs:
+                serial += 1
+                official_id = f"cev_official_{serial}"
+                broad_id = f"cev_broad_{serial}"
+                add_epl_evidence(store, official_id, official, followup.EPL_SOURCE, "AUTHORITATIVE", day)
+                add_epl_evidence(store, broad_id, independent, "ESPN_INDEPENDENT", "INDEPENDENT", day)
+                store.record_schedule(broad_id, "ESPN_DIRECT", "DIRECT", day, independent)
+                store.record_schedule(broad_id, "HISTORY_CATALOG", "LEGACY", day, independent)
+
+            count = len(pairs)
+            store.record_source_coverage(day, "EPL", followup.EPL_SOURCE, "AUTHORITATIVE", True, count, "")
+            store.record_source_coverage(day, "EPL", "ESPN_INDEPENDENT", "INDEPENDENT", True, count, "")
+            # Legacy/production knows the broader ESPN identities on the played
+            # dates; future Sep 20 legitimately has no production snapshot yet.
+            if day != "2026-09-20":
+                broad_ids = {
+                    row["canonical_event_id"]
+                    for row in store.events_for_day(day, "EPL")
+                    if "INDEPENDENT" in set(store.evidence_classes(row["canonical_event_id"]))
+                }
+                store.record_comparison(day, "EPL", broad_ids)
+            else:
+                store.record_comparison(day, "EPL", set())
+
+        repair = followup._repair_epl_alias_duplicates(fake)
+        assert repair["merged"] == 4, repair
+        assert repair["touched"] == ["2026-09-06", "2026-09-13", "2026-09-20"], repair
+
+        for day, expected in expected_live.items():
+            rows = store.events_for_day(day, "EPL")
+            assert len(rows) == expected, (day, rows)
+            for row in rows:
+                classes = set(store.evidence_classes(row["canonical_event_id"]))
+                assert "AUTHORITATIVE" in classes and "INDEPENDENT" in classes, (day, row, classes)
+            latest = store.latest_slates(day, "EPL")[0]
+            assert latest["certification_status"] == "CERTIFIED", (day, latest)
+            assert latest["conflict_count"] == 0, (day, latest)
+
+
 def verify_stale_known_conflict_normalization():
     v611._install_certification_gate()
     with tempfile.TemporaryDirectory() as td:
@@ -202,11 +315,27 @@ def verify_stale_known_conflict_normalization():
         assert latest["conflict_count"] == 0, latest
 
 
+def verify_release_wiring():
+    startup = (ROOT / "sbb" / "startup.py").read_text(encoding="utf-8")
+    verify = (ROOT / "VERIFY.sh").read_text(encoding="utf-8")
+    init = (ROOT / "sbb" / "__init__.py").read_text(encoding="utf-8")
+    if "from .startup import" in init and "bootstrap()" in init:
+        assert 'StartupRegistration("canonical-epl-fpl-state-v6116", "canonical_epl_fpl_state_followup_v6116")' in startup
+        assert 'StartupPhase("canonical-epl-fpl-state-v6116"' in startup
+    else:
+        assert "canonical_epl_fpl_state_followup_v6116 import install" in init
+    assert "python3 -m py_compile sbb/canonical_epl_fpl_state_followup_v6116.py" in verify
+    assert "python3 tests/test_v6116_epl_fpl_state_followup.py" in verify
+
+
 def main():
     verify_fpl_official_collector()
     verify_incomplete_fpl_schedule_fails_closed()
+    verify_explicit_epl_aliases_only()
+    verify_live_console_epl_alias_reconciliation()
     verify_stale_known_conflict_normalization()
-    print("PASS: v6.1.16 EPL official FPL authoritative adapter + stale conflict state normalization")
+    verify_release_wiring()
+    print("PASS: v6.1.16 EPL FPL adapter + explicit alias reconciliation + stale state normalization")
 
 
 if __name__ == "__main__":
