@@ -22,6 +22,11 @@ PRESERVE = (
     "tests/test_v6116_canonical_reconcile_followup.py",
     "tests/test_v6116_epl_fpl_state_followup.py",
     "tests/test_v6116_startup_registry_release_integrity.py",
+    "sbb/media_team_sources_v6116.py",
+    "ui/media-audit-copy-v6116.js",
+    "tests/test_media_team_sources_v6116.py",
+    "tests/test_media_audit_copy_v6116.py",
+    "tests/test_media_audit_discovery_visibility_v6116.py",
 )
 
 
@@ -118,6 +123,45 @@ def run_base(root, preserved):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
 
+
+
+def patch_media_repair_identity(root):
+    path = root / "media_audit_service.py"
+    text = path.read_text(encoding="utf-8")
+    old = "from sbb.media_team_sources_v6115 import TeamSourceRegistry\n"
+    new = "from sbb.media_team_sources_v6116 import TeamSourceRegistry\n"
+    if new not in text:
+        if old not in text:
+            raise SystemExit("ERROR: v6.1.16 Media Repair team-source import anchor missing")
+        text = text.replace(old, new, 1)
+        path.write_text(text, encoding="utf-8")
+
+
+def patch_media_audit_copy(root):
+    path = root / "media-audit.html"
+    text = path.read_text(encoding="utf-8")
+    button = '        <button id="copyAuditInfo" class="primary" aria-label="Copy important Media Audit diagnostics">COPY IMPORTANT INFO</button>'
+    if 'id="copyAuditInfo"' not in text:
+        anchor = '        <button id="exportCsv">FAILURES CSV</button>'
+        if anchor not in text:
+            raise SystemExit("ERROR: v6.1.16 Media Audit copy button anchor missing")
+        text = text.replace(anchor, anchor + "\n" + button, 1)
+    script = '  <script src="ui/media-audit-copy-v6116.js?v=6.1.16"></script>'
+    lines = text.splitlines()
+    found = False
+    for idx, line in enumerate(lines):
+        if 'ui/media-audit-copy-v6116.js' in line:
+            lines[idx] = script
+            found = True
+    if not found:
+        for idx, line in enumerate(lines):
+            if '</body>' in line:
+                lines.insert(idx, script)
+                found = True
+                break
+    if not found:
+        raise SystemExit("ERROR: v6.1.16 Media Audit copy script anchor missing")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 def patch_init(root):
     """Wire v6.1.16 on legacy startup or the P1 startup registry."""
@@ -233,6 +277,11 @@ def patch_verify(root):
         "python3 -m py_compile sbb/canonical_epl_fpl_state_followup_v6116.py",
         "python3 tests/test_v6116_epl_fpl_state_followup.py",
         "python3 tests/test_v6116_startup_registry_release_integrity.py",
+        "python3 -m py_compile sbb/media_team_sources_v6116.py",
+        "python3 tests/test_media_team_sources_v6116.py",
+        "python3 tests/test_media_audit_copy_v6116.py",
+        "python3 tests/test_media_audit_discovery_visibility_v6116.py",
+        "node --check ui/media-audit-copy-v6116.js",
     ]
     missing = [x for x in additions if x not in text]
     if missing:
@@ -288,6 +337,11 @@ def main(argv=None):
         root / "tests" / "test_v6116_canonical_reconcile_followup.py",
         root / "tests" / "test_v6116_epl_fpl_state_followup.py",
         root / "tests" / "test_v6116_startup_registry_release_integrity.py",
+        root / "sbb" / "media_team_sources_v6116.py",
+        root / "ui" / "media-audit-copy-v6116.js",
+        root / "tests" / "test_media_team_sources_v6116.py",
+        root / "tests" / "test_media_audit_copy_v6116.py",
+        root / "tests" / "test_media_audit_discovery_visibility_v6116.py",
     ]
     missing = [str(x.relative_to(root)) for x in required if not x.is_file()]
     if missing:
@@ -300,6 +354,8 @@ def main(argv=None):
     # can execute the checker. This is required after the P1 startup-registry cutover.
     patch_release_integrity_startup_registry(root)
     run_base(root, preserved)
+    patch_media_repair_identity(root)
+    patch_media_audit_copy(root)
     patch_init(root)
     patch_legacy_contracts(root)
     patch_verify(root)
