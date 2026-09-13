@@ -27,6 +27,7 @@ PRESERVE = (
     "tests/test_media_team_sources_v6116.py",
     "tests/test_media_audit_copy_v6116.py",
     "tests/test_media_audit_discovery_visibility_v6116.py",
+    "tests/test_v6116_storage_retention_release.py",
 )
 
 
@@ -274,6 +275,20 @@ def patch_legacy_contracts(root):
         if rendered != text:
             path.write_text(rendered, encoding="utf-8")
 
+    # v5.3.4 encoded the original fixed 256 MiB deploy guard as a literal token.
+    # v6.1.16 replaces that fixed threshold with bounded daily-backup retention
+    # and rollback-sized dynamic headroom. Translate only the obsolete literal;
+    # the dedicated v6.1.16 storage test verifies the stronger full contract.
+    browse_safety = tests / "test_v534_complete_browse_deploy_safety.py"
+    if browse_safety.is_file():
+        source = browse_safety.read_text(encoding="utf-8")
+        legacy_phrase = "less than 256 MiB free after safe cleanup"
+        if legacy_phrase in source:
+            browse_safety.write_text(
+                source.replace(legacy_phrase, "REQUIRED_KB=1048576", 1),
+                encoding="utf-8",
+            )
+
 
 def patch_verify(root):
     path = root / "VERIFY.sh"
@@ -295,6 +310,7 @@ def patch_verify(root):
         "python3 tests/test_media_audit_copy_v6116.py",
         "python3 tests/test_media_audit_discovery_visibility_v6116.py",
         "node --check ui/media-audit-copy-v6116.js",
+        "python3 tests/test_v6116_storage_retention_release.py",
     ]
     missing = [x for x in additions if x not in text]
     if missing:
@@ -355,6 +371,7 @@ def main(argv=None):
         root / "tests" / "test_media_team_sources_v6116.py",
         root / "tests" / "test_media_audit_copy_v6116.py",
         root / "tests" / "test_media_audit_discovery_visibility_v6116.py",
+        root / "tests" / "test_v6116_storage_retention_release.py",
     ]
     missing = [str(x.relative_to(root)) for x in required if not x.is_file()]
     if missing:
