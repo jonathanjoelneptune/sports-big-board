@@ -29,18 +29,23 @@ jobs:
           path = Path('app.js')
           source = path.read_text(encoding='utf-8')
 
+          ownership_old = """  const item=clip(index);\n  let transactionId=userPlaybackSession?.source==='score'?String(userPlaybackSession.transactionId||''):'';\n  const active=orchestrator.snapshot?.()||{};\n  if(!transactionId||active.transactionId!==transactionId||!window.SBB_APP_STORE?.transactionActive?.(transactionId)){"""
+          ownership_new = """  const item=clip(index);\n  const requestedTransactionId=String(options?.transactionId||'');\n  let transactionId=requestedTransactionId||(userPlaybackSession?.source==='score'?String(userPlaybackSession.transactionId||''):'');\n  const active=orchestrator.snapshot?.()||{};\n  const transactionIsActive=transactionId&&window.SBB_APP_STORE?.transactionActive?.(transactionId);\n  if(!transactionId||!transactionIsActive||(!requestedTransactionId&&active.transactionId!==transactionId)){"""
+          start = source.index('function tuneProgramIndexV5(')
+          end = source.index('function promotePreparedV5(', start)
+          tune_block = source[start:end]
+          count = tune_block.count(ownership_old)
+          if count != 1:
+              raise SystemExit(f'tuneProgramIndexV5 transaction ownership: expected exactly one scoped match, found {count}; refusing patch')
+          tune_block = tune_block.replace(ownership_old, ownership_new, 1)
+          source = source[:start] + tune_block + source[end:]
+
           def replace_once(old, new, label):
               global source
               count = source.count(old)
               if count != 1:
                   raise SystemExit(f'{label}: expected exactly one match, found {count}; refusing broad patch')
               source = source.replace(old, new, 1)
-
-          replace_once(
-              """  const item=clip(index);\n  let transactionId=userPlaybackSession?.source==='score'?String(userPlaybackSession.transactionId||''):'';\n  const active=orchestrator.snapshot?.()||{};\n  if(!transactionId||active.transactionId!==transactionId||!window.SBB_APP_STORE?.transactionActive?.(transactionId)){""",
-              """  const item=clip(index);\n  const requestedTransactionId=String(options?.transactionId||'');\n  let transactionId=requestedTransactionId||(userPlaybackSession?.source==='score'?String(userPlaybackSession.transactionId||''):'');\n  const active=orchestrator.snapshot?.()||{};\n  const transactionIsActive=transactionId&&window.SBB_APP_STORE?.transactionActive?.(transactionId);\n  if(!transactionId||!transactionIsActive||(!requestedTransactionId&&active.transactionId!==transactionId)){""",
-              'tuneProgramIndexV5 transaction ownership'
-          )
 
           replace_once(
               "tuneProgramIndexV5(0,{userInitiated:true,reason:'score-card selection'});",
@@ -128,6 +133,7 @@ jobs:
           const required=[
             "tuneProgramIndexV5(0,{userInitiated:true,reason:'score-card selection',transactionId:v5TransactionId});",
             "reason:'score reel continuation',transactionId:userPlaybackSession.transactionId",
+            "reason:'score reel clip selection',transactionId:userPlaybackSession.transactionId",
             "reason:'manual score reel next',transactionId:userPlaybackSession.transactionId",
             "reason:'manual score reel previous',transactionId:userPlaybackSession.transactionId",
             "reason:'historical exact-source refresh',restart:true,transactionId:session.transactionId",
