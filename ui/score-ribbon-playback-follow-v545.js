@@ -21,47 +21,11 @@
   function selectedEvent(){try{return window.SBB_SELECTED_EVENT?.get?.()||null;}catch(_){return null;}}
   function idsOf(obj){
     if(!obj||typeof obj!=='object')return [];
-    const keys=['canonicalEventKey','eventKey','eventId','providerEventId','gameId','matchId','scoreEventId','espnEventId','gamePk','gameCenterEventId','scoreGameKey','dateGameKey','id','uid'];
+    const keys=['canonicalEventKey','eventKey','eventId','providerEventId','gameId','matchId','id','uid'];
     const out=[];
     for(const k of keys){const v=clean(obj[k]);if(v)out.push(norm(v));}
     for(const k of ['match','event','competition','scoreMatch']){const child=obj[k];if(child&&typeof child==='object')for(const id of idsOf(child))out.push(id);}
     return [...new Set(out.filter(v=>v.length>=3))];
-  }
-  function eventDate(obj){
-    if(!obj||typeof obj!=='object')return '';
-    try{
-      if(typeof scoreEventDate==='function'){
-        const date=clean(scoreEventDate(obj)).slice(0,10);
-        if(/^\d{4}-\d{2}-\d{2}$/.test(date))return date;
-      }
-    }catch(_){}
-    const raw=clean(obj.scheduledGameDate||obj.__sbbDate||obj.gameDate||obj.date||obj.startDate||obj.scheduledAt);
-    return /^\d{4}-\d{2}-\d{2}/.test(raw)?raw.slice(0,10):'';
-  }
-  function resolvedPlaybackMatch(item){
-    if(!item)return null;
-    try{
-      if(typeof launchScoreMatchForItem==='function')return launchScoreMatchForItem(item)||null;
-    }catch(_){}
-    return null;
-  }
-  function sameEvent(a,b){
-    if(!a||!b)return false;
-    const ad=eventDate(a),bd=eventDate(b);
-    if(ad&&bd&&ad!==bd)return false;
-    const ai=idsOf(a),bi=idsOf(b);
-    if(ai.length&&bi.length)return ai.some(id=>bi.includes(id));
-    try{if(window.SBB_EVENT_IDENTITY?.same?.(a,b))return true;}catch(_){}
-    try{if(typeof sameGameProgramItem==='function'&&sameGameProgramItem(a,b))return true;}catch(_){}
-    return false;
-  }
-  function syncPlaybackRibbon(match,item){
-    const focus=match||item;
-    if(!focus)return false;
-    try{
-      if(typeof focusScoreRibbonForGame==='function')return !!focusScoreRibbonForGame(focus,{force:false});
-    }catch(_){}
-    return false;
   }
   function teamStrings(obj){
     if(!obj||typeof obj!=='object')return [];
@@ -78,11 +42,10 @@
     for(const k of ['title','name','matchup','displayName'])add(obj[k]);
     return [...new Set(out.map(norm).filter(Boolean))];
   }
-  function activeTexts(sources=[]){
-    const title=clean(document.getElementById('currentTitle')?.textContent);
-    const values=[title];
-    for(const source of sources)values.push(...teamStrings(source));
-    return [...new Set(values.filter(Boolean))];
+  function activeTexts(){
+    const item=currentItem(),selected=selectedEvent(),title=clean(document.getElementById('currentTitle')?.textContent);
+    const values=[title,...teamStrings(item),...teamStrings(selected)].filter(Boolean);
+    return [...new Set(values)];
   }
   function cardHaystack(card){
     const data=Object.values(card?.dataset||{}).map(clean).join(' ');
@@ -129,23 +92,8 @@
     lastScrollAt=Date.now();
   }
   function reconcile(reason='sync'){
-    scheduled=false;
-    const item=currentItem(),match=resolvedPlaybackMatch(item),rawSelected=selectedEvent();
-    const curatedActive=document.body?.classList?.contains('sbb-curation-active');
-    // The active playback item owns ribbon/date authority. launchScoreMatchForItem
-    // resolves direct event ids across today + yesterday before fuzzy team matching,
-    // which prevents a same-series matchup today from stealing a recap from yesterday.
-    // If startup media has neither a resolved game nor a game date yet, leave the
-    // score ribbon unclaimed instead of guessing against today's same-team matchup.
-    if(!curatedActive&&item&&!match&&!eventDate(item)){
-      clearHighlight();lastCard=null;
-      return {reason,kind:'scores',awaitingPlaybackIdentity:true};
-    }
-    if(!curatedActive)syncPlaybackRibbon(match,item);
-    const selected=rawSelected&&sameEvent(match||item,rawSelected)?rawSelected:null;
-    const sources=[match,item,selected].filter(Boolean);
-    const ctx=ribbonContext();if(!ctx||!ctx.cards.length){clearHighlight();lastCard=null;return null;}
-    const ids=[...new Set(sources.flatMap(idsOf))],texts=activeTexts(sources);
+    scheduled=false;const ctx=ribbonContext();if(!ctx||!ctx.cards.length){clearHighlight();lastCard=null;return null;}
+    const item=currentItem(),selected=selectedEvent(),ids=[...idsOf(item),...idsOf(selected)],texts=activeTexts();
     if(!ids.length&&!texts.length){clearHighlight();lastCard=null;return null;}
     let best=null,bestScore=-Infinity;
     for(const card of ctx.cards){const s=scoreCard(card,ids,texts);if(s>bestScore){best=card;bestScore=s;}}
@@ -154,7 +102,7 @@
     const signature=`${ctx.kind}|${ids[0]||''}|${norm(document.getElementById('currentTitle')?.textContent)}|${best.dataset?.sbbFocusId||best.textContent?.slice(0,80)||''}`;
     clearHighlight(best);best.classList.add('sbb-program-now-watching');best.dataset.sbbPlaybackFollow='1';best.setAttribute('aria-current','true');
     if(best!==lastCard||signature!==lastSignature){scrollToThird(ctx,best);lastCard=best;lastSignature=signature;}
-    return {reason,kind:ctx.kind,score:bestScore,card:best,playbackDate:eventDate(match||item),resolvedMatch:!!match};
+    return {reason,kind:ctx.kind,score:bestScore,card:best};
   }
   function schedule(reason='event'){
     if(scheduled)return;scheduled=true;
