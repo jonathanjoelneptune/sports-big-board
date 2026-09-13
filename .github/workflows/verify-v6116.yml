@@ -1,0 +1,28 @@
+name: Verify v6.1.16 schedule watchdog release
+
+on:
+  push:
+    branches:
+      - release/v6.1.16-official-schedule-watchdogs
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize v6.1.16
+        run: python3 tools/apply_v6116_release.py --skip-check
+      - name: Full repository verification
+        run: bash VERIFY.sh
+      - name: Explicit schedule watchdog contracts
+        run: |
+          python3 tests/test_v6116_schedule_watchdogs.py
+          python3 tests/test_v6116_schedule_watchdog_release.py
