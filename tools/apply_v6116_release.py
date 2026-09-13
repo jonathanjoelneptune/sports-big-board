@@ -258,6 +258,11 @@ def patch_legacy_contracts(root):
                 'assert version in {expected_version, ".".join(("6", "1", "16"))}, version',
                 1,
             )
+            rendered = rendered.replace(
+                'assert "from sbb.media_team_sources_v6115 import TeamSourceRegistry" in service',
+                'assert any(token in service for token in ("from sbb.media_team_sources_v6115 import TeamSourceRegistry", "from sbb.media_team_sources_v6116 import TeamSourceRegistry"))',
+                1,
+            )
         if rendered != text:
             path.write_text(rendered, encoding="utf-8")
 
