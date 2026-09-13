@@ -8,6 +8,7 @@
    Safety invariants:
    - never calls play()/playVideo()/loadVideoById before the user launch gesture;
    - Hot Standby is launch-gated because its readiness proof intentionally starts media;
+   - never monkey-patches the app's playback/standby owners;
    - never chooses a different program or owns playback/failover;
    - YouTube is CUED only, muted, on the already-assigned active slot;
    - native media uses preload=auto only and remains muted/paused;
@@ -34,12 +35,11 @@
   let lastMessage='Loading…';
   let progressValue=6;
   let launchCommitted=false;
-  let standbyGuardInstalled=false;
 
   const state={
     installed:true,version:VERSION,status:'WAITING_FOR_PROGRAM',transport:'',mediaKey:'',
     startedAt:Date.now(),preparedAt:0,attempts:0,lastMessage,error:'',
-    safeMode:'CUE_OR_PRELOAD_ONLY',prelaunchPlayRequests:0,blockedStandbyRequests:0
+    safeMode:'CUE_OR_PRELOAD_ONLY'
   };
 
   function launchScreen(){return document.getElementById('launchScreen');}
@@ -133,60 +133,11 @@
     return !!item?.mediaUrl&&!item?.youtubeId;
   }
 
-  function installStandbyLaunchGuard(){
-    if(standbyGuardInstalled)return true;
-    const original=window.prepareStandby;
-    if(typeof original!=='function')return false;
-    if(original.__sbbSplashLaunchGuard){standbyGuardInstalled=true;return true;}
-    function guardedPrepareStandby(slot,index,opts){
-      if(prelaunchLocked()){
-        state.blockedStandbyRequests++;
-        state.lastBlockedStandbyAt=Date.now();
-        state.lastBlockedStandbySlot=String(slot||'');
-        return false;
-      }
-      return original.apply(this,arguments);
-    }
-    try{
-      Object.defineProperty(guardedPrepareStandby,'__sbbSplashLaunchGuard',{value:true});
-      Object.defineProperty(guardedPrepareStandby,'__sbbOriginal',{value:original});
-    }catch(_){guardedPrepareStandby.__sbbSplashLaunchGuard=true;}
-    window.prepareStandby=guardedPrepareStandby;
-    standbyGuardInstalled=true;
-    state.standbyGuardInstalledAt=Date.now();
-    return true;
-  }
-
-  function enforceNativePrelaunchPause(event){
-    if(!prelaunchLocked())return;
-    const media=event?.target;
-    if(typeof HTMLMediaElement==='undefined'||!(media instanceof HTMLMediaElement))return;
-    state.prelaunchPlayRequests++;
-    state.lastPrelaunchPlayAt=Date.now();
-    try{media.muted=true;media.volume=0;}catch(_){}
-    try{media.pause();}catch(_){}
-    try{if(Number.isFinite(media.currentTime)&&media.currentTime>0.05)media.currentTime=0;}catch(_){}
-  }
-
-  function enforceYouTubePrelaunchPause(){
-    if(!prelaunchLocked())return;
-    const playingState=window.YT?.PlayerState?.PLAYING??1;
-    for(const slot of ['A','B']){
-      const p=playerFor(slot);if(!p)continue;
-      try{p.mute?.();}catch(_){}
-      let playing=false;
-      try{playing=p.getPlayerState?.()===playingState;}catch(_){}
-      if(!playing)continue;
-      state.prelaunchPlayRequests++;
-      state.lastPrelaunchPlayAt=Date.now();
-      try{p.pauseVideo?.();}catch(_){}
-      try{p.seekTo?.(0,true);}catch(_){}
-    }
-  }
-
   function warmHotStandby(item,index,key){
-    // Hot Standby intentionally proves readiness by briefly starting muted media.
-    // That is valid after launch, but never while the splash owns the user-gesture gate.
+    // Retain the canonical Hot Standby capability contract for post-launch use,
+    // but the splash never invokes it while it owns the launch screen. Hot Standby
+    // proves readiness by starting muted media and therefore belongs exclusively to
+    // the normal PlaybackController after the user's Start gesture.
     if(prelaunchLocked())return {handled:false,ready:false};
     let usable=true;
     try{if(typeof runtimeMediaUsable==='function')usable=!!runtimeMediaUsable(item);}catch(_){}
@@ -258,9 +209,10 @@
     if(!v||!url){status('Preparing first video…','WAITING_FOR_PLAYER');return false;}
     if(!assignmentMatches(slot,item)){status('Synchronizing first video…','WAITING_FOR_ASSIGNMENT');return false;}
     try{
-      // Preload is intentionally network/decoder preparation only. The element is
-      // kept paused and muted until the red launch button supplies the user gesture.
-      v.muted=true;v.volume=0;
+      // Preload is intentionally network/decoder preparation only. Do not change
+      // the element volume here: the app's launch gesture owns audible state.
+      // Muting alone is sufficient to guarantee silence while the splash is up.
+      v.muted=true;
       try{v.pause();}catch(_){}
       v.preload='auto';v.setAttribute('preload','auto');v.playsInline=true;v.setAttribute('playsinline','');
       const attr=String(v.getAttribute('src')||'');
@@ -285,8 +237,6 @@
   function tick(){
     if(stopped)return;
     if(experienceStarted()||!launchScreen()){stop('launch-complete');return;}
-    installStandbyLaunchGuard();
-    enforceYouTubePrelaunchPause();
     attempts++;state.attempts=attempts;
     if(performance.now()-startedAt>DEADLINE_MS){
       if(state.status!=='TIMEOUT')status('Board ready • video will finish loading when started','TIMEOUT');
@@ -307,6 +257,8 @@
     if(isContext(item)){
       lastTransport='CONTEXT_READY';status('First program ready • tap to start','READY');ready=true;
     }else{
+      // While the splash is visible, warmHotStandby() is intentionally a no-op;
+      // only cue/load preparation below is allowed to touch the selected media.
       const hot=warmHotStandby(item,index,key);
       if(hot.handled)ready=hot.ready;
       else if(isNative(item))ready=warmNative(item,slot,key);
@@ -318,19 +270,35 @@
     }
   }
 
+  function restoreLaunchAudioIntent(){
+    // pointerdown/keydown on the Start control is the core app's normal audio
+    // unlock gesture. Reassert that same intent after the splash's preload mute so
+    // the handoff begins in the exact state PlaybackController expects.
+    let unlocked=false;
+    try{unlocked=(typeof mediaInteractionUnlocked!=='undefined'&&!!mediaInteractionUnlocked);}catch(_){}
+    if(!unlocked)return;
+    const slot=assignedSlot();
+    try{
+      if(typeof slotMedia!=='undefined'&&slotMedia?.[slot]==='native'){
+        const v=nativeFor(slot);if(v)v.muted=false;
+      }else playerFor(slot)?.unMute?.();
+    }catch(_){}
+    try{if(typeof startupMutedSlots!=='undefined'&&startupMutedSlots)startupMutedSlots[slot]=false;}catch(_){}
+    state.audioIntentRestoredAt=Date.now();
+  }
+
   function onLaunchClick(){
-    // The click itself is the user authorization boundary. Release the guard before
-    // normal launch handlers run so startup can immediately use Hot Standby/playback.
+    // The click itself is the authorization boundary. From this point forward the
+    // splash owns nothing: restore the core app's audio intent and stop polling so
+    // normal PlaybackController + Hot Standby behavior is completely untouched.
     launchCommitted=true;
     state.launchCommittedAt=Date.now();
-    setTimeout(()=>stop('launch-click'),0);
+    restoreLaunchAudioIntent();
+    stop('launch-click');
   }
 
   function init(){
     try{if(typeof safeStartLiveData==='function')safeStartLiveData();}catch(_){}
-    installStandbyLaunchGuard();
-    document.addEventListener('play',enforceNativePrelaunchPause,true);
-    document.addEventListener('playing',enforceNativePrelaunchPause,true);
     status('Loading scores and first video…','WAITING_FOR_PROGRAM');
     launchButton()?.addEventListener('click',onLaunchClick,{once:true,capture:true});
     tick();timer=setInterval(tick,POLL_MS);
@@ -343,8 +311,5 @@
     stop:()=>stop('operator')
   });
 
-  // app.js is already parsed before this module, so install the Hot Standby gate
-  // immediately rather than waiting for DOMContentLoaded/init.
-  installStandbyLaunchGuard();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
