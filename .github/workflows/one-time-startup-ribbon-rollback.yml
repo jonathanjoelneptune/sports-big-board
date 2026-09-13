@@ -1,0 +1,48 @@
+name: One-time startup ribbon rollback
+
+on:
+  push:
+    branches:
+      - rollback/startup-ribbon-playback-follow-20260913
+    paths:
+      - .github/workflows/one-time-startup-ribbon-rollback.yml
+
+permissions:
+  contents: write
+
+jobs:
+  rollback-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: rollback/startup-ribbon-playback-follow-20260913
+          fetch-depth: 0
+
+      - name: Restore known-working playback-follow module
+        shell: bash
+        run: |
+          git checkout 74da872216ac00cf813cb3166c4ce022daa5bac1 -- \
+            ui/score-ribbon-playback-follow-v545.js \
+            tests/test_v545_controller_navigation_fullscreen_playback_follow.py
+
+      - name: Verify targeted rollback
+        shell: bash
+        run: |
+          python tests/test_v545_controller_navigation_fullscreen_playback_follow.py
+          git diff --check
+          git diff --name-only HEAD | sort > /tmp/changed.txt
+          printf '%s\n' \
+            tests/test_v545_controller_navigation_fullscreen_playback_follow.py \
+            ui/score-ribbon-playback-follow-v545.js | sort > /tmp/expected.txt
+          diff -u /tmp/expected.txt /tmp/changed.txt
+
+      - name: Commit rollback and remove workflow
+        shell: bash
+        run: |
+          rm .github/workflows/one-time-startup-ribbon-rollback.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ui/score-ribbon-playback-follow-v545.js tests/test_v545_controller_navigation_fullscreen_playback_follow.py .github/workflows/one-time-startup-ribbon-rollback.yml
+          git commit -m "Rollback startup ribbon playback-follow regression"
+          git push origin HEAD:rollback/startup-ribbon-playback-follow-20260913
