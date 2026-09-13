@@ -1,0 +1,117 @@
+name: One-time read-only playback-follow hotfix
+
+on:
+  push:
+    branches:
+      - hotfix/read-only-playback-follow-20260913
+    paths:
+      - .github/workflows/one-time-read-only-playback-follow.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hotfix/read-only-playback-follow-20260913
+          fetch-depth: 0
+
+      - name: Make playback-follow read-only
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          follow_path=Path('ui/score-ribbon-playback-follow-v545.js')
+          follow=follow_path.read_text()
+          helper="""  function syncPlaybackRibbon(match,item){\n    const focus=match||item;\n    if(!focus)return false;\n    try{\n      if(typeof focusScoreRibbonForGame==='function')return !!focusScoreRibbonForGame(focus,{force:false});\n    }catch(_){}\n    return false;\n  }\n"""
+          if follow.count(helper)!=1:
+              raise SystemExit(f'expected one syncPlaybackRibbon helper, found {follow.count(helper)}')
+          follow=follow.replace(helper,'',1)
+          call="    if(!curatedActive)syncPlaybackRibbon(match,item);\n"
+          if follow.count(call)!=1:
+              raise SystemExit(f'expected one mutating sync call, found {follow.count(call)}')
+          follow=follow.replace(call,"    // Playback-follow is observational only. Date/ribbon ownership belongs to the score pipeline.\n",1)
+          follow_path.write_text(follow)
+
+          test_path=Path('tests/test_v545_controller_navigation_fullscreen_playback_follow.py')
+          test=test_path.read_text()
+          replacements=[
+            ("let focused=null;\n", "let focusCalls=0;\n"),
+            ("  focusScoreRibbonForGame:x=>{focused=x;ctx.scoreBrowseDate=x.date;return true},\n", "  focusScoreRibbonForGame:()=>{focusCalls++;throw new Error('playback-follow must not mutate score ribbon/date');},\n"),
+            ("""const first=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();\nif(focused!==yesterday)throw new Error('publication date caused today game to retain playback authority');\nif(!first?.switchingDate||first.playbackDate!=='2026-09-12')throw new Error('ribbon did not switch to yesterday before scoring cards');\nif(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('today card was highlighted during date switch');\n\nconst second=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();\nif(!yesterdayCard.classList.contains('sbb-program-now-watching'))throw new Error('yesterday playback game was not highlighted');\nif(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('stale today selectedEvent stole NOW WATCHING');\nconsole.log(JSON.stringify({focused:focused.eventId,highlighted:yesterdayCard.dataset.eventId,playbackDate:second.playbackDate,resolvedMatch:second.resolvedMatch,browseDate:ctx.scoreBrowseDate}));\n""",
+             """const first=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();\nif(focusCalls!==0)throw new Error('playback-follow mutated score ribbon/date during reconciliation');\nif(!first?.switchingDate||first.playbackDate!=='2026-09-12')throw new Error('playback-follow did not recognize that the rendered ribbon is on another date');\nif(ctx.scoreBrowseDate!=='2026-09-13')throw new Error('playback-follow changed scoreBrowseDate');\nif(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('today card was highlighted while awaiting the score pipeline date change');\n\n// Simulate the authoritative score/date pipeline completing its own date change.\nctx.scoreBrowseDate='2026-09-12';\nconst second=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();\nif(focusCalls!==0)throw new Error('playback-follow called focusScoreRibbonForGame after the external date change');\nif(!yesterdayCard.classList.contains('sbb-program-now-watching'))throw new Error('yesterday playback game was not highlighted');\nif(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('stale today selectedEvent stole NOW WATCHING');\nconsole.log(JSON.stringify({focusCalls,highlighted:yesterdayCard.dataset.eventId,playbackDate:second.playbackDate,resolvedMatch:second.resolvedMatch,browseDate:ctx.scoreBrowseDate}));\n"""),
+            ("    assert payload['focused']=='YDAY-1', payload\n", "    assert payload['focusCalls']==0, payload\n"),
+          ]
+          for old,new in replacements:
+              if test.count(old)!=1:
+                  raise SystemExit(f'test patch expected one match, found {test.count(old)} for {old[:80]!r}')
+              test=test.replace(old,new,1)
+          marker="assert 'NOW WATCHING' in follow_css\n"
+          if test.count(marker)!=1:
+              raise SystemExit('unable to add read-only ownership assertion')
+          test=test.replace(marker, marker+"assert 'focusScoreRibbonForGame(' not in follow\n",1)
+          test_path.write_text(test)
+          PY
+
+      - name: Verify runtime module and ownership regression
+        shell: bash
+        run: |
+          node --check ui/score-ribbon-playback-follow-v545.js
+          if grep -q 'focusScoreRibbonForGame(' ui/score-ribbon-playback-follow-v545.js; then
+            echo 'playback-follow still mutates score-ribbon ownership' >&2
+            exit 1
+          fi
+          git diff --check
+
+      - name: Verify release materializer preserves hotfix
+        shell: bash
+        run: |
+          cp ui/score-ribbon-playback-follow-v545.js /tmp/follow-before-release.js
+          python3 tools/apply_v612_release.py >/tmp/materialize.log
+          tail -n 30 /tmp/materialize.log
+          if grep -q 'focusScoreRibbonForGame(' ui/score-ribbon-playback-follow-v545.js; then
+            echo 'release materializer reintroduced playback-follow mutation' >&2
+            exit 1
+          fi
+          python3 tests/test_v545_controller_navigation_fullscreen_playback_follow.py
+          # Restore the source tree after verification so the commit contains only the targeted source/test changes.
+          git reset --hard HEAD
+          git checkout -- ui/score-ribbon-playback-follow-v545.js tests/test_v545_controller_navigation_fullscreen_playback_follow.py
+          # Reapply the already-verified targeted patch from the copies produced before materialization.
+          cp /tmp/follow-before-release.js ui/score-ribbon-playback-follow-v545.js
+          python3 - <<'PY'
+          from pathlib import Path
+          # Re-run only the deterministic test-file edits after reset.
+          p=Path('tests/test_v545_controller_navigation_fullscreen_playback_follow.py')
+          s=p.read_text()
+          reps=[
+            ("let focused=null;\n", "let focusCalls=0;\n"),
+            ("  focusScoreRibbonForGame:x=>{focused=x;ctx.scoreBrowseDate=x.date;return true},\n", "  focusScoreRibbonForGame:()=>{focusCalls++;throw new Error('playback-follow must not mutate score ribbon/date');},\n"),
+            ("""const first=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();\nif(focused!==yesterday)throw new Error('publication date caused today game to retain playback authority');\nif(!first?.switchingDate||first.playbackDate!=='2026-09-12')throw new Error('ribbon did not switch to yesterday before scoring cards');\nif(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('today card was highlighted during date switch');\n\nconst second=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();\nif(!yesterdayCard.classList.contains('sbb-program-now-watching'))throw new Error('yesterday playback game was not highlighted');\nif(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('stale today selectedEvent stole NOW WATCHING');\nconsole.log(JSON.stringify({focused:focused.eventId,highlighted:yesterdayCard.dataset.eventId,playbackDate:second.playbackDate,resolvedMatch:second.resolvedMatch,browseDate:ctx.scoreBrowseDate}));\n""",
+             """const first=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();\nif(focusCalls!==0)throw new Error('playback-follow mutated score ribbon/date during reconciliation');\nif(!first?.switchingDate||first.playbackDate!=='2026-09-12')throw new Error('playback-follow did not recognize that the rendered ribbon is on another date');\nif(ctx.scoreBrowseDate!=='2026-09-13')throw new Error('playback-follow changed scoreBrowseDate');\nif(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('today card was highlighted while awaiting the score pipeline date change');\n\nctx.scoreBrowseDate='2026-09-12';\nconst second=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();\nif(focusCalls!==0)throw new Error('playback-follow called focusScoreRibbonForGame after the external date change');\nif(!yesterdayCard.classList.contains('sbb-program-now-watching'))throw new Error('yesterday playback game was not highlighted');\nif(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('stale today selectedEvent stole NOW WATCHING');\nconsole.log(JSON.stringify({focusCalls,highlighted:yesterdayCard.dataset.eventId,playbackDate:second.playbackDate,resolvedMatch:second.resolvedMatch,browseDate:ctx.scoreBrowseDate}));\n"""),
+            ("    assert payload['focused']=='YDAY-1', payload\n", "    assert payload['focusCalls']==0, payload\n"),
+          ]
+          for a,b in reps:
+              if s.count(a)!=1: raise SystemExit(f'reapply mismatch: {a[:60]!r} -> {s.count(a)}')
+              s=s.replace(a,b,1)
+          marker="assert 'NOW WATCHING' in follow_css\n"
+          if s.count(marker)!=1: raise SystemExit('marker mismatch')
+          s=s.replace(marker,marker+"assert 'focusScoreRibbonForGame(' not in follow\n",1)
+          p.write_text(s)
+          PY
+          node --check ui/score-ribbon-playback-follow-v545.js
+          git diff --check
+
+      - name: Commit hotfix and remove one-time workflow
+        shell: bash
+        run: |
+          rm .github/workflows/one-time-read-only-playback-follow.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ui/score-ribbon-playback-follow-v545.js tests/test_v545_controller_navigation_fullscreen_playback-follow.py .github/workflows/one-time-read-only-playback-follow.yml
+          git commit -m 'Make playback-follow score ribbon observer read-only'
+          git push origin HEAD:hotfix/read-only-playback-follow-20260913
