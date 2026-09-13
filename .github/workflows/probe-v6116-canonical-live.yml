@@ -7,21 +7,34 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
-      - name: Probe production canonical snapshot
+      - name: Wait for completed production canonical reconciliation
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, urllib.request
+          import json, urllib.request, time
           base='https://34-20-148-56.sslip.io'
           def get(path):
               with urllib.request.urlopen(base+path, timeout=45) as r:
                   return json.load(r)
           status=get('/api/status')
+          started=float(status.get('serverStartedAt') or 0)
+          final=None
+          for attempt in range(1, 26):
+              snap=get('/api/canonical/validation/snapshot')
+              worker=snap.get('worker') or {}
+              last=float(worker.get('certificationLastRunAt') or 0)
+              captured=float(snap.get('capturedAt') or 0)
+              print('POLL',attempt,'serverStartedAt',started,'lastRunAt',last,'capturedAt',captured,'summary',json.dumps(snap.get('summary') or {},sort_keys=True))
+              if last > started and captured >= last:
+                  final=snap
+                  break
+              time.sleep(60)
+          if final is None:
+              raise SystemExit('No post-start completed certification + validation snapshot within polling window')
           cert=get('/api/canonical/certification/health')
-          snap=get('/api/canonical/validation/snapshot')
-          print('STATUS',json.dumps({'ok':status.get('ok'),'version':status.get('version')},sort_keys=True))
+          print('STATUS',json.dumps({'ok':status.get('ok'),'version':status.get('version'),'serverStartedAt':started},sort_keys=True))
           print('CERT',json.dumps({
               'version':cert.get('version'),
               'productionAuthority':cert.get('productionAuthority'),
@@ -30,11 +43,10 @@ jobs:
               'officialScheduleWatchdogs':cert.get('officialScheduleWatchdogs'),
               'hardening':cert.get('hardening'),
           },sort_keys=True))
-          summary=snap.get('summary') or {}
-          print('SUMMARY',json.dumps(summary,sort_keys=True))
-          print('ADAPTERS',json.dumps(snap.get('adapters') or {},sort_keys=True))
-          print('STATE_VIOLATIONS',json.dumps(snap.get('stateConsistencyViolations') or [],sort_keys=True))
-          days=snap.get('days') or {}
+          print('SUMMARY',json.dumps(final.get('summary') or {},sort_keys=True))
+          print('ADAPTERS',json.dumps(final.get('adapters') or {},sort_keys=True))
+          print('STATE_VIOLATIONS',json.dumps(final.get('stateConsistencyViolations') or [],sort_keys=True))
+          days=final.get('days') or {}
           for day in ['2026-09-09','2026-09-10','2026-09-15','2026-09-17','2026-09-19','2026-09-20']:
               leagues=(days.get(day) or {}).get('leagues') or {}
               picked={}
@@ -43,5 +55,5 @@ jobs:
                   if not row: continue
                   picked[league]={k:row.get(k) for k in ['effectiveStatus','persistedStatus','cutoverReady','effectiveReason','productionOnly','shadowOnly','sourceCounts','evidenceGaps']}
               print('DAY',day,json.dumps(picked,sort_keys=True))
-          print('WORKER',json.dumps(snap.get('worker') or {},sort_keys=True))
+          print('WORKER',json.dumps(final.get('worker') or {},sort_keys=True))
           PY
