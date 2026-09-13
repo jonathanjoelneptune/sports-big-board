@@ -21,11 +21,127 @@
   function selectedEvent(){try{return window.SBB_SELECTED_EVENT?.get?.()||null;}catch(_){return null;}}
   function idsOf(obj){
     if(!obj||typeof obj!=='object')return [];
-    const keys=['canonicalEventKey','eventKey','eventId','providerEventId','gameId','matchId','id','uid'];
+    const keys=['canonicalEventKey','eventKey','eventId','providerEventId','gameId','matchId','scoreEventId','espnEventId','gamePk','gameCenterEventId','scoreGameKey','dateGameKey','id','uid'];
     const out=[];
     for(const k of keys){const v=clean(obj[k]);if(v)out.push(norm(v));}
     for(const k of ['match','event','competition','scoreMatch']){const child=obj[k];if(child&&typeof child==='object')for(const id of idsOf(child))out.push(id);}
     return [...new Set(out.filter(v=>v.length>=3))];
+  }
+  function eventDate(obj){
+    if(!obj||typeof obj!=='object')return '';
+    try{
+      if(typeof scoreEventDate==='function'){
+        const date=clean(scoreEventDate(obj)).slice(0,10);
+        if(/^\d{4}-\d{2}-\d{2}$/.test(date))return date;
+      }
+    }catch(_){}
+    const raw=clean(obj.scheduledGameDate||obj.__sbbDate||obj.gameDate||obj.date||obj.startDate||obj.scheduledAt);
+    return /^\d{4}-\d{2}-\d{2}/.test(raw)?raw.slice(0,10):'';
+  }
+  function strongEventDate(obj){
+    if(!obj||typeof obj!=='object')return '';
+    const raw=clean(obj.scheduledGameDate||obj.__sbbDate||obj.gameDate||obj.startDate||obj.scheduledAt);
+    return /^\d{4}-\d{2}-\d{2}/.test(raw)?raw.slice(0,10):'';
+  }
+  function browseDate(){
+    try{if(typeof scoreBrowseDate==='string')return clean(scoreBrowseDate).slice(0,10);}catch(_){}
+    return '';
+  }
+  function scoreCandidatesForPlayback(item){
+    if(!item||typeof scoreMatchesForDate!=='function')return [];
+    const league=clean(item.__sbbLeague||item.competitionId||item.league).toUpperCase();
+    const dates=[],addDate=value=>{
+      const date=clean(value).slice(0,10);
+      if(/^\d{4}-\d{2}-\d{2}$/.test(date)&&!dates.includes(date))dates.push(date);
+    };
+    addDate(strongEventDate(item));
+    try{if(typeof scorePlaybackDate==='string')addDate(scorePlaybackDate);}catch(_){}
+    try{if(typeof scoreBrowseDate==='string')addDate(scoreBrowseDate);}catch(_){}
+    try{if(typeof localDateISO==='function'){addDate(localDateISO(0));addDate(localDateISO(-1));}}catch(_){}
+    const rows=[],seen=new Set();
+    for(const date of dates){
+      let matches=[];
+      try{matches=scoreMatchesForDate(date)||[];}catch(_){matches=[];}
+      for(const match of matches){
+        if(!match)continue;
+        const matchLeague=clean(match.__sbbLeague||match.competitionId||match.league).toUpperCase();
+        if(league&&matchLeague&&league!==matchLeague)continue;
+        const key=`${date}|${idsOf(match).join('|')}|${norm(match.awayTeam?.displayName||match.awayTeam?.name||match.away||match.awayName||'')}|${norm(match.homeTeam?.displayName||match.homeTeam?.name||match.home||match.homeName||'')}`;
+        if(seen.has(key))continue;
+        seen.add(key);rows.push(match);
+      }
+    }
+    return rows;
+  }
+  function completedMatch(match){
+    if(!match)return false;
+    const status=clean(
+      match.status?.type?.name||match.status?.type?.state||match.status?.type?.description||
+      match.status?.name||match.status?.state||match.status||
+      match.state||match.gameState||match.statusText||match.statusName
+    ).toUpperCase();
+    return /FINAL|POST|COMPLETE|COMPLETED|ENDED/.test(status);
+  }
+  function recapLike(item){
+    if(!item)return false;
+    if(item.overview||clean(item.programType).toLowerCase()==='recap')return true;
+    return /highlight|recap|condensed|full game/i.test(`${item.title||''} ${item.subtitle||''} ${item.description||''}`);
+  }
+  function loosePlaybackMatches(item,rows){
+    const strong=strongEventDate(item);
+    return rows.filter(match=>{
+      if(strong&&eventDate(match)&&eventDate(match)!==strong)return false;
+      try{return typeof sameGameProgramItem==='function'&&sameGameProgramItem(match,item);}catch(_){return false;}
+    });
+  }
+  function resolvedPlaybackMatch(item){
+    if(!item)return null;
+    const rows=scoreCandidatesForPlayback(item);
+    const wanted=idsOf(item);
+    if(wanted.length){
+      for(const match of rows){
+        const mids=idsOf(match);
+        if(mids.some(id=>wanted.includes(id)))return match;
+      }
+    }
+    const loose=loosePlaybackMatches(item,rows);
+    if(loose.length===1)return loose[0];
+    if(loose.length>1&&recapLike(item)){
+      const completed=loose.filter(completedMatch);
+      if(completed.length===1)return completed[0];
+    }
+    // A generic media `date` is often the publication date, not the game date.
+    // If the same teams appear on adjacent slates, never let the legacy matcher
+    // guess today's game merely because that publication date is today.
+    if(loose.length>1)return null;
+    try{
+      if(typeof launchScoreMatchForItem==='function'){
+        const legacy=launchScoreMatchForItem(item)||null;
+        if(!legacy)return null;
+        const strong=strongEventDate(item);
+        if(strong&&eventDate(legacy)&&eventDate(legacy)!==strong)return null;
+        return legacy;
+      }
+    }catch(_){}
+    return null;
+  }
+  function sameEvent(a,b){
+    if(!a||!b)return false;
+    const ad=eventDate(a),bd=eventDate(b);
+    if(ad&&bd&&ad!==bd)return false;
+    const ai=idsOf(a),bi=idsOf(b);
+    if(ai.length&&bi.length)return ai.some(id=>bi.includes(id));
+    try{if(window.SBB_EVENT_IDENTITY?.same?.(a,b))return true;}catch(_){}
+    try{if(typeof sameGameProgramItem==='function'&&sameGameProgramItem(a,b))return true;}catch(_){}
+    return false;
+  }
+  function syncPlaybackRibbon(match,item){
+    const focus=match||item;
+    if(!focus)return false;
+    try{
+      if(typeof focusScoreRibbonForGame==='function')return !!focusScoreRibbonForGame(focus,{force:false});
+    }catch(_){}
+    return false;
   }
   function teamStrings(obj){
     if(!obj||typeof obj!=='object')return [];
@@ -42,10 +158,11 @@
     for(const k of ['title','name','matchup','displayName'])add(obj[k]);
     return [...new Set(out.map(norm).filter(Boolean))];
   }
-  function activeTexts(){
-    const item=currentItem(),selected=selectedEvent(),title=clean(document.getElementById('currentTitle')?.textContent);
-    const values=[title,...teamStrings(item),...teamStrings(selected)].filter(Boolean);
-    return [...new Set(values)];
+  function activeTexts(sources=[]){
+    const title=clean(document.getElementById('currentTitle')?.textContent);
+    const values=[title];
+    for(const source of sources)values.push(...teamStrings(source));
+    return [...new Set(values.filter(Boolean))];
   }
   function cardHaystack(card){
     const data=Object.values(card?.dataset||{}).map(clean).join(' ');
@@ -92,8 +209,27 @@
     lastScrollAt=Date.now();
   }
   function reconcile(reason='sync'){
-    scheduled=false;const ctx=ribbonContext();if(!ctx||!ctx.cards.length){clearHighlight();lastCard=null;return null;}
-    const item=currentItem(),selected=selectedEvent(),ids=[...idsOf(item),...idsOf(selected)],texts=activeTexts();
+    scheduled=false;
+    const item=currentItem(),match=resolvedPlaybackMatch(item),rawSelected=selectedEvent();
+    const curatedActive=document.body?.classList?.contains('sbb-curation-active');
+    // Playback owns score-ribbon authority. A media item's generic `date` may be
+    // its publication date, so only a resolved score match or a game-specific date
+    // may claim a score day. This prevents today's same-team matchup from stealing
+    // NOW WATCHING from yesterday's recap.
+    if(!curatedActive&&item&&!match&&!strongEventDate(item)){
+      clearHighlight();lastCard=null;
+      return {reason,kind:'scores',awaitingPlaybackIdentity:true};
+    }
+    const playbackDate=eventDate(match||item),browseBefore=browseDate();
+    if(!curatedActive)syncPlaybackRibbon(match,item);
+    if(!curatedActive&&playbackDate&&browseBefore&&playbackDate!==browseBefore){
+      clearHighlight();lastCard=null;
+      return {reason,kind:'scores',switchingDate:true,playbackDate,resolvedMatch:!!match};
+    }
+    const selected=curatedActive?rawSelected:(match&&rawSelected&&sameEvent(match,rawSelected)?rawSelected:null);
+    const sources=[match,item,selected].filter(Boolean);
+    const ctx=ribbonContext();if(!ctx||!ctx.cards.length){clearHighlight();lastCard=null;return null;}
+    const ids=[...new Set(sources.flatMap(idsOf))],texts=activeTexts(sources);
     if(!ids.length&&!texts.length){clearHighlight();lastCard=null;return null;}
     let best=null,bestScore=-Infinity;
     for(const card of ctx.cards){const s=scoreCard(card,ids,texts);if(s>bestScore){best=card;bestScore=s;}}
@@ -102,7 +238,7 @@
     const signature=`${ctx.kind}|${ids[0]||''}|${norm(document.getElementById('currentTitle')?.textContent)}|${best.dataset?.sbbFocusId||best.textContent?.slice(0,80)||''}`;
     clearHighlight(best);best.classList.add('sbb-program-now-watching');best.dataset.sbbPlaybackFollow='1';best.setAttribute('aria-current','true');
     if(best!==lastCard||signature!==lastSignature){scrollToThird(ctx,best);lastCard=best;lastSignature=signature;}
-    return {reason,kind:ctx.kind,score:bestScore,card:best};
+    return {reason,kind:ctx.kind,score:bestScore,card:best,playbackDate,resolvedMatch:!!match};
   }
   function schedule(reason='event'){
     if(scheduled)return;scheduled=true;

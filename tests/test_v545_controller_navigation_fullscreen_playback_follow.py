@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
-"""v5.5.0 controller navigation, fullscreen, commands, and playback-follow regression."""
+'''v5.5.0 controller navigation, fullscreen, commands, and playback-follow regression.'''
 from pathlib import Path
+import json
+import subprocess
+import tempfile
+
 ROOT=Path(__file__).resolve().parents[1]
 VERSION=(ROOT/'VERSION').read_text().strip()
 assert VERSION=='5.5.0',VERSION
@@ -59,6 +63,101 @@ assert "return clean(active?.dataset?.scoreFilter).toUpperCase()==='ALL';" in fo
 assert 'requestAnimationFrame(run)' in follow
 assert 'setInterval(' not in follow
 assert 'NOW WATCHING' in follow_css
+
+# Startup playback owns score-ribbon date/identity. Generic media `date` is a
+# publication timestamp and cannot force a same-team game on today's slate.
+for token in [
+    'function strongEventDate(obj)',
+    'function scoreCandidatesForPlayback(item)',
+    'function completedMatch(match)',
+    'function recapLike(item)',
+    'function loosePlaybackMatches(item,rows)',
+    'const loose=loosePlaybackMatches(item,rows);',
+    'if(loose.length>1&&recapLike(item)){',
+    'if(completed.length===1)return completed[0];',
+    'if(!curatedActive&&item&&!match&&!strongEventDate(item)){',
+    'const selected=curatedActive?rawSelected:(match&&rawSelected&&sameEvent(match,rawSelected)?rawSelected:null);',
+]:
+    assert token in follow, token
+
+node_test=r'''
+const fs=require('fs'),vm=require('vm');
+const source=fs.readFileSync(process.argv[2],'utf8');
+function classes(init=[]){const s=new Set(init);return{contains:x=>s.has(x),add:x=>s.add(x),remove:x=>s.delete(x),toggle(x,on){if(on)s.add(x);else s.delete(x)}};}
+function card(id,date){
+  return {
+    dataset:{eventId:id,date},textContent:'Pittsburgh Pirates vs Chicago Cubs',
+    classList:classes(['score-card']),hidden:false,isConnected:true,offsetLeft:0,offsetWidth:100,
+    getBoundingClientRect(){return{width:100,height:50}},
+    getAttribute(name){if(name==='aria-label')return `${date} Pittsburgh Pirates vs Chicago Cubs ${id}`;return ''},
+    setAttribute(name,value){this[name]=value},removeAttribute(name){delete this[name]}
+  };
+}
+const todayCard=card('TODAY-1','2026-09-13');
+const yesterdayCard=card('YDAY-1','2026-09-12');
+const host={scrollLeft:0,scrollWidth:500,clientWidth:300,querySelectorAll(){return[todayCard,yesterdayCard]},scrollTo({left}){this.scrollLeft=left}};
+const today={eventId:'TODAY-1',league:'MLB',date:'2026-09-13',awayTeam:'Pittsburgh Pirates',homeTeam:'Chicago Cubs',status:'SCHEDULED'};
+const yesterday={eventId:'YDAY-1',league:'MLB',date:'2026-09-12',awayTeam:'Pittsburgh Pirates',homeTeam:'Chicago Cubs',status:'FINAL'};
+// Reproduce production: recap published today, but it belongs to yesterday's game.
+const item={date:'2026-09-13',league:'MLB',title:'Pirates at Cubs highlights'};
+let focused=null;
+const tasks=[];
+const body={classList:classes([])};
+const document={
+  readyState:'complete',body,addEventListener(){},
+  querySelector(sel){if(sel.startsWith('#scoreFilters'))return{dataset:{scoreFilter:'ALL'}};return null;},
+  querySelectorAll(sel){if(sel==='.sbb-program-now-watching')return[todayCard,yesterdayCard].filter(c=>c.classList.contains('sbb-program-now-watching'));return[];},
+  getElementById(id){
+    if(id==='scoreCells')return host;
+    if(id==='currentTitle')return{textContent:'Pirates at Cubs highlights'};
+    if(id==='sbbCurationCards')return null;
+    return null;
+  }
+};
+const ctx={
+  console,document,currentIndex:0,PROGRAM:[item],clip:()=>item,
+  scoreBrowseDate:'2026-09-13',scorePlaybackDate:'2026-09-13',
+  scoreMatchesForDate:d=>d==='2026-09-12'?[yesterday]:d==='2026-09-13'?[today]:[],
+  localDateISO:d=>d===-1?'2026-09-12':'2026-09-13',
+  // Legacy behavior is intentionally wrong here. The playback-follow layer must
+  // override it using score-slate evidence rather than publication date.
+  launchScoreMatchForItem:()=>today,
+  focusScoreRibbonForGame:x=>{focused=x;ctx.scoreBrowseDate=x.date;return true},
+  scoreEventDate:o=>o.date||o.gameDate||'',
+  sameGameProgramItem:(a,b)=>{
+    const text=x=>`${x?.awayTeam||''} ${x?.homeTeam||''} ${x?.title||''}`.toLowerCase();
+    return /pirates|pittsburgh/.test(text(a))&&/cubs|chicago/.test(text(a))&&/pirates|pittsburgh/.test(text(b))&&/cubs|chicago/.test(text(b));
+  },
+  requestAnimationFrame:fn=>{tasks.push(fn);return tasks.length},
+  setTimeout:fn=>{tasks.push(fn);return tasks.length},
+  MutationObserver:undefined,matchMedia:()=>({matches:true})
+};
+ctx.window=ctx;
+ctx.window.SBB_SELECTED_EVENT={get:()=>today,subscribe(){}};
+ctx.window.SBB_EVENT_IDENTITY={same:(a,b)=>a.eventId&&b.eventId&&a.eventId===b.eventId};
+ctx.window.addEventListener=()=>{};
+vm.createContext(ctx);vm.runInContext(source,ctx);
+
+const first=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();
+if(focused!==yesterday)throw new Error('publication date caused today game to retain playback authority');
+if(!first?.switchingDate||first.playbackDate!=='2026-09-12')throw new Error('ribbon did not switch to yesterday before scoring cards');
+if(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('today card was highlighted during date switch');
+
+const second=ctx.SBB_SCORE_RIBBON_PLAYBACK_FOLLOW.reconcile();
+if(!yesterdayCard.classList.contains('sbb-program-now-watching'))throw new Error('yesterday playback game was not highlighted');
+if(todayCard.classList.contains('sbb-program-now-watching'))throw new Error('stale today selectedEvent stole NOW WATCHING');
+console.log(JSON.stringify({focused:focused.eventId,highlighted:yesterdayCard.dataset.eventId,playbackDate:second.playbackDate,resolvedMatch:second.resolvedMatch,browseDate:ctx.scoreBrowseDate}));
+'''
+with tempfile.TemporaryDirectory() as td:
+    script=Path(td)/'test.js'
+    script.write_text(node_test)
+    result=subprocess.run(['node',str(script),str(ROOT/'ui'/'score-ribbon-playback-follow-v545.js')],capture_output=True,text=True,check=True)
+    payload=json.loads(result.stdout.strip().splitlines()[-1])
+    assert payload['focused']=='YDAY-1', payload
+    assert payload['highlighted']=='YDAY-1', payload
+    assert payload['playbackDate']=='2026-09-12', payload
+    assert payload['resolvedMatch'] is True, payload
+    assert payload['browseDate']=='2026-09-12', payload
 
 for token in ['X — Play / Pause','LT + RT — Special Commands radial','MUTE / UNMUTE','D-pad Up from the Score Ribbon']:
     assert token in map_txt,token
