@@ -13,8 +13,10 @@ TEXT_SUFFIXES = {".py", ".js", ".css", ".html", ".json", ".sh", ".yml", ".yaml"}
 ACTIVE_DIRS = ("ui", "architecture", "sbb", "tests", "cloud", ".github")
 PRESERVE = (
     "sbb/canonical_schedule_watchdogs_v6116.py",
+    "sbb/canonical_reconciliation_hotfix_v6116.py",
     "tests/test_v6116_official_schedule_watchdogs.py",
     "tests/test_v6116_official_schedule_release.py",
+    "tests/test_v6116_canonical_reconcile_hotfix.py",
 )
 
 
@@ -53,25 +55,50 @@ def run_base(root, preserved):
 
 
 def patch_init(root):
-    path = root / "sbb" / "__init__.py"
-    text = path.read_text(encoding="utf-8")
-    if "_install_canonical_schedule_watchdogs_v6116()" in text:
-        return
-    block = '''
+    """Wire v6.1.16 on legacy startup or the parallel P1 startup registry."""
+    init_path = root / "sbb" / "__init__.py"
+    startup_path = root / "sbb" / "startup.py"
+    init_text = init_path.read_text(encoding="utf-8")
 
-# v6.1.16: official schedule-page watchdogs + canonical adapter/date repairs.
-# Shadow/certification only; this layer does not become production event authority.
-from .canonical_schedule_watchdogs_v6116 import install as _install_canonical_schedule_watchdogs_v6116
-_install_canonical_schedule_watchdogs_v6116()
-'''
-    path.write_text(text.rstrip() + block, encoding="utf-8")
+    if startup_path.is_file() and "from .startup import" in init_text and "bootstrap()" in init_text:
+        text = startup_path.read_text(encoding="utf-8")
+        reg_anchor = '    StartupRegistration("canonical-certification-v610", "canonical_certification_v610"),'
+        reg_line = '    StartupRegistration("canonical-reconcile-v6116", "canonical_reconciliation_hotfix_v6116"),'
+        phase_anchor = '    StartupPhase("canonical-certification", ("canonical-certification-v610",), ("canonical-certification-v610",)),'
+        phase_line = '    StartupPhase("canonical-reconcile-v6116", ("canonical-reconcile-v6116",), ("canonical-reconcile-v6116",)),'
+        rendered = text
+        if reg_line not in rendered:
+            if reg_anchor not in rendered:
+                raise SystemExit("ERROR: startup registry canonical registration anchor missing")
+            rendered = rendered.replace(reg_anchor, reg_anchor + "\n" + reg_line, 1)
+        if phase_line not in rendered:
+            if phase_anchor not in rendered:
+                raise SystemExit("ERROR: startup registry canonical phase anchor missing")
+            rendered = rendered.replace(phase_anchor, phase_anchor + "\n" + phase_line, 1)
+        if rendered != text:
+            startup_path.write_text(rendered, encoding="utf-8")
+        return
+
+    additions = []
+    if "_install_canonical_schedule_watchdogs_v6116()" not in init_text:
+        additions.append(
+            "# v6.1.16: official schedule-page watchdogs + canonical adapter/date repairs.\n"
+            "# Shadow/certification only; this layer does not become production event authority.\n"
+            "from .canonical_schedule_watchdogs_v6116 import install as _install_canonical_schedule_watchdogs_v6116\n"
+            "_install_canonical_schedule_watchdogs_v6116()"
+        )
+    if "_install_canonical_reconciliation_hotfix_v6116()" not in init_text:
+        additions.append(
+            "# v6.1.16 hotfix: exact NFL week proof + guarded NCAAF identity reconciliation.\n"
+            "# Shadow/certification only; production Day State/ribbon authority is unchanged.\n"
+            "from .canonical_reconciliation_hotfix_v6116 import install as _install_canonical_reconciliation_hotfix_v6116\n"
+            "_install_canonical_reconciliation_hotfix_v6116()"
+        )
+    if additions:
+        init_path.write_text(init_text.rstrip() + "\n\n" + "\n\n".join(additions) + "\n", encoding="utf-8")
 
 
 def patch_legacy_contracts(root):
-    # v6.1.12-v6.1.15 contracts intentionally preserve earlier capabilities, but
-    # several encode the previous forward release with constructed strings that
-    # global promotion cannot update. Advance only those version gates; all behavior
-    # assertions remain untouched.
     tests = root / "tests"
     if not tests.is_dir():
         return
@@ -100,6 +127,8 @@ def patch_verify(root):
         "python3 -m py_compile sbb/canonical_schedule_watchdogs_v6116.py",
         "python3 tests/test_v6116_official_schedule_watchdogs.py",
         "python3 tests/test_v6116_official_schedule_release.py",
+        "python3 -m py_compile sbb/canonical_reconciliation_hotfix_v6116.py",
+        "python3 tests/test_v6116_canonical_reconcile_hotfix.py",
     ]
     missing = [x for x in additions if x not in text]
     if missing:
@@ -146,14 +175,16 @@ def main(argv=None):
     required = [
         root / "tools" / "apply_v6115_release.py",
         root / "sbb" / "canonical_schedule_watchdogs_v6116.py",
+        root / "sbb" / "canonical_reconciliation_hotfix_v6116.py",
         root / "tests" / "test_v6116_official_schedule_watchdogs.py",
         root / "tests" / "test_v6116_official_schedule_release.py",
+        root / "tests" / "test_v6116_canonical_reconcile_hotfix.py",
     ]
     missing = [str(x.relative_to(root)) for x in required if not x.is_file()]
     if missing:
         raise SystemExit("ERROR: incomplete v6.1.16 release: " + ", ".join(missing))
     if args.dry_run:
-        print("v6.1.16: official schedule watchdogs + NFL/EPL/MLB canonical repairs")
+        print("v6.1.16: official schedule watchdogs + exact NFL/NCAAF canonical reconciliation hotfix")
         return 0
     preserved = {rel: (root / rel).read_text(encoding="utf-8") for rel in PRESERVE}
     run_base(root, preserved)
@@ -163,7 +194,7 @@ def main(argv=None):
     promote(root)
     controller(root)
     print("Sports Big Board v6.1.16 materialized")
-    print("Canonical schedule: current NFL route, EPL official structured fallback, explicit-date rehome")
+    print("Canonical schedule: exact NFL week proof/final rows + guarded NCAAF alias/drift reconciliation")
     print("Watchdogs: EPL NFL MLB NBA MLS NHL official pages; NCAAF FBSchedules secondary only")
     if args.skip_check:
         return 0
