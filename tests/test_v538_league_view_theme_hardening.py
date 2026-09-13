@@ -12,6 +12,8 @@ backend=(ROOT/'sbb'/'league_view_v538.py').read_text()
 focus=(ROOT/'sbb'/'team_focus_v537.py').read_text()
 news=(ROOT/'sbb'/'current_news_v523.py').read_text()
 init=(ROOT/'sbb'/'__init__.py').read_text()
+startup_path=ROOT/'sbb'/'startup.py'
+startup=startup_path.read_text() if startup_path.is_file() else ''
 assert version=='5.5.0',version
 for token in ['>LEAGUE VIEW</button>','id="leagueViewRoot"',f'ui/league-view-v538.css?v={version}',f'ui/league-view-v538.js?v={version}',f'playback-early-pause-recovery-v538.js?v={version}']:
     assert token in index,token
@@ -32,6 +34,13 @@ for forbidden in ['setInterval(','requestAnimationFrame(loop']:
     assert forbidden not in watchdog,forbidden
 for token in ['WALK_OFF','COMEBACK','SHUTOUT','DEBUT','LEAGUE_LEADER','SERIES','deliberately abundant']:
     assert token in news,token
-assert 'from .league_view_v538 import install as _install_league_view_v538' in init
-assert '_install_league_view_v538()' in init
+legacy_install=(
+    'from .league_view_v538 import install as _install_league_view_v538' in init
+    and '_install_league_view_v538()' in init
+)
+registered_install=(
+    'StartupRegistration("league-view-v538", "league_view_v538")' in startup
+    and 'StartupPhase("league-view", ("league-view-v538",), ("league-view-v538",))' in startup
+)
+assert legacy_install or registered_install, 'League View backend is not installed by legacy init or startup registry'
 print('PASS v5.5.0 League View + recap identity + team history cutoff + accessible theming + special-event context + early-pause recovery')
