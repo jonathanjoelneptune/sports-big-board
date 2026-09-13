@@ -1,0 +1,91 @@
+name: Ops R24 Repair Queue Monitor
+
+on:
+  push:
+    branches:
+      - ops/r24-repair-monitor-20260913
+
+permissions:
+  contents: read
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Sample production repair queue for 20 minutes
+        shell: bash
+        env:
+          STATUS_URL: https://34-20-148-56.sslip.io/api/media-audit/status
+        run: |
+          set -euo pipefail
+          for sample in $(seq 0 10); do
+            ok=0
+            for attempt in 1 2 3; do
+              if curl -fsS --max-time 20 "$STATUS_URL" > /tmp/r24-status.json; then
+                ok=1
+                break
+              fi
+              sleep 5
+            done
+            if [[ "$ok" != "1" ]]; then
+              echo "R24_SAMPLE_ERROR sample=$sample unable_to_fetch_status"
+            else
+              SAMPLE="$sample" python3 - <<'PY'
+          import json, os, time
+          with open('/tmp/r24-status.json', encoding='utf-8') as f:
+              d=json.load(f)
+          r=d.get('repair') or {}
+          workers=r.get('workers') or []
+          sum_keys=(
+              'jobsAttempted','gamesRepaired','discoveryExhausted','sourceAttempts','sourceResults',
+              'teamSourceChecks','teamSourcesVerified','teamResolutionQueueAttempts',
+              'teamResolutionUpgrades','teamResolutionRequeues','teamUnresolvedObserved'
+          )
+          totals={k:sum(int(((w.get('stats') or {}).get(k)) or 0) for w in workers) for k in sum_keys}
+          seed=(r.get('worker') or {})
+          ts=(seed.get('teamSources') or {})
+          rolling=r.get('rolling') or {}
+          circuit=r.get('discoveryCircuit') or {}
+          out={
+              'sample':int(os.environ['SAMPLE']),
+              'observedAt':time.time(),
+              'version':d.get('version'),
+              'generation':d.get('generation'),
+              'queue':r.get('queue'),
+              'repaired':r.get('repaired'),
+              'states':r.get('states') or {},
+              'health':r.get('health') or {},
+              'workerCount':r.get('workerCount'),
+              'circuitState':circuit.get('state'),
+              'circuitFailures':circuit.get('consecutiveFailures'),
+              'rollingState':rolling.get('state'),
+              'rollingBacklog':rolling.get('backlog'),
+              'totals':totals,
+              'teamSources':{
+                  'teams':ts.get('teams'),
+                  'verifiedSources':ts.get('verifiedSources'),
+                  'resolvedTeams':ts.get('resolvedTeams'),
+                  'unresolvedTeams':ts.get('unresolvedTeams'),
+                  'dueUnresolvedTeams':ts.get('dueUnresolvedTeams'),
+                  'waitingUnresolvedTeams':ts.get('waitingUnresolvedTeams'),
+                  'repairJobsRequeuedByResolution':ts.get('repairJobsRequeuedByResolution'),
+                  'resolutionStates':ts.get('resolutionStates') or {},
+                  'leagueTeamPages':ts.get('leagueTeamPages'),
+                  'officialSites':ts.get('leagueReferredOfficialSites'),
+                  'youtubeChannels':ts.get('youtubeChannels'),
+                  'indexedVideos':ts.get('indexedVideos'),
+                  'recentUnresolvedTeams':ts.get('recentUnresolvedTeams') or [],
+              },
+              'workers':[{
+                  'index':w.get('workerIndex'),
+                  'alive':w.get('alive'),
+                  'current':w.get('current') or {},
+                  'lastError':w.get('lastError') or ''
+              } for w in workers],
+          }
+          print('R24_SAMPLE '+json.dumps(out,sort_keys=True,separators=(',',':')))
+          PY
+            fi
+            if [[ "$sample" != "10" ]]; then sleep 120; fi
+          done
