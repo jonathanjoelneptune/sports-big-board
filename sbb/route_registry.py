@@ -47,7 +47,12 @@ def _normalize_path(value: str) -> str:
 
 
 def register(method: str, path: str, handler: RouteHandler, *, name: str = "") -> bool:
-    """Register one exact feature route and ensure the shared dispatcher exists."""
+    """Register one exact feature route.
+
+    Dispatcher installation is a separate final startup step. That ordering keeps
+    asynchronous legacy installers inside the compatibility fallback chain rather
+    than allowing one of them to overwrite the shared dispatcher during boot.
+    """
     if not callable(handler):
         raise TypeError("Shared route handler must be callable")
     method = _normalize_method(method)
@@ -61,7 +66,6 @@ def register(method: str, path: str, handler: RouteHandler, *, name: str = "") -
                 return False
             raise RuntimeError(f"Duplicate Sports Big Board route: {method} {path}")
         _ROUTES[key] = registration
-    ensure_dispatcher()
     return True
 
 
@@ -84,9 +88,9 @@ def dispatch(method: str, request: Any, server: Any) -> tuple[bool, Any]:
 def _install_dispatcher() -> None:
     global _DISPATCHER_INSTALLED, _DISPATCHER_ERROR
     try:
-        # Match the existing compatibility installers: the package is imported
-        # while server.py is still building its globals, so wait until Handler is
-        # ready rather than making import order another application authority.
+        # The package is imported while server.py is still building its globals.
+        # Wait until Handler is ready, then give the already-invoked compatibility
+        # installers a short settle window before capturing the final fallback.
         for _ in range(600):
             server = sys.modules.get("__main__")
             handler_cls = getattr(server, "Handler", None) if server else None
@@ -96,12 +100,14 @@ def _install_dispatcher() -> None:
         else:
             raise RuntimeError("Sports Big Board Handler was not ready for shared routes")
 
+        time.sleep(0.75)
         Handler = server.Handler
         with _LOCK:
-            if getattr(Handler, "__sbbSharedRouteRegistry", False):
+            current_get = Handler.do_GET
+            if getattr(current_get, "__sbbSharedRouteDispatcher", False):
                 _DISPATCHER_INSTALLED = True
                 return
-            legacy_get = Handler.do_GET
+            legacy_get = current_get
 
             def do_GET(self):
                 matched, result = dispatch("GET", self, server)
@@ -111,6 +117,8 @@ def _install_dispatcher() -> None:
 
             do_GET.__name__ = getattr(legacy_get, "__name__", "do_GET")
             do_GET.__doc__ = getattr(legacy_get, "__doc__", None)
+            do_GET.__sbbSharedRouteDispatcher = True
+            do_GET.__sbbSharedRouteFallback = legacy_get
             Handler.do_GET = do_GET
             Handler.__sbbSharedRouteRegistry = True
             Handler.__sbbSharedRouteFallback = legacy_get
@@ -131,6 +139,11 @@ def ensure_dispatcher() -> bool:
     return True
 
 
+def install() -> bool:
+    """Final startup registration for the shared route authority."""
+    return ensure_dispatcher()
+
+
 def snapshot() -> dict[str, Any]:
     with _LOCK:
         routes = [
@@ -146,4 +159,4 @@ def snapshot() -> dict[str, Any]:
         }
 
 
-__all__ = ["RouteRegistration", "register", "register_get", "dispatch", "ensure_dispatcher", "snapshot"]
+__all__ = ["RouteRegistration", "register", "register_get", "dispatch", "ensure_dispatcher", "install", "snapshot"]
