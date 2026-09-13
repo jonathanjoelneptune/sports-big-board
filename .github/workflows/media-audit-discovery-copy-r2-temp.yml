@@ -15,7 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Apply Media Audit integration on current main
-        run: python3 tools/patch_media_audit_discovery_copy_temp.py
+        run: |
+          python3 tools/patch_media_audit_discovery_copy_temp.py
+          python3 tools/patch_media_audit_v6115_contract_temp.py
       - name: Verify source-level changes
         run: |
           python3 -m py_compile sbb/media_team_sources_v6116.py media_audit_service.py tools/apply_v6116_release.py
