@@ -1,15 +1,16 @@
-/* Sports Big Board v4.7.20 — normalized Game Center browser contract.
+/* Sports Big Board v4.7.27 — normalized Game Center browser contract.
 
    Browser memory is HOT. Localhost/cloud SQLite is WARM. Provider identity belongs
-   to the server: score-ribbon ids are aliases, not assumed provider ids. v4.7.26
+   to the server: score-ribbon ids are aliases, not assumed provider ids. v4.7.27
    stability adds single-flight ownership, fetch-level hard timeouts, bounded 202
-   preparation polling, partial-final cooldown, and payload-size guards so one bad
-   Game Center can never monopolize the browser or create an infinite loading loop.
+   preparation polling, stable pending-request identity, partial-final cooldown,
+   and payload-size guards so one bad Game Center can never monopolize the browser
+   or create an infinite loading loop.
 */
 (() => {
   'use strict';
   const PREVIOUS=window.SBB_GAME_CENTER;
-  if(PREVIOUS?.watchdogVersion==='v4726')return;
+  if(PREVIOUS?.watchdogVersion==='v4727')return;
 
   const cache=new Map();
   const inflight=new Map();
@@ -90,13 +91,17 @@
       const remaining=Math.max(1200,overallLimit-(performance.now()-started));
       const response=await fetchBounded(url,{signal,timeoutMs:Math.min(6000,remaining)});diagnostics.requests++;
       let payload={};try{payload=await response.json();}catch(_){}
-      if(payload?.resolvedEventId)requestId=String(payload.resolvedEventId);
+      const resolvedRequestId=clean(payload?.resolvedEventId);
+      // Keep polling a pending preparation through the exact alias that started it.
+      // Switching to resolvedEventId on a 202 would change the server scheduler key
+      // and can create a second preparation job for the same sporting event.
       if(response.status===202||payload?.pending){
         polls++;
         if(polls>=8){diagnostics.pendingTimeouts++;cooldown.set(key,{until:Date.now()+30000,reason:'pending-loop'});if(hit)return hit.data;throw new Error(`Game Center provider remained pending after ${polls} checks. Retry later.`);}
         await sleep(Math.max(350,Math.min(1000,Number(payload?.retryAfterMs)||650)),signal);first=false;force=false;continue;
       }
       if(!response.ok){diagnostics.httpErrors++;throw new Error(payload?.message||`Game Center HTTP ${response.status}`);}
+      if(resolvedRequestId)requestId=resolvedRequestId;
       const raw=payload?.data||payload;
       let normalized=window.SBB_CORE?.gameCenter?window.SBB_CORE.gameCenter(raw,{competitionId:competition,eventId:requestId}):raw;
       normalized=boundPayload(normalized);
@@ -118,7 +123,7 @@
   function peek(eventLike){const ident=identity(eventLike);return cache.get(ident.key)?.data||cache.get(`${ident.competition}:provider:${ident.eventId}`)?.data||null;}
   function clear(){cache.clear();cooldown.clear();}
   async function prewarmSportsDays(){try{const timezone=Intl.DateTimeFormat().resolvedOptions().timeZone||'Etc/UTC';const utcOffsetMinutes=-new Date().getTimezoneOffset();const qs=new URLSearchParams({today:localDateISO(0),yesterday:localDateISO(-1),timezone,utcOffsetMinutes:String(utcOffsetMinutes),clientDate:localDateISO(0)});await fetchBounded(`/api/game-center/prewarm?${qs.toString()}`,{timeoutMs:5000});}catch(_){} }
-  function snapshot(){return {version:'1.8',watchdogVersion:'v4726',cacheEntries:cache.size,inflight:inflight.size,cooldowns:cooldown.size,...JSON.parse(JSON.stringify(diagnostics))};}
+  function snapshot(){return {version:'1.9',watchdogVersion:'v4727',cacheEntries:cache.size,inflight:inflight.size,cooldowns:cooldown.size,...JSON.parse(JSON.stringify(diagnostics))};}
   if(typeof document!=='undefined'){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>prewarmSportsDays(),{once:true});else setTimeout(prewarmSportsDays,0);}
-  window.SBB_GAME_CENTER=Object.freeze({version:'1.8',watchdogVersion:'v4726',get,peek,clear,identity,eventHints,prewarmSportsDays,snapshot});
+  window.SBB_GAME_CENTER=Object.freeze({version:'1.9',watchdogVersion:'v4727',get,peek,clear,identity,eventHints,prewarmSportsDays,snapshot});
 })();
