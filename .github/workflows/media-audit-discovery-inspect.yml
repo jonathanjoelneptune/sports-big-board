@@ -14,15 +14,12 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
-      - name: Discovery function locations
+      - name: Locate live repair source implementation
         run: |
-          grep -n -E '^    def (_deep_catalog_candidates|_discover_once|_youtube_index_candidates|_youtube_fallback_candidates|_repair_by_discovery)|NO_DIRECTORY_MATCH|Persistent unresolved-team|TEAM_SOURCE_REGISTRY' media_audit_service.py || true
-      - name: Repair discovery implementations
+          grep -Rni -C 45 -E 'NO_DIRECTORY_MATCH|OFFICIAL_TEAM_SOURCES|TEAM_SOURCE_REGISTRY|Persistent unresolved-team|repairJobsRequeued|team resolution queue|official sites|YT channels' --include='*.py' . || true
+      - name: Locate release materialization for media audit
         run: |
-          for fn in _deep_catalog_candidates _discover_once _youtube_index_candidates _youtube_fallback_candidates; do
-            line=$(grep -n "^    def ${fn}" media_audit_service.py | head -1 | cut -d: -f1)
-            if [ -n "$line" ]; then start=$((line-8)); end=$((line+125)); echo "===== ${fn} lines ${start}-${end} ====="; sed -n "${start},${end}p" media_audit_service.py; fi
-          done
-      - name: Team resolution implementation
+          grep -Rni -C 45 -E 'media_audit_service|OFFICIAL_TEAM_SOURCES|NO_DIRECTORY_MATCH|TEAM_SOURCE_REGISTRY|repair source|team.source' scripts .github --include='*.py' --include='*.yml' || true
+      - name: List repair/team source files
         run: |
-          grep -n -C 70 -E 'NO_DIRECTORY_MATCH|Persistent unresolved-team|repairJobsRequeued|TEAM_SOURCE_REGISTRY|unresolved.team|team.source' media_audit_service.py || true
+          find . -maxdepth 3 -type f \( -iname '*repair*' -o -iname '*team*source*' -o -iname '*media*audit*' \) -print | sort
