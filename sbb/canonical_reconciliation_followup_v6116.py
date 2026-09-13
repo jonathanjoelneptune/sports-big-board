@@ -44,10 +44,12 @@ _PATCHED = False
 
 _PRIMARY_EVENT_PROVIDERS = frozenset(("MLB", "ESPN"))
 
-# v6.1.9 already knows this alias. Re-registering it here is intentional because
-# this follow-up can also be imported in materialized/legacy startup orders.
+# Explicit aliases remain deliberately narrow and are limited to spellings that
+# are demonstrated by the live authoritative/independent reconciliation gaps.
 _NCAAF_FOLLOWUP_ALIASES = (
     ("Western Ky.", "Western Kentucky", "Western Kentucky Hilltoppers"),
+    ("Indiana", "Indiana Hoosiers"),
+    ("Clemson", "Clemson Tigers"),
 )
 
 _NFL_NICKNAMES = tuple(sorted(base_hotfix._NFL_NICKNAMES, key=len, reverse=True))
