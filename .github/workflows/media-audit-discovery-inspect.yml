@@ -1,4 +1,4 @@
-name: Inspect Media Audit Discovery
+name: Verify Media Audit Discovery Copy
 
 on:
   push:
@@ -6,20 +6,48 @@ on:
       - media-audit/discovery-copy-info-v6116
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: media-audit-discovery-copy-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  inspect:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
-      - name: Locate live repair source implementation
+      - name: Apply product wiring
+        run: python3 tools/patch_media_audit_discovery_copy_temp.py
+      - name: Run focused source-tree tests
         run: |
-          grep -Rni -C 45 -E 'NO_DIRECTORY_MATCH|OFFICIAL_TEAM_SOURCES|TEAM_SOURCE_REGISTRY|Persistent unresolved-team|repairJobsRequeued|team resolution queue|official sites|YT channels' --include='*.py' . || true
-      - name: Locate release materialization for media audit
+          python3 -m py_compile sbb/media_team_sources_v6116.py media_audit_service.py tools/apply_v6116_release.py
+          python3 tests/test_media_team_sources_v6116.py
+          python3 tests/test_media_audit_copy_v6116.py
+          python3 tests/test_media_audit_discovery_visibility_v6116.py
+          node --check ui/media-audit-copy-v6116.js
+          node --check ui/media-audit-v550.js
+      - name: Commit product changes only
         run: |
-          grep -Rni -C 45 -E 'media_audit_service|OFFICIAL_TEAM_SOURCES|NO_DIRECTORY_MATCH|TEAM_SOURCE_REGISTRY|repair source|team.source' scripts .github --include='*.py' --include='*.yml' || true
-      - name: List repair/team source files
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add media-audit.html media_audit_service.py tools/apply_v6116_release.py VERIFY.sh \
+            sbb/media_team_sources_v6116.py ui/media-audit-copy-v6116.js \
+            tests/test_media_team_sources_v6116.py tests/test_media_audit_copy_v6116.py \
+            tests/test_media_audit_discovery_visibility_v6116.py
+          if ! git diff --cached --quiet; then
+            git commit -m "Media Audit: improve repair identity discovery and copy diagnostics"
+            git push
+          fi
+      - name: Rehearse v6.1.16 release materialization
         run: |
-          find . -maxdepth 3 -type f \( -iname '*repair*' -o -iname '*team*source*' -o -iname '*media*audit*' \) -print | sort
+          python3 tools/apply_v6116_release.py --skip-check
+          grep -q 'from sbb.media_team_sources_v6116 import TeamSourceRegistry' media_audit_service.py
+          grep -q 'id="copyAuditInfo"' media-audit.html
+          grep -q 'ui/media-audit-copy-v6116.js' media-audit.html
+          python3 -m py_compile sbb/media_team_sources_v6116.py media_audit_service.py
+          python3 tests/test_media_team_sources_v6116.py
+          python3 tests/test_media_audit_copy_v6116.py
+          python3 tests/test_media_audit_discovery_visibility_v6116.py
+          node --check ui/media-audit-copy-v6116.js
