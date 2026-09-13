@@ -29,13 +29,14 @@ jobs:
       - name: Verify targeted rollback
         shell: bash
         run: |
-          python tests/test_v545_controller_navigation_fullscreen_playback_follow.py
+          node --check ui/score-ribbon-playback-follow-v545.js
           git diff --check
           git diff --name-only HEAD | sort > /tmp/changed.txt
           printf '%s\n' \
             tests/test_v545_controller_navigation_fullscreen_playback_follow.py \
             ui/score-ribbon-playback-follow-v545.js | sort > /tmp/expected.txt
           diff -u /tmp/expected.txt /tmp/changed.txt
+          cmp ui/score-ribbon-playback-follow-v545.js <(git show 74da872216ac00cf813cb3166c4ce022daa5bac1:ui/score-ribbon-playback-follow-v545.js)
 
       - name: Commit rollback and remove workflow
         shell: bash
