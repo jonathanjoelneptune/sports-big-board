@@ -27,6 +27,7 @@ PRESERVE = (
     "tests/test_media_team_sources_v6116.py",
     "tests/test_media_audit_copy_v6116.py",
     "tests/test_media_audit_discovery_visibility_v6116.py",
+    "tests/test_v6116_storage_retention_release.py",
 )
 
 
@@ -274,6 +275,26 @@ def patch_legacy_contracts(root):
         if rendered != text:
             path.write_text(rendered, encoding="utf-8")
 
+    # v5.3.4 encoded the original fixed 256 MiB deploy guard as a literal token.
+    # v6.1.16 replaces that fixed threshold with bounded daily-backup retention
+    # and rollback-sized dynamic headroom. Preserve the historical test's safety
+    # intent by upgrading only that obsolete assertion in the materialized tree.
+    browse_safety = tests / "test_v534_complete_browse_deploy_safety.py"
+    if browse_safety.is_file():
+        source = browse_safety.read_text(encoding="utf-8")
+        legacy = "        'less than 256 MiB free after safe cleanup',\n"
+        upgraded = (
+            "        'prune_daily_backups history 3',\n"
+            "        'prune_daily_backups game-centers 3',\n"
+            "        'REQUIRED_KB=1048576',\n"
+            "        'HISTORY_KB + 524288',\n"
+            "        'Live catalog was not touched',\n"
+        )
+        if legacy in source:
+            browse_safety.write_text(source.replace(legacy, upgraded, 1), encoding="utf-8")
+        elif "'REQUIRED_KB=1048576'" not in source:
+            raise SystemExit("ERROR: v5.3.4 deploy-safety compatibility anchor missing")
+
 
 def patch_verify(root):
     path = root / "VERIFY.sh"
@@ -295,6 +316,7 @@ def patch_verify(root):
         "python3 tests/test_media_audit_copy_v6116.py",
         "python3 tests/test_media_audit_discovery_visibility_v6116.py",
         "node --check ui/media-audit-copy-v6116.js",
+        "python3 tests/test_v6116_storage_retention_release.py",
     ]
     missing = [x for x in additions if x not in text]
     if missing:
@@ -355,6 +377,7 @@ def main(argv=None):
         root / "tests" / "test_media_team_sources_v6116.py",
         root / "tests" / "test_media_audit_copy_v6116.py",
         root / "tests" / "test_media_audit_discovery_visibility_v6116.py",
+        root / "tests" / "test_v6116_storage_retention_release.py",
     ]
     missing = [str(x.relative_to(root)) for x in required if not x.is_file()]
     if missing:
