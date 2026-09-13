@@ -50,8 +50,16 @@ SIDECAR_PATTERNS = (
 )
 
 
+def normalize_path(path: str) -> str:
+    """Normalize git paths without stripping meaningful dot-directory names."""
+    path = path.strip().replace("\\", "/")
+    while path.startswith("./"):
+        path = path[2:]
+    return path.lstrip("/")
+
+
 def is_frontend_only_path(path: str) -> bool:
-    path = path.strip().replace("\\", "/").lstrip("./")
+    path = normalize_path(path)
     if not path:
         return True
     if path in DATA_ONLY:
@@ -72,7 +80,7 @@ def is_frontend_only_path(path: str) -> bool:
 
 
 def classify(paths: list[str]) -> tuple[bool, list[str], list[str]]:
-    normalized = [p.strip().replace("\\", "/").lstrip("./") for p in paths if p.strip()]
+    normalized = [normalize_path(p) for p in paths if p.strip()]
     backend = [p for p in normalized if not is_frontend_only_path(p)]
     frontend = [p for p in normalized if is_frontend_only_path(p)]
     return bool(backend), frontend, backend
