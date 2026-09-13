@@ -1,4 +1,4 @@
-/* Sports Big Board v5.5.0 — splash-screen first-program preloader.
+/* Sports Big Board v5.5.1 — splash-screen first-program preloader.
 
    The splash is a visual/loading cover, not an initialization gate. Live sports
    data already starts on DOMContentLoaded; this layer additionally prepares the
@@ -7,6 +7,7 @@
 
    Safety invariants:
    - never calls play()/playVideo()/loadVideoById before the user launch gesture;
+   - Hot Standby is launch-gated because its readiness proof intentionally starts media;
    - never chooses a different program or owns playback/failover;
    - YouTube is CUED only, muted, on the already-assigned active slot;
    - native media uses preload=auto only and remains muted/paused;
@@ -17,7 +18,7 @@
   'use strict';
   if(window.SBB_SPLASH_PRELOAD?.installed)return;
 
-  const VERSION='5.5.0';
+  const VERSION='5.5.1';
   const POLL_MS=120;
   const DEADLINE_MS=30000;
   const startedAt=performance.now();
@@ -32,11 +33,13 @@
   let stopped=false;
   let lastMessage='Loading…';
   let progressValue=6;
+  let launchCommitted=false;
+  let standbyGuardInstalled=false;
 
   const state={
     installed:true,version:VERSION,status:'WAITING_FOR_PROGRAM',transport:'',mediaKey:'',
     startedAt:Date.now(),preparedAt:0,attempts:0,lastMessage,error:'',
-    safeMode:'CUE_OR_PRELOAD_ONLY',prelaunchPlayRequests:0
+    safeMode:'CUE_OR_PRELOAD_ONLY',prelaunchPlayRequests:0,blockedStandbyRequests:0
   };
 
   function launchScreen(){return document.getElementById('launchScreen');}
@@ -48,6 +51,9 @@
   function experienceStarted(){
     try{return !!window.SBB_START?.started || (typeof sportsBigBoardStarted!=='undefined' && !!sportsBigBoardStarted);}
     catch(_){return !!window.SBB_START?.started;}
+  }
+  function prelaunchLocked(){
+    return !launchCommitted && !experienceStarted() && !!launchScreen();
   }
   const PROGRESS_FLOOR=Object.freeze({
     WAITING_FOR_PROGRAM:10,WAITING_FOR_MEDIA:22,WAITING_FOR_PLAYER:34,
@@ -74,7 +80,7 @@
   }
   function stop(reason='stopped'){
     if(stopped)return;stopped=true;if(timer){clearInterval(timer);timer=0;}
-    state.status=experienceStarted()?'LAUNCHED':'STOPPED';state.stopReason=reason;state.stoppedAt=Date.now();
+    state.status=experienceStarted()||launchCommitted?'LAUNCHED':'STOPPED';state.stopReason=reason;state.stoppedAt=Date.now();
   }
   function currentProgram(){
     let index=0,item=null;
@@ -127,10 +133,61 @@
     return !!item?.mediaUrl&&!item?.youtubeId;
   }
 
+  function installStandbyLaunchGuard(){
+    if(standbyGuardInstalled)return true;
+    const original=window.prepareStandby;
+    if(typeof original!=='function')return false;
+    if(original.__sbbSplashLaunchGuard){standbyGuardInstalled=true;return true;}
+    function guardedPrepareStandby(slot,index,opts){
+      if(prelaunchLocked()){
+        state.blockedStandbyRequests++;
+        state.lastBlockedStandbyAt=Date.now();
+        state.lastBlockedStandbySlot=String(slot||'');
+        return false;
+      }
+      return original.apply(this,arguments);
+    }
+    try{
+      Object.defineProperty(guardedPrepareStandby,'__sbbSplashLaunchGuard',{value:true});
+      Object.defineProperty(guardedPrepareStandby,'__sbbOriginal',{value:original});
+    }catch(_){guardedPrepareStandby.__sbbSplashLaunchGuard=true;}
+    window.prepareStandby=guardedPrepareStandby;
+    standbyGuardInstalled=true;
+    state.standbyGuardInstalledAt=Date.now();
+    return true;
+  }
+
+  function enforceNativePrelaunchPause(event){
+    if(!prelaunchLocked())return;
+    const media=event?.target;
+    if(typeof HTMLMediaElement==='undefined'||!(media instanceof HTMLMediaElement))return;
+    state.prelaunchPlayRequests++;
+    state.lastPrelaunchPlayAt=Date.now();
+    try{media.muted=true;media.volume=0;}catch(_){}
+    try{media.pause();}catch(_){}
+    try{if(Number.isFinite(media.currentTime)&&media.currentTime>0.05)media.currentTime=0;}catch(_){}
+  }
+
+  function enforceYouTubePrelaunchPause(){
+    if(!prelaunchLocked())return;
+    const playingState=window.YT?.PlayerState?.PLAYING??1;
+    for(const slot of ['A','B']){
+      const p=playerFor(slot);if(!p)continue;
+      try{p.mute?.();}catch(_){}
+      let playing=false;
+      try{playing=p.getPlayerState?.()===playingState;}catch(_){}
+      if(!playing)continue;
+      state.prelaunchPlayRequests++;
+      state.lastPrelaunchPlayAt=Date.now();
+      try{p.pauseVideo?.();}catch(_){}
+      try{p.seekTo?.(0,true);}catch(_){}
+    }
+  }
+
   function warmHotStandby(item,index,key){
-    // Reuse the app's established A/B Hot Standby controller. It owns the muted
-    // play/progress proof, pauses, rewinds to 0, and publishes videoReady only
-    // after real decoder progress. The splash helper never performs playback itself.
+    // Hot Standby intentionally proves readiness by briefly starting muted media.
+    // That is valid after launch, but never while the splash owns the user-gesture gate.
+    if(prelaunchLocked())return {handled:false,ready:false};
     let usable=true;
     try{if(typeof runtimeMediaUsable==='function')usable=!!runtimeMediaUsable(item);}catch(_){}
     try{if(typeof standbyRejected==='function'&&standbyRejected(item))usable=false;}catch(_){}
@@ -164,8 +221,6 @@
         }
       }catch(err){state.hotStandbyError=`${err?.name||'Error'}: ${err?.message||err}`;}
     }
-    // If a request was accepted earlier, keep waiting for its exact claim. Never
-    // issue a second competing preload on the active slot while Hot Standby warms.
     if(standbyRequestedFor===key)return {handled:true,ready:false};
     return {handled:false,ready:false};
   }
@@ -205,7 +260,8 @@
     try{
       // Preload is intentionally network/decoder preparation only. The element is
       // kept paused and muted until the red launch button supplies the user gesture.
-      v.muted=true;
+      v.muted=true;v.volume=0;
+      try{v.pause();}catch(_){}
       v.preload='auto';v.setAttribute('preload','auto');v.playsInline=true;v.setAttribute('playsinline','');
       const attr=String(v.getAttribute('src')||'');
       const current=String(v.currentSrc||'');
@@ -229,6 +285,8 @@
   function tick(){
     if(stopped)return;
     if(experienceStarted()||!launchScreen()){stop('launch-complete');return;}
+    installStandbyLaunchGuard();
+    enforceYouTubePrelaunchPause();
     attempts++;state.attempts=attempts;
     if(performance.now()-startedAt>DEADLINE_MS){status('Board ready • video will finish loading when started','TIMEOUT');stop('deadline');return;}
     const {index,item}=currentProgram();
@@ -257,19 +315,33 @@
     }
   }
 
+  function onLaunchClick(){
+    // The click itself is the user authorization boundary. Release the guard before
+    // normal launch handlers run so startup can immediately use Hot Standby/playback.
+    launchCommitted=true;
+    state.launchCommittedAt=Date.now();
+    setTimeout(()=>stop('launch-click'),0);
+  }
+
   function init(){
     try{if(typeof safeStartLiveData==='function')safeStartLiveData();}catch(_){}
+    installStandbyLaunchGuard();
+    document.addEventListener('play',enforceNativePrelaunchPause,true);
+    document.addEventListener('playing',enforceNativePrelaunchPause,true);
     status('Loading scores and first video…','WAITING_FOR_PROGRAM');
-    launchButton()?.addEventListener('click',()=>setTimeout(()=>stop('launch-click'),0),{once:true});
+    launchButton()?.addEventListener('click',onLaunchClick,{once:true,capture:true});
     tick();timer=setInterval(tick,POLL_MS);
   }
 
   window.SBB_SPLASH_PRELOAD=Object.freeze({
     installed:true,version:VERSION,
-    snapshot:()=>({...state,status:state.status,lastMessage,mediaKey:lastKey||state.mediaKey,transport:lastTransport||state.transport,preparedAt:readyAt||state.preparedAt,stopped}),
+    snapshot:()=>({...state,status:state.status,lastMessage,mediaKey:lastKey||state.mediaKey,transport:lastTransport||state.transport,preparedAt:readyAt||state.preparedAt,stopped,launchCommitted,prelaunchLocked:prelaunchLocked()}),
     refresh:()=>{if(!stopped)tick();},
     stop:()=>stop('operator')
   });
 
+  // app.js is already parsed before this module, so install the Hot Standby gate
+  // immediately rather than waiting for DOMContentLoaded/init.
+  installStandbyLaunchGuard();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
