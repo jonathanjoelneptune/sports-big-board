@@ -11,7 +11,9 @@
   const clean=v=>String(v??'').trim();
   const orchestrator=window.SBB_PLAYBACK_ORCHESTRATOR;
   const legacyPauseAll=typeof window.sbbPauseAllPlayback==='function'?window.sbbPauseAllPlayback:null;
-  const state={generation:0,key:'',selectedAt:0,manualPause:false,manualPauseKey:'',providerControlInteractionAt:0,providerControlInteractionKey:'',softKicks:0,reloads:0,lastAction:'',lastReason:'',timers:[],events:[],adapterOwned:false};
+  const state={generation:0,key:'',selectedAt:0,manualPause:false,manualPauseKey:'',providerControlInteractionAt:0,providerControlInteractionKey:'',softKicks:0,reloads:0,lastAction:'',lastReason:'',timers:[],events:[],adapterOwned:false,failureOwnershipAttempts:0,failureHandlerOwned:false,playerErrorHandlerOwned:false,failureDelegate:'',playerErrorDelegate:''};
+  let failureDelegate=null;
+  let playerErrorDelegate=null;
 
   function log(action,detail=''){state.lastAction=action;state.lastReason=detail;state.events.push({at:Date.now(),action,detail,key:state.key});if(state.events.length>30)state.events=state.events.slice(-30);try{window.dispatchEvent(new CustomEvent('sbb:early-pause-recovery',{detail:{action,detail,key:state.key}}));}catch(_){}}
   function currentKey(){let index='';try{index=typeof currentIndex!=='undefined'?String(currentIndex):'';}catch(_){}return `${index}|${clean($('currentTitle')?.textContent)}`;}
@@ -61,6 +63,58 @@
     return !!extended;
   }
 
+  // Priority 1 ownership bridge. Browse historically patched the two global
+  // failure callbacks so its same-game alternate / next-game policy could sit in
+  // front of the legacy player. Preserve that policy byte-for-byte, but adopt the
+  // completed compatibility chain into one architecture-owned top-level wrapper.
+  // The Browse markers remain on the owner so its retry timers cannot build a new
+  // wrapper layer after ownership has been consolidated.
+  function installFailureOwnership(){
+    state.failureOwnershipAttempts++;
+    let changed=false;
+    try{
+      const current=typeof window.handlePlaybackFailure==='function'?window.handlePlaybackFailure:null;
+      if(current?.__sbbPlaybackFailureOwner){
+        state.failureHandlerOwned=true;
+      }else if(current?.__sbbBrowseV5313){
+        failureDelegate=current;
+        const owned=function(slot,err,userInitiated=false){return failureDelegate?.call(this,slot,err,userInitiated);};
+        owned.__sbbPlaybackFailureOwner=true;
+        owned.__sbbOwnershipP1=true;
+        owned.__sbbBrowseV5313=true;
+        owned.__sbbOriginal=current.__sbbOriginal||current;
+        owned.__sbbAdopted=current;
+        try{window.handlePlaybackFailure=owned;handlePlaybackFailure=owned;}catch(_){window.handlePlaybackFailure=owned;}
+        state.failureHandlerOwned=true;
+        state.failureDelegate=clean(current.name||'browse-failure-policy');
+        changed=true;
+        log('FAILURE_OWNER_ADOPT','curated playback failure policy');
+      }
+    }catch(_){}
+    try{
+      const current=typeof window.onPlayerError==='function'?window.onPlayerError:null;
+      if(current?.__sbbPlaybackFailureOwner){
+        state.playerErrorHandlerOwned=true;
+      }else if(current?.__sbbBrowseV5314){
+        playerErrorDelegate=current;
+        const owned=function(event){return playerErrorDelegate?.call(this,event);};
+        owned.__sbbPlaybackFailureOwner=true;
+        owned.__sbbOwnershipP1=true;
+        owned.__sbbBrowseV5314=true;
+        owned.__sbbOriginal=current.__sbbOriginal||current;
+        owned.__sbbAdopted=current;
+        try{window.onPlayerError=owned;onPlayerError=owned;}catch(_){window.onPlayerError=owned;}
+        state.playerErrorHandlerOwned=true;
+        state.playerErrorDelegate=clean(current.name||'browse-player-error-policy');
+        changed=true;
+        log('PLAYER_ERROR_OWNER_ADOPT','curated YouTube error policy');
+      }
+    }catch(_){}
+    return changed||state.failureHandlerOwned||state.playerErrorHandlerOwned;
+  }
+  function failureOwnershipSnapshot(){return {attempts:state.failureOwnershipAttempts,failureHandlerOwned:state.failureHandlerOwned,playerErrorHandlerOwned:state.playerErrorHandlerOwned,failureDelegate:state.failureDelegate,playerErrorDelegate:state.playerErrorDelegate,globalFailureOwned:!!window.handlePlaybackFailure?.__sbbPlaybackFailureOwner,globalPlayerErrorOwned:!!window.onPlayerError?.__sbbPlaybackFailureOwner};}
+  window.SBB_PLAYBACK_FAILURE_OWNER=Object.freeze({version:VERSION,adopt:installFailureOwnership,snapshot:failureOwnershipSnapshot,dispatchFailure:(slot,err,userInitiated=false)=>window.handlePlaybackFailure?.(slot,err,userInitiated),dispatchPlayerError:event=>window.onPlayerError?.(event)});
+
   function softResume(sample){
     if(userPaused()||providerControlPauseLikely()||!sample.paused)return false;
     const tx=currentTransaction();
@@ -96,7 +150,7 @@
     window.addEventListener('blur',()=>setTimeout(noteProviderControlInteraction,0),true);
     document.addEventListener('focusin',event=>{const frame=event.target;if(frame?.tagName==='IFRAME'&&/youtube(?:-nocookie)?\.com/i.test(clean(frame.src)))noteProviderControlInteraction();},true);
   }
-  function bind(){installAdapterOwnership();bindUserIntent();const title=$('currentTitle');if(title)new MutationObserver(()=>setTimeout(()=>schedule('title change'),0)).observe(title,{subtree:true,childList:true,characterData:true});window.addEventListener('sbb:curated-event-identity',()=>setTimeout(()=>schedule('curated selection'),0));window.addEventListener('sbb:score-click-selection',()=>setTimeout(()=>schedule('score selection'),0));setTimeout(()=>schedule('startup'),900);}
+  function bind(){installAdapterOwnership();installFailureOwnership();for(const ms of [80,700,1400])setTimeout(installFailureOwnership,ms);bindUserIntent();const title=$('currentTitle');if(title)new MutationObserver(()=>setTimeout(()=>schedule('title change'),0)).observe(title,{subtree:true,childList:true,characterData:true});window.addEventListener('sbb:curated-event-identity',()=>setTimeout(()=>schedule('curated selection'),0));window.addEventListener('sbb:score-click-selection',()=>setTimeout(()=>schedule('score selection'),0));setTimeout(()=>schedule('startup'),900);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_EARLY_PAUSE_RECOVERY=Object.freeze({version:VERSION,arm:schedule,snapshot:()=>({generation:state.generation,key:state.key,selectedAt:state.selectedAt,userPauseSuppressed:userPaused(),manualPause:state.manualPause,providerControlInteractionAt:state.providerControlInteractionAt,softKicks:state.softKicks,reloads:state.reloads,adapterOwned:state.adapterOwned,lastAction:state.lastAction,lastReason:state.lastReason,events:state.events.slice()})});
+  window.SBB_EARLY_PAUSE_RECOVERY=Object.freeze({version:VERSION,arm:schedule,adoptFailureOwnership:installFailureOwnership,snapshot:()=>({generation:state.generation,key:state.key,selectedAt:state.selectedAt,userPauseSuppressed:userPaused(),manualPause:state.manualPause,providerControlInteractionAt:state.providerControlInteractionAt,softKicks:state.softKicks,reloads:state.reloads,adapterOwned:state.adapterOwned,failureOwnership:failureOwnershipSnapshot(),lastAction:state.lastAction,lastReason:state.lastReason,events:state.events.slice()})});
 })();
