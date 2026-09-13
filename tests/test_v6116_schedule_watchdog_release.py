@@ -9,6 +9,7 @@ verify = (root / "VERIFY.sh").read_text(encoding="utf-8")
 materializer = (root / "tools" / "apply_v6116_release.py").read_text(encoding="utf-8")
 
 expected = ".".join(("6", "1", "16"))
+base = ".".join(("6", "1", "15"))
 assert version == expected, version
 assert "from .canonical_schedule_watchdog_v6116 import install as _install_canonical_schedule_watchdog_v6116" in init
 assert "_install_canonical_schedule_watchdog_v6116()" in init
@@ -32,7 +33,7 @@ for token in (
 assert "python3 -m py_compile sbb/canonical_schedule_watchdog_v6116.py" in verify
 assert "python3 tests/test_v6116_schedule_watchdogs.py" in verify
 assert "python3 tests/test_v6116_schedule_watchdog_release.py" in verify
-assert 'BASE = "6.1.15"' in materializer
-assert 'NEW = "6.1.16"' in materializer
+assert f'BASE = "{base}"' in materializer
+assert f'NEW = "{expected}"' in materializer
 
-print("PASS v6.1.16 official schedule watchdog release contract")
+print("PASS official schedule watchdog release contract", expected)
