@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
-  "pipelineVersion": "A4.14-legacy-browser-display-compat",
-  "generatedAt": "2026-09-13T04:31:27Z",
+  "pipelineVersion": "A4.15-resilient-editor-fallback",
+  "generatedAt": "2026-09-13T14:40:50Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
-  "model": "gpt-5.6-luna",
-  "sourceCandidateHash": "6e392608547f1ce275dea7a181026d0d8725261601fd4773c603868df4528578",
+  "model": "deterministic-source-fallback",
+  "sourceCandidateHash": "2320c9aedae06ad329b8cac20685eada236ea6a4d3552bfb14dbed54e1352e87",
   "leagues": [
     {
       "league": "MLB",
@@ -14,61 +14,17 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-8218c040573185a6"
-          ],
-          "type": "MILESTONE",
-          "priority": 72,
-          "headline": "Emmanuel Rodriguez homered in his first career at-bat, sparking a four-run inning in Minnesota’s 4-3 win over Cleveland.",
-          "text": "Emmanuel Rodriguez homered in his first career at-bat, sparking a four-run inning in Minnesota’s 4-3 win over Cleveland.",
-          "entities": [
-            "Minnesota Twins",
-            "Cleveland Guardians",
-            "Emmanuel Rodriguez"
-          ],
-          "occurredAt": "2026-09-12T20:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 8.36,
-          "freshnessBasis": "Minnesota beat Cleveland 4-3 Saturday after Emmanuel Rodriguez homered in his first career at-bat.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816913"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816913"
-            }
-          ],
-          "id": "a3-6fd0fd66751303ba",
-          "feedRank": 13,
-          "compactHeadline": "Emmanuel Rodriguez homers in first career at-bat"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-411a234bcef55672"
           ],
-          "type": "STANDINGS",
-          "priority": 71,
+          "type": "RESULT",
+          "priority": 70,
           "headline": "Ezequiel Duran had a two-run single and Wyatt Langford hit a solo homer during a six-run fifth inning to lead the Texas Rangers over the Arizona Diamondbacks 6-2 on Saturday night to even the three-game series.",
           "text": "Ezequiel Duran had a two-run single and Wyatt Langford hit a solo homer during a six-run fifth inning to lead the Texas Rangers over the Arizona Diamondbacks 6-2 on Saturday night to even the three-game series.",
-          "entities": [
-            "Texas Rangers",
-            "Arizona Diamondbacks",
-            "Ezequiel Duran",
-            "Wyatt Langford"
-          ],
+          "entities": [],
           "occurredAt": "2026-09-13T00:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
-          "freshnessBasis": "Texas beat Arizona 6-2 Saturday with a six-run fifth inning and remained in the AL playoff race.",
+          "ageHours": 14.51,
+          "freshnessBasis": "Highlightly final: Texas Rangers 6, Arizona Diamondbacks 2.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -86,36 +42,28 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816917"
             }
           ],
-          "id": "a3-4dd0d25ac1be9d3f",
-          "feedRank": 16,
-          "compactHeadline": "Rangers’ six-run fifth keeps them in AL playoff race"
+          "id": "a415-5b763af9d5e752b8",
+          "feedRank": 1,
+          "compactHeadline": "Rangers use a 6-run 5th inning to beat Diamondbacks 6-2, stay in AL playoff race"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
-            "cand-66c8dd7c89c12ebb"
+            "cand-90126709c19b3743"
           ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "San Diego beat San Francisco 7-6 for its fifth straight win; Jackson Merrill and Fernando Tatis Jr. homered, and Mason Miller finished the ninth.",
-          "text": "San Diego beat San Francisco 7-6 for its fifth straight win; Jackson Merrill and Fernando Tatis Jr. homered, and Mason Miller finished the ninth.",
-          "entities": [
-            "San Diego Padres",
-            "San Francisco Giants",
-            "Jackson Merrill",
-            "Fernando Tatis Jr.",
-            "Mason Miller"
-          ],
-          "occurredAt": "2026-09-12T20:05:00Z",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Ronald Acuña Jr. homered to spark an eight-run fourth inning and Tyler Mahle turned in another stellar outing to lead the Atlanta Braves to their second straight victory over the Philadelphia Phillies, 12-2 on Saturday night.",
+          "text": "Ronald Acuña Jr. homered to spark an eight-run fourth inning and Tyler Mahle turned in another stellar outing to lead the Atlanta Braves to their second straight victory over the Philadelphia Phillies, 12-2 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-09-12T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.44,
-          "freshnessBasis": "San Diego beat San Francisco 7-6 Saturday to extend its winning streak to five games.",
+          "ageHours": 15.43,
+          "freshnessBasis": "Highlightly final: Philadelphia Phillies 2, Atlanta Braves 12.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816915",
-            "http://www.espn.com/mlb/preview?gameId=401816915",
-            "http://www.espn.com/mlb/recap?gameId=401816900"
+            "http://www.espn.com/mlb/recap?gameId=401816910"
           ],
           "sources": [
             {
@@ -126,22 +74,47 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816915"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/preview?gameId=401816915"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816900"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816910"
             }
           ],
-          "id": "a3-fa57a17c12b46e78",
-          "feedRank": 23,
-          "compactHeadline": "Padres win fifth straight behind Merrill, Tatis homers"
+          "id": "a415-997c612b541c1ccf",
+          "feedRank": 2,
+          "compactHeadline": "Acuña homers for Braves, Mahle turns in another stellar outing in 12-2 rout of Phillies"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-8067fcc7b2417eeb"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Randal Grichuk hit a two-run, two-out homer in the ninth inning as the Chicago White Sox snapped a four-game losing streak with a 6-5 win over the St. Louis Cardinals on Saturday night.",
+          "text": "Randal Grichuk hit a two-run, two-out homer in the ninth inning as the Chicago White Sox snapped a four-game losing streak with a 6-5 win over the St. Louis Cardinals on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-09-12T23:15:00Z",
+          "timePrecision": "exact",
+          "ageHours": 15.43,
+          "freshnessBasis": "Highlightly final: Chicago White Sox 6, St. Louis Cardinals 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816911"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-12",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816911"
+            }
+          ],
+          "id": "a415-43818da5354f00db",
+          "feedRank": 3,
+          "compactHeadline": "Grichuk hits a 9th inning HR to help White Sox beat Cardinals 6-5"
         },
         {
           "rank": 4,
@@ -149,19 +122,14 @@
             "cand-8a6b4093541b2fa1"
           ],
           "type": "RESULT",
-          "priority": 72,
-          "headline": "Richie Palacios delivered a two-run single, Ian Seymour threw six strong innings and Tampa Bay beat Houston 3-2.",
-          "text": "Richie Palacios delivered a two-run single, Ian Seymour threw six strong innings and Tampa Bay beat Houston 3-2.",
-          "entities": [
-            "Tampa Bay Rays",
-            "Richie Palacios",
-            "Ian Seymour",
-            "Houston Astros"
-          ],
+          "priority": 70,
+          "headline": "Richie Palacios had a two-run single in fifth, Ian Seymour threw six strong innings and Nick Madrigal had a clutch sacrifice fly to help the postseason-bound Tampa Bay Rays beat the Houston Astros 3-2 on Saturday night.",
+          "text": "Richie Palacios had a two-run single in fifth, Ian Seymour threw six strong innings and Nick Madrigal had a clutch sacrifice fly to help the postseason-bound Tampa Bay Rays beat the Houston Astros 3-2 on Saturday night.",
+          "entities": [],
           "occurredAt": "2026-09-12T22:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.36,
-          "freshnessBasis": "Tampa Bay beat Houston 3-2 behind Richie Palacios’ two-run single and six strong innings from Ian Seymour.",
+          "ageHours": 16.51,
+          "freshnessBasis": "Highlightly final: Houston Astros 2, Tampa Bay Rays 3.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -179,33 +147,57 @@
               "url": "http://www.espn.com/mlb/recap?gameId=401816906"
             }
           ],
-          "id": "a3-5c10c41b3fd6b10b",
-          "feedRank": 28,
-          "compactHeadline": "Postseason-bound Rays edge Astros behind Palacios"
+          "id": "a415-b7e60e0326a6c3cd",
+          "feedRank": 4,
+          "compactHeadline": "Postseason-bound Rays beat the Astros 3-2"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-57bc24284729c963"
+            "cand-d84e4ce1542e9899"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "text": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "entities": [],
+          "occurredAt": "2026-09-13T14:35:53Z",
+          "timePrecision": "exact",
+          "ageHours": 0.08,
+          "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
+            }
+          ],
+          "id": "a415-388538a75ab29df9",
+          "feedRank": 5,
+          "compactHeadline": "MLB playoff tracker 2026: Clinching scenarios, bracket, schedule"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-8afc092c0a81918e"
           ],
           "type": "RESULT",
-          "priority": 72,
-          "headline": "Washington beat Los Angeles 6-5 in 10 innings after Andrew Alvarez threw seven innings of one-hit ball and CJ Abrams scored on an error.",
-          "text": "Washington beat Los Angeles 6-5 in 10 innings after Andrew Alvarez threw seven innings of one-hit ball and CJ Abrams scored on an error.",
-          "entities": [
-            "Washington Nationals",
-            "Los Angeles Angels",
-            "Andrew Alvarez",
-            "CJ Abrams"
-          ],
-          "occurredAt": "2026-09-12T20:05:00Z",
+          "priority": 70,
+          "headline": "Ranger Suarez struck out eight in seven innings of one-run ball, Wilyer Abreu hit a tiebreaking two-run double and the Boston Red Sox beat the Kansas City Royals 5-1 on Saturday to halt a three-game skid.",
+          "text": "Ranger Suarez struck out eight in seven innings of one-run ball, Wilyer Abreu hit a tiebreaking two-run double and the Boston Red Sox beat the Kansas City Royals 5-1 on Saturday to halt a three-game skid.",
+          "entities": [],
+          "occurredAt": "2026-09-12T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.44,
-          "freshnessBasis": "Washington beat Los Angeles 6-5 in 10 innings Saturday after Abrams scored on an error.",
+          "ageHours": 18.51,
+          "freshnessBasis": "Highlightly final: Kansas City Royals 1, Boston Red Sox 5.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816903"
+            "http://www.espn.com/mlb/recap?gameId=401816907"
           ],
           "sources": [
             {
@@ -216,44 +208,12 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816903"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816907"
             }
           ],
-          "id": "a3-6e1519b9fd83f68d",
-          "feedRank": 31,
-          "compactHeadline": "Nats win in 10 as Abrams scores on late error"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-6d1b936bf9ae41fc"
-          ],
-          "type": "RETURN",
-          "priority": 72,
-          "headline": "Freddie Freeman returned to the Dodgers’ lineup Saturday after missing two games because of a right knee issue.",
-          "text": "Freddie Freeman returned to the Dodgers’ lineup Saturday after missing two games because of a right knee issue.",
-          "entities": [
-            "Los Angeles Dodgers",
-            "Freddie Freeman"
-          ],
-          "occurredAt": "2026-09-12T19:42:53Z",
-          "timePrecision": "exact",
-          "ageHours": 8.81,
-          "freshnessBasis": "Los Angeles restored Freddie Freeman to its lineup Saturday after he missed two games with a right knee issue.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49917208/dodgers-freeman-lineup-missing-2-games-knee-issue"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49917208/dodgers-freeman-lineup-missing-2-games-knee-issue"
-            }
-          ],
-          "id": "a3-dbbfc7f2afe6a8ee",
-          "feedRank": 32,
-          "compactHeadline": "Freddie Freeman returns to Dodgers lineup after knee issue"
+          "id": "a415-704af242f5d3555a",
+          "feedRank": 6,
+          "compactHeadline": "Ranger Suarez goes 7 innings, Wilyer Abreu hits key 2-run double as Red Sox beat Royals 5-1"
         }
       ]
     },
@@ -264,229 +224,176 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-abc54a0ccec14969"
+            "cand-08ed4340f75a0388"
           ],
           "type": "INJURY",
-          "priority": 82,
-          "headline": "Dallas placed running back Malik Davis on injured reserve, with hip surgery scheduled after he was hurt in Friday’s practice.",
-          "text": "Dallas placed running back Malik Davis on injured reserve, with hip surgery scheduled after he was hurt in Friday’s practice.",
-          "entities": [
-            "Dallas Cowboys",
-            "Malik Davis"
-          ],
-          "occurredAt": "2026-09-12T18:25:09Z",
+          "priority": 78,
+          "headline": "49ers rookie wide receiver De'Zhaun Stribling will miss at least a month because of an ankle injury, sources told NFL Network.",
+          "text": "49ers rookie wide receiver De'Zhaun Stribling will miss at least a month because of an ankle injury, sources told NFL Network.",
+          "entities": [],
+          "occurredAt": "2026-09-13T13:51:59Z",
           "timePrecision": "exact",
-          "ageHours": 10.11,
-          "freshnessBasis": "Dallas placed Malik Davis on injured reserve Saturday ahead of scheduled hip surgery for his practice injury.",
+          "ageHours": 0.81,
+          "freshnessBasis": "49ers rookie wide receiver De'Zhaun Stribling will miss at least a month because of an ankle injury, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49906649/cowboys-malik-davis-hip-injured-practice-opener"
+            "https://www.espn.com/nfl/story/_/id/49926803/sources-49ers-rookie-dezhaun-stribling-least-1-month"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49906649/cowboys-malik-davis-hip-injured-practice-opener"
+              "url": "https://www.espn.com/nfl/story/_/id/49926803/sources-49ers-rookie-dezhaun-stribling-least-1-month"
             }
           ],
-          "id": "a3-8a876178a9aec930",
-          "feedRank": 6,
-          "compactHeadline": "Cowboys place Malik Davis on IR ahead of hip surgery"
+          "id": "a415-6c34c621ac02dd87",
+          "feedRank": 7,
+          "compactHeadline": "Sources: 49ers rookie De'Zhaun Stribling out at least 1 month"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-979e7c5d7332fd95"
+            "cand-a2be000a314f2c9e"
           ],
-          "type": "CONTRACT",
+          "type": "INJURY",
           "priority": 78,
-          "headline": "Las Vegas extended tight end Michael Mayer for three years and $45 million as he steps in for injured Brock Bowers.",
-          "text": "Las Vegas extended tight end Michael Mayer for three years and $45 million as he steps in for injured Brock Bowers.",
-          "entities": [
-            "Las Vegas Raiders",
-            "Michael Mayer",
-            "Brock Bowers"
-          ],
-          "occurredAt": "2026-09-12T17:42:12Z",
+          "headline": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, is unlikely to play against the Falcons because of a back injury, sources told NFL Network and ESPN, and the possibility of a trade remains in play.",
+          "text": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, is unlikely to play against the Falcons because of a back injury, sources told NFL Network and ESPN, and the possibility of a trade remains in play.",
+          "entities": [],
+          "occurredAt": "2026-09-13T13:02:06Z",
           "timePrecision": "exact",
-          "ageHours": 10.82,
-          "freshnessBasis": "Las Vegas agreed to a three-year, $45 million extension with Michael Mayer Saturday.",
+          "ageHours": 1.65,
+          "freshnessBasis": "Steelers cornerback Joey Porter Jr., who has been embroiled in a contract dispute all summer, is unlikely to play against the Falcons because of a back injury, sources told NFL Network and ESPN, and the possibility of a trade remains in play.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49914437/raiders-te-michael-mayer-gets-3-year-45m-extension-sources-say"
+            "https://www.espn.com/nfl/story/_/id/49920002/sources-joey-porter-jr-unlikely-play-amid-uncertain-steelers-future"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49914437/raiders-te-michael-mayer-gets-3-year-45m-extension-sources-say"
+              "url": "https://www.espn.com/nfl/story/_/id/49920002/sources-joey-porter-jr-unlikely-play-amid-uncertain-steelers-future"
             }
           ],
-          "id": "a3-780c6e614cb7eeca",
-          "feedRank": 15,
-          "compactHeadline": "Raiders give Michael Mayer three-year, $45M extension"
+          "id": "a415-e9e4c22e24477ca1",
+          "feedRank": 8,
+          "compactHeadline": "Sources: Joey Porter Jr. unlikely to play amid uncertain Steelers future"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-d011bdf8e4276f55"
+            "cand-07bfbf4af243a278"
           ],
           "type": "CONTRACT",
-          "priority": 77,
-          "headline": "Chicago and running back D’Andre Swift agreed to a three-year, $33.75 million extension with $27.5 million guaranteed.",
-          "text": "Chicago and running back D’Andre Swift agreed to a three-year, $33.75 million extension with $27.5 million guaranteed.",
-          "entities": [
-            "Chicago Bears",
-            "D’Andre Swift"
-          ],
-          "occurredAt": "2026-09-12T15:24:15Z",
+          "priority": 76,
+          "headline": "The Jaguars and Parker Washington are unlikely to agree to a contract extension before the start of the season, a source told NFL Network.",
+          "text": "The Jaguars and Parker Washington are unlikely to agree to a contract extension before the start of the season, a source told NFL Network.",
+          "entities": [],
+          "occurredAt": "2026-09-13T13:53:39Z",
           "timePrecision": "exact",
-          "ageHours": 13.12,
-          "freshnessBasis": "Chicago agreed to a three-year, $33.75 million extension with D’Andre Swift Saturday.",
+          "ageHours": 0.79,
+          "freshnessBasis": "The Jaguars and Parker Washington are unlikely to agree to a contract extension before the start of the season, a source told NFL Network.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49906474/bears-rb-swift-agree-3-year-3375m-extension"
+            "https://www.espn.com/nfl/story/_/id/49920927/source-jaguars-parker-washington-unlikely-agree-deal"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49906474/bears-rb-swift-agree-3-year-3375m-extension"
+              "url": "https://www.espn.com/nfl/story/_/id/49920927/source-jaguars-parker-washington-unlikely-agree-deal"
             }
           ],
-          "id": "a3-4207479f38a45160",
-          "feedRank": 18,
-          "compactHeadline": "Bears, D’Andre Swift agree to three-year extension"
+          "id": "a415-2a8086e9e27ce98b",
+          "feedRank": 9,
+          "compactHeadline": "Source: Jaguars, Parker Washington unlikely to agree to deal"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-11ffb29936879969"
+            "cand-018bf32954fe9375"
           ],
           "type": "CONTRACT",
           "priority": 76,
-          "headline": "Green Bay and tight end Tucker Kraft agreed to a four-year extension worth up to $92 million.",
-          "text": "Green Bay and tight end Tucker Kraft agreed to a four-year extension worth up to $92 million.",
-          "entities": [
-            "Green Bay Packers",
-            "Tucker Kraft"
-          ],
-          "occurredAt": "2026-09-12T15:35:15Z",
+          "headline": "Baker Mayfield just got $55 million per year in new money -- which is telling about where the QB market is headed. That's great news for 11 other passers ready for big deals.",
+          "text": "Baker Mayfield just got $55 million per year in new money -- which is telling about where the QB market is headed. That's great news for 11 other passers ready for big deals.",
+          "entities": [],
+          "occurredAt": "2026-09-13T12:38:29Z",
           "timePrecision": "exact",
-          "ageHours": 12.94,
-          "freshnessBasis": "Green Bay agreed to a four-year extension with Tucker Kraft worth up to $92 million Saturday.",
+          "ageHours": 2.04,
+          "freshnessBasis": "Baker Mayfield just got $55 million per year in new money -- which is telling about where the QB market is headed. That's great news for 11 other passers ready for big deals.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49914334/sources-packers-tucker-kraft-agree-4-year-extension"
+            "https://www.espn.com/nfl/story/_/id/49915176/quarterback-contract-market-baker-mayfield-extensions"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49914334/sources-packers-tucker-kraft-agree-4-year-extension"
+              "url": "https://www.espn.com/nfl/story/_/id/49915176/quarterback-contract-market-baker-mayfield-extensions"
             }
           ],
-          "id": "a3-0bcf7b9c6d965194",
-          "feedRank": 20,
-          "compactHeadline": "Packers extend Tucker Kraft for up to $92 million"
+          "id": "a415-9552018ed1f267b8",
+          "feedRank": 10,
+          "compactHeadline": "Why Baker Mayfield's contract means the QB market could burst"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-d66cd65cc4a782f2"
+            "cand-8c350b47bd443af7"
           ],
-          "type": "CONTRACT",
-          "priority": 75,
-          "headline": "C.J. Stroud and the Texans agreed to postpone long-term extension negotiations until after the 2026 season.",
-          "text": "C.J. Stroud and the Texans agreed to postpone long-term extension negotiations until after the 2026 season.",
-          "entities": [
-            "C.J. Stroud",
-            "Houston Texans"
-          ],
-          "occurredAt": "2026-09-12T20:47:40Z",
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Falcons quarterback Cooper Rush experienced back spasms Saturday, but he will still start Sunday against the Pittsburgh Steelers, the team announced.",
+          "text": "Falcons quarterback Cooper Rush experienced back spasms Saturday, but he will still start Sunday against the Pittsburgh Steelers, the team announced.",
+          "entities": [],
+          "occurredAt": "2026-09-13T13:26:28Z",
           "timePrecision": "exact",
-          "ageHours": 7.73,
-          "freshnessBasis": "C.J. Stroud and Houston agreed to wait until after the season to resume long-term contract talks.",
+          "ageHours": 1.24,
+          "freshnessBasis": "Falcons quarterback Cooper Rush experienced back spasms Saturday, but he will still start Sunday against the Pittsburgh Steelers, the team announced.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49917836/sources-cj-stroud-texans-table-extension-talks"
+            "https://www.espn.com/nfl/story/_/id/49918004/falcons-qb-rush-slated-start-back-spasms"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49917836/sources-cj-stroud-texans-table-extension-talks"
+              "url": "https://www.espn.com/nfl/story/_/id/49918004/falcons-qb-rush-slated-start-back-spasms"
             }
           ],
-          "id": "a3-93a707172d8afe30",
-          "feedRank": 21,
-          "compactHeadline": "Stroud, Texans table extension talks until after season"
+          "id": "a415-c0f958d28b16f4f7",
+          "feedRank": 11,
+          "compactHeadline": "Falcons QB Rush still slated to start despite back spasms"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-ad1bf4f43ca71b88"
+            "cand-2a0abae4b9a44ab3"
           ],
-          "type": "DEPTH_CHART",
-          "priority": 73,
-          "headline": "Kansas City will use undrafted rookie Kahlil Benson to help protect Patrick Mahomes after left tackle Josh Simmons was ruled out for Monday’s opener.",
-          "text": "Kansas City will use undrafted rookie Kahlil Benson to help protect Patrick Mahomes after left tackle Josh Simmons was ruled out for Monday’s opener.",
-          "entities": [
-            "Kansas City Chiefs",
-            "Josh Simmons",
-            "Kahlil Benson",
-            "Patrick Mahomes"
-          ],
-          "occurredAt": "2026-09-12T20:17:49Z",
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The Rams pursued Maxx Crosby shortly after his trade from the Raiders to the Ravens fell through, sources told NFL Network.",
+          "text": "The Rams pursued Maxx Crosby shortly after his trade from the Raiders to the Ravens fell through, sources told NFL Network.",
+          "entities": [],
+          "occurredAt": "2026-09-13T13:36:45Z",
           "timePrecision": "exact",
-          "ageHours": 8.23,
-          "freshnessBasis": "Kansas City ruled Josh Simmons out for Monday’s opener and is expected to use undrafted rookie Kahlil Benson.",
+          "ageHours": 1.07,
+          "freshnessBasis": "The Rams pursued Maxx Crosby shortly after his trade from the Raiders to the Ravens fell through, sources told NFL Network.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49917622/chiefs-set-use-undrafted-rookie-lt-josh-simmons-out"
+            "https://www.espn.com/nfl/story/_/id/49921824/sources-maxx-crosby-shut-rams-trade-talks-failed-ravens-deal"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49917622/chiefs-set-use-undrafted-rookie-lt-josh-simmons-out"
+              "url": "https://www.espn.com/nfl/story/_/id/49921824/sources-maxx-crosby-shut-rams-trade-talks-failed-ravens-deal"
             }
           ],
-          "id": "a3-a98e96793f385438",
-          "feedRank": 25,
-          "compactHeadline": "Chiefs turn to undrafted rookie with Josh Simmons out"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-8bc332799d602b0a"
-          ],
-          "type": "CONTRACT",
-          "priority": 72,
-          "headline": "Lamar Jackson and Baltimore are not expected to reach a long-term extension before the season, with talks tabled for now.",
-          "text": "Lamar Jackson and Baltimore are not expected to reach a long-term extension before the season, with talks tabled for now.",
-          "entities": [
-            "Baltimore Ravens",
-            "Lamar Jackson"
-          ],
-          "occurredAt": "2026-09-13T03:44:54Z",
-          "timePrecision": "exact",
-          "ageHours": 0.78,
-          "freshnessBasis": "Baltimore and Lamar Jackson are not expected to complete a long-term extension before the 2026 season.",
-          "status": "watch",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49915181/sources-lamar-jackson-reluctant-talk-deal-ravens"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49915181/sources-lamar-jackson-reluctant-talk-deal-ravens"
-            }
-          ],
-          "id": "a3-1c8354480d8e6a01",
-          "feedRank": 26,
-          "compactHeadline": "Lamar Jackson, Ravens table extension talks until later"
+          "id": "a415-643eba7866858a0f",
+          "feedRank": 12,
+          "compactHeadline": "Sources: Maxx Crosby shut down Rams trade talks after failed Ravens deal"
         }
       ]
     },
@@ -505,18 +412,14 @@
             "cand-ef6bf0d782e6fb57"
           ],
           "type": "SIGNING",
-          "priority": 74,
-          "headline": "Montreal signed veteran forward Chris Kreider to a one-year contract after he mutually terminated his previous deal with Anaheim.",
-          "text": "Montreal signed veteran forward Chris Kreider to a one-year contract after he mutually terminated his previous deal with Anaheim.",
-          "entities": [
-            "Montreal Canadiens",
-            "Chris Kreider",
-            "Anaheim Ducks"
-          ],
+          "priority": 76,
+          "headline": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
+          "text": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
+          "entities": [],
           "occurredAt": "2026-09-13T00:16:16Z",
           "timePrecision": "exact",
-          "ageHours": 4.25,
-          "freshnessBasis": "Montreal agreed to a one-year contract with Chris Kreider Saturday.",
+          "ageHours": 14.41,
+          "freshnessBasis": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49919075/chris-kreider-35-lands-1-year-deal-montreal-canadiens"
@@ -528,9 +431,67 @@
               "url": "https://www.espn.com/nhl/story/_/id/49919075/chris-kreider-35-lands-1-year-deal-montreal-canadiens"
             }
           ],
-          "id": "a3-aeb431bd7b3f112b",
-          "feedRank": 19,
-          "compactHeadline": "Chris Kreider joins Canadiens on one-year contract"
+          "id": "a415-19fe4235e88e9b57",
+          "feedRank": 13,
+          "compactHeadline": "Chris Kreider, 35, lands 1-year deal with Montreal Canadiens"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-db37ee8d2606f344"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "Golden Knights captain Mark Stone has signed a two-year contract extension with a $9 million annual value that goes through the 2028-29 season.",
+          "text": "Golden Knights captain Mark Stone has signed a two-year contract extension with a $9 million annual value that goes through the 2028-29 season.",
+          "entities": [],
+          "occurredAt": "2026-09-12T17:19:27Z",
+          "timePrecision": "exact",
+          "ageHours": 21.36,
+          "freshnessBasis": "Golden Knights captain Mark Stone has signed a two-year contract extension with a $9 million annual value that goes through the 2028-29 season.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49915341/golden-knights-extend-mark-stone-2-year-18m-deal"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49915341/golden-knights-extend-mark-stone-2-year-18m-deal"
+            }
+          ],
+          "id": "a415-6ff97c747dcc1b83",
+          "feedRank": 14,
+          "compactHeadline": "Golden Knights extend Mark Stone with 2-year, $18M deal"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-f5cacbe1ba5054a6"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The Ontario Hockey League's Brampton Steelheads received 17 draft picks from the Sudbury Wolves for the rights to forward prospect Tanner Adams in a blockbuster trade.",
+          "text": "The Ontario Hockey League's Brampton Steelheads received 17 draft picks from the Sudbury Wolves for the rights to forward prospect Tanner Adams in a blockbuster trade.",
+          "entities": [],
+          "occurredAt": "2026-09-12T14:52:10Z",
+          "timePrecision": "exact",
+          "ageHours": 23.81,
+          "freshnessBasis": "The Ontario Hockey League's Brampton Steelheads received 17 draft picks from the Sudbury Wolves for the rights to forward prospect Tanner Adams in a blockbuster trade.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49913580/junior-hockey-team-nets-17-picks-top-prospect-tanner-adams"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49913580/junior-hockey-team-nets-17-picks-top-prospect-tanner-adams"
+            }
+          ],
+          "id": "a415-28aca2ee92b5c280",
+          "feedRank": 15,
+          "compactHeadline": "OHL's Steelheads net 17 picks for top prospect Tanner Adams"
         }
       ]
     },
@@ -541,22 +502,75 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-ead0894ae07b2310"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
+          "text": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
+          "entities": [],
+          "occurredAt": "2026-09-13T12:13:56Z",
+          "timePrecision": "exact",
+          "ageHours": 2.45,
+          "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49926499/man-united-benjamin-sesko-perfect-place-injury-recovery"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49926499/man-united-benjamin-sesko-perfect-place-injury-recovery"
+            }
+          ],
+          "id": "a415-36c0b30b722455e8",
+          "feedRank": 16,
+          "compactHeadline": "Man United's Benjamin Sesko 'in perfect place' after injury recovery"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-b603575800380399"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Marcus Rashford will line up for Manchester United against Manchester City for the first time since March 2024.",
+          "text": "Marcus Rashford will line up for Manchester United against Manchester City for the first time since March 2024.",
+          "entities": [],
+          "occurredAt": "2026-09-13T14:32:15Z",
+          "timePrecision": "exact",
+          "ageHours": 0.14,
+          "freshnessBasis": "Marcus Rashford will line up for Manchester United against Manchester City for the first time since March 2024.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49927454/man-united-vs-man-city-marcus-rashford-elliot-anderson-start-manchester-derby"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49927454/man-united-vs-man-city-marcus-rashford-elliot-anderson-start-manchester-derby"
+            }
+          ],
+          "id": "a415-2053a6a25668b9f3",
+          "feedRank": 17,
+          "compactHeadline": "Man United vs. Man City: Marcus Rashford, Elliot Anderson to start Manchester derby"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-019a84240d91479c"
           ],
           "type": "RESULT",
-          "priority": 72,
-          "headline": "Bruno Guimarães and Bukayo Saka scored as Arsenal maintained its perfect Premier League start with a 2-0 win at Sunderland.",
-          "text": "Bruno Guimarães and Bukayo Saka scored as Arsenal maintained its perfect Premier League start with a 2-0 win at Sunderland.",
-          "entities": [
-            "Arsenal",
-            "Sunderland",
-            "Bruno Guimarães",
-            "Bukayo Saka"
-          ],
+          "priority": 70,
+          "headline": "Bruno Guimarães and Bukayo Saka helped maintain Arsenal's perfect start in the Premier League with a 2-0 win over Sunderland.",
+          "text": "Bruno Guimarães and Bukayo Saka helped maintain Arsenal's perfect start in the Premier League with a 2-0 win over Sunderland.",
+          "entities": [],
           "occurredAt": "2026-09-12T21:18:56Z",
           "timePrecision": "exact",
-          "ageHours": 7.21,
-          "freshnessBasis": "Arsenal beat Sunderland 2-0 Saturday to maintain a perfect Premier League start.",
+          "ageHours": 17.37,
+          "freshnessBasis": "Bruno Guimarães and Bukayo Saka helped maintain Arsenal's perfect start in the Premier League with a 2-0 win over Sunderland.",
           "status": "active",
           "sourceUrls": [
             "http://www.espn.com/soccer/report/_/gameId/401878779"
@@ -568,9 +582,96 @@
               "url": "http://www.espn.com/soccer/report/_/gameId/401878779"
             }
           ],
-          "id": "a3-12afc3317f529e2d",
-          "feedRank": 29,
-          "compactHeadline": "Arsenal stay perfect as Guimarães, Saka beat Sunderland"
+          "id": "a415-f534fc0b9f32bd10",
+          "feedRank": 18,
+          "compactHeadline": "Bruno Guimarães scores stunner as Arsenal overcome Sunderland"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-aa2b3732e529ca1b"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Tottenham Hotspur fired another blank after being frustrated by Everton in a 0-0 draw to extend their winless start to the new Premier League season to four matches.",
+          "text": "Tottenham Hotspur fired another blank after being frustrated by Everton in a 0-0 draw to extend their winless start to the new Premier League season to four matches.",
+          "entities": [],
+          "occurredAt": "2026-09-12T18:56:30Z",
+          "timePrecision": "exact",
+          "ageHours": 19.74,
+          "freshnessBasis": "Tottenham Hotspur fired another blank after being frustrated by Everton in a 0-0 draw to extend their winless start to the new Premier League season to four matches.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/soccer/report/_/gameId/401879277"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "http://www.espn.com/soccer/report/_/gameId/401879277"
+            }
+          ],
+          "id": "a415-0da0ca1d92f19870",
+          "feedRank": 19,
+          "compactHeadline": "Winless Tottenham still searching for first goal of season after draw with Everton"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-c33618a2dc9651c2"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Zian Flemming's first goal for Ipswich snatched a dramatic 3-2 victory at 10-man Crystal Palace for their second Premier League win of the season.",
+          "text": "Zian Flemming's first goal for Ipswich snatched a dramatic 3-2 victory at 10-man Crystal Palace for their second Premier League win of the season.",
+          "entities": [],
+          "occurredAt": "2026-09-12T16:30:10Z",
+          "timePrecision": "exact",
+          "ageHours": 22.18,
+          "freshnessBasis": "Zian Flemming's first goal for Ipswich snatched a dramatic 3-2 victory at 10-man Crystal Palace for their second Premier League win of the season.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/soccer/report/_/gameId/401879281"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "http://www.espn.com/soccer/report/_/gameId/401879281"
+            }
+          ],
+          "id": "a415-6f2ab42cd99b8502",
+          "feedRank": 20,
+          "compactHeadline": "Ipswich's impressive start continues with win over 10-man Crystal Palace"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-aecee51206a2ba52"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Liverpool were held to a 0-0 draw with struggling Fulham at Anfield, as a host of top players failed to perform.",
+          "text": "Liverpool were held to a 0-0 draw with struggling Fulham at Anfield, as a host of top players failed to perform.",
+          "entities": [],
+          "occurredAt": "2026-09-12T16:27:56Z",
+          "timePrecision": "exact",
+          "ageHours": 22.22,
+          "freshnessBasis": "Liverpool were held to a 0-0 draw with struggling Fulham at Anfield, as a host of top players failed to perform.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49912330/liverpool-ratings-barcola-wirtz-gravenberch-struggle-fulham-draw"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49912330/liverpool-ratings-barcola-wirtz-gravenberch-struggle-fulham-draw"
+            }
+          ],
+          "id": "a415-bea068f05e1666a4",
+          "feedRank": 21,
+          "compactHeadline": "Liverpool ratings: Barcola, Wirtz, Gravenberch struggle in Fulham draw"
         }
       ]
     },
@@ -581,61 +682,17 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-861dabf94db8beb5"
-          ],
-          "type": "STANDINGS",
-          "priority": 74,
-          "headline": "Nashville drew Inter Miami 2-2 Saturday and maintained a nine-point lead atop the Eastern Conference.",
-          "text": "Nashville drew Inter Miami 2-2 Saturday and maintained a nine-point lead atop the Eastern Conference.",
-          "entities": [
-            "Inter Miami",
-            "Nashville SC",
-            "Lionel Messi"
-          ],
-          "occurredAt": "2026-09-12T23:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 5.02,
-          "freshnessBasis": "Nashville drew Inter Miami 2-2 Saturday and maintained a nine-point lead atop the Eastern Conference.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
-            }
-          ],
-          "id": "a3-1b676a66f08a5389",
-          "feedRank": 10,
-          "compactHeadline": "Nashville deny Messi and maintain nine-point conference lead"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-3f5bcf4f2ba8fc32"
           ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves as New York beat Columbus 1-0 to end a six-match winless streak.",
-          "text": "Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves as New York beat Columbus 1-0 to end a six-match winless streak.",
-          "entities": [
-            "New York Red Bulls",
-            "Columbus Crew",
-            "Ronald Donkor",
-            "Ethan Horvath"
-          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves to help the New York Red Bulls end a six-match winless streak with a 1-0 victory over the Columbus Crew on Saturday night.",
+          "text": "Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves to help the New York Red Bulls end a six-match winless streak with a 1-0 victory over the Columbus Crew on Saturday night.",
+          "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.02,
-          "freshnessBasis": "New York beat Columbus 1-0 Saturday on Ronald Donkor’s 89th-minute goal, ending a six-match winless streak.",
+          "ageHours": 15.18,
+          "freshnessBasis": "Highlightly final: New York Red Bulls 1, Columbus Crew 0.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -653,29 +710,24 @@
               "url": "http://www.espn.com/soccer/report/_/gameId/761804"
             }
           ],
-          "id": "a3-13df90d0f3931bda",
+          "id": "a415-539bed25cd38d26d",
           "feedRank": 22,
-          "compactHeadline": "Red Bulls end six-match winless run with late Donkor goal"
+          "compactHeadline": "Donkor goals sees Red Bulls beat Crew to end winless streak at 6"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
             "cand-f73adb8ee7668d57"
           ],
-          "type": "STREAK",
-          "priority": 73,
-          "headline": "Orlando beat Toronto 3-0 Saturday as Antoine Griezmann scored in his fifth straight match.",
-          "text": "Orlando beat Toronto 3-0 Saturday as Antoine Griezmann scored in his fifth straight match.",
-          "entities": [
-            "Orlando City",
-            "Toronto FC",
-            "Antoine Griezmann",
-            "Harvey Sarajian"
-          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Antoine Griezmann scored for the eighth time in 10 matches, and rookie Harvey Sarajian notched his first goal and assist to spark Orlando City to a 3-0 victory over Toronto FC on Saturday night.",
+          "text": "Antoine Griezmann scored for the eighth time in 10 matches, and rookie Harvey Sarajian notched his first goal and assist to spark Orlando City to a 3-0 victory over Toronto FC on Saturday night.",
+          "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.02,
-          "freshnessBasis": "Orlando beat Toronto 3-0 Saturday as Antoine Griezmann scored in his fifth straight match.",
+          "ageHours": 15.18,
+          "freshnessBasis": "Highlightly final: Toronto FC 0, Orlando City 3.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
@@ -693,43 +745,131 @@
               "url": "http://www.espn.com/soccer/report/_/gameId/761801"
             }
           ],
-          "id": "a3-7dbdaac553af8f22",
+          "id": "a415-f9ea915244d4fb9e",
+          "feedRank": 23,
+          "compactHeadline": "Griezmann scores in 5th straight to help Orlando beat Toronto"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-861dabf94db8beb5"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
+          "text": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
+          "entities": [],
+          "occurredAt": "2026-09-12T23:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 15.18,
+          "freshnessBasis": "Highlightly final: Nashville SC 2, Inter Miami 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-12",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
+            }
+          ],
+          "id": "a415-648d84c8aca21134",
           "feedRank": 24,
-          "compactHeadline": "Griezmann scores in fifth straight as Orlando beat Toronto"
+          "compactHeadline": "Messi scores, but Nashville strikes late to deny Miami win"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-c5ac5f8b392a5b25"
+            "cand-12890deff0dfaeea"
           ],
-          "type": "STREAK",
-          "priority": 72,
-          "headline": "André Luiz and Taylor Calheira scored in the first half as Sporting Kansas City beat LAFC 3-1 to end a seven-match winless streak.",
-          "text": "André Luiz and Taylor Calheira scored in the first half as Sporting Kansas City beat LAFC 3-1 to end a seven-match winless streak.",
-          "entities": [
-            "Sporting Kansas City",
-            "Los Angeles FC",
-            "André Luiz",
-            "Taylor Calheira"
-          ],
-          "occurredAt": "2026-09-13T03:02:59Z",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
+          "text": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
+          "entities": [],
+          "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.47,
-          "freshnessBasis": "Sporting Kansas City beat LAFC 3-1 Saturday to end a seven-match winless streak.",
+          "ageHours": 12.18,
+          "freshnessBasis": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/soccer/report/_/gameId/761806"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "http://www.espn.com/soccer/report/_/gameId/761806"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-12",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-c432ab161e5c2e48",
+          "id": "a415-083f86d998918358",
+          "feedRank": 25,
+          "compactHeadline": "Los Angeles Galaxy and Seattle Sounders finished tied 1-1"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-bf4e56aa9416e10e"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
+          "text": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
+          "entities": [],
+          "occurredAt": "2026-09-13T02:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 12.18,
+          "freshnessBasis": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-12",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-125ef28b29ef5c4c",
+          "feedRank": 26,
+          "compactHeadline": "San Jose Earthquakes beat Houston Dynamo 1-0"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-e56b8e27f31b4ad0"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
+          "text": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
+          "entities": [],
+          "occurredAt": "2026-09-13T01:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 13.18,
+          "freshnessBasis": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-12",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-fd2635ff267a45c3",
           "feedRank": 27,
-          "compactHeadline": "Sporting KC stun LAFC to snap seven-match winless run"
+          "compactHeadline": "Colorado Rapids beat Montréal Impact 1-0"
         }
       ]
     },
@@ -740,24 +880,21 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-237c22e907f63a74"
+            "cand-5764785a781267f2"
           ],
           "type": "UPSET",
-          "priority": 94,
-          "headline": "No. 4 Texas rallied from 20 points down and held on 24-23 after No. 1 Ohio State missed a late field-goal attempt.",
-          "text": "No. 4 Texas rallied from 20 points down and held on 24-23 after No. 1 Ohio State missed a late field-goal attempt.",
-          "entities": [
-            "Texas Longhorns",
-            "Ohio State Buckeyes"
-          ],
-          "occurredAt": "2026-09-12T23:30:00Z",
+          "priority": 82,
+          "headline": "Justin Lamson threw a touchdown pass and Adam Jones ran for another in the first half for Montana State, and the Bobcats beat Nevada 20-7 on Saturday night to extend their program-best winning streak to 17 games.",
+          "text": "Justin Lamson threw a touchdown pass and Adam Jones ran for another in the first half for Montana State, and the Bobcats beat Nevada 20-7 on Saturday night to extend their program-best winning streak to 17 games.",
+          "entities": [],
+          "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.02,
-          "freshnessBasis": "Texas erased a 20-point deficit to beat No. 1 Ohio State 24-23 after a late missed field goal.",
+          "ageHours": 12.18,
+          "freshnessBasis": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "https://www.espn.com/college-football/story/_/id/49923197/no-4-texas-mounts-fourth-quarter-rally-stuns-no-1-ohio-state"
+            "http://www.espn.com/ncf/recap?gameId=401864500"
           ],
           "sources": [
             {
@@ -768,72 +905,118 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49923197/no-4-texas-mounts-fourth-quarter-rally-stuns-no-1-ohio-state"
+              "url": "http://www.espn.com/ncf/recap?gameId=401864500"
             }
           ],
-          "id": "a3-947df7e16b2e6274",
-          "feedRank": 1,
-          "compactHeadline": "Texas survives missed field goal to stun Ohio State"
+          "id": "a415-27ad66477d2c4c30",
+          "feedRank": 28,
+          "compactHeadline": "FCS champion Montana State wins 17th straight game, knocking off Nevada 20-7"
         },
         {
           "rank": 2,
           "candidateIds": [
-            "cand-fe0c90c4594990e3"
+            "cand-5d0e730fb249f65b"
           ],
-          "type": "UPSET",
-          "priority": 84,
-          "headline": "Gage Roy threw for 146 yards and 2 TDs as Illinois State Redbirds beat Northern Illinois Huskies 28-24.",
-          "text": "Gage Roy threw for 146 yards and 2 TDs as Illinois State Redbirds beat Northern Illinois Huskies 28-24.",
-          "entities": [
-            "Illinois State Redbirds",
-            "Northern Illinois Huskies"
-          ],
-          "occurredAt": "2026-09-12T23:00:00Z",
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
+          "text": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
+          "entities": [],
+          "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.52,
-          "freshnessBasis": "Illinois State beat Northern Illinois 28-24 in the supplied upset result.",
+          "ageHours": 15.18,
+          "freshnessBasis": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401864503"
+            "https://highlightly.net"
           ],
           "sources": [
             {
               "provider": "Highlightly",
               "sourceId": "highlightly-american-football-2026-09-12",
               "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "a45-espn-ncaaf-summary-401864503",
-              "url": "https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401864503"
             }
           ],
-          "id": "a3-ce6570c3278284b7",
-          "feedRank": 2,
-          "compactHeadline": "Illinois State hands Northern Illinois an upset loss"
+          "id": "a415-98e6871a64b614e4",
+          "feedRank": 29,
+          "compactHeadline": "Late score lifts Iowa Hawkeyes past Iowa State Cyclones 16-13"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-562dbeb0af0ff9ee"
+            "cand-237c22e907f63a74"
+          ],
+          "type": "RESULT",
+          "priority": 76,
+          "headline": "Ohio State Buckeyes missed a late field-goal attempt as Texas Longhorns held on 24-23.",
+          "text": "Ohio State Buckeyes missed a late field-goal attempt as Texas Longhorns held on 24-23.",
+          "entities": [],
+          "occurredAt": "2026-09-12T23:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 15.18,
+          "freshnessBasis": "Highlightly final: Ohio State Buckeyes 23, Texas Longhorns 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-12",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-e376971500d5af4c",
+          "feedRank": 30,
+          "compactHeadline": "Texas Longhorns survives late missed field goal to beat Ohio State Buckeyes 24-23"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-fe0c90c4594990e3"
           ],
           "type": "UPSET",
-          "priority": 83,
-          "headline": "JJ Kohl threw for 367 yards and 3 TDs as Florida International Panthers beat Buffalo Bulls 33-20.",
-          "text": "JJ Kohl threw for 367 yards and 3 TDs as Florida International Panthers beat Buffalo Bulls 33-20.",
-          "entities": [
-            "Florida International Panthers",
-            "Buffalo Bulls"
-          ],
-          "occurredAt": "2026-09-12T22:00:00Z",
+          "priority": 82,
+          "headline": "Highlightly final: Illinois State Redbirds 28, Northern Illinois Huskies 24.",
+          "text": "Highlightly final: Illinois State Redbirds 28, Northern Illinois Huskies 24.",
+          "entities": [],
+          "occurredAt": "2026-09-12T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
-          "freshnessBasis": "Florida International beat Buffalo 33-20 in the supplied upset result.",
+          "ageHours": 15.68,
+          "freshnessBasis": "Highlightly final: Illinois State Redbirds 28, Northern Illinois Huskies 24.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-12",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-de3b23928bc28806",
+          "feedRank": 31,
+          "compactHeadline": "Illinois State Redbirds beat Northern Illinois Huskies 28-24"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-98d9d6d130442892"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "DeVon Rice had two rushing touchdowns, Tama Uiliata had 10 receptions for 107 yards and threw a 7-yard touchdown pass to cap the scoring, and Hawaii beat New Mexico State 29-19 on Saturday night.",
+          "text": "DeVon Rice had two rushing touchdowns, Tama Uiliata had 10 receptions for 107 yards and threw a 7-yard touchdown pass to cap the scoring, and Hawaii beat New Mexico State 29-19 on Saturday night.",
+          "entities": [],
+          "occurredAt": "2026-09-13T03:59:00Z",
+          "timePrecision": "exact",
+          "ageHours": 10.7,
+          "freshnessBasis": "Highlightly final: New Mexico State Aggies 19, Hawai'i Rainbow Warriors 29.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401866414"
+            "http://www.espn.com/ncf/recap?gameId=401864578"
           ],
           "sources": [
             {
@@ -843,96 +1026,28 @@
             },
             {
               "provider": "ESPN",
-              "sourceId": "a45-espn-ncaaf-summary-401866414",
-              "url": "https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401866414"
-            }
-          ],
-          "id": "a3-101e948d51a55b0e",
-          "feedRank": 4,
-          "compactHeadline": "Florida International rolls past Buffalo in upset"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-7e7b603d8a2e181f"
-          ],
-          "type": "RECORD",
-          "priority": 82,
-          "headline": "Vicari Swain scored twice on punt returns to break South Carolina’s career record with five punt-return touchdowns in a 45-9 win over Towson.",
-          "text": "Vicari Swain scored twice on punt returns to break South Carolina’s career record with five punt-return touchdowns in a 45-9 win over Towson.",
-          "entities": [
-            "South Carolina Gamecocks",
-            "Towson Tigers",
-            "Vicari Swain"
-          ],
-          "occurredAt": "2026-09-13T03:41:29Z",
-          "timePrecision": "exact",
-          "ageHours": 0.83,
-          "freshnessBasis": "Vicari Swain broke South Carolina’s career punt-return touchdown record Saturday with two scores.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/ncf/recap?gameId=401856680"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "http://www.espn.com/ncf/recap?gameId=401856680"
+              "url": "http://www.espn.com/ncf/recap?gameId=401864578"
             }
           ],
-          "id": "a3-ccb71fef702fa587",
-          "feedRank": 5,
-          "compactHeadline": "South Carolina’s Swain sets career punt-return TD record"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-5d0e730fb249f65b"
-          ],
-          "type": "RESULT",
-          "priority": 82,
-          "headline": "Iowa beat Iowa State 16-13 after a 42-yard field goal with 15 seconds remaining provided the decisive points.",
-          "text": "Iowa beat Iowa State 16-13 after a 42-yard field goal with 15 seconds remaining provided the decisive points.",
-          "entities": [
-            "Iowa Hawkeyes",
-            "Iowa State Cyclones"
-          ],
-          "occurredAt": "2026-09-12T23:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 5.02,
-          "freshnessBasis": "Iowa beat Iowa State 16-13 Saturday on a late 42-yard field goal.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-96211475c8d41f06",
-          "feedRank": 7,
-          "compactHeadline": "Iowa wins rivalry game on late field goal, 16-13"
+          "id": "a415-9ba96e6c0e55d201",
+          "feedRank": 32,
+          "compactHeadline": "Rice's 2 rushing TDs help Hawaii beat New Mexico State 29-19"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-e03766a39f5131af"
+            "cand-562dbeb0af0ff9ee"
           ],
-          "type": "RESULT",
+          "type": "UPSET",
           "priority": 82,
-          "headline": "Ohio beat Jacksonville State 29-27 Saturday after blocking a last-second field-goal attempt.",
-          "text": "Ohio beat Jacksonville State 29-27 Saturday after blocking a last-second field-goal attempt.",
-          "entities": [
-            "Ohio Bobcats",
-            "Jacksonville State Gamecocks"
-          ],
+          "headline": "Highlightly final: Buffalo Bulls 20, Florida International Panthers 33.",
+          "text": "Highlightly final: Buffalo Bulls 20, Florida International Panthers 33.",
+          "entities": [],
           "occurredAt": "2026-09-12T22:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.52,
-          "freshnessBasis": "Ohio beat Jacksonville State 29-27 Saturday after blocking a last-second field-goal attempt.",
+          "ageHours": 16.68,
+          "freshnessBasis": "Highlightly final: Buffalo Bulls 20, Florida International Panthers 33.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -944,41 +1059,9 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a3-2119a4b6fceacf63",
-          "feedRank": 8,
-          "compactHeadline": "Blocked kick preserves Ohio’s 29-27 win over Jacksonville State"
-        },
-        {
-          "rank": 7,
-          "candidateIds": [
-            "cand-5858a46dfead59a2"
-          ],
-          "type": "RESULT",
-          "priority": 78,
-          "headline": "PENALTY UTSA False Start 5 yards from TXST03 to TXST08. NO PLAY.",
-          "text": "PENALTY UTSA False Start 5 yards from TXST03 to TXST08. NO PLAY.",
-          "entities": [
-            "UTSA Roadrunners",
-            "Texas State Bobcats"
-          ],
-          "occurredAt": "2026-09-12T19:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 9.02,
-          "freshnessBasis": "A late score lifted UTSA to a 31-26 victory over Texas State.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a3-43d98620e74fdb25",
-          "feedRank": 14,
-          "compactHeadline": "Late score lifts UTSA past Texas State"
+          "id": "a415-e02b2db15c55f874",
+          "feedRank": 33,
+          "compactHeadline": "Florida International Panthers beat Buffalo Bulls 33-20"
         }
       ]
     }
@@ -1129,40 +1212,6 @@
           "id": "a3-special-9d307df558a640ca",
           "feedRank": 17,
           "compactHeadline": "Kupcho’s late birdies pull Solheim Cup level at 8-8"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-39a4b25c9a2c7c79"
-          ],
-          "type": "EVENT_UPDATE",
-          "priority": 74,
-          "headline": "Europe built a 7-5 Solheim Cup lead after defeating the record-setting U.S. pairing of Nelly Korda and Allisen Corpuz.",
-          "text": "Europe built a 7-5 Solheim Cup lead after defeating the record-setting U.S. pairing of Nelly Korda and Allisen Corpuz.",
-          "entities": [
-            "Solheim Cup",
-            "Team Europe",
-            "Nelly Korda",
-            "Allisen Corpuz"
-          ],
-          "occurredAt": "2026-09-12T12:06:13Z",
-          "timePrecision": "exact",
-          "ageHours": 16.42,
-          "freshnessBasis": "Europe moved ahead 7-5 at the Solheim Cup after beating the U.S. pairing of Nelly Korda and Allisen Corpuz.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/golf/story/_/id/49912198/europe-builds-7-5-lead-solheim-cup-korda-corpuz-falter"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-lpga",
-              "url": "https://www.espn.com/golf/story/_/id/49912198/europe-builds-7-5-lead-solheim-cup-korda-corpuz-falter"
-            }
-          ],
-          "id": "a3-special-3bba7ec534a60139",
-          "feedRank": 30,
-          "compactHeadline": "Europe takes 7-5 Solheim Cup lead after Korda loss"
         }
       ]
     },
@@ -1219,5 +1268,14 @@
   },
   "headlineCount": 32,
   "headlineTargetChars": 80,
-  "headlineMaxChars": 96
+  "headlineMaxChars": 96,
+  "editorFallback": {
+    "active": true,
+    "version": "A4.15",
+    "mode": "deterministic-grounded-source-selection",
+    "reason": "openai_credit_balance_exhausted",
+    "freshCandidateCount": 140,
+    "publishedItemCount": 33,
+    "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
+  }
 }
