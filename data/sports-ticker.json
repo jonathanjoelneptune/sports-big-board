@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-13T23:01:57Z",
+  "generatedAt": "2026-09-13T23:31:57Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "7ceceec7d987f918403a3756e45063211ffe84a05044cd65edb76642b5cee6b7",
+  "sourceCandidateHash": "7737c40909d67c7b9f98dd589a5b04607f04264f53dcfd0519d06e2d642812a4",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.37,
+          "ageHours": 5.87,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Miami Marlins 6.",
           "status": "active",
           "sourceUrls": [
@@ -49,6 +49,41 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-c7ea70a5fcf4274f"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Corey Seager homered for the fourth time in seven games, Jacob Latz stranded the potential tying run at second base in a shaky ninth inning and the Texas Rangers won their first road series in two months with a 7-6 victory over the Arizona...",
+          "text": "Corey Seager homered for the fourth time in seven games, Jacob Latz stranded the potential tying run at second base in a shaky ninth inning and the Texas Rangers won their first road series in two months with a 7-6 victory over the Arizona...",
+          "entities": [],
+          "occurredAt": "2026-09-13T20:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.37,
+          "freshnessBasis": "Highlightly final: Texas Rangers 7, Arizona Diamondbacks 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816932"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816932"
+            }
+          ],
+          "id": "a415-90e31261c6513aa4",
+          "feedRank": 2,
+          "compactHeadline": "Seager homers, Rangers beat Diamondbacks 7-6 for first road series win in 2 months"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-be58ba80bcd62767"
           ],
           "type": "RESULT",
@@ -58,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.37,
+          "ageHours": 5.87,
           "freshnessBasis": "Highlightly final: Houston Astros 4, Tampa Bay Rays 14.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +113,11 @@
             }
           ],
           "id": "a415-4cd66b721e405f8a",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Freddy Peralta, Jonathan Aranda help Rays beat Astros 14-4 to sweep series"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-cadb3a87d206ac29"
           ],
@@ -93,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.87,
+          "ageHours": 5.37,
           "freshnessBasis": "Highlightly final: Cleveland Guardians 9, Minnesota Twins 2.",
           "status": "active",
           "sourceUrls": [
@@ -113,11 +148,11 @@
             }
           ],
           "id": "a415-53310f478a97780f",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Kwan, Bazzana help Guardians beat Twins 9-2, pull within 1/2 game of AL Central-leading White Sox"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-607b51cda0a81192"
           ],
@@ -128,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.45,
+          "ageHours": 5.95,
           "freshnessBasis": "Highlightly final: New York Mets 0, New York Yankees 2.",
           "status": "active",
           "sourceUrls": [
@@ -148,11 +183,11 @@
             }
           ],
           "id": "a415-a47c76f02402484f",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Schlittler takes over big league ERA lead, Yanks beat Mets 2-0 to close in on postseason berth"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-63b7e01b1b26c824"
           ],
@@ -163,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T18:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.78,
+          "ageHours": 5.28,
           "freshnessBasis": "Highlightly final: Chicago White Sox 1, St. Louis Cardinals 3.",
           "status": "active",
           "sourceUrls": [
@@ -183,43 +218,8 @@
             }
           ],
           "id": "a415-0aab106fe4b1d9d5",
-          "feedRank": 5,
-          "compactHeadline": "Burleson's bases-loaded double lifts Cardinals to 3-1 win over White Sox"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-87ce6c88df96d7b4"
-          ],
-          "type": "RESULT",
-          "priority": 72,
-          "headline": "Jackson Jobe struck out eight a career-high over 6 1/3 innings while pitching into the seventh inning for the first time, and the Detroit Tigers beat the Colorado Rockies 8-1 on Sunday to complete a three-game sweep that extended their winning...",
-          "text": "Jackson Jobe struck out eight a career-high over 6 1/3 innings while pitching into the seventh inning for the first time, and the Detroit Tigers beat the Colorado Rockies 8-1 on Sunday to complete a three-game sweep that extended their winning...",
-          "entities": [],
-          "occurredAt": "2026-09-13T16:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 6.87,
-          "freshnessBasis": "Highlightly final: Colorado Rockies 1, Detroit Tigers 8.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816920"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-13",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816920"
-            }
-          ],
-          "id": "a415-cf622d62e4aa4f6e",
           "feedRank": 6,
-          "compactHeadline": "Jobe strikes out career-high 8, Tigers extend Rockies' slide to 7 games with 8-1 win"
+          "compactHeadline": "Burleson's bases-loaded double lifts Cardinals to 3-1 win over White Sox"
         }
       ]
     },
@@ -239,7 +239,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.53,
           "freshnessBasis": "Highlightly final: New Orleans Saints 30, Detroit Lions 31.",
           "status": "active",
           "sourceUrls": [
@@ -274,7 +274,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.53,
           "freshnessBasis": "Highlightly final: Cleveland Browns 10, Jacksonville Jaguars 34.",
           "status": "active",
           "sourceUrls": [
@@ -309,7 +309,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.53,
           "freshnessBasis": "Highlightly final: Baltimore Ravens 41, Indianapolis Colts 23.",
           "status": "active",
           "sourceUrls": [
@@ -344,7 +344,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.53,
           "freshnessBasis": "Highlightly final: Buffalo Bills 36, Houston Texans 31.",
           "status": "active",
           "sourceUrls": [
@@ -385,7 +385,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.03,
+          "ageHours": 6.53,
           "freshnessBasis": "Highlightly final: Tampa Bay Buccaneers 27, Cincinnati Bengals 33.",
           "status": "active",
           "sourceUrls": [
@@ -420,7 +420,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T22:41:56Z",
           "timePrecision": "exact",
-          "ageHours": 0.33,
+          "ageHours": 0.83,
           "freshnessBasis": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring three times Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -460,7 +460,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T00:16:16Z",
           "timePrecision": "exact",
-          "ageHours": 22.76,
+          "ageHours": 23.26,
           "freshnessBasis": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
           "status": "active",
           "sourceUrls": [
@@ -495,7 +495,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:13:56Z",
           "timePrecision": "exact",
-          "ageHours": 10.8,
+          "ageHours": 11.3,
           "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
           "status": "active",
           "sourceUrls": [
@@ -524,7 +524,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 7.76,
+          "ageHours": 8.26,
           "freshnessBasis": "Brighton dealt 10-man Coventry a crushing 5-0 defeat to condemn them to a fourth straight Premier League loss.",
           "status": "active",
           "sourceUrls": [
@@ -553,7 +553,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:45:25Z",
           "timePrecision": "exact",
-          "ageHours": 3.28,
+          "ageHours": 3.78,
           "freshnessBasis": "Manchester City manager Enzo Maresca backed referee Michael Oliver's decision to send off Phil Foden in his team's 1-0 win against Manchester United, but said that Reds captain Bruno Fernandes should also have been shown a red card.",
           "status": "active",
           "sourceUrls": [
@@ -582,7 +582,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:16:04Z",
           "timePrecision": "exact",
-          "ageHours": 1.76,
+          "ageHours": 2.26,
           "freshnessBasis": "Pro Ref, the Premier League referees' body, has apologized to Manchester United after admitting the VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
           "status": "active",
           "sourceUrls": [
@@ -611,7 +611,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 2.29,
+          "ageHours": 2.79,
           "freshnessBasis": "Manchester City's Phil Foden was sent off after a kick on Manchester United captain Bruno Fernandes in the first half of the derby on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -640,7 +640,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:41:37Z",
           "timePrecision": "exact",
-          "ageHours": 2.34,
+          "ageHours": 2.84,
           "freshnessBasis": "Micah Richards said the Manchester derby was a \"bad day for referees\" after City claimed a 1-0 win with a controversial goal.",
           "status": "active",
           "sourceUrls": [
@@ -666,110 +666,34 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-3f5bcf4f2ba8fc32"
+            "cand-02b31edc01277218"
           ],
           "type": "RESULT",
-          "priority": 70,
-          "headline": "Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves to help the New York Red Bulls end a six-match winless streak with a 1-0 victory over the Columbus Crew on Saturday night.",
-          "text": "Ronald Donkor scored in the 89th minute and Ethan Horvath made three saves to help the New York Red Bulls end a six-match winless streak with a 1-0 victory over the Columbus Crew on Saturday night.",
+          "priority": 76,
+          "headline": "A late goal came in the 90th minute to decide FC Dallas's 2-1 win over Portland Timbers.",
+          "text": "A late goal came in the 90th minute to decide FC Dallas's 2-1 win over Portland Timbers.",
           "entities": [],
-          "occurredAt": "2026-09-12T23:30:00Z",
+          "occurredAt": "2026-09-13T00:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: New York Red Bulls 1, Columbus Crew 0.",
+          "ageHours": 23.03,
+          "freshnessBasis": "Highlightly final: Portland Timbers 1, FC Dallas 2.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/soccer/report/_/gameId/761804"
+            "https://highlightly.net"
           ],
           "sources": [
             {
               "provider": "Highlightly",
               "sourceId": "highlightly-football-2026-09-12",
               "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "http://www.espn.com/soccer/report/_/gameId/761804"
             }
           ],
-          "id": "a415-539bed25cd38d26d",
+          "id": "a415-ac2d41bf615dbe46",
           "feedRank": 20,
-          "compactHeadline": "Donkor goals sees Red Bulls beat Crew to end winless streak at 6"
+          "compactHeadline": "Late goal lifts FC Dallas beat Portland Timbers 2-1"
         },
         {
           "rank": 2,
-          "candidateIds": [
-            "cand-f73adb8ee7668d57"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Antoine Griezmann scored for the eighth time in 10 matches, and rookie Harvey Sarajian notched his first goal and assist to spark Orlando City to a 3-0 victory over Toronto FC on Saturday night.",
-          "text": "Antoine Griezmann scored for the eighth time in 10 matches, and rookie Harvey Sarajian notched his first goal and assist to spark Orlando City to a 3-0 victory over Toronto FC on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-09-12T23:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Toronto FC 0, Orlando City 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/soccer/report/_/gameId/761801"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "http://www.espn.com/soccer/report/_/gameId/761801"
-            }
-          ],
-          "id": "a415-f9ea915244d4fb9e",
-          "feedRank": 21,
-          "compactHeadline": "Griezmann scores in 5th straight to help Orlando beat Toronto"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-861dabf94db8beb5"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
-          "text": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
-          "entities": [],
-          "occurredAt": "2026-09-12T23:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Nashville SC 2, Inter Miami 2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-12",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
-            }
-          ],
-          "id": "a415-648d84c8aca21134",
-          "feedRank": 22,
-          "compactHeadline": "Messi scores, but Nashville strikes late to deny Miami win"
-        },
-        {
-          "rank": 4,
           "candidateIds": [
             "cand-12890deff0dfaeea"
           ],
@@ -780,7 +704,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.03,
           "freshnessBasis": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
           "status": "active",
           "sourceUrls": [
@@ -794,11 +718,11 @@
             }
           ],
           "id": "a415-083f86d998918358",
-          "feedRank": 23,
+          "feedRank": 21,
           "compactHeadline": "Los Angeles Galaxy and Seattle Sounders finished tied 1-1"
         },
         {
-          "rank": 5,
+          "rank": 3,
           "candidateIds": [
             "cand-bf4e56aa9416e10e"
           ],
@@ -809,7 +733,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.03,
           "freshnessBasis": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
           "status": "active",
           "sourceUrls": [
@@ -823,11 +747,11 @@
             }
           ],
           "id": "a415-125ef28b29ef5c4c",
-          "feedRank": 24,
+          "feedRank": 22,
           "compactHeadline": "San Jose Earthquakes beat Houston Dynamo 1-0"
         },
         {
-          "rank": 6,
+          "rank": 4,
           "candidateIds": [
             "cand-e56b8e27f31b4ad0"
           ],
@@ -838,7 +762,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.03,
           "freshnessBasis": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
           "status": "active",
           "sourceUrls": [
@@ -852,8 +776,66 @@
             }
           ],
           "id": "a415-fd2635ff267a45c3",
-          "feedRank": 25,
+          "feedRank": 23,
           "compactHeadline": "Colorado Rapids beat Montréal Impact 1-0"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-eac0c993226c42cf"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: New York City FC 2, Real Salt Lake 0.",
+          "text": "Highlightly final: New York City FC 2, Real Salt Lake 0.",
+          "entities": [],
+          "occurredAt": "2026-09-13T01:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 22.03,
+          "freshnessBasis": "Highlightly final: New York City FC 2, Real Salt Lake 0.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-12",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-1622a061e3e145ff",
+          "feedRank": 24,
+          "compactHeadline": "New York City FC beat Real Salt Lake 2-0"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-b8d10ad3368dcfa2"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Minnesota United 2, St. Louis City SC 4.",
+          "text": "Highlightly final: Minnesota United 2, St. Louis City SC 4.",
+          "entities": [],
+          "occurredAt": "2026-09-13T00:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.03,
+          "freshnessBasis": "Highlightly final: Minnesota United 2, St. Louis City SC 4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-football-2026-09-12",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-71d0d14492a5de11",
+          "feedRank": 25,
+          "compactHeadline": "St. Louis City SC beat Minnesota United 4-2"
         }
       ]
     },
@@ -864,64 +846,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-5d0e730fb249f65b"
-          ],
-          "type": "RESULT",
-          "priority": 78,
-          "headline": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
-          "text": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
-          "entities": [],
-          "occurredAt": "2026-09-12T23:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-98e6871a64b614e4",
-          "feedRank": 26,
-          "compactHeadline": "Late score lifts Iowa Hawkeyes past Iowa State Cyclones 16-13"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-237c22e907f63a74"
-          ],
-          "type": "RESULT",
-          "priority": 76,
-          "headline": "Ohio State Buckeyes missed a late field-goal attempt as Texas Longhorns held on 24-23.",
-          "text": "Ohio State Buckeyes missed a late field-goal attempt as Texas Longhorns held on 24-23.",
-          "entities": [],
-          "occurredAt": "2026-09-12T23:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Ohio State Buckeyes 23, Texas Longhorns 24.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-e376971500d5af4c",
-          "feedRank": 27,
-          "compactHeadline": "Texas Longhorns survives late missed field goal to beat Ohio State Buckeyes 24-23"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-b491d38b0faf1d02"
           ],
           "type": "INJURY",
@@ -931,7 +855,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:14:05Z",
           "timePrecision": "exact",
-          "ageHours": 2.8,
+          "ageHours": 3.3,
           "freshnessBasis": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -945,11 +869,11 @@
             }
           ],
           "id": "a415-ad1c0e6c8e87d519",
-          "feedRank": 28,
+          "feedRank": 26,
           "compactHeadline": "Sources: Clemson QB Christopher Vizzina (elbow) week-to-week"
         },
         {
-          "rank": 4,
+          "rank": 2,
           "candidateIds": [
             "cand-5764785a781267f2"
           ],
@@ -960,7 +884,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.03,
           "freshnessBasis": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
           "status": "active",
           "sourceUrls": [
@@ -974,11 +898,11 @@
             }
           ],
           "id": "a415-27ad66477d2c4c30",
-          "feedRank": 29,
+          "feedRank": 27,
           "compactHeadline": "Montana State Bobcats beat Nevada Wolf Pack 20-7"
         },
         {
-          "rank": 5,
+          "rank": 3,
           "candidateIds": [
             "cand-a218b59ebd192e28"
           ],
@@ -989,7 +913,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:43:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.3,
+          "ageHours": 1.8,
           "freshnessBasis": "Select your favorite contender, make your picks for how its season will play out and see what the Allstate Playoff Predictor foretells.",
           "status": "active",
           "sourceUrls": [
@@ -1003,11 +927,11 @@
             }
           ],
           "id": "a415-5b2a336fbb3bf915",
-          "feedRank": 30,
+          "feedRank": 28,
           "compactHeadline": "Allstate Playoff Predictor"
         },
         {
-          "rank": 6,
+          "rank": 4,
           "candidateIds": [
             "cand-3547f645cfb7c763"
           ],
@@ -1018,7 +942,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:46:41Z",
           "timePrecision": "exact",
-          "ageHours": 3.25,
+          "ageHours": 3.75,
           "freshnessBasis": "No. 22 Houston (2-0) at No. 13 Texas Tech (2-0), Sept. 18 at 8 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -1032,8 +956,66 @@
             }
           ],
           "id": "a415-14e1fb75c57e778c",
-          "feedRank": 31,
+          "feedRank": 29,
           "compactHeadline": "Texas Tech hosts Houston in ranked Big 12 matchup"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-e8730d11b92ab978"
+          ],
+          "type": "RANKING",
+          "priority": 72,
+          "headline": "No. 16 SMU (2-0) at No. 23 Louisville (1-1), Sept. 19 at 3:30 p.m. EDT.",
+          "text": "No. 16 SMU (2-0) at No. 23 Louisville (1-1), Sept. 19 at 3:30 p.m. EDT.",
+          "entities": [],
+          "occurredAt": "2026-09-13T19:44:47Z",
+          "timePrecision": "exact",
+          "ageHours": 3.79,
+          "freshnessBasis": "No. 16 SMU (2-0) at No. 23 Louisville (1-1), Sept. 19 at 3:30 p.m. EDT.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/ncf/preview?gameId=401858230"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/preview?gameId=401858230"
+            }
+          ],
+          "id": "a415-5e7678a2554ed3db",
+          "feedRank": 30,
+          "compactHeadline": "Louisville hosts SMU in ranked ACC matchup"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-08e861e244cd55d0"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
+          "text": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
+          "entities": [],
+          "occurredAt": "2026-09-13T03:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 20.53,
+          "freshnessBasis": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-12",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-52bd3c5202d047d9",
+          "feedRank": 31,
+          "compactHeadline": "USC Trojans beat Louisiana Ragin' Cajuns 49-30"
         }
       ]
     }
