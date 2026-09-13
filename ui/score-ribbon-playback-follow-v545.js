@@ -135,14 +135,6 @@
     try{if(typeof sameGameProgramItem==='function'&&sameGameProgramItem(a,b))return true;}catch(_){}
     return false;
   }
-  function syncPlaybackRibbon(match,item){
-    const focus=match||item;
-    if(!focus)return false;
-    try{
-      if(typeof focusScoreRibbonForGame==='function')return !!focusScoreRibbonForGame(focus,{force:false});
-    }catch(_){}
-    return false;
-  }
   function teamStrings(obj){
     if(!obj||typeof obj!=='object')return [];
     const out=[];
@@ -221,7 +213,7 @@
       return {reason,kind:'scores',awaitingPlaybackIdentity:true};
     }
     const playbackDate=eventDate(match||item),browseBefore=browseDate();
-    if(!curatedActive)syncPlaybackRibbon(match,item);
+    // Playback-follow is observational only. Date/ribbon ownership belongs to the score pipeline.
     if(!curatedActive&&playbackDate&&browseBefore&&playbackDate!==browseBefore){
       clearHighlight();lastCard=null;
       return {reason,kind:'scores',switchingDate:true,playbackDate,resolvedMatch:!!match};
