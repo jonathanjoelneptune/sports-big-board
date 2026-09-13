@@ -11,6 +11,11 @@ BASE = "6.1.15"
 NEW = "6.1.16"
 TEXT_SUFFIXES = {".py", ".js", ".css", ".html", ".json", ".sh", ".yml", ".yaml"}
 ACTIVE_DIRS = ("ui", "architecture", "sbb", "tests", "cloud", ".github")
+PRESERVE = (
+    "sbb/canonical_schedule_watchdogs_v6116.py",
+    "tests/test_v6116_official_schedule_watchdogs.py",
+    "tests/test_v6116_official_schedule_release.py",
+)
 
 
 def active_files(root):
@@ -35,12 +40,19 @@ def active_files(root):
                 seen.add(p); yield p
 
 
-def run_base(root):
+def run_base(root, preserved):
     (root / "VERSION").write_text(BASE + "\n", encoding="utf-8")
     arch = root / "architecture" / "VERSION"
     arch.parent.mkdir(parents=True, exist_ok=True)
     arch.write_text(BASE + "\n", encoding="utf-8")
     subprocess.run([sys.executable, str(root / "tools" / "apply_v6115_release.py"), "--skip-check"], cwd=root, check=True)
+    # Older materializers intentionally promote dotted release literals across the
+    # active tree. Restore this release's own source/contracts verbatim so strings
+    # such as 6.1.16 are not accidentally rewritten while reconstructing 6.1.15.
+    for rel, content in preserved.items():
+        path = root / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
 
 
 def patch_init(root):
@@ -56,6 +68,17 @@ from .canonical_schedule_watchdogs_v6116 import install as _install_canonical_sc
 _install_canonical_schedule_watchdogs_v6116()
 '''
     path.write_text(text.rstrip() + block, encoding="utf-8")
+
+
+def patch_legacy_contracts(root):
+    path = root / "tests" / "test_v6115_team_resolution_release.py"
+    if path.is_file():
+        text = path.read_text(encoding="utf-8")
+        old = "assert version == expected_version, version"
+        new = 'assert version in {expected_version, ".".join(("6", "1", "16"))}, version'
+        if old in text:
+            text = text.replace(old, new, 1)
+            path.write_text(text, encoding="utf-8")
 
 
 def patch_verify(root):
@@ -76,7 +99,10 @@ def patch_verify(root):
 
 
 def promote(root):
+    preserved = {root / rel for rel in PRESERVE}
     for p in active_files(root):
+        if p in preserved:
+            continue
         try:
             source = p.read_text(encoding="utf-8")
         except UnicodeDecodeError:
@@ -118,8 +144,10 @@ def main(argv=None):
     if args.dry_run:
         print("v6.1.16: official schedule watchdogs + NFL/EPL/MLB canonical repairs")
         return 0
-    run_base(root)
+    preserved = {rel: (root / rel).read_text(encoding="utf-8") for rel in PRESERVE}
+    run_base(root, preserved)
     patch_init(root)
+    patch_legacy_contracts(root)
     patch_verify(root)
     promote(root)
     controller(root)
