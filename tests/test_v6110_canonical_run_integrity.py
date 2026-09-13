@@ -4,6 +4,7 @@ from __future__ import annotations
 import sys
 import tempfile
 import time
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -175,13 +176,17 @@ def verify_source_window_batching():
 def verify_refresh_grace_is_stage_bounded():
     with tempfile.TemporaryDirectory() as td:
         store = new_store(td)
-        day = "2026-09-12"
+        # This behavior is intentionally only exercised on the current/future
+        # slate, where stale evidence is rejected. A fixed calendar date turns
+        # historical after midnight and bypasses the freshness gate, making the
+        # regression test fail even though production behavior is correct.
+        day = datetime.now(shadow.ET).date().isoformat()
         stale = time.time() - float(v610.FRESH_SECONDS) - 60.0
         game = {
             "canonical_event_id": "cev_mlb_grace", "competition_id": "MLB",
             "slate_date": day, "active": 1, "identity_state": "RESOLVED",
             "inclusion_state": "INCLUDED", "away_name": "A", "home_name": "B",
-            "scheduled_at": "2026-09-12T20:00:00Z",
+            "scheduled_at": f"{day}T20:00:00Z",
         }
         obs = {
             "cev_mlb_grace": [
