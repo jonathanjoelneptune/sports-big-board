@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Classify a Sports Big Board commit as frontend-only or backend-required.
 
-The fast path is intentionally conservative. Only known GitHub Pages surfaces
-and isolated Sports Ticker sidecar/build-verification files may skip the Compute
-Engine deployment. Unknown paths fall back to a full backend deploy so a newly
-introduced runtime dependency cannot be missed.
+The fast path is intentionally conservative. Only known GitHub Pages surfaces,
+isolated Sports Ticker sidecar/build-verification files, and deployment-control
+files may skip the Compute Engine deployment. Unknown paths fall back to a full
+backend deploy so a newly introduced runtime dependency cannot be missed.
 """
 from __future__ import annotations
 
@@ -34,12 +34,9 @@ DATA_ONLY = {
 }
 # The Sports Ticker is an Actions-owned data sidecar. Its collector/editor code
 # and regressions never run on the VM or in the Pages bundle, so changing them
-# must not force the unrelated full backend/canonical verification lane. The
-# resulting push still uses the existing frontend fast path; routine generated
-# ticker-data commits remain suppressed entirely by deploy-pages paths-ignore.
+# must not force the unrelated full backend/canonical verification lane. Routine
+# generated ticker-data commits are suppressed entirely by deploy-pages paths-ignore.
 SIDECAR_EXACT = {
-    "tools/classify_deploy_scope.py",
-    "tests/test_deploy_scope_classifier.py",
     "tests/test_sports_ticker_current.py",
     ".github/workflows/sports-ticker-refresh.yml",
     ".github/workflows/sports-ticker-scheduler-v2.yml",
@@ -48,6 +45,13 @@ SIDECAR_PATTERNS = (
     "tools/refresh_sports_ticker*.py",
     "tests/test_a4*.py",
 )
+# These files control deployment routing itself; changing them does not alter the
+# VM application runtime and should validate through the focused deployment lane.
+DEPLOY_CONTROL_EXACT = {
+    "tools/classify_deploy_scope.py",
+    "tests/test_deploy_scope_classifier.py",
+    ".github/workflows/deploy-pages.yml",
+}
 
 
 def normalize_path(path: str) -> str:
@@ -64,7 +68,7 @@ def is_frontend_only_path(path: str) -> bool:
         return True
     if path in DATA_ONLY:
         return True
-    if path in SIDECAR_EXACT:
+    if path in SIDECAR_EXACT or path in DEPLOY_CONTROL_EXACT:
         return True
     if any(fnmatch.fnmatch(path, pattern) for pattern in SIDECAR_PATTERNS):
         return True
