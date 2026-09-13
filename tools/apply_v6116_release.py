@@ -94,16 +94,37 @@ def promote(root):
 
 
 def patch_compat_tests(root):
-    """Preserve historical R24 behavior checks without pinning the repo to 6.1.15."""
-    path = root / "tests" / "test_v6115_team_resolution_release.py"
-    if not path.is_file():
-        return
-    text = path.read_text(encoding="utf-8")
-    old = 'expected_version = ".".join(("6", "1", "15"))\nassert version == expected_version, version'
-    new = 'expected_versions = {".".join(("6", "1", "15")), ".".join(("6", "1", "16"))}\nassert version in expected_versions, version'
-    if old in text:
-        text = text.replace(old, new, 1)
-        path.write_text(text, encoding="utf-8")
+    """Carry historical team-source safety contracts forward to v6.1.16."""
+    replacements = {
+        "test_v6115_team_resolution_release.py": [
+            (
+                'expected_version = ".".join(("6", "1", "15"))\nassert version == expected_version, version',
+                'expected_versions = {".".join(("6", "1", "15")), ".".join(("6", "1", "16"))}\nassert version in expected_versions, version',
+            ),
+        ],
+        "test_v6114_team_directory_hardening_release.py": [
+            (
+                'forward_version = ".".join(("6", "1", "15"))',
+                'forward_version = ".".join(("6", "1", "16"))',
+            ),
+        ],
+        "test_v6113_team_directory_release.py": [
+            (
+                'forward_version = ".".join(("6", "1", "15"))',
+                'forward_version = ".".join(("6", "1", "16"))',
+            ),
+        ],
+    }
+    for name, pairs in replacements.items():
+        path = root / "tests" / name
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        rendered = text
+        for old, new in pairs:
+            rendered = rendered.replace(old, new, 1)
+        if rendered != text:
+            path.write_text(rendered, encoding="utf-8")
 
 
 def controller(root):
