@@ -14,6 +14,15 @@ for name in ('history.sqlite3','game-centers.sqlite3'):
     dest=backups/f'{src.stem}-{stamp}.sqlite3'
     with closing(sqlite3.connect(src)) as source, closing(sqlite3.connect(dest)) as target:
         source.backup(target)
-for path in sorted(backups.glob('*.sqlite3'), key=lambda p:p.stat().st_mtime, reverse=True)[28:]:
-    try: path.unlink()
-    except OSError: pass
+# Keep three daily restore points per catalog. Restrict pruning to the timestamped
+# backups created above so deploy/migration recovery artifacts are never removed
+# by the routine daily retention job.
+for family in ('history', 'game-centers'):
+    daily = sorted(
+        backups.glob(f'{family}-????????T??????Z.sqlite3'),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    for path in daily[3:]:
+        try: path.unlink()
+        except OSError: pass

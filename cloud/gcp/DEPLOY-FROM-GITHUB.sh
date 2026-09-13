@@ -191,6 +191,28 @@ STATE_DIR="/var/lib/sports-big-board"
 CURRENT_REAL="$(readlink -f "$APP_BASE/current" 2>/dev/null || true)"
 mkdir -p "$STATE_DIR/backups" "$APP_BASE/releases"
 find "$STATE_DIR/backups" -maxdepth 1 -type f -name 'history-pre-relation-repair-v*.sqlite3' -print -delete 2>/dev/null || true
+# Daily SQLite backups are recovery copies, not the live catalog. Keep a small
+# bounded recent set per catalog so the persistent data disk cannot be exhausted
+# by full database copies. Special migration/reconciliation backups are not
+# matched by these timestamp-only patterns and remain untouched.
+prune_daily_backups(){
+  local family="$1" keep="$2" entry backup count=0
+  mapfile -t DAILY_BACKUPS < <(find "$STATE_DIR/backups" -maxdepth 1 -type f \
+    -name "${family}-????????T??????Z.sqlite3" -printf '%T@ %p\n' 2>/dev/null | \
+    sort -nr | cut -d' ' -f2-)
+  for backup in "${DAILY_BACKUPS[@]}"; do
+    count=$((count+1))
+    (( count <= keep )) && continue
+    echo "[storage] Pruning old ${family} daily backup: $backup"
+    rm -f -- "$backup"
+  done
+}
+echo "[storage] Largest persistent-state paths before bounded backup cleanup:"
+du -sh "$STATE_DIR"/* 2>/dev/null | sort -h | tail -n 12 || true
+prune_daily_backups history 3
+prune_daily_backups game-centers 3
+find "$STATE_DIR/backups" -maxdepth 1 -type f \
+  \( -name '*.sqlite3-wal' -o -name '*.sqlite3-shm' \) -print -delete 2>/dev/null || true
 rm -f /tmp/sbb-release-*.tgz 2>/dev/null || true
 mapfile -t OLD_RELEASES < <(find "$APP_BASE/releases" -mindepth 1 -maxdepth 1 -type d -printf '%T@ %p\n' 2>/dev/null | sort -nr | cut -d' ' -f2-)
 kept=0
@@ -203,8 +225,26 @@ done
 echo "[storage] Filesystem after cleanup:"
 df -h "$APP_BASE" "$STATE_DIR" || true
 AVAILABLE_KB="$(df -Pk "$STATE_DIR" | awk 'NR==2 {print $4}')"
-if [[ -n "$AVAILABLE_KB" && "$AVAILABLE_KB" -lt 262144 ]]; then
-  echo "[storage] ERROR: less than 256 MiB free after safe cleanup; refusing to touch the catalog."
+HISTORY_KB="$(du -k "$STATE_DIR/cache/history.sqlite3" 2>/dev/null | awk '{print $1}' || true)"
+HISTORY_KB="${HISTORY_KB:-0}"
+# Leave enough headroom for an emergency rollback copy if structural recovery is
+# ever needed, plus 512 MiB for WAL/temp activity. Never reclaim the live catalog.
+REQUIRED_KB=1048576
+if [[ "$HISTORY_KB" =~ ^[0-9]+$ ]] && (( HISTORY_KB + 524288 > REQUIRED_KB )); then
+  REQUIRED_KB=$((HISTORY_KB + 524288))
+fi
+if [[ -n "$AVAILABLE_KB" && "$AVAILABLE_KB" -lt "$REQUIRED_KB" ]]; then
+  echo "[storage] Free space is still below protected deploy headroom; reducing daily backups to one per catalog."
+  prune_daily_backups history 1
+  prune_daily_backups game-centers 1
+  AVAILABLE_KB="$(df -Pk "$STATE_DIR" | awk 'NR==2 {print $4}')"
+fi
+echo "[storage] Filesystem after bounded backup cleanup:"
+df -h "$APP_BASE" "$STATE_DIR" || true
+if [[ -n "$AVAILABLE_KB" && "$AVAILABLE_KB" -lt "$REQUIRED_KB" ]]; then
+  echo "[storage] ERROR: ${AVAILABLE_KB} KiB free; ${REQUIRED_KB} KiB required for safe deploy headroom."
+  echo "[storage] Live catalog was not touched. Largest remaining persistent-state paths:"
+  du -ah "$STATE_DIR" 2>/dev/null | sort -h | tail -n 20 || true
   exit 1
 fi
 PRECLEAN
