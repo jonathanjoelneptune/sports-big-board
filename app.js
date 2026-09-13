@@ -2804,7 +2804,7 @@ function tryScoreMediaFallback(failedItem,reason='playback failure',{runtimeFail
     setPlaybackUi('starting');
     showBumper(slotIndex,0,'LOADING ANOTHER VIDEO');
     try{fetch('/api/client-log?event=SCORE_MEDIA_FALLBACK&detail='+encodeURIComponent(`${session.matchId}|${failedKey}|${playbackItemKey(chosen)}|${reason}`),{cache:'no-store'}).catch(()=>{});}catch(_){ }
-    queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:`score media fallback: ${reason}`,restart:true,transactionId:session.transactionId}));
+    queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:`score media fallback: ${reason}`,restart:true}));
     return true;
   };
   if(candidate)return tuneCandidate(candidate);
@@ -2886,7 +2886,7 @@ function tryHistoricalScoreMediaRecovery(failedItem,reason='historical playback 
     try{window.SBB_PLAYBACK_ORCHESTRATOR?.selectMedia?.(session.transactionId,recovered,{candidateIndex:Math.max(0,(resolved.ranked||[]).findIndex(x=>playbackItemKey(x)===playbackItemKey(recovered)))});}catch(_){}
     clearPlaybackRecovery();
     renderScoresFromMatchesCombined(false);
-    queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:'historical exact-source refresh',restart:true,transactionId:session.transactionId}));
+    queueMicrotask(()=>tuneProgramIndexV5(slotIndex,{userInitiated:false,reason:'historical exact-source refresh',restart:true}));
   }).catch(err=>{
     if(userPlaybackSession!==session) return;
     console.warn('[SBB history playback] exact refresh failed',err);
@@ -3044,11 +3044,9 @@ function tuneProgramIndexV5(index,options={}){
   const orchestrator=window.SBB_PLAYBACK_ORCHESTRATOR;
   if(!orchestrator?.requestTune)return PlaybackController.tuneProgramIndex(index,options);
   const item=clip(index);
-  const requestedTransactionId=String(options?.transactionId||'');
-  let transactionId=requestedTransactionId||(userPlaybackSession?.source==='score'?String(userPlaybackSession.transactionId||''):'');
+  let transactionId=userPlaybackSession?.source==='score'?String(userPlaybackSession.transactionId||''):'';
   const active=orchestrator.snapshot?.()||{};
-  const transactionIsActive=transactionId&&window.SBB_APP_STORE?.transactionActive?.(transactionId);
-  if(!transactionId||!transactionIsActive||(!requestedTransactionId&&active.transactionId!==transactionId)){
+  if(!transactionId||active.transactionId!==transactionId||!window.SBB_APP_STORE?.transactionActive?.(transactionId)){
     const authority=(item&&playbackOwnsGameCenter(item))?(knownMatchForMedia(item)||gameCenterEventForPlayback(item)||item):null;
     transactionId=orchestrator.beginIntent(authority,{source:window.SBB_MEDIA_SCOPE?.isCollection?.(item)?'collection':'program',reason:options.reason||'program tune',userInitiated:!!options.userInitiated});
     try{orchestrator.setPlan(transactionId,item?[item]:[],{legacyProgramIndex:index});}catch(_){}
@@ -3093,7 +3091,7 @@ function advanceAfterCompletedItem(){
     const moreSameGame=!isFullRecapCandidate(finished) && currentIndex<selectionEnd && nextItem && sameGameProgramItem(finished,nextItem);
     if(moreSameGame){
       showBumper(currentIndex+1,350,'CONTINUING HIGHLIGHT REEL');
-      tuneProgramIndexV5(currentIndex+1,{userInitiated:false,reason:'score reel continuation',transactionId:userPlaybackSession.transactionId});
+      tuneProgramIndexV5(currentIndex+1,{userInitiated:false,reason:'score reel continuation'});
       return;
     }
     markGamePlayed(finished);
@@ -3977,7 +3975,7 @@ function renderQueue(){
       const reelPos=Number(item.reelIndex)||idx+1;
       const reelCount=Number(item.reelCount)||PROGRAM.length;
       row.innerHTML=`<div class="queue-num">${reelPos}</div>${queueThumbHtml(item)}<div class="queue-copy"><strong>${escapeHtml(displayProgramTitle(item))}</strong><span class="queue-meta-diagnostic">${itemMatchesFavoriteTeam(item)?'<b class="favorite-queue-badge">★ FAVORITE</b> • ':''}${escapeHtml(item.league || 'SPORT')} • ${kind} • ${escapeHtml(sourceLabel)} • ${stateLabel} • ${reelPos}/${reelCount}${postedAge}</span><span class="queue-meta-polished">${itemMatchesFavoriteTeam(item)?'<b class="favorite-queue-badge">★ FAVORITE</b>':''}${postedText?`${itemMatchesFavoriteTeam(item)?' • ':''}${escapeHtml(postedText)}`:''}</span>${queueRecapPairHtml(item)}</div>${queueDurationHtml(item)}`;
-      row.onclick=()=>{ if(idx!==currentIndex) tuneProgramIndexV5(idx,{userInitiated:true,reason:'score reel clip selection',transactionId:userPlaybackSession.transactionId}); };
+      row.onclick=()=>{ if(idx!==currentIndex) tuneProgramIndexV5(idx,{userInitiated:true,reason:'score reel clip selection'}); };
       list.appendChild(row);
     }
     if(currentIndex>0){
@@ -4169,7 +4167,7 @@ $('nextBtn').onclick = () => {
   if(!sbbPlaybackAllowed({notify:true})) return;
   if(userPlaybackSession?.source==='score' && currentIndex+1<userPlaybackSession.selectionCount){
     showBumper(currentIndex+1,300,'NEXT HIGHLIGHT');
-    tuneProgramIndexV5(currentIndex+1,{userInitiated:true,reason:'manual score reel next',transactionId:userPlaybackSession.transactionId});
+    tuneProgramIndexV5(currentIndex+1,{userInitiated:true,reason:'manual score reel next'});
     return;
   }
   if(userPlaybackSession) cancelUserPlaybackSession();
@@ -4182,7 +4180,7 @@ $('prevBtn').onclick = () => {
   if(!sbbPlaybackAllowed({notify:true})) return;
   if(userPlaybackSession?.source==='score' && currentIndex>0 && currentIndex<userPlaybackSession.selectionCount){
     showBumper(currentIndex-1,300,'PREVIOUS HIGHLIGHT');
-    tuneProgramIndexV5(currentIndex-1,{userInitiated:true,reason:'manual score reel previous',transactionId:userPlaybackSession.transactionId});
+    tuneProgramIndexV5(currentIndex-1,{userInitiated:true,reason:'manual score reel previous'});
     return;
   }
   if(userPlaybackSession) cancelUserPlaybackSession();
@@ -7246,7 +7244,7 @@ async function playGameHighlights(matchId, match, providedItems=null, options={}
     fetch('/api/client-log?event=SCORE_CLICK_TUNE&detail='+encodeURIComponent(`${matchId}|${primary.id||primary.youtubeId||''}|${kind}|provider=${providerForItem(primary)}|preparedAtClick=${selectedMediaWasPrepared?1:0}`),{cache:'no-store'}).catch(()=>{});
   }catch(e){}
   markScoreClickStage('TUNE_REQUESTED',match,{mediaKey:playbackItemKey(primary)});
-  tuneProgramIndexV5(0,{userInitiated:true,reason:'score-card selection',transactionId:v5TransactionId});
+  tuneProgramIndexV5(0,{userInitiated:true,reason:'score-card selection'});
   markScoreClickStage('TUNE_DISPATCHED',match,{mediaKey:playbackItemKey(primary),curatedFastLane});
   return true;
 }
