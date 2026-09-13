@@ -1,0 +1,32 @@
+name: Verify Media Audit P1-P3
+
+on:
+  push:
+    branches:
+      - media-audit/p123-ownership-v6116-r2
+
+permissions:
+  contents: read
+
+concurrency:
+  group: media-audit-p123-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Full preflight plus P1-P3 guards
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v7
+      - name: Run production verification
+        run: bash VERIFY.sh
+      - name: Run P1-P3 regression guards
+        run: python3 tests/test_priority123_media_audit_ownership.py
+      - name: Compile new backend ownership modules
+        run: python3 -m py_compile sbb/startup.py sbb/route_registry.py sbb/backend_inspector_routes.py sbb/__init__.py
+      - name: Parse playback ownership modules
+        run: |
+          node --check architecture/playback-orchestrator-v5.js
+          node --check architecture/playback-early-pause-recovery-v538.js
