@@ -1,12 +1,10 @@
 """Deterministic Sports Big Board backend startup registration.
 
-Priority 1 ownership consolidation: keep the existing installer behavior and order,
-but make startup explicit, inspectable, and testable instead of scattering import-
-time installer calls through ``sbb.__init__``.
-
-This is intentionally a compatibility bridge. Individual services may continue to
-use their existing ``install()`` implementations while they migrate to dependency
-injection and the shared route registry.
+Priority 1 ownership consolidation makes backend startup explicit and inspectable
+without changing the legacy import/install timing contract. The old ``sbb`` package
+pre-imported several compatibility modules before invoking their installers; those
+phases are represented here deliberately so consolidation does not become a hidden
+startup-order rewrite.
 """
 from __future__ import annotations
 
@@ -24,9 +22,17 @@ class StartupRegistration:
     installer: str = "install"
 
 
-# Order is part of the production contract. This list is a direct projection of
-# the legacy sbb/__init__.py installer order as of v6.1.16, followed by the new
-# shared route dispatcher so it becomes the outermost compatibility authority.
+@dataclass(frozen=True)
+class StartupPhase:
+    name: str
+    load_keys: tuple[str, ...]
+    install_keys: tuple[str, ...]
+
+
+# Flat install order is the application contract and is also useful for startup
+# diagnostics. Backend Inspector now registers through the shared route table; the
+# shared dispatcher is installed last so every unmigrated Handler wrapper remains
+# beneath it as a compatibility fallback.
 STARTUP_REGISTRATIONS = (
     StartupRegistration("nfl-weekly-playlists", "nfl_weekly_playlists"),
     StartupRegistration("competition-builder", "competition_builder"),
@@ -67,19 +73,82 @@ STARTUP_REGISTRATIONS = (
     StartupRegistration("shared-route-dispatcher", "route_registry"),
 )
 
+_REGISTRATION_BY_KEY = {item.key: item for item in STARTUP_REGISTRATIONS}
+
+# These phases mirror the previous sbb/__init__.py *import timing* as well as its
+# install order. In particular, the first compatibility modules are all imported
+# before any installer runs, then later modules are loaded at the same boundaries
+# where the legacy file imported them.
+STARTUP_PHASES = (
+    StartupPhase(
+        "legacy-initial-imports",
+        (
+            "nfl-weekly-playlists", "competition-builder", "competition-builder-v467",
+            "historical-media-v4610", "competition-builder-v4612", "competition-builder-v4613",
+            "competition-builder-v4614", "competition-builder-v4615", "special-event-media-v4616",
+            "day-state", "ribbon-authority-v521", "tennis-ribbon-projection",
+            "game-center-multisport", "history-readiness-repair", "runtime-path-repair-v5110",
+            "database-authority", "backend-inspector-api",
+        ),
+        (
+            "nfl-weekly-playlists", "competition-builder", "competition-builder-v467",
+            "historical-media-v4610", "competition-builder-v4612", "competition-builder-v4613",
+            "competition-builder-v4614", "competition-builder-v4615", "special-event-media-v4616",
+            "tennis-ribbon-projection", "ribbon-authority-v521", "day-state",
+        ),
+    ),
+    StartupPhase("ribbon-snapshot", ("ribbon-snapshot-v520",), ("ribbon-snapshot-v520", "game-center-multisport")),
+    StartupPhase("ncaaf-game-center", ("ncaaf-game-center",), ("ncaaf-game-center", "history-readiness-repair")),
+    StartupPhase(
+        "ncaaf-and-database-authority",
+        ("ncaaf-namespace-reset", "ncaaf-ranked"),
+        ("ncaaf-namespace-reset", "runtime-path-repair-v5110", "database-authority", "backend-inspector-api", "ncaaf-ranked"),
+    ),
+    StartupPhase(
+        "media-runtime",
+        ("media-runtime-repair-v5116", "media-authority-v5117", "tennis-game-center"),
+        ("media-runtime-repair-v5116", "media-authority-v5117", "tennis-game-center"),
+    ),
+    StartupPhase("game-center-identity", ("game-center-identity-v5122",), ("game-center-identity-v5122",)),
+    StartupPhase("current-news-v522", ("current-news-v522",), ("current-news-v522",)),
+    StartupPhase(
+        "release-integrity-news-v523",
+        ("release-identity-v523", "integrity-lane-v523", "backend-snapshot-v523", "current-news-v523"),
+        ("release-identity-v523", "integrity-lane-v523", "backend-snapshot-v523", "current-news-v523"),
+    ),
+    StartupPhase("team-focus", ("team-focus-v537",), ("team-focus-v537",)),
+    StartupPhase("league-view", ("league-view-v538",), ("league-view-v538",)),
+    StartupPhase("canonical-shadow", ("canonical-shadow-v600",), ("canonical-shadow-v600",)),
+    StartupPhase("canonical-certification", ("canonical-certification-v610",), ("canonical-certification-v610",)),
+    StartupPhase("nfl-club-sources", ("nfl-club-sources",), ("nfl-club-sources",)),
+    StartupPhase("nfl-audit-migration", ("nfl-audit-migration",), ("nfl-audit-migration",)),
+    StartupPhase("shared-route-authority", ("shared-route-dispatcher",), ("shared-route-dispatcher",)),
+)
+
 _LOCK = threading.RLock()
 _BOOTSTRAPPING = False
 _BOOTSTRAPPED = False
 _RESULTS: list[dict[str, Any]] = []
+_MODULES: dict[str, Any] = {}
 
 
-def _record(registration: StartupRegistration, *, started_at: float, result: Any = None, error: BaseException | None = None) -> None:
+def _record(
+    registration: StartupRegistration,
+    *,
+    stage: str,
+    phase: str,
+    started_at: float,
+    result: Any = None,
+    error: BaseException | None = None,
+) -> None:
     finished_at = time.time()
     _RESULTS.append(
         {
             "key": registration.key,
             "module": registration.module,
             "installer": registration.installer,
+            "stage": stage,
+            "phase": phase,
             "ok": error is None,
             "result": result if isinstance(result, (bool, int, float, str, type(None))) else type(result).__name__,
             "error": "" if error is None else f"{type(error).__name__}: {error}",
@@ -90,34 +159,52 @@ def _record(registration: StartupRegistration, *, started_at: float, result: Any
     )
 
 
-def bootstrap() -> bool:
-    """Install every registered backend service once, in deterministic order.
+def _load(key: str, phase: str) -> None:
+    if key in _MODULES:
+        return
+    registration = _REGISTRATION_BY_KEY[key]
+    started_at = time.time()
+    try:
+        module = import_module(f".{registration.module}", __package__)
+    except BaseException as exc:
+        with _LOCK:
+            _record(registration, stage="IMPORT", phase=phase, started_at=started_at, error=exc)
+        raise
+    _MODULES[key] = module
 
-    Returns ``True`` only for the caller that performs startup. Repeated imports
-    are no-ops. A failed installer remains fail-fast, matching the legacy import
-    behavior, while leaving an inspectable startup trace for diagnosis.
-    """
+
+def _install(key: str, phase: str) -> None:
+    registration = _REGISTRATION_BY_KEY[key]
+    if key not in _MODULES:
+        _load(key, phase)
+    started_at = time.time()
+    try:
+        installer = getattr(_MODULES[key], registration.installer)
+        result = installer()
+    except BaseException as exc:
+        with _LOCK:
+            _record(registration, stage="INSTALL", phase=phase, started_at=started_at, error=exc)
+        raise
+    with _LOCK:
+        _record(registration, stage="INSTALL", phase=phase, started_at=started_at, result=result)
+
+
+def bootstrap() -> bool:
+    """Run the legacy-compatible startup phases once in deterministic order."""
     global _BOOTSTRAPPING, _BOOTSTRAPPED
     with _LOCK:
         if _BOOTSTRAPPED or _BOOTSTRAPPING:
             return False
         _BOOTSTRAPPING = True
         _RESULTS.clear()
+        _MODULES.clear()
 
     try:
-        for registration in STARTUP_REGISTRATIONS:
-            started_at = time.time()
-            try:
-                module = import_module(f".{registration.module}", __package__)
-                installer = getattr(module, registration.installer)
-                result = installer()
-            except BaseException as exc:
-                with _LOCK:
-                    _record(registration, started_at=started_at, error=exc)
-                raise
-            else:
-                with _LOCK:
-                    _record(registration, started_at=started_at, result=result)
+        for phase in STARTUP_PHASES:
+            for key in phase.load_keys:
+                _load(key, phase.name)
+            for key in phase.install_keys:
+                _install(key, phase.name)
         with _LOCK:
             _BOOTSTRAPPED = True
         return True
@@ -128,13 +215,19 @@ def bootstrap() -> bool:
 
 def startup_snapshot() -> dict[str, Any]:
     with _LOCK:
+        install_results = [item for item in _RESULTS if item.get("stage") == "INSTALL"]
         return {
             "bootstrapping": _BOOTSTRAPPING,
             "bootstrapped": _BOOTSTRAPPED,
             "registered": len(STARTUP_REGISTRATIONS),
-            "completed": len(_RESULTS),
+            "phases": len(STARTUP_PHASES),
+            "loaded": len(_MODULES),
+            "completed": len(install_results),
             "services": [dict(item) for item in _RESULTS],
         }
 
 
-__all__ = ["StartupRegistration", "STARTUP_REGISTRATIONS", "bootstrap", "startup_snapshot"]
+__all__ = [
+    "StartupRegistration", "StartupPhase", "STARTUP_REGISTRATIONS", "STARTUP_PHASES",
+    "bootstrap", "startup_snapshot",
+]
