@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-13T21:01:41Z",
+  "generatedAt": "2026-09-13T21:31:45Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "8938672bbb0df43515f261207281eb6f05955c882d959ca4c2fd2a2307fb658d",
+  "sourceCandidateHash": "4ce7b73c907ca4e1b167851da0103df0ac23d6d499f2fe0d3a5b7b8ecbb9db5d",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,41 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-97c4652ef561c915"
+          ],
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "Agustin Ramirez delivered the walk-off in the bottom of the 9th inning.",
+          "text": "Agustin Ramirez delivered the walk-off in the bottom of the 9th inning.",
+          "entities": [],
+          "occurredAt": "2026-09-13T17:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.86,
+          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Miami Marlins 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816923"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816923"
+            }
+          ],
+          "id": "a415-dcf65e3df2562fda",
+          "feedRank": 1,
+          "compactHeadline": "Agustin Ramirez delivers walk-off as Miami Marlins beat Los Angeles Dodgers 6-4"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-be58ba80bcd62767"
           ],
@@ -23,13 +58,12 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.36,
+          "ageHours": 3.86,
           "freshnessBasis": "Highlightly final: Houston Astros 4, Tampa Bay Rays 14.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816921",
-            "http://www.espn.com/mlb/recap?gameId=401816906"
+            "http://www.espn.com/mlb/recap?gameId=401816921"
           ],
           "sources": [
             {
@@ -41,19 +75,49 @@
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401816921"
+            }
+          ],
+          "id": "a415-4cd66b721e405f8a",
+          "feedRank": 2,
+          "compactHeadline": "Freddy Peralta, Jonathan Aranda help Rays beat Astros 14-4 to sweep series"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-cadb3a87d206ac29"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Steven Kwan homered to lead off the game, Tanner Bibee had seven strikeouts in 6 2/3 strong innings, and the Cleveland Guardians beat the Minnesota Twins 9-2 on Sunday to pull within a half-game of the American League Central-leading Chicago White Sox.",
+          "text": "Steven Kwan homered to lead off the game, Tanner Bibee had seven strikeouts in 6 2/3 strong innings, and the Cleveland Guardians beat the Minnesota Twins 9-2 on Sunday to pull within a half-game of the American League Central-leading Chicago White Sox.",
+          "entities": [],
+          "occurredAt": "2026-09-13T18:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.36,
+          "freshnessBasis": "Highlightly final: Cleveland Guardians 9, Minnesota Twins 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816928"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-13",
+              "url": "https://highlightly.net"
             },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816906"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816928"
             }
           ],
-          "id": "a415-4cd66b721e405f8a",
-          "feedRank": 1,
-          "compactHeadline": "Freddy Peralta, Jonathan Aranda help Rays beat Astros 14-4 to sweep series"
+          "id": "a415-53310f478a97780f",
+          "feedRank": 3,
+          "compactHeadline": "Kwan, Bazzana help Guardians beat Twins 9-2, pull within 1/2 game of AL Central-leading White Sox"
         },
         {
-          "rank": 2,
+          "rank": 4,
           "candidateIds": [
             "cand-607b51cda0a81192"
           ],
@@ -64,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.44,
+          "ageHours": 3.95,
           "freshnessBasis": "Highlightly final: New York Mets 0, New York Yankees 2.",
           "status": "active",
           "sourceUrls": [
@@ -84,11 +148,11 @@
             }
           ],
           "id": "a415-a47c76f02402484f",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Schlittler takes over big league ERA lead, Yanks beat Mets 2-0 to close in on postseason berth"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-63b7e01b1b26c824"
           ],
@@ -99,13 +163,12 @@
           "entities": [],
           "occurredAt": "2026-09-13T18:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.78,
+          "ageHours": 3.28,
           "freshnessBasis": "Highlightly final: Chicago White Sox 1, St. Louis Cardinals 3.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816926",
-            "http://www.espn.com/mlb/recap?gameId=401816911"
+            "http://www.espn.com/mlb/recap?gameId=401816926"
           ],
           "sources": [
             {
@@ -117,19 +180,14 @@
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401816926"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816911"
             }
           ],
           "id": "a415-0aab106fe4b1d9d5",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Burleson's bases-loaded double lifts Cardinals to 3-1 win over White Sox"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-87ce6c88df96d7b4"
           ],
@@ -140,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T16:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.86,
+          "ageHours": 5.36,
           "freshnessBasis": "Highlightly final: Colorado Rockies 1, Detroit Tigers 8.",
           "status": "active",
           "sourceUrls": [
@@ -160,78 +218,8 @@
             }
           ],
           "id": "a415-cf622d62e4aa4f6e",
-          "feedRank": 4,
-          "compactHeadline": "Jobe strikes out career-high 8, Tigers extend Rockies' slide to 7 games with 8-1 win"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-e18a92994a3cfcb0"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Vladimir Guerrero Jr. had a solo home run among his four hits, George Springer and Kazuma Okamoto also went deep and the Toronto Blue Jays beat the Baltimore Orioles 8-1 on Sunday.",
-          "text": "Vladimir Guerrero Jr. had a solo home run among his four hits, George Springer and Kazuma Okamoto also went deep and the Toronto Blue Jays beat the Baltimore Orioles 8-1 on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-09-13T17:37:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.41,
-          "freshnessBasis": "Highlightly final: Baltimore Orioles 1, Toronto Blue Jays 8.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816919"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-13",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816919"
-            }
-          ],
-          "id": "a415-13fe15653851c9e1",
-          "feedRank": 5,
-          "compactHeadline": "Guerrero has four hits, including first HR at home, as Blue Jays thump Orioles 8-1"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-57bc24284729c963"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Daylen Lile tripled to key a four-run rally in the eighth inning, Jacob Young and Dylan Crews added RBI and the Washington Nationals beat the Los Angeles Angels 6-5 on Sunday to complete a three-game sweep.",
-          "text": "Daylen Lile tripled to key a four-run rally in the eighth inning, Jacob Young and Dylan Crews added RBI and the Washington Nationals beat the Los Angeles Angels 6-5 on Sunday to complete a three-game sweep.",
-          "entities": [],
-          "occurredAt": "2026-09-13T17:35:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.44,
-          "freshnessBasis": "Highlightly final: Los Angeles Angels 5, Washington Nationals 6.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816918"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-13",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816918"
-            }
-          ],
-          "id": "a415-5d774dff201c8ab9",
           "feedRank": 6,
-          "compactHeadline": "Nationals rally late for 6-5 win and sweep of Angels, who must go 7-6 to avoid first 100-loss season"
+          "compactHeadline": "Jobe strikes out career-high 8, Tigers extend Rockies' slide to 7 games with 8-1 win"
         }
       ]
     },
@@ -251,41 +239,12 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.53,
           "freshnessBasis": "Highlightly final: New Orleans Saints 30, Detroit Lions 31.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-13",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-6b4b9d8f8e8859a3",
-          "feedRank": 7,
-          "compactHeadline": "Detroit Lions survives last-second missed field goal to beat New Orleans Saints 31-30"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-a78757f2a7ffd913"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Caleb Williams threw for 269 yards and two touchdowns and ran for 65 yards and two more scores as the Chicago Bears defeated the Carolina Panthers 59-37 on Sunday in the highest-scoring season opener in NFL history.",
-          "text": "Caleb Williams threw for 269 yards and two touchdowns and ran for 65 yards and two more scores as the Chicago Bears defeated the Carolina Panthers 59-37 on Sunday in the highest-scoring season opener in NFL history.",
-          "entities": [],
-          "occurredAt": "2026-09-13T17:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.03,
-          "freshnessBasis": "Highlightly final: Chicago Bears 59, Carolina Panthers 37.",
-          "status": "active",
-          "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401872661"
+            "http://www.espn.com/nfl/recap?gameId=401872923"
           ],
           "sources": [
             {
@@ -296,26 +255,26 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401872661"
+              "url": "http://www.espn.com/nfl/recap?gameId=401872923"
             }
           ],
-          "id": "a415-e5a89e8e4fcdc666",
-          "feedRank": 8,
-          "compactHeadline": "Caleb Williams and Bears trounce Panthers 59-37 in highest-scoring season opener in NFL history"
+          "id": "a415-6b4b9d8f8e8859a3",
+          "feedRank": 7,
+          "compactHeadline": "Detroit Lions survives last-second missed field goal to beat New Orleans Saints 31-30"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
             "cand-3c2aef55d9e0c1a1"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Trevor Lawrence threw for 245 yards and four touchdowns, opening the season much like he closed last year, and the Jacksonville Jaguars dominated rebuilding Cleveland 34-10 on Sunday to spoil the debut of new Browns coach Todd Monken.",
-          "text": "Trevor Lawrence threw for 245 yards and four touchdowns, opening the season much like he closed last year, and the Jacksonville Jaguars dominated rebuilding Cleveland 34-10 on Sunday to spoil the debut of new Browns coach Todd Monken.",
+          "headline": "Trevor Lawrence and the Jacksonville Jaguars waited seven agonizing months to play another meaningful game at EverBank Stadium.",
+          "text": "Trevor Lawrence and the Jacksonville Jaguars waited seven agonizing months to play another meaningful game at EverBank Stadium.",
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.53,
           "freshnessBasis": "Highlightly final: Cleveland Browns 10, Jacksonville Jaguars 34.",
           "status": "active",
           "sourceUrls": [
@@ -335,8 +294,43 @@
             }
           ],
           "id": "a415-77662409e54a6ada",
-          "feedRank": 9,
+          "feedRank": 8,
           "compactHeadline": "Trevor Lawrence throws 4 TD passes as the Jaguars rout the Browns 34-10 in season opener"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-a78757f2a7ffd913"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Caleb Williams threw for 269 yards and two touchdowns and ran for 65 yards and two more scores as the Chicago Bears defeated the Carolina Panthers 59-37 on Sunday in the highest-scoring season opener in NFL history.",
+          "text": "Caleb Williams threw for 269 yards and two touchdowns and ran for 65 yards and two more scores as the Chicago Bears defeated the Carolina Panthers 59-37 on Sunday in the highest-scoring season opener in NFL history.",
+          "entities": [],
+          "occurredAt": "2026-09-13T17:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.53,
+          "freshnessBasis": "Highlightly final: Chicago Bears 59, Carolina Panthers 37.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/nfl/recap?gameId=401872661"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/recap?gameId=401872661"
+            }
+          ],
+          "id": "a415-e5a89e8e4fcdc666",
+          "feedRank": 9,
+          "compactHeadline": "Caleb Williams and Bears trounce Panthers 59-37 in highest-scoring season opener in NFL history"
         },
         {
           "rank": 4,
@@ -350,7 +344,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.53,
           "freshnessBasis": "Highlightly final: Baltimore Ravens 41, Indianapolis Colts 23.",
           "status": "active",
           "sourceUrls": [
@@ -391,7 +385,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.53,
           "freshnessBasis": "Highlightly final: New York Jets 23, Tennessee Titans 10.",
           "status": "active",
           "sourceUrls": [
@@ -426,7 +420,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.53,
           "freshnessBasis": "Highlightly final: Buffalo Bills 36, Houston Texans 31.",
           "status": "active",
           "sourceUrls": [
@@ -472,7 +466,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T00:16:16Z",
           "timePrecision": "exact",
-          "ageHours": 20.76,
+          "ageHours": 21.26,
           "freshnessBasis": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
           "status": "active",
           "sourceUrls": [
@@ -507,7 +501,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:13:56Z",
           "timePrecision": "exact",
-          "ageHours": 8.8,
+          "ageHours": 9.3,
           "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
           "status": "active",
           "sourceUrls": [
@@ -536,7 +530,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 5.76,
+          "ageHours": 6.26,
           "freshnessBasis": "Brighton dealt 10-man Coventry a crushing 5-0 defeat to condemn them to a fourth straight Premier League loss.",
           "status": "active",
           "sourceUrls": [
@@ -565,7 +559,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:45:25Z",
           "timePrecision": "exact",
-          "ageHours": 1.27,
+          "ageHours": 1.77,
           "freshnessBasis": "Manchester City manager Enzo Maresca backed referee Michael Oliver's decision to send off Phil Foden in his team's 1-0 win against Manchester United, but said that Reds captain Bruno Fernandes should also have been shown a red card.",
           "status": "active",
           "sourceUrls": [
@@ -585,17 +579,17 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-65f9c4d902745168"
+            "cand-fea6c778ec6a6b34"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Pro Ref, the Premier League referees' body, has apologised to Manchester United after admitting VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
-          "text": "Pro Ref, the Premier League referees' body, has apologised to Manchester United after admitting VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
+          "headline": "Pro Ref, the Premier League referees' body, has apologized to Manchester United after admitting the VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
+          "text": "Pro Ref, the Premier League referees' body, has apologized to Manchester United after admitting the VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
           "entities": [],
-          "occurredAt": "2026-09-13T20:48:40Z",
+          "occurredAt": "2026-09-13T21:16:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.22,
-          "freshnessBasis": "Pro Ref, the Premier League referees' body, has apologised to Manchester United after admitting VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
+          "ageHours": 0.26,
+          "freshnessBasis": "Pro Ref, the Premier League referees' body, has apologized to Manchester United after admitting the VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49932067/premier-league-referees-body-apologises-man-united-derby-offside-controversy"
@@ -607,9 +601,9 @@
               "url": "https://www.espn.com/soccer/story/_/id/49932067/premier-league-referees-body-apologises-man-united-derby-offside-controversy"
             }
           ],
-          "id": "a415-6eb89d380679a9ae",
+          "id": "a415-0fa2977cc9f648c1",
           "feedRank": 17,
-          "compactHeadline": "Premier League referees' body apologises to Man United after derby offside controversy"
+          "compactHeadline": "Premier League referees' body apologizes to Man United after derby offside controversy"
         },
         {
           "rank": 5,
@@ -623,7 +617,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 0.28,
+          "ageHours": 0.79,
           "freshnessBasis": "Manchester City's Phil Foden was sent off after a kick on Manchester United captain Bruno Fernandes in the first half of the derby on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -652,7 +646,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:41:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.33,
+          "ageHours": 0.84,
           "freshnessBasis": "Micah Richards said the Manchester derby was a \"bad day for referees\" after City claimed a 1-0 win with a controversial goal.",
           "status": "active",
           "sourceUrls": [
@@ -687,7 +681,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.03,
           "freshnessBasis": "Highlightly final: Toronto FC 0, Orlando City 3.",
           "status": "active",
           "sourceUrls": [
@@ -722,7 +716,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.03,
           "freshnessBasis": "Highlightly final: Nashville SC 2, Inter Miami 2.",
           "status": "active",
           "sourceUrls": [
@@ -757,7 +751,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.03,
           "freshnessBasis": "Highlightly final: New York Red Bulls 1, Columbus Crew 0.",
           "status": "active",
           "sourceUrls": [
@@ -792,7 +786,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.53,
+          "ageHours": 19.03,
           "freshnessBasis": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
           "status": "active",
           "sourceUrls": [
@@ -821,7 +815,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.53,
+          "ageHours": 19.03,
           "freshnessBasis": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
           "status": "active",
           "sourceUrls": [
@@ -850,7 +844,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.53,
+          "ageHours": 20.03,
           "freshnessBasis": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
           "status": "active",
           "sourceUrls": [
@@ -885,7 +879,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.03,
           "freshnessBasis": "Highlightly final: Iowa State Cyclones 13, Iowa Hawkeyes 16.",
           "status": "active",
           "sourceUrls": [
@@ -914,7 +908,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.03,
           "freshnessBasis": "Highlightly final: Ohio State Buckeyes 23, Texas Longhorns 24.",
           "status": "active",
           "sourceUrls": [
@@ -943,7 +937,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:14:05Z",
           "timePrecision": "exact",
-          "ageHours": 0.79,
+          "ageHours": 1.29,
           "freshnessBasis": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -972,7 +966,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.53,
+          "ageHours": 19.03,
           "freshnessBasis": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
           "status": "active",
           "sourceUrls": [
@@ -1001,7 +995,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T23:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.53,
           "freshnessBasis": "Highlightly final: Illinois State Redbirds 28, Northern Illinois Huskies 24.",
           "status": "active",
           "sourceUrls": [
@@ -1030,7 +1024,7 @@
           "entities": [],
           "occurredAt": "2026-09-12T22:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
+          "ageHours": 23.53,
           "freshnessBasis": "Highlightly final: Buffalo Bulls 20, Florida International Panthers 33.",
           "status": "active",
           "sourceUrls": [
