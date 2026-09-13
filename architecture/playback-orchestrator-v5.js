@@ -6,10 +6,12 @@
   'use strict';
   if(window.SBB_PLAYBACK_ORCHESTRATOR?.version==='5.1.10')return;
   const VERSION='5.1.10';
+  const OWNERSHIP_REVISION='P1-2026-09';
   const store=window.SBB_APP_STORE;
   if(!store)throw new Error('v5 Playback Orchestrator requires SBB_APP_STORE');
   let adapter=null;
   let adapterBoundAt=0;
+  let adapterExtendedAt=0;
 
   const clean=v=>String(v??'').trim();
   const mediaKey=item=>{
@@ -103,6 +105,15 @@
     if(!next||typeof next.tuneProgramIndex!=='function')throw new Error('v5 playback adapter must expose tuneProgramIndex');
     adapter=Object.freeze({...next});adapterBoundAt=Date.now();return true;
   }
+  // P1 compatibility bridge: app.js binds the legacy A/B adapter before later
+  // ownership modules load. Extensions let those later modules add pause/resume/
+  // recovery capabilities to the same adapter instead of replacing handlers or
+  // reaching through the orchestrator boundary.
+  function extendAdapter(extension){
+    if(!adapter)return false;
+    if(!extension||typeof extension!=='object')throw new Error('v5 playback adapter extension must be an object');
+    adapter=Object.freeze({...adapter,...extension});adapterExtendedAt=Date.now();return true;
+  }
   function requestTune(transactionId,index,options={}){
     if(!txMatches(transactionId))return Promise.reject(new Error('stale v5 playback transaction'));
     if(!adapter)return Promise.reject(new Error('v5 playback adapter is not bound'));
@@ -114,6 +125,24 @@
     if(!adapter||typeof adapter.promotePrepared!=='function')return requestTune(transactionId,index,{...options,reason:options.reason||'prepared promotion fallback'});
     store.dispatch({type:'PLAYBACK_STARTING',payload:{transactionId}});
     return Promise.resolve(adapter.promotePrepared(slot,index,options));
+  }
+  function requestPauseAll(reason='application pause',options={}){
+    if(!adapter||typeof adapter.pauseAll!=='function')return false;
+    return Promise.resolve(adapter.pauseAll({reason,...options}));
+  }
+  function requestResumeActive(transactionId,options={}){
+    if(!txMatches(transactionId))return false;
+    if(!adapter||typeof adapter.resumeActive!=='function')return false;
+    return Promise.resolve(adapter.resumeActive({transactionId,...options}));
+  }
+  function requestRecovery(transactionId,options={}){
+    if(!txMatches(transactionId))return Promise.reject(new Error('stale v5 playback transaction'));
+    const reason=clean(options.reason||options.error||'playback recovery');
+    recovering(transactionId,reason);
+    if(adapter&&typeof adapter.recoverActive==='function')return Promise.resolve(adapter.recoverActive({transactionId,...options,reason}));
+    const index=Number(options.index);
+    if(Number.isInteger(index)&&index>=0)return requestTune(transactionId,index,{...options,reason});
+    return Promise.reject(new Error('v5 playback adapter has no recovery capability'));
   }
   function tuneProgramIndex(index,options={}){
     let tx=current().transactionId;
@@ -156,5 +185,5 @@
     else if(sessionState==='ended'&&appState!=='ended')store.dispatch({type:'PLAYBACK_ENDED',payload:{transactionId:pb.transactionId}});
   });}catch(_){ }
 
-  window.SBB_PLAYBACK_ORCHESTRATOR=Object.freeze({version:VERSION,beginIntent,beginScoreIntent,beginProgramIntent,setPlan,preparing,prewarmResult,candidateAttempt,candidateRejected,planExhausted,selectMedia,recovering,unavailable,failed,ended,bindAdapter,requestTune,requestPreparedPromotion,tuneProgramIndex,ownershipSnapshot,ownsSelectedEvent,snapshot:()=>store.snapshot().playback,adapterSnapshot:()=>({bound:!!adapter,boundAt:adapterBoundAt})});
+  window.SBB_PLAYBACK_ORCHESTRATOR=Object.freeze({version:VERSION,ownershipRevision:OWNERSHIP_REVISION,beginIntent,beginScoreIntent,beginProgramIntent,setPlan,preparing,prewarmResult,candidateAttempt,candidateRejected,planExhausted,selectMedia,recovering,unavailable,failed,ended,bindAdapter,extendAdapter,requestTune,requestPreparedPromotion,requestPauseAll,requestResumeActive,requestRecovery,tuneProgramIndex,ownershipSnapshot,ownsSelectedEvent,snapshot:()=>store.snapshot().playback,adapterSnapshot:()=>({bound:!!adapter,boundAt:adapterBoundAt,extendedAt:adapterExtendedAt,capabilities:adapter?Object.keys(adapter).filter(key=>typeof adapter[key]==='function').sort():[]})});
 })();

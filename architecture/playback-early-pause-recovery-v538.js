@@ -9,10 +9,15 @@
   const VERSION='5.5.0';
   const $=id=>document.getElementById(id);
   const clean=v=>String(v??'').trim();
-  const state={generation:0,key:'',selectedAt:0,manualPause:false,manualPauseKey:'',providerControlInteractionAt:0,providerControlInteractionKey:'',softKicks:0,reloads:0,lastAction:'',lastReason:'',timers:[],events:[]};
+  const orchestrator=window.SBB_PLAYBACK_ORCHESTRATOR;
+  const legacyPauseAll=typeof window.sbbPauseAllPlayback==='function'?window.sbbPauseAllPlayback:null;
+  const state={generation:0,key:'',selectedAt:0,manualPause:false,manualPauseKey:'',providerControlInteractionAt:0,providerControlInteractionKey:'',softKicks:0,reloads:0,lastAction:'',lastReason:'',timers:[],events:[],adapterOwned:false,failureOwnershipAttempts:0,failureHandlerOwned:false,playerErrorHandlerOwned:false,failureDelegate:'',playerErrorDelegate:''};
+  let failureDelegate=null;
+  let playerErrorDelegate=null;
 
   function log(action,detail=''){state.lastAction=action;state.lastReason=detail;state.events.push({at:Date.now(),action,detail,key:state.key});if(state.events.length>30)state.events=state.events.slice(-30);try{window.dispatchEvent(new CustomEvent('sbb:early-pause-recovery',{detail:{action,detail,key:state.key}}));}catch(_){}}
   function currentKey(){let index='';try{index=typeof currentIndex!=='undefined'?String(currentIndex):'';}catch(_){}return `${index}|${clean($('currentTitle')?.textContent)}`;}
+  function currentTransaction(){try{return clean(orchestrator?.snapshot?.()?.transactionId);}catch(_){return '';}}
   function setCanonicalManualPause(value){try{if(typeof manualPauseRequested!=='undefined')manualPauseRequested=!!value;}catch(_){} }
   function userPaused(){return !!(state.manualPause&&state.manualPauseKey===state.key);}
   function markUserPause(reason){state.manualPause=true;state.manualPauseKey=state.key||currentKey();setCanonicalManualPause(true);log('USER_PAUSE_SUPPRESS',reason);}
@@ -27,12 +32,108 @@
   function confirmProviderPause(){if(state.providerControlInteractionKey!==state.key)return;const sample=providerState();if(sample.paused)markUserPause('embedded provider pause');}
   function noteProviderControlInteraction(){const active=document.activeElement;if(active?.tagName==='IFRAME'&&/youtube(?:-nocookie)?\.com/i.test(clean(active.src))){state.providerControlInteractionAt=Date.now();state.providerControlInteractionKey=state.key||currentKey();log('PROVIDER_CONTROL_INTERACTION','youtube iframe focus');for(const ms of [80,250,650,1100])setTimeout(confirmProviderPause,ms);return true;}return false;}
   function providerControlPauseLikely(){return state.providerControlInteractionKey===state.key&&state.providerControlInteractionAt>=state.selectedAt&&Date.now()-state.providerControlInteractionAt<10000;}
-  function softResume(sample){if(userPaused()||providerControlPauseLikely()||!sample.paused)return false;let acted=false;try{if(sample.kind==='YOUTUBE'){const p=(typeof players!=='undefined')?players?.[sample.slot]:null;p?.playVideo?.();acted=!!p;}else if(sample.kind==='DIRECT_VIDEO'){const v=(typeof nativeEl==='function')?nativeEl(sample.slot):$('native'+sample.slot);const promise=v?.play?.();promise?.catch?.(()=>{});acted=!!v;}}catch(_){}if(acted){state.softKicks++;log('SOFT_RESUME','positive unexpected PAUSED state');}return acted;}
+
+  function installAdapterOwnership(){
+    if(!orchestrator?.extendAdapter)return false;
+    const extended=orchestrator.extendAdapter({
+      pauseAll:()=>legacyPauseAll?legacyPauseAll():false,
+      resumeActive:({sample}={})=>{
+        const currentSample=sample||providerState();let acted=false;
+        try{
+          if(currentSample.kind==='YOUTUBE'){
+            const p=(typeof players!=='undefined')?players?.[currentSample.slot]:null;p?.playVideo?.();acted=!!p;
+          }else if(currentSample.kind==='DIRECT_VIDEO'){
+            const v=(typeof nativeEl==='function')?nativeEl(currentSample.slot):$('native'+currentSample.slot);const promise=v?.play?.();promise?.catch?.(()=>{});acted=!!v;
+          }
+        }catch(_){}
+        return acted;
+      },
+      recoverActive:({index,userInitiated=false,reason='adapter recovery'}={})=>{
+        const i=Number(index);
+        if(!Number.isInteger(i)||i<0||typeof window.SBB_PLAYBACK_CONTROLLER?.tuneProgramIndex!=='function')return false;
+        return window.SBB_PLAYBACK_CONTROLLER.tuneProgramIndex(i,{userInitiated,reason});
+      }
+    });
+    state.adapterOwned=!!extended;
+    if(extended&&legacyPauseAll&&orchestrator.requestPauseAll){
+      const ownedPauseAll=function(){const requested=orchestrator.requestPauseAll('application pause');return requested===false?legacyPauseAll():requested;};
+      ownedPauseAll.__sbbOwnershipP1=true;
+      try{window.sbbPauseAllPlayback=ownedPauseAll;sbbPauseAllPlayback=ownedPauseAll;}catch(_){window.sbbPauseAllPlayback=ownedPauseAll;}
+    }
+    return !!extended;
+  }
+
+  // Priority 1 ownership bridge. Browse historically patched the two global
+  // failure callbacks so its same-game alternate / next-game policy could sit in
+  // front of the legacy player. Preserve that policy byte-for-byte, but adopt the
+  // completed compatibility chain into one architecture-owned top-level wrapper.
+  // The Browse markers remain on the owner so its retry timers cannot build a new
+  // wrapper layer after ownership has been consolidated.
+  function installFailureOwnership(){
+    state.failureOwnershipAttempts++;
+    let changed=false;
+    try{
+      const current=typeof window.handlePlaybackFailure==='function'?window.handlePlaybackFailure:null;
+      if(current?.__sbbPlaybackFailureOwner){
+        state.failureHandlerOwned=true;
+      }else if(current?.__sbbBrowseV5313){
+        failureDelegate=current;
+        const owned=function(slot,err,userInitiated=false){return failureDelegate?.call(this,slot,err,userInitiated);};
+        owned.__sbbPlaybackFailureOwner=true;
+        owned.__sbbOwnershipP1=true;
+        owned.__sbbBrowseV5313=true;
+        owned.__sbbOriginal=current.__sbbOriginal||current;
+        owned.__sbbAdopted=current;
+        try{window.handlePlaybackFailure=owned;handlePlaybackFailure=owned;}catch(_){window.handlePlaybackFailure=owned;}
+        state.failureHandlerOwned=true;
+        state.failureDelegate=clean(current.name||'browse-failure-policy');
+        changed=true;
+        log('FAILURE_OWNER_ADOPT','curated playback failure policy');
+      }
+    }catch(_){}
+    try{
+      const current=typeof window.onPlayerError==='function'?window.onPlayerError:null;
+      if(current?.__sbbPlaybackFailureOwner){
+        state.playerErrorHandlerOwned=true;
+      }else if(current?.__sbbBrowseV5314){
+        playerErrorDelegate=current;
+        const owned=function(event){return playerErrorDelegate?.call(this,event);};
+        owned.__sbbPlaybackFailureOwner=true;
+        owned.__sbbOwnershipP1=true;
+        owned.__sbbBrowseV5314=true;
+        owned.__sbbOriginal=current.__sbbOriginal||current;
+        owned.__sbbAdopted=current;
+        try{window.onPlayerError=owned;onPlayerError=owned;}catch(_){window.onPlayerError=owned;}
+        state.playerErrorHandlerOwned=true;
+        state.playerErrorDelegate=clean(current.name||'browse-player-error-policy');
+        changed=true;
+        log('PLAYER_ERROR_OWNER_ADOPT','curated YouTube error policy');
+      }
+    }catch(_){}
+    return changed||state.failureHandlerOwned||state.playerErrorHandlerOwned;
+  }
+  function failureOwnershipSnapshot(){return {attempts:state.failureOwnershipAttempts,failureHandlerOwned:state.failureHandlerOwned,playerErrorHandlerOwned:state.playerErrorHandlerOwned,failureDelegate:state.failureDelegate,playerErrorDelegate:state.playerErrorDelegate,globalFailureOwned:!!window.handlePlaybackFailure?.__sbbPlaybackFailureOwner,globalPlayerErrorOwned:!!window.onPlayerError?.__sbbPlaybackFailureOwner};}
+  window.SBB_PLAYBACK_FAILURE_OWNER=Object.freeze({version:VERSION,adopt:installFailureOwnership,snapshot:failureOwnershipSnapshot,dispatchFailure:(slot,err,userInitiated=false)=>window.handlePlaybackFailure?.(slot,err,userInitiated),dispatchPlayerError:event=>window.onPlayerError?.(event)});
+
+  function softResume(sample){
+    if(userPaused()||providerControlPauseLikely()||!sample.paused)return false;
+    const tx=currentTransaction();
+    if(orchestrator?.requestResumeActive&&tx){
+      const requested=orchestrator.requestResumeActive(tx,{sample,reason:'confirmed unexpected startup pause'});
+      if(requested!==false){Promise.resolve(requested).catch(()=>{});state.softKicks++;log('SOFT_RESUME','adapter-owned positive unexpected PAUSED state');return true;}
+    }
+    return false;
+  }
   function boundedSameItemRecovery(){
     if(userPaused()||providerControlPauseLikely())return false;const sample=providerState();
     if(!sample.paused)return false; // Never reload a transport that is already playing/buffering.
-    let acted=false;try{if(typeof tuneProgramIndexV5==='function'&&typeof currentIndex!=='undefined'){tuneProgramIndexV5(currentIndex,{userInitiated:false,reason:'v5.5.0 confirmed unexpected startup pause'});acted=true;}}catch(_){}
-    if(acted){state.reloads++;log('BOUNDED_RECOVERY','same item after confirmed paused state');}return acted;
+    let index=-1;try{index=Number(typeof currentIndex!=='undefined'?currentIndex:-1);}catch(_){}
+    const tx=currentTransaction();
+    if(orchestrator?.requestRecovery&&tx&&Number.isInteger(index)&&index>=0){
+      const requested=orchestrator.requestRecovery(tx,{index,userInitiated:false,reason:'v5.5.0 confirmed unexpected startup pause'});
+      Promise.resolve(requested).catch(()=>{});state.reloads++;log('BOUNDED_RECOVERY','adapter-owned same item after confirmed paused state');return true;
+    }
+    return false;
   }
   function clearTimers(){for(const timer of state.timers)clearTimeout(timer);state.timers=[];}
   function schedule(reason='selection'){
@@ -49,7 +150,7 @@
     window.addEventListener('blur',()=>setTimeout(noteProviderControlInteraction,0),true);
     document.addEventListener('focusin',event=>{const frame=event.target;if(frame?.tagName==='IFRAME'&&/youtube(?:-nocookie)?\.com/i.test(clean(frame.src)))noteProviderControlInteraction();},true);
   }
-  function bind(){bindUserIntent();const title=$('currentTitle');if(title)new MutationObserver(()=>setTimeout(()=>schedule('title change'),0)).observe(title,{subtree:true,childList:true,characterData:true});window.addEventListener('sbb:curated-event-identity',()=>setTimeout(()=>schedule('curated selection'),0));window.addEventListener('sbb:score-click-selection',()=>setTimeout(()=>schedule('score selection'),0));setTimeout(()=>schedule('startup'),900);}
+  function bind(){installAdapterOwnership();installFailureOwnership();for(const ms of [80,700,1400])setTimeout(installFailureOwnership,ms);bindUserIntent();const title=$('currentTitle');if(title)new MutationObserver(()=>setTimeout(()=>schedule('title change'),0)).observe(title,{subtree:true,childList:true,characterData:true});window.addEventListener('sbb:curated-event-identity',()=>setTimeout(()=>schedule('curated selection'),0));window.addEventListener('sbb:score-click-selection',()=>setTimeout(()=>schedule('score selection'),0));setTimeout(()=>schedule('startup'),900);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_EARLY_PAUSE_RECOVERY=Object.freeze({version:VERSION,arm:schedule,snapshot:()=>({generation:state.generation,key:state.key,selectedAt:state.selectedAt,userPauseSuppressed:userPaused(),manualPause:state.manualPause,providerControlInteractionAt:state.providerControlInteractionAt,softKicks:state.softKicks,reloads:state.reloads,lastAction:state.lastAction,lastReason:state.lastReason,events:state.events.slice()})});
+  window.SBB_EARLY_PAUSE_RECOVERY=Object.freeze({version:VERSION,arm:schedule,adoptFailureOwnership:installFailureOwnership,snapshot:()=>({generation:state.generation,key:state.key,selectedAt:state.selectedAt,userPauseSuppressed:userPaused(),manualPause:state.manualPause,providerControlInteractionAt:state.providerControlInteractionAt,softKicks:state.softKicks,reloads:state.reloads,adapterOwned:state.adapterOwned,failureOwnership:failureOwnershipSnapshot(),lastAction:state.lastAction,lastReason:state.lastReason,events:state.events.slice()})});
 })();
