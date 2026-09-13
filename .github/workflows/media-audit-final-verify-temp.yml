@@ -1,0 +1,25 @@
+name: Final Media Audit Discovery Copy Verify
+
+on:
+  push:
+    branches:
+      - media-audit/discovery-copy-info-v6116-clean
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify source tree
+        run: bash VERIFY.sh
+      - name: Materialize v6.1.16 and verify release tree
+        run: |
+          python3 tools/apply_v6116_release.py --skip-check
+          grep -q 'from sbb.media_team_sources_v6116 import TeamSourceRegistry' media_audit_service.py
+          grep -q 'id="copyAuditInfo"' media-audit.html
+          grep -q 'ui/media-audit-copy-v6116.js' media-audit.html
+          bash VERIFY.sh
