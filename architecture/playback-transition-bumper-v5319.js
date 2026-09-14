@@ -3,7 +3,13 @@
    playback code was also changing that same class. On some browsers those two
    writers could create a hot mutation loop immediately after launch. v5.5.0
    removes DOM observation entirely. Playback Session events own the transition,
-   and a CSS state flag hides the raw loading surface while the bumper is active. */
+   and a CSS state flag hides the raw loading surface while the bumper is active.
+
+   Startup fail-open hardening: a failed/unavailable/timed-out first playback must
+   never strand the viewer behind the transition bumper. The visual transition is
+   cleared before recovery is attempted, so playback recovery can continue in the
+   background while the Big Board remains usable.
+*/
 (() => {
   'use strict';
   if(window.SBB_TRANSITION_BUMPER_V5319?.installed)return;
@@ -55,7 +61,9 @@
     if(id&&id!==activeSelectionId)return;
     setOwned(false);
     try{if(typeof setVideoLoadingOverlay==='function')setVideoLoadingOverlay(false);}catch(_){ }
+    document.getElementById('videoLoadingOverlay')?.classList.add('hidden');
     try{if(typeof hideBumper==='function')hideBumper();}catch(_){ }
+    document.getElementById('bumper')?.classList.add('hidden');
     if(proofTimer){clearTimeout(proofTimer);proofTimer=null;}
   }
   function actualPlaying(session){
@@ -78,14 +86,23 @@
     const state=clean(session.state).toLowerCase();
     if(state==='paused'&&session.userInitiated){hideTransition(id);return;}
     lastRecoveredSelection=id;
+
+    // Visual fail-open is unconditional. Recovery must never own or block the
+    // viewer's ability to enter/use the board.
+    hideTransition(id);
+
     try{
       const slot=activeSlotSafe();
       if(typeof handlePlaybackFailure==='function'){
-        handlePlaybackFailure(slot,new Error('Transition did not prove first-frame playback within 10 seconds'),false);
+        setTimeout(()=>{
+          try{handlePlaybackFailure(slot,new Error('Transition did not prove first-frame playback within 10 seconds'),false);}catch(_){ }
+        },0);
         return;
       }
     }catch(_){ }
-    try{if(typeof manualQueueAdvance==='function')manualQueueAdvance(1,{reason:'v5.5.0 transition timeout'});}catch(_){ }
+    setTimeout(()=>{
+      try{if(typeof manualQueueAdvance==='function')manualQueueAdvance(1,{reason:'v5.5.0 transition timeout'});}catch(_){ }
+    },0);
   }
   function beginProofLoop(id){
     if(proofTimer)clearTimeout(proofTimer);
@@ -96,7 +113,7 @@
       if(Number(session.selectionId||0)!==id)return;
       if(actualPlaying(session)){hideTransition(id);return;}
       const state=clean(session.state).toLowerCase();
-      if(['failed','ended','unavailable'].includes(state)){setOwned(false);return;}
+      if(['failed','ended','unavailable'].includes(state)){hideTransition(id);return;}
       if(state==='paused'&&session.userInitiated){hideTransition(id);return;}
       if(performance.now()-started>=10000){recoverStuck(id);return;}
       proofTimer=setTimeout(check,300);
@@ -115,7 +132,7 @@
       if(Number(session?.selectionId)||0)activeSelectionId=Number(session.selectionId)||activeSelectionId;
       hideTransition(Number(session?.selectionId)||activeSelectionId);
     }else if(['failed','ended','unavailable','idle'].includes(state)){
-      setOwned(false);
+      hideTransition(Number(session?.selectionId)||activeSelectionId);
     }
   }
   function bind(){
