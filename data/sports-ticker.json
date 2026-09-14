@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-14T02:31:59Z",
+  "generatedAt": "2026-09-14T03:01:51Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "64ef007291f1ce41ce34142069b255ae5debf39fd8086c19ece47d33a9538b18",
+  "sourceCandidateHash": "2a6a778f1ddea21574ffb18b3608d3a3d1abf40cc9832c71eeb86e240326a9c1",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.45,
+          "ageHours": 6.95,
           "freshnessBasis": "Highlightly final: Seattle Mariners 7, Oakland Athletics 8.",
           "status": "active",
           "sourceUrls": [
@@ -49,6 +49,41 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-d3d11f46c8ce3221"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Manny Machado hit a two-run homer and the San Diego Padres ran their winning streak to seven games with a 6-4 victory over the San Francisco Giants on Sunday night.",
+          "text": "Manny Machado hit a two-run homer and the San Diego Padres ran their winning streak to seven games with a 6-4 victory over the San Francisco Giants on Sunday night.",
+          "entities": [],
+          "occurredAt": "2026-09-13T23:20:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.7,
+          "freshnessBasis": "Highlightly final: San Diego Padres 6, San Francisco Giants 4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816930"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816930"
+            }
+          ],
+          "id": "a415-4d76d45ce0398193",
+          "feedRank": 2,
+          "compactHeadline": "Machado homers as the Padres beat the Giants 6-4 for 7th straight victory"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-97c4652ef561c915"
           ],
           "type": "RESULT",
@@ -58,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.87,
+          "ageHours": 9.36,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Miami Marlins 6.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +113,11 @@
             }
           ],
           "id": "a415-dcf65e3df2562fda",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Agustin Ramirez delivers walk-off as Miami Marlins beat Los Angeles Dodgers 6-4"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-c7ea70a5fcf4274f"
           ],
@@ -93,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.37,
+          "ageHours": 6.86,
           "freshnessBasis": "Highlightly final: Texas Rangers 7, Arizona Diamondbacks 6.",
           "status": "active",
           "sourceUrls": [
@@ -113,11 +148,11 @@
             }
           ],
           "id": "a415-90e31261c6513aa4",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Seager homers, Rangers beat Diamondbacks 7-6 for first road series win in 2 months"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-be58ba80bcd62767"
           ],
@@ -128,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.87,
+          "ageHours": 9.36,
           "freshnessBasis": "Highlightly final: Houston Astros 4, Tampa Bay Rays 14.",
           "status": "active",
           "sourceUrls": [
@@ -148,11 +183,11 @@
             }
           ],
           "id": "a415-4cd66b721e405f8a",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Freddy Peralta, Jonathan Aranda help Rays beat Astros 14-4 to sweep series"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-7e3152a9bb60b14b"
           ],
@@ -163,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.45,
+          "ageHours": 7.95,
           "freshnessBasis": "Highlightly final: Kansas City Royals 1, Boston Red Sox 4.",
           "status": "active",
           "sourceUrls": [
@@ -183,43 +218,8 @@
             }
           ],
           "id": "a415-7fc7431719ef7b0f",
-          "feedRank": 5,
-          "compactHeadline": "Payton Tolle starts with immaculate inning, Roman Anthony gets key hit as Red Sox beat Royals 4-1"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-cadb3a87d206ac29"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Steven Kwan homered to lead off the game, Tanner Bibee had seven strikeouts in 6 2/3 strong innings, and the Cleveland Guardians beat the Minnesota Twins 9-2 on Sunday to pull within a half-game of the American League Central-leading Chicago White Sox.",
-          "text": "Steven Kwan homered to lead off the game, Tanner Bibee had seven strikeouts in 6 2/3 strong innings, and the Cleveland Guardians beat the Minnesota Twins 9-2 on Sunday to pull within a half-game of the American League Central-leading Chicago White Sox.",
-          "entities": [],
-          "occurredAt": "2026-09-13T18:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 8.37,
-          "freshnessBasis": "Highlightly final: Cleveland Guardians 9, Minnesota Twins 2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816928"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-13",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816928"
-            }
-          ],
-          "id": "a415-53310f478a97780f",
           "feedRank": 6,
-          "compactHeadline": "Kwan, Bazzana help Guardians beat Twins 9-2, pull within 1/2 game of AL Central-leading White Sox"
+          "compactHeadline": "Payton Tolle starts with immaculate inning, Roman Anthony gets key hit as Red Sox beat Royals 4-1"
         }
       ]
     },
@@ -239,7 +239,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.53,
+          "ageHours": 10.03,
           "freshnessBasis": "Highlightly final: New Orleans Saints 30, Detroit Lions 31.",
           "status": "active",
           "sourceUrls": [
@@ -268,7 +268,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.12,
+          "ageHours": 6.61,
           "freshnessBasis": "Highlightly final: Miami Dolphins 13, Las Vegas Raiders 27.",
           "status": "active",
           "sourceUrls": [
@@ -298,12 +298,12 @@
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "On Sunday afternoon, Mike LaFleur became the first Cardinals' full-time coach to win his debut since Don Coryell did it in 1973, when Arizona authored a 26-14 victory over the heavily favored Los Angeles Chargers at SoFi Stadium in Inglewood, California.",
-          "text": "On Sunday afternoon, Mike LaFleur became the first Cardinals' full-time coach to win his debut since Don Coryell did it in 1973, when Arizona authored a 26-14 victory over the heavily favored Los Angeles Chargers at SoFi Stadium in Inglewood, California.",
+          "headline": "On Sunday afternoon, Mike LaFleur became the first Cardinals full-time coach to win his debut since Don Coryell did it in 1973, as Arizona authored a 26-14 victory over the heavily favored Los Angeles Chargers at SoFi Stadium in Inglewood, California.",
+          "text": "On Sunday afternoon, Mike LaFleur became the first Cardinals full-time coach to win his debut since Don Coryell did it in 1973, as Arizona authored a 26-14 victory over the heavily favored Los Angeles Chargers at SoFi Stadium in Inglewood, California.",
           "entities": [],
           "occurredAt": "2026-09-13T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.12,
+          "ageHours": 6.61,
           "freshnessBasis": "Highlightly final: Arizona Cardinals 26, Los Angeles Chargers 14.",
           "status": "active",
           "sourceUrls": [
@@ -344,7 +344,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.53,
+          "ageHours": 10.03,
           "freshnessBasis": "Highlightly final: Chicago Bears 59, Carolina Panthers 37.",
           "status": "active",
           "sourceUrls": [
@@ -379,7 +379,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.53,
+          "ageHours": 10.03,
           "freshnessBasis": "Highlightly final: Buffalo Bills 36, Houston Texans 31.",
           "status": "active",
           "sourceUrls": [
@@ -414,7 +414,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T00:31:12Z",
           "timePrecision": "exact",
-          "ageHours": 2.01,
+          "ageHours": 2.51,
           "freshnessBasis": "The Steelers QB, who is entering his 22nd season in the league, is chasing records, and ESPN will be chronicling his \"last rodeo.\"",
           "status": "active",
           "sourceUrls": [
@@ -459,7 +459,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:13:56Z",
           "timePrecision": "exact",
-          "ageHours": 14.3,
+          "ageHours": 14.8,
           "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
           "status": "active",
           "sourceUrls": [
@@ -488,7 +488,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 11.27,
+          "ageHours": 11.76,
           "freshnessBasis": "Brighton dealt 10-man Coventry a crushing 5-0 defeat to condemn them to a fourth straight Premier League loss.",
           "status": "active",
           "sourceUrls": [
@@ -517,7 +517,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:45:25Z",
           "timePrecision": "exact",
-          "ageHours": 6.78,
+          "ageHours": 7.27,
           "freshnessBasis": "Manchester City manager Enzo Maresca backed referee Michael Oliver's decision to send off Phil Foden in his team's 1-0 win against Manchester United, but said that Reds captain Bruno Fernandes should also have been shown a red card.",
           "status": "active",
           "sourceUrls": [
@@ -546,7 +546,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:16:04Z",
           "timePrecision": "exact",
-          "ageHours": 5.27,
+          "ageHours": 5.76,
           "freshnessBasis": "Pro Ref, the Premier League referees' body, has apologized to Manchester United after admitting the VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
           "status": "active",
           "sourceUrls": [
@@ -575,7 +575,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 5.79,
+          "ageHours": 6.29,
           "freshnessBasis": "Manchester City's Phil Foden was sent off after a kick on Manchester United captain Bruno Fernandes in the first half of the derby on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -604,7 +604,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:41:37Z",
           "timePrecision": "exact",
-          "ageHours": 5.84,
+          "ageHours": 6.34,
           "freshnessBasis": "Micah Richards said the Manchester derby was a \"bad day for referees\" after City claimed a 1-0 win with a controversial goal.",
           "status": "active",
           "sourceUrls": [
@@ -639,7 +639,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.53,
           "freshnessBasis": "Highlightly final: New England Revolution 2, Chicago Fire 1.",
           "status": "active",
           "sourceUrls": [
@@ -674,7 +674,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T22:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.53,
           "freshnessBasis": "Highlightly final: Austin 2, Vancouver Whitecaps 1.",
           "status": "active",
           "sourceUrls": [
@@ -703,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T03:40:15Z",
           "timePrecision": "exact",
-          "ageHours": 22.86,
+          "ageHours": 23.36,
           "freshnessBasis": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
           "status": "active",
           "sourceUrls": [
@@ -723,35 +723,6 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-ae8cd6c00d0c435c"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Antoine Griezmann scored for the eighth time in 10 matches, and rookie Harvey Sarajian notched his first goal and assist to spark Orlando City to a 3-0 victory over Toronto FC on Saturday night.",
-          "text": "Antoine Griezmann scored for the eighth time in 10 matches, and rookie Harvey Sarajian notched his first goal and assist to spark Orlando City to a 3-0 victory over Toronto FC on Saturday night.",
-          "entities": [],
-          "occurredAt": "2026-09-13T02:44:06Z",
-          "timePrecision": "exact",
-          "ageHours": 23.8,
-          "freshnessBasis": "Antoine Griezmann scored for the eighth time in 10 matches, and rookie Harvey Sarajian notched his first goal and assist to spark Orlando City to a 3-0 victory over Toronto FC on Saturday night.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/soccer/report/_/gameId/761801"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "http://www.espn.com/soccer/report/_/gameId/761801"
-            }
-          ],
-          "id": "a415-9140a666546798af",
-          "feedRank": 22,
-          "compactHeadline": "Griezmann scores in 5th straight to help Orlando beat Toronto"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-c5ac5f8b392a5b25"
           ],
           "type": "STREAK",
@@ -761,7 +732,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T03:02:59Z",
           "timePrecision": "exact",
-          "ageHours": 23.48,
+          "ageHours": 23.98,
           "freshnessBasis": "André Luiz and Taylor Calheira scored first-half goals and Sporting Kansas City shocked Los Angeles FC with a 3-1 victory on Saturday night that ended a seven-match winless streak.",
           "status": "active",
           "sourceUrls": [
@@ -775,7 +746,7 @@
             }
           ],
           "id": "a415-f45e117bb0c7c64b",
-          "feedRank": 23,
+          "feedRank": 22,
           "compactHeadline": "André Luiz, Taylor Calheira help Sporting KC stun LAFC 3-1 to end long winless streak"
         }
       ]
@@ -796,7 +767,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:14:05Z",
           "timePrecision": "exact",
-          "ageHours": 6.3,
+          "ageHours": 6.8,
           "freshnessBasis": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -810,7 +781,7 @@
             }
           ],
           "id": "a415-ad1c0e6c8e87d519",
-          "feedRank": 24,
+          "feedRank": 23,
           "compactHeadline": "Sources: Clemson QB Christopher Vizzina (elbow) week-to-week"
         },
         {
@@ -825,7 +796,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:43:47Z",
           "timePrecision": "exact",
-          "ageHours": 4.8,
+          "ageHours": 5.3,
           "freshnessBasis": "Select your favorite contender, make your picks for how its season will play out and see what the Allstate Playoff Predictor foretells.",
           "status": "active",
           "sourceUrls": [
@@ -839,7 +810,7 @@
             }
           ],
           "id": "a415-5b2a336fbb3bf915",
-          "feedRank": 25,
+          "feedRank": 24,
           "compactHeadline": "Allstate Playoff Predictor"
         },
         {
@@ -854,7 +825,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:46:41Z",
           "timePrecision": "exact",
-          "ageHours": 6.76,
+          "ageHours": 7.25,
           "freshnessBasis": "No. 22 Houston (2-0) at No. 13 Texas Tech (2-0), Sept. 18 at 8 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -868,7 +839,7 @@
             }
           ],
           "id": "a415-14e1fb75c57e778c",
-          "feedRank": 26,
+          "feedRank": 25,
           "compactHeadline": "Texas Tech hosts Houston in ranked Big 12 matchup"
         },
         {
@@ -883,7 +854,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:44:47Z",
           "timePrecision": "exact",
-          "ageHours": 6.79,
+          "ageHours": 7.28,
           "freshnessBasis": "No. 16 SMU (2-0) at No. 23 Louisville (1-1), Sept. 19 at 3:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -897,7 +868,7 @@
             }
           ],
           "id": "a415-5e7678a2554ed3db",
-          "feedRank": 27,
+          "feedRank": 26,
           "compactHeadline": "Louisville hosts SMU in ranked ACC matchup"
         },
         {
@@ -912,7 +883,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T01:04:57Z",
           "timePrecision": "exact",
-          "ageHours": 1.45,
+          "ageHours": 1.95,
           "freshnessBasis": "West Virginia staff member and former standout running back Noel Devine was placed on leave after his arrest Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -926,23 +897,23 @@
             }
           ],
           "id": "a415-f390e15fe3b6580b",
-          "feedRank": 28,
+          "feedRank": 27,
           "compactHeadline": "West Virginia assistant Devine arrested on strangulation charge"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-08e861e244cd55d0"
+            "cand-98d9d6d130442892"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
-          "text": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
+          "headline": "Highlightly final: New Mexico State Aggies 19, Hawai'i Rainbow Warriors 29.",
+          "text": "Highlightly final: New Mexico State Aggies 19, Hawai'i Rainbow Warriors 29.",
           "entities": [],
-          "occurredAt": "2026-09-13T03:00:00Z",
+          "occurredAt": "2026-09-13T03:59:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
+          "ageHours": 23.05,
+          "freshnessBasis": "Highlightly final: New Mexico State Aggies 19, Hawai'i Rainbow Warriors 29.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -954,9 +925,9 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-52bd3c5202d047d9",
-          "feedRank": 29,
-          "compactHeadline": "USC Trojans beat Louisiana Ragin' Cajuns 49-30"
+          "id": "a415-9ba96e6c0e55d201",
+          "feedRank": 28,
+          "compactHeadline": "Hawai'i Rainbow Warriors beat New Mexico State Aggies 29-19"
         }
       ]
     }
@@ -982,7 +953,7 @@
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
     "freshCandidateCount": 140,
-    "publishedItemCount": 29,
+    "publishedItemCount": 28,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
