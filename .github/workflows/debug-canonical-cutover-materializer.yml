@@ -1,0 +1,33 @@
+name: Debug canonical cutover materializer
+
+on:
+  push:
+    branches: [debug/canonical-cutover-materializer]
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    if: ${{ !contains(github.event.head_commit.message, '[skip debug]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Capture materializer output
+        shell: bash
+        run: |
+          set +e
+          python3 tools/apply_v612_release.py > debug-materializer.log 2>&1
+          code=$?
+          echo >> debug-materializer.log
+          echo "EXIT_CODE=$code" >> debug-materializer.log
+          cat debug-materializer.log
+          exit 0
+      - name: Commit diagnostic log to debug branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add debug-materializer.log
+          git commit -m "debug: capture materializer output [skip debug]"
+          git push origin HEAD:debug/canonical-cutover-materializer
