@@ -1,0 +1,43 @@
+name: Verify Known Candidate Salvage
+
+on:
+  push:
+    branches:
+      - media-repair/known-candidate-salvage-v6116
+
+permissions:
+  contents: write
+
+concurrency:
+  group: media-repair-salvage-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v7
+      - name: Apply salvage integration
+        run: python3 tools/patch_media_repair_salvage_v6116.py
+      - name: Source salvage contract
+        run: python3 tests/test_media_repair_salvage_v6116.py
+      - name: Compile source repair service and patcher
+        run: python3 -m py_compile media_audit_service.py tools/patch_media_repair_salvage_v6116.py
+      - name: Commit product integration
+        run: |
+          if ! git diff --quiet; then
+            git config user.name github-actions[bot]
+            git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+            git add media_audit_service.py ui/media-audit-v550.js tools/apply_v6116_release.py VERIFY.sh tools/patch_media_repair_salvage_v6116.py tests/test_media_repair_salvage_v6116.py
+            git commit -m "Media Repair: add known-candidate salvage lane"
+            git push
+          fi
+      - name: Materialize v6.1.16 release
+        run: python3 tools/apply_v612_release.py
+      - name: Materialized salvage contract
+        run: python3 tests/test_media_repair_salvage_v6116.py
+      - name: Compile materialized repair service
+        run: python3 -m py_compile media_audit_service.py tools/patch_media_repair_salvage_v6116.py
+      - name: Full release verification
+        run: bash VERIFY.sh
