@@ -42,6 +42,6 @@ jobs:
         run: python3 tests/test_media_repair_salvage_v6116.py
       - name: Compile materialized repair service
         run: python3 -m py_compile media_audit_service.py tools/patch_media_repair_salvage_v6116.py
-      - name: Full release verification
+      - name: Full release verification diagnostic
         continue-on-error: true
         run: bash VERIFY.sh
