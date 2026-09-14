@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-13T23:31:57Z",
+  "generatedAt": "2026-09-14T00:01:51Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "7737c40909d67c7b9f98dd589a5b04607f04264f53dcfd0519d06e2d642812a4",
+  "sourceCandidateHash": "5ca8e575d15599d6b83eec95c03bcce9cb6f7eba286694aad74a18dc9ad5988c",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-b5a4f02cf68c2fc0"
+          ],
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "Lawrence Butler delivered the walk-off in the bottom of the 9th inning.",
+          "text": "Lawrence Butler delivered the walk-off in the bottom of the 9th inning.",
+          "entities": [],
+          "occurredAt": "2026-09-13T20:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.95,
+          "freshnessBasis": "Highlightly final: Seattle Mariners 7, Oakland Athletics 8.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-13",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-766f43a78bce17e5",
+          "feedRank": 1,
+          "compactHeadline": "Lawrence Butler delivers walk-off as Oakland Athletics beat Seattle Mariners 8-7"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-97c4652ef561c915"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.87,
+          "ageHours": 6.36,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Miami Marlins 6.",
           "status": "active",
           "sourceUrls": [
@@ -43,11 +72,11 @@
             }
           ],
           "id": "a415-dcf65e3df2562fda",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Agustin Ramirez delivers walk-off as Miami Marlins beat Los Angeles Dodgers 6-4"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-c7ea70a5fcf4274f"
           ],
@@ -58,7 +87,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.37,
+          "ageHours": 3.86,
           "freshnessBasis": "Highlightly final: Texas Rangers 7, Arizona Diamondbacks 6.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +107,11 @@
             }
           ],
           "id": "a415-90e31261c6513aa4",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Seager homers, Rangers beat Diamondbacks 7-6 for first road series win in 2 months"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-be58ba80bcd62767"
           ],
@@ -93,7 +122,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.87,
+          "ageHours": 6.36,
           "freshnessBasis": "Highlightly final: Houston Astros 4, Tampa Bay Rays 14.",
           "status": "active",
           "sourceUrls": [
@@ -113,11 +142,46 @@
             }
           ],
           "id": "a415-4cd66b721e405f8a",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Freddy Peralta, Jonathan Aranda help Rays beat Astros 14-4 to sweep series"
         },
         {
-          "rank": 4,
+          "rank": 5,
+          "candidateIds": [
+            "cand-7e3152a9bb60b14b"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Payton Tolle opened the game with an immaculate inning, Roman Anthony hit a go-ahead single and the Boston Red Sox beat the Kansas City Royals 4-1 on...",
+          "text": "Payton Tolle opened the game with an immaculate inning, Roman Anthony hit a go-ahead single and the Boston Red Sox beat the Kansas City Royals 4-1 on...",
+          "entities": [],
+          "occurredAt": "2026-09-13T19:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.95,
+          "freshnessBasis": "Highlightly final: Kansas City Royals 1, Boston Red Sox 4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816922"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-13",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816922"
+            }
+          ],
+          "id": "a415-7fc7431719ef7b0f",
+          "feedRank": 5,
+          "compactHeadline": "Payton Tolle starts with immaculate inning, Roman Anthony gets key hit as Red Sox beat Royals 4-1"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-cadb3a87d206ac29"
           ],
@@ -128,7 +192,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.37,
+          "ageHours": 5.86,
           "freshnessBasis": "Highlightly final: Cleveland Guardians 9, Minnesota Twins 2.",
           "status": "active",
           "sourceUrls": [
@@ -148,78 +212,8 @@
             }
           ],
           "id": "a415-53310f478a97780f",
-          "feedRank": 4,
-          "compactHeadline": "Kwan, Bazzana help Guardians beat Twins 9-2, pull within 1/2 game of AL Central-leading White Sox"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-607b51cda0a81192"
-          ],
-          "type": "RESULT",
-          "priority": 71,
-          "headline": "Cam Schlittler took over the major league ERA lead, combining on a three-hitter that helped the New York Yankees close in on a record 61st postseason berth with a 2-0 win over the Mets on Sunday,",
-          "text": "Cam Schlittler took over the major league ERA lead, combining on a three-hitter that helped the New York Yankees close in on a record 61st postseason berth with a 2-0 win over the Mets on Sunday,",
-          "entities": [],
-          "occurredAt": "2026-09-13T17:35:00Z",
-          "timePrecision": "exact",
-          "ageHours": 5.95,
-          "freshnessBasis": "Highlightly final: New York Mets 0, New York Yankees 2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816924"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-13",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816924"
-            }
-          ],
-          "id": "a415-a47c76f02402484f",
-          "feedRank": 5,
-          "compactHeadline": "Schlittler takes over big league ERA lead, Yanks beat Mets 2-0 to close in on postseason berth"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-63b7e01b1b26c824"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Alec Burleson hit a bases-clearing double, sparking the St. Louis Cardinals to a 3-1 victory over the Chicago White Sox to wrap up a three-game series on Sunday.",
-          "text": "Alec Burleson hit a bases-clearing double, sparking the St. Louis Cardinals to a 3-1 victory over the Chicago White Sox to wrap up a three-game series on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-09-13T18:15:00Z",
-          "timePrecision": "exact",
-          "ageHours": 5.28,
-          "freshnessBasis": "Highlightly final: Chicago White Sox 1, St. Louis Cardinals 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816926"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-13",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816926"
-            }
-          ],
-          "id": "a415-0aab106fe4b1d9d5",
           "feedRank": 6,
-          "compactHeadline": "Burleson's bases-loaded double lifts Cardinals to 3-1 win over White Sox"
+          "compactHeadline": "Kwan, Bazzana help Guardians beat Twins 9-2, pull within 1/2 game of AL Central-leading White Sox"
         }
       ]
     },
@@ -239,7 +233,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.53,
+          "ageHours": 7.03,
           "freshnessBasis": "Highlightly final: New Orleans Saints 30, Detroit Lions 31.",
           "status": "active",
           "sourceUrls": [
@@ -265,21 +259,21 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-3c2aef55d9e0c1a1"
+            "cand-98af8353875eb8cb"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Trevor Lawrence and the Jacksonville Jaguars waited seven agonizing months to play another meaningful game at EverBank Stadium.",
-          "text": "Trevor Lawrence and the Jacksonville Jaguars waited seven agonizing months to play another meaningful game at EverBank Stadium.",
+          "headline": "Kirk Cousins became the 15th quarterback to throw at least 300 touchdown passes in his career after tossing three on Sunday to lead the Las Vegas Raiders to a 27-13 season-opening victory over...",
+          "text": "Kirk Cousins became the 15th quarterback to throw at least 300 touchdown passes in his career after tossing three on Sunday to lead the Las Vegas Raiders to a 27-13 season-opening victory over...",
           "entities": [],
-          "occurredAt": "2026-09-13T17:00:00Z",
+          "occurredAt": "2026-09-13T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.53,
-          "freshnessBasis": "Highlightly final: Cleveland Browns 10, Jacksonville Jaguars 34.",
+          "ageHours": 3.61,
+          "freshnessBasis": "Highlightly final: Miami Dolphins 13, Las Vegas Raiders 27.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/nfl/recap?gameId=401872922"
+            "http://www.espn.com/nfl/recap?gameId=401872928"
           ],
           "sources": [
             {
@@ -290,31 +284,31 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/recap?gameId=401872922"
+              "url": "http://www.espn.com/nfl/recap?gameId=401872928"
             }
           ],
-          "id": "a415-77662409e54a6ada",
+          "id": "a415-552726b8cddcd7db",
           "feedRank": 8,
-          "compactHeadline": "Trevor Lawrence throws 4 TD passes as the Jaguars rout the Browns 34-10 in season opener"
+          "compactHeadline": "Kirk Cousins hits 301 career TD passes as Raiders open the season with a 27-13 win over Dolphins"
         },
         {
           "rank": 3,
           "candidateIds": [
-            "cand-cd540ed2ded0f1c9"
+            "cand-f94beb45ac5c57c7"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "The Ravens lost receivers Zay Flowers and Ja'Kobi Lane to injuries in Sunday's season-opening 41-23 win over the Colts.",
-          "text": "The Ravens lost receivers Zay Flowers and Ja'Kobi Lane to injuries in Sunday's season-opening 41-23 win over the Colts.",
+          "headline": "Jacoby Brissett threw for 277 yards and a touchdown and the Arizona Cardinals defeated the Los Angeles Chargers 26-14 on Sunday, giving Mike LaFleur a victory in his head coaching debut over Jim Harbaugh.",
+          "text": "Jacoby Brissett threw for 277 yards and a touchdown and the Arizona Cardinals defeated the Los Angeles Chargers 26-14 on Sunday, giving Mike LaFleur a victory in his head coaching debut over Jim Harbaugh.",
           "entities": [],
-          "occurredAt": "2026-09-13T17:00:00Z",
+          "occurredAt": "2026-09-13T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.53,
-          "freshnessBasis": "Highlightly final: Baltimore Ravens 41, Indianapolis Colts 23.",
+          "ageHours": 3.61,
+          "freshnessBasis": "Highlightly final: Arizona Cardinals 26, Los Angeles Chargers 14.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "https://www.espn.com/nfl/story/_/id/49931127/jakobi-lane-zay-flowers-questionable-ravens"
+            "http://www.espn.com/nfl/recap?gameId=401872926"
           ],
           "sources": [
             {
@@ -325,12 +319,12 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49931127/jakobi-lane-zay-flowers-questionable-ravens"
+              "url": "http://www.espn.com/nfl/recap?gameId=401872926"
             }
           ],
-          "id": "a415-a592386282c45303",
+          "id": "a415-b9cde770d2b6b7ad",
           "feedRank": 9,
-          "compactHeadline": "Zay Flowers, Ja'Kobi Lane leave Ravens' win with injuries"
+          "compactHeadline": "Cardinals beat Chargers 26-14 as Mike LaFleur wins his head coaching debut"
         },
         {
           "rank": 4,
@@ -344,7 +338,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.53,
+          "ageHours": 7.03,
           "freshnessBasis": "Highlightly final: Buffalo Bills 36, Houston Texans 31.",
           "status": "active",
           "sourceUrls": [
@@ -385,7 +379,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.53,
+          "ageHours": 7.03,
           "freshnessBasis": "Highlightly final: Tampa Bay Buccaneers 27, Cincinnati Bengals 33.",
           "status": "active",
           "sourceUrls": [
@@ -411,31 +405,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-5a088af2ecb5ca80"
+            "cand-acb02abdc878c5ff"
           ],
-          "type": "RECORD",
+          "type": "MILESTONE",
           "priority": 82,
-          "headline": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring three times Sunday.",
-          "text": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring three times Sunday.",
+          "headline": "Trevor Lawrence's 100th NFL touchdown pass went to rookie wide receiver Josh Cameron, who hauled it in for his first NFL catch.",
+          "text": "Trevor Lawrence's 100th NFL touchdown pass went to rookie wide receiver Josh Cameron, who hauled it in for his first NFL catch.",
           "entities": [],
-          "occurredAt": "2026-09-13T22:41:56Z",
+          "occurredAt": "2026-09-13T23:53:42Z",
           "timePrecision": "exact",
-          "ageHours": 0.83,
-          "freshnessBasis": "Ravens running back Derrick Henry moved into third place on the NFL's all-time rushing touchdowns list by scoring three times Sunday.",
+          "ageHours": 0.14,
+          "freshnessBasis": "Trevor Lawrence's 100th NFL touchdown pass went to rookie wide receiver Josh Cameron, who hauled it in for his first NFL catch.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49930434/ravens-henry-passes-allen-third-all-rushing-tds"
+            "https://www.espn.com/nfl/story/_/id/49933848/trevor-lawrence-100th-career-nfl-touchdown-rookie-josh-cameron-jaguars"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49930434/ravens-henry-passes-allen-third-all-rushing-tds"
+              "url": "https://www.espn.com/nfl/story/_/id/49933848/trevor-lawrence-100th-career-nfl-touchdown-rookie-josh-cameron-jaguars"
             }
           ],
-          "id": "a415-c0fdf294e2d663aa",
+          "id": "a415-a1724a9fe721c5cd",
           "feedRank": 12,
-          "compactHeadline": "Ravens' Henry passes Allen for third all time in rushing TDs"
+          "compactHeadline": "Who keeps the ball? Trevor Lawrence's 100th TD is rookie's first catch"
         }
       ]
     },
@@ -460,7 +454,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T00:16:16Z",
           "timePrecision": "exact",
-          "ageHours": 23.26,
+          "ageHours": 23.76,
           "freshnessBasis": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
           "status": "active",
           "sourceUrls": [
@@ -495,7 +489,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:13:56Z",
           "timePrecision": "exact",
-          "ageHours": 11.3,
+          "ageHours": 11.8,
           "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
           "status": "active",
           "sourceUrls": [
@@ -524,7 +518,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 8.26,
+          "ageHours": 8.76,
           "freshnessBasis": "Brighton dealt 10-man Coventry a crushing 5-0 defeat to condemn them to a fourth straight Premier League loss.",
           "status": "active",
           "sourceUrls": [
@@ -553,7 +547,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:45:25Z",
           "timePrecision": "exact",
-          "ageHours": 3.78,
+          "ageHours": 4.27,
           "freshnessBasis": "Manchester City manager Enzo Maresca backed referee Michael Oliver's decision to send off Phil Foden in his team's 1-0 win against Manchester United, but said that Reds captain Bruno Fernandes should also have been shown a red card.",
           "status": "active",
           "sourceUrls": [
@@ -582,7 +576,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:16:04Z",
           "timePrecision": "exact",
-          "ageHours": 2.26,
+          "ageHours": 2.76,
           "freshnessBasis": "Pro Ref, the Premier League referees' body, has apologized to Manchester United after admitting the VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
           "status": "active",
           "sourceUrls": [
@@ -611,7 +605,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 2.79,
+          "ageHours": 3.29,
           "freshnessBasis": "Manchester City's Phil Foden was sent off after a kick on Manchester United captain Bruno Fernandes in the first half of the derby on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -640,7 +634,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:41:37Z",
           "timePrecision": "exact",
-          "ageHours": 2.84,
+          "ageHours": 3.34,
           "freshnessBasis": "Micah Richards said the Manchester derby was a \"bad day for referees\" after City claimed a 1-0 win with a controversial goal.",
           "status": "active",
           "sourceUrls": [
@@ -666,17 +660,17 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-02b31edc01277218"
+            "cand-d4c1a802692c689d"
           ],
           "type": "RESULT",
-          "priority": 76,
-          "headline": "A late goal came in the 90th minute to decide FC Dallas's 2-1 win over Portland Timbers.",
-          "text": "A late goal came in the 90th minute to decide FC Dallas's 2-1 win over Portland Timbers.",
+          "priority": 70,
+          "headline": "Highlightly final: New England Revolution 2, Chicago Fire 1.",
+          "text": "Highlightly final: New England Revolution 2, Chicago Fire 1.",
           "entities": [],
-          "occurredAt": "2026-09-13T00:30:00Z",
+          "occurredAt": "2026-09-13T21:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
-          "freshnessBasis": "Highlightly final: Portland Timbers 1, FC Dallas 2.",
+          "ageHours": 2.53,
+          "freshnessBasis": "Highlightly final: New England Revolution 2, Chicago Fire 1.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -684,13 +678,13 @@
           "sources": [
             {
               "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-12",
+              "sourceId": "highlightly-football-2026-09-13",
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-ac2d41bf615dbe46",
+          "id": "a415-ccaa0b29020f911f",
           "feedRank": 20,
-          "compactHeadline": "Late goal lifts FC Dallas beat Portland Timbers 2-1"
+          "compactHeadline": "New England Revolution beat Chicago Fire 2-1"
         },
         {
           "rank": 2,
@@ -704,7 +698,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.53,
           "freshnessBasis": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
           "status": "active",
           "sourceUrls": [
@@ -733,7 +727,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.53,
           "freshnessBasis": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
           "status": "active",
           "sourceUrls": [
@@ -762,7 +756,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.53,
           "freshnessBasis": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
           "status": "active",
           "sourceUrls": [
@@ -791,7 +785,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.53,
           "freshnessBasis": "Highlightly final: New York City FC 2, Real Salt Lake 0.",
           "status": "active",
           "sourceUrls": [
@@ -811,17 +805,17 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-b8d10ad3368dcfa2"
+            "cand-493acf64d040cd29"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Highlightly final: Minnesota United 2, St. Louis City SC 4.",
-          "text": "Highlightly final: Minnesota United 2, St. Louis City SC 4.",
+          "headline": "Highlightly final: Los Angeles FC 1, Sporting Kansas City 3.",
+          "text": "Highlightly final: Los Angeles FC 1, Sporting Kansas City 3.",
           "entities": [],
           "occurredAt": "2026-09-13T00:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 23.03,
-          "freshnessBasis": "Highlightly final: Minnesota United 2, St. Louis City SC 4.",
+          "ageHours": 23.53,
+          "freshnessBasis": "Highlightly final: Los Angeles FC 1, Sporting Kansas City 3.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -833,9 +827,9 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-71d0d14492a5de11",
+          "id": "a415-bfcc2030fb986b5e",
           "feedRank": 25,
-          "compactHeadline": "St. Louis City SC beat Minnesota United 4-2"
+          "compactHeadline": "Sporting Kansas City beat Los Angeles FC 3-1"
         }
       ]
     },
@@ -855,7 +849,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:14:05Z",
           "timePrecision": "exact",
-          "ageHours": 3.3,
+          "ageHours": 3.8,
           "freshnessBasis": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -884,7 +878,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.53,
           "freshnessBasis": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
           "status": "active",
           "sourceUrls": [
@@ -913,7 +907,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:43:47Z",
           "timePrecision": "exact",
-          "ageHours": 1.8,
+          "ageHours": 2.3,
           "freshnessBasis": "Select your favorite contender, make your picks for how its season will play out and see what the Allstate Playoff Predictor foretells.",
           "status": "active",
           "sourceUrls": [
@@ -942,7 +936,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:46:41Z",
           "timePrecision": "exact",
-          "ageHours": 3.75,
+          "ageHours": 4.25,
           "freshnessBasis": "No. 22 Houston (2-0) at No. 13 Texas Tech (2-0), Sept. 18 at 8 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -971,7 +965,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:44:47Z",
           "timePrecision": "exact",
-          "ageHours": 3.79,
+          "ageHours": 4.28,
           "freshnessBasis": "No. 16 SMU (2-0) at No. 23 Louisville (1-1), Sept. 19 at 3:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -1000,7 +994,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.53,
+          "ageHours": 21.03,
           "freshnessBasis": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
           "status": "active",
           "sourceUrls": [
