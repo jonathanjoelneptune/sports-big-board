@@ -50,12 +50,13 @@ classification=service.split('    def _salvage_classification(self, asset, now=N
 for token in ('RECENT_PLAYED','TRANSIENT_FAILURE','INFRA_FAILURE','STALE_NONHARD_FAILURE','UNVERIFIED_KNOWN'):
     assert token in classification
 
-# R21 rollout must preserve existing cooldowns; only the older R20 migration may
-# perform its one-time strategy requeue. R21 is picked up when each job is due.
+# R21 rollout must preserve existing cooldowns. Historical materializers may name
+# their own older one-time migration differently, but R21 itself may not introduce
+# a seed-time WHERE/details marker that wakes every WAITING_RETRY job.
 seed=service.split('    def seed_repair_queue(self):',1)[1].split('    def repair_liveness',1)[0]
 assert "NOT LIKE '%R21_KNOWN_CANDIDATE_SALVAGE%'" not in seed
-assert "R20_PLAYBACK_EVIDENCE_CORROBORATION" in seed
-assert 'R21_KNOWN_CANDIDATE_SALVAGE' in service.split('    def _repair_by_discovery(self, job):',1)[1]
+assert "R21 known-candidate salvage strategy upgrade: immediate one-time retry" not in seed
+assert 'R21_KNOWN_CANDIDATE_SALVAGE' in repair
 
 # Operator telemetry and overcomplete copy raw JSON will expose salvage yield.
 for token in ('salvage selected','salvage certified','salvage closed'):
