@@ -168,6 +168,8 @@ def verify_overincluded_blocks_cycle():
         store.record_schedule("cev_bad", "OFFICIAL", "AUTHORITATIVE", day, event)
         store.record_schedule("cev_bad", "ESPN_INDEPENDENT", "INDEPENDENT", day, event)
         snapshot = make_snapshot(day, "cev_bad")
+        snapshot["discrepancies"][0]["event"]["inclusion_state"] = "UNKNOWN"
+        snapshot["discrepancies"][0]["event"]["inclusion_reason"] = "UNSUPPORTED_POLICY"
         audit = cutover.classify_shadow_only(snapshot, store)
         assert audit["overIncluded"] == 1, audit
         assert "includedByPolicy" in audit["events"][0]["failedChecks"], audit
