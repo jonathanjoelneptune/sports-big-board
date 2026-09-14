@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-14T00:01:51Z",
+  "generatedAt": "2026-09-14T00:31:41Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "5ca8e575d15599d6b83eec95c03bcce9cb6f7eba286694aad74a18dc9ad5988c",
+  "sourceCandidateHash": "3feb4be9e80603f2bcd3f2f4427c2dcba1409918e96ecc4ff54420d3dfbdfff1",
   "leagues": [
     {
       "league": "MLB",
@@ -23,17 +23,23 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.95,
+          "ageHours": 4.44,
           "freshnessBasis": "Highlightly final: Seattle Mariners 7, Oakland Athletics 8.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816931"
           ],
           "sources": [
             {
               "provider": "Highlightly",
               "sourceId": "highlightly-baseball-2026-09-13",
               "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816931"
             }
           ],
           "id": "a415-766f43a78bce17e5",
@@ -52,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.36,
+          "ageHours": 6.86,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Miami Marlins 6.",
           "status": "active",
           "sourceUrls": [
@@ -87,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.86,
+          "ageHours": 4.36,
           "freshnessBasis": "Highlightly final: Texas Rangers 7, Arizona Diamondbacks 6.",
           "status": "active",
           "sourceUrls": [
@@ -122,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.36,
+          "ageHours": 6.86,
           "freshnessBasis": "Highlightly final: Houston Astros 4, Tampa Bay Rays 14.",
           "status": "active",
           "sourceUrls": [
@@ -157,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.95,
+          "ageHours": 5.44,
           "freshnessBasis": "Highlightly final: Kansas City Royals 1, Boston Red Sox 4.",
           "status": "active",
           "sourceUrls": [
@@ -192,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.86,
+          "ageHours": 6.36,
           "freshnessBasis": "Highlightly final: Cleveland Guardians 9, Minnesota Twins 2.",
           "status": "active",
           "sourceUrls": [
@@ -233,7 +239,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
+          "ageHours": 7.53,
           "freshnessBasis": "Highlightly final: New Orleans Saints 30, Detroit Lions 31.",
           "status": "active",
           "sourceUrls": [
@@ -268,7 +274,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.61,
+          "ageHours": 4.11,
           "freshnessBasis": "Highlightly final: Miami Dolphins 13, Las Vegas Raiders 27.",
           "status": "active",
           "sourceUrls": [
@@ -303,7 +309,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.61,
+          "ageHours": 4.11,
           "freshnessBasis": "Highlightly final: Arizona Cardinals 26, Los Angeles Chargers 14.",
           "status": "active",
           "sourceUrls": [
@@ -338,7 +344,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
+          "ageHours": 7.53,
           "freshnessBasis": "Highlightly final: Buffalo Bills 36, Houston Texans 31.",
           "status": "active",
           "sourceUrls": [
@@ -379,7 +385,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
+          "ageHours": 7.53,
           "freshnessBasis": "Highlightly final: Tampa Bay Buccaneers 27, Cincinnati Bengals 33.",
           "status": "active",
           "sourceUrls": [
@@ -405,31 +411,31 @@
         {
           "rank": 6,
           "candidateIds": [
-            "cand-acb02abdc878c5ff"
+            "cand-9c9febacf0bd7d14"
           ],
-          "type": "MILESTONE",
+          "type": "RECORD",
           "priority": 82,
-          "headline": "Trevor Lawrence's 100th NFL touchdown pass went to rookie wide receiver Josh Cameron, who hauled it in for his first NFL catch.",
-          "text": "Trevor Lawrence's 100th NFL touchdown pass went to rookie wide receiver Josh Cameron, who hauled it in for his first NFL catch.",
+          "headline": "The Steelers QB, who is entering his 22nd season in the league, is chasing records, and ESPN will be chronicling his \"last rodeo.\"",
+          "text": "The Steelers QB, who is entering his 22nd season in the league, is chasing records, and ESPN will be chronicling his \"last rodeo.\"",
           "entities": [],
-          "occurredAt": "2026-09-13T23:53:42Z",
+          "occurredAt": "2026-09-14T00:06:54Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
-          "freshnessBasis": "Trevor Lawrence's 100th NFL touchdown pass went to rookie wide receiver Josh Cameron, who hauled it in for his first NFL catch.",
+          "ageHours": 0.41,
+          "freshnessBasis": "The Steelers QB, who is entering his 22nd season in the league, is chasing records, and ESPN will be chronicling his \"last rodeo.\"",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49933848/trevor-lawrence-100th-career-nfl-touchdown-rookie-josh-cameron-jaguars"
+            "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49933848/trevor-lawrence-100th-career-nfl-touchdown-rookie-josh-cameron-jaguars"
+              "url": "https://www.espn.com/nfl/story/_/id/49907062/aaron-rodgers-2026-nfl-season-steelers-packers-jets-tracking-records-milestones"
             }
           ],
-          "id": "a415-a1724a9fe721c5cd",
+          "id": "a415-7a75961a3d7042a4",
           "feedRank": 12,
-          "compactHeadline": "Who keeps the ball? Trevor Lawrence's 100th TD is rookie's first catch"
+          "compactHeadline": "Aaron Rodgers' 2026 NFL season: Tracking records, milestones"
         }
       ]
     },
@@ -441,37 +447,7 @@
     {
       "league": "NHL",
       "seasonState": "offseason",
-      "items": [
-        {
-          "rank": 1,
-          "candidateIds": [
-            "cand-ef6bf0d782e6fb57"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
-          "text": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
-          "entities": [],
-          "occurredAt": "2026-09-13T00:16:16Z",
-          "timePrecision": "exact",
-          "ageHours": 23.76,
-          "freshnessBasis": "Veteran forward Chris Kreider, 35, who has 348 goals and 632 points in his career, agreed to a one-year contract with the Montreal Canadiens on Saturday after mutually terminating his previous deal with the Anaheim Ducks earlier in the week.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49919075/chris-kreider-35-lands-1-year-deal-montreal-canadiens"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49919075/chris-kreider-35-lands-1-year-deal-montreal-canadiens"
-            }
-          ],
-          "id": "a415-19fe4235e88e9b57",
-          "feedRank": 13,
-          "compactHeadline": "Chris Kreider, 35, lands 1-year deal with Montreal Canadiens"
-        }
-      ]
+      "items": []
     },
     {
       "league": "EPL",
@@ -489,7 +465,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:13:56Z",
           "timePrecision": "exact",
-          "ageHours": 11.8,
+          "ageHours": 12.3,
           "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
           "status": "active",
           "sourceUrls": [
@@ -503,7 +479,7 @@
             }
           ],
           "id": "a415-36c0b30b722455e8",
-          "feedRank": 14,
+          "feedRank": 13,
           "compactHeadline": "Man United's Benjamin Sesko 'in perfect place' after injury recovery"
         },
         {
@@ -518,7 +494,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 8.76,
+          "ageHours": 9.26,
           "freshnessBasis": "Brighton dealt 10-man Coventry a crushing 5-0 defeat to condemn them to a fourth straight Premier League loss.",
           "status": "active",
           "sourceUrls": [
@@ -532,7 +508,7 @@
             }
           ],
           "id": "a415-0521d20487893e72",
-          "feedRank": 15,
+          "feedRank": 14,
           "compactHeadline": "Lewis Dunk screamer helps Brighton pile more Premier League misery on Coventry"
         },
         {
@@ -547,7 +523,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:45:25Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 4.77,
           "freshnessBasis": "Manchester City manager Enzo Maresca backed referee Michael Oliver's decision to send off Phil Foden in his team's 1-0 win against Manchester United, but said that Reds captain Bruno Fernandes should also have been shown a red card.",
           "status": "active",
           "sourceUrls": [
@@ -561,7 +537,7 @@
             }
           ],
           "id": "a415-6500d58d730034fc",
-          "feedRank": 16,
+          "feedRank": 15,
           "compactHeadline": "Maresca fine with Foden red, says Bruno should have been sent off too"
         },
         {
@@ -576,7 +552,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:16:04Z",
           "timePrecision": "exact",
-          "ageHours": 2.76,
+          "ageHours": 3.26,
           "freshnessBasis": "Pro Ref, the Premier League referees' body, has apologized to Manchester United after admitting the VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
           "status": "active",
           "sourceUrls": [
@@ -590,7 +566,7 @@
             }
           ],
           "id": "a415-0fa2977cc9f648c1",
-          "feedRank": 17,
+          "feedRank": 16,
           "compactHeadline": "Premier League referees' body apologizes to Man United after derby offside controversy"
         },
         {
@@ -605,7 +581,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 3.29,
+          "ageHours": 3.78,
           "freshnessBasis": "Manchester City's Phil Foden was sent off after a kick on Manchester United captain Bruno Fernandes in the first half of the derby on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -619,7 +595,7 @@
             }
           ],
           "id": "a415-858d42f4b32f1c13",
-          "feedRank": 18,
+          "feedRank": 17,
           "compactHeadline": "Man City's Phil Foden sent off in derby after kick on Man United's Bruno Fernandes"
         },
         {
@@ -634,7 +610,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:41:37Z",
           "timePrecision": "exact",
-          "ageHours": 3.34,
+          "ageHours": 3.83,
           "freshnessBasis": "Micah Richards said the Manchester derby was a \"bad day for referees\" after City claimed a 1-0 win with a controversial goal.",
           "status": "active",
           "sourceUrls": [
@@ -648,7 +624,7 @@
             }
           ],
           "id": "a415-e464e427a6988e52",
-          "feedRank": 19,
+          "feedRank": 18,
           "compactHeadline": "Micah Richards: Manchester derby a 'bad day for referees' after Phil Foden red, Erling Haaland winner"
         }
       ]
@@ -669,7 +645,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.53,
+          "ageHours": 3.03,
           "freshnessBasis": "Highlightly final: New England Revolution 2, Chicago Fire 1.",
           "status": "active",
           "sourceUrls": [
@@ -683,7 +659,7 @@
             }
           ],
           "id": "a415-ccaa0b29020f911f",
-          "feedRank": 20,
+          "feedRank": 19,
           "compactHeadline": "New England Revolution beat Chicago Fire 2-1"
         },
         {
@@ -698,7 +674,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.03,
           "freshnessBasis": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
           "status": "active",
           "sourceUrls": [
@@ -712,7 +688,7 @@
             }
           ],
           "id": "a415-083f86d998918358",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Los Angeles Galaxy and Seattle Sounders finished tied 1-1"
         },
         {
@@ -727,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.03,
           "freshnessBasis": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
           "status": "active",
           "sourceUrls": [
@@ -741,7 +717,7 @@
             }
           ],
           "id": "a415-125ef28b29ef5c4c",
-          "feedRank": 22,
+          "feedRank": 21,
           "compactHeadline": "San Jose Earthquakes beat Houston Dynamo 1-0"
         },
         {
@@ -756,7 +732,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.53,
+          "ageHours": 23.03,
           "freshnessBasis": "Highlightly final: Montréal Impact 0, Colorado Rapids 1.",
           "status": "active",
           "sourceUrls": [
@@ -770,7 +746,7 @@
             }
           ],
           "id": "a415-fd2635ff267a45c3",
-          "feedRank": 23,
+          "feedRank": 22,
           "compactHeadline": "Colorado Rapids beat Montréal Impact 1-0"
         },
         {
@@ -785,7 +761,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T01:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.53,
+          "ageHours": 23.03,
           "freshnessBasis": "Highlightly final: New York City FC 2, Real Salt Lake 0.",
           "status": "active",
           "sourceUrls": [
@@ -799,37 +775,37 @@
             }
           ],
           "id": "a415-1622a061e3e145ff",
-          "feedRank": 24,
+          "feedRank": 23,
           "compactHeadline": "New York City FC beat Real Salt Lake 2-0"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-493acf64d040cd29"
+            "cand-1ad1f45ed6d9af35"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Highlightly final: Los Angeles FC 1, Sporting Kansas City 3.",
-          "text": "Highlightly final: Los Angeles FC 1, Sporting Kansas City 3.",
+          "headline": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
+          "text": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
           "entities": [],
-          "occurredAt": "2026-09-13T00:30:00Z",
+          "occurredAt": "2026-09-13T03:40:15Z",
           "timePrecision": "exact",
-          "ageHours": 23.53,
-          "freshnessBasis": "Highlightly final: Los Angeles FC 1, Sporting Kansas City 3.",
+          "ageHours": 20.86,
+          "freshnessBasis": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
           "status": "active",
           "sourceUrls": [
-            "https://highlightly.net"
+            "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
           ],
           "sources": [
             {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-12",
-              "url": "https://highlightly.net"
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/49921983/lionel-messi-goal-inter-miami-vs-nashville-mls-supporters-shield"
             }
           ],
-          "id": "a415-bfcc2030fb986b5e",
-          "feedRank": 25,
-          "compactHeadline": "Sporting Kansas City beat Los Angeles FC 3-1"
+          "id": "a415-3a264a818a064d77",
+          "feedRank": 24,
+          "compactHeadline": "Messi scores, but Nashville strikes late to deny Miami win"
         }
       ]
     },
@@ -849,7 +825,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:14:05Z",
           "timePrecision": "exact",
-          "ageHours": 3.8,
+          "ageHours": 4.29,
           "freshnessBasis": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -863,7 +839,7 @@
             }
           ],
           "id": "a415-ad1c0e6c8e87d519",
-          "feedRank": 26,
+          "feedRank": 25,
           "compactHeadline": "Sources: Clemson QB Christopher Vizzina (elbow) week-to-week"
         },
         {
@@ -878,7 +854,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.53,
+          "ageHours": 22.03,
           "freshnessBasis": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
           "status": "active",
           "sourceUrls": [
@@ -892,7 +868,7 @@
             }
           ],
           "id": "a415-27ad66477d2c4c30",
-          "feedRank": 27,
+          "feedRank": 26,
           "compactHeadline": "Montana State Bobcats beat Nevada Wolf Pack 20-7"
         },
         {
@@ -907,7 +883,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:43:47Z",
           "timePrecision": "exact",
-          "ageHours": 2.3,
+          "ageHours": 2.8,
           "freshnessBasis": "Select your favorite contender, make your picks for how its season will play out and see what the Allstate Playoff Predictor foretells.",
           "status": "active",
           "sourceUrls": [
@@ -921,7 +897,7 @@
             }
           ],
           "id": "a415-5b2a336fbb3bf915",
-          "feedRank": 28,
+          "feedRank": 27,
           "compactHeadline": "Allstate Playoff Predictor"
         },
         {
@@ -936,7 +912,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:46:41Z",
           "timePrecision": "exact",
-          "ageHours": 4.25,
+          "ageHours": 4.75,
           "freshnessBasis": "No. 22 Houston (2-0) at No. 13 Texas Tech (2-0), Sept. 18 at 8 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -950,7 +926,7 @@
             }
           ],
           "id": "a415-14e1fb75c57e778c",
-          "feedRank": 29,
+          "feedRank": 28,
           "compactHeadline": "Texas Tech hosts Houston in ranked Big 12 matchup"
         },
         {
@@ -965,7 +941,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:44:47Z",
           "timePrecision": "exact",
-          "ageHours": 4.28,
+          "ageHours": 4.78,
           "freshnessBasis": "No. 16 SMU (2-0) at No. 23 Louisville (1-1), Sept. 19 at 3:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -979,7 +955,7 @@
             }
           ],
           "id": "a415-5e7678a2554ed3db",
-          "feedRank": 30,
+          "feedRank": 29,
           "compactHeadline": "Louisville hosts SMU in ranked ACC matchup"
         },
         {
@@ -994,7 +970,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T03:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.03,
+          "ageHours": 21.53,
           "freshnessBasis": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
           "status": "active",
           "sourceUrls": [
@@ -1008,7 +984,7 @@
             }
           ],
           "id": "a415-52bd3c5202d047d9",
-          "feedRank": 31,
+          "feedRank": 30,
           "compactHeadline": "USC Trojans beat Louisiana Ragin' Cajuns 49-30"
         }
       ]
@@ -1113,7 +1089,7 @@
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
     "freshCandidateCount": 140,
-    "publishedItemCount": 31,
+    "publishedItemCount": 30,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
