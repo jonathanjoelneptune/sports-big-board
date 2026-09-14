@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-14T02:02:29Z",
+  "generatedAt": "2026-09-14T02:31:59Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "e636a66f3cf49086f71e897cdde5397c0252658da459e7e8ffa750c363fcfe9f",
+  "sourceCandidateHash": "64ef007291f1ce41ce34142069b255ae5debf39fd8086c19ece47d33a9538b18",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.96,
+          "ageHours": 6.45,
           "freshnessBasis": "Highlightly final: Seattle Mariners 7, Oakland Athletics 8.",
           "status": "active",
           "sourceUrls": [
@@ -58,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.37,
+          "ageHours": 8.87,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Miami Marlins 6.",
           "status": "active",
           "sourceUrls": [
@@ -93,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.87,
+          "ageHours": 6.37,
           "freshnessBasis": "Highlightly final: Texas Rangers 7, Arizona Diamondbacks 6.",
           "status": "active",
           "sourceUrls": [
@@ -128,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.37,
+          "ageHours": 8.87,
           "freshnessBasis": "Highlightly final: Houston Astros 4, Tampa Bay Rays 14.",
           "status": "active",
           "sourceUrls": [
@@ -163,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.96,
+          "ageHours": 7.45,
           "freshnessBasis": "Highlightly final: Kansas City Royals 1, Boston Red Sox 4.",
           "status": "active",
           "sourceUrls": [
@@ -198,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T18:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.87,
+          "ageHours": 8.37,
           "freshnessBasis": "Highlightly final: Cleveland Guardians 9, Minnesota Twins 2.",
           "status": "active",
           "sourceUrls": [
@@ -239,7 +239,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.04,
+          "ageHours": 9.53,
           "freshnessBasis": "Highlightly final: New Orleans Saints 30, Detroit Lions 31.",
           "status": "active",
           "sourceUrls": [
@@ -268,7 +268,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.62,
+          "ageHours": 6.12,
           "freshnessBasis": "Highlightly final: Miami Dolphins 13, Las Vegas Raiders 27.",
           "status": "active",
           "sourceUrls": [
@@ -298,16 +298,17 @@
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Coming off an injury-riddled three-win season and with a new coaching staff, the Arizona Cardinals were the NFL's biggest underdog going into Week 1.",
-          "text": "Coming off an injury-riddled three-win season and with a new coaching staff, the Arizona Cardinals were the NFL's biggest underdog going into Week 1.",
+          "headline": "On Sunday afternoon, Mike LaFleur became the first Cardinals' full-time coach to win his debut since Don Coryell did it in 1973, when Arizona authored a 26-14 victory over the heavily favored Los Angeles Chargers at SoFi Stadium in Inglewood, California.",
+          "text": "On Sunday afternoon, Mike LaFleur became the first Cardinals' full-time coach to win his debut since Don Coryell did it in 1973, when Arizona authored a 26-14 victory over the heavily favored Los Angeles Chargers at SoFi Stadium in Inglewood, California.",
           "entities": [],
           "occurredAt": "2026-09-13T20:25:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.62,
+          "ageHours": 6.12,
           "freshnessBasis": "Highlightly final: Arizona Cardinals 26, Los Angeles Chargers 14.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
+            "https://www.espn.com/nfl/story/_/id/49935970/cardinals-defeat-chargers-pull-week-1-biggest-upset",
             "http://www.espn.com/nfl/recap?gameId=401872926"
           ],
           "sources": [
@@ -319,12 +320,17 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49935970/cardinals-defeat-chargers-pull-week-1-biggest-upset"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
               "url": "http://www.espn.com/nfl/recap?gameId=401872926"
             }
           ],
           "id": "a415-b9cde770d2b6b7ad",
           "feedRank": 9,
-          "compactHeadline": "Cardinals beat Chargers 26-14 as Mike LaFleur wins his head coaching debut"
+          "compactHeadline": "Cardinals defeat Chargers, pull off Week 1's biggest upset"
         },
         {
           "rank": 4,
@@ -338,7 +344,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.04,
+          "ageHours": 9.53,
           "freshnessBasis": "Highlightly final: Chicago Bears 59, Carolina Panthers 37.",
           "status": "active",
           "sourceUrls": [
@@ -373,7 +379,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T17:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.04,
+          "ageHours": 9.53,
           "freshnessBasis": "Highlightly final: Buffalo Bills 36, Houston Texans 31.",
           "status": "active",
           "sourceUrls": [
@@ -408,7 +414,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T00:31:12Z",
           "timePrecision": "exact",
-          "ageHours": 1.52,
+          "ageHours": 2.01,
           "freshnessBasis": "The Steelers QB, who is entering his 22nd season in the league, is chasing records, and ESPN will be chronicling his \"last rodeo.\"",
           "status": "active",
           "sourceUrls": [
@@ -453,7 +459,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T12:13:56Z",
           "timePrecision": "exact",
-          "ageHours": 13.81,
+          "ageHours": 14.3,
           "freshnessBasis": "Benjamin Sesko now feels in the \"perfect\" place having recovered from the injury which brought his first season with Manchester United to a premature end.",
           "status": "active",
           "sourceUrls": [
@@ -482,7 +488,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T15:16:05Z",
           "timePrecision": "exact",
-          "ageHours": 10.77,
+          "ageHours": 11.27,
           "freshnessBasis": "Brighton dealt 10-man Coventry a crushing 5-0 defeat to condemn them to a fourth straight Premier League loss.",
           "status": "active",
           "sourceUrls": [
@@ -511,7 +517,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:45:25Z",
           "timePrecision": "exact",
-          "ageHours": 6.28,
+          "ageHours": 6.78,
           "freshnessBasis": "Manchester City manager Enzo Maresca backed referee Michael Oliver's decision to send off Phil Foden in his team's 1-0 win against Manchester United, but said that Reds captain Bruno Fernandes should also have been shown a red card.",
           "status": "active",
           "sourceUrls": [
@@ -540,7 +546,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:16:04Z",
           "timePrecision": "exact",
-          "ageHours": 4.77,
+          "ageHours": 5.27,
           "freshnessBasis": "Pro Ref, the Premier League referees' body, has apologized to Manchester United after admitting the VAR awarded Erling Haaland's winning goal in Manchester City's 1-0 win by \"error.\"",
           "status": "active",
           "sourceUrls": [
@@ -569,7 +575,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:44:39Z",
           "timePrecision": "exact",
-          "ageHours": 5.3,
+          "ageHours": 5.79,
           "freshnessBasis": "Manchester City's Phil Foden was sent off after a kick on Manchester United captain Bruno Fernandes in the first half of the derby on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -598,7 +604,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:41:37Z",
           "timePrecision": "exact",
-          "ageHours": 5.35,
+          "ageHours": 5.84,
           "freshnessBasis": "Micah Richards said the Manchester derby was a \"bad day for referees\" after City claimed a 1-0 win with a controversial goal.",
           "status": "active",
           "sourceUrls": [
@@ -633,7 +639,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.54,
+          "ageHours": 5.03,
           "freshnessBasis": "Highlightly final: New England Revolution 2, Chicago Fire 1.",
           "status": "active",
           "sourceUrls": [
@@ -668,7 +674,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T22:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.54,
+          "ageHours": 4.03,
           "freshnessBasis": "Highlightly final: Austin 2, Vancouver Whitecaps 1.",
           "status": "active",
           "sourceUrls": [
@@ -688,64 +694,6 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-12890deff0dfaeea"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
-          "text": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
-          "entities": [],
-          "occurredAt": "2026-09-13T02:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.54,
-          "freshnessBasis": "Highlightly final: Seattle Sounders 1, Los Angeles Galaxy 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-083f86d998918358",
-          "feedRank": 21,
-          "compactHeadline": "Los Angeles Galaxy and Seattle Sounders finished tied 1-1"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-bf4e56aa9416e10e"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
-          "text": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
-          "entities": [],
-          "occurredAt": "2026-09-13T02:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.54,
-          "freshnessBasis": "Highlightly final: Houston Dynamo 0, San Jose Earthquakes 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-125ef28b29ef5c4c",
-          "feedRank": 22,
-          "compactHeadline": "San Jose Earthquakes beat Houston Dynamo 1-0"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-1ad1f45ed6d9af35"
           ],
           "type": "RESULT",
@@ -755,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T03:40:15Z",
           "timePrecision": "exact",
-          "ageHours": 22.37,
+          "ageHours": 22.86,
           "freshnessBasis": "Lionel Messi scored a second-half goal, but Nashville SC struck back in stoppage time to earn a 2-2 draw at Inter Miami and maintain its nine-point lead at the top of the Eastern Conference.",
           "status": "active",
           "sourceUrls": [
@@ -769,11 +717,11 @@
             }
           ],
           "id": "a415-3a264a818a064d77",
-          "feedRank": 23,
+          "feedRank": 21,
           "compactHeadline": "Messi scores, but Nashville strikes late to deny Miami win"
         },
         {
-          "rank": 6,
+          "rank": 4,
           "candidateIds": [
             "cand-ae8cd6c00d0c435c"
           ],
@@ -784,7 +732,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T02:44:06Z",
           "timePrecision": "exact",
-          "ageHours": 23.31,
+          "ageHours": 23.8,
           "freshnessBasis": "Antoine Griezmann scored for the eighth time in 10 matches, and rookie Harvey Sarajian notched his first goal and assist to spark Orlando City to a 3-0 victory over Toronto FC on Saturday night.",
           "status": "active",
           "sourceUrls": [
@@ -798,8 +746,37 @@
             }
           ],
           "id": "a415-9140a666546798af",
-          "feedRank": 24,
+          "feedRank": 22,
           "compactHeadline": "Griezmann scores in 5th straight to help Orlando beat Toronto"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-c5ac5f8b392a5b25"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "André Luiz and Taylor Calheira scored first-half goals and Sporting Kansas City shocked Los Angeles FC with a 3-1 victory on Saturday night that ended a seven-match winless streak.",
+          "text": "André Luiz and Taylor Calheira scored first-half goals and Sporting Kansas City shocked Los Angeles FC with a 3-1 victory on Saturday night that ended a seven-match winless streak.",
+          "entities": [],
+          "occurredAt": "2026-09-13T03:02:59Z",
+          "timePrecision": "exact",
+          "ageHours": 23.48,
+          "freshnessBasis": "André Luiz and Taylor Calheira scored first-half goals and Sporting Kansas City shocked Los Angeles FC with a 3-1 victory on Saturday night that ended a seven-match winless streak.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/soccer/report/_/gameId/761806"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "http://www.espn.com/soccer/report/_/gameId/761806"
+            }
+          ],
+          "id": "a415-f45e117bb0c7c64b",
+          "feedRank": 23,
+          "compactHeadline": "André Luiz, Taylor Calheira help Sporting KC stun LAFC 3-1 to end long winless streak"
         }
       ]
     },
@@ -819,7 +796,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T20:14:05Z",
           "timePrecision": "exact",
-          "ageHours": 5.81,
+          "ageHours": 6.3,
           "freshnessBasis": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -833,40 +810,11 @@
             }
           ],
           "id": "a415-ad1c0e6c8e87d519",
-          "feedRank": 25,
+          "feedRank": 24,
           "compactHeadline": "Sources: Clemson QB Christopher Vizzina (elbow) week-to-week"
         },
         {
           "rank": 2,
-          "candidateIds": [
-            "cand-5764785a781267f2"
-          ],
-          "type": "UPSET",
-          "priority": 82,
-          "headline": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
-          "text": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
-          "entities": [],
-          "occurredAt": "2026-09-13T02:30:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.54,
-          "freshnessBasis": "Highlightly final: Montana State Bobcats 20, Nevada Wolf Pack 7.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-12",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-27ad66477d2c4c30",
-          "feedRank": 26,
-          "compactHeadline": "Montana State Bobcats beat Nevada Wolf Pack 20-7"
-        },
-        {
-          "rank": 3,
           "candidateIds": [
             "cand-a218b59ebd192e28"
           ],
@@ -877,7 +825,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T21:43:47Z",
           "timePrecision": "exact",
-          "ageHours": 4.31,
+          "ageHours": 4.8,
           "freshnessBasis": "Select your favorite contender, make your picks for how its season will play out and see what the Allstate Playoff Predictor foretells.",
           "status": "active",
           "sourceUrls": [
@@ -891,11 +839,11 @@
             }
           ],
           "id": "a415-5b2a336fbb3bf915",
-          "feedRank": 27,
+          "feedRank": 25,
           "compactHeadline": "Allstate Playoff Predictor"
         },
         {
-          "rank": 4,
+          "rank": 3,
           "candidateIds": [
             "cand-3547f645cfb7c763"
           ],
@@ -906,7 +854,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:46:41Z",
           "timePrecision": "exact",
-          "ageHours": 6.26,
+          "ageHours": 6.76,
           "freshnessBasis": "No. 22 Houston (2-0) at No. 13 Texas Tech (2-0), Sept. 18 at 8 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -920,11 +868,11 @@
             }
           ],
           "id": "a415-14e1fb75c57e778c",
-          "feedRank": 28,
+          "feedRank": 26,
           "compactHeadline": "Texas Tech hosts Houston in ranked Big 12 matchup"
         },
         {
-          "rank": 5,
+          "rank": 4,
           "candidateIds": [
             "cand-e8730d11b92ab978"
           ],
@@ -935,7 +883,7 @@
           "entities": [],
           "occurredAt": "2026-09-13T19:44:47Z",
           "timePrecision": "exact",
-          "ageHours": 6.3,
+          "ageHours": 6.79,
           "freshnessBasis": "No. 16 SMU (2-0) at No. 23 Louisville (1-1), Sept. 19 at 3:30 p.m. EDT.",
           "status": "active",
           "sourceUrls": [
@@ -949,11 +897,11 @@
             }
           ],
           "id": "a415-5e7678a2554ed3db",
-          "feedRank": 29,
+          "feedRank": 27,
           "compactHeadline": "Louisville hosts SMU in ranked ACC matchup"
         },
         {
-          "rank": 6,
+          "rank": 5,
           "candidateIds": [
             "cand-cff06b272cff5628"
           ],
@@ -964,7 +912,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T01:04:57Z",
           "timePrecision": "exact",
-          "ageHours": 0.96,
+          "ageHours": 1.45,
           "freshnessBasis": "West Virginia staff member and former standout running back Noel Devine was placed on leave after his arrest Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -978,8 +926,37 @@
             }
           ],
           "id": "a415-f390e15fe3b6580b",
-          "feedRank": 30,
+          "feedRank": 28,
           "compactHeadline": "West Virginia assistant Devine arrested on strangulation charge"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-08e861e244cd55d0"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
+          "text": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
+          "entities": [],
+          "occurredAt": "2026-09-13T03:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 23.53,
+          "freshnessBasis": "Highlightly final: Louisiana Ragin' Cajuns 30, USC Trojans 49.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-12",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-52bd3c5202d047d9",
+          "feedRank": 29,
+          "compactHeadline": "USC Trojans beat Louisiana Ragin' Cajuns 49-30"
         }
       ]
     }
@@ -1005,7 +982,7 @@
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
     "freshCandidateCount": 140,
-    "publishedItemCount": 30,
+    "publishedItemCount": 29,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
 }
