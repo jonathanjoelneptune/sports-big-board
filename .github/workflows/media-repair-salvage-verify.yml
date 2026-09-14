@@ -30,6 +30,34 @@ jobs:
       - name: Apply rollout safety correction
         if: ${{ hashFiles('tools/fix_salvage_cooldown_temp.py') != '' }}
         run: python3 tools/fix_salvage_cooldown_temp.py
+      - name: Bridge durable persistence into current salvage draft
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path=Path('media_audit_service.py')
+          text=path.read_text(encoding='utf-8')
+          text=text.replace(
+              "                if before!=after: changed.append(key)\n",
+              "                if before!=after:\n                    changed.append(key); asset['_salvageTransportRefreshed']=True\n",
+              1,
+          )
+          needle="""        merged,transport=self._merge_salvage_transport(assets,list(plan.get('candidates') or []))
+        self.stats['salvageTransportRefreshes']+=int(transport.get('transportChanged') or 0)
+"""
+          replacement="""        merged,transport=self._merge_salvage_transport(assets,list(plan.get('candidates') or []))
+        refreshed=[a for a in merged if a.get('_salvageTransportRefreshed')]
+        if refreshed:
+            persisted=self._write('persist salvage transport refresh','refresh_repair_known_transport',str(job['canonical_event_key']),refreshed,event_key=str(job['canonical_event_key']))
+            transport['persisted']=int(persisted or 0)
+            self.stats['salvageTransportPersisted']+=int(persisted or 0)
+        self.stats['salvageTransportRefreshes']+=int(transport.get('transportChanged') or 0)
+"""
+          if replacement not in text:
+              if needle not in text:
+                  raise SystemExit('current salvage persistence anchor missing')
+              text=text.replace(needle,replacement,1)
+          path.write_text(text,encoding='utf-8')
+          PY
       - name: Apply salvage integration
         run: python3 tools/patch_media_repair_salvage_v6116.py
       - name: Source salvage contract
