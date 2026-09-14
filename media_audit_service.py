@@ -582,12 +582,12 @@ class AuditStore:
                 "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,reason=CASE WHEN reason='' THEN 'Recovered interrupted Repair Engine job' ELSE reason END WHERE state IN ('SEARCHING','CERTIFYING')",
                 (now,),
             ); recovered_active=int(cur.rowcount or 0)
-            # R21 puts known-media salvage ahead of scarce fresh discovery. Give each
-            # actionable R20-era cooldown one immediate pass through the new lane,
-            # then persist the R21 strategy marker so service restarts do not erase
-            # cooldown policy or create an infinite strategy-requeue loop.
+            # R20 changes playback certification authority as well as the probe itself. Give every
+            # R19-exhausted actionable job one immediate pass through the stabilized
+            # probe and recent-PLAYED corroboration path. Once processed, details_json
+            # carries the R20 marker so service restarts preserve cooldowns.
             cur=conn.execute(
-                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R21 known-candidate salvage strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R21_KNOWN_CANDIDATE_SALVAGE%'",
+                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R20 playback-evidence corroboration strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R20_PLAYBACK_EVIDENCE_CORROBORATION%'",
                 (now,),
             ); strategy_requeued=int(cur.rowcount or 0)
             latest = conn.execute("SELECT id FROM history_media_audit_run ORDER BY id DESC LIMIT 1").fetchone()

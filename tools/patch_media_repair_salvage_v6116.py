@@ -38,25 +38,6 @@ def patch_service() -> bool:
     new_stats = '                    "knownCandidatesEligible":0,"knownTransportRefreshes":0,\n                    "salvageCandidatesConsidered":0,"salvageCandidatesSelected":0,"salvageCertified":0,\n                    "salvagePromotions":0,"salvageClosedHealthy":0,"salvageTransportRefreshes":0,"salvageTransportRecovered":0,\n                    "salvageHardRejected":0,"salvageTransportMissing":0,"salvageTargetSkipped":0,\n                    "localCatalogCandidates":0,"registeredProviderNew":0,"youtubeIndexCandidates":0,'
     text = replace_once(text, old_stats, new_stats, "salvage stats")
 
-    old_seed = '''            # R20 changes playback certification authority as well as the probe itself. Give every
-            # R19-exhausted actionable job one immediate pass through the stabilized
-            # probe and recent-PLAYED corroboration path. Once processed, details_json
-            # carries the R20 marker so service restarts preserve cooldowns.
-            cur=conn.execute(
-                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R20 playback-evidence corroboration strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R20_PLAYBACK_EVIDENCE_CORROBORATION%'",
-                (now,),
-            ); strategy_requeued=int(cur.rowcount or 0)
-'''
-    new_seed = '''            # R21 puts known-media salvage ahead of scarce fresh discovery. Give each
-            # actionable R20-era cooldown one immediate pass through the new lane,
-            # then persist the R21 strategy marker so service restarts do not erase
-            # cooldown policy or create an infinite strategy-requeue loop.
-            cur=conn.execute(
-                "UPDATE history_media_repair_queue SET state='PENDING',next_retry_at=0,updated_at=?,last_error='', reason='R21 known-candidate salvage strategy upgrade: immediate one-time retry' WHERE health IN ('DEGRADED','UNPLAYABLE','NO_MEDIA') AND state='WAITING_RETRY' AND COALESCE(details_json,'') NOT LIKE '%R21_KNOWN_CANDIDATE_SALVAGE%'",
-                (now,),
-            ); strategy_requeued=int(cur.rowcount or 0)
-'''
-    text = replace_once(text, old_seed, new_seed, "R21 strategy requeue")
 
     method_anchor = "    def _eligible_known_candidates(self, assets, target='ANY', tested=None):\n"
     if 'def _salvage_known_candidates(' not in text:
