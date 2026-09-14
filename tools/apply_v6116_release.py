@@ -30,6 +30,8 @@ PRESERVE = (
     "tests/test_media_audit_copy_v6116.py",
     "tests/test_media_audit_discovery_visibility_v6116.py",
     "tests/test_v6116_storage_retention_release.py",
+    "tools/patch_media_repair_salvage_v6116.py",
+    "tests/test_media_repair_salvage_v6116.py",
 )
 
 
@@ -403,6 +405,7 @@ def main(argv=None):
     run_base(root, preserved)
     patch_media_repair_identity(root)
     patch_media_audit_copy(root)
+    subprocess.run([sys.executable, str(root / "tools" / "patch_media_repair_salvage_v6116.py")], cwd=root, check=True)
     patch_init(root)
     patch_legacy_contracts(root)
     patch_verify(root)
