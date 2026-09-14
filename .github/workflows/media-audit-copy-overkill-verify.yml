@@ -1,0 +1,32 @@
+name: Verify Media Audit Overcomplete Copy
+
+on:
+  push:
+    branches:
+      - media-audit/copy-overkill-v6116
+
+permissions:
+  contents: read
+
+concurrency:
+  group: media-audit-copy-overkill-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Source copy contract
+        run: python3 tests/test_media_audit_copy_v6116.py
+      - name: Parse copy module
+        run: node --check ui/media-audit-copy-v6116.js
+      - name: Materialize v6.1.16 release
+        run: python3 tools/apply_v612_release.py
+      - name: Materialized copy contract
+        run: python3 tests/test_media_audit_copy_v6116.py
+      - name: Parse materialized copy module
+        run: node --check ui/media-audit-copy-v6116.js
+      - name: Full release verification
+        run: bash VERIFY.sh
