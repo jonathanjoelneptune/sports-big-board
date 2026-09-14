@@ -8,13 +8,14 @@
    Startup fail-open hardening: a failed/unavailable/timed-out first playback must
    never strand the viewer behind the transition bumper. The visual transition is
    cleared before recovery is attempted, so playback recovery can continue in the
-   background while the Big Board remains usable.
+   background while the Big Board remains usable. A launch-level watchdog also
+   covers the case where the first playback session is never created at all.
 */
 (() => {
   'use strict';
   if(window.SBB_TRANSITION_BUMPER_V5319?.installed)return;
   const VERSION='5.5.0';
-  let activeSelectionId=0,proofTimer=null,lastShownAt=0,lastRecoveredSelection=0;
+  let activeSelectionId=0,proofTimer=null,lastShownAt=0,lastRecoveredSelection=0,launchFailOpenTimer=null;
   let overlayTimers=[];
   const clean=v=>String(v??'').trim();
 
@@ -49,6 +50,14 @@
     // MutationObserver, can never form a self-sustaining feedback loop.
     for(const delay of [60,180,420,900,1800])overlayTimers.push(setTimeout(hide,delay));
   }
+  function clearVisualTransition(){
+    setOwned(false);
+    try{if(typeof setVideoLoadingOverlay==='function')setVideoLoadingOverlay(false);}catch(_){ }
+    document.getElementById('videoLoadingOverlay')?.classList.add('hidden');
+    try{if(typeof hideBumper==='function')hideBumper();}catch(_){ }
+    document.getElementById('bumper')?.classList.add('hidden');
+    if(proofTimer){clearTimeout(proofTimer);proofTimer=null;}
+  }
   function showTransition(session){
     const id=Number(session?.selectionId)||0;if(!id||id===activeSelectionId)return;
     activeSelectionId=id;lastShownAt=Date.now();
@@ -59,12 +68,7 @@
   }
   function hideTransition(id=activeSelectionId){
     if(id&&id!==activeSelectionId)return;
-    setOwned(false);
-    try{if(typeof setVideoLoadingOverlay==='function')setVideoLoadingOverlay(false);}catch(_){ }
-    document.getElementById('videoLoadingOverlay')?.classList.add('hidden');
-    try{if(typeof hideBumper==='function')hideBumper();}catch(_){ }
-    document.getElementById('bumper')?.classList.add('hidden');
-    if(proofTimer){clearTimeout(proofTimer);proofTimer=null;}
+    clearVisualTransition();
   }
   function actualPlaying(session){
     if(clean(session?.state).toLowerCase()==='playing'||Number(session?.firstFrameAt)>0)return true;
@@ -120,24 +124,46 @@
     };
     proofTimer=setTimeout(check,180);
   }
+  function armLaunchFailOpen(){
+    if(launchFailOpenTimer)clearTimeout(launchFailOpenTimer);
+    launchFailOpenTimer=setTimeout(()=>{
+      launchFailOpenTimer=null;
+      if(!experienceStarted())return;
+      const session=window.SBB_PLAYBACK_SESSION?.snapshot?.()||{};
+      if(actualPlaying(session))return;
+      // startSportsBigBoardExperience() displays the first bumper before a
+      // Playback Session necessarily exists. If transaction/session creation
+      // fails, onSession() can never clear that bumper, so clear it here.
+      clearVisualTransition();
+      try{window.dispatchEvent(new CustomEvent('sbb:startup-transition-failopen',{detail:{at:Date.now(),sessionState:clean(session.state)||'none'}}));}catch(_){ }
+    },8500);
+  }
   function onSession(session){
     const state=clean(session?.state).toLowerCase();
     // The splash owns all pre-launch loading. Never start a transition proof loop
     // while Hot Standby / cueing is preparing the first clip behind the launch card.
     if(!experienceStarted()){setOwned(false);return;}
+    if(state==='playing'||Number(session?.firstFrameAt)>0){
+      if(launchFailOpenTimer){clearTimeout(launchFailOpenTimer);launchFailOpenTimer=null;}
+      if(Number(session?.selectionId)||0)activeSelectionId=Number(session.selectionId)||activeSelectionId;
+      hideTransition(Number(session?.selectionId)||activeSelectionId);
+      return;
+    }
     if(['selected','preparing','starting'].includes(state)||(state==='buffering'&&!session?.firstFrameAt)){
       showTransition(session);return;
     }
-    if(state==='playing'||Number(session?.firstFrameAt)>0){
-      if(Number(session?.selectionId)||0)activeSelectionId=Number(session.selectionId)||activeSelectionId;
-      hideTransition(Number(session?.selectionId)||activeSelectionId);
-    }else if(['failed','ended','unavailable','idle'].includes(state)){
+    if(['failed','ended','unavailable','idle'].includes(state)){
       hideTransition(Number(session?.selectionId)||activeSelectionId);
     }
   }
   function bind(){
     try{window.SBB_PLAYBACK_SESSION?.subscribe?.(onSession);}catch(_){ }
+    const launch=document.getElementById('launchPlayBtn');
+    if(launch&&launch.dataset.sbbTransitionFailOpen!=='1'){
+      launch.dataset.sbbTransitionFailOpen='1';
+      launch.addEventListener('click',armLaunchFailOpen,{capture:true});
+    }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_TRANSITION_BUMPER_V5319=Object.freeze({installed:true,version:VERSION,snapshot:()=>({activeSelectionId,lastShownAt,lastRecoveredSelection,owned:document.documentElement.dataset.sbbTransitionBumper==='1'})});
+  window.SBB_TRANSITION_BUMPER_V5319=Object.freeze({installed:true,version:VERSION,snapshot:()=>({activeSelectionId,lastShownAt,lastRecoveredSelection,launchFailOpenArmed:!!launchFailOpenTimer,owned:document.documentElement.dataset.sbbTransitionBumper==='1'})});
 })();
