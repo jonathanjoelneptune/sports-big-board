@@ -3,6 +3,8 @@ set -euo pipefail
 
 echo "Sports Big Board v6.1.0 Canonical Slate Certification Shadow preflight"
 python3 tools/check_release_version.py
+python3 -m py_compile sbb/canonical_cutover_qualification_v6116.py
+python3 tests/test_v6116_canonical_cutover_qualification.py
 python3 -m py_compile sbb/media_team_sources_v6116.py
 python3 tests/test_media_team_sources_v6116.py
 python3 tests/test_media_audit_copy_v6116.py
@@ -76,8 +78,8 @@ node --check architecture/playback-transition-bumper-v5319.js
 node --check architecture/score-interrupt-queue-v5220.js
 node --check ui/player-visibility.js
 node --check architecture/key-info-current-v520.js
-node --check architecture/scroll-motion-smoothness-v5210.js
 node --check architecture/splash-preload-v5212.js
+node --check architecture/scroll-motion-smoothness-v5210.js
 node --check architecture/controller-readiness-v540.js
 node --check architecture/controller-mode-v542.js
 node --check architecture/controller-native-bridge-v544.js
