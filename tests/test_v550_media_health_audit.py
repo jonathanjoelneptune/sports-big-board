@@ -387,21 +387,23 @@ for token in ['repairStage','repairStageResult','repairSourceStats','source stag
 assert '5.5.0-r20' in html
 
 
-# R19/R20: known media must remain eligible for bounded repair recertification instead of
-# being discarded merely because its assetKey already exists on the event.
+# R21: known media salvage/revalidation must run before fresh discovery.
+# The legacy R19/R20 recertification phase names were intentionally retired.
 for token in [
-    'REPAIR_KNOWN_CANDIDATE_LIMIT','def _repair_transport_signature','def _eligible_known_candidates',
-    'KNOWN_CANDIDATES','REFRESHED_KNOWN_CANDIDATES','RECERTIFY_KNOWN_CANDIDATE','RECERTIFY_REFRESHED_KNOWN',
+    'REPAIR_SALVAGE_CANDIDATE_LIMIT','REPAIR_SALVAGE_STALE_SECONDS',
+    'def refresh_repair_known_transport','def _repair_plan_snapshot',
+    'def _merge_salvage_transport','def _salvage_known_candidates',
+    'KNOWN_TRANSPORT_REFRESH','KNOWN_CANDIDATE_SALVAGE','SALVAGE_KNOWN_CANDIDATE',
     'sourceEligibleKnown','knownCandidatesEligible','knownTransportRefreshes',
-    'known is not duplicate','tested.discard(key)','transportChanged',
+    'salvageTransportPersisted','transportChanged',
 ]:
-    assert token in service,token
+    assert token in service or token in js,token
 repair_discovery=service[service.index('def _repair_by_discovery'):service.index('@staticmethod',service.index('def _repair_by_discovery'))]
-assert repair_discovery.index("_eligible_known_candidates(before,target,tested)") < repair_discovery.index('_deep_catalog_candidates')
-assert "tested=tested,phase='RECERTIFY_KNOWN_CANDIDATE'" in repair_discovery
-assert "new_sig!=old_sig and key in tested" in repair_discovery
-assert "tested.discard(key)" in repair_discovery
-assert "sourceEligibleKnown" in js
+assert repair_discovery.index('_salvage_known_candidates(job,before,target,tested)') < repair_discovery.index('_deep_catalog_candidates')
+assert "if promoted and promoted.get('health')=='HEALTHY': return promoted" in repair_discovery
+assert "if (runtime=='FAILED' or assoc=='QUARANTINED') and _hard_media_failure_reason(failure):" in service
+assert 'refresh_repair_known_transport' in service
+assert 'sourceEligibleKnown' in js
 
 seed_block=service[service.index('def seed_repair_queue'):service.index('def repair_summary')]
 assert "state IN ('SEARCHING','CERTIFYING')" in seed_block
