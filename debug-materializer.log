@@ -1,0 +1,271 @@
+Sports Big Board v6.1.2 release materialization -> 6.1.2
+Files changed: 177
+  sbb/__init__.py
+  VERIFY.sh
+  tests/test_v610_canonical_certification.py
+  index.html
+  APPLY-V6.sh
+  media-audit-probe.html
+  media-audit.html
+  media_audit_service.py
+  test_v5212_splash_preload.py
+  test_v5213_broadcast_design.py
+  test_v5214_premium_masthead.py
+  test_v5215_now_watching.py
+  test_v5216_up_next_editorial_slugs.py
+  test_v5217_drawer_polish.py
+  test_v5218_workspace_reflow.py
+  test_v5219_game_center_readability.py
+  test_v5220_gc_scroll_interrupt_queue.py
+  test_v5221_collapse_viewport_fit.py
+  test_v530_browse_curated_programming.py
+  test_v5310_special_event_playback_league_view.py
+  test_v5311_playback_context_league_view.py
+  test_v5312_special_event_playback_standings.py
+  test_v5313_special_event_ownership_symmetry.py
+  test_v5314_league_navigation_event_brackets.py
+  test_v5315_wildcard_media_match_center.py
+  test_v5316_score_ribbon_league_day_queue.py
+  test_v5317_queue_performance_match_center.py
+  test_v5318_verified_play_all_fast_start.py
+  test_v5319_game_center_score_transition_bumper.py
+  test_v531_browse_ux_timeline.py
+  test_v5320_startup_unfreeze_progress.py
+  test_v532_team_browse_queue_flow.py
+  test_v533_browse_integration.py
+  test_v534_complete_browse_deploy_safety.py
+  test_v536_team_focus_enrichment.py
+  test_v537_focus_integration_theme.py
+  test_v538_league_view_theme_hardening.py
+  test_v539_team_context_drawer_sync.py
+  test_v540_controller_readiness.py
+  test_v542_controller_radials_live_input.py
+  test_v543_stealth_ultra_hid_bridge.py
+  test_v544_native_controller_bridge.py
+  test_v545_controller_navigation_fullscreen_playback_follow.py
+  test_v546_hierarchical_radials_drawer_fullscreen.py
+  test_v547_controller_native_browse_sendinput.py
+  test_v548_controller_polish.py
+  test_v549_cached_team_select.py
+  test_v550_media_health_audit.py
+  tools/check_release_version.py
+  ui/browse-curated-programming-v537.css
+  ui/browse-curated-programming-v537.js
+  ui/collapse-viewport-fit-v5221.css
+  ui/collapse-viewport-fit-v5221.js
+  ui/controller-hid-bridge-v543.css
+  ui/controller-mode-v542.css
+  ui/controller-native-bridge-v544.css
+  ui/controller-readiness-v540.css
+  ui/editorial-slugs-up-next-v5216.css
+  ui/fullscreen-controller-v545.css
+  ui/fullscreen-controller-v545.js
+  ui/game-center-readability-v5219.css
+  ui/game-center-readability-v5219.js
+  ui/game-center-score-authority-v5319.js
+  ui/game-center-scroll-v5220.css
+  ui/game-center-scroll-v5220.js
+  ui/harmonized-controls-drawer-v5217.css
+  ui/harmonized-controls-drawer-v5217.js
+  ui/league-view-v538.css
+  ui/league-view-v538.js
+  ui/media-audit-copy-v6116.js
+  ui/media-audit-v550.js
+  ui/playback-transition-bumper-v5319.css
+  ui/score-ribbon-playback-follow-v545.css
+  ui/score-ribbon-playback-follow-v545.js
+  ui/sport-match-center-v5317.css
+  ui/sport-match-center-v5317.js
+  ui/up-next-experience-v5217.js
+  ui/viewing-workspace-v5218.css
+  ui/viewing-workspace-v5218.js
+  ui/workspace-viewport-fit-v531.css
+  ui/workspace-viewport-fit-v531.js
+  architecture/controller-hid-bridge-v543.js
+  architecture/controller-mode-v542.js
+  architecture/controller-native-bridge-v544.js
+  architecture/controller-readiness-v540.js
+  architecture/key-info-current-v520.js
+  architecture/playback-early-pause-recovery-v538.js
+  architecture/playback-progress-watchdog-v5310.js
+  architecture/playback-transition-bumper-v5319.js
+  architecture/score-interrupt-queue-v5220.js
+  architecture/scroll-motion-smoothness-v5210.js
+  architecture/splash-preload-v5212.js
+  sbb/canonical_certification_v610.py
+  sbb/canonical_certification_v611.py
+  sbb/canonical_console_bootstrap_v6111.py
+  sbb/canonical_cutover_qualification_v6116.py
+  sbb/canonical_epl_fpl_state_followup_v6116.py
+  sbb/canonical_reconciliation_followup_v6116.py
+  sbb/canonical_reconciliation_hotfix_v6116.py
+  sbb/canonical_run_integrity_v6110.py
+  sbb/canonical_schedule_watchdogs_v6116.py
+  sbb/canonical_shadow_v600.py
+  sbb/current_news_v523.py
+  sbb/league_view_v538.py
+  sbb/media_team_sources_v6113.py
+  sbb/media_team_sources_v6114.py
+  sbb/media_team_sources_v6115.py
+  sbb/media_team_sources_v6116.py
+  sbb/team_focus_v537.py
+  tests/test_media_audit_copy_v6116.py
+  tests/test_media_audit_discovery_visibility_v6116.py
+  tests/test_media_team_sources_v6116.py
+  tests/test_p1_curated_playback_ownership.py
+  tests/test_r20_playback_evidence_corroboration.py
+  tests/test_v5213_broadcast_design.py
+  tests/test_v5214_premium_masthead.py
+  tests/test_v5215_now_watching.py
+  tests/test_v5216_up_next_editorial_slugs.py
+  tests/test_v5217_drawer_polish.py
+  tests/test_v5218_workspace_reflow.py
+  tests/test_v5219_game_center_readability.py
+  tests/test_v5220_gc_scroll_interrupt_queue.py
+  tests/test_v5221_collapse_viewport_fit.py
+  tests/test_v530_browse_curated_programming.py
+  tests/test_v5310_special_event_playback_league_view.py
+  tests/test_v5311_playback_context_league_view.py
+  tests/test_v5312_special_event_playback_standings.py
+  tests/test_v5313_special_event_ownership_symmetry.py
+  tests/test_v5314_league_navigation_event_brackets.py
+  tests/test_v5315_wildcard_media_match_center.py
+  tests/test_v5316_score_ribbon_league_day_queue.py
+  tests/test_v5317_queue_performance_match_center.py
+  tests/test_v5318_verified_play_all_fast_start.py
+  tests/test_v5319_game_center_score_transition_bumper.py
+  tests/test_v531_browse_ux_timeline.py
+  tests/test_v5320_startup_unfreeze_progress.py
+  tests/test_v532_team_browse_queue_flow.py
+  tests/test_v533_browse_integration.py
+  tests/test_v534_complete_browse_deploy_safety.py
+  tests/test_v536_team_focus_enrichment.py
+  tests/test_v537_focus_integration_theme.py
+  tests/test_v538_league_view_theme_hardening.py
+  tests/test_v539_team_context_drawer_sync.py
+  tests/test_v540_controller_readiness.py
+  tests/test_v542_controller_radials_live_input.py
+  tests/test_v543_stealth_ultra_hid_bridge.py
+  tests/test_v544_native_controller_bridge.py
+  tests/test_v545_controller_navigation_fullscreen_playback_follow.py
+  tests/test_v546_hierarchical_radials_drawer_fullscreen.py
+  tests/test_v547_controller_native_browse_sendinput.py
+  tests/test_v548_controller_polish.py
+  tests/test_v549_cached_team_select.py
+  tests/test_v550_media_health_audit.py
+  tests/test_v6110_canonical_run_integrity.py
+  tests/test_v6111_canonical_console_bootstrap.py
+  tests/test_v6112_team_source_registry.py
+  tests/test_v6112_team_source_release.py
+  tests/test_v6113_team_directory_release.py
+  tests/test_v6113_team_directory_resolution.py
+  tests/test_v6114_team_directory_hardening_release.py
+  tests/test_v6114_team_directory_scoping.py
+  tests/test_v6115_team_resolution_queue.py
+  tests/test_v6115_team_resolution_release.py
+  tests/test_v6116_canonical_cutover_qualification.py
+  tests/test_v6116_canonical_reconcile_followup.py
+  tests/test_v6116_canonical_reconcile_hotfix.py
+  tests/test_v6116_epl_fpl_state_followup.py
+  tests/test_v6116_official_schedule_release.py
+  tests/test_v6116_official_schedule_watchdogs.py
+  tests/test_v6116_startup_registry_release_integrity.py
+  tests/test_v6116_storage_retention_release.py
+  tests/test_v611_canonical_hardening.py
+  tests/test_v611_runtime_responsiveness.py
+  tests/test_v615_canonical_install_chain.py
+  cloud/gcp/DEPLOY-FROM-GITHUB.sh
+  cloud/github-pages/build_pages.py
+  CONTROLLER-REGION-MAP-v6.1.2.md
+Sports Big Board recovery release materialized: 6.1.3
+Media Audit defaults: workers=1 discoveryConcurrency=1 repairEnabled=0
+Release-identity files updated: 180
+Controller map: CONTROLLER-REGION-MAP-v6.1.3.md
+Sports Big Board v6.1.4 materialized
+Canonical validation installer: readiness-based, no 120-second give-up
+Frontend asset cache generation: Git commit SHA
+Sports Big Board v6.1.5 materialized
+Canonical install order: v6.1.1 certification hardening -> v6.1.2 validation diagnostics
+Sports Big Board v6.1.6 materialized
+Media Audit: rolling mode cutoff=today-1d interval=5m batch=250 auditWorkers=1
+Media Repair: enabled workers=2 discoveryConcurrency=1 externalConcurrency=1 circuit=3 failures/15m
+Sports Big Board v6.1.7 materialized
+R21 continuous Media Audit: yesterday-first rolling gaps, two repair workers, protected discovery
+Sports Big Board v6.1.8 materialized
+Canonical readiness: writable NORMAL sync + NCAAF state precedence + Eastern date comparison
+Sports Big Board v6.1.9 materialized
+Canonical identity/ingestion: ET ownership + alias merge + NCAAF policy-aware validation
+Sports Big Board v6.1.10 materialized
+Canonical run integrity: active-event validation + atomic source batching + staged refresh observability
+Sports Big Board v6.1.11 materialized
+Canonical console: one health roll-up/build + fast initial read + persisted bootstrap summary
+Sports Big Board v6.1.12 materialized
+Media Repair: league/provider -> official team web+YouTube -> generic search
+Team sources: persistent separate SQLite registry; home+away; strict two-participant/date matching
+Sports Big Board v6.1.13 materialized
+Media Repair R23: league/provider -> authoritative team directory -> generic search
+Team identities: persistent league directory cache; no guessed league team slugs
+Sports Big Board v6.1.14 materialized
+R23 team directory: authoritative resolution + bounded ownership context
+HTML anchors bind to nearest team card/heading; JSON URLs bind to nearest object
+Sports Big Board v6.1.15 materialized
+R24 team resolution: persistent due queue, explicit states, immediate team repair requeue
+Resolver cadence: seed-owner only, 2 teams/minute by default under external-source semaphore
+Sports Big Board v6.1.16 Canonical Slate Certification Shadow preflight
+PASS: frontend + backend + database-audit release inputs are synchronized at 6.1.16
+PASS v6.1.16 official schedule watchdog + adapter repair contract
+PASS: v6.1.16 EPL FPL adapter + explicit alias reconciliation + stale state normalization
+PASS v6.1.16 official schedule resiliency + canonical reconciliation + EPL FPL/state follow-up release contract
+PASS: v6.1.16 NFL LIVE continuity + post-collection NCAAF reconciliation + MLB strong-provider identity repair
+PASS: v6.1.16 EPL FPL adapter + explicit alias reconciliation + stale state normalization
+PASS: v6.1.16 release integrity accepts exact startup-registry ownership without weakening backend install checks
+PASS v6.1.16 bounded SQLite backup retention + deploy headroom contract
+PASS v6.1.165 persistent team-resolution queue and upgrade callback
+PASS v6.1.165 team-resolution control-loop release contract
+PASS v6.1.164 team-directory ownership scoping
+PASS team-directory ownership hardening release contract
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+OK
+PASS v6.1.163 authoritative league-directory team source resolver
+PASS authoritative team-directory release contract
+PASS v6.1.162 official team source registry
+PASS v6.1.162 official team-source repair ladder contract
+PASS: v6.1.161 canonical console bootstrap, single health roll-up, and fast first snapshot
+PASS: v6.1.160 canonical live-row filtering, aliases, atomic batching, refresh grace, and worker stages
+PASS: v6.1.16 canonical identity, Eastern ingestion, duplicate repair, and NCAAF policy-aware validation
+PASS: v6.1.16 canonical storage, NCAAF policy, and date ownership repairs
+PASS: v6.1.16 R21 continuous Media Audit release contract
+PASS: v6.1.16 continuous Media Audit + accelerated Repair contract
+PASS: canonical hardening installs before validation and exposes its engine dependency
+PASS: v6.1.16 smoke reliability + frontend cache generation
+PASS v6.1.16 Media Audit recovery invariant
+PASS test_adapter_status_can_rehydrate_from_persisted_source_coverage
+PASS test_console_has_one_click_copy_and_uses_unified_snapshot
+PASS test_copy_report_contains_every_major_diagnostic_section
+PASS test_decision_bones_revoke_certification_for_production_only_event
+PASS test_diagnostic_routes_and_audit_tables_exist
+PASS test_mls_utc_boundary_provenance_is_explicit
+PASS test_release_workflow_uses_v612_materializer_and_smokes_validation_health
+PASS test_source_parses_and_never_claims_production_authority
+PASS: 8/8 v6.1.16 canonical validation diagnostic tests
+Traceback (most recent call last):
+  File "/home/runner/work/sports-big-board/sports-big-board/tests/test_v6116_canonical_cutover_qualification.py", line 242, in <module>
+    main()
+  File "/home/runner/work/sports-big-board/sports-big-board/tests/test_v6116_canonical_cutover_qualification.py", line 236, in main
+    verify_overincluded_blocks_cycle()
+  File "/home/runner/work/sports-big-board/sports-big-board/tests/test_v6116_canonical_cutover_qualification.py", line 172, in verify_overincluded_blocks_cycle
+    assert audit["overIncluded"] == 1, audit
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'total': 1, 'expectedCanonicalAdditions': 1, 'overIncluded': 0, 'clean': True, 'events': [{'classification': 'EXPECTED_CANONICAL_ADDITION', 'date': '2026-09-14', 'league': 'MLB', 'canonicalEventId': 'cev_bad', 'away': 'Away Club', 'home': 'Home Club', 'scheduledAt': '2026-09-14T23:00:00Z', 'inclusionReason': 'ALL_LEAGUE_EVENTS', 'sourceClasses': ['AUTHORITATIVE', 'INDEPENDENT'], 'checks': {'active': True, 'includedByPolicy': True, 'resolvedIdentity': True, 'authoritativeEvidence': True, 'independentEvidence': True, 'dateProvenanceClean': True, 'leagueDayCutoverReady': True}, 'failedChecks': [], 'dateProvenanceFlags': []}]}
+Sports Big Board v6.1.16 materialized
+Canonical schedule: NFL pre/live/final continuity + post-collection NCAAF reconciliation
+Canonical identity: strong MLB IDs + explicit EPL Man Utd/Man City alias reconciliation
+EPL authority: league-operated FPL full-season schedule, fail-closed with official fallback
+Cutover qualification: shadow-only audit + consecutive clean-cycle gate + default-OFF reversible Day Slate authority
+Release integrity: legacy direct installers OR exact startup-registry ownership
+Watchdogs: EPL NFL MLB NBA MLS NHL official pages; NCAAF FBSchedules secondary only
+
+EXIT_CODE=1
