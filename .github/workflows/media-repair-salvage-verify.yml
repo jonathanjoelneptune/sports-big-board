@@ -18,6 +18,15 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v7
+      - name: Bridge intermediate salvage draft
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path=Path('media_audit_service.py')
+          text=path.read_text(encoding='utf-8')
+          text=text.replace('"salvageTransportRefreshes":0,"salvageTransportRecovered":0,', '"salvageTransportRefreshes":0,"salvageTransportRecovered":0,"salvageTransportPersisted":0,')
+          path.write_text(text,encoding='utf-8')
+          PY
       - name: Apply rollout safety correction
         if: ${{ hashFiles('tools/fix_salvage_cooldown_temp.py') != '' }}
         run: python3 tools/fix_salvage_cooldown_temp.py
@@ -33,7 +42,7 @@ jobs:
             git config user.name github-actions[bot]
             git config user.email 41898282+github-actions[bot]@users.noreply.github.com
             git add media_audit_service.py ui/media-audit-v550.js tools/apply_v6116_release.py VERIFY.sh tools/patch_media_repair_salvage_v6116.py tests/test_media_repair_salvage_v6116.py
-            git commit -m "Media Repair: add known-candidate salvage lane"
+            git commit -m "Media Repair: add durable known-candidate salvage lane"
             git push
           fi
       - name: Materialize v6.1.16 release without invoking unrelated full gate yet
