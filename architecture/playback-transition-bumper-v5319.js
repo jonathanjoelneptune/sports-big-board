@@ -10,12 +10,22 @@
    cleared before recovery is attempted, so playback recovery can continue in the
    background while the Big Board remains usable. A launch-level watchdog also
    covers the case where the first playback session is never created at all.
+
+   Context fail-open hardening: editorial CONTEXT programs are real short-form
+   programming, but they are not allowed to become a terminal startup surface. The
+   legacy context adapter marks itself playing while its dwell timer exists. When
+   that timer expires with no next playable item, showAllCaughtUp() pauses the
+   context without clearing its full-stage DOM. Background program refreshes then
+   preserve that dead context as the active object even after playable media
+   arrives. This guard clears the terminal context surface and automatically tunes
+   the first newly-available program without requiring another user gesture.
 */
 (() => {
   'use strict';
   if(window.SBB_TRANSITION_BUMPER_V5319?.installed)return;
   const VERSION='5.5.0';
   let activeSelectionId=0,proofTimer=null,lastShownAt=0,lastRecoveredSelection=0,launchFailOpenTimer=null;
+  let contextGuardTimer=null,contextWaitingSince=0,contextFailOpenCount=0,contextResumeCount=0,wrappedAllCaughtUp=false;
   let overlayTimers=[];
   const clean=v=>String(v??'').trim();
 
@@ -138,6 +148,126 @@
       try{window.dispatchEvent(new CustomEvent('sbb:startup-transition-failopen',{detail:{at:Date.now(),sessionState:clean(session.state)||'none'}}));}catch(_){ }
     },8500);
   }
+
+  function activeContextState(){
+    const slot=activeSlotSafe();
+    let context=false,timer=false;
+    try{context=(typeof slotMedia!=='undefined'&&slotMedia?.[slot]==='context');}catch(_){ }
+    try{timer=(typeof contextTimer!=='undefined'&&!!contextTimer?.[slot]);}catch(_){ }
+    return {slot,context,timer};
+  }
+  function nextProgramIndex(){
+    const current=currentIndexSafe();
+    try{
+      if(typeof nextVisibleQueueIndex==='function'){
+        const idx=Number(nextVisibleQueueIndex());
+        if(Number.isInteger(idx)&&idx>=0&&idx!==current)return idx;
+      }
+    }catch(_){ }
+    try{
+      if(typeof PROGRAM!=='undefined'&&Array.isArray(PROGRAM)&&PROGRAM.length>1){
+        for(let step=1;step<PROGRAM.length;step++){
+          const idx=(current+step)%PROGRAM.length,item=PROGRAM[idx];
+          if(!item)continue;
+          try{if(typeof isGamePlayed==='function'&&isGamePlayed(item))continue;}catch(_){ }
+          // Prefer actual media over another context card when escaping startup.
+          let isContext=false;try{isContext=typeof isContextItem==='function'&&isContextItem(item);}catch(_){ }
+          if(!isContext)return idx;
+        }
+        for(let step=1;step<PROGRAM.length;step++){
+          const idx=(current+step)%PROGRAM.length,item=PROGRAM[idx];
+          if(!item)continue;
+          try{if(typeof isGamePlayed==='function'&&isGamePlayed(item))continue;}catch(_){ }
+          return idx;
+        }
+      }
+    }catch(_){ }
+    return -1;
+  }
+  function logContextFailOpen(event,detail=''){
+    try{fetch(`/api/client-log?event=${encodeURIComponent(event)}&detail=${encodeURIComponent(detail)}`,{cache:'no-store'}).catch(()=>{});}catch(_){ }
+  }
+  function clearTerminalContext(slot,reason='context completed without next program'){
+    clearVisualTransition();
+    try{if(typeof setVideoLoadingOverlay==='function')setVideoLoadingOverlay(false);}catch(_){ }
+    document.getElementById('videoLoadingOverlay')?.classList.add('hidden');
+    let el=null;
+    try{if(typeof contextEl==='function')el=contextEl(slot);}catch(_){ }
+    if(!el)el=document.getElementById(`context${slot}`);
+    el?.classList.add('hidden');
+    document.documentElement.dataset.sbbContextFailOpen='waiting';
+    contextFailOpenCount++;
+    try{if(typeof setPlaybackUi==='function')setPlaybackUi('ready');}catch(_){ }
+    try{if(typeof setFeedNote==='function')setFeedNote('Sports Big Board ready • waiting for the next playable program');}catch(_){ }
+    logContextFailOpen('CONTEXT_FAILOPEN',`${reason}|slot=${slot}|index=${currentIndexSafe()}|title=${clean(clipSafe()?.title).slice(0,120)}`);
+  }
+  function resumeFromTerminalContext(target,slot){
+    if(target<0)return false;
+    contextWaitingSince=0;
+    document.documentElement.dataset.sbbContextFailOpen='resuming';
+    clearVisualTransition();
+    contextResumeCount++;
+    logContextFailOpen('CONTEXT_FAILOPEN_RESUME',`slot=${slot}|from=${currentIndexSafe()}|to=${target}|title=${clean(clipSafe()?.title).slice(0,120)}`);
+    try{
+      if(typeof tuneProgramIndexV5==='function'){
+        Promise.resolve(tuneProgramIndexV5(target,{userInitiated:false,reason:'terminal context playable-media resume'})).catch(()=>{});
+        return true;
+      }
+    }catch(_){ }
+    try{
+      if(typeof manualQueueAdvance==='function')return !!manualQueueAdvance(1);
+    }catch(_){ }
+    return false;
+  }
+  function checkTerminalContext(){
+    if(!experienceStarted()||document.hidden){contextWaitingSince=0;return;}
+    const {slot,context,timer}=activeContextState();
+    if(!context){
+      contextWaitingSince=0;
+      if(document.documentElement.dataset.sbbContextFailOpen==='resuming')delete document.documentElement.dataset.sbbContextFailOpen;
+      return;
+    }
+    if(timer){contextWaitingSince=0;return;}
+    if(!contextWaitingSince)contextWaitingSince=performance.now();
+    const target=nextProgramIndex();
+    if(target>=0){resumeFromTerminalContext(target,slot);return;}
+    // Give advanceAfterCompletedItem()/background merge one paint cycle to resolve
+    // normally. If it cannot, remove the stale full-stage context so the board is
+    // usable while media discovery continues. The guard keeps polling and will
+    // automatically tune a newly-arrived program.
+    if(performance.now()-contextWaitingSince>=650){
+      const marker=document.documentElement.dataset.sbbContextFailOpen;
+      if(marker!=='waiting')clearTerminalContext(slot);
+    }
+  }
+  function armContextGuard(){
+    if(contextGuardTimer)return;
+    contextGuardTimer=setInterval(checkTerminalContext,350);
+  }
+  function wrapAllCaughtUp(){
+    if(wrappedAllCaughtUp)return;
+    let original=null;
+    try{original=typeof showAllCaughtUp==='function'?showAllCaughtUp:null;}catch(_){ }
+    if(!original)return;
+    const wrapped=function(...args){
+      const before=activeContextState();
+      const result=original.apply(this,args);
+      if(before.context&&!before.timer){
+        // Already terminal; the interval will clear/resume it immediately.
+        contextWaitingSince=contextWaitingSince||performance.now()-1000;
+      }else if(before.context){
+        // pauseSlot() inside showAllCaughtUp clears the timer synchronously.
+        contextWaitingSince=performance.now()-1000;
+      }
+      setTimeout(checkTerminalContext,0);
+      return result;
+    };
+    wrapped.__sbbContextFailOpen=true;
+    try{window.showAllCaughtUp=wrapped;}catch(_){ }
+    try{showAllCaughtUp=wrapped;}catch(_){ }
+    wrappedAllCaughtUp=true;
+  }
+
   function onSession(session){
     const state=clean(session?.state).toLowerCase();
     // The splash owns all pre-launch loading. Never start a transition proof loop
@@ -158,12 +288,14 @@
   }
   function bind(){
     try{window.SBB_PLAYBACK_SESSION?.subscribe?.(onSession);}catch(_){ }
+    wrapAllCaughtUp();
+    armContextGuard();
     const launch=document.getElementById('launchPlayBtn');
     if(launch&&launch.dataset.sbbTransitionFailOpen!=='1'){
       launch.dataset.sbbTransitionFailOpen='1';
-      launch.addEventListener('click',armLaunchFailOpen,{capture:true});
+      launch.addEventListener('click',()=>{armLaunchFailOpen();armContextGuard();},{capture:true});
     }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-  window.SBB_TRANSITION_BUMPER_V5319=Object.freeze({installed:true,version:VERSION,snapshot:()=>({activeSelectionId,lastShownAt,lastRecoveredSelection,launchFailOpenArmed:!!launchFailOpenTimer,owned:document.documentElement.dataset.sbbTransitionBumper==='1'})});
+  window.SBB_TRANSITION_BUMPER_V5319=Object.freeze({installed:true,version:VERSION,snapshot:()=>({activeSelectionId,lastShownAt,lastRecoveredSelection,launchFailOpenArmed:!!launchFailOpenTimer,contextGuardArmed:!!contextGuardTimer,contextWaitingSince,contextFailOpenCount,contextResumeCount,contextFailOpenState:document.documentElement.dataset.sbbContextFailOpen||'',owned:document.documentElement.dataset.sbbTransitionBumper==='1'})});
 })();
