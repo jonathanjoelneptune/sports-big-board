@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-14T23:01:38Z",
+  "generatedAt": "2026-09-14T23:31:29Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "bbb6397e616bb8c4797d2052aa19246fded72ef8a50b8b5fdee98dac341cd82c",
+  "sourceCandidateHash": "578fa653513e8dd6e8766cc05cb5b22d99df567e14f1631c276fcaa70a2679df",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T19:27:47Z",
           "timePrecision": "exact",
-          "ageHours": 3.56,
+          "ageHours": 4.06,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -43,41 +43,6 @@
         {
           "rank": 2,
           "candidateIds": [
-            "cand-d3d11f46c8ce3221"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Manny Machado hit a two-run homer and the San Diego Padres ran their winning streak to seven games with a 6-4 victory over the San Francisco Giants on Sunday night.",
-          "text": "Manny Machado hit a two-run homer and the San Diego Padres ran their winning streak to seven games with a 6-4 victory over the San Francisco Giants on Sunday night.",
-          "entities": [],
-          "occurredAt": "2026-09-13T23:20:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.69,
-          "freshnessBasis": "Highlightly final: San Diego Padres 6, San Francisco Giants 4.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816930"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-13",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816930"
-            }
-          ],
-          "id": "a415-4d76d45ce0398193",
-          "feedRank": 2,
-          "compactHeadline": "Machado homers as the Padres beat the Giants 6-4 for 7th straight victory"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
             "cand-e3fbbe3a5305a402"
           ],
           "type": "PLAYOFF",
@@ -87,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T14:09:43Z",
           "timePrecision": "exact",
-          "ageHours": 8.87,
+          "ageHours": 9.36,
           "freshnessBasis": "Brewers or Dodgers? Yankees or Rays? Here's how those in the game view the upcoming playoffs.",
           "status": "active",
           "sourceUrls": [
@@ -101,8 +66,37 @@
             }
           ],
           "id": "a415-5bf40d2bf00c9663",
-          "feedRank": 3,
+          "feedRank": 2,
           "compactHeadline": "MLB execs, insiders on 2026 playoff favorites, biggest threats"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-21d7c06e995102b6"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Pete Alonso said he's grateful for his time as a Met ahead of his return to Citi Field with the Orioles on Monday night.",
+          "text": "Pete Alonso said he's grateful for his time as a Met ahead of his return to Citi Field with the Orioles on Monday night.",
+          "entities": [],
+          "occurredAt": "2026-09-14T23:21:14Z",
+          "timePrecision": "exact",
+          "ageHours": 0.17,
+          "freshnessBasis": "Pete Alonso said he's grateful for his time as a Met ahead of his return to Citi Field with the Orioles on Monday night.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49944188/orioles-pete-alonso-greeted-warmly-return-citi-field"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49944188/orioles-pete-alonso-greeted-warmly-return-citi-field"
+            }
+          ],
+          "id": "a415-ae33dab1096033dd",
+          "feedRank": 3,
+          "compactHeadline": "Orioles' Pete Alonso greeted warmly in return to Citi Field"
         },
         {
           "rank": 4,
@@ -116,7 +110,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T02:35:59Z",
           "timePrecision": "exact",
-          "ageHours": 20.43,
+          "ageHours": 20.93,
           "freshnessBasis": "The ABS challenge system leaderboard ranks batters, catchers, teams and umpires throughout the MLB season.",
           "status": "active",
           "sourceUrls": [
@@ -136,6 +130,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-84505979b58bb9b0"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Manny Machado hit a two-run homer and the San Diego Padres ran their winning streak to seven games with a 6-4 victory over the San Francisco Giants on Sunday night.",
+          "text": "Manny Machado hit a two-run homer and the San Diego Padres ran their winning streak to seven games with a 6-4 victory over the San Francisco Giants on Sunday night.",
+          "entities": [],
+          "occurredAt": "2026-09-14T02:44:30Z",
+          "timePrecision": "exact",
+          "ageHours": 20.78,
+          "freshnessBasis": "— Manny Machado hit a two-run homer and the San Diego Padres ran their winning streak to seven games with a 6-4 victory over the San Francisco Giants on Sunday night.",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/mlb/recap?gameId=401816930"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816930"
+            }
+          ],
+          "id": "a415-c41d98148c327af8",
+          "feedRank": 5,
+          "compactHeadline": "Machado homers as the Padres beat the Giants 6-4 for 7th straight victory"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-0094db888da83523"
           ],
           "type": "NEWS",
@@ -145,7 +168,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T14:52:09Z",
           "timePrecision": "exact",
-          "ageHours": 8.16,
+          "ageHours": 8.66,
           "freshnessBasis": "History or not, Alvarez's offensive campaign stands alone. Here's his status in the MVP race, how his season would rank among Triple Crown winners and more.",
           "status": "active",
           "sourceUrls": [
@@ -159,37 +182,8 @@
             }
           ],
           "id": "a415-04240b738052398a",
-          "feedRank": 5,
-          "compactHeadline": "MLB 2026: Yordan Alvarez's Triple Crown, MVP potential"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-93afe4b990760432"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Vladimir Guerrero Jr. had a solo home run among his four hits, George Springer and Kazuma Okamoto also went deep and the Toronto Blue Jays beat the Baltimore Orioles 8-1 on Sunday.",
-          "text": "Vladimir Guerrero Jr. had a solo home run among his four hits, George Springer and Kazuma Okamoto also went deep and the Toronto Blue Jays beat the Baltimore Orioles 8-1 on Sunday.",
-          "entities": [],
-          "occurredAt": "2026-09-14T01:27:29Z",
-          "timePrecision": "exact",
-          "ageHours": 21.57,
-          "freshnessBasis": "— Vladimir Guerrero Jr. had a solo home run among his four hits, George Springer and Kazuma Okamoto also went deep and the Toronto Blue Jays beat the Baltimore Orioles 8-1 on Sunday.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/mlb/recap?gameId=401816919"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816919"
-            }
-          ],
-          "id": "a415-2ec77d052d7e5a79",
           "feedRank": 6,
-          "compactHeadline": "Guerrero has four hits, including first HR at home, as Blue Jays thump Orioles 8-1"
+          "compactHeadline": "MLB 2026: Yordan Alvarez's Triple Crown, MVP potential"
         }
       ]
     },
@@ -209,7 +203,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T22:31:20Z",
           "timePrecision": "exact",
-          "ageHours": 0.51,
+          "ageHours": 1.0,
           "freshnessBasis": "Exactly 274 days ago, Mahomes, after suffering the most significant injury of his career, vowed to be back for Week 1. Here's how he did it.",
           "status": "active",
           "sourceUrls": [
@@ -238,7 +232,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T22:19:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.71,
+          "ageHours": 1.21,
           "freshnessBasis": "Chargers coach Jim Harbaugh said Monday that wide receiver Ladd McConkey has a rib injury and is considered day-to-day.",
           "status": "active",
           "sourceUrls": [
@@ -267,7 +261,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T21:39:20Z",
           "timePrecision": "exact",
-          "ageHours": 1.37,
+          "ageHours": 1.87,
           "freshnessBasis": "Giants coach John Harbaugh says tackling star receiver Malik Nabers was \"all in fun\" and was an effort to help the wideout move beyond his injury fears.",
           "status": "active",
           "sourceUrls": [
@@ -296,7 +290,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T21:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 1.78,
+          "ageHours": 2.27,
           "freshnessBasis": "Ravens receiver Zay Flowers is considered day-to-day while receiver Ja'Kobi Lane could be out for a longer period with a wrist injury, coach Jesse Minter said.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +319,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T16:38:43Z",
           "timePrecision": "exact",
-          "ageHours": 6.38,
+          "ageHours": 6.88,
           "freshnessBasis": "The Steelers QB, who is entering his 22nd season in the league, is chasing records, and ESPN will be chronicling his \"last rodeo.\"",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +348,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T20:37:47Z",
           "timePrecision": "exact",
-          "ageHours": 2.4,
+          "ageHours": 2.9,
           "freshnessBasis": "Falcons defensive tackle Da'Shawn Hand has a quad injury that will require what is expected to be season-ending surgery.",
           "status": "active",
           "sourceUrls": [
@@ -389,7 +383,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:57:02Z",
           "timePrecision": "exact",
-          "ageHours": 4.08,
+          "ageHours": 4.57,
           "freshnessBasis": "Can Toronto make a run in the East with Kawhi Leonard? Will LA make more moves? Let's grade the Raptors-Clippers trade.",
           "status": "active",
           "sourceUrls": [
@@ -418,7 +412,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T22:44:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.28,
+          "ageHours": 0.78,
           "freshnessBasis": "The Clippers and Raptors have both agreed to complete the blockbuster trade that will send Kawhi Leonard back to Toronto, sources told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +441,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T20:20:45Z",
           "timePrecision": "exact",
-          "ageHours": 2.68,
+          "ageHours": 3.18,
           "freshnessBasis": "Longtime NBA forward Taj Gibson is retiring after 17 seasons in the league and joining the Chicago Bulls coaching staff as an assistant.",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +470,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T12:37:19Z",
           "timePrecision": "exact",
-          "ageHours": 10.41,
+          "ageHours": 10.9,
           "freshnessBasis": "The next steps in the Clippers investigation, league expansion and NBA Europe could all be decided next week.",
           "status": "active",
           "sourceUrls": [
@@ -502,17 +496,17 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-80a0431eb6d9b85d"
+            "cand-4cd2ac8f88a79bd8"
           ],
           "type": "SIGNING",
           "priority": 76,
-          "headline": "The Canadiens have signed head coach Martin St. Louis to a multiyear extension.",
-          "text": "The Canadiens have signed head coach Martin St. Louis to a multiyear extension.",
+          "headline": "It was a busy Monday for the Montreal Canadiens, who signed coach Martin St. Louis to a multiyear extension just before training camp opens, and also introduced veteran forward Chris Kreider, 35, who signed a one-year contract with the club on Saturday.",
+          "text": "It was a busy Monday for the Montreal Canadiens, who signed coach Martin St. Louis to a multiyear extension just before training camp opens, and also introduced veteran forward Chris Kreider, 35, who signed a one-year contract with the club on Saturday.",
           "entities": [],
-          "occurredAt": "2026-09-14T16:33:14Z",
+          "occurredAt": "2026-09-14T23:21:04Z",
           "timePrecision": "exact",
-          "ageHours": 6.47,
-          "freshnessBasis": "The Canadiens have signed head coach Martin St. Louis to a multiyear extension.",
+          "ageHours": 0.17,
+          "freshnessBasis": "It was a busy Monday for the Montreal Canadiens, who signed coach Martin St. Louis to a multiyear extension just before training camp opens, and also introduced veteran forward Chris Kreider, 35, who signed a one-year contract with the club on Saturday.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nhl/story/_/id/49940783/canadiens-sign-coach-martin-st-louis-multiyear-extension"
@@ -524,9 +518,9 @@
               "url": "https://www.espn.com/nhl/story/_/id/49940783/canadiens-sign-coach-martin-st-louis-multiyear-extension"
             }
           ],
-          "id": "a415-2d71079480220840",
+          "id": "a415-7b02a7ccc5b37462",
           "feedRank": 17,
-          "compactHeadline": "Canadiens sign coach Martin St. Louis to multiyear extension"
+          "compactHeadline": "Canadiens sign coach Martin St. Louis, welcome Chris Kreider"
         },
         {
           "rank": 2,
@@ -540,7 +534,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:14:18Z",
           "timePrecision": "exact",
-          "ageHours": 5.79,
+          "ageHours": 6.29,
           "freshnessBasis": "The Sabres are banking on forward Noah Ostlund's potential by signing the 22-year-old to an eight-year, $52.8 million contract, the team announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -569,7 +563,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:32:11Z",
           "timePrecision": "exact",
-          "ageHours": 4.49,
+          "ageHours": 4.99,
           "freshnessBasis": "The NHL's plans to play its first regular-season games in Germany is not welcome news for the German Ice Hockey League, which says the planned games conflict with the schedules of 28 professional clubs there.",
           "status": "active",
           "sourceUrls": [
@@ -598,7 +592,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:11:29Z",
           "timePrecision": "exact",
-          "ageHours": 4.84,
+          "ageHours": 5.33,
           "freshnessBasis": "Avalanche president of hockey operations Joe Sakic will also remain general manager indefinitely with no GM search scheduled, a source told The Associated Press on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -633,7 +627,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.52,
           "freshnessBasis": "Highlightly final: Reading FC U21 3, Blackburn Rovers U21 2.",
           "status": "active",
           "sourceUrls": [
@@ -662,7 +656,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.52,
           "freshnessBasis": "Highlightly final: Liverpool U21 0, West Ham United U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -691,7 +685,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.03,
+          "ageHours": 4.52,
           "freshnessBasis": "Highlightly final: Newcastle United 1, Leeds 4.",
           "status": "active",
           "sourceUrls": [
@@ -726,7 +720,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.52,
           "freshnessBasis": "Highlightly final: Burnley U21 0, Nottingham Forest U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -755,7 +749,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T13:22:33Z",
           "timePrecision": "exact",
-          "ageHours": 9.65,
+          "ageHours": 10.15,
           "freshnessBasis": "Sunday's Manchester derby was fascinating and not just because of the referee/VAR errors. Also: Real Madrid get booed again, and Chelsea should be worried after being bullied by Hull City, as Gab Marcotti recaps the weekend.",
           "status": "active",
           "sourceUrls": [
@@ -784,7 +778,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:35:58Z",
           "timePrecision": "exact",
-          "ageHours": 5.43,
+          "ageHours": 5.93,
           "freshnessBasis": "Arsenal will contact Pro Ref, the body in charge of officiating in English football, over the decision to award Sunderland a penalty in Saturday's Premier League match at the Stadium of Light, a source has told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -819,7 +813,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T01:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.03,
+          "ageHours": 22.52,
           "freshnessBasis": "Highlightly final: Philadelphia Union 5, San Diego 0.",
           "status": "active",
           "sourceUrls": [
@@ -854,7 +848,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T22:00:13Z",
           "timePrecision": "exact",
-          "ageHours": 1.02,
+          "ageHours": 1.52,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -883,7 +877,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T01:41:40Z",
           "timePrecision": "exact",
-          "ageHours": 21.33,
+          "ageHours": 21.83,
           "freshnessBasis": "Dor Turgeman had a first-half goal and a second-half assist, Peyton Miller scored in his 50th MLS start, and the New England Revolution beat the Chicago Fire 2-1 on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -918,7 +912,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T21:21:48Z",
           "timePrecision": "exact",
-          "ageHours": 1.66,
+          "ageHours": 2.16,
           "freshnessBasis": "Washington's injury toll on offense continues to climb as starting wide receiver Christian Moss will miss two to three months with a lower body injury, coach Jedd Fisch announced on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -947,7 +941,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:55:20Z",
           "timePrecision": "exact",
-          "ageHours": 5.11,
+          "ageHours": 5.6,
           "freshnessBasis": "Tennessee Vols TE Ethan Davis will miss the remainder of the season after suffering an ACL injury during Saturday's win over Georgia Tech.",
           "status": "active",
           "sourceUrls": [
@@ -976,7 +970,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:45:19Z",
           "timePrecision": "exact",
-          "ageHours": 5.27,
+          "ageHours": 5.77,
           "freshnessBasis": "UCF starting QB Alonza Barnett III is expected to miss multiple weeks with a hamstring injury, sources tell ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -1005,7 +999,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T19:44:22Z",
           "timePrecision": "exact",
-          "ageHours": 3.29,
+          "ageHours": 3.79,
           "freshnessBasis": "The College Football Playoff's decision to open a 30-day negotiating window with ESPN last week may signal growing interest in a 24-team field, but SEC commissioner Greg Sankey said that expansion is not a foregone conclusion.",
           "status": "active",
           "sourceUrls": [
@@ -1034,7 +1028,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T20:57:39Z",
           "timePrecision": "exact",
-          "ageHours": 2.07,
+          "ageHours": 2.56,
           "freshnessBasis": "One week after an embarrassing loss to Tulsa, OSU snapped the nation's longest losing streak.",
           "status": "active",
           "sourceUrls": [
@@ -1063,7 +1057,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T16:41:23Z",
           "timePrecision": "exact",
-          "ageHours": 6.34,
+          "ageHours": 6.84,
           "freshnessBasis": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -1103,7 +1097,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 113,
+    "freshCandidateCount": 112,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
