@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-15T04:01:37Z",
+  "generatedAt": "2026-09-15T04:31:42Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "a2a26c76779d6d3d0c813d430f40af342e684b094a46ca083da9afeea5a729d5",
+  "sourceCandidateHash": "037e09726f214f0816759437214feead3d73c43cbb6cdab3ec1f71dc0d92e1e6",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
+          "ageHours": 4.86,
           "freshnessBasis": "Highlightly final: Atlanta Braves 3, Chicago Cubs 7.",
           "status": "active",
           "sourceUrls": [
@@ -58,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
+          "ageHours": 4.86,
           "freshnessBasis": "Highlightly final: New York Yankees 8, Minnesota Twins 3.",
           "status": "active",
           "sourceUrls": [
@@ -84,16 +84,51 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-cc62f2ea4f7cea34"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Manny Machado and Fernandez Tatis homered, helping the San Diego Padres beat the Colorado Rockies 8-7 Monday night to match their longest winning streak this season at eight games.",
+          "text": "Manny Machado and Fernandez Tatis homered, helping the San Diego Padres beat the Colorado Rockies 8-7 Monday night to match their longest winning streak this season at eight games.",
+          "entities": [],
+          "occurredAt": "2026-09-15T00:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.86,
+          "freshnessBasis": "Highlightly final: San Diego Padres 8, Colorado Rockies 7.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816940"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-14",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816940"
+            }
+          ],
+          "id": "a415-994dc22f6998ef7d",
+          "feedRank": 3,
+          "compactHeadline": "Padres stretch winning streak to 8, Machado and Tatis homer in 8-7 win over Rockies"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-be78fec6748bdecd"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "White Sox centerfielder Tristan Peters' 18-pitch walk proved the turning point in a 7-3 win over the Guardians on Monday that put Chicago in the driver's seat for the AL Central title.",
-          "text": "White Sox centerfielder Tristan Peters' 18-pitch walk proved the turning point in a 7-3 win over the Guardians on Monday that put Chicago in the driver's seat for the AL Central title.",
+          "headline": "White Sox center fielder Tristan Peters' 18-pitch walk proved the turning point in a 7-3 win over the Guardians on Monday that put Chicago in the driver's seat for the AL Central title.",
+          "text": "White Sox center fielder Tristan Peters' 18-pitch walk proved the turning point in a 7-3 win over the Guardians on Monday that put Chicago in the driver's seat for the AL Central title.",
           "entities": [],
           "occurredAt": "2026-09-14T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.36,
+          "ageHours": 5.86,
           "freshnessBasis": "Highlightly final: Chicago White Sox 7, Cleveland Guardians 3.",
           "status": "active",
           "sourceUrls": [
@@ -119,11 +154,11 @@
             }
           ],
           "id": "a415-96afde35b8bff064",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Peters' 18-pitch walk keys White Sox's win vs. Guardians"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-8ce9828b2d161590"
           ],
@@ -134,7 +169,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T03:20:06Z",
           "timePrecision": "exact",
-          "ageHours": 0.69,
+          "ageHours": 1.19,
           "freshnessBasis": "Aaron Judge hit his first home run since May 24 as the Yankees clinched their record 61st postseason berth and ninth in 10 years Monday night.",
           "status": "active",
           "sourceUrls": [
@@ -148,11 +183,11 @@
             }
           ],
           "id": "a415-29e7c73061942317",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Yankees clinch record 61st postseason berth, 9th in 10 years"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-28a938300dde825b"
           ],
@@ -163,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.36,
+          "ageHours": 5.86,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Cincinnati Reds 1.",
           "status": "active",
           "sourceUrls": [
@@ -189,37 +224,8 @@
             }
           ],
           "id": "a415-0344da257af83f78",
-          "feedRank": 5,
-          "compactHeadline": "Los Angeles Dodgers beat Cincinnati Reds 4-1"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-d79d60a7fc321f07"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Even though Freddie Freeman hasn't been in the lineup for three of the past five games, manager Dave Roberts said putting him on the IL to get him ready for the postseason isn't an option at this point.",
-          "text": "Even though Freddie Freeman hasn't been in the lineup for three of the past five games, manager Dave Roberts said putting him on the IL to get him ready for the postseason isn't an option at this point.",
-          "entities": [],
-          "occurredAt": "2026-09-15T02:40:51Z",
-          "timePrecision": "exact",
-          "ageHours": 1.35,
-          "freshnessBasis": "Even though Freddie Freeman hasn't been in the lineup for three of the past five games, manager Dave Roberts said putting him on the IL to get him ready for the postseason isn't an option at this point.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49945001/dodgers-manager-roberts-expect-il-stint-freeman"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49945001/dodgers-manager-roberts-expect-il-stint-freeman"
-            }
-          ],
-          "id": "a415-76c23bcb328bdbd9",
           "feedRank": 6,
-          "compactHeadline": "Dodgers manager Roberts doesn't expect IL stint for Freeman"
+          "compactHeadline": "Los Angeles Dodgers beat Cincinnati Reds 4-1"
         }
       ]
     },
@@ -234,12 +240,12 @@
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Kenneth Walker III ran for 173 yards and scored two touchdowns in his Chiefs debut, stealing some of the spotlight from Patrick Mahomes and...",
-          "text": "Kenneth Walker III ran for 173 yards and scored two touchdowns in his Chiefs debut, stealing some of the spotlight from Patrick Mahomes and...",
+          "headline": "So many people seemed to be focused on Chiefs quarterback Patrick Mahomes, and how the two-time MVP's surgically repaired left...",
+          "text": "So many people seemed to be focused on Chiefs quarterback Patrick Mahomes, and how the two-time MVP's surgically repaired left...",
           "entities": [],
           "occurredAt": "2026-09-15T00:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.78,
+          "ageHours": 4.28,
           "freshnessBasis": "Highlightly final: Denver Broncos 10, Kansas City Chiefs 31.",
           "status": "active",
           "sourceUrls": [
@@ -274,7 +280,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T03:31:00Z",
           "timePrecision": "exact",
-          "ageHours": 0.51,
+          "ageHours": 1.01,
           "freshnessBasis": "Travis Kelce reached another milestone Monday night against the Broncos, passing Jason Witten to move into second all time in receiving yards for a tight end.",
           "status": "active",
           "sourceUrls": [
@@ -294,6 +300,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-e74aa607b16edff9"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "On Dec. 14, Mahomes, after suffering the most significant injury of his career, vowed to be back for Week 1. Here's how he did it.",
+          "text": "On Dec. 14, Mahomes, after suffering the most significant injury of his career, vowed to be back for Week 1. Here's how he did it.",
+          "entities": [],
+          "occurredAt": "2026-09-15T04:29:49Z",
+          "timePrecision": "exact",
+          "ageHours": 0.03,
+          "freshnessBasis": "On Dec. 14, Mahomes, after suffering the most significant injury of his career, vowed to be back for Week 1. Here's how he did it.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49894461/patrick-mahomes-chiefs-return-knee-injury-nfl-week-1"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49894461/patrick-mahomes-chiefs-return-knee-injury-nfl-week-1"
+            }
+          ],
+          "id": "a415-fa7c7e0c1f554d06",
+          "feedRank": 9,
+          "compactHeadline": "Inside Patrick Mahomes' remarkable return from knee injury"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-6cbac6dc9a9b5c66"
           ],
           "type": "INJURY",
@@ -303,7 +338,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T01:29:36Z",
           "timePrecision": "exact",
-          "ageHours": 2.53,
+          "ageHours": 3.04,
           "freshnessBasis": "Seahawks QB Sam Darnold is dealing with what the team described as a \"very unique soft-tissue\" injury that is not expected to sideline him long term.",
           "status": "active",
           "sourceUrls": [
@@ -317,11 +352,11 @@
             }
           ],
           "id": "a415-314d501dc9a9f93b",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "Seahawks say Sam Darnold has 'unique soft-tissue' injury"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-cffb4c6d9f53ff29"
           ],
@@ -332,7 +367,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T00:17:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.74,
+          "ageHours": 4.24,
           "freshnessBasis": "The Eagles are placing left guard Landon Dickerson on injured reserve because of a knee injury, a source told ESPN's Adam Schefter, meaning he will miss at least the next four games.",
           "status": "active",
           "sourceUrls": [
@@ -346,11 +381,11 @@
             }
           ],
           "id": "a415-302d55040de78635",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Eagles placing LG Landon Dickerson (knee) on injured reserve"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-edd9e6fe9c1852ef"
           ],
@@ -361,7 +396,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T22:19:10Z",
           "timePrecision": "exact",
-          "ageHours": 5.71,
+          "ageHours": 6.21,
           "freshnessBasis": "Chargers coach Jim Harbaugh said Monday that wide receiver Ladd McConkey has a rib injury and is considered day-to-day.",
           "status": "active",
           "sourceUrls": [
@@ -375,37 +410,8 @@
             }
           ],
           "id": "a415-5c5b95542c7c495d",
-          "feedRank": 11,
-          "compactHeadline": "Chargers WR Ladd McConkey day-to-day with rib injury"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-121f3e571524494a"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Giants coach John Harbaugh says tackling star receiver Malik Nabers was \"all in fun\" and was an effort to help the wideout move beyond his injury fears.",
-          "text": "Giants coach John Harbaugh says tackling star receiver Malik Nabers was \"all in fun\" and was an effort to help the wideout move beyond his injury fears.",
-          "entities": [],
-          "occurredAt": "2026-09-14T21:39:20Z",
-          "timePrecision": "exact",
-          "ageHours": 6.37,
-          "freshnessBasis": "Giants coach John Harbaugh says tackling star receiver Malik Nabers was \"all in fun\" and was an effort to help the wideout move beyond his injury fears.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49943099/giants-harbaugh-tackled-nabers-relax-wideout-injury-fears"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49943099/giants-harbaugh-tackled-nabers-relax-wideout-injury-fears"
-            }
-          ],
-          "id": "a415-2b02aff12864b29a",
           "feedRank": 12,
-          "compactHeadline": "Giants' Harbaugh admits tackling Nabers to relax WR's injury fears"
+          "compactHeadline": "Chargers WR Ladd McConkey day-to-day with rib injury"
         }
       ]
     },
@@ -425,7 +431,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T02:02:59Z",
           "timePrecision": "exact",
-          "ageHours": 1.98,
+          "ageHours": 2.48,
           "freshnessBasis": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
           "status": "active",
           "sourceUrls": [
@@ -454,7 +460,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:57:02Z",
           "timePrecision": "exact",
-          "ageHours": 9.08,
+          "ageHours": 9.58,
           "freshnessBasis": "Can Toronto make a run in the East with Kawhi Leonard? Will LA make more moves? Let's grade the Raptors-Clippers trade.",
           "status": "active",
           "sourceUrls": [
@@ -483,7 +489,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T20:20:45Z",
           "timePrecision": "exact",
-          "ageHours": 7.68,
+          "ageHours": 8.18,
           "freshnessBasis": "Longtime NBA forward Taj Gibson is retiring after 17 seasons in the league and joining the Chicago Bulls coaching staff as an assistant.",
           "status": "active",
           "sourceUrls": [
@@ -512,7 +518,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T12:37:19Z",
           "timePrecision": "exact",
-          "ageHours": 15.41,
+          "ageHours": 15.91,
           "freshnessBasis": "The next steps in the Clippers investigation, league expansion and NBA Europe could all be decided next week.",
           "status": "active",
           "sourceUrls": [
@@ -528,35 +534,6 @@
           "id": "a415-fee7fec126459971",
           "feedRank": 16,
           "compactHeadline": "NBA intel: What to expect at next week's owners' meetings"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-cf3ee103ec9dfc1d"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "LA Clippers owner Steve Ballmer says he is complying with the NBA's punishments of the franchise and will not pursue any legal action.",
-          "text": "LA Clippers owner Steve Ballmer says he is complying with the NBA's punishments of the franchise and will not pursue any legal action.",
-          "entities": [],
-          "occurredAt": "2026-09-14T11:57:59Z",
-          "timePrecision": "exact",
-          "ageHours": 16.06,
-          "freshnessBasis": "LA Clippers owner Steve Ballmer says he is complying with the NBA's punishments of the franchise and will not pursue any legal action.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/49936660/clippers-ballmer-comply-nba-seek-legal-action"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/49936660/clippers-ballmer-comply-nba-seek-legal-action"
-            }
-          ],
-          "id": "a415-41b471e834c9556d",
-          "feedRank": 17,
-          "compactHeadline": "Ballmer to accept NBA's punishment, has 'sincere regrets'"
         }
       ]
     },
@@ -576,7 +553,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T23:21:04Z",
           "timePrecision": "exact",
-          "ageHours": 4.68,
+          "ageHours": 5.18,
           "freshnessBasis": "It was a busy Monday for the Montreal Canadiens, who signed coach Martin St. Louis to a multiyear extension just before training camp opens, and also introduced veteran forward Chris Kreider, 35, who signed a one-year contract with the club on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -590,7 +567,7 @@
             }
           ],
           "id": "a415-7b02a7ccc5b37462",
-          "feedRank": 18,
+          "feedRank": 17,
           "compactHeadline": "Canadiens sign coach Martin St. Louis, welcome Chris Kreider"
         },
         {
@@ -605,7 +582,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:14:18Z",
           "timePrecision": "exact",
-          "ageHours": 10.79,
+          "ageHours": 11.29,
           "freshnessBasis": "The Sabres are banking on forward Noah Ostlund's potential by signing the 22-year-old to an eight-year, $52.8 million contract, the team announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -619,7 +596,7 @@
             }
           ],
           "id": "a415-7c1271dd1942e667",
-          "feedRank": 19,
+          "feedRank": 18,
           "compactHeadline": "Sabres sign forward Noah Ostlund to 8-year, $52.8M contract"
         },
         {
@@ -634,7 +611,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:32:11Z",
           "timePrecision": "exact",
-          "ageHours": 9.49,
+          "ageHours": 9.99,
           "freshnessBasis": "The NHL's plans to play its first regular-season games in Germany is not welcome news for the German Ice Hockey League, which says the planned games conflict with the schedules of 28 professional clubs there.",
           "status": "active",
           "sourceUrls": [
@@ -648,7 +625,7 @@
             }
           ],
           "id": "a415-a7dfe9b26430f8ec",
-          "feedRank": 20,
+          "feedRank": 19,
           "compactHeadline": "German hockey league unhappy about NHL plans for games there"
         },
         {
@@ -663,7 +640,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:11:29Z",
           "timePrecision": "exact",
-          "ageHours": 9.84,
+          "ageHours": 10.34,
           "freshnessBasis": "Avalanche president of hockey operations Joe Sakic will also remain general manager indefinitely with no GM search scheduled, a source told The Associated Press on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -677,7 +654,7 @@
             }
           ],
           "id": "a415-7ab6862e092ffa34",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Source: Avalanche's Joe Sakic to stay on as GM indefinitely"
         }
       ]
@@ -698,7 +675,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 10.03,
+          "ageHours": 10.53,
           "freshnessBasis": "Highlightly final: Reading FC U21 3, Blackburn Rovers U21 2.",
           "status": "active",
           "sourceUrls": [
@@ -712,7 +689,7 @@
             }
           ],
           "id": "a415-9481d3883a1e1cf0",
-          "feedRank": 22,
+          "feedRank": 21,
           "compactHeadline": "Late goal lifts Reading FC U21 beat Blackburn Rovers U21 3-2"
         },
         {
@@ -727,7 +704,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 10.03,
+          "ageHours": 10.53,
           "freshnessBasis": "Highlightly final: Liverpool U21 0, West Ham United U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -741,7 +718,7 @@
             }
           ],
           "id": "a415-db14eed5e410502e",
-          "feedRank": 23,
+          "feedRank": 22,
           "compactHeadline": "Late goal lifts West Ham United U21 beat Liverpool U21 1-0"
         },
         {
@@ -756,7 +733,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.03,
+          "ageHours": 9.53,
           "freshnessBasis": "Highlightly final: Newcastle United 1, Leeds 4.",
           "status": "active",
           "sourceUrls": [
@@ -776,7 +753,7 @@
             }
           ],
           "id": "a415-16c8c0c19fc34e88",
-          "feedRank": 24,
+          "feedRank": 23,
           "compactHeadline": "Unbeaten Leeds cruise past Newcastle 4-1 in Premier League clash"
         },
         {
@@ -791,7 +768,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 10.03,
+          "ageHours": 10.53,
           "freshnessBasis": "Highlightly final: Burnley U21 0, Nottingham Forest U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -805,7 +782,7 @@
             }
           ],
           "id": "a415-56f61343d019e60b",
-          "feedRank": 25,
+          "feedRank": 24,
           "compactHeadline": "Nottingham Forest U21 beat Burnley U21 1-0"
         },
         {
@@ -820,7 +797,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T13:22:33Z",
           "timePrecision": "exact",
-          "ageHours": 14.65,
+          "ageHours": 15.15,
           "freshnessBasis": "Sunday's Manchester derby was fascinating and not just because of the referee/VAR errors. Also: Real Madrid get booed again, and Chelsea should be worried after being bullied by Hull City, as Gab Marcotti recaps the weekend.",
           "status": "active",
           "sourceUrls": [
@@ -834,7 +811,7 @@
             }
           ],
           "id": "a415-ab3ce5f465cfeb70",
-          "feedRank": 26,
+          "feedRank": 25,
           "compactHeadline": "Manchester derby defined by VAR drama; Real Madrid booed; Chelsea bullied by Hull"
         },
         {
@@ -849,7 +826,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:35:58Z",
           "timePrecision": "exact",
-          "ageHours": 10.43,
+          "ageHours": 10.93,
           "freshnessBasis": "Arsenal will contact Pro Ref, the body in charge of officiating in English football, over the decision to award Sunderland a penalty in Saturday's Premier League match at the Stadium of Light, a source has told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -863,7 +840,7 @@
             }
           ],
           "id": "a415-f5781f7c998a7fa8",
-          "feedRank": 27,
+          "feedRank": 26,
           "compactHeadline": "Arsenal to contact Pro Ref over Sunderland penalty incident - source"
         }
       ]
@@ -884,7 +861,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:16:14Z",
           "timePrecision": "exact",
-          "ageHours": 10.76,
+          "ageHours": 11.26,
           "freshnessBasis": "Cavan Sullivan recorded his first two-goal game in MLS and assisted on another goal to help the Philadelphia Union cruise to a 5-0 victory over San Diego on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -898,11 +875,40 @@
             }
           ],
           "id": "a415-1962aa7de3dc75f6",
-          "feedRank": 28,
+          "feedRank": 27,
           "compactHeadline": "Cavan Sullivan records first 2-goal game as Union crush San Diego"
         },
         {
           "rank": 2,
+          "candidateIds": [
+            "cand-1759ffbdf0325f25"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Inter Miami midfielder Alexander Shaw has been contacted by Colombia after playing for the United States U-20 team in the 2026 Concacaf tournament, a source confirmed to ESPN.",
+          "text": "Inter Miami midfielder Alexander Shaw has been contacted by Colombia after playing for the United States U-20 team in the 2026 Concacaf tournament, a source confirmed to ESPN.",
+          "entities": [],
+          "occurredAt": "2026-09-15T04:01:39Z",
+          "timePrecision": "exact",
+          "ageHours": 0.5,
+          "freshnessBasis": "Inter Miami midfielder Alexander Shaw has been contacted by Colombia after playing for the United States U-20 team in the 2026 Concacaf tournament, a source confirmed to ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49946575/source-colombia-united-state-battling-inter-miami-20-dual-national-alexander-shaw"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/49946575/source-colombia-united-state-battling-inter-miami-20-dual-national-alexander-shaw"
+            }
+          ],
+          "id": "a415-7d7f8def8421a941",
+          "feedRank": 28,
+          "compactHeadline": "Source: Colombia, U.S. battling for Inter Miami U20 dual national Alexander Shaw"
+        },
+        {
+          "rank": 3,
           "candidateIds": [
             "cand-e0d7b53d44cb4cd7"
           ],
@@ -913,7 +919,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T22:00:13Z",
           "timePrecision": "exact",
-          "ageHours": 6.02,
+          "ageHours": 6.52,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -946,9 +952,9 @@
           "headline": "Ducks coach Dan Lanning said Monday that the loss to the unranked Cowboys was \"by far the worst performance that we've had since I've been here.\"",
           "text": "Ducks coach Dan Lanning said Monday that the loss to the unranked Cowboys was \"by far the worst performance that we've had since I've been here.\"",
           "entities": [],
-          "occurredAt": "2026-09-15T03:48:59Z",
+          "occurredAt": "2026-09-15T04:30:14Z",
           "timePrecision": "exact",
-          "ageHours": 0.21,
+          "ageHours": 0.02,
           "freshnessBasis": "Ducks coach Dan Lanning said Monday that the loss to the unranked Cowboys was \"by far the worst performance that we've had since I've been here.\"",
           "status": "active",
           "sourceUrls": [
@@ -977,7 +983,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T21:21:48Z",
           "timePrecision": "exact",
-          "ageHours": 6.66,
+          "ageHours": 7.17,
           "freshnessBasis": "Washington's injury toll on offense continues to climb as starting wide receiver Christian Moss will miss two to three months with a lower body injury, coach Jedd Fisch announced on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -1006,7 +1012,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:55:20Z",
           "timePrecision": "exact",
-          "ageHours": 10.1,
+          "ageHours": 10.61,
           "freshnessBasis": "Tennessee Vols TE Ethan Davis will miss the remainder of the season after suffering an ACL injury during Saturday's win over Georgia Tech.",
           "status": "active",
           "sourceUrls": [
@@ -1035,7 +1041,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:45:19Z",
           "timePrecision": "exact",
-          "ageHours": 10.27,
+          "ageHours": 10.77,
           "freshnessBasis": "UCF starting QB Alonza Barnett III is expected to miss multiple weeks with a hamstring injury, sources tell ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -1064,7 +1070,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T19:44:22Z",
           "timePrecision": "exact",
-          "ageHours": 8.29,
+          "ageHours": 8.79,
           "freshnessBasis": "The College Football Playoff's decision to open a 30-day negotiating window with ESPN last week may signal growing interest in a 24-team field, but SEC commissioner Greg Sankey said that expansion is not a foregone conclusion.",
           "status": "active",
           "sourceUrls": [
@@ -1093,7 +1099,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T20:57:39Z",
           "timePrecision": "exact",
-          "ageHours": 7.07,
+          "ageHours": 7.57,
           "freshnessBasis": "One week after an embarrassing loss to Tulsa, OSU snapped the nation's longest losing streak.",
           "status": "active",
           "sourceUrls": [
@@ -1133,7 +1139,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 113,
+    "freshCandidateCount": 114,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
