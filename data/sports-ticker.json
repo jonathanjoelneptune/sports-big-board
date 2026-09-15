@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-15T02:01:36Z",
+  "generatedAt": "2026-09-15T02:31:35Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "23f1a730d0f8609329f747b3ee7208016f8f36674220f75eb8f28e5f37a8d357",
+  "sourceCandidateHash": "4b7d8f8ce7eab27ec5d5beaff8b6c2ba10126dbb60cf37e0806b2efd25fd6169",
   "leagues": [
     {
       "league": "MLB",
@@ -14,20 +14,56 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-28a938300dde825b"
+            "cand-be78fec6748bdecd"
           ],
           "type": "RESULT",
-          "priority": 71,
-          "headline": "The Los Angeles Dodgers clinched their 14th consecutive playoff berth with a 4-1 win over the Cincinnati Reds on Monday night behind Tarik Skubal's seven shutout innings and home runs by Kyle Tucker and Teoscar Hernández.",
-          "text": "The Los Angeles Dodgers clinched their 14th consecutive playoff berth with a 4-1 win over the Cincinnati Reds on Monday night behind Tarik Skubal's seven shutout innings and home runs by Kyle Tucker and Teoscar Hernández.",
+          "priority": 70,
+          "headline": "Tristan Peters fouled off 12 pitches in an 18-pitch plate appearance that keyed Chicago's six-run outburst in the sixth inning and the White Sox beat the Cleveland Guardians 7-3 on Monday night to stay atop the AL Central.",
+          "text": "Tristan Peters fouled off 12 pitches in an 18-pitch plate appearance that keyed Chicago's six-run outburst in the sixth inning and the White Sox beat the Cleveland Guardians 7-3 on Monday night to stay atop the AL Central.",
           "entities": [],
           "occurredAt": "2026-09-14T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.36,
+          "ageHours": 3.86,
+          "freshnessBasis": "Highlightly final: Chicago White Sox 7, Cleveland Guardians 3.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816934"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-14",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816934"
+            }
+          ],
+          "id": "a415-96afde35b8bff064",
+          "feedRank": 1,
+          "compactHeadline": "Peters draws key walk after 18-pitch plate appearance, White Sox down Guardians 7-3"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-28a938300dde825b"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "The Los Angeles Dodgers clinched their 14th consecutive playoff berth with a 4-1 victory over the Cincinnati Reds at Great American Ball Park on Monday night behind Tarik Skubal's seven shutout innings and home runs by Kyle Tucker and Teoscar Hernandez.",
+          "text": "The Los Angeles Dodgers clinched their 14th consecutive playoff berth with a 4-1 victory over the Cincinnati Reds at Great American Ball Park on Monday night behind Tarik Skubal's seven shutout innings and home runs by Kyle Tucker and Teoscar Hernandez.",
+          "entities": [],
+          "occurredAt": "2026-09-14T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.86,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Cincinnati Reds 1.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/49945547/los-angeles-dodgers-secure-14th-consecutive-playoff-berth",
             "http://www.espn.com/mlb/recap?gameId=401816936"
           ],
           "sources": [
@@ -39,41 +75,17 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49945547/los-angeles-dodgers-secure-14th-consecutive-playoff-berth"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401816936"
             }
           ],
           "id": "a415-0344da257af83f78",
-          "feedRank": 1,
-          "compactHeadline": "Dodgers clinch 14th straight playoff berth behind Skubal's 7 scoreless innings in 4-1 win over Reds"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-d79d60a7fc321f07"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Even though Freddie Freeman hasn't been in the lineup for three of the past five games, manager Dave Roberts said putting him on the IL to get him ready for the postseason isn't an option at this point.",
-          "text": "Even though Freddie Freeman hasn't been in the lineup for three of the past five games, manager Dave Roberts said putting him on the IL to get him ready for the postseason isn't an option at this point.",
-          "entities": [],
-          "occurredAt": "2026-09-15T01:54:24Z",
-          "timePrecision": "exact",
-          "ageHours": 0.12,
-          "freshnessBasis": "Even though Freddie Freeman hasn't been in the lineup for three of the past five games, manager Dave Roberts said putting him on the IL to get him ready for the postseason isn't an option at this point.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49945001/dodgers-manager-roberts-expect-il-stint-freeman"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49945001/dodgers-manager-roberts-expect-il-stint-freeman"
-            }
-          ],
-          "id": "a415-76c23bcb328bdbd9",
           "feedRank": 2,
-          "compactHeadline": "Dodgers manager Roberts doesn't expect IL stint for Freeman"
+          "compactHeadline": "Los Angeles Dodgers beat Cincinnati Reds 4-1"
         },
         {
           "rank": 3,
@@ -85,9 +97,9 @@
           "headline": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "text": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "entities": [],
-          "occurredAt": "2026-09-15T00:58:22Z",
+          "occurredAt": "2026-09-15T02:15:48Z",
           "timePrecision": "exact",
-          "ageHours": 1.05,
+          "ageHours": 0.26,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -107,17 +119,46 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-be78fec6748bdecd"
+            "cand-d79d60a7fc321f07"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "Even though Freddie Freeman hasn't been in the lineup for three of the past five games, manager Dave Roberts said putting him on the IL to get him ready for the postseason isn't an option at this point.",
+          "text": "Even though Freddie Freeman hasn't been in the lineup for three of the past five games, manager Dave Roberts said putting him on the IL to get him ready for the postseason isn't an option at this point.",
+          "entities": [],
+          "occurredAt": "2026-09-15T01:54:24Z",
+          "timePrecision": "exact",
+          "ageHours": 0.62,
+          "freshnessBasis": "Even though Freddie Freeman hasn't been in the lineup for three of the past five games, manager Dave Roberts said putting him on the IL to get him ready for the postseason isn't an option at this point.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49945001/dodgers-manager-roberts-expect-il-stint-freeman"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49945001/dodgers-manager-roberts-expect-il-stint-freeman"
+            }
+          ],
+          "id": "a415-76c23bcb328bdbd9",
+          "feedRank": 4,
+          "compactHeadline": "Dodgers manager Roberts doesn't expect IL stint for Freeman"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-bb9cc8f105f48254"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Highlightly final: Chicago White Sox 7, Cleveland Guardians 3.",
-          "text": "Highlightly final: Chicago White Sox 7, Cleveland Guardians 3.",
+          "headline": "Highlightly final: Atlanta Braves 3, Chicago Cubs 7.",
+          "text": "Highlightly final: Atlanta Braves 3, Chicago Cubs 7.",
           "entities": [],
-          "occurredAt": "2026-09-14T22:40:00Z",
+          "occurredAt": "2026-09-14T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.36,
-          "freshnessBasis": "Highlightly final: Chicago White Sox 7, Cleveland Guardians 3.",
+          "ageHours": 2.86,
+          "freshnessBasis": "Highlightly final: Atlanta Braves 3, Chicago Cubs 7.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -129,67 +170,38 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-96afde35b8bff064",
-          "feedRank": 4,
-          "compactHeadline": "Chicago White Sox beat Cleveland Guardians 7-3"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-e3fbbe3a5305a402"
-          ],
-          "type": "PLAYOFF",
-          "priority": 76,
-          "headline": "Brewers or Dodgers? Yankees or Rays? Here's how those in the game view the upcoming playoffs.",
-          "text": "Brewers or Dodgers? Yankees or Rays? Here's how those in the game view the upcoming playoffs.",
-          "entities": [],
-          "occurredAt": "2026-09-14T14:09:43Z",
-          "timePrecision": "exact",
-          "ageHours": 11.86,
-          "freshnessBasis": "Brewers or Dodgers? Yankees or Rays? Here's how those in the game view the upcoming playoffs.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49931681/mlb-2026-playoffs-execs-insiders-favorite-team-beat-predictions-biggest-threats"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49931681/mlb-2026-playoffs-execs-insiders-favorite-team-beat-predictions-biggest-threats"
-            }
-          ],
-          "id": "a415-5bf40d2bf00c9663",
+          "id": "a415-f5b1268a8eb81008",
           "feedRank": 5,
-          "compactHeadline": "MLB execs, insiders on 2026 playoff favorites, biggest threats"
+          "compactHeadline": "Chicago Cubs beat Atlanta Braves 7-3"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-21d7c06e995102b6"
+            "cand-b67d1ebee3120e27"
           ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Pete Alonso said he's grateful for his time as a Met ahead of his return to Citi Field with the Orioles on Monday night.",
-          "text": "Pete Alonso said he's grateful for his time as a Met ahead of his return to Citi Field with the Orioles on Monday night.",
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Baltimore Orioles 2, New York Mets 1.",
+          "text": "Highlightly final: Baltimore Orioles 2, New York Mets 1.",
           "entities": [],
-          "occurredAt": "2026-09-14T23:21:14Z",
+          "occurredAt": "2026-09-14T23:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.67,
-          "freshnessBasis": "Pete Alonso said he's grateful for his time as a Met ahead of his return to Citi Field with the Orioles on Monday night.",
+          "ageHours": 3.36,
+          "freshnessBasis": "Highlightly final: Baltimore Orioles 2, New York Mets 1.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49944188/orioles-pete-alonso-greeted-warmly-return-citi-field"
+            "https://highlightly.net"
           ],
           "sources": [
             {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49944188/orioles-pete-alonso-greeted-warmly-return-citi-field"
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-14",
+              "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-ae33dab1096033dd",
+          "id": "a415-5de2cec46c020fe8",
           "feedRank": 6,
-          "compactHeadline": "Orioles' Pete Alonso greeted warmly in return to Citi Field"
+          "compactHeadline": "Baltimore Orioles beat New York Mets 2-1"
         }
       ]
     },
@@ -209,7 +221,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T01:29:36Z",
           "timePrecision": "exact",
-          "ageHours": 0.53,
+          "ageHours": 1.03,
           "freshnessBasis": "Seahawks QB Sam Darnold is dealing with what the team described as a \"very unique soft-tissue\" injury that is not expected to sideline him long term.",
           "status": "active",
           "sourceUrls": [
@@ -238,7 +250,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T00:17:10Z",
           "timePrecision": "exact",
-          "ageHours": 1.74,
+          "ageHours": 2.24,
           "freshnessBasis": "The Eagles are placing left guard Landon Dickerson on injured reserve because of a knee injury, a source told ESPN's Adam Schefter, meaning he will miss at least the next four games.",
           "status": "active",
           "sourceUrls": [
@@ -267,7 +279,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T22:19:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.71,
+          "ageHours": 4.21,
           "freshnessBasis": "Chargers coach Jim Harbaugh said Monday that wide receiver Ladd McConkey has a rib injury and is considered day-to-day.",
           "status": "active",
           "sourceUrls": [
@@ -296,7 +308,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T21:39:20Z",
           "timePrecision": "exact",
-          "ageHours": 4.37,
+          "ageHours": 4.87,
           "freshnessBasis": "Giants coach John Harbaugh says tackling star receiver Malik Nabers was \"all in fun\" and was an effort to help the wideout move beyond his injury fears.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +337,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T21:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.78,
+          "ageHours": 5.28,
           "freshnessBasis": "Ravens receiver Zay Flowers is considered day-to-day while receiver Ja'Kobi Lane could be out for a longer period with a wrist injury, coach Jesse Minter said.",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +366,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T16:38:43Z",
           "timePrecision": "exact",
-          "ageHours": 9.38,
+          "ageHours": 9.88,
           "freshnessBasis": "The Steelers QB, who is entering his 22nd season in the league, is chasing records, and ESPN will be chronicling his \"last rodeo.\"",
           "status": "active",
           "sourceUrls": [
@@ -384,13 +396,13 @@
           ],
           "type": "TRADE",
           "priority": 78,
-          "headline": "The trade sending Kawhi Leonard from L.A. to Toronto is now official after a months-long delay due to the investigation into the Clippers.",
-          "text": "The trade sending Kawhi Leonard from L.A. to Toronto is now official after a months-long delay due to the investigation into the Clippers.",
+          "headline": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
+          "text": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
           "entities": [],
-          "occurredAt": "2026-09-15T01:34:02Z",
+          "occurredAt": "2026-09-15T02:02:59Z",
           "timePrecision": "exact",
-          "ageHours": 0.46,
-          "freshnessBasis": "The trade sending Kawhi Leonard from L.A. to Toronto is now official after a months-long delay due to the investigation into the Clippers.",
+          "ageHours": 0.48,
+          "freshnessBasis": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49941983/clippers-raptors-complete-kawhi-leonard-trade-sources-say"
@@ -418,7 +430,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:57:02Z",
           "timePrecision": "exact",
-          "ageHours": 7.08,
+          "ageHours": 7.58,
           "freshnessBasis": "Can Toronto make a run in the East with Kawhi Leonard? Will LA make more moves? Let's grade the Raptors-Clippers trade.",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +459,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T20:20:45Z",
           "timePrecision": "exact",
-          "ageHours": 5.68,
+          "ageHours": 6.18,
           "freshnessBasis": "Longtime NBA forward Taj Gibson is retiring after 17 seasons in the league and joining the Chicago Bulls coaching staff as an assistant.",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +488,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T12:37:19Z",
           "timePrecision": "exact",
-          "ageHours": 13.4,
+          "ageHours": 13.9,
           "freshnessBasis": "The next steps in the Clippers investigation, league expansion and NBA Europe could all be decided next week.",
           "status": "active",
           "sourceUrls": [
@@ -505,7 +517,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T11:57:59Z",
           "timePrecision": "exact",
-          "ageHours": 14.06,
+          "ageHours": 14.56,
           "freshnessBasis": "LA Clippers owner Steve Ballmer says he is complying with the NBA's punishments of the franchise and will not pursue any legal action.",
           "status": "active",
           "sourceUrls": [
@@ -540,7 +552,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T23:21:04Z",
           "timePrecision": "exact",
-          "ageHours": 2.68,
+          "ageHours": 3.18,
           "freshnessBasis": "It was a busy Monday for the Montreal Canadiens, who signed coach Martin St. Louis to a multiyear extension just before training camp opens, and also introduced veteran forward Chris Kreider, 35, who signed a one-year contract with the club on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -569,7 +581,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:14:18Z",
           "timePrecision": "exact",
-          "ageHours": 8.79,
+          "ageHours": 9.29,
           "freshnessBasis": "The Sabres are banking on forward Noah Ostlund's potential by signing the 22-year-old to an eight-year, $52.8 million contract, the team announced Monday.",
           "status": "active",
           "sourceUrls": [
@@ -598,7 +610,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:32:11Z",
           "timePrecision": "exact",
-          "ageHours": 7.49,
+          "ageHours": 7.99,
           "freshnessBasis": "The NHL's plans to play its first regular-season games in Germany is not welcome news for the German Ice Hockey League, which says the planned games conflict with the schedules of 28 professional clubs there.",
           "status": "active",
           "sourceUrls": [
@@ -627,7 +639,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:11:29Z",
           "timePrecision": "exact",
-          "ageHours": 7.84,
+          "ageHours": 8.34,
           "freshnessBasis": "Avalanche president of hockey operations Joe Sakic will also remain general manager indefinitely with no GM search scheduled, a source told The Associated Press on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -662,7 +674,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.03,
+          "ageHours": 8.53,
           "freshnessBasis": "Highlightly final: Reading FC U21 3, Blackburn Rovers U21 2.",
           "status": "active",
           "sourceUrls": [
@@ -691,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.03,
+          "ageHours": 8.53,
           "freshnessBasis": "Highlightly final: Liverpool U21 0, West Ham United U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -720,7 +732,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T19:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.03,
+          "ageHours": 7.53,
           "freshnessBasis": "Highlightly final: Newcastle United 1, Leeds 4.",
           "status": "active",
           "sourceUrls": [
@@ -755,7 +767,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.03,
+          "ageHours": 8.53,
           "freshnessBasis": "Highlightly final: Burnley U21 0, Nottingham Forest U21 1.",
           "status": "active",
           "sourceUrls": [
@@ -784,7 +796,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T13:22:33Z",
           "timePrecision": "exact",
-          "ageHours": 12.65,
+          "ageHours": 13.15,
           "freshnessBasis": "Sunday's Manchester derby was fascinating and not just because of the referee/VAR errors. Also: Real Madrid get booed again, and Chelsea should be worried after being bullied by Hull City, as Gab Marcotti recaps the weekend.",
           "status": "active",
           "sourceUrls": [
@@ -813,7 +825,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:35:58Z",
           "timePrecision": "exact",
-          "ageHours": 8.43,
+          "ageHours": 8.93,
           "freshnessBasis": "Arsenal will contact Pro Ref, the body in charge of officiating in English football, over the decision to award Sunderland a penalty in Saturday's Premier League match at the Stadium of Light, a source has told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -848,7 +860,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:16:14Z",
           "timePrecision": "exact",
-          "ageHours": 8.76,
+          "ageHours": 9.26,
           "freshnessBasis": "Cavan Sullivan recorded his first two-goal game in MLS and assisted on another goal to help the Philadelphia Union cruise to a 5-0 victory over San Diego on Sunday night.",
           "status": "active",
           "sourceUrls": [
@@ -877,7 +889,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T22:00:13Z",
           "timePrecision": "exact",
-          "ageHours": 4.02,
+          "ageHours": 4.52,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -912,7 +924,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T21:21:48Z",
           "timePrecision": "exact",
-          "ageHours": 4.66,
+          "ageHours": 5.16,
           "freshnessBasis": "Washington's injury toll on offense continues to climb as starting wide receiver Christian Moss will miss two to three months with a lower body injury, coach Jedd Fisch announced on Monday.",
           "status": "active",
           "sourceUrls": [
@@ -941,7 +953,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:55:20Z",
           "timePrecision": "exact",
-          "ageHours": 8.1,
+          "ageHours": 8.6,
           "freshnessBasis": "Tennessee Vols TE Ethan Davis will miss the remainder of the season after suffering an ACL injury during Saturday's win over Georgia Tech.",
           "status": "active",
           "sourceUrls": [
@@ -970,7 +982,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T17:45:19Z",
           "timePrecision": "exact",
-          "ageHours": 8.27,
+          "ageHours": 8.77,
           "freshnessBasis": "UCF starting QB Alonza Barnett III is expected to miss multiple weeks with a hamstring injury, sources tell ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -999,7 +1011,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T19:44:22Z",
           "timePrecision": "exact",
-          "ageHours": 6.29,
+          "ageHours": 6.79,
           "freshnessBasis": "The College Football Playoff's decision to open a 30-day negotiating window with ESPN last week may signal growing interest in a 24-team field, but SEC commissioner Greg Sankey said that expansion is not a foregone conclusion.",
           "status": "active",
           "sourceUrls": [
@@ -1028,7 +1040,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T20:57:39Z",
           "timePrecision": "exact",
-          "ageHours": 5.07,
+          "ageHours": 5.57,
           "freshnessBasis": "One week after an embarrassing loss to Tulsa, OSU snapped the nation's longest losing streak.",
           "status": "active",
           "sourceUrls": [
@@ -1057,7 +1069,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T16:41:23Z",
           "timePrecision": "exact",
-          "ageHours": 9.34,
+          "ageHours": 9.84,
           "freshnessBasis": "Clemson quarterback Christopher Vizzina is considered week-to-week after sustaining an elbow injury Saturday, sources told ESPN's Pete Thamel. Freshman Tait Reynolds is expected to start for the Tigers against North Carolina on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -1097,7 +1109,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 105,
+    "freshCandidateCount": 109,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
