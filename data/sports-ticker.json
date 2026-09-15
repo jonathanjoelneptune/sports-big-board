@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-15T21:31:30Z",
+  "generatedAt": "2026-09-15T22:01:51Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "fe4036bf477f0a2d0d437334c68d419b1779c81bbbc13cffaf84296a1817f9e9",
+  "sourceCandidateHash": "b5a9878709a1177f043a876d7d795291f2a7728e06e9ca86e17ac43d2b0d9ee8",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,35 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-b25be91510805f82"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The Phillies are putting pitcher Jesús Luzardo on the injured list, manager Don Mattingly said Tuesday.",
+          "text": "The Phillies are putting pitcher Jesús Luzardo on the injured list, manager Don Mattingly said Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-09-15T21:34:05Z",
+          "timePrecision": "exact",
+          "ageHours": 0.46,
+          "freshnessBasis": "The Phillies are putting pitcher Jesús Luzardo on the injured list, manager Don Mattingly said Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49951961/phillies-placing-pitcher-luzardo-il-shoulder-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49951961/phillies-placing-pitcher-luzardo-il-shoulder-injury"
+            }
+          ],
+          "id": "a415-700bf752d790809b",
+          "feedRank": 1,
+          "compactHeadline": "Phillies pace pitcher Luzardo on IL with shoulder inflammation"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-7521967e8199eaf7"
           ],
@@ -23,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.86,
+          "ageHours": 20.36,
           "freshnessBasis": "Highlightly final: Miami Marlins 7, Arizona Diamondbacks 8.",
           "status": "active",
           "sourceUrls": [
@@ -43,37 +72,8 @@
             }
           ],
           "id": "a415-cdcf0e0bf6331888",
-          "feedRank": 1,
-          "compactHeadline": "Corbin Carroll delivers walk-off as Arizona Diamondbacks beat Miami Marlins 8-7"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-bbfd443f25475a25"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Phillies are putting pitcher Jesús Luzardo on the injured list, manager Don Mattingly said Tuesday.",
-          "text": "The Phillies are putting pitcher Jesús Luzardo on the injured list, manager Don Mattingly said Tuesday.",
-          "entities": [],
-          "occurredAt": "2026-09-15T21:22:55Z",
-          "timePrecision": "exact",
-          "ageHours": 0.14,
-          "freshnessBasis": "The Phillies are putting pitcher Jesús Luzardo on the injured list, manager Don Mattingly said Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49951961/phillies-placing-pitcher-luzardo-il-shoulder-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49951961/phillies-placing-pitcher-luzardo-il-shoulder-injury"
-            }
-          ],
-          "id": "a415-75272cf8323c8d12",
           "feedRank": 2,
-          "compactHeadline": "Phillies placing pitcher Luzardo on IL with shoulder injury"
+          "compactHeadline": "Corbin Carroll delivers walk-off as Arizona Diamondbacks beat Miami Marlins 8-7"
         },
         {
           "rank": 3,
@@ -87,7 +87,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:04:52Z",
           "timePrecision": "exact",
-          "ageHours": 0.44,
+          "ageHours": 0.95,
           "freshnessBasis": "The Washington Capitals have re-signed forward Ryan Leonard to an eight-year, $84 million contract extension, the team announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -116,7 +116,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T01:38:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.89,
+          "ageHours": 20.4,
           "freshnessBasis": "Highlightly final: Seattle Mariners 4, Los Angeles Angels 6.",
           "status": "active",
           "sourceUrls": [
@@ -151,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.86,
+          "ageHours": 22.36,
           "freshnessBasis": "Highlightly final: Atlanta Braves 3, Chicago Cubs 7.",
           "status": "active",
           "sourceUrls": [
@@ -186,7 +186,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.86,
+          "ageHours": 22.36,
           "freshnessBasis": "Highlightly final: New York Yankees 8, Minnesota Twins 3.",
           "status": "active",
           "sourceUrls": [
@@ -218,35 +218,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-29b1fc6861636d29"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Cleveland Browns placed running back Dylan Sampson on injured reserve with a knee injury, the team announced Tuesday.",
-          "text": "The Cleveland Browns placed running back Dylan Sampson on injured reserve with a knee injury, the team announced Tuesday.",
-          "entities": [],
-          "occurredAt": "2026-09-15T19:41:54Z",
-          "timePrecision": "exact",
-          "ageHours": 1.83,
-          "freshnessBasis": "The Cleveland Browns placed running back Dylan Sampson on injured reserve with a knee injury, the team announced Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49951024/browns-place-rb-sampson-injured-reserve-knee-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49951024/browns-place-rb-sampson-injured-reserve-knee-injury"
-            }
-          ],
-          "id": "a415-582c0cf17fe2552d",
-          "feedRank": 7,
-          "compactHeadline": "Browns place RB Sampson on injured reserve with knee injury"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-502250cc9b7073c5"
           ],
           "type": "SIGNING",
@@ -254,9 +225,9 @@
           "headline": "The Panthers waived receiver Jimmy Horn Jr. on Tuesday and signed Tyrel Dodson from the practice squad.",
           "text": "The Panthers waived receiver Jimmy Horn Jr. on Tuesday and signed Tyrel Dodson from the practice squad.",
           "entities": [],
-          "occurredAt": "2026-09-15T21:16:53Z",
+          "occurredAt": "2026-09-15T21:59:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.24,
+          "ageHours": 0.04,
           "freshnessBasis": "The Panthers waived receiver Jimmy Horn Jr. on Tuesday and signed Tyrel Dodson from the practice squad.",
           "status": "active",
           "sourceUrls": [
@@ -270,8 +241,37 @@
             }
           ],
           "id": "a415-19ac7b6d6376a5b3",
-          "feedRank": 8,
+          "feedRank": 7,
           "compactHeadline": "Panthers waive WR Horn, sign LB Dodson from practice squad"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-29b1fc6861636d29"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The Cleveland Browns placed running back Dylan Sampson on injured reserve with a knee injury, the team announced Tuesday.",
+          "text": "The Cleveland Browns placed running back Dylan Sampson on injured reserve with a knee injury, the team announced Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-09-15T19:41:54Z",
+          "timePrecision": "exact",
+          "ageHours": 2.33,
+          "freshnessBasis": "The Cleveland Browns placed running back Dylan Sampson on injured reserve with a knee injury, the team announced Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49951024/browns-place-rb-sampson-injured-reserve-knee-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49951024/browns-place-rb-sampson-injured-reserve-knee-injury"
+            }
+          ],
+          "id": "a415-582c0cf17fe2552d",
+          "feedRank": 8,
+          "compactHeadline": "Browns place RB Sampson on injured reserve with knee injury"
         },
         {
           "rank": 3,
@@ -285,7 +285,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T14:21:20Z",
           "timePrecision": "exact",
-          "ageHours": 7.17,
+          "ageHours": 7.68,
           "freshnessBasis": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
           "status": "active",
           "sourceUrls": [
@@ -314,7 +314,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T10:40:17Z",
           "timePrecision": "exact",
-          "ageHours": 10.85,
+          "ageHours": 11.36,
           "freshnessBasis": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
           "status": "active",
           "sourceUrls": [
@@ -334,6 +334,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-418c30d6c3f914d2"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Ravens released Jake Moody from the practice squad after an impressive performance from kicker Tyler Loop in Sunday's season opener.",
+          "text": "The Ravens released Jake Moody from the practice squad after an impressive performance from kicker Tyler Loop in Sunday's season opener.",
+          "entities": [],
+          "occurredAt": "2026-09-15T21:31:21Z",
+          "timePrecision": "exact",
+          "ageHours": 0.51,
+          "freshnessBasis": "The Ravens released Jake Moody from the practice squad after an impressive performance from kicker Tyler Loop in Sunday's season opener.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49952085/ravens-cut-kicker-moody-loop-strong-season-opener"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49952085/ravens-cut-kicker-moody-loop-strong-season-opener"
+            }
+          ],
+          "id": "a415-4c240010ba5f78fe",
+          "feedRank": 11,
+          "compactHeadline": "Ravens cut kicker Moody after Loop's strong season opener"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-32cb1bae42b6789f"
           ],
           "type": "NEWS",
@@ -343,7 +372,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:12:16Z",
           "timePrecision": "exact",
-          "ageHours": 0.32,
+          "ageHours": 0.83,
           "freshnessBasis": "With rookie wide receiver Omar Cooper Jr. and safety Minkah Fitzpatrick expected to miss Week 2 with injuries, the Jets addressed depth concerns at those positions with a series of roster moves on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -357,37 +386,8 @@
             }
           ],
           "id": "a415-fa322c8b05ea1f42",
-          "feedRank": 11,
-          "compactHeadline": "Jets make moves to address depth with Cooper, Fitzpatrick hurt"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-4ca486f2768faeb4"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Denver Broncos 10, Kansas City Chiefs 31.",
-          "text": "Highlightly final: Denver Broncos 10, Kansas City Chiefs 31.",
-          "entities": [],
-          "occurredAt": "2026-09-15T00:15:00Z",
-          "timePrecision": "exact",
-          "ageHours": 21.28,
-          "freshnessBasis": "Highlightly final: Denver Broncos 10, Kansas City Chiefs 31.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-american-football-2026-09-14",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-24eaa5cc515c5af4",
           "feedRank": 12,
-          "compactHeadline": "Kansas City Chiefs beat Denver Broncos 31-10"
+          "compactHeadline": "Jets make moves to address depth with Cooper, Fitzpatrick hurt"
         }
       ]
     },
@@ -398,6 +398,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-6cf64d9dfa445730"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia in exchange for him, saying it's understandable.",
+          "text": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia in exchange for him, saying it's understandable.",
+          "entities": [],
+          "occurredAt": "2026-09-15T21:58:16Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia in exchange for him, saying it's understandable.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/49952238/paul-george-ready-prove-self-wake-controversial-trade"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/49952238/paul-george-ready-prove-self-wake-controversial-trade"
+            }
+          ],
+          "id": "a415-6133eea7336f5f58",
+          "feedRank": 13,
+          "compactHeadline": "Paul George ready to prove self in wake of controversial trade"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-b86cad9511bd8946"
           ],
           "type": "NEWS",
@@ -407,7 +436,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T20:10:25Z",
           "timePrecision": "exact",
-          "ageHours": 1.35,
+          "ageHours": 1.86,
           "freshnessBasis": "NBA commissioner Adam Silver said the league looked at similar cases before taking away five first-round draft picks from the L.A. Clippers for circumventing salary cap rules.",
           "status": "active",
           "sourceUrls": [
@@ -421,11 +450,11 @@
             }
           ],
           "id": "a415-f0f0683b093e7c12",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "NBA weighed precedent before punishing Clippers in salary cap case"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-eb426a4643ca120d"
           ],
@@ -436,7 +465,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T17:35:29Z",
           "timePrecision": "exact",
-          "ageHours": 3.93,
+          "ageHours": 4.44,
           "freshnessBasis": "Sophie Cunningham has discussed the soon-to-be-vacant WNBA commissioner's job with Adam Silver after the NBA commissioner reached out to her.",
           "status": "active",
           "sourceUrls": [
@@ -450,11 +479,11 @@
             }
           ],
           "id": "a415-9063e2612f2c970a",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Sophie Cunningham: I talked with Adam Silver about next WNBA commissioner"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-415a68e5c048a2af"
           ],
@@ -465,7 +494,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T02:02:59Z",
           "timePrecision": "exact",
-          "ageHours": 19.48,
+          "ageHours": 19.98,
           "freshnessBasis": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
           "status": "active",
           "sourceUrls": [
@@ -479,37 +508,8 @@
             }
           ],
           "id": "a415-5b6c303ac70ff107",
-          "feedRank": 15,
-          "compactHeadline": "Clippers, Raptors complete delayed Kawhi Leonard trade"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-342ac260d0aa75db"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Here are the top highlights from Brian Windhorst's \"The Hoop Collective\" podcast, from breaking news to the latest intel and reaction from around the NBA.",
-          "text": "Here are the top highlights from Brian Windhorst's \"The Hoop Collective\" podcast, from breaking news to the latest intel and reaction from around the NBA.",
-          "entities": [],
-          "occurredAt": "2026-09-15T14:26:58Z",
-          "timePrecision": "exact",
-          "ageHours": 7.08,
-          "freshnessBasis": "Here are the top highlights from Brian Windhorst's \"The Hoop Collective\" podcast, from breaking news to the latest intel and reaction from around the NBA.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/47168192/the-hoop-collective-latest-episodes-brian-windhorst-nba-podcast-archive-best-quotes"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/47168192/the-hoop-collective-latest-episodes-brian-windhorst-nba-podcast-archive-best-quotes"
-            }
-          ],
-          "id": "a415-a2cb80654f86c817",
           "feedRank": 16,
-          "compactHeadline": "'The Hoop Collective': Episodes of Brian Windhorst's NBA podcast"
+          "compactHeadline": "Clippers, Raptors complete delayed Kawhi Leonard trade"
         }
       ]
     },
@@ -529,7 +529,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:38:20Z",
           "timePrecision": "exact",
-          "ageHours": 4.89,
+          "ageHours": 5.39,
           "freshnessBasis": "Senators forward Drake Batherson has signed an eight-year, $86 million extension through the 2034-35 season.",
           "status": "active",
           "sourceUrls": [
@@ -558,7 +558,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:15:05Z",
           "timePrecision": "exact",
-          "ageHours": 5.27,
+          "ageHours": 5.78,
           "freshnessBasis": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -587,7 +587,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T23:21:04Z",
           "timePrecision": "exact",
-          "ageHours": 22.17,
+          "ageHours": 22.68,
           "freshnessBasis": "It was a busy Monday for the Montreal Canadiens, who signed coach Martin St. Louis to a multiyear extension just before training camp opens, and also introduced veteran forward Chris Kreider, 35, who signed a one-year contract with the club on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -616,7 +616,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:29:17Z",
           "timePrecision": "exact",
-          "ageHours": 3.04,
+          "ageHours": 3.54,
           "freshnessBasis": "The Capitals told The Associated Press that Alex Ovechkin was asked to participate in an ad this summer for Vladimir Putin's United Russia party.",
           "status": "active",
           "sourceUrls": [
@@ -651,7 +651,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.53,
+          "ageHours": 4.03,
           "freshnessBasis": "Highlightly final: Ipswich Town U21 4, Bromley U21 2.",
           "status": "active",
           "sourceUrls": [
@@ -680,7 +680,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.53,
+          "ageHours": 4.03,
           "freshnessBasis": "Highlightly final: Birmingham City U21 4, Gillingham Fc U21 0.",
           "status": "active",
           "sourceUrls": [
@@ -709,7 +709,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T07:19:59Z",
           "timePrecision": "exact",
-          "ageHours": 14.19,
+          "ageHours": 14.7,
           "freshnessBasis": "Jamie Carragher has compared Arsenal boss Mikel Arteta to Sir Alex Ferguson for the manner in which he criticised referees following the Gunners' 2-0 win over Sunderland.",
           "status": "active",
           "sourceUrls": [
@@ -738,7 +738,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:45:59Z",
           "timePrecision": "exact",
-          "ageHours": 2.76,
+          "ageHours": 3.26,
           "freshnessBasis": "Things have gone from bad to worse this week for Man United, with defeats on and off the field. Victory against Brighton in midweek would go a long way to lifting the mood.",
           "status": "active",
           "sourceUrls": [
@@ -767,7 +767,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:44:08Z",
           "timePrecision": "exact",
-          "ageHours": 2.79,
+          "ageHours": 3.3,
           "freshnessBasis": "Manchester United wonderkid JJ Gabriel has asked to leave the club, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -802,7 +802,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:53:21Z",
           "timePrecision": "exact",
-          "ageHours": 4.64,
+          "ageHours": 5.14,
           "freshnessBasis": "Real Salt Lake and U.S. midfielder Diego Luna is expected to be out for months and will likely undergo an arthroscopic procedure to determine the extent of a knee injury, sources confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -831,7 +831,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T20:40:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.85,
+          "ageHours": 1.36,
           "freshnessBasis": "The NFL, NBA, MLB, NHL, MLS and their players' unions are urging state gambling regulators to combat escalating harassment and violent threats from sports bettors.",
           "status": "active",
           "sourceUrls": [
@@ -880,7 +880,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:34:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.95,
+          "ageHours": 3.46,
           "freshnessBasis": "New Inter Miami head coach Cristian \"Kily\" González said he feels blessed at being given the opportunity to lead the club and coach Lionel Messi, after formerly taking up the role on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -909,7 +909,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T04:01:39Z",
           "timePrecision": "exact",
-          "ageHours": 17.5,
+          "ageHours": 18.0,
           "freshnessBasis": "Inter Miami midfielder Alexander Shaw has been contacted by Colombia after playing for the United States U-20 team in the 2026 Concacaf tournament, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -935,6 +935,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-6a84e34bc4f87d0b"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Iowa could be without several offensive contributors Saturday as it wraps up non-league play by hosting Northern Iowa, including starting tight end DJ Vonnahme who was injured in last week's victory over Iowa State, coach Kirk Ferentz said on Tuesday.",
+          "text": "Iowa could be without several offensive contributors Saturday as it wraps up non-league play by hosting Northern Iowa, including starting tight end DJ Vonnahme who was injured in last week's victory over Iowa State, coach Kirk Ferentz said on Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-09-15T21:56:17Z",
+          "timePrecision": "exact",
+          "ageHours": 0.09,
+          "freshnessBasis": "Iowa could be without several offensive contributors Saturday as it wraps up non-league play by hosting Northern Iowa, including starting tight end DJ Vonnahme who was injured in last week's victory over Iowa State, coach Kirk Ferentz said on Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49952240/dj-vonnahme-likely-miss-iowa-game-vs-northern-iowa"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49952240/dj-vonnahme-likely-miss-iowa-game-vs-northern-iowa"
+            }
+          ],
+          "id": "a415-bbfc4807d0c97fec",
+          "feedRank": 30,
+          "compactHeadline": "DJ Vonnahme likely to miss Iowa's game vs. Northern Iowa"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-5793ad2b8bac8d59"
           ],
           "type": "INJURY",
@@ -944,7 +973,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T19:27:30Z",
           "timePrecision": "exact",
-          "ageHours": 2.07,
+          "ageHours": 2.57,
           "freshnessBasis": "Oklahoma starting wideout Trell Harris will be out for the \"foreseeable future,\" Sooners coach Brent Venables said Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -958,11 +987,11 @@
             }
           ],
           "id": "a415-30300c131c9395af",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "Oklahoma WR Harris out for 'foreseeable future,' says Venables"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-0a2df12aee80338f"
           ],
@@ -973,7 +1002,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T15:06:44Z",
           "timePrecision": "exact",
-          "ageHours": 6.41,
+          "ageHours": 6.92,
           "freshnessBasis": "Washington State's Tony Freeman, the team's top returning receiver and kick-return specialist, has suffered a torn ACL and will miss the rest of the season.",
           "status": "active",
           "sourceUrls": [
@@ -987,11 +1016,11 @@
             }
           ],
           "id": "a415-a8217fcdd398e367",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "Washington State's Tony Freeman has torn ACL, out for season"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-26aa41e61234a8f3"
           ],
@@ -1002,7 +1031,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:18:09Z",
           "timePrecision": "exact",
-          "ageHours": 5.22,
+          "ageHours": 5.73,
           "freshnessBasis": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
           "status": "active",
           "sourceUrls": [
@@ -1016,11 +1045,11 @@
             }
           ],
           "id": "a415-4dea83cbbeb749b7",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "College Football Playoff 2026: Bubble Watch after Week 2"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-2923404f3243b6ee"
           ],
@@ -1031,7 +1060,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:47:08Z",
           "timePrecision": "exact",
-          "ageHours": 2.74,
+          "ageHours": 3.25,
           "freshnessBasis": "Vanderbilt freshman quarterback Jared Curtis will start Saturday against NC State after accounting for three of the Commodores' four touchdowns in last weekend's 35-26 win over Delaware.",
           "status": "active",
           "sourceUrls": [
@@ -1045,11 +1074,11 @@
             }
           ],
           "id": "a415-2a86971ab7501b39",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "Vanderbilt freshman QB Jared Curtis to start vs. NC State"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-a30c12a9ea2d53bb"
           ],
@@ -1060,7 +1089,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T12:30:21Z",
           "timePrecision": "exact",
-          "ageHours": 9.02,
+          "ageHours": 9.53,
           "freshnessBasis": "Ducks coach Dan Lanning said Monday that the loss to the unranked Cowboys was \"by far the worst performance that we've had since I've been here.\"",
           "status": "active",
           "sourceUrls": [
@@ -1074,37 +1103,8 @@
             }
           ],
           "id": "a415-1be680fa647a768f",
-          "feedRank": 34,
-          "compactHeadline": "Lanning points to 'lack of leadership' for Oregon's start"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-f340da400ed3d84d"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Texas QB Arch Manning has apologized for an \"insensitive comment\" about an AI-generated video that depicted coach Steve Sarkisian slapping ESPN's Holly Rowe.",
-          "text": "Texas QB Arch Manning has apologized for an \"insensitive comment\" about an AI-generated video that depicted coach Steve Sarkisian slapping ESPN's Holly Rowe.",
-          "entities": [],
-          "occurredAt": "2026-09-15T20:02:31Z",
-          "timePrecision": "exact",
-          "ageHours": 1.48,
-          "freshnessBasis": "Texas QB Arch Manning has apologized for an \"insensitive comment\" about an AI-generated video that depicted coach Steve Sarkisian slapping ESPN's Holly Rowe.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49950893/texas-arch-manning-apologizes-reaction-violent-ai-video"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49950893/texas-arch-manning-apologizes-reaction-violent-ai-video"
-            }
-          ],
-          "id": "a415-70e5b5a09b6bcdc4",
           "feedRank": 35,
-          "compactHeadline": "Texas' Arch Manning apologizes for reaction to violent AI video"
+          "compactHeadline": "Lanning points to 'lack of leadership' for Oregon's start"
         }
       ]
     }
@@ -1129,7 +1129,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 86,
+    "freshCandidateCount": 88,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
