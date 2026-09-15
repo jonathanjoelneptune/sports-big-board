@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-15T21:01:29Z",
+  "generatedAt": "2026-09-15T21:31:30Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "48a9dac0de9902b23925f61a933c535d290e7f68fffd03199ee397a8d2e0cb67",
+  "sourceCandidateHash": "fe4036bf477f0a2d0d437334c68d419b1779c81bbbc13cffaf84296a1817f9e9",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T01:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.36,
+          "ageHours": 19.86,
           "freshnessBasis": "Highlightly final: Miami Marlins 7, Arizona Diamondbacks 8.",
           "status": "active",
           "sourceUrls": [
@@ -49,6 +49,64 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-bbfd443f25475a25"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The Phillies are putting pitcher Jesús Luzardo on the injured list, manager Don Mattingly said Tuesday.",
+          "text": "The Phillies are putting pitcher Jesús Luzardo on the injured list, manager Don Mattingly said Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-09-15T21:22:55Z",
+          "timePrecision": "exact",
+          "ageHours": 0.14,
+          "freshnessBasis": "The Phillies are putting pitcher Jesús Luzardo on the injured list, manager Don Mattingly said Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49951961/phillies-placing-pitcher-luzardo-il-shoulder-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49951961/phillies-placing-pitcher-luzardo-il-shoulder-injury"
+            }
+          ],
+          "id": "a415-75272cf8323c8d12",
+          "feedRank": 2,
+          "compactHeadline": "Phillies placing pitcher Luzardo on IL with shoulder injury"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-52e32d79a441f273"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "The Washington Capitals have re-signed forward Ryan Leonard to an eight-year, $84 million contract extension, the team announced Tuesday.",
+          "text": "The Washington Capitals have re-signed forward Ryan Leonard to an eight-year, $84 million contract extension, the team announced Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-09-15T21:04:52Z",
+          "timePrecision": "exact",
+          "ageHours": 0.44,
+          "freshnessBasis": "The Washington Capitals have re-signed forward Ryan Leonard to an eight-year, $84 million contract extension, the team announced Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49949144/capitals-re-sign-ryan-leonard-8-year-84-million-extension"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/mlb/story/_/id/49949144/capitals-re-sign-ryan-leonard-8-year-84-million-extension"
+            }
+          ],
+          "id": "a415-98cd669c4acf952a",
+          "feedRank": 3,
+          "compactHeadline": "Capitals re-sign Ryan Leonard to 8-year, $84 million extension"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-b11618a091a4819a"
           ],
           "type": "RESULT",
@@ -58,7 +116,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T01:38:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.39,
+          "ageHours": 19.89,
           "freshnessBasis": "Highlightly final: Seattle Mariners 4, Los Angeles Angels 6.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +136,11 @@
             }
           ],
           "id": "a415-e5d5b5a13a93b0fd",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Reid Detmers and Jose Siri lead last-place Angels to 6-4 victory over fading Mariners"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-bb9cc8f105f48254"
           ],
@@ -93,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.36,
+          "ageHours": 21.86,
           "freshnessBasis": "Highlightly final: Atlanta Braves 3, Chicago Cubs 7.",
           "status": "active",
           "sourceUrls": [
@@ -113,11 +171,11 @@
             }
           ],
           "id": "a415-f5b1268a8eb81008",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Pete Crow-Armstrong hits his 42nd homer on a 4-hit night as Cubs beat Braves 7-3"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-e400a081068dee84"
           ],
@@ -128,7 +186,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.36,
+          "ageHours": 21.86,
           "freshnessBasis": "Highlightly final: New York Yankees 8, Minnesota Twins 3.",
           "status": "active",
           "sourceUrls": [
@@ -148,84 +206,8 @@
             }
           ],
           "id": "a415-97e77c5f2ad03cee",
-          "feedRank": 4,
-          "compactHeadline": "Judge's first homer since May 24 helps clinch postseason berth for Yankees in 8-3 win at Twins"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-b67d1ebee3120e27"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Baltimore first baseman Pete Alonso made his first visit to Citi Field as an opposing player Monday in the Orioles' 2-1 win over the New York Mets, and he was greeted warmly by 35,800 fans who chanted the former Met's name during his plate appearances.",
-          "text": "Baltimore first baseman Pete Alonso made his first visit to Citi Field as an opposing player Monday in the Orioles' 2-1 win over the New York Mets, and he was greeted warmly by 35,800 fans who chanted the former Met's name during his plate appearances.",
-          "entities": [],
-          "occurredAt": "2026-09-14T23:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 21.86,
-          "freshnessBasis": "Highlightly final: Baltimore Orioles 2, New York Mets 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/mlb/story/_/id/49944188/orioles-pete-alonso-greeted-warmly-return-citi-field"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-14",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49944188/orioles-pete-alonso-greeted-warmly-return-citi-field"
-            }
-          ],
-          "id": "a415-5de2cec46c020fe8",
-          "feedRank": 5,
-          "compactHeadline": "Pete Alonso salutes thunderous ovations in Citi Field return"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-be78fec6748bdecd"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "White Sox center fielder Tristan Peters' 18-pitch walk proved the turning point in a 7-3 win over the Guardians on Monday that put Chicago in the driver's seat for the AL Central title.",
-          "text": "White Sox center fielder Tristan Peters' 18-pitch walk proved the turning point in a 7-3 win over the Guardians on Monday that put Chicago in the driver's seat for the AL Central title.",
-          "entities": [],
-          "occurredAt": "2026-09-14T22:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 22.36,
-          "freshnessBasis": "Highlightly final: Chicago White Sox 7, Cleveland Guardians 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/mlb/story/_/id/49946398/tristan-peters-18-pitch-walk-keys-white-sox-win-vs-guards",
-            "http://www.espn.com/mlb/recap?gameId=401816934"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-14",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49946398/tristan-peters-18-pitch-walk-keys-white-sox-win-vs-guards"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816934"
-            }
-          ],
-          "id": "a415-96afde35b8bff064",
           "feedRank": 6,
-          "compactHeadline": "Peters' 18-pitch walk keys White Sox's win vs. Guardians"
+          "compactHeadline": "Judge's first homer since May 24 helps clinch postseason berth for Yankees in 8-3 win at Twins"
         }
       ]
     },
@@ -245,7 +227,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T19:41:54Z",
           "timePrecision": "exact",
-          "ageHours": 1.33,
+          "ageHours": 1.83,
           "freshnessBasis": "The Cleveland Browns placed running back Dylan Sampson on injured reserve with a knee injury, the team announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -265,6 +247,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-502250cc9b7073c5"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "The Panthers waived receiver Jimmy Horn Jr. on Tuesday and signed Tyrel Dodson from the practice squad.",
+          "text": "The Panthers waived receiver Jimmy Horn Jr. on Tuesday and signed Tyrel Dodson from the practice squad.",
+          "entities": [],
+          "occurredAt": "2026-09-15T21:16:53Z",
+          "timePrecision": "exact",
+          "ageHours": 0.24,
+          "freshnessBasis": "The Panthers waived receiver Jimmy Horn Jr. on Tuesday and signed Tyrel Dodson from the practice squad.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49952014/panthers-waive-wr-horn-sign-lb-dodson-practice-squad"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49952014/panthers-waive-wr-horn-sign-lb-dodson-practice-squad"
+            }
+          ],
+          "id": "a415-19ac7b6d6376a5b3",
+          "feedRank": 8,
+          "compactHeadline": "Panthers waive WR Horn, sign LB Dodson from practice squad"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-29679030ed4d0dd1"
           ],
           "type": "RANKING",
@@ -274,7 +285,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T14:21:20Z",
           "timePrecision": "exact",
-          "ageHours": 6.67,
+          "ageHours": 7.17,
           "freshnessBasis": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
           "status": "active",
           "sourceUrls": [
@@ -288,11 +299,11 @@
             }
           ],
           "id": "a415-dcde4a422d8ea634",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "2026 NFL pass rush, run stop, blocking win rate rankings"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-db7414897c62d879"
           ],
@@ -303,7 +314,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T10:40:17Z",
           "timePrecision": "exact",
-          "ageHours": 10.35,
+          "ageHours": 10.85,
           "freshnessBasis": "We're looking ahead to how the 14-team playoff picture could line up -- and who will win divisions -- en route to the Super Bowl.",
           "status": "active",
           "sourceUrls": [
@@ -317,11 +328,40 @@
             }
           ],
           "id": "a415-664b31274b6f618d",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "2026 NFL playoff picture: AFC, NFC seed projections, chances"
         },
         {
-          "rank": 4,
+          "rank": 5,
+          "candidateIds": [
+            "cand-32cb1bae42b6789f"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "With rookie wide receiver Omar Cooper Jr. and safety Minkah Fitzpatrick expected to miss Week 2 with injuries, the Jets addressed depth concerns at those positions with a series of roster moves on Tuesday.",
+          "text": "With rookie wide receiver Omar Cooper Jr. and safety Minkah Fitzpatrick expected to miss Week 2 with injuries, the Jets addressed depth concerns at those positions with a series of roster moves on Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-09-15T21:12:16Z",
+          "timePrecision": "exact",
+          "ageHours": 0.32,
+          "freshnessBasis": "With rookie wide receiver Omar Cooper Jr. and safety Minkah Fitzpatrick expected to miss Week 2 with injuries, the Jets addressed depth concerns at those positions with a series of roster moves on Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49949341/sources-jets-rookie-wr-omar-cooper-ankle-week-week"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49949341/sources-jets-rookie-wr-omar-cooper-ankle-week-week"
+            }
+          ],
+          "id": "a415-fa322c8b05ea1f42",
+          "feedRank": 11,
+          "compactHeadline": "Jets make moves to address depth with Cooper, Fitzpatrick hurt"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-4ca486f2768faeb4"
           ],
@@ -332,7 +372,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T00:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.77,
+          "ageHours": 21.28,
           "freshnessBasis": "Highlightly final: Denver Broncos 10, Kansas City Chiefs 31.",
           "status": "active",
           "sourceUrls": [
@@ -346,66 +386,8 @@
             }
           ],
           "id": "a415-24eaa5cc515c5af4",
-          "feedRank": 10,
-          "compactHeadline": "Kansas City Chiefs beat Denver Broncos 31-10"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-808ba50efd8cbb64"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Attorneys representing the former girlfriend of Josh Jacobs have filed a motion to permanently seal evidence and discovery materials in the criminal case involving the Packers RB.",
-          "text": "Attorneys representing the former girlfriend of Josh Jacobs have filed a motion to permanently seal evidence and discovery materials in the criminal case involving the Packers RB.",
-          "entities": [],
-          "occurredAt": "2026-09-15T20:52:46Z",
-          "timePrecision": "exact",
-          "ageHours": 0.15,
-          "freshnessBasis": "Attorneys representing the former girlfriend of Josh Jacobs have filed a motion to permanently seal evidence and discovery materials in the criminal case involving the Packers RB.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49951016/woman-josh-jacobs-case-wants-evidence-permanently-sealed"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49951016/woman-josh-jacobs-case-wants-evidence-permanently-sealed"
-            }
-          ],
-          "id": "a415-db3eab3a21792d73",
-          "feedRank": 11,
-          "compactHeadline": "Woman in Josh Jacobs case wants evidence permanently sealed"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-86746ba896f49cbb"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Jets rookie wide receiver Omar Cooper Jr., who left New York's 23-10 Week 1 victory over the Tennessee Titans in the first quarter, suffered an ankle sprain and the MRI showed some positive news, sources told NFL Network's Ian Rapoport.",
-          "text": "Jets rookie wide receiver Omar Cooper Jr., who left New York's 23-10 Week 1 victory over the Tennessee Titans in the first quarter, suffered an ankle sprain and the MRI showed some positive news, sources told NFL Network's Ian Rapoport.",
-          "entities": [],
-          "occurredAt": "2026-09-15T20:34:23Z",
-          "timePrecision": "exact",
-          "ageHours": 0.45,
-          "freshnessBasis": "Jets rookie wide receiver Omar Cooper Jr., who left New York's 23-10 Week 1 victory over the Tennessee Titans in the first quarter, suffered an ankle sprain and the MRI showed some positive news, sources told NFL Network's Ian Rapoport.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49949341/sources-jets-rookie-wr-omar-cooper-ankle-week-week"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49949341/sources-jets-rookie-wr-omar-cooper-ankle-week-week"
-            }
-          ],
-          "id": "a415-0b3bf7ffaacd4c42",
           "feedRank": 12,
-          "compactHeadline": "Sources: Jets rookie WR Omar Cooper (ankle) week-to-week"
+          "compactHeadline": "Kansas City Chiefs beat Denver Broncos 31-10"
         }
       ]
     },
@@ -425,7 +407,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T20:10:25Z",
           "timePrecision": "exact",
-          "ageHours": 0.85,
+          "ageHours": 1.35,
           "freshnessBasis": "NBA commissioner Adam Silver said the league looked at similar cases before taking away five first-round draft picks from the L.A. Clippers for circumventing salary cap rules.",
           "status": "active",
           "sourceUrls": [
@@ -454,7 +436,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T17:35:29Z",
           "timePrecision": "exact",
-          "ageHours": 3.43,
+          "ageHours": 3.93,
           "freshnessBasis": "Sophie Cunningham has discussed the soon-to-be-vacant WNBA commissioner's job with Adam Silver after the NBA commissioner reached out to her.",
           "status": "active",
           "sourceUrls": [
@@ -483,7 +465,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T02:02:59Z",
           "timePrecision": "exact",
-          "ageHours": 18.98,
+          "ageHours": 19.48,
           "freshnessBasis": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
           "status": "active",
           "sourceUrls": [
@@ -512,7 +494,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T14:26:58Z",
           "timePrecision": "exact",
-          "ageHours": 6.58,
+          "ageHours": 7.08,
           "freshnessBasis": "Here are the top highlights from Brian Windhorst's \"The Hoop Collective\" podcast, from breaking news to the latest intel and reaction from around the NBA.",
           "status": "active",
           "sourceUrls": [
@@ -547,7 +529,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:38:20Z",
           "timePrecision": "exact",
-          "ageHours": 4.39,
+          "ageHours": 4.89,
           "freshnessBasis": "Senators forward Drake Batherson has signed an eight-year, $86 million extension through the 2034-35 season.",
           "status": "active",
           "sourceUrls": [
@@ -576,7 +558,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:15:05Z",
           "timePrecision": "exact",
-          "ageHours": 4.77,
+          "ageHours": 5.27,
           "freshnessBasis": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -605,7 +587,7 @@
           "entities": [],
           "occurredAt": "2026-09-14T23:21:04Z",
           "timePrecision": "exact",
-          "ageHours": 21.67,
+          "ageHours": 22.17,
           "freshnessBasis": "It was a busy Monday for the Montreal Canadiens, who signed coach Martin St. Louis to a multiyear extension just before training camp opens, and also introduced veteran forward Chris Kreider, 35, who signed a one-year contract with the club on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -634,7 +616,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:29:17Z",
           "timePrecision": "exact",
-          "ageHours": 2.54,
+          "ageHours": 3.04,
           "freshnessBasis": "The Capitals told The Associated Press that Alex Ovechkin was asked to participate in an ad this summer for Vladimir Putin's United Russia party.",
           "status": "active",
           "sourceUrls": [
@@ -669,7 +651,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.02,
+          "ageHours": 3.53,
           "freshnessBasis": "Highlightly final: Ipswich Town U21 4, Bromley U21 2.",
           "status": "active",
           "sourceUrls": [
@@ -698,7 +680,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.02,
+          "ageHours": 3.53,
           "freshnessBasis": "Highlightly final: Birmingham City U21 4, Gillingham Fc U21 0.",
           "status": "active",
           "sourceUrls": [
@@ -727,7 +709,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T07:19:59Z",
           "timePrecision": "exact",
-          "ageHours": 13.69,
+          "ageHours": 14.19,
           "freshnessBasis": "Jamie Carragher has compared Arsenal boss Mikel Arteta to Sir Alex Ferguson for the manner in which he criticised referees following the Gunners' 2-0 win over Sunderland.",
           "status": "active",
           "sourceUrls": [
@@ -756,7 +738,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:45:59Z",
           "timePrecision": "exact",
-          "ageHours": 2.26,
+          "ageHours": 2.76,
           "freshnessBasis": "Things have gone from bad to worse this week for Man United, with defeats on and off the field. Victory against Brighton in midweek would go a long way to lifting the mood.",
           "status": "active",
           "sourceUrls": [
@@ -785,7 +767,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:44:08Z",
           "timePrecision": "exact",
-          "ageHours": 2.29,
+          "ageHours": 2.79,
           "freshnessBasis": "Manchester United wonderkid JJ Gabriel has asked to leave the club, sources have told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -820,7 +802,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:53:21Z",
           "timePrecision": "exact",
-          "ageHours": 4.14,
+          "ageHours": 4.64,
           "freshnessBasis": "Real Salt Lake and U.S. midfielder Diego Luna is expected to be out for months and will likely undergo an arthroscopic procedure to determine the extent of a knee injury, sources confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -849,7 +831,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T20:40:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.35,
+          "ageHours": 0.85,
           "freshnessBasis": "The NFL, NBA, MLB, NHL, MLS and their players' unions are urging state gambling regulators to combat escalating harassment and violent threats from sports bettors.",
           "status": "active",
           "sourceUrls": [
@@ -898,7 +880,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:34:18Z",
           "timePrecision": "exact",
-          "ageHours": 2.45,
+          "ageHours": 2.95,
           "freshnessBasis": "New Inter Miami head coach Cristian \"Kily\" González said he feels blessed at being given the opportunity to lead the club and coach Lionel Messi, after formerly taking up the role on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -927,7 +909,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T04:01:39Z",
           "timePrecision": "exact",
-          "ageHours": 17.0,
+          "ageHours": 17.5,
           "freshnessBasis": "Inter Miami midfielder Alexander Shaw has been contacted by Colombia after playing for the United States U-20 team in the 2026 Concacaf tournament, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -962,7 +944,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T19:27:30Z",
           "timePrecision": "exact",
-          "ageHours": 1.57,
+          "ageHours": 2.07,
           "freshnessBasis": "Oklahoma starting wideout Trell Harris will be out for the \"foreseeable future,\" Sooners coach Brent Venables said Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -991,7 +973,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T15:06:44Z",
           "timePrecision": "exact",
-          "ageHours": 5.91,
+          "ageHours": 6.41,
           "freshnessBasis": "Washington State's Tony Freeman, the team's top returning receiver and kick-return specialist, has suffered a torn ACL and will miss the rest of the season.",
           "status": "active",
           "sourceUrls": [
@@ -1020,7 +1002,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:18:09Z",
           "timePrecision": "exact",
-          "ageHours": 4.72,
+          "ageHours": 5.22,
           "freshnessBasis": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
           "status": "active",
           "sourceUrls": [
@@ -1049,7 +1031,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:47:08Z",
           "timePrecision": "exact",
-          "ageHours": 2.24,
+          "ageHours": 2.74,
           "freshnessBasis": "Vanderbilt freshman quarterback Jared Curtis will start Saturday against NC State after accounting for three of the Commodores' four touchdowns in last weekend's 35-26 win over Delaware.",
           "status": "active",
           "sourceUrls": [
@@ -1078,7 +1060,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T12:30:21Z",
           "timePrecision": "exact",
-          "ageHours": 8.52,
+          "ageHours": 9.02,
           "freshnessBasis": "Ducks coach Dan Lanning said Monday that the loss to the unranked Cowboys was \"by far the worst performance that we've had since I've been here.\"",
           "status": "active",
           "sourceUrls": [
@@ -1107,7 +1089,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T20:02:31Z",
           "timePrecision": "exact",
-          "ageHours": 0.98,
+          "ageHours": 1.48,
           "freshnessBasis": "Texas QB Arch Manning has apologized for an \"insensitive comment\" about an AI-generated video that depicted coach Steve Sarkisian slapping ESPN's Holly Rowe.",
           "status": "active",
           "sourceUrls": [
