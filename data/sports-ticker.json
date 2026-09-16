@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-16T17:30:55Z",
+  "generatedAt": "2026-09-16T18:01:01Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "4c376f236e7c5fe1e1e1e33bd85680b9a3a73cf9463d97053c04fbf623760e83",
+  "sourceCandidateHash": "f07cfff9efc63245e423d8dee752fdae04c1f1aa5be1bebd33642e57d79c1f5f",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.85,
+          "ageHours": 19.35,
           "freshnessBasis": "Highlightly final: Chicago White Sox 6, Cleveland Guardians 7.",
           "status": "active",
           "sourceUrls": [
@@ -52,7 +52,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T01:38:00Z",
           "timePrecision": "exact",
-          "ageHours": 15.88,
+          "ageHours": 16.38,
           "freshnessBasis": "Highlightly final: Seattle Mariners 1, Los Angeles Angels 2.",
           "status": "active",
           "sourceUrls": [
@@ -78,6 +78,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-14f036a09b9052a3"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Minnesota Twins rookie shortstop Kaelen Culpepper was placed on the 10-day injured list with a strained left hamstring on Wednesday, interrupting his promising debut.",
+          "text": "Minnesota Twins rookie shortstop Kaelen Culpepper was placed on the 10-day injured list with a strained left hamstring on Wednesday, interrupting his promising debut.",
+          "entities": [],
+          "occurredAt": "2026-09-16T17:34:36Z",
+          "timePrecision": "exact",
+          "ageHours": 0.44,
+          "freshnessBasis": "Minnesota Twins rookie shortstop Kaelen Culpepper was placed on the 10-day injured list with a strained left hamstring on Wednesday, interrupting his promising debut.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49958164/twins-shortstop-kaelen-culpepper-injured-list-hamstring-strain"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49958164/twins-shortstop-kaelen-culpepper-injured-list-hamstring-strain"
+            }
+          ],
+          "id": "a415-e588965220c32a06",
+          "feedRank": 3,
+          "compactHeadline": "Twins' shortstop Kaelen Culpepper to injured list with hamstring strain"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-9d4a5d255e080e47"
           ],
           "type": "INJURY",
@@ -87,7 +116,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T16:26:48Z",
           "timePrecision": "exact",
-          "ageHours": 1.07,
+          "ageHours": 1.57,
           "freshnessBasis": "St. Louis activated rookie second baseman JJ Wetherholt from the 10-day injured list Wednesday morning before the Cardinals met the San Francisco Giants.",
           "status": "active",
           "sourceUrls": [
@@ -101,11 +130,11 @@
             }
           ],
           "id": "a415-a2a40fb3be217095",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Cardinals activate rookie 2B JJ Wetherholt from injured list"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-d416e6ebedb01301"
           ],
@@ -116,7 +145,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 16.85,
+          "ageHours": 17.35,
           "freshnessBasis": "Highlightly final: San Diego Padres 3, Colorado Rockies 9.",
           "status": "active",
           "sourceUrls": [
@@ -136,11 +165,11 @@
             }
           ],
           "id": "a415-9cfccf62b678578f",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Cole Carrigg goes 4 for 5 and the Rockies defeat the Padres 9-3 to end their 8-game losing streak"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-eb158e4ca779653e"
           ],
@@ -151,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 17.77,
+          "ageHours": 18.27,
           "freshnessBasis": "Highlightly final: San Francisco Giants 10, St. Louis Cardinals 3.",
           "status": "active",
           "sourceUrls": [
@@ -171,43 +200,8 @@
             }
           ],
           "id": "a415-2419c7e9413f1cc9",
-          "feedRank": 5,
-          "compactHeadline": "Bryce Eldridge drives in 3 runs as the Giants cruise to a 10-3 win over Cardinals"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-9c66e75673331536"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jeremy Peña homered in his first two at-bats and Yordan Alvarez slugged his 39th home run to lead the Houston Astros to a 4-2 win over the Kansas City Royals on Tuesday night.",
-          "text": "Jeremy Peña homered in his first two at-bats and Yordan Alvarez slugged his 39th home run to lead the Houston Astros to a 4-2 win over the Kansas City Royals on Tuesday night.",
-          "entities": [],
-          "occurredAt": "2026-09-16T00:10:00Z",
-          "timePrecision": "exact",
-          "ageHours": 17.35,
-          "freshnessBasis": "Highlightly final: Kansas City Royals 2, Houston Astros 4.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816952"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-15",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816952"
-            }
-          ],
-          "id": "a415-894b32e3feaf3cd6",
           "feedRank": 6,
-          "compactHeadline": "Jeremy Peña hits 2 early homers, Yordan Alvarez hits 39th as Astros beat Royals 4-2"
+          "compactHeadline": "Bryce Eldridge drives in 3 runs as the Giants cruise to a 10-3 win over Cardinals"
         }
       ]
     },
@@ -227,7 +221,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T15:47:13Z",
           "timePrecision": "exact",
-          "ageHours": 1.73,
+          "ageHours": 2.23,
           "freshnessBasis": "Prescott needs four TDs to pass Tony Romo in the record book, so we sought the best moments from those who are helping him make history.",
           "status": "active",
           "sourceUrls": [
@@ -254,9 +248,9 @@
           "headline": "Falcons coach Kevin Stefanski said he's \"not ruling anybody out\" when it comes to which QB is starting against the Panthers on Sunday.",
           "text": "Falcons coach Kevin Stefanski said he's \"not ruling anybody out\" when it comes to which QB is starting against the Panthers on Sunday.",
           "entities": [],
-          "occurredAt": "2026-09-16T17:20:31Z",
+          "occurredAt": "2026-09-16T17:32:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 0.48,
           "freshnessBasis": "Falcons coach Kevin Stefanski said he's \"not ruling anybody out\" when it comes to which QB is starting against the Panthers on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -285,7 +279,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T10:37:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.9,
+          "ageHours": 7.4,
           "freshnessBasis": "The Texans signed former first-round pick Kenneth Murray to their practice squad Tuesday in the wake of starting linebacker Henry To'oTo'o landing on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -314,7 +308,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T10:00:04Z",
           "timePrecision": "exact",
-          "ageHours": 7.51,
+          "ageHours": 8.02,
           "freshnessBasis": "The Broncos are 4-8 in September under Sean Payton after Monday's loss to the Chiefs. And they now face five 2025 playoff teams in a row.",
           "status": "active",
           "sourceUrls": [
@@ -343,7 +337,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T17:03:14Z",
           "timePrecision": "exact",
-          "ageHours": 0.46,
+          "ageHours": 0.96,
           "freshnessBasis": "Colts wide receiver Keenan Allen was formally charged with two misdemeanor drunken driving charges on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -372,7 +366,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:59:10Z",
           "timePrecision": "exact",
-          "ageHours": 19.53,
+          "ageHours": 20.03,
           "freshnessBasis": "The Panthers waived receiver Jimmy Horn Jr. on Tuesday and signed Tyrel Dodson from the practice squad.",
           "status": "active",
           "sourceUrls": [
@@ -407,7 +401,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:12:47Z",
           "timePrecision": "exact",
-          "ageHours": 6.3,
+          "ageHours": 6.8,
           "freshnessBasis": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -436,7 +430,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:13:40Z",
           "timePrecision": "exact",
-          "ageHours": 6.29,
+          "ageHours": 6.79,
           "freshnessBasis": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
           "status": "active",
           "sourceUrls": [
@@ -465,7 +459,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:13:19Z",
           "timePrecision": "exact",
-          "ageHours": 6.29,
+          "ageHours": 6.8,
           "freshnessBasis": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia for him, saying it's understandable.",
           "status": "active",
           "sourceUrls": [
@@ -494,7 +488,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:14:16Z",
           "timePrecision": "exact",
-          "ageHours": 6.28,
+          "ageHours": 6.78,
           "freshnessBasis": "Longtime NBA forward Taj Gibson is retiring after 17 seasons in the league and joining the Chicago Bulls coaching staff as an assistant.",
           "status": "active",
           "sourceUrls": [
@@ -529,7 +523,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T10:45:05Z",
           "timePrecision": "exact",
-          "ageHours": 6.76,
+          "ageHours": 7.27,
           "freshnessBasis": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -558,7 +552,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T05:36:41Z",
           "timePrecision": "exact",
-          "ageHours": 11.9,
+          "ageHours": 12.41,
           "freshnessBasis": "The New Jersey Devils signed forward Luke Evangelista, 24, to a five-year contract extension Tuesday night, securing his place among the club's deep forward group after he was acquired from the Nashville Predators earlier this month for draft picks.",
           "status": "active",
           "sourceUrls": [
@@ -587,7 +581,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T05:41:27Z",
           "timePrecision": "exact",
-          "ageHours": 11.82,
+          "ageHours": 12.33,
           "freshnessBasis": "Forward Justin Sourdif, 24, a native of Richmond, British Columbia, who had 15 goals and 35 points in 78 games last season for Washington, signed with the Capitals on Tuesday on an eight-year contract worth $6.35 million annually.",
           "status": "active",
           "sourceUrls": [
@@ -616,7 +610,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T05:30:48Z",
           "timePrecision": "exact",
-          "ageHours": 12.0,
+          "ageHours": 12.5,
           "freshnessBasis": "Veteran forward Jordan Staal, 38, who captained the Carolina Hurricanes to a Stanley Cup title in June, winning the Conn Smythe Trophy for postseason MVP along the way, signed a one-year contract extension with the club late Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -645,7 +639,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T04:34:44Z",
           "timePrecision": "exact",
-          "ageHours": 12.94,
+          "ageHours": 13.44,
           "freshnessBasis": "The Washington Capitals have re-signed forward Ryan Leonard to an eight-year, $84 million contract extension, the team announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -674,7 +668,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T03:53:23Z",
           "timePrecision": "exact",
-          "ageHours": 13.63,
+          "ageHours": 14.13,
           "freshnessBasis": "After creating salary-cap space with the release of Chris Kreider, the Anaheim Ducks on Tuesday signed Cutter Gauthier to a six-year contract, with GM Pat Verbeek saying in a statement that the 22-year-old left wing is \"a major part of our young core.\"",
           "status": "active",
           "sourceUrls": [
@@ -709,7 +703,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:11:35Z",
           "timePrecision": "exact",
-          "ageHours": 6.32,
+          "ageHours": 6.82,
           "freshnessBasis": "Chelsea midfielder Cole Palmer was temporarily suspended from Twitch on Tuesday after streaming EA Sports FC 27 before the game's release.",
           "status": "active",
           "sourceUrls": [
@@ -738,7 +732,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T15:42:02Z",
           "timePrecision": "exact",
-          "ageHours": 1.81,
+          "ageHours": 2.32,
           "freshnessBasis": "João Pedro called for a new nickname for Chelsea's in-form front three as he discussed his growing understanding with Cole Palmer and Morgan Rogers.",
           "status": "active",
           "sourceUrls": [
@@ -758,64 +752,6 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-aec503ec588add34"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Ipswich Town U21 4, Bromley U21 2.",
-          "text": "Highlightly final: Ipswich Town U21 4, Bromley U21 2.",
-          "entities": [],
-          "occurredAt": "2026-09-15T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "Highlightly final: Ipswich Town U21 4, Bromley U21 2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-15",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-26511e4fcd9ba24f",
-          "feedRank": 25,
-          "compactHeadline": "Ipswich Town U21 beat Bromley U21 4-2"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-34bfe44863ee6e8c"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Birmingham City U21 4, Gillingham Fc U21 0.",
-          "text": "Highlightly final: Birmingham City U21 4, Gillingham Fc U21 0.",
-          "entities": [],
-          "occurredAt": "2026-09-15T18:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.52,
-          "freshnessBasis": "Highlightly final: Birmingham City U21 4, Gillingham Fc U21 0.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-football-2026-09-15",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-4eeb18e0c894c966",
-          "feedRank": 26,
-          "compactHeadline": "Birmingham City U21 beat Gillingham Fc U21 4-0"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
             "cand-b4bfc32078362633"
           ],
           "type": "NEWS",
@@ -825,7 +761,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T13:51:15Z",
           "timePrecision": "exact",
-          "ageHours": 3.66,
+          "ageHours": 4.16,
           "freshnessBasis": "Is it time to give the VAR the red card, or does soccer actually need the red flag? The Manchester derby controversy could have been avoided with an on-field challenge.",
           "status": "active",
           "sourceUrls": [
@@ -839,8 +775,66 @@
             }
           ],
           "id": "a415-cefc79aff5b85a69",
-          "feedRank": 27,
+          "feedRank": 25,
           "compactHeadline": "Soccer should learn from the NFL to fix the mess that VAR has created"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-379f6a0d6629868e"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The referee and VAR were correct not to issue a red card to Arsenal defender Gabriel for his kick to the head of Chelsea goalkeeper Emiliano Martínez earlier this month, a panel has found.",
+          "text": "The referee and VAR were correct not to issue a red card to Arsenal defender Gabriel for his kick to the head of Chelsea goalkeeper Emiliano Martínez earlier this month, a panel has found.",
+          "entities": [],
+          "occurredAt": "2026-09-16T13:21:28Z",
+          "timePrecision": "exact",
+          "ageHours": 4.66,
+          "freshnessBasis": "The referee and VAR were correct not to issue a red card to Arsenal defender Gabriel for his kick to the head of Chelsea goalkeeper Emiliano Martínez earlier this month, a panel has found.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49956518/var-right-not-send-arsenal-gabriel-emi-martinez-kick-panel-finds"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49956518/var-right-not-send-arsenal-gabriel-emi-martinez-kick-panel-finds"
+            }
+          ],
+          "id": "a415-fb619b9286109f73",
+          "feedRank": 26,
+          "compactHeadline": "VAR right not to send off Arsenal's Gabriel for Emi Martínez kick, panel finds"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-c26d3c34f979d0b0"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Leading sports barrister Nick De Marco has highlighted the \"most incredible delay\" in reaching an outcome in the key Manchester City legal case.",
+          "text": "Leading sports barrister Nick De Marco has highlighted the \"most incredible delay\" in reaching an outcome in the key Manchester City legal case.",
+          "entities": [],
+          "occurredAt": "2026-09-16T12:18:20Z",
+          "timePrecision": "exact",
+          "ageHours": 5.71,
+          "freshnessBasis": "Leading sports barrister Nick De Marco has highlighted the \"most incredible delay\" in reaching an outcome in the key Manchester City legal case.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49956250/man-city-115-charges-legal-case-premier-league-lord-david-pannick-nick-de-marco"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49956250/man-city-115-charges-legal-case-premier-league-lord-david-pannick-nick-de-marco"
+            }
+          ],
+          "id": "a415-63de2ca8c52f184e",
+          "feedRank": 27,
+          "compactHeadline": "Leading sports barrister highlights 'incredible delay' on two-year anniversary of Man City hearing"
         }
       ]
     },
@@ -860,7 +854,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:30:57Z",
           "timePrecision": "exact",
-          "ageHours": 17.0,
+          "ageHours": 17.5,
           "freshnessBasis": "New Inter Miami head coach Cristian \"Kily\" González said he feels blessed at being given the opportunity to lead the club and coach Lionel Messi, after formerly taking up the role on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -889,7 +883,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T20:40:15Z",
           "timePrecision": "exact",
-          "ageHours": 20.84,
+          "ageHours": 21.35,
           "freshnessBasis": "The NFL, NBA, MLB, NHL, MLS and their players' unions are urging state gambling regulators to combat escalating harassment and violent threats from sports bettors.",
           "status": "active",
           "sourceUrls": [
@@ -934,7 +928,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T10:58:05Z",
           "timePrecision": "exact",
-          "ageHours": 6.55,
+          "ageHours": 7.05,
           "freshnessBasis": "Strange happenings continue in college football, where long losing streaks have become a winning formula.",
           "status": "active",
           "sourceUrls": [
@@ -963,7 +957,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T15:24:06Z",
           "timePrecision": "exact",
-          "ageHours": 2.11,
+          "ageHours": 2.62,
           "freshnessBasis": "The LSU-Ole Miss rivalry took another dramatic turn Tuesday when Tigers star defensive end Princewill Umanmielen was served with court papers related to the Rebels' lawsuit against him, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -992,7 +986,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:56:17Z",
           "timePrecision": "exact",
-          "ageHours": 19.58,
+          "ageHours": 20.08,
           "freshnessBasis": "Iowa could be without several offensive contributors Saturday as it wraps up non-league play by hosting Northern Iowa, including starting tight end DJ Vonnahme who was injured in last week's victory over Iowa State, coach Kirk Ferentz said on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -1019,9 +1013,9 @@
           "headline": "The Florida State linebacker spent a month in a coma. It wasn't clear he'd ever wake up. Now, he's looking to play football again.",
           "text": "The Florida State linebacker spent a month in a coma. It wasn't clear he'd ever wake up. Now, he's looking to play football again.",
           "entities": [],
-          "occurredAt": "2026-09-16T17:08:31Z",
+          "occurredAt": "2026-09-16T17:42:53Z",
           "timePrecision": "exact",
-          "ageHours": 0.37,
+          "ageHours": 0.3,
           "freshnessBasis": "The Florida State linebacker spent a month in a coma. It wasn't clear he'd ever wake up. Now, he's looking to play football again.",
           "status": "active",
           "sourceUrls": [
@@ -1050,7 +1044,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T19:27:30Z",
           "timePrecision": "exact",
-          "ageHours": 22.06,
+          "ageHours": 22.56,
           "freshnessBasis": "Oklahoma starting wideout Trell Harris will be out for the \"foreseeable future,\" Sooners coach Brent Venables said Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -1079,7 +1073,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T16:21:05Z",
           "timePrecision": "exact",
-          "ageHours": 1.16,
+          "ageHours": 1.67,
           "freshnessBasis": "Nebraska and Notre Dame have booked a home-and-home series with games in 2032 and 2033, the first scheduled meetings between the two storied programs in over three decades.",
           "status": "active",
           "sourceUrls": [
@@ -1119,7 +1113,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 113,
+    "freshCandidateCount": 111,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
