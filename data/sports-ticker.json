@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-16T04:31:26Z",
+  "generatedAt": "2026-09-16T12:01:03Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "d486873e0234fef3a058a783d7c2d737b51f5a13b629278f705f13336af133e5",
+  "sourceCandidateHash": "8a3cabea3c68074ffb0838eaf795d06fcfd5fb0e4f3207fa7ce210a41a9cf77a",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.86,
+          "ageHours": 13.35,
           "freshnessBasis": "Highlightly final: Chicago White Sox 6, Cleveland Guardians 7.",
           "status": "active",
           "sourceUrls": [
@@ -49,6 +49,76 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-4b67566847f25a6f"
+          ],
+          "type": "RESULT",
+          "priority": 71,
+          "headline": "Ryan Johnson pitched six strong innings, Josh Lowe hit a tiebreaking home run and the Los Angeles Angels beat the Seattle Mariners 2-1 on Tuesday night.",
+          "text": "Ryan Johnson pitched six strong innings, Josh Lowe hit a tiebreaking home run and the Los Angeles Angels beat the Seattle Mariners 2-1 on Tuesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-16T01:38:00Z",
+          "timePrecision": "exact",
+          "ageHours": 10.38,
+          "freshnessBasis": "Highlightly final: Seattle Mariners 1, Los Angeles Angels 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816957"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-15",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816957"
+            }
+          ],
+          "id": "a415-48854b1d475b84ae",
+          "feedRank": 2,
+          "compactHeadline": "Ryan Johnson and Josh Lowe deliver for Angels in 2-1 win that clinches losing season for Mariners"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-d416e6ebedb01301"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Cole Carrigg homered twice and finished 4 for 5, Troy Johnston had three hits and two RBI, and the Colorado Rockies defeated the San Diego Padres 9-3 on Tuesday night to end an eight-game losing streak.",
+          "text": "Cole Carrigg homered twice and finished 4 for 5, Troy Johnston had three hits and two RBI, and the Colorado Rockies defeated the San Diego Padres 9-3 on Tuesday night to end an eight-game losing streak.",
+          "entities": [],
+          "occurredAt": "2026-09-16T00:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 11.35,
+          "freshnessBasis": "Highlightly final: San Diego Padres 3, Colorado Rockies 9.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816955"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-15",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816955"
+            }
+          ],
+          "id": "a415-9cfccf62b678578f",
+          "feedRank": 3,
+          "compactHeadline": "Cole Carrigg goes 4 for 5 and the Rockies defeat the Padres 9-3 to end their 8-game losing streak"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-eb158e4ca779653e"
           ],
           "type": "RESULT",
@@ -58,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.77,
+          "ageHours": 12.27,
           "freshnessBasis": "Highlightly final: San Francisco Giants 10, St. Louis Cardinals 3.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +148,11 @@
             }
           ],
           "id": "a415-2419c7e9413f1cc9",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Bryce Eldridge drives in 3 runs as the Giants cruise to a 10-3 win over Cardinals"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-9c66e75673331536"
           ],
@@ -93,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
+          "ageHours": 11.85,
           "freshnessBasis": "Highlightly final: Kansas City Royals 2, Houston Astros 4.",
           "status": "active",
           "sourceUrls": [
@@ -113,11 +183,11 @@
             }
           ],
           "id": "a415-894b32e3feaf3cd6",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Jeremy Peña hits 2 early homers, Yordan Alvarez hits 39th as Astros beat Royals 4-2"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-af745ceeaff22f21"
           ],
@@ -128,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.44,
+          "ageHours": 11.93,
           "freshnessBasis": "Highlightly final: Boston Red Sox 2, Texas Rangers 4.",
           "status": "active",
           "sourceUrls": [
@@ -148,78 +218,8 @@
             }
           ],
           "id": "a415-c08d92dc0a74600e",
-          "feedRank": 4,
-          "compactHeadline": "Jacob deGrom strikes out 8 to lead Rangers over Red Sox 4-2 in series between playoff contenders"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-4a5144920ff16454"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Spencer Torkelson hit a three-run homer, Drew Anderson pitched five shutout innings and the Detroit Tigers won their sixth straight game by thumping the Toronto Blue Jays 10-1 on Tuesday night.",
-          "text": "Spencer Torkelson hit a three-run homer, Drew Anderson pitched five shutout innings and the Detroit Tigers won their sixth straight game by thumping the Toronto Blue Jays 10-1 on Tuesday night.",
-          "entities": [],
-          "occurredAt": "2026-09-15T23:07:00Z",
-          "timePrecision": "exact",
-          "ageHours": 5.41,
-          "freshnessBasis": "Highlightly final: Detroit Tigers 10, Toronto Blue Jays 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816946"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-15",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816946"
-            }
-          ],
-          "id": "a415-b3cfb6c765644843",
-          "feedRank": 5,
-          "compactHeadline": "Spencer Torkelson hits 3-run homer as Tigers thump Blue Jays 10-1 to win 6th straight"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-9fad893a40318375"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Max Fried earned his first victory since April 27, backed by home runs from Cody Bellinger and Spencer Jones that helped the New York Yankees keep pace in the AL East race with an 8-1 win over...",
-          "text": "Max Fried earned his first victory since April 27, backed by home runs from Cody Bellinger and Spencer Jones that helped the New York Yankees keep pace in the AL East race with an 8-1 win over...",
-          "entities": [],
-          "occurredAt": "2026-09-15T23:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.86,
-          "freshnessBasis": "Highlightly final: New York Yankees 8, Minnesota Twins 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816953"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-15",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816953"
-            }
-          ],
-          "id": "a415-0256221924fd3297",
           "feedRank": 6,
-          "compactHeadline": "Fried gets first win since April, Yankees overpower Twins 8-1 with homers by Bellinger, Jones"
+          "compactHeadline": "Jacob deGrom strikes out 8 to lead Rangers over Red Sox 4-2 in series between playoff contenders"
         }
       ]
     },
@@ -230,6 +230,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-b8d0f6fdae358067"
+          ],
+          "type": "RECORD",
+          "priority": 82,
+          "headline": "Prescott needs four TDs to pass Tony Romo in the record book, so we sought the best moments from those who are helping him make history.",
+          "text": "Prescott needs four TDs to pass Tony Romo in the record book, so we sought the best moments from those who are helping him make history.",
+          "entities": [],
+          "occurredAt": "2026-09-16T10:13:43Z",
+          "timePrecision": "exact",
+          "ageHours": 1.79,
+          "freshnessBasis": "Prescott needs four TDs to pass Tony Romo in the record book, so we sought the best moments from those who are helping him make history.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49940226/nfl-dallas-cowboys-dak-prescott-tony-romo-touchdowns-passes-all-record"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49940226/nfl-dallas-cowboys-dak-prescott-tony-romo-touchdowns-passes-all-record"
+            }
+          ],
+          "id": "a415-7496ca73fa691919",
+          "feedRank": 7,
+          "compactHeadline": "Cowboys' TD record: I caught a TD pass from Dak Prescott"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-b9829c1c763165c0"
           ],
           "type": "INJURY",
@@ -237,9 +266,9 @@
           "headline": "The Texans signed former first-round pick Kenneth Murray to their practice squad Tuesday in the wake of starting linebacker Henry To'oTo'o landing on injured reserve.",
           "text": "The Texans signed former first-round pick Kenneth Murray to their practice squad Tuesday in the wake of starting linebacker Henry To'oTo'o landing on injured reserve.",
           "entities": [],
-          "occurredAt": "2026-09-16T02:08:14Z",
+          "occurredAt": "2026-09-16T10:37:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.39,
+          "ageHours": 1.4,
           "freshnessBasis": "The Texans signed former first-round pick Kenneth Murray to their practice squad Tuesday in the wake of starting linebacker Henry To'oTo'o landing on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -253,11 +282,40 @@
             }
           ],
           "id": "a415-4a01678bcc78d2a4",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Texans sign LB Kenneth Murray to practice squad"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-812612e1a21432cb"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "The Broncos are 4-8 in September under Sean Payton after Monday's loss to the Chiefs. And they now face five 2025 playoff teams in a row.",
+          "text": "The Broncos are 4-8 in September under Sean Payton after Monday's loss to the Chiefs. And they now face five 2025 playoff teams in a row.",
+          "entities": [],
+          "occurredAt": "2026-09-16T10:00:04Z",
+          "timePrecision": "exact",
+          "ageHours": 2.02,
+          "freshnessBasis": "The Broncos are 4-8 in September under Sean Payton after Monday's loss to the Chiefs. And they now face five 2025 playoff teams in a row.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49950484/denver-broncos-slow-starts-sean-payton-tough-six-game-stretch"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49950484/denver-broncos-slow-starts-sean-payton-tough-six-game-stretch"
+            }
+          ],
+          "id": "a415-beaaa3a49bb0ef03",
+          "feedRank": 9,
+          "compactHeadline": "Broncos face tough opening stretch, try to avoid slow start"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-502250cc9b7073c5"
           ],
@@ -268,7 +326,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:59:10Z",
           "timePrecision": "exact",
-          "ageHours": 6.54,
+          "ageHours": 14.03,
           "freshnessBasis": "The Panthers waived receiver Jimmy Horn Jr. on Tuesday and signed Tyrel Dodson from the practice squad.",
           "status": "active",
           "sourceUrls": [
@@ -282,11 +340,11 @@
             }
           ],
           "id": "a415-19ac7b6d6376a5b3",
-          "feedRank": 8,
+          "feedRank": 10,
           "compactHeadline": "Panthers waive WR Horn, sign LB Dodson from practice squad"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-29b1fc6861636d29"
           ],
@@ -297,7 +355,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T19:41:54Z",
           "timePrecision": "exact",
-          "ageHours": 8.83,
+          "ageHours": 16.32,
           "freshnessBasis": "The Cleveland Browns placed running back Dylan Sampson on injured reserve with a knee injury, the team announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -311,95 +369,37 @@
             }
           ],
           "id": "a415-582c0cf17fe2552d",
-          "feedRank": 9,
-          "compactHeadline": "Browns place RB Sampson on injured reserve with knee injury"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-29679030ed4d0dd1"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "text": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "entities": [],
-          "occurredAt": "2026-09-15T14:21:20Z",
-          "timePrecision": "exact",
-          "ageHours": 14.17,
-          "freshnessBasis": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49742016/2026-win-rates-team-player-rankings-pass-rush-run-stop-blocking"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49742016/2026-win-rates-team-player-rankings-pass-rush-run-stop-blocking"
-            }
-          ],
-          "id": "a415-dcde4a422d8ea634",
-          "feedRank": 10,
-          "compactHeadline": "2026 NFL pass rush, run stop, blocking win rate rankings"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-45c9b27d70d1c77e"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Los Angeles Chargers, depleted at receiver after a loss to the Arizona Cardinals, are signing Marquez Valdes-Scantling, 31, to its practice squad, a source told ESPN's Jeremy Fowler, adding a veteran who was a 2018 fifth-round choice from USF.",
-          "text": "The Los Angeles Chargers, depleted at receiver after a loss to the Arizona Cardinals, are signing Marquez Valdes-Scantling, 31, to its practice squad, a source told ESPN's Jeremy Fowler, adding a veteran who was a 2018 fifth-round choice from USF.",
-          "entities": [],
-          "occurredAt": "2026-09-16T04:16:25Z",
-          "timePrecision": "exact",
-          "ageHours": 0.25,
-          "freshnessBasis": "The Los Angeles Chargers, depleted at receiver after a loss to the Arizona Cardinals, are signing Marquez Valdes-Scantling, 31, to its practice squad, a source told ESPN's Jeremy Fowler, adding a veteran who was a 2018 fifth-round choice from USF.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49953448/chargers-signing-valdes-scantling-practice-squad"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49953448/chargers-signing-valdes-scantling-practice-squad"
-            }
-          ],
-          "id": "a415-462b86c7607d4f4d",
           "feedRank": 11,
-          "compactHeadline": "Source: Chargers signing Valdes-Scantling to practice squad"
+          "compactHeadline": "Browns place RB Sampson on injured reserve with knee injury"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-57a49ffe4c38df91"
+            "cand-fe56179b98133d68"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "The transfer of shares from New York Giants co-owners Steve, Laurie and Jonathan Tisch to their children's trusts is \"done,\" Carolyn Tisch Blodgett told Front Office Sports at an event in New York on Tuesday.",
-          "text": "The transfer of shares from New York Giants co-owners Steve, Laurie and Jonathan Tisch to their children's trusts is \"done,\" Carolyn Tisch Blodgett told Front Office Sports at an event in New York on Tuesday.",
+          "headline": "The NFL has long had a significant African presence, but no country is represented quite like Nigeria.",
+          "text": "The NFL has long had a significant African presence, but no country is represented quite like Nigeria.",
           "entities": [],
-          "occurredAt": "2026-09-16T00:00:17Z",
+          "occurredAt": "2026-09-16T10:56:15Z",
           "timePrecision": "exact",
-          "ageHours": 4.52,
-          "freshnessBasis": "The transfer of shares from New York Giants co-owners Steve, Laurie and Jonathan Tisch to their children's trusts is \"done,\" Carolyn Tisch Blodgett told Front Office Sports at an event in New York on Tuesday.",
+          "ageHours": 1.08,
+          "freshnessBasis": "The NFL has long had a significant African presence, but no country is represented quite like Nigeria.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49952859/tisch-blodgett-transfer-giants-ownership-shares-done"
+            "https://www.espn.com/espn/story/_/id/49955429/njoku-nwosu-emmanwori-more-10-nfl-players-nigerian-origin-watch-season"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49952859/tisch-blodgett-transfer-giants-ownership-shares-done"
+              "url": "https://www.espn.com/espn/story/_/id/49955429/njoku-nwosu-emmanwori-more-10-nfl-players-nigerian-origin-watch-season"
             }
           ],
-          "id": "a415-19d5caf2885edde9",
+          "id": "a415-5bfedc55d1fdf4cd",
           "feedRank": 12,
-          "compactHeadline": "Tisch Blodgett: Transfer of Giants ownership shares 'done'"
+          "compactHeadline": "Njoku, Nwosu, Emmanwori, and more - 10 NFL players of Nigerian origin to watch this season"
         }
       ]
     },
@@ -417,9 +417,9 @@
           "headline": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "text": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "entities": [],
-          "occurredAt": "2026-09-16T02:00:08Z",
+          "occurredAt": "2026-09-16T11:12:47Z",
           "timePrecision": "exact",
-          "ageHours": 2.52,
+          "ageHours": 0.8,
           "freshnessBasis": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -439,6 +439,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-415a68e5c048a2af"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
+          "text": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
+          "entities": [],
+          "occurredAt": "2026-09-16T11:13:40Z",
+          "timePrecision": "exact",
+          "ageHours": 0.79,
+          "freshnessBasis": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/49941983/clippers-raptors-complete-kawhi-leonard-trade-sources-say"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/49941983/clippers-raptors-complete-kawhi-leonard-trade-sources-say"
+            }
+          ],
+          "id": "a415-5b6c303ac70ff107",
+          "feedRank": 14,
+          "compactHeadline": "Clippers, Raptors complete delayed Kawhi Leonard trade"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-6cf64d9dfa445730"
           ],
           "type": "TRADE",
@@ -446,9 +475,9 @@
           "headline": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia for him, saying it's understandable.",
           "text": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia for him, saying it's understandable.",
           "entities": [],
-          "occurredAt": "2026-09-15T23:14:30Z",
+          "occurredAt": "2026-09-16T11:13:19Z",
           "timePrecision": "exact",
-          "ageHours": 5.28,
+          "ageHours": 0.8,
           "freshnessBasis": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia for him, saying it's understandable.",
           "status": "active",
           "sourceUrls": [
@@ -462,66 +491,37 @@
             }
           ],
           "id": "a415-6133eea7336f5f58",
-          "feedRank": 14,
-          "compactHeadline": "Paul George ready to prove self in wake of controversial trade"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-f1e655b660bf0d30"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "NBA commissioner Adam Silver said the league looked at similar cases before taking away five first-round draft picks from the LA Clippers for circumventing salary cap rules.",
-          "text": "NBA commissioner Adam Silver said the league looked at similar cases before taking away five first-round draft picks from the LA Clippers for circumventing salary cap rules.",
-          "entities": [],
-          "occurredAt": "2026-09-16T00:06:12Z",
-          "timePrecision": "exact",
-          "ageHours": 4.42,
-          "freshnessBasis": "NBA commissioner Adam Silver said the league looked at similar cases before taking away five first-round draft picks from the LA Clippers for circumventing salary cap rules.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/49951012/nba-weighed-precedent-punishing-clippers-salary-cap-case"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/49951012/nba-weighed-precedent-punishing-clippers-salary-cap-case"
-            }
-          ],
-          "id": "a415-66bc7b9bbdd16370",
           "feedRank": 15,
-          "compactHeadline": "Silver: Clippers earned 'appropriate consequences' in Kawhi case"
+          "compactHeadline": "Paul George ready to prove self in wake of controversial trade"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-eb426a4643ca120d"
+            "cand-6792eea558a3990b"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Sophie Cunningham has discussed the soon-to-be-vacant WNBA commissioner's job with Adam Silver after the NBA commissioner reached out to her.",
-          "text": "Sophie Cunningham has discussed the soon-to-be-vacant WNBA commissioner's job with Adam Silver after the NBA commissioner reached out to her.",
+          "headline": "Longtime NBA forward Taj Gibson is retiring after 17 seasons in the league and joining the Chicago Bulls coaching staff as an assistant.",
+          "text": "Longtime NBA forward Taj Gibson is retiring after 17 seasons in the league and joining the Chicago Bulls coaching staff as an assistant.",
           "entities": [],
-          "occurredAt": "2026-09-15T17:35:29Z",
+          "occurredAt": "2026-09-16T11:14:16Z",
           "timePrecision": "exact",
-          "ageHours": 10.93,
-          "freshnessBasis": "Sophie Cunningham has discussed the soon-to-be-vacant WNBA commissioner's job with Adam Silver after the NBA commissioner reached out to her.",
+          "ageHours": 0.78,
+          "freshnessBasis": "Longtime NBA forward Taj Gibson is retiring after 17 seasons in the league and joining the Chicago Bulls coaching staff as an assistant.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/wnba/story/_/id/49949851/sophie-cunningham-talked-adam-silver-next-wnba-commissioner"
+            "https://www.espn.com/nba/story/_/id/49942221/taj-gibson-announces-retirement-joins-bulls-assistant-coach"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nba",
-              "url": "https://www.espn.com/wnba/story/_/id/49949851/sophie-cunningham-talked-adam-silver-next-wnba-commissioner"
+              "url": "https://www.espn.com/nba/story/_/id/49942221/taj-gibson-announces-retirement-joins-bulls-assistant-coach"
             }
           ],
-          "id": "a415-9063e2612f2c970a",
+          "id": "a415-5905a33402e7538e",
           "feedRank": 16,
-          "compactHeadline": "Sophie Cunningham: I talked with Adam Silver about next WNBA commissioner"
+          "compactHeadline": "Taj Gibson announces retirement, joins Bulls as assistant coach"
         }
       ]
     },
@@ -532,6 +532,93 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-819e64ba49446ed5"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
+          "text": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-09-16T10:45:05Z",
+          "timePrecision": "exact",
+          "ageHours": 1.27,
+          "freshnessBasis": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49949878/wild-sign-head-coach-john-hynes-multiyear-extension"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49949878/wild-sign-head-coach-john-hynes-multiyear-extension"
+            }
+          ],
+          "id": "a415-25a5b9e288e2a6ad",
+          "feedRank": 17,
+          "compactHeadline": "Wild sign coach John Hynes to multiyear extension"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-34704b39f7a2e5a9"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "The New Jersey Devils signed forward Luke Evangelista, 24, to a five-year contract extension Tuesday night, securing his place among the club's deep forward group after he was acquired from the Nashville Predators earlier this month for draft picks.",
+          "text": "The New Jersey Devils signed forward Luke Evangelista, 24, to a five-year contract extension Tuesday night, securing his place among the club's deep forward group after he was acquired from the Nashville Predators earlier this month for draft picks.",
+          "entities": [],
+          "occurredAt": "2026-09-16T05:36:41Z",
+          "timePrecision": "exact",
+          "ageHours": 6.41,
+          "freshnessBasis": "The New Jersey Devils signed forward Luke Evangelista, 24, to a five-year contract extension Tuesday night, securing his place among the club's deep forward group after he was acquired from the Nashville Predators earlier this month for draft picks.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49954879/new-jersey-devils-sign-luke-evangelista-5-year-extension"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49954879/new-jersey-devils-sign-luke-evangelista-5-year-extension"
+            }
+          ],
+          "id": "a415-f42335603745259c",
+          "feedRank": 18,
+          "compactHeadline": "New Jersey Devils sign Luke Evangelista to 5-year extension"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-b47e31a798b1d893"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "Forward Justin Sourdif, 24, a native of Richmond, British Columbia, who had 15 goals and 35 points in 78 games last season for Washington, signed with the Capitals on Tuesday on an eight-year contract worth $6.35 million annually.",
+          "text": "Forward Justin Sourdif, 24, a native of Richmond, British Columbia, who had 15 goals and 35 points in 78 games last season for Washington, signed with the Capitals on Tuesday on an eight-year contract worth $6.35 million annually.",
+          "entities": [],
+          "occurredAt": "2026-09-16T05:41:27Z",
+          "timePrecision": "exact",
+          "ageHours": 6.33,
+          "freshnessBasis": "Forward Justin Sourdif, 24, a native of Richmond, British Columbia, who had 15 goals and 35 points in 78 games last season for Washington, signed with the Capitals on Tuesday on an eight-year contract worth $6.35 million annually.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49954948/capitals-sign-justin-sourdif-24-eight-year-contract"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49954948/capitals-sign-justin-sourdif-24-eight-year-contract"
+            }
+          ],
+          "id": "a415-897a6c13d64386d3",
+          "feedRank": 19,
+          "compactHeadline": "Capitals sign Justin Sourdif, 24, to eight-year contract"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-64ed4ffe9d9f1d73"
           ],
           "type": "SIGNING",
@@ -539,9 +626,9 @@
           "headline": "Veteran forward Jordan Staal, 38, who captained the Carolina Hurricanes to a Stanley Cup title in June, winning the Conn Smythe Trophy for postseason MVP along the way, signed a one-year contract extension with the club late Tuesday night.",
           "text": "Veteran forward Jordan Staal, 38, who captained the Carolina Hurricanes to a Stanley Cup title in June, winning the Conn Smythe Trophy for postseason MVP along the way, signed a one-year contract extension with the club late Tuesday night.",
           "entities": [],
-          "occurredAt": "2026-09-16T04:14:23Z",
+          "occurredAt": "2026-09-16T05:30:48Z",
           "timePrecision": "exact",
-          "ageHours": 0.28,
+          "ageHours": 6.5,
           "freshnessBasis": "Veteran forward Jordan Staal, 38, who captained the Carolina Hurricanes to a Stanley Cup title in June, winning the Conn Smythe Trophy for postseason MVP along the way, signed a one-year contract extension with the club late Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -555,11 +642,40 @@
             }
           ],
           "id": "a415-e6a5ded753af13da",
-          "feedRank": 17,
+          "feedRank": 20,
           "compactHeadline": "Champion Hurricanes give captain Jordan Staal, 38, new deal"
         },
         {
-          "rank": 2,
+          "rank": 5,
+          "candidateIds": [
+            "cand-3d73fd2f9e6849b0"
+          ],
+          "type": "SIGNING",
+          "priority": 76,
+          "headline": "The Washington Capitals have re-signed forward Ryan Leonard to an eight-year, $84 million contract extension, the team announced Tuesday.",
+          "text": "The Washington Capitals have re-signed forward Ryan Leonard to an eight-year, $84 million contract extension, the team announced Tuesday.",
+          "entities": [],
+          "occurredAt": "2026-09-16T04:34:44Z",
+          "timePrecision": "exact",
+          "ageHours": 7.44,
+          "freshnessBasis": "The Washington Capitals have re-signed forward Ryan Leonard to an eight-year, $84 million contract extension, the team announced Tuesday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49949144/capitals-re-sign-ryan-leonard-8-year-84-million-extension"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49949144/capitals-re-sign-ryan-leonard-8-year-84-million-extension"
+            }
+          ],
+          "id": "a415-aa0525cba15f0088",
+          "feedRank": 21,
+          "compactHeadline": "Capitals re-sign Ryan Leonard to 8-year, $84 million extension"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-6dacbc0dbb76efde"
           ],
@@ -570,7 +686,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T03:53:23Z",
           "timePrecision": "exact",
-          "ageHours": 0.63,
+          "ageHours": 8.13,
           "freshnessBasis": "After creating salary-cap space with the release of Chris Kreider, the Anaheim Ducks on Tuesday signed Cutter Gauthier to a six-year contract, with GM Pat Verbeek saying in a statement that the 22-year-old left wing is \"a major part of our young core.\"",
           "status": "active",
           "sourceUrls": [
@@ -584,95 +700,8 @@
             }
           ],
           "id": "a415-096ce38371bcc649",
-          "feedRank": 18,
+          "feedRank": 22,
           "compactHeadline": "Anaheim Ducks sign Cutter Gauthier, 22, to six-year contract"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-9b4bfd5570823f18"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Senators forward Drake Batherson has signed an eight-year, $86 million extension through the 2034-35 season.",
-          "text": "Senators forward Drake Batherson has signed an eight-year, $86 million extension through the 2034-35 season.",
-          "entities": [],
-          "occurredAt": "2026-09-15T16:38:20Z",
-          "timePrecision": "exact",
-          "ageHours": 11.89,
-          "freshnessBasis": "Senators forward Drake Batherson has signed an eight-year, $86 million extension through the 2034-35 season.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49949196/drake-batherson-signs-8-year-86m-extension-senators"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49949196/drake-batherson-signs-8-year-86m-extension-senators"
-            }
-          ],
-          "id": "a415-f3955a61c9c85c8b",
-          "feedRank": 19,
-          "compactHeadline": "Drake Batherson signs 8-year, $86M extension with Senators"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-f6f948dca6d821ff"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
-          "text": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
-          "entities": [],
-          "occurredAt": "2026-09-15T16:15:05Z",
-          "timePrecision": "exact",
-          "ageHours": 12.27,
-          "freshnessBasis": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49949878/wild-sign-head-coach-john-hynes-multiyear-extension"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49949878/wild-sign-head-coach-john-hynes-multiyear-extension"
-            }
-          ],
-          "id": "a415-a5ad841a091538e7",
-          "feedRank": 20,
-          "compactHeadline": "Wild sign head coach John Hynes to multiyear extension"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-dc4954342c1a7ce9"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Blackhawks named Connor Bedard, 21, as captain, the second-youngest captain in franchise history. Jonathan Toews was 20 when he received the honor.",
-          "text": "The Blackhawks named Connor Bedard, 21, as captain, the second-youngest captain in franchise history. Jonathan Toews was 20 when he received the honor.",
-          "entities": [],
-          "occurredAt": "2026-09-15T22:46:41Z",
-          "timePrecision": "exact",
-          "ageHours": 5.75,
-          "freshnessBasis": "The Blackhawks named Connor Bedard, 21, as captain, the second-youngest captain in franchise history. Jonathan Toews was 20 when he received the honor.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49949169/blackhawks-name-bedard-21-franchise-2nd-youngest-captain"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49949169/blackhawks-name-bedard-21-franchise-2nd-youngest-captain"
-            }
-          ],
-          "id": "a415-374476dcd2e49c45",
-          "feedRank": 21,
-          "compactHeadline": "Blackhawks name Bedard, 21, franchise's 2nd-youngest captain"
         }
       ]
     },
@@ -683,6 +712,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-057cdc0f26157979"
+          ],
+          "type": "SUSPENSION",
+          "priority": 64,
+          "headline": "Chelsea midfielder Cole Palmer was temporarily suspended from Twitch on Tuesday after streaming EA Sports FC 27 before the game's release.",
+          "text": "Chelsea midfielder Cole Palmer was temporarily suspended from Twitch on Tuesday after streaming EA Sports FC 27 before the game's release.",
+          "entities": [],
+          "occurredAt": "2026-09-16T11:11:35Z",
+          "timePrecision": "exact",
+          "ageHours": 0.82,
+          "freshnessBasis": "Chelsea midfielder Cole Palmer was temporarily suspended from Twitch on Tuesday after streaming EA Sports FC 27 before the game's release.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49955946/cole-palmer-temporarily-suspended-twitch-streaming-ea-fc-27-early-unban-pls"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49955946/cole-palmer-temporarily-suspended-twitch-streaming-ea-fc-27-early-unban-pls"
+            }
+          ],
+          "id": "a415-e411170b5e7609d5",
+          "feedRank": 23,
+          "compactHeadline": "Cole Palmer temporarily suspended from Twitch after streaming EA FC 27 early: 'Unban me pls'"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-aec503ec588add34"
           ],
           "type": "RESULT",
@@ -692,7 +750,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 10.52,
+          "ageHours": 18.02,
           "freshnessBasis": "Highlightly final: Ipswich Town U21 4, Bromley U21 2.",
           "status": "active",
           "sourceUrls": [
@@ -706,11 +764,11 @@
             }
           ],
           "id": "a415-26511e4fcd9ba24f",
-          "feedRank": 22,
+          "feedRank": 24,
           "compactHeadline": "Ipswich Town U21 beat Bromley U21 4-2"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-34bfe44863ee6e8c"
           ],
@@ -721,7 +779,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 10.52,
+          "ageHours": 18.02,
           "freshnessBasis": "Highlightly final: Birmingham City U21 4, Gillingham Fc U21 0.",
           "status": "active",
           "sourceUrls": [
@@ -735,95 +793,37 @@
             }
           ],
           "id": "a415-4eeb18e0c894c966",
-          "feedRank": 23,
+          "feedRank": 25,
           "compactHeadline": "Birmingham City U21 beat Gillingham Fc U21 4-0"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-c355e6806c93f7cd"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Andoni Iraola has heaped praise on midfielder Dominik Szoboszlai after he scored a \"worldie\" in Liverpool's 3-1 victory over Tottenham Hotspur.",
-          "text": "Andoni Iraola has heaped praise on midfielder Dominik Szoboszlai after he scored a \"worldie\" in Liverpool's 3-1 victory over Tottenham Hotspur.",
-          "entities": [],
-          "occurredAt": "2026-09-15T23:10:29Z",
-          "timePrecision": "exact",
-          "ageHours": 5.35,
-          "freshnessBasis": "Andoni Iraola has heaped praise on midfielder Dominik Szoboszlai after he scored a \"worldie\" in Liverpool's 3-1 victory over Tottenham Hotspur.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49952647/andoni-iraola-lauds-dominik-szoboszlai-worldie-tottenham-win"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49952647/andoni-iraola-lauds-dominik-szoboszlai-worldie-tottenham-win"
-            }
-          ],
-          "id": "a415-e8ec2c3f09b9bc2b",
-          "feedRank": 24,
-          "compactHeadline": "Liverpool's Andoni Iraola lauds Dominik Szoboszlai for 'worldie' in Tottenham win"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-433034c0e55799d7"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jamie Carragher has compared Arsenal boss Mikel Arteta to Sir Alex Ferguson for the manner in which he criticised referees following the Gunners' 2-0 win over Sunderland.",
-          "text": "Jamie Carragher has compared Arsenal boss Mikel Arteta to Sir Alex Ferguson for the manner in which he criticised referees following the Gunners' 2-0 win over Sunderland.",
-          "entities": [],
-          "occurredAt": "2026-09-15T07:19:59Z",
-          "timePrecision": "exact",
-          "ageHours": 21.19,
-          "freshnessBasis": "Jamie Carragher has compared Arsenal boss Mikel Arteta to Sir Alex Ferguson for the manner in which he criticised referees following the Gunners' 2-0 win over Sunderland.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49947328/jamie-carragher-mikel-arteta-referee-rant-becoming-sir-alex-ferguson-premier-league-now"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49947328/jamie-carragher-mikel-arteta-referee-rant-becoming-sir-alex-ferguson-premier-league-now"
-            }
-          ],
-          "id": "a415-c59b6402cca6d4b1",
-          "feedRank": 25,
-          "compactHeadline": "Jamie Carragher on Mikel Arteta referee rant: 'Becoming Sir Alex Ferguson of Premier League now'"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-babd8fffad010e64"
+            "cand-5e9b3e7b1a8bbe80"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Things have gone from bad to worse this week for Man United, with defeats on and off the field. Victory against Brighton in midweek would go a long way to lifting the mood.",
-          "text": "Things have gone from bad to worse this week for Man United, with defeats on and off the field. Victory against Brighton in midweek would go a long way to lifting the mood.",
+          "headline": "The Lewis family have put another £120 million of capital into Tottenham, the Press Association understands.",
+          "text": "The Lewis family have put another £120 million of capital into Tottenham, the Press Association understands.",
           "entities": [],
-          "occurredAt": "2026-09-15T18:45:59Z",
+          "occurredAt": "2026-09-16T11:21:58Z",
           "timePrecision": "exact",
-          "ageHours": 9.76,
-          "freshnessBasis": "Things have gone from bad to worse this week for Man United, with defeats on and off the field. Victory against Brighton in midweek would go a long way to lifting the mood.",
+          "ageHours": 0.65,
+          "freshnessBasis": "The Lewis family have put another £120 million of capital into Tottenham, the Press Association understands.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49950304/manchester-united-jj-gabriel-fan-protests-manchester-derby-var-defeat-analysis-michael-carrick"
+            "https://www.espn.com/soccer/story/_/id/49955999/big-spending-tottenham-hotspur-get-120m-boost-owners-reports"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49950304/manchester-united-jj-gabriel-fan-protests-manchester-derby-var-defeat-analysis-michael-carrick"
+              "url": "https://www.espn.com/soccer/story/_/id/49955999/big-spending-tottenham-hotspur-get-120m-boost-owners-reports"
             }
           ],
-          "id": "a415-67e098ac4095d022",
+          "id": "a415-03760f5e02b1fc79",
           "feedRank": 26,
-          "compactHeadline": "Man United need wins after bad week of JJ Gabriel unrest, protests and derby drama"
+          "compactHeadline": "Big-spending Tottenham get £120m boost from owners - reports"
         }
       ]
     },
@@ -843,7 +843,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:53:21Z",
           "timePrecision": "exact",
-          "ageHours": 11.63,
+          "ageHours": 19.13,
           "freshnessBasis": "Real Salt Lake and U.S. midfielder Diego Luna is expected to be out for months and will likely undergo an arthroscopic procedure to determine the extent of a knee injury, sources confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -872,7 +872,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:30:57Z",
           "timePrecision": "exact",
-          "ageHours": 4.01,
+          "ageHours": 11.5,
           "freshnessBasis": "New Inter Miami head coach Cristian \"Kily\" González said he feels blessed at being given the opportunity to lead the club and coach Lionel Messi, after formerly taking up the role on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -892,7 +892,7 @@
         {
           "rank": 3,
           "candidateIds": [
-            "cand-c4383f4b5271dd59"
+            "cand-fded75dcc46b5c56"
           ],
           "type": "NEWS",
           "priority": 64,
@@ -901,18 +901,13 @@
           "entities": [],
           "occurredAt": "2026-09-15T20:40:15Z",
           "timePrecision": "exact",
-          "ageHours": 7.85,
+          "ageHours": 15.35,
           "freshnessBasis": "The NFL, NBA, MLB, NHL, MLS and their players' unions are urging state gambling regulators to combat escalating harassment and violent threats from sports bettors.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/betting/sports/story/_/id/49949715/nfl-nba-mlb-nhl-mls-urge-action-threats-bettors"
           ],
           "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/betting/sports/story/_/id/49949715/nfl-nba-mlb-nhl-mls-urge-action-threats-bettors"
-            },
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
@@ -934,7 +929,7 @@
               "url": "https://www.espn.com/betting/sports/story/_/id/49949715/nfl-nba-mlb-nhl-mls-urge-action-threats-bettors"
             }
           ],
-          "id": "a415-6e00c970b07051c5",
+          "id": "a415-151ac232037e5957",
           "feedRank": 29,
           "compactHeadline": "NFL, NBA, MLB, NHL, MLS urge action against threats from bettors"
         }
@@ -947,6 +942,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-839e48a96c69f4d1"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Strange happenings continue in college football, where long losing streaks have become a winning formula.",
+          "text": "Strange happenings continue in college football, where long losing streaks have become a winning formula.",
+          "entities": [],
+          "occurredAt": "2026-09-16T10:58:05Z",
+          "timePrecision": "exact",
+          "ageHours": 1.05,
+          "freshnessBasis": "Strange happenings continue in college football, where long losing streaks have become a winning formula.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49950811/college-football-bottom-10-week-2-oregon-ducks-list"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49950811/college-football-bottom-10-week-2-oregon-ducks-list"
+            }
+          ],
+          "id": "a415-12588695f08add46",
+          "feedRank": 30,
+          "compactHeadline": "College football Bottom 10 after Week 2: Oregon ducks onto list"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-6a84e34bc4f87d0b"
           ],
           "type": "INJURY",
@@ -956,7 +980,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:56:17Z",
           "timePrecision": "exact",
-          "ageHours": 6.59,
+          "ageHours": 14.08,
           "freshnessBasis": "Iowa could be without several offensive contributors Saturday as it wraps up non-league play by hosting Northern Iowa, including starting tight end DJ Vonnahme who was injured in last week's victory over Iowa State, coach Kirk Ferentz said on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -970,11 +994,11 @@
             }
           ],
           "id": "a415-bbfc4807d0c97fec",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "DJ Vonnahme likely to miss Iowa's game vs. Northern Iowa"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-5793ad2b8bac8d59"
           ],
@@ -985,7 +1009,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T19:27:30Z",
           "timePrecision": "exact",
-          "ageHours": 9.07,
+          "ageHours": 16.56,
           "freshnessBasis": "Oklahoma starting wideout Trell Harris will be out for the \"foreseeable future,\" Sooners coach Brent Venables said Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -999,11 +1023,11 @@
             }
           ],
           "id": "a415-30300c131c9395af",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "Oklahoma WR Harris out for 'foreseeable future,' says Venables"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-0a2df12aee80338f"
           ],
@@ -1014,7 +1038,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T15:06:44Z",
           "timePrecision": "exact",
-          "ageHours": 13.41,
+          "ageHours": 20.91,
           "freshnessBasis": "Washington State's Tony Freeman, the team's top returning receiver and kick-return specialist, has suffered a torn ACL and will miss the rest of the season.",
           "status": "active",
           "sourceUrls": [
@@ -1028,11 +1052,11 @@
             }
           ],
           "id": "a415-a8217fcdd398e367",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Washington State's Tony Freeman has torn ACL, out for season"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-2923404f3243b6ee"
           ],
@@ -1043,7 +1067,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:04:10Z",
           "timePrecision": "exact",
-          "ageHours": 5.45,
+          "ageHours": 12.95,
           "freshnessBasis": "Vanderbilt freshman quarterback Jared Curtis will start Saturday against NC State after accounting for three of the Commodores' four touchdowns in last weekend's 35-26 win over Delaware.",
           "status": "active",
           "sourceUrls": [
@@ -1057,11 +1081,11 @@
             }
           ],
           "id": "a415-2a86971ab7501b39",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "Vanderbilt freshman QB Jared Curtis to start vs. NC State"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-26aa41e61234a8f3"
           ],
@@ -1072,7 +1096,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:18:09Z",
           "timePrecision": "exact",
-          "ageHours": 12.22,
+          "ageHours": 19.72,
           "freshnessBasis": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
           "status": "active",
           "sourceUrls": [
@@ -1086,37 +1110,8 @@
             }
           ],
           "id": "a415-4dea83cbbeb749b7",
-          "feedRank": 34,
-          "compactHeadline": "College Football Playoff 2026: Bubble Watch after Week 2"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-a30c12a9ea2d53bb"
-          ],
-          "type": "RANKING",
-          "priority": 72,
-          "headline": "Ducks coach Dan Lanning said Monday that the loss to the unranked Cowboys was \"by far the worst performance that we've had since I've been here.\"",
-          "text": "Ducks coach Dan Lanning said Monday that the loss to the unranked Cowboys was \"by far the worst performance that we've had since I've been here.\"",
-          "entities": [],
-          "occurredAt": "2026-09-15T12:30:21Z",
-          "timePrecision": "exact",
-          "ageHours": 16.02,
-          "freshnessBasis": "Ducks coach Dan Lanning said Monday that the loss to the unranked Cowboys was \"by far the worst performance that we've had since I've been here.\"",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49946221/lanning-points-lack-leadership-oregon-start"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49946221/lanning-points-lack-leadership-oregon-start"
-            }
-          ],
-          "id": "a415-1be680fa647a768f",
           "feedRank": 35,
-          "compactHeadline": "Lanning points to 'lack of leadership' for Oregon's start"
+          "compactHeadline": "College Football Playoff 2026: Bubble Watch after Week 2"
         }
       ]
     }
@@ -1141,7 +1136,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 87,
+    "freshCandidateCount": 112,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
