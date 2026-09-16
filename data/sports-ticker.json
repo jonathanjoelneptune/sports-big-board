@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-16T20:30:58Z",
+  "generatedAt": "2026-09-16T21:01:45Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "fb097d8416e5533b1c55b90f28432689fabf5b7b45c4e5eee631269365eb5765",
+  "sourceCandidateHash": "85e0e33515615b9ba482dbaeca6ccdbf8c3ca30a3551ff40da98df47f495b4ca",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,41 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-6b06c548ab610743"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Drew Gilbert hit a two-run home run in the 10th inning, lifting the San Francisco Giants to a 6-5 victory over the St. Louis Cardinals on Wednesday afternoon.",
+          "text": "Drew Gilbert hit a two-run home run in the 10th inning, lifting the San Francisco Giants to a 6-5 victory over the St. Louis Cardinals on Wednesday afternoon.",
+          "entities": [],
+          "occurredAt": "2026-09-16T17:15:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.78,
+          "freshnessBasis": "Highlightly final: San Francisco Giants 6, St. Louis Cardinals 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816969"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-16",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816969"
+            }
+          ],
+          "id": "a415-0bddca5a21a9dae7",
+          "feedRank": 1,
+          "compactHeadline": "Drew Gilbert's two-run homer in the 10th lifts Giants to a 6-5 win over the Cardinals"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-924d1be1aad2fd48"
           ],
@@ -23,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:36:19Z",
           "timePrecision": "exact",
-          "ageHours": 0.91,
+          "ageHours": 1.42,
           "freshnessBasis": "\"I went right to the source,\" Pham said on Wednesday about his quick turnaround from injured list to cleanup hitter.",
           "status": "active",
           "sourceUrls": [
@@ -37,11 +72,11 @@
             }
           ],
           "id": "a415-10b97743134572ac",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "White Sox's Pham homers after Tuesday night elevator pitch to GM"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-92e4c93ce1adfd31"
           ],
@@ -52,7 +87,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 21.85,
+          "ageHours": 22.36,
           "freshnessBasis": "Highlightly final: Chicago White Sox 6, Cleveland Guardians 7.",
           "status": "active",
           "sourceUrls": [
@@ -66,11 +101,11 @@
             }
           ],
           "id": "a415-7dc3c93d887a1bc0",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Brayan Rocchio delivers walk-off as Cleveland Guardians beat Chicago White Sox 7-6"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-4b67566847f25a6f"
           ],
@@ -81,7 +116,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T01:38:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.88,
+          "ageHours": 19.4,
           "freshnessBasis": "Highlightly final: Seattle Mariners 1, Los Angeles Angels 2.",
           "status": "active",
           "sourceUrls": [
@@ -101,11 +136,11 @@
             }
           ],
           "id": "a415-48854b1d475b84ae",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Ryan Johnson and Josh Lowe deliver for Angels in 2-1 win that clinches losing season for Mariners"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-14f036a09b9052a3"
           ],
@@ -116,7 +151,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T17:34:36Z",
           "timePrecision": "exact",
-          "ageHours": 2.94,
+          "ageHours": 3.45,
           "freshnessBasis": "Minnesota Twins rookie shortstop Kaelen Culpepper was placed on the 10-day injured list with a strained left hamstring on Wednesday, interrupting his promising debut.",
           "status": "active",
           "sourceUrls": [
@@ -130,11 +165,11 @@
             }
           ],
           "id": "a415-e588965220c32a06",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Twins' shortstop Kaelen Culpepper to injured list with hamstring strain"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-9d4a5d255e080e47"
           ],
@@ -145,7 +180,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T16:26:48Z",
           "timePrecision": "exact",
-          "ageHours": 4.07,
+          "ageHours": 4.58,
           "freshnessBasis": "St. Louis activated rookie second baseman JJ Wetherholt from the 10-day injured list Wednesday morning before the Cardinals met the San Francisco Giants.",
           "status": "active",
           "sourceUrls": [
@@ -159,37 +194,8 @@
             }
           ],
           "id": "a415-a2a40fb3be217095",
-          "feedRank": 5,
-          "compactHeadline": "Cardinals activate rookie 2B JJ Wetherholt from injured list"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-8377efaadd0ff192"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Chicago White Sox 3, Cleveland Guardians 6.",
-          "text": "Highlightly final: Chicago White Sox 3, Cleveland Guardians 6.",
-          "entities": [],
-          "occurredAt": "2026-09-16T17:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.52,
-          "freshnessBasis": "Highlightly final: Chicago White Sox 3, Cleveland Guardians 6.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-16",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-48688e0a4468c2df",
           "feedRank": 6,
-          "compactHeadline": "Cleveland Guardians beat Chicago White Sox 6-3"
+          "compactHeadline": "Cardinals activate rookie 2B JJ Wetherholt from injured list"
         }
       ]
     },
@@ -209,7 +215,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T18:47:28Z",
           "timePrecision": "exact",
-          "ageHours": 1.73,
+          "ageHours": 2.24,
           "freshnessBasis": "Emmitt Smith acknowledged this week that Ravens running back Derrick Henry could surpass him as the league's rushing king.",
           "status": "active",
           "sourceUrls": [
@@ -238,7 +244,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T20:29:15Z",
           "timePrecision": "exact",
-          "ageHours": 0.03,
+          "ageHours": 0.54,
           "freshnessBasis": "Rookie cornerback Mansoor Delane, who aggravated a shoulder injury after recording his first career interception, is on track to play on \"Sunday Night Football\" against the Colts, coach Andy Reid says.",
           "status": "active",
           "sourceUrls": [
@@ -267,7 +273,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T20:06:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.41,
+          "ageHours": 0.93,
           "freshnessBasis": "The Seahawks ruled out QB Sam Darnold for Sunday's game against the Cardinals due to the glute injury he suffered in Wednesday's season-opening win.",
           "status": "active",
           "sourceUrls": [
@@ -296,7 +302,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T15:47:13Z",
           "timePrecision": "exact",
-          "ageHours": 4.73,
+          "ageHours": 5.24,
           "freshnessBasis": "Prescott needs four TDs to pass Tony Romo in the record book, so we sought the best moments from those who are helping him make history.",
           "status": "active",
           "sourceUrls": [
@@ -325,7 +331,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:34:55Z",
           "timePrecision": "exact",
-          "ageHours": 0.93,
+          "ageHours": 1.45,
           "freshnessBasis": "Vikings running back Jordan Mason was placed on injured reserve Wednesday after undergoing surgery to repair a fractured thumb.",
           "status": "active",
           "sourceUrls": [
@@ -354,7 +360,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T17:32:30Z",
           "timePrecision": "exact",
-          "ageHours": 2.97,
+          "ageHours": 3.49,
           "freshnessBasis": "Falcons coach Kevin Stefanski said he's \"not ruling anybody out\" when it comes to which QB is starting against the Panthers on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -389,7 +395,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:12:47Z",
           "timePrecision": "exact",
-          "ageHours": 9.3,
+          "ageHours": 9.82,
           "freshnessBasis": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -418,7 +424,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:13:40Z",
           "timePrecision": "exact",
-          "ageHours": 9.29,
+          "ageHours": 9.8,
           "freshnessBasis": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
           "status": "active",
           "sourceUrls": [
@@ -447,7 +453,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:13:19Z",
           "timePrecision": "exact",
-          "ageHours": 9.29,
+          "ageHours": 9.81,
           "freshnessBasis": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia for him, saying it's understandable.",
           "status": "active",
           "sourceUrls": [
@@ -476,7 +482,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:14:16Z",
           "timePrecision": "exact",
-          "ageHours": 9.28,
+          "ageHours": 9.79,
           "freshnessBasis": "Longtime NBA forward Taj Gibson is retiring after 17 seasons in the league and joining the Chicago Bulls coaching staff as an assistant.",
           "status": "active",
           "sourceUrls": [
@@ -511,7 +517,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T20:02:50Z",
           "timePrecision": "exact",
-          "ageHours": 0.47,
+          "ageHours": 0.98,
           "freshnessBasis": "Dylan Larkin will not skate with the Red Wings when training camp starts on Thursday due to an upper-body injury, the team announced Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -540,7 +546,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:49:08Z",
           "timePrecision": "exact",
-          "ageHours": 0.7,
+          "ageHours": 1.21,
           "freshnessBasis": "Mathew Barzal, the Islanders' leading scorer last season, is not expected to skate for a couple of weeks after aggravating a previous injury.",
           "status": "active",
           "sourceUrls": [
@@ -560,6 +566,35 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-5854afe9de59b091"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "Brent Burns arrived at training camp without his trademark unkempt whiskers, instead sporting a close-cropped beard, as well as a sterling white bridge.",
+          "text": "Brent Burns arrived at training camp without his trademark unkempt whiskers, instead sporting a close-cropped beard, as well as a sterling white bridge.",
+          "entities": [],
+          "occurredAt": "2026-09-16T20:46:08Z",
+          "timePrecision": "exact",
+          "ageHours": 0.26,
+          "freshnessBasis": "Brent Burns arrived at training camp without his trademark unkempt whiskers, instead sporting a close-cropped beard, as well as a sterling white bridge.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49959974/neatly-trimmed-brent-burns-sports-new-look-avs-open-camp"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49959974/neatly-trimmed-brent-burns-sports-new-look-avs-open-camp"
+            }
+          ],
+          "id": "a415-3650456579e3445a",
+          "feedRank": 19,
+          "compactHeadline": "Brent Burns sports new look as Avalanche open camp"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-eea0e5bc48444441"
           ],
           "type": "INJURY",
@@ -569,7 +604,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:51:18Z",
           "timePrecision": "exact",
-          "ageHours": 0.66,
+          "ageHours": 1.17,
           "freshnessBasis": "Veteran forward Jason Zucker is expected to miss the start of the season after having surgery to repair a sports hernia.",
           "status": "active",
           "sourceUrls": [
@@ -583,11 +618,11 @@
             }
           ],
           "id": "a415-bf7eaa7d627b644e",
-          "feedRank": 19,
+          "feedRank": 20,
           "compactHeadline": "Sabres' Jason Zucker to miss start of season after sports hernia surgery"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-819e64ba49446ed5"
           ],
@@ -598,7 +633,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T10:45:05Z",
           "timePrecision": "exact",
-          "ageHours": 9.76,
+          "ageHours": 10.28,
           "freshnessBasis": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -612,11 +647,11 @@
             }
           ],
           "id": "a415-25a5b9e288e2a6ad",
-          "feedRank": 20,
+          "feedRank": 21,
           "compactHeadline": "Wild sign coach John Hynes to multiyear extension"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-34704b39f7a2e5a9"
           ],
@@ -627,7 +662,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T05:36:41Z",
           "timePrecision": "exact",
-          "ageHours": 14.9,
+          "ageHours": 15.42,
           "freshnessBasis": "The New Jersey Devils signed forward Luke Evangelista, 24, to a five-year contract extension Tuesday night, securing his place among the club's deep forward group after he was acquired from the Nashville Predators earlier this month for draft picks.",
           "status": "active",
           "sourceUrls": [
@@ -641,37 +676,8 @@
             }
           ],
           "id": "a415-f42335603745259c",
-          "feedRank": 21,
-          "compactHeadline": "New Jersey Devils sign Luke Evangelista to 5-year extension"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-b47e31a798b1d893"
-          ],
-          "type": "SIGNING",
-          "priority": 76,
-          "headline": "Forward Justin Sourdif, 24, a native of Richmond, British Columbia, who had 15 goals and 35 points in 78 games last season for Washington, signed with the Capitals on Tuesday on an eight-year contract worth $6.35 million annually.",
-          "text": "Forward Justin Sourdif, 24, a native of Richmond, British Columbia, who had 15 goals and 35 points in 78 games last season for Washington, signed with the Capitals on Tuesday on an eight-year contract worth $6.35 million annually.",
-          "entities": [],
-          "occurredAt": "2026-09-16T05:41:27Z",
-          "timePrecision": "exact",
-          "ageHours": 14.83,
-          "freshnessBasis": "Forward Justin Sourdif, 24, a native of Richmond, British Columbia, who had 15 goals and 35 points in 78 games last season for Washington, signed with the Capitals on Tuesday on an eight-year contract worth $6.35 million annually.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49954948/capitals-sign-justin-sourdif-24-eight-year-contract"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49954948/capitals-sign-justin-sourdif-24-eight-year-contract"
-            }
-          ],
-          "id": "a415-897a6c13d64386d3",
           "feedRank": 22,
-          "compactHeadline": "Capitals sign Justin Sourdif, 24, to eight-year contract"
+          "compactHeadline": "New Jersey Devils sign Luke Evangelista to 5-year extension"
         }
       ]
     },
@@ -691,7 +697,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T18:53:02Z",
           "timePrecision": "exact",
-          "ageHours": 1.63,
+          "ageHours": 2.15,
           "freshnessBasis": "Chelsea striker João Pedro has withdrawn from the Brazil squad because of injury.",
           "status": "active",
           "sourceUrls": [
@@ -720,7 +726,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:11:35Z",
           "timePrecision": "exact",
-          "ageHours": 9.32,
+          "ageHours": 9.84,
           "freshnessBasis": "Chelsea midfielder Cole Palmer was temporarily suspended from Twitch on Tuesday after streaming EA Sports FC 27 before the game's release.",
           "status": "active",
           "sourceUrls": [
@@ -749,7 +755,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T15:42:02Z",
           "timePrecision": "exact",
-          "ageHours": 4.82,
+          "ageHours": 5.33,
           "freshnessBasis": "João Pedro called for a new nickname for Chelsea's in-form front three as he discussed his growing understanding with Cole Palmer and Morgan Rogers.",
           "status": "active",
           "sourceUrls": [
@@ -778,7 +784,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T13:51:15Z",
           "timePrecision": "exact",
-          "ageHours": 6.66,
+          "ageHours": 7.18,
           "freshnessBasis": "Is it time to give the VAR the red card, or does soccer actually need the red flag? The Manchester derby controversy could have been avoided with an on-field challenge.",
           "status": "active",
           "sourceUrls": [
@@ -807,7 +813,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T13:21:28Z",
           "timePrecision": "exact",
-          "ageHours": 7.16,
+          "ageHours": 7.67,
           "freshnessBasis": "The referee and VAR were correct not to issue a red card to Arsenal defender Gabriel for his kick to the head of Chelsea goalkeeper Emiliano Martínez earlier this month, a panel has found.",
           "status": "active",
           "sourceUrls": [
@@ -823,6 +829,35 @@
           "id": "a415-fb619b9286109f73",
           "feedRank": 27,
           "compactHeadline": "VAR right not to send off Arsenal's Gabriel for Emi Martínez kick, panel finds"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
+            "cand-c26d3c34f979d0b0"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Leading sports barrister Nick De Marco has highlighted the \"most incredible delay\" in reaching an outcome in the key Manchester City legal case.",
+          "text": "Leading sports barrister Nick De Marco has highlighted the \"most incredible delay\" in reaching an outcome in the key Manchester City legal case.",
+          "entities": [],
+          "occurredAt": "2026-09-16T12:18:20Z",
+          "timePrecision": "exact",
+          "ageHours": 8.72,
+          "freshnessBasis": "Leading sports barrister Nick De Marco has highlighted the \"most incredible delay\" in reaching an outcome in the key Manchester City legal case.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49956250/man-city-115-charges-legal-case-premier-league-lord-david-pannick-nick-de-marco"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49956250/man-city-115-charges-legal-case-premier-league-lord-david-pannick-nick-de-marco"
+            }
+          ],
+          "id": "a415-63de2ca8c52f184e",
+          "feedRank": 28,
+          "compactHeadline": "Leading sports barrister highlights 'incredible delay' on two-year anniversary of Man City hearing"
         }
       ]
     },
@@ -842,7 +877,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:30:57Z",
           "timePrecision": "exact",
-          "ageHours": 20.0,
+          "ageHours": 20.51,
           "freshnessBasis": "New Inter Miami head coach Cristian \"Kily\" González said he feels blessed at being given the opportunity to lead the club and coach Lionel Messi, after formerly taking up the role on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -856,47 +891,8 @@
             }
           ],
           "id": "a415-d22205fbf9d641e8",
-          "feedRank": 28,
-          "compactHeadline": "Cristian 'Kily' González arrives to take charge of Messi, Miami"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
-            "cand-1fa64b6ba37d32f2"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The NFL, NBA, MLB, NHL, MLS and their players' unions are urging state gambling regulators to combat escalating harassment and violent threats from sports bettors.",
-          "text": "The NFL, NBA, MLB, NHL, MLS and their players' unions are urging state gambling regulators to combat escalating harassment and violent threats from sports bettors.",
-          "entities": [],
-          "occurredAt": "2026-09-15T20:40:15Z",
-          "timePrecision": "exact",
-          "ageHours": 23.85,
-          "freshnessBasis": "The NFL, NBA, MLB, NHL, MLS and their players' unions are urging state gambling regulators to combat escalating harassment and violent threats from sports bettors.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/betting/sports/story/_/id/49949715/nfl-nba-mlb-nhl-mls-urge-action-threats-bettors"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/betting/sports/story/_/id/49949715/nfl-nba-mlb-nhl-mls-urge-action-threats-bettors"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/betting/sports/story/_/id/49949715/nfl-nba-mlb-nhl-mls-urge-action-threats-bettors"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/betting/sports/story/_/id/49949715/nfl-nba-mlb-nhl-mls-urge-action-threats-bettors"
-            }
-          ],
-          "id": "a415-acff2421cc0d62a3",
           "feedRank": 29,
-          "compactHeadline": "NFL, NBA, MLB, NHL, MLS urge action against threats from bettors"
+          "compactHeadline": "Cristian 'Kily' González arrives to take charge of Messi, Miami"
         }
       ]
     },
@@ -916,7 +912,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T10:58:05Z",
           "timePrecision": "exact",
-          "ageHours": 9.55,
+          "ageHours": 10.06,
           "freshnessBasis": "Strange happenings continue in college football, where long losing streaks have become a winning formula.",
           "status": "active",
           "sourceUrls": [
@@ -945,7 +941,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T15:24:06Z",
           "timePrecision": "exact",
-          "ageHours": 5.11,
+          "ageHours": 5.63,
           "freshnessBasis": "The LSU-Ole Miss rivalry took another dramatic turn Tuesday when Tigers star defensive end Princewill Umanmielen was served with court papers related to the Rebels' lawsuit against him, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -969,13 +965,13 @@
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Florida State coach Mike Norvell said he had no idea a social media post showing a box truck outside his home went viral until he was asked about it during his Wednesday press conference, saying his entire focus has been on preparing to play at Alabama.",
-          "text": "Florida State coach Mike Norvell said he had no idea a social media post showing a box truck outside his home went viral until he was asked about it during his Wednesday press conference, saying his entire focus has been on preparing to play at Alabama.",
+          "headline": "Florida State coach Mike Norvell said he had no idea a social media post showing a box truck outside his home went viral until he was asked about it during his Wednesday news conference, saying his entire focus has been on preparing to play at Alabama.",
+          "text": "Florida State coach Mike Norvell said he had no idea a social media post showing a box truck outside his home went viral until he was asked about it during his Wednesday news conference, saying his entire focus has been on preparing to play at Alabama.",
           "entities": [],
-          "occurredAt": "2026-09-16T20:21:43Z",
+          "occurredAt": "2026-09-16T20:57:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.15,
-          "freshnessBasis": "Florida State coach Mike Norvell said he had no idea a social media post showing a box truck outside his home went viral until he was asked about it during his Wednesday press conference, saying his entire focus has been on preparing to play at Alabama.",
+          "ageHours": 0.07,
+          "freshnessBasis": "Florida State coach Mike Norvell said he had no idea a social media post showing a box truck outside his home went viral until he was asked about it during his Wednesday news conference, saying his entire focus has been on preparing to play at Alabama.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/college-football/story/_/id/49959762/florida-state-norvell-downplays-moving-truck-post-focused-alabama"
@@ -1003,7 +999,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:33:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.96,
+          "ageHours": 1.47,
           "freshnessBasis": "Oregon quarterback Dante Moore said the team is 'on the same page' after a player-led meeting in the wake of last week's upset loss at Oklahoma State.",
           "status": "active",
           "sourceUrls": [
@@ -1032,7 +1028,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:56:17Z",
           "timePrecision": "exact",
-          "ageHours": 22.58,
+          "ageHours": 23.09,
           "freshnessBasis": "Iowa could be without several offensive contributors Saturday as it wraps up non-league play by hosting Northern Iowa, including starting tight end DJ Vonnahme who was injured in last week's victory over Iowa State, coach Kirk Ferentz said on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -1061,7 +1057,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:04:20Z",
           "timePrecision": "exact",
-          "ageHours": 1.44,
+          "ageHours": 1.96,
           "freshnessBasis": "University of Miami athletic teams will be wearing Nike apparel again starting in July 2027, according to multiple reports.",
           "status": "active",
           "sourceUrls": [
