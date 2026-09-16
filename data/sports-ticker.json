@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-16T01:31:28Z",
+  "generatedAt": "2026-09-16T02:01:30Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "0cd18f37861b585b7daa9d115ea4be430d54ed058cb85e3b83aabae827b2b21e",
+  "sourceCandidateHash": "505a08ba2ef4e38e163c33ba70e782ab24ddf463dd11b3525fe55ae3e46f7f26",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,111 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-92e4c93ce1adfd31"
+          ],
+          "type": "RESULT",
+          "priority": 78,
+          "headline": "Brayan Rocchio delivered the walk-off in the bottom of the 9th inning.",
+          "text": "Brayan Rocchio delivered the walk-off in the bottom of the 9th inning.",
+          "entities": [],
+          "occurredAt": "2026-09-15T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.36,
+          "freshnessBasis": "Highlightly final: Chicago White Sox 6, Cleveland Guardians 7.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "https://www.espn.com/mlb/story/_/id/49946398/tristan-peters-18-pitch-walk-keys-white-sox-win-vs-guards"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-15",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49946398/tristan-peters-18-pitch-walk-keys-white-sox-win-vs-guards"
+            }
+          ],
+          "id": "a415-7dc3c93d887a1bc0",
+          "feedRank": 1,
+          "compactHeadline": "Brayan Rocchio delivers walk-off as Cleveland Guardians beat Chicago White Sox 7-6"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-029b8a96c0c7adda"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Yoshinobu Yamamoto allowed one hit through seven innings as the Los Angeles Dodgers beat the Cincinnati Reds 4-0 on Tuesday night to edge closer to an NL West division title.",
+          "text": "Yoshinobu Yamamoto allowed one hit through seven innings as the Los Angeles Dodgers beat the Cincinnati Reds 4-0 on Tuesday night to edge closer to an NL West division title.",
+          "entities": [],
+          "occurredAt": "2026-09-15T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.36,
+          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Cincinnati Reds 0.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816947"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-15",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816947"
+            }
+          ],
+          "id": "a415-936fb9951046ce87",
+          "feedRank": 2,
+          "compactHeadline": "Yamamoto dominant as Dodgers beat Reds 4-0, edge closer to NL West title"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-05924e2d5300faad"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jacob Misiorowski struck out seven in five shutout innings and the Milwaukee Brewers moved to the brink of their fourth straight National League Central title with a 5-1 win over the Pittsburgh Pirates on Tuesday night.",
+          "text": "Jacob Misiorowski struck out seven in five shutout innings and the Milwaukee Brewers moved to the brink of their fourth straight National League Central title with a 5-1 win over the Pittsburgh Pirates on Tuesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-15T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.36,
+          "freshnessBasis": "Highlightly final: Milwaukee Brewers 5, Pittsburgh Pirates 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816948"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-15",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816948"
+            }
+          ],
+          "id": "a415-823633d52861b90f",
+          "feedRank": 3,
+          "compactHeadline": "Misiorowski tosses 5 shutout innings as Brewers top Pirates 5-1 to move to brink of NL Central title"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-d29fd3a62ac6f7dd"
           ],
@@ -23,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T22:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.77,
+          "ageHours": 3.28,
           "freshnessBasis": "Highlightly final: Philadelphia Phillies 3, Washington Nationals 6.",
           "status": "active",
           "sourceUrls": [
@@ -49,26 +154,27 @@
             }
           ],
           "id": "a415-35d02dff3578d362",
-          "feedRank": 1,
+          "feedRank": 4,
           "compactHeadline": "Washington Nationals beat Philadelphia Phillies 6-3"
         },
         {
-          "rank": 2,
+          "rank": 5,
           "candidateIds": [
             "cand-0b233cf00bbf5ce4"
           ],
           "type": "STREAK",
           "priority": 74,
-          "headline": "Athletics (61-89, fourth in the AL West) vs. Tampa Bay Rays (90-59, first in the AL East)",
-          "text": "Athletics (61-89, fourth in the AL West) vs. Tampa Bay Rays (90-59, first in the AL East)",
+          "headline": "Junior Caminero hit his second game-ending homer in four games, an opposite-field liner leading off the ninth inning that gave the Tampa Bay Rays a 2-1 victory over the Athletics on Tuesday...",
+          "text": "Junior Caminero hit his second game-ending homer in four games, an opposite-field liner leading off the ninth inning that gave the Tampa Bay Rays a 2-1 victory over the Athletics on Tuesday...",
           "entities": [],
           "occurredAt": "2026-09-15T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.86,
+          "ageHours": 3.36,
           "freshnessBasis": "Highlightly final: Oakland Athletics 1, Tampa Bay Rays 2.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816943",
             "http://www.espn.com/mlb/preview?gameId=401816943"
           ],
           "sources": [
@@ -80,15 +186,20 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816943"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/preview?gameId=401816943"
             }
           ],
           "id": "a415-fef0939158c160a4",
-          "feedRank": 2,
+          "feedRank": 5,
           "compactHeadline": "Tampa Bay Rays beat Oakland Athletics 2-1"
         },
         {
-          "rank": 3,
+          "rank": 6,
           "candidateIds": [
             "cand-3f3bbdd5d61bfec0"
           ],
@@ -97,9 +208,9 @@
           "headline": "Justin Slaten likely will miss the rest of the season after being on the injured list the past month because of right elbow inflammation. Garrett Crochet threw about 30 pitches as he continues to progress.",
           "text": "Justin Slaten likely will miss the rest of the season after being on the injured list the past month because of right elbow inflammation. Garrett Crochet threw about 30 pitches as he continues to progress.",
           "entities": [],
-          "occurredAt": "2026-09-16T01:27:49Z",
+          "occurredAt": "2026-09-16T01:30:20Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
+          "ageHours": 0.52,
           "freshnessBasis": "Justin Slaten likely will miss the rest of the season after being on the injured list the past month because of right elbow inflammation. Garrett Crochet threw about 30 pitches as he continues to progress.",
           "status": "active",
           "sourceUrls": [
@@ -113,95 +224,8 @@
             }
           ],
           "id": "a415-b1fc132262e28eaf",
-          "feedRank": 3,
-          "compactHeadline": "Red Sox shut down Justin Slaten; Garrett Crochet progresses"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-9e7fc17735b5b02d"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Atlanta Braves right-hander Reynaldo Lopez was placed on the 15-day injured list Tuesday because of right shoulder inflammation.",
-          "text": "Atlanta Braves right-hander Reynaldo Lopez was placed on the 15-day injured list Tuesday because of right shoulder inflammation.",
-          "entities": [],
-          "occurredAt": "2026-09-15T23:49:47Z",
-          "timePrecision": "exact",
-          "ageHours": 1.69,
-          "freshnessBasis": "Atlanta Braves right-hander Reynaldo Lopez was placed on the 15-day injured list Tuesday because of right shoulder inflammation.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49952913/braves-righty-reynaldo-lopez-il-shoulder-inflammation"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49952913/braves-righty-reynaldo-lopez-il-shoulder-inflammation"
-            }
-          ],
-          "id": "a415-be37578003ce01c4",
-          "feedRank": 4,
-          "compactHeadline": "Braves righty Reynaldo Lopez on IL with shoulder inflammation"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-db70acbeb7904c99"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Phillies placed All-Star pitcher Jesús Luzardo on the 15-day injured list Tuesday.",
-          "text": "The Phillies placed All-Star pitcher Jesús Luzardo on the 15-day injured list Tuesday.",
-          "entities": [],
-          "occurredAt": "2026-09-15T22:45:30Z",
-          "timePrecision": "exact",
-          "ageHours": 2.77,
-          "freshnessBasis": "The Phillies placed All-Star pitcher Jesús Luzardo on the 15-day injured list Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49951961/phillies-placing-pitcher-luzardo-il-shoulder-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49951961/phillies-placing-pitcher-luzardo-il-shoulder-injury"
-            }
-          ],
-          "id": "a415-1bb975e0d68480ac",
-          "feedRank": 5,
-          "compactHeadline": "Phillies place Jesús Luzardo on IL with shoulder inflammation"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-029b8a96c0c7adda"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Los Angeles Dodgers 4, Cincinnati Reds 0.",
-          "text": "Highlightly final: Los Angeles Dodgers 4, Cincinnati Reds 0.",
-          "entities": [],
-          "occurredAt": "2026-09-15T22:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 2.86,
-          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Cincinnati Reds 0.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-15",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-936fb9951046ce87",
           "feedRank": 6,
-          "compactHeadline": "Los Angeles Dodgers beat Cincinnati Reds 4-0"
+          "compactHeadline": "Red Sox shut down Justin Slaten; Garrett Crochet progresses"
         }
       ]
     },
@@ -212,6 +236,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-b9829c1c763165c0"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "The Texans signed former first-round pick Kenneth Murray to their practice squad Tuesday in the wake of starting linebacker Henry To'oTo'o landing on injured reserve.",
+          "text": "The Texans signed former first-round pick Kenneth Murray to their practice squad Tuesday in the wake of starting linebacker Henry To'oTo'o landing on injured reserve.",
+          "entities": [],
+          "occurredAt": "2026-09-16T01:47:32Z",
+          "timePrecision": "exact",
+          "ageHours": 0.23,
+          "freshnessBasis": "The Texans signed former first-round pick Kenneth Murray to their practice squad Tuesday in the wake of starting linebacker Henry To'oTo'o landing on injured reserve.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49953603/texans-sign-kenneth-murray-practice-squad-henry-tootoo-injured-reserve"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49953603/texans-sign-kenneth-murray-practice-squad-henry-tootoo-injured-reserve"
+            }
+          ],
+          "id": "a415-4a01678bcc78d2a4",
+          "feedRank": 7,
+          "compactHeadline": "Texans sign LB Kenneth Murray to practice squad"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-502250cc9b7073c5"
           ],
           "type": "SIGNING",
@@ -221,7 +274,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:59:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.54,
+          "ageHours": 4.04,
           "freshnessBasis": "The Panthers waived receiver Jimmy Horn Jr. on Tuesday and signed Tyrel Dodson from the practice squad.",
           "status": "active",
           "sourceUrls": [
@@ -235,11 +288,11 @@
             }
           ],
           "id": "a415-19ac7b6d6376a5b3",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Panthers waive WR Horn, sign LB Dodson from practice squad"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-29b1fc6861636d29"
           ],
@@ -250,7 +303,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T19:41:54Z",
           "timePrecision": "exact",
-          "ageHours": 5.83,
+          "ageHours": 6.33,
           "freshnessBasis": "The Cleveland Browns placed running back Dylan Sampson on injured reserve with a knee injury, the team announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -264,11 +317,11 @@
             }
           ],
           "id": "a415-582c0cf17fe2552d",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Browns place RB Sampson on injured reserve with knee injury"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-29679030ed4d0dd1"
           ],
@@ -279,7 +332,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T14:21:20Z",
           "timePrecision": "exact",
-          "ageHours": 11.17,
+          "ageHours": 11.67,
           "freshnessBasis": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
           "status": "active",
           "sourceUrls": [
@@ -293,11 +346,40 @@
             }
           ],
           "id": "a415-dcde4a422d8ea634",
-          "feedRank": 9,
+          "feedRank": 10,
           "compactHeadline": "2026 NFL pass rush, run stop, blocking win rate rankings"
         },
         {
-          "rank": 4,
+          "rank": 5,
+          "candidateIds": [
+            "cand-45c9b27d70d1c77e"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Los Angeles Chargers, depleted at receiver after a loss to the Arizona Cardinals, are signing Marquez Valdes-Scantling, 31, to its practice squad, a source told ESPN's Jeremy Fowler, adding a veteran who was a 2018 fifth-round choice from USF.",
+          "text": "The Los Angeles Chargers, depleted at receiver after a loss to the Arizona Cardinals, are signing Marquez Valdes-Scantling, 31, to its practice squad, a source told ESPN's Jeremy Fowler, adding a veteran who was a 2018 fifth-round choice from USF.",
+          "entities": [],
+          "occurredAt": "2026-09-16T01:56:51Z",
+          "timePrecision": "exact",
+          "ageHours": 0.08,
+          "freshnessBasis": "The Los Angeles Chargers, depleted at receiver after a loss to the Arizona Cardinals, are signing Marquez Valdes-Scantling, 31, to its practice squad, a source told ESPN's Jeremy Fowler, adding a veteran who was a 2018 fifth-round choice from USF.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49953448/chargers-signing-valdes-scantling-practice-squad"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49953448/chargers-signing-valdes-scantling-practice-squad"
+            }
+          ],
+          "id": "a415-462b86c7607d4f4d",
+          "feedRank": 11,
+          "compactHeadline": "Source: Chargers signing Valdes-Scantling to practice squad"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-57a49ffe4c38df91"
           ],
@@ -308,7 +390,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:00:17Z",
           "timePrecision": "exact",
-          "ageHours": 1.52,
+          "ageHours": 2.02,
           "freshnessBasis": "The transfer of shares from New York Giants co-owners Steve, Laurie and Jonathan Tisch to their children's trusts is \"done,\" Carolyn Tisch Blodgett told Front Office Sports at an event in New York on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -322,66 +404,8 @@
             }
           ],
           "id": "a415-19d5caf2885edde9",
-          "feedRank": 10,
-          "compactHeadline": "Tisch Blodgett: Transfer of Giants ownership shares 'done'"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-7ce13fa9c3fccf88"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "McCaffrey had four fewer carries in Week 1 than Black, San Francisco's rookie RB2. What should we expect from this backfield going forward?",
-          "text": "McCaffrey had four fewer carries in Week 1 than Black, San Francisco's rookie RB2. What should we expect from this backfield going forward?",
-          "entities": [],
-          "occurredAt": "2026-09-15T22:18:45Z",
-          "timePrecision": "exact",
-          "ageHours": 3.21,
-          "freshnessBasis": "McCaffrey had four fewer carries in Week 1 than Black, San Francisco's rookie RB2. What should we expect from this backfield going forward?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49935565/san-francisco-49ers-christian-mccaffrey-kaelon-black-running-back-balance"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49935565/san-francisco-49ers-christian-mccaffrey-kaelon-black-running-back-balance"
-            }
-          ],
-          "id": "a415-74bcec770b213991",
-          "feedRank": 11,
-          "compactHeadline": "49ers find needed balance in run game with McCaffrey, Black"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-32cb1bae42b6789f"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "With rookie wide receiver Omar Cooper Jr. and safety Minkah Fitzpatrick expected to miss Week 2 with injuries, the Jets addressed depth concerns at those positions with a series of roster moves Tuesday.",
-          "text": "With rookie wide receiver Omar Cooper Jr. and safety Minkah Fitzpatrick expected to miss Week 2 with injuries, the Jets addressed depth concerns at those positions with a series of roster moves Tuesday.",
-          "entities": [],
-          "occurredAt": "2026-09-15T22:18:37Z",
-          "timePrecision": "exact",
-          "ageHours": 3.21,
-          "freshnessBasis": "With rookie wide receiver Omar Cooper Jr. and safety Minkah Fitzpatrick expected to miss Week 2 with injuries, the Jets addressed depth concerns at those positions with a series of roster moves Tuesday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49949341/sources-jets-rookie-wr-omar-cooper-ankle-week-week"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49949341/sources-jets-rookie-wr-omar-cooper-ankle-week-week"
-            }
-          ],
-          "id": "a415-fa322c8b05ea1f42",
           "feedRank": 12,
-          "compactHeadline": "Jets make moves to address depth with Cooper, Fitzpatrick hurt"
+          "compactHeadline": "Tisch Blodgett: Transfer of Giants ownership shares 'done'"
         }
       ]
     },
@@ -392,16 +416,16 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-677c90592c323b77"
+            "cand-0a5964a0603ffec8"
           ],
           "type": "SIGNING",
           "priority": 76,
           "headline": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "text": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "entities": [],
-          "occurredAt": "2026-09-16T01:05:42Z",
+          "occurredAt": "2026-09-16T01:48:55Z",
           "timePrecision": "exact",
-          "ageHours": 0.43,
+          "ageHours": 0.21,
           "freshnessBasis": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -414,9 +438,9 @@
               "url": "https://www.espn.com/nba/story/_/id/49953279/knicks-add-free-agent-john-konchar-one-year-deal"
             }
           ],
-          "id": "a415-25ca0299b34689da",
+          "id": "a415-6420f3a8bf594bcf",
           "feedRank": 13,
-          "compactHeadline": "Knicks add free agent John Konchar on one-year deal"
+          "compactHeadline": "Knicks agree to deal with veteran free agent John Konchar"
         },
         {
           "rank": 2,
@@ -430,7 +454,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:14:30Z",
           "timePrecision": "exact",
-          "ageHours": 2.28,
+          "ageHours": 2.78,
           "freshnessBasis": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia for him, saying it's understandable.",
           "status": "active",
           "sourceUrls": [
@@ -459,7 +483,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:06:12Z",
           "timePrecision": "exact",
-          "ageHours": 1.42,
+          "ageHours": 1.92,
           "freshnessBasis": "NBA commissioner Adam Silver said the league looked at similar cases before taking away five first-round draft picks from the LA Clippers for circumventing salary cap rules.",
           "status": "active",
           "sourceUrls": [
@@ -488,7 +512,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T17:35:29Z",
           "timePrecision": "exact",
-          "ageHours": 7.93,
+          "ageHours": 8.43,
           "freshnessBasis": "Sophie Cunningham has discussed the soon-to-be-vacant WNBA commissioner's job with Adam Silver after the NBA commissioner reached out to her.",
           "status": "active",
           "sourceUrls": [
@@ -523,7 +547,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:38:20Z",
           "timePrecision": "exact",
-          "ageHours": 8.89,
+          "ageHours": 9.39,
           "freshnessBasis": "Senators forward Drake Batherson has signed an eight-year, $86 million extension through the 2034-35 season.",
           "status": "active",
           "sourceUrls": [
@@ -552,7 +576,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:15:05Z",
           "timePrecision": "exact",
-          "ageHours": 9.27,
+          "ageHours": 9.77,
           "freshnessBasis": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -581,7 +605,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T22:46:41Z",
           "timePrecision": "exact",
-          "ageHours": 2.75,
+          "ageHours": 3.25,
           "freshnessBasis": "The Blackhawks named Connor Bedard, 21, as captain, the second-youngest captain in franchise history. Jonathan Toews was 20 when he received the honor.",
           "status": "active",
           "sourceUrls": [
@@ -610,7 +634,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:29:17Z",
           "timePrecision": "exact",
-          "ageHours": 7.04,
+          "ageHours": 7.54,
           "freshnessBasis": "The Capitals told The Associated Press that Alex Ovechkin was asked to participate in an ad this summer for Vladimir Putin's United Russia party.",
           "status": "active",
           "sourceUrls": [
@@ -645,7 +669,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.52,
+          "ageHours": 8.03,
           "freshnessBasis": "Highlightly final: Ipswich Town U21 4, Bromley U21 2.",
           "status": "active",
           "sourceUrls": [
@@ -674,7 +698,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.52,
+          "ageHours": 8.03,
           "freshnessBasis": "Highlightly final: Birmingham City U21 4, Gillingham Fc U21 0.",
           "status": "active",
           "sourceUrls": [
@@ -703,7 +727,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:10:29Z",
           "timePrecision": "exact",
-          "ageHours": 2.35,
+          "ageHours": 2.85,
           "freshnessBasis": "Andoni Iraola has heaped praise on midfielder Dominik Szoboszlai after he scored a \"worldie\" in Liverpool's 3-1 victory over Tottenham Hotspur.",
           "status": "active",
           "sourceUrls": [
@@ -732,7 +756,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T07:19:59Z",
           "timePrecision": "exact",
-          "ageHours": 18.19,
+          "ageHours": 18.69,
           "freshnessBasis": "Jamie Carragher has compared Arsenal boss Mikel Arteta to Sir Alex Ferguson for the manner in which he criticised referees following the Gunners' 2-0 win over Sunderland.",
           "status": "active",
           "sourceUrls": [
@@ -761,7 +785,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:45:59Z",
           "timePrecision": "exact",
-          "ageHours": 6.76,
+          "ageHours": 7.26,
           "freshnessBasis": "Things have gone from bad to worse this week for Man United, with defeats on and off the field. Victory against Brighton in midweek would go a long way to lifting the mood.",
           "status": "active",
           "sourceUrls": [
@@ -796,7 +820,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:53:21Z",
           "timePrecision": "exact",
-          "ageHours": 8.64,
+          "ageHours": 9.14,
           "freshnessBasis": "Real Salt Lake and U.S. midfielder Diego Luna is expected to be out for months and will likely undergo an arthroscopic procedure to determine the extent of a knee injury, sources confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -825,7 +849,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:30:57Z",
           "timePrecision": "exact",
-          "ageHours": 1.01,
+          "ageHours": 1.51,
           "freshnessBasis": "New Inter Miami head coach Cristian \"Kily\" González said he feels blessed at being given the opportunity to lead the club and coach Lionel Messi, after formerly taking up the role on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -854,7 +878,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T20:40:15Z",
           "timePrecision": "exact",
-          "ageHours": 4.85,
+          "ageHours": 5.35,
           "freshnessBasis": "The NFL, NBA, MLB, NHL, MLS and their players' unions are urging state gambling regulators to combat escalating harassment and violent threats from sports bettors.",
           "status": "active",
           "sourceUrls": [
@@ -903,7 +927,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T04:01:39Z",
           "timePrecision": "exact",
-          "ageHours": 21.5,
+          "ageHours": 22.0,
           "freshnessBasis": "Inter Miami midfielder Alexander Shaw has been contacted by Colombia after playing for the United States U-20 team in the 2026 Concacaf tournament, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -938,7 +962,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:56:17Z",
           "timePrecision": "exact",
-          "ageHours": 3.59,
+          "ageHours": 4.09,
           "freshnessBasis": "Iowa could be without several offensive contributors Saturday as it wraps up non-league play by hosting Northern Iowa, including starting tight end DJ Vonnahme who was injured in last week's victory over Iowa State, coach Kirk Ferentz said on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -967,7 +991,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T19:27:30Z",
           "timePrecision": "exact",
-          "ageHours": 6.07,
+          "ageHours": 6.57,
           "freshnessBasis": "Oklahoma starting wideout Trell Harris will be out for the \"foreseeable future,\" Sooners coach Brent Venables said Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -996,7 +1020,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T15:06:44Z",
           "timePrecision": "exact",
-          "ageHours": 10.41,
+          "ageHours": 10.91,
           "freshnessBasis": "Washington State's Tony Freeman, the team's top returning receiver and kick-return specialist, has suffered a torn ACL and will miss the rest of the season.",
           "status": "active",
           "sourceUrls": [
@@ -1025,7 +1049,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:04:10Z",
           "timePrecision": "exact",
-          "ageHours": 2.46,
+          "ageHours": 2.96,
           "freshnessBasis": "Vanderbilt freshman quarterback Jared Curtis will start Saturday against NC State after accounting for three of the Commodores' four touchdowns in last weekend's 35-26 win over Delaware.",
           "status": "active",
           "sourceUrls": [
@@ -1054,7 +1078,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:18:09Z",
           "timePrecision": "exact",
-          "ageHours": 9.22,
+          "ageHours": 9.72,
           "freshnessBasis": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
           "status": "active",
           "sourceUrls": [
@@ -1083,7 +1107,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T12:30:21Z",
           "timePrecision": "exact",
-          "ageHours": 13.02,
+          "ageHours": 13.52,
           "freshnessBasis": "Ducks coach Dan Lanning said Monday that the loss to the unranked Cowboys was \"by far the worst performance that we've had since I've been here.\"",
           "status": "active",
           "sourceUrls": [
@@ -1123,7 +1147,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 91,
+    "freshCandidateCount": 90,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
