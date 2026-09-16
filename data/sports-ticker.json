@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-16T03:01:24Z",
+  "generatedAt": "2026-09-16T03:31:25Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "e9aff8cac0ad4deaf6eafed47353fbd1a533e0ae15f8bf18dca97b6db852d7f7",
+  "sourceCandidateHash": "e79547da9d67eb2b08774bc8739a2c99247597550ffc0fa2ff08aecace0578f6",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
+          "ageHours": 4.86,
           "freshnessBasis": "Highlightly final: Chicago White Sox 6, Cleveland Guardians 7.",
           "status": "active",
           "sourceUrls": [
@@ -58,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.27,
+          "ageHours": 3.77,
           "freshnessBasis": "Highlightly final: San Francisco Giants 10, St. Louis Cardinals 3.",
           "status": "active",
           "sourceUrls": [
@@ -93,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.86,
+          "ageHours": 3.36,
           "freshnessBasis": "Highlightly final: Kansas City Royals 2, Houston Astros 4.",
           "status": "active",
           "sourceUrls": [
@@ -119,6 +119,76 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-af745ceeaff22f21"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Jacob deGrom struck out eight in five innings, Corey Seager had a two-run single and the Texas Rangers beat the Boston Red Sox 4-2 on Tuesday night in a series opener between playoff contenders.",
+          "text": "Jacob deGrom struck out eight in five innings, Corey Seager had a two-run single and the Texas Rangers beat the Boston Red Sox 4-2 on Tuesday night in a series opener between playoff contenders.",
+          "entities": [],
+          "occurredAt": "2026-09-16T00:05:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.44,
+          "freshnessBasis": "Highlightly final: Boston Red Sox 2, Texas Rangers 4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816951"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-15",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816951"
+            }
+          ],
+          "id": "a415-c08d92dc0a74600e",
+          "feedRank": 4,
+          "compactHeadline": "Jacob deGrom strikes out 8 to lead Rangers over Red Sox 4-2 in series between playoff contenders"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-4a5144920ff16454"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Spencer Torkelson hit a three-run homer, Drew Anderson pitched five shutout innings and the Detroit Tigers won their sixth straight game by thumping the Toronto Blue Jays 10-1 on Tuesday night.",
+          "text": "Spencer Torkelson hit a three-run homer, Drew Anderson pitched five shutout innings and the Detroit Tigers won their sixth straight game by thumping the Toronto Blue Jays 10-1 on Tuesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-15T23:07:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.41,
+          "freshnessBasis": "Highlightly final: Detroit Tigers 10, Toronto Blue Jays 1.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816946"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-15",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816946"
+            }
+          ],
+          "id": "a415-b3cfb6c765644843",
+          "feedRank": 5,
+          "compactHeadline": "Spencer Torkelson hits 3-run homer as Tigers thump Blue Jays 10-1 to win 6th straight"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-9fad893a40318375"
           ],
           "type": "RESULT",
@@ -128,7 +198,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.36,
+          "ageHours": 3.86,
           "freshnessBasis": "Highlightly final: New York Yankees 8, Minnesota Twins 1.",
           "status": "active",
           "sourceUrls": [
@@ -148,78 +218,8 @@
             }
           ],
           "id": "a415-0256221924fd3297",
-          "feedRank": 4,
-          "compactHeadline": "Fried gets first win since April, Yankees overpower Twins 8-1 with homers by Bellinger, Jones"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-029b8a96c0c7adda"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Yoshinobu Yamamoto allowed one hit through seven innings as the Los Angeles Dodgers beat the Cincinnati Reds 4-0 on Tuesday night to edge closer to an NL West division title.",
-          "text": "Yoshinobu Yamamoto allowed one hit through seven innings as the Los Angeles Dodgers beat the Cincinnati Reds 4-0 on Tuesday night to edge closer to an NL West division title.",
-          "entities": [],
-          "occurredAt": "2026-09-15T22:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.36,
-          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 4, Cincinnati Reds 0.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816947"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-15",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816947"
-            }
-          ],
-          "id": "a415-936fb9951046ce87",
-          "feedRank": 5,
-          "compactHeadline": "Yamamoto dominant as Dodgers beat Reds 4-0, edge closer to NL West title"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-05924e2d5300faad"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Jacob Misiorowski struck out seven in five shutout innings and the Milwaukee Brewers won their their fourth straight National League Central title with a 5-1 win over the Pittsburgh Pirates on Tuesday night.",
-          "text": "Jacob Misiorowski struck out seven in five shutout innings and the Milwaukee Brewers won their their fourth straight National League Central title with a 5-1 win over the Pittsburgh Pirates on Tuesday night.",
-          "entities": [],
-          "occurredAt": "2026-09-15T22:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 4.36,
-          "freshnessBasis": "Highlightly final: Milwaukee Brewers 5, Pittsburgh Pirates 1.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816948"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-15",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816948"
-            }
-          ],
-          "id": "a415-823633d52861b90f",
           "feedRank": 6,
-          "compactHeadline": "Misiorowski tosses 5 shutout innings, Brewers top Pirates 5-1 to win 4th straight NL Central title"
+          "compactHeadline": "Fried gets first win since April, Yankees overpower Twins 8-1 with homers by Bellinger, Jones"
         }
       ]
     },
@@ -239,7 +239,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T02:08:14Z",
           "timePrecision": "exact",
-          "ageHours": 0.89,
+          "ageHours": 1.39,
           "freshnessBasis": "The Texans signed former first-round pick Kenneth Murray to their practice squad Tuesday in the wake of starting linebacker Henry To'oTo'o landing on injured reserve.",
           "status": "active",
           "sourceUrls": [
@@ -268,7 +268,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:59:10Z",
           "timePrecision": "exact",
-          "ageHours": 5.04,
+          "ageHours": 5.54,
           "freshnessBasis": "The Panthers waived receiver Jimmy Horn Jr. on Tuesday and signed Tyrel Dodson from the practice squad.",
           "status": "active",
           "sourceUrls": [
@@ -297,7 +297,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T19:41:54Z",
           "timePrecision": "exact",
-          "ageHours": 7.33,
+          "ageHours": 7.83,
           "freshnessBasis": "The Cleveland Browns placed running back Dylan Sampson on injured reserve with a knee injury, the team announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -326,7 +326,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T14:21:20Z",
           "timePrecision": "exact",
-          "ageHours": 12.67,
+          "ageHours": 13.17,
           "freshnessBasis": "Our win rate metrics stack the NFL's top teams and players in run blocking, run stopping, pass protection and pass rushing.",
           "status": "active",
           "sourceUrls": [
@@ -355,7 +355,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T02:33:45Z",
           "timePrecision": "exact",
-          "ageHours": 0.46,
+          "ageHours": 0.96,
           "freshnessBasis": "The Los Angeles Chargers, depleted at receiver after a loss to the Arizona Cardinals, are signing Marquez Valdes-Scantling, 31, to its practice squad, a source told ESPN's Jeremy Fowler, adding a veteran who was a 2018 fifth-round choice from USF.",
           "status": "active",
           "sourceUrls": [
@@ -384,7 +384,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:00:17Z",
           "timePrecision": "exact",
-          "ageHours": 3.02,
+          "ageHours": 3.52,
           "freshnessBasis": "The transfer of shares from New York Giants co-owners Steve, Laurie and Jonathan Tisch to their children's trusts is \"done,\" Carolyn Tisch Blodgett told Front Office Sports at an event in New York on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -419,7 +419,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T02:00:08Z",
           "timePrecision": "exact",
-          "ageHours": 1.02,
+          "ageHours": 1.52,
           "freshnessBasis": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -448,7 +448,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:14:30Z",
           "timePrecision": "exact",
-          "ageHours": 3.78,
+          "ageHours": 4.28,
           "freshnessBasis": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia for him, saying it's understandable.",
           "status": "active",
           "sourceUrls": [
@@ -477,7 +477,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:06:12Z",
           "timePrecision": "exact",
-          "ageHours": 2.92,
+          "ageHours": 3.42,
           "freshnessBasis": "NBA commissioner Adam Silver said the league looked at similar cases before taking away five first-round draft picks from the LA Clippers for circumventing salary cap rules.",
           "status": "active",
           "sourceUrls": [
@@ -506,7 +506,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T17:35:29Z",
           "timePrecision": "exact",
-          "ageHours": 9.43,
+          "ageHours": 9.93,
           "freshnessBasis": "Sophie Cunningham has discussed the soon-to-be-vacant WNBA commissioner's job with Adam Silver after the NBA commissioner reached out to her.",
           "status": "active",
           "sourceUrls": [
@@ -539,9 +539,9 @@
           "headline": "After creating salary-cap space with the release of Chris Kreider, the Anaheim Ducks on Tuesday signed Cutter Gauthier to a six-year contract, with GM Pat Verbeek saying in a statement that the 22-year-old left wing is \"a major part of our young core.\"",
           "text": "After creating salary-cap space with the release of Chris Kreider, the Anaheim Ducks on Tuesday signed Cutter Gauthier to a six-year contract, with GM Pat Verbeek saying in a statement that the 22-year-old left wing is \"a major part of our young core.\"",
           "entities": [],
-          "occurredAt": "2026-09-16T02:39:04Z",
+          "occurredAt": "2026-09-16T03:21:21Z",
           "timePrecision": "exact",
-          "ageHours": 0.37,
+          "ageHours": 0.17,
           "freshnessBasis": "After creating salary-cap space with the release of Chris Kreider, the Anaheim Ducks on Tuesday signed Cutter Gauthier to a six-year contract, with GM Pat Verbeek saying in a statement that the 22-year-old left wing is \"a major part of our young core.\"",
           "status": "active",
           "sourceUrls": [
@@ -570,7 +570,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:38:20Z",
           "timePrecision": "exact",
-          "ageHours": 10.38,
+          "ageHours": 10.88,
           "freshnessBasis": "Senators forward Drake Batherson has signed an eight-year, $86 million extension through the 2034-35 season.",
           "status": "active",
           "sourceUrls": [
@@ -599,7 +599,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:15:05Z",
           "timePrecision": "exact",
-          "ageHours": 10.77,
+          "ageHours": 11.27,
           "freshnessBasis": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -628,7 +628,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T22:46:41Z",
           "timePrecision": "exact",
-          "ageHours": 4.25,
+          "ageHours": 4.75,
           "freshnessBasis": "The Blackhawks named Connor Bedard, 21, as captain, the second-youngest captain in franchise history. Jonathan Toews was 20 when he received the honor.",
           "status": "active",
           "sourceUrls": [
@@ -663,7 +663,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.02,
+          "ageHours": 9.52,
           "freshnessBasis": "Highlightly final: Ipswich Town U21 4, Bromley U21 2.",
           "status": "active",
           "sourceUrls": [
@@ -692,7 +692,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.02,
+          "ageHours": 9.52,
           "freshnessBasis": "Highlightly final: Birmingham City U21 4, Gillingham Fc U21 0.",
           "status": "active",
           "sourceUrls": [
@@ -721,7 +721,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:10:29Z",
           "timePrecision": "exact",
-          "ageHours": 3.85,
+          "ageHours": 4.35,
           "freshnessBasis": "Andoni Iraola has heaped praise on midfielder Dominik Szoboszlai after he scored a \"worldie\" in Liverpool's 3-1 victory over Tottenham Hotspur.",
           "status": "active",
           "sourceUrls": [
@@ -750,7 +750,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T07:19:59Z",
           "timePrecision": "exact",
-          "ageHours": 19.69,
+          "ageHours": 20.19,
           "freshnessBasis": "Jamie Carragher has compared Arsenal boss Mikel Arteta to Sir Alex Ferguson for the manner in which he criticised referees following the Gunners' 2-0 win over Sunderland.",
           "status": "active",
           "sourceUrls": [
@@ -779,7 +779,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T18:45:59Z",
           "timePrecision": "exact",
-          "ageHours": 8.26,
+          "ageHours": 8.76,
           "freshnessBasis": "Things have gone from bad to worse this week for Man United, with defeats on and off the field. Victory against Brighton in midweek would go a long way to lifting the mood.",
           "status": "active",
           "sourceUrls": [
@@ -814,7 +814,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:53:21Z",
           "timePrecision": "exact",
-          "ageHours": 10.13,
+          "ageHours": 10.63,
           "freshnessBasis": "Real Salt Lake and U.S. midfielder Diego Luna is expected to be out for months and will likely undergo an arthroscopic procedure to determine the extent of a knee injury, sources confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -843,7 +843,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T00:30:57Z",
           "timePrecision": "exact",
-          "ageHours": 2.51,
+          "ageHours": 3.01,
           "freshnessBasis": "New Inter Miami head coach Cristian \"Kily\" González said he feels blessed at being given the opportunity to lead the club and coach Lionel Messi, after formerly taking up the role on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -872,7 +872,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T20:40:15Z",
           "timePrecision": "exact",
-          "ageHours": 6.35,
+          "ageHours": 6.85,
           "freshnessBasis": "The NFL, NBA, MLB, NHL, MLS and their players' unions are urging state gambling regulators to combat escalating harassment and violent threats from sports bettors.",
           "status": "active",
           "sourceUrls": [
@@ -921,7 +921,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T04:01:39Z",
           "timePrecision": "exact",
-          "ageHours": 23.0,
+          "ageHours": 23.5,
           "freshnessBasis": "Inter Miami midfielder Alexander Shaw has been contacted by Colombia after playing for the United States U-20 team in the 2026 Concacaf tournament, a source confirmed to ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -956,7 +956,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T21:56:17Z",
           "timePrecision": "exact",
-          "ageHours": 5.09,
+          "ageHours": 5.59,
           "freshnessBasis": "Iowa could be without several offensive contributors Saturday as it wraps up non-league play by hosting Northern Iowa, including starting tight end DJ Vonnahme who was injured in last week's victory over Iowa State, coach Kirk Ferentz said on Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -985,7 +985,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T19:27:30Z",
           "timePrecision": "exact",
-          "ageHours": 7.57,
+          "ageHours": 8.07,
           "freshnessBasis": "Oklahoma starting wideout Trell Harris will be out for the \"foreseeable future,\" Sooners coach Brent Venables said Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -1014,7 +1014,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T15:06:44Z",
           "timePrecision": "exact",
-          "ageHours": 11.91,
+          "ageHours": 12.41,
           "freshnessBasis": "Washington State's Tony Freeman, the team's top returning receiver and kick-return specialist, has suffered a torn ACL and will miss the rest of the season.",
           "status": "active",
           "sourceUrls": [
@@ -1043,7 +1043,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T23:04:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.95,
+          "ageHours": 4.45,
           "freshnessBasis": "Vanderbilt freshman quarterback Jared Curtis will start Saturday against NC State after accounting for three of the Commodores' four touchdowns in last weekend's 35-26 win over Delaware.",
           "status": "active",
           "sourceUrls": [
@@ -1072,7 +1072,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T16:18:09Z",
           "timePrecision": "exact",
-          "ageHours": 10.72,
+          "ageHours": 11.22,
           "freshnessBasis": "Putting the spotlight on select teams and questions around others as the early playoff picture takes shape.",
           "status": "active",
           "sourceUrls": [
@@ -1101,7 +1101,7 @@
           "entities": [],
           "occurredAt": "2026-09-15T12:30:21Z",
           "timePrecision": "exact",
-          "ageHours": 14.52,
+          "ageHours": 15.02,
           "freshnessBasis": "Ducks coach Dan Lanning said Monday that the loss to the unranked Cowboys was \"by far the worst performance that we've had since I've been here.\"",
           "status": "active",
           "sourceUrls": [
@@ -1141,7 +1141,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 90,
+    "freshCandidateCount": 87,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
