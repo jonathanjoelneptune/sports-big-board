@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-17T01:00:54Z",
+  "generatedAt": "2026-09-17T01:30:50Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "ee6b0add032e0766937f8c170e67ae6c4f106d660cc41ebef6dabda54047e861",
+  "sourceCandidateHash": "88d32d28033d66aa8342941e4f4675690a7ea98a789c71e0e05d78753db05eb7",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.35,
+          "ageHours": 7.85,
           "freshnessBasis": "Highlightly final: New York Yankees 4, Minnesota Twins 5.",
           "status": "active",
           "sourceUrls": [
@@ -58,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T17:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.77,
+          "ageHours": 8.26,
           "freshnessBasis": "Highlightly final: San Francisco Giants 6, St. Louis Cardinals 5.",
           "status": "active",
           "sourceUrls": [
@@ -84,6 +84,47 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-b1cd20e4d2e7e476"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Nick Martinez worked five efficient innings for his 15th win, Jonny DeLuca was 2 for 4 with an RBI double, and the Tampa Bay Rays beat the Athletics 4-3 on Wednesday night for their fifth straight win.",
+          "text": "Nick Martinez worked five efficient innings for his 15th win, Jonny DeLuca was 2 for 4 with an RBI double, and the Tampa Bay Rays beat the Athletics 4-3 on Wednesday night for their fifth straight win.",
+          "entities": [],
+          "occurredAt": "2026-09-16T22:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.85,
+          "freshnessBasis": "Highlightly final: Oakland Athletics 3, Tampa Bay Rays 4.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816958",
+            "http://www.espn.com/mlb/preview?gameId=401816958"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-16",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816958"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401816958"
+            }
+          ],
+          "id": "a415-7dfe5388d577fe23",
+          "feedRank": 3,
+          "compactHeadline": "Tampa Bay Rays beat Oakland Athletics 4-3"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-8d33debc666d830e"
           ],
           "type": "INJURY",
@@ -93,7 +134,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T00:41:48Z",
           "timePrecision": "exact",
-          "ageHours": 0.32,
+          "ageHours": 0.82,
           "freshnessBasis": "Robert Stock's comeback season is over after the New York Mets right-hander was placed on the 15-day injured list due to numbness in his fingers.",
           "status": "active",
           "sourceUrls": [
@@ -107,11 +148,11 @@
             }
           ],
           "id": "a415-76281f5d3ca4fec5",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Mets' Robert Stock done for season due to numbness in his fingers"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-be1f6fb981d3fc31"
           ],
@@ -122,7 +163,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:07:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.9,
+          "ageHours": 6.4,
           "freshnessBasis": "Highlightly final: Detroit Tigers 1, Toronto Blue Jays 5.",
           "status": "active",
           "sourceUrls": [
@@ -148,11 +189,11 @@
             }
           ],
           "id": "a415-36bbbdad1a465cd4",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Toronto Blue Jays beat Detroit Tigers 5-1"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-924d1be1aad2fd48"
           ],
@@ -163,7 +204,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:36:19Z",
           "timePrecision": "exact",
-          "ageHours": 5.41,
+          "ageHours": 5.91,
           "freshnessBasis": "\"I went right to the source,\" Pham said on Wednesday about his quick turnaround from injured list to cleanup hitter.",
           "status": "active",
           "sourceUrls": [
@@ -177,43 +218,8 @@
             }
           ],
           "id": "a415-10b97743134572ac",
-          "feedRank": 5,
-          "compactHeadline": "White Sox's Pham homers after Tuesday night elevator pitch to GM"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-4b67566847f25a6f"
-          ],
-          "type": "RESULT",
-          "priority": 71,
-          "headline": "Ryan Johnson pitched six strong innings, Josh Lowe hit a tiebreaking home run and the Los Angeles Angels beat the Seattle Mariners 2-1 on Tuesday night.",
-          "text": "Ryan Johnson pitched six strong innings, Josh Lowe hit a tiebreaking home run and the Los Angeles Angels beat the Seattle Mariners 2-1 on Tuesday night.",
-          "entities": [],
-          "occurredAt": "2026-09-16T01:38:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.38,
-          "freshnessBasis": "Highlightly final: Seattle Mariners 1, Los Angeles Angels 2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816957"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-15",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816957"
-            }
-          ],
-          "id": "a415-48854b1d475b84ae",
           "feedRank": 6,
-          "compactHeadline": "Ryan Johnson and Josh Lowe deliver for Angels in 2-1 win that clinches losing season for Mariners"
+          "compactHeadline": "White Sox's Pham homers after Tuesday night elevator pitch to GM"
         }
       ]
     },
@@ -233,7 +239,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T18:47:28Z",
           "timePrecision": "exact",
-          "ageHours": 6.22,
+          "ageHours": 6.72,
           "freshnessBasis": "Emmitt Smith acknowledged this week that Ravens running back Derrick Henry could surpass him as the league's rushing king.",
           "status": "active",
           "sourceUrls": [
@@ -262,7 +268,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T21:45:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.26,
+          "ageHours": 3.76,
           "freshnessBasis": "49ers receiver De'Zhaun Stribling had surgery on his ankle and is expected to miss about 10 weeks, while tight end Jake Tonges has been ruled out for the season.",
           "status": "active",
           "sourceUrls": [
@@ -291,7 +297,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T21:35:59Z",
           "timePrecision": "exact",
-          "ageHours": 3.42,
+          "ageHours": 3.91,
           "freshnessBasis": "The Seahawks ruled out QB Sam Darnold for Sunday's game against the Cardinals due to the glute injury he suffered in Wednesday's season-opening win.",
           "status": "active",
           "sourceUrls": [
@@ -320,7 +326,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T20:29:15Z",
           "timePrecision": "exact",
-          "ageHours": 4.53,
+          "ageHours": 5.03,
           "freshnessBasis": "Rookie cornerback Mansoor Delane, who aggravated a shoulder injury after recording his first career interception, is on track to play on \"Sunday Night Football\" against the Colts, coach Andy Reid says.",
           "status": "active",
           "sourceUrls": [
@@ -349,7 +355,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:34:55Z",
           "timePrecision": "exact",
-          "ageHours": 5.43,
+          "ageHours": 5.93,
           "freshnessBasis": "Vikings running back Jordan Mason was placed on injured reserve Wednesday after undergoing surgery to repair a fractured thumb.",
           "status": "active",
           "sourceUrls": [
@@ -378,7 +384,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T17:32:30Z",
           "timePrecision": "exact",
-          "ageHours": 7.47,
+          "ageHours": 7.97,
           "freshnessBasis": "Falcons coach Kevin Stefanski said he's \"not ruling anybody out\" when it comes to which QB is starting against the Panthers on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -413,7 +419,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:12:47Z",
           "timePrecision": "exact",
-          "ageHours": 13.8,
+          "ageHours": 14.3,
           "freshnessBasis": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -442,7 +448,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:13:40Z",
           "timePrecision": "exact",
-          "ageHours": 13.79,
+          "ageHours": 14.29,
           "freshnessBasis": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
           "status": "active",
           "sourceUrls": [
@@ -471,7 +477,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:13:19Z",
           "timePrecision": "exact",
-          "ageHours": 13.79,
+          "ageHours": 14.29,
           "freshnessBasis": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia for him, saying it's understandable.",
           "status": "active",
           "sourceUrls": [
@@ -500,7 +506,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:14:16Z",
           "timePrecision": "exact",
-          "ageHours": 13.78,
+          "ageHours": 14.28,
           "freshnessBasis": "Longtime NBA forward Taj Gibson is retiring after 17 seasons in the league and joining the Chicago Bulls coaching staff as an assistant.",
           "status": "active",
           "sourceUrls": [
@@ -535,7 +541,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T20:02:50Z",
           "timePrecision": "exact",
-          "ageHours": 4.97,
+          "ageHours": 5.47,
           "freshnessBasis": "Dylan Larkin will not skate with the Red Wings when training camp starts on Thursday due to an upper-body injury, the team announced Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -564,7 +570,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:49:08Z",
           "timePrecision": "exact",
-          "ageHours": 5.2,
+          "ageHours": 5.7,
           "freshnessBasis": "Mathew Barzal, the Islanders' leading scorer last season, is not expected to skate for a couple of weeks after aggravating a previous injury.",
           "status": "active",
           "sourceUrls": [
@@ -593,7 +599,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T21:21:13Z",
           "timePrecision": "exact",
-          "ageHours": 3.66,
+          "ageHours": 4.16,
           "freshnessBasis": "Brent Burns arrived at training camp without his trademark unkempt whiskers, instead sporting a close-cropped beard, as well as a sterling white bridge.",
           "status": "active",
           "sourceUrls": [
@@ -622,7 +628,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:51:18Z",
           "timePrecision": "exact",
-          "ageHours": 5.16,
+          "ageHours": 5.66,
           "freshnessBasis": "Veteran forward Jason Zucker is expected to miss the start of the season after having surgery to repair a sports hernia.",
           "status": "active",
           "sourceUrls": [
@@ -651,7 +657,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T10:45:05Z",
           "timePrecision": "exact",
-          "ageHours": 14.26,
+          "ageHours": 14.76,
           "freshnessBasis": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -680,7 +686,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T05:36:41Z",
           "timePrecision": "exact",
-          "ageHours": 19.4,
+          "ageHours": 19.9,
           "freshnessBasis": "The New Jersey Devils signed forward Luke Evangelista, 24, to a five-year contract extension Tuesday night, securing his place among the club's deep forward group after he was acquired from the Nashville Predators earlier this month for draft picks.",
           "status": "active",
           "sourceUrls": [
@@ -715,7 +721,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T18:53:02Z",
           "timePrecision": "exact",
-          "ageHours": 6.13,
+          "ageHours": 6.63,
           "freshnessBasis": "Chelsea striker João Pedro has withdrawn from the Brazil squad because of injury.",
           "status": "active",
           "sourceUrls": [
@@ -744,7 +750,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T23:59:01Z",
           "timePrecision": "exact",
-          "ageHours": 1.03,
+          "ageHours": 1.53,
           "freshnessBasis": "Clearlake Capital has taken full control of Chelsea after acquiring the ownership stakes of Mark Walter and Todd Boehly, the Premier League club announced Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -773,7 +779,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T23:43:16Z",
           "timePrecision": "exact",
-          "ageHours": 1.29,
+          "ageHours": 1.79,
           "freshnessBasis": "Michael Carrick confirmed he is involved in conversations about JJ Gabriel's future after the 15-year-old's request to leave Manchester United made major ripples and that the team is being \"careful\" with the situation.",
           "status": "active",
           "sourceUrls": [
@@ -802,7 +808,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T23:34:02Z",
           "timePrecision": "exact",
-          "ageHours": 1.45,
+          "ageHours": 1.95,
           "freshnessBasis": "After being eliminated to Brighton & Hove Albion in the Carabao Cup, Manchester United boss Michael Carrick is now facing the first real pressure of his reign.",
           "status": "active",
           "sourceUrls": [
@@ -831,7 +837,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T22:58:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.04,
+          "ageHours": 2.53,
           "freshnessBasis": "Michael Carrick branded Manchester United's capitulation as unacceptable, after watching his team lose 3-2 to Brighton in the Carabao Cup after leading 2-0.",
           "status": "active",
           "sourceUrls": [
@@ -860,7 +866,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:11:35Z",
           "timePrecision": "exact",
-          "ageHours": 13.82,
+          "ageHours": 14.32,
           "freshnessBasis": "Chelsea midfielder Cole Palmer was temporarily suspended from Twitch on Tuesday after streaming EA Sports FC 27 before the game's release.",
           "status": "active",
           "sourceUrls": [
@@ -895,7 +901,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T00:58:43Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
+          "ageHours": 0.54,
           "freshnessBasis": "Messi opens Campeones Cup scoring with 100th goal for Miami",
           "status": "active",
           "sourceUrls": [
@@ -930,7 +936,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T10:58:05Z",
           "timePrecision": "exact",
-          "ageHours": 14.05,
+          "ageHours": 14.55,
           "freshnessBasis": "Strange happenings continue in college football, where long losing streaks have become a winning formula.",
           "status": "active",
           "sourceUrls": [
@@ -957,9 +963,9 @@
           "headline": "The NCAA's FBS oversight committee acknowledged that replay protocols were not properly followed at the end of Western Michigan's controversial loss to Michigan in Week 1 but said it does not have the authority to overturn the result of the game.",
           "text": "The NCAA's FBS oversight committee acknowledged that replay protocols were not properly followed at the end of Western Michigan's controversial loss to Michigan in Week 1 but said it does not have the authority to overturn the result of the game.",
           "entities": [],
-          "occurredAt": "2026-09-17T00:46:06Z",
+          "occurredAt": "2026-09-17T01:01:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
+          "ageHours": 0.48,
           "freshnessBasis": "The NCAA's FBS oversight committee acknowledged that replay protocols were not properly followed at the end of Western Michigan's controversial loss to Michigan in Week 1 but said it does not have the authority to overturn the result of the game.",
           "status": "active",
           "sourceUrls": [
@@ -988,7 +994,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T15:24:06Z",
           "timePrecision": "exact",
-          "ageHours": 9.61,
+          "ageHours": 10.11,
           "freshnessBasis": "The LSU-Ole Miss rivalry took another dramatic turn Tuesday when Tigers star defensive end Princewill Umanmielen was served with court papers related to the Rebels' lawsuit against him, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -1017,7 +1023,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T20:57:29Z",
           "timePrecision": "exact",
-          "ageHours": 4.06,
+          "ageHours": 4.56,
           "freshnessBasis": "Florida State coach Mike Norvell said he had no idea a social media post showing a box truck outside his home went viral until he was asked about it during his Wednesday news conference, saying his entire focus has been on preparing to play at Alabama.",
           "status": "active",
           "sourceUrls": [
@@ -1046,7 +1052,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:33:17Z",
           "timePrecision": "exact",
-          "ageHours": 5.46,
+          "ageHours": 5.96,
           "freshnessBasis": "Oregon quarterback Dante Moore said the team is 'on the same page' after a player-led meeting in the wake of last week's upset loss at Oklahoma State.",
           "status": "active",
           "sourceUrls": [
@@ -1075,7 +1081,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:04:20Z",
           "timePrecision": "exact",
-          "ageHours": 5.94,
+          "ageHours": 6.44,
           "freshnessBasis": "University of Miami athletic teams will be wearing Nike apparel again starting in July 2027, according to multiple reports.",
           "status": "active",
           "sourceUrls": [
@@ -1115,7 +1121,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 112,
+    "freshCandidateCount": 113,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
