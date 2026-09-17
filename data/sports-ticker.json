@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-17T23:01:10Z",
+  "generatedAt": "2026-09-17T23:30:57Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "f5a65d0ec6d1018b6fcd92ed8ca2cff6c1ba45e26669d9fec1c6b0b267cd411a",
+  "sourceCandidateHash": "6eff1d74839c7b2f9f3a59be671457709e813204dfef6df8a2a33fdebe4f86c6",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T19:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.85,
+          "ageHours": 4.35,
           "freshnessBasis": "Highlightly final: San Diego Padres 9, Colorado Rockies 2.",
           "status": "active",
           "sourceUrls": [
@@ -59,18 +59,18 @@
           ],
           "type": "RESULT",
           "priority": 71,
-          "headline": "The Los Angeles Dodgers clinched their fifth consecutive NL West division title and 13th in the 14 seasons, sparked by four hits from Kyle Tucker that included a first-inning home run in an 8-2 win over the Cincinnati Reds on Thursday.",
-          "text": "The Los Angeles Dodgers clinched their fifth consecutive NL West division title and 13th in the 14 seasons, sparked by four hits from Kyle Tucker that included a first-inning home run in an 8-2 win over the Cincinnati Reds on Thursday.",
+          "headline": "The Dodgers clinched their fifth consecutive National League West title and 13th in the past 14 seasons with an 8-2 win over the Reds.",
+          "text": "The Dodgers clinched their fifth consecutive National League West title and 13th in the past 14 seasons with an 8-2 win over the Reds.",
           "entities": [],
           "occurredAt": "2026-09-17T16:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.35,
+          "ageHours": 6.85,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 8, Cincinnati Reds 2.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816974",
             "https://www.espn.com/mlb/story/_/id/49967221/dodgers-clinch-fifth-straight-nl-west-title-13th-14-years",
+            "http://www.espn.com/mlb/recap?gameId=401816974",
             "http://www.espn.com/mlb/recap?gameId=401816962"
           ],
           "sources": [
@@ -82,12 +82,12 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816974"
+              "url": "https://www.espn.com/mlb/story/_/id/49967221/dodgers-clinch-fifth-straight-nl-west-title-13th-14-years"
             },
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49967221/dodgers-clinch-fifth-straight-nl-west-title-13th-14-years"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816974"
             },
             {
               "provider": "ESPN",
@@ -97,7 +97,7 @@
           ],
           "id": "a415-c0fadf7bd3fb933a",
           "feedRank": 2,
-          "compactHeadline": "Dodgers clinch 5th straight NL West title, 13th in 14 years, Tucker has 4 hits in 8-2 win over Reds"
+          "compactHeadline": "Dodgers clinch fifth straight NL West title, 13th in 14 years"
         },
         {
           "rank": 3,
@@ -111,7 +111,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T16:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.44,
+          "ageHours": 6.93,
           "freshnessBasis": "Highlightly final: Milwaukee Brewers 4, Pittsburgh Pirates 7.",
           "status": "active",
           "sourceUrls": [
@@ -137,6 +137,35 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-f0deb0e9161c37dc"
+          ],
+          "type": "TRADE",
+          "priority": 78,
+          "headline": "White Sox pitcher Luis Castillo will pitch out of the bullpen for the foreseeable future after struggling to a 7.76 ERA in seven outings since Chicago acquired him at the trade deadline.",
+          "text": "White Sox pitcher Luis Castillo will pitch out of the bullpen for the foreseeable future after struggling to a 7.76 ERA in seven outings since Chicago acquired him at the trade deadline.",
+          "entities": [],
+          "occurredAt": "2026-09-17T23:17:52Z",
+          "timePrecision": "exact",
+          "ageHours": 0.22,
+          "freshnessBasis": "White Sox pitcher Luis Castillo will pitch out of the bullpen for the foreseeable future after struggling to a 7.76 ERA in seven outings since Chicago acquired him at the trade deadline.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49968387/white-sox-move-struggling-luis-castillo-bullpen"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49968387/white-sox-move-struggling-luis-castillo-bullpen"
+            }
+          ],
+          "id": "a415-88ed5c09ff3840b2",
+          "feedRank": 4,
+          "compactHeadline": "White Sox move struggling Luis Castillo to bullpen"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-74910691d6b5217c"
           ],
           "type": "STREAK",
@@ -146,7 +175,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.85,
+          "ageHours": 6.35,
           "freshnessBasis": "Highlightly final: Oakland Athletics 1, Tampa Bay Rays 10.",
           "status": "active",
           "sourceUrls": [
@@ -166,11 +195,11 @@
             }
           ],
           "id": "a415-434e7923d886db82",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Tampa Bay Rays beat Oakland Athletics 10-1"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-4d677bb0e01caec3"
           ],
@@ -181,7 +210,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T19:24:48Z",
           "timePrecision": "exact",
-          "ageHours": 3.61,
+          "ageHours": 4.1,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -195,43 +224,8 @@
             }
           ],
           "id": "a415-dbccbfd4bc1f6041",
-          "feedRank": 5,
-          "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-95e9202c59d30a90"
-          ],
-          "type": "RESULT",
-          "priority": 74,
-          "headline": "Pete-Crow Armstrong hit his 43rd and 44th homers and broke the Chicago Cubs' record for left-handers, and Shota Imanaga allowed a run in six innings in an 8-4 victory over the Atlanta Braves on Wednesday night.",
-          "text": "Pete-Crow Armstrong hit his 43rd and 44th homers and broke the Chicago Cubs' record for left-handers, and Shota Imanaga allowed a run in six innings in an 8-4 victory over the Atlanta Braves on Wednesday night.",
-          "entities": [],
-          "occurredAt": "2026-09-16T23:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 23.35,
-          "freshnessBasis": "Highlightly final: Atlanta Braves 4, Chicago Cubs 8.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816965"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-16",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816965"
-            }
-          ],
-          "id": "a415-9a8f8c5c842dc9ae",
           "feedRank": 6,
-          "compactHeadline": "Crow-Armstrong homers twice, Imanaga shines as Cubs beat Braves 8-4"
+          "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
         }
       ]
     },
@@ -242,6 +236,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-9a46c1e81a54581f"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Eagles defensive tackle Jalen Carter expects to wear a cast on his injured right wrist for Sunday's Week 2 matchup against the Titans.",
+          "text": "Eagles defensive tackle Jalen Carter expects to wear a cast on his injured right wrist for Sunday's Week 2 matchup against the Titans.",
+          "entities": [],
+          "occurredAt": "2026-09-17T23:26:37Z",
+          "timePrecision": "exact",
+          "ageHours": 0.07,
+          "freshnessBasis": "Eagles defensive tackle Jalen Carter expects to wear a cast on his injured right wrist for Sunday's Week 2 matchup against the Titans.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49968365/eagles-jalen-carter-wear-cast-injured-right-wrist-week-2-game-titans"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49968365/eagles-jalen-carter-wear-cast-injured-right-wrist-week-2-game-titans"
+            }
+          ],
+          "id": "a415-4fcb18b7bb2b400b",
+          "feedRank": 7,
+          "compactHeadline": "Eagles' Jalen Carter to wear cast on injured wrist vs. Titans"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-c49e140154f4b0d8"
           ],
           "type": "INJURY",
@@ -251,7 +274,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:50:32Z",
           "timePrecision": "exact",
-          "ageHours": 1.18,
+          "ageHours": 1.67,
           "freshnessBasis": "Steelers cornerback Joey Porter Jr. left Thursday's practice early with an athletic trainer, days after being cleared form a back injury.",
           "status": "active",
           "sourceUrls": [
@@ -265,11 +288,11 @@
             }
           ],
           "id": "a415-3bc1712e668ff3d3",
-          "feedRank": 7,
+          "feedRank": 8,
           "compactHeadline": "Steelers CB Joey Porter Jr. leaves practice early with trainer"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-f34ec3beebe93c6c"
           ],
@@ -280,7 +303,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:05:06Z",
           "timePrecision": "exact",
-          "ageHours": 1.93,
+          "ageHours": 2.43,
           "freshnessBasis": "Texans star wide receiver Nico Collins suffered a hamstring injury during Wednesday's practice and is uncertain to play in Week 2 against the Bengals, a source told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -294,11 +317,11 @@
             }
           ],
           "id": "a415-8a33c2c1b724c7bf",
-          "feedRank": 8,
+          "feedRank": 9,
           "compactHeadline": "Source: Texans' Nico Collins (hamstring) uncertain for Week 2"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-0171725d005f2339"
           ],
@@ -309,7 +332,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:25:53Z",
           "timePrecision": "exact",
-          "ageHours": 4.59,
+          "ageHours": 5.08,
           "freshnessBasis": "Patriots running back TreVeyon Henderson said Thursday he's \"ready to go\" for Sunday's game against the Steelers after missing New England's opener with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -323,95 +346,66 @@
             }
           ],
           "id": "a415-21d78c28e41c57cb",
-          "feedRank": 9,
-          "compactHeadline": "Patriots' TreVeyon Henderson says he's 'ready to go' for Week 2"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-2abbf83b73bb55fe"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Rams defensive tackle Aaron Donald will practice in full Thursday and the team is \"hopeful\" he will play Monday night against the Giants, coach Sean McVay said.",
-          "text": "Rams defensive tackle Aaron Donald will practice in full Thursday and the team is \"hopeful\" he will play Monday night against the Giants, coach Sean McVay said.",
-          "entities": [],
-          "occurredAt": "2026-09-17T22:59:03Z",
-          "timePrecision": "exact",
-          "ageHours": 0.04,
-          "freshnessBasis": "Rams defensive tackle Aaron Donald will practice in full Thursday and the team is \"hopeful\" he will play Monday night against the Giants, coach Sean McVay said.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49968127/mcvay-rams-hopeful-donald-play-giants-mnf"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49968127/mcvay-rams-hopeful-donald-play-giants-mnf"
-            }
-          ],
-          "id": "a415-dc24aa10602f2c61",
           "feedRank": 10,
-          "compactHeadline": "McVay: Rams 'hopeful' Donald will play against Giants on MNF"
+          "compactHeadline": "Patriots' TreVeyon Henderson says he's 'ready to go' for Week 2"
         },
         {
           "rank": 5,
           "candidateIds": [
-            "cand-11717a2b68b0d99b"
+            "cand-b4961752ac6b1206"
           ],
-          "type": "NEWS",
+          "type": "ROSTER",
           "priority": 64,
-          "headline": "There's a sudden sense of urgency as the Washington Commanders and Dallas Cowboys renew an old NFC East rivalry with both teams staring at an 0-2 start in division games.",
-          "text": "There's a sudden sense of urgency as the Washington Commanders and Dallas Cowboys renew an old NFC East rivalry with both teams staring at an 0-2 start in division games.",
+          "headline": "The Buffalo Bills' standout defensive tackle Ed Oliver was a surprise inactive for Thursday night's game against the Detroit Lions.",
+          "text": "The Buffalo Bills' standout defensive tackle Ed Oliver was a surprise inactive for Thursday night's game against the Detroit Lions.",
           "entities": [],
-          "occurredAt": "2026-09-17T22:52:31Z",
+          "occurredAt": "2026-09-17T23:28:37Z",
           "timePrecision": "exact",
-          "ageHours": 0.14,
-          "freshnessBasis": "— There's a sudden sense of urgency as the Washington Commanders and Dallas Cowboys renew an old NFC East rivalry with both teams staring at an 0-2 start in division games.",
+          "ageHours": 0.04,
+          "freshnessBasis": "The Buffalo Bills' standout defensive tackle Ed Oliver was a surprise inactive for Thursday night's game against the Detroit Lions.",
           "status": "active",
           "sourceUrls": [
-            "http://www.espn.com/nfl/preview?gameId=401872944"
+            "https://www.espn.com/nfl/story/_/id/49968285/bills-top-dt-ed-oliver-inactive-injuring-hip-warmups"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/preview?gameId=401872944"
+              "url": "https://www.espn.com/nfl/story/_/id/49968285/bills-top-dt-ed-oliver-inactive-injuring-hip-warmups"
             }
           ],
-          "id": "a415-46f2242f38abfb2c",
+          "id": "a415-615367ac80ddbcd9",
           "feedRank": 11,
-          "compactHeadline": "There's sudden urgency for old NFC East rivals as Commanders visit Cowboys following opening losses"
+          "compactHeadline": "Bills' top DT Ed Oliver inactive after injuring hip in warmups"
         },
         {
           "rank": 6,
           "candidateIds": [
-            "cand-68407f8bf4674e7c"
+            "cand-dced6767bc502257"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Saints running back Alvin Kamara has \"no limitations,\" was a full participant in practice and says his knee feels good only one month after spraining his MCL in practice.",
-          "text": "Saints running back Alvin Kamara has \"no limitations,\" was a full participant in practice and says his knee feels good only one month after spraining his MCL in practice.",
+          "headline": "Jesse Minter wasn't even with the Ravens last season, but the new coach seems to have a healthy grasp of how 2025 went so badly wrong for Baltimore.",
+          "text": "Jesse Minter wasn't even with the Ravens last season, but the new coach seems to have a healthy grasp of how 2025 went so badly wrong for Baltimore.",
           "entities": [],
-          "occurredAt": "2026-09-17T22:48:24Z",
+          "occurredAt": "2026-09-17T23:19:29Z",
           "timePrecision": "exact",
-          "ageHours": 0.21,
-          "freshnessBasis": "Saints running back Alvin Kamara has \"no limitations,\" was a full participant in practice and says his knee feels good only one month after spraining his MCL in practice.",
+          "ageHours": 0.19,
+          "freshnessBasis": "Jesse Minter wasn't even with the Ravens last season, but the new coach seems to have a healthy grasp of how 2025 went so badly wrong for Baltimore.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49967979/saints-alvin-kamara-practices-moving-well-mcl-sprain"
+            "http://www.espn.com/nfl/preview?gameId=401872938"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49967979/saints-alvin-kamara-practices-moving-well-mcl-sprain"
+              "url": "http://www.espn.com/nfl/preview?gameId=401872938"
             }
           ],
-          "id": "a415-e0bdd6bbd6857562",
+          "id": "a415-5e533a7a1b73dadc",
           "feedRank": 12,
-          "compactHeadline": "Saints' Alvin Kamara practices, 'moving well' after MCL sprain"
+          "compactHeadline": "After a poor 2025 at home, the Ravens try to turn the page when they host New Orleans"
         }
       ]
     },
@@ -429,9 +423,9 @@
           "headline": "The New Orleans Pelicans and forward Saddiq Bey have agreed to a three-year, $55.5 million contract extension, his agents tell ESPN.",
           "text": "The New Orleans Pelicans and forward Saddiq Bey have agreed to a three-year, $55.5 million contract extension, his agents tell ESPN.",
           "entities": [],
-          "occurredAt": "2026-09-17T22:43:24Z",
+          "occurredAt": "2026-09-17T23:11:44Z",
           "timePrecision": "exact",
-          "ageHours": 0.3,
+          "ageHours": 0.32,
           "freshnessBasis": "The New Orleans Pelicans and forward Saddiq Bey have agreed to a three-year, $55.5 million contract extension, his agents tell ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -460,7 +454,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T03:06:15Z",
           "timePrecision": "exact",
-          "ageHours": 19.92,
+          "ageHours": 20.41,
           "freshnessBasis": "The Phoenix Suns, looking for depth in the wake of Mark Williams' injury, are signing center Duop Reath to a deal, sources told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -487,9 +481,9 @@
           "headline": "Michael Sweetney, who played four seasons in the NBA with the Knicks and Bulls after a standout college career at Georgetown, has died. He was 43.",
           "text": "Michael Sweetney, who played four seasons in the NBA with the Knicks and Bulls after a standout college career at Georgetown, has died. He was 43.",
           "entities": [],
-          "occurredAt": "2026-09-17T22:19:48Z",
+          "occurredAt": "2026-09-17T23:29:46Z",
           "timePrecision": "exact",
-          "ageHours": 0.69,
+          "ageHours": 0.02,
           "freshnessBasis": "Michael Sweetney, who played four seasons in the NBA with the Knicks and Bulls after a standout college career at Georgetown, has died. He was 43.",
           "status": "active",
           "sourceUrls": [
@@ -513,13 +507,13 @@
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "NBC announced Thursday that Brunson will appear in the season's fifth episode, which is scheduled to air Nov. 5.",
-          "text": "NBC announced Thursday that Brunson will appear in the season's fifth episode, which is scheduled to air Nov. 5.",
+          "headline": "NBC announced Thursday that Jalen Brunson will appear in the season's fifth episode, which is scheduled to air Nov. 5.",
+          "text": "NBC announced Thursday that Jalen Brunson will appear in the season's fifth episode, which is scheduled to air Nov. 5.",
           "entities": [],
-          "occurredAt": "2026-09-17T21:25:01Z",
+          "occurredAt": "2026-09-17T23:26:10Z",
           "timePrecision": "exact",
-          "ageHours": 1.6,
-          "freshnessBasis": "NBC announced Thursday that Brunson will appear in the season's fifth episode, which is scheduled to air Nov. 5.",
+          "ageHours": 0.08,
+          "freshnessBasis": "NBC announced Thursday that Jalen Brunson will appear in the season's fifth episode, which is scheduled to air Nov. 5.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/nba/story/_/id/49967701/new-york-knicks-jalen-brunson-law-order-svu-guest-appearance-mariska-hargitay"
@@ -553,7 +547,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:28:17Z",
           "timePrecision": "exact",
-          "ageHours": 1.55,
+          "ageHours": 2.04,
           "freshnessBasis": "The Sharks signed coach Ryan Warsofsky to a multiyear contact extension on the first day of training camp Thursday after he helped the rebuilding team get to the brink of the playoffs over his first two seasons.",
           "status": "active",
           "sourceUrls": [
@@ -573,6 +567,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-bf240cf524eaea20"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Florida forward Brad Marchand is expected to miss the first month of the season while continuing to recover from offseason surgery.",
+          "text": "Florida forward Brad Marchand is expected to miss the first month of the season while continuing to recover from offseason surgery.",
+          "entities": [],
+          "occurredAt": "2026-09-17T23:22:17Z",
+          "timePrecision": "exact",
+          "ageHours": 0.14,
+          "freshnessBasis": "Florida forward Brad Marchand is expected to miss the first month of the season while continuing to recover from offseason surgery.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49968235/panthers-say-brad-marchand-rehabbing-october"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49968235/panthers-say-brad-marchand-rehabbing-october"
+            }
+          ],
+          "id": "a415-516fe4fc9772c9a3",
+          "feedRank": 18,
+          "compactHeadline": "Panthers say Brad Marchand will be rehabbing through October"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-86682e172fbb3e22"
           ],
           "type": "TRADE",
@@ -582,7 +605,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:08:31Z",
           "timePrecision": "exact",
-          "ageHours": 5.88,
+          "ageHours": 6.37,
           "freshnessBasis": "Red Wings captain Dylan Larkin talked to his teammates about his offseason trade request and answered some questions from reporters on the first day of training camp.",
           "status": "active",
           "sourceUrls": [
@@ -596,11 +619,11 @@
             }
           ],
           "id": "a415-d942dcb47f941d50",
-          "feedRank": 18,
+          "feedRank": 19,
           "compactHeadline": "Red Wings center Dylan Larkin discusses offseason trade request"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-e5dc01f38c54c294"
           ],
@@ -611,7 +634,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:39:37Z",
           "timePrecision": "exact",
-          "ageHours": 5.36,
+          "ageHours": 5.86,
           "freshnessBasis": "Jets GM Kevin Cheveldayoff didn't rule out the possibility that goaltender Connor Hellebuyck could remain with the team after going public with a trade demand. The Jets formally suspended Hellebuyck on Wednesday for failure to report to training camp.",
           "status": "active",
           "sourceUrls": [
@@ -625,37 +648,8 @@
             }
           ],
           "id": "a415-831b685a029f53ca",
-          "feedRank": 19,
-          "compactHeadline": "GM: 'Door open' for star goalie Hellebuyck to remain with Jets"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-7af43ae4ad775e54"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "These are the top first-year players to monitor for 2026-27. Who will break out first?",
-          "text": "These are the top first-year players to monitor for 2026-27. Who will break out first?",
-          "entities": [],
-          "occurredAt": "2026-09-17T19:47:25Z",
-          "timePrecision": "exact",
-          "ageHours": 3.23,
-          "freshnessBasis": "These are the top first-year players to monitor for 2026-27. Who will break out first?",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49957147/nhl-2026-27-rookie-rankings-top-players-mckenna-martone-stenberg-hagens"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49957147/nhl-2026-27-rookie-rankings-top-players-mckenna-martone-stenberg-hagens"
-            }
-          ],
-          "id": "a415-7dc841a24f787b42",
           "feedRank": 20,
-          "compactHeadline": "NHL rookie watch list: The next wave of young hockey superstars"
+          "compactHeadline": "GM: 'Door open' for star goalie Hellebuyck to remain with Jets"
         }
       ]
     },
@@ -675,7 +669,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:40:02Z",
           "timePrecision": "exact",
-          "ageHours": 7.35,
+          "ageHours": 7.85,
           "freshnessBasis": "Matthias Jaissle hopes Anthony Elanga's injury is \"not that serious\" as Newcastle prepare to face Hull City on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -704,7 +698,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T22:50:45Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 0.67,
           "freshnessBasis": "Marco Rose was delighted to watch \"Bournemouth football\" during a 2-1 win at Real Sociedad and a memorable first match in Europe for the Premier League club.",
           "status": "active",
           "sourceUrls": [
@@ -733,7 +727,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T10:49:01Z",
           "timePrecision": "exact",
-          "ageHours": 12.2,
+          "ageHours": 12.7,
           "freshnessBasis": "Chelsea striker João Pedro has withdrawn from the Brazil squad because of injury.",
           "status": "active",
           "sourceUrls": [
@@ -762,7 +756,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T12:12:46Z",
           "timePrecision": "exact",
-          "ageHours": 10.81,
+          "ageHours": 11.3,
           "freshnessBasis": "Coventry boss Frank Lampard has urged his players to stay positive ahead of Saturday's Premier League trip to Nottingham Forest.",
           "status": "active",
           "sourceUrls": [
@@ -789,9 +783,9 @@
           "headline": "Despite using an alternative team, Manchester City made it six wins from six under Enzo Maresca, highlighting just how smoothly the post-Pep Guardiola era has begun.",
           "text": "Despite using an alternative team, Manchester City made it six wins from six under Enzo Maresca, highlighting just how smoothly the post-Pep Guardiola era has begun.",
           "entities": [],
-          "occurredAt": "2026-09-17T22:54:16Z",
+          "occurredAt": "2026-09-17T23:05:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.12,
+          "ageHours": 0.43,
           "freshnessBasis": "Despite using an alternative team, Manchester City made it six wins from six under Enzo Maresca, highlighting just how smoothly the post-Pep Guardiola era has begun.",
           "status": "active",
           "sourceUrls": [
@@ -826,7 +820,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T13:57:03Z",
           "timePrecision": "exact",
-          "ageHours": 9.07,
+          "ageHours": 9.57,
           "freshnessBasis": "Lionel Messi scored his 100th goal for Inter Miami in all competitions after heading home the opener in a 2-0 win over Cruz Azul in the Campeones Cup on Wednesday night at Nu Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -855,7 +849,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T22:08:13Z",
           "timePrecision": "exact",
-          "ageHours": 0.88,
+          "ageHours": 1.38,
           "freshnessBasis": "New York Red Bulls teenage forward Julian Hall said the decision on his international allegiance was still \"not solidified,\" despite earning a first call-up to the U.S. men's national team on Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -884,7 +878,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:58:28Z",
           "timePrecision": "exact",
-          "ageHours": 4.05,
+          "ageHours": 4.54,
           "freshnessBasis": "Lionel Messi pointed his finger at MLS commissioner Don Garber on multiple occasions while speaking with him after Inter Miami's game with Cruz Azul on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -913,7 +907,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:37:10Z",
           "timePrecision": "exact",
-          "ageHours": 4.4,
+          "ageHours": 4.9,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -948,7 +942,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:20:40Z",
           "timePrecision": "exact",
-          "ageHours": 1.68,
+          "ageHours": 2.17,
           "freshnessBasis": "North Carolina DC Steve Belichick has resigned as the university's probe into the football program's culture and climate found \"isolated\" disregard for standards of conduct.",
           "status": "active",
           "sourceUrls": [
@@ -977,7 +971,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:24:47Z",
           "timePrecision": "exact",
-          "ageHours": 4.61,
+          "ageHours": 5.1,
           "freshnessBasis": "Baylor quarterback DJ Lagway is considered doubtful for the Bears' game Saturday against Louisiana Tech because of an ankle injury, sources told ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -1006,7 +1000,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:28:30Z",
           "timePrecision": "exact",
-          "ageHours": 7.54,
+          "ageHours": 8.04,
           "freshnessBasis": "Northwestern coach David Braun has agreed to a new contract through the 2031 season, extending his agreement by three years.",
           "status": "active",
           "sourceUrls": [
@@ -1035,7 +1029,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T12:30:21Z",
           "timePrecision": "exact",
-          "ageHours": 10.51,
+          "ageHours": 11.01,
           "freshnessBasis": "In a surprising turn of events, LSU listed starting quarterback Sam Leavitt as doubtful for Saturday. The exact nature of his injury is unclear.",
           "status": "active",
           "sourceUrls": [
@@ -1064,7 +1058,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:31:39Z",
           "timePrecision": "exact",
-          "ageHours": 4.49,
+          "ageHours": 4.99,
           "freshnessBasis": "Texas co-defensive coordinator and inside linebackers coach Johnny Nansen has been charged with misdemeanor driving while intoxicated, head coach Steve Sarkisian announced Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -1093,7 +1087,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T03:15:36Z",
           "timePrecision": "exact",
-          "ageHours": 19.76,
+          "ageHours": 20.26,
           "freshnessBasis": "USC freshman wide receiver Trent Mosley has an undisclosed injury, according to coach Lincoln Riley, and the timeline for his return is \"inconclusive.\"",
           "status": "active",
           "sourceUrls": [
@@ -1133,7 +1127,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 122,
+    "freshCandidateCount": 124,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
