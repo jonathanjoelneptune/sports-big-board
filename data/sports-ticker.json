@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-17T22:00:55Z",
+  "generatedAt": "2026-09-17T22:30:54Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "222167fd9132af26c65c13d22899c5025fcb6d4332dbba5ec5ed146ae6d821f2",
+  "sourceCandidateHash": "fc5653cc460db21346bbe12d8b65afc4730f4030b0bc11094dcb5a9489ddcfba",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,47 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-42690eb9411b592e"
+          ],
+          "type": "RESULT",
+          "priority": 74,
+          "headline": "Ethan Salas hit his first two home runs and became the youngest catcher in major league history with a multi-homer game as the San Diego Padres beat...",
+          "text": "Ethan Salas hit his first two home runs and became the youngest catcher in major league history with a multi-homer game as the San Diego Padres beat...",
+          "entities": [],
+          "occurredAt": "2026-09-17T19:10:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.35,
+          "freshnessBasis": "Highlightly final: San Diego Padres 9, Colorado Rockies 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816980",
+            "http://www.espn.com/mlb/recap?gameId=401816970"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-17",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816980"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816970"
+            }
+          ],
+          "id": "a415-cb97c35b38fd6d33",
+          "feedRank": 1,
+          "compactHeadline": "Ethan Salas becomes youngest catcher with a multi-homer game as Padres beat Rockies 9-3"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-51a3e8981ae9011b"
           ],
@@ -23,7 +64,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T16:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.35,
+          "ageHours": 5.85,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 8, Cincinnati Reds 2.",
           "status": "active",
           "sourceUrls": [
@@ -55,11 +96,11 @@
             }
           ],
           "id": "a415-c0fadf7bd3fb933a",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Dodgers clinch 5th straight NL West title, 13th in 14 years, Tucker has 4 hits in 8-2 win over Reds"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-b3b16d31543fb49c"
           ],
@@ -70,7 +111,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T16:35:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.43,
+          "ageHours": 5.93,
           "freshnessBasis": "Highlightly final: Milwaukee Brewers 4, Pittsburgh Pirates 7.",
           "status": "active",
           "sourceUrls": [
@@ -90,11 +131,11 @@
             }
           ],
           "id": "a415-7179fb6de5232884",
-          "feedRank": 2,
+          "feedRank": 3,
           "compactHeadline": "Christian Yelich's 2-run double rallies NL Central champion Brewers to 5-4 win over Pirates"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-74910691d6b5217c"
           ],
@@ -105,13 +146,12 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.85,
+          "ageHours": 5.35,
           "freshnessBasis": "Highlightly final: Oakland Athletics 1, Tampa Bay Rays 10.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/preview?gameId=401816973",
-            "http://www.espn.com/mlb/recap?gameId=401816958"
+            "http://www.espn.com/mlb/preview?gameId=401816973"
           ],
           "sources": [
             {
@@ -123,51 +163,11 @@
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/preview?gameId=401816973"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816958"
             }
           ],
           "id": "a415-434e7923d886db82",
-          "feedRank": 3,
-          "compactHeadline": "Tampa Bay Rays beat Oakland Athletics 10-1"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-62419bd2e597bab0"
-          ],
-          "type": "RESULT",
-          "priority": 74,
-          "headline": "Ethan Salas hit his first two home runs and became the youngest catcher in major league history with a multi-homer game as the San Diego Padres beat...",
-          "text": "Ethan Salas hit his first two home runs and became the youngest catcher in major league history with a multi-homer game as the San Diego Padres beat...",
-          "entities": [],
-          "occurredAt": "2026-09-17T00:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 21.35,
-          "freshnessBasis": "Highlightly final: San Diego Padres 9, Colorado Rockies 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816970"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-16",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816970"
-            }
-          ],
-          "id": "a415-d6bfb5c94166c233",
           "feedRank": 4,
-          "compactHeadline": "Ethan Salas becomes youngest catcher with a multi-homer game as Padres beat Rockies 9-3"
+          "compactHeadline": "Tampa Bay Rays beat Oakland Athletics 10-1"
         },
         {
           "rank": 5,
@@ -181,7 +181,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T19:24:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.6,
+          "ageHours": 3.1,
           "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
           "status": "active",
           "sourceUrls": [
@@ -210,7 +210,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 22.35,
+          "ageHours": 22.85,
           "freshnessBasis": "Highlightly final: Atlanta Braves 4, Chicago Cubs 8.",
           "status": "active",
           "sourceUrls": [
@@ -251,7 +251,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:50:32Z",
           "timePrecision": "exact",
-          "ageHours": 0.17,
+          "ageHours": 0.67,
           "freshnessBasis": "Steelers cornerback Joey Porter Jr. left Thursday's practice early with an athletic trainer, days after being cleared form a back injury.",
           "status": "active",
           "sourceUrls": [
@@ -280,7 +280,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:05:06Z",
           "timePrecision": "exact",
-          "ageHours": 0.93,
+          "ageHours": 1.43,
           "freshnessBasis": "Texans star wide receiver Nico Collins suffered a hamstring injury during Wednesday's practice and is uncertain to play in Week 2 against the Bengals, a source told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -309,7 +309,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:25:53Z",
           "timePrecision": "exact",
-          "ageHours": 3.58,
+          "ageHours": 4.08,
           "freshnessBasis": "Patriots running back TreVeyon Henderson said Thursday he's \"ready to go\" for Sunday's game against the Steelers after missing New England's opener with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -329,6 +329,64 @@
         {
           "rank": 4,
           "candidateIds": [
+            "cand-2abbf83b73bb55fe"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Rams defensive tackle Aaron Donald will practice in full on Thursday and the team is \"hopeful\" he will play on Monday night against the Giants, coach Sean McVay said.",
+          "text": "Rams defensive tackle Aaron Donald will practice in full on Thursday and the team is \"hopeful\" he will play on Monday night against the Giants, coach Sean McVay said.",
+          "entities": [],
+          "occurredAt": "2026-09-17T22:28:13Z",
+          "timePrecision": "exact",
+          "ageHours": 0.04,
+          "freshnessBasis": "Rams defensive tackle Aaron Donald will practice in full on Thursday and the team is \"hopeful\" he will play on Monday night against the Giants, coach Sean McVay said.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49968127/mcvay-rams-hopeful-donald-play-giants-mnf"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49968127/mcvay-rams-hopeful-donald-play-giants-mnf"
+            }
+          ],
+          "id": "a415-dc24aa10602f2c61",
+          "feedRank": 10,
+          "compactHeadline": "McVay: Rams 'hopeful' Donald will play against Giants on MNF"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-da7503906eaa43dd"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "During his 24 seasons with the New England Patriots, Bill Belichick never held back in expressing his affinity for the",
+          "text": "During his 24 seasons with the New England Patriots, Bill Belichick never held back in expressing his affinity for the",
+          "entities": [],
+          "occurredAt": "2026-09-17T22:21:33Z",
+          "timePrecision": "exact",
+          "ageHours": 0.16,
+          "freshnessBasis": "— During his 24 seasons with the New England Patriots, Bill Belichick never held back in expressing his affinity for the",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nfl/preview?gameId=401872946"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/preview?gameId=401872946"
+            }
+          ],
+          "id": "a415-d9792f09a9add638",
+          "feedRank": 11,
+          "compactHeadline": "Steelers rolling, Patriots looking to bounce back in latest matchup between franchises"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-68407f8bf4674e7c"
           ],
           "type": "NEWS",
@@ -336,9 +394,9 @@
           "headline": "Saints RB Alvin Kamara has \"no limitations,\" was a full participant in practice and said his knee feels good just one month after spraining his MCL in practice.",
           "text": "Saints RB Alvin Kamara has \"no limitations,\" was a full participant in practice and said his knee feels good just one month after spraining his MCL in practice.",
           "entities": [],
-          "occurredAt": "2026-09-17T21:57:39Z",
+          "occurredAt": "2026-09-17T22:05:21Z",
           "timePrecision": "exact",
-          "ageHours": 0.05,
+          "ageHours": 0.43,
           "freshnessBasis": "Saints RB Alvin Kamara has \"no limitations,\" was a full participant in practice and said his knee feels good just one month after spraining his MCL in practice.",
           "status": "active",
           "sourceUrls": [
@@ -352,66 +410,8 @@
             }
           ],
           "id": "a415-e0bdd6bbd6857562",
-          "feedRank": 10,
-          "compactHeadline": "Saints' Alvin Kamara practices, 'moving well' after MCL sprain"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-58e2d0b6e343b357"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Trey McBride is in his fifth season with the Arizona Cardinals and has never been part of a win over the Seattle Seahawks, an NFC West rival...",
-          "text": "Trey McBride is in his fifth season with the Arizona Cardinals and has never been part of a win over the Seattle Seahawks, an NFC West rival...",
-          "entities": [],
-          "occurredAt": "2026-09-17T21:31:30Z",
-          "timePrecision": "exact",
-          "ageHours": 0.49,
-          "freshnessBasis": "— Trey McBride is in his fifth season with the Arizona Cardinals and has never been part of a win over the Seattle Seahawks, an NFC West rival...",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nfl/preview?gameId=401872943"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/preview?gameId=401872943"
-            }
-          ],
-          "id": "a415-1a53fc4be6dc58e7",
-          "feedRank": 11,
-          "compactHeadline": "Cardinals test-drive newfound confidence against the defending Super Bowl champ Seahawks"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-ba40413c8a239af3"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Chargers offensive coordinator Mike McDaniel says he was caught off-guard by the team's struggles on offense in the loss to the Cardinals but also expressed confidence it's a short-term issue.",
-          "text": "Chargers offensive coordinator Mike McDaniel says he was caught off-guard by the team's struggles on offense in the loss to the Cardinals but also expressed confidence it's a short-term issue.",
-          "entities": [],
-          "occurredAt": "2026-09-17T21:28:21Z",
-          "timePrecision": "exact",
-          "ageHours": 0.54,
-          "freshnessBasis": "Chargers offensive coordinator Mike McDaniel says he was caught off-guard by the team's struggles on offense in the loss to the Cardinals but also expressed confidence it's a short-term issue.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49967540/chargers-offense-match-vision-mike-mcdaniel-says"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49967540/chargers-offense-match-vision-mike-mcdaniel-says"
-            }
-          ],
-          "id": "a415-4cb3d972ee641f8b",
           "feedRank": 12,
-          "compactHeadline": "Chargers didn't play up to 'vision' in loss, Mike McDaniel says"
+          "compactHeadline": "Saints' Alvin Kamara practices, 'moving well' after MCL sprain"
         }
       ]
     },
@@ -422,6 +422,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-f3bf68e8c336cbf2"
+          ],
+          "type": "CONTRACT",
+          "priority": 76,
+          "headline": "The New Orleans Pelicans and forward Saddiq Bey have agreed to a three-year, $55.5 million contract extension, his agents tell ESPN.",
+          "text": "The New Orleans Pelicans and forward Saddiq Bey have agreed to a three-year, $55.5 million contract extension, his agents tell ESPN.",
+          "entities": [],
+          "occurredAt": "2026-09-17T22:24:42Z",
+          "timePrecision": "exact",
+          "ageHours": 0.1,
+          "freshnessBasis": "The New Orleans Pelicans and forward Saddiq Bey have agreed to a three-year, $55.5 million contract extension, his agents tell ESPN.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/49965682/pelicans-saddiq-bey-agree-3-year-555m-contract-extension"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/49965682/pelicans-saddiq-bey-agree-3-year-555m-contract-extension"
+            }
+          ],
+          "id": "a415-75c1ef931c3d7f24",
+          "feedRank": 13,
+          "compactHeadline": "Pelicans, Saddiq Bey agree on 3-year, $55.5M contract extension"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-c76688b3608d9bcd"
           ],
           "type": "INJURY",
@@ -431,7 +460,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T03:06:15Z",
           "timePrecision": "exact",
-          "ageHours": 18.91,
+          "ageHours": 19.41,
           "freshnessBasis": "The Phoenix Suns, looking for depth in the wake of Mark Williams' injury, are signing center Duop Reath to a deal, sources told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -445,11 +474,11 @@
             }
           ],
           "id": "a415-fdbd6cde45f976d4",
-          "feedRank": 13,
+          "feedRank": 14,
           "compactHeadline": "Sources: Suns add center depth with free agent Duop Reath"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-4d1b02724144f887"
           ],
@@ -458,9 +487,9 @@
           "headline": "Michael Sweetney, who played four seasons in the NBA with the Knicks and Bulls after a standout college career at Georgetown, has died. He was 43.",
           "text": "Michael Sweetney, who played four seasons in the NBA with the Knicks and Bulls after a standout college career at Georgetown, has died. He was 43.",
           "entities": [],
-          "occurredAt": "2026-09-17T21:45:40Z",
+          "occurredAt": "2026-09-17T22:19:48Z",
           "timePrecision": "exact",
-          "ageHours": 0.25,
+          "ageHours": 0.19,
           "freshnessBasis": "Michael Sweetney, who played four seasons in the NBA with the Knicks and Bulls after a standout college career at Georgetown, has died. He was 43.",
           "status": "active",
           "sourceUrls": [
@@ -474,11 +503,11 @@
             }
           ],
           "id": "a415-4607b4d6ff00b447",
-          "feedRank": 14,
+          "feedRank": 15,
           "compactHeadline": "Michael Sweetney, who played for the Hoyas, Knicks, Bulls, dies at 43"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-592daae96005446e"
           ],
@@ -489,7 +518,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:25:01Z",
           "timePrecision": "exact",
-          "ageHours": 0.6,
+          "ageHours": 1.1,
           "freshnessBasis": "NBC announced Thursday that Brunson will appear in the season's fifth episode, which is scheduled to air Nov. 5.",
           "status": "active",
           "sourceUrls": [
@@ -503,11 +532,11 @@
             }
           ],
           "id": "a415-3e71f65893853638",
-          "feedRank": 15,
+          "feedRank": 16,
           "compactHeadline": "Jalen Brunson to guest star on 'Law & Order: SVU' episode in November"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-c8bbd8c6c188bbd8"
           ],
@@ -518,7 +547,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:04:52Z",
           "timePrecision": "exact",
-          "ageHours": 0.93,
+          "ageHours": 1.43,
           "freshnessBasis": "The Minnesota Timberwolves star had a few jokes up his sleeve for the new 76ers duo.",
           "status": "active",
           "sourceUrls": [
@@ -532,37 +561,8 @@
             }
           ],
           "id": "a415-ea52f12b21a8c881",
-          "feedRank": 16,
-          "compactHeadline": "Anthony Edwards trolls LeBron James, Jaylen Brown in Adidas ad"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-1d9615bed3c23e12"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "The Cavaliers weren't one of the first teams interested in acquiring Peyton Watson, but once they began their pursuit of the restricted free agent, the 23-year-old forward saw how it made sense for both parties.",
-          "text": "The Cavaliers weren't one of the first teams interested in acquiring Peyton Watson, but once they began their pursuit of the restricted free agent, the 23-year-old forward saw how it made sense for both parties.",
-          "entities": [],
-          "occurredAt": "2026-09-17T19:36:18Z",
-          "timePrecision": "exact",
-          "ageHours": 2.41,
-          "freshnessBasis": "The Cavaliers weren't one of the first teams interested in acquiring Peyton Watson, but once they began their pursuit of the restricted free agent, the 23-year-old forward saw how it made sense for both parties.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/49966846/watson-eager-showcase-all-game-cavaliers"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/49966846/watson-eager-showcase-all-game-cavaliers"
-            }
-          ],
-          "id": "a415-90684cfe6204adc6",
           "feedRank": 17,
-          "compactHeadline": "Defensive stalwart Watson ready to flex his versatility with Cavs"
+          "compactHeadline": "Anthony Edwards trolls LeBron James, Jaylen Brown in Adidas ad"
         }
       ]
     },
@@ -582,7 +582,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:28:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.54,
+          "ageHours": 1.04,
           "freshnessBasis": "The Sharks signed coach Ryan Warsofsky to a multiyear contact extension on the first day of training camp Thursday after he helped the rebuilding team get to the brink of the playoffs over his first two seasons.",
           "status": "active",
           "sourceUrls": [
@@ -611,7 +611,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:08:31Z",
           "timePrecision": "exact",
-          "ageHours": 4.87,
+          "ageHours": 5.37,
           "freshnessBasis": "Red Wings captain Dylan Larkin talked to his teammates about his offseason trade request and answered some questions from reporters on the first day of training camp.",
           "status": "active",
           "sourceUrls": [
@@ -640,7 +640,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:39:37Z",
           "timePrecision": "exact",
-          "ageHours": 4.36,
+          "ageHours": 4.85,
           "freshnessBasis": "Jets GM Kevin Cheveldayoff didn't rule out the possibility that goaltender Connor Hellebuyck could remain with the team after going public with a trade demand. The Jets formally suspended Hellebuyck on Wednesday for failure to report to training camp.",
           "status": "active",
           "sourceUrls": [
@@ -669,7 +669,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T19:47:25Z",
           "timePrecision": "exact",
-          "ageHours": 2.23,
+          "ageHours": 2.72,
           "freshnessBasis": "These are the top first-year players to monitor for 2026-27. Who will break out first?",
           "status": "active",
           "sourceUrls": [
@@ -704,7 +704,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:40:02Z",
           "timePrecision": "exact",
-          "ageHours": 6.35,
+          "ageHours": 6.85,
           "freshnessBasis": "Matthias Jaissle hopes Anthony Elanga's injury is \"not that serious\" as Newcastle prepare to face Hull City on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -733,7 +733,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T10:49:01Z",
           "timePrecision": "exact",
-          "ageHours": 11.2,
+          "ageHours": 11.7,
           "freshnessBasis": "Chelsea striker João Pedro has withdrawn from the Brazil squad because of injury.",
           "status": "active",
           "sourceUrls": [
@@ -762,7 +762,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T12:12:46Z",
           "timePrecision": "exact",
-          "ageHours": 9.8,
+          "ageHours": 10.3,
           "freshnessBasis": "Coventry boss Frank Lampard has urged his players to stay positive ahead of Saturday's Premier League trip to Nottingham Forest.",
           "status": "active",
           "sourceUrls": [
@@ -782,31 +782,31 @@
         {
           "rank": 4,
           "candidateIds": [
-            "cand-a9c9a942446e281b"
+            "cand-ab5bb96518f8b7e0"
           ],
           "type": "NEWS",
           "priority": 64,
-          "headline": "Michail Antonio has been found guilty of failing to identify the driver of his Lamborghini supercar when it was suspected of involvement in a motoring offence in central London.",
-          "text": "Michail Antonio has been found guilty of failing to identify the driver of his Lamborghini supercar when it was suspected of involvement in a motoring offence in central London.",
+          "headline": "Teenager Floyd Samba said his debut was \"mind-blowing\" after his stunning two-goal display in Manchester City's 5-0 thrashing of Norwich.",
+          "text": "Teenager Floyd Samba said his debut was \"mind-blowing\" after his stunning two-goal display in Manchester City's 5-0 thrashing of Norwich.",
           "entities": [],
-          "occurredAt": "2026-09-17T17:12:43Z",
+          "occurredAt": "2026-09-17T22:18:47Z",
           "timePrecision": "exact",
-          "ageHours": 4.8,
-          "freshnessBasis": "Michail Antonio has been found guilty of failing to identify the driver of his Lamborghini supercar when it was suspected of involvement in a motoring offence in central London.",
+          "ageHours": 0.2,
+          "freshnessBasis": "Teenager Floyd Samba said his debut was \"mind-blowing\" after his stunning two-goal display in Manchester City's 5-0 thrashing of Norwich.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49965902/michail-antonio-found-guilty-failing-identify-driver-lamborgini-police"
+            "https://www.espn.com/soccer/story/_/id/49967991/manchester-city-floyd-samba-debut-brace-vs-norwich-was-mind-blowing"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49965902/michail-antonio-found-guilty-failing-identify-driver-lamborgini-police"
+              "url": "https://www.espn.com/soccer/story/_/id/49967991/manchester-city-floyd-samba-debut-brace-vs-norwich-was-mind-blowing"
             }
           ],
-          "id": "a415-b666a02b92b89033",
+          "id": "a415-049339ac369b103f",
           "feedRank": 25,
-          "compactHeadline": "Michail Antonio found guilty of failing to identify driver of his Lamborgini to police"
+          "compactHeadline": "Man City's 17-year-old Floyd Samba: Debut brace vs. Norwich was 'mind-blowing'"
         }
       ]
     },
@@ -826,7 +826,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T13:57:03Z",
           "timePrecision": "exact",
-          "ageHours": 8.06,
+          "ageHours": 8.56,
           "freshnessBasis": "Lionel Messi scored his 100th goal for Inter Miami in all competitions after heading home the opener in a 2-0 win over Cruz Azul in the Campeones Cup on Wednesday night at Nu Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -846,6 +846,35 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-dfef2aed0e11f5b5"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "New York Red Bulls teenage forward Julian Hall said the decision on his international allegiance was still \"not solidified,\" despite earning a first call-up to the U.S. men's national team on Thursday.",
+          "text": "New York Red Bulls teenage forward Julian Hall said the decision on his international allegiance was still \"not solidified,\" despite earning a first call-up to the U.S. men's national team on Thursday.",
+          "entities": [],
+          "occurredAt": "2026-09-17T22:08:13Z",
+          "timePrecision": "exact",
+          "ageHours": 0.38,
+          "freshnessBasis": "New York Red Bulls teenage forward Julian Hall said the decision on his international allegiance was still \"not solidified,\" despite earning a first call-up to the U.S. men's national team on Thursday.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49967712/julian-hall-usa-poland-new-york-red-bulls"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mls",
+              "url": "https://www.espn.com/soccer/story/_/id/49967712/julian-hall-usa-poland-new-york-red-bulls"
+            }
+          ],
+          "id": "a415-0985e5a4bd890429",
+          "feedRank": 27,
+          "compactHeadline": "Red Bulls teen Hall undecided on USMNT future despite 1st call-up"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
             "cand-8ac155c31ddf34da"
           ],
           "type": "NEWS",
@@ -855,7 +884,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:58:28Z",
           "timePrecision": "exact",
-          "ageHours": 3.04,
+          "ageHours": 3.54,
           "freshnessBasis": "Lionel Messi pointed his finger at MLS commissioner Don Garber on multiple occasions while speaking with him after Inter Miami's game with Cruz Azul on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -869,11 +898,11 @@
             }
           ],
           "id": "a415-75c58ff8ffe3cc68",
-          "feedRank": 27,
+          "feedRank": 28,
           "compactHeadline": "Messi, MLS' Garber appear to have heated exchange after Miami win"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-a43d07e7ac0edc79"
           ],
@@ -884,7 +913,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:37:10Z",
           "timePrecision": "exact",
-          "ageHours": 3.4,
+          "ageHours": 3.9,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -898,37 +927,8 @@
             }
           ],
           "id": "a415-1375489762173612",
-          "feedRank": 28,
-          "compactHeadline": "16-year-old Cavan Sullivan named to USMNT squad, Christian Pulisic left out"
-        },
-        {
-          "rank": 4,
-          "candidateIds": [
-            "cand-e0d7b53d44cb4cd7"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
-          "text": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
-          "entities": [],
-          "occurredAt": "2026-09-17T02:51:38Z",
-          "timePrecision": "exact",
-          "ageHours": 19.15,
-          "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/47978642/lionel-messi-2026-tracker-inter-miami-argentina-games-goals-assists-stats"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mls",
-              "url": "https://www.espn.com/soccer/story/_/id/47978642/lionel-messi-2026-tracker-inter-miami-argentina-games-goals-assists-stats"
-            }
-          ],
-          "id": "a415-fa668b3291d7fcc5",
           "feedRank": 29,
-          "compactHeadline": "Messi tracker: Goals, assists, key moments in 2026"
+          "compactHeadline": "16-year-old Cavan Sullivan named to USMNT squad, Christian Pulisic left out"
         }
       ]
     },
@@ -948,7 +948,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:20:40Z",
           "timePrecision": "exact",
-          "ageHours": 0.67,
+          "ageHours": 1.17,
           "freshnessBasis": "North Carolina DC Steve Belichick has resigned as the university's probe into the football program's culture and climate found \"isolated\" disregard for standards of conduct.",
           "status": "active",
           "sourceUrls": [
@@ -977,7 +977,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:24:47Z",
           "timePrecision": "exact",
-          "ageHours": 3.6,
+          "ageHours": 4.1,
           "freshnessBasis": "Baylor quarterback DJ Lagway is considered doubtful for the Bears' game Saturday against Louisiana Tech because of an ankle injury, sources told ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -1006,7 +1006,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:28:30Z",
           "timePrecision": "exact",
-          "ageHours": 6.54,
+          "ageHours": 7.04,
           "freshnessBasis": "Northwestern coach David Braun has agreed to a new contract through the 2031 season, extending his agreement by three years.",
           "status": "active",
           "sourceUrls": [
@@ -1035,7 +1035,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T12:30:21Z",
           "timePrecision": "exact",
-          "ageHours": 9.51,
+          "ageHours": 10.01,
           "freshnessBasis": "In a surprising turn of events, LSU listed starting quarterback Sam Leavitt as doubtful for Saturday. The exact nature of his injury is unclear.",
           "status": "active",
           "sourceUrls": [
@@ -1064,7 +1064,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:31:39Z",
           "timePrecision": "exact",
-          "ageHours": 3.49,
+          "ageHours": 3.99,
           "freshnessBasis": "Texas co-defensive coordinator and inside linebackers coach Johnny Nansen has been charged with misdemeanor driving while intoxicated, head coach Steve Sarkisian announced Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -1093,7 +1093,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T03:15:36Z",
           "timePrecision": "exact",
-          "ageHours": 18.76,
+          "ageHours": 19.26,
           "freshnessBasis": "USC freshman wide receiver Trent Mosley has an undisclosed injury, according to coach Lincoln Riley, and the timeline for his return is \"inconclusive.\"",
           "status": "active",
           "sourceUrls": [
@@ -1133,7 +1133,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 120,
+    "freshCandidateCount": 124,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
