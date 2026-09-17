@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-17T19:01:08Z",
+  "generatedAt": "2026-09-17T19:31:01Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "db9fa88bada6dd5a202eac25217f22f81385e654cad29e28b6ed57fbb519a364",
+  "sourceCandidateHash": "7bb64d5cef93edea0ca261511aacb9db125de0f87a1632f041af496ed762c8e5",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,41 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-51a3e8981ae9011b"
+          ],
+          "type": "RESULT",
+          "priority": 71,
+          "headline": "Elly De La Cruz hit a two-run homer and the Cincinnati Reds at least temporarily prevented the Los Angeles Dodgers from clinching the NL West title with a 6-2 victory on Wednesday night.",
+          "text": "Elly De La Cruz hit a two-run homer and the Cincinnati Reds at least temporarily prevented the Los Angeles Dodgers from clinching the NL West title with a 6-2 victory on Wednesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-17T16:40:00Z",
+          "timePrecision": "exact",
+          "ageHours": 2.85,
+          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 8, Cincinnati Reds 2.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816962"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-17",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816962"
+            }
+          ],
+          "id": "a415-c0fadf7bd3fb933a",
+          "feedRank": 1,
+          "compactHeadline": "Elly De La Cruz hits 2-run HR, Reds beat Dodgers 6-2 to delay NL West title"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-62419bd2e597bab0"
           ],
@@ -23,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T00:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.35,
+          "ageHours": 18.85,
           "freshnessBasis": "Highlightly final: San Diego Padres 9, Colorado Rockies 3.",
           "status": "active",
           "sourceUrls": [
@@ -43,11 +78,40 @@
             }
           ],
           "id": "a415-d6bfb5c94166c233",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Ethan Salas becomes youngest catcher with a multi-homer game as Padres beat Rockies 9-3"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-4d677bb0e01caec3"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "text": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "entities": [],
+          "occurredAt": "2026-09-17T19:24:48Z",
+          "timePrecision": "exact",
+          "ageHours": 0.1,
+          "freshnessBasis": "From current playoff matchups to league races to the postseason schedule, we have everything you need to know.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule"
+            }
+          ],
+          "id": "a415-dbccbfd4bc1f6041",
+          "feedRank": 3,
+          "compactHeadline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-95e9202c59d30a90"
           ],
@@ -58,7 +122,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 19.35,
+          "ageHours": 19.85,
           "freshnessBasis": "Highlightly final: Atlanta Braves 4, Chicago Cubs 8.",
           "status": "active",
           "sourceUrls": [
@@ -78,11 +142,11 @@
             }
           ],
           "id": "a415-9a8f8c5c842dc9ae",
-          "feedRank": 2,
+          "feedRank": 4,
           "compactHeadline": "Crow-Armstrong homers twice, Imanaga shines as Cubs beat Braves 8-4"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-9e445da2e843c109"
           ],
@@ -93,7 +157,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T00:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 18.85,
+          "ageHours": 19.35,
           "freshnessBasis": "Highlightly final: Kansas City Royals 5, Houston Astros 2.",
           "status": "active",
           "sourceUrls": [
@@ -113,11 +177,11 @@
             }
           ],
           "id": "a415-3689692ce6c12def",
-          "feedRank": 3,
+          "feedRank": 5,
           "compactHeadline": "Rave and Massey homer as Royals beat Astros 5-2, dropping Houston into first-place tie with Texas"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-0257375805714774"
           ],
@@ -128,7 +192,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T22:45:00Z",
           "timePrecision": "exact",
-          "ageHours": 20.27,
+          "ageHours": 20.77,
           "freshnessBasis": "Highlightly final: Philadelphia Phillies 3, Washington Nationals 0.",
           "status": "active",
           "sourceUrls": [
@@ -148,78 +212,8 @@
             }
           ],
           "id": "a415-cd86f9d98ef8595b",
-          "feedRank": 4,
-          "compactHeadline": "Zack Wheeler pitches 7 innings in the Phillies' 3-0 victory over the Nationals"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-0312599ebfead0d6"
-          ],
-          "type": "RESULT",
-          "priority": 71,
-          "headline": "Elly De La Cruz hit a two-run homer and the Cincinnati Reds at least temporarily prevented the Los Angeles Dodgers from clinching the NL West title with a 6-2 victory on Wednesday night.",
-          "text": "Elly De La Cruz hit a two-run homer and the Cincinnati Reds at least temporarily prevented the Los Angeles Dodgers from clinching the NL West title with a 6-2 victory on Wednesday night.",
-          "entities": [],
-          "occurredAt": "2026-09-16T22:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 20.35,
-          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 2, Cincinnati Reds 6.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816962"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-16",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816962"
-            }
-          ],
-          "id": "a415-a9c02255fc0db7a6",
-          "feedRank": 5,
-          "compactHeadline": "Elly De La Cruz hits 2-run HR, Reds beat Dodgers 6-2 to delay NL West title"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-99a7353e5a38c61b"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Christian Yelich’s two-run double in the seventh inning sent the NL Central champion Milwaukee Brewers to a 5-4 victory over the Pittsburgh Pirates on Wednesday night.",
-          "text": "Christian Yelich’s two-run double in the seventh inning sent the NL Central champion Milwaukee Brewers to a 5-4 victory over the Pittsburgh Pirates on Wednesday night.",
-          "entities": [],
-          "occurredAt": "2026-09-16T22:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 20.35,
-          "freshnessBasis": "Highlightly final: Milwaukee Brewers 5, Pittsburgh Pirates 4.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816963"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-16",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816963"
-            }
-          ],
-          "id": "a415-5d543da789c0e131",
           "feedRank": 6,
-          "compactHeadline": "Christian Yelich's 2-run double rallies NL Central champion Brewers to 5-4 win over Pirates"
+          "compactHeadline": "Zack Wheeler pitches 7 innings in the Phillies' 3-0 victory over the Nationals"
         }
       ]
     },
@@ -239,7 +233,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:25:53Z",
           "timePrecision": "exact",
-          "ageHours": 0.59,
+          "ageHours": 1.09,
           "freshnessBasis": "Patriots running back TreVeyon Henderson said Thursday he's \"ready to go\" for Sunday's game against the Steelers after missing New England's opener with an ankle injury.",
           "status": "active",
           "sourceUrls": [
@@ -268,7 +262,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T13:16:44Z",
           "timePrecision": "exact",
-          "ageHours": 5.74,
+          "ageHours": 6.24,
           "freshnessBasis": "Texans star wide receiver Nico Collins suffered a hamstring injury during Wednesday's practice and is uncertain to play in Week 2 against the Bengals, a source told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -288,6 +282,64 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-23faef88a6129dc6"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The NFC South suffered the indignity of having four teams finish with losing...",
+          "text": "The NFC South suffered the indignity of having four teams finish with losing...",
+          "entities": [],
+          "occurredAt": "2026-09-17T19:28:45Z",
+          "timePrecision": "exact",
+          "ageHours": 0.04,
+          "freshnessBasis": "— The NFC South suffered the indignity of having four teams finish with losing...",
+          "status": "active",
+          "sourceUrls": [
+            "http://www.espn.com/nfl/preview?gameId=401872933"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "http://www.espn.com/nfl/preview?gameId=401872933"
+            }
+          ],
+          "id": "a415-7958b990f8b0d507",
+          "feedRank": 9,
+          "compactHeadline": "Falcons are looking for better defensive plan against Panthers QB Bryce Young in NFC South showdown"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-a5ccbfa735817985"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Zxavian Harris and Dae'Quan Wright are ineligible to join any NFL teams this season after they attempted to return to college and play for LSU, the NFL reminded teams.",
+          "text": "Zxavian Harris and Dae'Quan Wright are ineligible to join any NFL teams this season after they attempted to return to college and play for LSU, the NFL reminded teams.",
+          "entities": [],
+          "occurredAt": "2026-09-17T19:27:38Z",
+          "timePrecision": "exact",
+          "ageHours": 0.06,
+          "freshnessBasis": "Zxavian Harris and Dae'Quan Wright are ineligible to join any NFL teams this season after they attempted to return to college and play for LSU, the NFL reminded teams.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49966817/nfl-reminds-teams-harris-wright-ineligible-sign-2026"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49966817/nfl-reminds-teams-harris-wright-ineligible-sign-2026"
+            }
+          ],
+          "id": "a415-b1d19fbd56864e1d",
+          "feedRank": 10,
+          "compactHeadline": "NFL reminds teams Harris, Wright ineligible to sign in 2026"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
             "cand-e67cd2543c61f365"
           ],
           "type": "INJURY",
@@ -297,7 +349,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T21:45:20Z",
           "timePrecision": "exact",
-          "ageHours": 21.26,
+          "ageHours": 21.76,
           "freshnessBasis": "49ers receiver De'Zhaun Stribling had surgery on his ankle and is expected to miss about 10 weeks, while tight end Jake Tonges has been ruled out for the season.",
           "status": "active",
           "sourceUrls": [
@@ -311,11 +363,11 @@
             }
           ],
           "id": "a415-c08c6882f5712beb",
-          "feedRank": 9,
+          "feedRank": 11,
           "compactHeadline": "49ers' De'Zhaun Stribling has surgery, to miss about 10 weeks"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-a9caf956a7b4a0d8"
           ],
@@ -326,7 +378,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:57:33Z",
           "timePrecision": "exact",
-          "ageHours": 0.06,
+          "ageHours": 0.56,
           "freshnessBasis": "— The Indianapolis Colts had a chance to watch the Kansas City Chiefs open the season with a rout of the Denver Broncos on TV on Monday night, and they came away having learned the same lesson as most everybody else who watched the game.",
           "status": "active",
           "sourceUrls": [
@@ -340,66 +392,8 @@
             }
           ],
           "id": "a415-690c197b1689f1d5",
-          "feedRank": 10,
-          "compactHeadline": "Colts brace for a new-look Chiefs attack after Kenneth Walker III’s 173-yard opener against Denver"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-8ee8eff8dfdcd02e"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "It's a stressful week for Chicago Bears coach Ben Johnson. Same for Minnesota Vikings defensive coordinator Brian Flores.",
-          "text": "It's a stressful week for Chicago Bears coach Ben Johnson. Same for Minnesota Vikings defensive coordinator Brian Flores.",
-          "entities": [],
-          "occurredAt": "2026-09-17T18:31:30Z",
-          "timePrecision": "exact",
-          "ageHours": 0.49,
-          "freshnessBasis": "— It's a stressful week for Chicago Bears coach Ben Johnson. Same for Minnesota Vikings defensive coordinator Brian Flores.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nfl/preview?gameId=401872937"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/preview?gameId=401872937"
-            }
-          ],
-          "id": "a415-e6101db7f01c7841",
-          "feedRank": 11,
-          "compactHeadline": "Ben Johnson and Brian Flores face off again as the Bears take on the Vikings in Week 2"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-3b744f0d89f3dec8"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "It has been quite a while since Jordan Love and the Green Bay Packers walked off the field with a victory.",
-          "text": "It has been quite a while since Jordan Love and the Green Bay Packers walked off the field with a victory.",
-          "entities": [],
-          "occurredAt": "2026-09-17T17:53:30Z",
-          "timePrecision": "exact",
-          "ageHours": 1.13,
-          "freshnessBasis": "— It has been quite a while since Jordan Love and the Green Bay Packers walked off the field with a victory.",
-          "status": "active",
-          "sourceUrls": [
-            "http://www.espn.com/nfl/preview?gameId=401872936"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "http://www.espn.com/nfl/preview?gameId=401872936"
-            }
-          ],
-          "id": "a415-2438365e101bd4f6",
           "feedRank": 12,
-          "compactHeadline": "Packers on a 6-game skid going back to last season and face a Jets squad looking for a 2-0 start"
+          "compactHeadline": "Colts brace for a new-look Chiefs attack after Kenneth Walker III’s 173-yard opener against Denver"
         }
       ]
     },
@@ -419,7 +413,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T03:06:15Z",
           "timePrecision": "exact",
-          "ageHours": 15.91,
+          "ageHours": 16.41,
           "freshnessBasis": "The Phoenix Suns, looking for depth in the wake of Mark Williams' injury, are signing center Duop Reath to a deal, sources told ESPN's Shams Charania.",
           "status": "active",
           "sourceUrls": [
@@ -446,9 +440,9 @@
           "headline": "The Knicks said they are pausing ticket sales after an error caused them to be listed for amounts that were too high.",
           "text": "The Knicks said they are pausing ticket sales after an error caused them to be listed for amounts that were too high.",
           "entities": [],
-          "occurredAt": "2026-09-17T17:52:14Z",
+          "occurredAt": "2026-09-17T19:23:48Z",
           "timePrecision": "exact",
-          "ageHours": 1.15,
+          "ageHours": 0.12,
           "freshnessBasis": "The Knicks said they are pausing ticket sales after an error caused them to be listed for amounts that were too high.",
           "status": "active",
           "sourceUrls": [
@@ -464,6 +458,64 @@
           "id": "a415-2686e965fefd0d93",
           "feedRank": 14,
           "compactHeadline": "Knicks pause ticket sales after error leads to higher prices"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-1d9615bed3c23e12"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Cavaliers weren't one of the first teams interested in acquiring Peyton Watson, but once they began their pursuit of the restricted free agent, the 23-year-old forward saw how it made sense for both parties.",
+          "text": "The Cavaliers weren't one of the first teams interested in acquiring Peyton Watson, but once they began their pursuit of the restricted free agent, the 23-year-old forward saw how it made sense for both parties.",
+          "entities": [],
+          "occurredAt": "2026-09-17T19:20:57Z",
+          "timePrecision": "exact",
+          "ageHours": 0.17,
+          "freshnessBasis": "The Cavaliers weren't one of the first teams interested in acquiring Peyton Watson, but once they began their pursuit of the restricted free agent, the 23-year-old forward saw how it made sense for both parties.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/49966846/watson-eager-showcase-all-game-cavaliers"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/49966846/watson-eager-showcase-all-game-cavaliers"
+            }
+          ],
+          "id": "a415-90684cfe6204adc6",
+          "feedRank": 15,
+          "compactHeadline": "Defensive stalwart Watson ready to flex his versatility with Cavs"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-c8bbd8c6c188bbd8"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "The Minnesota Timberwolves star had a few jokes up his sleeve for the new 76ers duo.",
+          "text": "The Minnesota Timberwolves star had a few jokes up his sleeve for the new 76ers duo.",
+          "entities": [],
+          "occurredAt": "2026-09-17T19:06:21Z",
+          "timePrecision": "exact",
+          "ageHours": 0.41,
+          "freshnessBasis": "The Minnesota Timberwolves star had a few jokes up his sleeve for the new 76ers duo.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nba/story/_/id/49966107/anthony-edwards-adidas-troll-lebron-james-jaylen-brown-minnesota-timberwolves-philadelphia-76ers"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nba",
+              "url": "https://www.espn.com/nba/story/_/id/49966107/anthony-edwards-adidas-troll-lebron-james-jaylen-brown-minnesota-timberwolves-philadelphia-76ers"
+            }
+          ],
+          "id": "a415-ea52f12b21a8c881",
+          "feedRank": 16,
+          "compactHeadline": "Anthony Edwards trolls LeBron James, Jaylen Brown in Adidas ad"
         }
       ]
     },
@@ -483,7 +535,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:08:31Z",
           "timePrecision": "exact",
-          "ageHours": 1.88,
+          "ageHours": 2.38,
           "freshnessBasis": "Red Wings captain Dylan Larkin talked to his teammates about his offseason trade request and answered some questions from reporters on the first day of training camp.",
           "status": "active",
           "sourceUrls": [
@@ -497,7 +549,7 @@
             }
           ],
           "id": "a415-d942dcb47f941d50",
-          "feedRank": 15,
+          "feedRank": 17,
           "compactHeadline": "Red Wings center Dylan Larkin discusses offseason trade request"
         },
         {
@@ -512,7 +564,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:39:37Z",
           "timePrecision": "exact",
-          "ageHours": 1.36,
+          "ageHours": 1.86,
           "freshnessBasis": "Jets GM Kevin Cheveldayoff didn't rule out the possibility that goaltender Connor Hellebuyck could remain with the team after going public with a trade demand. The Jets formally suspended Hellebuyck on Wednesday for failure to report to training camp.",
           "status": "active",
           "sourceUrls": [
@@ -526,7 +578,7 @@
             }
           ],
           "id": "a415-831b685a029f53ca",
-          "feedRank": 16,
+          "feedRank": 18,
           "compactHeadline": "GM: 'Door open' for star goalie Hellebuyck to remain with Jets"
         },
         {
@@ -539,9 +591,9 @@
           "headline": "Alex Ovechkin is drawing criticism after appearing in a TV ad for Vladimir Putin's political party, but the NHL's career goal-scoring leader said he only \"supports what's happening in Russia\" and hopes the war with Ukraine will end soon.",
           "text": "Alex Ovechkin is drawing criticism after appearing in a TV ad for Vladimir Putin's political party, but the NHL's career goal-scoring leader said he only \"supports what's happening in Russia\" and hopes the war with Ukraine will end soon.",
           "entities": [],
-          "occurredAt": "2026-09-17T18:12:18Z",
+          "occurredAt": "2026-09-17T19:29:20Z",
           "timePrecision": "exact",
-          "ageHours": 0.81,
+          "ageHours": 0.03,
           "freshnessBasis": "Alex Ovechkin is drawing criticism after appearing in a TV ad for Vladimir Putin's political party, but the NHL's career goal-scoring leader said he only \"supports what's happening in Russia\" and hopes the war with Ukraine will end soon.",
           "status": "active",
           "sourceUrls": [
@@ -555,7 +607,7 @@
             }
           ],
           "id": "a415-55d9e61bbe1902fb",
-          "feedRank": 17,
+          "feedRank": 19,
           "compactHeadline": "Alex Ovechkin says he supports Russia but is 'not pro-war'"
         },
         {
@@ -570,7 +622,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:49:08Z",
           "timePrecision": "exact",
-          "ageHours": 23.2,
+          "ageHours": 23.7,
           "freshnessBasis": "Mathew Barzal, the Islanders' leading scorer last season, is not expected to skate for a couple of weeks after aggravating a previous injury.",
           "status": "active",
           "sourceUrls": [
@@ -584,37 +636,8 @@
             }
           ],
           "id": "a415-7e88abd5850b2f8a",
-          "feedRank": 18,
+          "feedRank": 20,
           "compactHeadline": "Islanders' Mathew Barzal off skates for two weeks with injury"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-257eb54c23f004fa"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Ryan Reaves said Wednesday he is retiring from hockey at age 39 after playing more than a decade and a half in the NHL.",
-          "text": "Ryan Reaves said Wednesday he is retiring from hockey at age 39 after playing more than a decade and a half in the NHL.",
-          "entities": [],
-          "occurredAt": "2026-09-17T12:25:52Z",
-          "timePrecision": "exact",
-          "ageHours": 6.59,
-          "freshnessBasis": "Ryan Reaves said Wednesday he is retiring from hockey at age 39 after playing more than a decade and a half in the NHL.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49960700/enforcer-ryan-reaves-retires-just-3-visor-less-nhl-players-left"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49960700/enforcer-ryan-reaves-retires-just-3-visor-less-nhl-players-left"
-            }
-          ],
-          "id": "a415-46a7c1467f2d89f3",
-          "feedRank": 19,
-          "compactHeadline": "Enforcer Ryan Reaves retires; just 3 visor-less NHL players left"
         }
       ]
     },
@@ -634,7 +657,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:40:02Z",
           "timePrecision": "exact",
-          "ageHours": 3.35,
+          "ageHours": 3.85,
           "freshnessBasis": "Matthias Jaissle hopes Anthony Elanga's injury is \"not that serious\" as Newcastle prepare to face Hull City on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -648,7 +671,7 @@
             }
           ],
           "id": "a415-dd627f1d7eca3aa9",
-          "feedRank": 20,
+          "feedRank": 21,
           "compactHeadline": "Newcastle boss Matthias Jaissle hoping for 'positive' update on Anthony Elanga injury"
         },
         {
@@ -663,7 +686,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T10:49:01Z",
           "timePrecision": "exact",
-          "ageHours": 8.2,
+          "ageHours": 8.7,
           "freshnessBasis": "Chelsea striker João Pedro has withdrawn from the Brazil squad because of injury.",
           "status": "active",
           "sourceUrls": [
@@ -677,7 +700,7 @@
             }
           ],
           "id": "a415-d9e0c42c753cf646",
-          "feedRank": 21,
+          "feedRank": 22,
           "compactHeadline": "Chelsea's João Pedro withdraws from Brazil squad with injury"
         },
         {
@@ -692,7 +715,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T12:12:46Z",
           "timePrecision": "exact",
-          "ageHours": 6.81,
+          "ageHours": 7.3,
           "freshnessBasis": "Coventry boss Frank Lampard has urged his players to stay positive ahead of Saturday's Premier League trip to Nottingham Forest.",
           "status": "active",
           "sourceUrls": [
@@ -706,7 +729,7 @@
             }
           ],
           "id": "a415-acd68075d596e095",
-          "feedRank": 22,
+          "feedRank": 23,
           "compactHeadline": "Frank Lampard urges Coventry to stay positive amid four-game losing streak"
         },
         {
@@ -721,7 +744,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:12:43Z",
           "timePrecision": "exact",
-          "ageHours": 1.81,
+          "ageHours": 2.31,
           "freshnessBasis": "Michail Antonio has been found guilty of failing to identify the driver of his Lamborghini supercar when it was suspected of involvement in a motoring offence in central London.",
           "status": "active",
           "sourceUrls": [
@@ -735,7 +758,7 @@
             }
           ],
           "id": "a415-b666a02b92b89033",
-          "feedRank": 23,
+          "feedRank": 24,
           "compactHeadline": "Michail Antonio found guilty of failing to identify driver of his Lamborgini to police"
         },
         {
@@ -750,7 +773,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:10:06Z",
           "timePrecision": "exact",
-          "ageHours": 3.85,
+          "ageHours": 4.35,
           "freshnessBasis": "Viral Manchester United fan Frank Ilett's haircut challenge is nearing the two-year mark and he's back to square 1.",
           "status": "active",
           "sourceUrls": [
@@ -764,37 +787,8 @@
             }
           ],
           "id": "a415-1395386dea6768b6",
-          "feedRank": 24,
-          "compactHeadline": "Still at zero: Viral Man United fan's haircut challenge nears two years"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-bcdec096f7bddf15"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Fabian Hürzeler called for humility and continued focus on the basics as Brighton host Arsenal fresh from their remarkable Carabao Cup turnaround at Manchester United.",
-          "text": "Fabian Hürzeler called for humility and continued focus on the basics as Brighton host Arsenal fresh from their remarkable Carabao Cup turnaround at Manchester United.",
-          "entities": [],
-          "occurredAt": "2026-09-17T14:42:02Z",
-          "timePrecision": "exact",
-          "ageHours": 4.32,
-          "freshnessBasis": "Fabian Hürzeler called for humility and continued focus on the basics as Brighton host Arsenal fresh from their remarkable Carabao Cup turnaround at Manchester United.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49964818/fabian-hurzeler-brighton-stay-humble-comeback-win-man-united"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49964818/fabian-hurzeler-brighton-stay-humble-comeback-win-man-united"
-            }
-          ],
-          "id": "a415-3ffa5ace26a95237",
           "feedRank": 25,
-          "compactHeadline": "Fabian Hürzeler urges Brighton to stay humble despite impressive comeback win over Man United"
+          "compactHeadline": "Still at zero: Viral Man United fan's haircut challenge nears two years"
         }
       ]
     },
@@ -814,7 +808,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T13:57:03Z",
           "timePrecision": "exact",
-          "ageHours": 5.07,
+          "ageHours": 5.57,
           "freshnessBasis": "Lionel Messi scored his 100th goal for Inter Miami in all competitions after heading home the opener in a 2-0 win over Cruz Azul in the Campeones Cup on Wednesday night at Nu Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -843,7 +837,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:58:28Z",
           "timePrecision": "exact",
-          "ageHours": 0.04,
+          "ageHours": 0.54,
           "freshnessBasis": "Lionel Messi pointed his finger at MLS commissioner Don Garber on multiple occasions while speaking with him after Inter Miami's game with Cruz Azul on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -872,7 +866,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:37:10Z",
           "timePrecision": "exact",
-          "ageHours": 0.4,
+          "ageHours": 0.9,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -901,7 +895,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T02:51:38Z",
           "timePrecision": "exact",
-          "ageHours": 16.16,
+          "ageHours": 16.66,
           "freshnessBasis": "ESPN provides game-by-game analysis of Lionel Messi's performances for Inter Miami and Argentina.",
           "status": "active",
           "sourceUrls": [
@@ -936,7 +930,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:24:47Z",
           "timePrecision": "exact",
-          "ageHours": 0.61,
+          "ageHours": 1.1,
           "freshnessBasis": "Baylor quarterback DJ Lagway is considered doubtful for the Bears' game Saturday against Louisiana Tech because of an ankle injury, sources told ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -963,9 +957,9 @@
           "headline": "North Carolina DC Steve Belichick has resigned as the university's probe into the football program's culture and climate found \"isolated\" disregard for standards of conduct.",
           "text": "North Carolina DC Steve Belichick has resigned as the university's probe into the football program's culture and climate found \"isolated\" disregard for standards of conduct.",
           "entities": [],
-          "occurredAt": "2026-09-17T18:53:35Z",
+          "occurredAt": "2026-09-17T19:20:04Z",
           "timePrecision": "exact",
-          "ageHours": 0.13,
+          "ageHours": 0.18,
           "freshnessBasis": "North Carolina DC Steve Belichick has resigned as the university's probe into the football program's culture and climate found \"isolated\" disregard for standards of conduct.",
           "status": "active",
           "sourceUrls": [
@@ -994,7 +988,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:28:30Z",
           "timePrecision": "exact",
-          "ageHours": 3.54,
+          "ageHours": 4.04,
           "freshnessBasis": "Northwestern coach David Braun has agreed to a new contract through the 2031 season, extending his agreement by three years.",
           "status": "active",
           "sourceUrls": [
@@ -1023,7 +1017,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T12:30:21Z",
           "timePrecision": "exact",
-          "ageHours": 6.51,
+          "ageHours": 7.01,
           "freshnessBasis": "In a surprising turn of events, LSU listed starting quarterback Sam Leavitt as doubtful for Saturday. The exact nature of his injury is unclear.",
           "status": "active",
           "sourceUrls": [
@@ -1052,7 +1046,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:31:39Z",
           "timePrecision": "exact",
-          "ageHours": 0.49,
+          "ageHours": 0.99,
           "freshnessBasis": "Texas co-defensive coordinator and inside linebackers coach Johnny Nansen has been charged with misdemeanor driving while intoxicated, head coach Steve Sarkisian announced Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -1081,7 +1075,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T03:15:36Z",
           "timePrecision": "exact",
-          "ageHours": 15.76,
+          "ageHours": 16.26,
           "freshnessBasis": "USC freshman wide receiver Trent Mosley has an undisclosed injury, according to coach Lincoln Riley, and the timeline for his return is \"inconclusive.\"",
           "status": "active",
           "sourceUrls": [
@@ -1121,7 +1115,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 117,
+    "freshCandidateCount": 121,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
