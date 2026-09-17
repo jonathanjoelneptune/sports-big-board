@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-17T01:30:50Z",
+  "generatedAt": "2026-09-17T02:01:00Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "88d32d28033d66aa8342941e4f4675690a7ea98a789c71e0e05d78753db05eb7",
+  "sourceCandidateHash": "3dd604a6e6c707ce355a6bc0abf6f286c98025fd9844a0347a90c8e37cb4d284",
   "leagues": [
     {
       "league": "MLB",
@@ -23,7 +23,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T17:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.85,
+          "ageHours": 8.35,
           "freshnessBasis": "Highlightly final: New York Yankees 4, Minnesota Twins 5.",
           "status": "active",
           "sourceUrls": [
@@ -58,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T17:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 8.26,
+          "ageHours": 8.77,
           "freshnessBasis": "Highlightly final: San Francisco Giants 6, St. Louis Cardinals 5.",
           "status": "active",
           "sourceUrls": [
@@ -84,6 +84,47 @@
         {
           "rank": 3,
           "candidateIds": [
+            "cand-0257375805714774"
+          ],
+          "type": "STREAK",
+          "priority": 74,
+          "headline": "Zack Wheeler pitched seven scoreless innings, Alec Bohm went 2 for 2 with an RBI and three of Philadelphia's season-high 13 walks, and the Phillies beat the Washington Nationals 3-0 on Wednesday night.",
+          "text": "Zack Wheeler pitched seven scoreless innings, Alec Bohm went 2 for 2 with an RBI and three of Philadelphia's season-high 13 walks, and the Phillies beat the Washington Nationals 3-0 on Wednesday night.",
+          "entities": [],
+          "occurredAt": "2026-09-16T22:45:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.27,
+          "freshnessBasis": "Highlightly final: Philadelphia Phillies 3, Washington Nationals 0.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816964",
+            "http://www.espn.com/mlb/preview?gameId=401816964"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-16",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816964"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/preview?gameId=401816964"
+            }
+          ],
+          "id": "a415-cd86f9d98ef8595b",
+          "feedRank": 3,
+          "compactHeadline": "Philadelphia Phillies beat Washington Nationals 3-0"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-b1cd20e4d2e7e476"
           ],
           "type": "STREAK",
@@ -93,7 +134,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T22:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.85,
+          "ageHours": 3.35,
           "freshnessBasis": "Highlightly final: Oakland Athletics 3, Tampa Bay Rays 4.",
           "status": "active",
           "sourceUrls": [
@@ -119,11 +160,11 @@
             }
           ],
           "id": "a415-7dfe5388d577fe23",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Tampa Bay Rays beat Oakland Athletics 4-3"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-8d33debc666d830e"
           ],
@@ -134,7 +175,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T00:41:48Z",
           "timePrecision": "exact",
-          "ageHours": 0.82,
+          "ageHours": 1.32,
           "freshnessBasis": "Robert Stock's comeback season is over after the New York Mets right-hander was placed on the 15-day injured list due to numbness in his fingers.",
           "status": "active",
           "sourceUrls": [
@@ -148,11 +189,11 @@
             }
           ],
           "id": "a415-76281f5d3ca4fec5",
-          "feedRank": 4,
+          "feedRank": 5,
           "compactHeadline": "Mets' Robert Stock done for season due to numbness in his fingers"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-be1f6fb981d3fc31"
           ],
@@ -163,7 +204,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:07:00Z",
           "timePrecision": "exact",
-          "ageHours": 6.4,
+          "ageHours": 6.9,
           "freshnessBasis": "Highlightly final: Detroit Tigers 1, Toronto Blue Jays 5.",
           "status": "active",
           "sourceUrls": [
@@ -189,37 +230,8 @@
             }
           ],
           "id": "a415-36bbbdad1a465cd4",
-          "feedRank": 5,
-          "compactHeadline": "Toronto Blue Jays beat Detroit Tigers 5-1"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-924d1be1aad2fd48"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "\"I went right to the source,\" Pham said on Wednesday about his quick turnaround from injured list to cleanup hitter.",
-          "text": "\"I went right to the source,\" Pham said on Wednesday about his quick turnaround from injured list to cleanup hitter.",
-          "entities": [],
-          "occurredAt": "2026-09-16T19:36:19Z",
-          "timePrecision": "exact",
-          "ageHours": 5.91,
-          "freshnessBasis": "\"I went right to the source,\" Pham said on Wednesday about his quick turnaround from injured list to cleanup hitter.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49959078/chicago-white-sox-tommy-pham-home-run-elevator-pitch"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49959078/chicago-white-sox-tommy-pham-home-run-elevator-pitch"
-            }
-          ],
-          "id": "a415-10b97743134572ac",
           "feedRank": 6,
-          "compactHeadline": "White Sox's Pham homers after Tuesday night elevator pitch to GM"
+          "compactHeadline": "Toronto Blue Jays beat Detroit Tigers 5-1"
         }
       ]
     },
@@ -239,7 +251,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T18:47:28Z",
           "timePrecision": "exact",
-          "ageHours": 6.72,
+          "ageHours": 7.23,
           "freshnessBasis": "Emmitt Smith acknowledged this week that Ravens running back Derrick Henry could surpass him as the league's rushing king.",
           "status": "active",
           "sourceUrls": [
@@ -268,7 +280,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T21:45:20Z",
           "timePrecision": "exact",
-          "ageHours": 3.76,
+          "ageHours": 4.26,
           "freshnessBasis": "49ers receiver De'Zhaun Stribling had surgery on his ankle and is expected to miss about 10 weeks, while tight end Jake Tonges has been ruled out for the season.",
           "status": "active",
           "sourceUrls": [
@@ -297,7 +309,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T21:35:59Z",
           "timePrecision": "exact",
-          "ageHours": 3.91,
+          "ageHours": 4.42,
           "freshnessBasis": "The Seahawks ruled out QB Sam Darnold for Sunday's game against the Cardinals due to the glute injury he suffered in Wednesday's season-opening win.",
           "status": "active",
           "sourceUrls": [
@@ -326,7 +338,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T20:29:15Z",
           "timePrecision": "exact",
-          "ageHours": 5.03,
+          "ageHours": 5.53,
           "freshnessBasis": "Rookie cornerback Mansoor Delane, who aggravated a shoulder injury after recording his first career interception, is on track to play on \"Sunday Night Football\" against the Colts, coach Andy Reid says.",
           "status": "active",
           "sourceUrls": [
@@ -355,7 +367,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:34:55Z",
           "timePrecision": "exact",
-          "ageHours": 5.93,
+          "ageHours": 6.43,
           "freshnessBasis": "Vikings running back Jordan Mason was placed on injured reserve Wednesday after undergoing surgery to repair a fractured thumb.",
           "status": "active",
           "sourceUrls": [
@@ -384,7 +396,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T17:32:30Z",
           "timePrecision": "exact",
-          "ageHours": 7.97,
+          "ageHours": 8.48,
           "freshnessBasis": "Falcons coach Kevin Stefanski said he's \"not ruling anybody out\" when it comes to which QB is starting against the Panthers on Sunday.",
           "status": "active",
           "sourceUrls": [
@@ -419,7 +431,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:12:47Z",
           "timePrecision": "exact",
-          "ageHours": 14.3,
+          "ageHours": 14.8,
           "freshnessBasis": "John Konchar agreed to a one-year deal with the New York Knicks, agent George S. Langberg of GSL Sports Group told ESPN on Tuesday night.",
           "status": "active",
           "sourceUrls": [
@@ -448,7 +460,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:13:40Z",
           "timePrecision": "exact",
-          "ageHours": 14.29,
+          "ageHours": 14.79,
           "freshnessBasis": "The trade sending Kawhi Leonard from LA to Toronto is now official after a monthslong delay due to the investigation into the Clippers.",
           "status": "active",
           "sourceUrls": [
@@ -477,7 +489,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:13:19Z",
           "timePrecision": "exact",
-          "ageHours": 14.29,
+          "ageHours": 14.79,
           "freshnessBasis": "Paul George acknowledged Celtics fans' angst toward the trade that sent Jaylen Brown to Philadelphia for him, saying it's understandable.",
           "status": "active",
           "sourceUrls": [
@@ -506,7 +518,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:14:16Z",
           "timePrecision": "exact",
-          "ageHours": 14.28,
+          "ageHours": 14.78,
           "freshnessBasis": "Longtime NBA forward Taj Gibson is retiring after 17 seasons in the league and joining the Chicago Bulls coaching staff as an assistant.",
           "status": "active",
           "sourceUrls": [
@@ -541,7 +553,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T20:02:50Z",
           "timePrecision": "exact",
-          "ageHours": 5.47,
+          "ageHours": 5.97,
           "freshnessBasis": "Dylan Larkin will not skate with the Red Wings when training camp starts on Thursday due to an upper-body injury, the team announced Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -570,7 +582,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:49:08Z",
           "timePrecision": "exact",
-          "ageHours": 5.7,
+          "ageHours": 6.2,
           "freshnessBasis": "Mathew Barzal, the Islanders' leading scorer last season, is not expected to skate for a couple of weeks after aggravating a previous injury.",
           "status": "active",
           "sourceUrls": [
@@ -599,7 +611,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T21:21:13Z",
           "timePrecision": "exact",
-          "ageHours": 4.16,
+          "ageHours": 4.66,
           "freshnessBasis": "Brent Burns arrived at training camp without his trademark unkempt whiskers, instead sporting a close-cropped beard, as well as a sterling white bridge.",
           "status": "active",
           "sourceUrls": [
@@ -628,7 +640,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T19:51:18Z",
           "timePrecision": "exact",
-          "ageHours": 5.66,
+          "ageHours": 6.16,
           "freshnessBasis": "Veteran forward Jason Zucker is expected to miss the start of the season after having surgery to repair a sports hernia.",
           "status": "active",
           "sourceUrls": [
@@ -648,6 +660,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-d0a2f4dbb6f16f0e"
+          ],
+          "type": "SUSPENSION",
+          "priority": 64,
+          "headline": "The Jets on Wednesday night suspended star goalie Connor Hellebuyck for failure to report to the team's training camp.",
+          "text": "The Jets on Wednesday night suspended star goalie Connor Hellebuyck for failure to report to the team's training camp.",
+          "entities": [],
+          "occurredAt": "2026-09-17T01:53:12Z",
+          "timePrecision": "exact",
+          "ageHours": 0.13,
+          "freshnessBasis": "The Jets on Wednesday night suspended star goalie Connor Hellebuyck for failure to report to the team's training camp.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49961539/jets-suspend-connor-hellebuyck-failure-report-camp"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49961539/jets-suspend-connor-hellebuyck-failure-report-camp"
+            }
+          ],
+          "id": "a415-a09d43bb8c2cec9a",
+          "feedRank": 21,
+          "compactHeadline": "Jets suspend Connor Hellebuyck for failure to report to camp"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-819e64ba49446ed5"
           ],
           "type": "SIGNING",
@@ -657,7 +698,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T10:45:05Z",
           "timePrecision": "exact",
-          "ageHours": 14.76,
+          "ageHours": 15.27,
           "freshnessBasis": "The Wild have signed head coach John Hynes to a multiyear contract extension, the club announced Tuesday.",
           "status": "active",
           "sourceUrls": [
@@ -671,37 +712,8 @@
             }
           ],
           "id": "a415-25a5b9e288e2a6ad",
-          "feedRank": 21,
-          "compactHeadline": "Wild sign coach John Hynes to multiyear extension"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-34704b39f7a2e5a9"
-          ],
-          "type": "TRADE",
-          "priority": 78,
-          "headline": "The New Jersey Devils signed forward Luke Evangelista, 24, to a five-year contract extension Tuesday night, securing his place among the club's deep forward group after he was acquired from the Nashville Predators earlier this month for draft picks.",
-          "text": "The New Jersey Devils signed forward Luke Evangelista, 24, to a five-year contract extension Tuesday night, securing his place among the club's deep forward group after he was acquired from the Nashville Predators earlier this month for draft picks.",
-          "entities": [],
-          "occurredAt": "2026-09-16T05:36:41Z",
-          "timePrecision": "exact",
-          "ageHours": 19.9,
-          "freshnessBasis": "The New Jersey Devils signed forward Luke Evangelista, 24, to a five-year contract extension Tuesday night, securing his place among the club's deep forward group after he was acquired from the Nashville Predators earlier this month for draft picks.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nhl/story/_/id/49954879/new-jersey-devils-sign-luke-evangelista-5-year-extension"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nhl",
-              "url": "https://www.espn.com/nhl/story/_/id/49954879/new-jersey-devils-sign-luke-evangelista-5-year-extension"
-            }
-          ],
-          "id": "a415-f42335603745259c",
           "feedRank": 22,
-          "compactHeadline": "New Jersey Devils sign Luke Evangelista to 5-year extension"
+          "compactHeadline": "Wild sign coach John Hynes to multiyear extension"
         }
       ]
     },
@@ -721,7 +733,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T18:53:02Z",
           "timePrecision": "exact",
-          "ageHours": 6.63,
+          "ageHours": 7.13,
           "freshnessBasis": "Chelsea striker João Pedro has withdrawn from the Brazil squad because of injury.",
           "status": "active",
           "sourceUrls": [
@@ -750,7 +762,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T23:59:01Z",
           "timePrecision": "exact",
-          "ageHours": 1.53,
+          "ageHours": 2.03,
           "freshnessBasis": "Clearlake Capital has taken full control of Chelsea after acquiring the ownership stakes of Mark Walter and Todd Boehly, the Premier League club announced Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -779,7 +791,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T23:43:16Z",
           "timePrecision": "exact",
-          "ageHours": 1.79,
+          "ageHours": 2.3,
           "freshnessBasis": "Michael Carrick confirmed he is involved in conversations about JJ Gabriel's future after the 15-year-old's request to leave Manchester United made major ripples and that the team is being \"careful\" with the situation.",
           "status": "active",
           "sourceUrls": [
@@ -808,7 +820,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T23:34:02Z",
           "timePrecision": "exact",
-          "ageHours": 1.95,
+          "ageHours": 2.45,
           "freshnessBasis": "After being eliminated to Brighton & Hove Albion in the Carabao Cup, Manchester United boss Michael Carrick is now facing the first real pressure of his reign.",
           "status": "active",
           "sourceUrls": [
@@ -837,7 +849,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T22:58:48Z",
           "timePrecision": "exact",
-          "ageHours": 2.53,
+          "ageHours": 3.04,
           "freshnessBasis": "Michael Carrick branded Manchester United's capitulation as unacceptable, after watching his team lose 3-2 to Brighton in the Carabao Cup after leading 2-0.",
           "status": "active",
           "sourceUrls": [
@@ -866,7 +878,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T11:11:35Z",
           "timePrecision": "exact",
-          "ageHours": 14.32,
+          "ageHours": 14.82,
           "freshnessBasis": "Chelsea midfielder Cole Palmer was temporarily suspended from Twitch on Tuesday after streaming EA Sports FC 27 before the game's release.",
           "status": "active",
           "sourceUrls": [
@@ -896,13 +908,13 @@
           ],
           "type": "MILESTONE",
           "priority": 82,
-          "headline": "Messi opens Campeones Cup scoring with 100th goal for Miami",
-          "text": "Messi opens Campeones Cup scoring with 100th goal for Miami",
+          "headline": "Lionel Messi scored his 100th goal for Inter Miami in all competitions after heading home the opener against visiting Cruz Azul in the Campeones Cup on Wednesday night.",
+          "text": "Lionel Messi scored his 100th goal for Inter Miami in all competitions after heading home the opener against visiting Cruz Azul in the Campeones Cup on Wednesday night.",
           "entities": [],
-          "occurredAt": "2026-09-17T00:58:43Z",
+          "occurredAt": "2026-09-17T01:33:41Z",
           "timePrecision": "exact",
-          "ageHours": 0.54,
-          "freshnessBasis": "Messi opens Campeones Cup scoring with 100th goal for Miami",
+          "ageHours": 0.46,
+          "freshnessBasis": "Lionel Messi scored his 100th goal for Inter Miami in all competitions after heading home the opener against visiting Cruz Azul in the Campeones Cup on Wednesday night.",
           "status": "active",
           "sourceUrls": [
             "https://www.espn.com/soccer/story/_/id/49958765/messi-opens-campeones-cup-scoring-100th-goal-miami"
@@ -927,6 +939,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-fee447adfd8e206b"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "In a surprising turn of events, LSU listed starting quarterback Sam Leavitt as doubtful for Saturday. The exact nature of his injury is unclear.",
+          "text": "In a surprising turn of events, LSU listed starting quarterback Sam Leavitt as doubtful for Saturday. The exact nature of his injury is unclear.",
+          "entities": [],
+          "occurredAt": "2026-09-17T01:49:27Z",
+          "timePrecision": "exact",
+          "ageHours": 0.19,
+          "freshnessBasis": "In a surprising turn of events, LSU listed starting quarterback Sam Leavitt as doubtful for Saturday. The exact nature of his injury is unclear.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49961530/lsu-qb-sam-leavitt-surprise-doubtful-ahead-ole-miss-game"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49961530/lsu-qb-sam-leavitt-surprise-doubtful-ahead-ole-miss-game"
+            }
+          ],
+          "id": "a415-6b4132b6a3715d41",
+          "feedRank": 30,
+          "compactHeadline": "LSU QB Sam Leavitt surprise doubtful ahead of Ole Miss game"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-839e48a96c69f4d1"
           ],
           "type": "STREAK",
@@ -936,7 +977,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T10:58:05Z",
           "timePrecision": "exact",
-          "ageHours": 14.55,
+          "ageHours": 15.05,
           "freshnessBasis": "Strange happenings continue in college football, where long losing streaks have become a winning formula.",
           "status": "active",
           "sourceUrls": [
@@ -950,11 +991,40 @@
             }
           ],
           "id": "a415-12588695f08add46",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "College football Bottom 10 after Week 2: Oregon ducks onto list"
         },
         {
-          "rank": 2,
+          "rank": 3,
+          "candidateIds": [
+            "cand-6c67d78d75ea9546"
+          ],
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "South Carolina star edge rusher Dylan Stewart and talented newcomer offensive lineman Jacarrius Peak are listed as probable for Saturday's SEC opener against Mississippi State.",
+          "text": "South Carolina star edge rusher Dylan Stewart and talented newcomer offensive lineman Jacarrius Peak are listed as probable for Saturday's SEC opener against Mississippi State.",
+          "entities": [],
+          "occurredAt": "2026-09-17T01:51:56Z",
+          "timePrecision": "exact",
+          "ageHours": 0.15,
+          "freshnessBasis": "South Carolina star edge rusher Dylan Stewart and talented newcomer offensive lineman Jacarrius Peak are listed as probable for Saturday's SEC opener against Mississippi State.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/college-football/story/_/id/49961522/south-carolina-dylan-stewart-jacarrius-peak-probable-vs-mississippi-state"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "https://www.espn.com/college-football/story/_/id/49961522/south-carolina-dylan-stewart-jacarrius-peak-probable-vs-mississippi-state"
+            }
+          ],
+          "id": "a415-63029d112997d196",
+          "feedRank": 32,
+          "compactHeadline": "South Carolina's Dylan Stewart, Jacarrius Peak probable vs. Mississippi State"
+        },
+        {
+          "rank": 4,
           "candidateIds": [
             "cand-ba0e29932d05eec7"
           ],
@@ -963,9 +1033,9 @@
           "headline": "The NCAA's FBS oversight committee acknowledged that replay protocols were not properly followed at the end of Western Michigan's controversial loss to Michigan in Week 1 but said it does not have the authority to overturn the result of the game.",
           "text": "The NCAA's FBS oversight committee acknowledged that replay protocols were not properly followed at the end of Western Michigan's controversial loss to Michigan in Week 1 but said it does not have the authority to overturn the result of the game.",
           "entities": [],
-          "occurredAt": "2026-09-17T01:01:46Z",
+          "occurredAt": "2026-09-17T01:51:30Z",
           "timePrecision": "exact",
-          "ageHours": 0.48,
+          "ageHours": 0.16,
           "freshnessBasis": "The NCAA's FBS oversight committee acknowledged that replay protocols were not properly followed at the end of Western Michigan's controversial loss to Michigan in Week 1 but said it does not have the authority to overturn the result of the game.",
           "status": "active",
           "sourceUrls": [
@@ -979,11 +1049,11 @@
             }
           ],
           "id": "a415-7f902915f4a963ea",
-          "feedRank": 31,
+          "feedRank": 33,
           "compactHeadline": "FBS oversight committee says it can't overturn WMU's loss"
         },
         {
-          "rank": 3,
+          "rank": 5,
           "candidateIds": [
             "cand-f176d7fa45047617"
           ],
@@ -994,7 +1064,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T15:24:06Z",
           "timePrecision": "exact",
-          "ageHours": 10.11,
+          "ageHours": 10.62,
           "freshnessBasis": "The LSU-Ole Miss rivalry took another dramatic turn Tuesday when Tigers star defensive end Princewill Umanmielen was served with court papers related to the Rebels' lawsuit against him, according to court records.",
           "status": "active",
           "sourceUrls": [
@@ -1008,11 +1078,11 @@
             }
           ],
           "id": "a415-40a24323914aa1fd",
-          "feedRank": 32,
+          "feedRank": 34,
           "compactHeadline": "LSU's Umanmielen served court papers related to Ole Miss lawsuit"
         },
         {
-          "rank": 4,
+          "rank": 6,
           "candidateIds": [
             "cand-c37a2176081926bf"
           ],
@@ -1023,7 +1093,7 @@
           "entities": [],
           "occurredAt": "2026-09-16T20:57:29Z",
           "timePrecision": "exact",
-          "ageHours": 4.56,
+          "ageHours": 5.06,
           "freshnessBasis": "Florida State coach Mike Norvell said he had no idea a social media post showing a box truck outside his home went viral until he was asked about it during his Wednesday news conference, saying his entire focus has been on preparing to play at Alabama.",
           "status": "active",
           "sourceUrls": [
@@ -1037,66 +1107,8 @@
             }
           ],
           "id": "a415-edea50fb29d69c80",
-          "feedRank": 33,
-          "compactHeadline": "Florida State's Norvell downplays moving truck post, focused on Alabama"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-f57606bcc6fa0268"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "Oregon quarterback Dante Moore said the team is 'on the same page' after a player-led meeting in the wake of last week's upset loss at Oklahoma State.",
-          "text": "Oregon quarterback Dante Moore said the team is 'on the same page' after a player-led meeting in the wake of last week's upset loss at Oklahoma State.",
-          "entities": [],
-          "occurredAt": "2026-09-16T19:33:17Z",
-          "timePrecision": "exact",
-          "ageHours": 5.96,
-          "freshnessBasis": "Oregon quarterback Dante Moore said the team is 'on the same page' after a player-led meeting in the wake of last week's upset loss at Oklahoma State.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49959160/oregon-holds-player-led-meeting-losing-oklahoma-state"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49959160/oregon-holds-player-led-meeting-losing-oklahoma-state"
-            }
-          ],
-          "id": "a415-4f93fb6aef25b560",
-          "feedRank": 34,
-          "compactHeadline": "Oregon holds player-led meeting after losing to Oklahoma State"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-566770b60a1def8a"
-          ],
-          "type": "NEWS",
-          "priority": 64,
-          "headline": "University of Miami athletic teams will be wearing Nike apparel again starting in July 2027, according to multiple reports.",
-          "text": "University of Miami athletic teams will be wearing Nike apparel again starting in July 2027, according to multiple reports.",
-          "entities": [],
-          "occurredAt": "2026-09-16T19:04:20Z",
-          "timePrecision": "exact",
-          "ageHours": 6.44,
-          "freshnessBasis": "University of Miami athletic teams will be wearing Nike apparel again starting in July 2027, according to multiple reports.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49958590/report-miami-hurricanes-going-back-nike-200m+-deal"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49958590/report-miami-hurricanes-going-back-nike-200m+-deal"
-            }
-          ],
-          "id": "a415-b687da12bee69096",
           "feedRank": 35,
-          "compactHeadline": "Reports: Miami Hurricanes returning to Nike in '27 on $200M+ deal"
+          "compactHeadline": "Florida State's Norvell downplays moving truck post, focused on Alabama"
         }
       ]
     }
@@ -1121,7 +1133,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 113,
+    "freshCandidateCount": 115,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
