@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-18T04:31:00Z",
+  "generatedAt": "2026-09-18T12:01:01Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "1ea13a57ad99309c84de0a5a3f7594035dc6ca288ce3da5503fd3a0f2c40f9f0",
+  "sourceCandidateHash": "1cfb17c83d9d92ab070d6af8fda6b1b09e64c0ad0d196e45429203b2864dfa8a",
   "leagues": [
     {
       "league": "MLB",
@@ -13,6 +13,41 @@
       "items": [
         {
           "rank": 1,
+          "candidateIds": [
+            "cand-70cc6942c8b5e9d3"
+          ],
+          "type": "RESULT",
+          "priority": 80,
+          "headline": "Wade Meckler delivered the walk-off in the bottom of the 10th inning.",
+          "text": "Wade Meckler delivered the walk-off in the bottom of the 10th inning.",
+          "entities": [],
+          "occurredAt": "2026-09-18T01:38:00Z",
+          "timePrecision": "exact",
+          "ageHours": 10.38,
+          "freshnessBasis": "Highlightly final: Minnesota Twins 4, Los Angeles Angels 5.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816981"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-17",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816981"
+            }
+          ],
+          "id": "a415-abd4b542f9a70070",
+          "feedRank": 1,
+          "compactHeadline": "Wade Meckler delivers walk-off as Los Angeles Angels beat Minnesota Twins 5-4"
+        },
+        {
+          "rank": 2,
           "candidateIds": [
             "cand-46e9f3b6cf2bcf25"
           ],
@@ -23,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T00:05:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.43,
+          "ageHours": 11.93,
           "freshnessBasis": "Highlightly final: Boston Red Sox 4, Texas Rangers 3.",
           "status": "active",
           "sourceUrls": [
@@ -43,27 +78,27 @@
             }
           ],
           "id": "a415-687a83d5ed093f3d",
-          "feedRank": 1,
+          "feedRank": 2,
           "compactHeadline": "Trevor Story's 3-run homer lifts Red Sox to 4-3 win, dropping Rangers into 2nd place in AL West"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
-            "cand-d59c02e0deed61b6"
+            "cand-f451a83486337cb3"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Yordan Alvarez hit his 40th home run, one of five Houston long balls, and the Astros beat the Kansas City Royals 6-2 on Thursday night to move back over .500 and open a one-game lead over Texas in AL West.",
-          "text": "Yordan Alvarez hit his 40th home run, one of five Houston long balls, and the Astros beat the Kansas City Royals 6-2 on Thursday night to move back over .500 and open a one-game lead over Texas in AL West.",
+          "headline": "Munetaka Murakami hit his team-leading 32nd home run and the Chicago White Sox moved into a tie with idle Cleveland for first place in the AL Central with a 3-1 win over the Detroit Tigers on Thursday night.",
+          "text": "Munetaka Murakami hit his team-leading 32nd home run and the Chicago White Sox moved into a tie with idle Cleveland for first place in the AL Central with a 3-1 win over the Detroit Tigers on Thursday night.",
           "entities": [],
-          "occurredAt": "2026-09-17T23:15:00Z",
+          "occurredAt": "2026-09-17T23:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.27,
-          "freshnessBasis": "Highlightly final: Kansas City Royals 2, Houston Astros 6.",
+          "ageHours": 12.35,
+          "freshnessBasis": "Highlightly final: Detroit Tigers 1, Chicago White Sox 3.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816979"
+            "http://www.espn.com/mlb/recap?gameId=401816978"
           ],
           "sources": [
             {
@@ -74,15 +109,15 @@
             {
               "provider": "ESPN",
               "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816979"
+              "url": "http://www.espn.com/mlb/recap?gameId=401816978"
             }
           ],
-          "id": "a415-0a2af0e78253c024",
-          "feedRank": 2,
-          "compactHeadline": "Alvarez hits 40th home run, Astros beat Royals 6-2 to move 1 game ahead of Rangers for AL West lead"
+          "id": "a415-ccbc4c82ff2b3462",
+          "feedRank": 3,
+          "compactHeadline": "Murakami hits 3-run homer, White Sox top Tigers 3-1 to move into 1st place tie in AL Central"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-36b6b4337879d0af"
           ],
@@ -93,7 +128,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.27,
+          "ageHours": 12.77,
           "freshnessBasis": "Highlightly final: Philadelphia Phillies 3, New York Mets 0.",
           "status": "active",
           "sourceUrls": [
@@ -113,28 +148,62 @@
             }
           ],
           "id": "a415-949d130331784864",
-          "feedRank": 3,
+          "feedRank": 4,
           "compactHeadline": "Nola dominates Mets in 3-0 win as Phillies tie Cubs for top NL wild card"
         },
         {
-          "rank": 4,
+          "rank": 5,
+          "candidateIds": [
+            "cand-d59c02e0deed61b6"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Yordan Alvarez hit his 40th home run, one of five Houston long balls, and the Astros beat the Kansas City Royals 6-2 on Thursday night to move back over .500 and open a one-game lead over Texas in AL West.",
+          "text": "Yordan Alvarez hit his 40th home run, one of five Houston long balls, and the Astros beat the Kansas City Royals 6-2 on Thursday night to move back over .500 and open a one-game lead over Texas in AL West.",
+          "entities": [],
+          "occurredAt": "2026-09-17T23:15:00Z",
+          "timePrecision": "exact",
+          "ageHours": 12.77,
+          "freshnessBasis": "Highlightly final: Kansas City Royals 2, Houston Astros 6.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/mlb/recap?gameId=401816979"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-baseball-2026-09-17",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "http://www.espn.com/mlb/recap?gameId=401816979"
+            }
+          ],
+          "id": "a415-0a2af0e78253c024",
+          "feedRank": 5,
+          "compactHeadline": "Alvarez hits 40th home run, Astros beat Royals 6-2 to move 1 game ahead of Rangers for AL West lead"
+        },
+        {
+          "rank": 6,
           "candidateIds": [
             "cand-42690eb9411b592e"
           ],
           "type": "RESULT",
-          "priority": 74,
-          "headline": "Ethan Salas hit his first two home runs and became the youngest catcher in major league history with a multi-homer game as the San Diego Padres beat...",
-          "text": "Ethan Salas hit his first two home runs and became the youngest catcher in major league history with a multi-homer game as the San Diego Padres beat...",
+          "priority": 70,
+          "headline": "Xander Bogaerts homered and had an RBI triple during a seven-run second inning to help the San Diego Padres beat the reeling Colorado Rockies...",
+          "text": "Xander Bogaerts homered and had an RBI triple during a seven-run second inning to help the San Diego Padres beat the reeling Colorado Rockies...",
           "entities": [],
           "occurredAt": "2026-09-17T19:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 9.35,
+          "ageHours": 16.85,
           "freshnessBasis": "Highlightly final: San Diego Padres 9, Colorado Rockies 2.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net",
-            "http://www.espn.com/mlb/recap?gameId=401816980",
-            "http://www.espn.com/mlb/recap?gameId=401816970"
+            "http://www.espn.com/mlb/recap?gameId=401816980"
           ],
           "sources": [
             {
@@ -146,86 +215,11 @@
               "provider": "ESPN",
               "sourceId": "espn-mlb",
               "url": "http://www.espn.com/mlb/recap?gameId=401816980"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816970"
             }
           ],
           "id": "a415-cb97c35b38fd6d33",
-          "feedRank": 4,
-          "compactHeadline": "Ethan Salas becomes youngest catcher with a multi-homer game as Padres beat Rockies 9-3"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-51a3e8981ae9011b"
-          ],
-          "type": "RESULT",
-          "priority": 71,
-          "headline": "The Dodgers clinched their fifth consecutive National League West title and 13th in the past 14 seasons with an 8-2 win over the Reds.",
-          "text": "The Dodgers clinched their fifth consecutive National League West title and 13th in the past 14 seasons with an 8-2 win over the Reds.",
-          "entities": [],
-          "occurredAt": "2026-09-17T16:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 11.85,
-          "freshnessBasis": "Highlightly final: Los Angeles Dodgers 8, Cincinnati Reds 2.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net",
-            "https://www.espn.com/mlb/story/_/id/49967221/dodgers-clinch-fifth-straight-nl-west-title-13th-14-years",
-            "http://www.espn.com/mlb/recap?gameId=401816974"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-17",
-              "url": "https://highlightly.net"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49967221/dodgers-clinch-fifth-straight-nl-west-title-13th-14-years"
-            },
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "http://www.espn.com/mlb/recap?gameId=401816974"
-            }
-          ],
-          "id": "a415-c0fadf7bd3fb933a",
-          "feedRank": 5,
-          "compactHeadline": "Dodgers clinch fifth straight NL West title, 13th in 14 years"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-ce533adc23643caf"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Mets first baseman Jared Young was carted off the field in the sixth inning Thursday night after he was knocked out when struck on the head by a knee from pitcher Nolan McLean as the two converged on a slow grounder. A CT scan at a hospital was negative.",
-          "text": "Mets first baseman Jared Young was carted off the field in the sixth inning Thursday night after he was knocked out when struck on the head by a knee from pitcher Nolan McLean as the two converged on a slow grounder. A CT scan at a hospital was negative.",
-          "entities": [],
-          "occurredAt": "2026-09-18T03:39:52Z",
-          "timePrecision": "exact",
-          "ageHours": 0.85,
-          "freshnessBasis": "Mets first baseman Jared Young was carted off the field in the sixth inning Thursday night after he was knocked out when struck on the head by a knee from pitcher Nolan McLean as the two converged on a slow grounder. A CT scan at a hospital was negative.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/mlb/story/_/id/49968979/mets-jared-young-carted-field-taken-hospital-collision-nolan-mclean"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-mlb",
-              "url": "https://www.espn.com/mlb/story/_/id/49968979/mets-jared-young-carted-field-taken-hospital-collision-nolan-mclean"
-            }
-          ],
-          "id": "a415-59b6ea237c97c93c",
           "feedRank": 6,
-          "compactHeadline": "Mets' Young has concussion symptoms after collision with McLean"
+          "compactHeadline": "Xander Bogaerts helps power a 7-run 2nd inning as the Padres roll past the reeling Rockies 9-2"
         }
       ]
     },
@@ -240,12 +234,12 @@
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Josh Allen quickly put his stamp on the Buffalo Bills' new stadium that’s been aptly dubbed “The House that Allen built.”",
-          "text": "Josh Allen quickly put his stamp on the Buffalo Bills' new stadium that’s been aptly dubbed “The House that Allen built.”",
+          "headline": "Forget the official name of the Buffalo Bills' new stadium. It’s Josh Allen’s house.",
+          "text": "Forget the official name of the Buffalo Bills' new stadium. It’s Josh Allen’s house.",
           "entities": [],
           "occurredAt": "2026-09-18T00:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.27,
+          "ageHours": 11.77,
           "freshnessBasis": "Highlightly final: Detroit Lions 31, Buffalo Bills 41.",
           "status": "active",
           "sourceUrls": [
@@ -271,6 +265,64 @@
         {
           "rank": 2,
           "candidateIds": [
+            "cand-53634d5c8d262673"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "DJ Moore was ruled out of Thursday night's game against the Lions because of a shoulder injury.",
+          "text": "DJ Moore was ruled out of Thursday night's game against the Lions because of a shoulder injury.",
+          "entities": [],
+          "occurredAt": "2026-09-18T11:49:25Z",
+          "timePrecision": "exact",
+          "ageHours": 0.19,
+          "freshnessBasis": "DJ Moore was ruled out of Thursday night's game against the Lions because of a shoulder injury.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49969419/bills-rule-dj-moore-wr-suffers-shoulder-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49969419/bills-rule-dj-moore-wr-suffers-shoulder-injury"
+            }
+          ],
+          "id": "a415-4c45e3dfc61b3485",
+          "feedRank": 8,
+          "compactHeadline": "Source: Bills WR DJ Moore day-to-day with shoulder injury"
+        },
+        {
+          "rank": 3,
+          "candidateIds": [
+            "cand-9eb32733907caae9"
+          ],
+          "type": "PLAYOFF",
+          "priority": 76,
+          "headline": "O'Connell has had tremendous regular-season success, but is this the season it extends into the playoffs?",
+          "text": "O'Connell has had tremendous regular-season success, but is this the season it extends into the playoffs?",
+          "entities": [],
+          "occurredAt": "2026-09-18T11:28:24Z",
+          "timePrecision": "exact",
+          "ageHours": 0.54,
+          "freshnessBasis": "O'Connell has had tremendous regular-season success, but is this the season it extends into the playoffs?",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nfl/story/_/id/49964734/nfl-minnesota-vikings-kevin-oconnell-kyler-murray-jj-mccarthy"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nfl",
+              "url": "https://www.espn.com/nfl/story/_/id/49964734/nfl-minnesota-vikings-kevin-oconnell-kyler-murray-jj-mccarthy"
+            }
+          ],
+          "id": "a415-4eea6f369a14cf68",
+          "feedRank": 9,
+          "compactHeadline": "Career-defining season for Vikings coach Kevin O'Connell?"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
             "cand-7e0a84cadf1bf0b4"
           ],
           "type": "INJURY",
@@ -278,9 +330,9 @@
           "headline": "Lions defensive back Avonte Maddox was ruled out Thursday night at Buffalo after injuring his foot in the second quarter.",
           "text": "Lions defensive back Avonte Maddox was ruled out Thursday night at Buffalo after injuring his foot in the second quarter.",
           "entities": [],
-          "occurredAt": "2026-09-18T04:25:16Z",
+          "occurredAt": "2026-09-18T04:52:56Z",
           "timePrecision": "exact",
-          "ageHours": 0.1,
+          "ageHours": 7.13,
           "freshnessBasis": "Lions defensive back Avonte Maddox was ruled out Thursday night at Buffalo after injuring his foot in the second quarter.",
           "status": "active",
           "sourceUrls": [
@@ -294,40 +346,11 @@
             }
           ],
           "id": "a415-5df90e5301038f09",
-          "feedRank": 8,
+          "feedRank": 10,
           "compactHeadline": "Lions DB Avonte Maddox exits loss to Bills with foot injury"
         },
         {
-          "rank": 3,
-          "candidateIds": [
-            "cand-c572fc4ae30e7710"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "DJ Moore was ruled out of Thursday night's game against the Lions because of a shoulder injury.",
-          "text": "DJ Moore was ruled out of Thursday night's game against the Lions because of a shoulder injury.",
-          "entities": [],
-          "occurredAt": "2026-09-18T04:17:58Z",
-          "timePrecision": "exact",
-          "ageHours": 0.22,
-          "freshnessBasis": "DJ Moore was ruled out of Thursday night's game against the Lions because of a shoulder injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49969419/bills-rule-dj-moore-wr-suffers-shoulder-injury"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49969419/bills-rule-dj-moore-wr-suffers-shoulder-injury"
-            }
-          ],
-          "id": "a415-09f8b3cde5eb5f74",
-          "feedRank": 9,
-          "compactHeadline": "Bills rule out D.J. Moore after WR suffers shoulder injury"
-        },
-        {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-a22def8a173b87f2"
           ],
@@ -338,7 +361,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T04:13:17Z",
           "timePrecision": "exact",
-          "ageHours": 0.3,
+          "ageHours": 7.8,
           "freshnessBasis": "As Drew Lock steps into a starting role for the Seattle Seahawks, the veteran quarterback knows he doesn't have to force the issue while he fills in for the injured Sam Darnold.",
           "status": "active",
           "sourceUrls": [
@@ -352,11 +375,11 @@
             }
           ],
           "id": "a415-052f6ea00d777b92",
-          "feedRank": 10,
+          "feedRank": 11,
           "compactHeadline": "Drew Lock: Taking care of football key in Seahawks start"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-9a46c1e81a54581f"
           ],
@@ -367,7 +390,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:38:17Z",
           "timePrecision": "exact",
-          "ageHours": 4.88,
+          "ageHours": 12.38,
           "freshnessBasis": "Eagles defensive tackle Jalen Carter expects to wear a cast on his injured right wrist for Sunday's Week 2 matchup against the Titans.",
           "status": "active",
           "sourceUrls": [
@@ -381,37 +404,8 @@
             }
           ],
           "id": "a415-4fcb18b7bb2b400b",
-          "feedRank": 11,
-          "compactHeadline": "Eagles' Jalen Carter to wear cast on injured wrist vs. Titans"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-c49e140154f4b0d8"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Steelers cornerback Joey Porter Jr. left Thursday's practice early with an athletic trainer, days after being cleared form a back injury.",
-          "text": "Steelers cornerback Joey Porter Jr. left Thursday's practice early with an athletic trainer, days after being cleared form a back injury.",
-          "entities": [],
-          "occurredAt": "2026-09-17T21:50:32Z",
-          "timePrecision": "exact",
-          "ageHours": 6.67,
-          "freshnessBasis": "Steelers cornerback Joey Porter Jr. left Thursday's practice early with an athletic trainer, days after being cleared form a back injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nfl/story/_/id/49967768/steelers-cb-joey-porter-jr-leaves-practice-early-trainer"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nfl",
-              "url": "https://www.espn.com/nfl/story/_/id/49967768/steelers-cb-joey-porter-jr-leaves-practice-early-trainer"
-            }
-          ],
-          "id": "a415-3bc1712e668ff3d3",
           "feedRank": 12,
-          "compactHeadline": "Steelers CB Joey Porter Jr. leaves practice early with trainer"
+          "compactHeadline": "Eagles' Jalen Carter to wear cast on injured wrist vs. Titans"
         }
       ]
     },
@@ -422,35 +416,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-93b010568e56a6b5"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Phoenix Mercury Women 94, Portland Women 91.",
-          "text": "Highlightly final: Phoenix Mercury Women 94, Portland Women 91.",
-          "entities": [],
-          "occurredAt": "2026-09-18T02:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 2.52,
-          "freshnessBasis": "Highlightly final: Phoenix Mercury Women 94, Portland Women 91.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-09-17",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-927db6418e1726a2",
-          "feedRank": 13,
-          "compactHeadline": "Phoenix Mercury Women beat Portland Women 94-91"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-dadfbd887221f244"
           ],
           "type": "RESULT",
@@ -460,7 +425,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 2.52,
+          "ageHours": 10.02,
           "freshnessBasis": "Highlightly final: Las Vegas Aces Women 114, Seattle Storm Women 77.",
           "status": "active",
           "sourceUrls": [
@@ -474,23 +439,23 @@
             }
           ],
           "id": "a415-5464bb8b462b22a7",
-          "feedRank": 14,
+          "feedRank": 13,
           "compactHeadline": "Las Vegas Aces Women beat Seattle Storm Women 114-77"
         },
         {
-          "rank": 3,
+          "rank": 2,
           "candidateIds": [
-            "cand-6d39c1e2dc8fae58"
+            "cand-93b010568e56a6b5"
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Highlightly final: Los Angeles Sparks Women 97, Dallas Wings Women 77.",
-          "text": "Highlightly final: Los Angeles Sparks Women 97, Dallas Wings Women 77.",
+          "headline": "Highlightly final: Phoenix Mercury Women 94, Portland Women 91.",
+          "text": "Highlightly final: Phoenix Mercury Women 94, Portland Women 91.",
           "entities": [],
-          "occurredAt": "2026-09-18T00:00:00Z",
+          "occurredAt": "2026-09-18T02:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.52,
-          "freshnessBasis": "Highlightly final: Los Angeles Sparks Women 97, Dallas Wings Women 77.",
+          "ageHours": 10.02,
+          "freshnessBasis": "Highlightly final: Phoenix Mercury Women 94, Portland Women 91.",
           "status": "active",
           "sourceUrls": [
             "https://highlightly.net"
@@ -502,12 +467,12 @@
               "url": "https://highlightly.net"
             }
           ],
-          "id": "a415-e45a0cc9645055ba",
-          "feedRank": 15,
-          "compactHeadline": "Los Angeles Sparks Women beat Dallas Wings Women 97-77"
+          "id": "a415-927db6418e1726a2",
+          "feedRank": 14,
+          "compactHeadline": "Phoenix Mercury Women beat Portland Women 94-91"
         },
         {
-          "rank": 4,
+          "rank": 3,
           "candidateIds": [
             "cand-1d2605ab6fc4c9a1"
           ],
@@ -518,7 +483,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 4.52,
+          "ageHours": 12.02,
           "freshnessBasis": "Highlightly final: Washington Mystics Women 110, Chicago Sky Women 80.",
           "status": "active",
           "sourceUrls": [
@@ -532,8 +497,37 @@
             }
           ],
           "id": "a415-b07d44da0bc3ce1f",
-          "feedRank": 16,
+          "feedRank": 15,
           "compactHeadline": "Washington Mystics Women beat Chicago Sky Women 110-80"
+        },
+        {
+          "rank": 4,
+          "candidateIds": [
+            "cand-ebdc65a99f051192"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Los Angeles Sparks Women 77, Dallas Wings Women 97.",
+          "text": "Highlightly final: Los Angeles Sparks Women 77, Dallas Wings Women 97.",
+          "entities": [],
+          "occurredAt": "2026-09-18T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 12.02,
+          "freshnessBasis": "Highlightly final: Los Angeles Sparks Women 77, Dallas Wings Women 97.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-17",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-8478ee30dfabb9de",
+          "feedRank": 16,
+          "compactHeadline": "Dallas Wings Women beat Los Angeles Sparks Women 97-77"
         },
         {
           "rank": 5,
@@ -547,7 +541,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.02,
+          "ageHours": 12.52,
           "freshnessBasis": "Highlightly final: Connecticut Sun Women 59, Atlanta Dream Women 103.",
           "status": "active",
           "sourceUrls": [
@@ -576,7 +570,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:11:44Z",
           "timePrecision": "exact",
-          "ageHours": 5.32,
+          "ageHours": 12.82,
           "freshnessBasis": "The New Orleans Pelicans and forward Saddiq Bey have agreed to a three-year, $55.5 million contract extension, his agents tell ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -611,7 +605,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T01:02:19Z",
           "timePrecision": "exact",
-          "ageHours": 3.48,
+          "ageHours": 10.98,
           "freshnessBasis": "Quinn Hughes reported to his first training camp with Minnesota without an extension, raising the anxiety level within the fanbase.",
           "status": "active",
           "sourceUrls": [
@@ -640,7 +634,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:28:17Z",
           "timePrecision": "exact",
-          "ageHours": 7.05,
+          "ageHours": 14.55,
           "freshnessBasis": "The Sharks signed coach Ryan Warsofsky to a multiyear contact extension on the first day of training camp Thursday after he helped the rebuilding team get to the brink of the playoffs over his first two seasons.",
           "status": "active",
           "sourceUrls": [
@@ -669,7 +663,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:43:21Z",
           "timePrecision": "exact",
-          "ageHours": 4.79,
+          "ageHours": 12.29,
           "freshnessBasis": "Florida forward Brad Marchand is expected to miss the first month of the season while continuing to recover from offseason surgery.",
           "status": "active",
           "sourceUrls": [
@@ -698,7 +692,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:08:31Z",
           "timePrecision": "exact",
-          "ageHours": 11.37,
+          "ageHours": 18.88,
           "freshnessBasis": "Red Wings captain Dylan Larkin talked to his teammates about his offseason trade request and answered some questions from reporters on the first day of training camp.",
           "status": "active",
           "sourceUrls": [
@@ -724,6 +718,35 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-a8590673f0a284b4"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Alexander Isak has said he didn't regret his move from Newcastle United to Liverpool at any point of a tumultuous first season with the club.",
+          "text": "Alexander Isak has said he didn't regret his move from Newcastle United to Liverpool at any point of a tumultuous first season with the club.",
+          "entities": [],
+          "occurredAt": "2026-09-18T10:10:25Z",
+          "timePrecision": "exact",
+          "ageHours": 1.84,
+          "freshnessBasis": "Alexander Isak has said he didn't regret his move from Newcastle United to Liverpool at any point of a tumultuous first season with the club.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/soccer/story/_/id/49971310/alexander-isak-never-regretted-liverpool-move-even-amid-tough-injury"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-epl",
+              "url": "https://www.espn.com/soccer/story/_/id/49971310/alexander-isak-never-regretted-liverpool-move-even-amid-tough-injury"
+            }
+          ],
+          "id": "a415-58f0aceca4a88bac",
+          "feedRank": 23,
+          "compactHeadline": "Alexander Isak 'never' regretted Liverpool move even amid 'tough' injury"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-dc94e80843394558"
           ],
           "type": "INJURY",
@@ -733,7 +756,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:40:02Z",
           "timePrecision": "exact",
-          "ageHours": 12.85,
+          "ageHours": 20.35,
           "freshnessBasis": "Matthias Jaissle hopes Anthony Elanga's injury is \"not that serious\" as Newcastle prepare to face Hull City on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -747,11 +770,11 @@
             }
           ],
           "id": "a415-dd627f1d7eca3aa9",
-          "feedRank": 23,
+          "feedRank": 24,
           "compactHeadline": "Newcastle boss Matthias Jaissle hoping for 'positive' update on Anthony Elanga injury"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-a7f50553020511c1"
           ],
@@ -762,7 +785,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T22:50:45Z",
           "timePrecision": "exact",
-          "ageHours": 5.67,
+          "ageHours": 13.17,
           "freshnessBasis": "Marco Rose was delighted to watch \"Bournemouth football\" during a 2-1 win at Real Sociedad and a memorable first match in Europe for the Premier League club.",
           "status": "active",
           "sourceUrls": [
@@ -776,66 +799,37 @@
             }
           ],
           "id": "a415-f57eee7e53dedaa0",
-          "feedRank": 24,
-          "compactHeadline": "Marco Rose proud of 'Bournemouth football' in European debut win over Real Sociedad"
-        },
-        {
-          "rank": 3,
-          "candidateIds": [
-            "cand-275bcd6573689f90"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "Chelsea striker João Pedro has withdrawn from the Brazil squad because of injury.",
-          "text": "Chelsea striker João Pedro has withdrawn from the Brazil squad because of injury.",
-          "entities": [],
-          "occurredAt": "2026-09-17T10:49:01Z",
-          "timePrecision": "exact",
-          "ageHours": 17.7,
-          "freshnessBasis": "Chelsea striker João Pedro has withdrawn from the Brazil squad because of injury.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49958777/chelsea-joao-pedro-brazil-squad-injury-friendlies"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49958777/chelsea-joao-pedro-brazil-squad-injury-friendlies"
-            }
-          ],
-          "id": "a415-d9e0c42c753cf646",
           "feedRank": 25,
-          "compactHeadline": "Chelsea's João Pedro withdraws from Brazil squad with injury"
+          "compactHeadline": "Marco Rose proud of 'Bournemouth football' in European debut win over Real Sociedad"
         },
         {
           "rank": 4,
           "candidateIds": [
-            "cand-9632d446df770ebd"
+            "cand-60aef3c8ab25038f"
           ],
-          "type": "STREAK",
-          "priority": 74,
-          "headline": "Coventry boss Frank Lampard has urged his players to stay positive ahead of Saturday's Premier League trip to Nottingham Forest.",
-          "text": "Coventry boss Frank Lampard has urged his players to stay positive ahead of Saturday's Premier League trip to Nottingham Forest.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Arsenal boss Mikel Arteta insisted he has buried the hatchet with Brighton manager Fabian Hürzeler on the eve of their Premier League clash.",
+          "text": "Arsenal boss Mikel Arteta insisted he has buried the hatchet with Brighton manager Fabian Hürzeler on the eve of their Premier League clash.",
           "entities": [],
-          "occurredAt": "2026-09-17T12:12:46Z",
+          "occurredAt": "2026-09-18T11:23:15Z",
           "timePrecision": "exact",
-          "ageHours": 16.3,
-          "freshnessBasis": "Coventry boss Frank Lampard has urged his players to stay positive ahead of Saturday's Premier League trip to Nottingham Forest.",
+          "ageHours": 0.63,
+          "freshnessBasis": "Arsenal boss Mikel Arteta insisted he has buried the hatchet with Brighton manager Fabian Hürzeler on the eve of their Premier League clash.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/soccer/story/_/id/49963760/frank-lampard-coventry-stay-positive-four-game-losing-streak"
+            "https://www.espn.com/soccer/story/_/id/49971397/arsenal-boss-mikel-arteta-fabian-hurzeler-falling-thats-all-premier-league"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-epl",
-              "url": "https://www.espn.com/soccer/story/_/id/49963760/frank-lampard-coventry-stay-positive-four-game-losing-streak"
+              "url": "https://www.espn.com/soccer/story/_/id/49971397/arsenal-boss-mikel-arteta-fabian-hurzeler-falling-thats-all-premier-league"
             }
           ],
-          "id": "a415-acd68075d596e095",
+          "id": "a415-3f02bd2cedab6fa0",
           "feedRank": 26,
-          "compactHeadline": "Frank Lampard urges Coventry to stay positive amid four-game losing streak"
+          "compactHeadline": "Arsenal boss Mikel Arteta on Fabian Hürzeler falling out: 'That's all in the past'"
         }
       ]
     },
@@ -855,7 +849,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T13:57:03Z",
           "timePrecision": "exact",
-          "ageHours": 14.57,
+          "ageHours": 22.07,
           "freshnessBasis": "Lionel Messi scored his 100th goal for Inter Miami in all competitions after heading home the opener in a 2-0 win over Cruz Azul in the Campeones Cup on Wednesday night at Nu Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -884,7 +878,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T22:08:13Z",
           "timePrecision": "exact",
-          "ageHours": 6.38,
+          "ageHours": 13.88,
           "freshnessBasis": "New York Red Bulls teenage forward Julian Hall said the decision on his international allegiance was still \"not solidified,\" despite earning a first call-up to the U.S. men's national team on Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -913,7 +907,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:58:28Z",
           "timePrecision": "exact",
-          "ageHours": 9.54,
+          "ageHours": 17.04,
           "freshnessBasis": "Lionel Messi pointed his finger at MLS commissioner Don Garber on multiple occasions while speaking with him after Inter Miami's game with Cruz Azul on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -942,7 +936,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:37:10Z",
           "timePrecision": "exact",
-          "ageHours": 9.9,
+          "ageHours": 17.4,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -977,7 +971,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 5.02,
+          "ageHours": 12.52,
           "freshnessBasis": "Highlightly final: Syracuse Orange 13, Pittsburgh Panthers 27.",
           "status": "active",
           "sourceUrls": [
@@ -1012,7 +1006,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:20:40Z",
           "timePrecision": "exact",
-          "ageHours": 7.17,
+          "ageHours": 14.67,
           "freshnessBasis": "North Carolina DC Steve Belichick has resigned as the university's probe into the football program's culture and climate found \"isolated\" disregard for standards of conduct.",
           "status": "active",
           "sourceUrls": [
@@ -1041,7 +1035,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:24:47Z",
           "timePrecision": "exact",
-          "ageHours": 10.1,
+          "ageHours": 17.6,
           "freshnessBasis": "Baylor quarterback DJ Lagway is considered doubtful for the Bears' game Saturday against Louisiana Tech because of an ankle injury, sources told ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -1070,7 +1064,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:28:30Z",
           "timePrecision": "exact",
-          "ageHours": 13.04,
+          "ageHours": 20.54,
           "freshnessBasis": "Northwestern coach David Braun has agreed to a new contract through the 2031 season, extending his agreement by three years.",
           "status": "active",
           "sourceUrls": [
@@ -1090,31 +1084,31 @@
         {
           "rank": 5,
           "candidateIds": [
-            "cand-fee447adfd8e206b"
+            "cand-7264bddfe0954665"
           ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "In a surprising turn of events, LSU listed starting quarterback Sam Leavitt as doubtful for Saturday. The exact nature of his injury is unclear.",
-          "text": "In a surprising turn of events, LSU listed starting quarterback Sam Leavitt as doubtful for Saturday. The exact nature of his injury is unclear.",
+          "type": "NEWS",
+          "priority": 64,
+          "headline": "Like Oklahoma State and Auburn before, another team is ready to hang a banner long after the season's games were played.",
+          "text": "Like Oklahoma State and Auburn before, another team is ready to hang a banner long after the season's games were played.",
           "entities": [],
-          "occurredAt": "2026-09-17T12:30:21Z",
+          "occurredAt": "2026-09-18T10:13:42Z",
           "timePrecision": "exact",
-          "ageHours": 16.01,
-          "freshnessBasis": "In a surprising turn of events, LSU listed starting quarterback Sam Leavitt as doubtful for Saturday. The exact nature of his injury is unclear.",
+          "ageHours": 1.79,
+          "freshnessBasis": "Like Oklahoma State and Auburn before, another team is ready to hang a banner long after the season's games were played.",
           "status": "active",
           "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49961530/lsu-qb-sam-leavitt-surprise-doubtful-ahead-ole-miss-game"
+            "https://www.espn.com/college-football/story/_/id/49958642/claiming-college-football-national-title-66-years-later-missouri-tigers"
           ],
           "sources": [
             {
               "provider": "ESPN",
               "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49961530/lsu-qb-sam-leavitt-surprise-doubtful-ahead-ole-miss-game"
+              "url": "https://www.espn.com/college-football/story/_/id/49958642/claiming-college-football-national-title-66-years-later-missouri-tigers"
             }
           ],
-          "id": "a415-6b4132b6a3715d41",
+          "id": "a415-4bc6eaecbb193687",
           "feedRank": 35,
-          "compactHeadline": "LSU QB Sam Leavitt surprise doubtful ahead of Ole Miss game"
+          "compactHeadline": "How and why Missouri is claiming a college football title 66 years later"
         }
       ]
     }
@@ -1139,7 +1133,7 @@
     "version": "A4.15",
     "mode": "deterministic-grounded-source-selection",
     "reason": "openai_credit_balance_exhausted",
-    "freshCandidateCount": 125,
+    "freshCandidateCount": 134,
     "publishedItemCount": 35,
     "policy": "Use direct source candidates only; keep prior items only while still inside the 24-hour freshness window."
   }
