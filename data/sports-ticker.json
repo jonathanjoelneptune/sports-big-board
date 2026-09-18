@@ -1,11 +1,11 @@
 {
   "schemaVersion": 11,
   "pipelineVersion": "A4.15-resilient-editor-fallback",
-  "generatedAt": "2026-09-18T03:00:54Z",
+  "generatedAt": "2026-09-18T03:30:51Z",
   "freshnessHours": 24.0,
   "discoveryMode": "Highlightly + decisive parsing + result-story promotion + final relevance gate + game-event fusion + validated special events + hardened FBS identity + bounded ESPN football summary fallback + ESPN JSON news + ESPN FBS scoreboard context + official league pages; no OpenAI web search; A4 global 30-35 headline budget + conditional editor refill + compact-headline diversity selection",
   "model": "deterministic-source-fallback",
-  "sourceCandidateHash": "650f9421aa0e831d1407d729b5adbda13ddce94d07d71830b297787915c1f64d",
+  "sourceCandidateHash": "a465bf8fac55714c6c8f55b2a39f44465d89c4bc79d994c50f1e9245637f3e45",
   "leagues": [
     {
       "league": "MLB",
@@ -18,12 +18,12 @@
           ],
           "type": "RESULT",
           "priority": 70,
-          "headline": "Yordan Alvarez hit his 40th home run, one of five Houston long balls, and the Astros beat the Kansas City Royals 6-2 on Thursday night to move back over .500 and maintain at least a share of the AL West lead.",
-          "text": "Yordan Alvarez hit his 40th home run, one of five Houston long balls, and the Astros beat the Kansas City Royals 6-2 on Thursday night to move back over .500 and maintain at least a share of the AL West lead.",
+          "headline": "Yordan Alvarez hit his 40th home run, one of five Houston long balls, and the Astros beat the Kansas City Royals 6-2 on Thursday night to move back over .500 and open a one-game lead over Texas in AL West.",
+          "text": "Yordan Alvarez hit his 40th home run, one of five Houston long balls, and the Astros beat the Kansas City Royals 6-2 on Thursday night to move back over .500 and open a one-game lead over Texas in AL West.",
           "entities": [],
           "occurredAt": "2026-09-17T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.77,
+          "ageHours": 4.26,
           "freshnessBasis": "Highlightly final: Kansas City Royals 2, Houston Astros 6.",
           "status": "active",
           "sourceUrls": [
@@ -44,7 +44,7 @@
           ],
           "id": "a415-0a2af0e78253c024",
           "feedRank": 1,
-          "compactHeadline": "Alvarez hits 40th home run, Astros defeat Royals 6-2 to maintain at least share of AL West lead"
+          "compactHeadline": "Alvarez hits 40th home run, Astros beat Royals 6-2 to move 1 game ahead of Rangers for AL West lead"
         },
         {
           "rank": 2,
@@ -58,7 +58,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:15:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.77,
+          "ageHours": 4.26,
           "freshnessBasis": "Highlightly final: Philadelphia Phillies 3, New York Mets 0.",
           "status": "active",
           "sourceUrls": [
@@ -93,7 +93,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T19:10:00Z",
           "timePrecision": "exact",
-          "ageHours": 7.85,
+          "ageHours": 8.35,
           "freshnessBasis": "Highlightly final: San Diego Padres 9, Colorado Rockies 2.",
           "status": "active",
           "sourceUrls": [
@@ -134,7 +134,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T16:40:00Z",
           "timePrecision": "exact",
-          "ageHours": 10.35,
+          "ageHours": 10.85,
           "freshnessBasis": "Highlightly final: Los Angeles Dodgers 8, Cincinnati Reds 2.",
           "status": "active",
           "sourceUrls": [
@@ -166,6 +166,35 @@
         {
           "rank": 5,
           "candidateIds": [
+            "cand-ce533adc23643caf"
+          ],
+          "type": "INJURY",
+          "priority": 78,
+          "headline": "Mets first baseman Jared Young was carted off the field in the sixth inning Thursday night after he was knocked out when struck on the head by a knee of pitcher Nolan McLean as the two converged on a slow grounder. A CT scan at a hospital was negative.",
+          "text": "Mets first baseman Jared Young was carted off the field in the sixth inning Thursday night after he was knocked out when struck on the head by a knee of pitcher Nolan McLean as the two converged on a slow grounder. A CT scan at a hospital was negative.",
+          "entities": [],
+          "occurredAt": "2026-09-18T03:07:45Z",
+          "timePrecision": "exact",
+          "ageHours": 0.39,
+          "freshnessBasis": "Mets first baseman Jared Young was carted off the field in the sixth inning Thursday night after he was knocked out when struck on the head by a knee of pitcher Nolan McLean as the two converged on a slow grounder. A CT scan at a hospital was negative.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/mlb/story/_/id/49968979/mets-jared-young-carted-field-taken-hospital-collision-nolan-mclean"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-mlb",
+              "url": "https://www.espn.com/mlb/story/_/id/49968979/mets-jared-young-carted-field-taken-hospital-collision-nolan-mclean"
+            }
+          ],
+          "id": "a415-59b6ea237c97c93c",
+          "feedRank": 5,
+          "compactHeadline": "Mets' Young has concussion symptoms after collision with McLean"
+        },
+        {
+          "rank": 6,
+          "candidateIds": [
             "cand-f0deb0e9161c37dc"
           ],
           "type": "TRADE",
@@ -175,7 +204,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T02:47:12Z",
           "timePrecision": "exact",
-          "ageHours": 0.23,
+          "ageHours": 0.73,
           "freshnessBasis": "Luis Castillo will pitch out of the White Sox bullpen for the foreseeable future after struggling to a 7.76 ERA in seven outings since Chicago acquired him at the trade deadline.",
           "status": "active",
           "sourceUrls": [
@@ -189,37 +218,8 @@
             }
           ],
           "id": "a415-88ed5c09ff3840b2",
-          "feedRank": 5,
-          "compactHeadline": "White Sox move struggling Luis Castillo to bullpen"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-f451a83486337cb3"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Detroit Tigers 1, Chicago White Sox 3.",
-          "text": "Highlightly final: Detroit Tigers 1, Chicago White Sox 3.",
-          "entities": [],
-          "occurredAt": "2026-09-17T23:40:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.35,
-          "freshnessBasis": "Highlightly final: Detroit Tigers 1, Chicago White Sox 3.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-baseball-2026-09-17",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-ccbc4c82ff2b3462",
           "feedRank": 6,
-          "compactHeadline": "Chicago White Sox beat Detroit Tigers 3-1"
+          "compactHeadline": "White Sox move struggling Luis Castillo to bullpen"
         }
       ]
     },
@@ -237,7 +237,7 @@
           "headline": "As Drew Lock steps into a starting role for the Seattle Seahawks, the veteran quarterback knows he doesn't have to force the issue while he fills in for the injured Sam Darnold.",
           "text": "As Drew Lock steps into a starting role for the Seattle Seahawks, the veteran quarterback knows he doesn't have to force the issue while he fills in for the injured Sam Darnold.",
           "entities": [],
-          "occurredAt": "2026-09-18T02:59:17Z",
+          "occurredAt": "2026-09-18T03:28:47Z",
           "timePrecision": "exact",
           "ageHours": 0.03,
           "freshnessBasis": "As Drew Lock steps into a starting role for the Seattle Seahawks, the veteran quarterback knows he doesn't have to force the issue while he fills in for the injured Sam Darnold.",
@@ -268,7 +268,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T02:45:11Z",
           "timePrecision": "exact",
-          "ageHours": 0.26,
+          "ageHours": 0.76,
           "freshnessBasis": "DJ Moore was ruled out of Thursday night's game against the Lions because of a shoulder injury.",
           "status": "active",
           "sourceUrls": [
@@ -297,7 +297,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T02:44:33Z",
           "timePrecision": "exact",
-          "ageHours": 0.27,
+          "ageHours": 0.77,
           "freshnessBasis": "Lions defensive back Avonte Maddox was ruled out for the rest of Thursday night's game at Buffalo after injuring his foot in the second quarter.",
           "status": "active",
           "sourceUrls": [
@@ -326,7 +326,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:38:17Z",
           "timePrecision": "exact",
-          "ageHours": 3.38,
+          "ageHours": 3.88,
           "freshnessBasis": "Eagles defensive tackle Jalen Carter expects to wear a cast on his injured right wrist for Sunday's Week 2 matchup against the Titans.",
           "status": "active",
           "sourceUrls": [
@@ -355,7 +355,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:50:32Z",
           "timePrecision": "exact",
-          "ageHours": 5.17,
+          "ageHours": 5.67,
           "freshnessBasis": "Steelers cornerback Joey Porter Jr. left Thursday's practice early with an athletic trainer, days after being cleared form a back injury.",
           "status": "active",
           "sourceUrls": [
@@ -384,7 +384,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:05:06Z",
           "timePrecision": "exact",
-          "ageHours": 5.93,
+          "ageHours": 6.43,
           "freshnessBasis": "Texans star wide receiver Nico Collins suffered a hamstring injury during Wednesday's practice and is uncertain to play in Week 2 against the Bengals, a source told ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -410,35 +410,6 @@
         {
           "rank": 1,
           "candidateIds": [
-            "cand-1d2605ab6fc4c9a1"
-          ],
-          "type": "RESULT",
-          "priority": 70,
-          "headline": "Highlightly final: Washington Mystics Women 110, Chicago Sky Women 80.",
-          "text": "Highlightly final: Washington Mystics Women 110, Chicago Sky Women 80.",
-          "entities": [],
-          "occurredAt": "2026-09-18T00:00:00Z",
-          "timePrecision": "exact",
-          "ageHours": 3.02,
-          "freshnessBasis": "Highlightly final: Washington Mystics Women 110, Chicago Sky Women 80.",
-          "status": "active",
-          "sourceUrls": [
-            "https://highlightly.net"
-          ],
-          "sources": [
-            {
-              "provider": "Highlightly",
-              "sourceId": "highlightly-basketball-2026-09-17",
-              "url": "https://highlightly.net"
-            }
-          ],
-          "id": "a415-b07d44da0bc3ce1f",
-          "feedRank": 13,
-          "compactHeadline": "Washington Mystics Women beat Chicago Sky Women 110-80"
-        },
-        {
-          "rank": 2,
-          "candidateIds": [
             "cand-6d39c1e2dc8fae58"
           ],
           "type": "RESULT",
@@ -448,7 +419,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T00:00:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.02,
+          "ageHours": 3.51,
           "freshnessBasis": "Highlightly final: Los Angeles Sparks Women 97, Dallas Wings Women 77.",
           "status": "active",
           "sourceUrls": [
@@ -462,8 +433,37 @@
             }
           ],
           "id": "a415-e45a0cc9645055ba",
-          "feedRank": 14,
+          "feedRank": 13,
           "compactHeadline": "Los Angeles Sparks Women beat Dallas Wings Women 97-77"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
+            "cand-1d2605ab6fc4c9a1"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Highlightly final: Washington Mystics Women 110, Chicago Sky Women 80.",
+          "text": "Highlightly final: Washington Mystics Women 110, Chicago Sky Women 80.",
+          "entities": [],
+          "occurredAt": "2026-09-18T00:00:00Z",
+          "timePrecision": "exact",
+          "ageHours": 3.51,
+          "freshnessBasis": "Highlightly final: Washington Mystics Women 110, Chicago Sky Women 80.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-basketball-2026-09-17",
+              "url": "https://highlightly.net"
+            }
+          ],
+          "id": "a415-b07d44da0bc3ce1f",
+          "feedRank": 14,
+          "compactHeadline": "Washington Mystics Women beat Chicago Sky Women 110-80"
         },
         {
           "rank": 3,
@@ -477,7 +477,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:30:00Z",
           "timePrecision": "exact",
-          "ageHours": 3.52,
+          "ageHours": 4.01,
           "freshnessBasis": "Highlightly final: Connecticut Sun Women 59, Atlanta Dream Women 103.",
           "status": "active",
           "sourceUrls": [
@@ -506,7 +506,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:11:44Z",
           "timePrecision": "exact",
-          "ageHours": 3.82,
+          "ageHours": 4.32,
           "freshnessBasis": "The New Orleans Pelicans and forward Saddiq Bey have agreed to a three-year, $55.5 million contract extension, his agents tell ESPN.",
           "status": "active",
           "sourceUrls": [
@@ -522,35 +522,6 @@
           "id": "a415-75c1ef931c3d7f24",
           "feedRank": 16,
           "compactHeadline": "Pelicans, Saddiq Bey agree on 3-year, $55.5M contract extension"
-        },
-        {
-          "rank": 5,
-          "candidateIds": [
-            "cand-c76688b3608d9bcd"
-          ],
-          "type": "INJURY",
-          "priority": 78,
-          "headline": "The Phoenix Suns, looking for depth in the wake of Mark Williams' injury, are signing center Duop Reath to a deal, sources told ESPN's Shams Charania.",
-          "text": "The Phoenix Suns, looking for depth in the wake of Mark Williams' injury, are signing center Duop Reath to a deal, sources told ESPN's Shams Charania.",
-          "entities": [],
-          "occurredAt": "2026-09-17T03:06:15Z",
-          "timePrecision": "exact",
-          "ageHours": 23.91,
-          "freshnessBasis": "The Phoenix Suns, looking for depth in the wake of Mark Williams' injury, are signing center Duop Reath to a deal, sources told ESPN's Shams Charania.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/nba/story/_/id/49961989/sources-suns-add-center-depth-free-agent-duop-reath"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-nba",
-              "url": "https://www.espn.com/nba/story/_/id/49961989/sources-suns-add-center-depth-free-agent-duop-reath"
-            }
-          ],
-          "id": "a415-fdbd6cde45f976d4",
-          "feedRank": 17,
-          "compactHeadline": "Sources: Suns add center depth with free agent Duop Reath"
         }
       ]
     },
@@ -570,7 +541,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T01:02:19Z",
           "timePrecision": "exact",
-          "ageHours": 1.98,
+          "ageHours": 2.48,
           "freshnessBasis": "Quinn Hughes reported to his first training camp with Minnesota without an extension, raising the anxiety level within the fanbase.",
           "status": "active",
           "sourceUrls": [
@@ -584,7 +555,7 @@
             }
           ],
           "id": "a415-29dc4e2fba8fbcb2",
-          "feedRank": 18,
+          "feedRank": 17,
           "compactHeadline": "Quinn Hughes not worried about getting new Wild deal done"
         },
         {
@@ -599,7 +570,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:28:17Z",
           "timePrecision": "exact",
-          "ageHours": 5.54,
+          "ageHours": 6.04,
           "freshnessBasis": "The Sharks signed coach Ryan Warsofsky to a multiyear contact extension on the first day of training camp Thursday after he helped the rebuilding team get to the brink of the playoffs over his first two seasons.",
           "status": "active",
           "sourceUrls": [
@@ -613,7 +584,7 @@
             }
           ],
           "id": "a415-6d6fac764da10735",
-          "feedRank": 19,
+          "feedRank": 18,
           "compactHeadline": "Sharks sign coach Ryan Warsofsky to contract extension"
         },
         {
@@ -628,7 +599,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T23:43:21Z",
           "timePrecision": "exact",
-          "ageHours": 3.29,
+          "ageHours": 3.79,
           "freshnessBasis": "Florida forward Brad Marchand is expected to miss the first month of the season while continuing to recover from offseason surgery.",
           "status": "active",
           "sourceUrls": [
@@ -642,7 +613,7 @@
             }
           ],
           "id": "a415-516fe4fc9772c9a3",
-          "feedRank": 20,
+          "feedRank": 19,
           "compactHeadline": "Panthers say Brad Marchand will be rehabbing through October"
         },
         {
@@ -657,7 +628,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T17:08:31Z",
           "timePrecision": "exact",
-          "ageHours": 9.87,
+          "ageHours": 10.37,
           "freshnessBasis": "Red Wings captain Dylan Larkin talked to his teammates about his offseason trade request and answered some questions from reporters on the first day of training camp.",
           "status": "active",
           "sourceUrls": [
@@ -671,8 +642,37 @@
             }
           ],
           "id": "a415-d942dcb47f941d50",
-          "feedRank": 21,
+          "feedRank": 20,
           "compactHeadline": "Red Wings center Dylan Larkin discusses offseason trade request"
+        },
+        {
+          "rank": 5,
+          "candidateIds": [
+            "cand-e5dc01f38c54c294"
+          ],
+          "type": "SUSPENSION",
+          "priority": 64,
+          "headline": "Jets GM Kevin Cheveldayoff didn't rule out the possibility that goaltender Connor Hellebuyck could remain with the team after going public with a trade demand. The Jets formally suspended Hellebuyck on Wednesday for failure to report to training camp.",
+          "text": "Jets GM Kevin Cheveldayoff didn't rule out the possibility that goaltender Connor Hellebuyck could remain with the team after going public with a trade demand. The Jets formally suspended Hellebuyck on Wednesday for failure to report to training camp.",
+          "entities": [],
+          "occurredAt": "2026-09-17T17:39:37Z",
+          "timePrecision": "exact",
+          "ageHours": 9.85,
+          "freshnessBasis": "Jets GM Kevin Cheveldayoff didn't rule out the possibility that goaltender Connor Hellebuyck could remain with the team after going public with a trade demand. The Jets formally suspended Hellebuyck on Wednesday for failure to report to training camp.",
+          "status": "active",
+          "sourceUrls": [
+            "https://www.espn.com/nhl/story/_/id/49965861/gm-door-open-star-goalie-hellebuyck-remain-jets"
+          ],
+          "sources": [
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-nhl",
+              "url": "https://www.espn.com/nhl/story/_/id/49965861/gm-door-open-star-goalie-hellebuyck-remain-jets"
+            }
+          ],
+          "id": "a415-831b685a029f53ca",
+          "feedRank": 21,
+          "compactHeadline": "GM: 'Door open' for star goalie Hellebuyck to remain with Jets"
         }
       ]
     },
@@ -692,7 +692,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:40:02Z",
           "timePrecision": "exact",
-          "ageHours": 11.35,
+          "ageHours": 11.85,
           "freshnessBasis": "Matthias Jaissle hopes Anthony Elanga's injury is \"not that serious\" as Newcastle prepare to face Hull City on Saturday.",
           "status": "active",
           "sourceUrls": [
@@ -721,7 +721,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T22:50:45Z",
           "timePrecision": "exact",
-          "ageHours": 4.17,
+          "ageHours": 4.67,
           "freshnessBasis": "Marco Rose was delighted to watch \"Bournemouth football\" during a 2-1 win at Real Sociedad and a memorable first match in Europe for the Premier League club.",
           "status": "active",
           "sourceUrls": [
@@ -750,7 +750,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T10:49:01Z",
           "timePrecision": "exact",
-          "ageHours": 16.2,
+          "ageHours": 16.7,
           "freshnessBasis": "Chelsea striker João Pedro has withdrawn from the Brazil squad because of injury.",
           "status": "active",
           "sourceUrls": [
@@ -779,7 +779,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T12:12:46Z",
           "timePrecision": "exact",
-          "ageHours": 14.8,
+          "ageHours": 15.3,
           "freshnessBasis": "Coventry boss Frank Lampard has urged his players to stay positive ahead of Saturday's Premier League trip to Nottingham Forest.",
           "status": "active",
           "sourceUrls": [
@@ -814,7 +814,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T13:57:03Z",
           "timePrecision": "exact",
-          "ageHours": 13.06,
+          "ageHours": 13.56,
           "freshnessBasis": "Lionel Messi scored his 100th goal for Inter Miami in all competitions after heading home the opener in a 2-0 win over Cruz Azul in the Campeones Cup on Wednesday night at Nu Stadium.",
           "status": "active",
           "sourceUrls": [
@@ -843,7 +843,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T22:08:13Z",
           "timePrecision": "exact",
-          "ageHours": 4.88,
+          "ageHours": 5.38,
           "freshnessBasis": "New York Red Bulls teenage forward Julian Hall said the decision on his international allegiance was still \"not solidified,\" despite earning a first call-up to the U.S. men's national team on Thursday.",
           "status": "active",
           "sourceUrls": [
@@ -872,7 +872,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:58:28Z",
           "timePrecision": "exact",
-          "ageHours": 8.04,
+          "ageHours": 8.54,
           "freshnessBasis": "Lionel Messi pointed his finger at MLS commissioner Don Garber on multiple occasions while speaking with him after Inter Miami's game with Cruz Azul on Wednesday.",
           "status": "active",
           "sourceUrls": [
@@ -901,7 +901,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:37:10Z",
           "timePrecision": "exact",
-          "ageHours": 8.4,
+          "ageHours": 8.89,
           "freshnessBasis": "Philadelphia Union phenom Cavan Sullivan, 16, headlines the 28-player roster named by U.S. men's national team manager Mauricio Pochettino for the upcoming FIFA international window.",
           "status": "active",
           "sourceUrls": [
@@ -927,6 +927,41 @@
         {
           "rank": 1,
           "candidateIds": [
+            "cand-261e6b5396a09484"
+          ],
+          "type": "RESULT",
+          "priority": 70,
+          "headline": "Damon Ferguson Jr., La'Vell Wright and Mason Heintschel ran for touchdowns, and Pittsburgh continued its perfect start with a 27-13 win over Syracuse on Thursday night.",
+          "text": "Damon Ferguson Jr., La'Vell Wright and Mason Heintschel ran for touchdowns, and Pittsburgh continued its perfect start with a 27-13 win over Syracuse on Thursday night.",
+          "entities": [],
+          "occurredAt": "2026-09-17T23:30:00Z",
+          "timePrecision": "exact",
+          "ageHours": 4.01,
+          "freshnessBasis": "Highlightly final: Syracuse Orange 13, Pittsburgh Panthers 27.",
+          "status": "active",
+          "sourceUrls": [
+            "https://highlightly.net",
+            "http://www.espn.com/ncf/recap?gameId=401858225"
+          ],
+          "sources": [
+            {
+              "provider": "Highlightly",
+              "sourceId": "highlightly-american-football-2026-09-17",
+              "url": "https://highlightly.net"
+            },
+            {
+              "provider": "ESPN",
+              "sourceId": "espn-ncaaf",
+              "url": "http://www.espn.com/ncf/recap?gameId=401858225"
+            }
+          ],
+          "id": "a415-16259e3410177e5d",
+          "feedRank": 30,
+          "compactHeadline": "Pitt stays perfect, improves to 3-0 by grinding its way to a 27-13 win over sloppy Syracuse"
+        },
+        {
+          "rank": 2,
+          "candidateIds": [
             "cand-bd8882005bc3efc1"
           ],
           "type": "SIGNING",
@@ -936,7 +971,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T21:20:40Z",
           "timePrecision": "exact",
-          "ageHours": 5.67,
+          "ageHours": 6.17,
           "freshnessBasis": "North Carolina DC Steve Belichick has resigned as the university's probe into the football program's culture and climate found \"isolated\" disregard for standards of conduct.",
           "status": "active",
           "sourceUrls": [
@@ -950,11 +985,11 @@
             }
           ],
           "id": "a415-8d5e5971b79b3590",
-          "feedRank": 30,
+          "feedRank": 31,
           "compactHeadline": "North Carolina DC Steve Belichick resigns as investigation ends"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "candidateIds": [
             "cand-cfdea0ce5ddaa15f"
           ],
@@ -965,7 +1000,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T18:24:47Z",
           "timePrecision": "exact",
-          "ageHours": 8.6,
+          "ageHours": 9.1,
           "freshnessBasis": "Baylor quarterback DJ Lagway is considered doubtful for the Bears' game Saturday against Louisiana Tech because of an ankle injury, sources told ESPN's Pete Thamel.",
           "status": "active",
           "sourceUrls": [
@@ -979,11 +1014,11 @@
             }
           ],
           "id": "a415-5a90536feb8c63d6",
-          "feedRank": 31,
+          "feedRank": 32,
           "compactHeadline": "Sources: Baylor's Lagway doubtful to play against Louisiana Tech"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "candidateIds": [
             "cand-f027601b68db32d2"
           ],
@@ -994,7 +1029,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T15:28:30Z",
           "timePrecision": "exact",
-          "ageHours": 11.54,
+          "ageHours": 12.04,
           "freshnessBasis": "Northwestern coach David Braun has agreed to a new contract through the 2031 season, extending his agreement by three years.",
           "status": "active",
           "sourceUrls": [
@@ -1008,11 +1043,11 @@
             }
           ],
           "id": "a415-3fe88b829ad4117b",
-          "feedRank": 32,
+          "feedRank": 33,
           "compactHeadline": "Northwestern extends coach David Braun through 2031"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "candidateIds": [
             "cand-fee447adfd8e206b"
           ],
@@ -1023,7 +1058,7 @@
           "entities": [],
           "occurredAt": "2026-09-17T12:30:21Z",
           "timePrecision": "exact",
-          "ageHours": 14.51,
+          "ageHours": 15.01,
           "freshnessBasis": "In a surprising turn of events, LSU listed starting quarterback Sam Leavitt as doubtful for Saturday. The exact nature of his injury is unclear.",
           "status": "active",
           "sourceUrls": [
@@ -1037,11 +1072,11 @@
             }
           ],
           "id": "a415-6b4132b6a3715d41",
-          "feedRank": 33,
+          "feedRank": 34,
           "compactHeadline": "LSU QB Sam Leavitt surprise doubtful ahead of Ole Miss game"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "candidateIds": [
             "cand-171e7c0f1114eb2d"
           ],
@@ -1052,7 +1087,7 @@
           "entities": [],
           "occurredAt": "2026-09-18T01:12:08Z",
           "timePrecision": "exact",
-          "ageHours": 1.81,
+          "ageHours": 2.31,
           "freshnessBasis": "LSU quarterback Sam Leavitt has been upgraded from doubtful to questionable for Saturday's primetime rivalry game vs. Ole Miss in Oxford, Mississippi.",
           "status": "active",
           "sourceUrls": [
@@ -1066,37 +1101,8 @@
             }
           ],
           "id": "a415-06da66fa0ff0cac4",
-          "feedRank": 34,
-          "compactHeadline": "Sam Leavitt goes from doubtful to questionable for LSU"
-        },
-        {
-          "rank": 6,
-          "candidateIds": [
-            "cand-28971b5def91878e"
-          ],
-          "type": "LEGAL",
-          "priority": 64,
-          "headline": "Texas co-defensive coordinator and inside linebackers coach Johnny Nansen has been charged with misdemeanor driving while intoxicated, head coach Steve Sarkisian announced Thursday.",
-          "text": "Texas co-defensive coordinator and inside linebackers coach Johnny Nansen has been charged with misdemeanor driving while intoxicated, head coach Steve Sarkisian announced Thursday.",
-          "entities": [],
-          "occurredAt": "2026-09-17T18:31:39Z",
-          "timePrecision": "exact",
-          "ageHours": 8.49,
-          "freshnessBasis": "Texas co-defensive coordinator and inside linebackers coach Johnny Nansen has been charged with misdemeanor driving while intoxicated, head coach Steve Sarkisian announced Thursday.",
-          "status": "active",
-          "sourceUrls": [
-            "https://www.espn.com/college-football/story/_/id/49965804/texas-co-dc-nansen-charged-dwi-sarkisian-announces"
-          ],
-          "sources": [
-            {
-              "provider": "ESPN",
-              "sourceId": "espn-ncaaf",
-              "url": "https://www.espn.com/college-football/story/_/id/49965804/texas-co-dc-nansen-charged-dwi-sarkisian-announces"
-            }
-          ],
-          "id": "a415-a54253c5c31bdd3d",
           "feedRank": 35,
-          "compactHeadline": "Texas co-DC Nansen charged with DWI, Sarkisian announces"
+          "compactHeadline": "Sam Leavitt goes from doubtful to questionable for LSU"
         }
       ]
     }
